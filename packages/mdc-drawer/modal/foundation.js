@@ -22,25 +22,12 @@ import MDCDismissibleDrawerFoundation from '../dismissible/foundation';
  * @extends {MDCDismissibleDrawerFoundation<!MDCDrawerAdapter>}
  */
 class MDCModalDrawerFoundation extends MDCDismissibleDrawerFoundation {
-  static get defaultAdapter() {
-    return /** @type {!MDCDrawerAdapter} */ ({
-      addClass: (/* className: string */) => {},
-      removeClass: (/* className: string */) => {},
-      hasClass: (/* className: string */) => {},
-      eventTargetHasClass: (/* targetElement: !Element, className: string */) => {},
-      notifyClose: () => {},
-      notifyOpen: () => {},
-      trapFocusOnSurface: () => {},
-      untrapFocusOnSurface: () => {},
-    });
-  }
-
   /**
    * Executed when drawer finishes open animation.
    * @override
    */
   opened() {
-    this.adapter_.trapFocusOnSurface();
+    this.adapter_.trapFocus();
   }
 
   /**
@@ -48,7 +35,7 @@ class MDCModalDrawerFoundation extends MDCDismissibleDrawerFoundation {
    * @override
    */
   closed() {
-    this.adapter_.untrapFocusOnSurface();
+    this.adapter_.untrapFocus();
   }
 
   /**

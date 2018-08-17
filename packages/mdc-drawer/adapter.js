@@ -82,14 +82,14 @@ class MDCDrawerAdapter {
   notifyOpen() {}
 
   /**
-   * Traps focus on surface and focuses the active navigation element.
+   * Traps focus on root element and focuses the active navigation element.
    */
-  trapFocusOnSurface() {}
+  trapFocus() {}
 
   /**
-   * Removes trap focus from surface and resumes focus to nav button.
+   * Removes trap focus from root element and resumes focus to nav button.
    */
-  untrapFocusOnSurface() {}
+  untrapFocus() {}
 }
 
 export default MDCDrawerAdapter;

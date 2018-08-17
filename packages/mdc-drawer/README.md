@@ -354,8 +354,8 @@ Method Signature | Description
 `focusActiveNavigationItem() => void` | Focuses the active / selected navigation item.
 `notifyClosed() => void` | Emits the `MDCDrawer:close` event.
 `notifyOpen() => void` | Emits the `MDCDrawer:open` event.
-`trapFocusOnSurface() => void` | Traps focus on surface and focuses the active navigation element.
-`untrapFocusOnSurface() => void` | Removes trap focus from surface and resumes focus to nav button.
+`trapFocus() => void` | Traps focus on root element and focuses the active navigation element.
+`untrapFocus() => void` | Removes trap focus from root element and resumes focus to nav button.
 
 ### Foundations
 

@@ -20,37 +20,50 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 
 import {MDCDrawer} from '../../../packages/mdc-drawer';
+import * as util from '../../../packages/mdc-drawer/util';
+import {strings, cssClasses} from '../../../packages/mdc-drawer/constants';
 import MDCDismissibleDrawerFoundation from '../../../packages/mdc-drawer/dismissible/foundation';
 
-function getFixture() {
+function getFixture(variantClass) {
+  let scrimEl;
+  if (variantClass === cssClasses.MODAL) {
+    scrimEl = bel`<div class="mdc-drawer-scrim"></div>`;
+  }
+
   return bel`
   <div class="body-content">
-    <div class="mdc-drawer mdc-drawer--dismissible">
+    <div class="mdc-drawer ${variantClass}">
       <div class="mdc-drawer__content">
       <div class="mdc-list-group">
         <nav class="mdc-list">
-          <a class="mdc-list-item mdc-list-item--activated" href="#">
+          <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
             <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
           </a>
         </nav>
       </div>
     </div>
+    ${scrimEl}
   </div>
-`;
+  `;
 }
 
-function setupTest() {
-  const root = getFixture();
+function setupTest(variantClass = cssClasses.DISMISSIBLE) {
+  const root = getFixture(variantClass);
   const drawer = root.querySelector('.mdc-drawer');
   const component = new MDCDrawer(drawer);
   const MockFoundationCtor = td.constructor(MDCDismissibleDrawerFoundation);
   const mockFoundation = new MockFoundationCtor();
   return {root, drawer, component, mockFoundation};
 }
+
+function hasClassMatcher(className) {
+  return td.matchers.argThat((el) => el.classList && el.classList.contains(className));
+}
+
 suite('MDCDrawer');
 
 test('attachTo initializes and returns a MDCDrawer instance', () => {
-  const drawer = getFixture().querySelector('.mdc-drawer');
+  const drawer = getFixture(cssClasses.DISMISSIBLE).querySelector('.mdc-drawer');
   assert.isTrue(MDCDrawer.attachTo(drawer) instanceof MDCDrawer);
 });
 
@@ -138,4 +151,115 @@ test('adapter#eventTargetHasClass returns true when class is found on event targ
   const mockEventTarget = bel`<div class="foo">bar</div>`;
 
   assert.isTrue(component.getDefaultFoundation().adapter_.eventTargetHasClass(mockEventTarget, 'foo'));
+});
+
+test('adapter#restoreFocus restores focus to previously saved focus', () => {
+  const {component, root} = setupTest();
+  const button = bel`<button>Foo</button>`;
+  document.body.appendChild(button);
+  document.body.appendChild(root);
+  button.focus();
+
+  component.getDefaultFoundation().adapter_.saveFocus();
+  root.querySelector(strings.ACTIVE_NAV_ITEM_SELECTOR).focus();
+  component.getDefaultFoundation().adapter_.restoreFocus();
+
+  assert.equal(button, document.activeElement);
+  document.body.removeChild(button);
+  document.body.removeChild(root);
+});
+
+test('adapter#restoreFocus focus shouldn\'t restore if focus is not within root element', () => {
+  const {component, root} = setupTest();
+  const navButtonEl = bel`<button>Foo</button>`;
+  const otherButtonEl = bel`<button>Bar</button>`;
+  document.body.appendChild(navButtonEl);
+  document.body.appendChild(otherButtonEl);
+  document.body.appendChild(root);
+  navButtonEl.focus();
+
+  component.getDefaultFoundation().adapter_.saveFocus();
+  otherButtonEl.focus();
+  component.getDefaultFoundation().adapter_.restoreFocus();
+
+  assert.notEqual(navButtonEl, document.activeElement);
+  document.body.removeChild(navButtonEl);
+  document.body.removeChild(otherButtonEl);
+  document.body.removeChild(root);
+});
+
+test('adapter#restoreFocus focus is not restored if saveFocus never called', () => {
+  const {component, root} = setupTest();
+  const button = bel`<button>Foo</button>`;
+  document.body.appendChild(button);
+  document.body.appendChild(root);
+  button.focus();
+
+  const navItem = root.querySelector(strings.ACTIVE_NAV_ITEM_SELECTOR);
+  navItem.focus();
+  component.getDefaultFoundation().adapter_.restoreFocus();
+
+  assert.equal(navItem, document.activeElement);
+  document.body.removeChild(button);
+  document.body.removeChild(root);
+});
+
+test('adapter#trapFocus traps focus on surface', () => {
+  const {createFocusTrapInstance} = util;
+  util.createFocusTrapInstance = td.func('util.createFocusTrapInstance');
+
+  const fakeFocusTrapInstance = td.object({
+    activate: () => {},
+    deactivate: () => {},
+  });
+  td.when(
+    util.createFocusTrapInstance(hasClassMatcher('mdc-drawer'))
+  ).thenReturn(fakeFocusTrapInstance);
+
+  const {component} = setupTest(cssClasses.MODAL);
+  component.getDefaultFoundation().adapter_.untrapFocus();
+  util.createFocusTrapInstance = createFocusTrapInstance;
+
+  td.verify(fakeFocusTrapInstance.deactivate());
+});
+
+test('adapter#untrapFocus untraps focus on surface after trap focus', () => {
+  const {createFocusTrapInstance} = util;
+  util.createFocusTrapInstance = td.func('util.createFocusTrapInstance');
+
+  const fakeFocusTrapInstance = td.object({
+    activate: () => {},
+    deactivate: () => {},
+  });
+  td.when(
+    util.createFocusTrapInstance(hasClassMatcher('mdc-drawer'))
+  ).thenReturn(fakeFocusTrapInstance);
+
+  const {component} = setupTest(cssClasses.MODAL);
+  component.getDefaultFoundation().adapter_.trapFocus();
+  util.createFocusTrapInstance = createFocusTrapInstance;
+
+  td.verify(fakeFocusTrapInstance.activate());
+});
+
+test('adapter#notifyOpen emits drawer open event', () => {
+  const {component} = setupTest();
+
+  const handler = td.func('openHandler');
+
+  component.listen(strings.OPEN_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyOpen();
+
+  td.verify(handler(td.matchers.anything()));
+});
+
+test('adapter#notifyClose emits drawer close event', () => {
+  const {component} = setupTest();
+
+  const handler = td.func('closeHandler');
+
+  component.listen(strings.CLOSE_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyClose();
+
+  td.verify(handler(td.matchers.anything()));
 });
