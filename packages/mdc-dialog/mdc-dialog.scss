@@ -20,6 +20,8 @@
 @import "@material/rtl/mixins";
 @import "@material/typography/mixins";
 @import "@material/typography/variables";
+@import "./mixins";
+@import "./variables";
 
 // postcss-bem-linter: define dialog
 
@@ -36,7 +38,7 @@
   z-index: 5;
 }
 
-.mdc-dialog__backdrop {
+.mdc-dialog__scrim {
   @include mdc-theme-prop(background-color, text-primary-on-light);
 
   position: fixed;
@@ -51,17 +53,24 @@
 }
 
 .mdc-dialog__surface {
+  @include mdc-dialog-corner-radius($mdc-dialog-corner-radius);
   @include mdc-elevation(24);
   @include mdc-theme-prop(background-color, background);
 
   display: inline-flex;
   flex-direction: column;
-  width: calc(100% - 30px);
-  min-width: 640px;
-  max-width: 865px;
+  max-width: calc(100% - 32px);
+  max-height: calc(100% - 32px);
   transform: translateY(150px) scale(.8);
-  border-radius: 2px;
   opacity: 0;
+
+  @media (max-width: ($mdc-dialog-desktop-breakpoint - 1)) {
+    min-width: 280px;
+  }
+
+  @media (min-width: $mdc-dialog-desktop-breakpoint) {
+    min-width: 560px;
+  }
 
   @include mdc-rtl(".mdc-dialog") {
     text-align: right;
@@ -69,9 +78,24 @@
 }
 
 .mdc-dialog__header {
+  @include mdc-dialog-scroll-divider-color;
+  position: relative;
+
   display: flex;
+  flex-shrink: 0;
   align-items: center;
-  padding: 24px 24px 0;
+  margin: 0;
+  padding: 16px 24px 15px;
+
+  // TODO(acdvorak): Un-nest these selectors
+  .mdc-dialog--scrollable & {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+
+    // TODO(acdvorak): Ask Design about this
+    // TODO(acdvorak): Hide this when the user can't scroll any more
+    box-shadow: 0 24px 24px 0 rgba(white, 1);
+  }
 
   @include mdc-rtl(".mdc-dialog") {
     text-align: right;
@@ -82,7 +106,9 @@
   padding: 0;
 }
 
-.mdc-dialog__header__title {
+.mdc-dialog__title {
+  @include mdc-dialog-title-color;
+  @include mdc-dialog-multiline-ellipsis;
   @include mdc-typography(headline6);
 
   flex: 1;
@@ -90,61 +116,76 @@
 }
 
 .mdc-dialog__body {
-  @include mdc-theme-prop(color, text-secondary-on-light);
+  @include mdc-dialog-body-color;
   @include mdc-typography(body1);
 
-  margin-top: 20px;
-  padding: 0 24px 24px;
-}
+  overflow: auto;
 
-.mdc-dialog__body--scrollable {
-  max-height: 195px;
-  border-top: 1px solid rgba(0, 0, 0, .1);
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
-  overflow-x: auto;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
+  // TODO(acdvorak): Un-nest these selectors
+  .mdc-dialog--scrollable & {
+    // Must be scroll, not auto.
+    // https://css-tricks.com/snippets/css/momentum-scrolling-on-ios-overflow-elements/
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  // stylelint-disable-next-line order/properties-order
+  margin: 0;
+  padding: 10px 24px 21px;
+
+  // TODO(acdvorak): Is there a better way?
+  > :first-child {
+    margin-top: 0;
+  }
+
+  // TODO(acdvorak): Is there a better way?
+  > :last-child {
+    margin-bottom: 0;
+  }
 }
 
 .mdc-dialog__footer {
+  @include mdc-dialog-scroll-divider-color;
+
   display: flex;
+  position: relative;
+  flex-shrink: 0;
   flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
+  margin: 0;
   padding: 8px;
-}
 
-.mdc-dialog__footer__button {
-  @include mdc-rtl-reflexive-box(margin, right, 8px);
+  // TODO(acdvorak): Un-nest these selectors
+  .mdc-dialog--scrollable & {
+    border-top-width: 1px;
+    border-top-style: solid;
 
-  &:last-child {
-    @include mdc-rtl-reflexive-box(margin, right, 0);
+    // TODO(acdvorak): Ask Design about this
+    // TODO(acdvorak): Hide this when the user can't scroll any more
+    box-shadow: 0 -24px 24px 0 rgba(white, 1);
   }
 }
 
-.mdc-dialog__action:not(:disabled) {
-  @include mdc-theme-prop(color, secondary);
-}
+// TODO(acdvorak): Figure out how to apply 12px margin between stacked buttons
+.mdc-dialog__button {
+  @include mdc-rtl-reflexive-box(margin, left, 8px);
 
-// TODO: Replace with breakpoint variable
-@media (max-width: 640px) {
-  .mdc-dialog {
-    min-width: 280px;
+  &:first-child {
+    @include mdc-rtl-reflexive-box(margin, left, 0);
   }
 
-  .mdc-dialog__surface {
-    min-width: 280px;
-  }
+  text-align: right;
 
-  .mdc-dialog__body {
-    line-height: 24px;
+  @include mdc-rtl {
+    text-align: left;
   }
 }
 
 .mdc-dialog--animating {
   visibility: visible;
 
-  .mdc-dialog__backdrop {
+  .mdc-dialog__scrim {
     transition: mdc-animation-enter(opacity, 120ms);
   }
 
@@ -156,7 +197,7 @@
 .mdc-dialog--open {
   visibility: visible;
 
-  .mdc-dialog__backdrop {
+  .mdc-dialog__scrim {
     opacity: .3;
   }
 

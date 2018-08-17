@@ -51,7 +51,7 @@ Dialogs inform users about a specific task and may contain critical information 
   aria-describedby="my-mdc-dialog-description">
   <div class="mdc-dialog__surface">
     <header class="mdc-dialog__header">
-      <h2 id="my-mdc-dialog-label" class="mdc-dialog__header__title">
+      <h2 id="my-mdc-dialog-label" class="mdc-dialog__title">
         Use Google's location service?
       </h2>
     </header>
@@ -59,11 +59,11 @@ Dialogs inform users about a specific task and may contain critical information 
       Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
     </section>
     <footer class="mdc-dialog__footer">
-      <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">Decline</button>
-      <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept">Accept</button>
+      <button type="button" class="mdc-button mdc-dialog__button mdc-dialog__button--cancel">Decline</button>
+      <button type="button" class="mdc-button mdc-dialog__button mdc-dialog__button--accept">Accept</button>
     </footer>
   </div>
-  <div class="mdc-dialog__backdrop"></div>
+  <div class="mdc-dialog__scrim"></div>
 </aside>
 ```
 
@@ -86,7 +86,7 @@ a `mdc-dialog__body--scrollable` modifier to allow scrolling in the dialog.
     aria-describedby="mdc-dialog-with-list-description">
     <div class="mdc-dialog__surface">
       <header class="mdc-dialog__header">
-        <h2 id="mdc-dialog-with-list-label" class="mdc-dialog__header__title">
+        <h2 id="mdc-dialog-with-list-label" class="mdc-dialog__title">
           Choose a Ringtone
         </h2>
       </header>
@@ -106,11 +106,11 @@ a `mdc-dialog__body--scrollable` modifier to allow scrolling in the dialog.
         </ul>
       </section>
       <footer class="mdc-dialog__footer">
-        <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">Decline</button>
-        <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept">Accept</button>
+        <button type="button" class="mdc-button mdc-dialog__button mdc-dialog__button--cancel">Decline</button>
+        <button type="button" class="mdc-button mdc-dialog__button mdc-dialog__button--accept">Accept</button>
       </footer>
     </div>
-    <div class="mdc-dialog__backdrop"></div>
+    <div class="mdc-dialog__scrim"></div>
   </aside>
 ```
 
@@ -125,8 +125,8 @@ Dialog actions use system colors by default, but you can use a contrasting color
 <aside class="mdc-dialog">
   <div class="mdc-dialog__surface">
     <footer class="mdc-dialog__footer">
-      <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">Decline</button>
-      <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept mdc-dialog__action">Accept</button>
+      <button type="button" class="mdc-button mdc-dialog__button mdc-dialog__button--cancel">Decline</button>
+      <button type="button" class="mdc-button mdc-dialog__button mdc-dialog__button--accept mdc-dialog__action">Accept</button>
     </footer>
   </div>
 </aside>
@@ -228,11 +228,11 @@ Closes the dialog
 
 #### MDCDialog:accept
 
-Broadcast when a user actions on the `.mdc-dialog__footer__button--accept` element.
+Broadcast when a user actions on the `.mdc-dialog__button--accept` element.
 
 #### MDCDialog:cancel
 
-Broadcast when a user actions on the `.mdc-dialog__footer__button--cancel` element.
+Broadcast when a user actions on the `.mdc-dialog__button--cancel` element.
 
 ### Using the Foundation Class
 

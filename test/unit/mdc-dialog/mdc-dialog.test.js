@@ -34,7 +34,7 @@ function getFixture() {
         aria-describedby="my-dialog-description">
         <div class="mdc-dialog__surface">
           <header class="mdc-dialog__header">
-            <h2 id="my-dialog-label" class="mdc-dialog__header__title">
+            <h2 id="my-dialog-label" class="mdc-dialog__title">
               Use Google's location service?
             </h2>
           </header>
@@ -43,12 +43,12 @@ function getFixture() {
           </section>
           <footer class="mdc-dialog__footer">
             <button type="button"
-              class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">DECLINE</button>
+              class="mdc-button mdc-dialog__button mdc-dialog__button--cancel">DECLINE</button>
             <button type="button"
-              class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--accept">ACCEPT</button>
+              class="mdc-button mdc-dialog__button mdc-dialog__button--accept">ACCEPT</button>
           </footer>
         </div>
-        <div class="mdc-dialog__backdrop"></div>
+        <div class="mdc-dialog__scrim"></div>
       </aside>
     </div>`;
 }
@@ -58,8 +58,8 @@ function setupTest() {
   const openDialog = fixture.querySelector('.open-dialog');
   const root = fixture.querySelector('.mdc-dialog');
   const component = new MDCDialog(root);
-  const acceptButton = fixture.querySelector('.mdc-dialog__footer__button--accept');
-  const cancelButton = fixture.querySelector('.mdc-dialog__footer__button--cancel');
+  const acceptButton = fixture.querySelector('.mdc-dialog__button--accept');
+  const cancelButton = fixture.querySelector('.mdc-dialog__button--cancel');
   return {openDialog, root, acceptButton, cancelButton, component};
 }
 
@@ -247,7 +247,7 @@ test('adapter#trapFocusOnSurface calls activate() on a properly configured focus
   td.when(
     util.createFocusTrapInstance(
       hasClassMatcher('mdc-dialog__surface'),
-      hasClassMatcher('mdc-dialog__footer__button--accept')
+      hasClassMatcher('mdc-dialog__button--accept')
     )
   ).thenReturn(fakeFocusTrapInstance);
 
@@ -269,7 +269,7 @@ test('adapter#untrapFocusOnSurface calls deactivate() on a properly configured f
   td.when(
     util.createFocusTrapInstance(
       hasClassMatcher('mdc-dialog__surface'),
-      hasClassMatcher('mdc-dialog__footer__button--accept')
+      hasClassMatcher('mdc-dialog__button--accept')
     )
   ).thenReturn(fakeFocusTrapInstance);
 

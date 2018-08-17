@@ -44,7 +44,7 @@ export class MDCDialog extends MDCComponent {
     this.focusTrap_ = util.createFocusTrapInstance(this.dialogSurface_, this.acceptButton_);
     this.footerBtnRipples_ = [];
 
-    const footerBtns = this.root_.querySelectorAll('.mdc-dialog__footer__button');
+    const footerBtns = this.root_.querySelectorAll('.mdc-dialog__button');
     for (let i = 0, footerBtn; footerBtn = footerBtns[i]; i++) {
       this.footerBtnRipples_.push(new MDCRipple(footerBtn));
     }

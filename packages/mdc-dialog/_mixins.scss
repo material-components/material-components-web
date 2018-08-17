@@ -1,0 +1,59 @@
+//
+// Copyright 2018 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+@import "@material/theme/mixins";
+@import "@material/theme/variables";
+@import "./variables";
+
+// TODO(acdvorak): Create mixins for all redline values.
+// TODO(acdvorak): Create screenshot test page with `body { font-size: 200$; }` for all components to test a11y
+
+@mixin mdc-dialog-corner-radius($radius: $mdc-dialog-corner-radius) {
+  border-radius: $radius;
+}
+
+@mixin mdc-dialog-title-color($color: $mdc-dialog-title-color, $opacity: $mdc-dialog-title-opacity) {
+  color: rgba(mdc-theme-prop-value($color), $opacity);
+}
+
+@mixin mdc-dialog-body-color($color: $mdc-dialog-body-color, $opacity: $mdc-dialog-body-opacity) {
+  color: rgba(mdc-theme-prop-value($color), $opacity);
+}
+
+@mixin mdc-dialog-scroll-divider-color($color: $mdc-dialog-scroll-divider-color, $opacity: $mdc-dialog-scroll-divider-opacity) {
+  border-color: rgba(mdc-theme-prop-value($color), $opacity);
+}
+
+@mixin mdc-dialog-multiline-ellipsis($max-lines: 2) {
+  overflow: hidden;
+
+  // Firefox, Edge <= 16, IE 11
+  @supports not (-webkit-line-clamp: $max-lines) {
+    display: flex;
+    flex-direction: column;
+    max-height: (1.5em * $max-lines);
+  }
+
+  // Chrome, Safari, Edge 17+
+  @supports (-webkit-line-clamp: $max-lines) {
+    // stylelint-disable-next-line value-no-vendor-prefix
+    display: -webkit-box;
+
+    /* autoprefixer: ignore next */
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $max-lines;
+  }
+}
