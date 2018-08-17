@@ -32,7 +32,7 @@ class PluginFactory {
   createCopyrightBannerPlugin({
     projectName = 'Material Components for the Web',
     authorName = 'Google Inc.',
-    licenseName = 'Apache-2.0',
+    licenseName = 'MIT',
   } = {}) {
     return new CopyrightBannerPlugin({projectName, authorName, licenseName});
   }
