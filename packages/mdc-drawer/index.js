@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 import {MDCComponent} from '@material/base/index';
-import {MDCFoundation} from '@material/base/foundation';
 import MDCDismissibleDrawerFoundation from './dismissible/foundation';
 import {MDCList} from '@material/list/index';
 import {cssClasses as listCssClasses} from '@material/list/constants';
