@@ -38,8 +38,9 @@ $mdc-persistent-drawer-width: 240px;
     flex-direction: column;
     box-sizing: border-box;
     width: $mdc-persistent-drawer-width;
-    overflow: hidden;
-    touch-action: none;
+    overflow-x: hidden;
+    overflow-y: auto;
+    touch-action: pan-y;
   }
 
   &.mdc-drawer--open {
