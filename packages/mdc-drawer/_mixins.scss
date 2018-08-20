@@ -40,10 +40,14 @@
   @include mdc-list-divider-color($value);
 }
 
-@mixin mdc-drawer-subtitle-text-color($color, $opacity) {
+@mixin mdc-drawer-subtitle-ink-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
 
   @include mdc-list-group-subheader-ink-color($value);
+
+  .mdc-drawer__subtitle {
+    @include mdc-theme-prop(color, $value);
+  }
 }
 
 @mixin mdc-drawer-icon-fill-color($color, $opacity) {
@@ -56,8 +60,7 @@
   $accessibleColor: mdc-theme-accessible-ink-color($color);
 
   @include mdc-drawer-title-ink-color($accessibleColor, $opacity);
-  @include mdc-drawer-subtext-ink-color($accessibleColor, $opacity);
-  @include mdc-drawer-subtitle-text-color($accessibleColor, $opacity);
+  @include mdc-drawer-subtitle-ink-color($accessibleColor, $opacity);
   @include mdc-drawer-item-text-color($accessibleColor, $opacity);
   @include mdc-drawer-icon-ink-color($accessibleColor, $opacity);
   @include mdc-drawer-meta-ink-color($accessibleColor, $opacity);
@@ -119,14 +122,6 @@
   $value: rgba(mdc-theme-prop-value($color), $opacity);
 
   .mdc-drawer__title {
-    @include mdc-theme-prop(color, $value);
-  }
-}
-
-@mixin mdc-drawer-subtext-ink-color($color, $opacity) {
-  $value: rgba(mdc-theme-prop-value($color), $opacity);
-
-  .mdc-drawer__subtext {
     @include mdc-theme-prop(color, $value);
   }
 }

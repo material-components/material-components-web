@@ -125,7 +125,7 @@ Drawers can contain a header element which will not scroll with the rest of the 
 <nav class="mdc-drawer">
   <div class="mdc-drawer__header">
     <h3 class="mdc-drawer__title">Mail</h3>
-    <h6 class="mdc-drawer__subtext">email@material.io</h6>
+    <h6 class="mdc-drawer__subtitle">email@material.io</h6>
   </div>
   <div class="mdc-drawer__content">
     <nav class="mdc-list">
@@ -232,8 +232,8 @@ Class | Description
 `mdc-drawer__header` | Non-scrollable element that exists on the top of the drawer.
 `mdc-drawer--open` | If present indicates that dismissible drawer is in the open position.
 `mdc-drawer__content` | Scrollable content area of the drawer.
-`mdc-drawer__subtext` | Subtext element of the drawer.
 `mdc-drawer__title` | Title text element of the drawer.
+`mdc-drawer__subtitle` | Subtitle text element of the drawer.
 
 
 ### Sass Mixins
