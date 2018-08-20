@@ -15,4 +15,5 @@
  */
 
 const drawerEl = document.querySelector('.mdc-drawer');
+// eslint-disable-next-line no-new
 new mdc.drawer.MDCDrawer(drawerEl);
