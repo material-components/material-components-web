@@ -298,10 +298,10 @@ Class | Description
 `mdc-drawer__header` | Non-scrollable element that exists on the top of the drawer.
 `mdc-drawer--open` | If present indicates that dismissible drawer is in the open position.
 `mdc-drawer__content` | Scrollable content area of the drawer.
-`mdc-drawer__subtitle` | Subtitle text element of the drawer.
 `mdc-drawer__title` | Title text element of the drawer.
 `mdc-drawer-app-content` | Used for dismissible drawer variant sibling element that should animate open/closed with it.
 `mdc-drawer-scrim` | Used for backdrop to overlay on the app content. Applicable only for modal variant.
+`mdc-drawer__subtitle` | Subtitle text element of the drawer.
 
 
 ### Sass Mixins
@@ -312,7 +312,7 @@ Mixin | Description
 `mdc-drawer-border-color($color, $opacity)` | Sets border color of `mdc-drawer` surface.
 `mdc-drawer-divider-color($color, $opacity)` | Sets divider color found between list groups.
 `mdc-drawer-fill-color-accessible($color)` | Sets the fill color to `$color`, and list item text and icon ink colors to an accessible color relative to `$color`.
-`mdc-drawer-group-header-text-color` | Sets drawer list subheader and drawer subtitle ink color.
+`mdc-drawer-subtitle-text-color` | Sets drawer list subheader and drawer subtitle ink color.
 `mdc-drawer-icon-fill-color($color, $opacity)` | Sets drawer list item graphic icon background color.
 `mdc-drawer-icon-activated-ink-color($color, $opacity)` | Sets activated drawer list item icon ink color.
 `mdc-drawer-icon-ink-color($color, $opacity)` | Sets drawer list item graphic icon ink color.

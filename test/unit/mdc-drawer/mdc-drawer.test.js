@@ -270,3 +270,34 @@ test('adapter#computeBoundingRect calls getBoundingClientRect() on root', () => 
   assert.deepEqual(component.getDefaultFoundation().adapter_.computeBoundingRect(), root.getBoundingClientRect());
   document.body.removeChild(root);
 });
+
+test('adapter#notifyOpen emits drawer open event', () => {
+  const {component} = setupTest();
+
+  const handler = td.func('openHandler');
+
+  component.listen(strings.OPEN_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyOpen();
+
+  td.verify(handler(td.matchers.anything()));
+});
+
+test('adapter#notifyClose emits drawer close event', () => {
+  const {component} = setupTest();
+
+  const handler = td.func('closeHandler');
+
+  component.listen(strings.CLOSE_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyClose();
+
+  td.verify(handler(td.matchers.anything()));
+});
+
+test('adapter#focusActiveNavigationItem focuses on active navigation item', () => {
+  const {component, root} = setupTest();
+  document.body.appendChild(root);
+  component.getDefaultFoundation().adapter_.focusActiveNavigationItem();
+
+  assert.equal(root.querySelector(strings.ACTIVE_NAV_ITEM_SELECTOR), document.activeElement);
+  document.body.removeChild(root);
+});

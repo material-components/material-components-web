@@ -40,7 +40,7 @@
   @include mdc-list-divider-color($value);
 }
 
-@mixin mdc-drawer-group-header-text-color($color, $opacity) {
+@mixin mdc-drawer-subtitle-ink-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
 
   @include mdc-list-group-subheader-ink-color($value);
@@ -59,6 +59,8 @@
 @mixin mdc-drawer-fill-color-accessible($color, $opacity) {
   $accessibleColor: mdc-theme-accessible-ink-color($color);
 
+  @include mdc-drawer-title-ink-color($accessibleColor, $opacity);
+  @include mdc-drawer-subtitle-ink-color($accessibleColor, $opacity);
   @include mdc-drawer-item-text-color($accessibleColor, $opacity);
   @include mdc-drawer-icon-ink-color($accessibleColor, $opacity);
   @include mdc-drawer-meta-ink-color($accessibleColor, $opacity);
