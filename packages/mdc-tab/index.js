@@ -95,7 +95,6 @@ class MDCTab extends MDCComponent {
         hasClass: (className) => this.root_.classList.contains(className),
         activateIndicator: (previousIndicatorClientRect) => this.tabIndicator_.activate(previousIndicatorClientRect),
         deactivateIndicator: () => this.tabIndicator_.deactivate(),
-        computeIndicatorClientRect: () => this.tabIndicator_.computeContentClientRect(),
         notifyInteracted: () => this.emit(MDCTabFoundation.strings.INTERACTED_EVENT, {tab: this}, true /* bubble */),
         getOffsetLeft: () => this.root_.offsetLeft,
         getOffsetWidth: () => this.root_.offsetWidth,
@@ -133,7 +132,7 @@ class MDCTab extends MDCComponent {
    * @return {!ClientRect}
    */
   computeIndicatorClientRect() {
-    return this.foundation_.computeIndicatorClientRect();
+    return this.tabIndicator_.computeContentClientRect();
   }
 
   /**
