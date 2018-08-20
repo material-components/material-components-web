@@ -118,7 +118,7 @@
 .mdc-drawer__title {
   @include mdc-typography(headline6);
   @include mdc-typography-baseline-top(36px);
-  @include mdc-typography-baseline-top(20px);
+  @include mdc-typography-baseline-bottom(20px);
 
   margin: 0;
 }
