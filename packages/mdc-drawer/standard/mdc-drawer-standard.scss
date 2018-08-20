@@ -62,8 +62,8 @@
     @include mdc-typography(body2);
 
     height: calc(48px - 2 * #{$mdc-drawer-list-item-spacing});
-    margin: $mdc-drawer-list-item-spacing 0;
-    padding: 0 $mdc-drawer-surface-padding;
+    margin: $mdc-drawer-list-item-spacing 8px;
+    padding: 0 $mdc-drawer-surface-padding / 2;
   }
   // stylelint-enable selector-no-qualifying-type
 
