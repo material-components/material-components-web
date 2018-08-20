@@ -119,15 +119,13 @@
   @include mdc-typography(headline6);
   @include mdc-typography-baseline-top(36px);
   @include mdc-typography-baseline-bottom(20px);
-
-  margin: 0;
 }
 
 .mdc-drawer__subtitle {
   @include mdc-typography(body2);
   @include mdc-typography-baseline-top(20px);
 
-  margin: 0;
+  margin-bottom: 0;
 }
 
 .mdc-drawer__content {
