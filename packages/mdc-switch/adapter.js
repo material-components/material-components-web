@@ -42,14 +42,8 @@ class MDCSwitchAdapter {
   /** @param {boolean} checked */
   setNativeControlChecked(checked) {}
 
-  /** @return {boolean} checked */
-  isNativeControlChecked() {}
-
   /** @param {boolean} disabled */
   setNativeControlDisabled(disabled) {}
-
-  /** @return {boolean} disabled */
-  isNativeControlDisabled() {}
 }
 
 export default MDCSwitchAdapter;

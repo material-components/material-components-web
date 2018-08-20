@@ -1,7 +1,7 @@
 {
   "name": "@material/icon-button",
   "description": "The Material Components for the web icon button component",
-  "version": "0.38.1",
+  "version": "0.39.0-0",
   "license": "Apache 2.0",
   "keywords": [
     "material components",
