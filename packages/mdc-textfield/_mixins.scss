@@ -287,9 +287,6 @@
 
   .mdc-text-field__input {
     display: flex;
-    align-self: auto;
-    box-sizing: content-box; // Will be removed in a fast follow PR.
-    height: 30px;
     padding: 12px;
     border: none !important;  // FF adds unwanted border in HC mode on windows.
     background-color: transparent;
