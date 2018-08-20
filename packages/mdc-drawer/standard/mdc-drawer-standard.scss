@@ -62,8 +62,8 @@
     @include mdc-typography(body2);
 
     height: calc(48px - 2 * #{$mdc-drawer-list-item-spacing});
-    margin: $mdc-drawer-list-item-spacing 0;
-    padding: 0 $mdc-drawer-surface-padding;
+    margin: $mdc-drawer-list-item-spacing 8px;
+    padding: 0 $mdc-drawer-surface-padding / 2;
   }
   // stylelint-enable selector-no-qualifying-type
 
@@ -111,23 +111,20 @@
   flex-shrink: 0;
   box-sizing: border-box;
   min-height: 64px; // same as $mdc-top-app-bar-row-height
-  padding: $mdc-drawer-surface-padding;
-  padding-bottom: 4px;
+  padding: 0 $mdc-drawer-surface-padding 4px $mdc-drawer-surface-padding;
 }
 
 .mdc-drawer__title {
   @include mdc-typography(headline6);
   @include mdc-typography-baseline-top(36px);
-  @include mdc-typography-baseline-top(20px);
-
-  margin: 0;
+  @include mdc-typography-baseline-bottom(20px);
 }
 
 .mdc-drawer__subtitle {
   @include mdc-typography(body2);
   @include mdc-typography-baseline-top(20px);
 
-  margin: 0;
+  margin-bottom: 0;
 }
 
 .mdc-drawer__content {

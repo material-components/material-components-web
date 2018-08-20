@@ -75,32 +75,23 @@
 
 @mixin mdc-drawer-icon-activated-ink-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
-  // stylelint-disable selector-no-qualifying-type
-  .mdc-list-item--activated,
-  a.mdc-list-item--activated, {
+  .mdc-list-item--activated {
     @include mdc-list-item-graphic-ink-color($value);
   }
-  // stylelint-enable selector-no-qualifying-type
 }
 
 @mixin mdc-drawer-item-activated-text-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
-  // stylelint-disable selector-no-qualifying-type
-  .mdc-list-item--activated,
-  a.mdc-list-item--activated, {
+  .mdc-list-item--activated {
     @include mdc-list-item-primary-text-ink-color($value);
   }
-  // stylelint-enable selector-no-qualifying-type
 }
 
 @mixin mdc-drawer-item-text-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
-  // stylelint-disable selector-no-qualifying-type
-  .mdc-list-item,
-  a.mdc-list-item {
+  .mdc-list-item {
     @include mdc-list-item-primary-text-ink-color($value);
   }
-  // stylelint-enable selector-no-qualifying-type
 }
 
 // No meta-activated-ink-color mixins because the only meta element use case
