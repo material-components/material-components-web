@@ -109,6 +109,11 @@ class MDCList extends MDCComponent {
     }
   }
 
+  /** @param {boolean} useSelected */
+  set useSelectedClass(useSelected) {
+    this.foundation_.setUseSelectedClass(useSelected);
+  }
+
   /** @param {number} index */
   set selectedIndex(index) {
     this.foundation_.setSelectedIndex(index);
