@@ -75,6 +75,7 @@
 
 @mixin mdc-drawer-icon-activated-ink-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
+
   .mdc-list-item--activated {
     @include mdc-list-item-graphic-ink-color($value);
   }
@@ -82,6 +83,7 @@
 
 @mixin mdc-drawer-item-activated-text-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
+
   .mdc-list-item--activated {
     @include mdc-list-item-primary-text-ink-color($value);
   }
@@ -89,6 +91,7 @@
 
 @mixin mdc-drawer-item-text-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
+
   .mdc-list-item {
     @include mdc-list-item-primary-text-ink-color($value);
   }
