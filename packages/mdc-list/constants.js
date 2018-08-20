@@ -17,6 +17,7 @@
 
 /** @enum {string} */
 const cssClasses = {
+  ROOT: 'mdc-list',
   LIST_ITEM_CLASS: 'mdc-list-item',
   LIST_ITEM_SELECTED_CLASS: 'mdc-list-item--selected',
 };
@@ -24,9 +25,9 @@ const cssClasses = {
 /** @enum {string} */
 const strings = {
   ARIA_ORIENTATION: 'aria-orientation',
-  ARIA_ORIENTATION_VERTICAL: 'vertical',
+  ARIA_ORIENTATION_HORIZONTAL: 'horizontal',
   ARIA_SELECTED: 'aria-selected',
-  FOCUSABLE_CHILD_ELEMENTS: 'button:not(:disabled), a',
+  FOCUSABLE_CHILD_ELEMENTS: `.${cssClasses.LIST_ITEM_CLASS} button:not(:disabled), .${cssClasses.LIST_ITEM_CLASS} a`,
   ENABLED_ITEMS_SELECTOR: '.mdc-list-item:not(.mdc-list-item--disabled)',
 };
 

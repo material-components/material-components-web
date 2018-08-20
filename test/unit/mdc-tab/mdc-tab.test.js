@@ -24,10 +24,10 @@ import {MDCTab, MDCTabFoundation} from '../../../packages/mdc-tab';
 
 const getFixture = () => bel`
   <button class="mdc-tab" aria-selected="false" role="tab">
-    <div class="mdc-tab__content">
+    <span class="mdc-tab__content">
       <span class="mdc-tab__text-label">Foo</span>
       <span class="mdc-tab__icon"></span>
-    </div>
+    </span>
     <span class="mdc-tab__ripple"></span>
     <span class="mdc-tab-indicator">
       <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
@@ -41,12 +41,30 @@ test('attachTo returns an MDCTab instance', () => {
   assert.isTrue(MDCTab.attachTo(getFixture()) instanceof MDCTab);
 });
 
-function setupTest() {
+function setupTest({createMockFoundation = false} = {}) {
   const root = getFixture();
   const content = root.querySelector(MDCTabFoundation.strings.CONTENT_SELECTOR);
-  const component = new MDCTab(root);
-  return {root, content, component};
+  const mockFoundation = createMockFoundation ? new (td.constructor(MDCTabFoundation))() : undefined;
+  const component = new MDCTab(root, mockFoundation);
+  return {root, content, component, mockFoundation};
 }
+
+test('click handler is added during initialSyncWithDOM', () => {
+  const {component, root, mockFoundation} = setupTest({createMockFoundation: true});
+
+  domEvents.emit(root, 'click');
+  td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 1});
+
+  component.destroy();
+});
+
+test('click handler is removed during destroy', () => {
+  const {component, root, mockFoundation} = setupTest({createMockFoundation: true});
+
+  component.destroy();
+  domEvents.emit(root, 'click');
+  td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 0});
+});
 
 test('#destroy removes the ripple', () => {
   const raf = createMockRaf();
@@ -84,23 +102,6 @@ test('#adapter.setAttr adds a given attribute to the root element', () => {
   assert.equal(root.getAttribute('foo'), 'bar');
 });
 
-test('#adapter.registerEventHandler adds an event listener to the root element for a given event', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('transitionend handler');
-  component.getDefaultFoundation().adapter_.registerEventHandler('transitionend', handler);
-  domEvents.emit(root, 'transitionend');
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('#adapter.deregisterEventHandler removes an event listener from the root element for a given event', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('transitionend handler');
-  root.addEventListener('transitionend', handler);
-  component.getDefaultFoundation().adapter_.deregisterEventHandler('transitionend', handler);
-  domEvents.emit(root, 'transitionend');
-  td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
 test('#adapter.activateIndicator activates the indicator subcomponent', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.activateIndicator();
@@ -111,15 +112,6 @@ test('#adapter.deactivateIndicator deactivates the indicator subcomponent', () =
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.deactivateIndicator();
   assert.notOk(root.querySelector('.mdc-tab-indicator').classList.contains('mdc-tab-indicator--active'));
-});
-
-test('#adapter.computeIndicatorClientRect returns the indicator element\'s bounding client rect', () => {
-  const {root, component} = setupTest();
-  component.getDefaultFoundation().adapter_.deactivateIndicator();
-  assert.deepEqual(
-    component.getDefaultFoundation().adapter_.computeIndicatorClientRect(),
-    root.querySelector('.mdc-tab-indicator').getBoundingClientRect()
-  );
 });
 
 test('#adapter.getOffsetWidth() returns the offsetWidth of the root element', () => {
@@ -190,10 +182,13 @@ test('#deactivate() calls deactivate', () => {
   td.verify(mockFoundation.deactivate(), {times: 1});
 });
 
-test('#computeIndicatorClientRect() calls computeIndicatorClientRect', () => {
-  const {component, mockFoundation} = setupMockFoundationTest();
-  component.computeIndicatorClientRect();
-  td.verify(mockFoundation.computeIndicatorClientRect(), {times: 1});
+test('#computeIndicatorClientRect() returns the indicator element\'s bounding client rect', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.deactivateIndicator();
+  assert.deepEqual(
+    component.computeIndicatorClientRect(),
+    root.querySelector('.mdc-tab-indicator').getBoundingClientRect()
+  );
 });
 
 test('#computeDimensions() calls computeDimensions', () => {

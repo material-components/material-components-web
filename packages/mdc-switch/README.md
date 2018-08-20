@@ -70,9 +70,9 @@ const switchControl = new MDCSwitch(document.querySelector('.mdc-switch'));
 
 ## Variant
 
-### Disabled Switch
+### Initially Disabled Switch
 
-Users can add the class 'mdc-switch--disabled' to the 'mdc-switch' element to disable the switch.
+Add the `mdc-switch--disabled` class to the `mdc-switch` element, and the `disabled` attribute to the `mdc-switch__native-control` element to disable the switch. This logic is handled by the `MDCSwitchFoundation.setDisabled` method, but you'll want to avoid a FOUC by initially adding this class and attribute.
 
 ```html
 <div class="mdc-switch mdc-switch--disabled">
@@ -86,6 +86,22 @@ Users can add the class 'mdc-switch--disabled' to the 'mdc-switch' element to di
 <label for="another-basic-switch">off/on</label>
 ```
 
+### Initially "On" Switch
+
+Add the `mdc-switch--checked` class to the `mdc-switch` element, and the `checked` attribute to the `mdc-switch__native-control` element to toggle the switch to "on". This logic is handled by the `MDCSwitchFoundation.setChecked` method, but you'll want to avoid a FOUC by initially adding this class and attribute.
+
+```html
+<div class="mdc-switch mdc-switch--checked">
+  <div class="mdc-switch__track"></div>
+  <div class="mdc-switch__thumb-underlay">
+    <div class="mdc-switch__thumb">
+        <input type="checkbox" id="another-basic-switch" class="mdc-switch__native-control" role="switch" checked>
+    </div>
+  </div>
+</div>
+<label for="another-basic-switch">off/on</label>
+```
+
 ## Style Customization
 
 ### CSS Classes
@@ -93,6 +109,8 @@ Users can add the class 'mdc-switch--disabled' to the 'mdc-switch' element to di
 CSS Class | Description
 --- | ---
 `mdc-switch` | Mandatory, for the parent element.
+`mdc-switch--disabled` | Optional, styles the switch as disabled
+`mdc-switch--checked` | Optional, styles the switch as checked ("on")
 `mdc-switch__track` | Mandatory, for the track element.
 `mdc-switch__thumb-underlay` | Mandatory, for the ripple effect.
 `mdc-switch__thumb` | Mandatory, for the thumb element.
@@ -133,19 +151,15 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `addClass(className: string) => void` | Adds a class to the root element. |
 | `removeClass(className: string) => void` | Removes a class from the root element. |
 | `setNativeControlChecked(checked: boolean)` | Sets the checked state of the native control. |
-| `isNativeControlChecked() => boolean` | Returns the checked state of the native control. | 
 | `setNativeControlDisabled(disabled: boolean)` | Sets the disabled state of the native control. |
-| `isNativeControlDisabled() => boolean` | Returns the disabled state of the native control. | 
 
 ### `MDCSwitchFoundation`
 
 | Method Signature | Description |
 | --- | --- |
-| `isChecked() => boolean` | Returns whether the native control is checked. |
 | `setChecked(checked: boolean) => void` | Sets the checked value of the native control and updates styling to reflect the checked state. |
-| `isDisabled() => boolean` | Returns whether the native control is disabled. |
 | `setDisabled(disabled: boolean) => void` | Sets the disabled value of the native control and updates styling to reflect the disabled state. |
-| `handleChange() => void` | Handles a change event from the native control. |
+| `handleChange(evt: Event) => void` | Handles a change event from the native control. |
 
 ### `MDCSwitchFoundation` Event Handlers
 If wrapping the switch component it is necessary to add an event handler for native control change events that calls the `handleChange` foundation method. For an example of this, see the [MDCSwitch](index.js) component `initialSyncWithDOM` method.

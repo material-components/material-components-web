@@ -37,7 +37,7 @@ const MDC_CBT_USERNAME = process.env.MDC_CBT_USERNAME;
 const MDC_CBT_AUTHKEY = process.env.MDC_CBT_AUTHKEY;
 const REST_API_BASE_URL = 'https://crossbrowsertesting.com/api/v3';
 const SELENIUM_SERVER_URL = `http://${MDC_CBT_USERNAME}:${MDC_CBT_AUTHKEY}@hub.crossbrowsertesting.com:80/wd/hub`;
-const {ExitCode, SELENIUM_STALLED_TIME_MS} = require('./constants');
+const {ExitCode, SELENIUM_ZOMBIE_SESSION_DURATION_MS} = require('./constants');
 
 /** @type {?Promise<!Array<!cbt.proto.CbtDevice>>} */
 let allBrowsersPromise;
@@ -144,6 +144,16 @@ https://crossbrowsertesting.com/account
     this.logger_.debug(`Fetched ${allBrowsers.length} browsers from CBT!`);
 
     return allBrowsers;
+  }
+
+  /**
+   * @param {string} sessionId
+   * @return {!Promise<string>}
+   */
+  async getPublicTestResultUrl(sessionId) {
+    const stackTrace = getStackTrace('getPublicTestResultUrl');
+    const responseBody = await this.sendRequest_(stackTrace, 'GET', `/selenium/${sessionId}`);
+    return responseBody['show_result_public_url'];
   }
 
   /**
@@ -375,12 +385,12 @@ https://crossbrowsertesting.com/account
   /**
    * @return {!Promise<void>}
    */
-  async killStalledSeleniumTests() {
+  async killZombieSeleniumTests() {
     // NOTE: This only returns Selenium tests running on the authenticated CBT user's account.
     // It does NOT return Selenium tests running under other users.
     /** @type {!CbtSeleniumListResponse} */
     const listResponse = await this.sendRequest_(
-      getStackTrace('killStalledSeleniumTests'),
+      getStackTrace('killZombieSeleniumTests'),
       'GET', '/selenium?active=true&num=100'
     );
 
@@ -388,7 +398,7 @@ https://crossbrowsertesting.com/account
 
     /** @type {!Array<!CbtSeleniumInfoResponse>} */
     const infoResponses = await Promise.all(activeSeleniumTestIds.map((seleniumTestId) => {
-      const infoStackTrace = getStackTrace('killStalledSeleniumTests');
+      const infoStackTrace = getStackTrace('killZombieSeleniumTests');
       return this.sendRequest_(infoStackTrace, 'GET', `/selenium/${seleniumTestId}`);
     }));
 
@@ -401,7 +411,7 @@ https://crossbrowsertesting.com/account
       }
 
       const commandTimestampMs = new Date(lastCommand.date_issued).getTime();
-      if (!Duration.hasElapsed(SELENIUM_STALLED_TIME_MS, commandTimestampMs)) {
+      if (!Duration.hasElapsed(SELENIUM_ZOMBIE_SESSION_DURATION_MS, commandTimestampMs)) {
         continue;
       }
 
@@ -418,16 +428,27 @@ https://crossbrowsertesting.com/account
    */
   async killSeleniumTests(seleniumTestIds, silent = false) {
     await Promise.all(seleniumTestIds.map(async (seleniumTestId) => {
-      if (!silent) {
-        console.log(`${CliColor.magenta('Killing')} stalled Selenium test ${CliColor.bold(seleniumTestId)}`);
-      }
+      const log = (colorVerb) => {
+        if (silent) {
+          return;
+        }
+        console.log(`${colorVerb} Selenium session ${CliColor.bold(seleniumTestId)}`);
+      };
+
+      log(CliColor.magenta('Killing'));
+
       const stackTrace = getStackTrace('killSeleniumTests');
-      return await this.sendRequest_(stackTrace, 'DELETE', `/selenium/${seleniumTestId}`).catch((err) => {
-        if (!silent) {
-          console.warn(`${CliColor.red('Failed')} to kill stalled Selenium test ${CliColor.bold(seleniumTestId)}:`);
+      const requestPromise = this.sendRequest_(stackTrace, 'DELETE', `/selenium/${seleniumTestId}`).then(
+        () => {
+          log(CliColor.bold.magenta('Killed'));
+        },
+        (err) => {
+          log(CliColor.red('Failed'));
           console.warn(err);
         }
-      });
+      );
+
+      return await requestPromise;
     }));
   }
 

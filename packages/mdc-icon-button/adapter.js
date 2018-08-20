@@ -44,31 +44,16 @@ class MDCIconButtonToggleAdapter {
   removeClass(className) {}
 
   /**
-   * @param {string} type
-   * @param {!EventListener} handler
-   */
-  registerInteractionHandler(type, handler) {}
+   * @param {string} className
+   * @return {boolean}
+   * */
+  hasClass(className) {}
 
   /**
-   * @param {string} type
-   * @param {!EventListener} handler
+   * @param {string} attrName
+   * @param {string} attrValue
    */
-  deregisterInteractionHandler(type, handler) {}
-
-  /** @param {string} text */
-  setText(text) {}
-
-  /**
-   * @param {string} name
-   * @return {string}
-   */
-  getAttr(name) {}
-
-  /**
-   * @param {string} name
-   * @param {string} value
-   */
-  setAttr(name, value) {}
+  setAttr(attrName, attrValue) {}
 
   /** @param {!IconButtonToggleEvent} evtData */
   notifyChange(evtData) {}

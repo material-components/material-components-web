@@ -47,15 +47,12 @@ class MDCTabFoundation extends MDCFoundation {
    */
   static get defaultAdapter() {
     return /** @type {!MDCTabAdapter} */ ({
-      registerEventHandler: () => {},
-      deregisterEventHandler: () => {},
       addClass: () => {},
       removeClass: () => {},
       hasClass: () => {},
       setAttr: () => {},
       activateIndicator: () => {},
       deactivateIndicator: () => {},
-      computeIndicatorClientRect: () => {},
       notifyInteracted: () => {},
       getOffsetLeft: () => {},
       getOffsetWidth: () => {},
@@ -69,29 +66,8 @@ class MDCTabFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCTabFoundation.defaultAdapter, adapter));
 
-    /** @private {function(!Event): undefined} */
-    this.handleTransitionEnd_ = (evt) => this.handleTransitionEnd(evt);
-
     /** @private {function(?Event): undefined} */
     this.handleClick_ = () => this.handleClick();
-  }
-
-  init() {
-    this.adapter_.registerEventHandler('click', this.handleClick_);
-  }
-
-  /**
-   * Handles the "transitionend" event
-   * @param {!Event} evt A browser event
-   */
-  handleTransitionEnd(evt) {
-    // Early exit for ripple
-    if (evt.pseudoElement) {
-      return;
-    }
-    this.adapter_.deregisterEventHandler('transitionend', this.handleTransitionEnd_);
-    this.adapter_.removeClass(cssClasses.ANIMATING_ACTIVATE);
-    this.adapter_.removeClass(cssClasses.ANIMATING_DEACTIVATE);
   }
 
   /**
@@ -121,8 +97,6 @@ class MDCTabFoundation extends MDCFoundation {
       return;
     }
 
-    this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
-    this.adapter_.addClass(cssClasses.ANIMATING_ACTIVATE);
     this.adapter_.addClass(cssClasses.ACTIVE);
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'true');
     this.adapter_.setAttr(strings.TABINDEX, '0');
@@ -139,20 +113,10 @@ class MDCTabFoundation extends MDCFoundation {
       return;
     }
 
-    this.adapter_.registerEventHandler('transitionend', this.handleTransitionEnd_);
-    this.adapter_.addClass(cssClasses.ANIMATING_DEACTIVATE);
     this.adapter_.removeClass(cssClasses.ACTIVE);
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'false');
     this.adapter_.setAttr(strings.TABINDEX, '-1');
     this.adapter_.deactivateIndicator();
-  }
-
-  /**
-   * Returns the indicator's client rect
-   * @return {!ClientRect}
-   */
-  computeIndicatorClientRect() {
-    return this.adapter_.computeIndicatorClientRect();
   }
 
   /**
