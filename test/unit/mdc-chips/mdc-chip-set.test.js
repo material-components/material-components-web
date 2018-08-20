@@ -16,9 +16,11 @@
 
 import bel from 'bel';
 import {assert} from 'chai';
+import domEvents from 'dom-events';
 import td from 'testdouble';
 
-import {MDCChipSet} from '../../../packages/mdc-chips/chip-set';
+import {MDCChipSet, MDCChipSetFoundation} from '../../../packages/mdc-chips/chip-set';
+import {MDCChipFoundation} from '../../../packages/mdc-chips/chip';
 
 const getFixture = () => bel`
   <div class="mdc-chip-set">
@@ -48,9 +50,22 @@ class FakeChip {
   }
 }
 
-test('#constructor instantiates child chip components', () => {
+function setupTest() {
   const root = getFixture();
   const component = new MDCChipSet(root, undefined, (el) => new FakeChip(el));
+  return {root, component};
+}
+
+function setupMockFoundationTest() {
+  const root = getFixture();
+  const MockFoundationConstructor = td.constructor(MDCChipSetFoundation);
+  const mockFoundation = new MockFoundationConstructor();
+  const component = new MDCChipSet(root, mockFoundation);
+  return {root, component, mockFoundation};
+}
+
+test('#constructor instantiates child chip components', () => {
+  const {component} = setupTest();
   assert.equal(component.chips.length, 3);
   assert.instanceOf(component.chips[0], FakeChip);
   assert.instanceOf(component.chips[1], FakeChip);
@@ -58,18 +73,43 @@ test('#constructor instantiates child chip components', () => {
 });
 
 test('#destroy cleans up child chip components', () => {
-  const root = getFixture();
-  const component = new MDCChipSet(root, undefined, (el) => new FakeChip(el));
+  const {component} = setupTest();
   component.destroy();
   td.verify(component.chips[0].destroy());
   td.verify(component.chips[1].destroy());
   td.verify(component.chips[2].destroy());
 });
 
+test('#initialSyncWithDOM sets up event handlers', () => {
+  const {root, mockFoundation} = setupMockFoundationTest();
+
+  domEvents.emit(root, MDCChipFoundation.strings.INTERACTION_EVENT);
+  td.verify(mockFoundation.handleChipInteraction(td.matchers.anything()), {times: 1});
+
+  domEvents.emit(root, MDCChipFoundation.strings.REMOVAL_EVENT);
+  td.verify(mockFoundation.handleChipRemoval(td.matchers.anything()), {times: 1});
+});
+
+test('#destroy removes event handlers', () => {
+  const {root, component, mockFoundation} = setupMockFoundationTest();
+  component.destroy();
+
+  domEvents.emit(root, MDCChipFoundation.strings.INTERACTION_EVENT);
+  td.verify(mockFoundation.handleChipInteraction(td.matchers.anything()), {times: 0});
+
+  domEvents.emit(root, MDCChipFoundation.strings.REMOVAL_EVENT);
+  td.verify(mockFoundation.handleChipRemoval(td.matchers.anything()), {times: 0});
+});
+
+test('get selectedChipIds proxies to foundation', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.selectedChipIds;
+  td.verify(mockFoundation.getSelectedChipIds());
+});
+
 test('#addChip adds a new chip to the chip set', () => {
-  const root = getFixture();
-  const component = new MDCChipSet(root, undefined, (el) => new FakeChip(el));
-  component.initialSyncWithDOM();
+  const {component} = setupTest();
+  // component.initialSyncWithDOM(); // TODO: why is this here?
 
   const chipEl = bel`
     <div class="mdc-chip">
@@ -82,12 +122,6 @@ test('#addChip adds a new chip to the chip set', () => {
   assert.instanceOf(component.chips[3], FakeChip);
 });
 
-function setupTest() {
-  const root = getFixture();
-  const component = new MDCChipSet(root);
-  return {root, component};
-}
-
 test('#adapter.hasClass returns true if class is set on chip set element', () => {
   const {root, component} = setupTest();
   root.classList.add('foo');
@@ -95,17 +129,21 @@ test('#adapter.hasClass returns true if class is set on chip set element', () =>
 });
 
 test('#adapter.removeChip removes the chip object from the chip set', () => {
-  const root = getFixture();
-  const component = new MDCChipSet(root, undefined, (el) => new FakeChip(el));
+  const {component} = setupTest();
   const chip = component.chips[0];
   component.getDefaultFoundation().adapter_.removeChip(chip.id);
   assert.equal(component.chips.length, 2);
   td.verify(chip.destroy());
 });
 
+test('#adapter.removeChip does nothing if the given object is not in the chip set', () => {
+  const {component} = setupTest();
+  component.getDefaultFoundation().adapter_.removeChip('chip0');
+  assert.equal(component.chips.length, 3);
+});
+
 test('#adapter.setSelected sets selected on chip object', () => {
-  const root = getFixture();
-  const component = new MDCChipSet(root, undefined, (el) => new FakeChip(el));
+  const {component} = setupTest();
   const chip = component.chips[0];
   component.getDefaultFoundation().adapter_.setSelected(chip.id, true);
   assert.equal(chip.selected, true);

@@ -185,7 +185,23 @@ test('#handleTransitionEnd does nothing on checkmark opacity transition end, if 
   td.verify(mockAdapter.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON), {times: 0});
 });
 
-test('#handleTrailingIconInteraction emits custom event on click in trailing icon', () => {
+test('#handleTransitionEnd does nothing for width property when not exiting', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const mockEvt = {
+    type: 'transitionend',
+    target: {},
+    propertyName: 'width',
+  };
+
+  foundation.handleTransitionEnd(mockEvt);
+
+  td.verify(mockAdapter.notifyRemoval(), {times: 0});
+  td.verify(mockAdapter.addClassToLeadingIcon(cssClasses.HIDDEN_LEADING_ICON), {times: 0});
+  td.verify(mockAdapter.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON), {times: 0});
+});
+
+
+test('#handleTrailingIconInteraction emits custom event on click or enter key in trailing icon', () => {
   const {foundation, mockAdapter} = setupTest();
   const mockEvt = {
     type: 'click',
@@ -193,8 +209,16 @@ test('#handleTrailingIconInteraction emits custom event on click in trailing ico
   };
 
   foundation.handleTrailingIconInteraction(mockEvt);
-  td.verify(mockAdapter.notifyTrailingIconInteraction());
-  td.verify(mockEvt.stopPropagation());
+  td.verify(mockAdapter.notifyTrailingIconInteraction(), {times: 1});
+  td.verify(mockEvt.stopPropagation(), {times: 1});
+
+  foundation.handleTrailingIconInteraction(Object.assign(mockEvt, {type: 'keydown', keyCode: 13}));
+  td.verify(mockAdapter.notifyTrailingIconInteraction(), {times: 2});
+  td.verify(mockEvt.stopPropagation(), {times: 2});
+
+  foundation.handleTrailingIconInteraction(Object.assign(mockEvt, {type: 'keydown', key: 'Enter'}));
+  td.verify(mockAdapter.notifyTrailingIconInteraction(), {times: 3});
+  td.verify(mockEvt.stopPropagation(), {times: 3});
 });
 
 test(`#handleTrailingIconInteraction adds ${cssClasses.CHIP_EXIT} class by default on click in trailing icon`, () => {

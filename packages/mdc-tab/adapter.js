@@ -72,12 +72,6 @@ class MDCTabAdapter {
   deactivateIndicator() {}
 
   /**
-   * Returns the client rect of the indicator.
-   * @return {!ClientRect}
-   */
-  computeIndicatorClientRect() {}
-
-  /**
    * Emits the MDCTab:interacted event for use by parent components
    */
   notifyInteracted() {}
