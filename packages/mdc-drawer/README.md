@@ -35,7 +35,7 @@ npm install @material/drawer
 <nav class="mdc-drawer">
   <div class="mdc-drawer__content">
     <nav class="mdc-list">
-      <a class="mdc-list-item mdc-list-item--activated" href='#'>
+      <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selecetd="true">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
       </a>
       <a class="mdc-list-item" href="#">
@@ -80,7 +80,7 @@ const drawer = MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
 <nav class="mdc-drawer">
   <div class="mdc-drawer__content">
     <nav class="mdc-list">
-      <a class="mdc-list-item mdc-list-item--activated" href="#">
+      <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
         <span class="mdc-list-item__label">Inbox</span>
       </a>
@@ -128,7 +128,7 @@ Drawers can contain a header element which will not scroll with the rest of the 
   </div>
   <div class="mdc-drawer__content">
     <nav class="mdc-list">
-      <a class="mdc-list-item mdc-list-item--activated" href='#'>
+      <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
       </a>
       <a class="mdc-list-item" href="#">
@@ -151,7 +151,7 @@ Dismissible drawers are by default hidden off screen, and can slide into view. D
   <header class="mdc-drawer mdc-drawer--dismissible">
     <div class="mdc-drawer__content">
       <nav class="mdc-list">
-        <a class="mdc-list-item mdc-list-item--selected" href='#'>
+        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
         </a>
         <a class="mdc-list-item" href="#">
@@ -179,7 +179,7 @@ Modal drawers are elevated above most of the app’s UI and don’t affect the s
   <header class="mdc-drawer mdc-drawer--modal">
     <div class="mdc-drawer__content">
       <nav class="mdc-list">
-        <a class="mdc-list-item mdc-list-item--selected" href='#' tabindex="0">
+        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
         </a>
         <a class="mdc-list-item" href="#">
@@ -209,7 +209,7 @@ There are some styles that need to be applied to get the top app bar and the dis
   <nav class="mdc-drawer mdc-drawer--dismissible" id="drawer">
     <div class="mdc-drawer__content">
       <div class="mdc-list">
-        <a class="mdc-list-item mdc-list-item--selected" href='#' tabindex="0">
+        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
         </a>
         <a class="mdc-list-item" href="#">
