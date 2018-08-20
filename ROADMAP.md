@@ -24,7 +24,6 @@ We release a new version of MDC Web every 2 weeks. We also limit our breaking ch
 ### 0.42.0 - November 2018 (R21)
 - Shadows Theme
 - New side sheet
-- More text field sizes
 - Cascading menus
 
 ### 0.43.0 - December 2018 (R22)
