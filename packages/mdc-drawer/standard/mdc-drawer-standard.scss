@@ -111,8 +111,7 @@
   flex-shrink: 0;
   box-sizing: border-box;
   min-height: 64px; // same as $mdc-top-app-bar-row-height
-  padding: $mdc-drawer-surface-padding;
-  padding-bottom: 4px;
+  padding: 0 $mdc-drawer-surface-padding 4px $mdc-drawer-surface-padding;
 }
 
 .mdc-drawer__title {
