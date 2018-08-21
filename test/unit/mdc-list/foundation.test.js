@@ -648,3 +648,12 @@ test('#focusLastElement is called when the list is empty does not focus an eleme
 
   td.verify(mockAdapter.focusItemAtIndex(td.matchers.anything()), {times: 0});
 });
+
+test('#setUseActivatedClass causes setSelectedIndex to use the --activated class', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  foundation.setUseActivatedClass(true);
+  foundation.setSelectedIndex(1);
+
+  td.verify(mockAdapter.addClassForElementIndex(1, cssClasses.LIST_ITEM_ACTIVATED_CLASS), {times: 1});
+});

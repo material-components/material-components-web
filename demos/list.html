@@ -53,7 +53,7 @@
               info
             </a>
           </li>
-          <li class="mdc-list-item">
+          <li class="mdc-list-item mdc-list-item--activated">
             <span class="mdc-list-item__graphic" role="presentation">
               <i class="material-icons" aria-hidden="true">folder</i>
             </span>
@@ -1136,9 +1136,9 @@
           var list = mdc.list.MDCList.attachTo(ele);
           list.wrapFocus = true;
 
-          if (ele.parentElement.classList.contains('hero')) {
-            list.singleSelection = true;
-          }
+          // if (ele.parentElement.classList.contains('hero')) {
+          //   list.singleSelection = true;
+          // }
         });
 
         addRippleToListItems(document.getElementById('leading-checkbox-list'));

@@ -64,7 +64,7 @@ class MDCListFoundation extends MDCFoundation {
     /** {number} */
     this.selectedIndex_ = -1;
     /** {boolean} */
-    this.useSelectedClass_ = false;
+    this.useActivatedClass_ = false;
   }
 
   /**
@@ -92,11 +92,11 @@ class MDCListFoundation extends MDCFoundation {
   }
 
   /**
-   * Sets the useSelectedClass_ private variable.
-   * @param {boolean} useSelected
+   * Sets the useActivatedClass_ private variable.
+   * @param {boolean} useActivated
    */
-  setUseSelectedClass(useSelected) {
-    this.useSelectedClass_ = useSelected;
+  setUseActivatedClass(useActivated) {
+    this.useActivatedClass_ = useActivated;
   }
 
   /** @param {number} index */
@@ -105,8 +105,8 @@ class MDCListFoundation extends MDCFoundation {
       return;
     }
 
-    const className = this.useSelectedClass_
-      ? cssClasses.LIST_ITEM_SELECTED_CLASS : cssClasses.LIST_ITEM_ACTIVATED_CLASS;
+    const className = this.useActivatedClass_
+      ? cssClasses.LIST_ITEM_ACTIVATED_CLASS : cssClasses.LIST_ITEM_SELECTED_CLASS;
 
     if (this.selectedIndex_ >= 0) {
       this.adapter_.removeAttributeForElementIndex(this.selectedIndex_, strings.ARIA_SELECTED);
