@@ -113,7 +113,7 @@ This will produce a Material Design ripple on the button!
 - [Material.io](https://www.material.io) (external site)
 - [Material Design Guidelines](https://material.io/guidelines) (external site)
 
-## Need help
+## Need help?
 
 We're constantly trying to improve our components. If Github Issues doesn't fit your needs then please visit us on our [Discord Channel](https://discordapp.com/invite/material-components).
 
