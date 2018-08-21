@@ -115,7 +115,7 @@ This will produce a Material Design ripple on the button!
 
 ## Need help?
 
-We're constantly trying to improve our components. If Github Issues doesn't fit your needs then please visit us on our [Discord Channel](https://discord.gg/material-components).
+We're constantly trying to improve our components. If Github Issues don't fit your needs, then please visit us on our [Discord Channel](https://discord.gg/material-components).
 
 ## Browser support
 
