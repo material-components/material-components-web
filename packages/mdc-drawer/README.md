@@ -279,7 +279,7 @@ Method Signature | Description
 `addClass(className: string) => void` | Adds a class to the root element.
 `hasClass(className: string) => boolean` | Returns true if the root element contains the given `className`.
 `removeClass(className: string) => void` | Removes a class from the root element.
-`eventTargetHasClass(targetElement: !Element, className: string) => boolean` | Returns true if the target element contains the given class.
+`elementHasClass(element: !Element, className: string) => boolean` | Returns true if the an element contains the given class.
 `computeBoundingRect() => !ClientRect` | Returns the ClientRect for the root element.
 `saveFocus() => void` | Saves the focus of currently active element.
 `restoreFocus() => void` | Restores focus to element previously saved with 'saveFocus'.

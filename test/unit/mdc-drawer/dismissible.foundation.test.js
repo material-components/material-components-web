@@ -45,7 +45,7 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCDismissibleDrawerFoundation, [
-    'hasClass', 'addClass', 'removeClass', 'eventTargetHasClass', 'computeBoundingRect', 'saveFocus', 'restoreFocus',
+    'hasClass', 'addClass', 'removeClass', 'elementHasClass', 'computeBoundingRect', 'saveFocus', 'restoreFocus',
     'focusActiveNavigationItem', 'notifyClose', 'notifyOpen',
   ]);
 });
@@ -178,7 +178,7 @@ test('#handleKeydown calls close when event keyCode is 27', () => {
 test('#handleTransitionEnd removes all animating classes', () => {
   const {foundation, mockAdapter} = setupTest();
   const mockEventTarget = bel`<div class="foo">bar</div>`;
-  td.when(mockAdapter.eventTargetHasClass(mockEventTarget, cssClasses.ROOT)).thenReturn(true);
+  td.when(mockAdapter.elementHasClass(mockEventTarget, cssClasses.ROOT)).thenReturn(true);
   foundation.handleTransitionEnd({target: mockEventTarget});
   td.verify(mockAdapter.removeClass(cssClasses.ANIMATE), {times: 1});
   td.verify(mockAdapter.removeClass(cssClasses.OPENING), {times: 1});
@@ -188,7 +188,7 @@ test('#handleTransitionEnd removes all animating classes', () => {
 test('#handleTransitionEnd removes open class after closing, restores the focus and calls notifyClose', () => {
   const {foundation, mockAdapter} = setupTest();
   const mockEventTarget = bel`<div>root</div>`;
-  td.when(mockAdapter.eventTargetHasClass(mockEventTarget, cssClasses.ROOT)).thenReturn(true);
+  td.when(mockAdapter.elementHasClass(mockEventTarget, cssClasses.ROOT)).thenReturn(true);
   td.when(foundation.isClosing()).thenReturn(true);
 
   foundation.handleTransitionEnd({target: mockEventTarget});
@@ -201,7 +201,7 @@ test(`#handleTransitionEnd doesn\'t remove open class after opening,
     focuses on active navigation item and calls notifyOpen`, () => {
   const {foundation, mockAdapter} = setupTest();
   const mockEventTarget = bel`<div>root</div>`;
-  td.when(mockAdapter.eventTargetHasClass(mockEventTarget, cssClasses.ROOT)).thenReturn(true);
+  td.when(mockAdapter.elementHasClass(mockEventTarget, cssClasses.ROOT)).thenReturn(true);
   td.when(foundation.isClosing()).thenReturn(false);
 
   foundation.handleTransitionEnd({target: mockEventTarget});
@@ -213,7 +213,7 @@ test(`#handleTransitionEnd doesn\'t remove open class after opening,
 test('#handleTransitionEnd doesn\'t do anything if event is not triggered by root element', () => {
   const {foundation, mockAdapter} = setupTest();
   const mockEventTarget = bel`<div>child</div>`;
-  td.when(mockAdapter.eventTargetHasClass(mockEventTarget, cssClasses.ROOT)).thenReturn(false);
+  td.when(mockAdapter.elementHasClass(mockEventTarget, cssClasses.ROOT)).thenReturn(false);
 
   foundation.handleTransitionEnd({target: mockEventTarget});
   td.verify(mockAdapter.removeClass(cssClasses.OPEN), {times: 0});

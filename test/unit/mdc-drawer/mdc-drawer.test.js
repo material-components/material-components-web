@@ -134,11 +134,11 @@ test('adapter#hasClass returns false when there is no class on drawer element', 
   assert.isFalse(hasClass);
 });
 
-test('adapter#eventTargetHasClass returns true when class is found on event target', () => {
+test('adapter#elementHasClass returns true when class is found on event target', () => {
   const {component} = setupTest();
   const mockEventTarget = bel`<div class="foo">bar</div>`;
 
-  assert.isTrue(component.getDefaultFoundation().adapter_.eventTargetHasClass(mockEventTarget, 'foo'));
+  assert.isTrue(component.getDefaultFoundation().adapter_.elementHasClass(mockEventTarget, 'foo'));
 });
 
 

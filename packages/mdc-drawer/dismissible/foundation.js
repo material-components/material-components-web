@@ -38,7 +38,7 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
       hasClass: (/* className: string */) => {},
-      eventTargetHasClass: (/* targetElement: !Element, className: string */) => {},
+      elementHasClass: (/* element: !Element, className: string */) => {},
       computeBoundingRect: () => {},
       notifyClose: () => {},
       notifyOpen: () => {},
@@ -128,7 +128,7 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
    */
   handleTransitionEnd(evt) {
     const {OPENING, CLOSING, OPEN, ANIMATE, ROOT} = cssClasses;
-    if (!this.adapter_.eventTargetHasClass(/** @type {!Element} */ (evt.target), ROOT)) {
+    if (!this.adapter_.elementHasClass(/** @type {!Element} */ (evt.target), ROOT)) {
       return;
     }
 
