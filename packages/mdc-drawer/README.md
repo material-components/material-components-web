@@ -53,6 +53,7 @@ npm install @material/drawer
 ### Styles
 
 ```scss
+@import "@material/drawer/mdc-list";
 @import "@material/drawer/mdc-drawer";
 ```
 
