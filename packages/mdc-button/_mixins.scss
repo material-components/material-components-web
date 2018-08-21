@@ -29,7 +29,7 @@
 @import "./variables";
 
 /// Sets the container fill color for a contained (_raised_ or _unelevated_) button, and updates the button's ink, icon, and ripple colors to meet accessibility standards
-/// @param container-fill-color
+/// @param container-fill-color {color}
 @mixin mdc-button-filled-accessible($container-fill-color) {
   $fill-tone: mdc-theme-tone($container-fill-color);
 
@@ -45,6 +45,7 @@
 }
 
 /// Sets the container fill color to the given color.
+/// @param color {color}
 @mixin mdc-button-container-fill-color($color) {
   // :not(:disabled) is used to support link styled as button
   // as link does not support :enabled style
@@ -54,6 +55,7 @@
 }
 
 /// Sets the outline color to the given color.
+/// @param color {color}
 @mixin mdc-button-outline-color($color) {
   &:not(:disabled) {
     @include mdc-theme-prop(border-color, $color);
@@ -61,6 +63,7 @@
 }
 
 /// Sets the icon color to the given color.
+/// @param color {color}
 @mixin mdc-button-icon-color($color) {
   &:not(:disabled) .mdc-button__icon {
     @include mdc-theme-prop(color, $color);
@@ -68,6 +71,7 @@
 }
 
 /// Sets the ink color to the given color, and sets the icon color to the given color unless `mdc-button-icon-color` is also used.
+/// @param color {color}
 @mixin mdc-button-ink-color($color) {
   &:not(:disabled) {
     @include mdc-theme-prop(color, $color);
@@ -75,6 +79,7 @@
 }
 
 /// Sets the corner radius to the given number (defaults to 2px).
+/// @param size
 @mixin mdc-button-corner-radius($corner-radius) {
   border-radius: $corner-radius;
 }
