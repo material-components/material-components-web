@@ -117,6 +117,14 @@ function setupMockFoundationTest(root = getFixture()) {
   return {root, component, mockFoundation};
 }
 
+test('#initialSyncWithDom calls foundation.setChecked', () => {
+  const root = getFixture();
+  const inputEl = root.querySelector(NATIVE_CONTROL_SELECTOR);
+  inputEl.checked = true;
+  const {mockFoundation} = setupMockFoundationTest(root);
+  td.verify(mockFoundation.setChecked(true), {times: 1});
+});
+
 test('change handler is added to the native control element', () => {
   const {root, mockFoundation} = setupMockFoundationTest();
 

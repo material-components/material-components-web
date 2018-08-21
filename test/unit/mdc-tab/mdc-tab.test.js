@@ -114,15 +114,6 @@ test('#adapter.deactivateIndicator deactivates the indicator subcomponent', () =
   assert.notOk(root.querySelector('.mdc-tab-indicator').classList.contains('mdc-tab-indicator--active'));
 });
 
-test('#adapter.computeIndicatorClientRect returns the indicator element\'s bounding client rect', () => {
-  const {root, component} = setupTest();
-  component.getDefaultFoundation().adapter_.deactivateIndicator();
-  assert.deepEqual(
-    component.getDefaultFoundation().adapter_.computeIndicatorClientRect(),
-    root.querySelector('.mdc-tab-indicator').getBoundingClientRect()
-  );
-});
-
 test('#adapter.getOffsetWidth() returns the offsetWidth of the root element', () => {
   const {root, component} = setupTest();
   assert.strictEqual(component.getDefaultFoundation().adapter_.getOffsetWidth(), root.offsetWidth);
@@ -191,10 +182,13 @@ test('#deactivate() calls deactivate', () => {
   td.verify(mockFoundation.deactivate(), {times: 1});
 });
 
-test('#computeIndicatorClientRect() calls computeIndicatorClientRect', () => {
-  const {component, mockFoundation} = setupMockFoundationTest();
-  component.computeIndicatorClientRect();
-  td.verify(mockFoundation.computeIndicatorClientRect(), {times: 1});
+test('#computeIndicatorClientRect() returns the indicator element\'s bounding client rect', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.deactivateIndicator();
+  assert.deepEqual(
+    component.computeIndicatorClientRect(),
+    root.querySelector('.mdc-tab-indicator').getBoundingClientRect()
+  );
 });
 
 test('#computeDimensions() calls computeDimensions', () => {

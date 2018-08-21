@@ -2575,6 +2575,8 @@ $root.mdc = (function() {
              * @property {selenium.proto.IRawCapabilities|null} [desired_capabilities] UserAgent desired_capabilities
              * @property {selenium.proto.IRawCapabilities|null} [actual_capabilities] UserAgent actual_capabilities
              * @property {mdc.proto.UserAgent.INavigator|null} [navigator] UserAgent navigator
+             * @property {string|null} [selenium_session_id] UserAgent selenium_session_id
+             * @property {string|null} [selenium_result_url] UserAgent selenium_result_url
              * @property {boolean|null} [is_enabled_by_cli] UserAgent is_enabled_by_cli
              * @property {boolean|null} [is_available_locally] UserAgent is_available_locally
              * @property {boolean|null} [is_runnable] UserAgent is_runnable
@@ -2703,6 +2705,22 @@ $root.mdc = (function() {
             UserAgent.prototype.navigator = null;
 
             /**
+             * UserAgent selenium_session_id.
+             * @member {string} selenium_session_id
+             * @memberof mdc.proto.UserAgent
+             * @instance
+             */
+            UserAgent.prototype.selenium_session_id = "";
+
+            /**
+             * UserAgent selenium_result_url.
+             * @member {string} selenium_result_url
+             * @memberof mdc.proto.UserAgent
+             * @instance
+             */
+            UserAgent.prototype.selenium_result_url = "";
+
+            /**
              * UserAgent is_enabled_by_cli.
              * @member {boolean} is_enabled_by_cli
              * @memberof mdc.proto.UserAgent
@@ -2812,6 +2830,10 @@ $root.mdc = (function() {
                     writer.uint32(/* id 18, wireType 2 =*/146).string(message.browser_icon_url);
                 if (message.os_icon_url != null && message.hasOwnProperty("os_icon_url"))
                     writer.uint32(/* id 19, wireType 2 =*/154).string(message.os_icon_url);
+                if (message.selenium_session_id != null && message.hasOwnProperty("selenium_session_id"))
+                    writer.uint32(/* id 20, wireType 2 =*/162).string(message.selenium_session_id);
+                if (message.selenium_result_url != null && message.hasOwnProperty("selenium_result_url"))
+                    writer.uint32(/* id 21, wireType 2 =*/170).string(message.selenium_result_url);
                 return writer;
             };
 
@@ -2884,6 +2906,12 @@ $root.mdc = (function() {
                         break;
                     case 13:
                         message.navigator = $root.mdc.proto.UserAgent.Navigator.decode(reader, reader.uint32());
+                        break;
+                    case 20:
+                        message.selenium_session_id = reader.string();
+                        break;
+                    case 21:
+                        message.selenium_result_url = reader.string();
                         break;
                     case 14:
                         message.is_enabled_by_cli = reader.bool();
@@ -3013,6 +3041,12 @@ $root.mdc = (function() {
                     if (error)
                         return "navigator." + error;
                 }
+                if (message.selenium_session_id != null && message.hasOwnProperty("selenium_session_id"))
+                    if (!$util.isString(message.selenium_session_id))
+                        return "selenium_session_id: string expected";
+                if (message.selenium_result_url != null && message.hasOwnProperty("selenium_result_url"))
+                    if (!$util.isString(message.selenium_result_url))
+                        return "selenium_result_url: string expected";
                 if (message.is_enabled_by_cli != null && message.hasOwnProperty("is_enabled_by_cli"))
                     if (typeof message.is_enabled_by_cli !== "boolean")
                         return "is_enabled_by_cli: boolean expected";
@@ -3153,6 +3187,10 @@ $root.mdc = (function() {
                         throw TypeError(".mdc.proto.UserAgent.navigator: object expected");
                     message.navigator = $root.mdc.proto.UserAgent.Navigator.fromObject(object.navigator);
                 }
+                if (object.selenium_session_id != null)
+                    message.selenium_session_id = String(object.selenium_session_id);
+                if (object.selenium_result_url != null)
+                    message.selenium_result_url = String(object.selenium_result_url);
                 if (object.is_enabled_by_cli != null)
                     message.is_enabled_by_cli = Boolean(object.is_enabled_by_cli);
                 if (object.is_available_locally != null)
@@ -3201,6 +3239,8 @@ $root.mdc = (function() {
                     object.image_filename_suffix = "";
                     object.browser_icon_url = "";
                     object.os_icon_url = "";
+                    object.selenium_session_id = "";
+                    object.selenium_result_url = "";
                 }
                 if (message.alias != null && message.hasOwnProperty("alias"))
                     object.alias = message.alias;
@@ -3240,6 +3280,10 @@ $root.mdc = (function() {
                     object.browser_icon_url = message.browser_icon_url;
                 if (message.os_icon_url != null && message.hasOwnProperty("os_icon_url"))
                     object.os_icon_url = message.os_icon_url;
+                if (message.selenium_session_id != null && message.hasOwnProperty("selenium_session_id"))
+                    object.selenium_session_id = message.selenium_session_id;
+                if (message.selenium_result_url != null && message.hasOwnProperty("selenium_result_url"))
+                    object.selenium_result_url = message.selenium_result_url;
                 return object;
             };
 

@@ -48,10 +48,10 @@ class MDCDrawerAdapter {
   hasClass(className) {}
 
   /**
-   * @param {!Element} targetElement target element
+   * @param {!Element} element target element to verify class name
    * @param {string} className class name
    */
-  eventTargetHasClass(targetElement, className) {}
+  elementHasClass(element, className) {}
 
   /** @return {!ClientRect} */
   computeBoundingRect() {}
