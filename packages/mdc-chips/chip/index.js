@@ -60,7 +60,8 @@ class MDCChip extends MDCComponent {
     return new MDCChip(root);
   }
 
-  initialize() {
+  initialize(
+    rippleFactory = (el, foundation) => new MDCRipple(el, foundation)) {
     this.id = this.root_.id;
     this.leadingIcon_ = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
     this.trailingIcon_ = this.root_.querySelector(strings.TRAILING_ICON_SELECTOR);
@@ -78,9 +79,9 @@ class MDCChip extends MDCComponent {
           return {height, width};
         },
       });
-      this.ripple_ = new MDCRipple(this.root_, new MDCRippleFoundation(adapter));
+      this.ripple_ = rippleFactory(this.root_, new MDCRippleFoundation(adapter));
     } else {
-      this.ripple_ = new MDCRipple(this.root_);
+      this.ripple_ = rippleFactory(this.root_);
     }
   }
 
