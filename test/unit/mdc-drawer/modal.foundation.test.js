@@ -38,7 +38,7 @@ test('#opened traps the focus when drawer finishes animating open', () => {
 test('#closed untraps the focus when drawer finishes animating close', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.closed();
-  td.verify(mockAdapter.untrapFocus(), {times: 1});
+  td.verify(mockAdapter.releaseFocus(), {times: 1});
 });
 
 test('#handleScrimClick closes the drawer', () => {

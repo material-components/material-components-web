@@ -170,36 +170,6 @@ Dismissible drawers are by default hidden off screen, and can slide into view. D
 </body>
 ```
 
-## Modal Drawer
-
-Modal drawers are elevated above most of the app’s UI and don’t affect the screen’s layout grid.
-
-```html
-<body>
-  <header class="mdc-drawer mdc-drawer--modal">
-    <div class="mdc-drawer__content">
-      <nav class="mdc-list">
-        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
-        </a>
-        <a class="mdc-list-item" href="#">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Outgoing
-        </a>
-        <a class="mdc-list-item" href="#">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
-        </a>
-      </nav>
-    </div>
-  </header>
-
-  <div class="mdc-drawer-scrim">
-    App Content
-  </div>
-</body>
-```
-
-> Use the `mdc-drawer-scrim` class on next sibling element to add backdrop to block app's UI.
-
 #### Usage with Top App Bar
 
 In cases where the drawer occupies the full viewport height, some styles must be applied to get the dismissible drawer and the content below the top app bar to independently scroll and work in all browsers.
@@ -279,6 +249,35 @@ topAppBar.listen('MDCTopAppBar:nav', () => {
 });
 ```
 
+### Modal Drawer
+
+Modal drawers are elevated above most of the app’s UI and don’t affect the screen’s layout grid.
+
+```html
+<body>
+  <header class="mdc-drawer mdc-drawer--modal">
+    <div class="mdc-drawer__content">
+      <nav class="mdc-list">
+        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
+        </a>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Outgoing
+        </a>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="mdc-drawer-scrim"></div>
+  <div>Main Content</div>
+</body>
+```
+
+> Use the `mdc-drawer-scrim` class on next sibling element to add backdrop to block app's UI.
+
 ## Style Customization
 
 ### CSS Classes
@@ -296,7 +295,7 @@ Class | Description
 `mdc-drawer--opening` | Applied while the drawer is animating from the closed to the open position.
 `mdc-drawer--closing` | Applied while the drawer is animating from the open to the closed position.
 `mdc-drawer-app-content` | Dismissible variant only. Sibling element that is resized when the drawer opens/closes.
-`mdc-drawer-scrim` | Modal variant only. Used for backdrop to overlay on the app content. Applicable only for modal variant.
+`mdc-drawer-scrim` | Modal variant only. Used for backdrop to overlay on the app content.
 
 
 ### Sass Mixins
@@ -351,7 +350,7 @@ Method Signature | Description
 `notifyClose() => void` | Emits the `MDCDrawer:close` event.
 `notifyOpen() => void` | Emits the `MDCDrawer:open` event.
 `trapFocus() => void` | Traps focus on root element and focuses the active navigation element.
-`untrapFocus() => void` | Removes trap focus from root element and resumes focus to nav button.
+`releaseFocus() => void` | Releases focus on root element which trapFocus was previously called on and resumes focus to nav button.
 
 ### Foundations
 
@@ -361,8 +360,8 @@ Method Signature | Description
 --- | ---
 `open() => void` | Opens the drawer from the closed state.
 `close() => void` | Closes the drawer from the open state.
-`opened() => void` | Abstract method which gets called when drawer finished opening.
-`closed() => void` | Abstract method which gets called when drawer finished closing.
+`opened() => void` | Extensible method which gets called when drawer finished opening.
+`closed() => void` | Extensible method which gets called when drawer finished closing.
 `isOpen() => boolean` | Returns true if the drawer is in the open position.
 `isOpening() => boolean` | Returns true if the drawer is animating open.
 `isClosing() => boolean` | Returns true if the drawer is animating closed.

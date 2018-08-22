@@ -35,7 +35,7 @@ class MDCModalDrawerFoundation extends MDCDismissibleDrawerFoundation {
    * @override
    */
   closed() {
-    this.adapter_.untrapFocus();
+    this.adapter_.releaseFocus();
   }
 
   /**

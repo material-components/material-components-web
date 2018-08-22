@@ -52,7 +52,7 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
       restoreFocus: () => {},
       focusActiveNavigationItem: () => {},
       trapFocus: () => {},
-      untrapFocus: () => {},
+      releaseFocus: () => {},
     });
   }
 

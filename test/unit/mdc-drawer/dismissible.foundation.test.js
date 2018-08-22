@@ -51,7 +51,7 @@ test('exports cssClasses', () => {
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCDismissibleDrawerFoundation, [
     'hasClass', 'addClass', 'removeClass', 'elementHasClass', 'computeBoundingRect', 'saveFocus', 'restoreFocus',
-    'focusActiveNavigationItem', 'notifyClose', 'notifyOpen', 'trapFocus', 'untrapFocus',
+    'focusActiveNavigationItem', 'notifyClose', 'notifyOpen', 'trapFocus', 'releaseFocus',
   ]);
 });
 

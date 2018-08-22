@@ -139,7 +139,7 @@ export class MDCDrawer extends MDCComponent {
       notifyClose: () => this.emit(strings.CLOSE_EVENT, null, true /* shouldBubble */),
       notifyOpen: () => this.emit(strings.OPEN_EVENT, null, true /* shouldBubble */),
       trapFocus: () => this.focusTrap_.activate(),
-      untrapFocus: () => this.focusTrap_.deactivate(),
+      releaseFocus: () => this.focusTrap_.deactivate(),
     }));
 
     const {DISMISSIBLE, MODAL} = MDCDismissibleDrawerFoundation.cssClasses;

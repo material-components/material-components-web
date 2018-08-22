@@ -212,26 +212,7 @@ test('adapter#restoreFocus focus is not restored if saveFocus never called', () 
   document.body.removeChild(root);
 });
 
-test('adapter#trapFocus traps focus on surface', () => {
-  const {createFocusTrapInstance} = util;
-  util.createFocusTrapInstance = td.func('util.createFocusTrapInstance');
-
-  const fakeFocusTrapInstance = td.object({
-    activate: () => {},
-    deactivate: () => {},
-  });
-  td.when(
-    util.createFocusTrapInstance(hasClassMatcher('mdc-drawer'))
-  ).thenReturn(fakeFocusTrapInstance);
-
-  const {component} = setupTest(cssClasses.MODAL);
-  component.getDefaultFoundation().adapter_.untrapFocus();
-  util.createFocusTrapInstance = createFocusTrapInstance;
-
-  td.verify(fakeFocusTrapInstance.deactivate());
-});
-
-test('adapter#untrapFocus untraps focus on surface after trap focus', () => {
+test('adapter#trapFocus traps focus on root element', () => {
   const {createFocusTrapInstance} = util;
   util.createFocusTrapInstance = td.func('util.createFocusTrapInstance');
 
@@ -250,26 +231,23 @@ test('adapter#untrapFocus untraps focus on surface after trap focus', () => {
   td.verify(fakeFocusTrapInstance.activate());
 });
 
-test('adapter#notifyOpen emits drawer open event', () => {
-  const {component} = setupTest();
+test('adapter#releaseFocus releases focus on root element after trap focus', () => {
+  const {createFocusTrapInstance} = util;
+  util.createFocusTrapInstance = td.func('util.createFocusTrapInstance');
 
-  const handler = td.func('openHandler');
+  const fakeFocusTrapInstance = td.object({
+    activate: () => {},
+    deactivate: () => {},
+  });
+  td.when(
+    util.createFocusTrapInstance(hasClassMatcher('mdc-drawer'))
+  ).thenReturn(fakeFocusTrapInstance);
 
-  component.listen(strings.OPEN_EVENT, handler);
-  component.getDefaultFoundation().adapter_.notifyOpen();
+  const {component} = setupTest(cssClasses.MODAL);
+  component.getDefaultFoundation().adapter_.releaseFocus();
+  util.createFocusTrapInstance = createFocusTrapInstance;
 
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('adapter#notifyClose emits drawer close event', () => {
-  const {component} = setupTest();
-
-  const handler = td.func('closeHandler');
-
-  component.listen(strings.CLOSE_EVENT, handler);
-  component.getDefaultFoundation().adapter_.notifyClose();
-
-  td.verify(handler(td.matchers.anything()));
+  td.verify(fakeFocusTrapInstance.deactivate());
 });
 
 test('adapter#computeBoundingRect calls getBoundingClientRect() on root', () => {

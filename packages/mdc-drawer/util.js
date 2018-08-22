@@ -18,8 +18,8 @@ import createFocusTrap from 'focus-trap';
 
 export function createFocusTrapInstance(surfaceEl, focusTrapFactory = createFocusTrap) {
   return focusTrapFactory(surfaceEl, {
-    initialFocus: false,
     clickOutsideDeactivates: true,
+    initialFocus: false, // Navigation drawer handles focusing on active nav item.
     escapeDeactivates: false, // Navigation drawer handles ESC.
     returnFocusOnDeactivate: false, // Navigation drawer handles restore focus.
   });
