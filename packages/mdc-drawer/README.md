@@ -242,9 +242,9 @@ Class | Description
 `mdc-drawer__title` | Title text element of the drawer.
 `mdc-drawer__subtitle` | Subtitle text element of the drawer.
 `mdc-drawer--dismissible` | Dismissible drawer variant class.
-`mdc-drawer--open` | Dismissible variant only. If present, indicates that the dismissible drawer is in the open position.
-`mdc-drawer--opening` | Dismissible variant only. Applied while the drawer is animating from the closed to the open position.
-`mdc-drawer--closing` | Dismissible variant only. Applied while the drawer is animating from the open to the closed position.
+`mdc-drawer--open` | If present, indicates that the dismissible drawer is in the open position.
+`mdc-drawer--opening` | Applied while the drawer is animating from the closed to the open position.
+`mdc-drawer--closing` | Applied while the drawer is animating from the open to the closed position.
 `mdc-drawer-app-content` | Dismissible variant only. Sibling element that is resized when the drawer opens/closes.
 
 ### Sass Mixins
