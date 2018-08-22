@@ -2,7 +2,7 @@
   "name": "@material/menu",
   "version": "0.39.0-0",
   "description": "The Material Components for the web menu component",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "keywords": [
     "material components",
     "material design",

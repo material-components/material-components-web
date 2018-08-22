@@ -35,7 +35,7 @@ npm install @material/drawer
 <nav class="mdc-drawer">
   <div class="mdc-drawer__content">
     <nav class="mdc-list">
-      <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selecetd="true">
+      <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
       </a>
       <a class="mdc-list-item" href="#">
@@ -62,8 +62,7 @@ For the standard drawer, the list must be instantiated for appropriate keyboard 
 
 ```js
 import {MDCList} from "@material/list";
-const list = MDCList.attachTo(document.querySelector('.mdc-list'));
-const.singleSelection = true;
+MDCList.attachTo(document.querySelector('.mdc-list'));
 ```
 
 Other variants use the `MDCDrawer` component, which will instantiate `MDCList` automatically:
@@ -226,7 +225,7 @@ In the following example, the `mdc-drawer__content` and `main-content` elements 
   </nav>
 
   <div class="mdc-drawer-app-content">
-    <header class="mdc-top-app-bar" id="app-bar">
+    <header class="mdc-top-app-bar app-bar" id="app-bar">
       <div class="mdc-top-app-bar__row">
         <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
           <a href="#" class="demo-menu material-icons mdc-top-app-bar__navigation-icon">menu</a>
@@ -235,7 +234,7 @@ In the following example, the `mdc-drawer__content` and `main-content` elements 
       </div>
     </header>
 
-    <main class="main-content">
+    <main class="main-content" id="main-content">
       <div class="mdc-top-app-bar--fixed-adjust"></div>
         App Content
       </div>
@@ -264,26 +263,19 @@ body {
   height: 100%;
 }
 
-#app-bar {
+.app-bar {
   position: absolute;
 }
 ```
 
-JavaScript code to wireup TopAppBar with drawer.
+JavaScript to toggle drawer when navigation button is clicked looks like this:
 
-```javascript
-var drawerEl = document.getElementById('demo-drawer');
-drawer = new mdc.drawer.MDCDrawer(drawerEl);
-var topAppBarEl = document.getElementById('app-bar');
-var topAppBar = new mdc.topAppBar.MDCTopAppBar(topAppBarEl);
-// Auto hides top app bar when main content is scrolled.
+```js
+import {MDCTopAppBar} from "@material/top-app-bar";
+const topAppBar = MDCTopAppBar.attachTo(document.getElementById('app-bar'));
 topAppBar.setScrollTarget(document.getElementById('main-content'));
-topAppBar.listen('MDCTopAppBar:nav', function() {
-  if (drawer.open) {
-    drawer.open = false;
-  } else {
-    drawer.open = true;
-  }
+topAppBar.listen('MDCTopAppBar:nav', () => {
+    drawer.open = !drawer.open;
 });
 ```
 
@@ -300,9 +292,9 @@ Class | Description
 `mdc-drawer__subtitle` | Subtitle text element of the drawer.
 `mdc-drawer--dismissible` | Dismissible drawer variant class.
 `mdc-drawer--modal` | Modal drawer variant class.
-`mdc-drawer--open` | Dismissible variant only. If present, indicates that the dismissible drawer is in the open position.
-`mdc-drawer--opening` | Dismissible variant only. Applied while the drawer is animating from the closed to the open position.
-`mdc-drawer--closing` | Dismissible variant only. Applied while the drawer is animating from the open to the closed position.
+`mdc-drawer--open` | If present, indicates that the dismissible drawer is in the open position.
+`mdc-drawer--opening` | Applied while the drawer is animating from the closed to the open position.
+`mdc-drawer--closing` | Applied while the drawer is animating from the open to the closed position.
 `mdc-drawer-app-content` | Dismissible variant only. Sibling element that is resized when the drawer opens/closes.
 `mdc-drawer-scrim` | Modal variant only. Used for backdrop to overlay on the app content. Applicable only for modal variant.
 
