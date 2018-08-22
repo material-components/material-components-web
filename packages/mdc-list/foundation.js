@@ -69,6 +69,8 @@ class MDCListFoundation extends MDCFoundation {
     this.isSingleSelectionList_ = false;
     /** {number} */
     this.selectedIndex_ = -1;
+    /** {boolean} */
+    this.useActivatedClass_ = false;
   }
 
   /**
@@ -95,32 +97,33 @@ class MDCListFoundation extends MDCFoundation {
     this.isSingleSelectionList_ = value;
   }
 
+  /**
+   * Sets the useActivatedClass_ private variable.
+   * @param {boolean} useActivated
+   */
+  setUseActivatedClass(useActivated) {
+    this.useActivatedClass_ = useActivated;
+  }
+
   /** @param {number} index */
   setSelectedIndex(index) {
     if (index === this.selectedIndex_) {
-      this.adapter_.removeAttributeForElementIndex(this.selectedIndex_, strings.ARIA_SELECTED);
-      this.adapter_.removeClassForElementIndex(this.selectedIndex_, cssClasses.LIST_ITEM_SELECTED_CLASS);
-
-      // Used to reset the first element to tabindex=0 when deselecting a list item.
-      // If already on the first list item, leave tabindex at 0.
-      if (this.selectedIndex_ >= 0) {
-        this.adapter_.setAttributeForElementIndex(this.selectedIndex_, 'tabindex', -1);
-        this.adapter_.setAttributeForElementIndex(0, 'tabindex', 0);
-      }
-      this.selectedIndex_ = -1;
       return;
     }
 
+    const className = this.useActivatedClass_
+      ? cssClasses.LIST_ITEM_ACTIVATED_CLASS : cssClasses.LIST_ITEM_SELECTED_CLASS;
+
     if (this.selectedIndex_ >= 0) {
       this.adapter_.removeAttributeForElementIndex(this.selectedIndex_, strings.ARIA_SELECTED);
-      this.adapter_.removeClassForElementIndex(this.selectedIndex_, cssClasses.LIST_ITEM_SELECTED_CLASS);
+      this.adapter_.removeClassForElementIndex(this.selectedIndex_, className);
       this.adapter_.setAttributeForElementIndex(this.selectedIndex_, 'tabindex', -1);
     }
 
     if (index >= 0 && this.adapter_.getListItemCount() > index) {
       this.selectedIndex_ = index;
       this.adapter_.setAttributeForElementIndex(this.selectedIndex_, strings.ARIA_SELECTED, true);
-      this.adapter_.addClassForElementIndex(this.selectedIndex_, cssClasses.LIST_ITEM_SELECTED_CLASS);
+      this.adapter_.addClassForElementIndex(this.selectedIndex_, className);
       this.adapter_.setAttributeForElementIndex(this.selectedIndex_, 'tabindex', 0);
 
       if (this.selectedIndex_ !== 0) {

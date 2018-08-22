@@ -501,7 +501,7 @@ test('#handleKeydown space key is triggered when singleSelection is true selects
   td.verify(mockAdapter.setAttributeForElementIndex(0, strings.ARIA_SELECTED, true), {times: 1});
 });
 
-test('#handleKeydown space key is triggered 2x when singleSelection is true un-selects the list item', () => {
+test('#handleKeydown space key is triggered 2x when singleSelection does not un-select the item.', () => {
   const {foundation, mockAdapter} = setupTest();
   const preventDefault = td.func('preventDefault');
   const target = {classList: ['mdc-list-item']};
@@ -515,7 +515,8 @@ test('#handleKeydown space key is triggered 2x when singleSelection is true un-s
   foundation.handleKeydown(event);
 
   td.verify(preventDefault(), {times: 2});
-  td.verify(mockAdapter.removeAttributeForElementIndex(0, strings.ARIA_SELECTED), {times: 1});
+  td.verify(mockAdapter.setAttributeForElementIndex(0, strings.ARIA_SELECTED, true), {times: 1});
+  td.verify(mockAdapter.removeAttributeForElementIndex(0, strings.ARIA_SELECTED), {times: 0});
 });
 
 test('#handleKeydown space key is triggered when singleSelection is true on second ' +
@@ -550,8 +551,9 @@ test('#handleKeydown space key is triggered 2x when singleSelection is true on s
   foundation.handleKeydown(event);
 
   td.verify(preventDefault(), {times: 2});
-  td.verify(mockAdapter.setAttributeForElementIndex(0, 'tabindex', 0), {times: 1});
-  td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', -1), {times: 1});
+  td.verify(mockAdapter.setAttributeForElementIndex(1, strings.ARIA_SELECTED, true), {times: 1});
+  td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', 0), {times: 1});
+  td.verify(mockAdapter.setAttributeForElementIndex(0, 'tabindex', -1), {times: 1});
 });
 
 test('#handleKeydown space key is triggered and focused is moved to a different element', () => {
@@ -651,4 +653,13 @@ test('#focusLastElement is called when the list is empty does not focus an eleme
   foundation.focusLastElement();
 
   td.verify(mockAdapter.focusItemAtIndex(td.matchers.anything()), {times: 0});
+});
+
+test('#setUseActivatedClass causes setSelectedIndex to use the --activated class', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  foundation.setUseActivatedClass(true);
+  foundation.setSelectedIndex(1);
+
+  td.verify(mockAdapter.addClassForElementIndex(1, cssClasses.LIST_ITEM_ACTIVATED_CLASS), {times: 1});
 });

@@ -78,6 +78,30 @@ test('component calls setVerticalOrientation(true) on the foundation if aria-ori
   td.verify(mockFoundation.setVerticalOrientation(true), {times: 1});
 });
 
+test('#initializeListType sets the selectedIndex if a list item has the --selected class', () => {
+  const {root, component, mockFoundation} = setupTest();
+  root.querySelector('.mdc-list-item').classList.add(MDCListFoundation.cssClasses.LIST_ITEM_SELECTED_CLASS);
+  component.initializeListType();
+  td.verify(mockFoundation.setSelectedIndex(0), {times: 1});
+  td.verify(mockFoundation.setSingleSelection(true), {times: 1});
+});
+
+test('#initializeListType sets the selectedIndex if a list item has the --activated class', () => {
+  const {root, component, mockFoundation} = setupTest();
+  root.querySelector('.mdc-list-item').classList.add(MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS);
+  component.initializeListType();
+  td.verify(mockFoundation.setSelectedIndex(0), {times: 1});
+  td.verify(mockFoundation.setSingleSelection(true), {times: 1});
+});
+
+test('#initializeListType calls the foundation if the --activated class is present', () => {
+  const {root, component, mockFoundation} = setupTest();
+  root.querySelector('.mdc-list-item').classList.add(MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS);
+  component.initializeListType();
+  td.verify(mockFoundation.setUseActivatedClass(true), {times: 1});
+  td.verify(mockFoundation.setSingleSelection(true), {times: 1});
+});
+
 test('#adapter.getListItemCount returns correct number of list items', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
@@ -265,12 +289,6 @@ test('wrapFocus calls setWrapFocus on foundation', () => {
   td.verify(mockFoundation.setWrapFocus(true), {times: 1});
 });
 
-test('singleSelection true sets the selectedIndex if a list item has the --selected class', () => {
-  const {root, component, mockFoundation} = setupTest();
-  root.querySelector('.mdc-list-item').classList.add(MDCListFoundation.cssClasses.LIST_ITEM_SELECTED_CLASS);
-  component.singleSelection = true;
-  td.verify(mockFoundation.setSelectedIndex(0), {times: 1});
-});
 
 test('singleSelection true sets the click handler from the root element', () => {
   const {root, component, mockFoundation} = setupTest();

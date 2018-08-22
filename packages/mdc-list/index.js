@@ -67,6 +67,7 @@ class MDCList extends MDCComponent {
     this.root_.addEventListener('focusin', this.focusInEventListener_);
     this.root_.addEventListener('focusout', this.focusOutEventListener_);
     this.layout();
+    this.initializeListType();
   }
 
   layout() {
@@ -82,6 +83,21 @@ class MDCList extends MDCComponent {
     // Child button/a elements are not tabbable until the list item is focused.
     [].slice.call(this.root_.querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS))
       .forEach((ele) => ele.setAttribute('tabindex', -1));
+  }
+
+  initializeListType() {
+    // Automatically set single selection if selected/activated classes are present.
+    const preselectedElement =
+      this.root_.querySelector(`.${cssClasses.LIST_ITEM_ACTIVATED_CLASS}, .${cssClasses.LIST_ITEM_SELECTED_CLASS}`);
+
+    if (preselectedElement) {
+      if (preselectedElement.classList.contains(cssClasses.LIST_ITEM_ACTIVATED_CLASS)) {
+        this.foundation_.setUseActivatedClass(true);
+      }
+
+      this.singleSelection = true;
+      this.selectedIndex = this.listElements_.indexOf(preselectedElement);
+    }
   }
 
   /** @param {boolean} value */
@@ -108,11 +124,6 @@ class MDCList extends MDCComponent {
     }
 
     this.foundation_.setSingleSelection(isSingleSelectionList);
-    const selectedElement = this.root_.querySelector('.mdc-list-item--selected');
-
-    if (selectedElement) {
-      this.selectedIndex = this.listElements_.indexOf(selectedElement);
-    }
   }
 
   /** @param {number} index */

@@ -59,7 +59,7 @@
               info
             </a>
           </li>
-          <li class="mdc-list-item">
+          <li class="mdc-list-item mdc-list-item--selected" tabindex="0" aria-selected="true">
             <span class="mdc-list-item__graphic" role="presentation">
               <i class="material-icons" aria-hidden="true">folder</i>
             </span>
@@ -116,6 +116,53 @@
           <label for="toggle-rtl" id="toggle-rtl-label">Toggle RTL</label>
         </div>
       </section>
+
+      <div id="demo-wrapper">
+        <ul class="mdc-list mdc-list--two-line mdc-list--avatar-list demo-list demo-list--with-avatars" aria-orientation="vertical">
+          <li class="mdc-list-item" tabindex="-1">
+            <span class="mdc-list-item__graphic" role="presentation">
+              <i class="material-icons" aria-hidden="true">folder</i>
+            </span>
+            <span class="mdc-list-item__text">
+              <span class="mdc-list-item__primary-text">Photos</span>
+              <span class="mdc-list-item__secondary-text">Jan 9, 2014</span>
+            </span>
+            <a href="#" class="mdc-list-item__meta material-icons"
+               aria-label="View more information" title="More info"
+               onclick="event.preventDefault();">
+              info
+            </a>
+          </li>
+          <li class="mdc-list-item mdc-list-item--activated" tabindex="0" aria-selected="true">
+            <span class="mdc-list-item__graphic" role="presentation">
+              <i class="material-icons" aria-hidden="true">folder</i>
+            </span>
+            <span class="mdc-list-item__text">
+              <span class="mdc-list-item__primary-text">Recipes</span>
+              <span class="mdc-list-item__secondary-text">Jan 17, 2014</span>
+            </span>
+            <a href="#" class="mdc-list-item__meta material-icons"
+               aria-label="View more information" title="More info"
+               onclick="event.preventDefault();">
+              info
+            </a>
+          </li>
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__graphic" role="presentation">
+              <i class="material-icons" aria-hidden="true">folder</i>
+            </span>
+            <span class="mdc-list-item__text">
+              <span class="mdc-list-item__primary-text">Work</span>
+              <span class="mdc-list-item__secondary-text">Jan 28, 2014</span>
+            </span>
+            <a href="#" class="mdc-list-item__meta material-icons"
+               aria-label="View more information" title="More info"
+               onclick="event.preventDefault();">
+              info
+            </a>
+          </li>
+        </ul>
+      </div>
 
       <div id="demo-wrapper">
         <section>
@@ -1141,10 +1188,6 @@
         [].slice.call(document.querySelectorAll('.mdc-list')).forEach(function(ele) {
           var list = mdc.list.MDCList.attachTo(ele);
           list.wrapFocus = true;
-
-          if (ele.parentElement.classList.contains('hero')) {
-            list.singleSelection = true;
-          }
         });
 
         addRippleToListItems(document.getElementById('leading-checkbox-list'));
