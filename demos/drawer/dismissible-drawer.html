@@ -1,18 +1,24 @@
 <!DOCTYPE html>
 <!--
-  Copyright 2018 Google Inc. All rights reserved.
+  Copyright 2018 Google Inc.
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
 
-      https://www.apache.org/licenses/LICENSE-2.0
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
 
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  THE SOFTWARE.
 -->
 <html>
   <head>
@@ -28,56 +34,59 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   </head>
   <body class="mdc-typography demo-body">
-    <aside id="demo-drawer" class="mdc-drawer mdc-drawer--dismissible demo-drawer">
+    <aside id="demo-drawer" class="mdc-drawer mdc-drawer--dismissible mdc-drawer--open demo-drawer">
       <div class="mdc-drawer__header">
         <h3 class="mdc-drawer__title">Mail</h3>
         <h6 class="mdc-drawer__subtitle">email@material.io</h6>
       </div>
-      <div class="mdc-drawer__scrollable">
-        <div class="mdc-list-group">
-          <nav class="mdc-list">
-            <a class="mdc-list-item mdc-list-item--activated demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
-            </a>
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
-            </a>
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Sent Mail
-            </a>
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
-            </a>
-          </nav>
+      <div class="mdc-drawer__content">
+        <nav class="mdc-list">
+          <a class="mdc-list-item mdc-list-item--activated demo-drawer-list-item" href="#" aria-selected="true" tabindex="0">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
+            Inbox
+          </a>
+          <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>
+            Star
+          </a>
+          <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
+            Sent Mail
+          </a>
+          <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
+            Drafts
+          </a>
 
           <hr class="mdc-list-divider">
           <h6 class="mdc-list-group__subheader">Labels</h6>
-          <nav class="mdc-list">
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>Family
-            </a>
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>Friends
-            </a>
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>Work
-            </a>
-          </nav>
+          <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+            Family
+          </a>
+          <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+            Friends
+          </a>
+          <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+            Work
+          </a>
 
           <hr class="mdc-list-divider">
-          <nav class="mdc-list">
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>Settings
-            </a>
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">announcement</i>Help & feedback
-            </a>
-          </nav>
-        </div>
+          <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>
+            Settings
+          </a>
+          <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">announcement</i>
+            Help & feedback
+          </a>
+        </nav>
       </div>
     </aside>
     <div class="demo-content mdc-drawer-app-content" id="demo-content">
-      <header class="mdc-top-app-bar" id="app-bar">
+      <header class="mdc-top-app-bar demo-top-app-bar" id="app-bar">
         <div class="mdc-top-app-bar__row">
           <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
             <a href="#" class="demo-menu material-icons mdc-top-app-bar__navigation-icon">menu</a>
@@ -155,21 +164,6 @@
           extraTall.style.display = extraTall.style.display ? '' : 'none';
         });
 
-        var activatedClass = 'mdc-list-item--activated';
-        document.querySelector('.mdc-drawer').addEventListener('click', function(event) {
-          var el = event.target;
-          while (el && !el.classList.contains('mdc-list-item')) {
-            el = el.parentElement;
-          }
-          if (el) {
-            var activatedItem = document.querySelector('.' + activatedClass);
-            if (activatedItem) {
-              activatedItem.classList.remove(activatedClass);
-            }
-            event.target.classList.add(activatedClass);
-          }
-        });
-
         var drawerEl = document.getElementById('demo-drawer');
         var drawer = new mdc.drawer.MDCDrawer(drawerEl);
         var radioEl = document.querySelector('#demo-radio-buttons');
@@ -193,11 +187,7 @@
         var topAppBar = new mdc.topAppBar.MDCTopAppBar(topAppBarEl);
         topAppBar.setScrollTarget(document.getElementById('demo-main'));
         topAppBar.listen('MDCTopAppBar:nav', function() {
-          if (drawer.open) {
-            drawer.open = false;
-          } else {
-            drawer.open = true;
-          }
+            drawer.open = !drawer.open;
         });
       });
     </script>

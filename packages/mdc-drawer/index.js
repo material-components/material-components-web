@@ -22,6 +22,8 @@
  */
 import {MDCComponent} from '@material/base/index';
 import MDCDismissibleDrawerFoundation from './dismissible/foundation';
+import {MDCList} from '@material/list/index';
+import MDCListFoundation from '@material/list/foundation';
 import {strings} from './constants';
 
 /**
@@ -35,11 +37,13 @@ export class MDCDrawer extends MDCComponent {
   constructor(...args) {
     super(...args);
 
-    /** @private {?Element} */
-    this.appContent_;
-    /** @private {?Function} */
+    /** @private {!Element} */
+    this.previousFocus_;
+
+    /** @private {!Function} */
     this.handleKeydown_;
-    /** @private {?Function} */
+
+    /** @private {!Function} */
     this.handleTransitionEnd_;
   }
 
@@ -49,14 +53,6 @@ export class MDCDrawer extends MDCComponent {
    */
   static attachTo(root) {
     return new MDCDrawer(root);
-  }
-
-  initialize() {
-    const appContent = this.root_.parentElement.querySelector(
-      MDCDismissibleDrawerFoundation.strings.APP_CONTENT_SELECTOR);
-    if (appContent) {
-      this.appContent_= appContent;
-    }
   }
 
   /**
@@ -80,14 +76,19 @@ export class MDCDrawer extends MDCComponent {
   }
 
   destroy() {
-    document.removeEventListener('keydown', this.handleKeydown_);
+    this.root_.removeEventListener('keydown', this.handleKeydown_);
     this.root_.removeEventListener('transitionend', this.handleTransitionEnd_);
   }
 
+  initialize() {
+    MDCList.attachTo(this.root_.querySelector(`.${MDCListFoundation.cssClasses.ROOT}`));
+  }
+
   initialSyncWithDOM() {
-    this.handleKeydown_ = this.foundation_.handleKeydown.bind(this.foundation_);
-    this.handleTransitionEnd_ = this.foundation_.handleTransitionEnd.bind(this.foundation_);
-    document.addEventListener('keydown', this.handleKeydown_);
+    this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt);
+    this.handleTransitionEnd_ = (evt) => this.foundation_.handleTransitionEnd(evt);
+
+    this.root_.addEventListener('keydown', this.handleKeydown_);
     this.root_.addEventListener('transitionend', this.handleTransitionEnd_);
   }
 
@@ -97,28 +98,29 @@ export class MDCDrawer extends MDCComponent {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
-      setStyleAppContent: (propertyName, value) => {
-        if (this.appContent_) {
-          return this.appContent_.style.setProperty(propertyName, value);
-        }
-      },
+      elementHasClass: (element, className) => element.classList.contains(className),
       computeBoundingRect: () => this.root_.getBoundingClientRect(),
-      addClassAppContent: (className) => {
-        if (this.appContent_) {
-          this.appContent_.classList.add(className);
+      saveFocus: () => {
+        this.previousFocus_ = document.activeElement;
+      },
+      restoreFocus: () => {
+        const previousFocus = this.previousFocus_ && this.previousFocus_.focus;
+        if (this.root_.contains(document.activeElement) && previousFocus) {
+          this.previousFocus_.focus();
         }
       },
-      removeClassAppContent: (className) => {
-        if (this.appContent_) {
-          this.appContent_.classList.remove(className);
+      focusActiveNavigationItem: () => {
+        const activeNavItemEl = this.root_.querySelector(`.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`);
+        if (activeNavItemEl) {
+          activeNavItemEl.focus();
         }
       },
-      isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
       notifyClose: () => this.emit(strings.CLOSE_EVENT, null, true /* shouldBubble */),
       notifyOpen: () => this.emit(strings.OPEN_EVENT, null, true /* shouldBubble */),
     }));
 
-    if (this.root_.classList.contains(MDCDismissibleDrawerFoundation.cssClasses.DISMISSIBLE)) {
+    const {DISMISSIBLE} = MDCDismissibleDrawerFoundation.cssClasses;
+    if (this.root_.classList.contains(DISMISSIBLE)) {
       return new MDCDismissibleDrawerFoundation(adapter);
     }
   }

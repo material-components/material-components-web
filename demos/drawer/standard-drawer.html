@@ -39,47 +39,41 @@
         <h3 class="mdc-drawer__title">Mail</h3>
         <h6 class="mdc-drawer__subtitle">email@material.io</h6>
       </div>
-      <div class="mdc-drawer__scrollable">
-        <div class="mdc-list-group">
-          <nav class="mdc-list">
-            <a class="mdc-list-item mdc-list-item--activated demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
-            </a>
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
-            </a>
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Sent Mail
-            </a>
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
-            </a>
-          </nav>
+      <div class="mdc-drawer__content">
+        <nav class="mdc-list">
+          <a class="mdc-list-item mdc-list-item--activated demo-drawer-list-item" href="#" aria-selected="true" tabindex="0">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
+          </a>
+          <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
+          </a>
+          <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Sent Mail
+          </a>
+          <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
+          </a>
 
           <hr class="mdc-list-divider">
           <h6 class="mdc-list-group__subheader">Labels</h6>
-          <nav class="mdc-list">
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>Family
-            </a>
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>Friends
-            </a>
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>Work
-            </a>
-          </nav>
+          <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>Family
+          </a>
+          <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>Friends
+          </a>
+          <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>Work
+          </a>
 
           <hr class="mdc-list-divider">
-          <nav class="mdc-list">
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>Settings
-            </a>
-            <a class="mdc-list-item demo-drawer-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">announcement</i>Help & feedback
-            </a>
-          </nav>
-        </div>
+          <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>Settings
+          </a>
+          <a class="mdc-list-item demo-drawer-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">announcement</i>Help & feedback
+          </a>
+        </nav>
       </div>
     </aside>
     <div class="demo-content" id="demo-content">
@@ -157,21 +151,6 @@
           extraTall.style.display = extraTall.style.display ? '' : 'none';
         });
 
-        var activatedClass = 'mdc-list-item--activated';
-        document.querySelector('.mdc-drawer').addEventListener('click', function(event) {
-          var el = event.target;
-          while (el && !el.classList.contains('mdc-list-item')) {
-            el = el.parentElement;
-          }
-          if (el) {
-            var activatedItem = document.querySelector('.' + activatedClass);
-            if (activatedItem) {
-              activatedItem.classList.remove(activatedClass);
-            }
-            event.target.classList.add(activatedClass);
-          }
-        });
-
         var drawerEl = document.getElementById('demo-drawer');
         var radioEl = document.querySelector('#demo-radio-buttons');
         radioEl.addEventListener('change', function(e) {
@@ -191,6 +170,8 @@
         });
         var topAppBar = new mdc.topAppBar.MDCTopAppBar(document.getElementById('app-bar'));
         topAppBar.setScrollTarget(document.getElementById('demo-content'));
+
+        mdc.list.MDCList.attachTo(drawerEl.querySelector('.mdc-list'));
       });
     </script>
   </body>

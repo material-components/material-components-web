@@ -22,12 +22,12 @@
  */
 /** @enum {string} */
 const cssClasses = {
+  ROOT: 'mdc-drawer',
   DISMISSIBLE: 'mdc-drawer--dismissible',
   OPEN: 'mdc-drawer--open',
-  ANIMATING_CLOSE: 'mdc-drawer--animating-close',
-  ANIMATING_OPEN: 'mdc-drawer--animating-open',
-  APP_CONTENT_ANIMATE_CLOSE: 'mdc-drawer-app-content--animating-close',
-  APP_CONTENT_ANIMATE_OPEN: 'mdc-drawer-app-content--animating-open',
+  ANIMATE: 'mdc-drawer--animate',
+  OPENING: 'mdc-drawer--opening',
+  CLOSING: 'mdc-drawer--closing',
 };
 
 /** @enum {string} */

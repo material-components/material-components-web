@@ -1,19 +1,27 @@
 //
-// Copyright 2018 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc.
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions://
 //
-//      http://www.apache.org/licenses/LICENSE-2.0
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.//
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 //
 
+@import "@material/animation/functions";
+@import "@material/animation/variables";
 @import "@material/rtl/mixins";
 @import "@material/typography/mixins";
 @import "@material/typography/variables";
@@ -23,8 +31,9 @@
 @import "../mixins";
 
 .mdc-drawer {
+  @include mdc-drawer-title-ink-color($mdc-drawer-title-ink-color, $mdc-drawer-title-ink-opacity);
+  @include mdc-drawer-subtitle-ink-color($mdc-drawer-subtitle-ink-color, $mdc-drawer-subtitle-ink-opacity);
   @include mdc-drawer-border-color($mdc-drawer-divider-color, $mdc-drawer-divider-opacity);
-  @include mdc-drawer-group-header-text-color($mdc-drawer-subtitle-ink-color, $mdc-drawer-subtitle-ink-opacity);
   @include mdc-drawer-surface-fill-color($mdc-drawer-surface-fill-color, $mdc-drawer-surface-fill-opacity);
   @include mdc-drawer-icon-ink-color($mdc-drawer-icon-ink-color, $mdc-drawer-icon-ink-opacity);
   @include mdc-drawer-meta-ink-color($mdc-drawer-icon-ink-color, $mdc-drawer-icon-ink-opacity);
@@ -32,11 +41,19 @@
   @include mdc-drawer-item-activated-text-color($mdc-drawer-activated-ink-color, $mdc-drawer-activated-ink-opacity);
   @include mdc-drawer-item-corner-radius(4px);
 
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  box-sizing: border-box;
   width: $mdc-drawer-width;
-  min-width: $mdc-drawer-width;
+  max-width: $mdc-drawer-width;
+  height: 100%;
+  transition-property: transform;
+  transition-timing-function: $mdc-animation-standard-curve-timing-function;
   border-right-width: 1px;
   border-right-style: solid;
   overflow: hidden;
+  z-index: $mdc-drawer-z-index;
 
   @include mdc-rtl {
     border-right-width: 0;
@@ -45,52 +62,75 @@
     border-left-style: solid;
   }
 
-  .mdc-list,
-  .mdc-list-group .mdc-list {
-    padding: $mdc-drawer-surface-padding/2;
-    padding-top: 0;
-  }
-
-  // stylelint-disable selector-no-qualifying-type
-  .mdc-list-item,
-  a.mdc-list-item {
+  .mdc-list-item {
     @include mdc-typography(body2);
 
     height: calc(48px - 2 * #{$mdc-drawer-list-item-spacing});
-    margin: $mdc-drawer-list-item-spacing 0;
-    padding: 0 $mdc-drawer-surface-padding/2;
+    margin: $mdc-drawer-list-item-spacing 8px;
+    padding: 0 $mdc-drawer-surface-padding / 2;
   }
-  // stylelint-enable selector-no-qualifying-type
 
   .mdc-list-group__subheader {
     @include mdc-typography(body2);
+    @include mdc-typography-baseline-top(28px);
 
     margin: 0;
     padding: 0 $mdc-drawer-surface-padding;
-    padding-top: 8px;
+  }
+}
+
+.mdc-drawer--open {
+  transition: mdc-animation-standard(transform, $mdc-drawer-animation-enter);
+}
+
+.mdc-drawer--animate {
+  transform: translateX(-100%);
+
+  @include mdc-rtl {
+    transform: translateX(100%);
+  }
+}
+
+.mdc-drawer--opening {
+  transform: translateX(0);
+  transition-duration: $mdc-drawer-animation-enter;
+
+  // Required to level the specificity with animate class.
+  @include mdc-rtl {
+    transform: translateX(0);
+  }
+}
+
+.mdc-drawer--closing {
+  transform: translateX(-100%);
+  transition-duration: $mdc-drawer-animation-exit;
+
+  @include mdc-rtl {
+    transform: translateX(100%);
   }
 }
 
 .mdc-drawer__header {
+  flex-shrink: 0;
   box-sizing: border-box;
   min-height: 64px; // same as $mdc-top-app-bar-row-height
-  padding: $mdc-drawer-surface-padding;
-  padding-bottom: 4px;
+  padding: 0 $mdc-drawer-surface-padding 4px;
 }
 
 .mdc-drawer__title {
   @include mdc-typography(headline6);
-
-  margin: 0;
+  @include mdc-typography-baseline-top(36px);
+  @include mdc-typography-baseline-bottom(20px);
 }
 
 .mdc-drawer__subtitle {
   @include mdc-typography(body2);
+  @include mdc-typography-baseline-top(20px);
 
-  margin: 0;
+  margin-bottom: 0;
 }
 
-.mdc-drawer__scrollable {
+.mdc-drawer__content {
   height: 100%;
   overflow-y: auto;
 }

@@ -23,17 +23,19 @@
 @import "@material/theme/variables";
 
 // Colors
+$mdc-drawer-title-ink-color: mdc-theme-prop-value(on-surface);
+$mdc-drawer-subtitle-ink-color: mdc-theme-prop-value(on-surface);
 $mdc-drawer-divider-color: mdc-theme-prop-value(on-surface);
 $mdc-drawer-activated-ink-color: mdc-theme-prop-value(primary);
-$mdc-drawer-subtitle-ink-color: mdc-theme-prop-value(on-surface);
 $mdc-drawer-surface-fill-color: mdc-theme-prop-value(surface);
 $mdc-drawer-icon-ink-color: mdc-theme-prop-value(on-surface);
 $mdc-drawer-inactive-ink-color: mdc-theme-prop-value(on-surface);
 
 // Opacity
+$mdc-drawer-title-ink-opacity: 1;
+$mdc-drawer-subtitle-ink-opacity: .6;
 $mdc-drawer-divider-opacity: .12;
 $mdc-drawer-activated-ink-opacity: 1;
-$mdc-drawer-subtitle-ink-opacity: .6;
 $mdc-drawer-surface-fill-opacity: 1;
 $mdc-drawer-icon-ink-opacity: .6;
 $mdc-drawer-inactive-ink-opacity: 1;
@@ -46,3 +48,6 @@ $mdc-drawer-surface-padding: 16px;
 // Animations
 $mdc-drawer-animation-enter: 250ms;
 $mdc-drawer-animation-exit: 200ms;
+
+$mdc-drawer-z-index: 5;
+$mdc-drawer-modal-elevation: 16;
