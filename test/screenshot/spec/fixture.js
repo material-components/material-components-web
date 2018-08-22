@@ -1,74 +1,138 @@
-/*
- * Copyright 2018 Google Inc. All Rights Reserved.
+/**
+ * @license
+ * Copyright 2018 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      https://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
+
+import 'url-search-params-polyfill';
 
 window.mdc = window.mdc || {};
 
-window.mdc.testFixture = {
-  onPageLoad() {
-    this.attachFontObserver_();
-    this.measureMobileViewport_();
-  },
+class TestFixture {
+  constructor() {
+    /**
+     * @type {number}
+     * @private
+     */
+    this.fontFaceObserverTimeoutMs_ = this.getUrlParamInt_('font_face_observer_timeout_ms', 3000);
 
-  /** @private */
-  attachFontObserver_() {
-    const fontsLoadedPromise = new Promise((resolve) => {
-      const robotoFont = new FontFaceObserver('Roboto');
-      const materialIconsFont = new FontFaceObserver('Material Icons');
+    /**
+     * @type {number}
+     * @private
+     */
+    this.fontsLoadedReflowDelayMs_ = this.getUrlParamInt_('fonts_loaded_reflow_delay_ms', 100);
 
-      // The `load()` method accepts an optional string of text to ensure that those specific glyphs are available.
-      // For the Material Icons font, we need to pass it one of the icon names.
-      Promise.all([robotoFont.load(), materialIconsFont.load('star_border')]).then(function() {
-        resolve();
+    /**
+     * @type {!Promise<void>}
+     */
+    this.fontsLoaded = this.createFontObserver_();
+
+    this.fontsLoaded.then(() => {
+      console.log('Fonts loaded!');
+      this.measureMobileViewport_();
+      this.notifyWebDriver_();
+    });
+  }
+
+  /**
+   * @return {!Promise<void>}
+   * @private
+   */
+  createFontObserver_() {
+    return new Promise((resolve) => {
+      /* eslint-disable max-len */
+      // `FontFaceObserver.load()` accepts an optional `text` argument, which defaults to "BESbswy".
+      // It creates a temporary DOM node with the given text and measures it to see if the dimensions change.
+      // The default value is sufficient for most Latin-based language fonts, but the Material Icons font only renders
+      // icon glyphs if a specific sequence of characters is entered (e.g., `star_border`).
+      // As a result, we need to override the default text for Material Icons.
+      // See:
+      // https://github.com/bramstein/fontfaceobserver/blob/111670b895c338bed371ad5feb95d8573ce3d0c9/src/observer.js#L186
+      /* eslint-enable max-len */
+      /** @type {!Promise<void>} */
+      const materialIconsFontPromise = new FontFaceObserver('Material Icons').load('star_border');
+
+      // The default `load()` text works fine for Roboto.
+      /** @type {!Promise<void>} */
+      const robotoFontPromise = new FontFaceObserver('Roboto').load();
+
+      Promise.all([robotoFontPromise, materialIconsFontPromise]).then(() => {
+        // Give Microsoft Edge enough time to reflow and repaint `.mdc-text-field__input` elements after the page loads.
+        setTimeout(resolve, this.fontsLoadedReflowDelayMs_);
       });
 
-      setTimeout(() => {
-        resolve();
-      }, 3000); // TODO(acdvorak): Create a constant for font loading timeout values
+      // Fallback in case one or more fonts don't load.
+      setTimeout(resolve, this.fontFaceObserverTimeoutMs_);
     });
+  }
 
-    fontsLoadedPromise.then(() => {
-      document.body.setAttribute('data-fonts-loaded', '');
-    });
-  },
-
+  /** @private */
   measureMobileViewport_() {
-    const mainEl = document.querySelector('.test-main');
-    if (!mainEl || !mainEl.classList.contains('test-main--mobile-viewport')) {
+    /** @type {?HTMLMainElement} */
+    const mainEl = document.querySelector('.test-viewport');
+    if (!mainEl || !mainEl.classList.contains('test-viewport--mobile')) {
       return;
     }
 
-    window.requestAnimationFrame(() => {
-      const setHeight = mainEl.offsetHeight;
-      mainEl.style.height = 'auto';
-      const autoHeight = mainEl.offsetHeight;
-      mainEl.style.height = '';
+    requestAnimationFrame(() => {
+      this.warnIfMobileViewportIsOverflowing_(mainEl);
+    });
+  }
 
-      if (autoHeight > setHeight) {
-        mainEl.classList.add('test-main--overflowing');
-        console.error(`
+  /**
+   * @param {!HTMLMainElement} mainEl
+   * @private
+   */
+  warnIfMobileViewportIsOverflowing_(mainEl) {
+    const fixedHeight = mainEl.offsetHeight;
+    mainEl.style.height = 'auto';
+    const autoHeight = mainEl.offsetHeight;
+    mainEl.style.height = '';
+
+    if (autoHeight > fixedHeight) {
+      mainEl.classList.add('test-viewport--overflowing');
+      console.error(`
 Page content overflows a mobile viewport!
 Consider splitting this page into two separate pages.
 If you are trying to create a test page for a fullscreen component like drawer or top-app-bar,
-remove the 'test-main--mobile-viewport' class from the '<main class="test-main">' element.
+remove the 'test-viewport--mobile' class from the '<main class="test-viewport">' element.
           `.trim());
-      }
-    });
-  },
-};
+    }
+  }
 
-window.addEventListener('load', () => {
-  window.mdc.testFixture.onPageLoad();
-});
+  /** @private */
+  notifyWebDriver_() {
+    document.body.setAttribute('data-fonts-loaded', '');
+  }
+
+  /**
+   * @param {string} name
+   * @param {number=} defaultValue
+   * @return {number}
+   * @private
+   */
+  getUrlParamInt_(name, defaultValue = 0) {
+    const qs = new URLSearchParams(window.location.search);
+    const val = parseInt(qs.get(name), 10);
+    return isFinite(val) ? val : defaultValue;
+  }
+}
+
+window.mdc.testFixture = new TestFixture();

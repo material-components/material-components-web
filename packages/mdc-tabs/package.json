@@ -1,8 +1,8 @@
 {
   "name": "@material/tabs",
-  "version": "0.37.1",
+  "version": "0.39.0-0",
   "description": "The Material Components for the web tabs component",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "main": "dist/mdc.tabs.js",
   "repository": {
     "type": "git",
@@ -19,9 +19,9 @@
   "dependencies": {
     "@material/animation": "^0.34.0",
     "@material/base": "^0.35.0",
-    "@material/ripple": "^0.37.1",
+    "@material/ripple": "^0.38.1",
     "@material/rtl": "^0.36.0",
-    "@material/theme": "^0.35.0",
-    "@material/typography": "^0.37.1"
+    "@material/theme": "^0.38.0",
+    "@material/typography": "^0.39.0-0"
   }
 }

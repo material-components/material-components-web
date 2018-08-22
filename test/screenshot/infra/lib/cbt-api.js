@@ -1,17 +1,24 @@
-/*
- * Copyright 2018 Google Inc. All Rights Reserved.
+/**
+ * @license
+ * Copyright 2018 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 const VError = require('verror');
@@ -30,13 +37,14 @@ const Cli = require('./cli');
 const CliColor = require('./logger').colors;
 const DiffBaseParser = require('./diff-base-parser');
 const Duration = require('./duration');
+const Logger = require('./logger');
 const getStackTrace = require('./stacktrace')('CbtApi');
 
 const MDC_CBT_USERNAME = process.env.MDC_CBT_USERNAME;
 const MDC_CBT_AUTHKEY = process.env.MDC_CBT_AUTHKEY;
 const REST_API_BASE_URL = 'https://crossbrowsertesting.com/api/v3';
 const SELENIUM_SERVER_URL = `http://${MDC_CBT_USERNAME}:${MDC_CBT_AUTHKEY}@hub.crossbrowsertesting.com:80/wd/hub`;
-const {ExitCode, SELENIUM_STALLED_TIME_MS} = require('./constants');
+const {ExitCode, SELENIUM_ZOMBIE_SESSION_DURATION_MS} = require('./constants');
 
 /** @type {?Promise<!Array<!cbt.proto.CbtDevice>>} */
 let allBrowsersPromise;
@@ -54,6 +62,12 @@ class CbtApi {
      * @private
      */
     this.diffBaseParser_ = new DiffBaseParser();
+
+    /**
+     * @type {!Logger}
+     * @private
+     */
+    this.logger_ = new Logger();
 
     this.validateEnvVars_();
   }
@@ -126,12 +140,27 @@ https://crossbrowsertesting.com/account
       return allBrowsersPromise;
     }
 
-    console.log('Fetching browsers from CBT...');
+    this.logger_.debug('Fetching browsers from CBT...');
 
     const stackTrace = getStackTrace('fetchAvailableDevices');
     allBrowsersPromise = this.sendRequest_(stackTrace, 'GET', '/selenium/browsers');
 
-    return allBrowsersPromise;
+    /** @type {!Array<!cbt.proto.CbtDevice>} */
+    const allBrowsers = await allBrowsersPromise;
+
+    this.logger_.debug(`Fetched ${allBrowsers.length} browsers from CBT!`);
+
+    return allBrowsers;
+  }
+
+  /**
+   * @param {string} sessionId
+   * @return {!Promise<string>}
+   */
+  async getPublicTestResultUrl(sessionId) {
+    const stackTrace = getStackTrace('getPublicTestResultUrl');
+    const responseBody = await this.sendRequest_(stackTrace, 'GET', `/selenium/${sessionId}`);
+    return responseBody['show_result_public_url'];
   }
 
   /**
@@ -363,12 +392,12 @@ https://crossbrowsertesting.com/account
   /**
    * @return {!Promise<void>}
    */
-  async killStalledSeleniumTests() {
+  async killZombieSeleniumTests() {
     // NOTE: This only returns Selenium tests running on the authenticated CBT user's account.
     // It does NOT return Selenium tests running under other users.
     /** @type {!CbtSeleniumListResponse} */
     const listResponse = await this.sendRequest_(
-      getStackTrace('killStalledSeleniumTests'),
+      getStackTrace('killZombieSeleniumTests'),
       'GET', '/selenium?active=true&num=100'
     );
 
@@ -376,7 +405,7 @@ https://crossbrowsertesting.com/account
 
     /** @type {!Array<!CbtSeleniumInfoResponse>} */
     const infoResponses = await Promise.all(activeSeleniumTestIds.map((seleniumTestId) => {
-      const infoStackTrace = getStackTrace('killStalledSeleniumTests');
+      const infoStackTrace = getStackTrace('killZombieSeleniumTests');
       return this.sendRequest_(infoStackTrace, 'GET', `/selenium/${seleniumTestId}`);
     }));
 
@@ -389,7 +418,7 @@ https://crossbrowsertesting.com/account
       }
 
       const commandTimestampMs = new Date(lastCommand.date_issued).getTime();
-      if (!Duration.hasElapsed(SELENIUM_STALLED_TIME_MS, commandTimestampMs)) {
+      if (!Duration.hasElapsed(SELENIUM_ZOMBIE_SESSION_DURATION_MS, commandTimestampMs)) {
         continue;
       }
 
@@ -406,16 +435,27 @@ https://crossbrowsertesting.com/account
    */
   async killSeleniumTests(seleniumTestIds, silent = false) {
     await Promise.all(seleniumTestIds.map(async (seleniumTestId) => {
-      if (!silent) {
-        console.log(`${CliColor.magenta('Killing')} stalled Selenium test ${CliColor.bold(seleniumTestId)}`);
-      }
+      const log = (colorVerb) => {
+        if (silent) {
+          return;
+        }
+        console.log(`${colorVerb} Selenium session ${CliColor.bold(seleniumTestId)}`);
+      };
+
+      log(CliColor.magenta('Killing'));
+
       const stackTrace = getStackTrace('killSeleniumTests');
-      return await this.sendRequest_(stackTrace, 'DELETE', `/selenium/${seleniumTestId}`).catch((err) => {
-        if (!silent) {
-          console.warn(`${CliColor.red('Failed')} to kill stalled Selenium test ${CliColor.bold(seleniumTestId)}:`);
+      const requestPromise = this.sendRequest_(stackTrace, 'DELETE', `/selenium/${seleniumTestId}`).then(
+        () => {
+          log(CliColor.bold.magenta('Killed'));
+        },
+        (err) => {
+          log(CliColor.red('Failed'));
           console.warn(err);
         }
-      });
+      );
+
+      return await requestPromise;
     }));
   }
 
@@ -433,7 +473,7 @@ https://crossbrowsertesting.com/account
     if (this.cli_.isOffline()) {
       console.warn(
         `${CliColor.magenta('WARNING')}:`,
-        new Error('CbtApi#sendRequest_() should not be called in --offline mode')
+        new Error('CbtApi.sendRequest_() should not be called in --offline mode')
       );
       return [];
     }

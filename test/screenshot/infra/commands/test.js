@@ -1,17 +1,24 @@
-/*
- * Copyright 2018 Google Inc. All Rights Reserved.
+/**
+ * @license
+ * Copyright 2018 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      https://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 'use strict';
@@ -20,6 +27,7 @@ const VError = require('verror');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const GitRevision = mdcProto.GitRevision;
+const InclusionType = mdcProto.Screenshot.InclusionType;
 
 const BuildCommand = require('./build');
 const Cli = require('../lib/cli');
@@ -40,7 +48,7 @@ class TestCommand {
     this.diffBaseParser_ = new DiffBaseParser();
     this.gitHubApi_ = new GitHubApi();
     this.imageDiffer_ = new ImageDiffer();
-    this.logger_ = new Logger(__filename);
+    this.logger_ = new Logger();
   }
 
   /**
@@ -59,10 +67,10 @@ class TestCommand {
     const snapshotGitRev = snapshotDiffBase.git_revision;
 
     const isTravisPr = snapshotGitRev && snapshotGitRev.type === GitRevision.Type.TRAVIS_PR;
-    const isTestable = isTravisPr ? snapshotGitRev.pr_file_paths.length > 0 : true;
+    const shouldExit = process.env.HAS_TESTABLE_FILES === 'false';
 
-    if (!isTestable) {
-      this.logUntestablePr_(snapshotGitRev.pr_number);
+    if (shouldExit) {
+      this.logUntestableFiles_();
       return ExitCode.OK;
     }
 
@@ -205,35 +213,48 @@ class TestCommand {
     this.logger_.foldStart('screenshot.compare_master', `Comparing ${num} screenshot${plural} to master`);
 
     const promises = [];
-    const screenshots = reportData.screenshots;
-    const masterScreenshots = screenshots.actual_screenshot_list;
+    const masterScreenshotSets = reportData.screenshots;
+    const masterScreenshotList = masterScreenshotSets.actual_screenshot_list;
 
-    for (const masterScreenshot of masterScreenshots) {
+    masterScreenshotSets.added_screenshot_list.length = 0;
+    masterScreenshotSets.removed_screenshot_list.length = 0;
+    masterScreenshotSets.changed_screenshot_list.length = 0;
+    masterScreenshotSets.unchanged_screenshot_list.length = 0;
+    masterScreenshotSets.comparable_screenshot_list.length = 0;
+
+    for (const masterScreenshot of masterScreenshotList) {
       for (const capturedScreenshot of capturedScreenshots) {
         if (capturedScreenshot.html_file_path !== masterScreenshot.html_file_path ||
             capturedScreenshot.user_agent.alias !== masterScreenshot.user_agent.alias) {
           continue;
         }
+
         promises.push(new Promise(async (resolve) => {
           masterScreenshot.actual_html_file = capturedScreenshot.actual_html_file;
           masterScreenshot.actual_image_file = capturedScreenshot.actual_image_file;
           masterScreenshot.capture_state = capturedScreenshot.capture_state;
 
-          /** @type {!mdc.proto.DiffImageResult} */
-          const diffImageResult = await this.imageDiffer_.compareOneScreenshot({
-            meta: reportData.meta,
-            screenshot: masterScreenshot,
-          });
+          if (masterScreenshot.inclusion_type === InclusionType.ADD) {
+            masterScreenshotSets.added_screenshot_list.push(masterScreenshot);
+          } else if (masterScreenshot.inclusion_type === InclusionType.REMOVE) {
+            masterScreenshotSets.removed_screenshot_list.push(masterScreenshot);
+          } else if (masterScreenshot.inclusion_type === InclusionType.COMPARE) {
+            /** @type {!mdc.proto.DiffImageResult} */
+            const diffImageResult = await this.imageDiffer_.compareOneScreenshot({
+              meta: reportData.meta,
+              screenshot: masterScreenshot,
+            });
 
-          masterScreenshot.diff_image_result = diffImageResult;
-          masterScreenshot.diff_image_file = diffImageResult.diff_image_file;
+            masterScreenshot.diff_image_result = diffImageResult;
+            masterScreenshot.diff_image_file = diffImageResult.diff_image_file;
 
-          if (diffImageResult.has_changed) {
-            reportData.screenshots.changed_screenshot_list.push(masterScreenshot);
-          } else {
-            reportData.screenshots.unchanged_screenshot_list.push(masterScreenshot);
+            if (diffImageResult.has_changed) {
+              masterScreenshotSets.changed_screenshot_list.push(masterScreenshot);
+            } else {
+              masterScreenshotSets.unchanged_screenshot_list.push(masterScreenshot);
+            }
+            masterScreenshotSets.comparable_screenshot_list.push(masterScreenshot);
           }
-          reportData.screenshots.comparable_screenshot_list.push(masterScreenshot);
 
           resolve();
         }));
@@ -261,7 +282,7 @@ class TestCommand {
     const masterScreenshots = masterDiffReportData.screenshots;
     const masterGitRev = masterDiffReportData.meta.golden_diff_base.git_revision;
 
-    const numTotal = masterScreenshots.actual_screenshot_list.length;
+    const numTotal = masterScreenshots.runnable_screenshot_list.length;
     const numChanged =
       masterScreenshots.changed_screenshot_list.length +
       masterScreenshots.added_screenshot_list.length +
@@ -287,7 +308,9 @@ class TestCommand {
 
 
     return `
-### Screenshot test report ⚠️
+🤖 Beep boop!
+
+### Screenshot test report 🚦
 
 **${numChanged}** screenshot${plural} changed from \`${masterGitRev.branch}\` on commit ${snapshotGitRev.commit}:
 
@@ -395,7 +418,6 @@ ${listItemMarkdown}
    */
   logExternalPr_() {
     this.logger_.warn(`
-
 ${CliColor.bold.red('Screenshot tests are not supported on external PRs for security reasons.')}
 
 See ${CliColor.underline('https://docs.travis-ci.com/user/pull-requests/#Pull-Requests-and-Security-Restrictions')}
@@ -406,16 +428,16 @@ ${CliColor.bold.red('Skipping screenshot tests.')}
   }
 
   /**
-   * @param {number} prNumber
    * @private
    */
-  logUntestablePr_(prNumber) {
-    this.logger_.warn(`
+  logUntestableFiles_() {
+    const range = process.env.TRAVIS_COMMIT_RANGE;
 
-${CliColor.underline(`PR #${prNumber}`)} does not contain any testable source file changes.
+    this.logger_.log(`
+${CliColor.bold.magenta(`No testable source files were found for commit range ${range}.`)}
 
-${CliColor.bold.green('Skipping screenshot tests.')}
-`);
+${CliColor.bold.magenta('Skipping screenshot tests.')}
+`.trim());
   }
 
   /**

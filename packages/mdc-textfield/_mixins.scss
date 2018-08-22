@@ -1,17 +1,23 @@
 //
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2017 Google Inc.
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions://
 //
-//      http://www.apache.org/licenses/LICENSE-2.0
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.//
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 //
 
 @import "@material/floating-label/mixins";
@@ -262,7 +268,6 @@
   @include mdc-floating-label-shake-animation(text-field-outlined);
   @include mdc-text-field-outline-corner-radius_($mdc-text-field-border-radius);
 
-  height: 56px;
   border: none;
 
   .mdc-text-field__input {
@@ -326,20 +331,13 @@
   // Text Field Box intentionally omits press ripple, so each state needs to be specified individually
   @include mdc-states-base-color($mdc-text-field-ink-color);
   @include mdc-states-hover-opacity(mdc-states-opacity($mdc-text-field-ink-color, hover));
-  @include mdc-states-focus-opacity(
-    mdc-states-opacity($mdc-text-field-ink-color, focus),
-    $has-nested-focusable-element: true
-  );
+  @include mdc-states-focus-opacity(mdc-states-opacity($mdc-text-field-ink-color, focus));
   @include mdc-ripple-radius-bounded;
   @include mdc-text-field-box-corner-radius($mdc-text-field-border-radius);
   @include mdc-text-field-box-fill-color($mdc-text-field-box-background);
   @include mdc-floating-label-float-position($mdc-text-field-box-label-position-y);
   @include mdc-floating-label-shake-animation(text-field-box);
 
-  display: inline-flex;
-  position: relative;
-  height: 56px;
-  margin-top: 16px;
   overflow: hidden;
 
   .mdc-text-field__input {
@@ -429,15 +427,12 @@
 
   &:not(.mdc-text-field--textarea) {
     display: block;
-    box-sizing: border-box;
-    height: 56px;
     margin: 0;
     border: none;
     border-bottom: 1px solid;
     outline: none;
 
     .mdc-text-field__input {
-      width: 100%;
       height: 100%;
       padding: 0;
       resize: none;
@@ -486,8 +481,8 @@
   $label-offset-x: $padding-inset;
 
   display: flex;
-  width: fit-content;
-  height: initial;
+  width: auto;
+  height: auto;
   transition: none;
   border: 1px solid;
   overflow: hidden;
