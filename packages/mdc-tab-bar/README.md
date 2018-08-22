@@ -114,7 +114,7 @@ Method Signature | Description
 `getScrollContentWidth() => number` | Returns the width of the Tab Scroller's scroll content element.
 `getOffsetWidth() => number` | Returns the offsetWidth of the root element.
 `isRTL() => boolean` | Returns if the text direction is RTL.
-`activateTabAtIndex(index: number) => void` | Activates the Tab at the given index.
+`activateTab(index: number) => void` | Activates the Tab at the given index.
 `activateTabAtIndex(index: number, clientRect: ClientRect) => void` | Activates the Tab at the given index with the given clientRect.
 `deactivateTabAtIndex(index) => void` | Deactivates the Tab at the given index.
 `focusTabAtIndex(index: number) => void` | Focuses the Tab at the given index.

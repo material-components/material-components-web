@@ -416,7 +416,7 @@ function setupScrollIntoViewTest({
   scrollPosition = 0,
   offsetWidth = 400,
   tabDimensionsMap = {}
-}) {
+} = {}) {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getActiveTabIndex()).thenReturn(activeIndex);
   td.when(mockAdapter.getTabListLength()).thenReturn(tabListLength);

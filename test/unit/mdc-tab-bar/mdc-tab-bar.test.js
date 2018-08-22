@@ -147,12 +147,6 @@ test('#adapter.isRTL returns the RTL state of the root element', () => {
   document.body.removeAttribute('dir');
 });
 
-test('#adapter.activateTab calls foundation.activateTab', () => {
-  const {component} = setupTest();
-  component.getDefaultFoundation().adapter_.activateTab(2);
-  td.verify(component.getDefaultFoundation().activateTab(2), {times: 1});
-});
-
 test('#adapter.activateTabAtIndex calls activate on the tab at the index', () => {
   const {component} = setupTest();
   component.getDefaultFoundation().adapter_.activateTabAtIndex(2, {});
