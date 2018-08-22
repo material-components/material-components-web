@@ -360,7 +360,7 @@ test('#activateTab() does nothing if the index underflows the tab list', () => {
 
 test('#activateTab() does nothing if the index is the same as the previous active index', () => {
   const {foundation, mockAdapter} = setupActivateTabTest();
-  td.when(mockAdapter.getActiveTabIndex()).thenReturn(0);
+  td.when(mockAdapter.getPreviousActiveTabIndex()).thenReturn(0);
   td.when(mockAdapter.getTabListLength()).thenReturn(13);
   foundation.activateTab(0);
   td.verify(mockAdapter.deactivateTabAtIndex(td.matchers.isA(Number)), {times: 0});
