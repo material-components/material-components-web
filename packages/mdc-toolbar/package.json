@@ -2,7 +2,7 @@
   "name": "@material/toolbar",
   "version": "0.39.0-0",
   "description": "The Material Components for the web toolbar component",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git"

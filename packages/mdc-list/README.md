@@ -134,7 +134,7 @@ OR
 ### Single Selection List
 
 MDC List can handle selecting/deselecting list elements based on click or keyboard action. When enabled, the `space` and `enter` keys (or `click` event) will trigger an 
-single list item to become selected or deselected. 
+single list item to become selected and any other previous selected element to become deselected. 
 
 ```html
 <ul id="my-list" class="mdc-list" aria-orientation="vertical">
@@ -153,7 +153,8 @@ list.singleSelection = true;
 #### Pre-selected list item
 
 When rendering the list with a pre-selected list item, the list item that needs to be selected should contain
-the `mdc-list-item--selected` class and `aria-selected="true"` attribute before creating the list.
+the `mdc-list-item--selected` or `mdc-list-item--activated` class and `aria-selected="true"` attribute before
+creating the list.
 
 ```html
 <ul id="my-list" class="mdc-list" aria-orientation="vertical">
@@ -267,10 +268,10 @@ these should also receive `tabIndex="-1"`.
 #### Setup in `singleSelection()`
 
 When implementing a component that will use the single selection variant, the HTML should be modified to include
-the `aria-selected` attribute, the `mdc-list-item--selected` class should be added, and the `tabindex` of the selected
-element should be `0`. The first list item should have the `tabindex` updated to `-1`. The foundation method 
-`setSelectedIndex()` should be called with the initially selected element immediately after the foundation is 
-instantiated.
+the `aria-selected` attribute, the `mdc-list-item--selected` or `mdc-list-item--activated` class should be added, 
+and the `tabindex` of the selected element should be `0`. The first list item should have the `tabindex` updated 
+to `-1`. The foundation method `setSelectedIndex()` should be called with the initially selected element immediately 
+after the foundation is instantiated.
 
 ```html
 <ul id="my-list" class="mdc-list" aria-orientation="vertical">
@@ -302,6 +303,7 @@ Method Signature | Description
 `setVerticalOrientation(value: Boolean) => void` | Sets the list to an orientation causing the keys used for navigation to change. `true` results in the Up/Down arrow keys being used. `false` results in the Left/Right arrow keys being used. 
 `setSingleSelection(value: Boolean) => void` | Sets the list to be a selection list. Enables the `enter` and `space` keys for selecting/deselecting a list item. 
 `setSelectedIndex(index: Number) => void` | Toggles the `selected` state of the list item at index `index`. 
+`setUseActivated(useActivated: boolean) => void` | Sets the selection logic to apply/remove the `mdc-list-item--activated` class.
 `handleFocusIn(evt: Event) => void` | Handles the changing of `tabindex` to `0` for all `button` and `a` elements when a list item receives focus. 
 `handleFocusOut(evt: Event) => void` | Handles the changing of `tabindex` to `-1` for all `button` and `a` elements when a list item loses focus.
 `handleKeydown(evt: Event) => void` | Handles determining if a focus action should occur when a key event is triggered. 
