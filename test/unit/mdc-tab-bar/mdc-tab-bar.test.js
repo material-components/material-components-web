@@ -205,7 +205,7 @@ function setupMockFoundationTest(root = getFixture()) {
 
 test('#activateTab calls activateTab', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
-  component.setActiveTab(1);
+  component.activateTab(1);
   td.verify(mockFoundation.setActiveTab(1), {times: 1});
 });
 

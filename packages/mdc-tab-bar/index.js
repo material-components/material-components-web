@@ -118,7 +118,7 @@ class MDCTabBar extends MDCComponent {
         getScrollContentWidth: () => this.tabScroller_.getScrollContentWidth(),
         getOffsetWidth: () => this.root_.offsetWidth,
         isRTL: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
-        setActiveTab: (index) => this.foundation_.setActiveTab(index),
+        setActiveTab: (index) => this.foundation_.activateTab(index),
         activateTabAtIndex: (index, clientRect) => this.tabList_[index].activate(clientRect),
         deactivateTabAtIndex: (index) => this.tabList_[index].deactivate(),
         focusTabAtIndex: (index) => this.tabList_[index].focus(),
@@ -148,8 +148,8 @@ class MDCTabBar extends MDCComponent {
    * Sets the tab at the given index to be activated
    * @param {number} index The index of the tab
    */
-  setActiveTab(index) {
-    this.foundation_.setActiveTab(index);
+  activateTab(index) {
+    this.foundation_.activateTab(index);
   }
 
   /**

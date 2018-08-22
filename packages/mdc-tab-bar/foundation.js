@@ -124,7 +124,7 @@ class MDCTabBarFoundation extends MDCFoundation {
    * Sets the tab at the given index to be activated
    * @param {number} index
    */
-  setActiveTab(index) {
+  activateTab(index) {
     const previousActiveIndex = this.adapter_.getPreviousActiveTabIndex();
     if (!this.indexIsInRange_(index)) {
       return;

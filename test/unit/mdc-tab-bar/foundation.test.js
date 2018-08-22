@@ -342,69 +342,69 @@ const setupActivateTabTest = () => {
   return {foundation, mockAdapter, scrollIntoView};
 };
 
-test('#setActiveTab() does nothing if the index overflows the tab list', () => {
+test('#activateTab() does nothing if the index overflows the tab list', () => {
   const {foundation, mockAdapter} = setupActivateTabTest();
   td.when(mockAdapter.getTabListLength()).thenReturn(13);
-  foundation.setActiveTab(13);
+  foundation.activateTab(13);
   td.verify(mockAdapter.deactivateTabAtIndex(td.matchers.isA(Number)), {times: 0});
   td.verify(mockAdapter.activateTabAtIndex(td.matchers.isA(Number)), {times: 0});
 });
 
-test('#setActiveTab() does nothing if the index underflows the tab list', () => {
+test('#activateTab() does nothing if the index underflows the tab list', () => {
   const {foundation, mockAdapter} = setupActivateTabTest();
   td.when(mockAdapter.getTabListLength()).thenReturn(13);
-  foundation.setActiveTab(-1);
+  foundation.activateTab(-1);
   td.verify(mockAdapter.deactivateTabAtIndex(td.matchers.isA(Number)), {times: 0});
   td.verify(mockAdapter.activateTabAtIndex(td.matchers.isA(Number)), {times: 0});
 });
 
-test(`#setActiveTab() does not emit the ${MDCTabBarFoundation.strings.TAB_ACTIVATED_EVENT} event if the index` +
+test(`#activateTab() does not emit the ${MDCTabBarFoundation.strings.TAB_ACTIVATED_EVENT} event if the index` +
   ' is the currently active index', () => {
   const {foundation, mockAdapter} = setupActivateTabTest();
   td.when(mockAdapter.getTabListLength()).thenReturn(13);
   td.when(mockAdapter.getPreviousActiveTabIndex()).thenReturn(6);
-  foundation.setActiveTab(6);
+  foundation.activateTab(6);
   td.verify(mockAdapter.notifyTabActivated(td.matchers.anything()), {times: 0});
 });
 
-test('#setActiveTab() deactivates the previously active tab', () => {
+test('#activateTab() deactivates the previously active tab', () => {
   const {foundation, mockAdapter} = setupActivateTabTest();
   td.when(mockAdapter.getTabListLength()).thenReturn(13);
   td.when(mockAdapter.getPreviousActiveTabIndex()).thenReturn(6);
-  foundation.setActiveTab(1);
+  foundation.activateTab(1);
   td.verify(mockAdapter.deactivateTabAtIndex(6), {times: 1});
 });
 
-test('#setActiveTab() activates the newly active tab with the previously active tab\'s indicatorClientRect', () => {
+test('#activateTab() activates the newly active tab with the previously active tab\'s indicatorClientRect', () => {
   const {foundation, mockAdapter} = setupActivateTabTest();
   td.when(mockAdapter.getTabListLength()).thenReturn(13);
   td.when(mockAdapter.getPreviousActiveTabIndex()).thenReturn(6);
   td.when(mockAdapter.getTabIndicatorClientRectAtIndex(6)).thenReturn({
     left: 22, right: 33,
   });
-  foundation.setActiveTab(1);
+  foundation.activateTab(1);
   td.verify(mockAdapter.activateTabAtIndex(1, {left: 22, right: 33}), {times: 1});
 });
 
-test('#setActiveTab() scrolls the new tab index into view', () => {
+test('#activateTab() scrolls the new tab index into view', () => {
   const {foundation, mockAdapter, scrollIntoView} = setupActivateTabTest();
   td.when(mockAdapter.getTabListLength()).thenReturn(13);
   td.when(mockAdapter.getPreviousActiveTabIndex()).thenReturn(6);
   td.when(mockAdapter.getTabIndicatorClientRectAtIndex(6)).thenReturn({
     left: 22, right: 33,
   });
-  foundation.setActiveTab(1);
+  foundation.activateTab(1);
   td.verify(scrollIntoView(1));
 });
 
-test(`#setActiveTab() emits the ${MDCTabBarFoundation.strings.TAB_ACTIVATED_EVENT} with the index of the tab`, () => {
+test(`#activateTab() emits the ${MDCTabBarFoundation.strings.TAB_ACTIVATED_EVENT} with the index of the tab`, () => {
   const {foundation, mockAdapter} = setupActivateTabTest();
   td.when(mockAdapter.getTabListLength()).thenReturn(13);
   td.when(mockAdapter.getPreviousActiveTabIndex()).thenReturn(6);
   td.when(mockAdapter.getTabIndicatorClientRectAtIndex(6)).thenReturn({
     left: 22, right: 33,
   });
-  foundation.setActiveTab(1);
+  foundation.activateTab(1);
   td.verify(mockAdapter.notifyTabActivated(1));
 });
 
