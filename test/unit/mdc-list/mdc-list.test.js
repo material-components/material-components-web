@@ -1,18 +1,24 @@
 /**
  * @license
- * Copyright 2018 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 
@@ -70,6 +76,30 @@ test('component calls setVerticalOrientation(true) on the foundation if aria-ori
   root.setAttribute('aria-orientation', 'vertical');
   const {mockFoundation} = setupTest(root);
   td.verify(mockFoundation.setVerticalOrientation(true), {times: 1});
+});
+
+test('#initializeListType sets the selectedIndex if a list item has the --selected class', () => {
+  const {root, component, mockFoundation} = setupTest();
+  root.querySelector('.mdc-list-item').classList.add(MDCListFoundation.cssClasses.LIST_ITEM_SELECTED_CLASS);
+  component.initializeListType();
+  td.verify(mockFoundation.setSelectedIndex(0), {times: 1});
+  td.verify(mockFoundation.setSingleSelection(true), {times: 1});
+});
+
+test('#initializeListType sets the selectedIndex if a list item has the --activated class', () => {
+  const {root, component, mockFoundation} = setupTest();
+  root.querySelector('.mdc-list-item').classList.add(MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS);
+  component.initializeListType();
+  td.verify(mockFoundation.setSelectedIndex(0), {times: 1});
+  td.verify(mockFoundation.setSingleSelection(true), {times: 1});
+});
+
+test('#initializeListType calls the foundation if the --activated class is present', () => {
+  const {root, component, mockFoundation} = setupTest();
+  root.querySelector('.mdc-list-item').classList.add(MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS);
+  component.initializeListType();
+  td.verify(mockFoundation.setUseActivatedClass(true), {times: 1});
+  td.verify(mockFoundation.setSingleSelection(true), {times: 1});
 });
 
 test('#adapter.getListItemCount returns correct number of list items', () => {
@@ -259,12 +289,6 @@ test('wrapFocus calls setWrapFocus on foundation', () => {
   td.verify(mockFoundation.setWrapFocus(true), {times: 1});
 });
 
-test('singleSelection true sets the selectedIndex if a list item has the --selected class', () => {
-  const {root, component, mockFoundation} = setupTest();
-  root.querySelector('.mdc-list-item').classList.add(MDCListFoundation.cssClasses.LIST_ITEM_SELECTED_CLASS);
-  component.singleSelection = true;
-  td.verify(mockFoundation.setSelectedIndex(0), {times: 1});
-});
 
 test('singleSelection true sets the click handler from the root element', () => {
   const {root, component, mockFoundation} = setupTest();

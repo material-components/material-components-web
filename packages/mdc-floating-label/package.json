@@ -2,7 +2,7 @@
   "name": "@material/floating-label",
   "description": "The Material Components for the web floating-label component",
   "version": "0.39.0-0",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "keywords": [
     "material components",
     "material design",
