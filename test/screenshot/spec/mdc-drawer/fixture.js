@@ -21,6 +21,4 @@
  * THE SOFTWARE.
  */
 
-const drawerEl = document.querySelector('.mdc-drawer');
-// eslint-disable-next-line no-new
-new mdc.drawer.MDCDrawer(drawerEl);
+mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
