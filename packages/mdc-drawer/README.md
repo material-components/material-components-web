@@ -63,8 +63,7 @@ For the standard drawer, the list must be instantiated for appropriate keyboard 
 
 ```js
 import {MDCList} from "@material/list";
-const list = MDCList.attachTo(document.querySelector('.mdc-list'));
-const.singleSelection = true;
+MDCList.attachTo(document.querySelector('.mdc-list'));
 ```
 
 Other variants use the `MDCDrawer` component, which will instantiate `MDCList` automatically:
@@ -190,7 +189,7 @@ In the following example, the `mdc-drawer__content` and `main-content` elements 
       </div>
     </header>
 
-    <main class="main-content">
+    <main class="main-content" id="main-content">
       <div class="mdc-top-app-bar--fixed-adjust"></div>
         App Content
       </div>
@@ -218,6 +217,17 @@ body {
   overflow: auto;
   height: 100%;
 }
+```
+
+JavaScript to toggle drawer when navigation button is clicked looks like this:
+
+```js
+import {MDCTopAppBar} from "@material/top-app-bar";
+const topAppBar = MDCTopAppBar.attachTo(document.getElementById('app-bar'));
+topAppBar.setScrollTarget(document.getElementById('main-content'));
+topAppBar.listen('MDCTopAppBar:nav', () => {
+    drawer.open = !drawer.open;
+});
 ```
 
 ## Style Customization
