@@ -235,6 +235,7 @@ test('adapter#focusActiveNavigationItem focuses on active navigation item', () =
   document.body.appendChild(root);
   component.getDefaultFoundation().adapter_.focusActiveNavigationItem();
 
-  assert.equal(root.querySelector(`.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`), document.activeElement);
+  const activedNavigationItemEl = root.querySelector(`.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`);
+  assert.equal(activedNavigationItemEl, document.activeElement);
   document.body.removeChild(root);
 });
