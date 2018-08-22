@@ -76,6 +76,12 @@ class MDCTabBarAdapter {
   isRTL() {}
 
   /**
+   * Activates the tab at the given index
+   * @param {number} index The index of the tab to activate
+   */
+  activateTab(index) {}
+
+  /**
    * Activates the tab at the given index with the given client rect
    * @param {number} index The index of the tab to activate
    * @param {!ClientRect} clientRect The client rect of the previously active Tab Indicator

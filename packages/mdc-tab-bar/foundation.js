@@ -27,7 +27,6 @@ import {strings, numbers} from './constants';
 import MDCTabBarAdapter from './adapter';
 
 /* eslint-disable no-unused-vars */
-import MDCTabFoundation from '@material/tab/foundation';
 import {MDCTabDimensions} from '@material/tab/adapter';
 /* eslint-enable no-unused-vars */
 
@@ -82,6 +81,7 @@ class MDCTabBarFoundation extends MDCFoundation {
       getScrollContentWidth: () => {},
       getOffsetWidth: () => {},
       isRTL: () => {},
+      activateTab: () => {},
       activateTabAtIndex: () => {},
       deactivateTabAtIndex: () => {},
       focusTabAtIndex: () => {},
@@ -163,12 +163,12 @@ class MDCTabBarFoundation extends MDCFoundation {
       }
 
       const index = this.determineTargetFromKey_(this.adapter_.getActiveTabIndex(), key);
-      this.activateTab(index);
+      this.adapter_.activateTab(index);
       this.scrollIntoView(index);
     } else {
       const focusedTabIndex = this.adapter_.getFocusedTabIndex();
       if (this.isActivationKey_(key)) {
-        this.activateTab(focusedTabIndex);
+        this.adapter_.activateTab(focusedTabIndex);
       } else {
         const index = this.determineTargetFromKey_(focusedTabIndex, key);
         this.adapter_.focusTabAtIndex(index);
@@ -182,7 +182,7 @@ class MDCTabBarFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   handleTabInteraction(evt) {
-    this.activateTab(this.adapter_.getIndexOfTab(evt.detail.tab));
+    this.adapter_.activateTab(this.adapter_.getIndexOfTab(evt.detail.tab));
   }
 
   /**
