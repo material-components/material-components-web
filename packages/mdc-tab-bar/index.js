@@ -96,6 +96,13 @@ class MDCTabBar extends MDCComponent {
 
     this.root_.addEventListener(MDCTabFoundation.strings.INTERACTED_EVENT, this.handleTabInteraction_);
     this.root_.addEventListener('keydown', this.handleKeyDown_);
+
+    for (let i = 0; i < this.tabList_.length; i++) {
+      if (this.tabList_[i].active) {
+        this.scrollIntoView(i);
+        break;
+      }
+    }
   }
 
   destroy() {

@@ -105,12 +105,6 @@ class MDCTabBarFoundation extends MDCFoundation {
     this.useAutomaticActivation_ = false;
   }
 
-  init() {
-    // Upon init, the active tab index is the same as the previous active tab index
-    const activeIndex = this.adapter_.getPreviousActiveTabIndex();
-    this.scrollIntoView(activeIndex);
-  }
-
   /**
    * Switches between automatic and manual activation modes.
    * See https://www.w3.org/TR/wai-aria-practices/#tabpanel for examples.

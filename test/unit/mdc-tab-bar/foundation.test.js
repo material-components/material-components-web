@@ -55,14 +55,6 @@ test('defaultAdapter returns a complete adapter implementation', () => {
 
 const setupTest = () => setupFoundationTest(MDCTabBarFoundation);
 
-test('#init() scrolls the active tab into view', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.scrollIntoView = td.function();
-  td.when(mockAdapter.getPreviousActiveTabIndex()).thenReturn(99);
-  foundation.init();
-  td.verify(foundation.scrollIntoView(99), {times: 1});
-});
-
 const setupKeyDownTest = () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setUseAutomaticActivation(false);
