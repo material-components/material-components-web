@@ -21,6 +21,7 @@ import td from 'testdouble';
 
 import {MDCDrawer} from '../../../packages/mdc-drawer';
 import {strings} from '../../../packages/mdc-drawer/constants';
+import {MDCListFoundation} from '../../../packages/mdc-list';
 import MDCDismissibleDrawerFoundation from '../../../packages/mdc-drawer/dismissible/foundation';
 
 function getFixture() {
@@ -150,7 +151,7 @@ test('adapter#restoreFocus restores focus to previously saved focus', () => {
   button.focus();
 
   component.getDefaultFoundation().adapter_.saveFocus();
-  root.querySelector(strings.ACTIVE_NAV_ITEM_SELECTOR).focus();
+  root.querySelector(`.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`).focus();
   component.getDefaultFoundation().adapter_.restoreFocus();
 
   assert.equal(button, document.activeElement);
@@ -184,7 +185,7 @@ test('adapter#restoreFocus focus is not restored if saveFocus never called', () 
   document.body.appendChild(root);
   button.focus();
 
-  const navItem = root.querySelector(strings.ACTIVE_NAV_ITEM_SELECTOR);
+  const navItem = root.querySelector(`.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`);
   navItem.focus();
   component.getDefaultFoundation().adapter_.restoreFocus();
 
@@ -227,6 +228,6 @@ test('adapter#focusActiveNavigationItem focuses on active navigation item', () =
   document.body.appendChild(root);
   component.getDefaultFoundation().adapter_.focusActiveNavigationItem();
 
-  assert.equal(root.querySelector(strings.ACTIVE_NAV_ITEM_SELECTOR), document.activeElement);
+  assert.equal(root.querySelector(`.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`), document.activeElement);
   document.body.removeChild(root);
 });

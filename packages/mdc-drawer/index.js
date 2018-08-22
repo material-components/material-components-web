@@ -81,8 +81,7 @@ export class MDCDrawer extends MDCComponent {
   }
 
   initialize() {
-    const list = MDCList.attachTo(this.root_.querySelector(`.${MDCListFoundation.cssClasses.ROOT}`));
-    list.singleSelection = true;
+    MDCList.attachTo(this.root_.querySelector(`.${MDCListFoundation.cssClasses.ROOT}`));
   }
 
   initialSyncWithDOM() {
@@ -111,7 +110,7 @@ export class MDCDrawer extends MDCComponent {
         }
       },
       focusActiveNavigationItem: () => {
-        const activeNavItemEl = this.root_.querySelector(strings.ACTIVE_NAV_ITEM_SELECTOR);
+        const activeNavItemEl = this.root_.querySelector(`.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`);
         if (activeNavItemEl) {
           activeNavItemEl.focus();
         }

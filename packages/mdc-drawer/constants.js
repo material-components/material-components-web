@@ -33,7 +33,6 @@ const cssClasses = {
 /** @enum {string} */
 const strings = {
   APP_CONTENT_SELECTOR: '.mdc-drawer-app-content',
-  ACTIVE_NAV_ITEM_SELECTOR: '[aria-selected="true"]',
   CLOSE_EVENT: 'MDCDrawer:close',
   OPEN_EVENT: 'MDCDrawer:open',
 };
