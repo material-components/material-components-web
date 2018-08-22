@@ -99,26 +99,20 @@
   &:invalid {
     box-shadow: none;
   }
-
-  // Move label when text-field gets autofilled in Chrome
-  // stylelint-disable plugin/selector-bem-pattern
-  &:-webkit-autofill + .mdc-floating-label {
-    transform: translateY(-50%) scale(.75);
-    cursor: auto;
-  }
-  // stylelint-enable plugin/selector-bem-pattern
 }
 
+// stylelint-disable plugin/selector-bem-pattern
 .mdc-floating-label {
-  position: absolute;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   pointer-events: none;
-  overflow: hidden;
-  // Force the label into its own layer to prevent to prevent visible layer promotion adjustments
-  // when the ripple is activated behind it.
-  will-change: transform;
 }
+
+// Move label when text-field gets autofilled in Chrome
+.mdc-text-field__input:-webkit-autofill + .mdc-floating-label {
+  transform: translateY(-50%) scale(.75);
+  cursor: auto;
+}
+
+// stylelint-enable plugin/selector-bem-pattern
 
 .mdc-text-field--outlined {
   @include mdc-text-field-outlined_;

@@ -201,7 +201,7 @@ apply these mixins with CSS selectors such as `.foo-text-field.mdc-text-field--i
 
 > _NOTE_: the `mdc-line-ripple-color` mixin should be applied from the not focused class `foo-text-field:not(.mdc-text-field--focused)`).
 
-#### Mixins for all Text Field
+#### Mixins for all Text Fields
 
 Mixin | Description
 --- | ---
