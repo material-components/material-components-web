@@ -30,7 +30,7 @@ import {
   MDCSlidingTabIndicatorFoundation,
   MDCFadingTabIndicatorFoundation,
   MDCTabIndicatorFoundation,
-} from '../../../packages/mdc-tab-indicator';
+} from '../../../packages/mdc-tab-indicator/index';
 
 const getFixture = () => bel`
   <span class="mdc-tab-indicator">

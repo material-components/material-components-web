@@ -27,7 +27,7 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 
 import {strings} from '../../../packages/mdc-toolbar/constants';
-import {MDCToolbar} from '../../../packages/mdc-toolbar';
+import {MDCToolbar} from '../../../packages/mdc-toolbar/index';
 
 function getFixture() {
   return bel`

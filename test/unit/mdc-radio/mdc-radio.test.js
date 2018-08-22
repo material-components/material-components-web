@@ -26,8 +26,8 @@ import bel from 'bel';
 
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 import {createMockRaf} from '../helpers/raf';
-import {MDCRadio, MDCRadioFoundation} from '../../../packages/mdc-radio';
-import {MDCRipple} from '../../../packages/mdc-ripple';
+import {MDCRadio, MDCRadioFoundation} from '../../../packages/mdc-radio/index';
+import {MDCRipple} from '../../../packages/mdc-ripple/index';
 
 const {NATIVE_CONTROL_SELECTOR} = MDCRadioFoundation.strings;
 

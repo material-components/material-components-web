@@ -26,7 +26,7 @@ import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
 
-import {MDCTemporaryDrawer} from '../../../packages/mdc-drawer/temporary';
+import {MDCTemporaryDrawer} from '../../../packages/mdc-drawer/temporary/index';
 import {strings} from '../../../packages/mdc-drawer/temporary/constants';
 import {getTransformPropertyName, supportsCssCustomProperties} from '../../../packages/mdc-drawer/util';
 

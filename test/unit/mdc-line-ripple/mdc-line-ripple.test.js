@@ -26,7 +26,7 @@ import {assert} from 'chai';
 import td from 'testdouble';
 import domEvents from 'dom-events';
 
-import {MDCLineRipple, MDCLineRippleFoundation} from '../../../packages/mdc-line-ripple';
+import {MDCLineRipple, MDCLineRippleFoundation} from '../../../packages/mdc-line-ripple/index';
 
 const getFixture = () => bel`
   <div class="mdc-line-ripple"></div>

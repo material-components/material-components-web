@@ -26,7 +26,7 @@ import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
 
-import {MDCPersistentDrawer} from '../../../packages/mdc-drawer/persistent';
+import {MDCPersistentDrawer} from '../../../packages/mdc-drawer/persistent/index';
 import {strings} from '../../../packages/mdc-drawer/persistent/constants';
 import {getTransformPropertyName} from '../../../packages/mdc-drawer/util';
 

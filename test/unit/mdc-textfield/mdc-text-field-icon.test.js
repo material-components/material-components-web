@@ -26,7 +26,7 @@ import {assert} from 'chai';
 import td from 'testdouble';
 import domEvents from 'dom-events';
 
-import {MDCTextFieldIcon, MDCTextFieldIconFoundation} from '../../../packages/mdc-textfield/icon';
+import {MDCTextFieldIcon, MDCTextFieldIconFoundation} from '../../../packages/mdc-textfield/icon/index';
 
 const getFixture = () => bel`
   <div class="mdc-text-field__icon"></div>

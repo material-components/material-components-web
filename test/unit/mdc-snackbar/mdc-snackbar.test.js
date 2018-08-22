@@ -26,7 +26,7 @@ import bel from 'bel';
 import td from 'testdouble';
 import domEvents from 'dom-events';
 
-import {MDCSnackbar, MDCSnackbarFoundation} from '../../../packages/mdc-snackbar';
+import {MDCSnackbar, MDCSnackbarFoundation} from '../../../packages/mdc-snackbar/index';
 
 const {strings} = MDCSnackbarFoundation;
 

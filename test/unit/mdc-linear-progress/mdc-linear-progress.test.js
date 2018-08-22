@@ -24,7 +24,7 @@
 import {assert} from 'chai';
 import bel from 'bel';
 
-import {MDCLinearProgress, MDCLinearProgressFoundation} from '../../../packages/mdc-linear-progress';
+import {MDCLinearProgress, MDCLinearProgressFoundation} from '../../../packages/mdc-linear-progress/index';
 
 function getFixture() {
   return bel`

@@ -26,7 +26,7 @@ import td from 'testdouble';
 
 import {captureHandlers, verifyDefaultAdapter} from '../helpers/foundation';
 import {createMockRaf} from '../helpers/raf';
-import {MDCSlidableDrawerFoundation} from '../../../packages/mdc-drawer/slidable';
+import {MDCSlidableDrawerFoundation} from '../../../packages/mdc-drawer/slidable/index';
 
 function setupTest(isRootTransitioningEventTarget) {
   const mockAdapter = td.object(MDCSlidableDrawerFoundation.defaultAdapter);

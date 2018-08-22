@@ -26,7 +26,7 @@ import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
 
-import {MDCTopAppBar} from '../../../packages/mdc-top-app-bar';
+import {MDCTopAppBar} from '../../../packages/mdc-top-app-bar/index';
 import {strings} from '../../../packages/mdc-top-app-bar/constants';
 import MDCTopAppBarFoundation from '../../../packages/mdc-top-app-bar/foundation';
 import MDCFixedTopAppBarFoundation from '../../../packages/mdc-top-app-bar/fixed/foundation';

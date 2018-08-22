@@ -26,8 +26,8 @@ import {assert} from 'chai';
 import td from 'testdouble';
 import domEvents from 'dom-events';
 
-import {MDCTabBar, MDCTabBarFoundation} from '../../../packages/mdc-tab-bar';
-import {MDCTabFoundation} from '../../../packages/mdc-tab';
+import {MDCTabBar, MDCTabBarFoundation} from '../../../packages/mdc-tab-bar/index';
+import {MDCTabFoundation} from '../../../packages/mdc-tab/index';
 
 const getFixture = () => bel`
   <div class="mdc-tab-bar">

@@ -26,7 +26,7 @@ import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
 
-import {MDCRipple} from '../../../packages/mdc-ripple';
+import {MDCRipple} from '../../../packages/mdc-ripple/index';
 import {cssClasses} from '../../../packages/mdc-ripple/constants';
 import * as util from '../../../packages/mdc-ripple/util';
 import {createMockRaf} from '../helpers/raf';
