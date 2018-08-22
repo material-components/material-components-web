@@ -121,7 +121,7 @@ Method Signature | Description
 `getTabIndicatorClientRectAtIndex(index: number) => ClientRect` | Returns the client rect of the Tab at the given index.
 `getTabDimensionsAtIndex(index) => MDCTabDimensions` | Returns the dimensions of the Tab at the given index.
 `getTabListLength() => number` | Returns the number of child Tab components.
-`getActiveTabIndex() => number` | Returns the index of the active Tab.
+`getPreviousActiveTabIndex() => number` | Returns the index of the previously active Tab.
 `getFocusedTabIndex() => number` | Returns the index of the focused Tab.
 `getIndexOfTab(tab: MDCTab) => number` | Returns the index of the given Tab instance.
 `notifyTabActivated(index: number) => void` | Emits the `MDCTabBar:activated` event.

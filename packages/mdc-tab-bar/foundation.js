@@ -81,13 +81,13 @@ class MDCTabBarFoundation extends MDCFoundation {
       getScrollContentWidth: () => {},
       getOffsetWidth: () => {},
       isRTL: () => {},
-      activateTab: () => {},
+      setActiveTab: () => {},
       activateTabAtIndex: () => {},
       deactivateTabAtIndex: () => {},
       focusTabAtIndex: () => {},
       getTabIndicatorClientRectAtIndex: () => {},
       getTabDimensionsAtIndex: () => {},
-      getActiveTabIndex: () => {},
+      getPreviousActiveTabIndex: () => {},
       getFocusedTabIndex: () => {},
       getIndexOfTab: () => {},
       getTabListLength: () => {},
@@ -106,7 +106,7 @@ class MDCTabBarFoundation extends MDCFoundation {
   }
 
   init() {
-    const activeIndex = this.adapter_.getActiveTabIndex();
+    const activeIndex = this.adapter_.getPreviousActiveTabIndex();
     this.scrollIntoView(activeIndex);
   }
 
@@ -123,8 +123,8 @@ class MDCTabBarFoundation extends MDCFoundation {
    * Activates the tab at the given index
    * @param {number} index
    */
-  activateTab(index) {
-    const previousActiveIndex = this.adapter_.getActiveTabIndex();
+  setActiveTab(index) {
+    const previousActiveIndex = this.adapter_.getPreviousActiveTabIndex();
     if (!this.indexIsInRange_(index)) {
       return;
     }
@@ -162,13 +162,13 @@ class MDCTabBarFoundation extends MDCFoundation {
         return;
       }
 
-      const index = this.determineTargetFromKey_(this.adapter_.getActiveTabIndex(), key);
-      this.adapter_.activateTab(index);
+      const index = this.determineTargetFromKey_(this.adapter_.getPreviousActiveTabIndex(), key);
+      this.adapter_.setActiveTab(index);
       this.scrollIntoView(index);
     } else {
       const focusedTabIndex = this.adapter_.getFocusedTabIndex();
       if (this.isActivationKey_(key)) {
-        this.adapter_.activateTab(focusedTabIndex);
+        this.adapter_.setActiveTab(focusedTabIndex);
       } else {
         const index = this.determineTargetFromKey_(focusedTabIndex, key);
         this.adapter_.focusTabAtIndex(index);
@@ -182,7 +182,7 @@ class MDCTabBarFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   handleTabInteraction(evt) {
-    this.adapter_.activateTab(this.adapter_.getIndexOfTab(evt.detail.tab));
+    this.adapter_.setActiveTab(this.adapter_.getIndexOfTab(evt.detail.tab));
   }
 
   /**

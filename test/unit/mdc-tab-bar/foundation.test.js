@@ -48,7 +48,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'getOffsetWidth', 'isRTL', 'activateTab',
     'activateTabAtIndex', 'deactivateTabAtIndex', 'focusTabAtIndex',
     'getTabIndicatorClientRectAtIndex', 'getTabDimensionsAtIndex',
-    'getActiveTabIndex', 'getFocusedTabIndex', 'getIndexOfTab', 'getTabListLength',
+    'getPreviousActiveTabIndex', 'getFocusedTabIndex', 'getIndexOfTab', 'getTabListLength',
     'notifyTabActivated',
   ]);
 });
@@ -58,7 +58,7 @@ const setupTest = () => setupFoundationTest(MDCTabBarFoundation);
 test('#init() scrolls the active tab into view', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.scrollIntoView = td.function();
-  td.when(mockAdapter.getActiveTabIndex()).thenReturn(99);
+  td.when(mockAdapter.getPreviousActiveTabIndex()).thenReturn(99);
   foundation.init();
   td.verify(foundation.scrollIntoView(99), {times: 1});
 });
@@ -258,7 +258,7 @@ test('#handleKeyDown() activates the tab at the previous index on left arrow pre
   const {fakeEvent: fakeKeyEvent} = mockKeyDownEvent({key: MDCTabBarFoundation.strings.ARROW_LEFT_KEY});
   const {fakeEvent: fakeKeyCodeEvent} = mockKeyDownEvent({keyCode: 37});
   foundation.setUseAutomaticActivation(true);
-  td.when(mockAdapter.getActiveTabIndex()).thenReturn(2);
+  td.when(mockAdapter.getPreviousActiveTabIndex()).thenReturn(2);
   td.when(mockAdapter.getTabListLength()).thenReturn(13);
 
   foundation.handleKeyDown(fakeKeyEvent);
@@ -362,7 +362,7 @@ test(`#activateTab() does not emit the ${MDCTabBarFoundation.strings.TAB_ACTIVAT
   ' is the currently active index', () => {
   const {foundation, mockAdapter} = setupActivateTabTest();
   td.when(mockAdapter.getTabListLength()).thenReturn(13);
-  td.when(mockAdapter.getActiveTabIndex()).thenReturn(6);
+  td.when(mockAdapter.getPreviousActiveTabIndex()).thenReturn(6);
   foundation.activateTab(6);
   td.verify(mockAdapter.notifyTabActivated(td.matchers.anything()), {times: 0});
 });
@@ -370,7 +370,7 @@ test(`#activateTab() does not emit the ${MDCTabBarFoundation.strings.TAB_ACTIVAT
 test('#activateTab() deactivates the previously active tab', () => {
   const {foundation, mockAdapter} = setupActivateTabTest();
   td.when(mockAdapter.getTabListLength()).thenReturn(13);
-  td.when(mockAdapter.getActiveTabIndex()).thenReturn(6);
+  td.when(mockAdapter.getPreviousActiveTabIndex()).thenReturn(6);
   foundation.activateTab(1);
   td.verify(mockAdapter.deactivateTabAtIndex(6), {times: 1});
 });
@@ -378,7 +378,7 @@ test('#activateTab() deactivates the previously active tab', () => {
 test('#activateTab() activates the newly active tab with the previously active tab\'s indicatorClientRect', () => {
   const {foundation, mockAdapter} = setupActivateTabTest();
   td.when(mockAdapter.getTabListLength()).thenReturn(13);
-  td.when(mockAdapter.getActiveTabIndex()).thenReturn(6);
+  td.when(mockAdapter.getPreviousActiveTabIndex()).thenReturn(6);
   td.when(mockAdapter.getTabIndicatorClientRectAtIndex(6)).thenReturn({
     left: 22, right: 33,
   });
@@ -389,7 +389,7 @@ test('#activateTab() activates the newly active tab with the previously active t
 test('#activateTab() scrolls the new tab index into view', () => {
   const {foundation, mockAdapter, scrollIntoView} = setupActivateTabTest();
   td.when(mockAdapter.getTabListLength()).thenReturn(13);
-  td.when(mockAdapter.getActiveTabIndex()).thenReturn(6);
+  td.when(mockAdapter.getPreviousActiveTabIndex()).thenReturn(6);
   td.when(mockAdapter.getTabIndicatorClientRectAtIndex(6)).thenReturn({
     left: 22, right: 33,
   });
@@ -400,7 +400,7 @@ test('#activateTab() scrolls the new tab index into view', () => {
 test(`#activateTab() emits the ${MDCTabBarFoundation.strings.TAB_ACTIVATED_EVENT} with the index of the tab`, () => {
   const {foundation, mockAdapter} = setupActivateTabTest();
   td.when(mockAdapter.getTabListLength()).thenReturn(13);
-  td.when(mockAdapter.getActiveTabIndex()).thenReturn(6);
+  td.when(mockAdapter.getPreviousActiveTabIndex()).thenReturn(6);
   td.when(mockAdapter.getTabIndicatorClientRectAtIndex(6)).thenReturn({
     left: 22, right: 33,
   });
@@ -415,10 +415,10 @@ function setupScrollIntoViewTest({
   scrollContentWidth = 1000,
   scrollPosition = 0,
   offsetWidth = 400,
-  tabDimensionsMap = {}
+  tabDimensionsMap = {},
 } = {}) {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getActiveTabIndex()).thenReturn(activeIndex);
+  td.when(mockAdapter.getPreviousActiveTabIndex()).thenReturn(activeIndex);
   td.when(mockAdapter.getTabListLength()).thenReturn(tabListLength);
   td.when(mockAdapter.getTabIndicatorClientRectAtIndex(td.matchers.isA(Number))).thenReturn(indicatorClientRect);
   td.when(mockAdapter.getScrollPosition()).thenReturn(scrollPosition);

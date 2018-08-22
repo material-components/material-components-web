@@ -121,10 +121,10 @@ class MDCTabBarAdapter {
   getTabListLength() {}
 
   /**
-   * Returns the index of the active tab
+   * Returns the index of the previously active tab
    * @return {number}
    */
-  getActiveTabIndex() {}
+  getPreviousActiveTabIndex() {}
 
   /**
    * Returns the index of the focused tab
