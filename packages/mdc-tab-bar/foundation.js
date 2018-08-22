@@ -125,7 +125,7 @@ class MDCTabBarFoundation extends MDCFoundation {
    */
   activateTab(index) {
     const previousActiveIndex = this.adapter_.getActiveTabIndex();
-    if (!this.indexIsInRange_(index)) {
+    if (!this.indexIsInRange_(index) || index === previousActiveIndex) {
       return;
     }
 
@@ -133,10 +133,7 @@ class MDCTabBarFoundation extends MDCFoundation {
     this.adapter_.activateTabAtIndex(index, this.adapter_.getTabIndicatorClientRectAtIndex(previousActiveIndex));
     this.scrollIntoView(index);
 
-    // Only notify the tab activation if the index is different than the previously active index
-    if (index !== previousActiveIndex) {
-      this.adapter_.notifyTabActivated(index);
-    }
+    this.adapter_.notifyTabActivated(index);
   }
 
   /**

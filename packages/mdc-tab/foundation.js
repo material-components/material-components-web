@@ -98,11 +98,6 @@ class MDCTabFoundation extends MDCFoundation {
    * @param {!ClientRect=} previousIndicatorClientRect
    */
   activate(previousIndicatorClientRect) {
-    // Early exit
-    if (this.isActive()) {
-      return;
-    }
-
     this.adapter_.addClass(cssClasses.ACTIVE);
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'true');
     this.adapter_.setAttr(strings.TABINDEX, '0');

@@ -51,13 +51,6 @@ test('defaultAdapter returns a complete adapter implementation', () => {
 
 const setupTest = () => setupFoundationTest(MDCTabFoundation);
 
-test('#activate does nothing if already active', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(MDCTabFoundation.cssClasses.ACTIVE)).thenReturn(true);
-  foundation.activate();
-  td.verify(mockAdapter.addClass(MDCTabFoundation.cssClasses.ACTIVE), {times: 0});
-});
-
 test('#activate adds mdc-tab--active class to the root element', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.activate();
