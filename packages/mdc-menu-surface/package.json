@@ -8,7 +8,7 @@
     "material design",
     "menu surface"
   ],
-  "main": "index.js",
+  "main": "dist/mdc.menuSurface.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git"
