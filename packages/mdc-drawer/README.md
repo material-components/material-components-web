@@ -170,6 +170,8 @@ Dismissible drawers are by default hidden off screen, and can slide into view. D
 </body>
 ```
 
+> Use the `mdc-drawer-app-content` class to the element sibling to the drawer to get the open/close animations to work.
+
 #### Usage with Top App Bar
 
 In cases where the drawer occupies the full viewport height, some styles must be applied to get the dismissible drawer and the content below the top app bar to independently scroll and work in all browsers.
@@ -178,7 +180,7 @@ In the following example, the `mdc-drawer__content` and `main-content` elements 
 
 ```html
 <body>
-  <nav class="mdc-drawer mdc-drawer--dismissible" id="drawer">
+  <nav class="mdc-drawer mdc-drawer--dismissible">
     <div class="mdc-drawer__content">
       <div class="mdc-list">
         <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
