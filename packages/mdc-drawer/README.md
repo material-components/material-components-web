@@ -180,7 +180,7 @@ In the following example, the `mdc-drawer__content` and `main-content` elements 
   </nav>
 
   <div class="mdc-drawer-app-content">
-    <header class="mdc-top-app-bar" id="app-bar">
+    <header class="mdc-top-app-bar app-bar" id="app-bar">
       <div class="mdc-top-app-bar__row">
         <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
           <a href="#" class="demo-menu material-icons mdc-top-app-bar__navigation-icon">menu</a>
@@ -216,6 +216,10 @@ body {
 .main-content {
   overflow: auto;
   height: 100%;
+}
+
+.app-bar {
+  position: absolute;
 }
 ```
 
