@@ -121,7 +121,7 @@ class MDCTabBarFoundation extends MDCFoundation {
   }
 
   /**
-   * Sets the tab at the given index to be activated
+   * Activates the tab at the given index
    * @param {number} index
    */
   activateTab(index) {

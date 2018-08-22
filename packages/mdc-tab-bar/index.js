@@ -145,7 +145,7 @@ class MDCTabBar extends MDCComponent {
   }
 
   /**
-   * Sets the tab at the given index to be activated
+   * Activates the tab at the given index
    * @param {number} index The index of the tab
    */
   activateTab(index) {

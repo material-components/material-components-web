@@ -93,7 +93,7 @@ Mixin | Description
 
 Method Signature | Description
 --- | ---
-`activateTab(index: number) => void` | Sets the tab at the given index to be activated.
+`activateTab(index: number) => void` | Activates the tab at the given index.
 `scrollIntoView(index: number) => void` | Scrolls the tab at the given index into view.
 
 Event Name | Event Data Structure | Description
@@ -130,7 +130,7 @@ Method Signature | Description
 
 Method Signature | Description
 --- | ---
-`activateTab(index: number) => void` | Sets the tab at the given index to be activated.
+`activateTab(index: number) => void` | Activates the tab at the given index.
 `handleKeyDown(evt: Event) => void` | Handles the logic for the `"keydown"` event.
 `handleTabInteraction(evt: Event) => void` | Handles the logic for the `"MDCTab:interacted"` event.
 `scrollIntoView(index: number) => void` | Scrolls the Tab at the given index into view.
