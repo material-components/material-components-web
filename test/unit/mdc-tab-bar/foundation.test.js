@@ -45,7 +45,7 @@ test('exports numbers', () => {
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTabBarFoundation, [
     'scrollTo', 'incrementScroll', 'getScrollPosition', 'getScrollContentWidth',
-    'getOffsetWidth', 'isRTL', 'activateTab',
+    'getOffsetWidth', 'isRTL', 'setActiveTab',
     'activateTabAtIndex', 'deactivateTabAtIndex', 'focusTabAtIndex',
     'getTabIndicatorClientRectAtIndex', 'getTabDimensionsAtIndex',
     'getPreviousActiveTabIndex', 'getFocusedTabIndex', 'getIndexOfTab', 'getTabListLength',
