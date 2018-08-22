@@ -32,7 +32,7 @@ npm install @material/drawer
 ### HTML Structure
 
 ```html
-<nav class="mdc-drawer">
+<aside class="mdc-drawer">
   <div class="mdc-drawer__content">
     <nav class="mdc-list">
       <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
@@ -46,7 +46,7 @@ npm install @material/drawer
       </a>
     </nav>
   </div>
-</header>
+</aside>
 ```
 
 ### Styles
@@ -77,7 +77,7 @@ const drawer = MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
 ### Drawer with separate list groups
 
 ```html
-<nav class="mdc-drawer">
+<aside class="mdc-drawer">
   <div class="mdc-drawer__content">
     <nav class="mdc-list">
       <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
@@ -113,7 +113,7 @@ const drawer = MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
       </a>
     </nav>
   </div>
-</div>
+</aside>
 ```
 
 ### Drawer with Header
@@ -121,7 +121,7 @@ const drawer = MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
 Drawers can contain a header element which will not scroll with the rest of the drawer content. Things like account switchers and titles should live in the header element.
 
 ```html
-<nav class="mdc-drawer">
+<aside class="mdc-drawer">
   <div class="mdc-drawer__header">
     <h3 class="mdc-drawer__title">Mail</h3>
     <h6 class="mdc-drawer__subtitle">email@material.io</h6>
@@ -139,7 +139,7 @@ Drawers can contain a header element which will not scroll with the rest of the 
       </a>
     </nav>
   </div>
-</header>
+</aside>
 ```
 
 ### Dismissible Drawer
@@ -148,7 +148,7 @@ Dismissible drawers are by default hidden off screen, and can slide into view. D
 
 ```html
 <body>
-  <header class="mdc-drawer mdc-drawer--dismissible">
+  <aside class="mdc-drawer mdc-drawer--dismissible">
     <div class="mdc-drawer__content">
       <nav class="mdc-list">
         <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
@@ -162,7 +162,7 @@ Dismissible drawers are by default hidden off screen, and can slide into view. D
         </a>
       </nav>
     </div>
-  </header>
+  </aside>
 
   <div class="mdc-drawer-app-content">
     App Content
@@ -180,7 +180,7 @@ In the following example, the `mdc-drawer__content` and `main-content` elements 
 
 ```html
 <body>
-  <nav class="mdc-drawer mdc-drawer--dismissible">
+  <aside class="mdc-drawer mdc-drawer--dismissible">
     <div class="mdc-drawer__content">
       <div class="mdc-list">
         <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
@@ -194,7 +194,7 @@ In the following example, the `mdc-drawer__content` and `main-content` elements 
         </a>
       </div>
     </div>
-  </nav>
+  </aside>
 
   <div class="mdc-drawer-app-content">
     <header class="mdc-top-app-bar app-bar" id="app-bar">
@@ -257,7 +257,7 @@ Modal drawers are elevated above most of the app’s UI and don’t affect the s
 
 ```html
 <body>
-  <header class="mdc-drawer mdc-drawer--modal">
+  <aside class="mdc-drawer mdc-drawer--modal">
     <div class="mdc-drawer__content">
       <nav class="mdc-list">
         <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
@@ -271,7 +271,7 @@ Modal drawers are elevated above most of the app’s UI and don’t affect the s
         </a>
       </nav>
     </div>
-  </header>
+  </aside>
 
   <div class="mdc-drawer-scrim"></div>
   <div>Main Content</div>
