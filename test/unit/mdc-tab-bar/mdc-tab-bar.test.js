@@ -205,8 +205,8 @@ function setupMockFoundationTest(root = getFixture()) {
 
 test('#activateTab calls activateTab', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
-  component.activateTab(1);
-  td.verify(mockFoundation.activateTab(1), {times: 1});
+  component.setActiveTab(1);
+  td.verify(mockFoundation.setActiveTab(1), {times: 1});
 });
 
 test('#scrollIntoView calls scrollIntoView', () => {

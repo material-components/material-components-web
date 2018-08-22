@@ -106,6 +106,7 @@ class MDCTabBarFoundation extends MDCFoundation {
   }
 
   init() {
+    // Upon init, the active tab index is the same as the previous active tab index
     const activeIndex = this.adapter_.getPreviousActiveTabIndex();
     this.scrollIntoView(activeIndex);
   }
@@ -120,7 +121,7 @@ class MDCTabBarFoundation extends MDCFoundation {
   }
 
   /**
-   * Activates the tab at the given index
+   * Sets the tab at the given index to be activated
    * @param {number} index
    */
   setActiveTab(index) {
