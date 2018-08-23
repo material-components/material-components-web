@@ -26,7 +26,11 @@
 // postcss-bem-linter: define dialog
 
 .mdc-dialog {
-  display: flex;
+  // Use `display: none` instead of `visibility: hidden` to work around a `-webkit-line-clamp` bug.
+  // https://stackoverflow.com/a/44193578/467582
+  display: none;
+
+  // stylelint-disable-next-line declaration-empty-line-before
   position: fixed;
   top: 0;
   left: 0;
@@ -35,7 +39,6 @@
   box-sizing: border-box;
   width: 100%;
   height: 100%;
-  visibility: hidden;
   z-index: 5;
 }
 
@@ -91,23 +94,14 @@
   margin: 0;
   padding: 16px 24px 15px;
 
-  // TODO(acdvorak): Un-nest these selectors
   .mdc-dialog--scrollable & {
     border-bottom-width: 1px;
     border-bottom-style: solid;
-
-    // TODO(acdvorak): Ask Design about this
-    // TODO(acdvorak): Hide this when the user can't scroll any more
-    box-shadow: 0 24px 24px 0 rgba(white, 1);
   }
 
   @include mdc-rtl(".mdc-dialog") {
     text-align: right;
   }
-}
-
-.mdc-dialog__header__empty {
-  padding: 0;
 }
 
 .mdc-dialog__title {
@@ -124,20 +118,18 @@
   @include mdc-dialog-body-color;
   @include mdc-typography(body1);
 
+  flex-grow: 1;
   box-sizing: border-box;
+  margin: 0;
+  padding: 10px 24px 21px;
   overflow: auto;
 
-  // TODO(acdvorak): Un-nest these selectors
   .mdc-dialog--scrollable & {
-    // Must be scroll, not auto.
+    // Must be 'scroll', not 'auto'.
     // https://css-tricks.com/snippets/css/momentum-scrolling-on-ios-overflow-elements/
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
   }
-
-  // stylelint-disable-next-line order/properties-order
-  margin: 0;
-  padding: 10px 24px 21px;
 
   // TODO(acdvorak): Is there a better way?
   > :first-child {
@@ -163,14 +155,14 @@
   margin: 0;
   padding: 8px;
 
-  // TODO(acdvorak): Un-nest these selectors
   .mdc-dialog--scrollable & {
     border-top-width: 1px;
     border-top-style: solid;
+  }
 
-    // TODO(acdvorak): Ask Design about this
-    // TODO(acdvorak): Hide this when the user can't scroll any more
-    box-shadow: 0 -24px 24px 0 rgba(white, 1);
+  .mdc-dialog--stacked & {
+    flex-direction: column;
+    align-items: flex-end;
   }
 }
 
@@ -182,15 +174,21 @@
     @include mdc-rtl-reflexive-box(margin, left, 0);
   }
 
+  max-width: 100%; // Prevent long text from overflowing parent element in IE 11
   text-align: right;
 
-  @include mdc-rtl {
+  @include mdc-rtl(".mdc-dialog") {
     text-align: left;
+  }
+
+  .mdc-dialog--stacked &:not(:first-child) {
+    margin-top: 12px;
   }
 }
 
 .mdc-dialog--animating {
-  visibility: visible;
+  // Keep this value in sync with `.mdc-dialog--open`.
+  display: flex;
 
   .mdc-dialog__scrim {
     transition: mdc-animation-enter(opacity, 120ms);
@@ -202,7 +200,8 @@
 }
 
 .mdc-dialog--open {
-  visibility: visible;
+  // Keep this value in sync with `.mdc-dialog--animating`.
+  display: flex;
 
   .mdc-dialog__scrim {
     opacity: .3;

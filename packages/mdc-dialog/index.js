@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {MDCComponent} from '@material/base/index';
+import {MDCComponent, MDCFeatureDetector} from '@material/base/index';
 import {MDCRipple} from '@material/ripple/index';
 
 import MDCDialogFoundation from './foundation';
@@ -41,6 +41,7 @@ export class MDCDialog extends MDCComponent {
   }
 
   initialize() {
+    this.featureDetector_ = new MDCFeatureDetector();
     this.focusTrap_ = util.createFocusTrapInstance(this.dialogSurface_, this.acceptButton_);
     this.footerBtnRipples_ = [];
 
@@ -57,6 +58,55 @@ export class MDCDialog extends MDCComponent {
 
   show() {
     this.foundation_.open();
+
+    // TODO(acdvorak): Refactor
+    this.detectStackedButtons_();
+    this.detectScrollableContent_();
+  }
+
+  /** @private */
+  detectStackedButtons_() {
+    /** @type {!Array<!HTMLElement>} */
+    const buttonEls = [].slice.call(this.root_.querySelectorAll('.mdc-dialog__button'));
+    const offsetTopSet = new Set();
+    buttonEls.forEach((buttonEl) => offsetTopSet.add(buttonEl.offsetTop));
+
+    const isStacked = offsetTopSet.size > 1;
+    if (isStacked) {
+      this.root_.classList.add('mdc-dialog--stacked');
+    } else {
+      this.root_.classList.remove('mdc-dialog--stacked');
+    }
+  }
+
+  /**
+   * @param {boolean=} bypassRAF
+   * @private
+   */
+  detectScrollableContent_(bypassRAF = false) {
+    if (this.featureDetector_.hasFlexItemMaxHeightBug && !bypassRAF) {
+      // RAF causes a bit of jank, but it's necessary to force IE to render correctly.
+      requestAnimationFrame(() => {
+        this.fixContentOverflow_();
+        this.detectScrollableContent_(true);
+      });
+      return;
+    }
+
+    const bodyEl = this.root_.querySelector('.mdc-dialog__body');
+    if (bodyEl && bodyEl.scrollHeight > bodyEl.offsetHeight) {
+      this.root_.classList.add('mdc-dialog--scrollable');
+    } else {
+      this.root_.classList.remove('mdc-dialog--scrollable');
+    }
+  }
+
+  /** @private */
+  fixContentOverflow_() {
+    const bodyEl = this.root_.querySelector('.mdc-dialog__body');
+    if (bodyEl) {
+      this.featureDetector_.fixFlexItemMaxHeightBug(bodyEl);
+    }
   }
 
   close() {
