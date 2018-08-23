@@ -87,7 +87,7 @@
   }
 }
 
-@mixin mdc-drawer-item-activated-text-color($color, $opacity) {
+@mixin mdc-drawer-item-activated-text-color($color, $opacity: 1) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
 
   .mdc-list-item--activated {
@@ -95,7 +95,7 @@
   }
 }
 
-@mixin mdc-drawer-item-text-color($color, $opacity) {
+@mixin mdc-drawer-item-text-color($color, $opacity: 1) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
 
   .mdc-list-item {
@@ -112,13 +112,13 @@
   @include mdc-list-item-meta-ink-color($value);
 }
 
-@mixin mdc-drawer-surface-fill-color($color, $opacity) {
+@mixin mdc-drawer-surface-fill-color($color, $opacity: 1) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
 
   @include mdc-theme-prop(background-color, $value);
 }
 
-@mixin mdc-drawer-title-ink-color($color, $opacity) {
+@mixin mdc-drawer-title-ink-color($color, $opacity: 1) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
 
   .mdc-drawer__title {

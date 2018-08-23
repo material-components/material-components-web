@@ -103,19 +103,19 @@
 .demo-drawer--custom {
   @include mdc-drawer-border-color(lightblue, $mdc-drawer-divider-opacity);
   @include mdc-drawer-subtitle-ink-color(darkolivegreen, $mdc-drawer-subtitle-ink-opacity);
-  @include mdc-drawer-surface-fill-color(pink, $mdc-drawer-surface-fill-opacity);
+  @include mdc-drawer-surface-fill-color(pink);
   @include mdc-drawer-icon-ink-color(darkolivegreen, $mdc-drawer-icon-ink-opacity);
-  @include mdc-drawer-title-ink-color(darkolivegreen, 1);
+  @include mdc-drawer-title-ink-color(darkolivegreen);
   @include mdc-drawer-activated-overlay-color(darkcyan);
-  @include mdc-drawer-item-text-color(darkolivegreen, $mdc-drawer-inactive-ink-opacity);
-  @include mdc-drawer-item-activated-text-color(darkcyan, 1);
+  @include mdc-drawer-item-text-color(darkolivegreen);
+  @include mdc-drawer-item-activated-text-color(darkcyan);
   @include mdc-drawer-icon-activated-ink-color(darkcyan, 1);
 }
 
 .demo-drawer--accessible {
   @include mdc-drawer-fill-color-accessible(darkcyan, 1);
   @include mdc-drawer-activated-overlay-color(pink);
-  @include mdc-drawer-item-activated-text-color(pink, 1);
+  @include mdc-drawer-item-activated-text-color(pink);
   @include mdc-drawer-icon-activated-ink-color(pink, 1);
 }
 
