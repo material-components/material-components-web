@@ -88,9 +88,29 @@ class MDCCheckbox extends MDCComponent {
       registerChangeHandler: (handler) => this.nativeCb_.addEventListener('change', handler),
       deregisterChangeHandler: (handler) => this.nativeCb_.removeEventListener('change', handler),
       getNativeControl: () => this.nativeCb_,
+      isIndeterminate: this.isIndeterminate_,
+      isChecked: this.isChecked_,
+      hasNativeControl: () => !!this.nativeCb_,
+      setNativeControlDisabled: (disabled) => this.nativeControl_.disabled = disabled,
       forceLayout: () => this.root_.offsetWidth,
       isAttachedToDOM: () => Boolean(this.root_.parentNode),
     });
+  }
+
+  /**
+   * @return {boolean}
+   * @private
+   */
+  isIndeterminate_() {
+    return this.nativeCb_.indeterminate;
+  }
+
+  /**
+   * @return {boolean}
+   * @private
+   */
+  isChecked_() {
+    return this.nativeCb_.checked;
   }
 
   /** @return {!MDCRipple} */
@@ -100,27 +120,27 @@ class MDCCheckbox extends MDCComponent {
 
   /** @return {boolean} */
   get checked() {
-    return this.foundation_.isChecked();
+    return this.isChecked_();
   }
 
   /** @param {boolean} checked */
   set checked(checked) {
-    this.foundation_.setChecked(checked);
+    this.nativeCb_.checked = checked;
   }
 
   /** @return {boolean} */
   get indeterminate() {
-    return this.foundation_.isIndeterminate();
+    return this.isIndeterminate_();
   }
 
   /** @param {boolean} indeterminate */
   set indeterminate(indeterminate) {
-    this.foundation_.setIndeterminate(indeterminate);
+    this.nativeCb_.indeterminate = indeterminate;
   }
 
   /** @return {boolean} */
   get disabled() {
-    return this.foundation_.isDisabled();
+    return this.nativeCb_.disabled;
   }
 
   /** @param {boolean} disabled */
@@ -130,12 +150,12 @@ class MDCCheckbox extends MDCComponent {
 
   /** @return {?string} */
   get value() {
-    return this.foundation_.getValue();
+    return this.nativeCb_.value;
   }
 
   /** @param {?string} value */
   set value(value) {
-    this.foundation_.setValue(value);
+    this.nativeCb_.value = value;
   }
 
   destroy() {
