@@ -23,6 +23,7 @@
 
 import {MDCComponent, MDCFeatureDetector} from '@material/base/index';
 import {MDCRipple} from '@material/ripple/index';
+import {matches} from '@material/base/ponyfill';
 
 import MDCDialogFoundation from './foundation';
 import * as util from './util';
@@ -39,8 +40,8 @@ export class MDCDialog extends MDCComponent {
     return this.foundation_.isOpen();
   }
 
-  get acceptButton_() {
-    return this.root_.querySelector(MDCDialogFoundation.strings.ACCEPT_SELECTOR);
+  get notifyYesButton_() {
+    return this.root_.querySelector(MDCDialogFoundation.strings.YES_BTN_SELECTOR);
   }
 
   get dialogSurface_() {
@@ -49,7 +50,7 @@ export class MDCDialog extends MDCComponent {
 
   initialize() {
     this.featureDetector_ = new MDCFeatureDetector();
-    this.focusTrap_ = util.createFocusTrapInstance(this.dialogSurface_, this.acceptButton_);
+    this.focusTrap_ = util.createFocusTrapInstance(this.dialogSurface_, this.notifyYesButton_);
     this.footerBtnRipples_ = [];
 
     const footerBtns = this.root_.querySelectorAll('.mdc-dialog__button');
@@ -127,14 +128,20 @@ export class MDCDialog extends MDCComponent {
       addBodyClass: (className) => document.body.classList.add(className),
       removeBodyClass: (className) => document.body.classList.remove(className),
       eventTargetHasClass: (target, className) => target.classList.contains(className),
+      eventTargetMatchesSelector: (target, selector) => matches(target, selector),
       registerInteractionHandler: (evt, handler) => this.root_.addEventListener(evt, handler),
       deregisterInteractionHandler: (evt, handler) => this.root_.removeEventListener(evt, handler),
       registerSurfaceInteractionHandler: (evt, handler) => this.dialogSurface_.addEventListener(evt, handler),
       deregisterSurfaceInteractionHandler: (evt, handler) => this.dialogSurface_.removeEventListener(evt, handler),
       registerDocumentKeydownHandler: (handler) => document.addEventListener('keydown', handler),
       deregisterDocumentKeydownHandler: (handler) => document.removeEventListener('keydown', handler),
-      notifyAccept: () => this.emit(MDCDialogFoundation.strings.ACCEPT_EVENT),
+      notifyYes: () => this.emit(MDCDialogFoundation.strings.YES_EVENT),
+      notifyNo: () => this.emit(MDCDialogFoundation.strings.NO_EVENT),
       notifyCancel: () => this.emit(MDCDialogFoundation.strings.CANCEL_EVENT),
+      notifyOpenStart: () => this.emit(MDCDialogFoundation.strings.OPEN_START_EVENT),
+      notifyOpenEnd: () => this.emit(MDCDialogFoundation.strings.OPEN_END_EVENT),
+      notifyCloseStart: () => this.emit(MDCDialogFoundation.strings.CLOSE_START_EVENT),
+      notifyCloseEnd: () => this.emit(MDCDialogFoundation.strings.CLOSE_END_EVENT),
       trapFocusOnSurface: () => this.focusTrap_.activate(),
       untrapFocusOnSurface: () => this.focusTrap_.deactivate(),
       isDialog: (el) => el === this.dialogSurface_,

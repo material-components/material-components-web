@@ -27,16 +27,24 @@ const cssClasses = {
   ANIMATING: 'mdc-dialog--animating',
   BACKDROP: 'mdc-dialog__scrim',
   SCROLL_LOCK: 'mdc-dialog-scroll-lock',
-  ACCEPT_BTN: 'mdc-dialog__button--accept',
-  CANCEL_BTN: 'mdc-dialog__button--cancel',
 };
 
 const strings = {
   OPEN_DIALOG_SELECTOR: '.mdc-dialog--open',
   DIALOG_SURFACE_SELECTOR: '.mdc-dialog__container',
-  ACCEPT_SELECTOR: '.mdc-dialog__button--accept',
-  ACCEPT_EVENT: 'MDCDialog:accept',
+
+  YES_BTN_SELECTOR: '[data-mdc-dialog-action="yes"]',
+  NO_BTN_SELECTOR: '[data-mdc-dialog-action="no"]',
+  CANCEL_BTN_SELECTOR: '[data-mdc-dialog-action="cancel"]',
+
+  YES_EVENT: 'MDCDialog:yes',
+  NO_EVENT: 'MDCDialog:no',
   CANCEL_EVENT: 'MDCDialog:cancel',
+
+  OPEN_START_EVENT: 'MDCDialog:openStart',
+  OPEN_END_EVENT: 'MDCDialog:openEnd',
+  CLOSE_START_EVENT: 'MDCDialog:closeStart',
+  CLOSE_END_EVENT: 'MDCDialog:closeEnd',
 };
 
 const numbers = {

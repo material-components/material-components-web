@@ -27,6 +27,7 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 import {createMockRaf} from '../helpers/raf';
 import {strings} from '../../../packages/mdc-dialog/constants';
+import {matches} from '../../../packages/mdc-base/ponyfill';
 import {MDCDialog, util} from '../../../packages/mdc-dialog';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 
@@ -50,9 +51,11 @@ function getFixture() {
           </section>
           <footer class="mdc-dialog__actions">
             <button type="button"
-              class="mdc-button mdc-dialog__button mdc-dialog__button--cancel">DECLINE</button>
+              class="mdc-button mdc-dialog__button" data-mdc-dialog-action="cancel">Cancel</button>
             <button type="button"
-              class="mdc-button mdc-dialog__button mdc-dialog__button--accept">ACCEPT</button>
+              class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">No</button>
+            <button type="button"
+              class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">Yes</button>
           </footer>
         </div>
         <div class="mdc-dialog__scrim"></div>
@@ -65,13 +68,18 @@ function setupTest() {
   const openDialog = fixture.querySelector('.open-dialog');
   const root = fixture.querySelector('.mdc-dialog');
   const component = new MDCDialog(root);
-  const acceptButton = fixture.querySelector('.mdc-dialog__button--accept');
-  const cancelButton = fixture.querySelector('.mdc-dialog__button--cancel');
-  return {openDialog, root, acceptButton, cancelButton, component};
+  const yesButton = fixture.querySelector('[data-mdc-dialog-action="yes"]');
+  const noButton = fixture.querySelector('[data-mdc-dialog-action="no"]');
+  const cancelButton = fixture.querySelector('[data-mdc-dialog-action="cancel"]');
+  return {openDialog, root, yesButton, noButton, cancelButton, component};
 }
 
 function hasClassMatcher(className) {
   return td.matchers.argThat((el) => el.classList && el.classList.contains(className));
+}
+
+function hasSelectorMatcher(selector) {
+  return td.matchers.argThat((el) => matches(el, selector));
 }
 
 suite('MDCDialog');
@@ -83,23 +91,25 @@ test('attachTo returns a component instance', () => {
 if (supportsCssVariables(window)) {
   test('#initialize attaches ripple elements to all footer buttons', () => {
     const raf = createMockRaf();
-    const {acceptButton, cancelButton} = setupTest();
+    const {yesButton,noButton,  cancelButton} = setupTest();
     raf.flush();
 
-    assert.isTrue(acceptButton.classList.contains('mdc-ripple-upgraded'));
+    assert.isTrue(yesButton.classList.contains('mdc-ripple-upgraded'));
+    assert.isTrue(noButton.classList.contains('mdc-ripple-upgraded'));
     assert.isTrue(cancelButton.classList.contains('mdc-ripple-upgraded'));
     raf.restore();
   });
 
   test('#destroy cleans up all ripples on footer buttons', () => {
     const raf = createMockRaf();
-    const {component, acceptButton, cancelButton} = setupTest();
+    const {component, yesButton, noButton, cancelButton} = setupTest();
     raf.flush();
 
     component.destroy();
     raf.flush();
 
-    assert.isFalse(acceptButton.classList.contains('mdc-ripple-upgraded'));
+    assert.isFalse(yesButton.classList.contains('mdc-ripple-upgraded'));
+    assert.isFalse(noButton.classList.contains('mdc-ripple-upgraded'));
     assert.isFalse(cancelButton.classList.contains('mdc-ripple-upgraded'));
     raf.restore();
   });
@@ -221,13 +231,33 @@ test('adapter#eventTargetHasClass returns whether or not the className is in the
   assert.isFalse(adapter.eventTargetHasClass(target, 'non-existent-class'));
 });
 
-test(`adapter#notifyAccept emits ${strings.ACCEPT_EVENT}`, () => {
+test('adapter#eventTargetMatchesSelector returns whether or not the className is in the target\'s classList', () => {
+  const {component} = setupTest();
+  const target = bel`<div data-existent-attr></div>`;
+  const {adapter_: adapter} = component.getDefaultFoundation();
+
+  assert.isTrue(adapter.eventTargetMatchesSelector(target, '[data-existent-attr]'));
+  assert.isFalse(adapter.eventTargetMatchesSelector(target, '[data-non-existent-attr]'));
+});
+
+test(`adapter#notifyYes emits ${strings.YES_EVENT}`, () => {
   const {component} = setupTest();
 
-  const handler = td.func('acceptHandler');
+  const handler = td.func('yesHandler');
 
-  component.listen(strings.ACCEPT_EVENT, handler);
-  component.getDefaultFoundation().adapter_.notifyAccept();
+  component.listen(strings.YES_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyYes();
+
+  td.verify(handler(td.matchers.anything()));
+});
+
+test(`adapter#notifyNo emits ${strings.NO_EVENT}`, () => {
+  const {component} = setupTest();
+
+  const handler = td.func('noHandler');
+
+  component.listen(strings.NO_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyNo();
 
   td.verify(handler(td.matchers.anything()));
 });
@@ -254,7 +284,7 @@ test('adapter#trapFocusOnSurface calls activate() on a properly configured focus
   td.when(
     util.createFocusTrapInstance(
       hasClassMatcher('mdc-dialog__container'),
-      hasClassMatcher('mdc-dialog__button--accept')
+      hasSelectorMatcher('[data-mdc-dialog-action="yes"]')
     )
   ).thenReturn(fakeFocusTrapInstance);
 
@@ -276,7 +306,7 @@ test('adapter#untrapFocusOnSurface calls deactivate() on a properly configured f
   td.when(
     util.createFocusTrapInstance(
       hasClassMatcher('mdc-dialog__container'),
-      hasClassMatcher('mdc-dialog__button--accept')
+      hasSelectorMatcher('[data-mdc-dialog-action="yes"]')
     )
   ).thenReturn(fakeFocusTrapInstance);
 

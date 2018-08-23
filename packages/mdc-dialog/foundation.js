@@ -44,14 +44,20 @@ export default class MDCDialogFoundation extends MDCFoundation {
       addBodyClass: (/* className: string */) => {},
       removeBodyClass: (/* className: string */) => {},
       eventTargetHasClass: (/* target: EventTarget, className: string */) => /* boolean */ false,
+      eventTargetMatchesSelector: (/* target: EventTarget, selector: string */) => /* boolean */ false,
       registerInteractionHandler: (/* evt: string, handler: EventListener */) => {},
       deregisterInteractionHandler: (/* evt: string, handler: EventListener */) => {},
       registerSurfaceInteractionHandler: (/* evt: string, handler: EventListener */) => {},
       deregisterSurfaceInteractionHandler: (/* evt: string, handler: EventListener */) => {},
       registerDocumentKeydownHandler: (/* handler: EventListener */) => {},
       deregisterDocumentKeydownHandler: (/* handler: EventListener */) => {},
-      notifyAccept: () => {},
+      notifyYes: () => {},
+      notifyNo: () => {},
       notifyCancel: () => {},
+      notifyOpenStart: () => {},
+      notifyOpenEnd: () => {},
+      notifyCloseStart: () => {},
+      notifyCloseEnd: () => {},
       trapFocusOnSurface: () => {},
       untrapFocusOnSurface: () => {},
       isDialog: (/* el: Element */) => /* boolean */ false,
@@ -74,7 +80,6 @@ export default class MDCDialogFoundation extends MDCFoundation {
     };
 
     this.timerId_ = 0;
-    this.animationTimerEnd_ = (evt) => this.handleAnimationTimerEnd_(evt);
   };
 
   destroy() {
@@ -93,10 +98,15 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.registerDocumentKeydownHandler(this.documentKeydownHandler_);
     this.adapter_.registerSurfaceInteractionHandler('click', this.dialogClickHandler_);
     this.adapter_.registerInteractionHandler('click', this.componentClickHandler_);
-    clearTimeout(this.timerId_);
-    this.timerId_ = setTimeout(this.animationTimerEnd_, MDCDialogFoundation.numbers.DIALOG_ANIMATION_TIME_MS);
     this.adapter_.addClass(MDCDialogFoundation.cssClasses.ANIMATING);
     this.adapter_.addClass(MDCDialogFoundation.cssClasses.OPEN);
+    this.adapter_.notifyOpenStart(); // TODO(acdvorak): Add a unit test for this
+
+    clearTimeout(this.timerId_);
+    this.timerId_ = setTimeout(() => {
+      this.handleAnimationTimerEnd_();
+      this.adapter_.notifyOpenEnd(); // TODO(acdvorak): Add a unit test for this
+    }, MDCDialogFoundation.numbers.DIALOG_ANIMATION_TIME_MS);
   }
 
   close() {
@@ -106,19 +116,32 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.deregisterDocumentKeydownHandler(this.documentKeydownHandler_);
     this.adapter_.deregisterInteractionHandler('click', this.componentClickHandler_);
     this.adapter_.untrapFocusOnSurface();
-    clearTimeout(this.timerId_);
-    this.timerId_ = setTimeout(this.animationTimerEnd_, MDCDialogFoundation.numbers.DIALOG_ANIMATION_TIME_MS);
     this.adapter_.addClass(MDCDialogFoundation.cssClasses.ANIMATING);
     this.adapter_.removeClass(MDCDialogFoundation.cssClasses.OPEN);
+    this.adapter_.notifyCloseStart(); // TODO(acdvorak): Add a unit test for this
+
+    clearTimeout(this.timerId_);
+    this.timerId_ = setTimeout(() => {
+      this.handleAnimationTimerEnd_();
+      this.adapter_.notifyCloseEnd(); // TODO(acdvorak): Add a unit test for this
+    }, MDCDialogFoundation.numbers.DIALOG_ANIMATION_TIME_MS);
   }
 
   isOpen() {
     return this.isOpen_;
   }
 
-  accept(shouldNotify) {
+  yes(shouldNotify) {
     if (shouldNotify) {
-      this.adapter_.notifyAccept();
+      this.adapter_.notifyYes();
+    }
+
+    this.close();
+  }
+
+  no(shouldNotify) {
+    if (shouldNotify) {
+      this.adapter_.notifyNo();
     }
 
     this.close();
@@ -134,9 +157,11 @@ export default class MDCDialogFoundation extends MDCFoundation {
 
   handleDialogClick_(evt) {
     const {target} = evt;
-    if (this.adapter_.eventTargetHasClass(target, cssClasses.ACCEPT_BTN)) {
-      this.accept(true);
-    } else if (this.adapter_.eventTargetHasClass(target, cssClasses.CANCEL_BTN)) {
+    if (this.adapter_.eventTargetMatchesSelector(target, strings.YES_BTN_SELECTOR)) {
+      this.yes(true);
+    } else if (this.adapter_.eventTargetMatchesSelector(target, strings.NO_BTN_SELECTOR)) {
+      this.no(true);
+    } else if (this.adapter_.eventTargetMatchesSelector(target, strings.CANCEL_BTN_SELECTOR)) {
       this.cancel(true);
     }
   }

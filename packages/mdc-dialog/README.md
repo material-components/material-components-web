@@ -59,8 +59,8 @@ Dialogs inform users about a specific task and may contain critical information 
       Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
     </section>
     <footer class="mdc-dialog__actions">
-      <button type="button" class="mdc-button mdc-dialog__button mdc-dialog__button--cancel">Decline</button>
-      <button type="button" class="mdc-button mdc-dialog__button mdc-dialog__button--accept">Accept</button>
+      <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">Decline</button>
+      <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">OK</button>
     </footer>
   </div>
   <div class="mdc-dialog__scrim"></div>
@@ -106,8 +106,8 @@ a `mdc-dialog__content--scrollable` modifier to allow scrolling in the dialog.
         </ul>
       </section>
       <footer class="mdc-dialog__actions">
-        <button type="button" class="mdc-button mdc-dialog__button mdc-dialog__button--cancel">Decline</button>
-        <button type="button" class="mdc-button mdc-dialog__button mdc-dialog__button--accept">Accept</button>
+        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">Decline</button>
+        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">OK</button>
       </footer>
     </div>
     <div class="mdc-dialog__scrim"></div>
@@ -125,8 +125,8 @@ Dialog actions use system colors by default, but you can use a contrasting color
 <aside class="mdc-dialog">
   <div class="mdc-dialog__container">
     <footer class="mdc-dialog__actions">
-      <button type="button" class="mdc-button mdc-dialog__button mdc-dialog__button--cancel">Decline</button>
-      <button type="button" class="mdc-button mdc-dialog__button mdc-dialog__button--accept mdc-dialog__action">Accept</button>
+      <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">Decline</button>
+      <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">OK</button>
     </footer>
   </div>
 </aside>
@@ -176,7 +176,7 @@ const util = mdc.dialog.util;
 
 If you do not care about retaining the component instance for the dialog, simply call `attachTo()`
 and pass it a DOM element. This however, is only useful if you do not need to pass a callback to the dialog
-when the user selects Accept or Cancel.
+when the user selects Yes or Cancel.
 
 ```javascript
 mdc.dialog.MDCDialog.attachTo(document.querySelector('#my-mdc-dialog'));
@@ -196,7 +196,7 @@ const dialog = new MDCDialog(document.querySelector('#my-mdc-dialog'));
 ```js
 var dialog = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-default'));
 
-dialog.listen('MDCDialog:accept', function() {
+dialog.listen('MDCDialog:yes', function() {
   console.log('accepted');
 })
 
@@ -226,13 +226,17 @@ Closes the dialog
 
 ### Dialog Events
 
-#### MDCDialog:accept
+#### MDCDialog:yes
 
-Broadcast when a user actions on the `.mdc-dialog__button--accept` element.
+Broadcast when a user actions on the `[data-mdc-dialog-action="yes"]` element.
+
+#### MDCDialog:no
+
+Broadcast when a user actions on the `[data-mdc-dialog-action="no"]` element.
 
 #### MDCDialog:cancel
 
-Broadcast when a user actions on the `.mdc-dialog__button--cancel` element.
+Broadcast when a user actions on the `[data-mdc-dialog-action="cancel"]` element.
 
 ### Using the Foundation Class
 
@@ -260,7 +264,7 @@ do so. We provide instructions on how to add ripples to buttons within the [mdc-
 | `deregisterDocumentKeydownHandler(handler: EventListener) => void` | Deregisters an event handler on the `document` object for a `keydown` event. |
 | `registerTransitionEndHandler: (handler: EventListener) => void` | Registers an event handler to be called when a transitionend event is triggered on the dialog container sub-element element. |
 | `deregisterTransitionEndHandler: (handler: EventListener) => void` | Deregisters an event handler from a transitionend event listener. This will only be called with handlers that have previously been passed to registerTransitionEndHandler calls. |
-| `notifyAccept() => {}` | Broadcasts an event denoting that the user has accepted the dialog. |
+| `notifyYes() => {}` | Broadcasts an event denoting that the user has accepted the dialog. |
 | `notifyCancel() => {}` | Broadcasts an event denoting that the user has cancelled the dialog. |
 | `isDialog(el: Element) => boolean` | Returns boolean indicating whether the provided element is the dialog surface element. |
 | `trapFocusOnSurface() => {}` | Sets up the DOM which the dialog is contained in such that focusability is restricted to the elements on the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details). |
@@ -298,9 +302,9 @@ Opens the dialog, registers appropriate event listeners, sets aria attributes, f
 Closes the dialog, deregisters appropriate event listeners, resets aria attributes, focuses
 elements.
 
-#### MDCDialogFoundation.accept(notifyChange = false) => void
+#### MDCDialogFoundation.yes(notifyChange = false) => void
 
-Closes the dialog. If `notifyChange` is true, calls the adapter's `notifyAccept()` method.
+Closes the dialog. If `notifyChange` is true, calls the adapter's `notifyYes()` method.
 
 #### MDCDialogFoundation.cancel(notifyChange = false) => void
 
@@ -312,14 +316,14 @@ Returns true if the dialog is open, false otherwise.
 
 ### MDCDialog Util API
 
-#### util.createFocusTrapInstance(surfaceEl, acceptButtonEl, focusTrapFactory = require('focus-trap')) => {activate: () => {}, deactivate: () => {}};
+#### util.createFocusTrapInstance(surfaceEl, initialFocusEl, focusTrapFactory = require('focus-trap')) => {activate: () => {}, deactivate: () => {}};
 
-Given a dialog surface element, an accept button element, and an optional focusTrap factory
+Given a dialog surface element, an initial element to focus, and an optional focusTrap factory
 function, creates a properly configured [focus-trap](https://github.com/davidtheclark/focus-trap)
 instance such that:
 
 - The focus is trapped within the `surfaceEl`
-- The `acceptButtonEl` receives focus when the focus trap is activated
+- The `initialFocusEl` receives focus when the focus trap is activated
 - Pressing the `escape` key deactivates focus
 - Clicking outside the dialog deactivates focus
 - Focus is returned to the previously focused element before the focus trap was activated

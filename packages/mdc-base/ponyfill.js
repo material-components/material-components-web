@@ -21,24 +21,20 @@
  * THE SOFTWARE.
  */
 
-import {assert} from 'chai';
-import bel from 'bel';
-import td from 'testdouble';
+/*
+ * DOM ponyfills
+ */
 
-import * as util from '../../../packages/mdc-dialog/util';
-
-suite('MDCDialog - util');
-
-test('#createFocusTrapInstance creates a properly configured focus trap instance', () => {
-  const surface = bel`<div></div>`;
-  const yesBtn = bel`<button></button>`;
-  const focusTrapFactory = td.func('focusTrapFactory');
-  const properlyConfiguredFocusTrapInstance = {};
-  td.when(focusTrapFactory(surface, {
-    initialFocus: yesBtn,
-    clickOutsideDeactivates: true,
-  })).thenReturn(properlyConfiguredFocusTrapInstance);
-
-  const instance = util.createFocusTrapInstance(surface, yesBtn, focusTrapFactory);
-  assert.equal(instance, properlyConfiguredFocusTrapInstance);
-});
+/**
+ * @param {!Element} elem
+ * @param {string} selector
+ * @return {boolean}
+ */
+export function matches(elem, selector) {
+  const nativeMatches = elem.matches
+    || elem.webkitMatchesSelector
+    || elem.mozMatchesSelector
+    || elem.msMatchesSelector
+    || elem.oMatchesSelector;
+  return nativeMatches.call(elem, selector);
+}

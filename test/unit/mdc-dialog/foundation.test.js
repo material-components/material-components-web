@@ -48,15 +48,22 @@ test('exports numbers', () => {
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCDialogFoundation, [
     'addClass', 'removeClass', 'addBodyClass', 'removeBodyClass',
-    'eventTargetHasClass', 'registerInteractionHandler', 'deregisterInteractionHandler',
+    'eventTargetHasClass', 'eventTargetMatchesSelector',
+    'registerInteractionHandler', 'deregisterInteractionHandler',
     'registerSurfaceInteractionHandler', 'deregisterSurfaceInteractionHandler',
     'registerDocumentKeydownHandler', 'deregisterDocumentKeydownHandler',
-    'notifyAccept', 'notifyCancel', 'trapFocusOnSurface', 'untrapFocusOnSurface', 'isDialog',
+    'notifyYes', 'notifyNo', 'notifyCancel', 'notifyOpenStart', 'notifyOpenEnd', 'notifyCloseStart', 'notifyCloseEnd',
+    'trapFocusOnSurface', 'untrapFocusOnSurface', 'isDialog',
   ]);
 });
 
+/**
+ * @return {{mockAdapter: !Object, foundation: !MDCDialogFoundation}}
+ */
 function setupTest() {
-  return setupFoundationTest(MDCDialogFoundation);
+  return /** @type {{mockAdapter: !Object, foundation: !MDCDialogFoundation}} */ (
+    setupFoundationTest(MDCDialogFoundation)
+  );
 }
 
 test('#destroy closes the dialog to perform any necessary cleanup', () => {
@@ -175,18 +182,46 @@ test('#close deactivates focus trapping on the dialog surface', () => {
   td.verify(mockAdapter.untrapFocusOnSurface());
 });
 
-test('#accept closes the dialog', () => {
+test('#yes closes the dialog', () => {
   const {foundation} = setupTest();
 
-  foundation.accept();
+  foundation.yes();
   assert.isFalse(foundation.isOpen());
 });
 
-test('#accept calls accept when shouldNotify is set to true', () => {
+test('#yes calls notifyYes when shouldNotify is set to true', () => {
   const {foundation, mockAdapter} = setupTest();
 
-  foundation.accept(true);
-  td.verify(mockAdapter.notifyAccept());
+  foundation.yes(true);
+  td.verify(mockAdapter.notifyYes(), {times: 1});
+});
+
+test('#yes does not call notifyYes when shouldNotify is falsy', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.yes();
+  td.verify(mockAdapter.notifyYes(), {times: 0});
+});
+
+test('#no closes the dialog', () => {
+  const {foundation} = setupTest();
+
+  foundation.no();
+  assert.isFalse(foundation.isOpen());
+});
+
+test('#no calls notifyNo when shouldNotify is set to true', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.no(true);
+  td.verify(mockAdapter.notifyNo(), {times: 1});
+});
+
+test('#no does not call notifyNo when shouldNotify is falsy', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.no();
+  td.verify(mockAdapter.notifyNo(), {times: 0});
 });
 
 test('#cancel closes the dialog', () => {
@@ -200,10 +235,17 @@ test('#cancel calls notifyCancel when shouldNotify is set to true', () => {
   const {foundation, mockAdapter} = setupTest();
 
   foundation.cancel(true);
-  td.verify(mockAdapter.notifyCancel());
+  td.verify(mockAdapter.notifyCancel(), {times: 1});
 });
 
-test('on dialog surface click closes and notifies acceptance if event target is the accept button', () => {
+test('#cancel does not call notifyCancel when shouldNotify is falsy', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.cancel();
+  td.verify(mockAdapter.notifyCancel(), {times: 0});
+});
+
+test('on dialog surface click closes and notifies if event target is the "yes" button', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerSurfaceInteractionHandler');
   const evt = {
@@ -211,14 +253,14 @@ test('on dialog surface click closes and notifies acceptance if event target is 
     target: {},
   };
 
-  td.when(mockAdapter.eventTargetHasClass(evt.target, cssClasses.ACCEPT_BTN)).thenReturn(true);
+  td.when(mockAdapter.eventTargetMatchesSelector(evt.target, strings.YES_BTN_SELECTOR)).thenReturn(true);
   foundation.open();
   handlers.click(evt);
   td.verify(mockAdapter.removeClass(cssClasses.OPEN));
-  td.verify(mockAdapter.notifyAccept());
+  td.verify(mockAdapter.notifyYes());
 });
 
-test('on dialog surface click closes and notifies cancellation if event target is the cancel button', () => {
+test('on dialog surface click closes and notifies if event target is the "no" button', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerSurfaceInteractionHandler');
   const evt = {
@@ -226,7 +268,22 @@ test('on dialog surface click closes and notifies cancellation if event target i
     target: {},
   };
 
-  td.when(mockAdapter.eventTargetHasClass(evt.target, cssClasses.CANCEL_BTN)).thenReturn(true);
+  td.when(mockAdapter.eventTargetMatchesSelector(evt.target, strings.NO_BTN_SELECTOR)).thenReturn(true);
+  foundation.open();
+  handlers.click(evt);
+  td.verify(mockAdapter.removeClass(cssClasses.OPEN));
+  td.verify(mockAdapter.notifyNo());
+});
+
+test('on dialog surface click closes and notifies cancellation if event target is the "cancel" button', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const handlers = captureHandlers(mockAdapter, 'registerSurfaceInteractionHandler');
+  const evt = {
+    stopPropagation: () => {},
+    target: {},
+  };
+
+  td.when(mockAdapter.eventTargetMatchesSelector(evt.target, strings.CANCEL_BTN_SELECTOR)).thenReturn(true);
   foundation.open();
   handlers.click(evt);
   td.verify(mockAdapter.removeClass(cssClasses.OPEN));
@@ -234,7 +291,7 @@ test('on dialog surface click closes and notifies cancellation if event target i
 });
 
 test('on dialog surface click does not close or notify if the event target is not the ' +
-     'accept or cancel button', () => {
+     '"yes", "no", or "cancel" button', () => {
   const {foundation, mockAdapter} = setupTest();
   const handlers = captureHandlers(mockAdapter, 'registerSurfaceInteractionHandler');
   const evt = {
@@ -247,7 +304,8 @@ test('on dialog surface click does not close or notify if the event target is no
   handlers.click(evt);
   td.verify(mockAdapter.removeClass(cssClasses.OPEN), {times: 0});
   td.verify(mockAdapter.notifyCancel(), {times: 0});
-  td.verify(mockAdapter.notifyAccept(), {times: 0});
+  td.verify(mockAdapter.notifyYes(), {times: 0});
+  td.verify(mockAdapter.notifyNo(), {times: 0});
 });
 
 test('on click closes the dialog and notifies cancellation if event target is the backdrop', () => {
