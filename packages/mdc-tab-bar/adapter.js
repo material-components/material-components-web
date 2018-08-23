@@ -76,6 +76,12 @@ class MDCTabBarAdapter {
   isRTL() {}
 
   /**
+   * Sets the tab at the given index to be activated
+   * @param {number} index The index of the tab to activate
+   */
+  setActiveTab(index) {}
+
+  /**
    * Activates the tab at the given index with the given client rect
    * @param {number} index The index of the tab to activate
    * @param {!ClientRect} clientRect The client rect of the previously active Tab Indicator
@@ -115,10 +121,10 @@ class MDCTabBarAdapter {
   getTabListLength() {}
 
   /**
-   * Returns the index of the active tab
+   * Returns the index of the previously active tab
    * @return {number}
    */
-  getActiveTabIndex() {}
+  getPreviousActiveTabIndex() {}
 
   /**
    * Returns the index of the focused tab
