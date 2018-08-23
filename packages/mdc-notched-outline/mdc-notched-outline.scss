@@ -28,6 +28,16 @@
 
 // Notched Outline is intended for use by multiple components, but its styles should only be emitted once when bundled
 @include mdc-base-emit-once("mdc-notched-outline") {
+  .mdc-notched-outline,
+  .mdc-notched-outline__idle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+  }
+
   .mdc-notched-outline {
     @include mdc-notched-outline-base_;
 
