@@ -147,6 +147,8 @@ export class MDCDrawer extends MDCComponent {
       return new MDCDismissibleDrawerFoundation(adapter);
     } else if (this.root_.classList.contains(MODAL)) {
       return new MDCModalDrawerFoundation(adapter);
+    } else {
+      throw new Error(`MDCDrawer: Failed to instantiate component. Supported variants ${DISMISSIBLE} and ${MODAL}.`);
     }
   }
 }

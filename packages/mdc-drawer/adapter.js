@@ -93,7 +93,8 @@ class MDCDrawerAdapter {
   trapFocus() {}
 
   /**
-   * Releases focus on root element which trapFocus was previously called on and resumes focus to nav button.
+   * Releases focus trap from root element which was set by `trapFocus`
+   * and restores focus to where it was prior to calling `trapFocus`.
    */
   releaseFocus() {}
 }

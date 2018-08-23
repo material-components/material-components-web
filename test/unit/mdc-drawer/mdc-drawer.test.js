@@ -111,6 +111,11 @@ test('transitionend event calls foundation.handleTransitionEnd method', () => {
   td.verify(component.foundation_.handleTransitionEnd(td.matchers.isA(Object)), {times: 1});
 });
 
+test('component should throw error when invalid variant class name is used or no variant specified', () => {
+  assert.throws(() => setupTest('mdc-drawer--test-invalid-variant'), Error);
+  assert.throws(() => setupTest(' '), Error);
+});
+
 test('#destroy removes keydown event listener', () => {
   const {component, drawer, mockFoundation} = setupTest();
   component.destroy();

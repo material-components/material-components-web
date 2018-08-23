@@ -278,7 +278,7 @@ Modal drawers are elevated above most of the app’s UI and don’t affect the s
 </body>
 ```
 
-> Use the `mdc-drawer-scrim` class on next sibling element to add backdrop to block app's UI.
+> The `mdc-drawer-scrim` next sibling element protects the app's UI from interactions while the drawer is open.
 
 ## Style Customization
 
@@ -297,7 +297,7 @@ Class | Description
 `mdc-drawer--opening` | Applied while the drawer is animating from the closed to the open position.
 `mdc-drawer--closing` | Applied while the drawer is animating from the open to the closed position.
 `mdc-drawer-app-content` | Dismissible variant only. Sibling element that is resized when the drawer opens/closes.
-`mdc-drawer-scrim` | Modal variant only. Used for backdrop to overlay on the app content.
+`mdc-drawer-scrim` | Modal variant only. Used for the overlay on the app content.
 
 
 ### Sass Mixins
@@ -352,7 +352,7 @@ Method Signature | Description
 `notifyClose() => void` | Emits the `MDCDrawer:close` event.
 `notifyOpen() => void` | Emits the `MDCDrawer:open` event.
 `trapFocus() => void` | Traps focus on root element and focuses the active navigation element.
-`releaseFocus() => void` | Releases focus on root element which trapFocus was previously called on and resumes focus to nav button.
+`releaseFocus() => void` | Releases focus trap from root element which was set by `trapFocus` and restores focus to where it was prior to calling `trapFocus`.
 
 ### Foundations
 
