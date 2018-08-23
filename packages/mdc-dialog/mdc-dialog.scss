@@ -82,9 +82,9 @@
 
 .mdc-dialog__header {
   @include mdc-dialog-scroll-divider-color;
-  position: relative;
 
   display: flex;
+  position: relative;
   flex-shrink: 0;
   align-items: center;
   box-sizing: border-box;
