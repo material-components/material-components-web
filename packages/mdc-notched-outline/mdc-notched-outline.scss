@@ -39,8 +39,6 @@
   }
 
   .mdc-notched-outline {
-    @include mdc-notched-outline-base_;
-
     transition: opacity $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function;
     opacity: 0;
     text-align: left;
@@ -60,8 +58,6 @@
   }
 
   .mdc-notched-outline__idle {
-    @include mdc-notched-outline-base_;
-
     transition:
       opacity $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function,
       border-color $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function;
