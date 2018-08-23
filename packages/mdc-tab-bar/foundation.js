@@ -27,7 +27,6 @@ import {strings, numbers} from './constants';
 import MDCTabBarAdapter from './adapter';
 
 /* eslint-disable no-unused-vars */
-import MDCTabFoundation from '@material/tab/foundation';
 import {MDCTabDimensions} from '@material/tab/adapter';
 /* eslint-enable no-unused-vars */
 
@@ -82,12 +81,13 @@ class MDCTabBarFoundation extends MDCFoundation {
       getScrollContentWidth: () => {},
       getOffsetWidth: () => {},
       isRTL: () => {},
+      setActiveTab: () => {},
       activateTabAtIndex: () => {},
       deactivateTabAtIndex: () => {},
       focusTabAtIndex: () => {},
       getTabIndicatorClientRectAtIndex: () => {},
       getTabDimensionsAtIndex: () => {},
-      getActiveTabIndex: () => {},
+      getPreviousActiveTabIndex: () => {},
       getFocusedTabIndex: () => {},
       getIndexOfTab: () => {},
       getTabListLength: () => {},
@@ -105,11 +105,6 @@ class MDCTabBarFoundation extends MDCFoundation {
     this.useAutomaticActivation_ = false;
   }
 
-  init() {
-    const activeIndex = this.adapter_.getActiveTabIndex();
-    this.scrollIntoView(activeIndex);
-  }
-
   /**
    * Switches between automatic and manual activation modes.
    * See https://www.w3.org/TR/wai-aria-practices/#tabpanel for examples.
@@ -124,8 +119,8 @@ class MDCTabBarFoundation extends MDCFoundation {
    * @param {number} index
    */
   activateTab(index) {
-    const previousActiveIndex = this.adapter_.getActiveTabIndex();
-    if (!this.indexIsInRange_(index)) {
+    const previousActiveIndex = this.adapter_.getPreviousActiveTabIndex();
+    if (!this.indexIsInRange_(index) || index === previousActiveIndex) {
       return;
     }
 
@@ -133,10 +128,7 @@ class MDCTabBarFoundation extends MDCFoundation {
     this.adapter_.activateTabAtIndex(index, this.adapter_.getTabIndicatorClientRectAtIndex(previousActiveIndex));
     this.scrollIntoView(index);
 
-    // Only notify the tab activation if the index is different than the previously active index
-    if (index !== previousActiveIndex) {
-      this.adapter_.notifyTabActivated(index);
-    }
+    this.adapter_.notifyTabActivated(index);
   }
 
   /**
@@ -162,13 +154,13 @@ class MDCTabBarFoundation extends MDCFoundation {
         return;
       }
 
-      const index = this.determineTargetFromKey_(this.adapter_.getActiveTabIndex(), key);
-      this.activateTab(index);
+      const index = this.determineTargetFromKey_(this.adapter_.getPreviousActiveTabIndex(), key);
+      this.adapter_.setActiveTab(index);
       this.scrollIntoView(index);
     } else {
       const focusedTabIndex = this.adapter_.getFocusedTabIndex();
       if (this.isActivationKey_(key)) {
-        this.activateTab(focusedTabIndex);
+        this.adapter_.setActiveTab(focusedTabIndex);
       } else {
         const index = this.determineTargetFromKey_(focusedTabIndex, key);
         this.adapter_.focusTabAtIndex(index);
@@ -182,7 +174,7 @@ class MDCTabBarFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   handleTabInteraction(evt) {
-    this.activateTab(this.adapter_.getIndexOfTab(evt.detail.tab));
+    this.adapter_.setActiveTab(this.adapter_.getIndexOfTab(evt.detail.tab));
   }
 
   /**

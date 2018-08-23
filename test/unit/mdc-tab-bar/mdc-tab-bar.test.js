@@ -171,10 +171,10 @@ test('#adapter.getTabDimensionsAtIndex calls computeDimensions on the tab at the
   td.verify(component.tabList_[0].computeDimensions(), {times: 1});
 });
 
-test('#adapter.getActiveTabIndex returns the index of the active tab', () => {
+test('#adapter.getPreviousActiveTabIndex returns the index of the active tab', () => {
   const {component} = setupTest();
   component.tabList_[1].active = true;
-  assert.strictEqual(component.getDefaultFoundation().adapter_.getActiveTabIndex(), 1);
+  assert.strictEqual(component.getDefaultFoundation().adapter_.getPreviousActiveTabIndex(), 1);
 });
 
 test('#adapter.getIndexOfTab returns the index of the given tab', () => {
