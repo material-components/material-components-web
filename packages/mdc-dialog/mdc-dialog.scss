@@ -65,17 +65,17 @@
   display: inline-flex;
   flex-direction: column;
   box-sizing: border-box;
-  max-width: calc(100% - 32px);
-  max-height: calc(100% - 32px);
+  min-width: 280px;
+  max-height: $mdc-dialog-max-size-expr;
   transform: translateY(150px) scale(.8);
   opacity: 0;
 
-  @media (max-width: ($mdc-dialog-desktop-breakpoint - 1)) {
-    min-width: 280px;
+  @media (max-width: ($mdc-dialog-width-breakpoint - 1)) {
+    max-width: $mdc-dialog-max-size-expr;
   }
 
-  @media (min-width: $mdc-dialog-desktop-breakpoint) {
-    min-width: 560px;
+  @media (min-width: $mdc-dialog-width-breakpoint) {
+    max-width: $mdc-dialog-max-width;
   }
 
   @include mdc-rtl(".mdc-dialog") {

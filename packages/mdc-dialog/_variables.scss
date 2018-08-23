@@ -15,7 +15,10 @@
 //
 
 // TODO(acdvorak): Find the right value
-$mdc-dialog-desktop-breakpoint: 1024px;
+$mdc-dialog-margin: 16px;
+$mdc-dialog-max-width: 560px;
+$mdc-dialog-max-size-expr: calc(100% - #{$mdc-dialog-margin * 2});
+$mdc-dialog-width-breakpoint: $mdc-dialog-max-width + ($mdc-dialog-margin * 2);
 
 $mdc-dialog-corner-radius: 4px;
 $mdc-dialog-title-color: on-surface;
