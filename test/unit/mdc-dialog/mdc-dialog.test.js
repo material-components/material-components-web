@@ -39,16 +39,16 @@ function getFixture() {
         aria-hidden="true"
         aria-labelledby="my-dialog-label"
         aria-describedby="my-dialog-description">
-        <div class="mdc-dialog__surface">
+        <div class="mdc-dialog__container">
           <header class="mdc-dialog__header">
             <h2 id="my-dialog-label" class="mdc-dialog__title">
               Use Google's location service?
             </h2>
           </header>
-          <section id="my-dialog-description" class="mdc-dialog__body">
+          <section id="my-dialog-description" class="mdc-dialog__content">
             Let Google help apps determine location.
           </section>
-          <footer class="mdc-dialog__footer">
+          <footer class="mdc-dialog__actions">
             <button type="button"
               class="mdc-button mdc-dialog__button mdc-dialog__button--cancel">DECLINE</button>
             <button type="button"
@@ -253,7 +253,7 @@ test('adapter#trapFocusOnSurface calls activate() on a properly configured focus
   });
   td.when(
     util.createFocusTrapInstance(
-      hasClassMatcher('mdc-dialog__surface'),
+      hasClassMatcher('mdc-dialog__container'),
       hasClassMatcher('mdc-dialog__button--accept')
     )
   ).thenReturn(fakeFocusTrapInstance);
@@ -275,7 +275,7 @@ test('adapter#untrapFocusOnSurface calls deactivate() on a properly configured f
   });
   td.when(
     util.createFocusTrapInstance(
-      hasClassMatcher('mdc-dialog__surface'),
+      hasClassMatcher('mdc-dialog__container'),
       hasClassMatcher('mdc-dialog__button--accept')
     )
   ).thenReturn(fakeFocusTrapInstance);

@@ -21,7 +21,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
     dialog.show();
 
     if (dialogEl.classList.contains('test-dialog--scroll-to-bottom')) {
-      const bodyEl = dialogEl.querySelector('.mdc-dialog__body');
+      const bodyEl = dialogEl.querySelector('.mdc-dialog__content');
       if (bodyEl) {
         bodyEl.scrollTop = bodyEl.scrollHeight;
       }

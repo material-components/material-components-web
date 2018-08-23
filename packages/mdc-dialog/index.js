@@ -100,7 +100,7 @@ export class MDCDialog extends MDCComponent {
       return;
     }
 
-    const bodyEl = this.root_.querySelector('.mdc-dialog__body');
+    const bodyEl = this.root_.querySelector('.mdc-dialog__content');
     if (bodyEl && bodyEl.scrollHeight > bodyEl.offsetHeight) {
       this.root_.classList.add('mdc-dialog--scrollable');
     } else {
@@ -110,7 +110,7 @@ export class MDCDialog extends MDCComponent {
 
   /** @private */
   fixContentOverflow_() {
-    const bodyEl = this.root_.querySelector('.mdc-dialog__body');
+    const bodyEl = this.root_.querySelector('.mdc-dialog__content');
     if (bodyEl) {
       this.featureDetector_.fixFlexItemMaxHeightBug(bodyEl);
     }

@@ -14,18 +14,18 @@
 // limitations under the License.
 //
 
-// TODO(acdvorak): Find the right value
-$mdc-dialog-margin: 16px;
+$mdc-dialog-min-width: 280px;
 $mdc-dialog-max-width: 560px;
-$mdc-dialog-max-size-expr: calc(100% - #{$mdc-dialog-margin * 2});
-$mdc-dialog-width-breakpoint: $mdc-dialog-max-width + ($mdc-dialog-margin * 2);
+$mdc-dialog-viewport-margin: 16px;
+$mdc-dialog-viewport-size-expr: calc(100% - #{$mdc-dialog-viewport-margin * 2});
+$mdc-dialog-width-breakpoint: $mdc-dialog-max-width + ($mdc-dialog-viewport-margin * 2);
 
 $mdc-dialog-corner-radius: 4px;
-$mdc-dialog-title-color: on-surface;
-$mdc-dialog-title-opacity: .87;
-$mdc-dialog-body-color: on-surface;
-$mdc-dialog-body-opacity: .6;
+$mdc-dialog-title-ink-color: on-surface;
+$mdc-dialog-title-ink-opacity: .87;
+$mdc-dialog-content-ink-color: on-surface;
+$mdc-dialog-content-ink-opacity: .6;
 
-// TODO(acdvorak): Get actual value from Design (it's not in the spec)
+// TODO(acdvorak): Get actual value from Design (it's not in the spec yet)
 $mdc-dialog-scroll-divider-color: #e5e5e5;
 $mdc-dialog-scroll-divider-opacity: 1;

@@ -49,16 +49,16 @@ Dialogs inform users about a specific task and may contain critical information 
   role="alertdialog"
   aria-labelledby="my-mdc-dialog-label"
   aria-describedby="my-mdc-dialog-description">
-  <div class="mdc-dialog__surface">
+  <div class="mdc-dialog__container">
     <header class="mdc-dialog__header">
       <h2 id="my-mdc-dialog-label" class="mdc-dialog__title">
         Use Google's location service?
       </h2>
     </header>
-    <section id="my-mdc-dialog-description" class="mdc-dialog__body">
+    <section id="my-mdc-dialog-description" class="mdc-dialog__content">
       Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
     </section>
-    <footer class="mdc-dialog__footer">
+    <footer class="mdc-dialog__actions">
       <button type="button" class="mdc-button mdc-dialog__button mdc-dialog__button--cancel">Decline</button>
       <button type="button" class="mdc-button mdc-dialog__button mdc-dialog__button--accept">Accept</button>
     </footer>
@@ -73,10 +73,10 @@ the dialog. There are two types: dialog & dialogs with scrollable content. These
 In most cases, dialog content should be able to fit without scrolling. However, certain special cases call for the
 ability to scroll the dialog's contents (see "Scrollable content exception" under
 [Behavior](https://material.io/go/design-dialogs#dialogs-behavior)). For these special cases, there is
-a `mdc-dialog__body--scrollable` modifier to allow scrolling in the dialog.
+a `mdc-dialog__content--scrollable` modifier to allow scrolling in the dialog.
 
 > **Note**: The body of a scrollable dialog is styled with a default max-height; this can be overridden as necessary via
-> the `.mdc-dialog__body--scrollable` selector.
+> the `.mdc-dialog__content--scrollable` selector.
 
 ```html
   <aside id="mdc-dialog-with-list"
@@ -84,13 +84,13 @@ a `mdc-dialog__body--scrollable` modifier to allow scrolling in the dialog.
     role="alertdialog"
     aria-labelledby="mdc-dialog-with-list-label"
     aria-describedby="mdc-dialog-with-list-description">
-    <div class="mdc-dialog__surface">
+    <div class="mdc-dialog__container">
       <header class="mdc-dialog__header">
         <h2 id="mdc-dialog-with-list-label" class="mdc-dialog__title">
           Choose a Ringtone
         </h2>
       </header>
-      <section id="mdc-dialog-with-list-description" class="mdc-dialog__body mdc-dialog__body--scrollable">
+      <section id="mdc-dialog-with-list-description" class="mdc-dialog__content mdc-dialog__content--scrollable">
        	<ul class="mdc-list">
           <li class="mdc-list-item">None</li>
           <li class="mdc-list-item">Callisto</li>
@@ -105,7 +105,7 @@ a `mdc-dialog__body--scrollable` modifier to allow scrolling in the dialog.
           <li class="mdc-list-item">Schwifty</li>
         </ul>
       </section>
-      <footer class="mdc-dialog__footer">
+      <footer class="mdc-dialog__actions">
         <button type="button" class="mdc-button mdc-dialog__button mdc-dialog__button--cancel">Decline</button>
         <button type="button" class="mdc-button mdc-dialog__button mdc-dialog__button--accept">Accept</button>
       </footer>
@@ -123,8 +123,8 @@ Dialog actions use system colors by default, but you can use a contrasting color
 
 ```html
 <aside class="mdc-dialog">
-  <div class="mdc-dialog__surface">
-    <footer class="mdc-dialog__footer">
+  <div class="mdc-dialog__container">
+    <footer class="mdc-dialog__actions">
       <button type="button" class="mdc-button mdc-dialog__button mdc-dialog__button--cancel">Decline</button>
       <button type="button" class="mdc-button mdc-dialog__button mdc-dialog__button--accept mdc-dialog__action">Accept</button>
     </footer>

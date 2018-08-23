@@ -18,8 +18,7 @@
 @import "@material/theme/variables";
 @import "./variables";
 
-// TODO(acdvorak): Create mixins for all redline values.
-// TODO(acdvorak): Create screenshot test page with `body { font-size: 200$; }` for all components to test a11y
+// TODO(acdvorak): Create mixins for all redline values?
 
 //
 // Public
@@ -29,11 +28,11 @@
   border-radius: $radius;
 }
 
-@mixin mdc-dialog-title-color($color: $mdc-dialog-title-color, $opacity: $mdc-dialog-title-opacity) {
+@mixin mdc-dialog-title-ink-color($color: $mdc-dialog-title-ink-color, $opacity: $mdc-dialog-title-ink-opacity) {
   color: rgba(mdc-theme-prop-value($color), $opacity);
 }
 
-@mixin mdc-dialog-body-color($color: $mdc-dialog-body-color, $opacity: $mdc-dialog-body-opacity) {
+@mixin mdc-dialog-content-ink-color($color: $mdc-dialog-content-ink-color, $opacity: $mdc-dialog-content-ink-opacity) {
   color: rgba(mdc-theme-prop-value($color), $opacity);
 }
 

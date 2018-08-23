@@ -33,7 +33,7 @@ const cssClasses = {
 
 const strings = {
   OPEN_DIALOG_SELECTOR: '.mdc-dialog--open',
-  DIALOG_SURFACE_SELECTOR: '.mdc-dialog__surface',
+  DIALOG_SURFACE_SELECTOR: '.mdc-dialog__container',
   ACCEPT_SELECTOR: '.mdc-dialog__button--accept',
   ACCEPT_EVENT: 'MDCDialog:accept',
   CANCEL_EVENT: 'MDCDialog:cancel',
