@@ -27,14 +27,20 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 
 import {MDCDrawer} from '../../../packages/mdc-drawer';
-import {strings} from '../../../packages/mdc-drawer/constants';
+import * as util from '../../../packages/mdc-drawer/util';
+import {strings, cssClasses} from '../../../packages/mdc-drawer/constants';
 import {MDCListFoundation} from '../../../packages/mdc-list';
 import MDCDismissibleDrawerFoundation from '../../../packages/mdc-drawer/dismissible/foundation';
 
-function getFixture() {
+function getFixture(variantClass) {
+  let scrimEl;
+  if (variantClass === cssClasses.MODAL) {
+    scrimEl = bel`<div class="mdc-drawer-scrim"></div>`;
+  }
+
   return bel`
   <div class="body-content">
-    <div class="mdc-drawer mdc-drawer--dismissible">
+    <div class="mdc-drawer ${variantClass}">
       <div class="mdc-drawer__content">
       <div class="mdc-list-group">
         <nav class="mdc-list">
@@ -44,22 +50,28 @@ function getFixture() {
         </nav>
       </div>
     </div>
+    ${scrimEl}
   </div>
-`;
+  `;
 }
 
-function setupTest() {
-  const root = getFixture();
+function setupTest(variantClass = cssClasses.DISMISSIBLE) {
+  const root = getFixture(variantClass);
   const drawer = root.querySelector('.mdc-drawer');
   const component = new MDCDrawer(drawer);
   const MockFoundationCtor = td.constructor(MDCDismissibleDrawerFoundation);
   const mockFoundation = new MockFoundationCtor();
   return {root, drawer, component, mockFoundation};
 }
+
+function hasClassMatcher(className) {
+  return td.matchers.argThat((el) => el.classList && el.classList.contains(className));
+}
+
 suite('MDCDrawer');
 
 test('attachTo initializes and returns a MDCDrawer instance', () => {
-  const drawer = getFixture().querySelector('.mdc-drawer');
+  const drawer = getFixture(cssClasses.DISMISSIBLE).querySelector('.mdc-drawer');
   assert.isTrue(MDCDrawer.attachTo(drawer) instanceof MDCDrawer);
 });
 
@@ -97,6 +109,11 @@ test('transitionend event calls foundation.handleTransitionEnd method', () => {
   component.foundation_.handleTransitionEnd = td.func();
   domEvents.emit(drawer, 'transitionend');
   td.verify(component.foundation_.handleTransitionEnd(td.matchers.isA(Object)), {times: 1});
+});
+
+test('component should throw error when invalid variant class name is used or no variant specified', () => {
+  assert.throws(() => setupTest('mdc-drawer--test-invalid-variant'), Error);
+  assert.throws(() => setupTest(' '), Error);
 });
 
 test('#destroy removes keydown event listener', () => {
@@ -149,7 +166,6 @@ test('adapter#elementHasClass returns true when class is found on event target',
   assert.isTrue(component.getDefaultFoundation().adapter_.elementHasClass(mockEventTarget, 'foo'));
 });
 
-
 test('adapter#restoreFocus restores focus to previously saved focus', () => {
   const {component, root} = setupTest();
   const button = bel`<button>Foo</button>`;
@@ -199,6 +215,44 @@ test('adapter#restoreFocus focus is not restored if saveFocus never called', () 
   assert.equal(navItem, document.activeElement);
   document.body.removeChild(button);
   document.body.removeChild(root);
+});
+
+test('adapter#trapFocus traps focus on root element', () => {
+  const {createFocusTrapInstance} = util;
+  util.createFocusTrapInstance = td.func('util.createFocusTrapInstance');
+
+  const fakeFocusTrapInstance = td.object({
+    activate: () => {},
+    deactivate: () => {},
+  });
+  td.when(
+    util.createFocusTrapInstance(hasClassMatcher('mdc-drawer'))
+  ).thenReturn(fakeFocusTrapInstance);
+
+  const {component} = setupTest(cssClasses.MODAL);
+  component.getDefaultFoundation().adapter_.trapFocus();
+  util.createFocusTrapInstance = createFocusTrapInstance;
+
+  td.verify(fakeFocusTrapInstance.activate());
+});
+
+test('adapter#releaseFocus releases focus on root element after trap focus', () => {
+  const {createFocusTrapInstance} = util;
+  util.createFocusTrapInstance = td.func('util.createFocusTrapInstance');
+
+  const fakeFocusTrapInstance = td.object({
+    activate: () => {},
+    deactivate: () => {},
+  });
+  td.when(
+    util.createFocusTrapInstance(hasClassMatcher('mdc-drawer'))
+  ).thenReturn(fakeFocusTrapInstance);
+
+  const {component} = setupTest(cssClasses.MODAL);
+  component.getDefaultFoundation().adapter_.releaseFocus();
+  util.createFocusTrapInstance = createFocusTrapInstance;
+
+  td.verify(fakeFocusTrapInstance.deactivate());
 });
 
 test('adapter#computeBoundingRect calls getBoundingClientRect() on root', () => {

@@ -2,7 +2,6 @@
 title: "Drawers"
 layout: detail
 section: components
-excerpt: "Permanent drawers."
 iconId: side_navigation
 path: /catalog/drawers/
 -->
@@ -33,7 +32,7 @@ npm install @material/drawer
 ### HTML Structure
 
 ```html
-<nav class="mdc-drawer">
+<aside class="mdc-drawer">
   <div class="mdc-drawer__content">
     <nav class="mdc-list">
       <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
@@ -47,7 +46,7 @@ npm install @material/drawer
       </a>
     </nav>
   </div>
-</header>
+</aside>
 ```
 
 ### Styles
@@ -78,7 +77,7 @@ const drawer = MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
 ### Drawer with separate list groups
 
 ```html
-<nav class="mdc-drawer">
+<aside class="mdc-drawer">
   <div class="mdc-drawer__content">
     <nav class="mdc-list">
       <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
@@ -114,7 +113,7 @@ const drawer = MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
       </a>
     </nav>
   </div>
-</div>
+</aside>
 ```
 
 ### Drawer with Header
@@ -122,7 +121,7 @@ const drawer = MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
 Drawers can contain a header element which will not scroll with the rest of the drawer content. Things like account switchers and titles should live in the header element.
 
 ```html
-<nav class="mdc-drawer">
+<aside class="mdc-drawer">
   <div class="mdc-drawer__header">
     <h3 class="mdc-drawer__title">Mail</h3>
     <h6 class="mdc-drawer__subtitle">email@material.io</h6>
@@ -132,9 +131,15 @@ Drawers can contain a header element which will not scroll with the rest of the 
       <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
       </a>
+      <a class="mdc-list-item" href="#">
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Outgoing
+      </a>
+      <a class="mdc-list-item" href="#">
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
+      </a>
     </nav>
   </div>
-</header>
+</aside>
 ```
 
 ### Dismissible Drawer
@@ -143,15 +148,21 @@ Dismissible drawers are by default hidden off screen, and can slide into view. D
 
 ```html
 <body>
-  <header class="mdc-drawer mdc-drawer--dismissible">
+  <aside class="mdc-drawer mdc-drawer--dismissible">
     <div class="mdc-drawer__content">
       <nav class="mdc-list">
         <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
         </a>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Outgoing
+        </a>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
+        </a>
       </nav>
     </div>
-  </header>
+  </aside>
 
   <div class="mdc-drawer-app-content">
     App Content
@@ -169,15 +180,21 @@ In the following example, the `mdc-drawer__content` and `main-content` elements 
 
 ```html
 <body>
-  <nav class="mdc-drawer mdc-drawer--dismissible">
+  <aside class="mdc-drawer mdc-drawer--dismissible">
     <div class="mdc-drawer__content">
       <div class="mdc-list">
         <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
         </a>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Outgoing
+        </a>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
+        </a>
       </div>
     </div>
-  </nav>
+  </aside>
 
   <div class="mdc-drawer-app-content">
     <header class="mdc-top-app-bar app-bar" id="app-bar">
@@ -234,6 +251,35 @@ topAppBar.listen('MDCTopAppBar:nav', () => {
 });
 ```
 
+### Modal Drawer
+
+Modal drawers are elevated above most of the app’s UI and don’t affect the screen’s layout grid.
+
+```html
+<body>
+  <aside class="mdc-drawer mdc-drawer--modal">
+    <div class="mdc-drawer__content">
+      <nav class="mdc-list">
+        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
+        </a>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Outgoing
+        </a>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
+        </a>
+      </nav>
+    </div>
+  </aside>
+
+  <div class="mdc-drawer-scrim"></div>
+  <div>Main Content</div>
+</body>
+```
+
+> The `mdc-drawer-scrim` next sibling element protects the app's UI from interactions while the drawer is open.
+
 ## Style Customization
 
 ### CSS Classes
@@ -246,10 +292,13 @@ Class | Description
 `mdc-drawer__title` | Title text element of the drawer.
 `mdc-drawer__subtitle` | Subtitle text element of the drawer.
 `mdc-drawer--dismissible` | Dismissible drawer variant class.
+`mdc-drawer--modal` | Modal drawer variant class.
 `mdc-drawer--open` | If present, indicates that the dismissible drawer is in the open position.
 `mdc-drawer--opening` | Applied while the drawer is animating from the closed to the open position.
 `mdc-drawer--closing` | Applied while the drawer is animating from the open to the closed position.
 `mdc-drawer-app-content` | Dismissible variant only. Sibling element that is resized when the drawer opens/closes.
+`mdc-drawer-scrim` | Modal variant only. Used for the overlay on the app content.
+
 
 ### Sass Mixins
 
@@ -269,6 +318,7 @@ Mixin | Description
 `mdc-drawer-item-text-color($color, $opacity)` | Sets drawer list item ink color.
 `mdc-drawer-meta-ink-color($color, $opacity)` | Sets drawer list item meta icon ink color.
 `mdc-drawer-activated-overlay-color($color)` | Sets the overlay color of the activated drawer list item.
+`mdc-drawer-scrim-fill-color($color, $opacity)` | Sets the fill color of `mdc-drawer-scrim`.
 
 ## `MDCDrawer` Properties and Methods
 
@@ -301,8 +351,12 @@ Method Signature | Description
 `focusActiveNavigationItem() => void` | Focuses the active / selected navigation item.
 `notifyClose() => void` | Emits the `MDCDrawer:close` event.
 `notifyOpen() => void` | Emits the `MDCDrawer:open` event.
+`trapFocus() => void` | Traps focus on root element and focuses the active navigation element.
+`releaseFocus() => void` | Releases focus trap from root element which was set by `trapFocus` and restores focus to where it was prior to calling `trapFocus`.
 
-### Foundations: `MDCDismissibleDrawerFoundation`
+### Foundations
+
+#### `MDCDismissibleDrawerFoundation`
 
 Method Signature | Description
 --- | ---
@@ -313,3 +367,11 @@ Method Signature | Description
 `isClosing() => boolean` | Returns true if the drawer is animating closed.
 `handleKeyDown(evt: Event) => void` | Handles the keydown event.
 `handleTransitionEnd(evt: Event) => void` | Handles the transitionend event when the drawer finishes opening/closing.
+`opened() => void` | Only called internally. Extension point for when drawer finishes open animation.
+`closed() => void` | Only called internally. Extension point for when drawer finishes close animation.
+
+#### `MDCModalDrawerFoundation` (extends `MDCDismissibleDrawerFoundation`)
+
+Method Signature | Description
+--- | ---
+`handleScrimClick() => void` | Handles click event on scrim.

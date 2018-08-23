@@ -86,6 +86,17 @@ class MDCDrawerAdapter {
    * Emits a custom event "MDCDrawer:open" denoting the drawer has opened.
    */
   notifyOpen() {}
+
+  /**
+   * Traps focus on root element and focuses the active navigation element.
+   */
+  trapFocus() {}
+
+  /**
+   * Releases focus trap from root element which was set by `trapFocus`
+   * and restores focus to where it was prior to calling `trapFocus`.
+   */
+  releaseFocus() {}
 }
 
 export default MDCDrawerAdapter;

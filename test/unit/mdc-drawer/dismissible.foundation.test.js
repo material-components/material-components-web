@@ -33,7 +33,6 @@ suite('MDCDismissibleDrawerFoundation');
 
 const setupTest = () => {
   const mockAdapter = td.object(MDCDismissibleDrawerFoundation.defaultAdapter);
-
   const foundation = new MDCDismissibleDrawerFoundation(mockAdapter);
 
   return {foundation, mockAdapter};
@@ -52,7 +51,7 @@ test('exports cssClasses', () => {
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCDismissibleDrawerFoundation, [
     'hasClass', 'addClass', 'removeClass', 'elementHasClass', 'computeBoundingRect', 'saveFocus', 'restoreFocus',
-    'focusActiveNavigationItem', 'notifyClose', 'notifyOpen',
+    'focusActiveNavigationItem', 'notifyClose', 'notifyOpen', 'trapFocus', 'releaseFocus',
   ]);
 });
 
@@ -222,6 +221,17 @@ test('#handleTransitionEnd doesn\'t do anything if event is not triggered by roo
   td.when(mockAdapter.elementHasClass(mockEventTarget, cssClasses.ROOT)).thenReturn(false);
 
   foundation.handleTransitionEnd({target: mockEventTarget});
+  td.verify(mockAdapter.removeClass(cssClasses.OPEN), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.ANIMATE), {times: 0});
+  td.verify(mockAdapter.notifyOpen(), {times: 0});
+  td.verify(mockAdapter.notifyClose(), {times: 0});
+});
+
+test('#handleTransitionEnd doesn\'t do anything if event is emitted with a non-element target', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.handleTransitionEnd({target: {}});
+  td.verify(mockAdapter.elementHasClass(td.matchers.anything(), td.matchers.isA(String)), {times: 0});
   td.verify(mockAdapter.removeClass(cssClasses.OPEN), {times: 0});
   td.verify(mockAdapter.removeClass(cssClasses.ANIMATE), {times: 0});
   td.verify(mockAdapter.notifyOpen(), {times: 0});

@@ -22,9 +22,11 @@
  */
 import {MDCComponent} from '@material/base/index';
 import MDCDismissibleDrawerFoundation from './dismissible/foundation';
+import MDCModalDrawerFoundation from './modal/foundation';
 import {MDCList} from '@material/list/index';
 import MDCListFoundation from '@material/list/foundation';
 import {strings} from './constants';
+import * as util from './util';
 
 /**
  * @extends {MDCComponent<!MDCDismissibleDrawerFoundation>}
@@ -45,6 +47,9 @@ export class MDCDrawer extends MDCComponent {
 
     /** @private {!Function} */
     this.handleTransitionEnd_;
+
+    /** @private {!Function} */
+    this.handleScrimClick_;
   }
 
   /**
@@ -75,21 +80,37 @@ export class MDCDrawer extends MDCComponent {
     }
   }
 
-  destroy() {
-    this.root_.removeEventListener('keydown', this.handleKeydown_);
-    this.root_.removeEventListener('transitionend', this.handleTransitionEnd_);
-  }
-
   initialize() {
     MDCList.attachTo(this.root_.querySelector(`.${MDCListFoundation.cssClasses.ROOT}`));
   }
 
   initialSyncWithDOM() {
+    const {MODAL} = MDCDismissibleDrawerFoundation.cssClasses;
+
+    if (this.root_.classList.contains(MODAL)) {
+      const {SCRIM_SELECTOR} = MDCDismissibleDrawerFoundation.strings;
+      this.scrim_ = this.root_.parentElement.querySelector(SCRIM_SELECTOR);
+      this.handleScrimClick_ = () => this.foundation_.handleScrimClick();
+      this.scrim_.addEventListener('click', this.handleScrimClick_);
+      this.focusTrap_ = util.createFocusTrapInstance(this.root_);
+    }
+
     this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt);
     this.handleTransitionEnd_ = (evt) => this.foundation_.handleTransitionEnd(evt);
 
     this.root_.addEventListener('keydown', this.handleKeydown_);
     this.root_.addEventListener('transitionend', this.handleTransitionEnd_);
+  }
+
+  destroy() {
+    this.root_.removeEventListener('keydown', this.handleKeydown_);
+    this.root_.removeEventListener('transitionend', this.handleTransitionEnd_);
+
+    const {MODAL} = MDCDismissibleDrawerFoundation.cssClasses;
+    if (this.root_.classList.contains(MODAL)) {
+      this.scrim_.removeEventListener('click', this.handleScrimClick_);
+      this.focusTrap_.destroy();
+    }
   }
 
   getDefaultFoundation() {
@@ -117,11 +138,18 @@ export class MDCDrawer extends MDCComponent {
       },
       notifyClose: () => this.emit(strings.CLOSE_EVENT, null, true /* shouldBubble */),
       notifyOpen: () => this.emit(strings.OPEN_EVENT, null, true /* shouldBubble */),
+      trapFocus: () => this.focusTrap_.activate(),
+      releaseFocus: () => this.focusTrap_.deactivate(),
     }));
 
-    const {DISMISSIBLE} = MDCDismissibleDrawerFoundation.cssClasses;
+    const {DISMISSIBLE, MODAL} = MDCDismissibleDrawerFoundation.cssClasses;
     if (this.root_.classList.contains(DISMISSIBLE)) {
       return new MDCDismissibleDrawerFoundation(adapter);
+    } else if (this.root_.classList.contains(MODAL)) {
+      return new MDCModalDrawerFoundation(adapter);
+    } else {
+      throw new Error(
+        `MDCDrawer: Failed to instantiate component. Supported variants are ${DISMISSIBLE} and ${MODAL}.`);
     }
   }
 }

@@ -51,6 +51,8 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
       saveFocus: () => {},
       restoreFocus: () => {},
       focusActiveNavigationItem: () => {},
+      trapFocus: () => {},
+      releaseFocus: () => {},
     });
   }
 
@@ -82,12 +84,14 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
   }
 
   /**
-   * Extensible method which gets called when drawer finished opening.
+   * Extension point for when drawer finishes open animation.
+   * @protected
    */
   opened() {}
 
   /**
-   * Extensible method which gets called when drawer finished closing.
+   * Extension point for when drawer finishes close animation.
+   * @protected
    */
   closed() {}
 
@@ -134,7 +138,10 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
    */
   handleTransitionEnd(evt) {
     const {OPENING, CLOSING, OPEN, ANIMATE, ROOT} = cssClasses;
-    if (!this.adapter_.elementHasClass(/** @type {!Element} */ (evt.target), ROOT)) {
+
+    // In Edge, transitionend on ripple pseudo-elements yields a target without classList, so check for Element first.
+    const isElement = evt.target instanceof Element;
+    if (!isElement || !this.adapter_.elementHasClass(/** @type {!Element} */ (evt.target), ROOT)) {
       return;
     }
 

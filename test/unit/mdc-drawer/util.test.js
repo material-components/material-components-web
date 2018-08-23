@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2018 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,23 +20,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-/** @enum {string} */
-const cssClasses = {
-  ROOT: 'mdc-drawer',
-  DISMISSIBLE: 'mdc-drawer--dismissible',
-  MODAL: 'mdc-drawer--modal',
-  OPEN: 'mdc-drawer--open',
-  ANIMATE: 'mdc-drawer--animate',
-  OPENING: 'mdc-drawer--opening',
-  CLOSING: 'mdc-drawer--closing',
-};
 
-/** @enum {string} */
-const strings = {
-  APP_CONTENT_SELECTOR: '.mdc-drawer-app-content',
-  SCRIM_SELECTOR: '.mdc-drawer-scrim',
-  CLOSE_EVENT: 'MDCDrawer:close',
-  OPEN_EVENT: 'MDCDrawer:open',
-};
+import {assert} from 'chai';
+import bel from 'bel';
+import td from 'testdouble';
 
-export {cssClasses, strings};
+import * as util from '../../../packages/mdc-drawer/util';
+
+suite('MDCDrawer - util');
+
+test('#createFocusTrapInstance creates a properly configured focus trap instance', () => {
+  const rootEl = bel`<div></div>`;
+  const focusTrapFactory = td.func('focusTrapFactory');
+  const properlyConfiguredFocusTrapInstance = {};
+  td.when(focusTrapFactory(rootEl, {
+    clickOutsideDeactivates: true,
+    initialFocus: false,
+    escapeDeactivates: false,
+    returnFocusOnDeactivate: false,
+  })).thenReturn(properlyConfiguredFocusTrapInstance);
+
+  const instance = util.createFocusTrapInstance(rootEl, focusTrapFactory);
+  assert.equal(instance, properlyConfiguredFocusTrapInstance);
+});

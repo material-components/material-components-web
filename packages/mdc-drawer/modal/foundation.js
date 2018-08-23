@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2018 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,23 +20,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-/** @enum {string} */
-const cssClasses = {
-  ROOT: 'mdc-drawer',
-  DISMISSIBLE: 'mdc-drawer--dismissible',
-  MODAL: 'mdc-drawer--modal',
-  OPEN: 'mdc-drawer--open',
-  ANIMATE: 'mdc-drawer--animate',
-  OPENING: 'mdc-drawer--opening',
-  CLOSING: 'mdc-drawer--closing',
-};
 
-/** @enum {string} */
-const strings = {
-  APP_CONTENT_SELECTOR: '.mdc-drawer-app-content',
-  SCRIM_SELECTOR: '.mdc-drawer-scrim',
-  CLOSE_EVENT: 'MDCDrawer:close',
-  OPEN_EVENT: 'MDCDrawer:open',
-};
+import MDCDrawerAdapter from '../adapter';
+import MDCDismissibleDrawerFoundation from '../dismissible/foundation';
 
-export {cssClasses, strings};
+/**
+ * @extends {MDCDismissibleDrawerFoundation<!MDCDrawerAdapter>}
+ */
+class MDCModalDrawerFoundation extends MDCDismissibleDrawerFoundation {
+  /**
+   * Called when drawer finishes open animation.
+   * @override
+   */
+  opened() {
+    this.adapter_.trapFocus();
+  }
+
+  /**
+   * Called when drawer finishes close animation.
+   * @override
+   */
+  closed() {
+    this.adapter_.releaseFocus();
+  }
+
+  /**
+   * Handles click event on scrim.
+   */
+  handleScrimClick() {
+    this.close();
+  }
+}
+
+export default MDCModalDrawerFoundation;

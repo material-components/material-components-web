@@ -23,7 +23,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Dismissible Drawer - MDC Web Screenshot Test</title>
+    <title>Modal Drawer - MDC Web Screenshot Test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../../../out/mdc.drawer.css">
     <link rel="stylesheet" href="../../../out/mdc.list.css">
@@ -33,7 +33,7 @@
   </head>
 
   <body class="test-container mdc-typography test-drawer-container">
-    <aside class="mdc-drawer mdc-drawer--dismissible mdc-drawer--open">
+    <aside class="mdc-drawer mdc-drawer--modal mdc-drawer--open">
       <header class="mdc-drawer__header">
         <div class="mdc-drawer__title">Title here</div>
         <div class="mdc-drawer__subtitle">Subtext</div>
@@ -82,13 +82,13 @@
         </a>
       </nav>
     </aside>
-
-    <div class="mdc-drawer-app-content test-drawer-app-content">
+    <div class="mdc-drawer-scrim"></div>
+    <div class="test-drawer-app-content">
       <header class="mdc-top-app-bar">
         <div class="mdc-top-app-bar__row">
           <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
             <button class="material-icons mdc-top-app-bar__navigation-icon" id="test-drawer-menu-button">menu</button>
-            <span class="mdc-top-app-bar__title">Dismissible Drawer</span>
+            <span class="mdc-top-app-bar__title">Modal Drawer</span>
           </section>
         </div>
       </header>
