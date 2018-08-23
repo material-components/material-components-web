@@ -19,5 +19,12 @@ window.mdc.testFixture.fontsLoaded.then(() => {
     /** @type {!MDCDialog} */
     const dialog = new mdc.dialog.MDCDialog(dialogEl);
     dialog.show();
+
+    if (dialogEl.classList.contains('test-dialog--scroll-to-bottom')) {
+      const bodyEl = dialogEl.querySelector('.mdc-dialog__body');
+      if (bodyEl) {
+        bodyEl.scrollTop = bodyEl.scrollHeight;
+      }
+    }
   });
 });
