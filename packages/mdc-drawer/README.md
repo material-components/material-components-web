@@ -58,7 +58,7 @@ npm install @material/drawer
 
 ### JavaScript Instantiation
 
-For the standard drawer, the list must be instantiated for appropriate keyboard interaction:
+For permanently visible drawer, the list must be instantiated for appropriate keyboard interaction:
 
 ```js
 import {MDCList} from "@material/list";
