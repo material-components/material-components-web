@@ -56,6 +56,10 @@ class MDCCheckbox extends MDCComponent {
 
     /** @private {!MDCRipple} */
     this.ripple_ = this.initRipple_();
+    /** @private {!Function} */
+    this.handleChange_;
+    /** @private {!Function} */
+    this.handleAnimationEnd_;
   }
 
   initialSyncWithDOM() {
