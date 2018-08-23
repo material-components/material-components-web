@@ -1,18 +1,24 @@
 /**
  * @license
- * Copyright 2018 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 
@@ -495,7 +501,7 @@ test('#handleKeydown space key is triggered when singleSelection is true selects
   td.verify(mockAdapter.setAttributeForElementIndex(0, strings.ARIA_SELECTED, true), {times: 1});
 });
 
-test('#handleKeydown space key is triggered 2x when singleSelection is true un-selects the list item', () => {
+test('#handleKeydown space key is triggered 2x when singleSelection does not un-select the item.', () => {
   const {foundation, mockAdapter} = setupTest();
   const preventDefault = td.func('preventDefault');
   const target = {classList: ['mdc-list-item']};
@@ -509,7 +515,8 @@ test('#handleKeydown space key is triggered 2x when singleSelection is true un-s
   foundation.handleKeydown(event);
 
   td.verify(preventDefault(), {times: 2});
-  td.verify(mockAdapter.removeAttributeForElementIndex(0, strings.ARIA_SELECTED), {times: 1});
+  td.verify(mockAdapter.setAttributeForElementIndex(0, strings.ARIA_SELECTED, true), {times: 1});
+  td.verify(mockAdapter.removeAttributeForElementIndex(0, strings.ARIA_SELECTED), {times: 0});
 });
 
 test('#handleKeydown space key is triggered when singleSelection is true on second ' +
@@ -544,8 +551,9 @@ test('#handleKeydown space key is triggered 2x when singleSelection is true on s
   foundation.handleKeydown(event);
 
   td.verify(preventDefault(), {times: 2});
-  td.verify(mockAdapter.setAttributeForElementIndex(0, 'tabindex', 0), {times: 1});
-  td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', -1), {times: 1});
+  td.verify(mockAdapter.setAttributeForElementIndex(1, strings.ARIA_SELECTED, true), {times: 1});
+  td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', 0), {times: 1});
+  td.verify(mockAdapter.setAttributeForElementIndex(0, 'tabindex', -1), {times: 1});
 });
 
 test('#handleKeydown space key is triggered and focused is moved to a different element', () => {
@@ -645,4 +653,13 @@ test('#focusLastElement is called when the list is empty does not focus an eleme
   foundation.focusLastElement();
 
   td.verify(mockAdapter.focusItemAtIndex(td.matchers.anything()), {times: 0});
+});
+
+test('#setUseActivatedClass causes setSelectedIndex to use the --activated class', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  foundation.setUseActivatedClass(true);
+  foundation.setSelectedIndex(1);
+
+  td.verify(mockAdapter.addClassForElementIndex(1, cssClasses.LIST_ITEM_ACTIVATED_CLASS), {times: 1});
 });
