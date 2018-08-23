@@ -77,6 +77,10 @@
     margin: 0;
     padding: 0 $mdc-drawer-surface-padding;
   }
+
+  .mdc-list-divider {
+    margin: 3px 0 4px 0;
+  }
 }
 
 .mdc-drawer--open {

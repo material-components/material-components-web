@@ -150,3 +150,7 @@ $mdc-theme-property-values: (
 @function mdc-theme-is-valid-theme-prop-value_($style) {
   @return type-of($style) == "color" or $style == "currentColor" or str_slice($style, 1, 4) == "var(";
 }
+
+@function mdc-theme-text-emphasis($emphasis) {
+  @return map-get($mdc-theme-text-emphasis, $emphasis);
+}
