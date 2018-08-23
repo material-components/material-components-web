@@ -32,8 +32,9 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: calc(100% - 1px);
-    height: calc(100% - 2px);
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
     transition: opacity $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function;
     opacity: 0;
     text-align: left;
@@ -56,8 +57,9 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: calc(100% - 4px);
-    height: calc(100% - 4px);
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
     transition:
       opacity $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function,
       border-color $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function;
