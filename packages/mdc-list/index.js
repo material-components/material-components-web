@@ -58,13 +58,7 @@ class MDCList extends MDCComponent {
 
   destroy() {
     this.root_.removeEventListener('click', this.handleClick_);
-    [].slice.call(this.root_.querySelectorAll(MDCListFoundation.strings.LIST_ITEM_SELECTOR))
-    .forEach(this.cleanUpListItemDOM.bind(this));
     this.root_.removeEventListener('keydown', this.keydownHandler_);
-  }
-
-  cleanUpListItemDOM(listItemElement, index) {
-    listItemElement.removeEventListener('keydown', this.keydownHandlerArray_[index]);
   }
 
   initialSyncWithDOM() {
