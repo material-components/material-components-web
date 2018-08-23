@@ -49,14 +49,15 @@ class MDCList extends MDCComponent {
   }
 
   initialize() {
-    this.root_.querySelectorAll(MDCListFoundation.strings.LIST_ITEM_SELECTOR).forEach((listItemElement) => {
-      MDCListItem.attachTo(listItemElement);
-    });
+    [].slice.call(this.root_.querySelectorAll(MDCListFoundation.strings.LIST_ITEM_SELECTOR))
+      .forEach((listItemElement) => {
+        MDCListItem.attachTo(listItemElement);
+      });
   }
 
   destroy() {
     this.root_.removeEventListener('click', this.handleClick_);
-    this.root_.querySelectorAll(MDCListFoundation.strings.LIST_ITEM_SELECTOR)
+    [].slice.call(this.root_.querySelectorAll(MDCListFoundation.strings.LIST_ITEM_SELECTOR))
       .forEach(this.cleanUpListItemDOM.bind(this));
   }
 
@@ -67,7 +68,7 @@ class MDCList extends MDCComponent {
   initialSyncWithDOM() {
     this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
     this.keydownHandlerArray_ = [];
-    this.root_.querySelectorAll(MDCListFoundation.strings.LIST_ITEM_SELECTOR)
+    [].slice.call(this.root_.querySelectorAll(MDCListFoundation.strings.LIST_ITEM_SELECTOR))
       .forEach(this.initialSyncWithListItemDOM.bind(this));
     this.layout();
     this.initializeListType();
@@ -76,7 +77,7 @@ class MDCList extends MDCComponent {
   initialSyncWithListItemDOM(listItemElement) {
     const keydownHandler = (event) => {
       const listItemIndex = this.listElements_.indexOf(listItemElement);
-      this.foundation_.handleKeydown(event, event.target == listItemElement, listItemIndex);
+      this.foundation_.handleKeydown(event, event.target === listItemElement, listItemIndex);
     };
     const boundKeydownHandler = keydownHandler.bind(this);
     this.keydownHandlerArray_.push(boundKeydownHandler);
