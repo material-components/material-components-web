@@ -177,7 +177,7 @@ class MDCList extends MDCComponent {
         if (ele.href) {
           ele.click();
         }
-      }
+      },
     })));
   }
 }
