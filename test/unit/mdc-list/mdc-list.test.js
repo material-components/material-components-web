@@ -216,6 +216,28 @@ test('#adapter.focusItemAtIndex focuses the list item at the index specified', (
   document.body.removeChild(root);
 });
 
+test('#adapter.setTabIndexForListItemChildren sets the child button/a elements of index', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+  const listItemIndex = 1;
+  const listItem = root.querySelectorAll('.mdc-list-item')[listItemIndex];
+  component.getDefaultFoundation().adapter_.setTabIndexForListItemChildren(listItemIndex, 0);
+
+  assert.equal(1, root.querySelectorAll('button[tabindex="0"]').length);
+  assert.equal(listItem, root.querySelectorAll('button[tabindex="0"]')[0].parentElement);
+  document.body.removeChild(root);
+});
+
+test('layout adds tabindex=-1 to all list items without a tabindex', () => {
+  const {root} = setupTest();
+  assert.equal(0, root.querySelectorAll('.mdc-list-item:not([tabindex])').length);
+});
+
+test('layout adds tabindex=-1 to all list item button/a elements', () => {
+  const {root} = setupTest();
+  assert.equal(0, root.querySelectorAll('button:not([tabindex])').length);
+});
+
 test('vertical calls setVerticalOrientation on foundation', () => {
   const {component, mockFoundation} = setupTest();
   component.vertical = false;
@@ -254,6 +276,44 @@ test('selectedIndex calls setSelectedIndex on foundation', () => {
   const {component, mockFoundation} = setupTest();
   component.selectedIndex = 1;
   td.verify(mockFoundation.setSelectedIndex(1), {times: 1});
+});
+
+test('focusIn handler is added to root element', () => {
+  const {root, mockFoundation} = setupTest();
+  const event = document.createEvent('FocusEvent');
+  event.initEvent('focusin', true, true);
+  const listElementItem = root.querySelector('.mdc-list-item');
+  listElementItem.dispatchEvent(event);
+  td.verify(mockFoundation.handleFocusIn(event, 0), {times: 1});
+});
+
+test('focusIn handler is removed from the root element on destroy', () => {
+  const {root, component, mockFoundation} = setupTest();
+  component.destroy();
+  const event = document.createEvent('FocusEvent');
+  event.initEvent('focusin', true, true);
+  const listElementItem = root.querySelector('.mdc-list-item');
+  listElementItem.dispatchEvent(event);
+  td.verify(mockFoundation.handleFocusIn(event, 0), {times: 0});
+});
+
+test('focusOut handler is added to root element', () => {
+  const {root, mockFoundation} = setupTest();
+  const event = document.createEvent('FocusEvent');
+  event.initEvent('focusout', true, true);
+  const listElementItem = root.querySelector('.mdc-list-item');
+  listElementItem.dispatchEvent(event);
+  td.verify(mockFoundation.handleFocusOut(event, 0), {times: 1});
+});
+
+test('focusOut handler is removed from the root element on destroy', () => {
+  const {root, component, mockFoundation} = setupTest();
+  component.destroy();
+  const event = document.createEvent('FocusEvent');
+  event.initEvent('focusout', true, true);
+  const listElementItem = root.querySelector('.mdc-list-item');
+  listElementItem.dispatchEvent(event);
+  td.verify(mockFoundation.handleFocusOut(event, 0), {times: 0});
 });
 
 test('keydown handler is added to root element', () => {

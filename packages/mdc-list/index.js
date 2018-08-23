@@ -25,8 +25,6 @@ import MDCComponent from '@material/base/component';
 import MDCListFoundation from './foundation';
 import MDCListAdapter from './adapter';
 import {cssClasses, strings} from './constants';
-import {cssClasses as listItemClasses} from './list-item/constants';
-import {MDCListItem, MDCListItemFoundation} from './list-item/index';
 
 /**
  * @extends MDCComponent<!MDCListFoundation>
@@ -39,6 +37,10 @@ class MDCList extends MDCComponent {
     this.keydownHandler_;
     /** @private {!Function} */
     this.handleClick_;
+    /** @private {!Function} */
+    this.focusInEventListener_;
+    /** @private {!Function} */
+    this.focusOutEventListener_;
   }
 
   /**
@@ -59,12 +61,18 @@ class MDCList extends MDCComponent {
   destroy() {
     this.root_.removeEventListener('click', this.handleClick_);
     this.root_.removeEventListener('keydown', this.keydownHandler_);
+    this.root_.removeEventListener('focusin', this.focusInEventListener_);
+    this.root_.removeEventListener('focusout', this.focusOutEventListener_);
   }
 
   initialSyncWithDOM() {
     this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
     this.keydownHandler_ = this.handleKeydownEvent_.bind(this);
+    this.focusInEventListener_ = this.handleFocusInEvent_.bind(this);
+    this.focusOutEventListener_ = this.handleFocusOutEvent_.bind(this);
     this.root_.addEventListener('keydown', this.keydownHandler_);
+    this.root_.addEventListener('focusin', this.focusInEventListener_);
+    this.root_.addEventListener('focusout', this.focusOutEventListener_);
     this.layout();
     this.initializeListType();
   }
@@ -78,6 +86,54 @@ class MDCList extends MDCComponent {
       .forEach((ele) => {
         ele.setAttribute('tabindex', -1);
       });
+
+    // Child button/a elements are not tabbable until the list item is focused.
+    [].slice.call(this.root_.querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS))
+      .forEach((ele) => ele.setAttribute('tabindex', -1));
+  }
+
+  /**
+   * Used to figure out which list item this event is targetting. Or returns -1 if
+   * there is no list item
+   * @param {Event} evt
+   * @private
+   */
+  getListItemIndex_(evt) {
+    let eventTarget = /** @type {HTMLElement} */ (evt.target);
+    let ndx = -1;
+
+    // Find the first ancestor that is a list item or the list.
+    while (!eventTarget.classList.contains(cssClasses.LIST_ITEM_CLASS)
+    && !eventTarget.classList.contains(cssClasses.ROOT)) {
+      eventTarget = eventTarget.parentElement;
+    }
+
+    // Get the index of the element if it is a list item.
+    if (eventTarget.classList.contains(cssClasses.LIST_ITEM_CLASS)) {
+      ndx = this.listElements_.indexOf(eventTarget);
+    }
+
+    return ndx;
+  }
+
+  /**
+   * Used to figure out which element was clicked before sending the event to the foundation.
+   * @param {Event} evt
+   * @private
+   */
+  handleFocusInEvent_(evt) {
+    const ndx = this.getListItemIndex_(evt);
+    this.foundation_.handleFocusIn(evt, ndx);
+  }
+
+  /**
+   * Used to figure out which element was clicked before sending the event to the foundation.
+   * @param {Event} evt
+   * @private
+   */
+  handleFocusOutEvent_(evt) {
+    const ndx = this.getListItemIndex_(evt);
+    this.foundation_.handleFocusOut(evt, ndx);
   }
 
   /**
@@ -86,22 +142,10 @@ class MDCList extends MDCComponent {
    * @private
    */
   handleKeydownEvent_(evt) {
-    let eventTarget = /** @type {HTMLElement} */ (evt.target);
-    let ndx = -1;
-
-    // Find the first ancestor that is a list item or the list.
-    while (!eventTarget.classList.contains(listItemClasses.LIST_ITEM_CLASS)
-    && !eventTarget.classList.contains(cssClasses.ROOT)) {
-      eventTarget = eventTarget.parentElement;
-    }
-
-    // Get the index of the element if it is a list item.
-    if (eventTarget.classList.contains(listItemClasses.LIST_ITEM_CLASS)) {
-      ndx = this.listElements_.indexOf(eventTarget);
-    }
+    const ndx = this.getListItemIndex_(evt);
 
     if (ndx >= 0) {
-      this.foundation_.handleKeydown(evt, evt.target.classList.contains(listItemClasses.LIST_ITEM_CLASS), ndx);
+      this.foundation_.handleKeydown(evt, evt.target.classList.contains(cssClasses.LIST_ITEM_CLASS), ndx);
     }
   }
 
@@ -186,8 +230,13 @@ class MDCList extends MDCComponent {
           element.focus();
         }
       },
+      setTabIndexForListItemChildren: (listItemIndex, tabIndexValue) => {
+        const element = this.listElements_[listItemIndex];
+        const listItemChildren = [].slice.call(element.querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS));
+        listItemChildren.forEach((ele) => ele.setAttribute('tabindex', tabIndexValue));
+      },
     })));
   }
 }
 
-export {MDCList, MDCListFoundation, MDCListItem, MDCListItemFoundation};
+export {MDCList, MDCListFoundation};
