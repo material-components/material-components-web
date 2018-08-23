@@ -136,7 +136,10 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
    */
   handleTransitionEnd(evt) {
     const {OPENING, CLOSING, OPEN, ANIMATE, ROOT} = cssClasses;
-    if (!this.adapter_.elementHasClass(/** @type {!Element} */ (evt.target), ROOT)) {
+
+    // In Edge, transitionend on ripple pseudo-elements yields a target without classList, so check for Element first.
+    const isElement = evt.target instanceof Element;
+    if (!isElement || !this.adapter_.elementHasClass(/** @type {!Element} */ (evt.target), ROOT)) {
       return;
     }
 
