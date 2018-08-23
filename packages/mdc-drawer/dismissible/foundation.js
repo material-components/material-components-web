@@ -84,12 +84,14 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
   }
 
   /**
-   * Extensible method which gets called when drawer finishes open animation.
+   * Extension point for when drawer finishes open animation.
+   * @protected
    */
   opened() {}
 
   /**
-   * Extensible method which gets called when drawer finishes close animation.
+   * Extension point for when drawer finishes close animation.
+   * @protected
    */
   closed() {}
 
