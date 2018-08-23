@@ -259,17 +259,26 @@ test('selectedIndex calls setSelectedIndex on foundation', () => {
 test('keydown handler is added to root element', () => {
   const {root, mockFoundation} = setupTest();
   const event = document.createEvent('KeyboardEvent');
-  event.initEvent('keydown', false, true);
+  event.initEvent('keydown', true, true);
   const listElementItem = root.querySelector('.mdc-list-item');
   listElementItem.dispatchEvent(event);
   td.verify(mockFoundation.handleKeydown(event, true, 0), {times: 1});
+});
+
+test('keydown handler is triggered when a sub-element of a list is triggered', () => {
+  const {root, mockFoundation} = setupTest();
+  const event = document.createEvent('KeyboardEvent');
+  event.initEvent('keydown', true, true);
+  const button = root.querySelector('.mdc-list-item button');
+  button.dispatchEvent(event);
+  td.verify(mockFoundation.handleKeydown(event, false, 0), {times: 1});
 });
 
 test('keydown handler is removed from the root element on destroy', () => {
   const {root, component, mockFoundation} = setupTest();
   component.destroy();
   const event = document.createEvent('KeyboardEvent');
-  event.initEvent('keydown', false, true);
+  event.initEvent('keydown', true, true);
   const listElementItem = root.querySelector('.mdc-list-item');
   listElementItem.dispatchEvent(event);
   td.verify(mockFoundation.handleKeydown(event, true, 0), {times: 0});
