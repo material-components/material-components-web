@@ -118,14 +118,6 @@ test('#adapter.getFocusedElementIndex returns the index of the currently selecte
   document.body.removeChild(root);
 });
 
-test('#adapter.getListItemIndex returns the index of the element specified', () => {
-  const {root, component} = setupTest();
-  document.body.appendChild(root);
-  const selectedNode = root.querySelectorAll('.mdc-list-item')[1];
-  assert.equal(1, component.getDefaultFoundation().adapter_.getListItemIndex(selectedNode));
-  document.body.removeChild(root);
-});
-
 test('#adapter.setAttributeForElementIndex does nothing if the element at index does not exist', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
@@ -224,59 +216,6 @@ test('#adapter.focusItemAtIndex focuses the list item at the index specified', (
   document.body.removeChild(root);
 });
 
-test('adapter#isListItem returns true if the element is a list item', () => {
-  const {root, component} = setupTest();
-  const item1 = root.querySelectorAll('.mdc-list-item')[0];
-  assert.isTrue(component.getDefaultFoundation().adapter_.isListItem(item1));
-});
-
-test('adapter#isListItem returns false if the element is a not a list item', () => {
-  const {root, component} = setupTest();
-  const item1 = root.querySelectorAll('.mdc-list-item button')[0];
-  assert.isFalse(component.getDefaultFoundation().adapter_.isListItem(item1));
-});
-
-test('adapter#isElementFocusable returns true if the element is a focusable list item sub-element', () => {
-  const {root, component} = setupTest();
-  const item1 = root.querySelectorAll('.mdc-list-item button')[0];
-  assert.isTrue(component.getDefaultFoundation().adapter_.isElementFocusable(item1));
-});
-
-test('adapter#isElementFocusable returns false if the element is not a focusable list item sub-element',
-  () => {
-    const {root, component} = setupTest();
-    const item1 = root.querySelectorAll('.mdc-list-item')[2];
-    assert.isFalse(component.getDefaultFoundation().adapter_.isElementFocusable(item1));
-  });
-
-test('adapter#isElementFocusable returns false if the element is null/undefined',
-  () => {
-    const {component} = setupTest();
-    assert.isFalse(component.getDefaultFoundation().adapter_.isElementFocusable());
-  });
-
-test('#adapter.setTabIndexForListItemChildren sets the child button/a elements of index', () => {
-  const {root, component} = setupTest();
-  document.body.appendChild(root);
-  const listItemIndex = 1;
-  const listItem = root.querySelectorAll('.mdc-list-item')[listItemIndex];
-  component.getDefaultFoundation().adapter_.setTabIndexForListItemChildren(listItemIndex, 0);
-
-  assert.equal(1, root.querySelectorAll('button[tabindex="0"]').length);
-  assert.equal(listItem, root.querySelectorAll('button[tabindex="0"]')[0].parentElement);
-  document.body.removeChild(root);
-});
-
-test('layout adds tabindex=-1 to all list items without a tabindex', () => {
-  const {root} = setupTest();
-  assert.equal(0, root.querySelectorAll('.mdc-list-item:not([tabindex])').length);
-});
-
-test('layout adds tabindex=-1 to all list item button/a elements', () => {
-  const {root} = setupTest();
-  assert.equal(0, root.querySelectorAll('button:not([tabindex])').length);
-});
-
 test('vertical calls setVerticalOrientation on foundation', () => {
   const {component, mockFoundation} = setupTest();
   component.vertical = false;
@@ -321,8 +260,9 @@ test('keydown handler is added to root element', () => {
   const {root, mockFoundation} = setupTest();
   const event = document.createEvent('KeyboardEvent');
   event.initEvent('keydown', false, true);
-  root.dispatchEvent(event);
-  td.verify(mockFoundation.handleKeydown(event), {times: 1});
+  const listElementItem = root.querySelector('.mdc-list-item');
+  listElementItem.dispatchEvent(event);
+  td.verify(mockFoundation.handleKeydown(event, true, 0), {times: 1});
 });
 
 test('keydown handler is removed from the root element on destroy', () => {
@@ -330,6 +270,7 @@ test('keydown handler is removed from the root element on destroy', () => {
   component.destroy();
   const event = document.createEvent('KeyboardEvent');
   event.initEvent('keydown', false, true);
-  root.dispatchEvent(event);
-  td.verify(mockFoundation.handleKeydown(event), {times: 0});
+  const listElementItem = root.querySelector('.mdc-list-item');
+  listElementItem.dispatchEvent(event);
+  td.verify(mockFoundation.handleKeydown(event, true, 0), {times: 0});
 });

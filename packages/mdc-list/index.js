@@ -25,7 +25,7 @@ import MDCComponent from '@material/base/component';
 import MDCListFoundation from './foundation';
 import MDCListAdapter from './adapter';
 import {cssClasses, strings} from './constants';
-import {MDCListItem} from './list-item/index';
+import {MDCListItem, MDCListItemFoundation} from './list-item/index';
 
 /**
  * @extends MDCComponent<!MDCListFoundation>
@@ -34,8 +34,8 @@ class MDCList extends MDCComponent {
   /** @param {...?} args */
   constructor(...args) {
     super(...args);
-    /** @private {!Function} */
-    this.handleKeydown_;
+    /** @private {!Array<Function>} */
+    this.keydownHandlerArray_;
     /** @private {!Function} */
     this.handleClick_;
   }
@@ -55,20 +55,32 @@ class MDCList extends MDCComponent {
   }
 
   destroy() {
-    this.root_.removeEventListener('keydown', this.handleKeydown_);
     this.root_.removeEventListener('click', this.handleClick_);
+    this.root_.querySelectorAll(MDCListFoundation.strings.LIST_ITEM_SELECTOR)
+      .forEach(this.cleanUpListItemDOM.bind(this));
+  }
+
+  cleanUpListItemDOM(listItemElement, index) {
+    listItemElement.removeEventListener('keydown', this.keydownHandlerArray_[index]);
   }
 
   initialSyncWithDOM() {
-    this.handleKeydown_ = this.foundation_.handleKeydown.bind(this.foundation_);
     this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
-    this.root_.querySelectorAll(MDCListFoundation.strings.LIST_ITEM_SELECTOR).forEach((listItemElement) => {
-      listItemElement.addEventListener('keydown', (event) => {
-        this.handleKeydown_(event, event.target == listItemElement);
-      });
-    });
+    this.keydownHandlerArray_ = [];
+    this.root_.querySelectorAll(MDCListFoundation.strings.LIST_ITEM_SELECTOR)
+      .forEach(this.initialSyncWithListItemDOM.bind(this));
     this.layout();
     this.initializeListType();
+  }
+
+  initialSyncWithListItemDOM(listItemElement) {
+    const keydownHandler = (event) => {
+      const listItemIndex = this.listElements_.indexOf(listItemElement);
+      this.foundation_.handleKeydown(event, event.target == listItemElement, listItemIndex);
+    };
+    const boundKeydownHandler = keydownHandler.bind(this);
+    this.keydownHandlerArray_.push(boundKeydownHandler);
+    listItemElement.addEventListener('keydown', boundKeydownHandler);
   }
 
   layout() {
@@ -167,4 +179,4 @@ class MDCList extends MDCComponent {
   }
 }
 
-export {MDCList, MDCListFoundation};
+export {MDCList, MDCListFoundation, MDCListItem, MDCListItemFoundation};

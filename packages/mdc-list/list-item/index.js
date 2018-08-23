@@ -41,7 +41,7 @@ class MDCListItem extends MDCComponent {
 
   /**
    * @param {!Element} root
-   * @return {!MDCList}
+   * @return {!MDCListItem}
    */
   static attachTo(root) {
     return new MDCListItem(root);
@@ -68,11 +68,12 @@ class MDCListItem extends MDCComponent {
 
   /** @return {!MDCListItemFoundation} */
   getDefaultFoundation() {
-    return new MDCListItemFoundation(/** @type {!MDCListItemdapter} */ (Object.assign({
+    return new MDCListItemFoundation(/** @type {!MDCListItemAdapter} */ (Object.assign({
       setTabIndexForChildren: (tabIndexValue) => {
         const children = [].slice.call(this.root_.querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS));
         children.forEach((ele) => ele.setAttribute('tabindex', tabIndexValue));
       },
+      hasClass: (className) => this.root_.classList.contains(className),
     })));
   }
 }

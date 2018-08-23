@@ -132,8 +132,9 @@ class MDCListFoundation extends MDCFoundation {
    * Key handler for the list.
    * @param {Event} evt
    * @param {boolean} isRootListItem
+   * @param {number} listItemIndex
    */
-  handleKeydown(evt, isRootListItem) {
+  handleKeydown(evt, isRootListItem, listItemIndex) {
     const arrowLeft = evt.key === 'ArrowLeft' || evt.keyCode === 37;
     const arrowUp = evt.key === 'ArrowUp' || evt.keyCode === 38;
     const arrowRight = evt.key === 'ArrowRight' || evt.keyCode === 39;
@@ -144,6 +145,14 @@ class MDCListFoundation extends MDCFoundation {
     const isSpace = evt.key === 'Space' || evt.keyCode === 32;
 
     let currentIndex = this.adapter_.getFocusedElementIndex();
+    if (currentIndex === -1) {
+      currentIndex = listItemIndex;
+      if (currentIndex < 0) {
+        // If this event doesn't have a mdc-list-item ancestor from the
+        // current list (not from a sublist), return early.
+        return;
+      }
+    }
 
     if ((this.isVertical_ && arrowDown) || (!this.isVertical_ && arrowRight)) {
       this.preventDefaultEvent_(evt);

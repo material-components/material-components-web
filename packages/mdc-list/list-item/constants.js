@@ -24,6 +24,7 @@
 /** @enum {string} */
 const cssClasses = {
   LIST_ITEM_CLASS: 'mdc-list-item',
+  LIST_ITEM_DISABLED_CLASS: 'mdc-list-item--disabled',
 };
 
 /** @enum {string} */

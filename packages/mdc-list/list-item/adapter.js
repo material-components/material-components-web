@@ -24,7 +24,7 @@
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
- * Adapter for MDC List. Provides an interface for managing focus.
+ * Adapter for MDC List Item. Provides an interface for managing focus.
  *
  * Additionally, provides type information for the adapter to the Closure
  * compiler.
@@ -36,14 +36,20 @@
  *
  * @record
  */
-class MDCListAdapter {
-
+class MDCListItemAdapter {
   /**
    * Sets the tabindex to the value specified for all button/a element children of
    * the list item at the index specified.
    * @param {number} tabIndexValue
    */
   setTabIndexForChildren(tabIndexValue) {}
+
+  /**
+   * Returns true if the root element contains the given class.
+   * @param {string} className
+   * @return {boolean}
+   */
+  hasClass(className) {}
 }
 
-export default MDCListAdapter;
+export default MDCListItemAdapter;

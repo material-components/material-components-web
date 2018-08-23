@@ -44,27 +44,25 @@ class MDCListItemFoundation extends MDCFoundation {
   static get defaultAdapter() {
     return /** @type {!MDCListItemAdapter} */ ({
       setTabIndexForChildren: () => {},
+      hasClass: () => {},
     });
   }
 
   /**
    * Focus in handler for the list items.
-   * @param evt
    */
-  handleFocusIn(evt) {
-    const listItemId = evt.target.id;
-    if (!listItemId) return;
-    this.adapter_.setTabIndexForChildren(listItemId, 0);
+  handleFocusIn() {
+    if (this.adapter_.hasClass(cssClasses.LIST_ITEM_DISABLED_CLASS)) {
+      return;
+    }
+    this.adapter_.setTabIndexForChildren(0);
   }
 
   /**
    * Focus out handler for the list items.
-   * @param {Event} evt
    */
-  handleFocusOut(evt) {
-    const listItemId = evt.target.id;
-    if (!listItemId) return;
-    this.adapter_.setTabIndexForChildren(listItemId, -1);
+  handleFocusOut() {
+    this.adapter_.setTabIndexForChildren(-1);
   }
 }
 
