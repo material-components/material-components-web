@@ -292,7 +292,6 @@ Method Signature | Description
 `addClassForElementIndex(index: Number, className: String) => void` | Adds the `className` class to the list item at `index`.
 `removeClassForElementIndex(index: Number, className: String) => void` | Removes the `className` class to the list item at `index`.
 `focusItemAtIndex(index: Number) => void` | Focuses the list item at the `index` value specified.
-`isElementFocusable(ele: Element) => boolean` | Returns true if `ele` contains a focusable child element.
 `setTabIndexForListItemChildren(index: Number, value: Number) => void` | Sets the `tabindex` attribute to `value` for each child `button` and `a` element in the list item at the `index` specified.
 
 ### `MDCListFoundation`
