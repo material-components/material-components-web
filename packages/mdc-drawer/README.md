@@ -362,8 +362,8 @@ Method Signature | Description
 --- | ---
 `open() => void` | Opens the drawer from the closed state.
 `close() => void` | Closes the drawer from the open state.
-`opened() => void` | Extensible method which gets called when drawer finished opening.
-`closed() => void` | Extensible method which gets called when drawer finished closing.
+`opened() => void` | Extensible method which gets called when drawer finishes open animation.
+`closed() => void` | Extensible method which gets called when drawer finishes close animation.
 `isOpen() => boolean` | Returns true if the drawer is in the open position.
 `isOpening() => boolean` | Returns true if the drawer is animating open.
 `isClosing() => boolean` | Returns true if the drawer is animating closed.
@@ -374,6 +374,6 @@ Method Signature | Description
 
 Method Signature | Description
 --- | ---
-`opened() => void` | Executed when drawer finishes open animation.
-`closed() => void` | Executed when drawer finishes close animation.
+`opened() => void` | Called when drawer finishes open animation.
+`closed() => void` | Called when drawer finishes close animation.
 `handleScrimClick() => void` | Handles click event on scrim.
