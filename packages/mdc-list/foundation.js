@@ -53,7 +53,6 @@ class MDCListFoundation extends MDCFoundation {
       addClassForElementIndex: () => {},
       removeClassForElementIndex: () => {},
       focusItemAtIndex: () => {},
-      isElementFocusable: () => {},
       isListItem: () => {},
       setTabIndexForListItemChildren: () => {},
     });
