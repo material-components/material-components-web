@@ -25,6 +25,7 @@ import MDCComponent from '@material/base/component';
 import MDCListFoundation from './foundation';
 import MDCListAdapter from './adapter';
 import {cssClasses, strings} from './constants';
+import {MDCListItem} from './list-item/index';
 
 /**
  * @extends MDCComponent<!MDCListFoundation>
@@ -37,10 +38,6 @@ class MDCList extends MDCComponent {
     this.handleKeydown_;
     /** @private {!Function} */
     this.handleClick_;
-    /** @private {!Function} */
-    this.focusInEventListener_;
-    /** @private {!Function} */
-    this.focusOutEventListener_;
   }
 
   /**
@@ -51,21 +48,25 @@ class MDCList extends MDCComponent {
     return new MDCList(root);
   }
 
+  initialize() {
+    this.root_.querySelectorAll(MDCListFoundation.strings.LIST_ITEM_SELECTOR).forEach((listItemElement) => {
+      MDCListItem.attachTo(listItemElement);
+    });
+  }
+
   destroy() {
     this.root_.removeEventListener('keydown', this.handleKeydown_);
     this.root_.removeEventListener('click', this.handleClick_);
-    this.root_.removeEventListener('focusin', this.focusInEventListener_);
-    this.root_.removeEventListener('focusout', this.focusOutEventListener_);
   }
 
   initialSyncWithDOM() {
     this.handleKeydown_ = this.foundation_.handleKeydown.bind(this.foundation_);
     this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
-    this.focusInEventListener_ = this.foundation_.handleFocusIn.bind(this.foundation_);
-    this.focusOutEventListener_ = this.foundation_.handleFocusOut.bind(this.foundation_);
-    this.root_.addEventListener('keydown', this.handleKeydown_);
-    this.root_.addEventListener('focusin', this.focusInEventListener_);
-    this.root_.addEventListener('focusout', this.focusOutEventListener_);
+    this.root_.querySelectorAll(MDCListFoundation.strings.LIST_ITEM_SELECTOR).forEach((listItemElement) => {
+      listItemElement.addEventListener('keydown', (event) => {
+        this.handleKeydown_(event, event.target == listItemElement);
+      });
+    });
     this.layout();
     this.initializeListType();
   }
@@ -79,10 +80,6 @@ class MDCList extends MDCComponent {
       .forEach((ele) => {
         ele.setAttribute('tabindex', -1);
       });
-
-    // Child button/a elements are not tabbable until the list item is focused.
-    [].slice.call(this.root_.querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS))
-      .forEach((ele) => ele.setAttribute('tabindex', -1));
   }
 
   initializeListType() {
@@ -136,7 +133,6 @@ class MDCList extends MDCComponent {
     return new MDCListFoundation(/** @type {!MDCListAdapter} */ (Object.assign({
       getListItemCount: () => this.listElements_.length,
       getFocusedElementIndex: () => this.listElements_.indexOf(document.activeElement),
-      getListItemIndex: (node) => this.listElements_.indexOf(node),
       setAttributeForElementIndex: (index, attr, value) => {
         const element = this.listElements_[index];
         if (element) {
@@ -161,25 +157,11 @@ class MDCList extends MDCComponent {
           element.classList.remove(className);
         }
       },
-      isListItem: (target) => target.classList.contains(cssClasses.LIST_ITEM_CLASS),
       focusItemAtIndex: (index) => {
         const element = this.listElements_[index];
         if (element) {
           element.focus();
         }
-      },
-      isElementFocusable: (ele) => {
-        if (!ele) return false;
-        let matches = Element.prototype.matches;
-        if (!matches) { // IE uses a different name for the same functionality
-          matches = Element.prototype.msMatchesSelector;
-        }
-        return matches.call(ele, strings.FOCUSABLE_CHILD_ELEMENTS);
-      },
-      setTabIndexForListItemChildren: (listItemIndex, tabIndexValue) => {
-        const element = this.listElements_[listItemIndex];
-        const listItemChildren = [].slice.call(element.querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS));
-        listItemChildren.forEach((ele) => ele.setAttribute('tabindex', tabIndexValue));
       },
     })));
   }
