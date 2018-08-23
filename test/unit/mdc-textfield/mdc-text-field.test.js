@@ -93,16 +93,23 @@ class FakeOutline {
   }
 }
 
-test('#constructor when given a `mdc-text-field--box` element instantiates a ripple on the root element', () => {
+test('#constructor instantiates a ripple on the root element by default', () => {
   const root = getFixture();
-  root.classList.add(cssClasses.BOX);
   const component = new MDCTextField(root, undefined, (el) => new FakeRipple(el));
   assert.equal(component.ripple.root, root);
 });
 
-test('#constructor sets the ripple property to `null` when not given a `mdc-text-field--box` nor ' +
-     'a `mdc-text-field--outlined` subelement', () => {
-  const component = new MDCTextField(getFixture());
+test('#constructor does not instantiate a ripple when ${cssClasses.OUTLINED} class is present', () => {
+  const root = getFixture();
+  root.classList.add(cssClasses.OUTLINED);
+  const component = new MDCTextField(root);
+  assert.isNull(component.ripple);
+});
+
+test('#constructor does not instantiate a ripple when ${cssClasses.TEXTAREA} class is present', () => {
+  const root = getFixture();
+  root.classList.add(cssClasses.TEXTAREA);
+  const component = new MDCTextField(root);
   assert.isNull(component.ripple);
 });
 

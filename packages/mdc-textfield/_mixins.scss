@@ -29,7 +29,7 @@
 @import "icon/variables";
 @import "./variables";
 
-@mixin mdc-text-field-box-corner-radius($radius) {
+@mixin mdc-text-field-corner-radius($radius) {
   border-radius: $radius $radius 0 0;
 }
 
@@ -58,9 +58,9 @@
   }
 }
 
-@mixin mdc-text-field-box-fill-color($color) {
+@mixin mdc-text-field-fill-color($color) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-box-fill-color_($color);
+    @include mdc-text-field-fill-color_($color);
   }
 }
 
@@ -147,12 +147,10 @@
   @include mdc-text-field-helper-text-color_($mdc-text-field-disabled-helper-text-color);
   @include mdc-text-field-icon-color_($mdc-text-field-disabled-icon);
   @include mdc-text-field-fullwidth-bottom-line-color_($mdc-text-field-fullwidth-bottom-line-color);
+  @include mdc-text-field-fill-color_($mdc-text-field-disabled-background);
 
+  border-bottom: none;
   pointer-events: none;
-
-  .mdc-text-field__input {
-    border-bottom: 1px dotted;
-  }
 
   .mdc-floating-label {
     cursor: default;
@@ -189,11 +187,15 @@
 }
 
 @mixin mdc-text-field-dense_ {
-  // NOTE: This is an eyeball'd approximation of what's in the mocks.
-  @include mdc-floating-label-float-position(110%, 0%, $mdc-text-field-dense-label-scale);
+  @include mdc-floating-label-float-position($mdc-text-field-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
+  @include mdc-floating-label-shake-animation(text-field-dense);
 
   margin-top: 12px;
   margin-bottom: 4px;
+
+  .mdc-text-field__input {
+    padding: 12px 12px 0;
+  }
 
   .mdc-floating-label {
     font-size: .813rem;
@@ -220,11 +222,27 @@
   @include mdc-notched-outline-idle-corner-radius($radius);
 }
 
+@mixin mdc-text-field-floating-label_ {
+  .mdc-floating-label {
+    @include mdc-rtl-reflexive-position(left, 16px);
+
+    bottom: 20px;
+  }
+
+  &:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) {
+    .mdc-floating-label {
+      // @include mdc-floating-label-max-width(calc(100% - #{$mdc-text-field-icon-padding}));
+      max-width: calc(100% - #{$mdc-text-field-icon-padding});
+    }
+  }
+}
+
 // Outlined
 
 @mixin mdc-text-field-outlined-disabled_ {
   @include mdc-text-field-ink-color_($mdc-text-field-placeholder);
   @include mdc-text-field-outline-color_($mdc-text-field-outlined-disabled-border);
+  @include mdc-text-field-fill-color_(transparent);
 
   .mdc-text-field__input {
     border-bottom: none;
@@ -267,8 +285,11 @@
   @include mdc-floating-label-float-position($mdc-text-field-outlined-label-position-y);
   @include mdc-floating-label-shake-animation(text-field-outlined);
   @include mdc-text-field-outline-corner-radius_($mdc-text-field-border-radius);
+  @include mdc-states-base-color(transparent);
+  @include mdc-text-field-fill-color(transparent);
 
   border: none;
+  overflow: visible;
 
   .mdc-text-field__input {
     display: flex;
@@ -278,15 +299,12 @@
     z-index: 1;
   }
 
-  .mdc-floating-label {
-    @include mdc-rtl-reflexive-position(left, 16px);
-
-    position: absolute;
-    bottom: 20px;
-  }
-
   .mdc-text-field__icon {
     z-index: 2;
+  }
+
+  .mdc-floating-label {
+    width: auto;
   }
 }
 
@@ -321,62 +339,6 @@
 @mixin mdc-text-field-focused-outline-color_($color) {
   &.mdc-text-field--focused {
     @include mdc-notched-outline-color($color);
-  }
-}
-
-// Box
-
-@mixin mdc-text-field-box_ {
-  @include mdc-ripple-surface;
-  // Text Field Box intentionally omits press ripple, so each state needs to be specified individually
-  @include mdc-states-base-color($mdc-text-field-ink-color);
-  @include mdc-states-hover-opacity(mdc-states-opacity($mdc-text-field-ink-color, hover));
-  @include mdc-states-focus-opacity(mdc-states-opacity($mdc-text-field-ink-color, focus));
-  @include mdc-ripple-radius-bounded;
-  @include mdc-text-field-box-corner-radius($mdc-text-field-border-radius);
-  @include mdc-text-field-box-fill-color($mdc-text-field-box-background);
-  @include mdc-floating-label-float-position($mdc-text-field-box-label-position-y);
-  @include mdc-floating-label-shake-animation(text-field-box);
-
-  overflow: hidden;
-
-  .mdc-text-field__input {
-    align-self: flex-end;
-    box-sizing: border-box;
-    height: 100%;
-    padding: 20px 16px 0;
-  }
-
-  .mdc-floating-label {
-    @include mdc-rtl-reflexive-position(left, 16px);
-
-    position: absolute;
-    bottom: 20px;
-    width: calc(100% - #{$mdc-text-field-icon-padding});
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    pointer-events: none;
-    overflow: hidden;
-    // Force the label into its own layer to prevent to prevent visible layer promotion adjustments
-    // when the ripple is activated behind it.
-    will-change: transform;
-  }
-}
-
-@mixin mdc-text-field-box-disabled_ {
-  @include mdc-text-field-box-fill-color_($mdc-text-field-box-disabled-background);
-  @include mdc-text-field-bottom-line-color_($mdc-text-field-outlined-disabled-border);
-  @include mdc-text-field-label-color($mdc-text-field-disabled-label-color);
-
-  border-bottom: none;
-}
-
-@mixin mdc-text-field-box-dense_ {
-  @include mdc-floating-label-float-position($mdc-text-field-box-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
-  @include mdc-floating-label-shake-animation(text-field-box-dense);
-
-  .mdc-text-field__input {
-    padding: 12px 12px 0;
   }
 }
 
@@ -421,23 +383,14 @@
 @mixin mdc-text-field-fullwidth_ {
   width: 100%;
 
-  .mdc-text-field__input {
-    resize: vertical;
-  }
-
   &:not(.mdc-text-field--textarea) {
+    @include mdc-states-base-color(transparent);
+    @include mdc-text-field-fill-color(transparent);
+
     display: block;
-    margin: 0;
-    border: none;
-    border-bottom: 1px solid;
-    outline: none;
 
     .mdc-text-field__input {
-      height: 100%;
       padding: 0;
-      resize: none;
-      // Use !important here to override all other border treatments
-      border: none !important;
     }
   }
 }
@@ -449,9 +402,10 @@
 // Textarea
 
 @mixin mdc-text-field-textarea-disabled_ {
-  @include mdc-text-field-textarea-stroke-color_($mdc-text-field-disabled-border);
+  @include mdc-text-field-textarea-stroke-color_($mdc-textarea-disabled-border-color);
   @include mdc-text-field-textarea-fill-color_($mdc-textarea-disabled-background);
 
+  border-bottom-width: 1px;
   border-style: solid;
 
   .mdc-text-field__input {
@@ -475,6 +429,8 @@
   // to position the label within the bounds of the inset padding.
   @include mdc-floating-label-float-position($mdc-text-field-textarea-label-position-y, 0%, $mdc-text-field-textarea-label-scale);
   @include mdc-floating-label-shake-animation(textarea);
+  @include mdc-states-base-color(transparent);
+  @include mdc-text-field-fill-color(transparent);
 
   $padding-inset: 16px;
   $label-offset-y: $padding-inset + 2;
@@ -488,6 +444,8 @@
   overflow: hidden;
 
   .mdc-text-field__input {
+    align-self: auto;
+    box-sizing: content-box;
     height: auto;
     margin: 0;
     padding: $padding-inset;
@@ -502,6 +460,7 @@
 
     top: $label-offset-y;
     bottom: auto;
+    width: auto;
     margin-top: 2px;
     padding: 12px 8px 8px 8px;
     line-height: 1.15;
@@ -517,7 +476,7 @@
   }
 }
 
-@mixin mdc-text-field-box-fill-color_($color) {
+@mixin mdc-text-field-fill-color_($color) {
   @include mdc-theme-prop(background-color, $color);
 }
 
