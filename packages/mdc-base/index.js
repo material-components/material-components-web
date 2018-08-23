@@ -15,7 +15,8 @@
  * limitations under the License.
  */
 
-import MDCFoundation from './foundation';
 import MDCComponent from './component';
+import MDCFeatureDetector from './feature-detector';
+import MDCFoundation from './foundation';
 
-export {MDCFoundation, MDCComponent};
+export {MDCComponent, MDCFeatureDetector, MDCFoundation};
