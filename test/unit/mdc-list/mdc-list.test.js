@@ -236,18 +236,6 @@ test('adapter#isListItem returns false if the element is a not a list item', () 
   assert.isFalse(component.getDefaultFoundation().adapter_.isListItem(item1));
 });
 
-test('#adapter.setTabIndexForListItemChildren sets the child button/a elements of index', () => {
-  const {root, component} = setupTest();
-  document.body.appendChild(root);
-  const listItemIndex = 1;
-  const listItem = root.querySelectorAll('.mdc-list-item')[listItemIndex];
-  component.getDefaultFoundation().adapter_.setTabIndexForListItemChildren(listItemIndex, 0);
-
-  assert.equal(1, root.querySelectorAll('button[tabindex="0"]').length);
-  assert.equal(listItem, root.querySelectorAll('button[tabindex="0"]')[0].parentElement);
-  document.body.removeChild(root);
-});
-
 test('layout adds tabindex=-1 to all list items without a tabindex', () => {
   const {root} = setupTest();
   assert.equal(0, root.querySelectorAll('.mdc-list-item:not([tabindex])').length);

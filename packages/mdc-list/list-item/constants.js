@@ -23,18 +23,13 @@
 
 /** @enum {string} */
 const cssClasses = {
-  ROOT: 'mdc-list',
-  LIST_ITEM_SELECTED_CLASS: 'mdc-list-item--selected',
-  LIST_ITEM_ACTIVATED_CLASS: 'mdc-list-item--activated',
+  LIST_ITEM_CLASS: 'mdc-list-item',
+  LIST_ITEM_DISABLED_CLASS: 'mdc-list-item--disabled',
 };
 
 /** @enum {string} */
 const strings = {
-  ARIA_ORIENTATION: 'aria-orientation',
-  ARIA_ORIENTATION_HORIZONTAL: 'horizontal',
-  ARIA_SELECTED: 'aria-selected',
-  ENABLED_ITEMS_SELECTOR: '.mdc-list-item:not(.mdc-list-item--disabled)',
-  LIST_ITEM_SELECTOR: '.mdc-list-item',
+  FOCUSABLE_CHILD_ELEMENTS: `.${cssClasses.LIST_ITEM_CLASS} button:not(:disabled), .${cssClasses.LIST_ITEM_CLASS} a`,
 };
 
 export {strings, cssClasses};

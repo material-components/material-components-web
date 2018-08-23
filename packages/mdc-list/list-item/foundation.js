@@ -21,20 +21,48 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
-const cssClasses = {
-  ROOT: 'mdc-list',
-  LIST_ITEM_SELECTED_CLASS: 'mdc-list-item--selected',
-  LIST_ITEM_ACTIVATED_CLASS: 'mdc-list-item--activated',
-};
+import MDCFoundation from '@material/base/foundation';
+import MDCListItemAdapter from './adapter';
+import {strings, cssClasses} from './constants';
 
-/** @enum {string} */
-const strings = {
-  ARIA_ORIENTATION: 'aria-orientation',
-  ARIA_ORIENTATION_HORIZONTAL: 'horizontal',
-  ARIA_SELECTED: 'aria-selected',
-  ENABLED_ITEMS_SELECTOR: '.mdc-list-item:not(.mdc-list-item--disabled)',
-  LIST_ITEM_SELECTOR: '.mdc-list-item',
-};
+class MDCListItemFoundation extends MDCFoundation {
+  /** @return enum {string} */
+  static get strings() {
+    return strings;
+  }
 
-export {strings, cssClasses};
+  /** @return enum {string} */
+  static get cssClasses() {
+    return cssClasses;
+  }
+
+  /**
+   * {@see MDCListItemAdapter} for typing information on parameters and return
+   * types.
+   * @return {!MDCListItemAdapter}
+   */
+  static get defaultAdapter() {
+    return /** @type {!MDCListItemAdapter} */ ({
+      hasClass: () => {},
+      setTabIndexForChildren: () => {},
+    });
+  }
+
+  /**
+   * Focus in handler for the list items.
+   */
+  handleFocusIn() {
+    if (!this.adapter_.hasClass(cssClasses.LIST_ITEM_DISABLED_CLASS)) {
+      this.adapter_.setTabIndexForChildren(0);
+    }
+  }
+
+  /**
+   * Focus out handler for the list items.
+   */
+  handleFocusOut() {
+    this.adapter_.setTabIndexForChildren(-1);
+  }
+}
+
+export default MDCListItemFoundation;

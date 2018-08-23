@@ -44,7 +44,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCListFoundation, [
     'getListItemCount', 'getFocusedElementIndex', 'getListItemIndex', 'setAttributeForElementIndex',
     'removeAttributeForElementIndex', 'addClassForElementIndex', 'removeClassForElementIndex',
-    'focusItemAtIndex', 'isListItem', 'setTabIndexForListItemChildren',
+    'focusItemAtIndex', 'isListItem',
   ]);
 });
 
@@ -63,105 +63,6 @@ Object.defineProperty(Array.prototype, 'contains',
   });
 
 const setupTest = () => setupFoundationTest(MDCListFoundation);
-
-test('#handleFocusIn switches list item button/a elements to tabindex=0', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const target = {classList: ['mdc-list-item']};
-  const event = {target};
-
-  td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(1);
-  td.when(mockAdapter.isListItem(td.matchers.anything())).thenReturn(true);
-  foundation.handleFocusIn(event);
-
-  td.verify(mockAdapter.setTabIndexForListItemChildren(1, 0));
-});
-
-test('#handleFocusOut switches list item button/a elements to tabindex=-1', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const target = {classList: ['mdc-list-item']};
-  const event = {target};
-
-  td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(1);
-  td.when(mockAdapter.isListItem(td.matchers.anything())).thenReturn(true);
-  foundation.handleFocusOut(event);
-
-  td.verify(mockAdapter.setTabIndexForListItemChildren(1, -1));
-});
-
-test('#handleFocusIn switches list item button/a elements to tabindex=0 when target is child element', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const parentElement = {classList: ['mdc-list-item']};
-  const target = {classList: [], parentElement};
-  const event = {target};
-
-  td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(1);
-  td.when(mockAdapter.isListItem(td.matchers.anything())).thenReturn(true);
-  foundation.handleFocusIn(event);
-
-  td.verify(mockAdapter.setTabIndexForListItemChildren(1, 0));
-});
-
-test('#handleFocusOut switches list item button/a elements to tabindex=-1 when target is child element', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const parentElement = {classList: ['mdc-list-item']};
-  const target = {classList: [], parentElement};
-  const event = {target};
-
-  td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(1);
-  td.when(mockAdapter.isListItem(td.matchers.anything())).thenReturn(true);
-  foundation.handleFocusOut(event);
-
-  td.verify(mockAdapter.setTabIndexForListItemChildren(1, -1));
-});
-
-test('#handleFocusIn does nothing if mdc-list-item is not on element or ancestor', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const target = {classList: ['']};
-  const event = {target};
-
-  td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(1);
-  foundation.handleFocusIn(event);
-
-  td.verify(mockAdapter.setTabIndexForListItemChildren(td.matchers.anything(), td.matchers.anything()), {times: 0});
-});
-
-test('#handleFocusOut does nothing if mdc-list-item is not on element or ancestor', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const target = {classList: ['']};
-  const event = {target};
-
-  td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(1);
-  foundation.handleFocusOut(event);
-
-  td.verify(mockAdapter.setTabIndexForListItemChildren(td.matchers.anything(), td.matchers.anything()), {times: 0});
-});
-
-test('#handleFocusIn does nothing if list item is from nested list', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const parentElement = {classList: ['mdc-list-item']};
-  const target = {classList: [], parentElement};
-  const event = {target};
-
-  td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(-1);
-  td.when(mockAdapter.isListItem(td.matchers.anything())).thenReturn(false, true);
-  foundation.handleFocusIn(event);
-
-  td.verify(mockAdapter.setTabIndexForListItemChildren(td.matchers.anything(), td.matchers.anything()), {times: 0});
-});
-
-
-test('#handleFocusOut does nothing if list item is from nested list', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const parentElement = {classList: ['mdc-list-item']};
-  const target = {classList: [], parentElement};
-  const event = {target};
-
-  td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(-1);
-  td.when(mockAdapter.isListItem(td.matchers.anything())).thenReturn(false, true);
-  foundation.handleFocusOut(event);
-
-  td.verify(mockAdapter.setTabIndexForListItemChildren(td.matchers.anything(), td.matchers.anything()), {times: 0});
-});
 
 test('#handleKeydown does nothing if the key is not used for navigation', () => {
   const {foundation, mockAdapter} = setupTest();

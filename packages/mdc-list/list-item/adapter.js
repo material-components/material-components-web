@@ -24,7 +24,7 @@
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
- * Adapter for MDC List. Provides an interface for managing focus.
+ * Adapter for MDC List Item. Provides an interface for managing focus.
  *
  * Additionally, provides type information for the adapter to the Closure
  * compiler.
@@ -36,53 +36,21 @@
  *
  * @record
  */
-class MDCListAdapter {
-  /** @return {number} */
-  getListItemCount() {}
-
+class MDCListItemAdapter {
   /**
-   * @return {number} */
-  getFocusedElementIndex() {}
-
-  /** @param {Element} node */
-  getListItemIndex(node) {}
-
-  /**
-   * @param {number} index
-   * @param {string} attribute
-   * @param {string} value
-   */
-  setAttributeForElementIndex(index, attribute, value) {}
-
-  /**
-   * @param {number} index
-   * @param {string} attribute
-   */
-  removeAttributeForElementIndex(index, attribute) {}
-
-  /**
-   * @param {number} index
+   * Returns true if the root element contains the given class.
    * @param {string} className
+   * @return {boolean}
    */
-  addClassForElementIndex(index, className) {}
+  hasClass(className) {}
 
   /**
-   * @param {number} index
-   * @param {string} className
+   * Sets the tabindex to the value specified for all button/a element children of
+   * the list item at the index specified.
+   * @param {number} listItemIndex
+   * @param {number} tabIndexValue
    */
-  removeClassForElementIndex(index, className) {}
-
-  /**
-   * Focuses list item at the index specified.
-   * @param {number} index
-   */
-  focusItemAtIndex(index) {}
-
-  /**
-   * Checks if the provided element is contains the mdc-list-item class.
-   * @param {Element} ele
-   */
-  isListItem(ele) {}
+  setTabIndexForChildren(tabIndexValue) {}
 }
 
-export default MDCListAdapter;
+export default MDCListItemAdapter;

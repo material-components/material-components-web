@@ -54,7 +54,6 @@ class MDCListFoundation extends MDCFoundation {
       removeClassForElementIndex: () => {},
       focusItemAtIndex: () => {},
       isListItem: () => {},
-      setTabIndexForListItemChildren: () => {},
     });
   }
 
@@ -128,35 +127,6 @@ class MDCListFoundation extends MDCFoundation {
       if (this.selectedIndex_ !== 0) {
         this.adapter_.setAttributeForElementIndex(0, 'tabindex', -1);
       }
-    }
-  }
-
-  /**
-   * Focus in handler for the list items.
-   * @param evt
-   */
-  handleFocusIn(evt) {
-    const listItem = this.getListItem_(evt.target);
-    if (!listItem) return;
-
-    const listItemIndex = this.adapter_.getListItemIndex(listItem);
-
-    if (listItemIndex >= 0) {
-      this.adapter_.setTabIndexForListItemChildren(listItemIndex, 0);
-    }
-  }
-
-  /**
-   * Focus out handler for the list items.
-   * @param {Event} evt
-   */
-  handleFocusOut(evt) {
-    const listItem = this.getListItem_(evt.target);
-    if (!listItem) return;
-    const listItemIndex = this.adapter_.getListItemIndex(listItem);
-
-    if (listItemIndex >= 0) {
-      this.adapter_.setTabIndexForListItemChildren(listItemIndex, -1);
     }
   }
 
