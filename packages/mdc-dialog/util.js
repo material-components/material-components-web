@@ -48,6 +48,7 @@ function getFirstFocusableElement(surfaceEl) {
     'textarea',
     'button',
     'a',
+    '[autofocus]',
     '[tabIndex]',
   ];
 
