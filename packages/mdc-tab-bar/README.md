@@ -73,6 +73,11 @@ const tabBar = new MDCTabBar(document.querySelector('.mdc-tab-bar'));
 
 > See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
 
+### Variants
+
+MDC Tab Bar does not have any variants; however, its subcomponents do. See the [Tab Scroller](../mdc-tab-scroller),
+[Tab](../mdc-tab), and [Tab Indicator](../mdc-tab-indicator) documentation for more information.
+
 ## Style Customization
 
 ### CSS Classes
