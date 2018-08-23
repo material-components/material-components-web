@@ -236,25 +236,6 @@ test('adapter#isListItem returns false if the element is a not a list item', () 
   assert.isFalse(component.getDefaultFoundation().adapter_.isListItem(item1));
 });
 
-test('adapter#isElementFocusable returns true if the element is a focusable list item sub-element', () => {
-  const {root, component} = setupTest();
-  const item1 = root.querySelectorAll('.mdc-list-item button')[0];
-  assert.isTrue(component.getDefaultFoundation().adapter_.isElementFocusable(item1));
-});
-
-test('adapter#isElementFocusable returns false if the element is not a focusable list item sub-element',
-  () => {
-    const {root, component} = setupTest();
-    const item1 = root.querySelectorAll('.mdc-list-item')[2];
-    assert.isFalse(component.getDefaultFoundation().adapter_.isElementFocusable(item1));
-  });
-
-test('adapter#isElementFocusable returns false if the element is null/undefined',
-  () => {
-    const {component} = setupTest();
-    assert.isFalse(component.getDefaultFoundation().adapter_.isElementFocusable());
-  });
-
 test('#adapter.setTabIndexForListItemChildren sets the child button/a elements of index', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
