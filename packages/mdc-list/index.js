@@ -33,7 +33,7 @@ class MDCList extends MDCComponent {
   /** @param {...?} args */
   constructor(...args) {
     super(...args);
-    /** @private {!Array<Function>} */
+    /** @private {!Function} */
     this.keydownHandler_;
     /** @private {!Function} */
     this.handleClick_;
@@ -51,16 +51,9 @@ class MDCList extends MDCComponent {
     return new MDCList(root);
   }
 
-  initialize() {
-    [].slice.call(this.root_.querySelectorAll(MDCListFoundation.strings.LIST_ITEM_SELECTOR))
-      .forEach((listItemElement) => {
-        MDCListItem.attachTo(listItemElement);
-      });
-  }
-
   destroy() {
-    this.root_.removeEventListener('click', this.handleClick_);
     this.root_.removeEventListener('keydown', this.keydownHandler_);
+    this.root_.removeEventListener('click', this.handleClick_);
     this.root_.removeEventListener('focusin', this.focusInEventListener_);
     this.root_.removeEventListener('focusout', this.focusOutEventListener_);
   }

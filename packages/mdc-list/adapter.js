@@ -81,7 +81,7 @@ class MDCListAdapter {
    * @param {number} listItemIndex
    * @param {number} tabIndexValue
    */
-   setTabIndexForListItemChildren(listItemIndex, tabIndexValue) {}
+  setTabIndexForListItemChildren(listItemIndex, tabIndexValue) {}
 }
 
 export default MDCListAdapter;
