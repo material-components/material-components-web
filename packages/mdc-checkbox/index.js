@@ -88,10 +88,10 @@ class MDCCheckbox extends MDCComponent {
       registerChangeHandler: (handler) => this.nativeCb_.addEventListener('change', handler),
       deregisterChangeHandler: (handler) => this.nativeCb_.removeEventListener('change', handler),
       getNativeControl: () => this.nativeCb_,
-      isIndeterminate: this.isIndeterminate_,
-      isChecked: this.isChecked_,
+      isIndeterminate: () => this.isIndeterminate_(),
+      isChecked: () => this.isChecked_(),
       hasNativeControl: () => !!this.nativeCb_,
-      setNativeControlDisabled: (disabled) => this.nativeControl_.disabled = disabled,
+      setNativeControlDisabled: (disabled) => this.nativeCb_.disabled = disabled,
       forceLayout: () => this.root_.offsetWidth,
       isAttachedToDOM: () => Boolean(this.root_.parentNode),
     });

@@ -64,6 +64,10 @@ class MDCCheckboxFoundation extends MDCFoundation {
       getNativeControl: () => /* !MDCSelectionControlState */ {},
       forceLayout: () => {},
       isAttachedToDOM: () => /* boolean */ {},
+      isIndeterminate: () => /* boolean */ {},
+      isChecked: () => /* boolean */ {},
+      hasNativeControl: () => /* boolean */ {},
+      setNativeControlDisabled: (/* disabled: boolean */) => {},
     });
   }
 
@@ -88,7 +92,7 @@ class MDCCheckboxFoundation extends MDCFoundation {
 
   /** @override */
   init() {
-    this.currentCheckState_ = this.determineCheckState_());
+    this.currentCheckState_ = this.determineCheckState_();
     this.updateAriaChecked_();
     this.adapter_.addClass(cssClasses.UPGRADED);
     this.adapter_.registerChangeHandler(this.changeHandler_);
@@ -103,7 +107,7 @@ class MDCCheckboxFoundation extends MDCFoundation {
 
   /** @param {boolean} disabled */
   setDisabled(disabled) {
-    this.adapter_.setDisabled().disabled = disabled;
+    this.adapter_.setNativeControlDisabled(disabled);
     if (disabled) {
       this.adapter_.addClass(cssClasses.DISABLED);
     } else {
