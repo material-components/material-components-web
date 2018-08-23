@@ -2,7 +2,7 @@
   "name": "@material/selection-control",
   "description": "The set of base classes for Material selection controls",
   "version": "0.38.1",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "main": "index.js",
   "repository": {
     "type": "git",
