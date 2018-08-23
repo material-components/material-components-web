@@ -118,7 +118,3 @@
     @include mdc-theme-prop(background-color, $value);
   }
 }
-
-@function emphasis($value) {
-  @return map-get($mdc-theme-text-emphasis, $value);
-}
