@@ -226,3 +226,14 @@ test('#handleTransitionEnd doesn\'t do anything if event is not triggered by roo
   td.verify(mockAdapter.notifyOpen(), {times: 0});
   td.verify(mockAdapter.notifyClose(), {times: 0});
 });
+
+test('#handleTransitionEnd doesn\'t do anything if event is emitted with a non-element target', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.handleTransitionEnd({target: {}});
+  td.verify(mockAdapter.elementHasClass(td.matchers.anything(), td.matchers.isA(String)), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.OPEN), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.ANIMATE), {times: 0});
+  td.verify(mockAdapter.notifyOpen(), {times: 0});
+  td.verify(mockAdapter.notifyClose(), {times: 0});
+});

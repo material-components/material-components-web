@@ -29,7 +29,7 @@ import MDCDismissibleDrawerFoundation from '../dismissible/foundation';
  */
 class MDCModalDrawerFoundation extends MDCDismissibleDrawerFoundation {
   /**
-   * Executed when drawer finishes open animation.
+   * Called when drawer finishes open animation.
    * @override
    */
   opened() {
@@ -37,7 +37,7 @@ class MDCModalDrawerFoundation extends MDCDismissibleDrawerFoundation {
   }
 
   /**
-   * Executed when drawer finishes close animation.
+   * Called when drawer finishes close animation.
    * @override
    */
   closed() {
