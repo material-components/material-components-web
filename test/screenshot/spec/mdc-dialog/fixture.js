@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
-
+window.mdc.testFixture.fontsLoaded.then(() => {
+  [].forEach.call(document.querySelectorAll('.mdc-dialog'), /** @param {!HTMLElement} dialogEl */ (dialogEl) => {
+    /** @type {!MDCDialog} */
+    const dialog = new mdc.dialog.MDCDialog(dialogEl);
+    dialog.show();
+  });
+});
