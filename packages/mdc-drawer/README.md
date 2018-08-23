@@ -362,18 +362,16 @@ Method Signature | Description
 --- | ---
 `open() => void` | Opens the drawer from the closed state.
 `close() => void` | Closes the drawer from the open state.
-`opened() => void` | Extensible method which gets called when drawer finished opening.
-`closed() => void` | Extensible method which gets called when drawer finished closing.
 `isOpen() => boolean` | Returns true if the drawer is in the open position.
 `isOpening() => boolean` | Returns true if the drawer is animating open.
 `isClosing() => boolean` | Returns true if the drawer is animating closed.
 `handleKeyDown(evt: Event) => void` | Handles the keydown event.
 `handleTransitionEnd(evt: Event) => void` | Handles the transitionend event when the drawer finishes opening/closing.
+`opened() => void` | Only called internally. Extension point for when drawer finishes open animation.
+`closed() => void` | Only called internally. Extension point for when drawer finishes close animation.
 
 #### `MDCModalDrawerFoundation` (extends `MDCDismissibleDrawerFoundation`)
 
 Method Signature | Description
 --- | ---
-`opened() => void` | Executed when drawer finishes open animation.
-`closed() => void` | Executed when drawer finishes close animation.
 `handleScrimClick() => void` | Handles click event on scrim.
