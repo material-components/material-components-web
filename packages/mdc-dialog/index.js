@@ -40,17 +40,13 @@ export class MDCDialog extends MDCComponent {
     return this.foundation_.isOpen();
   }
 
-  get notifyYesButton_() {
-    return this.root_.querySelector(MDCDialogFoundation.strings.YES_BTN_SELECTOR);
-  }
-
   get dialogSurface_() {
     return this.root_.querySelector(MDCDialogFoundation.strings.DIALOG_SURFACE_SELECTOR);
   }
 
   initialize() {
     this.featureDetector_ = new MDCFeatureDetector();
-    this.focusTrap_ = util.createFocusTrapInstance(this.dialogSurface_, this.notifyYesButton_);
+    this.focusTrap_ = util.createFocusTrapInstance(this.dialogSurface_);
     this.footerBtnRipples_ = [];
 
     const footerBtns = this.root_.querySelectorAll('.mdc-dialog__button');

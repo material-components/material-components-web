@@ -22,10 +22,71 @@
  */
 
 import createFocusTrap from 'focus-trap';
+import {matches} from '@material/base/ponyfill';
 
+/**
+ * @param {!HTMLElement} surfaceEl
+ * @param {?HTMLElement=} initialFocusEl
+ * @param {function(!HTMLElement, !FocusTrapCreateOptions): !focusTrap} focusTrapFactory
+ * @return {!focusTrap}
+ */
 export function createFocusTrapInstance(surfaceEl, initialFocusEl, focusTrapFactory = createFocusTrap) {
   return focusTrapFactory(surfaceEl, {
-    initialFocus: initialFocusEl,
+    initialFocus: initialFocusEl || getFirstFocusableElement(surfaceEl),
     clickOutsideDeactivates: true,
   });
 }
+
+/**
+ * TODO(acdvorak): Add unit test for this?
+ * @param {!HTMLElement} surfaceEl
+ * @return {!HTMLElement|undefined}
+ */
+function getFirstFocusableElement(surfaceEl) {
+  const includeSelectors = [
+    'input',
+    'textarea',
+    'button',
+    'a',
+    '[tabIndex]',
+  ];
+
+  const excludeSelectors = [
+    '[tabIndex="-1"]',
+    '[type="radio"]',
+    '[type="checkbox"]',
+    '[type="hidden"]',
+  ];
+
+  const isExcluded = (el) => {
+    const style = getComputedStyle(el);
+    if (style.display === 'none' || style.visibility === 'hidden' || parseFloat(style.opacity) < 0.01) {
+      return true;
+    }
+
+    const rect = el.getBoundingClientRect();
+    if (!rect.width || !rect.height) {
+      return true;
+    }
+
+    if (excludeSelectors.some((excludeSelector) => matches(el, excludeSelector))) {
+      return true;
+    }
+
+    return false;
+  };
+
+  const includedEls = [].slice.call(surfaceEl.querySelectorAll(includeSelectors.join(', ')));
+  const focusableEls = includedEls.filter(/** @type {!HTMLElement} */ (el) => {
+    while (el) {
+      if (isExcluded(el)) {
+        return false;
+      }
+      el = el.parentElement;
+    }
+    return true;
+  });
+
+  return focusableEls[0];
+}
+
