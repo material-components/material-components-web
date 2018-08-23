@@ -44,7 +44,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCListFoundation, [
     'getListItemCount', 'getFocusedElementIndex', 'getListItemIndex', 'setAttributeForElementIndex',
     'removeAttributeForElementIndex', 'addClassForElementIndex', 'removeClassForElementIndex',
-    'focusItemAtIndex', 'isElementFocusable', 'isListItem', 'setTabIndexForListItemChildren',
+    'focusItemAtIndex', 'isListItem', 'setTabIndexForListItemChildren',
   ]);
 });
 
@@ -597,7 +597,6 @@ test('#handleClick when singleSelection=true on a button subelement should not c
     const event = {target, preventDefault};
 
     td.when(mockAdapter.getFocusedElementIndex()).thenReturn(-1);
-    td.when(mockAdapter.isElementFocusable(td.matchers.anything())).thenReturn(true);
     td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(1);
     td.when(mockAdapter.isListItem(td.matchers.anything())).thenReturn(false);
     foundation.setSingleSelection(true);
@@ -614,7 +613,6 @@ test('#handleClick when singleSelection=true on an element not in a list item sh
     const event = {target, preventDefault};
 
     td.when(mockAdapter.getFocusedElementIndex()).thenReturn(-1);
-    td.when(mockAdapter.isElementFocusable(td.matchers.anything())).thenReturn(true);
     td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(-1);
     foundation.setSingleSelection(true);
     foundation.handleClick(event);
@@ -630,7 +628,6 @@ test('#handleClick when singleSelection=true on the first element when already s
     const event = {target, preventDefault};
 
     td.when(mockAdapter.getFocusedElementIndex()).thenReturn(0);
-    td.when(mockAdapter.isElementFocusable(td.matchers.anything())).thenReturn(true);
     td.when(mockAdapter.getListItemIndex(td.matchers.anything())).thenReturn(0);
     foundation.setSingleSelection(true);
     foundation.handleClick(event);
