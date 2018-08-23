@@ -35,9 +35,10 @@
   @include mdc-drawer-subtitle-ink-color($mdc-drawer-subtitle-ink-color);
   @include mdc-drawer-border-color($mdc-drawer-divider-color);
   @include mdc-drawer-surface-fill-color($mdc-drawer-surface-fill-color);
-  @include mdc-drawer-item-icon-ink-color($mdc-drawer-item-icon-ink-color);
-  @include mdc-drawer-item-text-ink-color($mdc-drawer-inactive-ink-color);
-  @include mdc-drawer-item-activated-text-ink-color($mdc-drawer-activated-ink-color);
+  @include mdc-drawer-item-icon-ink-color($mdc-drawer-item-inactive-ink-color);
+  @include mdc-drawer-item-text-ink-color($mdc-drawer-item-inactive-ink-color);
+  @include mdc-drawer-item-activated-icon-ink-color($mdc-drawer-item-activated-ink-color);
+  @include mdc-drawer-item-activated-text-ink-color($mdc-drawer-item-activated-ink-color);
   @include mdc-drawer-item-corner-radius(4px);
 
   display: flex;
@@ -62,7 +63,7 @@
   }
 
   .mdc-list-item {
-    @include mdc-typography(body2);
+    @include mdc-typography(subtitle2);
 
     height: calc(48px - 2 * #{$mdc-drawer-list-item-spacing});
     margin: $mdc-drawer-list-item-spacing 8px;

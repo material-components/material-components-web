@@ -62,6 +62,12 @@ $mdc-theme-text-colors: (
   )
 ) !default;
 
+$mdc-theme-text-emphasis: (
+  high: 0.87,
+  medium: 0.6,
+  disabled: .38,
+);
+
 @function mdc-theme-ink-color-for-fill_($text-style, $fill-color) {
   $contrast-tone: mdc-theme-contrast-tone($fill-color);
 
