@@ -66,13 +66,22 @@
     @include mdc-typography(subtitle2);
 
     height: calc(48px - 2 * #{$mdc-drawer-list-item-spacing});
-    margin: $mdc-drawer-list-item-spacing 8px;
+    // To accomodate margin conflict.
+    margin: ($mdc-drawer-list-item-spacing * 2) 8px;
     padding: 0 $mdc-drawer-surface-padding / 2;
+  }
+
+  .mdc-list-item:nth-child(1) {
+    margin-top: 2px;
+  }
+
+  .mdc-list-item:nth-last-child(1) {
+    margin-bottom: 0;
   }
 
   .mdc-list-group__subheader {
     @include mdc-typography(body2);
-    @include mdc-typography-baseline-top(28px);
+    @include mdc-typography-baseline-top(24px);
 
     margin: 0;
     padding: 0 $mdc-drawer-surface-padding;
