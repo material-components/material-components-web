@@ -1,23 +1,30 @@
 /**
- * Copyright 2018 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2018 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import {assert} from 'chai';
 import td from 'testdouble';
 
-import {captureHandlers, verifyDefaultAdapter} from '../helpers/foundation';
+import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
 import MDCTabFoundation from '../../../packages/mdc-tab/foundation';
 
@@ -33,10 +40,9 @@ test('exports strings', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTabFoundation, [
-    'registerEventHandler', 'deregisterEventHandler',
     'addClass', 'removeClass', 'hasClass',
     'setAttr',
-    'activateIndicator', 'deactivateIndicator', 'computeIndicatorClientRect',
+    'activateIndicator', 'deactivateIndicator',
     'getOffsetLeft', 'getOffsetWidth', 'getContentOffsetLeft', 'getContentOffsetWidth',
     'notifyInteracted',
     'focus',
@@ -45,30 +51,10 @@ test('defaultAdapter returns a complete adapter implementation', () => {
 
 const setupTest = () => setupFoundationTest(MDCTabFoundation);
 
-test('#activate does nothing if already active', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(MDCTabFoundation.cssClasses.ACTIVE)).thenReturn(true);
-  foundation.activate();
-  td.verify(mockAdapter.addClass(MDCTabFoundation.cssClasses.ACTIVE), {times: 0});
-  td.verify(mockAdapter.registerEventHandler('transitionend', td.matchers.isA(Function)), {times: 0});
-});
-
-test('#activate registers a transitionend listener on the root element', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.activate();
-  td.verify(mockAdapter.registerEventHandler('transitionend', td.matchers.isA(Function)));
-});
-
 test('#activate adds mdc-tab--active class to the root element', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.activate();
   td.verify(mockAdapter.addClass(MDCTabFoundation.cssClasses.ACTIVE));
-});
-
-test('#activate adds mdc-tab--animating-activate class to the root element', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.activate();
-  td.verify(mockAdapter.addClass(MDCTabFoundation.cssClasses.ANIMATING_ACTIVATE));
 });
 
 test('#activate sets the root element aria-selected attribute to true', () => {
@@ -95,24 +81,10 @@ test('#activate focuses the root node', () => {
   td.verify(mockAdapter.focus());
 });
 
-test('#computeIndicatorClientRect calls computeIndicatorClientRect on the adapter', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.computeIndicatorClientRect();
-  td.verify(mockAdapter.computeIndicatorClientRect());
-});
-
 test('#deactivate does nothing if not active', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.deactivate();
   td.verify(mockAdapter.addClass, {times: 0});
-  td.verify(mockAdapter.registerEventHandler('transitionend', td.matchers.isA(Function)), {times: 0});
-});
-
-test('#deactivate registers a transitionend listener on the root element', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(MDCTabFoundation.cssClasses.ACTIVE)).thenReturn(true);
-  foundation.deactivate();
-  td.verify(mockAdapter.registerEventHandler('transitionend', td.matchers.isA(Function)));
 });
 
 test('#deactivate removes mdc-tab--active class to the root element', () => {
@@ -120,13 +92,6 @@ test('#deactivate removes mdc-tab--active class to the root element', () => {
   td.when(mockAdapter.hasClass(MDCTabFoundation.cssClasses.ACTIVE)).thenReturn(true);
   foundation.deactivate();
   td.verify(mockAdapter.removeClass(MDCTabFoundation.cssClasses.ACTIVE));
-});
-
-test('#deactivate adds mdc-tab--animating-deactivate class to the root element', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(MDCTabFoundation.cssClasses.ACTIVE)).thenReturn(true);
-  foundation.deactivate();
-  td.verify(mockAdapter.addClass(MDCTabFoundation.cssClasses.ANIMATING_DEACTIVATE));
 });
 
 test('#deactivate sets the root element aria-selected attribute to false', () => {
@@ -150,54 +115,10 @@ test('#deactivate sets the root element tabindex to -1', () => {
   td.verify(mockAdapter.setAttr(MDCTabFoundation.strings.TABINDEX, '-1'));
 });
 
-test('#handleTransitionEnd removes mdc-tab--animating-activate class', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.handleTransitionEnd({pseudoElement: ''});
-  td.verify(mockAdapter.removeClass(MDCTabFoundation.cssClasses.ANIMATING_ACTIVATE));
-});
-
-test('#handleTransitionEnd removes mdc-tab--animating-deactivate class', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.handleTransitionEnd({pseudoElement: ''});
-  td.verify(mockAdapter.removeClass(MDCTabFoundation.cssClasses.ANIMATING_DEACTIVATE));
-});
-
-test('#handleTransitionEnd deregisters the transitionend event listener', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.handleTransitionEnd({pseudoElement: ''});
-  td.verify(mockAdapter.deregisterEventHandler('transitionend', td.matchers.isA(Function)));
-});
-
-test('#handleTransitionEnd does nothing when triggered by a pseudo element', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.handleTransitionEnd({pseudoElement: '::before'});
-  td.verify(mockAdapter.removeClass(MDCTabFoundation.cssClasses.ANIMATING_ACTIVATE), {times: 0});
-  td.verify(mockAdapter.removeClass(MDCTabFoundation.cssClasses.ANIMATING_DEACTIVATE), {times: 0});
-  td.verify(mockAdapter.deregisterEventHandler('transitionend', td.matchers.isA(Function)), {times: 0});
-});
-
-test('on transitionend, call #handleTransitionEnd', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
-  foundation.handleTransitionEnd = td.function('handles transitionend');
-  foundation.activate();
-  handlers.transitionend();
-  td.verify(foundation.handleTransitionEnd(td.matchers.anything()), {times: 1});
-});
-
 test(`#handleClick emits the ${MDCTabFoundation.strings.INTERACTED_EVENT} event`, () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.handleClick();
   td.verify(mockAdapter.notifyInteracted(), {times: 1});
-});
-
-test('on click, call #handleClick', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const handlers = captureHandlers(mockAdapter, 'registerEventHandler');
-  foundation.handleClick = td.function('handles click');
-  foundation.init();
-  handlers.click();
-  td.verify(foundation.handleClick(), {times: 1});
 });
 
 test('#computeDimensions() returns the dimensions of the tab', () => {

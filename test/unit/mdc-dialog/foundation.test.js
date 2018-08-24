@@ -1,16 +1,24 @@
 /**
- * Copyright 2017 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2017 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import {assert} from 'chai';
@@ -20,17 +28,21 @@ import lolex from 'lolex';
 import {setupFoundationTest} from '../helpers/setup';
 import {verifyDefaultAdapter, captureHandlers} from '../helpers/foundation';
 
-import {cssClasses} from '../../../packages/mdc-dialog/constants';
+import {cssClasses, strings, numbers} from '../../../packages/mdc-dialog/constants';
 import MDCDialogFoundation from '../../../packages/mdc-dialog/foundation';
 
 suite('MDCDialogFoundation');
 
 test('exports cssClasses', () => {
-  assert.isTrue('cssClasses' in MDCDialogFoundation);
+  assert.deepEqual(MDCDialogFoundation.cssClasses, cssClasses);
 });
 
 test('exports strings', () => {
-  assert.isTrue('strings' in MDCDialogFoundation);
+  assert.deepEqual(MDCDialogFoundation.strings, strings);
+});
+
+test('exports numbers', () => {
+  assert.deepEqual(MDCDialogFoundation.numbers, numbers);
 });
 
 test('default adapter returns a complete adapter implementation', () => {
@@ -110,12 +122,17 @@ test('#close removes the open class to hide the dialog', () => {
   td.verify(mockAdapter.removeClass(cssClasses.OPEN));
 });
 
-test('#open adds the animation class to start an animation', () => {
+test('#open adds the animation class to start an animation, and removes it after the animation is done', () => {
   const {foundation, mockAdapter} = setupTest();
+  const clock = lolex.install();
 
   foundation.open();
-
   td.verify(mockAdapter.addClass(cssClasses.ANIMATING));
+
+  clock.tick(numbers.DIALOG_ANIMATION_TIME_MS);
+  td.verify(mockAdapter.removeClass(cssClasses.ANIMATING));
+
+  clock.uninstall();
 });
 
 test('#open adds scroll lock class to the body', () => {
@@ -143,9 +160,11 @@ test('#open activates focus trapping on the dialog surface', () => {
 
   td.when(mockAdapter.isDialog(td.matchers.isA(Object))).thenReturn(true);
   foundation.open();
-  clock.tick(MDCDialogFoundation.numbers.DIALOG_ANIMATION_TIME_MS);
 
+  clock.tick(numbers.DIALOG_ANIMATION_TIME_MS);
   td.verify(mockAdapter.trapFocusOnSurface());
+
+  clock.uninstall();
 });
 
 test('#close deactivates focus trapping on the dialog surface', () => {

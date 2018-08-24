@@ -22,6 +22,12 @@ The notched outline is a border around all sides of either a Text Field or Selec
   </li>
 </ul>
 
+## Installation
+
+```
+npm install @material/notched-outline
+```
+
 ## Basic Usage
 
 ### HTML Structure

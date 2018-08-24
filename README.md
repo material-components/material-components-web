@@ -1,3 +1,4 @@
+[![Version](https://img.shields.io/npm/v/material-components-web.svg)](https://www.npmjs.com/package/material-components-web)
 [![Build Status](https://travis-ci.com/material-components/material-components-web.svg?branch=master)](https://travis-ci.com/material-components/material-components-web/)
 [![codecov](https://codecov.io/gh/material-components/material-components-web/branch/master/graph/badge.svg)](https://codecov.io/gh/material-components/material-components-web)
 [![Chat](https://img.shields.io/discord/259087343246508035.svg)](https://discord.gg/material-components)
@@ -21,11 +22,18 @@ Material Components for the web is the successor to [Material Design Lite](https
     - [Blox Material](https://blox.src.zone/material): Angular Integration Library.
     - [Vue MDC Adapter](https://github.com/stasson/vue-mdc-adapter): MDC Web Integration for Vue.js (using [foundations/adapters](./docs/integrating-into-frameworks.md#the-advanced-approach-using-foundations-and-adapters).)
     - [Material Components Vue](https://github.com/matsp/material-components-vue): MDC Web Integration for Vue.js (using [vanilla components](./docs/integrating-into-frameworks.md#the-simple-approach-wrapping-mdc-web-vanilla-components))
+    - [BalmUI](https://material.balmjs.com/): Next Generation Material UI for Vue.js
   - More coming soon! Feel free to submit a pull request adding your library to this list, so long as you meet our [criteria](docs/integrating-into-frameworks.md).
 
 MDC Web strives to seamlessly incorporate into a wider range of usage contexts, from simple static websites to complex, JavaScript-heavy applications to hybrid client/server rendering systems. In short, whether you're already heavily invested in another framework or not, it should be easy to incorporate Material Components into your site in a lightweight, idiomatic fashion.
 
 **[Demos](https://material-components.github.io/material-components-web-catalog)** (updated with every release)
+
+> Note: Material Components Web follows semver and is still in version 0.x, which means it is regularly subject to
+> breaking changes. We typically follow a 2-week release schedule which includes one minor release per month with
+> breaking changes, and intermediate patch releases with bug fixes.
+> A list of changes is always available in the [CHANGELOG](./CHANGELOG.md),
+> and a tentative schedule of what we are working on next is available in the [ROADMAP](./ROADMAP.md).
 
 ## Quick start
 
@@ -104,6 +112,10 @@ This will produce a Material Design ripple on the button!
 - [Contributing](CONTRIBUTING.md)
 - [Material.io](https://www.material.io) (external site)
 - [Material Design Guidelines](https://material.io/guidelines) (external site)
+
+## Need help?
+
+We're constantly trying to improve our components. If Github Issues don't fit your needs, then please visit us on our [Discord Channel](https://discord.gg/material-components).
 
 ## Browser support
 

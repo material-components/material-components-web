@@ -1,7 +1,7 @@
 {
   "private": true,
   "description": "Material Components Web",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "scripts": {
     "build": "npm run clean && mkdirp build && webpack --progress --colors",
     "build:demos": "npm run clean && mkdirp build && webpack --config=demos/webpack.config.js --progress --colors",
@@ -120,7 +120,7 @@
     "standard-changelog": "^2.0.0",
     "stylelint": "^9.0.0",
     "stylelint-config-standard": "^18.0.0",
-    "stylelint-order": "^0.8.0",
+    "stylelint-order": "^1.0.0",
     "stylelint-scss": "^3.0.0",
     "stylelint-selector-bem-pattern": "^1.0.0",
     "testdouble": "^3.2.4",
@@ -179,6 +179,7 @@
           "linear-progress",
           "list",
           "menu",
+          "menu-surface",
           "notched-outline",
           "radio",
           "ripple",
@@ -222,6 +223,7 @@
     "mdc-line-ripple",
     "mdc-list",
     "mdc-menu",
+    "mdc-menu-surface",
     "mdc-notched-outline",
     "mdc-radio",
     "mdc-ripple",
