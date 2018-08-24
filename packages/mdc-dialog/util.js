@@ -30,7 +30,7 @@ import {matches} from '@material/base/ponyfill';
  * @param {function(!HTMLElement, !FocusTrapCreateOptions): !focusTrap} focusTrapFactory
  * @return {!focusTrap}
  */
-export function createFocusTrapInstance(surfaceEl, initialFocusEl, focusTrapFactory = createFocusTrap) {
+export function createFocusTrapInstance(surfaceEl, initialFocusEl = null, focusTrapFactory = createFocusTrap) {
   return focusTrapFactory(surfaceEl, {
     initialFocus: initialFocusEl || getFirstFocusableElement(surfaceEl),
     clickOutsideDeactivates: true,
@@ -39,24 +39,30 @@ export function createFocusTrapInstance(surfaceEl, initialFocusEl, focusTrapFact
 
 /**
  * TODO(acdvorak): Add unit test for this?
+ * See https://allyjs.io/data-tables/focusable.html
  * @param {!HTMLElement} surfaceEl
  * @return {!HTMLElement|undefined}
  */
 function getFirstFocusableElement(surfaceEl) {
   const includeSelectors = [
-    'input',
-    'textarea',
-    'button',
     'a',
-    '[autofocus]',
+    'button',
+    'input',
+    'select',
+    'summary',
+    'textarea',
+    'audio[controls]',
+    'video[controls]',
+    '[contenteditable]',
     '[tabIndex]',
   ];
 
   const excludeSelectors = [
+    'input[type="radio"]',
+    'input[type="checkbox"]',
+    'input[type="hidden"]',
+    '[disabled]',
     '[tabIndex="-1"]',
-    '[type="radio"]',
-    '[type="checkbox"]',
-    '[type="hidden"]',
   ];
 
   const isExcluded = (el) => {
@@ -77,8 +83,10 @@ function getFirstFocusableElement(surfaceEl) {
     return false;
   };
 
+  /** @type {!Array<!HTMLElement>} */
   const includedEls = [].slice.call(surfaceEl.querySelectorAll(includeSelectors.join(', ')));
-  const focusableEls = includedEls.filter(/** @type {!HTMLElement} */ (el) => {
+
+  const focusableEls = includedEls.filter((el) => {
     while (el) {
       if (isExcluded(el)) {
         return false;
@@ -88,6 +96,10 @@ function getFirstFocusableElement(surfaceEl) {
     return true;
   });
 
-  return focusableEls[0];
+  const autoFocusEls = focusableEls.filter((el) => {
+    return el.autofocus;
+  });
+
+  return autoFocusEls[0] || focusableEls[0];
 }
 
