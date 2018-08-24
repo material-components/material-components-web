@@ -119,7 +119,7 @@ class MDCTextField extends MDCComponent {
     }
 
     this.ripple = null;
-    if (this.root_.classList.contains(cssClasses.BOX)) {
+    if (!this.root_.classList.contains(cssClasses.TEXTAREA) && !this.root_.classList.contains(cssClasses.OUTLINED)) {
       const MATCHES = getMatchesProperty(HTMLElement.prototype);
       const adapter =
         Object.assign(MDCRipple.createAdapter(/** @type {!RippleCapableSurface} */ (this)), {

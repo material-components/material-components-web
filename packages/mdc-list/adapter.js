@@ -79,12 +79,6 @@ class MDCListAdapter {
   focusItemAtIndex(index) {}
 
   /**
-   * Checks if the provided element is a focusable sub-element.
-   * @param {Element} ele
-   */
-  isElementFocusable(ele) {}
-
-  /**
    * Checks if the provided element is contains the mdc-list-item class.
    * @param {Element} ele
    */

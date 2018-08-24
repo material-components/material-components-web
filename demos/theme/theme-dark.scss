@@ -26,6 +26,7 @@
 $mdc-theme-primary: $material-color-amber-300;
 $mdc-theme-secondary: $material-color-pink-400;
 $mdc-theme-background: $material-color-grey-900;
+$mdc-theme-surface: $material-color-grey-900;
 
 @import "./theme-shared";
 @import "../../packages/mdc-checkbox/mixins";
@@ -40,12 +41,6 @@ $mdc-theme-background: $material-color-grey-900;
 
 .demo-radio {
   @include mdc-radio-unchecked-stroke-color(text-secondary-on-dark);
-}
-
-.demo-text-field {
-  @include mdc-text-field-ink-color(text-primary-on-dark);
-  @include mdc-text-field-label-color(text-secondary-on-dark);
-  @include mdc-text-field-line-ripple-color(text-hint-on-dark);
 }
 
 .demo-checkbox-wrapper,

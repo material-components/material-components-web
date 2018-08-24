@@ -168,14 +168,6 @@ class MDCList extends MDCComponent {
           element.focus();
         }
       },
-      isElementFocusable: (ele) => {
-        if (!ele) return false;
-        let matches = Element.prototype.matches;
-        if (!matches) { // IE uses a different name for the same functionality
-          matches = Element.prototype.msMatchesSelector;
-        }
-        return matches.call(ele, strings.FOCUSABLE_CHILD_ELEMENTS);
-      },
       setTabIndexForListItemChildren: (listItemIndex, tabIndexValue) => {
         const element = this.listElements_[listItemIndex];
         const listItemChildren = [].slice.call(element.querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS));

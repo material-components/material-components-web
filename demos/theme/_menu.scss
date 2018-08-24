@@ -22,17 +22,23 @@
 
 @import "../../packages/mdc-theme/color-palette";
 @import "../../packages/mdc-theme/mixins";
+@import "../../packages/mdc-menu-surface/mixins";
 
 //
 // Toolbar and menu
 //
+
+.demo-theme-menu {
+  @include mdc-menu-width(6);
+}
 
 .demo-theme-menu__list-item--selected {
   background-color: $material-color-grey-400;
 }
 
 .demo-theme-list {
-  @include mdc-theme-prop(color, text-primary-on-light);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 //
