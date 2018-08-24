@@ -74,19 +74,14 @@ function withMockCheckboxDescriptorReturning(descriptor, runTests) {
 //   `change({checked: true, indeterminate: false})` simulates a change event as the result of a checkbox
 //   being checked.
 function setupChangeHandlerTest() {
-  let changeHandler;
   const {foundation, mockAdapter} = setupTest();
-  const {isA} = td.matchers;
-  td.when(mockAdapter.registerChangeHandler(isA(Function))).thenDo(function(handler) {
-    changeHandler = handler;
-  });
   td.when(mockAdapter.isAttachedToDOM()).thenReturn(true);
 
   foundation.init();
 
   const change = (newState) => {
     td.when(mockAdapter.getNativeControl()).thenReturn(newState);
-    changeHandler();
+    foundation.handleChange();
   };
 
   return {foundation, mockAdapter, change};
@@ -117,9 +112,8 @@ test('exports numbers', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCCheckboxFoundation, [
-    'addClass', 'removeClass', 'setNativeControlAttr', 'removeNativeControlAttr', 'registerAnimationEndHandler',
-    'deregisterAnimationEndHandler', 'registerChangeHandler', 'deregisterChangeHandler', 'getNativeControl',
-    'forceLayout', 'isAttachedToDOM',
+    'addClass', 'removeClass', 'setNativeControlAttr', 'removeNativeControlAttr',
+    'getNativeControl', 'forceLayout', 'isAttachedToDOM',
   ]);
 });
 
@@ -136,14 +130,6 @@ test('#init adds aria-checked="mixed" if checkbox is initially indeterminate', (
 
   foundation.init();
   td.verify(mockAdapter.setNativeControlAttr('aria-checked', strings.ARIA_CHECKED_INDETERMINATE_VALUE));
-});
-
-test('#init calls adapter.registerChangeHandler() with a change handler function', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const {isA} = td.matchers;
-
-  foundation.init();
-  td.verify(mockAdapter.registerChangeHandler(isA(Function)));
 });
 
 test('#init handles case where getNativeControl() does not return anything', () => {
@@ -167,20 +153,6 @@ test('#init handles case when property descriptors are not returned at all (Andr
   withMockCheckboxDescriptorReturning(undefined, () => {
     assert.doesNotThrow(() => foundation.init());
   });
-});
-
-test('#destroy calls adapter.deregisterChangeHandler() with a registerChangeHandler function', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const {isA} = td.matchers;
-
-  let changeHandler;
-  td.when(mockAdapter.registerChangeHandler(isA(Function))).thenDo(function(handler) {
-    changeHandler = handler;
-  });
-  foundation.init();
-
-  foundation.destroy();
-  td.verify(mockAdapter.deregisterChangeHandler(changeHandler));
 });
 
 test('#destroy handles case where getNativeControl() does not return anything', () => {
@@ -386,59 +358,39 @@ testChangeHandler('no transition classes applied when no state change', [
   },
 ], cssClasses.ANIM_UNCHECKED_CHECKED, {times: 1});
 
-test('animation end handler one-off removes animation class after short delay', () => {
+test('animation end handler removes animation class after short delay', () => {
   const clock = lolex.install();
-  const {mockAdapter, change} = setupChangeHandlerTest();
-  const {isA} = td.matchers;
-
-  let animEndHandler;
-  td.when(mockAdapter.registerAnimationEndHandler(isA(Function))).thenDo(function(handler) {
-    animEndHandler = handler;
-  });
-
-  change({checked: true, indeterminate: false});
-  assert.isOk(animEndHandler instanceof Function, 'animationend handler registeration sanity test');
-
-  animEndHandler();
   const {ANIM_UNCHECKED_CHECKED} = cssClasses;
+  const {mockAdapter, foundation} = setupTest();
+
+  foundation.enableAnimationEndHandler_ = true;
+  foundation.currentAnimationClass_ = ANIM_UNCHECKED_CHECKED;
   td.verify(mockAdapter.removeClass(ANIM_UNCHECKED_CHECKED), {times: 0});
 
+  foundation.handleAnimationEnd();
+
   clock.tick(numbers.ANIM_END_LATCH_MS);
-  td.verify(mockAdapter.removeClass(ANIM_UNCHECKED_CHECKED));
-  td.verify(mockAdapter.deregisterAnimationEndHandler(animEndHandler));
+  td.verify(mockAdapter.removeClass(ANIM_UNCHECKED_CHECKED), {times: 1});
+  assert.isFalse(foundation.enableAnimationEndHandler_);
 
   clock.uninstall();
 });
 
-test('change handler debounces changes within the animation end delay period', () => {
+test('animation end is debounced if event is called twice', () => {
   const clock = lolex.install();
-  const {mockAdapter, change} = setupChangeHandlerTest();
-  const {isA} = td.matchers;
+  const {ANIM_UNCHECKED_CHECKED} = cssClasses;
+  const {mockAdapter, foundation} = setupChangeHandlerTest();
+  foundation.enableAnimationEndHandler_ = true;
+  foundation.currentAnimationClass_ = ANIM_UNCHECKED_CHECKED;
 
-  let animEndHandler;
-  td.when(mockAdapter.registerAnimationEndHandler(isA(Function))).thenDo(function(handler) {
-    animEndHandler = handler;
-  });
+  foundation.handleAnimationEnd();
 
-  change({checked: true, indeterminate: false});
-  assert.isOk(animEndHandler instanceof Function, 'animationend handler registeration sanity test');
-  // Queue up initial timer
-  animEndHandler();
+  td.verify(mockAdapter.removeClass(ANIM_UNCHECKED_CHECKED), {times: 0});
 
-  const {ANIM_UNCHECKED_CHECKED, ANIM_CHECKED_INDETERMINATE} = cssClasses;
+  foundation.handleAnimationEnd();
 
-  change({checked: true, indeterminate: true});
-  // Without ticking the clock, check that the prior class has been removed.
-  td.verify(mockAdapter.removeClass(ANIM_UNCHECKED_CHECKED));
-  // The animation end handler should not yet have been removed.
-  td.verify(mockAdapter.deregisterAnimationEndHandler(animEndHandler), {times: 0});
-
-  // Call animEndHandler again, and tick the clock. The original timer should have been cleared, and the
-  // current timer should remove the correct, latest animation class, along with deregistering the handler.
-  animEndHandler();
   clock.tick(numbers.ANIM_END_LATCH_MS);
-  td.verify(mockAdapter.removeClass(ANIM_CHECKED_INDETERMINATE), {times: 1});
-  td.verify(mockAdapter.deregisterAnimationEndHandler(animEndHandler), {times: 1});
+  td.verify(mockAdapter.removeClass(ANIM_UNCHECKED_CHECKED), {times: 1});
 
   clock.uninstall();
 });
