@@ -78,10 +78,6 @@ function hasClassMatcher(className) {
   return td.matchers.argThat((el) => el.classList && el.classList.contains(className));
 }
 
-function hasSelectorMatcher(selector) {
-  return td.matchers.argThat((el) => matches(el, selector));
-}
-
 suite('MDCDialog');
 
 test('attachTo returns a component instance', () => {
@@ -281,12 +277,8 @@ test('adapter#trapFocusOnSurface calls activate() on a properly configured focus
     activate: () => {},
     deactivate: () => {},
   });
-  td.when(
-    util.createFocusTrapInstance(
-      hasClassMatcher('mdc-dialog__container'),
-      hasSelectorMatcher('[data-mdc-dialog-action="yes"]')
-    )
-  ).thenReturn(fakeFocusTrapInstance);
+
+  td.when(util.createFocusTrapInstance(hasClassMatcher('mdc-dialog__container'))).thenReturn(fakeFocusTrapInstance);
 
   const {component} = setupTest();
   component.getDefaultFoundation().adapter_.trapFocusOnSurface();
@@ -303,12 +295,8 @@ test('adapter#untrapFocusOnSurface calls deactivate() on a properly configured f
     activate: () => {},
     deactivate: () => {},
   });
-  td.when(
-    util.createFocusTrapInstance(
-      hasClassMatcher('mdc-dialog__container'),
-      hasSelectorMatcher('[data-mdc-dialog-action="yes"]')
-    )
-  ).thenReturn(fakeFocusTrapInstance);
+
+  td.when(util.createFocusTrapInstance(hasClassMatcher('mdc-dialog__container'))).thenReturn(fakeFocusTrapInstance);
 
   const {component} = setupTest();
   component.getDefaultFoundation().adapter_.untrapFocusOnSurface();
