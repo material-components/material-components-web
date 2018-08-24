@@ -159,10 +159,6 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | --- | --- |
 | `addClass(className: string) => void` | Adds a class to the root element. |
 | `removeClass(className: string) => void` | Removes a class from the root element. |
-| `registerAnimationEndHandler(handler: EventListener) => void` | Registers an event handler to be called when an `animationend` event is triggered on the root element. Note that you must account for vendor prefixes in order for this to work correctly. |
-| `deregisterAnimationEndHandler(handler: EventListener) => void` | Deregisters an event handler from an `animationend` event listener. This will only be called with handlers that have previously been passed to `registerAnimationEndHandler` calls. |
-| `registerChangeHandler(handler: EventListener) => void` | Registers an event handler to be called when a `change` event is triggered on the native control (_not_ the root element). |
-| `deregisterChangeHandler(handler: EventListener) => void` | Deregisters an event handler that was previously passed to `registerChangeHandler`. |
 | `getNativeControl() => HTMLInputElement?` | Returns the native checkbox control, if available. Note that if this control is not available, the methods that rely on it will exit gracefully.|
 | `forceLayout() => void` | Force-trigger a layout on the root element. This is needed to restart animations correctly. If you find that you do not need to do this, you can simply make it a no-op. |
 | `isAttachedToDOM() => boolean` | Returns true if the component is currently attached to the DOM, false otherwise. |
@@ -179,3 +175,5 @@ Method Signature | Description
 `setDisabled(disabled: boolean) => void` | Updates the `disabled` property on the underlying input. Does nothing when the underlying input is not present.
 `getValue() => string` | Returns the value of `MDCCheckboxAdapter.getNativeControl().value`. Returns `null` if `getNativeControl()` does not return an object.
 `setValue(value: string) => void` | Sets the value of `adapter.getNativeControl().value`. Does nothing if `getNativeControl()` does not return an object.
+`handleAnimationEnd() => void` | `animationend` event handler that should be applied to the root element.
+`handleChange() => void` | `change` event handler that should be applied to the checkbox element.
