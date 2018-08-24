@@ -44,9 +44,6 @@ class MDCListAdapter {
    * @return {number} */
   getFocusedElementIndex() {}
 
-  /** @param {Element} node */
-  getListItemIndex(node) {}
-
   /**
    * @param {number} index
    * @param {string} attribute
@@ -77,12 +74,6 @@ class MDCListAdapter {
    * @param {number} index
    */
   focusItemAtIndex(index) {}
-
-  /**
-   * Checks if the provided element is contains the mdc-list-item class.
-   * @param {Element} ele
-   */
-  isListItem(ele) {}
 
   /**
    * Sets the tabindex to the value specified for all button/a element children of
