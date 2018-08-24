@@ -55,6 +55,7 @@ class MDCListFoundation extends MDCFoundation {
       focusItemAtIndex: () => {},
       isListItem: () => {},
       setTabIndexForListItemChildren: () => {},
+      followHref: () => {},
     });
   }
 
@@ -203,6 +204,9 @@ class MDCListFoundation extends MDCFoundation {
       // Check if the space key was pressed on the list item or a child element.
       if (this.adapter_.isListItem(evt.target)) {
         this.setSelectedIndex(currentIndex);
+
+        // Explicitly activate links, since we're preventing default on Enter, and Space doesn't activate them
+        this.adapter_.followHref(evt.target);
       }
     }
   }
