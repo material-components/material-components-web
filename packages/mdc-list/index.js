@@ -59,10 +59,10 @@ class MDCList extends MDCComponent {
   }
 
   initialSyncWithDOM() {
-    this.handleKeydown_ = this.foundation_.handleKeydown.bind(this.foundation_);
     this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
-    this.focusInEventListener_ = this.foundation_.handleFocusIn.bind(this.foundation_);
-    this.focusOutEventListener_ = this.foundation_.handleFocusOut.bind(this.foundation_);
+    this.handleKeydown_ = this.handleKeydownEvent_.bind(this);
+    this.focusInEventListener_ = this.handleFocusInEvent_.bind(this);
+    this.focusOutEventListener_ = this.handleFocusOutEvent_.bind(this);
     this.root_.addEventListener('keydown', this.handleKeydown_);
     this.root_.addEventListener('focusin', this.focusInEventListener_);
     this.root_.addEventListener('focusout', this.focusOutEventListener_);
@@ -83,6 +83,63 @@ class MDCList extends MDCComponent {
     // Child button/a elements are not tabbable until the list item is focused.
     [].slice.call(this.root_.querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS))
       .forEach((ele) => ele.setAttribute('tabindex', -1));
+  }
+
+  /**
+   * Used to figure out which list item this event is targetting. Or returns -1 if
+   * there is no list item
+   * @param {Event} evt
+   * @private
+   */
+  getListItemIndex_(evt) {
+    let eventTarget = /** @type {HTMLElement} */ (evt.target);
+    let index = -1;
+
+    // Find the first ancestor that is a list item or the list.
+    while (!eventTarget.classList.contains(cssClasses.LIST_ITEM_CLASS)
+    && !eventTarget.classList.contains(cssClasses.ROOT)) {
+      eventTarget = eventTarget.parentElement;
+    }
+
+    // Get the index of the element if it is a list item.
+    if (eventTarget.classList.contains(cssClasses.LIST_ITEM_CLASS)) {
+      index = this.listElements_.indexOf(eventTarget);
+    }
+
+    return index;
+  }
+
+  /**
+   * Used to figure out which element was clicked before sending the event to the foundation.
+   * @param {Event} evt
+   * @private
+   */
+  handleFocusInEvent_(evt) {
+    const index = this.getListItemIndex_(evt);
+    this.foundation_.handleFocusIn(evt, index);
+  }
+
+  /**
+   * Used to figure out which element was clicked before sending the event to the foundation.
+   * @param {Event} evt
+   * @private
+   */
+  handleFocusOutEvent_(evt) {
+    const index = this.getListItemIndex_(evt);
+    this.foundation_.handleFocusOut(evt, index);
+  }
+
+  /**
+   * Used to figure out which element was clicked before sending the event to the foundation.
+   * @param {Event} evt
+   * @private
+   */
+  handleKeydownEvent_(evt) {
+    const index = this.getListItemIndex_(evt);
+
+    if (index >= 0) {
+      this.foundation_.handleKeydown(evt, evt.target.classList.contains(cssClasses.LIST_ITEM_CLASS), index);
+    }
   }
 
   initializeListType() {
@@ -136,7 +193,6 @@ class MDCList extends MDCComponent {
     return new MDCListFoundation(/** @type {!MDCListAdapter} */ (Object.assign({
       getListItemCount: () => this.listElements_.length,
       getFocusedElementIndex: () => this.listElements_.indexOf(document.activeElement),
-      getListItemIndex: (node) => this.listElements_.indexOf(node),
       setAttributeForElementIndex: (index, attr, value) => {
         const element = this.listElements_[index];
         if (element) {
@@ -161,7 +217,6 @@ class MDCList extends MDCComponent {
           element.classList.remove(className);
         }
       },
-      isListItem: (target) => target.classList.contains(cssClasses.LIST_ITEM_CLASS),
       focusItemAtIndex: (index) => {
         const element = this.listElements_[index];
         if (element) {
@@ -173,9 +228,10 @@ class MDCList extends MDCComponent {
         const listItemChildren = [].slice.call(element.querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS));
         listItemChildren.forEach((ele) => ele.setAttribute('tabindex', tabIndexValue));
       },
-      followHref: (ele) => {
-        if (ele.href) {
-          ele.click();
+      followHref: (index) => {
+        const listItem = this.listElements_[index];
+        if (listItem && listItem.href) {
+          listItem.click();
         }
       },
     })));
