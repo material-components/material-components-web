@@ -185,22 +185,22 @@
   }
 
   .mdc-dialog__body {
-    max-height: calc(100vh - 150px);
+    max-height: calc(100vh - 250px);
 
     @media (max-width: 640px) {
-      padding: 0px;
+      padding: 0;
     }
   }
 
   @media (max-width: 640px) {
     .mdc-dialog__surface {
-      max-height: 100%;
       width: 100%;
+      max-height: 100%;
     }
 
     .mdc-dialog__body {
-      max-height: 100vh;
       height: 100vh;
+      max-height: 100vh;
     }
   }
 }
