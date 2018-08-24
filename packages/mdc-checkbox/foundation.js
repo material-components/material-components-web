@@ -57,10 +57,6 @@ class MDCCheckboxFoundation extends MDCFoundation {
       removeClass: (/* className: string */) => {},
       setNativeControlAttr: (/* attr: string, value: string */) => {},
       removeNativeControlAttr: (/* attr: string */) => {},
-      registerAnimationEndHandler: (/* handler: EventListener */) => {},
-      deregisterAnimationEndHandler: (/* handler: EventListener */) => {},
-      registerChangeHandler: (/* handler: EventListener */) => {},
-      deregisterChangeHandler: (/* handler: EventListener */) => {},
       getNativeControl: () => /* !MDCSelectionControlState */ {},
       forceLayout: () => {},
       isAttachedToDOM: () => /* boolean */ {},
@@ -83,11 +79,8 @@ class MDCCheckboxFoundation extends MDCFoundation {
     /** @private {number} */
     this.animEndLatchTimer_ = 0;
 
-    this.animEndHandler_ = /** @private {!EventListener} */ (
-      () => this.handleAnimationEnd());
-
-    this.changeHandler_ = /** @private {!EventListener} */ (
-      () => this.handleChange());
+    /** @private {boolean} */
+    this.enableAnimationEndHandler_ = false;
   }
 
   /** @override */
@@ -95,13 +88,11 @@ class MDCCheckboxFoundation extends MDCFoundation {
     this.currentCheckState_ = this.determineCheckState_();
     this.updateAriaChecked_();
     this.adapter_.addClass(cssClasses.UPGRADED);
-    this.adapter_.registerChangeHandler(this.changeHandler_);
     this.installPropertyChangeHooks_();
   }
 
   /** @override */
   destroy() {
-    this.adapter_.deregisterChangeHandler(this.changeHandler_);
     this.uninstallPropertyChangeHooks_();
   }
 
@@ -119,10 +110,13 @@ class MDCCheckboxFoundation extends MDCFoundation {
    * Handles the animationend event for the checkbox
    */
   handleAnimationEnd() {
+    if (!this.enableAnimationEndHandler_) return;
+
     clearTimeout(this.animEndLatchTimer_);
+
     this.animEndLatchTimer_ = setTimeout(() => {
       this.adapter_.removeClass(this.currentAnimationClass_);
-      this.adapter_.deregisterAnimationEndHandler(this.animEndHandler_);
+      this.enableAnimationEndHandler_ = false;
     }, numbers.ANIM_END_LATCH_MS);
   }
 
@@ -200,7 +194,7 @@ class MDCCheckboxFoundation extends MDCFoundation {
     // to the DOM.
     if (this.adapter_.isAttachedToDOM() && this.currentAnimationClass_.length > 0) {
       this.adapter_.addClass(this.currentAnimationClass_);
-      this.adapter_.registerAnimationEndHandler(this.animEndHandler_);
+      this.enableAnimationEndHandler_ = true;
     }
   }
 
@@ -265,6 +259,8 @@ class MDCCheckboxFoundation extends MDCFoundation {
       this.adapter_.setNativeControlAttr(
         strings.ARIA_CHECKED_ATTR, strings.ARIA_CHECKED_INDETERMINATE_VALUE);
     } else {
+      // The on/off state does not need to keep track of aria-checked, since
+      // the screenreader uses the checked property on the checkbox element.
       this.adapter_.removeNativeControlAttr(strings.ARIA_CHECKED_ATTR);
     }
   }
