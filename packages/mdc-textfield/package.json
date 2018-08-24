@@ -2,7 +2,7 @@
   "name": "@material/textfield",
   "description": "The Material Components for the web text field component",
   "version": "0.39.0-0",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "keywords": [
     "material components",
     "material design",
