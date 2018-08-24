@@ -103,7 +103,7 @@
     "node-sass": "^4.9.0",
     "npm-run-all": "^4.1.1",
     "os-name": "^2.0.1",
-    "postcss-loader": "^2.0.3",
+    "postcss-loader": "^3.0.0",
     "protobufjs": "~6.8.6",
     "ps-node": "^0.1.6",
     "query-ast": "^1.0.1",
