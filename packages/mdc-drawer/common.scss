@@ -27,18 +27,18 @@
 @import "@material/typography/variables";
 @import "@material/theme/variables";
 @import "@material/theme/mixins";
-@import "../variables";
-@import "../mixins";
+@import "./variables";
+@import "./mixins";
 
 .mdc-drawer {
-  @include mdc-drawer-title-ink-color($mdc-drawer-title-ink-color, $mdc-drawer-title-ink-opacity);
-  @include mdc-drawer-subtitle-ink-color($mdc-drawer-subtitle-ink-color, $mdc-drawer-subtitle-ink-opacity);
-  @include mdc-drawer-border-color($mdc-drawer-divider-color, $mdc-drawer-divider-opacity);
-  @include mdc-drawer-surface-fill-color($mdc-drawer-surface-fill-color, $mdc-drawer-surface-fill-opacity);
-  @include mdc-drawer-icon-ink-color($mdc-drawer-icon-ink-color, $mdc-drawer-icon-ink-opacity);
-  @include mdc-drawer-meta-ink-color($mdc-drawer-icon-ink-color, $mdc-drawer-icon-ink-opacity);
-  @include mdc-drawer-item-text-color($mdc-drawer-inactive-ink-color, $mdc-drawer-inactive-ink-opacity);
-  @include mdc-drawer-item-activated-text-color($mdc-drawer-activated-ink-color, $mdc-drawer-activated-ink-opacity);
+  @include mdc-drawer-title-ink-color($mdc-drawer-title-ink-color);
+  @include mdc-drawer-subtitle-ink-color($mdc-drawer-subtitle-ink-color);
+  @include mdc-drawer-border-color($mdc-drawer-divider-color);
+  @include mdc-drawer-surface-fill-color($mdc-drawer-surface-fill-color);
+  @include mdc-drawer-item-icon-ink-color($mdc-drawer-item-inactive-ink-color);
+  @include mdc-drawer-item-text-ink-color($mdc-drawer-item-inactive-ink-color);
+  @include mdc-drawer-item-activated-icon-ink-color($mdc-drawer-item-activated-ink-color);
+  @include mdc-drawer-item-activated-text-ink-color($mdc-drawer-item-activated-ink-color);
   @include mdc-drawer-item-corner-radius(4px);
 
   display: flex;
@@ -63,19 +63,32 @@
   }
 
   .mdc-list-item {
-    @include mdc-typography(body2);
+    @include mdc-typography(subtitle2);
 
     height: calc(48px - 2 * #{$mdc-drawer-list-item-spacing});
-    margin: $mdc-drawer-list-item-spacing 8px;
+    // To accomodate margin conflict.
+    margin: ($mdc-drawer-list-item-spacing * 2) 8px;
     padding: 0 $mdc-drawer-surface-padding / 2;
+  }
+
+  .mdc-list-item:nth-child(1) {
+    margin-top: 2px;
+  }
+
+  .mdc-list-item:nth-last-child(1) {
+    margin-bottom: 0;
   }
 
   .mdc-list-group__subheader {
     @include mdc-typography(body2);
-    @include mdc-typography-baseline-top(28px);
+    @include mdc-typography-baseline-top(24px);
 
     margin: 0;
     padding: 0 $mdc-drawer-surface-padding;
+  }
+
+  .mdc-list-divider {
+    margin: 3px 0 4px 0;
   }
 }
 
