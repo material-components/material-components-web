@@ -4,7 +4,7 @@ layout: detail
 section: components
 excerpt: "A single line item within a list."
 iconId: list
-path: /catalog/lists/list-item
+path: /catalog/lists/list-item/
 -->
 
 # List Item

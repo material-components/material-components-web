@@ -47,7 +47,6 @@ class MDCListItemAdapter {
   /**
    * Sets the tabindex to the value specified for all button/a element children of
    * the list item at the index specified.
-   * @param {number} listItemIndex
    * @param {number} tabIndexValue
    */
   setTabIndexForChildren(tabIndexValue) {}
