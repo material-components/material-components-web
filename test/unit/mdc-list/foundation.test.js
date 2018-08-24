@@ -58,7 +58,7 @@ Object.defineProperty(Array.prototype, 'contains',
     configurable: false,
     writable: false,
     value: function(find) {
-      return (this.indexOf(find) > -1);
+      return (this.indexOf(find) > -1)
     },
   });
 

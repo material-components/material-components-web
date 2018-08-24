@@ -93,7 +93,7 @@ class MDCList extends MDCComponent {
    */
   getListItemIndex_(evt) {
     let eventTarget = /** @type {HTMLElement} */ (evt.target);
-    let ndx = -1;
+    let index = -1;
 
     // Find the first ancestor that is a list item or the list.
     while (!eventTarget.classList.contains(cssClasses.LIST_ITEM_CLASS)
@@ -103,10 +103,10 @@ class MDCList extends MDCComponent {
 
     // Get the index of the element if it is a list item.
     if (eventTarget.classList.contains(cssClasses.LIST_ITEM_CLASS)) {
-      ndx = this.listElements_.indexOf(eventTarget);
+      index = this.listElements_.indexOf(eventTarget);
     }
 
-    return ndx;
+    return index;
   }
 
   /**
@@ -115,8 +115,8 @@ class MDCList extends MDCComponent {
    * @private
    */
   handleFocusInEvent_(evt) {
-    const ndx = this.getListItemIndex_(evt);
-    this.foundation_.handleFocusIn(evt, ndx);
+    const index = this.getListItemIndex_(evt);
+    this.foundation_.handleFocusIn(evt, index);
   }
 
   /**
@@ -125,8 +125,8 @@ class MDCList extends MDCComponent {
    * @private
    */
   handleFocusOutEvent_(evt) {
-    const ndx = this.getListItemIndex_(evt);
-    this.foundation_.handleFocusOut(evt, ndx);
+    const index = this.getListItemIndex_(evt);
+    this.foundation_.handleFocusOut(evt, index);
   }
 
   /**
@@ -135,10 +135,10 @@ class MDCList extends MDCComponent {
    * @private
    */
   handleKeydownEvent_(evt) {
-    const ndx = this.getListItemIndex_(evt);
+    const index = this.getListItemIndex_(evt);
 
-    if (ndx >= 0) {
-      this.foundation_.handleKeydown(evt, evt.target.classList.contains(cssClasses.LIST_ITEM_CLASS), ndx);
+    if (index >= 0) {
+      this.foundation_.handleKeydown(evt, evt.target.classList.contains(cssClasses.LIST_ITEM_CLASS), index);
     }
   }
 
@@ -228,8 +228,8 @@ class MDCList extends MDCComponent {
         const listItemChildren = [].slice.call(element.querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS));
         listItemChildren.forEach((ele) => ele.setAttribute('tabindex', tabIndexValue));
       },
-      followHref: (ndx) => {
-        const listItem = this.listElements_[ndx];
+      followHref: (index) => {
+        const listItem = this.listElements_[index];
         if (listItem && listItem.href) {
           listItem.click();
         }
