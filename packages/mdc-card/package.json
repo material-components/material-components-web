@@ -2,7 +2,7 @@
   "name": "@material/card",
   "version": "0.38.1",
   "description": "The Material Components for the web card component",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "keywords": [
     "material components",
     "material design",
