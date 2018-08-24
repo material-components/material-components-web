@@ -1,18 +1,24 @@
 /**
  * @license
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2016 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import MDCFoundation from '@material/base/foundation';
@@ -176,7 +182,7 @@ class MDCRippleFoundation extends MDCFoundation {
    * @return {boolean}
    * @private
    */
-  isSupported_() {
+  supportsPressRipple_() {
     return this.adapter_.browserSupportsCssVars();
   }
 
@@ -196,57 +202,61 @@ class MDCRippleFoundation extends MDCFoundation {
 
   /** @override */
   init() {
-    if (!this.isSupported_()) {
-      return;
-    }
-    this.registerRootHandlers_();
+    const supportsPressRipple = this.supportsPressRipple_();
 
-    const {ROOT, UNBOUNDED} = MDCRippleFoundation.cssClasses;
-    requestAnimationFrame(() => {
-      this.adapter_.addClass(ROOT);
-      if (this.adapter_.isUnbounded()) {
-        this.adapter_.addClass(UNBOUNDED);
-        // Unbounded ripples need layout logic applied immediately to set coordinates for both shade and ripple
-        this.layoutInternal_();
-      }
-    });
+    this.registerRootHandlers_(supportsPressRipple);
+
+    if (supportsPressRipple) {
+      const {ROOT, UNBOUNDED} = MDCRippleFoundation.cssClasses;
+      requestAnimationFrame(() => {
+        this.adapter_.addClass(ROOT);
+        if (this.adapter_.isUnbounded()) {
+          this.adapter_.addClass(UNBOUNDED);
+          // Unbounded ripples need layout logic applied immediately to set coordinates for both shade and ripple
+          this.layoutInternal_();
+        }
+      });
+    }
   }
 
   /** @override */
   destroy() {
-    if (!this.isSupported_()) {
-      return;
-    }
+    if (this.supportsPressRipple_()) {
+      if (this.activationTimer_) {
+        clearTimeout(this.activationTimer_);
+        this.activationTimer_ = 0;
+        const {FG_ACTIVATION} = MDCRippleFoundation.cssClasses;
+        this.adapter_.removeClass(FG_ACTIVATION);
+      }
 
-    if (this.activationTimer_) {
-      clearTimeout(this.activationTimer_);
-      this.activationTimer_ = 0;
-      const {FG_ACTIVATION} = MDCRippleFoundation.cssClasses;
-      this.adapter_.removeClass(FG_ACTIVATION);
+      const {ROOT, UNBOUNDED} = MDCRippleFoundation.cssClasses;
+      requestAnimationFrame(() => {
+        this.adapter_.removeClass(ROOT);
+        this.adapter_.removeClass(UNBOUNDED);
+        this.removeCssVars_();
+      });
     }
 
     this.deregisterRootHandlers_();
     this.deregisterDeactivationHandlers_();
-
-    const {ROOT, UNBOUNDED} = MDCRippleFoundation.cssClasses;
-    requestAnimationFrame(() => {
-      this.adapter_.removeClass(ROOT);
-      this.adapter_.removeClass(UNBOUNDED);
-      this.removeCssVars_();
-    });
   }
 
-  /** @private */
-  registerRootHandlers_() {
-    ACTIVATION_EVENT_TYPES.forEach((type) => {
-      this.adapter_.registerInteractionHandler(type, this.activateHandler_);
-    });
+  /**
+   * @param {boolean} supportsPressRipple Passed from init to save a redundant function call
+   * @private
+   */
+  registerRootHandlers_(supportsPressRipple) {
+    if (supportsPressRipple) {
+      ACTIVATION_EVENT_TYPES.forEach((type) => {
+        this.adapter_.registerInteractionHandler(type, this.activateHandler_);
+      });
+      if (this.adapter_.isUnbounded()) {
+        this.adapter_.registerResizeHandler(this.resizeHandler_);
+      }
+    }
+
     this.adapter_.registerInteractionHandler('focus', this.focusHandler_);
     this.adapter_.registerInteractionHandler('blur', this.blurHandler_);
-
-    if (this.adapter_.isUnbounded()) {
-      this.adapter_.registerResizeHandler(this.resizeHandler_);
-    }
   }
 
   /**
