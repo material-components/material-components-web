@@ -2,6 +2,7 @@
 title: "Drawers"
 layout: detail
 section: components
+excerpt: "Permanent, dismissible, and modal drawers."
 iconId: side_navigation
 path: /catalog/drawers/
 -->
@@ -171,7 +172,7 @@ Dismissible drawers are by default hidden off screen, and can slide into view. D
 </body>
 ```
 
-> Use the `mdc-drawer-app-content` class to the element sibling to the drawer to get the open/close animations to work.
+> Apply the `mdc-drawer-app-content` class to the sibling element after the drawer for the open/close animations to work.
 
 #### Usage with Top App Bar
 
@@ -241,7 +242,7 @@ body {
 }
 ```
 
-JavaScript to toggle drawer when navigation button is clicked looks like this:
+The JavaScript to toggle the drawer when the navigation button is clicked looks like this:
 
 ```js
 import {MDCTopAppBar} from "@material/top-app-bar";
@@ -254,7 +255,7 @@ topAppBar.listen('MDCTopAppBar:nav', () => {
 
 ### Modal Drawer
 
-Modal drawers are elevated above most of the app’s UI and don’t affect the screen’s layout grid.
+Modal drawers are elevated above most of the app's UI and don't affect the screen's layout grid.
 
 ```html
 <body>
