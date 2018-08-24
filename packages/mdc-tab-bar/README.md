@@ -40,7 +40,7 @@ npm install @material/tab-bar
       <div class="mdc-tab-scroller__scroll-content">
         <button class="mdc-tab mdc-tab--active" role="tab" aria-selected="true" tabindex="0">
           <span class="mdc-tab__content">
-            <span class="mdc-tab__icon">heart</span>
+            <span class="mdc-tab__icon material-icons">favorite</span>
             <span class="mdc-tab__text-label">Favorites</span>
           </span>
           <span class="mdc-tab-indicator mdc-tab-indicator--active">
@@ -72,6 +72,11 @@ const tabBar = new MDCTabBar(document.querySelector('.mdc-tab-bar'));
 ```
 
 > See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
+
+### Variants
+
+MDC Tab Bar does not have any variants; however, its subcomponents do. See the [Tab Scroller](../mdc-tab-scroller),
+[Tab](../mdc-tab), and [Tab Indicator](../mdc-tab-indicator) documentation for more information.
 
 ## Style Customization
 
@@ -114,13 +119,14 @@ Method Signature | Description
 `getScrollContentWidth() => number` | Returns the width of the Tab Scroller's scroll content element.
 `getOffsetWidth() => number` | Returns the offsetWidth of the root element.
 `isRTL() => boolean` | Returns if the text direction is RTL.
+`setActiveTab(index: number) => void` | Sets the tab at the given index to be activated.
 `activateTabAtIndex(index: number, clientRect: ClientRect) => void` | Activates the Tab at the given index with the given clientRect.
 `deactivateTabAtIndex(index) => void` | Deactivates the Tab at the given index.
 `focusTabAtIndex(index: number) => void` | Focuses the Tab at the given index.
 `getTabIndicatorClientRectAtIndex(index: number) => ClientRect` | Returns the client rect of the Tab at the given index.
 `getTabDimensionsAtIndex(index) => MDCTabDimensions` | Returns the dimensions of the Tab at the given index.
 `getTabListLength() => number` | Returns the number of child Tab components.
-`getActiveTabIndex() => number` | Returns the index of the active Tab.
+`getPreviousActiveTabIndex() => number` | Returns the index of the previously active Tab.
 `getFocusedTabIndex() => number` | Returns the index of the focused Tab.
 `getIndexOfTab(tab: MDCTab) => number` | Returns the index of the given Tab instance.
 `notifyTabActivated(index: number) => void` | Emits the `MDCTabBar:activated` event.
@@ -129,7 +135,7 @@ Method Signature | Description
 
 Method Signature | Description
 --- | ---
-`activateTab(index: number) => void` | Activates the Tab at the given index.
+`activateTab(index: number) => void` | Activates the tab at the given index.
 `handleKeyDown(evt: Event) => void` | Handles the logic for the `"keydown"` event.
 `handleTabInteraction(evt: Event) => void` | Handles the logic for the `"MDCTab:interacted"` event.
 `scrollIntoView(index: number) => void` | Scrolls the Tab at the given index into view.
