@@ -229,22 +229,26 @@ test('adapter#setTabIndexForListItemChildren sets the child button/a elements of
 });
 
 test('adapter#followHref invokes click on element with href', () => {
-  const fakeElement = {
-    click: td.func('click'),
-    href: '#',
-  };
-  const {component} = setupTest();
-  component.getDefaultFoundation().adapter_.followHref(fakeElement);
+  const {root, component} = setupTest();
+  const anchorTag = document.createElement('a');
+  anchorTag.href = '#';
+  anchorTag .click = td.func('click');
+  anchorTag.classList.add('mdc-list-item');
+  root.appendChild(anchorTag);
+  component.getDefaultFoundation().adapter_.followHref(root.querySelectorAll('.mdc-list-item').length - 1);
 
-  td.verify(fakeElement.click());
+  td.verify(anchorTag.click(), {times: 1});
 });
 
 test('adapter#followHref does not invoke click on element without href', () => {
-  const fakeElement = {click: td.func('click')};
-  const {component} = setupTest();
-  component.getDefaultFoundation().adapter_.followHref(fakeElement);
+  const {root, component} = setupTest();
+  const anchorTag = document.createElement('a');
+  anchorTag .click = td.func('click');
+  anchorTag.classList.add('mdc-list-item');
+  root.appendChild(anchorTag);
+  component.getDefaultFoundation().adapter_.followHref(root.querySelectorAll('.mdc-list-item').length - 1);
 
-  td.verify(fakeElement.click(), {times: 0});
+  td.verify(anchorTag.click(), {times: 0});
 });
 
 test('layout adds tabindex=-1 to all list items without a tabindex', () => {

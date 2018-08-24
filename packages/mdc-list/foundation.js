@@ -196,8 +196,8 @@ class MDCListFoundation extends MDCFoundation {
       if (isRootListItem) {
         this.setSelectedIndex(currentIndex);
 
-        // Explicitly activate links, since we're preventing default on Enter, and Space doesn't activate them
-        this.adapter_.followHref(evt.target);
+        // Explicitly activate links, since we're preventing default on Enter, and Space doesn't activate them.
+        this.adapter_.followHref(currentIndex);
       }
     }
   }
