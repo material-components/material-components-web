@@ -75,8 +75,11 @@
   overflow: hidden;
   will-change: opacity, transform, color;
 
+  // stylelint-disable-next-line plugin/selector-bem-pattern
   .mdc-floating-label {
     @include mdc-rtl-reflexive-position(left, 12px);
+
+    pointer-events: none;
   }
 }
 
@@ -109,19 +112,12 @@
     box-shadow: none;
   }
 }
-
-// stylelint-disable plugin/selector-bem-pattern
-.mdc-floating-label {
-  pointer-events: none;
-}
-
-// Move label when text-field gets autofilled in Chrome
+// stylelint-disable-next-line plugin/selector-bem-pattern
+// Move label when text-field gets auto-filled in Chrome.
 .mdc-text-field__input:-webkit-autofill + .mdc-floating-label {
   transform: translateY(-50%) scale(.75);
   cursor: auto;
 }
-
-// stylelint-enable plugin/selector-bem-pattern
 
 .mdc-text-field--outlined {
   @include mdc-text-field-outlined_;

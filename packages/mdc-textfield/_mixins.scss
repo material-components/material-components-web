@@ -375,7 +375,6 @@
   // Outlined uses 16px for text alignment when using a trailing icon.
   &.mdc-text-field--outlined {
     @include mdc-text-field-icon-horizontal-position_(right, $mdc-text-field-icon-position, $mdc-text-field-icon-padding);
-
   }
 }
 
@@ -384,7 +383,6 @@
 }
 
 // Full Width
-
 @mixin mdc-text-field-fullwidth_ {
   width: 100%;
 
@@ -405,7 +403,6 @@
 }
 
 // Textarea
-
 @mixin mdc-text-field-textarea-disabled_ {
   @include mdc-text-field-textarea-stroke-color_($mdc-textarea-disabled-border-color);
   @include mdc-text-field-textarea-fill-color_($mdc-textarea-disabled-background);
