@@ -98,7 +98,7 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
     const width = this.adapter_.getWidth();
     const height = this.adapter_.getHeight();
     const cornerWidth = radius + 1.2;
-    const leadingStrokeLength = Math.abs(11 - cornerWidth);
+    const leadingStrokeLength = Math.abs(12 - cornerWidth);
     const paddedNotchWidth = notchWidth + 8;
 
     // The right, bottom, and left sides of the outline follow the same SVG path.
