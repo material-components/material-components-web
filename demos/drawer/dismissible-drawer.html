@@ -198,7 +198,7 @@
           selectedDestinationEl.textContent = event.target.lastChild.textContent;
           mainEl.querySelector('input').focus();
         });
-        document.body.addEventListener('MDCDrawer:close', function() {
+        document.body.addEventListener('MDCDrawer:closed', function() {
           mainEl.querySelector('input').focus();
         });
       });

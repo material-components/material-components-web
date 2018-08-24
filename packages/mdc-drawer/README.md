@@ -338,7 +338,7 @@ listEl.addEventListener('click', (event) => {
   mainContentEl.querySelector('input, button').focus();
 });
 
-document.body.addEventListener('MDCDrawer:close', () => {
+document.body.addEventListener('MDCDrawer:closed', () => {
   mainContentEl.querySelector('input, button').focus();
 });
 ```
@@ -355,7 +355,7 @@ listEl.addEventListener('click', (event) => {
   drawer.open = false;
 });
 
-document.body.addEventListener('MDCDrawer:close', () => {
+document.body.addEventListener('MDCDrawer:closed', () => {
   mainContentEl.querySelector('input, button').focus();
 });
 ```
@@ -370,8 +370,8 @@ Property | Value Type | Description
 
 Event Name | Event Data Structure | Description
 --- | --- | ---
-`MDCDrawer:open` | None | Emits when the navigation drawer has opened.
-`MDCDrawer:close` | None | Emits when the navigation drawer has closed.
+`MDCDrawer:opened` | None | Emits when the navigation drawer has opened.
+`MDCDrawer:closed` | None | Emits when the navigation drawer has closed.
 
 ## Usage within Web Frameworks
 
@@ -389,8 +389,8 @@ Method Signature | Description
 `saveFocus() => void` | Saves the focus of currently active element.
 `restoreFocus() => void` | Restores focus to element previously saved with 'saveFocus'.
 `focusActiveNavigationItem() => void` | Focuses the active / selected navigation item.
-`notifyClose() => void` | Emits the `MDCDrawer:close` event.
-`notifyOpen() => void` | Emits the `MDCDrawer:open` event.
+`notifyClose() => void` | Emits the `MDCDrawer:closed` event.
+`notifyOpen() => void` | Emits the `MDCDrawer:opened` event.
 `trapFocus() => void` | Traps focus on root element and focuses the active navigation element.
 `releaseFocus() => void` | Releases focus trap from root element which was set by `trapFocus` and restores focus to where it was prior to calling `trapFocus`.
 

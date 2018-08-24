@@ -78,12 +78,12 @@ class MDCDrawerAdapter {
   focusActiveNavigationItem() {}
 
   /**
-   * Emits a custom event "MDCDrawer:close" denoting the drawer has closed.
+   * Emits a custom event "MDCDrawer:closed" denoting the drawer has closed.
    */
   notifyClose() {}
 
   /**
-   * Emits a custom event "MDCDrawer:open" denoting the drawer has opened.
+   * Emits a custom event "MDCDrawer:opened" denoting the drawer has opened.
    */
   notifyOpen() {}
 

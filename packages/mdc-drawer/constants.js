@@ -35,8 +35,8 @@ const cssClasses = {
 const strings = {
   APP_CONTENT_SELECTOR: '.mdc-drawer-app-content',
   SCRIM_SELECTOR: '.mdc-drawer-scrim',
-  CLOSE_EVENT: 'MDCDrawer:close',
-  OPEN_EVENT: 'MDCDrawer:open',
+  CLOSE_EVENT: 'MDCDrawer:closed',
+  OPEN_EVENT: 'MDCDrawer:opened',
 };
 
 export {cssClasses, strings};
