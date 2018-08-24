@@ -62,7 +62,8 @@ For permanently visible drawer, the list must be instantiated for appropriate ke
 
 ```js
 import {MDCList} from "@material/list";
-MDCList.attachTo(document.querySelector('.mdc-list'));
+const list = MDCList.attachTo(document.querySelector('.mdc-list'));
+list.wrapFocus = true;
 ```
 
 Other variants use the `MDCDrawer` component, which will instantiate `MDCList` automatically:
@@ -82,34 +83,34 @@ const drawer = MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
     <nav class="mdc-list">
       <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
-        <span class="mdc-list-item__label">Inbox</span>
+        Inbox
       </a>
       <a class="mdc-list-item" href="#">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>
-        <span class="mdc-list-item__label">Star</span>
+        Star
       </a>
       <a class="mdc-list-item" href="#">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
-        <span class="mdc-list-item__label">Sent Mail</span>
+        Sent Mail
       </a>
       <a class="mdc-list-item" href="#">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
-        <span class="mdc-list-item__label">Drafts</span>
+        Drafts
       </a>
 
       <hr class="mdc-list-divider">
       <h6 class="mdc-list-group__subheader">Labels</h6>
       <a class="mdc-list-item" href="#">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
-        <span class="mdc-list-item__label">Family</span>
+        Family
       </a>
       <a class="mdc-list-item" href="#">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
-        <span class="mdc-list-item__label">Friends</span>
+        Friends
       </a>
       <a class="mdc-list-item" href="#">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
-        <span class="mdc-list-item__label">Work</span>
+        Work
       </a>
     </nav>
   </div>
@@ -373,3 +374,39 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `handleScrimClick() => void` | Handles click event on scrim.
+
+
+## Accessibility
+
+### Focus Management
+
+It is recommended to shift focus to first focusable element of main content when drawer is closed or one of the destination item is selected. By default it focuses on the menu button which opens it when drawer is closed.
+
+**Dismissible Drawer**
+
+```js
+const listEl = drawerEl.querySelector('.mdc-drawer .mdc-list');
+const mainContentEl = document.body.querySelector('.main-content');
+listEl.addEventListener('click', (event) => {
+  mainContentEl.querySelector('input, button').focus();
+});
+
+document.body.addEventListener('MDCDrawer:close', () => {
+  mainContentEl.querySelector('input, button').focus();
+});
+```
+
+**Modal Drawer**
+
+```js
+const listEl = drawerEl.querySelector('.mdc-drawer .mdc-list');
+const mainContentEl = document.body.querySelector('.main-content');
+listEl.addEventListener('click', (event) => {
+  drawer.open = false;
+});
+
+document.body.addEventListener('MDCDrawer:close', () => {
+  // Focus on first focusable element in main content only after drawer is closed.
+  mainContentEl.querySelector('input, button').focus();
+});
+```

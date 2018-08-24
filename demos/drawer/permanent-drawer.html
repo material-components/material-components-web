@@ -88,7 +88,7 @@
       <main class="demo-main">
         <div class="mdc-top-app-bar--fixed-adjust"></div>
         <h1 class="mdc-typography--headline4">Permanent Drawer</h1>
-        <p class="mdc-typography--body1">It sits to the left of this content.</p>
+        <p class="mdc-typography--body1">It sits to the left of this content. Currently active destination: <strong class="demo-selected-destination">Inbox</strong></p>
 
         <div id="demo-radio-buttons">
           <div class="mdc-form-field">
@@ -171,7 +171,15 @@
         var topAppBar = new mdc.topAppBar.MDCTopAppBar(document.getElementById('app-bar'));
         topAppBar.setScrollTarget(document.getElementById('demo-content'));
 
-        mdc.list.MDCList.attachTo(drawerEl.querySelector('.mdc-list'));
+        var listEl = drawerEl.querySelector('.mdc-list');
+        mdc.list.MDCList.attachTo(listEl);
+
+        var selectedDestinationEl = document.querySelector('.demo-selected-destination');
+        var mainEl = document.querySelector('.demo-main');
+        listEl.addEventListener('click', function(event) {
+          selectedDestinationEl.textContent = event.target.lastChild.textContent;
+          mainEl.querySelector('input').focus();
+        });
       });
     </script>
   </body>
