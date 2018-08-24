@@ -21,8 +21,8 @@
 //
 
 // Hard coded since the color is not present in any palette.
-$mdc-snackbar-background-color: #323232;
-$mdc-snackbar-foreground-color: white;
+$mdc-snackbar-background-color: #323232 !default;
+$mdc-snackbar-foreground-color: white !default;
 // TODO: Better spot to pull this breakpoint?
 //$snackbar-tablet-breakpoint: $grid-tablet-breakpoint;
-$mdc-snackbar-tablet-breakpoint: 600px;
+$mdc-snackbar-tablet-breakpoint: 600px !default;
