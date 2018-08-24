@@ -78,7 +78,7 @@
     "extract-text-webpack-plugin": "^3.0.0",
     "fs-extra": "^6.0.1",
     "glob": "^7.1.1",
-    "google-closure-compiler": "^20180402.0.0",
+    "google-closure-compiler": "^20180805.0.0",
     "handlebars": "^4.0.11",
     "husky": "^0.14.0",
     "is-online": "^7.0.0",

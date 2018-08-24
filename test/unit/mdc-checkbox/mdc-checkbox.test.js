@@ -31,7 +31,6 @@ import {createMockRaf} from '../helpers/raf';
 import {MDCCheckbox} from '../../../packages/mdc-checkbox';
 import {MDCRipple} from '../../../packages/mdc-ripple';
 import {strings} from '../../../packages/mdc-checkbox/constants';
-import {getCorrectEventName} from '../../../packages/mdc-animation';
 import {getMatchesProperty} from '../../../packages/mdc-ripple/util';
 
 function getFixture() {
@@ -139,6 +138,36 @@ test('get ripple returns a MDCRipple instance', () => {
   assert.isOk(component.ripple instanceof MDCRipple);
 });
 
+test('checkbox change event calls #foundation.handleChange', () => {
+  const {cb, component} = setupTest();
+  component.foundation_.handleChange = td.func();
+  domEvents.emit(cb, 'change');
+  td.verify(component.foundation_.handleChange(), {times: 1});
+});
+
+test('root animationend event calls #foundation.handleAnimationEnd', () => {
+  const {root, component} = setupTest();
+  component.foundation_.handleAnimationEnd = td.func();
+  domEvents.emit(root, 'animationend');
+  td.verify(component.foundation_.handleAnimationEnd(), {times: 1});
+});
+
+test('checkbox change event handler is destroyed on #destroy', () => {
+  const {cb, component} = setupTest();
+  component.foundation_.handleChange = td.func();
+  component.destroy();
+  domEvents.emit(cb, 'change');
+  td.verify(component.foundation_.handleChange(), {times: 0});
+});
+
+test('root animationend event handler is destroyed on #destroy', () => {
+  const {root, component} = setupTest();
+  component.foundation_.handleAnimationEnd = td.func();
+  component.destroy();
+  domEvents.emit(root, 'animationend');
+  td.verify(component.foundation_.handleAnimationEnd(), {times: 0});
+});
+
 test('adapter#addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
@@ -163,50 +192,6 @@ test('adapter#removeNativeControlAttr removes an attribute from the input elemen
   cb.setAttribute('aria-checked', 'mixed');
   component.getDefaultFoundation().adapter_.removeNativeControlAttr('aria-checked');
   assert.isFalse(cb.hasAttribute('aria-checked'));
-});
-
-test('adapter#registerAnimationEndHandler adds an animation end event listener on the root element', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('animationEndHandler');
-  component.getDefaultFoundation().adapter_.registerAnimationEndHandler(handler);
-  domEvents.emit(root, getCorrectEventName(window, 'animationend'));
-
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('adapter#deregisterAnimationEndHandler removes an animation end event listener on the root el', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('animationEndHandler');
-  const animEndEvtName = getCorrectEventName(window, 'animationend');
-  root.addEventListener(animEndEvtName, handler);
-
-  component.getDefaultFoundation().adapter_.deregisterAnimationEndHandler(handler);
-  domEvents.emit(root, animEndEvtName);
-
-  td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
-test('adapter#registerChangeHandler adds a change event listener to the native checkbox element', () => {
-  const {root, component} = setupTest();
-  const nativeCb = root.querySelector(strings.NATIVE_CONTROL_SELECTOR);
-  const handler = td.func('changeHandler');
-
-  component.getDefaultFoundation().adapter_.registerChangeHandler(handler);
-  domEvents.emit(nativeCb, 'change');
-
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('adapter#deregisterChangeHandler adds a change event listener to the native checkbox element', () => {
-  const {root, component} = setupTest();
-  const nativeCb = root.querySelector(strings.NATIVE_CONTROL_SELECTOR);
-  const handler = td.func('changeHandler');
-  nativeCb.addEventListener('change', handler);
-
-  component.getDefaultFoundation().adapter_.deregisterChangeHandler(handler);
-  domEvents.emit(nativeCb, 'change');
-
-  td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
 test('adapter#getNativeControl returns the native checkbox element', () => {
