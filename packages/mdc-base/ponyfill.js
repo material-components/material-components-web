@@ -21,8 +21,9 @@
  * THE SOFTWARE.
  */
 
-/*
- * DOM ponyfills
+/**
+ * @fileoverview A "ponyfill" is a polyfill that doesn't modify the global prototype chain.
+ * This makes ponyfills safer than traditional polyfills, especially for libraries like MDC.
  */
 
 /**
