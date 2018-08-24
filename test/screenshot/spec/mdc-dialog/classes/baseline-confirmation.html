@@ -45,7 +45,11 @@
           </header>
           <section class="mdc-dialog__content" id="test-dialog__body--confirmation-1-line">
 
-            <ul class="mdc-list" id="leading-checkbox-list" aria-orientation="vertical">
+            <!--
+              Inline `style="list-style-type: none"` needed to prevent rendering bug in Edge and IE 11.
+              See https://stackoverflow.com/a/23717689/467582
+            -->
+            <ul class="mdc-list" id="leading-checkbox-list" aria-orientation="vertical" style="list-style-type: none;">
               <li class="mdc-list-item" tabindex="0">
                 <span class="mdc-list-item__graphic">
                   <div class="mdc-radio">
