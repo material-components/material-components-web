@@ -291,7 +291,7 @@ class MDCCheckboxFoundation extends MDCFoundation {
       this.adapter_.setNativeControlAttr(
         strings.ARIA_CHECKED_ATTR, strings.ARIA_CHECKED_INDETERMINATE_VALUE);
     } else {
-      // the on/off state does not need to keep track of aria-checked, since
+      // The on/off state does not need to keep track of aria-checked, since
       // the screenreader uses the checked property on the checkbox element.
       this.adapter_.removeNativeControlAttr(strings.ARIA_CHECKED_ATTR);
     }

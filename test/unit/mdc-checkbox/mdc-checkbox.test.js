@@ -152,7 +152,7 @@ test('root animationend event calls #foundation.handleAnimationEnd', () => {
   td.verify(component.foundation_.handleAnimationEnd(), {times: 1});
 });
 
-test('checkbox change event is destroyed on #destroy', () => {
+test('checkbox change event handler is destroyed on #destroy', () => {
   const {cb, component} = setupTest();
   component.foundation_.handleChange = td.func();
   component.destroy();
@@ -160,7 +160,7 @@ test('checkbox change event is destroyed on #destroy', () => {
   td.verify(component.foundation_.handleChange(), {times: 0});
 });
 
-test('root animationend event is destroyed on #destroy', () => {
+test('root animationend event handler is destroyed on #destroy', () => {
   const {root, component} = setupTest();
   component.foundation_.handleAnimationEnd = td.func();
   component.destroy();

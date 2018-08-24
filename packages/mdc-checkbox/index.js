@@ -66,7 +66,7 @@ class MDCCheckbox extends MDCComponent {
     this.handleChange_ = () => this.foundation_.handleChange();
     this.handleAnimationEnd_= () => this.foundation_.handleAnimationEnd();
     this.nativeCb_.addEventListener('change', this.handleChange_);
-    this.root_.addEventListener(getCorrectEventName(window, 'animationend'), this.handleAnimationEnd_);
+    this.listen(getCorrectEventName(window, 'animationend'), this.handleAnimationEnd_);
   }
 
   /**
@@ -92,7 +92,6 @@ class MDCCheckbox extends MDCComponent {
       removeClass: (className) => this.root_.classList.remove(className),
       setNativeControlAttr: (attr, value) => this.nativeCb_.setAttribute(attr, value),
       removeNativeControlAttr: (attr) => this.nativeCb_.removeAttribute(attr),
-      deregisterChangeHandler: (handler) => this.nativeCb_.removeEventListener('change', handler),
       getNativeControl: () => this.nativeCb_,
       forceLayout: () => this.root_.offsetWidth,
       isAttachedToDOM: () => Boolean(this.root_.parentNode),
