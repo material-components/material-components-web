@@ -66,9 +66,9 @@ body {
 }
 
 .custom-drawer--fill-color {
-  @include mdc-drawer-surface-fill-color(pink, $mdc-drawer-surface-fill-opacity);
+  @include mdc-drawer-surface-fill-color(pink);
 }
 
 .custom-drawer--fill-color-accessible {
-  @include mdc-drawer-fill-color-accessible(darkcyan, 1);
+  @include mdc-drawer-fill-color-accessible(darkcyan);
 }

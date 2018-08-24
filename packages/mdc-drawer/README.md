@@ -58,11 +58,12 @@ npm install @material/drawer
 
 ### JavaScript Instantiation
 
-For the standard drawer, the list must be instantiated for appropriate keyboard interaction:
+For permanently visible drawer, the list must be instantiated for appropriate keyboard interaction:
 
 ```js
 import {MDCList} from "@material/list";
-MDCList.attachTo(document.querySelector('.mdc-list'));
+const list = MDCList.attachTo(document.querySelector('.mdc-list'));
+list.wrapFocus = true;
 ```
 
 Other variants use the `MDCDrawer` component, which will instantiate `MDCList` automatically:
@@ -82,34 +83,34 @@ const drawer = MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
     <nav class="mdc-list">
       <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
-        <span class="mdc-list-item__label">Inbox</span>
+        Inbox
       </a>
       <a class="mdc-list-item" href="#">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>
-        <span class="mdc-list-item__label">Star</span>
+        Star
       </a>
       <a class="mdc-list-item" href="#">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
-        <span class="mdc-list-item__label">Sent Mail</span>
+        Sent Mail
       </a>
       <a class="mdc-list-item" href="#">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
-        <span class="mdc-list-item__label">Drafts</span>
+        Drafts
       </a>
 
       <hr class="mdc-list-divider">
       <h6 class="mdc-list-group__subheader">Labels</h6>
       <a class="mdc-list-item" href="#">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
-        <span class="mdc-list-item__label">Family</span>
+        Family
       </a>
       <a class="mdc-list-item" href="#">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
-        <span class="mdc-list-item__label">Friends</span>
+        Friends
       </a>
       <a class="mdc-list-item" href="#">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
-        <span class="mdc-list-item__label">Work</span>
+        Work
       </a>
     </nav>
   </div>
@@ -304,21 +305,59 @@ Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-drawer-border-color($color, $opacity)` | Sets border color of `mdc-drawer` surface.
-`mdc-drawer-divider-color($color, $opacity)` | Sets divider color found between list groups.
+`mdc-drawer-border-color($color)` | Sets border color of `mdc-drawer` surface.
+`mdc-drawer-divider-color($color)` | Sets divider color found between list groups.
 `mdc-drawer-fill-color-accessible($color)` | Sets the fill color to `$color`, and list item and icon ink colors to an accessible color relative to `$color`.
-`mdc-drawer-surface-fill-color($color, $opacity)` | Sets the background color of `mdc-drawer`.
-`mdc-drawer-title-ink-color($color, $opacity)` | Sets the ink color of `mdc-drawer__title`.
+`mdc-drawer-surface-fill-color($color)` | Sets the background color of `mdc-drawer`.
+`mdc-drawer-title-ink-color($color)` | Sets the ink color of `mdc-drawer__title`.
 `mdc-drawer-subtitle-ink-color` | Sets drawer subtitle and list subheader ink color.
-`mdc-drawer-icon-fill-color($color, $opacity)` | Sets drawer list item graphic icon background color.
-`mdc-drawer-icon-ink-color($color, $opacity)` | Sets drawer list item graphic icon ink color.
-`mdc-drawer-icon-activated-ink-color($color, $opacity)` | Sets activated drawer list item icon ink color.
-`mdc-drawer-item-activated-text-color($color, $opacity)` | Sets activated drawer list item ink color.
+`mdc-drawer-item-icon-ink-color($color)` | Sets drawer list item graphic icon ink color.
+`mdc-drawer-item-text-ink-color($color)` | Sets drawer list item text ink color.
+`mdc-drawer-item-activated-icon-ink-color($color)` | Sets activated drawer list item icon ink color.
+`mdc-drawer-item-activated-text-ink-color($color)` | Sets activated drawer list item text ink color.
 `mdc-drawer-item-corner-radius($radius)` | Sets the corner border radius of the drawer list item.
-`mdc-drawer-item-text-color($color, $opacity)` | Sets drawer list item ink color.
-`mdc-drawer-meta-ink-color($color, $opacity)` | Sets drawer list item meta icon ink color.
 `mdc-drawer-activated-overlay-color($color)` | Sets the overlay color of the activated drawer list item.
-`mdc-drawer-scrim-fill-color($color, $opacity)` | Sets the fill color of `mdc-drawer-scrim`.
+`mdc-drawer-scrim-fill-color($color)` | Sets the fill color of `mdc-drawer-scrim`.
+
+## Accessibility
+
+### Focus Management
+
+It is recommended to shift focus to the first focusable element in the main content when drawer is closed or one of the destination items is activated. (By default, MDC Drawer restores focus to the menu button which opened it.)
+
+#### Dismissible Drawer
+
+Restore focus to the first focusable element when a list item is activated or after the drawer closes. Do not close the drawer upon item activation, since it should be up to the user when to show/hide the dismissible drawer.
+
+```js
+const listEl = drawerEl.querySelector('.mdc-drawer .mdc-list');
+const mainContentEl = document.body.querySelector('.main-content');
+
+listEl.addEventListener('click', (event) => {
+  mainContentEl.querySelector('input, button').focus();
+});
+
+document.body.addEventListener('MDCDrawer:close', () => {
+  mainContentEl.querySelector('input, button').focus();
+});
+```
+
+#### Modal Drawer
+
+Close the drawer when an item is activated in order to dismiss the modal as soon as the user performs an action. Only restore focus to the first focusable element in the main content after the drawer is closed, since it's being closed automatically.
+
+```js
+const listEl = drawerEl.querySelector('.mdc-drawer .mdc-list');
+const mainContentEl = document.body.querySelector('.main-content');
+
+listEl.addEventListener('click', (event) => {
+  drawer.open = false;
+});
+
+document.body.addEventListener('MDCDrawer:close', () => {
+  mainContentEl.querySelector('input, button').focus();
+});
+```
 
 ## `MDCDrawer` Properties and Methods
 
