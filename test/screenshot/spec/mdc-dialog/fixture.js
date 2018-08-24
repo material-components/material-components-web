@@ -14,27 +14,36 @@
  * limitations under the License.
  */
 
-import {cssClasses, strings, numbers} from '../../../../packages/mdc-dialog/constants';
+import {strings} from '../../../../packages/mdc-dialog/constants';
 
 window.mdc.testFixture.fontsLoaded.then(() => {
   [].forEach.call(document.querySelectorAll('.mdc-dialog'), /** @param {!HTMLElement} dialogEl */ (dialogEl) => {
     /** @type {!MDCDialog} */
     const dialog = new mdc.dialog.MDCDialog(dialogEl);
+
     const eventNames = [
       strings.YES_EVENT, strings.NO_EVENT, strings.CANCEL_EVENT,
       strings.OPEN_START_EVENT, strings.OPEN_END_EVENT,
       strings.CLOSE_START_EVENT, strings.CLOSE_END_EVENT,
     ];
+
     eventNames.forEach((eventName) => {
       dialog.listen(eventName, (evt) => console.log(eventName, evt));
     });
-    dialog.show();
 
     if (dialogEl.classList.contains('test-dialog--scroll-to-bottom')) {
       const bodyEl = dialogEl.querySelector('.mdc-dialog__content');
       if (bodyEl) {
-        bodyEl.scrollTop = bodyEl.scrollHeight;
+        const setContentScrollPosition = () => {
+          bodyEl.scrollTop = bodyEl.scrollHeight;
+          if (bodyEl.scrollTop === 0) {
+            requestAnimationFrame(setContentScrollPosition);
+          }
+        };
+        setContentScrollPosition();
       }
     }
+
+    dialog.show();
   });
 });

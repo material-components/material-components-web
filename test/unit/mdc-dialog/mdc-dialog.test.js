@@ -91,7 +91,7 @@ test('attachTo returns a component instance', () => {
 if (supportsCssVariables(window)) {
   test('#initialize attaches ripple elements to all footer buttons', () => {
     const raf = createMockRaf();
-    const {yesButton,noButton,  cancelButton} = setupTest();
+    const {yesButton, noButton, cancelButton} = setupTest();
     raf.flush();
 
     assert.isTrue(yesButton.classList.contains('mdc-ripple-upgraded'));
