@@ -82,6 +82,12 @@ class MDCListAdapter {
    * @param {number} tabIndexValue
    */
   setTabIndexForListItemChildren(listItemIndex, tabIndexValue) {}
+
+  /**
+   * If the given element has an href, follows the link.
+   * @param {!Element} ele
+   */
+  followHref(ele) {}
 }
 
 export default MDCListAdapter;

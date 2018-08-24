@@ -44,7 +44,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCListFoundation, [
     'getListItemCount', 'getFocusedElementIndex', 'setAttributeForElementIndex',
     'removeAttributeForElementIndex', 'addClassForElementIndex', 'removeClassForElementIndex',
-    'focusItemAtIndex', 'setTabIndexForListItemChildren',
+    'focusItemAtIndex', 'setTabIndexForListItemChildren', 'followHref',
   ]);
 });
 
