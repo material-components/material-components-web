@@ -27,7 +27,6 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 import {createMockRaf} from '../helpers/raf';
 import {strings} from '../../../packages/mdc-dialog/constants';
-import {matches} from '../../../packages/mdc-base/ponyfill';
 import {MDCDialog, util} from '../../../packages/mdc-dialog';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 
