@@ -81,7 +81,8 @@ export class MDCDrawer extends MDCComponent {
   }
 
   initialize() {
-    MDCList.attachTo(this.root_.querySelector(`.${MDCListFoundation.cssClasses.ROOT}`));
+    const list = MDCList.attachTo(this.root_.querySelector(`.${MDCListFoundation.cssClasses.ROOT}`));
+    list.wrapFocus = true;
   }
 
   initialSyncWithDOM() {

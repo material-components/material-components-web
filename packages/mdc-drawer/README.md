@@ -62,7 +62,8 @@ For permanently visible drawer, the list must be instantiated for appropriate ke
 
 ```js
 import {MDCList} from "@material/list";
-MDCList.attachTo(document.querySelector('.mdc-list'));
+const list = MDCList.attachTo(document.querySelector('.mdc-list'));
+list.wrapFocus = true;
 ```
 
 Other variants use the `MDCDrawer` component, which will instantiate `MDCList` automatically:
@@ -82,34 +83,34 @@ const drawer = MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
     <nav class="mdc-list">
       <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
-        <span class="mdc-list-item__label">Inbox</span>
+        Inbox
       </a>
       <a class="mdc-list-item" href="#">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>
-        <span class="mdc-list-item__label">Star</span>
+        Star
       </a>
       <a class="mdc-list-item" href="#">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
-        <span class="mdc-list-item__label">Sent Mail</span>
+        Sent Mail
       </a>
       <a class="mdc-list-item" href="#">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
-        <span class="mdc-list-item__label">Drafts</span>
+        Drafts
       </a>
 
       <hr class="mdc-list-divider">
       <h6 class="mdc-list-group__subheader">Labels</h6>
       <a class="mdc-list-item" href="#">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
-        <span class="mdc-list-item__label">Family</span>
+        Family
       </a>
       <a class="mdc-list-item" href="#">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
-        <span class="mdc-list-item__label">Friends</span>
+        Friends
       </a>
       <a class="mdc-list-item" href="#">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
-        <span class="mdc-list-item__label">Work</span>
+        Work
       </a>
     </nav>
   </div>
@@ -317,6 +318,46 @@ Mixin | Description
 `mdc-drawer-item-corner-radius($radius)` | Sets the corner border radius of the drawer list item.
 `mdc-drawer-activated-overlay-color($color)` | Sets the overlay color of the activated drawer list item.
 `mdc-drawer-scrim-fill-color($color)` | Sets the fill color of `mdc-drawer-scrim`.
+
+## Accessibility
+
+### Focus Management
+
+It is recommended to shift focus to the first focusable element in the main content when drawer is closed or one of the destination items is activated. (By default, MDC Drawer restores focus to the menu button which opened it.)
+
+#### Dismissible Drawer
+
+Restore focus to the first focusable element when a list item is activated or after the drawer closes. Do not close the drawer upon item activation, since it should be up to the user when to show/hide the dismissible drawer.
+
+```js
+const listEl = drawerEl.querySelector('.mdc-drawer .mdc-list');
+const mainContentEl = document.body.querySelector('.main-content');
+
+listEl.addEventListener('click', (event) => {
+  mainContentEl.querySelector('input, button').focus();
+});
+
+document.body.addEventListener('MDCDrawer:close', () => {
+  mainContentEl.querySelector('input, button').focus();
+});
+```
+
+#### Modal Drawer
+
+Close the drawer when an item is activated in order to dismiss the modal as soon as the user performs an action. Only restore focus to the first focusable element in the main content after the drawer is closed, since it's being closed automatically.
+
+```js
+const listEl = drawerEl.querySelector('.mdc-drawer .mdc-list');
+const mainContentEl = document.body.querySelector('.main-content');
+
+listEl.addEventListener('click', (event) => {
+  drawer.open = false;
+});
+
+document.body.addEventListener('MDCDrawer:close', () => {
+  mainContentEl.querySelector('input, button').focus();
+});
+```
 
 ## `MDCDrawer` Properties and Methods
 
