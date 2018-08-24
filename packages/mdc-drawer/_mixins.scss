@@ -118,11 +118,3 @@
     @include mdc-theme-prop(background-color, $value);
   }
 }
-
-@mixin mdc-drawer-scrim-fill-color($color, $opacity) {
-  $value: rgba(mdc-theme-prop-value($color), $opacity);
-
-  + .mdc-drawer-scrim {
-    @include mdc-theme-prop(background-color, $value);
-  }
-}
