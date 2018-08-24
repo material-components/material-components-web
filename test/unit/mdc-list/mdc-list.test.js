@@ -232,7 +232,7 @@ test('adapter#followHref invokes click on element with href', () => {
   const {root, component} = setupTest();
   const anchorTag = document.createElement('a');
   anchorTag.href = '#';
-  anchorTag .click = td.func('click');
+  anchorTag.click = td.func('click');
   anchorTag.classList.add('mdc-list-item');
   root.appendChild(anchorTag);
   component.getDefaultFoundation().adapter_.followHref(root.querySelectorAll('.mdc-list-item').length - 1);
@@ -243,7 +243,7 @@ test('adapter#followHref invokes click on element with href', () => {
 test('adapter#followHref does not invoke click on element without href', () => {
   const {root, component} = setupTest();
   const anchorTag = document.createElement('a');
-  anchorTag .click = td.func('click');
+  anchorTag.click = td.func('click');
   anchorTag.classList.add('mdc-list-item');
   root.appendChild(anchorTag);
   component.getDefaultFoundation().adapter_.followHref(root.querySelectorAll('.mdc-list-item').length - 1);
