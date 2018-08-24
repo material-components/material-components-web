@@ -48,7 +48,7 @@ Leading and trailing icons can be applied to text fields styled as `mdc-text-fie
 
 In text field box:
 ```html
-<div class="mdc-text-field mdc-text-field--box mdc-text-field--with-leading-icon">
+<div class="mdc-text-field mdc-text-field--with-leading-icon">
   <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
   <input type="text" id="my-input" class="mdc-text-field__input">
   <label for="my-input" class="mdc-floating-label">Your Name</label>
@@ -75,7 +75,7 @@ In outlined text field:
 
 In text field box:
 ```html
-<div class="mdc-text-field mdc-text-field--box mdc-text-field--with-trailing-icon">
+<div class="mdc-text-field mdc-text-field--with-trailing-icon">
   <input type="text" id="my-input" class="mdc-text-field__input">
   <label for="my-input" class="mdc-floating-label">Your Name</label>
   <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
