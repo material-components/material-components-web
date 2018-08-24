@@ -21,4 +21,25 @@
  * THE SOFTWARE.
  */
 
-mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
+import {assert} from 'chai';
+import bel from 'bel';
+import td from 'testdouble';
+
+import * as util from '../../../packages/mdc-drawer/util';
+
+suite('MDCDrawer - util');
+
+test('#createFocusTrapInstance creates a properly configured focus trap instance', () => {
+  const rootEl = bel`<div></div>`;
+  const focusTrapFactory = td.func('focusTrapFactory');
+  const properlyConfiguredFocusTrapInstance = {};
+  td.when(focusTrapFactory(rootEl, {
+    clickOutsideDeactivates: true,
+    initialFocus: false,
+    escapeDeactivates: false,
+    returnFocusOnDeactivate: false,
+  })).thenReturn(properlyConfiguredFocusTrapInstance);
+
+  const instance = util.createFocusTrapInstance(rootEl, focusTrapFactory);
+  assert.equal(instance, properlyConfiguredFocusTrapInstance);
+});

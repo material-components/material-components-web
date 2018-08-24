@@ -1,18 +1,24 @@
 /**
  * @license
- * Copyright 2018 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import MDCDrawerAdapter from '../adapter';
@@ -38,13 +44,15 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
       hasClass: (/* className: string */) => {},
+      elementHasClass: (/* element: !Element, className: string */) => {},
       computeBoundingRect: () => {},
-      setStyleAppContent: (/* propertyName: string, value: string */) => {},
-      addClassAppContent: (/* className: string */) => {},
-      removeClassAppContent: (/* className: string */) => {},
-      isRtl: () => {},
       notifyClose: () => {},
       notifyOpen: () => {},
+      saveFocus: () => {},
+      restoreFocus: () => {},
+      focusActiveNavigationItem: () => {},
+      trapFocus: () => {},
+      releaseFocus: () => {},
     });
   }
 
@@ -55,9 +63,13 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
     if (this.isOpen() || this.isOpening() || this.isClosing()) {
       return;
     }
+
     this.adapter_.addClass(cssClasses.OPEN);
-    this.adapter_.addClass(cssClasses.ANIMATING_OPEN);
-    this.animateAppContent_(true);
+    this.adapter_.addClass(cssClasses.ANIMATE);
+    this.adapter_.computeBoundingRect(); // Force reflow.
+    this.adapter_.addClass(cssClasses.OPENING);
+
+    this.adapter_.saveFocus();
   }
 
   /**
@@ -67,28 +79,21 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
     if (!this.isOpen() || this.isOpening() || this.isClosing()) {
       return;
     }
-    this.adapter_.addClass(cssClasses.ANIMATING_CLOSE);
-    this.animateAppContent_(false);
+
+    this.adapter_.addClass(cssClasses.CLOSING);
   }
 
   /**
-   * Animates the app content (sibling to the drawer) open/closed along with the drawer.
-   * @param {boolean} isOpening
+   * Extension point for when drawer finishes open animation.
+   * @protected
    */
-  animateAppContent_(isOpening) {
-    const {APP_CONTENT_ANIMATE_OPEN, APP_CONTENT_ANIMATE_CLOSE} = cssClasses;
-    const drawerWidth = this.adapter_.computeBoundingRect().width;
-    const invert = this.adapter_.isRtl() ? drawerWidth : -drawerWidth;
-    const firstTransform = isOpening ? `translateX(${invert}px)` : '';
-    const lastTransform = isOpening ? '' : `translateX(${invert}px)`;
-    this.adapter_.setStyleAppContent('transform', firstTransform);
+  opened() {}
 
-    requestAnimationFrame(() => {
-      const animateClass = isOpening ? APP_CONTENT_ANIMATE_OPEN : APP_CONTENT_ANIMATE_CLOSE;
-      this.adapter_.addClassAppContent(animateClass);
-      this.adapter_.setStyleAppContent('transform', lastTransform);
-    });
-  }
+  /**
+   * Extension point for when drawer finishes close animation.
+   * @protected
+   */
+  closed() {}
 
   /**
    * Returns true if drawer is in open state.
@@ -103,7 +108,7 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
    * @return {boolean}
    */
   isOpening() {
-    return this.adapter_.hasClass(cssClasses.ANIMATING_OPEN);
+    return this.adapter_.hasClass(cssClasses.OPENING);
   }
 
   /**
@@ -111,7 +116,7 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
    * @return {boolean}
    */
   isClosing() {
-    return this.adapter_.hasClass(cssClasses.ANIMATING_CLOSE);
+    return this.adapter_.hasClass(cssClasses.CLOSING);
   }
 
   /**
@@ -131,19 +136,29 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
    * Handles a transition end event on the root element.
    * @param {!Event} evt
    */
-  handleTransitionEnd() {
-    const {APP_CONTENT_ANIMATE_OPEN, APP_CONTENT_ANIMATE_CLOSE, ANIMATING_OPEN, ANIMATING_CLOSE, OPEN} = cssClasses;
+  handleTransitionEnd(evt) {
+    const {OPENING, CLOSING, OPEN, ANIMATE, ROOT} = cssClasses;
+
+    // In Edge, transitionend on ripple pseudo-elements yields a target without classList, so check for Element first.
+    const isElement = evt.target instanceof Element;
+    if (!isElement || !this.adapter_.elementHasClass(/** @type {!Element} */ (evt.target), ROOT)) {
+      return;
+    }
+
     if (this.isClosing()) {
       this.adapter_.removeClass(OPEN);
-      this.adapter_.setStyleAppContent('transform', '');
+      this.adapter_.restoreFocus();
+      this.closed();
       this.adapter_.notifyClose();
     } else {
+      this.adapter_.focusActiveNavigationItem();
+      this.opened();
       this.adapter_.notifyOpen();
     }
-    this.adapter_.removeClassAppContent(APP_CONTENT_ANIMATE_OPEN);
-    this.adapter_.removeClassAppContent(APP_CONTENT_ANIMATE_CLOSE);
-    this.adapter_.removeClass(ANIMATING_OPEN);
-    this.adapter_.removeClass(ANIMATING_CLOSE);
+
+    this.adapter_.removeClass(ANIMATE);
+    this.adapter_.removeClass(OPENING);
+    this.adapter_.removeClass(CLOSING);
   }
 }
 

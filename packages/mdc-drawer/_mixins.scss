@@ -46,7 +46,7 @@
   @include mdc-list-divider-color($value);
 }
 
-@mixin mdc-drawer-group-header-text-color($color, $opacity) {
+@mixin mdc-drawer-subtitle-ink-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
 
   @include mdc-list-group-subheader-ink-color($value);
@@ -65,6 +65,8 @@
 @mixin mdc-drawer-fill-color-accessible($color, $opacity) {
   $accessibleColor: mdc-theme-accessible-ink-color($color);
 
+  @include mdc-drawer-title-ink-color($accessibleColor, $opacity);
+  @include mdc-drawer-subtitle-ink-color($accessibleColor, $opacity);
   @include mdc-drawer-item-text-color($accessibleColor, $opacity);
   @include mdc-drawer-icon-ink-color($accessibleColor, $opacity);
   @include mdc-drawer-meta-ink-color($accessibleColor, $opacity);
@@ -79,32 +81,26 @@
 
 @mixin mdc-drawer-icon-activated-ink-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
-  // stylelint-disable selector-no-qualifying-type
-  .mdc-list-item--activated,
-  a.mdc-list-item--activated, {
+
+  .mdc-list-item--activated {
     @include mdc-list-item-graphic-ink-color($value);
   }
-  // stylelint-enable selector-no-qualifying-type
 }
 
 @mixin mdc-drawer-item-activated-text-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
-  // stylelint-disable selector-no-qualifying-type
-  .mdc-list-item--activated,
-  a.mdc-list-item--activated, {
+
+  .mdc-list-item--activated {
     @include mdc-list-item-primary-text-ink-color($value);
   }
-  // stylelint-enable selector-no-qualifying-type
 }
 
 @mixin mdc-drawer-item-text-color($color, $opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
-  // stylelint-disable selector-no-qualifying-type
-  .mdc-list-item,
-  a.mdc-list-item {
+
+  .mdc-list-item {
     @include mdc-list-item-primary-text-ink-color($value);
   }
-  // stylelint-enable selector-no-qualifying-type
 }
 
 // No meta-activated-ink-color mixins because the only meta element use case
@@ -127,5 +123,13 @@
 
   .mdc-drawer__title {
     @include mdc-theme-prop(color, $value);
+  }
+}
+
+@mixin mdc-drawer-scrim-fill-color($color, $opacity) {
+  $value: rgba(mdc-theme-prop-value($color), $opacity);
+
+  + .mdc-drawer-scrim {
+    @include mdc-theme-prop(background-color, $value);
   }
 }

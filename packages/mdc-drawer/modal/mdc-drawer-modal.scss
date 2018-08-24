@@ -21,32 +21,50 @@
 //
 
 @import "@material/animation/functions";
+@import "@material/elevation/mixins";
 @import "@material/rtl/mixins";
-@import "../variables";
 @import "../mixins";
+@import "../variables";
 
-.mdc-drawer--dismissible {
+.mdc-drawer--modal {
+  @include mdc-drawer-scrim-fill-color($mdc-drawer-modal-scrim-color, $mdc-drawer-modal-scrim-opacity);
+  @include mdc-elevation($mdc-drawer-modal-elevation);
   @include mdc-rtl-reflexive-position(left, 0);
 
   display: none;
-  position: absolute;
-  top: 0;
+  position: fixed;
 
   &.mdc-drawer--open {
-    display: flex;
+    display: block;
   }
 }
 
-.mdc-drawer-app-content {
-  @include mdc-rtl-reflexive-box(margin, left, 0);
-
-  position: relative;
+.mdc-drawer-scrim {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition-property: opacity;
+  transition-timing-function: $mdc-animation-standard-curve-timing-function;
+  z-index: $mdc-drawer-z-index - 1;
 
   .mdc-drawer--open + & {
-    @include mdc-rtl-reflexive-box(margin, left, $mdc-drawer-width);
+    display: block;
+  }
+
+  .mdc-drawer--animate + & {
+    opacity: 0;
+  }
+
+  .mdc-drawer--opening + & {
+    transition-duration: $mdc-drawer-animation-enter;
+    opacity: 1;
   }
 
   .mdc-drawer--closing + & {
-    @include mdc-rtl-reflexive-box(margin, left, 0);
+    transition-duration: $mdc-drawer-animation-exit;
+    opacity: 0;
   }
 }
