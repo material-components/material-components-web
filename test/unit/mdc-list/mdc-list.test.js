@@ -280,40 +280,48 @@ test('selectedIndex calls setSelectedIndex on foundation', () => {
 
 test('focusIn handler is added to root element', () => {
   const {root, mockFoundation} = setupTest();
-  const event = document.createEvent('FocusEvent');
+  document.body.appendChild(root);
+  const event = document.createEvent('Event');
   event.initEvent('focusin', true, true);
   const listElementItem = root.querySelector('.mdc-list-item');
   listElementItem.dispatchEvent(event);
   td.verify(mockFoundation.handleFocusIn(event, 0), {times: 1});
+  document.body.removeChild(root);
 });
 
 test('focusIn handler is removed from the root element on destroy', () => {
   const {root, component, mockFoundation} = setupTest();
+  document.body.appendChild(root);
   component.destroy();
-  const event = document.createEvent('FocusEvent');
+  const event = document.createEvent('Event');
   event.initEvent('focusin', true, true);
   const listElementItem = root.querySelector('.mdc-list-item');
   listElementItem.dispatchEvent(event);
   td.verify(mockFoundation.handleFocusIn(event, 0), {times: 0});
+  document.body.removeChild(root);
 });
 
 test('focusOut handler is added to root element', () => {
   const {root, mockFoundation} = setupTest();
-  const event = document.createEvent('FocusEvent');
+  document.body.appendChild(root);
+  const event = document.createEvent('Event');
   event.initEvent('focusout', true, true);
   const listElementItem = root.querySelector('.mdc-list-item');
   listElementItem.dispatchEvent(event);
   td.verify(mockFoundation.handleFocusOut(event, 0), {times: 1});
+  document.body.removeChild(root);
 });
 
 test('focusOut handler is removed from the root element on destroy', () => {
   const {root, component, mockFoundation} = setupTest();
+  document.body.appendChild(root);
   component.destroy();
-  const event = document.createEvent('FocusEvent');
+  const event = document.createEvent('Event');
   event.initEvent('focusout', true, true);
   const listElementItem = root.querySelector('.mdc-list-item');
   listElementItem.dispatchEvent(event);
   td.verify(mockFoundation.handleFocusOut(event, 0), {times: 0});
+  document.body.removeChild(root);
 });
 
 test('keydown handler is added to root element', () => {
