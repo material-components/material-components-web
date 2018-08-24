@@ -34,7 +34,7 @@ class MDCList extends MDCComponent {
   constructor(...args) {
     super(...args);
     /** @private {!Function} */
-    this.keydownHandler_;
+    this.handleKeydown_;
     /** @private {!Function} */
     this.handleClick_;
     /** @private {!Function} */
@@ -52,7 +52,7 @@ class MDCList extends MDCComponent {
   }
 
   destroy() {
-    this.root_.removeEventListener('keydown', this.keydownHandler_);
+    this.root_.removeEventListener('keydown', this.handleKeydown_);
     this.root_.removeEventListener('click', this.handleClick_);
     this.root_.removeEventListener('focusin', this.focusInEventListener_);
     this.root_.removeEventListener('focusout', this.focusOutEventListener_);
@@ -60,10 +60,10 @@ class MDCList extends MDCComponent {
 
   initialSyncWithDOM() {
     this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
-    this.keydownHandler_ = this.handleKeydownEvent_.bind(this);
+    this.handleKeydown_ = this.handleKeydownEvent_.bind(this);
     this.focusInEventListener_ = this.handleFocusInEvent_.bind(this);
     this.focusOutEventListener_ = this.handleFocusOutEvent_.bind(this);
-    this.root_.addEventListener('keydown', this.keydownHandler_);
+    this.root_.addEventListener('keydown', this.handleKeydown_);
     this.root_.addEventListener('focusin', this.focusInEventListener_);
     this.root_.addEventListener('focusout', this.focusOutEventListener_);
     this.layout();
