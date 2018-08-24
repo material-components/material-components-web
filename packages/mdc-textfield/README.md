@@ -15,13 +15,6 @@ result in no change.
 
 # Text Field
 
-<!--<div class="article__asset">
-  <a class="article__asset-link"
-     href="https://material-components.github.io/material-components-web-catalog/#/component/text-field">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/textfields.png" width="240" alt="Text fields screenshot">
-  </a>
-</div>-->
-
 Text fields allow users to input, edit, and select text.
 
 ## Design & API Documentation
