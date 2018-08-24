@@ -1,18 +1,24 @@
 /**
  * @license
- * Copyright 2018 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import MDCFoundation from '@material/base/foundation';
@@ -40,9 +46,7 @@ class MDCSwitchFoundation extends MDCFoundation {
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
       setNativeControlChecked: (/* checked: boolean */) => {},
-      isNativeControlChecked: () => /* boolean */ {},
       setNativeControlDisabled: (/* disabled: boolean */) => {},
-      isNativeControlDisabled: () => /* boolean */ {},
     });
   }
 
@@ -50,26 +54,10 @@ class MDCSwitchFoundation extends MDCFoundation {
     super(Object.assign(MDCSwitchFoundation.defaultAdapter, adapter));
   }
 
-  /** @override */
-  init() {
-    // Do an initial state update based on the state of the native control.
-    this.handleChange();
-  }
-
-  /** @return {boolean} */
-  isChecked() {
-    return this.adapter_.isNativeControlChecked();
-  }
-
   /** @param {boolean} checked */
   setChecked(checked) {
     this.adapter_.setNativeControlChecked(checked);
     this.updateCheckedStyling_(checked);
-  }
-
-  /** @return {boolean} */
-  isDisabled() {
-    return this.adapter_.isNativeControlDisabled();
   }
 
   /** @param {boolean} disabled */
@@ -84,9 +72,10 @@ class MDCSwitchFoundation extends MDCFoundation {
 
   /**
    * Handles the change event for the switch native control.
+   * @param {!Event} evt
    */
-  handleChange() {
-    this.updateCheckedStyling_(this.isChecked());
+  handleChange(evt) {
+    this.updateCheckedStyling_(evt.target.checked);
   }
 
   /**
