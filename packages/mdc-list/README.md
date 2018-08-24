@@ -50,8 +50,8 @@ npm install @material/list
 
 ### Two-Line List
 
-You can use the `mdc-list--two-line` combined with some extra markup around the text to style a list 
-in the double line list style as defined by 
+You can use the `mdc-list--two-line` combined with some extra markup around the text to style a list
+in the double line list style as defined by
 [the spec](https://material.io/design/components/lists.html#specs) (see "Double line").
 
 ```html
@@ -133,8 +133,8 @@ OR
 
 ### Single Selection List
 
-MDC List can handle selecting/deselecting list elements based on click or keyboard action. When enabled, the `space` and `enter` keys (or `click` event) will trigger an 
-single list item to become selected and any other previous selected element to become deselected. 
+MDC List can handle selecting/deselecting list elements based on click or keyboard action. When enabled, the `space` and `enter` keys (or `click` event) will trigger an
+single list item to become selected and any other previous selected element to become deselected.
 
 ```html
 <ul id="my-list" class="mdc-list" aria-orientation="vertical">
@@ -223,7 +223,7 @@ The MDCList JavaScript component implements the WAI-ARIA best practices for
 within the list component. You should not add `tabindex` to any of the `li` elements in a list.
 
 As the user navigates through the list, any `button` or `a` elements within the list will receive `tabindex="-1"`
-when the list item is not focused. When the list item receives focus, the child `button` and `a` elements will 
+when the list item is not focused. When the list item receives focus, the child `button` and `a` elements will
 receive `tabIndex="0"`. This allows for the user to tab through list item elements and then tab to the
 first element after the list. The `Arrow`, `Home`, and `End` keys should be used for navigating internal list elements.
 If `singleSelection=true`, the list will allow the user to use the `Space` or `Enter` keys to select or deselect
@@ -254,7 +254,7 @@ The default component requires that every list item receives a `tabindex` value 
 (`li` elements cannot receive focus at all without a `tabindex` value). Any element not already containing a
 `tabindex` attribute will receive `tabindex=-1`. The first list item should have `tabindex="0"` so that the
 user can find the first element using the `tab` key, but subsequent `tab` keys strokes will cause focus to
-skip over the entire list. If the list items contain sub-elements that are focusable (`button` or `a` elements), 
+skip over the entire list. If the list items contain sub-elements that are focusable (`button` or `a` elements),
 these should also receive `tabIndex="-1"`.
 
 ```html
@@ -268,9 +268,9 @@ these should also receive `tabIndex="-1"`.
 #### Setup in `singleSelection()`
 
 When implementing a component that will use the single selection variant, the HTML should be modified to include
-the `aria-selected` attribute, the `mdc-list-item--selected` or `mdc-list-item--activated` class should be added, 
-and the `tabindex` of the selected element should be `0`. The first list item should have the `tabindex` updated 
-to `-1`. The foundation method `setSelectedIndex()` should be called with the initially selected element immediately 
+the `aria-selected` attribute, the `mdc-list-item--selected` or `mdc-list-item--activated` class should be added,
+and the `tabindex` of the selected element should be `0`. The first list item should have the `tabindex` updated
+to `-1`. The foundation method `setSelectedIndex()` should be called with the initially selected element immediately
 after the foundation is instantiated.
 
 ```html
@@ -280,7 +280,7 @@ after the foundation is instantiated.
   <li class="mdc-list-item" tabindex="-1">Single-line item</li>
 </ul>
 ```
- 
+
 ### `MDCListAdapter`
 
 Method Signature | Description
@@ -293,19 +293,20 @@ Method Signature | Description
 `removeClassForElementIndex(index: Number, className: String) => void` | Removes the `className` class to the list item at `index`.
 `focusItemAtIndex(index: Number) => void` | Focuses the list item at the `index` value specified.
 `setTabIndexForListItemChildren(index: Number, value: Number) => void` | Sets the `tabindex` attribute to `value` for each child `button` and `a` element in the list item at the `index` specified.
+`followHref(element: Element) => void` | If the given element has an href, follows the link.
 
 ### `MDCListFoundation`
 
 Method Signature | Description
 --- | ---
-`setWrapFocus(value: Boolean) => void` | Sets the list to allow the up arrow on the first element to focus the last element of the list and vice versa. 
-`setVerticalOrientation(value: Boolean) => void` | Sets the list to an orientation causing the keys used for navigation to change. `true` results in the Up/Down arrow keys being used. `false` results in the Left/Right arrow keys being used. 
-`setSingleSelection(value: Boolean) => void` | Sets the list to be a selection list. Enables the `enter` and `space` keys for selecting/deselecting a list item. 
-`setSelectedIndex(index: Number) => void` | Toggles the `selected` state of the list item at index `index`. 
+`setWrapFocus(value: Boolean) => void` | Sets the list to allow the up arrow on the first element to focus the last element of the list and vice versa.
+`setVerticalOrientation(value: Boolean) => void` | Sets the list to an orientation causing the keys used for navigation to change. `true` results in the Up/Down arrow keys being used. `false` results in the Left/Right arrow keys being used.
+`setSingleSelection(value: Boolean) => void` | Sets the list to be a selection list. Enables the `enter` and `space` keys for selecting/deselecting a list item.
+`setSelectedIndex(index: Number) => void` | Toggles the `selected` state of the list item at index `index`.
 `setUseActivated(useActivated: boolean) => void` | Sets the selection logic to apply/remove the `mdc-list-item--activated` class.
-`handleFocusIn(evt: Event) => void` | Handles the changing of `tabindex` to `0` for all `button` and `a` elements when a list item receives focus. 
+`handleFocusIn(evt: Event) => void` | Handles the changing of `tabindex` to `0` for all `button` and `a` elements when a list item receives focus.
 `handleFocusOut(evt: Event) => void` | Handles the changing of `tabindex` to `-1` for all `button` and `a` elements when a list item loses focus.
-`handleKeydown(evt: Event) => void` | Handles determining if a focus action should occur when a key event is triggered. 
+`handleKeydown(evt: Event) => void` | Handles determining if a focus action should occur when a key event is triggered.
 `handleClick(evt: Event) => void` | Handles toggling the selected/deselected state for a list item when clicked. This method is only used by the single selection list.
 `focusNextElement(index: Number) => void` | Handles focusing the next element using the current `index`.
 `focusPrevElement(index: Number) => void` | Handles focusing the previous element using the current `index`.
