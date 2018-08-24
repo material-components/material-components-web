@@ -319,6 +319,46 @@ Mixin | Description
 `mdc-drawer-activated-overlay-color($color)` | Sets the overlay color of the activated drawer list item.
 `mdc-drawer-scrim-fill-color($color)` | Sets the fill color of `mdc-drawer-scrim`.
 
+## Accessibility
+
+### Focus Management
+
+It is recommended to shift focus to the first focusable element in the main content when drawer is closed or one of the destination items is activated. (By default, MDC Drawer restores focus to the menu button which opened it.)
+
+#### Dismissible Drawer
+
+Restore focus to the first focusable element when a list item is activated or after the drawer closes. Do not close the drawer upon item activation, since it should be up to the user when to show/hide the dismissible drawer.
+
+```js
+const listEl = drawerEl.querySelector('.mdc-drawer .mdc-list');
+const mainContentEl = document.body.querySelector('.main-content');
+
+listEl.addEventListener('click', (event) => {
+  mainContentEl.querySelector('input, button').focus();
+});
+
+document.body.addEventListener('MDCDrawer:close', () => {
+  mainContentEl.querySelector('input, button').focus();
+});
+```
+
+#### Modal Drawer
+
+Close the drawer when an item is activated in order to dismiss the modal as soon as the user performs an action. Only restore focus to the first focusable element in the main content after the drawer is closed, since it's being closed automatically.
+
+```js
+const listEl = drawerEl.querySelector('.mdc-drawer .mdc-list');
+const mainContentEl = document.body.querySelector('.main-content');
+
+listEl.addEventListener('click', (event) => {
+  drawer.open = false;
+});
+
+document.body.addEventListener('MDCDrawer:close', () => {
+  mainContentEl.querySelector('input, button').focus();
+});
+```
+
 ## `MDCDrawer` Properties and Methods
 
 Property | Value Type | Description
@@ -374,39 +414,3 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `handleScrimClick() => void` | Handles click event on scrim.
-
-
-## Accessibility
-
-### Focus Management
-
-It is recommended to shift focus to first focusable element of main content when drawer is closed or one of the destination item is selected. By default it focuses on the menu button which opens it when drawer is closed.
-
-**Dismissible Drawer**
-
-```js
-const listEl = drawerEl.querySelector('.mdc-drawer .mdc-list');
-const mainContentEl = document.body.querySelector('.main-content');
-listEl.addEventListener('click', (event) => {
-  mainContentEl.querySelector('input, button').focus();
-});
-
-document.body.addEventListener('MDCDrawer:close', () => {
-  mainContentEl.querySelector('input, button').focus();
-});
-```
-
-**Modal Drawer**
-
-```js
-const listEl = drawerEl.querySelector('.mdc-drawer .mdc-list');
-const mainContentEl = document.body.querySelector('.main-content');
-listEl.addEventListener('click', (event) => {
-  drawer.open = false;
-});
-
-document.body.addEventListener('MDCDrawer:close', () => {
-  // Focus on first focusable element in main content only after drawer is closed.
-  mainContentEl.querySelector('input, button').focus();
-});
-```
