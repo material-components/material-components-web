@@ -62,18 +62,6 @@ class MDCCheckboxAdapter {
    */
   removeNativeControlAttr(attr) {}
 
-  /** @param {!EventListener} handler */
-  registerAnimationEndHandler(handler) {}
-
-  /** @param {!EventListener} handler */
-  deregisterAnimationEndHandler(handler) {}
-
-  /** @param {!EventListener} handler */
-  registerChangeHandler(handler) {}
-
-  /** @param {!EventListener} handler */
-  deregisterChangeHandler(handler) {}
-
   /** @return {!MDCSelectionControlState} */
   getNativeControl() {}
 
