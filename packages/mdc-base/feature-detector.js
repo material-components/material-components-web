@@ -71,10 +71,14 @@ class MDCFeatureDetector {
   ignoresOverflowAutoOnChildFlexItemsThatExceedMaxHeight_() {
     const tempEl = document.createElement('div');
 
+    // The 1px border is necessary to force IE to calculate box sizing correctly.
     tempEl.innerHTML = `
-<section style="display: flex; flex-direction: column; max-height: 200px; opacity: 0.001;">
-  <header style="flex-shrink: 0; height: 50px;"></header>
-  <article style="flex-grow: 1; overflow: auto;">
+<section style="box-sizing: border-box; display: flex; flex-direction: column; max-height: 200px;
+                opacity: 0.001; position: fixed; top: -9999px; left: -9999px;
+                border: 1px solid transparent;">
+  <header style="box-sizing: border-box; flex-shrink: 0; height: 50px;">Foo</header>
+  <article style="box-sizing: border-box; flex-grow: 1; overflow: auto;
+                  border: 1px solid transparent;">
     1 <br>
     2 <br>
     3 <br>
@@ -85,15 +89,14 @@ class MDCFeatureDetector {
     8 <br>
     9 <br>
   </article>
-  <footer style="flex-shrink: 0; height: 50px;"></footer>
+  <footer style="box-sizing: border-box; flex-shrink: 0; height: 50px;">Bar</footer>
 <section>
 `;
 
-    // TODO(acdvorak): Use `position: fixed` (or similar) to prevent jank on page load, if necessary.
     document.body.appendChild(tempEl);
 
-    const contentEl = tempEl.querySelector('article');
-    const isScrollable = contentEl.scrollHeight > contentEl.offsetHeight;
+    const flexItemEl = tempEl.querySelector('article');
+    const isScrollable = flexItemEl.scrollHeight > flexItemEl.offsetHeight;
 
     document.body.removeChild(tempEl);
 
