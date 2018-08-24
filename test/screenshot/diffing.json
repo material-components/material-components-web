@@ -34,6 +34,7 @@
           "desktop_windows_ie@11"
         ],
         "url_regex_patterns": [
+          "mdc-dialog",
           "mdc-textfield",
           "mdc-typography"
         ],
