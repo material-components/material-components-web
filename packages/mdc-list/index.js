@@ -173,6 +173,11 @@ class MDCList extends MDCComponent {
         const listItemChildren = [].slice.call(element.querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS));
         listItemChildren.forEach((ele) => ele.setAttribute('tabindex', tabIndexValue));
       },
+      followHref: (ele) => {
+        if (ele.href) {
+          ele.click();
+        }
+      },
     })));
   }
 }
