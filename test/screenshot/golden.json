@@ -246,7 +246,7 @@
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/08/23/08_18_54_462/spec/mdc-dialog/classes/scrollable-bottom.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/08/23/23_59_54_225/spec/mdc-dialog/classes/scrollable-bottom.html.windows_chrome_68.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/08/23/23_59_54_225/spec/mdc-dialog/classes/scrollable-bottom.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/24/02_30_18_982/spec/mdc-dialog/classes/scrollable-bottom.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/08/23/23_59_54_225/spec/mdc-dialog/classes/scrollable-bottom.html.windows_firefox_61.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/08/24/00_51_53_788/spec/mdc-dialog/classes/scrollable-bottom.html.windows_ie_11.png"
     }
