@@ -30,7 +30,7 @@
  * @param {string} selector
  * @return {boolean}
  */
-export function matches(elem, selector) {
+function matches(elem, selector) {
   const nativeMatches = elem.matches
     || elem.webkitMatchesSelector
     || elem.mozMatchesSelector
@@ -38,3 +38,5 @@ export function matches(elem, selector) {
     || elem.oMatchesSelector;
   return nativeMatches.call(elem, selector);
 }
+
+export {matches};
