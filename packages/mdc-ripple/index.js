@@ -130,7 +130,15 @@ class MDCRipple extends MDCComponent {
 
   /** @override */
   initialSyncWithDOM() {
+    const isMobile = navigator.userAgent.indexOf('Mobile/') > -1;
+    const isSafari = navigator.userAgent.indexOf('Safari/') > -1;
     this.unbounded = 'mdcRippleIsUnbounded' in this.root_.dataset;
+    if (this.root_.id === 'foo' && isMobile && isSafari && !this.unbounded) {
+      const json = JSON.stringify(this.root_.dataset, null, 2);
+      const html = this.root_.outerHTML;
+      const message = `Error: this.unbounded is falsy!\n\n${json}\n\n${html}`;
+      throw new Error(message);
+    }
   }
 }
 
