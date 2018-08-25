@@ -109,45 +109,58 @@
       </div>
     </header>
 
-    <aside class="mdc-drawer--temporary">
-      <nav class="mdc-drawer__drawer">
-        <header class="mdc-drawer__header">
-          <div class="mdc-drawer__header-content mdc-theme--primary-bg mdc-theme--on-primary">
-            Header here
-          </div>
-        </header>
-        <nav class="mdc-drawer__content mdc-list-group">
-          <div class="mdc-list">
-            <a class="mdc-list-item mdc-list-item--selected" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
-            </a>
-            <a class="mdc-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
-            </a>
-            <a class="mdc-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Sent Mail
-            </a>
-            <a class="mdc-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
-            </a>
-          </div>
+    <aside class="mdc-drawer mdc-drawer--modal">
+      <div class="mdc-drawer__header">
+        <h3 class="mdc-drawer__title">Title here</h3>
+        <h6 class="mdc-drawer__subtitle">Subtitle here</h6>
+      </div>
+      <div class="mdc-drawer__content">
+        <nav class="mdc-list">
+          <a class="mdc-list-item mdc-list-item--activated" href="#" tabindex="0">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
+            <span class="mdc-list-item__label">Inbox</span>
+          </a>
+          <a class="mdc-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>
+            <span class="mdc-list-item__label">Star</span>
+          </a>
+          <a class="mdc-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
+            <span class="mdc-list-item__label">Sent Mail</span>
+          </a>
+          <a class="mdc-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
+            <span class="mdc-list-item__label">Drafts</span>
+          </a>
 
           <hr class="mdc-list-divider">
+          <h6 class="mdc-list-group__subheader">Labels</h6>
+          <a class="mdc-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+            <span class="mdc-list-item__label">Family</span>
+          </a>
+          <a class="mdc-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+            <span class="mdc-list-item__label">Friends</span>
+          </a>
+          <a class="mdc-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+            <span class="mdc-list-item__label">Work</span>
+          </a>
 
-          <div class="mdc-list">
-            <a class="mdc-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">email</i>All Mail
-            </a>
-            <a class="mdc-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">delete</i>Trash
-            </a>
-            <a class="mdc-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">report</i>Spam
-            </a>
-          </div>
+          <hr class="mdc-list-divider">
+          <a class="mdc-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>
+            <span class="mdc-list-item__label">Settings</span>
+          </a>
+          <a class="mdc-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">announcement</i>
+            <span class="mdc-list-item__label">Help & feedback</span>
+          </a>
         </nav>
-      </nav>
+      </div>
     </aside>
+    <div class="mdc-drawer-scrim"></div>
 
     <main class="mdc-toolbar-fixed-adjust demo-main">
       <h2 class="mdc-typography--headline4">
@@ -864,8 +877,8 @@
          * Drawer
          */
 
-        var drawerEl = document.querySelector('.mdc-drawer--temporary');
-        var drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
+        var drawerEl = document.querySelector('.mdc-drawer');
+        var drawer = new mdc.drawer.MDCDrawer(drawerEl);
 
         [].forEach.call(document.querySelectorAll('.demo-drawer-toggle'), function(toggleElem) {
           toggleElem.addEventListener('click', function() {
@@ -873,12 +886,12 @@
           });
         });
 
-        drawerEl.addEventListener('MDCTemporaryDrawer:open', function() {
-          console.log('Received MDCTemporaryDrawer:open');
+        drawerEl.addEventListener('MDCDrawer:opened', function() {
+          console.log('Received MDCDrawer:opened');
         });
 
-        drawerEl.addEventListener('MDCTemporaryDrawer:close', function() {
-          console.log('Received MDCTemporaryDrawer:close');
+        drawerEl.addEventListener('MDCDrawer:closed', function() {
+          console.log('Received MDCDrawer:closed');
         });
 
         /*

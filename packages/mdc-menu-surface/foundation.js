@@ -322,7 +322,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
       corner |= CornerBit.RIGHT;
     }
 
-    return corner;
+    return /** @type {Corner} */ (corner);
   }
 
   /**

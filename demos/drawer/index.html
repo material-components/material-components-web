@@ -27,24 +27,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/drawer/drawer.css">
-    <link rel="stylesheet" href="/assets/radio.css">
     <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-
   </head>
   <body class="mdc-typography demo-body">
-    <div class="mdc-toolbar mdc-toolbar--fixed">
-      <div class="mdc-toolbar__row">
-        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+    <header class="mdc-top-app-bar" id="app-bar">
+      <div class="mdc-top-app-bar__row">
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
           <a href="/" class="catalog-back mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
-          <span class="mdc-toolbar__title catalog-title">Drawer</span>
+          <span class="mdc-top-app-bar__title">Drawer</span>
         </section>
       </div>
-    </div>
+    </header>
 
-    <main class="mdc-toolbar-fixed-adjust">
+    <main>
+      <div class="mdc-top-app-bar--fixed-adjust"></div>
       <div class="intro">
        <p>
         To best show the functionality of drawers, we put all demos in iframes.
@@ -60,34 +59,24 @@
       <section class="examples">
         <div class="example">
           <h2 class="drawer-example-heading">
-            <span>Temporary Drawer</span>
+            <span>Permanent drawer</span>
           </h2>
-          <p><a href="./temporary-drawer.html" target="_blank">View in separate window</a></p>
-          <iframe src="./temporary-drawer.html"></iframe>
+          <p><a href="./permanent-drawer.html" target="_blank">View in separate window</a></p>
+          <iframe src="./permanent-drawer.html"></iframe>
         </div>
-
         <div class="example">
           <h2 class="drawer-example-heading">
-            <span>Persistent Drawer</span>
+            <span>Dismissible drawer</span>
           </h2>
-          <p><a href="./persistent-drawer.html" target="_blank">View in separate window</a></p>
-          <iframe src="./persistent-drawer.html"></iframe>
+          <p><a href="./dismissible-drawer.html" target="_blank">View in separate window</a></p>
+          <iframe src="./dismissible-drawer.html"></iframe>
         </div>
-
         <div class="example">
           <h2 class="drawer-example-heading">
-            <span>Permanent drawer above toolbar</span>
+            <span>Modal drawer</span>
           </h2>
-          <p><a href="./permanent-drawer-above-toolbar.html" target="_blank">View in separate window</a></p>
-          <iframe src="./permanent-drawer-above-toolbar.html"></iframe>
-        </div>
-
-        <div class="example">
-          <h2 class="drawer-example-heading">
-            <span>Permanent drawer below toolbar</span>
-          </h2>
-          <p><a href="./permanent-drawer-below-toolbar.html" target="_blank">View in separate window</a></p>
-          <iframe src="./permanent-drawer-below-toolbar.html"></iframe>
+          <p><a href="./modal-drawer.html" target="_blank">View in separate window</a></p>
+          <iframe src="./modal-drawer.html"></iframe>
         </div>
       </section>
     </main>

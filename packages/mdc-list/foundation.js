@@ -47,13 +47,11 @@ class MDCListFoundation extends MDCFoundation {
     return /** @type {!MDCListAdapter} */ ({
       getListItemCount: () => {},
       getFocusedElementIndex: () => {},
-      getListItemIndex: () => {},
       setAttributeForElementIndex: () => {},
       removeAttributeForElementIndex: () => {},
       addClassForElementIndex: () => {},
       removeClassForElementIndex: () => {},
       focusItemAtIndex: () => {},
-      isListItem: () => {},
       setTabIndexForListItemChildren: () => {},
       followHref: () => {},
     });
@@ -135,13 +133,9 @@ class MDCListFoundation extends MDCFoundation {
   /**
    * Focus in handler for the list items.
    * @param evt
+   * @param {number} listItemIndex
    */
-  handleFocusIn(evt) {
-    const listItem = this.getListItem_(evt.target);
-    if (!listItem) return;
-
-    const listItemIndex = this.adapter_.getListItemIndex(listItem);
-
+  handleFocusIn(evt, listItemIndex) {
     if (listItemIndex >= 0) {
       this.adapter_.setTabIndexForListItemChildren(listItemIndex, 0);
     }
@@ -150,12 +144,9 @@ class MDCListFoundation extends MDCFoundation {
   /**
    * Focus out handler for the list items.
    * @param {Event} evt
+   * @param {number} listItemIndex
    */
-  handleFocusOut(evt) {
-    const listItem = this.getListItem_(evt.target);
-    if (!listItem) return;
-    const listItemIndex = this.adapter_.getListItemIndex(listItem);
-
+  handleFocusOut(evt, listItemIndex) {
     if (listItemIndex >= 0) {
       this.adapter_.setTabIndexForListItemChildren(listItemIndex, -1);
     }
@@ -164,8 +155,10 @@ class MDCListFoundation extends MDCFoundation {
   /**
    * Key handler for the list.
    * @param {Event} evt
+   * @param {boolean} isRootListItem
+   * @param {number} listItemIndex
    */
-  handleKeydown(evt) {
+  handleKeydown(evt, isRootListItem, listItemIndex) {
     const arrowLeft = evt.key === 'ArrowLeft' || evt.keyCode === 37;
     const arrowUp = evt.key === 'ArrowUp' || evt.keyCode === 38;
     const arrowRight = evt.key === 'ArrowRight' || evt.keyCode === 39;
@@ -176,10 +169,8 @@ class MDCListFoundation extends MDCFoundation {
     const isSpace = evt.key === 'Space' || evt.keyCode === 32;
 
     let currentIndex = this.adapter_.getFocusedElementIndex();
-
     if (currentIndex === -1) {
-      currentIndex = this.adapter_.getListItemIndex(this.getListItem_(evt.target));
-
+      currentIndex = listItemIndex;
       if (currentIndex < 0) {
         // If this event doesn't have a mdc-list-item ancestor from the
         // current list (not from a sublist), return early.
@@ -202,11 +193,11 @@ class MDCListFoundation extends MDCFoundation {
     } else if (this.isSingleSelectionList_ && (isEnter || isSpace)) {
       this.preventDefaultEvent_(evt);
       // Check if the space key was pressed on the list item or a child element.
-      if (this.adapter_.isListItem(evt.target)) {
+      if (isRootListItem) {
         this.setSelectedIndex(currentIndex);
 
-        // Explicitly activate links, since we're preventing default on Enter, and Space doesn't activate them
-        this.adapter_.followHref(evt.target);
+        // Explicitly activate links, since we're preventing default on Enter, and Space doesn't activate them.
+        this.adapter_.followHref(currentIndex);
       }
     }
   }
@@ -281,20 +272,6 @@ class MDCListFoundation extends MDCFoundation {
     if (lastIndex >= 0) {
       this.adapter_.focusItemAtIndex(lastIndex);
     }
-  }
-
-  /**
-   * Utility method to find the first ancestor with the mdc-list-item class.
-   * @param {EventTarget} target
-   * @return {?Element}
-   * @private
-   */
-  getListItem_(target) {
-    while (!this.adapter_.isListItem(target)) {
-      if (!target.parentElement) return null;
-      target = target.parentElement;
-    }
-    return target;
   }
 }
 

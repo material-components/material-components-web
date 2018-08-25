@@ -2,17 +2,14 @@
 title: "Drawers"
 layout: detail
 section: components
-excerpt: "Permanent, persistent, and temporary drawers."
+excerpt: "Permanent, dismissible, and modal drawers."
 iconId: side_navigation
 path: /catalog/drawers/
 -->
 
 # Drawers
 
-The MDC Drawer component is a spec-aligned drawer component adhering to the
-[Material Design navigation drawer pattern](https://material.io/go/design-navigation-drawer).
-It implements permanent, persistent, and temporary drawers. Permanent drawers are CSS-only and require no JavaScript, whereas persistent and temporary drawers require JavaScript to function, in order to respond to
-user interaction.
+The MDC Navigation Drawer is used to organize access to destinations and other functionality on an app.
 
 ## Design & API Documentation
 
@@ -31,440 +28,390 @@ user interaction.
 npm install @material/drawer
 ```
 
-## Permanent drawer usage
+## Basic Usage
 
-A permanent drawer is always open, sitting to the side of the content. It is appropriate for any display size larger
-than mobile.
-
-> TODO(sgomes): Give advice on how to hide permanent drawer in mobile.
+### HTML Structure
 
 ```html
-<nav class="mdc-drawer mdc-drawer--permanent mdc-typography">
-  <div class="mdc-drawer__toolbar-spacer"></div>
+<aside class="mdc-drawer">
   <div class="mdc-drawer__content">
-    <nav id="icon-with-text-demo" class="mdc-list">
-      <a class="mdc-list-item mdc-list-item--activated" href="#">
+    <nav class="mdc-list">
+      <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
       </a>
       <a class="mdc-list-item" href="#">
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Outgoing
+      </a>
+      <a class="mdc-list-item" href="#">
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
       </a>
     </nav>
   </div>
-</nav>
-<div>
-  Toolbar and page content go inside here.
-</div>
-```
-
-In the example above, we've set the drawer above the toolbar, and are using a toolbar spacer to ensure that it is
-presented correctly, with the correct amount of space to match the toolbar height. Note that you can place content
-inside the toolbar spacer.
-
-Permanent drawers can also be set below the toolbar:
-
-```html
-<div>Toolbar goes here</div>
-
-<div class="content">
-  <nav class="mdc-drawer mdc-drawer--permanent mdc-typography">
-    <nav id="icon-with-text-demo" class="mdc-list">
-      <a class="mdc-list-item mdc-list-item--activated" href="#">
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
-      </a>
-      <a class="mdc-list-item" href="#">
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
-      </a>
-    </nav>
-  </nav>
-  <main>
-    Page content goes here.
-  </main>
-</div>
-```
-
-CSS classes:
-
-| Class                                  | Description                                                                |
-| -------------------------------------- | -------------------------------------------------------------------------- |
-| `mdc-drawer`                           | Mandatory. Needs to be set on the root element of the component.           |
-| `mdc-drawer--permanent`                | Mandatory. Needs to be set on the root element of the component.           |
-| `mdc-drawer__toolbar-spacer`           | Optional. Add to node to provide the matching amount of space for toolbar. |
-
-## Persistent drawer usage
-
-Persistent drawers can be toggled open or closed. The drawer sits on the same surface elevation as the content. It is closed by default. When the drawer is outside of the page grid and opens, the drawer forces other content to change size and adapt to the smaller viewport. Persistent drawers stay open until closed by the user.
-
-Persistent drawers are acceptable for all sizes larger than mobile.
-
-```html
-<aside class="mdc-drawer mdc-drawer--persistent mdc-typography">
-  <nav class="mdc-drawer__drawer">
-    <header class="mdc-drawer__header">
-      <div class="mdc-drawer__header-content">
-        Header here
-      </div>
-    </header>
-    <nav id="icon-with-text-demo" class="mdc-drawer__content mdc-list">
-      <a class="mdc-list-item mdc-list-item--activated" href="#">
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
-      </a>
-      <a class="mdc-list-item" href="#">
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
-      </a>
-    </nav>
-  </nav>
 </aside>
 ```
 
-```js
-let drawer = new mdc.drawer.MDCPersistentDrawer(document.querySelector('.mdc-drawer--persistent'));
-document.querySelector('.menu').addEventListener('click', () => drawer.open = true);
+### Styles
+
+```scss
+@import "@material/drawer/mdc-list";
+@import "@material/drawer/mdc-drawer";
 ```
 
-CSS classes:
+### JavaScript Instantiation
 
-| Class                                   | Description                                                                |
-| --------------------------------------- | -------------------------------------------------------------------------- |
-| `mdc-drawer`                            | Mandatory. Needs to be set on the root element of the component.           |
-| `mdc-drawer--persistent`                | Mandatory. Needs to be set on the root element of the component.           |
-| `mdc-drawer__drawer`                    | Mandatory. Needs to be set on the container node for the drawer content.   |
+For permanently visible drawer, the list must be instantiated for appropriate keyboard interaction:
+
+```js
+import {MDCList} from "@material/list";
+const list = MDCList.attachTo(document.querySelector('.mdc-list'));
+list.wrapFocus = true;
+```
+
+Other variants use the `MDCDrawer` component, which will instantiate `MDCList` automatically:
+
+```js
+import {MDCDrawer} from "@material/drawer";
+const drawer = MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
+```
+
+## Variants
+
+### Drawer with separate list groups
+
+```html
+<aside class="mdc-drawer">
+  <div class="mdc-drawer__content">
+    <nav class="mdc-list">
+      <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
+        Inbox
+      </a>
+      <a class="mdc-list-item" href="#">
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>
+        Star
+      </a>
+      <a class="mdc-list-item" href="#">
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
+        Sent Mail
+      </a>
+      <a class="mdc-list-item" href="#">
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
+        Drafts
+      </a>
+
+      <hr class="mdc-list-divider">
+      <h6 class="mdc-list-group__subheader">Labels</h6>
+      <a class="mdc-list-item" href="#">
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+        Family
+      </a>
+      <a class="mdc-list-item" href="#">
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+        Friends
+      </a>
+      <a class="mdc-list-item" href="#">
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+        Work
+      </a>
+    </nav>
+  </div>
+</aside>
+```
+
+### Drawer with Header
+
+Drawers can contain a header element which will not scroll with the rest of the drawer content. Things like account switchers and titles should live in the header element.
+
+```html
+<aside class="mdc-drawer">
+  <div class="mdc-drawer__header">
+    <h3 class="mdc-drawer__title">Mail</h3>
+    <h6 class="mdc-drawer__subtitle">email@material.io</h6>
+  </div>
+  <div class="mdc-drawer__content">
+    <nav class="mdc-list">
+      <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
+      </a>
+      <a class="mdc-list-item" href="#">
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Outgoing
+      </a>
+      <a class="mdc-list-item" href="#">
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
+      </a>
+    </nav>
+  </div>
+</aside>
+```
+
+### Dismissible Drawer
+
+Dismissible drawers are by default hidden off screen, and can slide into view. Dismissible drawers should be used when navigation is not common, and the main app content is prioritized.
+
+```html
+<body>
+  <aside class="mdc-drawer mdc-drawer--dismissible">
+    <div class="mdc-drawer__content">
+      <nav class="mdc-list">
+        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
+        </a>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Outgoing
+        </a>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
+        </a>
+      </nav>
+    </div>
+  </aside>
+
+  <div class="mdc-drawer-app-content">
+    App Content
+  </div>
+</body>
+```
+
+> Apply the `mdc-drawer-app-content` class to the sibling element after the drawer for the open/close animations to work.
+
+#### Usage with Top App Bar
+
+In cases where the drawer occupies the full viewport height, some styles must be applied to get the dismissible drawer and the content below the top app bar to independently scroll and work in all browsers.
+
+In the following example, the `mdc-drawer__content` and `main-content` elements should scroll independently of each other. The `mdc-drawer--dismissible` and `mdc-drawer-app-content` elements should then sit side-by-side. The markup looks something like this:
+
+```html
+<body>
+  <aside class="mdc-drawer mdc-drawer--dismissible">
+    <div class="mdc-drawer__content">
+      <div class="mdc-list">
+        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
+        </a>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Outgoing
+        </a>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <div class="mdc-drawer-app-content">
+    <header class="mdc-top-app-bar app-bar" id="app-bar">
+      <div class="mdc-top-app-bar__row">
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+          <a href="#" class="demo-menu material-icons mdc-top-app-bar__navigation-icon">menu</a>
+          <span class="mdc-top-app-bar__title">Dismissible Drawer</span>
+        </section>
+      </div>
+    </header>
+
+    <main class="main-content" id="main-content">
+      <div class="mdc-top-app-bar--fixed-adjust"></div>
+        App Content
+      </div>
+    </main>
+  </div>
+</body>
+```
+
+The CSS to match it looks like this:
+
+```scss
+// Note: these styles do not account for any paddings/margins that you may need.
+
+body {
+  display: flex;
+  height: 100vh;
+}
+
+.mdc-drawer-app-content {
+  flex: auto;
+  overflow: auto;
+}
+
+.main-content {
+  overflow: auto;
+  height: 100%;
+}
+
+.app-bar {
+  position: absolute;
+}
+```
+
+The JavaScript to toggle the drawer when the navigation button is clicked looks like this:
+
+```js
+import {MDCTopAppBar} from "@material/top-app-bar";
+const topAppBar = MDCTopAppBar.attachTo(document.getElementById('app-bar'));
+topAppBar.setScrollTarget(document.getElementById('main-content'));
+topAppBar.listen('MDCTopAppBar:nav', () => {
+    drawer.open = !drawer.open;
+});
+```
+
+### Modal Drawer
+
+Modal drawers are elevated above most of the app's UI and don't affect the screen's layout grid.
+
+```html
+<body>
+  <aside class="mdc-drawer mdc-drawer--modal">
+    <div class="mdc-drawer__content">
+      <nav class="mdc-list">
+        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
+        </a>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Outgoing
+        </a>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
+        </a>
+      </nav>
+    </div>
+  </aside>
+
+  <div class="mdc-drawer-scrim"></div>
+  <div>Main Content</div>
+</body>
+```
+
+> The `mdc-drawer-scrim` next sibling element protects the app's UI from interactions while the drawer is open.
+
+## Style Customization
+
+### CSS Classes
+
+Class | Description
+--- | ---
+`mdc-drawer` |  Mandatory.
+`mdc-drawer__header` | Non-scrollable element that exists at the top of the drawer.
+`mdc-drawer__content` | Scrollable content area of the drawer.
+`mdc-drawer__title` | Title text element of the drawer.
+`mdc-drawer__subtitle` | Subtitle text element of the drawer.
+`mdc-drawer--dismissible` | Dismissible drawer variant class.
+`mdc-drawer--modal` | Modal drawer variant class.
+`mdc-drawer--open` | If present, indicates that the dismissible drawer is in the open position.
+`mdc-drawer--opening` | Applied while the drawer is animating from the closed to the open position.
+`mdc-drawer--closing` | Applied while the drawer is animating from the open to the closed position.
+`mdc-drawer-app-content` | Dismissible variant only. Sibling element that is resized when the drawer opens/closes.
+`mdc-drawer-scrim` | Modal variant only. Used for the overlay on the app content.
+
 
 ### Sass Mixins
 
-To customize the fill color, the ink color, or scrim color (transparent mask found in the temporary drawer), you can use the following mixins.
+Mixin | Description
+--- | ---
+`mdc-drawer-border-color($color)` | Sets border color of `mdc-drawer` surface.
+`mdc-drawer-divider-color($color)` | Sets divider color found between list groups.
+`mdc-drawer-fill-color-accessible($color)` | Sets the fill color to `$color`, and list item and icon ink colors to an accessible color relative to `$color`.
+`mdc-drawer-surface-fill-color($color)` | Sets the background color of `mdc-drawer`.
+`mdc-drawer-title-ink-color($color)` | Sets the ink color of `mdc-drawer__title`.
+`mdc-drawer-subtitle-ink-color` | Sets drawer subtitle and list subheader ink color.
+`mdc-drawer-item-icon-ink-color($color)` | Sets drawer list item graphic icon ink color.
+`mdc-drawer-item-text-ink-color($color)` | Sets drawer list item text ink color.
+`mdc-drawer-item-activated-icon-ink-color($color)` | Sets activated drawer list item icon ink color.
+`mdc-drawer-item-activated-text-ink-color($color)` | Sets activated drawer list item text ink color.
+`mdc-drawer-item-corner-radius($radius)` | Sets the corner border radius of the drawer list item.
+`mdc-drawer-activated-overlay-color($color)` | Sets the overlay color of the activated drawer list item.
+`mdc-drawer-scrim-fill-color($color)` | Sets the fill color of `mdc-drawer-scrim`.
 
-#### `mdc-drawer-fill-color($color)`
+## Accessibility
 
-This mixin customizes the fill (background) color of the drawer.
+### Focus Management
 
-#### `mdc-drawer-ink-color($color)`
+It is recommended to shift focus to the first focusable element in the main content when drawer is closed or one of the destination items is activated. (By default, MDC Drawer restores focus to the menu button which opened it.)
 
-This mixin customizes the ink color (font / copy color) of the drawer.
+#### Dismissible Drawer
 
-#### `mdc-drawer-fill-color-accessible($color)`
-
-This mixin customizes the fill color of the drawer. It also sets the ink color to an accessible complement of the fill.
-
-#### `mdc-drawer-scrim-color($color, $opacity)`
-
-This mixin customizes the color and opacity of the scrim. (temporary drawer only)
-
-### Using the JS Component
-
-MDC Persistent Drawer ships with a Component / Foundation combo which allows for frameworks to richly integrate the
-correct drawer behaviors into idiomatic components.
-
-#### Including in code
-
-##### ES2015
-
-```javascript
-import {MDCPersistentDrawer, MDCPersistentDrawerFoundation, util} from '@material/drawer';
-```
-
-##### CommonJS
-
-```javascript
-const mdcDrawer = require('mdc-drawer');
-const MDCPersistentDrawer = mdcDrawer.MDCPersistentDrawer;
-const MDCPersistentDrawerFoundation = mdcDrawer.MDCPersistentDrawerFoundation;
-const util = mdcDrawer.util;
-```
-
-##### AMD
-
-```javascript
-require(['path/to/mdc-drawer'], mdcDrawer => {
-  const MDCPersistentDrawer = mdcDrawer.MDCPersistentDrawer;
-  const MDCPersistentDrawerFoundation = mdcDrawer.MDCPersistentDrawerFoundation;
-  const util = mdcDrawer.util;
-});
-```
-
-##### Global
-
-```javascript
-const MDCPersistentDrawer = mdc.drawer.MDCPersistentDrawer;
-const MDCPersistentDrawerFoundation = mdc.drawer.MDCPersistentDrawerFoundation;
-const util = mdc.drawer.util;
-```
-
-#### Automatic Instantiation
-
-If you do not care about retaining the component instance for the persistent drawer, simply call `attachTo()`
-and pass it a DOM element.
-
-```javascript
-mdc.drawer.MDCPersistentDrawer.attachTo(document.querySelector('.mdc-drawer--persistent'));
-```
-
-#### Manual Instantiation
-
-Persistent drawers can easily be initialized using their default constructors as well, similar to `attachTo`.
-
-```javascript
-import {MDCPersistentDrawer} from '@material/drawer';
-
-const drawer = new MDCPersistentDrawer(document.querySelector('.mdc-drawer--persistent'));
-```
-
-#### Handling events
-
-When the drawer is opened or closed, the component will emit a
-`MDCPersistentDrawer:open` or `MDCPersistentDrawer:close` custom event with no data attached.
-Events get emitted only when the drawer toggles its opened state, i.e. multiple consecutive
-`drawer.open = true` calls will result in only one `MDCPersistentDrawer:open`.
-
-### Using the Foundation Class
-
-MDC Persistent Drawer ships with an `MDCPersistentDrawerFoundation` class that external frameworks and libraries can
-use to integrate the component. As with all foundation classes, an adapter object must be provided.
-The adapter for persistent drawers must provide the following functions, with correct signatures:
-
-| Method Signature | Description |
-| --- | --- |
-| `addClass(className: string) => void` | Adds a class to the root element. |
-| `removeClass(className: string) => void` | Removes a class from the root element. |
-| `hasClass(className: string) => boolean` | Returns boolean indicating whether element has a given class. |
-| `hasNecessaryDom() => boolean` | Returns boolean indicating whether the necessary DOM is present (namely, the `mdc-drawer__drawer` drawer container). |
-| `registerInteractionHandler(evt: string, handler: EventListener) => void` | Adds an event listener to the root element, for the specified event name. |
-| `deregisterInteractionHandler(evt: string, handler: EventListener) => void` | Removes an event listener from the root element, for the specified event name. |
-| `registerDrawerInteractionHandler(evt: string, handler: EventListener) => void` | Adds an event listener to the drawer container sub-element, for the specified event name. |
-| `deregisterDrawerInteractionHandler(evt: string, handler: EventListener) => void` | Removes an event listener from drawer container sub-element, for the specified event name. |
-| `registerTransitionEndHandler(handler: EventListener) => void` | Registers an event handler to be called when a `transitionend` event is triggered on the drawer container sub-element element. |
-| `deregisterTransitionEndHandler(handler: EventListener) => void` | Deregisters an event handler from a `transitionend` event listener. This will only be called with handlers that have previously been passed to `registerTransitionEndHandler` calls. |
-| `registerDocumentKeydownHandler(handler: EventListener) => void` | Registers an event handler on the `document` object for a `keydown` event. |
-| `deregisterDocumentKeydownHandler(handler: EventListener) => void` | Deregisters an event handler on the `document` object for a `keydown` event. |
-| `getDrawerWidth() => number` | Returns the current drawer width, in pixels. |
-| `setTranslateX(value: number) => void` | Sets the current position for the drawer, in pixels from the border. |
-| `getFocusableElements() => NodeList` | Returns the node list of focusable elements inside the drawer. |
-| `saveElementTabState(el: Element) => void` | Saves the current tab index for the element in a data property. |
-| `restoreElementTabState(el: Element) => void` | Restores the saved tab index (if any) for an element. |
-| `makeElementUntabbable(el: Element) => void` | Makes an element untabbable. |
-| `notifyOpen() => void` | Dispatches an event notifying listeners that the drawer has been opened. |
-| `notifyClose() => void` | Dispatches an event notifying listeners that the drawer has been closed. |
-| `isRtl() => boolean` | Returns boolean indicating whether the current environment is RTL. |
-| `isDrawer(el: Element) => boolean` | Returns boolean indicating whether the provided element is the drawer container sub-element. |
-
-## Temporary drawer usage
-
-A temporary drawer is usually closed, sliding out at a higher elevation than the content when opened. It is appropriate
-for any display size.
-
-```html
-<aside class="mdc-drawer mdc-drawer--temporary mdc-typography">
-  <nav class="mdc-drawer__drawer">
-    <header class="mdc-drawer__header">
-      <div class="mdc-drawer__header-content">
-        Header here
-      </div>
-    </header>
-    <nav id="icon-with-text-demo" class="mdc-drawer__content mdc-list">
-      <a class="mdc-list-item mdc-list-item--activated" href="#">
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
-      </a>
-      <a class="mdc-list-item" href="#">
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
-      </a>
-    </nav>
-  </nav>
-</aside>
-```
+Restore focus to the first focusable element when a list item is activated or after the drawer closes. Do not close the drawer upon item activation, since it should be up to the user when to show/hide the dismissible drawer.
 
 ```js
-let drawer = new mdc.drawer.MDCTemporaryDrawer(document.querySelector('.mdc-drawer--temporary'));
-document.querySelector('.menu').addEventListener('click', () => drawer.open = true);
-```
+const listEl = drawerEl.querySelector('.mdc-drawer .mdc-list');
+const mainContentEl = document.body.querySelector('.main-content');
 
-### Headers and toolbar spacers
+listEl.addEventListener('click', (event) => {
+  mainContentEl.querySelector('input, button').focus();
+});
 
-Temporary drawers can use toolbar spacers, headers, or neither.
-
-A toolbar spacer adds to the drawer the same amount of space that the toolbar takes up in your application. This is
-very useful for visual alignment and consistency. Note that you can place content inside the toolbar spacer.
-
-```html
-<aside class="mdc-drawer mdc-drawer--temporary mdc-typography">
-  <nav class="mdc-drawer__drawer">
-
-    <div class="mdc-drawer__toolbar-spacer"></div>
-
-    <nav id="icon-with-text-demo" class="mdc-drawer__content mdc-list">
-      <a class="mdc-list-item mdc-list-item--activated" href="#">
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
-      </a>
-      <a class="mdc-list-item" href="#">
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
-      </a>
-    </nav>
-  </nav>
-</aside>
-```
-
-A header, on the other hand, is a large rectangular area that maintains a 16:9 ratio. It's often used for user account
-selection.
-It uses an outer `mdc-drawer__header` for positioning, with an inner `mdc-drawer__header-content`
-for placing the actual content, which will be bottom-aligned.
-
-```html
-<aside class="mdc-drawer mdc-drawer--temporary mdc-typography">
-  <nav class="mdc-drawer__drawer">
-
-    <header class="mdc-drawer__header">
-      <div class="mdc-drawer__header-content">
-        Header content goes here
-      </div>
-    </header>
-
-    <nav id="icon-with-text-demo" class="mdc-drawer__content mdc-list">
-      <a class="mdc-list-item mdc-list-item--activated" href="#">
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
-      </a>
-      <a class="mdc-list-item" href="#">
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
-      </a>
-    </nav>
-  </nav>
-</aside>
-```
-
-CSS classes:
-
-| Class                                  | Description                                                                |
-| -------------------------------------- | -------------------------------------------------------------------------- |
-| `mdc-drawer`                           | Mandatory. Needs to be set on the root element of the component.           |
-| `mdc-drawer--temporary`                | Mandatory. Needs to be set on the root element of the component.           |
-| `mdc-drawer__drawer`                   | Mandatory. Needs to be set on the container node for the drawer content.   |
-| `mdc-drawer__content`                  | Optional. Should be set on the list of items inside the drawer.            |
-| `mdc-drawer__toolbar-spacer`           | Optional. Add to node to provide the matching amount of space for toolbar. |
-| `mdc-drawer__header`                   | Optional. Add to container node to create a 16:9 drawer header.            |
-| `mdc-drawer__header-content`           | Optional. Add to content node inside `mdc-temporary-drawer__header`.       |
-
-### Using the JS Component
-
-MDC Temporary Drawer ships with a Component / Foundation combo which allows for frameworks to richly integrate the
-correct drawer behaviors into idiomatic components.
-
-#### Including in code
-
-##### ES2015
-
-```javascript
-import {MDCTemporaryDrawer, MDCTemporaryDrawerFoundation, util} from '@material/drawer';
-```
-
-##### CommonJS
-
-```javascript
-const mdcDrawer = require('mdc-drawer--temporary');
-const MDCTemporaryDrawer = mdcDrawer.MDCTemporaryDrawer;
-const MDCTemporaryDrawerFoundation = mdcDrawer.MDCTemporaryDrawerFoundation;
-const util = mdcDrawer.util;
-```
-
-##### AMD
-
-```javascript
-require(['path/to/mdc-drawer'], mdcDrawer => {
-  const MDCTemporaryDrawer = mdcDrawer.MDCTemporaryDrawer;
-  const MDCTemporaryDrawerFoundation = mdcDrawer.MDCTemporaryDrawerFoundation;
-  const util = mdcDrawer.util;
+document.body.addEventListener('MDCDrawer:closed', () => {
+  mainContentEl.querySelector('input, button').focus();
 });
 ```
 
-##### Global
+#### Modal Drawer
 
-```javascript
-const MDCTemporaryDrawer = mdc.drawer.MDCTemporaryDrawer;
-const MDCTemporaryDrawerFoundation = mdc.drawer.MDCTemporaryDrawerFoundation;
-const util = mdc.drawer.util;
+Close the drawer when an item is activated in order to dismiss the modal as soon as the user performs an action. Only restore focus to the first focusable element in the main content after the drawer is closed, since it's being closed automatically.
+
+```js
+const listEl = drawerEl.querySelector('.mdc-drawer .mdc-list');
+const mainContentEl = document.body.querySelector('.main-content');
+
+listEl.addEventListener('click', (event) => {
+  drawer.open = false;
+});
+
+document.body.addEventListener('MDCDrawer:closed', () => {
+  mainContentEl.querySelector('input, button').focus();
+});
 ```
 
-#### Automatic Instantiation
+## `MDCDrawer` Properties and Methods
 
-If you do not care about retaining the component instance for the temporary drawer, simply call `attachTo()`
-and pass it a DOM element.
+Property | Value Type | Description
+--- | --- | ---
+`open` | Boolean | Proxies to the foundation's `open`/`close` methods. Also returns true if drawer is in the open position.
 
-```javascript
-mdc.drawer.MDCTemporaryDrawer.attachTo(document.querySelector('.mdc-drawer--temporary'));
-```
+### Events
 
-#### Manual Instantiation
+Event Name | Event Data Structure | Description
+--- | --- | ---
+`MDCDrawer:opened` | None | Emits when the navigation drawer has opened.
+`MDCDrawer:closed` | None | Emits when the navigation drawer has closed.
 
-Temporary drawers can easily be initialized using their default constructors as well, similar to `attachTo`.
+## Usage within Web Frameworks
 
-```javascript
-import {MDCTemporaryDrawer} from '@material/drawer';
+If you are using a JavaScript framework, such as React or Angular, you can create a Navigation Drawer for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-const drawer = new MDCTemporaryDrawer(document.querySelector('.mdc-drawer--temporary'));
-```
+### `MDCDrawerAdapter`
 
-#### Handling events
+Method Signature | Description
+--- | ---
+`addClass(className: string) => void` | Adds a class to the root element.
+`hasClass(className: string) => boolean` | Returns true if the root element contains the given `className`.
+`removeClass(className: string) => void` | Removes a class from the root element.
+`elementHasClass(element: !Element, className: string) => boolean` | Returns true if the an element contains the given class.
+`computeBoundingRect() => !ClientRect` | Returns the ClientRect for the root element.
+`saveFocus() => void` | Saves the focus of currently active element.
+`restoreFocus() => void` | Restores focus to element previously saved with 'saveFocus'.
+`focusActiveNavigationItem() => void` | Focuses the active / selected navigation item.
+`notifyClose() => void` | Emits the `MDCDrawer:closed` event.
+`notifyOpen() => void` | Emits the `MDCDrawer:opened` event.
+`trapFocus() => void` | Traps focus on root element and focuses the active navigation element.
+`releaseFocus() => void` | Releases focus trap from root element which was set by `trapFocus` and restores focus to where it was prior to calling `trapFocus`.
 
-When the drawer is opened or closed, the component will emit a
-`MDCTemporaryDrawer:open` or `MDCTemporaryDrawer:close` custom event with no data attached.
-Events get emitted only when the drawer toggles its opened state, i.e. multiple consecutive
-`drawer.open = true` calls will result in only one `MDCTemporaryDrawer:open`.
+### Foundations
 
-### Using the Foundation Class
+#### `MDCDismissibleDrawerFoundation`
 
-MDC Temporary Drawer ships with an `MDCTemporaryDrawerFoundation` class that external frameworks and libraries can
-use to integrate the component. As with all foundation classes, an adapter object must be provided.
-The adapter for temporary drawers must provide the following functions, with correct signatures:
+Method Signature | Description
+--- | ---
+`open() => void` | Opens the drawer from the closed state.
+`close() => void` | Closes the drawer from the open state.
+`isOpen() => boolean` | Returns true if the drawer is in the open position.
+`isOpening() => boolean` | Returns true if the drawer is animating open.
+`isClosing() => boolean` | Returns true if the drawer is animating closed.
+`handleKeyDown(evt: Event) => void` | Handles the keydown event.
+`handleTransitionEnd(evt: Event) => void` | Handles the transitionend event when the drawer finishes opening/closing.
+`opened() => void` | Only called internally. Extension point for when drawer finishes open animation.
+`closed() => void` | Only called internally. Extension point for when drawer finishes close animation.
 
-| Method Signature | Description |
-| --- | --- |
-| `addClass(className: string) => void` | Adds a class to the root element. |
-| `removeClass(className: string) => void` | Removes a class from the root element. |
-| `hasClass(className: string) => boolean` | Returns boolean indicating whether element has a given class. |
-| `eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise. |
-| `addBodyClass(className: string) => void` | Adds a class to the body. |
-| `removeBodyClass(className: string) => void` | Removes a class from the body. |
-| `hasNecessaryDom() => boolean` | Returns boolean indicating whether the necessary DOM is present (namely, the `mdc-drawer__drawer` drawer container). |
-| `registerInteractionHandler(evt: string, handler: EventListener) => void` | Adds an event listener to the root element, for the specified event name. |
-| `deregisterInteractionHandler(evt: string, handler: EventListener) => void` | Removes an event listener from the root element, for the specified event name. |
-| `registerDrawerInteractionHandler(evt: string, handler: EventListener) => void` | Adds an event listener to the drawer container sub-element, for the specified event name. |
-| `deregisterDrawerInteractionHandler(evt: string, handler: EventListener) => void` | Removes an event listener from drawer container sub-element, for the specified event name. |
-| `registerTransitionEndHandler(handler: EventListener) => void` | Registers an event handler to be called when a `transitionend` event is triggered on the drawer container sub-element element. |
-| `deregisterTransitionEndHandler(handler: EventListener) => void` | Deregisters an event handler from a `transitionend` event listener. This will only be called with handlers that have previously been passed to `registerTransitionEndHandler` calls. |
-| `registerDocumentKeydownHandler(handler: EventListener) => void` | Registers an event handler on the `document` object for a `keydown` event. |
-| `deregisterDocumentKeydownHandler(handler: EventListener) => void` | Deregisters an event handler on the `document` object for a `keydown` event. |
-| `getDrawerWidth() => number` | Returns the current drawer width, in pixels. |
-| `setTranslateX(value: number) => void` | Sets the current position for the drawer, in pixels from the border. |
-| `updateCssVariable(value: string) => void` | Sets a CSS custom property, for controlling the current background opacity when manually dragging the drawer. |
-| `getFocusableElements() => NodeList` | Returns the node list of focusable elements inside the drawer. |
-| `saveElementTabState(el: Element) => void` | Saves the current tab index for the element in a data property. |
-| `restoreElementTabState(el: Element) => void` | Restores the saved tab index (if any) for an element. |
-| `makeElementUntabbable(el: Element) => void` | Makes an element untabbable. |
-| `notifyOpen() => void` | Dispatches an event notifying listeners that the drawer has been opened. |
-| `notifyClose() => void` | Dispatches an event notifying listeners that the drawer has been closed. |
-| `isRtl() => boolean` | Returns boolean indicating whether the current environment is RTL. |
-| `isDrawer(el: Element) => boolean` | Returns boolean indicating whether the provided element is the drawer container sub-element. |
+#### `MDCModalDrawerFoundation` (extends `MDCDismissibleDrawerFoundation`)
 
-### The util API
-External frameworks and libraries can use the following utility methods when integrating a component.
-
-#### util.remapEvent(eventName, globalObj = window) => String
-
-Remap touch events to pointer events, if the browser doesn't support touch events.
-
-#### util.getTransformPropertyName(globalObj = window, forceRefresh = false) => String
-
-Choose the correct transform property to use on the current browser.
-
-#### util.supportsCssCustomProperties(globalObj = window) => Boolean
-
-Determine whether the current browser supports CSS properties.
-
-#### util.applyPassive(globalObj = window, forceRefresh = false) => object
-
-Determine whether the current browser supports passive event listeners, and if so, use them.
-
-#### util.saveElementTabState(el) => void
-
-Save the tab state for an element.
-
-#### util.restoreElementTabState(el) => void
-
-Restore the tab state for an element, if it was saved.
+Method Signature | Description
+--- | ---
+`handleScrimClick() => void` | Handles click event on scrim.

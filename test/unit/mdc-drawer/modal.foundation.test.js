@@ -21,4 +21,34 @@
  * THE SOFTWARE.
  */
 
-mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
+import td from 'testdouble';
+import MDCModalDrawerFoundation from '../../../packages/mdc-drawer/modal/foundation';
+
+suite('MDCModalDrawerFoundation');
+
+const setupTest = () => {
+  const mockAdapter = td.object(MDCModalDrawerFoundation.defaultAdapter);
+  const foundation = new MDCModalDrawerFoundation(mockAdapter);
+  const MockFoundationCtor = td.constructor(MDCModalDrawerFoundation);
+  const mockFoundation = new MockFoundationCtor();
+
+  return {foundation, mockAdapter, mockFoundation};
+};
+
+test('#opened traps the focus when drawer finishes animating open', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.opened();
+  td.verify(mockAdapter.trapFocus(), {times: 1});
+});
+
+test('#closed untraps the focus when drawer finishes animating close', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.closed();
+  td.verify(mockAdapter.releaseFocus(), {times: 1});
+});
+
+test('#handleScrimClick closes the drawer', () => {
+  const {foundation} = setupTest();
+  foundation.handleScrimClick();
+  td.verify(foundation.close(), {times: 1});
+});

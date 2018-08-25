@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc.
+// Copyright 2018 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +20,33 @@
 // THE SOFTWARE.
 //
 
-$mdc-slidable-drawer-transition-close-time: 200ms;
-$mdc-slidable-drawer-transition-open-time: 250ms;
-$mdc-slidable-drawer-transition-close: mdc-animation-standard(transform, $mdc-slidable-drawer-transition-close-time);
-$mdc-slidable-drawer-transition-open: mdc-animation-standard(transform, $mdc-slidable-drawer-transition-open-time);
+@import "@material/animation/functions";
+@import "@material/rtl/mixins";
+@import "../variables";
+@import "../mixins";
+
+.mdc-drawer--dismissible {
+  @include mdc-rtl-reflexive-position(left, 0);
+
+  display: none;
+  position: absolute;
+  top: 0;
+
+  &.mdc-drawer--open {
+    display: flex;
+  }
+}
+
+.mdc-drawer-app-content {
+  @include mdc-rtl-reflexive-box(margin, left, 0);
+
+  position: relative;
+
+  .mdc-drawer--open + & {
+    @include mdc-rtl-reflexive-box(margin, left, $mdc-drawer-width);
+  }
+
+  .mdc-drawer--closing + & {
+    @include mdc-rtl-reflexive-box(margin, left, 0);
+  }
+}
