@@ -38,6 +38,21 @@ $test-layout-cell-grid-color: #dddddd;
   font-size: 200%;
 }
 
+// MS Edge only
+@supports (-ms-ime-align: auto) {
+  .test-container--edge-fonts {
+    .mdc-button,
+    .mdc-floating-label,
+    .mdc-text-field-helper-text,
+    .mdc-text-field__input {
+      // Monospace font is still somewhat flaky, but not nearly as bad as Roboto.
+      // The nuclear option would be to set `color: transparent !important`, which would prevent 100% of Edge flakes
+      // at the expense of not being able to test button font colors in Edge.
+      font-family: monospace !important;
+    }
+  }
+}
+
 .test-viewport {
   position: relative;
   box-sizing: border-box;
