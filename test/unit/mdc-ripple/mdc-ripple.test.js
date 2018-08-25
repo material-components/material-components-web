@@ -48,10 +48,10 @@ test('attachTo makes ripple unbounded when given as an option', () => {
 test('attachTo does not override unbounded data attr when omitted', () => {
   const root = bel`<div data-mdc-ripple-is-unbounded></div>`;
   const component = MDCRipple.attachTo(root);
-  if (!component.root_.dataset.mdcRippleIsUnbounded) {
+  if (!component.unbounded) {
     const json = JSON.stringify(component.root_.dataset, null, 2);
     const html = component.root_.outerHTML;
-    const message = `Error: dataset.mdcRippleIsUnbounded is not set!\n\n${json}\n\n${html}`;
+    const message = `Error: component.unbounded is falsy!\n\n${json}\n\n${html}`;
     throw new Error(message);
   }
   assert.isOk(component.unbounded);
