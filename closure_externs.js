@@ -70,7 +70,7 @@
  * @see http://npmjs.com/focus-trap
  */
 
-goog.provide('mdc.thirdparty.focusTrap')
+goog.provide('mdc.thirdparty.focusTrap');
 
 /**
  * @typedef {{

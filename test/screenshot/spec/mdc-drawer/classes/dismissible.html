@@ -19,11 +19,11 @@
   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
-  -->
+-->
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>fill-color-accessible Drawer Mixin - MDC Web Screenshot Test</title>
+    <title>Dismissible Drawer - MDC Web Screenshot Test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../../../out/mdc.drawer.css">
     <link rel="stylesheet" href="../../../out/mdc.list.css">
@@ -32,8 +32,8 @@
     <link rel="stylesheet" href="../../../out/spec/mdc-drawer/fixture.css">
   </head>
 
-  <body class="test-container mdc-typography test-drawer-container"></body>
-    <aside class="mdc-drawer custom-drawer--fill-color-accessible">
+  <body class="test-container mdc-typography test-drawer-container">
+    <aside class="mdc-drawer mdc-drawer--dismissible mdc-drawer--open">
       <header class="mdc-drawer__header">
         <div class="mdc-drawer__title">Title here</div>
         <div class="mdc-drawer__subtitle">Subtext</div>
@@ -87,7 +87,8 @@
       <header class="mdc-top-app-bar">
         <div class="mdc-top-app-bar__row">
           <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-            <span class="mdc-top-app-bar__title">Permanent Drawer</span>
+            <button class="material-icons mdc-top-app-bar__navigation-icon" id="test-drawer-menu-button">menu</button>
+            <span class="mdc-top-app-bar__title">Dismissible Drawer</span>
           </section>
         </div>
       </header>
@@ -136,6 +137,8 @@
     <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fontfaceobserver/2.0.13/fontfaceobserver.standalone.js"></script>
+    <script src="../../../out/material-components-web.js"></script>
     <script src="../../../out/spec/fixture.js"></script>
+    <script src="../../../out/spec/mdc-drawer/fixture.js"></script>
   </body>
 </html>

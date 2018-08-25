@@ -72,3 +72,17 @@ test('click handler removed from navigation icon during destroy', () => {
   foundation.destroy();
   td.verify(mockAdapter.deregisterNavigationIconInteractionHandler('click', td.matchers.isA(Function)));
 });
+
+test('#initScrollHandler calls registerScrollHandler', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.scrollHandler_ = td.func();
+  foundation.initScrollHandler();
+  td.verify(mockAdapter.registerScrollHandler(foundation.scrollHandler_), {times: 1});
+});
+
+test('#destroyScrollHandler calls deregisterScrollHandler', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.scrollHandler_ = td.func();
+  foundation.destroyScrollHandler();
+  td.verify(mockAdapter.deregisterScrollHandler(foundation.scrollHandler_), {times: 1});
+});

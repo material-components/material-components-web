@@ -20,34 +20,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+/** @enum {string} */
+const cssClasses = {
+  ROOT: 'mdc-drawer',
+  DISMISSIBLE: 'mdc-drawer--dismissible',
+  MODAL: 'mdc-drawer--modal',
+  OPEN: 'mdc-drawer--open',
+  ANIMATE: 'mdc-drawer--animate',
+  OPENING: 'mdc-drawer--opening',
+  CLOSING: 'mdc-drawer--closing',
+};
 
-import {MDCSlidableDrawerFoundation} from '../slidable/index';
-import {cssClasses, strings} from './constants';
+/** @enum {string} */
+const strings = {
+  APP_CONTENT_SELECTOR: '.mdc-drawer-app-content',
+  SCRIM_SELECTOR: '.mdc-drawer-scrim',
+  CLOSE_EVENT: 'MDCDrawer:closed',
+  OPEN_EVENT: 'MDCDrawer:opened',
+};
 
-export default class MDCPersistentDrawerFoundation extends MDCSlidableDrawerFoundation {
-  static get cssClasses() {
-    return cssClasses;
-  }
-
-  static get strings() {
-    return strings;
-  }
-
-  static get defaultAdapter() {
-    return Object.assign(MDCSlidableDrawerFoundation.defaultAdapter, {
-      isDrawer: () => false,
-    });
-  }
-
-  constructor(adapter) {
-    super(
-      Object.assign(MDCPersistentDrawerFoundation.defaultAdapter, adapter),
-      MDCPersistentDrawerFoundation.cssClasses.ROOT,
-      MDCPersistentDrawerFoundation.cssClasses.ANIMATING,
-      MDCPersistentDrawerFoundation.cssClasses.OPEN);
-  }
-
-  isRootTransitioningEventTarget_(el) {
-    return this.adapter_.isDrawer(el);
-  }
-}
+export {cssClasses, strings};
