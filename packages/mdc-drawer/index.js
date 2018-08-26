@@ -155,4 +155,4 @@ export class MDCDrawer extends MDCComponent {
   }
 }
 
-export {util};
+export {MDCDismissibleDrawerFoundation, MDCModalDrawerFoundation, util};
