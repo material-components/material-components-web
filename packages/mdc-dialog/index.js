@@ -21,9 +21,10 @@
  * THE SOFTWARE.
  */
 
-import {MDCComponent, MDCFeatureDetector} from '@material/base/index';
+import {MDCComponent} from '@material/base/index';
 import {MDCRipple} from '@material/ripple/index';
 import {matches} from '@material/base/ponyfill';
+import {hasFlexItemMaxHeightBug, fixFlexItemMaxHeightBug} from '@material/base/feature-detection';
 
 import MDCDialogFoundation from './foundation';
 import * as util from './util';
@@ -45,7 +46,6 @@ export class MDCDialog extends MDCComponent {
   }
 
   initialize() {
-    this.featureDetector_ = new MDCFeatureDetector();
     this.focusTrap_ = util.createFocusTrapInstance(this.dialogSurface_);
     this.footerBtnRipples_ = [];
 
@@ -88,7 +88,7 @@ export class MDCDialog extends MDCComponent {
    * @private
    */
   detectScrollableContent_(bypassRAF = false) {
-    if (this.featureDetector_.hasFlexItemMaxHeightBug && !bypassRAF) {
+    if (hasFlexItemMaxHeightBug() && !bypassRAF) {
       // RAF causes a bit of jank, but it's necessary to force IE to render correctly.
       requestAnimationFrame(() => {
         this.fixContentOverflow_();
@@ -109,7 +109,7 @@ export class MDCDialog extends MDCComponent {
   fixContentOverflow_() {
     const bodyEl = this.root_.querySelector('.mdc-dialog__content');
     if (bodyEl) {
-      this.featureDetector_.fixFlexItemMaxHeightBug(bodyEl);
+      fixFlexItemMaxHeightBug(bodyEl);
     }
   }
 

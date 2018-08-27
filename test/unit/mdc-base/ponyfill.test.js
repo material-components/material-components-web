@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2018 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,19 @@
  * THE SOFTWARE.
  */
 
-import MDCComponent from './component';
-import MDCFoundation from './foundation';
+import {assert} from 'chai';
+import bel from 'bel';
 
-export {MDCComponent, MDCFoundation};
+import {matches} from '../../../packages/mdc-base/ponyfill';
+
+suite('MDCBase - ponyfill');
+
+test('#matches returns true when the selector matches the element', () => {
+  const element = bel`<div class="foo"></div>`;
+  assert.isTrue(matches(element, '.foo'));
+});
+
+test('#matches returns false when the selector does not match the element', () => {
+  const element = bel`<div class="foo"></div>`;
+  assert.isFalse(matches(element, '.bar'));
+});
