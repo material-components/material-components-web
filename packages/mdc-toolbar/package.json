@@ -1,6 +1,6 @@
 {
   "name": "@material/toolbar",
-  "version": "0.39.0-0",
+  "version": "0.39.0",
   "description": "The Material Components for the web toolbar component",
   "license": "MIT",
   "repository": {
@@ -13,12 +13,12 @@
     "toolbar"
   ],
   "dependencies": {
-    "@material/base": "^0.35.0",
-    "@material/elevation": "^0.38.0",
-    "@material/ripple": "^0.38.1",
-    "@material/rtl": "^0.36.0",
-    "@material/theme": "^0.38.0",
-    "@material/typography": "^0.39.0-0"
+    "@material/base": "^0.39.0",
+    "@material/elevation": "^0.39.0",
+    "@material/ripple": "^0.39.0",
+    "@material/rtl": "^0.39.0",
+    "@material/theme": "^0.39.0",
+    "@material/typography": "^0.39.0"
   },
   "publishConfig": {
     "access": "public"

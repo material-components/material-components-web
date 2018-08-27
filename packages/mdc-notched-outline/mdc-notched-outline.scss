@@ -28,12 +28,17 @@
 
 // Notched Outline is intended for use by multiple components, but its styles should only be emitted once when bundled
 @include mdc-base-emit-once("mdc-notched-outline") {
-  .mdc-notched-outline {
+  .mdc-notched-outline,
+  .mdc-notched-outline__idle {
     position: absolute;
     top: 0;
     left: 0;
-    width: calc(100% - 1px);
-    height: calc(100% - 2px);
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+  }
+
+  .mdc-notched-outline {
     transition: opacity $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function;
     opacity: 0;
     text-align: left;
@@ -53,11 +58,6 @@
   }
 
   .mdc-notched-outline__idle {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: calc(100% - 4px);
-    height: calc(100% - 4px);
     transition:
       opacity $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function,
       border-color $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function;

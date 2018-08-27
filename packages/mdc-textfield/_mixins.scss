@@ -190,9 +190,6 @@
   @include mdc-floating-label-float-position($mdc-text-field-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
   @include mdc-floating-label-shake-animation(text-field-dense);
 
-  margin-top: 12px;
-  margin-bottom: 4px;
-
   .mdc-text-field__input {
     padding: 12px 12px 0;
   }
@@ -293,7 +290,7 @@
 
   .mdc-text-field__input {
     display: flex;
-    padding: 12px;
+    padding: 12px 16px 14px;
     border: none !important;  // FF adds unwanted border in HC mode on windows.
     background-color: transparent;
     z-index: 1;
@@ -304,6 +301,8 @@
   }
 
   .mdc-floating-label {
+    @include mdc-rtl-reflexive-position(left, 16px);
+
     width: auto;
   }
 }
@@ -371,7 +370,12 @@
 }
 
 @mixin mdc-text-field-with-trailing-icon_ {
-  @include mdc-text-field-icon-horizontal-position_(right, $mdc-text-field-icon-position, $mdc-text-field-icon-padding);
+  @include mdc-text-field-icon-horizontal-position_(right, $mdc-text-field-trailing-icon-position, $mdc-text-field-icon-padding);
+
+  // Outlined uses 16px for text alignment when using a trailing icon.
+  &.mdc-text-field--outlined {
+    @include mdc-text-field-icon-horizontal-position_(right, $mdc-text-field-icon-position, $mdc-text-field-icon-padding);
+  }
 }
 
 @mixin mdc-text-field-dense-with-trailing-icon_ {
@@ -379,7 +383,6 @@
 }
 
 // Full Width
-
 @mixin mdc-text-field-fullwidth_ {
   width: 100%;
 
@@ -400,7 +403,6 @@
 }
 
 // Textarea
-
 @mixin mdc-text-field-textarea-disabled_ {
   @include mdc-text-field-textarea-stroke-color_($mdc-textarea-disabled-border-color);
   @include mdc-text-field-textarea-fill-color_($mdc-textarea-disabled-background);

@@ -23,105 +23,75 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Drawer Above Toolbar - Material Components Catalog</title>
+    <title>Permanent Drawer - Material Components Catalog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
     <link rel="stylesheet" href="/assets/drawer/drawer.css">
     <link rel="stylesheet" href="/assets/radio.css">
+    <script src="/ready.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <style>
-      /* Ensure layout covers the entire screen. */
-      html {
-        height: 100%;
-      }
-
-      /* Place drawer and content side by side. */
-      .demo-body {
-        display: flex;
-        flex-direction: row;
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
-        min-height: 100%;
-        width: 100%;
-      }
-
-      /* Stack toolbar and main on top of each other. */
-      .demo-content {
-        display: inline-flex;
-        flex-direction: column;
-        flex-grow: 1;
-        height: 100%;
-        box-sizing: border-box;
-      }
-
-      /* Place drawer above toolbar shadow. */
-      .mdc-drawer--permanent {
-        z-index: 2;
-      }
-
-      .demo-main {
-        padding-left: 16px;
-        padding-right: 16px;
-      }
-
-      #extra-wide-content {
-        width: 200vw;
-      }
-
-      #extra-tall-content {
-        height: 200vh;
-      }
-    </style>
   </head>
   <body class="mdc-typography demo-body">
-    <nav id="demo-drawer" class="mdc-drawer mdc-drawer--permanent demo-drawer">
-      <div class="mdc-list-group">
+    <aside id="demo-drawer" class="mdc-drawer demo-drawer">
+      <div class="mdc-drawer__header">
+        <h3 class="mdc-drawer__title">Mail</h3>
+        <h6 class="mdc-drawer__subtitle">email@material.io</h6>
+      </div>
+      <div class="mdc-drawer__content">
         <nav class="mdc-list">
-          <a class="mdc-list-item mdc-list-item--selected demo-drawer-list-item" href="#">
+          <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true" tabindex="0">
             <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
           </a>
-          <a class="mdc-list-item demo-drawer-list-item" href="#">
+          <a class="mdc-list-item" href="#">
             <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
           </a>
-          <a class="mdc-list-item demo-drawer-list-item" href="#">
+          <a class="mdc-list-item" href="#">
             <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Sent Mail
           </a>
-          <a class="mdc-list-item demo-drawer-list-item" href="#">
+          <a class="mdc-list-item" href="#">
             <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
           </a>
-        </nav>
 
-        <hr class="mdc-list-divider">
+          <hr class="mdc-list-divider">
+          <h6 class="mdc-list-group__subheader">Labels</h6>
+          <a class="mdc-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>Family
+          </a>
+          <a class="mdc-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>Friends
+          </a>
+          <a class="mdc-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>Work
+          </a>
 
-        <nav class="mdc-list">
-          <a class="mdc-list-item demo-drawer-list-item" href="#">
-            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">email</i>All Mail
+          <hr class="mdc-list-divider">
+          <a class="mdc-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>Settings
           </a>
-          <a class="mdc-list-item demo-drawer-list-item" href="#">
-            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">delete</i>Trash
-          </a>
-          <a class="mdc-list-item demo-drawer-list-item" href="#">
-            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">report</i>Spam
+          <a class="mdc-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">announcement</i>Help & feedback
           </a>
         </nav>
       </div>
-    </nav>
-    <div class="demo-content">
-      <!-- TODO: #324 - Should switch to .mdc-toolbar--fixed -->
-      <header class="mdc-toolbar mdc-elevation--z4">
-        <div class="mdc-toolbar__row">
-          <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-            <span class="mdc-toolbar__title catalog-title">Permanent Drawer Above Toolbar</span>
+    </aside>
+    <div class="demo-content" id="demo-content">
+      <header class="mdc-top-app-bar" id="app-bar">
+        <div class="mdc-top-app-bar__row">
+          <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+            <span class="mdc-top-app-bar__title">Permanent Drawer</span>
           </section>
         </div>
       </header>
 
       <main class="demo-main">
+        <div class="mdc-top-app-bar--fixed-adjust"></div>
         <h1 class="mdc-typography--headline4">Permanent Drawer</h1>
-        <p class="mdc-typography--body1">It sits to the left of this content.</p>
+        <p class="mdc-typography--body1">
+          It sits to the left of this content.
+          Currently active destination: <strong class="demo-selected-destination">Inbox</strong>
+        </p>
 
         <div id="demo-radio-buttons">
           <div class="mdc-form-field">
@@ -170,50 +140,49 @@
       </main>
     </div>
 
+    <script src="/assets/material-components-web.js" async></script>
     <script>
-      var extraWide = document.querySelector('#extra-wide-content');
-      extraWide.style.display = 'none';
-      document.querySelector('#toggle-wide').addEventListener('click', function() {
-        extraWide.style.display = extraWide.style.display ? '' : 'none';
-      });
-      var extraTall = document.querySelector('#extra-tall-content');
-      extraTall.style.display = 'none';
-      document.querySelector('#toggle-tall').addEventListener('click', function() {
-        extraTall.style.display = extraTall.style.display ? '' : 'none';
-      });
+      demoReady(function() {
+        var extraWide = document.querySelector('#extra-wide-content');
+        extraWide.style.display = 'none';
+        document.querySelector('#toggle-wide').addEventListener('click', function() {
+          extraWide.style.display = extraWide.style.display ? '' : 'none';
+        });
+        var extraTall = document.querySelector('#extra-tall-content');
+        extraTall.style.display = 'none';
+        document.querySelector('#toggle-tall').addEventListener('click', function() {
+          extraTall.style.display = extraTall.style.display ? '' : 'none';
+        });
 
-      // Demonstrate application of --activated modifier to drawer menu items
-      var activatedClass = 'mdc-list-item--selected';
-      document.querySelector('.mdc-drawer').addEventListener('click', function(event) {
-        var el = event.target;
-        while (el && !el.classList.contains('mdc-list-item')) {
-          el = el.parentElement;
-        }
-        if (el) {
-          var activatedItem = document.querySelector('.' + activatedClass);
-          if (activatedItem) {
-            activatedItem.classList.remove(activatedClass);
+        var drawerEl = document.getElementById('demo-drawer');
+        var radioEl = document.querySelector('#demo-radio-buttons');
+        radioEl.addEventListener('change', function(e) {
+          drawerEl.classList.remove('demo-drawer--custom');
+          drawerEl.classList.remove('demo-drawer--accessible');
+
+          if(e.target.id === 'theme-radio-custom') {
+            drawerEl.classList.add('demo-drawer--custom');
+          } else if(e.target.id === 'theme-radio-accessible') {
+            drawerEl.classList.add('demo-drawer--accessible');
           }
-          event.target.classList.add(activatedClass);
-        }
-      });
+        });
 
-      var drawerEl = document.getElementById('demo-drawer');
-      var radioEl = document.querySelector('#demo-radio-buttons');
-      radioEl.addEventListener('change', function(e) {
-        drawerEl.classList.remove('demo-drawer--custom');
-        drawerEl.classList.remove('demo-drawer--accessible');
+        var rtlToggleBtn = document.querySelector('.demo-toolbar-example-heading__rtl-toggle-button');
+        rtlToggleBtn.addEventListener('click', function(event) {
+          document.body.setAttribute('dir', document.body.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl');
+        });
+        var topAppBar = new mdc.topAppBar.MDCTopAppBar(document.getElementById('app-bar'));
+        topAppBar.setScrollTarget(document.getElementById('demo-content'));
 
-        if(e.target.id === 'theme-radio-accessible') {
-          drawerEl.classList.add('demo-drawer--accessible');
-        } else if(e.target.id === 'theme-radio-custom') {
-          drawerEl.classList.add('demo-drawer--custom');
-        }
-      });
+        var listEl = drawerEl.querySelector('.mdc-list');
+        mdc.list.MDCList.attachTo(listEl);
 
-      var rtlToggleBtn = document.querySelector('.demo-toolbar-example-heading__rtl-toggle-button');
-      rtlToggleBtn.addEventListener('click', function(event) {
-        document.body.setAttribute('dir', document.body.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl');
+        var selectedDestinationEl = document.querySelector('.demo-selected-destination');
+        var mainEl = document.querySelector('.demo-main');
+        listEl.addEventListener('click', function(event) {
+          selectedDestinationEl.textContent = event.target.lastChild.textContent;
+          mainEl.querySelector('input').focus();
+        });
       });
     </script>
   </body>
