@@ -81,8 +81,8 @@ Then instantiate an `MDCIconButtonToggle` on the root element.
    aria-label="Add to favorites"
    aria-hidden="true"
    aria-pressed="false">
-   <i class="material-icons mdc-icon-button__icon">favorite</i>
-   <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite_border</i>
+   <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite</i>
+   <i class="material-icons mdc-icon-button__icon">favorite_border</i>
 </button>
 ```
 

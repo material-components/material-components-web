@@ -20,14 +20,14 @@
 // THE SOFTWARE.
 //
 
-@import "../../packages/mdc-list/mixins";
 @import "../../packages/mdc-form-field/mdc-form-field";
 @import "../common";
-@import "../../packages/mdc-drawer/mdc-drawer";
 @import "../../packages/mdc-drawer/mixins";
+@import "../../packages/mdc-drawer/mdc-drawer";
 @import "../../packages/mdc-elevation/mdc-elevation";
 @import "../../packages/mdc-list/mdc-list";
 @import "../../packages/mdc-button/mdc-button";
+@import "../../packages/mdc-top-app-bar/mdc-top-app-bar";
 
 .examples {
   display: flex;
@@ -65,36 +65,64 @@
   padding: 10px;
 }
 
+.demo-form-field {
+  margin: 16px 0;
+}
+
+/* Place drawer and content side by side. */
+.demo-body {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+}
+
+.demo-content {
+  flex: auto;
+  overflow: auto;
+  background: #fff;
+}
+
+.demo-main {
+  padding-left: 16px;
+  padding-right: 16px;
+  overflow: auto;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#extra-wide-content {
+  width: 200vw;
+}
+
+#extra-tall-content {
+  height: 200vh;
+}
+
 .demo-drawer--custom {
-  @include mdc-drawer-fill-color($material-color-teal-900);
-  @include mdc-drawer-ink-color(#fff);
-  @include mdc-list-item-graphic-ink-color(#fff);
-
-  .demo-drawer-list-item {
-    @include mdc-list-item-graphic-ink-color(text-icon-on-dark);
-    @include mdc-list-item-primary-text-ink-color(text-secondary-on-dark);
-  }
-
-  .demo-drawer-list-item.mdc-list-item--selected {
-    @include mdc-list-item-graphic-ink-color(text-primary-on-dark);
-    @include mdc-list-item-primary-text-ink-color(text-primary-on-dark);
-  }
+  @include mdc-drawer-border-color(lightblue);
+  @include mdc-drawer-subtitle-ink-color(darkolivegreen);
+  @include mdc-drawer-surface-fill-color(pink);
+  @include mdc-drawer-item-icon-ink-color(darkolivegreen);
+  @include mdc-drawer-title-ink-color(darkolivegreen);
+  @include mdc-drawer-activated-overlay-color(darkcyan);
+  @include mdc-drawer-item-text-ink-color(darkolivegreen);
+  @include mdc-drawer-item-activated-text-ink-color(darkcyan);
+  @include mdc-drawer-item-activated-icon-ink-color(darkcyan);
 }
 
 .demo-drawer--accessible {
-  @include mdc-drawer-fill-color-accessible($material-color-indigo-500);
-
-  .demo-drawer-list-item {
-    @include mdc-list-item-graphic-ink-color(text-icon-on-dark);
-    @include mdc-list-item-primary-text-ink-color(text-secondary-on-dark);
-  }
-
-  .demo-drawer-list-item.mdc-list-item--selected {
-    @include mdc-list-item-graphic-ink-color(text-primary-on-dark);
-    @include mdc-list-item-primary-text-ink-color(text-primary-on-dark);
-  }
+  @include mdc-drawer-fill-color-accessible(darkcyan);
+  @include mdc-drawer-activated-overlay-color(pink);
+  @include mdc-drawer-item-activated-text-ink-color(pink);
+  @include mdc-drawer-item-activated-icon-ink-color(pink);
 }
 
-.demo-form-field {
-  margin: 16px 0;
+.demo-top-app-bar {
+  position: absolute;
+}
+
+.demo-selected-destination {
+  font-weight: 500;
 }

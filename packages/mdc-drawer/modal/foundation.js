@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2018 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,6 +21,35 @@
  * THE SOFTWARE.
  */
 
-export const FOCUSABLE_ELEMENTS =
-  'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), ' +
-  'button:not([disabled]), iframe, object, embed, [tabindex], [contenteditable]';
+import MDCDrawerAdapter from '../adapter';
+import MDCDismissibleDrawerFoundation from '../dismissible/foundation';
+
+/**
+ * @extends {MDCDismissibleDrawerFoundation<!MDCDrawerAdapter>}
+ */
+class MDCModalDrawerFoundation extends MDCDismissibleDrawerFoundation {
+  /**
+   * Called when drawer finishes open animation.
+   * @override
+   */
+  opened() {
+    this.adapter_.trapFocus();
+  }
+
+  /**
+   * Called when drawer finishes close animation.
+   * @override
+   */
+  closed() {
+    this.adapter_.releaseFocus();
+  }
+
+  /**
+   * Handles click event on scrim.
+   */
+  handleScrimClick() {
+    this.close();
+  }
+}
+
+export default MDCModalDrawerFoundation;

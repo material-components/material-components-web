@@ -20,98 +20,101 @@
 // THE SOFTWARE.
 //
 
-@import "@material/animation/functions";
-@import "@material/animation/variables";
 @import "@material/theme/mixins";
-@import "@material/theme/variables";
-@import "@material/typography/mixins";
+@import "@material/list/mixins";
+@import "@material/ripple/mixins";
+@import "./variables";
 
-@mixin mdc-drawer-toolbar-spacer_() {
-  .mdc-drawer__toolbar-spacer {
-    display: flex;
-    position: relative;
-    flex-direction: row;
-    flex-shrink: 0;
-    align-items: center;
-    box-sizing: border-box;
-    height: 56px;
-    padding: 16px;
-    border-bottom: 1px solid rgba(0, 0, 0, .12);
-
-    // TODO(sgomes): replace with global breakpoints when we have them
-    @media (min-width: 600px) {
-      height: 64px;
-    }
+@mixin mdc-drawer-activated-overlay-color($color) {
+  :not(.mdc-list--non-interactive) > .mdc-list-item {
+    @include mdc-states-activated($color);
   }
 }
 
-@mixin mdc-drawer-header_() {
-  // Use aspect ratio trick to maintain 16:9 aspect ratio on the header
-  // styline things header is a type
-  // stylelint-disable selector-max-type
-  .mdc-drawer__header {
-    position: relative;
-  }
+@mixin mdc-drawer-border-color($color) {
+  $value: rgba(mdc-theme-prop-value($color), $mdc-drawer-divider-opacity);
 
-  .mdc-drawer__header::before {
-    display: block;
-    padding-top: 9 / 16 * 100%;
-    content: "";
-  }
-
-  .mdc-drawer__header-content {
-    display: flex;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    align-items: flex-end;
-    box-sizing: border-box;
-    padding: 16px;
-  }
-  // stylelint-enable selector-max-type
+  @include mdc-theme-prop(border-color, $value);
 }
 
-@mixin mdc-drawer-list_() {
-  .mdc-list-item {
-    @include mdc-typography(subtitle2);
+@mixin mdc-drawer-item-corner-radius($radius) {
+  @include mdc-list-item-corner-radius($radius);
+}
 
-    position: relative;
-    outline: none;
-    color: inherit;
-    text-decoration: none;
-  }
+@mixin mdc-drawer-divider-color($color) {
+  $value: rgba(mdc-theme-prop-value($color), $mdc-drawer-divider-opacity);
 
-  .mdc-list-item__graphic {
-    color: rgba(0, 0, 0, .54);
+  @include mdc-list-divider-color($value);
+}
+
+@mixin mdc-drawer-title-ink-color($color) {
+  $value: rgba(mdc-theme-prop-value($color), $mdc-drawer-title-ink-opacity);
+
+  .mdc-drawer__title {
+    @include mdc-theme-prop(color, $value);
   }
 }
 
-@mixin mdc-drawer-base_() {
-  @include mdc-drawer-toolbar-spacer_;
-  @include mdc-drawer-header_;
-  @include mdc-drawer-list_;
-}
+@mixin mdc-drawer-subtitle-ink-color($color) {
+  $value: rgba(mdc-theme-prop-value($color), $mdc-drawer-subtitle-ink-opacity);
 
-@mixin mdc-drawer-fill-color($color) {
-  &.mdc-drawer--permanent,
-  .mdc-drawer__drawer {
-    @include mdc-theme-prop(background-color, $color);
-  }
-}
+  @include mdc-list-group-subheader-ink-color($value);
 
-@mixin mdc-drawer-ink-color($color) {
-  @include mdc-theme-prop(color, $color);
-}
-
-@mixin mdc-drawer-scrim-color($color, $opacity) {
-  &::before {
-    background-color: rgba(mdc-theme-prop-value($color), $opacity);
+  .mdc-drawer__subtitle {
+    @include mdc-theme-prop(color, $value);
   }
 }
 
 @mixin mdc-drawer-fill-color-accessible($color) {
-  @include mdc-drawer-ink-color(mdc-theme-accessible-ink-color($color));
-  @include mdc-drawer-fill-color($color);
+  $accessibleColor: mdc-theme-accessible-ink-color($color);
+
+  @include mdc-drawer-title-ink-color($accessibleColor);
+  @include mdc-drawer-subtitle-ink-color($accessibleColor);
+  @include mdc-drawer-item-text-ink-color($accessibleColor);
+  @include mdc-drawer-item-icon-ink-color($accessibleColor);
+  @include mdc-drawer-surface-fill-color($color);
+}
+
+@mixin mdc-drawer-item-icon-ink-color($color) {
+  $value: rgba(mdc-theme-prop-value($color), $mdc-drawer-item-inactive-icon-ink-opacity);
+
+  @include mdc-list-item-graphic-ink-color($value);
+}
+
+@mixin mdc-drawer-item-activated-icon-ink-color($color) {
+  $value: rgba(mdc-theme-prop-value($color), $mdc-drawer-item-active-icon-ink-opacity);
+
+  .mdc-list-item--activated {
+    @include mdc-list-item-graphic-ink-color($value);
+  }
+}
+
+@mixin mdc-drawer-item-activated-text-ink-color($color) {
+  $value: rgba(mdc-theme-prop-value($color), $mdc-drawer-item-active-text-ink-opacity);
+
+  .mdc-list-item--activated {
+    @include mdc-list-item-primary-text-ink-color($value);
+  }
+}
+
+@mixin mdc-drawer-item-text-ink-color($color) {
+  $value: rgba(mdc-theme-prop-value($color), $mdc-drawer-item-inactive-text-ink-opacity);
+
+  .mdc-list-item {
+    @include mdc-list-item-primary-text-ink-color($value);
+  }
+}
+
+@mixin mdc-drawer-surface-fill-color($color) {
+  $value: mdc-theme-prop-value($color);
+
+  @include mdc-theme-prop(background-color, $value);
+}
+
+@mixin mdc-drawer-scrim-fill-color($color) {
+  $value: rgba(mdc-theme-prop-value($color), $mdc-drawer-modal-scrim-opacity);
+
+  + .mdc-drawer-scrim {
+    @include mdc-theme-prop(background-color, $value);
+  }
 }

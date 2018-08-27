@@ -20,6 +20,6 @@
 // THE SOFTWARE.
 //
 
-@import "./persistent/mdc-persistent-drawer";
-@import "./permanent/mdc-permanent-drawer";
-@import "./temporary/mdc-temporary-drawer";
+@import "./common";
+@import "./dismissible/mdc-drawer-dismissible";
+@import "./modal/mdc-drawer-modal";

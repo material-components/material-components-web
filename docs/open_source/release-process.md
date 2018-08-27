@@ -81,7 +81,9 @@ pass prior to releasing (lerna will update versions for us in the next step).
 $(npm bin)/lerna publish --skip-git --npm-tag=next --since=<previous-patch-tag>
 ```
 
-When lerna prompts for version, choose Pre-minor.
+When lerna prompts for version, choose **Pre-minor** for the first pre-release in a cycle, or **Prerelease** for
+subsequent pre-releases.
+(The resulting version number should always have the same minor version as the next planned release.)
 
 Be sure to include the command-line flags:
 
