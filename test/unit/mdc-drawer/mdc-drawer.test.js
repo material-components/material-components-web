@@ -27,7 +27,6 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 
 import {MDCDrawer} from '../../../packages/mdc-drawer';
-import * as util from '../../../packages/mdc-drawer/util';
 import {strings, cssClasses} from '../../../packages/mdc-drawer/constants';
 import {MDCListFoundation} from '../../../packages/mdc-list';
 import MDCDismissibleDrawerFoundation from '../../../packages/mdc-drawer/dismissible/foundation';
@@ -76,10 +75,6 @@ function setupTestWithMocks(variantClass = cssClasses.DISMISSIBLE) {
   return {root, drawer, component, mockFoundation, mockFocusTrapInstance};
 }
 
-function hasClassMatcher(className) {
-  return td.matchers.argThat((el) => el.classList && el.classList.contains(className));
-}
-
 suite('MDCDrawer');
 
 test('attachTo initializes and returns a MDCDrawer instance', () => {
@@ -106,14 +101,14 @@ test('#set open false calls foundation.close', () => {
 });
 
 test('keydown event calls foundation.handleKeydown method', () => {
-  const {component, drawer, mockFoundation} = setupTestWithMocks();
+  const {drawer, mockFoundation} = setupTestWithMocks();
   drawer.querySelector('.mdc-list-item').focus();
   domEvents.emit(drawer, 'keydown');
   td.verify(mockFoundation.handleKeydown(td.matchers.isA(Object)), {times: 1});
 });
 
 test('transitionend event calls foundation.handleTransitionEnd method', () => {
-  const {component, drawer, mockFoundation} = setupTestWithMocks();
+  const {drawer, mockFoundation} = setupTestWithMocks();
   domEvents.emit(drawer, 'transitionend');
   td.verify(mockFoundation.handleTransitionEnd(td.matchers.isA(Object)), {times: 1});
 });
