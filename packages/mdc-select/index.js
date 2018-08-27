@@ -55,6 +55,8 @@ class MDCSelect extends MDCComponent {
     /** @private {!Function} */
     this.handleFocus_;
     /** @private {!Function} */
+    this.handleBlur_;
+    /** @private {!Function} */
     this.handleClick_;
   }
 
