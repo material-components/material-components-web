@@ -112,4 +112,4 @@ class FocusTrapInstance {
  * @param {!Element} element
  * @param {FocusTrapCreateOptions=} createOptions
  */
-mdc.thirdparty.focusTrap.default;
+mdc.thirdparty.focusTrap;
