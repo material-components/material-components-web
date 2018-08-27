@@ -173,11 +173,6 @@ Method Signature | Description
 --- | ---
 `isChecked() => boolean` | Returns whether or not the underlying input is checked. Returns false when no input is available.
 `setChecked(checked: boolean) => void` | Updates the `checked` property on the underlying input. Does nothing when the underlying input is not present.
-`isIndeterminate() => boolean` | Returns whether or not the underlying input is indeterminate. Returns false when no input is available.
-`setIndeterminate(indeterminate: boolean) => void` | Updates the `indeterminate` property on the underlying input. Does nothing when the underlying input is not present.
-`isDisabled() => boolean` | Returns whether or not the underlying input is disabled. Returns false when no input is available.
 `setDisabled(disabled: boolean) => void` | Updates the `disabled` property on the underlying input. Does nothing when the underlying input is not present.
-`getValue() => string` | Returns the value of `MDCCheckboxAdapter.getNativeControl().value`. Returns `null` if `getNativeControl()` does not return an object.
-`setValue(value: string) => void` | Sets the value of `adapter.getNativeControl().value`. Does nothing if `getNativeControl()` does not return an object.
 `handleAnimationEnd() => void` | `animationend` event handler that should be applied to the root element.
 `handleChange() => void` | `change` event handler that should be applied to the checkbox element.
