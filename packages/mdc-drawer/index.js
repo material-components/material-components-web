@@ -28,6 +28,7 @@ import {MDCList} from '@material/list/index';
 import MDCListFoundation from '@material/list/foundation';
 import {strings} from './constants';
 import * as util from './util';
+import createFocusTrap from 'focus-trap';
 
 /**
  * @extends {MDCComponent<!MDCDismissibleDrawerFoundation>}
@@ -48,6 +49,9 @@ class MDCDrawer extends MDCComponent {
 
     /** @private {!Function} */
     this.handleTransitionEnd_;
+
+    /** @private {!Function} */
+    this.focusTrapFactory_;
 
     /** @private {!FocusTrapInstance} */
     this.focusTrap_;
@@ -87,10 +91,12 @@ class MDCDrawer extends MDCComponent {
     }
   }
 
-  initialize() {
+  initialize(
+    focusTrapFactory = createFocusTrap) {
     const listEl = /** @type {!Element} */ (this.root_.querySelector(`.${MDCListFoundation.cssClasses.ROOT}`));
     const list = MDCList.attachTo(listEl);
     list.wrapFocus = true;
+    this.focusTrapFactory_ = focusTrapFactory;
   }
 
   initialSyncWithDOM() {
@@ -101,7 +107,7 @@ class MDCDrawer extends MDCComponent {
       this.scrim_ = /** @type {!Element} */ (this.root_.parentElement.querySelector(SCRIM_SELECTOR));
       this.handleScrimClick_ = () => /** @type {!MDCModalDrawerFoundation} */ (this.foundation_).handleScrimClick();
       this.scrim_.addEventListener('click', this.handleScrimClick_);
-      this.focusTrap_ = util.createFocusTrapInstance(this.root_);
+      this.focusTrap_ = util.createFocusTrapInstance(this.root_, this.focusTrapFactory_);
     }
 
     this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt);
