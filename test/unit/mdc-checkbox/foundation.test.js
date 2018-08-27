@@ -85,7 +85,7 @@ function setupChangeHandlerTest() {
       td.when(mockAdapter.isChecked()).thenReturn(newState.checked);
       td.when(mockAdapter.isIndeterminate()).thenReturn(newState.indeterminate);
     }
-    changeHandler();
+    foundation.handleChange();
   };
 
   return {foundation, mockAdapter, change};
@@ -116,8 +116,7 @@ test('exports numbers', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCCheckboxFoundation, [
-    'addClass', 'removeClass', 'setNativeControlAttr', 'removeNativeControlAttr', 'registerAnimationEndHandler',
-    'deregisterAnimationEndHandler', 'registerChangeHandler', 'deregisterChangeHandler', 'getNativeControl',
+    'addClass', 'removeClass', 'setNativeControlAttr', 'removeNativeControlAttr', 'getNativeControl',
     'forceLayout', 'isAttachedToDOM', 'isIndeterminate', 'isChecked', 'hasNativeControl', 'setNativeControlDisabled',
   ]);
 });
