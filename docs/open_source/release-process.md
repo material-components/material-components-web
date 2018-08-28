@@ -29,7 +29,7 @@ team know NOT to merge PRs during this release process.
 Check out the master branch and update:
 
 ```
-git checkout master && git pull
+git checkout master && git pull && git fetch --tags
 ```
 
 This will pull the latest tags and `master` commits into your local repository.
