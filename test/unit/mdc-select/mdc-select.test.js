@@ -122,10 +122,10 @@ test('attachTo returns a component instance', () => {
   assert.isOk(MDCSelect.attachTo(getFixture()) instanceof MDCSelect);
 });
 
-function setupTest(isOutline = false, hasLabel = true) {
+function setupTest(hasOutline = false, hasLabel = true) {
   const bottomLine = new FakeBottomLine();
   const label = new FakeLabel();
-  const fixture = isOutline ? getOutlineFixture() : getFixture();
+  const fixture = hasOutline ? getOutlineFixture() : getFixture();
   const nativeControl = fixture.querySelector('.mdc-select__native-control');
   const labelEl = fixture.querySelector('.mdc-floating-label');
   const bottomLineEl = fixture.querySelector('.mdc-line-ripple');
@@ -423,7 +423,7 @@ test('adapter#getLabelWidth returns the width of the label', () => {
   assert.equal(component.getDefaultFoundation().adapter_.getLabelWidth(), LABEL_WIDTH);
 });
 
-test('adapter#getLabelWidth return 0 if the label does not exist', () => {
+test('adapter#getLabelWidth returns 0 if the label does not exist', () => {
   const hasOutline = true;
   const hasLabel = false;
   const {component} = setupTest(hasOutline, hasLabel);

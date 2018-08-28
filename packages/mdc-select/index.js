@@ -285,8 +285,8 @@ class MDCSelect extends MDCComponent {
    */
   setTransformOrigin_(evt) {
     const targetClientRect = evt.target.getBoundingClientRect();
-    const xCoordinates = evt.clientX;
-    const normalizedX = xCoordinates - targetClientRect.left;
+    const xCoordinate = evt.clientX;
+    const normalizedX = xCoordinate - targetClientRect.left;
     this.lineRipple_.setRippleCenter(normalizedX);
   }
 }
