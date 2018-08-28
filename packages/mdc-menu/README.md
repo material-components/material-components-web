@@ -41,7 +41,7 @@ npm install @material/menu
 ### HTML Structure
 
 ```html
-<div class="mdc-menu mdc-menu-surface" tabindex="-1" id="demo-menu">
+<div class="mdc-menu mdc-menu-surface" tabindex="-1">
   <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
     <li class="mdc-list-item" role="menuitem">A Menu Item</li>
     <li class="mdc-list-item" role="menuitem">Another Menu Item</li>
