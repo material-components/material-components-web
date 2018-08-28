@@ -103,8 +103,6 @@
 
 .mdc-list-item__text {
   @include mdc-typography-overflow-ellipsis;
-
-  align-self: flex-start;
 }
 
 $mdc-list-item-primary-text-baseline-height_: 32px;
@@ -159,6 +157,10 @@ $mdc-list-dense-item-primary-text-baseline-height_: 24px;
   @include mdc-list-graphic-size_(40px);
 
   border-radius: 50%;
+}
+
+.mdc-list--two-line .mdc-list-item__text {
+  align-self: flex-start;
 }
 
 .mdc-list--two-line .mdc-list-item {
