@@ -61,7 +61,7 @@
 }
 
 .mdc-select-corner-radius {
- // @include mdc-text-field-corner-radius(10px);
+  @include mdc-text-field-corner-radius(10px);
 }
 
 .mdc-select-outline-color {
