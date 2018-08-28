@@ -54,10 +54,10 @@ export default class MDCDialogFoundation extends MDCFoundation {
       notifyYes: () => {},
       notifyNo: () => {},
       notifyCancel: () => {},
-      notifyOpenStart: () => {},
-      notifyOpenEnd: () => {},
-      notifyCloseStart: () => {},
-      notifyCloseEnd: () => {},
+      notifyOpening: () => {},
+      notifyOpened: () => {},
+      notifyClosing: () => {},
+      notifyClosed: () => {},
       trapFocusOnSurface: () => {},
       untrapFocusOnSurface: () => {},
       isDialog: (/* el: Element */) => /* boolean */ false,
@@ -100,12 +100,12 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.registerInteractionHandler('click', this.componentClickHandler_);
     this.adapter_.addClass(MDCDialogFoundation.cssClasses.ANIMATING);
     this.adapter_.addClass(MDCDialogFoundation.cssClasses.OPEN);
-    this.adapter_.notifyOpenStart(); // TODO(acdvorak): Add a unit test for this
+    this.adapter_.notifyOpening(); // TODO(acdvorak): Add a unit test for this
 
     clearTimeout(this.timerId_);
     this.timerId_ = setTimeout(() => {
       this.handleAnimationTimerEnd_();
-      this.adapter_.notifyOpenEnd(); // TODO(acdvorak): Add a unit test for this
+      this.adapter_.notifyOpened(); // TODO(acdvorak): Add a unit test for this
     }, MDCDialogFoundation.numbers.DIALOG_ANIMATION_TIME_MS);
   }
 
@@ -118,12 +118,12 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.untrapFocusOnSurface();
     this.adapter_.addClass(MDCDialogFoundation.cssClasses.ANIMATING);
     this.adapter_.removeClass(MDCDialogFoundation.cssClasses.OPEN);
-    this.adapter_.notifyCloseStart(); // TODO(acdvorak): Add a unit test for this
+    this.adapter_.notifyClosing(); // TODO(acdvorak): Add a unit test for this
 
     clearTimeout(this.timerId_);
     this.timerId_ = setTimeout(() => {
       this.handleAnimationTimerEnd_();
-      this.adapter_.notifyCloseEnd(); // TODO(acdvorak): Add a unit test for this
+      this.adapter_.notifyClosed(); // TODO(acdvorak): Add a unit test for this
     }, MDCDialogFoundation.numbers.DIALOG_ANIMATION_TIME_MS);
   }
 

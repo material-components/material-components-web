@@ -41,10 +41,10 @@ const strings = {
   NO_EVENT: 'MDCDialog:no',
   CANCEL_EVENT: 'MDCDialog:cancel',
 
-  OPEN_START_EVENT: 'MDCDialog:openStart',
-  OPEN_END_EVENT: 'MDCDialog:openEnd',
-  CLOSE_START_EVENT: 'MDCDialog:closeStart',
-  CLOSE_END_EVENT: 'MDCDialog:closeEnd',
+  OPENING_EVENT: 'MDCDialog:opening',
+  OPENED_EVENT: 'MDCDialog:opened',
+  CLOSING_EVENT: 'MDCDialog:closing',
+  CLOSED_EVENT: 'MDCDialog:closed',
 };
 
 const numbers = {

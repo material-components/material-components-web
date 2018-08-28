@@ -96,10 +96,7 @@ function getFirstFocusableElement(surfaceEl) {
     return true;
   });
 
-  const autoFocusEls = focusableEls.filter((el) => {
-    return el.autofocus;
-  });
-
+  const autoFocusEls = focusableEls.filter((el) => el.autofocus);
   return autoFocusEls[0] || focusableEls[0];
 }
 

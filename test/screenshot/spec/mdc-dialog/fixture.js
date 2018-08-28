@@ -30,8 +30,8 @@ window.mdc.testFixture.fontsLoaded.then(() => {
 
     const eventNames = [
       strings.YES_EVENT, strings.NO_EVENT, strings.CANCEL_EVENT,
-      strings.OPEN_START_EVENT, strings.OPEN_END_EVENT,
-      strings.CLOSE_START_EVENT, strings.CLOSE_END_EVENT,
+      strings.OPENING_EVENT, strings.OPENED_EVENT,
+      strings.CLOSING_EVENT, strings.CLOSED_EVENT,
     ];
 
     eventNames.forEach((eventName) => {

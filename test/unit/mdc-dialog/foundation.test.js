@@ -52,7 +52,7 @@ test('default adapter returns a complete adapter implementation', () => {
     'registerInteractionHandler', 'deregisterInteractionHandler',
     'registerSurfaceInteractionHandler', 'deregisterSurfaceInteractionHandler',
     'registerDocumentKeydownHandler', 'deregisterDocumentKeydownHandler',
-    'notifyYes', 'notifyNo', 'notifyCancel', 'notifyOpenStart', 'notifyOpenEnd', 'notifyCloseStart', 'notifyCloseEnd',
+    'notifyYes', 'notifyNo', 'notifyCancel', 'notifyOpening', 'notifyOpened', 'notifyClosing', 'notifyClosed',
     'trapFocusOnSurface', 'untrapFocusOnSurface', 'isDialog',
   ]);
 });
