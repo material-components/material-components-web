@@ -69,6 +69,18 @@ class MDCCheckboxAdapter {
 
   /** @return {boolean} */
   isAttachedToDOM() {}
+
+  /** @return {boolean} */
+  isIndeterminate() {}
+
+  /** @return {boolean} */
+  isChecked() {}
+
+  /** @return {boolean} */
+  hasNativeControl() {}
+
+  /** @param {boolean} disabled */
+  setNativeControlDisabled(disabled) {}
 }
 
 export default MDCCheckboxAdapter;

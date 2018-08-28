@@ -118,3 +118,7 @@
     @include mdc-theme-prop(background-color, $value);
   }
 }
+
+@mixin mdc-drawer-z-index($value) {
+  z-index: $value;
+}

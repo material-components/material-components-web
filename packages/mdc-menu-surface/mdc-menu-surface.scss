@@ -38,8 +38,8 @@
   display: none;
   position: absolute;
   box-sizing: border-box;
-  max-width: calc(100vw - $mdc-menu-surface-min-distance-from-edge);
-  max-height: calc(100vh - $mdc-menu-surface-min-distance-from-edge);
+  max-width: calc(100vw - #{$mdc-menu-surface-min-distance-from-edge});
+  max-height: calc(100vh - #{$mdc-menu-surface-min-distance-from-edge});
   margin: 0;
   padding: 0;
   transform: scale(1);
