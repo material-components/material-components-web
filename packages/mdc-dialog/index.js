@@ -45,7 +45,7 @@ export class MDCDialog extends MDCComponent {
      * @type {!Array<!MDCRipple>}
      * @private
      */
-    this.footerBtnRipples_;
+    this.buttonRipples_;
   }
 
   static attachTo(root) {
@@ -64,22 +64,22 @@ export class MDCDialog extends MDCComponent {
     return this.root_.querySelector(MDCDialogFoundation.strings.CONTENT_SELECTOR);
   }
 
-  get actionButtonElements_() {
-    return this.root_.querySelectorAll(MDCDialogFoundation.strings.ACTION_BUTTON_SELECTOR);
+  get buttonElements_() {
+    return [].slice.call(this.root_.querySelectorAll(MDCDialogFoundation.strings.ACTION_BUTTON_SELECTOR));
   }
 
   initialize() {
     this.focusTrap_ = util.createFocusTrapInstance(this.containerElement_);
-    this.footerBtnRipples_ = [];
+    this.buttonRipples_ = [];
 
-    const actionButtonEls = this.actionButtonElements_;
-    for (let i = 0, footerBtn; footerBtn = actionButtonEls[i]; i++) {
-      this.footerBtnRipples_.push(new MDCRipple(footerBtn));
+    const buttonEls = this.buttonElements_;
+    for (let i = 0, buttonEl; buttonEl = buttonEls[i]; i++) {
+      this.buttonRipples_.push(new MDCRipple(buttonEl));
     }
   }
 
   destroy() {
-    this.footerBtnRipples_.forEach((ripple) => ripple.destroy());
+    this.buttonRipples_.forEach((ripple) => ripple.destroy());
     super.destroy();
   }
 
@@ -106,7 +106,7 @@ export class MDCDialog extends MDCComponent {
       registerDocumentKeydownHandler: (handler) => document.addEventListener('keydown', handler),
       deregisterDocumentKeydownHandler: (handler) => document.removeEventListener('keydown', handler),
       getContentElement: () => this.contentElement_,
-      getActionButtonElements: () => this.actionButtonElements_,
+      getButtonElements: () => this.buttonElements_,
       notifyYes: () => this.emit(MDCDialogFoundation.strings.YES_EVENT),
       notifyNo: () => this.emit(MDCDialogFoundation.strings.NO_EVENT),
       notifyCancel: () => this.emit(MDCDialogFoundation.strings.CANCEL_EVENT),

@@ -52,6 +52,7 @@ test('default adapter returns a complete adapter implementation', () => {
     'registerInteractionHandler', 'deregisterInteractionHandler',
     'registerSurfaceInteractionHandler', 'deregisterSurfaceInteractionHandler',
     'registerDocumentKeydownHandler', 'deregisterDocumentKeydownHandler',
+    'getContentElement', 'getButtonElements',
     'notifyYes', 'notifyNo', 'notifyCancel', 'notifyOpening', 'notifyOpened', 'notifyClosing', 'notifyClosed',
     'trapFocusOnSurface', 'untrapFocusOnSurface', 'isDialog',
   ]);
@@ -61,9 +62,18 @@ test('default adapter returns a complete adapter implementation', () => {
  * @return {{mockAdapter: !Object, foundation: !MDCDialogFoundation}}
  */
 function setupTest() {
-  return /** @type {{mockAdapter: !Object, foundation: !MDCDialogFoundation}} */ (
+  const ret = /** @type {{mockAdapter: !Object, foundation: !MDCDialogFoundation}} */ (
     setupFoundationTest(MDCDialogFoundation)
   );
+
+  const {foundation, mockAdapter} = ret;
+
+  td.when(mockAdapter.getContentElement()).thenReturn(document.createElement('div'));
+  td.when(mockAdapter.getButtonElements()).thenReturn([]);
+
+  foundation.init();
+
+  return ret;
 }
 
 test('#destroy closes the dialog to perform any necessary cleanup', () => {

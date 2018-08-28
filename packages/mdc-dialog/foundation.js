@@ -52,7 +52,8 @@ export default class MDCDialogFoundation extends MDCFoundation {
       deregisterSurfaceInteractionHandler: (/* evt: string, handler: !EventListener */) => {},
       registerDocumentKeydownHandler: (/* handler: !EventListener */) => {},
       deregisterDocumentKeydownHandler: (/* handler: !EventListener */) => {},
-      getActionButtonElements: () => [],
+      getContentElement: () => document.createElement('div'),
+      getButtonElements: () => [],
       notifyYes: () => {},
       notifyNo: () => {},
       notifyCancel: () => {},
@@ -197,7 +198,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
    */
   isStacked_() {
     /** @type {!Array<!HTMLElement>} */
-    const buttonEls = [].slice.call(this.adapter_.getActionButtonElements());
+    const buttonEls = [].slice.call(this.adapter_.getButtonElements());
     const offsetTopSet = new Set();
     buttonEls.forEach((buttonEl) => {
       offsetTopSet.add(buttonEl.offsetTop);
@@ -257,7 +258,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
     if (this.isOpen_) {
       this.adapter_.trapFocusOnSurface();
     }
-  };
+  }
 
   /** @private */
   disableScroll_() {
