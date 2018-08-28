@@ -80,7 +80,11 @@ function setupChangeHandlerTest() {
   foundation.init();
 
   const change = (newState) => {
-    td.when(mockAdapter.getNativeControl()).thenReturn(newState);
+    td.when(mockAdapter.hasNativeControl()).thenReturn(!!newState);
+    if (newState) {
+      td.when(mockAdapter.isChecked()).thenReturn(newState.checked);
+      td.when(mockAdapter.isIndeterminate()).thenReturn(newState.indeterminate);
+    }
     foundation.handleChange();
   };
 
@@ -112,8 +116,8 @@ test('exports numbers', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCCheckboxFoundation, [
-    'addClass', 'removeClass', 'setNativeControlAttr', 'removeNativeControlAttr',
-    'getNativeControl', 'forceLayout', 'isAttachedToDOM',
+    'addClass', 'removeClass', 'setNativeControlAttr', 'removeNativeControlAttr', 'getNativeControl',
+    'forceLayout', 'isAttachedToDOM', 'isIndeterminate', 'isChecked', 'hasNativeControl', 'setNativeControlDisabled',
   ]);
 });
 
@@ -125,8 +129,8 @@ test('#init adds the upgraded class to the root element', () => {
 });
 
 test('#init adds aria-checked="mixed" if checkbox is initially indeterminate', () => {
-  const {foundation, mockAdapter, nativeControl} = setupTest();
-  nativeControl.indeterminate = true;
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.isIndeterminate()).thenReturn(true);
 
   foundation.init();
   td.verify(mockAdapter.setNativeControlAttr('aria-checked', strings.ARIA_CHECKED_INDETERMINATE_VALUE));
@@ -171,126 +175,22 @@ test('#destroy handles case when WebIDL attrs cannot be overridden (Safari)', ()
   });
 });
 
-test('#setChecked updates the value of nativeControl.checked', () => {
-  const {foundation, nativeControl} = setupTest();
-  foundation.setChecked(true);
-  assert.isOk(foundation.isChecked());
-  assert.isOk(nativeControl.checked);
-  foundation.setChecked(false);
-  assert.isNotOk(foundation.isChecked());
-  assert.isNotOk(nativeControl.checked);
-});
-
-test('#setChecked works when no native control is returned', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getNativeControl()).thenReturn(null);
-  assert.doesNotThrow(() => foundation.setChecked(true));
-});
-
-test('#isChecked returns false when no native control is returned', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getNativeControl()).thenReturn(null);
-  assert.isNotOk(foundation.isChecked());
-});
-
-test('#setIndeterminate updates the value of nativeControl.indeterminate', () => {
-  const {foundation, nativeControl} = setupTest();
-  foundation.setIndeterminate(true);
-  assert.isOk(foundation.isIndeterminate());
-  assert.isOk(nativeControl.indeterminate);
-  foundation.setIndeterminate(false);
-  assert.isNotOk(foundation.isIndeterminate());
-  assert.isNotOk(nativeControl.indeterminate);
-});
-
-test('#setIndeterminate adds aria-checked="mixed" when indeterminate is true', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.init();
-  foundation.setIndeterminate(true);
-  td.verify(mockAdapter.setNativeControlAttr('aria-checked', strings.ARIA_CHECKED_INDETERMINATE_VALUE));
-});
-
-test('#setIndeterminate removes aria-checked when indeterminate is false', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.init();
-  foundation.setIndeterminate(false);
-  td.verify(mockAdapter.removeNativeControlAttr('aria-checked'));
-});
-
-test('#setIndeterminate works when no native control is returned', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getNativeControl()).thenReturn(null);
-  assert.doesNotThrow(() => foundation.setIndeterminate(true));
-});
-
-test('#isIndeterminate returns false when no native control is returned', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getNativeControl()).thenReturn(null);
-  assert.isNotOk(foundation.isIndeterminate());
-});
-
 test('#setDisabled updates the value of nativeControl.disabled', () => {
-  const {foundation, nativeControl} = setupTest();
+  const {foundation, mockAdapter} = setupTest();
   foundation.setDisabled(true);
-  assert.isOk(foundation.isDisabled());
-  assert.isOk(nativeControl.disabled);
-  foundation.setDisabled(false);
-  assert.isNotOk(foundation.isDisabled());
-  assert.isNotOk(nativeControl.disabled);
+  td.verify(mockAdapter.setNativeControlDisabled(true), {times: 1});
 });
 
 test('#setDisabled adds mdc-checkbox--disabled class to the root element when set to true', () => {
   const {foundation, mockAdapter} = setupTest();
-  const nativeControl = {disabled: false};
-  td.when(mockAdapter.getNativeControl()).thenReturn(nativeControl);
   foundation.setDisabled(true);
   td.verify(mockAdapter.addClass(cssClasses.DISABLED));
 });
 
 test('#setDisabled removes mdc-checkbox--disabled class from the root element when set to false', () => {
   const {foundation, mockAdapter} = setupTest();
-  const nativeControl = {disabled: true};
-  td.when(mockAdapter.getNativeControl()).thenReturn(nativeControl);
   foundation.setDisabled(false);
   td.verify(mockAdapter.removeClass(cssClasses.DISABLED));
-});
-
-test('#isDisabled returns false when no native control is returned', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getNativeControl()).thenReturn(null);
-  assert.isNotOk(foundation.isDisabled());
-});
-
-test('#setDisabled works when no native control is returned', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getNativeControl()).thenReturn(null);
-  assert.doesNotThrow(() => foundation.setDisabled(true));
-});
-
-test('#getValue returns the value of nativeControl.value', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getNativeControl()).thenReturn({value: 'value'});
-  assert.equal(foundation.getValue(), 'value');
-});
-
-test('#getValue returns null if getNativeControl() does not return anything', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getNativeControl()).thenReturn(null);
-  assert.isNull(foundation.getValue());
-});
-
-test('#setValue sets the value of nativeControl.value', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const nativeControl = {value: null};
-  td.when(mockAdapter.getNativeControl()).thenReturn(nativeControl);
-  foundation.setValue('new value');
-  assert.equal(nativeControl.value, 'new value');
-});
-
-test('#setValue exits gracefully if getNativeControl() does not return anything', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getNativeControl()).thenReturn(null);
-  assert.doesNotThrow(() => foundation.setValue('new value'));
 });
 
 testChangeHandler('unchecked -> checked animation class', {
@@ -441,6 +341,7 @@ test('"checked" property change hook works correctly', () => {
   const {foundation, mockAdapter, nativeControl} = setupTest();
   const clock = lolex.install();
   td.when(mockAdapter.isAttachedToDOM()).thenReturn(true);
+  td.when(mockAdapter.hasNativeControl()).thenReturn(true);
 
   withMockCheckboxDescriptorReturning({
     get: () => {},
@@ -449,10 +350,8 @@ test('"checked" property change hook works correctly', () => {
     configurable: true,
   }, () => {
     foundation.init();
-    td.when(mockAdapter.getNativeControl()).thenReturn({
-      checked: true,
-      indeterminate: false,
-    });
+    td.when(mockAdapter.isChecked()).thenReturn(true);
+    td.when(mockAdapter.isIndeterminate()).thenReturn(false);
     nativeControl.checked = !nativeControl.checked;
     td.verify(mockAdapter.addClass(cssClasses.ANIM_UNCHECKED_CHECKED));
   });
@@ -464,6 +363,7 @@ test('"indeterminate" property change hook works correctly', () => {
   const {foundation, mockAdapter, nativeControl} = setupTest();
   const clock = lolex.install();
   td.when(mockAdapter.isAttachedToDOM()).thenReturn(true);
+  td.when(mockAdapter.hasNativeControl()).thenReturn(true);
 
   withMockCheckboxDescriptorReturning({
     get: () => {},
@@ -472,10 +372,9 @@ test('"indeterminate" property change hook works correctly', () => {
     configurable: true,
   }, () => {
     foundation.init();
-    td.when(mockAdapter.getNativeControl()).thenReturn({
-      checked: false,
-      indeterminate: true,
-    });
+    td.when(mockAdapter.isChecked()).thenReturn(false);
+    td.when(mockAdapter.isIndeterminate()).thenReturn(true);
+
     nativeControl.indeterminate = !nativeControl.indeterminate;
     td.verify(mockAdapter.addClass(cssClasses.ANIM_UNCHECKED_INDETERMINATE));
   });
