@@ -40,6 +40,7 @@ function createFlexItemMaxHeightBugFixture() {
   // The 1px borders are necessary to force IE to calculate box sizing correctly.
   const element = bel`
 <section style="box-sizing: border-box; display: flex; flex-direction: column; max-height: 200px;
+                opacity: 0.001; position: fixed; top: -9999px; left: -9999px;
                 border: 1px solid transparent;">
   <header style="box-sizing: border-box; flex-shrink: 0; height: 50px;">Header</header>
   <article style="box-sizing: border-box; flex-grow: 1; overflow: auto;
@@ -85,7 +86,7 @@ test('#isScrollable compares height properties', function() {
   assert.isFalse(support.isScrollable({scrollHeight: 1, offsetHeight: 1}), 'scrollHeight === offsetHeight');
   assert.isFalse(support.isScrollable({scrollHeight: 1, offsetHeight: 2}), 'scrollHeight < offsetHeight');
 });
-/*
+
 test('#fixFlexItemMaxHeightBug does nothing when bug is not present', function(done) {
   const {support} = setupTest();
 
@@ -109,7 +110,7 @@ test('#fixFlexItemMaxHeightBug does nothing when bug is not present', function(d
     done();
   });
 });
-*/
+
 test('#fixFlexItemMaxHeightBug makes child flex item scrollable', function(done) {
   const {support} = setupTest();
 
@@ -122,16 +123,12 @@ test('#fixFlexItemMaxHeightBug makes child flex item scrollable', function(done)
 
   support.fixFlexItemMaxHeightBug(flexItemEl);
 
-  // Timeout for IE 11
-  setTimeout(() => {
-    support.fixFlexItemMaxHeightBug(flexItemEl);
-    requestAnimationFrame(() => {
-      // If the fix worked, the height of the scrollable area should be greater than the element's bounding box height.
-      assert.isAbove(flexItemEl.scrollHeight, flexItemEl.offsetHeight);
-      destroyFlexItemMaxHeightBugFixture(flexContainerEl);
-      done();
-    });
-  }, 500);
+  requestAnimationFrame(() => {
+    // If the fix worked, the height of the scrollable area should be greater than the element's bounding box height.
+    assert.isAbove(flexItemEl.scrollHeight, flexItemEl.offsetHeight);
+    destroyFlexItemMaxHeightBugFixture(flexContainerEl);
+    done();
+  });
 });
 
 test('#fixFlexItemMaxHeightBug restores flex-basis to its original value of ""', function(done) {
