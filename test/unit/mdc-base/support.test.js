@@ -23,14 +23,21 @@
 
 import {assert} from 'chai';
 import bel from 'bel';
+import td from 'testdouble';
 
-import {fixFlexItemMaxHeightBug} from '../../../packages/mdc-base/feature-detection';
+import {MDCSupport} from '../../../packages/mdc-base/support';
 
-suite('MDCBase - feature-detection');
+suite('MDCBase - support');
 
-test('#fixFlexItemMaxHeightBug recalculates overflow and enables scrolling', function(done) {
+function setupTest() {
+  const support = new MDCSupport();
+  return {support};
+}
+
+/** @return {!HTMLElement} */
+function createFlexItemMaxHeightBugFixture() {
   // The 1px borders are necessary to force IE to calculate box sizing correctly.
-  const fixture = bel`
+  const element = bel`
 <section style="box-sizing: border-box; display: flex; flex-direction: column; max-height: 200px;
                 opacity: 0.001; position: fixed; top: -9999px; left: -9999px;
                 border: 1px solid transparent;">
@@ -50,15 +57,45 @@ test('#fixFlexItemMaxHeightBug recalculates overflow and enables scrolling', fun
   <footer style="box-sizing: border-box; flex-shrink: 0; height: 50px;">Footer</footer>
 <section>
 `;
+  document.body.appendChild(element);
+  return element;
+}
 
-  document.body.appendChild(fixture);
+/** @param {!HTMLElement} element */
+function destroyFlexItemMaxHeightBugFixture(element) {
+  document.body.removeChild(element);
+}
 
-  const flexItemEl = fixture.querySelector('article');
-  fixFlexItemMaxHeightBug(flexItemEl);
+test('#hasFlexItemMaxHeightBug returns false when flex item is scrollable.', function() {
+  const {support} = setupTest();
+
+  support.isScrollable = td.func('isScrollable');
+  td.when(support.isScrollable(td.matchers.anything())).thenReturn(true);
+
+  assert.isFalse(support.hasFlexItemMaxHeightBug);
+});
+
+test('#hasFlexItemMaxHeightBug returns true when flex item is not scrollable.', function() {
+  const {support} = setupTest();
+
+  support.isScrollable = td.func('isScrollable');
+  td.when(support.isScrollable(td.matchers.anything())).thenReturn(false);
+
+  assert.isTrue(support.hasFlexItemMaxHeightBug);
+});
+
+test('#fixFlexItemMaxHeightBug makes child flex item scrollable', function(done) {
+  const {support} = setupTest();
+
+  const flexContainerEl = createFlexItemMaxHeightBugFixture();
+  const flexItemEl = flexContainerEl.querySelector('article');
+
+  support.fixFlexItemMaxHeightBug(flexItemEl);
 
   requestAnimationFrame(() => {
+    // If the fix worked, the height of the scrollable area should be greater than the element's bounding box height.
     assert.isAbove(flexItemEl.scrollHeight, flexItemEl.offsetHeight);
-    document.body.removeChild(fixture);
+    destroyFlexItemMaxHeightBugFixture(flexContainerEl);
     done();
   });
 });
