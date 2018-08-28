@@ -1,19 +1,25 @@
 /**
-  * @license
-  * Copyright 2018 Google Inc. All Rights Reserved.
-  *
-  * Licensed under the Apache License, Version 2.0 (the "License")
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *      http://www.apache.org/licenses/LICENSE-2.0
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-*/
+ * @license
+ * Copyright 2018 Google Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 
 import MDCFoundation from '@material/base/foundation';
 
@@ -21,7 +27,6 @@ import {strings, numbers} from './constants';
 import MDCTabBarAdapter from './adapter';
 
 /* eslint-disable no-unused-vars */
-import MDCTabFoundation from '@material/tab/foundation';
 import {MDCTabDimensions} from '@material/tab/adapter';
 /* eslint-enable no-unused-vars */
 
@@ -76,12 +81,13 @@ class MDCTabBarFoundation extends MDCFoundation {
       getScrollContentWidth: () => {},
       getOffsetWidth: () => {},
       isRTL: () => {},
+      setActiveTab: () => {},
       activateTabAtIndex: () => {},
       deactivateTabAtIndex: () => {},
       focusTabAtIndex: () => {},
       getTabIndicatorClientRectAtIndex: () => {},
       getTabDimensionsAtIndex: () => {},
-      getActiveTabIndex: () => {},
+      getPreviousActiveTabIndex: () => {},
       getFocusedTabIndex: () => {},
       getIndexOfTab: () => {},
       getTabListLength: () => {},
@@ -99,11 +105,6 @@ class MDCTabBarFoundation extends MDCFoundation {
     this.useAutomaticActivation_ = false;
   }
 
-  init() {
-    const activeIndex = this.adapter_.getActiveTabIndex();
-    this.scrollIntoView(activeIndex);
-  }
-
   /**
    * Switches between automatic and manual activation modes.
    * See https://www.w3.org/TR/wai-aria-practices/#tabpanel for examples.
@@ -118,8 +119,8 @@ class MDCTabBarFoundation extends MDCFoundation {
    * @param {number} index
    */
   activateTab(index) {
-    const previousActiveIndex = this.adapter_.getActiveTabIndex();
-    if (!this.indexIsInRange_(index)) {
+    const previousActiveIndex = this.adapter_.getPreviousActiveTabIndex();
+    if (!this.indexIsInRange_(index) || index === previousActiveIndex) {
       return;
     }
 
@@ -127,10 +128,7 @@ class MDCTabBarFoundation extends MDCFoundation {
     this.adapter_.activateTabAtIndex(index, this.adapter_.getTabIndicatorClientRectAtIndex(previousActiveIndex));
     this.scrollIntoView(index);
 
-    // Only notify the tab activation if the index is different than the previously active index
-    if (index !== previousActiveIndex) {
-      this.adapter_.notifyTabActivated(index);
-    }
+    this.adapter_.notifyTabActivated(index);
   }
 
   /**
@@ -156,13 +154,13 @@ class MDCTabBarFoundation extends MDCFoundation {
         return;
       }
 
-      const index = this.determineTargetFromKey_(this.adapter_.getActiveTabIndex(), key);
-      this.activateTab(index);
+      const index = this.determineTargetFromKey_(this.adapter_.getPreviousActiveTabIndex(), key);
+      this.adapter_.setActiveTab(index);
       this.scrollIntoView(index);
     } else {
       const focusedTabIndex = this.adapter_.getFocusedTabIndex();
       if (this.isActivationKey_(key)) {
-        this.activateTab(focusedTabIndex);
+        this.adapter_.setActiveTab(focusedTabIndex);
       } else {
         const index = this.determineTargetFromKey_(focusedTabIndex, key);
         this.adapter_.focusTabAtIndex(index);
@@ -176,7 +174,7 @@ class MDCTabBarFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   handleTabInteraction(evt) {
-    this.activateTab(this.adapter_.getIndexOfTab(evt.detail.tab));
+    this.adapter_.setActiveTab(this.adapter_.getIndexOfTab(evt.detail.tab));
   }
 
   /**

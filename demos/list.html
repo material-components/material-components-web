@@ -1,18 +1,24 @@
 <!DOCTYPE html>
 <!--
-  Copyright 2016 Google Inc. All rights reserved.
+  Copyright 2016 Google Inc.
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
 
-      https://www.apache.org/licenses/LICENSE-2.0
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
 
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  THE SOFTWARE.
 -->
 <html>
   <head>
@@ -53,7 +59,7 @@
               info
             </a>
           </li>
-          <li class="mdc-list-item">
+          <li class="mdc-list-item mdc-list-item--selected" tabindex="0" aria-selected="true">
             <span class="mdc-list-item__graphic" role="presentation">
               <i class="material-icons" aria-hidden="true">folder</i>
             </span>
@@ -110,6 +116,53 @@
           <label for="toggle-rtl" id="toggle-rtl-label">Toggle RTL</label>
         </div>
       </section>
+
+      <div id="demo-wrapper">
+        <ul class="mdc-list mdc-list--two-line mdc-list--avatar-list demo-list demo-list--with-avatars" aria-orientation="vertical">
+          <li class="mdc-list-item" tabindex="-1">
+            <span class="mdc-list-item__graphic" role="presentation">
+              <i class="material-icons" aria-hidden="true">folder</i>
+            </span>
+            <span class="mdc-list-item__text">
+              <span class="mdc-list-item__primary-text">Photos</span>
+              <span class="mdc-list-item__secondary-text">Jan 9, 2014</span>
+            </span>
+            <a href="#" class="mdc-list-item__meta material-icons"
+               aria-label="View more information" title="More info"
+               onclick="event.preventDefault();">
+              info
+            </a>
+          </li>
+          <li class="mdc-list-item mdc-list-item--activated" tabindex="0" aria-selected="true">
+            <span class="mdc-list-item__graphic" role="presentation">
+              <i class="material-icons" aria-hidden="true">folder</i>
+            </span>
+            <span class="mdc-list-item__text">
+              <span class="mdc-list-item__primary-text">Recipes</span>
+              <span class="mdc-list-item__secondary-text">Jan 17, 2014</span>
+            </span>
+            <a href="#" class="mdc-list-item__meta material-icons"
+               aria-label="View more information" title="More info"
+               onclick="event.preventDefault();">
+              info
+            </a>
+          </li>
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__graphic" role="presentation">
+              <i class="material-icons" aria-hidden="true">folder</i>
+            </span>
+            <span class="mdc-list-item__text">
+              <span class="mdc-list-item__primary-text">Work</span>
+              <span class="mdc-list-item__secondary-text">Jan 28, 2014</span>
+            </span>
+            <a href="#" class="mdc-list-item__meta material-icons"
+               aria-label="View more information" title="More info"
+               onclick="event.preventDefault();">
+              info
+            </a>
+          </li>
+        </ul>
+      </div>
 
       <div id="demo-wrapper">
         <section>
@@ -1135,10 +1188,6 @@
         [].slice.call(document.querySelectorAll('.mdc-list')).forEach(function(ele) {
           var list = mdc.list.MDCList.attachTo(ele);
           list.wrapFocus = true;
-
-          if (ele.parentElement.classList.contains('hero')) {
-            list.singleSelection = true;
-          }
         });
 
         addRippleToListItems(document.getElementById('leading-checkbox-list'));

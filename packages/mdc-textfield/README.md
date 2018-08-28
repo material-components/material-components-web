@@ -6,21 +6,7 @@ iconId: text_field
 path: /catalog/input-controls/text-field/
 -->
 
-## Important - Default Style Deprecation Notice
-
-The existing default text field style will be changed in an upcoming release. The Material spec indicates that
-the default style will be the filled variant (currently referred to as the box variant). This will become the
-default style. Continuing to add the `mdc-text-field--box` class to the text field will
-result in no change.
-
 # Text Field
-
-<!--<div class="article__asset">
-  <a class="article__asset-link"
-     href="https://material-components.github.io/material-components-web-catalog/#/component/text-field">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/textfields.png" width="240" alt="Text fields screenshot">
-  </a>
-</div>-->
 
 Text fields allow users to input, edit, and select text.
 
@@ -87,7 +73,7 @@ Full width text fields are useful for in-depth tasks or entering complex informa
 </div>
 ```
 
-> _NOTE_: Do not use `mdc-text-field--box` or `mdc-text-field--outlined` to style a full width text field.
+> _NOTE_: Do not use `mdc-text-field--outlined` to style a full width text field.
 
 > _NOTE_: Do not use `mdc-floating-label` within `mdc-text-field--fullwidth`. Labels should not be
 included as part of the DOM structure of a full width text field.
@@ -140,7 +126,7 @@ See [here](helper-text/) for more information on using helper text.
 
 ### Text Field with Leading and Trailing Icons
 
-Leading and trailing icons can be added within the box or outlined variants of MDC Text Field as visual indicators as
+Leading and trailing icons can be added within the default or outlined variant of MDC Text Field as visual indicators as
 well as interaction targets. See [here](icon/) for more information on using icons.
 
 
@@ -183,7 +169,6 @@ Un-styled Content (**FOUC**).
 CSS Class | Description
 --- | ---
 `mdc-text-field` | Mandatory.
-`mdc-text-field--box` | Styles the text field as a box text field.
 `mdc-text-field--outlined` | Styles the text field as an outlined text field.
 `mdc-text-field--fullwidth` | Styles the text field as a full width text field.
 `mdc-text-field--textarea` | Indicates the text field is a `<textarea>`.
@@ -202,12 +187,23 @@ apply these mixins with CSS selectors such as `.foo-text-field.mdc-text-field--i
 
 > _NOTE_: the `mdc-line-ripple-color` mixin should be applied from the not focused class `foo-text-field:not(.mdc-text-field--focused)`).
 
-#### Mixins for Text Field Box
+#### Mixins for all Text Fields
 
 Mixin | Description
 --- | ---
-`mdc-text-field-box-corner-radius($radius)` | Customizes the border radius for the text field box variant.
-`mdc-text-field-box-fill-color($color)` | Customizes the background color of the text field box.
+`mdc-text-field-ink-color($color)` | Customizes the color of the text entered into the text field.
+`mdc-text-field-label-color($color)` | Customizes the text color of the label.
+`mdc-text-field-caret-color($color)` | Customizes the color of the cursor caret of the text field.
+
+#### Mixins for Filled Text Field
+
+Mixin | Description
+--- | ---
+`mdc-text-field-corner-radius($radius)` | Customizes the border radius for the text field.
+`mdc-text-field-fill-color($color)` | Customizes the background color of the text field.
+`mdc-text-field-bottom-line-color($color)` | Customizes the text field bottom line color except the outlined and textarea variants.
+`mdc-text-field-hover-bottom-line-color($color)` | Customizes the hover text field bottom line color except the outlined and textarea variants.
+`mdc-text-field-line-ripple-color($color)` | Customizes the color of the default line ripple of the text field.
 
 #### Mixins for Outlined Text Field
 
@@ -233,17 +229,6 @@ Mixin | Description
 --- | ---
 `mdc-text-field-fullwidth-bottom-line-color($color)` | Customizes the fullwidth text field variant bottom line color.
 
-#### Other Mixins
-
-Mixin | Description
---- | ---
-`mdc-text-field-bottom-line-color($color)` | Customizes the text field bottom line color except the outlined and textarea variants.
-`mdc-text-field-hover-bottom-line-color($color)` | Customizes the hover text field bottom line color except the outlined and textarea variants.
-`mdc-text-field-ink-color($color)` | Customizes the text entered into the text field.
-`mdc-text-field-label-color($color)` | Customizes the text color of the label.
-`mdc-text-field-line-ripple-color($color)` | Customizes the color of the default line ripple of the text field.
-`mdc-text-field-caret-color($color)` | Customizes the color of the cursor caret of the text field.
-
 ## `MDCTextField` Properties and Methods
 
 Property | Value Type | Description
@@ -254,7 +239,7 @@ Property | Value Type | Description
 `valid` | Boolean | Proxies to the foundation's `isValid`/`setValid` methods.
 `required` | Boolean | Proxies to the foundation's `isRequired`/`setRequired` methods.
 `helperTextContent` | String | Proxies to the foundation's `setHelperTextContent` method when set.
-`ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCTextField` initializes; this only applies to Text Field Box, and is `null` for other variants.
+`ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCTextField` initializes; this only applies to the default Text Field, and is `null` for other variants.
 
 Method Signature | Description
 --- | ---

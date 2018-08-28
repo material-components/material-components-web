@@ -215,8 +215,11 @@ Mixin | Description
 `mdc-select-focused-label-color($color)` | Customizes the label color of the select when focused.
 `mdc-select-bottom-line-color($color)` | Customizes the color of the default bottom line of the select.
 `mdc-select-focused-bottom-line-color($color)` | Customizes the color of the bottom line of the select when focused.
-`mdc-select-hover-bottom-line-color($color)` | Customizes the color of the bottom line when select is hovered.
-`mdc-select-outline-corner-radius($color)` | Customizes the color of the notched outline when select is focused.
+`mdc-select-hover-bottom-line-color($color)` | Customizes the color of the bottom line when the select is hovered.
+`mdc-select-outline-color($color)` | Customizes the color of the notched outline.
+`mdc-select-outline-corner-radius($radius)` | Sets the border radius of of the outlined select variant.
+`mdc-select-focused-outline-color($color)` | Customizes the color of the outline of the select when focused.
+`mdc-select-hover-outline-color($color)` | Customizes the color of the outline when the select is hovered.
 
 > NOTE: To further customize the floating label, please see the [floating label documentation](./../mdc-floating-label/README.md).
 

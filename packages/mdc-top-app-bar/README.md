@@ -181,7 +181,9 @@ Mixin | Description
 
 ## `MDCTopAppBar` Properties and Methods
 
-MDCTopAppBar does not contain any properties or methods aside from those inherited from MDCComponent.
+Method Signature | Description
+--- | ---
+`setScrollTarget(target: element) => void` | Sets scroll target to different DOM node (default is window).
 
 ### Events
 
@@ -210,4 +212,7 @@ Method Signature | Description
 
 ### Foundations: `MDCTopAppBarBaseFoundation`, `MDCTopAppBarFoundation`, `MDCFixedTopAppBarFoundation` and `MDCShortTopAppBarFoundation`
 
-The foundations do not contain any public properties or methods aside from those inherited from MDCFoundation.
+Method Signature | Description
+--- | ---
+`initScrollHandler(handler: function) => void` | Registers a scroll handler on a specific target element.
+`destroyScrollHandler(handler: function) => void` | Deregisters the current scroll handler set by the foundation.
