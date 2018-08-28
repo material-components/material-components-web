@@ -127,9 +127,7 @@
   width: $width;
   max-width: $width;
 
-  @at-root {
-    .mdc-drawer--open + .mdc-drawer-app-content {
-      @include mdc-rtl-reflexive-box(margin, left, $width);
-    }
+  &.mdc-drawer--open + .mdc-drawer-app-content {
+    @include mdc-rtl-reflexive-box(margin, left, $width);
   }
 }

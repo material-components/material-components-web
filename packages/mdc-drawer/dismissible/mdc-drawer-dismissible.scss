@@ -42,7 +42,8 @@
 
   position: relative;
 
-  .mdc-drawer--closing + & {
+  // To level the specificity with app-content selector in `mdc-drawer-width` mixin.
+  .mdc-drawer.mdc-drawer--closing + & {
     @include mdc-rtl-reflexive-box(margin, left, 0);
   }
 }
