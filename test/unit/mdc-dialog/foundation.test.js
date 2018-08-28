@@ -316,7 +316,7 @@ test('on click closes the dialog and notifies cancellation if event target is th
     target: {},
   };
 
-  td.when(mockAdapter.eventTargetHasClass(evt.target, cssClasses.BACKDROP)).thenReturn(true);
+  td.when(mockAdapter.eventTargetHasClass(evt.target, cssClasses.SCRIM)).thenReturn(true);
 
   foundation.open();
   handlers.click(evt);
@@ -333,7 +333,7 @@ test('on click does not close or notify cancellation if event target is the surf
     target: {},
   };
 
-  td.when(mockAdapter.eventTargetHasClass(evt.target, cssClasses.BACKDROP)).thenReturn(false);
+  td.when(mockAdapter.eventTargetHasClass(evt.target, cssClasses.SCRIM)).thenReturn(false);
 
   foundation.open();
   handlers.click(evt);

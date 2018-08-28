@@ -73,6 +73,7 @@ class MDCSupport {
    */
   fixFlexItemMaxHeightBug(element) {
     if (!this.hasFlexItemMaxHeightBug) {
+      console.log('skipping fixFlexItemMaxHeightBug() because hasFlexItemMaxHeightBug is false');
       return;
     }
     const oldValue = element.style.flexBasis;

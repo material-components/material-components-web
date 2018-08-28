@@ -25,13 +25,18 @@ const cssClasses = {
   ROOT: 'mdc-dialog',
   OPEN: 'mdc-dialog--open',
   ANIMATING: 'mdc-dialog--animating',
-  BACKDROP: 'mdc-dialog__scrim',
+  STACKED: 'mdc-dialog--stacked',
+  SCROLLABLE: 'mdc-dialog--scrollable',
+  SCRIM: 'mdc-dialog__scrim',
+  CONTENT: 'mdc-dialog__content',
   SCROLL_LOCK: 'mdc-dialog-scroll-lock',
 };
 
 const strings = {
   OPEN_DIALOG_SELECTOR: '.mdc-dialog--open',
-  DIALOG_CONTAINER_SELECTOR: '.mdc-dialog__container',
+  CONTAINER_SELECTOR: '.mdc-dialog__container',
+  CONTENT_SELECTOR: '.mdc-dialog__content',
+  ACTION_BUTTON_SELECTOR: '.mdc-dialog__button',
 
   YES_BTN_SELECTOR: '[data-mdc-dialog-action="yes"]',
   NO_BTN_SELECTOR: '[data-mdc-dialog-action="no"]',

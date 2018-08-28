@@ -179,7 +179,7 @@ test('adapter#deregisterInteractionHandler removes an event listener from the ro
 
 test('adapter#registerSurfaceInteractionHandler adds an event listener to the root element', () => {
   const {root, component} = setupTest();
-  const dialog = root.querySelector(strings.DIALOG_CONTAINER_SELECTOR);
+  const dialog = root.querySelector(strings.CONTAINER_SELECTOR);
   const handler = td.func('eventHandler');
 
   component.getDefaultFoundation().adapter_.registerSurfaceInteractionHandler('click', handler);
@@ -190,7 +190,7 @@ test('adapter#registerSurfaceInteractionHandler adds an event listener to the ro
 
 test('adapter#deregisterSurfaceInteractionHandler removes an event listener from the root element', () => {
   const {root, component} = setupTest();
-  const dialog = root.querySelector(strings.DIALOG_CONTAINER_SELECTOR);
+  const dialog = root.querySelector(strings.CONTAINER_SELECTOR);
   const handler = td.func('eventHandler');
 
   dialog.addEventListener('click', handler);
@@ -278,11 +278,7 @@ test('adapter#trapFocusOnSurface calls activate() on a properly configured focus
     deactivate: td.func('focusTrap#deactivate'),
   });
 
-  td.when(util.createFocusTrapInstance(
-    hasClassMatcher('mdc-dialog__container'),
-    td.matchers.anything(),
-    td.matchers.anything()
-  ))
+  td.when(util.createFocusTrapInstance(hasClassMatcher('mdc-dialog__container')))
     .thenReturn(fakeFocusTrapInstance);
 
   const {component} = setupTest();
@@ -302,11 +298,7 @@ test('adapter#untrapFocusOnSurface calls deactivate() on a properly configured f
     deactivate: () => {},
   });
 
-  td.when(util.createFocusTrapInstance(
-    hasClassMatcher('mdc-dialog__container'),
-    td.matchers.anything(),
-    td.matchers.anything()
-  ))
+  td.when(util.createFocusTrapInstance(hasClassMatcher('mdc-dialog__container')))
     .thenReturn(fakeFocusTrapInstance);
 
   const {component} = setupTest();
@@ -318,7 +310,7 @@ test('adapter#untrapFocusOnSurface calls deactivate() on a properly configured f
 
 test('adapter#isDialog returns true for the dialog surface element', () => {
   const {root, component} = setupTest();
-  const dialog = root.querySelector(strings.DIALOG_CONTAINER_SELECTOR);
+  const dialog = root.querySelector(strings.CONTAINER_SELECTOR);
   assert.isOk(component.getDefaultFoundation().adapter_.isDialog(dialog));
 });
 

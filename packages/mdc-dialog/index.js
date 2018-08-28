@@ -24,7 +24,6 @@
 import {MDCComponent} from '@material/base/index';
 import {MDCRipple} from '@material/ripple/index';
 import {matches} from '@material/base/ponyfill';
-import {MDCSupport} from '@material/base/support';
 
 import MDCDialogFoundation from './foundation';
 import * as util from './util';
@@ -35,12 +34,6 @@ export {util};
 export class MDCDialog extends MDCComponent {
   constructor(...args) {
     super(...args);
-
-    /**
-     * @type {!MDCSupport}
-     * @private
-     */
-    this.support_;
 
     /**
      * @type {!focusTrap}
@@ -63,20 +56,24 @@ export class MDCDialog extends MDCComponent {
     return this.foundation_.isOpen();
   }
 
-  get dialogSurface_() {
-    return this.root_.querySelector(MDCDialogFoundation.strings.DIALOG_CONTAINER_SELECTOR);
+  get containerElement_() {
+    return this.root_.querySelector(MDCDialogFoundation.strings.CONTAINER_SELECTOR);
   }
 
-  initialize({
-    supportFactory = () => new MDCSupport(),
-    focusTrapFactory = undefined,
-  } = {}) {
-    this.support_ = supportFactory();
-    this.focusTrap_ = util.createFocusTrapInstance(this.dialogSurface_, undefined, focusTrapFactory);
+  get contentElement_() {
+    return this.root_.querySelector(MDCDialogFoundation.strings.CONTENT_SELECTOR);
+  }
+
+  get actionButtonElements_() {
+    return this.root_.querySelectorAll(MDCDialogFoundation.strings.ACTION_BUTTON_SELECTOR);
+  }
+
+  initialize() {
+    this.focusTrap_ = util.createFocusTrapInstance(this.containerElement_);
     this.footerBtnRipples_ = [];
 
-    const footerBtns = this.root_.querySelectorAll('.mdc-dialog__button');
-    for (let i = 0, footerBtn; footerBtn = footerBtns[i]; i++) {
+    const actionButtonEls = this.actionButtonElements_;
+    for (let i = 0, footerBtn; footerBtn = actionButtonEls[i]; i++) {
       this.footerBtnRipples_.push(new MDCRipple(footerBtn));
     }
   }
@@ -88,55 +85,6 @@ export class MDCDialog extends MDCComponent {
 
   show() {
     this.foundation_.open();
-
-    // TODO(acdvorak): Refactor
-    this.detectStackedButtons_();
-    this.detectScrollableContent_();
-  }
-
-  /** @private */
-  detectStackedButtons_() {
-    /** @type {!Array<!HTMLElement>} */
-    const buttonEls = [].slice.call(this.root_.querySelectorAll('.mdc-dialog__button'));
-    const offsetTopSet = new Set();
-    buttonEls.forEach((buttonEl) => offsetTopSet.add(buttonEl.offsetTop));
-
-    const isStacked = offsetTopSet.size > 1;
-    if (isStacked) {
-      this.root_.classList.add('mdc-dialog--stacked');
-    } else {
-      this.root_.classList.remove('mdc-dialog--stacked');
-    }
-  }
-
-  /**
-   * @param {boolean=} bypassRAF
-   * @private
-   */
-  detectScrollableContent_(bypassRAF = false) {
-    if (this.support_.hasFlexItemMaxHeightBug && !bypassRAF) {
-      // RAF causes a bit of jank, but it's necessary to force IE to render correctly.
-      requestAnimationFrame(() => {
-        this.fixContentOverflow_();
-        this.detectScrollableContent_(true);
-      });
-      return;
-    }
-
-    const bodyEl = this.root_.querySelector('.mdc-dialog__content');
-    if (bodyEl && bodyEl.scrollHeight > bodyEl.offsetHeight) {
-      this.root_.classList.add('mdc-dialog--scrollable');
-    } else {
-      this.root_.classList.remove('mdc-dialog--scrollable');
-    }
-  }
-
-  /** @private */
-  fixContentOverflow_() {
-    const bodyEl = this.root_.querySelector('.mdc-dialog__content');
-    if (this.support_.hasFlexItemMaxHeightBug && bodyEl) {
-      this.support_.fixFlexItemMaxHeightBug(bodyEl);
-    }
   }
 
   close() {
@@ -153,10 +101,12 @@ export class MDCDialog extends MDCComponent {
       eventTargetMatchesSelector: (target, selector) => matches(target, selector),
       registerInteractionHandler: (evt, handler) => this.root_.addEventListener(evt, handler),
       deregisterInteractionHandler: (evt, handler) => this.root_.removeEventListener(evt, handler),
-      registerSurfaceInteractionHandler: (evt, handler) => this.dialogSurface_.addEventListener(evt, handler),
-      deregisterSurfaceInteractionHandler: (evt, handler) => this.dialogSurface_.removeEventListener(evt, handler),
+      registerSurfaceInteractionHandler: (evt, handler) => this.containerElement_.addEventListener(evt, handler),
+      deregisterSurfaceInteractionHandler: (evt, handler) => this.containerElement_.removeEventListener(evt, handler),
       registerDocumentKeydownHandler: (handler) => document.addEventListener('keydown', handler),
       deregisterDocumentKeydownHandler: (handler) => document.removeEventListener('keydown', handler),
+      getContentElement: () => this.contentElement_,
+      getActionButtonElements: () => this.actionButtonElements_,
       notifyYes: () => this.emit(MDCDialogFoundation.strings.YES_EVENT),
       notifyNo: () => this.emit(MDCDialogFoundation.strings.NO_EVENT),
       notifyCancel: () => this.emit(MDCDialogFoundation.strings.CANCEL_EVENT),
@@ -166,7 +116,7 @@ export class MDCDialog extends MDCComponent {
       notifyClosed: () => this.emit(MDCDialogFoundation.strings.CLOSED_EVENT),
       trapFocusOnSurface: () => this.focusTrap_.activate(),
       untrapFocusOnSurface: () => this.focusTrap_.deactivate(),
-      isDialog: (el) => el === this.dialogSurface_,
+      isDialog: (el) => el === this.containerElement_,
     });
   }
 }
