@@ -93,6 +93,10 @@ class MDCCheckbox extends MDCComponent {
       setNativeControlAttr: (attr, value) => this.nativeCb_.setAttribute(attr, value),
       removeNativeControlAttr: (attr) => this.nativeCb_.removeAttribute(attr),
       getNativeControl: () => this.nativeCb_,
+      isIndeterminate: () => this.indeterminate,
+      isChecked: () => this.checked,
+      hasNativeControl: () => !!this.nativeCb_,
+      setNativeControlDisabled: (disabled) => this.nativeCb_.disabled = disabled,
       forceLayout: () => this.root_.offsetWidth,
       isAttachedToDOM: () => Boolean(this.root_.parentNode),
     });
@@ -105,27 +109,27 @@ class MDCCheckbox extends MDCComponent {
 
   /** @return {boolean} */
   get checked() {
-    return this.foundation_.isChecked();
+    return this.nativeCb_.checked;
   }
 
   /** @param {boolean} checked */
   set checked(checked) {
-    this.foundation_.setChecked(checked);
+    this.nativeCb_.checked = checked;
   }
 
   /** @return {boolean} */
   get indeterminate() {
-    return this.foundation_.isIndeterminate();
+    return this.nativeCb_.indeterminate;
   }
 
   /** @param {boolean} indeterminate */
   set indeterminate(indeterminate) {
-    this.foundation_.setIndeterminate(indeterminate);
+    this.nativeCb_.indeterminate = indeterminate;
   }
 
   /** @return {boolean} */
   get disabled() {
-    return this.foundation_.isDisabled();
+    return this.nativeCb_.disabled;
   }
 
   /** @param {boolean} disabled */
@@ -135,12 +139,12 @@ class MDCCheckbox extends MDCComponent {
 
   /** @return {?string} */
   get value() {
-    return this.foundation_.getValue();
+    return this.nativeCb_.value;
   }
 
   /** @param {?string} value */
   set value(value) {
-    this.foundation_.setValue(value);
+    this.nativeCb_.value = value;
   }
 
   destroy() {
