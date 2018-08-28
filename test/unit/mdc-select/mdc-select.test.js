@@ -33,9 +33,14 @@ import {MDCSelect} from '../../../packages/mdc-select';
 import {cssClasses} from '../../../packages/mdc-select/constants';
 import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline';
 
+const LABEL_WIDTH = 100;
+
 class FakeLabel {
   constructor() {
     this.float = td.func('label.float');
+    this.getWidth = td.func('label.getWidth');
+
+    td.when(this.getWidth()).thenReturn(LABEL_WIDTH);
   }
 }
 
@@ -43,12 +48,14 @@ class FakeBottomLine {
   constructor() {
     this.activate = td.func('bottomLine.activate');
     this.deactivate = td.func('bottomLine.deactivate');
+    this.setRippleCenter = td.func('bottomLine.setRippleCenter');
   }
 }
 
 class FakeOutline {
   constructor() {
     this.destroy = td.func('.destroy');
+    this.notch = td.func('.notch');
   }
 }
 
@@ -87,20 +94,47 @@ function getBoxFixture() {
   `;
 }
 
+function getOutlineFixture() {
+  return bel`
+    <div class="mdc-select mdc-select--outlined">
+      <select class="mdc-select__native-control">
+        <option value="orange">
+          Orange
+        </option>
+        <option value="apple">
+          Apple
+        </option>
+      </select>
+      <label class="mdc-floating-label">Pick a Food Group</label>
+      <div class="mdc-notched-outline">
+        <svg>
+          <path class="mdc-notched-outline__path">
+        </svg>
+      </div>   
+      <div class="mdc-notched-outline__idle"/>
+    </div>
+  `;
+}
+
 suite('MDCSelect');
 
 test('attachTo returns a component instance', () => {
   assert.isOk(MDCSelect.attachTo(getFixture()) instanceof MDCSelect);
 });
 
-function setupTest() {
+function setupTest(hasOutline = false, hasLabel = true) {
   const bottomLine = new FakeBottomLine();
   const label = new FakeLabel();
-  const fixture = getFixture();
+  const fixture = hasOutline ? getOutlineFixture() : getFixture();
   const nativeControl = fixture.querySelector('.mdc-select__native-control');
   const labelEl = fixture.querySelector('.mdc-floating-label');
   const bottomLineEl = fixture.querySelector('.mdc-line-ripple');
   const outline = new FakeOutline();
+
+  if (!hasLabel) {
+    fixture.removeChild(labelEl);
+  }
+
   const component = new MDCSelect(fixture, /* foundation */ undefined, () => label, () => bottomLine, () => outline);
 
   return {fixture, nativeControl, label, labelEl, bottomLine, bottomLineEl, component, outline};
@@ -366,6 +400,37 @@ test('adapter#deactivateBottomLine removes active class from the bottom line', (
   td.verify(bottomLine.deactivate());
 });
 
+test('adapter#notchOutline proxies labelWidth and isRtl to the outline', () => {
+  const hasOutline = true;
+  const {component, outline} = setupTest(hasOutline);
+  const isRtl = false;
+
+  component.getDefaultFoundation().adapter_.notchOutline(LABEL_WIDTH, isRtl);
+  td.verify(outline.notch(LABEL_WIDTH, isRtl), {times: 1});
+});
+
+test('adapter#notchOutline does not proxy values to the outline if it does not exist', () => {
+  const hasOutline = false;
+  const {component, outline} = setupTest(hasOutline);
+  const isRtl = false;
+
+  component.getDefaultFoundation().adapter_.notchOutline(LABEL_WIDTH, isRtl);
+  td.verify(outline.notch(LABEL_WIDTH, isRtl), {times: 0});
+});
+
+test('adapter#getLabelWidth returns the width of the label', () => {
+  const {component} = setupTest();
+  assert.equal(component.getDefaultFoundation().adapter_.getLabelWidth(), LABEL_WIDTH);
+});
+
+test('adapter#getLabelWidth returns 0 if the label does not exist', () => {
+  const hasOutline = true;
+  const hasLabel = false;
+  const {component} = setupTest(hasOutline, hasLabel);
+
+  assert.equal(component.getDefaultFoundation().adapter_.getLabelWidth(), 0);
+});
+
 test('change event triggers foundation.handleChange()', () => {
   const {component, nativeControl} = setupTest();
   component.foundation_.handleChange = td.func();
@@ -409,4 +474,30 @@ test('#destroy removes the blur handler', () => {
   component.destroy();
   domEvents.emit(nativeControl, 'blur');
   td.verify(component.foundation_.handleBlur(), {times: 0});
+});
+
+test('mousedown on the select sets the line ripple origin', () => {
+  const {bottomLine, fixture} = setupTest();
+  const event = document.createEvent('MouseEvent');
+  const clientX = 200;
+  const clientY = 200;
+  // IE11 mousedown event.
+  event.initMouseEvent('mousedown', true, true, window, 0, 0, 0, clientX, clientY, false, false, false, false, 0, null);
+  fixture.querySelector('select').dispatchEvent(event);
+
+  td.verify(bottomLine.setRippleCenter(200), {times: 1});
+});
+
+test('#destroy removes the mousedown listener', () => {
+  const {bottomLine, component, fixture} = setupTest();
+  const event = document.createEvent('MouseEvent');
+  const clientX = 200;
+  const clientY = 200;
+
+  component.destroy();
+  // IE11 mousedown event.
+  event.initMouseEvent('mousedown', true, true, window, 0, 0, 0, clientX, clientY, false, false, false, false, 0, null);
+  fixture.querySelector('select').dispatchEvent(event);
+
+  td.verify(bottomLine.setRippleCenter(200), {times: 0});
 });
