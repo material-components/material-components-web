@@ -530,6 +530,15 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/23/20_10_17_804/spec/mdc-textfield/classes/baseline-leading-icon.html.windows_ie_11.png"
     }
   },
+  "spec/mdc-textfield/classes/baseline-leading-trailing-icons.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/20_00_10_516/spec/mdc-textfield/classes/baseline-leading-trailing-icons.html",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/20_00_10_516/spec/mdc-textfield/classes/baseline-leading-trailing-icons.html.windows_chrome_68.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/20_00_10_516/spec/mdc-textfield/classes/baseline-leading-trailing-icons.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/20_00_10_516/spec/mdc-textfield/classes/baseline-leading-trailing-icons.html.windows_firefox_61.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/20_00_10_516/spec/mdc-textfield/classes/baseline-leading-trailing-icons.html.windows_ie_11.png"
+    }
+  },
   "spec/mdc-textfield/classes/baseline-trailing-icon.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/01/00_49_00_411/spec/mdc-textfield/classes/baseline-trailing-icon.html",
     "screenshots": {
@@ -591,6 +600,15 @@
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/23/20_10_17_804/spec/mdc-textfield/classes/disabled-leading-icon.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/23/20_10_17_804/spec/mdc-textfield/classes/disabled-leading-icon.html.windows_firefox_61.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/23/20_10_17_804/spec/mdc-textfield/classes/disabled-leading-icon.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-textfield/classes/disabled-leading-trailing-icons.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/20_00_10_516/spec/mdc-textfield/classes/disabled-leading-trailing-icons.html",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/20_00_10_516/spec/mdc-textfield/classes/disabled-leading-trailing-icons.html.windows_chrome_68.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/20_00_10_516/spec/mdc-textfield/classes/disabled-leading-trailing-icons.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/20_00_10_516/spec/mdc-textfield/classes/disabled-leading-trailing-icons.html.windows_firefox_61.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/20_00_10_516/spec/mdc-textfield/classes/disabled-leading-trailing-icons.html.windows_ie_11.png"
     }
   },
   "spec/mdc-textfield/classes/disabled-trailing-icon.html": {
@@ -656,6 +674,15 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/23/20_10_17_804/spec/mdc-textfield/classes/focused-leading-icon.html.windows_ie_11.png"
     }
   },
+  "spec/mdc-textfield/classes/focused-leading-trailing-icons.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/20_00_10_516/spec/mdc-textfield/classes/focused-leading-trailing-icons.html",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/20_00_10_516/spec/mdc-textfield/classes/focused-leading-trailing-icons.html.windows_chrome_68.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/20_00_10_516/spec/mdc-textfield/classes/focused-leading-trailing-icons.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/20_00_10_516/spec/mdc-textfield/classes/focused-leading-trailing-icons.html.windows_firefox_61.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/20_00_10_516/spec/mdc-textfield/classes/focused-leading-trailing-icons.html.windows_ie_11.png"
+    }
+  },
   "spec/mdc-textfield/classes/focused-trailing-icon.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/01/00_49_00_411/spec/mdc-textfield/classes/focused-trailing-icon.html",
     "screenshots": {
@@ -719,6 +746,15 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/23/20_10_17_804/spec/mdc-textfield/classes/invalid-focused-leading-icon.html.windows_ie_11.png"
     }
   },
+  "spec/mdc-textfield/classes/invalid-focused-leading-trailing-icons.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/20_00_10_516/spec/mdc-textfield/classes/invalid-focused-leading-trailing-icons.html",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/20_00_10_516/spec/mdc-textfield/classes/invalid-focused-leading-trailing-icons.html.windows_chrome_68.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/20_00_10_516/spec/mdc-textfield/classes/invalid-focused-leading-trailing-icons.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/20_00_10_516/spec/mdc-textfield/classes/invalid-focused-leading-trailing-icons.html.windows_firefox_61.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/20_00_10_516/spec/mdc-textfield/classes/invalid-focused-leading-trailing-icons.html.windows_ie_11.png"
+    }
+  },
   "spec/mdc-textfield/classes/invalid-focused-trailing-icon.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/01/00_49_00_411/spec/mdc-textfield/classes/invalid-focused-trailing-icon.html",
     "screenshots": {
@@ -780,6 +816,15 @@
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/23/20_10_17_804/spec/mdc-textfield/classes/invalid-leading-icon.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/23/20_10_17_804/spec/mdc-textfield/classes/invalid-leading-icon.html.windows_firefox_61.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/23/20_10_17_804/spec/mdc-textfield/classes/invalid-leading-icon.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-textfield/classes/invalid-leading-trailing-icons.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/20_00_10_516/spec/mdc-textfield/classes/invalid-leading-trailing-icons.html",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/20_00_10_516/spec/mdc-textfield/classes/invalid-leading-trailing-icons.html.windows_chrome_68.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/20_00_10_516/spec/mdc-textfield/classes/invalid-leading-trailing-icons.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/20_00_10_516/spec/mdc-textfield/classes/invalid-leading-trailing-icons.html.windows_firefox_61.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/20_00_10_516/spec/mdc-textfield/classes/invalid-leading-trailing-icons.html.windows_ie_11.png"
     }
   },
   "spec/mdc-textfield/classes/invalid-trailing-icon.html": {
