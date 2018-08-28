@@ -123,12 +123,15 @@ test('#fixFlexItemMaxHeightBug makes child flex item scrollable', function(done)
 
   support.fixFlexItemMaxHeightBug(flexItemEl);
 
-  requestAnimationFrame(() => {
-    // If the fix worked, the height of the scrollable area should be greater than the element's bounding box height.
-    assert.isAbove(flexItemEl.scrollHeight, flexItemEl.offsetHeight);
-    destroyFlexItemMaxHeightBugFixture(flexContainerEl);
-    done();
-  });
+  // Timeout for IE 11
+  setTimeout(() => {
+    requestAnimationFrame(() => {
+      // If the fix worked, the height of the scrollable area should be greater than the element's bounding box height.
+      assert.isAbove(flexItemEl.scrollHeight, flexItemEl.offsetHeight);
+      destroyFlexItemMaxHeightBugFixture(flexContainerEl);
+      done();
+    });
+  }, 500);
 });
 
 test('#fixFlexItemMaxHeightBug restores flex-basis to its original value of ""', function(done) {
