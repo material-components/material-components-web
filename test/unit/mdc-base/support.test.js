@@ -25,6 +25,7 @@ import {assert} from 'chai';
 import bel from 'bel';
 import td from 'testdouble';
 
+import {createMockRaf} from '../helpers/raf';
 import {MDCSupport} from '../../../packages/mdc-base/support';
 
 suite('MDCBase - support');
@@ -81,7 +82,41 @@ test('#hasFlexItemMaxHeightBug returns true when flex item is not scrollable.', 
   support.isScrollable = td.func('isScrollable');
   td.when(support.isScrollable(td.matchers.anything())).thenReturn(false);
 
+  // Call the getter twice to make code coverage happy
   assert.isTrue(support.hasFlexItemMaxHeightBug);
+  assert.isTrue(support.hasFlexItemMaxHeightBug);
+});
+
+test('#isScrollable compares height properties', function() {
+  const {support} = setupTest();
+
+  assert.isTrue(support.isScrollable({scrollHeight: 2, offsetHeight: 1}), 'scrollHeight > offsetHeight');
+  assert.isFalse(support.isScrollable({scrollHeight: 1, offsetHeight: 1}), 'scrollHeight === offsetHeight');
+  assert.isFalse(support.isScrollable({scrollHeight: 1, offsetHeight: 2}), 'scrollHeight < offsetHeight');
+});
+
+test('#fixFlexItemMaxHeightBug does nothing when bug is not present', function(done) {
+  const {support} = setupTest();
+
+  const flexContainerEl = createFlexItemMaxHeightBugFixture();
+  const flexItemEl = flexContainerEl.querySelector('article');
+
+  const mockRaf = createMockRaf();
+
+  Object.defineProperty(support, 'hasFlexItemMaxHeightBug', {
+    get: () => false,
+  });
+
+  support.fixFlexItemMaxHeightBug(flexItemEl);
+
+  mockRaf.flush();
+  mockRaf.restore();
+
+  requestAnimationFrame(() => {
+    assert.equal(mockRaf.pendingFrames.length, 0);
+    destroyFlexItemMaxHeightBugFixture(flexContainerEl);
+    done();
+  });
 });
 
 test('#fixFlexItemMaxHeightBug makes child flex item scrollable', function(done) {
@@ -90,11 +125,55 @@ test('#fixFlexItemMaxHeightBug makes child flex item scrollable', function(done)
   const flexContainerEl = createFlexItemMaxHeightBugFixture();
   const flexItemEl = flexContainerEl.querySelector('article');
 
+  Object.defineProperty(support, 'hasFlexItemMaxHeightBug', {
+    get: () => true,
+  });
+
   support.fixFlexItemMaxHeightBug(flexItemEl);
 
   requestAnimationFrame(() => {
     // If the fix worked, the height of the scrollable area should be greater than the element's bounding box height.
     assert.isAbove(flexItemEl.scrollHeight, flexItemEl.offsetHeight);
+    destroyFlexItemMaxHeightBugFixture(flexContainerEl);
+    done();
+  });
+});
+
+test('#fixFlexItemMaxHeightBug restores flex-basis to its original value of ""', function(done) {
+  const {support} = setupTest();
+
+  const flexContainerEl = createFlexItemMaxHeightBugFixture();
+  const flexItemEl = flexContainerEl.querySelector('article');
+  flexItemEl.style.flexBasis = '';
+
+  Object.defineProperty(support, 'hasFlexItemMaxHeightBug', {
+    get: () => true,
+  });
+
+  support.fixFlexItemMaxHeightBug(flexItemEl);
+
+  requestAnimationFrame(() => {
+    assert.equal(flexItemEl.style.flexBasis, '');
+    destroyFlexItemMaxHeightBugFixture(flexContainerEl);
+    done();
+  });
+});
+
+test('#fixFlexItemMaxHeightBug restores flex-basis to its original value of "auto"', function(done) {
+  const {support} = setupTest();
+
+  const flexContainerEl = createFlexItemMaxHeightBugFixture();
+  const flexItemEl = flexContainerEl.querySelector('article');
+  flexItemEl.style.flexBasis = 'auto';
+
+  Object.defineProperty(support, 'hasFlexItemMaxHeightBug', {
+    get: () => true,
+  });
+
+  support.fixFlexItemMaxHeightBug(flexItemEl);
+
+  requestAnimationFrame(() => {
+    assert.equal(flexItemEl.style.flexBasis, 'auto');
     destroyFlexItemMaxHeightBugFixture(flexContainerEl);
     done();
   });
