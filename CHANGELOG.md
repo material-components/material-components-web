@@ -1,9 +1,17 @@
-<a name="0.39.0-0"></a>
-# [0.39.0-0](https://github.com/material-components/material-components-web/compare/v0.38.0...v0.39.0-0) (2018-08-16)
+<a name="0.39.0"></a>
+# [0.39.0](https://github.com/material-components/material-components-web/compare/v0.39.0-0...v0.39.0) (2018-08-27)
 
 
 ### Bug Fixes
 
+* **checkbox:** remove register/deregister event listeners from foundation ([#3402](https://github.com/material-components/material-components-web/issues/3402)) ([430b338](https://github.com/material-components/material-components-web/commit/430b338))
+* **drawer:** Fix exports and closure tests ([#3424](https://github.com/material-components/material-components-web/issues/3424)) ([8d53068](https://github.com/material-components/material-components-web/commit/8d53068))
+* **list:** Add support for activated ([#3388](https://github.com/material-components/material-components-web/issues/3388)) ([5590412](https://github.com/material-components/material-components-web/commit/5590412))
+* **list:** Follow hrefs on keypresses on links ([#3407](https://github.com/material-components/material-components-web/issues/3407)) ([e6d6deb](https://github.com/material-components/material-components-web/commit/e6d6deb))
+* **snackbar:** Allow variables to be customized ([#3335](https://github.com/material-components/material-components-web/issues/3335)) ([215d0c6](https://github.com/material-components/material-components-web/commit/215d0c6))
+* **tab-bar:** Early exit ([#3386](https://github.com/material-components/material-components-web/issues/3386)) ([f0ebfea](https://github.com/material-components/material-components-web/commit/f0ebfea))
+* **tab-bar:** Move activateTab to adapter ([#3394](https://github.com/material-components/material-components-web/issues/3394)) ([5007604](https://github.com/material-components/material-components-web/commit/5007604))
+* **text-field:** Update to match spec ([#3397](https://github.com/material-components/material-components-web/issues/3397)) ([e34b251](https://github.com/material-components/material-components-web/commit/e34b251))
 * **menu-surface:** Remove overflow hidden during menu-surface animation. ([#3358](https://github.com/material-components/material-components-web/issues/3358)) ([951a3ae](https://github.com/material-components/material-components-web/commit/951a3ae))
 * **notched-outline:** Add alignment ([#3349](https://github.com/material-components/material-components-web/issues/3349)) ([ee93c61](https://github.com/material-components/material-components-web/commit/ee93c61))
 * **snackbar:** Doesn't close while other element is focused ([#2183](https://github.com/material-components/material-components-web/issues/2183)) ([e161cc0](https://github.com/material-components/material-components-web/commit/e161cc0))
@@ -12,8 +20,22 @@
 * **text-field:** Input position and textarea size ([#3321](https://github.com/material-components/material-components-web/issues/3321)) ([5160241](https://github.com/material-components/material-components-web/commit/5160241)), closes [#2826](https://github.com/material-components/material-components-web/issues/2826)
 
 
+### Chores
+
+* **list:** Remove all references to Element from MDCListAdapter ([#3398](https://github.com/material-components/material-components-web/issues/3398)) ([53f42b9](https://github.com/material-components/material-components-web/commit/53f42b9))
+* **tab:** Move computeIndicatorClientRect logic out of the foundation ([#3367](https://github.com/material-components/material-components-web/issues/3367)) ([9cac7c0](https://github.com/material-components/material-components-web/commit/9cac7c0)), closes [#3341](https://github.com/material-components/material-components-web/issues/3341)
+
+
+### Code Refactoring
+
+* **text-field:** Change text-field--box to be the new default ([#2859](https://github.com/material-components/material-components-web/issues/2859)) ([01b6be7](https://github.com/material-components/material-components-web/commit/01b6be7))
+
+
 ### Features
 
+* Update to MIT license ([#3376](https://github.com/material-components/material-components-web/issues/3376)) ([2cf8487](https://github.com/material-components/material-components-web/commit/2cf8487))
+* **drawer:** Improved navigation drawer  ([#3417](https://github.com/material-components/material-components-web/issues/3417)) ([3aa211d](https://github.com/material-components/material-components-web/commit/3aa211d))
+* **theme:** Added new function for text emphasis opacities ([f841afe](https://github.com/material-components/material-components-web/commit/f841afe))
 * **chips:** Pass chip ids instead of foundations in events  ([#3265](https://github.com/material-components/material-components-web/issues/3265)) ([7ce0fba](https://github.com/material-components/material-components-web/commit/7ce0fba))
 * **icon-button:** Add SVG support ([#3310](https://github.com/material-components/material-components-web/issues/3310)) ([25fa51e](https://github.com/material-components/material-components-web/commit/25fa51e))
 * **menu:** Adds new menu, menu-surface. ([#3311](https://github.com/material-components/material-components-web/issues/3311)) ([6439c5b](https://github.com/material-components/material-components-web/commit/6439c5b))
@@ -28,6 +50,14 @@
 
 ### BREAKING CHANGES
 
+* **drawer:** Drawer variants have new DOM structure, mixins, and JS. MDCPersistentDrawer and MDCTemporaryDrawer components are replaced with a single MDCDrawer component which supports both.
+* **list:** Please update calls to MDCListFoundation.handleKeydown to pass in isRootListItem and listItemIndex, and update both MDCListFoundation.handleFocusIn, MDCListFoundation.handleFocusOut to pass in listItemIndex
+* **text-field:** This PR removes the margin-top from the mdc-text-field container. This can cause a UI to shift/change. 
+* **checkbox:** Event registration adapter APIs have been removed and are now the responsibility of the component.
+* **list:** Adds a followHref adapter API.
+* **text-field:** Removes the default version of the text field and changes the new default variant to be the `--box` variant. Changes the box-sizing to border-box. 
+* **tab-bar:** `getActiveTabIndex` adapter method renamed and `setActiveTab` adapter method added.
+* **tab:** We've removed the `computeIndicatorClientRect` method from `MDCTabFoundation`
 * **switch:** We've removed the `isChecked` and `isDisabled` methods from `MDCSwitchFoundation`. Please update any call to `MDCSwitchFoundation.handleChange` so it passes in the change event. And note that `isNativeControlChecked` and `isNativeControlDisabled` are no longer required methods in `MDCSwitchAdapter`
 * **text-field:** Setting the validity state using `setValid` no longer ignores native input validation. New API `useNativeValidation` is introduced to enable / disable native validation for custom validity.
 * **menu:** Menu positioning logic has been split into its own package (mdc-menu-surface). mdc-menu is rebuilt to use mdc-menu-surface and mdc-list styles and JavaScript.

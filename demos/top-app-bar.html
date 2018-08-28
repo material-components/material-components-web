@@ -45,46 +45,6 @@
       </div>
     </header>
 
-    <aside class="mdc-drawer mdc-drawer--temporary">
-      <nav class="mdc-drawer__drawer">
-        <header class="mdc-drawer__header">
-          <div class="mdc-drawer__header-content mdc-theme--on-primary mdc-theme--primary-bg">
-            Header here
-          </div>
-        </header>
-        <nav class="mdc-drawer__content mdc-list-group">
-          <div class="mdc-list">
-            <a href="/" class="mdc-list-item ">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">&#xE5C4;</i>Back
-            </a>
-            <a class="mdc-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Star
-            </a>
-            <a class="mdc-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>Sent Mail
-            </a>
-            <a class="mdc-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>Drafts
-            </a>
-          </div>
-
-          <hr class="mdc-list-divider">
-
-          <div class="mdc-list">
-            <a class="mdc-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">email</i>All Mail
-            </a>
-            <a class="mdc-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">delete</i>Trash
-            </a>
-            <a class="mdc-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">report</i>Spam
-            </a>
-          </div>
-        </nav>
-      </nav>
-    </aside>
-
     <main class="demo-main">
       <div id="content-main" class="mdc-top-app-bar--fixed-adjust">
         <p class="demo-paragraph">
@@ -213,10 +173,8 @@
         var appBarEl = document.getElementById('demo-top-app-bar');
         var rightItemEl = document.getElementById('right-item');
         var rightSection = document.getElementById('iconSection');
-        var drawerEl = document.querySelector('.mdc-drawer');
         var contentMainEl = document.getElementById('content-main');
 
-        var drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
         var appBar = mdc.topAppBar.MDCTopAppBar.attachTo(appBarEl);
 
         var rtlCheckbox = document.getElementById('rtl-checkbox');
@@ -227,10 +185,6 @@
         var shortCheckbox = document.getElementById('short-checkbox');
         var alwaysCollapsedCheckbox = document.getElementById('always-collapsed-checkbox');
 
-
-        appBarEl.addEventListener('MDCTopAppBar:nav', function() {
-          drawer.open = true;
-        });
 
         // Generic Options
         noActionItemCheckbox.addEventListener('change', function()  {

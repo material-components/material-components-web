@@ -251,7 +251,8 @@ function patchNodeForDeclarationSource(source, srcFile, rootDir, node) {
   if (isThirdPartyModule) {
     assert(source.indexOf('@material') < 0, '@material/* import sources should have already been rewritten');
     patchDefaultImportIfNeeded(node);
-    resolvedSource = `goog:mdc.thirdparty.${camelCase(source)}`;
+    resolvedSource = `mdc.thirdparty.${camelCase(source)}`;
+    return resolvedSource;
   } else {
     const normPath = path.normalize(path.dirname(srcFile), source);
     const needsClosureModuleRootResolution = path.isAbsolute(source) || fs.statSync(normPath).isDirectory();
@@ -260,13 +261,14 @@ function patchNodeForDeclarationSource(source, srcFile, rootDir, node) {
         basedir: path.dirname(srcFile),
       }));
     }
+
+    const packageParts = resolvedSource.replace('mdc-', '').replace(/-/g, '').replace('.js', '').split('/');
+    const packageStr = 'mdc.' + packageParts.join('.').replace('.index', '');
+    if (packageStr in defaultTypesMap) {
+      return defaultTypesMap[packageStr];
+    }
+    return packageStr;
   }
-  const packageParts = resolvedSource.replace('mdc-', '').replace(/-/g, '').replace('.js', '').split('/');
-  const packageStr = 'mdc.' + packageParts.join('.').replace('.index', '');
-  if (packageStr in defaultTypesMap) {
-    return defaultTypesMap[packageStr];
-  }
-  return packageStr;
 }
 
 function patchDefaultImportIfNeeded(node) {

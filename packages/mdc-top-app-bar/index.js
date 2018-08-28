@@ -44,6 +44,8 @@ class MDCTopAppBar extends MDCComponent {
     this.navIcon_;
     /** @type {?Array<MDCRipple>} */
     this.iconRipples_;
+    /** @type {Object} */
+    this.scrollTarget_;
   }
 
   initialize(
@@ -66,6 +68,12 @@ class MDCTopAppBar extends MDCComponent {
   destroy() {
     this.iconRipples_.forEach((iconRipple) => iconRipple.destroy());
     super.destroy();
+  }
+
+  setScrollTarget(target) {
+    this.foundation_.destroyScrollHandler();
+    this.scrollTarget_ = target;
+    this.foundation_.initScrollHandler();
   }
 
   /**
@@ -100,15 +108,18 @@ class MDCTopAppBar extends MDCComponent {
       notifyNavigationIconClicked: () => {
         this.emit(strings.NAVIGATION_EVENT, {});
       },
-      registerScrollHandler: (handler) => window.addEventListener('scroll', handler),
-      deregisterScrollHandler: (handler) => window.removeEventListener('scroll', handler),
+      registerScrollHandler: (handler) => this.scrollTarget_.addEventListener('scroll', handler),
+      deregisterScrollHandler: (handler) => this.scrollTarget_.removeEventListener('scroll', handler),
       registerResizeHandler: (handler) => window.addEventListener('resize', handler),
       deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
-      getViewportScrollY: () => window.pageYOffset,
+      getViewportScrollY: () =>
+        this.scrollTarget_[this.scrollTarget_ === window ? 'pageYOffset' : 'scrollTop'],
       getTotalActionItems: () =>
         this.root_.querySelectorAll(strings.ACTION_ITEM_SELECTOR).length,
     })
     );
+
+    this.scrollTarget_ = window;
 
     /** @type {!MDCTopAppBarBaseFoundation} */
     let foundation;

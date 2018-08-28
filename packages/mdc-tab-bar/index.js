@@ -96,6 +96,13 @@ class MDCTabBar extends MDCComponent {
 
     this.root_.addEventListener(MDCTabFoundation.strings.INTERACTED_EVENT, this.handleTabInteraction_);
     this.root_.addEventListener('keydown', this.handleKeyDown_);
+
+    for (let i = 0; i < this.tabList_.length; i++) {
+      if (this.tabList_[i].active) {
+        this.scrollIntoView(i);
+        break;
+      }
+    }
   }
 
   destroy() {
@@ -118,12 +125,13 @@ class MDCTabBar extends MDCComponent {
         getScrollContentWidth: () => this.tabScroller_.getScrollContentWidth(),
         getOffsetWidth: () => this.root_.offsetWidth,
         isRTL: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
+        setActiveTab: (index) => this.foundation_.activateTab(index),
         activateTabAtIndex: (index, clientRect) => this.tabList_[index].activate(clientRect),
         deactivateTabAtIndex: (index) => this.tabList_[index].deactivate(),
         focusTabAtIndex: (index) => this.tabList_[index].focus(),
         getTabIndicatorClientRectAtIndex: (index) => this.tabList_[index].computeIndicatorClientRect(),
         getTabDimensionsAtIndex: (index) => this.tabList_[index].computeDimensions(),
-        getActiveTabIndex: () => {
+        getPreviousActiveTabIndex: () => {
           for (let i = 0; i < this.tabList_.length; i++) {
             if (this.tabList_[i].active) {
               return i;

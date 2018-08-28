@@ -44,9 +44,6 @@ class MDCListAdapter {
    * @return {number} */
   getFocusedElementIndex() {}
 
-  /** @param {Element} node */
-  getListItemIndex(node) {}
-
   /**
    * @param {number} index
    * @param {string} attribute
@@ -79,24 +76,18 @@ class MDCListAdapter {
   focusItemAtIndex(index) {}
 
   /**
-   * Checks if the provided element is a focusable sub-element.
-   * @param {Element} ele
-   */
-  isElementFocusable(ele) {}
-
-  /**
-   * Checks if the provided element is contains the mdc-list-item class.
-   * @param {Element} ele
-   */
-  isListItem(ele) {}
-
-  /**
    * Sets the tabindex to the value specified for all button/a element children of
    * the list item at the index specified.
    * @param {number} listItemIndex
    * @param {number} tabIndexValue
    */
   setTabIndexForListItemChildren(listItemIndex, tabIndexValue) {}
+
+  /**
+   * If the given element has an href, follows the link.
+   * @param {!Element} ele
+   */
+  followHref(ele) {}
 }
 
 export default MDCListAdapter;

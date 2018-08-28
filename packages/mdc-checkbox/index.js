@@ -56,6 +56,17 @@ class MDCCheckbox extends MDCComponent {
 
     /** @private {!MDCRipple} */
     this.ripple_ = this.initRipple_();
+    /** @private {!Function} */
+    this.handleChange_;
+    /** @private {!Function} */
+    this.handleAnimationEnd_;
+  }
+
+  initialSyncWithDOM() {
+    this.handleChange_ = () => this.foundation_.handleChange();
+    this.handleAnimationEnd_= () => this.foundation_.handleAnimationEnd();
+    this.nativeCb_.addEventListener('change', this.handleChange_);
+    this.listen(getCorrectEventName(window, 'animationend'), this.handleAnimationEnd_);
   }
 
   /**
@@ -81,12 +92,6 @@ class MDCCheckbox extends MDCComponent {
       removeClass: (className) => this.root_.classList.remove(className),
       setNativeControlAttr: (attr, value) => this.nativeCb_.setAttribute(attr, value),
       removeNativeControlAttr: (attr) => this.nativeCb_.removeAttribute(attr),
-      registerAnimationEndHandler:
-        (handler) => this.root_.addEventListener(getCorrectEventName(window, 'animationend'), handler),
-      deregisterAnimationEndHandler:
-        (handler) => this.root_.removeEventListener(getCorrectEventName(window, 'animationend'), handler),
-      registerChangeHandler: (handler) => this.nativeCb_.addEventListener('change', handler),
-      deregisterChangeHandler: (handler) => this.nativeCb_.removeEventListener('change', handler),
       getNativeControl: () => this.nativeCb_,
       forceLayout: () => this.root_.offsetWidth,
       isAttachedToDOM: () => Boolean(this.root_.parentNode),
@@ -140,6 +145,8 @@ class MDCCheckbox extends MDCComponent {
 
   destroy() {
     this.ripple_.destroy();
+    this.nativeCb_.removeEventListener('change', this.handleChange_);
+    this.unlisten(getCorrectEventName(window, 'animationend'), this.handleAnimationEnd_);
     super.destroy();
   }
 }

@@ -54,6 +54,12 @@
   }
 }
 
+@mixin mdc-list-item-corner-radius($radius) {
+  .mdc-list-item {
+    border-radius: $radius;
+  }
+}
+
 @mixin mdc-list-divider-color($color) {
   .mdc-list-divider {
     @include mdc-theme-prop(border-bottom-color, $color);

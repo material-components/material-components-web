@@ -25,7 +25,7 @@
 @import "../../packages/mdc-card/mdc-card";
 @import "../../packages/mdc-checkbox/mdc-checkbox";
 @import "../../packages/mdc-dialog/mdc-dialog";
-@import "../../packages/mdc-drawer/temporary/mdc-temporary-drawer";
+@import "../../packages/mdc-drawer/mdc-drawer";
 @import "../../packages/mdc-elevation/mdc-elevation";
 @import "../../packages/mdc-fab/mdc-fab";
 @import "../../packages/mdc-form-field/mdc-form-field";
@@ -33,6 +33,7 @@
 @import "../../packages/mdc-linear-progress/mdc-linear-progress";
 @import "../../packages/mdc-list/mdc-list";
 @import "../../packages/mdc-menu/mdc-menu";
+@import "../../packages/mdc-menu-surface/mdc-menu-surface";
 @import "../../packages/mdc-radio/mdc-radio";
 @import "../../packages/mdc-ripple/mdc-ripple";
 @import "../../packages/mdc-select/mdc-select";
@@ -120,7 +121,10 @@ figure {
 //
 
 .demo-main {
-  padding: 24px;
+  // Don't override padding-top, which is set by the fixed-adjust class
+  padding-bottom: 24px;
+  padding-right: 24px;
+  padding-left: 24px;
 }
 
 .demo-component-section {

@@ -102,7 +102,7 @@ test('#initializeListType calls the foundation if the --activated class is prese
   td.verify(mockFoundation.setSingleSelection(true), {times: 1});
 });
 
-test('#adapter.getListItemCount returns correct number of list items', () => {
+test('adapter#getListItemCount returns correct number of list items', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
   const number = root.querySelectorAll('.mdc-list-item').length;
@@ -110,7 +110,7 @@ test('#adapter.getListItemCount returns correct number of list items', () => {
   document.body.removeChild(root);
 });
 
-test('#adapter.getFocusedElementIndex returns the index of the currently selected element', () => {
+test('adapter#getFocusedElementIndex returns the index of the currently selected element', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
   root.querySelectorAll('.mdc-list-item')[0].focus();
@@ -118,15 +118,7 @@ test('#adapter.getFocusedElementIndex returns the index of the currently selecte
   document.body.removeChild(root);
 });
 
-test('#adapter.getListItemIndex returns the index of the element specified', () => {
-  const {root, component} = setupTest();
-  document.body.appendChild(root);
-  const selectedNode = root.querySelectorAll('.mdc-list-item')[1];
-  assert.equal(1, component.getDefaultFoundation().adapter_.getListItemIndex(selectedNode));
-  document.body.removeChild(root);
-});
-
-test('#adapter.setAttributeForElementIndex does nothing if the element at index does not exist', () => {
+test('adapter#setAttributeForElementIndex does nothing if the element at index does not exist', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
   const func = () => {
@@ -136,7 +128,7 @@ test('#adapter.setAttributeForElementIndex does nothing if the element at index 
   document.body.removeChild(root);
 });
 
-test('#adapter.setAttributeForElementIndex sets the attribute for the list element at index specified', () => {
+test('adapter#setAttributeForElementIndex sets the attribute for the list element at index specified', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
   const selectedNode = root.querySelectorAll('.mdc-list-item')[1];
@@ -145,7 +137,7 @@ test('#adapter.setAttributeForElementIndex sets the attribute for the list eleme
   document.body.removeChild(root);
 });
 
-test('#adapter.removeAttributeForElementIndex does nothing if the element at index does not exist', () => {
+test('adapter#removeAttributeForElementIndex does nothing if the element at index does not exist', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
   const func = () => {
@@ -155,7 +147,7 @@ test('#adapter.removeAttributeForElementIndex does nothing if the element at ind
   document.body.removeChild(root);
 });
 
-test('#adapter.removeAttributeForElementIndex sets the attribute for the list element at index specified', () => {
+test('adapter#removeAttributeForElementIndex sets the attribute for the list element at index specified', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
   const selectedNode = root.querySelectorAll('.mdc-list-item')[1];
@@ -165,7 +157,7 @@ test('#adapter.removeAttributeForElementIndex sets the attribute for the list el
   document.body.removeChild(root);
 });
 
-test('#adapter.addClassForElementIndex does nothing if the element at index does not exist', () => {
+test('adapter#addClassForElementIndex does nothing if the element at index does not exist', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
   const func = () => {
@@ -175,7 +167,7 @@ test('#adapter.addClassForElementIndex does nothing if the element at index does
   document.body.removeChild(root);
 });
 
-test('#adapter.addClassForElementIndex adds the class to the list element at index specified', () => {
+test('adapter#addClassForElementIndex adds the class to the list element at index specified', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
   const selectedNode = root.querySelectorAll('.mdc-list-item')[1];
@@ -184,7 +176,7 @@ test('#adapter.addClassForElementIndex adds the class to the list element at ind
   document.body.removeChild(root);
 });
 
-test('#adapter.removeClassForElementIndex does nothing if the element at index does not exist', () => {
+test('adapter#removeClassForElementIndex does nothing if the element at index does not exist', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
   const func = () => {
@@ -194,7 +186,7 @@ test('#adapter.removeClassForElementIndex does nothing if the element at index d
   document.body.removeChild(root);
 });
 
-test('#adapter.removeClassForElementIndex removes the class from the list element at index specified', () => {
+test('adapter#removeClassForElementIndex removes the class from the list element at index specified', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
   const selectedNode = root.querySelectorAll('.mdc-list-item')[1];
@@ -204,7 +196,7 @@ test('#adapter.removeClassForElementIndex removes the class from the list elemen
   document.body.removeChild(root);
 });
 
-test('#adapter.focusItemAtIndex does not throw an error if element at index is undefined/null', () => {
+test('adapter#focusItemAtIndex does not throw an error if element at index is undefined/null', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
   const func = () => {
@@ -214,7 +206,7 @@ test('#adapter.focusItemAtIndex does not throw an error if element at index is u
   document.body.removeChild(root);
 });
 
-test('#adapter.focusItemAtIndex focuses the list item at the index specified', () => {
+test('adapter#focusItemAtIndex focuses the list item at the index specified', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
   const items = root.querySelectorAll('.mdc-list-item');
@@ -224,38 +216,7 @@ test('#adapter.focusItemAtIndex focuses the list item at the index specified', (
   document.body.removeChild(root);
 });
 
-test('adapter#isListItem returns true if the element is a list item', () => {
-  const {root, component} = setupTest();
-  const item1 = root.querySelectorAll('.mdc-list-item')[0];
-  assert.isTrue(component.getDefaultFoundation().adapter_.isListItem(item1));
-});
-
-test('adapter#isListItem returns false if the element is a not a list item', () => {
-  const {root, component} = setupTest();
-  const item1 = root.querySelectorAll('.mdc-list-item button')[0];
-  assert.isFalse(component.getDefaultFoundation().adapter_.isListItem(item1));
-});
-
-test('adapter#isElementFocusable returns true if the element is a focusable list item sub-element', () => {
-  const {root, component} = setupTest();
-  const item1 = root.querySelectorAll('.mdc-list-item button')[0];
-  assert.isTrue(component.getDefaultFoundation().adapter_.isElementFocusable(item1));
-});
-
-test('adapter#isElementFocusable returns false if the element is not a focusable list item sub-element',
-  () => {
-    const {root, component} = setupTest();
-    const item1 = root.querySelectorAll('.mdc-list-item')[2];
-    assert.isFalse(component.getDefaultFoundation().adapter_.isElementFocusable(item1));
-  });
-
-test('adapter#isElementFocusable returns false if the element is null/undefined',
-  () => {
-    const {component} = setupTest();
-    assert.isFalse(component.getDefaultFoundation().adapter_.isElementFocusable());
-  });
-
-test('#adapter.setTabIndexForListItemChildren sets the child button/a elements of index', () => {
+test('adapter#setTabIndexForListItemChildren sets the child button/a elements of index', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
   const listItemIndex = 1;
@@ -265,6 +226,29 @@ test('#adapter.setTabIndexForListItemChildren sets the child button/a elements o
   assert.equal(1, root.querySelectorAll('button[tabindex="0"]').length);
   assert.equal(listItem, root.querySelectorAll('button[tabindex="0"]')[0].parentElement);
   document.body.removeChild(root);
+});
+
+test('adapter#followHref invokes click on element with href', () => {
+  const {root, component} = setupTest();
+  const anchorTag = document.createElement('a');
+  anchorTag.href = '#';
+  anchorTag.click = td.func('click');
+  anchorTag.classList.add('mdc-list-item');
+  root.appendChild(anchorTag);
+  component.getDefaultFoundation().adapter_.followHref(root.querySelectorAll('.mdc-list-item').length - 1);
+
+  td.verify(anchorTag.click(), {times: 1});
+});
+
+test('adapter#followHref does not invoke click on element without href', () => {
+  const {root, component} = setupTest();
+  const anchorTag = document.createElement('a');
+  anchorTag.click = td.func('click');
+  anchorTag.classList.add('mdc-list-item');
+  root.appendChild(anchorTag);
+  component.getDefaultFoundation().adapter_.followHref(root.querySelectorAll('.mdc-list-item').length - 1);
+
+  td.verify(anchorTag.click(), {times: 0});
 });
 
 test('layout adds tabindex=-1 to all list items without a tabindex', () => {
@@ -317,19 +301,76 @@ test('selectedIndex calls setSelectedIndex on foundation', () => {
   td.verify(mockFoundation.setSelectedIndex(1), {times: 1});
 });
 
+test('focusIn handler is added to root element', () => {
+  const {root, mockFoundation} = setupTest();
+  document.body.appendChild(root);
+  const event = document.createEvent('Event');
+  event.initEvent('focusin', true, true);
+  const listElementItem = root.querySelector('.mdc-list-item');
+  listElementItem.dispatchEvent(event);
+  td.verify(mockFoundation.handleFocusIn(event, 0), {times: 1});
+  document.body.removeChild(root);
+});
+
+test('focusIn handler is removed from the root element on destroy', () => {
+  const {root, component, mockFoundation} = setupTest();
+  document.body.appendChild(root);
+  component.destroy();
+  const event = document.createEvent('Event');
+  event.initEvent('focusin', true, true);
+  const listElementItem = root.querySelector('.mdc-list-item');
+  listElementItem.dispatchEvent(event);
+  td.verify(mockFoundation.handleFocusIn(event, 0), {times: 0});
+  document.body.removeChild(root);
+});
+
+test('focusOut handler is added to root element', () => {
+  const {root, mockFoundation} = setupTest();
+  document.body.appendChild(root);
+  const event = document.createEvent('Event');
+  event.initEvent('focusout', true, true);
+  const listElementItem = root.querySelector('.mdc-list-item');
+  listElementItem.dispatchEvent(event);
+  td.verify(mockFoundation.handleFocusOut(event, 0), {times: 1});
+  document.body.removeChild(root);
+});
+
+test('focusOut handler is removed from the root element on destroy', () => {
+  const {root, component, mockFoundation} = setupTest();
+  document.body.appendChild(root);
+  component.destroy();
+  const event = document.createEvent('Event');
+  event.initEvent('focusout', true, true);
+  const listElementItem = root.querySelector('.mdc-list-item');
+  listElementItem.dispatchEvent(event);
+  td.verify(mockFoundation.handleFocusOut(event, 0), {times: 0});
+  document.body.removeChild(root);
+});
+
 test('keydown handler is added to root element', () => {
   const {root, mockFoundation} = setupTest();
   const event = document.createEvent('KeyboardEvent');
-  event.initEvent('keydown', false, true);
-  root.dispatchEvent(event);
-  td.verify(mockFoundation.handleKeydown(event), {times: 1});
+  event.initEvent('keydown', true, true);
+  const listElementItem = root.querySelector('.mdc-list-item');
+  listElementItem.dispatchEvent(event);
+  td.verify(mockFoundation.handleKeydown(event, true, 0), {times: 1});
+});
+
+test('keydown handler is triggered when a sub-element of a list is triggered', () => {
+  const {root, mockFoundation} = setupTest();
+  const event = document.createEvent('KeyboardEvent');
+  event.initEvent('keydown', true, true);
+  const button = root.querySelector('.mdc-list-item button');
+  button.dispatchEvent(event);
+  td.verify(mockFoundation.handleKeydown(event, false, 0), {times: 1});
 });
 
 test('keydown handler is removed from the root element on destroy', () => {
   const {root, component, mockFoundation} = setupTest();
   component.destroy();
   const event = document.createEvent('KeyboardEvent');
-  event.initEvent('keydown', false, true);
-  root.dispatchEvent(event);
-  td.verify(mockFoundation.handleKeydown(event), {times: 0});
+  event.initEvent('keydown', true, true);
+  const listElementItem = root.querySelector('.mdc-list-item');
+  listElementItem.dispatchEvent(event);
+  td.verify(mockFoundation.handleKeydown(event, true, 0), {times: 0});
 });
