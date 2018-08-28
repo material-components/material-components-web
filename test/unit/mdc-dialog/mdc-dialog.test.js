@@ -34,11 +34,12 @@ function getFixture() {
   return bel`
     <div>
       <button class="open-dialog">click</button>
-      <aside id="my-dialog" class="mdc-dialog"
-        role="alertdialog"
-        aria-hidden="true"
-        aria-labelledby="my-dialog-label"
-        aria-describedby="my-dialog-description">
+      <div id="my-dialog"
+           class="mdc-dialog"
+           role="alertdialog"
+           aria-hidden="true"
+           aria-labelledby="my-dialog-label"
+           aria-describedby="my-dialog-description">
         <div class="mdc-dialog__container">
           <header class="mdc-dialog__header">
             <h2 id="my-dialog-label" class="mdc-dialog__title">
@@ -58,7 +59,7 @@ function getFixture() {
           </footer>
         </div>
         <div class="mdc-dialog__scrim"></div>
-      </aside>
+      </div>
     </div>`;
 }
 
@@ -178,7 +179,7 @@ test('adapter#deregisterInteractionHandler removes an event listener from the ro
 
 test('adapter#registerSurfaceInteractionHandler adds an event listener to the root element', () => {
   const {root, component} = setupTest();
-  const dialog = root.querySelector(strings.DIALOG_SURFACE_SELECTOR);
+  const dialog = root.querySelector(strings.DIALOG_CONTAINER_SELECTOR);
   const handler = td.func('eventHandler');
 
   component.getDefaultFoundation().adapter_.registerSurfaceInteractionHandler('click', handler);
@@ -189,7 +190,7 @@ test('adapter#registerSurfaceInteractionHandler adds an event listener to the ro
 
 test('adapter#deregisterSurfaceInteractionHandler removes an event listener from the root element', () => {
   const {root, component} = setupTest();
-  const dialog = root.querySelector(strings.DIALOG_SURFACE_SELECTOR);
+  const dialog = root.querySelector(strings.DIALOG_CONTAINER_SELECTOR);
   const handler = td.func('eventHandler');
 
   dialog.addEventListener('click', handler);
@@ -273,14 +274,20 @@ test('adapter#trapFocusOnSurface calls activate() on a properly configured focus
   util.createFocusTrapInstance = td.func('util.createFocusTrapInstance');
 
   const fakeFocusTrapInstance = td.object({
-    activate: () => {},
-    deactivate: () => {},
+    activate: td.func('focusTrap#activate'),
+    deactivate: td.func('focusTrap#deactivate'),
   });
 
-  td.when(util.createFocusTrapInstance(hasClassMatcher('mdc-dialog__container'))).thenReturn(fakeFocusTrapInstance);
+  td.when(util.createFocusTrapInstance(
+    hasClassMatcher('mdc-dialog__container'),
+    td.matchers.anything(),
+    td.matchers.anything()
+  ))
+    .thenReturn(fakeFocusTrapInstance);
 
   const {component} = setupTest();
   component.getDefaultFoundation().adapter_.trapFocusOnSurface();
+
   util.createFocusTrapInstance = createFocusTrapInstance;
 
   td.verify(fakeFocusTrapInstance.activate());
@@ -295,7 +302,12 @@ test('adapter#untrapFocusOnSurface calls deactivate() on a properly configured f
     deactivate: () => {},
   });
 
-  td.when(util.createFocusTrapInstance(hasClassMatcher('mdc-dialog__container'))).thenReturn(fakeFocusTrapInstance);
+  td.when(util.createFocusTrapInstance(
+    hasClassMatcher('mdc-dialog__container'),
+    td.matchers.anything(),
+    td.matchers.anything()
+  ))
+    .thenReturn(fakeFocusTrapInstance);
 
   const {component} = setupTest();
   component.getDefaultFoundation().adapter_.untrapFocusOnSurface();
@@ -306,7 +318,7 @@ test('adapter#untrapFocusOnSurface calls deactivate() on a properly configured f
 
 test('adapter#isDialog returns true for the dialog surface element', () => {
   const {root, component} = setupTest();
-  const dialog = root.querySelector(strings.DIALOG_SURFACE_SELECTOR);
+  const dialog = root.querySelector(strings.DIALOG_CONTAINER_SELECTOR);
   assert.isOk(component.getDefaultFoundation().adapter_.isDialog(dialog));
 });
 

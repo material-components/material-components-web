@@ -24,7 +24,7 @@
 import {MDCComponent} from '@material/base/index';
 import {MDCRipple} from '@material/ripple/index';
 import {matches} from '@material/base/ponyfill';
-import {hasFlexItemMaxHeightBug, fixFlexItemMaxHeightBug} from '@material/base/feature-detection';
+import {MDCSupport} from '@material/base/support';
 
 import MDCDialogFoundation from './foundation';
 import * as util from './util';
@@ -33,6 +33,28 @@ export {MDCDialogFoundation};
 export {util};
 
 export class MDCDialog extends MDCComponent {
+  constructor(...args) {
+    super(...args);
+
+    /**
+     * @type {!MDCSupport}
+     * @private
+     */
+    this.support_;
+
+    /**
+     * @type {!focusTrap}
+     * @private
+     */
+    this.focusTrap_;
+
+    /**
+     * @type {!Array<!MDCRipple>}
+     * @private
+     */
+    this.footerBtnRipples_;
+  }
+
   static attachTo(root) {
     return new MDCDialog(root);
   }
@@ -42,11 +64,15 @@ export class MDCDialog extends MDCComponent {
   }
 
   get dialogSurface_() {
-    return this.root_.querySelector(MDCDialogFoundation.strings.DIALOG_SURFACE_SELECTOR);
+    return this.root_.querySelector(MDCDialogFoundation.strings.DIALOG_CONTAINER_SELECTOR);
   }
 
-  initialize() {
-    this.focusTrap_ = util.createFocusTrapInstance(this.dialogSurface_);
+  initialize({
+    supportFactory = () => new MDCSupport(),
+    focusTrapFactory = undefined,
+  } = {}) {
+    this.support_ = supportFactory();
+    this.focusTrap_ = util.createFocusTrapInstance(this.dialogSurface_, undefined, focusTrapFactory);
     this.footerBtnRipples_ = [];
 
     const footerBtns = this.root_.querySelectorAll('.mdc-dialog__button');
@@ -88,7 +114,7 @@ export class MDCDialog extends MDCComponent {
    * @private
    */
   detectScrollableContent_(bypassRAF = false) {
-    if (hasFlexItemMaxHeightBug() && !bypassRAF) {
+    if (this.support_.hasFlexItemMaxHeightBug && !bypassRAF) {
       // RAF causes a bit of jank, but it's necessary to force IE to render correctly.
       requestAnimationFrame(() => {
         this.fixContentOverflow_();
@@ -108,8 +134,8 @@ export class MDCDialog extends MDCComponent {
   /** @private */
   fixContentOverflow_() {
     const bodyEl = this.root_.querySelector('.mdc-dialog__content');
-    if (bodyEl) {
-      fixFlexItemMaxHeightBug(bodyEl);
+    if (this.support_.hasFlexItemMaxHeightBug && bodyEl) {
+      this.support_.fixFlexItemMaxHeightBug(bodyEl);
     }
   }
 

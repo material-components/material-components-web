@@ -31,7 +31,7 @@ const cssClasses = {
 
 const strings = {
   OPEN_DIALOG_SELECTOR: '.mdc-dialog--open',
-  DIALOG_SURFACE_SELECTOR: '.mdc-dialog__container',
+  DIALOG_CONTAINER_SELECTOR: '.mdc-dialog__container',
 
   YES_BTN_SELECTOR: '[data-mdc-dialog-action="yes"]',
   NO_BTN_SELECTOR: '[data-mdc-dialog-action="no"]',
