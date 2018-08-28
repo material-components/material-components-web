@@ -37,3 +37,11 @@ test('#matches returns false when the selector does not match the element', () =
   const element = bel`<div class="foo"></div>`;
   assert.isFalse(matches(element, '.bar'));
 });
+
+test('#matches supports vendor prefixes', () => {
+  assert.isTrue(matches({matches: () => true}, ''));
+  assert.isTrue(matches({webkitMatchesSelector: () => true}, ''));
+  assert.isTrue(matches({mozMatchesSelector: () => true}, ''));
+  assert.isTrue(matches({msMatchesSelector: () => true}, ''));
+  assert.isTrue(matches({oMatchesSelector: () => true}, ''));
+});
