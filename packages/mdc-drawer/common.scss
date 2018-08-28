@@ -40,6 +40,7 @@
   @include mdc-drawer-item-activated-icon-ink-color($mdc-drawer-item-activated-ink-color);
   @include mdc-drawer-item-activated-text-ink-color($mdc-drawer-item-activated-ink-color);
   @include mdc-drawer-item-corner-radius(4px);
+  @include mdc-drawer-z-index($mdc-drawer-z-index);
 
   display: flex;
   flex-direction: column;
@@ -53,7 +54,6 @@
   border-right-width: 1px;
   border-right-style: solid;
   overflow: hidden;
-  z-index: $mdc-drawer-z-index;
 
   @include mdc-rtl {
     border-right-width: 0;

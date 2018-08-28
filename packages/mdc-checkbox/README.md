@@ -162,6 +162,10 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `getNativeControl() => HTMLInputElement?` | Returns the native checkbox control, if available. Note that if this control is not available, the methods that rely on it will exit gracefully.|
 | `forceLayout() => void` | Force-trigger a layout on the root element. This is needed to restart animations correctly. If you find that you do not need to do this, you can simply make it a no-op. |
 | `isAttachedToDOM() => boolean` | Returns true if the component is currently attached to the DOM, false otherwise. |
+| `isIndeterminate() => boolean` | Returns true if the component is in the indeterminate state. |
+| `isChecked() => boolean` | Returns true if the component is checked. |
+| `hasNativeControl() => boolean` | Returns true if the input is present in the component. |
+| `setNativeControlDisabled(disabled: boolean) => void` | Sets the input to disabled. |
 
 ### `MDCCheckboxFoundation`
 
@@ -169,11 +173,6 @@ Method Signature | Description
 --- | ---
 `isChecked() => boolean` | Returns whether or not the underlying input is checked. Returns false when no input is available.
 `setChecked(checked: boolean) => void` | Updates the `checked` property on the underlying input. Does nothing when the underlying input is not present.
-`isIndeterminate() => boolean` | Returns whether or not the underlying input is indeterminate. Returns false when no input is available.
-`setIndeterminate(indeterminate: boolean) => void` | Updates the `indeterminate` property on the underlying input. Does nothing when the underlying input is not present.
-`isDisabled() => boolean` | Returns whether or not the underlying input is disabled. Returns false when no input is available.
 `setDisabled(disabled: boolean) => void` | Updates the `disabled` property on the underlying input. Does nothing when the underlying input is not present.
-`getValue() => string` | Returns the value of `MDCCheckboxAdapter.getNativeControl().value`. Returns `null` if `getNativeControl()` does not return an object.
-`setValue(value: string) => void` | Sets the value of `adapter.getNativeControl().value`. Does nothing if `getNativeControl()` does not return an object.
 `handleAnimationEnd() => void` | `animationend` event handler that should be applied to the root element.
 `handleChange() => void` | `change` event handler that should be applied to the checkbox element.
