@@ -128,7 +128,7 @@ const SAUCE_LAUNCHERS = {
   'sl-ios-safari-latest': {
     base: 'SauceLabs',
     deviceName: 'iPhone Simulator',
-    platformVersion: '10.0',
+    platformVersion: '11.0',
     platformName: 'iOS',
     browserName: 'Safari',
   },
