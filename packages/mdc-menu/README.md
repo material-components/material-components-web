@@ -45,7 +45,6 @@ npm install @material/menu
   <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
     <li class="mdc-list-item" role="menuitem">A Menu Item</li>
     <li class="mdc-list-item" role="menuitem">Another Menu Item</li>
-    ...
   </ul>
 </div>
 ```
