@@ -225,3 +225,44 @@ test('adapter#isAttachedToDOM returns false when root is not attached to DOM', (
   const {component} = setupTest();
   assert.isNotOk(component.getDefaultFoundation().adapter_.isAttachedToDOM());
 });
+
+test('#adapter.isIndeterminate returns true when checkbox is indeterminate', () => {
+  const {cb, component} = setupTest();
+  cb.indeterminate = true;
+  assert.isTrue(component.getDefaultFoundation().adapter_.isIndeterminate());
+});
+
+test('#adapter.isIndeterminate returns false when checkbox is not indeterminate', () => {
+  const {cb, component} = setupTest();
+  cb.indeterminate = false;
+  assert.isFalse(component.getDefaultFoundation().adapter_.isIndeterminate());
+});
+
+test('#adapter.isChecked returns true when checkbox is checked', () => {
+  const {cb, component} = setupTest();
+  cb.checked = true;
+  assert.isTrue(component.getDefaultFoundation().adapter_.isChecked());
+});
+
+test('#adapter.isChecked returns false when checkbox is not checked', () => {
+  const {cb, component} = setupTest();
+  cb.checked = false;
+  assert.isFalse(component.getDefaultFoundation().adapter_.isChecked());
+});
+
+test('#adapter.hasNativeControl returns true when checkbox exists', () => {
+  const {component} = setupTest();
+  assert.isTrue(component.getDefaultFoundation().adapter_.hasNativeControl());
+});
+
+test('#adapter.setNativeControlDisabled returns true when checkbox is disabled', () => {
+  const {cb, component} = setupTest();
+  component.getDefaultFoundation().adapter_.setNativeControlDisabled(true);
+  assert.isTrue(cb.disabled);
+});
+
+test('#adapter.setNativeControlDisabled returns false when checkbox is not disabled', () => {
+  const {cb, component} = setupTest();
+  component.getDefaultFoundation().adapter_.setNativeControlDisabled(false);
+  assert.isFalse(cb.disabled);
+});
