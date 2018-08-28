@@ -60,6 +60,10 @@ class MDCCheckboxFoundation extends MDCFoundation {
       getNativeControl: () => /* !MDCSelectionControlState */ {},
       forceLayout: () => {},
       isAttachedToDOM: () => /* boolean */ {},
+      isIndeterminate: () => /* boolean */ {},
+      isChecked: () => /* boolean */ {},
+      hasNativeControl: () => /* boolean */ {},
+      setNativeControlDisabled: (/* disabled: boolean */) => {},
     });
   }
 
@@ -81,7 +85,7 @@ class MDCCheckboxFoundation extends MDCFoundation {
 
   /** @override */
   init() {
-    this.currentCheckState_ = this.determineCheckState_(this.getNativeControl_());
+    this.currentCheckState_ = this.determineCheckState_();
     this.updateAriaChecked_();
     this.adapter_.addClass(cssClasses.UPGRADED);
     this.installPropertyChangeHooks_();
@@ -92,49 +96,14 @@ class MDCCheckboxFoundation extends MDCFoundation {
     this.uninstallPropertyChangeHooks_();
   }
 
-  /** @return {boolean} */
-  isChecked() {
-    return this.getNativeControl_().checked;
-  }
-
-  /** @param {boolean} checked */
-  setChecked(checked) {
-    this.getNativeControl_().checked = checked;
-  }
-
-  /** @return {boolean} */
-  isIndeterminate() {
-    return this.getNativeControl_().indeterminate;
-  }
-
-  /** @param {boolean} indeterminate */
-  setIndeterminate(indeterminate) {
-    this.getNativeControl_().indeterminate = indeterminate;
-  }
-
-  /** @return {boolean} */
-  isDisabled() {
-    return this.getNativeControl_().disabled;
-  }
-
   /** @param {boolean} disabled */
   setDisabled(disabled) {
-    this.getNativeControl_().disabled = disabled;
+    this.adapter_.setNativeControlDisabled(disabled);
     if (disabled) {
       this.adapter_.addClass(cssClasses.DISABLED);
     } else {
       this.adapter_.removeClass(cssClasses.DISABLED);
     }
-  }
-
-  /** @return {?string} */
-  getValue() {
-    return this.getNativeControl_().value;
-  }
-
-  /** @param {?string} value */
-  setValue(value) {
-    this.getNativeControl_().value = value;
   }
 
   /**
@@ -198,12 +167,12 @@ class MDCCheckboxFoundation extends MDCFoundation {
 
   /** @private */
   transitionCheckState_() {
-    const nativeCb = this.adapter_.getNativeControl();
-    if (!nativeCb) {
+    if (!this.adapter_.hasNativeControl()) {
       return;
     }
     const oldState = this.currentCheckState_;
-    const newState = this.determineCheckState_(nativeCb);
+    const newState = this.determineCheckState_();
+
     if (oldState === newState) {
       return;
     }
@@ -230,21 +199,20 @@ class MDCCheckboxFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {!MDCSelectionControlState} nativeCb
    * @return {string}
    * @private
    */
-  determineCheckState_(nativeCb) {
+  determineCheckState_() {
     const {
       TRANSITION_STATE_INDETERMINATE,
       TRANSITION_STATE_CHECKED,
       TRANSITION_STATE_UNCHECKED,
     } = strings;
 
-    if (nativeCb.indeterminate) {
+    if (this.adapter_.isIndeterminate()) {
       return TRANSITION_STATE_INDETERMINATE;
     }
-    return nativeCb.checked ? TRANSITION_STATE_CHECKED : TRANSITION_STATE_UNCHECKED;
+    return this.adapter_.isChecked() ? TRANSITION_STATE_CHECKED : TRANSITION_STATE_UNCHECKED;
   }
 
   /**
@@ -287,7 +255,7 @@ class MDCCheckboxFoundation extends MDCFoundation {
 
   updateAriaChecked_() {
     // Ensure aria-checked is set to mixed if checkbox is in indeterminate state.
-    if (this.isIndeterminate()) {
+    if (this.adapter_.isIndeterminate()) {
       this.adapter_.setNativeControlAttr(
         strings.ARIA_CHECKED_ATTR, strings.ARIA_CHECKED_INDETERMINATE_VALUE);
     } else {
