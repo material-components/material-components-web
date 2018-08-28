@@ -83,8 +83,8 @@
 }
 
 // Takes a base box-model property name (`margin`, `border`, `padding`, etc.) along with a
-// default direction (`left` or `right`) and value, and emits rules which apply the given value to the default direction
-// by default and the opposite direction in RTL.
+// default direction (`left` or `right`) and value, and emits rules which apply the given value to the
+// specified direction by default and the opposite direction in RTL.
 //
 // For example:
 //
