@@ -320,6 +320,12 @@ Mixin | Description
 `mdc-drawer-activated-overlay-color($color)` | Sets the overlay color of the activated drawer list item.
 `mdc-drawer-scrim-fill-color($color)` | Sets the fill color of `mdc-drawer-scrim`.
 
+### Sass Variables
+
+Variable | Description
+--- | ---
+`$mdc-drawer-width` | Sets the width of drawer.
+
 ## Accessibility
 
 ### Focus Management
