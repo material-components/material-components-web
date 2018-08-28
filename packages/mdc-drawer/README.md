@@ -319,6 +319,7 @@ Mixin | Description
 `mdc-drawer-item-corner-radius($radius)` | Sets the corner border radius of the drawer list item.
 `mdc-drawer-activated-overlay-color($color)` | Sets the overlay color of the activated drawer list item.
 `mdc-drawer-scrim-fill-color($color)` | Sets the fill color of `mdc-drawer-scrim`.
+`mdc-drawer-z-index($value)` | Sets the z index of drawer. Drawer stays on top of top app bar except for clipped variant of drawer.
 
 ## Accessibility
 
