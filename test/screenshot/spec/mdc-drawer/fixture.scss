@@ -72,3 +72,7 @@ body {
 .custom-drawer--fill-color-accessible {
   @include mdc-drawer-fill-color-accessible(darkcyan);
 }
+
+.custom-drawer--width {
+  @include mdc-drawer-width(400px);
+}
