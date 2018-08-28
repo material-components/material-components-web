@@ -41,14 +41,10 @@ npm install @material/menu
 ### HTML Structure
 
 ```html
-<div class="mdc-menu" tabindex="-1">
-  <ul class="mdc-menu__items mdc-list" role="menu" aria-hidden="true">
-    <li class="mdc-list-item" role="menuitem" tabindex="0">
-      A Menu Item
-    </li>
-    <li class="mdc-list-item" role="menuitem" tabindex="0">
-      Another Menu Item
-    </li>
+<div class="mdc-menu mdc-menu-surface" tabindex="-1">
+  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
+    <li class="mdc-list-item" role="menuitem">A Menu Item</li>
+    <li class="mdc-list-item" role="menuitem">Another Menu Item</li>
   </ul>
 </div>
 ```
@@ -57,7 +53,7 @@ npm install @material/menu
 
 ```scss
 @import "@material/menu/mdc-list";
-@import "@material/menu/mdc-menu-surface";
+@import "@material/menu-surface/mdc-menu-surface";
 @import "@material/menu/mdc-menu";
 ```
 

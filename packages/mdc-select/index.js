@@ -56,6 +56,8 @@ class MDCSelect extends MDCComponent {
     this.handleFocus_;
     /** @private {!Function} */
     this.handleBlur_;
+    /** @private {!Function} */
+    this.handleClick_;
   }
 
   /**
@@ -169,10 +171,14 @@ class MDCSelect extends MDCComponent {
     this.handleChange_ = () => this.foundation_.handleChange();
     this.handleFocus_ = () => this.foundation_.handleFocus();
     this.handleBlur_ = () => this.foundation_.handleBlur();
+    this.handleClick_ = (evt) => this.setTransformOrigin_(evt);
 
     this.nativeControl_.addEventListener('change', this.handleChange_);
     this.nativeControl_.addEventListener('focus', this.handleFocus_);
     this.nativeControl_.addEventListener('blur', this.handleBlur_);
+    ['mousedown', 'touchstart'].forEach((evtType) => {
+      this.nativeControl_.addEventListener(evtType, this.handleClick_);
+    });
 
     // Initially sync floating label
     this.foundation_.handleChange();
@@ -186,6 +192,9 @@ class MDCSelect extends MDCComponent {
     this.nativeControl_.removeEventListener('change', this.handleChange_);
     this.nativeControl_.removeEventListener('focus', this.handleFocus_);
     this.nativeControl_.removeEventListener('blur', this.handleBlur_);
+    ['mousedown', 'touchstart'].forEach((evtType) => {
+      this.nativeControl_.removeEventListener(evtType, this.handleClick_);
+    });
 
     if (this.ripple) {
       this.ripple.destroy();
@@ -264,11 +273,21 @@ class MDCSelect extends MDCComponent {
         }
       },
       getLabelWidth: () => {
-        if (this.label_) {
-          return this.label_.getWidth();
-        }
+        return this.label_ ? this.label_.getWidth() : 0;
       },
     };
+  }
+
+  /**
+   * Sets the line ripple's transform origin, so that the line ripple activate
+   * animation will animate out from the user's click location.
+   * @param {!(MouseEvent|TouchEvent)} evt
+   */
+  setTransformOrigin_(evt) {
+    const targetClientRect = evt.target.getBoundingClientRect();
+    const xCoordinate = evt.clientX;
+    const normalizedX = xCoordinate - targetClientRect.left;
+    this.lineRipple_.setRippleCenter(normalizedX);
   }
 }
 

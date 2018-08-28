@@ -213,6 +213,7 @@ Mixin | Description
 `mdc-list-item-graphic-fill-color($color)` | Sets background ink color of the graphic element within list item.
 `mdc-list-item-graphic-ink-color($color)` | Sets ink color of the graphic element within list item.
 `mdc-list-item-meta-ink-color($color)` | Sets ink color of the meta element within list item.
+`mdc-list-item-corner-radius($radius)` | Sets the corner border radius of the list item.
 `mdc-list-divider-color($color)` | Sets divider ink color.
 `mdc-list-group-subheader-ink-color($color)` | Sets ink color of subheader text within list group.
 

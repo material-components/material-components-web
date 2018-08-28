@@ -21,10 +21,17 @@
 //
 
 @import "../../../../packages/mdc-drawer/mixins";
+@import "../../../../packages/mdc-drawer/variables";
+@import "../../../../packages/mdc-typography/mdc-typography";
+@import "../../../../packages/mdc-top-app-bar/mdc-top-app-bar";
 @import "../../../../packages/mdc-list/mixins";
 @import "../../../../packages/mdc-theme/color-palette";
 
 $custom-drawer-color: $material-color-orange-900;
+
+.test-drawer-container {
+  flex-direction: row;
+}
 
 .test-viewport--drawer {
   display: flex;
@@ -41,14 +48,27 @@ $custom-drawer-color: $material-color-orange-900;
   line-height: 1;
 }
 
+body {
+  display: flex;
+  height: 100vh;
+}
+
+.test-drawer-app-content {
+  flex: auto;
+  overflow: auto;
+}
+
+.test-main-content {
+  overflow: auto;
+  height: 100%;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
 .custom-drawer--fill-color {
-  @include mdc-drawer-fill-color($custom-drawer-color);
+  @include mdc-drawer-surface-fill-color(pink);
 }
 
 .custom-drawer--fill-color-accessible {
-  @include mdc-drawer-fill-color-accessible($custom-drawer-color);
-}
-
-.custom-drawer--ink-color {
-  @include mdc-drawer-ink-color($custom-drawer-color);
+  @include mdc-drawer-fill-color-accessible(darkcyan);
 }

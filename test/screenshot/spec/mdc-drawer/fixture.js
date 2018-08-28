@@ -21,23 +21,4 @@
  * THE SOFTWARE.
  */
 
-const temporaryDrawerEl = document.querySelector('.mdc-drawer--temporary');
-const persistentDrawerEl = document.querySelector('.mdc-drawer--persistent');
-
-if (temporaryDrawerEl) {
-  const MDCTemporaryDrawer = mdc.drawer.MDCTemporaryDrawer;
-  const temporaryDrawer = new MDCTemporaryDrawer(temporaryDrawerEl);
-
-  document.querySelector('#test-drawer-menu-button').addEventListener('click', () => {
-    temporaryDrawer.open = !temporaryDrawer.open;
-  });
-}
-
-if (persistentDrawerEl) {
-  const MDCPersistentDrawer = mdc.drawer.MDCPersistentDrawer;
-  const persistentDrawer = new MDCPersistentDrawer(persistentDrawerEl);
-
-  document.querySelector('#test-drawer-menu-button').addEventListener('click', () => {
-    persistentDrawer.open = !persistentDrawer.open;
-  });
-}
+mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
