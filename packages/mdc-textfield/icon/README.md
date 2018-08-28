@@ -42,11 +42,11 @@ const icon = new MDCTextFieldIcon(document.querySelector('.mdc-text-field-icon')
 ```
 ## Variants
 
-Leading and trailing icons can be applied to text fields styled as `mdc-text-field--box` or `mdc-text-field--outlined`. To add an icon, add the relevant class (either `mdc-text-field--with-leading-icon` or `mdc-text-field--with-trailing-icon`) to the root element, add an `i` element with your preferred icon, and give it a class of `mdc-text-field__icon`.
+Leading and trailing icons can be applied to text fields styled as the default or `mdc-text-field--outlined`. To add an icon, add the relevant class (either `mdc-text-field--with-leading-icon` and/or `mdc-text-field--with-trailing-icon`) to the root element, add an `i` element with your preferred icon, and give it a class of `mdc-text-field__icon`. If using 2 icons, the first icon will be positioned before the input text, and the second icon will be positioned after.
 
 ### Leading icon
 
-In text field box:
+In text field:
 ```html
 <div class="mdc-text-field mdc-text-field--with-leading-icon">
   <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
@@ -73,7 +73,7 @@ In outlined text field:
 
 ### Trailing icon
 
-In text field box:
+In text field:
 ```html
 <div class="mdc-text-field mdc-text-field--with-trailing-icon">
   <input type="text" id="my-input" class="mdc-text-field__input">
@@ -89,6 +89,35 @@ In outlined text field:
   <input type="text" id="my-input" class="mdc-text-field__input">
   <label for="my-input" class="mdc-floating-label">Your Name</label>
   <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
+  <div class="mdc-notched-outline">
+    <svg>
+      <path class="mdc-notched-outline__path"/>
+    </svg>
+  </div>
+  <div class="mdc-notched-outline__idle"></div>
+</div>
+```
+
+### Leading and Trailing icons
+
+In text field:
+```html
+<div class="mdc-text-field mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon">
+  <i class="material-icons mdc-text-field__icon">phone</i>
+  <input type="text" id="my-input" class="mdc-text-field__input">
+  <label for="my-input" class="mdc-floating-label">Phone Number</label>
+  <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
+  <div class="mdc-line-ripple"></div>
+</div>
+```
+
+In outlined text field:
+```html
+<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon">
+  <i class="material-icons mdc-text-field__icon">phone</i>
+  <input type="text" id="my-input" class="mdc-text-field__input">
+  <label for="my-input" class="mdc-floating-label">Phone Number</label>
+  <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">clear</i>
   <div class="mdc-notched-outline">
     <svg>
       <path class="mdc-notched-outline__path"/>
@@ -114,7 +143,7 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-text-field-icon-color($color)` | Customizes the color for the leading/trailing icons.
+`mdc-text-field-icon-color($color, $onlyTrailing: false)` | Customizes the color for the leading/trailing icons. If the `$onlyTrailing` is `true` it will output the color to only apply to the trailing icon.
 
 ## `MDCTextFieldIcon` Properties and Methods
 
