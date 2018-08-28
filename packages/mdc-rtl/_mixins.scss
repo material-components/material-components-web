@@ -23,7 +23,6 @@
 // Creates a rule that will be applied when an MDC Web component is within the context of an RTL layout.
 //
 // Usage Example:
-//
 // ```scss
 // .mdc-foo {
 //   position: absolute;
@@ -94,7 +93,6 @@
 //   @include mdc-rtl-reflexive-box(margin, left, 8px);
 // }
 // ```
-//
 // is equivalent to:
 //
 // ```scss
@@ -107,7 +105,6 @@
 //   }
 // }
 // ```
-//
 // whereas:
 //
 // ```scss
@@ -115,7 +112,6 @@
 //   @include mdc-rtl-reflexive-box(margin, right, 8px);
 // }
 // ```
-//
 // is equivalent to:
 //
 // ```scss
@@ -159,7 +155,6 @@
 //   @include mdc-rtl-reflexive-property(margin, auto, 12px);
 // }
 // ```
-//
 // is equivalent to:
 //
 // ```scss
@@ -192,22 +187,20 @@
 //   position: absolute;
 // }
 // ```
-//
 // is equivalent to:
 //
 // ```scss
-// .mdc-foo {
-//   position: absolute;
-//   left: 0;
-//   right: initial;
+//  .mdc-foo {
+//    position: absolute;
+//    left: 0;
+//    right: initial;
 //
-//   @include mdc-rtl {
-//     right: 0;
-//     left: initial;
-//   }
-// }
+//    @include mdc-rtl {
+//      right: 0;
+//      left: initial;
+//    }
+//  }
 // ```
-//
 // An optional third $root-selector argument may also be given, which is passed to `mdc-rtl`.
 @mixin mdc-rtl-reflexive-position($position-property, $value, $root-selector: null) {
   @if (index((right, left), $position-property) == null) {
@@ -232,24 +225,22 @@
 // .mdc-foo {
 //   @include mdc-rtl-reflexive(left, 2px, right, 5px);
 //   position: absolute;
-// }
-// ```
+//  }
+//  ```
+//  is equivalent to:
 //
-// is equivalent to:
+//  ```scss
+//  .mdc-foo {
+//    position: absolute;
+//    left: 2px;
+//    right: 5px;
 //
-// ```scss
-// .mdc-foo {
-//   position: absolute;
-//   left: 2px;
-//   right: 5px;
-//
-//   @include mdc-rtl {
-//     right: 2px;
-//     left: 5px;
-//   }
-// }
-// ```
-//
+//    @include mdc-rtl {
+//      right: 2px;
+//      left: 5px;
+//    }
+//  }
+//  ```
 // An optional fifth $root-selector argument may also be given, which is passed to `mdc-rtl`.
 @mixin mdc-rtl-reflexive(
   $left-property,
