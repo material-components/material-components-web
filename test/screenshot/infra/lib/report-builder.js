@@ -37,6 +37,7 @@ const {Approvals, DiffImageResult, Dimensions, FlakeConfig, GitStatus, GoldenScr
 const {ReportData, ReportMeta, Screenshot, Screenshots, ScreenshotList, TestFile, User, UserAgents} = mdcProto;
 const {InclusionType, CaptureState} = Screenshot;
 
+const Analytics = require('./analytics');
 const CbtApi = require('./cbt-api');
 const Cli = require('./cli');
 const DiffBaseParser = require('./diff-base-parser');
@@ -54,6 +55,12 @@ const TEMP_DIR = os.tmpdir();
 
 class ReportBuilder {
   constructor() {
+    /**
+     * @type {!Analytics}
+     * @private
+     */
+    this.analytics_ = new Analytics();
+
     /**
      * @type {!CbtApi}
      * @private
@@ -979,8 +986,12 @@ class ReportBuilder {
     if (count > 0) {
       for (const screenshot of screenshots) {
         const htmlFile = screenshot.actual_html_file || screenshot.expected_html_file;
-        const publicUrl = htmlFile.public_url;
-        console.log(`  - ${publicUrl} > ${screenshot.user_agent.alias}`);
+        const publicUrl = this.analytics_.getUrl({
+          url: htmlFile.public_url,
+          source: 'cli',
+          type: 'inventory',
+        });
+        console.log(`  - ${this.cli_.colorizeUrl(publicUrl)} > ${screenshot.user_agent.alias}`);
       }
     }
     console.log();

@@ -29,6 +29,7 @@ const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const GitRevision = mdcProto.GitRevision;
 const InclusionType = mdcProto.Screenshot.InclusionType;
 
+const Analytics = require('../lib/analytics');
 const BuildCommand = require('./build');
 const Cli = require('../lib/cli');
 const CliColor = require('../lib/logger').colors;
@@ -44,6 +45,7 @@ const {ExitCode} = require('../lib/constants');
 // TODO(acdvorak): Refactor most of this class out into a separate file
 class TestCommand {
   constructor() {
+    this.analytics_ = new Analytics();
     this.cli_ = new Cli();
     this.diffBaseParser_ = new DiffBaseParser();
     this.gitHubApi_ = new GitHubApi();
@@ -278,7 +280,11 @@ class TestCommand {
    * @private
    */
   getPrComment_({masterDiffReportData, snapshotGitRev}) {
-    const masterReportPageUrl = masterDiffReportData.meta.report_html_file.public_url;
+    const masterReportPageUrl = this.analytics_.getUrl({
+      url: masterDiffReportData.meta.report_html_file.public_url,
+      source: 'github',
+      type: 'pr_comment',
+    });
     const masterScreenshots = masterDiffReportData.screenshots;
     const masterGitRev = masterDiffReportData.meta.golden_diff_base.git_revision;
 
@@ -291,8 +297,7 @@ class TestCommand {
 
     if (numChanged === 0) {
       const range = `commit ${snapshotGitRev.commit} vs. \`${masterGitRev.branch}\``;
-      const reportUrl = masterDiffReportData.meta.report_html_file.public_url;
-      return `**All [${numTotal} screenshot tests](${reportUrl}) passed** for ${range}! 💯🎉`;
+      return `**All [${numTotal} screenshot tests](${masterReportPageUrl}) passed** for ${range}! 💯🎉`;
     }
 
     const listMarkdown = [
@@ -306,7 +311,6 @@ class TestCommand {
         'Removed', masterScreenshots.removed_screenshot_list, masterScreenshots.removed_screenshot_page_map
       ),
     ].filter((str) => Boolean(str)).join('\n\n');
-
 
     return `
 🤖 Beep boop!
@@ -342,7 +346,11 @@ ${listMarkdown}
     const listItemMarkdown = Object.entries(screenshotMap).map(([htmlFilePath, screenshotList]) => {
       const browserIconMarkup = this.getAllBrowserIcons_(screenshotList.screenshots);
       const firstScreenshot = screenshotList.screenshots[0];
-      const htmlFileUrl = (firstScreenshot.actual_html_file || firstScreenshot.expected_html_file).public_url;
+      const htmlFileUrl = this.analytics_.getUrl({
+        url: (firstScreenshot.actual_html_file || firstScreenshot.expected_html_file).public_url,
+        source: 'github',
+        type: 'pr_comment',
+      });
 
       return `
 * [\`${htmlFilePath}\`](${htmlFileUrl}) ${browserIconMarkup}
@@ -374,7 +382,11 @@ ${listItemMarkdown}
    */
   getOneBrowserIcon_(screenshot) {
     const imgFile = screenshot.diff_image_file || screenshot.actual_image_file || screenshot.expected_image_file;
-    const linkUrl = imgFile.public_url;
+    const linkUrl = this.analytics_.getUrl({
+      url: imgFile.public_url,
+      source: 'github',
+      type: 'pr_comment',
+    });
 
     const untrimmed = `
 <a href="${linkUrl}"
@@ -474,7 +486,11 @@ ${CliColor.bold.magenta('Skipping screenshot tests.')}
     const snapshotDisplayName = this.getDisplayName_(reportData.meta.snapshot_diff_base);
 
     const changedMsg = `${numChanges} screenshot${numChanges === 1 ? '' : 's'} changed!`;
-    const reportPageUrl = reportData.meta.report_html_file.public_url;
+    const reportPageUrl = this.analytics_.getUrl({
+      url: reportData.meta.report_html_file.public_url,
+      source: 'cli',
+      type: 'test_results',
+    });
 
     const headingPlain = 'Screenshot Test Results';
     const headingColor = CliColor.bold(headingPlain);
