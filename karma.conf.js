@@ -24,8 +24,12 @@
 const path = require('path');
 const webpackConfig = require('./webpack.config')[0];
 
+// https://github.com/babel/babel-preset-env/issues/112#issuecomment-269761545
+require('babel-polyfill');
+require('@cbt/karma-cbt-launcher');
+
 const USING_TRAVISCI = Boolean(process.env.TRAVIS);
-const USING_SL = Boolean(process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY);
+const USING_CBT = Boolean(process.env.MDC_CBT_USERNAME && process.env.MDC_CBT_AUTHKEY);
 
 const LOCAL_LAUNCHERS = {
   /** See https://github.com/travis-ci/travis-ci/issues/8836#issuecomment-348248951 */
@@ -35,119 +39,50 @@ const LOCAL_LAUNCHERS = {
   },
 };
 
-const SAUCE_LAUNCHERS = {
-  /*
-   * Chrome (desktop)
-   */
-
-  'sl-chrome-stable': {
-    base: 'SauceLabs',
-    browserName: 'chrome',
-    version: 'latest',
-    platform: 'macOS 10.12',
-    extendedDebugging: true,
-  },
-  // 'sl-chrome-beta': {
-  //   base: 'SauceLabs',
-  //   browserName: 'chrome',
-  //   version: 'dev',
-  //   platform: 'macOS 10.12',
-  //   extendedDebugging: true,
-  // },
-  // 'sl-chrome-previous': {
-  //   base: 'SauceLabs',
-  //   browserName: 'chrome',
-  //   version: 'latest-1',
-  //   platform: 'macOS 10.12',
-  //   extendedDebugging: true,
-  // },
-
-  /*
-   * Firefox
-   */
-
-  'sl-firefox-stable': {
-    base: 'SauceLabs',
-    browserName: 'firefox',
-    version: 'latest',
+// Config generator: https://app.crossbrowsertesting.com/selenium/run
+const CBT_LAUNCHERS = {
+  'Chrome': {
+    base: 'CrossBrowserTesting',
+    browserName: 'Chrome',
     platform: 'Windows 10',
-    extendedDebugging: true,
   },
-  // 'sl-firefox-previous': {
-  //   base: 'SauceLabs',
-  //   browserName: 'firefox',
-  //   version: 'latest-1',
-  //   platform: 'Windows 10',
-  //   extendedDebugging: true,
-  // },
-
-  /*
-   * IE
-   */
-
-  'sl-ie': {
-    base: 'SauceLabs',
-    browserName: 'internet explorer',
+  'Firefox': {
+    base: 'CrossBrowserTesting',
+    browserName: 'Firefox',
+    platform: 'Windows 10',
+  },
+  'Internet Explorer': {
+    base: 'CrossBrowserTesting',
+    browserName: 'Internet Explorer',
     version: '11',
     platform: 'Windows 10',
   },
-
-  /*
-   * Edge
-   */
-
-  // TODO(sgomes): Re-enable Edge and Safari after Sauce Labs problems are fixed.
-  // 'sl-edge': {
-  //   base: 'SauceLabs',
-  //   browserName: 'microsoftedge',
-  //   version: 'latest',
-  //   platform: 'Windows 10',
-  // },
-
-  /*
-   * Safari (desktop)
-   */
-
-  // 'sl-safari-stable': {
-  //   base: 'SauceLabs',
-  //   browserName: 'safari',
-  //   version: 'latest',
-  //   platform: 'macOS 10.12',
-  // },
-  // 'sl-safari-previous': {
-  //   base: 'SauceLabs',
-  //   browserName: 'safari',
-  //   version: '9.0',
-  //   platform: 'OS X 10.11',
-  // },
-
-  /*
-   * Safari (mobile)
-   */
-
-  'sl-ios-safari-latest': {
-    base: 'SauceLabs',
-    deviceName: 'iPhone Simulator',
+  'MicrosoftEdge': {
+    base: 'CrossBrowserTesting',
+    browserName: 'MicrosoftEdge',
+    platform: 'Windows 10',
+  },
+  'Safari': {
+    base: 'CrossBrowserTesting',
+    browserName: 'Safari',
+    deviceName: 'iPhone X Simulator',
     platformVersion: '11.0',
     platformName: 'iOS',
-    browserName: 'Safari',
+    deviceOrientation: 'landscape',
   },
-  // 'sl-ios-safari-previous': {
-  //   base: 'SauceLabs',
-  //   deviceName: 'iPhone Simulator',
-  //   platformVersion: '9.3',
-  //   platformName: 'iOS',
-  //   browserName: 'Safari',
-  // },
 };
 
-const getLaunchers = () => USING_SL ? SAUCE_LAUNCHERS : LOCAL_LAUNCHERS;
+const getLaunchers = () => USING_CBT ? CBT_LAUNCHERS : LOCAL_LAUNCHERS;
 const getBrowsers = () => USING_TRAVISCI ? Object.keys(getLaunchers()) : ['Chrome'];
 
 module.exports = function(config) {
   config.set({
     basePath: '',
     frameworks: ['mocha'],
+    plugins: [
+      'karma-*',
+      '@cbt/karma-cbt-launcher',
+    ],
     files: [
       'test/unit/index.js',
     ],
@@ -162,7 +97,7 @@ module.exports = function(config) {
     browserDisconnectTimeout: 40000,
     browserNoActivityTimeout: 120000,
     captureTimeout: 240000,
-    concurrency: USING_SL ? 4 : Infinity,
+    concurrency: USING_CBT ? 4 : Infinity,
     customLaunchers: getLaunchers(),
 
     coverageReporter: {
@@ -208,15 +143,15 @@ module.exports = function(config) {
     },
   });
 
-  if (USING_SL) {
-    const sauceLabsConfig = {
-      username: process.env.SAUCE_USERNAME,
-      accessKey: process.env.SAUCE_ACCESS_KEY,
+  if (USING_CBT) {
+    const cbtConfig = {
+      username: process.env.MDC_CBT_USERNAME,
+      authkey: process.env.MDC_CBT_AUTHKEY,
     };
 
     if (USING_TRAVISCI) {
       // See https://github.com/karma-runner/karma-sauce-launcher/issues/73
-      Object.assign(sauceLabsConfig, {
+      Object.assign(cbtConfig, {
         testName: 'Material Components Web Unit Tests - CI',
         tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
         startConnect: false,
@@ -224,7 +159,7 @@ module.exports = function(config) {
     }
 
     config.set({
-      sauceLabs: sauceLabsConfig,
+      cbtConfig,
       // Attempt to de-flake Sauce Labs tests on TravisCI.
       transports: ['polling'],
       browserDisconnectTolerance: 3,
