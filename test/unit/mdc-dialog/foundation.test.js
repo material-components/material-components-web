@@ -54,7 +54,7 @@ test('default adapter returns a complete adapter implementation', () => {
     'registerDocumentKeydownHandler', 'deregisterDocumentKeydownHandler',
     'isScrollable', 'getContentElement', 'getButtonElements',
     'notifyYes', 'notifyNo', 'notifyCancel', 'notifyOpening', 'notifyOpened', 'notifyClosing', 'notifyClosed',
-    'trapFocusOnSurface', 'untrapFocusOnSurface', 'isDialog',
+    'trapFocusOnSurface', 'untrapFocusOnSurface',
   ]);
 });
 
@@ -163,9 +163,7 @@ test('#open adds scroll lock class to the body', () => {
 test('#close removes the scroll lock class from the body', () => {
   const {foundation, mockAdapter} = setupTest();
 
-  td.when(mockAdapter.isDialog(td.matchers.isA(Object))).thenReturn(true);
   foundation.open();
-  td.when(mockAdapter.isDialog(td.matchers.isA(Object))).thenReturn(true);
   foundation.close();
 
   td.verify(mockAdapter.removeBodyClass(cssClasses.SCROLL_LOCK));
@@ -175,7 +173,6 @@ test('#open activates focus trapping on the dialog surface', () => {
   const {foundation, mockAdapter} = setupTest();
   const clock = lolex.install();
 
-  td.when(mockAdapter.isDialog(td.matchers.isA(Object))).thenReturn(true);
   foundation.open();
 
   clock.tick(numbers.DIALOG_ANIMATION_TIME_MS);
@@ -415,6 +412,6 @@ test('on document keydown does nothing when key other than escape is pressed', (
 
 test('should clean up transition handlers after dialog close', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.isDialog(td.matchers.isA(Object))).thenReturn(true);
   foundation.close();
+  // TODO(acdvorak): Write this test
 });

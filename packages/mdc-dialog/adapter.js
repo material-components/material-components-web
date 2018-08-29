@@ -44,12 +44,6 @@ class MDCDialogAdapter {
    * @param {!HTMLElement} el
    * @return {boolean}
    */
-  isDialog(el) {}
-
-  /**
-   * @param {!HTMLElement} el
-   * @return {boolean}
-   */
   isScrollable(el) {}
 
   /**

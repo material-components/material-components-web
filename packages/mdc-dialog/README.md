@@ -271,8 +271,8 @@ do so. We provide instructions on how to add ripples to buttons within the [mdc-
 | `registerTransitionEndHandler: (handler: EventListener) => void` | Registers an event handler to be called when a transitionend event is triggered on the dialog container sub-element element. |
 | `deregisterTransitionEndHandler: (handler: EventListener) => void` | Deregisters an event handler from a transitionend event listener. This will only be called with handlers that have previously been passed to registerTransitionEndHandler calls. |
 | `notifyYes() => {}` | Broadcasts an event denoting that the user has accepted the dialog. |
+| `notifyNo() => {}` | Broadcasts an event denoting that the user has rejected the dialog. |
 | `notifyCancel() => {}` | Broadcasts an event denoting that the user has cancelled the dialog. |
-| `isDialog(el: Element) => boolean` | Returns boolean indicating whether the provided element is the dialog surface element. |
 | `trapFocusOnSurface() => {}` | Sets up the DOM which the dialog is contained in such that focusability is restricted to the elements on the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details). |
 | `untrapFocusOnSurface() => {}` | Removes any affects of focus trapping on the dialog surface from the DOM (see [Handling Focus Trapping](#handling-focus-trapping) below for more details). |
 

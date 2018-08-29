@@ -307,14 +307,3 @@ test('adapter#untrapFocusOnSurface calls deactivate() on a properly configured f
 
   td.verify(fakeFocusTrapInstance.deactivate());
 });
-
-test('adapter#isDialog returns true for the dialog surface element', () => {
-  const {root, component} = setupTest();
-  const dialog = root.querySelector(strings.CONTAINER_SELECTOR);
-  assert.isOk(component.getDefaultFoundation().adapter_.isDialog(dialog));
-});
-
-test('adapter#isDialog returns false for a non-dialog surface element', () => {
-  const {root, component} = setupTest();
-  assert.isNotOk(component.getDefaultFoundation().adapter_.isDialog(root));
-});

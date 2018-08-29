@@ -117,7 +117,6 @@ export class MDCDialog extends MDCComponent {
       notifyClosed: () => this.emit(MDCDialogFoundation.strings.CLOSED_EVENT),
       trapFocusOnSurface: () => this.focusTrap_.activate(),
       untrapFocusOnSurface: () => this.focusTrap_.deactivate(),
-      isDialog: (el) => el === this.containerElement_,
     });
   }
 }
