@@ -5545,6 +5545,7 @@ $root.mdc = (function() {
              * @property {mdc.proto.ITestFile|null} [actual_image_file] Screenshot actual_image_file
              * @property {mdc.proto.ITestFile|null} [diff_image_file] Screenshot diff_image_file
              * @property {mdc.proto.IDiffImageResult|null} [diff_image_result] Screenshot diff_image_result
+             * @property {mdc.proto.ICropResult|null} [crop_result] Screenshot crop_result
              * @property {number|null} [retry_count] Screenshot retry_count
              * @property {mdc.proto.IFlakeConfig|null} [flake_config] Screenshot flake_config
              */
@@ -5661,6 +5662,14 @@ $root.mdc = (function() {
             Screenshot.prototype.diff_image_result = null;
 
             /**
+             * Screenshot crop_result.
+             * @member {mdc.proto.ICropResult|null|undefined} crop_result
+             * @memberof mdc.proto.Screenshot
+             * @instance
+             */
+            Screenshot.prototype.crop_result = null;
+
+            /**
              * Screenshot retry_count.
              * @member {number} retry_count
              * @memberof mdc.proto.Screenshot
@@ -5728,6 +5737,8 @@ $root.mdc = (function() {
                     $root.mdc.proto.FlakeConfig.encode(message.flake_config, writer.uint32(/* id 13, wireType 2 =*/106).fork()).ldelim();
                 if (message.is_url_skipped_by_cli != null && message.hasOwnProperty("is_url_skipped_by_cli"))
                     writer.uint32(/* id 14, wireType 0 =*/112).bool(message.is_url_skipped_by_cli);
+                if (message.crop_result != null && message.hasOwnProperty("crop_result"))
+                    $root.mdc.proto.CropResult.encode(message.crop_result, writer.uint32(/* id 15, wireType 2 =*/122).fork()).ldelim();
                 return writer;
             };
 
@@ -5797,6 +5808,9 @@ $root.mdc = (function() {
                         break;
                     case 11:
                         message.diff_image_result = $root.mdc.proto.DiffImageResult.decode(reader, reader.uint32());
+                        break;
+                    case 15:
+                        message.crop_result = $root.mdc.proto.CropResult.decode(reader, reader.uint32());
                         break;
                     case 12:
                         message.retry_count = reader.uint32();
@@ -5904,6 +5918,11 @@ $root.mdc = (function() {
                     var error = $root.mdc.proto.DiffImageResult.verify(message.diff_image_result);
                     if (error)
                         return "diff_image_result." + error;
+                }
+                if (message.crop_result != null && message.hasOwnProperty("crop_result")) {
+                    var error = $root.mdc.proto.CropResult.verify(message.crop_result);
+                    if (error)
+                        return "crop_result." + error;
                 }
                 if (message.retry_count != null && message.hasOwnProperty("retry_count"))
                     if (!$util.isInteger(message.retry_count))
@@ -6013,6 +6032,11 @@ $root.mdc = (function() {
                         throw TypeError(".mdc.proto.Screenshot.diff_image_result: object expected");
                     message.diff_image_result = $root.mdc.proto.DiffImageResult.fromObject(object.diff_image_result);
                 }
+                if (object.crop_result != null) {
+                    if (typeof object.crop_result !== "object")
+                        throw TypeError(".mdc.proto.Screenshot.crop_result: object expected");
+                    message.crop_result = $root.mdc.proto.CropResult.fromObject(object.crop_result);
+                }
                 if (object.retry_count != null)
                     message.retry_count = object.retry_count >>> 0;
                 if (object.flake_config != null) {
@@ -6051,6 +6075,7 @@ $root.mdc = (function() {
                     object.retry_count = 0;
                     object.flake_config = null;
                     object.is_url_skipped_by_cli = false;
+                    object.crop_result = null;
                 }
                 if (message.is_runnable != null && message.hasOwnProperty("is_runnable"))
                     object.is_runnable = message.is_runnable;
@@ -6080,6 +6105,8 @@ $root.mdc = (function() {
                     object.flake_config = $root.mdc.proto.FlakeConfig.toObject(message.flake_config, options);
                 if (message.is_url_skipped_by_cli != null && message.hasOwnProperty("is_url_skipped_by_cli"))
                     object.is_url_skipped_by_cli = message.is_url_skipped_by_cli;
+                if (message.crop_result != null && message.hasOwnProperty("crop_result"))
+                    object.crop_result = $root.mdc.proto.CropResult.toObject(message.crop_result, options);
                 return object;
             };
 
@@ -6135,6 +6162,260 @@ $root.mdc = (function() {
             })();
 
             return Screenshot;
+        })();
+
+        proto.CropResult = (function() {
+
+            /**
+             * Properties of a CropResult.
+             * @memberof mdc.proto
+             * @interface ICropResult
+             * @property {number|null} [uncropped_width] CropResult uncropped_width
+             * @property {number|null} [uncropped_height] CropResult uncropped_height
+             * @property {number|null} [cropped_width] CropResult cropped_width
+             * @property {number|null} [cropped_height] CropResult cropped_height
+             */
+
+            /**
+             * Constructs a new CropResult.
+             * @memberof mdc.proto
+             * @classdesc Represents a CropResult.
+             * @implements ICropResult
+             * @constructor
+             * @param {mdc.proto.ICropResult=} [properties] Properties to set
+             */
+            function CropResult(properties) {
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
+            }
+
+            /**
+             * CropResult uncropped_width.
+             * @member {number} uncropped_width
+             * @memberof mdc.proto.CropResult
+             * @instance
+             */
+            CropResult.prototype.uncropped_width = 0;
+
+            /**
+             * CropResult uncropped_height.
+             * @member {number} uncropped_height
+             * @memberof mdc.proto.CropResult
+             * @instance
+             */
+            CropResult.prototype.uncropped_height = 0;
+
+            /**
+             * CropResult cropped_width.
+             * @member {number} cropped_width
+             * @memberof mdc.proto.CropResult
+             * @instance
+             */
+            CropResult.prototype.cropped_width = 0;
+
+            /**
+             * CropResult cropped_height.
+             * @member {number} cropped_height
+             * @memberof mdc.proto.CropResult
+             * @instance
+             */
+            CropResult.prototype.cropped_height = 0;
+
+            /**
+             * Creates a new CropResult instance using the specified properties.
+             * @function create
+             * @memberof mdc.proto.CropResult
+             * @static
+             * @param {mdc.proto.ICropResult=} [properties] Properties to set
+             * @returns {mdc.proto.CropResult} CropResult instance
+             */
+            CropResult.create = function create(properties) {
+                return new CropResult(properties);
+            };
+
+            /**
+             * Encodes the specified CropResult message. Does not implicitly {@link mdc.proto.CropResult.verify|verify} messages.
+             * @function encode
+             * @memberof mdc.proto.CropResult
+             * @static
+             * @param {mdc.proto.ICropResult} message CropResult message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            CropResult.encode = function encode(message, writer) {
+                if (!writer)
+                    writer = $Writer.create();
+                if (message.uncropped_width != null && message.hasOwnProperty("uncropped_width"))
+                    writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.uncropped_width);
+                if (message.uncropped_height != null && message.hasOwnProperty("uncropped_height"))
+                    writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.uncropped_height);
+                if (message.cropped_width != null && message.hasOwnProperty("cropped_width"))
+                    writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.cropped_width);
+                if (message.cropped_height != null && message.hasOwnProperty("cropped_height"))
+                    writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.cropped_height);
+                return writer;
+            };
+
+            /**
+             * Encodes the specified CropResult message, length delimited. Does not implicitly {@link mdc.proto.CropResult.verify|verify} messages.
+             * @function encodeDelimited
+             * @memberof mdc.proto.CropResult
+             * @static
+             * @param {mdc.proto.ICropResult} message CropResult message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            CropResult.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes a CropResult message from the specified reader or buffer.
+             * @function decode
+             * @memberof mdc.proto.CropResult
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {mdc.proto.CropResult} CropResult
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            CropResult.decode = function decode(reader, length) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader.create(reader);
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.mdc.proto.CropResult();
+                while (reader.pos < end) {
+                    var tag = reader.uint32();
+                    switch (tag >>> 3) {
+                    case 1:
+                        message.uncropped_width = reader.uint32();
+                        break;
+                    case 2:
+                        message.uncropped_height = reader.uint32();
+                        break;
+                    case 3:
+                        message.cropped_width = reader.uint32();
+                        break;
+                    case 4:
+                        message.cropped_height = reader.uint32();
+                        break;
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                return message;
+            };
+
+            /**
+             * Decodes a CropResult message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
+             * @memberof mdc.proto.CropResult
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @returns {mdc.proto.CropResult} CropResult
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            CropResult.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = new $Reader(reader);
+                return this.decode(reader, reader.uint32());
+            };
+
+            /**
+             * Verifies a CropResult message.
+             * @function verify
+             * @memberof mdc.proto.CropResult
+             * @static
+             * @param {Object.<string,*>} message Plain object to verify
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+             */
+            CropResult.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
+                if (message.uncropped_width != null && message.hasOwnProperty("uncropped_width"))
+                    if (!$util.isInteger(message.uncropped_width))
+                        return "uncropped_width: integer expected";
+                if (message.uncropped_height != null && message.hasOwnProperty("uncropped_height"))
+                    if (!$util.isInteger(message.uncropped_height))
+                        return "uncropped_height: integer expected";
+                if (message.cropped_width != null && message.hasOwnProperty("cropped_width"))
+                    if (!$util.isInteger(message.cropped_width))
+                        return "cropped_width: integer expected";
+                if (message.cropped_height != null && message.hasOwnProperty("cropped_height"))
+                    if (!$util.isInteger(message.cropped_height))
+                        return "cropped_height: integer expected";
+                return null;
+            };
+
+            /**
+             * Creates a CropResult message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof mdc.proto.CropResult
+             * @static
+             * @param {Object.<string,*>} object Plain object
+             * @returns {mdc.proto.CropResult} CropResult
+             */
+            CropResult.fromObject = function fromObject(object) {
+                if (object instanceof $root.mdc.proto.CropResult)
+                    return object;
+                var message = new $root.mdc.proto.CropResult();
+                if (object.uncropped_width != null)
+                    message.uncropped_width = object.uncropped_width >>> 0;
+                if (object.uncropped_height != null)
+                    message.uncropped_height = object.uncropped_height >>> 0;
+                if (object.cropped_width != null)
+                    message.cropped_width = object.cropped_width >>> 0;
+                if (object.cropped_height != null)
+                    message.cropped_height = object.cropped_height >>> 0;
+                return message;
+            };
+
+            /**
+             * Creates a plain object from a CropResult message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof mdc.proto.CropResult
+             * @static
+             * @param {mdc.proto.CropResult} message CropResult
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            CropResult.toObject = function toObject(message, options) {
+                if (!options)
+                    options = {};
+                var object = {};
+                if (options.defaults) {
+                    object.uncropped_width = 0;
+                    object.uncropped_height = 0;
+                    object.cropped_width = 0;
+                    object.cropped_height = 0;
+                }
+                if (message.uncropped_width != null && message.hasOwnProperty("uncropped_width"))
+                    object.uncropped_width = message.uncropped_width;
+                if (message.uncropped_height != null && message.hasOwnProperty("uncropped_height"))
+                    object.uncropped_height = message.uncropped_height;
+                if (message.cropped_width != null && message.hasOwnProperty("cropped_width"))
+                    object.cropped_width = message.cropped_width;
+                if (message.cropped_height != null && message.hasOwnProperty("cropped_height"))
+                    object.cropped_height = message.cropped_height;
+                return object;
+            };
+
+            /**
+             * Converts this CropResult to JSON.
+             * @function toJSON
+             * @memberof mdc.proto.CropResult
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            CropResult.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            return CropResult;
         })();
 
         proto.FlakeConfig = (function() {

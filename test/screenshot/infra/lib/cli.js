@@ -29,6 +29,7 @@ const {ApprovalId} = mdcProto;
 const argparse = require('argparse');
 const checkIsOnline = require('is-online');
 
+const CliColor = require('./logger').colors;
 const Duration = require('./duration');
 const {GOLDEN_JSON_RELATIVE_PATH} = require('./constants');
 
@@ -64,6 +65,21 @@ class Cli {
     this.initTestCommand_();
 
     this.args_ = this.rootParser_.parseArgs();
+  }
+
+  /**
+   * @param {string} url
+   * @return {string}
+   */
+  colorizeUrl(url) {
+    return url.replace(/^([^?]+)(\?.*)?$/, (substring, resourcePlain, queryPlain) => {
+      const resourceColor = CliColor.reset(resourcePlain);
+      if (queryPlain) {
+        const queryColor = CliColor.gray(queryPlain);
+        return `${resourceColor}${queryColor}`;
+      }
+      return resourceColor;
+    });
   }
 
   /**
