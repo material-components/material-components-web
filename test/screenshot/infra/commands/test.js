@@ -291,7 +291,8 @@ class TestCommand {
 
     if (numChanged === 0) {
       const range = `commit ${snapshotGitRev.commit} vs. \`${masterGitRev.branch}\``;
-      return `**All ${numTotal} screenshot tests passed** for ${range}! 💯🎉`;
+      const reportUrl = masterDiffReportData.meta.report_html_file.public_url;
+      return `**All [${numTotal} screenshot tests](${reportUrl}) passed** for ${range}! 💯🎉`;
     }
 
     const listMarkdown = [

@@ -94,6 +94,7 @@ class GoldenFile {
       };
     }
 
+    this.suiteJson_[htmlFilePath].public_url = htmlFileUrl;
     this.suiteJson_[htmlFilePath].screenshots[userAgentAlias] = screenshotImageUrl;
   }
 
