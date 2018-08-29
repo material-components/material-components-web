@@ -41,11 +41,12 @@ $custom-drawer-color: $material-color-orange-900;
 
 .test-drawer-app-content {
   flex: auto;
-  overflow: auto;
   height: 100vh;
+  overflow: auto;
 }
 
 .test-drawer-main-content {
+  display: block; // Needed for IE 11
   height: calc(100% - 64px);
   padding-right: 16px;
   padding-left: 16px;
