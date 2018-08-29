@@ -26,11 +26,19 @@
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const {GoldenScreenshot, GoldenSuite, TestFile} = mdcProto;
 
+const Analytics = require('./analytics');
+
 class GoldenFile {
   /**
    * @param {!mdc.proto.GoldenSuite=} suiteJson
    */
   constructor(suiteJson = GoldenSuite.create()) {
+    /**
+     * @type {!Analytics}
+     * @private
+     */
+    this.analytics_ = new Analytics();
+
     /**
      * @type {!mdc.proto.GoldenSuite}
      * @private
@@ -94,7 +102,10 @@ class GoldenFile {
       };
     }
 
-    this.suiteJson_[htmlFilePath].public_url = htmlFileUrl;
+    this.suiteJson_[htmlFilePath].public_url = this.analytics_.getUrl({
+      url: htmlFileUrl,
+      source: 'golden_json',
+    });
     this.suiteJson_[htmlFilePath].screenshots[userAgentAlias] = screenshotImageUrl;
   }
 
