@@ -43,8 +43,8 @@ export default class MDCDialogFoundation extends MDCFoundation {
     return new MDCDialogAdapter();
   }
 
-  constructor(adapter) {
-    super(Object.assign(MDCDialogFoundation.defaultAdapter, adapter));
+  constructor(adapter = MDCDialogFoundation.defaultAdapter()) {
+    super(adapter);
 
     /**
      * @type {boolean}

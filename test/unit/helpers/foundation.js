@@ -31,9 +31,11 @@ import td from 'testdouble';
 // Every foundation test suite include this verification.
 export function verifyDefaultAdapter(FoundationClass, expectedMethods) {
   const {defaultAdapter} = FoundationClass;
-  const actualMethods = Object.keys(defaultAdapter).filter((k) => typeof defaultAdapter[k] === 'function');
+  const plainObject = toPlainObject(defaultAdapter);
+  const adapterKeys = Object.keys(plainObject);
+  const actualMethods = adapterKeys.filter((key) => typeof defaultAdapter[key] === 'function');
 
-  assert.equal(actualMethods.length, Object.keys(defaultAdapter).length, 'Every adapter key must be a function');
+  assert.equal(actualMethods.length, adapterKeys.length, 'Every adapter key must be a function');
 
   // Test for equality without requiring that the array be in a specific order
   const actualArray = actualMethods.slice().sort();
@@ -42,6 +44,39 @@ export function verifyDefaultAdapter(FoundationClass, expectedMethods) {
 
   // Test default methods
   actualMethods.forEach((m) => assert.doesNotThrow(defaultAdapter[m]));
+}
+
+function toPlainObject(adapterInstance) {
+  function hasMethod(obj, name) {
+    const desc = Object.getOwnPropertyDescriptor(obj, name);
+    return !!desc && typeof desc.value === 'function';
+  }
+
+  function getInstanceMethodNames(obj, stop = Object.prototype) {
+    const array = [];
+    let proto = Object.getPrototypeOf(obj);
+    while (proto && proto !== stop) {
+      Object.getOwnPropertyNames(proto)
+        .forEach((name) => {
+          if (name !== 'constructor') {
+            if (hasMethod(proto, name)) {
+              array.push(name);
+            }
+          }
+        });
+      proto = Object.getPrototypeOf(proto);
+    }
+    return array;
+  }
+
+  const adapterMethods = {};
+  Object.getOwnPropertyNames(adapterInstance).forEach((name) => {
+    adapterMethods[name] = adapterInstance[name];
+  });
+  getInstanceMethodNames(adapterInstance).forEach((name) => {
+    adapterMethods[name] = adapterInstance[name];
+  });
+  return adapterMethods;
 }
 
 /**
