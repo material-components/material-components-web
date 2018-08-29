@@ -33,11 +33,12 @@ const path = require('path');
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const seleniumProto = require('../proto/selenium.pb').selenium.proto;
 
-const {Screenshot, TestFile, UserAgent} = mdcProto;
+const {CropResult, Screenshot, TestFile, UserAgent} = mdcProto;
 const {CaptureState, InclusionType} = Screenshot;
 const {BrowserVendorType, Navigator} = UserAgent;
 const {RawCapabilities} = seleniumProto;
 
+const Analytics = require('./analytics');
 const CbtApi = require('./cbt-api');
 const Cli = require('./cli');
 const CliColor = require('./logger').colors;
@@ -65,7 +66,6 @@ const CliStatuses = {
   STARTING: {name: 'Starting', color: CliColor.green},
   STARTED: {name: 'Started', color: CliColor.bold.green},
   GET: {name: 'Get', color: CliColor.bold.white},
-  CROP: {name: 'Crop', color: CliColor.white},
   PASS: {name: 'Pass', color: CliColor.green},
   ADD: {name: 'Add', color: CliColor.bgGreen.black},
   FAIL: {name: 'Fail', color: CliColor.red},
@@ -78,6 +78,12 @@ const CliStatuses = {
 
 class SeleniumApi {
   constructor() {
+    /**
+     * @type {!Analytics}
+     * @private
+     */
+    this.analytics_ = new Analytics();
+
     /**
      * @type {!CbtApi}
      * @private
@@ -630,7 +636,7 @@ class SeleniumApi {
         this.numPending_--;
         this.numCompleted_++;
 
-        const message = `${screenshot.actual_html_file.public_url} > ${screenshot.user_agent.alias}`;
+        const message = this.createStatusMessage_(screenshot);
 
         if (diffImageResult.has_changed) {
           changedScreenshots.push(screenshot);
@@ -716,7 +722,12 @@ class SeleniumApi {
       if (screenshot.retry_count > 0) {
         // TODO(acdvorak): Print this info when a test fails.
         const {width, height} = diffImageResult.diff_image_dimensions;
-        const whichMsg = `${screenshot.actual_html_file.public_url} > ${userAgent.alias}`;
+        const actualHtmlFileUrl = this.analytics_.getUrl({
+          url: screenshot.actual_html_file.public_url,
+          source: 'cli',
+          type: 'progress',
+        });
+        const whichMsg = `${actualHtmlFileUrl} > ${userAgent.alias}`;
         const countMsg = `attempt ${screenshot.retry_count} of ${maxRetries}`;
         const pixelMsg = `${changedPixelCount.toLocaleString()} pixels differed`;
         const deltaMsg = `${diffImageResult.changed_pixel_percentage}% of ${width}x${height}`;
@@ -774,13 +785,17 @@ class SeleniumApi {
     const userAgent = screenshot.user_agent;
     const flakeConfig = screenshot.flake_config;
 
-    const qsParams = new URLSearchParams({
-      font_face_observer_timeout_ms: flakeConfig.font_face_observer_timeout_ms,
-      fonts_loaded_reflow_delay_ms: flakeConfig.fonts_loaded_reflow_delay_ms,
+    const urlWithQsParams = this.analytics_.getUrl({
+      url,
+      source: 'cbt',
+      type: 'selenium',
+      extraParams: {
+        font_face_observer_timeout_ms: flakeConfig.font_face_observer_timeout_ms,
+        fonts_loaded_reflow_delay_ms: flakeConfig.fonts_loaded_reflow_delay_ms,
+      },
     });
-    const urlWithQsParams = `${url}?${qsParams}`;
 
-    this.logStatus_(CliStatuses.GET, `${urlWithQsParams} > ${userAgent.alias}...`);
+    this.logStatus_(CliStatuses.GET, `${this.cli_.colorizeUrl(urlWithQsParams)} > ${userAgent.alias}...`);
 
     const isOnline = this.cli_.isOnline();
     const fontLoadTimeoutMs = isOnline ? flakeConfig.font_face_observer_timeout_ms : 500;
@@ -802,10 +817,12 @@ class SeleniumApi {
     const {width: uncroppedWidth, height: uncroppedHeight} = uncroppedJimpImage.bitmap;
     const {width: croppedWidth, height: croppedHeight} = croppedJimpImage.bitmap;
 
-    const message =
-      `${urlWithQsParams} > ${userAgent.alias} screenshot from ` +
-      `${uncroppedWidth}x${uncroppedHeight} to ${croppedWidth}x${croppedHeight}`;
-    this.logStatus_(CliStatuses.CROP, message);
+    screenshot.crop_result = CropResult.create({
+      uncropped_width: uncroppedWidth,
+      uncropped_height: uncroppedHeight,
+      cropped_width: croppedWidth,
+      cropped_height: croppedHeight,
+    });
 
     return croppedImageBuffer;
   }
@@ -929,6 +946,35 @@ class SeleniumApi {
   }
 
   /**
+   * @param {!mdc.proto.Screenshot} screenshot
+   * @return {string}
+   * @private
+   */
+  createStatusMessage_(screenshot) {
+    const actualHtmlFileUrlPlain = this.analytics_.getUrl({
+      url: screenshot.actual_html_file.public_url,
+      source: 'cli',
+      type: 'progress',
+    });
+    const actualHtmlFileUrlColor = this.cli_.colorizeUrl(actualHtmlFileUrlPlain);
+
+    let cropColor = '';
+    if (screenshot.crop_result && screenshot.crop_result.uncropped_height > 0) {
+      const {
+        cropped_height: croppedHeight,
+        cropped_width: croppedWidth,
+        uncropped_height: uncroppedHeight,
+        uncropped_width: uncroppedWidth,
+      } = screenshot.crop_result;
+      cropColor = CliColor.gray(
+        ` (cropped from ${uncroppedWidth}x${uncroppedHeight} to ${croppedWidth}x${croppedHeight})`
+      );
+    }
+
+    return `${actualHtmlFileUrlColor} > ${screenshot.user_agent.alias}${cropColor}`;
+  }
+
+  /**
    * @param {!CliStatus} status
    * @param {!mdc.proto.UserAgent} userAgent
    * @private
@@ -938,7 +984,7 @@ class SeleniumApi {
     const browser = CliColor.bold(`${navigator.browser_name} ${navigator.browser_version}`);
     const os = `${navigator.os_name} ${navigator.os_version}`;
     const sessionId = userAgent.selenium_session_id;
-    const publicCbtUrl = CliColor.underline(userAgent.selenium_result_url);
+    const publicCbtUrl = CliColor.yellow.underline(userAgent.selenium_result_url);
 
     this.logStatus_(status, `${browser} on ${os}! - video: ${publicCbtUrl} (Selenium session ID: ${sessionId})`);
   }
