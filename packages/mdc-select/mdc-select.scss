@@ -34,7 +34,13 @@
 
 // postcss-bem-linter: define select
 .mdc-select {
-  @include mdc-select-container-fill-color(transparent);
+  @include mdc-select-container-fill-color($mdc-select-box-fill-color);
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius-bounded;
+  // Select intentionally omits press ripple, so each state needs to be specified individually.
+  @include mdc-states-base-color($mdc-select-ink-color);
+  @include mdc-states-hover-opacity(mdc-states-opacity($mdc-select-ink-color, hover));
+  @include mdc-states-focus-opacity(mdc-states-opacity($mdc-select-ink-color, focus));
   @include mdc-select-dd-arrow-svg-bg_;
   @include mdc-select-ink-color($mdc-select-ink-color);
   @include mdc-select-label-color($mdc-select-label-color);
@@ -46,20 +52,30 @@
 
   // Hover state colors
   @include mdc-select-hover-bottom-line-color($mdc-select-bottom-line-hover-color);
+  @include mdc-floating-label-float-position($mdc-select-label-position-y);
+  @include mdc-select-floating-label_;
 
   display: inline-flex;
   position: relative;
   box-sizing: border-box;
-  height: 52px;
+  height: 56px;
+  border-radius: 4px 4px 0 0;
   background-repeat: no-repeat;
-  background-position: right 8px bottom 12px;
+  background-position: right 10px center;
+  overflow: hidden;
+  will-change: opacity, transform, color;
+
+  // stylelint-disable-next-line plugin/selector-bem-pattern
+  .mdc-floating-label {
+    pointer-events: none;
+  }
 
   @include mdc-rtl {
-    background-position: left 8px bottom 12px;
+    background-position: left 10px center;
   }
 
   &__native-control {
-    @include mdc-rtl-reflexive-property(padding, 0, $mdc-select-arrow-padding);
+    @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
     @include mdc-typography(subtitle1);
 
     &::-ms-expand {
@@ -72,21 +88,17 @@
     }
 
     width: 100%;
+    height: 56px;
     padding-top: 20px;
     padding-bottom: 4px;
     border: none;
     border-bottom: 1px solid;
-    border-radius: 0;
+    border-radius: 4px 4px 0 0;
     outline: none;
     background-color: transparent;
     white-space: nowrap;
     cursor: pointer;
     appearance: none;
-  }
-
-  // stylelint-disable-next-line plugin/selector-bem-pattern
-  .mdc-floating-label {
-    pointer-events: none;
   }
 
   @include mdc-select-focused-line-ripple_ {
@@ -97,60 +109,19 @@
   }
 }
 
-.mdc-select--box {
-  @include mdc-select-container-fill-color($mdc-select-box-fill-color);
-  @include mdc-ripple-surface;
-  @include mdc-ripple-radius-bounded;
-  // Select Box intentionally omits press ripple, so each state needs to be specified individually
-  @include mdc-states-base-color($mdc-select-ink-color);
-  @include mdc-states-hover-opacity(mdc-states-opacity($mdc-select-ink-color, hover));
-  @include mdc-states-focus-opacity(mdc-states-opacity($mdc-select-ink-color, focus));
-
-  height: 56px;
-  border-radius: 4px 4px 0 0;
-  background-position: right 10px center;
-  overflow: hidden;
-
-  @include mdc-rtl {
-    background-position: left 10px center;
-  }
-
-  .mdc-select__native-control {
-    @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
-
-    height: 56px;
-    border-radius: 4px 4px 0 0;
-  }
-
-  // stylelint-disable plugin/selector-bem-pattern
-  .mdc-floating-label {
-    @include mdc-rtl-reflexive-position(left, 16px);
-
-    bottom: 12px;
-    line-height: 1.75rem;
-
-    &--float-above {
-      transform: translateY(-40%) scale(.75, .75);
-    }
-  }
-  // stylelint-enable plugin/selector-bem-pattern
-}
-
 .mdc-select--outlined {
+  @include mdc-select-container-fill-color(transparent);
   @include mdc-select-outline-color($mdc-select-outlined-idle-border);
   @include mdc-select-hover-outline-color($mdc-select-outlined-hover-border);
   @include mdc-select-focused-outline-color(primary);
   @include mdc-floating-label-float-position($mdc-select-outlined-label-position-y);
   @include mdc-floating-label-shake-animation(text-field-outlined);
   @include mdc-select-outline-corner-radius($mdc-select-border-radius);
+  @include mdc-states-base-color(transparent);
+  @include mdc-select-container-fill-color(transparent);
 
-  height: 56px;
   border: none;
-  background-position: right 10px center;
-
-  @include mdc-rtl {
-    background-position: left 10px center;
-  }
+  overflow: visible;
 
   .mdc-select__native-control {
     @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
@@ -161,14 +132,6 @@
     border: none;
     background-color: transparent;
     z-index: 1;
-  }
-
-  // stylelint-disable-next-line plugin/selector-bem-pattern
-  .mdc-floating-label {
-    @include mdc-rtl-reflexive-position(left, 16px);
-
-    position: absolute;
-    bottom: 20px;
   }
 }
 

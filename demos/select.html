@@ -139,54 +139,6 @@
       </section>
 
       <section class="example">
-        <h2 class="mdc-typography--headline6">Select box</h2>
-        <section id="box-demo-wrapper">
-          <div id="box-js-select" class="mdc-select mdc-select--box">
-            <select class="mdc-select__native-control" id="select-box">
-              <option value="" disabled selected></option>
-              <option value="fruit-roll-ups">
-                Fruit Roll Ups
-              </option>
-              <option value="cotton-candy">
-                Candy (cotton)&#x200E;
-              </option>
-              <option value="vegetables" disabled>
-                Vegetables
-              </option>
-              <option value="noodles">
-                Noodles
-              </option>
-            </select>
-            <label class="mdc-floating-label" for="select-box">Food Group</label>
-            <div class="mdc-line-ripple"></div>
-          </div>
-        </section>
-        <p>Currently selected: <span id="box-currently-selected">(none)</span></p>
-        <div>
-          <input type="checkbox" id="box-rtl">
-          <label for="box-rtl">RTL</label>
-        </div>
-        <div>
-          <input type="checkbox" id="box-alternate-colors">
-          <label for="box-alternate-colors">Alternate Colors</label>
-        </div>
-        <div>
-          <input type="checkbox" id="box-disabled">
-          <label for="box-disabled">Disabled</label>
-        </div>
-        <div class="button-container">
-          <button class="mdc-button mdc-button--raised" id="box-set-selected-index-zero-button">
-            Set Selected Index (0)
-          </button>
-        </div>
-        <div class="button-container">
-          <button class="mdc-button mdc-button--raised" id="box-set-value-fruit-roll-up-button">
-            Set Value to Fruit Roll Ups
-          </button>
-        </div>
-      </section>
-
-      <section class="example">
         <h2 class="mdc-typography--headline6">Outlined Select</h2>
         <section>
           <div id="outline-js-select" class="mdc-select mdc-select--outlined">
@@ -331,47 +283,6 @@
         });
         setValueMeatButton.addEventListener('click', function() {
           select.value = 'meat';
-          updateSelectedTextContent();
-        });
-      });
-
-      demoReady(function() {
-        var root = document.getElementById('box-js-select');
-        var currentlySelected = document.getElementById('box-currently-selected');
-        var select = new mdc.select.MDCSelect(root);
-        var demoWrapper = document.getElementById('box-demo-wrapper');
-        var rtlCb = document.getElementById('box-rtl');
-        var alternateColorsCb = document.getElementById('box-alternate-colors');
-        var disabledCb = document.getElementById('box-disabled');
-        var setSelectedButton = document.getElementById('box-set-selected-index-zero-button');
-        var setValueFruitRollUpsButton = document.getElementById('box-set-value-fruit-roll-up-button');
-        function updateSelectedTextContent() {
-          var value = select.value;
-          var index = select.selectedIndex;
-          currentlySelected.textContent = value ? value + ' at index ' + index : '(none)';
-        }
-        root.addEventListener('change', function() {
-          updateSelectedTextContent();
-        });
-        rtlCb.addEventListener('change', function() {
-          if (rtlCb.checked) {
-            demoWrapper.setAttribute('dir', 'rtl');
-          } else {
-            demoWrapper.removeAttribute('dir');
-          }
-        });
-        alternateColorsCb.addEventListener('change', function() {
-          root.classList[alternateColorsCb.checked ? 'add' : 'remove']('demo-select-custom-colors');
-        });
-        disabledCb.addEventListener('change', function() {
-          select.disabled = disabledCb.checked;
-        });
-        setSelectedButton.addEventListener('click', function() {
-          select.selectedIndex = 0;
-          updateSelectedTextContent();
-        });
-        setValueFruitRollUpsButton.addEventListener('click', function() {
-          select.value = 'fruit-roll-ups';
           updateSelectedTextContent();
         });
       });
