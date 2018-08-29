@@ -117,6 +117,12 @@ a `mdc-dialog__body--scrollable` modifier to allow scrolling in the dialog.
 Note that unlike the css classnames, the specific ID names used do not have to be _exactly_ the same as listed above.
 They only need to match the values set for their corresponding aria attributes.
 
+### Styles
+
+```scss
+@import "@material/dialog/mdc-dialog";
+```
+
 ### Dialog Action Color ###
 
 Dialog actions use system colors by default, but you can use a contrasting color, such as the palette’s secondary color, to distinguish dialog actions from dialog content. To emphasize an action from other contents, add `mdc-dialog__action` to `mdc-button` to apply secondary color.

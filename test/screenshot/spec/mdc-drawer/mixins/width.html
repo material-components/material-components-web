@@ -32,8 +32,9 @@
     <link rel="stylesheet" href="../../../out/spec/mdc-drawer/fixture.css">
   </head>
 
-  <body class="test-container mdc-typography test-drawer-container">
-    <aside class="mdc-drawer mdc-drawer--dismissible mdc-drawer--open custom-drawer--width">
+  <body class="test-container">
+    <div class="test-viewport test-viewport--drawer">
+      <aside class="mdc-drawer mdc-drawer--dismissible mdc-drawer--open custom-drawer--width">
       <header class="mdc-drawer__header">
         <div class="mdc-drawer__title">Title here</div>
         <div class="mdc-drawer__subtitle">Subtext</div>
@@ -98,7 +99,7 @@
         </div>
       </header>
 
-      <div class="mdc-top-app-bar--fixed-adjust test-main-content">
+      <div class="mdc-top-app-bar--fixed-adjust test-drawer-main-content">
         <p class="test-drawer-paragraph">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br>
           sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut<br>
@@ -136,7 +137,8 @@
           anim id est laborum.
         </p>
       </div>
-    </main>
+    </div>
+  </div>
 
     <!-- Automatically provides/replaces `Promise` if missing or broken. -->
     <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.js"></script>
