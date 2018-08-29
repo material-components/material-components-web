@@ -48,7 +48,7 @@
           "desktop_windows_edge@latest"
         ],
         "url_regex_patterns": [
-          "mdc-dialog/.*overflow",
+          "mdc-dialog/.*overflow"
         ],
         "custom_config": {
           "max_retries": 6
