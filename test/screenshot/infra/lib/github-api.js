@@ -25,11 +25,13 @@ const VError = require('verror');
 const debounce = require('debounce');
 const octokit = require('@octokit/rest');
 
+const Analytics = require('./analytics');
 const GitRepo = require('./git-repo');
 const getStackTrace = require('./stacktrace')('GitHubApi');
 
 class GitHubApi {
   constructor() {
+    this.analytics_ = new Analytics();
     this.gitRepo_ = new GitRepo();
     this.octokit_ = octokit();
     this.isTravis_ = process.env.TRAVIS === 'true';
@@ -146,7 +148,7 @@ class GitHubApi {
         description = `${numChanged.toLocaleString()} screenshots differ from PR's golden.json`;
       }
 
-      targetUrl = meta.report_html_file.public_url;
+      targetUrl = reportFileUrl;
     } else {
       const runnableScreenshots = screenshots.runnable_screenshot_list;
       const numTotal = runnableScreenshots.length;
@@ -196,7 +198,7 @@ class GitHubApi {
         repo: 'material-components-web',
         sha,
         state,
-        target_url: targetUrl,
+        target_url: this.analytics_.getUrl({url: targetUrl, source: 'github', type: 'pr_commit_status'}),
         description,
         context: 'screenshot-test/butter-bot',
       });
