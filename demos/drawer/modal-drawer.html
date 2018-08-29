@@ -215,7 +215,12 @@
         var mainEl = document.querySelector('.demo-main');
         listEl.addEventListener('click', function(event) {
           drawer.open = false;
-          selectedDestinationEl.textContent = event.target.lastChild.textContent;
+          let listItemTarget = event.target;
+          while(!listItemTarget.classList.contains('mdc-list-item')) {
+            if (listItemTarget.parentElement === null) return;
+            listItemTarget = listItemTarget.parentElement;
+          }
+          selectedDestinationEl.textContent = listItemTarget.lastElementChild.textContent;
         });
         document.body.addEventListener('MDCDrawer:closed', function() {
           mainEl.querySelector('input').focus();
