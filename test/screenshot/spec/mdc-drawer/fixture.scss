@@ -55,14 +55,18 @@ body {
 
 .test-drawer-app-content {
   flex: auto;
-  overflow: auto;
 }
 
 .test-main-content {
-  overflow: auto;
   height: 100%;
   padding-left: 16px;
   padding-right: 16px;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+.test-drawer-top-app-bar {
+  position: absolute;
 }
 
 .custom-drawer--fill-color {
