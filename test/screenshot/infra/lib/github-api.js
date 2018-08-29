@@ -151,7 +151,7 @@ class GitHubApi {
       targetUrl = this.analytics_.getUrl({
         url: reportFileUrl,
         source: 'github',
-        type: 'status',
+        type: 'pr_status',
       });
     } else {
       const runnableScreenshots = screenshots.runnable_screenshot_list;
