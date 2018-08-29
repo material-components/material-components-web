@@ -23,7 +23,7 @@ function maybe_fetch_git_branches() {
   maybe_add_git_branch 'master'
   maybe_add_git_branch "$TRAVIS_BRANCH"
   maybe_add_git_branch "$TRAVIS_PULL_REQUEST_BRANCH"
-  git fetch --tags
+  git fetch --tags 2>&1 > /dev/null
 }
 
 function maybe_extract_api_credentials() {
