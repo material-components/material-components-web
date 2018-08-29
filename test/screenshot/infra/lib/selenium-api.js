@@ -636,26 +636,7 @@ class SeleniumApi {
         this.numPending_--;
         this.numCompleted_++;
 
-        const actualHtmlFileUrlPlain = this.analytics_.getUrl({
-          url: screenshot.actual_html_file.public_url,
-          source: 'cli',
-          type: 'test_progress',
-        });
-        const actualHtmlFileUrlColor = this.cli_.colorizeUrl(actualHtmlFileUrlPlain);
-        let cropColor = '';
-        if (screenshot.crop_result && screenshot.crop_result.uncropped_height > 0) {
-          const {
-            cropped_height: croppedHeight,
-            cropped_width: croppedWidth,
-            uncropped_height: uncroppedHeight,
-            uncropped_width: uncroppedWidth,
-          } = screenshot.crop_result;
-          cropColor = CliColor.dim(
-            ` (cropped from ${uncroppedWidth}x${uncroppedHeight} to ${croppedWidth}x${croppedHeight})`
-          );
-        }
-        const message = `${actualHtmlFileUrlColor} > ${screenshot.user_agent.alias}${cropColor}`;
-        // pixel cropping!
+        const message = this.createStatusMessage_(screenshot);
 
         if (diffImageResult.has_changed) {
           changedScreenshots.push(screenshot);
@@ -962,6 +943,35 @@ class SeleniumApi {
    */
   async sleep_(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  /**
+   * @param {!mdc.proto.Screenshot} screenshot
+   * @return {string}
+   * @private
+   */
+  createStatusMessage_(screenshot) {
+    const actualHtmlFileUrlPlain = this.analytics_.getUrl({
+      url: screenshot.actual_html_file.public_url,
+      source: 'cli',
+      type: 'test_progress',
+    });
+    const actualHtmlFileUrlColor = this.cli_.colorizeUrl(actualHtmlFileUrlPlain);
+
+    let cropColor = '';
+    if (screenshot.crop_result && screenshot.crop_result.uncropped_height > 0) {
+      const {
+        cropped_height: croppedHeight,
+        cropped_width: croppedWidth,
+        uncropped_height: uncroppedHeight,
+        uncropped_width: uncroppedWidth,
+      } = screenshot.crop_result;
+      cropColor = CliColor.dim(
+        ` (cropped from ${uncroppedWidth}x${uncroppedHeight} to ${croppedWidth}x${croppedHeight})`
+      );
+    }
+
+    return `${actualHtmlFileUrlColor} > ${screenshot.user_agent.alias}${cropColor}`;
   }
 
   /**
