@@ -51,10 +51,20 @@
           </header>
           <section class="mdc-dialog__content" id="test-dialog__body--simple">
 
-            <ul class="mdc-list" id="leading-checkbox-list-2" aria-orientation="vertical">
-              <li class="mdc-list-item" tabindex="0"><i class="material-icons mdc-list-item__graphic">network_wifi</i> Wi-Fi</li>
-              <li class="mdc-list-item" tabindex="0"><i class="material-icons mdc-list-item__graphic">bluetooth</i> Bluetooth</li>
-              <li class="mdc-list-item" tabindex="0"><i class="material-icons mdc-list-item__graphic">data_usage</i> Data usage</li>
+            <!--
+              Inline `style="list-style-type: none"` needed to prevent rendering bug in Edge and IE 11.
+              See https://stackoverflow.com/a/23717689/467582
+            -->
+            <ul class="mdc-list" aria-orientation="vertical" style="list-style-type: none;">
+              <li class="mdc-list-item" tabindex="0">
+                <i class="material-icons mdc-list-item__graphic">network_wifi</i> Wi-Fi
+              </li>
+              <li class="mdc-list-item" tabindex="0">
+                <i class="material-icons mdc-list-item__graphic">bluetooth</i> Bluetooth
+              </li>
+              <li class="mdc-list-item" tabindex="0">
+                <i class="material-icons mdc-list-item__graphic">data_usage</i> Data usage
+              </li>
             </ul>
 
           </section>
