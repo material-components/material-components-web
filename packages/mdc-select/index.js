@@ -290,9 +290,7 @@ class MDCSelect extends MDCComponent {
     const targetClientRect = evt.target.getBoundingClientRect();
     const xCoordinate = evt.clientX;
     const normalizedX = xCoordinate - targetClientRect.left;
-    if (this.lineRipple_) {
-      this.lineRipple_.setRippleCenter(normalizedX);
-    }
+    this.lineRipple_.setRippleCenter(normalizedX);
   }
 }
 
