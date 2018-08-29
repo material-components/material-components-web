@@ -125,7 +125,6 @@
 
 @mixin mdc-drawer-width($width) {
   width: $width;
-  max-width: $width;
 
   &.mdc-drawer--open + .mdc-drawer-app-content {
     @include mdc-rtl-reflexive-box(margin, left, $width);
