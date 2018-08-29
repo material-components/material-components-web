@@ -15,7 +15,7 @@ function log_error() {
 function maybe_add_git_branch() {
   if [[ -n "$1" ]]; then
     # https://github.com/marionebl/commitlint/issues/6#issuecomment-231186598
-    git remote set-branches --add origin "$1"
+    git remote set-branches --add origin "$1" 2>&1 > /dev/null
   fi
 }
 
@@ -23,7 +23,7 @@ function maybe_fetch_git_branches() {
   maybe_add_git_branch 'master'
   maybe_add_git_branch "$TRAVIS_BRANCH"
   maybe_add_git_branch "$TRAVIS_PULL_REQUEST_BRANCH"
-  git fetch --tags 2>&1 > /dev/null
+  git fetch --tags
 }
 
 function maybe_extract_api_credentials() {
