@@ -41,7 +41,5 @@ test('#matches returns false when the selector does not match the element', () =
 test('#matches supports vendor prefixes', () => {
   assert.isTrue(matches({matches: () => true}, ''));
   assert.isTrue(matches({webkitMatchesSelector: () => true}, ''));
-  assert.isTrue(matches({mozMatchesSelector: () => true}, ''));
   assert.isTrue(matches({msMatchesSelector: () => true}, ''));
-  assert.isTrue(matches({oMatchesSelector: () => true}, ''));
 });

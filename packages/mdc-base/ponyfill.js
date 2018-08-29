@@ -34,9 +34,7 @@
 function matches(elem, selector) {
   const nativeMatches = elem.matches
     || elem.webkitMatchesSelector
-    || elem.mozMatchesSelector
-    || elem.msMatchesSelector
-    || elem.oMatchesSelector;
+    || elem.msMatchesSelector;
   return nativeMatches.call(elem, selector);
 }
 
