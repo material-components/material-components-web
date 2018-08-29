@@ -71,7 +71,7 @@ function getUnequalArrayMessage(actualArray, expectedArray) {
    */
   const getAddedStr = (actualSet, expectedSet) => {
     const addedArray = [];
-    [...actualSet].forEach((val) => {
+    actualSet.forEach((val) => {
       if (!expectedSet.has(val)) {
         addedArray.push(val);
       }
@@ -85,7 +85,7 @@ function getUnequalArrayMessage(actualArray, expectedArray) {
    */
   const getRemovedStr = (actualSet, expectedSet) => {
     const removedArray = [];
-    [...expectedSet].forEach((val) => {
+    expectedSet.forEach((val) => {
       if (!actualSet.has(val)) {
         removedArray.push(val);
       }
