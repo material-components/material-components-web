@@ -22,7 +22,6 @@
  */
 
 import createFocusTrap from 'focus-trap';
-import {matches} from '@material/base/ponyfill';
 
 /**
  * @param {!HTMLElement} surfaceEl
@@ -32,71 +31,7 @@ import {matches} from '@material/base/ponyfill';
  */
 export function createFocusTrapInstance(surfaceEl, initialFocusEl = null, focusTrapFactory = createFocusTrap) {
   return focusTrapFactory(surfaceEl, {
-    initialFocus: initialFocusEl || getFirstFocusableElement(surfaceEl),
+    initialFocus: initialFocusEl,
     clickOutsideDeactivates: true,
   });
 }
-
-/**
- * TODO(acdvorak): Add unit test for this?
- * See https://allyjs.io/data-tables/focusable.html
- * @param {!HTMLElement} surfaceEl
- * @return {!HTMLElement|undefined}
- */
-function getFirstFocusableElement(surfaceEl) {
-  const includeSelectors = [
-    'a',
-    'button',
-    'input',
-    'select',
-    'summary',
-    'textarea',
-    'audio[controls]',
-    'video[controls]',
-    '[contenteditable]',
-    '[tabIndex]',
-  ];
-
-  const excludeSelectors = [
-    'input[type="radio"]',
-    'input[type="checkbox"]',
-    'input[type="hidden"]',
-    '[disabled]',
-    '[tabIndex="-1"]',
-  ];
-
-  const isExcluded = (el) => {
-    const style = getComputedStyle(el);
-    if (style.display === 'none' || style.visibility === 'hidden' || parseFloat(style.opacity) < 0.01) {
-      return true;
-    }
-
-    const rect = el.getBoundingClientRect();
-    if (!rect.width || !rect.height) {
-      return true;
-    }
-
-    if (excludeSelectors.some((excludeSelector) => matches(el, excludeSelector))) {
-      return true;
-    }
-
-    return false;
-  };
-
-  /** @type {!Array<!HTMLElement>} */
-  const includedEls = [].slice.call(surfaceEl.querySelectorAll(includeSelectors.join(', ')));
-
-  const focusableEls = includedEls.filter((el) => {
-    while (el) {
-      if (isExcluded(el)) {
-        return false;
-      }
-      el = el.parentElement;
-    }
-    return true;
-  });
-
-  const autoFocusEls = focusableEls.filter((el) => el.autofocus);
-  return autoFocusEls[0] || focusableEls[0];
-}
-

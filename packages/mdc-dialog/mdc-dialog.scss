@@ -132,6 +132,13 @@
   padding: 10px 24px 21px;
   overflow: auto;
 
+  .mdc-dialog--fix-ie-overflow & {
+    // Fix flexbox overflow bug in IE 11.
+    // Causes a split second of jank in IE, but it's the least-crappy workaround I could find.
+    // See https://github.com/philipwalton/flexbugs/issues/216
+    flex-basis: auto;
+  }
+
   .mdc-dialog--scrollable & {
     // Must be 'scroll', not 'auto'.
     // https://css-tricks.com/snippets/css/momentum-scrolling-on-ios-overflow-elements/

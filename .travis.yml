@@ -27,11 +27,11 @@ install:
 matrix:
   include:
 
-  - node_js: 8
-    env:
-      - TEST_SUITE=lint
-    script:
-      - if has_testable_files; then npm run lint; else log_untestable_files; fi
+#  - node_js: 8
+#    env:
+#      - TEST_SUITE=lint
+#    script:
+#      - if has_testable_files; then npm run lint; else log_untestable_files; fi
 
   - node_js: 8
     env:
@@ -43,31 +43,31 @@ matrix:
     after_success:
       - codecov
 
-  - node_js: 8
-    env:
-      - TEST_SUITE=closure
-      - CLOSURE=1
-    script:
-      - if has_testable_files; then npm run test:closure; else log_untestable_files; fi
-
-  - node_js: 8
-    env:
-      - TEST_SUITE=site-generator
-    script:
-      - if has_testable_files; then npm run test:site; else log_untestable_files; fi
-
-  - node_js: 8
-    env:
-      - TEST_SUITE=screenshot
-    git:
-      depth: 200
-    before_install: # Override global settings
-      # Source the scripts to export their env vars. See https://superuser.com/a/176788/62792
-      - source scripts/travis-env-vars.sh
-      - source test/screenshot/infra/commands/travis.sh
-    install: # Override global settings
-      - npm install
-      # Noisy output, but useful for debugging npm package dependency version issues:
-      #- npm ls
-    script:
-      - npm run screenshot:test
+#  - node_js: 8
+#    env:
+#      - TEST_SUITE=closure
+#      - CLOSURE=1
+#    script:
+#      - if has_testable_files; then npm run test:closure; else log_untestable_files; fi
+#
+#  - node_js: 8
+#    env:
+#      - TEST_SUITE=site-generator
+#    script:
+#      - if has_testable_files; then npm run test:site; else log_untestable_files; fi
+#
+#  - node_js: 8
+#    env:
+#      - TEST_SUITE=screenshot
+#    git:
+#      depth: 200
+#    before_install: # Override global settings
+#      # Source the scripts to export their env vars. See https://superuser.com/a/176788/62792
+#      - source scripts/travis-env-vars.sh
+#      - source test/screenshot/infra/commands/travis.sh
+#    install: # Override global settings
+#      - npm install
+#      # Noisy output, but useful for debugging npm package dependency version issues:
+#      #- npm ls
+#    script:
+#      - npm run screenshot:test

@@ -27,6 +27,7 @@ const cssClasses = {
   ANIMATING: 'mdc-dialog--animating',
   STACKED: 'mdc-dialog--stacked',
   SCROLLABLE: 'mdc-dialog--scrollable',
+  FIX_IE_OVERFLOW: 'mdc-dialog--fix-ie-overflow',
   SCRIM: 'mdc-dialog__scrim',
   CONTENT: 'mdc-dialog__content',
   SCROLL_LOCK: 'mdc-dialog-scroll-lock',

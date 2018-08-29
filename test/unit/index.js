@@ -23,5 +23,5 @@
 
 /** @fileoverview Bootstraps the test bundle for karma-webpack. */
 
-const testsContext = require.context('.', true, /\.test\.js$/);
+const testsContext = require.context(/* directory */ '.', /* useSubdirectories */ true, /mdc-(base|dialog).*\.test\.js$/);
 testsContext.keys().forEach(testsContext);

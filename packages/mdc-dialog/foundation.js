@@ -23,7 +23,6 @@
 
 import {MDCFoundation} from '@material/base/index';
 import {cssClasses, strings, numbers} from './constants';
-import {MDCSupport} from '@material/base/support';
 
 export default class MDCDialogFoundation extends MDCFoundation {
   static get cssClasses() {
@@ -52,6 +51,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
       deregisterSurfaceInteractionHandler: (/* evt: string, handler: !EventListener */) => {},
       registerDocumentKeydownHandler: (/* handler: !EventListener */) => {},
       deregisterDocumentKeydownHandler: (/* handler: !EventListener */) => {},
+      isScrollable: (/* element: !HTMLElement */) => false,
       getContentElement: () => document.createElement('div'),
       getButtonElements: () => [],
       notifyYes: () => {},
@@ -69,12 +69,6 @@ export default class MDCDialogFoundation extends MDCFoundation {
 
   constructor(adapter) {
     super(Object.assign(MDCDialogFoundation.defaultAdapter, adapter));
-
-    /**
-     * @type {!MDCSupport}
-     * @private
-     */
-    this.support_;
 
     /**
      * @type {boolean}
@@ -101,10 +95,6 @@ export default class MDCDialogFoundation extends MDCFoundation {
 
     this.timerId_ = 0;
   };
-
-  init({supportFactory = () => new MDCSupport()} = {}) {
-    this.support_ = supportFactory();
-  }
 
   destroy() {
     // Ensure that dialog is cleaned up when destroyed
@@ -208,32 +198,27 @@ export default class MDCDialogFoundation extends MDCFoundation {
 
   /** @private */
   detectScrollableContent_() {
-    this.detectScrollableContentImpl_();
-
-    if (this.support_.hasFlexItemMaxHeightBug) {
-      // Necessary to force IE 11 to calculate overflow correctly.
+    // CAUTION: Deep voodoo magic below. Modify at your own risk.
+    // The *exact* sequence of rAF and addClass/removeClass calls is necessary to fix a flexbox bug in IE 11.
+    // See https://github.com/philipwalton/flexbugs/issues/216
+    requestAnimationFrame(() => {
+      this.adapter_.addClass(cssClasses.FIX_IE_OVERFLOW);
       requestAnimationFrame(() => {
-        this.fixContentOverflow_();
         this.detectScrollableContentImpl_();
+        requestAnimationFrame(() => {
+          this.adapter_.removeClass(cssClasses.FIX_IE_OVERFLOW);
+        });
       });
-    }
+    });
   }
 
   /** @private */
   detectScrollableContentImpl_() {
     const contentEl = this.adapter_.getContentElement();
-    if (contentEl && this.support_.isScrollable(contentEl)) {
+    if (contentEl && this.adapter_.isScrollable(contentEl)) {
       this.adapter_.addClass(cssClasses.SCROLLABLE);
     } else {
       this.adapter_.removeClass(cssClasses.SCROLLABLE);
-    }
-  }
-
-  /** @private */
-  fixContentOverflow_() {
-    const contentEl = this.adapter_.getContentElement();
-    if (contentEl && this.support_.hasFlexItemMaxHeightBug) {
-      this.support_.fixFlexItemMaxHeightBug(contentEl);
     }
   }
 

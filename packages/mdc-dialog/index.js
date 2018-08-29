@@ -105,6 +105,7 @@ export class MDCDialog extends MDCComponent {
       deregisterSurfaceInteractionHandler: (evt, handler) => this.containerElement_.removeEventListener(evt, handler),
       registerDocumentKeydownHandler: (handler) => document.addEventListener('keydown', handler),
       deregisterDocumentKeydownHandler: (handler) => document.removeEventListener('keydown', handler),
+      isScrollable: (element) => element.scrollHeight > element.offsetHeight,
       getContentElement: () => this.contentElement_,
       getButtonElements: () => this.buttonElements_,
       notifyYes: () => this.emit(MDCDialogFoundation.strings.YES_EVENT),

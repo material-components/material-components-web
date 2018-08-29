@@ -52,7 +52,7 @@ test('default adapter returns a complete adapter implementation', () => {
     'registerInteractionHandler', 'deregisterInteractionHandler',
     'registerSurfaceInteractionHandler', 'deregisterSurfaceInteractionHandler',
     'registerDocumentKeydownHandler', 'deregisterDocumentKeydownHandler',
-    'getContentElement', 'getButtonElements',
+    'isScrollable', 'getContentElement', 'getButtonElements',
     'notifyYes', 'notifyNo', 'notifyCancel', 'notifyOpening', 'notifyOpened', 'notifyClosing', 'notifyClosed',
     'trapFocusOnSurface', 'untrapFocusOnSurface', 'isDialog',
   ]);
