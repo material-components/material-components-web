@@ -207,13 +207,7 @@
         var selectedDestinationEl = document.querySelector('.demo-selected-destination');
         var mainEl = document.querySelector('.demo-main');
         listEl.addEventListener('click', function(event) {
-          let listItemTarget = event.target;
-          while(!listItemTarget.classList.contains('mdc-list-item')) {
-            if (listItemTarget.parentElement === null) return;
-            listItemTarget = listItemTarget.parentElement;
-          }
-
-          selectedDestinationEl.textContent = listItemTarget.lastElementChild.textContent;
+          selectedDestinationEl.textContent = event.target.lastElementChild.textContent;
           mainEl.querySelector('input').focus();
         });
       });
