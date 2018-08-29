@@ -71,11 +71,11 @@ function getUnequalArrayMessage(actualArray, expectedArray) {
    */
   const getAddedStr = (actualSet, expectedSet) => {
     const addedArray = [];
-    for (const val of actualSet) {
+    actualSet.keys().forEach((val) => {
       if (!expectedSet.has(val)) {
         addedArray.push(val);
       }
-    }
+    });
     return format(addedArray, 'unexpected method');
   };
 
@@ -85,11 +85,11 @@ function getUnequalArrayMessage(actualArray, expectedArray) {
    */
   const getRemovedStr = (actualSet, expectedSet) => {
     const removedArray = [];
-    for (const val of expectedSet) {
+    expectedSet.keys().forEach((val) => {
       if (!actualSet.has(val)) {
         removedArray.push(val);
       }
-    }
+    });
     return format(removedArray, 'missing method');
   };
 
