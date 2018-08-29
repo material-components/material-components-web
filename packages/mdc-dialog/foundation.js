@@ -22,6 +22,7 @@
  */
 
 import {MDCFoundation} from '@material/base/index';
+import MDCDialogAdapter from './adapter';
 import {cssClasses, strings, numbers} from './constants';
 
 export default class MDCDialogFoundation extends MDCFoundation {
@@ -37,34 +38,9 @@ export default class MDCDialogFoundation extends MDCFoundation {
     return numbers;
   }
 
+  /** @return {!MDCDialogAdapter} */
   static get defaultAdapter() {
-    return ({
-      addClass: (/* className: string */) => {},
-      removeClass: (/* className: string */) => {},
-      addBodyClass: (/* className: string */) => {},
-      removeBodyClass: (/* className: string */) => {},
-      eventTargetHasClass: (/* target: !EventTarget, className: string */) => /* boolean */ false,
-      eventTargetMatchesSelector: (/* target: !EventTarget, selector: string */) => /* boolean */ false,
-      registerInteractionHandler: (/* evt: string, handler: !EventListener */) => {},
-      deregisterInteractionHandler: (/* evt: string, handler: !EventListener */) => {},
-      registerSurfaceInteractionHandler: (/* evt: string, handler: !EventListener */) => {},
-      deregisterSurfaceInteractionHandler: (/* evt: string, handler: !EventListener */) => {},
-      registerDocumentKeydownHandler: (/* handler: !EventListener */) => {},
-      deregisterDocumentKeydownHandler: (/* handler: !EventListener */) => {},
-      isScrollable: (/* element: !HTMLElement */) => false,
-      getContentElement: () => document.createElement('div'),
-      getButtonElements: () => [],
-      notifyYes: () => {},
-      notifyNo: () => {},
-      notifyCancel: () => {},
-      notifyOpening: () => {},
-      notifyOpened: () => {},
-      notifyClosing: () => {},
-      notifyClosed: () => {},
-      trapFocusOnSurface: () => {},
-      untrapFocusOnSurface: () => {},
-      isDialog: (/* el: !Element */) => /* boolean */ false,
-    });
+    return new MDCDialogAdapter();
   }
 
   constructor(adapter) {
