@@ -31,13 +31,89 @@ import td from 'testdouble';
 // Every foundation test suite include this verification.
 export function verifyDefaultAdapter(FoundationClass, expectedMethods) {
   const {defaultAdapter} = FoundationClass;
-  const methods = Object.keys(defaultAdapter).filter((k) => typeof defaultAdapter[k] === 'function');
+  const actualMethods = Object.keys(defaultAdapter).filter((k) => typeof defaultAdapter[k] === 'function');
 
-  assert.equal(methods.length, Object.keys(defaultAdapter).length, 'Every adapter key must be a function');
+  assert.equal(actualMethods.length, Object.keys(defaultAdapter).length, 'Every adapter key must be a function');
+
   // Test for equality without requiring that the array be in a specific order
-  assert.deepEqual(methods.slice().sort(), expectedMethods.slice().sort());
+  const actualArray = actualMethods.slice().sort();
+  const expectedArray = expectedMethods.slice().sort();
+  assert.deepEqual(actualArray, expectedArray, getUnequalArrayMessage(actualArray, expectedArray));
+
   // Test default methods
-  methods.forEach((m) => assert.doesNotThrow(defaultAdapter[m]));
+  actualMethods.forEach((m) => assert.doesNotThrow(defaultAdapter[m]));
+}
+
+/**
+ * @param {!Array<string>} actualArray
+ * @param {!Array<string>} expectedArray
+ * @return {string}
+ */
+function getUnequalArrayMessage(actualArray, expectedArray) {
+  /**
+   * @param {!Array<string>} values
+   * @param {string} singularName
+   * @return {string}
+   */
+  const format = (values, singularName) => {
+    const count = values.length;
+    if (count === 0) {
+      return '';
+    }
+    const plural = count === 1 ? '' : 's';
+    const str = values.join(', ');
+    return `${count} ${singularName}${plural}: ${str}`;
+  };
+
+  /**
+   * @param {!Set<string>} actualSet
+   * @param {!Set<string>} expectedSet
+   */
+  const getAddedStr = (actualSet, expectedSet) => {
+    const addedArray = [];
+    for (const val of actualSet) {
+      if (!expectedSet.has(val)) {
+        addedArray.push(val);
+      }
+    }
+    return format(addedArray, 'unexpected method');
+  };
+
+  /**
+   * @param {!Set<string>} actualSet
+   * @param {!Set<string>} expectedSet
+   */
+  const getRemovedStr = (actualSet, expectedSet) => {
+    const removedArray = [];
+    for (const val of expectedSet) {
+      if (!actualSet.has(val)) {
+        removedArray.push(val);
+      }
+    }
+    return format(removedArray, 'missing method');
+  };
+
+  /**
+   * @param {!Array<string>} array
+   * @return {!Set<string>}
+   */
+  const toSet = (array) => {
+    const set = new Set();
+    array.forEach((value) => set.add(value));
+    return set;
+  };
+
+  const actualSet = toSet(actualArray);
+  const expectedSet = toSet(expectedArray);
+  const addedStr = getAddedStr(actualSet, expectedSet);
+  const removedStr = getRemovedStr(actualSet, expectedSet);
+  const messages = [addedStr, removedStr].filter((val) => Boolean(val));
+
+  if (messages.length === 0) {
+    return '';
+  }
+
+  return `Found ${messages.join('; ')}`;
 }
 
 // Returns an object that intercepts calls to an adapter method used to register event handlers, and adds
