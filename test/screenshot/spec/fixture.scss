@@ -101,6 +101,12 @@ $test-layout-cell-grid-color: #dddddd;
   content: "ERROR: Content overflows mobile viewport!";
 }
 
+.test-viewport--center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .test-layout {
   display: flex;
   flex-wrap: wrap;

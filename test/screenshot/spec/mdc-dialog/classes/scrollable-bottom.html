@@ -35,14 +35,17 @@
   </head>
 
   <body class="test-container test-container--edge-fonts">
-    <main class="test-viewport">
+    <main class="test-viewport test-viewport--center">
+
+      <button data-test-dialog-id="test-dialog" autofocus>Open Dialog</button>
 
       <div class="mdc-dialog test-dialog test-dialog--scroll-to-bottom"
            role="alertdialog"
            aria-modal="true"
            aria-hidden="true"
            aria-labelledby="test-dialog__title--confirmation-2-line"
-           aria-describedby="test-dialog__body--confirmation-2-line">
+           aria-describedby="test-dialog__body--confirmation-2-line"
+           id="test-dialog">
         <div class="mdc-dialog__scrim"></div>
         <div class="mdc-dialog__container">
           <header class="mdc-dialog__header">

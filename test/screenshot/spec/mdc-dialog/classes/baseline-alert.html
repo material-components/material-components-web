@@ -35,13 +35,16 @@
   </head>
 
   <body class="test-container test-container--edge-fonts">
-    <main class="test-viewport">
+    <main class="test-viewport test-viewport--center">
+
+      <button data-test-dialog-id="test-dialog" autofocus>Open Dialog</button>
 
       <div class="mdc-dialog test-dialog"
            role="alertdialog"
            aria-modal="true"
            aria-hidden="true"
-           aria-describedby="test-dialog__body--alert">
+           aria-describedby="test-dialog__body--alert"
+           id="test-dialog">
         <div class="mdc-dialog__scrim"></div>
         <div class="mdc-dialog__container">
           <section class="mdc-dialog__content" id="test-dialog__body--alert">

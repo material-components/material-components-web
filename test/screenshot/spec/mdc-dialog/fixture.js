@@ -51,6 +51,11 @@ window.mdc.testFixture.fontsLoaded.then(() => {
       }
     }
 
+    const openButtonEl = dialogEl.id ? document.querySelector(`[data-test-dialog-id="${dialogEl.id}"]`) : null;
+    if (openButtonEl) {
+      openButtonEl.addEventListener('click', () => dialog.show());
+    }
+
     dialog.show();
   });
 });
