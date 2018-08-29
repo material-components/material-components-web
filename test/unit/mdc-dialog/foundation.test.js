@@ -411,7 +411,7 @@ test('on document keydown does nothing when key other than escape is pressed', (
 });
 
 test('should clean up transition handlers after dialog close', () => {
-  const {foundation, mockAdapter} = setupTest();
+  const {foundation} = setupTest();
   foundation.close();
   // TODO(acdvorak): Write this test
 });
