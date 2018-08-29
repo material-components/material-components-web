@@ -966,7 +966,7 @@ class SeleniumApi {
         uncropped_height: uncroppedHeight,
         uncropped_width: uncroppedWidth,
       } = screenshot.crop_result;
-      cropColor = CliColor.dim(
+      cropColor = CliColor.gray(
         ` (cropped from ${uncroppedWidth}x${uncroppedHeight} to ${croppedWidth}x${croppedHeight})`
       );
     }
