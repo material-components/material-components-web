@@ -148,7 +148,11 @@ class GitHubApi {
         description = `${numChanged.toLocaleString()} screenshots differ from PR's golden.json`;
       }
 
-      targetUrl = this.analytics_.getUrl({url: reportFileUrl, source: 'github', type: 'pr_commit_status'});
+      targetUrl = this.analytics_.getUrl({
+        url: reportFileUrl,
+        source: 'github',
+        type: 'status',
+      });
     } else {
       const runnableScreenshots = screenshots.runnable_screenshot_list;
       const numTotal = runnableScreenshots.length;
