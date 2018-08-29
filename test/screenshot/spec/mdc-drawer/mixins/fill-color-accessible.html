@@ -41,105 +41,179 @@
     </script>
   </head>
 
-  <body class="test-container mdc-typography test-drawer-container"></body>
-    <aside class="mdc-drawer custom-drawer--fill-color-accessible">
-      <header class="mdc-drawer__header">
-        <div class="mdc-drawer__title">Title here</div>
-        <div class="mdc-drawer__subtitle">Subtext</div>
-      </header>
-      <nav class="mdc-list">
-        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true" tabindex="0">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
-          Inbox
-        </a>
-        <a class="mdc-list-item" href="#">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>
-          Star
-        </a>
-        <a class="mdc-list-item" href="#">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
-          Sent Mail
-        </a>
-        <a class="mdc-list-item" href="#">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
-          Drafts
-        </a>
+  <body class="test-container">
+    <div class="test-viewport test-viewport--drawer">
+      <aside class="mdc-drawer custom-drawer--fill-color-accessible">
+        <header class="mdc-drawer__header">
+          <div class="mdc-drawer__title">Title here</div>
+          <div class="mdc-drawer__subtitle">Subtext</div>
+        </header>
+        <nav class="mdc-list">
+          <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true" tabindex="0">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
+            Inbox
+          </a>
+          <a class="mdc-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>
+            Star
+          </a>
+          <a class="mdc-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
+            Sent Mail
+          </a>
+          <a class="mdc-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
+            Drafts
+          </a>
 
-        <hr class="mdc-list-divider">
-        <h6 class="mdc-list-group__subheader">Labels</h6>
-        <a class="mdc-list-item" href="#">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
-          Family
-        </a>
-        <a class="mdc-list-item" href="#">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
-          Friends
-        </a>
-        <a class="mdc-list-item" href="#">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
-          Work
-        </a>
+          <hr class="mdc-list-divider">
+          <h6 class="mdc-list-group__subheader">Labels</h6>
+          <a class="mdc-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+            Family
+          </a>
+          <a class="mdc-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+            Friends
+          </a>
+          <a class="mdc-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+            Work
+          </a>
 
-        <hr class="mdc-list-divider">
-        <a class="mdc-list-item" href="#">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>
-          Settings
-        </a>
-        <a class="mdc-list-item" href="#">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">announcement</i>
-          Help & feedback
-        </a>
-      </nav>
-    </aside>
+          <hr class="mdc-list-divider">
+          <a class="mdc-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>
+            Settings
+          </a>
+          <a class="mdc-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">announcement</i>
+            Help & feedback
+          </a>
+        </nav>
+      </aside>
 
-    <div class="mdc-drawer-app-content test-drawer-app-content">
-      <header class="mdc-top-app-bar">
-        <div class="mdc-top-app-bar__row">
-          <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-            <span class="mdc-top-app-bar__title">Permanent Drawer</span>
-          </section>
-        </div>
-      </header>
+      <div class="mdc-drawer-app-content test-drawer-app-content">
+        <header class="mdc-top-app-bar">
+          <div class="mdc-top-app-bar__row">
+            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+              <span class="mdc-top-app-bar__title">Permanent Drawer</span>
+            </section>
+          </div>
+        </header>
 
-      <div class="mdc-top-app-bar--fixed-adjust test-main-content">
-        <p class="test-drawer-paragraph">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br>
-          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut<br>
-          enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut<br>
-          aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in<br>
-          voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint<br>
-          occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit<br>
-          anim id est laborum.
-        </p>
-        <p class="test-drawer-paragraph">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br>
-          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut<br>
-          enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut<br>
-          aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in<br>
-          voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint<br>
-          occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit<br>
-          anim id est laborum.
-        </p>
-        <p class="test-drawer-paragraph">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br>
-          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut<br>
-          enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut<br>
-          aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in<br>
-          voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint<br>
-          occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit<br>
-          anim id est laborum.
-        </p>
-        <p class="test-drawer-paragraph">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br>
-          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut<br>
-          enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut<br>
-          aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in<br>
-          voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint<br>
-          occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit<br>
-          anim id est laborum.
-        </p>
+        <main class="mdc-top-app-bar--fixed-adjust test-drawer-main-content">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br>
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut<br>
+            enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut<br>
+            aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in<br>
+            voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint<br>
+            occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit<br>
+            anim id est laborum.
+          </p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br>
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut<br>
+            enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut<br>
+            aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in<br>
+            voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint<br>
+            occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit<br>
+            anim id est laborum.
+          </p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br>
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut<br>
+            enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut<br>
+            aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in<br>
+            voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint<br>
+            occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit<br>
+            anim id est laborum.
+          </p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br>
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut<br>
+            enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut<br>
+            aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in<br>
+            voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint<br>
+            occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit<br>
+            anim id est laborum.
+          </p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br>
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut<br>
+            enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut<br>
+            aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in<br>
+            voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint<br>
+            occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit<br>
+            anim id est laborum.
+          </p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br>
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut<br>
+            enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut<br>
+            aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in<br>
+            voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint<br>
+            occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit<br>
+            anim id est laborum.
+          </p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br>
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut<br>
+            enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut<br>
+            aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in<br>
+            voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint<br>
+            occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit<br>
+            anim id est laborum.
+          </p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br>
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut<br>
+            enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut<br>
+            aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in<br>
+            voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint<br>
+            occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit<br>
+            anim id est laborum.
+          </p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br>
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut<br>
+            enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut<br>
+            aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in<br>
+            voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint<br>
+            occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit<br>
+            anim id est laborum.
+          </p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br>
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut<br>
+            enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut<br>
+            aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in<br>
+            voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint<br>
+            occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit<br>
+            anim id est laborum.
+          </p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br>
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut<br>
+            enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut<br>
+            aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in<br>
+            voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint<br>
+            occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit<br>
+            anim id est laborum.
+          </p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br>
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut<br>
+            enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut<br>
+            aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in<br>
+            voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint<br>
+            occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit<br>
+            anim id est laborum.
+          </p>
+        </main>
       </div>
-    </main>
+    </div>
 
     <!-- Automatically provides/replaces `Promise` if missing or broken. -->
     <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.js"></script>
