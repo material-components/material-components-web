@@ -488,6 +488,19 @@ test('mousedown on the select sets the line ripple origin', () => {
   td.verify(bottomLine.setRippleCenter(200), {times: 1});
 });
 
+test('mousedown on the select does nothing if the it does not have a lineRipple', () => {
+  const hasOutline = true;
+  const {bottomLine, fixture} = setupTest(hasOutline);
+  const event = document.createEvent('MouseEvent');
+  const clientX = 200;
+  const clientY = 200;
+  // IE11 mousedown event.
+  event.initMouseEvent('mousedown', true, true, window, 0, 0, 0, clientX, clientY, false, false, false, false, 0, null);
+  fixture.querySelector('select').dispatchEvent(event);
+
+  td.verify(bottomLine.setRippleCenter(200), {times: 0});
+});
+
 test('#destroy removes the mousedown listener', () => {
   const {bottomLine, component, fixture} = setupTest();
   const event = document.createEvent('MouseEvent');
