@@ -121,7 +121,7 @@ class MDCMenu extends MDCComponent {
    * @return {!Array<!HTMLElement>}
    */
   get items() {
-    return this.list_.listElements_;
+    return this.list_.listElements;
   }
 
   /**
