@@ -62,7 +62,7 @@ class MDCDrawer extends MDCComponent {
     /** @private {?Function} */
     this.handleScrimClick_;
 
-    /** @prviate {MDCList} */
+    /** @private {?MDCList} */
     this.list_;
   }
 
