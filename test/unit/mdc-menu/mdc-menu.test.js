@@ -52,7 +52,7 @@ class FakeList {
     this.root = root;
     this.destroy = td.func('.destroy');
     this.itemsContainer = td.func('.root_');
-    this.listElements_ = [].slice.call(root.querySelectorAll('.mdc-list-item'));
+    this.listElements = [].slice.call(root.querySelectorAll('.mdc-list-item'));
   }
 }
 
@@ -179,28 +179,28 @@ test('setQuickOpen', () => {
 test('items returns all menu items', () => {
   const {root, component, list} = setupTestWithFakes();
   const items = [].slice.call(root.querySelectorAll('[role="menuitem"]'));
-  list.listElements_ = items;
+  list.listElements = items;
   assert.deepEqual(component.items, items);
 });
 
 test('items returns nothing if list is not defined', () => {
   const {root, component, list} = setupTestWithFakes();
   const items = [].slice.call(root.querySelectorAll('[role="menuitem"]'));
-  list.listElements_ = items;
+  list.listElements = items;
   assert.deepEqual(component.items, items);
 });
 
 test('getOptionByIndex', () => {
   const {root, component, list} = setupTestWithFakes();
   const items = [].slice.call(root.querySelectorAll('[role="menuitem"]'));
-  list.listElements_ = items;
+  list.listElements = items;
   assert.deepEqual(component.getOptionByIndex(0), items[0]);
 });
 
 test('getOptionByIndex returns null if index is > list length', () => {
   const {root, component, list} = setupTestWithFakes();
   const items = [].slice.call(root.querySelectorAll('[role="menuitem"]'));
-  list.listElements_ = items;
+  list.listElements = items;
   assert.isNull(component.getOptionByIndex(items.length));
 });
 
@@ -268,7 +268,7 @@ test('menu surface opened event causes no element to be focused if the list is e
 
 test('open=true does not throw an error if there are no items in the list to focus', () => {
   const {component, root, list} = setupTestWithFakes();
-  list.listElements_ = [];
+  list.listElements = [];
   document.body.appendChild(root);
   root.querySelector('.mdc-list-item');
   assert.doesNotThrow(() => {
