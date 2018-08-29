@@ -148,7 +148,7 @@ class GitHubApi {
         description = `${numChanged.toLocaleString()} screenshots differ from PR's golden.json`;
       }
 
-      targetUrl = reportFileUrl;
+      targetUrl = this.analytics_.getUrl({url: reportFileUrl, source: 'github', type: 'pr_commit_status'});
     } else {
       const runnableScreenshots = screenshots.runnable_screenshot_list;
       const numTotal = runnableScreenshots.length;
@@ -198,7 +198,7 @@ class GitHubApi {
         repo: 'material-components-web',
         sha,
         state,
-        target_url: this.analytics_.getUrl({url: targetUrl, source: 'github', type: 'pr_commit_status'}),
+        target_url: targetUrl,
         description,
         context: 'screenshot-test/butter-bot',
       });
