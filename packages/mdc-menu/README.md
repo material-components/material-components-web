@@ -43,8 +43,12 @@ npm install @material/menu
 ```html
 <div class="mdc-menu mdc-menu-surface" tabindex="-1">
   <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
-    <li class="mdc-list-item" role="menuitem">A Menu Item</li>
-    <li class="mdc-list-item" role="menuitem">Another Menu Item</li>
+    <li class="mdc-list-item" role="menuitem">
+      <span class="mdc-list-item__text">A Menu Item</span>
+    </li>
+    <li class="mdc-list-item" role="menuitem">
+      <span class="mdc-list-item__text">Another Menu Item</span>
+    </li>
   </ul>
 </div>
 ```
@@ -83,18 +87,20 @@ Menus can contain a group of list items that can represent the selection state o
           <span class="mdc-menu__selection-group-icon">
             ...
           </span>
-          Single
+          <span class="mdc-list-item__text">Single</span>
         </li>
         <li class="mdc-list-item" role="menuitem">
           <span class="mdc-menu__selection-group-icon">
            ...
           </span>
-          1.15
+          <span class="mdc-list-item__text">1.15</span>
         </li>
       </ul>
     </li>
     <li class="mdc-list-divider" role="separator"></li>
-    <li class="mdc-list-item" role="menuitem">Add space before paragraph</li>
+    <li class="mdc-list-item" role="menuitem">
+      <span class="mdc-list-item__text">Add space before paragraph</span>
+    </li>
     ...
   </ul>
 </div>

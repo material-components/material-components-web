@@ -92,17 +92,61 @@ a `mdc-dialog__body--scrollable` modifier to allow scrolling in the dialog.
       </header>
       <section id="mdc-dialog-with-list-description" class="mdc-dialog__body mdc-dialog__body--scrollable">
        	<ul class="mdc-list">
-          <li class="mdc-list-item">None</li>
-          <li class="mdc-list-item">Callisto</li>
-          <li class="mdc-list-item">Ganymede</li>
-          <li class="mdc-list-item">Luna</li>
-          <li class="mdc-list-item">Marimba</li>
-          <li class="mdc-list-item">Schwifty</li>
-          <li class="mdc-list-item">Callisto</li>
-          <li class="mdc-list-item">Ganymede</li>
-          <li class="mdc-list-item">Luna</li>
-          <li class="mdc-list-item">Marimba</li>
-          <li class="mdc-list-item">Schwifty</li>
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__text">
+              None
+            </span>
+          </li>
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__text">
+              Callisto
+            </span>
+          </li>
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__text">
+              Ganymede
+            </span>
+          </li>
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__text">
+              Luna
+            </span>
+          </li>
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__text">
+              Marimba
+            </span>
+          </li>
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__text">
+              Schwifty
+            </span>
+          </li>
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__text">
+              Callisto
+            </span>
+          </li>
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__text">
+              Ganymede
+            </span>
+          </li>
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__text">
+              Luna
+            </span>
+          </li>
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__text">
+              Marimba
+            </span>
+          </li>
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__text">
+              Schwifty
+            </span>
+          </li>
         </ul>
       </section>
       <footer class="mdc-dialog__footer">
