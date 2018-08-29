@@ -27,8 +27,11 @@ require('url-search-params-polyfill');
 
 class Analytics {
   /**
+   * See:
+   * - https://support.google.com/analytics/answer/1033863?hl=en
+   * - https://ga-dev-tools.appspot.com/campaign-url-builder/
    * @param {string} url
-   * @param {string|undefined=} source
+   * @param {string} source
    * @param {string|undefined=} type
    * @param {string|undefined=} campaign
    * @param {string|undefined=} medium
@@ -37,7 +40,7 @@ class Analytics {
    */
   getUrl({
     url,
-    source = undefined,
+    source,
     type = undefined,
     campaign = undefined,
     medium = undefined,
@@ -45,9 +48,7 @@ class Analytics {
   } = {}) {
     const [resource, oldQuery] = url.split('?');
     const params = new URLSearchParams(oldQuery);
-    if (source) {
-      params.set('utm_source', source);
-    }
+    params.set('utm_source', source);
     if (type) {
       params.set('utm_content', type);
     }
