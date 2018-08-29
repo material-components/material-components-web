@@ -103,7 +103,7 @@ class MDCList extends MDCComponent {
 
     // Get the index of the element if it is a list item.
     if (eventTarget.classList.contains(cssClasses.LIST_ITEM_CLASS)) {
-      index = this.listElements_.indexOf(eventTarget);
+      index = this.listElements.indexOf(eventTarget);
     }
 
     return index;
@@ -153,7 +153,7 @@ class MDCList extends MDCComponent {
       }
 
       this.singleSelection = true;
-      this.selectedIndex = this.listElements_.indexOf(preselectedElement);
+      this.selectedIndex = this.listElements.indexOf(preselectedElement);
     }
   }
 
@@ -163,7 +163,7 @@ class MDCList extends MDCComponent {
   }
 
   /** @return Array<!Element>*/
-  get listElements_() {
+  get listElements() {
     return [].slice.call(this.root_.querySelectorAll(strings.ENABLED_ITEMS_SELECTOR));
   }
 
@@ -191,45 +191,45 @@ class MDCList extends MDCComponent {
   /** @return {!MDCListFoundation} */
   getDefaultFoundation() {
     return new MDCListFoundation(/** @type {!MDCListAdapter} */ (Object.assign({
-      getListItemCount: () => this.listElements_.length,
-      getFocusedElementIndex: () => this.listElements_.indexOf(document.activeElement),
+      getListItemCount: () => this.listElements.length,
+      getFocusedElementIndex: () => this.listElements.indexOf(document.activeElement),
       setAttributeForElementIndex: (index, attr, value) => {
-        const element = this.listElements_[index];
+        const element = this.listElements[index];
         if (element) {
           element.setAttribute(attr, value);
         }
       },
       removeAttributeForElementIndex: (index, attr) => {
-        const element = this.listElements_[index];
+        const element = this.listElements[index];
         if (element) {
           element.removeAttribute(attr);
         }
       },
       addClassForElementIndex: (index, className) => {
-        const element = this.listElements_[index];
+        const element = this.listElements[index];
         if (element) {
           element.classList.add(className);
         }
       },
       removeClassForElementIndex: (index, className) => {
-        const element = this.listElements_[index];
+        const element = this.listElements[index];
         if (element) {
           element.classList.remove(className);
         }
       },
       focusItemAtIndex: (index) => {
-        const element = this.listElements_[index];
+        const element = this.listElements[index];
         if (element) {
           element.focus();
         }
       },
       setTabIndexForListItemChildren: (listItemIndex, tabIndexValue) => {
-        const element = this.listElements_[listItemIndex];
+        const element = this.listElements[listItemIndex];
         const listItemChildren = [].slice.call(element.querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS));
         listItemChildren.forEach((ele) => ele.setAttribute('tabindex', tabIndexValue));
       },
       followHref: (index) => {
-        const listItem = this.listElements_[index];
+        const listItem = this.listElements[index];
         if (listItem && listItem.href) {
           listItem.click();
         }
