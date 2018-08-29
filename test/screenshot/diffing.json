@@ -8,7 +8,7 @@
   "flaky_test_config": {
     "global_config": {
       "max_retries": 0,
-      "retry_delay_ms": 0,
+      "retry_delay_ms": 500,
       "min_changed_pixel_count": 15,
       "max_changed_pixel_fraction_to_retry": 0.05,
       "font_face_observer_timeout_ms": 3000,
@@ -17,19 +17,18 @@
 
     "config_overrides": [
       {
-        "description": "IE and Edge flake more frequently than other browsers, especially with font rendering on <button> elements",
+        "description": "IE and Edge rendering is inherently flaky. `border-radius`, `box-shadow`, and font rendering (especially on <button> elements) seem to be the worst offenders.",
         "browser_regex_patterns": [
           "desktop_windows_edge@latest",
           "desktop_windows_ie@11"
         ],
         "custom_config": {
           "max_retries": 3,
-          "retry_delay_ms": 500,
           "fonts_loaded_reflow_delay_ms": 250
         }
       },
       {
-        "description": "IE and Edge are extra flaky on Textfield pages for some reason",
+        "description": "IE and Edge are extra flaky on Text Field pages",
         "browser_regex_patterns": [
           "desktop_windows_edge@latest",
           "desktop_windows_ie@11"
@@ -40,18 +39,6 @@
         "custom_config": {
           "max_retries": 6,
           "fonts_loaded_reflow_delay_ms": 500
-        }
-      },
-      {
-        "description": "Edge font rendering is extra flaky on <button> elements, especially those with lots of text",
-        "browser_regex_patterns": [
-          "desktop_windows_edge@latest"
-        ],
-        "url_regex_patterns": [
-          "mdc-dialog/.*overflow"
-        ],
-        "custom_config": {
-          "max_retries": 6
         }
       },
       {
