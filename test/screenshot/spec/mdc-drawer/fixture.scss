@@ -29,10 +29,6 @@
 
 $custom-drawer-color: $material-color-orange-900;
 
-.test-drawer-container {
-  flex-direction: row;
-}
-
 .test-viewport--drawer {
   display: flex;
   flex-direction: row;
@@ -43,26 +39,17 @@ $custom-drawer-color: $material-color-orange-900;
   flex-direction: column;
 }
 
-.test-drawer-paragraph {
-  margin: 1em 0 0 0;
-  line-height: 1;
-}
-
-body {
-  display: flex;
-  height: 100vh;
-}
-
 .test-drawer-app-content {
   flex: auto;
   overflow: auto;
+  height: 100vh;
 }
 
-.test-main-content {
-  overflow: auto;
-  height: 100%;
-  padding-left: 16px;
+.test-drawer-main-content {
+  height: calc(100% - 64px);
   padding-right: 16px;
+  padding-left: 16px;
+  overflow: auto;
 }
 
 .custom-drawer--fill-color {
