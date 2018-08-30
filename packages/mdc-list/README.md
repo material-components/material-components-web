@@ -40,9 +40,15 @@ npm install @material/list
 
 ```html
 <ul class="mdc-list" aria-orientation="vertical">
-  <li class="mdc-list-item">Single-line item</li>
-  <li class="mdc-list-item">Single-line item</li>
-  <li class="mdc-list-item">Single-line item</li>
+  <li class="mdc-list-item">
+    <span class="mdc-list-item__text">Single-line item</span>
+  </li>
+  <li class="mdc-list-item">
+    <span class="mdc-list-item__text">Single-line item</span>
+  </li>
+  <li class="mdc-list-item">
+    <span class="mdc-list-item__text">Single-line item</span>
+  </li>
 </ul>
 ```
 
@@ -87,16 +93,27 @@ Multiple related lists can be grouped together using the `mdc-list-group` class 
 <div class="mdc-list-group">
   <h3 class="mdc-list-group__subheader">List 1</h3>
   <ul class="mdc-list" aria-orientation="vertical">
-    <li class="mdc-list-item">line item</li>
-    <li class="mdc-list-item">line item</li>
-    <li class="mdc-list-item">line item</li>
+    <li class="mdc-list-item">
+      <span class="mdc-list-item__text">line item</span>
+    </li>
+    <li class="mdc-list-item">
+      <span class="mdc-list-item__text">line item</span>
+    </li>
+    <li class="mdc-list-item">
+      <span class="mdc-list-item__text">line item</span>
+    </li>
   </ul>
-
   <h3 class="mdc-list-group__subheader">List 2</h3>
   <ul class="mdc-list" aria-orientation="vertical">
-    <li class="mdc-list-item">line item</li>
-    <li class="mdc-list-item">line item</li>
-    <li class="mdc-list-item">line item</li>
+    <li class="mdc-list-item">
+      <span class="mdc-list-item__text">line item</span>
+    </li>
+    <li class="mdc-list-item">
+      <span class="mdc-list-item__text">line item</span>
+    </li>
+    <li class="mdc-list-item">
+      <span class="mdc-list-item__text">line item</span>
+    </li>
   </ul>
 </div>
 ```
@@ -107,11 +124,19 @@ MDC List contains an `mdc-list-divider` class which can be used as full-width or
 
 ```html
 <ul class="mdc-list" aria-orientation="vertical">
-  <li class="mdc-list-item">Item 1 - Division 1</li>
-  <li class="mdc-list-item">Item 2 - Division 1</li>
+  <li class="mdc-list-item">
+    <span class="mdc-list-item__text">Item 1 - Division 1</span>
+  </li>
+  <li class="mdc-list-item">
+    <span class="mdc-list-item__text">Item 2 - Division 1</span>
+  </li>
   <li role="separator" class="mdc-list-divider"></li>
-  <li class="mdc-list-item">Item 1 - Division 2</li>
-  <li class="mdc-list-item">Item 2 - Division 2</li>
+  <li class="mdc-list-item">
+    <span class="mdc-list-item__text">Item 1 - Division 2</span>
+  </li>
+  <li class="mdc-list-item">
+    <span class="mdc-list-item__text">Item 2 - Division 2</span>
+  </li>
 </ul>
 ```
 
@@ -121,13 +146,21 @@ OR
 
 ```html
 <ul class="mdc-list" aria-orientation="vertical">
-  <li class="mdc-list-item">Item 1 - List 1</li>
-  <li class="mdc-list-item">Item 2 - List 1</li>
+  <li class="mdc-list-item">
+    <span class="mdc-list-item__text">Item 1 - List 1</span>
+  </li>
+  <li class="mdc-list-item">
+    <span class="mdc-list-item__text">Item 2 - List 1</span>
+  </li>
 </ul>
 <hr class="mdc-list-divider">
 <ul class="mdc-list" aria-orientation="vertical">
-  <li class="mdc-list-item">Item 1 - List 2</li>
-  <li class="mdc-list-item">Item 2 - List 2</li>
+  <li class="mdc-list-item">
+    <span class="mdc-list-item__text">Item 1 - List 2</span>
+  </li>
+  <li class="mdc-list-item">
+    <span class="mdc-list-item__text">Item 2 - List 2</span>
+  </li>
 </ul>
 ```
 
@@ -138,9 +171,15 @@ single list item to become selected and any other previous selected element to b
 
 ```html
 <ul id="my-list" class="mdc-list" aria-orientation="vertical">
-  <li class="mdc-list-item" tabindex="0">Single-line item</li>
-  <li class="mdc-list-item">Single-line item</li>
-  <li class="mdc-list-item">Single-line item</li>
+  <li class="mdc-list-item" tabindex="0">
+    <span class="mdc-list-item__text">Single-line item</span>
+  </li>
+  <li class="mdc-list-item">
+    <span class="mdc-list-item__text">Single-line item</span>
+  </li>
+  <li class="mdc-list-item">
+    <span class="mdc-list-item__text">Single-line item</span>
+  </li>
 </ul>
 ```
 
@@ -158,9 +197,15 @@ creating the list.
 
 ```html
 <ul id="my-list" class="mdc-list" aria-orientation="vertical">
-  <li class="mdc-list-item">Single-line item</li>
-  <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" tabindex="0">Single-line item</li>
-  <li class="mdc-list-item">Single-line item</li>
+  <li class="mdc-list-item">
+    <span class="mdc-list-item__text">Single-line item</span>
+  </li>
+  <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" tabindex="0">
+    <span class="mdc-list-item__text">Single-line item</span>
+  </li>
+  <li class="mdc-list-item">
+    <span class="mdc-list-item__text">Single-line item</span>
+  </li>
 </ul>
 ```
 
@@ -182,7 +227,7 @@ CSS Class | Description
 `mdc-list--avatar-list` | Optional, configures the leading tiles of each row to display images instead of icons. This will make the graphics of the list items larger.
 `mdc-list--two-line` | Optional, modifier to style list with two lines (primary and secondary lines).
 `mdc-list-item` | Mandatory, for the list item element.
-`mdc-list-item__text` |	Optional, wrapper for two line list item text content (displayed as middle column of the list item).
+`mdc-list-item__text` |	Mandatory. Wrapper for list item text content (displayed as middle column of the list item).
 `mdc-list-item__primary-text` | Optional, primary text for the list item. Should be the child of `mdc-list-item__text`.
 `mdc-list-item__secondary-text` | Optional, secondary text for the list item. Displayed below the primary text. Should be the child of `mdc-list-item__text`.
 `mdc-list-item--selected` | Optional, styles the row in an selected* state.
@@ -260,9 +305,16 @@ these should also receive `tabIndex="-1"`.
 
 ```html
 <ul id="my-list" class="mdc-list" aria-orientation="vertical">
-  <li class="mdc-list-item" tabindex="0">Single-line item<button tabindex="-1"></button></li>
-  <li class="mdc-list-item" tabindex="-1">Single-line item</li>
-  <li class="mdc-list-item" tabindex="-1">Single-line item</li>
+  <li class="mdc-list-item" tabindex="0">
+    <span class="mdc-list-item__text">Single-line item</span>
+    <button tabindex="-1"></button>
+  </li>
+  <li class="mdc-list-item" tabindex="-1">
+    <span class="mdc-list-item__text">Single-line item</span>
+  </li>
+  <li class="mdc-list-item" tabindex="-1">
+    <span class="mdc-list-item__text">Single-line item</span>
+  </li>
 </ul>
 ```
 
@@ -276,9 +328,16 @@ after the foundation is instantiated.
 
 ```html
 <ul id="my-list" class="mdc-list" aria-orientation="vertical">
-  <li class="mdc-list-item" tabindex="-1">Single-line item<button tabindex="-1"></button></li>
-  <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" tabindex="0">Single-line item</li>
-  <li class="mdc-list-item" tabindex="-1">Single-line item</li>
+  <li class="mdc-list-item" tabindex="-1">
+    <span class="mdc-list-item__text">Single-line item</span>
+    <button tabindex="-1"></button>
+    </li>
+  <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" tabindex="0">
+    <span class="mdc-list-item__text">Single-line item</span>
+  </li>
+  <li class="mdc-list-item" tabindex="-1">
+    <span class="mdc-list-item__text">Single-line item</span>
+  </li>
 </ul>
 ```
 
