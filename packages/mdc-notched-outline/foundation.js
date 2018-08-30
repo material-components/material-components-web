@@ -100,7 +100,7 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
     const cornerWidth = radius + 1.2;
     const leadingStrokeLength = Math.abs(12 - cornerWidth);
 
-    // If the notchWidth is 0, the label doesn't need padding.
+    // If the notchWidth is 0, the the notched outline doesn't need to add padding.
     let paddedNotchWidth = 0;
     if (notchWidth > 0) {
       paddedNotchWidth = notchWidth + 8;
