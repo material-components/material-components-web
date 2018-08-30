@@ -61,6 +61,9 @@ class MDCDrawer extends MDCComponent {
 
     /** @private {?Function} */
     this.handleScrimClick_;
+
+    /** @private {?MDCList} */
+    this.list_;
   }
 
   /**
@@ -92,10 +95,13 @@ class MDCDrawer extends MDCComponent {
   }
 
   initialize(
-    focusTrapFactory = createFocusTrap) {
+    focusTrapFactory = createFocusTrap,
+    listFactory = (el) => new MDCList(el)) {
     const listEl = /** @type {!Element} */ (this.root_.querySelector(`.${MDCListFoundation.cssClasses.ROOT}`));
-    const list = MDCList.attachTo(listEl);
-    list.wrapFocus = true;
+    if (listEl) {
+      this.list_ = listFactory(listEl);
+      this.list_.wrapFocus = true;
+    }
     this.focusTrapFactory_ = focusTrapFactory;
   }
 
@@ -120,6 +126,10 @@ class MDCDrawer extends MDCComponent {
   destroy() {
     this.root_.removeEventListener('keydown', this.handleKeydown_);
     this.root_.removeEventListener('transitionend', this.handleTransitionEnd_);
+
+    if (this.list_) {
+      this.list_.destroy();
+    }
 
     const {MODAL} = MDCDismissibleDrawerFoundation.cssClasses;
     if (this.root_.classList.contains(MODAL)) {
