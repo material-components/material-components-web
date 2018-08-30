@@ -176,6 +176,7 @@ class MDCSelect extends MDCComponent {
     this.nativeControl_.addEventListener('change', this.handleChange_);
     this.nativeControl_.addEventListener('focus', this.handleFocus_);
     this.nativeControl_.addEventListener('blur', this.handleBlur_);
+
     if (this.lineRipple_) {
       ['mousedown', 'touchstart'].forEach((evtType) => {
         this.nativeControl_.addEventListener(evtType, this.handleClick_);
