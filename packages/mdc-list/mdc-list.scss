@@ -95,10 +95,13 @@
   align-items: center;
   justify-content: center;
   fill: currentColor;
+  pointer-events: none;
 }
 
 .mdc-list-item__meta {
   @include mdc-rtl-reflexive-property(margin, auto, 0, ".mdc-list-item");
+
+  pointer-events: none;
 }
 
 .mdc-list-item__text {
