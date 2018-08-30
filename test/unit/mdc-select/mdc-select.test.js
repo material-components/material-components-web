@@ -309,7 +309,7 @@ test(`#constructor instantiates an outline on the ${cssClasses.OUTLINE_SELECTOR}
   assert.instanceOf(component.outline_, MDCNotchedOutline);
 });
 
-test(`handles ripple focus properly`, function() {
+test('handles ripple focus properly', function() {
   if (!supportsCssVariables(window, true)) {
     this.skip(); // eslint-disable-line no-invalid-this
     return;
@@ -358,7 +358,8 @@ test('#destroy cleans up the outline if present', () => {
 });
 
 test(`does not instantiate ripple when ${cssClasses.OUTLINED} class is present`, () => {
-  const {component} = setupTest();
+  const hasOutline = true;
+  const {component} = setupTest(hasOutline);
   assert.isUndefined(component.ripple);
 });
 
