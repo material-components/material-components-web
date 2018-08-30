@@ -146,11 +146,11 @@ Determines whether to use light or dark text on top of a given color.
 @debug mdc-theme-contrast-tone(#9c27b0); // light
 ```
 
-#### `mdc-theme-prop-value($property)`
+#### `mdc-theme-prop-value($style)`
 
-If `$property` is a literal color value (e.g., `blue`, `#fff`), it is returned verbatim. Otherwise, the value of the
-corresponding theme property (from `$mdc-theme-property-values`) is returned. If `$property` is not a color and no
-such theme property exists, an error is thrown.
+If `$style` is a color (a literal color value, `currentColor`, or a CSS custom property), it is returned verbatim.
+Otherwise, `$style` is treated as a theme property name, and the corresponding value from `$mdc-theme-property-values`
+is returned. If this also fails, an error is thrown.
 
 This is mainly useful in situations where `mdc-theme-prop` cannot be used directly (e.g., `box-shadow`).
 
@@ -178,4 +178,16 @@ Params:
 ```scss
 @debug mdc-theme-accessible-ink-color(secondary); // rgba(0, 0, 0, .87) (text-primary-on-light)
 @debug mdc-theme-accessible-ink-color(blue);      // white              (text-primary-on-dark)
+```
+#### `mdc-theme-text-emphasis($emphasis)`
+
+Returns opacity value for given emphasis.
+
+Params:
+
+- `$emphasis`: Type of emphasis such as `high`, `medium` & `disabled`.
+
+```scss
+@debug mdc-theme-text-emphasis(high); // .87
+@debug mdc-theme-text-emphasis(disabled); // .38
 ```

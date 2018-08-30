@@ -1,3 +1,154 @@
+<a name="0.39.0"></a>
+# [0.39.0](https://github.com/material-components/material-components-web/compare/v0.39.0-0...v0.39.0) (2018-08-27)
+
+
+### Bug Fixes
+
+* **checkbox:** remove register/deregister event listeners from foundation ([#3402](https://github.com/material-components/material-components-web/issues/3402)) ([430b338](https://github.com/material-components/material-components-web/commit/430b338))
+* **drawer:** Fix exports and closure tests ([#3424](https://github.com/material-components/material-components-web/issues/3424)) ([8d53068](https://github.com/material-components/material-components-web/commit/8d53068))
+* **list:** Add support for activated ([#3388](https://github.com/material-components/material-components-web/issues/3388)) ([5590412](https://github.com/material-components/material-components-web/commit/5590412))
+* **list:** Follow hrefs on keypresses on links ([#3407](https://github.com/material-components/material-components-web/issues/3407)) ([e6d6deb](https://github.com/material-components/material-components-web/commit/e6d6deb))
+* **snackbar:** Allow variables to be customized ([#3335](https://github.com/material-components/material-components-web/issues/3335)) ([215d0c6](https://github.com/material-components/material-components-web/commit/215d0c6))
+* **tab-bar:** Early exit ([#3386](https://github.com/material-components/material-components-web/issues/3386)) ([f0ebfea](https://github.com/material-components/material-components-web/commit/f0ebfea))
+* **tab-bar:** Move activateTab to adapter ([#3394](https://github.com/material-components/material-components-web/issues/3394)) ([5007604](https://github.com/material-components/material-components-web/commit/5007604))
+* **text-field:** Update to match spec ([#3397](https://github.com/material-components/material-components-web/issues/3397)) ([e34b251](https://github.com/material-components/material-components-web/commit/e34b251))
+* **menu-surface:** Remove overflow hidden during menu-surface animation. ([#3358](https://github.com/material-components/material-components-web/issues/3358)) ([951a3ae](https://github.com/material-components/material-components-web/commit/951a3ae))
+* **notched-outline:** Add alignment ([#3349](https://github.com/material-components/material-components-web/issues/3349)) ([ee93c61](https://github.com/material-components/material-components-web/commit/ee93c61))
+* **snackbar:** Doesn't close while other element is focused ([#2183](https://github.com/material-components/material-components-web/issues/2183)) ([e161cc0](https://github.com/material-components/material-components-web/commit/e161cc0))
+* **text-field:** Adjust the baseline of text field's helper text to match spec ([#3069](https://github.com/material-components/material-components-web/issues/3069)) ([36acc28](https://github.com/material-components/material-components-web/commit/36acc28))
+* **text-field:** Fix label shake bug. Update invalid screenshots to show required star. ([#3338](https://github.com/material-components/material-components-web/issues/3338)) ([1245573](https://github.com/material-components/material-components-web/commit/1245573))
+* **text-field:** Input position and textarea size ([#3321](https://github.com/material-components/material-components-web/issues/3321)) ([5160241](https://github.com/material-components/material-components-web/commit/5160241)), closes [#2826](https://github.com/material-components/material-components-web/issues/2826)
+
+
+### Chores
+
+* **list:** Remove all references to Element from MDCListAdapter ([#3398](https://github.com/material-components/material-components-web/issues/3398)) ([53f42b9](https://github.com/material-components/material-components-web/commit/53f42b9))
+* **tab:** Move computeIndicatorClientRect logic out of the foundation ([#3367](https://github.com/material-components/material-components-web/issues/3367)) ([9cac7c0](https://github.com/material-components/material-components-web/commit/9cac7c0)), closes [#3341](https://github.com/material-components/material-components-web/issues/3341)
+
+
+### Code Refactoring
+
+* **text-field:** Change text-field--box to be the new default ([#2859](https://github.com/material-components/material-components-web/issues/2859)) ([01b6be7](https://github.com/material-components/material-components-web/commit/01b6be7))
+
+
+### Features
+
+* Update to MIT license ([#3376](https://github.com/material-components/material-components-web/issues/3376)) ([2cf8487](https://github.com/material-components/material-components-web/commit/2cf8487))
+* **drawer:** Improved navigation drawer  ([#3417](https://github.com/material-components/material-components-web/issues/3417)) ([3aa211d](https://github.com/material-components/material-components-web/commit/3aa211d))
+* **theme:** Added new function for text emphasis opacities ([f841afe](https://github.com/material-components/material-components-web/commit/f841afe))
+* **chips:** Pass chip ids instead of foundations in events  ([#3265](https://github.com/material-components/material-components-web/issues/3265)) ([7ce0fba](https://github.com/material-components/material-components-web/commit/7ce0fba))
+* **icon-button:** Add SVG support ([#3310](https://github.com/material-components/material-components-web/issues/3310)) ([25fa51e](https://github.com/material-components/material-components-web/commit/25fa51e))
+* **menu:** Adds new menu, menu-surface. ([#3311](https://github.com/material-components/material-components-web/issues/3311)) ([6439c5b](https://github.com/material-components/material-components-web/commit/6439c5b))
+* **switch:** Move component specific logic out of foundation ([#3342](https://github.com/material-components/material-components-web/issues/3342)) ([e1e4465](https://github.com/material-components/material-components-web/commit/e1e4465))
+* **tab:** Move event registration to component ([#3331](https://github.com/material-components/material-components-web/issues/3331)) ([f2ac793](https://github.com/material-components/material-components-web/commit/f2ac793))
+* **tab-bar:** Support manual and automatic activation behavior ([#3303](https://github.com/material-components/material-components-web/issues/3303)) ([7182fa1](https://github.com/material-components/material-components-web/commit/7182fa1))
+* **tab-indicator:** Remove transitionend event handling ([#3337](https://github.com/material-components/material-components-web/issues/3337)) ([c8af69b](https://github.com/material-components/material-components-web/commit/c8af69b))
+* **text-field:** New API to enable/disable native input validation for custom validity ([#3084](https://github.com/material-components/material-components-web/issues/3084)) ([bd49920](https://github.com/material-components/material-components-web/commit/bd49920))
+* **text-field:** Support for types- color, date, datetime-local, etc ([#2854](https://github.com/material-components/material-components-web/issues/2854)) ([0d02f1f](https://github.com/material-components/material-components-web/commit/0d02f1f))
+* **typography:** Reverted baseline mixin to use display inline-block because of IE issues ([#3297](https://github.com/material-components/material-components-web/issues/3297)) ([ded07d0](https://github.com/material-components/material-components-web/commit/ded07d0))
+
+
+### BREAKING CHANGES
+
+* **drawer:** Drawer variants have new DOM structure, mixins, and JS. MDCPersistentDrawer and MDCTemporaryDrawer components are replaced with a single MDCDrawer component which supports both.
+* **list:** Please update calls to MDCListFoundation.handleKeydown to pass in isRootListItem and listItemIndex, and update both MDCListFoundation.handleFocusIn, MDCListFoundation.handleFocusOut to pass in listItemIndex
+* **text-field:** This PR removes the margin-top from the mdc-text-field container. This can cause a UI to shift/change. 
+* **checkbox:** Event registration adapter APIs have been removed and are now the responsibility of the component.
+* **list:** Adds a followHref adapter API.
+* **text-field:** Removes the default version of the text field and changes the new default variant to be the `--box` variant. Changes the box-sizing to border-box. 
+* **tab-bar:** `getActiveTabIndex` adapter method renamed and `setActiveTab` adapter method added.
+* **tab:** We've removed the `computeIndicatorClientRect` method from `MDCTabFoundation`
+* **switch:** We've removed the `isChecked` and `isDisabled` methods from `MDCSwitchFoundation`. Please update any call to `MDCSwitchFoundation.handleChange` so it passes in the change event. And note that `isNativeControlChecked` and `isNativeControlDisabled` are no longer required methods in `MDCSwitchAdapter`
+* **text-field:** Setting the validity state using `setValid` no longer ignores native input validation. New API `useNativeValidation` is introduced to enable / disable native validation for custom validity.
+* **menu:** Menu positioning logic has been split into its own package (mdc-menu-surface). mdc-menu is rebuilt to use mdc-menu-surface and mdc-list styles and JavaScript.
+* **text-field:** The `mdc-text-field--upgraded` class has been removed. `mdc-text-field__input` position has changed by 2px to match spec. `mdc-text-field--textarea` width in IE and Edge now matches other browsers.
+* **tab:** Removes handleTransitionEnd foundation API. Removes [de]registerEventHandler adapter APIs. Event registration is now the component's responsibility.
+* **icon-button:** Removes the previous data attributes and no longer dynamically changes the label. Allows developers to add both elements to the button, with one indicated as the on state by using a data-toggle-on attribute. State is now changed by adding/removing the mdc-icon-button--on class to the mdc-icon-button element. All icon elements should have the mdc-icon-button__icon class.
+* **tab-indicator:** Removes handleTransitionEnd foundation API. Removes [de]registerEventHandler adapter APIs.
+* **typography:** Helper text and MDC List two-line text that uses new typography baseline mixin should strip the white-space.
+* **chips:** `MDCChip` takes an `id`, no longer exposes its `foundation`, and has `selected` as a property. Custom event details require a `chipId` instead of `chipFoundation`. New methods added to `MDCChipSetAdapter` and `MDCChipSetFoundation`.
+* **text-field:** Removed bottom margin from both text field and helper text.
+* **snackbar:** Adds a new adapter method that is required `isFocused`.
+* **tab-bar:** Adds focusTabAtIndex and getFocusedTabIndex MDCTabBarAdapter APIs; adds focus MDCTab component API used by MDCTabBar.
+
+
+
+<a name="0.38.2"></a>
+## [0.38.2](https://github.com/material-components/material-components-web/compare/v0.38.1...v0.38.2) (2018-08-15)
+
+
+### Bug Fixes
+
+* **dialog:** Expose numbers on foundation ([#3346](https://github.com/material-components/material-components-web/issues/3346)) ([8aa7ae0](https://github.com/material-components/material-components-web/commit/8aa7ae0))
+
+
+
+<a name="0.38.1"></a>
+## [0.38.1](https://github.com/material-components/material-components-web/compare/v0.38.0...v0.38.1) (2018-08-13)
+
+
+### Bug Fixes
+
+* **dialog:** Fixes transitionend event not always being called ([#3267](https://github.com/material-components/material-components-web/issues/3267)) ([f4af684](https://github.com/material-components/material-components-web/commit/f4af684))
+* **list:** Update clickable elements selector ([#3312](https://github.com/material-components/material-components-web/issues/3312)) ([c4fc932](https://github.com/material-components/material-components-web/commit/c4fc932))
+* **radio:** Add missing `[@import](https://github.com/import)` for theme mixins; add screenshot tests ([#3285](https://github.com/material-components/material-components-web/issues/3285)) ([553438a](https://github.com/material-components/material-components-web/commit/553438a))
+* **ripple:** Register focus/blur handlers in IE ([#3294](https://github.com/material-components/material-components-web/issues/3294)) ([1e10ac2](https://github.com/material-components/material-components-web/commit/1e10ac2))
+* **select:** add adapter ([#3233](https://github.com/material-components/material-components-web/issues/3233)) ([3b20de8](https://github.com/material-components/material-components-web/commit/3b20de8))
+* **text-field:** Set the margin for text-area helper text ([#3290](https://github.com/material-components/material-components-web/issues/3290)) ([e395bb3](https://github.com/material-components/material-components-web/commit/e395bb3))
+* **text-field:** Stop emitting unused CSS in Text Field & Select ([#3293](https://github.com/material-components/material-components-web/issues/3293)) ([4041d9e](https://github.com/material-components/material-components-web/commit/4041d9e))
+
+
+
+<a name="0.38.0"></a>
+# [0.38.0](https://github.com/material-components/material-components-web/compare/v0.37.1...v0.38.0) (2018-07-30)
+
+
+### Bug Fixes
+
+* **chips:** Remove color change from selected filter chips ([#3093](https://github.com/material-components/material-components-web/issues/3093)) ([19e3d7f](https://github.com/material-components/material-components-web/commit/19e3d7f))
+* **infrastructure:** Rework goog.module positioning ([#3098](https://github.com/material-components/material-components-web/issues/3098)) ([fbbf58a](https://github.com/material-components/material-components-web/commit/fbbf58a))
+* **infrastructure:** update saucelabs windows 8 to windows 10 IE11 browser ([#3234](https://github.com/material-components/material-components-web/issues/3234)) ([547a980](https://github.com/material-components/material-components-web/commit/547a980))
+* **list:** add list to webpack js bundler ([#3244](https://github.com/material-components/material-components-web/issues/3244)) ([b95d4e7](https://github.com/material-components/material-components-web/commit/b95d4e7))
+* **theme:** Allow CSS variables to be passed to mdc-theme-prop ([#3086](https://github.com/material-components/material-components-web/issues/3086)) ([b47fe7d](https://github.com/material-components/material-components-web/commit/b47fe7d))
+
+
+### Features
+
+* **auto-init:** return initialized components ([#1333](https://github.com/material-components/material-components-web/issues/1333)) ([19955bf](https://github.com/material-components/material-components-web/commit/19955bf))
+* **floating-label:** Add max-width mixin ([#2956](https://github.com/material-components/material-components-web/issues/2956)) ([66f8bf7](https://github.com/material-components/material-components-web/commit/66f8bf7))
+* **chips:** Register handlers in component instead of foundation ([#3146](https://github.com/material-components/material-components-web/issues/3146)) ([36e2755](https://github.com/material-components/material-components-web/commit/36e2755))
+* **icon-button:** update event handling to new standard ([#3165](https://github.com/material-components/material-components-web/issues/3165)) ([531867e](https://github.com/material-components/material-components-web/commit/531867e))
+* **list:** Add single selection ([#2970](https://github.com/material-components/material-components-web/issues/2970)) ([cd1f972](https://github.com/material-components/material-components-web/commit/cd1f972))
+* **list:** Updated two-line list to use typography baseline to match spec. ([#3085](https://github.com/material-components/material-components-web/issues/3085)) ([4d11b37](https://github.com/material-components/material-components-web/commit/4d11b37))
+* **select:** reduce adapter apis not used in MDCReact and update events to new pattern ([#3204](https://github.com/material-components/material-components-web/issues/3204)) ([e29742a](https://github.com/material-components/material-components-web/commit/e29742a))
+* **switch:** Merge updated switch into master ([#3214](https://github.com/material-components/material-components-web/issues/3214)) ([19724f1](https://github.com/material-components/material-components-web/commit/19724f1)), closes [#2825](https://github.com/material-components/material-components-web/issues/2825)
+* **tab-bar:** Launch tab, tab indicator, tab scroller, tab bar ([#3252](https://github.com/material-components/material-components-web/issues/3252)) ([78bf4bc](https://github.com/material-components/material-components-web/commit/78bf4bc))
+* **typography:** New mixin to set exact baseline height of text elements. ([#3083](https://github.com/material-components/material-components-web/issues/3083)) ([dd3817a](https://github.com/material-components/material-components-web/commit/dd3817a))
+
+
+### BREAKING CHANGES
+
+* **tab-bar:** mdc-tabs is deprecated and no longer bundled in the material-components-web package. You are encouraged to use the new mdc-tab-bar and related packages instead.
+* **switch:** MDC Switch DOM structure and Sass APIs have changed, and JavaScript APIs have been added. See the documentation for more information.
+* **icon-button:** Removed some adapter APIs (registerInteractionHandler, deregisterInteractionHandler) and shifted responsibility of event handling out of the foundation and into the component.
+* **select:** Removed some adapter APIs (setDisabled, setSelectedIndex, getSelectedIndex, setValue, registerInteractionHandler, deregisterInteractionHandler) and shifted responsibility of event handling and programmatic select element updates out of the foundation and into the component.
+* **chips:** `MDCChip`/`MDCChipSet` registerEventHandler adapter methods were removed, and corresponding handlers were made public in `MDCChipFoundation`/`MDCChipSetFoundation`.
+* **list:** The layout of two-line list items is changed to wrap primary text line in a separate block element.
+
+
+<a name="0.37.1"></a>
+## [0.37.1](https://github.com/material-components/material-components-web/compare/v0.37.0...v0.37.1) (2018-07-16)
+
+
+### Bug Fixes
+
+* hot-patching closure annotations. ([#3024](https://github.com/material-components/material-components-web/issues/3024)) ([d5b95ab](https://github.com/material-components/material-components-web/commit/d5b95ab))
+* **button:** Remove dense/stroked line-height tweaks to improve alignment ([#3028](https://github.com/material-components/material-components-web/issues/3028)) ([8b5f595](https://github.com/material-components/material-components-web/commit/8b5f595))
+* **notched-outline:** Remove unused dependency from scss ([#3044](https://github.com/material-components/material-components-web/issues/3044)) ([85ecf11](https://github.com/material-components/material-components-web/commit/85ecf11))
+* **typography:**  Update variable reference to work for newer versions of ruby-sass ([#3047](https://github.com/material-components/material-components-web/issues/3047)) ([0dfad9a](https://github.com/material-components/material-components-web/commit/0dfad9a))
+
+
+
 <a name="0.37.0"></a>
 # [0.37.0](https://github.com/material-components/material-components-web/compare/v0.36.0...v0.37.0) (2018-07-02)
 

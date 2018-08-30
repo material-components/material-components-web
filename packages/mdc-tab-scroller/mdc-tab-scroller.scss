@@ -1,0 +1,88 @@
+/**
+ * @license
+ * Copyright 2018 Google Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+@import "@material/animation/variables";
+@import "@material/tab/mixins";
+
+// postcss-bem-linter: define tab-scroller
+.mdc-tab-scroller {
+  overflow-y: hidden;
+}
+
+// Selector for test element used to feature-detect horizontal scrollbar height
+.mdc-tab-scroller__test {
+  position: absolute;
+  top: -9999px;
+  width: 100px;
+  height: 100px;
+  overflow-x: scroll;
+}
+
+.mdc-tab-scroller__scroll-area {
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  overflow-x: hidden;
+}
+
+.mdc-tab-scroller__scroll-area,
+.mdc-tab-scroller__test {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+// This modifier class will be added in JS after computing the OS scrollbar size in order to hide the scrollbar.
+.mdc-tab-scroller__scroll-area--scroll {
+  overflow-x: scroll;
+}
+
+.mdc-tab-scroller__scroll-content {
+  @include mdc-tab-parent-positioning;
+
+  display: flex;
+  flex: 1 0 auto;
+  transform: none;
+  will-change: transform;
+}
+
+.mdc-tab-scroller--align-start .mdc-tab-scroller__scroll-content {
+  justify-content: flex-start;
+}
+
+.mdc-tab-scroller--align-end .mdc-tab-scroller__scroll-content {
+  justify-content: flex-end;
+}
+
+.mdc-tab-scroller--align-center .mdc-tab-scroller__scroll-content {
+  justify-content: center;
+}
+
+.mdc-tab-scroller--animating .mdc-tab-scroller__scroll-area {
+  -webkit-overflow-scrolling: auto;
+}
+
+.mdc-tab-scroller--animating .mdc-tab-scroller__scroll-content {
+  transition: 250ms transform $mdc-animation-standard-curve-timing-function;
+}
+
+// postcss-bem-linter: end
