@@ -39,33 +39,3 @@
 @mixin mdc-dialog-scroll-divider-color($color: $mdc-dialog-scroll-divider-color, $opacity: $mdc-dialog-scroll-divider-opacity) {
   border-color: rgba(mdc-theme-prop-value($color), $opacity);
 }
-
-@mixin mdc-dialog-multiline-ellipsis($max-lines: 2) {
-  @include mdc-dialog-multiline-ellipsis-fallback_($max-lines);
-  @include mdc-dialog-multiline-ellipsis-webkit_($max-lines);
-
-  // All browsers
-  overflow: hidden;
-}
-
-//
-// Private
-//
-
-// Firefox, Edge <= 16, IE 11
-@mixin mdc-dialog-multiline-ellipsis-fallback_($max-lines) {
-  display: flex;
-  max-height: (1.5em * $max-lines);
-}
-
-// Chrome, Safari, Edge 17+
-@mixin mdc-dialog-multiline-ellipsis-webkit_($max-lines) {
-  @supports (-webkit-line-clamp: $max-lines) {
-    // stylelint-disable-next-line value-no-vendor-prefix
-    display: -webkit-box;
-
-    /* autoprefixer: ignore next */
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: $max-lines;
-  }
-}

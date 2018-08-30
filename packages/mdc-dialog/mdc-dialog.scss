@@ -91,8 +91,10 @@
   }
 }
 
-.mdc-dialog__header {
+.mdc-dialog__title {
   @include mdc-dialog-scroll-divider-color;
+  @include mdc-dialog-title-ink-color;
+  @include mdc-typography(headline6);
 
   display: flex;
   position: relative;
@@ -110,16 +112,6 @@
   @include mdc-rtl(".mdc-dialog") {
     text-align: right;
   }
-}
-
-.mdc-dialog__title {
-  @include mdc-dialog-title-ink-color;
-  @include mdc-dialog-multiline-ellipsis;
-  @include mdc-typography(headline6);
-
-  flex: 1;
-  box-sizing: border-box;
-  margin: 0;
 }
 
 .mdc-dialog__content {
