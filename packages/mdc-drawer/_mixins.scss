@@ -118,3 +118,15 @@
     @include mdc-theme-prop(background-color, $value);
   }
 }
+
+@mixin mdc-drawer-z-index($value) {
+  z-index: $value;
+}
+
+@mixin mdc-drawer-width($width) {
+  width: $width;
+
+  &.mdc-drawer--open:not(.mdc-drawer--closing) + .mdc-drawer-app-content {
+    @include mdc-rtl-reflexive-box(margin, left, $width);
+  }
+}
