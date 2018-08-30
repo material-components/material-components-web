@@ -121,7 +121,7 @@ class MDCSelectFoundation extends MDCFoundation {
    * @param {boolean} openNotch
    */
   notchOutline(openNotch) {
-    if (!this.adapter_.hasOutline() || !this.adapter_.hasLabel()) {
+    if (!this.adapter_.hasOutline()) {
       return;
     }
 
