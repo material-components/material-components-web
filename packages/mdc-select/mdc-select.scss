@@ -143,6 +143,7 @@
 
 .mdc-select--disabled {
   @include mdc-select-dd-arrow-svg-bg_($mdc-select-disabled-arrow-color);
+  @include mdc-select-container-fill-color_($mdc-select-box-disabled-fill-color);
 
   .mdc-floating-label {
     @include mdc-floating-label-ink-color($mdc-select-disabled-label-color);
@@ -158,11 +159,9 @@
     border-bottom-style: dotted;
   }
 
-  &.mdc-select--box {
-    @include mdc-select-container-fill-color_($mdc-select-box-disabled-fill-color);
-  }
-
   &.mdc-select--outlined {
+    @include mdc-select-container-fill-color_(transparent);
+
     // stylelint-disable-next-line plugin/selector-bem-pattern
     .mdc-select__native-control {
       border-bottom-style: none;
