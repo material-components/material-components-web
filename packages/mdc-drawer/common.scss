@@ -41,13 +41,12 @@
   @include mdc-drawer-item-activated-text-ink-color($mdc-drawer-item-activated-ink-color);
   @include mdc-drawer-item-corner-radius(4px);
   @include mdc-drawer-z-index($mdc-drawer-z-index);
+  @include mdc-drawer-width($mdc-drawer-width);
 
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
   box-sizing: border-box;
-  width: $mdc-drawer-width;
-  max-width: $mdc-drawer-width;
   height: 100%;
   transition-property: transform;
   transition-timing-function: $mdc-animation-standard-curve-timing-function;

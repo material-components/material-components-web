@@ -50,11 +50,9 @@ Dialogs inform users about a specific task and may contain critical information 
   aria-labelledby="my-mdc-dialog-label"
   aria-describedby="my-mdc-dialog-description">
   <div class="mdc-dialog__container">
-    <header class="mdc-dialog__header">
-      <h2 id="my-mdc-dialog-label" class="mdc-dialog__title">
-        Use Google's location service?
-      </h2>
-    </header>
+    <h2 id="my-mdc-dialog-label" class="mdc-dialog__title">
+      Use Google's location service?
+    </h2>
     <section id="my-mdc-dialog-description" class="mdc-dialog__content">
       Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
     </section>
@@ -85,24 +83,66 @@ a `mdc-dialog__content--scrollable` modifier to allow scrolling in the dialog.
     aria-labelledby="mdc-dialog-with-list-label"
     aria-describedby="mdc-dialog-with-list-description">
     <div class="mdc-dialog__container">
-      <header class="mdc-dialog__header">
-        <h2 id="mdc-dialog-with-list-label" class="mdc-dialog__title">
-          Choose a Ringtone
-        </h2>
-      </header>
+      <h2 id="mdc-dialog-with-list-label" class="mdc-dialog__title">
+        Choose a Ringtone
+      </h2>
       <section id="mdc-dialog-with-list-description" class="mdc-dialog__content mdc-dialog__content--scrollable">
        	<ul class="mdc-list">
-          <li class="mdc-list-item">None</li>
-          <li class="mdc-list-item">Callisto</li>
-          <li class="mdc-list-item">Ganymede</li>
-          <li class="mdc-list-item">Luna</li>
-          <li class="mdc-list-item">Marimba</li>
-          <li class="mdc-list-item">Schwifty</li>
-          <li class="mdc-list-item">Callisto</li>
-          <li class="mdc-list-item">Ganymede</li>
-          <li class="mdc-list-item">Luna</li>
-          <li class="mdc-list-item">Marimba</li>
-          <li class="mdc-list-item">Schwifty</li>
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__text">
+              None
+            </span>
+          </li>
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__text">
+              Callisto
+            </span>
+          </li>
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__text">
+              Ganymede
+            </span>
+          </li>
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__text">
+              Luna
+            </span>
+          </li>
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__text">
+              Marimba
+            </span>
+          </li>
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__text">
+              Schwifty
+            </span>
+          </li>
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__text">
+              Callisto
+            </span>
+          </li>
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__text">
+              Ganymede
+            </span>
+          </li>
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__text">
+              Luna
+            </span>
+          </li>
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__text">
+              Marimba
+            </span>
+          </li>
+          <li class="mdc-list-item">
+            <span class="mdc-list-item__text">
+              Schwifty
+            </span>
+          </li>
         </ul>
       </section>
       <footer class="mdc-dialog__actions">

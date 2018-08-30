@@ -41,21 +41,16 @@ function getFixture() {
            aria-labelledby="my-dialog-label"
            aria-describedby="my-dialog-description">
         <div class="mdc-dialog__container">
-          <header class="mdc-dialog__header">
-            <h2 id="my-dialog-label" class="mdc-dialog__title">
-              Use Google's location service?
-            </h2>
-          </header>
-          <section id="my-dialog-description" class="mdc-dialog__content">
+          <h2 class="mdc-dialog__title" id="my-dialog-label">
+            Use Google's location service?
+          </h2>
+          <section class="mdc-dialog__content" id="my-dialog-description">
             Let Google help apps determine location.
           </section>
           <footer class="mdc-dialog__actions">
-            <button type="button"
-              class="mdc-button mdc-dialog__button" data-mdc-dialog-action="cancel">Cancel</button>
-            <button type="button"
-              class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">No</button>
-            <button type="button"
-              class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">Yes</button>
+            <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="cancel">Cancel</button>
+            <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">No</button>
+            <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">Yes</button>
           </footer>
         </div>
         <div class="mdc-dialog__scrim"></div>
