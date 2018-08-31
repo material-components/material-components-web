@@ -41,6 +41,24 @@ export function createFocusTrapInstance(surfaceEl, initialFocusEl = null, focusT
 }
 
 /**
+ * @param {!HTMLElement} el
+ * @return {boolean}
+ */
+export function isScrollable(el) {
+  return el.scrollHeight > el.offsetHeight;
+}
+
+/**
+ * @param {!Array<!HTMLElement>|!NodeList} els
+ * @return {boolean}
+ */
+export function areTopsAligned(els) {
+  const tops = new Set();
+  [].forEach.call(els, (el) => tops.add(el.offsetTop));
+  return tops.size > 1;
+}
+
+/**
  * IE 11 flexbox bug. `overflow: auto` is ignored on child flex items when their height exceeds the `max-height` of
  * their parent flex container. The child ends up overflowing the parent instead of respecting `max-height`.
  *
@@ -104,24 +122,6 @@ export function fixFlexItemMaxHeightBug(flexItemEl, callback) {
   for (let i = 0; i < numbers.IE_FLEX_OVERFLOW_BUG_ITERATIONS; i++) {
     setTimeout(() => tick(), i * numbers.IE_FLEX_OVERFLOW_BUG_INTERVAL_MS);
   }
-}
-
-/**
- * @param {!HTMLElement} el
- * @return {boolean}
- */
-export function isScrollable(el) {
-  return el.scrollHeight > el.offsetHeight;
-}
-
-/**
- * @param {!Array<!HTMLElement>|!NodeList} els
- * @return {boolean}
- */
-export function areTopsAligned(els) {
-  const tops = new Set();
-  [].forEach.call(els, (el) => tops.add(el.offsetTop));
-  return tops.size > 1;
 }
 
 /**
