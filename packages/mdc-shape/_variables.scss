@@ -20,28 +20,12 @@
 // THE SOFTWARE.
 //
 
-// Component heights
-$mdc-shape-extended-fab-height: 48px;
-$mdc-shape-button-height: 36px;
-$mdc-shape-button-dense-height: 32px;
-$mdc-shape-text-field-outlined-height: 56px;
-$mdc-shape-text-field-outlined-dense-height: 48px;
-
 // Shape categories
 $mdc-shape-small-radius: 4px !default;
 $mdc-shape-medium-radius: 4px !default;
 $mdc-shape-large-radius: 24px !default;
 
-// Components which support pill shape radius.
-$mdc-shape-height-values: (
-  extended-fab: $mdc-shape-extended-fab-height,
-  button: $mdc-shape-button-height,
-  button-dense: $mdc-shape-button-dense-height,
-  text-field-outlined: $mdc-shape-text-field-outlined-height,
-  text-field-outlined-dense: $mdc-shape-text-field-outlined-dense-height,
-);
-
-// Shape category baseline values.
+// Shape category mapping.
 $mdc-shape-category-values: (
   small: $mdc-shape-small-radius,
   medium: $mdc-shape-medium-radius,
