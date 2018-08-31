@@ -18,7 +18,6 @@ $mdc-dialog-min-width: 280px;
 $mdc-dialog-max-width: 560px;
 $mdc-dialog-viewport-margin: 16px;
 $mdc-dialog-viewport-size-expr: calc(100% - #{$mdc-dialog-viewport-margin * 2});
-$mdc-dialog-width-breakpoint: $mdc-dialog-max-width + ($mdc-dialog-viewport-margin * 2);
 
 $mdc-dialog-corner-radius: 4px;
 $mdc-dialog-title-ink-color: on-surface;

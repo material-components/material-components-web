@@ -32,6 +32,10 @@
 // postcss-bem-linter: define dialog
 
 .mdc-dialog {
+  @include mdc-dialog-min-width;
+  @include mdc-dialog-max-width;
+  @include mdc-dialog-max-height;
+
   // Use `display: none` instead of `visibility: hidden` to work around a `-webkit-line-clamp` bug.
   // https://stackoverflow.com/a/44193578/467582
   display: none;
@@ -69,18 +73,6 @@
   display: flex;
   flex-direction: row; // IE 11
   box-sizing: border-box;
-  max-height: $mdc-dialog-viewport-size-expr;
-
-  // Fit snugly within the viewport at smaller screen sizes.
-  @media (max-width: ($mdc-dialog-width-breakpoint - 1)) {
-    max-width: $mdc-dialog-viewport-size-expr;
-  }
-
-  // Once the screen gets big enough, apply a fixed maximum width.
-  @media (min-width: $mdc-dialog-width-breakpoint) {
-    max-width: $mdc-dialog-max-width;
-  }
-
   transform: translateY(150px) scale(.8);
   opacity: 0;
 }
@@ -95,7 +87,6 @@
   flex-grow: 0; // IE 11
   flex-shrink: 0; // IE 11
   box-sizing: border-box;
-  min-width: $mdc-dialog-min-width;
   max-width: 100%; // IE 11
   max-height: 100%; // IE 11
 

@@ -39,3 +39,49 @@
 @mixin mdc-dialog-scroll-divider-color($color: $mdc-dialog-scroll-divider-color, $opacity: $mdc-dialog-scroll-divider-opacity) {
   border-color: rgba(mdc-theme-prop-value($color), $opacity);
 }
+
+@mixin mdc-dialog-min-width($min-width: $mdc-dialog-min-width) {
+  .mdc-dialog__surface {
+    min-width: $min-width;
+  }
+}
+
+@mixin mdc-dialog-max-width($max-width-scalar: $mdc-dialog-max-width) {
+  .mdc-dialog__container {
+    @if $max-width-scalar {
+      $max-width-breakpoint: $max-width-scalar + ($mdc-dialog-viewport-margin * 2);
+
+      // Fit snugly within the viewport at smaller screen sizes.
+      @media (max-width: ($max-width-breakpoint - 1)) {
+        max-width: $mdc-dialog-viewport-size-expr;
+      }
+
+      // Once the screen gets big enough, apply a fixed maximum width.
+      @media (min-width: $max-width-breakpoint) {
+        max-width: $max-width-scalar;
+      }
+    } @else {
+      max-width: $mdc-dialog-viewport-size-expr;
+    }
+  }
+}
+
+@mixin mdc-dialog-max-height($max-height-scalar: null) {
+  .mdc-dialog__container {
+    @if $max-height-scalar {
+      $max-height-breakpoint: $max-height-scalar + ($mdc-dialog-viewport-margin * 2);
+
+      // Fit snugly within the viewport at smaller screen sizes.
+      @media (max-height: ($max-height-breakpoint - 1)) {
+        max-height: $mdc-dialog-viewport-size-expr;
+      }
+
+      // Once the screen gets big enough, apply a fixed maximum height.
+      @media (min-height: $max-height-breakpoint) {
+        max-height: $max-height-scalar;
+      }
+    } @else {
+      max-height: $mdc-dialog-viewport-size-expr;
+    }
+  }
+}
