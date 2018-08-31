@@ -39,7 +39,11 @@
 }
 
 @function mdc-shape-resolve-pill-corner_($component-height, $radius) {
-  @return $component-height / 2;
+  @if $radius == pill {
+    @return $component-height / 2;
+  } @else {
+    @return $radius;
+  }
 }
 
 @function mdc-shape-prop-value($radius) {
