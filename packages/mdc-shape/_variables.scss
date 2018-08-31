@@ -1,0 +1,45 @@
+//
+// Copyright 2018 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+$mdc-shape-extended-fab-height: 48px;
+$mdc-shape-button-height: 36px;
+$mdc-shape-button-dense-height: 32px;
+$mdc-shape-text-field-outlined-height: 56px;
+$mdc-shape-text-field-outlined-dense-height: 48px;
+
+$mdc-shape-button-radius: 2px !default;
+$mdc-shape-fab-radius: 50% !default;
+$mdc-shape-sheet-expanded-radius: 0 !default;
+$mdc-shape-extended-fab-radius: $mdc-shape-extended-fab-height / 2 !default;
+$mdc-shape-small-container-radius: 4px !default;
+
+// Components which support pill shape radius.
+$mdc-shape-height-values: (
+  extended-fab: $mdc-shape-extended-fab-height,
+  button: $mdc-shape-button-height,
+  button-dense: $mdc-shape-button-dense-height,
+  text-field-outlined: $mdc-shape-text-field-outlined-height,
+  text-field-outlined-dense: $mdc-shape-text-field-outlined-dense-height,
+);
+
+// Shape category baseline values.
+$mdc-shape-category-values: (
+  button: $mdc-shape-button-radius,
+  fab: $mdc-shape-fab-radius,
+  sheet-expanded: $mdc-shape-sheet-expanded-radius,
+  extended-fab: $mdc-shape-extended-fab-radius,
+  small-container: $mdc-shape-small-container-radius,
+);

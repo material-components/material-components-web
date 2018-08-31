@@ -16,9 +16,6 @@ path: /catalog/shape/
 
 Shapes direct attention, identify components, communicate state, and express brand.
 
-Many MDC Web components include direct support for rounded corners; this package provides additional support for
-applying angled corners to unelevated surfaces.
-
 ## Design & API Documentation
 
 <ul class="icon-list">
@@ -38,72 +35,27 @@ npm install @material/shape
 
 ## Basic Usage
 
-### HTML
-
-The markup for angled corners involves a container element, and one element per angled corner.
-
-The following example demonstrates angled corners applied to a MDC Button, but this technique may be applied to any
-unelevated component.
-
-```html
-<div class="mdc-shape-container my-shape-container">
-  <button class="mdc-button mdc-button--unelevated">Button</button>
-  <div class="mdc-shape-container__corner mdc-shape-container__corner--top-left"></div>
-  <div class="mdc-shape-container__corner mdc-shape-container__corner--top-right"></div>
-  <div class="mdc-shape-container__corner mdc-shape-container__corner--bottom-right"></div>
-  <div class="mdc-shape-container__corner mdc-shape-container__corner--bottom-left"></div>
-</div>
-```
-
-> **Note:** Each angled corner should have its own `<div>` element. Any corner that will not be cut (i.e. its size is 0)
-> does not need a dedicated element.
-
 ### Styles
 
-```scss
-@import "@material/shape/mdc-shape"; // The base shape styles need to be imported once in the page or application
-@import "@material/shape/mixins";
+The styles for applying custom shape to button component looks like this:
 
-.my-shape-container {
-  @include mdc-shape-angled-corner(#fff, 10px);
+```scss
+@import "@material/button/mixins";
+
+.my-custom-button {
+  @include mdc-button-shape-radius(pill);
 }
 ```
 
-## Variants
+In this example, the above styles applies `pill` shape to button. It can also be absolute value (e.g., `8px`);
 
-### Outlined Angled Corners
-
-Outlined angled corners involve the same markup and styles/imports as above, with the addition of including a mixin for
-outline:
-
-```scss
-.my-shape-container {
-  @include mdc-shape-angled-corner(#fff, 10px);
-  @include mdc-shape-angled-corner-outline(2px, blue);
-}
-```
-
-## Style Customization
-
-### CSS Classes
-
-CSS Class | Description
---- | ---
-`mdc-shape-container` | Mandatory. Parent element containing the component to be masked.
-`mdc-shape-container__corner` | Mandatory. Element for masking a specific corner; there may be up to 4.
-`mdc-shape-container__corner--bottom-left` | Element for masking the bottom left corner of the component.
-`mdc-shape-container__corner--bottom-right` | Element for masking the bottom right corner of the component.
-`mdc-shape-container__corner--top-left` | Element for masking the top left corner of the component.
-`mdc-shape-container__corner--top-right` | Element for masking the top right corner of the component.
+> You would indirectly use the Shape API through respective component's mixin which takes care of applying radius all corners to all its component variants.
 
 ### Sass Mixins
 
 Mixin | Description
 --- | ---
-`mdc-shape-angled-corner($background-color, $top-left-size[, $top-right-size, $bottom-right-size, $bottom-left-size])` | Applies styles for masking angled corners, using the given background color and corner sizes. If fewer than 4 corner sizes are specified, the mixin automatically determines the other corners similarly to CSS `border-radius`.
-`mdc-shape-angled-corner-background($background-color)` | Sets the background color used to mask angled corners. Useful for styling a subset of components in a section with a different background color.
-`mdc-shape-angled-corner-outline($outline-width, $outline-color[, $outline-style])` | Applies outline styles to angled corners. `$outline-style` defaults to `solid`.
+`mdc-shape-radius($radius, $rtl-reflexive)` | Shape API used by all other components to apply radius to appropriate corners. `$radius` can be single value or list of 4 radius corner values. Set `$rtl-reflexive` to true to flip the radius in RTL case, `false` by default.
+`mdc-shape-flip-radius($radius)` | Flips the radius in RTL case. Where `$radius` is a list of 4 radius corner values.
 
-> **Note:** When mentioned above, "background color" specifically refers to the color of the background behind the surface (_not_ the fill color of the surface). These mixins operate by masking the corners of the surface to match the background.
-
-> **Note:** These mixins should be included in the context of the container element (or an ancestor) in order to apply styles to the corner elements.
+> `$radius` value can be single radius or list of 4 radius corner values. Accepted unit type for radius: `px` or `pill`. Where `pill` is automatically calculated based on component's height.
