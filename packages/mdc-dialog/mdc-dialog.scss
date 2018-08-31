@@ -92,7 +92,6 @@
 }
 
 .mdc-dialog__title {
-  @include mdc-dialog-scroll-divider-color;
   @include mdc-dialog-title-ink-color;
   @include mdc-typography(headline6);
 
@@ -103,10 +102,10 @@
   box-sizing: border-box;
   margin: 0;
   padding: 16px 24px 15px;
+  border-bottom: 1px solid transparent;
 
   .mdc-dialog--scrollable & {
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
+    @include mdc-dialog-scroll-divider-color;
   }
 
   @include mdc-rtl(".mdc-dialog") {
@@ -129,6 +128,7 @@
     // Causes a split second of jank in IE, but it's the least-crappy workaround I could find.
     // See https://github.com/philipwalton/flexbugs/issues/216
     flex-basis: auto;
+    //border-bottom-width: 1px;
   }
 
   .mdc-dialog--scrollable & {
@@ -150,8 +150,6 @@
 }
 
 .mdc-dialog__actions {
-  @include mdc-dialog-scroll-divider-color;
-
   display: flex;
   position: relative;
   flex-shrink: 0;
@@ -161,10 +159,10 @@
   box-sizing: border-box;
   margin: 0;
   padding: 8px;
+  border-top: 1px solid transparent;
 
   .mdc-dialog--scrollable & {
-    border-top-width: 1px;
-    border-top-style: solid;
+    @include mdc-dialog-scroll-divider-color;
   }
 
   .mdc-dialog--stacked & {

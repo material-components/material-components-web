@@ -304,8 +304,8 @@ do so. We provide instructions on how to add ripples to buttons within the [mdc-
 | `eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise. |
 | `registerInteractionHandler(evt: string, handler: EventListener) => void` | Adds an event listener to the root element, for the specified event name. |
 | `deregisterInteractionHandler(evt: string, handler: EventListener) => void` | Removes an event listener from the root element, for the specified event name. |
-| `registerSurfaceInteractionHandler(evt: string, handler: EventListener) => void` | Registers an event handler on the dialog surface element. |
-| `deregisterSurfaceInteractionHandler(evt: string, handler: EventListener) => void` | Deregisters an event handler from the dialog surface element. |
+| `registerContainerInteractionHandler(evt: string, handler: EventListener) => void` | Registers an event handler on the dialog surface element. |
+| `deregisterContainerInteractionHandler(evt: string, handler: EventListener) => void` | Deregisters an event handler from the dialog surface element. |
 | `registerDocumentKeydownHandler(handler: EventListener) => void` | Registers an event handler on the `document` object for a `keydown` event. |
 | `deregisterDocumentKeydownHandler(handler: EventListener) => void` | Deregisters an event handler on the `document` object for a `keydown` event. |
 | `registerTransitionEndHandler: (handler: EventListener) => void` | Registers an event handler to be called when a transitionend event is triggered on the dialog container sub-element element. |

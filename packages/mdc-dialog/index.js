@@ -31,6 +31,9 @@ import * as util from './util';
 export {MDCDialogFoundation};
 export {util};
 
+const cssClasses = MDCDialogFoundation.cssClasses;
+const strings = MDCDialogFoundation.strings;
+
 export class MDCDialog extends MDCComponent {
   constructor(...args) {
     super(...args);
@@ -46,6 +49,8 @@ export class MDCDialog extends MDCComponent {
      * @private
      */
     this.buttonRipples_;
+
+    window._component = this;
   }
 
   static attachTo(root) {
@@ -56,23 +61,23 @@ export class MDCDialog extends MDCComponent {
     return this.foundation_.isOpen();
   }
 
-  get containerElement_() {
-    return this.root_.querySelector(MDCDialogFoundation.strings.CONTAINER_SELECTOR);
+  get container_() {
+    return this.root_.querySelector(strings.CONTAINER_SELECTOR);
   }
 
-  get contentElement_() {
-    return this.root_.querySelector(MDCDialogFoundation.strings.CONTENT_SELECTOR);
+  get content_() {
+    return this.root_.querySelector(strings.CONTENT_SELECTOR);
   }
 
-  get buttonElements_() {
-    return [].slice.call(this.root_.querySelectorAll(MDCDialogFoundation.strings.ACTION_BUTTON_SELECTOR));
+  get buttons_() {
+    return [].slice.call(this.root_.getElementsByClassName(cssClasses.BUTTON));
   }
 
   initialize() {
-    this.focusTrap_ = util.createFocusTrapInstance(this.containerElement_);
+    this.focusTrap_ = util.createFocusTrapInstance(this.container_);
     this.buttonRipples_ = [];
 
-    const buttonEls = this.buttonElements_;
+    const buttonEls = this.buttons_;
     for (let i = 0, buttonEl; buttonEl = buttonEls[i]; i++) {
       this.buttonRipples_.push(new MDCRipple(buttonEl));
     }
@@ -101,22 +106,19 @@ export class MDCDialog extends MDCComponent {
       eventTargetMatchesSelector: (target, selector) => matches(target, selector),
       registerInteractionHandler: (evt, handler) => this.root_.addEventListener(evt, handler),
       deregisterInteractionHandler: (evt, handler) => this.root_.removeEventListener(evt, handler),
-      registerSurfaceInteractionHandler: (evt, handler) => this.containerElement_.addEventListener(evt, handler),
-      deregisterSurfaceInteractionHandler: (evt, handler) => this.containerElement_.removeEventListener(evt, handler),
       registerDocumentKeydownHandler: (handler) => document.addEventListener('keydown', handler),
       deregisterDocumentKeydownHandler: (handler) => document.removeEventListener('keydown', handler),
-      isScrollable: (element) => element.scrollHeight > element.offsetHeight,
-      getContentElement: () => this.contentElement_,
-      getButtonElements: () => this.buttonElements_,
-      notifyYes: () => this.emit(MDCDialogFoundation.strings.YES_EVENT),
-      notifyNo: () => this.emit(MDCDialogFoundation.strings.NO_EVENT),
-      notifyCancel: () => this.emit(MDCDialogFoundation.strings.CANCEL_EVENT),
-      notifyOpening: () => this.emit(MDCDialogFoundation.strings.OPENING_EVENT),
-      notifyOpened: () => this.emit(MDCDialogFoundation.strings.OPENED_EVENT),
-      notifyClosing: () => this.emit(MDCDialogFoundation.strings.CLOSING_EVENT),
-      notifyClosed: () => this.emit(MDCDialogFoundation.strings.CLOSED_EVENT),
+      registerWindowResizeHandler: (handler) => window.addEventListener('resize', handler),
+      deregisterWindowResizeHandler: (handler) => window.removeEventListener('resize', handler),
       trapFocusOnSurface: () => this.focusTrap_.activate(),
       untrapFocusOnSurface: () => this.focusTrap_.deactivate(),
+      isContentScrollable: () => Boolean(this.content_) && this.content_.scrollHeight > this.content_.offsetHeight,
+      areButtonsStacked: () => this.buttons_.reduce((set, el) => set.add(el.offsetTop) || set, new Set()).size > 1,
+      getAction: (element) => element.getAttribute(strings.ACTION_ATTRIBUTE),
+      notifyOpening: () => this.emit(strings.OPENING_EVENT),
+      notifyOpened: () => this.emit(strings.OPENED_EVENT),
+      notifyClosing: (action = undefined) => this.emit(strings.CLOSING_EVENT, {action}),
+      notifyClosed: (action = undefined) => this.emit(strings.CLOSED_EVENT, {action}),
     });
   }
 }

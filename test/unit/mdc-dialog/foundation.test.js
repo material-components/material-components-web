@@ -50,7 +50,7 @@ test('default adapter returns a complete adapter implementation', () => {
     'addClass', 'removeClass', 'addBodyClass', 'removeBodyClass',
     'eventTargetHasClass', 'eventTargetMatchesSelector',
     'registerInteractionHandler', 'deregisterInteractionHandler',
-    'registerSurfaceInteractionHandler', 'deregisterSurfaceInteractionHandler',
+    'registerContainerInteractionHandler', 'deregisterContainerInteractionHandler',
     'registerDocumentKeydownHandler', 'deregisterDocumentKeydownHandler',
     'isScrollable', 'getContentElement', 'getButtonElements',
     'notifyYes', 'notifyNo', 'notifyCancel', 'notifyOpening', 'notifyOpened', 'notifyClosing', 'notifyClosed',
@@ -110,7 +110,7 @@ test('#open registers all events registered within open()', () => {
 
   foundation.open();
 
-  td.verify(mockAdapter.registerSurfaceInteractionHandler('click', td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerContainerInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.registerDocumentKeydownHandler(td.matchers.isA(Function)));
   td.verify(mockAdapter.registerInteractionHandler('click', td.matchers.isA(Function)));
 });
@@ -120,7 +120,7 @@ test('#close deregisters all events registered within open()', () => {
 
   foundation.close();
 
-  td.verify(mockAdapter.deregisterSurfaceInteractionHandler('click', td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterContainerInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterDocumentKeydownHandler(td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterInteractionHandler('click', td.matchers.isA(Function)));
 });
@@ -254,7 +254,7 @@ test('#cancel does not call notifyCancel when shouldNotify is falsy', () => {
 
 test('on dialog surface click closes and notifies if event target is the "yes" button', () => {
   const {foundation, mockAdapter} = setupTest();
-  const handlers = captureHandlers(mockAdapter, 'registerSurfaceInteractionHandler');
+  const handlers = captureHandlers(mockAdapter, 'registerContainerInteractionHandler');
   const evt = {
     stopPropagation: () => {},
     target: {},
@@ -269,7 +269,7 @@ test('on dialog surface click closes and notifies if event target is the "yes" b
 
 test('on dialog surface click closes and notifies if event target is the "no" button', () => {
   const {foundation, mockAdapter} = setupTest();
-  const handlers = captureHandlers(mockAdapter, 'registerSurfaceInteractionHandler');
+  const handlers = captureHandlers(mockAdapter, 'registerContainerInteractionHandler');
   const evt = {
     stopPropagation: () => {},
     target: {},
@@ -284,7 +284,7 @@ test('on dialog surface click closes and notifies if event target is the "no" bu
 
 test('on dialog surface click closes and notifies cancellation if event target is the "cancel" button', () => {
   const {foundation, mockAdapter} = setupTest();
-  const handlers = captureHandlers(mockAdapter, 'registerSurfaceInteractionHandler');
+  const handlers = captureHandlers(mockAdapter, 'registerContainerInteractionHandler');
   const evt = {
     stopPropagation: () => {},
     target: {},
@@ -300,7 +300,7 @@ test('on dialog surface click closes and notifies cancellation if event target i
 test('on dialog surface click does not close or notify if the event target is not the ' +
      '"yes", "no", or "cancel" button', () => {
   const {foundation, mockAdapter} = setupTest();
-  const handlers = captureHandlers(mockAdapter, 'registerSurfaceInteractionHandler');
+  const handlers = captureHandlers(mockAdapter, 'registerContainerInteractionHandler');
   const evt = {
     target: {},
     stopPropagation: () => {},

@@ -40,22 +40,6 @@
  * @record
  */
 class MDCDialogAdapter {
-  /**
-   * @param {!HTMLElement} el
-   * @return {boolean}
-   */
-  isScrollable(el) {}
-
-  /**
-   * @return {?HTMLElement}
-   */
-  getContentElement() {}
-
-  /**
-   * @return {!NodeList|!Array<!HTMLElement>}
-   */
-  getButtonElements() {}
-
   /** @param {string} className */
   addClass(className) {}
 
@@ -95,18 +79,6 @@ class MDCDialogAdapter {
   deregisterInteractionHandler(evt, handler) {}
 
   /**
-   * @param {string} evt
-   * @param {!EventListener} handler
-   */
-  registerSurfaceInteractionHandler(evt, handler) {}
-
-  /**
-   * @param {string} evt
-   * @param {!EventListener} handler
-   */
-  deregisterSurfaceInteractionHandler(evt, handler) {}
-
-  /**
    * @param {!EventListener} handler
    */
   registerDocumentKeydownHandler(handler) {}
@@ -116,16 +88,40 @@ class MDCDialogAdapter {
    */
   deregisterDocumentKeydownHandler(handler) {}
 
+  /**
+   * @param {!EventListener} handler
+   */
+  registerWindowResizeHandler(handler) {}
+
+  /**
+   * @param {!EventListener} handler
+   */
+  deregisterWindowResizeHandler(handler) {}
+
   trapFocusOnSurface() {}
   untrapFocusOnSurface() {}
 
-  notifyYes() {}
-  notifyNo() {}
-  notifyCancel() {}
+  /** @return {boolean} */
+  isContentScrollable() {}
+
+  /** @return {boolean} */
+  areButtonsStacked() {}
+
+  /** @return {?string} */
+  getAction(element) {}
+
   notifyOpening() {}
   notifyOpened() {}
-  notifyClosing() {}
-  notifyClosed() {}
+
+  /**
+   * @param {string=} action
+   */
+  notifyClosing(action = undefined) {}
+
+  /**
+   * @param {string=} action
+   */
+  notifyClosed(action = undefined) {}
 }
 
 export default MDCDialogAdapter;

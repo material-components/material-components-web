@@ -172,24 +172,24 @@ test('adapter#deregisterInteractionHandler removes an event listener from the ro
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('adapter#registerSurfaceInteractionHandler adds an event listener to the root element', () => {
+test('adapter#registerContainerInteractionHandler adds an event listener to the root element', () => {
   const {root, component} = setupTest();
   const dialog = root.querySelector(strings.CONTAINER_SELECTOR);
   const handler = td.func('eventHandler');
 
-  component.getDefaultFoundation().adapter_.registerSurfaceInteractionHandler('click', handler);
+  component.getDefaultFoundation().adapter_.registerContainerInteractionHandler('click', handler);
   domEvents.emit(dialog, 'click');
 
   td.verify(handler(td.matchers.anything()));
 });
 
-test('adapter#deregisterSurfaceInteractionHandler removes an event listener from the root element', () => {
+test('adapter#deregisterContainerInteractionHandler removes an event listener from the root element', () => {
   const {root, component} = setupTest();
   const dialog = root.querySelector(strings.CONTAINER_SELECTOR);
   const handler = td.func('eventHandler');
 
   dialog.addEventListener('click', handler);
-  component.getDefaultFoundation().adapter_.deregisterSurfaceInteractionHandler('click', handler);
+  component.getDefaultFoundation().adapter_.deregisterContainerInteractionHandler('click', handler);
   domEvents.emit(dialog, 'click');
   td.verify(handler(td.matchers.anything()), {times: 0});
 });

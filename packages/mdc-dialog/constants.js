@@ -30,6 +30,7 @@ const cssClasses = {
   FIX_IE_OVERFLOW: 'mdc-dialog--fix-ie-overflow',
   SCRIM: 'mdc-dialog__scrim',
   CONTENT: 'mdc-dialog__content',
+  BUTTON: 'mdc-dialog__button',
   SCROLL_LOCK: 'mdc-dialog-scroll-lock',
 };
 
@@ -37,11 +38,6 @@ const strings = {
   OPEN_DIALOG_SELECTOR: '.mdc-dialog--open',
   CONTAINER_SELECTOR: '.mdc-dialog__container',
   CONTENT_SELECTOR: '.mdc-dialog__content',
-  ACTION_BUTTON_SELECTOR: '.mdc-dialog__button',
-
-  YES_BTN_SELECTOR: '[data-mdc-dialog-action="yes"]',
-  NO_BTN_SELECTOR: '[data-mdc-dialog-action="no"]',
-  CANCEL_BTN_SELECTOR: '[data-mdc-dialog-action="cancel"]',
 
   YES_EVENT: 'MDCDialog:yes',
   NO_EVENT: 'MDCDialog:no',
@@ -51,6 +47,8 @@ const strings = {
   OPENED_EVENT: 'MDCDialog:opened',
   CLOSING_EVENT: 'MDCDialog:closing',
   CLOSED_EVENT: 'MDCDialog:closed',
+
+  ACTION_ATTRIBUTE: 'data-mdc-dialog-action',
 };
 
 const numbers = {
