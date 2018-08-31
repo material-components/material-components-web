@@ -31,7 +31,6 @@ import * as util from './util';
 export {MDCDialogFoundation};
 export {util};
 
-const cssClasses = MDCDialogFoundation.cssClasses;
 const strings = MDCDialogFoundation.strings;
 
 export class MDCDialog extends MDCComponent {
@@ -72,15 +71,14 @@ export class MDCDialog extends MDCComponent {
   }
 
   get buttons_() {
-    return [].slice.call(this.root_.getElementsByClassName(cssClasses.BUTTON));
+    return [].slice.call(this.root_.querySelectorAll(strings.BUTTON_SELECTOR));
   }
 
   initialize() {
     this.focusTrap_ = util.createFocusTrapInstance(this.container_);
     this.buttonRipples_ = [];
 
-    const buttonEls = this.buttons_;
-    for (let i = 0, buttonEl; buttonEl = buttonEls[i]; i++) {
+    for (let i = 0, buttonEl; buttonEl = this.buttons_[i]; i++) {
       this.buttonRipples_.push(new MDCRipple(buttonEl));
     }
   }
