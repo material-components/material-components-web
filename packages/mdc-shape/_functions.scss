@@ -1,0 +1,55 @@
+@import './variables';
+
+@function mdc-shape-flip-radius($radius) {
+  @return nth($radius, 2) nth($radius, 1) nth($radius, 4) nth($radius, 3);
+}
+
+@function mdc-shape-resolve-pill-radius($type, $radius) {
+  @if type-of($radius) == "list" {
+    $radius-value: ();
+    @each $corner in $radius {
+      $radius-value: append($radius-value, mdc-shape-resolve-pill-corner_($type, $corner));
+    }
+    @return $radius-value;
+  } @else {
+    @return mdc-shape-resolve-pill-corner_($type, $radius);
+  }
+}
+
+@function mdc-shape-resolve-pill-corner_($type, $radius) {
+  @if $radius == pill {
+    @if not map-has-key($mdc-shape-height-values, $type) {
+      @error "Invalid radius: '#{$type}' doesn't support pill type radius";
+    }
+
+    @return map-get($mdc-shape-height-values, $type) / 2;
+  } @else {
+    @return $radius;
+  }
+}
+
+@function mdc-shape-prop-value($radius) {
+  @if type-of($radius) == "list" {
+    $radius-value: ();
+    @each $corner in $radius {
+      $radius-value: append($radius-value, mdc-shape-prop-corner-value_($corner));
+    }
+    @return $radius-value;
+  } @else {
+    @return mdc-shape-prop-corner-value_($radius);
+  }
+}
+
+@function mdc-shape-prop-corner-value_($radius) {
+  @if mdc-shape-is-valid-radius-value_($radius) {
+    @return $radius;
+  } @else if not map-has-key($mdc-shape-category-values, $radius) {
+    @error "Invalid radius: '#{$radius}' radius in not defined";
+  }
+
+  @return map-get($mdc-shape-category-values, $radius);
+}
+
+@function mdc-shape-is-valid-radius-value_($radius) {
+  @return type-of($radius) == "number" or str_index($radius, "var(") or str_index($radius, "calc(");
+}
