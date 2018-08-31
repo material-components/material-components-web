@@ -1,7 +1,7 @@
 {
   "name": "@material/snackbar",
   "description": "The Material Components for the web snackbar component",
-  "version": "0.39.0",
+  "version": "0.39.1",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -16,8 +16,8 @@
   "dependencies": {
     "@material/animation": "^0.39.0",
     "@material/base": "^0.39.0",
-    "@material/rtl": "^0.39.0",
-    "@material/theme": "^0.39.0",
+    "@material/rtl": "^0.39.1",
+    "@material/theme": "^0.39.1",
     "@material/typography": "^0.39.0"
   }
 }
