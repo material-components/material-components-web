@@ -72,7 +72,7 @@ export function createFocusTrapInstance(surfaceEl, initialFocusEl = null, focusT
  *
  * @return {boolean}
  */
-function hasFlexItemMaxHeightBug() {
+export function hasFlexItemMaxHeightBug() {
   if (typeof hasFlexItemMaxHeightBug_ === 'undefined') {
     hasFlexItemMaxHeightBug_ = ignoresOverflowAutoOnFlexItemsThatExceedMaxHeight_();
   }
@@ -84,7 +84,7 @@ function hasFlexItemMaxHeightBug() {
  * @param {function(): undefined} callback
  */
 export function fixFlexItemMaxHeightBug(flexItemEl, callback) {
-  if (!flexItemEl || !hasFlexItemMaxHeightBug()) {
+  if (!hasFlexItemMaxHeightBug()) {
     return;
   }
 
@@ -111,9 +111,6 @@ export function fixFlexItemMaxHeightBug(flexItemEl, callback) {
  * @return {boolean}
  */
 export function isScrollable(el) {
-  if (!el) {
-    return false;
-  }
   return el.scrollHeight > el.offsetHeight;
 }
 
@@ -150,10 +147,11 @@ function ignoresOverflowAutoOnFlexItemsThatExceedMaxHeight_() {
 
   document.body.appendChild(tempEl);
 
+  /** @type {!HTMLElement} */
   const flexItemEl = tempEl.querySelector('article');
-  const isScrollable = flexItemEl.scrollHeight > flexItemEl.offsetHeight;
+  const canScroll = isScrollable(flexItemEl);
 
   document.body.removeChild(tempEl);
 
-  return !isScrollable;
+  return !canScroll;
 }
