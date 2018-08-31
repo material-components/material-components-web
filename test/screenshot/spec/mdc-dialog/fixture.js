@@ -29,7 +29,6 @@ window.mdc.testFixture.fontsLoaded.then(() => {
     const dialog = new mdc.dialog.MDCDialog(dialogEl);
 
     const eventNames = [
-      strings.YES_EVENT, strings.NO_EVENT, strings.CANCEL_EVENT,
       strings.OPENING_EVENT, strings.OPENED_EVENT,
       strings.CLOSING_EVENT, strings.CLOSED_EVENT,
     ];
@@ -38,17 +37,20 @@ window.mdc.testFixture.fontsLoaded.then(() => {
       dialog.listen(eventName, (evt) => console.log(eventName, evt));
     });
 
-    if (dialogEl.classList.contains('test-dialog--scroll-to-bottom')) {
-      const bodyEl = dialogEl.querySelector('.mdc-dialog__content');
-      if (bodyEl) {
-        const setContentScrollPosition = () => {
+    const bodyEl = dialogEl.querySelector('.mdc-dialog__content');
+    const shouldScrollToBottom = dialogEl.classList.contains('test-dialog--scroll-to-bottom');
+    if (bodyEl && shouldScrollToBottom) {
+      const scrollToBottom = () => {
+        const tryToScroll = () => {
           bodyEl.scrollTop = bodyEl.scrollHeight;
           if (bodyEl.scrollTop === 0) {
-            requestAnimationFrame(setContentScrollPosition);
+            requestAnimationFrame(tryToScroll);
           }
         };
-        setContentScrollPosition();
-      }
+        tryToScroll();
+      };
+      dialog.listen(strings.OPENING_EVENT, scrollToBottom);
+      dialog.listen(strings.OPENED_EVENT, scrollToBottom);
     }
 
     const openButtonEl = dialogEl.id ? document.querySelector(`[data-test-dialog-id="${dialogEl.id}"]`) : null;
