@@ -24,10 +24,14 @@
 @import "./functions";
 
 @mixin mdc-shape-radius($radius, $rtl-reflexive: false) {
-  border-radius: mdc-shape-prop-value($radius);
+  @if mdc-shape-has-pill-radius($radius) {
+    @error "Invalid radius: '#{$radius}' is not supported for this component";
+  } @else {
+    border-radius: mdc-shape-prop-value($radius);
 
-  @if ($rtl-reflexive) {
-    @include mdc-shape-flip-radius($radius);
+    @if ($rtl-reflexive) {
+      @include mdc-shape-flip-radius($radius);
+    }
   }
 }
 
