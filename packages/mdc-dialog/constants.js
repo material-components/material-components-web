@@ -36,10 +36,6 @@ const strings = {
   CONTENT_SELECTOR: '.mdc-dialog__content',
   BUTTON_SELECTOR: '.mdc-dialog__button',
 
-  YES_EVENT: 'MDCDialog:yes',
-  NO_EVENT: 'MDCDialog:no',
-  CANCEL_EVENT: 'MDCDialog:cancel',
-
   OPENING_EVENT: 'MDCDialog:opening',
   OPENED_EVENT: 'MDCDialog:opened',
   CLOSING_EVENT: 'MDCDialog:closing',
@@ -50,6 +46,8 @@ const strings = {
 
 const numbers = {
   DIALOG_ANIMATION_TIME_MS: 120,
+  IE_FLEX_OVERFLOW_BUG_ITERATIONS: 5,
+  IE_FLEX_OVERFLOW_BUG_INTERVAL_MS: 100,
 };
 
 export {cssClasses, strings, numbers};

@@ -112,7 +112,7 @@ export class MDCDialog extends MDCComponent {
       deregisterWindowResizeHandler: (handler) => window.removeEventListener('resize', handler),
       trapFocusOnSurface: () => this.focusTrap_.activate(),
       untrapFocusOnSurface: () => this.focusTrap_.deactivate(),
-      fixOverflowIE: (callback) => util.fixOverflowIE(this.surface_, callback),
+      fixOverflowIE: (callback) => util.fixFlexItemMaxHeightBug(this.surface_, callback),
       isContentScrollable: () => util.isScrollable(this.content_),
       areButtonsStacked: () => util.areTopsAligned(this.buttons_),
       getAction: (element) => element.getAttribute(strings.ACTION_ATTRIBUTE),
