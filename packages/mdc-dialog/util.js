@@ -36,7 +36,7 @@ let hasFlexItemMaxHeightBug_;
 export function createFocusTrapInstance(surfaceEl, initialFocusEl = null, focusTrapFactory = createFocusTrap) {
   return focusTrapFactory(surfaceEl, {
     initialFocus: initialFocusEl,
-    clickOutsideDeactivates: true,
+    clickOutsideDeactivates: false,
   });
 }
 
