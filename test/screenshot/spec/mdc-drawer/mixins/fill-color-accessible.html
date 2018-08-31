@@ -48,56 +48,61 @@
           <div class="mdc-drawer__title">Title here</div>
           <div class="mdc-drawer__subtitle">Subtext</div>
         </header>
-        <nav class="mdc-list">
-          <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true" tabindex="0">
-            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
-            Inbox
-          </a>
-          <a class="mdc-list-item" href="#">
-            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>
-            Star
-          </a>
-          <a class="mdc-list-item" href="#">
-            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
-            Sent Mail
-          </a>
-          <a class="mdc-list-item" href="#">
-            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
-            Drafts
-          </a>
+        <div class="mdc-drawer__content">
+          <nav class="mdc-list">
+            <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true" tabindex="0">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
+              Inbox
+            </a>
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>
+              Star
+            </a>
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
+              Sent Mail
+            </a>
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
+              Drafts
+            </a>
 
-          <hr class="mdc-list-divider">
-          <h6 class="mdc-list-group__subheader">Labels</h6>
-          <a class="mdc-list-item" href="#">
-            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
-            Family
-          </a>
-          <a class="mdc-list-item" href="#">
-            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
-            Friends
-          </a>
-          <a class="mdc-list-item" href="#">
-            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
-            Work
-          </a>
+            <hr class="mdc-list-divider">
+            <h6 class="mdc-list-group__subheader">Labels</h6>
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+              Family
+            </a>
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+              Friends
+            </a>
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+              Work
+            </a>
 
-          <hr class="mdc-list-divider">
-          <a class="mdc-list-item" href="#">
-            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>
-            Settings
-          </a>
-          <a class="mdc-list-item" href="#">
-            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">announcement</i>
-            Help & feedback
-          </a>
-        </nav>
+            <hr class="mdc-list-divider">
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>
+              Settings
+            </a>
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">announcement</i>
+              Help & feedback
+            </a>
+          </nav>
+        </div>
       </aside>
 
       <div class="mdc-drawer-app-content test-drawer-app-content">
-        <header class="mdc-top-app-bar">
+        <header class="mdc-top-app-bar test-drawer-top-app-bar">
           <div class="mdc-top-app-bar__row">
             <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
               <span class="mdc-top-app-bar__title">Permanent Drawer</span>
+            </section>
+            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+              <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Download" alt="Download">file_download</a>
             </section>
           </div>
         </header>
