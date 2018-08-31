@@ -93,6 +93,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
     clearTimeout(this.timerId_);
     this.timerId_ = setTimeout(() => {
       this.handleAnimationTimerEnd_();
+      this.layoutIE_();
       this.adapter_.notifyOpened();
     }, numbers.DIALOG_ANIMATION_TIME_MS);
   }
@@ -128,6 +129,20 @@ export default class MDCDialogFoundation extends MDCFoundation {
     });
   }
 
+  // TODO(acdvorak): Only run this in IE.
+  layoutIE_() {
+    const fixOverflowIE = () => {
+      this.adapter_.fixOverflowIE();
+      setTimeout(() => {
+        this.layout();
+      });
+    };
+
+    for (let i = 0; i < 5; i++) {
+      setTimeout(() => fixOverflowIE(), i * 100);
+    }
+  }
+
   /** @private */
   detectStackedButtons_() {
     // Remove the class first to let us measure the buttons' natural positions.
@@ -160,7 +175,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
 
   /** @private */
   handleWindowResize_() {
-    requestAnimationFrame(() => this.layout());
+    this.layout();
   }
 
   /** @private */

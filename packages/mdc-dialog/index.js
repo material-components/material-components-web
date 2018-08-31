@@ -63,6 +63,10 @@ export class MDCDialog extends MDCComponent {
     return this.root_.querySelector(strings.CONTAINER_SELECTOR);
   }
 
+  get surface_() {
+    return this.root_.querySelector(strings.SURFACE_SELECTOR);
+  }
+
   get content_() {
     return this.root_.querySelector(strings.CONTENT_SELECTOR);
   }
@@ -95,6 +99,13 @@ export class MDCDialog extends MDCComponent {
   }
 
   getDefaultFoundation() {
+    const toggleStyle = (el, prop, firstValue, secondValue) => {
+      if (el) {
+        const oldValue = el.style[prop];
+        el.style[prop] = el.style[prop] === firstValue ? secondValue : firstValue;
+        el.style[prop] = oldValue;
+      }
+    };
     return new MDCDialogFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
@@ -110,6 +121,7 @@ export class MDCDialog extends MDCComponent {
       deregisterWindowResizeHandler: (handler) => window.removeEventListener('resize', handler),
       trapFocusOnSurface: () => this.focusTrap_.activate(),
       untrapFocusOnSurface: () => this.focusTrap_.deactivate(),
+      fixOverflowIE: () => toggleStyle(this.surface_, 'flex-basis', 'auto', ''),
       isContentScrollable: () => Boolean(this.content_) && this.content_.scrollHeight > this.content_.offsetHeight,
       areButtonsStacked: () => this.buttons_.reduce((set, el) => set.add(el.offsetTop) || set, new Set()).size > 1,
       getAction: (element) => element.getAttribute(strings.ACTION_ATTRIBUTE),
