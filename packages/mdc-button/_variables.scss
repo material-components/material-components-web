@@ -20,7 +20,9 @@
 // THE SOFTWARE.
 //
 
-$mdc-button-height: 36px;
+@import "@material/shape/variables";
+
+$mdc-button-height: $mdc-shape-button-height;
 $mdc-button-horizontal-padding: 8px;
 $mdc-button-contained-horizontal-padding: 16px;
 $mdc-dense-button-height: 32px;

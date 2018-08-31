@@ -21,6 +21,7 @@
 //
 
 @import "@material/theme/mixins";
+@import "@material/shape/mixins";
 @import "./variables";
 
 //
@@ -68,4 +69,8 @@
     display: block;
     content: "";
   }
+}
+
+@mixin mdc-card-shape-radius($radius) {
+  @include mdc-shape-radius($radius);
 }
