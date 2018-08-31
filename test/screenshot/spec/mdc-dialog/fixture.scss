@@ -17,4 +17,6 @@
 @import "../../../../packages/mdc-dialog/mixins";
 @import "../../../../packages/mdc-theme/color-palette";
 
-$custom-dialog-color: $material-color-orange-900;
+.test-dialog-open-button {
+  font-size: 100%;
+}
