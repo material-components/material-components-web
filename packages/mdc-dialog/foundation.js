@@ -131,16 +131,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
 
   // TODO(acdvorak): Only run this in IE.
   layoutIE_() {
-    const fixOverflowIE = () => {
-      this.adapter_.fixOverflowIE();
-      setTimeout(() => {
-        this.layout();
-      });
-    };
-
-    for (let i = 0; i < 5; i++) {
-      setTimeout(() => fixOverflowIE(), i * 100);
-    }
+    this.adapter_.fixOverflowIE(() => this.layout());
   }
 
   /** @private */

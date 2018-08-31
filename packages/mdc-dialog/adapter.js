@@ -101,6 +101,11 @@ class MDCDialogAdapter {
   trapFocusOnSurface() {}
   untrapFocusOnSurface() {}
 
+  /**
+   * @param {function(): undefined} callback
+   */
+  fixOverflowIE(callback) {}
+
   /** @return {boolean} */
   isContentScrollable() {}
 

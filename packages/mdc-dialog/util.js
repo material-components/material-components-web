@@ -35,3 +35,51 @@ export function createFocusTrapInstance(surfaceEl, initialFocusEl = null, focusT
     clickOutsideDeactivates: true,
   });
 }
+
+/**
+ * @param {!HTMLElement} flexItemEl
+ * @param {function(): undefined} callback
+ */
+export function fixOverflowIE(flexItemEl, callback) {
+  if (!flexItemEl) {
+    return;
+  }
+
+  const toggleStyle = (el, prop, firstValue, secondValue) => {
+    const oldValue = el.style[prop];
+    el.style[prop] = el.style[prop] === firstValue ? secondValue : firstValue;
+    el.style[prop] = oldValue;
+  };
+
+  const tick = () => {
+    toggleStyle(flexItemEl, 'flex-basis', 'auto', '');
+    setTimeout(() => {
+      callback();
+    });
+  };
+
+  for (let i = 0; i < 5; i++) {
+    setTimeout(() => tick(), i * 100);
+  }
+}
+
+/**
+ * @param {!HTMLElement} el
+ * @return {boolean}
+ */
+export function isScrollable(el) {
+  if (!el) {
+    return false;
+  }
+  return el.scrollHeight > el.offsetHeight;
+}
+
+/**
+ * @param {!Array<!HTMLElement>|!NodeList} els
+ * @return {boolean}
+ */
+export function areTopsAligned(els) {
+  const tops = new Set();
+  [].forEach.call(els, (el) => tops.add(el.offsetTop));
+  return tops.size > 1;
+}
