@@ -52,9 +52,11 @@ export default class MDCDialogFoundation extends MDCFoundation {
      */
     this.isOpen_ = false;
 
+    /**
+     * @type {number}
+     * @private
+     */
     this.timerId_ = 0;
-
-    window._foundation = this;
 
     this.clickHandler_ = (evt) => this.handleDialogClick_(evt);
     this.resizeHandler_ = () => this.handleWindowResize_();
@@ -105,12 +107,12 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.untrapFocusOnSurface();
     this.adapter_.addClass(cssClasses.ANIMATING);
     this.adapter_.removeClass(cssClasses.OPEN);
-    this.adapter_.removeClass(cssClasses.STACKED);
-    this.adapter_.removeClass(cssClasses.SCROLLABLE);
 
     clearTimeout(this.timerId_);
     this.timerId_ = setTimeout(() => {
       this.handleAnimationTimerEnd_();
+      this.adapter_.removeClass(cssClasses.STACKED);
+      this.adapter_.removeClass(cssClasses.SCROLLABLE);
       this.adapter_.notifyClosed(action);
     }, numbers.DIALOG_ANIMATION_TIME_MS);
   }
@@ -137,40 +139,10 @@ export default class MDCDialogFoundation extends MDCFoundation {
 
   /** @private */
   detectScrollableContent_() {
-    this.detectScrollableContentImpl_();
-    this.detectScrollableContentInIE_();
-  }
-
-  /** @private */
-  detectScrollableContentImpl_() {
     if (this.adapter_.isContentScrollable()) {
       this.adapter_.addClass(cssClasses.SCROLLABLE);
     } else {
       this.adapter_.removeClass(cssClasses.SCROLLABLE);
-    }
-  }
-
-  /**
-   * TODO(acdvorak): Only run this in IE 11?
-   * CAUTION: Deep voodoo magic below. Modify at your own risk.
-   * The *exact* sequence of rAF and addClass/removeClass calls is necessary to fix a flexbox bug in IE 11.
-   * See https://github.com/philipwalton/flexbugs/issues/216
-   * @private
-   */
-  detectScrollableContentInIE_() {
-    const toggleIEClass = () => {
-      requestAnimationFrame(() => {
-        this.adapter_.addClass(cssClasses.FIX_IE_OVERFLOW);
-        requestAnimationFrame(() => {
-          this.adapter_.removeClass(cssClasses.FIX_IE_OVERFLOW);
-          this.detectScrollableContentImpl_();
-        });
-      });
-    };
-
-    // No joke, this is the only thing I've found that reliably "fixes" IE.
-    for (let i = 0; i < 5; i++) {
-      setTimeout(() => toggleIEClass(), i * 100);
     }
   }
 
@@ -196,7 +168,6 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.removeClass(cssClasses.ANIMATING);
     if (this.isOpen_) {
       this.adapter_.trapFocusOnSurface();
-      this.layout();
     }
   }
 

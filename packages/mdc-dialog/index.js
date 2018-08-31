@@ -49,8 +49,6 @@ export class MDCDialog extends MDCComponent {
      * @private
      */
     this.buttonRipples_;
-
-    window._component = this;
   }
 
   static attachTo(root) {

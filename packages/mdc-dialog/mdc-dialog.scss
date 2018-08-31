@@ -63,18 +63,13 @@
   z-index: -1;
 }
 
+// This wrapper element is needed to make max-height work with flexbox in IE 11.
+// See https://github.com/philipwalton/flexbugs/issues/216
 .mdc-dialog__container {
-  @include mdc-dialog-corner-radius($mdc-dialog-corner-radius);
-  @include mdc-elevation(24);
-  @include mdc-theme-prop(background-color, background);
-
-  display: inline-flex;
-  flex-direction: column;
+  display: flex;
+  flex-direction: row;
   box-sizing: border-box;
-  min-width: $mdc-dialog-min-width;
   max-height: $mdc-dialog-viewport-size-expr;
-  transform: translateY(150px) scale(.8);
-  opacity: 0;
 
   // Fit snugly within the viewport at smaller screen sizes.
   @media (max-width: ($mdc-dialog-width-breakpoint - 1)) {
@@ -85,6 +80,26 @@
   @media (min-width: $mdc-dialog-width-breakpoint) {
     max-width: $mdc-dialog-max-width;
   }
+
+  transform: translateY(150px) scale(.8);
+  opacity: 0;
+}
+
+// TODO(acdvorak): Come up with a better class name.
+// https://github.com/philipwalton/flexbugs/issues/216
+.mdc-dialog__container-inner {
+  @include mdc-dialog-corner-radius($mdc-dialog-corner-radius);
+  @include mdc-elevation(24);
+  @include mdc-theme-prop(background-color, background);
+
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  min-width: $mdc-dialog-min-width;
+  max-width: 100%; // IE 11
+  max-height: 100%; // IE 11
 
   @include mdc-rtl(".mdc-dialog") {
     text-align: right;
