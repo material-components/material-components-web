@@ -43,9 +43,7 @@ $mdc-shape-height-values: (
 
 // Shape category baseline values.
 $mdc-shape-category-values: (
-  button: $mdc-shape-button-radius,
-  fab: $mdc-shape-fab-radius,
-  sheet-expanded: $mdc-shape-sheet-expanded-radius,
-  extended-fab: $mdc-shape-extended-fab-radius,
-  small-container: $mdc-shape-small-container-radius,
+  small: $mdc-shape-small-radius,
+  medium: $mdc-shape-medium-radius,
+  large: $mdc-shape-large-radius,
 );
