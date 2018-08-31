@@ -1,31 +1,45 @@
+//
+// Copyright 2018 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions://
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.//
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
 @import './variables';
 
 @function mdc-shape-flip-radius($radius) {
   @return nth($radius, 2) nth($radius, 1) nth($radius, 4) nth($radius, 3);
 }
 
-@function mdc-shape-resolve-pill-radius($type, $radius) {
+@function mdc-shape-resolve-pill-radius($component-height, $radius) {
   @if type-of($radius) == "list" {
     $radius-value: ();
     @each $corner in $radius {
-      $radius-value: append($radius-value, mdc-shape-resolve-pill-corner_($type, $corner));
+      $radius-value: append($radius-value, mdc-shape-resolve-pill-corner_($component-height, $corner));
     }
     @return $radius-value;
   } @else {
-    @return mdc-shape-resolve-pill-corner_($type, $radius);
+    @return mdc-shape-resolve-pill-corner_($component-height, $radius);
   }
 }
 
-@function mdc-shape-resolve-pill-corner_($type, $radius) {
-  @if $radius == pill {
-    @if not map-has-key($mdc-shape-height-values, $type) {
-      @error "Invalid radius: '#{$type}' doesn't support pill type radius";
-    }
-
-    @return map-get($mdc-shape-height-values, $type) / 2;
-  } @else {
-    @return $radius;
-  }
+@function mdc-shape-resolve-pill-corner_($component-height, $radius) {
+  @return $component-height / 2;
 }
 
 @function mdc-shape-prop-value($radius) {
@@ -52,4 +66,19 @@
 
 @function mdc-shape-is-valid-radius-value_($radius) {
   @return type-of($radius) == "number" or str_index($radius, "var(") or str_index($radius, "calc(");
+}
+
+@function mdc-shape-has-pill-radius($radius) {
+  @if type-of($radius) == "list" {
+    $radius-value: ();
+    @each $corner in $radius {
+      @if $corner == pill {
+        @return true;
+      }
+    }
+  } @else if $radius == pill {
+    @return true;
+  }
+
+  @return false;
 }
