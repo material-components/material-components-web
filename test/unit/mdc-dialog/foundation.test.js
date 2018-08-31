@@ -50,10 +50,10 @@ test('default adapter returns a complete adapter implementation', () => {
     'addClass', 'removeClass', 'addBodyClass', 'removeBodyClass',
     'eventTargetHasClass', 'eventTargetMatchesSelector',
     'registerInteractionHandler', 'deregisterInteractionHandler',
-    'registerContainerInteractionHandler', 'deregisterContainerInteractionHandler',
+    'registerWindowResizeHandler', 'deregisterWindowResizeHandler',
     'registerDocumentKeydownHandler', 'deregisterDocumentKeydownHandler',
-    'isScrollable', 'getContentElement', 'getButtonElements',
-    'notifyYes', 'notifyNo', 'notifyCancel', 'notifyOpening', 'notifyOpened', 'notifyClosing', 'notifyClosed',
+    'fixOverflowIE', 'isContentScrollable', 'areButtonsStacked', 'getAction',
+    'notifyOpening', 'notifyOpened', 'notifyClosing', 'notifyClosed',
     'trapFocusOnSurface', 'untrapFocusOnSurface',
   ]);
 });

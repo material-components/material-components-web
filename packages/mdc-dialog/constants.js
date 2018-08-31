@@ -28,8 +28,6 @@ const cssClasses = {
   STACKED: 'mdc-dialog--stacked',
   SCROLLABLE: 'mdc-dialog--scrollable',
   SCRIM: 'mdc-dialog__scrim',
-  CONTENT: 'mdc-dialog__content',
-  BUTTON: 'mdc-dialog__button',
   SCROLL_LOCK: 'mdc-dialog-scroll-lock',
 };
 
@@ -38,6 +36,7 @@ const strings = {
   CONTAINER_SELECTOR: '.mdc-dialog__container',
   SURFACE_SELECTOR: '.mdc-dialog__surface',
   CONTENT_SELECTOR: '.mdc-dialog__content',
+  BUTTON_SELECTOR: '.mdc-dialog__button',
 
   YES_EVENT: 'MDCDialog:yes',
   NO_EVENT: 'MDCDialog:no',
