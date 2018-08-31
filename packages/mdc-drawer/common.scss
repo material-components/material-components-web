@@ -90,6 +90,12 @@
   .mdc-list-divider {
     margin: 3px 0 4px 0;
   }
+
+  // Prevents list item children from being included in the click target.
+  .mdc-list-item__text,
+  .mdc-list-item__graphic {
+    pointer-events: none;
+  }
 }
 
 .mdc-drawer--open {

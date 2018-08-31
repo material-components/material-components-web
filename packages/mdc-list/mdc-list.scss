@@ -103,8 +103,6 @@
 
 .mdc-list-item__text {
   @include mdc-typography-overflow-ellipsis;
-
-  pointer-events: none;
 }
 
 $mdc-list-item-primary-text-baseline-height_: 32px;
