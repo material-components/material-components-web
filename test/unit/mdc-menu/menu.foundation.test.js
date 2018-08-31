@@ -237,6 +237,28 @@ test('handleKeydown space/enter key inside of a list item not inside of the menu
   td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
 });
 
+test('handleKeydown space/enter key inside of a selection group ' +
+  'with additional markup does not cause loop', () => {
+  // This test will timeout of there is an endless loop in the selection group logic.
+  const {foundation, mockAdapter} = setupTest();
+  const clock = lolex.install();
+  const parentElement = {};
+  const event = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
+  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
+  td.when(mockAdapter.elementContainsClass(td.matchers.anything(), listClasses.ROOT)).thenReturn(false, true);
+  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
+  td.when(mockAdapter.getParentElement(td.matchers.anything())).thenReturn(parentElement, null);
+  td.when(mockAdapter.elementContainsClass(td.matchers.anything(), cssClasses.MENU_SELECTION_GROUP)).thenReturn(false);
+
+  foundation.handleKeydown(event);
+  event.key = 'Enter';
+  foundation.handleKeydown(event);
+  clock.tick(numbers.TRANSITION_CLOSE_DURATION);
+
+  td.verify(mockAdapter.closeSurface(), {times: 2});
+  clock.uninstall();
+});
+
 test('handleKeydown space/enter key inside of a selection group with another element selected', () => {
   const {foundation, mockAdapter} = setupTest();
   const clock = lolex.install();
