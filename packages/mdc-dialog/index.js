@@ -59,11 +59,27 @@ export class MDCDialog extends MDCComponent {
     return this.foundation_.isOpen();
   }
 
+  get container_() {
+    return this.root_.querySelector(strings.CONTAINER_SELECTOR);
+  }
+
+  get surface_() {
+    return this.root_.querySelector(strings.SURFACE_SELECTOR);
+  }
+
+  get content_() {
+    return this.root_.querySelector(strings.CONTENT_SELECTOR);
+  }
+
+  get buttons_() {
+    return [].slice.call(this.root_.getElementsByClassName(cssClasses.BUTTON));
+  }
+
   initialize() {
-    this.focusTrap_ = util.createFocusTrapInstance(this.root_.querySelector(strings.CONTAINER_SELECTOR));
+    this.focusTrap_ = util.createFocusTrapInstance(this.container_);
     this.buttonRipples_ = [];
 
-    const buttonEls = this.root_.querySelector(strings.BUTTON_SELECTOR);
+    const buttonEls = this.buttons_;
     for (let i = 0, buttonEl; buttonEl = buttonEls[i]; i++) {
       this.buttonRipples_.push(new MDCRipple(buttonEl));
     }
@@ -98,9 +114,9 @@ export class MDCDialog extends MDCComponent {
       deregisterWindowResizeHandler: (handler) => window.removeEventListener('resize', handler),
       trapFocusOnSurface: () => this.focusTrap_.activate(),
       untrapFocusOnSurface: () => this.focusTrap_.deactivate(),
-      fixOverflowIE: (callback) => util.fixOverflowIE(this.root_.querySelector(strings.SURFACE_SELECTOR), callback),
-      isContentScrollable: () => util.isScrollable(this.root_.querySelector(strings.CONTENT_SELECTOR)),
-      areButtonsStacked: () => util.areTopsAligned(this.root_.querySelector(strings.BUTTON_SELECTOR)),
+      fixOverflowIE: (callback) => util.fixOverflowIE(this.surface_, callback),
+      isContentScrollable: () => util.isScrollable(this.content_),
+      areButtonsStacked: () => util.areTopsAligned(this.buttons_),
       getAction: (element) => element.getAttribute(strings.ACTION_ATTRIBUTE),
       notifyOpening: () => this.emit(strings.OPENING_EVENT),
       notifyOpened: () => this.emit(strings.OPENED_EVENT),
