@@ -74,7 +74,6 @@
 
 @function mdc-shape-has-pill-radius($radius) {
   @if type-of($radius) == "list" {
-    $radius-value: ();
     @each $corner in $radius {
       @if $corner == pill {
         @return true;
