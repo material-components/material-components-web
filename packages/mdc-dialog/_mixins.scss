@@ -1,22 +1,27 @@
 //
-// Copyright 2018 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc.
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions://
 //
-//     https://www.apache.org/licenses/LICENSE-2.0
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.//
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 //
 
 @import "@material/theme/mixins";
-@import "@material/theme/variables";
-@import "./variables";
+@import "@material/theme/variables"; // for mdc-theme-prop-value
 
 // TODO(acdvorak): Create mixins for all redline values?
 
@@ -24,64 +29,89 @@
 // Public
 //
 
-@mixin mdc-dialog-corner-radius($radius: $mdc-dialog-corner-radius) {
-  border-radius: $radius;
+@mixin mdc-dialog-container-fill-color($color) {
+  .mdc-dialog__surface {
+    @include mdc-theme-prop(background-color, $color);
+  }
 }
 
-@mixin mdc-dialog-title-ink-color($color: $mdc-dialog-title-ink-color, $opacity: $mdc-dialog-title-ink-opacity) {
-  color: rgba(mdc-theme-prop-value($color), $opacity);
+@mixin mdc-dialog-scrim-color($color, $opacity) {
+  .mdc-dialog__scrim {
+    background-color: rgba(mdc-theme-prop-value($color), $opacity);
+  }
 }
 
-@mixin mdc-dialog-content-ink-color($color: $mdc-dialog-content-ink-color, $opacity: $mdc-dialog-content-ink-opacity) {
-  color: rgba(mdc-theme-prop-value($color), $opacity);
+@mixin mdc-dialog-title-ink-color($color, $opacity) {
+  .mdc-dialog__title {
+    color: rgba(mdc-theme-prop-value($color), $opacity);
+  }
 }
 
-@mixin mdc-dialog-scroll-divider-color($color: $mdc-dialog-scroll-divider-color, $opacity: $mdc-dialog-scroll-divider-opacity) {
-  border-color: rgba(mdc-theme-prop-value($color), $opacity);
+@mixin mdc-dialog-content-ink-color($color, $opacity) {
+  .mdc-dialog__content {
+    color: rgba(mdc-theme-prop-value($color), $opacity);
+  }
 }
 
-@mixin mdc-dialog-min-width($min-width: $mdc-dialog-min-width) {
+@mixin mdc-dialog-scroll-divider-color($color, $opacity) {
+  &.mdc-dialog--scrollable .mdc-dialog__title,
+  &.mdc-dialog--scrollable .mdc-dialog__actions {
+    border-color: rgba(mdc-theme-prop-value($color), $opacity);
+  }
+}
+
+@mixin mdc-dialog-min-width($min-width) {
   .mdc-dialog__surface {
     min-width: $min-width;
   }
 }
 
-@mixin mdc-dialog-max-width($max-width-scalar: $mdc-dialog-max-width) {
+@mixin mdc-dialog-max-width($max-width-px, $margin) {
+  $max-size-calc-expr: calc(100% - #{$margin * 2});
+
   .mdc-dialog__container {
-    @if $max-width-scalar {
-      $max-width-breakpoint: $max-width-scalar + ($mdc-dialog-viewport-margin * 2);
+    @if $max-width-px and $max-width-px != "viewport" {
+      $max-width-breakpoint: $max-width-px + ($margin * 2);
 
       // Fit snugly within the viewport at smaller screen sizes.
       @media (max-width: ($max-width-breakpoint - 1)) {
-        max-width: $mdc-dialog-viewport-size-expr;
+        max-width: $max-size-calc-expr;
       }
 
       // Once the screen gets big enough, apply a fixed maximum width.
       @media (min-width: $max-width-breakpoint) {
-        max-width: $max-width-scalar;
+        max-width: $max-width-px;
       }
     } @else {
-      max-width: $mdc-dialog-viewport-size-expr;
+      max-width: $max-size-calc-expr;
     }
   }
 }
 
-@mixin mdc-dialog-max-height($max-height-scalar: null) {
+@mixin mdc-dialog-max-height($max-height-px, $margin) {
+  $max-size-calc-expr: calc(100% - #{$margin * 2});
+
   .mdc-dialog__container {
-    @if $max-height-scalar {
-      $max-height-breakpoint: $max-height-scalar + ($mdc-dialog-viewport-margin * 2);
+    @if $max-height-px and $max-height-px != "viewport" {
+      $max-height-breakpoint: $max-height-px + ($margin * 2);
 
       // Fit snugly within the viewport at smaller screen sizes.
       @media (max-height: ($max-height-breakpoint - 1)) {
-        max-height: $mdc-dialog-viewport-size-expr;
+        max-height: $max-size-calc-expr;
       }
 
       // Once the screen gets big enough, apply a fixed maximum height.
       @media (min-height: $max-height-breakpoint) {
-        max-height: $max-height-scalar;
+        max-height: $max-height-px;
       }
     } @else {
-      max-height: $mdc-dialog-viewport-size-expr;
+      max-height: $max-size-calc-expr;
     }
+  }
+}
+
+@mixin mdc-dialog-corner-radius($radius) {
+  .mdc-dialog__surface {
+    border-radius: $radius;
   }
 }

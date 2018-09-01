@@ -27,20 +27,24 @@
 @import "@material/typography/mixins";
 @import "@material/typography/variables";
 @import "./mixins";
-@import "./variables";
 
 // postcss-bem-linter: define dialog
 
 .mdc-dialog {
-  @include mdc-dialog-min-width;
-  @include mdc-dialog-max-width;
-  @include mdc-dialog-max-height;
+  @include mdc-dialog-container-fill-color(surface);
+  @include mdc-dialog-scrim-color(on-surface, .32);
+  @include mdc-dialog-title-ink-color(on-surface, .87);
+  @include mdc-dialog-content-ink-color(on-surface, .6);
+  @include mdc-dialog-scroll-divider-color(on-surface, .12);
+  @include mdc-dialog-min-width(280px);
+  @include mdc-dialog-max-width(560px, 16px);
+  @include mdc-dialog-max-height(viewport, 16px);
+  @include mdc-dialog-corner-radius(4px);
 
-  // Use `display: none` instead of `visibility: hidden` to work around a `-webkit-line-clamp` bug.
-  // https://stackoverflow.com/a/44193578/467582
+  // Use `display: none` instead of `visibility: hidden` to avoid recalculating layout when the dialog is closed.
+  // This also ensures that clients who use `-webkit-line-clamp` to truncate long titles with an ellipsis don't
+  // run into the rendering bug described in https://stackoverflow.com/a/44193578/467582.
   display: none;
-
-  // stylelint-disable-next-line declaration-empty-line-before
   position: fixed;
   top: 0;
   left: 0;
@@ -53,8 +57,6 @@
 }
 
 .mdc-dialog__scrim {
-  @include mdc-theme-prop(background-color, text-primary-on-light);
-
   position: fixed;
   top: 0;
   left: 0;
@@ -78,9 +80,7 @@
 }
 
 .mdc-dialog__surface {
-  @include mdc-dialog-corner-radius($mdc-dialog-corner-radius);
   @include mdc-elevation(24);
-  @include mdc-theme-prop(background-color, background);
 
   display: flex;
   flex-direction: column;
@@ -96,7 +96,6 @@
 }
 
 .mdc-dialog__title {
-  @include mdc-dialog-title-ink-color;
   @include mdc-typography(headline6);
 
   display: flex;
@@ -108,17 +107,12 @@
   padding: 16px 24px 15px;
   border-bottom: 1px solid transparent;
 
-  .mdc-dialog--scrollable & {
-    @include mdc-dialog-scroll-divider-color;
-  }
-
   @include mdc-rtl(".mdc-dialog") {
     text-align: right;
   }
 }
 
 .mdc-dialog__content {
-  @include mdc-dialog-content-ink-color;
   @include mdc-typography(body1);
 
   flex-grow: 1;
@@ -126,13 +120,7 @@
   margin: 0;
   padding: 10px 24px 21px;
   overflow: auto;
-
-  .mdc-dialog--scrollable & {
-    // Must be 'scroll', not 'auto'.
-    // https://css-tricks.com/snippets/css/momentum-scrolling-on-ios-overflow-elements/
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
-  }
+  -webkit-overflow-scrolling: touch;
 
   // The subelement already has top/bottom padding, so we need to suppress margins on its first/last children.
   > :first-child {
@@ -156,10 +144,6 @@
   margin: 0;
   padding: 8px;
   border-top: 1px solid transparent;
-
-  .mdc-dialog--scrollable & {
-    @include mdc-dialog-scroll-divider-color;
-  }
 
   .mdc-dialog--stacked & {
     flex-direction: column;
@@ -188,7 +172,7 @@
 }
 
 .mdc-dialog--animating {
-  // Keep this value in sync with `.mdc-dialog--open`.
+  // Keep this value in sync with .mdc-dialog--open
   display: flex;
 
   .mdc-dialog__scrim {
@@ -201,11 +185,11 @@
 }
 
 .mdc-dialog--open {
-  // Keep this value in sync with `.mdc-dialog--animating`.
+  // Keep this value in sync with .mdc-dialog--animating
   display: flex;
 
   .mdc-dialog__scrim {
-    opacity: .3;
+    opacity: 1;
   }
 
   .mdc-dialog__container {
