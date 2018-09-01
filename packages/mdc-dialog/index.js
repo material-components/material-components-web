@@ -114,7 +114,7 @@ export class MDCDialog extends MDCComponent {
       untrapFocusOnSurface: () => this.focusTrap_.deactivate(),
       fixOverflowIE: (callback) => Boolean(this.surface_) && util.fixFlexItemMaxHeightBug(this.surface_, callback),
       isContentScrollable: () => Boolean(this.content_) && util.isScrollable(this.content_),
-      areButtonsStacked: () => util.areTopsAligned(this.buttons_),
+      areButtonsStacked: () => util.areTopsMisaligned(this.buttons_),
       getAction: (element) => element.getAttribute(strings.ACTION_ATTRIBUTE),
       notifyOpening: () => this.emit(strings.OPENING_EVENT),
       notifyOpened: () => this.emit(strings.OPENED_EVENT),

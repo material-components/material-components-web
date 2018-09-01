@@ -29,6 +29,15 @@ import * as util from '../../../packages/mdc-dialog/util';
 
 suite('MDCDialog - util');
 
+function testDOM(element, callback) {
+  document.body.appendChild(element);
+  try {
+    callback();
+  } finally {
+    document.body.removeChild(element);
+  }
+}
+
 test('#createFocusTrapInstance creates a properly configured focus trap instance', () => {
   const surface = bel`<div></div>`;
   const yesBtn = bel`<button></button>`;
@@ -43,23 +52,96 @@ test('#createFocusTrapInstance creates a properly configured focus trap instance
   assert.equal(instance, properlyConfiguredFocusTrapInstance);
 });
 
-test("#isScrollable returns true when an element's content overflows its bounding box", () => {
-  const element = bel`
-<div style="height: 20px; overflow: auto;">
-  <div style="height: 30px;"></div>
-</div>`;
-  element.first
-  document.body.appendChild(element);
-  assert.isTrue(util.isScrollable(element));
-  document.body.removeChild(element);
+test('#isScrollable returns false when element has no content', () => {
+  const element = bel`<div></div>`;
+  testDOM(element, () => {
+    assert.isFalse(util.isScrollable(element));
+  });
 });
 
-test("#isScrollable returns true when an element's content does not overflow its bounding box", () => {
+test('#isScrollable returns false when element content does not overflow its bounding box', () => {
   const element = bel`
 <div style="height: 20px; overflow: auto;">
   <div style="height: 10px;"></div>
 </div>`;
-  document.body.appendChild(element);
-  assert.isFalse(util.isScrollable(element));
-  document.body.removeChild(element);
+  testDOM(element, () => {
+    assert.isFalse(util.isScrollable(element));
+  });
+});
+
+test('#isScrollable returns true when element content overflows its bounding box', () => {
+  const element = bel`
+<div style="height: 20px; overflow: auto;">
+  <div style="height: 30px;"></div>
+</div>`;
+  testDOM(element, () => {
+    assert.isTrue(util.isScrollable(element));
+  });
+});
+
+test('#areTopsMisaligned returns true when array is empty', () => {
+  assert.isFalse(util.areTopsMisaligned([]));
+});
+
+test('#areTopsMisaligned returns false when array only contains one element', () => {
+  const parent = bel`
+<div style="display: flex;
+            position: relative;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: flex-end;">
+  <button>1</button>
+</div>`;
+  const buttons = parent.querySelectorAll('button');
+  testDOM(parent, () => {
+    assert.isFalse(util.areTopsMisaligned(buttons));
+  });
+});
+
+test('#areTopsMisaligned returns false when elements have same offsetTop', () => {
+  const parent = bel`
+<div style="display: flex;
+            position: relative;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: flex-end;">
+  <button>1</button>
+  <button>2</button>
+</div>`;
+  const buttons = parent.querySelectorAll('button');
+  testDOM(parent, () => {
+    assert.isFalse(util.areTopsMisaligned(buttons));
+  });
+});
+
+test('#areTopsMisaligned returns true when elements have different "top" values', () => {
+  const parent = bel`
+<div style="display: flex;
+            position: relative;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: flex-end;">
+  <button>1</button>
+  <button style="position: relative; top: 1px;">2</button>
+</div>`;
+  const buttons = parent.querySelectorAll('button');
+  testDOM(parent, () => {
+    assert.isTrue(util.areTopsMisaligned(buttons));
+  });
+});
+
+test('#areTopsMisaligned returns true when elements have different heights in a vertically-centered container', () => {
+  const parent = bel`
+<div style="display: flex;
+            position: relative;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: flex-end;">
+  <button>1</button>
+  <button style="height: 100px;">2</button>
+</div>`;
+  const buttons = parent.querySelectorAll('button');
+  testDOM(parent, () => {
+    assert.isTrue(util.areTopsMisaligned(buttons));
+  });
 });

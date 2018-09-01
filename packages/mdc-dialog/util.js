@@ -52,7 +52,7 @@ export function isScrollable(el) {
  * @param {!Array<!HTMLElement>|!NodeList} els
  * @return {boolean}
  */
-export function areTopsAligned(els) {
+export function areTopsMisaligned(els) {
   const tops = new Set();
   [].forEach.call(els, (el) => tops.add(el.offsetTop));
   return tops.size > 1;
