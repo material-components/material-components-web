@@ -122,12 +122,12 @@
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 
-  // The subelement already has top/bottom padding, so we need to suppress margins on its first/last children.
+  // The content element already has top/bottom padding, so we need to suppress margins on its first/last children.
   > :first-child {
     margin-top: 0;
   }
 
-  // The subelement already has top/bottom padding, so we need to suppress margins on its first/last children.
+  // The content element already has top/bottom padding, so we need to suppress margins on its first/last children.
   > :last-child {
     margin-bottom: 0;
   }

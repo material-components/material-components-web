@@ -93,7 +93,6 @@ export default class MDCDialogFoundation extends MDCFoundation {
     clearTimeout(this.timerId_);
     this.timerId_ = setTimeout(() => {
       this.handleAnimationTimerEnd_();
-      this.layoutIE_();
       this.adapter_.notifyOpened();
     }, numbers.DIALOG_ANIMATION_TIME_MS);
   }
@@ -127,11 +126,6 @@ export default class MDCDialogFoundation extends MDCFoundation {
       this.detectStackedButtons_();
       this.detectScrollableContent_();
     });
-  }
-
-  // TODO(acdvorak): Only run this in IE.
-  layoutIE_() {
-    this.adapter_.fixOverflowIE(() => this.layout());
   }
 
   /** @private */
@@ -174,6 +168,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.removeClass(cssClasses.ANIMATING);
     if (this.isOpen_) {
       this.adapter_.trapFocusOnSurface();
+      this.adapter_.fixOverflowIE(() => this.layout());
     }
   }
 
