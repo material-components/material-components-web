@@ -81,12 +81,12 @@ class MDCDialogAdapter {
   /**
    * @param {!EventListener} handler
    */
-  registerDocumentKeydownHandler(handler) {}
+  registerDocumentKeyDownHandler(handler) {}
 
   /**
    * @param {!EventListener} handler
    */
-  deregisterDocumentKeydownHandler(handler) {}
+  deregisterDocumentKeyDownHandler(handler) {}
 
   /**
    * @param {!EventListener} handler

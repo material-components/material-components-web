@@ -194,21 +194,21 @@ test('adapter#deregisterContainerInteractionHandler removes an event listener fr
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('adapter#registerDocumentKeydownHandler attaches a "keydown" handler to the document', () => {
+test('adapter#registerDocumentKeyDownHandler attaches a "keydown" handler to the document', () => {
   const {component} = setupTest();
   const handler = td.func('keydownHandler');
 
-  component.getDefaultFoundation().adapter_.registerDocumentKeydownHandler(handler);
+  component.getDefaultFoundation().adapter_.registerDocumentKeyDownHandler(handler);
   domEvents.emit(document, 'keydown');
   td.verify(handler(td.matchers.anything()));
 });
 
-test('adapter#deregisterDocumentKeydownHandler removes a "keydown" handler from the document', () => {
+test('adapter#deregisterDocumentKeyDownHandler removes a "keydown" handler from the document', () => {
   const {component} = setupTest();
   const handler = td.func('keydownHandler');
 
   document.addEventListener('keydown', handler);
-  component.getDefaultFoundation().adapter_.deregisterDocumentKeydownHandler(handler);
+  component.getDefaultFoundation().adapter_.deregisterDocumentKeyDownHandler(handler);
   domEvents.emit(document, 'keydown');
   td.verify(handler(td.matchers.anything()), {times: 0});
 });

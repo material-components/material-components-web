@@ -51,7 +51,7 @@ test('default adapter returns a complete adapter implementation', () => {
     'eventTargetHasClass', 'eventTargetMatchesSelector',
     'registerInteractionHandler', 'deregisterInteractionHandler',
     'registerContainerInteractionHandler', 'deregisterContainerInteractionHandler',
-    'registerDocumentKeydownHandler', 'deregisterDocumentKeydownHandler',
+    'registerDocumentKeyDownHandler', 'deregisterDocumentKeyDownHandler',
     'isScrollable', 'getContentElement', 'getButtonElements',
     'notifyYes', 'notifyNo', 'notifyCancel', 'notifyOpening', 'notifyOpened', 'notifyClosing', 'notifyClosed',
     'trapFocusOnSurface', 'untrapFocusOnSurface',
@@ -111,7 +111,7 @@ test('#open registers all events registered within open()', () => {
   foundation.open();
 
   td.verify(mockAdapter.registerContainerInteractionHandler('click', td.matchers.isA(Function)));
-  td.verify(mockAdapter.registerDocumentKeydownHandler(td.matchers.isA(Function)));
+  td.verify(mockAdapter.registerDocumentKeyDownHandler(td.matchers.isA(Function)));
   td.verify(mockAdapter.registerInteractionHandler('click', td.matchers.isA(Function)));
 });
 
@@ -121,7 +121,7 @@ test('#close deregisters all events registered within open()', () => {
   foundation.close();
 
   td.verify(mockAdapter.deregisterContainerInteractionHandler('click', td.matchers.isA(Function)));
-  td.verify(mockAdapter.deregisterDocumentKeydownHandler(td.matchers.isA(Function)));
+  td.verify(mockAdapter.deregisterDocumentKeyDownHandler(td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterInteractionHandler('click', td.matchers.isA(Function)));
 });
 
@@ -351,7 +351,7 @@ test('on click does not close or notify cancellation if event target is the surf
 test('on document keydown closes the dialog when escape key is pressed', () => {
   const {foundation, mockAdapter} = setupTest();
   let keydown;
-  td.when(mockAdapter.registerDocumentKeydownHandler(td.matchers.isA(Function))).thenDo((handler) => {
+  td.when(mockAdapter.registerDocumentKeyDownHandler(td.matchers.isA(Function))).thenDo((handler) => {
     keydown = handler;
   });
   foundation.init();
@@ -366,7 +366,7 @@ test('on document keydown closes the dialog when escape key is pressed', () => {
 test('on document keydown closes the dialog when escape key is pressed using keycode', () => {
   const {foundation, mockAdapter} = setupTest();
   let keydown;
-  td.when(mockAdapter.registerDocumentKeydownHandler(td.matchers.isA(Function))).thenDo((handler) => {
+  td.when(mockAdapter.registerDocumentKeyDownHandler(td.matchers.isA(Function))).thenDo((handler) => {
     keydown = handler;
   });
   foundation.init();
@@ -382,7 +382,7 @@ test('on document keydown calls notifyCancel', () => {
   const {foundation, mockAdapter} = setupTest();
 
   let keydown;
-  td.when(mockAdapter.registerDocumentKeydownHandler(td.matchers.isA(Function))).thenDo((handler) => {
+  td.when(mockAdapter.registerDocumentKeyDownHandler(td.matchers.isA(Function))).thenDo((handler) => {
     keydown = handler;
   });
   foundation.init();
@@ -398,7 +398,7 @@ test('on document keydown calls notifyCancel', () => {
 test('on document keydown does nothing when key other than escape is pressed', () => {
   const {foundation, mockAdapter} = setupTest();
   let keydown;
-  td.when(mockAdapter.registerDocumentKeydownHandler(td.matchers.isA(Function))).thenDo((handler) => {
+  td.when(mockAdapter.registerDocumentKeyDownHandler(td.matchers.isA(Function))).thenDo((handler) => {
     keydown = handler;
   });
   foundation.init();

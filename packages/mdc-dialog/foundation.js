@@ -43,7 +43,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
     return new MDCDialogAdapter();
   }
 
-  constructor(adapter = MDCDialogFoundation.defaultAdapter()) {
+  constructor(adapter = MDCDialogFoundation.defaultAdapter) {
     super(adapter);
 
     /**
@@ -56,16 +56,11 @@ export default class MDCDialogFoundation extends MDCFoundation {
      * @type {number}
      * @private
      */
-    this.timerId_ = 0;
+    this.animationTimer_ = 0;
 
-    this.clickHandler_ = (evt) => this.handleDialogClick_(evt);
-    this.resizeHandler_ = () => this.handleWindowResize_();
-
-    this.documentKeydownHandler_ = (evt) => {
-      if (evt.key && evt.key === 'Escape' || evt.keyCode === 27) {
-        this.close('escape');
-      }
-    };
+    this.dialogClickHandler_ = (evt) => this.handleDialogClick_(evt);
+    this.windowResizeHandler_ = () => this.handleWindowResize_();
+    this.documentKeyDownHandler_ = (evt) => this.handleDocumentKeyDown_(evt);
   };
 
   destroy() {
@@ -75,44 +70,44 @@ export default class MDCDialogFoundation extends MDCFoundation {
     }
     // Final cleanup of animating class in case the timer has not completed.
     this.adapter_.removeClass(cssClasses.ANIMATING);
-    clearTimeout(this.timerId_);
+    clearTimeout(this.animationTimer_);
   }
 
   open() {
-    this.adapter_.notifyOpening();
     this.isOpen_ = true;
-    this.disableScroll_();
-    this.adapter_.registerDocumentKeydownHandler(this.documentKeydownHandler_);
-    this.adapter_.registerWindowResizeHandler(this.resizeHandler_);
-    this.adapter_.registerInteractionHandler('click', this.clickHandler_);
+    this.adapter_.registerDocumentKeyDownHandler(this.documentKeyDownHandler_);
+    this.adapter_.registerWindowResizeHandler(this.windowResizeHandler_);
+    this.adapter_.registerInteractionHandler('click', this.dialogClickHandler_);
     this.adapter_.addClass(cssClasses.ANIMATING);
     this.adapter_.addClass(cssClasses.OPEN);
+    this.adapter_.addBodyClass(cssClasses.SCROLL_LOCK);
+    this.adapter_.notifyOpening();
 
     this.layout();
 
-    clearTimeout(this.timerId_);
-    this.timerId_ = setTimeout(() => {
+    clearTimeout(this.animationTimer_);
+    this.animationTimer_ = setTimeout(() => {
       this.handleAnimationTimerEnd_();
+      this.adapter_.trapFocusOnSurface();
+      this.adapter_.fixOverflowIE(() => this.layout());
       this.adapter_.notifyOpened();
     }, numbers.DIALOG_ANIMATION_TIME_MS);
   }
 
   close(action = undefined) {
-    this.adapter_.notifyClosing(action);
     this.isOpen_ = false;
-    this.enableScroll_();
-    this.adapter_.deregisterDocumentKeydownHandler(this.documentKeydownHandler_);
-    this.adapter_.deregisterWindowResizeHandler(this.resizeHandler_);
-    this.adapter_.deregisterInteractionHandler('click', this.clickHandler_);
+    this.adapter_.deregisterDocumentKeyDownHandler(this.documentKeyDownHandler_);
+    this.adapter_.deregisterWindowResizeHandler(this.windowResizeHandler_);
+    this.adapter_.deregisterInteractionHandler('click', this.dialogClickHandler_);
     this.adapter_.untrapFocusOnSurface();
     this.adapter_.addClass(cssClasses.ANIMATING);
     this.adapter_.removeClass(cssClasses.OPEN);
+    this.adapter_.removeBodyClass(cssClasses.SCROLL_LOCK);
+    this.adapter_.notifyClosing(action);
 
-    clearTimeout(this.timerId_);
-    this.timerId_ = setTimeout(() => {
+    clearTimeout(this.animationTimer_);
+    this.animationTimer_ = setTimeout(() => {
       this.handleAnimationTimerEnd_();
-      this.adapter_.removeClass(cssClasses.STACKED);
-      this.adapter_.removeClass(cssClasses.SCROLLABLE);
       this.adapter_.notifyClosed(action);
     }, numbers.DIALOG_ANIMATION_TIME_MS);
   }
@@ -163,22 +158,18 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.layout();
   }
 
-  /** @private */
-  handleAnimationTimerEnd_() {
-    this.adapter_.removeClass(cssClasses.ANIMATING);
-    if (this.isOpen_) {
-      this.adapter_.trapFocusOnSurface();
-      this.adapter_.fixOverflowIE(() => this.layout());
+  /**
+   * @param {!KeyboardEvent} evt
+   * @private
+   */
+  handleDocumentKeyDown_(evt) {
+    if (evt.key === 'Escape' || evt.keyCode === 27) {
+      this.close('escape');
     }
   }
 
   /** @private */
-  disableScroll_() {
-    this.adapter_.addBodyClass(cssClasses.SCROLL_LOCK);
-  }
-
-  /** @private */
-  enableScroll_() {
-    this.adapter_.removeBodyClass(cssClasses.SCROLL_LOCK);
+  handleAnimationTimerEnd_() {
+    this.adapter_.removeClass(cssClasses.ANIMATING);
   }
 }
