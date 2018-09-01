@@ -36,9 +36,30 @@ test('#createFocusTrapInstance creates a properly configured focus trap instance
   const properlyConfiguredFocusTrapInstance = {};
   td.when(focusTrapFactory(surface, {
     initialFocus: yesBtn,
-    clickOutsideDeactivates: true,
+    clickOutsideDeactivates: false,
   })).thenReturn(properlyConfiguredFocusTrapInstance);
 
   const instance = util.createFocusTrapInstance(surface, yesBtn, focusTrapFactory);
   assert.equal(instance, properlyConfiguredFocusTrapInstance);
+});
+
+test("#isScrollable returns true when an element's content overflows its bounding box", () => {
+  const element = bel`
+<div style="height: 20px; overflow: auto;">
+  <div style="height: 30px;"></div>
+</div>`;
+  element.first
+  document.body.appendChild(element);
+  assert.isTrue(util.isScrollable(element));
+  document.body.removeChild(element);
+});
+
+test("#isScrollable returns true when an element's content does not overflow its bounding box", () => {
+  const element = bel`
+<div style="height: 20px; overflow: auto;">
+  <div style="height: 10px;"></div>
+</div>`;
+  document.body.appendChild(element);
+  assert.isFalse(util.isScrollable(element));
+  document.body.removeChild(element);
 });
