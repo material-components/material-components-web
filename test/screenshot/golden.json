@@ -404,6 +404,15 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/02/18_08_57_688/spec/mdc-select/issues/3230.html.windows_ie_11.png"
     }
   },
+  "spec/mdc-select/issues/3496.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/02/19_06_54_751/spec/mdc-select/issues/3496.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/02/18_27_17_064/spec/mdc-select/issues/3496.html.windows_chrome_68.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/02/19_06_54_751/spec/mdc-select/issues/3496.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/02/18_27_17_064/spec/mdc-select/issues/3496.html.windows_firefox_61.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/02/18_27_17_064/spec/mdc-select/issues/3496.html.windows_ie_11.png"
+    }
+  },
   "spec/mdc-switch/classes/baseline.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/07/23/18_31_44_533/spec/mdc-switch/classes/baseline.html",
     "screenshots": {

@@ -47,6 +47,7 @@ class TestFixture {
     this.fontsLoaded.then(() => {
       console.log('Fonts loaded!');
       this.measureMobileViewport_();
+      this.autoFocus_();
       this.notifyWebDriver_();
     });
   }
@@ -114,6 +115,28 @@ Consider splitting this page into two separate pages.
 If you are trying to create a test page for a fullscreen component like drawer or top-app-bar,
 remove the 'test-viewport--mobile' class from the '<main class="test-viewport">' element.
           `.trim());
+    }
+  }
+
+  /** @private */
+  autoFocus_() {
+    // Edge doesn't always focus `<select autofocus>` elements correctly.
+    // E.g., the "golden" image on the left of this screenshot test report:
+    // https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/02/19_06_54_751/report/report.html
+    const autoFocusEls = [].filter.call(document.querySelectorAll('[autofocus]'), (el) => {
+      const style = getComputedStyle(el);
+      if (style.visibility === 'hidden' || style.display === 'none' || style.opacity < 0.1) {
+        return false;
+      }
+      const rect = el.getBoundingClientRect();
+      if (rect.height === 0 || rect.width === 0) {
+        return false;
+      }
+      return true;
+    });
+    const autoFocusEl = autoFocusEls[0];
+    if (autoFocusEl && document.activeElement !== autoFocusEl) {
+      autoFocusEl.focus();
     }
   }
 
