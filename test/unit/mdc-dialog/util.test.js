@@ -53,6 +53,16 @@ function destroyFlexItemBugFixture(element) {
   document.body.removeChild(element);
 }
 
+// Babel transpiles optional function arguments into `if` statements. Istanbul (our code coverage tool) then reports the
+// transpiled `else` branch as lacking coverage, but the coverage report UI doesn't tell you where the missing branches
+// are. See https://github.com/gotwarlost/istanbul/issues/582#issuecomment-334683612.
+// createFocusTrapInstance() has two optional arguments, so code coverage reports two missed branches.
+test('#createFocusTrapInstance covers `if` branches added by Babel transpilation of optional arguments', () => {
+  const util = new MDCDialogUtil();
+  const surface = bel`<div></div>`;
+  util.createFocusTrapInstance(surface);
+});
+
 test('#createFocusTrapInstance creates a properly configured focus trap instance', () => {
   const util = new MDCDialogUtil();
   const surface = bel`<div></div>`;
