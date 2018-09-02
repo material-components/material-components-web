@@ -51,8 +51,8 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
       deregisterForwardIndicatorClickHandler: (/* handler: EventListener */) => {},
       registerCapturedInteractionHandler: (/* evt: string, handler: EventListener */) => {},
       deregisterCapturedInteractionHandler: (/* evt: string, handler: EventListener */) => {},
-      registerWindowHandler: (/* handler: EventListener */) => {},
-      deregisterWindowHandler: (/* handler: EventListener */) => {},
+      registerWindowResizeHandler: (/* handler: EventListener */) => {},
+      deregisterWindowResizeHandler: (/* handler: EventListener */) => {},
       getNumberOfTabs: () => /* number */ 0,
       getComputedWidthForTabAtIndex: () => /* number */ 0,
       getComputedLeftForTabAtIndex: () => /* number */ 0,
@@ -92,7 +92,7 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
   init() {
     this.adapter_.registerBackIndicatorClickHandler(this.backIndicatorClickHandler_);
     this.adapter_.registerForwardIndicatorClickHandler(this.forwardIndicatorClickHandler_);
-    this.adapter_.registerWindowHandler(this.resizeHandler_);
+    this.adapter_.registerWindowResizeHandler(this.resizeHandler_);
     ['touchstart', 'mousedown', 'focus'].forEach((evtType) => {
       this.adapter_.registerCapturedInteractionHandler(evtType, this.interactionHandler_);
     });
@@ -102,7 +102,7 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
   destroy() {
     this.adapter_.deregisterBackIndicatorClickHandler(this.backIndicatorClickHandler_);
     this.adapter_.deregisterForwardIndicatorClickHandler(this.forwardIndicatorClickHandler_);
-    this.adapter_.deregisterWindowHandler(this.resizeHandler_);
+    this.adapter_.deregisterWindowResizeHandler(this.resizeHandler_);
     ['touchstart', 'mousedown', 'focus'].forEach((evtType) => {
       this.adapter_.deregisterCapturedInteractionHandler(evtType, this.interactionHandler_);
     });

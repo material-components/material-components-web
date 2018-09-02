@@ -69,9 +69,9 @@ export class MDCTabBarScroller extends MDCComponent {
         this.root_.addEventListener(evt, handler, true),
       deregisterCapturedInteractionHandler: (evt, handler) =>
         this.root_.removeEventListener(evt, handler, true),
-      registerWindowHandler: (handler) =>
+      registerWindowResizeHandler: (handler) =>
         window.addEventListener('resize', handler),
-      deregisterWindowHandler: (handler) =>
+      deregisterWindowResizeHandler: (handler) =>
         window.removeEventListener('resize', handler),
       getNumberOfTabs: () => this.tabBar.tabs.length,
       getComputedWidthForTabAtIndex: (index) => this.tabBar.tabs[index].computedWidth,
