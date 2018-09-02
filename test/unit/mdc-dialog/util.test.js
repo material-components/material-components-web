@@ -133,6 +133,7 @@ test('#areTopsMisaligned returns false when array only contains one element', ()
   const parent = bel`
 <div style="display: flex;
             position: relative;
+            flex-direction: row;
             flex-wrap: wrap;
             align-items: center;
             justify-content: flex-end;">
@@ -154,6 +155,7 @@ test('#areTopsMisaligned returns false when elements have same offsetTop', () =>
   const parent = bel`
 <div style="display: flex;
             position: relative;
+            flex-direction: row;
             flex-wrap: wrap;
             align-items: center;
             justify-content: flex-end;">
@@ -176,29 +178,12 @@ test('#areTopsMisaligned returns true when elements have different "top" values'
   const parent = bel`
 <div style="display: flex;
             position: relative;
+            flex-direction: column;
             flex-wrap: wrap;
             align-items: center;
             justify-content: flex-end;">
   <button>1</button>
-  <button style="position: relative; top: 1px;">2</button>
-</div>`;
-  const buttons = parent.querySelectorAll('button');
-
-  // HTMLElement.offsetTop only returns the correct value when the element is attached to the DOM.
-  document.body.appendChild(parent);
-  try {
-    assert.isTrue(util.areTopsMisaligned(buttons));
-  } finally {
-    document.body.removeChild(parent);
-  }
-});
-
-test('#areTopsMisaligned returns true when elements have different heights in a vertically-centered container', () => {
-  const util = new MDCDialogUtil();
-  const parent = bel`
-<div class="mdc-dialog__actions">
-  <button>1</button>
-  <button style="height: 100px;">2</button>
+  <button>2</button>
 </div>`;
   const buttons = parent.querySelectorAll('button');
 
