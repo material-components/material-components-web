@@ -33,6 +33,13 @@ import td from 'testdouble';
  * @return {{mockAdapter: !Object, foundation: !MDCFoundation}}
  */
 export function setupFoundationTest(FoundationClass) {
+  // Make code coverage happy.
+  // Babel transpiles optional function arguments into `if` statements. Istanbul (our code coverage tool) then reports
+  // the transpiled `else` branch as lacking coverage, but the coverage report UI doesn't tell you where the
+  // missing branches are. See https://github.com/gotwarlost/istanbul/issues/582#issuecomment-334683612
+  // eslint-disable-next-line no-new
+  new FoundationClass();
+
   const mockAdapter = td.object(FoundationClass.defaultAdapter);
   const foundation = new FoundationClass(mockAdapter);
   return {mockAdapter, foundation};
