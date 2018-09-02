@@ -81,7 +81,7 @@ export class MDCDialog extends MDCComponent {
   }
 
   initialize() {
-    this.util_ = new MDCDialogUtil();
+    this.util_ = this.util_ || new MDCDialogUtil();
     this.focusTrap_ = this.util_.createFocusTrapInstance(this.container_);
     this.buttonRipples_ = [];
 
@@ -93,6 +93,10 @@ export class MDCDialog extends MDCComponent {
   destroy() {
     this.buttonRipples_.forEach((ripple) => ripple.destroy());
     super.destroy();
+  }
+
+  layout() {
+    this.foundation_.layout();
   }
 
   show() {
@@ -119,7 +123,7 @@ export class MDCDialog extends MDCComponent {
       deregisterWindowHandler: (eventName, handler) => window.removeEventListener(eventName, handler),
       trapFocusOnSurface: () => this.focusTrap_.activate(),
       untrapFocusOnSurface: () => this.focusTrap_.deactivate(),
-      fixOverflowIE: (callback) => !!this.surface_ && this.util_.fixFlexItemMaxHeightBug(this.surface_, callback),
+      fixOverflowIE: (callback) => this.util_.fixFlexItemMaxHeightBug(this.surface_, callback),
       isContentScrollable: () => !!this.content_ && this.util_.isScrollable(this.content_),
       areButtonsStacked: () => this.util_.areTopsMisaligned(this.buttons_),
       getAction: (element) => element.getAttribute(strings.ACTION_ATTRIBUTE),

@@ -27,31 +27,36 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 import {createMockRaf} from '../helpers/raf';
 import {strings} from '../../../packages/mdc-dialog/constants';
-import {MDCDialog, util} from '../../../packages/mdc-dialog';
+import {MDCDialog} from '../../../packages/mdc-dialog';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 
 function getFixture() {
   return bel`
     <div>
-      <button class="open-dialog">click</button>
-      <div id="my-dialog"
+      <button class="open-dialog-button">click</button>
+      <div id="test-dialog"
            class="mdc-dialog"
            role="alertdialog"
            aria-hidden="true"
-           aria-labelledby="my-dialog-label"
-           aria-describedby="my-dialog-description">
+           aria-labelledby="test-dialog-label"
+           aria-describedby="test-dialog-description">
         <div class="mdc-dialog__container">
-          <h2 class="mdc-dialog__title" id="my-dialog-label">
-            Use Google's location service?
-          </h2>
-          <section class="mdc-dialog__content" id="my-dialog-description">
-            Let Google help apps determine location.
-          </section>
-          <footer class="mdc-dialog__actions">
-            <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="cancel">Cancel</button>
-            <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">No</button>
-            <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">Yes</button>
-          </footer>
+          <div class="mdc-dialog__surface">
+            <h2 class="mdc-dialog__title">
+              Use Google's location service?
+            </h2>
+            <section class="mdc-dialog__content">
+              Let Google help apps determine location.
+            </section>
+            <footer class="mdc-dialog__actions">
+              <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="cancel"
+                      type="button">Cancel</button>
+              <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no"
+                      type="button">No</button>
+              <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes"
+                      type="button">Yes</button>
+            </footer>
+          </div>
         </div>
         <div class="mdc-dialog__scrim"></div>
       </div>
@@ -60,13 +65,23 @@ function getFixture() {
 
 function setupTest() {
   const fixture = getFixture();
-  const openDialog = fixture.querySelector('.open-dialog');
+  const openDialogButton = fixture.querySelector('.open-dialog-button');
   const root = fixture.querySelector('.mdc-dialog');
   const component = new MDCDialog(root);
+  const scrim = fixture.querySelector('.mdc-dialog__scrim');
+  const container = fixture.querySelector('.mdc-dialog__container');
+  const surface = fixture.querySelector('.mdc-dialog__surface');
+  const title = fixture.querySelector('.mdc-dialog__title');
+  const content = fixture.querySelector('.mdc-dialog__content');
+  const actions = fixture.querySelector('.mdc-dialog__actions');
   const yesButton = fixture.querySelector('[data-mdc-dialog-action="yes"]');
   const noButton = fixture.querySelector('[data-mdc-dialog-action="no"]');
   const cancelButton = fixture.querySelector('[data-mdc-dialog-action="cancel"]');
-  return {openDialog, root, yesButton, noButton, cancelButton, component};
+  return {
+    openDialogButton,
+    component,
+    root, scrim, container, surface, title, content, actions, yesButton, noButton, cancelButton,
+  };
 }
 
 function hasClassMatcher(className) {
@@ -151,6 +166,24 @@ test('adapter#removeBodyClass adds a class to the body, locking the background s
   assert.isNotOk(body.classList.contains('mdc-dialog--scroll-lock'));
 });
 
+test('adapter#eventTargetHasClass returns whether or not the className is in the target\'s classList', () => {
+  const {component} = setupTest();
+  const target = bel`<div class="existent-class"></div>`;
+  const {adapter_: adapter} = component.getDefaultFoundation();
+
+  assert.isTrue(adapter.eventTargetHasClass(target, 'existent-class'));
+  assert.isFalse(adapter.eventTargetHasClass(target, 'non-existent-class'));
+});
+
+test('adapter#eventTargetMatchesSelector returns whether or not the className is in the target\'s classList', () => {
+  const {component} = setupTest();
+  const target = bel`<div data-existent-attr></div>`;
+  const {adapter_: adapter} = component.getDefaultFoundation();
+
+  assert.isTrue(adapter.eventTargetMatchesSelector(target, '[data-existent-attr]'));
+  assert.isFalse(adapter.eventTargetMatchesSelector(target, '[data-non-existent-attr]'));
+});
+
 test('adapter#registerInteractionHandler adds an event listener to the root element', () => {
   const {root, component} = setupTest();
   const handler = td.func('eventHandler');
@@ -172,133 +205,189 @@ test('adapter#deregisterInteractionHandler removes an event listener from the ro
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('adapter#registerContainerInteractionHandler adds an event listener to the root element', () => {
-  const {root, component} = setupTest();
-  const dialog = root.querySelector(strings.CONTAINER_SELECTOR);
-  const handler = td.func('eventHandler');
-
-  component.getDefaultFoundation().adapter_.registerContainerInteractionHandler('click', handler);
-  domEvents.emit(dialog, 'click');
-
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('adapter#deregisterContainerInteractionHandler removes an event listener from the root element', () => {
-  const {root, component} = setupTest();
-  const dialog = root.querySelector(strings.CONTAINER_SELECTOR);
-  const handler = td.func('eventHandler');
-
-  dialog.addEventListener('click', handler);
-  component.getDefaultFoundation().adapter_.deregisterContainerInteractionHandler('click', handler);
-  domEvents.emit(dialog, 'click');
-  td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
-test('adapter#registerDocumentKeyDownHandler attaches a "keydown" handler to the document', () => {
+test('adapter#registerDocumentHandler attaches an event listener to the document', () => {
   const {component} = setupTest();
-  const handler = td.func('keydownHandler');
+  const handler = td.func('eventHandler');
 
-  component.getDefaultFoundation().adapter_.registerDocumentKeyDownHandler(handler);
+  component.getDefaultFoundation().adapter_.registerDocumentHandler('keydown', handler);
   domEvents.emit(document, 'keydown');
+
   td.verify(handler(td.matchers.anything()));
 });
 
-test('adapter#deregisterDocumentKeyDownHandler removes a "keydown" handler from the document', () => {
+test('adapter#deregisterDocumentHandler detaches an event listener from the document', () => {
   const {component} = setupTest();
-  const handler = td.func('keydownHandler');
+  const handler = td.func('eventHandler');
 
   document.addEventListener('keydown', handler);
-  component.getDefaultFoundation().adapter_.deregisterDocumentKeyDownHandler(handler);
+  component.getDefaultFoundation().adapter_.deregisterDocumentHandler('keydown', handler);
   domEvents.emit(document, 'keydown');
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test('adapter#eventTargetHasClass returns whether or not the className is in the target\'s classList', () => {
+test('adapter#registerWindowHandler attaches an event handler to the window', () => {
   const {component} = setupTest();
-  const target = bel`<div class="existent-class"></div>`;
-  const {adapter_: adapter} = component.getDefaultFoundation();
+  const handler = td.func('resizeHandler');
 
-  assert.isTrue(adapter.eventTargetHasClass(target, 'existent-class'));
-  assert.isFalse(adapter.eventTargetHasClass(target, 'non-existent-class'));
+  component.getDefaultFoundation().adapter_.registerWindowHandler('resize', handler);
+  domEvents.emit(window, 'resize');
+  td.verify(handler(td.matchers.anything()));
 });
 
-test('adapter#eventTargetMatchesSelector returns whether or not the className is in the target\'s classList', () => {
+test('adapter#deregisterWindowHandler detaches an event handler from the window', () => {
   const {component} = setupTest();
-  const target = bel`<div data-existent-attr></div>`;
-  const {adapter_: adapter} = component.getDefaultFoundation();
+  const handler = td.func('resizeHandler');
 
-  assert.isTrue(adapter.eventTargetMatchesSelector(target, '[data-existent-attr]'));
-  assert.isFalse(adapter.eventTargetMatchesSelector(target, '[data-non-existent-attr]'));
+  window.addEventListener('resize', handler);
+  component.getDefaultFoundation().adapter_.deregisterWindowHandler('resize', handler);
+  domEvents.emit(window, 'resize');
+  td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
-test(`adapter#notifyYes emits ${strings.YES_EVENT}`, () => {
+test(`adapter#notifyOpening emits ${strings.OPENING_EVENT}`, () => {
   const {component} = setupTest();
 
-  const handler = td.func('yesHandler');
+  const handler = td.func('notifyOpeningHandler');
 
-  component.listen(strings.YES_EVENT, handler);
-  component.getDefaultFoundation().adapter_.notifyYes();
+  component.listen(strings.OPENING_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyOpening();
 
   td.verify(handler(td.matchers.anything()));
 });
 
-test(`adapter#notifyNo emits ${strings.NO_EVENT}`, () => {
+test(`adapter#notifyOpened emits ${strings.OPENED_EVENT}`, () => {
   const {component} = setupTest();
 
-  const handler = td.func('noHandler');
+  const handler = td.func('notifyOpenedHandler');
 
-  component.listen(strings.NO_EVENT, handler);
-  component.getDefaultFoundation().adapter_.notifyNo();
+  component.listen(strings.OPENED_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyOpened();
 
   td.verify(handler(td.matchers.anything()));
 });
 
-test(`adapter#notifyCancel emits ${strings.CANCEL_EVENT}`, () => {
+test(`adapter#notifyClosing emits ${strings.CLOSING_EVENT} without action`, () => {
   const {component} = setupTest();
 
-  const handler = td.func('cancelHandler');
+  const handler = td.func('notifyClosingHandler');
 
-  component.listen(strings.CANCEL_EVENT, handler);
-  component.getDefaultFoundation().adapter_.notifyCancel();
+  component.listen(strings.CLOSING_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyClosing();
 
-  td.verify(handler(td.matchers.anything()));
+  td.verify(handler(td.matchers.contains({detail: {action: undefined}})));
+});
+
+test(`adapter#notifyClosing emits ${strings.CLOSING_EVENT} with action`, () => {
+  const {component} = setupTest();
+
+  const handler = td.func('notifyClosingHandler');
+
+  component.listen(strings.CLOSING_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyClosing('foo');
+
+  td.verify(handler(td.matchers.contains({detail: {action: 'foo'}})));
 });
 
 test('adapter#trapFocusOnSurface calls activate() on a properly configured focus trap instance', () => {
-  const {createFocusTrapInstance} = util;
-  util.createFocusTrapInstance = td.func('util.createFocusTrapInstance');
+  const {component} = setupTest();
+  component.util_.createFocusTrapInstance = td.func('component.util_.createFocusTrapInstance');
 
   const fakeFocusTrapInstance = td.object({
     activate: td.func('focusTrap#activate'),
     deactivate: td.func('focusTrap#deactivate'),
   });
 
-  td.when(util.createFocusTrapInstance(hasClassMatcher('mdc-dialog__container')))
+  td.when(component.util_.createFocusTrapInstance(hasClassMatcher('mdc-dialog__container')))
     .thenReturn(fakeFocusTrapInstance);
 
-  const {component} = setupTest();
+  component.initialize();
   component.getDefaultFoundation().adapter_.trapFocusOnSurface();
-
-  util.createFocusTrapInstance = createFocusTrapInstance;
 
   td.verify(fakeFocusTrapInstance.activate());
 });
 
 test('adapter#untrapFocusOnSurface calls deactivate() on a properly configured focus trap instance', () => {
-  const {createFocusTrapInstance} = util;
-  util.createFocusTrapInstance = td.func('util.createFocusTrapInstance');
+  const {component} = setupTest();
+  component.util_.createFocusTrapInstance = td.func('component.util_.createFocusTrapInstance');
 
   const fakeFocusTrapInstance = td.object({
     activate: () => {},
     deactivate: () => {},
   });
 
-  td.when(util.createFocusTrapInstance(hasClassMatcher('mdc-dialog__container')))
+  td.when(component.util_.createFocusTrapInstance(hasClassMatcher('mdc-dialog__container')))
     .thenReturn(fakeFocusTrapInstance);
 
-  const {component} = setupTest();
+  component.initialize();
   component.getDefaultFoundation().adapter_.untrapFocusOnSurface();
-  util.createFocusTrapInstance = createFocusTrapInstance;
 
   td.verify(fakeFocusTrapInstance.deactivate());
+});
+
+test('adapter#fixOverflowIE calls util method with surface element', () => {
+  const {component, surface} = setupTest();
+  const callback = td.func('callback');
+  component.util_.fixFlexItemMaxHeightBug = td.func('component.util_.fixFlexItemMaxHeightBug');
+
+  component.getDefaultFoundation().adapter_.fixOverflowIE(callback);
+
+  td.verify(component.util_.fixFlexItemMaxHeightBug(surface, callback));
+});
+
+test('adapter#isContentScrollable returns false when there is no content element', () => {
+  const {component, content} = setupTest();
+  content.parentElement.removeChild(content);
+  const isContentScrollable = component.getDefaultFoundation().adapter_.isContentScrollable();
+  assert.isFalse(isContentScrollable);
+});
+
+test('adapter#isContentScrollable returns false when content does not require scrolling', () => {
+  const {component} = setupTest();
+  const isContentScrollable = component.getDefaultFoundation().adapter_.isContentScrollable();
+  assert.isFalse(isContentScrollable);
+});
+
+test('adapter#isContentScrollable returns true when content requires scrolling', () => {
+  const {component, content} = setupTest();
+  component.util_.isScrollable = td.func('component.util_.isScrollable');
+  td.when(component.util_.isScrollable(content)).thenReturn(true);
+
+  const isContentScrollable = component.getDefaultFoundation().adapter_.isContentScrollable();
+
+  assert.isTrue(isContentScrollable);
+});
+
+test('adapter#areButtonsStacked returns false when tops are aligned', () => {
+  const {component} = setupTest();
+  const areButtonsStacked = component.getDefaultFoundation().adapter_.areButtonsStacked();
+  assert.isFalse(areButtonsStacked);
+});
+
+test('adapter#areButtonsStacked returns true when tops are misaligned', () => {
+  const {component} = setupTest();
+  component.util_.areTopsMisaligned = td.func('component.util_.areTopsMisaligned');
+  td.when(component.util_.areTopsMisaligned(td.matchers.anything())).thenReturn(true);
+
+  const areButtonsStacked = component.getDefaultFoundation().adapter_.areButtonsStacked();
+
+  assert.isTrue(areButtonsStacked);
+});
+
+test('adapter#getAction returns attribute value', () => {
+  const {component, yesButton} = setupTest();
+  const action = component.getDefaultFoundation().adapter_.getAction(yesButton);
+  assert.equal(action, 'yes');
+});
+
+test('adapter#getAction returns null when attribute is not present', () => {
+  const {component, title} = setupTest();
+  const action = component.getDefaultFoundation().adapter_.getAction(title);
+  assert.isNull(action);
+});
+
+test('#layout proxies to foundation', () => {
+  const {component} = setupTest();
+  component.foundation_.layout = td.func('component.foundation_.layout');
+  component.layout();
+  td.verify(component.foundation_.layout());
 });
