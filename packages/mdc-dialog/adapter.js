@@ -67,36 +67,40 @@ class MDCDialogAdapter {
   eventTargetMatchesSelector(target, selector) {}
 
   /**
-   * @param {string} evt
+   * @param {string} eventName
    * @param {!EventListener} handler
    */
-  registerInteractionHandler(evt, handler) {}
+  registerInteractionHandler(eventName, handler) {}
 
   /**
-   * @param {string} evt
+   * @param {string} eventName
    * @param {!EventListener} handler
    */
-  deregisterInteractionHandler(evt, handler) {}
+  deregisterInteractionHandler(eventName, handler) {}
 
   /**
+   * @param {string} eventName
    * @param {!EventListener} handler
    */
-  registerDocumentKeyDownHandler(handler) {}
+  registerDocumentHandler(eventName, handler) {}
 
   /**
+   * @param {string} eventName
    * @param {!EventListener} handler
    */
-  deregisterDocumentKeyDownHandler(handler) {}
+  deregisterDocumentHandler(eventName, handler) {}
 
   /**
+   * @param {string} eventName
    * @param {!EventListener} handler
    */
-  registerWindowResizeHandler(handler) {}
+  registerWindowHandler(eventName, handler) {}
 
   /**
+   * @param {string} eventName
    * @param {!EventListener} handler
    */
-  deregisterWindowResizeHandler(handler) {}
+  deregisterWindowHandler(eventName, handler) {}
 
   trapFocusOnSurface() {}
   untrapFocusOnSurface() {}

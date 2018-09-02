@@ -76,8 +76,8 @@ export default class MDCDialogFoundation extends MDCFoundation {
   open() {
     this.isOpen_ = true;
     this.adapter_.registerInteractionHandler('click', this.dialogClickHandler_);
-    this.adapter_.registerDocumentKeyDownHandler(this.documentKeyDownHandler_);
-    this.adapter_.registerWindowResizeHandler(this.windowResizeHandler_);
+    this.adapter_.registerDocumentHandler('keydown', this.documentKeyDownHandler_);
+    this.adapter_.registerWindowHandler('resize', this.windowResizeHandler_);
     this.adapter_.addClass(cssClasses.ANIMATING);
     this.adapter_.addClass(cssClasses.OPEN);
     this.adapter_.addBodyClass(cssClasses.SCROLL_LOCK);
@@ -97,8 +97,8 @@ export default class MDCDialogFoundation extends MDCFoundation {
   close(action = undefined) {
     this.isOpen_ = false;
     this.adapter_.deregisterInteractionHandler('click', this.dialogClickHandler_);
-    this.adapter_.deregisterDocumentKeyDownHandler(this.documentKeyDownHandler_);
-    this.adapter_.deregisterWindowResizeHandler(this.windowResizeHandler_);
+    this.adapter_.deregisterDocumentHandler('keydown', this.documentKeyDownHandler_);
+    this.adapter_.deregisterWindowHandler('resize', this.windowResizeHandler_);
     this.adapter_.untrapFocusOnSurface();
     this.adapter_.addClass(cssClasses.ANIMATING);
     this.adapter_.removeClass(cssClasses.OPEN);
@@ -164,7 +164,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
    */
   handleDocumentKeyDown_(evt) {
     if (evt.key === 'Escape' || evt.keyCode === 27) {
-      this.close('escape');
+      this.close(strings.ESCAPE_ACTION);
     }
   }
 

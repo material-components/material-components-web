@@ -42,6 +42,8 @@ const strings = {
   CLOSED_EVENT: 'MDCDialog:closed',
 
   ACTION_ATTRIBUTE: 'data-mdc-dialog-action',
+
+  ESCAPE_ACTION: 'escape',
 };
 
 const numbers = {
