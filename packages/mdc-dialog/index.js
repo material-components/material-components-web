@@ -26,10 +26,10 @@ import {MDCRipple} from '@material/ripple/index';
 import {matches} from '@material/base/ponyfill';
 
 import MDCDialogFoundation from './foundation';
-import * as util from './util';
+import MDCDialogUtil from './util';
 
 export {MDCDialogFoundation};
-export {util};
+export {MDCDialogUtil};
 
 const strings = MDCDialogFoundation.strings;
 
@@ -48,6 +48,12 @@ export class MDCDialog extends MDCComponent {
      * @private
      */
     this.buttonRipples_;
+
+    /**
+     * @type {!MDCDialogUtil}
+     * @private
+     */
+    this.util_ = new MDCDialogUtil();
   }
 
   static attachTo(root) {
@@ -75,7 +81,7 @@ export class MDCDialog extends MDCComponent {
   }
 
   initialize() {
-    this.focusTrap_ = util.createFocusTrapInstance(this.container_);
+    this.focusTrap_ = this.util_.createFocusTrapInstance(this.container_);
     this.buttonRipples_ = [];
 
     for (let i = 0, buttonEl; buttonEl = this.buttons_[i]; i++) {
@@ -112,9 +118,9 @@ export class MDCDialog extends MDCComponent {
       deregisterWindowResizeHandler: (handler) => window.removeEventListener('resize', handler),
       trapFocusOnSurface: () => this.focusTrap_.activate(),
       untrapFocusOnSurface: () => this.focusTrap_.deactivate(),
-      fixOverflowIE: (callback) => Boolean(this.surface_) && util.fixFlexItemMaxHeightBug(this.surface_, callback),
-      isContentScrollable: () => Boolean(this.content_) && util.isScrollable(this.content_),
-      areButtonsStacked: () => util.areTopsMisaligned(this.buttons_),
+      fixOverflowIE: (callback) => !!this.surface_ && this.util_.fixFlexItemMaxHeightBug(this.surface_, callback),
+      isContentScrollable: () => !!this.content_ && this.util_.isScrollable(this.content_),
+      areButtonsStacked: () => this.util_.areTopsMisaligned(this.buttons_),
       getAction: (element) => element.getAttribute(strings.ACTION_ATTRIBUTE),
       notifyOpening: () => this.emit(strings.OPENING_EVENT),
       notifyOpened: () => this.emit(strings.OPENED_EVENT),

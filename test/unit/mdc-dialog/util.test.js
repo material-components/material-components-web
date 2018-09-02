@@ -21,24 +21,40 @@
  * THE SOFTWARE.
  */
 
-import {assert} from 'chai';
 import bel from 'bel';
+import lolex from 'lolex';
 import td from 'testdouble';
+import {assert} from 'chai';
 
-import * as util from '../../../packages/mdc-dialog/util';
+import MDCDialogUtil from '../../../packages/mdc-dialog/util';
+import {numbers} from '../../../packages/mdc-dialog/constants';
 
 suite('MDCDialog - util');
 
-function testDOM(element, callback) {
+/** @return {!HTMLElement} */
+function createFlexItemBugFixture() {
+  const element = bel`
+<section style="box-sizing: border-box; display: flex; flex-direction: column; max-height: 200px;
+                opacity: 0.001; position: fixed; top: -9999px; left: -9999px;
+                border: 1px solid transparent;">
+  <header style="box-sizing: border-box; flex-shrink: 0; height: 50px;">Header</header>
+  <article style="box-sizing: border-box; flex-grow: 1; overflow: auto;
+                  border: 1px solid transparent;">
+    <div style="height: 500px"></div>
+  </article>
+  <footer style="box-sizing: border-box; flex-shrink: 0; height: 50px;">Footer</footer>
+<section>
+`;
   document.body.appendChild(element);
-  try {
-    callback();
-  } finally {
-    document.body.removeChild(element);
-  }
+  return element;
+}
+
+function destroyFlexItemBugFixture(element) {
+  document.body.removeChild(element);
 }
 
 test('#createFocusTrapInstance creates a properly configured focus trap instance', () => {
+  const util = new MDCDialogUtil();
   const surface = bel`<div></div>`;
   const yesBtn = bel`<button></button>`;
   const focusTrapFactory = td.func('focusTrapFactory');
@@ -53,37 +69,57 @@ test('#createFocusTrapInstance creates a properly configured focus trap instance
 });
 
 test('#isScrollable returns false when element has no content', () => {
-  const element = bel`<div></div>`;
-  testDOM(element, () => {
-    assert.isFalse(util.isScrollable(element));
-  });
+  const util = new MDCDialogUtil();
+  const parent = bel`<div></div>`;
+
+  // Element.scrollHeight only returns the correct value when the element is attached to the DOM.
+  document.body.appendChild(parent);
+  try {
+    assert.isFalse(util.isScrollable(parent));
+  } finally {
+    document.body.removeChild(parent);
+  }
 });
 
 test('#isScrollable returns false when element content does not overflow its bounding box', () => {
-  const element = bel`
+  const util = new MDCDialogUtil();
+  const parent = bel`
 <div style="height: 20px; overflow: auto;">
   <div style="height: 10px;"></div>
 </div>`;
-  testDOM(element, () => {
-    assert.isFalse(util.isScrollable(element));
-  });
+
+  // Element.scrollHeight only returns the correct value when the element is attached to the DOM.
+  document.body.appendChild(parent);
+  try {
+    assert.isFalse(util.isScrollable(parent));
+  } finally {
+    document.body.removeChild(parent);
+  }
 });
 
 test('#isScrollable returns true when element content overflows its bounding box', () => {
-  const element = bel`
+  const util = new MDCDialogUtil();
+  const parent = bel`
 <div style="height: 20px; overflow: auto;">
   <div style="height: 30px;"></div>
 </div>`;
-  testDOM(element, () => {
-    assert.isTrue(util.isScrollable(element));
-  });
+
+  // Element.scrollHeight only returns the correct value when the element is attached to the DOM.
+  document.body.appendChild(parent);
+  try {
+    assert.isTrue(util.isScrollable(parent));
+  } finally {
+    document.body.removeChild(parent);
+  }
 });
 
 test('#areTopsMisaligned returns true when array is empty', () => {
+  const util = new MDCDialogUtil();
   assert.isFalse(util.areTopsMisaligned([]));
 });
 
 test('#areTopsMisaligned returns false when array only contains one element', () => {
+  const util = new MDCDialogUtil();
   const parent = bel`
 <div style="display: flex;
             position: relative;
@@ -93,12 +129,18 @@ test('#areTopsMisaligned returns false when array only contains one element', ()
   <button>1</button>
 </div>`;
   const buttons = parent.querySelectorAll('button');
-  testDOM(parent, () => {
+
+  // HTMLElement.offsetTop only returns the correct value when the element is attached to the DOM.
+  document.body.appendChild(parent);
+  try {
     assert.isFalse(util.areTopsMisaligned(buttons));
-  });
+  } finally {
+    document.body.removeChild(parent);
+  }
 });
 
 test('#areTopsMisaligned returns false when elements have same offsetTop', () => {
+  const util = new MDCDialogUtil();
   const parent = bel`
 <div style="display: flex;
             position: relative;
@@ -109,12 +151,18 @@ test('#areTopsMisaligned returns false when elements have same offsetTop', () =>
   <button>2</button>
 </div>`;
   const buttons = parent.querySelectorAll('button');
-  testDOM(parent, () => {
+
+  // HTMLElement.offsetTop only returns the correct value when the element is attached to the DOM.
+  document.body.appendChild(parent);
+  try {
     assert.isFalse(util.areTopsMisaligned(buttons));
-  });
+  } finally {
+    document.body.removeChild(parent);
+  }
 });
 
 test('#areTopsMisaligned returns true when elements have different "top" values', () => {
+  const util = new MDCDialogUtil();
   const parent = bel`
 <div style="display: flex;
             position: relative;
@@ -125,12 +173,18 @@ test('#areTopsMisaligned returns true when elements have different "top" values'
   <button style="position: relative; top: 1px;">2</button>
 </div>`;
   const buttons = parent.querySelectorAll('button');
-  testDOM(parent, () => {
+
+  // HTMLElement.offsetTop only returns the correct value when the element is attached to the DOM.
+  document.body.appendChild(parent);
+  try {
     assert.isTrue(util.areTopsMisaligned(buttons));
-  });
+  } finally {
+    document.body.removeChild(parent);
+  }
 });
 
 test('#areTopsMisaligned returns true when elements have different heights in a vertically-centered container', () => {
+  const util = new MDCDialogUtil();
   const parent = bel`
 <div style="display: flex;
             position: relative;
@@ -141,7 +195,98 @@ test('#areTopsMisaligned returns true when elements have different heights in a 
   <button style="height: 100px;">2</button>
 </div>`;
   const buttons = parent.querySelectorAll('button');
-  testDOM(parent, () => {
+
+  // HTMLElement.offsetTop only returns the correct value when the element is attached to the DOM.
+  document.body.appendChild(parent);
+  try {
     assert.isTrue(util.areTopsMisaligned(buttons));
-  });
+  } finally {
+    document.body.removeChild(parent);
+  }
+});
+
+// TODO(acdvorak): CACHING! hasFlexItemMaxHeightBug_ gets cached.
+test('#hasFlexItemMaxHeightBug returns false when child flex item is scrollable', () => {
+  const util = new MDCDialogUtil();
+  util.isScrollable = td.func('isScrollable');
+  td.when(util.isScrollable(td.matchers.anything())).thenReturn(true);
+
+  assert.isFalse(util.hasFlexItemMaxHeightBug());
+});
+
+test('#hasFlexItemMaxHeightBug returns true when child flex item is not scrollable', () => {
+  const util = new MDCDialogUtil();
+  util.isScrollable = td.func('isScrollable');
+  td.when(util.isScrollable(td.matchers.anything())).thenReturn(false);
+
+  assert.isTrue(util.hasFlexItemMaxHeightBug());
+});
+
+test('#fixFlexItemMaxHeightBug does nothing if bug is not present', () => {
+  const util = new MDCDialogUtil();
+  util.isScrollable = td.func('isScrollable');
+  td.when(util.isScrollable(td.matchers.anything())).thenReturn(true);
+
+  const clock = lolex.install();
+  const callback = td.func('callback');
+  const intervalMs = numbers.IE_FLEX_OVERFLOW_BUG_INTERVAL_MS;
+  const numIterations = numbers.IE_FLEX_OVERFLOW_BUG_ITERATIONS;
+  const flexContainer = createFlexItemBugFixture();
+  const flexItem = flexContainer.querySelector('article');
+
+  util.fixFlexItemMaxHeightBug(flexItem, callback);
+
+  for (let i = 0; i < numIterations; i++) {
+    clock.tick(intervalMs);
+  }
+
+  td.verify(callback(), {times: 0});
+
+  clock.uninstall();
+  destroyFlexItemBugFixture(flexContainer);
+});
+
+test('#fixFlexItemMaxHeightBug invokes callback on every iteration', () => {
+  const util = new MDCDialogUtil();
+  util.isScrollable = td.func('isScrollable');
+  td.when(util.isScrollable(td.matchers.anything())).thenReturn(false);
+
+  const clock = lolex.install();
+  const callback = td.func('callback');
+  const intervalMs = numbers.IE_FLEX_OVERFLOW_BUG_INTERVAL_MS;
+  const numIterations = numbers.IE_FLEX_OVERFLOW_BUG_ITERATIONS;
+  const flexContainer = createFlexItemBugFixture();
+  const flexItem = flexContainer.querySelector('article');
+
+  util.fixFlexItemMaxHeightBug(flexItem, callback);
+
+  for (let i = 0; i < numIterations; i++) {
+    clock.tick(i * intervalMs);
+  }
+
+  td.verify(callback(), {times: numIterations});
+
+  clock.uninstall();
+  destroyFlexItemBugFixture(flexContainer);
+});
+
+test('#fixFlexItemMaxHeightBug enables scrolling in child flex item', () => {
+  const util = new MDCDialogUtil();
+  util.isScrollable = td.func('isScrollable');
+  td.when(util.isScrollable(td.matchers.anything())).thenReturn(false);
+
+  const callback = td.func('callback');
+  const intervalMs = numbers.IE_FLEX_OVERFLOW_BUG_INTERVAL_MS;
+  const numIterations = numbers.IE_FLEX_OVERFLOW_BUG_ITERATIONS;
+  const flexContainer = createFlexItemBugFixture();
+  const flexItem = flexContainer.querySelector('article');
+
+  util.fixFlexItemMaxHeightBug(flexItem, callback);
+
+  setTimeout(() => {
+    assert.isTrue(util.isScrollable(flexItem));
+
+    destroyFlexItemBugFixture(flexContainer);
+    done();
+  }, intervalMs * numIterations + 500);
 });
