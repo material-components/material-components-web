@@ -22,6 +22,7 @@
           "mdc-dialog"
         ],
         "custom_config": {
+          "max_retries": 2,
           "fonts_loaded_reflow_delay_ms": 250
         }
       },
