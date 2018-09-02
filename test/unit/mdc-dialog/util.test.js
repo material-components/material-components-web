@@ -222,6 +222,17 @@ test('#hasFlexItemMaxHeightBug returns true when child flex item is not scrollab
   assert.isTrue(util.hasFlexItemMaxHeightBug());
 });
 
+test('#hasFlexItemMaxHeightBug caches its return value', () => {
+  const util = new MDCDialogUtil();
+  util.isScrollable = td.func('isScrollable');
+
+  td.when(util.isScrollable(td.matchers.anything())).thenReturn(false);
+  assert.isTrue(util.hasFlexItemMaxHeightBug());
+
+  td.when(util.isScrollable(td.matchers.anything())).thenReturn(true);
+  assert.isTrue(util.hasFlexItemMaxHeightBug());
+});
+
 test('#fixFlexItemMaxHeightBug does nothing if bug is not present', () => {
   const util = new MDCDialogUtil();
   util.isScrollable = td.func('isScrollable');
@@ -248,8 +259,8 @@ test('#fixFlexItemMaxHeightBug does nothing if bug is not present', () => {
 
 test('#fixFlexItemMaxHeightBug invokes callback on every iteration', () => {
   const util = new MDCDialogUtil();
-  util.isScrollable = td.func('isScrollable');
-  td.when(util.isScrollable(td.matchers.anything())).thenReturn(false);
+  util.hasFlexItemMaxHeightBug = td.func('hasFlexItemMaxHeightBug');
+  td.when(util.hasFlexItemMaxHeightBug()).thenReturn(true);
 
   const clock = lolex.install();
   const callback = td.func('callback');
@@ -272,8 +283,8 @@ test('#fixFlexItemMaxHeightBug invokes callback on every iteration', () => {
 
 test('#fixFlexItemMaxHeightBug enables scrolling in child flex item', () => {
   const util = new MDCDialogUtil();
-  util.isScrollable = td.func('isScrollable');
-  td.when(util.isScrollable(td.matchers.anything())).thenReturn(false);
+  util.hasFlexItemMaxHeightBug = td.func('hasFlexItemMaxHeightBug');
+  td.when(util.hasFlexItemMaxHeightBug()).thenReturn(true);
 
   const callback = td.func('callback');
   const intervalMs = numbers.IE_FLEX_OVERFLOW_BUG_INTERVAL_MS;
@@ -285,6 +296,49 @@ test('#fixFlexItemMaxHeightBug enables scrolling in child flex item', () => {
 
   setTimeout(() => {
     assert.isTrue(util.isScrollable(flexItem));
+
+    destroyFlexItemBugFixture(flexContainer);
+    done();
+  }, intervalMs * numIterations + 500);
+});
+
+test('#fixFlexItemMaxHeightBug restores original flex-basis value of "" (empty string)', () => {
+  const util = new MDCDialogUtil();
+  util.hasFlexItemMaxHeightBug = td.func('hasFlexItemMaxHeightBug');
+  td.when(util.hasFlexItemMaxHeightBug()).thenReturn(true);
+
+  const callback = td.func('callback');
+  const intervalMs = numbers.IE_FLEX_OVERFLOW_BUG_INTERVAL_MS;
+  const numIterations = numbers.IE_FLEX_OVERFLOW_BUG_ITERATIONS;
+  const flexContainer = createFlexItemBugFixture();
+  const flexItem = flexContainer.querySelector('article');
+
+  util.fixFlexItemMaxHeightBug(flexItem, callback);
+
+  setTimeout(() => {
+    assert.equal(flexItem.style['flex-basis'], '');
+
+    destroyFlexItemBugFixture(flexContainer);
+    done();
+  }, intervalMs * numIterations + 500);
+});
+
+test('#fixFlexItemMaxHeightBug restores original flex-basis value of "auto"', () => {
+  const util = new MDCDialogUtil();
+  util.hasFlexItemMaxHeightBug = td.func('hasFlexItemMaxHeightBug');
+  td.when(util.hasFlexItemMaxHeightBug()).thenReturn(true);
+
+  const callback = td.func('callback');
+  const intervalMs = numbers.IE_FLEX_OVERFLOW_BUG_INTERVAL_MS;
+  const numIterations = numbers.IE_FLEX_OVERFLOW_BUG_ITERATIONS;
+  const flexContainer = createFlexItemBugFixture();
+  const flexItem = flexContainer.querySelector('article');
+  flexItem.style['flex-basis'] = 'auto';
+
+  util.fixFlexItemMaxHeightBug(flexItem, callback);
+
+  setTimeout(() => {
+    assert.equal(flexItem.style['flex-basis'], 'auto');
 
     destroyFlexItemBugFixture(flexContainer);
     done();
