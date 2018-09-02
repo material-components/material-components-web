@@ -196,11 +196,7 @@ test('#areTopsMisaligned returns true when elements have different "top" values'
 test('#areTopsMisaligned returns true when elements have different heights in a vertically-centered container', () => {
   const util = new MDCDialogUtil();
   const parent = bel`
-<div style="display: flex;
-            position: relative;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: flex-end;">
+<div class="mdc-dialog__actions">
   <button>1</button>
   <button style="height: 100px;">2</button>
 </div>`;
