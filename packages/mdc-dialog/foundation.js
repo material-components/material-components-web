@@ -66,7 +66,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
   destroy() {
     // Ensure that dialog is cleaned up when destroyed
     if (this.isOpen_) {
-      this.close();
+      this.close(strings.DESTROY_ACTION);
     }
     // Final cleanup of animating class in case the timer has not completed.
     this.adapter_.removeClass(cssClasses.ANIMATING);

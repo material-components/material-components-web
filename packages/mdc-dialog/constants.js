@@ -43,7 +43,8 @@ const strings = {
 
   ACTION_ATTRIBUTE: 'data-mdc-dialog-action',
 
-  ESCAPE_ACTION: 'escape',
+  ESCAPE_ACTION: 'MDCDialog:escape',
+  DESTROY_ACTION: 'MDCDialog:destroy',
 };
 
 const numbers = {

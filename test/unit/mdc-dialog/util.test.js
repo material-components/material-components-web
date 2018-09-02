@@ -272,7 +272,7 @@ test('#fixFlexItemMaxHeightBug invokes callback on every iteration', () => {
   util.fixFlexItemMaxHeightBug(flexItem, callback);
 
   for (let i = 0; i < numIterations; i++) {
-    clock.tick(i * intervalMs);
+    clock.tick(intervalMs);
   }
 
   td.verify(callback(), {times: numIterations});

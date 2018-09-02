@@ -70,14 +70,41 @@ function setupTest() {
   return adapterFoundationPair;
 }
 
-test('#destroy closes the dialog to perform any necessary cleanup', () => {
-  const {foundation, mockAdapter} = setupTest();
+test('#destroy closes the dialog if it is still open', () => {
+  const {foundation} = setupTest();
+  foundation.close = td.func('close');
 
   foundation.open();
   foundation.destroy();
 
-  td.verify(mockAdapter.removeClass(cssClasses.OPEN));
+  td.verify(foundation.close(strings.DESTROY_ACTION));
+});
+
+test(`#destroy removes the ${cssClasses.ANIMATING} class`, () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.destroy();
+
   td.verify(mockAdapter.removeClass(cssClasses.ANIMATING));
+});
+
+test('#open adds CSS classes', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.open();
+
+  td.verify(mockAdapter.addClass(cssClasses.ANIMATING));
+  td.verify(mockAdapter.addClass(cssClasses.OPEN));
+  td.verify(mockAdapter.addBodyClass(cssClasses.SCROLL_LOCK));
+});
+
+test('#close removes CSS classes', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.close();
+
+  td.verify(mockAdapter.addClass(cssClasses.ANIMATING));
+  td.verify(mockAdapter.removeClass(cssClasses.OPEN));
   td.verify(mockAdapter.removeBodyClass(cssClasses.SCROLL_LOCK));
 });
 
@@ -123,22 +150,6 @@ test('#close deregisters all events registered within open()', () => {
   td.verify(mockAdapter.deregisterWindowHandler('resize', td.matchers.isA(Function)));
 });
 
-test('#open adds the open class to reveal the dialog', () => {
-  const {foundation, mockAdapter} = setupTest();
-
-  foundation.open();
-
-  td.verify(mockAdapter.addClass(cssClasses.OPEN));
-});
-
-test('#close removes the open class to hide the dialog', () => {
-  const {foundation, mockAdapter} = setupTest();
-
-  foundation.close();
-
-  td.verify(mockAdapter.removeClass(cssClasses.OPEN));
-});
-
 test('#open adds the animation class to start an animation, and removes it after the animation is done', () => {
   const {foundation, mockAdapter} = setupTest();
   const clock = lolex.install();
@@ -151,21 +162,17 @@ test('#open adds the animation class to start an animation, and removes it after
   clock.uninstall();
 });
 
-test('#open adds scroll lock class to the body', () => {
+test('#open fixes content overflow bug in IE', () => {
   const {foundation, mockAdapter} = setupTest();
+  foundation.layout = td.func('layout');
+  td.when(mockAdapter.fixOverflowIE(td.matchers.isA(Function))).thenDo((callback) => callback());
+  const clock = lolex.install();
 
   foundation.open();
 
-  td.verify(mockAdapter.addBodyClass(cssClasses.SCROLL_LOCK));
-});
-
-test('#close removes the scroll lock class from the body', () => {
-  const {foundation, mockAdapter} = setupTest();
-
-  foundation.open();
-  foundation.close();
-
-  td.verify(mockAdapter.removeBodyClass(cssClasses.SCROLL_LOCK));
+  clock.tick(numbers.DIALOG_ANIMATION_TIME_MS);
+  td.verify(foundation.layout(), {times: 2});
+  clock.uninstall();
 });
 
 test('#open activates focus trapping on the dialog surface', () => {
@@ -244,7 +251,7 @@ test('#layout detects unstacked buttons', () => {
   mockRaf.restore();
 });
 
-test(`#layout removes "${cssClasses.STACKED}" class before recalculating button stacking`, () => {
+test(`#layout removes ${cssClasses.STACKED} class before recalculating button stacking`, () => {
   const {foundation, mockAdapter} = setupTest();
   const mockRaf = createMockRaf();
   td.when(mockAdapter.areButtonsStacked()).thenReturn(true);

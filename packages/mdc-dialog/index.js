@@ -53,7 +53,7 @@ export class MDCDialog extends MDCComponent {
      * @type {!MDCDialogUtil}
      * @private
      */
-    this.util_ = new MDCDialogUtil();
+    this.util_;
   }
 
   static attachTo(root) {
@@ -81,6 +81,7 @@ export class MDCDialog extends MDCComponent {
   }
 
   initialize() {
+    this.util_ = new MDCDialogUtil();
     this.focusTrap_ = this.util_.createFocusTrapInstance(this.container_);
     this.buttonRipples_ = [];
 
