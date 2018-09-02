@@ -66,6 +66,11 @@
       display: none;
     }
 
+    &::-ms-value {
+      background-color: transparent;
+      color: inherit;
+    }
+
     // counteracts the extra text padding that Firefox adds by default
     @-moz-document url-prefix("") {
       text-indent: -2px;
