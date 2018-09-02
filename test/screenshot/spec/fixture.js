@@ -120,9 +120,8 @@ remove the 'test-viewport--mobile' class from the '<main class="test-viewport">'
 
   /** @private */
   autoFocus_() {
-    // Edge doesn't always focus `<select autofocus>` elements correctly.
-    // E.g., the "golden" image on the left of this screenshot test report:
-    // https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/02/19_06_54_751/report/report.html
+    // Edge doesn't always focus `<select autofocus>` elements correctly. E.g.:
+    // https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/02/19_24_47_468/report/report.html
     const autoFocusEls = [].filter.call(document.querySelectorAll('[autofocus]'), (el) => {
       const style = getComputedStyle(el);
       if (style.visibility === 'hidden' || style.display === 'none' || style.opacity < 0.1) {
