@@ -395,7 +395,7 @@ class SeleniumApi {
       // If nobody else is running any tests, run half the number of concurrent tests allowed by our CBT account.
       // This gives us _some_ parallelism while still allowing other users to run their tests.
       if (active === 0) {
-        return Math.ceil(max / 2);
+        return Math.floor(max / 2);
       }
 
       // If someone else is already running tests, only run one test at a time.
