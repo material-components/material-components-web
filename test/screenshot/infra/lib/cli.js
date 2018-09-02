@@ -75,7 +75,7 @@ class Cli {
     return url.replace(/^([^?]+)(\?.*)?$/, (substring, resourcePlain, queryPlain) => {
       const resourceColor = CliColor.reset(resourcePlain);
       if (queryPlain) {
-        const queryColor = CliColor.gray(queryPlain);
+        const queryColor = CliColor.dim(queryPlain);
         return `${resourceColor}${queryColor}`;
       }
       return resourceColor;

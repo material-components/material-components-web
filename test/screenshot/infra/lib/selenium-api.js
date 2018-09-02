@@ -72,7 +72,7 @@ const CliStatuses = {
   RETRY: {name: 'Retry', color: CliColor.magenta},
   CAPTURED: {name: 'Captured', color: CliColor.bold.grey},
   FINISHED: {name: 'Finished', color: CliColor.bold.green},
-  FAILED: {name: 'Failed', color: CliColor.bold.red},
+  ERROR: {name: 'Error', color: CliColor.bold.red},
   QUITTING: {name: 'Quitting', color: CliColor.white},
 };
 
@@ -305,7 +305,7 @@ class SeleniumApi {
       this.logSession_(CliStatuses.FINISHED, userAgent);
     } catch (err) {
       runtimeError = new VError(err, stackTrace);
-      this.logSession_(CliStatuses.FAILED, userAgent);
+      this.logSession_(CliStatuses.ERROR, userAgent);
     } finally {
       this.numSessionsEnded_++;
       this.logSession_(CliStatuses.QUITTING, userAgent);
@@ -622,23 +622,18 @@ class SeleniumApi {
       for (const screenshot of screenshotQueue) {
         screenshot.capture_state = CaptureState.RUNNING;
 
-        /** @type {!mdc.proto.DiffImageResult} */
-        const diffImageResult = await this.takeScreenshotWithRetries_({driver, screenshot, meta});
-
         if (this.isKillRequested_ || this.isKilled_) {
           return null;
         }
 
-        screenshot.capture_state = CaptureState.DIFFED;
-        screenshot.diff_image_result = diffImageResult;
-        screenshot.diff_image_file = diffImageResult.diff_image_file;
+        await this.takeScreenshotWithRetries_({driver, screenshot, meta});
 
         this.numPending_--;
         this.numCompleted_++;
 
         const message = this.createStatusMessage_(screenshot);
 
-        if (diffImageResult.has_changed) {
+        if (screenshot.diff_image_result.has_changed) {
           changedScreenshots.push(screenshot);
           this.numChanged_++;
           this.logStatus_(CliStatuses.FAIL, message);
@@ -695,58 +690,44 @@ class SeleniumApi {
    * @param {!IWebDriver} driver
    * @param {!mdc.proto.Screenshot} screenshot
    * @param {!mdc.proto.ReportMeta} meta
-   * @return {!Promise<?mdc.proto.DiffImageResult>}
+   * @return {!Promise<void>}
    * @private
    */
   async takeScreenshotWithRetries_({driver, screenshot, meta}) {
-    /** @type {?mdc.proto.DiffImageResult} */
-    let diffImageResult = null;
-    let changedPixelCount = 0;
-    let changedPixelFraction = 0;
-
     const maxRetries = screenshot.flake_config.max_retries;
     const maxPixelFraction = screenshot.flake_config.max_changed_pixel_fraction_to_retry;
-    const userAgent = screenshot.user_agent;
+
+    const getChangedPixelFraction = () => {
+      return screenshot.diff_image_result ? screenshot.diff_image_result.changed_pixel_fraction : 0;
+    };
 
     while (true) {
+      if (this.isKillRequested_ || this.isKilled_) {
+        return;
+      }
+
       const isRetryCountExceeded = screenshot.retry_count > maxRetries;
-      const isPixelFractionExceeded = changedPixelFraction > maxPixelFraction;
+      const isPixelFractionExceeded = getChangedPixelFraction() > maxPixelFraction;
       if (isRetryCountExceeded || isPixelFractionExceeded) {
         break;
       }
 
-      if (this.isKillRequested_ || this.isKilled_) {
-        return null;
-      }
-
       if (screenshot.retry_count > 0) {
-        // TODO(acdvorak): Print this info when a test fails.
-        const {width, height} = diffImageResult.diff_image_dimensions;
-        const actualHtmlFileUrl = this.analytics_.getUrl({
-          url: screenshot.actual_html_file.public_url,
-          source: 'cli',
-          type: 'progress',
-        });
-        const whichMsg = `${actualHtmlFileUrl} > ${userAgent.alias}`;
-        const countMsg = `attempt ${screenshot.retry_count} of ${maxRetries}`;
-        const pixelMsg = `${changedPixelCount.toLocaleString()} pixels differed`;
-        const deltaMsg = `${diffImageResult.changed_pixel_percentage}% of ${width}x${height}`;
-        this.logStatus_(CliStatuses.RETRY, `${whichMsg} (${countMsg}). ${pixelMsg} (${deltaMsg})`);
+        this.logRetry_(screenshot);
       }
 
       screenshot.actual_image_file = await this.takeScreenshotWithoutRetries_({meta, screenshot, driver});
-      diffImageResult = await this.imageDiffer_.compareOneScreenshot({meta, screenshot});
+      screenshot.diff_image_result = await this.imageDiffer_.compareOneScreenshot({meta, screenshot});
+      screenshot.diff_image_file = screenshot.diff_image_result.diff_image_file;
 
-      if (!diffImageResult.has_changed) {
+      if (!screenshot.diff_image_result.has_changed) {
         break;
       }
 
-      changedPixelCount = diffImageResult.changed_pixel_count;
-      changedPixelFraction = diffImageResult.changed_pixel_fraction;
       screenshot.retry_count++;
     }
 
-    return diffImageResult;
+    screenshot.capture_state = CaptureState.DIFFED;
   }
 
   /**
@@ -795,7 +776,7 @@ class SeleniumApi {
       },
     });
 
-    this.logStatus_(CliStatuses.GET, `${this.cli_.colorizeUrl(urlWithQsParams)} > ${userAgent.alias}...`);
+    this.logStatus_(CliStatuses.GET, `${this.createUrlAliasMessage_(urlWithQsParams, userAgent)}...`);
 
     const isOnline = this.cli_.isOnline();
     const fontLoadTimeoutMs = isOnline ? flakeConfig.font_face_observer_timeout_ms : 500;
@@ -956,7 +937,6 @@ class SeleniumApi {
       source: 'cli',
       type: 'progress',
     });
-    const actualHtmlFileUrlColor = this.cli_.colorizeUrl(actualHtmlFileUrlPlain);
 
     let cropColor = '';
     if (screenshot.crop_result && screenshot.crop_result.uncropped_height > 0) {
@@ -966,12 +946,29 @@ class SeleniumApi {
         uncropped_height: uncroppedHeight,
         uncropped_width: uncroppedWidth,
       } = screenshot.crop_result;
-      cropColor = CliColor.gray(
-        ` (cropped from ${uncroppedWidth}x${uncroppedHeight} to ${croppedWidth}x${croppedHeight})`
-      );
+
+      const from = CliColor.bold(`${uncroppedWidth}x${uncroppedHeight}`);
+      const to = CliColor.bold(`${croppedWidth}x${croppedHeight}`);
+
+      if (croppedHeight === uncroppedHeight && croppedWidth === uncroppedWidth) {
+        cropColor = ` (${from}, not cropped)`;
+      } else {
+        cropColor = ` (cropped from ${from} to ${to})`;
+      }
     }
 
-    return `${actualHtmlFileUrlColor} > ${screenshot.user_agent.alias}${cropColor}`;
+    return this.createUrlAliasMessage_(actualHtmlFileUrlPlain, screenshot.user_agent) + cropColor;
+  }
+
+  /**
+   * @param {string} url
+   * @param {!mdc.proto.UserAgent} userAgent
+   * @return {string}
+   * @private
+   */
+  createUrlAliasMessage_(url, userAgent) {
+    const userAgentColor = CliColor.bold.italic;
+    return `${this.cli_.colorizeUrl(url)} > ${userAgentColor(userAgent.alias)}`;
   }
 
   /**
@@ -987,6 +984,34 @@ class SeleniumApi {
     const publicCbtUrl = CliColor.yellow.underline(userAgent.selenium_result_url);
 
     this.logStatus_(status, `${browser} on ${os}! - video: ${publicCbtUrl} (Selenium session ID: ${sessionId})`);
+  }
+
+  /**
+   * @param {!mdc.proto.Screenshot} screenshot
+   * @private
+   */
+  logRetry_(screenshot) {
+    const diffImageResult = screenshot.diff_image_result;
+    const maxRetries = screenshot.flake_config.max_retries;
+    const changedPixelCount = diffImageResult.changed_pixel_count;
+    const userAgent = screenshot.user_agent;
+    const {width, height} = diffImageResult.diff_image_dimensions;
+
+    const actualHtmlFileUrl = this.analytics_.getUrl({
+      url: screenshot.actual_html_file.public_url,
+      source: 'cli',
+      type: 'progress',
+    });
+
+    const bold = CliColor.bold;
+    const magenta = CliColor.bold.magenta;
+
+    const whichMsg = this.createUrlAliasMessage_(actualHtmlFileUrl, userAgent);
+    const countMsg = `attempt ${magenta(screenshot.retry_count)} of ${magenta(maxRetries)}`;
+    const pixelMsg = `${bold(changedPixelCount.toLocaleString())} pixels differed`;
+    const deltaMsg = `${bold(`${diffImageResult.changed_pixel_percentage}%`)} of ${bold(`${width}x${height}`)}`;
+
+    this.logStatus_(CliStatuses.RETRY, `${whichMsg} (${countMsg}). ${pixelMsg} (${deltaMsg})`);
   }
 
   /**
