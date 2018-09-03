@@ -79,20 +79,20 @@ class TestCommand {
 
     // TODO(acdvorak): Find a better word than "local"
     /** @type {!mdc.proto.ReportData} */
-    const localDiffReportData = await this.diffAgainstLocal_(snapshotDiffBase);
-    const localExitCode = this.getExitCode_(localDiffReportData);
+    const localReportData = await this.diffAgainstLocal_(snapshotDiffBase);
+    const localExitCode = this.getExitCode_(localReportData);
     if (localExitCode !== ExitCode.OK) {
-      this.logTestResults_(localDiffReportData);
+      this.logTestResults_(localReportData);
       return localExitCode;
     }
 
     if (isTravisPr) {
       /** @type {!mdc.proto.ReportData} */
-      const masterDiffReportData = await this.diffAgainstMaster_({localDiffReportData, snapshotGitRev});
-      this.logTestResults_(localDiffReportData);
-      this.logTestResults_(masterDiffReportData);
+      const masterReportData = await this.diffAgainstMaster_({localReportData, snapshotGitRev});
+      this.logTestResults_(localReportData);
+      this.logTestResults_(masterReportData);
     } else {
-      this.logTestResults_(localDiffReportData);
+      this.logTestResults_(localReportData);
     }
 
     // Diffs against master shouldn't fail the Travis job.
@@ -139,50 +139,50 @@ class TestCommand {
 
   /**
    * TODO(acdvorak): Rename this method
-   * @param {!mdc.proto.ReportData} localDiffReportData
+   * @param {!mdc.proto.ReportData} localReportData
    * @param {!mdc.proto.DiffBase} goldenDiffBase
    * @param {!Array<!mdc.proto.Screenshot>} capturedScreenshots
    * @param {string} startTimeIsoUtc
    * @return {!Promise<!mdc.proto.ReportData>}
    * @private
    */
-  async diffAgainstMasterImpl_({localDiffReportData, goldenDiffBase, capturedScreenshots, startTimeIsoUtc}) {
+  async diffAgainstMasterImpl_({localReportData, goldenDiffBase, capturedScreenshots, startTimeIsoUtc}) {
     const controller = new Controller();
 
     /** @type {!mdc.proto.ReportData} */
-    const masterDiffReportData = await controller.initForCapture(goldenDiffBase);
+    const masterReportData = await controller.initForCapture(goldenDiffBase);
 
-    const localDiffReportDataWithMasterUploadDir = ReportData.create(localDiffReportData);
-    localDiffReportDataWithMasterUploadDir.meta.remote_upload_base_dir = masterDiffReportData.meta.remote_upload_base_dir;
+    const localReportDataWithMasterUploadDir = ReportData.create(localReportData);
+    localReportDataWithMasterUploadDir.meta.remote_upload_base_dir = masterReportData.meta.remote_upload_base_dir;
 
     try {
-      await controller.uploadAllAssets(masterDiffReportData);
-      await controller.uploadAllScreenshotImages(localDiffReportDataWithMasterUploadDir);
-      await this.copyAndCompareScreenshots_({masterDiffReportData, capturedScreenshots, startTimeIsoUtc});
+      await controller.uploadAllAssets(masterReportData);
+      await controller.uploadAllScreenshotImages(localReportDataWithMasterUploadDir);
+      await this.copyAndCompareScreenshots_({masterReportData, capturedScreenshots, startTimeIsoUtc});
 
-      controller.populateMaps(masterDiffReportData);
+      controller.populateMaps(masterReportData);
 
-      await controller.uploadAllDiffImages(masterDiffReportData);
-      await controller.generateReportPage(masterDiffReportData);
+      await controller.uploadAllDiffImages(masterReportData);
+      await controller.generateReportPage(masterReportData);
 
-      this.logComparisonResults_(masterDiffReportData);
+      this.logComparisonResults_(masterReportData);
     } catch (err) {
       await this.gitHubApi_.setPullRequestError();
       throw new VError(err, getStackTrace('diffAgainstMasterImpl_'));
     }
 
-    return masterDiffReportData;
+    return masterReportData;
   }
 
   /**
    * TODO(acdvorak): Rename this method
-   * @param {!mdc.proto.ReportData} localDiffReportData
+   * @param {!mdc.proto.ReportData} localReportData
    * @param {!mdc.proto.GitRevision} snapshotGitRev
    * @return {!Promise<!mdc.proto.ReportData>}
    * @private
    */
-  async diffAgainstMaster_({localDiffReportData, snapshotGitRev}) {
-    const localScreenshots = localDiffReportData.screenshots;
+  async diffAgainstMaster_({localReportData, snapshotGitRev}) {
+    const localScreenshots = localReportData.screenshots;
 
     /** @type {!Array<!mdc.proto.Screenshot>} */
     const capturedScreenshots = [].concat(
@@ -196,34 +196,34 @@ class TestCommand {
     const masterDiffBase = await this.diffBaseParser_.parseMasterDiffBase();
 
     /** @type {!mdc.proto.ReportData} */
-    const masterDiffReportData = await this.diffAgainstMasterImpl_({
-      localDiffReportData,
+    const masterReportData = await this.diffAgainstMasterImpl_({
+      localReportData,
       goldenDiffBase: masterDiffBase,
       capturedScreenshots,
-      startTimeIsoUtc: localDiffReportData.meta.start_time_iso_utc,
+      startTimeIsoUtc: localReportData.meta.start_time_iso_utc,
     });
 
     const prNumber = snapshotGitRev.pr_number;
-    const comment = this.getPrComment_({masterDiffReportData, snapshotGitRev});
+    const comment = this.getPrComment_({masterReportData, snapshotGitRev});
     await this.gitHubApi_.createPullRequestComment({prNumber, comment});
 
-    return masterDiffReportData;
+    return masterReportData;
   }
 
   /**
-   * @param {!mdc.proto.ReportData} masterDiffReportData
+   * @param {!mdc.proto.ReportData} masterReportData
    * @param {!Array<!mdc.proto.Screenshot>} capturedScreenshots
    * @param {string} startTimeIsoUtc
    * @return {!Promise<void>}
    * @private
    */
-  async copyAndCompareScreenshots_({masterDiffReportData, capturedScreenshots, startTimeIsoUtc}) {
+  async copyAndCompareScreenshots_({masterReportData, capturedScreenshots, startTimeIsoUtc}) {
     const num = capturedScreenshots.length;
     const plural = num === 1 ? '' : 's';
     this.logger_.foldStart('screenshot.compare_master', `Comparing ${num} screenshot${plural} to master`);
 
     const promises = [];
-    const masterScreenshotSets = masterDiffReportData.screenshots;
+    const masterScreenshotSets = masterReportData.screenshots;
     const masterScreenshotList = masterScreenshotSets.actual_screenshot_list;
 
     masterScreenshotSets.added_screenshot_list.length = 0;
@@ -251,7 +251,7 @@ class TestCommand {
           } else if (masterScreenshot.inclusion_type === InclusionType.COMPARE) {
             /** @type {!mdc.proto.DiffImageResult} */
             const diffImageResult = await this.imageDiffer_.compareOneScreenshot({
-              meta: masterDiffReportData.meta,
+              meta: masterReportData.meta,
               screenshot: masterScreenshot,
             });
 
@@ -274,27 +274,27 @@ class TestCommand {
     await Promise.all(promises);
 
     const endTimeIsoUtc = new Date().toISOString();
-    masterDiffReportData.meta.start_time_iso_utc = startTimeIsoUtc;
-    masterDiffReportData.meta.end_time_iso_utc = endTimeIsoUtc;
-    masterDiffReportData.meta.duration_ms = Duration.elapsed(startTimeIsoUtc, endTimeIsoUtc).toMillis();
+    masterReportData.meta.start_time_iso_utc = startTimeIsoUtc;
+    masterReportData.meta.end_time_iso_utc = endTimeIsoUtc;
+    masterReportData.meta.duration_ms = Duration.elapsed(startTimeIsoUtc, endTimeIsoUtc).toMillis();
 
     this.logger_.foldEnd('screenshot.compare_master');
   }
 
   /**
-   * @param {!mdc.proto.ReportData} masterDiffReportData
+   * @param {!mdc.proto.ReportData} masterReportData
    * @param {!mdc.proto.GitRevision} snapshotGitRev
    * @return {string}
    * @private
    */
-  getPrComment_({masterDiffReportData, snapshotGitRev}) {
+  getPrComment_({masterReportData, snapshotGitRev}) {
     const masterReportPageUrl = this.analytics_.getUrl({
-      url: masterDiffReportData.meta.report_html_file.public_url,
+      url: masterReportData.meta.report_html_file.public_url,
       source: 'github',
       type: 'pr_comment',
     });
-    const masterScreenshots = masterDiffReportData.screenshots;
-    const masterGitRev = masterDiffReportData.meta.golden_diff_base.git_revision;
+    const masterScreenshots = masterReportData.screenshots;
+    const masterGitRev = masterReportData.meta.golden_diff_base.git_revision;
 
     const numTotal = masterScreenshots.runnable_screenshot_list.length;
     const numChanged =
