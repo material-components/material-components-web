@@ -28,7 +28,7 @@
   "line-max-len": 200,
   "line-max-len-ignore-regex": "<script|<link|<path|^\\s*<!--\\s*https?://|^\\s*https?://|^\\s*href=\"[^\"]+\"",
   "line-no-trailing-whitespace": false,
-  "raw-ignore-regex": "<!-- htmllint ignore -->[^]*?<!-- htmllint unignore -->|<svg[^>]*>[^]*?</svg>",
+  "raw-ignore-regex": "<!--\\s*htmllint-disable\\s*-->[^]*?<!--\\s*htmllint-enable\\s*-->|<svg[^>]*>[^]*?</svg>",
   "tag-bans": ["b"],
   "tag-name-lowercase": true,
   "tag-name-match": true,
