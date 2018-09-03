@@ -155,11 +155,19 @@ class Controller {
   /**
    * @param {!mdc.proto.ReportData} reportData
    */
-  async uploadAllImages(reportData) {
-    this.logger_.foldStart('screenshot.upload_images', 'Controller.uploadAllImages()');
-    await this.cloudStorage_.uploadAllScreenshots(reportData);
-    await this.cloudStorage_.uploadAllDiffs(reportData);
-    this.logger_.foldEnd('screenshot.upload_images');
+  async uploadAllScreenshotImages(reportData) {
+    this.logger_.foldStart('screenshot.upload_screenshots', 'Controller.uploadAllScreenshotImages()');
+    await this.cloudStorage_.uploadAllScreenshotImages(reportData);
+    this.logger_.foldEnd('screenshot.upload_screenshots');
+  }
+
+  /**
+   * @param {!mdc.proto.ReportData} reportData
+   */
+  async uploadAllDiffImages(reportData) {
+    this.logger_.foldStart('screenshot.upload_diffs', 'Controller.uploadAllDiffImages()');
+    await this.cloudStorage_.uploadAllDiffImages(reportData);
+    this.logger_.foldEnd('screenshot.upload_diffs');
   }
 
   /**
