@@ -97,8 +97,6 @@ class TestCommand {
 
     // Diffs against master shouldn't fail the Travis job.
     return ExitCode.OK;
-
-    
   }
 
   async build_() {
