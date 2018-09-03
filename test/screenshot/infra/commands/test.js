@@ -162,7 +162,6 @@ class TestCommand {
 
       controller.populateMaps(masterReportData);
 
-      await controller.uploadAllScreenshotImages(masterReportData);
       await controller.uploadAllDiffImages(masterReportData);
       await controller.generateReportPage(masterReportData);
 
