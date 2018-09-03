@@ -56,7 +56,7 @@ npm install @material/menu
 ### Styles
 
 ```scss
-@import "@material/menu/mdc-list";
+@import "@material/list/mdc-list";
 @import "@material/menu-surface/mdc-menu-surface";
 @import "@material/menu/mdc-menu";
 ```
