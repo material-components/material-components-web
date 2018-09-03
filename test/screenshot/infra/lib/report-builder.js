@@ -551,7 +551,7 @@ class ReportBuilder {
 
   /**
    * @param {!mdc.proto.ReportMeta} reportMeta
-   * @param {!mdc.proto.UserAgents} allUserAgents
+   * @param {!mdc.proto.UserAgents} userAgents
    * @param {!mdc.proto.DiffBase} goldenDiffBase
    * @return {!Promise<!mdc.proto.Screenshots>}
    * @private
@@ -566,6 +566,8 @@ class ReportBuilder {
     /** @type {!Array<!mdc.proto.Screenshot>} */
     const actualScreenshots = await this.getActualScreenshots_({goldenFile, reportMeta, userAgents});
 
+    this.pruneUserAgentsWithNoUrls_({actualScreenshots, userAgents});
+
     // TODO(acdvorak): Rename `Screenshots`
     return this.sortAndGroupScreenshots_(userAgents, Screenshots.create({
       expected_screenshot_list: expectedScreenshots,
@@ -576,6 +578,30 @@ class ReportBuilder {
       removed_screenshot_list: await this.getRemovedScreenshots_({expectedScreenshots, actualScreenshots}),
       comparable_screenshot_list: this.getComparableScreenshots_({expectedScreenshots, actualScreenshots}),
     }));
+  }
+
+  /**
+   * @param {!Array<!mdc.proto.Screenshot>} actualScreenshots
+   * @param {!mdc.proto.UserAgents} userAgents
+   * @private
+   */
+  pruneUserAgentsWithNoUrls_({actualScreenshots, userAgents}) {
+    const actualScreenshotUserAgentAliases = new Set();
+    actualScreenshots.forEach((actualScreenshot) => {
+      if (actualScreenshot.is_runnable) {
+        actualScreenshotUserAgentAliases.add(actualScreenshot.user_agent.alias);
+      }
+    });
+    const runnableUAs = userAgents.runnable_user_agents;
+    const skippedUAs = userAgents.skipped_user_agents;
+    let i = runnableUAs.length;
+    while (i--) {
+      const userAgent = runnableUAs[i];
+      if (!actualScreenshotUserAgentAliases.has(userAgent.alias)) {
+        runnableUAs.splice(i, 1);
+        skippedUAs.push(userAgent);
+      }
+    }
   }
 
   /**
