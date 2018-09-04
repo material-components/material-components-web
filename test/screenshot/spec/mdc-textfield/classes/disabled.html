@@ -29,6 +29,15 @@
     <link rel="stylesheet" href="../../../out/mdc.typography.css">
     <link rel="stylesheet" href="../../../out/spec/fixture.css">
     <link rel="stylesheet" href="../../../out/spec/mdc-textfield/fixture.css">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118996389-2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-118996389-2');
+    </script>
   </head>
 
   <body class="test-container mdc-typography">
@@ -60,7 +69,7 @@
           <div class="mdc-text-field mdc-text-field--disabled">
             <input type="text" id="filled-text-field-with-value" class="mdc-text-field__input test-text-field__input"
                    value="Filled value" disabled>
-            <label for="filled-text-field" class="mdc-floating-label mdc-floating-label--float-above">Label</label>
+            <label for="filled-text-field-with-value" class="mdc-floating-label mdc-floating-label--float-above">Label</label>
             <div class="mdc-line-ripple"></div>
           </div>
         </div>
@@ -69,7 +78,7 @@
           <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--disabled">
             <input type="text" id="outlined-text-field-with-value" class="mdc-text-field__input test-text-field__input"
                    value="Filled value" disabled>
-            <label for="outlined-text-field" class="mdc-floating-label mdc-floating-label--float-above">Label</label>
+            <label for="outlined-text-field-with-value" class="mdc-floating-label mdc-floating-label--float-above">Label</label>
             <div class="mdc-notched-outline">
               <svg>
                 <path class="mdc-notched-outline__path"/>

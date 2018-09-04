@@ -47,7 +47,7 @@ const SELENIUM_SERVER_URL = `http://${MDC_CBT_USERNAME}:${MDC_CBT_AUTHKEY}@hub.c
 const {ExitCode, SELENIUM_ZOMBIE_SESSION_DURATION_MS} = require('./constants');
 
 /** @type {?Promise<!Array<!cbt.proto.CbtDevice>>} */
-let allBrowsersPromise;
+let allDevicesPromise;
 
 class CbtApi {
   constructor() {
@@ -136,21 +136,21 @@ https://crossbrowsertesting.com/account
    * @return {!Promise<!Array<!cbt.proto.CbtDevice>>}
    */
   async fetchAvailableDevices() {
-    if (allBrowsersPromise) {
-      return allBrowsersPromise;
+    if (allDevicesPromise) {
+      return allDevicesPromise;
     }
 
-    this.logger_.debug('Fetching browsers from CBT...');
+    this.logger_.debug('Fetching devices and browsers from CBT...');
 
     const stackTrace = getStackTrace('fetchAvailableDevices');
-    allBrowsersPromise = this.sendRequest_(stackTrace, 'GET', '/selenium/browsers');
+    allDevicesPromise = this.sendRequest_(stackTrace, 'GET', '/selenium/browsers');
 
     /** @type {!Array<!cbt.proto.CbtDevice>} */
-    const allBrowsers = await allBrowsersPromise;
+    const allDevices = await allDevicesPromise;
 
-    this.logger_.debug(`Fetched ${allBrowsers.length} browsers from CBT!`);
+    this.logger_.debug(`Fetched ${allDevices.length} devices from CBT!`);
 
-    return allBrowsers;
+    return allDevices;
   }
 
   /**

@@ -1,3 +1,24 @@
+<a name="0.39.1"></a>
+## [0.39.1](https://github.com/material-components/material-components-web/compare/v0.39.0...v0.39.1) (2018-08-31)
+
+
+### Bug Fixes
+
+* **drawer:** Destroy list in destroy method ([#3474](https://github.com/material-components/material-components-web/issues/3474)) ([4719e0c](https://github.com/material-components/material-components-web/commit/4719e0c))
+* **drawer:** Modal --open state class needs display: flex ([#3431](https://github.com/material-components/material-components-web/issues/3431)) ([7fe8a97](https://github.com/material-components/material-components-web/commit/7fe8a97))
+* **drawer:** Remove list item children to be included in click target. ([#3480](https://github.com/material-components/material-components-web/issues/3480)) ([e05ca84](https://github.com/material-components/material-components-web/commit/e05ca84))
+* **list:** Change private getter method to public ([#3473](https://github.com/material-components/material-components-web/issues/3473)) ([45f6be9](https://github.com/material-components/material-components-web/commit/45f6be9))
+* **list:** Update single line list to ellipsis ([#3460](https://github.com/material-components/material-components-web/issues/3460)) ([148c1cd](https://github.com/material-components/material-components-web/commit/148c1cd))
+* **menu:** Prevent endless loop from unexpected markup ([#3489](https://github.com/material-components/material-components-web/issues/3489)) ([730b176](https://github.com/material-components/material-components-web/commit/730b176))
+* **menu:** Update styles to match guidance ([#3455](https://github.com/material-components/material-components-web/issues/3455)) ([3ef0ada](https://github.com/material-components/material-components-web/commit/3ef0ada))
+* **menu-surface:** Fix interpolation in calc ([#3445](https://github.com/material-components/material-components-web/issues/3445)) ([7aa7804](https://github.com/material-components/material-components-web/commit/7aa7804))
+* **select:** Add missing mixin ([#3435](https://github.com/material-components/material-components-web/issues/3435)) ([39f95a3](https://github.com/material-components/material-components-web/commit/39f95a3))
+* **select:** Fix outlined select not changing color without label ([#3433](https://github.com/material-components/material-components-web/issues/3433)) ([dcd9466](https://github.com/material-components/material-components-web/commit/dcd9466))
+* **select:** Only add line ripple listeners when line ripple is present ([#3470](https://github.com/material-components/material-components-web/issues/3470)) ([f9ef8f5](https://github.com/material-components/material-components-web/commit/f9ef8f5))
+* **select:** Set transform origin for line ripple ([#3432](https://github.com/material-components/material-components-web/issues/3432)) ([251c95f](https://github.com/material-components/material-components-web/commit/251c95f))
+
+
+
 <a name="0.39.0"></a>
 # [0.39.0](https://github.com/material-components/material-components-web/compare/v0.39.0-0...v0.39.0) (2018-08-27)
 

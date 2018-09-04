@@ -26,8 +26,26 @@
 $custom-radio-color: $material-color-red-300;
 
 .test-cell--radio {
+  position: relative;
   width: 71px;
-  height: 71px;
+  height: 91px;
+}
+
+.test-radio-label {
+  display: block;
+  position: absolute;
+  bottom: 11px;
+  left: 11px;
+  width: 39px;
+  height: 19px;
+  background: rgba($custom-radio-color, .4);
+  text-align: center;
+  cursor: pointer;
+}
+
+.mdc-radio--disabled + .test-radio-label {
+  background: rgba(0, 0, 0, .1);
+  cursor: not-allowed;
 }
 
 .custom-radio--unchecked-stroke-color {
