@@ -24,13 +24,13 @@
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
 $test-viewport-trim-color: #abc123; // Value must match `TRIM_COLOR_CSS_VALUE` in `image-cropper.js`
-$test-layout-cell-grid-color: #dddddd;
+$test-layout-cell-grid-color: #ddd;
 
 @mixin test-fixture-grid-bg {
   // Ruler grid pattern
   // https://stackoverflow.com/a/32861765/467582
   background-image:
-    linear-gradient(to right, #{$test-layout-cell-grid-color} 1px, transparent 1.01px),  // fraction for IE 11
+    linear-gradient(to right, #{$test-layout-cell-grid-color} 1px, transparent 1.01px),
     linear-gradient(to bottom, #{$test-layout-cell-grid-color} 1px, transparent 1.01px); // fraction for IE 11
 
   background-size: 10px 10px;
@@ -105,6 +105,7 @@ $test-layout-cell-grid-color: #dddddd;
   height: 20px;
 }
 
+// stylelint-disable selector-max-universal
 .test-animation--paused,
 .test-animation--paused::before,
 .test-animation--paused::after,
@@ -114,3 +115,4 @@ $test-layout-cell-grid-color: #dddddd;
   animation-play-state: paused !important;
   transition: none !important;
 }
+// stylelint-enable selector-max-universal

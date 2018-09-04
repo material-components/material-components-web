@@ -20,6 +20,8 @@
  * THE SOFTWARE.
  */
 
+// stylelint-disable selector-max-type, selector-max-universal, no-descending-specificity, declaration-property-unit-whitelist
+
 /*
  * Global
  */
@@ -29,7 +31,7 @@
 html {
   box-sizing: border-box;
 }
-*, *:before, *:after {
+*, *:before, *:after { // stylelint-disable-line
   box-sizing: inherit;
 }
 
@@ -75,7 +77,7 @@ th {
 .report-metadata__heading-content,
 .report-collection__heading-content,
 .report-html-file__heading-content,
-.report-user-agent__heading-content{
+.report-user-agent__heading-content {
   display: inline-block;
   width: calc(100% - 7em);
   vertical-align: top;
@@ -103,8 +105,8 @@ th {
 }
 
 .report-metadata__table {
-  border-collapse: collapse;
   border: 1px solid #eee;
+  border-collapse: collapse;
 }
 
 .report-metadata__row--top-divider {
@@ -294,6 +296,7 @@ th {
 .report-toolbar__button--approve {
   color: green;
 }
+
 .report-toolbar__button--approve:disabled {
   color: rgba(green, .5);
 }
@@ -301,6 +304,7 @@ th {
 .report-toolbar__button--retry {
   color: red;
 }
+
 .report-toolbar__button--retry:disabled {
   color: rgba(red, .5);
 }

@@ -33,9 +33,9 @@ $custom-drawer-color: $material-color-orange-900;
 .test-viewport--drawer {
   @include mdc-typography-base;
 
-  height: 100vh;
   display: flex;
   flex-direction: row;
+  height: 100vh;
   overflow: hidden;
 }
 
@@ -54,12 +54,12 @@ $custom-drawer-color: $material-color-orange-900;
 
 .test-drawer-main-content {
   display: block; // Needed for IE 11
+  box-sizing: border-box;
   height: 100%;
   padding-right: 16px;
   padding-left: 16px;
-  overflow: auto;
-  box-sizing: border-box;
   background: #fff;
+  overflow: auto;
 }
 
 .custom-drawer--fill-color {
