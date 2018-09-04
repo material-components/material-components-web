@@ -23,6 +23,45 @@
 @import "../../../../packages/mdc-dialog/mixins";
 @import "../../../../packages/mdc-theme/color-palette";
 
+$custom-dialog-color: $material-color-red-300;
+
 .test-dialog-open-button {
-  font-size: 100%;
+  font-size: 100%; // stylelint-disable-line declaration-property-unit-whitelist
 }
+
+.test-dialog--container-fill-color {
+  @include mdc-dialog-container-fill-color($custom-dialog-color);
+}
+
+.test-dialog--scrim-color {
+  @include mdc-dialog-scrim-color($custom-dialog-color, .3);
+}
+
+.test-dialog--title-ink-color {
+  @include mdc-dialog-title-ink-color($custom-dialog-color, .8);
+}
+
+.test-dialog--content-ink-color {
+  @include mdc-dialog-content-ink-color($custom-dialog-color, .8);
+}
+
+.test-dialog--scroll-divider-color {
+  @include mdc-dialog-scroll-divider-color($custom-dialog-color, .5);
+}
+
+.test-dialog--corner-radius {
+  @include mdc-dialog-corner-radius(10px);
+}
+
+.test-dialog--min-width {
+  @include mdc-dialog-min-width(100px);
+}
+
+.test-dialog--max-width {
+  @include mdc-dialog-max-width(400px, 30px);
+}
+
+.test-dialog--max-height {
+  @include mdc-dialog-max-height(400px, 30px);
+}
+

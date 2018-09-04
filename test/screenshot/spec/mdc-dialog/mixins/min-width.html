@@ -23,7 +23,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Manual Window Resize Dialog - MDC Web Screenshot Test</title>
+    <title>min-width Dialog Mixin - MDC Web Screenshot Test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../../../out/mdc.button.css">
     <link rel="stylesheet" href="../../../out/mdc.dialog.css">
@@ -39,7 +39,7 @@
 
       <button class="test-dialog-open-button" data-test-dialog-id="test-dialog" autofocus>Open Dialog</button>
 
-      <div class="mdc-dialog test-dialog"
+      <div class="mdc-dialog test-dialog test-dialog--min-width"
            role="alertdialog"
            aria-modal="true"
            aria-hidden="true"
@@ -50,33 +50,12 @@
         <div class="mdc-dialog__container">
           <div class="mdc-dialog__surface">
             <h2 class="mdc-dialog__title" id="test-dialog__title--confirmation-2-line">
-              “The Count of Monte Cristo” by Alexandre Dumas.<br>
-              Published in 1844 and translated by Robin Buss.<br>
-              Public domain.
+              Title
             </h2>
             <section class="mdc-dialog__content" id="test-dialog__body--confirmation-2-line">
-              <h3>Chapter 1. Marseilles—The Arrival</h3>
-
-              <p>On the 24th of February, 1815, the look-out at Notre-Dame de la Garde
-                signalled the three-master, the Pharaon from Smyrna, Trieste, and
-                Naples.</p>
-
-              <p>As usual, a pilot put off immediately, and rounding the Château d’If,
-                got on board the vessel between Cape Morgiou and Rion island.</p>
-
-              <p>Immediately, and according to custom, the ramparts of Fort Saint-Jean
-                were covered with spectators; it is always an event at Marseilles for a
-                ship to come into port, especially when this ship, like the Pharaon, has
-                been built, rigged, and laden at the old Phocee docks, and belongs to an
-                owner of the city.</p>
+              Content
             </section>
             <footer class="mdc-dialog__actions">
-              <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="other">
-                Verbose loquacious button text
-              </button>
-              <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="cancel">
-                Cancel
-              </button>
               <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
                 OK
               </button>

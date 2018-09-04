@@ -60,6 +60,12 @@
   }
 }
 
+@mixin mdc-dialog-corner-radius($radius) {
+  .mdc-dialog__surface {
+    border-radius: $radius;
+  }
+}
+
 @mixin mdc-dialog-min-width($min-width) {
   .mdc-dialog__surface {
     min-width: $min-width;
@@ -107,11 +113,5 @@
     } @else {
       max-height: $max-size-calc-expr;
     }
-  }
-}
-
-@mixin mdc-dialog-corner-radius($radius) {
-  .mdc-dialog__surface {
-    border-radius: $radius;
   }
 }
