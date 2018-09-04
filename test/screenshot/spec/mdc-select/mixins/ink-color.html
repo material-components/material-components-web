@@ -36,26 +36,7 @@
   <div class="test-layout">
 
     <div class="test-cell test-cell--select">
-      <div class="mdc-select mdc-select--box mdc-select-bottom-line-color">
-        <select class="mdc-select__native-control" id="my-select">
-          <option selected></option>
-          <option value="grains">
-            Bread, Cereal, Rice, and Pasta
-          </option>
-          <option value="vegetables">
-            Vegetables
-          </option>
-          <option value="fruit">
-            Fruit
-          </option>
-        </select>
-        <label class="mdc-floating-label" for="my-select">Pick a Food Group</label>
-        <div class="mdc-line-ripple"></div>
-      </div>
-    </div>
-
-    <div class="test-cell test-cell--select">
-      <div class="mdc-select mdc-select--box mdc-select-bottom-line-color">
+      <div class="mdc-select mdc-select--box custom-select-ink-color">
         <select class="mdc-select__native-control" id="my-select3">
           <option value="grains" selected>
             Bread, Cereal, Rice, and Pasta
@@ -69,6 +50,29 @@
         </select>
         <label class="mdc-floating-label mdc-floating-label--float-above" for="my-select3">Pick a Food Group</label>
         <div class="mdc-line-ripple"></div>
+      </div>
+    </div>
+
+    <div class="test-cell test-cell--select">
+      <div class="mdc-select mdc-select--outlined custom-select-ink-color">
+        <select class="mdc-select__native-control" id="my-select4">
+          <option value="grains" selected>
+            Bread, Cereal, Rice, and Pasta
+          </option>
+          <option value="vegetables">
+            Vegetables
+          </option>
+          <option value="fruit">
+            Fruit
+          </option>
+        </select>
+        <label class="mdc-floating-label mdc-floating-label--float-above" for="my-select4">Pick a Food Group</label>
+        <div class="mdc-notched-outline">
+          <svg>
+            <path class="mdc-notched-outline__path"/>
+          </svg>
+        </div>
+        <div class="mdc-notched-outline__idle"></div>
       </div>
     </div>
 

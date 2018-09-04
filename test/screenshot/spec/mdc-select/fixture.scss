@@ -28,30 +28,30 @@
   height: 121px;
 }
 
-.mdc-select-ink-color {
+.custom-select-ink-color {
   @include mdc-select-ink-color(green);
 }
 
-.mdc-select-container-fill-color {
+.custom-select-container-fill-color {
   @include mdc-select-container-fill-color(green);
 }
 
-.mdc-select-label-color {
+.custom-select-label-color {
   @include mdc-select-label-color(green);
 }
 
-.mdc-select-bottom-line-color {
+.custom-select-bottom-line-color {
   @include mdc-select-bottom-line-color(green);
 }
 
-.mdc-select-corner-radius {
+.custom-select-corner-radius {
   @include mdc-select-corner-radius(10px);
 }
 
-.mdc-select-outline-color {
+.custom-select-outline-color {
   @include mdc-select-outline-color(green);
 }
 
-.mdc-select-outline-corner-radius {
+.custom-select-outline-corner-radius {
   @include mdc-select-outline-corner-radius(10px);
 }

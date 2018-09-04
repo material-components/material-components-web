@@ -422,7 +422,7 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/29/23_30_54_653/spec/mdc-select/classes/disabled.html.windows_ie_11.png"
     }
   },
-  "spec/mdc-select/mixins/mdc-select-bottom-line-color.html": {
+  "spec/mdc-select/mixins/bottom-line-color.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/01_23_53_100/spec/mdc-select/mixins/mdc-select-bottom-line-color.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/01_23_53_100/spec/mdc-select/mixins/mdc-select-bottom-line-color.html.windows_chrome_68.png",
@@ -431,7 +431,7 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/01_23_53_100/spec/mdc-select/mixins/mdc-select-bottom-line-color.html.windows_ie_11.png"
     }
   },
-  "spec/mdc-select/mixins/mdc-select-container-fill-color.html": {
+  "spec/mdc-select/mixins/container-fill-color.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/01_23_53_100/spec/mdc-select/mixins/mdc-select-container-fill-color.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/30/00_11_07_363/spec/mdc-select/mixins/mdc-select-container-fill-color.html.windows_chrome_68.png",
@@ -440,7 +440,7 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/williamernest/2018/08/30/00_11_07_363/spec/mdc-select/mixins/mdc-select-container-fill-color.html.windows_ie_11.png"
     }
   },
-  "spec/mdc-select/mixins/mdc-select-corner-radius.html": {
+  "spec/mdc-select/mixins/corner-radius.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/01_23_53_100/spec/mdc-select/mixins/mdc-select-corner-radius.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/21_40_24_691/spec/mdc-select/mixins/mdc-select-corner-radius.html.windows_chrome_68.png",
@@ -449,7 +449,7 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/21_40_24_691/spec/mdc-select/mixins/mdc-select-corner-radius.html.windows_ie_11.png"
     }
   },
-  "spec/mdc-select/mixins/mdc-select-ink-color.html": {
+  "spec/mdc-select/mixins/ink-color.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/01_23_53_100/spec/mdc-select/mixins/mdc-select-ink-color.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/01_23_53_100/spec/mdc-select/mixins/mdc-select-ink-color.html.windows_chrome_68.png",
@@ -458,7 +458,7 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/01_23_53_100/spec/mdc-select/mixins/mdc-select-ink-color.html.windows_ie_11.png"
     }
   },
-  "spec/mdc-select/mixins/mdc-select-label-color.html": {
+  "spec/mdc-select/mixins/label-color.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/01_23_53_100/spec/mdc-select/mixins/mdc-select-label-color.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/01_23_53_100/spec/mdc-select/mixins/mdc-select-label-color.html.windows_chrome_68.png",
@@ -467,7 +467,7 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/01_23_53_100/spec/mdc-select/mixins/mdc-select-label-color.html.windows_ie_11.png"
     }
   },
-  "spec/mdc-select/mixins/mdc-select-outline-color.html": {
+  "spec/mdc-select/mixins/outline-color.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/01_23_53_100/spec/mdc-select/mixins/mdc-select-outline-color.html",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/01_23_53_100/spec/mdc-select/mixins/mdc-select-outline-color.html.windows_chrome_68.png",
