@@ -49,18 +49,20 @@ $test-layout-cell-grid-color: #ddd;
 }
 
 .test-container--large-font {
-  font-size: 200%;
+  font-size: 200%; // stylelint-disable-line declaration-property-unit-whitelist
 }
 
 // MS Edge only
 @supports (-ms-ime-align: auto) {
   .test-container--edge-fonts {
+    // stylelint-disable selector-class-pattern
     .mdc-button,
     .mdc-floating-label,
     .mdc-text-field-helper-text,
     .mdc-text-field__input {
       color: transparent !important;
     }
+    // stylelint-enable selector-class-pattern
   }
 }
 
