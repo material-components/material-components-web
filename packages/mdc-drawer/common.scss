@@ -30,6 +30,8 @@
 @import "./variables";
 @import "./mixins";
 
+// postcss-bem-linter: define drawer
+
 .mdc-drawer {
   @include mdc-drawer-title-ink-color($mdc-drawer-title-ink-color);
   @include mdc-drawer-subtitle-ink-color($mdc-drawer-subtitle-ink-color);
@@ -62,6 +64,7 @@
     border-left-style: solid;
   }
 
+  // postcss-bem-linter: ignore
   .mdc-list-item {
     @include mdc-typography(subtitle2);
 
@@ -71,14 +74,17 @@
     padding: 0 $mdc-drawer-surface-padding / 2;
   }
 
+  // postcss-bem-linter: ignore
   .mdc-list-item:nth-child(1) {
     margin-top: 2px;
   }
 
+  // postcss-bem-linter: ignore
   .mdc-list-item:nth-last-child(1) {
     margin-bottom: 0;
   }
 
+  // postcss-bem-linter: ignore
   .mdc-list-group__subheader {
     @include mdc-typography(body2);
     @include mdc-typography-baseline-top(24px);
@@ -87,11 +93,13 @@
     padding: 0 $mdc-drawer-surface-padding;
   }
 
+  // postcss-bem-linter: ignore
   .mdc-list-divider {
     margin: 3px 0 4px 0;
   }
 
   // Prevents list item children from being included in the click target.
+  // postcss-bem-linter: ignore
   .mdc-list-item__text,
   .mdc-list-item__graphic {
     pointer-events: none;
@@ -153,3 +161,5 @@
   height: 100%;
   overflow-y: auto;
 }
+
+// postcss-bem-linter: end

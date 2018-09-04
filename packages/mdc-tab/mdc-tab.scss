@@ -28,6 +28,8 @@
 @import "./mixins";
 @import "./variables";
 
+// postcss-bem-linter: define tab
+
 .mdc-tab {
   @include mdc-tab-text-label-color(on-surface);
   @include mdc-tab-icon-color(on-surface);
@@ -133,3 +135,5 @@
 .mdc-tab:not(.mdc-tab--stacked) .mdc-tab__icon + .mdc-tab__text-label {
   @include mdc-rtl-reflexive-box(padding, left, 8px);
 }
+
+// postcss-bem-linter: end
