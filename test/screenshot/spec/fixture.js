@@ -132,7 +132,7 @@ class TestFixture {
       }
       if (side === 'first-baseline' || side === 'last-baseline') {
         const bl = document.createElement('span');
-        bl.classList.add('test-redline-baseline');
+        bl.classList.add('test-baseline-probe');
         if (side === 'last-baseline') {
           el.appendChild(bl);
         } else {
