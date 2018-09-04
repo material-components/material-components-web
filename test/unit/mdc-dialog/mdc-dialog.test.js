@@ -324,16 +324,6 @@ test('adapter#untrapFocusOnSurface calls deactivate() on a properly configured f
   td.verify(fakeFocusTrapInstance.deactivate());
 });
 
-test('adapter#fixOverflowIE calls util method with surface element', () => {
-  const {component, surface} = setupTest();
-  const callback = td.func('callback');
-  component.util_.fixFlexItemMaxHeightBug = td.func('component.util_.fixFlexItemMaxHeightBug');
-
-  component.getDefaultFoundation().adapter_.fixOverflowIE(callback);
-
-  td.verify(component.util_.fixFlexItemMaxHeightBug(surface, callback));
-});
-
 test('adapter#isContentScrollable returns false when there is no content element', () => {
   const {component, content} = setupTest();
   content.parentElement.removeChild(content);

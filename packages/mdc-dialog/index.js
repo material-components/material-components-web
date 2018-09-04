@@ -68,10 +68,6 @@ export class MDCDialog extends MDCComponent {
     return this.root_.querySelector(strings.CONTAINER_SELECTOR);
   }
 
-  get surface_() {
-    return this.root_.querySelector(strings.SURFACE_SELECTOR);
-  }
-
   get content_() {
     return this.root_.querySelector(strings.CONTENT_SELECTOR);
   }
@@ -123,7 +119,6 @@ export class MDCDialog extends MDCComponent {
       deregisterWindowHandler: (eventName, handler) => window.removeEventListener(eventName, handler),
       trapFocusOnSurface: () => this.focusTrap_.activate(),
       untrapFocusOnSurface: () => this.focusTrap_.deactivate(),
-      fixOverflowIE: (callback) => this.util_.fixFlexItemMaxHeightBug(this.surface_, callback),
       isContentScrollable: () => !!this.content_ && this.util_.isScrollable(this.content_),
       areButtonsStacked: () => this.util_.areTopsMisaligned(this.buttons_),
       getAction: (element) => element.getAttribute(strings.ACTION_ATTRIBUTE),

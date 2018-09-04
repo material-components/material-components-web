@@ -54,7 +54,7 @@ test('default adapter returns a complete adapter implementation', () => {
     'registerDocumentHandler', 'deregisterDocumentHandler',
     'registerWindowHandler', 'deregisterWindowHandler',
     'trapFocusOnSurface', 'untrapFocusOnSurface',
-    'fixOverflowIE', 'isContentScrollable', 'areButtonsStacked', 'getAction',
+    'isContentScrollable', 'areButtonsStacked', 'getAction',
     'notifyOpening', 'notifyOpened', 'notifyClosing', 'notifyClosed',
   ]);
 });
@@ -159,19 +159,6 @@ test('#open adds the animation class to start an animation, and removes it after
   td.verify(mockAdapter.addClass(cssClasses.ANIMATING));
   clock.tick(numbers.DIALOG_ANIMATION_TIME_MS);
   td.verify(mockAdapter.removeClass(cssClasses.ANIMATING));
-  clock.uninstall();
-});
-
-test('#open fixes content overflow bug in IE', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.layout = td.func('layout');
-  td.when(mockAdapter.fixOverflowIE(td.matchers.isA(Function))).thenDo((callback) => callback());
-  const clock = lolex.install();
-
-  foundation.open();
-
-  clock.tick(numbers.DIALOG_ANIMATION_TIME_MS);
-  td.verify(foundation.layout(), {times: 2});
   clock.uninstall();
 });
 

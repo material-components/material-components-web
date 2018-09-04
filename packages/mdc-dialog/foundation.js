@@ -89,7 +89,6 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.animationTimer_ = setTimeout(() => {
       this.handleAnimationTimerEnd_();
       this.adapter_.trapFocusOnSurface();
-      this.adapter_.fixOverflowIE(() => this.layout());
       this.adapter_.notifyOpened();
     }, numbers.DIALOG_ANIMATION_TIME_MS);
   }
