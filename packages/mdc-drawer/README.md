@@ -56,8 +56,8 @@ npm install @material/drawer
 ### Styles
 
 ```scss
-@import "@material/drawer/mdc-list";
 @import "@material/drawer/mdc-drawer";
+@import "@material/list/mdc-list";
 ```
 
 ### JavaScript Instantiation
@@ -221,7 +221,7 @@ In the following example, the `mdc-drawer__content` and `main-content` elements 
     </header>
 
     <main class="main-content" id="main-content">
-      <div class="mdc-top-app-bar--fixed-adjust"></div>
+      <div class="mdc-top-app-bar--fixed-adjust">
         App Content
       </div>
     </main>
