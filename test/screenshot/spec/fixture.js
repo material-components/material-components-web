@@ -90,9 +90,9 @@ class TestFixture {
   }
 
   /**
-   * @param {?Element} fromEl
+   * @param {!Element} fromEl
    * @param {string} fromSide
-   * @param {?Element} toEl
+   * @param {!Element} toEl
    * @param {string} toSide
    * @param {number} specDistancePx
    * @param {number=} displayOffsetPx
@@ -108,47 +108,15 @@ class TestFixture {
     displayAlignment = 'left',
   }) {
     const lineEl = document.createElement('div');
-    lineEl.classList.add('test-redline');
-    lineEl.innerHTML = '<div class="test-redline__label"></div>';
-    lineEl.classList.add('test-redline--horizontal');
-
-    const getPos = (el, side) => {
-      const rect = el.getBoundingClientRect();
-      const borderBottomWidth = parseInt(getComputedStyle(el).borderBottomWidth, 10);
-      const borderTopWidth = parseInt(getComputedStyle(el).borderTopWidth, 10);
-      const borderLeftWidth = parseInt(getComputedStyle(el).borderLeftWidth, 10);
-      const borderRightWidth = parseInt(getComputedStyle(el).borderRightWidth, 10);
-      if (side === 'top') {
-        return rect.top + borderTopWidth;
-      }
-      if (side === 'bottom') {
-        return rect.bottom - borderBottomWidth;
-      }
-      if (side === 'left') {
-        return rect.left + borderLeftWidth;
-      }
-      if (side === 'right') {
-        return rect.right - borderRightWidth;
-      }
-      if (side === 'first-baseline' || side === 'last-baseline') {
-        const bl = document.createElement('span');
-        bl.classList.add('test-baseline-probe');
-        if (side === 'last-baseline') {
-          el.appendChild(bl);
-        } else {
-          el.insertBefore(bl, el.firstChild);
-        }
-        const pos = bl.getBoundingClientRect().top;
-        el.removeChild(bl);
-        return pos - borderTopWidth;
-      }
-      throw new Error(`Unsupported \`side\` value: "${side}"`);
-    };
+    const labelEl = document.createElement('div');
+    lineEl.appendChild(labelEl);
+    lineEl.classList.add('test-redline', 'test-redline--horizontal');
+    labelEl.classList.add('test-redline__label');
 
     const fromRect = fromEl.getBoundingClientRect();
     const toRect = toEl.getBoundingClientRect();
-    const fromViewportY = getPos(fromEl, fromSide);
-    const toViewportY = getPos(toEl, toSide);
+    const fromViewportY = this.getViewportCoordinate_(fromEl, fromSide);
+    const toViewportY = this.getViewportCoordinate_(toEl, toSide);
 
     const actualStartY = Math.min(fromViewportY, toViewportY);
     const actualEndY = Math.max(fromViewportY, toViewportY);
@@ -172,16 +140,13 @@ class TestFixture {
     lineEl.style.height = `${actualDistancePx}px`;
 
     if (actualDistancePx === specDistancePx) {
-      lineEl.querySelector('.test-redline__label').innerText =
-        `${actualDistancePx}px`;
+      labelEl.innerHTML = `${actualDistancePx}px`;
       lineEl.classList.add('test-redline--pass');
     } else if (Math.abs(actualDistancePx - specDistancePx) <= 1) {
-      lineEl.querySelector('.test-redline__label').innerHTML =
-        `Spec: ${specDistancePx}px<br>Actual: ${actualDistancePx}px`;
+      labelEl.innerHTML = `Spec: ${specDistancePx}px<br>Actual: ${actualDistancePx}px`;
       lineEl.classList.add('test-redline--warn');
     } else {
-      lineEl.querySelector('.test-redline__label').innerHTML =
-        `Spec: ${specDistancePx}px<br>Actual: ${actualDistancePx}px`;
+      labelEl.innerHTML = `Spec: ${specDistancePx}px<br>Actual: ${actualDistancePx}px`;
       lineEl.classList.add('test-redline--fail');
     }
 
@@ -190,6 +155,50 @@ class TestFixture {
     }
 
     document.body.appendChild(lineEl);
+  }
+
+  /**
+   * @param {!Element} el
+   * @param {string} side
+   * @return {number}
+   * @private
+   */
+  getViewportCoordinate_(el, side) {
+    const rect = el.getBoundingClientRect();
+    const borderBottomWidth = parseInt(getComputedStyle(el).borderBottomWidth, 10);
+    const borderTopWidth = parseInt(getComputedStyle(el).borderTopWidth, 10);
+    const borderLeftWidth = parseInt(getComputedStyle(el).borderLeftWidth, 10);
+    const borderRightWidth = parseInt(getComputedStyle(el).borderRightWidth, 10);
+
+    if (side === 'top') {
+      return rect.top + borderTopWidth;
+    }
+    if (side === 'bottom') {
+      return rect.bottom - borderBottomWidth;
+    }
+    if (side === 'left') {
+      return rect.left + borderLeftWidth;
+    }
+    if (side === 'right') {
+      return rect.right - borderRightWidth;
+    }
+
+    if (side === 'first-baseline' || side === 'last-baseline') {
+      const bl = document.createElement('span');
+      bl.classList.add('test-baseline-probe');
+
+      if (side === 'last-baseline') {
+        el.appendChild(bl);
+      } else {
+        el.insertBefore(bl, el.firstChild);
+      }
+
+      const pos = bl.getBoundingClientRect().top;
+      el.removeChild(bl);
+      return pos - borderTopWidth;
+    }
+
+    throw new Error(`Unsupported \`side\` value: "${side}"`);
   }
 
   /**
