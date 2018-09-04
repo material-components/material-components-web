@@ -44,6 +44,7 @@ $custom-switch-color: $material-color-red-500;
   cursor: pointer;
 }
 
+// stylelint-disable-next-line selector-class-pattern
 .mdc-switch--disabled + .test-switch-label {
   background: rgba(0, 0, 0, .1);
   cursor: not-allowed;
