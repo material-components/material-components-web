@@ -185,13 +185,13 @@ $test-layout-cell-grid-color: #ddd;
   margin-top: -100%;
   border-radius: 2px;
   background-color: rgba(white, .4);
-  font-family: monospace;
-  font-size: 11px;
+  font-family: Courier, monospace;
+  font-size: 8px; // 8px is the least flaky font size in Firefox on Windows
   text-align: right;
   white-space: nowrap;
 
   .test-redline--small & {
-    top: -2px;
+    top: 0;
   }
 }
 
