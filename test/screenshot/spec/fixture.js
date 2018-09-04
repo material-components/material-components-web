@@ -185,7 +185,7 @@ class TestFixture {
       lineEl.classList.add('test-redline--fail');
     }
 
-    if (actualDistancePx < 20) {
+    if (actualDistancePx < 13) {
       lineEl.classList.add('test-redline--small');
     }
 

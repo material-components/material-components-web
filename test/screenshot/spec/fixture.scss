@@ -182,7 +182,6 @@ $test-layout-cell-grid-color: #ddd;
   position: absolute;
   top: 2px;
   right: 2px;
-  margin-top: -100%;
   border-radius: 2px;
   background-color: rgba(white, .4);
   font-family: Courier, monospace;
@@ -191,7 +190,7 @@ $test-layout-cell-grid-color: #ddd;
   white-space: nowrap;
 
   .test-redline--small & {
-    top: 0;
+    top: -1px;
   }
 }
 
