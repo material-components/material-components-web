@@ -21,45 +21,45 @@
   THE SOFTWARE.
 -->
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Issue 3332 - MDC Web Screenshot Test</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="../../../out/mdc.textfield.css">
-  <link rel="stylesheet" href="../../../out/mdc.typography.css">
-  <link rel="stylesheet" href="../../../out/spec/fixture.css">
-  <link rel="stylesheet" href="../../../out/spec/mdc-textfield/fixture.css">
-</head>
+  <head>
+    <meta charset="utf-8">
+    <title>Issue 3332 - MDC Web Screenshot Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../../out/mdc.textfield.css">
+    <link rel="stylesheet" href="../../../out/mdc.typography.css">
+    <link rel="stylesheet" href="../../../out/spec/fixture.css">
+    <link rel="stylesheet" href="../../../out/spec/mdc-textfield/fixture.css">
+  </head>
 
-<body class="test-container mdc-typography">
-<main class="test-viewport test-viewport--mobile">
-  <div class="test-layout">
+  <body class="test-container mdc-typography">
+    <main class="test-viewport test-viewport--mobile">
+      <div class="test-layout">
 
-    <!-- This test sets `text-align: center` on the parent container to assert that the svg outline will render appropriately when focused. -->
-    <!-- See https://github.com/material-components/material-components-web/issues/3332 -->
-    <div class="test-cell test-cell--textfield" style="text-align: center;">
-      <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--focused">
-        <!-- The single space value is to overcome an issue where the component does not draw the SVG path when created unless there is a value. -->
-        <input type="text" id="outlined-text-field" class="mdc-text-field__input" value=" ">
-        <label for="outlined-text-field" class="mdc-floating-label mdc-floating-label--float-above">Label</label>
-        <div class="mdc-notched-outline">
-          <svg>
-            <path class="mdc-notched-outline__path"/>
-          </svg>
+        <!-- This test sets `text-align: center` on the parent container to assert that the svg outline will render appropriately when focused. -->
+        <!-- See https://github.com/material-components/material-components-web/issues/3332 -->
+        <div class="test-cell test-cell--textfield" style="text-align: center;">
+          <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--focused">
+            <!-- The single space value is to overcome an issue where the component does not draw the SVG path when created unless there is a value. -->
+            <input type="text" id="outlined-text-field" class="mdc-text-field__input" value=" ">
+            <label for="outlined-text-field" class="mdc-floating-label mdc-floating-label--float-above">Label</label>
+            <div class="mdc-notched-outline">
+              <svg>
+                <path class="mdc-notched-outline__path"/>
+              </svg>
+            </div>
+            <div class="mdc-notched-outline__idle"></div>
+          </div>
         </div>
-        <div class="mdc-notched-outline__idle"></div>
+
       </div>
-    </div>
+    </main>
 
-  </div>
-</main>
-
-<!-- Automatically provides/replaces `Promise` if missing or broken. -->
-<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fontfaceobserver/2.0.13/fontfaceobserver.standalone.js"></script>
-<script src="../../../out/material-components-web.js"></script>
-<script src="../../../out/spec/fixture.js"></script>
-<script src="../../../out/spec/mdc-textfield/fixture.js"></script>
-</body>
+    <!-- Automatically provides/replaces `Promise` if missing or broken. -->
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fontfaceobserver/2.0.13/fontfaceobserver.standalone.js"></script>
+    <script src="../../../out/material-components-web.js"></script>
+    <script src="../../../out/spec/fixture.js"></script>
+    <script src="../../../out/spec/mdc-textfield/fixture.js"></script>
+  </body>
 </html>
