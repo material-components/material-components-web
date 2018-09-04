@@ -75,6 +75,16 @@ class TestFixture {
     }
 
     if (fromSide === 'top' || fromSide === 'bottom' || fromSide === 'first-baseline' || fromSide === 'last-baseline') {
+      this.addVerticalRedline_({
+        fromEl,
+        fromSide,
+        toEl,
+        toSide,
+        specDistancePx,
+        displayOffsetPx,
+        displayAlignment,
+      });
+    } else if (fromSide === 'left' || fromSide === 'right') {
       this.addHorizontalRedline_({
         fromEl,
         fromSide,
@@ -98,7 +108,7 @@ class TestFixture {
    * @param {number=} displayOffsetPx
    * @param {string=} displayAlignment
    */
-  addHorizontalRedline_({
+  addVerticalRedline_({
     fromEl,
     fromSide,
     toEl,
@@ -110,7 +120,7 @@ class TestFixture {
     const lineEl = document.createElement('div');
     const labelEl = document.createElement('div');
     lineEl.appendChild(labelEl);
-    lineEl.classList.add('test-redline', 'test-redline--horizontal');
+    lineEl.classList.add('test-redline', 'test-redline--vertical');
     labelEl.classList.add('test-redline__label');
 
     const fromRect = fromEl.getBoundingClientRect();
@@ -138,6 +148,74 @@ class TestFixture {
 
     lineEl.style.top = `${actualStartY}px`;
     lineEl.style.height = `${actualDistancePx}px`;
+
+    if (actualDistancePx === specDistancePx) {
+      labelEl.innerHTML = `${actualDistancePx}px`;
+      lineEl.classList.add('test-redline--pass');
+    } else if (Math.abs(actualDistancePx - specDistancePx) <= 1) {
+      labelEl.innerHTML = `Spec: ${specDistancePx}px<br>Actual: ${actualDistancePx}px`;
+      lineEl.classList.add('test-redline--warn');
+    } else {
+      labelEl.innerHTML = `Spec: ${specDistancePx}px<br>Actual: ${actualDistancePx}px`;
+      lineEl.classList.add('test-redline--fail');
+    }
+
+    if (actualDistancePx < 13) {
+      lineEl.classList.add('test-redline--small');
+    }
+
+    document.body.appendChild(lineEl);
+  }
+
+  /**
+   * @param {!Element} fromEl
+   * @param {string} fromSide
+   * @param {!Element} toEl
+   * @param {string} toSide
+   * @param {number} specDistancePx
+   * @param {number=} displayOffsetPx
+   * @param {string=} displayAlignment
+   */
+  addHorizontalRedline_({
+    fromEl,
+    fromSide,
+    toEl,
+    toSide,
+    specDistancePx,
+    displayOffsetPx = 0,
+    displayAlignment = 'top',
+  }) {
+    const lineEl = document.createElement('div');
+    const labelEl = document.createElement('div');
+    lineEl.appendChild(labelEl);
+    lineEl.classList.add('test-redline', 'test-redline--horizontal');
+    labelEl.classList.add('test-redline__label');
+
+    const fromRect = fromEl.getBoundingClientRect();
+    const toRect = toEl.getBoundingClientRect();
+    const fromViewportX = this.getViewportCoordinate_(fromEl, fromSide);
+    const toViewportX = this.getViewportCoordinate_(toEl, toSide);
+
+    const actualStartX = Math.min(fromViewportX, toViewportX);
+    const actualEndX = Math.max(fromViewportX, toViewportX);
+    const actualDistancePx = Math.floor(actualEndX - actualStartX);
+
+    const lineStartY = Math.min(fromRect.top, toRect.top);
+    const lineEndY = Math.min(fromRect.bottom, toRect.bottom);
+
+    if (displayAlignment === 'center') {
+      const topMost = Math.min(fromRect.top, toRect.top);
+      const bottomMost = Math.max(fromRect.bottom, toRect.bottom);
+      const half = (bottomMost - topMost) / 2;
+      lineEl.style.top = `${lineStartY + half + displayOffsetPx}px`;
+    } else if (displayAlignment === 'bottom') {
+      lineEl.style.top = `${lineEndY - displayOffsetPx}px`;
+    } else {
+      lineEl.style.top = `${lineStartY + displayOffsetPx}px`;
+    }
+
+    lineEl.style.left = `${actualStartX}px`;
+    lineEl.style.width = `${actualDistancePx}px`;
 
     if (actualDistancePx === specDistancePx) {
       labelEl.innerHTML = `${actualDistancePx}px`;

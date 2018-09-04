@@ -142,12 +142,23 @@ $test-layout-cell-grid-color: #ddd;
 // stylelint-enable selector-max-universal
 
 .test-redline {
+  display: flex;
   position: fixed;
+  justify-content: center;
+  align-items: flex-end;
   width: 1px;
   height: 1px;
   background-color: currentColor;
   color: red;
   z-index: 100;
+}
+
+.test-redline--vertical {
+  flex-direction: column;
+}
+
+.test-redline--horizontal {
+  flex-direction: row;
 }
 
 .test-redline--pass {
@@ -158,8 +169,8 @@ $test-layout-cell-grid-color: #ddd;
   color: deeppink;
 }
 
-.test-redline--horizontal::before,
-.test-redline--horizontal::after {
+.test-redline--vertical::before,
+.test-redline--vertical::after {
   display: block;
   position: absolute;
   right: -10px;
@@ -169,29 +180,55 @@ $test-layout-cell-grid-color: #ddd;
   content: "";
 }
 
-.test-redline--horizontal::before {
+.test-redline--vertical::before {
   top: 0;
 }
 
-.test-redline--horizontal::after {
+.test-redline--vertical::after {
   bottom: 0;
+}
+
+.test-redline--horizontal::before,
+.test-redline--horizontal::after {
+  display: block;
+  position: absolute;
+  top: -10px;
+  bottom: -10px;
+  width: 1px;
+  background-color: currentColor;
+  content: "";
+}
+
+.test-redline--horizontal::before {
+  left: 0;
+}
+
+.test-redline--horizontal::after {
+  right: 0;
 }
 
 .test-redline__label {
   display: block;
-  position: absolute;
-  top: 2px;
-  right: 2px;
+  position: relative;
   border-radius: 2px;
-  background-color: rgba(white, .4);
+  background-color: rgba(white, .9);
   font-family: Courier, monospace;
   font-size: 8px; // 8px is the least flaky font size in Firefox on Windows
   text-align: right;
   white-space: nowrap;
+}
 
-  .test-redline--small & {
-    top: -1px;
-  }
+.test-redline--vertical .test-redline__label {
+  top: 0;
+  right: 2px;
+}
+
+.test-redline--vertical.test-redline--small .test-redline__label {
+  top: -1px;
+}
+
+.test-redline--horizontal .test-redline__label {
+  bottom: 13px;
 }
 
 .test-baseline-probe {

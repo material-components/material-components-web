@@ -37,13 +37,14 @@ window.mdc.testFixture.fontsLoaded.then(() => {
       dialog.listen(eventName, (evt) => console.log(eventName, evt));
     });
 
-    const bodyEl = dialogEl.querySelector('.mdc-dialog__content');
+    const surfaceEl = dialogEl.querySelector('.mdc-dialog__surface');
+    const contentEl = dialogEl.querySelector('.mdc-dialog__content');
     const shouldScrollToBottom = dialogEl.classList.contains('test-dialog--scroll-to-bottom');
-    if (bodyEl && shouldScrollToBottom) {
+    if (contentEl && shouldScrollToBottom) {
       const scrollToBottom = () => {
         const tryToScroll = () => {
-          bodyEl.scrollTop = bodyEl.scrollHeight;
-          if (bodyEl.scrollTop === 0) {
+          contentEl.scrollTop = contentEl.scrollHeight;
+          if (contentEl.scrollTop === 0) {
             requestAnimationFrame(tryToScroll);
           }
         };
@@ -64,15 +65,14 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         '.mdc-dialog__title:not(.test-dialog__title--3-line):not(.test-dialog__title--5-line)'
       );
       const threeLineTitleEl = document.querySelector('.test-dialog__title--3-line');
-      const contentEl = document.querySelector('.mdc-dialog__content');
       const anyActionsEl = document.querySelector('.mdc-dialog__actions');
       const nonStackedNonScrollableActionsEl = document.querySelector(
         '.mdc-dialog:not(.mdc-dialog--stacked):not(.mdc-dialog--scrollable) .mdc-dialog__actions'
       );
 
       const buttonEls = [].slice.call(document.querySelectorAll('.mdc-dialog__button'));
-      const firstButton = buttonEls[0];
-      const lastButton = buttonEls[buttonEls.length - 1];
+      const firstButtonEl = buttonEls[0];
+      const lastButtonEl = buttonEls[buttonEls.length - 1];
 
       const firstParagraphEls =
         contentEl ? [].slice.call(contentEl.querySelectorAll([
@@ -98,6 +98,8 @@ window.mdc.testFixture.fontsLoaded.then(() => {
 
       const firstParagraphEl = firstParagraphEls[0];
       const lastParagraphEl = lastParagraphEls[lastParagraphEls.length - 1];
+
+      // Vertical
 
       window.mdc.testFixture.addRedline({
         fromEl: anyTitleEl,
@@ -152,7 +154,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
       window.mdc.testFixture.addRedline({
         fromEl: anyActionsEl,
         fromSide: 'top',
-        toEl: firstButton,
+        toEl: firstButtonEl,
         toSide: 'top',
         specDistancePx: 8,
         displayOffsetPx: 0,
@@ -160,7 +162,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
       });
 
       window.mdc.testFixture.addRedline({
-        fromEl: lastButton,
+        fromEl: lastButtonEl,
         fromSide: 'bottom',
         toEl: anyActionsEl,
         toSide: 'bottom',
@@ -177,6 +179,28 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         specDistancePx: 28,
         displayOffsetPx: 100,
         displayAlignment: 'left',
+      });
+
+      // Horizontal
+
+      window.mdc.testFixture.addRedline({
+        fromEl: lastButtonEl,
+        fromSide: 'right',
+        toEl: anyActionsEl,
+        toSide: 'right',
+        specDistancePx: 8,
+        displayOffsetPx: 0,
+        displayAlignment: 'bottom',
+      });
+
+      window.mdc.testFixture.addRedline({
+        fromEl: surfaceEl,
+        fromSide: 'left',
+        toEl: firstParagraphEl,
+        toSide: 'left',
+        specDistancePx: 24,
+        displayOffsetPx: 0,
+        displayAlignment: 'top',
       });
     });
 
