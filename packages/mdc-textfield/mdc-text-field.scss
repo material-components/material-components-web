@@ -1,17 +1,23 @@
 //
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2017 Google Inc.
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions://
 //
-//      http://www.apache.org/licenses/LICENSE-2.0
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.//
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 //
 
 @import "@material/animation/variables";
@@ -33,40 +39,63 @@
 // postcss-bem-linter: define text-field
 
 .mdc-text-field {
-  @include mdc-text-field-bottom-line-color($mdc-text-field-underline-idle);
-  @include mdc-text-field-hover-bottom-line-color($mdc-text-field-underline-hover);
-  @include mdc-text-field-line-ripple-color_(primary);
-  @include mdc-text-field-ink-color(text-primary-on-background);
-  @include mdc-text-field-label-color($mdc-text-field-label);
-  @include mdc-text-field-helper-text-color(text-hint-on-background);
-  @include mdc-text-field-fullwidth-bottom-line-color($mdc-text-field-divider);
-  @include mdc-text-field-icon-color($mdc-text-field-underline-hover);
+  @include mdc-ripple-surface;
+  // Text Field intentionally omits press ripple, so each state needs to be specified individually.
+  @include mdc-states-base-color($mdc-text-field-ink-color);
+  @include mdc-states-hover-opacity(mdc-states-opacity($mdc-text-field-ink-color, hover));
+  @include mdc-states-focus-opacity(mdc-states-opacity($mdc-text-field-ink-color, focus));
+  @include mdc-ripple-radius-bounded;
 
-  display: inline-block;
+  // Shape
+  @include mdc-text-field-corner-radius($mdc-text-field-border-radius);
+
+  // Colors
+  @include mdc-text-field-label-color($mdc-text-field-label);
+  @include mdc-text-field-ink-color($mdc-text-field-ink-color);
+  @include mdc-text-field-caret-color(primary);
+  @include mdc-text-field-bottom-line-color($mdc-text-field-bottom-line-idle);
+  @include mdc-text-field-hover-bottom-line-color($mdc-text-field-bottom-line-hover);
+  @include mdc-text-field-line-ripple-color_(primary);
+  @include mdc-text-field-fullwidth-bottom-line-color($mdc-text-field-fullwidth-bottom-line-color);
+  @include mdc-text-field-helper-text-color($mdc-text-field-helper-text-color);
+  @include mdc-text-field-icon-color($mdc-text-field-icon-color);
+  @include mdc-text-field-fill-color($mdc-text-field-background);
+
+  // Floating Label
+  @include mdc-text-field-floating-label_;
+  // The following mixins will be removed after select is updated to default to the box.
+  @include mdc-floating-label-float-position($mdc-text-field-label-position-y);
+  @include mdc-floating-label-shake-animation(text-field-box);
+  @include mdc-floating-label-shake-keyframes(text-field-box, $mdc-text-field-label-position-y);
+
+  display: inline-flex;
   position: relative;
-  margin-bottom: 8px;
+  box-sizing: border-box;
+  height: 56px;
+  overflow: hidden;
   will-change: opacity, transform, color;
+
+  // stylelint-disable-next-line plugin/selector-bem-pattern
+  .mdc-floating-label {
+    @include mdc-rtl-reflexive-position(left, 12px);
+
+    pointer-events: none;
+  }
 }
 
 .mdc-text-field__input {
-  @include mdc-typography-base;
-  // We use only a subset of the MDC typography values here as changing things such as line-height
-  // affects how the labels are transformed.
-  // TODO: Re-add setting the font-size from mdc-typography-styles (currently
-  // setting it here has no effect because it is overriden by the font-size
-  // given below).
-  @each $prop in (letter-spacing) {
-    #{$prop}: map-get(map-get($mdc-typography-styles, subheading2), $prop);
-  }
+  @include mdc-typography(subtitle1);
 
+  align-self: flex-end;
+  box-sizing: border-box;
   width: 100%;
-  padding: 20px 0 8px;
+  height: 100%;
+  padding: 20px 12px 6px;
   transition: mdc-text-field-transition(opacity);
   border: none;
   border-bottom: 1px solid;
   border-radius: 0;
   background: none;
-  font-size: inherit;
   appearance: none;
 
   &::placeholder {
@@ -82,14 +111,12 @@
   &:invalid {
     box-shadow: none;
   }
-
-  // Move label when text-field gets autofilled in Chrome
-  // stylelint-disable plugin/selector-bem-pattern
-  &:-webkit-autofill + .mdc-floating-label {
-    transform: translateY(-100%) scale(.75);
-    cursor: auto;
-  }
-  // stylelint-enable plugin/selector-bem-pattern
+}
+// stylelint-disable-next-line plugin/selector-bem-pattern
+// Move label when text-field gets auto-filled in Chrome.
+.mdc-text-field__input:-webkit-autofill + .mdc-floating-label {
+  transform: translateY(-50%) scale(.75);
+  cursor: auto;
 }
 
 .mdc-text-field--outlined {
@@ -106,18 +133,6 @@
 
 .mdc-text-field--outlined.mdc-text-field--dense {
   @include mdc-text-field-outlined-dense_;
-}
-
-.mdc-text-field--box {
-  @include mdc-text-field-box_;
-}
-
-.mdc-text-field--box.mdc-text-field--disabled {
-  @include mdc-text-field-box-disabled_;
-}
-
-.mdc-text-field--box.mdc-text-field--dense {
-  @include mdc-text-field-box-dense_;
 }
 
 .mdc-text-field--with-leading-icon {
@@ -152,19 +167,6 @@
   @include mdc-text-field-dense-with-trailing-icon_;
 }
 
-.mdc-text-field--upgraded:not(.mdc-text-field--fullwidth):not(.mdc-text-field--box) {
-  display: inline-flex;
-  position: relative;
-  align-items: flex-end;
-  box-sizing: border-box;
-  margin-top: 16px;
-
-  // stylelint-disable-next-line selector-max-specificity
-  &:not(.mdc-text-field--textarea):not(.mdc-text-field--outlined) {
-    height: 48px;
-  }
-}
-
 .mdc-text-field--dense {
   @include mdc-text-field-dense_;
 }
@@ -194,7 +196,11 @@
     margin-bottom: 4px;
   }
 
-  .mdc-text-field--box + &,
+  .mdc-text-field + & {
+    margin-right: 12px;
+    margin-left: 12px;
+  }
+
   .mdc-text-field--outlined + & {
     margin-right: 16px;
     margin-left: 16px;
@@ -240,10 +246,11 @@
   @include mdc-text-field-textarea-disabled_;
 }
 
-@include mdc-floating-label-shake-keyframes(text-field-box, $mdc-text-field-box-label-position-y);
-@include mdc-floating-label-shake-keyframes(text-field-box-dense, $mdc-text-field-box-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
+@include mdc-floating-label-shake-keyframes(text-field-dense, $mdc-text-field-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
 @include mdc-floating-label-shake-keyframes(text-field-outlined, $mdc-text-field-outlined-label-position-y);
 @include mdc-floating-label-shake-keyframes(text-field-outlined-dense, $mdc-text-field-outlined-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
 @include mdc-floating-label-shake-keyframes(text-field-outlined-leading-icon, $mdc-text-field-outlined-label-position-y, $mdc-text-field-outlined-with-leading-icon-label-position-x);
 @include mdc-floating-label-shake-keyframes(text-field-outlined-leading-icon-dense, $mdc-text-field-outlined-dense-label-position-y, $mdc-text-field-outlined-dense-with-leading-icon-label-position-x, $mdc-text-field-dense-label-scale);
+@include mdc-floating-label-shake-keyframes(text-field-outlined-leading-icon-rtl, $mdc-text-field-outlined-label-position-y, -$mdc-text-field-outlined-with-leading-icon-label-position-x);
+@include mdc-floating-label-shake-keyframes(text-field-outlined-leading-icon-dense-rtl, $mdc-text-field-outlined-dense-label-position-y, -$mdc-text-field-outlined-dense-with-leading-icon-label-position-x, $mdc-text-field-dense-label-scale);
 @include mdc-floating-label-shake-keyframes(textarea, $mdc-text-field-textarea-label-position-y, 0%, $mdc-text-field-textarea-label-scale);

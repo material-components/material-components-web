@@ -442,8 +442,9 @@ _Only reference global objects defined within the ECMAScript specification withi
 We make an exception for this rule for `requestAnimationFrame`, but in the future we may refactor
 that out as well. In addition, a workaround to working with host objects in a foundation is to ask
 for them via the adapter. However, you should design your adapter APIs such that they return a
-[structural type]() representing your host object, rather than a [nominal type]() of the host object
-itself. For example, instead of asking for an `HTMLInputElement` of type `"checkbox"`, ask for an
+[structural type](https://github.com/google/closure-compiler/wiki/Structural-Interfaces-in-Closure-Compiler)
+representing your host object, rather than a nominal type of the host object itself. For example,
+instead of asking for an `HTMLInputElement` of type `"checkbox"`, ask for an
 object that has `checked`, `indeterminate`, and `disabled` boolean properties.
 
 ### Clean up all references on destruction
@@ -524,7 +525,7 @@ For example, if you are building a checkbox component, `keywords` would include 
   "name": "@material/example",
   "version": "0.0.0",
   "description": "The Material Components for the web example component",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git"
@@ -546,22 +547,28 @@ We are required to put the following at the _top_ of _every source code file_, i
 demos, and demo html. The stanza is as follows:
 
 ```
-Copyright 2016 Google Inc. All Rights Reserved.
+Copyright <YEAR> Google Inc.
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-    http://www.apache.org/licenses/LICENSE-2.0
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
 ```
 
-Please put this in a comment at the top of every source file.
+Please put this in a comment at the top of every source file, replacing <YEAR> with the year the file was created.
 
 ### Scss
 
@@ -752,14 +759,13 @@ Concretely:
 - Ensure that the correct **commit subject** for the package is added to the
   `config.validate-commit-msg.scope.allowed` array within the top-level `package.json` at the root
   of the repo. The commit subject is the _name the component, without the `mdc-`/`@material/`_.
-  E.g., for `mdc-icon-toggle`, the correct subject is `icon-toggle`.
+  E.g., for `mdc-icon-button`, the correct subject is `icon-button`.
 - Ensure that the package name is added to the `closureWhitelist` array within the top-level
   `package.json`.
 
 #### Closure Compatibility
 
-> NOTE: This section was introduced as part of our [closure compatibility milestone](https://github.com/material-components/material-components-web/milestone/4). Our
-currently existing components are in the process of being made compatible with closure.
+> NOTE: Our currently existing components are in the process of being made compatible with closure.
 
 All core MDC Web components must be fully compatible with the Google Closure Compiler using its
 advanced compilation mechanisms. We've provided a thorough explanation of this, as well as

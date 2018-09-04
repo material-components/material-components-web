@@ -9,39 +9,13 @@ path: /catalog/theme/
 
 # Theme
 
-<!--<div class="article__asset">
-  <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/theme/index.html">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/themes.png" width="241" alt="Themes screenshot">
-  </a>
-</div>-->
-
-This color palette comprises primary and secondary colors that can be used for illustration or to develop your brand colors.
-
-MDC Theme is a foundational module that themes MDC Web components. The colors in this module are derived from three theme colors:
-
-* Primary: the primary color used in your application, applies to a number of UI elements.
-* Secondary: the secondary color used in your application, applies to a number of UI elements. (Previously called "accent".)
-* Background: the background color for your application, aka the color on top of which your UI is drawn.
-
-and five text styles:
-
-* Primary: used for most text
-* Secondary: used for text which is lower in the visual hierarchy
-* Hint: used for text hints, such as those in text fields and labels
-* Disabled: used for text in disabled components and content
-* Icon: used for icons
-
-> **A note about Primary and Secondary**, don't confuse primary/secondary _color_ with primary/secondary _text_. The former refers to the primary/secondary _theme_ color that is used to establish a visual identity and color many parts of your application. The latter refers to the style of text that is most prominent (low opacity, high contrast), and used to display most content.
+The Material Design color system can be used to create a color scheme that reflects your brand or style.
 
 ## Design & API Documentation
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/style/color.html">Material Design guidelines: Color</a>
-  </li>
-  <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/theme/index.html">Demo</a>
+    <a href="https://material.io/go/design-theming">Material Design guidelines: Color</a>
   </li>
 </ul>
 
@@ -53,58 +27,62 @@ npm install @material/theme
 
 ## Usage
 
-### Change Theme Colors
+### Color Scheme
 
-MDC Theme makes it easy to develop your brand colors. You override the default theme color through Sass variables or CSS custom properties. CSS custom properties enables runtime theming.
-
-> **A note about Sass variables**, you need to define the three theme color variables before importing mdc-theme or any MDC Web components that rely on it, like following:
+You can define the theme color variables before importing any MDC Web components:
 
 ```scss
-$mdc-theme-primary: #9c27b0; // Purple 500
-$mdc-theme-secondary: #ffab40; // Orange A200
-$mdc-theme-background: #fff; // White
+$mdc-theme-primary: #fcb8ab;
+$mdc-theme-secondary: #feeae6;
+$mdc-theme-on-primary: #442b2d;
+$mdc-theme-on-secondary: #442b2d;
 
-@import "@material/theme/mdc-theme";
+@import "@material/button/mdc-button";
 ```
 
-> **A note about `$mdc-theme-secondary`**: This variable was previously named `$mdc-theme-accent`.
-> For backward compatibility, `$mdc-theme-accent` still exists, but it is **deprecated**.
-> Apps that previously customized `$mdc-theme-accent` will continue to work, but new apps should use
-> `$mdc-theme-secondary` instead.
-
-The text color, for text placed on top of these selected theme colors, is programmatically computed based on color contrast. We follow the Web Content Accessibility Guidelines 2.0.
+We suggest you follow the Web Content Accessibility Guidelines 2.0 when picking the values for on-primary, on-secondary, etc. These values should be accessible on top of the corresponding value, e.g. primary and secondary.
 
 https://www.w3.org/TR/WCAG20
 
+### Advanced customization
+
+Color scheme will only get you 80% of the way to a well-designed app. Inevitably there will be some components that do not work "out of the box". To fix problems with accessibility and design, we suggest you use our Sass mixins, such as `mdc-button-filled-accessible`. For more information, consult the documentation for each component.
+
+### Non-Sass customization
+
+Only a very limited number of Material Design color customization features are supported for non-Sass clients. They are a set of CSS custom properties, and a set of CSS classes.
+
 #### CSS Custom Properties
 
-> **A note about `<TEXT_STYLE>` and `<THEME_COLOR>`**, `<TEXT_STYLE>` represents the lowercase name of the text styles listed above, e.g. `hint`. `<THEME_COLOR>` represents the lowercase name of the theme colors listed above, e.g. `secondary`. When you put it all together it would be `--mdc-theme-text-hint-on-secondary`.
+**A note about `<TEXT_STYLE>`**, `<TEXT_STYLE>` represents the lowercase name of the text styles listed above, e.g. `hint`.
 
 CSS Custom property | Description
 --- | ---
 `--mdc-theme-primary` | The theme primary color
 `--mdc-theme-secondary` | The theme secondary color
 `--mdc-theme-background` | The theme background color
-`--mdc-theme-text-<TEXT_STYLE>-on-<THEME_COLOR>` | Text color for TEXT_STYLE on top of THEME_COLOR background
+`--mdc-theme-surface` | The theme surface color
+`--mdc-theme-on-primary` | Text color on top of a primary background
+`--mdc-theme-on-secondary` | Text color on top of a secondary background
+`--mdc-theme-on-surface` | Text color on top of a surface background
 `--mdc-theme-text-<TEXT_STYLE>-on-light` | Text color for TEXT_STYLE on top of light background
 `--mdc-theme-text-<TEXT_STYLE>-on-dark` | Text color for TEXT_STYLE on top of dark background
 
-### CSS Classes
+#### CSS Classes
 
-MDC Web provides SASS mixins, such as `mdc-button-filled-accessible`, to facilitate customization of some components. For more information, consult the documentation for each component.
-
-If you want to modify an element, which is not a Material Design component, you can apply the following modifier CSS classes.
-
-> **A note about `<TEXT_STYLE>` and `<THEME_COLOR>`**, `<TEXT_STYLE>` represents the lowercase name of the text styles listed above, e.g. `hint`. `<THEME_COLOR>` represents the lowercase name of the theme colors listed above, e.g. `secondary`. When you put it all together it would be `mdc-theme--text-hint-on-secondary`.
+> **A note about `<TEXT_STYLE>`**, `<TEXT_STYLE>` represents the lowercase name of the text styles listed above, e.g. `hint`.
 
 CSS Class | Description
 --- | ---
 `mdc-theme--primary` | Sets the text color to the theme primary color
 `mdc-theme--secondary` | Sets the text color to the theme secondary color
 `mdc-theme--background` | Sets the background color to the theme background color
+`mdc-theme--surface` | Sets the surface color to the theme surface color
+`mdc-theme--on-primary` | Sets the text color to the theme on-primary color
+`mdc-theme--on-secondary` | Sets the text color to the theme on-secondary color
+`mdc-theme--on-surface` | Sets the text color to the theme on-surface color
 `mdc-theme--primary-bg` | Sets the background color to the theme primary color
 `mdc-theme--secondary-bg` | Sets the background color to the theme secondary color
-`mdc-theme--text-<TEXT_STYLE>-on-<THEME_COLOR>` | Sets text to a suitable color for TEXT_STYLE on top of THEME_COLOR background
 `mdc-theme--text-<TEXT_STYLE>-on-light` | Sets text to a suitable color for TEXT_STYLE on top of light background
 `mdc-theme--text-<TEXT_STYLE>-on-dark` | Sets text to a suitable color for TEXT_STYLE on top of dark background
 
@@ -118,16 +96,20 @@ Mixin | Description
 
 The properties below can be used as the `$style` argument for the `mdc-theme-prop` mixin. Literal color values (e.g., `rgba(0, 0, 0, .75)`) may also be used instead.
 
-> **A note about `<TEXT_STYLE>` and `<THEME_COLOR>`**, `<TEXT_STYLE>` represents the lowercase name of the text styles listed above, e.g. `hint`. `<THEME_COLOR>` represents the lowercase name of the theme colors listed above, e.g. `secondary`. When you put it all together it would be `text-hint-on-secondary`.
+**A note about `<TEXT_STYLE>`**, `<TEXT_STYLE>` represents the lowercase name of the text styles listed above, e.g. `hint`.
 
 Property Name | Description
 --- | ---
 `primary` | The theme primary color
 `secondary` | The theme secondary color
 `background` | The theme background color
-`text-<TEXT_STYLE>-on-<THEME_COLOR>` | TEXT_STYLE on top of THEME_COLOR background
+`surface` | The theme surface color
 `text-<TEXT_STYLE>-on-light` | TEXT_STYLE on top of a light background
 `text-<TEXT_STYLE>-on-dark` | TEXT_STYLE on top of a dark background
+`on-primary` | A text/iconography color that is usable on top of primary color
+`on-secondary` | A text/iconography color that is usable on top of secondary color
+`on-surface` | A text/iconography color that is usable on top of surface color
+
 
 #### `mdc-theme-luminance($color)`
 
@@ -164,11 +146,11 @@ Determines whether to use light or dark text on top of a given color.
 @debug mdc-theme-contrast-tone(#9c27b0); // light
 ```
 
-#### `mdc-theme-prop-value($property)`
+#### `mdc-theme-prop-value($style)`
 
-If `$property` is a literal color value (e.g., `blue`, `#fff`), it is returned verbatim. Otherwise, the value of the
-corresponding theme property (from `$mdc-theme-property-values`) is returned. If `$property` is not a color and no
-such theme property exists, an error is thrown.
+If `$style` is a color (a literal color value, `currentColor`, or a CSS custom property), it is returned verbatim.
+Otherwise, `$style` is treated as a theme property name, and the corresponding value from `$mdc-theme-property-values`
+is returned. If this also fails, an error is thrown.
 
 This is mainly useful in situations where `mdc-theme-prop` cannot be used directly (e.g., `box-shadow`).
 
@@ -196,4 +178,16 @@ Params:
 ```scss
 @debug mdc-theme-accessible-ink-color(secondary); // rgba(0, 0, 0, .87) (text-primary-on-light)
 @debug mdc-theme-accessible-ink-color(blue);      // white              (text-primary-on-dark)
+```
+#### `mdc-theme-text-emphasis($emphasis)`
+
+Returns opacity value for given emphasis.
+
+Params:
+
+- `$emphasis`: Type of emphasis such as `high`, `medium` & `disabled`.
+
+```scss
+@debug mdc-theme-text-emphasis(high); // .87
+@debug mdc-theme-text-emphasis(disabled); // .38
 ```

@@ -1,8 +1,8 @@
 {
   "name": "@material/ripple",
   "description": "The Material Components for the web Ink Ripple effect for web element interactions",
-  "version": "0.34.1",
-  "license": "Apache-2.0",
+  "version": "0.39.1",
+  "license": "MIT",
   "keywords": [
     "material components",
     "material design",
@@ -14,7 +14,8 @@
     "url": "https://github.com/material-components/material-components-web.git"
   },
   "dependencies": {
-    "@material/base": "^0.34.0",
-    "@material/theme": "^0.34.0"
+    "@material/animation": "^0.39.0",
+    "@material/base": "^0.39.0",
+    "@material/theme": "^0.39.1"
   }
 }

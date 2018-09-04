@@ -1,0 +1,64 @@
+//
+// Copyright 2018 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions://
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.//
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+// Sets 45-degree angle corners of a certain size (akin to border-radius but for flat corners).
+@mixin mdc-shape-angled-corner($background-color, $top-left-size, $top-right-size: $top-left-size, $bottom-right-size: $top-left-size, $bottom-left-size: $top-right-size) {
+  $corners: (top, left, $top-left-size),
+    (top, right, $top-right-size),
+    (bottom, right, $bottom-right-size),
+    (bottom, left, $bottom-left-size);
+
+  @each $y, $x, $size in $corners {
+    @if $size > 0 {
+      // Assume that the size passed represents the width/height rather than the diagonal.
+      // This makes it trivial e.g. to accomplish a horizontal arrow cap by specifying exactly half the shape's height.
+      // Unfortunately, Sass doesn't have built-in exponentiation, and node-sass custom functions seem to hang.
+      // (https://github.com/sass/node-sass/issues/857 may be related, but the workaround didn't seem to work.)
+      // Fortunately, if we assume 45 degree cutouts all the time, a^2 + b^2 = c^2 simplifies to a*sqrt(2).
+      $diagonal-length: $size * 1.4142135623730951;
+
+      .mdc-shape-container__corner--#{$y}-#{$x} {
+        #{$y}: -$diagonal-length / 2;
+        #{$x}: -$diagonal-length / 2;
+        width: $diagonal-length;
+        height: $diagonal-length;
+      }
+    }
+  }
+
+  @include mdc-shape-angled-corner-background($background-color);
+}
+
+// Sets the background color used for masking.
+// Exposed separately to allow overriding for some shapes within a page which happen to be over a different background.
+@mixin mdc-shape-angled-corner-background($background-color) {
+  .mdc-shape-container__corner::after {
+    background-color: $background-color;
+  }
+}
+
+@mixin mdc-shape-angled-corner-outline($outline-width, $outline-color, $outline-style: solid) {
+  .mdc-shape-container__corner::before {
+    top: $outline-width;
+    border-bottom: $outline-width $outline-style $outline-color;
+  }
+}

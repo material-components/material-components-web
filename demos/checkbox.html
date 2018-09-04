@@ -1,18 +1,24 @@
 <!DOCTYPE html>
 <!--
-  Copyright 2016 Google Inc. All rights reserved.
+  Copyright 2016 Google Inc.
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
 
-      https://www.apache.org/licenses/LICENSE-2.0
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
 
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  THE SOFTWARE.
 -->
 <html>
   <head>
@@ -67,7 +73,6 @@
                  viewBox="0 0 24 24">
               <path class="mdc-checkbox__checkmark-path"
                     fill="none"
-                    stroke="white"
                     d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
             </svg>
             <div class="mdc-checkbox__mixedmark"></div>
@@ -89,7 +94,6 @@
                      viewBox="0 0 24 24">
                   <path class="mdc-checkbox__checkmark-path"
                         fill="none"
-                        stroke="white"
                         d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
                 </svg>
                 <div class="mdc-checkbox__mixedmark"></div>
@@ -98,10 +102,10 @@
             <label for="basic-checkbox">Default checkbox</label>
           </div>
           <div class="demo-toggle-group">
-            <button type="button" class="mdc-button mdc-button--stroked" onclick="this.parentElement.parentElement.hasAttribute('dir') ? this.parentElement.parentElement.removeAttribute('dir') : this.parentElement.parentElement.setAttribute('dir', 'rtl');">
+            <button type="button" class="mdc-button mdc-button--outlined" onclick="this.parentElement.parentElement.hasAttribute('dir') ? this.parentElement.parentElement.removeAttribute('dir') : this.parentElement.parentElement.setAttribute('dir', 'rtl');">
               Toggle RTL
             </button>
-            <button type="button" class="mdc-button mdc-button--stroked" onclick="document.querySelector('.mdc-form-field').classList.toggle('mdc-form-field--align-end');">
+            <button type="button" class="mdc-button mdc-button--outlined" onclick="document.querySelector('.mdc-form-field').classList.toggle('mdc-form-field--align-end');">
               <span>Toggle <code>--align-end</code></span>
             </button>
           </div>
@@ -118,7 +122,6 @@
                      viewBox="0 0 24 24">
                   <path class="mdc-checkbox__checkmark-path"
                         fill="none"
-                        stroke="white"
                         d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
                 </svg>
                 <div class="mdc-checkbox__mixedmark"></div>
@@ -137,7 +140,6 @@
                        viewBox="0 0 24 24">
                     <path class="mdc-checkbox__checkmark-path"
                           fill="none"
-                          stroke="white"
                           d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
                   </svg>
                   <div class="mdc-checkbox__mixedmark"></div>
@@ -160,7 +162,6 @@
                        viewBox="0 0 24 24">
                     <path class="mdc-checkbox__checkmark-path"
                           fill="none"
-                          stroke="white"
                           d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
                   </svg>
                   <div class="mdc-checkbox__mixedmark"></div>
@@ -180,7 +181,6 @@
                        viewBox="0 0 24 24">
                     <path class="mdc-checkbox__checkmark-path"
                           fill="none"
-                          stroke="white"
                           d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
                   </svg>
                   <div class="mdc-checkbox__mixedmark"></div>
@@ -205,7 +205,6 @@
                      viewBox="0 0 24 24">
                   <path class="mdc-checkbox__checkmark-path"
                         fill="none"
-                        stroke="white"
                         d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
                 </svg>
                 <div class="mdc-checkbox__mixedmark"></div>
@@ -214,8 +213,8 @@
             <label for="native-js-checkbox">Default checkbox</label>
           </div>
           <div class="demo-toggle-group">
-            <button type="button" class="mdc-button mdc-button--stroked toggle-indeterminate"><span>Toggle <code>indeterminate</code></span></button>
-            <button type="button" class="mdc-button mdc-button--stroked toggle-disabled"><span>Toggle <code>disabled</code></span></button>
+            <button type="button" class="mdc-button mdc-button--outlined toggle-indeterminate"><span>Toggle <code>indeterminate</code></span></button>
+            <button type="button" class="mdc-button mdc-button--outlined toggle-disabled"><span>Toggle <code>disabled</code></span></button>
           </div>
         </div>
         <div>
@@ -230,7 +229,6 @@
                      viewBox="0 0 24 24">
                   <path class="mdc-checkbox__checkmark-path"
                         fill="none"
-                        stroke="white"
                         d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
                 </svg>
                 <div class="mdc-checkbox__mixedmark"></div>
@@ -239,8 +237,8 @@
             <label for="native-js-checkbox-indeterminate">Indeterminate checkbox</label>
           </div>
           <div class="demo-toggle-group">
-            <button type="button" class="mdc-button mdc-button--stroked toggle-indeterminate"><span>Toggle <code>indeterminate</code></span></button>
-            <button type="button" class="mdc-button mdc-button--stroked toggle-disabled"><span>Toggle <code>disabled</code></span></button>
+            <button type="button" class="mdc-button mdc-button--outlined toggle-indeterminate"><span>Toggle <code>indeterminate</code></span></button>
+            <button type="button" class="mdc-button mdc-button--outlined toggle-disabled"><span>Toggle <code>disabled</code></span></button>
           </div>
           <script>
             document.getElementById('native-js-checkbox-indeterminate').indeterminate = true;
@@ -257,7 +255,6 @@
                      viewBox="0 0 24 24">
                   <path class="mdc-checkbox__checkmark-path"
                         fill="none"
-                        stroke="white"
                         d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
                 </svg>
                 <div class="mdc-checkbox__mixedmark"></div>
@@ -266,8 +263,8 @@
             <label for="native-js-checkbox-custom-all">Custom colored checkbox (stroke, fill, ripple, and focus)</label>
           </div>
           <div class="demo-toggle-group">
-            <button type="button" class="mdc-button mdc-button--stroked toggle-indeterminate"><span>Toggle <code>indeterminate</code></span></button>
-            <button type="button" class="mdc-button mdc-button--stroked toggle-disabled"><span>Toggle <code>disabled</code></span></button>
+            <button type="button" class="mdc-button mdc-button--outlined toggle-indeterminate"><span>Toggle <code>indeterminate</code></span></button>
+            <button type="button" class="mdc-button mdc-button--outlined toggle-disabled"><span>Toggle <code>disabled</code></span></button>
           </div>
         </div>
         <div>
@@ -281,7 +278,6 @@
                      viewBox="0 0 24 24">
                   <path class="mdc-checkbox__checkmark-path"
                         fill="none"
-                        stroke="white"
                         d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
                 </svg>
                 <div class="mdc-checkbox__mixedmark"></div>
@@ -290,8 +286,8 @@
             <label for="native-js-checkbox-custom-stroke-and-fill">Custom colored checkbox (stroke and fill only)</label>
           </div>
           <div class="demo-toggle-group">
-            <button type="button" class="mdc-button mdc-button--stroked toggle-indeterminate"><span>Toggle <code>indeterminate</code></span></button>
-            <button type="button" class="mdc-button mdc-button--stroked toggle-disabled"><span>Toggle <code>disabled</code></span></button>
+            <button type="button" class="mdc-button mdc-button--outlined toggle-indeterminate"><span>Toggle <code>indeterminate</code></span></button>
+            <button type="button" class="mdc-button mdc-button--outlined toggle-disabled"><span>Toggle <code>disabled</code></span></button>
           </div>
         </div>
       </section>

@@ -1,21 +1,28 @@
 /**
- * Copyright 2017 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2017 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import {MDCFoundation} from '@material/base/index';
-import {cssClasses, strings} from './constants';
+import {cssClasses, strings, numbers} from './constants';
 
 export default class MDCDialogFoundation extends MDCFoundation {
   static get cssClasses() {
@@ -26,8 +33,12 @@ export default class MDCDialogFoundation extends MDCFoundation {
     return strings;
   }
 
+  static get numbers() {
+    return numbers;
+  }
+
   static get defaultAdapter() {
-    return {
+    return ({
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
       addBodyClass: (/* className: string */) => {},
@@ -39,15 +50,12 @@ export default class MDCDialogFoundation extends MDCFoundation {
       deregisterSurfaceInteractionHandler: (/* evt: string, handler: EventListener */) => {},
       registerDocumentKeydownHandler: (/* handler: EventListener */) => {},
       deregisterDocumentKeydownHandler: (/* handler: EventListener */) => {},
-      registerTransitionEndHandler: (/* handler: EventListener */) => {},
-      deregisterTransitionEndHandler: (/* handler: EventListener */) => {},
       notifyAccept: () => {},
       notifyCancel: () => {},
       trapFocusOnSurface: () => {},
       untrapFocusOnSurface: () => {},
       isDialog: (/* el: Element */) => /* boolean */ false,
-      layoutFooterRipples: () => {},
-    };
+    });
   }
 
   constructor(adapter) {
@@ -64,21 +72,19 @@ export default class MDCDialogFoundation extends MDCFoundation {
         this.cancel(true);
       }
     };
-    this.transitionEndHandler_ = (evt) => this.handleTransitionEnd_(evt);
+
+    this.timerId_ = 0;
+    this.animationTimerEnd_ = (evt) => this.handleAnimationTimerEnd_(evt);
   };
 
   destroy() {
     // Ensure that dialog is cleaned up when destroyed
     if (this.isOpen_) {
-      this.adapter_.deregisterSurfaceInteractionHandler('click', this.dialogClickHandler_);
-      this.adapter_.deregisterDocumentKeydownHandler(this.documentKeydownHandler_);
-      this.adapter_.deregisterInteractionHandler('click', this.componentClickHandler_);
-      this.adapter_.untrapFocusOnSurface();
-      this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
-      this.adapter_.removeClass(MDCDialogFoundation.cssClasses.ANIMATING);
-      this.adapter_.removeClass(MDCDialogFoundation.cssClasses.OPEN);
-      this.enableScroll_();
+      this.close();
     }
+    // Final cleanup of animating class in case the timer has not completed.
+    this.adapter_.removeClass(MDCDialogFoundation.cssClasses.ANIMATING);
+    clearTimeout(this.timerId_);
   }
 
   open() {
@@ -87,18 +93,21 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.registerDocumentKeydownHandler(this.documentKeydownHandler_);
     this.adapter_.registerSurfaceInteractionHandler('click', this.dialogClickHandler_);
     this.adapter_.registerInteractionHandler('click', this.componentClickHandler_);
-    this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
+    clearTimeout(this.timerId_);
+    this.timerId_ = setTimeout(this.animationTimerEnd_, MDCDialogFoundation.numbers.DIALOG_ANIMATION_TIME_MS);
     this.adapter_.addClass(MDCDialogFoundation.cssClasses.ANIMATING);
     this.adapter_.addClass(MDCDialogFoundation.cssClasses.OPEN);
   }
 
   close() {
     this.isOpen_ = false;
+    this.enableScroll_();
     this.adapter_.deregisterSurfaceInteractionHandler('click', this.dialogClickHandler_);
     this.adapter_.deregisterDocumentKeydownHandler(this.documentKeydownHandler_);
     this.adapter_.deregisterInteractionHandler('click', this.componentClickHandler_);
     this.adapter_.untrapFocusOnSurface();
-    this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
+    clearTimeout(this.timerId_);
+    this.timerId_ = setTimeout(this.animationTimerEnd_, MDCDialogFoundation.numbers.DIALOG_ANIMATION_TIME_MS);
     this.adapter_.addClass(MDCDialogFoundation.cssClasses.ANIMATING);
     this.adapter_.removeClass(MDCDialogFoundation.cssClasses.OPEN);
   }
@@ -132,17 +141,11 @@ export default class MDCDialogFoundation extends MDCFoundation {
     }
   }
 
-  handleTransitionEnd_(evt) {
-    if (this.adapter_.isDialog(evt.target)) {
-      this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
-      this.adapter_.removeClass(MDCDialogFoundation.cssClasses.ANIMATING);
-      if (this.isOpen_) {
-        this.adapter_.trapFocusOnSurface();
-        this.adapter_.layoutFooterRipples();
-      } else {
-        this.enableScroll_();
-      };
-    };
+  handleAnimationTimerEnd_() {
+    this.adapter_.removeClass(MDCDialogFoundation.cssClasses.ANIMATING);
+    if (this.isOpen_) {
+      this.adapter_.trapFocusOnSurface();
+    }
   };
 
   disableScroll_() {

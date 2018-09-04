@@ -1,17 +1,24 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2016 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import td from 'testdouble';
@@ -176,7 +183,7 @@ testFoundation('sets FG position from the coords to the center within surface on
     ));
   });
 
-testFoundation('adds activation classes on keydown when surface is made active',
+testFoundation('adds activation classes on keydown when surface is made active on same frame',
   ({foundation, adapter, mockRaf}) => {
     const handlers = captureHandlers(adapter, 'registerInteractionHandler');
     td.when(adapter.isSurfaceActive()).thenReturn(true);
@@ -184,9 +191,34 @@ testFoundation('adds activation classes on keydown when surface is made active',
     mockRaf.flush();
 
     handlers.keydown();
+    td.verify(adapter.addClass(cssClasses.FG_ACTIVATION));
+  });
+
+testFoundation('adds activation classes on keydown when surface only reflects :active on next frame for space keydown',
+  ({foundation, adapter, mockRaf}) => {
+    const handlers = captureHandlers(adapter, 'registerInteractionHandler');
+    td.when(adapter.isSurfaceActive()).thenReturn(false, true);
+    foundation.init();
     mockRaf.flush();
 
-    td.verify(adapter.addClass(cssClasses.FG_ACTIVATION));
+    handlers.keydown({key: ' '});
+    td.verify(adapter.addClass(cssClasses.FG_ACTIVATION), {times: 0});
+
+    mockRaf.flush();
+    td.verify(adapter.addClass(cssClasses.FG_ACTIVATION), {times: 1});
+  });
+
+testFoundation('does not add activation classes on keydown when surface is not made active',
+  ({foundation, adapter, mockRaf}) => {
+    const handlers = captureHandlers(adapter, 'registerInteractionHandler');
+    td.when(adapter.isSurfaceActive()).thenReturn(false, false);
+    foundation.init();
+    mockRaf.flush();
+
+    handlers.keydown({key: ' '});
+    mockRaf.flush();
+
+    td.verify(adapter.addClass(cssClasses.FG_ACTIVATION), {times: 0});
   });
 
 testFoundation('sets FG position to center on non-pointer activation', ({foundation, adapter, mockRaf}) => {

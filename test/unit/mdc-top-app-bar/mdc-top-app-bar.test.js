@@ -1,17 +1,24 @@
 /**
- * Copyright 2017 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2017 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import {assert} from 'chai';
@@ -25,6 +32,8 @@ import MDCTopAppBarFoundation from '../../../packages/mdc-top-app-bar/foundation
 import MDCFixedTopAppBarFoundation from '../../../packages/mdc-top-app-bar/fixed/foundation';
 import MDCShortTopAppBarFoundation from '../../../packages/mdc-top-app-bar/short/foundation';
 
+const MENU_ICONS_COUNT = 3;
+
 function getFixture(removeIcon) {
   const html = bel`
     <div>
@@ -34,26 +43,26 @@ function getFixture(removeIcon) {
           <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
           <span class="mdc-top-app-bar__title">Title</span>
         </section>
-        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" 
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end"
         role="top-app-bar">
           <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Download" alt="Download">
           file_download</a>
-          <a href="#" class="material-icons mdc-top-app-bar__action-item" 
+          <a href="#" class="material-icons mdc-top-app-bar__action-item"
              aria-label="Print this page" alt="Print this page">
           print</a>
-          <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Bookmark this page" 
+          <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Bookmark this page"
           alt="Bookmark this page">bookmark</a>
           <div class="mdc-menu-anchor">
             <div class="mdc-menu" tabindex="-1" id="demo-menu">
               <ul class="mdc-menu__items mdc-list" role="menu" aria-hidden="true" style="transform: scale(1, 1);">
               </ul>
             </div>
-          </div>
-        </section>
-      </div>
-    </header>
+          </section>
+        </div>
+      </header>
       <main class="mdc-top-app-bar-fixed-adjust">
       </main>
+      <div class="content">Content</div>
     </div>
   `;
 
@@ -73,13 +82,13 @@ class FakeRipple {
   }
 }
 
-function setupTest(removeIcon = false) {
+function setupTest(removeIcon = false, rippleFactory = (el) => new FakeRipple(el)) {
   const fixture = getFixture(removeIcon);
   const root = fixture.querySelector(strings.ROOT_SELECTOR);
   const icon = root.querySelector(strings.NAVIGATION_ICON_SELECTOR);
-  const component = new MDCTopAppBar(root, undefined, (el) => new FakeRipple(el));
+  const component = new MDCTopAppBar(root, undefined, rippleFactory);
 
-  return {root, component, icon};
+  return {root, component, icon, fixture};
 }
 
 suite('MDCTopAppBar');
@@ -88,12 +97,21 @@ test('attachTo initializes and returns an MDCTopAppBar instance', () => {
   assert.isTrue(MDCTopAppBar.attachTo(getFixture()) instanceof MDCTopAppBar);
 });
 
-test('constructor instantiates icon ripples', () => {
-  const {root, component} = setupTest();
-  const selector = strings.ACTION_ITEM_SELECTOR + ',' + strings.NAVIGATION_ICON_SELECTOR;
-  const totalIcons = root.querySelectorAll(selector).length;
+test('constructor instantiates icon ripples for all icons', () => {
+  const rippleFactory = td.function();
+  // Including navigation icon.
+  const totalIcons = MENU_ICONS_COUNT + 1;
 
-  assert.isTrue(component.iconRipples_.length === totalIcons);
+  td.when(rippleFactory(td.matchers.anything()), {times: totalIcons}).thenReturn((el) => new FakeRipple(el));
+  setupTest(/** removeIcon */ false, rippleFactory);
+});
+
+test('constructor does not instantiate ripple for nav icon when not present', () => {
+  const rippleFactory = td.function();
+  const totalIcons = MENU_ICONS_COUNT;
+
+  td.when(rippleFactory(td.matchers.anything()), {times: totalIcons}).thenReturn((el) => new FakeRipple(el));
+  setupTest(/** removeIcon */ true, rippleFactory);
 });
 
 test('destroy destroys icon ripples', () => {
@@ -102,6 +120,17 @@ test('destroy destroys icon ripples', () => {
   component.iconRipples_.forEach((icon) => {
     td.verify(icon.destroy());
   });
+});
+
+test('#setScrollTarget deregisters and registers scroll handler on provided target', () => {
+  const {component} = setupTest();
+  const fakeTarget = {};
+  component.foundation_.destroyScrollHandler = td.func();
+  component.foundation_.initScrollHandler = td.func();
+  component.setScrollTarget(fakeTarget);
+  td.verify(component.foundation_.destroyScrollHandler(), {times: 1});
+  td.verify(component.foundation_.initScrollHandler(), {times: 1});
+  assert.equal(component.scrollTarget_, fakeTarget);
 });
 
 test('getDefaultFoundation returns the appropriate foundation for default', () => {
@@ -153,6 +182,13 @@ test('adapter#removeClass removes a class from the root element', () => {
   root.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
   assert.isFalse(root.classList.contains('foo'));
+});
+
+test('adapter#setStyle sets a style attribute on the root element', () => {
+  const {root, component} = setupTest();
+  assert.isFalse(root.style.getPropertyValue('top') === '1px');
+  component.getDefaultFoundation().adapter_.setStyle('top', '1px');
+  assert.isTrue(root.style.getPropertyValue('top') === '1px');
 });
 
 test('registerNavigationIconInteractionHandler does not add a handler to the nav icon if the nav icon is null', () => {
@@ -221,9 +257,44 @@ test('#adapter.deregisterScrollHandler removes a scroll handler from the window 
   }
 });
 
+test('#adapter.registerResizeHandler adds a resize handler to the window', () => {
+  const {component} = setupTest();
+  const handler = td.func('resizeHandler');
+  component.getDefaultFoundation().adapter_.registerResizeHandler(handler);
+
+  domEvents.emit(window, 'resize');
+  try {
+    td.verify(handler(td.matchers.anything()));
+  } finally {
+    // Just to be safe
+    window.removeEventListener('resize', handler);
+  }
+});
+
+test('#adapter.deregisterResizeHandler removes a resize handler from the window', () => {
+  const {component} = setupTest();
+  const handler = td.func('resizeHandler');
+  window.addEventListener('resize', handler);
+  component.getDefaultFoundation().adapter_.deregisterResizeHandler(handler);
+  domEvents.emit(window, 'resize');
+  try {
+    td.verify(handler(td.matchers.anything()), {times: 0});
+  } finally {
+    // Just to be safe
+    window.removeEventListener('resize', handler);
+  }
+});
+
 test('adapter#getViewportScrollY returns scroll distance', () => {
   const {component} = setupTest();
   assert.equal(component.getDefaultFoundation().adapter_.getViewportScrollY(), window.pageYOffset);
+});
+
+test('adapter#getViewportScrollY returns scroll distance when scrollTarget_ is not window', () => {
+  const {component, fixture} = setupTest();
+  const content = fixture.querySelector('.content');
+  component.scrollTarget_ = content;
+  assert.equal(component.getDefaultFoundation().adapter_.getViewportScrollY(), content.scrollTop);
 });
 
 test('adapter#getTotalActionItems returns the number of action items on the opposite side of the menu', () => {

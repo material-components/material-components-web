@@ -96,11 +96,10 @@ The following guidelines outline the general conventions for writing closurized 
 This section should contain most - if not all - of what you need to get up and running writing
 closure for our codebase. It also includes an [example component skeleton](#an-example-component-skeleton).
 
-### Making MDC Web aware of closure components (temporary)
+### Making MDC Web aware of closure components
 
-Until our [closure compatibility milestone](https://github.com/material-components/material-components-web/milestone/4) has been reached, please ensure that whenever a
-component is annotated, it's directory name under `packages/` is added to the `"closureWhitelist"`
-array within the top-level `package.json` file. This will allow our infrastructure to run build
+Please ensure that whenever a component is annotated, its directory name under `packages/` is added to the
+`"closureWhitelist"` array within the top-level `package.json` file. This will allow our infrastructure to run build
 tests against that package and its dependencies.
 
 ### Convention Guidelines

@@ -1,0 +1,8 @@
+{
+  "user_agent_aliases": [
+    "desktop_windows_chrome@latest",
+    "desktop_windows_firefox@latest",
+    "desktop_windows_edge@latest",
+    "desktop_windows_ie@11"
+  ]
+}

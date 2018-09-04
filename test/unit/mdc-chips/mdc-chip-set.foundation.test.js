@@ -1,17 +1,24 @@
 /**
- * Copyright 2017 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2017 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import {assert} from 'chai';
@@ -34,119 +41,133 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCChipSetFoundation, [
-    'hasClass', 'registerInteractionHandler', 'deregisterInteractionHandler',
+    'hasClass', 'removeChip', 'setSelected',
   ]);
 });
 
 const setupTest = () => {
   const mockAdapter = td.object(MDCChipSetFoundation.defaultAdapter);
   const foundation = new MDCChipSetFoundation(mockAdapter);
-  const chipA = td.object({
-    foundation: {
-      toggleSelected: () => {},
-    },
-  });
-  const chipB = td.object({
-    foundation: {
-      toggleSelected: () => {},
-    },
-  });
-  return {foundation, mockAdapter, chipA, chipB};
+  return {foundation, mockAdapter};
 };
 
-test('#init adds event listeners', () => {
+test('in choice chips, #select does nothing if chip is already selected', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.init();
-
-  td.verify(mockAdapter.registerInteractionHandler('MDCChip:interaction', td.matchers.isA(Function)));
-});
-
-test('#destroy removes event listeners', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.destroy();
-
-  td.verify(mockAdapter.deregisterInteractionHandler('MDCChip:interaction', td.matchers.isA(Function)));
-});
-
-test('on custom MDCChip:interaction event toggles selected state with single selection on choice chips', () => {
-  const {foundation, mockAdapter, chipA, chipB} = setupTest();
-  let chipInteractionHandler;
-  td.when(mockAdapter.registerInteractionHandler('MDCChip:interaction', td.matchers.isA(Function)))
-    .thenDo((evtType, handler) => {
-      chipInteractionHandler = handler;
-    });
   td.when(mockAdapter.hasClass(cssClasses.CHOICE)).thenReturn(true);
-
-  assert.equal(foundation.selectedChips_.length, 0);
-  foundation.init();
-
-  chipInteractionHandler({
-    detail: {
-      chip: chipA,
-    },
-  });
-  td.verify(chipA.foundation.toggleSelected());
-  assert.equal(foundation.selectedChips_.length, 1);
-
-  chipInteractionHandler({
-    detail: {
-      chip: chipB,
-    },
-  });
-  td.verify(chipA.foundation.toggleSelected());
-  td.verify(chipB.foundation.toggleSelected());
-  assert.equal(foundation.selectedChips_.length, 1);
-
-  chipInteractionHandler({
-    detail: {
-      chip: chipB,
-    },
-  });
-  td.verify(chipB.foundation.toggleSelected());
-  assert.equal(foundation.selectedChips_.length, 0);
+  foundation.select('chipA');
+  foundation.select('chipA');
+  td.verify(mockAdapter.setSelected('chipA', true), {times: 1});
+  assert.equal(foundation.getSelectedChipIds().length, 1);
 });
 
-test('on custom MDCChip:interaction event toggles selected state with multi-selection on filter chips', () => {
-  const {foundation, mockAdapter, chipA, chipB} = setupTest();
-  let chipInteractionHandler;
-  td.when(mockAdapter.registerInteractionHandler('MDCChip:interaction', td.matchers.isA(Function)))
-    .thenDo((evtType, handler) => {
-      chipInteractionHandler = handler;
-    });
+test('in choice chips, #select selects chip if no chips are selected', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.CHOICE)).thenReturn(true);
+  assert.equal(foundation.getSelectedChipIds().length, 0);
+
+  foundation.select('chipA');
+  td.verify(mockAdapter.setSelected('chipA', true));
+  assert.equal(foundation.getSelectedChipIds().length, 1);
+});
+
+test('in choice chips, #select deselects chip if another chip is selected', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.CHOICE)).thenReturn(true);
+  foundation.select('chipB');
+  assert.equal(foundation.getSelectedChipIds().length, 1);
+
+  foundation.select('chipA');
+  td.verify(mockAdapter.setSelected('chipB', false));
+  td.verify(mockAdapter.setSelected('chipA', true));
+  assert.equal(foundation.getSelectedChipIds().length, 1);
+});
+
+test('in filter chips, #select selects multiple chips', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.FILTER)).thenReturn(true);
+  assert.equal(foundation.getSelectedChipIds().length, 0);
+
+  foundation.select('chipA');
+  td.verify(mockAdapter.setSelected('chipA', true));
+  assert.equal(foundation.getSelectedChipIds().length, 1);
+
+  foundation.select('chipB');
+  td.verify(mockAdapter.setSelected('chipB', true));
+  assert.equal(foundation.getSelectedChipIds().length, 2);
+});
+
+test('in filter chips, #select does nothing if chip is already selected', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.CHOICE)).thenReturn(false);
+  td.when(mockAdapter.hasClass(cssClasses.FILTER)).thenReturn(true);
+  foundation.select('chipA');
+  foundation.select('chipA');
+  td.verify(mockAdapter.setSelected('chipA', true), {times: 1});
+  assert.equal(foundation.getSelectedChipIds().length, 1);
+});
+
+test('in filter chips, #deselect deselects selected chips', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.FILTER)).thenReturn(true);
+  foundation.select('chipA');
+  foundation.select('chipB');
+  assert.equal(foundation.getSelectedChipIds().length, 2);
+
+  foundation.deselect('chipB');
+  td.verify(mockAdapter.setSelected('chipB', false));
+  assert.equal(foundation.getSelectedChipIds().length, 1);
+
+  foundation.deselect('chipA');
+  td.verify(mockAdapter.setSelected('chipA', false));
+  assert.equal(foundation.getSelectedChipIds().length, 0);
+});
+
+test('#handleChipInteraction selects chip if the chip set is a filter chip set', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.CHOICE)).thenReturn(false);
   td.when(mockAdapter.hasClass(cssClasses.FILTER)).thenReturn(true);
 
-  assert.equal(foundation.selectedChips_.length, 0);
-  foundation.init();
-
-  chipInteractionHandler({
+  foundation.handleChipInteraction({
     detail: {
-      chip: chipA,
+      chipId: 'chipA',
     },
   });
-  td.verify(chipA.foundation.toggleSelected());
-  assert.equal(foundation.selectedChips_.length, 1);
+  td.verify(mockAdapter.setSelected('chipA', true));
+});
 
-  chipInteractionHandler({
+test('#handleChipInteraction selects chip if the chip set is a choice chip set', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.CHOICE)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.FILTER)).thenReturn(false);
+
+  foundation.handleChipInteraction({
     detail: {
-      chip: chipB,
+      chipId: 'chipA',
     },
   });
-  td.verify(chipB.foundation.toggleSelected());
-  assert.equal(foundation.selectedChips_.length, 2);
+  td.verify(mockAdapter.setSelected('chipA', true));
+});
 
-  chipInteractionHandler({
+test('#handleChipInteraction does nothing if the chip set is neither choice nor filter', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.CHOICE)).thenReturn(false);
+  td.when(mockAdapter.hasClass(cssClasses.FILTER)).thenReturn(false);
+
+  foundation.handleChipInteraction({
     detail: {
-      chip: chipB,
+      chipId: 'chipA',
     },
   });
-  td.verify(chipB.foundation.toggleSelected());
-  assert.equal(foundation.selectedChips_.length, 1);
+  td.verify(mockAdapter.setSelected('chipA', true), {times: 0});
+});
 
-  chipInteractionHandler({
+test('#handleChipRemoval removes chip', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.handleChipRemoval({
     detail: {
-      chip: chipA,
+      chipId: 'chipA',
     },
   });
-  td.verify(chipA.foundation.toggleSelected());
-  assert.equal(foundation.selectedChips_.length, 0);
+  td.verify(mockAdapter.removeChip('chipA'));
 });

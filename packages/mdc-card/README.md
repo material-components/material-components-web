@@ -11,23 +11,23 @@ path: /catalog/cards/
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
-     href="https://material-components-web.appspot.com/card.html">
+     href="https://material-components.github.io/material-components-web-catalog/#/component/card">
     <img src="{{ site.rootpath }}/images/mdc_web_screenshots/cards.png" width="328" alt="Cards screenshot">
   </a>
 </div>-->
 
 MDC Card is a component that implements the
-[Material Design card component](https://material.io/guidelines/components/cards.html), and makes it available to
+[Material Design card component](https://material.io/go/design-cards), and makes it available to
 developers as a set of CSS classes.
 
 ## Design & API Documentation
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/cards.html">Material Design guidelines: Cards</a>
+    <a href="https://material.io/go/design-cards">Material Design guidelines: Cards</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components-web.appspot.com/card.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/card">Demo</a>
   </li>
 </ul>
 
@@ -61,8 +61,8 @@ Fully-featured:
       <button class="mdc-button mdc-card__action mdc-card__action--button">Action 2</button>
     </div>
     <div class="mdc-card__action-icons">
-      <i class="material-icons mdc-card__action mdc-card__action--icon" tabindex="0" role="button" title="Share">share</i>
-      <i class="material-icons mdc-card__action mdc-card__action--icon" tabindex="0" role="button" title="More options">more_vert</i>
+      <button class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="Share">share</button>
+      <button class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="More options">more_vert</button>
     </div>
   </div>
 </div>
@@ -121,18 +121,15 @@ above, or with icon buttons, as below:
 
 ```html
 <div class="mdc-card__actions">
-  <i class="mdc-icon-toggle material-icons mdc-card__action mdc-card__action--icon"
-     tabindex="0"
-     role="button"
+  <button class="mdc-icon-button mdc-card__action mdc-card__action--icon"
      aria-pressed="false"
      aria-label="Add to favorites"
-     title="Add to favorites"
-     data-toggle-on='{"content": "favorite", "label": "Remove from favorites"}'
-     data-toggle-off='{"content": "favorite_border", "label": "Add to favorites"}'>
-    favorite_border
-  </i>
-  <i class="material-icons mdc-card__action mdc-card__action--icon" tabindex="0" role="button" title="Share">share</i>
-  <i class="material-icons mdc-card__action mdc-card__action--icon" tabindex="0" role="button" title="More options">more_vert</i>
+     title="Add to favorites">
+   <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite</i>
+   <i class="material-icons mdc-icon-button__icon">favorite_border</i>
+  </button>
+  <button class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="Share">share</button>
+  <button class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="More options">more_vert</button>
 </div>
 ```
 
@@ -160,10 +157,15 @@ elements:
     <button class="mdc-button mdc-card__action mdc-card__action--button">Bookmark</button>
   </div>
   <div class="mdc-card__action-icons">
-    <i class="material-icons mdc-card__action mdc-card__action--icon" tabindex="0" role="button" title="Share">share</i>
-    <i class="material-icons mdc-card__action mdc-card__action--icon" tabindex="0" role="button" title="More options">more_vert</i>
+   <button class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="Share">share</button>
+    <button class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="More options">more_vert</button>
   </div>
 </div>
+```
+
+### Styles
+```css
+@import "@material/card/mdc-card";
 ```
 
 ### CSS Classes
@@ -171,7 +173,7 @@ elements:
 CSS Class | Description
 --- | ---
 `mdc-card` | Mandatory, for the card element
-`mdc-card--stroked` | Removes the shadow and displays a hairline stroke instead
+`mdc-card--outlined` | Removes the shadow and displays a hairline outline instead
 `mdc-card__primary-action` | The main tappable area of the card. Typically contains most (or all) card content _except_ `mdc-card__actions`. Only applicable to cards that have a primary action that the main surface should trigger.
 `mdc-card__media` | Media area that displays a custom `background-image` with `background-size: cover`
 `mdc-card__media--square` | Automatically scales the media area's height to equal its width
@@ -190,6 +192,6 @@ CSS Class | Description
 Mixin | Description
 --- | ---
 `mdc-card-fill-color($color)` | Sets the fill color of a card
-`mdc-card-stroke($color, $thickness)` | Sets the color and thickness of a card's stroke (but does _not_ remove its shadow)
+`mdc-card-outline($color, $thickness)` | Sets the color and thickness of a card's outline (but does _not_ remove its shadow)
 `mdc-card-corner-radius($radius)` | Sets the corner radius of a card
 `mdc-card-media-aspect-ratio($x, $y)` | Maintains the given aspect ratio on a `mdc-card__media` subelement by dynamically scaling its height relative to its width

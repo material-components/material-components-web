@@ -1,17 +1,24 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2016 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import {assert} from 'chai';
@@ -57,6 +64,8 @@ const setupTest = () => {
   });
   const icon = td.object({
     setDisabled: () => {},
+    setAriaLabel: () => {},
+    setContent: () => {},
     registerInteractionHandler: () => {},
     deregisterInteractionHandler: () => {},
     handleInteraction: () => {},
@@ -140,6 +149,17 @@ test('#setValue valid and invalid input', () => {
   td.verify(mockAdapter.floatLabel(true));
 });
 
+test('#setValue with invalid status and empty value does not shake the label', () => {
+  const {foundation, mockAdapter, helperText} =
+    setupValueTest('', /* isValid */ false, undefined, true);
+
+  foundation.setValue('');
+  td.verify(mockAdapter.addClass(cssClasses.INVALID));
+  td.verify(helperText.setValidity(false));
+  td.verify(mockAdapter.shakeLabel(false));
+  td.verify(mockAdapter.floatLabel(false));
+});
+
 test('#setValue does not affect focused state', () => {
   const {foundation, mockAdapter} = setupValueTest('');
   foundation.setValue('');
@@ -164,8 +184,9 @@ test('#isValid for native validation', () => {
   assert.isNotOk(foundation.isValid());
 });
 
-test('#setValid overrides native validation', () => {
+test('#setValid overrides native validation when useNativeValidation set to false', () => {
   const {foundation, nativeInput} = setupValueTest('', /* isValid */ false);
+  foundation.setUseNativeValidation(false);
   foundation.setValid(true);
   assert.isOk(foundation.isValid());
 
@@ -278,12 +299,6 @@ test('#setValid removes mdc-textfied--invalid when set to true', () => {
   td.verify(mockAdapter.removeClass(cssClasses.INVALID));
 });
 
-test('#init adds mdc-text-field--upgraded class', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.init();
-  td.verify(mockAdapter.addClass(cssClasses.UPGRADED));
-});
-
 test('#init focuses on input if adapter.isFocused is true', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.isFocused()).thenReturn(true);
@@ -371,6 +386,18 @@ test('#setHelperTextContent sets the content of the helper text element', () => 
   const {foundation, helperText} = setupTest();
   foundation.setHelperTextContent('foo');
   td.verify(helperText.setContent('foo'));
+});
+
+test('#setIconAriaLabel sets the aria-label of the icon element', () => {
+  const {foundation, icon} = setupTest();
+  foundation.setIconAriaLabel('foo');
+  td.verify(icon.setAriaLabel('foo'));
+});
+
+test('#setIconContent sets the content of the icon element', () => {
+  const {foundation, icon} = setupTest();
+  foundation.setIconContent('foo');
+  td.verify(icon.setContent('foo'));
 });
 
 test('#notchOutline updates the SVG path of the outline element', () => {
@@ -608,14 +635,14 @@ test('does not style label on blur if input has a value and hasLabel is false', 
   td.verify(mockAdapter.floatLabel(td.matchers.anything()), {times: 0});
 });
 
-test('on blur removes mdc-text-field--invalid if custom validity is false and' +
+test('on blur removes mdc-text-field--invalid if useNativeValidation is true and' +
      'input.checkValidity() returns true', () => {
   const {mockAdapter, blur} = setupBlurTest();
   blur();
   td.verify(mockAdapter.removeClass(cssClasses.INVALID));
 });
 
-test('on blur adds mdc-textfied--invalid if custom validity is false and' +
+test('on blur adds mdc-textfied--invalid if useNativeValidation is true and' +
      'input.checkValidity() returns false', () => {
   const {mockAdapter, blur, nativeInput} = setupBlurTest();
   nativeInput.validity.valid = false;
@@ -623,9 +650,10 @@ test('on blur adds mdc-textfied--invalid if custom validity is false and' +
   td.verify(mockAdapter.addClass(cssClasses.INVALID));
 });
 
-test('on blur does not remove mdc-text-field--invalid if custom validity is true and' +
+test('on blur does not remove mdc-text-field--invalid if useNativeValidation is false and' +
      'input.checkValidity() returns true', () => {
   const {foundation, mockAdapter, blur} = setupBlurTest();
+  foundation.setUseNativeValidation(false);
   foundation.setValid(false);
   blur();
   td.verify(mockAdapter.removeClass(cssClasses.INVALID), {times: 0});
@@ -745,7 +773,7 @@ test('on validation attribute change calls styleValidity_', () => {
     .thenDo((handler) => attributeChange = handler);
   foundation.init();
 
-  attributeChange([{attributeName: 'required'}]);
+  attributeChange(['required']);
   td.verify(mockAdapter.removeClass(cssClasses.INVALID));
   td.verify(helperText.setValidity(true));
 
@@ -770,4 +798,25 @@ test('should not call styleValidity_ on non-whitelisted attribute change', () =>
   td.verify(mockAdapter.removeClass(cssClasses.FOCUSED), {times: 0});
   td.verify(mockAdapter.addClass(cssClasses.DISABLED), {times: 0});
   td.verify(mockAdapter.removeClass(cssClasses.DISABLED), {times: 0});
+});
+
+test('label floats on invalid input even if value is empty', () => {
+  const {mockAdapter} = setupValueTest('', false, true, true);
+  td.verify(mockAdapter.floatLabel(true));
+});
+
+test('label floats when type is date even if value is empty', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasLabel()).thenReturn(true);
+  const nativeInput = {
+    type: 'date',
+    value: '',
+    validity: {
+      valid: true,
+      badInput: false,
+    },
+  };
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+  foundation.init();
+  td.verify(mockAdapter.floatLabel(true));
 });

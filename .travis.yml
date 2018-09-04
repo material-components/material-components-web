@@ -1,30 +1,72 @@
 language: node_js
+
+# Opt-in to Travis's container infrastructure. This potentially makes builds less flaky, and easier to debug.
+# - https://docs.travis-ci.com/user/reference/trusty/#container-based-with-sudo-false
+# - https://docs.travis-ci.com/user/common-build-problems/#troubleshooting-locally-in-a-docker-image
+# - https://blog.travis-ci.com/2014-12-17-faster-builds-with-container-based-infrastructure/#what-benefits-does-this-new-infrastructure-have
+sudo: false
+
 branches:
+  # Only run Travis on:
+  #   A) Commits made directly to the `master` branch (i.e., merged PRs); and
+  #   B) PRs that will eventually be merged into `master`.
+  # This prevents excessive resource usage and CI slowness.
   only:
     - master
+
+before_install:
+  # Source the scripts to export their env vars. See https://superuser.com/a/176788/62792
+  - source scripts/travis-env-vars.sh
+
+install:
+  - if has_testable_files; then npm install; fi
+  # Noisy output, but useful for debugging npm package dependency version issues:
+  #- npm ls
+
 matrix:
   include:
-    - node_js: 8
-      env:
-        - TEST_SUITE=build
-      script: npm run build
-    - node_js: 8
-      env:
-        - TEST_SUITE=lint
-      script: npm run lint
-    - node_js: 8
-      env:
-        - TEST_SUITE=unit
-        - SAUCE_USERNAME=material-sauce
-      addons:
-        sauce_connect: true
-        jwt:
-          secure: PPzwed24vgtPpksTvbg+c2N3oZkHV8W5L7iYpON7HiqX1b+l5p+m0yyrHfBo+Ynkxvt/pZpboyUIVHStS3teZCW5VDtz0hBSG5lMcTurBDiHUxe6zJqjkdJQH+TKzpQi40m73x/ROhnOiM9nYwzSCJQ0tGrrPslz0KqPcZTFrrHQq2tnJwW2JpriB5tHRYInrMx8e8RWSNjhf2zwhmY8V3G08geFUf4OejT5vqFPiSqqPpg05wt2S4V3EF2o+M9/tFpk8acFDpEcg1knJs1UIo3FofrEXmckUSq6ah1/bF5DTNtWcoIfNuXKoG4nrA3EKAOGHKmMw2/UPOkdotcDSdYUhUiI/fMNisyWwKSk6x820ABMpNPh9bApwEEh1KKyt3cnMT4ubylPNs99kJpe88a3RXYyDRm7updSc8cnmGYtNunR/+7nuP+70dde9lY9jBfwZHvuCNULjBXd85TkB33TnRrz0s0rWn1d45BzPuguO+b//zsDGN0jj9Lzii+Iz4AxzV7TiaU18kz9wChxKScQV0gN6L3gD/L2luxCcv4xgF6M1rhjhRCskzz6wBHu9O6EBeaG3wZvwHPRXY/2dCGZU1dj48+3L2medBmbvOR91oWubcI8WcS9CtcyLLa+zvaqY5vTlzHqf4bdn0dA8CTt27/lN4UyhVHBMcgwe5s=
-      script: npm run test:unit && npm run posttest
-      after_success:
-        - codecov
-    - node_js: 8
-      env:
-        - TEST_SUITE=closure
-        - CLOSURE=1
-      script: npm run test:closure
+
+  - node_js: 8
+    env:
+      - TEST_SUITE=lint
+    script:
+      - if has_testable_files; then npm run lint; else log_untestable_files; fi
+
+  - node_js: 8
+    env:
+      - TEST_SUITE=unit
+    addons:
+      sauce_connect: true
+    script:
+      - if has_testable_files; then npm run test:unit && npm run posttest; else log_untestable_files; fi
+    after_success:
+      - codecov
+
+  - node_js: 8
+    env:
+      - TEST_SUITE=closure
+      - CLOSURE=1
+    script:
+      - if has_testable_files; then npm run test:closure; else log_untestable_files; fi
+
+  - node_js: 8
+    env:
+      - TEST_SUITE=site-generator
+    script:
+      - if has_testable_files; then npm run test:site; else log_untestable_files; fi
+
+  - node_js: 8
+    env:
+      - TEST_SUITE=screenshot
+    git:
+      depth: 200
+    before_install: # Override global settings
+      # Source the scripts to export their env vars. See https://superuser.com/a/176788/62792
+      - source scripts/travis-env-vars.sh
+      - source test/screenshot/infra/commands/travis.sh
+    install: # Override global settings
+      - npm install
+      # Noisy output, but useful for debugging npm package dependency version issues:
+      #- npm ls
+    script:
+      - npm run screenshot:test

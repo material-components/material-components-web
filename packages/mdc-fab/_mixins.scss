@@ -1,16 +1,22 @@
-// Copyright 2016 Google Inc. All Rights Reserved.
+// Copyright 2016 Google Inc.
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions://
 //
-//      http://www.apache.org/licenses/LICENSE-2.0
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.//
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 
 @import "@material/animation/functions";
 @import "@material/elevation/mixins";
@@ -19,6 +25,8 @@
 @import "@material/ripple/variables";
 @import "@material/theme/functions";
 @import "@material/theme/mixins";
+@import "@material/rtl/mixins";
+@import "./variables";
 
 @mixin mdc-fab-accessible($container-color) {
   $fill-tone: mdc-theme-tone($container-color);
@@ -38,12 +46,49 @@
   @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
 }
 
+@mixin mdc-fab-icon-size($width, $height: $width) {
+  .mdc-fab__icon {
+    width: $width;
+    height: $height;
+    font-size: $height;
+  }
+}
+
 @mixin mdc-fab-ink-color($color) {
   @include mdc-theme-prop(color, $color);
 }
 
+@mixin mdc-fab-extended-fluid {
+  width: 100%;
+}
+
+@mixin mdc-fab-extended-padding($icon-padding, $label-padding) {
+  @include mdc-fab-extended-label-padding($label-padding);
+
+  // Offsets the outer label padding by deducting it from icon padding.
+  .mdc-fab__icon {
+    @include mdc-rtl-reflexive-property(
+      margin,
+      $icon-padding - $label-padding,
+      $icon-padding);
+  }
+
+  // For Extended FAB with text label followed by icon.
+  .mdc-fab__label + .mdc-fab__icon {
+    @include mdc-rtl-reflexive-property(
+      margin,
+      $icon-padding,
+      $icon-padding - $label-padding);
+  }
+}
+
+@mixin mdc-fab-extended-label-padding($label-padding) {
+  padding: 0 $label-padding;
+}
+
 $mdc-fab-icon-enter-delay_: 90ms;
 $mdc-fab-icon-enter-duration_: 180ms;
+$mdc-fab-extended-height_: 48px;
 
 @mixin mdc-fab-base_ {
   @include mdc-ripple-surface;
@@ -52,6 +97,7 @@ $mdc-fab-icon-enter-duration_: 180ms;
 
   display: inline-flex;
   position: relative;
+  align-items: center;
   justify-content: center;
   box-sizing: border-box;
   width: 56px;
@@ -113,13 +159,35 @@ $mdc-fab-icon-enter-duration_: 180ms;
   height: 40px;
 }
 
+@mixin mdc-fab--extended_ {
+  @include mdc-typography(button);
+  @include mdc-fab-extended-padding(
+    $mdc-fab-extended-icon-padding,
+    $mdc-fab-extended-label-padding);
+
+  width: auto;
+  max-width: 100%;
+  height: $mdc-fab-extended-height_;
+  border-radius: $mdc-fab-extended-height_ / 2;
+}
+
 @mixin mdc-fab__icon_ {
-  display: flex;
+  transition: mdc-animation-enter(transform, $mdc-fab-icon-enter-duration_, $mdc-fab-icon-enter-delay_);
+  fill: currentColor;
+  will-change: transform;
+}
+
+@mixin mdc-fab__label_ {
+  justify-content: flex-start;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+@mixin mdc-fab__icon-overrides_ {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  transition: mdc-animation-enter(transform, $mdc-fab-icon-enter-duration_, $mdc-fab-icon-enter-delay_);
-  will-change: transform;
 }
 
 @mixin mdc-fab--exited_ {

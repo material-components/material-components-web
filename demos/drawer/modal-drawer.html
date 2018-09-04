@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2018 Google Inc.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  THE SOFTWARE.
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Modal Drawer - Material Components Catalog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
+    <link rel="stylesheet" href="/assets/drawer/drawer.css">
+    <link rel="stylesheet" href="/assets/radio.css">
+    <script src="/ready.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  </head>
+  <body class="mdc-typography demo-body">
+    <aside id="demo-drawer" class="mdc-drawer mdc-drawer--modal demo-drawer">
+      <div class="mdc-drawer__header">
+        <h3 class="mdc-drawer__title">Mail</h3>
+        <h6 class="mdc-drawer__subtitle">email@material.io</h6>
+      </div>
+      <div class="mdc-drawer__content">
+        <nav class="mdc-list">
+          <a class="mdc-list-item mdc-list-item--activated" href="#" tabindex="0">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
+            <span class="mdc-list-item__text">
+              Inbox
+            </span>
+          </a>
+          <a class="mdc-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>
+            <span class="mdc-list-item__text">
+              Star
+            </span>
+          </a>
+          <a class="mdc-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
+            <span class="mdc-list-item__text">
+              Sent Mail
+            </span>
+          </a>
+          <a class="mdc-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
+            <span class="mdc-list-item__text">
+              Drafts
+            </span>
+          </a>
+
+          <hr class="mdc-list-divider">
+          <h6 class="mdc-list-group__subheader">Labels</h6>
+          <a class="mdc-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+            <span class="mdc-list-item__text">
+              Family
+            </span>
+          </a>
+          <a class="mdc-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+            <span class="mdc-list-item__text">
+             Friends
+            </span>
+          </a>
+          <a class="mdc-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
+            <span class="mdc-list-item__text">
+             Work
+            </span>
+          </a>
+
+          <hr class="mdc-list-divider">
+          <a class="mdc-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>
+            <span class="mdc-list-item__text">
+              Settings
+            </span>
+          </a>
+          <a class="mdc-list-item" href="#">
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">announcement</i>
+            <span class="mdc-list-item__text">
+              Help & feedback
+            </span>
+          </a>
+        </nav>
+      </div>
+    </aside>
+    <div class="mdc-drawer-scrim"></div>
+    <div class="demo-content" id="demo-content">
+      <header class="mdc-top-app-bar" id="app-bar">
+        <div class="mdc-top-app-bar__row">
+          <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+            <a href="#" class="demo-menu material-icons mdc-top-app-bar__navigation-icon">menu</a>
+            <span class="mdc-top-app-bar__title">Modal Drawer</span>
+          </section>
+          <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+            <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Download" alt="Download">file_download</a>
+          </section>
+        </div>
+      </header>
+
+      <main class="demo-main" id="demo-main">
+        <div class="mdc-top-app-bar--fixed-adjust"></div>
+        <h1 class="mdc-typography--headline4">Modal Drawer</h1>
+        <p class="mdc-typography--body1">It sits to the left of this content. Currently active destination: <strong class="demo-selected-destination">Inbox</strong></p>
+
+        <div id="demo-radio-buttons">
+          <div class="mdc-form-field">
+            <div class="mdc-radio">
+              <input class="mdc-radio__native-control" type="radio" id="theme-radio-default" name="theme" checked>
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label for="theme-radio-default">Default</label>
+          </div>
+          <div class="mdc-form-field">
+            <div class="mdc-radio">
+              <input class="mdc-radio__native-control" type="radio" id="theme-radio-custom" name="theme">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label for="theme-radio-custom">Custom Theme</label>
+          </div>
+          <div class="mdc-form-field">
+            <div class="mdc-radio">
+              <input class="mdc-radio__native-control" type="radio" id="theme-radio-accessible" name="theme">
+              <div class="mdc-radio__background">
+                <div class="mdc-radio__outer-circle"></div>
+                <div class="mdc-radio__inner-circle"></div>
+              </div>
+            </div>
+            <label for="theme-radio-accessible">Accessible Theme</label>
+          </div>
+        </div>
+
+        <div class="extra-content-wrapper">
+          <button type="button" class="mdc-button mdc-button--outlined mdc-button--dense demo-toolbar-example-heading__rtl-toggle-button">Toggle RTL</button>
+        </div>
+        <div class="extra-content-wrapper">
+          <button id="toggle-wide" class="mdc-button mdc-button--outlined mdc-button--dense">Toggle extra-wide content</button>
+          <div id="extra-wide-content" class="mdc-elevation--z2">&nbsp;</div>
+        </div>
+        <div class="extra-content-wrapper">
+          <button id="toggle-tall" class="mdc-button mdc-button--outlined mdc-button--dense">Toggle extra-tall content</button>
+          <div id="extra-tall-content" class="mdc-elevation--z2">&nbsp;</div>
+        </div>
+      </main>
+    </div>
+
+    <script src="/assets/material-components-web.js" async></script>
+    <script>
+      demoReady(function() {
+        var extraWide = document.querySelector('#extra-wide-content');
+        extraWide.style.display = 'none';
+        document.querySelector('#toggle-wide').addEventListener('click', function() {
+          extraWide.style.display = extraWide.style.display ? '' : 'none';
+        });
+        var extraTall = document.querySelector('#extra-tall-content');
+        extraTall.style.display = 'none';
+        document.querySelector('#toggle-tall').addEventListener('click', function() {
+          extraTall.style.display = extraTall.style.display ? '' : 'none';
+        });
+
+        var drawerEl = document.getElementById('demo-drawer');
+        var drawer = new mdc.drawer.MDCDrawer(drawerEl);
+        var radioEl = document.querySelector('#demo-radio-buttons');
+        radioEl.addEventListener('change', function(e) {
+          drawerEl.classList.remove('demo-drawer--custom');
+          drawerEl.classList.remove('demo-drawer--accessible');
+
+          if(e.target.id === 'theme-radio-custom') {
+            drawerEl.classList.add('demo-drawer--custom');
+          } else if(e.target.id === 'theme-radio-accessible') {
+            drawerEl.classList.add('demo-drawer--accessible');
+          }
+        });
+
+        var rtlToggleBtn = document.querySelector('.demo-toolbar-example-heading__rtl-toggle-button');
+        rtlToggleBtn.addEventListener('click', function(event) {
+          document.body.setAttribute('dir', document.body.getAttribute('dir') === 'rtl' ? 'ltr' : 'rtl');
+        });
+
+        var topAppBarEl = document.getElementById('app-bar');
+        var topAppBar = new mdc.topAppBar.MDCTopAppBar(topAppBarEl);
+        var mainEl = document.querySelector('.demo-main');
+        topAppBar.setScrollTarget(mainEl);
+        topAppBar.listen('MDCTopAppBar:nav', function() {
+          drawer.open = !drawer.open;
+        });
+
+        var listEl = drawerEl.querySelector('.mdc-list');
+        var selectedDestinationEl = document.querySelector('.demo-selected-destination');
+        var mainEl = document.querySelector('.demo-main');
+        listEl.addEventListener('click', function(event) {
+          drawer.open = false;
+          selectedDestinationEl.textContent = event.target.lastElementChild.textContent;
+        });
+        document.body.addEventListener('MDCDrawer:closed', function() {
+          mainEl.querySelector('input').focus();
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,123 @@
+//
+// Copyright 2018 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions://
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.//
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+@import "../../../../packages/mdc-typography/mixins";
+
+.test-typography {
+  display: inline-block;
+  //outline: 1px solid black;
+}
+
+.test-cell--typography-headline1 {
+  width: 421px;
+  height: 221px;
+}
+
+.test-cell--typography-headline2 {
+  width: 281px;
+  height: 151px;
+}
+
+.test-cell--typography-headline3 {
+  width: 241px;
+  height: 131px;
+}
+
+.test-cell--typography-headline4 {
+  width: 181px;
+  height: 111px;
+}
+
+.test-cell--typography-headline5 {
+  width: 141px;
+  height: 101px;
+}
+
+.test-cell--typography-headline6 {
+  width: 121px;
+  height: 101px;
+}
+
+.test-cell--typography-subtitle1 {
+  width: 101px;
+  height: 91px;
+}
+
+.test-cell--typography-subtitle2 {
+  width: 91px;
+  height: 81px;
+}
+
+.test-cell--typography-body1 {
+  width: 81px;
+  height: 81px;
+}
+
+.test-cell--typography-body2 {
+  width: 71px;
+  height: 71px;
+}
+
+.test-cell--typography-caption {
+  width: 81px;
+  height: 71px;
+}
+
+.test-cell--typography-button {
+  width: 91px;
+  height: 101px;
+}
+
+.test-cell--typography-overline {
+  width: 101px;
+  height: 101px;
+}
+
+.test-cell--typography-overflow-ellipsis {
+  width: 341px;
+  height: 81px;
+}
+
+.test-cell--typography-baseline-text {
+  width: 341px;
+  height: 141px;
+}
+
+.custom-typography--overflow-ellipsis {
+  @include mdc-typography-overflow-ellipsis;
+
+  width: 7em;
+}
+
+.custom-typography--baseline-1 {
+  @include mdc-typography-baseline-top(34px);
+  @include mdc-typography-baseline-bottom(22px);
+}
+
+.custom-typography--baseline-2 {
+  @include mdc-typography-baseline-top(22px);
+  @include mdc-typography-baseline-bottom(28px);
+}
+
+.custom-typography--baseline-3 {
+  @include mdc-typography-baseline-top(28px);
+}

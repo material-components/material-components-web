@@ -52,7 +52,7 @@ and `disconnectedCallback` for destruction.
 
 ### The Advanced Approach: Using foundations and adapters
 
-Many modern front-end libraries/frameworks, such as react and angular2, wind up targeting more than
+Many modern front-end libraries/frameworks, such as react and angular, wind up targeting more than
 just a web browser. For these frameworks - and for some highly advanced application architectures -
 a more robust approach is required. We provide foundations and adapters to accommodate this use
 case.

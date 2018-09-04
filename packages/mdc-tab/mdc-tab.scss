@@ -1,39 +1,44 @@
 //
-// Copyright 2018 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc.
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions://
 //
-//      http://www.apache.org/licenses/LICENSE-2.0
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.//
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 //
 
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
 @import "@material/typography/mixins";
+@import "@material/tab-indicator/mixins";
 @import "./mixins";
 @import "./variables";
 
 .mdc-tab {
-  @include mdc-ripple-surface;
-  @include mdc-ripple-radius-bounded;
-  @include mdc-states(primary);
-  @include mdc-tab-text-label-color($mdc-tab-baseline-color);
-  @include mdc-tab-icon-color($mdc-tab-baseline-color);
+  @include mdc-tab-text-label-color(on-surface);
+  @include mdc-tab-icon-color(on-surface);
+  @include mdc-tab-indicator-surface;
+  @include mdc-typography(button);
 
   display: flex;
-  position: relative;
   flex: 1 0 auto;
   justify-content: center;
   box-sizing: border-box;
-  height: 48px;
+  height: $mdc-tab-height;
   padding: 0 24px;
   border: none;
   outline: none;
@@ -44,56 +49,87 @@
   white-space: nowrap;
   cursor: pointer;
   -webkit-appearance: none;
-  overflow: hidden;
   z-index: 1;
+}
+
+.mdc-tab--min-width {
+  flex: 0 1 auto;
+}
+
+.mdc-tab__ripple {
+  @include mdc-ripple-surface;
+  @include mdc-ripple-radius-bounded;
+  @include mdc-states(primary);
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 .mdc-tab__content {
+  @include mdc-tab-indicator-surface;
+
   display: flex;
-  position: relative;
+  align-items: center;
   justify-content: center;
   height: inherit;
-  z-index: 1;
+  pointer-events: none;
+}
+
+.mdc-tab__text-label,
+.mdc-tab__icon {
+  transition: 150ms color linear, 150ms opacity linear;
+  z-index: 2;
 }
 
 .mdc-tab__text-label {
-  @include mdc-typography-base;
-
   display: inline-block;
-  padding: 16px 0 20px;
-  font-size: 14px;
-  font-weight: 500;
+  opacity: $mdc-tab-text-label-opacity;
+  // Setting line-height here overrides the line-height from the typography
+  // mixin above. The line-height needs to be overridden so that the spacing
+  // between the text label and the icon as well as the text label and the
+  // bottom of the tab remain the same.
+  line-height: 1;
 }
 
 .mdc-tab__icon {
-  width: 24px;
-  height: 24px;
-  padding: 12px 0;
+  width: $mdc-tab-icon-size;
+  height: $mdc-tab-icon-size;
+  opacity: $mdc-tab-icon-opacity;
 }
 
-.mdc-tab__icon + .mdc-tab__text-label {
-  @include mdc-rtl-reflexive-box(padding, left, 8px);
+.mdc-tab--stacked {
+  height: $mdc-tab-stacked-height;
 }
 
-/**
- * The [de]activation animation affects color for text label and icon
- */
-.mdc-tab--animating-activate .mdc-tab__text-label,
-.mdc-tab--animating-activate .mdc-tab__icon,
-.mdc-tab--animating-deactivate .mdc-tab__text-label,
-.mdc-tab--animating-deactivate .mdc-tab__icon {
-  transition: 150ms color linear;
+.mdc-tab--stacked .mdc-tab__content {
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
 }
 
-/**
- * The activation animation has a delay of 100ms
- */
-.mdc-tab--animating-activate .mdc-tab__text-label,
-.mdc-tab--animating-activate .mdc-tab__icon {
-  transition-delay: 100ms;
+.mdc-tab--stacked .mdc-tab__icon {
+  padding-top: 12px;
+}
+
+.mdc-tab--stacked .mdc-tab__text-label {
+  padding-bottom: 16px;
 }
 
 .mdc-tab--active {
   @include mdc-tab-text-label-color(primary);
   @include mdc-tab-icon-color(primary);
+
+  .mdc-tab__text-label,
+  .mdc-tab__icon {
+    transition-delay: 100ms;
+    opacity: 1;
+  }
+}
+
+.mdc-tab:not(.mdc-tab--stacked) .mdc-tab__icon + .mdc-tab__text-label {
+  @include mdc-rtl-reflexive-box(padding, left, 8px);
 }

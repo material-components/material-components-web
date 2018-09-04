@@ -1,18 +1,24 @@
 /**
  * @license
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2016 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import MDCComponent from '@material/base/component';
@@ -93,7 +99,7 @@ class MDCTextField extends MDCComponent {
     if (labelElement) {
       this.label_ = labelFactory(labelElement);
     }
-    const lineRippleElement = this.root_.querySelector(strings.BOTTOM_LINE_SELECTOR);
+    const lineRippleElement = this.root_.querySelector(strings.LINE_RIPPLE_SELECTOR);
     if (lineRippleElement) {
       this.lineRipple_ = lineRippleFactory(lineRippleElement);
     }
@@ -113,7 +119,7 @@ class MDCTextField extends MDCComponent {
     }
 
     this.ripple = null;
-    if (this.root_.classList.contains(cssClasses.BOX)) {
+    if (!this.root_.classList.contains(cssClasses.TEXTAREA) && !this.root_.classList.contains(cssClasses.OUTLINED)) {
       const MATCHES = getMatchesProperty(HTMLElement.prototype);
       const adapter =
         Object.assign(MDCRipple.createAdapter(/** @type {!RippleCapableSurface} */ (this)), {
@@ -310,15 +316,35 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
-   * Recomputes the outline SVG path for the outline element, and recomputes
-   * all dimensions and positions for the ripple element.
+   * Sets the aria label of the icon.
+   * @param {string} label
+   */
+  set iconAriaLabel(label) {
+    this.foundation_.setIconAriaLabel(label);
+  }
+
+  /**
+   * Sets the text content of the icon.
+   * @param {string} content
+   */
+  set iconContent(content) {
+    this.foundation_.setIconContent(content);
+  }
+
+  /**
+   * Enables or disables the use of native validation. Use this for custom validation.
+   * @param {boolean} useNativeValidation Set this to false to ignore native input validation.
+   */
+  set useNativeValidation(useNativeValidation) {
+    this.foundation_.setUseNativeValidation(useNativeValidation);
+  }
+
+  /**
+   * Recomputes the outline SVG path for the outline element.
    */
   layout() {
     const openNotch = this.foundation_.shouldFloat;
     this.foundation_.notchOutline(openNotch);
-    if (this.ripple) {
-      this.ripple.layout();
-    }
   }
 
   /**
@@ -333,7 +359,8 @@ class MDCTextField extends MDCComponent {
         registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
         deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
         registerValidationAttributeChangeHandler: (handler) => {
-          const observer = new MutationObserver(handler);
+          const getAttributesList = (mutationsList) => mutationsList.map((mutation) => mutation.attributeName);
+          const observer = new MutationObserver((mutationsList) => handler(getAttributesList(mutationsList)));
           const targetNode = this.root_.querySelector(strings.INPUT_SELECTOR);
           const config = {attributes: true};
           observer.observe(targetNode, config);
@@ -373,7 +400,7 @@ class MDCTextField extends MDCComponent {
    * @return {!{
    *   activateLineRipple: function(): undefined,
    *   deactivateLineRipple: function(): undefined,
-   *   setLineRippleTransformOrigin: function(!number): undefined,
+   *   setLineRippleTransformOrigin: function(number): undefined,
    * }}
    */
   getLineRippleAdapterMethods_() {

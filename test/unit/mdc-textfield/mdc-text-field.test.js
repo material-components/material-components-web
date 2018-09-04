@@ -1,17 +1,24 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2016 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import bel from 'bel';
@@ -30,7 +37,7 @@ const {cssClasses} = MDCTextFieldFoundation;
 
 const getFixture = () => bel`
   <div class="mdc-text-field">
-    <i class="material-icons mdc-text-field__icon" tabindex="0">event</i>
+    <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
     <input type="text" class="mdc-text-field__input" id="my-text-field">
     <label class="mdc-floating-label" for="my-text-field">My Label</label>
     <div class="mdc-line-ripple"></div>
@@ -46,7 +53,6 @@ test('attachTo returns an MDCTextField instance', () => {
 class FakeRipple {
   constructor(root) {
     this.root = root;
-    this.layout = td.func('.layout');
     this.destroy = td.func('.destroy');
   }
 }
@@ -87,16 +93,23 @@ class FakeOutline {
   }
 }
 
-test('#constructor when given a `mdc-text-field--box` element instantiates a ripple on the root element', () => {
+test('#constructor instantiates a ripple on the root element by default', () => {
   const root = getFixture();
-  root.classList.add(cssClasses.BOX);
   const component = new MDCTextField(root, undefined, (el) => new FakeRipple(el));
   assert.equal(component.ripple.root, root);
 });
 
-test('#constructor sets the ripple property to `null` when not given a `mdc-text-field--box` nor ' +
-     'a `mdc-text-field--outlined` subelement', () => {
-  const component = new MDCTextField(getFixture());
+test('#constructor does not instantiate a ripple when ${cssClasses.OUTLINED} class is present', () => {
+  const root = getFixture();
+  root.classList.add(cssClasses.OUTLINED);
+  const component = new MDCTextField(root);
+  assert.isNull(component.ripple);
+});
+
+test('#constructor does not instantiate a ripple when ${cssClasses.TEXTAREA} class is present', () => {
+  const root = getFixture();
+  root.classList.add(cssClasses.TEXTAREA);
+  const component = new MDCTextField(root);
   assert.isNull(component.ripple);
 });
 
@@ -267,12 +280,18 @@ test('set helperTextContent has no effect when no helper text element is present
   });
 });
 
-test('#layout recomputes all dimensions and positions for the ripple element', () => {
-  const root = getFixture();
-  root.classList.add(cssClasses.BOX);
-  const component = new MDCTextField(root, undefined, (el) => new FakeRipple(el));
-  component.layout();
-  td.verify(component.ripple.layout());
+test('set iconAriaLabel has no effect when no icon element is present', () => {
+  const {component} = setupTest();
+  assert.doesNotThrow(() => {
+    component.iconAriaLabel = 'foo';
+  });
+});
+
+test('set iconContent has no effect when no icon element is present', () => {
+  const {component} = setupTest();
+  assert.doesNotThrow(() => {
+    component.iconContent = 'foo';
+  });
 });
 
 test('#adapter.addClass adds a class to the root element', () => {
@@ -328,7 +347,7 @@ test('#adapter.deregisterTextFieldInteractionHandler removes an event handler fo
 test('#adapter.registerValidationAttributeChangeHandler creates a working mutation observer', (done) => {
   const {root, component} = setupTest();
   const handler = td.func('ValidationAttributeChangeHandler');
-  td.when(handler(td.matchers.anything(), td.matchers.anything())).thenDo(() => {
+  td.when(handler(td.matchers.contains('required'))).thenDo(() => {
     done();
   });
 
@@ -415,6 +434,12 @@ test('get/set required', () => {
   assert.isTrue(component.required);
   component.required = false;
   assert.isFalse(component.required);
+});
+
+test('set useNativeValidation', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.useNativeValidation = true;
+  td.verify(mockFoundation.setUseNativeValidation(true));
 });
 
 test('get/set pattern', () => {

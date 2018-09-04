@@ -1,16 +1,24 @@
 <!--docs:
-title: "Tabs"
+title: "Tabs (Deprecated)"
 layout: detail
 section: components
 excerpt: "A tabbed navigation component."
 iconId: tabs
-path: /catalog/tabs/
+path: /catalog/tabs/legacy/
 -->
+
+## Important - Deprecation Notice
+
+The `mdc-tabs` package is deprecated and no longer maintained, and is no longer included in the all-in-one
+`material-components-web` package. Improved functionality is available across the `mdc-tab-bar`, `mdc-tab-scroller`,
+`mdc-tab-indicator`, and `mdc-tab` packages, which are now included in the `material-components-web` package.
+Bugs and feature requests will no longer be accepted for this package. It is recommended that you migrate to the new
+packages to continue to receive new features and updates.
 
 # MDC Tabs
 
 The MDC Tabs component contains components which are used to create spec-aligned tabbed navigation components adhering to the
-[Material Design tabs guidelines](https://material.io/guidelines/components/tabs.html). These components are:
+[Material Design tabs guidelines](https://material.io/go/design-tabs). These components are:
 
 - **mdc-tab**: The individual tab elements
 - **mdc-tab-bar**: The main component which is composed of `mdc-tab` elements
@@ -20,10 +28,10 @@ The MDC Tabs component contains components which are used to create spec-aligned
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/guidelines/components/tabs.html">Material Design guidelines: Tabs</a>
+    <a href="https://material.io/go/design-tabs">Material Design guidelines: Tabs</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
-    <a href="http://material-components-web.appspot.com/tabs.html">Demo</a>
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/tabs">Demo</a>
   </li>
 </ul>
 

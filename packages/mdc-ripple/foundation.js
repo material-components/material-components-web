@@ -1,18 +1,24 @@
 /**
  * @license
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2016 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import MDCFoundation from '@material/base/foundation';
@@ -21,7 +27,7 @@ import {cssClasses, strings, numbers} from './constants';
 import {getNormalizedEventCoords} from './util';
 
 /**
- * @typedef {!{
+ * @typedef {{
  *   isActivated: (boolean|undefined),
  *   hasDeactivationUXRun: (boolean|undefined),
  *   wasActivatedByPointer: (boolean|undefined),
@@ -33,7 +39,7 @@ import {getNormalizedEventCoords} from './util';
 let ActivationStateType;
 
 /**
- * @typedef {!{
+ * @typedef {{
  *   activate: (string|undefined),
  *   deactivate: (string|undefined),
  *   focus: (string|undefined),
@@ -43,7 +49,7 @@ let ActivationStateType;
 let ListenerInfoType;
 
 /**
- * @typedef {!{
+ * @typedef {{
  *   activate: function(!Event),
  *   deactivate: function(!Event),
  *   focus: function(),
@@ -53,7 +59,7 @@ let ListenerInfoType;
 let ListenersType;
 
 /**
- * @typedef {!{
+ * @typedef {{
  *   x: number,
  *   y: number
  * }}
@@ -132,19 +138,15 @@ class MDCRippleFoundation extends MDCFoundation {
     this.deactivateHandler_ = (e) => this.deactivate_(e);
 
     /** @private {function(?Event=)} */
-    this.focusHandler_ = () => requestAnimationFrame(
-      () => this.adapter_.addClass(MDCRippleFoundation.cssClasses.BG_FOCUSED)
-    );
+    this.focusHandler_ = () => this.handleFocus();
 
     /** @private {function(?Event=)} */
-    this.blurHandler_ = () => requestAnimationFrame(
-      () => this.adapter_.removeClass(MDCRippleFoundation.cssClasses.BG_FOCUSED)
-    );
+    this.blurHandler_ = () => this.handleBlur();
 
     /** @private {!Function} */
     this.resizeHandler_ = () => this.layout();
 
-    /** @private {!{left: number, top:number}} */
+    /** @private {{left: number, top:number}} */
     this.unboundedCoords_ = {
       left: 0,
       top: 0,
@@ -180,7 +182,7 @@ class MDCRippleFoundation extends MDCFoundation {
    * @return {boolean}
    * @private
    */
-  isSupported_() {
+  supportsPressRipple_() {
     return this.adapter_.browserSupportsCssVars();
   }
 
@@ -198,53 +200,63 @@ class MDCRippleFoundation extends MDCFoundation {
     };
   }
 
+  /** @override */
   init() {
-    if (!this.isSupported_()) {
-      return;
-    }
-    this.registerRootHandlers_();
+    const supportsPressRipple = this.supportsPressRipple_();
 
-    const {ROOT, UNBOUNDED} = MDCRippleFoundation.cssClasses;
-    requestAnimationFrame(() => {
-      this.adapter_.addClass(ROOT);
-      if (this.adapter_.isUnbounded()) {
-        this.adapter_.addClass(UNBOUNDED);
-      }
-      this.layoutInternal_();
-    });
+    this.registerRootHandlers_(supportsPressRipple);
+
+    if (supportsPressRipple) {
+      const {ROOT, UNBOUNDED} = MDCRippleFoundation.cssClasses;
+      requestAnimationFrame(() => {
+        this.adapter_.addClass(ROOT);
+        if (this.adapter_.isUnbounded()) {
+          this.adapter_.addClass(UNBOUNDED);
+          // Unbounded ripples need layout logic applied immediately to set coordinates for both shade and ripple
+          this.layoutInternal_();
+        }
+      });
+    }
   }
 
+  /** @override */
   destroy() {
-    if (!this.isSupported_()) {
-      return;
-    }
+    if (this.supportsPressRipple_()) {
+      if (this.activationTimer_) {
+        clearTimeout(this.activationTimer_);
+        this.activationTimer_ = 0;
+        const {FG_ACTIVATION} = MDCRippleFoundation.cssClasses;
+        this.adapter_.removeClass(FG_ACTIVATION);
+      }
 
-    if (this.activationTimer_) {
-      clearTimeout(this.activationTimer_);
-      this.activationTimer_ = 0;
-      const {FG_ACTIVATION} = MDCRippleFoundation.cssClasses;
-      this.adapter_.removeClass(FG_ACTIVATION);
+      const {ROOT, UNBOUNDED} = MDCRippleFoundation.cssClasses;
+      requestAnimationFrame(() => {
+        this.adapter_.removeClass(ROOT);
+        this.adapter_.removeClass(UNBOUNDED);
+        this.removeCssVars_();
+      });
     }
 
     this.deregisterRootHandlers_();
     this.deregisterDeactivationHandlers_();
-
-    const {ROOT, UNBOUNDED} = MDCRippleFoundation.cssClasses;
-    requestAnimationFrame(() => {
-      this.adapter_.removeClass(ROOT);
-      this.adapter_.removeClass(UNBOUNDED);
-      this.removeCssVars_();
-    });
   }
 
-  /** @private */
-  registerRootHandlers_() {
-    ACTIVATION_EVENT_TYPES.forEach((type) => {
-      this.adapter_.registerInteractionHandler(type, this.activateHandler_);
-    });
+  /**
+   * @param {boolean} supportsPressRipple Passed from init to save a redundant function call
+   * @private
+   */
+  registerRootHandlers_(supportsPressRipple) {
+    if (supportsPressRipple) {
+      ACTIVATION_EVENT_TYPES.forEach((type) => {
+        this.adapter_.registerInteractionHandler(type, this.activateHandler_);
+      });
+      if (this.adapter_.isUnbounded()) {
+        this.adapter_.registerResizeHandler(this.resizeHandler_);
+      }
+    }
+
     this.adapter_.registerInteractionHandler('focus', this.focusHandler_);
     this.adapter_.registerInteractionHandler('blur', this.blurHandler_);
-    this.adapter_.registerResizeHandler(this.resizeHandler_);
   }
 
   /**
@@ -268,7 +280,10 @@ class MDCRippleFoundation extends MDCFoundation {
     });
     this.adapter_.deregisterInteractionHandler('focus', this.focusHandler_);
     this.adapter_.deregisterInteractionHandler('blur', this.blurHandler_);
-    this.adapter_.deregisterResizeHandler(this.resizeHandler_);
+
+    if (this.adapter_.isUnbounded()) {
+      this.adapter_.deregisterResizeHandler(this.resizeHandler_);
+    }
   }
 
   /** @private */
@@ -330,23 +345,41 @@ class MDCRippleFoundation extends MDCFoundation {
       this.registerDeactivationHandlers_(e);
     }
 
+    activationState.wasElementMadeActive = this.checkElementMadeActive_(e);
+    if (activationState.wasElementMadeActive) {
+      this.animateActivation_();
+    }
+
     requestAnimationFrame(() => {
-      // This needs to be wrapped in an rAF call b/c web browsers
-      // report active states inconsistently when they're called within
-      // event handling code:
-      // - https://bugs.chromium.org/p/chromium/issues/detail?id=635971
-      // - https://bugzilla.mozilla.org/show_bug.cgi?id=1293741
-      activationState.wasElementMadeActive = (e && e.type === 'keydown') ? this.adapter_.isSurfaceActive() : true;
-      if (activationState.wasElementMadeActive) {
-        this.animateActivation_();
-      } else {
+      // Reset array on next frame after the current event has had a chance to bubble to prevent ancestor ripples
+      activatedTargets = [];
+
+      if (!activationState.wasElementMadeActive && (e.key === ' ' || e.keyCode === 32)) {
+        // If space was pressed, try again within an rAF call to detect :active, because different UAs report
+        // active states inconsistently when they're called within event handling code:
+        // - https://bugs.chromium.org/p/chromium/issues/detail?id=635971
+        // - https://bugzilla.mozilla.org/show_bug.cgi?id=1293741
+        // We try first outside rAF to support Edge, which does not exhibit this problem, but will crash if a CSS
+        // variable is set within a rAF callback for a submit button interaction (#2241).
+        activationState.wasElementMadeActive = this.checkElementMadeActive_(e);
+        if (activationState.wasElementMadeActive) {
+          this.animateActivation_();
+        }
+      }
+
+      if (!activationState.wasElementMadeActive) {
         // Reset activation state immediately if element was not made active.
         this.activationState_ = this.defaultActivationState_();
       }
-
-      // Reset array on next frame after the current event has had a chance to bubble to prevent ancestor ripples
-      activatedTargets = [];
     });
+  }
+
+  /**
+   * @param {?Event} e
+   * @private
+   */
+  checkElementMadeActive_(e) {
+    return (e && e.type === 'keydown') ? this.adapter_.isSurfaceActive() : true;
   }
 
   /**
@@ -361,6 +394,8 @@ class MDCRippleFoundation extends MDCFoundation {
     const {VAR_FG_TRANSLATE_START, VAR_FG_TRANSLATE_END} = MDCRippleFoundation.strings;
     const {FG_DEACTIVATION, FG_ACTIVATION} = MDCRippleFoundation.cssClasses;
     const {DEACTIVATION_TIMEOUT_MS} = MDCRippleFoundation.numbers;
+
+    this.layoutInternal_();
 
     let translateStart = '';
     let translateEnd = '';
@@ -559,6 +594,16 @@ class MDCRippleFoundation extends MDCFoundation {
     } else {
       this.adapter_.removeClass(UNBOUNDED);
     }
+  }
+
+  handleFocus() {
+    requestAnimationFrame(() =>
+      this.adapter_.addClass(MDCRippleFoundation.cssClasses.BG_FOCUSED));
+  }
+
+  handleBlur() {
+    requestAnimationFrame(() =>
+      this.adapter_.removeClass(MDCRippleFoundation.cssClasses.BG_FOCUSED));
   }
 }
 
