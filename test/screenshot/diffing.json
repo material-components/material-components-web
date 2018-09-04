@@ -7,10 +7,10 @@
 
   "flaky_test_config": {
     "global_config": {
-      "max_retries": 0,
+      "max_retries": 2,
       "retry_delay_ms": 500,
       "min_changed_pixel_count": 15,
-      "max_changed_pixel_fraction_to_retry": 0.05,
+      "max_changed_pixel_fraction_to_retry": 0.10,
       "font_face_observer_timeout_ms": 3000,
       "fonts_loaded_reflow_delay_ms": 50
     },
@@ -22,7 +22,6 @@
           "mdc-dialog"
         ],
         "custom_config": {
-          "max_retries": 2,
           "fonts_loaded_reflow_delay_ms": 250
         }
       },
