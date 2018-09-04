@@ -24,50 +24,99 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
-// Sanity tests to ensure the following:
-// - Default adapters contain functions
-// - All expected adapter functions are accounted for
-// - Invoking any of the default methods does not throw an error.
-// Every foundation test suite include this verification.
-export function verifyDefaultAdapter(FoundationClass, expectedMethods) {
+/**
+ * Sanity tests to ensure the following:
+ * - Default adapters contain functions
+ * - All expected adapter functions are accounted for
+ * - Invoking any of the default methods does not throw an error.
+ * Every foundation test suite include this verification.
+ * @param {!F.} FoundationClass
+ * @param {!Array<string>} expectedMethodNames
+ * @template F
+ */
+export function verifyDefaultAdapter(FoundationClass, expectedMethodNames) {
   const {defaultAdapter} = FoundationClass;
   const plainObject = toPlainObject(defaultAdapter);
   const adapterKeys = Object.keys(plainObject);
-  const actualMethods = adapterKeys.filter((key) => typeof defaultAdapter[key] === 'function');
+  const actualMethodNames = adapterKeys.filter((key) => typeof defaultAdapter[key] === 'function');
 
-  assert.equal(actualMethods.length, adapterKeys.length, 'Every adapter key must be a function');
+  assert.equal(actualMethodNames.length, adapterKeys.length, 'Every adapter key must be a function');
 
   // Test for equality without requiring that the array be in a specific order
-  const actualArray = actualMethods.slice().sort();
-  const expectedArray = expectedMethods.slice().sort();
+  const actualArray = actualMethodNames.slice().sort();
+  const expectedArray = expectedMethodNames.slice().sort();
   assert.deepEqual(actualArray, expectedArray, getUnequalArrayMessage(actualArray, expectedArray));
 
   // Test default methods
-  actualMethods.forEach((m) => assert.doesNotThrow(defaultAdapter[m]));
+  actualMethodNames.forEach((m) => assert.doesNotThrow(defaultAdapter[m]));
 }
 
+/**
+ * Returns an object that intercepts calls to an adapter method used to register event handlers, and adds
+ * it to that object where the key is the event name and the value is the function being used. This is the
+ * preferred way of testing interaction handlers.
+ *
+ * ```javascript
+ * test('#init adds a click listener which adds a "foo" class', (t) => {
+ *   const {foundation, mockAdapter} = setupTest();
+ *   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
+ *   foundation.init();
+ *   handlers.click(/* you can pass event info in here *\/ {type: 'click'});
+ *   t.doesNotThrow(() => td.verify(mockAdapter.addClass('foo')));
+ *   t.end();
+ * });
+ * ```
+ *
+ * Note that `handlerCaptureMethodName` _must_ have a signature of `(string, EventListener) => any` in order to
+ * be effective.
+ *
+ * @param {!A} adapter
+ * @param {string} handlerCaptureMethodName
+ * @template A
+ */
+export function captureHandlers(adapter, handlerCaptureMethodName) {
+  const {isA} = td.matchers;
+  const handlers = {};
+  td.when(adapter[handlerCaptureMethodName](isA(String), isA(Function))).thenDo((type, handler) => {
+    handlers[type] = (evtInfo = {}) => handler(Object.assign({type}, evtInfo));
+  });
+  return handlers;
+}
+
+/**
+ * @param {!A} adapterInstance
+ * @return {!A}
+ * @template A
+ */
 function toPlainObject(adapterInstance) {
-  function hasMethod(obj, name) {
+  /**
+   * @param {!Object} obj
+   * @param {string} name
+   * @return {boolean}
+   */
+  const hasMethod = (obj, name) => {
     const desc = Object.getOwnPropertyDescriptor(obj, name);
     return !!desc && typeof desc.value === 'function';
-  }
+  };
 
-  function getInstanceMethodNames(obj, stop = Object.prototype) {
+  /**
+   * @param {!Object} obj
+   * @param {!Object.} stopPrototype
+   * @return {!Array<string>}
+   */
+  const getInstanceMethodNames = (obj, stopPrototype = Object.prototype) => {
     const array = [];
-    let proto = Object.getPrototypeOf(obj);
-    while (proto && proto !== stop) {
-      Object.getOwnPropertyNames(proto)
-        .forEach((name) => {
-          if (name !== 'constructor') {
-            if (hasMethod(proto, name)) {
-              array.push(name);
-            }
-          }
-        });
-      proto = Object.getPrototypeOf(proto);
+    let curPrototype = Object.getPrototypeOf(obj);
+    while (curPrototype && curPrototype !== stopPrototype) {
+      Object.getOwnPropertyNames(curPrototype).forEach((name) => {
+        if (name !== 'constructor' && hasMethod(curPrototype, name)) {
+          array.push(name);
+        }
+      });
+      curPrototype = Object.getPrototypeOf(curPrototype);
     }
     return array;
-  }
+  };
 
   const adapterMethods = {};
   Object.getOwnPropertyNames(adapterInstance).forEach((name) => {
@@ -149,30 +198,4 @@ function getUnequalArrayMessage(actualArray, expectedArray) {
   }
 
   return `Found ${messages.join('; ')}`;
-}
-
-// Returns an object that intercepts calls to an adapter method used to register event handlers, and adds
-// it to that object where the key is the event name and the value is the function being used. This is the
-// preferred way of testing interaction handlers.
-//
-// ```javascript
-// test('#init adds a click listener which adds a "foo" class', (t) => {
-//   const {foundation, mockAdapter} = setupTest();
-//   const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
-//   foundation.init();
-//   handlers.click(/* you can pass event info in here */ {type: 'click'});
-//   t.doesNotThrow(() => td.verify(mockAdapter.addClass('foo')));
-//   t.end();
-// });
-// ```
-//
-// Note that `handlerCaptureMethod` _must_ have a signature of `(string, EventListener) => any` in order to
-// be effective.
-export function captureHandlers(adapter, handlerCaptureMethod) {
-  const {isA} = td.matchers;
-  const handlers = {};
-  td.when(adapter[handlerCaptureMethod](isA(String), isA(Function))).thenDo((type, handler) => {
-    handlers[type] = (evtInfo = {}) => handler(Object.assign({type}, evtInfo));
-  });
-  return handlers;
 }
