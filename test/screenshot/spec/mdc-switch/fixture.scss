@@ -26,8 +26,27 @@
 $custom-switch-color: $material-color-red-500;
 
 .test-cell--switch {
-  width: 85px;
-  height: 80px;
+  position: relative;
+  width: 101px;
+  height: 101px;
+  padding: 30px;
+}
+
+.test-switch-label {
+  display: block;
+  position: absolute;
+  bottom: 11px;
+  left: 11px;
+  width: 69px;
+  height: 19px;
+  background: rgba($custom-switch-color, .4);
+  text-align: center;
+  cursor: pointer;
+}
+
+.mdc-switch--disabled + .test-switch-label {
+  background: rgba(0, 0, 0, .1);
+  cursor: not-allowed;
 }
 
 .custom-switch--thumb-color {
