@@ -96,16 +96,22 @@
 }
 
 .mdc-dialog__title {
+  // TODO(acdvorak): Add note to README about leading whitespace in __title markup.
+  @include mdc-typography-baseline-top(40px);
   @include mdc-typography(headline6);
 
-  display: flex;
+  display: block;
   position: relative;
   flex-shrink: 0;
-  align-items: center;
   box-sizing: border-box;
+  min-height: 64px;
   margin: 0;
-  padding: 16px 24px 15px;
-  border-bottom: 1px solid transparent;
+  padding: 0 24px 15px;
+
+  .mdc-dialog--scrollable & {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+  }
 
   @include mdc-rtl(".mdc-dialog") {
     text-align: right;
@@ -141,9 +147,14 @@
   align-items: center;
   justify-content: flex-end;
   box-sizing: border-box;
+  min-height: 52px;
   margin: 0;
   padding: 8px;
-  border-top: 1px solid transparent;
+
+  .mdc-dialog--scrollable & {
+    border-top-width: 1px;
+    border-top-style: solid;
+  }
 
   .mdc-dialog--stacked & {
     flex-direction: column;

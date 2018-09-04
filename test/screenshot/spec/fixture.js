@@ -53,6 +53,146 @@ class TestFixture {
   }
 
   /**
+   * @param {?Element} fromEl
+   * @param {string} fromSide
+   * @param {?Element} toEl
+   * @param {string} toSide
+   * @param {number} specDistancePx
+   * @param {number=} displayOffsetPx
+   * @param {string=} displayAlignment
+   */
+  addRedline({
+    fromEl,
+    fromSide,
+    toEl,
+    toSide,
+    specDistancePx,
+    displayOffsetPx = 0,
+    displayAlignment = 'left',
+  }) {
+    if (!fromEl || !toEl) {
+      return;
+    }
+
+    if (fromSide === 'top' || fromSide === 'bottom' || fromSide === 'first-baseline' || fromSide === 'last-baseline') {
+      this.addHorizontalRedline_({
+        fromEl,
+        fromSide,
+        toEl,
+        toSide,
+        specDistancePx,
+        displayOffsetPx,
+        displayAlignment,
+      });
+    } else {
+      throw new Error(`Unsupported \`fromSide\` value: "${fromSide}"`);
+    }
+  }
+
+  /**
+   * @param {?Element} fromEl
+   * @param {string} fromSide
+   * @param {?Element} toEl
+   * @param {string} toSide
+   * @param {number} specDistancePx
+   * @param {number=} displayOffsetPx
+   * @param {string=} displayAlignment
+   */
+  addHorizontalRedline_({
+    fromEl,
+    fromSide,
+    toEl,
+    toSide,
+    specDistancePx,
+    displayOffsetPx = 0,
+    displayAlignment = 'left',
+  }) {
+    const lineEl = document.createElement('div');
+    lineEl.classList.add('test-redline');
+    lineEl.innerHTML = '<div class="test-redline__label"></div>';
+    lineEl.classList.add('test-redline--horizontal');
+
+    const getPos = (el, side) => {
+      const rect = el.getBoundingClientRect();
+      const borderBottomWidth = parseInt(getComputedStyle(el).borderBottomWidth, 10);
+      const borderTopWidth = parseInt(getComputedStyle(el).borderTopWidth, 10);
+      const borderLeftWidth = parseInt(getComputedStyle(el).borderLeftWidth, 10);
+      const borderRightWidth = parseInt(getComputedStyle(el).borderRightWidth, 10);
+      if (side === 'top') {
+        return rect.top + borderTopWidth;
+      }
+      if (side === 'bottom') {
+        return rect.bottom - borderBottomWidth;
+      }
+      if (side === 'left') {
+        return rect.left + borderLeftWidth;
+      }
+      if (side === 'right') {
+        return rect.right - borderRightWidth;
+      }
+      if (side === 'first-baseline' || side === 'last-baseline') {
+        const bl = document.createElement('span');
+        bl.classList.add('test-redline-baseline');
+        if (side === 'last-baseline') {
+          el.appendChild(bl);
+        } else {
+          el.insertBefore(bl, el.firstChild);
+        }
+        const pos = bl.getBoundingClientRect().top;
+        el.removeChild(bl);
+        return pos - borderTopWidth;
+      }
+      throw new Error(`Unsupported \`side\` value: "${side}"`);
+    };
+
+    const fromRect = fromEl.getBoundingClientRect();
+    const toRect = toEl.getBoundingClientRect();
+    const fromViewportY = getPos(fromEl, fromSide);
+    const toViewportY = getPos(toEl, toSide);
+
+    const actualStartY = Math.min(fromViewportY, toViewportY);
+    const actualEndY = Math.max(fromViewportY, toViewportY);
+    const actualDistancePx = Math.floor(actualEndY - actualStartY);
+
+    const lineStartX = Math.min(fromRect.left, toRect.left);
+    const lineEndX = Math.min(fromRect.right, toRect.right);
+
+    if (displayAlignment === 'center') {
+      const leftMost = Math.min(fromRect.left, toRect.left);
+      const rightMost = Math.max(fromRect.right, toRect.right);
+      const half = (rightMost - leftMost) / 2;
+      lineEl.style.left = `${lineStartX + half + displayOffsetPx}px`;
+    } else if (displayAlignment === 'right') {
+      lineEl.style.left = `${lineEndX - displayOffsetPx}px`;
+    } else {
+      lineEl.style.left = `${lineStartX + displayOffsetPx}px`;
+    }
+
+    lineEl.style.top = `${actualStartY}px`;
+    lineEl.style.height = `${actualDistancePx}px`;
+
+    if (actualDistancePx === specDistancePx) {
+      lineEl.querySelector('.test-redline__label').innerText =
+        `${actualDistancePx}px`;
+      lineEl.classList.add('test-redline--pass');
+    } else if (Math.abs(actualDistancePx - specDistancePx) <= 1) {
+      lineEl.querySelector('.test-redline__label').innerHTML =
+        `Spec: ${specDistancePx}px<br>Actual: ${actualDistancePx}px`;
+      lineEl.classList.add('test-redline--warn');
+    } else {
+      lineEl.querySelector('.test-redline__label').innerHTML =
+        `Spec: ${specDistancePx}px<br>Actual: ${actualDistancePx}px`;
+      lineEl.classList.add('test-redline--fail');
+    }
+
+    if (actualDistancePx < 20) {
+      lineEl.classList.add('test-redline--small');
+    }
+
+    document.body.appendChild(lineEl);
+  }
+
+  /**
    * @return {!Promise<void>}
    * @private
    */
