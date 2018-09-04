@@ -43,6 +43,7 @@ $custom-radio-color: $material-color-red-300;
   cursor: pointer;
 }
 
+// stylelint-disable-next-line selector-class-pattern
 .mdc-radio--disabled + .test-radio-label {
   background: rgba(0, 0, 0, .1);
   cursor: not-allowed;
