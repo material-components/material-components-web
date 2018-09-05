@@ -181,6 +181,7 @@
   .mdc-floating-label {
     @include mdc-rtl-reflexive-position(left, 16px);
 
+    pointer-events: none;
     bottom: 12px;
     line-height: 1.75rem;
   }

@@ -65,11 +65,6 @@
   overflow: hidden;
   will-change: opacity, transform, color;
 
-  // stylelint-disable-next-line plugin/selector-bem-pattern
-  .mdc-floating-label {
-    pointer-events: none;
-  }
-
   @include mdc-rtl {
     background-position: left 10px center;
   }
