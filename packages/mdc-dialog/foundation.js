@@ -135,10 +135,10 @@ export default class MDCDialogFoundation extends MDCFoundation {
 
   /** @private */
   detectScrollableContent_() {
+    // Remove the class first to let us measure the natural height of the content.
+    this.adapter_.removeClass(cssClasses.SCROLLABLE);
     if (this.adapter_.isContentScrollable()) {
       this.adapter_.addClass(cssClasses.SCROLLABLE);
-    } else {
-      this.adapter_.removeClass(cssClasses.SCROLLABLE);
     }
   }
 
