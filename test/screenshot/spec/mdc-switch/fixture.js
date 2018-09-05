@@ -21,12 +21,8 @@
  * THE SOFTWARE.
  */
 
-@import "./mixins";
-
-// postcss-bem-linter: define tab-bar
-
-.mdc-tab-bar {
-  @include mdc-tab-bar-width(100%);
-}
-
-// postcss-bem-linter: end
+window.mdc.testFixture.fontsLoaded.then(() => {
+  [].forEach.call(document.querySelectorAll('.mdc-switch'), (el) => {
+    mdc.switchControl.MDCSwitch.attachTo(el);
+  });
+});
