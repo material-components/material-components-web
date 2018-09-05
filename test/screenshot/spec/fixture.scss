@@ -23,6 +23,9 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700");
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
+// Sass
+@import "./mixins";
+
 $test-viewport-trim-color: #abc123; // Value must match `TRIM_COLOR_CSS_VALUE` in `image-cropper.js`
 $test-layout-cell-grid-color: #ddd;
 
@@ -52,8 +55,7 @@ $test-layout-cell-grid-color: #ddd;
   font-size: 200%; // stylelint-disable-line declaration-property-unit-whitelist
 }
 
-// MS Edge only
-@supports (-ms-ime-align: auto) {
+@include test-browser-selector-edge {
   .test-container--edge-fonts {
     // stylelint-disable selector-class-pattern
     .mdc-button,

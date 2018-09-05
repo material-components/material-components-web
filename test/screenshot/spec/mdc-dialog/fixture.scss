@@ -22,11 +22,11 @@
 
 @import "../../../../packages/mdc-dialog/mixins";
 @import "../../../../packages/mdc-theme/color-palette";
+@import "../mixins";
 
 $custom-dialog-color: $material-color-red-300;
 
-// MS Edge only
-@supports (-ms-ime-align: auto) {
+@include test-browser-selector-edge {
   .test-dialog__title,
   .test-dialog__content {
     // Reduce flaky text rendering. The default MDC typography value is 0.25px.
