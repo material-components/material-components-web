@@ -129,7 +129,6 @@ See [here](helper-text/) for more information on using helper text.
 Leading and trailing icons can be added within the default or outlined variant of MDC Text Field as visual indicators as
 well as interaction targets. See [here](icon/) for more information on using icons.
 
-
 ### HTML5 Validation
 
 `MDCTextFieldFoundation` provides validity styling by using the `:invalid` and `:required` attributes provided
@@ -240,6 +239,11 @@ Property | Value Type | Description
 `required` | Boolean | Proxies to the foundation's `isRequired`/`setRequired` methods.
 `helperTextContent` | String | Proxies to the foundation's `setHelperTextContent` method when set.
 `ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCTextField` initializes; this only applies to the default Text Field, and is `null` for other variants.
+`leadingIconAriaLabel` | String | Proxies to the foundation's `setLeadingIconAriaLabel` method.
+`trailingIconAriaLabel` | String | Proxies to the foundation's `setTrailingIconAriaLabel` method.
+`leadingIconContent` | String | Proxies to the foundation's `setLeadingIconContent` method.
+`leadingIconContent` | String | Proxies to the foundation's `setTrailingIconContent` method.
+
 
 Method Signature | Description
 --- | ---
@@ -296,8 +300,10 @@ Method Signature | Description
 `activateFocus() => void` | Activates the focus state of the Text Field. Normally called in response to the input focus event.
 `deactivateFocus() => void` | Deactivates the focus state of the Text Field. Normally called in response to the input blur event.
 `setHelperTextContent(content: string) => void` | Sets the content of the helper text.
-`setIconAriaLabel(label: string) => void` | Sets the aria label of the icon.
-`setIconContent(content: string) => void` | Sets the text content of the icon.
+`setLeadingIconAriaLabel(label: string) => void` | Sets the aria label of the leading icon.
+`setLeadingIconContent(content: string) => void` | Sets the text content of the leading icon.
+`setTrailingIconAriaLabel(label: string) => void` | Sets the aria label of the trailing icon.
+`setTrailingIconContent(content: string) => void` | Sets the text content of the trailing icon.
 `notchOutline(openNotch: boolean) => void` | Opens/closes the notched outline.
 
 `MDCTextFieldFoundation` supports multiple optional sub-elements: helper text and icon. The foundations of these sub-elements must be passed in as constructor arguments to `MDCTextFieldFoundation`.
