@@ -21,6 +21,7 @@
     "@material/checkbox": "^0.39.1",
     "@material/chips": "^0.39.1",
     "@material/dialog": "^0.39.1",
+    "@material/dom": "^0.0.0",
     "@material/drawer": "^0.39.1",
     "@material/elevation": "^0.39.1",
     "@material/fab": "^0.39.1",

@@ -50,7 +50,14 @@ const MASTER_PKG = require(path.join(process.env.PWD, MASTER_PKG_PATH));
 // These few MDC packages work as foundation or utility packages, and are not
 // directly included in webpack or the material-component-web module. But they
 // are necessary since other MDC packages depend on them.
-const CSS_WHITELIST = ['base', 'animation', 'auto-init', 'rtl', 'selection-control'];
+const CSS_WHITELIST = [
+  'base',
+  'animation',
+  'auto-init',
+  'dom',
+  'rtl',
+  'selection-control',
+];
 
 // List of packages that are intentionally not included in the MCW package's dependencies
 const NOT_MCW_DEP = [
@@ -60,6 +67,7 @@ const NOT_MCW_DEP = [
 const NOT_AUTOINIT = [
   'auto-init',
   'base',
+  'dom',
   'selection-control',
   'tab', // Only makes sense in context of tab-bar
   'tab-indicator', // Only makes sense in context of tab-bar
