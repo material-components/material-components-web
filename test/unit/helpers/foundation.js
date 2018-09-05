@@ -106,6 +106,7 @@ function getUnequalArrayMessage(actualArray, expectedArray) {
   /**
    * @param {!Set<string>} actualSet
    * @param {!Set<string>} expectedSet
+   * @return {string}
    */
   const getAddedStr = (actualSet, expectedSet) => {
     const addedArray = [];
@@ -120,6 +121,7 @@ function getUnequalArrayMessage(actualArray, expectedArray) {
   /**
    * @param {!Set<string>} actualSet
    * @param {!Set<string>} expectedSet
+   * @return {string}
    */
   const getRemovedStr = (actualSet, expectedSet) => {
     const removedArray = [];
@@ -145,7 +147,7 @@ function getUnequalArrayMessage(actualArray, expectedArray) {
   const expectedSet = toSet(expectedArray);
   const addedStr = getAddedStr(actualSet, expectedSet);
   const removedStr = getRemovedStr(actualSet, expectedSet);
-  const messages = [addedStr, removedStr].filter((val) => Boolean(val));
+  const messages = [addedStr, removedStr].filter((val) => val.length > 0);
 
   if (messages.length === 0) {
     return '';
