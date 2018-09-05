@@ -69,13 +69,18 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         '.mdc-dialog__title:not(.test-dialog__title--3-line):not(.test-dialog__title--5-line)'
       );
       const threeLineTitleEl = document.querySelector('.test-dialog__title--3-line');
+      const notScrolledTitleEl = document.querySelector(
+        '.test-dialog:not(.test-dialog--scroll-to-bottom) .test-dialog__title'
+      );
+
       const anyActionsEl = document.querySelector('.mdc-dialog__actions');
-      const nonStackedNonScrollableActionsEl = document.querySelector(
-        '.mdc-dialog:not(.mdc-dialog--stacked):not(.mdc-dialog--scrollable) .mdc-dialog__actions'
+      const sideBySideActionsEl = document.querySelector(
+        '.mdc-dialog:not(.mdc-dialog--stacked) .mdc-dialog__actions'
       );
 
       const buttonEls = [].slice.call(document.querySelectorAll('.mdc-dialog__button'));
       const firstButtonEl = buttonEls[0];
+      const secondLastButtonEl = buttonEls[buttonEls.length - 2];
       const lastButtonEl = buttonEls[buttonEls.length - 1];
 
       const firstParagraphEls =
@@ -103,8 +108,11 @@ window.mdc.testFixture.fontsLoaded.then(() => {
       const firstParagraphEl = firstParagraphEls[0];
       const lastParagraphEl = lastParagraphEls[lastParagraphEls.length - 1];
 
-      // Vertical
+      /*
+       * Vertical
+       */
 
+      // Title typography baseline
       window.mdc.testFixture.addRedline({
         fromEl: anyTitleEl,
         fromSide: 'top',
@@ -115,6 +123,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         displayAlignment: 'left',
       });
 
+      // Title height (1-line)
       window.mdc.testFixture.addRedline({
         fromEl: oneLineTitleEl,
         fromSide: 'top',
@@ -125,6 +134,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         displayAlignment: 'left',
       });
 
+      // Title height (3-line)
       window.mdc.testFixture.addRedline({
         fromEl: threeLineTitleEl,
         fromSide: 'top',
@@ -135,8 +145,9 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         displayAlignment: 'left',
       });
 
+      // Content typography baseline
       window.mdc.testFixture.addRedline({
-        fromEl: anyTitleEl,
+        fromEl: notScrolledTitleEl,
         fromSide: 'last-baseline',
         toEl: firstParagraphEl,
         toSide: 'first-baseline',
@@ -145,10 +156,11 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         displayAlignment: 'left',
       });
 
+      // Actions height (1-line)
       window.mdc.testFixture.addRedline({
-        fromEl: nonStackedNonScrollableActionsEl,
+        fromEl: sideBySideActionsEl,
         fromSide: 'top',
-        toEl: nonStackedNonScrollableActionsEl,
+        toEl: sideBySideActionsEl,
         toSide: 'bottom',
         specDistancePx: 52,
         displayOffsetPx: 0,
@@ -178,14 +190,26 @@ window.mdc.testFixture.fontsLoaded.then(() => {
       window.mdc.testFixture.addRedline({
         fromEl: lastParagraphEl,
         fromSide: 'last-baseline',
-        toEl: nonStackedNonScrollableActionsEl,
+        toEl: sideBySideActionsEl,
         toSide: 'top',
         specDistancePx: 28,
         displayOffsetPx: 100,
         displayAlignment: 'left',
       });
 
-      // Horizontal
+      /*
+       * Horizontal
+       */
+
+      window.mdc.testFixture.addRedline({
+        fromEl: secondLastButtonEl,
+        fromSide: 'right',
+        toEl: lastButtonEl,
+        toSide: 'left',
+        specDistancePx: 8,
+        displayOffsetPx: 0,
+        displayAlignment: 'bottom',
+      });
 
       window.mdc.testFixture.addRedline({
         fromEl: lastButtonEl,
@@ -202,6 +226,16 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         fromSide: 'left',
         toEl: firstParagraphEl,
         toSide: 'left',
+        specDistancePx: 24,
+        displayOffsetPx: 0,
+        displayAlignment: 'top',
+      });
+
+      window.mdc.testFixture.addRedline({
+        fromEl: firstParagraphEl,
+        fromSide: 'right',
+        toEl: surfaceEl,
+        toSide: 'right',
         specDistancePx: 24,
         displayOffsetPx: 0,
         displayAlignment: 'top',
