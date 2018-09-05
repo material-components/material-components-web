@@ -42,10 +42,6 @@
 
   position: relative;
 
-  .mdc-drawer--open + & {
-    @include mdc-rtl-reflexive-box(margin, left, $mdc-drawer-width);
-  }
-
   .mdc-drawer--closing + & {
     @include mdc-rtl-reflexive-box(margin, left, 0);
   }

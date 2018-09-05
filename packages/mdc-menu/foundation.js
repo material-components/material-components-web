@@ -180,7 +180,7 @@ class MDCMenuFoundation extends MDCFoundation {
 
     // Iterate through ancestors until we find the group or get to the list.
     while (!isGroup && !this.adapter_.elementContainsClass(parent, MDCListFoundation.cssClasses.ROOT)) {
-      parent = this.adapter_.getParentElement(listItem);
+      parent = this.adapter_.getParentElement(parent);
       isGroup = this.adapter_.elementContainsClass(parent, cssClasses.MENU_SELECTION_GROUP);
     }
 
