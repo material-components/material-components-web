@@ -152,7 +152,6 @@
   }
 }
 
-// TODO(acdvorak): Figure out how to apply 12px margin between stacked buttons
 .mdc-dialog__button {
   @include mdc-rtl-reflexive-box(margin, left, 8px);
 
