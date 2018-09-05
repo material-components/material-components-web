@@ -38,7 +38,7 @@
   @include mdc-dialog-scroll-divider-color(on-surface, .12);
   @include mdc-dialog-min-width(280px);
   @include mdc-dialog-max-width(560px, 16px);
-  @include mdc-dialog-max-height(viewport, 16px);
+  @include mdc-dialog-max-height(null, 16px);
   @include mdc-dialog-corner-radius(4px);
 
   // Use `display: none` instead of `visibility: hidden` to avoid recalculating layout when the dialog is closed.
