@@ -23,7 +23,7 @@
 
 import {MDCComponent} from '@material/base/index';
 import {MDCRipple} from '@material/ripple/index';
-import {matches} from '@material/base/ponyfill';
+import {matches} from '@material/dom/ponyfill';
 
 import MDCDialogFoundation from './foundation';
 import MDCDialogUtil from './util';
