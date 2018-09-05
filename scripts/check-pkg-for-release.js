@@ -60,6 +60,7 @@ const NOT_MCW_DEP = [
 const NOT_AUTOINIT = [
   'auto-init',
   'base',
+  'dom',
   'selection-control',
   'tab', // Only makes sense in context of tab-bar
   'tab-indicator', // Only makes sense in context of tab-bar
