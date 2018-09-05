@@ -42,8 +42,6 @@
   @include mdc-dialog-corner-radius(4px);
 
   // Use `display: none` instead of `visibility: hidden` to avoid recalculating layout when the dialog is closed.
-  // This also ensures that clients who use `-webkit-line-clamp` to truncate long titles with an ellipsis don't
-  // run into the rendering bug described in https://stackoverflow.com/a/44193578/467582.
   display: none;
   position: fixed;
   top: 0;
