@@ -35,8 +35,13 @@
 <main class="test-viewport test-viewport--mobile">
   <div class="test-layout">
 
-    <!-- This tests that the outlined select will still turn the primary color when it does not have a floating label -->
-    <!-- See https://github.com/material-components/material-components-web/issues/3230 -->
+    <!--
+      This page tests the following regressions:
+      1.  Outlined select should still turn the primary color when it does not have a floating label.
+          https://github.com/material-components/material-components-web/issues/3230
+      2.  IE's default blue background should be hidden on focus.
+          https://github.com/material-components/material-components-web/issues/3496
+    -->
     <div class="test-cell test-cell--select">
       <div class="mdc-select mdc-select--outlined">
         <select class="mdc-select__native-control" id="my-select" autofocus>
