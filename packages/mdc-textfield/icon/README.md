@@ -42,7 +42,7 @@ const icon = new MDCTextFieldIcon(document.querySelector('.mdc-text-field-icon')
 ```
 ## Variants
 
-Leading and trailing icons can be applied to text fields styled as the default or `mdc-text-field--outlined`. To add an icon, add the relevant class (either `mdc-text-field--with-leading-icon` and/or `mdc-text-field--with-trailing-icon`) to the root element, add an `i` element with your preferred icon, and give it a class of `mdc-text-field__icon`. If using 2 icons, the first icon will be positioned before the input text, and the second icon will be positioned after.
+Leading and trailing icons can be applied to text fields styled as the default or `mdc-text-field--outlined`. To add an icon, add the relevant class (either `mdc-text-field--with-leading-icon` and/or `mdc-text-field--with-trailing-icon`) to the root element, add an `i` element with your preferred icon, and give it a class of `mdc-text-field__icon`. If using 2 icons at the same time, the first icon will be inside the `mdc-text-field` will be interpreted as the leading icon and the second icon will be interpreted as the trailing icon.
 
 ### Leading icon
 
@@ -143,7 +143,7 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-text-field-icon-color($color, $onlyTrailing: false)` | Customizes the color for the leading/trailing icons. If the `$onlyTrailing` is `true` it will output the color to only apply to the trailing icon.
+`mdc-text-field-icon-color($color, $isTrailing: false)` | Customizes the color for the leading/trailing icons. If the `$isTrailing` is `true` it will output the color to only apply to the trailing icon.
 
 ## `MDCTextFieldIcon` Properties and Methods
 
