@@ -23,6 +23,9 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700");
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
+// Sass
+@import "./mixins";
+
 $test-viewport-trim-color: #abc123; // Value must match `TRIM_COLOR_CSS_VALUE` in `image-cropper.js`
 $test-layout-cell-grid-color: #ddd;
 
@@ -46,6 +49,28 @@ $test-layout-cell-grid-color: #ddd;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+.test-container--large-font {
+  font-size: 200%; // stylelint-disable-line declaration-property-unit-whitelist
+}
+
+@include test-browser-selector-edge {
+  .test-container--edge-fonts {
+    // stylelint-disable selector-class-pattern
+    .mdc-button,
+    .mdc-floating-label,
+    .mdc-text-field-helper-text,
+    .mdc-text-field__input {
+      color: transparent !important;
+    }
+    // stylelint-enable selector-class-pattern
+  }
+
+  .test-container--edge-fonts .test-font--flaky {
+    background-color: black;
+    color: black;
+  }
 }
 
 .test-viewport {
@@ -85,6 +110,12 @@ $test-layout-cell-grid-color: #ddd;
   content: "ERROR: Content overflows mobile viewport!";
 }
 
+.test-viewport--center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .test-layout {
   display: flex;
   flex-wrap: wrap;
@@ -116,3 +147,96 @@ $test-layout-cell-grid-color: #ddd;
   transition: none !important;
 }
 // stylelint-enable selector-max-universal
+
+.test-redline {
+  display: block;
+  position: fixed;
+  justify-content: center;
+  width: 1px;
+  height: 1px;
+  background-color: currentColor;
+  color: red;
+  z-index: 100;
+}
+
+.test-redline--pass {
+  color: green;
+}
+
+.test-redline--warn {
+  color: deeppink;
+}
+
+.test-redline__tick {
+  display: block;
+  position: absolute;
+  background-color: currentColor;
+}
+
+.test-redline--vertical .test-redline__tick {
+  right: -10px;
+  left: -10px;
+  height: 1px;
+}
+
+.test-redline--horizontal .test-redline__tick {
+  top: -10px;
+  bottom: -10px;
+  width: 1px;
+}
+
+.test-redline--vertical .test-redline__tick--start {
+  top: 0;
+}
+
+.test-redline--vertical .test-redline__tick--end {
+  bottom: 0;
+}
+
+.test-redline--horizontal .test-redline__tick--start {
+  left: 0;
+}
+
+.test-redline--horizontal .test-redline__tick--end {
+  right: 0;
+}
+
+.test-redline__label {
+  display: block;
+  position: absolute;
+  padding: 2px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  background-color: white;
+  font-family: Courier, monospace;
+  font-size: 8px; // 8px is the least flaky font size in Firefox on Windows
+  text-align: right;
+  white-space: nowrap;
+}
+
+.test-redline--vertical .test-redline__label {
+  top: 50%;
+  right: 2px;
+  transform: translateY(-50%);
+}
+
+.test-redline--horizontal .test-redline__label {
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.test-redline--small.test-redline--vertical .test-redline__label {
+  right: 13px;
+}
+
+.test-redline--small.test-redline--horizontal .test-redline__label {
+  bottom: 13px;
+}
+
+.test-baseline-probe {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  vertical-align: baseline;
+}
