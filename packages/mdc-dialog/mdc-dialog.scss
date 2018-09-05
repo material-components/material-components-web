@@ -107,11 +107,7 @@
   min-height: 64px;
   margin: 0;
   padding: 0 24px 15px;
-
-  .mdc-dialog--scrollable & {
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
-  }
+  border-bottom: 1px solid transparent;
 
   @include mdc-rtl(".mdc-dialog") {
     text-align: right;
@@ -124,7 +120,7 @@
   flex-grow: 1;
   box-sizing: border-box;
   margin: 0;
-  padding: 10px 24px 21px;
+  padding: 10px 24px 20px;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 
@@ -150,11 +146,7 @@
   min-height: 52px;
   margin: 0;
   padding: 8px;
-
-  .mdc-dialog--scrollable & {
-    border-top-width: 1px;
-    border-top-style: solid;
-  }
+  border-top: 1px solid transparent;
 
   .mdc-dialog--stacked & {
     flex-direction: column;
