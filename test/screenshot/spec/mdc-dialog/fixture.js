@@ -64,6 +64,8 @@ window.mdc.testFixture.fontsLoaded.then(() => {
     });
 
     dialog.listen(strings.OPENED_EVENT, () => {
+      const isStacked = dialogEl.classList.contains('mdc-dialog--stacked');
+
       const anyTitleEl = document.querySelector('.mdc-dialog__title');
       const oneLineTitleEl = document.querySelector(
         '.mdc-dialog__title:not(.test-dialog__title--3-line):not(.test-dialog__title--5-line)'
@@ -145,7 +147,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         displayAlignment: 'left',
       });
 
-      // Content typography baseline
+      // Content typography baseline top
       window.mdc.testFixture.addRedline({
         fromEl: notScrolledTitleEl,
         fromSide: 'last-baseline',
@@ -153,6 +155,17 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         toSide: 'first-baseline',
         specDistancePx: 36,
         displayOffsetPx: 0,
+        displayAlignment: 'left',
+      });
+
+      // Content typography baseline bottom
+      window.mdc.testFixture.addRedline({
+        fromEl: lastParagraphEl,
+        fromSide: 'last-baseline',
+        toEl: sideBySideActionsEl,
+        toSide: 'top',
+        specDistancePx: 28,
+        displayOffsetPx: 100,
         displayAlignment: 'left',
       });
 
@@ -167,6 +180,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         displayAlignment: 'left',
       });
 
+      // Actions padding top
       window.mdc.testFixture.addRedline({
         fromEl: anyActionsEl,
         fromSide: 'top',
@@ -177,6 +191,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         displayAlignment: 'center',
       });
 
+      // Actions padding bottom
       window.mdc.testFixture.addRedline({
         fromEl: lastButtonEl,
         fromSide: 'bottom',
@@ -187,30 +202,24 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         displayAlignment: 'center',
       });
 
-      window.mdc.testFixture.addRedline({
-        fromEl: lastParagraphEl,
-        fromSide: 'last-baseline',
-        toEl: sideBySideActionsEl,
-        toSide: 'top',
-        specDistancePx: 28,
-        displayOffsetPx: 100,
-        displayAlignment: 'left',
-      });
-
       /*
        * Horizontal
        */
 
-      window.mdc.testFixture.addRedline({
-        fromEl: secondLastButtonEl,
-        fromSide: 'right',
-        toEl: lastButtonEl,
-        toSide: 'left',
-        specDistancePx: 8,
-        displayOffsetPx: 0,
-        displayAlignment: 'bottom',
-      });
+      if (!isStacked) {
+        // Side-by-side button margin
+        window.mdc.testFixture.addRedline({
+          fromEl: secondLastButtonEl,
+          fromSide: 'right',
+          toEl: lastButtonEl,
+          toSide: 'left',
+          specDistancePx: 8,
+          displayOffsetPx: 0,
+          displayAlignment: 'bottom',
+        });
+      }
 
+      // Actions padding right
       window.mdc.testFixture.addRedline({
         fromEl: lastButtonEl,
         fromSide: 'right',
@@ -221,6 +230,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         displayAlignment: 'bottom',
       });
 
+      // Content padding left
       window.mdc.testFixture.addRedline({
         fromEl: surfaceEl,
         fromSide: 'left',
@@ -231,6 +241,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         displayAlignment: 'top',
       });
 
+      // Content padding right
       window.mdc.testFixture.addRedline({
         fromEl: firstParagraphEl,
         fromSide: 'right',
