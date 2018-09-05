@@ -26,25 +26,22 @@
     <title>Issue 3230 - MDC Web Screenshot Test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../../../out/mdc.select.css">
+    <link rel="stylesheet" href="../../../out/mdc.typography.css">
     <link rel="stylesheet" href="../../../out/spec/fixture.css">
     <link rel="stylesheet" href="../../../out/spec/mdc-select/fixture.css">
-
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118996389-2"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-118996389-2');
-    </script>
   </head>
 
-  <body class="test-container">
+  <body class="test-container mdc-typography">
     <main class="test-viewport test-viewport--mobile">
       <div class="test-layout">
 
-        <!-- This tests that the outlined select will still turn the primary color when it does not have a floating label -->
-        <!-- See https://github.com/material-components/material-components-web/issues/3230 -->
+        <!--
+          This page tests the following regressions:
+          1.  Outlined select should still turn the primary color when it does not have a floating label.
+              https://github.com/material-components/material-components-web/issues/3230
+          2.  IE's default blue background should be hidden on focus.
+              https://github.com/material-components/material-components-web/issues/3496
+        -->
         <div class="test-cell test-cell--select">
           <div class="mdc-select mdc-select--outlined">
             <select class="mdc-select__native-control" id="my-select" autofocus>
