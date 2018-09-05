@@ -76,7 +76,7 @@
   $max-size-calc-expr: calc(100vw - #{$margin * 2});
 
   .mdc-dialog__container {
-    @if $max-width and $max-width != "viewport" {
+    @if $max-width {
       $max-width-breakpoint: $max-width + ($margin * 2);
 
       // Fit snugly within the viewport at smaller screen sizes.
@@ -98,7 +98,7 @@
   $max-size-calc-expr: calc(100vh - #{$margin * 2});
 
   .mdc-dialog__surface {
-    @if $max-height and $max-height != "viewport" {
+    @if $max-height {
       $max-height-breakpoint: $max-height + ($margin * 2);
 
       // Fit snugly within the viewport at smaller screen sizes.
