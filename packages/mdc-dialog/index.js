@@ -38,16 +38,34 @@ export class MDCDialog extends MDCComponent {
     super(...args);
 
     /**
-     * @type {!focusTrap}
-     * @private
-     */
-    this.focusTrap_;
-
-    /**
      * @type {!Array<!MDCRipple>}
      * @private
      */
     this.buttonRipples_;
+
+    /**
+     * @type {!Array<!HTMLElement>}
+     * @private
+     */
+    this.buttons_;
+
+    /**
+     * @type {!HTMLElement}
+     * @private
+     */
+    this.container;
+
+    /**
+     * @type {?HTMLElement}
+     * @private
+     */
+    this.content_;
+
+    /**
+     * @type {!focusTrap}
+     * @private
+     */
+    this.focusTrap_;
 
     /**
      * @type {!MDCDialogUtil}
@@ -64,20 +82,11 @@ export class MDCDialog extends MDCComponent {
     return this.foundation_.isOpen();
   }
 
-  get container_() {
-    return this.root_.querySelector(strings.CONTAINER_SELECTOR);
-  }
-
-  get content_() {
-    return this.root_.querySelector(strings.CONTENT_SELECTOR);
-  }
-
-  get buttons_() {
-    return [].slice.call(this.root_.querySelectorAll(strings.BUTTON_SELECTOR));
-  }
-
   initialize() {
     this.util_ = this.util_ || new MDCDialogUtil();
+    this.container_ = this.root_.querySelector(strings.CONTAINER_SELECTOR);
+    this.content_ = this.root_.querySelector(strings.CONTENT_SELECTOR);
+    this.buttons_ = [].slice.call(this.root_.querySelectorAll(strings.BUTTON_SELECTOR));
     this.focusTrap_ = this.util_.createFocusTrapInstance(this.container_);
     this.buttonRipples_ = [];
 
