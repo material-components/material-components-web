@@ -22,6 +22,7 @@
  */
 
 import 'url-search-params-polyfill';
+import bel from 'bel';
 
 window.mdc = window.mdc || {};
 
@@ -117,11 +118,14 @@ class TestFixture {
     displayOffsetPx = 0,
     displayAlignment = 'left',
   }) {
-    const lineEl = document.createElement('div');
-    const labelEl = document.createElement('div');
-    lineEl.appendChild(labelEl);
-    lineEl.classList.add('test-redline', 'test-redline--vertical');
-    labelEl.classList.add('test-redline__label');
+    const lineEl = bel`
+<div class="test-redline test-redline--vertical">
+  <div class="test-redline__tick test-redline__tick--start"></div>
+  <div class="test-redline__tick test-redline__tick--end"></div>
+  <div class="test-redline__label"></div>
+</div>
+`;
+    const labelEl = lineEl.querySelector('.test-redline__label');
 
     const fromRect = fromEl.getBoundingClientRect();
     const toRect = toEl.getBoundingClientRect();
@@ -160,11 +164,11 @@ class TestFixture {
       lineEl.classList.add('test-redline--fail');
     }
 
-    if (actualDistancePx < 13) {
+    document.body.appendChild(lineEl);
+
+    if (actualDistancePx < labelEl.offsetHeight + 2) {
       lineEl.classList.add('test-redline--small');
     }
-
-    document.body.appendChild(lineEl);
   }
 
   /**
@@ -185,11 +189,14 @@ class TestFixture {
     displayOffsetPx = 0,
     displayAlignment = 'top',
   }) {
-    const lineEl = document.createElement('div');
-    const labelEl = document.createElement('div');
-    lineEl.appendChild(labelEl);
-    lineEl.classList.add('test-redline', 'test-redline--horizontal');
-    labelEl.classList.add('test-redline__label');
+    const lineEl = bel`
+<div class="test-redline test-redline--horizontal">
+  <div class="test-redline__tick test-redline__tick--start"></div>
+  <div class="test-redline__tick test-redline__tick--end"></div>
+  <div class="test-redline__label"></div>
+</div>
+`;
+    const labelEl = lineEl.querySelector('.test-redline__label');
 
     const fromRect = fromEl.getBoundingClientRect();
     const toRect = toEl.getBoundingClientRect();
@@ -228,11 +235,11 @@ class TestFixture {
       lineEl.classList.add('test-redline--fail');
     }
 
-    if (actualDistancePx < 13) {
+    document.body.appendChild(lineEl);
+
+    if (actualDistancePx < labelEl.offsetWidth + 2) {
       lineEl.classList.add('test-redline--small');
     }
-
-    document.body.appendChild(lineEl);
   }
 
   /**

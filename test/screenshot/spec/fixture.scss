@@ -142,23 +142,14 @@ $test-layout-cell-grid-color: #ddd;
 // stylelint-enable selector-max-universal
 
 .test-redline {
-  display: flex;
+  display: block;
   position: fixed;
   justify-content: center;
-  align-items: flex-end;
   width: 1px;
   height: 1px;
   background-color: currentColor;
   color: red;
   z-index: 100;
-}
-
-.test-redline--vertical {
-  flex-direction: column;
-}
-
-.test-redline--horizontal {
-  flex-direction: row;
 }
 
 .test-redline--pass {
@@ -169,49 +160,47 @@ $test-layout-cell-grid-color: #ddd;
   color: deeppink;
 }
 
-.test-redline--vertical::before,
-.test-redline--vertical::after {
+.test-redline__tick {
   display: block;
   position: absolute;
+  background-color: currentColor;
+}
+
+.test-redline--vertical .test-redline__tick {
   right: -10px;
   left: -10px;
   height: 1px;
-  background-color: currentColor;
-  content: "";
 }
 
-.test-redline--vertical::before {
-  top: 0;
-}
-
-.test-redline--vertical::after {
-  bottom: 0;
-}
-
-.test-redline--horizontal::before,
-.test-redline--horizontal::after {
-  display: block;
-  position: absolute;
+.test-redline--horizontal .test-redline__tick {
   top: -10px;
   bottom: -10px;
   width: 1px;
-  background-color: currentColor;
-  content: "";
 }
 
-.test-redline--horizontal::before {
+.test-redline--vertical .test-redline__tick--start {
+  top: 0;
+}
+
+.test-redline--vertical .test-redline__tick--end {
+  bottom: 0;
+}
+
+.test-redline--horizontal .test-redline__tick--start {
   left: 0;
 }
 
-.test-redline--horizontal::after {
+.test-redline--horizontal .test-redline__tick--end {
   right: 0;
 }
 
 .test-redline__label {
   display: block;
-  position: relative;
+  position: absolute;
+  padding: 2px;
+  border: 1px solid #ccc;
   border-radius: 2px;
-  background-color: rgba(white, .9);
+  background-color: white;
   font-family: Courier, monospace;
   font-size: 8px; // 8px is the least flaky font size in Firefox on Windows
   text-align: right;
@@ -219,15 +208,22 @@ $test-layout-cell-grid-color: #ddd;
 }
 
 .test-redline--vertical .test-redline__label {
-  top: 0;
+  top: 50%;
   right: 2px;
-}
-
-.test-redline--vertical.test-redline--small .test-redline__label {
-  top: -1px;
+  transform: translateY(-50%);
 }
 
 .test-redline--horizontal .test-redline__label {
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.test-redline--small.test-redline--vertical .test-redline__label {
+  right: 13px;
+}
+
+.test-redline--small.test-redline--horizontal .test-redline__label {
   bottom: 13px;
 }
 
