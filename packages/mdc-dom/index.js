@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2018 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,25 +21,6 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
-const cssClasses = {
-  DISABLED: 'mdc-select--disabled',
-  ROOT: 'mdc-select',
-  OUTLINED: 'mdc-select--outlined',
-};
+import * as ponyfill from './ponyfill';
 
-/** @enum {string} */
-const strings = {
-  CHANGE_EVENT: 'MDCSelect:change',
-  LINE_RIPPLE_SELECTOR: '.mdc-line-ripple',
-  LABEL_SELECTOR: '.mdc-floating-label',
-  NATIVE_CONTROL_SELECTOR: '.mdc-select__native-control',
-  OUTLINE_SELECTOR: '.mdc-notched-outline',
-};
-
-/** @enum {number} */
-const numbers = {
-  LABEL_SCALE: 0.75,
-};
-
-export {cssClasses, strings, numbers};
+export {ponyfill};
