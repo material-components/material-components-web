@@ -30,6 +30,18 @@
 
 // postcss-bem-linter: define dialog
 
+.mdc-dialog,
+.mdc-dialog__scrim {
+  position: fixed;
+  top: 0;
+  left: 0;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+}
+
 .mdc-dialog {
   @include mdc-dialog-container-fill-color(surface);
   @include mdc-dialog-scrim-color(on-surface, .32);
@@ -43,26 +55,10 @@
 
   // Use `display: none` instead of `visibility: hidden` to avoid recalculating layout when the dialog is closed.
   display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  width: 100%;
-  height: 100%;
   z-index: 5;
 }
 
 .mdc-dialog__scrim {
-  position: fixed;
-  top: 0;
-  left: 0;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  width: 100%;
-  height: 100%;
   opacity: 0;
   z-index: -1;
 }
