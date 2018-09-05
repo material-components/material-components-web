@@ -2,52 +2,34 @@
 title: "DOM"
 layout: detail
 section: components
-excerpt: "DOM manipulation utilities."
+excerpt: "Provides commonly-used utilities for inspecting, traversing, and manipulating the DOM."
 path: /catalog/dom/
 -->
 
 # DOM
 
-MDC DOM contains ... TODO
+MDC DOM provides commonly-used utilities for inspecting, traversing, and manipulating the DOM.
 
 Most of the time, you shouldn't need to depend on `mdc-dom` directly. It is useful however if you'd like to write custom components that follow MDC Web's pattern and elegantly integrate with the MDC Web ecosystem.
 
 ## Installation
 
-First install the module:
-
 ```
 npm install @material/dom
 ```
 
-Then include it in your code in one of the following ways:
+## Basic Usage
 
-#### ES2015+
-
-```javascript
-import {matches} from '@material/dom/ponyfill';
+```js
+import * as ponyfill from '@material/dom/ponyfill';
 ```
 
-#### CommonJS
+> See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
 
-```javascript
-const {matches} = require('@material/dom/ponyfill');
-```
+## Ponyfill Functions
 
-#### AMD
+The `ponyfill` module provides the following functions:
 
-```javascript
-require(['path/to/mdc-dom/ponyfill'], function(ponyfill) {
-  const matches = ponyfill.matches;
-});
-```
-
-#### Vanilla
-
-```javascript
-const matches = mdc.dom.ponyfill.matches;
-```
-
-## Usage
-
-TODO
+Function Signature | Description
+--- | ---
+`matches(element: Element, selector: string) => boolean` | Returns true if the given element matches the given CSS selector.

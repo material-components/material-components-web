@@ -27,15 +27,15 @@
  */
 
 /**
- * @param {!Element} elem
+ * @param {!Element} element
  * @param {string} selector
  * @return {boolean}
  */
-function matches(elem, selector) {
-  const nativeMatches = elem.matches
-    || elem.webkitMatchesSelector
-    || elem.msMatchesSelector;
-  return nativeMatches.call(elem, selector);
+function matches(element, selector) {
+  const nativeMatches = element.matches
+    || element.webkitMatchesSelector
+    || element.msMatchesSelector;
+  return nativeMatches.call(element, selector);
 }
 
 export {matches};
