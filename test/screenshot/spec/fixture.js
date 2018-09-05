@@ -76,6 +76,10 @@ class TestFixture {
     window.addEventListener('resize', () => {
       this.renderRedlines_();
     });
+
+    window.addEventListener('orientationchange', () => {
+      this.renderRedlines_();
+    });
   }
 
   /** @param {!RedlineConfig} config */

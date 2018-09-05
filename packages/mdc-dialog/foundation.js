@@ -78,6 +78,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.registerInteractionHandler('click', this.dialogClickHandler_);
     this.adapter_.registerDocumentHandler('keydown', this.documentKeyDownHandler_);
     this.adapter_.registerWindowHandler('resize', this.windowResizeHandler_);
+    this.adapter_.registerWindowHandler('orientationchange', this.windowResizeHandler_);
     this.adapter_.addClass(cssClasses.ANIMATING);
     this.adapter_.addClass(cssClasses.OPEN);
     this.adapter_.addBodyClass(cssClasses.SCROLL_LOCK);
@@ -98,6 +99,7 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.deregisterInteractionHandler('click', this.dialogClickHandler_);
     this.adapter_.deregisterDocumentHandler('keydown', this.documentKeyDownHandler_);
     this.adapter_.deregisterWindowHandler('resize', this.windowResizeHandler_);
+    this.adapter_.deregisterWindowHandler('orientationchange', this.windowResizeHandler_);
     this.adapter_.untrapFocusOnSurface();
     this.adapter_.addClass(cssClasses.ANIMATING);
     this.adapter_.removeClass(cssClasses.OPEN);
