@@ -66,8 +66,7 @@ class TestFixture {
      * @type {!HTMLElement}
      * @private
      */
-    this.redlineContainerEl_ = document.createElement('div');
-    this.redlineContainerEl_.id = 'test-redlines';
+    this.redlineContainerEl_ = bel`<div id="test-redlines"></div>`;
 
     /**
      * @type {!Promise<void>}
@@ -89,11 +88,6 @@ class TestFixture {
     window.addEventListener('orientationchange', () => {
       this.renderRedlines_();
     });
-  }
-
-  removeRedlines() {
-    this.redlineContainerEl_.innerHTML = '';
-    this.redlineConfigs_.length = 0;
   }
 
   /** @param {!RedlineConfig} config */
@@ -122,6 +116,11 @@ class TestFixture {
     }, config));
 
     this.renderRedlines_();
+  }
+
+  removeRedlines() {
+    this.redlineConfigs_.length = 0;
+    this.redlineContainerEl_.innerHTML = '';
   }
 
   /** @private */
