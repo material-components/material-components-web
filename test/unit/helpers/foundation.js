@@ -36,8 +36,7 @@ import td from 'testdouble';
  */
 export function verifyDefaultAdapter(FoundationClass, expectedMethodNames) {
   const {defaultAdapter} = FoundationClass;
-  const plainObject = toPlainObject(defaultAdapter);
-  const adapterKeys = Object.keys(plainObject);
+  const adapterKeys = Object.keys(defaultAdapter);
   const actualMethodNames = adapterKeys.filter((key) => typeof defaultAdapter[key] === 'function');
 
   assert.equal(actualMethodNames.length, adapterKeys.length, 'Every adapter key must be a function');
@@ -81,51 +80,6 @@ export function captureHandlers(adapter, handlerCaptureMethodName) {
     handlers[type] = (evtInfo = {}) => handler(Object.assign({type}, evtInfo));
   });
   return handlers;
-}
-
-/**
- * @param {!A} adapterInstance
- * @return {!A}
- * @template A
- */
-function toPlainObject(adapterInstance) {
-  /**
-   * @param {!Object} obj
-   * @param {string} name
-   * @return {boolean}
-   */
-  const hasMethod = (obj, name) => {
-    const desc = Object.getOwnPropertyDescriptor(obj, name);
-    return !!desc && typeof desc.value === 'function';
-  };
-
-  /**
-   * @param {!Object} obj
-   * @param {!Object.} stopPrototype
-   * @return {!Array<string>}
-   */
-  const getInstanceMethodNames = (obj, stopPrototype = Object.prototype) => {
-    const array = [];
-    let curPrototype = Object.getPrototypeOf(obj);
-    while (curPrototype && curPrototype !== stopPrototype) {
-      Object.getOwnPropertyNames(curPrototype).forEach((name) => {
-        if (name !== 'constructor' && hasMethod(curPrototype, name)) {
-          array.push(name);
-        }
-      });
-      curPrototype = Object.getPrototypeOf(curPrototype);
-    }
-    return array;
-  };
-
-  const adapterMethods = {};
-  Object.getOwnPropertyNames(adapterInstance).forEach((name) => {
-    adapterMethods[name] = adapterInstance[name];
-  });
-  getInstanceMethodNames(adapterInstance).forEach((name) => {
-    adapterMethods[name] = adapterInstance[name];
-  });
-  return adapterMethods;
 }
 
 /**

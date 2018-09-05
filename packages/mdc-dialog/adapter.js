@@ -111,7 +111,10 @@ class MDCDialogAdapter {
   /** @return {boolean} */
   areButtonsStacked() {}
 
-  /** @return {?string} */
+  /**
+   * @param {!Element} element
+   * @return {?string}
+   */
   getAction(element) {}
 
   notifyOpening() {}

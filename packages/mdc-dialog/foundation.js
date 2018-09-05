@@ -38,9 +38,30 @@ export default class MDCDialogFoundation extends MDCFoundation {
     return numbers;
   }
 
-  /** @return {!MDCDialogAdapter} */
   static get defaultAdapter() {
-    return new MDCDialogAdapter();
+    return /** @type {!MDCDialogAdapter} */ ({
+      addClass(/* className: string */) {},
+      removeClass(/* className: string */) {},
+      addBodyClass(/* className: string */) {},
+      removeBodyClass(/* className: string */) {},
+      eventTargetHasClass(/* target: !EventTarget, className: string */) {},
+      eventTargetMatchesSelector(/* target: !EventTarget, selector: string */) {},
+      registerInteractionHandler(/* eventName: string, handler: !EventListener */) {},
+      deregisterInteractionHandler(/* eventName: string, handler: !EventListener */) {},
+      registerDocumentHandler(/* eventName: string, handler: !EventListener */) {},
+      deregisterDocumentHandler(/* eventName: string, handler: !EventListener */) {},
+      registerWindowHandler(/* eventName: string, handler: !EventListener */) {},
+      deregisterWindowHandler(/* eventName: string, handler: !EventListener */) {},
+      trapFocusOnSurface() {},
+      untrapFocusOnSurface() {},
+      isContentScrollable() {},
+      areButtonsStacked() {},
+      getAction(/* element: !Element */) {},
+      notifyOpening() {},
+      notifyOpened() {},
+      notifyClosing(/* action: string|undefined */) {},
+      notifyClosed(/* action: string|undefined */) {},
+    });
   }
 
   constructor(adapter = MDCDialogFoundation.defaultAdapter) {
