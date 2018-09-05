@@ -26,6 +26,20 @@ import bel from 'bel';
 
 window.mdc = window.mdc || {};
 
+/**
+ * @typedef {{
+ *   fromEl: ?Element,
+ *   fromSide: string,
+ *   toEl: ?Element,
+ *   toSide: string,
+ *   specDistancePx: number,
+ *   displayOffsetPx: number,
+ *   displayAlignment: string,
+ *   lineEl: ?Element,
+ *   labelEl: ?Element,
+ * }} RedlineConfig
+ */
+
 class TestFixture {
   constructor() {
     /**
@@ -41,6 +55,12 @@ class TestFixture {
     this.fontsLoadedReflowDelayMs_ = this.getUrlParamInt_('fonts_loaded_reflow_delay_ms', 100);
 
     /**
+     * @type {!Array<!RedlineConfig>}
+     * @private
+     */
+    this.redlineConfigs_ = [];
+
+    /**
      * @type {!Promise<void>}
      */
     this.fontsLoaded = this.createFontObserver_();
@@ -49,83 +69,72 @@ class TestFixture {
       console.log('Fonts loaded!');
       this.measureMobileViewport_();
       this.autoFocus_();
+      this.renderRedlines_();
       this.notifyWebDriver_();
+    });
+
+    window.addEventListener('resize', () => {
+      this.renderRedlines_();
     });
   }
 
-  /**
-   * @param {?Element} fromEl
-   * @param {string} fromSide
-   * @param {?Element} toEl
-   * @param {string} toSide
-   * @param {number} specDistancePx
-   * @param {number=} displayOffsetPx
-   * @param {string=} displayAlignment
-   */
-  addRedline({
-    fromEl,
-    fromSide,
-    toEl,
-    toSide,
-    specDistancePx,
-    displayOffsetPx = 0,
-    displayAlignment = 'left',
-  }) {
+  /** @param {!RedlineConfig} config */
+  addRedline(config) {
+    const {fromEl, toEl} = config;
     if (!fromEl || !toEl) {
       return;
     }
 
-    if (fromSide === 'top' || fromSide === 'bottom' || fromSide === 'first-baseline' || fromSide === 'last-baseline') {
-      this.addVerticalRedline_({
-        fromEl,
-        fromSide,
-        toEl,
-        toSide,
-        specDistancePx,
-        displayOffsetPx,
-        displayAlignment,
-      });
-    } else if (fromSide === 'left' || fromSide === 'right') {
-      this.addHorizontalRedline_({
-        fromEl,
-        fromSide,
-        toEl,
-        toSide,
-        specDistancePx,
-        displayOffsetPx,
-        displayAlignment,
-      });
-    } else {
-      throw new Error(`Unsupported \`fromSide\` value: "${fromSide}"`);
-    }
-  }
-
-  /**
-   * @param {!Element} fromEl
-   * @param {string} fromSide
-   * @param {!Element} toEl
-   * @param {string} toSide
-   * @param {number} specDistancePx
-   * @param {number=} displayOffsetPx
-   * @param {string=} displayAlignment
-   */
-  addVerticalRedline_({
-    fromEl,
-    fromSide,
-    toEl,
-    toSide,
-    specDistancePx,
-    displayOffsetPx = 0,
-    displayAlignment = 'left',
-  }) {
     const lineEl = bel`
-<div class="test-redline test-redline--vertical">
+<div class="test-redline">
   <div class="test-redline__tick test-redline__tick--start"></div>
   <div class="test-redline__tick test-redline__tick--end"></div>
   <div class="test-redline__label"></div>
 </div>
 `;
     const labelEl = lineEl.querySelector('.test-redline__label');
+
+    document.body.appendChild(lineEl);
+
+    this.redlineConfigs_.push(Object.assign({
+      lineEl,
+      labelEl,
+    }, config));
+
+    this.renderRedlines_();
+  }
+
+  /** @private */
+  renderRedlines_() {
+    requestAnimationFrame(() => {
+      this.redlineConfigs_.forEach((config) => {
+        const {lineEl, fromSide} = config;
+        lineEl.classList.remove(
+          'test-redline--vertical',
+          'test-redline--horizontal',
+          'test-redline--pass',
+          'test-redline--warn',
+          'test-redline--small',
+        );
+        if (fromSide === 'top' || fromSide === 'bottom' ||
+            fromSide === 'first-baseline' || fromSide === 'last-baseline') {
+          this.drawVerticalRedline_(config);
+        } else if (fromSide === 'left' || fromSide === 'right') {
+          this.drawHorizontalRedline_(config);
+        } else {
+          throw new Error(`Unsupported \`fromSide\` value: "${fromSide}"`);
+        }
+      });
+    });
+  }
+
+  /**
+   * @param {!RedlineConfig} config
+   * @private
+   */
+  drawVerticalRedline_(config) {
+    const {lineEl, labelEl, fromEl, fromSide, toEl, toSide, specDistancePx, displayOffsetPx, displayAlignment} = config;
+    lineEl.classList.add('test-redline--vertical');
 
     const fromRect = fromEl.getBoundingClientRect();
     const toRect = toEl.getBoundingClientRect();
@@ -164,39 +173,18 @@ class TestFixture {
       lineEl.classList.add('test-redline--fail');
     }
 
-    document.body.appendChild(lineEl);
-
     if (actualDistancePx < labelEl.offsetHeight + 2) {
       lineEl.classList.add('test-redline--small');
     }
   }
 
   /**
-   * @param {!Element} fromEl
-   * @param {string} fromSide
-   * @param {!Element} toEl
-   * @param {string} toSide
-   * @param {number} specDistancePx
-   * @param {number=} displayOffsetPx
-   * @param {string=} displayAlignment
+   * @param {!RedlineConfig} config
+   * @private
    */
-  addHorizontalRedline_({
-    fromEl,
-    fromSide,
-    toEl,
-    toSide,
-    specDistancePx,
-    displayOffsetPx = 0,
-    displayAlignment = 'top',
-  }) {
-    const lineEl = bel`
-<div class="test-redline test-redline--horizontal">
-  <div class="test-redline__tick test-redline__tick--start"></div>
-  <div class="test-redline__tick test-redline__tick--end"></div>
-  <div class="test-redline__label"></div>
-</div>
-`;
-    const labelEl = lineEl.querySelector('.test-redline__label');
+  drawHorizontalRedline_(config) {
+    const {lineEl, labelEl, fromEl, fromSide, toEl, toSide, specDistancePx, displayOffsetPx, displayAlignment} = config;
+    lineEl.classList.add('test-redline--horizontal');
 
     const fromRect = fromEl.getBoundingClientRect();
     const toRect = toEl.getBoundingClientRect();
@@ -234,8 +222,6 @@ class TestFixture {
       labelEl.innerHTML = `Spec: ${specDistancePx}px<br>Actual: ${actualDistancePx}px`;
       lineEl.classList.add('test-redline--fail');
     }
-
-    document.body.appendChild(lineEl);
 
     if (actualDistancePx < labelEl.offsetWidth + 2) {
       lineEl.classList.add('test-redline--small');
