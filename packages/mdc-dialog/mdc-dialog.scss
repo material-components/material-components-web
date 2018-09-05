@@ -67,7 +67,7 @@
   z-index: -1;
 }
 
-// This wrapper element is needed to make max-height work IE 11.
+// This wrapper element is needed to make max-height work in IE 11.
 // See https://github.com/philipwalton/flexbugs/issues/216
 .mdc-dialog__container {
   display: flex;
