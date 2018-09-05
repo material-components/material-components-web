@@ -52,6 +52,7 @@ class MDCDialogFoundation extends MDCFoundation {
       deregisterDocumentHandler(/* eventName: string, handler: !EventListener */) {},
       registerWindowHandler(/* eventName: string, handler: !EventListener */) {},
       deregisterWindowHandler(/* eventName: string, handler: !EventListener */) {},
+      computeBoundingRect() {},
       trapFocusOnSurface() {},
       untrapFocusOnSurface() {},
       isContentScrollable() {},
@@ -104,6 +105,9 @@ class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.registerWindowHandler('resize', this.windowResizeHandler_);
     this.adapter_.registerWindowHandler('orientationchange', this.windowResizeHandler_);
     this.adapter_.addClass(cssClasses.ANIMATING);
+
+    // Force redraw now that display is no longer "none", to establish basis for animation
+    this.adapter_.computeBoundingRect();
     this.adapter_.addClass(cssClasses.OPEN);
     this.adapter_.addBodyClass(cssClasses.SCROLL_LOCK);
     this.adapter_.notifyOpening();

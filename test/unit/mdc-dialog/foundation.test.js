@@ -53,6 +53,7 @@ test('default adapter returns a complete adapter implementation', () => {
     'registerInteractionHandler', 'deregisterInteractionHandler',
     'registerDocumentHandler', 'deregisterDocumentHandler',
     'registerWindowHandler', 'deregisterWindowHandler',
+    'computeBoundingRect',
     'trapFocusOnSurface', 'untrapFocusOnSurface',
     'isContentScrollable', 'areButtonsStacked', 'getAction',
     'notifyOpening', 'notifyOpened', 'notifyClosing', 'notifyClosed',

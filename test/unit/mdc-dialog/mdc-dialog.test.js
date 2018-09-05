@@ -244,6 +244,17 @@ test('adapter#deregisterWindowHandler detaches an event handler from the window'
   td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
+test('adapter#computeBoundingRect calls getBoundingClientRect() on root', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+
+  try {
+    assert.deepEqual(component.getDefaultFoundation().adapter_.computeBoundingRect(), root.getBoundingClientRect());
+  } finally {
+    document.body.removeChild(root);
+  }
+});
+
 test(`adapter#notifyOpening emits ${strings.OPENING_EVENT}`, () => {
   const {component} = setupTest();
 

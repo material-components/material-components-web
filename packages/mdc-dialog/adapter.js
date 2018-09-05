@@ -102,6 +102,9 @@ class MDCDialogAdapter {
    */
   deregisterWindowHandler(eventName, handler) {}
 
+  /** @return {!ClientRect} */
+  computeBoundingRect() {}
+
   trapFocusOnSurface() {}
   untrapFocusOnSurface() {}
 

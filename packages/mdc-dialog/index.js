@@ -126,6 +126,7 @@ class MDCDialog extends MDCComponent {
       deregisterDocumentHandler: (eventName, handler) => document.removeEventListener(eventName, handler),
       registerWindowHandler: (eventName, handler) => window.addEventListener(eventName, handler),
       deregisterWindowHandler: (eventName, handler) => window.removeEventListener(eventName, handler),
+      computeBoundingRect: () => this.root_.getBoundingClientRect(),
       trapFocusOnSurface: () => this.focusTrap_.activate(),
       untrapFocusOnSurface: () => this.focusTrap_.deactivate(),
       isContentScrollable: () => !!this.content_ && this.util_.isScrollable(/** @type {!Element} */ (this.content_)),
