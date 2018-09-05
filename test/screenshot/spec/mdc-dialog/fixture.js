@@ -65,6 +65,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
 
     dialog.listen(strings.OPENED_EVENT, () => {
       const isStacked = dialogEl.classList.contains('mdc-dialog--stacked');
+      const isScrollable = dialogEl.classList.contains('mdc-dialog--scrollable');
 
       const anyTitleEl = document.querySelector('.mdc-dialog__title');
       const oneLineTitleEl = document.querySelector(
@@ -159,15 +160,17 @@ window.mdc.testFixture.fontsLoaded.then(() => {
       });
 
       // Content typography baseline bottom
-      window.mdc.testFixture.addRedline({
-        fromEl: lastParagraphEl,
-        fromSide: 'last-baseline',
-        toEl: sideBySideActionsEl,
-        toSide: 'top',
-        specDistancePx: 28,
-        displayOffsetPx: 100,
-        displayAlignment: 'left',
-      });
+      if (!isScrollable) {
+        window.mdc.testFixture.addRedline({
+          fromEl: lastParagraphEl,
+          fromSide: 'last-baseline',
+          toEl: sideBySideActionsEl,
+          toSide: 'top',
+          specDistancePx: 28,
+          displayOffsetPx: 100,
+          displayAlignment: 'left',
+        });
+      }
 
       // Actions height (1-line)
       window.mdc.testFixture.addRedline({
