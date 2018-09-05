@@ -62,7 +62,7 @@ $custom-dialog-color: $material-color-red-300;
 }
 
 .test-dialog--min-width {
-  @include mdc-dialog-min-width(100px);
+  @include mdc-dialog-min-width(200px);
 }
 
 .test-dialog--max-width {
