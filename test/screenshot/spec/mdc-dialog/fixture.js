@@ -59,6 +59,10 @@ window.mdc.testFixture.fontsLoaded.then(() => {
       openButtonEl.addEventListener('click', () => dialog.show());
     }
 
+    dialog.listen(strings.CLOSING_EVENT, () => {
+      window.mdc.testFixture.removeRedlines();
+    });
+
     dialog.listen(strings.OPENED_EVENT, () => {
       const anyTitleEl = document.querySelector('.mdc-dialog__title');
       const oneLineTitleEl = document.querySelector(

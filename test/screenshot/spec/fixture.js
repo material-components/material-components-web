@@ -61,6 +61,13 @@ class TestFixture {
     this.redlineConfigs_ = [];
 
     /**
+     * @type {!HTMLElement}
+     * @private
+     */
+    this.redlineContainerEl_ = document.createElement('div');
+    this.redlineContainerEl_.id = 'test-redlines';
+
+    /**
      * @type {!Promise<void>}
      */
     this.fontsLoaded = this.createFontObserver_();
@@ -82,6 +89,11 @@ class TestFixture {
     });
   }
 
+  removeRedlines() {
+    this.redlineContainerEl_.innerHTML = '';
+    this.redlineConfigs_.length = 0;
+  }
+
   /** @param {!RedlineConfig} config */
   addRedline(config) {
     const {fromEl, toEl} = config;
@@ -98,7 +110,7 @@ class TestFixture {
 `;
     const labelEl = lineEl.querySelector('.test-redline__label');
 
-    document.body.appendChild(lineEl);
+    this.redlineContainerEl_.appendChild(lineEl);
 
     this.redlineConfigs_.push(Object.assign({
       lineEl,
@@ -111,6 +123,10 @@ class TestFixture {
   /** @private */
   renderRedlines_() {
     requestAnimationFrame(() => {
+      if (!this.redlineContainerEl_.parentElement) {
+        document.body.appendChild(this.redlineContainerEl_);
+      }
+
       this.redlineConfigs_.forEach((config) => {
         const {lineEl, fromSide} = config;
         lineEl.classList.remove(
