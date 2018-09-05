@@ -28,6 +28,7 @@ window.mdc = window.mdc || {};
 
 /**
  * @typedef {{
+ *   name: string,
  *   fromEl: ?Element,
  *   fromSide: string,
  *   toEl: ?Element,
@@ -97,13 +98,13 @@ class TestFixture {
 
   /** @param {!RedlineConfig} config */
   addRedline(config) {
-    const {fromEl, toEl} = config;
+    const {fromEl, toEl, name} = config;
     if (!fromEl || !toEl) {
       return;
     }
 
     const lineEl = bel`
-<div class="test-redline">
+<div class="test-redline" title="${name}">
   <div class="test-redline__tick test-redline__tick--start"></div>
   <div class="test-redline__tick test-redline__tick--end"></div>
   <div class="test-redline__label"></div>

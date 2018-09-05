@@ -117,41 +117,42 @@ window.mdc.testFixture.fontsLoaded.then(() => {
        * Vertical
        */
 
-      // Title typography baseline
       window.mdc.testFixture.addRedline({
         fromEl: anyTitleEl,
+        name: 'Title typography baseline',
         fromSide: 'top',
         toEl: anyTitleEl,
         toSide: 'first-baseline',
         specDistancePx: 40,
+        displayOffsetPx: 24,
         displayAlignment: 'left',
       });
 
-      // Title height (1-line)
       window.mdc.testFixture.addRedline({
         fromEl: oneLineTitleEl,
+        name: 'Title height (1-line)',
         fromSide: 'top',
         toEl: oneLineTitleEl,
         toSide: 'bottom',
         specDistancePx: 64,
-        displayOffsetPx: 50,
-        displayAlignment: 'left',
+        displayAlignment: 'center',
+        displayTargetEl: oneLineTitleEl,
       });
 
-      // Title height (3-line)
       window.mdc.testFixture.addRedline({
         fromEl: threeLineTitleEl,
+        name: 'Title height (3-line)',
         fromSide: 'top',
         toEl: threeLineTitleEl,
         toSide: 'bottom',
         specDistancePx: 128,
-        displayOffsetPx: 100,
-        displayAlignment: 'left',
+        displayAlignment: 'center',
+        displayTargetEl: threeLineTitleEl,
       });
 
-      // Content typography baseline top
       window.mdc.testFixture.addRedline({
         fromEl: notScrolledTitleEl,
+        name: 'Content typography baseline top',
         fromSide: 'last-baseline',
         toEl: firstParagraphEl,
         toSide: 'first-baseline',
@@ -159,9 +160,9 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         displayAlignment: 'left',
       });
 
-      // Content typography baseline bottom
       if (!isScrollable) {
         window.mdc.testFixture.addRedline({
+          name: 'Content typography baseline bottom',
           fromEl: lastParagraphEl,
           fromSide: 'last-baseline',
           toEl: sideBySideActionsEl,
@@ -172,9 +173,9 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         });
       }
 
-      // Actions height (1-line)
       window.mdc.testFixture.addRedline({
         fromEl: sideBySideActionsEl,
+        name: 'Actions height (1-line)',
         fromSide: 'top',
         toEl: sideBySideActionsEl,
         toSide: 'bottom',
@@ -182,18 +183,18 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         displayAlignment: 'left',
       });
 
-      // Actions padding top
       window.mdc.testFixture.addRedline({
         fromEl: anyActionsEl,
+        name: 'Actions padding top',
         fromSide: 'top',
         toEl: firstButtonEl,
         toSide: 'top',
         specDistancePx: 8,
       });
 
-      // Actions padding bottom
       window.mdc.testFixture.addRedline({
         fromEl: lastButtonEl,
+        name: 'Actions padding bottom',
         fromSide: 'bottom',
         toEl: anyActionsEl,
         toSide: 'bottom',
@@ -203,9 +204,9 @@ window.mdc.testFixture.fontsLoaded.then(() => {
       // TODO fix content to right side
 
       if (isStacked) {
-        // Stacked button margin
         window.mdc.testFixture.addRedline({
           fromEl: secondLastButtonEl,
+          name: 'Stacked button margin',
           fromSide: 'bottom',
           toEl: lastButtonEl,
           toSide: 'top',
@@ -220,9 +221,9 @@ window.mdc.testFixture.fontsLoaded.then(() => {
        */
 
       if (!isStacked) {
-        // Side-by-side button margin
         window.mdc.testFixture.addRedline({
           fromEl: secondLastButtonEl,
+          name: 'Side-by-side button margin',
           fromSide: 'right',
           toEl: lastButtonEl,
           toSide: 'left',
@@ -232,20 +233,21 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         });
       }
 
-      // Actions padding right
       window.mdc.testFixture.addRedline({
         fromEl: lastButtonEl,
+        name: 'Actions padding right',
         fromSide: 'right',
         toEl: anyActionsEl,
         toSide: 'right',
         specDistancePx: 8,
-        displayAlignment: 'bottom',
+        displayAlignment: 'center',
+        displayTargetEl: anyActionsEl,
       });
 
       if (contentRectEl) {
-        // Content padding left
         window.mdc.testFixture.addRedline({
           fromEl: surfaceEl,
+          name: 'Content padding left',
           fromSide: 'left',
           toEl: contentRectEl,
           toSide: 'left',
@@ -254,9 +256,9 @@ window.mdc.testFixture.fontsLoaded.then(() => {
           displayTargetEl: surfaceEl,
         });
 
-        // Content padding right
         window.mdc.testFixture.addRedline({
           fromEl: contentRectEl,
+          name: 'Content padding right',
           fromSide: 'right',
           toEl: surfaceEl,
           toSide: 'right',
