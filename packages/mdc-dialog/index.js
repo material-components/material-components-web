@@ -28,12 +28,9 @@ import {matches} from '@material/dom/ponyfill';
 import MDCDialogFoundation from './foundation';
 import MDCDialogUtil from './util';
 
-export {MDCDialogFoundation};
-export {MDCDialogUtil};
-
 const strings = MDCDialogFoundation.strings;
 
-export class MDCDialog extends MDCComponent {
+class MDCDialog extends MDCComponent {
   constructor(...args) {
     super(...args);
 
@@ -44,25 +41,25 @@ export class MDCDialog extends MDCComponent {
     this.buttonRipples_;
 
     /**
-     * @type {!Array<!HTMLElement>}
+     * @type {!Array<!Element>}
      * @private
      */
     this.buttons_;
 
     /**
-     * @type {!HTMLElement}
+     * @type {!Element}
      * @private
      */
-    this.container;
+    this.container_;
 
     /**
-     * @type {?HTMLElement}
+     * @type {?Element}
      * @private
      */
     this.content_;
 
     /**
-     * @type {!focusTrap}
+     * @type {!FocusTrapInstance}
      * @private
      */
     this.focusTrap_;
@@ -84,7 +81,7 @@ export class MDCDialog extends MDCComponent {
 
   initialize() {
     this.util_ = this.util_ || new MDCDialogUtil();
-    this.container_ = this.root_.querySelector(strings.CONTAINER_SELECTOR);
+    this.container_ = /** @type {!Element} */ (this.root_.querySelector(strings.CONTAINER_SELECTOR));
     this.content_ = this.root_.querySelector(strings.CONTENT_SELECTOR);
     this.buttons_ = [].slice.call(this.root_.querySelectorAll(strings.BUTTON_SELECTOR));
     this.focusTrap_ = this.util_.createFocusTrapInstance(this.container_);
@@ -128,13 +125,15 @@ export class MDCDialog extends MDCComponent {
       deregisterWindowHandler: (eventName, handler) => window.removeEventListener(eventName, handler),
       trapFocusOnSurface: () => this.focusTrap_.activate(),
       untrapFocusOnSurface: () => this.focusTrap_.deactivate(),
-      isContentScrollable: () => !!this.content_ && this.util_.isScrollable(this.content_),
+      isContentScrollable: () => !!this.content_ && this.util_.isScrollable(/** @type {!Element} */ (this.content_)),
       areButtonsStacked: () => this.util_.areTopsMisaligned(this.buttons_),
       getAction: (element) => element.getAttribute(strings.ACTION_ATTRIBUTE),
-      notifyOpening: () => this.emit(strings.OPENING_EVENT),
-      notifyOpened: () => this.emit(strings.OPENED_EVENT),
+      notifyOpening: () => this.emit(strings.OPENING_EVENT, {}),
+      notifyOpened: () => this.emit(strings.OPENED_EVENT, {}),
       notifyClosing: (action = undefined) => this.emit(strings.CLOSING_EVENT, {action}),
       notifyClosed: (action = undefined) => this.emit(strings.CLOSED_EVENT, {action}),
     });
   }
 }
+
+export {MDCDialog, MDCDialogFoundation, MDCDialogUtil};

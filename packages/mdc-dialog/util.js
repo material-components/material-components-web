@@ -23,12 +23,12 @@
 
 import createFocusTrap from 'focus-trap';
 
-export default class MDCDialogUtil {
+class MDCDialogUtil {
   /**
-   * @param {!HTMLElement} surfaceEl
-   * @param {?HTMLElement=} initialFocusEl
-   * @param {function(!HTMLElement, !FocusTrapCreateOptions): !focusTrap} focusTrapFactory
-   * @return {!focusTrap}
+   * @param {!Element} surfaceEl
+   * @param {?Element=} initialFocusEl
+   * @param {function(!Element, !FocusTrapCreateOptions): !FocusTrapInstance} focusTrapFactory
+   * @return {!FocusTrapInstance}
    */
   createFocusTrapInstance(surfaceEl, initialFocusEl = null, focusTrapFactory = createFocusTrap) {
     return focusTrapFactory(surfaceEl, {
@@ -38,7 +38,7 @@ export default class MDCDialogUtil {
   }
 
   /**
-   * @param {!HTMLElement} el
+   * @param {!Element} el
    * @return {boolean}
    */
   isScrollable(el) {
@@ -46,7 +46,7 @@ export default class MDCDialogUtil {
   }
 
   /**
-   * @param {!Array<!HTMLElement>|!NodeList} els
+   * @param {!Array<!Element>|!NodeList} els
    * @return {boolean}
    */
   areTopsMisaligned(els) {
@@ -55,3 +55,5 @@ export default class MDCDialogUtil {
     return tops.size > 1;
   }
 }
+
+export default MDCDialogUtil;

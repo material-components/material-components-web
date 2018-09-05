@@ -25,7 +25,7 @@ import {MDCFoundation} from '@material/base/index';
 import MDCDialogAdapter from './adapter';
 import {cssClasses, numbers, strings} from './constants';
 
-export default class MDCDialogFoundation extends MDCFoundation {
+class MDCDialogFoundation extends MDCFoundation {
   static get cssClasses() {
     return cssClasses;
   }
@@ -198,3 +198,5 @@ export default class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.removeClass(cssClasses.ANIMATING);
   }
 }
+
+export default MDCDialogFoundation;
