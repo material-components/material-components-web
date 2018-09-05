@@ -44,53 +44,55 @@
            aria-modal="true"
            aria-hidden="true"
            aria-labelledby="test-dialog__title"
-           aria-describedby="test-dialog__body"
+           aria-describedby="test-dialog__content"
            id="test-dialog">
         <div class="mdc-dialog__scrim"></div>
         <div class="mdc-dialog__container">
           <div class="mdc-dialog__surface">
             <h2 class="mdc-dialog__title test-dialog__title" id="test-dialog__title">Confirmation</h2>
-            <section class="mdc-dialog__content test-dialog__content" id="test-dialog__body">
+            <section class="mdc-dialog__content test-dialog__content" id="test-dialog__content">
 
-              <!--
-                Inline `style="list-style-type: none"` needed to prevent rendering bug in Edge and IE 11.
-                See https://stackoverflow.com/a/23717689/467582
-              -->
-              <ul class="mdc-list" aria-orientation="vertical" style="list-style-type: none;">
-                <li class="mdc-list-item" tabindex="0">
-                  <span class="mdc-list-item__graphic">
-                    <div class="mdc-radio">
-                      <input class="mdc-radio__native-control"
-                             type="radio"
-                             id="test-dialog-baseline-confirmation-radio-1"
-                             name="test-dialog-baseline-confirmation-radio-group"
-                             checked>
-                      <div class="mdc-radio__background">
-                        <div class="mdc-radio__outer-circle"></div>
-                        <div class="mdc-radio__inner-circle"></div>
+              <div class="test-dialog__content-rect">
+                <!--
+                  Inline `style="list-style-type: none"` needed to prevent rendering bug in Edge and IE 11.
+                  See https://stackoverflow.com/a/23717689/467582
+                -->
+                <ul class="mdc-list" aria-orientation="vertical" style="list-style-type: none;">
+                  <li class="mdc-list-item" tabindex="0">
+                    <span class="mdc-list-item__graphic">
+                      <div class="mdc-radio">
+                        <input class="mdc-radio__native-control"
+                               type="radio"
+                               id="test-dialog-baseline-confirmation-radio-1"
+                               name="test-dialog-baseline-confirmation-radio-group"
+                               checked>
+                        <div class="mdc-radio__background">
+                          <div class="mdc-radio__outer-circle"></div>
+                          <div class="mdc-radio__inner-circle"></div>
+                        </div>
                       </div>
-                    </div>
-                  </span>
-                  <label id="test-dialog-baseline-confirmation-radio-1-label"
-                         for="test-dialog-baseline-confirmation-radio-1">Option 1</label>
-                </li>
-                <li class="mdc-list-item" tabindex="0">
-                  <span class="mdc-list-item__graphic">
-                    <div class="mdc-radio">
-                      <input class="mdc-radio__native-control"
-                             type="radio"
-                             id="test-dialog-baseline-confirmation-radio-2"
-                             name="test-dialog-baseline-confirmation-radio-group">
-                      <div class="mdc-radio__background">
-                        <div class="mdc-radio__outer-circle"></div>
-                        <div class="mdc-radio__inner-circle"></div>
+                    </span>
+                    <label id="test-dialog-baseline-confirmation-radio-1-label"
+                           for="test-dialog-baseline-confirmation-radio-1">Option 1</label>
+                  </li>
+                  <li class="mdc-list-item" tabindex="0">
+                    <span class="mdc-list-item__graphic">
+                      <div class="mdc-radio">
+                        <input class="mdc-radio__native-control"
+                               type="radio"
+                               id="test-dialog-baseline-confirmation-radio-2"
+                               name="test-dialog-baseline-confirmation-radio-group">
+                        <div class="mdc-radio__background">
+                          <div class="mdc-radio__outer-circle"></div>
+                          <div class="mdc-radio__inner-circle"></div>
+                        </div>
                       </div>
-                    </div>
-                  </span>
-                  <label id="test-dialog-baseline-confirmation-radio-2-label"
-                         for="test-dialog-baseline-confirmation-radio-2">Option 2</label>
-                </li>
-              </ul>
+                    </span>
+                    <label id="test-dialog-baseline-confirmation-radio-2-label"
+                           for="test-dialog-baseline-confirmation-radio-2">Option 2</label>
+                  </li>
+                </ul>
+              </div>
 
             </section>
             <footer class="mdc-dialog__actions">

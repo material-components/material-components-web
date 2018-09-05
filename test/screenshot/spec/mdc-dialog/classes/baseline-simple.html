@@ -44,29 +44,31 @@
            aria-modal="true"
            aria-hidden="true"
            aria-labelledby="test-dialog__title--simple"
-           aria-describedby="test-dialog__body--simple"
+           aria-describedby="test-dialog__content--simple"
            id="test-dialog">
         <div class="mdc-dialog__scrim" data-mdc-dialog-action="cancel"></div>
         <div class="mdc-dialog__container">
           <div class="mdc-dialog__surface">
             <h2 class="mdc-dialog__title test-dialog__title" id="test-dialog__title--simple">Simple</h2>
-            <section class="mdc-dialog__content test-dialog__content" id="test-dialog__body--simple">
+            <section class="mdc-dialog__content test-dialog__content" id="test-dialog__content--simple">
 
-              <!--
-                Inline `style="list-style-type: none"` needed to prevent rendering bug in Edge and IE 11.
-                See https://stackoverflow.com/a/23717689/467582
-              -->
-              <ul class="mdc-list" aria-orientation="vertical" style="list-style-type: none;">
-                <li class="mdc-list-item" tabindex="0">
-                  <i class="material-icons mdc-list-item__graphic">network_wifi</i> Wi-Fi
-                </li>
-                <li class="mdc-list-item" tabindex="0">
-                  <i class="material-icons mdc-list-item__graphic">bluetooth</i> Bluetooth
-                </li>
-                <li class="mdc-list-item" tabindex="0">
-                  <i class="material-icons mdc-list-item__graphic">data_usage</i> Data usage
-                </li>
-              </ul>
+              <div class="test-dialog__content-rect">
+                <!--
+                  Inline `style="list-style-type: none"` needed to prevent rendering bug in Edge and IE 11.
+                  See https://stackoverflow.com/a/23717689/467582
+                -->
+                <ul class="mdc-list" aria-orientation="vertical" style="list-style-type: none;">
+                  <li class="mdc-list-item" tabindex="0">
+                    <i class="material-icons mdc-list-item__graphic">network_wifi</i> Wi-Fi
+                  </li>
+                  <li class="mdc-list-item" tabindex="0">
+                    <i class="material-icons mdc-list-item__graphic">bluetooth</i> Bluetooth
+                  </li>
+                  <li class="mdc-list-item" tabindex="0">
+                    <i class="material-icons mdc-list-item__graphic">data_usage</i> Data usage
+                  </li>
+                </ul>
+              </div>
 
             </section>
           </div>

@@ -29,7 +29,18 @@ $custom-dialog-color: $material-color-red-300;
 @supports (-ms-ime-align: auto) {
   .test-dialog__title,
   .test-dialog__content {
+    // Reduce flaky text rendering. The default MDC typography value is 0.25px.
     letter-spacing: 0;
+  }
+}
+
+.test-dialog__content-rect {
+  :first-child {
+    margin-top: 0;
+  }
+
+  :last-child {
+    margin-bottom: 0;
   }
 }
 

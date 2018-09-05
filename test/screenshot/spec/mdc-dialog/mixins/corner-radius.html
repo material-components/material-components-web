@@ -44,7 +44,7 @@
            aria-modal="true"
            aria-hidden="true"
            aria-labelledby="test-dialog__title"
-           aria-describedby="test-dialog__body"
+           aria-describedby="test-dialog__content"
            id="test-dialog">
         <div class="mdc-dialog__scrim"></div>
         <div class="mdc-dialog__container">
@@ -54,31 +54,33 @@
               Published in 1844 and translated by Robin Buss.<br>
               Public domain.<!--
          --></h2>
-            <section class="mdc-dialog__content test-dialog__content" id="test-dialog__body">
-              <p>On the <span class="test-font--flaky">24th</span> of February, 1815, the look-out at Notre-Dame de la Garde
-                signalled the <span class="test-font--flaky">three-master, the</span> Pharaon from Smyrna, Trieste, and
-                Naples.</p>
+            <section class="mdc-dialog__content test-dialog__content" id="test-dialog__content">
+              <div class="test-dialog__content-rect">
+                <p>On the <span class="test-font--flaky">24th</span> of February, 1815, the look-out at Notre-Dame de la Garde
+                  signalled the <span class="test-font--flaky">three-master, the</span> Pharaon from Smyrna, Trieste, and
+                  Naples.</p>
 
-              <p>As usual, a pilot put off immediately, and rounding the Château d’If,
-                got on board the vessel between Cape Morgiou and Rion island.</p>
+                <p>As usual, a pilot put off immediately, and rounding the Château d’If,
+                  got on board the vessel between Cape Morgiou and Rion island.</p>
 
-              <p>Immediately, and according to custom, the ramparts of Fort Saint-Jean
-                were covered with spectators; it is always an event at Marseilles for a
-                ship to come into port, especially when this ship, like the Pharaon, has
-                been built, rigged, and laden at the old Phocee docks, and belongs to an
-                owner of the city.</p>
-            </section>
-            <footer class="mdc-dialog__actions">
-              <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="other">
-                <span class="test-font--flaky">Verbose loquacious button text</span>
-              </button>
-              <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="cancel">
-                <span class="test-font--flaky">Cancel</span>
-              </button>
-              <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
-                <span class="test-font--flaky">OK</span>
-              </button>
-            </footer>
+                <p>Immediately, and according to custom, the ramparts of Fort Saint-Jean
+                  were covered with spectators; it is always an event at Marseilles for a
+                  ship to come into port, especially when this ship, like the Pharaon, has
+                  been built, rigged, and laden at the old Phocee docks, and belongs to an
+                  owner of the city.</p>
+              </section>
+              <footer class="mdc-dialog__actions">
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="other">
+                  <span class="test-font--flaky">Verbose loquacious button text</span>
+                </button>
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="cancel">
+                  <span class="test-font--flaky">Cancel</span>
+                </button>
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
+                  <span class="test-font--flaky">OK</span>
+                </button>
+              </footer>
+            </div>
           </div>
         </div>
       </div>

@@ -35,6 +35,7 @@ window.mdc = window.mdc || {};
  *   specDistancePx: number,
  *   displayOffsetPx: number,
  *   displayAlignment: string,
+ *   displayTargetEl: ?Element,
  *   lineEl: ?Element,
  *   labelEl: ?Element,
  * }} RedlineConfig
@@ -115,6 +116,8 @@ class TestFixture {
     this.redlineConfigs_.push(Object.assign({
       lineEl,
       labelEl,
+      displayOffsetPx: 0,
+      displayAlignment: 'center',
     }, config));
 
     this.renderRedlines_();
@@ -206,6 +209,7 @@ class TestFixture {
    */
   drawHorizontalRedline_(config) {
     const {lineEl, labelEl, fromEl, fromSide, toEl, toSide, specDistancePx, displayOffsetPx, displayAlignment} = config;
+    const {displayTargetEl} = config;
     lineEl.classList.add('test-redline--horizontal');
 
     const fromRect = fromEl.getBoundingClientRect();
@@ -222,8 +226,16 @@ class TestFixture {
 
     let topPos;
     if (displayAlignment === 'center') {
-      const topMost = Math.min(fromRect.top, toRect.top);
-      const bottomMost = Math.max(fromRect.bottom, toRect.bottom);
+      let topMost;
+      let bottomMost;
+
+      if (displayTargetEl) {
+        topMost = displayTargetEl.getBoundingClientRect().top;
+        bottomMost = displayTargetEl.getBoundingClientRect().bottom;
+      } else {
+        topMost = Math.min(fromRect.top, toRect.top);
+        bottomMost = Math.max(fromRect.bottom, toRect.bottom);
+      }
       const half = (bottomMost - topMost) / 2;
       topPos = lineStartY + half + displayOffsetPx;
     } else if (displayAlignment === 'bottom') {

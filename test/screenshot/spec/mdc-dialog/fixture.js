@@ -76,6 +76,8 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         '.test-dialog:not(.test-dialog--scroll-to-bottom) .test-dialog__title'
       );
 
+      const contentRectEl = document.querySelector('.test-dialog__content-rect');
+
       const anyActionsEl = document.querySelector('.mdc-dialog__actions');
       const sideBySideActionsEl = document.querySelector(
         '.mdc-dialog:not(.mdc-dialog--stacked) .mdc-dialog__actions'
@@ -88,24 +90,24 @@ window.mdc.testFixture.fontsLoaded.then(() => {
 
       const firstParagraphEls =
         contentEl ? [].slice.call(contentEl.querySelectorAll([
-          '.mdc-dialog__content > h1:first-child',
-          '.mdc-dialog__content > h2:first-child',
-          '.mdc-dialog__content > h3:first-child',
-          '.mdc-dialog__content > h4:first-child',
-          '.mdc-dialog__content > h5:first-child',
-          '.mdc-dialog__content > h6:first-child',
-          '.mdc-dialog__content > p:first-child',
+          '.mdc-dialog__content h1:first-child',
+          '.mdc-dialog__content h2:first-child',
+          '.mdc-dialog__content h3:first-child',
+          '.mdc-dialog__content h4:first-child',
+          '.mdc-dialog__content h5:first-child',
+          '.mdc-dialog__content h6:first-child',
+          '.mdc-dialog__content p:first-child',
         ].join(', '))) : null;
 
       const lastParagraphEls =
         contentEl ? [].slice.call(contentEl.querySelectorAll([
-          '.mdc-dialog__content > h1:last-child',
-          '.mdc-dialog__content > h2:last-child',
-          '.mdc-dialog__content > h3:last-child',
-          '.mdc-dialog__content > h4:last-child',
-          '.mdc-dialog__content > h5:last-child',
-          '.mdc-dialog__content > h6:last-child',
-          '.mdc-dialog__content > p:last-child',
+          '.mdc-dialog__content h1:last-child',
+          '.mdc-dialog__content h2:last-child',
+          '.mdc-dialog__content h3:last-child',
+          '.mdc-dialog__content h4:last-child',
+          '.mdc-dialog__content h5:last-child',
+          '.mdc-dialog__content h6:last-child',
+          '.mdc-dialog__content p:last-child',
         ].join(', '))) : null;
 
       const firstParagraphEl = firstParagraphEls[0];
@@ -122,7 +124,6 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         toEl: anyTitleEl,
         toSide: 'first-baseline',
         specDistancePx: 40,
-        displayOffsetPx: 0,
         displayAlignment: 'left',
       });
 
@@ -155,7 +156,6 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         toEl: firstParagraphEl,
         toSide: 'first-baseline',
         specDistancePx: 36,
-        displayOffsetPx: 0,
         displayAlignment: 'left',
       });
 
@@ -179,7 +179,6 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         toEl: sideBySideActionsEl,
         toSide: 'bottom',
         specDistancePx: 52,
-        displayOffsetPx: 0,
         displayAlignment: 'left',
       });
 
@@ -190,8 +189,6 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         toEl: firstButtonEl,
         toSide: 'top',
         specDistancePx: 8,
-        displayOffsetPx: 0,
-        displayAlignment: 'center',
       });
 
       // Actions padding bottom
@@ -201,9 +198,22 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         toEl: anyActionsEl,
         toSide: 'bottom',
         specDistancePx: 8,
-        displayOffsetPx: 0,
-        displayAlignment: 'center',
       });
+
+      // TODO fix content to right side
+
+      if (isStacked) {
+        // Stacked button margin
+        window.mdc.testFixture.addRedline({
+          fromEl: secondLastButtonEl,
+          fromSide: 'bottom',
+          toEl: lastButtonEl,
+          toSide: 'top',
+          specDistancePx: 12,
+          displayOffsetPx: 0,
+          displayAlignment: 'center',
+        });
+      }
 
       /*
        * Horizontal
@@ -229,31 +239,32 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         toEl: anyActionsEl,
         toSide: 'right',
         specDistancePx: 8,
-        displayOffsetPx: 0,
         displayAlignment: 'bottom',
       });
 
-      // Content padding left
-      window.mdc.testFixture.addRedline({
-        fromEl: surfaceEl,
-        fromSide: 'left',
-        toEl: firstParagraphEl,
-        toSide: 'left',
-        specDistancePx: 24,
-        displayOffsetPx: 0,
-        displayAlignment: 'top',
-      });
+      if (contentRectEl) {
+        // Content padding left
+        window.mdc.testFixture.addRedline({
+          fromEl: surfaceEl,
+          fromSide: 'left',
+          toEl: contentRectEl,
+          toSide: 'left',
+          specDistancePx: 24,
+          displayAlignment: 'center',
+          displayTargetEl: surfaceEl,
+        });
 
-      // Content padding right
-      window.mdc.testFixture.addRedline({
-        fromEl: firstParagraphEl,
-        fromSide: 'right',
-        toEl: surfaceEl,
-        toSide: 'right',
-        specDistancePx: 24,
-        displayOffsetPx: 0,
-        displayAlignment: 'top',
-      });
+        // Content padding right
+        window.mdc.testFixture.addRedline({
+          fromEl: contentRectEl,
+          fromSide: 'right',
+          toEl: surfaceEl,
+          toSide: 'right',
+          specDistancePx: 24,
+          displayAlignment: 'center',
+          displayTargetEl: surfaceEl,
+        });
+      }
     });
 
     dialog.show();
