@@ -57,7 +57,10 @@ class MDCListFoundation extends MDCFoundation {
     });
   }
 
-  constructor(adapter = /** @type {!MDCListFoundation} */ ({})) {
+  /**
+   * @param {!MDCListAdapter=} adapter
+   */
+  constructor(adapter) {
     super(Object.assign(MDCListFoundation.defaultAdapter, adapter));
     /** {boolean} */
     this.wrapFocus_ = false;
