@@ -71,6 +71,11 @@
       text-indent: -2px;
     }
 
+    // stylelint-disable-next-line selector-max-type, plugin/selector-bem-pattern
+    > option {
+      color: inherit; // Override default user agent stylesheet
+    }
+
     width: 100%;
     padding-top: 20px;
     padding-bottom: 4px;
@@ -79,6 +84,7 @@
     border-radius: 0;
     outline: none;
     background-color: transparent;
+    color: inherit; // Override default user agent stylesheet
     white-space: nowrap;
     cursor: pointer;
     appearance: none;
@@ -186,6 +192,7 @@
 
   .mdc-select__native-control {
     border-bottom-style: dotted;
+    color: $mdc-select-disabled-ink-color;
   }
   // stylelint-enable plugin/selector-bem-pattern
 
@@ -202,7 +209,6 @@
     @include mdc-select-outline-color_($mdc-select-outlined-disabled-border);
   }
 
-  opacity: .38;
   cursor: default;
   pointer-events: none;
 }
