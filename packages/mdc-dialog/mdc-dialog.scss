@@ -69,7 +69,7 @@
   display: flex;
   flex-direction: row; // IE 11
   box-sizing: border-box;
-  transform: translateY(150px) scale(.8);
+  transform: scale(.8);
   opacity: 0;
 }
 
@@ -166,29 +166,41 @@
   }
 }
 
-.mdc-dialog--animating {
-  // Keep this value in sync with .mdc-dialog--open
+.mdc-dialog--open,
+.mdc-dialog--opening,
+.mdc-dialog--closing {
   display: flex;
+}
 
+.mdc-dialog--opening {
   .mdc-dialog__scrim {
-    transition: mdc-animation-enter(opacity, 120ms);
+    transition: opacity 150ms linear;
   }
 
   .mdc-dialog__container {
-    transition: mdc-animation-enter(opacity, 120ms), mdc-animation-enter(transform, 120ms);
+    transition: opacity 75ms linear, mdc-animation-enter(transform, 150ms);
+  }
+}
+
+.mdc-dialog--closing {
+  .mdc-dialog__scrim,
+  .mdc-dialog__container {
+    transition: opacity 75ms linear;
+  }
+
+  .mdc-dialog__container {
+    // Dialog container scales up while opening, but should remain scaled up while closing
+    transform: scale(1);
   }
 }
 
 .mdc-dialog--open {
-  // Keep this value in sync with .mdc-dialog--animating
-  display: flex;
-
   .mdc-dialog__scrim {
     opacity: 1;
   }
 
   .mdc-dialog__container {
-    transform: translateY(0) scale(1);
+    transform: scale(1);
     opacity: 1;
   }
 }

@@ -94,7 +94,7 @@ class MDCDialogFoundation extends MDCFoundation {
       this.close(strings.DESTROY_ACTION);
     }
     // Final cleanup of animating class in case the timer has not completed.
-    this.adapter_.removeClass(cssClasses.ANIMATING);
+    this.handleAnimationTimerEnd_();
     clearTimeout(this.animationTimer_);
   }
 
@@ -104,7 +104,7 @@ class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.registerDocumentHandler('keydown', this.documentKeyDownHandler_);
     this.adapter_.registerWindowHandler('resize', this.windowResizeHandler_);
     this.adapter_.registerWindowHandler('orientationchange', this.windowResizeHandler_);
-    this.adapter_.addClass(cssClasses.ANIMATING);
+    this.adapter_.addClass(cssClasses.OPENING);
 
     // Force redraw now that display is no longer "none", to establish basis for animation
     this.adapter_.computeBoundingRect();
@@ -119,7 +119,7 @@ class MDCDialogFoundation extends MDCFoundation {
       this.handleAnimationTimerEnd_();
       this.adapter_.trapFocusOnSurface();
       this.adapter_.notifyOpened();
-    }, numbers.DIALOG_ANIMATION_TIME_MS);
+    }, numbers.DIALOG_ANIMATION_OPEN_TIME_MS);
   }
 
   /**
@@ -132,7 +132,7 @@ class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.deregisterWindowHandler('resize', this.windowResizeHandler_);
     this.adapter_.deregisterWindowHandler('orientationchange', this.windowResizeHandler_);
     this.adapter_.untrapFocusOnSurface();
-    this.adapter_.addClass(cssClasses.ANIMATING);
+    this.adapter_.addClass(cssClasses.CLOSING);
     this.adapter_.removeClass(cssClasses.OPEN);
     this.adapter_.removeBodyClass(cssClasses.SCROLL_LOCK);
     this.adapter_.notifyClosing(action);
@@ -141,7 +141,7 @@ class MDCDialogFoundation extends MDCFoundation {
     this.animationTimer_ = setTimeout(() => {
       this.handleAnimationTimerEnd_();
       this.adapter_.notifyClosed(action);
-    }, numbers.DIALOG_ANIMATION_TIME_MS);
+    }, numbers.DIALOG_ANIMATION_CLOSE_TIME_MS);
   }
 
   isOpen() {
@@ -202,7 +202,8 @@ class MDCDialogFoundation extends MDCFoundation {
 
   /** @private */
   handleAnimationTimerEnd_() {
-    this.adapter_.removeClass(cssClasses.ANIMATING);
+    this.adapter_.removeClass(cssClasses.OPENING);
+    this.adapter_.removeClass(cssClasses.CLOSING);
   }
 }
 

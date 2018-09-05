@@ -23,7 +23,8 @@
 
 const cssClasses = {
   OPEN: 'mdc-dialog--open',
-  ANIMATING: 'mdc-dialog--animating',
+  OPENING: 'mdc-dialog--opening',
+  CLOSING: 'mdc-dialog--closing',
   STACKED: 'mdc-dialog--stacked',
   SCROLLABLE: 'mdc-dialog--scrollable',
   SCROLL_LOCK: 'mdc-dialog-scroll-lock',
@@ -48,7 +49,8 @@ const strings = {
 };
 
 const numbers = {
-  DIALOG_ANIMATION_TIME_MS: 120,
+  DIALOG_ANIMATION_OPEN_TIME_MS: 150,
+  DIALOG_ANIMATION_CLOSE_TIME_MS: 75,
   IE_FLEX_OVERFLOW_BUG_ITERATIONS: 5,
   IE_FLEX_OVERFLOW_BUG_INTERVAL_MS: 100,
 };
