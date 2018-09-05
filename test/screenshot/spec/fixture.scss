@@ -67,9 +67,20 @@ $test-layout-cell-grid-color: #ddd;
     // stylelint-enable selector-class-pattern
   }
 
-  .test-container--edge-fonts .test-font--flaky {
-    background-color: black;
+  .test-container--edge-fonts .test-font--redact-all,
+  .test-container--edge-fonts .test-font--redact-prev-letter {
+    display: inline-block;
+    background: black;
     color: black;
+    z-index: 1;
+  }
+
+  .test-container--edge-fonts .test-font--redact-prev-letter {
+    position: absolute;
+    top: 0;
+    width: 1em;
+    height: 100%;
+    transform: translateX(calc(-100% + 4px));
   }
 }
 
