@@ -67,9 +67,18 @@ $test-layout-cell-grid-color: #ddd;
     // stylelint-enable selector-class-pattern
   }
 
-  .test-container--edge-fonts .test-font--flaky {
+  .test-container--edge-fonts .test-font--redact-all {
     background-color: black;
     color: black;
+  }
+
+  .test-container--edge-fonts .test-font--redact-last-letter::after {
+    display: inline-block;
+    position: relative;
+    transform: translateX(-100%);
+    background: black;
+    color: black;
+    content: "W"; // widest, tallest letter
   }
 }
 
