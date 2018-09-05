@@ -168,19 +168,21 @@ class TestFixture {
     const lineStartX = Math.min(fromRect.left, toRect.left);
     const lineEndX = Math.min(fromRect.right, toRect.right);
 
+    let leftPos;
     if (displayAlignment === 'center') {
       const leftMost = Math.min(fromRect.left, toRect.left);
       const rightMost = Math.max(fromRect.right, toRect.right);
       const half = (rightMost - leftMost) / 2;
-      lineEl.style.left = `${lineStartX + half + displayOffsetPx}px`;
+      leftPos = lineStartX + half + displayOffsetPx;
     } else if (displayAlignment === 'right') {
-      lineEl.style.left = `${lineEndX - displayOffsetPx}px`;
+      leftPos = lineEndX - displayOffsetPx;
     } else {
-      lineEl.style.left = `${lineStartX + displayOffsetPx}px`;
+      leftPos = lineStartX + displayOffsetPx;
     }
 
-    lineEl.style.top = `${actualStartY}px`;
-    lineEl.style.height = `${actualDistancePx}px`;
+    lineEl.style.top = `${Math.round(actualStartY)}px`;
+    lineEl.style.left = `${Math.round(leftPos)}px`;
+    lineEl.style.height = `${Math.round(actualDistancePx)}px`;
 
     if (actualDistancePx === specDistancePx) {
       labelEl.innerHTML = `${actualDistancePx}px`;
@@ -218,19 +220,21 @@ class TestFixture {
     const lineStartY = Math.min(fromRect.top, toRect.top);
     const lineEndY = Math.min(fromRect.bottom, toRect.bottom);
 
+    let topPos;
     if (displayAlignment === 'center') {
       const topMost = Math.min(fromRect.top, toRect.top);
       const bottomMost = Math.max(fromRect.bottom, toRect.bottom);
       const half = (bottomMost - topMost) / 2;
-      lineEl.style.top = `${lineStartY + half + displayOffsetPx}px`;
+      topPos = lineStartY + half + displayOffsetPx;
     } else if (displayAlignment === 'bottom') {
-      lineEl.style.top = `${lineEndY - displayOffsetPx}px`;
+      topPos = lineEndY - displayOffsetPx;
     } else {
-      lineEl.style.top = `${lineStartY + displayOffsetPx}px`;
+      topPos = lineStartY + displayOffsetPx;
     }
 
-    lineEl.style.left = `${actualStartX}px`;
-    lineEl.style.width = `${actualDistancePx}px`;
+    lineEl.style.top = `${Math.round(topPos)}px`;
+    lineEl.style.left = `${Math.round(actualStartX)}px`;
+    lineEl.style.width = `${Math.round(actualDistancePx)}px`;
 
     if (actualDistancePx === specDistancePx) {
       labelEl.innerHTML = `${actualDistancePx}px`;

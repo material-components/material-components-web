@@ -27,8 +27,8 @@ $custom-dialog-color: $material-color-red-300;
 
 // MS Edge only
 @supports (-ms-ime-align: auto) {
-  .mdc-dialog__title,
-  .mdc-dialog__content {
+  .test-dialog__title,
+  .test-dialog__content {
     letter-spacing: 0;
   }
 }
