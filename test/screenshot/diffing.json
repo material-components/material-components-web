@@ -28,14 +28,13 @@
         }
       },
       {
-        "description": "IE and Edge are extra flaky on Textfield and Typography pages for some reason",
+        "description": "IE and Edge are extra flaky on Text Field pages",
         "browser_regex_patterns": [
           "desktop_windows_edge@latest",
           "desktop_windows_ie@11"
         ],
         "url_regex_patterns": [
-          "mdc-textfield",
-          "mdc-typography"
+          "mdc-textfield"
         ],
         "custom_config": {
           "max_retries": 6,
