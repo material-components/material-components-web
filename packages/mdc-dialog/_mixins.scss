@@ -80,7 +80,7 @@
       $max-width-breakpoint: $max-width + ($margin * 2);
 
       // Fit snugly within the viewport at smaller screen sizes.
-      @media (max-width: ($max-width-breakpoint - 1)) {
+      @media (max-width: $max-width-breakpoint) {
         max-width: $max-size-calc-expr;
       }
 
@@ -102,7 +102,7 @@
       $max-height-breakpoint: $max-height + ($margin * 2);
 
       // Fit snugly within the viewport at smaller screen sizes.
-      @media (max-height: ($max-height-breakpoint - 1)) {
+      @media (max-height: $max-height-breakpoint) {
         max-height: $max-size-calc-expr;
       }
 
