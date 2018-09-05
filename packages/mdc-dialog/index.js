@@ -105,8 +105,11 @@ class MDCDialog extends MDCComponent {
     this.foundation_.open();
   }
 
-  close() {
-    this.foundation_.close();
+  /**
+   * @param {string|undefined=} action
+   */
+  close(action = undefined) {
+    this.foundation_.close(action);
   }
 
   getDefaultFoundation() {

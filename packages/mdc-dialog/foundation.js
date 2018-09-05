@@ -59,8 +59,8 @@ class MDCDialogFoundation extends MDCFoundation {
       getAction(/* element: !Element */) {},
       notifyOpening() {},
       notifyOpened() {},
-      notifyClosing(/* action: string|undefined */) {},
-      notifyClosed(/* action: string|undefined */) {},
+      notifyClosing(/* action: ?string */) {},
+      notifyClosed(/* action: ?string */) {},
     });
   }
 
@@ -118,6 +118,9 @@ class MDCDialogFoundation extends MDCFoundation {
     }, numbers.DIALOG_ANIMATION_TIME_MS);
   }
 
+  /**
+   * @param {string|undefined=} action
+   */
   close(action = undefined) {
     this.isOpen_ = false;
     this.adapter_.deregisterInteractionHandler('click', this.dialogClickHandler_);

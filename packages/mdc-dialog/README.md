@@ -7,7 +7,7 @@ iconId: dialog
 path: /catalog/dialogs/
 -->
 
-# Dialogs
+# Dialog
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
@@ -16,11 +16,8 @@ path: /catalog/dialogs/
   </a>
 </div>-->
 
-The MDC Dialog component is a spec-aligned dialog component adhering to the
-[Material Design dialog pattern](https://material.io/go/design-dialogs).
-It implements a modal dialog window. You may notice that full screen components outlined in the dialog spec
-do not appear in MDC Dialog. This is because they have been deemed to be outside of the scope of what
-a dialog should be.
+[Dialogs](https://material.io/go/design-dialogs) inform users about a task and can contain critical information,
+require decisions, or involve multiple tasks.
 
 ## Design & API Documentation
 
@@ -39,21 +36,21 @@ a dialog should be.
 npm install @material/dialog
 ```
 
-## Dialog usage
-
-Dialogs inform users about a specific task and may contain critical information or require decisions.
+## Basic Usage
 
 ```html
-<aside id="my-mdc-dialog"
-  class="mdc-dialog"
-  role="alertdialog"
-  aria-labelledby="my-mdc-dialog-label"
-  aria-describedby="my-mdc-dialog-description">
+<div id="test-dialog"
+     class="mdc-dialog"
+     role="alertdialog"
+     aria-modal="true"
+     aria-labelledby="test-dialog-title"
+     aria-describedby="test-dialog-content">
   <div class="mdc-dialog__container">
-    <h2 id="my-mdc-dialog-label" class="mdc-dialog__title">
-      Use Google's location service?
-    </h2>
-    <section id="my-mdc-dialog-description" class="mdc-dialog__content">
+    <!-- Title cannot contain leading whitespace due to a technical limitation in mdc-typography-baseline-top(). -->
+    <h2 class="mdc-dialog__title" id="test-dialog-title"><!--
+   -->Use Google's location service?<!--
+ --></h2>
+    <section class="mdc-dialog__content" id="test-dialog-content">
       Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
     </section>
     <footer class="mdc-dialog__actions">
@@ -62,265 +59,161 @@ Dialogs inform users about a specific task and may contain critical information 
     </footer>
   </div>
   <div class="mdc-dialog__scrim"></div>
-</aside>
+</div>
 ```
 
-In the example above, we've created a dialog box in an `aside` element. Note that you can place content inside
-the dialog. There are two types: dialog & dialogs with scrollable content. These are declared using CSS classes.
+> **Note**: Dialogs have default `max-width` and `max-height` values that can be overridden via the
+> `mdc-dialog-max-width()` and `mdc-dialog-max-height()` Sass mixins.
 
-In most cases, dialog content should be able to fit without scrolling. However, certain special cases call for the
-ability to scroll the dialog's contents (see "Scrollable content exception" under
-[Behavior](https://material.io/go/design-dialogs#dialogs-behavior)). For these special cases, there is
-a `mdc-dialog__content--scrollable` modifier to allow scrolling in the dialog.
-
-> **Note**: The body of a scrollable dialog is styled with a default max-height; this can be overridden as necessary via
-> the `.mdc-dialog__content--scrollable` selector.
+> **Note**: Titles cannot contain leading whitespace due to how `mdc-typography-baseline-top()` works.
 
 ```html
-  <aside id="mdc-dialog-with-list"
-    class="mdc-dialog"
-    role="alertdialog"
-    aria-labelledby="mdc-dialog-with-list-label"
-    aria-describedby="mdc-dialog-with-list-description">
-    <div class="mdc-dialog__container">
-      <h2 id="mdc-dialog-with-list-label" class="mdc-dialog__title">
-        Choose a Ringtone
-      </h2>
-      <section id="mdc-dialog-with-list-description" class="mdc-dialog__content mdc-dialog__content--scrollable">
-       	<ul class="mdc-list">
-          <li class="mdc-list-item">
-            <span class="mdc-list-item__text">
-              None
-            </span>
-          </li>
-          <li class="mdc-list-item">
-            <span class="mdc-list-item__text">
-              Callisto
-            </span>
-          </li>
-          <li class="mdc-list-item">
-            <span class="mdc-list-item__text">
-              Ganymede
-            </span>
-          </li>
-          <li class="mdc-list-item">
-            <span class="mdc-list-item__text">
-              Luna
-            </span>
-          </li>
-          <li class="mdc-list-item">
-            <span class="mdc-list-item__text">
-              Marimba
-            </span>
-          </li>
-          <li class="mdc-list-item">
-            <span class="mdc-list-item__text">
-              Schwifty
-            </span>
-          </li>
-          <li class="mdc-list-item">
-            <span class="mdc-list-item__text">
-              Callisto
-            </span>
-          </li>
-          <li class="mdc-list-item">
-            <span class="mdc-list-item__text">
-              Ganymede
-            </span>
-          </li>
-          <li class="mdc-list-item">
-            <span class="mdc-list-item__text">
-              Luna
-            </span>
-          </li>
-          <li class="mdc-list-item">
-            <span class="mdc-list-item__text">
-              Marimba
-            </span>
-          </li>
-          <li class="mdc-list-item">
-            <span class="mdc-list-item__text">
-              Schwifty
-            </span>
-          </li>
-        </ul>
-      </section>
-      <footer class="mdc-dialog__actions">
-        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">Decline</button>
-        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">OK</button>
-      </footer>
-    </div>
-    <div class="mdc-dialog__scrim"></div>
-  </aside>
-```
-
-Note that unlike the css classnames, the specific ID names used do not have to be _exactly_ the same as listed above.
-They only need to match the values set for their corresponding aria attributes.
-
-### Styles
-
-```scss
-@import "@material/dialog/mdc-dialog";
-```
-
-### Dialog Action Color ###
-
-Dialog actions use system colors by default, but you can use a contrasting color, such as the palette’s secondary color, to distinguish dialog actions from dialog content. To emphasize an action from other contents, add `mdc-dialog__action` to `mdc-button` to apply secondary color.
-
-```html
-<aside class="mdc-dialog">
+<div id="test-dialog-with-list"
+     class="mdc-dialog"
+     role="alertdialog"
+     aria-modal="true"
+     aria-labelledby="test-dialog-with-list-label"
+     aria-describedby="test-dialog-with-list-description">
   <div class="mdc-dialog__container">
+    <!-- Title cannot contain leading whitespace due to a technical limitation in mdc-typography-baseline-top(). -->
+    <h2 class="mdc-dialog__title" id="test-dialog-with-list-label"><!--
+   -->Choose a Ringtone<!--
+ --></h2>
+    <section class="mdc-dialog__content" id="test-dialog-with-list-description">
+      <ul class="mdc-list">
+        <li class="mdc-list-item">
+          <span class="mdc-list-item__text">None</span>
+        </li>
+        <li class="mdc-list-item">
+          <span class="mdc-list-item__text">Callisto</span>
+        </li>
+        <li class="mdc-list-item">
+          <span class="mdc-list-item__text">Ganymede</span>
+        </li>
+        <li class="mdc-list-item">
+          <span class="mdc-list-item__text">Luna</span>
+        </li>
+        <li class="mdc-list-item">
+          <span class="mdc-list-item__text">Marimba</span>
+        </li>
+        <li class="mdc-list-item">
+          <span class="mdc-list-item__text">Schwifty</span>
+        </li>
+        <li class="mdc-list-item">
+          <span class="mdc-list-item__text">Callisto</span>
+        </li>
+        <li class="mdc-list-item">
+          <span class="mdc-list-item__text">Ganymede</span>
+        </li>
+        <li class="mdc-list-item">
+          <span class="mdc-list-item__text">Luna</span>
+        </li>
+        <li class="mdc-list-item">
+          <span class="mdc-list-item__text">Marimba</span>
+        </li>
+        <li class="mdc-list-item">
+          <span class="mdc-list-item__text">Schwifty</span>
+        </li>
+      </ul>
+    </section>
     <footer class="mdc-dialog__actions">
       <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">Decline</button>
       <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">OK</button>
     </footer>
-  </div>
-</aside>
+  </div>
+  <div class="mdc-dialog__scrim"></div>
+</div>
 ```
 
-### Using the Component
+## Style Customization
 
-MDC Dialog ships with a Component / Foundation combo which allows for frameworks to richly integrate the
-correct dialog behaviors into idiomatic components.
+### CSS Classes
 
-#### Including in code
+CSS Class | Description
+--- | ---
+`mdc-dialog` | Mandatory. The root DOM element containing the surface and the container.
+`mdc-dialog--animating` | Optional. Indicates that the dialog is in the process of animating open or closed.
+`mdc-dialog--open` | Optional. Indicates that the dialog is open and visible.
+`mdc-dialog__actions` | Optional. Footer area containing the dialog's action buttons.
+`mdc-dialog__button` | Optional. Individual action button. Typically paired with `mdc-button`.
+`mdc-dialog__container` | Mandatory. Wrapper element needed to make flexbox behave in IE 11.
+`mdc-dialog__content` | Optional. Primary content area. Can contain a list, a form, or prose.
+`mdc-dialog__scrim` | Mandatory. Semitransparent backdrop that displays behind a dialog.
+`mdc-dialog__surface` | Mandatory. The bounding box for the dialog's content.
+`mdc-dialog__title` | Optional. Brief summary of the dialog's purpose.
 
-##### ES2015
+## JS Classes
 
-```javascript
-import {MDCDialog, MDCDialogFoundation, util} from '@material/dialog';
-```
+### `MDCDialog` Properties and Methods
 
-##### CommonJS
+Property | Value Type | Description
+--- | --- | ---
+`open` | `boolean` | Returns whether the dialog is open or not.
 
-```javascript
-const mdcDialog = require('@material/dialog');
-const MDCDialog = mdcDialog.MDCDialog;
-const MDCDialogFoundation = mdcDialog.MDCDialogFoundation;
-const util = mdcDialog.util;
-```
+Method Signature | Description
+--- | ---
+`layout() => void` | Recalculates layout and automatically adds/removes modifier classes like `--scrollable`.
+`show() => void` | Opens the dialog.
+`close() => void` | Closes the dialog.
 
-##### AMD
+### `MDCDialogFoundation` Methods
 
-```javascript
-require(['path/to/@material/dialog'], mdcDialog => {
-  const MDCDialog = mdcDrawer.MDCDialog;
-  const MDCDialogFoundation = mdcDialog.MDCDialogFoundation;
-  const util = mdcDialog.util;
-});
-```
+Property | Value Type | Description
+--- | --- | ---
+`open` | `boolean` | Returns whether the dialog is open or not.
 
-##### Global
+Method Signature | Description
+--- | ---
+`open()` | Opens the dialog.
+`close(action)` | Closes the dialog with an optional "action" param denoting the reason the dialog was closed.
+`isOpen()` | Returns `true` if the dialog is open, or `false` if it is closed.
+`layout()` | Recalculates layout and automatically adds/removes modifier classes like `--scrollable`.
 
-```javascript
-const MDCDialog = mdc.dialog.MDCDialog;
-const MDCDialogFoundation = mdc.dialog.MDCDialogFoundation;
-const util = mdc.dialog.util;
-```
+### `MDCDialogAdapter` Methods
 
-#### Automatic Instantiation
+Method Signature | Description
+--- | ---
+`addClass(className: string) => void` | Adds a class to the root element.
+`removeClass(className: string) => void` | Removes a class from the root element.
+`addBodyClass(className: string) => void` | Adds a class to the `<body>`.
+`removeBodyClass(className: string) => void` | Removes a class from the `<body>`.
+`eventTargetHasClass(target: !EventTarget, className: string) => void` | Returns `true` if the target element has the given CSS class, otherwise `false`.
+`eventTargetMatchesSelector(target: !EventTarget, selector: string) => void` | Returns `true` if the target element matches the given CSS selector, otherwise `false`.
+`registerInteractionHandler(eventName: string, handler: !EventListener) => void` | Adds an event listener to the root element for the specified event name.
+`deregisterInteractionHandler(eventName: string, handler: !EventListener) => void` | Removes an event listener from the root element for the specified event name.
+`registerDocumentHandler(eventName: string, handler: !EventListener) => void` | Adds an event listener to the `document` for the specified event name.
+`deregisterDocumentHandler(eventName: string, handler: !EventListener) => void` | Removes an event listener from the `document` for the specified event name.
+`registerWindowHandler(eventName: string, handler: !EventListener) => void` | Adds an event listener to the `window` for the specified event name.
+`deregisterWindowHandler(eventName: string, handler: !EventListener) => void` | Removes an event listener from the `window` for the specified event name.
+`trapFocusOnSurface() => void` | Sets up the DOM which the dialog is contained in such that focusability is restricted to the elements on the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details).
+`untrapFocusOnSurface() => void` | Removes any affects of focus trapping on the dialog surface from the DOM (see [Handling Focus Trapping](#handling-focus-trapping) below for more details).
+`isContentScrollable() => boolean` | Returns `true` if `mdc-dialog__content` can be scrolled by the user, otherwise `false`.
+`areButtonsStacked() => boolean` | Returns `true` if `mdc-dialog__action` buttons (`mdc-dialog__button`) are stacked vertically, otherwise `false` if they are side-by-side.
+`getAction(element: !Element) => ?string` | Retrieves the value of a `data-*` attribute from the given element.
+`notifyOpening() => void` | Broadcasts an event denoting that the dialog has just started to open.
+`notifyOpened() => void` | Broadcasts an event denoting that the dialog has finished opening.
+`notifyClosing(action: ?string) {}` | Broadcasts an event denoting that the dialog has just started closing.
+`notifyClosed(action: ?string) {}` | Broadcasts an event denoting that the dialog has finished closing.
 
-If you do not care about retaining the component instance for the dialog, simply call `attachTo()`
-and pass it a DOM element. This however, is only useful if you do not need to pass a callback to the dialog
-when the user selects Yes or Cancel.
+### The Util API
 
-```javascript
-mdc.dialog.MDCDialog.attachTo(document.querySelector('#my-mdc-dialog'));
-```
+External frameworks and libraries can use the following utility methods when integrating a component.
 
-#### Manual Instantiation
+Method Signature | Description
+--- | ---
+`createFocusTrapInstance(surfaceEl: !Element, initialFocusEl: ?Element, focusTrapFactory: function(): !focusTrap) => focusTrap` | Creates a properly configured [focus-trap][] instance.
+`isScrollable(el) => boolean` | Determines if the given element is scrollable.
+`areTopsMisaligned(els) => boolean` | Determines if two or more of the given elements have different `offsetTop` values.
 
-Dialogs can easily be initialized using their default constructors as well, similar to `attachTo`.
+### Handling Focus Trapping
 
-```javascript
-import {MDCDialog} from '@material/dialog';
+In order for dialogs to be fully accessible, they must conform to the guidelines outlined in:
+- https://www.w3.org/TR/wai-aria-practices/#dialog_modal
+- https://www.w3.org/TR/wai-aria-practices-1.1/examples/dialog-modal/dialog.html
+- https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_dialog_role
 
-const dialog = new MDCDialog(document.querySelector('#my-mdc-dialog'));
-```
-
-#### Using the dialog component
-```js
-var dialog = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-default'));
-
-dialog.listen('MDCDialog:yes', function() {
-  console.log('accepted');
-})
-
-dialog.listen('MDCDialog:cancel', function() {
-  console.log('canceled');
-})
-
-document.querySelector('#default-dialog-activation').addEventListener('click', function (evt) {
-  dialog.lastFocusedTarget = evt.target;
-  dialog.show();
-})
-```
-
-### Dialog component API
-
-#### MDCDialog.open
-
-Boolean. True when the dialog is shown, false otherwise.
-
-#### MDCDialog.show() => void
-
-Shows the dialog
-
-#### MDCDialog.close() => void
-
-Closes the dialog
-
-### Dialog Events
-
-#### MDCDialog:yes
-
-Broadcast when a user actions on the `[data-mdc-dialog-action="yes"]` element.
-
-#### MDCDialog:no
-
-Broadcast when a user actions on the `[data-mdc-dialog-action="no"]` element.
-
-#### MDCDialog:cancel
-
-Broadcast when a user actions on the `[data-mdc-dialog-action="cancel"]` element.
-
-### Using the Foundation Class
-
-MDC Dialog ships with an `MDCDialogFoundation` class that external frameworks and libraries can
-use to integrate the component. As with all foundation classes, an adapter object must be provided.
-
-> **NOTE**: Components themselves must manage adding ripples to dialog buttons, should they choose to
-do so. We provide instructions on how to add ripples to buttons within the [mdc-button README](../mdc-button#adding-ripples-to-buttons).
-
-### Adapter API
-
-| Method Signature | Description |
-| --- | --- |
-| `addClass(className: string) => void` | Adds a class to the root element. |
-| `removeClass(className: string) => void` | Removes a class from the root element. |
-| `setStyle(propertyName: string, value: string) => void` | Sets a style property `propertyName` on the root element to the `value` specified |
-| `addBodyClass(className: string) => void` | Adds a class to the body. |
-| `removeBodyClass(className: string) => void` | Removes a class from the body. |
-| `eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise. |
-| `registerInteractionHandler(evt: string, handler: EventListener) => void` | Adds an event listener to the root element, for the specified event name. |
-| `deregisterInteractionHandler(evt: string, handler: EventListener) => void` | Removes an event listener from the root element, for the specified event name. |
-| `registerContainerInteractionHandler(evt: string, handler: EventListener) => void` | Registers an event handler on the dialog surface element. |
-| `deregisterContainerInteractionHandler(evt: string, handler: EventListener) => void` | Deregisters an event handler from the dialog surface element. |
-| `registerDocumentKeyDownHandler(handler: EventListener) => void` | Registers an event handler on the `document` object for a `keydown` event. |
-| `deregisterDocumentKeyDownHandler(handler: EventListener) => void` | Deregisters an event handler on the `document` object for a `keydown` event. |
-| `registerTransitionEndHandler: (handler: EventListener) => void` | Registers an event handler to be called when a transitionend event is triggered on the dialog container sub-element element. |
-| `deregisterTransitionEndHandler: (handler: EventListener) => void` | Deregisters an event handler from a transitionend event listener. This will only be called with handlers that have previously been passed to registerTransitionEndHandler calls. |
-| `notifyYes() => {}` | Broadcasts an event denoting that the user has accepted the dialog. |
-| `notifyNo() => {}` | Broadcasts an event denoting that the user has rejected the dialog. |
-| `notifyCancel() => {}` | Broadcasts an event denoting that the user has cancelled the dialog. |
-| `trapFocusOnSurface() => {}` | Sets up the DOM which the dialog is contained in such that focusability is restricted to the elements on the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details). |
-| `untrapFocusOnSurface() => {}` | Removes any affects of focus trapping on the dialog surface from the DOM (see [Handling Focus Trapping](#handling-focus-trapping) below for more details). |
-
-#### Handling Focus Trapping
-
-In order for dialogs to be fully accessible, they must conform to the guidelines outlined in
-https://www.w3.org/TR/wai-aria-practices/#dialog_modal. The main implication of these guidelines is
-that the only focusable elements are those contained within a dialog surface.
+The main implication of these guidelines is that the only focusable elements are those contained within a dialog
+surface.
 
 Trapping focus correctly for a modal dialog requires a complex set of events and interaction
 patterns that we feel is best not duplicated within the logic of this component. Furthermore,
@@ -328,45 +221,26 @@ frameworks and libraries may have their own ways of trapping focus that framewor
 to make use of. For this reason, we have two methods on the adapter that should be used to handle
 focus trapping:
 
-- *trapFocusOnSurface()* is called when the dialog is open and should set up focus trapping adhering
+- `trapFocusOnSurface()` is called when the dialog is open and should set up focus trapping adhering
   to the ARIA practices in the link above.
-- *untrapFocusOnSurface()* is called when the dialog is closed and should tear down any focus
+- `untrapFocusOnSurface()` is called when the dialog is closed and should tear down any focus
   trapping set up when the dialog was open.
 
-In our `MDCDialog` component, we use the [focus-trap](https://github.com/davidtheclark/focus-trap)
-package to handle this. **You can use [util.createFocusTrapInstance](#mdcdialog-util-api) to easily
-create a focus trapping solution for your component code.**
+In our `MDCDialog` component, we use the [focus-trap][] package to handle this.
+**You can use `util.createFocusTrapInstance)_` (see below) to easily create
+a focus trapping solution for your component code.**
 
-### The full foundation API
+[focus-trap]: https://github.com/davidtheclark/focus-trap
 
-#### MDCDialogFoundation.open() => void
+#### `createFocusTrapInstance()`
 
-Opens the dialog, registers appropriate event listeners, sets aria attributes, focuses elements.
-
-#### MDCDialogFoundation.close() => void
-
-Closes the dialog, deregisters appropriate event listeners, resets aria attributes, focuses
-elements.
-
-#### MDCDialogFoundation.yes(notifyChange = false) => void
-
-Closes the dialog. If `notifyChange` is true, calls the adapter's `notifyYes()` method.
-
-#### MDCDialogFoundation.cancel(notifyChange = false) => void
-
-Closes the dialog. If `notifyChange` is true, calls the adapter's `notifyCancel()` method.
-
-#### MDCDialogFoundation.isOpen() => Boolean
-
-Returns true if the dialog is open, false otherwise.
-
-### MDCDialog Util API
-
-#### util.createFocusTrapInstance(surfaceEl, initialFocusEl, focusTrapFactory = require('focus-trap')) => {activate: () => {}, deactivate: () => {}};
+```js
+const {activate, deactivate} =
+  util.createFocusTrapInstance(surfaceEl, initialFocusEl, focusTrapFactory = require('focus-trap'));
+```
 
 Given a dialog surface element, an initial element to focus, and an optional focusTrap factory
-function, creates a properly configured [focus-trap](https://github.com/davidtheclark/focus-trap)
-instance such that:
+function, such that:
 
 - The focus is trapped within the `surfaceEl`
 - The `initialFocusEl` receives focus when the focus trap is activated
