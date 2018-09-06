@@ -176,3 +176,13 @@
     @include mdc-notched-outline-color($color);
   }
 }
+
+@mixin mdc-select-floating-label_ {
+  .mdc-floating-label {
+    @include mdc-rtl-reflexive-position(left, 16px);
+
+    bottom: 12px;
+    line-height: 1.75rem;
+    pointer-events: none;
+  }
+}
