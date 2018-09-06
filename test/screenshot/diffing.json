@@ -17,15 +17,6 @@
 
     "config_overrides": [
       {
-        "description": "Wait for entrance animations to finish.",
-        "url_regex_patterns": [
-          "mdc-dialog"
-        ],
-        "custom_config": {
-          "fonts_loaded_reflow_delay_ms": 250
-        }
-      },
-      {
         "description": "IE and Edge rendering is inherently flaky. `border-radius`, `box-shadow`, and font rendering (especially on <button> elements) seem to be the worst offenders.",
         "browser_regex_patterns": [
           "desktop_windows_edge@latest",
@@ -61,6 +52,17 @@
         ],
         "custom_config": {
           "skip_all": true
+        }
+      },
+      {
+        "description": "Wait for entrance animations to finish.",
+        "url_regex_patterns": [
+          "mdc-dialog"
+        ],
+        "custom_config": {
+          "max_retries": 4,
+          "min_changed_pixel_count": 25,
+          "fonts_loaded_reflow_delay_ms": 250
         }
       }
     ]
