@@ -345,9 +345,3 @@ test('on document keydown does nothing when key other than escape is pressed', (
   });
   td.verify(foundation.close(strings.ESCAPE_ACTION), {times: 0});
 });
-
-test('should clean up transition handlers after dialog close', () => {
-  const {foundation} = setupTest();
-  foundation.close();
-  // TODO(acdvorak): Write this test
-});

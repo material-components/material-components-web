@@ -90,7 +90,6 @@
 }
 
 .mdc-dialog__title {
-  // TODO(acdvorak): Add note to README about leading whitespace in __title markup.
   @include mdc-typography-baseline-top(40px);
   @include mdc-typography(headline6);
 
