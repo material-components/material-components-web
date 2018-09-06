@@ -77,13 +77,13 @@
 }
 
 .mdc-chip__icon--trailing {
-  margin: 0 -4px 0 4px;
+  margin: $mdc-chip-trailing-icon-margin-top $mdc-chip-trailing-icon-margin-right $mdc-chip-trailing-icon-margin-bottom $mdc-chip-trailing-icon-margin-left;
 }
 
 .mdc-chip__checkmark,
 .mdc-chip__icon--leading {
   height: $mdc-chip-leading-icon-size;
-  margin: -4px 4px -4px -4px;
+  margin: $mdc-chip-leading-icon-margin-top $mdc-chip-leading-icon-margin-right $mdc-chip-leading-icon-margin-bottom $mdc-chip-leading-icon-margin-left;
 }
 
 .mdc-chip__checkmark-path {
