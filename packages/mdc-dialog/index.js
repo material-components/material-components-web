@@ -23,7 +23,6 @@
 
 import {MDCComponent} from '@material/base/index';
 import {MDCRipple} from '@material/ripple/index';
-import {matches} from '@material/dom/ponyfill';
 
 import MDCDialogFoundation from './foundation';
 import MDCDialogUtil from './util';
@@ -79,6 +78,14 @@ class MDCDialog extends MDCComponent {
     return this.foundation_.isOpen();
   }
 
+  set open(isOpen) {
+    if (isOpen) {
+      this.foundation_.open();
+    } else {
+      this.foundation_.close();
+    }
+  }
+
   initialize() {
     this.util_ = this.util_ || new MDCDialogUtil();
     this.container_ = /** @type {!Element} */ (this.root_.querySelector(strings.CONTAINER_SELECTOR));
@@ -119,7 +126,6 @@ class MDCDialog extends MDCComponent {
       addBodyClass: (className) => document.body.classList.add(className),
       removeBodyClass: (className) => document.body.classList.remove(className),
       eventTargetHasClass: (target, className) => target.classList.contains(className),
-      eventTargetMatchesSelector: (target, selector) => matches(target, selector),
       registerInteractionHandler: (eventName, handler) => this.root_.addEventListener(eventName, handler),
       deregisterInteractionHandler: (eventName, handler) => this.root_.removeEventListener(eventName, handler),
       registerDocumentHandler: (eventName, handler) => document.addEventListener(eventName, handler),
@@ -127,11 +133,11 @@ class MDCDialog extends MDCComponent {
       registerWindowHandler: (eventName, handler) => window.addEventListener(eventName, handler),
       deregisterWindowHandler: (eventName, handler) => window.removeEventListener(eventName, handler),
       computeBoundingRect: () => this.root_.getBoundingClientRect(),
-      trapFocusOnSurface: () => this.focusTrap_.activate(),
-      untrapFocusOnSurface: () => this.focusTrap_.deactivate(),
+      trapFocus: () => this.focusTrap_.activate(),
+      releaseFocus: () => this.focusTrap_.deactivate(),
       isContentScrollable: () => !!this.content_ && this.util_.isScrollable(/** @type {!Element} */ (this.content_)),
       areButtonsStacked: () => this.util_.areTopsMisaligned(this.buttons_),
-      getAction: (element) => element.getAttribute(strings.ACTION_ATTRIBUTE),
+      getActionFromEvent: (event) => event.target.getAttribute(strings.ACTION_ATTRIBUTE),
       notifyOpening: () => this.emit(strings.OPENING_EVENT, {}),
       notifyOpened: () => this.emit(strings.OPENED_EVENT, {}),
       notifyClosing: (action = undefined) => this.emit(strings.CLOSING_EVENT, {action}),

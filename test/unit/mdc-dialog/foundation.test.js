@@ -49,13 +49,12 @@ test('exports numbers', () => {
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCDialogFoundation, [
     'addClass', 'removeClass', 'addBodyClass', 'removeBodyClass',
-    'eventTargetHasClass', 'eventTargetMatchesSelector',
+    'eventTargetHasClass',
     'registerInteractionHandler', 'deregisterInteractionHandler',
     'registerDocumentHandler', 'deregisterDocumentHandler',
     'registerWindowHandler', 'deregisterWindowHandler',
-    'computeBoundingRect',
-    'trapFocusOnSurface', 'untrapFocusOnSurface',
-    'isContentScrollable', 'areButtonsStacked', 'getAction',
+    'computeBoundingRect', 'trapFocus', 'releaseFocus',
+    'isContentScrollable', 'areButtonsStacked', 'getActionFromEvent',
     'notifyOpening', 'notifyOpened', 'notifyClosing', 'notifyClosed',
   ]);
 });
@@ -191,7 +190,7 @@ test('#open activates focus trapping on the dialog surface', () => {
   clock.tick(numbers.DIALOG_ANIMATION_OPEN_TIME_MS);
 
   try {
-    td.verify(mockAdapter.trapFocusOnSurface());
+    td.verify(mockAdapter.trapFocus());
   } finally {
     clock.uninstall();
   }
@@ -202,7 +201,7 @@ test('#close deactivates focus trapping on the dialog surface', () => {
 
   foundation.close();
 
-  td.verify(mockAdapter.untrapFocusOnSurface());
+  td.verify(mockAdapter.releaseFocus());
 });
 
 test('#open emits "opening" and "opened" events', () => {
@@ -325,7 +324,7 @@ test(`clicking does nothing when ${strings.ACTION_ATTRIBUTE} attribute is not pr
     target: {},
   };
 
-  td.when(mockAdapter.getAction(evt.target)).thenReturn(null);
+  td.when(mockAdapter.getActionFromEvent(evt)).thenReturn(null);
   foundation.open();
   handlers.click(evt);
   td.verify(foundation.close(), {times: 0});
@@ -338,11 +337,12 @@ test(`clicking closes dialog when ${strings.ACTION_ATTRIBUTE} attribute is prese
   const evt = {
     target: {},
   };
+  const action = 'action';
 
-  td.when(mockAdapter.getAction(evt.target)).thenReturn('frobulate');
+  td.when(mockAdapter.getActionFromEvent(td.matchers.anything())).thenReturn(action);
   foundation.open();
   handlers.click(evt);
-  td.verify(foundation.close('frobulate'));
+  td.verify(foundation.close(action));
 });
 
 test('window resize recalculates layout', () => {

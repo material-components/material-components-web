@@ -45,7 +45,6 @@ class MDCDialogFoundation extends MDCFoundation {
       addBodyClass: (/* className: string */) => {},
       removeBodyClass: (/* className: string */) => {},
       eventTargetHasClass: (/* target: !EventTarget, className: string */) => {},
-      eventTargetMatchesSelector: (/* target: !EventTarget, selector: string */) => {},
       registerInteractionHandler: (/* eventName: string, handler: !EventListener */) => {},
       deregisterInteractionHandler: (/* eventName: string, handler: !EventListener */) => {},
       registerDocumentHandler: (/* eventName: string, handler: !EventListener */) => {},
@@ -53,11 +52,11 @@ class MDCDialogFoundation extends MDCFoundation {
       registerWindowHandler: (/* eventName: string, handler: !EventListener */) => {},
       deregisterWindowHandler: (/* eventName: string, handler: !EventListener */) => {},
       computeBoundingRect: () => {},
-      trapFocusOnSurface: () => {},
-      untrapFocusOnSurface: () => {},
+      trapFocus: () => {},
+      releaseFocus: () => {},
       isContentScrollable: () => {},
       areButtonsStacked: () => {},
-      getAction: (/* element: !Element */) => {},
+      getActionFromEvent: (/* event: !Event */) => {},
       notifyOpening: () => {},
       notifyOpened: () => {},
       notifyClosing: (/* action: ?string */) => {},
@@ -117,7 +116,7 @@ class MDCDialogFoundation extends MDCFoundation {
     clearTimeout(this.animationTimer_);
     this.animationTimer_ = setTimeout(() => {
       this.handleAnimationTimerEnd_();
-      this.adapter_.trapFocusOnSurface();
+      this.adapter_.trapFocus();
       this.adapter_.notifyOpened();
     }, numbers.DIALOG_ANIMATION_OPEN_TIME_MS);
   }
@@ -131,7 +130,7 @@ class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.deregisterDocumentHandler('keydown', this.documentKeyDownHandler_);
     this.adapter_.deregisterWindowHandler('resize', this.windowResizeHandler_);
     this.adapter_.deregisterWindowHandler('orientationchange', this.windowResizeHandler_);
-    this.adapter_.untrapFocusOnSurface();
+    this.adapter_.releaseFocus();
     this.adapter_.addClass(cssClasses.CLOSING);
     this.adapter_.removeClass(cssClasses.OPEN);
     this.adapter_.removeBodyClass(cssClasses.SCROLL_LOCK);
@@ -179,7 +178,7 @@ class MDCDialogFoundation extends MDCFoundation {
    */
   handleDialogClick_(evt) {
     const {target} = evt;
-    const action = this.adapter_.getAction(target);
+    const action = this.adapter_.getActionFromEvent(evt);
     if (action) {
       this.close(action);
     }

@@ -60,13 +60,6 @@ class MDCDialogAdapter {
   eventTargetHasClass(target, className) {}
 
   /**
-   * @param {!EventTarget} target
-   * @param {string} selector
-   * @return {boolean}
-   */
-  eventTargetMatchesSelector(target, selector) {}
-
-  /**
    * @param {string} eventName
    * @param {!EventListener} handler
    */
@@ -105,8 +98,8 @@ class MDCDialogAdapter {
   /** @return {!ClientRect} */
   computeBoundingRect() {}
 
-  trapFocusOnSurface() {}
-  untrapFocusOnSurface() {}
+  trapFocus() {}
+  releaseFocus() {}
 
   /** @return {boolean} */
   isContentScrollable() {}
@@ -115,10 +108,10 @@ class MDCDialogAdapter {
   areButtonsStacked() {}
 
   /**
-   * @param {!Element} element
-   * @return {?string}
+   * @param {!Event} event
+   * @return {string}
    */
-  getAction(element) {}
+  getActionFromEvent(event) {}
 
   notifyOpening() {}
   notifyOpened() {}
