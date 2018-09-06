@@ -99,7 +99,7 @@ test('#isScrollable returns true when element content overflows its bounding box
   }
 });
 
-test('#areTopsMisaligned returns true when array is empty', () => {
+test('#areTopsMisaligned returns false when array is empty', () => {
   const util = new MDCDialogUtil();
   assert.isFalse(util.areTopsMisaligned([]));
 });
