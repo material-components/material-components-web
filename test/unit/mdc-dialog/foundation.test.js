@@ -294,18 +294,6 @@ test('#layout removes scrollable class when content is not scrollable', () => {
   mockRaf.restore();
 });
 
-test(`click does nothing when ${strings.ACTION_ATTRIBUTE} attribute is not present`, () => {
-  const {foundation, mockAdapter} = setupTest();
-  const evt = {target: {}};
-  foundation.close = td.func('close');
-
-  td.when(mockAdapter.getActionFromEvent(evt)).thenReturn('');
-  foundation.open();
-  foundation.handleClick(evt);
-
-  td.verify(foundation.close(), {times: 0});
-});
-
 test(`click closes dialog when ${strings.ACTION_ATTRIBUTE} attribute is present`, () => {
   const {foundation, mockAdapter} = setupTest();
   const evt = {target: {}};
@@ -319,6 +307,43 @@ test(`click closes dialog when ${strings.ACTION_ATTRIBUTE} attribute is present`
   td.verify(foundation.close(action));
 });
 
+test(`click does nothing when ${strings.ACTION_ATTRIBUTE} attribute is not present`, () => {
+  const {foundation, mockAdapter} = setupTest();
+  const evt = {target: {}};
+  foundation.close = td.func('close');
+
+  td.when(mockAdapter.getActionFromEvent(evt)).thenReturn('');
+  foundation.open();
+  foundation.handleClick(evt);
+
+  td.verify(foundation.close(td.matchers.isA(String)), {times: 0});
+});
+
+test(`click closes dialog when ${cssClasses.SCRIM} class is present`, () => {
+  const {foundation, mockAdapter} = setupTest();
+  const evt = {target: {}};
+  foundation.close = td.func('close');
+  td.when(mockAdapter.eventTargetHasClass(evt.target, cssClasses.SCRIM)).thenReturn(true);
+
+  foundation.open();
+  foundation.handleClick(evt);
+
+  td.verify(foundation.close(foundation.getScrimClickAction()));
+});
+
+test(`click does nothing when ${cssClasses.SCRIM} class is present but scrim click action is empty string`, () => {
+  const {foundation, mockAdapter} = setupTest();
+  const evt = {target: {}};
+  foundation.close = td.func('close');
+  td.when(mockAdapter.eventTargetHasClass(evt.target, cssClasses.SCRIM)).thenReturn(true);
+
+  foundation.setScrimClickAction('');
+  foundation.open();
+  foundation.handleClick(evt);
+
+  td.verify(foundation.close(td.matchers.isA(String)), {times: 0});
+});
+
 test('escape keydown closes the dialog (via key property)', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.close = td.func('close');
@@ -326,7 +351,7 @@ test('escape keydown closes the dialog (via key property)', () => {
   foundation.open();
   foundation.handleKeydown({key: 'Escape'});
 
-  td.verify(foundation.close(strings.ESCAPE_ACTION));
+  td.verify(foundation.close(foundation.getEscapeKeyAction()));
 });
 
 test('escape keydown closes the dialog (via keyCode property)', () => {
@@ -336,15 +361,26 @@ test('escape keydown closes the dialog (via keyCode property)', () => {
   foundation.open();
   foundation.handleKeydown({keyCode: 27});
 
-  td.verify(foundation.close(strings.ESCAPE_ACTION));
+  td.verify(foundation.close(foundation.getEscapeKeyAction()));
 });
 
-test('on document keydown does nothing when key other than escape is pressed', () => {
+test('escape keydown does nothing if escape key action is set to empty string', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.close = td.func('close');
+
+  foundation.setEscapeKeyAction('');
+  foundation.open();
+  foundation.handleKeydown({key: 'Escape'});
+
+  td.verify(foundation.close(foundation.getEscapeKeyAction()), {times: 0});
+});
+
+test('keydown does nothing when key other than escape is pressed', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.close = td.func('close');
 
   foundation.open();
   foundation.handleKeydown({key: 'Enter'});
 
-  td.verify(foundation.close(strings.ESCAPE_ACTION), {times: 0});
+  td.verify(foundation.close(foundation.getEscapeKeyAction()), {times: 0});
 });

@@ -33,7 +33,8 @@ class MDCDialogUtil {
   createFocusTrapInstance(surfaceEl, initialFocusEl = null, focusTrapFactory = createFocusTrap) {
     return focusTrapFactory(surfaceEl, {
       initialFocus: initialFocusEl,
-      clickOutsideDeactivates: false,
+      escapeDeactivates: false, // Dialog foundation handles escape key
+      clickOutsideDeactivates: true, // Allow handling of scrim clicks
     });
   }
 

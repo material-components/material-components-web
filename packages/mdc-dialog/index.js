@@ -86,6 +86,22 @@ class MDCDialog extends MDCComponent {
     }
   }
 
+  get escapeKeyAction() {
+    return this.foundation_.getEscapeKeyAction();
+  }
+
+  set escapeKeyAction(action) {
+    this.foundation_.setEscapeKeyAction(action);
+  }
+
+  get scrimClickAction() {
+    return this.foundation_.getScrimClickAction();
+  }
+
+  set scrimClickAction(action) {
+    this.foundation_.setScrimClickAction(action);
+  }
+
   initialize() {
     this.util_ = this.util_ || new MDCDialogUtil();
     this.container_ = /** @type {!Element} */ (this.root_.querySelector(strings.CONTAINER_SELECTOR));

@@ -170,6 +170,33 @@ radio buttons (indicating single selection) or checkboxes (indicating multiple s
 </div>
 ```
 
+### Additional Information
+
+#### Dialog Actions
+
+All dialog variants support the concept of dialog actions. Any element within a dialog may include the
+`data-mdc-dialog-action` attribute to indicate that interacting with it should close the dialog with the specified action.
+This action is then reflected via `event.detail.action` in the `MDCDialog:closing` and `MDCDialog:closed` events.
+
+Additionally, two interactions have defined actions by default:
+
+* Clicking on the scrim
+* Pressing the Escape key within the dialog
+
+Both of these map to the `close` action by default. This can be accessed and customized via the component's
+`scrimClickAction` and `escapeKeyAction` properties, respectively. Setting either of these properties to an empty string
+will result in that interaction being disabled (i.e. the dialog will no longer close in response to the interaction).
+
+Any action buttons within the dialog which equate strictly to a dismissal with no further action should also use the
+`close` action; this will make it possible to handle all dismiss events consistently, while separately handling other
+actions.
+
+#### Actions and Selections
+
+Dialogs which require making a choice via selection controls should initially disable any button which performs an
+action if no choice is selected by default. MDC Dialog does not include built-in logic for this, since it aims to remain
+as unopinionated as possible regarding dialog contents, aside from relaying information on which action is taken.
+
 ## Style Customization
 
 ### CSS Classes
@@ -211,6 +238,8 @@ Mixin | Description
 Property | Value Type | Description
 --- | --- | ---
 `open` | `boolean` | Returns or sets whether the dialog is open.
+`escapeKeyAction` | `string` | Proxies to the foundation's `getEscapeKeyAction` and `setEscapeKeyAction` methods.
+`scrimClickAction` | `string` | Proxies to the foundation's `getScrimClickAction` and `setScrimClickAction` methods.
 
 Method Signature | Description
 --- | ---
@@ -255,9 +284,13 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `open()` | Opens the dialog.
-`close(action)` | Closes the dialog, optionally with the specified action indicating why it was closed.
-`isOpen()` | Returns whether the dialog is open.
+`close(action: string)` | Closes the dialog, optionally with the specified action indicating why it was closed.
+`isOpen() => boolean` | Returns whether the dialog is open.
 `layout()` | Recalculates layout and automatically adds/removes modifier classes e.g. `--scrollable`.
+`getEscapeKeyAction() => string` | Returns the action reflected when the Escape key is pressed.
+`setEscapeKeyAction(action: string)` | Sets the action reflected when the Escape key is pressed. Setting to `''` disables closing the dialog via Escape key.
+`getScrimClickAction() => string` | Returns the action reflected when the scrim is clicked.
+`setScrimClickAction(action: string)` | Sets the action reflected when the scrim is clicked. Setting to `''` disables closing the dialog via scrim click.
 `handleClick(event: Event)` | Handles `click` events on or within the dialog's root element
 `handleKeydown(event: Event)` | Handles `keydown` events on or within the dialog's root element
 
@@ -304,7 +337,7 @@ focus trapping:
 * `releaseFocus()` is called when the dialog is closed and should tear down any focus
   trapping set up when the dialog was open.
 
-In our `MDCDialog` component, we use the [focus-trap][] package to handle this.
+The `MDCDialog` component uses the [focus-trap][] package to handle this.
 **You can use `util.createFocusTrapInstance()` (see below) to easily create
 a focus trapping solution for your component code.**
 
@@ -325,10 +358,10 @@ function, such that:
 * Closing the dialog in any way (including pressing Escape or clicking outside the dialog) deactivates focus trapping
 * Focus is returned to the previously focused element before the focus trap was activated
 
-This focus trap instance can be used to implement the `trapFocus` and
-`releaseFocus` adapter methods by calling `instance.activate()` and `instance.deactivate()`
-respectively within those methods.
+This focus trap instance can be used to implement the `trapFocus` and `releaseFocus` adapter methods by calling
+`instance.activate()` and `instance.deactivate()` respectively within those methods.
 
-The `focusTrapFactory` can be used to override the `focus-trap` function used to create the focus
-trap. Its API is the same as focus-trap's [createFocusTrap](https://github.com/davidtheclark/focus-trap#focustrap--createfocustrapelement-createoptions) (which is what it defaults to). You can pass in a custom function for mocking out the
-actual function within tests, or to modify the arguments passed to the function before it's called.
+The `focusTrapFactory` can be used to override the `focus-trap` function used to create the focus trap. Its API is the
+same as focus-trap's [createFocusTrap](https://github.com/davidtheclark/focus-trap#focustrap--createfocustrapelement-createoptions)
+(which is what it defaults to). You can pass in a custom function for mocking out the actual function within tests,
+or to modify the arguments passed to the function before it's called.

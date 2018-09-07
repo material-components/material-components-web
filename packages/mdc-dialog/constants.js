@@ -26,6 +26,7 @@ const cssClasses = {
   OPENING: 'mdc-dialog--opening',
   CLOSING: 'mdc-dialog--closing',
   STACKED: 'mdc-dialog--stacked',
+  SCRIM: 'mdc-dialog__scrim',
   SCROLLABLE: 'mdc-dialog--scrollable',
   SCROLL_LOCK: 'mdc-dialog-scroll-lock',
 };
@@ -43,8 +44,8 @@ const strings = {
 
   ACTION_ATTRIBUTE: 'data-mdc-dialog-action',
 
-  ESCAPE_ACTION: 'MDCDialog:escape',
-  DESTROY_ACTION: 'MDCDialog:destroy',
+  CLOSE_ACTION: 'close',
+  DESTROY_ACTION: 'destroy',
 };
 
 const numbers = {

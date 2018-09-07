@@ -226,6 +226,34 @@ test('set open = false forwards to MDCDialogFoundation#close', () => {
   td.verify(mockFoundation.close());
 });
 
+test('get escapeKeyAction forwards to MDCDialogFoundation#getEscapeKeyAction', () => {
+  const {component, mockFoundation} = setupTestWithMocks();
+
+  component.escapeKeyAction;
+  td.verify(mockFoundation.getEscapeKeyAction());
+});
+
+test('set escapeKeyAction forwards to MDCDialogFoundation#setEscapeKeyAction', () => {
+  const {component, mockFoundation} = setupTestWithMocks();
+
+  component.escapeKeyAction = 'action';
+  td.verify(mockFoundation.setEscapeKeyAction('action'));
+});
+
+test('get scrimClickAction forwards to MDCDialogFoundation#getScrimClickAction', () => {
+  const {component, mockFoundation} = setupTestWithMocks();
+
+  component.scrimClickAction;
+  td.verify(mockFoundation.getScrimClickAction());
+});
+
+test('set scrimClickAction forwards to MDCDialogFoundation#setScrimClickAction', () => {
+  const {component, mockFoundation} = setupTestWithMocks();
+
+  component.scrimClickAction = 'action';
+  td.verify(mockFoundation.setScrimClickAction('action'));
+});
+
 test('adapter#addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');

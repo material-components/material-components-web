@@ -72,6 +72,12 @@ class MDCDialogFoundation extends MDCFoundation {
 
     /** @private {number} */
     this.layoutFrame_ = 0;
+
+    /** @private {string} */
+    this.escapeKeyAction_ = strings.CLOSE_ACTION;
+
+    /** @private {string} */
+    this.scrimClickAction_ = strings.CLOSE_ACTION;
   };
 
   destroy() {
@@ -132,6 +138,26 @@ class MDCDialogFoundation extends MDCFoundation {
     return this.isOpen_;
   }
 
+  /** @return {string} */
+  getEscapeKeyAction(action) {
+    return this.escapeKeyAction_;
+  }
+
+  /** @param {string} action */
+  setEscapeKeyAction(action) {
+    this.escapeKeyAction_ = action;
+  }
+
+  /** @return {string} */
+  getScrimClickAction(action) {
+    return this.scrimClickAction_;
+  }
+
+  /** @param {string} action */
+  setScrimClickAction(action) {
+    this.scrimClickAction_ = action;
+  }
+
   layout() {
     if (this.layoutFrame_) {
       cancelAnimationFrame(this.layoutFrame_);
@@ -170,10 +196,11 @@ class MDCDialogFoundation extends MDCFoundation {
    * @private
    */
   handleClick(evt) {
-    const {target} = evt;
     const action = this.adapter_.getActionFromEvent(evt);
     if (action) {
       this.close(action);
+    } else if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.SCRIM) && this.scrimClickAction_) {
+      this.close(this.scrimClickAction_);
     }
   }
 
@@ -182,8 +209,8 @@ class MDCDialogFoundation extends MDCFoundation {
    * @private
    */
   handleKeydown(evt) {
-    if (evt.key === 'Escape' || evt.keyCode === 27) {
-      this.close(strings.ESCAPE_ACTION);
+    if ((evt.key === 'Escape' || evt.keyCode === 27) && this.escapeKeyAction_) {
+      this.close(this.escapeKeyAction_);
     }
   }
 
