@@ -178,17 +178,10 @@ test('#destroy cleans up all ripples on footer buttons', () => {
   raf.restore();
 });
 
-test('#show forwards to MDCDialogFoundation#open', () => {
+test('#open forwards to MDCDialogFoundation#open', () => {
   const {component, mockFoundation} = setupTestWithMocks();
 
-  component.show();
-  td.verify(mockFoundation.open());
-});
-
-test('set open = true forwards to MDCDialogFoundation#open', () => {
-  const {component, mockFoundation} = setupTestWithMocks();
-
-  component.open = true;
+  component.open();
   td.verify(mockFoundation.open());
 });
 
@@ -203,17 +196,10 @@ test('#close forwards to MDCDialogFoundation#close', () => {
   td.verify(mockFoundation.close(''));
 });
 
-test('set open = false forwards to MDCDialogFoundation#close', () => {
+test('get isOpen forwards to MDCDialogFoundation#isOpen', () => {
   const {component, mockFoundation} = setupTestWithMocks();
 
-  component.open = false;
-  td.verify(mockFoundation.close());
-});
-
-test('get open forwards to MDCDialogFoundation#isOpen', () => {
-  const {component, mockFoundation} = setupTestWithMocks();
-
-  component.open;
+  component.isOpen;
   td.verify(mockFoundation.isOpen());
 });
 

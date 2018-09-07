@@ -74,16 +74,8 @@ class MDCDialog extends MDCComponent {
     return new MDCDialog(root);
   }
 
-  get open() {
+  get isOpen() {
     return this.foundation_.isOpen();
-  }
-
-  set open(isOpen) {
-    if (isOpen) {
-      this.foundation_.open();
-    } else {
-      this.foundation_.close();
-    }
   }
 
   get escapeKeyAction() {
@@ -149,7 +141,7 @@ class MDCDialog extends MDCComponent {
     this.foundation_.layout();
   }
 
-  show() {
+  open() {
     this.foundation_.open();
   }
 
