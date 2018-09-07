@@ -201,8 +201,6 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         specDistancePx: 8,
       });
 
-      // TODO fix content to right side
-
       if (isStacked) {
         window.mdc.testFixture.addRedline({
           fromEl: secondLastButtonEl,
