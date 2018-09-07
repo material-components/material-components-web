@@ -59,42 +59,6 @@ class MDCDialogAdapter {
    */
   eventTargetHasClass(target, className) {}
 
-  /**
-   * @param {string} eventName
-   * @param {!EventListener} handler
-   */
-  registerInteractionHandler(eventName, handler) {}
-
-  /**
-   * @param {string} eventName
-   * @param {!EventListener} handler
-   */
-  deregisterInteractionHandler(eventName, handler) {}
-
-  /**
-   * @param {string} eventName
-   * @param {!EventListener} handler
-   */
-  registerDocumentHandler(eventName, handler) {}
-
-  /**
-   * @param {string} eventName
-   * @param {!EventListener} handler
-   */
-  deregisterDocumentHandler(eventName, handler) {}
-
-  /**
-   * @param {string} eventName
-   * @param {!EventListener} handler
-   */
-  registerWindowHandler(eventName, handler) {}
-
-  /**
-   * @param {string} eventName
-   * @param {!EventListener} handler
-   */
-  deregisterWindowHandler(eventName, handler) {}
-
   /** @return {!ClientRect} */
   computeBoundingRect() {}
 
@@ -109,7 +73,7 @@ class MDCDialogAdapter {
 
   /**
    * @param {!Event} event
-   * @return {string}
+   * @return {?string}
    */
   getActionFromEvent(event) {}
 

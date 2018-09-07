@@ -50,9 +50,6 @@ test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCDialogFoundation, [
     'addClass', 'removeClass', 'addBodyClass', 'removeBodyClass',
     'eventTargetHasClass',
-    'registerInteractionHandler', 'deregisterInteractionHandler',
-    'registerDocumentHandler', 'deregisterDocumentHandler',
-    'registerWindowHandler', 'deregisterWindowHandler',
     'computeBoundingRect', 'trapFocus', 'releaseFocus',
     'isContentScrollable', 'areButtonsStacked', 'getActionFromEvent',
     'notifyOpening', 'notifyOpened', 'notifyClosing', 'notifyClosed',
@@ -80,9 +77,10 @@ test('#destroy closes the dialog if it is still open', () => {
   td.verify(foundation.close(strings.DESTROY_ACTION));
 });
 
-test(`#destroy removes the animating classes`, () => {
+test('#destroy removes animating classes if called when the dialog is animating', () => {
   const {foundation, mockAdapter} = setupTest();
 
+  foundation.open();
   foundation.destroy();
 
   td.verify(mockAdapter.removeClass(cssClasses.OPENING));
@@ -159,26 +157,6 @@ test('#isOpen returns false when the dialog is closed after being open', () => {
   foundation.close();
 
   assert.isFalse(foundation.isOpen());
-});
-
-test('#open registers all events registered within open()', () => {
-  const {foundation, mockAdapter} = setupTest();
-
-  foundation.open();
-
-  td.verify(mockAdapter.registerInteractionHandler('click', td.matchers.isA(Function)));
-  td.verify(mockAdapter.registerDocumentHandler('keydown', td.matchers.isA(Function)));
-  td.verify(mockAdapter.registerWindowHandler('resize', td.matchers.isA(Function)));
-});
-
-test('#close deregisters all events registered within open()', () => {
-  const {foundation, mockAdapter} = setupTest();
-
-  foundation.close();
-
-  td.verify(mockAdapter.deregisterInteractionHandler('click', td.matchers.isA(Function)));
-  td.verify(mockAdapter.deregisterDocumentHandler('keydown', td.matchers.isA(Function)));
-  td.verify(mockAdapter.deregisterWindowHandler('resize', td.matchers.isA(Function)));
 });
 
 test('#open activates focus trapping on the dialog surface', () => {
@@ -316,73 +294,57 @@ test('#layout removes scrollable class when content is not scrollable', () => {
   mockRaf.restore();
 });
 
-test(`clicking does nothing when ${strings.ACTION_ATTRIBUTE} attribute is not present`, () => {
+test(`click does nothing when ${strings.ACTION_ATTRIBUTE} attribute is not present`, () => {
   const {foundation, mockAdapter} = setupTest();
+  const evt = {target: {}};
   foundation.close = td.func('close');
-  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
-  const evt = {
-    target: {},
-  };
 
-  td.when(mockAdapter.getActionFromEvent(evt)).thenReturn(null);
+  td.when(mockAdapter.getActionFromEvent(evt)).thenReturn('');
   foundation.open();
-  handlers.click(evt);
+  foundation.handleClick(evt);
+
   td.verify(foundation.close(), {times: 0});
 });
 
-test(`clicking closes dialog when ${strings.ACTION_ATTRIBUTE} attribute is present`, () => {
+test(`click closes dialog when ${strings.ACTION_ATTRIBUTE} attribute is present`, () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.close = td.func('close');
-  const handlers = captureHandlers(mockAdapter, 'registerInteractionHandler');
-  const evt = {
-    target: {},
-  };
+  const evt = {target: {}};
   const action = 'action';
+  foundation.close = td.func('close');
 
-  td.when(mockAdapter.getActionFromEvent(td.matchers.anything())).thenReturn(action);
+  td.when(mockAdapter.getActionFromEvent(evt)).thenReturn(action);
   foundation.open();
-  handlers.click(evt);
+  foundation.handleClick(evt);
+
   td.verify(foundation.close(action));
 });
 
-test('window resize recalculates layout', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.layout = td.func('layout');
-  const handlers = captureHandlers(mockAdapter, 'registerWindowHandler');
-  foundation.open();
-  handlers.resize();
-  td.verify(foundation.layout());
-});
-
-test('on document keydown closes the dialog when escape key is pressed', () => {
+test('escape keydown closes the dialog (via key property)', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.close = td.func('close');
-  const handlers = captureHandlers(mockAdapter, 'registerDocumentHandler');
+
   foundation.open();
-  handlers.keydown({
-    key: 'Escape',
-  });
+  foundation.handleKeydown({key: 'Escape'});
+
   td.verify(foundation.close(strings.ESCAPE_ACTION));
 });
 
-test('on document keydown closes the dialog when escape key is pressed using keycode', () => {
+test('escape keydown closes the dialog (via keyCode property)', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.close = td.func('close');
-  const handlers = captureHandlers(mockAdapter, 'registerDocumentHandler');
+
   foundation.open();
-  handlers.keydown({
-    keyCode: 27,
-  });
+  foundation.handleKeydown({keyCode: 27});
+
   td.verify(foundation.close(strings.ESCAPE_ACTION));
 });
 
 test('on document keydown does nothing when key other than escape is pressed', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.close = td.func('close');
-  const handlers = captureHandlers(mockAdapter, 'registerDocumentHandler');
+
   foundation.open();
-  handlers.keydown({
-    key: 'Enter',
-  });
+  foundation.handleKeydown({key: 'Enter'});
+
   td.verify(foundation.close(strings.ESCAPE_ACTION), {times: 0});
 });

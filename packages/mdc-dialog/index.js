@@ -39,35 +39,35 @@ class MDCDialog extends MDCComponent {
      */
     this.buttonRipples_;
 
-    /**
-     * @type {!Array<!Element>}
-     * @private
-     */
+    /** @private {!Array<!Element>} */
     this.buttons_;
 
-    /**
-     * @type {!Element}
-     * @private
-     */
+    /** @private {!Element} */
     this.container_;
 
-    /**
-     * @type {?Element}
-     * @private
-     */
+    /** @private {?Element} */
     this.content_;
 
-    /**
-     * @type {!FocusTrapInstance}
-     * @private
-     */
+    /** @private {!FocusTrapInstance} */
     this.focusTrap_;
 
-    /**
-     * @type {!MDCDialogUtil}
-     * @private
-     */
+    /** @private {!MDCDialogUtil} */
     this.util_;
+
+    /** @private {!Function} */
+    this.handleClick_;
+
+    /** @private {!Function} */
+    this.handleKeydown_;
+
+    /** @private {!Function} */
+    this.handleOpening_;
+
+    /** @private {!Function} */
+    this.handleClosing_;
+
+    /** @private {Function} */
+    this.handleWindowResize_;
   }
 
   static attachTo(root) {
@@ -99,7 +99,32 @@ class MDCDialog extends MDCComponent {
     }
   }
 
+  initialSyncWithDOM() {
+    this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
+    this.handleKeydown_ = this.foundation_.handleKeydown.bind(this.foundation_);
+    this.handleWindowResize_ = () => this.foundation_.layout();
+
+    const WINDOW_EVENTS = ['resize', 'orientationchange'];
+    this.handleOpening_ = () => {
+      WINDOW_EVENTS.forEach((type) => window.addEventListener(type, this.handleWindowResize_));
+    };
+    this.handleClosing_ = () => {
+      WINDOW_EVENTS.forEach((type) => window.removeEventListener(type, this.handleWindowResize_));
+    };
+
+    this.listen('click', this.handleClick_);
+    this.listen('keydown', this.handleKeydown_);
+    this.listen(strings.OPENING_EVENT, this.handleOpening_);
+    this.listen(strings.CLOSING_EVENT, this.handleClosing_);
+  }
+
   destroy() {
+    this.unlisten('click', this.handleClick_);
+    this.unlisten('keydown', this.handleKeydown_);
+    this.unlisten(strings.OPENING_EVENT, this.handleOpening_);
+    this.unlisten(strings.CLOSING_EVENT, this.handleClosing_);
+    this.handleClosing_();
+
     this.buttonRipples_.forEach((ripple) => ripple.destroy());
     super.destroy();
   }
@@ -126,12 +151,6 @@ class MDCDialog extends MDCComponent {
       addBodyClass: (className) => document.body.classList.add(className),
       removeBodyClass: (className) => document.body.classList.remove(className),
       eventTargetHasClass: (target, className) => target.classList.contains(className),
-      registerInteractionHandler: (eventName, handler) => this.root_.addEventListener(eventName, handler),
-      deregisterInteractionHandler: (eventName, handler) => this.root_.removeEventListener(eventName, handler),
-      registerDocumentHandler: (eventName, handler) => document.addEventListener(eventName, handler),
-      deregisterDocumentHandler: (eventName, handler) => document.removeEventListener(eventName, handler),
-      registerWindowHandler: (eventName, handler) => window.addEventListener(eventName, handler),
-      deregisterWindowHandler: (eventName, handler) => window.removeEventListener(eventName, handler),
       computeBoundingRect: () => this.root_.getBoundingClientRect(),
       trapFocus: () => this.focusTrap_.activate(),
       releaseFocus: () => this.focusTrap_.deactivate(),

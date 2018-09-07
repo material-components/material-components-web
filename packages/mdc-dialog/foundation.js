@@ -45,12 +45,6 @@ class MDCDialogFoundation extends MDCFoundation {
       addBodyClass: (/* className: string */) => {},
       removeBodyClass: (/* className: string */) => {},
       eventTargetHasClass: (/* target: !EventTarget, className: string */) => {},
-      registerInteractionHandler: (/* eventName: string, handler: !EventListener */) => {},
-      deregisterInteractionHandler: (/* eventName: string, handler: !EventListener */) => {},
-      registerDocumentHandler: (/* eventName: string, handler: !EventListener */) => {},
-      deregisterDocumentHandler: (/* eventName: string, handler: !EventListener */) => {},
-      registerWindowHandler: (/* eventName: string, handler: !EventListener */) => {},
-      deregisterWindowHandler: (/* eventName: string, handler: !EventListener */) => {},
       computeBoundingRect: () => {},
       trapFocus: () => {},
       releaseFocus: () => {},
@@ -70,46 +64,41 @@ class MDCDialogFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCDialogFoundation.defaultAdapter, adapter));
 
-    /**
-     * @type {boolean}
-     * @private
-     */
+    /** @private {boolean} */
     this.isOpen_ = false;
 
-    /**
-     * @type {number}
-     * @private
-     */
+    /** @private {number} */
     this.animationTimer_ = 0;
 
-    this.dialogClickHandler_ = (evt) => this.handleDialogClick_(evt);
-    this.windowResizeHandler_ = () => this.handleWindowResize_();
-    this.documentKeyDownHandler_ = (evt) => this.handleDocumentKeyDown_(evt);
+    /** @private {number} */
+    this.layoutFrame_ = 0;
   };
 
   destroy() {
-    // Ensure that dialog is cleaned up when destroyed
     if (this.isOpen_) {
       this.close(strings.DESTROY_ACTION);
     }
-    // Final cleanup of animating class in case the timer has not completed.
-    this.handleAnimationTimerEnd_();
-    clearTimeout(this.animationTimer_);
+
+    if (this.animationTimer_) {
+      clearTimeout(this.animationTimer_);
+      this.handleAnimationTimerEnd_();
+    }
+
+    if (this.layoutFrame_) {
+      cancelAnimationFrame(this.layoutFrame_);
+      this.layoutFrame_ = 0;
+    }
   }
 
   open() {
     this.isOpen_ = true;
-    this.adapter_.registerInteractionHandler('click', this.dialogClickHandler_);
-    this.adapter_.registerDocumentHandler('keydown', this.documentKeyDownHandler_);
-    this.adapter_.registerWindowHandler('resize', this.windowResizeHandler_);
-    this.adapter_.registerWindowHandler('orientationchange', this.windowResizeHandler_);
+    this.adapter_.notifyOpening();
     this.adapter_.addClass(cssClasses.OPENING);
 
     // Force redraw now that display is no longer "none", to establish basis for animation
     this.adapter_.computeBoundingRect();
     this.adapter_.addClass(cssClasses.OPEN);
     this.adapter_.addBodyClass(cssClasses.SCROLL_LOCK);
-    this.adapter_.notifyOpening();
 
     this.layout();
 
@@ -126,15 +115,11 @@ class MDCDialogFoundation extends MDCFoundation {
    */
   close(action = undefined) {
     this.isOpen_ = false;
-    this.adapter_.deregisterInteractionHandler('click', this.dialogClickHandler_);
-    this.adapter_.deregisterDocumentHandler('keydown', this.documentKeyDownHandler_);
-    this.adapter_.deregisterWindowHandler('resize', this.windowResizeHandler_);
-    this.adapter_.deregisterWindowHandler('orientationchange', this.windowResizeHandler_);
+    this.adapter_.notifyClosing(action);
     this.adapter_.releaseFocus();
     this.adapter_.addClass(cssClasses.CLOSING);
     this.adapter_.removeClass(cssClasses.OPEN);
     this.adapter_.removeBodyClass(cssClasses.SCROLL_LOCK);
-    this.adapter_.notifyClosing(action);
 
     clearTimeout(this.animationTimer_);
     this.animationTimer_ = setTimeout(() => {
@@ -148,10 +133,18 @@ class MDCDialogFoundation extends MDCFoundation {
   }
 
   layout() {
-    requestAnimationFrame(() => {
-      this.detectStackedButtons_();
-      this.detectScrollableContent_();
+    if (this.layoutFrame_) {
+      cancelAnimationFrame(this.layoutFrame_);
+    }
+    this.layoutFrame_ = requestAnimationFrame(() => {
+      this.layoutInternal_();
+      this.layoutFrame_ = 0;
     });
+  }
+
+  layoutInternal_() {
+    this.detectStackedButtons_();
+    this.detectScrollableContent_();
   }
 
   /** @private */
@@ -176,7 +169,7 @@ class MDCDialogFoundation extends MDCFoundation {
    * @param {!Event} evt
    * @private
    */
-  handleDialogClick_(evt) {
+  handleClick(evt) {
     const {target} = evt;
     const action = this.adapter_.getActionFromEvent(evt);
     if (action) {
@@ -184,16 +177,11 @@ class MDCDialogFoundation extends MDCFoundation {
     }
   }
 
-  /** @private */
-  handleWindowResize_() {
-    this.layout();
-  }
-
   /**
    * @param {!KeyboardEvent} evt
    * @private
    */
-  handleDocumentKeyDown_(evt) {
+  handleKeydown(evt) {
     if (evt.key === 'Escape' || evt.keyCode === 27) {
       this.close(strings.ESCAPE_ACTION);
     }
@@ -201,6 +189,7 @@ class MDCDialogFoundation extends MDCFoundation {
 
   /** @private */
   handleAnimationTimerEnd_() {
+    this.animationTimer_ = 0;
     this.adapter_.removeClass(cssClasses.OPENING);
     this.adapter_.removeClass(cssClasses.CLOSING);
   }

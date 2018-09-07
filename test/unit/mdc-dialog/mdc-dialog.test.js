@@ -75,7 +75,7 @@ function setupTest() {
   return {root, component, title, content, yesButton, noButton, cancelButton};
 }
 
-function setupTestWithFakes() {
+function setupTestWithMocks() {
   const root = getFixture();
 
   const MockFoundationCtor = td.constructor(MDCDialogFoundation);
@@ -95,49 +95,124 @@ test('attachTo returns a component instance', () => {
   assert.isOk(MDCDialog.attachTo(getFixture().querySelector('.mdc-dialog')) instanceof MDCDialog);
 });
 
-if (supportsCssVariables(window)) {
-  test('#initialize attaches ripple elements to all footer buttons', () => {
-    const raf = createMockRaf();
-    const {yesButton, noButton, cancelButton} = setupTest();
-    raf.flush();
+test('#initialSyncWithDOM registers click handler on the root element', () => {
+  const {root, component, mockFoundation} = setupTestWithMocks();
+  domEvents.emit(root, 'click');
+  td.verify(mockFoundation.handleClick(td.matchers.isA(Event)), {times: 1});
+  component.destroy();
+});
 
-    assert.isTrue(yesButton.classList.contains('mdc-ripple-upgraded'));
-    assert.isTrue(noButton.classList.contains('mdc-ripple-upgraded'));
-    assert.isTrue(cancelButton.classList.contains('mdc-ripple-upgraded'));
-    raf.restore();
+test('#initialSyncWithDOM registers keydown handler on the root element', () => {
+  const {root, component, mockFoundation} = setupTestWithMocks();
+  domEvents.emit(root, 'keydown');
+  td.verify(mockFoundation.handleKeydown(td.matchers.isA(Event)), {times: 1});
+  component.destroy();
+});
+
+test('#destroy deregisters click handler on the root element', () => {
+  const {root, component, mockFoundation} = setupTestWithMocks();
+  component.destroy();
+  domEvents.emit(root, 'click');
+  td.verify(mockFoundation.handleClick(td.matchers.isA(Event)), {times: 0});
+});
+
+test('#destroy deregisters keydown handler on the root element', () => {
+  const {root, component, mockFoundation} = setupTestWithMocks();
+  component.destroy();
+  domEvents.emit(root, 'keydown');
+  td.verify(mockFoundation.handleKeydown(td.matchers.isA(Event)), {times: 0});
+});
+
+test(`${strings.OPENING_EVENT} registers window resize handler and ${strings.CLOSING_EVENT} deregisters it`, () => {
+  const {root, mockFoundation} = setupTestWithMocks();
+  domEvents.emit(root, strings.OPENING_EVENT);
+  domEvents.emit(window, 'resize');
+  td.verify(mockFoundation.layout(), {times: 1});
+
+  domEvents.emit(root, strings.CLOSING_EVENT);
+  domEvents.emit(window, 'resize');
+  td.verify(mockFoundation.layout(), {times: 1});
+});
+
+test(`${strings.OPENING_EVENT} registers window orientationchange handler and ${strings.CLOSING_EVENT} deregisters it`,
+  () => {
+    const {root, mockFoundation} = setupTestWithMocks();
+    domEvents.emit(root, strings.OPENING_EVENT);
+    domEvents.emit(window, 'orientationchange');
+    td.verify(mockFoundation.layout(), {times: 1});
+
+    domEvents.emit(root, strings.CLOSING_EVENT);
+    domEvents.emit(window, 'orientationchange');
+    td.verify(mockFoundation.layout(), {times: 1});
   });
 
-  test('#destroy cleans up all ripples on footer buttons', () => {
-    const raf = createMockRaf();
-    const {component, yesButton, noButton, cancelButton} = setupTest();
-    raf.flush();
+test(`${strings.CLOSING_EVENT} causes the window resize handler to be deregistered`, () => {
+  const {root, mockFoundation} = setupTestWithMocks();
+  domEvents.emit(root, strings.OPENING_EVENT);
+  domEvents.emit(root, strings.CLOSING_EVENT);
+  domEvents.emit(window, 'resize');
+  td.verify(mockFoundation.layout(), {times: 0});
+});
 
-    component.destroy();
-    raf.flush();
+test(`${strings.CLOSING_EVENT} causes the window orientationchange handler to be deregistered`, () => {
+  const {root, mockFoundation} = setupTestWithMocks();
+  domEvents.emit(root, strings.OPENING_EVENT);
+  domEvents.emit(root, strings.CLOSING_EVENT);
+  domEvents.emit(window, 'orientationchange');
+  td.verify(mockFoundation.layout(), {times: 0});
+});
 
-    assert.isFalse(yesButton.classList.contains('mdc-ripple-upgraded'));
-    assert.isFalse(noButton.classList.contains('mdc-ripple-upgraded'));
-    assert.isFalse(cancelButton.classList.contains('mdc-ripple-upgraded'));
-    raf.restore();
-  });
-}
+test('#initialize attaches ripple elements to all footer buttons', () => {
+  if (!supportsCssVariables(window, true)) {
+    this.skip(); // eslint-disable-line no-invalid-this
+    return;
+  }
+
+  const raf = createMockRaf();
+  const {yesButton, noButton, cancelButton} = setupTest();
+  raf.flush();
+
+  assert.isTrue(yesButton.classList.contains('mdc-ripple-upgraded'));
+  assert.isTrue(noButton.classList.contains('mdc-ripple-upgraded'));
+  assert.isTrue(cancelButton.classList.contains('mdc-ripple-upgraded'));
+  raf.restore();
+});
+
+test('#destroy cleans up all ripples on footer buttons', () => {
+  if (!supportsCssVariables(window, true)) {
+    this.skip(); // eslint-disable-line no-invalid-this
+    return;
+  }
+
+  const raf = createMockRaf();
+  const {component, yesButton, noButton, cancelButton} = setupTest();
+  raf.flush();
+
+  component.destroy();
+  raf.flush();
+
+  assert.isFalse(yesButton.classList.contains('mdc-ripple-upgraded'));
+  assert.isFalse(noButton.classList.contains('mdc-ripple-upgraded'));
+  assert.isFalse(cancelButton.classList.contains('mdc-ripple-upgraded'));
+  raf.restore();
+});
 
 test('#show forwards to MDCDialogFoundation#open', () => {
-  const {component, mockFoundation} = setupTestWithFakes();
+  const {component, mockFoundation} = setupTestWithMocks();
 
   component.show();
   td.verify(mockFoundation.open());
 });
 
 test('set open = true forwards to MDCDialogFoundation#open', () => {
-  const {component, mockFoundation} = setupTestWithFakes();
+  const {component, mockFoundation} = setupTestWithMocks();
 
   component.open = true;
   td.verify(mockFoundation.open());
 });
 
 test('#close forwards to MDCDialogFoundation#close', () => {
-  const {component, mockFoundation} = setupTestWithFakes();
+  const {component, mockFoundation} = setupTestWithMocks();
   const action = 'action';
 
   component.close(action);
@@ -145,7 +220,7 @@ test('#close forwards to MDCDialogFoundation#close', () => {
 });
 
 test('set open = false forwards to MDCDialogFoundation#close', () => {
-  const {component, mockFoundation} = setupTestWithFakes();
+  const {component, mockFoundation} = setupTestWithMocks();
 
   component.open = false;
   td.verify(mockFoundation.close());
@@ -186,66 +261,6 @@ test('adapter#eventTargetHasClass returns whether or not the className is in the
 
   assert.isTrue(adapter.eventTargetHasClass(target, 'existent-class'));
   assert.isFalse(adapter.eventTargetHasClass(target, 'non-existent-class'));
-});
-
-test('adapter#registerInteractionHandler adds an event listener to the root element', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('eventHandler');
-
-  component.getDefaultFoundation().adapter_.registerInteractionHandler('click', handler);
-  domEvents.emit(root, 'click');
-
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('adapter#deregisterInteractionHandler removes an event listener from the root element', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('eventHandler');
-  root.addEventListener('click', handler);
-
-  component.getDefaultFoundation().adapter_.deregisterInteractionHandler('click', handler);
-  domEvents.emit(root, 'click');
-
-  td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
-test('adapter#registerDocumentHandler attaches an event listener to the document', () => {
-  const {component} = setupTest();
-  const handler = td.func('eventHandler');
-
-  component.getDefaultFoundation().adapter_.registerDocumentHandler('keydown', handler);
-  domEvents.emit(document, 'keydown');
-
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('adapter#deregisterDocumentHandler detaches an event listener from the document', () => {
-  const {component} = setupTest();
-  const handler = td.func('eventHandler');
-
-  document.addEventListener('keydown', handler);
-  component.getDefaultFoundation().adapter_.deregisterDocumentHandler('keydown', handler);
-  domEvents.emit(document, 'keydown');
-  td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
-test('adapter#registerWindowHandler attaches an event handler to the window', () => {
-  const {component} = setupTest();
-  const handler = td.func('resizeHandler');
-
-  component.getDefaultFoundation().adapter_.registerWindowHandler('resize', handler);
-  domEvents.emit(window, 'resize');
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('adapter#deregisterWindowHandler detaches an event handler from the window', () => {
-  const {component} = setupTest();
-  const handler = td.func('resizeHandler');
-
-  window.addEventListener('resize', handler);
-  component.getDefaultFoundation().adapter_.deregisterWindowHandler('resize', handler);
-  domEvents.emit(window, 'resize');
-  td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
 test('adapter#computeBoundingRect calls getBoundingClientRect() on root', () => {
