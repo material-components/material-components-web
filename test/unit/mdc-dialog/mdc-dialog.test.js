@@ -198,6 +198,9 @@ test('#close forwards to MDCDialogFoundation#close', () => {
 
   component.close(action);
   td.verify(mockFoundation.close(action));
+
+  component.close();
+  td.verify(mockFoundation.close(''));
 });
 
 test('set open = false forwards to MDCDialogFoundation#close', () => {
@@ -205,6 +208,13 @@ test('set open = false forwards to MDCDialogFoundation#close', () => {
 
   component.open = false;
   td.verify(mockFoundation.close());
+});
+
+test('get open forwards to MDCDialogFoundation#isOpen', () => {
+  const {component, mockFoundation} = setupTestWithMocks();
+
+  component.open;
+  td.verify(mockFoundation.isOpen());
 });
 
 test('get escapeKeyAction forwards to MDCDialogFoundation#getEscapeKeyAction', () => {
@@ -316,22 +326,23 @@ test(`adapter#notifyClosing emits ${strings.CLOSING_EVENT} without action`, () =
   component.getDefaultFoundation().adapter_.notifyClosing();
   component.unlisten(strings.CLOSING_EVENT, handler);
 
-  td.verify(handler(td.matchers.contains({detail: {action: undefined}})));
+  td.verify(handler(td.matchers.contains({detail: {}})));
 });
 
 test(`adapter#notifyClosing emits ${strings.CLOSING_EVENT} with action`, () => {
   const {component} = setupTest();
+  const action = 'action';
 
   const handler = td.func('notifyClosingHandler');
 
   component.listen(strings.CLOSING_EVENT, handler);
-  component.getDefaultFoundation().adapter_.notifyClosing('foo');
+  component.getDefaultFoundation().adapter_.notifyClosing(action);
   component.unlisten(strings.CLOSING_EVENT, handler);
 
-  td.verify(handler(td.matchers.contains({detail: {action: 'foo'}})));
+  td.verify(handler(td.matchers.contains({detail: {action}})));
 });
 
-test(`adapter#notifyClosed emits ${strings.CLOSED_EVENT}`, () => {
+test(`adapter#notifyClosed emits ${strings.CLOSED_EVENT} without action`, () => {
   const {component} = setupTest();
 
   const handler = td.func('notifyClosedHandler');
@@ -340,7 +351,20 @@ test(`adapter#notifyClosed emits ${strings.CLOSED_EVENT}`, () => {
   component.getDefaultFoundation().adapter_.notifyClosed();
   component.unlisten(strings.CLOSED_EVENT, handler);
 
-  td.verify(handler(td.matchers.anything()));
+  td.verify(handler(td.matchers.contains({detail: {}})));
+});
+
+test(`adapter#notifyClosed emits ${strings.CLOSED_EVENT} with action`, () => {
+  const {component} = setupTest();
+  const action = 'action';
+
+  const handler = td.func('notifyClosedHandler');
+
+  component.listen(strings.CLOSED_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyClosed(action);
+  component.unlisten(strings.CLOSED_EVENT, handler);
+
+  td.verify(handler(td.matchers.contains({detail: {action}})));
 });
 
 test('adapter#trapFocus calls activate() on a properly configured focus trap instance', () => {

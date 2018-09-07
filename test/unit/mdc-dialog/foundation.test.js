@@ -204,9 +204,15 @@ test('#close emits "closing" and "closed" events', () => {
   foundation.close();
 
   try {
-    td.verify(mockAdapter.notifyClosing(undefined), {times: 1});
+    td.verify(mockAdapter.notifyClosing(''), {times: 1});
     clock.tick(numbers.DIALOG_ANIMATION_CLOSE_TIME_MS);
-    td.verify(mockAdapter.notifyClosed(undefined), {times: 1});
+    td.verify(mockAdapter.notifyClosed(''), {times: 1});
+
+    const action = 'action';
+    foundation.close(action);
+    td.verify(mockAdapter.notifyClosing(action), {times: 1});
+    clock.tick(numbers.DIALOG_ANIMATION_CLOSE_TIME_MS);
+    td.verify(mockAdapter.notifyClosed(action), {times: 1});
   } finally {
     clock.uninstall();
   }

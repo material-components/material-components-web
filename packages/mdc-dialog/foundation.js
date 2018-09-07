@@ -117,9 +117,9 @@ class MDCDialogFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {string|undefined=} action
+   * @param {string=} action
    */
-  close(action = undefined) {
+  close(action = '') {
     this.isOpen_ = false;
     this.adapter_.notifyClosing(action);
     this.adapter_.releaseFocus();
