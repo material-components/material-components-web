@@ -16,8 +16,7 @@ path: /catalog/dialogs/
   </a>
 </div>-->
 
-[Dialogs](https://material.io/go/design-dialogs) inform users about a task and can contain critical information,
-require decisions, or involve multiple tasks.
+Dialogs inform users about a task and can contain critical information, require decisions, or involve multiple tasks.
 
 ## Design & API Documentation
 
@@ -63,9 +62,6 @@ npm install @material/dialog
 </div>
 ```
 
-> *NOTE*: Dialogs have default `max-width` and `max-height` values that can be overridden via the
-> `mdc-dialog-max-width()` and `mdc-dialog-max-height()` Sass mixins.
-
 > *NOTE*: Titles cannot contain leading whitespace due to how `mdc-typography-baseline-top()` works.
 
 ### Styles
@@ -74,8 +70,8 @@ npm install @material/dialog
 @import "@material/dialog/mdc-dialog";
 ```
 
-> *NOTE*: Since MDC Dialog is unopinionated about its contents, styles for any components you intend to include within
-> dialogs (e.g. List, Checkboxes, etc.) must also be imported.
+> *NOTE*: Styles for any components you intend to include within dialogs (e.g. List, Checkboxes, etc.) must also be
+> imported.
 
 ### JavaScript Instantiation
 
@@ -86,9 +82,9 @@ const dialog = new MDCDialog(document.querySelector('.mdc-dialog'));
 
 > See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
 
-> *NOTE*: Since MDC Dialog is unopinionated about its contents, any List, Checkboxes, etc. must also be similarly
-> instantiated. It is a good idea to instantiate when `MDCDialog:opened` fires, to delay layout until the dialog's
-> contents are in document flow.
+> *NOTE*: MDC Dialog makes no assumptions about what will be added to the `mdc-dialog__content` element.
+> Any List, Checkboxes, etc. must also be instantiated.
+> Additionally, call `layout` on any components within the content when `MDCDialog:opened` is emitted.
 
 ## Variants
 
@@ -162,13 +158,17 @@ radio buttons (indicating single selection) or checkboxes (indicating multiple s
       </ul>
     </section>
     <footer class="mdc-dialog__actions">
-      <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">Decline</button>
-      <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">OK</button>
+      <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">Cancel</button>
+      <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept">OK</button>
     </footer>
   </div>
   <div class="mdc-dialog__scrim"></div>
 </div>
 ```
+
+> *NOTE*: In the example above, the Cancel button intentionally has the `close` action to align with the behavior of
+> clicking the scrim or pressing the Escape key, allowing all interactions involving dismissal without taking an action
+> to be detected the same way.
 
 ### Additional Information
 
@@ -184,11 +184,14 @@ Additionally, two interactions have defined actions by default:
 * Pressing the Escape key within the dialog
 
 Both of these map to the `close` action by default. This can be accessed and customized via the component's
-`scrimClickAction` and `escapeKeyAction` properties, respectively. Setting either of these properties to an empty string
-will result in that interaction being disabled (i.e. the dialog will no longer close in response to the interaction).
+`scrimClickAction` and `escapeKeyAction` properties, respectively.
+
+Setting either of these properties to an empty string will result in that interaction being disabled (i.e. the dialog
+will no longer close in response to the interaction). Exercise caution when doing this - it should always be possible
+for a user to dismiss the dialog.
 
 Any action buttons within the dialog which equate strictly to a dismissal with no further action should also use the
-`close` action; this will make it possible to handle all dismiss events consistently, while separately handling other
+`close` action; this will make it easy to handle all such interactions consistently, while separately handling other
 actions.
 
 #### Actions and Selections
@@ -237,14 +240,14 @@ Mixin | Description
 
 Property | Value Type | Description
 --- | --- | ---
-`open` | `boolean` | Returns or sets whether the dialog is open.
+`isOpen` | `boolean` (read-only) | Proxies to the foundation's `isOpen` method.
 `escapeKeyAction` | `string` | Proxies to the foundation's `getEscapeKeyAction` and `setEscapeKeyAction` methods.
 `scrimClickAction` | `string` | Proxies to the foundation's `getScrimClickAction` and `setScrimClickAction` methods.
 
 Method Signature | Description
 --- | ---
 `layout() => void` | Recalculates layout and automatically adds/removes modifier classes like `--scrollable`.
-`show() => void` | Opens the dialog.
+`open() => void` | Opens the dialog.
 `close(action: string?) => void` | Closes the dialog, optionally with the specified action indicating why it was closed.
 
 ### Events
@@ -253,8 +256,8 @@ Event Name | `event.detail` | Description
 --- | --- | ---
 `MDCDialog:opening` | `{}` | Indicates when the dialog begins its opening animation.
 `MDCDialog:opened` | `{}` | Indicates when the dialog finishes its opening animation.
-`MDCDialog:closing` | `{action: string}` | Indicates when the dialog begins its closing animation. `action` represents the action which closed the dialog.
-`MDCDialog:closed` | `{action: string}` | Indicates when the dialog finishes its closing animation. `action` represents the action which closed the dialog.
+`MDCDialog:closing` | `{action: string?}` | Indicates when the dialog begins its closing animation. `action` represents the action which closed the dialog.
+`MDCDialog:closed` | `{action: string?}` | Indicates when the dialog finishes its closing animation. `action` represents the action which closed the dialog.
 
 ## Usage within Web Frameworks
 
@@ -269,6 +272,7 @@ Method Signature | Description
 `addBodyClass(className: string) => void` | Adds a class to the `<body>`.
 `removeBodyClass(className: string) => void` | Removes a class from the `<body>`.
 `eventTargetHasClass(target: !EventTarget, className: string) => void` | Returns `true` if the target element has the given CSS class, otherwise `false`.
+`computeBoundingRect()`: Forces the component to recalculate its layout; in the vanilla DOM implementation, this calls `computeBoundingClientRect`.
 `trapFocus() => void` | Sets up the DOM such that keyboard navigation is restricted to focusable elements within the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details).
 `releaseFocus() => void` | Removes any effects of focus trapping on the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details).
 `isContentScrollable() => boolean` | Returns `true` if `mdc-dialog__content` can be scrolled by the user, otherwise `false`.
