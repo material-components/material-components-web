@@ -23,7 +23,6 @@
 
 /** @enum {string} */
 const cssClasses = {
-  BOX: 'mdc-select--box',
   DISABLED: 'mdc-select--disabled',
   ROOT: 'mdc-select',
   OUTLINED: 'mdc-select--outlined',

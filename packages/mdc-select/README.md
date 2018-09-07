@@ -83,21 +83,6 @@ See [Importing the JS component](../../docs/importing-js.md) for more informatio
 
 ## Variants
 
-### Select Box
-
-The Select Box variant uses the same markup as the standard variant, with the addition of the `mdc-select--box`
-modifier class on the root element.
-
-```html
-<div class="mdc-select mdc-select--box">
-  <select class="mdc-select__native-control">
-    ...
-  </select>
-  <label class="mdc-floating-label">Pick a Food Group</label>
-  <div class="mdc-line-ripple"></div>
-</div>
-```
-
 ### Outlined Select
 
 The Select Outlined variant uses the `mdc-notched-outline` in place of the `mdc-line-ripple` element and adds the
@@ -198,7 +183,6 @@ Since MDC Select uses native `<select>` and `<option>` elements, simply add the 
 | Class | Description |
 | --- | --- |
 | `mdc-select` | Mandatory. |
-| `mdc-select--box` | Optional. Styles the select as a box select. |
 | `mdc-select--disabled` | Optional. Styles the select as disabled. This class should be applied to the root element when the `disabled` attribute is applied to the `<select>` element. |
 | `mdc-select--outlined` | Optional. Styles the select as outlined select. |
 | `mdc-select__native-control` | Mandatory. The native `<select>` element. |
@@ -215,7 +199,7 @@ Mixin | Description
 `mdc-select-focused-label-color($color)` | Customizes the label color of the select when focused.
 `mdc-select-bottom-line-color($color)` | Customizes the color of the default bottom line of the select.
 `mdc-select-focused-bottom-line-color($color)` | Customizes the color of the bottom line of the select when focused.
-`mdc-select-corner-radius($radius)` | Customizes the corner radius of the box variant of the select.
+`mdc-select-corner-radius($radius)` | Customizes the corner radius of the filled variant of the select.
 `mdc-select-hover-bottom-line-color($color)` | Customizes the color of the bottom line when the select is hovered.
 `mdc-select-outline-color($color)` | Customizes the color of the notched outline.
 `mdc-select-outline-corner-radius($radius)` | Sets the border radius of of the outlined select variant.
