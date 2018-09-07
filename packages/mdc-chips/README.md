@@ -208,8 +208,7 @@ Mixin | Description
 `mdc-chip-ink-color($color)` | Customizes the text ink color for a chip, and updates the chip's ripple color to match
 `mdc-chip-selected-ink-color($color)` | Customizes text ink and ripple color of a chip in the _selected_ state
 `mdc-chip-outline($width, $style, $color)` | Customizes the outline properties for a chip
-`mdc-chip-outline-width($width, $horizontal-padding)` | Customizes the outline width for a chip. `$horizontal-padding` is only required in cases where
-`mdc-chip-horizontal-padding` is also included with a custom value
+`mdc-chip-outline-width($width, $horizontal-padding)` | Customizes the outline width for a chip. `$horizontal-padding` is only required in cases where `mdc-chip-horizontal-padding` is also included with a custom value
 `mdc-chip-outline-style($style)` | Customizes the outline style for a chip
 `mdc-chip-outline-color($color)` | Customizes the outline color for a chip
 `mdc-chip-height($height)` | Customizes the height for a chip
