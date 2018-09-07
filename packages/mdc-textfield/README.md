@@ -242,7 +242,7 @@ Property | Value Type | Description
 `leadingIconAriaLabel` | String | Proxies to the foundation's `setLeadingIconAriaLabel` method.
 `trailingIconAriaLabel` | String | Proxies to the foundation's `setTrailingIconAriaLabel` method.
 `leadingIconContent` | String | Proxies to the foundation's `setLeadingIconContent` method.
-`leadingIconContent` | String | Proxies to the foundation's `setTrailingIconContent` method.
+`trailingIconContent` | String | Proxies to the foundation's `setTrailingIconContent` method.
 
 
 Method Signature | Description

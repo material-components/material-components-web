@@ -42,11 +42,14 @@ const icon = new MDCTextFieldIcon(document.querySelector('.mdc-text-field-icon')
 ```
 ## Variants
 
-Leading and trailing icons can be applied to text fields styled as the default or `mdc-text-field--outlined`. To add an icon, add the relevant class (either `mdc-text-field--with-leading-icon` and/or `mdc-text-field--with-trailing-icon`) to the root element, add an `i` element with your preferred icon, and give it a class of `mdc-text-field__icon`. If using 2 icons at the same time, the first icon will be inside the `mdc-text-field` will be interpreted as the leading icon and the second icon will be interpreted as the trailing icon.
+Leading and trailing icons can be applied to default or `mdc-text-field--outlined` Text Fields. To add an icon, add the relevant class (`mdc-text-field--with-leading-icon` and/or `mdc-text-field--with-trailing-icon`) to the root element, add an `i` element with your preferred icon, and give it a class of `mdc-text-field__icon`. If using 2 icons at the same time, the first icon inside the `mdc-text-field` element will be interpreted as the leading icon and the second icon will be interpreted as the trailing icon.
+
+> **NOTE:** if you would like to display un-clickable icons, simply omit `tabindex="0"` and `role="button"`, and the CSS will ensure the cursor is set to default, and that interacting with an icon doesn't do anything unexpected.
 
 ### Leading icon
 
 In text field:
+
 ```html
 <div class="mdc-text-field mdc-text-field--with-leading-icon">
   <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
@@ -57,6 +60,7 @@ In text field:
 ```
 
 In outlined text field:
+
 ```html
 <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon">
   <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
@@ -74,6 +78,7 @@ In outlined text field:
 ### Trailing icon
 
 In text field:
+
 ```html
 <div class="mdc-text-field mdc-text-field--with-trailing-icon">
   <input type="text" id="my-input" class="mdc-text-field__input">
@@ -84,6 +89,7 @@ In text field:
 ```
 
 In outlined text field:
+
 ```html
 <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-trailing-icon">
   <input type="text" id="my-input" class="mdc-text-field__input">
@@ -101,6 +107,7 @@ In outlined text field:
 ### Leading and Trailing icons
 
 In text field:
+
 ```html
 <div class="mdc-text-field mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon">
   <i class="material-icons mdc-text-field__icon">phone</i>
@@ -112,6 +119,7 @@ In text field:
 ```
 
 In outlined text field:
+
 ```html
 <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon">
   <i class="material-icons mdc-text-field__icon">phone</i>
@@ -126,10 +134,6 @@ In outlined text field:
   <div class="mdc-notched-outline__idle"></div>
 </div>
 ```
-
->**NOTE:** if you would like to display un-clickable icons, simply remove `tabindex="0"` and `role="button"`,
-and the CSS will ensure the cursor is set to default, and that interacting with an icon doesn't
-do anything unexpected.
 
 ## Style Customization
 

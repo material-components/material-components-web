@@ -330,7 +330,7 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
-   * Sets the aria label of the icon.
+   * Sets the aria label of the leading icon.
    * @param {string} label
    */
   set leadingIconAriaLabel(label) {
@@ -338,15 +338,7 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
-   * Sets the aria label of the icon.
-   * @param {string} label
-   */
-  set trailingIconAriaLabel(label) {
-    this.foundation_.setTrailingIconAriaLabel(label);
-  }
-
-  /**
-   * Sets the text content of the icon.
+   * Sets the text content of the leading icon.
    * @param {string} content
    */
   set leadingIconContent(content) {
@@ -354,7 +346,15 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
-   * Sets the text content of the icon.
+   * Sets the aria label of the trailing icon.
+   * @param {string} label
+   */
+  set trailingIconAriaLabel(label) {
+    this.foundation_.setTrailingIconAriaLabel(label);
+  }
+
+  /**
+   * Sets the text content of the trailing icon.
    * @param {string} content
    */
   set trailingIconContent(content) {

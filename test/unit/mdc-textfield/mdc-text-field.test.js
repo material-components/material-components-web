@@ -150,7 +150,7 @@ test('#constructor instantiates a leading icon if an icon element is present', (
 test('#constructor instantiates an icon for both icon elements if present', () => {
   const root = getFixture(true);
   root.classList.add('mdc-text-field--with-trailing-icon');
-  root.insertAdjacentHTML('beforeend', '<i class="mdc-text-field__icon material-icons">3d_rotations</i>');
+  root.appendChild(bel`<i class="mdc-text-field__icon material-icons">3d_rotations</i>`);
   const component = new MDCTextField(root);
   assert.instanceOf(component.leadingIcon_, MDCTextFieldIcon);
   assert.instanceOf(component.trailingIcon_, MDCTextFieldIcon);
@@ -440,6 +440,30 @@ test('get/set value', () => {
   td.verify(mockFoundation.getValue());
   component.value = 'foo';
   td.verify(mockFoundation.setValue('foo'));
+});
+
+test('set leadingIconAriaLabel', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.leadingIconAriaLabel = 'label';
+  td.verify(mockFoundation.setLeadingIconAriaLabel('label'));
+});
+
+test('set leadingIconContent', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.leadingIconContent = 'label';
+  td.verify(mockFoundation.setLeadingIconContent('label'));
+});
+
+test('set trailingIconAriaLabel', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.trailingIconAriaLabel = 'label';
+  td.verify(mockFoundation.setTrailingIconAriaLabel('label'));
+});
+
+test('set trailingIconContent', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.trailingIconContent = 'label';
+  td.verify(mockFoundation.setTrailingIconContent('label'));
 });
 
 test('get/set valid', () => {
