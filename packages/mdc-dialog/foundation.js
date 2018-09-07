@@ -139,7 +139,7 @@ class MDCDialogFoundation extends MDCFoundation {
   }
 
   /** @return {string} */
-  getEscapeKeyAction(action) {
+  getEscapeKeyAction() {
     return this.escapeKeyAction_;
   }
 
@@ -149,7 +149,7 @@ class MDCDialogFoundation extends MDCFoundation {
   }
 
   /** @return {string} */
-  getScrimClickAction(action) {
+  getScrimClickAction() {
     return this.scrimClickAction_;
   }
 

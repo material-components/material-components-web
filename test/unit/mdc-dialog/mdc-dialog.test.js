@@ -110,7 +110,7 @@ test('#destroy deregisters click handler on the root element', () => {
 });
 
 test(`${strings.OPENING_EVENT} registers document keydown handler and ${strings.CLOSING_EVENT} deregisters it`, () => {
-  const {root, component, mockFoundation} = setupTestWithMocks();
+  const {root, mockFoundation} = setupTestWithMocks();
   domEvents.emit(root, strings.OPENING_EVENT);
   domEvents.emit(document, 'keydown');
   td.verify(mockFoundation.handleDocumentKeydown(td.matchers.isA(Event)), {times: 1});

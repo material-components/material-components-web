@@ -26,7 +26,7 @@ import td from 'testdouble';
 import lolex from 'lolex';
 
 import {setupFoundationTest} from '../helpers/setup';
-import {verifyDefaultAdapter, captureHandlers} from '../helpers/foundation';
+import {verifyDefaultAdapter} from '../helpers/foundation';
 
 import {cssClasses, strings, numbers} from '../../../packages/mdc-dialog/constants';
 import {createMockRaf} from '../helpers/raf';
@@ -351,7 +351,7 @@ test(`click does nothing when ${cssClasses.SCRIM} class is present but scrim cli
 });
 
 test('escape keydown closes the dialog (via key property)', () => {
-  const {foundation, mockAdapter} = setupTest();
+  const {foundation} = setupTest();
   foundation.close = td.func('close');
 
   foundation.open();
@@ -361,7 +361,7 @@ test('escape keydown closes the dialog (via key property)', () => {
 });
 
 test('escape keydown closes the dialog (via keyCode property)', () => {
-  const {foundation, mockAdapter} = setupTest();
+  const {foundation} = setupTest();
   foundation.close = td.func('close');
 
   foundation.open();
@@ -371,7 +371,7 @@ test('escape keydown closes the dialog (via keyCode property)', () => {
 });
 
 test('escape keydown does nothing if escape key action is set to empty string', () => {
-  const {foundation, mockAdapter} = setupTest();
+  const {foundation} = setupTest();
   foundation.close = td.func('close');
 
   foundation.setEscapeKeyAction('');
@@ -382,7 +382,7 @@ test('escape keydown does nothing if escape key action is set to empty string', 
 });
 
 test('keydown does nothing when key other than escape is pressed', () => {
-  const {foundation, mockAdapter} = setupTest();
+  const {foundation} = setupTest();
   foundation.close = td.func('close');
 
   foundation.open();
