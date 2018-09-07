@@ -27,6 +27,7 @@
 @import "@material/typography/mixins";
 @import "@material/typography/variables";
 @import "./mixins";
+@import "./variables";
 
 // postcss-bem-linter: define dialog
 
@@ -44,14 +45,14 @@
 
 .mdc-dialog {
   @include mdc-dialog-container-fill-color(surface);
-  @include mdc-dialog-scrim-color(on-surface, .32);
-  @include mdc-dialog-title-ink-color(on-surface, .87);
-  @include mdc-dialog-content-ink-color(on-surface, .6);
-  @include mdc-dialog-scroll-divider-color(on-surface, .12);
-  @include mdc-dialog-min-width(280px);
-  @include mdc-dialog-max-width(560px, 16px);
-  @include mdc-dialog-max-height(null, 16px);
-  @include mdc-dialog-corner-radius(4px);
+  @include mdc-dialog-scrim-color($mdc-dialog-scrim-color);
+  @include mdc-dialog-title-ink-color($mdc-dialog-title-ink-color);
+  @include mdc-dialog-content-ink-color($mdc-dialog-content-ink-color);
+  @include mdc-dialog-scroll-divider-color($mdc-dialog-scroll-divider-color);
+  @include mdc-dialog-min-width($mdc-dialog-min-width);
+  @include mdc-dialog-max-width($mdc-dialog-max-width, $mdc-dialog-margin);
+  @include mdc-dialog-max-height(null, $mdc-dialog-margin);
+  @include mdc-dialog-corner-radius($mdc-dialog-corner-radius);
 
   // Use `display: none` instead of `visibility: hidden` to avoid recalculating layout when the dialog is closed.
   display: none;

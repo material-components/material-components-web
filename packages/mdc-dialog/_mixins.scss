@@ -33,25 +33,25 @@
   }
 }
 
-@mixin mdc-dialog-scrim-color($color, $opacity) {
+@mixin mdc-dialog-scrim-color($color, $opacity: $mdc-dialog-scrim-opacity) {
   .mdc-dialog__scrim {
     background-color: rgba(mdc-theme-prop-value($color), $opacity);
   }
 }
 
-@mixin mdc-dialog-title-ink-color($color, $opacity) {
+@mixin mdc-dialog-title-ink-color($color, $opacity: $mdc-dialog-title-ink-opacity) {
   .mdc-dialog__title {
     color: rgba(mdc-theme-prop-value($color), $opacity);
   }
 }
 
-@mixin mdc-dialog-content-ink-color($color, $opacity) {
+@mixin mdc-dialog-content-ink-color($color, $opacity: $mdc-dialog-content-ink-opacity) {
   .mdc-dialog__content {
     color: rgba(mdc-theme-prop-value($color), $opacity);
   }
 }
 
-@mixin mdc-dialog-scroll-divider-color($color, $opacity) {
+@mixin mdc-dialog-scroll-divider-color($color, $opacity: $mdc-dialog-scroll-divider-opacity) {
   &.mdc-dialog--scrollable .mdc-dialog__title,
   &.mdc-dialog--scrollable .mdc-dialog__actions {
     border-color: rgba(mdc-theme-prop-value($color), $opacity);
