@@ -23,8 +23,15 @@
 
 import td from 'testdouble';
 
-// Returns a foundation configured to use a mock object with the same api as a default adapter,
-// as well as that adapter itself.
+/**
+ * Returns a foundation configured to use a mock object with the same API as a default adapter,
+ * as well as that adapter itself.
+ * The trailing `.` in the `@param` type below is intentional: It indicates a reference to the class itself instead of
+ * an instance of the class.
+ * See https://youtrack.jetbrains.com/issue/WEB-10214#focus=streamItem-27-1305930-0-0
+ * @param {!MDCFoundation.} FoundationClass
+ * @return {{mockAdapter: !Object, foundation: !MDCFoundation}}
+ */
 export function setupFoundationTest(FoundationClass) {
   const mockAdapter = td.object(FoundationClass.defaultAdapter);
   const foundation = new FoundationClass(mockAdapter);
