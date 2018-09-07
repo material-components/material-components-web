@@ -47,7 +47,8 @@ test('#createFocusTrapInstance creates a properly configured focus trap instance
   const properlyConfiguredFocusTrapInstance = {};
   td.when(focusTrapFactory(surface, {
     initialFocus: yesBtn,
-    clickOutsideDeactivates: false,
+    escapeDeactivates: false,
+    clickOutsideDeactivates: true,
   })).thenReturn(properlyConfiguredFocusTrapInstance);
 
   const instance = util.createFocusTrapInstance(surface, yesBtn, focusTrapFactory);

@@ -58,7 +58,7 @@ class MDCDialog extends MDCComponent {
     this.handleClick_;
 
     /** @private {!Function} */
-    this.handleKeydown_;
+    this.handleDocumentKeydown_;
 
     /** @private {!Function} */
     this.handleOpening_;
@@ -67,7 +67,7 @@ class MDCDialog extends MDCComponent {
     this.handleClosing_;
 
     /** @private {Function} */
-    this.handleWindowResize_;
+    this.layout_;
   }
 
   static attachTo(root) {
@@ -117,26 +117,26 @@ class MDCDialog extends MDCComponent {
 
   initialSyncWithDOM() {
     this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
-    this.handleKeydown_ = this.foundation_.handleKeydown.bind(this.foundation_);
-    this.handleWindowResize_ = () => this.foundation_.layout();
+    this.handleDocumentKeydown_ = this.foundation_.handleDocumentKeydown.bind(this.foundation_);
+    this.layout_ = this.layout.bind(this);
 
-    const WINDOW_EVENTS = ['resize', 'orientationchange'];
+    const LAYOUT_EVENTS = ['resize', 'orientationchange'];
     this.handleOpening_ = () => {
-      WINDOW_EVENTS.forEach((type) => window.addEventListener(type, this.handleWindowResize_));
+      LAYOUT_EVENTS.forEach((type) => window.addEventListener(type, this.layout_));
+      document.addEventListener('keydown', this.handleDocumentKeydown_);
     };
     this.handleClosing_ = () => {
-      WINDOW_EVENTS.forEach((type) => window.removeEventListener(type, this.handleWindowResize_));
+      LAYOUT_EVENTS.forEach((type) => window.removeEventListener(type, this.layout_));
+      document.removeEventListener('keydown', this.handleDocumentKeydown_);
     };
 
     this.listen('click', this.handleClick_);
-    this.listen('keydown', this.handleKeydown_);
     this.listen(strings.OPENING_EVENT, this.handleOpening_);
     this.listen(strings.CLOSING_EVENT, this.handleClosing_);
   }
 
   destroy() {
     this.unlisten('click', this.handleClick_);
-    this.unlisten('keydown', this.handleKeydown_);
     this.unlisten(strings.OPENING_EVENT, this.handleOpening_);
     this.unlisten(strings.CLOSING_EVENT, this.handleClosing_);
     this.handleClosing_();

@@ -208,7 +208,7 @@ class MDCDialogFoundation extends MDCFoundation {
    * @param {!KeyboardEvent} evt
    * @private
    */
-  handleKeydown(evt) {
+  handleDocumentKeydown(evt) {
     if ((evt.key === 'Escape' || evt.keyCode === 27) && this.escapeKeyAction_) {
       this.close(this.escapeKeyAction_);
     }

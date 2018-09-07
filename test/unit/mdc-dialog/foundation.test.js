@@ -349,7 +349,7 @@ test('escape keydown closes the dialog (via key property)', () => {
   foundation.close = td.func('close');
 
   foundation.open();
-  foundation.handleKeydown({key: 'Escape'});
+  foundation.handleDocumentKeydown({key: 'Escape'});
 
   td.verify(foundation.close(foundation.getEscapeKeyAction()));
 });
@@ -359,7 +359,7 @@ test('escape keydown closes the dialog (via keyCode property)', () => {
   foundation.close = td.func('close');
 
   foundation.open();
-  foundation.handleKeydown({keyCode: 27});
+  foundation.handleDocumentKeydown({keyCode: 27});
 
   td.verify(foundation.close(foundation.getEscapeKeyAction()));
 });
@@ -370,7 +370,7 @@ test('escape keydown does nothing if escape key action is set to empty string', 
 
   foundation.setEscapeKeyAction('');
   foundation.open();
-  foundation.handleKeydown({key: 'Escape'});
+  foundation.handleDocumentKeydown({key: 'Escape'});
 
   td.verify(foundation.close(foundation.getEscapeKeyAction()), {times: 0});
 });
@@ -380,7 +380,7 @@ test('keydown does nothing when key other than escape is pressed', () => {
   foundation.close = td.func('close');
 
   foundation.open();
-  foundation.handleKeydown({key: 'Enter'});
+  foundation.handleDocumentKeydown({key: 'Enter'});
 
   td.verify(foundation.close(foundation.getEscapeKeyAction()), {times: 0});
 });

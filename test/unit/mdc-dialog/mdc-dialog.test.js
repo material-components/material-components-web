@@ -102,13 +102,6 @@ test('#initialSyncWithDOM registers click handler on the root element', () => {
   component.destroy();
 });
 
-test('#initialSyncWithDOM registers keydown handler on the root element', () => {
-  const {root, component, mockFoundation} = setupTestWithMocks();
-  domEvents.emit(root, 'keydown');
-  td.verify(mockFoundation.handleKeydown(td.matchers.isA(Event)), {times: 1});
-  component.destroy();
-});
-
 test('#destroy deregisters click handler on the root element', () => {
   const {root, component, mockFoundation} = setupTestWithMocks();
   component.destroy();
@@ -116,11 +109,15 @@ test('#destroy deregisters click handler on the root element', () => {
   td.verify(mockFoundation.handleClick(td.matchers.isA(Event)), {times: 0});
 });
 
-test('#destroy deregisters keydown handler on the root element', () => {
+test(`${strings.OPENING_EVENT} registers document keydown handler and ${strings.CLOSING_EVENT} deregisters it`, () => {
   const {root, component, mockFoundation} = setupTestWithMocks();
-  component.destroy();
-  domEvents.emit(root, 'keydown');
-  td.verify(mockFoundation.handleKeydown(td.matchers.isA(Event)), {times: 0});
+  domEvents.emit(root, strings.OPENING_EVENT);
+  domEvents.emit(document, 'keydown');
+  td.verify(mockFoundation.handleDocumentKeydown(td.matchers.isA(Event)), {times: 1});
+
+  domEvents.emit(root, strings.CLOSING_EVENT);
+  domEvents.emit(document, 'keydown');
+  td.verify(mockFoundation.handleDocumentKeydown(td.matchers.isA(Event)), {times: 1});
 });
 
 test(`${strings.OPENING_EVENT} registers window resize handler and ${strings.CLOSING_EVENT} deregisters it`, () => {
@@ -145,22 +142,6 @@ test(`${strings.OPENING_EVENT} registers window orientationchange handler and ${
     domEvents.emit(window, 'orientationchange');
     td.verify(mockFoundation.layout(), {times: 1});
   });
-
-test(`${strings.CLOSING_EVENT} causes the window resize handler to be deregistered`, () => {
-  const {root, mockFoundation} = setupTestWithMocks();
-  domEvents.emit(root, strings.OPENING_EVENT);
-  domEvents.emit(root, strings.CLOSING_EVENT);
-  domEvents.emit(window, 'resize');
-  td.verify(mockFoundation.layout(), {times: 0});
-});
-
-test(`${strings.CLOSING_EVENT} causes the window orientationchange handler to be deregistered`, () => {
-  const {root, mockFoundation} = setupTestWithMocks();
-  domEvents.emit(root, strings.OPENING_EVENT);
-  domEvents.emit(root, strings.CLOSING_EVENT);
-  domEvents.emit(window, 'orientationchange');
-  td.verify(mockFoundation.layout(), {times: 0});
-});
 
 test('#initialize attaches ripple elements to all footer buttons', () => {
   if (!supportsCssVariables(window, true)) {
