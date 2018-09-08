@@ -25,9 +25,9 @@ const cssClasses = {
   OPEN: 'mdc-dialog--open',
   OPENING: 'mdc-dialog--opening',
   CLOSING: 'mdc-dialog--closing',
-  STACKED: 'mdc-dialog--stacked',
   SCRIM: 'mdc-dialog__scrim',
   SCROLLABLE: 'mdc-dialog--scrollable',
+  STACKED: 'mdc-dialog--stacked',
   SCROLL_LOCK: 'mdc-dialog-scroll-lock',
 };
 
@@ -51,8 +51,6 @@ const strings = {
 const numbers = {
   DIALOG_ANIMATION_OPEN_TIME_MS: 150,
   DIALOG_ANIMATION_CLOSE_TIME_MS: 75,
-  IE_FLEX_OVERFLOW_BUG_ITERATIONS: 5,
-  IE_FLEX_OVERFLOW_BUG_INTERVAL_MS: 100,
 };
 
 export {cssClasses, strings, numbers};
