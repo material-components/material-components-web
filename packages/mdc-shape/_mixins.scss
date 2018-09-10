@@ -24,21 +24,15 @@
 @import "./functions";
 
 @mixin mdc-shape-radius($radius, $rtl-reflexive: false) {
-  @if mdc-shape-has-pill-radius($radius) {
-    @error "Invalid radius: '#{$radius}' is not supported for this component";
-  } @else {
+  @if mdc-shape-is-valid-radius($radius) {
     border-radius: mdc-shape-prop-value($radius);
 
     @if ($rtl-reflexive) {
-      @include mdc-shape-flip-radius($radius);
+      @include mdc-rtl {
+        border-radius: mdc-shape-flip-radius($radius);
+      }
     }
-  }
-}
-
-@mixin mdc-shape-flip-radius($radius) {
-  @if length($radius) == 4 {
-    @include mdc-rtl {
-      border-radius: mdc-shape-flip-radius($radius);
-    }
+  } @else {
+    @error "Invalid radius: '#{$radius}' is not supported for this component";
   }
 }

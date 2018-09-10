@@ -33,23 +33,38 @@ Shapes direct attention, identify components, communicate state, and express bra
 npm install @material/shape
 ```
 
-## Basic Usage
+## Usage
 
-### Styles
+### Shapes for fixed height components
 
-The styles for applying custom shape to button component looks like this:
+Styles for applying shape to button component looks like this.
 
 ```scss
-@import "@material/button/mixins";
-
-.my-custom-button {
-  @include mdc-button-shape-radius(pill);
-}
+@include mdc-shape-radius(mdc-shape-resolve-pill-radius($mdc-button-height, $radius));
 ```
 
-In this example, the above styles applies `pill` shape to button. It can also be absolute value (e.g., `8px`);
+Where, `$mdc-button-height` is the height of standard button and $radius is the size of shape.
+`$radius` value can be `pill` which translates to component height divided by 2 or absolute value.
 
-> You would indirectly use the Shape API through respective component's mixin which takes care of applying radius all corners to all its component variants.
+### Shapes for dynamic height components
+
+Styles for applying shapes to dynamic height component like card looks like this:
+
+```scss
+@include mdc-shape-radius($radius);
+```
+
+Where, `$radius` is absolute value only.
+
+### Shapes for components on specific corners
+
+Styles for applying shapes for specific corners such as drawer looks like this:
+
+```scss
+@include mdc-shape-radius((0, $radius, $radius, 0), $rtl-reflexive: true);
+```
+
+Where, only top-right & bottom-right corners are customizable and it automatically flips based on RTL context when `$rtl-reflexive` is set to true.
 
 ### Sass Mixins
 
