@@ -67,10 +67,12 @@
 }
 
 @function mdc-shape-prop-corner-value_($radius) {
-  @if mdc-shape-is-valid-radius-value_($radius) {
+  @if map-has-key($mdc-shape-category-values, $radius) {
+    @return map-get($mdc-shape-category-values, $radius);
+  } @else if mdc-shape-is-valid-radius-value_($radius) {
     @return $radius;
-  } @else if not map-has-key($mdc-shape-category-values, $radius) {
-    @error "Invalid radius: '#{$radius}' radius in not defined";
+  } @else {
+    @error "Invalid radius: '#{$radius}' radius is not supported";
   }
 
   @return map-get($mdc-shape-category-values, $radius);
@@ -78,20 +80,4 @@
 
 @function mdc-shape-is-valid-radius-value_($radius) {
   @return type-of($radius) == "number" or str_index($radius, "var(") or str_index($radius, "calc(");
-}
-
-@function mdc-shape-is-valid-radius($radius) {
-  $radius: mdc-shape-prop-value($radius);
-
-  @if type-of($radius) == "list" {
-    @each $corner in $radius {
-      @if not mdc-shape-is-valid-radius-value_($radius) {
-        @return false;
-      }
-    }
-  } @else if not mdc-shape-is-valid-radius-value_($radius) {
-    @return false;
-  }
-
-  @return true;
 }
