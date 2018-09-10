@@ -131,7 +131,7 @@
     "useragent": "^2.3.0",
     "validate-commit-msg": "^2.6.1",
     "verror": "^1.10.0",
-    "webpack": "^3.0.0",
+    "webpack": "^4.18.0",
     "webpack-dev-server": "^2.4.3"
   },
   "babel": {
