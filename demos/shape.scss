@@ -34,7 +34,7 @@
 }
 
 .demo-card {
-  @include mdc-card-shape-radius(12px);
+  @include mdc-card-shape-radius((12px, 0, 12px, 0));
 }
 
 .demo-card__media {
