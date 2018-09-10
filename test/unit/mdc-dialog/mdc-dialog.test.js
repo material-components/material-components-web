@@ -143,7 +143,7 @@ test(`${strings.OPENING_EVENT} registers window orientationchange handler and ${
     td.verify(mockFoundation.layout(), {times: 1});
   });
 
-test('#initialize attaches ripple elements to all footer buttons', () => {
+test('#initialize attaches ripple elements to all footer buttons', function() {
   if (!supportsCssVariables(window, true)) {
     this.skip(); // eslint-disable-line no-invalid-this
     return;
@@ -159,7 +159,7 @@ test('#initialize attaches ripple elements to all footer buttons', () => {
   raf.restore();
 });
 
-test('#destroy cleans up all ripples on footer buttons', () => {
+test('#destroy cleans up all ripples on footer buttons', function() {
   if (!supportsCssVariables(window, true)) {
     this.skip(); // eslint-disable-line no-invalid-this
     return;
