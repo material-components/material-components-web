@@ -22,9 +22,9 @@
 
 // Public mixins
 
-@mixin mdc-text-field-icon-color($color, $isTrailing: false) {
+@mixin mdc-text-field-icon-color($color, $styleSecondIcon: false) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-icon-color_($color, $isTrailing);
+    @include mdc-text-field-icon-color_($color, $styleSecondIcon);
   }
 }
 
@@ -76,9 +76,9 @@
   }
 }
 
-@mixin mdc-text-field-icon-color_($color, $isTrailing: false) {
+@mixin mdc-text-field-icon-color_($color, $styleSecondIcon: false) {
   .mdc-text-field__icon {
-    @if ($isTrailing) {
+    @if ($styleSecondIcon) {
       ~ .mdc-text-field__icon { // Selects the second instance of this class regardless of element type.
         @include mdc-theme-prop(color, $color);
       }
