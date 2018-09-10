@@ -43,8 +43,7 @@ Styles for applying shape to button component looks like this.
 @include mdc-shape-radius(mdc-shape-resolve-pill-radius($mdc-button-height, $radius));
 ```
 
-Where, `$mdc-button-height` is the height of standard button and $radius is the size of shape.
-`$radius` value can be `pill` which translates to component height divided by 2 or absolute value.
+Where, `$mdc-button-height` is the height of standard button and `$radius` is the size of shape. `mdc-shape-resolve-pill-radius` function is used to resolve `pill` value to appropriate `$radius` value based on component height.
 
 ### Shapes for dynamic height components
 
@@ -64,13 +63,12 @@ Styles for applying shapes for specific corners such as drawer looks like this:
 @include mdc-shape-radius((0, $radius, $radius, 0), $rtl-reflexive: true);
 ```
 
-Where, only top-right & bottom-right corners are customizable and it automatically flips based on RTL context when `$rtl-reflexive` is set to true.
+Where, only top-right & bottom-right corners are customizable and it automatically flips radius values based on RTL context when `$rtl-reflexive` is set to true.
 
 ### Sass Mixins
 
 Mixin | Description
 --- | ---
 `mdc-shape-radius($radius, $rtl-reflexive)` | Shape API used by all other components to apply radius to appropriate corners. `$radius` can be single value or list of 4 radius corner values. Set `$rtl-reflexive` to true to flip the radius in RTL case, `false` by default.
-`mdc-shape-flip-radius($radius)` | Flips the radius in RTL case. Where `$radius` is a list of 4 radius corner values.
 
-> `$radius` value can be single radius or list of 4 radius corner values. Accepted unit type for radius: `px` or `pill`. Where `pill` is automatically calculated based on component's height.
+> Use `mdc-shape-resolve-pill-radius` sass function to resolve `pill` to appropriate radius value.
