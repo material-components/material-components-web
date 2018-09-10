@@ -170,7 +170,18 @@ testFoundation(`#destroy removes ${cssClasses.FG_ACTIVATION} if activation is in
     foundation.destroy();
     mockRaf.flush();
 
+    assert.equal(foundation.activationTimer_, 0);
     td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION));
+  });
+
+testFoundation(`#destroy removes ${cssClasses.FG_DEACTIVATION} if deactivation is interrupted`,
+  ({foundation, adapter, mockRaf}) => {
+    foundation.fgDeactivationRemovalTimer_ = 1;
+    foundation.destroy();
+    mockRaf.flush();
+
+    assert.equal(foundation.fgDeactivationRemovalTimer_, 0);
+    td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION));
   });
 
 testFoundation('#destroy removes all CSS variables', ({foundation, adapter, mockRaf}) => {
