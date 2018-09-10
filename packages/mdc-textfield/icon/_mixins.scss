@@ -57,11 +57,9 @@
 
 @mixin mdc-text-field-icon-horizontal-position-two-icons_($position-left, $padding-left, $position-right, $padding-right) {
   .mdc-text-field__icon {
-    &:first-of-type {
-      @include mdc-rtl-reflexive(left, $position-left, right, auto);
-    }
+    @include mdc-rtl-reflexive(left, $position-left, right, auto);
 
-    &:last-of-type {
+    ~ .mdc-text-field__icon {
       @include mdc-rtl-reflexive(right, $position-right, left, auto);
     }
   }
