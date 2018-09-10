@@ -1,7 +1,7 @@
 {
   "name": "@material/tab-indicator",
   "description": "The Material Components for the web tab indicator component",
-  "version": "0.39.0",
+  "version": "0.39.1",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -17,7 +17,7 @@
   "dependencies": {
     "@material/animation": "^0.39.0",
     "@material/base": "^0.39.0",
-    "@material/theme": "^0.39.0"
+    "@material/theme": "^0.39.1"
   },
   "publishConfig": {
     "access": "public"
