@@ -22,6 +22,13 @@
 
 @import './variables';
 
+//
+// Flips the radius values based on RTL context.
+//
+// Examples:
+//
+// 1. mdc-shape-flip-radius((0, 4px, 4px, 0)) => 4px 0 0 4px
+//
 @function mdc-shape-flip-radius($radius) {
   @if length($radius) == 4 {
     @return nth($radius, 2) nth($radius, 1) nth($radius, 4) nth($radius, 3);
@@ -34,6 +41,13 @@
   }
 }
 
+//
+// Resolves the pill radius to appropriate radius value based on component height.
+//
+// Examples:
+//
+// mdc-shape-resolve-pill-radius(36px, pill) => `18px` (i.e., 36px / 2)
+//
 @function mdc-shape-resolve-pill-radius($component-height, $radius) {
   @if type-of($radius) == "list" {
     $radius-value: ();
@@ -54,8 +68,17 @@
   }
 }
 
+//
+// Returns $radius is one of the shape literal `large`, `medium` or `small` it returns their corresponding shape size.
+// Otherwise, it returns the $radius itself if valid.
+// $radius can be a single value or list of 4.
+//
 @function mdc-shape-prop-value($radius) {
   @if type-of($radius) == "list" {
+    @if length($radius) > 4 {
+      @error "Invalid radius: '#{$radius}' radius is not supported";
+    }
+
     $radius-value: ();
     @each $corner in $radius {
       $radius-value: append($radius-value, mdc-shape-prop-corner-value_($corner));
