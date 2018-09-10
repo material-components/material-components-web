@@ -73,8 +73,8 @@ async function resolveCherryPick(tag) {
   const tagCommit = info.slice(info.indexOf('hash:') + 5).trim();
 
   const cherryPickLog = await simpleGit.log({
-    format: logFormat,
-    splitter: logSplitter,
+    'format': logFormat,
+    'splitter': logSplitter,
     '--grep': `cherry picked from commit ${tagCommit}`,
   });
 
