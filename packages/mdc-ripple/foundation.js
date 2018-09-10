@@ -546,7 +546,7 @@ class MDCRippleFoundation extends MDCFoundation {
     this.frame_ = this.adapter_.computeBoundingRect();
     const maxDim = Math.max(this.frame_.height, this.frame_.width);
 
-    // Surface diameter is treated differently for unbounded vs. bounded ripples
+    // Surface diameter is treated differently for unbounded vs. bounded ripples.
     // Unbounded ripple diameter is calculated smaller since the surface is expected to already be padded appropriately
     // to extend the hitbox, and the ripple is expected to meet the edges of the padded hitbox (which is typically
     // square). Bounded ripples, on the other hand, are fully expected to expand beyond the surface's longest diameter
