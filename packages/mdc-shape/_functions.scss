@@ -81,6 +81,8 @@
 }
 
 @function mdc-shape-is-valid-radius($radius) {
+  $radius: mdc-shape-prop-value($radius);
+
   @if type-of($radius) == "list" {
     @each $corner in $radius {
       @if not mdc-shape-is-valid-radius-value_($radius) {
