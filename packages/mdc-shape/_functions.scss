@@ -28,6 +28,7 @@
 // Examples:
 //
 // 1. mdc-shape-flip-radius((0, 4px, 4px, 0)) => 4px 0 0 4px
+// 2. mdc-shape-flip-radius((0, 8px)) => 8px 0
 //
 @function mdc-shape-flip-radius($radius) {
   @if length($radius) == 4 {
@@ -43,6 +44,7 @@
 
 //
 // Resolves the pill radius to appropriate radius value based on component height.
+// Use this for fixed height components only.
 //
 // Examples:
 //
@@ -69,9 +71,13 @@
 }
 
 //
-// Returns $radius is one of the shape literal `large`, `medium` or `small` it returns their corresponding shape size.
+// Returns $radius value of shape category - `large`, `medium` or `small`.
 // Otherwise, it returns the $radius itself if valid.
 // $radius can be a single value or list of 4.
+//
+// Examples:
+//
+// mdc-shape-prop-value(small) => 4px
 //
 @function mdc-shape-prop-value($radius) {
   @if type-of($radius) == "list" {

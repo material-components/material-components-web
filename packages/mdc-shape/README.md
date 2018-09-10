@@ -63,7 +63,7 @@ Styles for applying shapes for specific corners such as drawer looks like this:
 @include mdc-shape-radius((0, $radius, $radius, 0), $rtl-reflexive: true);
 ```
 
-Where, only top-right & bottom-right corners are customizable and it automatically flips based on RTL context when `$rtl-reflexive` is set to true.
+Where, only top-right & bottom-right corners are customizable and it automatically flips radius values based on RTL context when `$rtl-reflexive` is set to true.
 
 ### Sass Mixins
 
