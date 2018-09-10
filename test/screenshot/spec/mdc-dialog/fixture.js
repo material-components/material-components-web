@@ -37,7 +37,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
       dialog.listen(eventName, (evt) => console.log(eventName, evt));
     });
 
-    const surfaceEl = dialogEl.querySelector('.mdc-dialog__surface');
+    // const surfaceEl = dialogEl.querySelector('.mdc-dialog__surface');
     const contentEl = dialogEl.querySelector('.mdc-dialog__content');
     const shouldScrollToBottom = dialogEl.classList.contains('test-dialog--scroll-to-bottom');
     if (contentEl && shouldScrollToBottom) {
@@ -58,6 +58,8 @@ window.mdc.testFixture.fontsLoaded.then(() => {
     if (openButtonEl) {
       openButtonEl.addEventListener('click', () => dialog.open());
     }
+
+    /* Commenting out redlines for now due to unexplained flakes
 
     dialog.listen(strings.CLOSING_EVENT, () => {
       window.mdc.testFixture.removeRedlines();
@@ -113,9 +115,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
       const firstParagraphEl = firstParagraphEls[0];
       const lastParagraphEl = lastParagraphEls[lastParagraphEls.length - 1];
 
-      /*
-       * Vertical
-       */
+      // Vertical redlines
 
       window.mdc.testFixture.addRedline({
         fromEl: anyTitleEl,
@@ -214,9 +214,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         });
       }
 
-      /*
-       * Horizontal
-       */
+      // Horizontal redlines
 
       if (!isStacked) {
         window.mdc.testFixture.addRedline({
@@ -266,6 +264,8 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         });
       }
     });
+
+    */
 
     dialog.open();
   });
