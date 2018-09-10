@@ -23,7 +23,15 @@
 @import './variables';
 
 @function mdc-shape-flip-radius($radius) {
-  @return nth($radius, 2) nth($radius, 1) nth($radius, 4) nth($radius, 3);
+  @if length($radius) == 4 {
+    @return nth($radius, 2) nth($radius, 1) nth($radius, 4) nth($radius, 3);
+  } @else if length($radius) == 3 {
+    @return nth($radius, 2) nth($radius, 1) nth($radius, 2) nth($radius, 3);
+  } @else if length($radius) == 2 {
+    @return nth($radius, 2) nth($radius, 1);
+  } @else {
+    @return $radius;
+  }
 }
 
 @function mdc-shape-resolve-pill-radius($component-height, $radius) {
@@ -72,16 +80,16 @@
   @return type-of($radius) == "number" or str_index($radius, "var(") or str_index($radius, "calc(");
 }
 
-@function mdc-shape-has-pill-radius($radius) {
+@function mdc-shape-is-valid-radius($radius) {
   @if type-of($radius) == "list" {
     @each $corner in $radius {
-      @if $corner == pill {
-        @return true;
+      @if not mdc-shape-is-valid-radius-value_($radius) {
+        @return false;
       }
     }
-  } @else if $radius == pill {
-    @return true;
+  } @else if not mdc-shape-is-valid-radius-value_($radius) {
+    @return false;
   }
 
-  @return false;
+  @return true;
 }
