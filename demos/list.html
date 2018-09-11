@@ -1330,31 +1330,14 @@
       });
     }
 
-    function clickHandler(evt, li) {
-      if (evt.target === li) {
-        var checkbox = li.querySelector('.mdc-checkbox__native-control');
-        checkbox.checked = !checkbox.checked;
-      }
-    };
-
     function addRippleToListItems(list) {
-      var listItems = list.querySelectorAll('.mdc-list-item');
-
-      [].forEach.call(listItems, function(li) {
-        mdc.ripple.MDCRipple.attachTo(li);
-        li.addEventListener('click', function(e) {
-          clickHandler(e, li);
-        });
-      });
+      mdc.list.MDCList.attachTo(list);
     };
 
     [].slice.call(document.querySelectorAll('.mdc-list')).forEach(function(ele) {
       var list = mdc.list.MDCList.attachTo(ele);
       list.wrapFocus = true;
     });
-
-    addRippleToListItems(document.getElementById('leading-checkbox-list'));
-    addRippleToListItems(document.getElementById('trailing-checkbox-list'));
   });
 </script>
 </body>

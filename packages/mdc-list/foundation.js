@@ -54,6 +54,7 @@ class MDCListFoundation extends MDCFoundation {
       focusItemAtIndex: () => {},
       setTabIndexForListItemChildren: () => {},
       followHref: () => {},
+      toggleCheckbox: () => {},
     });
   }
 
@@ -202,6 +203,11 @@ class MDCListFoundation extends MDCFoundation {
         // Explicitly activate links, since we're preventing default on Enter, and Space doesn't activate them.
         this.adapter_.followHref(currentIndex);
       }
+    }
+
+    if (isEnter || isSpace) {
+      this.adapter_.toggleCheckbox(listItemIndex);
+      this.preventDefaultEvent_(evt);
     }
   }
 

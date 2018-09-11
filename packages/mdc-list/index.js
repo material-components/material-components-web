@@ -234,6 +234,17 @@ class MDCList extends MDCComponent {
           listItem.click();
         }
       },
+      toggleCheckbox: (index) => {
+        const listItem = this.listElements[index];
+        const elementsToToggle =
+          [].slice.call(listItem.querySelectorAll('input[type="radio"], input[type="checkbox"]'));
+        elementsToToggle.forEach((element) => {
+          element.checked = !element.checked;
+          const event = document.createEvent('Event');
+          event.initEvent('change', false, true);
+          element.dispatchEvent(event);
+        });
+      },
     })));
   }
 }
