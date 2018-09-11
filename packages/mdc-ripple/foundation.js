@@ -225,8 +225,13 @@ class MDCRippleFoundation extends MDCFoundation {
       if (this.activationTimer_) {
         clearTimeout(this.activationTimer_);
         this.activationTimer_ = 0;
-        const {FG_ACTIVATION} = MDCRippleFoundation.cssClasses;
-        this.adapter_.removeClass(FG_ACTIVATION);
+        this.adapter_.removeClass(MDCRippleFoundation.cssClasses.FG_ACTIVATION);
+      }
+
+      if (this.fgDeactivationRemovalTimer_) {
+        clearTimeout(this.fgDeactivationRemovalTimer_);
+        this.fgDeactivationRemovalTimer_ = 0;
+        this.adapter_.removeClass(MDCRippleFoundation.cssClasses.FG_DEACTIVATION);
       }
 
       const {ROOT, UNBOUNDED} = MDCRippleFoundation.cssClasses;
