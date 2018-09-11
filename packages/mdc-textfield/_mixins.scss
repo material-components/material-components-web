@@ -237,7 +237,6 @@
 // Outlined
 
 @mixin mdc-text-field-outlined-disabled_ {
-  @include mdc-text-field-ink-color_($mdc-text-field-placeholder);
   @include mdc-text-field-outline-color_($mdc-text-field-outlined-disabled-border);
   @include mdc-text-field-fill-color_(transparent);
 
