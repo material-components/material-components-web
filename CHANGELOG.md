@@ -1,3 +1,15 @@
+<a name="0.39.3"></a>
+## [0.39.3](https://github.com/material-components/material-components-web/compare/v0.39.1...v0.39.3) (2018-09-11)
+
+
+### Bug Fixes
+
+* **ripple:** Clean deactivation timer and CSS when interrupted ([#3529](https://github.com/material-components/material-components-web/issues/3529)) ([425df03](https://github.com/material-components/material-components-web/commit/425df03))
+* **select:** Disabled color and opacity ([#3513](https://github.com/material-components/material-components-web/issues/3513)) ([8b10c02](https://github.com/material-components/material-components-web/commit/8b10c02))
+* **select:** Remove blue background in IE on focus ([#3497](https://github.com/material-components/material-components-web/issues/3497)) ([a02a4f1](https://github.com/material-components/material-components-web/commit/a02a4f1)), closes [#3496](https://github.com/material-components/material-components-web/issues/3496)
+
+
+
 <a name="0.39.1"></a>
 ## [0.39.1](https://github.com/material-components/material-components-web/compare/v0.39.0...v0.39.1) (2018-08-31)
 
