@@ -54,7 +54,7 @@ $custom-button-custom-horizontal-padding: 24px;
 }
 
 .custom-button--corner-radius {
-  @include mdc-button-corner-radius($custom-button-custom-corner-radius);
+  @include mdc-button-shape-radius($custom-button-custom-corner-radius);
 }
 
 .custom-button--icon-color {

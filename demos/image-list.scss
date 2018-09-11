@@ -54,7 +54,7 @@
 }
 
 .rounded-corners {
-  @include mdc-image-list-corner-radius(8px);
+  @include mdc-image-list-shape-radius(8px);
 }
 
 @media (max-width: 599px) {

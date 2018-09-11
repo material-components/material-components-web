@@ -23,9 +23,11 @@
 @import "@material/ripple/mixins";
 @import "@material/theme/functions";
 @import "@material/theme/mixins";
+@import "@material/shape/mixins";
+@import "@material/shape/functions";
 
-@mixin mdc-chip-corner-radius($radius) {
-  border-radius: $radius;
+@mixin mdc-chip-shape-radius($radius, $rtl-reflexive: false) {
+  @include mdc-shape-radius(mdc-shape-resolve-pill-radius($mdc-chip-height-default, $radius), $rtl-reflexive);
 }
 
 @mixin mdc-chip-fill-color-accessible($color) {

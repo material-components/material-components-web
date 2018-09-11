@@ -65,6 +65,42 @@ Styles for applying shapes for specific corners such as drawer looks like this:
 
 Where, only top-right & bottom-right corners are customizable and it automatically flips radius values based on RTL context when `$rtl-reflexive` is set to true.
 
+### Global theming
+
+Components are categorized as small, medium and large in shapes system. Overriding below sass variables applies shapes (rounded) to respective categories. For example, overriding `$mdc-shape-medium-radius` variable would apply shape to all components that belong to medium category.
+
+Variable | Category | Default Size | Components
+--- | --- | --- | ---
+`$mdc-shape-small-radius` | Small | 4px | Button, Snackbar, Text field
+`$mdc-shape-medium-radius` | Medium | 4px | Card, Dialog, Menu
+`$mdc-shape-large-radius` | Large | 0 | Drawer
+
+**Default overrides**
+
+Component | Category | Default override
+--- | --- | ---
+Image list item | Medium | 0
+Chip | Small | 50% (pill)
+Extended FAB | Small | 50% (pill)
+FAB | Small | 50% (pill)
+Top App Bar (short) | Small | 24px
+
+### Component theming
+
+The styles for applying custom shape to button component instance looks like this:
+
+```scss
+@import "@material/button/mixins";
+
+.my-custom-button {
+  @include mdc-button-shape-radius(pill);
+}
+```
+
+In this example, the above styles applies `pill` shape to button. It can also be absolute value (e.g., `8px`);
+
+> You would indirectly use the Shape API through respective component's mixin which takes care of applying radius to applicable corners for all its variants.
+
 ### Sass Mixins
 
 Mixin | Description

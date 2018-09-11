@@ -38,8 +38,8 @@
   @include mdc-theme-prop(border-color, $value);
 }
 
-@mixin mdc-drawer-item-corner-radius($radius) {
-  @include mdc-list-item-corner-radius($radius);
+@mixin mdc-drawer-item-shape-radius($radius, $rtl-reflexive: true) {
+  @include mdc-list-item-shape-radius($radius, $rtl-reflexive);
 }
 
 @mixin mdc-drawer-shape-radius($radius) {
