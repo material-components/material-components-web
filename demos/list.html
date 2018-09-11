@@ -1330,10 +1330,6 @@
       });
     }
 
-    function addRippleToListItems(list) {
-      mdc.list.MDCList.attachTo(list);
-    };
-
     [].slice.call(document.querySelectorAll('.mdc-list')).forEach(function(ele) {
       var list = mdc.list.MDCList.attachTo(ele);
       list.wrapFocus = true;
