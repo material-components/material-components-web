@@ -219,7 +219,11 @@ class MDCListFoundation extends MDCFoundation {
 
     if (currentIndex === -1) return;
 
-    this.setSelectedIndex(currentIndex);
+    this.adapter_.toggleCheckbox(currentIndex);
+
+    if (this.isSingleSelectionList_) {
+      this.setSelectedIndex(currentIndex);
+    }
   }
 
   /**

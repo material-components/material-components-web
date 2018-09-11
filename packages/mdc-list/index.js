@@ -66,6 +66,7 @@ class MDCList extends MDCComponent {
     this.root_.addEventListener('keydown', this.handleKeydown_);
     this.root_.addEventListener('focusin', this.focusInEventListener_);
     this.root_.addEventListener('focusout', this.focusOutEventListener_);
+    this.root_.addEventListener('click', this.handleClick_);
     this.layout();
     this.initializeListType();
   }
@@ -174,12 +175,6 @@ class MDCList extends MDCComponent {
 
   /** @param {boolean} isSingleSelectionList */
   set singleSelection(isSingleSelectionList) {
-    if (isSingleSelectionList) {
-      this.root_.addEventListener('click', this.handleClick_);
-    } else {
-      this.root_.removeEventListener('click', this.handleClick_);
-    }
-
     this.foundation_.setSingleSelection(isSingleSelectionList);
   }
 
