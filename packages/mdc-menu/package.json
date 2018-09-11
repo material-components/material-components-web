@@ -1,6 +1,6 @@
 {
   "name": "@material/menu",
-  "version": "0.39.1",
+  "version": "0.39.3",
   "description": "The Material Components for the web menu component",
   "license": "MIT",
   "keywords": [
@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@material/base": "^0.39.0",
-    "@material/list": "^0.39.1",
+    "@material/list": "^0.39.3",
     "@material/menu-surface": "^0.39.1",
     "@material/rtl": "^0.39.1"
   }
