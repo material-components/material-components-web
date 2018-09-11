@@ -37,10 +37,11 @@ function getFixture() {
     </li>
     <li class="mdc-list-item">
       Pasta
-      <button>two</button>
+      <input type="checkbox"/>
     </li>
     <li class="mdc-list-item">
       Pizza
+      <input type="radio"/>
     </li>
    </ul>
   `;
@@ -219,7 +220,7 @@ test('adapter#focusItemAtIndex focuses the list item at the index specified', ()
 test('adapter#setTabIndexForListItemChildren sets the child button/a elements of index', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
-  const listItemIndex = 1;
+  const listItemIndex = 0;
   const listItem = root.querySelectorAll('.mdc-list-item')[listItemIndex];
   component.getDefaultFoundation().adapter_.setTabIndexForListItemChildren(listItemIndex, 0);
 
@@ -271,22 +272,6 @@ test('wrapFocus calls setWrapFocus on foundation', () => {
   const {component, mockFoundation} = setupTest();
   component.wrapFocus = true;
   td.verify(mockFoundation.setWrapFocus(true), {times: 1});
-});
-
-
-test('singleSelection true sets the click handler from the root element', () => {
-  const {root, component, mockFoundation} = setupTest();
-  component.singleSelection = true;
-  domEvents.emit(root, 'click');
-  td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 1});
-});
-
-test('singleSelection false removes the click handler from the root element', () => {
-  const {root, component, mockFoundation} = setupTest();
-  component.singleSelection = true;
-  component.singleSelection = false;
-  domEvents.emit(root, 'click');
-  td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 0});
 });
 
 test('singleSelection calls foundation setSingleSelection with the provided value', () => {
@@ -373,4 +358,24 @@ test('keydown handler is removed from the root element on destroy', () => {
   const listElementItem = root.querySelector('.mdc-list-item');
   listElementItem.dispatchEvent(event);
   td.verify(mockFoundation.handleKeydown(event, true, 0), {times: 0});
+});
+
+test('adapter#toggleCheckbox toggles a checkbox', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+  const checkbox = root.querySelector('input[type="checkbox"]');
+
+  component.getDefaultFoundation().adapter_.toggleCheckbox(1);
+  assert.isTrue(checkbox.checked);
+  document.body.removeChild(root);
+});
+
+test('adapter#toggleCheckbox toggles a radio button', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+  const checkbox = root.querySelector('input[type="radio"]');
+
+  component.getDefaultFoundation().adapter_.toggleCheckbox(2);
+  assert.isTrue(checkbox.checked);
+  document.body.removeChild(root);
 });

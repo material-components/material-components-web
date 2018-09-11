@@ -44,7 +44,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCListFoundation, [
     'getListItemCount', 'getFocusedElementIndex', 'setAttributeForElementIndex',
     'removeAttributeForElementIndex', 'addClassForElementIndex', 'removeClassForElementIndex',
-    'focusItemAtIndex', 'setTabIndexForListItemChildren', 'followHref',
+    'focusItemAtIndex', 'setTabIndexForListItemChildren', 'followHref', 'toggleCheckbox',
   ]);
 });
 
@@ -487,6 +487,7 @@ test('#handleClick when singleSelection=true on a list item should cause the lis
   const target = {classList: ['mdc-list-item']};
   const event = {target, preventDefault};
 
+  foundation.setSingleSelection(true);
   td.when(mockAdapter.getFocusedElementIndex()).thenReturn(1);
   td.when(mockAdapter.getListItemCount()).thenReturn(3);
   foundation.handleClick(event);
