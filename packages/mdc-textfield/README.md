@@ -233,13 +233,23 @@ Mixin | Description
 
 Property | Value Type | Description
 --- | --- | ---
-`value` | String | Proxies to the foundation's `getValue`/`setValue` methods.
-`disabled` | Boolean | Proxies to the foundation's `isDisabled`/`setDisabled` methods.
-`useNativeValidation` | Boolean (write-only) | Proxies to the foundation's `setUseNativeValidation` method.
-`valid` | Boolean | Proxies to the foundation's `isValid`/`setValid` methods.
-`required` | Boolean | Proxies to the foundation's `isRequired`/`setRequired` methods.
-`helperTextContent` | String | Proxies to the foundation's `setHelperTextContent` method when set.
-`ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCTextField` initializes; this only applies to the default Text Field, and is `null` for other variants.
+`value` | string | Proxies to the foundation's `getValue`/`setValue` methods.
+`disabled` | boolean | Proxies to the foundation's `isDisabled`/`setDisabled` methods.
+`useNativeValidation` | boolean (write-only) | Proxies to the foundation's `setUseNativeValidation` method.
+`valid` | boolean | Proxies to the foundation's `isValid`/`setValid` methods.
+`helperTextContent` | string (write-only) | Proxies to the foundation's `setHelperTextContent` method when set.
+`iconAriaLabel` | string (write-only) | Proxies to the foundation's `setIconAriaLabel` method when set.
+`iconContent` | string (write-only) | Proxies to the foundation's `setIconContent` method when set.
+`ripple` | `MDCRipple` (read-only) | The `MDCRipple` instance for the root element that `MDCTextField` initializes; this only applies to the default Text Field, and is `null` for other variants.
+
+In addition to the above, the following properties proxy to the `input` element's properties of the same name:
+
+* `required`
+* `minLength`
+* `maxLength`
+* `min`
+* `max`
+* `step`
 
 Method Signature | Description
 --- | ---
@@ -289,8 +299,6 @@ Method Signature | Description
 `isValid() => boolean` | Returns the component's current validity state (either native or custom, depending on how `setUseNativeValidation()` was configured).
 `isDisabled() => boolean` | Returns whether or not the input is disabled.
 `setDisabled(disabled: boolean) => void` | Updates the input's disabled state.
-`isRequired() => boolean` | Returns whether the input is required.
-`setRequired(isRequired: boolean)` | Sets whether the input is required.
 `handleTextFieldInteraction(evt: Event) => void` | Handles click and keydown events originating from inside the Text Field component.
 `handleValidationAttributeChange(attributesList: !Array<string>) => void` | Handles validation attribute changes.
 `activateFocus() => void` | Activates the focus state of the Text Field. Normally called in response to the input focus event.
