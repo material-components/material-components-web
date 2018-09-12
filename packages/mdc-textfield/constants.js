@@ -40,6 +40,7 @@ const cssClasses = {
   INVALID: 'mdc-text-field--invalid',
   TEXTAREA: 'mdc-text-field--textarea',
   OUTLINED: 'mdc-text-field--outlined',
+  WITH_LEADING_ICON: 'mdc-text-field--with-leading-icon',
 };
 
 /** @enum {number} */
