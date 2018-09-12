@@ -621,12 +621,12 @@
     }
   },
   "spec/mdc-textfield/classes/disabled-leading-trailing-icons.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/11/21_26_44_558/spec/mdc-textfield/classes/disabled-leading-trailing-icons.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/12/19_39_12_819/spec/mdc-textfield/classes/disabled-leading-trailing-icons.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/20_00_10_516/spec/mdc-textfield/classes/disabled-leading-trailing-icons.html.windows_chrome_68.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/20_00_10_516/spec/mdc-textfield/classes/disabled-leading-trailing-icons.html.windows_edge_17.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/11/21_26_44_558/spec/mdc-textfield/classes/disabled-leading-trailing-icons.html.windows_firefox_62.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/08/28/20_00_10_516/spec/mdc-textfield/classes/disabled-leading-trailing-icons.html.windows_ie_11.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/12/19_39_12_819/spec/mdc-textfield/classes/disabled-leading-trailing-icons.html.windows_chrome_69.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/12/19_39_12_819/spec/mdc-textfield/classes/disabled-leading-trailing-icons.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/12/19_39_12_819/spec/mdc-textfield/classes/disabled-leading-trailing-icons.html.windows_firefox_62.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/12/19_39_12_819/spec/mdc-textfield/classes/disabled-leading-trailing-icons.html.windows_ie_11.png"
     }
   },
   "spec/mdc-textfield/classes/disabled-trailing-icon.html": {
