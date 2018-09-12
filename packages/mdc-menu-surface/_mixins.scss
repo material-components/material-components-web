@@ -30,6 +30,6 @@
   @include mdc-theme-prop(background-color, $color);
 }
 
-@mixin mdc-menu-surface-corner-radius($radius) {
+@mixin mdc-menu-surface-shape-radius($radius) {
   border-radius: $radius;
 }
