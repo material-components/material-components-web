@@ -23,62 +23,77 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Disabled Text Field Element - MDC Web Screenshot Test</title>
+    <title>Focused Text Field Element - MDC Web Screenshot Test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../../../out/mdc.textfield.css">
     <link rel="stylesheet" href="../../../out/mdc.typography.css">
     <link rel="stylesheet" href="../../../out/spec/fixture.css">
     <link rel="stylesheet" href="../../../out/spec/mdc-textfield/fixture.css">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118996389-2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-118996389-2');
+    </script>
   </head>
 
+  <!--This screenshot test is used to check the focused state of the text field. -->
   <body class="test-container mdc-typography">
     <main class="test-viewport test-viewport--mobile">
       <div class="test-layout">
 
         <div class="test-cell test-cell--textfield">
-          <div class="mdc-text-field mdc-text-field--disabled">
-            <input type="text" id="filled-text-field" class="mdc-text-field__input test-text-field__input" disabled>
+          <div class="mdc-text-field mdc-text-field--focused mdc-text-field--with-trailing-icon mdc-text-field--with-leading-icon">
+            <i class="material-icons mdc-text-field__icon" role="button">3d_rotation</i>
+            <input type="text" id="filled-text-field" class="mdc-text-field__input test-text-field__input">
             <label class="mdc-floating-label" for="filled-text-field">Label</label>
-            <div class="mdc-line-ripple"></div>
+            <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
+            <div class="mdc-line-ripple mdc-line-ripple--active"></div>
           </div>
-          <p class="mdc-text-field-helper-text" aria-hidden="true">Helper Text</p>
         </div>
 
         <div class="test-cell test-cell--textfield">
-          <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--disabled">
-            <input type="text" id="outlined-text-field" class="mdc-text-field__input test-text-field__input" disabled>
-            <label for="outlined-text-field" class="mdc-floating-label">Label</label>
-            <div class="mdc-notched-outline">
+          <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--focused mdc-text-field--with-trailing-icon mdc-text-field--with-leading-icon">
+            <!-- The single space value is to overcome an issue where the component does not draw the SVG path when created unless there is a value. -->
+            <i class="material-icons mdc-text-field__icon" role="button">3d_rotation</i>
+            <input type="text" id="outlined-text-field" class="mdc-text-field__input test-text-field__input" value=" ">
+            <label for="outlined-text-field" class="mdc-floating-label mdc-floating-label--float-above">Label</label>
+            <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
+            <div class="mdc-notched-outline mdc-notched-outline--notched">
               <svg>
                 <path class="mdc-notched-outline__path"/>
               </svg>
             </div>
             <div class="mdc-notched-outline__idle"></div>
           </div>
-          <p class="mdc-text-field-helper-text" aria-hidden="true">Helper Text</p>
         </div>
 
         <div class="test-cell test-cell--textfield">
-          <div class="mdc-text-field mdc-text-field--disabled">
-            <input type="text" id="filled-text-field-with-value" class="mdc-text-field__input test-text-field__input" value="Filled value" disabled>
+          <div class="mdc-text-field mdc-text-field--focused mdc-text-field--with-trailing-icon mdc-text-field--with-leading-icon">
+            <i class="material-icons mdc-text-field__icon" role="button">3d_rotation</i>
+            <input type="text" id="filled-text-field-with-value" class="mdc-text-field__input test-text-field__input" value="Filled value">
             <label for="filled-text-field-with-value" class="mdc-floating-label mdc-floating-label--float-above">Label</label>
-            <div class="mdc-line-ripple"></div>
+            <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
+            <div class="mdc-line-ripple mdc-line-ripple--active"></div>
           </div>
-          <p class="mdc-text-field-helper-text" aria-hidden="true">Helper Text</p>
         </div>
 
         <div class="test-cell test-cell--textfield">
-          <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--disabled">
-            <input type="text" id="outlined-text-field-with-value" class="mdc-text-field__input test-text-field__input" value="Filled value" disabled>
+          <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--focused mdc-text-field--with-trailing-icon mdc-text-field--with-leading-icon">
+            <i class="material-icons mdc-text-field__icon" role="button">3d_rotation</i>
+            <input type="text" id="outlined-text-field-with-value" class="mdc-text-field__input test-text-field__input" value="Filled value">
             <label for="outlined-text-field-with-value" class="mdc-floating-label mdc-floating-label--float-above">Label</label>
-            <div class="mdc-notched-outline">
+            <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
+            <div class="mdc-notched-outline mdc-notched-outline--notched">
               <svg>
                 <path class="mdc-notched-outline__path"/>
               </svg>
             </div>
             <div class="mdc-notched-outline__idle"></div>
           </div>
-          <p class="mdc-text-field-helper-text" aria-hidden="true">Helper Text</p>
         </div>
 
       </div>
