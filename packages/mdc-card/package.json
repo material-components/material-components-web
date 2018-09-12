@@ -1,6 +1,6 @@
 {
   "name": "@material/card",
-  "version": "0.39.1",
+  "version": "0.39.3",
   "description": "The Material Components for the web card component",
   "license": "MIT",
   "keywords": [
@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@material/elevation": "^0.39.1",
-    "@material/ripple": "^0.39.1",
+    "@material/ripple": "^0.39.3",
     "@material/rtl": "^0.39.1",
     "@material/theme": "^0.39.1"
   }

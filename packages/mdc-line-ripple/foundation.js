@@ -55,7 +55,7 @@ class MDCLineRippleFoundation extends MDCFoundation {
   /**
    * @param {!MDCLineRippleAdapter=} adapter
    */
-  constructor(adapter = /** @type {!MDCLineRippleAdapter} */ ({})) {
+  constructor(adapter) {
     super(Object.assign(MDCLineRippleFoundation.defaultAdapter, adapter));
 
     /** @private {function(!Event): undefined} */

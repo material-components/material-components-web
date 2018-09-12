@@ -166,7 +166,13 @@
   @include mdc-text-field-caret-color($mdc-text-field-error);
 
   &.mdc-text-field--with-trailing-icon {
-    @include mdc-text-field-icon-color($mdc-text-field-error);
+    &:not(.mdc-text-field--with-leading-icon) {
+      @include mdc-text-field-icon-color($mdc-text-field-error);
+    }
+
+    &.mdc-text-field--with-leading-icon {
+      @include mdc-text-field-icon-color($mdc-text-field-error, /* styleSecondIcon */ true);
+    }
   }
 
   + .mdc-text-field-helper-text--validation-msg {
@@ -380,6 +386,14 @@
 
 @mixin mdc-text-field-dense-with-trailing-icon_ {
   @include mdc-text-field-icon-horizontal-position_(right, $mdc-text-field-dense-icon-position, $mdc-text-field-dense-icon-padding);
+}
+
+@mixin mdc-text-field-with-both-icons_ {
+  @include mdc-text-field-icon-horizontal-position-two-icons_($mdc-text-field-icon-position, $mdc-text-field-icon-padding, $mdc-text-field-trailing-icon-position, $mdc-text-field-icon-padding);
+}
+
+@mixin mdc-text-field-dense-with-both-icons_ {
+  @include mdc-text-field-icon-horizontal-position-two-icons_($mdc-text-field-dense-icon-position, $mdc-text-field-dense-icon-padding, $mdc-text-field-dense-icon-position, $mdc-text-field-dense-icon-padding);
 }
 
 // Full Width
