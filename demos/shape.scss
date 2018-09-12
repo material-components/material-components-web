@@ -30,7 +30,7 @@
 }
 
 .demo-button-rounded {
-  @include mdc-button-shape-radius(pill);
+  @include mdc-button-shape-radius(50%);
 }
 
 .demo-card {
