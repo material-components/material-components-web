@@ -43,7 +43,9 @@
 }
 
 @mixin mdc-drawer-shape-radius($radius) {
-  @if length($radius) == 2 {
+  @if length($radius > 2) {
+    @error "Invalid radius: '#{$radius}' component doesn't allow customizing all corners";
+  } @else if length($radius) == 2 {
     $radius: 0 nth($radius, 1) nth($radius, 2) 0;
   } @else {
     $radius: 0 $radius $radius 0;

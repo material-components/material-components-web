@@ -144,7 +144,7 @@ Mixin | Description
 `mdc-button-container-fill-color($color)` | Sets the container fill color to the given color.
 `mdc-button-icon-color($color)` | Sets the icon color to the given color.
 `mdc-button-ink-color($color)` | Sets the ink color to the given color, and sets the icon color to the given color unless `mdc-button-icon-color` is also used.
-`mdc-button-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape of button with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`mdc-button-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to button with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `mdc-button-horizontal-padding($padding)` | Sets horizontal padding to the given number.
 `mdc-button-outline-color($color)` | Sets the outline color to the given color.
 `mdc-button-outline-width($width, $padding)` | Sets the outline width to the given number (defaults to 2px) and adjusts padding accordingly. `$padding` is only required in cases where `mdc-button-horizontal-padding` is also included with a custom value.

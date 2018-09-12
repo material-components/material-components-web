@@ -127,7 +127,3 @@
 .demo-selected-destination {
   font-weight: 500;
 }
-
-.demo-drawer-shape {
-  @include mdc-drawer-shape-radius((24px, 0));
-}
