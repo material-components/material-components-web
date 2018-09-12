@@ -167,8 +167,8 @@ class MDCDialog extends MDCComponent {
       getActionFromEvent: (event) => event.target.getAttribute(strings.ACTION_ATTRIBUTE),
       notifyOpening: () => this.emit(strings.OPENING_EVENT, {}),
       notifyOpened: () => this.emit(strings.OPENED_EVENT, {}),
-      notifyClosing: (action = undefined) => this.emit(strings.CLOSING_EVENT, action ? {action} : {}),
-      notifyClosed: (action = undefined) => this.emit(strings.CLOSED_EVENT, action ? {action} : {}),
+      notifyClosing: (action) => this.emit(strings.CLOSING_EVENT, action ? {action} : {}),
+      notifyClosed: (action) => this.emit(strings.CLOSED_EVENT, action ? {action} : {}),
     });
   }
 }

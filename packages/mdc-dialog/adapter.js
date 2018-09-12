@@ -81,14 +81,14 @@ class MDCDialogAdapter {
   notifyOpened() {}
 
   /**
-   * @param {string=} action
+   * @param {string} action
    */
-  notifyClosing(action = undefined) {}
+  notifyClosing(action) {}
 
   /**
-   * @param {string=} action
+   * @param {string} action
    */
-  notifyClosed(action = undefined) {}
+  notifyClosed(action) {}
 }
 
 export default MDCDialogAdapter;

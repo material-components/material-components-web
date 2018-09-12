@@ -280,8 +280,8 @@ Method Signature | Description
 `getActionFromEvent(event: !Event) => ?string` | Retrieves the value of the `data-mdc-dialog-action` attribute from the given event's target.
 `notifyOpening() => void` | Broadcasts an event denoting that the dialog has just started to open.
 `notifyOpened() => void` | Broadcasts an event denoting that the dialog has finished opening.
-`notifyClosing(action: ?string) {}` | Broadcasts an event denoting that the dialog has just started closing.
-`notifyClosed(action: ?string) {}` | Broadcasts an event denoting that the dialog has finished closing.
+`notifyClosing(action: string) {}` | Broadcasts an event denoting that the dialog has just started closing. If a non-empty `action` is passed, the event's `detail` object should include its value in the `action` property.
+`notifyClosed(action: string) {}` | Broadcasts an event denoting that the dialog has finished closing. If a non-empty `action` is passed, the event's `detail` object should include its value in the `action` property.
 
 ### `MDCDialogFoundation`
 

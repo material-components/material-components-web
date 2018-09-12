@@ -303,13 +303,13 @@ test(`adapter#notifyOpened emits ${strings.OPENED_EVENT}`, () => {
   td.verify(handler(td.matchers.anything()));
 });
 
-test(`adapter#notifyClosing emits ${strings.CLOSING_EVENT} without action`, () => {
+test(`adapter#notifyClosing emits ${strings.CLOSING_EVENT} without action if passed action is empty string`, () => {
   const {component} = setupTest();
 
   const handler = td.func('notifyClosingHandler');
 
   component.listen(strings.CLOSING_EVENT, handler);
-  component.getDefaultFoundation().adapter_.notifyClosing();
+  component.getDefaultFoundation().adapter_.notifyClosing('');
   component.unlisten(strings.CLOSING_EVENT, handler);
 
   td.verify(handler(td.matchers.contains({detail: {}})));
@@ -328,13 +328,13 @@ test(`adapter#notifyClosing emits ${strings.CLOSING_EVENT} with action`, () => {
   td.verify(handler(td.matchers.contains({detail: {action}})));
 });
 
-test(`adapter#notifyClosed emits ${strings.CLOSED_EVENT} without action`, () => {
+test(`adapter#notifyClosed emits ${strings.CLOSED_EVENT} without action if passed action is empty string`, () => {
   const {component} = setupTest();
 
   const handler = td.func('notifyClosedHandler');
 
   component.listen(strings.CLOSED_EVENT, handler);
-  component.getDefaultFoundation().adapter_.notifyClosed();
+  component.getDefaultFoundation().adapter_.notifyClosed('');
   component.unlisten(strings.CLOSED_EVENT, handler);
 
   td.verify(handler(td.matchers.contains({detail: {}})));
