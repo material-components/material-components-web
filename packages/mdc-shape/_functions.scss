@@ -82,7 +82,7 @@
 @function mdc-shape-prop-value($radius) {
   @if type-of($radius) == "list" {
     @if length($radius) > 4 {
-      @error "Invalid radius: '#{$radius}' radius is not supported";
+      @error "Invalid radius: '#{$radius}' is more than 4 values";
     }
 
     $radius-value: ();
