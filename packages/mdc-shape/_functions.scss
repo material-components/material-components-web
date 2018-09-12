@@ -43,12 +43,12 @@
 }
 
 //
-// Resolves the pill radius to appropriate radius value based on component height.
+// Resolves the percentage unit radius to appropriate absolute radius value based on component height.
 // Use this for fixed height components only.
 //
 // Examples:
 //
-// mdc-shape-resolve-pill-radius(36px, pill) => `18px` (i.e., 36px / 2)
+// mdc-shape-resolve-percentage-radius(36px, 50%) => `18px` (i.e., 36px / 2)
 //
 @function mdc-shape-resolve-percentage-radius($component-height, $radius) {
   @if type-of($radius) == "list" {
