@@ -50,21 +50,22 @@
 //
 // mdc-shape-resolve-pill-radius(36px, pill) => `18px` (i.e., 36px / 2)
 //
-@function mdc-shape-resolve-pill-radius($component-height, $radius) {
+@function mdc-shape-resolve-percentage-radius($component-height, $radius) {
   @if type-of($radius) == "list" {
     $radius-value: ();
     @each $corner in $radius {
-      $radius-value: append($radius-value, mdc-shape-resolve-pill-corner_($component-height, $corner));
+      $radius-value: append($radius-value, mdc-shape-resolve-percentage-for-corner_($component-height, $corner));
     }
     @return $radius-value;
   } @else {
-    @return mdc-shape-resolve-pill-corner_($component-height, $radius);
+    @return mdc-shape-resolve-percentage-for-corner_($component-height, $radius);
   }
 }
 
-@function mdc-shape-resolve-pill-corner_($component-height, $radius) {
-  @if $radius == pill {
-    @return $component-height / 2;
+@function mdc-shape-resolve-percentage-for-corner_($component-height, $radius) {
+  @if type-of($radius) == "number" and unit($radius) == "%" {
+    $percentage: $radius / ($radius * 0 + 1);
+    @return $component-height * ($percentage / 100);
   } @else {
     @return $radius;
   }
@@ -82,7 +83,7 @@
 @function mdc-shape-prop-value($radius) {
   @if type-of($radius) == "list" {
     @if length($radius) > 4 {
-      @error "Invalid radius: '#{$radius}' radius is not supported";
+      @error "Invalid radius: '#{$radius}' is more than 4 values";
     }
 
     $radius-value: ();
@@ -108,5 +109,6 @@
 }
 
 @function mdc-shape-is-valid-radius-value_($radius) {
-  @return type-of($radius) == "number" or str_index($radius, "var(") or str_index($radius, "calc(");
+  $is-absolute-value: (type-of($radius) == "number" and unit($radius) != "%");
+  @return $is-absolute-value or str_index($radius, "var(") or str_index($radius, "calc(");
 }
