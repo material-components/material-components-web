@@ -36,11 +36,16 @@ function getFixture() {
       <button>one</button>
     </li>
     <li class="mdc-list-item">
+      Potato
+      <a href="http://www.google.com">Link</a>
+    </li>
+    <li class="mdc-list-item">
       Pasta
-      <button>two</button>
+      <input type="checkbox"/>
     </li>
     <li class="mdc-list-item">
       Pizza
+      <input type="radio"/>
     </li>
    </ul>
   `;
@@ -216,15 +221,17 @@ test('adapter#focusItemAtIndex focuses the list item at the index specified', ()
   document.body.removeChild(root);
 });
 
-test('adapter#setTabIndexForListItemChildren sets the child button/a elements of index', () => {
+test('adapter#setTabIndexForListItemChildren sets the child button/a/radio/checkbox elements of index', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
-  const listItemIndex = 1;
-  const listItem = root.querySelectorAll('.mdc-list-item')[listItemIndex];
-  component.getDefaultFoundation().adapter_.setTabIndexForListItemChildren(listItemIndex, 0);
+  const listItems = root.querySelectorAll('.mdc-list-item');
 
-  assert.equal(1, root.querySelectorAll('button[tabindex="0"]').length);
-  assert.equal(listItem, root.querySelectorAll('button[tabindex="0"]')[0].parentElement);
+  for (let index = 0; index < listItems.length; index++) {
+    assert.equal(0, listItems[index].querySelectorAll('[tabindex="0"]').length);
+    component.getDefaultFoundation().adapter_.setTabIndexForListItemChildren(index, 0);
+    assert.equal(1, listItems[index].querySelectorAll('[tabindex="0"]').length);
+  }
+
   document.body.removeChild(root);
 });
 
