@@ -354,6 +354,7 @@ Method Signature | Description
 `focusItemAtIndex(index: Number) => void` | Focuses the list item at the `index` value specified.
 `setTabIndexForListItemChildren(index: Number, value: Number) => void` | Sets the `tabindex` attribute to `value` for each child `button` and `a` element in the list item at the `index` specified.
 `followHref(element: Element) => void` | If the given element has an href, follows the link.
+`toggleCheckbox(index: number) => boolean` | Toggles a checkbox and radio button in the list item and returns true/false if one was found.
 
 ### `MDCListFoundation`
 

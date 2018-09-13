@@ -230,6 +230,7 @@ class MDCList extends MDCComponent {
         }
       },
       toggleCheckbox: (index) => {
+        let checkboxOrRadioExists = false;
         const listItem = this.listElements[index];
         const elementsToToggle =
           [].slice.call(listItem.querySelectorAll('input[type="radio"], input[type="checkbox"]'));
@@ -237,17 +238,13 @@ class MDCList extends MDCComponent {
           const event = document.createEvent('Event');
           event.initEvent('change', false, true);
 
-          if (!element.checked) {
+          if (!element.checked || element.type !== 'radio') {
             element.checked = !element.checked;
             element.dispatchEvent(event);
-          } else {
-            // Only toggle/emit event for radios that are not checked.
-            if (element.type !== 'radio') {
-              element.checked = !element.checked;
-              element.dispatchEvent(event);
-            }
           }
+          checkboxOrRadioExists = true;
         });
+        return checkboxOrRadioExists;
       },
     })));
   }

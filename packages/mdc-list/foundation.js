@@ -206,7 +206,7 @@ class MDCListFoundation extends MDCFoundation {
     }
 
     if (isEnter || isSpace) {
-      this.adapter_.toggleCheckbox(listItemIndex);
+      this.adapter_.toggleCheckbox(listItemIndex) ? this.preventDefaultEvent_(evt) : null;
     }
   }
 

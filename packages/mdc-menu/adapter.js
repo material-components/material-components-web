@@ -110,6 +110,13 @@ class MDCMenuAdapter {
  *   }} evtData
    */
   notifySelected(evtData) {}
+
+  /**
+   * Toggles the checkbox within a list item.
+   * @param {number} index
+   * @return {boolean} returns true if an element was toggled.
+   */
+  toggleCheckbox(index) {}
 }
 
 export {MDCMenuAdapter};
