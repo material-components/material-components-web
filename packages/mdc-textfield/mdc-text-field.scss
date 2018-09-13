@@ -47,7 +47,7 @@
   @include mdc-ripple-radius-bounded;
 
   // Shape
-  @include mdc-text-field-corner-radius($mdc-text-field-border-radius);
+  @include mdc-text-field-shape-radius(small);
 
   // Colors
   @include mdc-text-field-label-color($mdc-text-field-label);
@@ -71,7 +71,7 @@
   display: inline-flex;
   position: relative;
   box-sizing: border-box;
-  height: 56px;
+  height: $mdc-text-field-height;
   overflow: hidden;
   will-change: opacity, transform, color;
 
