@@ -35,63 +35,28 @@ Shapes direct attention, identify components, communicate state, and express bra
 npm install @material/shape
 ```
 
-## Usage
+## Basic Usage
 
-### Shapes for fixed height components
-
-Styles for applying shape to button component looks like this.
+### Styles
 
 ```scss
-@include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-button-height, $radius));
+@import "@material/shape/mixins";
+@import "@material/shape/functions";
 ```
 
-Where, `$mdc-button-height` is the height of standard button and `$radius` is the size of shape. `mdc-shape-resolve-percentage-radius` function is used to resolve percentage unit value to absolute `$radius` value based on component height.
+## Style Customization
 
-### Shapes for dynamic height components
+### Sass Variables
 
-Styles for applying shapes to dynamic height component like card looks like this:
+Components are categorized as small, medium and large in shape system. Overriding below sass variables applies shape (rounded) to respective categories. For example, overriding `$mdc-shape-medium-radius` variable would apply shape to all components that belong to medium category.
 
-```scss
-@include mdc-shape-radius($radius);
-```
+Variable | Description
+--- | ---
+`$mdc-shape-small-surface-radius` | Rounded shape radius size for small surface components. Default value `4px`.
+`$mdc-shape-medium-surface-radius` | Rounded shape radius size for medium surface components. Default value `8px`.
+`$mdc-shape-large-surface-radius` | Rounded shape radius size for large surface components. Default value `0`.
 
-Where, `$radius` is absolute value only.
-
-### Shapes for components on specific corners
-
-Styles for applying shapes for specific corners such as drawer looks like this:
-
-```scss
-@include mdc-shape-radius((0, $radius, $radius, 0), $rtl-reflexive: true);
-```
-
-Where, only top-right & bottom-right corners are customizable and it automatically flips radius values based on RTL context when `$rtl-reflexive` is set to true.
-
-### Global theming
-
-Components are categorized as small, medium and large in shapes system. Overriding below sass variables applies shapes (rounded) to respective categories. For example, overriding `$mdc-shape-medium-radius` variable would apply shape to all components that belong to medium category.
-
-Variable | Category | Default Size
---- | --- | --- | ---
-`$mdc-shape-small-radius` | Small | 4px
-`$mdc-shape-medium-radius` | Medium | 4px
-`$mdc-shape-large-radius` | Large | 0
-
-### Component theming
-
-The styles for applying custom shape to button component instance looks like this:
-
-```scss
-@import "@material/button/mixins";
-
-.my-custom-button {
-  @include mdc-button-shape-radius(50%);
-}
-```
-
-In this example, the above styles applies 50% (pill) shape to button. It can also be absolute value (e.g., `8px`);
-
-> You would indirectly use the Shape API through respective component's mixin which takes care of applying radius to applicable corners for all its variants.
+Please refer [Material Design guidelines: Shape](https://material.io/go/design-shape) to learn about how components are categories.
 
 ### Sass Mixins
 
@@ -109,3 +74,51 @@ Function | Description
 `mdc-shape-resolve-percentage-radius($component-height, $radius)` | Function that calculates the absolute radius value based on its component height. Use this for fixed height components only.
 `mdc-shape-prop-value($radius)` | Returns radius value of shape category - `large`, `medium` or `small`. Otherwise, it returns the `$radius` itself if valid. `$radius` can be a single value or list of 4.
 `mdc-shape-mask-top-radius($radius)` | Accepts radius number or list of 2 radius values and returns 4 value list with top-left value, top-right value, bottom-right 0, bottom-left 0. Throws error when length of radius is more than 2.
+
+### Additional Information
+
+#### Shapes for fixed height components
+
+Styles for applying shape to button component looks like this.
+
+```scss
+@include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-button-height, $radius));
+```
+
+Where, `$mdc-button-height` is the height of standard button and `$radius` is the size of shape. `mdc-shape-resolve-percentage-radius` function is used to resolve percentage unit value to absolute `$radius` value based on component height.
+
+#### Shapes for dynamic height components
+
+Styles for applying shapes to dynamic height component like card looks like this:
+
+```scss
+@include mdc-shape-radius($radius);
+```
+
+Where, `$radius` is absolute value only.
+
+#### Shapes for components on specific corners
+
+Styles for applying shapes for specific corners such as drawer looks like this:
+
+```scss
+@include mdc-shape-radius((0, $radius, $radius, 0), $rtl-reflexive: true);
+```
+
+Where, only top-right & bottom-right corners are customizable and it automatically flips radius values based on RTL context when `$rtl-reflexive` is set to true.
+
+#### Component theming
+
+The styles for applying custom shape to button component instance looks like this:
+
+```scss
+@import "@material/button/mixins";
+
+.my-custom-button {
+  @include mdc-button-shape-radius(50%);
+}
+```
+
+In this example, the above styles applies 50% (pill) shape to button. It can also be absolute value (e.g., `8px`);
+
+> You would indirectly use the Shape API through respective component's mixin which takes care of applying radius to applicable corners for all its variants.
