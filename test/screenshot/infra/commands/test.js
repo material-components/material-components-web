@@ -86,14 +86,15 @@ class TestCommand {
       return localExitCode;
     }
 
-    if (isTravisPr) {
-      /** @type {!mdc.proto.ReportData} */
-      const masterReportData = await this.diffAgainstMaster_({localReportData, snapshotGitRev});
+    // Temporarily disabled, see https://github.com/material-components/material-components-web/issues/3555
+    // if (isTravisPr) {
+    //   /** @type {!mdc.proto.ReportData} */
+    //   const masterReportData = await this.diffAgainstMaster_({localReportData, snapshotGitRev});
+    //   this.logTestResults_(localReportData);
+    //   this.logTestResults_(masterReportData);
+    // } else {
       this.logTestResults_(localReportData);
-      this.logTestResults_(masterReportData);
-    } else {
-      this.logTestResults_(localReportData);
-    }
+    // }
 
     // Diffs against master shouldn't fail the Travis job.
     return ExitCode.OK;
