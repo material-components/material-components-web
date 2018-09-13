@@ -144,7 +144,7 @@
 
 // Simple mixin for base states which automatically selects opacity values based on whether the ink color is
 // light or dark.
-@mixin mdc-states($color: black, $has-nested-focusable-element: false) {
+@mixin mdc-states($color: mdc-theme-prop-value(on-surface), $has-nested-focusable-element: false) {
   @include mdc-states-interactions_($color, $has-nested-focusable-element);
 }
 
