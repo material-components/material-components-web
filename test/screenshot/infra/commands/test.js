@@ -26,7 +26,7 @@
 const VError = require('verror');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
-const GitRevision = mdcProto.GitRevision;
+// const GitRevision = mdcProto.GitRevision;
 const InclusionType = mdcProto.Screenshot.InclusionType;
 const ReportData = mdcProto.ReportData;
 
@@ -67,9 +67,9 @@ class TestCommand {
 
     /** @type {!mdc.proto.DiffBase} */
     const snapshotDiffBase = await this.diffBaseParser_.parseGoldenDiffBase();
-    const snapshotGitRev = snapshotDiffBase.git_revision;
+    // const snapshotGitRev = snapshotDiffBase.git_revision;
 
-    const isTravisPr = snapshotGitRev && snapshotGitRev.type === GitRevision.Type.TRAVIS_PR;
+    // const isTravisPr = snapshotGitRev && snapshotGitRev.type === GitRevision.Type.TRAVIS_PR;
     const shouldExit = process.env.HAS_TESTABLE_FILES === 'false';
 
     if (shouldExit) {
@@ -93,7 +93,7 @@ class TestCommand {
     //   this.logTestResults_(localReportData);
     //   this.logTestResults_(masterReportData);
     // } else {
-      this.logTestResults_(localReportData);
+    this.logTestResults_(localReportData);
     // }
 
     // Diffs against master shouldn't fail the Travis job.
