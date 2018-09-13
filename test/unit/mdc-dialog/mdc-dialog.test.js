@@ -89,10 +89,6 @@ function setupTestWithMocks() {
   return {root, component, mockFoundation, mockFocusTrapInstance};
 }
 
-function hasClassMatcher(className) {
-  return td.matchers.argThat((el) => el.classList && el.classList.contains(className));
-}
-
 suite('MDCDialog');
 
 test('attachTo returns a component instance', () => {
