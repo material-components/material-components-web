@@ -17,7 +17,7 @@
 
     "config_overrides": [
       {
-        "description": "IE and Edge flake more frequently than other browsers, especially with font rendering",
+        "description": "IE and Edge rendering is inherently flaky. `border-radius`, `box-shadow`, and font rendering (especially on <button> elements) seem to be the worst offenders.",
         "browser_regex_patterns": [
           "desktop_windows_edge@latest",
           "desktop_windows_ie@11"
@@ -49,6 +49,30 @@
         "url_regex_patterns": [
           "mdc-textfield/.*textarea",
           "mdc-typography"
+        ],
+        "custom_config": {
+          "skip_all": true
+        }
+      },
+      {
+        "description": "Wait for dialog entrance animations to finish.",
+        "url_regex_patterns": [
+          "mdc-dialog"
+        ],
+        "custom_config": {
+          "max_retries": 4,
+          "min_changed_pixel_count": 25,
+          "fonts_loaded_reflow_delay_ms": 250
+        }
+      },
+      {
+        "description": "IE consistently flakes sometimes on some dialog pages.",
+        "browser_regex_patterns": [
+          "desktop_windows_ie@11"
+        ],
+        "url_regex_patterns": [
+          "mdc-dialog/classes/overflow",
+          "mdc-dialog/mixins"
         ],
         "custom_config": {
           "skip_all": true
