@@ -22,9 +22,10 @@
  */
 
 import {MDCFoundation} from '@material/base/index';
-import {cssClasses, strings, numbers} from './constants';
+import MDCDialogAdapter from './adapter';
+import {cssClasses, numbers, strings} from './constants';
 
-export default class MDCDialogFoundation extends MDCFoundation {
+class MDCDialogFoundation extends MDCFoundation {
   static get cssClasses() {
     return cssClasses;
   }
@@ -38,121 +39,187 @@ export default class MDCDialogFoundation extends MDCFoundation {
   }
 
   static get defaultAdapter() {
-    return ({
+    return /** @type {!MDCDialogAdapter} */ ({
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
       addBodyClass: (/* className: string */) => {},
       removeBodyClass: (/* className: string */) => {},
-      eventTargetHasClass: (/* target: EventTarget, className: string */) => /* boolean */ false,
-      registerInteractionHandler: (/* evt: string, handler: EventListener */) => {},
-      deregisterInteractionHandler: (/* evt: string, handler: EventListener */) => {},
-      registerSurfaceInteractionHandler: (/* evt: string, handler: EventListener */) => {},
-      deregisterSurfaceInteractionHandler: (/* evt: string, handler: EventListener */) => {},
-      registerDocumentKeydownHandler: (/* handler: EventListener */) => {},
-      deregisterDocumentKeydownHandler: (/* handler: EventListener */) => {},
-      notifyAccept: () => {},
-      notifyCancel: () => {},
-      trapFocusOnSurface: () => {},
-      untrapFocusOnSurface: () => {},
-      isDialog: (/* el: Element */) => /* boolean */ false,
+      eventTargetHasClass: (/* target: !EventTarget, className: string */) => {},
+      computeBoundingRect: () => {},
+      trapFocus: () => {},
+      releaseFocus: () => {},
+      isContentScrollable: () => {},
+      areButtonsStacked: () => {},
+      getActionFromEvent: (/* event: !Event */) => {},
+      notifyOpening: () => {},
+      notifyOpened: () => {},
+      notifyClosing: (/* action: ?string */) => {},
+      notifyClosed: (/* action: ?string */) => {},
     });
   }
 
+  /**
+   * @param {!MDCDialogAdapter=} adapter
+   */
   constructor(adapter) {
     super(Object.assign(MDCDialogFoundation.defaultAdapter, adapter));
-    this.isOpen_ = false;
-    this.componentClickHandler_ = (evt) => {
-      if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.BACKDROP)) {
-        this.cancel(true);
-      }
-    };
-    this.dialogClickHandler_ = (evt) => this.handleDialogClick_(evt);
-    this.documentKeydownHandler_ = (evt) => {
-      if (evt.key && evt.key === 'Escape' || evt.keyCode === 27) {
-        this.cancel(true);
-      }
-    };
 
-    this.timerId_ = 0;
-    this.animationTimerEnd_ = (evt) => this.handleAnimationTimerEnd_(evt);
+    /** @private {boolean} */
+    this.isOpen_ = false;
+
+    /** @private {number} */
+    this.animationTimer_ = 0;
+
+    /** @private {number} */
+    this.layoutFrame_ = 0;
+
+    /** @private {string} */
+    this.escapeKeyAction_ = strings.CLOSE_ACTION;
+
+    /** @private {string} */
+    this.scrimClickAction_ = strings.CLOSE_ACTION;
   };
 
   destroy() {
-    // Ensure that dialog is cleaned up when destroyed
     if (this.isOpen_) {
-      this.close();
+      this.close(strings.DESTROY_ACTION);
     }
-    // Final cleanup of animating class in case the timer has not completed.
-    this.adapter_.removeClass(MDCDialogFoundation.cssClasses.ANIMATING);
-    clearTimeout(this.timerId_);
+
+    if (this.animationTimer_) {
+      clearTimeout(this.animationTimer_);
+      this.handleAnimationTimerEnd_();
+    }
+
+    if (this.layoutFrame_) {
+      cancelAnimationFrame(this.layoutFrame_);
+      this.layoutFrame_ = 0;
+    }
   }
 
   open() {
     this.isOpen_ = true;
-    this.disableScroll_();
-    this.adapter_.registerDocumentKeydownHandler(this.documentKeydownHandler_);
-    this.adapter_.registerSurfaceInteractionHandler('click', this.dialogClickHandler_);
-    this.adapter_.registerInteractionHandler('click', this.componentClickHandler_);
-    clearTimeout(this.timerId_);
-    this.timerId_ = setTimeout(this.animationTimerEnd_, MDCDialogFoundation.numbers.DIALOG_ANIMATION_TIME_MS);
-    this.adapter_.addClass(MDCDialogFoundation.cssClasses.ANIMATING);
-    this.adapter_.addClass(MDCDialogFoundation.cssClasses.OPEN);
+    this.adapter_.notifyOpening();
+    this.adapter_.addClass(cssClasses.OPENING);
+
+    // Force redraw now that display is no longer "none", to establish basis for animation
+    this.adapter_.computeBoundingRect();
+    this.adapter_.addClass(cssClasses.OPEN);
+    this.adapter_.addBodyClass(cssClasses.SCROLL_LOCK);
+
+    this.layout();
+
+    clearTimeout(this.animationTimer_);
+    this.animationTimer_ = setTimeout(() => {
+      this.handleAnimationTimerEnd_();
+      this.adapter_.trapFocus();
+      this.adapter_.notifyOpened();
+    }, numbers.DIALOG_ANIMATION_OPEN_TIME_MS);
   }
 
-  close() {
+  /**
+   * @param {string=} action
+   */
+  close(action = '') {
     this.isOpen_ = false;
-    this.enableScroll_();
-    this.adapter_.deregisterSurfaceInteractionHandler('click', this.dialogClickHandler_);
-    this.adapter_.deregisterDocumentKeydownHandler(this.documentKeydownHandler_);
-    this.adapter_.deregisterInteractionHandler('click', this.componentClickHandler_);
-    this.adapter_.untrapFocusOnSurface();
-    clearTimeout(this.timerId_);
-    this.timerId_ = setTimeout(this.animationTimerEnd_, MDCDialogFoundation.numbers.DIALOG_ANIMATION_TIME_MS);
-    this.adapter_.addClass(MDCDialogFoundation.cssClasses.ANIMATING);
-    this.adapter_.removeClass(MDCDialogFoundation.cssClasses.OPEN);
+    this.adapter_.notifyClosing(action);
+    this.adapter_.releaseFocus();
+    this.adapter_.addClass(cssClasses.CLOSING);
+    this.adapter_.removeClass(cssClasses.OPEN);
+    this.adapter_.removeBodyClass(cssClasses.SCROLL_LOCK);
+
+    clearTimeout(this.animationTimer_);
+    this.animationTimer_ = setTimeout(() => {
+      this.handleAnimationTimerEnd_();
+      this.adapter_.notifyClosed(action);
+    }, numbers.DIALOG_ANIMATION_CLOSE_TIME_MS);
   }
 
   isOpen() {
     return this.isOpen_;
   }
 
-  accept(shouldNotify) {
-    if (shouldNotify) {
-      this.adapter_.notifyAccept();
-    }
-
-    this.close();
+  /** @return {string} */
+  getEscapeKeyAction() {
+    return this.escapeKeyAction_;
   }
 
-  cancel(shouldNotify) {
-    if (shouldNotify) {
-      this.adapter_.notifyCancel();
-    }
-
-    this.close();
+  /** @param {string} action */
+  setEscapeKeyAction(action) {
+    this.escapeKeyAction_ = action;
   }
 
-  handleDialogClick_(evt) {
-    const {target} = evt;
-    if (this.adapter_.eventTargetHasClass(target, cssClasses.ACCEPT_BTN)) {
-      this.accept(true);
-    } else if (this.adapter_.eventTargetHasClass(target, cssClasses.CANCEL_BTN)) {
-      this.cancel(true);
+  /** @return {string} */
+  getScrimClickAction() {
+    return this.scrimClickAction_;
+  }
+
+  /** @param {string} action */
+  setScrimClickAction(action) {
+    this.scrimClickAction_ = action;
+  }
+
+  layout() {
+    if (this.layoutFrame_) {
+      cancelAnimationFrame(this.layoutFrame_);
+    }
+    this.layoutFrame_ = requestAnimationFrame(() => {
+      this.layoutInternal_();
+      this.layoutFrame_ = 0;
+    });
+  }
+
+  layoutInternal_() {
+    this.detectStackedButtons_();
+    this.detectScrollableContent_();
+  }
+
+  /** @private */
+  detectStackedButtons_() {
+    // Remove the class first to let us measure the buttons' natural positions.
+    this.adapter_.removeClass(cssClasses.STACKED);
+    if (this.adapter_.areButtonsStacked()) {
+      this.adapter_.addClass(cssClasses.STACKED);
     }
   }
 
+  /** @private */
+  detectScrollableContent_() {
+    // Remove the class first to let us measure the natural height of the content.
+    this.adapter_.removeClass(cssClasses.SCROLLABLE);
+    if (this.adapter_.isContentScrollable()) {
+      this.adapter_.addClass(cssClasses.SCROLLABLE);
+    }
+  }
+
+  /**
+   * @param {!Event} evt
+   * @private
+   */
+  handleClick(evt) {
+    const action = this.adapter_.getActionFromEvent(evt);
+    if (action) {
+      this.close(action);
+    } else if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.SCRIM) && this.scrimClickAction_) {
+      this.close(this.scrimClickAction_);
+    }
+  }
+
+  /**
+   * @param {!KeyboardEvent} evt
+   * @private
+   */
+  handleDocumentKeydown(evt) {
+    if ((evt.key === 'Escape' || evt.keyCode === 27) && this.escapeKeyAction_) {
+      this.close(this.escapeKeyAction_);
+    }
+  }
+
+  /** @private */
   handleAnimationTimerEnd_() {
-    this.adapter_.removeClass(MDCDialogFoundation.cssClasses.ANIMATING);
-    if (this.isOpen_) {
-      this.adapter_.trapFocusOnSurface();
-    }
-  };
-
-  disableScroll_() {
-    this.adapter_.addBodyClass(cssClasses.SCROLL_LOCK);
-  }
-
-  enableScroll_() {
-    this.adapter_.removeBodyClass(cssClasses.SCROLL_LOCK);
+    this.animationTimer_ = 0;
+    this.adapter_.removeClass(cssClasses.OPENING);
+    this.adapter_.removeClass(cssClasses.CLOSING);
   }
 }
+
+export default MDCDialogFoundation;
