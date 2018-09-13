@@ -33,13 +33,13 @@
 @import "./functions";
 
 @mixin mdc-text-field-shape-radius($radius, $rtl-reflexive: false) {
-  $radius: mdc-text-field-mask-radius($radius);
+  $radius: mdc-shape-mask-top-radius($radius);
 
   @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-text-field-height, $radius), $rtl-reflexive);
 }
 
 @mixin mdc-text-field-textarea-shape-radius($radius, $rtl-reflexive: false) {
-  $radius-masked: mdc-text-field-mask-radius($radius);
+  $radius-masked: mdc-shape-mask-top-radius($radius);
 
   @include mdc-shape-radius($radius, $rtl-reflexive);
 

@@ -25,13 +25,3 @@
 @function mdc-text-field-transition($property) {
   @return #{$property} 180ms $mdc-animation-standard-curve-timing-function;
 }
-
-@function mdc-text-field-mask-radius($radius) {
-  @if length($radius) > 2 {
-    @error "Invalid radius: '#{$radius}' component doesn't allow customizing all corners";
-  } @else if length($radius) == 2 {
-    @return nth($radius, 1) nth($radius, 2) 0 0;
-  } @else {
-    @return $radius $radius 0 0;
-  }
-}

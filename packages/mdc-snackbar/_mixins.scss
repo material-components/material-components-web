@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc.
+// Copyright 2018 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,11 +20,18 @@
 // THE SOFTWARE.
 //
 
-// Hard coded since the color is not present in any palette.
-$mdc-snackbar-background-color: #323232 !default;
-$mdc-snackbar-foreground-color: white !default;
-// TODO: Better spot to pull this breakpoint?
-//$snackbar-tablet-breakpoint: $grid-tablet-breakpoint;
-$mdc-snackbar-tablet-breakpoint: 600px !default;
-$mdc-snackbar-height: 48px;
-$mdc-snackbar-multiline-height: 80px;
+@import "@material/shape/mixins";
+@import "@material/shape/functions";
+@import "./variables";
+
+@mixin mdc-snackbar-shape-radius($radius, $rtl-reflexive: false) {
+  $radius: mdc-shape-mask-top-radius($radius);
+
+  @media (min-width: $mdc-snackbar-tablet-breakpoint) {
+    @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-snackbar-height, $radius), $rtl-reflexive);
+
+    &.mdc-snackbar--multiline {
+      @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-snackbar-multiline-height, $radius), $rtl-reflexive);
+    }
+  }
+}
