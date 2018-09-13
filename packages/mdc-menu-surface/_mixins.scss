@@ -31,6 +31,6 @@
   @include mdc-theme-prop(background-color, $color);
 }
 
-@mixin mdc-menu-surface-shape-radius($radius) {
-  @include mdc-shape-radius($radius);
+@mixin mdc-menu-surface-shape-radius($radius, $rtl-reflexive: false) {
+  @include mdc-shape-radius($radius, $rtl-reflexive);
 }

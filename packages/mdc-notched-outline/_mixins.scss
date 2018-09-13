@@ -42,11 +42,11 @@
 }
 
 @mixin mdc-notched-outline-shape-radius($radius, $rtl-reflexive: false) {
-  @include mdc-shape-radius($radius);
+  @include mdc-shape-radius($radius, $rtl-reflexive);
 }
 
 @mixin mdc-notched-outline-idle-shape-radius($radius, $rtl-reflexive: false) {
   .mdc-notched-outline__idle {
-    @include mdc-shape-radius($radius);
+    @include mdc-shape-radius($radius, $rtl-reflexive);
   }
 }

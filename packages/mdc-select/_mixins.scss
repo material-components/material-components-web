@@ -101,7 +101,7 @@
   }
 
   &, &__native-control {
-    @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-shape-height, $radius), $rtl-reflexive);
+    @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-select-height, $radius), $rtl-reflexive);
   }
 }
 
@@ -113,13 +113,13 @@
   // are siblings. .mdc-notched-outline__idle needs to be a child of
   // .mdc-notched-outline in order to remedy this issue.
   .mdc-notched-outline {
-    @include mdc-notched-outline-shape-radius(mdc-shape-resolve-percentage-radius($mdc-shape-height, $radius), $rtl-reflexive);
+    @include mdc-notched-outline-shape-radius(mdc-shape-resolve-percentage-radius($mdc-select-height, $radius), $rtl-reflexive);
   }
 
-  @include mdc-notched-outline-idle-shape-radius(mdc-shape-resolve-percentage-radius($mdc-shape-height, $radius), $rtl-reflexive);
+  @include mdc-notched-outline-idle-shape-radius(mdc-shape-resolve-percentage-radius($mdc-select-height, $radius), $rtl-reflexive);
 
   &__native-control {
-    @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-shape-height, $radius), $rtl-reflexive);
+    @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-select-height, $radius), $rtl-reflexive);
   }
 }
 

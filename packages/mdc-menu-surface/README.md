@@ -146,7 +146,7 @@ Mixin | Description
 --- | ---
 `mdc-menu-surface-ink-color($color)` | Sets the `color` property of the `mdc-menu-surface`.
 `mdc-menu-surface-fill-color($color)` | Sets the `background-color` property of the `mdc-menu-surface`.
-`mdc-menu-surface-shape-radius($radius)` | Sets the rounded shape to menu surface with given radius size.
+`mdc-menu-surface-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to menu surface with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 
 ## `MDCMenuSurface` Properties and Methods
 
