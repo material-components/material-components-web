@@ -31,6 +31,7 @@
 .mdc-top-app-bar {
   @include mdc-top-app-bar-fill-color-accessible(primary);
   @include mdc-top-app-bar-icon-ink-color(on-primary);
+  @include mdc-top-app-bar-short-shape-radius(24px);
 
   display: flex;
   position: fixed;
@@ -110,7 +111,6 @@
 }
 
 .mdc-top-app-bar--short-collapsed {
-  @include mdc-top-app-bar-short-border-radius;
   @include mdc-elevation(4);
 
   width: $mdc-top-app-bar-short-collapsed-width;
