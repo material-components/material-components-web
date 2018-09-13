@@ -43,7 +43,8 @@ let NativeInputType;
 /**
  * @typedef {{
  *   helperText: (!MDCTextFieldHelperTextFoundation|undefined),
- *   icon: (!MDCTextFieldIconFoundation|undefined),
+ *   leadingIcon: (!MDCTextFieldIconFoundation|undefined),
+ *   trailingIcon: (!MDCTextFieldIconFoundation|undefined),
  * }}
  */
 let FoundationMapType;
