@@ -27,7 +27,7 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 import {createMockRaf} from '../helpers/raf';
 import {strings} from '../../../packages/mdc-dialog/constants';
-import {MDCDialog, MDCDialogFoundation} from '../../../packages/mdc-dialog';
+import {MDCDialog, MDCDialogFoundation, util} from '../../../packages/mdc-dialog';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 
 function getFixture() {
@@ -80,9 +80,13 @@ function setupTestWithMocks() {
 
   const MockFoundationCtor = td.constructor(MDCDialogFoundation);
   const mockFoundation = new MockFoundationCtor();
+  const mockFocusTrapInstance = td.object({
+    activate: () => {},
+    deactivate: () => {},
+  });
 
-  const component = new MDCDialog(root, mockFoundation);
-  return {root, component, mockFoundation};
+  const component = new MDCDialog(root, mockFoundation, () => mockFocusTrapInstance);
+  return {root, component, mockFoundation, mockFocusTrapInstance};
 }
 
 function hasClassMatcher(className) {
@@ -354,39 +358,19 @@ test(`adapter#notifyClosed emits ${strings.CLOSED_EVENT} with action`, () => {
 });
 
 test('adapter#trapFocus calls activate() on a properly configured focus trap instance', () => {
-  const {component} = setupTest();
-  component.util_.createFocusTrapInstance = td.func('component.util_.createFocusTrapInstance');
-
-  const fakeFocusTrapInstance = td.object({
-    activate: td.func('focusTrap#activate'),
-    deactivate: td.func('focusTrap#deactivate'),
-  });
-
-  td.when(component.util_.createFocusTrapInstance(hasClassMatcher('mdc-dialog__container')))
-    .thenReturn(fakeFocusTrapInstance);
-
+  const {component, mockFocusTrapInstance} = setupTestWithMocks();
   component.initialize();
   component.getDefaultFoundation().adapter_.trapFocus();
 
-  td.verify(fakeFocusTrapInstance.activate());
+  td.verify(mockFocusTrapInstance.activate());
 });
 
 test('adapter#releaseFocus calls deactivate() on a properly configured focus trap instance', () => {
-  const {component} = setupTest();
-  component.util_.createFocusTrapInstance = td.func('component.util_.createFocusTrapInstance');
-
-  const fakeFocusTrapInstance = td.object({
-    activate: () => {},
-    deactivate: () => {},
-  });
-
-  td.when(component.util_.createFocusTrapInstance(hasClassMatcher('mdc-dialog__container')))
-    .thenReturn(fakeFocusTrapInstance);
-
+  const {component, mockFocusTrapInstance} = setupTestWithMocks();
   component.initialize();
   component.getDefaultFoundation().adapter_.releaseFocus();
 
-  td.verify(fakeFocusTrapInstance.deactivate());
+  td.verify(mockFocusTrapInstance.deactivate());
 });
 
 test('adapter#isContentScrollable returns false when there is no content element', () => {
@@ -396,36 +380,16 @@ test('adapter#isContentScrollable returns false when there is no content element
   assert.isFalse(isContentScrollable);
 });
 
-test('adapter#isContentScrollable returns false when content does not require scrolling', () => {
-  const {component} = setupTest();
-  const isContentScrollable = component.getDefaultFoundation().adapter_.isContentScrollable();
-  assert.isFalse(isContentScrollable);
-});
-
-test('adapter#isContentScrollable returns true when content requires scrolling', () => {
+test('adapter#isContentScrollable returns result of util.isScrollable', () => {
   const {component, content} = setupTest();
-  component.util_.isScrollable = td.func('component.util_.isScrollable');
-  td.when(component.util_.isScrollable(content)).thenReturn(true);
-
-  const isContentScrollable = component.getDefaultFoundation().adapter_.isContentScrollable();
-
-  assert.isTrue(isContentScrollable);
+  assert.strictEqual(component.getDefaultFoundation().adapter_.isContentScrollable(), util.isScrollable(content));
 });
 
-test('adapter#areButtonsStacked returns false when tops are aligned', () => {
-  const {component} = setupTest();
-  const areButtonsStacked = component.getDefaultFoundation().adapter_.areButtonsStacked();
-  assert.isFalse(areButtonsStacked);
-});
-
-test('adapter#areButtonsStacked returns true when tops are misaligned', () => {
-  const {component} = setupTest();
-  component.util_.areTopsMisaligned = td.func('component.util_.areTopsMisaligned');
-  td.when(component.util_.areTopsMisaligned(td.matchers.anything())).thenReturn(true);
-
-  const areButtonsStacked = component.getDefaultFoundation().adapter_.areButtonsStacked();
-
-  assert.isTrue(areButtonsStacked);
+test('adapter#areButtonsStacked returns result of util.areTopsMisaligned', () => {
+  const {component, yesButton, noButton, cancelButton} = setupTest();
+  assert.strictEqual(
+    component.getDefaultFoundation().adapter_.areButtonsStacked(),
+    util.areTopsMisaligned([yesButton, noButton, cancelButton]));
 });
 
 test('adapter#getActionFromEvent returns attribute value', () => {

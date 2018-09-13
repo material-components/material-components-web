@@ -25,7 +25,9 @@ import {MDCComponent} from '@material/base/index';
 import {MDCRipple} from '@material/ripple/index';
 
 import MDCDialogFoundation from './foundation';
-import MDCDialogUtil from './util';
+import * as util from './util';
+
+import createFocusTrap from 'focus-trap';
 
 const strings = MDCDialogFoundation.strings;
 
@@ -48,11 +50,14 @@ class MDCDialog extends MDCComponent {
     /** @private {?Element} */
     this.content_;
 
+    /** @private {?Element} */
+    this.initialFocusEl_;
+
+    /** @private {!Function} */
+    this.focusTrapFactory_;
+
     /** @private {!FocusTrapInstance} */
     this.focusTrap_;
-
-    /** @private {!MDCDialogUtil} */
-    this.util_;
 
     /** @private {!Function} */
     this.handleClick_;
@@ -94,13 +99,13 @@ class MDCDialog extends MDCComponent {
     this.foundation_.setScrimClickAction(action);
   }
 
-  initialize() {
-    this.util_ = this.util_ || new MDCDialogUtil();
+  initialize(focusTrapFactory = createFocusTrap, initialFocusEl = null) {
     this.container_ = /** @type {!Element} */ (this.root_.querySelector(strings.CONTAINER_SELECTOR));
     this.content_ = this.root_.querySelector(strings.CONTENT_SELECTOR);
     this.buttons_ = [].slice.call(this.root_.querySelectorAll(strings.BUTTON_SELECTOR));
-    this.focusTrap_ = this.util_.createFocusTrapInstance(this.container_);
     this.buttonRipples_ = [];
+    this.focusTrapFactory_ = focusTrapFactory;
+    this.initialFocusEl_ = initialFocusEl;
 
     for (let i = 0, buttonEl; buttonEl = this.buttons_[i]; i++) {
       this.buttonRipples_.push(new MDCRipple(buttonEl));
@@ -108,6 +113,8 @@ class MDCDialog extends MDCComponent {
   }
 
   initialSyncWithDOM() {
+    this.focusTrap_ = util.createFocusTrapInstance(this.container_, this.focusTrapFactory_, this.initialFocusEl_);
+
     this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
     this.handleDocumentKeydown_ = this.foundation_.handleDocumentKeydown.bind(this.foundation_);
     this.layout_ = this.layout.bind(this);
@@ -162,8 +169,8 @@ class MDCDialog extends MDCComponent {
       computeBoundingRect: () => this.root_.getBoundingClientRect(),
       trapFocus: () => this.focusTrap_.activate(),
       releaseFocus: () => this.focusTrap_.deactivate(),
-      isContentScrollable: () => !!this.content_ && this.util_.isScrollable(/** @type {!Element} */ (this.content_)),
-      areButtonsStacked: () => this.util_.areTopsMisaligned(this.buttons_),
+      isContentScrollable: () => !!this.content_ && util.isScrollable(/** @type {!Element} */ (this.content_)),
+      areButtonsStacked: () => util.areTopsMisaligned(this.buttons_),
       getActionFromEvent: (event) => event.target.getAttribute(strings.ACTION_ATTRIBUTE),
       notifyOpening: () => this.emit(strings.OPENING_EVENT, {}),
       notifyOpened: () => this.emit(strings.OPENED_EVENT, {}),
@@ -173,4 +180,4 @@ class MDCDialog extends MDCComponent {
   }
 }
 
-export {MDCDialog, MDCDialogFoundation, MDCDialogUtil};
+export {MDCDialog, MDCDialogFoundation, util};

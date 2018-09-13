@@ -311,7 +311,7 @@ Event | Target | Foundation Handler | Register | Deregister
 
 ### The Util API
 
-External frameworks and libraries can use the following utility methods when integrating a component.
+External frameworks and libraries can use the following utility methods from the `util` module when implementing their own component.
 
 Method Signature | Description
 --- | ---

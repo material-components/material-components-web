@@ -25,7 +25,7 @@ import bel from 'bel';
 import td from 'testdouble';
 import {assert} from 'chai';
 
-import MDCDialogUtil from '../../../packages/mdc-dialog/util';
+import * as util from '../../../packages/mdc-dialog/util';
 
 suite('MDCDialog - util');
 
@@ -33,14 +33,12 @@ suite('MDCDialog - util');
 // transpiled `else` branch as lacking coverage, but the coverage report UI doesn't tell you where the missing branches
 // are. See https://github.com/gotwarlost/istanbul/issues/582#issuecomment-334683612.
 // createFocusTrapInstance() has two optional arguments, so code coverage reports two missed branches.
-test('#createFocusTrapInstance covers `if` branches added by Babel transpilation of optional arguments', () => {
-  const util = new MDCDialogUtil();
+test('createFocusTrapInstance covers `if` branches added by Babel transpilation of optional arguments', () => {
   const surface = bel`<div></div>`;
   util.createFocusTrapInstance(surface);
 });
 
-test('#createFocusTrapInstance creates a properly configured focus trap instance', () => {
-  const util = new MDCDialogUtil();
+test('createFocusTrapInstance creates a properly configured focus trap instance', () => {
   const surface = bel`<div></div>`;
   const yesBtn = bel`<button></button>`;
   const focusTrapFactory = td.func('focusTrapFactory');
@@ -51,12 +49,11 @@ test('#createFocusTrapInstance creates a properly configured focus trap instance
     clickOutsideDeactivates: true,
   })).thenReturn(properlyConfiguredFocusTrapInstance);
 
-  const instance = util.createFocusTrapInstance(surface, yesBtn, focusTrapFactory);
+  const instance = util.createFocusTrapInstance(surface, focusTrapFactory, yesBtn);
   assert.equal(instance, properlyConfiguredFocusTrapInstance);
 });
 
-test('#isScrollable returns false when element has no content', () => {
-  const util = new MDCDialogUtil();
+test('isScrollable returns false when element has no content', () => {
   const parent = bel`<div></div>`;
 
   // Element.scrollHeight only returns the correct value when the element is attached to the DOM.
@@ -68,8 +65,7 @@ test('#isScrollable returns false when element has no content', () => {
   }
 });
 
-test('#isScrollable returns false when element content does not overflow its bounding box', () => {
-  const util = new MDCDialogUtil();
+test('isScrollable returns false when element content does not overflow its bounding box', () => {
   const parent = bel`
 <div style="height: 20px; overflow: auto;">
   <div style="height: 10px;"></div>
@@ -84,8 +80,7 @@ test('#isScrollable returns false when element content does not overflow its bou
   }
 });
 
-test('#isScrollable returns true when element content overflows its bounding box', () => {
-  const util = new MDCDialogUtil();
+test('isScrollable returns true when element content overflows its bounding box', () => {
   const parent = bel`
 <div style="height: 20px; overflow: auto;">
   <div style="height: 30px;"></div>
@@ -100,13 +95,11 @@ test('#isScrollable returns true when element content overflows its bounding box
   }
 });
 
-test('#areTopsMisaligned returns false when array is empty', () => {
-  const util = new MDCDialogUtil();
+test('areTopsMisaligned returns false when array is empty', () => {
   assert.isFalse(util.areTopsMisaligned([]));
 });
 
-test('#areTopsMisaligned returns false when array only contains one element', () => {
-  const util = new MDCDialogUtil();
+test('areTopsMisaligned returns false when array only contains one element', () => {
   const parent = bel`
 <div style="display: flex;
             position: relative;
@@ -127,8 +120,7 @@ test('#areTopsMisaligned returns false when array only contains one element', ()
   }
 });
 
-test('#areTopsMisaligned returns false when elements have same offsetTop', () => {
-  const util = new MDCDialogUtil();
+test('areTopsMisaligned returns false when elements have same offsetTop', () => {
   const parent = bel`
 <div style="display: flex;
             position: relative;
@@ -150,8 +142,7 @@ test('#areTopsMisaligned returns false when elements have same offsetTop', () =>
   }
 });
 
-test('#areTopsMisaligned returns true when elements have different "top" values', () => {
-  const util = new MDCDialogUtil();
+test('areTopsMisaligned returns true when elements have different "top" values', () => {
   const parent = bel`
 <div style="display: flex;
             position: relative;
