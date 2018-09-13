@@ -1,6 +1,6 @@
 {
   "name": "@material/drawer",
-  "version": "0.39.1",
+  "version": "0.39.3",
   "description": "The Material Components Web drawer component",
   "license": "MIT",
   "keywords": [
@@ -18,7 +18,7 @@
     "@material/animation": "^0.39.0",
     "@material/base": "^0.39.0",
     "@material/elevation": "^0.39.1",
-    "@material/list": "^0.39.1",
+    "@material/list": "^0.39.3",
     "@material/rtl": "^0.39.1",
     "@material/theme": "^0.39.1",
     "@material/typography": "^0.39.0",
