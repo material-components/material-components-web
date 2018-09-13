@@ -225,8 +225,13 @@ class MDCRippleFoundation extends MDCFoundation {
       if (this.activationTimer_) {
         clearTimeout(this.activationTimer_);
         this.activationTimer_ = 0;
-        const {FG_ACTIVATION} = MDCRippleFoundation.cssClasses;
-        this.adapter_.removeClass(FG_ACTIVATION);
+        this.adapter_.removeClass(MDCRippleFoundation.cssClasses.FG_ACTIVATION);
+      }
+
+      if (this.fgDeactivationRemovalTimer_) {
+        clearTimeout(this.fgDeactivationRemovalTimer_);
+        this.fgDeactivationRemovalTimer_ = 0;
+        this.adapter_.removeClass(MDCRippleFoundation.cssClasses.FG_DEACTIVATION);
       }
 
       const {ROOT, UNBOUNDED} = MDCRippleFoundation.cssClasses;
@@ -560,7 +565,7 @@ class MDCRippleFoundation extends MDCFoundation {
     this.maxRadius_ = this.adapter_.isUnbounded() ? maxDim : getBoundedRadius();
 
     // Ripple is sized as a fraction of the largest dimension of the surface, then scales up using a CSS scale transform
-    this.initialSize_ = maxDim * MDCRippleFoundation.numbers.INITIAL_ORIGIN_SCALE;
+    this.initialSize_ = Math.floor(maxDim * MDCRippleFoundation.numbers.INITIAL_ORIGIN_SCALE);
     this.fgScale_ = this.maxRadius_ / this.initialSize_;
 
     this.updateLayoutCssVars_();
