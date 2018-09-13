@@ -261,12 +261,12 @@
     }
   },
   "spec/mdc-dialog/mixins/container-fill-color.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/12/22_19_10_073/spec/mdc-dialog/mixins/container-fill-color.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/13/00_32_54_004/spec/mdc-dialog/mixins/container-fill-color.html?utm_source=golden_json",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/12/22_19_10_073/spec/mdc-dialog/mixins/container-fill-color.html.windows_chrome_69.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/12/22_19_10_073/spec/mdc-dialog/mixins/container-fill-color.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/12/22_19_10_073/spec/mdc-dialog/mixins/container-fill-color.html.windows_firefox_62.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/12/22_19_10_073/spec/mdc-dialog/mixins/container-fill-color.html.windows_ie_11.png"
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/13/00_32_54_004/spec/mdc-dialog/mixins/container-fill-color.html.windows_ie_11.png"
     }
   },
   "spec/mdc-dialog/mixins/content-ink-color.html": {
@@ -279,12 +279,12 @@
     }
   },
   "spec/mdc-dialog/mixins/corner-radius.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/12/22_19_10_073/spec/mdc-dialog/mixins/corner-radius.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/13/00_32_54_004/spec/mdc-dialog/mixins/corner-radius.html?utm_source=golden_json",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/12/22_19_10_073/spec/mdc-dialog/mixins/corner-radius.html.windows_chrome_69.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/12/22_19_10_073/spec/mdc-dialog/mixins/corner-radius.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/12/22_19_10_073/spec/mdc-dialog/mixins/corner-radius.html.windows_firefox_62.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/12/22_19_10_073/spec/mdc-dialog/mixins/corner-radius.html.windows_ie_11.png"
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/13/00_32_54_004/spec/mdc-dialog/mixins/corner-radius.html.windows_ie_11.png"
     }
   },
   "spec/mdc-dialog/mixins/max-height.html": {
