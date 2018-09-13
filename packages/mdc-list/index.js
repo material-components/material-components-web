@@ -234,10 +234,19 @@ class MDCList extends MDCComponent {
         const elementsToToggle =
           [].slice.call(listItem.querySelectorAll('input[type="radio"], input[type="checkbox"]'));
         elementsToToggle.forEach((element) => {
-          element.checked = !element.checked;
           const event = document.createEvent('Event');
           event.initEvent('change', false, true);
-          element.dispatchEvent(event);
+
+          if (!element.checked) {
+            element.checked = !element.checked;
+            element.dispatchEvent(event);
+          } else {
+            // Only toggle/emit event for radios that are not checked.
+            if (element.type !== 'radio') {
+              element.checked = !element.checked;
+              element.dispatchEvent(event);
+            }
+          }
         });
       },
     })));
