@@ -34,7 +34,9 @@ const strings = {
   ARIA_ORIENTATION: 'aria-orientation',
   ARIA_ORIENTATION_HORIZONTAL: 'horizontal',
   ARIA_SELECTED: 'aria-selected',
-  FOCUSABLE_CHILD_ELEMENTS: `.${cssClasses.LIST_ITEM_CLASS} button:not(:disabled), .${cssClasses.LIST_ITEM_CLASS} a`,
+  FOCUSABLE_CHILD_ELEMENTS: `.${cssClasses.LIST_ITEM_CLASS} button:not(:disabled), .${cssClasses.LIST_ITEM_CLASS} a,
+  .${cssClasses.LIST_ITEM_CLASS} input[type="radio"]:not(:disabled),
+  .${cssClasses.LIST_ITEM_CLASS} input[type="checkbox"]:not(:disabled)`,
   ENABLED_ITEMS_SELECTOR: '.mdc-list-item:not(.mdc-list-item--disabled)',
 };
 
