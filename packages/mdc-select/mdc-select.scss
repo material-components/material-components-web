@@ -69,6 +69,23 @@
     background-position: left 10px center;
   }
 
+  &__dropdown-icon {
+    @include mdc-select-dd-arrow-svg-bg_;
+    @include mdc-rtl-reflexive(left, auto, right, 8px);
+
+    position: absolute;
+    bottom: 16px;
+    width: 24px;
+    height: 24px;
+    transition: transform 250ms;
+    pointer-events: none;
+
+    .mdc-select--focused & {
+      transform: rotate(180deg);
+      transition: transform 250ms;
+    }
+  }
+
   &__native-control {
     @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
     @include mdc-typography(subtitle1);
@@ -156,6 +173,10 @@
 
   .mdc-floating-label {
     @include mdc-floating-label-ink-color($mdc-select-disabled-label-color);
+  }
+
+  .mdc-select__dropdown-icon {
+    @include mdc-select-dd-arrow-svg-bg_(str_slice(#{$mdc-select-disabled-arrow-color}, 2), .37);
   }
 
   // stylelint-disable-next-line plugin/selector-bem-pattern
