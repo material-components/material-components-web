@@ -23,6 +23,7 @@
 @import "@material/ripple/mixins";
 @import "@material/theme/functions";
 @import "@material/theme/mixins";
+@import "./variables";
 
 @mixin mdc-chip-corner-radius($radius) {
   border-radius: $radius;
