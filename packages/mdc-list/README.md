@@ -268,8 +268,8 @@ The MDCList JavaScript component implements the WAI-ARIA best practices for
 [Listbox](https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox). This includes overriding the default tab behavior
 within the list component. You should not add `tabindex` to any of the `li` elements in a list.
 
-As the user navigates through the list, any `button`, `a`, `input[type="radio"]` and `input[type="checkbox"]` elements 
-within the list will receive `tabindex="-1"` when the list item is not focused. When the list item receives focus, the 
+As the user navigates through the list, any `button`, `a`, `input[type="radio"]` and `input[type="checkbox"]` elements
+within the list will receive `tabindex="-1"` when the list item is not focused. When the list item receives focus, the
 aforementioned elements will receive `tabIndex="0"`. This allows for the user to tab through list item elements
 and then tab to the first element after the list. The `Arrow`, `Home`, and `End` keys should be used for navigating
 internal list elements. If `singleSelection=true`, the list will allow the user to use the `Space` or `Enter` keys to
@@ -364,6 +364,7 @@ Method Signature | Description
 `setSingleSelection(value: Boolean) => void` | Sets the list to be a selection list. Enables the `enter` and `space` keys for selecting/deselecting a list item.
 `setSelectedIndex(index: Number) => void` | Toggles the `selected` state of the list item at index `index`.
 `setUseActivated(useActivated: boolean) => void` | Sets the selection logic to apply/remove the `mdc-list-item--activated` class.
+`setFocusInListItemChildren(enable: Boolean) => void` | Sets the list to enable or disable focusing in list item children.
 `handleFocusIn(evt: Event) => void` | Handles the changing of `tabindex` to `0` for all button, anchor, radio, and checkbox elements when a list item receives focus.
 `handleFocusOut(evt: Event) => void` | Handles the changing of `tabindex` to `-1` for all button, anchor, radio and checkbox elements when a list item loses focus.
 `handleKeydown(evt: Event) => void` | Handles determining if a focus action should occur when a key event is triggered.

@@ -62,16 +62,24 @@ class MDCListFoundation extends MDCFoundation {
    */
   constructor(adapter) {
     super(Object.assign(MDCListFoundation.defaultAdapter, adapter));
-    /** {boolean} */
+
+    /** @type {boolean} */
     this.wrapFocus_ = false;
-    /** {boolean} */
+
+    /** @type {boolean} */
     this.isVertical_ = true;
-    /** {boolean} */
+
+    /** @type {boolean} */
     this.isSingleSelectionList_ = false;
-    /** {number} */
+
+    /** @type {number} */
     this.selectedIndex_ = -1;
-    /** {boolean} */
+
+    /** @type {boolean} */
     this.useActivatedClass_ = false;
+
+    /** @type {boolean} */
+    this.focusInListItemChildren_ = true;
   }
 
   /**
@@ -104,6 +112,14 @@ class MDCListFoundation extends MDCFoundation {
    */
   setUseActivatedClass(useActivated) {
     this.useActivatedClass_ = useActivated;
+  }
+
+  /**
+   * Sets the list to enable or disable focusing in list item children.
+   * @param {boolean} enable Set to true to update tabindex of list item children to 0 on focusin.
+   */
+  setFocusInListItemChildren(enable) {
+    this.focusInListItemChildren_ = enable;
   }
 
   /** @param {number} index */
@@ -139,7 +155,7 @@ class MDCListFoundation extends MDCFoundation {
    * @param {number} listItemIndex
    */
   handleFocusIn(evt, listItemIndex) {
-    if (listItemIndex >= 0) {
+    if (listItemIndex >= 0 && this.focusInListItemChildren_) {
       this.adapter_.setTabIndexForListItemChildren(listItemIndex, 0);
     }
   }
@@ -150,7 +166,7 @@ class MDCListFoundation extends MDCFoundation {
    * @param {number} listItemIndex
    */
   handleFocusOut(evt, listItemIndex) {
-    if (listItemIndex >= 0) {
+    if (listItemIndex >= 0 && this.focusInListItemChildren_) {
       this.adapter_.setTabIndexForListItemChildren(listItemIndex, -1);
     }
   }
