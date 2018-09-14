@@ -64,6 +64,7 @@
 
 @function mdc-shape-resolve-percentage-for-corner_($component-height, $radius) {
   @if type-of($radius) == "number" and unit($radius) == "%" {
+    // Converts the percentage to number without unit. Example: 50% => 50.
     $percentage: $radius / ($radius * 0 + 1);
     @return $component-height * ($percentage / 100);
   } @else {
