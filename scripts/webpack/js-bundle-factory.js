@@ -137,6 +137,7 @@ class JsBundleFactory {
         checkbox: getAbsolutePath('/packages/mdc-checkbox/index.js'),
         chips: getAbsolutePath('/packages/mdc-chips/index.js'),
         dialog: getAbsolutePath('/packages/mdc-dialog/index.js'),
+        dom: getAbsolutePath('/packages/mdc-dom/index.js'),
         drawer: getAbsolutePath('/packages/mdc-drawer/index.js'),
         floatingLabel: getAbsolutePath('/packages/mdc-floating-label/index.js'),
         formField: getAbsolutePath('/packages/mdc-form-field/index.js'),

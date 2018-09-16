@@ -56,8 +56,8 @@ npm install @material/drawer
 ### Styles
 
 ```scss
-@import "@material/drawer/mdc-list";
 @import "@material/drawer/mdc-drawer";
+@import "@material/list/mdc-list";
 ```
 
 ### JavaScript Instantiation
@@ -221,7 +221,7 @@ In the following example, the `mdc-drawer__content` and `main-content` elements 
     </header>
 
     <main class="main-content" id="main-content">
-      <div class="mdc-top-app-bar--fixed-adjust"></div>
+      <div class="mdc-top-app-bar--fixed-adjust">
         App Content
       </div>
     </main>
@@ -348,8 +348,8 @@ It is recommended to shift focus to the first focusable element in the main cont
 Restore focus to the first focusable element when a list item is activated or after the drawer closes. Do not close the drawer upon item activation, since it should be up to the user when to show/hide the dismissible drawer.
 
 ```js
-const listEl = drawerEl.querySelector('.mdc-drawer .mdc-list');
-const mainContentEl = document.body.querySelector('.main-content');
+const listEl = document.querySelector('.mdc-drawer .mdc-list');
+const mainContentEl = document.querySelector('.main-content');
 
 listEl.addEventListener('click', (event) => {
   mainContentEl.querySelector('input, button').focus();
@@ -365,8 +365,8 @@ document.body.addEventListener('MDCDrawer:closed', () => {
 Close the drawer when an item is activated in order to dismiss the modal as soon as the user performs an action. Only restore focus to the first focusable element in the main content after the drawer is closed, since it's being closed automatically.
 
 ```js
-const listEl = drawerEl.querySelector('.mdc-drawer .mdc-list');
-const mainContentEl = document.body.querySelector('.main-content');
+const listEl = document.querySelector('.mdc-drawer .mdc-list');
+const mainContentEl = document.querySelector('.main-content');
 
 listEl.addEventListener('click', (event) => {
   drawer.open = false;

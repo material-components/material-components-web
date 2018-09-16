@@ -75,7 +75,7 @@ class Cli {
     return url.replace(/^([^?]+)(\?.*)?$/, (substring, resourcePlain, queryPlain) => {
       const resourceColor = CliColor.reset(resourcePlain);
       if (queryPlain) {
-        const queryColor = CliColor.gray(queryPlain);
+        const queryColor = CliColor.dim(queryPlain);
         return `${resourceColor}${queryColor}`;
       }
       return resourceColor;
@@ -272,7 +272,7 @@ If a local dev server is not already running, one will be started for the durati
       type: 'integer',
       description: `
 Maximum number of browser VMs to run in parallel (subject to our CBT plan limit and VM availability).
-If no value is specified, the default is to start 3 browsers if nobody else is running tests, or 1 browser if other
+If no value is specified, the default is to start 2 browsers if nobody else is running tests, or 1 browser if other
 tests are already running.
 IMPORTANT: To ensure that multiple developers can run their tests simultaneously, DO NOT set this value during normal
 business hours.
