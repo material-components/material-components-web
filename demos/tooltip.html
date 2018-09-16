@@ -130,61 +130,6 @@
           </div>
         </div>
       </section>
-
-      <button class="mdc-button mdc-button--raised" id="dialog-btn">
-        <span class="mdc-tooltip">Show Tooltips inside Dialog</span>
-        Open Dialog
-      </button>
-
-      <aside id="tooltip-dialog" class="mdc-dialog">
-        <div class="mdc-dialog__surface">
-          <header class="mdc-dialog__header">
-            <h2 id="my-mdc-dialog-label" class="mdc-dialog__header__title">
-              Tooltips inside Dialog
-            </h2>
-          </header>
-          <div class="mdc-layout-grid">
-            <div class="mdc-layout-grid__inner">
-              <div class="mdc-layout-grid__cell--span-3">
-                <button class="mdc-fab material-icons" aria-label="Favorite">
-                  <span class="mdc-fab__icon">
-                    arrow_downward
-                  </span>
-                  <span class="mdc-tooltip">Bottom Tooltip</span>
-                </button>
-              </div>
-              <div class="mdc-layout-grid__cell--span-3">
-                <button class="mdc-fab material-icons" aria-label="Favorite">
-                  <span class="mdc-fab__icon">
-                    arrow_upward
-                  </span>
-                  <span class="mdc-tooltip mdc-tooltip--top">Top Tooltip</span>
-                </button>
-              </div>
-              <div class="mdc-layout-grid__cell--span-3">
-                <button class="mdc-fab material-icons" aria-label="Favorite">
-                  <span class="mdc-fab__icon">
-                    arrow_back
-                  </span>
-                  <span class="mdc-tooltip mdc-tooltip--left">Left Tooltip</span>
-                </button>
-              </div>
-              <div class="mdc-layout-grid__cell--span-3">
-                <button class="mdc-fab material-icons" aria-label="Favorite">
-                  <span class="mdc-fab__icon">
-                    arrow_forward
-                  </span>
-                  <span class="mdc-tooltip mdc-tooltip--right">Right Tooltip</span>
-                </button>
-              </div>
-            </div>
-          </div>
-          <footer class="mdc-dialog__footer">
-            <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">Close</button>
-          </footer>
-        </div>
-        <div class="mdc-dialog__backdrop"></div>
-      </aside>
     </main>
 
     <script src="/assets/material-components-web.js" async></script>
@@ -195,11 +140,6 @@
         for (var i = 0, tooltip; tooltip = tooltips[i]; i++) {
           mdc.tooltip.MDCTooltip.attachTo(tooltip);
         }
-
-        var dialog = mdc.dialog.MDCDialog.attachTo(document.getElementById("tooltip-dialog"));
-        document.getElementById("dialog-btn").addEventListener("click", function () {
-          dialog.show();
-        });
       });
     </script>
   </body>
