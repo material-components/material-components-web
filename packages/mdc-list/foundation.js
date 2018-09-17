@@ -212,16 +212,18 @@ class MDCListFoundation extends MDCFoundation {
 
   /**
    * Click handler for the list.
+   * @param {number} index
+   * @param {boolean} toggleCheckbox
    */
-  handleClick() {
-    const currentIndex = this.adapter_.getFocusedElementIndex();
+  handleClick(index, toggleCheckbox) {
+    if (index === -1) return;
 
-    if (currentIndex === -1) return;
-
-    this.adapter_.toggleCheckbox(currentIndex);
+    if (toggleCheckbox) {
+      this.adapter_.toggleCheckbox(index);
+    }
 
     if (this.isSingleSelectionList_) {
-      this.setSelectedIndex(currentIndex);
+      this.setSelectedIndex(index);
     }
   }
 

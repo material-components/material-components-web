@@ -297,7 +297,7 @@ test('handleClick handler is added to root element', () => {
   event.initEvent('click', true, true);
   const listElementItem = root.querySelector('.mdc-list-item');
   listElementItem.dispatchEvent(event);
-  td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 1});
+  td.verify(mockFoundation.handleClick(0, true), {times: 1});
   document.body.removeChild(root);
 });
 

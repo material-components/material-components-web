@@ -24,6 +24,7 @@
 import MDCComponent from '@material/base/component';
 import MDCListFoundation from './foundation';
 import MDCListAdapter from './adapter';
+import {matches} from '@material/dom/ponyfill';
 import {cssClasses, strings} from './constants';
 
 /**
@@ -59,7 +60,7 @@ class MDCList extends MDCComponent {
   }
 
   initialSyncWithDOM() {
-    this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
+    this.handleClick_ = this.handleClickEvent_.bind(this);
     this.handleKeydown_ = this.handleKeydownEvent_.bind(this);
     this.focusInEventListener_ = this.handleFocusInEvent_.bind(this);
     this.focusOutEventListener_ = this.handleFocusOutEvent_.bind(this);
@@ -131,7 +132,8 @@ class MDCList extends MDCComponent {
   }
 
   /**
-   * Used to figure out which element was clicked before sending the event to the foundation.
+   * Used to figure out which element was focused when keydown event occurred before sending the event to the
+   * foundation.
    * @param {Event} evt
    * @private
    */
@@ -141,6 +143,19 @@ class MDCList extends MDCComponent {
     if (index >= 0) {
       this.foundation_.handleKeydown(evt, evt.target.classList.contains(cssClasses.LIST_ITEM_CLASS), index);
     }
+  }
+
+  /**
+   * Used to figure out which element was clicked before sending the event to the foundation.
+   * @param {Event} evt
+   * @private
+   */
+  handleClickEvent_(evt) {
+    const index = this.getListItemIndex_(evt);
+
+    // Toggle the checkbox only if it's not the target of the event, or the checkbox will have 2 change events.
+    const toggleCheckbox = !matches(/** @type {HTMLElement} */ (evt.target), strings.CHECKBOX_RADIO_SELECTOR);
+    this.foundation_.handleClick(index, toggleCheckbox);
   }
 
   initializeListType() {
@@ -233,7 +248,7 @@ class MDCList extends MDCComponent {
         let checkboxOrRadioExists = false;
         const listItem = this.listElements[index];
         const elementsToToggle =
-          [].slice.call(listItem.querySelectorAll('input[type="radio"], input[type="checkbox"]'));
+          [].slice.call(listItem.querySelectorAll(strings.CHECKBOX_RADIO_SELECTOR));
         elementsToToggle.forEach((element) => {
           const event = document.createEvent('Event');
           event.initEvent('change', true, true);

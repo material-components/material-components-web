@@ -483,28 +483,20 @@ test('#handleKeydown space key is triggered and focused is moved to a different 
 
 test('#handleClick when singleSelection=true on a list item should not cause the list item to be selected', () => {
   const {foundation, mockAdapter} = setupTest();
-  const preventDefault = td.func('preventDefault');
-  const target = {classList: ['mdc-list-item']};
-  const event = {target, preventDefault};
 
   foundation.setSingleSelection(false);
-  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(1);
   td.when(mockAdapter.getListItemCount()).thenReturn(3);
-  foundation.handleClick(event);
+  foundation.handleClick(1, false);
 
   td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', 0), {times: 0});
 });
 
 test('#handleClick when singleSelection=true on a list item should cause the list item to be selected', () => {
   const {foundation, mockAdapter} = setupTest();
-  const preventDefault = td.func('preventDefault');
-  const target = {classList: ['mdc-list-item']};
-  const event = {target, preventDefault};
 
   foundation.setSingleSelection(true);
-  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(1);
   td.when(mockAdapter.getListItemCount()).thenReturn(3);
-  foundation.handleClick(event);
+  foundation.handleClick(1, false);
 
   td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', 0), {times: 1});
 });
@@ -512,46 +504,43 @@ test('#handleClick when singleSelection=true on a list item should cause the lis
 test('#handleClick when singleSelection=true on a button subelement should not cause the list item to be selected',
   () => {
     const {foundation, mockAdapter} = setupTest();
-    const parentElement = {classList: ['mdc-list-item']};
-    const preventDefault = td.func('preventDefault');
-    const target = {classList: [], parentElement};
-    const event = {target, preventDefault};
 
-    td.when(mockAdapter.getFocusedElementIndex()).thenReturn(-1);
     foundation.setSingleSelection(true);
-    foundation.handleClick(event);
+    foundation.handleClick(-1, false);
 
     td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', 0), {times: 0});
   });
 
-test('#handleClick when singleSelection=true on an element not in a list item should be ignored',
-  () => {
-    const {foundation, mockAdapter} = setupTest();
-    const preventDefault = td.func('preventDefault');
-    const target = {classList: []};
-    const event = {target, preventDefault};
+test('#handleClick when singleSelection=true on an element not in a list item should be ignored', () => {
+  const {foundation, mockAdapter} = setupTest();
 
-    td.when(mockAdapter.getFocusedElementIndex()).thenReturn(-1);
-    foundation.setSingleSelection(true);
-    foundation.handleClick(event);
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(-1);
+  foundation.setSingleSelection(true);
+  foundation.handleClick(-1, false);
 
-    td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', 0), {times: 0});
-  });
+  td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', 0), {times: 0});
+});
 
-test('#handleClick when singleSelection=true on the first element when already selected',
-  () => {
-    const {foundation, mockAdapter} = setupTest();
-    const preventDefault = td.func('preventDefault');
-    const target = {classList: []};
-    const event = {target, preventDefault};
+test('#handleClick when singleSelection=true on the first element when already selected', () => {
+  const {foundation, mockAdapter} = setupTest();
 
-    td.when(mockAdapter.getFocusedElementIndex()).thenReturn(0);
-    foundation.setSingleSelection(true);
-    foundation.handleClick(event);
-    foundation.handleClick(event);
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(0);
+  foundation.setSingleSelection(true);
+  foundation.handleClick(0, false);
+  foundation.handleClick(0, false);
 
-    td.verify(mockAdapter.setAttributeForElementIndex(0, 'tabindex', 0), {times: 0});
-  });
+  td.verify(mockAdapter.setAttributeForElementIndex(0, 'tabindex', 0), {times: 0});
+});
+
+test('#handleClick proxies to the adapter#toggleCheckbox is toggleCheckbox is true', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(0);
+  foundation.setSingleSelection(true);
+  foundation.handleClick(0, true);
+
+  td.verify(mockAdapter.toggleCheckbox(0), {times: 1});
+});
 
 test('#focusFirstElement is called when the list is empty does not focus an element', () => {
   const {foundation, mockAdapter} = setupTest();
