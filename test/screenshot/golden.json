@@ -306,12 +306,12 @@
     }
   },
   "spec/mdc-chips/mixins/leading-icon-margin.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/13/22_36_05_454/spec/mdc-chips/mixins/leading-icon-margin.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/17/18_18_41_165/spec/mdc-chips/mixins/leading-icon-margin.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/13/22_36_05_454/spec/mdc-chips/mixins/leading-icon-margin.html.windows_chrome_69.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/13/22_36_05_454/spec/mdc-chips/mixins/leading-icon-margin.html.windows_edge_17.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/13/22_36_05_454/spec/mdc-chips/mixins/leading-icon-margin.html.windows_firefox_62.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/13/22_36_05_454/spec/mdc-chips/mixins/leading-icon-margin.html.windows_ie_11.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/17/18_18_41_165/spec/mdc-chips/mixins/leading-icon-margin.html.windows_chrome_69.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/17/18_18_41_165/spec/mdc-chips/mixins/leading-icon-margin.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/17/18_18_41_165/spec/mdc-chips/mixins/leading-icon-margin.html.windows_firefox_62.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/17/18_18_41_165/spec/mdc-chips/mixins/leading-icon-margin.html.windows_ie_11.png"
     }
   },
   "spec/mdc-chips/mixins/leading-icon-size.html": {

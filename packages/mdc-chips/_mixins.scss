@@ -118,12 +118,8 @@
   }
 }
 
-// For customizing icon styles, we need to increase specifity to ensure
-// overrides apply. Styles defined in the .material-icons CSS class are
-// loaded separately, so the order of CSS definitions is not guaranteed.
-
 @mixin mdc-chip-leading-icon-color($color, $opacity: $mdc-chip-icon-opacity) {
-  .mdc-chip__icon.mdc-chip__icon--leading {
+  .mdc-chip__icon--leading {
     color: rgba(mdc-theme-prop-value($color), $opacity);
   }
 }
@@ -133,7 +129,7 @@
   $opacity: $mdc-chip-icon-opacity,
   $hover-opacity: $mdc-chip-trailing-icon-hover-opacity,
   $focus-opacity: $mdc-chip-trailing-icon-focus-opacity) {
-  .mdc-chip__icon.mdc-chip__icon--trailing {
+  .mdc-chip__icon--trailing {
     color: rgba(mdc-theme-prop-value($color), $opacity);
 
     &:hover {
@@ -145,6 +141,10 @@
     }
   }
 }
+
+// For customizing icon size, we need to increase specifity to ensure
+// overrides apply. Styles defined in the .material-icons CSS class are
+// loaded separately, so the order of CSS definitions is not guaranteed.
 
 @mixin mdc-chip-leading-icon-size($size) {
   .mdc-chip__icon.mdc-chip__icon--leading:not(.mdc-chip__icon--leading-hidden) {
@@ -169,7 +169,8 @@
   $right: $mdc-chip-leading-icon-margin-right,
   $bottom: $mdc-chip-leading-icon-margin-bottom,
   $left: $mdc-chip-leading-icon-margin-left) {
-  .mdc-chip__icon.mdc-chip__icon--leading {
+  &.mdc-chip--selected .mdc-chip__checkmark,
+  .mdc-chip__icon--leading:not(.mdc-chip__icon--leading-hidden) {
     margin: $top $right $bottom $left;
   }
 }
@@ -179,7 +180,7 @@
   $right: $mdc-chip-trailing-icon-margin-right,
   $bottom: $mdc-chip-trailing-icon-margin-bottom,
   $left: $mdc-chip-trailing-icon-margin-left) {
-  .mdc-chip__icon.mdc-chip__icon--trailing {
+  .mdc-chip__icon--trailing {
     margin: $top $right $bottom $left;
   }
 }
