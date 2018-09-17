@@ -52,7 +52,7 @@ $custom-card-color: $material-color-red-300;
   @include mdc-card-outline($custom-card-color, 5px);
 }
 
-.custom-card--corner-radius {
+.custom-card--shape-radius {
   @include mdc-card-shape-radius(20px);
 }
 
