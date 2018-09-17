@@ -280,6 +280,11 @@ test('wrapFocus calls setWrapFocus on foundation', () => {
   td.verify(mockFoundation.setWrapFocus(true), {times: 1});
 });
 
+test('focusInListItemChildren calls setFocusInListItemChildren on foundation', () => {
+  const {component, mockFoundation} = setupTest();
+  component.focusInListItemChildren = false;
+  td.verify(mockFoundation.setFocusInListItemChildren(false), {times: 1});
+});
 
 test('singleSelection true sets the click handler from the root element', () => {
   const {root, component, mockFoundation} = setupTest();

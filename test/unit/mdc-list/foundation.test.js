@@ -74,6 +74,17 @@ test('#handleFocusIn switches list item button/a elements to tabindex=0', () => 
   td.verify(mockAdapter.setTabIndexForListItemChildren(1, 0));
 });
 
+test('#handleFocusIn does not update tabindex for button/a elements when focusInListItemChildren is false', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const target = {classList: ['mdc-list-item']};
+  const event = {target};
+
+  foundation.setFocusInListItemChildren(false);
+  foundation.handleFocusIn(event, 1);
+
+  td.verify(mockAdapter.setTabIndexForListItemChildren(1, 0), {times: 0});
+});
+
 test('#handleFocusOut switches list item button/a elements to tabindex=-1', () => {
   const {foundation, mockAdapter} = setupTest();
   const target = {classList: ['mdc-list-item']};
@@ -82,6 +93,17 @@ test('#handleFocusOut switches list item button/a elements to tabindex=-1', () =
   foundation.handleFocusOut(event, 1);
 
   td.verify(mockAdapter.setTabIndexForListItemChildren(1, -1));
+});
+
+test('#handleFocusOut does not update tabindex for button/a elements when focusInListItemChildren is false', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const target = {classList: ['mdc-list-item']};
+  const event = {target};
+
+  foundation.setFocusInListItemChildren(false);
+  foundation.handleFocusOut(event, 1);
+
+  td.verify(mockAdapter.setTabIndexForListItemChildren(1, -1), {times: 0});
 });
 
 test('#handleFocusIn switches list item button/a elements to tabindex=0 when target is child element', () => {

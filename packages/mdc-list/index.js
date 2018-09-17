@@ -188,6 +188,11 @@ class MDCList extends MDCComponent {
     this.foundation_.setSelectedIndex(index);
   }
 
+  /** @param {boolean} enable */
+  set focusInListItemChildren(enable) {
+    this.foundation_.setFocusInListItemChildren(enable);
+  }
+
   /** @return {!MDCListFoundation} */
   getDefaultFoundation() {
     return new MDCListFoundation(/** @type {!MDCListAdapter} */ (Object.assign({
