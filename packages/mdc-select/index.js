@@ -24,12 +24,14 @@
 import {MDCComponent} from '@material/base/index';
 import {MDCFloatingLabel} from '@material/floating-label/index';
 import {MDCLineRipple} from '@material/line-ripple/index';
+import {MDCMenu} from '@material/menu/index';
 import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
 import {MDCNotchedOutline} from '@material/notched-outline/index';
 
 import MDCSelectFoundation from './foundation';
 import MDCSelectAdapter from './adapter';
 import {cssClasses, strings} from './constants';
+import {Corner} from '../mdc-menu-surface/constants';
 
 /**
  * @extends MDCComponent<!MDCSelectFoundation>
@@ -42,6 +44,10 @@ class MDCSelect extends MDCComponent {
     super(...args);
     /** @private {?Element} */
     this.nativeControl_;
+    /** @private {?Element} */
+    this.selectedText_;
+    /** @type {?MDCMenu} */
+    this.menu_;
     /** @type {?MDCRipple} */
     this.ripple;
     /** @private {?MDCLineRipple} */
@@ -72,7 +78,7 @@ class MDCSelect extends MDCComponent {
    * @return {string} The value of the select.
    */
   get value() {
-    return this.nativeControl_.value;
+    return this.nativeControl_ ? this.nativeControl_.value : this.selectedText_.textContent;
   }
 
   /**
@@ -102,14 +108,14 @@ class MDCSelect extends MDCComponent {
    * @return {boolean} True if the select is disabled.
    */
   get disabled() {
-    return this.nativeControl_.disabled;
+    return this.nativeControl_ ? this.nativeControl_.disabled : this.root_.classList.contains('mdc-select--disabled');
   }
 
   /**
    * @param {boolean} disabled Sets the select disabled or enabled.
    */
   set disabled(disabled) {
-    this.nativeControl_.disabled = disabled;
+    this.nativeControl_ ? this.nativeControl_.disabled = disabled : null;
     this.foundation_.updateDisabledStyle(disabled);
   }
 
@@ -132,6 +138,15 @@ class MDCSelect extends MDCComponent {
     lineRippleFactory = (el) => new MDCLineRipple(el),
     outlineFactory = (el) => new MDCNotchedOutline(el)) {
     this.nativeControl_ = this.root_.querySelector(strings.NATIVE_CONTROL_SELECTOR);
+    this.selectedText_ = this.root_.querySelector('.mdc-select__selected-text');
+
+    if (this.selectedText_) {
+      this.selectedText_.setAttribute('tabindex', '0');
+      this.menu_ = new MDCMenu(this.root_.querySelector('.mdc-menu'));
+      this.menu_.hoistMenuToBody();
+      this.menu_.setAnchorElement(this.root_);
+      this.menu_.setAnchorCorner(Corner.BOTTOM_START);
+    }
     const labelElement = this.root_.querySelector(strings.LABEL_SELECTOR);
     if (labelElement) {
       this.label_ = labelFactory(labelElement);
@@ -155,9 +170,10 @@ class MDCSelect extends MDCComponent {
    * @return {!MDCRipple}
    */
   initRipple_() {
+    const element = this.nativeControl_ ? this.nativeControl_ : this.selectedText_;
     const adapter = Object.assign(MDCRipple.createAdapter(this), {
-      registerInteractionHandler: (type, handler) => this.nativeControl_.addEventListener(type, handler),
-      deregisterInteractionHandler: (type, handler) => this.nativeControl_.removeEventListener(type, handler),
+      registerInteractionHandler: (type, handler) => element.addEventListener(type, handler),
+      deregisterInteractionHandler: (type, handler) => element.removeEventListener(type, handler),
     });
     const foundation = new MDCRippleFoundation(adapter);
     return new MDCRipple(this.root_, foundation);
@@ -173,30 +189,35 @@ class MDCSelect extends MDCComponent {
     this.handleBlur_ = () => this.foundation_.handleBlur();
     this.handleClick_ = (evt) => this.setTransformOrigin_(evt);
 
-    this.nativeControl_.addEventListener('change', this.handleChange_);
-    this.nativeControl_.addEventListener('focus', this.handleFocus_);
-    this.nativeControl_.addEventListener('blur', this.handleBlur_);
+    const element = this.nativeControl_ ? this.nativeControl_ : this.selectedText_;
+
+    element.addEventListener('change', this.handleChange_);
+    element.addEventListener('focus', this.handleFocus_);
+    element.addEventListener('blur', this.handleBlur_);
 
     if (this.lineRipple_) {
       ['mousedown', 'touchstart'].forEach((evtType) => {
-        this.nativeControl_.addEventListener(evtType, this.handleClick_);
+        element.addEventListener(evtType, this.handleClick_);
       });
     }
 
     // Initially sync floating label
     this.foundation_.handleChange();
 
-    if (this.nativeControl_.disabled) {
+    if (this.root_.classList.contains('mdc-select--disabled')
+      || (this.nativeControl_ && this.nativeControl_.disabled)) {
       this.disabled = true;
     }
   }
 
   destroy() {
-    this.nativeControl_.removeEventListener('change', this.handleChange_);
-    this.nativeControl_.removeEventListener('focus', this.handleFocus_);
-    this.nativeControl_.removeEventListener('blur', this.handleBlur_);
+    const element = this.nativeControl_ ? this.nativeControl_ : this.selectedText_;
+
+    element.removeEventListener('change', this.handleChange_);
+    element.removeEventListener('focus', this.handleFocus_);
+    element.removeEventListener('blur', this.handleBlur_);
     ['mousedown', 'touchstart'].forEach((evtType) => {
-      this.nativeControl_.removeEventListener(evtType, this.handleClick_);
+      element.removeEventListener(evtType, this.handleClick_);
     });
 
     if (this.ripple) {
@@ -218,7 +239,7 @@ class MDCSelect extends MDCComponent {
         addClass: (className) => this.root_.classList.add(className),
         removeClass: (className) => this.root_.classList.remove(className),
         hasClass: (className) => this.root_.classList.contains(className),
-        getValue: () => this.nativeControl_.value,
+        getValue: () => this.nativeControl_ ? this.nativeControl_.value : this.selectedText_.innerText,
         isRtl: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
         activateBottomLine: () => {
           if (this.lineRipple_) {
@@ -228,6 +249,16 @@ class MDCSelect extends MDCComponent {
         deactivateBottomLine: () => {
           if (this.lineRipple_) {
             this.lineRipple_.deactivate();
+          }
+        },
+        openMenu: () => {
+          if (this.menu_ && !this.menu_.open) {
+            this.menu_.open = true;
+          }
+        },
+        closeMenu: () => {
+          if (this.menu_ && this.menu_.open) {
+            this.menu_.open = false;
           }
         },
       },

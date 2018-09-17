@@ -67,6 +67,8 @@ class MDCSelectFoundation extends MDCFoundation {
       hasOutline: () => false,
       notchOutline: (/* labelWidth: number, isRtl: boolean */) => {},
       closeOutline: () => {},
+      openMenu: () => {},
+      closeMenu: () => {},
     });
   }
 
@@ -100,17 +102,18 @@ class MDCSelectFoundation extends MDCFoundation {
   }
 
   /**
-   * Handles focus events from root element.
+   * Handles focus events from select element.
    */
   handleFocus() {
     this.adapter_.floatLabel(true);
     this.notchOutline(true);
     this.adapter_.addClass('mdc-select--focused');
     this.adapter_.activateBottomLine();
+    this.adapter_.openMenu();
   }
 
   /**
-   * Handles blur events from root element.
+   * Handles blur events from select element.
    */
   handleBlur() {
     this.handleChange();

@@ -22,6 +22,9 @@
 
 @import "./common";
 @import "../packages/mdc-button/mdc-button";
+@import "../packages/mdc-list/mdc-list";
+@import "../packages/mdc-menu-surface/mdc-menu-surface";
+@import "../packages/mdc-menu/mdc-menu";
 @import "../packages/mdc-select/mdc-select";
 
 // stylelint-disable selector-class-pattern
@@ -50,5 +53,21 @@
 
 .button-container {
   margin: 8px 0;
+}
+
+.demo-example {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
+.demo-examples-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.example {
+  min-width: 300px;
 }
 // stylelint-enable selector-class-pattern
