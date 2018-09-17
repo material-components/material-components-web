@@ -118,7 +118,7 @@
     "selenium-webdriver": "^4.0.0-alpha.1",
     "semver": "^5.3.0",
     "serve-index": "^1.9.1",
-    "simple-git": "^1.92.0",
+    "simple-git": "^1.100.0",
     "standard-changelog": "^2.0.0",
     "stylelint": "^9.0.0",
     "stylelint-config-standard": "^18.0.0",
