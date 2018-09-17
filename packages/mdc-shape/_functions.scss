@@ -20,7 +20,7 @@
 // THE SOFTWARE.
 //
 
-@import './variables';
+@import "./variables";
 
 //
 // Flips the radius values based on RTL context.
@@ -31,6 +31,12 @@
 // 2. mdc-shape-flip-radius((0, 8px)) => 8px 0
 //
 @function mdc-shape-flip-radius($radius) {
+  @if type-of($radius) == "list" {
+    @if length($radius) > 4 {
+      @error "Invalid radius: '#{$radius}' is more than 4 values";
+    }
+  }
+
   @if length($radius) == 4 {
     @return nth($radius, 2) nth($radius, 1) nth($radius, 4) nth($radius, 3);
   } @else if length($radius) == 3 {
@@ -53,9 +59,11 @@
 @function mdc-shape-resolve-percentage-radius($component-height, $radius) {
   @if type-of($radius) == "list" {
     $radius-value: ();
+
     @each $corner in $radius {
       $radius-value: append($radius-value, mdc-shape-resolve-percentage-for-corner_($component-height, $corner));
     }
+
     @return $radius-value;
   } @else {
     @return mdc-shape-resolve-percentage-for-corner_($component-height, $radius);
@@ -64,7 +72,9 @@
 
 @function mdc-shape-resolve-percentage-for-corner_($component-height, $radius) {
   @if type-of($radius) == "number" and unit($radius) == "%" {
+    // Converts the percentage to number without unit. Example: 50% => 50.
     $percentage: $radius / ($radius * 0 + 1);
+
     @return $component-height * ($percentage / 100);
   } @else {
     @return $radius;
@@ -74,7 +84,7 @@
 //
 // Returns $radius value of shape category - `large`, `medium` or `small`.
 // Otherwise, it returns the $radius itself if valid.
-// $radius can be a single value or list of 4.
+// $radius can be a single value or list of up to 4.
 //
 // Examples:
 //
@@ -87,12 +97,34 @@
     }
 
     $radius-value: ();
+
     @each $corner in $radius {
       $radius-value: append($radius-value, mdc-shape-prop-corner-value_($corner));
     }
+
     @return $radius-value;
   } @else {
     @return mdc-shape-prop-corner-value_($radius);
+  }
+}
+
+//
+// Accepts radius number or list of 2 radius values and returns 4 value list with
+// top-left value, top-right value, bottom-right 0, bottom-left 0.
+// Throws error when length of radius is more than 2.
+//
+// Example:
+//
+// 1. mdc-shape-mask-top-radius((2px, 3px)) => 2px 3px 0 0
+// 2. mdc-shape-mask-top-radius(8px) => 8px 8px 0 0
+//
+@function mdc-shape-mask-top-radius($radius) {
+  @if length($radius) > 2 {
+    @error "Invalid radius: '#{$radius}' component doesn't allow customizing all corners";
+  } @else if length($radius) == 2 {
+    @return nth($radius, 1) nth($radius, 2) 0 0;
+  } @else {
+    @return $radius $radius 0 0;
   }
 }
 
