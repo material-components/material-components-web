@@ -85,7 +85,8 @@
     }
   }
 
-  &__native-control {
+  &__native-control,
+  &__selected-text {
     @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
     @include mdc-typography(subtitle1);
 
@@ -122,6 +123,11 @@
     white-space: nowrap;
     cursor: pointer;
     appearance: none;
+    box-sizing: border-box;
+  }
+
+  &__selected-text {
+    min-width: 200px;
   }
 
   @include mdc-select-focused-line-ripple_ {
@@ -146,7 +152,8 @@
   border: none;
   overflow: visible;
 
-  .mdc-select__native-control {
+  .mdc-select__native-control,
+  .mdc-select__selected-text {
     @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
 
     display: flex;
@@ -182,16 +189,22 @@
   }
 
   // stylelint-disable-next-line plugin/selector-bem-pattern
-  .mdc-select__native-control {
+  .mdc-select__native-control,
+  .mdc-select__selected-text {
     border-bottom-style: dotted;
     color: $mdc-select-disabled-ink-color;
+  }
+
+  .mdc-select__selected-text {
+    pointer-events: none;
   }
 
   &.mdc-select--outlined {
     @include mdc-select-container-fill-color_(transparent);
 
     // stylelint-disable-next-line plugin/selector-bem-pattern
-    .mdc-select__native-control {
+    .mdc-select__native-control,
+    .mdc-select__selected-text {
       border-bottom-style: none;
     }
 
