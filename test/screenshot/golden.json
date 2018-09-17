@@ -80,15 +80,6 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/09/13/21_47_32_548/spec/mdc-button/mixins/container-fill-color.html.windows_ie_11.png"
     }
   },
-  "spec/mdc-button/mixins/corner-radius.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/17/22_50_36_536/spec/mdc-button/mixins/corner-radius.html",
-    "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/17/22_50_36_536/spec/mdc-button/mixins/corner-radius.html.windows_chrome_67.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/17/22_50_36_536/spec/mdc-button/mixins/corner-radius.html.windows_edge_17.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/17/22_50_36_536/spec/mdc-button/mixins/corner-radius.html.windows_firefox_61.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/17/22_50_36_536/spec/mdc-button/mixins/corner-radius.html.windows_ie_11.png"
-    }
-  },
   "spec/mdc-button/mixins/filled-accessible.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/09/13/21_47_32_548/spec/mdc-button/mixins/filled-accessible.html?utm_source=golden_json",
     "screenshots": {
@@ -132,6 +123,15 @@
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/09/13/21_47_32_548/spec/mdc-button/mixins/ink-color.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/09/13/21_47_32_548/spec/mdc-button/mixins/ink-color.html.windows_firefox_62.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/09/13/21_47_32_548/spec/mdc-button/mixins/ink-color.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-button/mixins/shape-radius.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/09/17/20_33_17_975/spec/mdc-button/mixins/shape-radius.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/09/17/20_33_17_975/spec/mdc-button/mixins/shape-radius.html.windows_chrome_69.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/09/17/20_33_17_975/spec/mdc-button/mixins/shape-radius.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/09/17/20_33_17_975/spec/mdc-button/mixins/shape-radius.html.windows_firefox_62.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/09/17/20_33_17_975/spec/mdc-button/mixins/shape-radius.html.windows_ie_11.png"
     }
   },
   "spec/mdc-button/mixins/stroke-color.html": {
