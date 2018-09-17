@@ -285,6 +285,17 @@ test('selectedIndex calls setSelectedIndex on foundation', () => {
   td.verify(mockFoundation.setSelectedIndex(1), {times: 1});
 });
 
+test('handleClick handler is added to root element', () => {
+  const {root, mockFoundation} = setupTest();
+  document.body.appendChild(root);
+  const event = document.createEvent('Event');
+  event.initEvent('click', true, true);
+  const listElementItem = root.querySelector('.mdc-list-item');
+  listElementItem.dispatchEvent(event);
+  td.verify(mockFoundation.handleClick(), {times: 1});
+  document.body.removeChild(root);
+});
+
 test('focusIn handler is added to root element', () => {
   const {root, mockFoundation} = setupTest();
   document.body.appendChild(root);
@@ -364,17 +375,28 @@ test('adapter#toggleCheckbox toggles a checkbox', () => {
   document.body.appendChild(root);
   const checkbox = root.querySelector('input[type="checkbox"]');
 
-  component.getDefaultFoundation().adapter_.toggleCheckbox(1);
+  const checkboxReturnValue = component.getDefaultFoundation().adapter_.toggleCheckbox(1);
   assert.isTrue(checkbox.checked);
+  assert.isTrue(checkboxReturnValue);
   document.body.removeChild(root);
 });
 
 test('adapter#toggleCheckbox toggles a radio button', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
-  const checkbox = root.querySelector('input[type="radio"]');
+  const radio = root.querySelector('input[type="radio"]');
 
-  component.getDefaultFoundation().adapter_.toggleCheckbox(2);
-  assert.isTrue(checkbox.checked);
+  const checkboxReturnValue = component.getDefaultFoundation().adapter_.toggleCheckbox(2);
+  assert.isTrue(radio.checked);
+  assert.isTrue(checkboxReturnValue);
+  document.body.removeChild(root);
+});
+
+test('adapter#toggleCheckbox returns false if no checkbox or radio button is present', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+
+  const checkboxReturnValue = component.getDefaultFoundation().adapter_.toggleCheckbox(0);
+  assert.isFalse(checkboxReturnValue);
   document.body.removeChild(root);
 });

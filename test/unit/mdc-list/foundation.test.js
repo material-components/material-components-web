@@ -481,6 +481,20 @@ test('#handleKeydown space key is triggered and focused is moved to a different 
   td.verify(mockAdapter.setAttributeForElementIndex(2, 'tabindex', 0), {times: 1});
 });
 
+test('#handleClick when singleSelection=true on a list item should not cause the list item to be selected', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const preventDefault = td.func('preventDefault');
+  const target = {classList: ['mdc-list-item']};
+  const event = {target, preventDefault};
+
+  foundation.setSingleSelection(false);
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(1);
+  td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  foundation.handleClick(event);
+
+  td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', 0), {times: 0});
+});
+
 test('#handleClick when singleSelection=true on a list item should cause the list item to be selected', () => {
   const {foundation, mockAdapter} = setupTest();
   const preventDefault = td.func('preventDefault');
