@@ -51,7 +51,7 @@ test('default adapter returns a complete adapter implementation', () => {
     'addClass', 'removeClass', 'addBodyClass', 'removeBodyClass',
     'eventTargetHasClass',
     'computeBoundingRect', 'trapFocus', 'releaseFocus',
-    'isContentScrollable', 'areButtonsStacked', 'getActionFromEvent',
+    'isContentScrollable', 'areButtonsStacked', 'getActionFromEvent', 'reverseButtons',
     'notifyOpening', 'notifyOpened', 'notifyClosing', 'notifyClosed',
   ]);
 });
@@ -227,7 +227,7 @@ test('#open recalculates layout', () => {
   td.verify(foundation.layout());
 });
 
-test('#layout detects stacked buttons', () => {
+test(`#layout removes ${cssClasses.STACKED} class, detects stacked buttons, and adds class`, () => {
   const {foundation, mockAdapter} = setupTest();
   const mockRaf = createMockRaf();
   td.when(mockAdapter.areButtonsStacked()).thenReturn(true);
@@ -236,13 +236,14 @@ test('#layout detects stacked buttons', () => {
   mockRaf.flush();
 
   try {
+    td.verify(mockAdapter.removeClass(cssClasses.STACKED));
     td.verify(mockAdapter.addClass(cssClasses.STACKED));
   } finally {
     mockRaf.restore();
   }
 });
 
-test('#layout detects unstacked buttons', () => {
+test(`#layout removes ${cssClasses.STACKED} class, detects unstacked buttons, and does not add class`, () => {
   const {foundation, mockAdapter} = setupTest();
   const mockRaf = createMockRaf();
   td.when(mockAdapter.areButtonsStacked()).thenReturn(false);
@@ -252,22 +253,24 @@ test('#layout detects unstacked buttons', () => {
 
   try {
     td.verify(mockAdapter.removeClass(cssClasses.STACKED));
+    td.verify(mockAdapter.addClass(cssClasses.STACKED), {times: 0});
   } finally {
     mockRaf.restore();
   }
 });
 
-test(`#layout removes ${cssClasses.STACKED} class before recalculating button stacking`, () => {
+test(`#layout does nothing to ${cssClasses.STACKED} class if autoStackButtons is false`, () => {
   const {foundation, mockAdapter} = setupTest();
   const mockRaf = createMockRaf();
   td.when(mockAdapter.areButtonsStacked()).thenReturn(true);
 
+  foundation.setAutoStackButtons(false);
   foundation.layout();
   mockRaf.flush();
 
   try {
-    td.verify(mockAdapter.removeClass(cssClasses.STACKED));
-    td.verify(mockAdapter.addClass(cssClasses.STACKED));
+    td.verify(mockAdapter.addClass(cssClasses.STACKED), {times: 0});
+    td.verify(mockAdapter.removeClass(cssClasses.STACKED), {times: 0});
   } finally {
     mockRaf.restore();
   }

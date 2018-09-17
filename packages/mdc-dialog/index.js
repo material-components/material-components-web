@@ -99,6 +99,14 @@ class MDCDialog extends MDCComponent {
     this.foundation_.setScrimClickAction(action);
   }
 
+  get autoStackButtons() {
+    return this.foundation_.getAutoStackButtons();
+  }
+
+  set autoStackButtons(autoStack) {
+    this.foundation_.setAutoStackButtons(autoStack);
+  }
+
   initialize(focusTrapFactory = createFocusTrap, initialFocusEl = null) {
     this.container_ = /** @type {!Element} */ (this.root_.querySelector(strings.CONTAINER_SELECTOR));
     this.content_ = this.root_.querySelector(strings.CONTENT_SELECTOR);
@@ -132,6 +140,10 @@ class MDCDialog extends MDCComponent {
     this.listen('click', this.handleClick_);
     this.listen(strings.OPENING_EVENT, this.handleOpening_);
     this.listen(strings.CLOSING_EVENT, this.handleClosing_);
+
+    if (this.root_.classList.contains(MDCDialogFoundation.cssClasses.STACKED)) {
+      this.autoStackButtons = false;
+    }
   }
 
   destroy() {
@@ -172,6 +184,10 @@ class MDCDialog extends MDCComponent {
       isContentScrollable: () => !!this.content_ && util.isScrollable(/** @type {!Element} */ (this.content_)),
       areButtonsStacked: () => util.areTopsMisaligned(this.buttons_),
       getActionFromEvent: (event) => event.target.getAttribute(strings.ACTION_ATTRIBUTE),
+      reverseButtons: () => {
+        this.buttons_.reverse();
+        this.buttons_.forEach((button) => button.parentElement.appendChild(button));
+      },
       notifyOpening: () => this.emit(strings.OPENING_EVENT, {}),
       notifyOpened: () => this.emit(strings.OPENED_EVENT, {}),
       notifyClosing: (action) => this.emit(strings.CLOSING_EVENT, action ? {action} : {}),

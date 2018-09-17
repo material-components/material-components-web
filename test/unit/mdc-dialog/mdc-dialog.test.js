@@ -69,10 +69,11 @@ function setupTest() {
   const component = new MDCDialog(root);
   const title = fixture.querySelector('.mdc-dialog__title');
   const content = fixture.querySelector('.mdc-dialog__content');
+  const actions = fixture.querySelector('.mdc-dialog__actions');
   const yesButton = fixture.querySelector('[data-mdc-dialog-action="yes"]');
   const noButton = fixture.querySelector('[data-mdc-dialog-action="no"]');
   const cancelButton = fixture.querySelector('[data-mdc-dialog-action="cancel"]');
-  return {root, component, title, content, yesButton, noButton, cancelButton};
+  return {root, component, title, content, actions, yesButton, noButton, cancelButton};
 }
 
 function setupTestWithMocks() {
@@ -398,6 +399,12 @@ test('adapter#getActionFromEvent returns null when attribute is not present', ()
   const {component, title} = setupTest();
   const action = component.getDefaultFoundation().adapter_.getActionFromEvent({target: title});
   assert.isNull(action);
+});
+
+test('adapter#reverseButtons reverses the order of children under the actions element', () => {
+  const {component, actions, yesButton, noButton, cancelButton} = setupTest();
+  component.getDefaultFoundation().adapter_.reverseButtons();
+  assert.sameOrderedMembers([yesButton, noButton, cancelButton], [].slice.call(actions.children));
 });
 
 test('#layout proxies to foundation', () => {

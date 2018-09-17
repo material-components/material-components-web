@@ -77,6 +77,8 @@ class MDCDialogAdapter {
    */
   getActionFromEvent(event) {}
 
+  reverseButtons() {}
+
   notifyOpening() {}
   notifyOpened() {}
 
