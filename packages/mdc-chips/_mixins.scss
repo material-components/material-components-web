@@ -93,13 +93,17 @@
   border-style: $style;
 }
 
-@mixin mdc-chip-outline-width($width) {
+@mixin mdc-chip-outline-width($width, $horizontal-padding: $mdc-chip-horizontal-padding) {
   // Note: Adjust padding to maintain consistent width with non-outlined chips
-  $horizontal-padding-value: max($mdc-chip-horizontal-padding - $width, 0);
+  $horizontal-padding-value: max($horizontal-padding - $width, 0);
   $vertical-padding-value: max($mdc-chip-vertical-padding - $width, 0);
 
   padding: $vertical-padding-value $horizontal-padding-value;
   border-width: $width;
+}
+
+@mixin mdc-chip-horizontal-padding($padding) {
+  padding: $mdc-chip-vertical-padding $padding;
 }
 
 @mixin mdc-chip-height($height) {
@@ -114,12 +118,8 @@
   }
 }
 
-// For customizing icon styles, we need to increase specifity to ensure
-// overrides apply. Styles defined in the .material-icons CSS class are
-// loaded separately, so the order of CSS definitions is not guaranteed.
-
 @mixin mdc-chip-leading-icon-color($color, $opacity: $mdc-chip-icon-opacity) {
-  .mdc-chip__icon.mdc-chip__icon--leading {
+  .mdc-chip__icon--leading {
     color: rgba(mdc-theme-prop-value($color), $opacity);
   }
 }
@@ -129,7 +129,7 @@
   $opacity: $mdc-chip-icon-opacity,
   $hover-opacity: $mdc-chip-trailing-icon-hover-opacity,
   $focus-opacity: $mdc-chip-trailing-icon-focus-opacity) {
-  .mdc-chip__icon.mdc-chip__icon--trailing {
+  .mdc-chip__icon--trailing {
     color: rgba(mdc-theme-prop-value($color), $opacity);
 
     &:hover {
@@ -141,6 +141,10 @@
     }
   }
 }
+
+// For customizing icon size, we need to increase specifity to ensure
+// overrides apply. Styles defined in the .material-icons CSS class are
+// loaded separately, so the order of CSS definitions is not guaranteed.
 
 @mixin mdc-chip-leading-icon-size($size) {
   .mdc-chip__icon.mdc-chip__icon--leading:not(.mdc-chip__icon--leading-hidden) {
@@ -158,4 +162,25 @@
   width: $size;
   height: $size;
   font-size: $size;
+}
+
+@mixin mdc-chip-leading-icon-margin(
+  $top: $mdc-chip-leading-icon-margin-top,
+  $right: $mdc-chip-leading-icon-margin-right,
+  $bottom: $mdc-chip-leading-icon-margin-bottom,
+  $left: $mdc-chip-leading-icon-margin-left) {
+  &.mdc-chip--selected .mdc-chip__checkmark,
+  .mdc-chip__icon--leading:not(.mdc-chip__icon--leading-hidden) {
+    margin: $top $right $bottom $left;
+  }
+}
+
+@mixin mdc-chip-trailing-icon-margin(
+  $top: $mdc-chip-trailing-icon-margin-top,
+  $right: $mdc-chip-trailing-icon-margin-right,
+  $bottom: $mdc-chip-trailing-icon-margin-bottom,
+  $left: $mdc-chip-trailing-icon-margin-left) {
+  .mdc-chip__icon--trailing {
+    margin: $top $right $bottom $left;
+  }
 }
