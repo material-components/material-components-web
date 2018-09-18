@@ -72,13 +72,28 @@
 
 @function mdc-shape-resolve-percentage-for-corner_($component-height, $radius) {
   @if type-of($radius) == "number" and unit($radius) == "%" {
-    // Converts the percentage to number without unit. Example: 50% => 50.
-    $percentage: $radius / ($radius * 0 + 1);
+    $percentage: mdc-shape-strip-unit_($radius);
 
     @return $component-height * ($percentage / 100);
   } @else {
     @return $radius;
   }
+}
+
+//
+// Strips unit from number. This is accomplished by dividing the value by itself to cancel out units, while resulting
+// in a denominator of 1.
+//
+// Examples:
+//
+// 50% => 50
+//
+@function mdc-shape-strip-unit_($number) {
+  @if type-of($number) == 'number' and not unitless($number) {
+    @return $number / ($number * 0 + 1);
+  }
+
+  @return $number;
 }
 
 //

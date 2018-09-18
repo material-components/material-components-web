@@ -62,7 +62,7 @@ Please refer [Material Design guidelines: Shape](https://material.io/go/design-s
 
 Mixin | Description
 --- | ---
-`mdc-shape-radius($radius, $rtl-reflexive)` | Shape API used by all other components to apply radius to appropriate corners. `$radius` can be single value or list of 4 radius corner values. Set `$rtl-reflexive` to true to flip the radius in RTL case, `false` by default.
+`mdc-shape-radius($radius, $rtl-reflexive)` | Shape API used by all other components to apply radius to appropriate corners. `$radius` can be single value or list of up to 4 radius corner values. Set `$rtl-reflexive` to true to flip the radius in RTL case, `false` by default.
 
 > Use `mdc-shape-resolve-percentage-radius` sass function to resolve percentage unit value to absolute radius value.
 
