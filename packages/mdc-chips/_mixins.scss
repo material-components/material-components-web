@@ -186,7 +186,7 @@
   }
 }
 
-@mixin mdc-chip-elevation-transition-value() {
+@mixin mdc-chip-elevation-transition() {
   transition: mdc-elevation-transition-value();
 
   &.mdc-chip--exit {
