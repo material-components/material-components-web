@@ -219,6 +219,7 @@ Mixin | Description
 `mdc-chip-trailing-icon-size($size)` | Customizes the size of a trailing icon in a chip
 `mdc-chip-leading-icon-margin($top, $right, $bottom, $left)` | Customizes the margin of a leading icon in a chip
 `mdc-chip-trailing-icon-margin($top, $right, $bottom, $left)` | Customizes the margin of a trailing icon in a chip
+`mdc-chip-elevation-transition()` | Adds a MDC elevation transition to the chip. This should be used instead of setting transition with `mdc-elevation-transition-value()` directly when a box shadow transition is desired for a chip
 
 > _NOTE_: `mdc-chip-set-spacing` also sets the amount of space between a chip and the edge of the set it's contained in.
 

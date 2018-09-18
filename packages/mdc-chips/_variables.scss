@@ -20,6 +20,7 @@
 // THE SOFTWARE.
 //
 
+@import "@material/animation/variables";
 @import "@material/theme/variables";
 
 $mdc-chip-border-radius-default: 16px;
@@ -52,3 +53,9 @@ $mdc-chip-trailing-icon-margin-top: 0;
 $mdc-chip-trailing-icon-margin-right: -4px;
 $mdc-chip-trailing-icon-margin-bottom: 0;
 $mdc-chip-trailing-icon-margin-left: 4px;
+
+$mdc-chip-exit-transition:
+  opacity 75ms $mdc-animation-standard-curve-timing-function,
+  width 150ms $mdc-animation-deceleration-curve-timing-function,
+  padding 100ms linear,
+  margin 100ms linear;
