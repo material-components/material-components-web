@@ -197,7 +197,7 @@ class MDCDialogFoundation extends MDCFoundation {
    */
   handleClick(evt) {
     // Check for scrim click first since it doesn't require querying ancestors
-    if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.SCRIM) && this.scrimClickAction_) {
+    if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.SCRIM) && this.scrimClickAction_ !== '') {
       this.close(this.scrimClickAction_);
     } else {
       const action = this.adapter_.getActionFromEvent(evt);
@@ -212,7 +212,7 @@ class MDCDialogFoundation extends MDCFoundation {
    * @private
    */
   handleDocumentKeydown(evt) {
-    if ((evt.key === 'Escape' || evt.keyCode === 27) && this.escapeKeyAction_) {
+    if ((evt.key === 'Escape' || evt.keyCode === 27) && this.escapeKeyAction_ !== '') {
       this.close(this.escapeKeyAction_);
     }
   }
