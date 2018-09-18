@@ -565,7 +565,7 @@ class MDCRippleFoundation extends MDCFoundation {
     this.maxRadius_ = this.adapter_.isUnbounded() ? maxDim : getBoundedRadius();
 
     // Ripple is sized as a fraction of the largest dimension of the surface, then scales up using a CSS scale transform
-    this.initialSize_ = maxDim * MDCRippleFoundation.numbers.INITIAL_ORIGIN_SCALE;
+    this.initialSize_ = Math.floor(maxDim * MDCRippleFoundation.numbers.INITIAL_ORIGIN_SCALE);
     this.fgScale_ = this.maxRadius_ / this.initialSize_;
 
     this.updateLayoutCssVars_();
