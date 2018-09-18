@@ -105,6 +105,8 @@ class MDCSelectFoundation extends MDCFoundation {
    * Handles focus events from select element.
    */
   handleFocus() {
+    if (this.adapter_.isMenuOpened()) return;
+    this.adapter_.addClass('mdc-select--focused');
     this.adapter_.floatLabel(true);
     this.notchOutline(true);
     this.adapter_.addClass('mdc-select--focused');
@@ -116,6 +118,8 @@ class MDCSelectFoundation extends MDCFoundation {
    * Handles blur events from select element.
    */
   handleBlur() {
+    if (this.adapter_.isMenuOpened()) return;
+    this.adapter_.removeClass('mdc-select--focused');
     this.handleChange();
     this.adapter_.removeClass('mdc-select--focused');
     this.adapter_.deactivateBottomLine();

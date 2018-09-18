@@ -44,8 +44,7 @@
 
 @mixin mdc-select-focused-label-color($color) {
   &:not(.mdc-select--disabled) {
-    .mdc-select__native-control:focus ~ .mdc-floating-label,
-    .mdc-select__selected-text:focus ~ .mdc-floating-label {
+    &.mdc-select--focused .mdc-floating-label {
       @include mdc-floating-label-ink-color(mdc-theme-prop-value($color));
     }
   }
@@ -126,15 +125,13 @@
 
 // Private
 @mixin mdc-select-focused-line-ripple_ {
-  .mdc-select__native-control:focus ~ .mdc-line-ripple,
-  .mdc-select__selected-text:focus ~ .mdc-line-ripple {
+  &.mdc-select--focused .mdc-line-ripple {
     @content;
   }
 }
 
 @mixin mdc-select-focused-outline_ {
-  .mdc-select__native-control:focus ~ .mdc-notched-outline,
-  .mdc-select__selected-text:focus ~ .mdc-notched-outline {
+  &.mdc-select--focused .mdc-notched-outline {
     @include mdc-notched-outline-stroke-width(2px);
     @content;
   }

@@ -31,6 +31,8 @@ import {MDCNotchedOutline} from '@material/notched-outline/index';
 import MDCSelectFoundation from './foundation';
 import MDCSelectAdapter from './adapter';
 import {cssClasses, strings} from './constants';
+import {strings as menuSurfaceStrings} from '@material/menu-surface/constants';
+import {strings as menuStrings} from '@material/menu/constants';
 import {Corner} from '../mdc-menu-surface/constants';
 
 /**
@@ -87,7 +89,12 @@ class MDCSelect extends MDCComponent {
    * @param {string} value The value to set on the select.
    */
   set value(value) {
-    this.nativeControl_.value = value;
+    if (this.nativeControl_) {
+      this.nativeControl_.value = value;
+    } else if (this.selectedText_) {
+      this.selectedText_.textContent = value;
+    }
+
     this.foundation_.handleChange();
   }
 
@@ -95,14 +102,26 @@ class MDCSelect extends MDCComponent {
    * @return {number} The selected index of the select.
    */
   get selectedIndex() {
-    return this.nativeControl_.selectedIndex;
+    let selectedIndex = -1;
+
+    if (this.nativeControl_) {
+      selectedIndex = this.nativeControl_.selectedIndex;
+    } else if (this.menu_) {
+      selectedIndex = this.menu_.items.indexOf(this.root_.querySelector('.mdc-list-item--selected'));
+    }
+
+    return selectedIndex;
   }
 
   /**
    * @param {number} selectedIndex The index of the option to be set on the select.
    */
   set selectedIndex(selectedIndex) {
-    this.nativeControl_.selectedIndex = selectedIndex;
+    if (this.nativeControl_) {
+      this.nativeControl_.selectedIndex = selectedIndex;
+    } else if (this.menu_) {
+      this.selectedText_.textContent = this.menu_.items[selectedIndex].textContent;
+    }
     this.foundation_.handleChange();
   }
 
@@ -117,7 +136,11 @@ class MDCSelect extends MDCComponent {
    * @param {boolean} disabled Sets the select disabled or enabled.
    */
   set disabled(disabled) {
-    this.nativeControl_ ? this.nativeControl_.disabled = disabled : null;
+    if (this.nativeControl_) {
+      this.nativeControl_ ? this.nativeControl_.disabled = disabled : null;
+    } else if (this.selectedText_) {
+      this.selectedText_.setAttribute('tabindex', disabled ? '-1' : '0');
+    }
     this.foundation_.updateDisabledStyle(disabled);
   }
 
@@ -148,6 +171,16 @@ class MDCSelect extends MDCComponent {
       this.menu_.hoistMenuToBody();
       this.menu_.setAnchorElement(this.root_);
       this.menu_.setAnchorCorner(Corner.BOTTOM_START);
+      this.menu_.listen(menuSurfaceStrings.CLOSED_EVENT, () => {
+        this.menuOpened_ = false;
+        if (document.activeElement !== this.selectedText_) {
+          this.foundation_.handleBlur();
+        }
+      });
+
+      this.menu_.listen(menuStrings.SELECTED_EVENT, (evtData) => {
+        this.value = evtData.detail.item.textContent;
+      });
     }
     const labelElement = this.root_.querySelector(strings.LABEL_SELECTOR);
     if (labelElement) {
@@ -255,8 +288,8 @@ class MDCSelect extends MDCComponent {
         },
         openMenu: () => {
           if (this.menu_ && !this.menu_.open) {
-            this.menuOpened_ = true;
             this.menu_.open = true;
+            this.menuOpened_ = true;
           }
         },
         closeMenu: () => {
@@ -265,6 +298,7 @@ class MDCSelect extends MDCComponent {
             this.menuOpened_ = false;
           }
         },
+        isMenuOpened: () => this.menu_ && this.menuOpened_,
       },
       this.getOutlineAdapterMethods_(),
       this.getLabelAdapterMethods_())
