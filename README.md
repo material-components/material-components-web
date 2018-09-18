@@ -85,9 +85,9 @@ This will produce a customized Material Design button!
 
 ### Include JavaScript for a component
 
-> Note: This guide assumes you have webpack configured to compile ES2015 into JavaScript. See the [getting started guide](docs/getting-started.md) for pointers on how to configure webpack.
+> Note: This guide assumes you have webpack configured to compile ES2015+ into JavaScript. See the [getting started guide](docs/getting-started.md) for pointers on how to configure webpack.
 
-To include the ES2015 files for the Material Design ripple, install the dependency:
+To include the ES2015+ files for the Material Design ripple, install the dependency:
 
 ```
 npm install @material/ripple
