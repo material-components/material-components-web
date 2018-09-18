@@ -380,7 +380,7 @@ test('adapter#toggleCheckbox toggles a checkbox', () => {
   document.body.appendChild(root);
   const checkbox = root.querySelector('input[type="checkbox"]');
 
-  const checkboxReturnValue = component.getDefaultFoundation().adapter_.toggleCheckbox(1);
+  const checkboxReturnValue = component.getDefaultFoundation().adapter_.toggleCheckbox(2);
   assert.isTrue(checkbox.checked);
   assert.isTrue(checkboxReturnValue);
   document.body.removeChild(root);
@@ -391,7 +391,7 @@ test('adapter#toggleCheckbox toggles a radio button', () => {
   document.body.appendChild(root);
   const radio = root.querySelector('input[type="radio"]');
 
-  const checkboxReturnValue = component.getDefaultFoundation().adapter_.toggleCheckbox(2);
+  const checkboxReturnValue = component.getDefaultFoundation().adapter_.toggleCheckbox(3);
   assert.isTrue(radio.checked);
   assert.isTrue(checkboxReturnValue);
   document.body.removeChild(root);
