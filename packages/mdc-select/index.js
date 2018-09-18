@@ -64,6 +64,8 @@ class MDCSelect extends MDCComponent {
     this.handleBlur_;
     /** @private {!Function} */
     this.handleClick_;
+    /** @private {boolean} */
+    this.menuOpened_ = false;
   }
 
   /**
@@ -253,12 +255,14 @@ class MDCSelect extends MDCComponent {
         },
         openMenu: () => {
           if (this.menu_ && !this.menu_.open) {
+            this.menuOpened_ = true;
             this.menu_.open = true;
           }
         },
         closeMenu: () => {
           if (this.menu_ && this.menu_.open) {
             this.menu_.open = false;
+            this.menuOpened_ = false;
           }
         },
       },
