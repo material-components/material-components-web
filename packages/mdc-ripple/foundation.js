@@ -32,7 +32,7 @@ import {getNormalizedEventCoords} from './util';
  *   hasDeactivationUXRun: (boolean|undefined),
  *   wasActivatedByPointer: (boolean|undefined),
  *   wasElementMadeActive: (boolean|undefined),
- *   activationEvent: (Event|undefined),
+ *   activationEvent: (!Event|undefined),
  *   isProgrammatic: (boolean|undefined)
  * }}
  */
@@ -51,7 +51,7 @@ let ListenerInfoType;
 /**
  * @typedef {{
  *   activate: function(!Event),
- *   deactivate: function(Event=),
+ *   deactivate: function(!Event=),
  *   focus: function(),
  *   blur: function()
  * }}
@@ -134,13 +134,13 @@ class MDCRippleFoundation extends MDCFoundation {
     /** @private {function(!Event)} */
     this.activateHandler_ = (e) => this.activate_(e);
 
-    /** @private {function(Event=)} */
+    /** @private {function(!Event=)} */
     this.deactivateHandler_ = () => this.deactivate_();
 
-    /** @private {function(Event=)} */
+    /** @private {function(!Event=)} */
     this.focusHandler_ = () => this.handleFocus();
 
-    /** @private {function(Event=)} */
+    /** @private {function(!Event=)} */
     this.blurHandler_ = () => this.handleBlur();
 
     /** @private {!Function} */
@@ -170,7 +170,7 @@ class MDCRippleFoundation extends MDCFoundation {
       this.runDeactivationUXLogicIfReady_();
     };
 
-    /** @private {Event|undefined} */
+    /** @private {!Event|undefined} */
     this.previousActivationEvent_;
   }
 
@@ -195,7 +195,7 @@ class MDCRippleFoundation extends MDCFoundation {
       hasDeactivationUXRun: false,
       wasActivatedByPointer: false,
       wasElementMadeActive: false,
-      activationEvent: null,
+      activationEvent: undefined,
       isProgrammatic: false,
     };
   }
@@ -310,7 +310,7 @@ class MDCRippleFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {Event=} e
+   * @param {!Event=} e
    * @private
    */
   activate_(e) {
@@ -380,7 +380,7 @@ class MDCRippleFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {Event=} e
+   * @param {!Event=} e
    * @private
    */
   checkElementMadeActive_(e) {
@@ -388,7 +388,7 @@ class MDCRippleFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {Event=} event Optional event containing position information.
+   * @param {!Event=} event Optional event containing position information.
    */
   activate(event) {
     this.activate_(event);
@@ -488,7 +488,7 @@ class MDCRippleFoundation extends MDCFoundation {
     this.activationState_ = this.defaultActivationState_();
     // Touch devices may fire additional events for the same interaction within a short time.
     // Store the previous event until it's safe to assume that subsequent events are for new interactions.
-    setTimeout(() => this.previousActivationEvent_ = null, MDCRippleFoundation.numbers.TAP_DELAY_MS);
+    setTimeout(() => this.previousActivationEvent_ = undefined, MDCRippleFoundation.numbers.TAP_DELAY_MS);
   }
 
   /**

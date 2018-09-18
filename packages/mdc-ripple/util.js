@@ -97,7 +97,7 @@ function supportsCssVariables(windowObj, forceRefresh = false) {
  * Determine whether the current browser supports passive event listeners, and if so, use them.
  * @param {!Window=} globalObj
  * @param {boolean=} forceRefresh
- * @return {boolean|{passive: boolean}}
+ * @return {boolean|!EventListenerOptions}
  */
 function applyPassive(globalObj = window, forceRefresh = false) {
   if (supportsPassive_ === undefined || forceRefresh) {
@@ -105,23 +105,38 @@ function applyPassive(globalObj = window, forceRefresh = false) {
     try {
       globalObj.document.addEventListener('test', null, {get passive() {
         isSupported = true;
+        return isSupported;
       }});
     } catch (e) { }
 
     supportsPassive_ = isSupported;
   }
 
-  return supportsPassive_ ? {passive: true} : false;
+  return supportsPassive_
+    ? /** @type {!EventListenerOptions} */ ({passive: true})
+    : false;
 }
 
 /**
  * @param {!Object} HTMLElementPrototype
- * @return {!Array<string>}
+ * @return {string}
  */
 function getMatchesProperty(HTMLElementPrototype) {
-  return [
-    'webkitMatchesSelector', 'msMatchesSelector', 'matches',
-  ].filter((p) => p in HTMLElementPrototype).pop();
+  /**
+   * Order is important because we return the first existing method we find.
+   * Do not change the order of the items in the below array.
+   */
+  const matchesMethods = ['matches', 'webkitMatchesSelector', 'msMatchesSelector'];
+  let method = 'matches';
+  for (let i = 0; i < matchesMethods.length; i++) {
+    const matchesMethod = matchesMethods[i];
+    if (matchesMethod in HTMLElementPrototype) {
+      method = matchesMethod;
+      break;
+    }
+  }
+
+  return method;
 }
 
 /**
@@ -139,9 +154,11 @@ function getNormalizedEventCoords(ev, pageOffset, clientRect) {
   let normalizedY;
   // Determine touch point relative to the ripple container.
   if (ev.type === 'touchstart') {
+    ev = /** @type {!TouchEvent} */ (ev);
     normalizedX = ev.changedTouches[0].pageX - documentX;
     normalizedY = ev.changedTouches[0].pageY - documentY;
   } else {
+    ev = /** @type {!MouseEvent} */ (ev);
     normalizedX = ev.pageX - documentX;
     normalizedY = ev.pageY - documentY;
   }
