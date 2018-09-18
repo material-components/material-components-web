@@ -129,6 +129,27 @@
   }
 }
 
+// stylelint-disable-next-line plugin/selector-bem-pattern
+.mdc-dialog__title + .mdc-dialog__content {
+  // Eliminate padding to bring as close to spec as possible, relying on title padding.
+  // (Spec seems inconsistent RE title/body spacing on alert vs. simple variants.)
+  padding-top: 0;
+}
+
+// stylelint-disable-next-line plugin/selector-bem-pattern
+.mdc-dialog--scrollable .mdc-dialog__content {
+  // Reduce and equalize vertical paddings when scrollable dividers are present
+  // (Note: this is intentionally after title + content to take precedence)
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+// stylelint-disable-next-line plugin/selector-bem-pattern
+.mdc-dialog__content .mdc-list:first-child:last-child {
+  // Override default .mdc-list padding for content consisting exclusively of a MDC List
+  padding: 0;
+}
+
 .mdc-dialog__actions {
   display: flex;
   position: relative;
@@ -207,24 +228,6 @@
 }
 
 // postcss-bem-linter: end
-
-.mdc-dialog__title + .mdc-dialog__content {
-  // Eliminate padding to bring as close to spec as possible, relying on title padding.
-  // (Spec seems inconsistent RE title/body spacing on alert vs. simple variants.)
-  padding-top: 0;
-}
-
-.mdc-dialog--scrollable .mdc-dialog__content {
-  // Reduce and equalize vertical paddings when scrollable dividers are present
-  // (Note: this is intentionally after title + content to take precedence)
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-
-.mdc-dialog__content .mdc-list:first-child:last-child {
-  // Override default .mdc-list padding for content consisting exclusively of a MDC List
-  padding: 0;
-}
 
 // Class applied to body while dialog is open, to prevent scrolling behind the dialog
 .mdc-dialog-scroll-lock {
