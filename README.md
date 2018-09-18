@@ -66,7 +66,7 @@ You also need to configure sass-loader to understand the `@material` imports use
 {
   loader: 'sass-loader',
   options: {
-    includePaths: ['./node_modules']
+    includePaths: ['node_modules'].map((d) => path.join(__dirname, d))
   }
 }
 ```
@@ -93,7 +93,7 @@ To include the ES2015 files for the Material Design ripple, install the dependen
 npm install @material/ripple
 ```
 
-Then import the ES2015 file for @material/ripple into your application, and initialize an MDCRipple with a DOM element:
+Then import the ES2015+ file for @material/ripple into your application, and initialize an MDCRipple with a DOM element:
 
 ```js
 import {MDCRipple} from '@material/ripple';
