@@ -366,6 +366,14 @@ test('keydown handler is triggered when a sub-element of a list is triggered', (
   td.verify(mockFoundation.handleKeydown(event, false, 0), {times: 1});
 });
 
+test('keydown handler does not call foundation when event target is not a list item or child of list item', () => {
+  const {root, mockFoundation} = setupTest();
+  const event = document.createEvent('KeyboardEvent');
+  event.initEvent('keydown', true, true);
+  root.dispatchEvent(event);
+  td.verify(mockFoundation.handleKeydown(event, false, 0), {times: 0});
+});
+
 test('keydown handler is removed from the root element on destroy', () => {
   const {root, component, mockFoundation} = setupTest();
   component.destroy();
@@ -393,6 +401,18 @@ test('adapter#toggleCheckbox toggles a radio button', () => {
   const radio = root.querySelector('input[type="radio"]');
 
   const checkboxReturnValue = component.getDefaultFoundation().adapter_.toggleCheckbox(3);
+  assert.isTrue(radio.checked);
+  assert.isTrue(checkboxReturnValue);
+  document.body.removeChild(root);
+});
+
+test('adapter#toggleCheckbox does not toggle a radio button if it is already checked', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+  const radio = root.querySelector('input[type="radio"]');
+
+  const checkboxReturnValue = component.getDefaultFoundation().adapter_.toggleCheckbox(3);
+  component.getDefaultFoundation().adapter_.toggleCheckbox(3);
   assert.isTrue(radio.checked);
   assert.isTrue(checkboxReturnValue);
   document.body.removeChild(root);
