@@ -42,6 +42,7 @@ class MDCDialogFoundation extends MDCFoundation {
     return /** @type {!MDCDialogAdapter} */ ({
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
+      hasClass: (/* className: string */) => {},
       addBodyClass: (/* className: string */) => {},
       removeBodyClass: (/* className: string */) => {},
       eventTargetHasClass: (/* target: !EventTarget, className: string */) => {},
@@ -85,6 +86,12 @@ class MDCDialogFoundation extends MDCFoundation {
 
     /** @private {boolean} */
     this.areButtonsStacked_ = false;
+  };
+
+  init() {
+    if (this.adapter_.hasClass(cssClasses.STACKED)) {
+      this.setAutoStackButtons(false);
+    }
   };
 
   destroy() {

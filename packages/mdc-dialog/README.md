@@ -289,6 +289,7 @@ Method Signature | Description
 --- | ---
 `addClass(className: string) => void` | Adds a class to the root element.
 `removeClass(className: string) => void` | Removes a class from the root element.
+`hasClass(className: string) => boolean` | Returns whether the given class exists on the root element.
 `addBodyClass(className: string) => void` | Adds a class to the `<body>`.
 `removeBodyClass(className: string) => void` | Removes a class from the `<body>`.
 `eventTargetHasClass(target: !EventTarget, className: string) => void` | Returns `true` if the target element has the given CSS class, otherwise `false`.

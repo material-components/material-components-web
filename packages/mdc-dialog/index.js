@@ -140,10 +140,6 @@ class MDCDialog extends MDCComponent {
     this.listen('click', this.handleClick_);
     this.listen(strings.OPENING_EVENT, this.handleOpening_);
     this.listen(strings.CLOSING_EVENT, this.handleClosing_);
-
-    if (this.root_.classList.contains(MDCDialogFoundation.cssClasses.STACKED)) {
-      this.autoStackButtons = false;
-    }
   }
 
   destroy() {
@@ -175,6 +171,7 @@ class MDCDialog extends MDCComponent {
     return new MDCDialogFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
+      hasClass: (className) => this.root_.classList.contains(className),
       addBodyClass: (className) => document.body.classList.add(className),
       removeBodyClass: (className) => document.body.classList.remove(className),
       eventTargetHasClass: (target, className) => target.classList.contains(className),

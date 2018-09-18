@@ -48,8 +48,8 @@ test('exports numbers', () => {
 
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCDialogFoundation, [
-    'addClass', 'removeClass', 'addBodyClass', 'removeBodyClass',
-    'eventTargetHasClass',
+    'addClass', 'removeClass', 'hasClass',
+    'addBodyClass', 'removeBodyClass', 'eventTargetHasClass',
     'computeBoundingRect', 'trapFocus', 'releaseFocus',
     'isContentScrollable', 'areButtonsStacked', 'getActionFromEvent', 'reverseButtons',
     'notifyOpening', 'notifyOpened', 'notifyClosing', 'notifyClosed',
@@ -66,6 +66,14 @@ function setupTest() {
   adapterFoundationPair.foundation.init();
   return adapterFoundationPair;
 }
+
+test(`#init turns off auto-stack if ${cssClasses.STACKED} is already present`, () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.STACKED)).thenReturn(true);
+
+  foundation.init();
+  assert.isFalse(foundation.getAutoStackButtons());
+});
 
 test('#destroy closes the dialog if it is still open', () => {
   const {foundation} = setupTest();
@@ -392,4 +400,26 @@ test('keydown does nothing when key other than escape is pressed', () => {
   foundation.handleDocumentKeydown({key: 'Enter'});
 
   td.verify(foundation.close(foundation.getEscapeKeyAction()), {times: 0});
+});
+
+test('#getAutoStackButtons reflects setting of #setAutoStackButtons', () => {
+  const {foundation} = setupTest();
+  foundation.setAutoStackButtons(false);
+  assert.isFalse(foundation.getAutoStackButtons());
+  foundation.setAutoStackButtons(true);
+  assert.isTrue(foundation.getAutoStackButtons());
+});
+
+test('#getEscapeKeyAction reflects setting of #setEscapeKeyAction', () => {
+  const {foundation} = setupTest();
+  const action = 'foo';
+  foundation.setEscapeKeyAction(action);
+  assert.strictEqual(foundation.getEscapeKeyAction(), action);
+});
+
+test('#getScrimClickAction reflects setting of #setScrimClickAction', () => {
+  const {foundation} = setupTest();
+  const action = 'foo';
+  foundation.setScrimClickAction(action);
+  assert.strictEqual(foundation.getScrimClickAction(), action);
 });
