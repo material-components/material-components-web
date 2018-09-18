@@ -20,6 +20,7 @@
 // THE SOFTWARE.
 //
 
+@import "@material/elevation/mixins";
 @import "@material/ripple/mixins";
 @import "@material/theme/functions";
 @import "@material/theme/mixins";
@@ -182,5 +183,15 @@
   $left: $mdc-chip-trailing-icon-margin-left) {
   .mdc-chip__icon--trailing {
     margin: $top $right $bottom $left;
+  }
+}
+
+@mixin mdc-chip-elevation-transition() {
+  transition: mdc-elevation-transition-value();
+
+  &.mdc-chip--exit {
+    transition:
+      mdc-elevation-transition-value(),
+      $mdc-chip-exit-transition;
   }
 }
