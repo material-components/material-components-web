@@ -29,7 +29,8 @@ $mdc-select-border-radius: 4px;
 $mdc-select-ink-color: rgba(mdc-theme-prop-value(on-surface), .87);
 $mdc-select-dropdown-color: mdc-theme-prop-value(on-surface);
 $mdc-select-disabled-ink-color: rgba(mdc-theme-prop-value(on-surface), .37);
-$mdc-select-disabled-arrow-opacity: .37;
+$mdc-select-dropdown-opacity: .54;
+$mdc-select-disabled-dropdown-opacity: .37;
 
 $mdc-select-label-color: rgba(mdc-theme-prop-value(on-surface), .6);
 $mdc-select-focused-label-color: rgba(mdc-theme-prop-value(primary), .87);
