@@ -154,7 +154,7 @@ class MDCList extends MDCComponent {
     const index = this.getListItemIndex_(evt);
 
     // Toggle the checkbox only if it's not the target of the event, or the checkbox will have 2 change events.
-    const toggleCheckbox = !matches(/** @type {Element} */ (evt.target), strings.CHECKBOX_RADIO_SELECTOR);
+    const toggleCheckbox = !matches(/** @type {!Element} */ (evt.target), strings.CHECKBOX_RADIO_SELECTOR);
     this.foundation_.handleClick(index, toggleCheckbox);
   }
 
