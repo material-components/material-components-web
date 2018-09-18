@@ -50,6 +50,7 @@ We’re going to use `webpack-dev-server` to demonstrate how webpack bundles our
 
 You’ll need all of these Node dependencies:
 - [webpack](https://www.npmjs.com/package/webpack): Bundles Sass and JavaScript
+- [webpack-cli](https://www.npmjs.com/package/webpack-cli): CLI handling
 - [webpack-dev-server](https://www.npmjs.com/package/webpack-dev-server): Development server
 - [sass-loader](https://www.npmjs.com/package/sass-loader): Loads a Sass file and compiles it to CSS
 - [node-sass](https://www.npmjs.com/package/node-sass): Provides binding for Node.js to Sass, peer dependency to sass-loader
@@ -206,13 +207,13 @@ Now run `npm start` again and open http://localhost:8080. You should see a Mater
 
 <img src="button.png" alt="Button" width="90" height="36">
 
-### Step 3: Webpack with ES2015
+### Step 3: Webpack with ES2015+
 
-We need to configure webpack to bundle ES2015 JavaScript into standard JavaScript, through [babel](https://babeljs.io). You’ll need all of these dependencies:
+We need to configure webpack to bundle ES2015+ JavaScript into standard JavaScript, through [babel](https://babeljs.io). You’ll need all of these dependencies:
 
-- [babel-core](https://www.npmjs.com/package/babel-core)
+- [@babel/core](https://www.npmjs.com/package/@babel/core)
 - [babel-loader](https://www.npmjs.com/package/babel-loader): Compiles JavaScript files using babel
-- [babel-preset-es2015](https://www.npmjs.com/package/babel-preset-es2015): Preset for compiling es2015
+- [@babel/preset-env](https://www.npmjs.com/package/@babel/preset-env): Preset for compiling es2015+
 
 You can install all of them by running this command:
 
