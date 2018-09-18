@@ -225,11 +225,12 @@ test('adapter#setTabIndexForListItemChildren sets the child button/a/radio/check
   document.body.appendChild(root);
   const listItems = root.querySelectorAll('.mdc-list-item');
 
-  for (let index = 0; index < listItems.length; index++) {
-    assert.equal(0, listItems[index].querySelectorAll('[tabindex="0"]').length);
-    component.getDefaultFoundation().adapter_.setTabIndexForListItemChildren(index, 0);
-    assert.equal(1, listItems[index].querySelectorAll('[tabindex="0"]').length);
-  }
+  component.getDefaultFoundation().adapter_.setTabIndexForListItemChildren(0, 0);
+  component.getDefaultFoundation().adapter_.setTabIndexForListItemChildren(1, 0);
+
+  assert.equal(1, listItems[0].querySelectorAll('[tabindex="0"]').length);
+  assert.equal(1, listItems[1].querySelectorAll('[tabindex="0"]').length);
+
   document.body.removeChild(root);
 });
 
