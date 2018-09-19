@@ -199,7 +199,8 @@ class MDCSelect extends MDCComponent {
     this.handleChange_ = () => this.foundation_.handleChange();
     this.handleFocus_ = () => this.foundation_.handleFocus();
     this.handleBlur_ = () => this.foundation_.handleBlur();
-    this.handleClick_ = (evt) => this.setTransformOrigin_(evt);
+    this.handleClick_ = (evt) => this.foundation_.handleClick(this.getNormalizedXCoordinate_(evt));
+    this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt);
 
     const element = this.nativeControl_ ? this.nativeControl_ : this.selectedText_;
 
@@ -337,16 +338,9 @@ class MDCSelect extends MDCComponent {
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
       isRtl: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
-      activateBottomLine: () => {
-        if (this.lineRipple_) {
-          this.lineRipple_.activate();
-        }
-      },
-      deactivateBottomLine: () => {
-        if (this.lineRipple_) {
-          this.lineRipple_.deactivate();
-        }
-      },
+      setRippleCenter: (normalizedX) => this.lineRipple_ && this.lineRipple_.setRippleCenter(normalizedX),
+      activateBottomLine: () => this.lineRipple_ && this.lineRipple_.activate(),
+      deactivateBottomLine: () => this.lineRipple_ && this.lineRipple_.deactivate(),
     };
   }
 
@@ -395,15 +389,14 @@ class MDCSelect extends MDCComponent {
   }
 
   /**
-   * Sets the line ripple's transform origin, so that the line ripple activate
-   * animation will animate out from the user's click location.
+   * Calculates where the line ripple should start based on the x coordinate within the component.
    * @param {!(MouseEvent|TouchEvent)} evt
+   * @return {number} normalizedX
    */
-  setTransformOrigin_(evt) {
+  getNormalizedXCoordinate_(evt) {
     const targetClientRect = evt.target.getBoundingClientRect();
     const xCoordinate = evt.clientX;
-    const normalizedX = xCoordinate - targetClientRect.left;
-    this.lineRipple_.setRippleCenter(normalizedX);
+    return xCoordinate - targetClientRect.left;
   }
 }
 
