@@ -26,6 +26,7 @@ import {MDCRipple} from '@material/ripple/index';
 
 import MDCDialogFoundation from './foundation';
 import * as util from './util';
+import {closest} from '@material/dom/ponyfill';
 
 import createFocusTrap from 'focus-trap';
 
@@ -171,7 +172,10 @@ class MDCDialog extends MDCComponent {
       releaseFocus: () => this.focusTrap_.deactivate(),
       isContentScrollable: () => !!this.content_ && util.isScrollable(/** @type {!Element} */ (this.content_)),
       areButtonsStacked: () => util.areTopsMisaligned(this.buttons_),
-      getActionFromEvent: (event) => event.target.getAttribute(strings.ACTION_ATTRIBUTE),
+      getActionFromEvent: (event) => {
+        const element = closest(event.target, `[${strings.ACTION_ATTRIBUTE}]`);
+        return element && element.getAttribute(strings.ACTION_ATTRIBUTE);
+      },
       notifyOpening: () => this.emit(strings.OPENING_EVENT, {}),
       notifyOpened: () => this.emit(strings.OPENED_EVENT, {}),
       notifyClosing: (action) => this.emit(strings.CLOSING_EVENT, action ? {action} : {}),

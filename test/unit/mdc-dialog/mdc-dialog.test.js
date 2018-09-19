@@ -387,9 +387,17 @@ test('adapter#areButtonsStacked returns result of util.areTopsMisaligned', () =>
     util.areTopsMisaligned([yesButton, noButton, cancelButton]));
 });
 
-test('adapter#getActionFromEvent returns attribute value', () => {
+test('adapter#getActionFromEvent returns attribute value on event target', () => {
   const {component, yesButton} = setupTest();
   const action = component.getDefaultFoundation().adapter_.getActionFromEvent({target: yesButton});
+  assert.equal(action, 'yes');
+});
+
+test('adapter#getActionFromEvent returns attribute value on parent of event target', () => {
+  const {component, yesButton} = setupTest();
+  const childEl = bel`<span></span>`;
+  yesButton.appendChild(childEl);
+  const action = component.getDefaultFoundation().adapter_.getActionFromEvent({target: childEl});
   assert.equal(action, 'yes');
 });
 
