@@ -37,7 +37,6 @@ function getFixture() {
       <div id="test-dialog"
            class="mdc-dialog"
            role="alertdialog"
-           aria-hidden="true"
            aria-labelledby="test-dialog-label"
            aria-describedby="test-dialog-description">
         <div class="mdc-dialog__container">

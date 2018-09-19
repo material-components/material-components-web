@@ -278,6 +278,15 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/13/20_54_11_470/spec/mdc-chips/mixins/height.html.windows_ie_11.png"
     }
   },
+  "spec/mdc-chips/mixins/horizontal-padding.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/13/22_36_05_454/spec/mdc-chips/mixins/horizontal-padding.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/13/22_36_05_454/spec/mdc-chips/mixins/horizontal-padding.html.windows_chrome_69.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/13/22_36_05_454/spec/mdc-chips/mixins/horizontal-padding.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/13/22_36_05_454/spec/mdc-chips/mixins/horizontal-padding.html.windows_firefox_62.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/13/22_36_05_454/spec/mdc-chips/mixins/horizontal-padding.html.windows_ie_11.png"
+    }
+  },
   "spec/mdc-chips/mixins/ink-color.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/13/20_54_11_470/spec/mdc-chips/mixins/ink-color.html?utm_source=golden_json",
     "screenshots": {
@@ -294,6 +303,15 @@
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/13/20_54_11_470/spec/mdc-chips/mixins/leading-icon-color.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/13/20_54_11_470/spec/mdc-chips/mixins/leading-icon-color.html.windows_firefox_62.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/13/20_54_11_470/spec/mdc-chips/mixins/leading-icon-color.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-chips/mixins/leading-icon-margin.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/17/18_18_41_165/spec/mdc-chips/mixins/leading-icon-margin.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/17/18_18_41_165/spec/mdc-chips/mixins/leading-icon-margin.html.windows_chrome_69.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/17/18_18_41_165/spec/mdc-chips/mixins/leading-icon-margin.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/17/18_18_41_165/spec/mdc-chips/mixins/leading-icon-margin.html.windows_firefox_62.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/17/18_18_41_165/spec/mdc-chips/mixins/leading-icon-margin.html.windows_ie_11.png"
     }
   },
   "spec/mdc-chips/mixins/leading-icon-size.html": {
@@ -332,6 +350,15 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/13/20_54_11_470/spec/mdc-chips/mixins/trailing-icon-color.html.windows_ie_11.png"
     }
   },
+  "spec/mdc-chips/mixins/trailing-icon-margin.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/13/22_36_05_454/spec/mdc-chips/mixins/trailing-icon-margin.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/13/22_36_05_454/spec/mdc-chips/mixins/trailing-icon-margin.html.windows_chrome_69.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/13/22_36_05_454/spec/mdc-chips/mixins/trailing-icon-margin.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/13/22_36_05_454/spec/mdc-chips/mixins/trailing-icon-margin.html.windows_firefox_62.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/13/22_36_05_454/spec/mdc-chips/mixins/trailing-icon-margin.html.windows_ie_11.png"
+    }
+  },
   "spec/mdc-chips/mixins/trailing-icon-size.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/13/20_54_11_470/spec/mdc-chips/mixins/trailing-icon-size.html?utm_source=golden_json",
     "screenshots": {
@@ -341,7 +368,7 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/13/20_54_11_470/spec/mdc-chips/mixins/trailing-icon-size.html.windows_ie_11.png"
     }
   },
-"spec/mdc-dialog/classes/baseline-alert.html": {
+  "spec/mdc-dialog/classes/baseline-alert.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/12/22_19_10_073/spec/mdc-dialog/classes/baseline-alert.html?utm_source=golden_json",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/12/22_19_10_073/spec/mdc-dialog/classes/baseline-alert.html.windows_chrome_69.png",

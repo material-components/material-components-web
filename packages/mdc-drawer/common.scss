@@ -159,6 +159,7 @@
 .mdc-drawer__content {
   height: 100%;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 // postcss-bem-linter: end
