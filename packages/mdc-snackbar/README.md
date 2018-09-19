@@ -231,13 +231,3 @@ before the `mdc-snackbar` CSS is loaded:
 .mdc-snackbar { transform: translateY(100%); }
 ```
 This will move the snackbar offscreen until the CSS is fully loaded and avoids a translate transition upon load.
-
-## Style Customization
-
-### Sass Mixins
-
-Mixins should be included in the context of a custom class applied to the component's root element, e.g. `.my-snackbar`.
-
-Mixin | Description
---- | ---
-`mdc-snackbar-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to all snackbar variants with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.

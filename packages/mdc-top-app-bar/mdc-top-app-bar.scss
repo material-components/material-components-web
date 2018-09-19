@@ -31,7 +31,6 @@
 .mdc-top-app-bar {
   @include mdc-top-app-bar-fill-color-accessible(primary);
   @include mdc-top-app-bar-icon-ink-color(on-primary);
-  @include mdc-top-app-bar-short-shape-radius(24px);
 
   display: flex;
   position: fixed;
@@ -82,6 +81,10 @@
   &__navigation-icon {
     @include mdc-top-app-bar-icon_;
   }
+}
+
+@at-root {
+  @include mdc-top-app-bar-short-shape-radius(24px);
 }
 
 .mdc-top-app-bar--short {

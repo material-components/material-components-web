@@ -25,12 +25,9 @@
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
 @import "./variables";
-@import "./mixins";
 
 // postcss-bem-linter: define snackbar
 .mdc-snackbar {
-  @include mdc-snackbar-shape-radius(small);
-
   display: flex;
   position: fixed;
   bottom: 0;
@@ -55,6 +52,7 @@
   @media (min-width: $mdc-snackbar-tablet-breakpoint) {
     min-width: 288px;
     max-width: 568px;
+    border-radius: 2px;
   }
 }
 
@@ -105,7 +103,7 @@
 
   display: flex;
   align-items: center;
-  height: $mdc-snackbar-height;
+  height: 48px;
   transition: mdc-animation-exit-permanent(opacity, .3s);
   opacity: 0;
   color: $mdc-snackbar-foreground-color;
@@ -129,7 +127,7 @@
 }
 
 .mdc-snackbar--multiline .mdc-snackbar__text {
-  height: $mdc-snackbar-multiline-height;
+  height: 80px;
 }
 
 .mdc-snackbar__action-button {
