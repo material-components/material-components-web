@@ -46,6 +46,12 @@ class MDCDialogAdapter {
   /** @param {string} className */
   removeClass(className) {}
 
+  /**
+   * @param {string} className
+   * @return {boolean}
+   */
+  hasClass(className) {}
+
   /** @param {string} className */
   addBodyClass(className) {}
 
@@ -76,6 +82,8 @@ class MDCDialogAdapter {
    * @return {?string}
    */
   getActionFromEvent(event) {}
+
+  reverseButtons() {}
 
   notifyOpening() {}
   notifyOpened() {}

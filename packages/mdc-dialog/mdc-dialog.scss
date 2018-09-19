@@ -114,7 +114,7 @@
   flex-grow: 1;
   box-sizing: border-box;
   margin: 0;
-  padding: 10px 24px 20px;
+  padding: 20px 24px; // Note: the top padding is only 20px for dialogs without titles; see below for override
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 
@@ -127,6 +127,27 @@
   > :last-child {
     margin-bottom: 0;
   }
+}
+
+// stylelint-disable-next-line plugin/selector-bem-pattern
+.mdc-dialog__title + .mdc-dialog__content {
+  // Eliminate padding to bring as close to spec as possible, relying on title padding.
+  // (Spec seems inconsistent RE title/body spacing on alert vs. simple variants.)
+  padding-top: 0;
+}
+
+// stylelint-disable-next-line plugin/selector-bem-pattern
+.mdc-dialog--scrollable .mdc-dialog__content {
+  // Reduce and equalize vertical paddings when scrollable dividers are present
+  // (Note: this is intentionally after title + content to take precedence)
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+// stylelint-disable-next-line plugin/selector-bem-pattern
+.mdc-dialog__content .mdc-list:first-child:last-child {
+  // Override default .mdc-list padding for content consisting exclusively of a MDC List
+  padding: 0;
 }
 
 .mdc-dialog__actions {
@@ -208,6 +229,7 @@
 
 // postcss-bem-linter: end
 
+// Class applied to body while dialog is open, to prevent scrolling behind the dialog
 .mdc-dialog-scroll-lock {
   overflow: hidden;
 }

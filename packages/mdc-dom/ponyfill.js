@@ -29,6 +29,26 @@
 /**
  * @param {!Element} element
  * @param {string} selector
+ * @return {?Element}
+ */
+function closest(element, selector) {
+  if (element.closest) {
+    return element.closest(selector);
+  }
+
+  let el = element;
+  while (el) {
+    if (matches(el, selector)) {
+      return el;
+    }
+    el = el.parentElement;
+  }
+  return null;
+}
+
+/**
+ * @param {!Element} element
+ * @param {string} selector
  * @return {boolean}
  */
 function matches(element, selector) {
@@ -38,4 +58,4 @@ function matches(element, selector) {
   return nativeMatches.call(element, selector);
 }
 
-export {matches};
+export {closest, matches};
