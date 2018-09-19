@@ -48,10 +48,10 @@ test('exports numbers', () => {
 
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCDialogFoundation, [
-    'addClass', 'removeClass', 'addBodyClass', 'removeBodyClass',
-    'eventTargetHasClass',
+    'addClass', 'removeClass', 'hasClass',
+    'addBodyClass', 'removeBodyClass', 'eventTargetHasClass',
     'computeBoundingRect', 'trapFocus', 'releaseFocus',
-    'isContentScrollable', 'areButtonsStacked', 'getActionFromEvent',
+    'isContentScrollable', 'areButtonsStacked', 'getActionFromEvent', 'reverseButtons',
     'notifyOpening', 'notifyOpened', 'notifyClosing', 'notifyClosed',
   ]);
 });
@@ -66,6 +66,14 @@ function setupTest() {
   adapterFoundationPair.foundation.init();
   return adapterFoundationPair;
 }
+
+test(`#init turns off auto-stack if ${cssClasses.STACKED} is already present`, () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.STACKED)).thenReturn(true);
+
+  foundation.init();
+  assert.isFalse(foundation.getAutoStackButtons());
+});
 
 test('#destroy closes the dialog if it is still open', () => {
   const {foundation} = setupTest();
@@ -227,7 +235,7 @@ test('#open recalculates layout', () => {
   td.verify(foundation.layout());
 });
 
-test('#layout detects stacked buttons', () => {
+test(`#layout removes ${cssClasses.STACKED} class, detects stacked buttons, and adds class`, () => {
   const {foundation, mockAdapter} = setupTest();
   const mockRaf = createMockRaf();
   td.when(mockAdapter.areButtonsStacked()).thenReturn(true);
@@ -236,13 +244,14 @@ test('#layout detects stacked buttons', () => {
   mockRaf.flush();
 
   try {
+    td.verify(mockAdapter.removeClass(cssClasses.STACKED));
     td.verify(mockAdapter.addClass(cssClasses.STACKED));
   } finally {
     mockRaf.restore();
   }
 });
 
-test('#layout detects unstacked buttons', () => {
+test(`#layout removes ${cssClasses.STACKED} class, detects unstacked buttons, and does not add class`, () => {
   const {foundation, mockAdapter} = setupTest();
   const mockRaf = createMockRaf();
   td.when(mockAdapter.areButtonsStacked()).thenReturn(false);
@@ -252,22 +261,24 @@ test('#layout detects unstacked buttons', () => {
 
   try {
     td.verify(mockAdapter.removeClass(cssClasses.STACKED));
+    td.verify(mockAdapter.addClass(cssClasses.STACKED), {times: 0});
   } finally {
     mockRaf.restore();
   }
 });
 
-test(`#layout removes ${cssClasses.STACKED} class before recalculating button stacking`, () => {
+test(`#layout does nothing to ${cssClasses.STACKED} class if autoStackButtons is false`, () => {
   const {foundation, mockAdapter} = setupTest();
   const mockRaf = createMockRaf();
   td.when(mockAdapter.areButtonsStacked()).thenReturn(true);
 
+  foundation.setAutoStackButtons(false);
   foundation.layout();
   mockRaf.flush();
 
   try {
-    td.verify(mockAdapter.removeClass(cssClasses.STACKED));
-    td.verify(mockAdapter.addClass(cssClasses.STACKED));
+    td.verify(mockAdapter.addClass(cssClasses.STACKED), {times: 0});
+    td.verify(mockAdapter.removeClass(cssClasses.STACKED), {times: 0});
   } finally {
     mockRaf.restore();
   }
@@ -389,4 +400,26 @@ test('keydown does nothing when key other than escape is pressed', () => {
   foundation.handleDocumentKeydown({key: 'Enter'});
 
   td.verify(foundation.close(foundation.getEscapeKeyAction()), {times: 0});
+});
+
+test('#getAutoStackButtons reflects setting of #setAutoStackButtons', () => {
+  const {foundation} = setupTest();
+  foundation.setAutoStackButtons(false);
+  assert.isFalse(foundation.getAutoStackButtons());
+  foundation.setAutoStackButtons(true);
+  assert.isTrue(foundation.getAutoStackButtons());
+});
+
+test('#getEscapeKeyAction reflects setting of #setEscapeKeyAction', () => {
+  const {foundation} = setupTest();
+  const action = 'foo';
+  foundation.setEscapeKeyAction(action);
+  assert.strictEqual(foundation.getEscapeKeyAction(), action);
+});
+
+test('#getScrimClickAction reflects setting of #setScrimClickAction', () => {
+  const {foundation} = setupTest();
+  const action = 'foo';
+  foundation.setScrimClickAction(action);
+  assert.strictEqual(foundation.getScrimClickAction(), action);
 });
