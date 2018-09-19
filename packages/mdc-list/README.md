@@ -268,7 +268,7 @@ The MDCList JavaScript component implements the WAI-ARIA best practices for
 [Listbox](https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox). This includes overriding the default tab behavior
 within the list component. You should not add `tabindex` to any of the `li` elements in a list.
 
-As the user navigates through the list, any `button`, and `a` elements within the list will receive `tabindex="-1"` when
+As the user navigates through the list, any `button` and `a` elements within the list will receive `tabindex="-1"` when
 the list item is not focused. When the list item receives focus, the aforementioned elements will receive
 `tabIndex="0"`. This allows for the user to tab through list item elements and then tab to the first element after the
 list. The `Arrow`, `Home`, and `End` keys should be used for navigating internal list elements. If 
