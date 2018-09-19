@@ -220,7 +220,7 @@ test('adapter#focusItemAtIndex focuses the list item at the index specified', ()
   document.body.removeChild(root);
 });
 
-test('adapter#setTabIndexForListItemChildren sets the child button/a/radio/checkbox elements of index', () => {
+test('adapter#setTabIndexForListItemChildren sets the child button/a elements of index', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
   const listItems = root.querySelectorAll('.mdc-list-item');
