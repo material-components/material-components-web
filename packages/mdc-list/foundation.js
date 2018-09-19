@@ -195,15 +195,13 @@ class MDCListFoundation extends MDCFoundation {
       this.preventDefaultEvent_(evt);
       this.focusLastElement();
     } else if (isEnter || isSpace) {
-      if (this.isSingleSelectionList_) {
+      if (this.isSingleSelectionList_ && isRootListItem) {
         // Check if the space key was pressed on the list item or a child element.
-        if (isRootListItem) {
-          this.setSelectedIndex(currentIndex);
-          this.preventDefaultEvent_(evt);
+        this.setSelectedIndex(currentIndex);
+        this.preventDefaultEvent_(evt);
 
-          // Explicitly activate links, since we're preventing default on Enter, and Space doesn't activate them.
-          this.adapter_.followHref(currentIndex);
-        }
+        // Explicitly activate links, since we're preventing default on Enter, and Space doesn't activate them.
+        this.adapter_.followHref(currentIndex);
       }
 
       const checkboxFound = this.adapter_.toggleCheckbox(listItemIndex);
