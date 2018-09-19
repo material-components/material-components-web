@@ -68,10 +68,11 @@ function setupTest() {
   const component = new MDCDialog(root);
   const title = fixture.querySelector('.mdc-dialog__title');
   const content = fixture.querySelector('.mdc-dialog__content');
+  const actions = fixture.querySelector('.mdc-dialog__actions');
   const yesButton = fixture.querySelector('[data-mdc-dialog-action="yes"]');
   const noButton = fixture.querySelector('[data-mdc-dialog-action="no"]');
   const cancelButton = fixture.querySelector('[data-mdc-dialog-action="cancel"]');
-  return {root, component, title, content, yesButton, noButton, cancelButton};
+  return {root, component, title, content, actions, yesButton, noButton, cancelButton};
 }
 
 function setupTestWithMocks() {
@@ -91,7 +92,7 @@ function setupTestWithMocks() {
 suite('MDCDialog');
 
 test('attachTo returns a component instance', () => {
-  assert.isOk(MDCDialog.attachTo(getFixture().querySelector('.mdc-dialog')) instanceof MDCDialog);
+  assert.instanceOf(MDCDialog.attachTo(getFixture().querySelector('.mdc-dialog')), MDCDialog);
 });
 
 test('#initialSyncWithDOM registers click handler on the root element', () => {
@@ -233,20 +234,27 @@ test('set scrimClickAction forwards to MDCDialogFoundation#setScrimClickAction',
 test('adapter#addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
-  assert.isOk(root.classList.contains('foo'));
+  assert.isTrue(root.classList.contains('foo'));
 });
 
 test('adapter#removeClass removes a class from the root element', () => {
   const {root, component} = setupTest();
   root.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
-  assert.isNotOk(root.classList.contains('foo'));
+  assert.isFalse(root.classList.contains('foo'));
+});
+
+test('adapter#hasClass returns whether a class exists on the root element', () => {
+  const {root, component} = setupTest();
+  root.classList.add('foo');
+  assert.isTrue(component.getDefaultFoundation().adapter_.hasClass('foo'));
+  assert.isFalse(component.getDefaultFoundation().adapter_.hasClass('does-not-exist'));
 });
 
 test('adapter#addBodyClass adds a class to the body', () => {
   const {component} = setupTest();
   component.getDefaultFoundation().adapter_.addBodyClass('mdc-dialog--scroll-lock');
-  assert.isOk(document.querySelector('body').classList.contains('mdc-dialog--scroll-lock'));
+  assert.isTrue(document.querySelector('body').classList.contains('mdc-dialog--scroll-lock'));
 });
 
 test('adapter#removeBodyClass removes a class from the body', () => {
@@ -255,7 +263,7 @@ test('adapter#removeBodyClass removes a class from the body', () => {
 
   body.classList.add('mdc-dialog--scroll-lock');
   component.getDefaultFoundation().adapter_.removeBodyClass('mdc-dialog--scroll-lock');
-  assert.isNotOk(body.classList.contains('mdc-dialog--scroll-lock'));
+  assert.isFalse(body.classList.contains('mdc-dialog--scroll-lock'));
 });
 
 test('adapter#eventTargetHasClass returns whether or not the className is in the target\'s classList', () => {
@@ -405,6 +413,12 @@ test('adapter#getActionFromEvent returns null when attribute is not present', ()
   const {component, title} = setupTest();
   const action = component.getDefaultFoundation().adapter_.getActionFromEvent({target: title});
   assert.isNull(action);
+});
+
+test('adapter#reverseButtons reverses the order of children under the actions element', () => {
+  const {component, actions, yesButton, noButton, cancelButton} = setupTest();
+  component.getDefaultFoundation().adapter_.reverseButtons();
+  assert.sameOrderedMembers([yesButton, noButton, cancelButton], [].slice.call(actions.children));
 });
 
 test('#layout proxies to foundation', () => {

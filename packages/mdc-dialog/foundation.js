@@ -42,6 +42,7 @@ class MDCDialogFoundation extends MDCFoundation {
     return /** @type {!MDCDialogAdapter} */ ({
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
+      hasClass: (/* className: string */) => {},
       addBodyClass: (/* className: string */) => {},
       removeBodyClass: (/* className: string */) => {},
       eventTargetHasClass: (/* target: !EventTarget, className: string */) => {},
@@ -51,6 +52,7 @@ class MDCDialogFoundation extends MDCFoundation {
       isContentScrollable: () => {},
       areButtonsStacked: () => {},
       getActionFromEvent: (/* event: !Event */) => {},
+      reverseButtons: () => {},
       notifyOpening: () => {},
       notifyOpened: () => {},
       notifyClosing: (/* action: ?string */) => {},
@@ -78,6 +80,18 @@ class MDCDialogFoundation extends MDCFoundation {
 
     /** @private {string} */
     this.scrimClickAction_ = strings.CLOSE_ACTION;
+
+    /** @private {boolean} */
+    this.autoStackButtons_ = true;
+
+    /** @private {boolean} */
+    this.areButtonsStacked_ = false;
+  };
+
+  init() {
+    if (this.adapter_.hasClass(cssClasses.STACKED)) {
+      this.setAutoStackButtons(false);
+    }
   };
 
   destroy() {
@@ -158,6 +172,16 @@ class MDCDialogFoundation extends MDCFoundation {
     this.scrimClickAction_ = action;
   }
 
+  /** @return {boolean} */
+  getAutoStackButtons() {
+    return this.autoStackButtons_;
+  }
+
+  /** @param {boolean} autoStack */
+  setAutoStackButtons(autoStack) {
+    this.autoStackButtons_ = autoStack;
+  }
+
   layout() {
     if (this.layoutFrame_) {
       cancelAnimationFrame(this.layoutFrame_);
@@ -169,7 +193,9 @@ class MDCDialogFoundation extends MDCFoundation {
   }
 
   layoutInternal_() {
-    this.detectStackedButtons_();
+    if (this.autoStackButtons_) {
+      this.detectStackedButtons_();
+    }
     this.detectScrollableContent_();
   }
 
@@ -177,8 +203,16 @@ class MDCDialogFoundation extends MDCFoundation {
   detectStackedButtons_() {
     // Remove the class first to let us measure the buttons' natural positions.
     this.adapter_.removeClass(cssClasses.STACKED);
-    if (this.adapter_.areButtonsStacked()) {
+
+    const areButtonsStacked = this.adapter_.areButtonsStacked();
+
+    if (areButtonsStacked) {
       this.adapter_.addClass(cssClasses.STACKED);
+    }
+
+    if (areButtonsStacked !== this.areButtonsStacked_) {
+      this.adapter_.reverseButtons();
+      this.areButtonsStacked_ = areButtonsStacked;
     }
   }
 

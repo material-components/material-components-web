@@ -194,6 +194,25 @@ Any action buttons within the dialog which equate strictly to a dismissal with n
 `close` action; this will make it easy to handle all such interactions consistently, while separately handling other
 actions.
 
+#### Action Button Arrangement
+
+As indicated in the [Dialog design article](https://material.io/design/components/dialogs.html#anatomy), buttons within
+the `mdc-dialog__actions` element are arranged horizontally by default, with the confirming action _last_.
+
+In cases where the button text is too long for all buttons to fit on a single line, the buttons are stacked vertically,
+with the confirming action _first_.
+
+MDC Dialog detects and handles this automatically by default, reversing the buttons when applying the stacked layout.
+This automatic behavior can be disabled by setting `autoStackButtons` to `false` on the component instance:
+
+```js
+dialog.autoStackButtons = false;
+```
+
+This will also be disabled if the `mdc-dialog--stacked` modifier class is applied manually to the root element before the
+component is instantiated, but note that dialog action button labels are recommended to be short enough to fit on a
+single line if possible.
+
 #### Actions and Selections
 
 Dialogs which require making a choice via selection controls should initially disable any button which performs an
@@ -243,6 +262,7 @@ Property | Value Type | Description
 `isOpen` | `boolean` (read-only) | Proxies to the foundation's `isOpen` method.
 `escapeKeyAction` | `string` | Proxies to the foundation's `getEscapeKeyAction` and `setEscapeKeyAction` methods.
 `scrimClickAction` | `string` | Proxies to the foundation's `getScrimClickAction` and `setScrimClickAction` methods.
+`autoStackButtons` | `boolean` | Proxies to the foundation's `getAutoStackButtons` and `setAutoStackButtons` methods.
 
 Method Signature | Description
 --- | ---
@@ -269,6 +289,7 @@ Method Signature | Description
 --- | ---
 `addClass(className: string) => void` | Adds a class to the root element.
 `removeClass(className: string) => void` | Removes a class from the root element.
+`hasClass(className: string) => boolean` | Returns whether the given class exists on the root element.
 `addBodyClass(className: string) => void` | Adds a class to the `<body>`.
 `removeBodyClass(className: string) => void` | Removes a class from the `<body>`.
 `eventTargetHasClass(target: !EventTarget, className: string) => void` | Returns `true` if the target element has the given CSS class, otherwise `false`.
@@ -278,6 +299,7 @@ Method Signature | Description
 `isContentScrollable() => boolean` | Returns `true` if `mdc-dialog__content` can be scrolled by the user, otherwise `false`.
 `areButtonsStacked() => boolean` | Returns `true` if `mdc-dialog__action` buttons (`mdc-dialog__button`) are stacked vertically, otherwise `false` if they are side-by-side.
 `getActionFromEvent(event: !Event) => ?string` | Retrieves the value of the `data-mdc-dialog-action` attribute from the given event's target, or an ancestor of the target.
+`reverseButtons() => void` | Reverses the order of action buttons in the `mdc-dialog__actions` element. Used when switching between stacked and unstacked button layouts.
 `notifyOpening() => void` | Broadcasts an event denoting that the dialog has just started to open.
 `notifyOpened() => void` | Broadcasts an event denoting that the dialog has finished opening.
 `notifyClosing(action: string) {}` | Broadcasts an event denoting that the dialog has just started closing. If a non-empty `action` is passed, the event's `detail` object should include its value in the `action` property.
@@ -295,6 +317,8 @@ Method Signature | Description
 `setEscapeKeyAction(action: string)` | Sets the action reflected when the Escape key is pressed. Setting to `''` disables closing the dialog via Escape key.
 `getScrimClickAction() => string` | Returns the action reflected when the scrim is clicked.
 `setScrimClickAction(action: string)` | Sets the action reflected when the scrim is clicked. Setting to `''` disables closing the dialog via scrim click.
+`getAutoStackButtons() => boolean` | Returns whether stacked/unstacked action button layout is automatically handled during layout logic.
+`setAutoStackButtons(autoStack: boolean) => void` | Sets whether stacked/unstacked action button layout is automatically handled during layout logic.
 `handleClick(event: Event)` | Handles `click` events on or within the dialog's root element
 `handleDocumentKeydown(event: Event)` | Handles `keydown` events on or within the document while the dialog is open
 

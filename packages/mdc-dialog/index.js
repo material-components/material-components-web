@@ -100,6 +100,14 @@ class MDCDialog extends MDCComponent {
     this.foundation_.setScrimClickAction(action);
   }
 
+  get autoStackButtons() {
+    return this.foundation_.getAutoStackButtons();
+  }
+
+  set autoStackButtons(autoStack) {
+    this.foundation_.setAutoStackButtons(autoStack);
+  }
+
   initialize(focusTrapFactory = createFocusTrap, initialFocusEl = null) {
     this.container_ = /** @type {!Element} */ (this.root_.querySelector(strings.CONTAINER_SELECTOR));
     this.content_ = this.root_.querySelector(strings.CONTENT_SELECTOR);
@@ -164,6 +172,7 @@ class MDCDialog extends MDCComponent {
     return new MDCDialogFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
+      hasClass: (className) => this.root_.classList.contains(className),
       addBodyClass: (className) => document.body.classList.add(className),
       removeBodyClass: (className) => document.body.classList.remove(className),
       eventTargetHasClass: (target, className) => target.classList.contains(className),
@@ -175,6 +184,10 @@ class MDCDialog extends MDCComponent {
       getActionFromEvent: (event) => {
         const element = closest(event.target, `[${strings.ACTION_ATTRIBUTE}]`);
         return element && element.getAttribute(strings.ACTION_ATTRIBUTE);
+      },
+      reverseButtons: () => {
+        this.buttons_.reverse();
+        this.buttons_.forEach((button) => button.parentElement.appendChild(button));
       },
       notifyOpening: () => this.emit(strings.OPENING_EVENT, {}),
       notifyOpened: () => this.emit(strings.OPENED_EVENT, {}),
