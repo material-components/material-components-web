@@ -163,6 +163,26 @@ class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.deactivateBottomLine();
   }
 
+  handleClick(normalizedX) {
+    if (this.adapter_.isMenuOpened()) return;
+    this.adapter_.setRippleCenter(normalizedX);
+
+    if (this.adapter_.hasClass('mdc-select--focused')) {
+      this.adapter_.openMenu();
+    }
+  }
+
+  handleKeydown(event) {
+    if (this.adapter_.isMenuOpened()) return;
+
+    const isEnter = event.key === 'Enter' || event.keyCode === 13;
+    const isSpace = event.key === 'Space' || event.keyCode === 32;
+
+    if (this.adapter_.hasClass('mdc-select--focused') && (isEnter || isSpace)) {
+      this.adapter_.openMenu();
+    }
+  }
+
   /**
    * Opens/closes the notched outline.
    * @param {boolean} openNotch
