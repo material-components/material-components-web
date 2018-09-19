@@ -207,6 +207,8 @@ class MDCSelect extends MDCComponent {
     element.addEventListener('change', this.handleChange_);
     element.addEventListener('focus', this.handleFocus_);
     element.addEventListener('blur', this.handleBlur_);
+    element.addEventListener('click', this.handleClick);
+    element.addEventListener('keydown', this.handleKeydown_);
 
     if (this.lineRipple_) {
       ['mousedown', 'touchstart'].forEach((evtType) => {

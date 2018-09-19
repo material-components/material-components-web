@@ -173,8 +173,8 @@
                     </li>
                   </ul>
               </div>
-                <label class="mdc-floating-label">Food Group</label>
-                <div class="mdc-line-ripple"></div>
+              <label class="mdc-floating-label">Food Group</label>
+              <div class="mdc-line-ripple"></div>
               </div>
             </section>
             <p>Currently selected: <span id="enhanced-currently-selected">(none)</span></p>
@@ -203,6 +203,7 @@
           </section>
         </div>
         <div class="demo-examples-row">
+
           <section class="example">
           <h2 class="mdc-typography--headline6">Outlined Select</h2>
           <section>
@@ -263,6 +264,70 @@
             </button>
           </div>
         </section>
+
+          <section class="example">
+          <h2 class="mdc-typography--headline6">Outlined Select</h2>
+          <section>
+            <div id="outline-select-enhanced" class="mdc-select mdc-select--outlined demo-enhanced-select">
+              <div class="mdc-select__selected-text" role="combobox"></div>
+              <div class="mdc-menu demo-enhanced-menu mdc-menu-surface mdc-select--menu" role="listbox" id="outlined-select-selected-text">
+                <ul class="mdc-list">
+                  <li class="mdc-list-item">
+                    <span class="mdc-list-item__text"></span>
+                  </li>
+                  <li class="mdc-list-item" value="bread">
+                    <span class="mdc-list-item__text">Bread, Cereal, Rice, and Pasta</span>
+                  </li>
+                  <li class="mdc-list-item mdc-list-item--disabled" value="vegetables">
+                    <span class="mdc-list-item__text">Vegetables</span>
+                  </li>
+                  <li class="mdc-list-item" value="fruit">
+                    <span class="mdc-list-item__text">Fruit</span>
+                  </li>
+                  <li class="mdc-list-item" value="dairy">
+                    <span class="mdc-list-item__text">Milk, Yogurt, and Cheese</span>
+                  </li>
+                  <li class="mdc-list-item" value="meat">
+                    <span class="mdc-list-item__text">Meat, Poultry, Fish, Dry Beans, Eggs, and Nuts</span>
+                  </li>
+                  <li class="mdc-list-item" value="fats">
+                    <span class="mdc-list-item__text">Fats, Oils, and Sweets</span>
+                  </li>
+                </ul>
+              </div>
+              <label class="mdc-floating-label" for="outlined-select-selected-text">Food Group</label>
+              <div class="mdc-notched-outline">
+                <svg>
+                  <path class="mdc-notched-outline__path"></path>
+                </svg>
+              </div>
+              <div class="mdc-notched-outline__idle"></div>
+            </div>
+          </section>
+          <p>Currently selected: <span id="currently-selected-outline-enhanced">(none)</span></p>
+          <div>
+            <input type="checkbox" id="rtl-outline-enhanced">
+            <label for="rtl-outline-enhanced">RTL</label>
+          </div>
+          <div>
+            <input type="checkbox" id="alternate-colors-outline-enhanced">
+            <label for="alternate-colors-outline-enhanced">Alternate Colors</label>
+          </div>
+          <div>
+            <input type="checkbox" id="disabled-outline-enhanced">
+            <label for="disabled-outline-enhanced">Disabled</label>
+          </div>
+          <div class="button-container">
+            <button class="mdc-button mdc-button--raised" id="set-selected-index-zero-button-outline-enhanced">
+              Set Selected Index (0)
+            </button>
+          </div>
+          <div class="button-container">
+            <button class="mdc-button mdc-button--raised" id="set-value-meat-button-outline-enhanced">
+              Set Value to Meat
+            </button>
+          </div>
+        </section>
         </div>
         <div class="demo-examples-row">
           <section class="example">
@@ -315,6 +380,7 @@
 
     <script src="/assets/material-components-web.js" async></script>
     <script>
+      // Filled Native Select
       demoReady(function() {
         mdc.select.MDCSelect.attachTo(document.getElementById('hero-js-select'));
         mdc.select.MDCSelect.attachTo(document.getElementById('js-pre-selected'));
@@ -360,6 +426,7 @@
         });
       });
 
+      // Filled Enhanced Select
       demoReady(function() {
         var root = document.getElementById('enhanced-select');
         var currentlySelected = document.getElementById('enhanced-currently-selected');
@@ -401,8 +468,8 @@
         });
       });
 
+      // Outline Native Select
       demoReady(function() {
-
         var root = document.getElementById('outline-js-select');
         var currentlySelected = document.getElementById('currently-selected-outline');
         var select = new mdc.select.MDCSelect(root);
@@ -412,6 +479,49 @@
         var disabledCb = document.getElementById('disabled-outline');
         var setSelectedButton = document.getElementById('set-selected-index-zero-button-outline');
         var setValueMeatButton = document.getElementById('set-value-meat-button-outline');
+        function updateSelectedTextContent() {
+          var value = select.value;
+          var index = select.selectedIndex;
+          currentlySelected.textContent = value ? value + ' at index ' + index : '(none)';
+        }
+        root.addEventListener('change', function() {
+          updateSelectedTextContent();
+        });
+        rtlCb.addEventListener('change', function() {
+          if (rtlCb.checked) {
+            demoWrapper.setAttribute('dir', 'rtl');
+          } else {
+            demoWrapper.removeAttribute('dir');
+          }
+          select.layout();
+        });
+        alternateColorsCb.addEventListener('change', function() {
+          root.classList[alternateColorsCb.checked ? 'add' : 'remove']('demo-select-custom-colors');
+        });
+        disabledCb.addEventListener('change', function() {
+          select.disabled = disabledCb.checked;
+        });
+        setSelectedButton.addEventListener('click', function() {
+          select.selectedIndex = 0;
+          updateSelectedTextContent();
+        });
+        setValueMeatButton.addEventListener('click', function() {
+          select.value = 'meat';
+          updateSelectedTextContent();
+        });
+      });
+
+      // Outline Enhanced Select
+      demoReady(function() {
+        var root = document.getElementById('outline-select-enhanced');
+        var currentlySelected = document.getElementById('currently-selected-outline-enhanced');
+        var select = new mdc.select.MDCSelect(root);
+        var demoWrapper = root.parentElement;
+        var rtlCb = document.getElementById('rtl-outline-enhanced');
+        var alternateColorsCb = document.getElementById('alternate-colors-outline-enhanced');
+        var disabledCb = document.getElementById('disabled-outline-enhanced');
+        var setSelectedButton = document.getElementById('set-selected-index-zero-button-outline-enhanced');
+        var setValueMeatButton = document.getElementById('set-value-meat-button-outline-enhanced');
         function updateSelectedTextContent() {
           var value = select.value;
           var index = select.selectedIndex;

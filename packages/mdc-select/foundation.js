@@ -112,7 +112,7 @@ class MDCSelectFoundation extends MDCFoundation {
   }
 
   layout() {
-    const openNotch = this.adapter_.getValue().length >= 0;
+    const openNotch = this.adapter_.getValue().length > 0;
     this.notchOutline(openNotch);
   }
 
@@ -180,6 +180,7 @@ class MDCSelectFoundation extends MDCFoundation {
 
     if (this.adapter_.hasClass('mdc-select--focused') && (isEnter || isSpace)) {
       this.adapter_.openMenu();
+      event.preventDefault();
     }
   }
 
