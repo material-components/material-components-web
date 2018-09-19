@@ -60,6 +60,7 @@ class MDCSelectFoundation extends MDCFoundation {
       activateBottomLine: () => {},
       deactivateBottomLine: () => {},
       getValue: () => {},
+      setValue: () => {},
       isRtl: () => false,
       hasLabel: () => false,
       floatLabel: (/* value: boolean */) => {},
@@ -69,6 +70,10 @@ class MDCSelectFoundation extends MDCFoundation {
       closeOutline: () => {},
       openMenu: () => {},
       closeMenu: () => {},
+      setSelectedIndex: () => {},
+      getSelectedIndex: () => {},
+      isDisabled: () => {},
+      setDisabled: () => {},
     });
   }
 
@@ -78,6 +83,39 @@ class MDCSelectFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCSelectFoundation.defaultAdapter, adapter));
   }
+
+  set selectedIndex(index) {
+    this.adapter_.setSelectedIndex(index);
+    this.handleChange();
+  }
+
+  get selectedIndex() {
+    return this.adapter_.getSelectedIndex();
+  }
+
+  get value() {
+    this.adapter_.getValue();
+  }
+
+  set value(value) {
+    this.adapter_.setValue(value);
+    this.handleChange();
+  }
+
+  get disabled() {
+    this.adapter_.isDisabled();
+  }
+
+  set disabled(isDisabled) {
+    this.adapter_.setDisabled(isDisabled);
+    this.updateDisabledStyle(isDisabled);
+  }
+
+  layout() {
+    const openNotch = this.adapter_.getValue().length >= 0;
+    this.notchOutline(openNotch);
+  }
+
 
   /**
    * Updates the styles of the select to show the disasbled state.

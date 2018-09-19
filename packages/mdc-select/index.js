@@ -82,74 +82,49 @@ class MDCSelect extends MDCComponent {
    * @return {string} The value of the select.
    */
   get value() {
-    return this.nativeControl_ ? this.nativeControl_.value : this.selectedText_.textContent;
+    return this.foundation_.value;
   }
 
   /**
    * @param {string} value The value to set on the select.
    */
   set value(value) {
-    if (this.nativeControl_) {
-      this.nativeControl_.value = value;
-    } else if (this.selectedText_) {
-      this.selectedText_.textContent = value;
-    }
-
-    this.foundation_.handleChange();
+    this.foundation_.value = value;
   }
 
   /**
    * @return {number} The selected index of the select.
    */
   get selectedIndex() {
-    let selectedIndex = -1;
-
-    if (this.nativeControl_) {
-      selectedIndex = this.nativeControl_.selectedIndex;
-    } else if (this.menu_) {
-      selectedIndex = this.menu_.items.indexOf(this.root_.querySelector('.mdc-list-item--selected'));
-    }
-
-    return selectedIndex;
+    return this.foundation_.selectedIndex;
   }
 
   /**
    * @param {number} selectedIndex The index of the option to be set on the select.
    */
   set selectedIndex(selectedIndex) {
-    if (this.nativeControl_) {
-      this.nativeControl_.selectedIndex = selectedIndex;
-    } else if (this.menu_) {
-      this.selectedText_.textContent = this.menu_.items[selectedIndex].textContent;
-    }
-    this.foundation_.handleChange();
+    this.foundation_.selectedIndex = selectedIndex;
   }
 
   /**
    * @return {boolean} True if the select is disabled.
    */
   get disabled() {
-    return this.nativeControl_ ? this.nativeControl_.disabled : this.root_.classList.contains('mdc-select--disabled');
+    return this.foundation_.disabled;
   }
 
   /**
    * @param {boolean} disabled Sets the select disabled or enabled.
    */
   set disabled(disabled) {
-    if (this.nativeControl_) {
-      this.nativeControl_ ? this.nativeControl_.disabled = disabled : null;
-    } else if (this.selectedText_) {
-      this.selectedText_.setAttribute('tabindex', disabled ? '-1' : '0');
-    }
-    this.foundation_.updateDisabledStyle(disabled);
+    this.foundation_.disabled = disabled;
   }
 
   /**
    * Recomputes the outline SVG path for the outline element.
    */
   layout() {
-    const openNotch = this.nativeControl_.value.length > 0;
-    this.foundation_.notchOutline(openNotch);
+    this.foundation_.layout();
   }
 
 
@@ -166,8 +141,10 @@ class MDCSelect extends MDCComponent {
     this.selectedText_ = this.root_.querySelector('.mdc-select__selected-text');
 
     if (this.selectedText_) {
-      this.selectedText_.setAttribute('tabindex', '0');
-      this.menu_ = new MDCMenu(this.root_.querySelector('.mdc-menu'));
+      const isDisabled = this.root_.classList.contains('mdc-select--disabled');
+      this.selectedText_.setAttribute('tabindex', isDisabled ? '-1' : '0');
+      this.menuElement_ = this.root_.querySelector('.mdc-menu');
+      this.menu_ = new MDCMenu(this.menuElement_);
       this.menu_.hoistMenuToBody();
       this.menu_.setAnchorElement(this.root_);
       this.menu_.setAnchorCorner(Corner.BOTTOM_START);
@@ -179,7 +156,7 @@ class MDCSelect extends MDCComponent {
       });
 
       this.menu_.listen(menuStrings.SELECTED_EVENT, (evtData) => {
-        this.value = evtData.detail.item.textContent;
+        this.selectedIndex = evtData.detail.index;
       });
     }
     const labelElement = this.root_.querySelector(strings.LABEL_SELECTOR);
@@ -270,40 +247,107 @@ class MDCSelect extends MDCComponent {
    */
   getDefaultFoundation() {
     return new MDCSelectFoundation(
-      /** @type {!MDCSelectAdapter} */ (Object.assign({
-        addClass: (className) => this.root_.classList.add(className),
-        removeClass: (className) => this.root_.classList.remove(className),
-        hasClass: (className) => this.root_.classList.contains(className),
-        getValue: () => this.nativeControl_ ? this.nativeControl_.value : this.selectedText_.innerText,
-        isRtl: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
-        activateBottomLine: () => {
-          if (this.lineRipple_) {
-            this.lineRipple_.activate();
-          }
-        },
-        deactivateBottomLine: () => {
-          if (this.lineRipple_) {
-            this.lineRipple_.deactivate();
-          }
-        },
-        openMenu: () => {
-          if (this.menu_ && !this.menu_.open) {
-            this.menu_.open = true;
-            this.menuOpened_ = true;
-          }
-        },
-        closeMenu: () => {
-          if (this.menu_ && this.menu_.open) {
-            this.menu_.open = false;
-            this.menuOpened_ = false;
-          }
-        },
-        isMenuOpened: () => this.menu_ && this.menuOpened_,
-      },
-      this.getOutlineAdapterMethods_(),
-      this.getLabelAdapterMethods_())
+      /** @type {!MDCSelectAdapter} */ (Object.assign(
+        this.nativeControl_ ? this.getNativeSelectAdapterMethods_() : this.getEnahncedSelectAdapterMethods_(),
+        this.getCommonAdapterMethods_(),
+        this.getOutlineAdapterMethods_(),
+        this.getLabelAdapterMethods_())
       )
     );
+  }
+
+  getNativeSelectAdapterMethods_() {
+    return {
+      getValue: () => this.nativeControl_.value,
+      setValue: (value) => this.nativeControl_.value = value,
+      openMenu: () => {},
+      closeMenu: () => {},
+      isMenuOpened: () => this.menu_ && this.menuOpened_,
+      getSelectedIndex: () => {
+        return this.nativeControl_.selectedIndex;
+      },
+      setSelectedIndex: (index) => {
+        this.nativeControl_.selectedIndex = index;
+      },
+      isDisabled: () => this.nativeControl_.disabled,
+      setDisabled: (isDisabled) => this.nativeControl_.disabled = isDisabled,
+    };
+  }
+
+  getEnahncedSelectAdapterMethods_() {
+    return {
+      getValue: () => {
+        const listItem = this.menuElement_.querySelector('.mdc-list-item--selected');
+        if (listItem) {
+          if (listItem.value) {
+            return listItem.value;
+          } else {
+            return listItem.textContent.trim();
+          }
+        }
+        return '';
+      },
+      setValue: (value) => {
+        const element = this.menuElement_.querySelector(`[value="${value}"]`);
+        this.setEnhancedSelectedIndex(this.menu_.items.indexOf(element));
+      },
+      openMenu: () => {
+        if (this.menu_ && !this.menu_.open) {
+          this.menu_.open = true;
+          this.menuOpened_ = true;
+        }
+      },
+      closeMenu: () => {
+        if (this.menu_ && this.menu_.open) {
+          this.menu_.open = false;
+        }
+      },
+      isMenuOpened: () => this.menu_ && this.menuOpened_,
+      getSelectedIndex: () => {
+        const selectedElement = this.menuElement_.querySelector('.mdc-list-item--selected');
+        return this.menu_.items.indexOf(selectedElement);
+      },
+      setSelectedIndex: (index) => {
+        this.setEnhancedSelectedIndex(index);
+      },
+      isDisabled: () => this.root_.classList.contains('mdc-select--disabled'),
+      setDisabled: (isDisabled) => {
+        this.selectedText_.setAttribute('tabindex', isDisabled ? '-1' : '0');
+        this.root_.classList[isDisabled ? 'add' : 'remove']('mdc-select--disabled');
+      },
+    };
+  }
+
+  setEnhancedSelectedIndex(index) {
+    const selectedItem = this.menu_.items[index];
+    this.selectedText_.textContent = selectedItem.textContent.trim();
+    const previouslySelected = this.menuElement_.querySelector('.mdc-list-item--selected');
+
+    if (previouslySelected) {
+      previouslySelected.classList.remove('mdc-list-item--selected');
+    }
+
+    selectedItem.classList.add('mdc-list-item--selected');
+    this.layout();
+  }
+
+  getCommonAdapterMethods_() {
+    return {
+      addClass: (className) => this.root_.classList.add(className),
+      removeClass: (className) => this.root_.classList.remove(className),
+      hasClass: (className) => this.root_.classList.contains(className),
+      isRtl: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
+      activateBottomLine: () => {
+        if (this.lineRipple_) {
+          this.lineRipple_.activate();
+        }
+      },
+      deactivateBottomLine: () => {
+        if (this.lineRipple_) {
+          this.lineRipple_.deactivate();
+        }
+      },
+    };
   }
 
   /**
