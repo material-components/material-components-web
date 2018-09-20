@@ -25,17 +25,22 @@ const cssClasses = {
   OPEN: 'mdc-dialog--open',
   OPENING: 'mdc-dialog--opening',
   CLOSING: 'mdc-dialog--closing',
-  SCRIM: 'mdc-dialog__scrim',
   SCROLLABLE: 'mdc-dialog--scrollable',
   STACKED: 'mdc-dialog--stacked',
   SCROLL_LOCK: 'mdc-dialog-scroll-lock',
 };
 
 const strings = {
+  SCRIM_SELECTOR: '.mdc-dialog__scrim',
   CONTAINER_SELECTOR: '.mdc-dialog__container',
   SURFACE_SELECTOR: '.mdc-dialog__surface',
   CONTENT_SELECTOR: '.mdc-dialog__content',
   BUTTON_SELECTOR: '.mdc-dialog__button',
+  DEFAULT_BUTTON_SELECTOR: '.mdc-dialog__button--default',
+  SUPPRESS_DEFAULT_PRESS_SELECTOR: [
+    'textarea',
+    '.mdc-menu .mdc-list-item',
+  ].join(', '),
 
   OPENING_EVENT: 'MDCDialog:opening',
   OPENED_EVENT: 'MDCDialog:opened',
