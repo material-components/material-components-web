@@ -21,6 +21,7 @@
  * THE SOFTWARE.
  */
 
+const VError = require('verror');
 const mkdirp = require('mkdirp');
 const os = require('os');
 const path = require('path');
@@ -52,9 +53,10 @@ class FileCache {
   /**
    * @param {string} uri Public URI or local file path.
    * @param {?string=} encoding 'utf8' for text, or `null` for binary data.
+   * @param {boolean=} download
    * @return {!Promise<!mdc.proto.TestFile>} Local copy of the file pointed to by `uri`.
    */
-  async downloadUrlToDisk(uri, encoding = null) {
+  async downloadUrlToDisk(uri, encoding = null, download = true) {
     mkdirp.sync(this.tempDirPath_);
 
     // TODO(acdvorak): Document this hack
@@ -68,8 +70,7 @@ class FileCache {
       });
     }
 
-    const fileName = this.getFilename_(uri);
-    const filePath = path.resolve(this.tempDirPath_, fileName);
+    const filePath = this.getAbsolutePath(uri);
     if (await this.localStorage_.exists(filePath)) {
       return TestFile.create({
         absolute_path: filePath,
@@ -78,21 +79,38 @@ class FileCache {
       });
     }
 
-    const buffer = await request({uri, encoding});
-    await this.localStorage_.writeBinaryFile(filePath, buffer, encoding)
-      .catch(async (err) => {
-        console.error(`downloadUrlToDisk("${uri}"):`);
-        console.error(err);
-        if (await this.localStorage_.exists(filePath)) {
-          await this.localStorage_.delete(filePath);
-        }
-      });
+    if (download) {
+      let buffer;
+      try {
+        buffer = await request({uri, encoding});
+      } catch (err) {
+        throw new VError(err, `Failed to download ${uri} with encoding ${encoding}!`);
+      }
+
+      await this.localStorage_.writeBinaryFile(filePath, buffer, encoding)
+        .catch(async (err) => {
+          console.error(`downloadUrlToDisk("${uri}"):`);
+          console.error(err);
+          if (await this.localStorage_.exists(filePath)) {
+            await this.localStorage_.delete(filePath);
+          }
+        });
+    }
 
     return TestFile.create({
       absolute_path: filePath,
       relative_path: fakeRelativePath,
       public_url: uri,
     });
+  }
+
+  /**
+   * @param {string} uri
+   * @return {string}
+   */
+  getAbsolutePath(uri) {
+    const fileName = this.getFilename_(uri);
+    return path.resolve(this.tempDirPath_, fileName);
   }
 
   /**

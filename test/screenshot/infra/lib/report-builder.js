@@ -659,10 +659,6 @@ class ReportBuilder {
    * @private
    */
   async getExpectedScreenshots_(goldenFile) {
-    const downloadFileAndGetPath = async (url) => {
-      return (await this.fileCache_.downloadUrlToDisk(url)).absolute_path;
-    };
-
     /** @type {!Array<!mdc.proto.Screenshot>} */
     const expectedScreenshots = [];
     const goldenScreenshots = goldenFile.getGoldenScreenshots();
@@ -673,12 +669,12 @@ class ReportBuilder {
         expected_html_file: TestFile.create({
           public_url: goldenScreenshot.html_file_url,
           relative_path: goldenScreenshot.html_file_path,
-          absolute_path: await downloadFileAndGetPath(goldenScreenshot.html_file_url),
+          absolute_path: this.fileCache_.getAbsolutePath(goldenScreenshot.html_file_url),
         }),
         expected_image_file: TestFile.create({
           public_url: goldenScreenshot.screenshot_image_url,
           relative_path: goldenScreenshot.screenshot_image_path,
-          absolute_path: await downloadFileAndGetPath(goldenScreenshot.screenshot_image_url),
+          absolute_path: this.fileCache_.getAbsolutePath(goldenScreenshot.screenshot_image_url),
         }),
         user_agent: await this.userAgentStore_.getUserAgent(goldenScreenshot.user_agent_alias),
       });
@@ -720,10 +716,12 @@ class ReportBuilder {
         const isScreenshotRunnable = isHtmlFileRunnable && userAgent.is_runnable && !flakeConfig.skip_all;
         const expectedScreenshotImageUrl = goldenFile.getScreenshotImageUrl({htmlFilePath, userAgentAlias});
 
+        const encoding = null;
+        const download = false;
         /** @type {?mdc.proto.TestFile} */
         const expectedImageFile =
           expectedScreenshotImageUrl
-            ? await this.fileCache_.downloadUrlToDisk(expectedScreenshotImageUrl)
+            ? await this.fileCache_.downloadUrlToDisk(expectedScreenshotImageUrl, encoding, download)
             : null;
 
         allScreenshots.push(Screenshot.create({
