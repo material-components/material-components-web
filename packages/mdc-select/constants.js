@@ -26,11 +26,14 @@ const cssClasses = {
   DISABLED: 'mdc-select--disabled',
   ROOT: 'mdc-select',
   OUTLINED: 'mdc-select--outlined',
+  SELECTED: 'mdc-list-item--selected',
 };
 
 /** @enum {string} */
 const strings = {
   CHANGE_EVENT: 'MDCSelect:change',
+  SELECTED_ITEM_SELECTOR: `.${cssClasses.SELECTED}`,
+  MENU_SELECTOR: '.mdc-menu',
   LINE_RIPPLE_SELECTOR: '.mdc-line-ripple',
   LABEL_SELECTOR: '.mdc-floating-label',
   NATIVE_CONTROL_SELECTOR: '.mdc-select__native-control',
