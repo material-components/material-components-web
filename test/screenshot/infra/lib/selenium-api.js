@@ -790,7 +790,6 @@ class SeleniumApi {
     }
 
     const uncroppedImageBuffer = Buffer.from(await driver.takeScreenshot(), 'base64');
-
     const croppedImageBuffer = await this.imageCropper_.autoCropImage(uncroppedImageBuffer);
 
     const uncroppedJimpImage = await Jimp.read(uncroppedImageBuffer);
