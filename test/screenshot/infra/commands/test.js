@@ -26,7 +26,7 @@
 const VError = require('verror');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
-// const GitRevision = mdcProto.GitRevision;
+const GitRevision = mdcProto.GitRevision;
 const InclusionType = mdcProto.Screenshot.InclusionType;
 const ReportData = mdcProto.ReportData;
 
@@ -67,9 +67,9 @@ class TestCommand {
 
     /** @type {!mdc.proto.DiffBase} */
     const snapshotDiffBase = await this.diffBaseParser_.parseGoldenDiffBase();
-    // const snapshotGitRev = snapshotDiffBase.git_revision;
+    const snapshotGitRev = snapshotDiffBase.git_revision;
 
-    // const isTravisPr = snapshotGitRev && snapshotGitRev.type === GitRevision.Type.TRAVIS_PR;
+    const isTravisPr = snapshotGitRev && snapshotGitRev.type === GitRevision.Type.TRAVIS_PR;
     const shouldExit = process.env.HAS_TESTABLE_FILES === 'false';
 
     if (shouldExit) {
@@ -86,15 +86,14 @@ class TestCommand {
       return localExitCode;
     }
 
-    // Temporarily disabled, see https://github.com/material-components/material-components-web/issues/3555
-    // if (isTravisPr) {
-    //   /** @type {!mdc.proto.ReportData} */
-    //   const masterReportData = await this.diffAgainstMaster_({localReportData, snapshotGitRev});
-    //   this.logTestResults_(localReportData);
-    //   this.logTestResults_(masterReportData);
-    // } else {
-    this.logTestResults_(localReportData);
-    // }
+    if (isTravisPr) {
+      /** @type {!mdc.proto.ReportData} */
+      const masterReportData = await this.diffAgainstMaster_({localReportData, snapshotGitRev});
+      this.logTestResults_(localReportData);
+      this.logTestResults_(masterReportData);
+    } else {
+      this.logTestResults_(localReportData);
+    }
 
     // Diffs against master shouldn't fail the Travis job.
     return ExitCode.OK;
@@ -223,7 +222,7 @@ class TestCommand {
     const plural = num === 1 ? '' : 's';
     this.logger_.foldStart('screenshot.compare_master', `Comparing ${num} screenshot${plural} to master`);
 
-    const promises = [];
+    const comparisonFunctions = [];
     const masterScreenshotSets = masterReportData.screenshots;
     const masterScreenshotList = masterScreenshotSets.actual_screenshot_list;
 
@@ -240,7 +239,7 @@ class TestCommand {
           continue;
         }
 
-        promises.push(new Promise(async (resolve) => {
+        comparisonFunctions.push(async (resolve) => {
           masterScreenshot.actual_html_file = capturedScreenshot.actual_html_file;
           masterScreenshot.actual_image_file = capturedScreenshot.actual_image_file;
           masterScreenshot.capture_state = capturedScreenshot.capture_state;
@@ -268,11 +267,19 @@ class TestCommand {
           }
 
           resolve();
-        }));
+        });
       }
     }
 
-    await Promise.all(promises);
+    this.logger_.debug('');
+
+    let cur = 0;
+    while (comparisonFunctions.length > 0) {
+      const promises = comparisonFunctions.splice(0, 50).map((comparisonFunction) => new Promise(comparisonFunction));
+      this.logger_.debug(`Comparing screenshots ${cur} to ${cur + promises.length}...`);
+      await Promise.all(promises);
+      cur += promises.length;
+    }
 
     const endTimeIsoUtc = new Date().toISOString();
     masterReportData.meta.start_time_iso_utc = startTimeIsoUtc;
