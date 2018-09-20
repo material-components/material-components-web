@@ -82,6 +82,22 @@
 }
 
 //
+// Strips unit from number. This is accomplished by dividing the value by itself to cancel out units, while resulting
+// in a denominator of 1.
+//
+// Examples:
+//
+// 50% => 50
+//
+@function mdc-shape-strip-unit_($number) {
+  @if type-of($number) == 'number' and not unitless($number) {
+    @return $number / ($number * 0 + 1);
+  }
+
+  @return $number;
+}
+
+//
 // Returns $radius value of shape category - `large`, `medium` or `small`.
 // Otherwise, it returns the $radius itself if valid.
 // $radius can be a single value or list of up to 4.

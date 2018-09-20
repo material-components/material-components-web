@@ -62,7 +62,7 @@ Please refer [Material Design guidelines: Shape](https://material.io/go/design-s
 
 Mixin | Description
 --- | ---
-`mdc-shape-radius($radius, $rtl-reflexive)` | Shape API used by all other components to apply radius to appropriate corners. `$radius` can be single value or list of 4 radius corner values. Set `$rtl-reflexive` to true to flip the radius in RTL case, `false` by default.
+`mdc-shape-radius($radius, $rtl-reflexive)` | Shape API used by all other components to apply radius to appropriate corners. `$radius` can be single value or list of up to 4 radius corner values. Set `$rtl-reflexive` to true to flip the radius in RTL case, `false` by default.
 
 > Use `mdc-shape-resolve-percentage-radius` sass function to resolve percentage unit value to absolute radius value.
 
@@ -70,7 +70,7 @@ Mixin | Description
 
 Function | Description
 --- | ---
-`mdc-shape-flip-radius($radius)` | Flips the radius values in RTL context. $radius is list of 2-4 corner values.
+`mdc-shape-flip-radius($radius)` | Flips the radius values in RTL context. `$radius` is list of 2-4 corner values.
 `mdc-shape-resolve-percentage-radius($component-height, $radius)` | Calculates the absolute radius value based on its component height. Use this for fixed height components only.
 `mdc-shape-mask-top-radius($radius)` | Accepts radius number or list of 2 radius values and returns 4 value list with top-left value, top-right value, bottom-right 0, bottom-left 0. Throws error when length of radius is more than 2.
 `mdc-shape-mask-radius($radius, $masked-corners)` | Accepts radius number or list of 2-4 radius values and returns 4 value list with masked corners as mentioned in `$masked-corners`.
@@ -102,7 +102,7 @@ Where, `$radius` is absolute value only.
 Styles for applying shapes for specific corners such as drawer looks like this:
 
 ```scss
-@include mdc-shape-radius((0, $radius, $radius, 0), $rtl-reflexive: true);
+@include mdc-shape-radius(0 $radius $radius 0, $rtl-reflexive: true);
 ```
 
 Where, only top-right & bottom-right corners are customizable and it automatically flips radius values based on RTL context when `$rtl-reflexive` is set to true.
