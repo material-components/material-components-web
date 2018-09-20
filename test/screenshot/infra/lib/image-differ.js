@@ -23,9 +23,9 @@
 
 'use strict';
 
-const Jimp = require('jimp');
 const compareImages = require('resemblejs/compareImages');
 const path = require('path');
+const sharp = require('sharp');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const {DiffImageResult, Dimensions, TestFile} = mdcProto;
@@ -42,6 +42,18 @@ class ImageDiffer {
      * @private
      */
     this.localStorage_ = new LocalStorage();
+  }
+
+  /**
+   * @param {!Buffer} imageBuffer
+   * @return {!Promise<!mdc.proto.Dimensions>}
+   */
+  async getImageDimensions(imageBuffer) {
+    const {info} = await (sharp(imageBuffer).raw().toBuffer({resolveWithObject: true}));
+    return Dimensions.create({
+      width: info.width,
+      height: info.height,
+    });
   }
 
   /**
@@ -70,12 +82,8 @@ class ImageDiffer {
     const actualImageBuffer = await this.localStorage_.readBinaryFile(actualImageFile.absolute_path);
 
     if (!expectedImageFile) {
-      const actualJimpImage = await Jimp.read(actualImageBuffer);
       return DiffImageResult.create({
-        actual_image_dimensions: Dimensions.create({
-          width: actualJimpImage.bitmap.width,
-          height: actualJimpImage.bitmap.height,
-        }),
+        actual_image_dimensions: await this.getImageDimensions(actualImageBuffer),
       });
     }
 
@@ -134,9 +142,9 @@ class ImageDiffer {
     /** @type {!Buffer} */
     const diffImageBuffer = resembleComparisonResult.getBuffer();
 
-    /** @type {!Jimp.Jimp} */ const expectedJimpImage = await Jimp.read(expectedImageBuffer);
-    /** @type {!Jimp.Jimp} */ const actualJimpImage = await Jimp.read(actualImageBuffer);
-    /** @type {!Jimp.Jimp} */ const diffJimpImage = await Jimp.read(diffImageBuffer);
+    const expectedImageDimensions = await this.getImageDimensions(expectedImageBuffer);
+    const actualImageDimensions = await this.getImageDimensions(actualImageBuffer);
+    const diffImageDimensions = await this.getImageDimensions(diffImageBuffer);
 
     function roundPercentage(rawPercentage) {
       let roundPower = Math.pow(10, 1);
@@ -150,22 +158,13 @@ class ImageDiffer {
     const diffPixelRawPercentage = resembleComparisonResult.rawMisMatchPercentage;
     const diffPixelRoundPercentage = roundPercentage(diffPixelRawPercentage);
     const diffPixelFraction = diffPixelRawPercentage / 100;
-    const diffPixelCount = Math.ceil(diffPixelFraction * diffJimpImage.bitmap.width * diffJimpImage.bitmap.height);
+    const diffPixelCount = Math.ceil(diffPixelFraction * diffImageDimensions.width * diffImageDimensions.height);
     const minChangedPixelCount = flakeConfig.min_changed_pixel_count;
     const hasChanged = diffPixelCount >= minChangedPixelCount;
     const diffImageResult = DiffImageResult.create({
-      expected_image_dimensions: Dimensions.create({
-        width: expectedJimpImage.bitmap.width,
-        height: expectedJimpImage.bitmap.height,
-      }),
-      actual_image_dimensions: Dimensions.create({
-        width: actualJimpImage.bitmap.width,
-        height: actualJimpImage.bitmap.height,
-      }),
-      diff_image_dimensions: Dimensions.create({
-        width: diffJimpImage.bitmap.width,
-        height: diffJimpImage.bitmap.height,
-      }),
+      expected_image_dimensions: expectedImageDimensions,
+      actual_image_dimensions: actualImageDimensions,
+      diff_image_dimensions: diffImageDimensions,
       changed_pixel_count: diffPixelCount,
       changed_pixel_fraction: diffPixelFraction,
       changed_pixel_percentage: diffPixelRoundPercentage,
