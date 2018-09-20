@@ -23,6 +23,7 @@
 
 'use strict';
 
+const Jimp = require('jimp');
 const childProcess = require('mz/child_process');
 const detectPort = require('detect-port');
 const express = require('express');
@@ -32,7 +33,7 @@ const path = require('path');
 const serveIndex = require('serve-index');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
-const {Approvals, DiffImageResult, FlakeConfig, GitStatus, GoldenScreenshot, LibraryVersion} = mdcProto;
+const {Approvals, DiffImageResult, Dimensions, FlakeConfig, GitStatus, GoldenScreenshot, LibraryVersion} = mdcProto;
 const {ReportData, ReportMeta, Screenshot, Screenshots, ScreenshotList, TestFile, User, UserAgents} = mdcProto;
 const {InclusionType, CaptureState} = Screenshot;
 
@@ -41,8 +42,8 @@ const CbtApi = require('./cbt-api');
 const Cli = require('./cli');
 const DiffBaseParser = require('./diff-base-parser');
 const FileCache = require('./file-cache');
+const GitHubApi = require('./github-api');
 const GitRepo = require('./git-repo');
-const ImageDiffer = require('./image-differ');
 const LocalStorage = require('./local-storage');
 const Logger = require('./logger');
 const GoldenIo = require('./golden-io');
@@ -85,6 +86,12 @@ class ReportBuilder {
     this.fileCache_ = new FileCache();
 
     /**
+     * @type {!GitHubApi}
+     * @private
+     */
+    this.gitHubApi_ = new GitHubApi();
+
+    /**
      * @type {!GitRepo}
      * @private
      */
@@ -95,12 +102,6 @@ class ReportBuilder {
      * @private
      */
     this.goldenIo_ = new GoldenIo();
-
-    /**
-     * @type {!ImageDiffer}
-     * @private
-     */
-    this.imageDiffer_ = new ImageDiffer();
 
     /**
      * @type {!LocalStorage}
@@ -860,9 +861,10 @@ class ReportBuilder {
 
       if (!actualScreenshot) {
         const expectedImageUrl = expectedScreenshot.expected_image_file.public_url;
-        const expectedImageBuffer = await this.fileCache_.downloadFileToBuffer(expectedImageUrl);
+        const expectedJimpImage = await Jimp.read(await this.fileCache_.downloadFileToBuffer(expectedImageUrl));
+        const {width, height} = expectedJimpImage.bitmap;
         expectedScreenshot.diff_image_result = DiffImageResult.create({
-          expected_image_dimensions: await this.imageDiffer_.getImageDimensions(expectedImageBuffer),
+          expected_image_dimensions: Dimensions.create({width, height}),
         });
         removedScreenshots.push(expectedScreenshot);
       }
