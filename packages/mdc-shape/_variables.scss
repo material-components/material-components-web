@@ -20,39 +20,14 @@
 // THE SOFTWARE.
 //
 
-.mdc-shape-container {
-  display: inline-block;
-  position: relative;
-  overflow: hidden; // Prevent overflowed borders from encroaching on surrounding elements
-}
+// Shape categories
+$mdc-shape-small-surface-radius: 4px !default;
+$mdc-shape-medium-surface-radius: 4px !default;
+$mdc-shape-large-surface-radius: 0 !default;
 
-.mdc-shape-container__corner {
-  position: absolute;
-  // IE and Edge require z-index set to 1 to properly mask ripple.
-  z-index: 1;
-}
-
-.mdc-shape-container__corner::before,
-.mdc-shape-container__corner::after {
-  position: absolute;
-  box-sizing: border-box;
-  width: 100%;
-  height: 100%;
-  content: "";
-}
-
-.mdc-shape-container__corner--top-left {
-  transform: rotate(-45deg);
-}
-
-.mdc-shape-container__corner--top-right {
-  transform: rotate(45deg);
-}
-
-.mdc-shape-container__corner--bottom-right {
-  transform: rotate(135deg);
-}
-
-.mdc-shape-container__corner--bottom-left {
-  transform: rotate(-135deg);
-}
+// Shape category mapping.
+$mdc-shape-category-values: (
+  small: $mdc-shape-small-surface-radius,
+  medium: $mdc-shape-medium-surface-radius,
+  large: $mdc-shape-large-surface-radius,
+);
