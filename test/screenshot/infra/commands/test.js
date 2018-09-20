@@ -271,14 +271,13 @@ class TestCommand {
       }
     }
 
-    this.logger_.debug('');
-
-    let cur = 0;
+    let startIndex = 0;
     while (comparisonFunctions.length > 0) {
       const promises = comparisonFunctions.splice(0, 50).map((comparisonFunction) => new Promise(comparisonFunction));
-      this.logger_.debug(`Comparing screenshots ${cur} to ${cur + promises.length}...`);
+      const endIndex = startIndex + promises.length;
+      this.logger_.debug(`Comparing screenshots ${startIndex} to ${endIndex}...`);
       await Promise.all(promises);
-      cur += promises.length;
+      startIndex += promises.length;
     }
 
     const endTimeIsoUtc = new Date().toISOString();
@@ -286,6 +285,7 @@ class TestCommand {
     masterReportData.meta.end_time_iso_utc = endTimeIsoUtc;
     masterReportData.meta.duration_ms = Duration.elapsed(startTimeIsoUtc, endTimeIsoUtc).toMillis();
 
+    this.logger_.log('');
     this.logger_.foldEnd('screenshot.compare_master');
   }
 
