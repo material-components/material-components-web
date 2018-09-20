@@ -44,14 +44,12 @@ const Cli = require('./cli');
 const CliColor = require('./logger').colors;
 const Constants = require('./constants');
 const Duration = require('./duration');
-const FileCache = require('./file-cache');
 const GitHubApi = require('./github-api');
 const ImageCropper = require('./image-cropper');
 const ImageDiffer = require('./image-differ');
 const LocalStorage = require('./local-storage');
 const getStackTrace = require('./stacktrace')('SeleniumApi');
 const {Browser, Builder, By, logging, until} = require('selenium-webdriver');
-// const {Browser, Builder, logging} = require('selenium-webdriver');
 const {CBT_CONCURRENCY_POLL_INTERVAL_MS, CBT_CONCURRENCY_MAX_WAIT_MS, ExitCode} = Constants;
 
 /**
@@ -80,8 +78,6 @@ const CliStatuses = {
 
 class SeleniumApi {
   constructor() {
-    this.fileCache_ = new FileCache();
-
     /**
      * @type {!Analytics}
      * @private
@@ -782,8 +778,6 @@ class SeleniumApi {
 
     this.logStatus_(CliStatuses.GET, `${this.createUrlAliasMessage_(urlWithQsParams, userAgent)}...`);
 
-    // TODO(acdvorak): DO NOT MERGE
-
     const isOnline = this.cli_.isOnline();
     const fontLoadTimeoutMs = isOnline ? flakeConfig.font_face_observer_timeout_ms : 500;
 
@@ -796,19 +790,6 @@ class SeleniumApi {
     }
 
     const uncroppedImageBuffer = Buffer.from(await driver.takeScreenshot(), 'base64');
-
-    // if (!driver) {
-    //   console.log('This should never happen');
-    // }
-    // const fakeUrl = 'https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/20/20_56_16_637/'
-    //   + screenshot.expected_image_file.relative_path
-    //     .replace('windows_firefox_61', 'windows_firefox_62')
-    //     .replace('windows_chrome_67', 'windows_chrome_69')
-    //     .replace('windows_chrome_68', 'windows_chrome_69')
-    // ;
-    // const uncroppedImageBuffer = await this.fileCache_.downloadFileToBuffer(fakeUrl);
-
-    // TODO(acdvorak): DO NOT MERGE
 
     const croppedImageBuffer = await this.imageCropper_.autoCropImage(uncroppedImageBuffer);
 
