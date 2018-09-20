@@ -141,9 +141,9 @@ class MDCSelect extends MDCComponent {
     this.selectedText_ = this.root_.querySelector('.mdc-select__selected-text');
 
     if (this.selectedText_) {
-      const isDisabled = this.root_.classList.contains('mdc-select--disabled');
+      const isDisabled = this.root_.classList.contains(cssClasses.DISABLED);
       this.selectedText_.setAttribute('tabindex', isDisabled ? '-1' : '0');
-      this.menuElement_ = this.root_.querySelector('.mdc-menu');
+      this.menuElement_ = this.root_.querySelector(strings.MENU_SELECTOR);
       this.menu_ = new MDCMenu(this.menuElement_);
       this.menu_.hoistMenuToBody();
       this.menu_.setAnchorElement(this.root_);
@@ -207,19 +207,22 @@ class MDCSelect extends MDCComponent {
     element.addEventListener('change', this.handleChange_);
     element.addEventListener('focus', this.handleFocus_);
     element.addEventListener('blur', this.handleBlur_);
-    element.addEventListener('click', this.handleClick);
     element.addEventListener('keydown', this.handleKeydown_);
 
-    if (this.lineRipple_) {
-      ['mousedown', 'touchstart'].forEach((evtType) => {
-        element.addEventListener(evtType, this.handleClick_);
-      });
+    ['mousedown', 'touchstart'].forEach((evtType) => {
+      element.addEventListener(evtType, this.handleClick_);
+    });
+
+    if (this.menuElement_ && this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)) {
+      // If an element is selected, the select should set the initial selected text.
+      const enhancedAdapterMethods = this.getEnahncedSelectAdapterMethods_();
+      enhancedAdapterMethods.setValue(enhancedAdapterMethods.getValue());
     }
 
     // Initially sync floating label
     this.foundation_.handleChange();
 
-    if (this.root_.classList.contains('mdc-select--disabled')
+    if (this.root_.classList.contains(cssClasses.DISABLED)
       || (this.nativeControl_ && this.nativeControl_.disabled)) {
       this.disabled = true;
     }
@@ -280,7 +283,7 @@ class MDCSelect extends MDCComponent {
   getEnahncedSelectAdapterMethods_() {
     return {
       getValue: () => {
-        const listItem = this.menuElement_.querySelector('.mdc-list-item--selected');
+        const listItem = this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR);
         if (listItem) {
           if (listItem.value) {
             return listItem.value;
@@ -292,7 +295,11 @@ class MDCSelect extends MDCComponent {
       },
       setValue: (value) => {
         const element = this.menuElement_.querySelector(`[value="${value}"]`);
-        this.setEnhancedSelectedIndex(this.menu_.items.indexOf(element));
+        if (element) {
+          this.setEnhancedSelectedIndex(this.menu_.items.indexOf(element));
+        } else {
+          this.selectedText_.textContent = value;
+        }
       },
       openMenu: () => {
         if (this.menu_ && !this.menu_.open) {
@@ -307,16 +314,16 @@ class MDCSelect extends MDCComponent {
       },
       isMenuOpened: () => this.menu_ && this.menuOpened_,
       getSelectedIndex: () => {
-        const selectedElement = this.menuElement_.querySelector('.mdc-list-item--selected');
+        const selectedElement = this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR);
         return this.menu_.items.indexOf(selectedElement);
       },
       setSelectedIndex: (index) => {
         this.setEnhancedSelectedIndex(index);
       },
-      isDisabled: () => this.root_.classList.contains('mdc-select--disabled'),
+      isDisabled: () => this.root_.classList.contains(cssClasses.DISABLED),
       setDisabled: (isDisabled) => {
         this.selectedText_.setAttribute('tabindex', isDisabled ? '-1' : '0');
-        this.root_.classList[isDisabled ? 'add' : 'remove']('mdc-select--disabled');
+        this.root_.classList[isDisabled ? 'add' : 'remove'](cssClasses.DISABLED);
       },
     };
   }
@@ -324,13 +331,13 @@ class MDCSelect extends MDCComponent {
   setEnhancedSelectedIndex(index) {
     const selectedItem = this.menu_.items[index];
     this.selectedText_.textContent = selectedItem.textContent.trim();
-    const previouslySelected = this.menuElement_.querySelector('.mdc-list-item--selected');
+    const previouslySelected = this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR);
 
     if (previouslySelected) {
-      previouslySelected.classList.remove('mdc-list-item--selected');
+      previouslySelected.classList.remove(cssClasses.SELECTED);
     }
 
-    selectedItem.classList.add('mdc-list-item--selected');
+    selectedItem.classList.add(cssClasses.SELECTED);
     this.layout();
   }
 
