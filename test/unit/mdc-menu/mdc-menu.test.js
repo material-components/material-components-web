@@ -375,33 +375,3 @@ test('adapter#notifySelected emits an event for a selected element', () => {
   component.getDefaultFoundation().adapter_.notifySelected(0);
   td.verify(handler(td.matchers.anything()));
 });
-
-test('adapter#getCheckboxAtIndex returns a checkbox inside a list item at the index specified', () => {
-  const {root, component} = setupTest();
-  const checkbox = document.createElement('input');
-  checkbox.type = 'checkbox';
-  checkbox.checked = false;
-  const firstItem = root.querySelector('.mdc-list-item');
-  firstItem.appendChild(checkbox);
-
-  assert.equal(component.getDefaultFoundation().adapter_.getCheckboxAtIndex(0), checkbox);
-});
-
-test('adapter#getCheckboxAtIndex returns null if a checkbox does not exist in the element at index specified', () => {
-  const {component} = setupTest();
-  assert.isNull(component.getDefaultFoundation().adapter_.getCheckboxAtIndex(0));
-});
-
-test('adapter#toggleCheckbox toggles a checkbox', () => {
-  const {root, component} = setupTest();
-  document.body.appendChild(root);
-  const checkbox = document.createElement('input');
-  checkbox.type = 'checkbox';
-  checkbox.checked = false;
-  const firstItem = root.querySelector('.mdc-list-item');
-  firstItem.appendChild(checkbox);
-
-  component.getDefaultFoundation().adapter_.toggleCheckbox(checkbox);
-  assert.isTrue(checkbox.checked);
-  document.body.removeChild(root);
-});

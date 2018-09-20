@@ -54,6 +54,7 @@ class MDCListFoundation extends MDCFoundation {
       focusItemAtIndex: () => {},
       setTabIndexForListItemChildren: () => {},
       followHref: () => {},
+      toggleCheckbox: () => {},
     });
   }
 
@@ -193,27 +194,39 @@ class MDCListFoundation extends MDCFoundation {
     } else if (isEnd) {
       this.preventDefaultEvent_(evt);
       this.focusLastElement();
-    } else if (this.isSingleSelectionList_ && (isEnter || isSpace)) {
-      this.preventDefaultEvent_(evt);
-      // Check if the space key was pressed on the list item or a child element.
-      if (isRootListItem) {
+    } else if (isEnter || isSpace) {
+      if (this.isSingleSelectionList_ && isRootListItem) {
+        // Check if the space key was pressed on the list item or a child element.
         this.setSelectedIndex(currentIndex);
+        this.preventDefaultEvent_(evt);
 
         // Explicitly activate links, since we're preventing default on Enter, and Space doesn't activate them.
         this.adapter_.followHref(currentIndex);
+      }
+
+      const checkboxFound = this.adapter_.toggleCheckbox(listItemIndex);
+
+      if (checkboxFound) {
+        this.preventDefaultEvent_(evt);
       }
     }
   }
 
   /**
    * Click handler for the list.
+   * @param {number} index
+   * @param {boolean} toggleCheckbox
    */
-  handleClick() {
-    const currentIndex = this.adapter_.getFocusedElementIndex();
+  handleClick(index, toggleCheckbox) {
+    if (index === -1) return;
 
-    if (currentIndex === -1) return;
+    if (toggleCheckbox) {
+      this.adapter_.toggleCheckbox(index);
+    }
 
-    this.setSelectedIndex(currentIndex);
+    if (this.isSingleSelectionList_) {
+      this.setSelectedIndex(index);
+    }
   }
 
   /**
