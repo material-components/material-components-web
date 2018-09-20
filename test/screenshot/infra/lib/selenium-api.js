@@ -806,7 +806,6 @@ class SeleniumApi {
         .replace('windows_chrome_67', 'windows_chrome_69')
         .replace('windows_chrome_68', 'windows_chrome_69')
     ;
-    console.log('fakeUrl:', fakeUrl);
     const uncroppedImageBuffer = await this.fileCache_.downloadFileToBuffer(fakeUrl);
 
     // TODO(acdvorak): DO NOT MERGE
