@@ -416,10 +416,30 @@ test('#handleKeydown space/enter key does not cause event.preventDefault when si
   td.when(mockAdapter.toggleCheckbox(0)).thenReturn(false);
   foundation.setSingleSelection(false);
   foundation.handleKeydown(event, true, 0);
-  event.key = 'Enter';
+  event.key = 'Space';
   foundation.handleKeydown(event, true, 0);
 
   td.verify(preventDefault(), {times: 0});
+});
+
+test('#handleKeydown space/enter key call adapter.followHref regardless of singleSelection', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const target = {classList: ['mdc-list-item']};
+  const event = {key: 'Enter', target, preventDefault: () => {}};
+
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(0);
+  td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  td.when(mockAdapter.toggleCheckbox(0)).thenReturn(false);
+  foundation.setSingleSelection(false);
+  foundation.handleKeydown(event, true, 0);
+  foundation.setSingleSelection(true);
+  foundation.handleKeydown(event, true, 0);
+  event.key = 'Space';
+  foundation.handleKeydown(event, true, 0);
+  foundation.setSingleSelection(false);
+  foundation.handleKeydown(event, true, 0);
+
+  td.verify(mockAdapter.followHref(0), {times: 4});
 });
 
 test('#handleKeydown space key does not cause preventDefault to be called if singleSelection=false', () => {

@@ -195,10 +195,12 @@ class MDCListFoundation extends MDCFoundation {
       this.preventDefaultEvent_(evt);
       this.focusLastElement();
     } else if (isEnter || isSpace) {
-      if (this.isSingleSelectionList_ && isRootListItem) {
-        // Check if the space key was pressed on the list item or a child element.
-        this.setSelectedIndex(currentIndex);
-        this.preventDefaultEvent_(evt);
+      if (isRootListItem) {
+        if (this.isSingleSelectionList_) {
+          // Check if the space key was pressed on the list item or a child element.
+          this.setSelectedIndex(currentIndex);
+          this.preventDefaultEvent_(evt);
+        }
 
         // Explicitly activate links, since we're preventing default on Enter, and Space doesn't activate them.
         this.adapter_.followHref(currentIndex);
