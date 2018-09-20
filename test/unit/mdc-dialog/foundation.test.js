@@ -356,10 +356,10 @@ test(`interaction closes dialog when ${strings.ACTION_ATTRIBUTE} attribute is pr
   });
 });
 
-test(`interaction does not close dialog with action for non-activation keys`, () => {
+test('interaction does not close dialog with action for non-activation keys', () => {
   const {foundation, mockAdapter} = setupTest();
   const action = 'action';
-  const event = {type: 'keydown', 'key': 'Escape', target: {}};
+  const event = {type: 'keydown', key: 'Escape', target: {}};
   foundation.close = td.func('close');
   td.when(mockAdapter.getActionFromEvent(event)).thenReturn(action);
 
