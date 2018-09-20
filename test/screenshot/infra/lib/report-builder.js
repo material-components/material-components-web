@@ -128,7 +128,7 @@ class ReportBuilder {
    */
   async initForApproval({runReportJsonUrl}) {
     /** @type {!mdc.proto.TestFile} */
-    const runReportJsonFile = await this.fileCache_.downloadUrlToDisk(runReportJsonUrl, 'utf8');
+    const runReportJsonFile = await this.fileCache_.getFile({uri: runReportJsonUrl, encoding: 'utf8'});
     /** @type {!mdc.proto.ReportData} */
     const reportData = ReportData.fromObject(require(runReportJsonFile.absolute_path));
     reportData.approvals = Approvals.create();
@@ -357,7 +357,7 @@ class ReportBuilder {
     await Promise.all(
       urls
         .filter((url) => Boolean(url))
-        .map((url) => this.fileCache_.downloadUrlToDisk(url))
+        .map((url) => this.fileCache_.getFile({uri: url}))
     );
   }
 
@@ -716,12 +716,10 @@ class ReportBuilder {
         const isScreenshotRunnable = isHtmlFileRunnable && userAgent.is_runnable && !flakeConfig.skip_all;
         const expectedScreenshotImageUrl = goldenFile.getScreenshotImageUrl({htmlFilePath, userAgentAlias});
 
-        const encoding = null;
-        const download = false;
         /** @type {?mdc.proto.TestFile} */
         const expectedImageFile =
           expectedScreenshotImageUrl
-            ? await this.fileCache_.downloadUrlToDisk(expectedScreenshotImageUrl, encoding, download)
+            ? await this.fileCache_.getFile({uri: expectedScreenshotImageUrl, download: false})
             : null;
 
         allScreenshots.push(Screenshot.create({
@@ -861,7 +859,7 @@ class ReportBuilder {
 
       if (!actualScreenshot) {
         const expectedImageUrl = expectedScreenshot.expected_image_file.public_url;
-        const expectedJimpImage = await Jimp.read(await this.fileCache_.downloadFileToBuffer(expectedImageUrl));
+        const expectedJimpImage = await Jimp.read(await this.fileCache_.getBuffer({uri: expectedImageUrl}));
         const {width, height} = expectedJimpImage.bitmap;
         expectedScreenshot.diff_image_result = DiffImageResult.create({
           expected_image_dimensions: Dimensions.create({width, height}),

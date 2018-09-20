@@ -51,12 +51,21 @@ class FileCache {
   }
 
   /**
+   * @param {string} uri
+   * @return {string}
+   */
+  getAbsolutePath(uri) {
+    const fileName = this.getFilename_(uri);
+    return path.resolve(this.tempDirPath_, fileName);
+  }
+
+  /**
    * @param {string} uri Public URI or local file path.
    * @param {?string=} encoding 'utf8' for text, or `null` for binary data.
    * @param {boolean=} download
    * @return {!Promise<!mdc.proto.TestFile>} Local copy of the file pointed to by `uri`.
    */
-  async downloadUrlToDisk(uri, encoding = null, download = true) {
+  async getFile({uri, encoding = null, download = true}) {
     mkdirp.sync(this.tempDirPath_);
 
     // TODO(acdvorak): Document this hack
@@ -105,22 +114,13 @@ class FileCache {
   }
 
   /**
-   * @param {string} uri
-   * @return {string}
-   */
-  getAbsolutePath(uri) {
-    const fileName = this.getFilename_(uri);
-    return path.resolve(this.tempDirPath_, fileName);
-  }
-
-  /**
    * @param {string} uri Public URI or local file path.
    * @param {?string=} encoding 'utf8' for text, or `null` for binary data.
    * @return {!Promise<!Buffer>} Buffer containing the contents of the file pointed to by `uri`.
    */
-  async downloadFileToBuffer(uri, encoding = null) {
+  async getBuffer({uri, encoding = null}) {
     /** @type {!mdc.proto.TestFile} */
-    const file = await this.downloadUrlToDisk(uri, encoding);
+    const file = await this.getFile({uri, encoding});
     return this.localStorage_.readBinaryFile(file.absolute_path, encoding);
   }
 
