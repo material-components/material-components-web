@@ -82,9 +82,20 @@ const dialog = new MDCDialog(document.querySelector('.mdc-dialog'));
 
 > See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
 
-> *NOTE*: MDC Dialog makes no assumptions about what will be added to the `mdc-dialog__content` element.
-> Any List, Checkboxes, etc. must also be instantiated.
-> Additionally, call `layout` on any components within the content when `MDCDialog:opened` is emitted.
+MDC Dialog makes no assumptions about what will be added to the `mdc-dialog__content` element. Any List, Checkboxes,
+etc. must also be instantiated. Additionally, call `layout` on any applicable components within the content when
+`MDCDialog:opened` is emitted.
+
+For example, to instantiate an MDC List inside of a Simple or Confirmation Dialog:
+
+```js
+import {MDCList} from '@material/list';
+const list = new MDCList(document.querySelector('.mdc-dialog .mdc-list'));
+
+dialog.listen('MDCDialog:opened', () => {
+  list.layout();
+});
+```
 
 ## Variants
 
@@ -105,10 +116,10 @@ The Simple Dialog contains a list of potential actions. It does not contain butt
  --></h2>
     <section class="mdc-dialog__content" id="my-dialog-content">
       <ul class="mdc-list">
-        <li class="mdc-list-item">
+        <li class="mdc-list-item" data-mdc-dialog-action="none">
           <span class="mdc-list-item__text">None</span>
         </li>
-        <li class="mdc-list-item">
+        <li class="mdc-list-item" data-mdc-dialog-action="callisto">
           <span class="mdc-list-item__text">Callisto</span>
         </li>
         <!-- ... -->
