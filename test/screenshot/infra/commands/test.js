@@ -271,6 +271,9 @@ class TestCommand {
       }
     }
 
+    // When there are a lot of images (~400 or more), comparing all of them in parallel causes timeouts and OOMs.
+    // To avoid this, we compare images in batches of 50 at a time.
+    // See https://github.com/material-components/material-components-web/issues/3555
     let startIndex = 0;
     while (comparisonFunctions.length > 0) {
       const promises = comparisonFunctions.splice(0, 50).map((comparisonFunction) => new Promise(comparisonFunction));
