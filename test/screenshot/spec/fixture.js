@@ -105,7 +105,7 @@ class TestFixture {
       timer = setTimeout(() => {
         console.log('Animations settled!');
         document.body.setAttribute('data-animations-settled', '');
-      }, 300); // TODO(acdvorak): Create a constant for this
+      }, this.fontsLoadedReflowDelayMs_);
     };
 
     window.addEventListener('animationstart', handleAnimationEvent);
