@@ -43,8 +43,8 @@ window.mdc.testFixture.fontsLoaded.then(() => {
       const scrollToBottom = () => {
         const tryToScroll = () => {
           contentEl.scrollTop = contentEl.scrollHeight;
-          if (contentEl.scrollTop === 0) {
-            requestAnimationFrame(tryToScroll);
+          if (contentEl.scrollHeight > contentEl.scrollTop + contentEl.offsetHeight) {
+            setTimeout(tryToScroll);
           }
         };
         tryToScroll();
