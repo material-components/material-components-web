@@ -368,6 +368,15 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/rlfriedman/2018/09/13/20_54_11_470/spec/mdc-chips/mixins/trailing-icon-size.html.windows_ie_11.png"
     }
   },
+  "spec/mdc-dialog/classes/baseline-alert-above-drawer.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/20/18_53_58_822/spec/mdc-dialog/classes/baseline-alert-above-drawer.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/20/18_53_58_822/spec/mdc-dialog/classes/baseline-alert-above-drawer.html.windows_chrome_69.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/20/18_53_58_822/spec/mdc-dialog/classes/baseline-alert-above-drawer.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/20/18_53_58_822/spec/mdc-dialog/classes/baseline-alert-above-drawer.html.windows_firefox_62.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/20/18_53_58_822/spec/mdc-dialog/classes/baseline-alert-above-drawer.html.windows_ie_11.png"
+    }
+  },
   "spec/mdc-dialog/classes/baseline-alert-with-title.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/18/18_18_22_548/spec/mdc-dialog/classes/baseline-alert-with-title.html?utm_source=golden_json",
     "screenshots": {
