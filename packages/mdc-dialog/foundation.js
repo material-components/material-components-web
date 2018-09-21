@@ -45,13 +45,14 @@ class MDCDialogFoundation extends MDCFoundation {
       hasClass: (/* className: string */) => {},
       addBodyClass: (/* className: string */) => {},
       removeBodyClass: (/* className: string */) => {},
-      eventTargetHasClass: (/* target: !EventTarget, className: string */) => {},
+      eventTargetMatches: (/* target: !EventTarget, selector: string */) => {},
       computeBoundingRect: () => {},
       trapFocus: () => {},
       releaseFocus: () => {},
       isContentScrollable: () => {},
       areButtonsStacked: () => {},
       getActionFromEvent: (/* event: !Event */) => {},
+      clickDefaultButton: () => {},
       reverseButtons: () => {},
       notifyOpening: () => {},
       notifyOpened: () => {},
@@ -236,14 +237,18 @@ class MDCDialogFoundation extends MDCFoundation {
    */
   handleInteraction(evt) {
     const isClick = evt.type === 'click';
+    const isEnter = evt.key === 'Enter' || evt.keyCode === 13;
 
     // Check for scrim click first since it doesn't require querying ancestors
-    if (isClick && this.adapter_.eventTargetHasClass(evt.target, cssClasses.SCRIM) && this.scrimClickAction_ !== '') {
+    if (isClick && this.adapter_.eventTargetMatches(evt.target, strings.SCRIM_SELECTOR) &&
+      this.scrimClickAction_ !== '') {
       this.close(this.scrimClickAction_);
-    } else if (isClick || evt.key === 'Space' || evt.keyCode === 32 || evt.key === 'Enter' || evt.keyCode === 13) {
+    } else if (isClick || evt.key === 'Space' || evt.keyCode === 32 || isEnter) {
       const action = this.adapter_.getActionFromEvent(evt);
       if (action) {
         this.close(action);
+      } else if (isEnter && !this.adapter_.eventTargetMatches(evt.target, strings.SUPPRESS_DEFAULT_PRESS_SELECTOR)) {
+        this.adapter_.clickDefaultButton();
       }
     }
   }

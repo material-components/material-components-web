@@ -32,13 +32,16 @@ import {cssClasses, strings, numbers} from '../../../packages/mdc-dialog/constan
 import {createMockRaf} from '../helpers/raf';
 import MDCDialogFoundation from '../../../packages/mdc-dialog/foundation';
 
-const INTERACTION_EVENTS = [
-  {type: 'click', target: {}},
+const ENTER_EVENTS = [
   {type: 'keydown', key: 'Enter', target: {}},
   {type: 'keydown', keyCode: 13, target: {}},
+];
+
+const INTERACTION_EVENTS = [
+  {type: 'click', target: {}},
   {type: 'keydown', key: 'Space', target: {}},
   {type: 'keydown', keyCode: 32, target: {}},
-];
+].concat(ENTER_EVENTS);
 
 suite('MDCDialogFoundation');
 
@@ -57,9 +60,9 @@ test('exports numbers', () => {
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCDialogFoundation, [
     'addClass', 'removeClass', 'hasClass',
-    'addBodyClass', 'removeBodyClass', 'eventTargetHasClass',
+    'addBodyClass', 'removeBodyClass', 'eventTargetMatches',
     'computeBoundingRect', 'trapFocus', 'releaseFocus',
-    'isContentScrollable', 'areButtonsStacked', 'getActionFromEvent', 'reverseButtons',
+    'isContentScrollable', 'areButtonsStacked', 'getActionFromEvent', 'clickDefaultButton', 'reverseButtons',
     'notifyOpening', 'notifyOpened', 'notifyClosing', 'notifyClosed',
   ]);
 });
@@ -383,11 +386,32 @@ test(`interaction does nothing when ${strings.ACTION_ATTRIBUTE} attribute is not
   });
 });
 
-test(`click closes dialog when ${cssClasses.SCRIM} class is present`, () => {
+test('enter keydown calls adapter.clickDefaultButton', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  ENTER_EVENTS.forEach((event) => {
+    foundation.handleInteraction(event);
+    td.verify(mockAdapter.clickDefaultButton());
+    td.reset();
+  });
+});
+
+test('enter keydown does not call adapter.clickDefaultButton when it should be suppressed', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  ENTER_EVENTS.forEach((event) => {
+    td.when(mockAdapter.eventTargetMatches(event.target, strings.SUPPRESS_DEFAULT_PRESS_SELECTOR)).thenReturn(true);
+    foundation.handleInteraction(event);
+    td.verify(mockAdapter.clickDefaultButton(), {times: 0});
+    td.reset();
+  });
+});
+
+test(`click closes dialog when ${strings.SCRIM_SELECTOR} selector matches`, () => {
   const {foundation, mockAdapter} = setupTest();
   const evt = {type: 'click', target: {}};
   foundation.close = td.func('close');
-  td.when(mockAdapter.eventTargetHasClass(evt.target, cssClasses.SCRIM)).thenReturn(true);
+  td.when(mockAdapter.eventTargetMatches(evt.target, strings.SCRIM_SELECTOR)).thenReturn(true);
 
   foundation.open();
   foundation.handleInteraction(evt);
@@ -395,11 +419,11 @@ test(`click closes dialog when ${cssClasses.SCRIM} class is present`, () => {
   td.verify(foundation.close(foundation.getScrimClickAction()));
 });
 
-test(`click does nothing when ${cssClasses.SCRIM} class is present but scrim click action is empty string`, () => {
+test(`click does nothing when ${strings.SCRIM_SELECTOR} class is present but scrimClickAction is empty string`, () => {
   const {foundation, mockAdapter} = setupTest();
   const evt = {type: 'click', target: {}};
   foundation.close = td.func('close');
-  td.when(mockAdapter.eventTargetHasClass(evt.target, cssClasses.SCRIM)).thenReturn(true);
+  td.when(mockAdapter.eventTargetMatches(evt.target, strings.SCRIM_SELECTOR)).thenReturn(true);
 
   foundation.setScrimClickAction('');
   foundation.open();
@@ -428,7 +452,7 @@ test('escape keydown closes the dialog (via keyCode property)', () => {
   td.verify(foundation.close(foundation.getEscapeKeyAction()));
 });
 
-test('escape keydown does nothing if escape key action is set to empty string', () => {
+test('escape keydown does nothing if escapeKeyAction is set to empty string', () => {
   const {foundation} = setupTest();
   foundation.close = td.func('close');
 

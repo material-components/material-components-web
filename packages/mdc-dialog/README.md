@@ -226,6 +226,24 @@ This will also be disabled if the `mdc-dialog--stacked` modifier class is applie
 component is instantiated, but note that dialog action button labels are recommended to be short enough to fit on a
 single line if possible.
 
+#### Default Action Button
+
+MDC Dialog supports indicating that one of its action buttons represents the default action, triggered by pressing the
+Enter key. This can be used e.g. for single-choice Confirmation Dialogs to accelerate the process of making a selection,
+avoiding the need to tab through to the appropriate button to confirm the choice.
+
+To indicate that a button represents the default action, add the `mdc-dialog__button--default` modifier class.
+For example:
+
+```html
+...
+<footer class="mdc-dialog__actions">
+  <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">Cancel</button>
+  <button type="button" class="mdc-button mdc-dialog__button mdc-dialog__button--default" data-mdc-dialog-action="accept">OK</button>
+</footer>
+...
+```
+
 #### Actions and Selections
 
 Dialogs which require making a choice via selection controls should initially disable any button which performs an
@@ -305,13 +323,14 @@ Method Signature | Description
 `hasClass(className: string) => boolean` | Returns whether the given class exists on the root element.
 `addBodyClass(className: string) => void` | Adds a class to the `<body>`.
 `removeBodyClass(className: string) => void` | Removes a class from the `<body>`.
-`eventTargetHasClass(target: !EventTarget, className: string) => void` | Returns `true` if the target element has the given CSS class, otherwise `false`.
+`eventTargetMatches(target: !EventTarget, selector: string) => void` | Returns `true` if the target element matches the given CSS selector, otherwise `false`.
 `computeBoundingRect()`: Forces the component to recalculate its layout; in the vanilla DOM implementation, this calls `computeBoundingClientRect`.
 `trapFocus() => void` | Sets up the DOM such that keyboard navigation is restricted to focusable elements within the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details).
 `releaseFocus() => void` | Removes any effects of focus trapping on the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details).
 `isContentScrollable() => boolean` | Returns `true` if `mdc-dialog__content` can be scrolled by the user, otherwise `false`.
 `areButtonsStacked() => boolean` | Returns `true` if `mdc-dialog__action` buttons (`mdc-dialog__button`) are stacked vertically, otherwise `false` if they are side-by-side.
 `getActionFromEvent(event: !Event) => ?string` | Retrieves the value of the `data-mdc-dialog-action` attribute from the given event's target, or an ancestor of the target.
+`clickDefaultButton() => void` | Invokes `click()` on the `mdc-dialog__button--default` element, if one exists in the dialog.
 `reverseButtons() => void` | Reverses the order of action buttons in the `mdc-dialog__actions` element. Used when switching between stacked and unstacked button layouts.
 `notifyOpening() => void` | Broadcasts an event denoting that the dialog has just started to open.
 `notifyOpened() => void` | Broadcasts an event denoting that the dialog has finished opening.
