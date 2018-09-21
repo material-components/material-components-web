@@ -115,7 +115,7 @@ The Simple Dialog contains a list of potential actions. It does not contain butt
    -->Choose a Ringtone<!--
  --></h2>
     <section class="mdc-dialog__content" id="my-dialog-content">
-      <ul class="mdc-list">
+      <ul class="mdc-list mdc-list--avatar-list">
         <li class="mdc-list-item" data-mdc-dialog-action="none">
           <span class="mdc-list-item__text">None</span>
         </li>
@@ -129,6 +129,8 @@ The Simple Dialog contains a list of potential actions. It does not contain butt
   <div class="mdc-dialog__scrim"></div>
 </div>
 ```
+
+> Note the inclusion of the `mdc-list--avatar-list` class, which aligns with the Simple Dialog spec.
 
 ### Confirmation Dialog
 
