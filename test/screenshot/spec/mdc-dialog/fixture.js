@@ -154,7 +154,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
           fromSide: 'top',
           toEl: listItemEl,
           toSide: 'top',
-          specDistancePx: 64,
+          specDistancePx: 64, // NOTE: This currently seems to be measured off-by-one
           displayTargetEl: oneLineTitleEl,
           flipLabel: true,
         },
@@ -211,7 +211,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
           fromSide: 'top',
           toEl: firstParagraphEl,
           toSide: 'first-baseline',
-          specDistancePx: 36,
+          specDistancePx: 36, // NOTE: This currently seems to be measured off-by-one
           displayAlignment: 'left',
           displayOffsetPx: 48,
           flipLabel: true,
