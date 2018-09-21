@@ -222,7 +222,7 @@ class TestFixture {
       labelEl.innerHTML = `${actualDistancePx}px`;
       lineEl.classList.add('test-redline--pass');
     } else if (Math.abs(actualDistancePx - specDistancePx) <= 1) {
-      labelEl.innerHTML = `Spec: ${specDistancePx}px<br>Actual: ${actualDistancePx}px`;
+      labelEl.innerHTML = `${actualDistancePx}px`;
       lineEl.classList.add('test-redline--warn');
     } else {
       labelEl.innerHTML = `Spec: ${specDistancePx}px<br>Actual: ${actualDistancePx}px`;
@@ -283,7 +283,7 @@ class TestFixture {
       labelEl.innerHTML = `${actualDistancePx}px`;
       lineEl.classList.add('test-redline--pass');
     } else if (Math.abs(actualDistancePx - specDistancePx) <= 1) {
-      labelEl.innerHTML = `Spec: ${specDistancePx}px<br>Actual: ${actualDistancePx}px`;
+      labelEl.innerHTML = `${actualDistancePx}px`;
       lineEl.classList.add('test-redline--warn');
     } else {
       labelEl.innerHTML = `Spec: ${specDistancePx}px<br>Actual: ${actualDistancePx}px`;
