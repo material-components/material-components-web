@@ -56,7 +56,7 @@
 
   // Use `display: none` instead of `visibility: hidden` to avoid recalculating layout when the dialog is closed.
   display: none;
-  z-index: 5;
+  z-index: $mdc-dialog-z-index;
 }
 
 .mdc-dialog__scrim {

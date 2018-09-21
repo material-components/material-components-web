@@ -22,9 +22,5 @@
  */
 
 window.mdc.testFixture.fontsLoaded.then(() => {
-  [].forEach.call(document.querySelectorAll('.mdc-switch'), (el) => {
-    mdc.switchControl.MDCSwitch.attachTo(el);
-  });
-
   window.mdc.testFixture.notifyDomReady();
 });

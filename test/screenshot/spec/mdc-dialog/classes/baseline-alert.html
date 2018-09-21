@@ -34,21 +34,21 @@
     <link rel="stylesheet" href="../../../out/spec/mdc-dialog/fixture.css">
   </head>
 
-  <body class="test-container test-container--edge-fonts">
+  <body class="test-container test-container--edge-fonts mdc-dialog-scroll-lock">
     <main class="test-viewport test-viewport--center">
 
       <button class="test-dialog-open-button" data-test-dialog-id="test-dialog" autofocus>Open Dialog</button>
 
-      <div class="mdc-dialog test-dialog"
+      <div class="mdc-dialog mdc-dialog--open test-dialog"
            role="alertdialog"
            aria-modal="true"
-           aria-describedby="test-dialog__content--alert"
+           aria-describedby="test-dialog__content"
            id="test-dialog">
         <div class="mdc-dialog__scrim"></div>
         <div class="mdc-dialog__container">
           <div class="mdc-dialog__surface">
-            <section class="mdc-dialog__content test-dialog__content" id="test-dialog__content--alert">
-              <div class="test-dialog__content-rect">Alert</div>
+            <section class="mdc-dialog__content test-dialog__content" id="test-dialog__content">
+              <div class="test-dialog__content-rect"><p>Alert</p></div>
             </section>
             <footer class="mdc-dialog__actions">
               <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="cancel">

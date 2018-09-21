@@ -134,6 +134,11 @@ class MDCDialogFoundation extends MDCFoundation {
    * @param {string=} action
    */
   close(action = '') {
+    if (!this.isOpen_) {
+      // Avoid redundant close calls (and events), e.g. from keydown on elements that inherently emit click
+      return;
+    }
+
     this.isOpen_ = false;
     this.adapter_.notifyClosing(action);
     this.adapter_.releaseFocus();
@@ -229,11 +234,13 @@ class MDCDialogFoundation extends MDCFoundation {
    * @param {!Event} evt
    * @private
    */
-  handleClick(evt) {
+  handleInteraction(evt) {
+    const isClick = evt.type === 'click';
+
     // Check for scrim click first since it doesn't require querying ancestors
-    if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.SCRIM) && this.scrimClickAction_ !== '') {
+    if (isClick && this.adapter_.eventTargetHasClass(evt.target, cssClasses.SCRIM) && this.scrimClickAction_ !== '') {
       this.close(this.scrimClickAction_);
-    } else {
+    } else if (isClick || evt.key === 'Space' || evt.keyCode === 32 || evt.key === 'Enter' || evt.keyCode === 13) {
       const action = this.adapter_.getActionFromEvent(evt);
       if (action) {
         this.close(action);

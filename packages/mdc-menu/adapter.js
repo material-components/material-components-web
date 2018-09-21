@@ -110,19 +110,6 @@ class MDCMenuAdapter {
  *   }} evtData
    */
   notifySelected(evtData) {}
-
-  /**
-   * Returns the checkbox contained within the element at the index specified.
-   * @param {number} index
-   * @return {?HTMLElement} checkbox
-   */
-  getCheckboxAtIndex(index) {}
-
-  /**
-   * Toggles the checkbox within a list item.
-   * @param {!HTMLElement} target
-   */
-  toggleCheckbox(target) {}
 }
 
 export {MDCMenuAdapter};

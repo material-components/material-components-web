@@ -98,7 +98,14 @@ test('attachTo returns a component instance', () => {
 test('#initialSyncWithDOM registers click handler on the root element', () => {
   const {root, component, mockFoundation} = setupTestWithMocks();
   domEvents.emit(root, 'click');
-  td.verify(mockFoundation.handleClick(td.matchers.isA(Event)), {times: 1});
+  td.verify(mockFoundation.handleInteraction(td.matchers.isA(Event)), {times: 1});
+  component.destroy();
+});
+
+test('#initialSyncWithDOM registers keydown handler on the root element', () => {
+  const {root, component, mockFoundation} = setupTestWithMocks();
+  domEvents.emit(root, 'keydown');
+  td.verify(mockFoundation.handleInteraction(td.matchers.isA(Event)), {times: 1});
   component.destroy();
 });
 
@@ -106,7 +113,14 @@ test('#destroy deregisters click handler on the root element', () => {
   const {root, component, mockFoundation} = setupTestWithMocks();
   component.destroy();
   domEvents.emit(root, 'click');
-  td.verify(mockFoundation.handleClick(td.matchers.isA(Event)), {times: 0});
+  td.verify(mockFoundation.handleInteraction(td.matchers.isA(Event)), {times: 0});
+});
+
+test('#destroy deregisters keydown handler on the root element', () => {
+  const {root, component, mockFoundation} = setupTestWithMocks();
+  component.destroy();
+  domEvents.emit(root, 'keydown');
+  td.verify(mockFoundation.handleInteraction(td.matchers.isA(Event)), {times: 0});
 });
 
 test(`${strings.OPENING_EVENT} registers document keydown handler and ${strings.CLOSING_EVENT} deregisters it`, () => {
@@ -229,6 +243,20 @@ test('set scrimClickAction forwards to MDCDialogFoundation#setScrimClickAction',
 
   component.scrimClickAction = 'action';
   td.verify(mockFoundation.setScrimClickAction('action'));
+});
+
+test('get autoStackButtons forwards to MDCDialogFoundation#getAutoStackButtons', () => {
+  const {component, mockFoundation} = setupTestWithMocks();
+
+  component.autoStackButtons;
+  td.verify(mockFoundation.getAutoStackButtons());
+});
+
+test('set autoStackButtons forwards to MDCDialogFoundation#setAutoStackButtons', () => {
+  const {component, mockFoundation} = setupTestWithMocks();
+
+  component.autoStackButtons = false;
+  td.verify(mockFoundation.setAutoStackButtons(false));
 });
 
 test('adapter#addClass adds a class to the root element', () => {

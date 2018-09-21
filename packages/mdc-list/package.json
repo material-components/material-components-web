@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@material/base": "^0.39.0",
+    "@material/dom": "^0.0.0",
     "@material/ripple": "^0.39.3",
     "@material/rtl": "^0.39.1",
     "@material/theme": "^0.39.1",

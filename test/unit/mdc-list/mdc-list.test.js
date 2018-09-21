@@ -26,7 +26,6 @@ import {assert} from 'chai';
 import td from 'testdouble';
 import bel from 'bel';
 import {MDCList, MDCListFoundation} from '../../../packages/mdc-list';
-import domEvents from 'dom-events';
 
 function getFixture() {
   return bel`
@@ -221,16 +220,16 @@ test('adapter#focusItemAtIndex focuses the list item at the index specified', ()
   document.body.removeChild(root);
 });
 
-test('adapter#setTabIndexForListItemChildren sets the child button/a/radio/checkbox elements of index', () => {
+test('adapter#setTabIndexForListItemChildren sets the child button/a elements of index', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
   const listItems = root.querySelectorAll('.mdc-list-item');
 
-  for (let index = 0; index < listItems.length; index++) {
-    assert.equal(0, listItems[index].querySelectorAll('[tabindex="0"]').length);
-    component.getDefaultFoundation().adapter_.setTabIndexForListItemChildren(index, 0);
-    assert.equal(1, listItems[index].querySelectorAll('[tabindex="0"]').length);
-  }
+  component.getDefaultFoundation().adapter_.setTabIndexForListItemChildren(0, 0);
+  component.getDefaultFoundation().adapter_.setTabIndexForListItemChildren(1, 0);
+
+  assert.equal(1, listItems[0].querySelectorAll('[tabindex="0"]').length);
+  assert.equal(1, listItems[1].querySelectorAll('[tabindex="0"]').length);
 
   document.body.removeChild(root);
 });
@@ -280,22 +279,6 @@ test('wrapFocus calls setWrapFocus on foundation', () => {
   td.verify(mockFoundation.setWrapFocus(true), {times: 1});
 });
 
-
-test('singleSelection true sets the click handler from the root element', () => {
-  const {root, component, mockFoundation} = setupTest();
-  component.singleSelection = true;
-  domEvents.emit(root, 'click');
-  td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 1});
-});
-
-test('singleSelection false removes the click handler from the root element', () => {
-  const {root, component, mockFoundation} = setupTest();
-  component.singleSelection = true;
-  component.singleSelection = false;
-  domEvents.emit(root, 'click');
-  td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 0});
-});
-
 test('singleSelection calls foundation setSingleSelection with the provided value', () => {
   const {component, mockFoundation} = setupTest();
   component.singleSelection = true;
@@ -306,6 +289,17 @@ test('selectedIndex calls setSelectedIndex on foundation', () => {
   const {component, mockFoundation} = setupTest();
   component.selectedIndex = 1;
   td.verify(mockFoundation.setSelectedIndex(1), {times: 1});
+});
+
+test('handleClick handler is added to root element', () => {
+  const {root, mockFoundation} = setupTest();
+  document.body.appendChild(root);
+  const event = document.createEvent('Event');
+  event.initEvent('click', true, true);
+  const listElementItem = root.querySelector('.mdc-list-item');
+  listElementItem.dispatchEvent(event);
+  td.verify(mockFoundation.handleClick(0, true), {times: 1});
+  document.body.removeChild(root);
 });
 
 test('focusIn handler is added to root element', () => {
@@ -372,6 +366,14 @@ test('keydown handler is triggered when a sub-element of a list is triggered', (
   td.verify(mockFoundation.handleKeydown(event, false, 0), {times: 1});
 });
 
+test('keydown handler does not call foundation when event target is not a list item or child of list item', () => {
+  const {root, mockFoundation} = setupTest();
+  const event = document.createEvent('KeyboardEvent');
+  event.initEvent('keydown', true, true);
+  root.dispatchEvent(event);
+  td.verify(mockFoundation.handleKeydown(event, false, 0), {times: 0});
+});
+
 test('keydown handler is removed from the root element on destroy', () => {
   const {root, component, mockFoundation} = setupTest();
   component.destroy();
@@ -380,4 +382,47 @@ test('keydown handler is removed from the root element on destroy', () => {
   const listElementItem = root.querySelector('.mdc-list-item');
   listElementItem.dispatchEvent(event);
   td.verify(mockFoundation.handleKeydown(event, true, 0), {times: 0});
+});
+
+test('adapter#toggleCheckbox toggles a checkbox', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+  const checkbox = root.querySelector('input[type="checkbox"]');
+
+  const checkboxReturnValue = component.getDefaultFoundation().adapter_.toggleCheckbox(2);
+  assert.isTrue(checkbox.checked);
+  assert.isTrue(checkboxReturnValue);
+  document.body.removeChild(root);
+});
+
+test('adapter#toggleCheckbox toggles a radio button', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+  const radio = root.querySelector('input[type="radio"]');
+
+  const checkboxReturnValue = component.getDefaultFoundation().adapter_.toggleCheckbox(3);
+  assert.isTrue(radio.checked);
+  assert.isTrue(checkboxReturnValue);
+  document.body.removeChild(root);
+});
+
+test('adapter#toggleCheckbox does not toggle a radio button if it is already checked', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+  const radio = root.querySelector('input[type="radio"]');
+
+  const checkboxReturnValue = component.getDefaultFoundation().adapter_.toggleCheckbox(3);
+  component.getDefaultFoundation().adapter_.toggleCheckbox(3);
+  assert.isTrue(radio.checked);
+  assert.isTrue(checkboxReturnValue);
+  document.body.removeChild(root);
+});
+
+test('adapter#toggleCheckbox returns false if no checkbox or radio button is present', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+
+  const checkboxReturnValue = component.getDefaultFoundation().adapter_.toggleCheckbox(0);
+  assert.isFalse(checkboxReturnValue);
+  document.body.removeChild(root);
 });
