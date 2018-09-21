@@ -41,7 +41,8 @@
   @include mdc-drawer-item-text-ink-color($mdc-drawer-item-inactive-ink-color);
   @include mdc-drawer-item-activated-icon-ink-color($mdc-drawer-item-activated-ink-color);
   @include mdc-drawer-item-activated-text-ink-color($mdc-drawer-item-activated-ink-color);
-  @include mdc-drawer-item-corner-radius(4px);
+  @include mdc-drawer-shape-radius(large);
+  @include mdc-drawer-item-shape-radius(4px);
   @include mdc-drawer-z-index($mdc-drawer-z-index);
   @include mdc-drawer-width($mdc-drawer-width);
 

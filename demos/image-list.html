@@ -455,7 +455,10 @@
         });
 
         document.getElementById('toggle-radius').addEventListener('change', function() {
-          document.querySelector('.example').classList[this.checked ? 'add' : 'remove']('rounded-corners');
+          var isChecked = this.checked;
+          document.querySelectorAll('.mdc-image-list').forEach(function(el) {
+            el.classList[isChecked ? 'add' : 'remove']('rounded-corners');
+          });
         });
 
         var standardImageListEl = document.getElementById('standard-image-list');
