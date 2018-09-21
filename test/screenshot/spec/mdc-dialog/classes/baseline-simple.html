@@ -39,7 +39,7 @@
 
       <button class="test-dialog-open-button" data-test-dialog-id="test-dialog" autofocus>Open Dialog</button>
 
-      <div class="mdc-dialog mdc-dialog--open test-dialog"
+      <div class="mdc-dialog mdc-dialog--open test-dialog test-dialog--simple"
            role="alertdialog"
            aria-modal="true"
            aria-labelledby="test-dialog__title--simple"
@@ -56,7 +56,7 @@
                   Inline `style="list-style-type: none"` needed to prevent rendering bug in Edge and IE 11.
                   See https://stackoverflow.com/a/23717689/467582
                 -->
-                <ul class="mdc-list" aria-orientation="vertical" style="list-style-type: none;">
+                <ul class="mdc-list mdc-list--avatar-list" aria-orientation="vertical" style="list-style-type: none;">
                   <li class="mdc-list-item" tabindex="0" data-mdc-dialog-action="wifi">
                     <i class="material-icons mdc-list-item__graphic">network_wifi</i>
                     <span class="test-list-item__label">Wi-Fi</span>

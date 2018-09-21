@@ -24,68 +24,94 @@
 import {strings} from '../../../../packages/mdc-dialog/constants';
 
 window.mdc.testFixture.fontsLoaded.then(() => {
-  [].forEach.call(document.querySelectorAll('.mdc-dialog'), /** @param {!HTMLElement} dialogEl */ (dialogEl) => {
-    /** @type {!MDCDialog} */
-    const dialog = new mdc.dialog.MDCDialog(dialogEl);
+  class DialogFixture {
+    /** @param {!HTMLElement} dialogEl */
+    initialize(dialogEl) {
+      /**
+       * @type {!HTMLElement}
+       * @private
+       */
+      this.dialogEl_ = dialogEl;
 
-    [strings.OPENING_EVENT, strings.OPENED_EVENT].forEach((eventName) => {
-      dialog.listen(eventName, (evt) => console.log(eventName, evt));
-    });
+      /**
+       * @type {!HTMLElement}
+       * @private
+       */
+      this.surfaceEl_ = this.dialogEl_.querySelector('.mdc-dialog__surface');
 
-    [strings.CLOSING_EVENT, strings.CLOSED_EVENT].forEach((eventName) => {
-      dialog.listen(eventName, (evt) => console.log(eventName, evt.detail.action, evt));
-    });
+      /**
+       * @type {!HTMLElement}
+       * @private
+       */
+      this.contentEl_ = this.dialogEl_.querySelector('.mdc-dialog__content');
 
-    // const surfaceEl = dialogEl.querySelector('.mdc-dialog__surface');
-    const contentEl = dialogEl.querySelector('.mdc-dialog__content');
-    const shouldScrollToBottom = dialogEl.classList.contains('test-dialog--scroll-to-bottom');
-    if (contentEl && shouldScrollToBottom) {
-      const scrollToTop = () => setTimeout(() => contentEl.scrollTop = contentEl.scrollHeight);
-      dialog.listen(strings.OPENING_EVENT, scrollToTop);
-      dialog.listen(strings.OPENED_EVENT, scrollToTop);
+      /**
+       * @type {!MDCDialog}
+       * @private
+       */
+      this.dialogInstance_ = new mdc.dialog.MDCDialog(this.dialogEl_);
+
+      [strings.OPENING_EVENT, strings.OPENED_EVENT].forEach((eventName) => {
+        this.dialogInstance_.listen(eventName, (evt) => console.log(eventName, evt));
+      });
+
+      [strings.CLOSING_EVENT, strings.CLOSED_EVENT].forEach((eventName) => {
+        this.dialogInstance_.listen(eventName, (evt) => console.log(eventName, evt.detail.action, evt));
+      });
+
+      const shouldScrollToBottom = this.dialogEl_.classList.contains('test-dialog--scroll-to-bottom');
+      if (shouldScrollToBottom) {
+        this.dialogInstance_.listen(strings.OPENING_EVENT, () => this.scrollToBottom_());
+        this.dialogInstance_.listen(strings.OPENED_EVENT, () => this.scrollToBottom_());
+      }
+
+      const listEl = this.dialogEl_.querySelector('.mdc-list');
+      if (listEl) {
+        const list = new mdc.list.MDCList(listEl);
+        this.dialogInstance_.listen(strings.OPENED_EVENT, () => list.layout());
+      }
+
+      this.dialogInstance_.listen(strings.OPENED_EVENT, () => {
+        this.addRedlines_();
+      });
+
+      this.dialogInstance_.listen(strings.CLOSING_EVENT, () => {
+        this.removeRedlines_();
+      });
+
+      const openButtonEl = document.querySelector(`[data-test-dialog-id="${this.dialogEl_.id}"]`);
+      if (openButtonEl) {
+        openButtonEl.addEventListener('click', () => this.dialogInstance_.open());
+      }
+
+      this.dialogInstance_.open();
     }
 
-    const openButtonEl = dialogEl.id ? document.querySelector(`[data-test-dialog-id="${dialogEl.id}"]`) : null;
-    if (openButtonEl) {
-      openButtonEl.addEventListener('click', () => dialog.open());
-    }
+    /** @private */
+    addRedlines_() {
+      const dialogEl = this.dialogEl_;
+      const contentEl = this.contentEl_;
 
-    const listEl = dialogEl.querySelector('.mdc-list');
-    if (listEl) {
-      const list = new mdc.list.MDCList(listEl);
-      dialog.listen(strings.OPENED_EVENT, () => list.layout());
-    }
-
-    dialog.listen(strings.OPENED_EVENT, () => {
-      window.mdc.testFixture.notifyDomReady();
-    });
-
-    /* Commenting out redlines for now due to unexplained flakes
-
-    dialog.listen(strings.CLOSING_EVENT, () => {
-      window.mdc.testFixture.removeRedlines();
-    });
-
-    dialog.listen(strings.OPENED_EVENT, () => {
-      const isStacked = dialogEl.classList.contains('mdc-dialog--stacked');
-      const isScrollable = dialogEl.classList.contains('mdc-dialog--scrollable');
+      const isSimple = () => dialogEl.classList.contains('test-dialog--simple');
+      const isConfirmation = () => dialogEl.classList.contains('test-dialog--confirmation');
+      const isStacked = () => dialogEl.classList.contains('mdc-dialog--stacked');
+      const isSideBySide = () => !isStacked();
+      const isScrollable = () => dialogEl.classList.contains('mdc-dialog--scrollable');
+      const isNotScrollable = () => !isScrollable();
 
       const anyTitleEl = document.querySelector('.mdc-dialog__title');
       const oneLineTitleEl = document.querySelector(
         '.mdc-dialog__title:not(.test-dialog__title--3-line):not(.test-dialog__title--5-line)'
       );
-      const threeLineTitleEl = document.querySelector('.test-dialog__title--3-line');
-      const notScrolledTitleEl = document.querySelector(
-        '.test-dialog:not(.test-dialog--scroll-to-bottom) .test-dialog__title'
-      );
+      const threeLineTitleEl = document.querySelector('.mdc-dialog--scrollable .test-dialog__title--3-line');
 
+      const contentNoTitleEl = dialogEl.querySelector('.mdc-dialog__content:first-child');
       const contentRectEl = document.querySelector('.test-dialog__content-rect');
+      const listItemEl = document.querySelector('.mdc-list-item');
+      const listItemGraphicEl = document.querySelector('.mdc-list-item:last-child .mdc-list-item__graphic');
+      const listItemLabelEl = document.querySelector('.mdc-list-item:last-child .test-list-item__label');
 
-      const anyActionsEl = document.querySelector('.mdc-dialog__actions');
-      const sideBySideActionsEl = document.querySelector(
-        '.mdc-dialog:not(.mdc-dialog--stacked) .mdc-dialog__actions'
-      );
-
+      const actionsEl = document.querySelector('.mdc-dialog__actions');
       const buttonEls = [].slice.call(document.querySelectorAll('.mdc-dialog__button'));
       const firstButtonEl = buttonEls[0];
       const secondLastButtonEl = buttonEls[buttonEls.length - 2];
@@ -102,172 +128,257 @@ window.mdc.testFixture.fontsLoaded.then(() => {
           '.mdc-dialog__content p:first-child',
         ].join(', '))) : null;
 
-      const lastParagraphEls =
-        contentEl ? [].slice.call(contentEl.querySelectorAll([
-          '.mdc-dialog__content h1:last-child',
-          '.mdc-dialog__content h2:last-child',
-          '.mdc-dialog__content h3:last-child',
-          '.mdc-dialog__content h4:last-child',
-          '.mdc-dialog__content h5:last-child',
-          '.mdc-dialog__content h6:last-child',
-          '.mdc-dialog__content p:last-child',
-        ].join(', '))) : null;
+      const nonScrollableLastParagraphEl =
+        document.querySelector('.mdc-dialog:not(.mdc-dialog--scrollable) .mdc-dialog__content p:last-child');
 
       const firstParagraphEl = firstParagraphEls[0];
-      const lastParagraphEl = lastParagraphEls[lastParagraphEls.length - 1];
 
-      // Vertical redlines
+      window.mdc.testFixture.addRedlines([
+        /*
+         * Title
+         */
 
-      window.mdc.testFixture.addRedline({
-        fromEl: anyTitleEl,
-        name: 'Title typography baseline',
-        fromSide: 'top',
-        toEl: anyTitleEl,
-        toSide: 'first-baseline',
-        specDistancePx: 40,
-        displayOffsetPx: 24,
-        displayAlignment: 'left',
-      });
-
-      window.mdc.testFixture.addRedline({
-        fromEl: oneLineTitleEl,
-        name: 'Title height (1-line)',
-        fromSide: 'top',
-        toEl: oneLineTitleEl,
-        toSide: 'bottom',
-        specDistancePx: 64,
-        displayAlignment: 'center',
-        displayTargetEl: oneLineTitleEl,
-      });
-
-      window.mdc.testFixture.addRedline({
-        fromEl: threeLineTitleEl,
-        name: 'Title height (3-line)',
-        fromSide: 'top',
-        toEl: threeLineTitleEl,
-        toSide: 'bottom',
-        specDistancePx: 128,
-        displayAlignment: 'center',
-        displayTargetEl: threeLineTitleEl,
-      });
-
-      window.mdc.testFixture.addRedline({
-        fromEl: notScrolledTitleEl,
-        name: 'Content typography baseline top',
-        fromSide: 'last-baseline',
-        toEl: firstParagraphEl,
-        toSide: 'first-baseline',
-        specDistancePx: 36,
-        displayAlignment: 'left',
-      });
-
-      if (!isScrollable) {
-        window.mdc.testFixture.addRedline({
-          name: 'Content typography baseline bottom',
-          fromEl: lastParagraphEl,
-          fromSide: 'last-baseline',
-          toEl: sideBySideActionsEl,
-          toSide: 'top',
-          specDistancePx: 28,
-          displayOffsetPx: 100,
+        {
+          name: 'Title typography baseline',
+          fromEl: anyTitleEl,
+          fromSide: 'top',
+          toEl: anyTitleEl,
+          toSide: 'first-baseline',
+          specDistancePx: 40,
           displayAlignment: 'left',
-        });
-      }
-
-      window.mdc.testFixture.addRedline({
-        fromEl: sideBySideActionsEl,
-        name: 'Actions height (1-line)',
-        fromSide: 'top',
-        toEl: sideBySideActionsEl,
-        toSide: 'bottom',
-        specDistancePx: 52,
-        displayAlignment: 'left',
-      });
-
-      window.mdc.testFixture.addRedline({
-        fromEl: anyActionsEl,
-        name: 'Actions padding top',
-        fromSide: 'top',
-        toEl: firstButtonEl,
-        toSide: 'top',
-        specDistancePx: 8,
-      });
-
-      window.mdc.testFixture.addRedline({
-        fromEl: lastButtonEl,
-        name: 'Actions padding bottom',
-        fromSide: 'bottom',
-        toEl: anyActionsEl,
-        toSide: 'bottom',
-        specDistancePx: 8,
-      });
-
-      if (isStacked) {
-        window.mdc.testFixture.addRedline({
-          fromEl: secondLastButtonEl,
-          name: 'Stacked button margin',
-          fromSide: 'bottom',
-          toEl: lastButtonEl,
+          displayOffsetPx: 24,
+        },
+        {
+          name: 'Title height (1-line for Simple/Confirmation)',
+          fromEl: oneLineTitleEl,
+          fromSide: 'top',
+          toEl: listItemEl,
           toSide: 'top',
-          specDistancePx: 12,
-          displayOffsetPx: 0,
-          displayAlignment: 'center',
-        });
-      }
+          specDistancePx: 64, // NOTE: This currently seems to be measured off-by-one
+          displayTargetEl: oneLineTitleEl,
+          flipLabel: true,
+        },
+        {
+          name: 'Title height (3-line)',
+          fromEl: threeLineTitleEl,
+          fromSide: 'top',
+          toEl: threeLineTitleEl,
+          toSide: 'bottom',
+          specDistancePx: 128,
+          displayTargetEl: threeLineTitleEl,
+          flipLabel: true,
+        },
 
-      // Horizontal redlines
+        /*
+         * Content
+         */
 
-      if (!isStacked) {
-        window.mdc.testFixture.addRedline({
-          fromEl: secondLastButtonEl,
-          name: 'Side-by-side button margin',
-          fromSide: 'right',
-          toEl: lastButtonEl,
-          toSide: 'left',
-          specDistancePx: 8,
-          displayOffsetPx: 0,
-          displayAlignment: 'bottom',
-        });
-      }
-
-      window.mdc.testFixture.addRedline({
-        fromEl: lastButtonEl,
-        name: 'Actions padding right',
-        fromSide: 'right',
-        toEl: anyActionsEl,
-        toSide: 'right',
-        specDistancePx: 8,
-        displayAlignment: 'center',
-        displayTargetEl: anyActionsEl,
-      });
-
-      if (contentRectEl) {
-        window.mdc.testFixture.addRedline({
-          fromEl: surfaceEl,
+        {
           name: 'Content padding left',
+          fromEl: this.surfaceEl_,
           fromSide: 'left',
           toEl: contentRectEl,
           toSide: 'left',
           specDistancePx: 24,
-          displayAlignment: 'center',
-          displayTargetEl: surfaceEl,
-        });
-
-        window.mdc.testFixture.addRedline({
-          fromEl: contentRectEl,
+          displayTargetEl: this.surfaceEl_,
+          displayOffsetPx: -10,
+        },
+        {
           name: 'Content padding right',
+          fromEl: contentRectEl,
           fromSide: 'right',
-          toEl: surfaceEl,
+          toEl: this.surfaceEl_,
           toSide: 'right',
           specDistancePx: 24,
-          displayAlignment: 'center',
-          displayTargetEl: surfaceEl,
-        });
+          displayTargetEl: this.surfaceEl_,
+          displayOffsetPx: -10,
+        },
+        {
+          name: 'Non-scrollable content typography baseline top (with title)',
+          fromEl: anyTitleEl,
+          fromSide: 'last-baseline',
+          toEl: firstParagraphEl,
+          toSide: 'first-baseline',
+          specDistancePx: 36,
+          displayAlignment: 'left',
+          displayOffsetPx: 48,
+          flipLabel: true,
+          conditionFn: isNotScrollable,
+        },
+        {
+          name: 'Non-scrollable content typography baseline top (without title)',
+          fromEl: contentNoTitleEl,
+          fromSide: 'top',
+          toEl: firstParagraphEl,
+          toSide: 'first-baseline',
+          specDistancePx: 36, // NOTE: This currently seems to be measured off-by-one
+          displayAlignment: 'left',
+          displayOffsetPx: 48,
+          flipLabel: true,
+          conditionFn: isNotScrollable,
+        },
+        {
+          name: 'Non-scrollable content typography baseline bottom',
+          fromEl: nonScrollableLastParagraphEl,
+          fromSide: 'last-baseline',
+          toEl: actionsEl,
+          toSide: 'top',
+          specDistancePx: 28,
+          displayAlignment: 'left',
+          displayOffsetPx: 48,
+          flipLabel: true,
+          conditionFn: isNotScrollable,
+        },
+
+        /*
+         * Action buttons
+         */
+
+        {
+          name: 'Actions padding top',
+          fromEl: actionsEl,
+          fromSide: 'top',
+          toEl: firstButtonEl,
+          toSide: 'top',
+          specDistancePx: 8,
+        },
+        {
+          name: 'Actions padding bottom',
+          fromEl: lastButtonEl,
+          fromSide: 'bottom',
+          toEl: actionsEl,
+          toSide: 'bottom',
+          specDistancePx: 8,
+        },
+        {
+          name: 'Actions padding right',
+          fromEl: lastButtonEl,
+          fromSide: 'right',
+          toEl: actionsEl,
+          toSide: 'right',
+          specDistancePx: 8,
+          displayTargetEl: actionsEl,
+        },
+        {
+          name: 'Actions height (side-by-side)',
+          fromEl: actionsEl,
+          fromSide: 'top',
+          toEl: actionsEl,
+          toSide: 'bottom',
+          specDistancePx: 52,
+          displayAlignment: 'left',
+          conditionFn: isSideBySide,
+        },
+        {
+          name: 'Actions button margin (side-by-side)',
+          fromEl: secondLastButtonEl,
+          fromSide: 'right',
+          toEl: lastButtonEl,
+          toSide: 'left',
+          specDistancePx: 8,
+          displayAlignment: 'bottom',
+          conditionFn: isSideBySide,
+        },
+        {
+          name: 'Actions button margin (stacked)',
+          fromEl: secondLastButtonEl,
+          fromSide: 'bottom',
+          toEl: lastButtonEl,
+          toSide: 'top',
+          specDistancePx: 12,
+          conditionFn: isStacked,
+        },
+
+        /*
+         * Simple dialog - list items
+         */
+
+        {
+          name: 'Simple list item height',
+          fromEl: listItemEl,
+          fromSide: 'top',
+          toEl: listItemEl,
+          toSide: 'bottom',
+          specDistancePx: 56,
+          flipLabel: true,
+          conditionFn: isSimple,
+        },
+        {
+          name: 'Simple list item graphic width',
+          fromEl: listItemGraphicEl,
+          fromSide: 'left',
+          toEl: listItemGraphicEl,
+          toSide: 'right',
+          specDistancePx: 40,
+          flipLabel: true,
+          conditionFn: isSimple,
+        },
+        {
+          name: 'Simple list item label margin',
+          fromEl: listItemGraphicEl,
+          fromSide: 'right',
+          toEl: listItemLabelEl,
+          toSide: 'left',
+          specDistancePx: 16, // NOTE: Dialog spec says this is 20, but that is inconsistent with List spec.
+          flipLabel: false,
+          conditionFn: isSimple,
+        },
+
+        /*
+         * Confirmation dialog - list items
+         */
+
+        {
+          name: 'Confirmation list item height',
+          fromEl: listItemEl,
+          fromSide: 'top',
+          toEl: listItemEl,
+          toSide: 'bottom',
+          specDistancePx: 48,
+          flipLabel: true,
+          conditionFn: isConfirmation,
+        },
+        {
+          name: 'Confirmation list item graphic width',
+          fromEl: listItemGraphicEl,
+          fromSide: 'left',
+          toEl: listItemGraphicEl,
+          toSide: 'right',
+          specDistancePx: 24,
+          flipLabel: true,
+          conditionFn: isConfirmation,
+        },
+        {
+          name: 'Confirmation list item label margin',
+          fromEl: listItemGraphicEl,
+          fromSide: 'right',
+          toEl: listItemLabelEl,
+          toSide: 'left',
+          specDistancePx: 32,
+          flipLabel: false,
+          conditionFn: isConfirmation,
+        },
+      ]);
+
+      window.mdc.testFixture.notifyDomReady();
+    }
+
+    /** @private */
+    removeRedlines_() {
+      window.mdc.testFixture.removeRedlines();
+    }
+
+    /** @private */
+    scrollToBottom_() {
+      if (!this.contentEl_) {
+        return;
       }
-    });
+      setTimeout(() => this.contentEl_.scrollTop = this.contentEl_.scrollHeight);
+    }
+  }
 
-    */
-
-    dialog.open();
+  [].forEach.call(document.querySelectorAll('.mdc-dialog'), (dialogEl) => {
+    const dialogFixture = new DialogFixture();
+    dialogFixture.initialize(dialogEl);
   });
 });
