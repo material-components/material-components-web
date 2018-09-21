@@ -34,12 +34,12 @@
     <link rel="stylesheet" href="../../../out/spec/mdc-dialog/fixture.css">
   </head>
 
-  <body class="test-container test-container--edge-fonts">
+  <body class="test-container test-container--edge-fonts mdc-dialog-scroll-lock">
     <main class="test-viewport test-viewport--center">
 
       <button class="test-dialog-open-button" data-test-dialog-id="test-dialog" autofocus>Open Dialog</button>
 
-      <div class="mdc-dialog test-dialog"
+      <div class="mdc-dialog mdc-dialog--open test-dialog test-dialog--confirmation"
            role="alertdialog"
            aria-modal="true"
            aria-labelledby="test-dialog__title"
@@ -72,8 +72,7 @@
                         </div>
                       </div>
                     </span>
-                    <label id="test-dialog-baseline-confirmation-radio-1-label"
-                           for="test-dialog-baseline-confirmation-radio-1">Option 1</label>
+                    <label class="test-list-item__label" for="test-dialog-baseline-confirmation-radio-1">Option 1</label>
                   </li>
                   <li class="mdc-list-item" tabindex="0">
                     <span class="mdc-list-item__graphic">
@@ -89,8 +88,7 @@
                         </div>
                       </div>
                     </span>
-                    <label id="test-dialog-baseline-confirmation-radio-2-label"
-                           for="test-dialog-baseline-confirmation-radio-2">Option 2</label>
+                    <label class="test-list-item__label" for="test-dialog-baseline-confirmation-radio-2">Option 2</label>
                   </li>
                 </ul>
               </div>
