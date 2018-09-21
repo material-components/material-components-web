@@ -165,7 +165,8 @@ radio buttons (indicating single selection) or checkboxes (indicating multiple s
             </div>
           </span>
           <label id="test-dialog-baseline-confirmation-radio-1-label"
-                 for="test-dialog-baseline-confirmation-radio-1">None</label>
+                 for="test-dialog-baseline-confirmation-radio-1"
+                 class="mdc-list-item__text">None</label>
         </li>
         <!-- ... -->
       </ul>
