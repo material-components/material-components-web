@@ -36,7 +36,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
       dialog.listen(eventName, (evt) => console.log(eventName, evt.detail.action, evt));
     });
 
-    const surfaceEl = dialogEl.querySelector('.mdc-dialog__surface');
+    // const surfaceEl = dialogEl.querySelector('.mdc-dialog__surface');
     const contentEl = dialogEl.querySelector('.mdc-dialog__content');
     const shouldScrollToBottom = dialogEl.classList.contains('test-dialog--scroll-to-bottom');
     if (contentEl && shouldScrollToBottom) {
@@ -63,6 +63,8 @@ window.mdc.testFixture.fontsLoaded.then(() => {
       const list = new mdc.list.MDCList(listEl);
       dialog.listen(strings.OPENED_EVENT, () => list.layout());
     }
+
+    /* Commenting out redlines for now due to unexplained flakes
 
     dialog.listen(strings.CLOSING_EVENT, () => {
       window.mdc.testFixture.removeRedlines();
@@ -267,6 +269,8 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         });
       }
     });
+
+    */
 
     dialog.open();
   });
