@@ -384,15 +384,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
       if (!this.contentEl_) {
         return;
       }
-
-      const tryToScroll = () => {
-        this.contentEl_.scrollTop = this.contentEl_.scrollHeight;
-        if (this.contentEl_.scrollTop === 0) {
-          requestAnimationFrame(tryToScroll);
-        }
-      };
-
-      tryToScroll();
+      setTimeout(() => this.contentEl_.scrollTop = this.contentEl_.scrollHeight);
     }
   }
 
