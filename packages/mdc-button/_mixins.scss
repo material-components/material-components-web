@@ -26,6 +26,8 @@
 @import "@material/theme/functions";
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
+@import "@material/shape/mixins";
+@import "@material/shape/functions";
 @import "./variables";
 
 @mixin mdc-button-filled-accessible($container-fill-color) {
@@ -68,8 +70,12 @@
   }
 }
 
-@mixin mdc-button-corner-radius($corner-radius) {
-  border-radius: $corner-radius;
+@mixin mdc-button-shape-radius($radius, $rtl-reflexive: false) {
+  @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-button-height, $radius), $rtl-reflexive);
+
+  &.mdc-button--dense {
+    @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-dense-button-height, $radius), $rtl-reflexive);
+  }
 }
 
 @mixin mdc-button-horizontal-padding($padding) {

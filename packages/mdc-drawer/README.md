@@ -331,7 +331,8 @@ Mixin | Description
 `mdc-drawer-item-text-ink-color($color)` | Sets drawer list item text ink color.
 `mdc-drawer-item-activated-icon-ink-color($color)` | Sets activated drawer list item icon ink color.
 `mdc-drawer-item-activated-text-ink-color($color)` | Sets activated drawer list item text ink color.
-`mdc-drawer-item-corner-radius($radius)` | Sets the corner border radius of the drawer list item.
+`mdc-drawer-shape-radius($radius)` | Sets the rounded shape to drawer with given radius size. `$radius` can be single radius or list of 2 radius values for trailing-top and trailing-bottom. Automatically flips the radius values in RTL context.
+`mdc-drawer-item-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to drawer navigation item with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to true.
 `mdc-drawer-activated-overlay-color($color)` | Sets the overlay color of the activated drawer list item.
 `mdc-drawer-scrim-fill-color($color)` | Sets the fill color of `mdc-drawer-scrim`.
 `mdc-drawer-z-index($value)` | Sets the z index of drawer. Drawer stays on top of top app bar except for clipped variant of drawer.

@@ -20,45 +20,15 @@
 // THE SOFTWARE.
 //
 
-// Sets 45-degree angle corners of a certain size (akin to border-radius but for flat corners).
-@mixin mdc-shape-angled-corner($background-color, $top-left-size, $top-right-size: $top-left-size, $bottom-right-size: $top-left-size, $bottom-left-size: $top-right-size) {
-  $corners: (top, left, $top-left-size),
-    (top, right, $top-right-size),
-    (bottom, right, $bottom-right-size),
-    (bottom, left, $bottom-left-size);
+@import "./variables";
+@import "./functions";
 
-  @each $y, $x, $size in $corners {
-    @if $size > 0 {
-      // Assume that the size passed represents the width/height rather than the diagonal.
-      // This makes it trivial e.g. to accomplish a horizontal arrow cap by specifying exactly half the shape's height.
-      // Unfortunately, Sass doesn't have built-in exponentiation, and node-sass custom functions seem to hang.
-      // (https://github.com/sass/node-sass/issues/857 may be related, but the workaround didn't seem to work.)
-      // Fortunately, if we assume 45 degree cutouts all the time, a^2 + b^2 = c^2 simplifies to a*sqrt(2).
-      $diagonal-length: $size * 1.4142135623730951;
+@mixin mdc-shape-radius($radius, $rtl-reflexive: false) {
+  border-radius: mdc-shape-prop-value_($radius);
 
-      .mdc-shape-container__corner--#{$y}-#{$x} {
-        #{$y}: -$diagonal-length / 2;
-        #{$x}: -$diagonal-length / 2;
-        width: $diagonal-length;
-        height: $diagonal-length;
-      }
+  @if ($rtl-reflexive) {
+    @include mdc-rtl {
+      border-radius: mdc-shape-flip-radius($radius);
     }
-  }
-
-  @include mdc-shape-angled-corner-background($background-color);
-}
-
-// Sets the background color used for masking.
-// Exposed separately to allow overriding for some shapes within a page which happen to be over a different background.
-@mixin mdc-shape-angled-corner-background($background-color) {
-  .mdc-shape-container__corner::after {
-    background-color: $background-color;
-  }
-}
-
-@mixin mdc-shape-angled-corner-outline($outline-width, $outline-color, $outline-style: solid) {
-  .mdc-shape-container__corner::before {
-    top: $outline-width;
-    border-bottom: $outline-width $outline-style $outline-color;
   }
 }

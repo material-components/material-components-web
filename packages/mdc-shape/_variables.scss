@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc.
+// Copyright 2018 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,43 +20,14 @@
 // THE SOFTWARE.
 //
 
-@import "./common";
-@import "../packages/mdc-button/mdc-button";
-@import "../packages/mdc-button/mixins";
-@import "../packages/mdc-button/variables";
-@import "../packages/mdc-checkbox/mdc-checkbox";
-@import "../packages/mdc-form-field/mdc-form-field";
-@import "../packages/mdc-ripple/mixins";
+// Shape categories
+$mdc-shape-small-surface-radius: 4px !default;
+$mdc-shape-medium-surface-radius: 4px !default;
+$mdc-shape-large-surface-radius: 0 !default;
 
-.mdc-button.secondary-text-button {
-  @include mdc-button-ink-color($mdc-theme-secondary);
-  @include mdc-states(secondary);
-}
-
-.mdc-button.secondary-filled-button {
-  @include mdc-button-filled-accessible($mdc-theme-secondary);
-}
-
-.mdc-button.secondary-outlined-button {
-  @include mdc-button-ink-color($mdc-theme-secondary);
-  @include mdc-button-outline-color($mdc-theme-secondary);
-
-}
-
-.mdc-button.big-round-corner-button {
-  @include mdc-button-shape-radius(8px);
-}
-
-.mdc-button.thick-outline-button {
-  @include mdc-button-outline-width(4px);
-}
-
-.demo-ink-color {
-  @include mdc-button-icon-color(white);
-  @include mdc-button-ink-color(orange);
-  @include mdc-states(orange);
-}
-
-.demo-icon-color {
-  @include mdc-button-icon-color(orange);
-}
+// Shape category mapping.
+$mdc-shape-category-values: (
+  small: $mdc-shape-small-surface-radius,
+  medium: $mdc-shape-medium-surface-radius,
+  large: $mdc-shape-large-surface-radius,
+);

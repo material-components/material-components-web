@@ -193,5 +193,5 @@ Mixin | Description
 --- | ---
 `mdc-card-fill-color($color)` | Sets the fill color of a card
 `mdc-card-outline($color, $thickness)` | Sets the color and thickness of a card's outline (but does _not_ remove its shadow)
-`mdc-card-corner-radius($radius)` | Sets the corner radius of a card
+`mdc-card-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to card with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `mdc-card-media-aspect-ratio($x, $y)` | Maintains the given aspect ratio on a `mdc-card__media` subelement by dynamically scaling its height relative to its width

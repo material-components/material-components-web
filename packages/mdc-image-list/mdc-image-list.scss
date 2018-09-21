@@ -62,6 +62,7 @@
 
 @at-root {
   @include mdc-image-list-aspect(1);
+  @include mdc-image-list-shape-radius(0);
 }
 
 .mdc-image-list__supporting {
