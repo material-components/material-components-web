@@ -116,7 +116,7 @@ The Simple Dialog contains a list of potential actions. It does not contain butt
  --></h2>
     <section class="mdc-dialog__content" id="my-dialog-content">
       <ul class="mdc-list mdc-list--avatar-list">
-        <li class="mdc-list-item" data-mdc-dialog-action="none">
+        <li class="mdc-list-item" tabindex="0" data-mdc-dialog-action="none">
           <span class="mdc-list-item__text">None</span>
         </li>
         <li class="mdc-list-item" data-mdc-dialog-action="callisto">
