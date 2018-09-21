@@ -31,9 +31,8 @@ import {MDCNotchedOutline} from '@material/notched-outline/index';
 import MDCSelectFoundation from './foundation';
 import MDCSelectAdapter from './adapter';
 import {cssClasses, strings} from './constants';
-import {strings as menuSurfaceStrings} from '@material/menu-surface/constants';
+import {strings as menuSurfaceStrings, Corner} from '@material/menu-surface/constants';
 import {strings as menuStrings} from '@material/menu/constants';
-import {Corner} from '../mdc-menu-surface/constants';
 
 /**
  * @extends MDCComponent<!MDCSelectFoundation>
