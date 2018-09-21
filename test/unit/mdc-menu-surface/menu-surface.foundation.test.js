@@ -122,7 +122,7 @@ testFoundation('#open adds the animation class to start an animation',
     td.verify(mockAdapter.addClass(cssClasses.ANIMATING_OPEN), {times: 1});
   });
 
-testFoundation('#open does not add the animation class to start an animation when setQuickOpen is false',
+testFoundation('#open does not add the animation class to start an animation when setQuickOpen is true',
   ({foundation, mockAdapter}) => {
     foundation.setQuickOpen(true);
     foundation.open();
@@ -149,16 +149,23 @@ testFoundation('#open removes the animation class at the end of the animation',
     td.verify(mockAdapter.removeClass(cssClasses.ANIMATING_OPEN));
   });
 
-testFoundation('#open emits the open event at the end of the animation',
-  ({foundation, mockAdapter, mockRaf}) => {
-    const clock = lolex.install();
-    foundation.open();
-    mockRaf.flush();
-    mockRaf.flush();
-    clock.tick(numbers.TRANSITION_OPEN_DURATION);
-    mockRaf.flush();
-    td.verify(mockAdapter.notifyOpen());
-  });
+testFoundation('#open emits the open event at the end of the animation', ({foundation, mockAdapter, mockRaf}) => {
+  const clock = lolex.install();
+  foundation.open();
+  mockRaf.flush();
+  mockRaf.flush();
+  clock.tick(numbers.TRANSITION_OPEN_DURATION);
+  mockRaf.flush();
+  td.verify(mockAdapter.notifyOpen());
+});
+
+testFoundation('#open emits the open event when setQuickOpen is true', ({foundation, mockAdapter, mockRaf}) => {
+  foundation.setQuickOpen(true);
+  foundation.open();
+  mockRaf.flush();
+  mockRaf.flush();
+  td.verify(mockAdapter.notifyOpen());
+});
 
 /** Testing various layout cases for autopositioning */
 testFoundation('#open from small anchor in center of viewport, default (TOP_START) anchor corner, RTL',
@@ -526,28 +533,63 @@ testFoundation('#close removes the open class from the menu surface', ({foundati
   td.verify(mockAdapter.removeClass(cssClasses.OPEN));
 });
 
-testFoundation('#close removes the animation class at the end of the animation',
+testFoundation('#close removes the animation class at the end of the animation', ({foundation, mockAdapter, mockRaf}) => {
+  const clock = lolex.install();
+  foundation.close();
+  mockRaf.flush();
+  mockRaf.flush();
+  td.verify(mockAdapter.addClass(cssClasses.ANIMATING_CLOSED));
+  clock.tick(numbers.TRANSITION_CLOSE_DURATION);
+  mockRaf.flush();
+  td.verify(mockAdapter.removeClass(cssClasses.ANIMATING_CLOSED));
+  td.verify(mockAdapter.notifyClose());
+});
+
+testFoundation('#close emits the close event at the end of the animation', ({foundation, mockAdapter, mockRaf}) => {
+  const clock = lolex.install();
+  foundation.close();
+  mockRaf.flush();
+  mockRaf.flush();
+  clock.tick(numbers.TRANSITION_CLOSE_DURATION);
+  mockRaf.flush();
+  td.verify(mockAdapter.notifyClose());
+});
+
+testFoundation('#close emits the close event when quickOpen is true', ({foundation, mockAdapter, mockRaf}) => {
+  foundation.setQuickOpen(true);
+  foundation.close();
+  mockRaf.flush();
+  mockRaf.flush();
+  td.verify(mockAdapter.notifyClose());
+});
+
+testFoundation('#close causes restoreFocus to be called if the menu-surface has focus',
   ({foundation, mockAdapter, mockRaf}) => {
-    const clock = lolex.install();
+    td.when(mockAdapter.isFocused()).thenReturn(true);
+    foundation.setQuickOpen(true);
     foundation.close();
     mockRaf.flush();
-    mockRaf.flush();
-    td.verify(mockAdapter.addClass(cssClasses.ANIMATING_CLOSED));
-    clock.tick(numbers.TRANSITION_CLOSE_DURATION);
-    mockRaf.flush();
-    td.verify(mockAdapter.removeClass(cssClasses.ANIMATING_CLOSED));
-    td.verify(mockAdapter.notifyClose());
+    td.verify(mockAdapter.restoreFocus());
   });
 
-testFoundation('#close emits the close event at the end of the animation',
+testFoundation('#close causes restoreFocus to be called if an element within the menu-surface has focus',
   ({foundation, mockAdapter, mockRaf}) => {
-    const clock = lolex.install();
+    td.when(mockAdapter.isFocused()).thenReturn(false);
+    td.when(mockAdapter.isElementInContainer(td.matchers.anything())).thenReturn(true);
+    foundation.setQuickOpen(true);
     foundation.close();
     mockRaf.flush();
+    td.verify(mockAdapter.restoreFocus());
+  });
+
+testFoundation('#close does not cause restoreFocus to be called if the active element is not within the menu-surface',
+  ({foundation, mockAdapter, mockRaf}) => {
+    td.when(mockAdapter.isFocused()).thenReturn(false);
+    td.when(mockAdapter.isElementInContainer(td.matchers.anything())).thenReturn(false);
+    foundation.setQuickOpen(true);
+    foundation.close();
     mockRaf.flush();
-    clock.tick(numbers.TRANSITION_CLOSE_DURATION);
-    mockRaf.flush();
-    td.verify(mockAdapter.notifyClose());
+    td.verify(mockAdapter.restoreFocus(), {times: 0});
   });
 
 test('#isOpen returns true when the menu surface is open', () => {
