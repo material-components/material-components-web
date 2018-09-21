@@ -78,11 +78,12 @@ class MDCChipSetFoundation extends MDCFoundation {
 
   /**
    * Toggles selection of the chip with the given id.
+   * @private
    * @param {string} chipId
    */
-  toggleSelect(chipId) {
+  toggleSelect_(chipId) {
     if (this.selectedChipIds_.indexOf(chipId) >= 0) {
-      this.deselect(chipId);
+      this.deselect_(chipId);
     } else {
       this.select(chipId);
     }
@@ -107,9 +108,10 @@ class MDCChipSetFoundation extends MDCFoundation {
 
   /**
    * Deselects the chip with the given id.
+   * @private
    * @param {string} chipId
    */
-  deselect(chipId) {
+  deselect_(chipId) {
     const index = this.selectedChipIds_.indexOf(chipId);
     if (index >= 0) {
       this.selectedChipIds_.splice(index, 1);
@@ -121,20 +123,18 @@ class MDCChipSetFoundation extends MDCFoundation {
    * Handles a chip interaction event
    * @param {!MDCChipInteractionEventType} evt
    */
-  handleChipInteraction(evt) {
-    const {chipId} = evt.detail;
+  handleChipInteraction(chipId) {
     if (this.adapter_.hasClass(cssClasses.CHOICE) || this.adapter_.hasClass(cssClasses.FILTER)) {
-      this.toggleSelect(chipId);
+      this.toggleSelect_(chipId);
     }
   }
 
   /**
    * Handles the event when a chip is removed.
-   * @param {!MDCChipRemovalEventType} evt
+   * @param {string} chipId
    */
-  handleChipRemoval(evt) {
-    const {chipId} = evt.detail;
-    this.deselect(chipId);
+  handleChipRemoval(chipId) {
+    this.deselect_(chipId);
     this.adapter_.removeChip(chipId);
   }
 }

@@ -89,12 +89,18 @@ test('#destroy cleans up child chip components', () => {
 
 test('#initialSyncWithDOM sets up event handlers', () => {
   const {root, mockFoundation} = setupMockFoundationTest();
+  const evtData = {
+    detail: {chipId: 'chipA'},
+    bubbles: true,
+  };
+  const evt1 = new CustomEvent(MDCChipFoundation.strings.INTERACTION_EVENT, evtData);
+  const evt2 = new CustomEvent(MDCChipFoundation.strings.REMOVAL_EVENT, evtData);
 
-  domEvents.emit(root, MDCChipFoundation.strings.INTERACTION_EVENT);
-  td.verify(mockFoundation.handleChipInteraction(td.matchers.anything()), {times: 1});
+  root.dispatchEvent(evt1);
+  td.verify(mockFoundation.handleChipInteraction('chipA'), {times: 1});
 
-  domEvents.emit(root, MDCChipFoundation.strings.REMOVAL_EVENT);
-  td.verify(mockFoundation.handleChipRemoval(td.matchers.anything()), {times: 1});
+  root.dispatchEvent(evt2);
+  td.verify(mockFoundation.handleChipRemoval('chipA'), {times: 1});
 });
 
 test('#destroy removes event handlers', () => {
