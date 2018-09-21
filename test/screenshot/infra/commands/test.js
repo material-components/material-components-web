@@ -277,8 +277,8 @@ class TestCommand {
     let startIndex = 0;
     while (comparisonFunctions.length > 0) {
       const promises = comparisonFunctions.splice(0, 50).map((comparisonFunction) => new Promise(comparisonFunction));
-      const endIndex = startIndex + promises.length;
-      this.logger_.debug(`Comparing screenshots ${startIndex} to ${endIndex}...`);
+      const endIndex = startIndex + promises.length - 1;
+      this.logger_.debug(`Comparing screenshots ${startIndex}–${endIndex}...`);
       await Promise.all(promises);
       startIndex += promises.length;
     }
