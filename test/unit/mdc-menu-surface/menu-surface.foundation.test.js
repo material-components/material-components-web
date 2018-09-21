@@ -278,7 +278,7 @@ testFoundation('#open from small anchor in right bottom of viewport, BOTTOM_END 
     td.verify(mockAdapter.setPosition({right: '40px', bottom: '20px'}));
   });
 
-testFoundation('#open from small anchor in top right of viewport, fixed position, no scroll',
+testFoundation('#open from small anchor in top left of viewport, fixed position, no scroll',
   ({foundation, mockAdapter, mockRaf}) => {
     initAnchorLayout(mockAdapter, smallTopLeft, true);
     foundation.setFixedPosition(true);
@@ -288,7 +288,7 @@ testFoundation('#open from small anchor in top right of viewport, fixed position
     td.verify(mockAdapter.setPosition({left: '20px', top: '20px'}));
   });
 
-testFoundation('#open from small anchor in top right of viewport, absolute position, no scroll',
+testFoundation('#open from small anchor in top left of viewport, absolute position, no scroll',
   ({foundation, mockAdapter, mockRaf}) => {
     initAnchorLayout(mockAdapter, smallTopLeft, true);
     foundation.open();
@@ -297,7 +297,7 @@ testFoundation('#open from small anchor in top right of viewport, absolute posit
     td.verify(mockAdapter.setPosition({left: '0', top: '0'}));
   });
 
-testFoundation('#open from anchor in top right of viewport, absolute position, hoisted menu surface, no scroll',
+testFoundation('#open from anchor in top left of viewport, absolute position, hoisted menu surface, no scroll',
   ({foundation, mockAdapter, mockRaf}) => {
     initAnchorLayout(mockAdapter, smallTopLeft, true);
     foundation.setIsHoisted(true);
@@ -307,7 +307,7 @@ testFoundation('#open from anchor in top right of viewport, absolute position, h
     td.verify(mockAdapter.setPosition({left: '20px', top: '20px'}));
   });
 
-testFoundation('#open from small anchor in top right of viewport, fixed position, scrollX/scrollY 5px/10 px',
+testFoundation('#open from small anchor in top left of viewport, fixed position, scrollX/scrollY 5px/10 px',
   ({foundation, mockAdapter, mockRaf}) => {
     initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 5, y: 10});
     foundation.setFixedPosition(true);
@@ -317,7 +317,7 @@ testFoundation('#open from small anchor in top right of viewport, fixed position
     td.verify(mockAdapter.setPosition({left: '20px', top: '20px'}));
   });
 
-testFoundation('#open from small anchor in top right of viewport, absolute position, scrollX/scrollY 5px/10 px',
+testFoundation('#open from small anchor in top left of viewport, absolute position, scrollX/scrollY 5px/10 px',
   ({foundation, mockAdapter, mockRaf}) => {
     initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 5, y: 10});
     foundation.open();
@@ -326,7 +326,7 @@ testFoundation('#open from small anchor in top right of viewport, absolute posit
     td.verify(mockAdapter.setPosition({left: '0', top: '0'}));
   });
 
-testFoundation('#open from anchor in top right of viewport, absolute position, hoisted menu surface, scrollX/scrollY ' +
+testFoundation('#open from anchor in top left of viewport, absolute position, hoisted menu surface, scrollX/scrollY ' +
   '5px/10 px', ({foundation, mockAdapter, mockRaf}) => {
   initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 5, y: 10});
   foundation.setIsHoisted(true);
