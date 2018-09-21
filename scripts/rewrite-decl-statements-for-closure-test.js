@@ -232,15 +232,6 @@ function transform(srcFile, rootDir) {
     const message = `
 Missing multiline comment terminator!
 
-Note that the following syntax is not supported:
-
-    export function foo() { ... }
-
-use this instead:
-
-    function foo() { ... }
-    export {foo};
-
 ${data}
 `.trim();
 
