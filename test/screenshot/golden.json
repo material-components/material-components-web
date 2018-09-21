@@ -431,11 +431,11 @@
     }
   },
   "spec/mdc-dialog/classes/overflow-bottom.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/18/18_18_22_548/spec/mdc-dialog/classes/overflow-bottom.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/21/11_20_28_699/spec/mdc-dialog/classes/overflow-bottom.html?utm_source=golden_json",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/18/18_18_22_548/spec/mdc-dialog/classes/overflow-bottom.html.windows_chrome_69.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/17/15_33_59_538/spec/mdc-dialog/classes/overflow-bottom.html.windows_edge_17.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/18/18_18_22_548/spec/mdc-dialog/classes/overflow-bottom.html.windows_firefox_62.png"
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/21/11_20_28_699/spec/mdc-dialog/classes/overflow-bottom.html.windows_firefox_62.png"
     }
   },
   "spec/mdc-dialog/classes/overflow-top.html": {
