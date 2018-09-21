@@ -335,9 +335,12 @@ class MDCSelect extends MDCComponent {
 
     if (previouslySelected) {
       previouslySelected.classList.remove(cssClasses.SELECTED);
+      previouslySelected.removeAttribute('aria-selected');
     }
 
     selectedItem.classList.add(cssClasses.SELECTED);
+    selectedItem.setAttribute('aria-selected', 'true');
+
     this.layout();
   }
 
