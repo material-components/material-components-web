@@ -225,8 +225,6 @@ Method Signature | Description
 `getParentElement(element: HTMLElement) => ?HTMLElement` | Returns the `.parentElement` element of the `element` provided.
 `getSelectedElementIndex(element: HTMLElement) => number` | Returns the `index` value of the element within the selection group provided, `element` that contains the `mdc-menu-item--selected` class.
 `notifySelected(index: number) => void` | Emits a `MDCMenu:selected` event for the element at the `index` specified.
-`getCheckboxAtIndex(index: number) => ?HTMLElement` | Returns the checkbox element contained within the element at the `index` specified.
-`toggleCheckbox(checkbox: HTMLElement) => void` | Toggles the `checkbox` element provided and triggers a `change` event for the element.
 
 ### `MDCMenuFoundation`
 

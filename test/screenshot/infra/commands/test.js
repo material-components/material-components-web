@@ -222,7 +222,7 @@ class TestCommand {
     const plural = num === 1 ? '' : 's';
     this.logger_.foldStart('screenshot.compare_master', `Comparing ${num} screenshot${plural} to master`);
 
-    const promises = [];
+    const comparisonFunctions = [];
     const masterScreenshotSets = masterReportData.screenshots;
     const masterScreenshotList = masterScreenshotSets.actual_screenshot_list;
 
@@ -239,7 +239,7 @@ class TestCommand {
           continue;
         }
 
-        promises.push(new Promise(async (resolve) => {
+        comparisonFunctions.push(async (resolve) => {
           masterScreenshot.actual_html_file = capturedScreenshot.actual_html_file;
           masterScreenshot.actual_image_file = capturedScreenshot.actual_image_file;
           masterScreenshot.capture_state = capturedScreenshot.capture_state;
@@ -267,17 +267,28 @@ class TestCommand {
           }
 
           resolve();
-        }));
+        });
       }
     }
 
-    await Promise.all(promises);
+    // When there are a lot of images (~400 or more), comparing all of them in parallel causes timeouts and OOMs.
+    // To avoid this, we compare images in batches of 50 at a time.
+    // See https://github.com/material-components/material-components-web/issues/3555
+    let startIndex = 0;
+    while (comparisonFunctions.length > 0) {
+      const promises = comparisonFunctions.splice(0, 50).map((comparisonFunction) => new Promise(comparisonFunction));
+      const endIndex = startIndex + promises.length - 1;
+      this.logger_.debug(`Comparing screenshots ${startIndex + 1}–${endIndex + 1}...`);
+      await Promise.all(promises);
+      startIndex += promises.length;
+    }
 
     const endTimeIsoUtc = new Date().toISOString();
     masterReportData.meta.start_time_iso_utc = startTimeIsoUtc;
     masterReportData.meta.end_time_iso_utc = endTimeIsoUtc;
     masterReportData.meta.duration_ms = Duration.elapsed(startTimeIsoUtc, endTimeIsoUtc).toMillis();
 
+    this.logger_.log('');
     this.logger_.foldEnd('screenshot.compare_master');
   }
 
