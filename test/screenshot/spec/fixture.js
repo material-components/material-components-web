@@ -84,6 +84,8 @@ class TestFixture {
       this.notifyWebDriver_();
     });
 
+    this.listenForAnimationEvents_();
+
     window.addEventListener('resize', () => {
       this.renderRedlines_();
     });
@@ -93,8 +95,44 @@ class TestFixture {
     });
   }
 
-  /** @param {!RedlineConfig} config */
-  addRedline(config) {
+  listenForAnimationEvents_() {
+    let timer = null;
+
+    const handleAnimationEvent = () => {
+      console.log('Waiting for animations to settle...');
+      document.body.removeAttribute('data-animations-settled');
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        console.log('Animations settled!');
+        document.body.setAttribute('data-animations-settled', '');
+      }, 300); // TODO(acdvorak): Create a constant for this
+    };
+
+    window.addEventListener('animationstart', handleAnimationEvent);
+    window.addEventListener('transitionstart', handleAnimationEvent);
+    window.addEventListener('animationend', handleAnimationEvent);
+    window.addEventListener('transitionend', handleAnimationEvent);
+    window.addEventListener('load', handleAnimationEvent);
+  }
+
+  notifyDomReady() {
+    setTimeout(() => {
+      console.log('DOM ready!');
+      document.body.setAttribute('data-dom-ready', '');
+    });
+  }
+
+  /** @param {!Array<!RedlineConfig>} configs */
+  addRedlines(configs) {
+    configs.forEach((config) => this.addRedline(config, /* renderNow */ false));
+    this.renderRedlines_();
+  }
+
+  /**
+   * @param {!RedlineConfig} config
+   * @param {boolean=} renderNow
+   */
+  addRedline(config, renderNow = true) {
     const {fromEl, toEl, name} = config;
     if (!fromEl || !toEl) {
       return;
@@ -123,29 +161,15 @@ class TestFixture {
     mergedConfig.orientation = this.getOrientation_(mergedConfig);
 
     this.redlineConfigs_.push(mergedConfig);
-    this.renderRedlines_();
+
+    if (renderNow) {
+      this.renderRedlines_();
+    }
   }
 
   removeRedlines() {
     this.redlineConfigs_.length = 0;
     this.redlineContainerEl_.innerHTML = '';
-  }
-
-  /**
-   * @param {!RedlineConfig} config
-   * @return {string}
-   * @private
-   */
-  getOrientation_(config) {
-    const {fromSide} = config;
-    if (fromSide === 'top' || fromSide === 'bottom' ||
-      fromSide === 'first-baseline' || fromSide === 'last-baseline') {
-      return 'vertical';
-    } else if (fromSide === 'left' || fromSide === 'right') {
-      return 'horizontal';
-    } else {
-      throw new Error(`Unsupported 'fromSide' value: "${fromSide}"`);
-    }
   }
 
   /** @private */
@@ -353,6 +377,23 @@ class TestFixture {
       el = el.parentElement;
     }
     return 0;
+  }
+
+  /**
+   * @param {!RedlineConfig} config
+   * @return {string}
+   * @private
+   */
+  getOrientation_(config) {
+    const {fromSide} = config;
+    if (fromSide === 'top' || fromSide === 'bottom' ||
+      fromSide === 'first-baseline' || fromSide === 'last-baseline') {
+      return 'vertical';
+    } else if (fromSide === 'left' || fromSide === 'right') {
+      return 'horizontal';
+    } else {
+      throw new Error(`Unsupported 'fromSide' value: "${fromSide}"`);
+    }
   }
 
   /**

@@ -782,7 +782,8 @@ class SeleniumApi {
     const fontLoadTimeoutMs = isOnline ? flakeConfig.font_face_observer_timeout_ms : 500;
 
     await driver.get(urlWithQsParams);
-    await driver.wait(until.elementLocated(By.css('[data-fonts-loaded]')), fontLoadTimeoutMs).catch(() => 0);
+    const domReadyCssSelector = '[data-fonts-loaded][data-animations-settled][data-dom-ready]';
+    await driver.wait(until.elementLocated(By.css(domReadyCssSelector)), fontLoadTimeoutMs).catch(() => {});
 
     const delayMs = flakeConfig.retry_delay_ms;
     if (delayMs > 0) {
