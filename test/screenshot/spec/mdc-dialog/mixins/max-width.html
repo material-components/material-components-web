@@ -34,12 +34,12 @@
     <link rel="stylesheet" href="../../../out/spec/mdc-dialog/fixture.css">
   </head>
 
-  <body class="test-container test-container--edge-fonts">
+  <body class="test-container test-container--edge-fonts mdc-dialog-scroll-lock">
     <main class="test-viewport test-viewport--center">
 
       <button class="test-dialog-open-button" data-test-dialog-id="test-dialog" autofocus>Open Dialog</button>
 
-      <div class="mdc-dialog test-dialog test-dialog--max-width"
+      <div class="mdc-dialog mdc-dialog--open test-dialog test-dialog--max-width"
            role="alertdialog"
            aria-modal="true"
            aria-labelledby="test-dialog__title"
@@ -48,9 +48,11 @@
         <div class="mdc-dialog__scrim"></div>
         <div class="mdc-dialog__container">
           <div class="mdc-dialog__surface">
-            <h2 class="mdc-dialog__title test-dialog__title test-dialog__title--5-line" id="test-dialog__title">“The Count of Monte Cristo” by Alexandre Dumas.<br>
+            <h2 class="mdc-dialog__title test-dialog__title test-dialog__title--5-line" id="test-dialog__title"><!--
+           -->“The Count of Monte Cristo” by Alexandre Dumas.<br>
               Published in 1844 and translated by Robin Buss.<br>
-              Public domain.</h2>
+              Public domain.<!--
+         --></h2>
             <section class="mdc-dialog__content test-dialog__content" id="test-dialog__content">
               <div class="test-dialog__content-rect">
                 <p>On the <span class="test-font--redact-all">24th</span> of February, 1815, the look-out at Notre-Dame de la Garde

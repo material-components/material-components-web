@@ -128,7 +128,7 @@ class ReportBuilder {
    */
   async initForApproval({runReportJsonUrl}) {
     /** @type {!mdc.proto.TestFile} */
-    const runReportJsonFile = await this.fileCache_.downloadUrlToDisk(runReportJsonUrl, 'utf8');
+    const runReportJsonFile = await this.fileCache_.getFile({uri: runReportJsonUrl, encoding: 'utf8'});
     /** @type {!mdc.proto.ReportData} */
     const reportData = ReportData.fromObject(require(runReportJsonFile.absolute_path));
     reportData.approvals = Approvals.create();
@@ -357,7 +357,7 @@ class ReportBuilder {
     await Promise.all(
       urls
         .filter((url) => Boolean(url))
-        .map((url) => this.fileCache_.downloadUrlToDisk(url))
+        .map((url) => this.fileCache_.getFile({uri: url}))
     );
   }
 
@@ -659,10 +659,6 @@ class ReportBuilder {
    * @private
    */
   async getExpectedScreenshots_(goldenFile) {
-    const downloadFileAndGetPath = async (url) => {
-      return (await this.fileCache_.downloadUrlToDisk(url)).absolute_path;
-    };
-
     /** @type {!Array<!mdc.proto.Screenshot>} */
     const expectedScreenshots = [];
     const goldenScreenshots = goldenFile.getGoldenScreenshots();
@@ -673,12 +669,12 @@ class ReportBuilder {
         expected_html_file: TestFile.create({
           public_url: goldenScreenshot.html_file_url,
           relative_path: goldenScreenshot.html_file_path,
-          absolute_path: await downloadFileAndGetPath(goldenScreenshot.html_file_url),
+          absolute_path: this.fileCache_.getAbsolutePath(goldenScreenshot.html_file_url),
         }),
         expected_image_file: TestFile.create({
           public_url: goldenScreenshot.screenshot_image_url,
           relative_path: goldenScreenshot.screenshot_image_path,
-          absolute_path: await downloadFileAndGetPath(goldenScreenshot.screenshot_image_url),
+          absolute_path: this.fileCache_.getAbsolutePath(goldenScreenshot.screenshot_image_url),
         }),
         user_agent: await this.userAgentStore_.getUserAgent(goldenScreenshot.user_agent_alias),
       });
@@ -723,7 +719,7 @@ class ReportBuilder {
         /** @type {?mdc.proto.TestFile} */
         const expectedImageFile =
           expectedScreenshotImageUrl
-            ? await this.fileCache_.downloadUrlToDisk(expectedScreenshotImageUrl)
+            ? await this.fileCache_.getFile({uri: expectedScreenshotImageUrl, download: false})
             : null;
 
         allScreenshots.push(Screenshot.create({
@@ -863,7 +859,7 @@ class ReportBuilder {
 
       if (!actualScreenshot) {
         const expectedImageUrl = expectedScreenshot.expected_image_file.public_url;
-        const expectedJimpImage = await Jimp.read(await this.fileCache_.downloadFileToBuffer(expectedImageUrl));
+        const expectedJimpImage = await Jimp.read(await this.fileCache_.getBuffer({uri: expectedImageUrl}));
         const {width, height} = expectedJimpImage.bitmap;
         expectedScreenshot.diff_image_result = DiffImageResult.create({
           expected_image_dimensions: Dimensions.create({width, height}),

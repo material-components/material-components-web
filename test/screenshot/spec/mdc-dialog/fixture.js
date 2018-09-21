@@ -40,17 +40,9 @@ window.mdc.testFixture.fontsLoaded.then(() => {
     const contentEl = dialogEl.querySelector('.mdc-dialog__content');
     const shouldScrollToBottom = dialogEl.classList.contains('test-dialog--scroll-to-bottom');
     if (contentEl && shouldScrollToBottom) {
-      const scrollToBottom = () => {
-        const tryToScroll = () => {
-          contentEl.scrollTop = contentEl.scrollHeight;
-          if (contentEl.scrollTop === 0) {
-            requestAnimationFrame(tryToScroll);
-          }
-        };
-        tryToScroll();
-      };
-      dialog.listen(strings.OPENING_EVENT, scrollToBottom);
-      dialog.listen(strings.OPENED_EVENT, scrollToBottom);
+      const scrollToTop = () => setTimeout(() => contentEl.scrollTop = contentEl.scrollHeight);
+      dialog.listen(strings.OPENING_EVENT, scrollToTop);
+      dialog.listen(strings.OPENED_EVENT, scrollToTop);
     }
 
     const openButtonEl = dialogEl.id ? document.querySelector(`[data-test-dialog-id="${dialogEl.id}"]`) : null;
@@ -63,6 +55,10 @@ window.mdc.testFixture.fontsLoaded.then(() => {
       const list = new mdc.list.MDCList(listEl);
       dialog.listen(strings.OPENED_EVENT, () => list.layout());
     }
+
+    dialog.listen(strings.OPENED_EVENT, () => {
+      window.mdc.testFixture.notifyDomReady();
+    });
 
     /* Commenting out redlines for now due to unexplained flakes
 
