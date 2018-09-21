@@ -33,20 +33,28 @@
 @import "./functions";
 
 @mixin mdc-text-field-shape-radius($radius, $rtl-reflexive: false) {
-  $radius: mdc-shape-mask-top-radius($radius);
+  @if length($radius) > 2 {
+    @error "Invalid radius: '#{$radius}' component doesn't allow customizing all corners";
+  }
 
-  @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-text-field-height, $radius), $rtl-reflexive);
+  $masked-radius: mdc-shape-mask-radius($radius, 1 1 0 0);
+
+  @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-text-field-height, $masked-radius), $rtl-reflexive);
 }
 
 @mixin mdc-text-field-textarea-shape-radius($radius, $rtl-reflexive: false) {
-  $radius-masked: mdc-shape-mask-top-radius($radius);
+  @if length($radius) > 2 {
+    @error "Invalid radius: '#{$radius}' component doesn't allow customizing all corners";
+  }
 
-  @include mdc-shape-radius($radius, $rtl-reflexive);
+  $masked-radius: mdc-shape-mask-radius($radius, 1 1 0 0);
+
+  @include mdc-shape-radius($masked-radius, $rtl-reflexive);
 
   .mdc-floating-label {
     // Bottom corners are square to prevent weird edge cases
     // where text would be visible outside of the curve.
-    @include mdc-shape-radius($radius-masked, $rtl-reflexive);
+    @include mdc-shape-radius($masked-radius, $rtl-reflexive);
   }
 
   .mdc-text-field__input {

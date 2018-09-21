@@ -125,26 +125,6 @@
 }
 
 //
-// Accepts radius number or list of 2 radius values and returns 4 value list with
-// top-left value, top-right value, bottom-right 0, bottom-left 0.
-// Throws error when length of radius is more than 2.
-//
-// Example:
-//
-// 1. mdc-shape-mask-top-radius((2px, 3px)) => 2px 3px 0 0
-// 2. mdc-shape-mask-top-radius(8px) => 8px 8px 0 0
-//
-@function mdc-shape-mask-top-radius($radius) {
-  @if length($radius) > 2 {
-    @error "Invalid radius: '#{$radius}' component doesn't allow customizing all corners";
-  } @else if length($radius) == 2 {
-    @return nth($radius, 1) nth($radius, 2) 0 0;
-  } @else {
-    @return $radius $radius 0 0;
-  }
-}
-
-//
 // Accepts radius number or list of 2-4 radius values and returns 4 value list with
 // masked corners as mentioned in `$masked-corners`
 //
@@ -173,10 +153,10 @@
     $radius: $radius $radius $radius $radius;
   }
 
-  @return nth($radius, 1) * nth($masked-corners, 1)
-      nth($radius, 2) * nth($masked-corners, 2)
-      nth($radius, 3) * nth($masked-corners, 3)
-      nth($radius, 4) * nth($masked-corners, 4);
+  @return if(nth($masked-corners, 1) == 1, nth($radius, 1), 0)
+      if(nth($masked-corners, 2) == 1, nth($radius, 2), 0)
+      if(nth($masked-corners, 3) == 1, nth($radius, 3), 0)
+      if(nth($masked-corners, 4) == 1, nth($radius, 4), 0);
 }
 
 @function mdc-shape-prop-corner-value_($radius) {

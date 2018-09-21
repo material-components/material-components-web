@@ -93,10 +93,14 @@
 }
 
 @mixin mdc-select-shape-radius($radius, $rtl-reflexive: false) {
-  $radius: mdc-shape-mask-top-radius($radius);
+  @if length($radius) > 2 {
+    @error "Invalid radius: '#{$radius}' component doesn't allow customizing all corners";
+  }
+
+  $masked-radius: mdc-shape-mask-radius($radius, 1 1 0 0);
 
   &, &__native-control {
-    @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-select-height, $radius), $rtl-reflexive);
+    @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-select-height, $masked-radius), $rtl-reflexive);
   }
 }
 
