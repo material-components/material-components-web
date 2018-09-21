@@ -101,11 +101,13 @@ window.mdc.testFixture.fontsLoaded.then(() => {
       const isScrolledToBottom = () => contentEl.scrollTop + contentEl.offsetHeight === contentEl.scrollHeight;
 
       const anyTitleEl = document.querySelector('.mdc-dialog__title');
+      const nonScrollableTitleEl = document.querySelector('.mdc-dialog:not(.mdc-dialog--scrollable) .mdc-dialog__title');
       const oneLineTitleEl = document.querySelector(
         '.mdc-dialog__title:not(.test-dialog__title--3-line):not(.test-dialog__title--5-line)'
       );
-      const threeLineTitleEl = document.querySelector('.test-dialog__title--3-line');
+      const threeLineTitleEl = document.querySelector('.mdc-dialog--scrollable .test-dialog__title--3-line');
 
+      const contentNoTitleEl = dialogEl.querySelector('.mdc-dialog__content:first-child');
       const contentRectEl = document.querySelector('.test-dialog__content-rect');
       const listItemEl = document.querySelector('.mdc-list-item');
       const listItemGraphicEl = document.querySelector('.mdc-list-item:last-child .mdc-list-item__graphic');
@@ -128,19 +130,10 @@ window.mdc.testFixture.fontsLoaded.then(() => {
           '.mdc-dialog__content p:first-child',
         ].join(', '))) : null;
 
-      const lastParagraphEls =
-        contentEl ? [].slice.call(contentEl.querySelectorAll([
-          '.mdc-dialog__content h1:last-child',
-          '.mdc-dialog__content h2:last-child',
-          '.mdc-dialog__content h3:last-child',
-          '.mdc-dialog__content h4:last-child',
-          '.mdc-dialog__content h5:last-child',
-          '.mdc-dialog__content h6:last-child',
-          '.mdc-dialog__content p:last-child',
-        ].join(', '))) : null;
+      const nonScrollableLastParagraphEl =
+        document.querySelector('.mdc-dialog:not(.mdc-dialog--scrollable) .mdc-dialog__content p:last-child');
 
       const firstParagraphEl = firstParagraphEls[0];
-      const lastParagraphEl = lastParagraphEls[lastParagraphEls.length - 1];
 
       window.mdc.testFixture.addRedlines([
         /*
@@ -158,11 +151,11 @@ window.mdc.testFixture.fontsLoaded.then(() => {
           displayOffsetPx: 24,
         },
         {
-          name: 'Title height (1-line)',
+          name: 'Title height (1-line for Simple/Confirmation)',
           fromEl: oneLineTitleEl,
           fromSide: 'top',
-          toEl: oneLineTitleEl,
-          toSide: 'bottom',
+          toEl: listItemEl,
+          toSide: 'top',
           specDistancePx: 64,
           displayTargetEl: oneLineTitleEl,
           flipLabel: true,
@@ -216,7 +209,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         },
         {
           name: 'Content typography baseline top',
-          fromEl: anyTitleEl,
+          fromEl: nonScrollableTitleEl,
           fromSide: 'last-baseline',
           toEl: firstParagraphEl,
           toSide: 'first-baseline',
@@ -227,8 +220,20 @@ window.mdc.testFixture.fontsLoaded.then(() => {
           conditionFn: () => contentEl.scrollTop === 0,
         },
         {
-          name: 'Content typography baseline bottom',
-          fromEl: lastParagraphEl,
+          name: 'Content typography baseline top (no title)',
+          fromEl: contentNoTitleEl,
+          fromSide: 'top',
+          toEl: firstParagraphEl,
+          toSide: 'first-baseline',
+          specDistancePx: 36,
+          displayAlignment: 'left',
+          displayOffsetPx: 48,
+          flipLabel: true,
+          conditionFn: () => contentEl.scrollTop === 0,
+        },
+        {
+          name: 'Content typography baseline bottom (non-scrollable)',
+          fromEl: nonScrollableLastParagraphEl,
           fromSide: 'last-baseline',
           toEl: actionsEl,
           toSide: 'top',
@@ -330,7 +335,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
           fromSide: 'right',
           toEl: listItemLabelEl,
           toSide: 'left',
-          specDistancePx: 20,
+          specDistancePx: 16, // NOTE: Dialog spec says this is 20, but that is inconsistent with List spec.
           flipLabel: false,
           conditionFn: isSimple,
         },

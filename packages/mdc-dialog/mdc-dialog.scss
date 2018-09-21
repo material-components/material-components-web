@@ -98,14 +98,20 @@
   position: relative;
   flex-shrink: 0;
   box-sizing: border-box;
-  min-height: 64px;
   margin: 0;
-  padding: 0 24px 15px;
+  padding: 0 24px $mdc-dialog-title-bottom-padding;
   border-bottom: 1px solid transparent;
 
   @include mdc-rtl(".mdc-dialog") {
     text-align: right;
   }
+}
+
+// stylelint-disable-next-line plugin/selector-bem-pattern
+.mdc-dialog--scrollable .mdc-dialog__title {
+  // Adjust bottom padding to make title height align to spec when divider is present.
+  // (Titles for alert dialogs w/o dividers align based on text baseline instead. All spec values are divisible by 4.)
+  padding-bottom: $mdc-dialog-title-bottom-padding + 6px;
 }
 
 .mdc-dialog__content {
@@ -146,6 +152,12 @@
 
 // stylelint-disable-next-line plugin/selector-bem-pattern
 .mdc-dialog__content .mdc-list:first-child:last-child {
+  // Override default .mdc-list padding for content consisting exclusively of a MDC List
+  padding: 6px 0 0; // Top padding balances with title height
+}
+
+// stylelint-disable-next-line plugin/selector-bem-pattern
+.mdc-dialog--scrollable .mdc-dialog__content .mdc-list:first-child:last-child {
   // Override default .mdc-list padding for content consisting exclusively of a MDC List
   padding: 0;
 }
