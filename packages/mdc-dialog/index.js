@@ -61,7 +61,7 @@ class MDCDialog extends MDCComponent {
     this.focusTrap_;
 
     /** @private {!Function} */
-    this.handleClick_;
+    this.handleInteraction_;
 
     /** @private {!Function} */
     this.handleDocumentKeydown_;
@@ -124,7 +124,7 @@ class MDCDialog extends MDCComponent {
   initialSyncWithDOM() {
     this.focusTrap_ = util.createFocusTrapInstance(this.container_, this.focusTrapFactory_, this.initialFocusEl_);
 
-    this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
+    this.handleInteraction_ = this.foundation_.handleInteraction.bind(this.foundation_);
     this.handleDocumentKeydown_ = this.foundation_.handleDocumentKeydown.bind(this.foundation_);
     this.layout_ = this.layout.bind(this);
 
@@ -138,13 +138,15 @@ class MDCDialog extends MDCComponent {
       document.removeEventListener('keydown', this.handleDocumentKeydown_);
     };
 
-    this.listen('click', this.handleClick_);
+    this.listen('click', this.handleInteraction_);
+    this.listen('keydown', this.handleInteraction_);
     this.listen(strings.OPENING_EVENT, this.handleOpening_);
     this.listen(strings.CLOSING_EVENT, this.handleClosing_);
   }
 
   destroy() {
-    this.unlisten('click', this.handleClick_);
+    this.unlisten('click', this.handleInteraction_);
+    this.unlisten('keydown', this.handleInteraction_);
     this.unlisten(strings.OPENING_EVENT, this.handleOpening_);
     this.unlisten(strings.CLOSING_EVENT, this.handleClosing_);
     this.handleClosing_();
