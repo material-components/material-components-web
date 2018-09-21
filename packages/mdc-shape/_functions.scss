@@ -151,8 +151,8 @@
 // Example:
 //
 // 1. mdc-shape-mask-radius(2px 3px, 1 1 0 0) => 2px 3px 0 0
-// 2. mdc-shape-mask-top-radius(8px, 0 0 1 1) => 0 0 8px 8px
-// 3. mdc-shape-mask-top-radius(4px 4px 4px 4px, 0 1 1 0) => 0 4px 4px 0
+// 2. mdc-shape-mask-radius(8px, 0 0 1 1) => 0 0 8px 8px
+// 3. mdc-shape-mask-radius(4px 4px 4px 4px, 0 1 1 0) => 0 4px 4px 0
 //
 @function mdc-shape-mask-radius($radius, $masked-corners) {
   @if type-of($radius) == "list" {
@@ -161,7 +161,7 @@
     }
   }
 
-  @if type-of($masked-corners) != "list" and length($masked-corners) != "length" {
+  @if length($masked-corners) != 4 {
     @error "Expected masked-corners of length 4 but got '#{length($masked-corners)}'.";
   }
 
