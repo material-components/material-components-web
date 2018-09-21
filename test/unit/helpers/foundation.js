@@ -118,7 +118,7 @@ function getArrayDeltaMessage(actualMethodNames, expectedMethodNames) {
  * @return {string}
  */
 function getAddedMethodMessage(actualMethodNameSet, expectedMethodNameSet) {
-  return getArrayDelta(actualMethodNameSet, expectedMethodNameSet, 'unexpected method');
+  return getArrayDeltaMessage(actualMethodNameSet, expectedMethodNameSet, 'unexpected method');
 }
 
 /**
@@ -127,7 +127,7 @@ function getAddedMethodMessage(actualMethodNameSet, expectedMethodNameSet) {
  * @return {string}
  */
 function getRemovedMethodMessage(actualMethodNameSet, expectedMethodNameSet) {
-  return getArrayDelta(expectedMethodNameSet, actualMethodNameSet, 'missing method');
+  return getArrayDeltaMessage(expectedMethodNameSet, actualMethodNameSet, 'missing method');
 }
 
 /**
@@ -136,14 +136,14 @@ function getRemovedMethodMessage(actualMethodNameSet, expectedMethodNameSet) {
  * @param {string} singularName
  * @return {string}
  */
-function getArrayDelta(actualSet, expectedSet, singularName) {
+function getArrayDeltaMessage(actualSet, expectedSet, singularName) {
   const deltaArray = [];
   actualSet.forEach((val) => {
     if (!expectedSet.has(val)) {
       deltaArray.push(val);
     }
   });
-  return formatArrayDelta(deltaArray, singularName);
+  return formatArrayDeltaMessage(deltaArray, singularName);
 }
 
 /**
@@ -151,7 +151,7 @@ function getArrayDelta(actualSet, expectedSet, singularName) {
  * @param {string} singularName
  * @return {string}
  */
-function formatArrayDelta(values, singularName) {
+function formatArrayDeltaMessage(values, singularName) {
   const count = values.length;
   if (count === 0) {
     return '';
