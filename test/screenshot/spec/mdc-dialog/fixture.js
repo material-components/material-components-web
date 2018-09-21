@@ -72,8 +72,9 @@ window.mdc.testFixture.fontsLoaded.then(() => {
       const isSimple = () => dialogEl.classList.contains('test-dialog--simple');
       const isConfirmation = () => dialogEl.classList.contains('test-dialog--confirmation');
       const isStacked = () => dialogEl.classList.contains('mdc-dialog--stacked');
-      const isSideBySide = () => !dialogEl.classList.contains('mdc-dialog--stacked');
+      const isSideBySide = () => !isStacked();
       const isScrollable = () => dialogEl.classList.contains('mdc-dialog--scrollable');
+      const isNotScrollable = () => !isScrollable();
 
       const anyTitleEl = document.querySelector('.mdc-dialog__title');
       const oneLineTitleEl = document.querySelector(
@@ -170,7 +171,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
       });
 
       window.mdc.testFixture.addRedline({
-        name: 'Content padding right',
+        name: 'Non-scrollable content padding right',
         fromEl: contentRectEl,
         fromSide: 'right',
         toEl: surfaceEl,
@@ -178,6 +179,19 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         specDistancePx: 24,
         displayTargetEl: surfaceEl,
         displayOffsetPx: -10,
+        conditionFn: isNotScrollable,
+      });
+
+      window.mdc.testFixture.addRedline({
+        name: 'Scrollable content padding right',
+        fromEl: contentRectEl,
+        fromSide: 'right',
+        toEl: surfaceEl,
+        toSide: 'right',
+        specDistancePx: 24,
+        displayTargetEl: surfaceEl,
+        displayOffsetPx: -10,
+        conditionFn: isScrollable,
       });
 
       window.mdc.testFixture.addRedline({

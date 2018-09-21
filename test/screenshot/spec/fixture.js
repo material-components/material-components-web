@@ -307,6 +307,7 @@ class TestFixture {
     const borderTopWidth = parseInt(getComputedStyle(el).borderTopWidth, 10);
     const borderLeftWidth = parseInt(getComputedStyle(el).borderLeftWidth, 10);
     const borderRightWidth = parseInt(getComputedStyle(el).borderRightWidth, 10);
+    const scrollbarWidth = this.getScrollbarWidth_(el);
 
     if (side === 'top') {
       return rect.top + borderTopWidth;
@@ -318,7 +319,7 @@ class TestFixture {
       return rect.left + borderLeftWidth;
     }
     if (side === 'right') {
-      return rect.right - borderRightWidth;
+      return rect.right - borderRightWidth + scrollbarWidth;
     }
 
     if (side === 'first-baseline' || side === 'last-baseline') {
@@ -337,6 +338,21 @@ class TestFixture {
     }
 
     throw new Error(`Unsupported \`side\` value: "${side}"`);
+  }
+
+  /**
+   * @param {!Element} el
+   * @private
+   */
+  getScrollbarWidth_(el) {
+    while (el) {
+      const scrollbarWidth = el.offsetWidth - el.clientWidth;
+      if (scrollbarWidth > 0) {
+        return scrollbarWidth;
+      }
+      el = el.parentElement;
+    }
+    return 0;
   }
 
   /**
