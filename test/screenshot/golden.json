@@ -467,15 +467,6 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/content-ink-color.html.windows_ie_11.png"
     }
   },
-  "spec/mdc-dialog/mixins/corner-radius.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/corner-radius.html?utm_source=golden_json",
-    "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/corner-radius.html.windows_chrome_69.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/corner-radius.html.windows_edge_17.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/corner-radius.html.windows_firefox_62.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/corner-radius.html.windows_ie_11.png"
-    }
-  },
   "spec/mdc-dialog/mixins/max-height.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/max-height.html?utm_source=golden_json",
     "screenshots": {
@@ -519,6 +510,15 @@
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/scroll-divider-color.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/scroll-divider-color.html.windows_firefox_62.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/scroll-divider-color.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-dialog/mixins/shape-radius.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/09/21/22_25_39_766/spec/mdc-dialog/mixins/shape-radius.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/09/21/22_25_39_766/spec/mdc-dialog/mixins/shape-radius.html.windows_chrome_69.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/09/21/22_25_39_766/spec/mdc-dialog/mixins/shape-radius.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/09/21/22_25_39_766/spec/mdc-dialog/mixins/shape-radius.html.windows_firefox_62.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/09/21/22_25_39_766/spec/mdc-dialog/mixins/shape-radius.html.windows_ie_11.png"
     }
   },
   "spec/mdc-dialog/mixins/title-ink-color.html": {

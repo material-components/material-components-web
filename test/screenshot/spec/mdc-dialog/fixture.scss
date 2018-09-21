@@ -68,8 +68,8 @@ $custom-dialog-color: $material-color-red-300;
   @include mdc-dialog-scroll-divider-color($custom-dialog-color, .5);
 }
 
-.test-dialog--corner-radius {
-  @include mdc-dialog-corner-radius(10px);
+.test-dialog--shape-radius {
+  @include mdc-dialog-shape-radius(10px);
 }
 
 .test-dialog--min-width {
@@ -83,4 +83,3 @@ $custom-dialog-color: $material-color-red-300;
 .test-dialog--max-height {
   @include mdc-dialog-max-height(400px, 30px);
 }
-
