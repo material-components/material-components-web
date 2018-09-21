@@ -43,8 +43,12 @@ npm install @material/menu
 ```html
 <div class="mdc-menu mdc-menu-surface" tabindex="-1">
   <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
-    <li class="mdc-list-item" role="menuitem">A Menu Item</li>
-    <li class="mdc-list-item" role="menuitem">Another Menu Item</li>
+    <li class="mdc-list-item" role="menuitem">
+      <span class="mdc-list-item__text">A Menu Item</span>
+    </li>
+    <li class="mdc-list-item" role="menuitem">
+      <span class="mdc-list-item__text">Another Menu Item</span>
+    </li>
   </ul>
 </div>
 ```
@@ -52,7 +56,7 @@ npm install @material/menu
 ### Styles
 
 ```scss
-@import "@material/menu/mdc-list";
+@import "@material/list/mdc-list";
 @import "@material/menu-surface/mdc-menu-surface";
 @import "@material/menu/mdc-menu";
 ```
@@ -83,18 +87,20 @@ Menus can contain a group of list items that can represent the selection state o
           <span class="mdc-menu__selection-group-icon">
             ...
           </span>
-          Single
+          <span class="mdc-list-item__text">Single</span>
         </li>
         <li class="mdc-list-item" role="menuitem">
           <span class="mdc-menu__selection-group-icon">
            ...
           </span>
-          1.15
+          <span class="mdc-list-item__text">1.15</span>
         </li>
       </ul>
     </li>
     <li class="mdc-list-divider" role="separator"></li>
-    <li class="mdc-list-item" role="menuitem">Add space before paragraph</li>
+    <li class="mdc-list-item" role="menuitem">
+      <span class="mdc-list-item__text">Add space before paragraph</span>
+    </li>
     ...
   </ul>
 </div>
@@ -219,8 +225,6 @@ Method Signature | Description
 `getParentElement(element: HTMLElement) => ?HTMLElement` | Returns the `.parentElement` element of the `element` provided.
 `getSelectedElementIndex(element: HTMLElement) => number` | Returns the `index` value of the element within the selection group provided, `element` that contains the `mdc-menu-item--selected` class.
 `notifySelected(index: number) => void` | Emits a `MDCMenu:selected` event for the element at the `index` specified.
-`getCheckboxAtIndex(index: number) => ?HTMLElement` | Returns the checkbox element contained within the element at the `index` specified.
-`toggleCheckbox(checkbox: HTMLElement) => void` | Toggles the `checkbox` element provided and triggers a `change` event for the element.
 
 ### `MDCMenuFoundation`
 

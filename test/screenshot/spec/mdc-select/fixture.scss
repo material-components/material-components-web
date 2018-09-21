@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc.
+// Copyright 2018 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,9 +20,38 @@
 // THE SOFTWARE.
 //
 
-@import "./common";
-@import "../packages/mdc-button/mdc-button";
-@import "../packages/mdc-checkbox/mdc-checkbox";
-@import "../packages/mdc-dialog/mdc-dialog";
-@import "../packages/mdc-form-field/mdc-form-field";
-@import "../packages/mdc-list/mdc-list";
+@import "../../../../packages/mdc-select/mixins";
+@import "../../../../packages/mdc-theme/color-palette";
+
+.test-cell--select {
+  width: 301px;
+  height: 121px;
+}
+
+.custom-select-ink-color {
+  @include mdc-select-ink-color(green);
+}
+
+.custom-select-container-fill-color {
+  @include mdc-select-container-fill-color(green);
+}
+
+.custom-select-label-color {
+  @include mdc-select-label-color(green);
+}
+
+.custom-select-bottom-line-color {
+  @include mdc-select-bottom-line-color(green);
+}
+
+.custom-select-corner-radius {
+  @include mdc-select-corner-radius(10px);
+}
+
+.custom-select-outline-color {
+  @include mdc-select-outline-color(green);
+}
+
+.custom-select-outline-corner-radius {
+  @include mdc-select-outline-corner-radius(10px);
+}

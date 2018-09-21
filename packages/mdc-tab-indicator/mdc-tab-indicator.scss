@@ -24,6 +24,8 @@
 @import "@material/animation/variables";
 @import "./mixins";
 
+// postcss-bem-linter: define tab-indicator
+
 .mdc-tab-indicator {
   @include mdc-tab-indicator-underline-color(primary);
   @include mdc-tab-indicator-underline-height(2px);
@@ -73,6 +75,9 @@
   transition: 150ms opacity linear;
 }
 
+// postcss-bem-linter: ignore
 .mdc-tab-indicator--active.mdc-tab-indicator--fade > .mdc-tab-indicator__content {
   transition-delay: 100ms;
 }
+
+// postcss-bem-linter: end

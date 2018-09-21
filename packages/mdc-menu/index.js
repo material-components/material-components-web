@@ -121,7 +121,7 @@ class MDCMenu extends MDCComponent {
    * @return {!Array<!HTMLElement>}
    */
   get items() {
-    return this.list_.listElements_;
+    return this.list_.listElements;
   }
 
   /**
@@ -211,16 +211,6 @@ class MDCMenu extends MDCComponent {
         index: evtData.index,
         item: this.items[evtData.index],
       }),
-      getCheckboxAtIndex: (index) => {
-        const list = this.items;
-        return list[index].querySelector(strings.CHECKBOX_SELECTOR);
-      },
-      toggleCheckbox: (checkBox) => {
-        checkBox.checked = !checkBox.checked;
-        const event = document.createEvent('Event');
-        event.initEvent('change', false, true);
-        checkBox.dispatchEvent(event);
-      },
     });
   }
 }

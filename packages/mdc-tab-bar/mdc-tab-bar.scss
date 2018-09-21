@@ -23,6 +23,10 @@
 
 @import "./mixins";
 
+// postcss-bem-linter: define tab-bar
+
 .mdc-tab-bar {
   @include mdc-tab-bar-width(100%);
 }
+
+// postcss-bem-linter: end

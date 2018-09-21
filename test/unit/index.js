@@ -23,5 +23,6 @@
 
 /** @fileoverview Bootstraps the test bundle for karma-webpack. */
 
-const testsContext = require.context('.', true, /\.test\.js$/);
+// https://github.com/webpack/docs/wiki/context#requirecontext
+const testsContext = require.context(/* directory */ '.', /* useSubdirectories */ true, /\.test\.js$/);
 testsContext.keys().forEach(testsContext);
