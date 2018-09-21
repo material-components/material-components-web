@@ -40,17 +40,9 @@ window.mdc.testFixture.fontsLoaded.then(() => {
     const contentEl = dialogEl.querySelector('.mdc-dialog__content');
     const shouldScrollToBottom = dialogEl.classList.contains('test-dialog--scroll-to-bottom');
     if (contentEl && shouldScrollToBottom) {
-      const scrollToBottom = () => {
-        const lastChild = contentEl.children[contentEl.children.length - 1];
-        if (lastChild && lastChild.scrollIntoView) {
-          lastChild.scrollIntoView(/* topAligned */ false);
-        }
-        contentEl.scrollTop = contentEl.scrollHeight;
-      };
-
       const handleOpenEvent = () => {
         for (let ms = 0; ms < 500; ms += 50) {
-          setTimeout(scrollToBottom, ms);
+          setTimeout(() => contentEl.scrollTop = contentEl.scrollHeight, ms);
         }
       };
 
