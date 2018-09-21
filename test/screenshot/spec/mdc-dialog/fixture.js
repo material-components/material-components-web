@@ -64,6 +64,10 @@ window.mdc.testFixture.fontsLoaded.then(() => {
       dialog.listen(strings.OPENED_EVENT, () => list.layout());
     }
 
+    dialog.listen(strings.OPENED_EVENT, () => {
+      window.mdc.testFixture.notifyDomReady();
+    });
+
     /* Commenting out redlines for now due to unexplained flakes
 
     dialog.listen(strings.CLOSING_EVENT, () => {
