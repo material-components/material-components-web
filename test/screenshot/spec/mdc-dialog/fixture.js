@@ -49,7 +49,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
       };
 
       const handleOpenEvent = () => {
-        for (let ms = 0; ms < 500; i += 50) {
+        for (let ms = 0; ms < 500; ms += 50) {
           setTimeout(scrollToBottom, ms);
         }
       };
