@@ -55,6 +55,7 @@ class MDCChipFoundation extends MDCFoundation {
       removeClassFromLeadingIcon: () => {},
       eventTargetHasClass: () => {},
       notifyInteraction: () => {},
+      notifySelection: () => {},
       notifyTrailingIconInteraction: () => {},
       notifyRemoval: () => {},
       getComputedStyleValue: () => {},

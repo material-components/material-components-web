@@ -94,6 +94,8 @@ class MDCChipSet extends MDCComponent {
     this.root_.removeEventListener(
       MDCChipFoundation.strings.INTERACTION_EVENT, this.handleChipInteraction_);
     this.root_.removeEventListener(
+      MDCChipFoundation.strings.SELECTION_EVENT, this.handleChipSelection_);
+    this.root_.removeEventListener(
       MDCChipFoundation.strings.REMOVAL_EVENT, this.handleChipRemoval_);
 
     super.destroy();
