@@ -350,9 +350,22 @@ testFoundation('#open in absolute position at x/y=100, absolute position, hoiste
     td.verify(mockAdapter.setPosition({left: '100px', top: '110px'}));
   });
 
-testFoundation('#open in absolute position at x/y=100, fixed position, hoisted menu surface, scrollY 10 px',
+testFoundation('#open in absolute position at x/y=100, absolute position, hoisted menu surface, scrollX 10 px',
   ({foundation, mockAdapter, mockRaf}) => {
-    initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 0, y: 10});
+    initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 10, y: 0});
+    td.when(mockAdapter.hasAnchor()).thenReturn(false);
+    td.when(mockAdapter.getAnchorDimensions()).thenReturn(undefined);
+    foundation.setIsHoisted(true);
+    foundation.setAbsolutePosition(100, 100);
+    foundation.open();
+    mockRaf.flush();
+    td.verify(mockAdapter.setTransformOrigin('left top'));
+    td.verify(mockAdapter.setPosition({left: '110px', top: '100px'}));
+  });
+
+testFoundation('#open in absolute position at x/y=100, fixed position, hoisted menu surface, scrollY/scrollY 10 px',
+  ({foundation, mockAdapter, mockRaf}) => {
+    initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 10, y: 10});
     td.when(mockAdapter.hasAnchor()).thenReturn(false);
     td.when(mockAdapter.getAnchorDimensions()).thenReturn(undefined);
     foundation.setIsHoisted(true);
