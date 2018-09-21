@@ -299,7 +299,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
       });
 
       window.mdc.testFixture.addRedline({
-        name: 'Simple list item graphic/label margin',
+        name: 'Simple list item label margin',
         fromEl: listItemGraphicEl,
         fromSide: 'right',
         toEl: listItemLabelEl,
@@ -336,7 +336,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
       });
 
       window.mdc.testFixture.addRedline({
-        name: 'Confirmation list item graphic/label margin',
+        name: 'Confirmation list item label margin',
         fromEl: listItemGraphicEl,
         fromSide: 'right',
         toEl: listItemLabelEl,
