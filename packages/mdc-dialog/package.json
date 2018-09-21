@@ -22,6 +22,7 @@
     "@material/ripple": "^0.39.3",
     "@material/rtl": "^0.39.1",
     "@material/theme": "^0.39.1",
+    "@material/shape": "^0.39.0",
     "@material/typography": "^0.39.0",
     "focus-trap": "^2.3.0"
   },
