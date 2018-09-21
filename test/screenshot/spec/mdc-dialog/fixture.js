@@ -98,10 +98,8 @@ window.mdc.testFixture.fontsLoaded.then(() => {
       const isSideBySide = () => !isStacked();
       const isScrollable = () => dialogEl.classList.contains('mdc-dialog--scrollable');
       const isNotScrollable = () => !isScrollable();
-      const isScrolledToBottom = () => contentEl.scrollTop + contentEl.offsetHeight === contentEl.scrollHeight;
 
       const anyTitleEl = document.querySelector('.mdc-dialog__title');
-      const nonScrollableTitleEl = document.querySelector('.mdc-dialog:not(.mdc-dialog--scrollable) .mdc-dialog__title');
       const oneLineTitleEl = document.querySelector(
         '.mdc-dialog__title:not(.test-dialog__title--3-line):not(.test-dialog__title--5-line)'
       );
@@ -186,7 +184,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
           displayOffsetPx: -10,
         },
         {
-          name: 'Non-scrollable content padding right',
+          name: 'Content padding right',
           fromEl: contentRectEl,
           fromSide: 'right',
           toEl: this.surfaceEl_,
@@ -194,22 +192,10 @@ window.mdc.testFixture.fontsLoaded.then(() => {
           specDistancePx: 24,
           displayTargetEl: this.surfaceEl_,
           displayOffsetPx: -10,
-          conditionFn: isNotScrollable,
         },
         {
-          name: 'Scrollable content padding right',
-          fromEl: contentRectEl,
-          fromSide: 'right',
-          toEl: this.surfaceEl_,
-          toSide: 'right',
-          specDistancePx: 24,
-          displayTargetEl: this.surfaceEl_,
-          displayOffsetPx: -10,
-          conditionFn: isScrollable,
-        },
-        {
-          name: 'Content typography baseline top',
-          fromEl: nonScrollableTitleEl,
+          name: 'Non-scrollable content typography baseline top (with title)',
+          fromEl: anyTitleEl,
           fromSide: 'last-baseline',
           toEl: firstParagraphEl,
           toSide: 'first-baseline',
@@ -217,10 +203,10 @@ window.mdc.testFixture.fontsLoaded.then(() => {
           displayAlignment: 'left',
           displayOffsetPx: 48,
           flipLabel: true,
-          conditionFn: () => contentEl.scrollTop === 0,
+          conditionFn: isNotScrollable,
         },
         {
-          name: 'Content typography baseline top (no title)',
+          name: 'Non-scrollable content typography baseline top (without title)',
           fromEl: contentNoTitleEl,
           fromSide: 'top',
           toEl: firstParagraphEl,
@@ -229,10 +215,10 @@ window.mdc.testFixture.fontsLoaded.then(() => {
           displayAlignment: 'left',
           displayOffsetPx: 48,
           flipLabel: true,
-          conditionFn: () => contentEl.scrollTop === 0,
+          conditionFn: isNotScrollable,
         },
         {
-          name: 'Content typography baseline bottom (non-scrollable)',
+          name: 'Non-scrollable content typography baseline bottom',
           fromEl: nonScrollableLastParagraphEl,
           fromSide: 'last-baseline',
           toEl: actionsEl,
@@ -241,7 +227,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
           displayAlignment: 'left',
           displayOffsetPx: 48,
           flipLabel: true,
-          conditionFn: () => !isScrollable() || isScrolledToBottom(),
+          conditionFn: isNotScrollable,
         },
 
         /*
@@ -249,23 +235,12 @@ window.mdc.testFixture.fontsLoaded.then(() => {
          */
 
         {
-          name: 'Actions height (1-line)',
-          fromEl: actionsEl,
-          fromSide: 'top',
-          toEl: actionsEl,
-          toSide: 'bottom',
-          specDistancePx: 52,
-          displayAlignment: 'left',
-          conditionFn: isSideBySide,
-        },
-        {
           name: 'Actions padding top',
           fromEl: actionsEl,
           fromSide: 'top',
           toEl: firstButtonEl,
           toSide: 'top',
           specDistancePx: 8,
-          conditionFn: isSideBySide,
         },
         {
           name: 'Actions padding bottom',
@@ -274,7 +249,6 @@ window.mdc.testFixture.fontsLoaded.then(() => {
           toEl: actionsEl,
           toSide: 'bottom',
           specDistancePx: 8,
-          conditionFn: isSideBySide,
         },
         {
           name: 'Actions padding right',
@@ -286,16 +260,17 @@ window.mdc.testFixture.fontsLoaded.then(() => {
           displayTargetEl: actionsEl,
         },
         {
-          name: 'Stacked button margin',
-          fromEl: secondLastButtonEl,
-          fromSide: 'bottom',
-          toEl: lastButtonEl,
-          toSide: 'top',
-          specDistancePx: 12,
-          conditionFn: isStacked,
+          name: 'Actions height (side-by-side)',
+          fromEl: actionsEl,
+          fromSide: 'top',
+          toEl: actionsEl,
+          toSide: 'bottom',
+          specDistancePx: 52,
+          displayAlignment: 'left',
+          conditionFn: isSideBySide,
         },
         {
-          name: 'Side-by-side button margin',
+          name: 'Actions button margin (side-by-side)',
           fromEl: secondLastButtonEl,
           fromSide: 'right',
           toEl: lastButtonEl,
@@ -303,6 +278,15 @@ window.mdc.testFixture.fontsLoaded.then(() => {
           specDistancePx: 8,
           displayAlignment: 'bottom',
           conditionFn: isSideBySide,
+        },
+        {
+          name: 'Actions button margin (stacked)',
+          fromEl: secondLastButtonEl,
+          fromSide: 'bottom',
+          toEl: lastButtonEl,
+          toSide: 'top',
+          specDistancePx: 12,
+          conditionFn: isStacked,
         },
 
         /*
