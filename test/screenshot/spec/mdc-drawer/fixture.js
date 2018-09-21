@@ -21,4 +21,7 @@
  * THE SOFTWARE.
  */
 
-mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
+window.mdc.testFixture.fontsLoaded.then(() => {
+  mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
+  window.mdc.testFixture.notifyDomReady();
+});

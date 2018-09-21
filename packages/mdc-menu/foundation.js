@@ -60,8 +60,6 @@ class MDCMenuFoundation extends MDCFoundation {
       getParentElement: () => {},
       getSelectedElementIndex: () => {},
       notifySelected: () => {},
-      getCheckboxAtIndex: () => {},
-      toggleCheckbox: () => {},
     });
   }
 
@@ -134,11 +132,6 @@ class MDCMenuFoundation extends MDCFoundation {
     this.adapter_.notifySelected({index});
     this.adapter_.closeSurface();
 
-    const checkbox = this.adapter_.getCheckboxAtIndex(index);
-    if (checkbox) {
-      this.adapter_.toggleCheckbox(/** @type {!HTMLElement} */ (checkbox));
-    }
-
     // Wait for the menu to close before adding/removing classes that affect styles.
     this.closeAnimationEndTimerId_ = setTimeout(() => {
       const selectionGroup = this.getSelectionGroup_(listItem);
@@ -180,7 +173,7 @@ class MDCMenuFoundation extends MDCFoundation {
 
     // Iterate through ancestors until we find the group or get to the list.
     while (!isGroup && !this.adapter_.elementContainsClass(parent, MDCListFoundation.cssClasses.ROOT)) {
-      parent = this.adapter_.getParentElement(listItem);
+      parent = this.adapter_.getParentElement(parent);
       isGroup = this.adapter_.elementContainsClass(parent, cssClasses.MENU_SELECTION_GROUP);
     }
 

@@ -22,9 +22,9 @@
 
 // Public mixins
 
-@mixin mdc-text-field-icon-color($color) {
+@mixin mdc-text-field-icon-color($color, $styleSecondIcon: false) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-icon-color_($color);
+    @include mdc-text-field-icon-color_($color, $styleSecondIcon);
   }
 }
 
@@ -46,8 +46,8 @@
     }
   }
 
-  // Only move the label's position to allow room for the icon, if the icon is on the same
-  // side as the label. Aka the icon is on left side in a LTR context.
+  // Only move the label's position to allow room for the icon, if the icon is on the same side as the label.
+  // E.g., the icon is on left side in LTR context.
   @if ($position-property == left) {
     .mdc-floating-label {
       @include mdc-rtl-reflexive-position($position-property, $padding);
@@ -55,8 +55,35 @@
   }
 }
 
-@mixin mdc-text-field-icon-color_($color) {
+@mixin mdc-text-field-icon-horizontal-position-two-icons_($position-left, $padding-left, $position-right, $padding-right) {
   .mdc-text-field__icon {
-    @include mdc-theme-prop(color, $color);
+    @include mdc-rtl-reflexive(left, $position-left, right, auto);
+
+    ~ .mdc-text-field__icon {
+      @include mdc-rtl-reflexive(right, $position-right, left, auto);
+    }
+  }
+
+  // Move the input's position, to allow room for the icons.
+  .mdc-text-field__input {
+    @include mdc-rtl-reflexive-property(padding, $padding-left, $padding-right);
+  }
+
+  // Only move the label's position to allow room for the icon, if the icon is on the same
+  // side as the label. Aka the icon is on left side in a LTR context.
+  .mdc-floating-label {
+    @include mdc-rtl-reflexive(left, $padding-left, right, auto);
+  }
+}
+
+@mixin mdc-text-field-icon-color_($color, $styleSecondIcon: false) {
+  .mdc-text-field__icon {
+    @if ($styleSecondIcon) {
+      ~ .mdc-text-field__icon { // Selects the second instance of this class regardless of element type.
+        @include mdc-theme-prop(color, $color);
+      }
+    } @else {
+      @include mdc-theme-prop(color, $color);
+    }
   }
 }

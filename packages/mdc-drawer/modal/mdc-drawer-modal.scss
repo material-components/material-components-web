@@ -35,7 +35,7 @@
   position: fixed;
 
   &.mdc-drawer--open {
-    display: block;
+    display: flex;
   }
 }
 

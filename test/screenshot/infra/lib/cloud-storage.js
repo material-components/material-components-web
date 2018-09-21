@@ -58,7 +58,7 @@ class CloudStorage {
    * @param {!mdc.proto.ReportData} reportData
    * @return {!Promise<void>}
    */
-  async uploadAllScreenshots(reportData) {
+  async uploadAllScreenshotImages(reportData) {
     await this.uploadDirectory_('screenshot images', reportData, reportData.meta.local_screenshot_image_base_dir);
   }
 
@@ -66,7 +66,7 @@ class CloudStorage {
    * @param {!mdc.proto.ReportData} reportData
    * @return {!Promise<void>}
    */
-  async uploadAllDiffs(reportData) {
+  async uploadAllDiffImages(reportData) {
     await this.uploadDirectory_('image diffs', reportData, reportData.meta.local_diff_image_base_dir);
   }
 
@@ -112,7 +112,7 @@ class CloudStorage {
 
     const cmd = 'gsutil';
     const args = [
-      '-m', // multi-thread (upload files in parallel)w
+      '-m', // multi-thread (upload files in parallel)
       'cp', // copy
       '-r', // recursive
       `${localSourceDir}/*`,

@@ -71,8 +71,13 @@ function setupTestWithMocks(variantClass = cssClasses.DISMISSIBLE) {
     activate: () => {},
     deactivate: () => {},
   });
-  const component = new MDCDrawer(drawer, mockFoundation, () => mockFocusTrapInstance);
-  return {root, drawer, component, mockFoundation, mockFocusTrapInstance};
+  const mockList = td.object({
+    wrapFocus: () => {},
+    destroy: () => {},
+  });
+
+  const component = new MDCDrawer(drawer, mockFoundation, () => mockFocusTrapInstance, () => mockList);
+  return {root, drawer, component, mockFoundation, mockFocusTrapInstance, mockList};
 }
 
 suite('MDCDrawer');
@@ -132,6 +137,13 @@ test('#destroy removes transitionend event listener', () => {
 
   domEvents.emit(drawer, 'transitionend');
   td.verify(mockFoundation.handleTransitionEnd(td.matchers.isA(Object)), {times: 0});
+});
+
+test('#destroy calls destroy on list', () => {
+  const {component, mockList} = setupTestWithMocks();
+  component.destroy();
+
+  td.verify(mockList.destroy(), {times: 1});
 });
 
 test('adapter#addClass adds class to drawer', () => {
