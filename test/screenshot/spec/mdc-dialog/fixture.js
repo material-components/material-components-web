@@ -28,13 +28,12 @@ window.mdc.testFixture.fontsLoaded.then(() => {
     /** @type {!MDCDialog} */
     const dialog = new mdc.dialog.MDCDialog(dialogEl);
 
-    const eventNames = [
-      strings.OPENING_EVENT, strings.OPENED_EVENT,
-      strings.CLOSING_EVENT, strings.CLOSED_EVENT,
-    ];
-
-    eventNames.forEach((eventName) => {
+    [strings.OPENING_EVENT, strings.OPENED_EVENT].forEach((eventName) => {
       dialog.listen(eventName, (evt) => console.log(eventName, evt));
+    });
+
+    [strings.CLOSING_EVENT, strings.CLOSED_EVENT].forEach((eventName) => {
+      dialog.listen(eventName, (evt) => console.log(eventName, evt.detail.action, evt));
     });
 
     // const surfaceEl = dialogEl.querySelector('.mdc-dialog__surface');
@@ -58,6 +57,16 @@ window.mdc.testFixture.fontsLoaded.then(() => {
     if (openButtonEl) {
       openButtonEl.addEventListener('click', () => dialog.open());
     }
+
+    const listEl = dialogEl.querySelector('.mdc-list');
+    if (listEl) {
+      const list = new mdc.list.MDCList(listEl);
+      dialog.listen(strings.OPENED_EVENT, () => list.layout());
+    }
+
+    dialog.listen(strings.OPENED_EVENT, () => {
+      window.mdc.testFixture.notifyDomReady();
+    });
 
     /* Commenting out redlines for now due to unexplained flakes
 
