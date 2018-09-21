@@ -69,6 +69,8 @@ window.mdc.testFixture.fontsLoaded.then(() => {
     });
 
     dialog.listen(strings.OPENED_EVENT, () => {
+      const isSimple = () => dialogEl.classList.contains('test-dialog--simple');
+      const isConfirmation = () => dialogEl.classList.contains('test-dialog--confirmation');
       const isStacked = () => dialogEl.classList.contains('mdc-dialog--stacked');
       const isSideBySide = () => !dialogEl.classList.contains('mdc-dialog--stacked');
       const isScrollable = () => dialogEl.classList.contains('mdc-dialog--scrollable');
@@ -282,6 +284,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         toSide: 'bottom',
         specDistancePx: 56,
         flipLabel: true,
+        conditionFn: isSimple,
       });
 
       window.mdc.testFixture.addRedline({
@@ -292,16 +295,55 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         toSide: 'right',
         specDistancePx: 40,
         flipLabel: true,
+        conditionFn: isSimple,
       });
 
       window.mdc.testFixture.addRedline({
-        name: 'Simple list item graphic width',
+        name: 'Simple list item graphic/label margin',
         fromEl: listItemGraphicEl,
         fromSide: 'right',
         toEl: listItemLabelEl,
         toSide: 'left',
         specDistancePx: 20,
         flipLabel: false,
+        conditionFn: isSimple,
+      });
+
+      /*
+       * Confirmation dialog - list items
+       */
+
+      window.mdc.testFixture.addRedline({
+        name: 'Confirmation list item height',
+        fromEl: listItemEl,
+        fromSide: 'top',
+        toEl: listItemEl,
+        toSide: 'bottom',
+        specDistancePx: 48,
+        flipLabel: true,
+        conditionFn: isConfirmation,
+      });
+
+      window.mdc.testFixture.addRedline({
+        name: 'Confirmation list item graphic width',
+        fromEl: listItemGraphicEl,
+        fromSide: 'left',
+        toEl: listItemGraphicEl,
+        toSide: 'right',
+        specDistancePx: 24,
+        flipLabel: true,
+        conditionFn: isConfirmation,
+      });
+
+      window.mdc.testFixture.addRedline({
+        name: 'Confirmation list item graphic/label margin',
+        fromEl: listItemGraphicEl,
+        fromSide: 'right',
+        toEl: listItemLabelEl,
+        toSide: 'left',
+        specDistancePx: 32,
+        flipLabel: false,
+        conditionFn: isConfirmation,
       });
     });
 
