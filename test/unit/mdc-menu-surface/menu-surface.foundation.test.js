@@ -307,10 +307,9 @@ testFoundation('#open from anchor in top right of viewport, absolute position, h
     td.verify(mockAdapter.setPosition({left: '20px', top: '20px'}));
   });
 
-
-testFoundation('#open from small anchor in top right of viewport, fixed position, scrollY 10 px',
+testFoundation('#open from small anchor in top right of viewport, fixed position, scrollX/scrollY 5px/10 px',
   ({foundation, mockAdapter, mockRaf}) => {
-    initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 0, y: 10});
+    initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 5, y: 10});
     foundation.setFixedPosition(true);
     foundation.open();
     mockRaf.flush();
@@ -318,54 +317,41 @@ testFoundation('#open from small anchor in top right of viewport, fixed position
     td.verify(mockAdapter.setPosition({left: '20px', top: '20px'}));
   });
 
-testFoundation('#open from small anchor in top right of viewport, absolute position, scrollY 10 px',
+testFoundation('#open from small anchor in top right of viewport, absolute position, scrollX/scrollY 5px/10 px',
   ({foundation, mockAdapter, mockRaf}) => {
-    initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 0, y: 10});
+    initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 5, y: 10});
     foundation.open();
     mockRaf.flush();
     td.verify(mockAdapter.setTransformOrigin('left top'));
     td.verify(mockAdapter.setPosition({left: '0', top: '0'}));
   });
 
-testFoundation('#open from anchor in top right of viewport, absolute position, hoisted menu surface, scrollY 10 px',
-  ({foundation, mockAdapter, mockRaf}) => {
-    initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 0, y: 10});
-    foundation.setIsHoisted(true);
-    foundation.open();
-    mockRaf.flush();
-    td.verify(mockAdapter.setTransformOrigin('left top'));
-    td.verify(mockAdapter.setPosition({left: '20px', top: '30px'}));
-  });
+testFoundation('#open from anchor in top right of viewport, absolute position, hoisted menu surface, scrollX/scrollY ' +
+  '5px/10 px', ({foundation, mockAdapter, mockRaf}) => {
+  initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 5, y: 10});
+  foundation.setIsHoisted(true);
+  foundation.open();
+  mockRaf.flush();
+  td.verify(mockAdapter.setTransformOrigin('left top'));
+  td.verify(mockAdapter.setPosition({left: '25px', top: '30px'}));
+});
 
-testFoundation('#open in absolute position at x/y=100, absolute position, hoisted menu surface, scrollY 10 px',
-  ({foundation, mockAdapter, mockRaf}) => {
-    initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 0, y: 10});
-    td.when(mockAdapter.hasAnchor()).thenReturn(false);
-    td.when(mockAdapter.getAnchorDimensions()).thenReturn(undefined);
-    foundation.setIsHoisted(true);
-    foundation.setAbsolutePosition(100, 100);
-    foundation.open();
-    mockRaf.flush();
-    td.verify(mockAdapter.setTransformOrigin('left top'));
-    td.verify(mockAdapter.setPosition({left: '100px', top: '110px'}));
-  });
+testFoundation('#open in absolute position at x/y=100, absolute position, hoisted menu surface, scrollX/scrollY ' +
+  '5px/10 px', ({foundation, mockAdapter, mockRaf}) => {
+  initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 5, y: 10});
+  td.when(mockAdapter.hasAnchor()).thenReturn(false);
+  td.when(mockAdapter.getAnchorDimensions()).thenReturn(undefined);
+  foundation.setIsHoisted(true);
+  foundation.setAbsolutePosition(100, 100);
+  foundation.open();
+  mockRaf.flush();
+  td.verify(mockAdapter.setTransformOrigin('left top'));
+  td.verify(mockAdapter.setPosition({left: '105px', top: '110px'}));
+});
 
-testFoundation('#open in absolute position at x/y=100, absolute position, hoisted menu surface, scrollX 10 px',
+testFoundation('#open in absolute position at x/y=100, fixed position, hoisted menu surface, scrollY/scrollY 5px/10 px',
   ({foundation, mockAdapter, mockRaf}) => {
-    initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 10, y: 0});
-    td.when(mockAdapter.hasAnchor()).thenReturn(false);
-    td.when(mockAdapter.getAnchorDimensions()).thenReturn(undefined);
-    foundation.setIsHoisted(true);
-    foundation.setAbsolutePosition(100, 100);
-    foundation.open();
-    mockRaf.flush();
-    td.verify(mockAdapter.setTransformOrigin('left top'));
-    td.verify(mockAdapter.setPosition({left: '110px', top: '100px'}));
-  });
-
-testFoundation('#open in absolute position at x/y=100, fixed position, hoisted menu surface, scrollY/scrollY 10 px',
-  ({foundation, mockAdapter, mockRaf}) => {
-    initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 10, y: 10});
+    initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 5, y: 10});
     td.when(mockAdapter.hasAnchor()).thenReturn(false);
     td.when(mockAdapter.getAnchorDimensions()).thenReturn(undefined);
     foundation.setIsHoisted(true);
@@ -376,7 +362,6 @@ testFoundation('#open in absolute position at x/y=100, fixed position, hoisted m
     td.verify(mockAdapter.setTransformOrigin('left top'));
     td.verify(mockAdapter.setPosition({left: '100px', top: '100px'}));
   });
-
 
 testFoundation('#open from small anchor in left bottom of viewport, default (TOP_START) anchor corner, RTL',
   ({foundation, mockAdapter, mockRaf}) => {
