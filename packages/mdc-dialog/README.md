@@ -227,8 +227,8 @@ single line if possible.
 #### Default Action Button
 
 MDC Dialog supports indicating that one of its action buttons represents the default action, triggered by pressing the
-Enter key. This can be used e.g. for Confirmation Dialogs to accelerate the process of making a selection, avoiding the
-need to tab through to the appropriate button to confirm the choice.
+Enter key. This can be used e.g. for single-choice Confirmation Dialogs to accelerate the process of making a selection,
+avoiding the need to tab through to the appropriate button to confirm the choice.
 
 To indicate that a button represents the default action, add the `mdc-dialog__button--default` modifier class.
 For example:
