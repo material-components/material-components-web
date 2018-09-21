@@ -41,11 +41,11 @@ window.mdc.testFixture.fontsLoaded.then(() => {
     const shouldScrollToBottom = dialogEl.classList.contains('test-dialog--scroll-to-bottom');
     if (contentEl && shouldScrollToBottom) {
       const scrollToBottom = () => {
-        contentEl.scrollTop = contentEl.scrollHeight;
         const lastChild = contentEl.children[contentEl.children.length - 1];
         if (lastChild && lastChild.scrollIntoView) {
           lastChild.scrollIntoView(/* topAligned */ false);
         }
+        contentEl.scrollTop = contentEl.scrollHeight;
       };
 
       const handleOpenEvent = () => {
