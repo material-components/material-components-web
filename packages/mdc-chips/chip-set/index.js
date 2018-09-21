@@ -76,9 +76,12 @@ class MDCChipSet extends MDCComponent {
     });
 
     this.handleChipInteraction_ = (evt) => this.foundation_.handleChipInteraction(evt);
+    this.handleChipSelection_ = (evt) => this.foundation_.handleChipSelection(evt);
     this.handleChipRemoval_ = (evt) => this.foundation_.handleChipRemoval(evt);
     this.root_.addEventListener(
       MDCChipFoundation.strings.INTERACTION_EVENT, this.handleChipInteraction_);
+    this.root_.addEventListener(
+      MDCChipFoundation.strings.SELECTION_EVENT, this.handleChipSelection_);
     this.root_.addEventListener(
       MDCChipFoundation.strings.REMOVAL_EVENT, this.handleChipRemoval_);
   }

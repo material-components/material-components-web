@@ -91,6 +91,7 @@ class MDCChipFoundation extends MDCFoundation {
     } else {
       this.adapter_.removeClass(cssClasses.SELECTED);
     }
+    this.adapter_.notifySelection(selected);
   }
 
   /**
