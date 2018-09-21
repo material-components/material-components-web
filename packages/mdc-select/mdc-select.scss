@@ -127,6 +127,7 @@
   }
 
   &__selected-text {
+    padding-top: 22px;
     min-width: 200px;
   }
 
@@ -162,6 +163,10 @@
     border: none;
     background-color: transparent;
     z-index: 1;
+  }
+
+  .mdc-select__selected-text {
+    padding-top: 14px;
   }
 
   // stylelint-disable-next-line plugin/selector-bem-pattern
@@ -213,4 +218,9 @@
 
   cursor: default;
   pointer-events: none;
+}
+
+.mdc-select__menu .mdc-list .mdc-list-item--selected {
+  @include mdc-theme-prop(color, on-surface);
+  @include mdc-states;
 }
