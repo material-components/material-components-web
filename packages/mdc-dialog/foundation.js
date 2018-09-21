@@ -240,7 +240,8 @@ class MDCDialogFoundation extends MDCFoundation {
     const isEnter = evt.key === 'Enter' || evt.keyCode === 13;
 
     // Check for scrim click first since it doesn't require querying ancestors
-    if (isClick && this.adapter_.eventTargetMatches(evt.target, strings.SCRIM_SELECTOR) && this.scrimClickAction_ !== '') {
+    if (isClick && this.adapter_.eventTargetMatches(evt.target, strings.SCRIM_SELECTOR) &&
+      this.scrimClickAction_ !== '') {
       this.close(this.scrimClickAction_);
     } else if (isClick || evt.key === 'Space' || evt.keyCode === 32 || isEnter) {
       const action = this.adapter_.getActionFromEvent(evt);

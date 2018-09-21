@@ -35,7 +35,7 @@ import MDCDialogFoundation from '../../../packages/mdc-dialog/foundation';
 const ENTER_EVENTS = [
   {type: 'keydown', key: 'Enter', target: {}},
   {type: 'keydown', keyCode: 13, target: {}},
-  ];
+];
 
 const INTERACTION_EVENTS = [
   {type: 'click', target: {}},
@@ -419,7 +419,7 @@ test(`click closes dialog when ${strings.SCRIM_SELECTOR} selector matches`, () =
   td.verify(foundation.close(foundation.getScrimClickAction()));
 });
 
-test(`click does nothing when ${strings.SCRIM_SELECTOR} class is present but scrim click action is empty string`, () => {
+test(`click does nothing when ${strings.SCRIM_SELECTOR} class is present but scrimClickAction is empty string`, () => {
   const {foundation, mockAdapter} = setupTest();
   const evt = {type: 'click', target: {}};
   foundation.close = td.func('close');
@@ -452,7 +452,7 @@ test('escape keydown closes the dialog (via keyCode property)', () => {
   td.verify(foundation.close(foundation.getEscapeKeyAction()));
 });
 
-test('escape keydown does nothing if escape key action is set to empty string', () => {
+test('escape keydown does nothing if escapeKeyAction is set to empty string', () => {
   const {foundation} = setupTest();
   foundation.close = td.func('close');
 
