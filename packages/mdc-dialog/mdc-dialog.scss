@@ -156,7 +156,7 @@
   padding: 6px 0 0; // Top padding balances with title height
 }
 
-// stylelint-disable-next-line plugin/selector-bem-pattern
+// stylelint-disable-next-line plugin/selector-bem-pattern, selector-max-specificity
 .mdc-dialog--scrollable .mdc-dialog__content .mdc-list:first-child:last-child {
   // Override default .mdc-list padding for content consisting exclusively of a MDC List
   padding: 0;
