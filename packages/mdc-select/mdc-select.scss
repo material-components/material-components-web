@@ -41,7 +41,6 @@
   @include mdc-states-base-color($mdc-select-ink-color);
   @include mdc-states-hover-opacity(mdc-states-opacity($mdc-select-ink-color, hover));
   @include mdc-states-focus-opacity(mdc-states-opacity($mdc-select-ink-color, focus));
-  @include mdc-select-dd-arrow-svg-bg_($mdc-select-dropdown-color, $mdc-select-dropdown-opacity);
   @include mdc-select-ink-color($mdc-select-ink-color);
   @include mdc-select-label-color($mdc-select-label-color);
   @include mdc-select-bottom-line-color($mdc-select-bottom-line-idle-color);
@@ -67,6 +66,23 @@
 
   @include mdc-rtl {
     background-position: left 10px center;
+  }
+
+  &__dropdown-icon {
+    @include mdc-select-dd-arrow-svg-bg_($mdc-select-dropdown-color, $mdc-select-dropdown-opacity);
+    @include mdc-rtl-reflexive(left, auto, right, 8px);
+
+    position: absolute;
+    bottom: 16px;
+    width: 24px;
+    height: 24px;
+    transition: transform $mdc-select-dropdown-transition-duration $mdc-animation-standard-curve-timing-function;
+    pointer-events: none;
+
+    .mdc-select--focused & {
+      transform: rotate(180deg) translateY(-5px);
+      transition: transform $mdc-select-dropdown-transition-duration $mdc-animation-standard-curve-timing-function;
+    }
   }
 
   &__native-control {
@@ -150,11 +166,14 @@
 }
 
 .mdc-select--disabled {
-  @include mdc-select-dd-arrow-svg-bg_($mdc-select-dropdown-color, $mdc-select-disabled-dropdown-opacity);
   @include mdc-select-container-fill-color_($mdc-select-box-disabled-fill-color);
 
   .mdc-floating-label {
     @include mdc-floating-label-ink-color($mdc-select-disabled-label-color);
+  }
+
+  .mdc-select__dropdown-icon {
+    @include mdc-select-dd-arrow-svg-bg_($mdc-select-dropdown-color, $mdc-select-disabled-dropdown-opacity);
   }
 
   // stylelint-disable-next-line plugin/selector-bem-pattern
