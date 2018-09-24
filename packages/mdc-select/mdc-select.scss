@@ -45,6 +45,7 @@
   @include mdc-select-ink-color($mdc-select-ink-color);
   @include mdc-select-label-color($mdc-select-label-color);
   @include mdc-select-bottom-line-color($mdc-select-bottom-line-idle-color);
+  @include mdc-select-shape-radius(medium);
 
   // Focused state colors
   @include mdc-select-focused-bottom-line-color(primary);
@@ -58,8 +59,7 @@
   display: inline-flex;
   position: relative;
   box-sizing: border-box;
-  height: 56px;
-  border-radius: 4px 4px 0 0;
+  height: $mdc-select-height;
   background-repeat: no-repeat;
   background-position: right 10px center;
   overflow: hidden;
@@ -100,7 +100,6 @@
     padding-bottom: 4px;
     border: none;
     border-bottom: 1px solid;
-    border-radius: 4px 4px 0 0;
     outline: none;
     background-color: transparent;
     color: inherit; // Override default user agent stylesheet
@@ -124,7 +123,7 @@
   @include mdc-select-focused-outline-color(primary);
   @include mdc-floating-label-float-position($mdc-select-outlined-label-position-y);
   @include mdc-floating-label-shake-animation(text-field-outlined);
-  @include mdc-select-outline-corner-radius($mdc-select-border-radius);
+  @include mdc-select-outline-shape-radius(medium);
   @include mdc-states-base-color(transparent);
   @include mdc-select-container-fill-color(transparent);
 

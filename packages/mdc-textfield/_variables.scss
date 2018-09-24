@@ -51,8 +51,7 @@ $mdc-textarea-disabled-border-color: rgba(mdc-theme-prop-value(on-surface), .26)
 // will make text unreadable
 $mdc-textarea-disabled-background: rgba(249, 249, 249, 1);
 
-$mdc-text-field-border-radius: 4px !default;
-
+$mdc-text-field-height: 56px;
 $mdc-text-field-label-position-y: 50%;
 $mdc-text-field-dense-label-position-y: 70%;
 $mdc-text-field-dense-label-scale: .923;

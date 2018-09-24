@@ -20,49 +20,14 @@
 // THE SOFTWARE.
 //
 
-@import "./common";
-@import "../packages/mdc-checkbox/mdc-checkbox";
-@import "../packages/mdc-form-field/mdc-form-field";
-@import "../packages/mdc-image-list/mdc-image-list";
-@import "../packages/mdc-radio/mdc-radio";
+// Shape categories
+$mdc-shape-small-surface-radius: 4px !default;
+$mdc-shape-medium-surface-radius: 4px !default;
+$mdc-shape-large-surface-radius: 0 !default;
 
-.mdc-image-list.hero-image-list {
-  @include mdc-image-list-standard-columns(5);
-
-  width: 300px;
-  margin: 0;
-}
-
-.hero-image-list .mdc-image-list__image {
-  background-color: #000;
-}
-
-.mdc-image-list.standard-image-list {
-  @include mdc-image-list-aspect(1.5); // Images are 3:2
-  @include mdc-image-list-standard-columns(5);
-
-  max-width: 1000px;
-}
-
-.mdc-image-list.masonry-image-list {
-  @include mdc-image-list-masonry-columns(5);
-  max-width: 1000px;
-}
-
-.hide-supporting .mdc-image-list__supporting {
-  display: none;
-}
-
-.rounded-corners {
-  @include mdc-image-list-shape-radius(8px);
-}
-
-@media (max-width: 599px) {
-  .mdc-image-list.standard-image-list {
-    @include mdc-image-list-standard-columns(3);
-  }
-
-  .mdc-image-list.masonry-image-list {
-    @include mdc-image-list-masonry-columns(3);
-  }
-}
+// Shape category mapping.
+$mdc-shape-category-values: (
+  small: $mdc-shape-small-surface-radius,
+  medium: $mdc-shape-medium-surface-radius,
+  large: $mdc-shape-large-surface-radius,
+);
