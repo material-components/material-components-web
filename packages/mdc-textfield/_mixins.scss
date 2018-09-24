@@ -24,22 +24,32 @@
 @import "@material/line-ripple/mixins";
 @import "@material/notched-outline/mixins";
 @import "@material/theme/mixins";
+@import "@material/shape/mixins";
+@import "@material/shape/functions";
 @import "helper-text/mixins";
 @import "icon/mixins";
 @import "icon/variables";
 @import "./variables";
+@import "./functions";
 
-@mixin mdc-text-field-corner-radius($radius) {
-  border-radius: $radius $radius 0 0;
+@mixin mdc-text-field-shape-radius($radius, $rtl-reflexive: false) {
+  @if length($radius) > 2 {
+    @error "Invalid radius: '#{$radius}' component doesn't allow customizing all corners";
+  }
+
+  $masked-radius: mdc-shape-mask-radius($radius, 1 1 0 0);
+
+  @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-text-field-height, $masked-radius), $rtl-reflexive);
 }
 
-@mixin mdc-text-field-textarea-corner-radius($radius) {
-  border-radius: $radius;
+@mixin mdc-text-field-textarea-shape-radius($radius, $rtl-reflexive: false) {
+  @include mdc-shape-radius($radius, $rtl-reflexive);
 
   .mdc-floating-label {
     // Bottom corners are square to prevent weird edge cases
     // where text would be visible outside of the curve.
-    border-radius: $radius $radius 0 0;
+    $masked-radius: mdc-shape-mask-radius($radius, 1 1 0 0);
+    @include mdc-shape-radius($masked-radius, $rtl-reflexive);
   }
 
   .mdc-text-field__input {
@@ -48,7 +58,16 @@
     // background between the two borders in each corner when the
     // textarea is focused. This also means we need to guard against
     // invalid output.
-    border-radius: max($radius - 2, 0);
+    $radius-value: $radius;
+
+    @if type-of($radius) == "list" {
+      $radius-value: ();
+      @each $corner in $radius {
+        $radius-value: append($radius-value, max($corner - 2, 0));
+      }
+    }
+
+    @include mdc-shape-radius($radius-value, $rtl-reflexive);
   }
 }
 
@@ -211,18 +230,20 @@
   }
 }
 
-@mixin mdc-text-field-outline-corner-radius_($radius) {
+@mixin mdc-text-field-outline-shape-radius($radius, $rtl-reflexive: false) {
   // NOTE: idle and notched state border radius mixins
   // are broken into 2 different mixins, otherwise
   // we would be overly specific (big no, no). The cause of
   // this is because .mdc-notched-outline and .mdc-notched-outline__idle
   // are siblings. .mdc-notched-outline__idle needs to be a child of
   // .mdc-notched-outline in order to remedy this issue.
+  $resolved-radius: mdc-shape-resolve-percentage-radius($mdc-text-field-height, $radius);
+
   .mdc-notched-outline {
-    @include mdc-notched-outline-corner-radius($radius);
+    @include mdc-notched-outline-shape-radius($resolved-radius, $rtl-reflexive);
   }
 
-  @include mdc-notched-outline-idle-corner-radius($radius);
+  @include mdc-notched-outline-idle-shape-radius($resolved-radius, $rtl-reflexive);
 }
 
 @mixin mdc-text-field-floating-label_ {
@@ -286,7 +307,7 @@
   @include mdc-text-field-focused-outline-color(primary);
   @include mdc-floating-label-float-position($mdc-text-field-outlined-label-position-y);
   @include mdc-floating-label-shake-animation(text-field-outlined);
-  @include mdc-text-field-outline-corner-radius_($mdc-text-field-border-radius);
+  @include mdc-text-field-outline-shape-radius(small);
   @include mdc-states-base-color(transparent);
   @include mdc-text-field-fill-color(transparent);
 
@@ -437,7 +458,7 @@
 }
 
 @mixin mdc-text-field-textarea_ {
-  @include mdc-text-field-textarea-corner-radius($mdc-text-field-border-radius);
+  @include mdc-text-field-textarea-shape-radius(small);
   @include mdc-text-field-textarea-stroke-color($mdc-textarea-border);
 
   // Translate above the top of the input, and compensate for the amount of offset needed

@@ -21,6 +21,7 @@
     "@material/animation": "^0.39.0",
     "@material/base": "^0.39.0",
     "@material/rtl": "^0.39.1",
+    "@material/shape": "^0.39.0",
     "@material/theme": "^0.39.1"
   }
 }

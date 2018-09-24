@@ -126,7 +126,7 @@ CSS Class | Description
 Mixin | Description
 --- | ---
 `mdc-image-list-aspect($width-height-ratio)` | Styles the aspect container elements within an Image List to conform to the given ratio, where 1 is 1:1, greater than 1 is wider, and less than 1 is taller.
-`mdc-image-list-corner-radius($radius)` | Styles the image and supporting content elements within an Image List to have rounded corners with the given radius.
+`mdc-image-list-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to image list item with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `mdc-image-list-standard-columns($column-count, $gutter-size)` | Styles a Standard Image List to display the given number of columns. `$gutter-size` is optional and overrides the default amount of space between items.
 `mdc-image-list-masonry-columns($column-count, $gutter-size)` | Styles a Masonry Image List to display the given number of columns. `$gutter-size` is optional and overrides the default amount of space between items.
 

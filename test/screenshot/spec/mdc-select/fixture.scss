@@ -44,14 +44,14 @@
   @include mdc-select-bottom-line-color(green);
 }
 
-.custom-select-corner-radius {
-  @include mdc-select-corner-radius(10px);
+.custom-select-shape-radius {
+  @include mdc-select-shape-radius(10px);
 }
 
 .custom-select-outline-color {
   @include mdc-select-outline-color(green);
 }
 
-.custom-select-outline-corner-radius {
-  @include mdc-select-outline-corner-radius(10px);
+.custom-select-outline-shape-radius {
+  @include mdc-select-outline-shape-radius(10px);
 }

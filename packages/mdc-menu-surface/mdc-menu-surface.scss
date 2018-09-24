@@ -33,7 +33,7 @@
   @include mdc-menu-surface-fill-color(surface);
   @include mdc-menu-surface-ink-color(on-surface);
   @include mdc-rtl-reflexive-property(transform-origin, top left, top right);
-  @include mdc-menu-surface-corner-radius(4px);
+  @include mdc-menu-surface-shape-radius(medium);
 
   display: none;
   position: absolute;

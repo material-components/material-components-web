@@ -20,6 +20,7 @@
 // THE SOFTWARE.
 //
 
+@import "@material/shape/mixins";
 @import "@material/theme/mixins";
 @import "@material/theme/variables"; // for mdc-theme-prop-value
 
@@ -58,9 +59,9 @@
   }
 }
 
-@mixin mdc-dialog-corner-radius($radius) {
+@mixin mdc-dialog-shape-radius($radius, $rtl-reflexive: false) {
   .mdc-dialog__surface {
-    border-radius: $radius;
+    @include mdc-shape-radius($radius, $rtl-reflexive)
   }
 }
 

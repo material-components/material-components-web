@@ -286,7 +286,7 @@ Mixin | Description
 `mdc-dialog-title-ink-color($color, $opacity)` | Sets the color of the dialog's title text.
 `mdc-dialog-content-ink-color($color, $opacity)` | Sets the color of the dialog's content text.
 `mdc-dialog-scroll-divider-color($color, $opacity)` | Sets the color of the dividers which display around scrollable content.
-`mdc-dialog-corner-radius($radius)` | Sets the corner radius to the given amount (defaults to 4px on all sides).
+`mdc-dialog-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to dialog surface with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `mdc-dialog-min-width($min-width)` | Sets the minimum width of the dialog (defaults to 280px).
 `mdc-dialog-max-width($max-width, $margin)` | Sets the maximum width of the dialog (defaults to 560px max width and 16px margins).
 `mdc-dialog-max-height($max-height, $margin)` | Sets the maximum height of the dialog (defaults to no max height and 16px margins).

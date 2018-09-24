@@ -52,7 +52,7 @@
   @include mdc-dialog-min-width($mdc-dialog-min-width);
   @include mdc-dialog-max-width($mdc-dialog-max-width, $mdc-dialog-margin);
   @include mdc-dialog-max-height(null, $mdc-dialog-margin);
-  @include mdc-dialog-corner-radius($mdc-dialog-corner-radius);
+  @include mdc-dialog-shape-radius(medium);
 
   // Use `display: none` instead of `visibility: hidden` to avoid recalculating layout when the dialog is closed.
   display: none;

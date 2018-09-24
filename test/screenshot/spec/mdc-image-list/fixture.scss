@@ -20,39 +20,14 @@
 // THE SOFTWARE.
 //
 
-.mdc-shape-container {
-  display: inline-block;
-  position: relative;
-  overflow: hidden; // Prevent overflowed borders from encroaching on surrounding elements
+@import "../../../../packages/mdc-image-list/mixins";
+
+$custom-image-list-shape-radius: 8px;
+
+.test-image-list--standard {
+  @include mdc-image-list-standard-columns(3);
 }
 
-.mdc-shape-container__corner {
-  position: absolute;
-  // IE and Edge require z-index set to 1 to properly mask ripple.
-  z-index: 1;
-}
-
-.mdc-shape-container__corner::before,
-.mdc-shape-container__corner::after {
-  position: absolute;
-  box-sizing: border-box;
-  width: 100%;
-  height: 100%;
-  content: "";
-}
-
-.mdc-shape-container__corner--top-left {
-  transform: rotate(-45deg);
-}
-
-.mdc-shape-container__corner--top-right {
-  transform: rotate(45deg);
-}
-
-.mdc-shape-container__corner--bottom-right {
-  transform: rotate(135deg);
-}
-
-.mdc-shape-container__corner--bottom-left {
-  transform: rotate(-135deg);
+.custom-image-list--shape-radius {
+  @include mdc-image-list-shape-radius($custom-image-list-shape-radius);
 }
