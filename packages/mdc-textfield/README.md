@@ -6,21 +6,7 @@ iconId: text_field
 path: /catalog/input-controls/text-field/
 -->
 
-## Important - Default Style Deprecation Notice
-
-The existing default text field style will be changed in an upcoming release. The Material spec indicates that
-the default style will be the filled variant (currently referred to as the box variant). This will become the
-default style. Continuing to add the `mdc-text-field--box` class to the text field will
-result in no change.
-
 # Text Field
-
-<!--<div class="article__asset">
-  <a class="article__asset-link"
-     href="https://material-components.github.io/material-components-web-catalog/#/component/text-field">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/textfields.png" width="240" alt="Text fields screenshot">
-  </a>
-</div>-->
 
 Text fields allow users to input, edit, and select text.
 
@@ -87,7 +73,7 @@ Full width text fields are useful for in-depth tasks or entering complex informa
 </div>
 ```
 
-> _NOTE_: Do not use `mdc-text-field--box` or `mdc-text-field--outlined` to style a full width text field.
+> _NOTE_: Do not use `mdc-text-field--outlined` to style a full width text field.
 
 > _NOTE_: Do not use `mdc-floating-label` within `mdc-text-field--fullwidth`. Labels should not be
 included as part of the DOM structure of a full width text field.
@@ -140,9 +126,8 @@ See [here](helper-text/) for more information on using helper text.
 
 ### Text Field with Leading and Trailing Icons
 
-Leading and trailing icons can be added within the box or outlined variants of MDC Text Field as visual indicators as
+Leading and trailing icons can be added within the default or outlined variant of MDC Text Field as visual indicators as
 well as interaction targets. See [here](icon/) for more information on using icons.
-
 
 ### HTML5 Validation
 
@@ -183,7 +168,6 @@ Un-styled Content (**FOUC**).
 CSS Class | Description
 --- | ---
 `mdc-text-field` | Mandatory.
-`mdc-text-field--box` | Styles the text field as a box text field.
 `mdc-text-field--outlined` | Styles the text field as an outlined text field.
 `mdc-text-field--fullwidth` | Styles the text field as a full width text field.
 `mdc-text-field--textarea` | Indicates the text field is a `<textarea>`.
@@ -202,12 +186,23 @@ apply these mixins with CSS selectors such as `.foo-text-field.mdc-text-field--i
 
 > _NOTE_: the `mdc-line-ripple-color` mixin should be applied from the not focused class `foo-text-field:not(.mdc-text-field--focused)`).
 
-#### Mixins for Text Field Box
+#### Mixins for all Text Fields
 
 Mixin | Description
 --- | ---
-`mdc-text-field-box-corner-radius($radius)` | Customizes the border radius for the text field box variant.
-`mdc-text-field-box-fill-color($color)` | Customizes the background color of the text field box.
+`mdc-text-field-ink-color($color)` | Customizes the color of the text entered into the text field.
+`mdc-text-field-label-color($color)` | Customizes the text color of the label.
+`mdc-text-field-caret-color($color)` | Customizes the color of the cursor caret of the text field.
+
+#### Mixins for Filled Text Field
+
+Mixin | Description
+--- | ---
+`mdc-text-field-corner-radius($radius)` | Customizes the border radius for the text field.
+`mdc-text-field-fill-color($color)` | Customizes the background color of the text field.
+`mdc-text-field-bottom-line-color($color)` | Customizes the text field bottom line color except the outlined and textarea variants.
+`mdc-text-field-hover-bottom-line-color($color)` | Customizes the hover text field bottom line color except the outlined and textarea variants.
+`mdc-text-field-line-ripple-color($color)` | Customizes the color of the default line ripple of the text field.
 
 #### Mixins for Outlined Text Field
 
@@ -233,28 +228,29 @@ Mixin | Description
 --- | ---
 `mdc-text-field-fullwidth-bottom-line-color($color)` | Customizes the fullwidth text field variant bottom line color.
 
-#### Other Mixins
-
-Mixin | Description
---- | ---
-`mdc-text-field-bottom-line-color($color)` | Customizes the text field bottom line color except the outlined and textarea variants.
-`mdc-text-field-hover-bottom-line-color($color)` | Customizes the hover text field bottom line color except the outlined and textarea variants.
-`mdc-text-field-ink-color($color)` | Customizes the text entered into the text field.
-`mdc-text-field-label-color($color)` | Customizes the text color of the label.
-`mdc-text-field-line-ripple-color($color)` | Customizes the color of the default line ripple of the text field.
-`mdc-text-field-caret-color($color)` | Customizes the color of the cursor caret of the text field.
-
 ## `MDCTextField` Properties and Methods
 
 Property | Value Type | Description
 --- | --- | ---
-`value` | String | Proxies to the foundation's `getValue`/`setValue` methods.
-`disabled` | Boolean | Proxies to the foundation's `isDisabled`/`setDisabled` methods.
-`useNativeValidation` | Boolean (write-only) | Proxies to the foundation's `setUseNativeValidation` method.
-`valid` | Boolean | Proxies to the foundation's `isValid`/`setValid` methods.
-`required` | Boolean | Proxies to the foundation's `isRequired`/`setRequired` methods.
-`helperTextContent` | String | Proxies to the foundation's `setHelperTextContent` method when set.
-`ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCTextField` initializes; this only applies to Text Field Box, and is `null` for other variants.
+`value` | string | Proxies to the foundation's `getValue`/`setValue` methods.
+`disabled` | boolean | Proxies to the foundation's `isDisabled`/`setDisabled` methods.
+`useNativeValidation` | boolean (write-only) | Proxies to the foundation's `setUseNativeValidation` method.
+`valid` | boolean | Proxies to the foundation's `isValid`/`setValid` methods.
+`helperTextContent` | string (write-only)| Proxies to the foundation's `setHelperTextContent` method when set.
+`ripple` | `MDCRipple` (write-only) | The `MDCRipple` instance for the root element that `MDCTextField` initializes; this only applies to the default Text Field, and is `null` for other variants.
+`leadingIconAriaLabel` | string (write-only) | Proxies to the foundation's `setLeadingIconAriaLabel` method.
+`trailingIconAriaLabel` | string (write-only) | Proxies to the foundation's `setTrailingIconAriaLabel` method.
+`leadingIconContent` | string (write-only) | Proxies to the foundation's `setLeadingIconContent` method.
+`trailingIconContent` | string (write-only) | Proxies to the foundation's `setTrailingIconContent` method.
+
+In addition to the above, the following properties proxy to the `input` element's properties of the same name:
+
+* `required`
+* `minLength`
+* `maxLength`
+* `min`
+* `max`
+* `step`
 
 Method Signature | Description
 --- | ---
@@ -304,15 +300,15 @@ Method Signature | Description
 `isValid() => boolean` | Returns the component's current validity state (either native or custom, depending on how `setUseNativeValidation()` was configured).
 `isDisabled() => boolean` | Returns whether or not the input is disabled.
 `setDisabled(disabled: boolean) => void` | Updates the input's disabled state.
-`isRequired() => boolean` | Returns whether the input is required.
-`setRequired(isRequired: boolean)` | Sets whether the input is required.
 `handleTextFieldInteraction(evt: Event) => void` | Handles click and keydown events originating from inside the Text Field component.
 `handleValidationAttributeChange(attributesList: !Array<string>) => void` | Handles validation attribute changes.
 `activateFocus() => void` | Activates the focus state of the Text Field. Normally called in response to the input focus event.
 `deactivateFocus() => void` | Deactivates the focus state of the Text Field. Normally called in response to the input blur event.
 `setHelperTextContent(content: string) => void` | Sets the content of the helper text.
-`setIconAriaLabel(label: string) => void` | Sets the aria label of the icon.
-`setIconContent(content: string) => void` | Sets the text content of the icon.
+`setLeadingIconAriaLabel(label: string) => void` | Sets the aria label of the leading icon.
+`setLeadingIconContent(content: string) => void` | Sets the text content of the leading icon.
+`setTrailingIconAriaLabel(label: string) => void` | Sets the aria label of the trailing icon.
+`setTrailingIconContent(content: string) => void` | Sets the text content of the trailing icon.
 `notchOutline(openNotch: boolean) => void` | Opens/closes the notched outline.
 
 `MDCTextFieldFoundation` supports multiple optional sub-elements: helper text and icon. The foundations of these sub-elements must be passed in as constructor arguments to `MDCTextFieldFoundation`.

@@ -1,17 +1,24 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2016 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import {MDCComponent} from '@material/base/index';
@@ -49,6 +56,8 @@ class MDCSelect extends MDCComponent {
     this.handleFocus_;
     /** @private {!Function} */
     this.handleBlur_;
+    /** @private {!Function} */
+    this.handleClick_;
   }
 
   /**
@@ -136,7 +145,7 @@ class MDCSelect extends MDCComponent {
       this.outline_ = outlineFactory(outlineElement);
     }
 
-    if (this.root_.classList.contains(cssClasses.BOX)) {
+    if (!this.root_.classList.contains(cssClasses.OUTLINED)) {
       this.ripple = this.initRipple_();
     }
   }
@@ -162,10 +171,17 @@ class MDCSelect extends MDCComponent {
     this.handleChange_ = () => this.foundation_.handleChange();
     this.handleFocus_ = () => this.foundation_.handleFocus();
     this.handleBlur_ = () => this.foundation_.handleBlur();
+    this.handleClick_ = (evt) => this.setTransformOrigin_(evt);
 
     this.nativeControl_.addEventListener('change', this.handleChange_);
     this.nativeControl_.addEventListener('focus', this.handleFocus_);
     this.nativeControl_.addEventListener('blur', this.handleBlur_);
+
+    if (this.lineRipple_) {
+      ['mousedown', 'touchstart'].forEach((evtType) => {
+        this.nativeControl_.addEventListener(evtType, this.handleClick_);
+      });
+    }
 
     // Initially sync floating label
     this.foundation_.handleChange();
@@ -179,6 +195,9 @@ class MDCSelect extends MDCComponent {
     this.nativeControl_.removeEventListener('change', this.handleChange_);
     this.nativeControl_.removeEventListener('focus', this.handleFocus_);
     this.nativeControl_.removeEventListener('blur', this.handleBlur_);
+    ['mousedown', 'touchstart'].forEach((evtType) => {
+      this.nativeControl_.removeEventListener(evtType, this.handleClick_);
+    });
 
     if (this.ripple) {
       this.ripple.destroy();
@@ -257,11 +276,21 @@ class MDCSelect extends MDCComponent {
         }
       },
       getLabelWidth: () => {
-        if (this.label_) {
-          return this.label_.getWidth();
-        }
+        return this.label_ ? this.label_.getWidth() : 0;
       },
     };
+  }
+
+  /**
+   * Sets the line ripple's transform origin, so that the line ripple activate
+   * animation will animate out from the user's click location.
+   * @param {!(MouseEvent|TouchEvent)} evt
+   */
+  setTransformOrigin_(evt) {
+    const targetClientRect = evt.target.getBoundingClientRect();
+    const xCoordinate = evt.clientX;
+    const normalizedX = xCoordinate - targetClientRect.left;
+    this.lineRipple_.setRippleCenter(normalizedX);
   }
 }
 

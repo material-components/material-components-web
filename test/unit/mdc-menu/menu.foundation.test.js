@@ -1,17 +1,24 @@
 /**
- * Copyright 2018 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2018 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import {assert} from 'chai';
@@ -39,7 +46,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCMenuFoundation, [
     'addClassToElementAtIndex', 'removeClassFromElementAtIndex', 'addAttributeToElementAtIndex',
     'removeAttributeFromElementAtIndex', 'elementContainsClass', 'closeSurface', 'getElementIndex', 'getParentElement',
-    'getSelectedElementIndex', 'notifySelected', 'getCheckboxAtIndex', 'toggleCheckbox',
+    'getSelectedElementIndex', 'notifySelected',
   ]);
 });
 
@@ -185,38 +192,6 @@ test('handleKeydown space/enter key inside of a child of a list item causes the 
   td.verify(mockAdapter.notifySelected({index: 0}), {times: 2});
 });
 
-test('handleKeydown space/enter key on a list item with a checkbox toggles the checkbox', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const event = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
-  const checkbox = document.createElement('input');
-  checkbox.type = 'checkbox';
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(false, true);
-  td.when(mockAdapter.getParentElement(event.target)).thenReturn(event.target);
-  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
-  td.when(mockAdapter.getCheckboxAtIndex(0)).thenReturn(checkbox);
-
-  foundation.handleKeydown(event);
-  event.key = 'Enter';
-  foundation.handleKeydown(event);
-
-  td.verify(mockAdapter.toggleCheckbox(checkbox), {times: 2});
-});
-
-test('handleKeydown space/enter key on a list item without a checkbox does not toggle a checkbox', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const event = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(false, true);
-  td.when(mockAdapter.getParentElement(event.target)).thenReturn(event.target);
-  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
-  td.when(mockAdapter.getCheckboxAtIndex(0)).thenReturn(null);
-
-  foundation.handleKeydown(event);
-  event.key = 'Enter';
-  foundation.handleKeydown(event);
-
-  td.verify(mockAdapter.toggleCheckbox(td.matchers.anything()), {times: 0});
-});
-
 test('handleKeydown space/enter key inside of a list item not inside of the menu', () => {
   const {foundation, mockAdapter} = setupTest();
   const event = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
@@ -228,6 +203,28 @@ test('handleKeydown space/enter key inside of a list item not inside of the menu
   foundation.handleKeydown(event);
 
   td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
+});
+
+test('handleKeydown space/enter key inside of a selection group ' +
+  'with additional markup does not cause loop', () => {
+  // This test will timeout of there is an endless loop in the selection group logic.
+  const {foundation, mockAdapter} = setupTest();
+  const clock = lolex.install();
+  const parentElement = {};
+  const event = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
+  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
+  td.when(mockAdapter.elementContainsClass(td.matchers.anything(), listClasses.ROOT)).thenReturn(false, true);
+  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
+  td.when(mockAdapter.getParentElement(td.matchers.anything())).thenReturn(parentElement, null);
+  td.when(mockAdapter.elementContainsClass(td.matchers.anything(), cssClasses.MENU_SELECTION_GROUP)).thenReturn(false);
+
+  foundation.handleKeydown(event);
+  event.key = 'Enter';
+  foundation.handleKeydown(event);
+  clock.tick(numbers.TRANSITION_CLOSE_DURATION);
+
+  td.verify(mockAdapter.closeSurface(), {times: 2});
+  clock.uninstall();
 });
 
 test('handleKeydown space/enter key inside of a selection group with another element selected', () => {
@@ -397,34 +394,6 @@ test('Click event inside of a child of a list item causes the list item to be se
   foundation.handleClick(event);
 
   td.verify(mockAdapter.notifySelected({index: 0}), {times: 1});
-});
-
-test('Click event on a list item with a checkbox toggles the checkbox', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const event = {target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
-  const checkbox = document.createElement('input');
-  checkbox.type = 'checkbox';
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(false, true);
-  td.when(mockAdapter.getParentElement(event.target)).thenReturn(event.target);
-  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
-  td.when(mockAdapter.getCheckboxAtIndex(0)).thenReturn(checkbox);
-
-  foundation.handleClick(event);
-
-  td.verify(mockAdapter.toggleCheckbox(checkbox), {times: 1});
-});
-
-test('Click event on a list item without a checkbox does not toggle a checkbox', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const event = {target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(false, true);
-  td.when(mockAdapter.getParentElement(event.target)).thenReturn(event.target);
-  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
-  td.when(mockAdapter.getCheckboxAtIndex(0)).thenReturn(null);
-
-  foundation.handleClick(event);
-
-  td.verify(mockAdapter.toggleCheckbox(td.matchers.anything()), {times: 0});
 });
 
 test('Click event inside of a list item not inside of the menu', () => {

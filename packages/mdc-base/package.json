@@ -1,8 +1,8 @@
 {
   "name": "@material/base",
   "description": "The set of base classes for Material Components for the web",
-  "version": "0.35.0",
-  "license": "Apache-2.0",
+  "version": "0.39.0",
+  "license": "MIT",
   "main": "index.js",
   "repository": {
     "type": "git",

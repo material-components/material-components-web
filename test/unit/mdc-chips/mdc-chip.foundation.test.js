@@ -1,17 +1,24 @@
 /**
- * Copyright 2017 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2017 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import {assert} from 'chai';
@@ -185,7 +192,23 @@ test('#handleTransitionEnd does nothing on checkmark opacity transition end, if 
   td.verify(mockAdapter.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON), {times: 0});
 });
 
-test('#handleTrailingIconInteraction emits custom event on click in trailing icon', () => {
+test('#handleTransitionEnd does nothing for width property when not exiting', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const mockEvt = {
+    type: 'transitionend',
+    target: {},
+    propertyName: 'width',
+  };
+
+  foundation.handleTransitionEnd(mockEvt);
+
+  td.verify(mockAdapter.notifyRemoval(), {times: 0});
+  td.verify(mockAdapter.addClassToLeadingIcon(cssClasses.HIDDEN_LEADING_ICON), {times: 0});
+  td.verify(mockAdapter.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON), {times: 0});
+});
+
+
+test('#handleTrailingIconInteraction emits custom event on click or enter key in trailing icon', () => {
   const {foundation, mockAdapter} = setupTest();
   const mockEvt = {
     type: 'click',
@@ -193,8 +216,16 @@ test('#handleTrailingIconInteraction emits custom event on click in trailing ico
   };
 
   foundation.handleTrailingIconInteraction(mockEvt);
-  td.verify(mockAdapter.notifyTrailingIconInteraction());
-  td.verify(mockEvt.stopPropagation());
+  td.verify(mockAdapter.notifyTrailingIconInteraction(), {times: 1});
+  td.verify(mockEvt.stopPropagation(), {times: 1});
+
+  foundation.handleTrailingIconInteraction(Object.assign(mockEvt, {type: 'keydown', keyCode: 13}));
+  td.verify(mockAdapter.notifyTrailingIconInteraction(), {times: 2});
+  td.verify(mockEvt.stopPropagation(), {times: 2});
+
+  foundation.handleTrailingIconInteraction(Object.assign(mockEvt, {type: 'keydown', key: 'Enter'}));
+  td.verify(mockAdapter.notifyTrailingIconInteraction(), {times: 3});
+  td.verify(mockEvt.stopPropagation(), {times: 3});
 });
 
 test(`#handleTrailingIconInteraction adds ${cssClasses.CHIP_EXIT} class by default on click in trailing icon`, () => {

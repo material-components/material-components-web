@@ -1,27 +1,33 @@
 //
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2017 Google Inc.
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions://
 //
-//      http://www.apache.org/licenses/LICENSE-2.0
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.//
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 //
 
-@import "../../packages/mdc-list/mixins";
 @import "../../packages/mdc-form-field/mdc-form-field";
 @import "../common";
-@import "../../packages/mdc-drawer/mdc-drawer";
 @import "../../packages/mdc-drawer/mixins";
+@import "../../packages/mdc-drawer/mdc-drawer";
 @import "../../packages/mdc-elevation/mdc-elevation";
 @import "../../packages/mdc-list/mdc-list";
 @import "../../packages/mdc-button/mdc-button";
+@import "../../packages/mdc-top-app-bar/mdc-top-app-bar";
 
 .examples {
   display: flex;
@@ -59,36 +65,65 @@
   padding: 10px;
 }
 
+.demo-form-field {
+  margin: 16px 0;
+}
+
+/* Place drawer and content side by side. */
+.demo-body {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+}
+
+.demo-content {
+  position: relative;
+  flex: auto;
+  overflow: auto;
+  background: #fff;
+}
+
+.demo-main {
+  padding-left: 16px;
+  padding-right: 16px;
+  overflow: auto;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#extra-wide-content {
+  width: 200vw;
+}
+
+#extra-tall-content {
+  height: 200vh;
+}
+
 .demo-drawer--custom {
-  @include mdc-drawer-fill-color($material-color-teal-900);
-  @include mdc-drawer-ink-color(#fff);
-  @include mdc-list-item-graphic-ink-color(#fff);
-
-  .demo-drawer-list-item {
-    @include mdc-list-item-graphic-ink-color(text-icon-on-dark);
-    @include mdc-list-item-primary-text-ink-color(text-secondary-on-dark);
-  }
-
-  .demo-drawer-list-item.mdc-list-item--selected {
-    @include mdc-list-item-graphic-ink-color(text-primary-on-dark);
-    @include mdc-list-item-primary-text-ink-color(text-primary-on-dark);
-  }
+  @include mdc-drawer-border-color(lightblue);
+  @include mdc-drawer-subtitle-ink-color(darkolivegreen);
+  @include mdc-drawer-surface-fill-color(pink);
+  @include mdc-drawer-item-icon-ink-color(darkolivegreen);
+  @include mdc-drawer-title-ink-color(darkolivegreen);
+  @include mdc-drawer-activated-overlay-color(darkcyan);
+  @include mdc-drawer-item-text-ink-color(darkolivegreen);
+  @include mdc-drawer-item-activated-text-ink-color(darkcyan);
+  @include mdc-drawer-item-activated-icon-ink-color(darkcyan);
 }
 
 .demo-drawer--accessible {
-  @include mdc-drawer-fill-color-accessible($material-color-indigo-500);
-
-  .demo-drawer-list-item {
-    @include mdc-list-item-graphic-ink-color(text-icon-on-dark);
-    @include mdc-list-item-primary-text-ink-color(text-secondary-on-dark);
-  }
-
-  .demo-drawer-list-item.mdc-list-item--selected {
-    @include mdc-list-item-graphic-ink-color(text-primary-on-dark);
-    @include mdc-list-item-primary-text-ink-color(text-primary-on-dark);
-  }
+  @include mdc-drawer-fill-color-accessible(darkcyan);
+  @include mdc-drawer-activated-overlay-color(pink);
+  @include mdc-drawer-item-activated-text-ink-color(pink);
+  @include mdc-drawer-item-activated-icon-ink-color(pink);
 }
 
-.demo-form-field {
-  margin: 16px 0;
+.demo-top-app-bar {
+  position: absolute;
+}
+
+.demo-selected-destination {
+  font-weight: 500;
 }

@@ -1,18 +1,24 @@
 <!DOCTYPE html>
 <!--
-  Copyright 2018 Google Inc. All rights reserved.
+  Copyright 2018 Google Inc.
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
 
-      https://www.apache.org/licenses/LICENSE-2.0
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
 
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  THE SOFTWARE.
 -->
 <html lang="en">
   <head>
@@ -22,6 +28,15 @@
     <link rel="stylesheet" href="../../../out/mdc.radio.css">
     <link rel="stylesheet" href="../../../out/spec/fixture.css">
     <link rel="stylesheet" href="../../../out/spec/mdc-radio/fixture.css">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118996389-2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-118996389-2');
+    </script>
   </head>
 
   <body class="test-container mdc-typography">
@@ -29,42 +44,50 @@
       <div class="test-layout">
         <div class="test-cell test-cell--radio">
           <div class="mdc-radio">
-            <input class="mdc-radio__native-control" type="radio" name="enabled-radio-group">
+            <input class="mdc-radio__native-control" type="radio" name="enabled-radio-group"
+                   id="test-radio-1">
             <div class="mdc-radio__background">
               <div class="mdc-radio__outer-circle"></div>
               <div class="mdc-radio__inner-circle"></div>
             </div>
           </div>
+          <label class="test-radio-label" for="test-radio-1">1</label>
         </div>
 
         <div class="test-cell test-cell--radio">
           <div class="mdc-radio">
-            <input class="mdc-radio__native-control" type="radio" name="enabled-radio-group" checked>
+            <input class="mdc-radio__native-control" type="radio" name="enabled-radio-group" checked
+                   id="test-radio-2">
             <div class="mdc-radio__background">
               <div class="mdc-radio__outer-circle"></div>
               <div class="mdc-radio__inner-circle"></div>
             </div>
           </div>
+          <label class="test-radio-label" for="test-radio-2">2</label>
         </div>
 
         <div class="test-cell test-cell--radio">
           <div class="mdc-radio mdc-radio--disabled">
-            <input class="mdc-radio__native-control" type="radio" name="disabled-radio-group" disabled>
+            <input class="mdc-radio__native-control" type="radio" name="disabled-radio-group" disabled
+                   id="test-radio-3">
             <div class="mdc-radio__background">
               <div class="mdc-radio__outer-circle"></div>
               <div class="mdc-radio__inner-circle"></div>
             </div>
           </div>
+          <label class="test-radio-label" for="test-radio-3">3</label>
         </div>
 
         <div class="test-cell test-cell--radio">
           <div class="mdc-radio mdc-radio--disabled">
-            <input class="mdc-radio__native-control" type="radio" name="disabled-radio-group" disabled checked>
+            <input class="mdc-radio__native-control" type="radio" name="disabled-radio-group" disabled checked
+                   id="test-radio-4">
             <div class="mdc-radio__background">
               <div class="mdc-radio__outer-circle"></div>
               <div class="mdc-radio__inner-circle"></div>
             </div>
           </div>
+          <label class="test-radio-label" for="test-radio-4">4</label>
         </div>
       </div>
     </main>
@@ -73,6 +96,8 @@
     <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fontfaceobserver/2.0.13/fontfaceobserver.standalone.js"></script>
+    <script src="../../../out/material-components-web.js"></script>
     <script src="../../../out/spec/fixture.js"></script>
+    <script src="../../../out/spec/mdc-radio/fixture.js"></script>
   </body>
 </html>

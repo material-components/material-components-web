@@ -1,17 +1,24 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2016 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import {assert} from 'chai';
@@ -24,7 +31,6 @@ import {createMockRaf} from '../helpers/raf';
 import {MDCCheckbox} from '../../../packages/mdc-checkbox';
 import {MDCRipple} from '../../../packages/mdc-ripple';
 import {strings} from '../../../packages/mdc-checkbox/constants';
-import {getCorrectEventName} from '../../../packages/mdc-animation';
 import {getMatchesProperty} from '../../../packages/mdc-ripple/util';
 
 function getFixture() {
@@ -132,6 +138,36 @@ test('get ripple returns a MDCRipple instance', () => {
   assert.isOk(component.ripple instanceof MDCRipple);
 });
 
+test('checkbox change event calls #foundation.handleChange', () => {
+  const {cb, component} = setupTest();
+  component.foundation_.handleChange = td.func();
+  domEvents.emit(cb, 'change');
+  td.verify(component.foundation_.handleChange(), {times: 1});
+});
+
+test('root animationend event calls #foundation.handleAnimationEnd', () => {
+  const {root, component} = setupTest();
+  component.foundation_.handleAnimationEnd = td.func();
+  domEvents.emit(root, 'animationend');
+  td.verify(component.foundation_.handleAnimationEnd(), {times: 1});
+});
+
+test('checkbox change event handler is destroyed on #destroy', () => {
+  const {cb, component} = setupTest();
+  component.foundation_.handleChange = td.func();
+  component.destroy();
+  domEvents.emit(cb, 'change');
+  td.verify(component.foundation_.handleChange(), {times: 0});
+});
+
+test('root animationend event handler is destroyed on #destroy', () => {
+  const {root, component} = setupTest();
+  component.foundation_.handleAnimationEnd = td.func();
+  component.destroy();
+  domEvents.emit(root, 'animationend');
+  td.verify(component.foundation_.handleAnimationEnd(), {times: 0});
+});
+
 test('adapter#addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
@@ -156,50 +192,6 @@ test('adapter#removeNativeControlAttr removes an attribute from the input elemen
   cb.setAttribute('aria-checked', 'mixed');
   component.getDefaultFoundation().adapter_.removeNativeControlAttr('aria-checked');
   assert.isFalse(cb.hasAttribute('aria-checked'));
-});
-
-test('adapter#registerAnimationEndHandler adds an animation end event listener on the root element', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('animationEndHandler');
-  component.getDefaultFoundation().adapter_.registerAnimationEndHandler(handler);
-  domEvents.emit(root, getCorrectEventName(window, 'animationend'));
-
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('adapter#deregisterAnimationEndHandler removes an animation end event listener on the root el', () => {
-  const {root, component} = setupTest();
-  const handler = td.func('animationEndHandler');
-  const animEndEvtName = getCorrectEventName(window, 'animationend');
-  root.addEventListener(animEndEvtName, handler);
-
-  component.getDefaultFoundation().adapter_.deregisterAnimationEndHandler(handler);
-  domEvents.emit(root, animEndEvtName);
-
-  td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
-test('adapter#registerChangeHandler adds a change event listener to the native checkbox element', () => {
-  const {root, component} = setupTest();
-  const nativeCb = root.querySelector(strings.NATIVE_CONTROL_SELECTOR);
-  const handler = td.func('changeHandler');
-
-  component.getDefaultFoundation().adapter_.registerChangeHandler(handler);
-  domEvents.emit(nativeCb, 'change');
-
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('adapter#deregisterChangeHandler adds a change event listener to the native checkbox element', () => {
-  const {root, component} = setupTest();
-  const nativeCb = root.querySelector(strings.NATIVE_CONTROL_SELECTOR);
-  const handler = td.func('changeHandler');
-  nativeCb.addEventListener('change', handler);
-
-  component.getDefaultFoundation().adapter_.deregisterChangeHandler(handler);
-  domEvents.emit(nativeCb, 'change');
-
-  td.verify(handler(td.matchers.anything()), {times: 0});
 });
 
 test('adapter#getNativeControl returns the native checkbox element', () => {
@@ -232,4 +224,45 @@ test('adapter#isAttachedToDOM returns true when root is attached to DOM', () => 
 test('adapter#isAttachedToDOM returns false when root is not attached to DOM', () => {
   const {component} = setupTest();
   assert.isNotOk(component.getDefaultFoundation().adapter_.isAttachedToDOM());
+});
+
+test('#adapter.isIndeterminate returns true when checkbox is indeterminate', () => {
+  const {cb, component} = setupTest();
+  cb.indeterminate = true;
+  assert.isTrue(component.getDefaultFoundation().adapter_.isIndeterminate());
+});
+
+test('#adapter.isIndeterminate returns false when checkbox is not indeterminate', () => {
+  const {cb, component} = setupTest();
+  cb.indeterminate = false;
+  assert.isFalse(component.getDefaultFoundation().adapter_.isIndeterminate());
+});
+
+test('#adapter.isChecked returns true when checkbox is checked', () => {
+  const {cb, component} = setupTest();
+  cb.checked = true;
+  assert.isTrue(component.getDefaultFoundation().adapter_.isChecked());
+});
+
+test('#adapter.isChecked returns false when checkbox is not checked', () => {
+  const {cb, component} = setupTest();
+  cb.checked = false;
+  assert.isFalse(component.getDefaultFoundation().adapter_.isChecked());
+});
+
+test('#adapter.hasNativeControl returns true when checkbox exists', () => {
+  const {component} = setupTest();
+  assert.isTrue(component.getDefaultFoundation().adapter_.hasNativeControl());
+});
+
+test('#adapter.setNativeControlDisabled returns true when checkbox is disabled', () => {
+  const {cb, component} = setupTest();
+  component.getDefaultFoundation().adapter_.setNativeControlDisabled(true);
+  assert.isTrue(cb.disabled);
+});
+
+test('#adapter.setNativeControlDisabled returns false when checkbox is not disabled', () => {
+  const {cb, component} = setupTest();
+  component.getDefaultFoundation().adapter_.setNativeControlDisabled(false);
+  assert.isFalse(cb.disabled);
 });

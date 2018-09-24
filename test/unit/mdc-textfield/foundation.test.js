@@ -1,17 +1,24 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2016 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import {assert} from 'chai';
@@ -55,7 +62,15 @@ const setupTest = () => {
     showToScreenReader: () => {},
     setValidity: () => {},
   });
-  const icon = td.object({
+  const leadingIcon = td.object({
+    setDisabled: () => {},
+    setAriaLabel: () => {},
+    setContent: () => {},
+    registerInteractionHandler: () => {},
+    deregisterInteractionHandler: () => {},
+    handleInteraction: () => {},
+  });
+  const trailingIcon = td.object({
     setDisabled: () => {},
     setAriaLabel: () => {},
     setContent: () => {},
@@ -65,10 +80,11 @@ const setupTest = () => {
   });
   const foundationMap = {
     helperText,
-    icon,
+    leadingIcon,
+    trailingIcon,
   };
   const foundation = new MDCTextFieldFoundation(mockAdapter, foundationMap);
-  return {foundation, mockAdapter, helperText, icon};
+  return {foundation, mockAdapter, helperText, leadingIcon, trailingIcon};
 };
 
 test('#constructor sets disabled to false', () => {
@@ -274,10 +290,16 @@ test('#setDisabled removes mdc-text-field--disabled when set to false', () => {
   td.verify(mockAdapter.removeClass(cssClasses.DISABLED));
 });
 
-test('#setDisabled sets disabled on icon', () => {
-  const {foundation, icon} = setupTest();
+test('#setDisabled sets disabled on leading icon', () => {
+  const {foundation, leadingIcon} = setupTest();
   foundation.setDisabled(true);
-  td.verify(icon.setDisabled(true));
+  td.verify(leadingIcon.setDisabled(true));
+});
+
+test('#setDisabled sets disabled on trailing icon', () => {
+  const {foundation, trailingIcon} = setupTest();
+  foundation.setDisabled(true);
+  td.verify(trailingIcon.setDisabled(true));
 });
 
 test('#setValid adds mdc-textfied--invalid when set to false', () => {
@@ -381,16 +403,28 @@ test('#setHelperTextContent sets the content of the helper text element', () => 
   td.verify(helperText.setContent('foo'));
 });
 
-test('#setIconAriaLabel sets the aria-label of the icon element', () => {
-  const {foundation, icon} = setupTest();
-  foundation.setIconAriaLabel('foo');
-  td.verify(icon.setAriaLabel('foo'));
+test('#setLeadingIconAriaLabel sets the aria-label of the leading icon element', () => {
+  const {foundation, leadingIcon} = setupTest();
+  foundation.setLeadingIconAriaLabel('foo');
+  td.verify(leadingIcon.setAriaLabel('foo'));
 });
 
-test('#setIconContent sets the content of the icon element', () => {
-  const {foundation, icon} = setupTest();
-  foundation.setIconContent('foo');
-  td.verify(icon.setContent('foo'));
+test('#setLeadingIconContent sets the content of the leading icon element', () => {
+  const {foundation, leadingIcon} = setupTest();
+  foundation.setLeadingIconContent('foo');
+  td.verify(leadingIcon.setContent('foo'));
+});
+
+test('#setTrailingIconAriaLabel sets the aria-label of the trailing icon element', () => {
+  const {foundation, trailingIcon} = setupTest();
+  foundation.setTrailingIconAriaLabel('foo');
+  td.verify(trailingIcon.setAriaLabel('foo'));
+});
+
+test('#setTrailingIconContent sets the content of the trailing icon element', () => {
+  const {foundation, trailingIcon} = setupTest();
+  foundation.setTrailingIconContent('foo');
+  td.verify(trailingIcon.setContent('foo'));
 });
 
 test('#notchOutline updates the SVG path of the outline element', () => {

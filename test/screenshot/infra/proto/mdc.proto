@@ -173,6 +173,8 @@ message UserAgent {
   RawCapabilities desired_capabilities = 11;
   RawCapabilities actual_capabilities = 12;
   Navigator navigator = 13;
+  string selenium_session_id = 20;
+  string selenium_result_url = 21;
 
   bool is_enabled_by_cli = 14;
   bool is_available_locally = 15;
@@ -258,9 +260,17 @@ message Screenshot {
   TestFile actual_image_file = 9;
   TestFile diff_image_file = 10;
   DiffImageResult diff_image_result = 11;
+  CropResult crop_result = 15;
 
   uint32 retry_count = 12;
   FlakeConfig flake_config = 13;
+}
+
+message CropResult {
+  uint32 uncropped_width = 1;
+  uint32 uncropped_height = 2;
+  uint32 cropped_width = 3;
+  uint32 cropped_height = 4;
 }
 
 message FlakeConfig {

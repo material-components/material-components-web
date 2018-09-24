@@ -119,16 +119,15 @@ The following mixins apply only to _enabled_ checkboxes. It is not currently pos
 
 Mixin | Description
 --- | ---
-`mdc-checkbox-container-colors($unmarked-stroke-color, $unmarked-fill-color, $marked-fill-color, $generate-keyframes)` | Generates CSS classes to set and animate the stroke color and/or container fill color of a checkbox
+`mdc-checkbox-container-colors($unmarked-stroke-color, $unmarked-fill-color, $marked-stroke-color, $marked-fill-color, $generate-keyframes)` | Generates CSS classes to set and animate the stroke color and/or container fill color of a checkbox
 `mdc-checkbox-ink-color($color)` | Sets the ink color of the checked and indeterminate icons
 `mdc-checkbox-focus-indicator-color($color)` | Sets the color of the focus indicator
 
 The ripple effect for the Checkbox component is styled using [MDC Ripple](../mdc-ripple) mixins.
 
-#### `mdc-checkbox-container-colors($unmarked-stroke-color, $unmarked-fill-color, $marked-fill-color, $generate-keyframes)`
+#### `mdc-checkbox-container-colors($unmarked-stroke-color, $unmarked-fill-color, $marked-stroke-color, $marked-fill-color, $generate-keyframes)`
 
-In the unmarked state, stroke and fill color may be customized independently; in the marked state, only the fill color
-may be customized, and the stroke will automatically match the fill color.
+Stroke and fill color may be customized independently in both the marked and unmarked state.
 
 All parameters are optional, and if left unspecified will use their default values.
 
@@ -159,13 +158,13 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | --- | --- |
 | `addClass(className: string) => void` | Adds a class to the root element. |
 | `removeClass(className: string) => void` | Removes a class from the root element. |
-| `registerAnimationEndHandler(handler: EventListener) => void` | Registers an event handler to be called when an `animationend` event is triggered on the root element. Note that you must account for vendor prefixes in order for this to work correctly. |
-| `deregisterAnimationEndHandler(handler: EventListener) => void` | Deregisters an event handler from an `animationend` event listener. This will only be called with handlers that have previously been passed to `registerAnimationEndHandler` calls. |
-| `registerChangeHandler(handler: EventListener) => void` | Registers an event handler to be called when a `change` event is triggered on the native control (_not_ the root element). |
-| `deregisterChangeHandler(handler: EventListener) => void` | Deregisters an event handler that was previously passed to `registerChangeHandler`. |
 | `getNativeControl() => HTMLInputElement?` | Returns the native checkbox control, if available. Note that if this control is not available, the methods that rely on it will exit gracefully.|
 | `forceLayout() => void` | Force-trigger a layout on the root element. This is needed to restart animations correctly. If you find that you do not need to do this, you can simply make it a no-op. |
 | `isAttachedToDOM() => boolean` | Returns true if the component is currently attached to the DOM, false otherwise. |
+| `isIndeterminate() => boolean` | Returns true if the component is in the indeterminate state. |
+| `isChecked() => boolean` | Returns true if the component is checked. |
+| `hasNativeControl() => boolean` | Returns true if the input is present in the component. |
+| `setNativeControlDisabled(disabled: boolean) => void` | Sets the input to disabled. |
 
 ### `MDCCheckboxFoundation`
 
@@ -173,9 +172,6 @@ Method Signature | Description
 --- | ---
 `isChecked() => boolean` | Returns whether or not the underlying input is checked. Returns false when no input is available.
 `setChecked(checked: boolean) => void` | Updates the `checked` property on the underlying input. Does nothing when the underlying input is not present.
-`isIndeterminate() => boolean` | Returns whether or not the underlying input is indeterminate. Returns false when no input is available.
-`setIndeterminate(indeterminate: boolean) => void` | Updates the `indeterminate` property on the underlying input. Does nothing when the underlying input is not present.
-`isDisabled() => boolean` | Returns whether or not the underlying input is disabled. Returns false when no input is available.
 `setDisabled(disabled: boolean) => void` | Updates the `disabled` property on the underlying input. Does nothing when the underlying input is not present.
-`getValue() => string` | Returns the value of `MDCCheckboxAdapter.getNativeControl().value`. Returns `null` if `getNativeControl()` does not return an object.
-`setValue(value: string) => void` | Sets the value of `adapter.getNativeControl().value`. Does nothing if `getNativeControl()` does not return an object.
+`handleAnimationEnd() => void` | `animationend` event handler that should be applied to the root element.
+`handleChange() => void` | `change` event handler that should be applied to the checkbox element.
