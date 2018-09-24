@@ -21,6 +21,7 @@
 //
 
 @import "@material/theme/mixins";
+@import "@material/shape/mixins";
 
 @mixin mdc-menu-surface-ink-color($color) {
   @include mdc-theme-prop(color, $color);
@@ -30,6 +31,6 @@
   @include mdc-theme-prop(background-color, $color);
 }
 
-@mixin mdc-menu-surface-corner-radius($radius) {
-  border-radius: $radius;
+@mixin mdc-menu-surface-shape-radius($radius, $rtl-reflexive: false) {
+  @include mdc-shape-radius($radius, $rtl-reflexive);
 }

@@ -18,6 +18,7 @@
     "@material/base": "^0.39.0",
     "@material/elevation": "^0.39.1",
     "@material/rtl": "^0.39.1",
+    "@material/shape": "^0.39.0",
     "@material/theme": "^0.39.1"
   },
   "publishConfig": {

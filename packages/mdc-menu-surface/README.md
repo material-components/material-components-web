@@ -112,8 +112,8 @@ menuSurface.setFixedPosition(true);
 
 #### Absolute Position
 
-The menu surface can use absolute positioning when being displayed. This requires that the element containing the 
-menu(`body` if using `hoistMenuToBody()`) has the `position: relative` style. 
+The menu surface can use absolute positioning when being displayed. This requires that the element containing the
+menu (`body` if using `hoistMenuToBody()`) has the `position: relative` style.
 
 ```html
 <div class="mdc-menu-surface">
@@ -146,7 +146,7 @@ Mixin | Description
 --- | ---
 `mdc-menu-surface-ink-color($color)` | Sets the `color` property of the `mdc-menu-surface`.
 `mdc-menu-surface-fill-color($color)` | Sets the `background-color` property of the `mdc-menu-surface`.
-`mdc-menu-surface-corner-radius($radius)` | Sets the `border-radius` property of the `mdc-menu-surface`.
+`mdc-menu-surface-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to menu surface with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 
 ## `MDCMenuSurface` Properties and Methods
 
@@ -216,7 +216,7 @@ Method Signature | Description
 `setAbsolutePosition(x: number, y: numnber) => void` | Sets the absolute x/y position of the menu. Should only be used when the menu is hoisted or using fixed positioning.
 `handleBodyClick(event: Event) => void` | Method used as the callback function for the `click` event.
 `handleKeydown(event: Event) => void` | Method used as the callback function for the `keydown` events.
-`open() => void` | Opens the menu surface. 
+`open() => void` | Opens the menu surface.
 `close() => void` | Closes the menu.
 `isOpen() => boolean` | Returns a boolean indicating whether the menu surface is open.
 `setQuickOpen(quickOpen: boolean) => void` | Sets whether the menu surface should open and close without animation when the `open`/`close` methods are called.
