@@ -48,6 +48,8 @@ class MDCChipSet extends MDCComponent {
     /** @private {?function(?Event): undefined} */
     this.handleChipInteraction_;
     /** @private {?function(?Event): undefined} */
+    this.handleChipSelection_;
+    /** @private {?function(?Event): undefined} */
     this.handleChipRemoval_;
   }
 
