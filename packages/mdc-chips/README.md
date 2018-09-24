@@ -276,7 +276,7 @@ Method Signature | Description
 `removeClassFromLeadingIcon(className: string) => void` | Removes a class from the leading icon element
 `eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise
 `notifyInteraction() => void` | Emits a custom event `MDCChip:interaction` denoting the chip has been interacted with\*
-`notifySelection(selected) => void` | Emits a custom event `MDCChip:interaction` denoting the chip has been interacted with\*\*\*
+`notifySelection(selected) => void` | Emits a custom event `MDCChip:selection` denoting the chip has been selected or deselected\*\*\*
 `notifyTrailingIconInteraction() => void` | Emits a custom event `MDCChip:trailingIconInteraction` denoting the chip's trailing icon has been interacted with\*
 `notifyRemoval() => void` | Emits a custom event `MDCChip:removal` denoting the chip will be removed\*\*
 `getComputedStyleValue(propertyName: string) => string` | Returns the computed property value of the given style property on the root element
