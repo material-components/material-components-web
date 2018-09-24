@@ -99,7 +99,8 @@
 
   $masked-radius: mdc-shape-mask-radius($radius, 1 1 0 0);
 
-  &, &__native-control {
+  &,
+  &__native-control {
     @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-select-height, $masked-radius), $rtl-reflexive);
   }
 }
