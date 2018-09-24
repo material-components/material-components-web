@@ -61,7 +61,7 @@
 
 @mixin mdc-dialog-shape-radius($radius, $rtl-reflexive: false) {
   .mdc-dialog__surface {
-    @include mdc-shape-radius($radius, $rtl-reflexive)
+    @include mdc-shape-radius($radius, $rtl-reflexive);
   }
 }
 
