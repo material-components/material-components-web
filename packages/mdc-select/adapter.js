@@ -118,6 +118,40 @@ class MDCSelectAdapter {
    * Closes notch in outline element, if the outline exists.
    */
   closeOutline() {}
+
+  /**
+   * Sets the value of the select.
+   * @param {string} value
+   */
+  setValue(value) {}
+
+  /**
+   * Opens the menu.
+   */
+  openMenu() {}
+
+  /**
+   * Closes the menu.
+   */
+  closeMenu() {}
+
+  /**
+   * Returns true if the menu is currently open.
+   * @return {boolean}
+   */
+  isMenuOpened() {}
+
+  /**
+   * Sets the selected index of the select to the index provided.
+   * @param {number} index
+   */
+  setSelectedIndex(index) {}
+
+  /**
+   * Sets the select to disabled.
+   * @param {boolean} isDisabled
+   */
+  setDisabled(isDisabled) {}
 }
 
 export default MDCSelectAdapter;

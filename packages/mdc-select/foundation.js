@@ -59,7 +59,6 @@ class MDCSelectFoundation extends MDCFoundation {
       hasClass: (/* className: string */) => false,
       activateBottomLine: () => {},
       deactivateBottomLine: () => {},
-      getValue: () => {},
       setValue: () => {},
       isRtl: () => false,
       hasLabel: () => false,
@@ -71,8 +70,6 @@ class MDCSelectFoundation extends MDCFoundation {
       openMenu: () => {},
       closeMenu: () => {},
       setSelectedIndex: () => {},
-      getSelectedIndex: () => {},
-      isDisabled: () => {},
       setDisabled: () => {},
     });
   }
@@ -84,29 +81,21 @@ class MDCSelectFoundation extends MDCFoundation {
     super(Object.assign(MDCSelectFoundation.defaultAdapter, adapter));
   }
 
-  set selectedIndex(index) {
+  setSelectedIndex(index) {
     this.adapter_.setSelectedIndex(index);
     this.handleChange();
   }
 
-  get selectedIndex() {
-    return this.adapter_.getSelectedIndex();
-  }
-
-  get value() {
-    this.adapter_.getValue();
-  }
-
-  set value(value) {
+  setValue(value) {
     this.adapter_.setValue(value);
     this.handleChange();
   }
 
-  get disabled() {
-    this.adapter_.isDisabled();
+  getValue() {
+    this.adapter_.getValue();
   }
 
-  set disabled(isDisabled) {
+  setDisabled(isDisabled) {
     this.adapter_.setDisabled(isDisabled);
     this.updateDisabledStyle(isDisabled);
   }

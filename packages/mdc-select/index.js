@@ -81,42 +81,49 @@ class MDCSelect extends MDCComponent {
    * @return {string} The value of the select.
    */
   get value() {
-    return this.foundation_.value;
+    return this.foundation_.getValue();
   }
 
   /**
    * @param {string} value The value to set on the select.
    */
   set value(value) {
-    this.foundation_.value = value;
+    this.foundation_.setValue(value);
   }
 
   /**
    * @return {number} The selected index of the select.
    */
   get selectedIndex() {
-    return this.foundation_.selectedIndex;
+    let selectedIndex;
+    if (this.menuElement_) {
+      const selectedElement =this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR);
+      selectedIndex = this.menu_.items.indexOf(selectedElement);
+    } else {
+      selectedIndex = this.nativeControl_.selectedIndex;
+    }
+    return selectedIndex;
   }
 
   /**
    * @param {number} selectedIndex The index of the option to be set on the select.
    */
   set selectedIndex(selectedIndex) {
-    this.foundation_.selectedIndex = selectedIndex;
+    this.foundation_.setSelectedIndex(selectedIndex);
   }
 
   /**
    * @return {boolean} True if the select is disabled.
    */
   get disabled() {
-    return this.foundation_.disabled;
+    return this.root_.classList.contains(cssClasses.DISABLED) || (this.nativeControl_ && this.nativeControl_.disabled);
   }
 
   /**
    * @param {boolean} disabled Sets the select disabled or enabled.
    */
   set disabled(disabled) {
-    this.foundation_.disabled = disabled;
+    this.foundation_.setDisabled(disabled);
   }
 
   /**
@@ -148,6 +155,9 @@ class MDCSelect extends MDCComponent {
       this.menu_.setAnchorElement(this.root_);
       this.menu_.setAnchorCorner(Corner.BOTTOM_START);
       this.menu_.listen(menuSurfaceStrings.CLOSED_EVENT, () => {
+        // menuOpened_ is used to track the state of the menu opening or closing since the menu.open function
+        // will return false if the menu is still closing and this method listens to the closed event which
+        // occurs after the menu is already closed.
         this.menuOpened_ = false;
         if (document.activeElement !== this.selectedText_) {
           this.foundation_.handleBlur();
@@ -214,7 +224,7 @@ class MDCSelect extends MDCComponent {
 
     if (this.menuElement_ && this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)) {
       // If an element is selected, the select should set the initial selected text.
-      const enhancedAdapterMethods = this.getEnahncedSelectAdapterMethods_();
+      const enhancedAdapterMethods = this.getEnhancedSelectAdapterMethods_();
       enhancedAdapterMethods.setValue(enhancedAdapterMethods.getValue());
     }
 
@@ -253,7 +263,7 @@ class MDCSelect extends MDCComponent {
   getDefaultFoundation() {
     return new MDCSelectFoundation(
       /** @type {!MDCSelectAdapter} */ (Object.assign(
-        this.nativeControl_ ? this.getNativeSelectAdapterMethods_() : this.getEnahncedSelectAdapterMethods_(),
+        this.nativeControl_ ? this.getNativeSelectAdapterMethods_() : this.getEnhancedSelectAdapterMethods_(),
         this.getCommonAdapterMethods_(),
         this.getOutlineAdapterMethods_(),
         this.getLabelAdapterMethods_())
@@ -267,19 +277,15 @@ class MDCSelect extends MDCComponent {
       setValue: (value) => this.nativeControl_.value = value,
       openMenu: () => {},
       closeMenu: () => {},
-      isMenuOpened: () => this.menu_ && this.menuOpened_,
-      getSelectedIndex: () => {
-        return this.nativeControl_.selectedIndex;
-      },
+      isMenuOpened: () => false,
       setSelectedIndex: (index) => {
         this.nativeControl_.selectedIndex = index;
       },
-      isDisabled: () => this.nativeControl_.disabled,
       setDisabled: (isDisabled) => this.nativeControl_.disabled = isDisabled,
     };
   }
 
-  getEnahncedSelectAdapterMethods_() {
+  getEnhancedSelectAdapterMethods_() {
     return {
       getValue: () => {
         const listItem = this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR);
@@ -295,7 +301,7 @@ class MDCSelect extends MDCComponent {
       setValue: (value) => {
         const element = this.menuElement_.querySelector(`[value="${value}"]`);
         if (element) {
-          this.setEnhancedSelectedIndex(this.menu_.items.indexOf(element));
+          this.setEnhancedSelectedIndex_(this.menu_.items.indexOf(element));
         } else {
           this.selectedText_.textContent = value;
         }
@@ -312,14 +318,9 @@ class MDCSelect extends MDCComponent {
         }
       },
       isMenuOpened: () => this.menu_ && this.menuOpened_,
-      getSelectedIndex: () => {
-        const selectedElement = this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR);
-        return this.menu_.items.indexOf(selectedElement);
-      },
       setSelectedIndex: (index) => {
-        this.setEnhancedSelectedIndex(index);
+        this.setEnhancedSelectedIndex_(index);
       },
-      isDisabled: () => this.root_.classList.contains(cssClasses.DISABLED),
       setDisabled: (isDisabled) => {
         this.selectedText_.setAttribute('tabindex', isDisabled ? '-1' : '0');
         this.root_.classList[isDisabled ? 'add' : 'remove'](cssClasses.DISABLED);
@@ -327,7 +328,7 @@ class MDCSelect extends MDCComponent {
     };
   }
 
-  setEnhancedSelectedIndex(index) {
+  setEnhancedSelectedIndex_(index) {
     const selectedItem = this.menu_.items[index];
     this.selectedText_.textContent = selectedItem.textContent.trim();
     const previouslySelected = this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR);
