@@ -105,6 +105,7 @@ class MDCSelectFoundation extends MDCFoundation {
   handleFocus() {
     this.adapter_.floatLabel(true);
     this.notchOutline(true);
+    this.adapter_.addClass('mdc-select--focused');
     this.adapter_.activateBottomLine();
   }
 
@@ -113,6 +114,7 @@ class MDCSelectFoundation extends MDCFoundation {
    */
   handleBlur() {
     this.handleChange();
+    this.adapter_.removeClass('mdc-select--focused');
     this.adapter_.deactivateBottomLine();
   }
 
