@@ -39,12 +39,23 @@ export function verifyDefaultAdapter(FoundationClass, expectedMethodNames) {
   const adapterKeys = Object.keys(defaultAdapter);
   const actualMethodNames = adapterKeys.filter((key) => typeof defaultAdapter[key] === 'function');
 
-  assert.equal(actualMethodNames.length, adapterKeys.length, 'Every adapter key must be a function');
+  // Make a copy of the array so we can mutate it without affecting the caller
+  expectedMethodNames = expectedMethodNames.slice();
 
   // Test for equality without requiring that the array be in a specific order
-  const actualArray = actualMethodNames.slice().sort();
-  const expectedArray = expectedMethodNames.slice().sort();
-  assert.deepEqual(actualArray, expectedArray, getUnequalArrayMessage(actualArray, expectedArray));
+  actualMethodNames.sort();
+  expectedMethodNames.sort();
+
+  assert.equal(
+    actualMethodNames.length,
+    adapterKeys.length,
+    'Every adapter key must be a function',
+  );
+  assert.deepEqual(
+    actualMethodNames,
+    expectedMethodNames,
+    getArrayDeltaMessage(actualMethodNames, expectedMethodNames),
+  );
 
   // Test default methods
   actualMethodNames.forEach((m) => assert.doesNotThrow(defaultAdapter[m]));
@@ -83,75 +94,80 @@ export function captureHandlers(adapter, handlerCaptureMethodName) {
 }
 
 /**
- * @param {!Array<string>} actualArray
- * @param {!Array<string>} expectedArray
+ * @param {!Array<string>} actualMethodNames
+ * @param {!Array<string>} expectedMethodNames
  * @return {string}
  */
-function getUnequalArrayMessage(actualArray, expectedArray) {
-  /**
-   * @param {!Array<string>} values
-   * @param {string} singularName
-   * @return {string}
-   */
-  const format = (values, singularName) => {
-    const count = values.length;
-    if (count === 0) {
-      return '';
-    }
-    const plural = count === 1 ? '' : 's';
-    const str = values.join(', ');
-    return `${count} ${singularName}${plural}: ${str}`;
-  };
-
-  /**
-   * @param {!Set<string>} actualSet
-   * @param {!Set<string>} expectedSet
-   * @return {string}
-   */
-  const getAddedStr = (actualSet, expectedSet) => {
-    const addedArray = [];
-    actualSet.forEach((val) => {
-      if (!expectedSet.has(val)) {
-        addedArray.push(val);
-      }
-    });
-    return format(addedArray, 'unexpected method');
-  };
-
-  /**
-   * @param {!Set<string>} actualSet
-   * @param {!Set<string>} expectedSet
-   * @return {string}
-   */
-  const getRemovedStr = (actualSet, expectedSet) => {
-    const removedArray = [];
-    expectedSet.forEach((val) => {
-      if (!actualSet.has(val)) {
-        removedArray.push(val);
-      }
-    });
-    return format(removedArray, 'missing method');
-  };
-
-  /**
-   * @param {!Array<string>} array
-   * @return {!Set<string>}
-   */
-  const toSet = (array) => {
-    const set = new Set();
-    array.forEach((value) => set.add(value));
-    return set;
-  };
-
-  const actualSet = toSet(actualArray);
-  const expectedSet = toSet(expectedArray);
-  const addedStr = getAddedStr(actualSet, expectedSet);
-  const removedStr = getRemovedStr(actualSet, expectedSet);
-  const messages = [addedStr, removedStr].filter((val) => val.length > 0);
+function getArrayDeltaMessage(actualMethodNames, expectedMethodNames) {
+  const actualMethodNameSet = toSet(actualMethodNames);
+  const expectedMethodNameSet = toSet(expectedMethodNames);
+  const addedMessage = getAddedMethodMessage(actualMethodNameSet, expectedMethodNameSet);
+  const removedMessage = getRemovedMethodMessage(actualMethodNameSet, expectedMethodNameSet);
+  const messages = [addedMessage, removedMessage].filter((val) => val.length > 0);
 
   if (messages.length === 0) {
     return '';
   }
 
   return `Found ${messages.join('; ')}`;
+}
+
+/**
+ * @param {!Set<string>} actualMethodNameSet
+ * @param {!Set<string>} expectedMethodNameSet
+ * @return {string}
+ */
+function getAddedMethodMessage(actualMethodNameSet, expectedMethodNameSet) {
+  return getArrayDeltaMessage(actualMethodNameSet, expectedMethodNameSet, 'unexpected method');
+}
+
+/**
+ * @param {!Set<string>} actualMethodNameSet
+ * @param {!Set<string>} expectedMethodNameSet
+ * @return {string}
+ */
+function getRemovedMethodMessage(actualMethodNameSet, expectedMethodNameSet) {
+  return getArrayDeltaMessage(expectedMethodNameSet, actualMethodNameSet, 'missing method');
+}
+
+/**
+ * @param {!Set<string>} actualSet
+ * @param {!Set<string>} expectedSet
+ * @param {string} singularName
+ * @return {string}
+ */
+function getArrayDeltaMessage(actualSet, expectedSet, singularName) {
+  const deltaArray = [];
+  actualSet.forEach((val) => {
+    if (!expectedSet.has(val)) {
+      deltaArray.push(val);
+    }
+  });
+  return formatArrayDeltaMessage(deltaArray, singularName);
+}
+
+/**
+ * @param {!Array<string>} values
+ * @param {string} singularName
+ * @return {string}
+ */
+function formatArrayDeltaMessage(values, singularName) {
+  const count = values.length;
+  if (count === 0) {
+    return '';
+  }
+  const plural = count === 1 ? '' : 's';
+  const str = values.join(', ');
+  return `${count} ${singularName}${plural}: ${str}`;
+}
+
+/**
+ * @param {!Array<string>} array
+ * @return {!Set<string>}
+ */
+function toSet(array) {
+  // IE 11 doesn't support passing constructor arguments to Set()
+  const set = new Set();
+  array.forEach((value) => set.add(value));
+  return set;
 }
