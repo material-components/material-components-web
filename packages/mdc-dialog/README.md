@@ -40,7 +40,7 @@ npm install @material/dialog
 ### HTML Structure
 
 ```html
-<aside class="mdc-dialog"
+<div class="mdc-dialog"
      role="alertdialog"
      aria-modal="true"
      aria-labelledby="my-dialog-title"
@@ -61,7 +61,7 @@ npm install @material/dialog
     </div>
   </div>
   <div class="mdc-dialog__scrim"></div>
-</aside>
+</div>
 ```
 
 > *NOTE*: Titles cannot contain leading whitespace due to how `mdc-typography-baseline-top()` works.
@@ -106,7 +106,7 @@ dialog.listen('MDCDialog:opened', () => {
 The Simple Dialog contains a list of potential actions. It does not contain buttons.
 
 ```html
-<aside class="mdc-dialog"
+<div class="mdc-dialog"
      role="alertdialog"
      aria-modal="true"
      aria-labelledby="my-dialog-title"
@@ -131,7 +131,7 @@ The Simple Dialog contains a list of potential actions. It does not contain butt
     </div>
   </div>
   <div class="mdc-dialog__scrim"></div>
-</aside>
+</div>
 ```
 
 > Note the inclusion of the `mdc-list--avatar-list` class, which aligns with the Simple Dialog spec.
@@ -142,7 +142,7 @@ The Confirmation Dialog contains a list of choices, and buttons to confirm or ca
 radio buttons (indicating single selection) or checkboxes (indicating multiple selection).
 
 ```html
-<aside class="mdc-dialog"
+<div class="mdc-dialog"
      role="alertdialog"
      aria-modal="true"
      aria-labelledby="my-dialog-title"
@@ -183,7 +183,7 @@ radio buttons (indicating single selection) or checkboxes (indicating multiple s
     </div>
   </div>
   <div class="mdc-dialog__scrim"></div>
-</aside>
+</div>
 ```
 
 > *NOTE*: In the example above, the Cancel button intentionally has the `close` action to align with the behavior of
