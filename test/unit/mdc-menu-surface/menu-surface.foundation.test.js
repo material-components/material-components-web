@@ -533,17 +533,18 @@ testFoundation('#close removes the open class from the menu surface', ({foundati
   td.verify(mockAdapter.removeClass(cssClasses.OPEN));
 });
 
-testFoundation('#close removes the animation class at the end of the animation', ({foundation, mockAdapter, mockRaf}) => {
-  const clock = lolex.install();
-  foundation.close();
-  mockRaf.flush();
-  mockRaf.flush();
-  td.verify(mockAdapter.addClass(cssClasses.ANIMATING_CLOSED));
-  clock.tick(numbers.TRANSITION_CLOSE_DURATION);
-  mockRaf.flush();
-  td.verify(mockAdapter.removeClass(cssClasses.ANIMATING_CLOSED));
-  td.verify(mockAdapter.notifyClose());
-});
+testFoundation('#close removes the animation class at the end of the animation',
+  ({foundation, mockAdapter, mockRaf}) => {
+    const clock = lolex.install();
+    foundation.close();
+    mockRaf.flush();
+    mockRaf.flush();
+    td.verify(mockAdapter.addClass(cssClasses.ANIMATING_CLOSED));
+    clock.tick(numbers.TRANSITION_CLOSE_DURATION);
+    mockRaf.flush();
+    td.verify(mockAdapter.removeClass(cssClasses.ANIMATING_CLOSED));
+    td.verify(mockAdapter.notifyClose());
+  });
 
 testFoundation('#close emits the close event at the end of the animation', ({foundation, mockAdapter, mockRaf}) => {
   const clock = lolex.install();
