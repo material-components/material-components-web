@@ -49,6 +49,7 @@
     // Bottom corners are square to prevent weird edge cases
     // where text would be visible outside of the curve.
     $masked-radius: mdc-shape-mask-radius($radius, 1 1 0 0);
+
     @include mdc-shape-radius($masked-radius, $rtl-reflexive);
   }
 
@@ -62,6 +63,7 @@
 
     @if type-of($radius) == "list" {
       $radius-value: ();
+
       @each $corner in $radius {
         $radius-value: append($radius-value, max($corner - 2, 0));
       }

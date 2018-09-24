@@ -90,7 +90,7 @@
 // 50% => 50
 //
 @function mdc-shape-strip-unit_($number) {
-  @if type-of($number) == 'number' and not unitless($number) {
+  @if type-of($number) == "number" and not unitless($number) {
     @return $number / ($number * 0 + 1);
   }
 
@@ -154,9 +154,9 @@
   }
 
   @return if(nth($masked-corners, 1) == 1, nth($radius, 1), 0)
-      if(nth($masked-corners, 2) == 1, nth($radius, 2), 0)
-      if(nth($masked-corners, 3) == 1, nth($radius, 3), 0)
-      if(nth($masked-corners, 4) == 1, nth($radius, 4), 0);
+    if(nth($masked-corners, 2) == 1, nth($radius, 2), 0)
+    if(nth($masked-corners, 3) == 1, nth($radius, 3), 0)
+    if(nth($masked-corners, 4) == 1, nth($radius, 4), 0);
 }
 
 @function mdc-shape-prop-corner-value_($radius) {
