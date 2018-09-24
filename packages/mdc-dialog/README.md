@@ -51,9 +51,9 @@ npm install @material/dialog
       <h2 class="mdc-dialog__title" id="my-dialog-title"><!--
      -->Dialog Title<!--
    --></h2>
-      <section class="mdc-dialog__content" id="my-dialog-content">
+      <div class="mdc-dialog__content" id="my-dialog-content">
         Dialog body text goes here.
-      </section>
+      </div>
       <footer class="mdc-dialog__actions">
         <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">No</button>
         <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">Yes</button>
@@ -117,7 +117,7 @@ The Simple Dialog contains a list of potential actions. It does not contain butt
       <h2 class="mdc-dialog__title" id="my-dialog-title"><!--
      -->Choose a Ringtone<!--
    --></h2>
-      <section class="mdc-dialog__content" id="my-dialog-content">
+      <div class="mdc-dialog__content" id="my-dialog-content">
         <ul class="mdc-list mdc-list--avatar-list">
           <li class="mdc-list-item" tabindex="0" data-mdc-dialog-action="none">
             <span class="mdc-list-item__text">None</span>
@@ -127,7 +127,7 @@ The Simple Dialog contains a list of potential actions. It does not contain butt
           </li>
           <!-- ... -->
         </ul>
-      </section>
+      </div>
     </div>
   </div>
   <div class="mdc-dialog__scrim"></div>
@@ -153,7 +153,7 @@ radio buttons (indicating single selection) or checkboxes (indicating multiple s
       <h2 class="mdc-dialog__title" id="my-dialog-title"><!--
      -->Choose a Ringtone<!--
    --></h2>
-      <section class="mdc-dialog__content" id="my-dialog-content">
+      <div class="mdc-dialog__content" id="my-dialog-content">
         <ul class="mdc-list">
           <li class="mdc-list-item" tabindex="0">
             <span class="mdc-list-item__graphic">
@@ -175,7 +175,7 @@ radio buttons (indicating single selection) or checkboxes (indicating multiple s
           </li>
           <!-- ... -->
         </ul>
-      </section>
+      </div>
       <footer class="mdc-dialog__actions">
         <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">Cancel</button>
         <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept">OK</button>
