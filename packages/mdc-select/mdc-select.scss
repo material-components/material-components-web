@@ -174,7 +174,7 @@
   }
 
   .mdc-select__dropdown-icon {
-    @include mdc-select-dd-arrow-svg-bg_($mdc-select-dropdown-color, .37);
+    @include mdc-select-dd-arrow-svg-bg_($mdc-select-dropdown-color, $mdc-select-disabled-dropdown-opacity);
   }
 
   // stylelint-disable-next-line plugin/selector-bem-pattern
