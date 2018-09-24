@@ -44,7 +44,7 @@
   @include mdc-select-bottom-line-color(green);
 }
 
-.custom-select-corner-radius {
+.custom-select-shape-radius {
   @include mdc-select-shape-radius(10px);
 }
 
@@ -52,6 +52,6 @@
   @include mdc-select-outline-color(green);
 }
 
-.custom-select-outline-corner-radius {
+.custom-select-outline-shape-radius {
   @include mdc-select-outline-shape-radius(10px);
 }

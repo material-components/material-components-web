@@ -22,12 +22,12 @@
 
 @import "../../../../packages/mdc-image-list/mixins";
 
-$custom-image-list-corner-radius: 8px;
+$custom-image-list-shape-radius: 8px;
 
 .test-image-list--standard {
   @include mdc-image-list-standard-columns(3);
 }
 
 .custom-image-list--shape-radius {
-  @include mdc-image-list-shape-radius($custom-image-list-corner-radius);
+  @include mdc-image-list-shape-radius($custom-image-list-shape-radius);
 }
