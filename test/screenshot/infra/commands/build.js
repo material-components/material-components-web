@@ -72,6 +72,10 @@ class BuildCommand {
       this.processManager_.spawnChildProcessSync('npm', ['run', 'screenshot:webpack']);
     }
 
+    if (process.env.TRAVIS === 'true') {
+      this.processManager_.spawnChildProcessSync('npm', ['run', 'dist']);
+    }
+
     this.logger_.foldEnd('screenshot.build');
 
     if (!shouldWatch) {
