@@ -21,6 +21,7 @@
 //
 
 @import "@material/theme/mixins";
+@import "@material/shape/mixins";
 @import "./variables";
 
 //
@@ -35,8 +36,8 @@
   border: $thickness solid mdc-theme-prop-value($color);
 }
 
-@mixin mdc-card-corner-radius($radius) {
-  border-radius: $radius;
+@mixin mdc-card-shape-radius($radius, $rtl-reflexive: false) {
+  @include mdc-shape-radius($radius, $rtl-reflexive);
 }
 
 @mixin mdc-card-media-aspect-ratio($x, $y) {

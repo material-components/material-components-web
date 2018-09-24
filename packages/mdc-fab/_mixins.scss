@@ -25,6 +25,8 @@
 @import "@material/ripple/variables";
 @import "@material/theme/functions";
 @import "@material/theme/mixins";
+@import "@material/shape/mixins";
+@import "@material/shape/functions";
 @import "@material/rtl/mixins";
 @import "./variables";
 
@@ -86,29 +88,40 @@
   padding: 0 $label-padding;
 }
 
+@mixin mdc-fab-shape-radius($radius, $rtl-reflexive: false) {
+  @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-fab-height, $radius), $rtl-reflexive);
+
+  &.mdc-fab--mini {
+    @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-fab-mini-height, $radius), $rtl-reflexive);
+  }
+
+  &.mdc-fab--extended {
+    @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-fab-extended-height, $radius), $rtl-reflexive);
+  }
+}
+
 $mdc-fab-icon-enter-delay_: 90ms;
 $mdc-fab-icon-enter-duration_: 180ms;
-$mdc-fab-extended-height_: 48px;
 
 @mixin mdc-fab-base_ {
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;
   @include mdc-elevation(6);
+  @include mdc-fab-shape-radius(50%);
 
   display: inline-flex;
   position: relative;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  width: 56px;
-  height: 56px;
+  width: $mdc-fab-height;
+  height: $mdc-fab-height;
   padding: 0;
   transition:
     box-shadow $mdc-elevation-transition-duration $mdc-elevation-transition-timing-function,
     opacity 15ms linear 30ms,
     mdc-animation-enter(transform, $mdc-fab-icon-enter-duration_ + $mdc-fab-icon-enter-delay_);
   border: none;
-  border-radius: 50%;
   fill: currentColor;
   cursor: pointer;
   user-select: none;
@@ -155,8 +168,8 @@ $mdc-fab-extended-height_: 48px;
 }
 
 @mixin mdc-fab--mini_ {
-  width: 40px;
-  height: 40px;
+  width: $mdc-fab-mini-height;
+  height: $mdc-fab-mini-height;
 }
 
 @mixin mdc-fab--extended_ {
@@ -167,8 +180,7 @@ $mdc-fab-extended-height_: 48px;
 
   width: auto;
   max-width: 100%;
-  height: $mdc-fab-extended-height_;
-  border-radius: $mdc-fab-extended-height_ / 2;
+  height: $mdc-fab-extended-height;
 }
 
 @mixin mdc-fab__icon_ {

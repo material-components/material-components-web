@@ -23,6 +23,7 @@
 @import "@material/theme/mixins";
 @import "@material/list/mixins";
 @import "@material/ripple/mixins";
+@import "@material/shape/mixins";
 @import "./variables";
 
 @mixin mdc-drawer-activated-overlay-color($color) {
@@ -37,8 +38,20 @@
   @include mdc-theme-prop(border-color, $value);
 }
 
-@mixin mdc-drawer-item-corner-radius($radius) {
-  @include mdc-list-item-corner-radius($radius);
+@mixin mdc-drawer-item-shape-radius($radius, $rtl-reflexive: true) {
+  @include mdc-list-item-shape-radius($radius, $rtl-reflexive);
+}
+
+@mixin mdc-drawer-shape-radius($radius) {
+  @if length($radius) > 2 {
+    @error "Invalid radius: '#{$radius}' component doesn't allow customizing all corners";
+  } @else if length($radius) == 2 {
+    $radius: 0 nth($radius, 1) nth($radius, 2) 0;
+  } @else {
+    $radius: 0 $radius $radius 0;
+  }
+
+  @include mdc-shape-radius($radius, $rtl-reflexive: true);
 }
 
 @mixin mdc-drawer-divider-color($color) {

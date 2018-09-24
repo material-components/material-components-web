@@ -33,7 +33,7 @@
 .mdc-chip {
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;
-  @include mdc-chip-corner-radius($mdc-chip-border-radius-default);
+  @include mdc-chip-shape-radius(50%);
   @include mdc-chip-fill-color($mdc-chip-fill-color-default);
   @include mdc-chip-ink-color($mdc-chip-ink-color-default);
   @include mdc-typography(body2);

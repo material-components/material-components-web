@@ -20,6 +20,7 @@
 
 @import "@material/rtl/mixins";
 @import "@material/theme/mixins";
+@import "@material/shape/mixins";
 @import "./variables";
 
 //
@@ -54,9 +55,9 @@
   }
 }
 
-@mixin mdc-list-item-corner-radius($radius) {
+@mixin mdc-list-item-shape-radius($radius, $rtl-reflexive: false) {
   .mdc-list-item {
-    border-radius: $radius;
+    @include mdc-shape-radius($radius, $rtl-reflexive);
   }
 }
 

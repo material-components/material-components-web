@@ -22,8 +22,11 @@
 
 @import "@material/floating-label/mixins";
 @import "@material/theme/mixins";
+@import "@material/shape/mixins";
+@import "@material/shape/functions";
 @import "@material/line-ripple/mixins";
 @import "@material/notched-outline/mixins";
+@import "./variables";
 
 // Public
 
@@ -89,11 +92,19 @@
   }
 }
 
-@mixin mdc-select-corner-radius($radius) {
-  border-radius: $radius $radius 0 0;
+@mixin mdc-select-shape-radius($radius, $rtl-reflexive: false) {
+  @if length($radius) > 2 {
+    @error "Invalid radius: '#{$radius}' component doesn't allow customizing all corners";
+  }
+
+  $masked-radius: mdc-shape-mask-radius($radius, 1 1 0 0);
+
+  &, &__native-control {
+    @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-select-height, $masked-radius), $rtl-reflexive);
+  }
 }
 
-@mixin mdc-select-outline-corner-radius($radius) {
+@mixin mdc-select-outline-shape-radius($radius, $rtl-reflexive: false) {
   // NOTE: idle and notched state border radius mixins
   // are broken into 2 different mixins, otherwise
   // we would be overly specific (big no, no). The cause of
@@ -101,10 +112,14 @@
   // are siblings. .mdc-notched-outline__idle needs to be a child of
   // .mdc-notched-outline in order to remedy this issue.
   .mdc-notched-outline {
-    @include mdc-notched-outline-corner-radius($radius);
+    @include mdc-notched-outline-shape-radius(mdc-shape-resolve-percentage-radius($mdc-select-height, $radius), $rtl-reflexive);
   }
 
-  @include mdc-notched-outline-idle-corner-radius($radius);
+  @include mdc-notched-outline-idle-shape-radius(mdc-shape-resolve-percentage-radius($mdc-select-height, $radius), $rtl-reflexive);
+
+  &__native-control {
+    @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-select-height, $radius), $rtl-reflexive);
+  }
 }
 
 // Private

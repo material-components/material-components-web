@@ -22,6 +22,7 @@
     "@material/elevation": "^0.39.1",
     "@material/ripple": "^0.39.3",
     "@material/theme": "^0.39.1",
+    "@material/shape": "^0.39.0",
     "@material/typography": "^0.39.0"
   }
 }
