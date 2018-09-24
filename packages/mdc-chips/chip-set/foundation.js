@@ -24,7 +24,7 @@
 import MDCFoundation from '@material/base/foundation';
 import MDCChipSetAdapter from './adapter';
 // eslint-disable-next-line no-unused-vars
-import {MDCChipInteractionEventType, MDCChipRemovalEventType} from '../chip/foundation';
+import {MDCChipInteractionEventType, MDCChipSelectionEventType, MDCChipRemovalEventType} from '../chip/foundation';
 import {strings, cssClasses} from './constants';
 
 /**
@@ -131,7 +131,7 @@ class MDCChipSetFoundation extends MDCFoundation {
 
   /**
    * Handles a chip selection event, used to handle discrepancy when selection state is set directly on the Chip.
-   * @param {!MDCChipInteractionEventType} evt
+   * @param {!MDCChipSelectionEventType} evt
    */
   handleChipSelection(evt) {
     const {chipId, selected} = evt.detail;

@@ -200,6 +200,17 @@ let MDCChipInteractionEventType;
  * @typedef {{
  *   detail: {
  *     chipId: string,
+ *     selected: boolean,
+ *   },
+ *   bubbles: boolean,
+ * }}
+ */
+let MDCChipSelectionEventType;
+
+/**
+ * @typedef {{
+ *   detail: {
+ *     chipId: string,
  *     root: Element,
  *   },
  *   bubbles: boolean,
@@ -207,4 +218,4 @@ let MDCChipInteractionEventType;
  */
 let MDCChipRemovalEventType;
 
-export {MDCChipFoundation, MDCChipInteractionEventType, MDCChipRemovalEventType};
+export {MDCChipFoundation, MDCChipInteractionEventType, MDCChipSelectionEventType, MDCChipRemovalEventType};
