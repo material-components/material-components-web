@@ -62,8 +62,7 @@ function getFixture() {
     </div>`;
 }
 
-function setupTest() {
-  const fixture = getFixture();
+function setupTest(fixture = getFixture()) {
   const root = fixture.querySelector('.mdc-dialog');
   const component = new MDCDialog(root);
   const title = fixture.querySelector('.mdc-dialog__title');
@@ -294,13 +293,13 @@ test('adapter#removeBodyClass removes a class from the body', () => {
   assert.isFalse(body.classList.contains('mdc-dialog--scroll-lock'));
 });
 
-test('adapter#eventTargetHasClass returns whether or not the className is in the target\'s classList', () => {
+test('adapter#eventTargetMatches returns whether or not the target matches the selector', () => {
   const {component} = setupTest();
   const target = bel`<div class="existent-class"></div>`;
   const {adapter_: adapter} = component.getDefaultFoundation();
 
-  assert.isTrue(adapter.eventTargetHasClass(target, 'existent-class'));
-  assert.isFalse(adapter.eventTargetHasClass(target, 'non-existent-class'));
+  assert.isTrue(adapter.eventTargetMatches(target, '.existent-class'));
+  assert.isFalse(adapter.eventTargetMatches(target, '.non-existent-class'));
 });
 
 test('adapter#computeBoundingRect calls getBoundingClientRect() on root', () => {
@@ -441,6 +440,28 @@ test('adapter#getActionFromEvent returns null when attribute is not present', ()
   const {component, title} = setupTest();
   const action = component.getDefaultFoundation().adapter_.getActionFromEvent({target: title});
   assert.isNull(action);
+});
+
+test(`adapter#clickDefaultButton invokes click() on button matching ${strings.DEFAULT_BUTTON_SELECTOR}`, () => {
+  const fixture = getFixture();
+  const yesButton = fixture.querySelector('[data-mdc-dialog-action="yes"]');
+  yesButton.classList.add(strings.DEFAULT_BUTTON_SELECTOR.slice(1));
+
+  const {component} = setupTest(fixture);
+  yesButton.click = td.func('click');
+
+  component.getDefaultFoundation().adapter_.clickDefaultButton();
+  td.verify(yesButton.click());
+});
+
+test(`adapter#clickDefaultButton does nothing if nothing matches ${strings.DEFAULT_BUTTON_SELECTOR}`, () => {
+  const {component, yesButton, noButton} = setupTest();
+  yesButton.click = td.func('click');
+  noButton.click = td.func('click');
+
+  assert.doesNotThrow(() => component.getDefaultFoundation().adapter_.clickDefaultButton());
+  td.verify(yesButton.click(), {times: 0});
+  td.verify(noButton.click(), {times: 0});
 });
 
 test('adapter#reverseButtons reverses the order of children under the actions element', () => {
