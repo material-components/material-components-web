@@ -72,7 +72,6 @@ Function | Description
 --- | ---
 `mdc-shape-flip-radius($radius)` | Flips the radius values in RTL context. `$radius` is list of 2-4 corner values.
 `mdc-shape-resolve-percentage-radius($component-height, $radius)` | Calculates the absolute radius value based on its component height. Use this for fixed height components only.
-`mdc-shape-mask-top-radius($radius)` | Accepts radius number or list of 2 radius values and returns 4 value list with top-left value, top-right value, bottom-right 0, bottom-left 0. Throws error when length of radius is more than 2.
 `mdc-shape-mask-radius($radius, $masked-corners)` | Accepts radius number or list of 2-4 radius values and returns 4 value list with masked corners as mentioned in `$masked-corners`.
 
 ### Additional Information
