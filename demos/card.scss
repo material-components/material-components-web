@@ -140,11 +140,7 @@
 //
 
 .demo-card--music {
-  @include mdc-card-corner-radius(24px 4px);
-
-  @include mdc-rtl {
-    @include mdc-card-corner-radius(4px 24px);
-  }
+  @include mdc-card-shape-radius((24px, 4px), $rtl-reflexive: true);
 }
 
 .demo-card__music-row {

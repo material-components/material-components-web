@@ -45,13 +45,14 @@ class MDCDialogFoundation extends MDCFoundation {
       hasClass: (/* className: string */) => {},
       addBodyClass: (/* className: string */) => {},
       removeBodyClass: (/* className: string */) => {},
-      eventTargetHasClass: (/* target: !EventTarget, className: string */) => {},
+      eventTargetMatches: (/* target: !EventTarget, selector: string */) => {},
       computeBoundingRect: () => {},
       trapFocus: () => {},
       releaseFocus: () => {},
       isContentScrollable: () => {},
       areButtonsStacked: () => {},
       getActionFromEvent: (/* event: !Event */) => {},
+      clickDefaultButton: () => {},
       reverseButtons: () => {},
       notifyOpening: () => {},
       notifyOpened: () => {},
@@ -134,6 +135,11 @@ class MDCDialogFoundation extends MDCFoundation {
    * @param {string=} action
    */
   close(action = '') {
+    if (!this.isOpen_) {
+      // Avoid redundant close calls (and events), e.g. from keydown on elements that inherently emit click
+      return;
+    }
+
     this.isOpen_ = false;
     this.adapter_.notifyClosing(action);
     this.adapter_.releaseFocus();
@@ -229,14 +235,20 @@ class MDCDialogFoundation extends MDCFoundation {
    * @param {!Event} evt
    * @private
    */
-  handleClick(evt) {
+  handleInteraction(evt) {
+    const isClick = evt.type === 'click';
+    const isEnter = evt.key === 'Enter' || evt.keyCode === 13;
+
     // Check for scrim click first since it doesn't require querying ancestors
-    if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.SCRIM) && this.scrimClickAction_ !== '') {
+    if (isClick && this.adapter_.eventTargetMatches(evt.target, strings.SCRIM_SELECTOR) &&
+      this.scrimClickAction_ !== '') {
       this.close(this.scrimClickAction_);
-    } else {
+    } else if (isClick || evt.key === 'Space' || evt.keyCode === 32 || isEnter) {
       const action = this.adapter_.getActionFromEvent(evt);
       if (action) {
         this.close(action);
+      } else if (isEnter && !this.adapter_.eventTargetMatches(evt.target, strings.SUPPRESS_DEFAULT_PRESS_SELECTOR)) {
+        this.adapter_.clickDefaultButton();
       }
     }
   }

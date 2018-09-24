@@ -52,8 +52,8 @@ $custom-card-color: $material-color-red-300;
   @include mdc-card-outline($custom-card-color, 5px);
 }
 
-.custom-card--corner-radius {
-  @include mdc-card-corner-radius(20px);
+.custom-card--shape-radius {
+  @include mdc-card-shape-radius(20px);
 }
 
 .custom-card--media-aspect-ratio {
@@ -63,4 +63,3 @@ $custom-card-color: $material-color-red-300;
     @include mdc-card-media-aspect-ratio(3, 2);
   }
 }
-

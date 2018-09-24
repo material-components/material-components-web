@@ -83,6 +83,10 @@
   }
 }
 
+@at-root {
+  @include mdc-top-app-bar-short-shape-radius(24px);
+}
+
 .mdc-top-app-bar--short {
   top: 0;
   right: auto;
@@ -110,7 +114,6 @@
 }
 
 .mdc-top-app-bar--short-collapsed {
-  @include mdc-top-app-bar-short-border-radius;
   @include mdc-elevation(4);
 
   width: $mdc-top-app-bar-short-collapsed-width;

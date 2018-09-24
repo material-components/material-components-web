@@ -64,19 +64,6 @@
           "min_changed_pixel_count": 25,
           "fonts_loaded_reflow_delay_ms": 250
         }
-      },
-      {
-        "description": "IE consistently flakes sometimes on some dialog pages.",
-        "browser_regex_patterns": [
-          "desktop_windows_ie@11"
-        ],
-        "url_regex_patterns": [
-          "mdc-dialog/classes/overflow",
-          "mdc-dialog/mixins"
-        ],
-        "custom_config": {
-          "skip_all": true
-        }
       }
     ]
   }

@@ -177,7 +177,7 @@ Mixin | Description
 `mdc-top-app-bar-icon-ink-color($color)` | Sets the ink color of the top app bar icons.
 `mdc-top-app-bar-fill-color($color)` | Sets the fill color of the top app bar.
 `mdc-top-app-bar-fill-color-accessible($color)` | Sets the fill color of the top app bar and automatically sets a high-contrast ink color.
-`mdc-top-app-bar-short-border-radius($border-radius)` | Sets the `border-bottom-radius` property on the action item side. Used only for the short top app bar when collapsed.
+`mdc-top-app-bar-short-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to short top app bar variant (when it is collapsed) with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to true.
 
 ## `MDCTopAppBar` Properties and Methods
 

@@ -24,6 +24,8 @@
 @import "@material/ripple/mixins";
 @import "@material/theme/variables"; // for mdc-theme-accessible-ink-color
 @import "@material/theme/mixins";
+@import "@material/shape/mixins";
+@import "@material/shape/functions";
 @import "./variables";
 
 //
@@ -51,8 +53,18 @@
   }
 }
 
-@mixin mdc-top-app-bar-short-border-radius($border-radius: $mdc-top-app-bar-short-collapsed-border-radius) {
-  @include mdc-rtl-reflexive(border-bottom-left-radius, 0, border-bottom-right-radius, $border-radius);
+@mixin mdc-top-app-bar-short-shape-radius($radius, $rtl-reflexive: true) {
+  @if length($radius) > 1 {
+    @error "Invalid radius: '#{$radius}' component doesn't allow customizing all corners";
+  }
+
+  $radius: 0 0 $radius 0;
+
+  $selector: if(&, "&.mdc-top-app-bar--short-collapsed", ".mdc-top-app-bar--short-collapsed");
+
+  #{$selector} {
+    @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-top-app-bar-dense-row-height, $radius), $rtl-reflexive);
+  }
 }
 
 @mixin mdc-top-app-bar-mobile-breakpoint_($mobile-breakpoint: $mdc-top-app-bar-mobile-breakpoint) {

@@ -43,8 +43,8 @@
 
 }
 
-.mdc-button.big-round-corner-button {
-  @include mdc-button-corner-radius(8px);
+.mdc-button.big-round-shape-button {
+  @include mdc-button-shape-radius(8px);
 }
 
 .mdc-button.thick-outline-button {

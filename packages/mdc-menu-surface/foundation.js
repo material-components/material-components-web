@@ -456,7 +456,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
    * @private
    */
   adjustPositionForHoistedElement_(position) {
-    const {bodyDimensions, windowScroll, viewport, viewportDistance} = this.measures_;
+    const {windowScroll, viewportDistance} = this.measures_;
 
     for (const prop in position) {
       if (position.hasOwnProperty(prop)) {
@@ -468,10 +468,16 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
 
         // Surfaces that are absolutely positioned need to have additional calculations for scroll
         // and bottom positioning.
-        if (!this.isFixedPosition_ && prop === 'top') {
-          position[prop] = parseInt(position[prop], 10) + windowScroll.y;
-        } else if (!this.isFixedPosition_ && prop === 'bottom') {
-          position[prop] = bodyDimensions.height - (viewport.height + windowScroll.y) + parseInt(position[prop], 10);
+        if (!this.isFixedPosition_) {
+          if (prop === 'top') {
+            position[prop] = parseInt(position[prop], 10) + windowScroll.y;
+          } else if (prop === 'bottom') {
+            position[prop] = parseInt(position[prop], 10) - windowScroll.y;
+          } else if (prop === 'left') {
+            position[prop] = parseInt(position[prop], 10) + windowScroll.x;
+          } else if (prop === 'right') {
+            position[prop] = parseInt(position[prop], 10) - windowScroll.x;
+          }
         }
       }
     }
