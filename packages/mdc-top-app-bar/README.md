@@ -51,7 +51,7 @@ npm install @material/top-app-bar
 </header>
 ```
 
-#### Menu Icon
+#### Menu Icons
 
 We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts:
 
