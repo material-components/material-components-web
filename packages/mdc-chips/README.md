@@ -70,6 +70,16 @@ const chipSet = new MDCChipSet(document.querySelector('.mdc-chip-set'));
 
 You can optionally add a leading icon (i.e. thumbnail) and/or a trailing "remove" icon to a chip. To add an icon, add an `i` element with your preferred icon, give it a class of `mdc-chip__icon`, and a class of either `mdc-chip__icon--leading` or `mdc-chip__icon--trailing`.
 
+We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts:
+
+```html
+<head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+```
+
+However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any other icon library you wish.
+
 #### Leading icon
 
 ```html
@@ -187,7 +197,7 @@ CSS Class | Description
 `mdc-chip` | Mandatory.
 `mdc-chip--selected` | Optional. Indicates that the chip is selected.
 `mdc-chip__text` | Mandatory. Indicates the text content of the chip.
-`mdc-chip__icon` | Optional. Indicates an icon in the chip.
+`mdc-chip__icon` | Optional. Indicates an icon in the chip. We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts.
 `mdc-chip__icon--leading` | Optional. Indicates a leading icon in the chip.
 `mdc-chip__icon--leading-hidden` | Optional. Hides the leading icon in a filter chip when the chip is selected.
 `mdc-chip__icon--trailing` | Optional. Indicates a trailing icon which removes the chip from the DOM. Only use with input chips.
