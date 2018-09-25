@@ -22,6 +22,13 @@
  */
 
 window.mdc.testFixture.fontsLoaded.then(() => {
-  mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
+  /** @type {!MDCDrawer} */
+  const drawer = mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
+  const menuButtonEl = document.querySelector('#test-drawer-menu-button');
+  if (menuButtonEl) {
+    menuButtonEl.addEventListener('click', () => {
+      drawer.open = !drawer.open;
+    });
+  }
   window.mdc.testFixture.notifyDomReady();
 });
