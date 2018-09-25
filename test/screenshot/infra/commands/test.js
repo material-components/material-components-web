@@ -219,6 +219,7 @@ class TestCommand {
     const masterScreenshotSets = masterReportData.screenshots;
     const masterScreenshotList = masterScreenshotSets.actual_screenshot_list;
 
+    masterScreenshotSets.added_screenshot_list.length = 0;
     masterScreenshotSets.changed_screenshot_list.length = 0;
     masterScreenshotSets.unchanged_screenshot_list.length = 0;
 
