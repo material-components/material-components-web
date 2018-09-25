@@ -80,6 +80,12 @@ class MDCChipAdapter {
   notifyInteraction() {}
 
   /**
+   * Emits a custom "MDCChip:selection" event denoting the chip has been selected or deselected.
+   * @param {boolean} selected
+   */
+  notifySelection(selected) {}
+
+  /**
    * Emits a custom "MDCChip:trailingIconInteraction" event denoting the trailing icon has been
    * interacted with (typically on click or keydown).
    */
