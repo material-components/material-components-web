@@ -244,11 +244,11 @@ Where `./util` could look like:
 
 ```javascript
 export function toggleClass(element, className) {
-  if (root.classList.contains(className)) {
-    root.classList.remove(className);
+  if (element.classList.contains(className)) {
+    element.classList.remove(className);
     return;
   }
-  root.classList.add(className);
+  element.classList.add(className);
 }
 ```
 
