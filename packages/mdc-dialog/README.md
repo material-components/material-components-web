@@ -46,17 +46,19 @@ npm install @material/dialog
      aria-labelledby="my-dialog-title"
      aria-describedby="my-dialog-content">
   <div class="mdc-dialog__container">
-    <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
-    <h2 class="mdc-dialog__title" id="my-dialog-title"><!--
-   -->Dialog Title<!--
- --></h2>
-    <section class="mdc-dialog__content" id="my-dialog-content">
-      Dialog body text goes here.
-    </section>
-    <footer class="mdc-dialog__actions">
-      <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">No</button>
-      <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">Yes</button>
-    </footer>
+    <div class="mdc-dialog__surface">
+      <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
+      <h2 class="mdc-dialog__title" id="my-dialog-title"><!--
+     -->Dialog Title<!--
+   --></h2>
+      <div class="mdc-dialog__content" id="my-dialog-content">
+        Dialog body text goes here.
+      </div>
+      <footer class="mdc-dialog__actions">
+        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">No</button>
+        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">Yes</button>
+      </footer>
+    </div>
   </div>
   <div class="mdc-dialog__scrim"></div>
 </div>
@@ -110,21 +112,23 @@ The Simple Dialog contains a list of potential actions. It does not contain butt
      aria-labelledby="my-dialog-title"
      aria-describedby="my-dialog-content">
   <div class="mdc-dialog__container">
-    <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
-    <h2 class="mdc-dialog__title" id="my-dialog-title"><!--
-   -->Choose a Ringtone<!--
- --></h2>
-    <section class="mdc-dialog__content" id="my-dialog-content">
-      <ul class="mdc-list mdc-list--avatar-list">
-        <li class="mdc-list-item" tabindex="0" data-mdc-dialog-action="none">
-          <span class="mdc-list-item__text">None</span>
-        </li>
-        <li class="mdc-list-item" data-mdc-dialog-action="callisto">
-          <span class="mdc-list-item__text">Callisto</span>
-        </li>
-        <!-- ... -->
-      </ul>
-    </section>
+    <div class="mdc-dialog__surface">
+      <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
+      <h2 class="mdc-dialog__title" id="my-dialog-title"><!--
+     -->Choose a Ringtone<!--
+   --></h2>
+      <div class="mdc-dialog__content" id="my-dialog-content">
+        <ul class="mdc-list mdc-list--avatar-list">
+          <li class="mdc-list-item" tabindex="0" data-mdc-dialog-action="none">
+            <span class="mdc-list-item__text">None</span>
+          </li>
+          <li class="mdc-list-item" data-mdc-dialog-action="callisto">
+            <span class="mdc-list-item__text">Callisto</span>
+          </li>
+          <!-- ... -->
+        </ul>
+      </div>
+    </div>
   </div>
   <div class="mdc-dialog__scrim"></div>
 </div>
@@ -144,37 +148,39 @@ radio buttons (indicating single selection) or checkboxes (indicating multiple s
      aria-labelledby="my-dialog-title"
      aria-describedby="my-dialog-content">
   <div class="mdc-dialog__container">
-    <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
-    <h2 class="mdc-dialog__title" id="my-dialog-title"><!--
-   -->Choose a Ringtone<!--
- --></h2>
-    <section class="mdc-dialog__content" id="my-dialog-content">
-      <ul class="mdc-list">
-        <li class="mdc-list-item" tabindex="0">
-          <span class="mdc-list-item__graphic">
-            <div class="mdc-radio">
-              <input class="mdc-radio__native-control"
-                     type="radio"
-                     id="test-dialog-baseline-confirmation-radio-1"
-                     name="test-dialog-baseline-confirmation-radio-group"
-                     checked>
-              <div class="mdc-radio__background">
-                <div class="mdc-radio__outer-circle"></div>
-                <div class="mdc-radio__inner-circle"></div>
+    <div class="mdc-dialog__surface">
+      <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
+      <h2 class="mdc-dialog__title" id="my-dialog-title"><!--
+     -->Choose a Ringtone<!--
+   --></h2>
+      <div class="mdc-dialog__content" id="my-dialog-content">
+        <ul class="mdc-list">
+          <li class="mdc-list-item" tabindex="0">
+            <span class="mdc-list-item__graphic">
+              <div class="mdc-radio">
+                <input class="mdc-radio__native-control"
+                       type="radio"
+                       id="test-dialog-baseline-confirmation-radio-1"
+                       name="test-dialog-baseline-confirmation-radio-group"
+                       checked>
+                <div class="mdc-radio__background">
+                  <div class="mdc-radio__outer-circle"></div>
+                  <div class="mdc-radio__inner-circle"></div>
+                </div>
               </div>
-            </div>
-          </span>
-          <label id="test-dialog-baseline-confirmation-radio-1-label"
-                 for="test-dialog-baseline-confirmation-radio-1"
-                 class="mdc-list-item__text">None</label>
-        </li>
-        <!-- ... -->
-      </ul>
-    </section>
-    <footer class="mdc-dialog__actions">
-      <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">Cancel</button>
-      <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept">OK</button>
-    </footer>
+            </span>
+            <label id="test-dialog-baseline-confirmation-radio-1-label"
+                   for="test-dialog-baseline-confirmation-radio-1"
+                   class="mdc-list-item__text">None</label>
+          </li>
+          <!-- ... -->
+        </ul>
+      </div>
+      <footer class="mdc-dialog__actions">
+        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">Cancel</button>
+        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept">OK</button>
+      </footer>
+    </div>
   </div>
   <div class="mdc-dialog__scrim"></div>
 </div>
@@ -280,7 +286,7 @@ Mixin | Description
 `mdc-dialog-title-ink-color($color, $opacity)` | Sets the color of the dialog's title text.
 `mdc-dialog-content-ink-color($color, $opacity)` | Sets the color of the dialog's content text.
 `mdc-dialog-scroll-divider-color($color, $opacity)` | Sets the color of the dividers which display around scrollable content.
-`mdc-dialog-corner-radius($radius)` | Sets the corner radius to the given amount (defaults to 4px on all sides).
+`mdc-dialog-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to dialog surface with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `mdc-dialog-min-width($min-width)` | Sets the minimum width of the dialog (defaults to 280px).
 `mdc-dialog-max-width($max-width, $margin)` | Sets the maximum width of the dialog (defaults to 560px max width and 16px margins).
 `mdc-dialog-max-height($max-height, $margin)` | Sets the maximum height of the dialog (defaults to no max height and 16px margins).

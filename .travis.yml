@@ -39,6 +39,12 @@ matrix:
 
   - node_js: 8
     env:
+      - TEST_SUITE=build
+    script:
+      - if has_testable_files; then npm run build; else log_untestable_files; fi
+
+  - node_js: 8
+    env:
       - TEST_SUITE=unit
     addons:
       sauce_connect: true
@@ -69,9 +75,5 @@ matrix:
       # Source the scripts to export their env vars. See https://superuser.com/a/176788/62792
       - source scripts/travis-env-vars.sh
       - source test/screenshot/infra/commands/travis.sh
-    install: # Override global settings
-      - npm install
-      # Noisy output, but useful for debugging npm package dependency version issues:
-      #- npm ls
     script:
-      - npm run screenshot:test
+      - if has_testable_files; then npm run screenshot:test; else log_untestable_files; fi

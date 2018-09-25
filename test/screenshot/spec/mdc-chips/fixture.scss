@@ -36,8 +36,8 @@ $custom-chip-ink-color: $material-color-blue-500;
   @include mdc-chip-set-spacing(20px);
 }
 
-.custom-chip--corner-radius {
-  @include mdc-chip-corner-radius(10px);
+.custom-chip--shape-radius {
+  @include mdc-chip-shape-radius(10px);
 }
 
 .custom-chip--fill-color-accessible {

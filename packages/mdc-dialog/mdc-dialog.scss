@@ -52,7 +52,7 @@
   @include mdc-dialog-min-width($mdc-dialog-min-width);
   @include mdc-dialog-max-width($mdc-dialog-max-width, $mdc-dialog-margin);
   @include mdc-dialog-max-height(null, $mdc-dialog-margin);
-  @include mdc-dialog-corner-radius($mdc-dialog-corner-radius);
+  @include mdc-dialog-shape-radius(medium);
 
   // Use `display: none` instead of `visibility: hidden` to avoid recalculating layout when the dialog is closed.
   display: none;
@@ -156,7 +156,7 @@
   padding: 6px 0 0; // Top padding balances with title height
 }
 
-// stylelint-disable-next-line plugin/selector-bem-pattern
+// stylelint-disable-next-line plugin/selector-bem-pattern, selector-max-specificity
 .mdc-dialog--scrollable .mdc-dialog__content .mdc-list:first-child:last-child {
   // Override default .mdc-list padding for content consisting exclusively of a MDC List
   padding: 0;
