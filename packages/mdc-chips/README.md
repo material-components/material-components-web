@@ -327,8 +327,6 @@ Method Signature | Description
 --- | ---
 `getSelectedChipIds() => boolean` | Returns an array of the IDs of all selected chips
 `select(chipId: string) => void` | Selects the chip with the given id
-`handleChipInteraction(chipId: string) => void` | Handles a click event on a specific chip
-`handleChipRemoval(chipId: string) => void` | Handles a removal event on a specific chip
-`handleChipInteraction(evt: Event) => void` | Handles a custom `MDCChip:interaction` event on the root element
-`handleChipSelection(evt: Event) => void` | Handles a custom `MDCChip:selection` event on the root element
-`handleChipRemoval(evt: Event) => void` | Handles a custom `MDCChip:removal` event on the root element
+`handleChipInteraction(chipId: string) => void` | Handles a custom `MDCChip:interaction` event on the root element
+`handleChipSelection(chipId: string, selected: boolean) => void` | Handles a custom `MDCChip:selection` event on the root element
+`handleChipRemoval(chipId: string) => void` | Handles a custom `MDCChip:removal` event on the root element
