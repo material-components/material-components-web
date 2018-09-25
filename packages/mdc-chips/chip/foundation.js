@@ -55,6 +55,7 @@ class MDCChipFoundation extends MDCFoundation {
       removeClassFromLeadingIcon: () => {},
       eventTargetHasClass: () => {},
       notifyInteraction: () => {},
+      notifySelection: () => {},
       notifyTrailingIconInteraction: () => {},
       notifyRemoval: () => {},
       getComputedStyleValue: () => {},
@@ -91,6 +92,7 @@ class MDCChipFoundation extends MDCFoundation {
     } else {
       this.adapter_.removeClass(cssClasses.SELECTED);
     }
+    this.adapter_.notifySelection(selected);
   }
 
   /**
@@ -198,6 +200,17 @@ let MDCChipInteractionEventType;
  * @typedef {{
  *   detail: {
  *     chipId: string,
+ *     selected: boolean,
+ *   },
+ *   bubbles: boolean,
+ * }}
+ */
+let MDCChipSelectionEventType;
+
+/**
+ * @typedef {{
+ *   detail: {
+ *     chipId: string,
  *     root: Element,
  *   },
  *   bubbles: boolean,
@@ -205,4 +218,4 @@ let MDCChipInteractionEventType;
  */
 let MDCChipRemovalEventType;
 
-export {MDCChipFoundation, MDCChipInteractionEventType, MDCChipRemovalEventType};
+export {MDCChipFoundation, MDCChipInteractionEventType, MDCChipSelectionEventType, MDCChipRemovalEventType};
