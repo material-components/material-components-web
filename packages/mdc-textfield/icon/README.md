@@ -27,6 +27,18 @@ Icons describe the type of input a text field requires. They can also be interac
 <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
 ```
 
+#### Icon Set
+
+We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts:
+
+```html
+<head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+```
+
+However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any other icon library you wish.
+
 ### Styles
 
 ```scss
@@ -40,6 +52,7 @@ import {MDCTextFieldIcon} from '@material/textfield/icon';
 
 const icon = new MDCTextFieldIcon(document.querySelector('.mdc-text-field-icon'));
 ```
+
 ## Variants
 
 Leading and trailing icons can be applied to default or `mdc-text-field--outlined` Text Fields. To add an icon, add the relevant class (`mdc-text-field--with-leading-icon` and/or `mdc-text-field--with-trailing-icon`) to the root element, add an `i` element with your preferred icon, and give it a class of `mdc-text-field__icon`. If using 2 icons at the same time, the first icon inside the `mdc-text-field` element will be interpreted as the leading icon and the second icon will be interpreted as the trailing icon.

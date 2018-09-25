@@ -69,14 +69,6 @@ class TestCommand {
     const snapshotDiffBase = await this.diffBaseParser_.parseGoldenDiffBase();
     const snapshotGitRev = snapshotDiffBase.git_revision;
 
-    const isTravisPr = snapshotGitRev && snapshotGitRev.type === GitRevision.Type.TRAVIS_PR;
-    const shouldExit = process.env.HAS_TESTABLE_FILES === 'false';
-
-    if (shouldExit) {
-      this.logUntestableFiles_();
-      return ExitCode.OK;
-    }
-
     // TODO(acdvorak): Find a better word than "local"
     /** @type {!mdc.proto.ReportData} */
     const localReportData = await this.diffAgainstLocal_(snapshotDiffBase);
@@ -86,6 +78,7 @@ class TestCommand {
       return localExitCode;
     }
 
+    const isTravisPr = snapshotGitRev && snapshotGitRev.type === GitRevision.Type.TRAVIS_PR;
     if (isTravisPr) {
       /** @type {!mdc.proto.ReportData} */
       const masterReportData = await this.diffAgainstMaster_({localReportData, snapshotGitRev});
@@ -457,19 +450,6 @@ for more information.
 
 ${CliColor.bold.red('Skipping screenshot tests.')}
 `);
-  }
-
-  /**
-   * @private
-   */
-  logUntestableFiles_() {
-    const range = process.env.TRAVIS_COMMIT_RANGE;
-
-    this.logger_.log(`
-${CliColor.bold.magenta(`No testable source files were found for commit range ${range}.`)}
-
-${CliColor.bold.magenta('Skipping screenshot tests.')}
-`.trim());
   }
 
   /**

@@ -70,6 +70,16 @@ const chipSet = new MDCChipSet(document.querySelector('.mdc-chip-set'));
 
 You can optionally add a leading icon (i.e. thumbnail) and/or a trailing "remove" icon to a chip. To add an icon, add an `i` element with your preferred icon, give it a class of `mdc-chip__icon`, and a class of either `mdc-chip__icon--leading` or `mdc-chip__icon--trailing`.
 
+We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts:
+
+```html
+<head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+```
+
+However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any other icon library you wish.
+
 #### Leading icon
 
 ```html
@@ -187,7 +197,7 @@ CSS Class | Description
 `mdc-chip` | Mandatory.
 `mdc-chip--selected` | Optional. Indicates that the chip is selected.
 `mdc-chip__text` | Mandatory. Indicates the text content of the chip.
-`mdc-chip__icon` | Optional. Indicates an icon in the chip.
+`mdc-chip__icon` | Optional. Indicates an icon in the chip. We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts.
 `mdc-chip__icon--leading` | Optional. Indicates a leading icon in the chip.
 `mdc-chip__icon--leading-hidden` | Optional. Hides the leading icon in a filter chip when the chip is selected.
 `mdc-chip__icon--trailing` | Optional. Indicates a trailing icon which removes the chip from the DOM. Only use with input chips.
@@ -276,6 +286,7 @@ Method Signature | Description
 `removeClassFromLeadingIcon(className: string) => void` | Removes a class from the leading icon element
 `eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise
 `notifyInteraction() => void` | Emits a custom event `MDCChip:interaction` denoting the chip has been interacted with\*
+`notifySelection(selected) => void` | Emits a custom event `MDCChip:selection` denoting the chip has been selected or deselected\*\*\*
 `notifyTrailingIconInteraction() => void` | Emits a custom event `MDCChip:trailingIconInteraction` denoting the chip's trailing icon has been interacted with\*
 `notifyRemoval() => void` | Emits a custom event `MDCChip:removal` denoting the chip will be removed\*\*
 `getComputedStyleValue(propertyName: string) => string` | Returns the computed property value of the given style property on the root element
@@ -284,6 +295,8 @@ Method Signature | Description
 > \*_NOTE_: The custom events emitted by `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target chip's ID via `event.detail.chipId`, as well as bubble to the parent `mdc-chip-set` element.
 
 > \*\*_NOTE_: The custom event emitted by `notifyRemoval` must pass along the target chip's ID via `event.detail.chipId` and its root element via `event.detail.root`, as well as bubble to the parent `mdc-chip-set` element.
+
+> \*\*_NOTE_: The custom events emitted by `notifySelection` must pass along the target chip's ID via `event.detail.chipId` and selected state via `event.detail.selected`, as well as bubble to the parent `mdc-chip-set` element.
 
 #### `MDCChipSetAdapter`
 
@@ -317,4 +330,5 @@ Method Signature | Description
 `deselect(chipId: string) => void` | Deselects the chip with the given id
 `toggleSelect(chipId: string) => void` | Toggles selection of the chip with the given id
 `handleChipInteraction(evt: Event) => void` | Handles a custom `MDCChip:interaction` event on the root element
+`handleChipSelection(evt: Event) => void` | Handles a custom `MDCChip:selection` event on the root element
 `handleChipRemoval(evt: Event) => void` | Handles a custom `MDCChip:removal` event on the root element

@@ -76,8 +76,13 @@ if [[ "$TEST_SUITE" == 'unit' ]]; then
 fi
 
 if [[ "$TEST_SUITE" == 'lint' ]]; then
-  # Only run linter if package JS/Sass files changed
+  # Only run linter if JS/Sass files changed
   check_for_testable_files '\.(js|css|scss)$'
+fi
+
+if [[ "$TEST_SUITE" == 'build' ]]; then
+  # Only run build if package JS/Sass files changed
+  check_for_testable_files '^packages/.+\.(js|css|scss)$'
 fi
 
 if [[ "$TEST_SUITE" == 'closure' ]]; then
@@ -91,6 +96,6 @@ if [[ "$TEST_SUITE" == 'site-generator' ]]; then
 fi
 
 if [[ "$TEST_SUITE" == 'screenshot' ]]; then
-  # Only run screenshot tests if package JS/Sass files, non-Markdown screenshot test files, or image files changed.
+  # Only run screenshot tests if package JS/Sass files, screenshot test files, or image files changed.
   check_for_testable_files '^packages/.+\.(js|css|scss)$' '^test/screenshot/' '\.(png|jpg|jpeg|gif|svg)$'
 fi

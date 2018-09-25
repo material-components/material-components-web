@@ -184,6 +184,8 @@ class MDCChip extends MDCComponent {
       },
       eventTargetHasClass: (target, className) => target.classList.contains(className),
       notifyInteraction: () => this.emit(strings.INTERACTION_EVENT, {chipId: this.id}, true /* shouldBubble */),
+      notifySelection: (selected) => this.emit(
+        strings.SELECTION_EVENT, {chipId: this.id, selected: selected}, true /* shouldBubble */),
       notifyTrailingIconInteraction: () => this.emit(
         strings.TRAILING_ICON_INTERACTION_EVENT, {chipId: this.id}, true /* shouldBubble */),
       notifyRemoval: () =>
