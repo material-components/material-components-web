@@ -20,16 +20,17 @@
 // THE SOFTWARE.
 //
 
-@import "./functions";
+// Rounds the given unitless number of pixels (e.g., 52) up to the nearest number that ends with 1 (e.g., 61),
+// and returns that number with a px suffix (e.g., 61px).
+// This ensures that the background grid pattern ends on a border.
+@function test-cell-size($px) {
+  $mod: (($px - 1) % 10);
 
-// MS Edge only
-@mixin test-browser-selector-edge {
-  @supports (-ms-ime-align: auto) {
-    @content;
+  @if $mod == 0 {
+    @return #{$px}px;
   }
-}
 
-@mixin test-cell-size($width, $height: $width) {
-  width: test-cell-size($width);
-  height: test-cell-size($height);
+  $pxRounded: $px + (10 - $mod);
+
+  @return #{$pxRounded}px;
 }
