@@ -45,7 +45,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCChipFoundation, [
     'addClass', 'removeClass', 'hasClass', 'addClassToLeadingIcon',
     'removeClassFromLeadingIcon', 'eventTargetHasClass', 'notifyInteraction',
-    'notifyTrailingIconInteraction', 'notifyRemoval',
+    'notifyTrailingIconInteraction', 'notifyRemoval', 'notifySelection',
     'getComputedStyleValue', 'setStyleProperty',
   ]);
 });
@@ -74,6 +74,18 @@ test('#setSelected removes mdc-chip--selected class if false', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setSelected(false);
   td.verify(mockAdapter.removeClass(cssClasses.SELECTED));
+});
+
+test('#setSelected removes calls adapter.notifySelection when selected is true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setSelected(true);
+  td.verify(mockAdapter.notifySelection(true));
+});
+
+test('#setSelected removes calls adapter.notifySelection when selected is false', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setSelected(false);
+  td.verify(mockAdapter.notifySelection(false));
 });
 
 test(`#beginExit adds ${cssClasses.CHIP_EXIT} class`, () => {

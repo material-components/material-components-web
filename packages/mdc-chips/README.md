@@ -276,6 +276,7 @@ Method Signature | Description
 `removeClassFromLeadingIcon(className: string) => void` | Removes a class from the leading icon element
 `eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise
 `notifyInteraction() => void` | Emits a custom event `MDCChip:interaction` denoting the chip has been interacted with\*
+`notifySelection(selected) => void` | Emits a custom event `MDCChip:selection` denoting the chip has been selected or deselected\*\*\*
 `notifyTrailingIconInteraction() => void` | Emits a custom event `MDCChip:trailingIconInteraction` denoting the chip's trailing icon has been interacted with\*
 `notifyRemoval() => void` | Emits a custom event `MDCChip:removal` denoting the chip will be removed\*\*
 `getComputedStyleValue(propertyName: string) => string` | Returns the computed property value of the given style property on the root element
@@ -284,6 +285,8 @@ Method Signature | Description
 > \*_NOTE_: The custom events emitted by `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target chip's ID via `event.detail.chipId`, as well as bubble to the parent `mdc-chip-set` element.
 
 > \*\*_NOTE_: The custom event emitted by `notifyRemoval` must pass along the target chip's ID via `event.detail.chipId` and its root element via `event.detail.root`, as well as bubble to the parent `mdc-chip-set` element.
+
+> \*\*_NOTE_: The custom events emitted by `notifySelection` must pass along the target chip's ID via `event.detail.chipId` and selected state via `event.detail.selected`, as well as bubble to the parent `mdc-chip-set` element.
 
 #### `MDCChipSetAdapter`
 
@@ -317,4 +320,5 @@ Method Signature | Description
 `deselect(chipId: string) => void` | Deselects the chip with the given id
 `toggleSelect(chipId: string) => void` | Toggles selection of the chip with the given id
 `handleChipInteraction(evt: Event) => void` | Handles a custom `MDCChip:interaction` event on the root element
+`handleChipSelection(evt: Event) => void` | Handles a custom `MDCChip:selection` event on the root element
 `handleChipRemoval(evt: Event) => void` | Handles a custom `MDCChip:removal` event on the root element
