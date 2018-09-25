@@ -21,14 +21,27 @@
  * THE SOFTWARE.
  */
 
+import MDCDismissibleDrawerFoundation from '../../../../packages/mdc-drawer/dismissible/foundation';
+
 window.mdc.testFixture.fontsLoaded.then(() => {
+  const {DISMISSIBLE, MODAL} = MDCDismissibleDrawerFoundation.cssClasses;
+  const selector = [DISMISSIBLE, MODAL].join(', ');
+  const drawerEl = document.querySelector(selector);
+
+  // Don't try to instantiate a permanent drawer
+  if (!drawerEl) {
+    return;
+  }
+
   /** @type {!MDCDrawer} */
-  const drawer = mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
+  const drawer = mdc.drawer.MDCDrawer.attachTo(drawerEl);
+
   const menuButtonEl = document.querySelector('#test-drawer-menu-button');
   if (menuButtonEl) {
     menuButtonEl.addEventListener('click', () => {
       drawer.open = !drawer.open;
     });
   }
+
   window.mdc.testFixture.notifyDomReady();
 });
