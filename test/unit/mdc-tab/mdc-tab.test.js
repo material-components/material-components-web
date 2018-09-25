@@ -33,7 +33,7 @@ const getFixture = () => bel`
   <button class="mdc-tab" aria-selected="false" role="tab">
     <span class="mdc-tab__content">
       <span class="mdc-tab__text-label">Foo</span>
-      <span class="mdc-tab__icon"></span>
+      <span class="mdc-tab__icon" aria-hidden="true"></span>
     </span>
     <span class="mdc-tab__ripple"></span>
     <span class="mdc-tab-indicator">
