@@ -25,7 +25,7 @@ import MDCDismissibleDrawerFoundation from '../../../../packages/mdc-drawer/dism
 
 window.mdc.testFixture.fontsLoaded.then(() => {
   const {DISMISSIBLE, MODAL} = MDCDismissibleDrawerFoundation.cssClasses;
-  const selector = [DISMISSIBLE, MODAL].join(', ');
+  const selector = [DISMISSIBLE, MODAL].map((className) => `.${className}`).join(', ');
   const drawerEl = document.querySelector(selector);
 
   // Don't try to instantiate a permanent drawer
