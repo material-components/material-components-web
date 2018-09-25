@@ -21,20 +21,22 @@
  * THE SOFTWARE.
  */
 
-import MDCDismissibleDrawerFoundation from '../../../../packages/mdc-drawer/dismissible/foundation';
+import {MDCDismissibleDrawerFoundation} from '../../../../packages/mdc-drawer';
 
 window.mdc.testFixture.fontsLoaded.then(() => {
   const {DISMISSIBLE, MODAL} = MDCDismissibleDrawerFoundation.cssClasses;
-  const selector = [DISMISSIBLE, MODAL].map((className) => `.${className}`).join(', ');
-  const drawerEl = document.querySelector(selector);
+  const dismissibleDrawerSelector = [DISMISSIBLE, MODAL].map((className) => `.${className}`).join(', ');
+  const dismissibleDrawerEl = document.querySelector(dismissibleDrawerSelector);
 
-  // Don't try to instantiate a permanent drawer
-  if (!drawerEl) {
+  // Don't instantiate permanent drawers
+  if (!dismissibleDrawerEl) {
+    const list = mdc.list.MDCList.attachTo(document.querySelector('.mdc-list'));
+    list.wrapFocus = true;
     return;
   }
 
   /** @type {!MDCDrawer} */
-  const drawer = mdc.drawer.MDCDrawer.attachTo(drawerEl);
+  const drawer = mdc.drawer.MDCDrawer.attachTo(dismissibleDrawerEl);
 
   const menuButtonEl = document.querySelector('#test-drawer-menu-button');
   if (menuButtonEl) {
