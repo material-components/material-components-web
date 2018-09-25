@@ -58,8 +58,8 @@ npm install @material/chips
 
 ```js
 import {MDCChipSet} from '@material/chips';
-
-const chipSet = new MDCChipSet(document.querySelector('.mdc-chip-set'));
+const chipSetEl = document.querySelector('.mdc-chip-set');
+const chipSet = new MDCChipSet(chipSetEl);
 ```
 
 > See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
@@ -157,7 +157,23 @@ Input chips are a variant of chips which enable user input by converting text in
 </div>
 ```
 
- You'd also want to add an event listener that calls `addChip` on the `MDCChipSet` to convert text to a chip. More information can be found in the "`MDCChip` Properties and Methods" section below.
+The MDC Chips package does not handle the process of converting text into chips, in order to remain framework-agnostic. The `MDCChipSet` component exposes an `addChip` method, which accepts an element which is expected to already be inserted within the Chip Set element after any existing chips. The `MDCChipSet` component will then handle creating and tracking a `MDCChip` component instance.
+
+For example:
+
+```js
+input.addEventListener('keydown', function(event) {
+  if (event.key === 'Enter' || event.keyCode === 13) {
+    const chipEl = document.createElement('div');
+    // ... perform operations to properly populate/decorate chip element ...
+    chipSetEl.appendChild(chipEl);
+    chipSet.addChip(chipEl);
+  }
+});
+```
+
+> _NOTE_: `MDCChipSet` will generate a unique ID to apply to each added chip's element if it does not already have an ID
+> when it is passed to `addChip`. This is used to distinguish chips during user interactions.
 
 ### Pre-selected
 
@@ -258,6 +274,15 @@ Property | Value Type | Description
 
 > \*\*_NOTE_: If `shouldRemoveOnTrailingIconClick` is set to false, you must manually call `beginExit()` on the chip to remove it.
 
+##### Events
+
+Event Name | `event.detail` | Description
+--- | --- | ---
+`MDCChip:interaction` | `{chipId: string}` | Indicates the chip was interacted with (via click/tap or Enter key)
+`MDCChip:selection` | `{chipId: string, selected: boolean}` | Indicates the chip's selection state has changed (for choice/filter chips)
+`MDCChip:removal` | `{chipId: string}` | Indicates the chip is ready to be removed from the DOM (used by `MDCChipSetFoundation`)
+`MDCChip:trailingIconInteraction` | `{chipId: string}` | Indicates the chip's trailing icon was interacted with (via click/tap or Enter key)
+
 #### `MDCChipSet`
 
 Method Signature | Description
@@ -321,6 +346,16 @@ Method Signature | Description
 `handleTransitionEnd(evt: Event) => void` | Handles a transition end event on the root element
 `handleTrailingIconInteraction(evt: Event) => void` | Handles an interaction event on the trailing icon element
 
+#### `MDCChipFoundation` Event Handlers
+
+When wrapping the Chip foundation, the following events must be bound to the indicated foundation methods:
+
+Events | Element Selector | Foundation Handler
+--- | --- | ---
+`click`, `keydown` | `.mdc-chip` (root) | `handleInteraction()`
+`click`, `keydown` | `.mdc-chip__icon--trailing` (if present) | `handleTrailingIconInteraction()`
+`transitionend` | `.mdc-chip` (root) | `handleTransitionEnd()`
+
 #### `MDCChipSetFoundation`
 
 Method Signature | Description
@@ -332,3 +367,13 @@ Method Signature | Description
 `handleChipInteraction(evt: Event) => void` | Handles a custom `MDCChip:interaction` event on the root element
 `handleChipSelection(evt: Event) => void` | Handles a custom `MDCChip:selection` event on the root element
 `handleChipRemoval(evt: Event) => void` | Handles a custom `MDCChip:removal` event on the root element
+
+#### `MDCChipSetFoundation` Event Handlers
+
+When wrapping the Chip Set foundation, the following events must be bound to the indicated foundation methods:
+
+Events | Element Selector | Foundation Handler
+--- | --- | ---
+`MDCChip:interaction` | `.mdc-chip-set` (root) | `handleChipInteraction`
+`MDCChip:selection` | `.mdc-chip-set` (root) | `handleChipSelection`
+`MDCChip:removal` | `.mdc-chip-set` (root) | `handleChipRemoval`
