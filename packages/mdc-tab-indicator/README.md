@@ -94,11 +94,14 @@ We recommend using [Material Icons](https://material.io/tools/icons/) from Googl
 
 However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any other icon library you wish.
 
+Remember to include `aria-hidden="true"`, since the active indicator is already signified via the
+`aria-selected` attribute on the tab.
+
 ##### Fading Icon Indicator
 
 ```html
 <span class="mdc-tab-indicator mdc-tab-indicator--fade">
-  <span class="mdc-tab-indicator__content mdc-tab-indicator__content--icon material-icons">star</span>
+  <span class="mdc-tab-indicator__content mdc-tab-indicator__content--icon material-icons" aria-hidden="true">star</span>
 </span>
 ```
 
@@ -106,7 +109,7 @@ However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any 
 
 ```html
 <span class="mdc-tab-indicator">
-  <span class="mdc-tab-indicator__content mdc-tab-indicator__content--icon material-icons">star</span>
+  <span class="mdc-tab-indicator__content mdc-tab-indicator__content--icon material-icons" aria-hidden="true">star</span>
 </span>
 ```
 
