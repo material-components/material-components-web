@@ -23,6 +23,7 @@
 
 import 'url-search-params-polyfill';
 import bel from 'bel';
+import {ponyfill} from '../../../packages/mdc-dom';
 
 window.mdc = window.mdc || {};
 
@@ -85,14 +86,8 @@ class TestFixture {
     });
 
     this.listenForAnimationEvents_();
-
-    window.addEventListener('resize', () => {
-      this.renderRedlines_();
-    });
-
-    window.addEventListener('orientationchange', () => {
-      this.renderRedlines_();
-    });
+    this.listenForResizeEvents_();
+    this.preventEmptyHashLinkNavigation_();
   }
 
   listenForAnimationEvents_() {
@@ -113,6 +108,24 @@ class TestFixture {
     window.addEventListener('animationend', handleAnimationEvent);
     window.addEventListener('transitionend', handleAnimationEvent);
     window.addEventListener('load', handleAnimationEvent);
+  }
+
+  listenForResizeEvents_() {
+    window.addEventListener('resize', () => {
+      this.renderRedlines_();
+    });
+
+    window.addEventListener('orientationchange', () => {
+      this.renderRedlines_();
+    });
+  }
+
+  preventEmptyHashLinkNavigation_() {
+    document.addEventListener('click', (evt) => {
+      if (ponyfill.closest(evt.target, 'a[href="#"]')) {
+        evt.preventDefault();
+      }
+    });
   }
 
   notifyDomReady() {
