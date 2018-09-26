@@ -82,7 +82,7 @@
     "google-closure-compiler": "^20180805.0.0",
     "handlebars": "^4.0.11",
     "htmllint-cli": "0.0.7",
-    "husky": "^0.14.0",
+    "husky": "^1.0.0",
     "is-online": "^7.0.0",
     "istanbul": "^0.4.4",
     "istanbul-instrumenter-loader": "^3.0.0",
