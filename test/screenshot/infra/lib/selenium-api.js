@@ -769,7 +769,7 @@ class SeleniumApi {
     const urlWithQsParams = this.analytics_.getUrl({
       url,
       source: 'cbt',
-      type: 'selenium',
+      medium: 'selenium',
       extraParams: {
         font_face_observer_timeout_ms: flakeConfig.font_face_observer_timeout_ms,
         fonts_loaded_reflow_delay_ms: flakeConfig.fonts_loaded_reflow_delay_ms,
@@ -936,7 +936,7 @@ class SeleniumApi {
     const actualHtmlFileUrlPlain = this.analytics_.getUrl({
       url: screenshot.actual_html_file.public_url,
       source: 'cli',
-      type: 'progress',
+      medium: 'progress',
     });
 
     let cropColor = '';
@@ -1001,7 +1001,7 @@ class SeleniumApi {
     const actualHtmlFileUrl = this.analytics_.getUrl({
       url: screenshot.actual_html_file.public_url,
       source: 'cli',
-      type: 'progress',
+      medium: 'progress',
     });
 
     const bold = CliColor.bold;
