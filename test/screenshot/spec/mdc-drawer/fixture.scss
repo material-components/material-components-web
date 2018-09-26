@@ -31,8 +31,6 @@
 $custom-drawer-color: $material-color-orange-900;
 
 .test-viewport--drawer {
-  @include mdc-typography-base;
-
   display: flex;
   flex-direction: row;
   height: 100vh;
@@ -58,7 +56,6 @@ $custom-drawer-color: $material-color-orange-900;
   height: 100%;
   padding-right: 16px;
   padding-left: 16px;
-  background: #fff;
   overflow: auto;
 }
 

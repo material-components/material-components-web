@@ -22,6 +22,7 @@
 
 @import "../../../../packages/mdc-button/mixins";
 @import "../../../../packages/mdc-theme/color-palette";
+@import "../mixins";
 
 $custom-button-color: $material-color-red-300;
 $custom-button-custom-shape-radius: 50%;
@@ -29,8 +30,7 @@ $custom-button-custom-outline-width: 4px;
 $custom-button-custom-horizontal-padding: 24px;
 
 .test-cell--button {
-  width: 171px;
-  height: 71px;
+  @include test-cell-size(171, 71);
 }
 
 .custom-button--ink-color {

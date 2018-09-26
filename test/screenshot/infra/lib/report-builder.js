@@ -1011,7 +1011,7 @@ class ReportBuilder {
         const publicUrl = this.analytics_.getUrl({
           url: htmlFile.public_url,
           source: 'cli',
-          type: 'inventory',
+          medium: 'inventory',
         });
         console.log(`  - ${this.cli_.colorizeUrl(publicUrl)} > ${screenshot.user_agent.alias}`);
       }

@@ -23,7 +23,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Card Mixins - MDC Web Screenshot Test</title>
+    <title>Color and Shape Card Mixins - MDC Web Screenshot Test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../../../out/mdc.button.css">
     <link rel="stylesheet" href="../../../out/mdc.card.css">
@@ -42,41 +42,41 @@
     </script>
   </head>
 
-  <body class="test-container mdc-typography">
+  <body class="test-container">
     <main class="test-viewport test-viewport--mobile">
 
-      <div class="mdc-card test-card custom-card--fill-color">
-        <div class="test-card__content">
-          Fill Color
-        </div>
-      </div>
-
-      <div class="mdc-card mdc-card--outlined test-card custom-card--outline">
-        <div class="test-card__content">
-          Outline
-        </div>
-      </div>
-
-      <div class="mdc-card test-card custom-card--shape-radius">
-        <div class="test-card__content">
-          Shape Radius
-        </div>
-      </div>
-
-      <div class="mdc-card mdc-card--outlined test-card custom-card--shape-radius">
-        <div class="test-card__content">
-          Shape Radius
-        </div>
-      </div>
-
-      <div class="mdc-card test-card custom-card--media-aspect-ratio">
-        <a class="mdc-card__primary-action" href="#" onclick="return false">
-          <div class="mdc-card__media custom-card__media">
-            <div class="test-card__media-content">
-              Aspect Ratio (3:2)
+      <div class="test-layout">
+        <div class="test-cell test-cell--card-without-media">
+          <div class="mdc-card test-card custom-card--fill-color">
+            <div class="test-card__content">
+              Fill Color
             </div>
           </div>
-        </a>
+        </div>
+
+        <div class="test-cell test-cell--card-without-media">
+          <div class="mdc-card mdc-card--outlined test-card custom-card--outline">
+            <div class="test-card__content">
+              Outline
+            </div>
+          </div>
+        </div>
+
+        <div class="test-cell test-cell--card-without-media">
+          <div class="mdc-card test-card custom-card--shape-radius">
+            <div class="test-card__content">
+              Shape Radius
+            </div>
+          </div>
+        </div>
+
+        <div class="test-cell test-cell--card-without-media">
+          <div class="mdc-card mdc-card--outlined test-card custom-card--shape-radius">
+            <div class="test-card__content">
+              Shape Radius
+            </div>
+          </div>
+        </div>
       </div>
 
     </main>

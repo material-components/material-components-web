@@ -22,10 +22,10 @@
 
 @import "../../../../packages/mdc-select/mixins";
 @import "../../../../packages/mdc-theme/color-palette";
+@import "../mixins";
 
 .test-cell--select {
-  width: 301px;
-  height: 121px;
+  @include test-cell-size(301, 121);
 }
 
 .custom-select-ink-color {

@@ -18,17 +18,19 @@
   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-  THE SOFTWARE..
--->
+  THE SOFTWARE.
+  -->
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Baseline Elevation - MDC Web Screenshot Test</title>
+    <title>media-aspect-ratio Card Mixin - MDC Web Screenshot Test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../../../out/mdc.elevation.css">
+    <link rel="stylesheet" href="../../../out/mdc.button.css">
+    <link rel="stylesheet" href="../../../out/mdc.card.css">
+    <link rel="stylesheet" href="../../../out/mdc.icon-button.css">
     <link rel="stylesheet" href="../../../out/mdc.typography.css">
     <link rel="stylesheet" href="../../../out/spec/fixture.css">
-    <link rel="stylesheet" href="../../../out/spec/mdc-elevation/fixture.css">
+    <link rel="stylesheet" href="../../../out/spec/mdc-card/fixture.css">
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118996389-2"></script>
@@ -42,20 +44,23 @@
 
   <body class="test-container">
     <main class="test-viewport test-viewport--mobile">
+
       <div class="test-layout">
-        <div class="test-cell test-cell--elevation"><span class="mdc-elevation--z13 test-elevation">13</span></div>
-        <div class="test-cell test-cell--elevation"><span class="mdc-elevation--z14 test-elevation">14</span></div>
-        <div class="test-cell test-cell--elevation"><span class="mdc-elevation--z15 test-elevation">15</span></div>
-        <div class="test-cell test-cell--elevation"><span class="mdc-elevation--z16 test-elevation">16</span></div>
-        <div class="test-cell test-cell--elevation"><span class="mdc-elevation--z17 test-elevation">17</span></div>
-        <div class="test-cell test-cell--elevation"><span class="mdc-elevation--z18 test-elevation">18</span></div>
-        <div class="test-cell test-cell--elevation"><span class="mdc-elevation--z19 test-elevation">19</span></div>
-        <div class="test-cell test-cell--elevation"><span class="mdc-elevation--z20 test-elevation">20</span></div>
-        <div class="test-cell test-cell--elevation"><span class="mdc-elevation--z21 test-elevation">21</span></div>
-        <div class="test-cell test-cell--elevation"><span class="mdc-elevation--z22 test-elevation">22</span></div>
-        <div class="test-cell test-cell--elevation"><span class="mdc-elevation--z23 test-elevation">23</span></div>
-        <div class="test-cell test-cell--elevation"><span class="mdc-elevation--z24 test-elevation">24</span></div>
+        <div class="test-cell test-cell--card-with-media">
+          <div class="mdc-card test-card custom-card--media-aspect-ratio">
+            <a class="mdc-card__primary-action" href="#">
+              <div class="mdc-card__media custom-card__media">
+                <div class="test-card__media-content">
+                  <b>Media</b>: 3:2 <small>(custom)</small><br>
+                  <b>Width</b>: 200px<br>
+                  <b>Height</b>: unset
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
       </div>
+
     </main>
 
     <!-- Automatically provides/replaces `Promise` if missing or broken. -->
@@ -64,6 +69,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fontfaceobserver/2.0.13/fontfaceobserver.standalone.js"></script>
     <script src="../../../out/material-components-web.js"></script>
     <script src="../../../out/spec/fixture.js"></script>
-    <script src="../../../out/spec/mdc-elevation/fixture.js"></script>
+    <script src="../../../out/spec/mdc-card/fixture.js"></script>
   </body>
 </html>
