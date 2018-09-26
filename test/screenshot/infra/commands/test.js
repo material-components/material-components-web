@@ -245,14 +245,12 @@ class TestCommand {
           masterScreenshot.diff_image_result = diffImageResult;
           masterScreenshot.diff_image_file = diffImageResult.diff_image_file;
 
-          if (diffImageResult.has_changed) {
+          if (masterScreenshot.inclusion_type === InclusionType.ADD) {
+            masterScreenshotSets.added_screenshot_list.push(masterScreenshot);
+          } else if (diffImageResult.has_changed) {
             masterScreenshotSets.changed_screenshot_list.push(masterScreenshot);
           } else {
             masterScreenshotSets.unchanged_screenshot_list.push(masterScreenshot);
-          }
-
-          if (masterScreenshot.inclusion_type === InclusionType.ADD) {
-            masterScreenshotSets.added_screenshot_list.push(masterScreenshot);
           }
 
           resolve();
