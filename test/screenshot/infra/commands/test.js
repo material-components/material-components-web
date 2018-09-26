@@ -237,24 +237,26 @@ class TestCommand {
           masterScreenshot.actual_image_file = capturedScreenshot.actual_image_file;
           masterScreenshot.capture_state = capturedScreenshot.capture_state;
 
-          /** @type {!mdc.proto.DiffImageResult} */
-          const diffImageResult = await this.imageDiffer_.compareOneScreenshot({
-            meta: masterReportData.meta,
-            screenshot: masterScreenshot,
-          });
-
-          masterScreenshot.diff_image_result = diffImageResult;
-          masterScreenshot.diff_image_file = diffImageResult.diff_image_file;
-
           if (masterScreenshot.inclusion_type === InclusionType.ADD) {
             masterScreenshotSets.added_screenshot_list.push(masterScreenshot);
-          } else if (diffImageResult.has_changed) {
-            masterScreenshotSets.changed_screenshot_list.push(masterScreenshot);
           } else {
-            masterScreenshotSets.unchanged_screenshot_list.push(masterScreenshot);
-          }
+            /** @type {!mdc.proto.DiffImageResult} */
+            const diffImageResult = await this.imageDiffer_.compareOneScreenshot({
+              meta: masterReportData.meta,
+              screenshot: masterScreenshot,
+            });
 
-          masterScreenshotSets.comparable_screenshot_list.push(masterScreenshot);
+            masterScreenshot.diff_image_result = diffImageResult;
+            masterScreenshot.diff_image_file = diffImageResult.diff_image_file;
+
+            if (diffImageResult.has_changed) {
+              masterScreenshotSets.changed_screenshot_list.push(masterScreenshot);
+            } else {
+              masterScreenshotSets.unchanged_screenshot_list.push(masterScreenshot);
+            }
+
+            masterScreenshotSets.comparable_screenshot_list.push(masterScreenshot);
+          }
 
           resolve();
         });
