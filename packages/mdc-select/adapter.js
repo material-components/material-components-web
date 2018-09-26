@@ -152,6 +152,12 @@ class MDCSelectAdapter {
    * @param {boolean} isDisabled
    */
   setDisabled(isDisabled) {}
+
+  /**
+   * Sets the line ripple transform origin center.
+   * @param {number} normalizedX
+   */
+  setRippleCenter(normalizedX) {}
 }
 
 export default MDCSelectAdapter;

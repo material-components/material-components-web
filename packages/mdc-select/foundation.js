@@ -60,6 +60,7 @@ class MDCSelectFoundation extends MDCFoundation {
       activateBottomLine: () => {},
       deactivateBottomLine: () => {},
       setValue: () => {},
+      getValue: () => {},
       isRtl: () => false,
       hasLabel: () => false,
       floatLabel: (/* value: boolean */) => {},
@@ -69,8 +70,10 @@ class MDCSelectFoundation extends MDCFoundation {
       closeOutline: () => {},
       openMenu: () => {},
       closeMenu: () => {},
+      isMenuOpened: () => {},
       setSelectedIndex: () => {},
       setDisabled: () => {},
+      setRippleCenter: () => {},
     });
   }
 
@@ -83,6 +86,7 @@ class MDCSelectFoundation extends MDCFoundation {
 
   setSelectedIndex(index) {
     this.adapter_.setSelectedIndex(index);
+    this.adapter_.closeMenu();
     this.handleChange();
   }
 
@@ -92,11 +96,12 @@ class MDCSelectFoundation extends MDCFoundation {
   }
 
   getValue() {
-    this.adapter_.getValue();
+    return this.adapter_.getValue();
   }
 
   setDisabled(isDisabled) {
     this.adapter_.setDisabled(isDisabled);
+    this.adapter_.closeMenu();
     this.updateDisabledStyle(isDisabled);
   }
 
@@ -133,7 +138,7 @@ class MDCSelectFoundation extends MDCFoundation {
    */
   handleFocus() {
     if (this.adapter_.isMenuOpened()) return;
-    this.adapter_.addClass('mdc-select--focused');
+    this.adapter_.addClass(cssClasses.FOCUSED);
     this.adapter_.floatLabel(true);
     this.notchOutline(true);
     this.adapter_.addClass('mdc-select--focused');
@@ -146,7 +151,7 @@ class MDCSelectFoundation extends MDCFoundation {
    */
   handleBlur() {
     if (this.adapter_.isMenuOpened()) return;
-    this.adapter_.removeClass('mdc-select--focused');
+    this.adapter_.removeClass(cssClasses.FOCUSED);
     this.handleChange();
     this.adapter_.removeClass('mdc-select--focused');
     this.adapter_.deactivateBottomLine();
@@ -156,7 +161,7 @@ class MDCSelectFoundation extends MDCFoundation {
     if (this.adapter_.isMenuOpened()) return;
     this.adapter_.setRippleCenter(normalizedX);
 
-    if (this.adapter_.hasClass('mdc-select--focused')) {
+    if (this.adapter_.hasClass(cssClasses.FOCUSED)) {
       this.adapter_.openMenu();
     }
   }
@@ -167,7 +172,7 @@ class MDCSelectFoundation extends MDCFoundation {
     const isEnter = event.key === 'Enter' || event.keyCode === 13;
     const isSpace = event.key === 'Space' || event.keyCode === 32;
 
-    if (this.adapter_.hasClass('mdc-select--focused') && (isEnter || isSpace)) {
+    if (this.adapter_.hasClass(cssClasses.FOCUSED) && (isEnter || isSpace)) {
       this.adapter_.openMenu();
       event.preventDefault();
     }
