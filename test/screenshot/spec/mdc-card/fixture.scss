@@ -22,15 +22,24 @@
 
 @import "../../../../packages/mdc-card/mixins";
 @import "../../../../packages/mdc-theme/color-palette";
+@import "../mixins";
 
 $custom-card-color: $material-color-red-300;
+
+.test-cell--card-without-media {
+  @include test-cell-size(341, 111);
+}
+
+.test-cell--card-with-media {
+  @include test-cell-size(341, 281);
+}
 
 .test-card {
   margin: 15px 10px;
 }
 
 .test-card--square {
-  width: 145px;
+  width: 200px;
 }
 
 .test-card__content {
@@ -57,7 +66,7 @@ $custom-card-color: $material-color-red-300;
 }
 
 .custom-card--media-aspect-ratio {
-  width: 175px;
+  width: 200px;
 
   .custom-card__media {
     @include mdc-card-media-aspect-ratio(3, 2);

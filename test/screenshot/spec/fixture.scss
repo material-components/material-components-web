@@ -127,6 +127,10 @@ $test-layout-cell-grid-color: #ddd;
   justify-content: center;
 }
 
+.test-viewport--gridlines {
+  @include test-fixture-grid-bg;
+}
+
 .test-layout {
   display: flex;
   flex-wrap: wrap;

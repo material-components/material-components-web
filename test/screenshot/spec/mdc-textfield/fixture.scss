@@ -22,15 +22,14 @@
 
 @import "../../../../packages/mdc-textfield/mixins";
 @import "../../../../packages/mdc-theme/color-palette";
+@import "../mixins";
 
 .test-cell--textfield {
-  width: 301px;
-  height: 121px;
+  @include test-cell-size(301, 121);
 }
 
 .test-cell--textarea {
-  width: 301px;
-  height: 181px;
+  @include test-cell-size(301, 181);
 }
 
 // Work around MS Edge rendering bug.

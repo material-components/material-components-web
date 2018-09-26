@@ -20,9 +20,16 @@
 // THE SOFTWARE.
 //
 
+@import "./functions";
+
 // MS Edge only
 @mixin test-browser-selector-edge {
   @supports (-ms-ime-align: auto) {
     @content;
   }
+}
+
+@mixin test-cell-size($width, $height: $width) {
+  width: test-cell-size($width);
+  height: test-cell-size($height);
 }
