@@ -37,7 +37,7 @@
         ],
         "custom_config": {
           "max_retries": 6,
-          "fonts_loaded_reflow_delay_ms": 100,
+          "fonts_loaded_reflow_delay_ms": 500,
           "retry_delay_ms": 1000
         }
       },
