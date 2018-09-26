@@ -29,7 +29,7 @@
   "line-max-len-ignore-regex": "<script|<link|<path|^\\s*<!--\\s*https?://|^\\s*https?://|^\\s*href=\"[^\"]+\"",
   "line-no-trailing-whitespace": false,
   "raw-ignore-regex": "<!--\\s*htmllint-disable\\s*-->[^]*?<!--\\s*htmllint-enable\\s*-->|<svg[^>]*>[^]*?</svg>",
-  "tag-bans": ["b"],
+  "tag-bans": [],
   "tag-name-lowercase": true,
   "tag-name-match": true,
   "title-max-len": false,

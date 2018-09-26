@@ -22,14 +22,15 @@
 
 @import "../../../../packages/mdc-chips/mixins";
 @import "../../../../packages/mdc-theme/color-palette";
+@import "../mixins";
 
 $custom-chip-fill-color: $material-color-red-500;
 $custom-chip-ink-color: $material-color-blue-500;
 
 .test-cell--chip {
+  @include test-cell-size(321, 111);
+
   position: relative;
-  width: 321px;
-  height: 111px;
 }
 
 .custom-chip--chip-set-spacing {

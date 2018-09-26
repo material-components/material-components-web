@@ -20,38 +20,17 @@
 // THE SOFTWARE.
 //
 
-@import "../../../../packages/mdc-select/mixins";
-@import "../../../../packages/mdc-theme/color-palette";
-@import "../mixins";
+// Rounds the given unitless number of pixels (e.g., 52) up to the nearest number that ends with 1 (e.g., 61),
+// and returns that number with a px suffix (e.g., 61px).
+// This ensures that the background grid pattern ends on a border.
+@function test-cell-size($px) {
+  $mod: (($px - 1) % 10);
 
-.test-cell--select {
-  @include test-cell-size(301, 121);
-}
+  @if $mod == 0 {
+    @return #{$px}px;
+  }
 
-.custom-select-ink-color {
-  @include mdc-select-ink-color(green);
-}
+  $pxRounded: $px + (10 - $mod);
 
-.custom-select-container-fill-color {
-  @include mdc-select-container-fill-color(green);
-}
-
-.custom-select-label-color {
-  @include mdc-select-label-color(green);
-}
-
-.custom-select-bottom-line-color {
-  @include mdc-select-bottom-line-color(green);
-}
-
-.custom-select-shape-radius {
-  @include mdc-select-shape-radius(10px);
-}
-
-.custom-select-outline-color {
-  @include mdc-select-outline-color(green);
-}
-
-.custom-select-outline-shape-radius {
-  @include mdc-select-outline-shape-radius(10px);
+  @return #{$pxRounded}px;
 }
