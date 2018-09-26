@@ -982,16 +982,17 @@ class SeleniumApi {
    * @private
    */
   isBusinessHours_() {
-    const MORNING_UTC_HOURS = 13; // 1pm UTC === 9am EST
-    const EVENING_UTC_HOURS = 1; // 1am UTC === 6pm PST
-    const SATURDAY = 7;
+    const MORNING_HOUR = 6; // 6am PT = 9am ET
+    const EVENING_HOUR = 18; // 6pm PT = 9pm ET
+    const SATURDAY = 6;
     const SUNDAY = 0;
 
+    // Travis CI runs in the Pacific Time Zone (America/Los_Angeles). See scripts/travis-env-vars.sh.
     const nowDate = new Date();
-    const nowUtcHours = nowDate.getUTCHours();
+    const nowHour = nowDate.getHours();
 
     const isWeekDay = nowDate.getDay() > SUNDAY || nowDate.getDay() < SATURDAY;
-    const is9to5 = nowUtcHours > MORNING_UTC_HOURS || nowUtcHours < EVENING_UTC_HOURS;
+    const is9to5 = nowHour > MORNING_HOUR || nowHour < EVENING_HOUR;
 
     return isWeekDay && is9to5;
   }
