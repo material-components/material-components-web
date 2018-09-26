@@ -6,10 +6,10 @@
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions://
+// furnished to do so, subject to the following conditions:
 //
 // The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.//
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -22,14 +22,15 @@
 
 @import "../../../../packages/mdc-chips/mixins";
 @import "../../../../packages/mdc-theme/color-palette";
+@import "../mixins";
 
 $custom-chip-fill-color: $material-color-red-500;
 $custom-chip-ink-color: $material-color-blue-500;
 
 .test-cell--chip {
+  @include test-cell-size(321, 111);
+
   position: relative;
-  width: 321px;
-  height: 111px;
 }
 
 .custom-chip--chip-set-spacing {

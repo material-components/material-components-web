@@ -392,14 +392,19 @@ class SeleniumApi {
         return Math.min(cliParallels, available);
       }
 
-      // If nobody else is running any tests, run half the number of concurrent tests allowed by our CBT account.
-      // This gives us _some_ parallelism while still allowing other users to run their tests.
-      if (active === 0) {
-        return Math.floor(max / 2);
+      if (this.isBusinessHours_()) {
+        // Nobody else is running tests.
+        if (active === 0) {
+          // Run half the number of concurrent tests allowed by our CBT account.
+          // This gives us _some_ parallelism while ensuring that other users can run their tests too.
+          return Math.floor(max / 2);
+        }
+
+        // Somebody else is running tests, so only run one test at a time.
+        return 1;
       }
 
-      // If someone else is already running tests, only run one test at a time.
-      return 1;
+      return available;
     }
   }
 
@@ -973,6 +978,26 @@ class SeleniumApi {
   }
 
   /**
+   * @return {boolean}
+   * @private
+   */
+  isBusinessHours_() {
+    const MORNING_HOUR = 6; // 6am PT = 9am ET
+    const EVENING_HOUR = 18; // 6pm PT = 9pm ET
+    const SATURDAY = 6;
+    const SUNDAY = 0;
+
+    // Travis CI runs in the Pacific Time Zone (America/Los_Angeles). See scripts/travis-env-vars.sh.
+    const nowDate = new Date();
+    const nowHour = nowDate.getHours();
+
+    const isWeekDay = nowDate.getDay() > SUNDAY || nowDate.getDay() < SATURDAY;
+    const is9to5 = nowHour > MORNING_HOUR || nowHour < EVENING_HOUR;
+
+    return isWeekDay && is9to5;
+  }
+
+  /**
    * @param {!CliStatus} status
    * @param {!mdc.proto.UserAgent} userAgent
    * @private
@@ -1033,12 +1058,6 @@ class SeleniumApi {
     const statusName = status.name.toUpperCase();
     const paddingSpaces = ''.padStart(maxStatusWidth - statusName.length, ' ');
 
-    console.log(eraseCurrentLine + paddingSpaces + status.color(statusName) + ':', ...args);
-
-    if (this.isKillRequested_) {
-      return;
-    }
-
     const numDone = this.numCompleted_;
     const strDone = numDone.toLocaleString();
 
@@ -1051,14 +1070,6 @@ class SeleniumApi {
     const numPercent = numTotal > 0 ? (100 * numDone / numTotal) : 0;
     const strPercent = numPercent.toFixed(1);
 
-    if (process.env.TRAVIS === 'true') {
-      this.gitHubApi_.setPullRequestStatusManual({
-        state: GitHubApi.PullRequestState.PENDING,
-        description: `${strDone} of ${strTotal} (${strPercent}%) - ${strChanged} diff${numChanged === 1 ? '' : 's'}`,
-      });
-      return;
-    }
-
     const pending = this.numPending_;
     const completed = numDone;
     const total = pending + completed;
@@ -1068,6 +1079,22 @@ class SeleniumApi {
     const colorCompleted = CliColor.bold.white(completed.toLocaleString());
     const colorTotal = CliColor.bold.white(total.toLocaleString());
     const colorPercent = CliColor.bold.white(`${percent}%`);
+
+    const isTravis = process.env.TRAVIS === 'true';
+    const colorProgressTravis = isTravis ? ` [${colorCompleted} of ${colorTotal} = ${colorPercent} complete]` : '';
+    console.log(eraseCurrentLine + paddingSpaces + status.color(statusName) + colorProgressTravis + ':', ...args);
+
+    if (this.isKillRequested_) {
+      return;
+    }
+
+    if (isTravis) {
+      this.gitHubApi_.setPullRequestStatusManual({
+        state: GitHubApi.PullRequestState.PENDING,
+        description: `${strDone} of ${strTotal} (${strPercent}%) - ${strChanged} diff${numChanged === 1 ? '' : 's'}`,
+      });
+      return;
+    }
 
     process.stdout.write(`${colorCaptured}: ${colorCompleted} of ${colorTotal} screenshots (${colorPercent} complete)`);
   }
