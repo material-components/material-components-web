@@ -392,19 +392,19 @@ class SeleniumApi {
         return Math.min(cliParallels, available);
       }
 
-      // Nobody else is running tests
-      if (active === 0) {
-        if (this.isBusinessHours_()) {
+      if (this.isBusinessHours_()) {
+        // Nobody else is running tests.
+        if (active === 0) {
           // Run half the number of concurrent tests allowed by our CBT account.
-          // This gives us _some_ parallelism while allowing other users to run their tests.
+          // This gives us _some_ parallelism while ensuring that other users can run their tests too.
           return Math.floor(max / 2);
-        } else {
-          return available;
         }
+
+        // Somebody else is running tests, so only run one test at a time.
+        return 1;
       }
 
-      // If someone else is already running tests, only run one test at a time.
-      return 1;
+      return available;
     }
   }
 
