@@ -982,8 +982,8 @@ class SeleniumApi {
    * @private
    */
   isBusinessHours_() {
-    const MORNING_HOUR = 9; // 9am
-    const EVENING_HOUR = 18; // 6pm
+    const MORNING_HOUR = 6; // 6am PT = 9am ET
+    const EVENING_HOUR = 18; // 6pm PT = 9pm ET
     const SATURDAY = 6;
     const SUNDAY = 0;
 
