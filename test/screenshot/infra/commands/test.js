@@ -294,7 +294,7 @@ class TestCommand {
     const masterReportPageUrl = this.analytics_.getUrl({
       url: masterReportData.meta.report_html_file.public_url,
       source: 'github',
-      type: 'pr_comment',
+      medium: 'pr_comment',
     });
     const masterScreenshots = masterReportData.screenshots;
     const masterGitRev = masterReportData.meta.golden_diff_base.git_revision;
@@ -360,7 +360,7 @@ ${listMarkdown}
       const htmlFileUrl = this.analytics_.getUrl({
         url: (firstScreenshot.actual_html_file || firstScreenshot.expected_html_file).public_url,
         source: 'github',
-        type: 'pr_comment',
+        medium: 'pr_comment',
       });
 
       return `
@@ -396,7 +396,7 @@ ${listItemMarkdown}
     const linkUrl = this.analytics_.getUrl({
       url: imgFile.public_url,
       source: 'github',
-      type: 'pr_comment',
+      medium: 'pr_comment',
     });
 
     const untrimmed = `
@@ -487,7 +487,7 @@ ${CliColor.bold.red('Skipping screenshot tests.')}
     const reportPageUrl = this.analytics_.getUrl({
       url: reportData.meta.report_html_file.public_url,
       source: 'cli',
-      type: 'test_results',
+      medium: 'test_results',
     });
 
     const headingPlain = 'Screenshot Test Results';
