@@ -26,14 +26,14 @@ const cssClasses = {
   DISABLED: 'mdc-select--disabled',
   ROOT: 'mdc-select',
   OUTLINED: 'mdc-select--outlined',
-  SELECTED: 'mdc-list-item--selected',
   FOCUSED: 'mdc-select--focused',
+  SELECTED_ITEM_CLASS: 'mdc-list-item--selected',
 };
 
 /** @enum {string} */
 const strings = {
   CHANGE_EVENT: 'MDCSelect:change',
-  SELECTED_ITEM_SELECTOR: `.${cssClasses.SELECTED}`,
+  SELECTED_ITEM_SELECTOR: `.${cssClasses.SELECTED_ITEM_CLASS}`,
   MENU_SELECTOR: '.mdc-select__menu',
   LINE_RIPPLE_SELECTOR: '.mdc-line-ripple',
   LABEL_SELECTOR: '.mdc-floating-label',
