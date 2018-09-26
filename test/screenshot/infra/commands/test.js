@@ -98,15 +98,15 @@ class TestCommand {
   }
 
   /**
-   * @param {!mdc.proto.DiffBase} goldenDiffBase
+   * @param {!mdc.proto.DiffBase} snapshotDiffBase
    * @return {!Promise<!mdc.proto.ReportData>}
    * @private
    */
-  async diffAgainstLocal_(goldenDiffBase) {
+  async diffAgainstLocal_(snapshotDiffBase) {
     const controller = new Controller();
 
     /** @type {!mdc.proto.ReportData} */
-    const reportData = await controller.initForCapture(goldenDiffBase);
+    const reportData = await controller.initForCapture(snapshotDiffBase);
 
     try {
       await this.gitHubApi_.setPullRequestStatusAuto(reportData);
@@ -133,17 +133,17 @@ class TestCommand {
   /**
    * TODO(acdvorak): Rename this method
    * @param {!mdc.proto.ReportData} localReportData
-   * @param {!mdc.proto.DiffBase} goldenDiffBase
+   * @param {!mdc.proto.DiffBase} masterDiffBase
    * @param {!Array<!mdc.proto.Screenshot>} capturedScreenshots
    * @param {string} startTimeIsoUtc
    * @return {!Promise<!mdc.proto.ReportData>}
    * @private
    */
-  async diffAgainstMasterImpl_({localReportData, goldenDiffBase, capturedScreenshots, startTimeIsoUtc}) {
+  async diffAgainstMasterImpl_({localReportData, masterDiffBase, capturedScreenshots, startTimeIsoUtc}) {
     const controller = new Controller();
 
     /** @type {!mdc.proto.ReportData} */
-    const masterReportData = await controller.initForCapture(goldenDiffBase);
+    const masterReportData = await controller.initForCapture(masterDiffBase);
 
     const localReportDataWithMasterUploadDir = ReportData.create(localReportData);
     localReportDataWithMasterUploadDir.meta.remote_upload_base_dir = masterReportData.meta.remote_upload_base_dir;
@@ -191,7 +191,7 @@ class TestCommand {
     /** @type {!mdc.proto.ReportData} */
     const masterReportData = await this.diffAgainstMasterImpl_({
       localReportData,
-      goldenDiffBase: masterDiffBase,
+      masterDiffBase,
       capturedScreenshots,
       startTimeIsoUtc: localReportData.meta.start_time_iso_utc,
     });
@@ -220,7 +220,6 @@ class TestCommand {
     const masterScreenshotList = masterScreenshotSets.actual_screenshot_list;
 
     masterScreenshotSets.added_screenshot_list.length = 0;
-    masterScreenshotSets.removed_screenshot_list.length = 0;
     masterScreenshotSets.changed_screenshot_list.length = 0;
     masterScreenshotSets.unchanged_screenshot_list.length = 0;
     masterScreenshotSets.comparable_screenshot_list.length = 0;
@@ -233,15 +232,14 @@ class TestCommand {
         }
 
         comparisonFunctions.push(async (resolve) => {
+          masterScreenshot.user_agent = capturedScreenshot.user_agent;
           masterScreenshot.actual_html_file = capturedScreenshot.actual_html_file;
           masterScreenshot.actual_image_file = capturedScreenshot.actual_image_file;
           masterScreenshot.capture_state = capturedScreenshot.capture_state;
 
           if (masterScreenshot.inclusion_type === InclusionType.ADD) {
             masterScreenshotSets.added_screenshot_list.push(masterScreenshot);
-          } else if (masterScreenshot.inclusion_type === InclusionType.REMOVE) {
-            masterScreenshotSets.removed_screenshot_list.push(masterScreenshot);
-          } else if (masterScreenshot.inclusion_type === InclusionType.COMPARE) {
+          } else {
             /** @type {!mdc.proto.DiffImageResult} */
             const diffImageResult = await this.imageDiffer_.compareOneScreenshot({
               meta: masterReportData.meta,
@@ -256,6 +254,7 @@ class TestCommand {
             } else {
               masterScreenshotSets.unchanged_screenshot_list.push(masterScreenshot);
             }
+
             masterScreenshotSets.comparable_screenshot_list.push(masterScreenshot);
           }
 
