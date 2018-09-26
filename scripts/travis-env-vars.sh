@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# https://stackoverflow.com/a/27052708/467582
+export TZ=America/Los_Angeles
+
 CHANGED_FILE_PATHS=$(git diff --name-only "$TRAVIS_COMMIT_RANGE")
 
 if [[ -n "$CHANGED_FILE_PATHS" ]]; then
@@ -18,7 +21,9 @@ function log_warning() {
 
 function print_travis_env_vars() {
   echo
-  env | grep TRAVIS
+  date
+  echo
+  env | grep -E -e 'TRAVIS' -e '^(LANG|TERM|TZ)=' | sort
   echo
 }
 
