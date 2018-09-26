@@ -222,6 +222,7 @@ class TestCommand {
     masterScreenshotSets.added_screenshot_list.length = 0;
     masterScreenshotSets.changed_screenshot_list.length = 0;
     masterScreenshotSets.unchanged_screenshot_list.length = 0;
+    masterScreenshotSets.comparable_screenshot_list.length = 0;
 
     for (const masterScreenshot of masterScreenshotList) {
       for (const capturedScreenshot of capturedScreenshots) {
@@ -252,6 +253,8 @@ class TestCommand {
           } else {
             masterScreenshotSets.unchanged_screenshot_list.push(masterScreenshot);
           }
+
+          masterScreenshotSets.comparable_screenshot_list.push(masterScreenshot);
 
           resolve();
         });
