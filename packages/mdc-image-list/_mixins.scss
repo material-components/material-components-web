@@ -18,6 +18,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+@import "@material/shape/mixins";
+@import "@material/shape/functions";
 @import "./variables";
 
 @mixin mdc-image-list-aspect($width-height-ratio) {
@@ -26,13 +28,17 @@
   }
 }
 
-@mixin mdc-image-list-corner-radius($radius) {
+@mixin mdc-image-list-shape-radius($radius, $rtl-reflexive: false) {
   .mdc-image-list__image {
-    border-radius: $radius;
+    @include mdc-shape-radius($radius, $rtl-reflexive);
   }
 
-  .mdc-image-list__supporting {
-    border-radius: 0 0 $radius $radius;
+  $selector: if(&, "&.mdc-image-list--with-text-protection", ".mdc-image-list--with-text-protection");
+
+  #{$selector} .mdc-image-list__supporting {
+    $masked-radius: mdc-shape-mask-radius($radius, 0 0 1 1);
+
+    @include mdc-shape-radius($masked-radius, $rtl-reflexive);
   }
 }
 

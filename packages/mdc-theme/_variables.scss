@@ -41,6 +41,9 @@ $mdc-theme-background: #fff !default; // White
 $mdc-theme-surface: #fff !default;
 $mdc-theme-on-surface: if(mdc-theme-contrast-tone($mdc-theme-surface) == "dark", #000, #fff) !default;
 
+$mdc-theme-error: #b00020 !default;
+$mdc-theme-on-error: #fff !default;
+
 //
 // Text colors according to light vs dark and text type.
 //
@@ -87,9 +90,12 @@ $mdc-theme-property-values: (
   background: $mdc-theme-background,
   // Surface
   surface: $mdc-theme-surface,
+  // Error
+  error: $mdc-theme-error,
   on-primary: $mdc-theme-on-primary,
   on-secondary: $mdc-theme-on-secondary,
   on-surface: $mdc-theme-on-surface,
+  on-error: $mdc-theme-on-error,
   // Text-primary on "background" background
   text-primary-on-background: mdc-theme-ink-color-for-fill_(primary, $mdc-theme-background),
   text-secondary-on-background: mdc-theme-ink-color-for-fill_(secondary, $mdc-theme-background),

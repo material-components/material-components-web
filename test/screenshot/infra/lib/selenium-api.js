@@ -72,7 +72,7 @@ const CliStatuses = {
   RETRY: {name: 'Retry', color: CliColor.magenta},
   CAPTURED: {name: 'Captured', color: CliColor.bold.grey},
   FINISHED: {name: 'Finished', color: CliColor.bold.green},
-  FAILED: {name: 'Failed', color: CliColor.bold.red},
+  ERROR: {name: 'Error', color: CliColor.bold.red},
   QUITTING: {name: 'Quitting', color: CliColor.white},
 };
 
@@ -305,7 +305,7 @@ class SeleniumApi {
       this.logSession_(CliStatuses.FINISHED, userAgent);
     } catch (err) {
       runtimeError = new VError(err, stackTrace);
-      this.logSession_(CliStatuses.FAILED, userAgent);
+      this.logSession_(CliStatuses.ERROR, userAgent);
     } finally {
       this.numSessionsEnded_++;
       this.logSession_(CliStatuses.QUITTING, userAgent);
@@ -392,14 +392,19 @@ class SeleniumApi {
         return Math.min(cliParallels, available);
       }
 
-      // If nobody else is running any tests, run half the number of concurrent tests allowed by our CBT account.
-      // This gives us _some_ parallelism while still allowing other users to run their tests.
-      if (active === 0) {
-        return Math.ceil(max / 2);
+      if (this.isBusinessHours_()) {
+        // Nobody else is running tests.
+        if (active === 0) {
+          // Run half the number of concurrent tests allowed by our CBT account.
+          // This gives us _some_ parallelism while ensuring that other users can run their tests too.
+          return Math.floor(max / 2);
+        }
+
+        // Somebody else is running tests, so only run one test at a time.
+        return 1;
       }
 
-      // If someone else is already running tests, only run one test at a time.
-      return 1;
+      return available;
     }
   }
 
@@ -622,23 +627,18 @@ class SeleniumApi {
       for (const screenshot of screenshotQueue) {
         screenshot.capture_state = CaptureState.RUNNING;
 
-        /** @type {!mdc.proto.DiffImageResult} */
-        const diffImageResult = await this.takeScreenshotWithRetries_({driver, screenshot, meta});
-
         if (this.isKillRequested_ || this.isKilled_) {
           return null;
         }
 
-        screenshot.capture_state = CaptureState.DIFFED;
-        screenshot.diff_image_result = diffImageResult;
-        screenshot.diff_image_file = diffImageResult.diff_image_file;
+        await this.takeScreenshotWithRetries_({driver, screenshot, meta});
 
         this.numPending_--;
         this.numCompleted_++;
 
         const message = this.createStatusMessage_(screenshot);
 
-        if (diffImageResult.has_changed) {
+        if (screenshot.diff_image_result.has_changed) {
           changedScreenshots.push(screenshot);
           this.numChanged_++;
           this.logStatus_(CliStatuses.FAIL, message);
@@ -695,58 +695,44 @@ class SeleniumApi {
    * @param {!IWebDriver} driver
    * @param {!mdc.proto.Screenshot} screenshot
    * @param {!mdc.proto.ReportMeta} meta
-   * @return {!Promise<?mdc.proto.DiffImageResult>}
+   * @return {!Promise<void>}
    * @private
    */
   async takeScreenshotWithRetries_({driver, screenshot, meta}) {
-    /** @type {?mdc.proto.DiffImageResult} */
-    let diffImageResult = null;
-    let changedPixelCount = 0;
-    let changedPixelFraction = 0;
-
     const maxRetries = screenshot.flake_config.max_retries;
     const maxPixelFraction = screenshot.flake_config.max_changed_pixel_fraction_to_retry;
-    const userAgent = screenshot.user_agent;
+
+    const getChangedPixelFraction = () => {
+      return screenshot.diff_image_result ? screenshot.diff_image_result.changed_pixel_fraction : 0;
+    };
 
     while (true) {
+      if (this.isKillRequested_ || this.isKilled_) {
+        return;
+      }
+
       const isRetryCountExceeded = screenshot.retry_count > maxRetries;
-      const isPixelFractionExceeded = changedPixelFraction > maxPixelFraction;
+      const isPixelFractionExceeded = getChangedPixelFraction() > maxPixelFraction;
       if (isRetryCountExceeded || isPixelFractionExceeded) {
         break;
       }
 
-      if (this.isKillRequested_ || this.isKilled_) {
-        return null;
-      }
-
       if (screenshot.retry_count > 0) {
-        // TODO(acdvorak): Print this info when a test fails.
-        const {width, height} = diffImageResult.diff_image_dimensions;
-        const actualHtmlFileUrl = this.analytics_.getUrl({
-          url: screenshot.actual_html_file.public_url,
-          source: 'cli',
-          type: 'progress',
-        });
-        const whichMsg = `${actualHtmlFileUrl} > ${userAgent.alias}`;
-        const countMsg = `attempt ${screenshot.retry_count} of ${maxRetries}`;
-        const pixelMsg = `${changedPixelCount.toLocaleString()} pixels differed`;
-        const deltaMsg = `${diffImageResult.changed_pixel_percentage}% of ${width}x${height}`;
-        this.logStatus_(CliStatuses.RETRY, `${whichMsg} (${countMsg}). ${pixelMsg} (${deltaMsg})`);
+        this.logRetry_(screenshot);
       }
 
       screenshot.actual_image_file = await this.takeScreenshotWithoutRetries_({meta, screenshot, driver});
-      diffImageResult = await this.imageDiffer_.compareOneScreenshot({meta, screenshot});
+      screenshot.diff_image_result = await this.imageDiffer_.compareOneScreenshot({meta, screenshot});
+      screenshot.diff_image_file = screenshot.diff_image_result.diff_image_file;
 
-      if (!diffImageResult.has_changed) {
+      if (!screenshot.diff_image_result.has_changed) {
         break;
       }
 
-      changedPixelCount = diffImageResult.changed_pixel_count;
-      changedPixelFraction = diffImageResult.changed_pixel_fraction;
       screenshot.retry_count++;
     }
 
-    return diffImageResult;
+    screenshot.capture_state = CaptureState.DIFFED;
   }
 
   /**
@@ -788,20 +774,21 @@ class SeleniumApi {
     const urlWithQsParams = this.analytics_.getUrl({
       url,
       source: 'cbt',
-      type: 'selenium',
+      medium: 'selenium',
       extraParams: {
         font_face_observer_timeout_ms: flakeConfig.font_face_observer_timeout_ms,
         fonts_loaded_reflow_delay_ms: flakeConfig.fonts_loaded_reflow_delay_ms,
       },
     });
 
-    this.logStatus_(CliStatuses.GET, `${this.cli_.colorizeUrl(urlWithQsParams)} > ${userAgent.alias}...`);
+    this.logStatus_(CliStatuses.GET, `${this.createUrlAliasMessage_(urlWithQsParams, userAgent)}...`);
 
     const isOnline = this.cli_.isOnline();
     const fontLoadTimeoutMs = isOnline ? flakeConfig.font_face_observer_timeout_ms : 500;
 
     await driver.get(urlWithQsParams);
-    await driver.wait(until.elementLocated(By.css('[data-fonts-loaded]')), fontLoadTimeoutMs).catch(() => 0);
+    const domReadyCssSelector = '[data-fonts-loaded][data-animations-settled][data-dom-ready]';
+    await driver.wait(until.elementLocated(By.css(domReadyCssSelector)), fontLoadTimeoutMs).catch(() => {});
 
     const delayMs = flakeConfig.retry_delay_ms;
     if (delayMs > 0) {
@@ -954,9 +941,8 @@ class SeleniumApi {
     const actualHtmlFileUrlPlain = this.analytics_.getUrl({
       url: screenshot.actual_html_file.public_url,
       source: 'cli',
-      type: 'progress',
+      medium: 'progress',
     });
-    const actualHtmlFileUrlColor = this.cli_.colorizeUrl(actualHtmlFileUrlPlain);
 
     let cropColor = '';
     if (screenshot.crop_result && screenshot.crop_result.uncropped_height > 0) {
@@ -966,12 +952,48 @@ class SeleniumApi {
         uncropped_height: uncroppedHeight,
         uncropped_width: uncroppedWidth,
       } = screenshot.crop_result;
-      cropColor = CliColor.gray(
-        ` (cropped from ${uncroppedWidth}x${uncroppedHeight} to ${croppedWidth}x${croppedHeight})`
-      );
+
+      const from = CliColor.bold(`${uncroppedWidth}x${uncroppedHeight}`);
+      const to = CliColor.bold(`${croppedWidth}x${croppedHeight}`);
+
+      if (croppedHeight === uncroppedHeight && croppedWidth === uncroppedWidth) {
+        cropColor = ` (${from}, not cropped)`;
+      } else {
+        cropColor = ` (cropped from ${from} to ${to})`;
+      }
     }
 
-    return `${actualHtmlFileUrlColor} > ${screenshot.user_agent.alias}${cropColor}`;
+    return this.createUrlAliasMessage_(actualHtmlFileUrlPlain, screenshot.user_agent) + cropColor;
+  }
+
+  /**
+   * @param {string} url
+   * @param {!mdc.proto.UserAgent} userAgent
+   * @return {string}
+   * @private
+   */
+  createUrlAliasMessage_(url, userAgent) {
+    const userAgentColor = CliColor.bold.italic;
+    return `${this.cli_.colorizeUrl(url)} > ${userAgentColor(userAgent.alias)}`;
+  }
+
+  /**
+   * @return {boolean}
+   * @private
+   */
+  isBusinessHours_() {
+    const MORNING_UTC_HOURS = 13; // 1pm UTC === 9am EST
+    const EVENING_UTC_HOURS = 1; // 1am UTC === 6pm PST
+    const SATURDAY = 7;
+    const SUNDAY = 0;
+
+    const nowDate = new Date();
+    const nowUtcHours = nowDate.getUTCHours();
+
+    const isWeekDay = nowDate.getDay() > SUNDAY || nowDate.getDay() < SATURDAY;
+    const is9to5 = nowUtcHours > MORNING_UTC_HOURS || nowUtcHours < EVENING_UTC_HOURS;
+
+    return isWeekDay && is9to5;
   }
 
   /**
@@ -987,6 +1009,34 @@ class SeleniumApi {
     const publicCbtUrl = CliColor.yellow.underline(userAgent.selenium_result_url);
 
     this.logStatus_(status, `${browser} on ${os}! - video: ${publicCbtUrl} (Selenium session ID: ${sessionId})`);
+  }
+
+  /**
+   * @param {!mdc.proto.Screenshot} screenshot
+   * @private
+   */
+  logRetry_(screenshot) {
+    const diffImageResult = screenshot.diff_image_result;
+    const maxRetries = screenshot.flake_config.max_retries;
+    const changedPixelCount = diffImageResult.changed_pixel_count;
+    const userAgent = screenshot.user_agent;
+    const {width, height} = diffImageResult.diff_image_dimensions;
+
+    const actualHtmlFileUrl = this.analytics_.getUrl({
+      url: screenshot.actual_html_file.public_url,
+      source: 'cli',
+      medium: 'progress',
+    });
+
+    const bold = CliColor.bold;
+    const magenta = CliColor.bold.magenta;
+
+    const whichMsg = this.createUrlAliasMessage_(actualHtmlFileUrl, userAgent);
+    const countMsg = `attempt ${magenta(screenshot.retry_count)} of ${magenta(maxRetries)}`;
+    const pixelMsg = `${bold(changedPixelCount.toLocaleString())} pixels differed`;
+    const deltaMsg = `${bold(`${diffImageResult.changed_pixel_percentage}%`)} of ${bold(`${width}x${height}`)}`;
+
+    this.logStatus_(CliStatuses.RETRY, `${whichMsg} (${countMsg}). ${pixelMsg} (${deltaMsg})`);
   }
 
   /**
@@ -1007,12 +1057,6 @@ class SeleniumApi {
     const statusName = status.name.toUpperCase();
     const paddingSpaces = ''.padStart(maxStatusWidth - statusName.length, ' ');
 
-    console.log(eraseCurrentLine + paddingSpaces + status.color(statusName) + ':', ...args);
-
-    if (this.isKillRequested_) {
-      return;
-    }
-
     const numDone = this.numCompleted_;
     const strDone = numDone.toLocaleString();
 
@@ -1025,14 +1069,6 @@ class SeleniumApi {
     const numPercent = numTotal > 0 ? (100 * numDone / numTotal) : 0;
     const strPercent = numPercent.toFixed(1);
 
-    if (process.env.TRAVIS === 'true') {
-      this.gitHubApi_.setPullRequestStatusManual({
-        state: GitHubApi.PullRequestState.PENDING,
-        description: `${strDone} of ${strTotal} (${strPercent}%) - ${strChanged} diff${numChanged === 1 ? '' : 's'}`,
-      });
-      return;
-    }
-
     const pending = this.numPending_;
     const completed = numDone;
     const total = pending + completed;
@@ -1042,6 +1078,22 @@ class SeleniumApi {
     const colorCompleted = CliColor.bold.white(completed.toLocaleString());
     const colorTotal = CliColor.bold.white(total.toLocaleString());
     const colorPercent = CliColor.bold.white(`${percent}%`);
+
+    const isTravis = process.env.TRAVIS === 'true';
+    const colorProgressTravis = isTravis ? ` [${colorCompleted} of ${colorTotal} = ${colorPercent} complete]` : '';
+    console.log(eraseCurrentLine + paddingSpaces + status.color(statusName) + colorProgressTravis + ':', ...args);
+
+    if (this.isKillRequested_) {
+      return;
+    }
+
+    if (isTravis) {
+      this.gitHubApi_.setPullRequestStatusManual({
+        state: GitHubApi.PullRequestState.PENDING,
+        description: `${strDone} of ${strTotal} (${strPercent}%) - ${strChanged} diff${numChanged === 1 ? '' : 's'}`,
+      });
+      return;
+    }
 
     process.stdout.write(`${colorCaptured}: ${colorCompleted} of ${colorTotal} screenshots (${colorPercent} complete)`);
   }

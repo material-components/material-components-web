@@ -22,12 +22,32 @@
 
 @import "../../../../packages/mdc-radio/mixins";
 @import "../../../../packages/mdc-theme/color-palette";
+@import "../mixins";
 
 $custom-radio-color: $material-color-red-300;
 
 .test-cell--radio {
-  width: 71px;
-  height: 71px;
+  @include test-cell-size(71, 91);
+
+  position: relative;
+}
+
+.test-radio-label {
+  display: block;
+  position: absolute;
+  bottom: 11px;
+  left: 11px;
+  width: 39px;
+  height: 19px;
+  background: rgba($custom-radio-color, .4);
+  text-align: center;
+  cursor: pointer;
+}
+
+// stylelint-disable-next-line selector-class-pattern
+.mdc-radio--disabled + .test-radio-label {
+  background: rgba(0, 0, 0, .1);
+  cursor: not-allowed;
 }
 
 .custom-radio--unchecked-stroke-color {

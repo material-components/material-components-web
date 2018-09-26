@@ -24,11 +24,13 @@
 
 $mdc-select-arrow-padding: 26px;
 $mdc-select-label-padding: 16px;
-$mdc-select-border-radius: 4px;
+$mdc-select-height: 56px;
 
 $mdc-select-ink-color: rgba(mdc-theme-prop-value(on-surface), .87);
+$mdc-select-dropdown-color: mdc-theme-prop-value(on-surface);
 $mdc-select-disabled-ink-color: rgba(mdc-theme-prop-value(on-surface), .37);
-$mdc-select-disabled-arrow-color: mdc-theme-prop-value(on-surface);
+$mdc-select-dropdown-opacity: .54;
+$mdc-select-disabled-dropdown-opacity: .37;
 
 $mdc-select-label-color: rgba(mdc-theme-prop-value(on-surface), .6);
 $mdc-select-focused-label-color: rgba(mdc-theme-prop-value(primary), .87);
@@ -46,5 +48,6 @@ $mdc-select-outlined-idle-border: rgba(mdc-theme-prop-value(on-surface), .24);
 $mdc-select-outlined-disabled-border: rgba(mdc-theme-prop-value(on-surface), .16);
 $mdc-select-outlined-hover-border: rgba(mdc-theme-prop-value(on-surface), .87);
 
+$mdc-select-label-position-y: 40%;
 $mdc-select-outlined-label-position-y: 130%;
 $mdc-select-outlined-dense-label-position-y: 110%;

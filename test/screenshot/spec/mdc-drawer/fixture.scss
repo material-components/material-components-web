@@ -23,6 +23,7 @@
 @import "../../../../packages/mdc-drawer/mixins";
 @import "../../../../packages/mdc-drawer/variables";
 @import "../../../../packages/mdc-typography/mdc-typography";
+@import "../../../../packages/mdc-typography/mixins";
 @import "../../../../packages/mdc-top-app-bar/mdc-top-app-bar";
 @import "../../../../packages/mdc-list/mixins";
 @import "../../../../packages/mdc-theme/color-palette";
@@ -32,6 +33,8 @@ $custom-drawer-color: $material-color-orange-900;
 .test-viewport--drawer {
   display: flex;
   flex-direction: row;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .test-drawer-column {
@@ -41,13 +44,16 @@ $custom-drawer-color: $material-color-orange-900;
 
 .test-drawer-app-content {
   flex: auto;
-  height: 100vh;
-  overflow: auto;
+}
+
+.test-drawer-top-app-bar {
+  position: absolute;
 }
 
 .test-drawer-main-content {
   display: block; // Needed for IE 11
-  height: calc(100% - 64px);
+  box-sizing: border-box;
+  height: 100%;
   padding-right: 16px;
   padding-left: 16px;
   overflow: auto;
@@ -59,4 +65,8 @@ $custom-drawer-color: $material-color-orange-900;
 
 .custom-drawer--fill-color-accessible {
   @include mdc-drawer-fill-color-accessible(darkcyan);
+}
+
+.custom-drawer--width {
+  @include mdc-drawer-width(400px);
 }

@@ -218,6 +218,17 @@ test('adapter#notifyInteraction emits ' + MDCChipFoundation.strings.INTERACTION_
   td.verify(handler(td.matchers.anything()));
 });
 
+test('adapter#notifySelection emits ' + MDCChipFoundation.strings.SELECTION_EVENT, () => {
+  const {component} = setupTest();
+  const handler = td.func('selection handler');
+
+  component.listen(
+    MDCChipFoundation.strings.SELECTION_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifySelection();
+
+  td.verify(handler(td.matchers.anything()));
+});
+
 test('adapter#notifyTrailingIconInteraction emits ' +
   MDCChipFoundation.strings.TRAILING_ICON_INTERACTION_EVENT, () => {
   const {component} = setupTest();

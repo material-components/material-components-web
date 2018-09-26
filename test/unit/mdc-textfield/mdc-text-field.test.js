@@ -36,7 +36,7 @@ import {MDCTextField, MDCTextFieldFoundation, MDCTextFieldHelperText,
 const {cssClasses} = MDCTextFieldFoundation;
 
 const getFixture = () => bel`
-  <div class="mdc-text-field">
+  <div class="mdc-text-field mdc-text-field--with-leading-icon">
     <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
     <input type="text" class="mdc-text-field__input" id="my-text-field">
     <label class="mdc-floating-label" for="my-text-field">My Label</label>
@@ -140,10 +140,32 @@ test('#constructor instantiates a helper text on the element with id specified i
   document.body.removeChild(helperText);
 });
 
-test('#constructor instantiates an icon on the `.mdc-text-field__icon` element if present', () => {
+test('#constructor instantiates a leading icon if an icon element is present', () => {
   const root = getFixture();
   const component = new MDCTextField(root);
-  assert.instanceOf(component.icon_, MDCTextFieldIcon);
+  assert.instanceOf(component.leadingIcon_, MDCTextFieldIcon);
+  assert.equal(component.trailingIcon_, undefined);
+});
+
+test('#constructor instantiates an icon for both icon elements if present', () => {
+  const root = getFixture(true);
+  root.classList.add('mdc-text-field--with-trailing-icon');
+  root.appendChild(bel`<i class="mdc-text-field__icon material-icons">3d_rotations</i>`);
+  const component = new MDCTextField(root);
+  assert.instanceOf(component.leadingIcon_, MDCTextFieldIcon);
+  assert.instanceOf(component.trailingIcon_, MDCTextFieldIcon);
+});
+
+test('#constructor instantiates a trailing icon if the icon is present', () => {
+  const root = getFixture(true);
+  const icon = root.querySelector('.mdc-text-field__icon');
+  root.removeChild(icon);
+  root.appendChild(icon);
+  root.classList.add('mdc-text-field--with-trailing-icon');
+  root.classList.remove('mdc-text-field--with-leading-icon');
+  const component = new MDCTextField(root);
+  assert.equal(component.leadingIcon_, undefined);
+  assert.instanceOf(component.trailingIcon_, MDCTextFieldIcon);
 });
 
 test('#constructor instantiates a label on the `.mdc-floating-label` element if present', () => {
@@ -418,6 +440,30 @@ test('get/set value', () => {
   td.verify(mockFoundation.getValue());
   component.value = 'foo';
   td.verify(mockFoundation.setValue('foo'));
+});
+
+test('set leadingIconAriaLabel', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.leadingIconAriaLabel = 'label';
+  td.verify(mockFoundation.setLeadingIconAriaLabel('label'));
+});
+
+test('set leadingIconContent', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.leadingIconContent = 'label';
+  td.verify(mockFoundation.setLeadingIconContent('label'));
+});
+
+test('set trailingIconAriaLabel', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.trailingIconAriaLabel = 'label';
+  td.verify(mockFoundation.setTrailingIconAriaLabel('label'));
+});
+
+test('set trailingIconContent', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.trailingIconContent = 'label';
+  td.verify(mockFoundation.setTrailingIconContent('label'));
 });
 
 test('get/set valid', () => {

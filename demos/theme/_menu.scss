@@ -61,14 +61,6 @@
   border-color: $material-color-deep-purple-a700 $material-color-teal-a400 $material-color-teal-a400 $material-color-deep-purple-a700;
 }
 
-[data-theme="black"] .demo-theme-color-radio__inner {
-  border-color: $material-color-grey-900 $material-color-light-green-a700 $material-color-light-green-a700 $material-color-grey-900;
-}
-
 [data-theme="dark"] .demo-theme-color-radio__inner {
   border-color: $material-color-amber-300 $material-color-pink-400 $material-color-pink-400 $material-color-amber-300;
-}
-
-[data-theme="shrine"] .demo-theme-color-radio__inner {
-  border-color: #442B2D #FCB8AB #FCB8AB #442B2D;
 }

@@ -47,7 +47,7 @@
   @include mdc-ripple-radius-bounded;
 
   // Shape
-  @include mdc-text-field-corner-radius($mdc-text-field-border-radius);
+  @include mdc-text-field-shape-radius(small);
 
   // Colors
   @include mdc-text-field-label-color($mdc-text-field-label);
@@ -71,7 +71,7 @@
   display: inline-flex;
   position: relative;
   box-sizing: border-box;
-  height: 56px;
+  height: $mdc-text-field-height;
   overflow: hidden;
   will-change: opacity, transform, color;
 
@@ -151,6 +151,10 @@
   @include mdc-text-field-with-trailing-icon_;
 }
 
+.mdc-text-field--with-leading-icon.mdc-text-field--with-trailing-icon {
+  @include mdc-text-field-with-both-icons_;
+}
+
 // stylelint-disable plugin/selector-bem-pattern
 .mdc-text-field--with-leading-icon.mdc-text-field--dense .mdc-text-field__icon,
 .mdc-text-field--with-trailing-icon.mdc-text-field--dense .mdc-text-field__icon {
@@ -165,6 +169,10 @@
 
 .mdc-text-field--with-trailing-icon.mdc-text-field--dense {
   @include mdc-text-field-dense-with-trailing-icon_;
+}
+
+.mdc-text-field--with-leading-icon.mdc-text-field--with-trailing-icon.mdc-text-field--dense {
+  @include mdc-text-field-dense-with-both-icons_;
 }
 
 .mdc-text-field--dense {

@@ -22,15 +22,16 @@
 
 @import "../../../../packages/mdc-elevation/mixins";
 @import "../../../../packages/mdc-theme/color-palette";
+@import "../mixins";
 
 $custom-elevation-color: $material-color-red-300;
 
 .test-cell--elevation {
+  @include test-cell-size(111, 131);
+
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 111px;
-  height: 131px;
 }
 
 .test-elevation {

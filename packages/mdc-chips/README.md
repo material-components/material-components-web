@@ -70,6 +70,16 @@ const chipSet = new MDCChipSet(document.querySelector('.mdc-chip-set'));
 
 You can optionally add a leading icon (i.e. thumbnail) and/or a trailing "remove" icon to a chip. To add an icon, add an `i` element with your preferred icon, give it a class of `mdc-chip__icon`, and a class of either `mdc-chip__icon--leading` or `mdc-chip__icon--trailing`.
 
+We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts:
+
+```html
+<head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+```
+
+However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any other icon library you wish.
+
 #### Leading icon
 
 ```html
@@ -187,7 +197,7 @@ CSS Class | Description
 `mdc-chip` | Mandatory.
 `mdc-chip--selected` | Optional. Indicates that the chip is selected.
 `mdc-chip__text` | Mandatory. Indicates the text content of the chip.
-`mdc-chip__icon` | Optional. Indicates an icon in the chip.
+`mdc-chip__icon` | Optional. Indicates an icon in the chip. We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts.
 `mdc-chip__icon--leading` | Optional. Indicates a leading icon in the chip.
 `mdc-chip__icon--leading-hidden` | Optional. Hides the leading icon in a filter chip when the chip is selected.
 `mdc-chip__icon--trailing` | Optional. Indicates a trailing icon which removes the chip from the DOM. Only use with input chips.
@@ -202,20 +212,24 @@ CSS Class | Description
 Mixin | Description
 --- | ---
 `mdc-chip-set-spacing($gap-size)` | Customizes the amount of space between each chip in the set
-`mdc-chip-corner-radius($radius)` | Customizes the corner radius for a chip
+`mdc-chip-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to chip with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `mdc-chip-fill-color-accessible($color)` | Customizes the background fill color for a chip, and updates the chip's ink, icon and ripple colors to meet accessibility standards
 `mdc-chip-fill-color($color)` | Customizes the background fill color for a chip
 `mdc-chip-ink-color($color)` | Customizes the text ink color for a chip, and updates the chip's ripple color to match
 `mdc-chip-selected-ink-color($color)` | Customizes text ink and ripple color of a chip in the _selected_ state
 `mdc-chip-outline($width, $style, $color)` | Customizes the outline properties for a chip
-`mdc-chip-outline-width($width)` | Customizes the outline width for a chip
+`mdc-chip-outline-width($width, $horizontal-padding)` | Customizes the outline width for a chip. `$horizontal-padding` is only required in cases where `mdc-chip-horizontal-padding` is also included with a custom value
 `mdc-chip-outline-style($style)` | Customizes the outline style for a chip
 `mdc-chip-outline-color($color)` | Customizes the outline color for a chip
 `mdc-chip-height($height)` | Customizes the height for a chip
+`mdc-chip-horizontal-padding($padding)` | Customizes the horizontal padding for a chip
 `mdc-chip-leading-icon-color($color, $opacity)` | Customizes the color of a leading icon in a chip, optionally customizes opacity
 `mdc-chip-trailing-icon-color($color, $opacity, $hover-opacity, $focus-opacity)` | Customizes the color of a trailing icon in a chip, optionally customizes regular/hover/focus opacities
 `mdc-chip-leading-icon-size($size)` | Customizes the size of a leading icon in a chip
 `mdc-chip-trailing-icon-size($size)` | Customizes the size of a trailing icon in a chip
+`mdc-chip-leading-icon-margin($top, $right, $bottom, $left)` | Customizes the margin of a leading icon in a chip
+`mdc-chip-trailing-icon-margin($top, $right, $bottom, $left)` | Customizes the margin of a trailing icon in a chip
+`mdc-chip-elevation-transition()` | Adds a MDC elevation transition to the chip. This should be used instead of setting transition with `mdc-elevation-transition-value()` directly when a box shadow transition is desired for a chip
 
 > _NOTE_: `mdc-chip-set-spacing` also sets the amount of space between a chip and the edge of the set it's contained in.
 
@@ -272,14 +286,17 @@ Method Signature | Description
 `removeClassFromLeadingIcon(className: string) => void` | Removes a class from the leading icon element
 `eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise
 `notifyInteraction() => void` | Emits a custom event `MDCChip:interaction` denoting the chip has been interacted with\*
+`notifySelection(selected) => void` | Emits a custom event `MDCChip:selection` denoting the chip has been selected or deselected\*\*
 `notifyTrailingIconInteraction() => void` | Emits a custom event `MDCChip:trailingIconInteraction` denoting the chip's trailing icon has been interacted with\*
-`notifyRemoval() => void` | Emits a custom event `MDCChip:removal` denoting the chip will be removed\*\*
+`notifyRemoval() => void` | Emits a custom event `MDCChip:removal` denoting the chip will be removed\*\*\*
 `getComputedStyleValue(propertyName: string) => string` | Returns the computed property value of the given style property on the root element
 `setStyleProperty(propertyName: string, value: string) => void` | Sets the property value of the given style property on the root element
 
 > \*_NOTE_: The custom events emitted by `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target chip's ID via `event.detail.chipId`, as well as bubble to the parent `mdc-chip-set` element.
 
-> \*\*_NOTE_: The custom event emitted by `notifyRemoval` must pass along the target chip's ID via `event.detail.chipId` and its root element via `event.detail.root`, as well as bubble to the parent `mdc-chip-set` element.
+> \*\*_NOTE_: The custom events emitted by `notifySelection` must pass along the target chip's ID via `event.detail.chipId` and selected state via `event.detail.selected`, as well as bubble to the parent `mdc-chip-set` element.
+
+> \*\*\*_NOTE_: The custom event emitted by `notifyRemoval` must pass along the target chip's ID via `event.detail.chipId` and its root element via `event.detail.root`, as well as bubble to the parent `mdc-chip-set` element.
 
 #### `MDCChipSetAdapter`
 
@@ -313,4 +330,5 @@ Method Signature | Description
 `deselect(chipId: string) => void` | Deselects the chip with the given id
 `toggleSelect(chipId: string) => void` | Toggles selection of the chip with the given id
 `handleChipInteraction(evt: Event) => void` | Handles a custom `MDCChip:interaction` event on the root element
+`handleChipSelection(evt: Event) => void` | Handles a custom `MDCChip:selection` event on the root element
 `handleChipRemoval(evt: Event) => void` | Handles a custom `MDCChip:removal` event on the root element

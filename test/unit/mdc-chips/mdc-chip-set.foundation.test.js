@@ -161,6 +161,62 @@ test('#handleChipInteraction does nothing if the chip set is neither choice nor 
   td.verify(mockAdapter.setSelected('chipA', true), {times: 0});
 });
 
+test('#handleChipSelection selects an unselected chip if selected is true', () => {
+  const {foundation} = setupTest();
+
+  foundation.selectedChipIds_ = [];
+  foundation.select = td.func();
+  foundation.handleChipSelection({
+    detail: {
+      chipId: 'chipA',
+      selected: true,
+    },
+  });
+  td.verify(foundation.select('chipA'));
+});
+
+test('#handleChipSelection does nothing if selected is true and the chip is already selected', () => {
+  const {foundation} = setupTest();
+
+  foundation.selectedChipIds_ = ['chipA'];
+  foundation.select = td.func();
+  foundation.handleChipSelection({
+    detail: {
+      chipId: 'chipA',
+      selected: true,
+    },
+  });
+  td.verify(foundation.select('chipA'), {times: 0});
+});
+
+test('#handleChipSelection deselects a selected chip if selected is false', () => {
+  const {foundation} = setupTest();
+
+  foundation.selectedChipIds_ = ['chipA'];
+  foundation.deselect = td.func();
+  foundation.handleChipSelection({
+    detail: {
+      chipId: 'chipA',
+      selected: false,
+    },
+  });
+  td.verify(foundation.deselect('chipA'));
+});
+
+test('#handleChipSelection does nothing if selected is false and the chip is not selected', () => {
+  const {foundation} = setupTest();
+
+  foundation.selectedChipIds_ = [];
+  foundation.deselect = td.func();
+  foundation.handleChipSelection({
+    detail: {
+      chipId: 'chipA',
+      selected: false,
+    },
+  });
+  td.verify(foundation.deselect('chipA'), {times: 0});
+});
+
 test('#handleChipRemoval removes chip', () => {
   const {foundation, mockAdapter} = setupTest();
 

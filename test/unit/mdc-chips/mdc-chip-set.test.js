@@ -93,6 +93,9 @@ test('#initialSyncWithDOM sets up event handlers', () => {
   domEvents.emit(root, MDCChipFoundation.strings.INTERACTION_EVENT);
   td.verify(mockFoundation.handleChipInteraction(td.matchers.anything()), {times: 1});
 
+  domEvents.emit(root, MDCChipFoundation.strings.SELECTION_EVENT);
+  td.verify(mockFoundation.handleChipSelection(td.matchers.anything()), {times: 1});
+
   domEvents.emit(root, MDCChipFoundation.strings.REMOVAL_EVENT);
   td.verify(mockFoundation.handleChipRemoval(td.matchers.anything()), {times: 1});
 });
@@ -103,6 +106,9 @@ test('#destroy removes event handlers', () => {
 
   domEvents.emit(root, MDCChipFoundation.strings.INTERACTION_EVENT);
   td.verify(mockFoundation.handleChipInteraction(td.matchers.anything()), {times: 0});
+
+  domEvents.emit(root, MDCChipFoundation.strings.SELECTION_EVENT);
+  td.verify(mockFoundation.handleChipSelection(td.matchers.anything()), {times: 0});
 
   domEvents.emit(root, MDCChipFoundation.strings.REMOVAL_EVENT);
   td.verify(mockFoundation.handleChipRemoval(td.matchers.anything()), {times: 0});

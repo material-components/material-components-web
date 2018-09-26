@@ -22,12 +22,12 @@
 
 @import "../../../../packages/mdc-linear-progress/mixins";
 @import "../../../../packages/mdc-theme/color-palette";
+@import "../mixins";
 
 $custom-linear-progress-color: $material-color-red-300;
 
 .test-cell--linear-progress {
-  width: 341px;
-  height: 61px;
+  @include test-cell-size(341, 61);
 }
 
 .custom-linear-progress--bar-color {

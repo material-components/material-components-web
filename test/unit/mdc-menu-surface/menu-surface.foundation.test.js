@@ -122,7 +122,7 @@ testFoundation('#open adds the animation class to start an animation',
     td.verify(mockAdapter.addClass(cssClasses.ANIMATING_OPEN), {times: 1});
   });
 
-testFoundation('#open does not add the animation class to start an animation when setQuickOpen is false',
+testFoundation('#open does not add the animation class to start an animation when setQuickOpen is true',
   ({foundation, mockAdapter}) => {
     foundation.setQuickOpen(true);
     foundation.open();
@@ -149,16 +149,23 @@ testFoundation('#open removes the animation class at the end of the animation',
     td.verify(mockAdapter.removeClass(cssClasses.ANIMATING_OPEN));
   });
 
-testFoundation('#open emits the open event at the end of the animation',
-  ({foundation, mockAdapter, mockRaf}) => {
-    const clock = lolex.install();
-    foundation.open();
-    mockRaf.flush();
-    mockRaf.flush();
-    clock.tick(numbers.TRANSITION_OPEN_DURATION);
-    mockRaf.flush();
-    td.verify(mockAdapter.notifyOpen());
-  });
+testFoundation('#open emits the open event at the end of the animation', ({foundation, mockAdapter, mockRaf}) => {
+  const clock = lolex.install();
+  foundation.open();
+  mockRaf.flush();
+  mockRaf.flush();
+  clock.tick(numbers.TRANSITION_OPEN_DURATION);
+  mockRaf.flush();
+  td.verify(mockAdapter.notifyOpen());
+});
+
+testFoundation('#open emits the open event when setQuickOpen is true', ({foundation, mockAdapter, mockRaf}) => {
+  foundation.setQuickOpen(true);
+  foundation.open();
+  mockRaf.flush();
+  mockRaf.flush();
+  td.verify(mockAdapter.notifyOpen());
+});
 
 /** Testing various layout cases for autopositioning */
 testFoundation('#open from small anchor in center of viewport, default (TOP_START) anchor corner, RTL',
@@ -278,7 +285,7 @@ testFoundation('#open from small anchor in right bottom of viewport, BOTTOM_END 
     td.verify(mockAdapter.setPosition({right: '40px', bottom: '20px'}));
   });
 
-testFoundation('#open from small anchor in top right of viewport, fixed position, no scroll',
+testFoundation('#open from small anchor in top left of viewport, fixed position, no scroll',
   ({foundation, mockAdapter, mockRaf}) => {
     initAnchorLayout(mockAdapter, smallTopLeft, true);
     foundation.setFixedPosition(true);
@@ -288,7 +295,7 @@ testFoundation('#open from small anchor in top right of viewport, fixed position
     td.verify(mockAdapter.setPosition({left: '20px', top: '20px'}));
   });
 
-testFoundation('#open from small anchor in top right of viewport, absolute position, no scroll',
+testFoundation('#open from small anchor in top left of viewport, absolute position, no scroll',
   ({foundation, mockAdapter, mockRaf}) => {
     initAnchorLayout(mockAdapter, smallTopLeft, true);
     foundation.open();
@@ -297,7 +304,7 @@ testFoundation('#open from small anchor in top right of viewport, absolute posit
     td.verify(mockAdapter.setPosition({left: '0', top: '0'}));
   });
 
-testFoundation('#open from anchor in top right of viewport, absolute position, hoisted menu surface, no scroll',
+testFoundation('#open from anchor in top left of viewport, absolute position, hoisted menu surface, no scroll',
   ({foundation, mockAdapter, mockRaf}) => {
     initAnchorLayout(mockAdapter, smallTopLeft, true);
     foundation.setIsHoisted(true);
@@ -307,10 +314,9 @@ testFoundation('#open from anchor in top right of viewport, absolute position, h
     td.verify(mockAdapter.setPosition({left: '20px', top: '20px'}));
   });
 
-
-testFoundation('#open from small anchor in top right of viewport, fixed position, scrollY 10 px',
+testFoundation('#open from small anchor in top left of viewport, fixed position, scrollX/scrollY 5px/10px',
   ({foundation, mockAdapter, mockRaf}) => {
-    initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 0, y: 10});
+    initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 5, y: 10});
     foundation.setFixedPosition(true);
     foundation.open();
     mockRaf.flush();
@@ -318,41 +324,41 @@ testFoundation('#open from small anchor in top right of viewport, fixed position
     td.verify(mockAdapter.setPosition({left: '20px', top: '20px'}));
   });
 
-testFoundation('#open from small anchor in top right of viewport, absolute position, scrollY 10 px',
+testFoundation('#open from small anchor in top left of viewport, absolute position, scrollX/scrollY 5px/10px',
   ({foundation, mockAdapter, mockRaf}) => {
-    initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 0, y: 10});
+    initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 5, y: 10});
     foundation.open();
     mockRaf.flush();
     td.verify(mockAdapter.setTransformOrigin('left top'));
     td.verify(mockAdapter.setPosition({left: '0', top: '0'}));
   });
 
-testFoundation('#open from anchor in top right of viewport, absolute position, hoisted menu surface, scrollY 10 px',
-  ({foundation, mockAdapter, mockRaf}) => {
-    initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 0, y: 10});
-    foundation.setIsHoisted(true);
-    foundation.open();
-    mockRaf.flush();
-    td.verify(mockAdapter.setTransformOrigin('left top'));
-    td.verify(mockAdapter.setPosition({left: '20px', top: '30px'}));
-  });
+testFoundation('#open from anchor in top left of viewport, absolute position, hoisted menu surface, scrollX/scrollY ' +
+  '5px/10px', ({foundation, mockAdapter, mockRaf}) => {
+  initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 5, y: 10});
+  foundation.setIsHoisted(true);
+  foundation.open();
+  mockRaf.flush();
+  td.verify(mockAdapter.setTransformOrigin('left top'));
+  td.verify(mockAdapter.setPosition({left: '25px', top: '30px'}));
+});
 
-testFoundation('#open in absolute position at x/y=100, absolute position, hoisted menu surface, scrollY 10 px',
-  ({foundation, mockAdapter, mockRaf}) => {
-    initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 0, y: 10});
-    td.when(mockAdapter.hasAnchor()).thenReturn(false);
-    td.when(mockAdapter.getAnchorDimensions()).thenReturn(undefined);
-    foundation.setIsHoisted(true);
-    foundation.setAbsolutePosition(100, 100);
-    foundation.open();
-    mockRaf.flush();
-    td.verify(mockAdapter.setTransformOrigin('left top'));
-    td.verify(mockAdapter.setPosition({left: '100px', top: '110px'}));
-  });
+testFoundation('#open in absolute position at x/y=100, absolute position, hoisted menu surface, scrollX/scrollY ' +
+  '5px/10px', ({foundation, mockAdapter, mockRaf}) => {
+  initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 5, y: 10});
+  td.when(mockAdapter.hasAnchor()).thenReturn(false);
+  td.when(mockAdapter.getAnchorDimensions()).thenReturn(undefined);
+  foundation.setIsHoisted(true);
+  foundation.setAbsolutePosition(100, 100);
+  foundation.open();
+  mockRaf.flush();
+  td.verify(mockAdapter.setTransformOrigin('left top'));
+  td.verify(mockAdapter.setPosition({left: '105px', top: '110px'}));
+});
 
-testFoundation('#open in absolute position at x/y=100, fixed position, hoisted menu surface, scrollY 10 px',
+testFoundation('#open in absolute position at x/y=100, fixed position, hoisted menu surface, scrollY/scrollY 5px/10px',
   ({foundation, mockAdapter, mockRaf}) => {
-    initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 0, y: 10});
+    initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 5, y: 10});
     td.when(mockAdapter.hasAnchor()).thenReturn(false);
     td.when(mockAdapter.getAnchorDimensions()).thenReturn(undefined);
     foundation.setIsHoisted(true);
@@ -363,7 +369,6 @@ testFoundation('#open in absolute position at x/y=100, fixed position, hoisted m
     td.verify(mockAdapter.setTransformOrigin('left top'));
     td.verify(mockAdapter.setPosition({left: '100px', top: '100px'}));
   });
-
 
 testFoundation('#open from small anchor in left bottom of viewport, default (TOP_START) anchor corner, RTL',
   ({foundation, mockAdapter, mockRaf}) => {
@@ -541,15 +546,51 @@ testFoundation('#close removes the animation class at the end of the animation',
     td.verify(mockAdapter.notifyClose());
   });
 
-testFoundation('#close emits the close event at the end of the animation',
+testFoundation('#close emits the close event at the end of the animation', ({foundation, mockAdapter, mockRaf}) => {
+  const clock = lolex.install();
+  foundation.close();
+  mockRaf.flush();
+  mockRaf.flush();
+  clock.tick(numbers.TRANSITION_CLOSE_DURATION);
+  mockRaf.flush();
+  td.verify(mockAdapter.notifyClose());
+});
+
+testFoundation('#close emits the close event when quickOpen is true', ({foundation, mockAdapter, mockRaf}) => {
+  foundation.setQuickOpen(true);
+  foundation.close();
+  mockRaf.flush();
+  mockRaf.flush();
+  td.verify(mockAdapter.notifyClose());
+});
+
+testFoundation('#close causes restoreFocus to be called if the menu-surface has focus',
   ({foundation, mockAdapter, mockRaf}) => {
-    const clock = lolex.install();
+    td.when(mockAdapter.isFocused()).thenReturn(true);
+    foundation.setQuickOpen(true);
     foundation.close();
     mockRaf.flush();
+    td.verify(mockAdapter.restoreFocus());
+  });
+
+testFoundation('#close causes restoreFocus to be called if an element within the menu-surface has focus',
+  ({foundation, mockAdapter, mockRaf}) => {
+    td.when(mockAdapter.isFocused()).thenReturn(false);
+    td.when(mockAdapter.isElementInContainer(td.matchers.anything())).thenReturn(true);
+    foundation.setQuickOpen(true);
+    foundation.close();
     mockRaf.flush();
-    clock.tick(numbers.TRANSITION_CLOSE_DURATION);
+    td.verify(mockAdapter.restoreFocus());
+  });
+
+testFoundation('#close does not cause restoreFocus to be called if the active element is not within the menu-surface',
+  ({foundation, mockAdapter, mockRaf}) => {
+    td.when(mockAdapter.isFocused()).thenReturn(false);
+    td.when(mockAdapter.isElementInContainer(td.matchers.anything())).thenReturn(false);
+    foundation.setQuickOpen(true);
+    foundation.close();
     mockRaf.flush();
-    td.verify(mockAdapter.notifyClose());
+    td.verify(mockAdapter.restoreFocus(), {times: 0});
   });
 
 test('#isOpen returns true when the menu surface is open', () => {
