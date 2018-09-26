@@ -147,26 +147,7 @@ class MDCSelect extends MDCComponent {
     this.selectedText_ = this.root_.querySelector('.mdc-select__selected-text');
 
     if (this.selectedText_) {
-      const isDisabled = this.root_.classList.contains(cssClasses.DISABLED);
-      this.selectedText_.setAttribute('tabindex', isDisabled ? '-1' : '0');
-      this.menuElement_ = this.root_.querySelector(strings.MENU_SELECTOR);
-      this.menu_ = new MDCMenu(this.menuElement_);
-      this.menu_.hoistMenuToBody();
-      this.menu_.setAnchorElement(this.root_);
-      this.menu_.setAnchorCorner(Corner.BOTTOM_START);
-      this.menu_.listen(menuSurfaceStrings.CLOSED_EVENT, () => {
-        // menuOpened_ is used to track the state of the menu opening or closing since the menu.open function
-        // will return false if the menu is still closing and this method listens to the closed event which
-        // occurs after the menu is already closed.
-        this.menuOpened_ = false;
-        if (document.activeElement !== this.selectedText_) {
-          this.foundation_.handleBlur();
-        }
-      });
-
-      this.menu_.listen(menuStrings.SELECTED_EVENT, (evtData) => {
-        this.selectedIndex = evtData.detail.index;
-      });
+      this.enhancedSelectSetup_();
     }
     const labelElement = this.root_.querySelector(strings.LABEL_SELECTOR);
     if (labelElement) {
@@ -184,6 +165,40 @@ class MDCSelect extends MDCComponent {
     if (!this.root_.classList.contains(cssClasses.OUTLINED)) {
       this.ripple = this.initRipple_();
     }
+  }
+
+  /**
+   * Handles setup for the enhanced menu.
+   * @private
+   */
+  enhancedSelectSetup_() {
+    const isDisabled = this.root_.classList.contains(cssClasses.DISABLED);
+    this.selectedText_.setAttribute('tabindex', isDisabled ? '-1' : '0');
+    this.menuElement_ = this.root_.querySelector(strings.MENU_SELECTOR);
+    this.menu_ = new MDCMenu(this.menuElement_);
+    this.menu_.hoistMenuToBody();
+    this.menu_.setAnchorElement(this.root_);
+    this.menu_.setAnchorCorner(Corner.BOTTOM_START);
+    this.menu_.listen(menuSurfaceStrings.CLOSED_EVENT, () => {
+      // menuOpened_ is used to track the state of the menu opening or closing since the menu.open function
+      // will return false if the menu is still closing and this method listens to the closed event which
+      // occurs after the menu is already closed.
+      this.menuOpened_ = false;
+      if (document.activeElement !== this.selectedText_) {
+        this.foundation_.handleBlur();
+      }
+    });
+
+    // Menu should open to the last selected element.
+    this.menu_.listen(menuSurfaceStrings.OPENED_EVENT, () => {
+      if (this.selectedIndex >= 0) {
+        this.menu_.items[this.selectedIndex].focus();
+      }
+    });
+
+    this.menu_.listen(menuStrings.SELECTED_EVENT, (evtData) => {
+      this.selectedIndex = evtData.detail.index;
+    });
   }
 
   /**
@@ -271,6 +286,18 @@ class MDCSelect extends MDCComponent {
     );
   }
 
+  /**
+   * @return {!{
+   *   getValue: function(): string,
+   *   setValue: function(string): string,
+   *   openMenu: function(): void,
+   *   closeMenu: function(): void,
+   *   isMenuOpened: function(): boolean,
+   *   setSelectedIndex: function(number): void,
+   *   setDisabled: function(boolean): void
+   * }}
+   * @private
+   */
   getNativeSelectAdapterMethods_() {
     return {
       getValue: () => this.nativeControl_.value,
@@ -285,6 +312,18 @@ class MDCSelect extends MDCComponent {
     };
   }
 
+  /**
+   * @return {!{
+   *   getValue: function(): string,
+   *   setValue: function(string): string,
+   *   openMenu: function(): void,
+   *   closeMenu: function(): void,
+   *   isMenuOpened: function(): boolean,
+   *   setSelectedIndex: function(number): void,
+   *   setDisabled: function(boolean): void
+   * }}
+   * @private
+   */
   getEnhancedSelectAdapterMethods_() {
     return {
       getValue: () => {
@@ -328,6 +367,11 @@ class MDCSelect extends MDCComponent {
     };
   }
 
+  /**
+   * Sets the selected index of the enhanced menu.
+   * @param {number} index
+   * @private
+   */
   setEnhancedSelectedIndex_(index) {
     const selectedItem = this.menu_.items[index];
     this.selectedText_.textContent = selectedItem.textContent.trim();
@@ -344,6 +388,18 @@ class MDCSelect extends MDCComponent {
     this.layout();
   }
 
+  /**
+   * @return {!{
+   *   addClass: function(string): void,
+   *   removeClass: function(string): void,
+   *   hasClass: function(string): void,
+   *   isRtl: function(): boolean,
+   *   setRippleCenter: function(number): void,
+   *   activateBottomLine: function(): void,
+   *   deactivateBottomLine: function(): void
+   * }}
+   * @private
+   */
   getCommonAdapterMethods_() {
     return {
       addClass: (className) => this.root_.classList.add(className),

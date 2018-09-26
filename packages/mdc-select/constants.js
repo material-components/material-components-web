@@ -27,6 +27,7 @@ const cssClasses = {
   ROOT: 'mdc-select',
   OUTLINED: 'mdc-select--outlined',
   SELECTED: 'mdc-list-item--selected',
+  FOCUSED: 'mdc-select--focused',
 };
 
 /** @enum {string} */
