@@ -22,13 +22,14 @@
 
 @import "../../../../packages/mdc-switch/mixins";
 @import "../../../../packages/mdc-theme/color-palette";
+@import "../mixins";
 
 $custom-switch-color: $material-color-red-500;
 
 .test-cell--switch {
+  @include test-cell-size(101);
+
   position: relative;
-  width: 101px;
-  height: 101px;
   padding: 30px;
 }
 

@@ -22,13 +22,14 @@
 
 @import "../../../../packages/mdc-radio/mixins";
 @import "../../../../packages/mdc-theme/color-palette";
+@import "../mixins";
 
 $custom-radio-color: $material-color-red-300;
 
 .test-cell--radio {
+  @include test-cell-size(71, 91);
+
   position: relative;
-  width: 71px;
-  height: 91px;
 }
 
 .test-radio-label {

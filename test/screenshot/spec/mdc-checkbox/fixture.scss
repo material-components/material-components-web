@@ -22,12 +22,12 @@
 
 @import "../../../../packages/mdc-checkbox/mixins";
 @import "../../../../packages/mdc-theme/color-palette";
+@import "../mixins";
 
 $custom-checkbox-color: $material-color-red-300;
 
 .test-cell--checkbox {
-  width: 91px;
-  height: 91px;
+  @include test-cell-size(91);
 }
 
 .custom-checkbox--container-colors {
