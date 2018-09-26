@@ -7,12 +7,6 @@ path: /catalog/shape/
 -->
 
 # Shape
-<!--<div class="article__asset">
-  <a class="article__asset-link"
-     href="https://material-components.github.io/material-components-web-catalog/#/component/shape">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/shape.png" width="159" alt="Shape screenshot">
-  </a>
-</div>-->
 
 Shapes direct attention, identify components, communicate state, and express brand.
 
@@ -23,9 +17,6 @@ Shapes direct attention, identify components, communicate state, and express bra
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
     <a href="https://material.io/go/design-shape">Material Design guidelines: Shape</a>
-  </li>
-  <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components.github.io/material-components-web-catalog/#/component/shape">Demo</a>
   </li>
 </ul>
 
