@@ -1,0 +1,9 @@
+{
+  "name": "mdc-web-shield-generator",
+  "description": "MDC Web GitHub Shield Generator for Google Cloud Functions",
+  "main": "index.js",
+  "dependencies": {
+    "@octokit/rest": "^15.12.0",
+    "url-search-params-polyfill": "^5.0.0"
+  }
+}
