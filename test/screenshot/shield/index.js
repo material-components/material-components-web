@@ -59,11 +59,15 @@ class ScreenshotShieldServer {
    * @return {!Promise<!GitHubStatusInfo>}
    * @private
    */
-  async parseGitHubStatus_() {
+  async parseGitHubStatus_(req) {
+    const reqQueryString = require('url').parse(req.url).query;
+    const reqQueryParams = new URLSearchParams(reqQueryString);
+    const ref = reqQueryParams.get('ref') || 'master';
+
     const response = await this.octokit_.repos.getCombinedStatusForRef({
       owner: 'material-components',
       repo: 'material-components-web',
-      ref: 'master',
+      ref,
     });
 
     const isButterBot = (status) => status.context === 'screenshot-test/butter-bot';
@@ -142,7 +146,7 @@ class ScreenshotShieldServer {
     this.allowCORS_(req, res);
 
     /** @type {!GitHubStatusInfo} */
-    const status = await this.parseGitHubStatus_();
+    const status = await this.parseGitHubStatus_(req);
     const {message, color} = status;
     const messageEncoded = encodeURI(message);
     this.redirect_(req, res, `https://img.shields.io/badge/screenshots-${messageEncoded}-${color}.svg`);
@@ -152,7 +156,7 @@ class ScreenshotShieldServer {
     this.allowCORS_(req, res);
 
     /** @type {!GitHubStatusInfo} */
-    const status = await this.parseGitHubStatus_();
+    const status = await this.parseGitHubStatus_(req);
     const {targetUrl} = status;
     if (targetUrl) {
       this.redirect_(req, res, targetUrl);
