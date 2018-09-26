@@ -21,15 +21,14 @@
 //
 
 @import "../../../../packages/mdc-fab/mixins";
+@import "../mixins";
 
 .test-cell--fab {
-  width: 81px;
-  height: 81px;
+  @include test-cell-size(81);
 }
 
 .test-cell--fab-extended {
-  width: 191px;
-  height: 71px;
+  @include test-cell-size(191, 71);
 }
 
 .custom-fab--extended-padding-and-icon-size {
