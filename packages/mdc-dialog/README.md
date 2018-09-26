@@ -414,7 +414,7 @@ a focus trapping solution for your component code.**
 
 ```js
 const {activate, deactivate} =
-  util.createFocusTrapInstance(surfaceEl, initialFocusEl, focusTrapFactory = require('focus-trap'));
+  util.createFocusTrapInstance(surfaceEl, focusTrapFactory = require('focus-trap'), initialFocusEl);
 ```
 
 Given a dialog surface element, an initial element to focus, and an optional `focusTrap` factory
