@@ -392,10 +392,15 @@ class SeleniumApi {
         return Math.min(cliParallels, available);
       }
 
-      // If nobody else is running any tests, run half the number of concurrent tests allowed by our CBT account.
-      // This gives us _some_ parallelism while still allowing other users to run their tests.
+      // Nobody else is running tests
       if (active === 0) {
-        return Math.floor(max / 2);
+        if (this.isBusinessHours_()) {
+          // Run half the number of concurrent tests allowed by our CBT account.
+          // This gives us _some_ parallelism while allowing other users to run their tests.
+          return Math.floor(max / 2);
+        } else {
+          return available;
+        }
       }
 
       // If someone else is already running tests, only run one test at a time.
@@ -769,7 +774,7 @@ class SeleniumApi {
     const urlWithQsParams = this.analytics_.getUrl({
       url,
       source: 'cbt',
-      type: 'selenium',
+      medium: 'selenium',
       extraParams: {
         font_face_observer_timeout_ms: flakeConfig.font_face_observer_timeout_ms,
         fonts_loaded_reflow_delay_ms: flakeConfig.fonts_loaded_reflow_delay_ms,
@@ -936,7 +941,7 @@ class SeleniumApi {
     const actualHtmlFileUrlPlain = this.analytics_.getUrl({
       url: screenshot.actual_html_file.public_url,
       source: 'cli',
-      type: 'progress',
+      medium: 'progress',
     });
 
     let cropColor = '';
@@ -973,6 +978,25 @@ class SeleniumApi {
   }
 
   /**
+   * @return {boolean}
+   * @private
+   */
+  isBusinessHours_() {
+    const MORNING_UTC_HOURS = 13; // 1pm UTC === 9am EST
+    const EVENING_UTC_HOURS = 1; // 1am UTC === 6pm PST
+    const SATURDAY = 7;
+    const SUNDAY = 0;
+
+    const nowDate = new Date();
+    const nowUtcHours = nowDate.getUTCHours();
+
+    const isWeekDay = nowDate.getDay() > SUNDAY || nowDate.getDay() < SATURDAY;
+    const is9to5 = nowUtcHours > MORNING_UTC_HOURS || nowUtcHours < EVENING_UTC_HOURS;
+
+    return isWeekDay && is9to5;
+  }
+
+  /**
    * @param {!CliStatus} status
    * @param {!mdc.proto.UserAgent} userAgent
    * @private
@@ -1001,7 +1025,7 @@ class SeleniumApi {
     const actualHtmlFileUrl = this.analytics_.getUrl({
       url: screenshot.actual_html_file.public_url,
       source: 'cli',
-      type: 'progress',
+      medium: 'progress',
     });
 
     const bold = CliColor.bold;

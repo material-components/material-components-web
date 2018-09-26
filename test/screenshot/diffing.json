@@ -8,11 +8,11 @@
   "flaky_test_config": {
     "global_config": {
       "max_retries": 2,
-      "retry_delay_ms": 500,
       "min_changed_pixel_count": 15,
       "max_changed_pixel_fraction_to_retry": 0.10,
       "font_face_observer_timeout_ms": 3000,
-      "fonts_loaded_reflow_delay_ms": 50
+      "fonts_loaded_reflow_delay_ms": 0,
+      "retry_delay_ms": 0
     },
 
     "config_overrides": [
@@ -23,8 +23,7 @@
           "desktop_windows_ie@11"
         ],
         "custom_config": {
-          "max_retries": 3,
-          "fonts_loaded_reflow_delay_ms": 250
+          "max_retries": 3
         }
       },
       {
@@ -52,17 +51,6 @@
         ],
         "custom_config": {
           "skip_all": true
-        }
-      },
-      {
-        "description": "Wait for dialog entrance animations to finish.",
-        "url_regex_patterns": [
-          "mdc-dialog"
-        ],
-        "custom_config": {
-          "max_retries": 4,
-          "min_changed_pixel_count": 25,
-          "fonts_loaded_reflow_delay_ms": 250
         }
       }
     ]

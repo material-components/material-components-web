@@ -21,7 +21,29 @@
  * THE SOFTWARE.
  */
 
+import {MDCDismissibleDrawerFoundation} from '../../../../packages/mdc-drawer';
+
 window.mdc.testFixture.fontsLoaded.then(() => {
-  mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
+  const {DISMISSIBLE, MODAL} = MDCDismissibleDrawerFoundation.cssClasses;
+  const dismissibleDrawerSelector = [DISMISSIBLE, MODAL].map((className) => `.${className}`).join(', ');
+  const dismissibleDrawerEl = document.querySelector(dismissibleDrawerSelector);
+
+  // Don't instantiate permanent drawers
+  if (!dismissibleDrawerEl) {
+    const list = mdc.list.MDCList.attachTo(document.querySelector('.mdc-list'));
+    list.wrapFocus = true;
+    return;
+  }
+
+  /** @type {!MDCDrawer} */
+  const drawer = mdc.drawer.MDCDrawer.attachTo(dismissibleDrawerEl);
+
+  const menuButtonEl = document.querySelector('#test-drawer-menu-button');
+  if (menuButtonEl) {
+    menuButtonEl.addEventListener('click', () => {
+      drawer.open = !drawer.open;
+    });
+  }
+
   window.mdc.testFixture.notifyDomReady();
 });
