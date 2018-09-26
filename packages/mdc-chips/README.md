@@ -157,6 +157,8 @@ Input chips are a variant of chips which enable user input by converting text in
 </div>
 ```
 
+#### Adding Chips to the DOM
+
 The MDC Chips package does not handle the process of converting text into chips, in order to remain framework-agnostic. The `MDCChipSet` component exposes an `addChip` method, which accepts an element which is expected to already be inserted within the Chip Set element after any existing chips. The `MDCChipSet` component will then handle creating and tracking a `MDCChip` component instance.
 
 For example:
@@ -174,6 +176,18 @@ input.addEventListener('keydown', function(event) {
 
 > _NOTE_: `MDCChipSet` will generate a unique ID to apply to each added chip's element if it does not already have an ID
 > when it is passed to `addChip`. This is used to distinguish chips during user interactions.
+
+#### Removing Chips from the DOM
+
+By default, input chips are removed in response to clicking the trailing remove icon in the chip. Removal can also be triggered by calling `MDCChip`'s `beginExit()` method.
+
+Individual `MDCChip` instances will emit a `MDCChip:removal` event once the exit transition ends. `MDCChipSet` will handle destroying the `MDCChip` instance in response to `MDCChip:removal`, but it must be removed from the DOM manually. You can listen for `MDCChip:removal` from the parent Chip Set or any ancestor, since the event bubbles:
+
+```js
+chipSet.listen('MDCChip:removal', function(event) {
+  chipSetEl.removeChild(event.root);
+});
+```
 
 ### Pre-selected
 
@@ -280,8 +294,10 @@ Event Name | `event.detail` | Description
 --- | --- | ---
 `MDCChip:interaction` | `{chipId: string}` | Indicates the chip was interacted with (via click/tap or Enter key)
 `MDCChip:selection` | `{chipId: string, selected: boolean}` | Indicates the chip's selection state has changed (for choice/filter chips)
-`MDCChip:removal` | `{chipId: string}` | Indicates the chip is ready to be removed from the DOM (used by `MDCChipSetFoundation`)
+`MDCChip:removal` | `{chipId: string, root: Element}` | Indicates the chip is ready to be removed from the DOM
 `MDCChip:trailingIconInteraction` | `{chipId: string}` | Indicates the chip's trailing icon was interacted with (via click/tap or Enter key)
+
+> _NOTE_: All of `MDCChip`'s emitted events bubble up through the DOM.
 
 #### `MDCChipSet`
 
