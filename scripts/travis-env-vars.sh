@@ -21,7 +21,8 @@ function log_warning() {
 
 function print_travis_env_vars() {
   echo
-  date
+  echo "Shell date: $(date)"
+  echo "Node date: $(echo 'console.log(new Date().toString())' | node)"
   echo
   env | grep -E -e 'TRAVIS' -e '^(LANG|TERM|TZ)=' | sort
   echo
