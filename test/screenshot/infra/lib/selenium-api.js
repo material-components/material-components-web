@@ -1057,12 +1057,6 @@ class SeleniumApi {
     const statusName = status.name.toUpperCase();
     const paddingSpaces = ''.padStart(maxStatusWidth - statusName.length, ' ');
 
-    console.log(eraseCurrentLine + paddingSpaces + status.color(statusName) + ':', ...args);
-
-    if (this.isKillRequested_) {
-      return;
-    }
-
     const numDone = this.numCompleted_;
     const strDone = numDone.toLocaleString();
 
@@ -1075,14 +1069,6 @@ class SeleniumApi {
     const numPercent = numTotal > 0 ? (100 * numDone / numTotal) : 0;
     const strPercent = numPercent.toFixed(1);
 
-    if (process.env.TRAVIS === 'true') {
-      this.gitHubApi_.setPullRequestStatusManual({
-        state: GitHubApi.PullRequestState.PENDING,
-        description: `${strDone} of ${strTotal} (${strPercent}%) - ${strChanged} diff${numChanged === 1 ? '' : 's'}`,
-      });
-      return;
-    }
-
     const pending = this.numPending_;
     const completed = numDone;
     const total = pending + completed;
@@ -1092,6 +1078,22 @@ class SeleniumApi {
     const colorCompleted = CliColor.bold.white(completed.toLocaleString());
     const colorTotal = CliColor.bold.white(total.toLocaleString());
     const colorPercent = CliColor.bold.white(`${percent}%`);
+
+    const isTravis = process.env.TRAVIS === 'true';
+    const colorProgressTravis = isTravis ? ` [${colorCompleted} of ${colorTotal} = ${colorPercent} complete]` : '';
+    console.log(eraseCurrentLine + paddingSpaces + status.color(statusName) + colorProgressTravis + ':', ...args);
+
+    if (this.isKillRequested_) {
+      return;
+    }
+
+    if (isTravis) {
+      this.gitHubApi_.setPullRequestStatusManual({
+        state: GitHubApi.PullRequestState.PENDING,
+        description: `${strDone} of ${strTotal} (${strPercent}%) - ${strChanged} diff${numChanged === 1 ? '' : 's'}`,
+      });
+      return;
+    }
 
     process.stdout.write(`${colorCaptured}: ${colorCompleted} of ${colorTotal} screenshots (${colorPercent} complete)`);
   }
