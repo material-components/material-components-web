@@ -231,6 +231,7 @@ class TestCommand {
         }
 
         comparisonFunctions.push(async (resolve) => {
+          masterScreenshot.user_agent = capturedScreenshot.user_agent;
           masterScreenshot.actual_html_file = capturedScreenshot.actual_html_file;
           masterScreenshot.actual_image_file = capturedScreenshot.actual_image_file;
           masterScreenshot.capture_state = capturedScreenshot.capture_state;
@@ -248,6 +249,10 @@ class TestCommand {
             masterScreenshotSets.changed_screenshot_list.push(masterScreenshot);
           } else {
             masterScreenshotSets.unchanged_screenshot_list.push(masterScreenshot);
+          }
+
+          if (masterScreenshot.inclusion_type === InclusionType.ADD) {
+            masterScreenshotSets.added_screenshot_list.push(masterScreenshot);
           }
 
           resolve();
