@@ -46,6 +46,11 @@ class ScreenshotShieldServer {
     res.set('Access-Control-Allow-Headers', 'Content-Type');
     res.set('Access-Control-Max-Age', '3600');
 
+    // Prevent GitHub Camo from caching images
+    // https://github.com/github/markup/issues/224#issuecomment-33454537
+    res.set('Cache-Control', 'no-cache');
+    res.set('Expires', '0');
+
     // Send response to OPTIONS requests and terminate the function execution
     if (req.method === 'OPTIONS') {
       res.status(204).send('');
