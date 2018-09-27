@@ -992,7 +992,7 @@ class SeleniumApi {
     const nowHour = nowDate.getHours();
 
     const isWeekDay = nowDate.getDay() > SUNDAY || nowDate.getDay() < SATURDAY;
-    const is9to5 = nowHour > MORNING_HOUR || nowHour < EVENING_HOUR;
+    const is9to5 = nowHour > MORNING_HOUR && nowHour < EVENING_HOUR;
 
     return isWeekDay && is9to5;
   }
