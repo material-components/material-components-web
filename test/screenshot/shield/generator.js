@@ -28,6 +28,7 @@ const request = require('request-promise-native');
 
 /**
  * @typedef {{
+ *   type: string,
  *   color: string,
  *   message: string,
  *   targetUrl: ?string,
@@ -100,8 +101,54 @@ class ShieldGenerator {
   async getShieldConfig_(req) {
     const reqQueryString = require('url').parse(req.url).query;
     const reqQueryParams = new URLSearchParams(reqQueryString);
-    const ref = reqQueryParams.get('ref') || 'master';
 
+    const gitRefParam = reqQueryParams.get('ref');
+    const maxGitRefsParam = parseInt(reqQueryParams.get('max'), 10);
+    const typeParam = reqQueryParams.get('type');
+    const latestParam = reqQueryParams.get('latest') !== null;
+
+    // Number of GitHub commits to search through for a matching status.
+    // Valid values: 1 through 50. Defaults to 25.
+    const maxGitRefs = latestParam ? 1 : Math.min(50, Math.max(1, maxGitRefsParam || 25));
+
+    let [, refName, separator, initialOffset] = (/^(.+?)([~^])(\d+)$/.exec(gitRefParam) || []);
+    refName = refName || 'master';
+    separator = separator || '~';
+    initialOffset = parseInt(initialOffset, 10) || 0;
+
+    const shieldConfigs = [];
+
+    for (let curRefOffset = initialOffset; curRefOffset < initialOffset + maxGitRefs; curRefOffset++) {
+      /** @type {!ShieldConfig} */
+      const shieldConfig = await this.getGitHubCommitStatus_(`${refName}${separator}${curRefOffset}`);
+      if (typeParam) {
+        if (typeParam === shieldConfig.type) {
+          return shieldConfig;
+        }
+      } else if (this.isTerminalState_(shieldConfig)) {
+        return shieldConfig;
+      }
+      shieldConfigs.push(shieldConfig);
+    }
+    return shieldConfigs[0];
+  }
+
+  /**
+   *
+   * @param {!ShieldConfig} shieldConfig
+   * @return {boolean}
+   * @private
+   */
+  isTerminalState_(shieldConfig) {
+    return shieldConfig.type === 'error' || shieldConfig.type === 'failed' || shieldConfig.type === 'passed';
+  }
+
+  /**
+   * @param {string} ref
+   * @return {!Promise<!ShieldConfig>}
+   * @private
+   */
+  async getGitHubCommitStatus_(ref) {
     let statusResponse;
     try {
       statusResponse = await this.octokit_.repos.getCombinedStatusForRef({
@@ -111,6 +158,7 @@ class ShieldGenerator {
       });
     } catch (err) {
       return {
+        type: '404',
         color: 'lightgrey',
         message: '404 not found',
         targetUrl: null,
@@ -119,9 +167,21 @@ class ShieldGenerator {
     }
 
     const isButterBot = (status) => status.context === 'screenshot-test/butter-bot';
+    const isTravisCiFinished = (status) => status.context.indexOf('travis') > -1 && status.state === 'success';
     const butterBotStatus = statusResponse.data.statuses.filter(isButterBot)[0];
+    const travisCiFinishedStatus = statusResponse.data.statuses.filter(isTravisCiFinished)[0];
     if (!butterBotStatus) {
+      if (travisCiFinishedStatus) {
+        return {
+          type: 'skipped',
+          color: 'lightgrey',
+          message: 'skipped',
+          targetUrl: null,
+          state: null,
+        };
+      }
       return {
+        type: 'pending',
         color: 'lightgrey',
         message: 'pending',
         targetUrl: null,
@@ -139,14 +199,14 @@ class ShieldGenerator {
     const desc = butterBotStatus.description;
 
     return (
-      this.getProgressStatus_(desc, targetUrl) ||
+      this.getRunningStatus_(desc, state, targetUrl) ||
       this.getPassedStatus_(desc, state, targetUrl) ||
       this.getFailedStatus_(desc, state, targetUrl) ||
-      this.getErrorStatus_(state, targetUrl)
+      this.getErrorStatus_(desc, state, targetUrl)
     );
   }
 
-  getProgressStatus_(desc, targetUrl) {
+  getRunningStatus_(desc, state, targetUrl) {
     // E.g.: desc = "87 of 581 (15.0%) - 0 diffs"
     // eslint-disable-next-line no-unused-vars
     const [, strDone, strTotal, strPercent, strDiffsSoFar] =
@@ -157,10 +217,11 @@ class ShieldGenerator {
       const flooredPercent = parseInt(strPercent, 10) + '%';
       const message = `${flooredPercent} - ${numDiffsSoFar.toLocaleString()} diff${numDiffsSoFar === 1 ? '' : 's'}`;
       return {
+        type: 'running',
         color: numDiffsSoFar === 0 ? 'yellow' : 'red',
         message,
         targetUrl,
-        state: 'running',
+        state,
       };
     }
 
@@ -173,6 +234,7 @@ class ShieldGenerator {
 
     if (isFinite(numPassed)) {
       return {
+        type: 'passed',
         color: 'brightgreen',
         message: `${numPassed.toLocaleString()} pass`,
         targetUrl,
@@ -189,6 +251,7 @@ class ShieldGenerator {
 
     if (isFinite(numDiffsTotal)) {
       return {
+        type: 'failed',
         color: 'red',
         message: `${numDiffsTotal.toLocaleString()} diff${numDiffsTotal === 1 ? '' : 's'}`,
         targetUrl,
@@ -199,9 +262,10 @@ class ShieldGenerator {
     return null;
   }
 
-  getErrorStatus_(state, targetUrl) {
+  getErrorStatus_(desc, state, targetUrl) {
     if (state === 'error' || state === 'failure') {
       return {
+        type: 'error',
         color: 'red',
         message: state,
         targetUrl,
@@ -210,6 +274,7 @@ class ShieldGenerator {
     }
 
     return {
+      type: 'unknown',
       color: 'lightgrey',
       message: (state || 'unknown').toLowerCase(),
       targetUrl,
