@@ -52,7 +52,10 @@ class ShieldGenerator {
     // passing two of them.
     const messageEncoded = encodeURI(message.replace(/-/g, '--').replace(/_/g, '__'));
 
-    const svgUrl = `https://img.shields.io/badge/screenshots-${messageEncoded}-${color}.svg?link=${targetUrl}`;
+    let svgUrl = `https://img.shields.io/badge/screenshots-${messageEncoded}-${color}.svg`;
+    if (targetUrl) {
+      svgUrl += `?link=${targetUrl}`;
+    }
 
     try {
       const svgResponse = await request({method: 'GET', uri: svgUrl});
