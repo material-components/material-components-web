@@ -46,7 +46,12 @@ class ShieldGenerator {
     /** @type {!GitHubStatusInfo} */
     const status = await this.parseGitHubStatus_(req);
     const {message, color, targetUrl} = status;
+
+    // Dashes and underscores are special reserved characters in shield.io URLs (dashes are used as URL separators and
+    // underscores get converted to spaces). To render a literal dash or underscore character, you need to escape it by
+    // passing two of them.
     const messageEncoded = encodeURI(message.replace(/-/g, '--').replace(/_/g, '__'));
+
     const svgUrl = `https://img.shields.io/badge/screenshots-${messageEncoded}-${color}.svg?link=${targetUrl}`;
 
     try {
@@ -54,6 +59,7 @@ class ShieldGenerator {
       res.set('Content-Type', 'image/svg+xml;charset=utf-8');
       res.send(svgResponse);
     } catch (err) {
+      res.set('Content-Type', 'text/plain;charset=utf-8');
       res.send(500, err);
     }
   }
