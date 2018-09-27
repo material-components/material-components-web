@@ -74,9 +74,9 @@ class ScreenshotShieldServer {
     const butterBotStatus = response.data.statuses.filter(isButterBot)[0];
     if (!butterBotStatus) {
       return {
-        state: null,
+        state: 'pending',
         color: 'lightgrey',
-        message: 'unknown',
+        message: 'pending',
         targetUrl: null,
       };
     }
@@ -101,13 +101,18 @@ class ScreenshotShieldServer {
       };
     }
 
-    const [, strDiffsSoFar] = (/(\d+) diffs?/.exec(desc) || []);
+    // E.g.: desc = "87 of 581 (15.0%) - 0 diffs"
+    // eslint-disable-next-line no-unused-vars
+    const [, strDone, strTotal, strPercent, strDiffsSoFar] =
+      (/(\d+) of (\d+) \(([\d.]+%)\) - (\d+) diffs?/.exec(desc) || []);
     const numDiffsSoFar = parseInt(strDiffsSoFar, 10);
     if (isFinite(numDiffsSoFar)) {
+      const flooredPercent = parseInt(strPercent, 10) + '%';
+      const message = `${flooredPercent} - ${numDiffsSoFar} diff${numDiffsSoFar === 1 ? '' : 's'}`;
       return {
-        state,
-        color: 'red',
-        message: `${numDiffsSoFar} diff${numDiffsSoFar === 1 ? '' : 's'}`,
+        state: 'running',
+        color: numDiffsSoFar === 0 ? 'yellow' : 'red',
+        message,
         targetUrl,
       };
     }
@@ -148,7 +153,7 @@ class ScreenshotShieldServer {
     /** @type {!GitHubStatusInfo} */
     const status = await this.parseGitHubStatus_(req);
     const {message, color} = status;
-    const messageEncoded = encodeURI(message);
+    const messageEncoded = encodeURI(message.replace(/-/g, '--').replace(/_/g, '__'));
     this.redirect_(req, res, `https://img.shields.io/badge/screenshots-${messageEncoded}-${color}.svg`);
   }
 
@@ -159,13 +164,13 @@ class ScreenshotShieldServer {
     const status = await this.parseGitHubStatus_(req);
     const {targetUrl} = status;
     if (targetUrl) {
-      this.redirect_(req, res, targetUrl);
+      this.redirect_(req, res, targetUrl, /* addAnalytics */ true);
     } else {
       this.redirect_(req, res, 'https://github.com/material-components/material-components-web');
     }
   }
 
-  redirect_(req, res, destinationUrl) {
+  redirect_(req, res, destinationUrl, addAnalytics) {
     const destQueryString = require('url').parse(destinationUrl).query;
     const destQueryParams = new URLSearchParams(destQueryString);
     const reqQueryString = require('url').parse(req.url).query;
@@ -173,10 +178,17 @@ class ScreenshotShieldServer {
 
     const resQueryParams = new URLSearchParams();
     for (const [key, value] of destQueryParams) {
-      resQueryParams.append(key, value);
+      resQueryParams.set(key, value);
     }
     for (const [key, value] of reqQueryParams) {
-      resQueryParams.append(key, value);
+      resQueryParams.set(key, value);
+    }
+
+    resQueryParams.delete('ref');
+
+    if (addAnalytics) {
+      resQueryParams.set('utm_source', 'github');
+      resQueryParams.set('utm_medium', 'shield');
     }
 
     const resQueryString = resQueryParams.toString() ? `?${resQueryParams.toString()}` : '';
