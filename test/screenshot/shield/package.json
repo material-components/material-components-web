@@ -4,6 +4,8 @@
   "main": "index.js",
   "dependencies": {
     "@octokit/rest": "^15.12.0",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2",
     "request-promise-native": "^1.0.5",
     "url-search-params-polyfill": "^5.0.0"
   }
