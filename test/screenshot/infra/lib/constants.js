@@ -55,6 +55,12 @@ module.exports = {
   CBT_CONCURRENCY_MAX_WAIT_MS: 10 * 60 * 1000, // 10 minutes
 
   /**
+   * Maximum number of times to retry a failed HTTP request to CBT.
+   * @type {number}
+   */
+  CBT_HTTP_MAX_RETRIES: 5,
+
+  /**
    * Number of milliseconds a Selenium test should wait to receive commands before being considered "stalled".
    * @type {number}
    */

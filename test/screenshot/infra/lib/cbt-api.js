@@ -44,7 +44,7 @@ const MDC_CBT_USERNAME = process.env.MDC_CBT_USERNAME;
 const MDC_CBT_AUTHKEY = process.env.MDC_CBT_AUTHKEY;
 const REST_API_BASE_URL = 'https://crossbrowsertesting.com/api/v3';
 const SELENIUM_SERVER_URL = `http://${MDC_CBT_USERNAME}:${MDC_CBT_AUTHKEY}@hub.crossbrowsertesting.com:80/wd/hub`;
-const {ExitCode, SELENIUM_ZOMBIE_SESSION_DURATION_MS} = require('./constants');
+const {ExitCode, CBT_HTTP_MAX_RETRIES, SELENIUM_ZOMBIE_SESSION_DURATION_MS} = require('./constants');
 
 /** @type {?Promise<!Array<!cbt.proto.CbtDevice>>} */
 let allDevicesPromise;
@@ -413,16 +413,20 @@ https://crossbrowsertesting.com/account
 
     for (const infoResponse of infoResponses) {
       const lastCommand = infoResponse.commands[infoResponse.commands.length - 1];
-      if (!lastCommand) {
-        continue;
+
+      // At least one Selenium command was received
+      if (lastCommand) {
+        const commandTimestampMs = new Date(lastCommand.date_issued).getTime();
+        if (Duration.hasElapsed(SELENIUM_ZOMBIE_SESSION_DURATION_MS, commandTimestampMs)) {
+          stalledSeleniumTestIds.push(infoResponse.selenium_test_id);
+        }
       }
 
-      const commandTimestampMs = new Date(lastCommand.date_issued).getTime();
-      if (!Duration.hasElapsed(SELENIUM_ZOMBIE_SESSION_DURATION_MS, commandTimestampMs)) {
-        continue;
+      // No Selenium commands have been received
+      const startTimestampMs = new Date(infoResponse.start_date || infoResponse.startup_finish_date).getTime();
+      if (Duration.hasElapsed(SELENIUM_ZOMBIE_SESSION_DURATION_MS, startTimestampMs)) {
+        stalledSeleniumTestIds.push(infoResponse.selenium_test_id);
       }
-
-      stalledSeleniumTestIds.push(infoResponse.selenium_test_id);
     }
 
     await this.killSeleniumTests(stalledSeleniumTestIds);
@@ -464,10 +468,11 @@ https://crossbrowsertesting.com/account
    * @param {string} method
    * @param {string} endpoint
    * @param {!Object=} body
+   * @param {number=} retryCount
    * @return {!Promise<!Object<string, *>|!Array<*>>}
    * @private
    */
-  async sendRequest_(stackTrace, method, endpoint, body = undefined) {
+  async sendRequest_(stackTrace, method, endpoint, body = undefined, retryCount = 0) {
     const uri = `${REST_API_BASE_URL}${endpoint}`;
 
     if (this.cli_.isOffline()) {
@@ -490,8 +495,32 @@ https://crossbrowsertesting.com/account
         json: true, // Automatically stringify the request body and parse the response body as JSON
       });
     } catch (err) {
+      if (++retryCount <= CBT_HTTP_MAX_RETRIES) {
+        this.logRetry_(method, uri, err, stackTrace, retryCount);
+        return this.sendRequest_(stackTrace, method, endpoint, body, retryCount);
+      }
       throw new VError(err, `CBT API request failed: ${method} ${uri}:\n${stackTrace}`);
     }
+  }
+
+  logRetry_(method, uri, err, stackTrace, retryCount) {
+    const colorLabel = CliColor.magenta('CBT API request failed:');
+    const colorMethod = CliColor.bold(method);
+    const colorUri = CliColor.underline(uri);
+    console.error('');
+    console.error('');
+    console.error(`${colorLabel} ${colorMethod} ${colorUri}`);
+    console.error('');
+    console.error(err);
+    console.error('');
+    console.error(stackTrace);
+    console.error('');
+
+    const colorRetrying = CliColor.magenta('Retrying request');
+    const colorAttemptCount = CliColor.bold.magenta(retryCount);
+    const colorMaxRetries = CliColor.bold.magenta(CBT_HTTP_MAX_RETRIES);
+    console.error(`${colorRetrying} (attempt ${colorAttemptCount} of ${colorMaxRetries})...`);
+    console.error('');
   }
 }
 
