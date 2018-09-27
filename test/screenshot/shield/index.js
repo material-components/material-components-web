@@ -49,6 +49,7 @@ class ScreenshotShieldServer {
     // https://github.com/github/markup/issues/224#issuecomment-33454537
     res.set('Cache-Control', 'no-cache');
     res.set('Expires', '0');
+    res.set('Vary', 'Accept-Encoding');
 
     // Send response to OPTIONS requests and terminate the function execution
     if (req.method === 'OPTIONS') {
