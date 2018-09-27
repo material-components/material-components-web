@@ -413,16 +413,20 @@ https://crossbrowsertesting.com/account
 
     for (const infoResponse of infoResponses) {
       const lastCommand = infoResponse.commands[infoResponse.commands.length - 1];
-      if (!lastCommand) {
-        continue;
+
+      // At least one Selenium command was received
+      if (lastCommand) {
+        const commandTimestampMs = new Date(lastCommand.date_issued).getTime();
+        if (Duration.hasElapsed(SELENIUM_ZOMBIE_SESSION_DURATION_MS, commandTimestampMs)) {
+          stalledSeleniumTestIds.push(infoResponse.selenium_test_id);
+        }
       }
 
-      const commandTimestampMs = new Date(lastCommand.date_issued).getTime();
-      if (!Duration.hasElapsed(SELENIUM_ZOMBIE_SESSION_DURATION_MS, commandTimestampMs)) {
-        continue;
+      // No Selenium commands have been received
+      const startTimestampMs = new Date(infoResponse.start_date || infoResponse.startup_finish_date).getTime();
+      if (Duration.hasElapsed(SELENIUM_ZOMBIE_SESSION_DURATION_MS, startTimestampMs)) {
+        stalledSeleniumTestIds.push(infoResponse.selenium_test_id);
       }
-
-      stalledSeleniumTestIds.push(infoResponse.selenium_test_id);
     }
 
     await this.killSeleniumTests(stalledSeleniumTestIds);
