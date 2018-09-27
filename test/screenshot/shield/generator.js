@@ -140,7 +140,7 @@ class ShieldGenerator {
 
     if (isFinite(numDiffsSoFar)) {
       const flooredPercent = parseInt(strPercent, 10) + '%';
-      const message = `${flooredPercent} - ${numDiffsSoFar} diff${numDiffsSoFar === 1 ? '' : 's'}`;
+      const message = `${flooredPercent} - ${numDiffsSoFar.toLocaleString()} diff${numDiffsSoFar === 1 ? '' : 's'}`;
       return {
         state: 'running',
         color: numDiffsSoFar === 0 ? 'yellow' : 'red',
@@ -160,7 +160,7 @@ class ShieldGenerator {
       return {
         state,
         color: 'brightgreen',
-        message: `${numPassed} pass`,
+        message: `${numPassed.toLocaleString()} pass`,
         targetUrl,
       };
     }
@@ -176,7 +176,7 @@ class ShieldGenerator {
       return {
         state,
         color: 'red',
-        message: `${numDiffsTotal} diff${numDiffsTotal === 1 ? '' : 's'}`,
+        message: `${numDiffsTotal.toLocaleString()} diff${numDiffsTotal === 1 ? '' : 's'}`,
         targetUrl,
       };
     }
