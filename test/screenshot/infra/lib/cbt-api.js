@@ -464,10 +464,11 @@ https://crossbrowsertesting.com/account
    * @param {string} method
    * @param {string} endpoint
    * @param {!Object=} body
+   * @param {number=} retryCount
    * @return {!Promise<!Object<string, *>|!Array<*>>}
    * @private
    */
-  async sendRequest_(stackTrace, method, endpoint, body = undefined) {
+  async sendRequest_(stackTrace, method, endpoint, body = undefined, retryCount = 0) {
     const uri = `${REST_API_BASE_URL}${endpoint}`;
 
     if (this.cli_.isOffline()) {
@@ -490,6 +491,16 @@ https://crossbrowsertesting.com/account
         json: true, // Automatically stringify the request body and parse the response body as JSON
       });
     } catch (err) {
+      const MAX_RETRIES = 5;
+      if (retryCount < MAX_RETRIES) {
+        console.error('');
+        console.error(`CBT API request failed: ${method} ${uri}:\n${stackTrace}`);
+        console.error(err);
+        console.error('');
+        console.error(`Retrying request (attempt ${retryCount + 1} of ${MAX_RETRIES})...`);
+        console.error('');
+        return this.sendRequest_(stackTrace, method, endpoint, body, retryCount + 1);
+      }
       throw new VError(err, `CBT API request failed: ${method} ${uri}:\n${stackTrace}`);
     }
   }
