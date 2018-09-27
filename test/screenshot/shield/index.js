@@ -62,14 +62,24 @@ class ScreenshotShieldServer {
     const reqQueryParams = new URLSearchParams(reqQueryString);
     const ref = reqQueryParams.get('ref') || 'master';
 
-    const response = await this.octokit_.repos.getCombinedStatusForRef({
-      owner: 'material-components',
-      repo: 'material-components-web',
-      ref,
-    });
+    let statusResponse;
+    try {
+      statusResponse = await this.octokit_.repos.getCombinedStatusForRef({
+        owner: 'material-components',
+        repo: 'material-components-web',
+        ref,
+      });
+    } catch (err) {
+      return {
+        state: null,
+        color: 'lightgrey',
+        message: '404 not found',
+        targetUrl: null,
+      };
+    }
 
     const isButterBot = (status) => status.context === 'screenshot-test/butter-bot';
-    const butterBotStatus = response.data.statuses.filter(isButterBot)[0];
+    const butterBotStatus = statusResponse.data.statuses.filter(isButterBot)[0];
     if (!butterBotStatus) {
       return {
         state: 'pending',
