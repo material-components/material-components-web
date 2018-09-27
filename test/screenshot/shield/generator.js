@@ -43,6 +43,12 @@ class ShieldGenerator {
   async handleSvgRequest(req, res) {
     this.setResponseHeaders_(req, res);
 
+    // Send response to OPTIONS requests and terminate function execution.
+    if (req.method === 'OPTIONS') {
+      res.status(204).send('');
+      return;
+    }
+
     /** @type {!ShieldConfig} */
     const config = await this.getShieldConfig_(req);
     const {message, color, targetUrl} = config;
@@ -69,6 +75,12 @@ class ShieldGenerator {
 
   async handleUrlRequest(req, res) {
     this.setResponseHeaders_(req, res);
+
+    // Send response to OPTIONS requests and terminate function execution.
+    if (req.method === 'OPTIONS') {
+      res.status(204).send('');
+      return;
+    }
 
     /** @type {!ShieldConfig} */
     const config = await this.getShieldConfig_(req);
@@ -206,22 +218,11 @@ class ShieldGenerator {
   }
 
   setResponseHeaders_(req, res) {
-    // Allow CORS requests.
-    // See https://cloud.google.com/functions/docs/writing/http#handling_cors_requests
-    res.set('Access-Control-Allow-Origin', '*');
-    res.set('Access-Control-Allow-Methods', 'GET');
-    res.set('Access-Control-Max-Age', '3600');
-
     // Prevent GitHub Camo from caching images.
     // See https://github.com/github/markup/issues/224#issuecomment-33454537
     res.set('Cache-Control', 'no-cache');
     res.set('Expires', '0');
     res.set('Vary', 'Accept-Encoding');
-
-    // Send response to OPTIONS requests and terminate function execution.
-    if (req.method === 'OPTIONS') {
-      res.status(204).send('');
-    }
   }
 
   redirect_(req, res, destinationUrl, addAnalytics) {
