@@ -42,7 +42,7 @@
     "test:site": "npm run clean:site && ./scripts/site-generator-test.sh"
   },
   "devDependencies": {
-    "@octokit/rest": "^15.9.4",
+    "@octokit/rest": "^15.12.1",
     "argparse": "^1.0.10",
     "ascii-table": "0.0.9",
     "autoprefixer": "^9.0.0",
