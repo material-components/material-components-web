@@ -24,6 +24,7 @@
 require('url-search-params-polyfill');
 
 const octokit = require('@octokit/rest');
+const request = require('request-promise-native');
 
 /**
  * @typedef {{
@@ -40,7 +41,7 @@ class ScreenshotShieldServer {
   }
 
   /** @private */
-  allowCORS_(req, res) {
+  setResponseHeaders_(req, res) {
     res.set('Access-Control-Allow-Origin', '*.github.com');
     res.set('Access-Control-Allow-Methods', 'GET');
     res.set('Access-Control-Max-Age', '3600');
@@ -158,20 +159,35 @@ class ScreenshotShieldServer {
         targetUrl,
       };
     }
+
+    return {
+      state,
+      color: 'lightgrey',
+      message: (state || 'unknown').toLowerCase(),
+      targetUrl,
+    };
   }
 
-  async handleShieldRequest(req, res) {
-    this.allowCORS_(req, res);
+  async handleSvgRequest(req, res) {
+    this.setResponseHeaders_(req, res);
 
     /** @type {!GitHubStatusInfo} */
     const status = await this.parseGitHubStatus_(req);
-    const {message, color} = status;
+    const {message, color, targetUrl} = status;
     const messageEncoded = encodeURI(message.replace(/-/g, '--').replace(/_/g, '__'));
-    this.redirect_(req, res, `https://img.shields.io/badge/screenshots-${messageEncoded}-${color}.svg`);
+    const svgUrl = `https://img.shields.io/badge/screenshots-${messageEncoded}-${color}.svg?link=${targetUrl}`;
+
+    try {
+      const svgResponse = await request({method: 'GET', uri: svgUrl});
+      res.set('Content-Type', 'image/svg+xml;charset=utf-8');
+      res.send(svgResponse);
+    } catch (err) {
+      res.send(500, err);
+    }
   }
 
   async handleUrlRequest(req, res) {
-    this.allowCORS_(req, res);
+    this.setResponseHeaders_(req, res);
 
     /** @type {!GitHubStatusInfo} */
     const status = await this.parseGitHubStatus_(req);
@@ -212,5 +228,5 @@ class ScreenshotShieldServer {
 
 const screenshotShieldServer = new ScreenshotShieldServer();
 
-exports.screenshotShieldSvg = (req, res) => screenshotShieldServer.handleShieldRequest(req, res);
+exports.screenshotShieldSvg = (req, res) => screenshotShieldServer.handleSvgRequest(req, res);
 exports.screenshotShieldUrl = (req, res) => screenshotShieldServer.handleUrlRequest(req, res);
