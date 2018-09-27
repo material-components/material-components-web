@@ -43,7 +43,6 @@ class ScreenshotShieldServer {
   allowCORS_(req, res) {
     res.set('Access-Control-Allow-Origin', '*.github.com');
     res.set('Access-Control-Allow-Methods', 'GET');
-    res.set('Access-Control-Allow-Headers', 'Content-Type');
     res.set('Access-Control-Max-Age', '3600');
 
     // Prevent GitHub Camo from caching images
