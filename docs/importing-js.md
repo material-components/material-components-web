@@ -27,7 +27,8 @@ import {MDCFoo, MDCFooFoundation} from '@material/foo/index';
 ```
 
 Note that in this case, you must ensure your build toolchain is configured to process and transpile MDC Web's modules
-as well as your own. You will also need to include babel's `transform-object-assign` plugin for IE 11 support.
+as well as your own. You will also need to include babel's
+[`transform-object-assign`](https://www.npmjs.com/package/babel-plugin-transform-object-assign) plugin for IE 11 support.
 
 See the [Getting Started guide](getting-started.md) for more details on setting up an environment.
 
