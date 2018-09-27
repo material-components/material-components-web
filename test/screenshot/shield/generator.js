@@ -28,11 +28,11 @@ const request = require('request-promise-native');
 
 /**
  * @typedef {{
- *   state: ?string,
  *   color: string,
  *   message: string,
  *   targetUrl: ?string,
- * }} GitHubStatusInfo
+ *   state: ?string,
+ * }} ShieldConfig
  */
 
 class ShieldGenerator {
@@ -43,9 +43,9 @@ class ShieldGenerator {
   async handleSvgRequest(req, res) {
     this.setResponseHeaders_(req, res);
 
-    /** @type {!GitHubStatusInfo} */
-    const status = await this.parseGitHubStatus_(req);
-    const {message, color, targetUrl} = status;
+    /** @type {!ShieldConfig} */
+    const config = await this.getShieldConfig_(req);
+    const {message, color, targetUrl} = config;
 
     // Dashes and underscores are special reserved characters in shield.io URLs (dashes are used as URL separators and
     // underscores get converted to spaces). To render a literal dash or underscore character, you need to escape it by
@@ -70,9 +70,9 @@ class ShieldGenerator {
   async handleUrlRequest(req, res) {
     this.setResponseHeaders_(req, res);
 
-    /** @type {!GitHubStatusInfo} */
-    const status = await this.parseGitHubStatus_(req);
-    const {targetUrl} = status;
+    /** @type {!ShieldConfig} */
+    const config = await this.getShieldConfig_(req);
+    const {targetUrl} = config;
     if (targetUrl) {
       this.redirect_(req, res, targetUrl, /* addAnalytics */ true);
     } else {
@@ -82,10 +82,10 @@ class ShieldGenerator {
 
   /**
    * @param {{url: string}} req
-   * @return {!Promise<!GitHubStatusInfo>}
+   * @return {!Promise<!ShieldConfig>}
    * @private
    */
-  async parseGitHubStatus_(req) {
+  async getShieldConfig_(req) {
     const reqQueryString = require('url').parse(req.url).query;
     const reqQueryParams = new URLSearchParams(reqQueryString);
     const ref = reqQueryParams.get('ref') || 'master';
@@ -99,10 +99,10 @@ class ShieldGenerator {
       });
     } catch (err) {
       return {
-        state: null,
         color: 'lightgrey',
         message: '404 not found',
         targetUrl: null,
+        state: null,
       };
     }
 
@@ -110,10 +110,10 @@ class ShieldGenerator {
     const butterBotStatus = statusResponse.data.statuses.filter(isButterBot)[0];
     if (!butterBotStatus) {
       return {
-        state: 'pending',
         color: 'lightgrey',
         message: 'pending',
         targetUrl: null,
+        state: 'pending',
       };
     }
 
@@ -145,10 +145,10 @@ class ShieldGenerator {
       const flooredPercent = parseInt(strPercent, 10) + '%';
       const message = `${flooredPercent} - ${numDiffsSoFar.toLocaleString()} diff${numDiffsSoFar === 1 ? '' : 's'}`;
       return {
-        state: 'running',
         color: numDiffsSoFar === 0 ? 'yellow' : 'red',
         message,
         targetUrl,
+        state: 'running',
       };
     }
 
@@ -161,10 +161,10 @@ class ShieldGenerator {
 
     if (isFinite(numPassed)) {
       return {
-        state,
         color: 'brightgreen',
         message: `${numPassed.toLocaleString()} pass`,
         targetUrl,
+        state,
       };
     }
 
@@ -177,10 +177,10 @@ class ShieldGenerator {
 
     if (isFinite(numDiffsTotal)) {
       return {
-        state,
         color: 'red',
         message: `${numDiffsTotal.toLocaleString()} diff${numDiffsTotal === 1 ? '' : 's'}`,
         targetUrl,
+        state,
       };
     }
 
@@ -190,18 +190,18 @@ class ShieldGenerator {
   getErrorStatus_(state, targetUrl) {
     if (state === 'error' || state === 'failure') {
       return {
-        state,
         color: 'red',
         message: state,
         targetUrl,
+        state,
       };
     }
 
     return {
-      state,
       color: 'lightgrey',
       message: (state || 'unknown').toLowerCase(),
       targetUrl,
+      state,
     };
   }
 
