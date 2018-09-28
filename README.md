@@ -96,9 +96,13 @@ npm install @material/ripple
 Then import the ES2015 file for @material/ripple into your application, and initialize an MDCRipple with a DOM element:
 
 ```js
-import {MDCRipple} from '@material/ripple';
+import {MDCRipple} from '@material/ripple/index';
 const ripple = new MDCRipple(document.querySelector('.foo-button'));
 ```
+
+> Note: Import `@material/ripple/index` if you wish to transpile MDC Web's ES2015 sources as part of your build process.
+> If your build toolchain is configured to only transpile your own sources, import `@material/ripple` instead, which will
+> reference the distributed UMD module instead.
 
 This will produce a Material Design ripple on the button!
 

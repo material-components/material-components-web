@@ -3,6 +3,7 @@
   "version": "0.40.0",
   "description": "The Material Components for the web toolbar component",
   "license": "MIT",
+  "main": "dist/mdc.toolbar.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git"
