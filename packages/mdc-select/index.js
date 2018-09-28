@@ -116,7 +116,8 @@ class MDCSelect extends MDCComponent {
    * @return {boolean} True if the select is disabled.
    */
   get disabled() {
-    return this.root_.classList.contains(cssClasses.DISABLED) || (this.nativeControl_ && this.nativeControl_.disabled);
+    return this.root_.classList.contains(cssClasses.DISABLED) ||
+      (this.nativeControl_ ? this.nativeControl_.disabled : false);
   }
 
   /**
@@ -329,8 +330,8 @@ class MDCSelect extends MDCComponent {
       getValue: () => {
         const listItem = this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR);
         if (listItem) {
-          if (listItem.value) {
-            return listItem.value;
+          if (listItem.hasAttribute('value')) {
+            return listItem.getAttribute('value');
           } else {
             return listItem.textContent.trim();
           }
