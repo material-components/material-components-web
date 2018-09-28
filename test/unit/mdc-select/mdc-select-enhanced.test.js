@@ -28,10 +28,10 @@ import td from 'testdouble';
 import {createMockRaf} from '../helpers/raf';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 
-import {MDCRipple, MDCRippleFoundation} from '../../../packages/mdc-ripple';
-import {MDCSelect} from '../../../packages/mdc-select';
+import {MDCRipple, MDCRippleFoundation} from '../../../packages/mdc-ripple/index';
+import {MDCSelect} from '../../../packages/mdc-select/index';
 import {cssClasses} from '../../../packages/mdc-select/constants';
-import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline';
+import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline/index';
 
 const LABEL_WIDTH = 100;
 
@@ -64,6 +64,7 @@ function getFixture() {
   return bel`
     <div class="mdc-select">
       <div class="mdc-select__selected-text"></div>
+      <i class="mdc-select__dropdown-icon"></i>
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
       <ul class="mdc-list">
         <li class="mdc-list-item mdc-list-item--selected"></li>
@@ -84,7 +85,8 @@ function getFixture() {
 function getOutlineFixture() {
   return bel`
     <div class="mdc-select mdc-select--outlined">
-    <div class="mdc-select__selected-text"></div>
+      <div class="mdc-select__selected-text"></div>
+      <i class="mdc-select__dropdown-icon"></i>
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
       <ul class="mdc-list">
         <li class="mdc-list-item mdc-list-item--selected"></li>
