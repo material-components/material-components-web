@@ -28,8 +28,8 @@ import td from 'testdouble';
 
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 import {createMockRaf} from '../helpers/raf';
-import {MDCCheckbox} from '../../../packages/mdc-checkbox';
-import {MDCRipple} from '../../../packages/mdc-ripple';
+import {MDCCheckbox} from '../../../packages/mdc-checkbox/index';
+import {MDCRipple} from '../../../packages/mdc-ripple/index';
 import {strings} from '../../../packages/mdc-checkbox/constants';
 import {getMatchesProperty} from '../../../packages/mdc-ripple/util';
 

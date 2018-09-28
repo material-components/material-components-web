@@ -3,6 +3,7 @@
   "description": "The Material Components for the web list component",
   "version": "0.40.0",
   "license": "MIT",
+  "main": "dist/mdc.list.js",
   "keywords": [
     "material components",
     "material design",
