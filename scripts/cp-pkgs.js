@@ -30,6 +30,7 @@ const path = require('path');
 const fs = require('fs');
 const cpFile = require('cp-file');
 const toSlugCase = require('to-slug-case');
+const {spawnSync} = require('child_process');
 const {sync: globSync} = require('glob');
 
 const PKG_RE = /(?:material\-components\-web)|(?:mdc\.[a-zA-Z\-]+)/;
@@ -42,10 +43,19 @@ const isValidCwd = (
 
 if (!isValidCwd) {
   console.error(
-    'Invalid CWD. Please ensure you are running this from the root of the repo, ' +
-    'and that you have run `npm run dist`'
+    'Invalid CWD. Please ensure you are running this from the root of the repo, and that you have run `npm run dist`'
   );
-  process.exit(0);
+  process.exit(1);
+}
+
+function cleanPkgDistDirs() {
+  const statuses = globSync('packages/*/dist').map(
+    (distPath) => spawnSync('rm', ['-r', distPath], {stdio: 'inherit'}).status);
+
+  if (statuses.find((status) => status > 0)) {
+    console.error('Failed to clean package dist folders prior to copying');
+    process.exit(1);
+  }
 }
 
 function getAssetEntry(asset) {
@@ -66,6 +76,8 @@ function cpAsset(asset) {
   const destDir = path.join(assetPkg, 'dist', path.basename(asset));
   return cpFile(asset, destDir).then(() => console.log(`cp ${asset} -> ${destDir}`));
 }
+
+cleanPkgDistDirs();
 
 Promise.all(globSync('build/*.{css,js}').map(cpAsset)).catch((err) => {
   console.error(`Error encountered copying assets: ${err}`);

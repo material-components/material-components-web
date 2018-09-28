@@ -24,7 +24,7 @@
 import bel from 'bel';
 import {assert} from 'chai';
 
-import {MDCTextFieldHelperText} from '../../../packages/mdc-textfield/helper-text';
+import {MDCTextFieldHelperText} from '../../../packages/mdc-textfield/helper-text/index';
 
 const getFixture = () => bel`
   <div class="mdc-textfield__helper-text"></div>

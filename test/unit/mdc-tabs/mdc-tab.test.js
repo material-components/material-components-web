@@ -27,8 +27,7 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 import {createMockRaf} from '../helpers/raf';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
-import {MDCTab} from '../../../packages/mdc-tabs/tab';
-import {MDCTabFoundation} from '../../../packages/mdc-tabs/tab';
+import {MDCTab, MDCTabFoundation} from '../../../packages/mdc-tabs/tab/index';
 import {cssClasses, strings} from '../../../packages/mdc-tabs/tab/constants';
 
 function getFixture() {

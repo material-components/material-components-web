@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {getCorrectPropertyName} from '../../../packages/mdc-animation';
+import {getCorrectPropertyName} from '../../../packages/mdc-animation/index';
 import {captureHandlers} from '../helpers/foundation';
 import {createMockRaf} from '../helpers/raf';
 import {setupFoundationTest} from '../helpers/setup';
