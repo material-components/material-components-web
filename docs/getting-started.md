@@ -333,6 +333,27 @@ Now run `npm start` again and open http://localhost:8080. You should see a Mater
 
 <img src="button_with_ripple.png" alt="Button with Ripple" width="90" height="36">
 
+### Step 5: Build Assets for Production
+
+Up to this point, we've used `webpack-dev-server` to preview our work with live updates. However, `webpack-dev-server` is not intended for production use. Instead, we should generate production-ready assets.
+
+Add another script to `package.json`:
+
+```json
+  "scripts": {
+    "build": "webpack -p",
+    "start": "webpack-dev-server"
+  }
+```
+
+Now run the following command:
+
+```
+npm run build
+```
+
+This will produce `bundle.js` and `bundle.css` in the project directory. These contain the compiled CSS and transpiled JS, which you can then copy into a directory served by any web server.
+
 ## Appendix: Configuring a Sass Importer for Nested node_modules
 
 It is possible to end up with nested `node_modules` folders if you have dependencies on conflicting versions of
