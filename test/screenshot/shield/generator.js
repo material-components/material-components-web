@@ -305,6 +305,9 @@ class ShieldGenerator {
     }
 
     resQueryParams.delete('ref');
+    resQueryParams.delete('max');
+    resQueryParams.delete('type');
+    resQueryParams.delete('latest');
 
     if (addAnalytics) {
       resQueryParams.set('utm_source', 'github');
