@@ -21,29 +21,6 @@
  * THE SOFTWARE.
  */
 
-/**
- * @license
- * Copyright 2016 Google Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
 import {assert} from 'chai';
 import bel from 'bel';
 import domEvents from 'dom-events';
@@ -79,16 +56,17 @@ class FakeOutline {
   constructor() {
     this.destroy = td.func('.destroy');
     this.notch = td.func('.notch');
+    this.closeNotch = td.func('.closeNotch');
   }
 }
 
 function getFixture() {
   return bel`
     <div class="mdc-select">
-    <div class="mdc-select__selected-text"></div>
+      <div class="mdc-select__selected-text"></div>
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
       <ul class="mdc-list">
-        <li class="mdc-list-item"></li>
+        <li class="mdc-list-item mdc-list-item--selected"></li>
         <li class="mdc-list-item" value="orange">          
           Orange
         </li>
@@ -109,7 +87,7 @@ function getOutlineFixture() {
     <div class="mdc-select__selected-text"></div>
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
       <ul class="mdc-list">
-        <li class="mdc-list-item"></li>
+        <li class="mdc-list-item mdc-list-item--selected"></li>
         <li class="mdc-list-item" value="orange">          
           Orange
         </li>
@@ -129,7 +107,7 @@ function getOutlineFixture() {
   `;
 }
 
-suite('MDCSelect');
+suite('MDCSelect-Enhanced');
 
 test('attachTo returns a component instance', () => {
   assert.isOk(MDCSelect.attachTo(getFixture()) instanceof MDCSelect);
@@ -139,7 +117,7 @@ function setupTest(hasOutline = false, hasLabel = true) {
   const bottomLine = new FakeBottomLine();
   const label = new FakeLabel();
   const fixture = hasOutline ? getOutlineFixture() : getFixture();
-  const nativeControl = fixture.querySelector('.mdc-select__native-control');
+  const selectedText = fixture.querySelector('.mdc-select__selected-text');
   const labelEl = fixture.querySelector('.mdc-floating-label');
   const bottomLineEl = fixture.querySelector('.mdc-line-ripple');
   const outline = new FakeOutline();
@@ -150,7 +128,7 @@ function setupTest(hasOutline = false, hasLabel = true) {
 
   const component = new MDCSelect(fixture, /* foundation */ undefined, () => label, () => bottomLine, () => outline);
 
-  return {fixture, nativeControl, label, labelEl, bottomLine, bottomLineEl, component, outline};
+  return {fixture, selectedText, label, labelEl, bottomLine, bottomLineEl, component, outline};
 }
 
 test('#get/setSelectedIndex', () => {
@@ -176,12 +154,6 @@ test('#get value', () => {
   assert.equal(component.value, 'orange');
 });
 
-test('#set value sets the value on the <select>', () => {
-  const {component, nativeControl} = setupTest();
-  component.value = 'orange';
-  assert.equal(nativeControl.value, 'orange');
-});
-
 test('#set value calls foundation.handleChange', () => {
   const {component} = setupTest();
   component.foundation_.handleChange = td.func();
@@ -203,17 +175,21 @@ test('#set disabled calls foundation.updateDisabledStyle', () => {
   td.verify(component.foundation_.updateDisabledStyle(true), {times: 1});
 });
 
-test('#initialSyncWithDOM sets the selected index if an option has the selected attr', () => {
+test('#initialSyncWithDOM sets the selected index if an option has the selected class', () => {
   const fixture = bel`
     <div class="mdc-select">
-      <select class="mdc-select__native-control">
-        <option value="orange">
+      <div class="mdc-select__selected-text"></div>
+      <div class="mdc-select__menu mdc-menu mdc-menu-surface">
+      <ul class="mdc-list">
+        <li class="mdc-list-item"></li>
+        <li class="mdc-list-item mdc-list-item--selected" value="orange">          
           Orange
-        </option>
-        <option value="apple" selected>
+        </li>
+        <li class="mdc-list-item" value="apple">
           Apple
-        </option>
-      </select>
+        </li> 
+      </ul>
+      </div>
       <label class="mdc-floating-label">Pick a Food Group</label>
       <div class="mdc-line-ripple"></div>
     </div>
@@ -222,18 +198,22 @@ test('#initialSyncWithDOM sets the selected index if an option has the selected 
   assert.equal(component.selectedIndex, 1);
 });
 
-test('#initialSyncWithDOM disables the select if the disabled attr is found on the <select>', () => {
+test('#initialSyncWithDOM disables the select if the disabled class is found', () => {
   const fixture = bel`
-    <div class="mdc-select">
-      <select class="mdc-select__native-control" disabled>
-        <option value="orange">
+    <div class="mdc-select mdc-select--disabled">
+      <div class="mdc-select__selected-text"></div>
+      <div class="mdc-select__menu mdc-menu mdc-menu-surface">
+      <ul class="mdc-list">
+        <li class="mdc-list-item mdc-list-item--selected"></li>
+        <li class="mdc-list-item" value="orange">          
           Orange
-        </option>
-        <option value="apple" selected>
+        </li>
+        <li class="mdc-list-item" value="apple">
           Apple
-        </option>
-      </select>
-      <label class="mdc-floating-label"></label>
+        </li> 
+      </ul>
+      </div>
+      <label class="mdc-floating-label">Pick a Food Group</label>
       <div class="mdc-line-ripple"></div>
     </div>
   `;
@@ -263,14 +243,18 @@ test('adapter#hasClass returns true if a class exists on the root element', () =
 test('adapter_.floatLabel does not throw error if label does not exist', () => {
   const fixture = bel`
     <div class="mdc-select">
-      <select class="mdc-select__native-control">
-        <option value="orange">
+      <div class="mdc-select__selected-text"></div>
+      <div class="mdc-select__menu mdc-menu mdc-menu-surface">
+      <ul class="mdc-list">
+        <li class="mdc-list-item mdc-list-item--selected"></li>
+        <li class="mdc-list-item" value="orange">          
           Orange
-        </option>
-        <option value="apple" selected>
+        </li>
+        <li class="mdc-list-item" value="apple">
           Apple
-        </option>
-      </select>
+        </li> 
+      </ul>
+      </div>
       <div class="mdc-line-ripple"></div>
     </div>
   `;
@@ -283,15 +267,19 @@ test('adapter.activateBottomLine and adapter.deactivateBottomLine ' +
   'does not throw error if bottomLine does not exist', () => {
   const fixture = bel`
     <div class="mdc-select">
-      <select class="mdc-select__native-control">
-        <option value="orange">
+      <div class="mdc-select__selected-text"></div>
+      <div class="mdc-select__menu mdc-menu mdc-menu-surface">
+      <ul class="mdc-list">
+        <li class="mdc-list-item mdc-list-item--selected"></li>
+        <li class="mdc-list-item" value="orange">          
           Orange
-        </option>
-        <option value="apple" selected>
+        </li>
+        <li class="mdc-list-item" value="apple">
           Apple
-        </option>
-      </select>
-      <label class="mdc-floating-label"></label>
+        </li> 
+      </ul>
+      </div>
+      <label class="mdc-floating-label">Pick a Food Group</label>
     </div>
   `;
   const component = new MDCSelect(fixture);
@@ -351,9 +339,9 @@ test('handles ripple focus properly', function() {
   MDCSelect.attachTo(fixture);
   raf.flush();
 
-  const nativeControl = fixture.querySelector('.mdc-select__native-control');
+  const selectedText = fixture.querySelector('.mdc-select__selected-text');
 
-  domEvents.emit(nativeControl, 'focus');
+  domEvents.emit(selectedText, 'focus');
   raf.flush();
 
   assert.isTrue(fixture.classList.contains(MDCRippleFoundation.cssClasses.BG_FOCUSED));
@@ -446,47 +434,47 @@ test('adapter#getLabelWidth returns 0 if the label does not exist', () => {
 });
 
 test('change event triggers foundation.handleChange()', () => {
-  const {component, nativeControl} = setupTest();
+  const {component, selectedText} = setupTest();
   component.foundation_.handleChange = td.func();
-  domEvents.emit(nativeControl, 'change');
+  domEvents.emit(selectedText, 'change');
   td.verify(component.foundation_.handleChange(), {times: 1});
 });
 
 test('focus event triggers foundation.handleFocus()', () => {
-  const {component, nativeControl} = setupTest();
+  const {component, selectedText} = setupTest();
   component.foundation_.handleFocus = td.func();
-  domEvents.emit(nativeControl, 'focus');
+  domEvents.emit(selectedText, 'focus');
   td.verify(component.foundation_.handleFocus(), {times: 1});
 });
 
 test('blur event triggers foundation.handleBlur()', () => {
-  const {component, nativeControl} = setupTest();
+  const {component, selectedText} = setupTest();
   component.foundation_.handleBlur = td.func();
-  domEvents.emit(nativeControl, 'blur');
+  domEvents.emit(selectedText, 'blur');
   td.verify(component.foundation_.handleBlur(), {times: 1});
 });
 
 test('#destroy removes the change handler', () => {
-  const {component, nativeControl} = setupTest();
+  const {component, selectedText} = setupTest();
   component.foundation_.handleChange = td.func();
   component.destroy();
-  domEvents.emit(nativeControl, 'change');
+  domEvents.emit(selectedText, 'change');
   td.verify(component.foundation_.handleChange(), {times: 0});
 });
 
 test('#destroy removes the focus handler', () => {
-  const {component, nativeControl} = setupTest();
+  const {component, selectedText} = setupTest();
   component.foundation_.handleFocus = td.func();
   component.destroy();
-  domEvents.emit(nativeControl, 'focus');
+  domEvents.emit(selectedText, 'focus');
   td.verify(component.foundation_.handleFocus(), {times: 0});
 });
 
 test('#destroy removes the blur handler', () => {
-  const {component, nativeControl} = setupTest();
+  const {component, selectedText} = setupTest();
   component.foundation_.handleBlur = td.func();
   component.destroy();
-  domEvents.emit(nativeControl, 'blur');
+  domEvents.emit(selectedText, 'blur');
   td.verify(component.foundation_.handleBlur(), {times: 0});
 });
 
@@ -497,7 +485,7 @@ test('mousedown on the select sets the line ripple origin', () => {
   const clientY = 200;
   // IE11 mousedown event.
   event.initMouseEvent('mousedown', true, true, window, 0, 0, 0, clientX, clientY, false, false, false, false, 0, null);
-  fixture.querySelector('select').dispatchEvent(event);
+  fixture.querySelector('.mdc-select__selected-text').dispatchEvent(event);
 
   td.verify(bottomLine.setRippleCenter(200), {times: 1});
 });
@@ -510,7 +498,7 @@ test('mousedown on the select does nothing if the it does not have a lineRipple'
   const clientY = 200;
   // IE11 mousedown event.
   event.initMouseEvent('mousedown', true, true, window, 0, 0, 0, clientX, clientY, false, false, false, false, 0, null);
-  fixture.querySelector('select').dispatchEvent(event);
+  fixture.querySelector('.mdc-select__selected-text').dispatchEvent(event);
 
   td.verify(bottomLine.setRippleCenter(200), {times: 0});
 });
@@ -524,7 +512,7 @@ test('#destroy removes the mousedown listener', () => {
   component.destroy();
   // IE11 mousedown event.
   event.initMouseEvent('mousedown', true, true, window, 0, 0, 0, clientX, clientY, false, false, false, false, 0, null);
-  fixture.querySelector('select').dispatchEvent(event);
+  fixture.querySelector('.mdc-select__selected-text').dispatchEvent(event);
 
   td.verify(bottomLine.setRippleCenter(200), {times: 0});
 });
