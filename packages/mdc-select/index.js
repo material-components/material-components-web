@@ -31,8 +31,9 @@ import {MDCNotchedOutline} from '@material/notched-outline/index';
 import MDCSelectFoundation from './foundation';
 import MDCSelectAdapter from './adapter';
 import {cssClasses, strings} from './constants';
-import {strings as menuSurfaceStrings, Corner} from '@material/menu-surface/constants';
-import {strings as menuStrings} from '@material/menu/constants';
+// Closure has issues with {this as that} syntax.
+import * as menuSurfaceConstants from '@material/menu-surface/constants';
+import * as menuConstants from '@material/menu/constants';
 
 /**
  * @extends MDCComponent<!MDCSelectFoundation>
@@ -43,10 +44,12 @@ class MDCSelect extends MDCComponent {
    */
   constructor(...args) {
     super(...args);
-    /** @private {?Element} */
+    /** @private {?HTMLElement} */
     this.nativeControl_;
-    /** @private {?Element} */
+    /** @private {?HTMLElement} */
     this.selectedText_;
+    /** @private {?HTMLElement} */
+    this.menuElement_;
     /** @type {?MDCMenu} */
     this.menu_;
     /** @type {?MDCRipple} */
@@ -65,6 +68,8 @@ class MDCSelect extends MDCComponent {
     this.handleBlur_;
     /** @private {!Function} */
     this.handleClick_;
+    /** @private {!Function} */
+    this.handleKeydown_;
     /** @private {boolean} */
     this.menuOpened_ = false;
   }
@@ -97,8 +102,8 @@ class MDCSelect extends MDCComponent {
   get selectedIndex() {
     let selectedIndex;
     if (this.menuElement_) {
-      const selectedElement =this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR);
-      selectedIndex = this.menu_.items.indexOf(selectedElement);
+      const selectedEl = /** @type{!HTMLElement} */ (this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR));
+      selectedIndex = this.menu_.items.indexOf(selectedEl);
     } else {
       selectedIndex = this.nativeControl_.selectedIndex;
     }
@@ -144,8 +149,8 @@ class MDCSelect extends MDCComponent {
     labelFactory = (el) => new MDCFloatingLabel(el),
     lineRippleFactory = (el) => new MDCLineRipple(el),
     outlineFactory = (el) => new MDCNotchedOutline(el)) {
-    this.nativeControl_ = this.root_.querySelector(strings.NATIVE_CONTROL_SELECTOR);
-    this.selectedText_ = this.root_.querySelector('.mdc-select__selected-text');
+    this.nativeControl_ = /** @type {HTMLElement} */ (this.root_.querySelector(strings.NATIVE_CONTROL_SELECTOR));
+    this.selectedText_ = /** @type {HTMLElement} */ (this.root_.querySelector('.mdc-select__selected-text'));
 
     if (this.selectedText_) {
       this.enhancedSelectSetup_();
@@ -175,12 +180,12 @@ class MDCSelect extends MDCComponent {
   enhancedSelectSetup_() {
     const isDisabled = this.root_.classList.contains(cssClasses.DISABLED);
     this.selectedText_.setAttribute('tabindex', isDisabled ? '-1' : '0');
-    this.menuElement_ = this.root_.querySelector(strings.MENU_SELECTOR);
+    this.menuElement_ = /** @type {HTMLElement} */ (this.root_.querySelector(strings.MENU_SELECTOR));
     this.menu_ = new MDCMenu(this.menuElement_);
     this.menu_.hoistMenuToBody();
-    this.menu_.setAnchorElement(this.root_);
-    this.menu_.setAnchorCorner(Corner.BOTTOM_START);
-    this.menu_.listen(menuSurfaceStrings.CLOSED_EVENT, () => {
+    this.menu_.setAnchorElement(/** @type {!HTMLElement} */ (this.root_));
+    this.menu_.setAnchorCorner(menuSurfaceConstants.Corner.BOTTOM_START);
+    this.menu_.listen(menuSurfaceConstants.strings.CLOSED_EVENT, () => {
       // menuOpened_ is used to track the state of the menu opening or closing since the menu.open function
       // will return false if the menu is still closing and this method listens to the closed event which
       // occurs after the menu is already closed.
@@ -191,13 +196,13 @@ class MDCSelect extends MDCComponent {
     });
 
     // Menu should open to the last selected element.
-    this.menu_.listen(menuSurfaceStrings.OPENED_EVENT, () => {
+    this.menu_.listen(menuSurfaceConstants.strings.OPENED_EVENT, () => {
       if (this.selectedIndex >= 0) {
         this.menu_.items[this.selectedIndex].focus();
       }
     });
 
-    this.menu_.listen(menuStrings.SELECTED_EVENT, (evtData) => {
+    this.menu_.listen(menuConstants.strings.SELECTED_EVENT, (evtData) => {
       this.selectedIndex = evtData.detail.index;
     });
   }
@@ -339,7 +344,7 @@ class MDCSelect extends MDCComponent {
         return '';
       },
       setValue: (value) => {
-        const element = this.menuElement_.querySelector(`[value="${value}"]`);
+        const element = /** @type {HTMLElement} */ (this.menuElement_.querySelector(`[value="${value}"]`));
         if (element) {
           this.setEnhancedSelectedIndex_(this.menu_.items.indexOf(element));
         } else {
@@ -363,7 +368,7 @@ class MDCSelect extends MDCComponent {
       },
       setDisabled: (isDisabled) => {
         this.selectedText_.setAttribute('tabindex', isDisabled ? '-1' : '0');
-        this.root_.classList[isDisabled ? 'add' : 'remove'](cssClasses.DISABLED);
+        isDisabled ? this.root_.classList.add(cssClasses.DISABLED) : this.root_.classList.remove(cssClasses.DISABLED);
       },
     };
   }
