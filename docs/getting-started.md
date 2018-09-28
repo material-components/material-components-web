@@ -7,9 +7,9 @@ path: /docs/getting-started/
 
 # Getting Started
 
-## Quick Start
+## Quick Start (CDN)
 
-To try Material Components for the web with minimal setup, load the CSS and JS from unpkg:
+To try Material Components for the web with minimal setup, load the precompiled all-in-one CSS and JS bundles from unpkg:
 
 ```html
 https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css
@@ -28,11 +28,27 @@ Then include MDC markup...
 mdc.ripple.MDCRipple.attachTo(document.querySelector('.foo-button'));
 ```
 
-However, it is highly recommended to install Material Components for the web via npm and consume its ES2015 modules and Sass directly. This is outlined in the steps below.
+## Installing Locally
 
-## Using MDC Web with ES2015 and Sass
+Material Components for the web can be installed locally using npm. It is available as a single all-in-one package:
 
-This section walks you through how to [install MDC Web Node modules](https://www.npmjs.com/org/material), and bundle the Sass and JavaScript from those Node modules in your [webpack](https://webpack.js.org/) configuration.
+```
+npm i material-components-web
+```
+
+...or as individual components:
+
+```
+npm i @material/button @material/ripple
+```
+
+Each package provides precompiled CSS and JS under its `dist` folder. The precompiled JS is converted to UMD format and is consumable directly by browsers or within any workflow that expects to consume ES5. Referencing `@material/foo` within a Node.js context will automatically reference the precompiled JS under `dist`.
+
+However, for optimal results, we recommend consuming MDC Web's ES2015 modules and Sass directly. This is outlined in the steps below.
+
+## Using MDC Web with Sass and ES2015
+
+This section walks through how to [install MDC Web Node modules](https://www.npmjs.com/org/material), and bundle the Sass and JavaScript from those Node modules in your [webpack](https://webpack.js.org/) configuration.
 
 > Note: This guide assumes you have Node.js and npm installed locally.
 
@@ -325,9 +341,13 @@ npm install --save-dev @material/ripple
 We need to tell our `app.js` to import the ES2015 file for `@material/ripple`. We also need to initialize an `MDCRipple` with a DOM element. Replace your “hello world” version of `app.js` with this code:
 
 ```js
-import {MDCRipple} from '@material/ripple';
+import {MDCRipple} from '@material/ripple/index';
 const ripple = new MDCRipple(document.querySelector('.foo-button'));
 ```
+
+> Note: We explicitly reference `index` within each MDC Web package in order to import the ES2015 source directly.
+> This allows for tree-shaking and avoiding duplicate code for common dependencies (e.g. Ripple).
+> However, it requires transpiling the MDC Web modules using the tools installed in Step 3.
 
 Now run `npm start` again and open http://localhost:8080. You should see a Material Design ripple on the button!
 

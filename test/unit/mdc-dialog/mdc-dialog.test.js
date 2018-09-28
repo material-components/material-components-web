@@ -27,7 +27,7 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 import {createMockRaf} from '../helpers/raf';
 import {strings} from '../../../packages/mdc-dialog/constants';
-import {MDCDialog, MDCDialogFoundation, util} from '../../../packages/mdc-dialog';
+import {MDCDialog, MDCDialogFoundation, util} from '../../../packages/mdc-dialog/index';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 
 function getFixture() {

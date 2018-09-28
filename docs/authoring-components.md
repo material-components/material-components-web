@@ -319,7 +319,7 @@ adapter is extremely straightforward as we can simply repurpose the methods we s
 ```js
 class RedblueToggle extends MDCComponent {
   get toggled() {
-    return this.foundations_.isToggled();
+    return this.foundation_.isToggled();
   }
 
   set toggled(toggled) {
