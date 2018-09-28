@@ -576,7 +576,7 @@ Please put this in a comment at the top of every source file, replacing <YEAR> w
 
 If variables and mixins are intended to be used outside of a single stylesheet, refactor them out
 into [sass partials](http://sass-lang.com/guide#topic-4). These files can then be included in other
-stylesheets without having extra CSS omitted both times. As a rule of thumb, _never `@import` sass
+stylesheets without having extra CSS omitted both times. As a rule of thumb, _never_ `@import` sass
 files which output CSS`, as it will most likely be duplicate output.
 
 #### Follow the BEM Pattern
