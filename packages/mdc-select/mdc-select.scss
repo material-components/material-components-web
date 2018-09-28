@@ -59,8 +59,6 @@
   position: relative;
   box-sizing: border-box;
   height: $mdc-select-height;
-  background-repeat: no-repeat;
-  background-position: right 10px center;
   overflow: hidden;
   will-change: opacity, transform, color;
 
@@ -112,7 +110,6 @@
     }
 
     width: 100%;
-    height: 56px;
     padding-top: 20px;
     padding-bottom: 4px;
     border: none;
