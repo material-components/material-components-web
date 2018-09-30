@@ -104,6 +104,7 @@ message User {
   string name = 1;
   string email = 2;
   string username = 3;
+  string date = 4;
 }
 
 message LibraryVersion {
@@ -361,4 +362,14 @@ message GitStatus {
   repeated string modified = 5;
   repeated string renamed = 6;
   repeated string files = 7;
+}
+
+enum ShieldState {
+  UNKNOWN = 0;
+  NO_DATA = 1;
+  INITIALIZING = 2;
+  RUNNING = 3;
+  PASSED = 4;
+  FAILED = 5;
+  ERROR = 6;
 }

@@ -237,6 +237,7 @@ class GitRepo {
     return User.create({
       name: logEntry.author_name,
       email: logEntry.author_email,
+      date: logEntry.date,
     });
   }
 

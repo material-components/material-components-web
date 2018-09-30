@@ -44,10 +44,10 @@ const Cli = require('./cli');
 const CliColor = require('./logger').colors;
 const Constants = require('./constants');
 const Duration = require('./duration');
-const GitHubApi = require('./github-api');
 const ImageCropper = require('./image-cropper');
 const ImageDiffer = require('./image-differ');
 const LocalStorage = require('./local-storage');
+const StatusNotifier = require('./status-notifier');
 const getStackTrace = require('./stacktrace')('SeleniumApi');
 const {Browser, Builder, By, logging, until} = require('selenium-webdriver');
 const {CBT_CONCURRENCY_POLL_INTERVAL_MS, CBT_CONCURRENCY_MAX_WAIT_MS, ExitCode} = Constants;
@@ -97,12 +97,6 @@ class SeleniumApi {
     this.cli_ = new Cli();
 
     /**
-     * @type {!GitHubApi}
-     * @private
-     */
-    this.gitHubApi_ = new GitHubApi();
-
-    /**
      * @type {!ImageCropper}
      * @private
      */
@@ -125,6 +119,12 @@ class SeleniumApi {
      * @private
      */
     this.seleniumSessionIds_ = new Set();
+
+    /**
+     * @type {!StatusNotifier}
+     * @private
+     */
+    this.statusNotifier_ = new StatusNotifier();
 
     /**
      * @type {number}
@@ -186,6 +186,8 @@ class SeleniumApi {
   async captureAllPages(reportData) {
     /** @type {string|undefined} */
     let stackTrace;
+
+    this.statusNotifier_.setReportData(reportData);
 
     try {
       stackTrace = getStackTrace('captureAllPages');
@@ -1089,10 +1091,7 @@ class SeleniumApi {
     }
 
     if (isTravis) {
-      this.gitHubApi_.setPullRequestStatusManual({
-        state: GitHubApi.PullRequestState.PENDING,
-        description: `${strDone} of ${strTotal} (${strPercent}%) - ${strChanged} diff${numChanged === 1 ? '' : 's'}`,
-      });
+      this.statusNotifier_.setRunning();
       return;
     }
 

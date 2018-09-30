@@ -101,68 +101,18 @@ class GitHubApi {
   /**
    * @param {string} state
    * @param {string} description
+   * @param {string} targetUrl
    */
-  setPullRequestStatusManual({state, description}) {
+  setPullRequestStatusManual({state, description, targetUrl}) {
     if (!this.isTravis_ || !this.isAuthenticated_) {
       return;
     }
 
     this.createStatusThrottled_({
       state,
-      targetUrl: `https://travis-ci.com/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`,
+      targetUrl,
       description,
     });
-  }
-
-  /**
-   * @param {!mdc.proto.ReportData} reportData
-   * @return {!Promise<*>}
-   */
-  async setPullRequestStatusAuto(reportData) {
-    if (!this.isTravis_ || !this.isAuthenticated_) {
-      return;
-    }
-
-    const meta = reportData.meta;
-    const screenshots = reportData.screenshots;
-    const numUnchanged = screenshots.unchanged_screenshot_list.length;
-    const numChanged =
-      screenshots.changed_screenshot_list.length +
-      screenshots.added_screenshot_list.length +
-      screenshots.removed_screenshot_list.length;
-    const reportFileUrl = meta.report_html_file ? meta.report_html_file.public_url : null;
-
-    let state;
-    let targetUrl;
-    let description;
-
-    if (reportFileUrl) {
-      if (numChanged === 0) {
-        state = GitHubApi.PullRequestState.SUCCESS;
-        description = `All ${numUnchanged.toLocaleString()} screenshots match PR's golden.json`;
-      } else if (numChanged === 1) {
-        state = GitHubApi.PullRequestState.FAILURE;
-        description = "1 screenshot differs from PR's golden.json";
-      } else {
-        state = GitHubApi.PullRequestState.FAILURE;
-        description = `${numChanged.toLocaleString()} screenshots differ from PR's golden.json`;
-      }
-
-      targetUrl = this.analytics_.getUrl({
-        url: reportFileUrl,
-        source: 'github',
-        medium: 'pr_status',
-      });
-    } else {
-      const runnableScreenshots = screenshots.runnable_screenshot_list;
-      const numTotal = runnableScreenshots.length;
-
-      state = GitHubApi.PullRequestState.PENDING;
-      targetUrl = `https://travis-ci.com/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`;
-      description = `Running ${numTotal.toLocaleString()} screenshots...`;
-    }
-
-    return await this.createStatusUnthrottled_({state, targetUrl, description});
   }
 
   async setPullRequestError() {
@@ -191,7 +141,20 @@ class GitHubApi {
 
     const travisPrSha = process.env.TRAVIS_PULL_REQUEST_SHA;
     const travisCommit = process.env.TRAVIS_COMMIT;
+    const travisPrBranch = process.env.TRAVIS_PULL_REQUEST_BRANCH;
+    const travisBranch = process.env.TRAVIS_BRANCH;
     const sha = travisPrSha || travisCommit || await this.gitRepo_.getFullCommitHash();
+    const branch = travisPrBranch || travisBranch || await this.gitRepo_.getBranchName();
+
+    /*
+    TRAVIS_BUILD_ID
+    TRAVIS_BUILD_NUMBER
+    TRAVIS_JOB_ID
+    TRAVIS_JOB_NUMBER
+    TRAVIS_PULL_REQUEST
+    */
+
+    await this.storeGCP_({state, targetUrl, description, sha, branch});
 
     let stackTrace;
 

@@ -1851,6 +1851,7 @@ $root.mdc = (function() {
              * @property {string|null} [name] User name
              * @property {string|null} [email] User email
              * @property {string|null} [username] User username
+             * @property {string|null} [date] User date
              */
 
             /**
@@ -1893,6 +1894,14 @@ $root.mdc = (function() {
             User.prototype.username = "";
 
             /**
+             * User date.
+             * @member {string} date
+             * @memberof mdc.proto.User
+             * @instance
+             */
+            User.prototype.date = "";
+
+            /**
              * Creates a new User instance using the specified properties.
              * @function create
              * @memberof mdc.proto.User
@@ -1922,6 +1931,8 @@ $root.mdc = (function() {
                     writer.uint32(/* id 2, wireType 2 =*/18).string(message.email);
                 if (message.username != null && message.hasOwnProperty("username"))
                     writer.uint32(/* id 3, wireType 2 =*/26).string(message.username);
+                if (message.date != null && message.hasOwnProperty("date"))
+                    writer.uint32(/* id 4, wireType 2 =*/34).string(message.date);
                 return writer;
             };
 
@@ -1964,6 +1975,9 @@ $root.mdc = (function() {
                         break;
                     case 3:
                         message.username = reader.string();
+                        break;
+                    case 4:
+                        message.date = reader.string();
                         break;
                     default:
                         reader.skipType(tag & 7);
@@ -2009,6 +2023,9 @@ $root.mdc = (function() {
                 if (message.username != null && message.hasOwnProperty("username"))
                     if (!$util.isString(message.username))
                         return "username: string expected";
+                if (message.date != null && message.hasOwnProperty("date"))
+                    if (!$util.isString(message.date))
+                        return "date: string expected";
                 return null;
             };
 
@@ -2030,6 +2047,8 @@ $root.mdc = (function() {
                     message.email = String(object.email);
                 if (object.username != null)
                     message.username = String(object.username);
+                if (object.date != null)
+                    message.date = String(object.date);
                 return message;
             };
 
@@ -2050,6 +2069,7 @@ $root.mdc = (function() {
                     object.name = "";
                     object.email = "";
                     object.username = "";
+                    object.date = "";
                 }
                 if (message.name != null && message.hasOwnProperty("name"))
                     object.name = message.name;
@@ -2057,6 +2077,8 @@ $root.mdc = (function() {
                     object.email = message.email;
                 if (message.username != null && message.hasOwnProperty("username"))
                     object.username = message.username;
+                if (message.date != null && message.hasOwnProperty("date"))
+                    object.date = message.date;
                 return object;
             };
 
@@ -9632,6 +9654,30 @@ $root.mdc = (function() {
             };
 
             return GitStatus;
+        })();
+
+        /**
+         * ShieldState enum.
+         * @name mdc.proto.ShieldState
+         * @enum {string}
+         * @property {number} UNKNOWN=0 UNKNOWN value
+         * @property {number} NO_DATA=1 NO_DATA value
+         * @property {number} INITIALIZING=2 INITIALIZING value
+         * @property {number} RUNNING=3 RUNNING value
+         * @property {number} PASSED=4 PASSED value
+         * @property {number} FAILED=5 FAILED value
+         * @property {number} ERROR=6 ERROR value
+         */
+        proto.ShieldState = (function() {
+            var valuesById = {}, values = Object.create(valuesById);
+            values[valuesById[0] = "UNKNOWN"] = 0;
+            values[valuesById[1] = "NO_DATA"] = 1;
+            values[valuesById[2] = "INITIALIZING"] = 2;
+            values[valuesById[3] = "RUNNING"] = 3;
+            values[valuesById[4] = "PASSED"] = 4;
+            values[valuesById[5] = "FAILED"] = 5;
+            values[valuesById[6] = "ERROR"] = 6;
+            return values;
         })();
 
         return proto;
