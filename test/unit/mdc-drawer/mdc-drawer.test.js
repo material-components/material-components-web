@@ -245,13 +245,6 @@ test('adapter#releaseFocus releases focus on root element after trap focus', () 
   td.verify(mockFocusTrapInstance.deactivate());
 });
 
-test('adapter#computeBoundingRect calls getBoundingClientRect() on root', () => {
-  const {root, component} = setupTest();
-  document.body.appendChild(root);
-  assert.deepEqual(component.getDefaultFoundation().adapter_.computeBoundingRect(), root.getBoundingClientRect());
-  document.body.removeChild(root);
-});
-
 test('adapter#notifyOpen emits drawer open event', () => {
   const {component} = setupTest();
 
