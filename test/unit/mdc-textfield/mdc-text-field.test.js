@@ -26,12 +26,12 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 import {assert} from 'chai';
 
-import {MDCRipple} from '../../../packages/mdc-ripple';
-import {MDCLineRipple} from '../../../packages/mdc-line-ripple';
-import {MDCFloatingLabel} from '../../../packages/mdc-floating-label';
-import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline';
+import {MDCRipple} from '../../../packages/mdc-ripple/index';
+import {MDCLineRipple} from '../../../packages/mdc-line-ripple/index';
+import {MDCFloatingLabel} from '../../../packages/mdc-floating-label/index';
+import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline/index';
 import {MDCTextField, MDCTextFieldFoundation, MDCTextFieldHelperText,
-  MDCTextFieldIcon} from '../../../packages/mdc-textfield';
+  MDCTextFieldIcon} from '../../../packages/mdc-textfield/index';
 
 const {cssClasses} = MDCTextFieldFoundation;
 

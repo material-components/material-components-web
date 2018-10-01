@@ -8,11 +8,11 @@
     "material design",
     "tab"
   ],
-  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git"
   },
+  "main": "dist/mdc.tab.js",
   "dependencies": {
     "@material/base": "^0.39.0",
     "@material/ripple": "^0.40.0",
