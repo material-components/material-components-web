@@ -1,0 +1,39 @@
+indexes:
+
+- kind: ScreenshotStatus
+  ancestor: no
+  properties:
+  - name: git_branch
+  - name: git_commit_timestamp
+    direction: desc
+  - name: event_timestamp
+    direction: desc
+
+- kind: ScreenshotStatus
+  ancestor: no
+  properties:
+  - name: git_branch
+  - name: state
+  - name: git_commit_timestamp
+    direction: desc
+  - name: event_timestamp
+    direction: desc
+
+- kind: ScreenshotStatus
+  ancestor: no
+  properties:
+  - name: git_commit_hash
+  - name: git_commit_timestamp
+    direction: desc
+  - name: event_timestamp
+    direction: desc
+
+- kind: ScreenshotStatus
+  ancestor: no
+  properties:
+  - name: git_commit_hash
+  - name: state
+  - name: git_commit_timestamp
+    direction: desc
+  - name: event_timestamp
+    direction: desc

@@ -14,6 +14,41 @@ class CloudDatastore {
      * @private
      */
     this.datastore_ = new Datastore({});
+
+    /**
+     * @type {!Key}
+     * @private
+     */
+    this.statusKey_ = this.datastore_.key('ScreenshotStatus');
+  }
+
+  /**
+   * @param {string} gitRef
+   * @param {?ShieldState=} shieldState
+   * @return {!Promise<!Object>}
+   */
+  async getStatus(gitRef, shieldState = undefined) {
+    const query = this.datastore_.createQuery(this.statusKey_.kind);
+
+    query
+      .filter('git_branch', '=', gitRef)
+      // .filter('git_commit_hash', '=', gitRef)
+    ;
+
+    if (shieldState) {
+      query.filter('state', '=', ShieldState[shieldState]);
+    }
+
+    query
+      .order('git_commit_timestamp', {descending: true})
+      .order('event_timestamp', {descending: true})
+    ;
+
+    // runQuery returns an array: [resultArray, cursorInfoObject]
+    const statusArray = (await this.datastore_.runQuery(query))[0];
+    console.log('statusArray:', statusArray);
+
+    return statusArray[0];
   }
 
   /**
@@ -33,9 +68,8 @@ class CloudDatastore {
     targetUrl,
     snapshotGitRev,
   }) {
-    const statusKey = this.datastore_.key('ScreenshotStatus');
     const entity = {
-      key: statusKey,
+      key: this.statusKey_,
       data: [
         {
           name: 'event_timestamp',
@@ -87,7 +121,7 @@ class CloudDatastore {
       .save(entity)
       .then(
         () => {
-          console.log(`Status ${statusKey.id} created successfully.`);
+          console.log(`Status ${this.statusKey_.id} created successfully.`);
         },
         (err) => {
           console.error('ERROR:', err);

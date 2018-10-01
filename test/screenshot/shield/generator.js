@@ -26,6 +26,11 @@ require('url-search-params-polyfill');
 const octokit = require('@octokit/rest');
 const request = require('request-promise-native');
 
+const mdcProto = require('../infra/proto/mdc.pb').mdc.proto;
+const ShieldState = mdcProto.ShieldState;
+
+const CloudDatastore = require('../infra/lib/cloud-datastore');
+
 /**
  * @typedef {{
  *   type: string,
@@ -39,6 +44,7 @@ const request = require('request-promise-native');
 class ShieldGenerator {
   constructor() {
     this.octokit_ = octokit();
+    this.cloudDatastore_ = new CloudDatastore();
   }
 
   async handleSvgRequest(req, res) {
@@ -103,9 +109,7 @@ class ShieldGenerator {
     const reqQueryParams = new URLSearchParams(reqQueryString);
 
     const gitRefParam = reqQueryParams.get('ref');
-    const maxGitRefsParam = parseInt(reqQueryParams.get('max'), 10);
     const typeParam = reqQueryParams.get('type');
-    const latestParam = reqQueryParams.get('latest') !== null;
 
     // Number of GitHub commits to search through for a matching status.
     // Valid values: 1 through 50. Defaults to 25.
@@ -120,7 +124,7 @@ class ShieldGenerator {
 
     for (let curRefOffset = initialOffset; curRefOffset < initialOffset + maxGitRefs; curRefOffset++) {
       /** @type {!ShieldConfig} */
-      const shieldConfig = await this.getGitHubCommitStatus_(`${refName}${separator}${curRefOffset}`);
+      const shieldConfig = await this.getDatastoreCommitStatus_(`${refName}${separator}${curRefOffset}`);
       if (typeParam) {
         if (typeParam === shieldConfig.type) {
           return shieldConfig;
@@ -141,6 +145,22 @@ class ShieldGenerator {
    */
   isTerminalState_(shieldConfig) {
     return shieldConfig.type === 'error' || shieldConfig.type === 'failed' || shieldConfig.type === 'passed';
+  }
+
+  /**
+   * @param {string} ref
+   * @return {!Promise<!ShieldConfig>}
+   * @private
+   */
+  async getDatastoreCommitStatus_(ref, type) {
+    const status = await this.cloudDatastore_.getStatus(ref, type);
+    const shieldState = ShieldState[status.state];
+    if (shieldState === ShieldState.PASSED) {
+      return this.createPassedStatus_(
+        ``,
+        null
+      )
+    }
   }
 
   /**
@@ -199,14 +219,14 @@ class ShieldGenerator {
     const desc = butterBotStatus.description;
 
     return (
-      this.getRunningStatus_(desc, state, targetUrl) ||
-      this.getPassedStatus_(desc, state, targetUrl) ||
-      this.getFailedStatus_(desc, state, targetUrl) ||
-      this.getErrorStatus_(desc, state, targetUrl)
+      this.createRunningStatus_(desc, state, targetUrl) ||
+      this.createPassedStatus_(desc, state, targetUrl) ||
+      this.createFailedStatus_(desc, state, targetUrl) ||
+      this.createErrorStatus_(desc, state, targetUrl)
     );
   }
 
-  getRunningStatus_(desc, state, targetUrl) {
+  createRunningStatus_(desc, state, targetUrl) {
     // E.g.: desc = "87 of 581 (15.0%) - 0 diffs"
     // eslint-disable-next-line no-unused-vars
     const [, strDone, strTotal, strPercent, strDiffsSoFar] =
@@ -228,7 +248,7 @@ class ShieldGenerator {
     return null;
   }
 
-  getPassedStatus_(desc, state, targetUrl) {
+  createPassedStatus_(desc, state, targetUrl) {
     const [, strPassed] = (/All (\d+) screenshots match/.exec(desc) || []);
     const numPassed = parseInt(strPassed, 10);
 
@@ -245,7 +265,7 @@ class ShieldGenerator {
     return null;
   }
 
-  getFailedStatus_(desc, state, targetUrl) {
+  createFailedStatus_(desc, state, targetUrl) {
     const [, strDiffsTotal] = (/(\d+) screenshots? differ/.exec(desc) || []);
     const numDiffsTotal = parseInt(strDiffsTotal, 10);
 
@@ -262,7 +282,7 @@ class ShieldGenerator {
     return null;
   }
 
-  getErrorStatus_(desc, state, targetUrl) {
+  createErrorStatus_(desc, state, targetUrl) {
     if (state === 'error' || state === 'failure') {
       return {
         type: 'error',
