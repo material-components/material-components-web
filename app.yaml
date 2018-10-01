@@ -10,8 +10,8 @@ skip_files:
 
 handlers:
 - url: /
-  static_files: demos/index.html
-  upload: demos/index.html
+  static_files: demos/redirect.html
+  upload: demos/redirect.html
 
 - url: /assets/(.*)
   static_files: build/\1
