@@ -1,6 +1,6 @@
-# Demonstrations 
+# Demonstrations
 
-MDC Web's collection of components. Demonstrated in idiomatic JavaScript/CSS/HTML. A hosted version of this folder can be found [here](http://material-components-web.appspot.com/).
+MDC Web's collection of components. Demonstrated in idiomatic JavaScript/CSS/HTML.
 
 ## Installation
 
