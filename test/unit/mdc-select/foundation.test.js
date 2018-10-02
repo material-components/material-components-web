@@ -47,7 +47,7 @@ test('exports strings', () => {
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSelectFoundation, [
     'addClass', 'removeClass', 'hasClass', 'floatLabel', 'activateBottomLine', 'deactivateBottomLine', 'getValue',
-    'isRtl', 'hasLabel', 'getLabelWidth', 'hasOutline', 'notchOutline', 'closeOutline', 'isMenuOpened', 'openMenu',
+    'isRtl', 'getLabelWidth', 'hasOutline', 'notchOutline', 'closeOutline', 'isMenuOpened', 'openMenu',
     'closeMenu', 'setDisabled', 'setSelectedIndex', 'setValue', 'setRippleCenter',
   ]);
 });
@@ -73,7 +73,6 @@ test('#updateDisabledStyle(false) calls adapter.removeClass', () => {
 test('#notchOutline updates the SVG path of the outline element', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getLabelWidth()).thenReturn(30);
-  td.when(mockAdapter.hasLabel()).thenReturn(true);
   td.when(mockAdapter.hasOutline()).thenReturn(true);
   td.when(mockAdapter.isRtl()).thenReturn(false);
 
@@ -84,7 +83,6 @@ test('#notchOutline updates the SVG path of the outline element', () => {
 test('#notchOutline does nothing if no outline is present', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasOutline()).thenReturn(false);
-  td.when(mockAdapter.hasLabel()).thenReturn(true);
 
   foundation.notchOutline(true);
   td.verify(mockAdapter.notchOutline(td.matchers.anything()), {times: 0});
@@ -93,7 +91,6 @@ test('#notchOutline does nothing if no outline is present', () => {
 test('#notchOutline does nothing if no label is present', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasOutline()).thenReturn(true);
-  td.when(mockAdapter.hasLabel()).thenReturn(false);
 
   foundation.notchOutline(true);
   td.verify(mockAdapter.notchOutline(td.matchers.anything()), {times: 0});
@@ -102,7 +99,6 @@ test('#notchOutline does nothing if no label is present', () => {
 test('#notchOutline calls updates notched outline to return to idle state when ' +
   'openNotch is false', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasLabel()).thenReturn(true);
   td.when(mockAdapter.hasOutline()).thenReturn(true);
 
   foundation.notchOutline(false);

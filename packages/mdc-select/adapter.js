@@ -83,12 +83,6 @@ class MDCSelectAdapter {
   isRtl() {}
 
   /**
-   * Returns true if label element exists, false if it doesn't.
-   * @return {boolean}
-   */
-  hasLabel() {}
-
-  /**
    * Floats label determined based off of the shouldFloat argument.
    * @param {boolean} shouldFloat
    */
