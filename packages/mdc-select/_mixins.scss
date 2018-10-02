@@ -137,6 +137,12 @@
   }
 }
 
+@mixin mdc-select-focused-outline-idle_ {
+  &.mdc-select--focused {
+    @content;
+  }
+}
+
 @mixin mdc-select-ink-color_($color) {
   .mdc-select__native-control,
   .mdc-select__selected-text {
@@ -196,6 +202,10 @@
 @mixin mdc-select-focused-outline-color_($color) {
   @include mdc-select-focused-outline_ {
     @include mdc-notched-outline-color($color);
+  }
+
+  @include mdc-select-focused-outline-idle_ {
+    @include mdc-notched-outline-idle-color($color);
   }
 }
 

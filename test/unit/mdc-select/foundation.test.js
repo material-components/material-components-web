@@ -48,7 +48,7 @@ test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSelectFoundation, [
     'addClass', 'removeClass', 'hasClass', 'floatLabel', 'activateBottomLine', 'deactivateBottomLine', 'getValue',
     'isRtl', 'getLabelWidth', 'hasOutline', 'notchOutline', 'closeOutline', 'isMenuOpened', 'openMenu',
-    'closeMenu', 'setDisabled', 'setSelectedIndex', 'setValue', 'setRippleCenter',
+    'closeMenu', 'setDisabled', 'setSelectedIndex', 'setValue', 'setRippleCenter', 'changeEvent',
   ]);
 });
 
@@ -58,15 +58,15 @@ function setupTest() {
   return {mockAdapter, foundation};
 }
 
-test('#updateDisabledStyle(true) calls adapter.addClass', () => {
+test('#setDisabled(true) calls adapter.addClass', () => {
   const {mockAdapter, foundation} = setupTest();
-  foundation.updateDisabledStyle(true);
+  foundation.setDisabled(true);
   td.verify(mockAdapter.addClass(MDCSelectFoundation.cssClasses.DISABLED));
 });
 
-test('#updateDisabledStyle(false) calls adapter.removeClass', () => {
+test('#setDisabled(false) calls adapter.removeClass', () => {
   const {mockAdapter, foundation} = setupTest();
-  foundation.updateDisabledStyle(false);
+  foundation.setDisabled(false);
   td.verify(mockAdapter.removeClass(MDCSelectFoundation.cssClasses.DISABLED));
 });
 
@@ -139,6 +139,14 @@ test('#handleChange calls foundation.notchOutline(false) when there is no value'
   td.verify(foundation.notchOutline(false), {times: 1});
 });
 
+test('#handleChange calls adapter.changeEvent() if didChange is true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getValue()).thenReturn('value');
+
+  foundation.handleChange(/* didChange */ true);
+  td.verify(mockAdapter.changeEvent(td.matchers.anything()), {times: 1});
+});
+
 test('#handleFocus calls adapter.floatLabel(true)', () => {
   const {foundation, mockAdapter} = setupTest();
 
@@ -170,7 +178,7 @@ test('#handleBlur calls foundation.handleChange()', () => {
   const {foundation} = setupTest();
   foundation.handleChange = td.func();
   foundation.handleBlur();
-  td.verify(foundation.handleChange(), {times: 1});
+  td.verify(foundation.handleChange(false), {times: 1});
 });
 
 test('#handleBlur calls adapter.deactivateBottomLine()', () => {

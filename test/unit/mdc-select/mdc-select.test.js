@@ -156,21 +156,21 @@ test('#set value calls foundation.handleChange', () => {
   const {component} = setupTest();
   component.foundation_.handleChange = td.func();
   component.value = 'orange';
-  td.verify(component.foundation_.handleChange(), {times: 1});
+  td.verify(component.foundation_.handleChange(true), {times: 1});
 });
 
 test('#set selectedIndex calls foundation.handleChange', () => {
   const {component} = setupTest();
   component.foundation_.handleChange = td.func();
   component.selectedIndex = 1;
-  td.verify(component.foundation_.handleChange(), {times: 1});
+  td.verify(component.foundation_.handleChange(true), {times: 1});
 });
 
-test('#set disabled calls foundation.updateDisabledStyle', () => {
+test('#set disabled calls foundation.updateDisabledStyle_', () => {
   const {component} = setupTest();
-  component.foundation_.updateDisabledStyle = td.func();
+  component.foundation_.updateDisabledStyle_ = td.func();
   component.disabled = true;
-  td.verify(component.foundation_.updateDisabledStyle(true), {times: 1});
+  td.verify(component.foundation_.updateDisabledStyle_(true), {times: 1});
 });
 
 test('#initialSyncWithDOM sets the selected index if an option has the selected attr', () => {
@@ -415,11 +415,11 @@ test('adapter#getLabelWidth returns 0 if the label does not exist', () => {
   assert.equal(component.getDefaultFoundation().adapter_.getLabelWidth(), 0);
 });
 
-test('change event triggers foundation.handleChange()', () => {
+test('change event triggers foundation.handleChange(true)', () => {
   const {component, nativeControl} = setupTest();
   component.foundation_.handleChange = td.func();
   domEvents.emit(nativeControl, 'change');
-  td.verify(component.foundation_.handleChange(), {times: 1});
+  td.verify(component.foundation_.handleChange(true), {times: 1});
 });
 
 test('focus event triggers foundation.handleFocus()', () => {
@@ -441,7 +441,7 @@ test('#destroy removes the change handler', () => {
   component.foundation_.handleChange = td.func();
   component.destroy();
   domEvents.emit(nativeControl, 'change');
-  td.verify(component.foundation_.handleChange(), {times: 0});
+  td.verify(component.foundation_.handleChange(true), {times: 0});
 });
 
 test('#destroy removes the focus handler', () => {
