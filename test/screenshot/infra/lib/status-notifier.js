@@ -21,16 +21,12 @@
  * THE SOFTWARE.
  */
 
-const VError = require('verror');
-const debounce = require('debounce');
-
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const ShieldState = mdcProto.ShieldState;
 const CaptureState = mdcProto.Screenshot.CaptureState;
 
 const CloudDatastore = require('./cloud-datastore');
 const GitHubApi = require('./github-api');
-const getStackTrace = require('./stacktrace')('StatusNotifier');
 
 /**
  * @typedef {{

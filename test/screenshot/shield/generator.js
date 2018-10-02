@@ -23,7 +23,6 @@
 
 require('url-search-params-polyfill');
 
-const octokit = require('@octokit/rest');
 const request = require('request-promise-native');
 
 const mdcProto = require('../infra/proto/mdc.pb').mdc.proto;
@@ -42,7 +41,6 @@ const CloudDatastore = require('../infra/lib/cloud-datastore');
 
 class ShieldGenerator {
   constructor() {
-    this.octokit_ = octokit();
     this.cloudDatastore_ = new CloudDatastore();
   }
 
