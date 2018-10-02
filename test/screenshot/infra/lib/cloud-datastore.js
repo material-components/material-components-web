@@ -145,16 +145,7 @@ class CloudDatastore {
       ],
     };
 
-    return this.datastore_
-      .save(entity)
-      .then(
-        () => {
-          console.log(`Status ${key.id} created successfully.`);
-        },
-        (err) => {
-          console.error('ERROR:', err);
-        }
-      );
+    return await this.datastore_.save(entity);
   }
 }
 

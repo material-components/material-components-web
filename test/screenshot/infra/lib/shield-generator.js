@@ -41,7 +41,17 @@ const CloudDatastore = require('../lib/cloud-datastore');
 
 class ShieldGenerator {
   constructor() {
+    /**
+     * @type {!CloudDatastore}
+     * @private
+     */
     this.cloudDatastore_ = new CloudDatastore();
+
+    /**
+     * @type {!Map<string, string>}
+     * @private
+     */
+    this.svgCache_ = new Map();
   }
 
   async handleSvgRequest(req, res) {
@@ -68,7 +78,7 @@ class ShieldGenerator {
     }
 
     try {
-      const svgResponse = await request({method: 'GET', uri: svgUrl});
+      const svgResponse = await this.fetchSVG_(svgUrl);
       res.set('Content-Type', 'image/svg+xml;charset=utf-8');
       res.send(svgResponse);
     } catch (err) {
@@ -209,6 +219,20 @@ class ShieldGenerator {
       targetUrl,
       shieldState: actualShieldState,
     };
+  }
+
+  /**
+   * @param {string} url
+   * @return {!Promise<string>}
+   * @private
+   */
+  async fetchSVG_(url) {
+    if (!this.svgCache_.has(url)) {
+      const svg = await request({method: 'GET', uri: url});
+      console.log('svg:', svg);
+      this.svgCache_.set(url, svg);
+    }
+    return this.svgCache_.get(url);
   }
 
   setResponseHeaders_(req, res) {
