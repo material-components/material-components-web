@@ -72,33 +72,72 @@ class StatusNotifier {
 
   /** @private */
   initThrottle_() {
-    const throttle = (fn, delay) => {
-      let lastCall = 0;
-      return (...args) => {
-        const now = (new Date).getTime();
-        if (now - lastCall < delay) {
-          return;
-        }
-        lastCall = now;
-        return fn(...args);
-      };
-    };
+    const INTERVAL_MS = 2500;
 
-    const setStatusDebounced = debounce((statusInfo) => {
-      return this.setStatusUnthrottled_(statusInfo);
-    }, 2500); // TODO(acdvorak): Constant
+    /** @type {!Array<!StatusInfo>} */
+    const statusInfos = [];
 
-    const setStatusThrottled = throttle((statusInfo) => {
-      return this.setStatusUnthrottled_(statusInfo);
-    }, 5000); // TODO(acdvorak): Constant
+    /** @type {?StatusInfo} */
+    let prevStatusInfo = null;
+
+    let isTimerActive = false;
 
     /**
      * @param {!StatusInfo} statusInfo
+     * @return {boolean}
+     */
+    const isError = (statusInfo) => {
+      return (
+        statusInfo.shieldState === ShieldState.ERROR
+      );
+    };
+
+    /**
+     * @param {!StatusInfo} statusInfo
+     * @return {boolean}
+     */
+    const isTerminal = (statusInfo) => {
+      return (
+        statusInfo.shieldState === ShieldState.ERROR ||
+        statusInfo.shieldState === ShieldState.PASSED ||
+        statusInfo.shieldState === ShieldState.FAILED
+      );
+    };
+
+    const maybeSetStatus = () => {
+      const newestStatusInfo = statusInfos[statusInfos.length - 1];
+      if (isTimerActive || !newestStatusInfo || newestStatusInfo === prevStatusInfo) {
+        return;
+      }
+
+      prevStatusInfo = newestStatusInfo;
+      isTimerActive = true;
+
+      this.setStatusUnthrottled_(newestStatusInfo);
+
+      setTimeout(() => {
+        isTimerActive = false;
+        maybeSetStatus();
+      }, INTERVAL_MS);
+    };
+
+    /**
+     * @param {!StatusInfo} newStatusInfo
      * @private
      */
-    this.setStatusThrottled_ = (statusInfo) => {
-      setStatusDebounced(statusInfo);
-      setStatusThrottled(statusInfo);
+    this.setStatusThrottled_ = (newStatusInfo) => {
+      if (prevStatusInfo) {
+        // Prevent out-of-order status updates, which can happen due to async execution.
+        if (isError(prevStatusInfo)) {
+          return;
+        }
+        if (isTerminal(prevStatusInfo) && !isTerminal(newStatusInfo)) {
+          return;
+        }
+      }
+
+      statusInfos.push(newStatusInfo);
+      maybeSetStatus();
     };
   }
 

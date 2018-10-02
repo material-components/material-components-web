@@ -7,6 +7,22 @@ const Datastore = require('@google-cloud/datastore');
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const ShieldState = mdcProto.ShieldState;
 
+const KIND = 'ScreenshotStatus';
+
+/**
+ * @typedef {{
+ *   event_timestamp: string,
+ *   git_branch: string,
+ *   git_commit_hash: string,
+ *   git_commit_timestamp: string,
+ *   num_diffs: number,
+ *   num_screenshots_finished: number,
+ *   num_screenshots_total: number,
+ *   state: !mdc.proto.ShieldState,
+ *   target_url: string,
+ * }} CloudStatus
+ */
+
 class CloudDatastore {
   constructor() {
     /**
@@ -14,26 +30,30 @@ class CloudDatastore {
      * @private
      */
     this.datastore_ = new Datastore({});
-
-    /**
-     * @type {!Key}
-     * @private
-     */
-    this.statusKey_ = this.datastore_.key('ScreenshotStatus');
   }
 
   /**
    * @param {string} gitRef
-   * @param {?ShieldState=} shieldState
-   * @return {!Promise<!Object>}
+   * @param {?mdc.proto.ShieldState=} shieldState
+   * @return {!Promise<?CloudStatus>}
    */
   async getStatus(gitRef, shieldState = undefined) {
-    const query = this.datastore_.createQuery(this.statusKey_.kind);
+    return (
+      await this.getStatus_('git_branch', gitRef, shieldState) ||
+      await this.getStatus_('git_commit_hash', gitRef, shieldState)
+    );
+  }
 
-    query
-      .filter('git_branch', '=', gitRef)
-      // .filter('git_commit_hash', '=', gitRef)
-    ;
+  /**
+   * @param {string} gitRefColumnName
+   * @param {string} gitRef
+   * @param {?mdc.proto.ShieldState=} shieldState
+   * @return {!Promise<?CloudStatus>}
+   */
+  async getStatus_(gitRefColumnName, gitRef, shieldState = undefined) {
+    const query = this.datastore_.createQuery(KIND);
+
+    query.filter(gitRefColumnName, '=', gitRef);
 
     if (shieldState) {
       query.filter('state', '=', ShieldState[shieldState]);
@@ -45,10 +65,18 @@ class CloudDatastore {
     ;
 
     // runQuery returns an array: [resultArray, cursorInfoObject]
-    const statusArray = (await this.datastore_.runQuery(query))[0];
-    console.log('statusArray:', statusArray);
+    const queryResult = await this.datastore_.runQuery(query);
 
-    return statusArray[0];
+    /** @type {!Array<!CloudStatus>} */
+    const statusArray = queryResult[0];
+
+    /** @type {?CloudStatus} */
+    const latestStatus = statusArray[0];
+    if (latestStatus) {
+      // Convert string name to enum value. E.g., "PASSED" -> 4.
+      latestStatus.state = ShieldState[latestStatus.state];
+    }
+    return latestStatus;
   }
 
   /**
@@ -68,8 +96,11 @@ class CloudDatastore {
     targetUrl,
     snapshotGitRev,
   }) {
+    const key = this.datastore_.key(KIND);
+
+    // IMPORTANT: If you modify this data structure, you might also need to update test/screenshot/shield/index.yaml.
     const entity = {
-      key: this.statusKey_,
+      key,
       data: [
         {
           name: 'event_timestamp',
@@ -82,7 +113,6 @@ class CloudDatastore {
         {
           name: 'git_commit_hash',
           value: snapshotGitRev.commit,
-          excludeFromIndexes: true,
         },
         {
           name: 'git_branch',
@@ -115,13 +145,11 @@ class CloudDatastore {
       ],
     };
 
-    console.log(entity);
-
     return this.datastore_
       .save(entity)
       .then(
         () => {
-          console.log(`Status ${this.statusKey_.id} created successfully.`);
+          console.log(`Status ${key.id} created successfully.`);
         },
         (err) => {
           console.error('ERROR:', err);

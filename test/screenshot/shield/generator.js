@@ -33,11 +33,10 @@ const CloudDatastore = require('../infra/lib/cloud-datastore');
 
 /**
  * @typedef {{
- *   type: string,
  *   color: string,
  *   message: string,
  *   targetUrl: ?string,
- *   state: ?string,
+ *   shieldState: !mdc.proto.ShieldState,
  * }} ShieldConfig
  */
 
@@ -105,200 +104,112 @@ class ShieldGenerator {
    * @private
    */
   async getShieldConfig_(req) {
-    const reqQueryString = require('url').parse(req.url).query;
-    const reqQueryParams = new URLSearchParams(reqQueryString);
+    const query = require('url').parse(req.url).query;
+    const params = new URLSearchParams(query);
 
-    const gitRefParam = reqQueryParams.get('ref');
-    const typeParam = reqQueryParams.get('type');
+    const gitRef = this.getGitRef_(params.get('ref'));
+    const shieldState = this.getShieldState_(params.get('state'));
 
-    // Number of GitHub commits to search through for a matching status.
-    // Valid values: 1 through 50. Defaults to 25.
-    const maxGitRefs = latestParam ? 1 : Math.min(50, Math.max(1, maxGitRefsParam || 25));
-
-    let [, refName, separator, initialOffset] = (/^(.+?)([~^])(\d+)$/.exec(gitRefParam) || []);
-    refName = refName || 'master';
-    separator = separator || '~';
-    initialOffset = parseInt(initialOffset, 10) || 0;
-
-    const shieldConfigs = [];
-
-    for (let curRefOffset = initialOffset; curRefOffset < initialOffset + maxGitRefs; curRefOffset++) {
-      /** @type {!ShieldConfig} */
-      const shieldConfig = await this.getDatastoreCommitStatus_(`${refName}${separator}${curRefOffset}`);
-      if (typeParam) {
-        if (typeParam === shieldConfig.type) {
-          return shieldConfig;
-        }
-      } else if (this.isTerminalState_(shieldConfig)) {
-        return shieldConfig;
-      }
-      shieldConfigs.push(shieldConfig);
-    }
-    return shieldConfigs[0];
+    return await this.getShieldConfigFromDatastore_(gitRef, shieldState);
   }
 
   /**
-   *
-   * @param {!ShieldConfig} shieldConfig
-   * @return {boolean}
+   * @param {?string} gitRefParam
+   * @return {string}
    * @private
    */
-  isTerminalState_(shieldConfig) {
-    return shieldConfig.type === 'error' || shieldConfig.type === 'failed' || shieldConfig.type === 'passed';
+  getGitRef_(gitRefParam) {
+    return gitRefParam || 'master';
   }
 
   /**
-   * @param {string} ref
+   * @param {?string} shieldStateParam
+   * @return {?mdc.proto.ShieldState}
+   * @private
+   */
+  getShieldState_(shieldStateParam) {
+    if (!shieldStateParam) {
+      return ShieldState.PASSED;
+    }
+    if (shieldStateParam === '*' || shieldStateParam === 'any' || shieldStateParam === 'all') {
+      return null;
+    }
+    return ShieldState[shieldStateParam.toUpperCase()];
+  }
+
+  /**
+   * @param {string} gitRef
+   * @param {?mdc.proto.ShieldState} reqShieldState
    * @return {!Promise<!ShieldConfig>}
    * @private
    */
-  async getDatastoreCommitStatus_(ref, type) {
-    const status = await this.cloudDatastore_.getStatus(ref, type);
-    const shieldState = ShieldState[status.state];
-    if (shieldState === ShieldState.PASSED) {
-      return this.createPassedStatus_(
-        ``,
-        null
-      )
-    }
-  }
+  async getShieldConfigFromDatastore_(gitRef, reqShieldState) {
+    /** @type {?CloudStatus} */
+    const cloudStatus = await this.cloudDatastore_.getStatus(gitRef, reqShieldState);
 
-  /**
-   * @param {string} ref
-   * @return {!Promise<!ShieldConfig>}
-   * @private
-   */
-  async getGitHubCommitStatus_(ref) {
-    let statusResponse;
-    try {
-      statusResponse = await this.octokit_.repos.getCombinedStatusForRef({
-        owner: 'material-components',
-        repo: 'material-components-web',
-        ref,
-      });
-    } catch (err) {
+    if (!cloudStatus) {
       return {
-        type: '404',
         color: 'lightgrey',
-        message: '404 not found',
+        message: 'unknown',
         targetUrl: null,
-        state: null,
+        shieldState: ShieldState.UNKNOWN,
       };
     }
 
-    const isButterBot = (status) => status.context === 'screenshot-test/butter-bot';
-    const isTravisCiFinished = (status) => status.context.indexOf('travis') > -1 && status.state === 'success';
-    const butterBotStatus = statusResponse.data.statuses.filter(isButterBot)[0];
-    const travisCiFinishedStatus = statusResponse.data.statuses.filter(isTravisCiFinished)[0];
-    if (!butterBotStatus) {
-      if (travisCiFinishedStatus) {
-        return {
-          type: 'skipped',
-          color: 'lightgrey',
-          message: 'skipped',
-          targetUrl: null,
-          state: null,
-        };
-      }
+    const actualShieldState = cloudStatus.state;
+    const targetUrl = cloudStatus.target_url;
+    const numDone = cloudStatus.num_screenshots_finished;
+    const numTotal = cloudStatus.num_screenshots_total;
+    const numDiffs = cloudStatus.num_diffs;
+    const numPercent = numTotal > 0 ? (100 * numDone / numTotal) : 0;
+
+    const strTotal = numTotal.toLocaleString();
+    const strDiffs = numDiffs.toLocaleString();
+    const strPercent = `${Math.floor(numPercent)}%`;
+
+    const pluralDiffs = numDiffs === 1 ? '' : 's';
+
+    if (actualShieldState === ShieldState.PASSED) {
       return {
-        type: 'pending',
-        color: 'lightgrey',
-        message: 'pending',
-        targetUrl: null,
-        state: 'pending',
-      };
-    }
-
-    /** @type {string} */
-    const state = butterBotStatus.state;
-
-    /** @type {string} */
-    const targetUrl = butterBotStatus.target_url;
-
-    /** @type {string} */
-    const desc = butterBotStatus.description;
-
-    return (
-      this.createRunningStatus_(desc, state, targetUrl) ||
-      this.createPassedStatus_(desc, state, targetUrl) ||
-      this.createFailedStatus_(desc, state, targetUrl) ||
-      this.createErrorStatus_(desc, state, targetUrl)
-    );
-  }
-
-  createRunningStatus_(desc, state, targetUrl) {
-    // E.g.: desc = "87 of 581 (15.0%) - 0 diffs"
-    // eslint-disable-next-line no-unused-vars
-    const [, strDone, strTotal, strPercent, strDiffsSoFar] =
-      (/(\d+) of (\d+) \(([\d.]+%)\) - (\d+) diffs?/.exec(desc) || []);
-    const numDiffsSoFar = parseInt(strDiffsSoFar, 10);
-
-    if (isFinite(numDiffsSoFar)) {
-      const flooredPercent = parseInt(strPercent, 10) + '%';
-      const message = `${flooredPercent} - ${numDiffsSoFar.toLocaleString()} diff${numDiffsSoFar === 1 ? '' : 's'}`;
-      return {
-        type: 'running',
-        color: numDiffsSoFar === 0 ? 'yellow' : 'red',
-        message,
-        targetUrl,
-        state,
-      };
-    }
-
-    return null;
-  }
-
-  createPassedStatus_(desc, state, targetUrl) {
-    const [, strPassed] = (/All (\d+) screenshots match/.exec(desc) || []);
-    const numPassed = parseInt(strPassed, 10);
-
-    if (isFinite(numPassed)) {
-      return {
-        type: 'passed',
         color: 'brightgreen',
-        message: `${numPassed.toLocaleString()} pass`,
+        message: `${strTotal} pass`,
         targetUrl,
-        state,
+        shieldState: actualShieldState,
       };
     }
 
-    return null;
-  }
-
-  createFailedStatus_(desc, state, targetUrl) {
-    const [, strDiffsTotal] = (/(\d+) screenshots? differ/.exec(desc) || []);
-    const numDiffsTotal = parseInt(strDiffsTotal, 10);
-
-    if (isFinite(numDiffsTotal)) {
+    if (actualShieldState === ShieldState.FAILED) {
       return {
-        type: 'failed',
         color: 'red',
-        message: `${numDiffsTotal.toLocaleString()} diff${numDiffsTotal === 1 ? '' : 's'}`,
+        message: `${strDiffs} diff${pluralDiffs}`,
         targetUrl,
-        state,
+        shieldState: actualShieldState,
       };
     }
 
-    return null;
-  }
-
-  createErrorStatus_(desc, state, targetUrl) {
-    if (state === 'error' || state === 'failure') {
+    if (actualShieldState === ShieldState.ERROR) {
       return {
-        type: 'error',
         color: 'red',
-        message: state,
+        message: 'error',
         targetUrl,
-        state,
+        shieldState: actualShieldState,
+      };
+    }
+
+    if (actualShieldState === ShieldState.RUNNING || actualShieldState === ShieldState.INITIALIZING) {
+      return {
+        color: numDiffs > 0 ? 'red' : 'yellow',
+        message: `${strPercent} - ${numDiffs} diff${pluralDiffs}`,
+        targetUrl,
+        shieldState: actualShieldState,
       };
     }
 
     return {
-      type: 'unknown',
       color: 'lightgrey',
-      message: (state || 'unknown').toLowerCase(),
+      message: 'unknown',
       targetUrl,
-      state,
+      shieldState: actualShieldState,
     };
   }
 

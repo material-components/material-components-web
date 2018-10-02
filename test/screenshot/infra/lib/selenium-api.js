@@ -1090,12 +1090,13 @@ class SeleniumApi {
       return;
     }
 
-    if (isTravis) {
-      this.statusNotifier_.setRunning();
-      return;
-    }
+    this.statusNotifier_.setRunning();
 
-    process.stdout.write(`${colorCaptured}: ${colorCompleted} of ${colorTotal} screenshots (${colorPercent} complete)`);
+    if (!isTravis) {
+      process.stdout.write(
+        `${colorCaptured}: ${colorCompleted} of ${colorTotal} screenshots (${colorPercent} complete)`
+      );
+    }
   }
 }
 

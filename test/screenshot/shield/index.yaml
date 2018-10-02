@@ -1,3 +1,11 @@
+#
+# IMPORTANT: If you modify this file, you'll also need to push it to GCP:
+#
+#     gcloud datastore indexes create test/screenshot/shield/index.yaml
+#
+# It may take several minutes for GCP to generate the indexes.
+#
+
 indexes:
 
 - kind: ScreenshotStatus
