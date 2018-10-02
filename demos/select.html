@@ -401,7 +401,7 @@
           var index = select.selectedIndex;
           currentlySelected.textContent = value ? value + ' at index ' + index : '(none)';
         }
-        root.addEventListener('change', function() {
+        root.addEventListener('MDCSelect:change', function() {
           updateSelectedTextContent();
         });
         rtlCb.addEventListener('change', function() {
