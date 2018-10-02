@@ -69,7 +69,7 @@ class MDCDialogFoundation extends MDCFoundation {
     /** @private {boolean} */
     this.isOpen_ = false;
 
-    /** @ private {number} */
+    /** @private {number} */
     this.animationFrame_ = 0;
 
     /** @private {number} */
