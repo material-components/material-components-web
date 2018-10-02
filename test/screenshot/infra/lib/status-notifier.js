@@ -232,7 +232,7 @@ class StatusNotifier {
     const strChanged = numChanged.toLocaleString();
     const changedPlural = numChanged === 1 ? '' : 's';
 
-    this.cloudDatastore_.setStatusManual({
+    this.cloudDatastore_.setStatus({
       state: shieldState,
       numScreenshotsTotal: numTotal,
       numScreenshotsFinished: numDone,

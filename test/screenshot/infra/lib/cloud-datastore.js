@@ -88,7 +88,7 @@ class CloudDatastore {
    * @param {!mdc.proto.GitRevision} snapshotGitRev
    * @return {!Promise<void>}
    */
-  async setStatusManual({
+  async setStatus({
     state,
     numScreenshotsTotal,
     numScreenshotsFinished,
