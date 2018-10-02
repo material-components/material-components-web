@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+gcloud datastore indexes create test/screenshot/shield/index.yaml
+
 cd $(dirname "$0")
 
 if [[ "$1" == '--local' ]]; then
