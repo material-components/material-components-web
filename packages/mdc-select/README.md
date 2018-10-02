@@ -237,7 +237,6 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `deactivateBottomLine() => void` | Deactivates the bottom line component. |
 | `getValue() => string` | Returns the value selected on the `select` element. |
 | `isRtl() => boolean` | Returns true if a parent of the root element is in RTL. |
-| `hasLabel() => boolean` | Returns true if the `select` has a label associated with it. |
 | `floatLabel(value: boolean) => void` | Floats or defloats label. |
 | `getLabelWidth() => number` | Returns the offsetWidth of the label element. |
 | `hasOutline() => boolean` | Returns true if the `select` has the notched outline element. |

@@ -144,16 +144,18 @@ class MDCSelect extends MDCComponent {
    * @param {(function(!Element): !MDCLineRipple)=} lineRippleFactory A function which creates a new MDCLineRipple.
    * @param {(function(!Element): !MDCFloatingLabel)=} labelFactory A function which creates a new MDCFloatingLabel.
    * @param {(function(!Element): !MDCNotchedOutline)=} outlineFactory A function which creates a new MDCNotchedOutline.
+   * @param {(function(!Element): !MDCMenu)=} menuFactory A function which creates a new MDCMenu.
    */
   initialize(
     labelFactory = (el) => new MDCFloatingLabel(el),
     lineRippleFactory = (el) => new MDCLineRipple(el),
-    outlineFactory = (el) => new MDCNotchedOutline(el)) {
+    outlineFactory = (el) => new MDCNotchedOutline(el),
+    menuFactory = (el) => new MDCMenu(el)) {
     this.nativeControl_ = /** @type {HTMLElement} */ (this.root_.querySelector(strings.NATIVE_CONTROL_SELECTOR));
     this.selectedText_ = /** @type {HTMLElement} */ (this.root_.querySelector('.mdc-select__selected-text'));
 
     if (this.selectedText_) {
-      this.enhancedSelectSetup_();
+      this.enhancedSelectSetup_(menuFactory);
     }
     const labelElement = this.root_.querySelector(strings.LABEL_SELECTOR);
     if (labelElement) {
@@ -177,11 +179,11 @@ class MDCSelect extends MDCComponent {
    * Handles setup for the enhanced menu.
    * @private
    */
-  enhancedSelectSetup_() {
+  enhancedSelectSetup_(menuFactory) {
     const isDisabled = this.root_.classList.contains(cssClasses.DISABLED);
     this.selectedText_.setAttribute('tabindex', isDisabled ? '-1' : '0');
     this.menuElement_ = /** @type {HTMLElement} */ (this.root_.querySelector(strings.MENU_SELECTOR));
-    this.menu_ = new MDCMenu(this.menuElement_);
+    this.menu_ = menuFactory(this.menuElement_);
     this.menu_.hoistMenuToBody();
     this.menu_.setAnchorElement(/** @type {!HTMLElement} */ (this.root_));
     this.menu_.setAnchorCorner(menuSurfaceConstants.Corner.BOTTOM_START);
@@ -264,6 +266,7 @@ class MDCSelect extends MDCComponent {
     element.removeEventListener('change', this.handleChange_);
     element.removeEventListener('focus', this.handleFocus_);
     element.removeEventListener('blur', this.handleBlur_);
+    element.removeEventListener('keydown', this.handleKeydown_);
     ['mousedown', 'touchstart'].forEach((evtType) => {
       element.removeEventListener(evtType, this.handleClick_);
     });
@@ -380,7 +383,7 @@ class MDCSelect extends MDCComponent {
    */
   setEnhancedSelectedIndex_(index) {
     const selectedItem = this.menu_.items[index];
-    this.selectedText_.textContent = selectedItem.textContent.trim();
+    this.selectedText_.textContent = selectedItem ? selectedItem.textContent.trim() : '';
     const previouslySelected = this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR);
 
     if (previouslySelected) {
@@ -388,8 +391,10 @@ class MDCSelect extends MDCComponent {
       previouslySelected.removeAttribute('aria-selected');
     }
 
-    selectedItem.classList.add(cssClasses.SELECTED_ITEM_CLASS);
-    selectedItem.setAttribute('aria-selected', 'true');
+    if (selectedItem) {
+      selectedItem.classList.add(cssClasses.SELECTED_ITEM_CLASS);
+      selectedItem.setAttribute('aria-selected', 'true');
+    }
 
     this.layout();
   }
@@ -443,14 +448,12 @@ class MDCSelect extends MDCComponent {
 
   /**
    * @return {!{
-   *   hasLabel: function(): boolean,
    *   floatLabel: function(boolean): undefined,
    *   getLabelWidth: function(): number,
    * }}
    */
   getLabelAdapterMethods_() {
     return {
-      hasLabel: () => !!this.label_,
       floatLabel: (shouldFloat) => {
         if (this.label_) {
           this.label_.float(shouldFloat);
