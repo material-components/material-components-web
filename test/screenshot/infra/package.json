@@ -1,9 +1,10 @@
 {
-  "name": "mdc-web-shield-generator",
-  "description": "MDC Web GitHub Shield Generator for Google Cloud Functions",
+  "name": "mdc-web-gcloud-functions",
+  "description": "Google Cloud Functions for MDC Web",
   "main": "index.js",
   "dependencies": {
-    "@octokit/rest": "^15.12.0",
+    "@google-cloud/datastore": "^2.0.0",
+    "protobufjs": "^6.8.8",
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
     "request-promise-native": "^1.0.5",

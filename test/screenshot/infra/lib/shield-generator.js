@@ -25,10 +25,10 @@ require('url-search-params-polyfill');
 
 const request = require('request-promise-native');
 
-const mdcProto = require('../infra/proto/mdc.pb').mdc.proto;
+const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const ShieldState = mdcProto.ShieldState;
 
-const CloudDatastore = require('../infra/lib/cloud-datastore');
+const CloudDatastore = require('../lib/cloud-datastore');
 
 /**
  * @typedef {{

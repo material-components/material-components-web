@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-const ShieldGenerator = require('./generator');
+const ShieldGenerator = require('./lib/shield-generator');
 const shieldGenerator = new ShieldGenerator();
 
 exports.screenshotShieldSvg = (req, res) => shieldGenerator.handleSvgRequest(req, res);

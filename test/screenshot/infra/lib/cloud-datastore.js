@@ -98,7 +98,7 @@ class CloudDatastore {
   }) {
     const key = this.datastore_.key(KIND);
 
-    // IMPORTANT: If you modify this data structure, you might also need to update test/screenshot/shield/index.yaml.
+    // IMPORTANT: If you modify this data structure, you might also need to update test/screenshot/infra/index.yaml.
     const entity = {
       key,
       data: [
