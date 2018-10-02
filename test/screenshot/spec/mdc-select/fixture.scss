@@ -55,3 +55,7 @@
 .custom-select-outline-shape-radius {
   @include mdc-select-outline-shape-radius(10px);
 }
+
+.custom-enhanced-select-width {
+  width: 275px;
+}
