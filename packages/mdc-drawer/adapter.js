@@ -59,9 +59,6 @@ class MDCDrawerAdapter {
    */
   elementHasClass(element, className) {}
 
-  /** @return {!ClientRect} */
-  computeBoundingRect() {}
-
   /**
    * Saves the focus of currently active element.
    */

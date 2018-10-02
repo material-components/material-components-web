@@ -246,12 +246,3 @@ MDC React repository, with the "required for sync" label.
 Our markdown documentation is transformed and mirrored to the Develop section of material.io.
 
 Currently, this requires some manual work by the Tools team, so we need to notify them to update the site content.
-
-## (Deprecated) Deploy Catalog Server
-
-> Note: We now promote the [MDC Web Catalog](https://github.com/material-components/material-components-web-catalog)
-> instead. The old catalog server is no longer linked from our documentation.
-
-`MDC_ENV=development npm run build:demos && gcloud app deploy`
-
-[Double check it is live](https://material-components-web.appspot.com/)

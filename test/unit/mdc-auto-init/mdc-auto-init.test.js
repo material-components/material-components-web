@@ -24,7 +24,7 @@
 import bel from 'bel';
 import td from 'testdouble';
 import {assert} from 'chai';
-import mdcAutoInit from '../../../packages/mdc-auto-init';
+import mdcAutoInit from '../../../packages/mdc-auto-init/index';
 
 class FakeComponent {
   static attachTo(node) {
