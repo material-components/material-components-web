@@ -73,6 +73,7 @@ class MDCSelectFoundation extends MDCFoundation {
       setSelectedIndex: () => {},
       setDisabled: () => {},
       setRippleCenter: () => {},
+      changeEvent: () => {},
     });
   }
 
@@ -86,12 +87,14 @@ class MDCSelectFoundation extends MDCFoundation {
   setSelectedIndex(index) {
     this.adapter_.setSelectedIndex(index);
     this.adapter_.closeMenu();
-    this.handleChange();
+    const didChange = true;
+    this.handleChange(didChange);
   }
 
   setValue(value) {
     this.adapter_.setValue(value);
-    this.handleChange();
+    const didChange = true;
+    this.handleChange(didChange);
   }
 
   getValue() {
@@ -101,20 +104,20 @@ class MDCSelectFoundation extends MDCFoundation {
   setDisabled(isDisabled) {
     this.adapter_.setDisabled(isDisabled);
     this.adapter_.closeMenu();
-    this.updateDisabledStyle(isDisabled);
+    this.updateDisabledStyle_(isDisabled);
   }
 
   layout() {
-    const openNotch = this.adapter_.getValue().length > 0;
+    const openNotch = this.getValue().length > 0;
     this.notchOutline(openNotch);
   }
 
 
   /**
-   * Updates the styles of the select to show the disasbled state.
+   * Updates the styles of the select to show the disabled state.
    * @param {boolean} disabled
    */
-  updateDisabledStyle(disabled) {
+  updateDisabledStyle_(disabled) {
     const {DISABLED} = MDCSelectFoundation.cssClasses;
     if (disabled) {
       this.adapter_.addClass(DISABLED);
@@ -126,10 +129,14 @@ class MDCSelectFoundation extends MDCFoundation {
   /**
    * Handles value changes, via change event or programmatic updates.
    */
-  handleChange() {
-    const optionHasValue = this.adapter_.getValue().length > 0;
+  handleChange(didChange) {
+    const value = this.getValue();
+    const optionHasValue = value.length > 0;
     this.adapter_.floatLabel(optionHasValue);
     this.notchOutline(optionHasValue);
+    if (didChange) {
+      this.adapter_.changeEvent({value});
+    }
   }
 
   /**
@@ -151,7 +158,7 @@ class MDCSelectFoundation extends MDCFoundation {
   handleBlur() {
     if (this.adapter_.isMenuOpened()) return;
     this.adapter_.removeClass(cssClasses.FOCUSED);
-    this.handleChange();
+    this.handleChange(false);
     this.adapter_.removeClass('mdc-select--focused');
     this.adapter_.deactivateBottomLine();
   }

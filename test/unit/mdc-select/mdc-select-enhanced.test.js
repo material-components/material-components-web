@@ -196,7 +196,7 @@ test('#set value calls foundation.handleChange', () => {
   const hasLabel = true;
   const {component, mockFoundation} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   component.value = 'orange';
-  td.verify(mockFoundation.handleChange(), {times: 1});
+  td.verify(mockFoundation.setValue('orange'), {times: 1});
 });
 
 test('#set selectedIndex calls foundation.handleChange', () => {
@@ -206,14 +206,17 @@ test('#set selectedIndex calls foundation.handleChange', () => {
   const hasLabel = true;
   const {component, mockFoundation} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   component.selectedIndex = 1;
-  td.verify(mockFoundation.handleChange(), {times: 1});
+  td.verify(mockFoundation.setSelectedIndex(1), {times: 1});
 });
 
-test('#set disabled calls foundation.updateDisabledStyle', () => {
-  const {component} = setupTest();
-  component.foundation_.updateDisabledStyle = td.func();
+test('#set disabled calls foundation.updateDisabledStyle_', () => {
+  const hasMockFoundation = true;
+  const hasMockMenu = true;
+  const hasOutline = false;
+  const hasLabel = true;
+  const {component, mockFoundation} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   component.disabled = true;
-  td.verify(component.foundation_.updateDisabledStyle(true), {times: 1});
+  td.verify(mockFoundation.setDisabled(true), {times: 1});
 });
 
 test('#initialSyncWithDOM sets the selected index if an option has the selected class', () => {
@@ -480,7 +483,7 @@ test('change event triggers foundation.handleChange()', () => {
   const {component, selectedText} = setupTest();
   component.foundation_.handleChange = td.func();
   domEvents.emit(selectedText, 'change');
-  td.verify(component.foundation_.handleChange(), {times: 1});
+  td.verify(component.foundation_.handleChange(true), {times: 1});
 });
 
 test('focus event triggers foundation.handleFocus()', () => {

@@ -152,6 +152,14 @@ class MDCSelectAdapter {
    * @param {number} normalizedX
    */
   setRippleCenter(normalizedX) {}
+
+  /**
+   * Emits a change event when an element is selected.
+   * @param {{
+ *    value: string
+ *   }} evtData
+   */
+  changeEvent(evtData) {}
 }
 
 export default MDCSelectAdapter;

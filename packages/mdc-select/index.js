@@ -228,7 +228,7 @@ class MDCSelect extends MDCComponent {
    * on the environment's state.
    */
   initialSyncWithDOM() {
-    this.handleChange_ = () => this.foundation_.handleChange();
+    this.handleChange_ = () => this.foundation_.handleChange(/* didChange */ true);
     this.handleFocus_ = () => this.foundation_.handleFocus();
     this.handleBlur_ = () => this.foundation_.handleBlur();
     this.handleClick_ = (evt) => this.foundation_.handleClick(this.getNormalizedXCoordinate_(evt));
@@ -420,6 +420,10 @@ class MDCSelect extends MDCComponent {
       setRippleCenter: (normalizedX) => this.lineRipple_ && this.lineRipple_.setRippleCenter(normalizedX),
       activateBottomLine: () => this.lineRipple_ && this.lineRipple_.activate(),
       deactivateBottomLine: () => this.lineRipple_ && this.lineRipple_.deactivate(),
+      changeEvent: (evtData) => {
+        evtData.index = this.selectedIndex;
+        this.emit(strings.CHANGE_EVENT, evtData);
+      },
     };
   }
 
