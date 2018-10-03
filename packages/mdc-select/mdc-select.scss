@@ -88,6 +88,10 @@
     padding-top: 22px;
   }
 
+  &__native-control {
+    padding-top: 20px;
+  }
+
   &__native-control,
   &__selected-text {
     @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
@@ -116,7 +120,6 @@
 
     box-sizing: border-box;
     width: 100%;
-    padding-top: 20px;
     padding-bottom: 4px;
     border: none;
     border-bottom: 1px solid;
