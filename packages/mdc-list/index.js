@@ -24,6 +24,7 @@
 import MDCComponent from '@material/base/component';
 import MDCListFoundation from './foundation';
 import MDCListAdapter from './adapter';
+import {matches} from '@material/dom/ponyfill';
 import {cssClasses, strings} from './constants';
 
 /**
@@ -59,13 +60,14 @@ class MDCList extends MDCComponent {
   }
 
   initialSyncWithDOM() {
-    this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
+    this.handleClick_ = this.handleClickEvent_.bind(this);
     this.handleKeydown_ = this.handleKeydownEvent_.bind(this);
     this.focusInEventListener_ = this.handleFocusInEvent_.bind(this);
     this.focusOutEventListener_ = this.handleFocusOutEvent_.bind(this);
     this.root_.addEventListener('keydown', this.handleKeydown_);
     this.root_.addEventListener('focusin', this.focusInEventListener_);
     this.root_.addEventListener('focusout', this.focusOutEventListener_);
+    this.root_.addEventListener('click', this.handleClick_);
     this.layout();
     this.initializeListType();
   }
@@ -103,7 +105,7 @@ class MDCList extends MDCComponent {
 
     // Get the index of the element if it is a list item.
     if (eventTarget.classList.contains(cssClasses.LIST_ITEM_CLASS)) {
-      index = this.listElements_.indexOf(eventTarget);
+      index = this.listElements.indexOf(eventTarget);
     }
 
     return index;
@@ -130,7 +132,8 @@ class MDCList extends MDCComponent {
   }
 
   /**
-   * Used to figure out which element was clicked before sending the event to the foundation.
+   * Used to figure out which element was focused when keydown event occurred before sending the event to the
+   * foundation.
    * @param {Event} evt
    * @private
    */
@@ -140,6 +143,19 @@ class MDCList extends MDCComponent {
     if (index >= 0) {
       this.foundation_.handleKeydown(evt, evt.target.classList.contains(cssClasses.LIST_ITEM_CLASS), index);
     }
+  }
+
+  /**
+   * Used to figure out which element was clicked before sending the event to the foundation.
+   * @param {Event} evt
+   * @private
+   */
+  handleClickEvent_(evt) {
+    const index = this.getListItemIndex_(evt);
+
+    // Toggle the checkbox only if it's not the target of the event, or the checkbox will have 2 change events.
+    const toggleCheckbox = !matches(/** @type {!Element} */ (evt.target), strings.CHECKBOX_RADIO_SELECTOR);
+    this.foundation_.handleClick(index, toggleCheckbox);
   }
 
   initializeListType() {
@@ -153,7 +169,7 @@ class MDCList extends MDCComponent {
       }
 
       this.singleSelection = true;
-      this.selectedIndex = this.listElements_.indexOf(preselectedElement);
+      this.selectedIndex = this.listElements.indexOf(preselectedElement);
     }
   }
 
@@ -163,7 +179,7 @@ class MDCList extends MDCComponent {
   }
 
   /** @return Array<!Element>*/
-  get listElements_() {
+  get listElements() {
     return [].slice.call(this.root_.querySelectorAll(strings.ENABLED_ITEMS_SELECTOR));
   }
 
@@ -174,12 +190,6 @@ class MDCList extends MDCComponent {
 
   /** @param {boolean} isSingleSelectionList */
   set singleSelection(isSingleSelectionList) {
-    if (isSingleSelectionList) {
-      this.root_.addEventListener('click', this.handleClick_);
-    } else {
-      this.root_.removeEventListener('click', this.handleClick_);
-    }
-
     this.foundation_.setSingleSelection(isSingleSelectionList);
   }
 
@@ -191,48 +201,65 @@ class MDCList extends MDCComponent {
   /** @return {!MDCListFoundation} */
   getDefaultFoundation() {
     return new MDCListFoundation(/** @type {!MDCListAdapter} */ (Object.assign({
-      getListItemCount: () => this.listElements_.length,
-      getFocusedElementIndex: () => this.listElements_.indexOf(document.activeElement),
+      getListItemCount: () => this.listElements.length,
+      getFocusedElementIndex: () => this.listElements.indexOf(document.activeElement),
       setAttributeForElementIndex: (index, attr, value) => {
-        const element = this.listElements_[index];
+        const element = this.listElements[index];
         if (element) {
           element.setAttribute(attr, value);
         }
       },
       removeAttributeForElementIndex: (index, attr) => {
-        const element = this.listElements_[index];
+        const element = this.listElements[index];
         if (element) {
           element.removeAttribute(attr);
         }
       },
       addClassForElementIndex: (index, className) => {
-        const element = this.listElements_[index];
+        const element = this.listElements[index];
         if (element) {
           element.classList.add(className);
         }
       },
       removeClassForElementIndex: (index, className) => {
-        const element = this.listElements_[index];
+        const element = this.listElements[index];
         if (element) {
           element.classList.remove(className);
         }
       },
       focusItemAtIndex: (index) => {
-        const element = this.listElements_[index];
+        const element = this.listElements[index];
         if (element) {
           element.focus();
         }
       },
       setTabIndexForListItemChildren: (listItemIndex, tabIndexValue) => {
-        const element = this.listElements_[listItemIndex];
-        const listItemChildren = [].slice.call(element.querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS));
+        const element = this.listElements[listItemIndex];
+        const listItemChildren = [].slice.call(element.querySelectorAll(strings.CHILD_ELEMENTS_TO_TOGGLE_TABINDEX));
         listItemChildren.forEach((ele) => ele.setAttribute('tabindex', tabIndexValue));
       },
       followHref: (index) => {
-        const listItem = this.listElements_[index];
+        const listItem = this.listElements[index];
         if (listItem && listItem.href) {
           listItem.click();
         }
+      },
+      toggleCheckbox: (index) => {
+        let checkboxOrRadioExists = false;
+        const listItem = this.listElements[index];
+        const elementsToToggle =
+          [].slice.call(listItem.querySelectorAll(strings.CHECKBOX_RADIO_SELECTOR));
+        elementsToToggle.forEach((element) => {
+          const event = document.createEvent('Event');
+          event.initEvent('change', true, true);
+
+          if (!element.checked || element.type !== 'radio') {
+            element.checked = !element.checked;
+            element.dispatchEvent(event);
+          }
+          checkboxOrRadioExists = true;
+        });
+        return checkboxOrRadioExists;
       },
     })));
   }

@@ -37,6 +37,7 @@ const {Approvals, DiffImageResult, Dimensions, FlakeConfig, GitStatus, GoldenScr
 const {ReportData, ReportMeta, Screenshot, Screenshots, ScreenshotList, TestFile, User, UserAgents} = mdcProto;
 const {InclusionType, CaptureState} = Screenshot;
 
+const Analytics = require('./analytics');
 const CbtApi = require('./cbt-api');
 const Cli = require('./cli');
 const DiffBaseParser = require('./diff-base-parser');
@@ -54,6 +55,12 @@ const TEMP_DIR = os.tmpdir();
 
 class ReportBuilder {
   constructor() {
+    /**
+     * @type {!Analytics}
+     * @private
+     */
+    this.analytics_ = new Analytics();
+
     /**
      * @type {!CbtApi}
      * @private
@@ -121,7 +128,7 @@ class ReportBuilder {
    */
   async initForApproval({runReportJsonUrl}) {
     /** @type {!mdc.proto.TestFile} */
-    const runReportJsonFile = await this.fileCache_.downloadUrlToDisk(runReportJsonUrl, 'utf8');
+    const runReportJsonFile = await this.fileCache_.getFile({uri: runReportJsonUrl, encoding: 'utf8'});
     /** @type {!mdc.proto.ReportData} */
     const reportData = ReportData.fromObject(require(runReportJsonFile.absolute_path));
     reportData.approvals = Approvals.create();
@@ -350,7 +357,7 @@ class ReportBuilder {
     await Promise.all(
       urls
         .filter((url) => Boolean(url))
-        .map((url) => this.fileCache_.downloadUrlToDisk(url))
+        .map((url) => this.fileCache_.getFile({uri: url}))
     );
   }
 
@@ -544,7 +551,7 @@ class ReportBuilder {
 
   /**
    * @param {!mdc.proto.ReportMeta} reportMeta
-   * @param {!mdc.proto.UserAgents} allUserAgents
+   * @param {!mdc.proto.UserAgents} userAgents
    * @param {!mdc.proto.DiffBase} goldenDiffBase
    * @return {!Promise<!mdc.proto.Screenshots>}
    * @private
@@ -559,6 +566,8 @@ class ReportBuilder {
     /** @type {!Array<!mdc.proto.Screenshot>} */
     const actualScreenshots = await this.getActualScreenshots_({goldenFile, reportMeta, userAgents});
 
+    this.pruneUserAgentsWithNoUrls_({actualScreenshots, userAgents});
+
     // TODO(acdvorak): Rename `Screenshots`
     return this.sortAndGroupScreenshots_(userAgents, Screenshots.create({
       expected_screenshot_list: expectedScreenshots,
@@ -569,6 +578,30 @@ class ReportBuilder {
       removed_screenshot_list: await this.getRemovedScreenshots_({expectedScreenshots, actualScreenshots}),
       comparable_screenshot_list: this.getComparableScreenshots_({expectedScreenshots, actualScreenshots}),
     }));
+  }
+
+  /**
+   * @param {!Array<!mdc.proto.Screenshot>} actualScreenshots
+   * @param {!mdc.proto.UserAgents} userAgents
+   * @private
+   */
+  pruneUserAgentsWithNoUrls_({actualScreenshots, userAgents}) {
+    const actualScreenshotUserAgentAliases = new Set();
+    actualScreenshots.forEach((actualScreenshot) => {
+      if (actualScreenshot.is_runnable) {
+        actualScreenshotUserAgentAliases.add(actualScreenshot.user_agent.alias);
+      }
+    });
+    const runnableUAs = userAgents.runnable_user_agents;
+    const skippedUAs = userAgents.skipped_user_agents;
+    let i = runnableUAs.length;
+    while (i--) {
+      const userAgent = runnableUAs[i];
+      if (!actualScreenshotUserAgentAliases.has(userAgent.alias)) {
+        runnableUAs.splice(i, 1);
+        skippedUAs.push(userAgent);
+      }
+    }
   }
 
   /**
@@ -626,10 +659,6 @@ class ReportBuilder {
    * @private
    */
   async getExpectedScreenshots_(goldenFile) {
-    const downloadFileAndGetPath = async (url) => {
-      return (await this.fileCache_.downloadUrlToDisk(url)).absolute_path;
-    };
-
     /** @type {!Array<!mdc.proto.Screenshot>} */
     const expectedScreenshots = [];
     const goldenScreenshots = goldenFile.getGoldenScreenshots();
@@ -640,12 +669,12 @@ class ReportBuilder {
         expected_html_file: TestFile.create({
           public_url: goldenScreenshot.html_file_url,
           relative_path: goldenScreenshot.html_file_path,
-          absolute_path: await downloadFileAndGetPath(goldenScreenshot.html_file_url),
+          absolute_path: this.fileCache_.getAbsolutePath(goldenScreenshot.html_file_url),
         }),
         expected_image_file: TestFile.create({
           public_url: goldenScreenshot.screenshot_image_url,
           relative_path: goldenScreenshot.screenshot_image_path,
-          absolute_path: await downloadFileAndGetPath(goldenScreenshot.screenshot_image_url),
+          absolute_path: this.fileCache_.getAbsolutePath(goldenScreenshot.screenshot_image_url),
         }),
         user_agent: await this.userAgentStore_.getUserAgent(goldenScreenshot.user_agent_alias),
       });
@@ -690,7 +719,7 @@ class ReportBuilder {
         /** @type {?mdc.proto.TestFile} */
         const expectedImageFile =
           expectedScreenshotImageUrl
-            ? await this.fileCache_.downloadUrlToDisk(expectedScreenshotImageUrl)
+            ? await this.fileCache_.getFile({uri: expectedScreenshotImageUrl, download: false})
             : null;
 
         allScreenshots.push(Screenshot.create({
@@ -830,7 +859,7 @@ class ReportBuilder {
 
       if (!actualScreenshot) {
         const expectedImageUrl = expectedScreenshot.expected_image_file.public_url;
-        const expectedJimpImage = await Jimp.read(await this.fileCache_.downloadFileToBuffer(expectedImageUrl));
+        const expectedJimpImage = await Jimp.read(await this.fileCache_.getBuffer({uri: expectedImageUrl}));
         const {width, height} = expectedJimpImage.bitmap;
         expectedScreenshot.diff_image_result = DiffImageResult.create({
           expected_image_dimensions: Dimensions.create({width, height}),
@@ -979,8 +1008,12 @@ class ReportBuilder {
     if (count > 0) {
       for (const screenshot of screenshots) {
         const htmlFile = screenshot.actual_html_file || screenshot.expected_html_file;
-        const publicUrl = htmlFile.public_url;
-        console.log(`  - ${publicUrl} > ${screenshot.user_agent.alias}`);
+        const publicUrl = this.analytics_.getUrl({
+          url: htmlFile.public_url,
+          source: 'cli',
+          medium: 'inventory',
+        });
+        console.log(`  - ${this.cli_.colorizeUrl(publicUrl)} > ${screenshot.user_agent.alias}`);
       }
     }
     console.log();

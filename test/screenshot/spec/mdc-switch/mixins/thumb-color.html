@@ -28,9 +28,18 @@
     <link rel="stylesheet" href="../../../out/mdc.switch.css">
     <link rel="stylesheet" href="../../../out/spec/fixture.css">
     <link rel="stylesheet" href="../../../out/spec/mdc-switch/fixture.css">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118996389-2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-118996389-2');
+    </script>
   </head>
 
-  <body class="test-container mdc-typography">
+  <body class="test-container">
     <main class="test-viewport test-viewport--mobile">
       <div class="test-layout">
         <div class="test-cell test-cell--switch">
@@ -38,10 +47,11 @@
             <div class="mdc-switch__track"></div>
             <div class="mdc-switch__thumb-underlay">
               <div class="mdc-switch__thumb">
-                  <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch">
+                <input type="checkbox" id="basic-switch-1" class="mdc-switch__native-control" role="switch">
               </div>
             </div>
           </div>
+          <label class="test-switch-label" for="basic-switch-1">1</label>
         </div>
 
         <div class="test-cell test-cell--switch">
@@ -49,10 +59,11 @@
             <div class="mdc-switch__track"></div>
             <div class="mdc-switch__thumb-underlay">
               <div class="mdc-switch__thumb">
-                  <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch">
+                <input type="checkbox" id="basic-switch-2" class="mdc-switch__native-control" role="switch" checked>
               </div>
             </div>
           </div>
+          <label class="test-switch-label" for="basic-switch-2">2</label>
         </div>
 
         <div class="test-cell test-cell--switch">
@@ -60,10 +71,11 @@
             <div class="mdc-switch__track"></div>
             <div class="mdc-switch__thumb-underlay">
               <div class="mdc-switch__thumb">
-                  <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch">
+                <input type="checkbox" id="basic-switch-3" class="mdc-switch__native-control" role="switch" disabled>
               </div>
             </div>
           </div>
+          <label class="test-switch-label" for="basic-switch-3">3</label>
         </div>
 
         <div class="test-cell test-cell--switch">
@@ -71,10 +83,11 @@
             <div class="mdc-switch__track"></div>
             <div class="mdc-switch__thumb-underlay">
               <div class="mdc-switch__thumb">
-                  <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch">
+                <input type="checkbox" id="basic-switch-4" class="mdc-switch__native-control" role="switch" checked disabled>
               </div>
             </div>
           </div>
+          <label class="test-switch-label" for="basic-switch-4">4</label>
         </div>
 
       </div>
@@ -84,6 +97,8 @@
     <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fontfaceobserver/2.0.13/fontfaceobserver.standalone.js"></script>
+    <script src="../../../out/material-components-web.js"></script>
     <script src="../../../out/spec/fixture.js"></script>
+    <script src="../../../out/spec/mdc-switch/fixture.js"></script>
   </body>
 </html>

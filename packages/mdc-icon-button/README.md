@@ -72,7 +72,7 @@ iconButtonRipple.unbounded = true;
 
 The icon button can be used to toggle between an on and off icon. To style an icon button as an icon button toggle, add
 both icons as child elements and place the `mdc-icon-button__icon--on` class on the icon that represents the on element.
-If the button should be initialized in the "on" state, then add the `mdc-icon-button--on` class to the parent `button`. 
+If the button should be initialized in the "on" state, then add the `mdc-icon-button--on` class to the parent `button`.
 Then instantiate an `MDCIconButtonToggle` on the root element.
 
 ```html
@@ -126,8 +126,15 @@ The icon button toggle can be used with `img` tags.
 
 ### Icons
 
-The icon button can be used with a standard icon library such as Material Icons, or with an `svg`.
-We recommend you use [Material Icons](https://material.io/tools/icons) from Google Fonts.
+We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts:
+
+```html
+<head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+```
+
+However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any other icon library you wish.
 
 ### Disabled
 

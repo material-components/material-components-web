@@ -40,6 +40,8 @@ npm install @material/toolbar
 
 ## Usage
 
+### HTML Structure
+
 Wrap the items with `mdc-toolbar` class in the following way:
 
 ```html
@@ -130,7 +132,17 @@ Icons can be added as anchor tags, `span`s, or `button`s to `mdc-toolbar`. There
 `mdc-toolbar__menu-icon` represents the left most icon in `mdc-toolbar` usually to the left of `mdc-toolbar__title`.
 `mdc-toolbar__icon` represents any icons placed on the right side of an `mdc-toolbar`.
 
-When using `svg` icons, ensure you wrap the `svg` element in an `a` and include the `mdc-toolbar__icon` class.
+We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts:
+
+```html
+<head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+```
+
+However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any other icon library you wish.
+
+When using SVG icons, ensure you wrap the `svg` element in an `a` and include the `mdc-toolbar__icon` class:
 
 ```html
 <a href="#" class="mdc-toolbar__icon">

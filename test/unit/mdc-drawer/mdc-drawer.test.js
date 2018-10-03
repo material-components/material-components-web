@@ -26,9 +26,9 @@ import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
 
-import {MDCDrawer} from '../../../packages/mdc-drawer';
+import {MDCDrawer} from '../../../packages/mdc-drawer/index';
 import {strings, cssClasses} from '../../../packages/mdc-drawer/constants';
-import {MDCListFoundation} from '../../../packages/mdc-list';
+import {MDCListFoundation} from '../../../packages/mdc-list/index';
 import MDCDismissibleDrawerFoundation from '../../../packages/mdc-drawer/dismissible/foundation';
 
 function getFixture(variantClass) {
@@ -71,8 +71,13 @@ function setupTestWithMocks(variantClass = cssClasses.DISMISSIBLE) {
     activate: () => {},
     deactivate: () => {},
   });
-  const component = new MDCDrawer(drawer, mockFoundation, () => mockFocusTrapInstance);
-  return {root, drawer, component, mockFoundation, mockFocusTrapInstance};
+  const mockList = td.object({
+    wrapFocus: () => {},
+    destroy: () => {},
+  });
+
+  const component = new MDCDrawer(drawer, mockFoundation, () => mockFocusTrapInstance, () => mockList);
+  return {root, drawer, component, mockFoundation, mockFocusTrapInstance, mockList};
 }
 
 suite('MDCDrawer');
@@ -132,6 +137,13 @@ test('#destroy removes transitionend event listener', () => {
 
   domEvents.emit(drawer, 'transitionend');
   td.verify(mockFoundation.handleTransitionEnd(td.matchers.isA(Object)), {times: 0});
+});
+
+test('#destroy calls destroy on list', () => {
+  const {component, mockList} = setupTestWithMocks();
+  component.destroy();
+
+  td.verify(mockList.destroy(), {times: 1});
 });
 
 test('adapter#addClass adds class to drawer', () => {
@@ -231,13 +243,6 @@ test('adapter#releaseFocus releases focus on root element after trap focus', () 
   component.getDefaultFoundation().adapter_.releaseFocus();
 
   td.verify(mockFocusTrapInstance.deactivate());
-});
-
-test('adapter#computeBoundingRect calls getBoundingClientRect() on root', () => {
-  const {root, component} = setupTest();
-  document.body.appendChild(root);
-  assert.deepEqual(component.getDefaultFoundation().adapter_.computeBoundingRect(), root.getBoundingClientRect());
-  document.body.removeChild(root);
 });
 
 test('adapter#notifyOpen emits drawer open event', () => {

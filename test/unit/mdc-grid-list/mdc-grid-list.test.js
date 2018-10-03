@@ -26,7 +26,7 @@ import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
 
-import {MDCGridList} from '../../../packages/mdc-grid-list';
+import {MDCGridList} from '../../../packages/mdc-grid-list/index';
 
 function getFixture() {
   return bel`

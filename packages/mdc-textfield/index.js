@@ -58,7 +58,9 @@ class MDCTextField extends MDCComponent {
     /** @private {?MDCTextFieldHelperText} */
     this.helperText_;
     /** @private {?MDCTextFieldIcon} */
-    this.icon_;
+    this.leadingIcon_;
+    /** @private {?MDCTextFieldIcon} */
+    this.trailingIcon_;
     /** @private {?MDCFloatingLabel} */
     this.label_;
     /** @private {?MDCNotchedOutline} */
@@ -113,9 +115,18 @@ class MDCTextField extends MDCComponent {
         this.helperText_ = helperTextFactory(helperTextElement);
       }
     }
-    const iconElement = this.root_.querySelector(strings.ICON_SELECTOR);
-    if (iconElement) {
-      this.icon_ = iconFactory(iconElement);
+    const iconElements = this.root_.querySelectorAll(strings.ICON_SELECTOR);
+    if (iconElements.length > 0) {
+      if (iconElements.length > 1) { // Has both icons.
+        this.leadingIcon_ = iconFactory(iconElements[0]);
+        this.trailingIcon_ = iconFactory(iconElements[1]);
+      } else {
+        if (this.root_.classList.contains(cssClasses.WITH_LEADING_ICON)) {
+          this.leadingIcon_ = iconFactory(iconElements[0]);
+        } else {
+          this.trailingIcon_ = iconFactory(iconElements[0]);
+        }
+      }
     }
 
     this.ripple = null;
@@ -142,8 +153,11 @@ class MDCTextField extends MDCComponent {
     if (this.helperText_) {
       this.helperText_.destroy();
     }
-    if (this.icon_) {
-      this.icon_.destroy();
+    if (this.leadingIcon_) {
+      this.leadingIcon_.destroy();
+    }
+    if (this.trailingIcon_) {
+      this.trailingIcon_.destroy();
     }
     if (this.label_) {
       this.label_.destroy();
@@ -316,19 +330,35 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
-   * Sets the aria label of the icon.
+   * Sets the aria label of the leading icon.
    * @param {string} label
    */
-  set iconAriaLabel(label) {
-    this.foundation_.setIconAriaLabel(label);
+  set leadingIconAriaLabel(label) {
+    this.foundation_.setLeadingIconAriaLabel(label);
   }
 
   /**
-   * Sets the text content of the icon.
+   * Sets the text content of the leading icon.
    * @param {string} content
    */
-  set iconContent(content) {
-    this.foundation_.setIconContent(content);
+  set leadingIconContent(content) {
+    this.foundation_.setLeadingIconContent(content);
+  }
+
+  /**
+   * Sets the aria label of the trailing icon.
+   * @param {string} label
+   */
+  set trailingIconAriaLabel(label) {
+    this.foundation_.setTrailingIconAriaLabel(label);
+  }
+
+  /**
+   * Sets the text content of the trailing icon.
+   * @param {string} content
+   */
+  set trailingIconContent(content) {
+    this.foundation_.setTrailingIconContent(content);
   }
 
   /**
@@ -459,7 +489,8 @@ class MDCTextField extends MDCComponent {
   getFoundationMap_() {
     return {
       helperText: this.helperText_ ? this.helperText_.foundation : undefined,
-      icon: this.icon_ ? this.icon_.foundation : undefined,
+      leadingIcon: this.leadingIcon_ ? this.leadingIcon_.foundation : undefined,
+      trailingIcon: this.trailingIcon_ ? this.trailingIcon_.foundation : undefined,
     };
   }
 }

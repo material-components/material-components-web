@@ -48,7 +48,7 @@ npm install @material/typography
 
 ### HTML Structure
 
-We recommend you load Roboto from Google Fonts:
+We recommend using Roboto from Google Fonts:
 
 ```html
 <head>
@@ -145,13 +145,14 @@ $mdc-typography-font-family: "Arial, Helvetica, sans-serif";
 @import ...
 ```
 
-Example: Overriding the `font-family` property for `headline1` and `headline2`.
+Example: Overriding the `font-family` property for `headline1` and `font-family` and `font-size` for `headline2`.
 ```scss
 $mdc-typography-styles-headline1: (
-  font-family: "Arial, Helvetica, sans-serif";
+  font-family: unquote("Arial, Helvetica, sans-serif")
 );
 $mdc-typography-styles-headline2: (
-  font-family: "Arial, Helvetica, sans-serif";
+  font-family: unquote("Arial, Helvetica, sans-serif"),
+  font-size: 3.25rem
 );
 
 ...
