@@ -302,17 +302,6 @@ test('adapter#eventTargetMatches returns whether or not the target matches the s
   assert.isFalse(adapter.eventTargetMatches(target, '.non-existent-class'));
 });
 
-test('adapter#computeBoundingRect calls getBoundingClientRect() on root', () => {
-  const {root, component} = setupTest();
-  document.body.appendChild(root);
-
-  try {
-    assert.deepEqual(component.getDefaultFoundation().adapter_.computeBoundingRect(), root.getBoundingClientRect());
-  } finally {
-    document.body.removeChild(root);
-  }
-});
-
 test(`adapter#notifyOpening emits ${strings.OPENING_EVENT}`, () => {
   const {component} = setupTest();
 

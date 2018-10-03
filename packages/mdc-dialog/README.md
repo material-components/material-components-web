@@ -331,7 +331,6 @@ Method Signature | Description
 `addBodyClass(className: string) => void` | Adds a class to the `<body>`.
 `removeBodyClass(className: string) => void` | Removes a class from the `<body>`.
 `eventTargetMatches(target: !EventTarget, selector: string) => void` | Returns `true` if the target element matches the given CSS selector, otherwise `false`.
-`computeBoundingRect()`: Forces the component to recalculate its layout; in the vanilla DOM implementation, this calls `computeBoundingClientRect`.
 `trapFocus() => void` | Sets up the DOM such that keyboard navigation is restricted to focusable elements within the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details).
 `releaseFocus() => void` | Removes any effects of focus trapping on the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details).
 `isContentScrollable() => boolean` | Returns `true` if `mdc-dialog__content` can be scrolled by the user, otherwise `false`.
