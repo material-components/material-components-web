@@ -152,6 +152,7 @@ class ShieldGenerator {
    * @private
    */
   async getShieldConfigFromDatastore_(gitRef, reqShieldState) {
+    // TODO(acdvorak): Return the first terminal status (passed, failed, error) by default instead of just "passed".
     /** @type {?CloudStatus} */
     const cloudStatus = await this.cloudDatastore_.getStatus(gitRef, reqShieldState);
 
