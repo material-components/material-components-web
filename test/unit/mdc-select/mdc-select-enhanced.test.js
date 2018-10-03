@@ -652,26 +652,3 @@ test('open menu when menu is opened does not set ', () => {
   td.verify(mockFoundation.handleKeydown(td.matchers.anything()), {times: 0});
   document.body.removeChild(fixture);
 });
-
-test('menu selected event sets the selected-text element text', () => {
-  const hasMockFoundation = true;
-  const hasMockMenu = false;
-  const hasOutline = false;
-  const hasLabel = true;
-  const {fixture, mockFoundation, menuSurface} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-  document.body.appendChild(fixture);
-  let evt;
-  if (typeof CustomEvent === 'function') {
-    evt = new CustomEvent(MDCMenuFoundation.strings.SELECTED_EVENT, {
-      detail: {index: 1},
-      bubbles: true,
-    });
-  } else {
-    evt = document.createEvent('CustomEvent');
-    evt.initCustomEvent(MDCMenuFoundation.strings.SELECTED_EVENT, true, false, {detail: {index: 1}});
-  }
-  menuSurface.dispatchEvent(evt);
-  td.verify(mockFoundation.setSelectedIndex(1), {times: 1});
-  document.body.removeChild(fixture);
-  document.body.removeChild(menuSurface);
-});
