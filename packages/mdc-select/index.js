@@ -252,7 +252,7 @@ class MDCSelect extends MDCComponent {
     }
 
     // Initially sync floating label
-    this.foundation_.handleChange();
+    this.foundation_.handleChange(/* didChange */ false);
 
     if (this.root_.classList.contains(cssClasses.DISABLED)
       || (this.nativeControl_ && this.nativeControl_.disabled)) {
