@@ -83,6 +83,11 @@
     }
   }
 
+  &__selected-text {
+    min-width: 200px;
+    padding-top: 22px;
+  }
+
   &__native-control,
   &__selected-text {
     @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
@@ -109,6 +114,7 @@
       color: inherit; // Override default user agent stylesheet
     }
 
+    box-sizing: border-box;
     width: 100%;
     padding-top: 20px;
     padding-bottom: 4px;
@@ -120,12 +126,6 @@
     white-space: nowrap;
     cursor: pointer;
     appearance: none;
-    box-sizing: border-box;
-  }
-
-  &__selected-text {
-    padding-top: 22px;
-    min-width: 200px;
   }
 
   @include mdc-select-focused-line-ripple_ {
