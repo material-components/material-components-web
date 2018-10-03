@@ -152,9 +152,9 @@ module.exports = function(config) {
     if (USING_TRAVISCI) {
       // See https://github.com/karma-runner/karma-sauce-launcher/issues/73
       Object.assign(cbtConfig, {
-        testName: 'Material Components Web Unit Tests - CI',
-        tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
-        startConnect: false,
+        // testName: 'Material Components Web Unit Tests - CI',
+        // tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
+        // startConnect: false,
       });
     }
 
