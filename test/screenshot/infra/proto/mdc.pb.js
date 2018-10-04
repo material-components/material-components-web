@@ -9656,30 +9656,6 @@ $root.mdc = (function() {
             return GitStatus;
         })();
 
-        /**
-         * ShieldState enum.
-         * @name mdc.proto.ShieldState
-         * @enum {string}
-         * @property {number} UNKNOWN=0 UNKNOWN value
-         * @property {number} NO_DATA=1 NO_DATA value
-         * @property {number} INITIALIZING=2 INITIALIZING value
-         * @property {number} RUNNING=3 RUNNING value
-         * @property {number} PASSED=4 PASSED value
-         * @property {number} FAILED=5 FAILED value
-         * @property {number} ERROR=6 ERROR value
-         */
-        proto.ShieldState = (function() {
-            var valuesById = {}, values = Object.create(valuesById);
-            values[valuesById[0] = "UNKNOWN"] = 0;
-            values[valuesById[1] = "NO_DATA"] = 1;
-            values[valuesById[2] = "INITIALIZING"] = 2;
-            values[valuesById[3] = "RUNNING"] = 3;
-            values[valuesById[4] = "PASSED"] = 4;
-            values[valuesById[5] = "FAILED"] = 5;
-            values[valuesById[6] = "ERROR"] = 6;
-            return values;
-        })();
-
         return proto;
     })();
 

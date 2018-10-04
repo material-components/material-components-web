@@ -110,10 +110,10 @@ class TestCommand {
     /** @type {!mdc.proto.ReportData} */
     const reportData = await controller.initForCapture(snapshotDiffBase);
 
-    this.statusNotifier_.setReportData(reportData);
+    this.statusNotifier_.initialize(reportData);
 
     try {
-      await this.statusNotifier_.setInitializing();
+      await this.statusNotifier_.starting();
 
       await controller.uploadAllAssets(reportData);
       await controller.captureAllPages(reportData);
@@ -124,11 +124,11 @@ class TestCommand {
       await controller.uploadAllDiffImages(reportData);
       await controller.generateReportPage(reportData);
 
-      await this.statusNotifier_.setFinished();
+      await this.statusNotifier_.finished();
 
       this.logComparisonResults_(reportData);
     } catch (err) {
-      await this.statusNotifier_.setError();
+      await this.statusNotifier_.error();
       throw new VError(err, getStackTrace('diffAgainstLocal_'));
     }
 
@@ -165,7 +165,7 @@ class TestCommand {
 
       this.logComparisonResults_(masterReportData);
     } catch (err) {
-      await this.statusNotifier_.setError();
+      await this.statusNotifier_.error();
       throw new VError(err, getStackTrace('diffAgainstMasterImpl_'));
     }
 

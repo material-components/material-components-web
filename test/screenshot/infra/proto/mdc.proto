@@ -363,13 +363,3 @@ message GitStatus {
   repeated string renamed = 6;
   repeated string files = 7;
 }
-
-enum ShieldState {
-  UNKNOWN = 0;
-  NO_DATA = 1;
-  INITIALIZING = 2;
-  RUNNING = 3;
-  PASSED = 4;
-  FAILED = 5;
-  ERROR = 6;
-}

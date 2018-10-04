@@ -187,7 +187,7 @@ class SeleniumApi {
     /** @type {string|undefined} */
     let stackTrace;
 
-    this.statusNotifier_.setReportData(reportData);
+    this.statusNotifier_.initialize(reportData);
 
     try {
       stackTrace = getStackTrace('captureAllPages');
@@ -1060,20 +1060,8 @@ class SeleniumApi {
     const statusName = status.name.toUpperCase();
     const paddingSpaces = ''.padStart(maxStatusWidth - statusName.length, ' ');
 
-    const numDone = this.numCompleted_;
-    const strDone = numDone.toLocaleString();
-
-    const numTotal = numDone + this.numPending_;
-    const strTotal = numTotal.toLocaleString();
-
-    const numChanged = this.numChanged_;
-    const strChanged = numChanged.toLocaleString();
-
-    const numPercent = numTotal > 0 ? (100 * numDone / numTotal) : 0;
-    const strPercent = numPercent.toFixed(1);
-
     const pending = this.numPending_;
-    const completed = numDone;
+    const completed = this.numCompleted_;
     const total = pending + completed;
     const percent = (total === 0 ? 0 : (100 * completed / total).toFixed(1));
 
@@ -1090,7 +1078,7 @@ class SeleniumApi {
       return;
     }
 
-    this.statusNotifier_.setRunning();
+    this.statusNotifier_.running();
 
     if (!isTravis) {
       process.stdout.write(

@@ -22,9 +22,7 @@
  */
 
 const Datastore = require('@google-cloud/datastore');
-
-const mdcProto = require('../proto/mdc.pb').mdc.proto;
-const ShieldState = mdcProto.ShieldState;
+const {ShieldState} = require('../types/status-types');
 
 const KIND = 'ScreenshotStatus';
 
@@ -61,13 +59,13 @@ class CloudDatastore {
    * @param {?mdc.proto.ShieldState=} shieldState
    * @return {!Promise<?CloudStatus>}
    */
-  async getStatus(gitRef, shieldState = undefined) {
+  async getScreenshotStatus(gitRef, shieldState = undefined) {
     if (!this.isAuthenticated_()) {
       return null;
     }
     return (
-      await this.getStatus_('git_branch', gitRef, shieldState) ||
-      await this.getStatus_('git_commit_hash', gitRef, shieldState)
+      await this.getScreenshotStatus_('git_branch', gitRef, shieldState) ||
+      await this.getScreenshotStatus_('git_commit_hash', gitRef, shieldState)
     );
   }
 
@@ -77,7 +75,7 @@ class CloudDatastore {
    * @param {?mdc.proto.ShieldState=} shieldState
    * @return {!Promise<?CloudStatus>}
    */
-  async getStatus_(gitRefColumnName, gitRef, shieldState = undefined) {
+  async getScreenshotStatus_(gitRefColumnName, gitRef, shieldState = undefined) {
     const query = this.datastore_.createQuery(KIND);
 
     query.filter(gitRefColumnName, '=', gitRef);
@@ -98,12 +96,7 @@ class CloudDatastore {
     const statusArray = queryResult[0];
 
     /** @type {?CloudStatus} */
-    const latestStatus = statusArray[0];
-    if (latestStatus) {
-      // Convert string name to enum value. E.g., "PASSED" -> 4.
-      latestStatus.state = ShieldState[latestStatus.state];
-    }
-    return latestStatus;
+    return statusArray[0];
   }
 
   /**
@@ -115,7 +108,7 @@ class CloudDatastore {
    * @param {!mdc.proto.GitRevision} snapshotGitRev
    * @return {!Promise<void>}
    */
-  async setStatus({
+  async createScreenshotStatus({
     state,
     numScreenshotsTotal,
     numScreenshotsFinished,
@@ -166,7 +159,7 @@ class CloudDatastore {
         },
         {
           name: 'state',
-          value: ShieldState[state],
+          value: state,
         },
         {
           name: 'target_url',

@@ -22,26 +22,11 @@
  */
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
-const ShieldState = mdcProto.ShieldState;
 const CaptureState = mdcProto.Screenshot.CaptureState;
+const {ThrottleType, ShieldState} = require('../types/status-types');
 
 const CloudDatastore = require('./cloud-datastore');
 const GitHubApi = require('./github-api');
-
-/**
- * @typedef {{
- *   shieldState: !mdc.proto.ShieldState,
- *   numScreenshotsTotal: number,
- *   numScreenshotsFinished: number,
- *   numChanged: number,
- *   targetUrl: ?string=,
- * }} StatusInfo
- */
-
-const ThrottleType = {
-  THROTTLED: 1,
-  UNTHROTTLED: 2,
-};
 
 class StatusNotifier {
   constructor() {
@@ -100,7 +85,7 @@ class StatusNotifier {
       );
     };
 
-    const maybeSetStatus = () => {
+    const maybeNotify = () => {
       const newestStatusInfo = statusInfos[statusInfos.length - 1];
       if (isTimerActive || !newestStatusInfo || newestStatusInfo === prevStatusInfo) {
         return;
@@ -109,11 +94,11 @@ class StatusNotifier {
       prevStatusInfo = newestStatusInfo;
       isTimerActive = true;
 
-      this.setStatusUnthrottled_(newestStatusInfo);
+      this.notifyUnthrottled_(newestStatusInfo);
 
       setTimeout(() => {
         isTimerActive = false;
-        maybeSetStatus();
+        maybeNotify();
       }, INTERVAL_MS);
     };
 
@@ -121,7 +106,7 @@ class StatusNotifier {
      * @param {!StatusInfo} newStatusInfo
      * @private
      */
-    this.setStatusThrottled_ = (newStatusInfo) => {
+    this.notifyThrottled_ = (newStatusInfo) => {
       if (prevStatusInfo) {
         // Prevent out-of-order status updates, which can happen due to async execution.
         if (isError(prevStatusInfo)) {
@@ -133,38 +118,38 @@ class StatusNotifier {
       }
 
       statusInfos.push(newStatusInfo);
-      maybeSetStatus();
+      maybeNotify();
     };
   }
 
   /**
    * @param {!mdc.proto.ReportData} reportData
    */
-  setReportData(reportData) {
+  initialize(reportData) {
     this.reportData_ = reportData;
   }
 
-  setInitializing() {
-    this.setStatusAuto_(ThrottleType.UNTHROTTLED, ShieldState.INITIALIZING);
+  starting() {
+    this.notify_(ShieldState.STARTING, ThrottleType.UNTHROTTLED);
   }
 
-  setError() {
-    this.setStatusAuto_(ThrottleType.UNTHROTTLED, ShieldState.ERROR);
+  error() {
+    this.notify_(ShieldState.ERROR, ThrottleType.UNTHROTTLED);
   }
 
-  setRunning() {
-    this.setStatusAuto_(ThrottleType.THROTTLED, ShieldState.RUNNING);
+  running() {
+    this.notify_(ShieldState.RUNNING, ThrottleType.THROTTLED);
   }
 
-  setFinished() {
-    this.setStatusAuto_(ThrottleType.UNTHROTTLED, ShieldState.RUNNING);
+  finished() {
+    this.notify_(ShieldState.RUNNING, ThrottleType.UNTHROTTLED);
   }
 
   /**
+   * @param {!mdc.proto.ShieldState} shieldState
    * @param {!ThrottleType} throttleType
-   * @param {!mdc.proto.ShieldState=} shieldState
    */
-  setStatusAuto_(throttleType, shieldState = ShieldState.RUNNING) {
+  notify_(shieldState, throttleType) {
     const runnableScreenshots = this.reportData_.screenshots.runnable_screenshot_list;
     const targetUrl = this.reportData_.meta.report_html_file ? this.reportData_.meta.report_html_file.public_url : null;
 
@@ -203,9 +188,9 @@ class StatusNotifier {
     };
 
     if (throttleType === ThrottleType.UNTHROTTLED) {
-      this.setStatusUnthrottled_(statusInfo);
+      this.notifyUnthrottled_(statusInfo);
     } else {
-      this.setStatusThrottled_(statusInfo);
+      this.notifyThrottled_(statusInfo);
     }
   }
 
@@ -213,7 +198,7 @@ class StatusNotifier {
    * @param {!StatusInfo} statusInfo
    * @private
    */
-  setStatusUnthrottled_(statusInfo) {
+  notifyUnthrottled_(statusInfo) {
     const travisJobId = process.env.TRAVIS_JOB_ID;
     const travisJobUrl =
       travisJobId ? `https://travis-ci.com/material-components/material-components-web/jobs/${travisJobId}` : null;
@@ -232,7 +217,20 @@ class StatusNotifier {
     const strChanged = numChanged.toLocaleString();
     const changedPlural = numChanged === 1 ? '' : 's';
 
-    this.cloudDatastore_.setStatus({
+    this.postToDatastore_({shieldState, numTotal, numDone, numChanged, targetUrl});
+    this.postToGitHub_({shieldState, strTotal, strDone, strChanged, changedPlural, strPercent, targetUrl});
+  }
+
+  /**
+   * @param {!mdc.proto.ShieldState} shieldState
+   * @param {number} numTotal
+   * @param {number} numDone
+   * @param {number} numChanged
+   * @param {string} targetUrl
+   * @private
+   */
+  postToDatastore_({shieldState, numTotal, numDone, numChanged, targetUrl}) {
+    this.cloudDatastore_.createScreenshotStatus({
       state: shieldState,
       numScreenshotsTotal: numTotal,
       numScreenshotsFinished: numDone,
@@ -241,7 +239,19 @@ class StatusNotifier {
       targetUrl,
       snapshotGitRev: this.reportData_.meta.snapshot_diff_base.git_revision,
     });
+  }
 
+  /**
+   * @param {!mdc.proto.ShieldState} shieldState
+   * @param {string} strTotal
+   * @param {string} strDone
+   * @param {string} strChanged
+   * @param {string} changedPlural
+   * @param {string} strPercent
+   * @param {string} targetUrl
+   * @private
+   */
+  postToGitHub_({shieldState, strTotal, strDone, strChanged, changedPlural, strPercent, targetUrl}) {
     if (shieldState === ShieldState.ERROR) {
       this.gitHubApi_.setPullRequestError();
     } else if (shieldState === ShieldState.PASSED) {
