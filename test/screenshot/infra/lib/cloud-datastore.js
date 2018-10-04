@@ -36,7 +36,7 @@ const KIND = 'ScreenshotStatus';
  *   num_diffs: number,
  *   num_screenshots_finished: number,
  *   num_screenshots_total: number,
- *   state: !mdc.proto.ShieldState,
+ *   shield_state: !ShieldState,
  *   target_url: string,
  *   travis_build_id: ?string,
  *   travis_build_number: ?string,
@@ -56,7 +56,7 @@ class CloudDatastore {
 
   /**
    * @param {string} gitRef
-   * @param {?mdc.proto.ShieldState=} shieldState
+   * @param {?ShieldState=} shieldState
    * @return {!Promise<?CloudStatus>}
    */
   async getScreenshotStatus(gitRef, shieldState = undefined) {
@@ -72,7 +72,7 @@ class CloudDatastore {
   /**
    * @param {string} gitRefColumnName
    * @param {string} gitRef
-   * @param {?mdc.proto.ShieldState=} shieldState
+   * @param {?ShieldState=} shieldState
    * @return {!Promise<?CloudStatus>}
    */
   async getScreenshotStatus_(gitRefColumnName, gitRef, shieldState = undefined) {
@@ -81,7 +81,7 @@ class CloudDatastore {
     query.filter(gitRefColumnName, '=', gitRef);
 
     if (shieldState) {
-      query.filter('state', '=', ShieldState[shieldState]);
+      query.filter('state', '=', shieldState);
     }
 
     query
@@ -100,7 +100,7 @@ class CloudDatastore {
   }
 
   /**
-   * @param {!mdc.proto.ShieldState} state
+   * @param {!ShieldState} shieldState
    * @param {number} numScreenshotsTotal
    * @param {number} numScreenshotsFinished
    * @param {number} numDiffs
@@ -109,7 +109,7 @@ class CloudDatastore {
    * @return {!Promise<void>}
    */
   async createScreenshotStatus({
-    state,
+    shieldState,
     numScreenshotsTotal,
     numScreenshotsFinished,
     numDiffs,
@@ -159,7 +159,7 @@ class CloudDatastore {
         },
         {
           name: 'state',
-          value: state,
+          value: shieldState,
         },
         {
           name: 'target_url',

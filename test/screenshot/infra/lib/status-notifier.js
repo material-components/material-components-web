@@ -146,7 +146,7 @@ class StatusNotifier {
   }
 
   /**
-   * @param {!mdc.proto.ShieldState} shieldState
+   * @param {!ShieldState} shieldState
    * @param {!ThrottleType} throttleType
    */
   notify_(shieldState, throttleType) {
@@ -222,7 +222,7 @@ class StatusNotifier {
   }
 
   /**
-   * @param {!mdc.proto.ShieldState} shieldState
+   * @param {!ShieldState} shieldState
    * @param {number} numTotal
    * @param {number} numDone
    * @param {number} numChanged
@@ -231,7 +231,7 @@ class StatusNotifier {
    */
   postToDatastore_({shieldState, numTotal, numDone, numChanged, targetUrl}) {
     this.cloudDatastore_.createScreenshotStatus({
-      state: shieldState,
+      shieldState,
       numScreenshotsTotal: numTotal,
       numScreenshotsFinished: numDone,
       numDiffs: numChanged,
@@ -242,7 +242,7 @@ class StatusNotifier {
   }
 
   /**
-   * @param {!mdc.proto.ShieldState} shieldState
+   * @param {!ShieldState} shieldState
    * @param {string} strTotal
    * @param {string} strDone
    * @param {string} strChanged
