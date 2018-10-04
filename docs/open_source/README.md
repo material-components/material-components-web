@@ -57,7 +57,7 @@ having to fix the bug.
 
 Our code is released as Node modules. External developers install these modules.
 
-[Catalog Server](https://material-components-web.appspot.com/)
+[Catalog Server](https://material-components.github.io/material-components-web-catalog/)
 
 Our catalog server is where we visually display the components to our external
 developers.
@@ -67,4 +67,3 @@ developers.
 [Discord channel](https://discordapp.com/invite/material-components)
 
 Our Discord channel is where we can talk with external developers in realtime.
-

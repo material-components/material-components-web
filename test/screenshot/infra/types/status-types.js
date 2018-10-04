@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc.
+ * Copyright 2018 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,25 +21,51 @@
  * THE SOFTWARE.
  */
 
-import {getCorrectPropertyName} from '../../../packages/mdc-animation/index';
-import {captureHandlers} from '../helpers/foundation';
-import {createMockRaf} from '../helpers/raf';
-import {setupFoundationTest} from '../helpers/setup';
+/**
+ * @typedef {{
+ *   shieldState: !ShieldState,
+ *   numScreenshotsTotal: number,
+ *   numScreenshotsFinished: number,
+ *   numChanged: number,
+ *   targetUrl: ?string,
+ * }} StatusNotification
+ */
 
-import MDCSliderFoundation from '../../../packages/mdc-slider/foundation';
+/**
+ * @typedef {{
+ *   event_timestamp: string,
+ *   git_branch: string,
+ *   git_commit_hash: string,
+ *   git_commit_timestamp: string,
+ *   pull_request_number: ?number,
+ *   num_diffs: number,
+ *   num_screenshots_finished: number,
+ *   num_screenshots_total: number,
+ *   state: !ShieldState,
+ *   target_url: string,
+ *   travis_build_id: ?string,
+ *   travis_build_number: ?string,
+ *   travis_job_id: ?string,
+ *   travis_job_number: ?string,
+ * }} DatastoreScreenshotStatus
+ */
 
-export const TRANSFORM_PROP = getCorrectPropertyName(window, 'transform');
+/**
+ * @enum {string}
+ */
+module.exports.ThrottleType = {
+  THROTTLED: 1,
+  UNTHROTTLED: 2,
+};
 
-export function setupEventTest() {
-  const {foundation, mockAdapter} = setupFoundationTest(MDCSliderFoundation);
-  const raf = createMockRaf();
-
-  return {
-    foundation,
-    mockAdapter,
-    raf,
-    rootHandlers: captureHandlers(mockAdapter, 'registerInteractionHandler'),
-    thumbContainerHandlers: captureHandlers(mockAdapter, 'registerThumbContainerInteractionHandler'),
-    bodyHandlers: captureHandlers(mockAdapter, 'registerBodyInteractionHandler'),
-  };
-}
+/**
+ * @enum {string}
+ */
+module.exports.ShieldState = {
+  UNKNOWN: 'UNKNOWN',
+  STARTING: 'STARTING',
+  RUNNING: 'RUNNING',
+  PASSED: 'PASSED',
+  FAILED: 'FAILED',
+  ERROR: 'ERROR',
+};

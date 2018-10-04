@@ -146,7 +146,6 @@ class MDCDrawer extends MDCComponent {
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
       elementHasClass: (element, className) => element.classList.contains(className),
-      computeBoundingRect: () => this.root_.getBoundingClientRect(),
       saveFocus: () => {
         this.previousFocus_ = document.activeElement;
       },
