@@ -110,9 +110,13 @@ class ShieldGenerator {
   async getShieldConfig_(req) {
     const query = require('url').parse(req.url).query;
     const params = new URLSearchParams(query);
+    const getLastParam = (key) => {
+      const all = params.getAll(key);
+      return all[all.length - 1];
+    };
 
-    const gitRef = this.getGitRef_(params.get('ref'));
-    const shieldState = this.getShieldState_(params.get('state'));
+    const gitRef = this.getGitRef_(getLastParam('ref'));
+    const shieldState = this.getShieldState_(getLastParam('state'));
 
     return await this.getShieldConfigFromDatastore_(gitRef, shieldState);
   }
