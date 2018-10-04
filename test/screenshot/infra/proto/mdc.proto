@@ -188,6 +188,11 @@ message UserAgent {
 
   string browser_icon_url = 18;
   string os_icon_url = 19;
+
+  repeated string raw_options = 22;
+  bool is_high_contrast_mode = 23;
+  bool is_font_smoothing_disabled = 24;
+  bool is_rtl = 25;
 }
 
 message Screenshots {

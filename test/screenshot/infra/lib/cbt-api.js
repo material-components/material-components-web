@@ -196,6 +196,9 @@ https://crossbrowsertesting.com/account
       name: `${cbtTestName} - `,
       build: cbtBuildName,
 
+      high_contrast: userAgent.is_high_contrast_mode ? 'black' : false,
+      font_smoothing: userAgent.is_font_smoothing_disabled !== true,
+
       // TODO(acdvorak): Expose these as CLI flags
       record_video: true,
       record_network: true,
