@@ -74,6 +74,7 @@ class ShieldGenerator {
     if (targetUrl) {
       svgUrl += `?link=${targetUrl}`;
     }
+    svgUrl = this.mergeUrlParams_(req, svgUrl, /* addAnalytics */ false);
 
     try {
       const svgResponse = await this.fetchSVG_(svgUrl);
@@ -96,12 +97,9 @@ class ShieldGenerator {
 
     /** @type {!ShieldConfig} */
     const config = await this.getShieldConfig_(req);
-    const {targetUrl} = config;
-    if (targetUrl) {
-      this.redirect_(req, res, targetUrl, /* addAnalytics */ true);
-    } else {
-      this.redirect_(req, res, 'https://github.com/material-components/material-components-web');
-    }
+    const targetUrl = config.targetUrl || 'https://github.com/material-components/material-components-web';
+    const addAnalytics = targetUrl.includes('report/report.html');
+    this.redirect_(req, res, targetUrl, addAnalytics);
   }
 
   /**
@@ -242,7 +240,26 @@ class ShieldGenerator {
     res.set('Vary', 'Accept-Encoding');
   }
 
+  /**
+   * @param {{url: string}} req
+   * @param {{redirect: function(string)}} res
+   * @param {string} destinationUrl
+   * @param {boolean} addAnalytics
+   * @return {string}
+   * @private
+   */
   redirect_(req, res, destinationUrl, addAnalytics) {
+    res.redirect(this.mergeUrlParams_(req, destinationUrl, addAnalytics));
+  }
+
+  /**
+   * @param {{url: string}} req
+   * @param {string} destinationUrl
+   * @param {boolean} addAnalytics
+   * @return {string}
+   * @private
+   */
+  mergeUrlParams_(req, destinationUrl, addAnalytics) {
     const destQueryString = require('url').parse(destinationUrl).query;
     const destQueryParams = new URLSearchParams(destQueryString);
     const reqQueryString = require('url').parse(req.url).query;
@@ -257,9 +274,7 @@ class ShieldGenerator {
     }
 
     resQueryParams.delete('ref');
-    resQueryParams.delete('max');
-    resQueryParams.delete('type');
-    resQueryParams.delete('latest');
+    resQueryParams.delete('state');
 
     if (addAnalytics) {
       resQueryParams.set('utm_source', 'github');
@@ -267,8 +282,7 @@ class ShieldGenerator {
     }
 
     const resQueryString = resQueryParams.toString() ? `?${resQueryParams.toString()}` : '';
-    const redirectUrl = destinationUrl.replace(/\?.*$/, '') + resQueryString;
-    res.redirect(redirectUrl);
+    return destinationUrl.replace(/\?.*$/, '') + resQueryString;
   }
 }
 
