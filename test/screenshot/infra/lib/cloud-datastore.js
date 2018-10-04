@@ -190,6 +190,9 @@ class CloudDatastore {
    * @private
    */
   isAuthenticated_() {
+    // By default, the client will authenticate using the service account file specified by the
+    // GOOGLE_APPLICATION_CREDENTIALS environment variable.
+    // See https://googlecloudplatform.github.io/google-cloud-node/#/docs/datastore/latest/guides/authentication
     return Boolean(process.env.GOOGLE_APPLICATION_CREDENTIALS);
   }
 }

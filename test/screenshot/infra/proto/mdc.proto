@@ -104,7 +104,7 @@ message User {
   string name = 1;
   string email = 2;
   string username = 3;
-  string date = 4;
+  string date = 4; // TODO(acdvorak): Move this field to GitRevision
 }
 
 message LibraryVersion {
