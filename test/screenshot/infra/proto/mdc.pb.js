@@ -1428,6 +1428,7 @@ $root.mdc = (function() {
              * @property {number|null} [pr_number] GitRevision pr_number
              * @property {mdc.proto.IUser|null} [author] GitRevision author
              * @property {mdc.proto.IUser|null} [committer] GitRevision committer
+             * @property {string|null} [date] GitRevision date
              */
 
             /**
@@ -1518,6 +1519,14 @@ $root.mdc = (function() {
             GitRevision.prototype.committer = null;
 
             /**
+             * GitRevision date.
+             * @member {string} date
+             * @memberof mdc.proto.GitRevision
+             * @instance
+             */
+            GitRevision.prototype.date = "";
+
+            /**
              * Creates a new GitRevision instance using the specified properties.
              * @function create
              * @memberof mdc.proto.GitRevision
@@ -1559,6 +1568,8 @@ $root.mdc = (function() {
                     $root.mdc.proto.User.encode(message.author, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
                 if (message.committer != null && message.hasOwnProperty("committer"))
                     $root.mdc.proto.User.encode(message.committer, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
+                if (message.date != null && message.hasOwnProperty("date"))
+                    writer.uint32(/* id 10, wireType 2 =*/82).string(message.date);
                 return writer;
             };
 
@@ -1619,6 +1630,9 @@ $root.mdc = (function() {
                         break;
                     case 9:
                         message.committer = $root.mdc.proto.User.decode(reader, reader.uint32());
+                        break;
+                    case 10:
+                        message.date = reader.string();
                         break;
                     default:
                         reader.skipType(tag & 7);
@@ -1695,6 +1709,9 @@ $root.mdc = (function() {
                     if (error)
                         return "committer." + error;
                 }
+                if (message.date != null && message.hasOwnProperty("date"))
+                    if (!$util.isString(message.date))
+                        return "date: string expected";
                 return null;
             };
 
@@ -1758,6 +1775,8 @@ $root.mdc = (function() {
                         throw TypeError(".mdc.proto.GitRevision.committer: object expected");
                     message.committer = $root.mdc.proto.User.fromObject(object.committer);
                 }
+                if (object.date != null)
+                    message.date = String(object.date);
                 return message;
             };
 
@@ -1784,6 +1803,7 @@ $root.mdc = (function() {
                     object.pr_number = 0;
                     object.author = null;
                     object.committer = null;
+                    object.date = "";
                 }
                 if (message.type != null && message.hasOwnProperty("type"))
                     object.type = options.enums === String ? $root.mdc.proto.GitRevision.Type[message.type] : message.type;
@@ -1803,6 +1823,8 @@ $root.mdc = (function() {
                     object.author = $root.mdc.proto.User.toObject(message.author, options);
                 if (message.committer != null && message.hasOwnProperty("committer"))
                     object.committer = $root.mdc.proto.User.toObject(message.committer, options);
+                if (message.date != null && message.hasOwnProperty("date"))
+                    object.date = message.date;
                 return object;
             };
 

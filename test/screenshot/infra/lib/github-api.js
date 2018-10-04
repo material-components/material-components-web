@@ -22,22 +22,31 @@
  */
 
 const VError = require('verror');
-const debounce = require('debounce');
 const octokit = require('@octokit/rest');
 
-const Analytics = require('./analytics');
 const GitRepo = require('./git-repo');
 const getStackTrace = require('./stacktrace')('GitHubApi');
 
 class GitHubApi {
+  /**
+   * @return {{PENDING: string, SUCCESS: string, FAILURE: string, ERROR: string}}
+   * @constructor
+   */
+  static get PullRequestState() {
+    return {
+      PENDING: 'pending',
+      SUCCESS: 'success',
+      FAILURE: 'failure',
+      ERROR: 'error',
+    };
+  }
+
   constructor() {
-    this.analytics_ = new Analytics();
     this.gitRepo_ = new GitRepo();
     this.octokit_ = octokit();
     this.isTravis_ = process.env.TRAVIS === 'true';
     this.isAuthenticated_ = false;
     this.authenticate_();
-    this.initStatusThrottle_();
   }
 
   /** @private */
@@ -59,133 +68,14 @@ class GitHubApi {
     this.isAuthenticated_ = true;
   }
 
-  /** @private */
-  initStatusThrottle_() {
-    const throttle = (fn, delay) => {
-      let lastCall = 0;
-      return (...args) => {
-        const now = (new Date).getTime();
-        if (now - lastCall < delay) {
-          return;
-        }
-        lastCall = now;
-        return fn(...args);
-      };
-    };
-
-    const createStatusDebounced = debounce((...args) => {
-      return this.createStatusUnthrottled_(...args);
-    }, 2500);
-    const createStatusThrottled = throttle((...args) => {
-      return this.createStatusUnthrottled_(...args);
-    }, 5000);
-    this.createStatusThrottled_ = (...args) => {
-      createStatusDebounced(...args);
-      createStatusThrottled(...args);
-    };
-  }
-
-  /**
-   * @return {{PENDING: string, SUCCESS: string, FAILURE: string, ERROR: string}}
-   * @constructor
-   */
-  static get PullRequestState() {
-    return {
-      PENDING: 'pending',
-      SUCCESS: 'success',
-      FAILURE: 'failure',
-      ERROR: 'error',
-    };
-  }
-
-  /**
-   * @param {string} state
-   * @param {string} description
-   */
-  setPullRequestStatusManual({state, description}) {
-    if (!this.isTravis_ || !this.isAuthenticated_) {
-      return;
-    }
-
-    this.createStatusThrottled_({
-      state,
-      targetUrl: `https://travis-ci.com/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`,
-      description,
-    });
-  }
-
-  /**
-   * @param {!mdc.proto.ReportData} reportData
-   * @return {!Promise<*>}
-   */
-  async setPullRequestStatusAuto(reportData) {
-    if (!this.isTravis_ || !this.isAuthenticated_) {
-      return;
-    }
-
-    const meta = reportData.meta;
-    const screenshots = reportData.screenshots;
-    const numUnchanged = screenshots.unchanged_screenshot_list.length;
-    const numChanged =
-      screenshots.changed_screenshot_list.length +
-      screenshots.added_screenshot_list.length +
-      screenshots.removed_screenshot_list.length;
-    const reportFileUrl = meta.report_html_file ? meta.report_html_file.public_url : null;
-
-    let state;
-    let targetUrl;
-    let description;
-
-    if (reportFileUrl) {
-      if (numChanged === 0) {
-        state = GitHubApi.PullRequestState.SUCCESS;
-        description = `All ${numUnchanged.toLocaleString()} screenshots match PR's golden.json`;
-      } else if (numChanged === 1) {
-        state = GitHubApi.PullRequestState.FAILURE;
-        description = "1 screenshot differs from PR's golden.json";
-      } else {
-        state = GitHubApi.PullRequestState.FAILURE;
-        description = `${numChanged.toLocaleString()} screenshots differ from PR's golden.json`;
-      }
-
-      targetUrl = this.analytics_.getUrl({
-        url: reportFileUrl,
-        source: 'github',
-        medium: 'pr_status',
-      });
-    } else {
-      const runnableScreenshots = screenshots.runnable_screenshot_list;
-      const numTotal = runnableScreenshots.length;
-
-      state = GitHubApi.PullRequestState.PENDING;
-      targetUrl = `https://travis-ci.com/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`;
-      description = `Running ${numTotal.toLocaleString()} screenshots...`;
-    }
-
-    return await this.createStatusUnthrottled_({state, targetUrl, description});
-  }
-
-  async setPullRequestError() {
-    if (!this.isTravis_ || !this.isAuthenticated_) {
-      return;
-    }
-
-    return await this.createStatusUnthrottled_({
-      state: GitHubApi.PullRequestState.ERROR,
-      targetUrl: `https://travis-ci.com/material-components/material-components-web/jobs/${process.env.TRAVIS_JOB_ID}`,
-      description: 'Error running screenshot tests',
-    });
-  }
-
   /**
    * @param {string} state
    * @param {string} targetUrl
    * @param {string=} description
-   * @return {!Promise<*>}
-   * @private
+   * @return {!Promise<?Github.AnyResponse>}
    */
-  async createStatusUnthrottled_({state, targetUrl, description = undefined}) {
-    if (!this.isAuthenticated_) {
+  async setPullRequestStatus({state, targetUrl, description = undefined}) {
+    if (!this.isTravis_ || !this.isAuthenticated_) {
       return null;
     }
 
@@ -196,7 +86,7 @@ class GitHubApi {
     let stackTrace;
 
     try {
-      stackTrace = getStackTrace('createStatusUnthrottled_');
+      stackTrace = getStackTrace('setPullRequestStatus');
       return await this.octokit_.repos.createStatus({
         owner: 'material-components',
         repo: 'material-components-web',
@@ -208,6 +98,31 @@ class GitHubApi {
       });
     } catch (err) {
       throw new VError(err, `Failed to set commit status:\n${stackTrace}`);
+    }
+  }
+
+  /**
+   * @param {number} prNumber
+   * @param {string} comment
+   * @return {!Promise<?Github.AnyResponse>}
+   */
+  async createPullRequestComment({prNumber, comment}) {
+    if (!this.isTravis_ || !this.isAuthenticated_) {
+      return null;
+    }
+
+    let stackTrace;
+
+    try {
+      stackTrace = getStackTrace('createPullRequestComment');
+      return await this.octokit_.issues.createComment({
+        owner: 'material-components',
+        repo: 'material-components-web',
+        number: prNumber,
+        body: comment,
+      });
+    } catch (err) {
+      throw new VError(err, `Failed to create comment on PR #${prNumber}:\n${stackTrace}`);
     }
   }
 
@@ -239,30 +154,6 @@ class GitHubApi {
   }
 
   /**
-   * @param prNumber
-   * @return {!Promise<!Array<!github.proto.PullRequestFile>>}
-   */
-  async getPullRequestFiles(prNumber) {
-    /** @type {!github.proto.PullRequestFileResponse} */
-    let fileResponse;
-    let stackTrace;
-
-    try {
-      stackTrace = getStackTrace('getPullRequestFiles');
-      fileResponse = await this.octokit_.pullRequests.getFiles({
-        owner: 'material-components',
-        repo: 'material-components-web',
-        number: prNumber,
-        per_page: 300,
-      });
-    } catch (err) {
-      throw new VError(err, `Failed to get file list for PR #${prNumber}:\n${stackTrace}`);
-    }
-
-    return fileResponse.data;
-  }
-
-  /**
    * @param {number} prNumber
    * @return {!Promise<string>}
    */
@@ -287,31 +178,6 @@ class GitHubApi {
     }
 
     return `origin/${prResponse.data.base.ref}`;
-  }
-
-  /**
-   * @param {number} prNumber
-   * @param {string} comment
-   * @return {!Promise<*>}
-   */
-  async createPullRequestComment({prNumber, comment}) {
-    if (!this.isTravis_ || !this.isAuthenticated_) {
-      return;
-    }
-
-    let stackTrace;
-
-    try {
-      stackTrace = getStackTrace('createPullRequestComment');
-      return await this.octokit_.issues.createComment({
-        owner: 'material-components',
-        repo: 'material-components-web',
-        number: prNumber,
-        body: comment,
-      });
-    } catch (err) {
-      throw new VError(err, `Failed to create comment on PR #${prNumber}:\n${stackTrace}`);
-    }
   }
 }
 
