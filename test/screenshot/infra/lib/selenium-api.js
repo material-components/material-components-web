@@ -510,7 +510,7 @@ class SeleniumApi {
     if (this.cli_.isOnline()) {
       return this.cbtApi_.getDesiredCapabilities({meta, userAgent});
     }
-    return this.createDesiredCapabilitiesOffline_({userAgent});
+    return this.createOfflineDesiredCapabilities_({userAgent});
   }
 
   /**
@@ -518,7 +518,7 @@ class SeleniumApi {
    * @return {!selenium.proto.RawCapabilities}
    * @private
    */
-  createDesiredCapabilitiesOffline_({userAgent}) {
+  createOfflineDesiredCapabilities_({userAgent}) {
     const browserVendorMap = {
       [BrowserVendorType.CHROME]: Browser.CHROME,
       [BrowserVendorType.EDGE]: Browser.EDGE,
