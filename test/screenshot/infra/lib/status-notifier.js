@@ -55,46 +55,46 @@ class StatusNotifier {
   initThrottle_() {
     const INTERVAL_MS = 2500;
 
-    /** @type {!Array<!StatusInfo>} */
-    const statusInfos = [];
+    /** @type {!Array<!StatusNotification>} */
+    const statusNotifications = [];
 
-    /** @type {?StatusInfo} */
-    let prevStatusInfo = null;
+    /** @type {?StatusNotification} */
+    let prevStatusNotification = null;
 
     let isTimerActive = false;
 
     /**
-     * @param {!StatusInfo} statusInfo
+     * @param {!StatusNotification} statusNotification
      * @return {boolean}
      */
-    const isError = (statusInfo) => {
+    const isError = (statusNotification) => {
       return (
-        statusInfo.shieldState === ShieldState.ERROR
+        statusNotification.shieldState === ShieldState.ERROR
       );
     };
 
     /**
-     * @param {!StatusInfo} statusInfo
+     * @param {!StatusNotification} statusNotification
      * @return {boolean}
      */
-    const isTerminal = (statusInfo) => {
+    const isTerminal = (statusNotification) => {
       return (
-        statusInfo.shieldState === ShieldState.ERROR ||
-        statusInfo.shieldState === ShieldState.PASSED ||
-        statusInfo.shieldState === ShieldState.FAILED
+        statusNotification.shieldState === ShieldState.ERROR ||
+        statusNotification.shieldState === ShieldState.PASSED ||
+        statusNotification.shieldState === ShieldState.FAILED
       );
     };
 
     const maybeNotify = () => {
-      const newestStatusInfo = statusInfos[statusInfos.length - 1];
-      if (isTimerActive || !newestStatusInfo || newestStatusInfo === prevStatusInfo) {
+      const newestStatusNotification = statusNotifications[statusNotifications.length - 1];
+      if (isTimerActive || !newestStatusNotification || newestStatusNotification === prevStatusNotification) {
         return;
       }
 
-      prevStatusInfo = newestStatusInfo;
+      prevStatusNotification = newestStatusNotification;
       isTimerActive = true;
 
-      this.notifyUnthrottled_(newestStatusInfo);
+      this.notifyUnthrottled_(newestStatusNotification);
 
       setTimeout(() => {
         isTimerActive = false;
@@ -103,21 +103,21 @@ class StatusNotifier {
     };
 
     /**
-     * @param {!StatusInfo} newStatusInfo
+     * @param {!StatusNotification} newStatusNotification
      * @private
      */
-    this.notifyThrottled_ = (newStatusInfo) => {
-      if (prevStatusInfo) {
+    this.notifyThrottled_ = (newStatusNotification) => {
+      if (prevStatusNotification) {
         // Prevent out-of-order status updates, which can happen due to async execution.
-        if (isError(prevStatusInfo)) {
+        if (isError(prevStatusNotification)) {
           return;
         }
-        if (isTerminal(prevStatusInfo) && !isTerminal(newStatusInfo)) {
+        if (isTerminal(prevStatusNotification) && !isTerminal(newStatusNotification)) {
           return;
         }
       }
 
-      statusInfos.push(newStatusInfo);
+      statusNotifications.push(newStatusNotification);
       maybeNotify();
     };
   }
@@ -178,8 +178,8 @@ class StatusNotifier {
       shieldState = ShieldState.FAILED;
     }
 
-    /** @type {!StatusInfo} */
-    const statusInfo = {
+    /** @type {!StatusNotification} */
+    const statusNotification = {
       shieldState,
       numScreenshotsTotal,
       numScreenshotsFinished,
@@ -188,28 +188,28 @@ class StatusNotifier {
     };
 
     if (throttleType === ThrottleType.UNTHROTTLED) {
-      this.notifyUnthrottled_(statusInfo);
+      this.notifyUnthrottled_(statusNotification);
     } else {
-      this.notifyThrottled_(statusInfo);
+      this.notifyThrottled_(statusNotification);
     }
   }
 
   /**
-   * @param {!StatusInfo} statusInfo
+   * @param {!StatusNotification} statusNotification
    * @private
    */
-  notifyUnthrottled_(statusInfo) {
+  notifyUnthrottled_(statusNotification) {
     const travisJobId = process.env.TRAVIS_JOB_ID;
     const travisJobUrl =
       travisJobId ? `https://travis-ci.com/material-components/material-components-web/jobs/${travisJobId}` : null;
     const githubRepoUrl = 'https://github.com/material-components/material-components-web';
 
-    const shieldState = statusInfo.shieldState;
-    const numTotal = statusInfo.numScreenshotsTotal;
-    const numDone = statusInfo.numScreenshotsFinished;
-    const numChanged = statusInfo.numChanged;
+    const shieldState = statusNotification.shieldState;
+    const numTotal = statusNotification.numScreenshotsTotal;
+    const numDone = statusNotification.numScreenshotsFinished;
+    const numChanged = statusNotification.numChanged;
     const numPercent = numTotal > 0 ? (100 * numDone / numTotal) : 0;
-    const targetUrl = statusInfo.targetUrl || travisJobUrl || githubRepoUrl;
+    const targetUrl = statusNotification.targetUrl || travisJobUrl || githubRepoUrl;
 
     const strDone = numDone.toLocaleString();
     const strTotal = numTotal.toLocaleString();

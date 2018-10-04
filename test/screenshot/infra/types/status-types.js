@@ -28,7 +28,26 @@
  *   numScreenshotsFinished: number,
  *   numChanged: number,
  *   targetUrl: ?string,
- * }} StatusInfo
+ * }} StatusNotification
+ */
+
+/**
+ * @typedef {{
+ *   event_timestamp: string,
+ *   git_branch: string,
+ *   git_commit_hash: string,
+ *   git_commit_timestamp: string,
+ *   pull_request_number: ?number,
+ *   num_diffs: number,
+ *   num_screenshots_finished: number,
+ *   num_screenshots_total: number,
+ *   state: !ShieldState,
+ *   target_url: string,
+ *   travis_build_id: ?string,
+ *   travis_build_number: ?string,
+ *   travis_job_id: ?string,
+ *   travis_job_number: ?string,
+ * }} DatastoreScreenshotStatus
  */
 
 /**

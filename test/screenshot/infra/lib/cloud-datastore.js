@@ -22,28 +22,8 @@
  */
 
 const Datastore = require('@google-cloud/datastore');
-const {ShieldState} = require('../types/status-types');
 
 const KIND = 'ScreenshotStatus';
-
-/**
- * @typedef {{
- *   event_timestamp: string,
- *   git_branch: string,
- *   git_commit_hash: string,
- *   git_commit_timestamp: string,
- *   pull_request_number: ?number,
- *   num_diffs: number,
- *   num_screenshots_finished: number,
- *   num_screenshots_total: number,
- *   shield_state: !ShieldState,
- *   target_url: string,
- *   travis_build_id: ?string,
- *   travis_build_number: ?string,
- *   travis_job_id: ?string,
- *   travis_job_number: ?string,
- * }} CloudStatus
- */
 
 class CloudDatastore {
   constructor() {
@@ -57,7 +37,7 @@ class CloudDatastore {
   /**
    * @param {string} gitRef
    * @param {?ShieldState=} shieldState
-   * @return {!Promise<?CloudStatus>}
+   * @return {!Promise<?DatastoreScreenshotStatus>}
    */
   async getScreenshotStatus(gitRef, shieldState = undefined) {
     if (!this.isAuthenticated_()) {
@@ -73,7 +53,7 @@ class CloudDatastore {
    * @param {string} gitRefColumnName
    * @param {string} gitRef
    * @param {?ShieldState=} shieldState
-   * @return {!Promise<?CloudStatus>}
+   * @return {!Promise<?DatastoreScreenshotStatus>}
    */
   async getScreenshotStatus_(gitRefColumnName, gitRef, shieldState = undefined) {
     const query = this.datastore_.createQuery(KIND);
@@ -92,10 +72,10 @@ class CloudDatastore {
     // runQuery returns an array: [resultArray, cursorInfoObject]
     const queryResult = await this.datastore_.runQuery(query);
 
-    /** @type {!Array<!CloudStatus>} */
+    /** @type {!Array<!DatastoreScreenshotStatus>} */
     const statusArray = queryResult[0];
 
-    /** @type {?CloudStatus} */
+    /** @type {?DatastoreScreenshotStatus} */
     return statusArray[0];
   }
 
