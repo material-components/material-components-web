@@ -147,7 +147,10 @@ Expected browser vendor to be one of [${validBrowserVendors}], but got '${browse
     const browserIconUrl = this.getBrowserIconUrl_(browserVendorType);
     const osIconUrl = this.getOsIconUrl_(browserVendorType);
 
-    /** @type {!Array<string>} */
+    /**
+     * Skip the first leading underscore (e.g., "_highcontrast_rtl" -> ["highcontrast", "rtl"]).
+     * @type {!Array<string>}
+     */
     const options = optionString.split('_').slice(1);
 
     return UserAgent.create({
