@@ -77,7 +77,7 @@ module.exports = {
    * (e.g., creating GitHub Status Checks, writing to Google Cloud Datastore).
    * @type {number}
    */
-  STATUS_UPDATE_THROTTLE_INTERVAL_MS: 2500, // 2.5 seconds
+  STATUS_UPDATE_THROTTLE_INTERVAL_MS: 5000, // 5 seconds
 
   ExitCode: {
     OK: 0,
