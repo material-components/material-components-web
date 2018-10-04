@@ -209,7 +209,7 @@ Method Signature | Description
 
 Method Signature | Description
 --- | ---
-`setAnchorCorner(corder: Corner) => void` | Sets the corner that the menu surface will be anchored to. See [constants.js](./constants.js)
+`setAnchorCorner(corner: Corner) => void` | Sets the corner that the menu surface will be anchored to. See [constants.js](./constants.js)
 `setAnchorMargin(margin: AnchorMargin) => void` | Sets the distance from the anchor point that the menu surface should be shown.
 `setIsHoisted(isHoisted: boolean) => void` | Sets whether the menu surface has been hoisted to the body so that the offsets are calculated relative to the page and not the anchor.
 `setFixedPosition(isFixed: boolean) => void` | Sets whether the menu surface is using fixed positioning.

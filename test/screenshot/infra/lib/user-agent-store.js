@@ -76,7 +76,8 @@ class UserAgentStore {
    * @private
    */
   async parseAlias_(alias) {
-    const matchArray = /^([a-z]+)_([a-z]+)_([a-z]+)@([a-z0-9.]+)$/.exec(alias);
+    const aliasRegExp = /^([a-z]+)_([a-z]+)_([a-z]+)@([a-z0-9.]+)((?:_(?:highcontrast|disablefontsmoothing|rtl))*)$/;
+    const matchArray = aliasRegExp.exec(alias);
     if (!matchArray) {
       // TODO(acdvorak): Better error message
       throw new Error(`
@@ -86,7 +87,7 @@ Expected format: 'desktop_windows_chrome@latest'.
       );
     }
 
-    const [, formFactorName, osVendorName, browserVendorName, browserVersionName] = matchArray;
+    const [, formFactorName, osVendorName, browserVendorName, browserVersionName, optionString] = matchArray;
 
     const getEnumKeysLowerCase = (enumeration) => {
       return Object.keys(enumeration).filter((key) => key !== 'UNKNOWN').map((key) => key.toLowerCase());
@@ -146,6 +147,12 @@ Expected browser vendor to be one of [${validBrowserVendors}], but got '${browse
     const browserIconUrl = this.getBrowserIconUrl_(browserVendorType);
     const osIconUrl = this.getOsIconUrl_(browserVendorType);
 
+    /**
+     * Skip the first leading underscore (e.g., "_highcontrast_rtl" -> ["highcontrast", "rtl"]).
+     * @type {!Array<string>}
+     */
+    const options = optionString.split('_').slice(1);
+
     return UserAgent.create({
       alias,
 
@@ -166,6 +173,11 @@ Expected browser vendor to be one of [${validBrowserVendors}], but got '${browse
 
       browser_icon_url: browserIconUrl,
       os_icon_url: osIconUrl,
+
+      raw_options: options,
+      is_high_contrast_mode: options.includes('highcontrast'),
+      is_font_smoothing_disabled: options.includes('disablefontsmoothing'),
+      is_rtl: options.includes('rtl'),
     });
   }
 

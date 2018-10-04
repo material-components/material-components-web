@@ -41,7 +41,7 @@ class Analytics {
   getUrl({
     url,
     source,
-    type = undefined,
+    content = undefined,
     campaign = undefined,
     medium = undefined,
     extraParams = undefined,
@@ -49,8 +49,8 @@ class Analytics {
     const [resource, oldQuery] = url.split('?');
     const params = new URLSearchParams(oldQuery);
     params.set('utm_source', source);
-    if (type) {
-      params.set('utm_content', type);
+    if (content) {
+      params.set('utm_content', content);
     }
     if (campaign) {
       params.set('utm_campaign', campaign);

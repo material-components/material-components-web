@@ -40,6 +40,7 @@ const Duration = require('../lib/duration');
 const GitHubApi = require('../lib/github-api');
 const ImageDiffer = require('../lib/image-differ');
 const Logger = require('../lib/logger');
+const StatusNotifier = require('../lib/status-notifier');
 const getStackTrace = require('../lib/stacktrace')('TestCommand');
 const {ExitCode} = require('../lib/constants');
 
@@ -52,6 +53,7 @@ class TestCommand {
     this.gitHubApi_ = new GitHubApi();
     this.imageDiffer_ = new ImageDiffer();
     this.logger_ = new Logger();
+    this.statusNotifier_ = new StatusNotifier();
   }
 
   /**
@@ -98,18 +100,21 @@ class TestCommand {
   }
 
   /**
-   * @param {!mdc.proto.DiffBase} goldenDiffBase
+   * @param {!mdc.proto.DiffBase} snapshotDiffBase
    * @return {!Promise<!mdc.proto.ReportData>}
    * @private
    */
-  async diffAgainstLocal_(goldenDiffBase) {
+  async diffAgainstLocal_(snapshotDiffBase) {
     const controller = new Controller();
 
     /** @type {!mdc.proto.ReportData} */
-    const reportData = await controller.initForCapture(goldenDiffBase);
+    const reportData = await controller.initForCapture(snapshotDiffBase);
+
+    this.statusNotifier_.initialize(reportData);
 
     try {
-      await this.gitHubApi_.setPullRequestStatusAuto(reportData);
+      await this.statusNotifier_.starting();
+
       await controller.uploadAllAssets(reportData);
       await controller.captureAllPages(reportData);
 
@@ -119,11 +124,11 @@ class TestCommand {
       await controller.uploadAllDiffImages(reportData);
       await controller.generateReportPage(reportData);
 
-      await this.gitHubApi_.setPullRequestStatusAuto(reportData);
+      await this.statusNotifier_.finished();
 
       this.logComparisonResults_(reportData);
     } catch (err) {
-      await this.gitHubApi_.setPullRequestError();
+      await this.statusNotifier_.error();
       throw new VError(err, getStackTrace('diffAgainstLocal_'));
     }
 
@@ -133,17 +138,17 @@ class TestCommand {
   /**
    * TODO(acdvorak): Rename this method
    * @param {!mdc.proto.ReportData} localReportData
-   * @param {!mdc.proto.DiffBase} goldenDiffBase
+   * @param {!mdc.proto.DiffBase} masterDiffBase
    * @param {!Array<!mdc.proto.Screenshot>} capturedScreenshots
    * @param {string} startTimeIsoUtc
    * @return {!Promise<!mdc.proto.ReportData>}
    * @private
    */
-  async diffAgainstMasterImpl_({localReportData, goldenDiffBase, capturedScreenshots, startTimeIsoUtc}) {
+  async diffAgainstMasterImpl_({localReportData, masterDiffBase, capturedScreenshots, startTimeIsoUtc}) {
     const controller = new Controller();
 
     /** @type {!mdc.proto.ReportData} */
-    const masterReportData = await controller.initForCapture(goldenDiffBase);
+    const masterReportData = await controller.initForCapture(masterDiffBase);
 
     const localReportDataWithMasterUploadDir = ReportData.create(localReportData);
     localReportDataWithMasterUploadDir.meta.remote_upload_base_dir = masterReportData.meta.remote_upload_base_dir;
@@ -160,7 +165,7 @@ class TestCommand {
 
       this.logComparisonResults_(masterReportData);
     } catch (err) {
-      await this.gitHubApi_.setPullRequestError();
+      await this.statusNotifier_.error();
       throw new VError(err, getStackTrace('diffAgainstMasterImpl_'));
     }
 
@@ -191,7 +196,7 @@ class TestCommand {
     /** @type {!mdc.proto.ReportData} */
     const masterReportData = await this.diffAgainstMasterImpl_({
       localReportData,
-      goldenDiffBase: masterDiffBase,
+      masterDiffBase,
       capturedScreenshots,
       startTimeIsoUtc: localReportData.meta.start_time_iso_utc,
     });
@@ -220,7 +225,6 @@ class TestCommand {
     const masterScreenshotList = masterScreenshotSets.actual_screenshot_list;
 
     masterScreenshotSets.added_screenshot_list.length = 0;
-    masterScreenshotSets.removed_screenshot_list.length = 0;
     masterScreenshotSets.changed_screenshot_list.length = 0;
     masterScreenshotSets.unchanged_screenshot_list.length = 0;
     masterScreenshotSets.comparable_screenshot_list.length = 0;
@@ -233,15 +237,14 @@ class TestCommand {
         }
 
         comparisonFunctions.push(async (resolve) => {
+          masterScreenshot.user_agent = capturedScreenshot.user_agent;
           masterScreenshot.actual_html_file = capturedScreenshot.actual_html_file;
           masterScreenshot.actual_image_file = capturedScreenshot.actual_image_file;
           masterScreenshot.capture_state = capturedScreenshot.capture_state;
 
           if (masterScreenshot.inclusion_type === InclusionType.ADD) {
             masterScreenshotSets.added_screenshot_list.push(masterScreenshot);
-          } else if (masterScreenshot.inclusion_type === InclusionType.REMOVE) {
-            masterScreenshotSets.removed_screenshot_list.push(masterScreenshot);
-          } else if (masterScreenshot.inclusion_type === InclusionType.COMPARE) {
+          } else {
             /** @type {!mdc.proto.DiffImageResult} */
             const diffImageResult = await this.imageDiffer_.compareOneScreenshot({
               meta: masterReportData.meta,
@@ -256,6 +259,7 @@ class TestCommand {
             } else {
               masterScreenshotSets.unchanged_screenshot_list.push(masterScreenshot);
             }
+
             masterScreenshotSets.comparable_screenshot_list.push(masterScreenshot);
           }
 
@@ -295,7 +299,7 @@ class TestCommand {
     const masterReportPageUrl = this.analytics_.getUrl({
       url: masterReportData.meta.report_html_file.public_url,
       source: 'github',
-      type: 'pr_comment',
+      medium: 'pr_comment',
     });
     const masterScreenshots = masterReportData.screenshots;
     const masterGitRev = masterReportData.meta.golden_diff_base.git_revision;
@@ -361,7 +365,7 @@ ${listMarkdown}
       const htmlFileUrl = this.analytics_.getUrl({
         url: (firstScreenshot.actual_html_file || firstScreenshot.expected_html_file).public_url,
         source: 'github',
-        type: 'pr_comment',
+        medium: 'pr_comment',
       });
 
       return `
@@ -397,7 +401,7 @@ ${listItemMarkdown}
     const linkUrl = this.analytics_.getUrl({
       url: imgFile.public_url,
       source: 'github',
-      type: 'pr_comment',
+      medium: 'pr_comment',
     });
 
     const untrimmed = `
@@ -488,7 +492,7 @@ ${CliColor.bold.red('Skipping screenshot tests.')}
     const reportPageUrl = this.analytics_.getUrl({
       url: reportData.meta.report_html_file.public_url,
       source: 'cli',
-      type: 'test_results',
+      medium: 'test_results',
     });
 
     const headingPlain = 'Screenshot Test Results';

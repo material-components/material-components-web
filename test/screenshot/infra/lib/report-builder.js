@@ -42,7 +42,6 @@ const CbtApi = require('./cbt-api');
 const Cli = require('./cli');
 const DiffBaseParser = require('./diff-base-parser');
 const FileCache = require('./file-cache');
-const GitHubApi = require('./github-api');
 const GitRepo = require('./git-repo');
 const LocalStorage = require('./local-storage');
 const Logger = require('./logger');
@@ -84,12 +83,6 @@ class ReportBuilder {
      * @private
      */
     this.fileCache_ = new FileCache();
-
-    /**
-     * @type {!GitHubApi}
-     * @private
-     */
-    this.gitHubApi_ = new GitHubApi();
 
     /**
      * @type {!GitRepo}
@@ -1011,7 +1004,7 @@ class ReportBuilder {
         const publicUrl = this.analytics_.getUrl({
           url: htmlFile.public_url,
           source: 'cli',
-          type: 'inventory',
+          medium: 'inventory',
         });
         console.log(`  - ${this.cli_.colorizeUrl(publicUrl)} > ${screenshot.user_agent.alias}`);
       }

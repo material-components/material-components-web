@@ -2,6 +2,7 @@
 [![Build Status](https://travis-ci.com/material-components/material-components-web.svg?branch=master)](https://travis-ci.com/material-components/material-components-web/)
 [![codecov](https://codecov.io/gh/material-components/material-components-web/branch/master/graph/badge.svg)](https://codecov.io/gh/material-components/material-components-web)
 [![Chat](https://img.shields.io/discord/259087343246508035.svg)](https://discord.gg/material-components)
+[![Screenshots](https://us-central1-material-components-web.cloudfunctions.net/screenshot-shield-svg)](https://us-central1-material-components-web.cloudfunctions.net/screenshot-shield-url)
 
 # Material Components for the web
 
@@ -96,9 +97,13 @@ npm install @material/ripple
 Then import the ES2015 file for @material/ripple into your application, and initialize an MDCRipple with a DOM element:
 
 ```js
-import {MDCRipple} from '@material/ripple';
+import {MDCRipple} from '@material/ripple/index';
 const ripple = new MDCRipple(document.querySelector('.foo-button'));
 ```
+
+> Note: Import `@material/ripple/index` if you wish to transpile MDC Web's ES2015 sources as part of your build process.
+> If your build toolchain is configured to only transpile your own sources, import `@material/ripple` instead, which will
+> reference the distributed UMD module instead.
 
 This will produce a Material Design ripple on the button!
 

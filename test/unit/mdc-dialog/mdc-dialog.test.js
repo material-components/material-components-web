@@ -27,7 +27,7 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 import {createMockRaf} from '../helpers/raf';
 import {strings} from '../../../packages/mdc-dialog/constants';
-import {MDCDialog, MDCDialogFoundation, util} from '../../../packages/mdc-dialog';
+import {MDCDialog, MDCDialogFoundation, util} from '../../../packages/mdc-dialog/index';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 
 function getFixture() {
@@ -300,17 +300,6 @@ test('adapter#eventTargetMatches returns whether or not the target matches the s
 
   assert.isTrue(adapter.eventTargetMatches(target, '.existent-class'));
   assert.isFalse(adapter.eventTargetMatches(target, '.non-existent-class'));
-});
-
-test('adapter#computeBoundingRect calls getBoundingClientRect() on root', () => {
-  const {root, component} = setupTest();
-  document.body.appendChild(root);
-
-  try {
-    assert.deepEqual(component.getDefaultFoundation().adapter_.computeBoundingRect(), root.getBoundingClientRect());
-  } finally {
-    document.body.removeChild(root);
-  }
 });
 
 test(`adapter#notifyOpening emits ${strings.OPENING_EVENT}`, () => {
