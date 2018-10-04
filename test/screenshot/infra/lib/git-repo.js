@@ -237,8 +237,30 @@ class GitRepo {
     return User.create({
       name: logEntry.author_name,
       email: logEntry.author_email,
-      date: logEntry.date,
     });
+  }
+
+  /**
+   * @param {string} commit
+   * @param {string} stackTrace
+   * @return {!Promise<string>}
+   */
+  async getCommitDate(commit, stackTrace) {
+    /** @type {!Array<!DefaultLogFields>} */
+    let logEntries;
+
+    try {
+      logEntries = await this.getLog([commit]);
+    } catch (err) {
+      throw new VError(err, `Unable to get date for commit "${commit}":\n${stackTrace}`);
+    }
+
+    const logEntry = logEntries[0];
+    if (!logEntry) {
+      throw new VError(err, `Unable to get date for commit "${commit}":\n${stackTrace}`);
+    }
+
+    return logEntry.date;
   }
 
   /**

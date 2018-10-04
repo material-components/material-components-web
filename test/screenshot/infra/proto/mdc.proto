@@ -98,13 +98,15 @@ message GitRevision {
   // author = "Alice" and committer = "Bob".
   User author = 8;
   User committer = 9;
+
+  // Raw date string returned by git. E.g.: "2018-10-03 21:12:43 -0700"
+  string date = 10;
 }
 
 message User {
   string name = 1;
   string email = 2;
   string username = 3;
-  string date = 4; // TODO(acdvorak): Move this field to GitRevision
 }
 
 message LibraryVersion {

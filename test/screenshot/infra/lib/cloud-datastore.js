@@ -112,7 +112,7 @@ class CloudDatastore {
         },
         {
           name: 'git_commit_timestamp',
-          value: snapshotGitRev.author.date,
+          value: snapshotGitRev.date,
         },
         {
           name: 'git_commit_hash',
