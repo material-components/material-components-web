@@ -64,6 +64,10 @@ log "Moving built assets to package directories..."
 node scripts/cp-pkgs.js
 echo ""
 
+log "Verifying that all packages are correctly pointing main to dist..."
+node scripts/verify-pkg-main.js
+echo ""
+
 log "Pre-release steps done! Next, continue with the Release step in the Release Process documentation:"
 echo "https://github.com/material-components/material-components-web/blob/master/docs/open_source/release-process.md#release"
 echo ""

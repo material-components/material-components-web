@@ -26,8 +26,8 @@ import {assert} from 'chai';
 import domEvents from 'dom-events';
 import td from 'testdouble';
 
-import {MDCRipple} from '../../../packages/mdc-ripple';
-import {MDCChip, MDCChipFoundation} from '../../../packages/mdc-chips/chip';
+import {MDCRipple} from '../../../packages/mdc-ripple/index';
+import {MDCChip, MDCChipFoundation} from '../../../packages/mdc-chips/chip/index';
 
 const getFixture = () => bel`
   <div class="mdc-chip">

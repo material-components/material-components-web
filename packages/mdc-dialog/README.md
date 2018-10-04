@@ -331,7 +331,6 @@ Method Signature | Description
 `addBodyClass(className: string) => void` | Adds a class to the `<body>`.
 `removeBodyClass(className: string) => void` | Removes a class from the `<body>`.
 `eventTargetMatches(target: !EventTarget, selector: string) => void` | Returns `true` if the target element matches the given CSS selector, otherwise `false`.
-`computeBoundingRect()`: Forces the component to recalculate its layout; in the vanilla DOM implementation, this calls `computeBoundingClientRect`.
 `trapFocus() => void` | Sets up the DOM such that keyboard navigation is restricted to focusable elements within the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details).
 `releaseFocus() => void` | Removes any effects of focus trapping on the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details).
 `isContentScrollable() => boolean` | Returns `true` if `mdc-dialog__content` can be scrolled by the user, otherwise `false`.
@@ -378,7 +377,7 @@ External frameworks and libraries can use the following utility methods from the
 
 Method Signature | Description
 --- | ---
-`createFocusTrapInstance(surfaceEl: !Element, initialFocusEl: ?Element, focusTrapFactory: function(): !FocusTrap) => !FocusTrap` | Creates a properly configured [focus-trap][] instance.
+`createFocusTrapInstance(surfaceEl: !Element, focusTrapFactory: function(): !FocusTrap, initialFocusEl: ?Element) => !FocusTrap` | Creates a properly configured [focus-trap][] instance.
 `isScrollable(el) => boolean` | Determines if the given element is scrollable.
 `areTopsMisaligned(els) => boolean` | Determines if two or more of the given elements have different `offsetTop` values.
 
@@ -414,14 +413,15 @@ a focus trapping solution for your component code.**
 
 ```js
 const {activate, deactivate} =
-  util.createFocusTrapInstance(surfaceEl, initialFocusEl, focusTrapFactory = require('focus-trap'));
+  util.createFocusTrapInstance(surfaceEl, focusTrapFactory, initialFocusEl);
 ```
 
-Given a dialog surface element, an initial element to focus, and an optional `focusTrap` factory
-function, such that:
+Given a dialog surface element an optional `focusTrap` factory function, and an optional initial element to focus,
+such that:
 
 * The focus is trapped within the `surfaceEl`
 * The `initialFocusEl` receives focus when the focus trap is activated
+    - If omitted, defaults to the first focusable element in `surfaceEl`
 * Closing the dialog in any way (including pressing Escape or clicking outside the dialog) deactivates focus trapping
 * Focus is returned to the previously focused element before the focus trap was activated
 

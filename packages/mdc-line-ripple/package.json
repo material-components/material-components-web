@@ -9,7 +9,7 @@
     "lineripple",
     "line-ripple"
   ],
-  "main": "index.js",
+  "main": "dist/mdc.lineRipple.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/material-components/material-components-web.git"

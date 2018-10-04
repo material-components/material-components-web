@@ -58,8 +58,8 @@ npm install @material/chips
 
 ```js
 import {MDCChipSet} from '@material/chips';
-
-const chipSet = new MDCChipSet(document.querySelector('.mdc-chip-set'));
+const chipSetEl = document.querySelector('.mdc-chip-set');
+const chipSet = new MDCChipSet(chipSetEl);
 ```
 
 > See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
@@ -157,7 +157,37 @@ Input chips are a variant of chips which enable user input by converting text in
 </div>
 ```
 
- You'd also want to add an event listener that calls `addChip` on the `MDCChipSet` to convert text to a chip. More information can be found in the "`MDCChip` Properties and Methods" section below.
+#### Adding Chips to the DOM
+
+The MDC Chips package does not handle the process of converting text into chips, in order to remain framework-agnostic. The `MDCChipSet` component exposes an `addChip` method, which accepts an element which is expected to already be inserted within the Chip Set element after any existing chips. The `MDCChipSet` component will then handle creating and tracking a `MDCChip` component instance.
+
+For example:
+
+```js
+input.addEventListener('keydown', function(event) {
+  if (event.key === 'Enter' || event.keyCode === 13) {
+    const chipEl = document.createElement('div');
+    // ... perform operations to properly populate/decorate chip element ...
+    chipSetEl.appendChild(chipEl);
+    chipSet.addChip(chipEl);
+  }
+});
+```
+
+> _NOTE_: `MDCChipSet` will generate a unique ID to apply to each added chip's element if it does not already have an ID
+> when it is passed to `addChip`. This is used to distinguish chips during user interactions.
+
+#### Removing Chips from the DOM
+
+By default, input chips are removed in response to clicking the trailing remove icon in the chip. Removal can also be triggered by calling `MDCChip`'s `beginExit()` method.
+
+Individual `MDCChip` instances will emit a `MDCChip:removal` event once the exit transition ends. `MDCChipSet` will handle destroying the `MDCChip` instance in response to `MDCChip:removal`, but it must be removed from the DOM manually. You can listen for `MDCChip:removal` from the parent Chip Set or any ancestor, since the event bubbles:
+
+```js
+chipSet.listen('MDCChip:removal', function(event) {
+  chipSetEl.removeChild(event.root);
+});
+```
 
 ### Pre-selected
 
@@ -258,6 +288,17 @@ Property | Value Type | Description
 
 > \*\*_NOTE_: If `shouldRemoveOnTrailingIconClick` is set to false, you must manually call `beginExit()` on the chip to remove it.
 
+##### Events
+
+Event Name | `event.detail` | Description
+--- | --- | ---
+`MDCChip:interaction` | `{chipId: string}` | Indicates the chip was interacted with (via click/tap or Enter key)
+`MDCChip:selection` | `{chipId: string, selected: boolean}` | Indicates the chip's selection state has changed (for choice/filter chips)
+`MDCChip:removal` | `{chipId: string, root: Element}` | Indicates the chip is ready to be removed from the DOM
+`MDCChip:trailingIconInteraction` | `{chipId: string}` | Indicates the chip's trailing icon was interacted with (via click/tap or Enter key)
+
+> _NOTE_: All of `MDCChip`'s emitted events bubble up through the DOM.
+
 #### `MDCChipSet`
 
 Method Signature | Description
@@ -275,6 +316,8 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 
 ### Adapters: `MDCChipAdapter` and `MDCChipSetAdapter`
 
+See [`chip/index.js`](chip/index.js) and [`chip-set/index.js`](chip-set/index.js) for vanilla DOM implementations of these adapter APIs for reference.
+
 #### `MDCChipAdapter`
 
 Method Signature | Description
@@ -285,18 +328,18 @@ Method Signature | Description
 `addClassToLeadingIcon(className: string) => void` | Adds a class to the leading icon element
 `removeClassFromLeadingIcon(className: string) => void` | Removes a class from the leading icon element
 `eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise
-`notifyInteraction() => void` | Emits a custom event `MDCChip:interaction` denoting the chip has been interacted with\*
-`notifySelection(selected) => void` | Emits a custom event `MDCChip:selection` denoting the chip has been selected or deselected\*\*
-`notifyTrailingIconInteraction() => void` | Emits a custom event `MDCChip:trailingIconInteraction` denoting the chip's trailing icon has been interacted with\*
-`notifyRemoval() => void` | Emits a custom event `MDCChip:removal` denoting the chip will be removed\*\*\*
+`notifyInteraction() => void` | Notifies the Chip Set that the chip has been interacted with\*
+`notifySelection(selected) => void` | Notifies the Chip Set that the chip has been selected or deselected\*\*
+`notifyTrailingIconInteraction() => void` | Notifies the Chip Set that the chip's trailing icon has been interacted with\*
+`notifyRemoval() => void` | Notifies the Chip Set that the chip will be removed\*\*\*
 `getComputedStyleValue(propertyName: string) => string` | Returns the computed property value of the given style property on the root element
 `setStyleProperty(propertyName: string, value: string) => void` | Sets the property value of the given style property on the root element
 
-> \*_NOTE_: The custom events emitted by `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target chip's ID via `event.detail.chipId`, as well as bubble to the parent `mdc-chip-set` element.
+> \*_NOTE_: `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target chip's ID, and must be observable by the parent `mdc-chip-set` element (e.g. via DOM event bubbling).
 
-> \*\*_NOTE_: The custom events emitted by `notifySelection` must pass along the target chip's ID via `event.detail.chipId` and selected state via `event.detail.selected`, as well as bubble to the parent `mdc-chip-set` element.
+> \*\*_NOTE_: `notifySelection` must pass along the target chip's ID and selected state, and must be observable by the parent `mdc-chip-set` element (e.g. via DOM event bubbling).
 
-> \*\*\*_NOTE_: The custom event emitted by `notifyRemoval` must pass along the target chip's ID via `event.detail.chipId` and its root element via `event.detail.root`, as well as bubble to the parent `mdc-chip-set` element.
+> \*\*\*_NOTE_: `notifyRemoval` must pass along the target chip's ID and its root element, and must be observable by the parent `mdc-chip-set` element (e.g. via DOM event bubbling).
 
 #### `MDCChipSetAdapter`
 
@@ -321,6 +364,16 @@ Method Signature | Description
 `handleTransitionEnd(evt: Event) => void` | Handles a transition end event on the root element
 `handleTrailingIconInteraction(evt: Event) => void` | Handles an interaction event on the trailing icon element
 
+#### `MDCChipFoundation` Event Handlers
+
+When wrapping the Chip foundation, the following events must be bound to the indicated foundation methods:
+
+Events | Element Selector | Foundation Handler
+--- | --- | ---
+`click`, `keydown` | `.mdc-chip` (root) | `handleInteraction()`
+`click`, `keydown` | `.mdc-chip__icon--trailing` (if present) | `handleTrailingIconInteraction()`
+`transitionend` | `.mdc-chip` (root) | `handleTransitionEnd()`
+
 #### `MDCChipSetFoundation`
 
 Method Signature | Description
@@ -332,3 +385,13 @@ Method Signature | Description
 `handleChipInteraction(evt: Event) => void` | Handles a custom `MDCChip:interaction` event on the root element
 `handleChipSelection(evt: Event) => void` | Handles a custom `MDCChip:selection` event on the root element
 `handleChipRemoval(evt: Event) => void` | Handles a custom `MDCChip:removal` event on the root element
+
+#### `MDCChipSetFoundation` Event Handlers
+
+When wrapping the Chip Set foundation, the following events must be bound to the indicated foundation methods:
+
+Events | Element Selector | Foundation Handler
+--- | --- | ---
+`MDCChip:interaction` | `.mdc-chip-set` (root) | `handleChipInteraction`
+`MDCChip:selection` | `.mdc-chip-set` (root) | `handleChipSelection`
+`MDCChip:removal` | `.mdc-chip-set` (root) | `handleChipRemoval`

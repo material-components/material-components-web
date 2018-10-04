@@ -170,8 +170,6 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 
 Method Signature | Description
 --- | ---
-`isChecked() => boolean` | Returns whether or not the underlying input is checked. Returns false when no input is available.
-`setChecked(checked: boolean) => void` | Updates the `checked` property on the underlying input. Does nothing when the underlying input is not present.
 `setDisabled(disabled: boolean) => void` | Updates the `disabled` property on the underlying input. Does nothing when the underlying input is not present.
 `handleAnimationEnd() => void` | `animationend` event handler that should be applied to the root element.
 `handleChange() => void` | `change` event handler that should be applied to the checkbox element.

@@ -8,7 +8,7 @@
     "material design",
     "icon toggle"
   ],
-  "main": "index.js",
+  "main": "dist/mdc.iconToggle.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git"
