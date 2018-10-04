@@ -41,16 +41,16 @@
         }
       },
       {
-        "description": "Edge in highcontrast mode frequently fails to load the Roboto font",
+        "description": "Edge in highcontrast mode frequently fails to load the Roboto font, especially on fullscreen pages",
         "browser_regex_patterns": [
           "desktop_windows_edge@latest_highcontrast"
         ],
         "url_regex_patterns": [
-          "mdc-dialog"
+          "mdc-dialog",
+          "mdc-drawer"
         ],
         "custom_config": {
-          "max_retries": 6,
-          "fonts_loaded_reflow_delay_ms": 500
+          "skip_all": true
         }
       },
       {

@@ -477,7 +477,6 @@
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/baseline-alert-above-drawer.html.windows_chrome_69.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/baseline-alert-above-drawer.html.windows_edge_17.png",
-      "desktop_windows_edge@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_52_22_538/spec/mdc-dialog/classes/baseline-alert-above-drawer.html.windows_edge_17_highcontrast.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/baseline-alert-above-drawer.html.windows_firefox_62.png",
       "desktop_windows_firefox@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-dialog/classes/baseline-alert-above-drawer.html.windows_firefox_62.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/baseline-alert-above-drawer.html.windows_ie_11.png"
@@ -488,7 +487,6 @@
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/baseline-alert-with-title.html.windows_chrome_69.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/baseline-alert-with-title.html.windows_edge_17.png",
-      "desktop_windows_edge@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_52_22_538/spec/mdc-dialog/classes/baseline-alert-with-title.html.windows_edge_17_highcontrast.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/baseline-alert-with-title.html.windows_firefox_62.png",
       "desktop_windows_firefox@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-dialog/classes/baseline-alert-with-title.html.windows_firefox_62.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/baseline-alert-with-title.html.windows_ie_11.png"
@@ -499,7 +497,6 @@
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/baseline-alert.html.windows_chrome_69.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/baseline-alert.html.windows_edge_17.png",
-      "desktop_windows_edge@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_52_22_538/spec/mdc-dialog/classes/baseline-alert.html.windows_edge_17_highcontrast.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/baseline-alert.html.windows_firefox_62.png",
       "desktop_windows_firefox@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-dialog/classes/baseline-alert.html.windows_firefox_62.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/baseline-alert.html.windows_ie_11.png"
@@ -510,7 +507,6 @@
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/baseline-confirmation.html.windows_chrome_69.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/baseline-confirmation.html.windows_edge_17.png",
-      "desktop_windows_edge@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_52_22_538/spec/mdc-dialog/classes/baseline-confirmation.html.windows_edge_17_highcontrast.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/baseline-confirmation.html.windows_firefox_62.png",
       "desktop_windows_firefox@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-dialog/classes/baseline-confirmation.html.windows_firefox_62.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/baseline-confirmation.html.windows_ie_11.png"
@@ -521,7 +517,6 @@
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/baseline-simple.html.windows_chrome_69.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/baseline-simple.html.windows_edge_17.png",
-      "desktop_windows_edge@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_56_40_112/spec/mdc-dialog/classes/baseline-simple.html.windows_edge_17_highcontrast.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/baseline-simple.html.windows_firefox_62.png",
       "desktop_windows_firefox@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-dialog/classes/baseline-simple.html.windows_firefox_62.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/baseline-simple.html.windows_ie_11.png"
@@ -532,7 +527,6 @@
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/manual-window-resize.html.windows_chrome_69.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/23_10_20_654/spec/mdc-dialog/classes/manual-window-resize.html.windows_edge_17.png",
-      "desktop_windows_edge@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_52_22_538/spec/mdc-dialog/classes/manual-window-resize.html.windows_edge_17_highcontrast.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/manual-window-resize.html.windows_firefox_62.png",
       "desktop_windows_firefox@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-dialog/classes/manual-window-resize.html.windows_firefox_62.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/manual-window-resize.html.windows_ie_11.png"
@@ -543,7 +537,6 @@
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/overflow-accessible-font-size.html.windows_chrome_69.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/23_10_20_654/spec/mdc-dialog/classes/overflow-accessible-font-size.html.windows_edge_17.png",
-      "desktop_windows_edge@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/07_27_09_769/spec/mdc-dialog/classes/overflow-accessible-font-size.html.windows_edge_17_highcontrast.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/overflow-accessible-font-size.html.windows_firefox_62.png",
       "desktop_windows_firefox@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-dialog/classes/overflow-accessible-font-size.html.windows_firefox_62.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/overflow-accessible-font-size.html.windows_ie_11.png"
@@ -554,7 +547,6 @@
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/overflow-bottom.html.windows_chrome_69.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/23_10_20_654/spec/mdc-dialog/classes/overflow-bottom.html.windows_edge_17.png",
-      "desktop_windows_edge@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_56_40_112/spec/mdc-dialog/classes/overflow-bottom.html.windows_edge_17_highcontrast.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/overflow-bottom.html.windows_firefox_62.png",
       "desktop_windows_firefox@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-dialog/classes/overflow-bottom.html.windows_firefox_62.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/overflow-bottom.html.windows_ie_11.png"
@@ -565,7 +557,6 @@
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/overflow-top.html.windows_chrome_69.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/23_10_20_654/spec/mdc-dialog/classes/overflow-top.html.windows_edge_17.png",
-      "desktop_windows_edge@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/07_21_07_641/spec/mdc-dialog/classes/overflow-top.html.windows_edge_17_highcontrast.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/overflow-top.html.windows_firefox_62.png",
       "desktop_windows_firefox@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-dialog/classes/overflow-top.html.windows_firefox_62.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/overflow-top.html.windows_ie_11.png"
@@ -576,7 +567,6 @@
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/container-fill-color.html.windows_chrome_69.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/23_10_20_654/spec/mdc-dialog/mixins/container-fill-color.html.windows_edge_17.png",
-      "desktop_windows_edge@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/07_21_07_641/spec/mdc-dialog/mixins/container-fill-color.html.windows_edge_17_highcontrast.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/container-fill-color.html.windows_firefox_62.png",
       "desktop_windows_firefox@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-dialog/mixins/container-fill-color.html.windows_firefox_62.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/container-fill-color.html.windows_ie_11.png"
@@ -587,7 +577,6 @@
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/content-ink-color.html.windows_chrome_69.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/23_10_20_654/spec/mdc-dialog/mixins/content-ink-color.html.windows_edge_17.png",
-      "desktop_windows_edge@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_52_22_538/spec/mdc-dialog/mixins/content-ink-color.html.windows_edge_17_highcontrast.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/content-ink-color.html.windows_firefox_62.png",
       "desktop_windows_firefox@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-dialog/mixins/content-ink-color.html.windows_firefox_62.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/content-ink-color.html.windows_ie_11.png"
@@ -598,7 +587,6 @@
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/max-height.html.windows_chrome_69.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/23_10_20_654/spec/mdc-dialog/mixins/max-height.html.windows_edge_17.png",
-      "desktop_windows_edge@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_52_22_538/spec/mdc-dialog/mixins/max-height.html.windows_edge_17_highcontrast.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/max-height.html.windows_firefox_62.png",
       "desktop_windows_firefox@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-dialog/mixins/max-height.html.windows_firefox_62.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/max-height.html.windows_ie_11.png"
@@ -609,7 +597,6 @@
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/max-width.html.windows_chrome_69.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/23_10_20_654/spec/mdc-dialog/mixins/max-width.html.windows_edge_17.png",
-      "desktop_windows_edge@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/07_21_07_641/spec/mdc-dialog/mixins/max-width.html.windows_edge_17_highcontrast.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/max-width.html.windows_firefox_62.png",
       "desktop_windows_firefox@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-dialog/mixins/max-width.html.windows_firefox_62.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/max-width.html.windows_ie_11.png"
@@ -620,7 +607,6 @@
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/min-width.html.windows_chrome_69.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/min-width.html.windows_edge_17.png",
-      "desktop_windows_edge@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_52_22_538/spec/mdc-dialog/mixins/min-width.html.windows_edge_17_highcontrast.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/min-width.html.windows_firefox_62.png",
       "desktop_windows_firefox@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-dialog/mixins/min-width.html.windows_firefox_62.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/min-width.html.windows_ie_11.png"
@@ -631,7 +617,6 @@
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/scrim-color.html.windows_chrome_69.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/23_10_20_654/spec/mdc-dialog/mixins/scrim-color.html.windows_edge_17.png",
-      "desktop_windows_edge@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_56_40_112/spec/mdc-dialog/mixins/scrim-color.html.windows_edge_17_highcontrast.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/scrim-color.html.windows_firefox_62.png",
       "desktop_windows_firefox@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-dialog/mixins/scrim-color.html.windows_firefox_62.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/scrim-color.html.windows_ie_11.png"
@@ -642,7 +627,6 @@
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/scroll-divider-color.html.windows_chrome_69.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/23_10_20_654/spec/mdc-dialog/mixins/scroll-divider-color.html.windows_edge_17.png",
-      "desktop_windows_edge@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_52_22_538/spec/mdc-dialog/mixins/scroll-divider-color.html.windows_edge_17_highcontrast.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/scroll-divider-color.html.windows_firefox_62.png",
       "desktop_windows_firefox@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-dialog/mixins/scroll-divider-color.html.windows_firefox_62.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/scroll-divider-color.html.windows_ie_11.png"
@@ -653,7 +637,6 @@
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/09/21/22_25_39_766/spec/mdc-dialog/mixins/shape-radius.html.windows_chrome_69.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/09/24/17_17_41_724/spec/mdc-dialog/mixins/shape-radius.html.windows_edge_17.png",
-      "desktop_windows_edge@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_56_40_112/spec/mdc-dialog/mixins/shape-radius.html.windows_edge_17_highcontrast.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/09/21/22_25_39_766/spec/mdc-dialog/mixins/shape-radius.html.windows_firefox_62.png",
       "desktop_windows_firefox@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-dialog/mixins/shape-radius.html.windows_firefox_62.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/09/21/22_25_39_766/spec/mdc-dialog/mixins/shape-radius.html.windows_ie_11.png"
@@ -664,7 +647,6 @@
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/title-ink-color.html.windows_chrome_69.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/23_10_20_654/spec/mdc-dialog/mixins/title-ink-color.html.windows_edge_17.png",
-      "desktop_windows_edge@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_52_22_538/spec/mdc-dialog/mixins/title-ink-color.html.windows_edge_17_highcontrast.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/title-ink-color.html.windows_firefox_62.png",
       "desktop_windows_firefox@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-dialog/mixins/title-ink-color.html.windows_firefox_62.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/mixins/title-ink-color.html.windows_ie_11.png"
@@ -675,7 +657,6 @@
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-drawer/classes/dismissible.html.windows_chrome_69.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-drawer/classes/dismissible.html.windows_edge_17.png",
-      "desktop_windows_edge@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-drawer/classes/dismissible.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-drawer/classes/dismissible.html.windows_firefox_62.png",
       "desktop_windows_firefox@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-drawer/classes/dismissible.html.windows_firefox_62.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-drawer/classes/dismissible.html.windows_ie_11.png"
@@ -686,7 +667,6 @@
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-drawer/classes/modal.html.windows_chrome_69.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-drawer/classes/modal.html.windows_edge_17.png",
-      "desktop_windows_edge@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-drawer/classes/modal.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-drawer/classes/modal.html.windows_firefox_62.png",
       "desktop_windows_firefox@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-drawer/classes/modal.html.windows_firefox_62.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-drawer/classes/modal.html.windows_ie_11.png"
@@ -697,7 +677,6 @@
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-drawer/classes/permanent.html.windows_chrome_69.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-drawer/classes/permanent.html.windows_edge_17.png",
-      "desktop_windows_edge@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-drawer/classes/permanent.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-drawer/classes/permanent.html.windows_firefox_62.png",
       "desktop_windows_firefox@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-drawer/classes/permanent.html.windows_firefox_62.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-drawer/classes/permanent.html.windows_ie_11.png"
@@ -708,7 +687,6 @@
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-drawer/mixins/fill-color-accessible.html.windows_chrome_69.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-drawer/mixins/fill-color-accessible.html.windows_edge_17.png",
-      "desktop_windows_edge@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-drawer/mixins/fill-color-accessible.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-drawer/mixins/fill-color-accessible.html.windows_firefox_62.png",
       "desktop_windows_firefox@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-drawer/mixins/fill-color-accessible.html.windows_firefox_62.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-drawer/mixins/fill-color-accessible.html.windows_ie_11.png"
@@ -719,7 +697,6 @@
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-drawer/mixins/fill-color.html.windows_chrome_69.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-drawer/mixins/fill-color.html.windows_edge_17.png",
-      "desktop_windows_edge@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-drawer/mixins/fill-color.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-drawer/mixins/fill-color.html.windows_firefox_62.png",
       "desktop_windows_firefox@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-drawer/mixins/fill-color.html.windows_firefox_62.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-drawer/mixins/fill-color.html.windows_ie_11.png"
@@ -730,7 +707,6 @@
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-drawer/mixins/width.html.windows_chrome_69.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-drawer/mixins/width.html.windows_edge_17.png",
-      "desktop_windows_edge@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-drawer/mixins/width.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-drawer/mixins/width.html.windows_firefox_62.png",
       "desktop_windows_firefox@latest_highcontrast": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/10/04/06_22_25_725/spec/mdc-drawer/mixins/width.html.windows_firefox_62.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/26/06_08_27_877/spec/mdc-drawer/mixins/width.html.windows_ie_11.png"
