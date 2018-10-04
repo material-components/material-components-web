@@ -22,6 +22,7 @@
  */
 
 const Datastore = require('@google-cloud/datastore');
+const {ShieldState} = require('../types/status-types');
 
 const KIND = 'ScreenshotStatus';
 
@@ -56,6 +57,24 @@ class CloudDatastore {
    * @return {!Promise<?DatastoreScreenshotStatus>}
    */
   async getScreenshotStatus_(gitRefColumnName, gitRef, shieldState = undefined) {
+    if (shieldState === ShieldState.META_TERMINAL_STATE) {
+      /** @type {!Array<?DatastoreScreenshotStatus>} */
+      const allStatuses = await Promise.all([
+        this.getScreenshotStatus_(gitRefColumnName, gitRef, ShieldState.ERROR),
+        this.getScreenshotStatus_(gitRefColumnName, gitRef, ShieldState.PASSED),
+        this.getScreenshotStatus_(gitRefColumnName, gitRef, ShieldState.FAILED),
+      ]);
+
+      // Sort statuses in descending order by event timestamp (newest to oldest).
+      const sortedStatuses = allStatuses
+        .filter((status) => Boolean(status))
+        .sort((status1, status2) => new Date(status1.event_timestamp) - new Date(status2.event_timestamp))
+        .reverse()
+      ;
+
+      return sortedStatuses[0] || this.getScreenshotStatus_(gitRefColumnName, gitRef);
+    }
+
     const query = this.datastore_.createQuery(KIND);
 
     query.filter(gitRefColumnName, '=', gitRef);
@@ -182,10 +201,10 @@ class CloudDatastore {
    * @private
    */
   isAuthenticated_() {
-    // By default, the client will authenticate using the service account file specified by the
-    // GOOGLE_APPLICATION_CREDENTIALS environment variable.
-    // See https://googlecloudplatform.github.io/google-cloud-node/#/docs/datastore/latest/guides/authentication
-    return Boolean(process.env.GOOGLE_APPLICATION_CREDENTIALS);
+    // See:
+    // - https://googlecloudplatform.github.io/google-cloud-node/#/docs/datastore/latest/guides/authentication
+    // - https://github.com/googleapis/google-auth-library-nodejs
+    return Boolean(this.datastore_.auth.getApplicationDefault());
   }
 }
 

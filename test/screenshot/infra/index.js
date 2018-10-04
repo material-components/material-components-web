@@ -21,52 +21,8 @@
  * THE SOFTWARE.
  */
 
-/**
- * @typedef {{
- *   shieldState: !ShieldState,
- *   numScreenshotsTotal: number,
- *   numScreenshotsFinished: number,
- *   numChanged: number,
- *   targetUrl: ?string,
- * }} StatusNotification
- */
+const ShieldGenerator = require('./lib/shield-generator');
+const shieldGenerator = new ShieldGenerator();
 
-/**
- * @typedef {{
- *   event_timestamp: string,
- *   git_branch: string,
- *   git_commit_hash: string,
- *   git_commit_timestamp: string,
- *   pull_request_number: ?number,
- *   num_diffs: number,
- *   num_screenshots_finished: number,
- *   num_screenshots_total: number,
- *   state: !ShieldState,
- *   target_url: string,
- *   travis_build_id: ?string,
- *   travis_build_number: ?string,
- *   travis_job_id: ?string,
- *   travis_job_number: ?string,
- * }} DatastoreScreenshotStatus
- */
-
-/**
- * @enum {string}
- */
-module.exports.ThrottleType = {
-  THROTTLED: 1,
-  UNTHROTTLED: 2,
-};
-
-/**
- * @enum {string}
- */
-module.exports.ShieldState = {
-  UNKNOWN: 'UNKNOWN',
-  STARTING: 'STARTING',
-  RUNNING: 'RUNNING',
-  PASSED: 'PASSED',
-  FAILED: 'FAILED',
-  ERROR: 'ERROR',
-  META_TERMINAL_STATE: 'META_TERMINAL_STATE',
-};
+exports.screenshotShieldSvg = (req, res) => shieldGenerator.handleSvgRequest(req, res);
+exports.screenshotShieldUrl = (req, res) => shieldGenerator.handleUrlRequest(req, res);
