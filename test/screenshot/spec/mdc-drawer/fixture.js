@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {MDCDismissibleDrawerFoundation} from '../../../../packages/mdc-drawer';
+import {MDCDismissibleDrawerFoundation} from '../../../../packages/mdc-drawer/index';
 
 window.mdc.testFixture.fontsLoaded.then(() => {
   const {DISMISSIBLE, MODAL} = MDCDismissibleDrawerFoundation.cssClasses;
