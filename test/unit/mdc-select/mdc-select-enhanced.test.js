@@ -32,7 +32,7 @@ import {MDCRipple, MDCRippleFoundation} from '../../../packages/mdc-ripple/index
 import {MDCSelect} from '../../../packages/mdc-select/index';
 import {cssClasses} from '../../../packages/mdc-select/constants';
 import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline/index';
-import {MDCMenu, MDCMenuFoundation} from '../../../packages/mdc-menu/index';
+import {MDCMenu} from '../../../packages/mdc-menu/index';
 import {MDCMenuSurfaceFoundation} from '../../../packages/mdc-menu-surface/index';
 import MDCSelectFoundation from '../../../packages/mdc-select/foundation';
 
