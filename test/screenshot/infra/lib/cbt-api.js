@@ -170,9 +170,12 @@ https://crossbrowsertesting.com/account
    */
   async setTestScore({seleniumSessionId, changedScreenshots}) {
     const stackTrace = getStackTrace('fetchAvailableDevices');
-    await this.sendRequest_(stackTrace, 'PUT', `/selenium/${seleniumSessionId}`, {
+    return this.sendRequest_(stackTrace, 'PUT', `/selenium/${seleniumSessionId}`, {
       action: 'set_score',
       score: changedScreenshots.length === 0 ? 'pass' : 'fail',
+    }).catch((reason) => {
+      console.error(CliColor.red('ERROR:'), reason);
+      console.error(getStackTrace('setTestScore'));
     });
   }
 
