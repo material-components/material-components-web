@@ -44,10 +44,10 @@ const Cli = require('./cli');
 const CliColor = require('./logger').colors;
 const Constants = require('./constants');
 const Duration = require('./duration');
-const GitHubApi = require('./github-api');
 const ImageCropper = require('./image-cropper');
 const ImageDiffer = require('./image-differ');
 const LocalStorage = require('./local-storage');
+const StatusNotifier = require('./status-notifier');
 const getStackTrace = require('./stacktrace')('SeleniumApi');
 const {Browser, Builder, By, logging, until} = require('selenium-webdriver');
 const {CBT_CONCURRENCY_POLL_INTERVAL_MS, CBT_CONCURRENCY_MAX_WAIT_MS, ExitCode} = Constants;
@@ -97,12 +97,6 @@ class SeleniumApi {
     this.cli_ = new Cli();
 
     /**
-     * @type {!GitHubApi}
-     * @private
-     */
-    this.gitHubApi_ = new GitHubApi();
-
-    /**
      * @type {!ImageCropper}
      * @private
      */
@@ -125,6 +119,12 @@ class SeleniumApi {
      * @private
      */
     this.seleniumSessionIds_ = new Set();
+
+    /**
+     * @type {!StatusNotifier}
+     * @private
+     */
+    this.statusNotifier_ = new StatusNotifier();
 
     /**
      * @type {number}
@@ -186,6 +186,8 @@ class SeleniumApi {
   async captureAllPages(reportData) {
     /** @type {string|undefined} */
     let stackTrace;
+
+    this.statusNotifier_.initialize(reportData);
 
     try {
       stackTrace = getStackTrace('captureAllPages');
@@ -508,7 +510,7 @@ class SeleniumApi {
     if (this.cli_.isOnline()) {
       return this.cbtApi_.getDesiredCapabilities({meta, userAgent});
     }
-    return this.createDesiredCapabilitiesOffline_({userAgent});
+    return this.createOfflineDesiredCapabilities_({userAgent});
   }
 
   /**
@@ -516,7 +518,7 @@ class SeleniumApi {
    * @return {!selenium.proto.RawCapabilities}
    * @private
    */
-  createDesiredCapabilitiesOffline_({userAgent}) {
+  createOfflineDesiredCapabilities_({userAgent}) {
     const browserVendorMap = {
       [BrowserVendorType.CHROME]: Browser.CHROME,
       [BrowserVendorType.EDGE]: Browser.EDGE,
@@ -1058,20 +1060,8 @@ class SeleniumApi {
     const statusName = status.name.toUpperCase();
     const paddingSpaces = ''.padStart(maxStatusWidth - statusName.length, ' ');
 
-    const numDone = this.numCompleted_;
-    const strDone = numDone.toLocaleString();
-
-    const numTotal = numDone + this.numPending_;
-    const strTotal = numTotal.toLocaleString();
-
-    const numChanged = this.numChanged_;
-    const strChanged = numChanged.toLocaleString();
-
-    const numPercent = numTotal > 0 ? (100 * numDone / numTotal) : 0;
-    const strPercent = numPercent.toFixed(1);
-
     const pending = this.numPending_;
-    const completed = numDone;
+    const completed = this.numCompleted_;
     const total = pending + completed;
     const percent = (total === 0 ? 0 : (100 * completed / total).toFixed(1));
 
@@ -1088,15 +1078,13 @@ class SeleniumApi {
       return;
     }
 
-    if (isTravis) {
-      this.gitHubApi_.setPullRequestStatusManual({
-        state: GitHubApi.PullRequestState.PENDING,
-        description: `${strDone} of ${strTotal} (${strPercent}%) - ${strChanged} diff${numChanged === 1 ? '' : 's'}`,
-      });
-      return;
-    }
+    this.statusNotifier_.running();
 
-    process.stdout.write(`${colorCaptured}: ${colorCompleted} of ${colorTotal} screenshots (${colorPercent} complete)`);
+    if (!isTravis) {
+      process.stdout.write(
+        `${colorCaptured}: ${colorCompleted} of ${colorTotal} screenshots (${colorPercent} complete)`
+      );
+    }
   }
 }
 
