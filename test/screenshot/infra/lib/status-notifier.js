@@ -24,6 +24,7 @@
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const CaptureState = mdcProto.Screenshot.CaptureState;
 const {ThrottleType, ShieldState} = require('../types/status-types');
+const {STATUS_UPDATE_THROTTLE_INTERVAL_MS} = require('./constants');
 
 const CloudDatastore = require('./cloud-datastore');
 const GitHubApi = require('./github-api');
@@ -53,8 +54,6 @@ class StatusNotifier {
 
   /** @private */
   initThrottle_() {
-    const INTERVAL_MS = 2500;
-
     /** @type {!Array<!StatusNotification>} */
     const statusNotifications = [];
 
@@ -99,7 +98,7 @@ class StatusNotifier {
       setTimeout(() => {
         isTimerActive = false;
         maybeNotify();
-      }, INTERVAL_MS);
+      }, STATUS_UPDATE_THROTTLE_INTERVAL_MS);
     };
 
     /**
