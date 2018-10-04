@@ -41,9 +41,9 @@
         }
       },
       {
-        "description": "Edge in highcontrast mode frequently fails to load the Roboto font, especially on fullscreen pages",
+        "description": "Edge frequently fails to load the Roboto font, especially on fullscreen pages and in highcontrast mode",
         "browser_regex_patterns": [
-          "desktop_windows_edge@latest_highcontrast"
+          "desktop_windows_edge@latest"
         ],
         "url_regex_patterns": [
           "mdc-dialog",

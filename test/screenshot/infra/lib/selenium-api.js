@@ -1068,16 +1068,21 @@ class SeleniumApi {
 
     const pending = this.numPending_;
     const completed = this.numCompleted_;
+    const changed = this.numChanged_;
     const total = pending + completed;
     const percent = (total === 0 ? 0 : (100 * completed / total).toFixed(1));
 
+    const plainDiffs = `${changed.toLocaleString()} diff${(changed === 1 ? '' : 's')}`;
+    const colorDiffs = changed > 0 ? ` - ${CliColor.bold.red(plainDiffs)}` : '';
     const colorCaptured = CliStatuses.CAPTURED.color(CliStatuses.CAPTURED.name.toUpperCase());
-    const colorCompleted = CliColor.bold.white(completed.toLocaleString());
-    const colorTotal = CliColor.bold.white(total.toLocaleString());
+    const colorCompleted = completed.toLocaleString();
+    const colorTotal = total.toLocaleString();
     const colorPercent = CliColor.bold.white(`${percent}%`);
 
     const isTravis = process.env.TRAVIS === 'true';
-    const colorProgressTravis = isTravis ? ` [${colorCompleted} of ${colorTotal} = ${colorPercent} complete]` : '';
+    const colorProgressTravis = isTravis
+      ? ` [${colorCompleted} of ${colorTotal} - ${colorPercent}${colorDiffs}]`
+      : '';
     console.log(eraseCurrentLine + paddingSpaces + status.color(statusName) + colorProgressTravis + ':', ...args);
 
     if (this.isKillRequested_) {
@@ -1088,7 +1093,7 @@ class SeleniumApi {
 
     if (!isTravis) {
       process.stdout.write(
-        `${colorCaptured}: ${colorCompleted} of ${colorTotal} screenshots (${colorPercent} complete)`
+        `${colorCaptured}: ${colorCompleted} of ${colorTotal} screenshots (${colorPercent} complete)${colorDiffs}`
       );
     }
   }
