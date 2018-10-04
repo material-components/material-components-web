@@ -26,8 +26,10 @@ const CaptureState = mdcProto.Screenshot.CaptureState;
 const {ThrottleType, ShieldState} = require('../types/status-types');
 const {STATUS_UPDATE_THROTTLE_INTERVAL_MS} = require('./constants');
 
+const CliColor = require('./logger').colors;
 const CloudDatastore = require('./cloud-datastore');
 const GitHubApi = require('./github-api');
+const getStackTrace = require('./stacktrace')('StatusNotifier');
 
 class StatusNotifier {
   constructor() {
@@ -237,6 +239,9 @@ class StatusNotifier {
       numChanged,
       targetUrl,
       snapshotGitRev: this.reportData_.meta.snapshot_diff_base.git_revision,
+    }).catch((reason) => {
+      console.error(CliColor.red('ERROR:'), reason);
+      console.error(getStackTrace('postToDatastore_'));
     });
   }
 
@@ -251,27 +256,27 @@ class StatusNotifier {
    * @private
    */
   postToGitHub_({shieldState, strTotal, strDone, strChanged, changedPlural, strPercent, targetUrl}) {
+    let state = null;
+    let description = null;
+
     if (shieldState === ShieldState.ERROR) {
-      this.gitHubApi_.setPullRequestError();
+      state = GitHubApi.PullRequestState.ERROR;
+      description = 'Error running screenshot tests';
     } else if (shieldState === ShieldState.PASSED) {
-      this.gitHubApi_.setPullRequestStatus({
-        state: GitHubApi.PullRequestState.SUCCESS,
-        description: `All ${strTotal} screenshots match PR's golden.json`,
-        targetUrl,
-      });
+      state = GitHubApi.PullRequestState.SUCCESS;
+      description = `All ${strTotal} screenshots match PR's golden.json`;
     } else if (shieldState === ShieldState.FAILED) {
-      this.gitHubApi_.setPullRequestStatus({
-        state: GitHubApi.PullRequestState.SUCCESS,
-        description: `${strChanged} screenshot${changedPlural} differ from PR's golden.json`,
-        targetUrl,
-      });
+      state = GitHubApi.PullRequestState.SUCCESS;
+      description = `${strChanged} screenshot${changedPlural} differ from PR's golden.json`;
     } else {
-      this.gitHubApi_.setPullRequestStatus({
-        state: GitHubApi.PullRequestState.PENDING,
-        description: `${strDone} of ${strTotal} (${strPercent}) - ${strChanged} diff${changedPlural}`,
-        targetUrl,
-      });
+      state = GitHubApi.PullRequestState.PENDING;
+      description = `${strDone} of ${strTotal} (${strPercent}) - ${strChanged} diff${changedPlural}`;
     }
+
+    this.gitHubApi_.setPullRequestStatus({state, description, targetUrl}).catch((reason) => {
+      console.error(CliColor.red('ERROR:'), reason);
+      console.error(getStackTrace('postToGitHub_'));
+    });
   }
 }
 
