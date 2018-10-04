@@ -1,10 +1,12 @@
 {
   "user_agent_aliases": [
     "desktop_windows_chrome@latest",
+    "desktop_windows_chrome@latest_rtl",
     "desktop_windows_firefox@latest",
     "desktop_windows_firefox@latest_highcontrast",
     "desktop_windows_edge@latest",
     "desktop_windows_edge@latest_highcontrast",
-    "desktop_windows_ie@11"
+    "desktop_windows_ie@11",
+    "desktop_windows_ie@11_rtl"
   ]
 }

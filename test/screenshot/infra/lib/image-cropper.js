@@ -85,7 +85,7 @@ class ImageCropper {
   getCropRect_(jimpImage) {
     const {rows, cols} = this.findPixelsWithTrimColor_(jimpImage);
 
-    const left = this.getCropAmount_(cols, TRIM_COLOR_TOP_LEFT_DISTANCE);
+    const left = this.getCropAmount_(cols, TRIM_COLOR_TOP_LEFT_DISTANCE); // TODO(acdvorak): Add RTL support
     const top = this.getCropAmount_(rows, TRIM_COLOR_TOP_LEFT_DISTANCE);
     const right = this.getCropAmount_(cols.slice(left).reverse());
     const bottom = this.getCropAmount_(rows.slice(top).reverse());
