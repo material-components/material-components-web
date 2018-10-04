@@ -25,13 +25,11 @@ const VError = require('verror');
 const debounce = require('debounce');
 const octokit = require('@octokit/rest');
 
-const Analytics = require('./analytics');
 const GitRepo = require('./git-repo');
 const getStackTrace = require('./stacktrace')('GitHubApi');
 
 class GitHubApi {
   constructor() {
-    this.analytics_ = new Analytics();
     this.gitRepo_ = new GitRepo();
     this.octokit_ = octokit();
     this.isTravis_ = process.env.TRAVIS === 'true';
@@ -103,7 +101,7 @@ class GitHubApi {
    * @param {string} description
    * @param {string} targetUrl
    */
-  setPullRequestStatusManual({state, description, targetUrl}) {
+  setPullRequestStatus({state, description, targetUrl}) {
     if (!this.isTravis_ || !this.isAuthenticated_) {
       return;
     }
@@ -141,20 +139,7 @@ class GitHubApi {
 
     const travisPrSha = process.env.TRAVIS_PULL_REQUEST_SHA;
     const travisCommit = process.env.TRAVIS_COMMIT;
-    const travisPrBranch = process.env.TRAVIS_PULL_REQUEST_BRANCH;
-    const travisBranch = process.env.TRAVIS_BRANCH;
     const sha = travisPrSha || travisCommit || await this.gitRepo_.getFullCommitHash();
-    const branch = travisPrBranch || travisBranch || await this.gitRepo_.getBranchName();
-
-    /*
-    TRAVIS_BUILD_ID
-    TRAVIS_BUILD_NUMBER
-    TRAVIS_JOB_ID
-    TRAVIS_JOB_NUMBER
-    TRAVIS_PULL_REQUEST
-    */
-
-    await this.storeGCP_({state, targetUrl, description, sha, branch});
 
     let stackTrace;
 
@@ -199,30 +184,6 @@ class GitHubApi {
 
     const pr = filteredPRs[0];
     return pr ? pr.number : null;
-  }
-
-  /**
-   * @param prNumber
-   * @return {!Promise<!Array<!github.proto.PullRequestFile>>}
-   */
-  async getPullRequestFiles(prNumber) {
-    /** @type {!github.proto.PullRequestFileResponse} */
-    let fileResponse;
-    let stackTrace;
-
-    try {
-      stackTrace = getStackTrace('getPullRequestFiles');
-      fileResponse = await this.octokit_.pullRequests.getFiles({
-        owner: 'material-components',
-        repo: 'material-components-web',
-        number: prNumber,
-        per_page: 300,
-      });
-    } catch (err) {
-      throw new VError(err, `Failed to get file list for PR #${prNumber}:\n${stackTrace}`);
-    }
-
-    return fileResponse.data;
   }
 
   /**

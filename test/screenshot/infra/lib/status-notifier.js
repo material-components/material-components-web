@@ -245,19 +245,19 @@ class StatusNotifier {
     if (shieldState === ShieldState.ERROR) {
       this.gitHubApi_.setPullRequestError();
     } else if (shieldState === ShieldState.PASSED) {
-      this.gitHubApi_.setPullRequestStatusManual({
+      this.gitHubApi_.setPullRequestStatus({
         state: GitHubApi.PullRequestState.SUCCESS,
         description: `All ${strTotal} screenshots match PR's golden.json`,
         targetUrl,
       });
     } else if (shieldState === ShieldState.FAILED) {
-      this.gitHubApi_.setPullRequestStatusManual({
+      this.gitHubApi_.setPullRequestStatus({
         state: GitHubApi.PullRequestState.SUCCESS,
         description: `${strChanged} screenshot${changedPlural} differ from PR's golden.json`,
         targetUrl,
       });
     } else {
-      this.gitHubApi_.setPullRequestStatusManual({
+      this.gitHubApi_.setPullRequestStatus({
         state: GitHubApi.PullRequestState.PENDING,
         description: `${strDone} of ${strTotal} (${strPercent}) - ${strChanged} diff${changedPlural}`,
         targetUrl,

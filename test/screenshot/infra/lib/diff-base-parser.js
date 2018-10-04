@@ -226,7 +226,6 @@ class DiffBaseParser {
         author,
         branch: travisPrBranch || travisBranch,
         pr_number: travisPrNumber,
-        pr_file_paths: await this.getTestablePrFilePaths_(travisPrNumber),
       });
     }
 
@@ -251,28 +250,6 @@ class DiffBaseParser {
     }
 
     return null;
-  }
-
-  /**
-   * @param {number} prNumber
-   * @return {!Promise<!Array<string>>}
-   * @private
-   */
-  async getTestablePrFilePaths_(prNumber) {
-    /** @type {!Array<!github.proto.PullRequestFile>} */
-    const allPrFiles = await this.gitHubApi_.getPullRequestFiles(prNumber);
-
-    return allPrFiles
-      .filter((prFile) => {
-        const isMarkdownFile = () => prFile.filename.endsWith('.md');
-        const isDemosFile = () => prFile.filename.startsWith('demos/');
-        const isDocsFile = () => prFile.filename.startsWith('docs/');
-        const isUnitTestFile = () => prFile.filename.startsWith('test/unit/');
-        const isIgnoredFile = isMarkdownFile() || isDemosFile() || isDocsFile() || isUnitTestFile();
-        return !isIgnoredFile;
-      })
-      .map((prFile) => prFile.filename)
-    ;
   }
 
   /**
