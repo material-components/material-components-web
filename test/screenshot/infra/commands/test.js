@@ -40,6 +40,7 @@ const Duration = require('../lib/duration');
 const GitHubApi = require('../lib/github-api');
 const ImageDiffer = require('../lib/image-differ');
 const Logger = require('../lib/logger');
+const StatusNotifier = require('../lib/status-notifier');
 const getStackTrace = require('../lib/stacktrace')('TestCommand');
 const {ExitCode} = require('../lib/constants');
 
@@ -52,6 +53,7 @@ class TestCommand {
     this.gitHubApi_ = new GitHubApi();
     this.imageDiffer_ = new ImageDiffer();
     this.logger_ = new Logger();
+    this.statusNotifier_ = new StatusNotifier();
   }
 
   /**
@@ -108,8 +110,11 @@ class TestCommand {
     /** @type {!mdc.proto.ReportData} */
     const reportData = await controller.initForCapture(snapshotDiffBase);
 
+    this.statusNotifier_.initialize(reportData);
+
     try {
-      await this.gitHubApi_.setPullRequestStatusAuto(reportData);
+      await this.statusNotifier_.starting();
+
       await controller.uploadAllAssets(reportData);
       await controller.captureAllPages(reportData);
 
@@ -119,11 +124,11 @@ class TestCommand {
       await controller.uploadAllDiffImages(reportData);
       await controller.generateReportPage(reportData);
 
-      await this.gitHubApi_.setPullRequestStatusAuto(reportData);
+      await this.statusNotifier_.finished();
 
       this.logComparisonResults_(reportData);
     } catch (err) {
-      await this.gitHubApi_.setPullRequestError();
+      await this.statusNotifier_.error();
       throw new VError(err, getStackTrace('diffAgainstLocal_'));
     }
 
@@ -160,7 +165,7 @@ class TestCommand {
 
       this.logComparisonResults_(masterReportData);
     } catch (err) {
-      await this.gitHubApi_.setPullRequestError();
+      await this.statusNotifier_.error();
       throw new VError(err, getStackTrace('diffAgainstMasterImpl_'));
     }
 

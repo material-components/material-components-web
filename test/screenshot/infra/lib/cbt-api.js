@@ -170,9 +170,12 @@ https://crossbrowsertesting.com/account
    */
   async setTestScore({seleniumSessionId, changedScreenshots}) {
     const stackTrace = getStackTrace('fetchAvailableDevices');
-    await this.sendRequest_(stackTrace, 'PUT', `/selenium/${seleniumSessionId}`, {
+    return this.sendRequest_(stackTrace, 'PUT', `/selenium/${seleniumSessionId}`, {
       action: 'set_score',
       score: changedScreenshots.length === 0 ? 'pass' : 'fail',
+    }).catch((reason) => {
+      console.error(CliColor.red('ERROR:'), reason);
+      console.error(getStackTrace('setTestScore'));
     });
   }
 
@@ -192,6 +195,9 @@ https://crossbrowsertesting.com/account
     const defaultCaps = {
       name: `${cbtTestName} - `,
       build: cbtBuildName,
+
+      high_contrast: userAgent.is_high_contrast_mode ? 'black' : false,
+      font_smoothing: userAgent.is_font_smoothing_disabled !== true,
 
       // TODO(acdvorak): Expose these as CLI flags
       record_video: true,
@@ -401,7 +407,7 @@ https://crossbrowsertesting.com/account
       'GET', '/selenium?active=true&num=100'
     );
 
-    const activeSeleniumTestIds = listResponse.selenium.map((test) => test.selenium_test_id);
+    const activeSeleniumTestIds = listResponse.selenium.map((test) => test.selenium_session_id);
 
     /** @type {!Array<!CbtSeleniumInfoResponse>} */
     const infoResponses = await Promise.all(activeSeleniumTestIds.map((seleniumTestId) => {
@@ -409,27 +415,26 @@ https://crossbrowsertesting.com/account
       return this.sendRequest_(infoStackTrace, 'GET', `/selenium/${seleniumTestId}`);
     }));
 
-    const stalledSeleniumTestIds = [];
+    const stalledSeleniumSessionIds = [];
 
     for (const infoResponse of infoResponses) {
       const lastCommand = infoResponse.commands[infoResponse.commands.length - 1];
+      let timestampMs = null;
 
-      // At least one Selenium command was received
       if (lastCommand) {
-        const commandTimestampMs = new Date(lastCommand.date_issued).getTime();
-        if (Duration.hasElapsed(SELENIUM_ZOMBIE_SESSION_DURATION_MS, commandTimestampMs)) {
-          stalledSeleniumTestIds.push(infoResponse.selenium_test_id);
-        }
+        // At least one Selenium command was received.
+        timestampMs = new Date(lastCommand.date_issued).getTime();
+      } else {
+        // No Selenium commands have been received yet.
+        timestampMs = new Date(infoResponse.start_date || infoResponse.startup_finish_date).getTime();
       }
 
-      // No Selenium commands have been received
-      const startTimestampMs = new Date(infoResponse.start_date || infoResponse.startup_finish_date).getTime();
-      if (Duration.hasElapsed(SELENIUM_ZOMBIE_SESSION_DURATION_MS, startTimestampMs)) {
-        stalledSeleniumTestIds.push(infoResponse.selenium_test_id);
+      if (timestampMs > 0 && Duration.hasElapsed(SELENIUM_ZOMBIE_SESSION_DURATION_MS, timestampMs)) {
+        stalledSeleniumSessionIds.push(infoResponse.selenium_session_id);
       }
     }
 
-    await this.killSeleniumTests(stalledSeleniumTestIds);
+    await this.killSeleniumTests(stalledSeleniumSessionIds);
   }
 
   /**
