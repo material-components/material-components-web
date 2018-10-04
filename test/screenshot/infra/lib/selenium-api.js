@@ -583,9 +583,11 @@ class SeleniumApi {
   getImageFileNameSuffix_(userAgent) {
     /* eslint-disable camelcase */
     const {os_name, browser_name, browser_version} = userAgent.navigator;
-    return [os_name, browser_name, browser_version].map((value) => {
-      // TODO(acdvorak): Clean this up
-      return value.toLowerCase().replace(/\..+$/, '').replace(/[^a-z0-9]+/ig, '');
+    return [os_name, browser_name, browser_version, ...userAgent.raw_options].map((value) => {
+      return value.toLowerCase()
+        .replace(/\..+$/, '') // Remove minor/path version numbers (e.g., "3.2.1" -> "3")
+        .replace(/[^a-z0-9]+/ig, '') // Remove all non-alphanumeric characters
+      ;
     }).join('_');
     /* eslint-enable camelcase */
   }
@@ -1004,7 +1006,8 @@ class SeleniumApi {
    */
   logSession_(status, userAgent) {
     const navigator = userAgent.navigator;
-    const browser = CliColor.bold(`${navigator.browser_name} ${navigator.browser_version}`);
+    const options = userAgent.raw_options.length > 0 ? ` (${userAgent.raw_options.join(', ')})` : '';
+    const browser = CliColor.bold(`${navigator.browser_name} ${navigator.browser_version}${options}`);
     const os = `${navigator.os_name} ${navigator.os_version}`;
     const sessionId = userAgent.selenium_session_id;
     const publicCbtUrl = CliColor.yellow.underline(userAgent.selenium_result_url);

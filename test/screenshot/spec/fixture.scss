@@ -73,6 +73,10 @@ $test-layout-cell-grid-color: #ddd;
     background: black;
     color: black;
     z-index: 1;
+
+    @media screen and (-ms-high-contrast: active) {
+      visibility: hidden;
+    }
   }
 
   .test-container--edge-fonts .test-font--redact-prev-letter {
