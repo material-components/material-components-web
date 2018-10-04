@@ -775,22 +775,25 @@ class SeleniumApi {
     const userAgent = screenshot.user_agent;
     const flakeConfig = screenshot.flake_config;
 
-    const urlWithQsParams = this.analytics_.getUrl({
+    const extraParams = {
+      font_face_observer_timeout_ms: flakeConfig.font_face_observer_timeout_ms,
+      fonts_loaded_reflow_delay_ms: flakeConfig.fonts_loaded_reflow_delay_ms,
+      dir: userAgent.is_rtl ? 'rtl' : 'ltr',
+    };
+
+    const urlWithParams = this.analytics_.getUrl({
       url,
       source: 'cbt',
       medium: 'selenium',
-      extraParams: {
-        font_face_observer_timeout_ms: flakeConfig.font_face_observer_timeout_ms,
-        fonts_loaded_reflow_delay_ms: flakeConfig.fonts_loaded_reflow_delay_ms,
-      },
+      extraParams,
     });
 
-    this.logStatus_(CliStatuses.GET, `${this.createUrlAliasMessage_(urlWithQsParams, userAgent)}...`);
+    this.logStatus_(CliStatuses.GET, `${this.createUrlAliasMessage_(urlWithParams, userAgent)}...`);
 
     const isOnline = this.cli_.isOnline();
     const fontLoadTimeoutMs = isOnline ? flakeConfig.font_face_observer_timeout_ms : 500;
 
-    await driver.get(urlWithQsParams);
+    await driver.get(urlWithParams);
     const domReadyCssSelector = '[data-fonts-loaded][data-animations-settled][data-dom-ready]';
     await driver.wait(until.elementLocated(By.css(domReadyCssSelector)), fontLoadTimeoutMs).catch(() => {});
 
