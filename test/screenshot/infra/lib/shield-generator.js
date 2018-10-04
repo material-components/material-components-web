@@ -25,17 +25,15 @@ require('url-search-params-polyfill');
 
 const request = require('request-promise-native');
 
-const mdcProto = require('../proto/mdc.pb').mdc.proto;
-const ShieldState = mdcProto.ShieldState;
-
 const CloudDatastore = require('../lib/cloud-datastore');
+const {ShieldState} = require('../types/status-types');
 
 /**
  * @typedef {{
  *   color: string,
  *   message: string,
  *   targetUrl: ?string,
- *   shieldState: !mdc.proto.ShieldState,
+ *   shieldState: !ShieldState,
  * }} ShieldConfig
  */
 
@@ -132,12 +130,12 @@ class ShieldGenerator {
 
   /**
    * @param {?string} shieldStateParam
-   * @return {?mdc.proto.ShieldState}
+   * @return {?ShieldState}
    * @private
    */
   getShieldState_(shieldStateParam) {
     if (!shieldStateParam) {
-      return ShieldState.PASSED;
+      return ShieldState.META_TERMINAL_STATE;
     }
     if (shieldStateParam === '*' || shieldStateParam === 'any' || shieldStateParam === 'all') {
       return null;
@@ -147,16 +145,16 @@ class ShieldGenerator {
 
   /**
    * @param {string} gitRef
-   * @param {?mdc.proto.ShieldState} reqShieldState
+   * @param {?ShieldState} reqShieldState
    * @return {!Promise<!ShieldConfig>}
    * @private
    */
   async getShieldConfigFromDatastore_(gitRef, reqShieldState) {
     // TODO(acdvorak): Return the first terminal status (passed, failed, error) by default instead of just "passed".
-    /** @type {?CloudStatus} */
-    const cloudStatus = await this.cloudDatastore_.getStatus(gitRef, reqShieldState);
+    /** @type {?DatastoreScreenshotStatus} */
+    const datastoreScreenshotStatus = await this.cloudDatastore_.getScreenshotStatus(gitRef, reqShieldState);
 
-    if (!cloudStatus) {
+    if (!datastoreScreenshotStatus) {
       return {
         color: 'lightgrey',
         message: 'unknown',
@@ -165,11 +163,11 @@ class ShieldGenerator {
       };
     }
 
-    const actualShieldState = cloudStatus.state;
-    const targetUrl = cloudStatus.target_url;
-    const numDone = cloudStatus.num_screenshots_finished;
-    const numTotal = cloudStatus.num_screenshots_total;
-    const numDiffs = cloudStatus.num_diffs;
+    const actualShieldState = datastoreScreenshotStatus.state;
+    const targetUrl = datastoreScreenshotStatus.target_url;
+    const numDone = datastoreScreenshotStatus.num_screenshots_finished;
+    const numTotal = datastoreScreenshotStatus.num_screenshots_total;
+    const numDiffs = datastoreScreenshotStatus.num_diffs;
     const numPercent = numTotal > 0 ? (100 * numDone / numTotal) : 0;
 
     const strTotal = numTotal.toLocaleString();
@@ -205,7 +203,7 @@ class ShieldGenerator {
       };
     }
 
-    if (actualShieldState === ShieldState.RUNNING || actualShieldState === ShieldState.INITIALIZING) {
+    if (actualShieldState === ShieldState.RUNNING || actualShieldState === ShieldState.STARTING) {
       return {
         color: numDiffs > 0 ? 'red' : 'yellow',
         message: `${strPercent} - ${numDiffs} diff${pluralDiffs}`,

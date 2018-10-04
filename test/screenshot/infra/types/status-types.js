@@ -68,4 +68,5 @@ module.exports.ShieldState = {
   PASSED: 'PASSED',
   FAILED: 'FAILED',
   ERROR: 'ERROR',
+  META_TERMINAL_STATE: 'META_TERMINAL_STATE',
 };
