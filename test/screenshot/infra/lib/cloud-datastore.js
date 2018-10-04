@@ -15,11 +15,16 @@ const KIND = 'ScreenshotStatus';
  *   git_branch: string,
  *   git_commit_hash: string,
  *   git_commit_timestamp: string,
+ *   pull_request_number: ?number,
  *   num_diffs: number,
  *   num_screenshots_finished: number,
  *   num_screenshots_total: number,
  *   state: !mdc.proto.ShieldState,
  *   target_url: string,
+ *   travis_build_id: ?string,
+ *   travis_build_number: ?string,
+ *   travis_job_id: ?string,
+ *   travis_job_number: ?string,
  * }} CloudStatus
  */
 
@@ -38,6 +43,9 @@ class CloudDatastore {
    * @return {!Promise<?CloudStatus>}
    */
   async getStatus(gitRef, shieldState = undefined) {
+    if (!this.isAuthenticated_()) {
+      return null;
+    }
     return (
       await this.getStatus_('git_branch', gitRef, shieldState) ||
       await this.getStatus_('git_commit_hash', gitRef, shieldState)
@@ -96,6 +104,10 @@ class CloudDatastore {
     targetUrl,
     snapshotGitRev,
   }) {
+    if (!this.isAuthenticated_()) {
+      return null;
+    }
+
     const key = this.datastore_.key(KIND);
 
     // IMPORTANT: If you modify this data structure, you might also need to update test/screenshot/infra/index.yaml.
@@ -142,10 +154,43 @@ class CloudDatastore {
           value: targetUrl,
           excludeFromIndexes: true,
         },
+        {
+          name: 'pull_request_number',
+          value: snapshotGitRev.pr_number || null,
+          excludeFromIndexes: true,
+        },
+        {
+          name: 'travis_build_id',
+          value: process.env.TRAVIS_BUILD_ID || null,
+          excludeFromIndexes: true,
+        },
+        {
+          name: 'travis_build_number',
+          value: process.env.TRAVIS_BUILD_NUMBER || null,
+          excludeFromIndexes: true,
+        },
+        {
+          name: 'travis_job_id',
+          value: process.env.TRAVIS_JOB_ID || null,
+          excludeFromIndexes: true,
+        },
+        {
+          name: 'travis_job_number',
+          value: process.env.TRAVIS_JOB_NUMBER || null,
+          excludeFromIndexes: true,
+        },
       ],
     };
 
     return await this.datastore_.save(entity);
+  }
+
+  /**
+   * @return {boolean}
+   * @private
+   */
+  isAuthenticated_() {
+    return Boolean(process.env.GOOGLE_APPLICATION_CREDENTIALS);
   }
 }
 
