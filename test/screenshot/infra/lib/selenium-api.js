@@ -585,9 +585,11 @@ class SeleniumApi {
   getImageFileNameSuffix_(userAgent) {
     /* eslint-disable camelcase */
     const {os_name, browser_name, browser_version} = userAgent.navigator;
-    return [os_name, browser_name, browser_version].map((value) => {
-      // TODO(acdvorak): Clean this up
-      return value.toLowerCase().replace(/\..+$/, '').replace(/[^a-z0-9]+/ig, '');
+    return [os_name, browser_name, browser_version, ...userAgent.raw_options].map((value) => {
+      return value.toLowerCase()
+        .replace(/\..+$/, '') // Remove minor/path version numbers (e.g., "3.2.1" -> "3")
+        .replace(/[^a-z0-9]+/ig, '') // Remove all non-alphanumeric characters
+      ;
     }).join('_');
     /* eslint-enable camelcase */
   }
@@ -773,22 +775,25 @@ class SeleniumApi {
     const userAgent = screenshot.user_agent;
     const flakeConfig = screenshot.flake_config;
 
-    const urlWithQsParams = this.analytics_.getUrl({
+    const extraParams = {
+      font_face_observer_timeout_ms: flakeConfig.font_face_observer_timeout_ms,
+      fonts_loaded_reflow_delay_ms: flakeConfig.fonts_loaded_reflow_delay_ms,
+      dir: userAgent.is_rtl ? 'rtl' : 'ltr',
+    };
+
+    const urlWithParams = this.analytics_.getUrl({
       url,
       source: 'cbt',
       medium: 'selenium',
-      extraParams: {
-        font_face_observer_timeout_ms: flakeConfig.font_face_observer_timeout_ms,
-        fonts_loaded_reflow_delay_ms: flakeConfig.fonts_loaded_reflow_delay_ms,
-      },
+      extraParams,
     });
 
-    this.logStatus_(CliStatuses.GET, `${this.createUrlAliasMessage_(urlWithQsParams, userAgent)}...`);
+    this.logStatus_(CliStatuses.GET, `${this.createUrlAliasMessage_(urlWithParams, userAgent)}...`);
 
     const isOnline = this.cli_.isOnline();
     const fontLoadTimeoutMs = isOnline ? flakeConfig.font_face_observer_timeout_ms : 500;
 
-    await driver.get(urlWithQsParams);
+    await driver.get(urlWithParams);
     const domReadyCssSelector = '[data-fonts-loaded][data-animations-settled][data-dom-ready]';
     await driver.wait(until.elementLocated(By.css(domReadyCssSelector)), fontLoadTimeoutMs).catch(() => {});
 
@@ -1006,7 +1011,8 @@ class SeleniumApi {
    */
   logSession_(status, userAgent) {
     const navigator = userAgent.navigator;
-    const browser = CliColor.bold(`${navigator.browser_name} ${navigator.browser_version}`);
+    const options = userAgent.raw_options.length > 0 ? ` (${userAgent.raw_options.join(', ')})` : '';
+    const browser = CliColor.bold(`${navigator.browser_name} ${navigator.browser_version}${options}`);
     const os = `${navigator.os_name} ${navigator.os_version}`;
     const sessionId = userAgent.selenium_session_id;
     const publicCbtUrl = CliColor.yellow.underline(userAgent.selenium_result_url);

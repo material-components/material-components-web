@@ -2605,6 +2605,10 @@ $root.mdc = (function() {
              * @property {string|null} [image_filename_suffix] UserAgent image_filename_suffix
              * @property {string|null} [browser_icon_url] UserAgent browser_icon_url
              * @property {string|null} [os_icon_url] UserAgent os_icon_url
+             * @property {Array.<string>|null} [raw_options] UserAgent raw_options
+             * @property {boolean|null} [is_high_contrast_mode] UserAgent is_high_contrast_mode
+             * @property {boolean|null} [is_font_smoothing_disabled] UserAgent is_font_smoothing_disabled
+             * @property {boolean|null} [is_rtl] UserAgent is_rtl
              */
 
             /**
@@ -2616,6 +2620,7 @@ $root.mdc = (function() {
              * @param {mdc.proto.IUserAgent=} [properties] Properties to set
              */
             function UserAgent(properties) {
+                this.raw_options = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         if (properties[keys[i]] != null)
@@ -2791,6 +2796,38 @@ $root.mdc = (function() {
             UserAgent.prototype.os_icon_url = "";
 
             /**
+             * UserAgent raw_options.
+             * @member {Array.<string>} raw_options
+             * @memberof mdc.proto.UserAgent
+             * @instance
+             */
+            UserAgent.prototype.raw_options = $util.emptyArray;
+
+            /**
+             * UserAgent is_high_contrast_mode.
+             * @member {boolean} is_high_contrast_mode
+             * @memberof mdc.proto.UserAgent
+             * @instance
+             */
+            UserAgent.prototype.is_high_contrast_mode = false;
+
+            /**
+             * UserAgent is_font_smoothing_disabled.
+             * @member {boolean} is_font_smoothing_disabled
+             * @memberof mdc.proto.UserAgent
+             * @instance
+             */
+            UserAgent.prototype.is_font_smoothing_disabled = false;
+
+            /**
+             * UserAgent is_rtl.
+             * @member {boolean} is_rtl
+             * @memberof mdc.proto.UserAgent
+             * @instance
+             */
+            UserAgent.prototype.is_rtl = false;
+
+            /**
              * Creates a new UserAgent instance using the specified properties.
              * @function create
              * @memberof mdc.proto.UserAgent
@@ -2856,6 +2893,15 @@ $root.mdc = (function() {
                     writer.uint32(/* id 20, wireType 2 =*/162).string(message.selenium_session_id);
                 if (message.selenium_result_url != null && message.hasOwnProperty("selenium_result_url"))
                     writer.uint32(/* id 21, wireType 2 =*/170).string(message.selenium_result_url);
+                if (message.raw_options != null && message.raw_options.length)
+                    for (var i = 0; i < message.raw_options.length; ++i)
+                        writer.uint32(/* id 22, wireType 2 =*/178).string(message.raw_options[i]);
+                if (message.is_high_contrast_mode != null && message.hasOwnProperty("is_high_contrast_mode"))
+                    writer.uint32(/* id 23, wireType 0 =*/184).bool(message.is_high_contrast_mode);
+                if (message.is_font_smoothing_disabled != null && message.hasOwnProperty("is_font_smoothing_disabled"))
+                    writer.uint32(/* id 24, wireType 0 =*/192).bool(message.is_font_smoothing_disabled);
+                if (message.is_rtl != null && message.hasOwnProperty("is_rtl"))
+                    writer.uint32(/* id 25, wireType 0 =*/200).bool(message.is_rtl);
                 return writer;
             };
 
@@ -2952,6 +2998,20 @@ $root.mdc = (function() {
                         break;
                     case 19:
                         message.os_icon_url = reader.string();
+                        break;
+                    case 22:
+                        if (!(message.raw_options && message.raw_options.length))
+                            message.raw_options = [];
+                        message.raw_options.push(reader.string());
+                        break;
+                    case 23:
+                        message.is_high_contrast_mode = reader.bool();
+                        break;
+                    case 24:
+                        message.is_font_smoothing_disabled = reader.bool();
+                        break;
+                    case 25:
+                        message.is_rtl = reader.bool();
                         break;
                     default:
                         reader.skipType(tag & 7);
@@ -3087,6 +3147,22 @@ $root.mdc = (function() {
                 if (message.os_icon_url != null && message.hasOwnProperty("os_icon_url"))
                     if (!$util.isString(message.os_icon_url))
                         return "os_icon_url: string expected";
+                if (message.raw_options != null && message.hasOwnProperty("raw_options")) {
+                    if (!Array.isArray(message.raw_options))
+                        return "raw_options: array expected";
+                    for (var i = 0; i < message.raw_options.length; ++i)
+                        if (!$util.isString(message.raw_options[i]))
+                            return "raw_options: string[] expected";
+                }
+                if (message.is_high_contrast_mode != null && message.hasOwnProperty("is_high_contrast_mode"))
+                    if (typeof message.is_high_contrast_mode !== "boolean")
+                        return "is_high_contrast_mode: boolean expected";
+                if (message.is_font_smoothing_disabled != null && message.hasOwnProperty("is_font_smoothing_disabled"))
+                    if (typeof message.is_font_smoothing_disabled !== "boolean")
+                        return "is_font_smoothing_disabled: boolean expected";
+                if (message.is_rtl != null && message.hasOwnProperty("is_rtl"))
+                    if (typeof message.is_rtl !== "boolean")
+                        return "is_rtl: boolean expected";
                 return null;
             };
 
@@ -3225,6 +3301,19 @@ $root.mdc = (function() {
                     message.browser_icon_url = String(object.browser_icon_url);
                 if (object.os_icon_url != null)
                     message.os_icon_url = String(object.os_icon_url);
+                if (object.raw_options) {
+                    if (!Array.isArray(object.raw_options))
+                        throw TypeError(".mdc.proto.UserAgent.raw_options: array expected");
+                    message.raw_options = [];
+                    for (var i = 0; i < object.raw_options.length; ++i)
+                        message.raw_options[i] = String(object.raw_options[i]);
+                }
+                if (object.is_high_contrast_mode != null)
+                    message.is_high_contrast_mode = Boolean(object.is_high_contrast_mode);
+                if (object.is_font_smoothing_disabled != null)
+                    message.is_font_smoothing_disabled = Boolean(object.is_font_smoothing_disabled);
+                if (object.is_rtl != null)
+                    message.is_rtl = Boolean(object.is_rtl);
                 return message;
             };
 
@@ -3241,6 +3330,8 @@ $root.mdc = (function() {
                 if (!options)
                     options = {};
                 var object = {};
+                if (options.arrays || options.defaults)
+                    object.raw_options = [];
                 if (options.defaults) {
                     object.alias = "";
                     object.form_factor_name = "";
@@ -3263,6 +3354,9 @@ $root.mdc = (function() {
                     object.os_icon_url = "";
                     object.selenium_session_id = "";
                     object.selenium_result_url = "";
+                    object.is_high_contrast_mode = false;
+                    object.is_font_smoothing_disabled = false;
+                    object.is_rtl = false;
                 }
                 if (message.alias != null && message.hasOwnProperty("alias"))
                     object.alias = message.alias;
@@ -3306,6 +3400,17 @@ $root.mdc = (function() {
                     object.selenium_session_id = message.selenium_session_id;
                 if (message.selenium_result_url != null && message.hasOwnProperty("selenium_result_url"))
                     object.selenium_result_url = message.selenium_result_url;
+                if (message.raw_options && message.raw_options.length) {
+                    object.raw_options = [];
+                    for (var j = 0; j < message.raw_options.length; ++j)
+                        object.raw_options[j] = message.raw_options[j];
+                }
+                if (message.is_high_contrast_mode != null && message.hasOwnProperty("is_high_contrast_mode"))
+                    object.is_high_contrast_mode = message.is_high_contrast_mode;
+                if (message.is_font_smoothing_disabled != null && message.hasOwnProperty("is_font_smoothing_disabled"))
+                    object.is_font_smoothing_disabled = message.is_font_smoothing_disabled;
+                if (message.is_rtl != null && message.hasOwnProperty("is_rtl"))
+                    object.is_rtl = message.is_rtl;
                 return object;
             };
 
