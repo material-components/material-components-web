@@ -36,10 +36,7 @@ class ProtoCommand {
    */
   async runAsync(isWatching = false) {
     const processManager = new ProcessManager();
-    const protoFilePaths = glob.sync(
-      path.join(TEST_DIR_RELATIVE_PATH, '**/*.proto'),
-      {ignore: '**/node_modules/**'},
-    );
+    const protoFilePaths = glob.sync(path.join(TEST_DIR_RELATIVE_PATH, '**/*.proto'));
 
     const cmd = 'pbjs';
     const args = ['--target=static-module', '--wrap=commonjs', '--keep-case'];
