@@ -41,6 +41,19 @@
         }
       },
       {
+        "description": "Edge frequently fails to load the Roboto font, especially on fullscreen pages and in highcontrast mode",
+        "browser_regex_patterns": [
+          "desktop_windows_edge@latest"
+        ],
+        "url_regex_patterns": [
+          "mdc-dialog",
+          "mdc-drawer"
+        ],
+        "custom_config": {
+          "skip_all": true
+        }
+      },
+      {
         "description": "Edge flakes so frequently on certain pages that it needs to be disabled entirely",
         "browser_regex_patterns": [
           "desktop_windows_edge@latest"
