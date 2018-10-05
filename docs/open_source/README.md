@@ -34,9 +34,8 @@ NPM. Triage and release are only performed when the team member is
 “release cop”, which is determined by a rotation calendar. Each team member is
 release cop for two weeks.
 
-* [Untriaged Issues](https://github.com/material-components/material-components-web/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aopen%20-label%3Ain-tracker%20-label%3A%22help%20wanted%22%20no%3Aassignee%20sort%3Acreated-asc%20)
-* Triage Process
-* Release Process
+* [Triage Process](triage.md)
+* [Release Process](release-process.md)
 * Idle in Discord
 
 ## External Contributors
