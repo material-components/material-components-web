@@ -44,11 +44,11 @@ class MDCSelect extends MDCComponent {
    */
   constructor(...args) {
     super(...args);
-    /** @private {?HTMLElement} */
+    /** @private {?Element} */
     this.nativeControl_;
-    /** @private {?HTMLElement} */
+    /** @private {?Element} */
     this.selectedText_;
-    /** @private {?HTMLElement} */
+    /** @private {?Element} */
     this.menuElement_;
     /** @type {?MDCMenu} */
     this.menu_;
@@ -102,7 +102,7 @@ class MDCSelect extends MDCComponent {
   get selectedIndex() {
     let selectedIndex;
     if (this.menuElement_) {
-      const selectedEl = /** @type{!HTMLElement} */ (this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR));
+      const selectedEl = /** @type {!HTMLElement} */ (this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR));
       selectedIndex = this.menu_.items.indexOf(selectedEl);
     } else {
       selectedIndex = this.nativeControl_.selectedIndex;
@@ -301,7 +301,7 @@ class MDCSelect extends MDCComponent {
    *   setValue: function(string): string,
    *   openMenu: function(): void,
    *   closeMenu: function(): void,
-   *   isMenuOpened: function(): boolean,
+   *   isMenuOpen: function(): boolean,
    *   setSelectedIndex: function(number): void,
    *   setDisabled: function(boolean): void
    * }}
@@ -313,7 +313,7 @@ class MDCSelect extends MDCComponent {
       setValue: (value) => this.nativeControl_.value = value,
       openMenu: () => {},
       closeMenu: () => {},
-      isMenuOpened: () => false,
+      isMenuOpen: () => false,
       setSelectedIndex: (index) => {
         this.nativeControl_.selectedIndex = index;
       },
@@ -327,7 +327,7 @@ class MDCSelect extends MDCComponent {
    *   setValue: function(string): string,
    *   openMenu: function(): void,
    *   closeMenu: function(): void,
-   *   isMenuOpened: function(): boolean,
+   *   isMenuOpen: function(): boolean,
    *   setSelectedIndex: function(number): void,
    *   setDisabled: function(boolean): void
    * }}
@@ -365,7 +365,7 @@ class MDCSelect extends MDCComponent {
           this.menu_.open = false;
         }
       },
-      isMenuOpened: () => this.menu_ && this.menuOpened_,
+      isMenuOpen: () => this.menu_ && this.menuOpened_,
       setSelectedIndex: (index) => {
         this.setEnhancedSelectedIndex_(index);
       },
@@ -407,7 +407,8 @@ class MDCSelect extends MDCComponent {
    *   isRtl: function(): boolean,
    *   setRippleCenter: function(number): void,
    *   activateBottomLine: function(): void,
-   *   deactivateBottomLine: function(): void
+   *   deactivateBottomLine: function(): void,
+   *   notifyChange: function(!{value: string}): void
    * }}
    * @private
    */
@@ -420,7 +421,7 @@ class MDCSelect extends MDCComponent {
       setRippleCenter: (normalizedX) => this.lineRipple_ && this.lineRipple_.setRippleCenter(normalizedX),
       activateBottomLine: () => this.lineRipple_ && this.lineRipple_.activate(),
       deactivateBottomLine: () => this.lineRipple_ && this.lineRipple_.deactivate(),
-      changeEvent: (evtData) => {
+      notifyChange: (evtData) => {
         evtData.index = this.selectedIndex;
         this.emit(strings.CHANGE_EVENT, evtData);
       },

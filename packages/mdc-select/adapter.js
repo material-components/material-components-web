@@ -71,6 +71,12 @@ class MDCSelectAdapter {
   deactivateBottomLine() {}
 
   /**
+   * Sets the value of the select.
+   * @param {string} value
+   */
+  setValue(value) {}
+
+  /**
    * Returns the selected value of the select element.
    * @return {string}
    */
@@ -114,12 +120,6 @@ class MDCSelectAdapter {
   closeOutline() {}
 
   /**
-   * Sets the value of the select.
-   * @param {string} value
-   */
-  setValue(value) {}
-
-  /**
    * Opens the menu.
    */
   openMenu() {}
@@ -133,7 +133,7 @@ class MDCSelectAdapter {
    * Returns true if the menu is currently open.
    * @return {boolean}
    */
-  isMenuOpened() {}
+  isMenuOpen() {}
 
   /**
    * Sets the selected index of the select to the index provided.
@@ -155,11 +155,11 @@ class MDCSelectAdapter {
 
   /**
    * Emits a change event when an element is selected.
-   * @param {{
+   * @param {!{
  *    value: string
  *   }} evtData
    */
-  changeEvent(evtData) {}
+  notifyChange(evtData) {}
 }
 
 export default MDCSelectAdapter;
