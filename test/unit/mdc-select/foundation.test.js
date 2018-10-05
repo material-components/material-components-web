@@ -47,8 +47,8 @@ test('exports strings', () => {
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSelectFoundation, [
     'addClass', 'removeClass', 'hasClass', 'floatLabel', 'activateBottomLine', 'deactivateBottomLine', 'getValue',
-    'isRtl', 'getLabelWidth', 'hasOutline', 'notchOutline', 'closeOutline', 'isMenuOpened', 'openMenu',
-    'closeMenu', 'setDisabled', 'setSelectedIndex', 'setValue', 'setRippleCenter', 'changeEvent',
+    'isRtl', 'getLabelWidth', 'hasOutline', 'notchOutline', 'closeOutline', 'isMenuOpen', 'openMenu',
+    'closeMenu', 'setDisabled', 'setSelectedIndex', 'setValue', 'setRippleCenter', 'notifyChange',
   ]);
 });
 
@@ -139,12 +139,12 @@ test('#handleChange calls foundation.notchOutline(false) when there is no value'
   td.verify(foundation.notchOutline(false), {times: 1});
 });
 
-test('#handleChange calls adapter.changeEvent() if didChange is true', () => {
+test('#handleChange calls adapter.notifyChange() if didChange is true', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getValue()).thenReturn('value');
 
   foundation.handleChange(/* didChange */ true);
-  td.verify(mockAdapter.changeEvent(td.matchers.anything()), {times: 1});
+  td.verify(mockAdapter.notifyChange(td.matchers.anything()), {times: 1});
 });
 
 test('#handleFocus calls adapter.floatLabel(true)', () => {
@@ -167,9 +167,9 @@ test('#handleFocus calls adapter.activateBottomLine()', () => {
   td.verify(mockAdapter.activateBottomLine(), {times: 1});
 });
 
-test('#handleFocus does not call adapter.activateBottomLine() if isMenuOpened=true', () => {
+test('#handleFocus does not call adapter.activateBottomLine() if isMenuOpen=true', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.isMenuOpened()).thenReturn(true);
+  td.when(mockAdapter.isMenuOpen()).thenReturn(true);
   foundation.handleFocus();
   td.verify(mockAdapter.activateBottomLine(), {times: 0});
 });
@@ -187,38 +187,38 @@ test('#handleBlur calls adapter.deactivateBottomLine()', () => {
   td.verify(mockAdapter.deactivateBottomLine(), {times: 1});
 });
 
-test('#handleBlur does not call deactivateBottomLine if isMenuOpened=true', () => {
+test('#handleBlur does not call deactivateBottomLine if isMenuOpen=true', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.isMenuOpened()).thenReturn(true);
+  td.when(mockAdapter.isMenuOpen()).thenReturn(true);
   foundation.handleBlur();
   td.verify(mockAdapter.deactivateBottomLine(), {times: 0});
 });
 
-test('#handleClick does nothing if isMenuOpened=true', () => {
+test('#handleClick does nothing if isMenuOpen=true', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.isMenuOpened()).thenReturn(true);
+  td.when(mockAdapter.isMenuOpen()).thenReturn(true);
   foundation.handleClick(0);
   td.verify(mockAdapter.setRippleCenter(0), {times: 0});
 });
 
-test('#handleClick sets the ripple center if isMenuOpened=false', () => {
+test('#handleClick sets the ripple center if isMenuOpen=false', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.isMenuOpened()).thenReturn(false);
+  td.when(mockAdapter.isMenuOpen()).thenReturn(false);
   foundation.handleClick(0);
   td.verify(mockAdapter.setRippleCenter(0), {times: 1});
 });
 
-test('#handleClick does not open the menu if the select is not focused and isMenuOpened=false', () => {
+test('#handleClick does not open the menu if the select is not focused and isMenuOpen=false', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.isMenuOpened()).thenReturn(false);
+  td.when(mockAdapter.isMenuOpen()).thenReturn(false);
   td.when(mockAdapter.hasClass(td.matchers.anything())).thenReturn(false);
   foundation.handleClick(0);
   td.verify(mockAdapter.openMenu(), {times: 0});
 });
 
-test('#handleClick opens the menu if the select is focused and isMenuOpened=false', () => {
+test('#handleClick opens the menu if the select is focused and isMenuOpen=false', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.isMenuOpened()).thenReturn(false);
+  td.when(mockAdapter.isMenuOpen()).thenReturn(false);
   td.when(mockAdapter.hasClass(td.matchers.anything())).thenReturn(true);
   foundation.handleClick(0);
   td.verify(mockAdapter.openMenu(), {times: 1});
@@ -229,7 +229,7 @@ test('#handleKeydown calls adapter.openMenu if Enter/Space key is pressed, menu 
     const {foundation, mockAdapter} = setupTest();
     const preventDefault = td.func();
     const event = {key: 'Enter', preventDefault};
-    td.when(mockAdapter.isMenuOpened()).thenReturn(false);
+    td.when(mockAdapter.isMenuOpen()).thenReturn(false);
     td.when(mockAdapter.hasClass('mdc-select--focused')).thenReturn(true);
     foundation.handleKeydown(event);
     event.key = 'Space';
@@ -247,7 +247,7 @@ test('#handleKeydown does not call adapter.openMenu if Enter/Space key is presse
   const {foundation, mockAdapter} = setupTest();
   const preventDefault = td.func();
   const event = {key: 'Enter', preventDefault};
-  td.when(mockAdapter.isMenuOpened()).thenReturn(false);
+  td.when(mockAdapter.isMenuOpen()).thenReturn(false);
   td.when(mockAdapter.hasClass('mdc-select--focused')).thenReturn(false);
   foundation.handleKeydown(event);
   event.key = 'Space';
@@ -265,7 +265,7 @@ test('#handleKeydown does not call adapter.openMenu if menu is opened', () => {
   const {foundation, mockAdapter} = setupTest();
   const preventDefault = td.func();
   const event = {key: 'Enter', preventDefault};
-  td.when(mockAdapter.isMenuOpened()).thenReturn(true);
+  td.when(mockAdapter.isMenuOpen()).thenReturn(true);
   foundation.handleKeydown(event);
   event.key = 'Space';
   foundation.handleKeydown(event);

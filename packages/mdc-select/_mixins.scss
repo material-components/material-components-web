@@ -188,8 +188,8 @@
 }
 
 @mixin mdc-select-hover-outline-color_($color) {
-  &:not(.mdc-select__native-control:focus) .mdc-select__native-control:hover ~,
-  &:not(.mdc-select__selected-text:focus) .mdc-select__selected-text:hover ~ {
+  &:not(.mdc-select--focused) .mdc-select__native-control:hover ~,
+  &:not(.mdc-select--focused) .mdc-select__selected-text:hover ~ {
     @include mdc-notched-outline-idle-color($color);
 
     // stylelint-disable-next-line selector-max-specificity

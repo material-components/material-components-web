@@ -69,11 +69,11 @@ class MDCSelectFoundation extends MDCFoundation {
       closeOutline: () => {},
       openMenu: () => {},
       closeMenu: () => {},
-      isMenuOpened: () => {},
+      isMenuOpen: () => {},
       setSelectedIndex: () => {},
       setDisabled: () => {},
       setRippleCenter: () => {},
-      changeEvent: () => {},
+      notifyChange: () => {},
     });
   }
 
@@ -104,26 +104,18 @@ class MDCSelectFoundation extends MDCFoundation {
   setDisabled(isDisabled) {
     this.adapter_.setDisabled(isDisabled);
     this.adapter_.closeMenu();
-    this.updateDisabledStyle_(isDisabled);
+
+    const {DISABLED} = MDCSelectFoundation.cssClasses;
+    if (isDisabled) {
+      this.adapter_.addClass(DISABLED);
+    } else {
+      this.adapter_.removeClass(DISABLED);
+    }
   }
 
   layout() {
     const openNotch = this.getValue().length > 0;
     this.notchOutline(openNotch);
-  }
-
-
-  /**
-   * Updates the styles of the select to show the disabled state.
-   * @param {boolean} disabled
-   */
-  updateDisabledStyle_(disabled) {
-    const {DISABLED} = MDCSelectFoundation.cssClasses;
-    if (disabled) {
-      this.adapter_.addClass(DISABLED);
-    } else {
-      this.adapter_.removeClass(DISABLED);
-    }
   }
 
   /**
@@ -135,7 +127,7 @@ class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.floatLabel(optionHasValue);
     this.notchOutline(optionHasValue);
     if (didChange) {
-      this.adapter_.changeEvent({value});
+      this.adapter_.notifyChange({value});
     }
   }
 
@@ -143,7 +135,7 @@ class MDCSelectFoundation extends MDCFoundation {
    * Handles focus events from select element.
    */
   handleFocus() {
-    if (this.adapter_.isMenuOpened()) return;
+    if (this.adapter_.isMenuOpen()) return;
     this.adapter_.addClass(cssClasses.FOCUSED);
     this.adapter_.floatLabel(true);
     this.notchOutline(true);
@@ -156,7 +148,7 @@ class MDCSelectFoundation extends MDCFoundation {
    * Handles blur events from select element.
    */
   handleBlur() {
-    if (this.adapter_.isMenuOpened()) return;
+    if (this.adapter_.isMenuOpen()) return;
     this.adapter_.removeClass(cssClasses.FOCUSED);
     this.handleChange(false);
     this.adapter_.removeClass('mdc-select--focused');
@@ -164,7 +156,7 @@ class MDCSelectFoundation extends MDCFoundation {
   }
 
   handleClick(normalizedX) {
-    if (this.adapter_.isMenuOpened()) return;
+    if (this.adapter_.isMenuOpen()) return;
     this.adapter_.setRippleCenter(normalizedX);
 
     if (this.adapter_.hasClass(cssClasses.FOCUSED)) {
@@ -173,7 +165,7 @@ class MDCSelectFoundation extends MDCFoundation {
   }
 
   handleKeydown(event) {
-    if (this.adapter_.isMenuOpened()) return;
+    if (this.adapter_.isMenuOpen()) return;
 
     const isEnter = event.key === 'Enter' || event.keyCode === 13;
     const isSpace = event.key === 'Space' || event.keyCode === 32;

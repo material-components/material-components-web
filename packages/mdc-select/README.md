@@ -86,6 +86,14 @@ The enhanced select uses an MDCMenu component to contain the list of options
 
 ### Styles
 
+For the native select version you can simply include the select Sass file. 
+
+```scss
+@import "@material/select/mdc-select";
+```
+
+When using the enhanced select, you will also require the menu components. 
+
 ```scss
 @import "@material/list/mdc-list";
 @import "@material/menu-surface/mdc-menu-surface";
@@ -114,7 +122,7 @@ same.
 
 ```html
 <div class="mdc-select mdc-select--outlined">
-  ... // Other elements from the basic examples remain.
+  <!-- Other elements from the native or enhanced select remain. -->
   <label class="mdc-floating-label">Pick a Food Group</label>
    <div class="mdc-notched-outline">
      <svg>
@@ -153,8 +161,8 @@ This will ensure that the label moves out of the way of the select's value and p
 </div>
 ```
 
-The enhanced select works in a similar way, but uses the `mdc-list-item--selected` class to set the selected. The
-enhanced select also needs the text from the selected element moved to the `mdc-select__selected-text` element.
+The enhanced select works in a similar way, but uses the `mdc-list-item--selected` class to set the selected item. The
+enhanced select also needs the text from the selected element copied to the `mdc-select__selected-text` element.
 
 ```html
 <div class="mdc-select">
@@ -284,7 +292,7 @@ programmatically select a disabled list item in the enhanced select.
 | `mdc-select__native-control` | Mandatory for the native select. The native `<select>` element. |
 | `mdc-select__selected-text` | Mandatory for the enhanced select. This element should be placed on a `div` within the `mdc-select` element. |
 
-> Note: To further customize the [MDCMenu](./../mdc-menu/README.md) or the [MDCList](./../mdc-list/README.md) component contained within the select, please refer to their respective documentation.
+> Note: To further customize the [MDCMenu](./../mdc-menu) or the [MDCList](./../mdc-list) component contained within the select, please refer to their respective documentation.
 
 ### Sass Mixins
 
@@ -344,11 +352,11 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `openMenu() => void` | Causes the menu element in the enhanced select to open. |
 | `closeMenu() => void` | Causes the menu element in the enhanced select to close. |
 | `setValue(value: string) => void` | Sets the value of the select or text content of the selected-text element. |
-| `isMenuOpened() => boolean` | Returns true if the menu is currently opened. |
-| `setSelectedIndex(index: number) => void` | Sets the select or selected list item to the element at the index specified. |
-| `setDisabled(isDisabled: boolean) => void` | Sets the select or selected list item to the disabled state. |
+| `isMenuOpen() => boolean` | Returns true if the menu is currently opened. |
+| `setSelectedIndex(index: number) => void` | Sets the option or list item at the specified index. |
+| `setDisabled(isDisabled: boolean) => void` | Enables or disabled the native or enhanced select. |
 | `setRippleCenter(normalizedX: number) => void` | Sets the line ripple center to the provided normalizedX value. |
-| `changeEvent({value: string}: Object) => void` | Emits the `MDCSelect:change` event when an element is selected. |
+| `notifyChange({value: string}: Object) => void` | Emits the `MDCSelect:change` event when an element is selected. |
 
 ### `MDCSelectFoundation`
 

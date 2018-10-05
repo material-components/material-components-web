@@ -166,11 +166,11 @@ test('#set selectedIndex calls foundation.handleChange', () => {
   td.verify(component.foundation_.handleChange(true), {times: 1});
 });
 
-test('#set disabled calls foundation.updateDisabledStyle_', () => {
+test('#set disabled calls foundation.setDisabled', () => {
   const {component} = setupTest();
-  component.foundation_.updateDisabledStyle_ = td.func();
+  component.foundation_.setDisabled = td.func();
   component.disabled = true;
-  td.verify(component.foundation_.updateDisabledStyle_(true), {times: 1});
+  td.verify(component.foundation_.setDisabled(true), {times: 1});
 });
 
 test('#initialSyncWithDOM sets the selected index if an option has the selected attr', () => {
