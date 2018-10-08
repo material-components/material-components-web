@@ -1,7 +1,7 @@
 {
   "name": "@material/checkbox",
   "description": "The Material Components for the web checkbox component",
-  "version": "0.40.0",
+  "version": "0.40.1",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -14,11 +14,11 @@
     "url": "https://github.com/material-components/material-components-web.git"
   },
   "dependencies": {
-    "@material/animation": "^0.39.0",
-    "@material/base": "^0.39.0",
-    "@material/ripple": "^0.40.0",
-    "@material/rtl": "^0.39.1",
-    "@material/selection-control": "^0.40.0",
-    "@material/theme": "^0.40.0"
+    "@material/animation": "^0.40.1",
+    "@material/base": "^0.40.1",
+    "@material/ripple": "^0.40.1",
+    "@material/rtl": "^0.40.1",
+    "@material/selection-control": "^0.40.1",
+    "@material/theme": "^0.40.1"
   }
 }
