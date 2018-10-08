@@ -811,8 +811,12 @@ test('menu surface opened event causes selected element to be focused', () => {
   document.body.removeChild(menuSurface);
 });
 
-test('menu surface closed event calls foundation blur if selected-text is focused', () => {
-  const {fixture, menuSurface, mockFoundation} = setupWithMockFoundation();
+test('menu surface closed event does not call foundation.handleBlur if selected-text is focused', () => {
+  const hasMockFoundation = true;
+  const hasMockMenu = false;
+  const hasOutline = false;
+  const hasLabel = true;
+  const {fixture, menuSurface, mockFoundation} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   document.body.appendChild(fixture);
   fixture.querySelector('.mdc-select__selected-text').focus();
   const event = document.createEvent('Event');
@@ -821,6 +825,23 @@ test('menu surface closed event calls foundation blur if selected-text is focuse
 
   td.verify(mockFoundation.handleBlur(), {times: 0});
   document.body.removeChild(fixture);
+});
+
+test('menu surface closed event calls foundation.handleBlur if selected-text is not focused', () => {
+  const hasMockFoundation = true;
+  const hasMockMenu = false;
+  const hasOutline = false;
+  const hasLabel = true;
+  const {fixture, menuSurface, mockFoundation} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  document.body.appendChild(fixture);
+  document.body.focus();
+  const event = document.createEvent('Event');
+  event.initEvent(MDCMenuSurfaceFoundation.strings.CLOSED_EVENT, false, true);
+  menuSurface.dispatchEvent(event);
+
+  td.verify(mockFoundation.handleBlur(), {times: 1});
+  document.body.removeChild(fixture);
+  document.body.removeChild(menuSurface);
 });
 
 test('menu surface closed event does not call foundation blur if selected-text is not focused', () => {
