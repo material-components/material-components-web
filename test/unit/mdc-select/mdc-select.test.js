@@ -56,6 +56,7 @@ class FakeOutline {
   constructor() {
     this.destroy = td.func('.destroy');
     this.notch = td.func('.notch');
+    this.closeNotch = td.func('.notch');
   }
 }
 
@@ -230,7 +231,7 @@ test('adapter#hasClass returns true if a class exists on the root element', () =
   assert.isTrue(component.getDefaultFoundation().adapter_.hasClass('foo'));
 });
 
-test('adapter_.floatLabel does not throw error if label does not exist', () => {
+test('adapter_#floatLabel does not throw error if label does not exist', () => {
   const fixture = bel`
     <div class="mdc-select">
       <select class="mdc-select__native-control">
@@ -249,7 +250,7 @@ test('adapter_.floatLabel does not throw error if label does not exist', () => {
     () => component.getDefaultFoundation().adapter_.floatLabel('foo'));
 });
 
-test('adapter.activateBottomLine and adapter.deactivateBottomLine ' +
+test('adapter#activateBottomLine and adapter.deactivateBottomLine ' +
   'does not throw error if bottomLine does not exist', () => {
   const fixture = bel`
     <div class="mdc-select">
@@ -272,7 +273,7 @@ test('adapter.activateBottomLine and adapter.deactivateBottomLine ' +
 });
 
 
-test('#adapter.isRtl returns true when the root element is in an RTL context' +
+test('adapter#isRtl returns true when the root element is in an RTL context' +
   'and false otherwise', () => {
   const wrapper = bel`<div dir="rtl"></div>`;
   const {fixture, component} = setupTest();
@@ -283,6 +284,25 @@ test('#adapter.isRtl returns true when the root element is in an RTL context' +
   assert.isTrue(component.getDefaultFoundation().adapter_.isRtl());
 
   document.body.removeChild(wrapper);
+});
+
+test('adapter#setDisabled sets the select to be disabled', () => {
+  const {component, nativeControl} = setupTest();
+  const adapter = component.getDefaultFoundation().adapter_;
+  assert.isFalse(nativeControl.disabled);
+  adapter.setDisabled(true);
+  assert.isTrue(nativeControl.disabled);
+  adapter.setDisabled(false);
+  assert.isFalse(nativeControl.disabled);
+});
+
+test('adapter#setSelectedIndex sets the select selected index to the index specified', () => {
+  const {component, nativeControl} = setupTest();
+  const adapter = component.getDefaultFoundation().adapter_;
+  adapter.setSelectedIndex(1);
+  assert.equal(nativeControl.selectedIndex, 1);
+  adapter.setSelectedIndex(2);
+  assert.equal(nativeControl.selectedIndex, 2);
 });
 
 test('instantiates ripple', function() {
@@ -460,40 +480,40 @@ test('#destroy removes the blur handler', () => {
   td.verify(component.foundation_.handleBlur(), {times: 0});
 });
 
-test('mousedown on the select sets the line ripple origin', () => {
+test('mouseup on the select sets the line ripple origin', () => {
   const {bottomLine, fixture} = setupTest();
   const event = document.createEvent('MouseEvent');
   const clientX = 200;
   const clientY = 200;
-  // IE11 mousedown event.
-  event.initMouseEvent('mousedown', true, true, window, 0, 0, 0, clientX, clientY, false, false, false, false, 0, null);
+  // IE11 mouseup event.
+  event.initMouseEvent('mouseup', true, true, window, 0, 0, 0, clientX, clientY, false, false, false, false, 0, null);
   fixture.querySelector('select').dispatchEvent(event);
 
   td.verify(bottomLine.setRippleCenter(200), {times: 1});
 });
 
-test('mousedown on the select does nothing if the it does not have a lineRipple', () => {
+test('mouseup on the select does nothing if the it does not have a lineRipple', () => {
   const hasOutline = true;
   const {bottomLine, fixture} = setupTest(hasOutline);
   const event = document.createEvent('MouseEvent');
   const clientX = 200;
   const clientY = 200;
-  // IE11 mousedown event.
-  event.initMouseEvent('mousedown', true, true, window, 0, 0, 0, clientX, clientY, false, false, false, false, 0, null);
+  // IE11 mouseup event.
+  event.initMouseEvent('mouseup', true, true, window, 0, 0, 0, clientX, clientY, false, false, false, false, 0, null);
   fixture.querySelector('select').dispatchEvent(event);
 
   td.verify(bottomLine.setRippleCenter(200), {times: 0});
 });
 
-test('#destroy removes the mousedown listener', () => {
+test('#destroy removes the mouseup listener', () => {
   const {bottomLine, component, fixture} = setupTest();
   const event = document.createEvent('MouseEvent');
   const clientX = 200;
   const clientY = 200;
 
   component.destroy();
-  // IE11 mousedown event.
-  event.initMouseEvent('mousedown', true, true, window, 0, 0, 0, clientX, clientY, false, false, false, false, 0, null);
+  // IE11 mouseup event.
+  event.initMouseEvent('mouseup', true, true, window, 0, 0, 0, clientX, clientY, false, false, false, false, 0, null);
   fixture.querySelector('select').dispatchEvent(event);
 
   td.verify(bottomLine.setRippleCenter(200), {times: 0});

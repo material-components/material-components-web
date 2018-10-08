@@ -70,6 +70,12 @@ class MDCSelect extends MDCComponent {
     this.handleClick_;
     /** @private {!Function} */
     this.handleKeydown_;
+    /** @private {!Function} */
+    this.handleMenuOpened_;
+    /** @private {!Function} */
+    this.handleMenuClosed_;
+    /** @private {!Function} */
+    this.handleMenuSelected_;
     /** @private {boolean} */
     this.menuOpened_ = false;
   }
@@ -187,26 +193,6 @@ class MDCSelect extends MDCComponent {
     this.menu_.hoistMenuToBody();
     this.menu_.setAnchorElement(/** @type {!HTMLElement} */ (this.root_));
     this.menu_.setAnchorCorner(menuSurfaceConstants.Corner.BOTTOM_START);
-    this.menu_.listen(menuSurfaceConstants.strings.CLOSED_EVENT, () => {
-      // menuOpened_ is used to track the state of the menu opening or closing since the menu.open function
-      // will return false if the menu is still closing and this method listens to the closed event which
-      // occurs after the menu is already closed.
-      this.menuOpened_ = false;
-      if (document.activeElement !== this.selectedText_) {
-        this.foundation_.handleBlur();
-      }
-    });
-
-    // Menu should open to the last selected element.
-    this.menu_.listen(menuSurfaceConstants.strings.OPENED_EVENT, () => {
-      if (this.selectedIndex >= 0) {
-        this.menu_.items[this.selectedIndex].focus();
-      }
-    });
-
-    this.menu_.listen(menuConstants.strings.SELECTED_EVENT, (evtData) => {
-      this.selectedIndex = evtData.detail.index;
-    });
   }
 
   /**
@@ -233,6 +219,21 @@ class MDCSelect extends MDCComponent {
     this.handleBlur_ = () => this.foundation_.handleBlur();
     this.handleClick_ = (evt) => this.foundation_.handleClick(this.getNormalizedXCoordinate_(evt));
     this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt);
+    this.handleMenuSelected_ = (evtData) => this.selectedIndex = evtData.detail.index;
+    this.handleMenuOpened_ = () => {
+      if (this.selectedIndex >= 0) {
+        this.menu_.items[this.selectedIndex].focus();
+      }
+    };
+    this.handleMenuClosed_ = () => {
+      // menuOpened_ is used to track the state of the menu opening or closing since the menu.open function
+      // will return false if the menu is still closing and this method listens to the closed event which
+      // occurs after the menu is already closed.
+      this.menuOpened_ = false;
+      if (document.activeElement !== this.selectedText_) {
+        this.foundation_.handleBlur();
+      }
+    };
 
     const element = this.nativeControl_ ? this.nativeControl_ : this.selectedText_;
 
@@ -241,14 +242,21 @@ class MDCSelect extends MDCComponent {
     element.addEventListener('blur', this.handleBlur_);
     element.addEventListener('keydown', this.handleKeydown_);
 
-    ['mousedown', 'touchstart'].forEach((evtType) => {
+    ['mouseup', 'touchend'].forEach((evtType) => {
       element.addEventListener(evtType, this.handleClick_);
     });
 
-    if (this.menuElement_ && this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)) {
-      // If an element is selected, the select should set the initial selected text.
-      const enhancedAdapterMethods = this.getEnhancedSelectAdapterMethods_();
-      enhancedAdapterMethods.setValue(enhancedAdapterMethods.getValue());
+    if (this.menuElement_) {
+      this.menu_.listen(menuSurfaceConstants.strings.CLOSED_EVENT, this.handleMenuClosed_);
+      // Menu should open to the last selected element.
+      this.menu_.listen(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
+      this.menu_.listen(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
+
+      if (this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)) {
+        // If an element is selected, the select should set the initial selected text.
+        const enhancedAdapterMethods = this.getEnhancedSelectAdapterMethods_();
+        enhancedAdapterMethods.setValue(enhancedAdapterMethods.getValue());
+      }
     }
 
     // Initially sync floating label
@@ -267,9 +275,16 @@ class MDCSelect extends MDCComponent {
     element.removeEventListener('focus', this.handleFocus_);
     element.removeEventListener('blur', this.handleBlur_);
     element.removeEventListener('keydown', this.handleKeydown_);
-    ['mousedown', 'touchstart'].forEach((evtType) => {
+    ['mouseup', 'touchend'].forEach((evtType) => {
       element.removeEventListener(evtType, this.handleClick_);
     });
+
+    if (this.menu_) {
+      this.menu_.unlisten(menuSurfaceConstants.strings.CLOSED_EVENT, this.handleMenuClosed_);
+      this.menu_.unlisten(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
+      this.menu_.unlisten(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
+      this.menu_.destroy();
+    }
 
     if (this.ripple) {
       this.ripple.destroy();
@@ -344,7 +359,7 @@ class MDCSelect extends MDCComponent {
             return listItem.textContent.trim();
           }
         }
-        return '';
+        return this.selectedText_.textContent.trim();
       },
       setValue: (value) => {
         const element = /** @type {HTMLElement} */ (this.menuElement_.querySelector(`[value="${value}"]`));
@@ -423,7 +438,7 @@ class MDCSelect extends MDCComponent {
       deactivateBottomLine: () => this.lineRipple_ && this.lineRipple_.deactivate(),
       notifyChange: (evtData) => {
         evtData.index = this.selectedIndex;
-        this.emit(strings.CHANGE_EVENT, evtData);
+        this.emit(strings.CHANGE_EVENT, evtData, true);
       },
     };
   }

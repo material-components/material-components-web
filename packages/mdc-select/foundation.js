@@ -135,13 +135,11 @@ class MDCSelectFoundation extends MDCFoundation {
    * Handles focus events from select element.
    */
   handleFocus() {
-    if (this.adapter_.isMenuOpen()) return;
     this.adapter_.addClass(cssClasses.FOCUSED);
     this.adapter_.floatLabel(true);
     this.notchOutline(true);
     this.adapter_.addClass('mdc-select--focused');
     this.adapter_.activateBottomLine();
-    this.adapter_.openMenu();
   }
 
   /**
@@ -159,9 +157,7 @@ class MDCSelectFoundation extends MDCFoundation {
     if (this.adapter_.isMenuOpen()) return;
     this.adapter_.setRippleCenter(normalizedX);
 
-    if (this.adapter_.hasClass(cssClasses.FOCUSED)) {
-      this.adapter_.openMenu();
-    }
+    this.adapter_.openMenu();
   }
 
   handleKeydown(event) {
@@ -169,8 +165,10 @@ class MDCSelectFoundation extends MDCFoundation {
 
     const isEnter = event.key === 'Enter' || event.keyCode === 13;
     const isSpace = event.key === 'Space' || event.keyCode === 32;
+    const arrowUp = event.key === 'ArrowUp' || event.keyCode === 38;
+    const arrowDown = event.key === 'ArrowDown' || event.keyCode === 40;
 
-    if (this.adapter_.hasClass(cssClasses.FOCUSED) && (isEnter || isSpace)) {
+    if (this.adapter_.hasClass(cssClasses.FOCUSED) && (isEnter || isSpace || arrowUp || arrowDown)) {
       this.adapter_.openMenu();
       event.preventDefault();
     }

@@ -162,7 +162,7 @@ This will ensure that the label moves out of the way of the select's value and p
 ```
 
 The enhanced select works in a similar way, but uses the `mdc-list-item--selected` class to set the selected item. The
-enhanced select also needs the text from the selected element copied to the `mdc-select__selected-text` element.
+enhanced select also needs the text from the selected element copied to the `mdc-select__selected-text` element. 
 
 ```html
 <div class="mdc-select">
@@ -206,7 +206,7 @@ Add the `mdc-select--disabled` class to the `mdc-select` element, and add the `d
 
 ```html
 <div class="mdc-select mdc-select--disabled">
-    <i class="mdc-select__dropdown-icon"></i>
+  <i class="mdc-select__dropdown-icon"></i>
   <select class="mdc-select__native-control" disabled>
     ...
   </select>
@@ -290,7 +290,7 @@ programmatically select a disabled list item in the enhanced select.
 | `mdc-select--disabled` | Optional. Styles the select as disabled. This class should be applied to the root element when the `disabled` attribute is applied to the `<select>` element. |
 | `mdc-select--outlined` | Optional. Styles the select as outlined select. |
 | `mdc-select__native-control` | Mandatory for the native select. The native `<select>` element. |
-| `mdc-select__selected-text` | Mandatory for the enhanced select. This element should be placed on a `div` within the `mdc-select` element. |
+| `mdc-select__selected-text` | Mandatory for the enhanced select. This class should be placed on a `div` within the `mdc-select` element. |
 
 > Note: To further customize the [MDCMenu](./../mdc-menu) or the [MDCList](./../mdc-list) component contained within the select, please refer to their respective documentation.
 
@@ -353,8 +353,8 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `closeMenu() => void` | Causes the menu element in the enhanced select to close. |
 | `setValue(value: string) => void` | Sets the value of the select or text content of the selected-text element. |
 | `isMenuOpen() => boolean` | Returns true if the menu is currently opened. |
-| `setSelectedIndex(index: number) => void` | Sets the option or list item at the specified index. |
-| `setDisabled(isDisabled: boolean) => void` | Enables or disabled the native or enhanced select. |
+| `setSelectedIndex(index: number) => void` | Selects the option or list item at the specified index. |
+| `setDisabled(isDisabled: boolean) => void` | Enables or disables the native or enhanced select. |
 | `setRippleCenter(normalizedX: number) => void` | Sets the line ripple center to the provided normalizedX value. |
 | `notifyChange({value: string}: Object) => void` | Emits the `MDCSelect:change` event when an element is selected. |
 
