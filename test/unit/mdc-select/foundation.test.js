@@ -61,13 +61,13 @@ function setupTest() {
 test('#setDisabled(true) calls adapter.addClass', () => {
   const {mockAdapter, foundation} = setupTest();
   foundation.setDisabled(true);
-  td.verify(mockAdapter.addClass(MDCSelectFoundation.cssClasses.DISABLED));
+  td.verify(mockAdapter.setDisabled(true));
 });
 
 test('#setDisabled(false) calls adapter.removeClass', () => {
   const {mockAdapter, foundation} = setupTest();
   foundation.setDisabled(false);
-  td.verify(mockAdapter.removeClass(MDCSelectFoundation.cssClasses.DISABLED));
+  td.verify(mockAdapter.setDisabled(false));
 });
 
 test('#notchOutline updates the SVG path of the outline element', () => {
