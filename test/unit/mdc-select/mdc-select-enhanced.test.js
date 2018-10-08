@@ -129,6 +129,7 @@ suite('MDCSelect-Enhanced');
 
 test('attachTo returns a component instance', () => {
   assert.isOk(MDCSelect.attachTo(getFixture()) instanceof MDCSelect);
+  document.body.removeChild(document.querySelector('.mdc-select__menu'));
 });
 
 function setupTest(hasOutline = false, hasLabel = true, hasMockFoundation = false, hasMockMenu = true) {
@@ -265,6 +266,7 @@ test('#initialSyncWithDOM sets the selected index if an option has the selected 
   `;
   const component = new MDCSelect(fixture, /* foundation */ undefined);
   assert.equal(component.selectedIndex, 1);
+  document.body.removeChild(document.querySelector('.mdc-select__menu'));
 });
 
 test('#initialSyncWithDOM disables the select if the disabled class is found', () => {
@@ -288,6 +290,7 @@ test('#initialSyncWithDOM disables the select if the disabled class is found', (
   `;
   const component = new MDCSelect(fixture);
   assert.isTrue(component.disabled);
+  document.body.removeChild(document.querySelector('.mdc-select__menu'));
 });
 
 test('instantiates ripple', function() {
@@ -305,6 +308,7 @@ test('instantiates ripple', function() {
   assert.instanceOf(component.ripple, MDCRipple);
   assert.isTrue(fixture.classList.contains(MDCRippleFoundation.cssClasses.ROOT));
   raf.restore();
+  document.body.removeChild(document.querySelector('.mdc-select__menu'));
 });
 
 test(`#constructor instantiates an outline on the ${cssClasses.OUTLINE_SELECTOR} element if present`, () => {
@@ -312,6 +316,7 @@ test(`#constructor instantiates an outline on the ${cssClasses.OUTLINE_SELECTOR}
   root.appendChild(bel`<div class="mdc-notched-outline"></div>`);
   const component = new MDCSelect(root);
   assert.instanceOf(component.outline_, MDCNotchedOutline);
+  document.body.removeChild(document.querySelector('.mdc-select__menu'));
 });
 
 test('handles ripple focus properly', function() {
@@ -333,6 +338,7 @@ test('handles ripple focus properly', function() {
 
   assert.isTrue(fixture.classList.contains(MDCRippleFoundation.cssClasses.BG_FOCUSED));
   raf.restore();
+  document.body.removeChild(document.querySelector('.mdc-select__menu'));
 });
 
 test('#destroy removes the ripple', function() {
@@ -353,6 +359,7 @@ test('#destroy removes the ripple', function() {
 
   assert.isFalse(fixture.classList.contains(MDCRippleFoundation.cssClasses.ROOT));
   raf.restore();
+  document.body.removeChild(document.querySelector('.mdc-select__menu'));
 });
 
 test('#destroy cleans up the outline if present', () => {
@@ -410,6 +417,7 @@ test('adapter_#floatLabel does not throw error if label does not exist', () => {
   const component = new MDCSelect(fixture);
   assert.doesNotThrow(
     () => component.getDefaultFoundation().adapter_.floatLabel('foo'));
+  document.body.removeChild(document.querySelector('.mdc-select__menu'));
 });
 
 test('adapter#activateBottomLine and adapter.deactivateBottomLine ' +
@@ -436,6 +444,7 @@ test('adapter#activateBottomLine and adapter.deactivateBottomLine ' +
     () => component.getDefaultFoundation().adapter_.activateBottomLine());
   assert.doesNotThrow(
     () => component.getDefaultFoundation().adapter_.deactivateBottomLine());
+  document.body.removeChild(document.querySelector('.mdc-select__menu'));
 });
 
 test('adapter#isRtl returns true when the root element is in an RTL context' +
