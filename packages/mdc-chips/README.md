@@ -239,7 +239,7 @@ CSS Class | Description
 
 ### Sass Mixins
 
-Mixin | Description 
+Mixin | Description
 --- | ---
 `mdc-chip-set-spacing($gap-size)` | Customizes the amount of space between each chip in the set
 `mdc-chip-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to chip with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
