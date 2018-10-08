@@ -181,7 +181,7 @@ test('#get/setSelectedIndex 2x removes previously selected element', () => {
   const hasMockMenu = false;
   const hasOutline = false;
   const hasLabel = true;
-  const {component, menuSurface,} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  const {component, menuSurface} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   assert.equal(component.selectedIndex, -1);
   component.selectedIndex = 1;
   component.selectedIndex = 2;
