@@ -1,6 +1,6 @@
 {
   "name": "@material/slider",
-  "version": "0.40.0",
+  "version": "0.40.1",
   "description": "The Material Components for the web slider component",
   "main": "dist/mdc.slider.js",
   "license": "MIT",
@@ -17,10 +17,10 @@
     "access": "public"
   },
   "dependencies": {
-    "@material/animation": "^0.39.0",
-    "@material/base": "^0.39.0",
-    "@material/rtl": "^0.39.1",
-    "@material/theme": "^0.40.0",
-    "@material/typography": "^0.39.0"
+    "@material/animation": "^0.40.1",
+    "@material/base": "^0.40.1",
+    "@material/rtl": "^0.40.1",
+    "@material/theme": "^0.40.1",
+    "@material/typography": "^0.40.1"
   }
 }
