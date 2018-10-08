@@ -104,13 +104,6 @@ class MDCSelectFoundation extends MDCFoundation {
   setDisabled(isDisabled) {
     this.adapter_.setDisabled(isDisabled);
     this.adapter_.closeMenu();
-
-    const {DISABLED} = MDCSelectFoundation.cssClasses;
-    if (isDisabled) {
-      this.adapter_.addClass(DISABLED);
-    } else {
-      this.adapter_.removeClass(DISABLED);
-    }
   }
 
   layout() {
