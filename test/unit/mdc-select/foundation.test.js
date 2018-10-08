@@ -171,7 +171,7 @@ test('#handleFocus does not call adapter.activateBottomLine() if isMenuOpen=true
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.isMenuOpen()).thenReturn(true);
   foundation.handleFocus();
-  td.verify(mockAdapter.activateBottomLine(), {times: 0});
+  td.verify(mockAdapter.activateBottomLine(), {times: 1});
 });
 
 test('#handleBlur calls foundation.handleChange()', () => {
@@ -208,14 +208,6 @@ test('#handleClick sets the ripple center if isMenuOpen=false', () => {
   td.verify(mockAdapter.setRippleCenter(0), {times: 1});
 });
 
-test('#handleClick does not open the menu if the select is not focused and isMenuOpen=false', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.isMenuOpen()).thenReturn(false);
-  td.when(mockAdapter.hasClass(td.matchers.anything())).thenReturn(false);
-  foundation.handleClick(0);
-  td.verify(mockAdapter.openMenu(), {times: 0});
-});
-
 test('#handleClick opens the menu if the select is focused and isMenuOpen=false', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.isMenuOpen()).thenReturn(false);
@@ -224,7 +216,7 @@ test('#handleClick opens the menu if the select is focused and isMenuOpen=false'
   td.verify(mockAdapter.openMenu(), {times: 1});
 });
 
-test('#handleKeydown calls adapter.openMenu if Enter/Space key is pressed, menu is not open and select is focused',
+test('#handleKeydown calls adapter.openMenu if valid keys is pressed, menu is not open and select is focused',
   () => {
     const {foundation, mockAdapter} = setupTest();
     const preventDefault = td.func();
@@ -235,12 +227,16 @@ test('#handleKeydown calls adapter.openMenu if Enter/Space key is pressed, menu 
     event.key = 'Space';
     foundation.handleKeydown(event);
     event.key = '';
-    event.keyCode = 13;
+    event.keyCode = 13; // Enter
     foundation.handleKeydown(event);
-    event.keyCode = 32;
+    event.keyCode = 32; // Space
     foundation.handleKeydown(event);
-    td.verify(mockAdapter.openMenu(), {times: 4});
-    td.verify(preventDefault(), {times: 4});
+    event.keyCode = 38; // Up
+    foundation.handleKeydown(event);
+    event.keyCode = 40; // Down
+    foundation.handleKeydown(event);
+    td.verify(mockAdapter.openMenu(), {times: 6});
+    td.verify(preventDefault(), {times: 6});
   });
 
 test('#handleKeydown does not call adapter.openMenu if Enter/Space key is pressed, and select is not focused', () => {
@@ -256,6 +252,10 @@ test('#handleKeydown does not call adapter.openMenu if Enter/Space key is presse
   event.keyCode = 13;
   foundation.handleKeydown(event);
   event.keyCode = 32;
+  foundation.handleKeydown(event);
+  event.keyCode = 38; // Up
+  foundation.handleKeydown(event);
+  event.keyCode = 40; // Down
   foundation.handleKeydown(event);
   td.verify(mockAdapter.openMenu(), {times: 0});
   td.verify(preventDefault(), {times: 0});
