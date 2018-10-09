@@ -21,36 +21,52 @@
  * THE SOFTWARE.
  */
 
-'use strict';
+/**
+ * @typedef {{
+ *   shieldState: !ShieldState,
+ *   numScreenshotsTotal: number,
+ *   numScreenshotsFinished: number,
+ *   numChanged: number,
+ *   targetUrl: ?string,
+ * }} StatusNotification
+ */
 
-const glob = require('glob');
-const path = require('path');
+/**
+ * @typedef {{
+ *   event_timestamp: string,
+ *   git_branch: string,
+ *   git_commit_hash: string,
+ *   git_commit_timestamp: string,
+ *   pull_request_number: ?number,
+ *   num_diffs: number,
+ *   num_screenshots_finished: number,
+ *   num_screenshots_total: number,
+ *   state: !ShieldState,
+ *   target_url: string,
+ *   travis_build_id: ?string,
+ *   travis_build_number: ?string,
+ *   travis_job_id: ?string,
+ *   travis_job_number: ?string,
+ * }} DatastoreScreenshotStatus
+ */
 
-const ProcessManager = require('../lib/process-manager');
-const {TEST_DIR_RELATIVE_PATH} = require('../lib/constants');
+/**
+ * @enum {string}
+ */
+module.exports.ThrottleType = {
+  THROTTLED: 1,
+  UNTHROTTLED: 2,
+};
 
-class ProtoCommand {
-  /**
-   * @param {boolean} isWatching
-   * @return {!Promise<number|undefined>} Process exit code. If no exit code is returned, `0` is assumed.
-   */
-  async runAsync(isWatching = false) {
-    const processManager = new ProcessManager();
-    const protoFilePaths = glob.sync(
-      path.join(TEST_DIR_RELATIVE_PATH, '**/*.proto'),
-      {ignore: '**/node_modules/**'},
-    );
-
-    const cmd = 'pbjs';
-    const args = ['--target=static-module', '--wrap=commonjs', '--keep-case'];
-
-    for (const protoFilePath of protoFilePaths) {
-      const jsFilePath = protoFilePath.replace(/.proto$/, '.pb.js');
-      processManager.spawnChildProcessSync(
-        cmd, args.concat(`--out=${jsFilePath}`, protoFilePath), undefined, isWatching
-      );
-    }
-  }
-}
-
-module.exports = ProtoCommand;
+/**
+ * @enum {string}
+ */
+module.exports.ShieldState = {
+  UNKNOWN: 'UNKNOWN',
+  STARTING: 'STARTING',
+  RUNNING: 'RUNNING',
+  PASSED: 'PASSED',
+  FAILED: 'FAILED',
+  ERROR: 'ERROR',
+  META_TERMINAL_STATE: 'META_TERMINAL_STATE',
+};

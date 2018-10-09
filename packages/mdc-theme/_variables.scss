@@ -42,7 +42,7 @@ $mdc-theme-surface: #fff !default;
 $mdc-theme-on-surface: if(mdc-theme-contrast-tone($mdc-theme-surface) == "dark", #000, #fff) !default;
 
 $mdc-theme-error: #b00020 !default;
-$mdc-theme-on-error: #fff !default;
+$mdc-theme-on-error: if(mdc-theme-contrast-tone($mdc-theme-error) == "dark", #000, #fff) !default;
 
 //
 // Text colors according to light vs dark and text type.
