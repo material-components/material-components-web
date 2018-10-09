@@ -96,7 +96,7 @@ module.exports = function(config) {
     browserDisconnectTimeout: 40000,
     browserNoActivityTimeout: 120000,
     captureTimeout: 240000,
-    concurrency: USING_CBT ? 4 : Infinity,
+    concurrency: USING_CBT ? 2 : Infinity,
     customLaunchers: getLaunchers(),
 
     coverageReporter: {
