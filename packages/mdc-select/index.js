@@ -176,6 +176,11 @@ class MDCSelect extends MDCComponent {
       this.outline_ = outlineFactory(outlineElement);
     }
 
+    const leadingIcon = this.root_.classList.contains('mdc-select--with-leading-icon');
+    if (leadingIcon && this.menuElement_) {
+      this.menuElement_.classList.add('mdc-select--with-leading-icon');
+    }
+
     if (!this.root_.classList.contains(cssClasses.OUTLINED)) {
       this.ripple = this.initRipple_();
     }

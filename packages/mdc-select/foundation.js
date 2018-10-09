@@ -174,13 +174,14 @@ class MDCSelectFoundation extends MDCFoundation {
     if (!this.adapter_.hasOutline()) {
       return;
     }
+    const isFocused = this.adapter_.hasClass(cssClasses.FOCUSED);
 
     if (openNotch) {
       const labelScale = numbers.LABEL_SCALE;
       const labelWidth = this.adapter_.getLabelWidth() * labelScale;
       const isRtl = this.adapter_.isRtl();
       this.adapter_.notchOutline(labelWidth, isRtl);
-    } else {
+    } else if (!isFocused) {
       this.adapter_.closeOutline();
     }
   }
