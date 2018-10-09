@@ -177,6 +177,12 @@
   }
 }
 
+.mdc-select--focused {
+  .mdc-select__dropdown-icon {
+    @include mdc-select-dd-arrow-svg-bg_(mdc-theme-prop-value(primary), 1);
+  }
+}
+
 .mdc-select--disabled {
   @include mdc-select-container-fill-color_($mdc-select-box-disabled-fill-color);
 
