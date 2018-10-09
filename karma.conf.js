@@ -26,7 +26,7 @@ const webpackConfig = require('./webpack.config')[0];
 
 // https://github.com/babel/babel-preset-env/issues/112#issuecomment-269761545
 require('babel-polyfill');
-require('@cbt/karma-cbt-launcher');
+require('karma-cbt-launcher');
 
 const USING_TRAVISCI = Boolean(process.env.TRAVIS);
 const USING_CBT = Boolean(process.env.MDC_CBT_USERNAME && process.env.MDC_CBT_AUTHKEY);
@@ -81,7 +81,6 @@ module.exports = function(config) {
     frameworks: ['mocha'],
     plugins: [
       'karma-*',
-      '@cbt/karma-cbt-launcher',
     ],
     files: [
       'test/unit/index.js',
