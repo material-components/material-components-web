@@ -59,8 +59,6 @@
   position: relative;
   box-sizing: border-box;
   height: $mdc-select-height;
-  background-repeat: no-repeat;
-  background-position: right 10px center;
   overflow: hidden;
   will-change: opacity, transform, color;
 
@@ -161,6 +159,12 @@
     bottom: 20px;
     line-height: 1.15rem;
     pointer-events: auto;
+  }
+}
+
+.mdc-select--focused {
+  .mdc-select__dropdown-icon {
+    @include mdc-select-dd-arrow-svg-bg_(mdc-theme-prop-value(primary), 1);
   }
 }
 
