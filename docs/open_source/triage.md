@@ -7,8 +7,8 @@
 
 ### Installation Problems
 
-Some installation problems we can help with. For example, @material SASS paths
-in the SASS compiler is expertise we have, and we can help them with this
+Some installation problems we can help with. For example, @material Sass paths
+in the Sass compiler is expertise we have, and we can help them with this
 question. But it is best if the answer to this question is a link to
 documentation.
 
@@ -30,7 +30,7 @@ bigger Material Design journey.
 They are welcome to build this feature request on top of our code, in another
 repository. Then close!
 
-If it is in spec, mirror the issue into Pivotal, add the "in-tracker" label.
+If it is in spec, add the "icebox" label.
 Tell them we've decided this is in spec, and link to the relevant place in spec.
 
 ### Valid Bug
@@ -40,5 +40,5 @@ reasonable grasp on how to solve it. If we know offhand how to solve it, add
 the solution to the response, along with any relevant code samples. Always
 kindly ask for a PR if the issue is labeled "help wanted".
 
-Otherwise, mirror the issue into Pivotal, add the "in-tracker" label. Thank
-them for filing the bug.
+Otherwise, add the "icebox" label, or if it is an immediate priority, add it to a release milestone instead.
+Thank them for filing the bug.
