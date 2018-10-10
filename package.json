@@ -9,7 +9,6 @@
     "changelog": "standard-changelog -i CHANGELOG.md -k packages/material-components-web/package.json",
     "clean": "del-cli build/** build .closure-tmp/** .closure-tmp",
     "clean:site": "del-cli .site-generator-tmp/** .site-generator-tmp",
-    "commitmsg": "validate-commit-msg",
     "dist": "npm run build && npm run build:min",
     "dev": "npm run clean && cross-env MDC_ENV=development webpack-dev-server --config=demos/webpack.config.js --progress --inline --hot --host 0.0.0.0",
     "fix:js": "eslint --fix packages test webpack.config.js demos/webpack.config.js karma.conf.js",
@@ -83,7 +82,7 @@
     "google-closure-compiler": "^20180805.0.0",
     "handlebars": "^4.0.11",
     "htmllint-cli": "0.0.7",
-    "husky": "^0.14.0",
+    "husky": "^1.1.1",
     "is-online": "^7.0.0",
     "istanbul": "^0.4.4",
     "istanbul-instrumenter-loader": "^3.0.0",
@@ -244,5 +243,10 @@
     "mdc-tab-bar",
     "mdc-textfield",
     "mdc-top-app-bar"
-  ]
+  ],
+  "husky": {
+    "hooks": {
+      "commit-msg": "validate-commit-msg"
+    }
+  }
 }
