@@ -226,6 +226,10 @@ test('#handleKeydown calls adapter.openMenu if valid keys are pressed, menu is n
     foundation.handleKeydown(event);
     event.key = 'Space';
     foundation.handleKeydown(event);
+    event.key = 'ArrowUp';
+    foundation.handleKeydown(event);
+    event.key = 'ArrowDown';
+    foundation.handleKeydown(event);
     event.key = '';
     event.keyCode = 13; // Enter
     foundation.handleKeydown(event);
@@ -235,8 +239,8 @@ test('#handleKeydown calls adapter.openMenu if valid keys are pressed, menu is n
     foundation.handleKeydown(event);
     event.keyCode = 40; // Down
     foundation.handleKeydown(event);
-    td.verify(mockAdapter.openMenu(), {times: 6});
-    td.verify(preventDefault(), {times: 6});
+    td.verify(mockAdapter.openMenu(), {times: 8});
+    td.verify(preventDefault(), {times: 8});
   });
 
 test('#handleKeydown does not call adapter.openMenu if Enter/Space key is pressed, and select is not focused', () => {
@@ -248,10 +252,14 @@ test('#handleKeydown does not call adapter.openMenu if Enter/Space key is presse
   foundation.handleKeydown(event);
   event.key = 'Space';
   foundation.handleKeydown(event);
-  event.key = '';
-  event.keyCode = 13;
+  event.key = 'ArrowUp';
   foundation.handleKeydown(event);
-  event.keyCode = 32;
+  event.key = 'ArrowDown';
+  foundation.handleKeydown(event);
+  event.key = '';
+  event.keyCode = 13; // Enter
+  foundation.handleKeydown(event);
+  event.keyCode = 32; // Space
   foundation.handleKeydown(event);
   event.keyCode = 38; // Up
   foundation.handleKeydown(event);
@@ -269,10 +277,14 @@ test('#handleKeydown does not call adapter.openMenu if menu is opened', () => {
   foundation.handleKeydown(event);
   event.key = 'Space';
   foundation.handleKeydown(event);
-  event.key = '';
-  event.keyCode = 13;
+  event.key = 'ArrowUp';
   foundation.handleKeydown(event);
-  event.keyCode = 32;
+  event.key = 'ArrowDown';
+  foundation.handleKeydown(event);
+  event.key = '';
+  event.keyCode = 13; // Enter
+  foundation.handleKeydown(event);
+  event.keyCode = 32; // Space
   foundation.handleKeydown(event);
   event.keyCode = 38; // Up
   foundation.handleKeydown(event);
