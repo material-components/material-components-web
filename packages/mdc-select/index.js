@@ -240,13 +240,13 @@ class MDCSelect extends MDCComponent {
     element.addEventListener('change', this.handleChange_);
     element.addEventListener('focus', this.handleFocus_);
     element.addEventListener('blur', this.handleBlur_);
-    element.addEventListener('keydown', this.handleKeydown_);
 
     ['mousedown', 'touchstart'].forEach((evtType) => {
       element.addEventListener(evtType, this.handleClick_);
     });
 
     if (this.menuElement_) {
+      this.selectedText_.addEventListener('keydown', this.handleKeydown_);
       this.menu_.listen(menuSurfaceConstants.strings.CLOSED_EVENT, this.handleMenuClosed_);
       // Menu should open to the last selected element.
       this.menu_.listen(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
