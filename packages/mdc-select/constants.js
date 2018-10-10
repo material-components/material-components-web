@@ -34,11 +34,14 @@ const cssClasses = {
 const strings = {
   CHANGE_EVENT: 'MDCSelect:change',
   SELECTED_ITEM_SELECTOR: `.${cssClasses.SELECTED_ITEM_CLASS}`,
+  SELECTED_TEXT_SELECTOR: '.mdc-select__selected-text',
   MENU_SELECTOR: '.mdc-select__menu',
   LINE_RIPPLE_SELECTOR: '.mdc-line-ripple',
   LABEL_SELECTOR: '.mdc-floating-label',
   NATIVE_CONTROL_SELECTOR: '.mdc-select__native-control',
   OUTLINE_SELECTOR: '.mdc-notched-outline',
+  ENHANCED_VALUE_ATTR: 'data-value',
+  ARIA_SELECTED_ATTR: 'aria-selected',
 };
 
 /** @enum {number} */

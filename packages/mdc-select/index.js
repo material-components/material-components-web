@@ -158,7 +158,7 @@ class MDCSelect extends MDCComponent {
     outlineFactory = (el) => new MDCNotchedOutline(el),
     menuFactory = (el) => new MDCMenu(el)) {
     this.nativeControl_ = /** @type {HTMLElement} */ (this.root_.querySelector(strings.NATIVE_CONTROL_SELECTOR));
-    this.selectedText_ = /** @type {HTMLElement} */ (this.root_.querySelector('.mdc-select__selected-text'));
+    this.selectedText_ = /** @type {HTMLElement} */ (this.root_.querySelector(strings.SELECTED_TEXT_SELECTOR));
 
     if (this.selectedText_) {
       this.enhancedSelectSetup_(menuFactory);
@@ -352,13 +352,14 @@ class MDCSelect extends MDCComponent {
     return {
       getValue: () => {
         const listItem = this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR);
-        if (listItem && listItem.hasAttribute('data-value')) {
-          return listItem.getAttribute('data-value');
+        if (listItem && listItem.hasAttribute(strings.ENHANCED_VALUE_ATTR)) {
+          return listItem.getAttribute(strings.ENHANCED_VALUE_ATTR);
         }
         return '';
       },
       setValue: (value) => {
-        const element = /** @type {HTMLElement} */ (this.menuElement_.querySelector(`[data-value="${value}"]`));
+        const element = /** @type {HTMLElement} */
+        (this.menuElement_.querySelector(`[${strings.ENHANCED_VALUE_ATTR}="${value}"]`));
         this.setEnhancedSelectedIndex_(element ? this.menu_.items.indexOf(element) : -1);
       },
       openMenu: () => {
@@ -394,12 +395,12 @@ class MDCSelect extends MDCComponent {
 
     if (previouslySelected) {
       previouslySelected.classList.remove(cssClasses.SELECTED_ITEM_CLASS);
-      previouslySelected.removeAttribute('aria-selected');
+      previouslySelected.removeAttribute(strings.ARIA_SELECTED_ATTR);
     }
 
     if (selectedItem) {
       selectedItem.classList.add(cssClasses.SELECTED_ITEM_CLASS);
-      selectedItem.setAttribute('aria-selected', 'true');
+      selectedItem.setAttribute(strings.ARIA_SELECTED_ATTR, 'true');
     }
 
     this.layout();
