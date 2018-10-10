@@ -48,7 +48,7 @@ npm install @material/typography
 
 ### HTML Structure
 
-We recommend you load Roboto from Google Fonts:
+We recommend using Roboto from Google Fonts:
 
 ```html
 <head>

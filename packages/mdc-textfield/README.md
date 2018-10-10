@@ -198,7 +198,7 @@ Mixin | Description
 
 Mixin | Description
 --- | ---
-`mdc-text-field-corner-radius($radius)` | Customizes the border radius for the text field.
+`mdc-text-field-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to boxed text field variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `mdc-text-field-fill-color($color)` | Customizes the background color of the text field.
 `mdc-text-field-bottom-line-color($color)` | Customizes the text field bottom line color except the outlined and textarea variants.
 `mdc-text-field-hover-bottom-line-color($color)` | Customizes the hover text field bottom line color except the outlined and textarea variants.
@@ -211,13 +211,13 @@ Mixin | Description
 `mdc-text-field-focused-outline-color($color)` | Customizes the outline border color when the text field is focused.
 `mdc-text-field-hover-outline-color($color)` | Customizes the outline border color when the text field is hovered.
 `mdc-text-field-outline-color($color)` | Customizes the border color of the outlined text field.
-`mdc-text-field-outline-corner-radius($radius)` | Sets the border radius of of the outlined text field variant.
+`mdc-text-field-outline-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to outlined text field variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 
 #### Mixins for Textarea
 
 Mixin | Description
 --- | ---
-`mdc-text-field-textarea-corner-radius($radius)` | Customizes the border radius for a `<textarea>` variant.
+`mdc-text-field-textarea-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to text area variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `mdc-text-field-textarea-fill-color($color)` | Customizes the color of the background of the textarea.
 `mdc-text-field-textarea-stroke-color($color)` | Customizes the color of the border of the textarea.
 

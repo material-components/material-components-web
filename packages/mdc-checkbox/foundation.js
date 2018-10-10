@@ -94,6 +94,7 @@ class MDCCheckboxFoundation extends MDCFoundation {
   /** @override */
   destroy() {
     this.uninstallPropertyChangeHooks_();
+    clearTimeout(this.animEndLatchTimer_);
   }
 
   /** @param {boolean} disabled */

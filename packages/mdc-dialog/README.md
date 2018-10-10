@@ -46,17 +46,19 @@ npm install @material/dialog
      aria-labelledby="my-dialog-title"
      aria-describedby="my-dialog-content">
   <div class="mdc-dialog__container">
-    <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
-    <h2 class="mdc-dialog__title" id="my-dialog-title"><!--
-   -->Dialog Title<!--
- --></h2>
-    <section class="mdc-dialog__content" id="my-dialog-content">
-      Dialog body text goes here.
-    </section>
-    <footer class="mdc-dialog__actions">
-      <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">No</button>
-      <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">Yes</button>
-    </footer>
+    <div class="mdc-dialog__surface">
+      <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
+      <h2 class="mdc-dialog__title" id="my-dialog-title"><!--
+     -->Dialog Title<!--
+   --></h2>
+      <div class="mdc-dialog__content" id="my-dialog-content">
+        Dialog body text goes here.
+      </div>
+      <footer class="mdc-dialog__actions">
+        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">No</button>
+        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">Yes</button>
+      </footer>
+    </div>
   </div>
   <div class="mdc-dialog__scrim"></div>
 </div>
@@ -82,9 +84,20 @@ const dialog = new MDCDialog(document.querySelector('.mdc-dialog'));
 
 > See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
 
-> *NOTE*: MDC Dialog makes no assumptions about what will be added to the `mdc-dialog__content` element.
-> Any List, Checkboxes, etc. must also be instantiated.
-> Additionally, call `layout` on any components within the content when `MDCDialog:opened` is emitted.
+MDC Dialog makes no assumptions about what will be added to the `mdc-dialog__content` element. Any List, Checkboxes,
+etc. must also be instantiated. Additionally, call `layout` on any applicable components within the content when
+`MDCDialog:opened` is emitted.
+
+For example, to instantiate an MDC List inside of a Simple or Confirmation Dialog:
+
+```js
+import {MDCList} from '@material/list';
+const list = new MDCList(document.querySelector('.mdc-dialog .mdc-list'));
+
+dialog.listen('MDCDialog:opened', () => {
+  list.layout();
+});
+```
 
 ## Variants
 
@@ -99,25 +112,29 @@ The Simple Dialog contains a list of potential actions. It does not contain butt
      aria-labelledby="my-dialog-title"
      aria-describedby="my-dialog-content">
   <div class="mdc-dialog__container">
-    <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
-    <h2 class="mdc-dialog__title" id="my-dialog-title"><!--
-   -->Choose a Ringtone<!--
- --></h2>
-    <section class="mdc-dialog__content" id="my-dialog-content">
-      <ul class="mdc-list">
-        <li class="mdc-list-item">
-          <span class="mdc-list-item__text">None</span>
-        </li>
-        <li class="mdc-list-item">
-          <span class="mdc-list-item__text">Callisto</span>
-        </li>
-        <!-- ... -->
-      </ul>
-    </section>
+    <div class="mdc-dialog__surface">
+      <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
+      <h2 class="mdc-dialog__title" id="my-dialog-title"><!--
+     -->Choose a Ringtone<!--
+   --></h2>
+      <div class="mdc-dialog__content" id="my-dialog-content">
+        <ul class="mdc-list mdc-list--avatar-list">
+          <li class="mdc-list-item" tabindex="0" data-mdc-dialog-action="none">
+            <span class="mdc-list-item__text">None</span>
+          </li>
+          <li class="mdc-list-item" data-mdc-dialog-action="callisto">
+            <span class="mdc-list-item__text">Callisto</span>
+          </li>
+          <!-- ... -->
+        </ul>
+      </div>
+    </div>
   </div>
   <div class="mdc-dialog__scrim"></div>
 </div>
 ```
+
+> Note the inclusion of the `mdc-list--avatar-list` class, which aligns with the Simple Dialog spec.
 
 ### Confirmation Dialog
 
@@ -131,36 +148,39 @@ radio buttons (indicating single selection) or checkboxes (indicating multiple s
      aria-labelledby="my-dialog-title"
      aria-describedby="my-dialog-content">
   <div class="mdc-dialog__container">
-    <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
-    <h2 class="mdc-dialog__title" id="my-dialog-title"><!--
-   -->Choose a Ringtone<!--
- --></h2>
-    <section class="mdc-dialog__content" id="my-dialog-content">
-      <ul class="mdc-list">
-        <li class="mdc-list-item" tabindex="0">
-          <span class="mdc-list-item__graphic">
-            <div class="mdc-radio">
-              <input class="mdc-radio__native-control"
-                     type="radio"
-                     id="test-dialog-baseline-confirmation-radio-1"
-                     name="test-dialog-baseline-confirmation-radio-group"
-                     checked>
-              <div class="mdc-radio__background">
-                <div class="mdc-radio__outer-circle"></div>
-                <div class="mdc-radio__inner-circle"></div>
+    <div class="mdc-dialog__surface">
+      <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
+      <h2 class="mdc-dialog__title" id="my-dialog-title"><!--
+     -->Choose a Ringtone<!--
+   --></h2>
+      <div class="mdc-dialog__content" id="my-dialog-content">
+        <ul class="mdc-list">
+          <li class="mdc-list-item" tabindex="0">
+            <span class="mdc-list-item__graphic">
+              <div class="mdc-radio">
+                <input class="mdc-radio__native-control"
+                       type="radio"
+                       id="test-dialog-baseline-confirmation-radio-1"
+                       name="test-dialog-baseline-confirmation-radio-group"
+                       checked>
+                <div class="mdc-radio__background">
+                  <div class="mdc-radio__outer-circle"></div>
+                  <div class="mdc-radio__inner-circle"></div>
+                </div>
               </div>
-            </div>
-          </span>
-          <label id="test-dialog-baseline-confirmation-radio-1-label"
-                 for="test-dialog-baseline-confirmation-radio-1">None</label>
-        </li>
-        <!-- ... -->
-      </ul>
-    </section>
-    <footer class="mdc-dialog__actions">
-      <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">Cancel</button>
-      <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept">OK</button>
-    </footer>
+            </span>
+            <label id="test-dialog-baseline-confirmation-radio-1-label"
+                   for="test-dialog-baseline-confirmation-radio-1"
+                   class="mdc-list-item__text">None</label>
+          </li>
+          <!-- ... -->
+        </ul>
+      </div>
+      <footer class="mdc-dialog__actions">
+        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">Cancel</button>
+        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept">OK</button>
+      </footer>
+    </div>
   </div>
   <div class="mdc-dialog__scrim"></div>
 </div>
@@ -213,6 +233,24 @@ This will also be disabled if the `mdc-dialog--stacked` modifier class is applie
 component is instantiated, but note that dialog action button labels are recommended to be short enough to fit on a
 single line if possible.
 
+#### Default Action Button
+
+MDC Dialog supports indicating that one of its action buttons represents the default action, triggered by pressing the
+Enter key. This can be used e.g. for single-choice Confirmation Dialogs to accelerate the process of making a selection,
+avoiding the need to tab through to the appropriate button to confirm the choice.
+
+To indicate that a button represents the default action, add the `mdc-dialog__button--default` modifier class.
+For example:
+
+```html
+...
+<footer class="mdc-dialog__actions">
+  <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">Cancel</button>
+  <button type="button" class="mdc-button mdc-dialog__button mdc-dialog__button--default" data-mdc-dialog-action="accept">OK</button>
+</footer>
+...
+```
+
 #### Actions and Selections
 
 Dialogs which require making a choice via selection controls should initially disable any button which performs an
@@ -248,7 +286,7 @@ Mixin | Description
 `mdc-dialog-title-ink-color($color, $opacity)` | Sets the color of the dialog's title text.
 `mdc-dialog-content-ink-color($color, $opacity)` | Sets the color of the dialog's content text.
 `mdc-dialog-scroll-divider-color($color, $opacity)` | Sets the color of the dividers which display around scrollable content.
-`mdc-dialog-corner-radius($radius)` | Sets the corner radius to the given amount (defaults to 4px on all sides).
+`mdc-dialog-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to dialog surface with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `mdc-dialog-min-width($min-width)` | Sets the minimum width of the dialog (defaults to 280px).
 `mdc-dialog-max-width($max-width, $margin)` | Sets the maximum width of the dialog (defaults to 560px max width and 16px margins).
 `mdc-dialog-max-height($max-height, $margin)` | Sets the maximum height of the dialog (defaults to no max height and 16px margins).
@@ -292,13 +330,13 @@ Method Signature | Description
 `hasClass(className: string) => boolean` | Returns whether the given class exists on the root element.
 `addBodyClass(className: string) => void` | Adds a class to the `<body>`.
 `removeBodyClass(className: string) => void` | Removes a class from the `<body>`.
-`eventTargetHasClass(target: !EventTarget, className: string) => void` | Returns `true` if the target element has the given CSS class, otherwise `false`.
-`computeBoundingRect()`: Forces the component to recalculate its layout; in the vanilla DOM implementation, this calls `computeBoundingClientRect`.
+`eventTargetMatches(target: !EventTarget, selector: string) => void` | Returns `true` if the target element matches the given CSS selector, otherwise `false`.
 `trapFocus() => void` | Sets up the DOM such that keyboard navigation is restricted to focusable elements within the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details).
 `releaseFocus() => void` | Removes any effects of focus trapping on the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details).
 `isContentScrollable() => boolean` | Returns `true` if `mdc-dialog__content` can be scrolled by the user, otherwise `false`.
 `areButtonsStacked() => boolean` | Returns `true` if `mdc-dialog__action` buttons (`mdc-dialog__button`) are stacked vertically, otherwise `false` if they are side-by-side.
 `getActionFromEvent(event: !Event) => ?string` | Retrieves the value of the `data-mdc-dialog-action` attribute from the given event's target, or an ancestor of the target.
+`clickDefaultButton() => void` | Invokes `click()` on the `mdc-dialog__button--default` element, if one exists in the dialog.
 `reverseButtons() => void` | Reverses the order of action buttons in the `mdc-dialog__actions` element. Used when switching between stacked and unstacked button layouts.
 `notifyOpening() => void` | Broadcasts an event denoting that the dialog has just started to open.
 `notifyOpened() => void` | Broadcasts an event denoting that the dialog has finished opening.
@@ -339,7 +377,7 @@ External frameworks and libraries can use the following utility methods from the
 
 Method Signature | Description
 --- | ---
-`createFocusTrapInstance(surfaceEl: !Element, initialFocusEl: ?Element, focusTrapFactory: function(): !FocusTrap) => !FocusTrap` | Creates a properly configured [focus-trap][] instance.
+`createFocusTrapInstance(surfaceEl: !Element, focusTrapFactory: function(): !FocusTrap, initialFocusEl: ?Element) => !FocusTrap` | Creates a properly configured [focus-trap][] instance.
 `isScrollable(el) => boolean` | Determines if the given element is scrollable.
 `areTopsMisaligned(els) => boolean` | Determines if two or more of the given elements have different `offsetTop` values.
 
@@ -375,14 +413,15 @@ a focus trapping solution for your component code.**
 
 ```js
 const {activate, deactivate} =
-  util.createFocusTrapInstance(surfaceEl, initialFocusEl, focusTrapFactory = require('focus-trap'));
+  util.createFocusTrapInstance(surfaceEl, focusTrapFactory, initialFocusEl);
 ```
 
-Given a dialog surface element, an initial element to focus, and an optional `focusTrap` factory
-function, such that:
+Given a dialog surface element an optional `focusTrap` factory function, and an optional initial element to focus,
+such that:
 
 * The focus is trapped within the `surfaceEl`
 * The `initialFocusEl` receives focus when the focus trap is activated
+    - If omitted, defaults to the first focusable element in `surfaceEl`
 * Closing the dialog in any way (including pressing Escape or clicking outside the dialog) deactivates focus trapping
 * Focus is returned to the previously focused element before the focus trap was activated
 

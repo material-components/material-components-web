@@ -45,13 +45,13 @@ class MDCDialogFoundation extends MDCFoundation {
       hasClass: (/* className: string */) => {},
       addBodyClass: (/* className: string */) => {},
       removeBodyClass: (/* className: string */) => {},
-      eventTargetHasClass: (/* target: !EventTarget, className: string */) => {},
-      computeBoundingRect: () => {},
+      eventTargetMatches: (/* target: !EventTarget, selector: string */) => {},
       trapFocus: () => {},
       releaseFocus: () => {},
       isContentScrollable: () => {},
       areButtonsStacked: () => {},
       getActionFromEvent: (/* event: !Event */) => {},
+      clickDefaultButton: () => {},
       reverseButtons: () => {},
       notifyOpening: () => {},
       notifyOpened: () => {},
@@ -68,6 +68,9 @@ class MDCDialogFoundation extends MDCFoundation {
 
     /** @private {boolean} */
     this.isOpen_ = false;
+
+    /** @private {number} */
+    this.animationFrame_ = 0;
 
     /** @private {number} */
     this.animationTimer_ = 0;
@@ -99,6 +102,10 @@ class MDCDialogFoundation extends MDCFoundation {
       this.close(strings.DESTROY_ACTION);
     }
 
+    if (this.animationFrame_) {
+      cancelAnimationFrame(this.animationFrame_);
+    }
+
     if (this.animationTimer_) {
       clearTimeout(this.animationTimer_);
       this.handleAnimationTimerEnd_();
@@ -115,25 +122,30 @@ class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.notifyOpening();
     this.adapter_.addClass(cssClasses.OPENING);
 
-    // Force redraw now that display is no longer "none", to establish basis for animation
-    this.adapter_.computeBoundingRect();
-    this.adapter_.addClass(cssClasses.OPEN);
-    this.adapter_.addBodyClass(cssClasses.SCROLL_LOCK);
+    // Wait a frame once display is no longer "none", to establish basis for animation
+    this.runNextAnimationFrame_(() => {
+      this.adapter_.addClass(cssClasses.OPEN);
+      this.adapter_.addBodyClass(cssClasses.SCROLL_LOCK);
 
-    this.layout();
+      this.layout();
 
-    clearTimeout(this.animationTimer_);
-    this.animationTimer_ = setTimeout(() => {
-      this.handleAnimationTimerEnd_();
-      this.adapter_.trapFocus();
-      this.adapter_.notifyOpened();
-    }, numbers.DIALOG_ANIMATION_OPEN_TIME_MS);
+      this.animationTimer_ = setTimeout(() => {
+        this.handleAnimationTimerEnd_();
+        this.adapter_.trapFocus();
+        this.adapter_.notifyOpened();
+      }, numbers.DIALOG_ANIMATION_OPEN_TIME_MS);
+    });
   }
 
   /**
    * @param {string=} action
    */
   close(action = '') {
+    if (!this.isOpen_) {
+      // Avoid redundant close calls (and events), e.g. from keydown on elements that inherently emit click
+      return;
+    }
+
     this.isOpen_ = false;
     this.adapter_.notifyClosing(action);
     this.adapter_.releaseFocus();
@@ -229,14 +241,20 @@ class MDCDialogFoundation extends MDCFoundation {
    * @param {!Event} evt
    * @private
    */
-  handleClick(evt) {
+  handleInteraction(evt) {
+    const isClick = evt.type === 'click';
+    const isEnter = evt.key === 'Enter' || evt.keyCode === 13;
+
     // Check for scrim click first since it doesn't require querying ancestors
-    if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.SCRIM) && this.scrimClickAction_ !== '') {
+    if (isClick && this.adapter_.eventTargetMatches(evt.target, strings.SCRIM_SELECTOR) &&
+      this.scrimClickAction_ !== '') {
       this.close(this.scrimClickAction_);
-    } else {
+    } else if (isClick || evt.key === 'Space' || evt.keyCode === 32 || isEnter) {
       const action = this.adapter_.getActionFromEvent(evt);
       if (action) {
         this.close(action);
+      } else if (isEnter && !this.adapter_.eventTargetMatches(evt.target, strings.SUPPRESS_DEFAULT_PRESS_SELECTOR)) {
+        this.adapter_.clickDefaultButton();
       }
     }
   }
@@ -256,6 +274,20 @@ class MDCDialogFoundation extends MDCFoundation {
     this.animationTimer_ = 0;
     this.adapter_.removeClass(cssClasses.OPENING);
     this.adapter_.removeClass(cssClasses.CLOSING);
+  }
+
+  /**
+   * Runs the given logic on the next animation frame, using setTimeout to factor in Firefox reflow behavior.
+   * @param {Function} callback
+   * @private
+   */
+  runNextAnimationFrame_(callback) {
+    cancelAnimationFrame(this.animationFrame_);
+    this.animationFrame_ = requestAnimationFrame(() => {
+      this.animationFrame_ = 0;
+      clearTimeout(this.animationTimer_);
+      this.animationTimer_ = setTimeout(callback, 0);
+    });
   }
 }
 

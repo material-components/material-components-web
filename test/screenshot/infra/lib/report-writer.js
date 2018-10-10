@@ -389,7 +389,10 @@ class ReportWriter {
   getFilteredCountMarkup_(numRunnable, numSkipped) {
     const numTotal = numRunnable + numSkipped;
     if (numSkipped > 0) {
-      return new Handlebars.SafeString(`${numRunnable} of ${numTotal} (skipped ${numSkipped})`);
+      const strRunnable = numRunnable.toLocaleString();
+      const strTotal = numTotal.toLocaleString();
+      const strSkipped = numSkipped.toLocaleString();
+      return new Handlebars.SafeString(`${strRunnable} of ${strTotal} (skipped ${strSkipped})`);
     }
     return new Handlebars.SafeString(numRunnable);
   }

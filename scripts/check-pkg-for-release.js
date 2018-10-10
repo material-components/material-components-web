@@ -57,6 +57,7 @@ const CSS_WHITELIST = [
   'dom',
   'rtl',
   'selection-control',
+  'shape',
 ];
 
 // List of packages that are intentionally not included in the MCW package's dependencies

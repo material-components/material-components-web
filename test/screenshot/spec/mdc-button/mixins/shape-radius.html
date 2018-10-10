@@ -19,18 +19,15 @@
   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
-  -->
+-->
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Card Mixins - MDC Web Screenshot Test</title>
+    <title>shape-radius Button Mixin - MDC Web Screenshot Test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../../../out/mdc.button.css">
-    <link rel="stylesheet" href="../../../out/mdc.card.css">
-    <link rel="stylesheet" href="../../../out/mdc.icon-button.css">
-    <link rel="stylesheet" href="../../../out/mdc.typography.css">
     <link rel="stylesheet" href="../../../out/spec/fixture.css">
-    <link rel="stylesheet" href="../../../out/spec/mdc-card/fixture.css">
+    <link rel="stylesheet" href="../../../out/spec/mdc-button/fixture.css">
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118996389-2"></script>
@@ -42,49 +39,42 @@
     </script>
   </head>
 
-  <body class="test-container mdc-typography">
+  <body class="test-container">
     <main class="test-viewport test-viewport--mobile">
-
-      <div class="mdc-card test-card custom-card--fill-color">
-        <div class="test-card__content">
-          Fill Color
+      <div class="test-layout">
+        <div class="test-cell test-cell--button">
+          <button class="custom-button custom-button--shape-radius mdc-button">Button</button>
+        </div>
+        <div class="test-cell test-cell--button">
+          <button class="custom-button custom-button--shape-radius mdc-button" disabled>Disabled</button>
+        </div>
+        <div class="test-cell test-cell--button">
+          <button class="custom-button custom-button--shape-radius mdc-button mdc-button--raised">Button</button>
+        </div>
+        <div class="test-cell test-cell--button">
+          <button class="custom-button custom-button--shape-radius mdc-button mdc-button--raised" disabled>Disabled</button>
+        </div>
+        <div class="test-cell test-cell--button">
+          <button class="custom-button custom-button--shape-radius mdc-button mdc-button--unelevated">Button</button>
+        </div>
+        <div class="test-cell test-cell--button">
+          <button class="custom-button custom-button--shape-radius mdc-button mdc-button--unelevated" disabled>Disabled</button>
+        </div>
+        <div class="test-cell test-cell--button">
+          <button class="custom-button custom-button--shape-radius mdc-button mdc-button--outlined">Button</button>
+        </div>
+        <div class="test-cell test-cell--button">
+          <button class="custom-button custom-button--shape-radius mdc-button mdc-button--outlined" disabled>Disabled</button>
         </div>
       </div>
-
-      <div class="mdc-card mdc-card--outlined test-card custom-card--outline">
-        <div class="test-card__content">
-          Outline
-        </div>
-      </div>
-
-      <div class="mdc-card test-card custom-card--corner-radius">
-        <div class="test-card__content">
-          Corner Radius
-        </div>
-      </div>
-
-      <div class="mdc-card mdc-card--outlined test-card custom-card--corner-radius">
-        <div class="test-card__content">
-          Corner Radius
-        </div>
-      </div>
-
-      <div class="mdc-card test-card custom-card--media-aspect-ratio">
-        <a class="mdc-card__primary-action" href="#" onclick="return false">
-          <div class="mdc-card__media custom-card__media">
-            <div class="test-card__media-content">
-              Aspect Ratio (3:2)
-            </div>
-          </div>
-        </a>
-      </div>
-
     </main>
 
     <!-- Automatically provides/replaces `Promise` if missing or broken. -->
     <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fontfaceobserver/2.0.13/fontfaceobserver.standalone.js"></script>
+    <script src="../../../out/material-components-web.js"></script>
     <script src="../../../out/spec/fixture.js"></script>
+    <script src="../../../out/spec/mdc-button/fixture.js"></script>
   </body>
 </html>

@@ -23,6 +23,11 @@ install:
   # Noisy output, but useful for debugging npm package dependency version issues:
   #- npm ls
 
+after_script:
+  # Prevent Travis job logs from getting truncated early.
+  # See https://github.com/travis-ci/travis-ci/issues/6421#issuecomment-238137337
+  - sleep 5
+
 matrix:
   include:
 
@@ -31,6 +36,12 @@ matrix:
       - TEST_SUITE=lint
     script:
       - if has_testable_files; then npm run lint; else log_untestable_files; fi
+
+  - node_js: 8
+    env:
+      - TEST_SUITE=build
+    script:
+      - if has_testable_files; then npm run build; else log_untestable_files; fi
 
   - node_js: 8
     env:
@@ -64,9 +75,5 @@ matrix:
       # Source the scripts to export their env vars. See https://superuser.com/a/176788/62792
       - source scripts/travis-env-vars.sh
       - source test/screenshot/infra/commands/travis.sh
-    install: # Override global settings
-      - npm install
-      # Noisy output, but useful for debugging npm package dependency version issues:
-      #- npm ls
     script:
-      - npm run screenshot:test
+      - if has_testable_files; then npm run screenshot:test; else log_untestable_files; fi

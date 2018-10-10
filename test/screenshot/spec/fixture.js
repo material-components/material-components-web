@@ -23,6 +23,7 @@
 
 import 'url-search-params-polyfill';
 import bel from 'bel';
+import {ponyfill} from '../../../packages/mdc-dom';
 
 window.mdc = window.mdc || {};
 
@@ -33,12 +34,15 @@ window.mdc = window.mdc || {};
  *   fromSide: string,
  *   toEl: ?Element,
  *   toSide: string,
+ *   orientation: ?string,
  *   specDistancePx: number,
  *   displayOffsetPx: number,
  *   displayAlignment: string,
  *   displayTargetEl: ?Element,
  *   lineEl: ?Element,
  *   labelEl: ?Element,
+ *   flipLabel: ?boolean,
+ *   conditionFn: ?function(): boolean,
  * }} RedlineConfig
  */
 
@@ -81,6 +85,33 @@ class TestFixture {
       this.notifyWebDriver_();
     });
 
+    this.detectRtl_();
+    this.listenForAnimationEvents_();
+    this.listenForResizeEvents_();
+    this.preventEmptyHashLinkNavigation_();
+  }
+
+  listenForAnimationEvents_() {
+    let timer = null;
+
+    const handleAnimationEvent = () => {
+      console.log('Waiting for animations to settle...');
+      document.body.removeAttribute('data-animations-settled');
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        console.log('Animations settled!');
+        document.body.setAttribute('data-animations-settled', '');
+      }, this.fontsLoadedReflowDelayMs_);
+    };
+
+    window.addEventListener('animationstart', handleAnimationEvent);
+    window.addEventListener('transitionstart', handleAnimationEvent);
+    window.addEventListener('animationend', handleAnimationEvent);
+    window.addEventListener('transitionend', handleAnimationEvent);
+    window.addEventListener('load', handleAnimationEvent);
+  }
+
+  listenForResizeEvents_() {
     window.addEventListener('resize', () => {
       this.renderRedlines_();
     });
@@ -90,8 +121,32 @@ class TestFixture {
     });
   }
 
-  /** @param {!RedlineConfig} config */
-  addRedline(config) {
+  preventEmptyHashLinkNavigation_() {
+    document.addEventListener('click', (evt) => {
+      if (ponyfill.closest(evt.target, 'a[href="#"]')) {
+        evt.preventDefault();
+      }
+    });
+  }
+
+  notifyDomReady() {
+    setTimeout(() => {
+      console.log('DOM ready!');
+      document.body.setAttribute('data-dom-ready', '');
+    });
+  }
+
+  /** @param {!Array<!RedlineConfig>} configs */
+  addRedlines(configs) {
+    configs.forEach((config) => this.addRedline(config, /* renderNow */ false));
+    this.renderRedlines_();
+  }
+
+  /**
+   * @param {!RedlineConfig} config
+   * @param {boolean=} renderNow
+   */
+  addRedline(config, renderNow = true) {
     const {fromEl, toEl, name} = config;
     if (!fromEl || !toEl) {
       return;
@@ -108,14 +163,22 @@ class TestFixture {
 
     this.redlineContainerEl_.appendChild(lineEl);
 
-    this.redlineConfigs_.push(Object.assign({
+    /** @type {!RedlineConfig} */
+    const mergedConfig = Object.assign({
       lineEl,
       labelEl,
       displayOffsetPx: 0,
       displayAlignment: 'center',
-    }, config));
+      flipLabel: false,
+    }, config);
 
-    this.renderRedlines_();
+    mergedConfig.orientation = this.getOrientation_(mergedConfig);
+
+    this.redlineConfigs_.push(mergedConfig);
+
+    if (renderNow) {
+      this.renderRedlines_();
+    }
   }
 
   removeRedlines() {
@@ -131,21 +194,25 @@ class TestFixture {
       }
 
       this.redlineConfigs_.forEach((config) => {
-        const {lineEl, fromSide} = config;
-        lineEl.classList.remove(
-          'test-redline--vertical',
-          'test-redline--horizontal',
-          'test-redline--pass',
-          'test-redline--warn',
-          'test-redline--small',
-        );
-        if (fromSide === 'top' || fromSide === 'bottom' ||
-            fromSide === 'first-baseline' || fromSide === 'last-baseline') {
+        const {lineEl, orientation, flipLabel, conditionFn} = config;
+
+        // Remove all modifier classes
+        lineEl.className = 'test-redline';
+
+        if (conditionFn && !conditionFn()) {
+          lineEl.classList.add('test-redline--hidden');
+        }
+
+        if (flipLabel) {
+          lineEl.classList.add('test-redline--flipped');
+        }
+
+        if (orientation === 'vertical') {
           this.drawVerticalRedline_(config);
-        } else if (fromSide === 'left' || fromSide === 'right') {
+        } else if (orientation === 'horizontal') {
           this.drawHorizontalRedline_(config);
         } else {
-          throw new Error(`Unsupported \`fromSide\` value: "${fromSide}"`);
+          throw new Error(`Unsupported 'orientation' value: "${orientation}"`);
         }
       });
     });
@@ -156,7 +223,9 @@ class TestFixture {
    * @private
    */
   drawVerticalRedline_(config) {
-    const {lineEl, labelEl, fromEl, fromSide, toEl, toSide, specDistancePx, displayOffsetPx, displayAlignment} = config;
+    const {lineEl, labelEl, fromEl, toEl, fromSide, toSide} = config;
+    const {specDistancePx, displayOffsetPx, displayAlignment} = config;
+
     lineEl.classList.add('test-redline--vertical');
 
     const fromRect = fromEl.getBoundingClientRect();
@@ -191,7 +260,7 @@ class TestFixture {
       labelEl.innerHTML = `${actualDistancePx}px`;
       lineEl.classList.add('test-redline--pass');
     } else if (Math.abs(actualDistancePx - specDistancePx) <= 1) {
-      labelEl.innerHTML = `Spec: ${specDistancePx}px<br>Actual: ${actualDistancePx}px`;
+      labelEl.innerHTML = `${actualDistancePx}px`;
       lineEl.classList.add('test-redline--warn');
     } else {
       labelEl.innerHTML = `Spec: ${specDistancePx}px<br>Actual: ${actualDistancePx}px`;
@@ -252,7 +321,7 @@ class TestFixture {
       labelEl.innerHTML = `${actualDistancePx}px`;
       lineEl.classList.add('test-redline--pass');
     } else if (Math.abs(actualDistancePx - specDistancePx) <= 1) {
-      labelEl.innerHTML = `Spec: ${specDistancePx}px<br>Actual: ${actualDistancePx}px`;
+      labelEl.innerHTML = `${actualDistancePx}px`;
       lineEl.classList.add('test-redline--warn');
     } else {
       labelEl.innerHTML = `Spec: ${specDistancePx}px<br>Actual: ${actualDistancePx}px`;
@@ -276,6 +345,7 @@ class TestFixture {
     const borderTopWidth = parseInt(getComputedStyle(el).borderTopWidth, 10);
     const borderLeftWidth = parseInt(getComputedStyle(el).borderLeftWidth, 10);
     const borderRightWidth = parseInt(getComputedStyle(el).borderRightWidth, 10);
+    const scrollbarWidth = this.getScrollbarWidth_(el);
 
     if (side === 'top') {
       return rect.top + borderTopWidth;
@@ -284,10 +354,10 @@ class TestFixture {
       return rect.bottom - borderBottomWidth;
     }
     if (side === 'left') {
-      return rect.left + borderLeftWidth;
+      return rect.left + borderLeftWidth - (this.isRtl_() ? scrollbarWidth : 0);
     }
     if (side === 'right') {
-      return rect.right - borderRightWidth;
+      return rect.right - borderRightWidth + (this.isRtl_() ? 0 : scrollbarWidth);
     }
 
     if (side === 'first-baseline' || side === 'last-baseline') {
@@ -306,6 +376,38 @@ class TestFixture {
     }
 
     throw new Error(`Unsupported \`side\` value: "${side}"`);
+  }
+
+  /**
+   * @param {!Element} el
+   * @private
+   */
+  getScrollbarWidth_(el) {
+    while (el) {
+      const scrollbarWidth = el.offsetWidth - el.clientWidth;
+      if (scrollbarWidth > 0) {
+        return scrollbarWidth;
+      }
+      el = el.parentElement;
+    }
+    return 0;
+  }
+
+  /**
+   * @param {!RedlineConfig} config
+   * @return {string}
+   * @private
+   */
+  getOrientation_(config) {
+    const {fromSide} = config;
+    if (fromSide === 'top' || fromSide === 'bottom' ||
+      fromSide === 'first-baseline' || fromSide === 'last-baseline') {
+      return 'vertical';
+    } else if (fromSide === 'left' || fromSide === 'right') {
+      return 'horizontal';
+    } else {
+      throw new Error(`Unsupported 'fromSide' value: "${fromSide}"`);
+    }
   }
 
   /**
@@ -416,6 +518,21 @@ remove the 'test-viewport--mobile' class from the '<main class="test-viewport">'
     const qs = new URLSearchParams(window.location.search);
     const val = parseInt(qs.get(name), 10);
     return isFinite(val) ? val : defaultValue;
+  }
+
+  detectRtl_() {
+    if (this.isRtl_()) {
+      document.documentElement.setAttribute('dir', 'rtl');
+    }
+  }
+
+  /**
+   * @return {boolean}
+   * @private
+   */
+  isRtl_() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('dir') === 'rtl';
   }
 }
 

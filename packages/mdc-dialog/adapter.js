@@ -60,13 +60,10 @@ class MDCDialogAdapter {
 
   /**
    * @param {!EventTarget} target
-   * @param {string} className
+   * @param {string} selector
    * @return {boolean}
    */
-  eventTargetHasClass(target, className) {}
-
-  /** @return {!ClientRect} */
-  computeBoundingRect() {}
+  eventTargetMatches(target, selector) {}
 
   trapFocus() {}
   releaseFocus() {}
@@ -83,6 +80,7 @@ class MDCDialogAdapter {
    */
   getActionFromEvent(event) {}
 
+  clickDefaultButton() {}
   reverseButtons() {}
 
   notifyOpening() {}
