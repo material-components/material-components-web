@@ -29,6 +29,8 @@ const cssClasses = {
   FOCUSED: 'mdc-select--focused',
   SELECTED_ITEM_CLASS: 'mdc-list-item--selected',
   WITH_LEADING_ICON: 'mdc-select--with-leading-icon',
+  INVALID: 'mdc-select--invalid',
+  REQUIRED: 'mdc-select--required',
 };
 
 /** @enum {string} */

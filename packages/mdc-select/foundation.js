@@ -76,6 +76,7 @@ class MDCSelectFoundation extends MDCFoundation {
       setDisabled: () => {},
       setRippleCenter: () => {},
       notifyChange: () => {},
+      checkValidity: () => {},
     });
   }
 
@@ -171,6 +172,13 @@ class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.removeClass(cssClasses.FOCUSED);
     this.handleChange(false);
     this.adapter_.deactivateBottomLine();
+
+    const isRequired = this.adapter_.hasClass(cssClasses.REQUIRED);
+
+    if (isRequired) {
+      this.setValid(this.checkValidity());
+    }
+
     if (this.helperText_) {
       // Will handle validity checking in a followup PR.
       this.helperText_.setValidity(true /* isValid */);
@@ -236,6 +244,18 @@ class MDCSelectFoundation extends MDCFoundation {
     if (this.leadingIcon_) {
       this.leadingIcon_.setContent(content);
     }
+  }
+
+  setValid(isValid) {
+    if (isValid) {
+      this.adapter_.removeClass(cssClasses.INVALID);
+    } else {
+      this.adapter_.addClass(cssClasses.INVALID);
+    }
+  }
+
+  checkValidity() {
+    return this.adapter_.checkValidity();
   }
 }
 

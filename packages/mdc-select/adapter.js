@@ -172,6 +172,12 @@ class MDCSelectAdapter {
  *   }} evtData
    */
   notifyChange(evtData) {}
+
+  /**
+   * Checks if the select is currently valid.
+   * @return {boolean} isValid
+   */
+  checkValidity() {}
 }
 
 export {MDCSelectAdapter, FoundationMapType};

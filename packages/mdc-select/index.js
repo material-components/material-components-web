@@ -40,6 +40,8 @@ import {MDCSelectHelperText, MDCSelectHelperTextFoundation} from './helper-text/
 import * as menuSurfaceConstants from '@material/menu-surface/constants';
 import * as menuConstants from '@material/menu/constants';
 
+const VALIDATION_ATTR_WHITELIST = ['required'];
+
 /**
  * @extends MDCComponent<!MDCSelectFoundation>
  */
@@ -87,6 +89,8 @@ class MDCSelect extends MDCComponent {
     this.handleMenuSelected_;
     /** @private {boolean} */
     this.menuOpened_ = false;
+    /** @private {!MutationObserver} */
+    this.validationObserver_;
   }
 
   /**
@@ -201,6 +205,11 @@ class MDCSelect extends MDCComponent {
     if (this.selectedText_) {
       this.enhancedSelectSetup_(menuFactory);
     }
+
+    if (this.nativeControl_) {
+      this.addMutationObserverForInvalid();
+    }
+
     const labelElement = this.root_.querySelector(strings.LABEL_SELECTOR);
     if (labelElement) {
       this.label_ = labelFactory(labelElement);
@@ -354,6 +363,9 @@ class MDCSelect extends MDCComponent {
     if (this.helperText_) {
       this.helperText_.destroy();
     }
+    if (this.validationObserver_) {
+      this.validationObserver_.disconnect();
+    }
 
     super.destroy();
   }
@@ -396,6 +408,7 @@ class MDCSelect extends MDCComponent {
         this.nativeControl_.selectedIndex = index;
       },
       setDisabled: (isDisabled) => this.nativeControl_.disabled = isDisabled,
+      checkValidity: () => this.nativeControl_.checkValidity(),
     };
   }
 
@@ -562,6 +575,44 @@ class MDCSelect extends MDCComponent {
       leadingIcon: this.leadingIcon_ ? this.leadingIcon_.foundation : undefined,
       helperText: this.helperText_ ? this.helperText_.foundation : undefined,
     };
+  }
+
+
+  addMutationObserverForInvalid() {
+    const observerHandler = (attributesList) => {
+      attributesList.some((attributeName) => {
+        if (VALIDATION_ATTR_WHITELIST.indexOf(attributeName) > -1) {
+          this.setRequired(true);
+          return true;
+        }
+      });
+    };
+
+    const getAttributesList = (mutationsList) => mutationsList.map((mutation) => mutation.attributeName);
+    const observer = new MutationObserver((mutationsList) => observerHandler(getAttributesList(mutationsList)));
+    observer.observe(this.nativeControl_, {attributes: true});
+
+    this.validationObserver_ = observer;
+
+    if (this.nativeControl_.required || this.root_.classList.contains(cssClasses.REQUIRED)) {
+      this.nativeControl_.required = true;
+    }
+  };
+
+  setValid(isValid) {
+    this.foundation_.setValid(isValid);
+  }
+
+  checkValidity() {
+    this.foundation_.checkValidity();
+  }
+
+  setRequired(isRequired) {
+    if (isRequired) {
+      this.root_.classList.add(cssClasses.REQUIRED);
+    } else {
+      this.root_.classList.remove(cssClasses.REQUIRED);
+    }
   }
 }
 
