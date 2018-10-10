@@ -242,7 +242,7 @@ class MDCSelect extends MDCComponent {
     element.addEventListener('blur', this.handleBlur_);
     element.addEventListener('keydown', this.handleKeydown_);
 
-    ['mouseup', 'touchend'].forEach((evtType) => {
+    ['mousedown', 'touchstart'].forEach((evtType) => {
       element.addEventListener(evtType, this.handleClick_);
     });
 
@@ -275,7 +275,7 @@ class MDCSelect extends MDCComponent {
     element.removeEventListener('focus', this.handleFocus_);
     element.removeEventListener('blur', this.handleBlur_);
     element.removeEventListener('keydown', this.handleKeydown_);
-    ['mouseup', 'touchend'].forEach((evtType) => {
+    ['mousedown', 'touchstart'].forEach((evtType) => {
       element.removeEventListener(evtType, this.handleClick_);
     });
 
@@ -353,21 +353,17 @@ class MDCSelect extends MDCComponent {
       getValue: () => {
         const listItem = this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR);
         if (listItem) {
-          if (listItem.hasAttribute('value')) {
-            return listItem.getAttribute('value');
+          if (listItem.hasAttribute('data-value')) {
+            return listItem.getAttribute('data-value');
           } else {
             return listItem.textContent.trim();
           }
         }
-        return this.selectedText_.textContent.trim();
+        return '';
       },
       setValue: (value) => {
-        const element = /** @type {HTMLElement} */ (this.menuElement_.querySelector(`[value="${value}"]`));
-        if (element) {
-          this.setEnhancedSelectedIndex_(this.menu_.items.indexOf(element));
-        } else {
-          this.selectedText_.textContent = value;
-        }
+        const element = /** @type {HTMLElement} */ (this.menuElement_.querySelector(`[data-value="${value}"]`));
+        this.setEnhancedSelectedIndex_(this.menu_.items.indexOf(element));
       },
       openMenu: () => {
         if (this.menu_ && !this.menu_.open) {
@@ -386,7 +382,6 @@ class MDCSelect extends MDCComponent {
       },
       setDisabled: (isDisabled) => {
         this.selectedText_.setAttribute('tabindex', isDisabled ? '-1' : '0');
-        isDisabled ? this.root_.classList.add(cssClasses.DISABLED) : this.root_.classList.remove(cssClasses.DISABLED);
       },
     };
   }
@@ -438,7 +433,7 @@ class MDCSelect extends MDCComponent {
       deactivateBottomLine: () => this.lineRipple_ && this.lineRipple_.deactivate(),
       notifyChange: (evtData) => {
         evtData.index = this.selectedIndex;
-        this.emit(strings.CHANGE_EVENT, evtData, true);
+        this.emit(strings.CHANGE_EVENT, evtData, true /* shouldBubble  */);
       },
     };
   }

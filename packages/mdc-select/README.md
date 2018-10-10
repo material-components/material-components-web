@@ -59,7 +59,8 @@ npm install @material/select
 </div>
 ```
 
-The enhanced select uses an MDCMenu component to contain the list of options
+The enhanced select uses an MDCMenu component to contain the list of options, but uses the `data-value` attribute
+instead of `value`. 
 
 ```html
 <div class="mdc-select">
@@ -67,14 +68,14 @@ The enhanced select uses an MDCMenu component to contain the list of options
   <div class="mdc-select__selected-text" role="combobox"></div>
   <div class="mdc-select__menu mdc-menu mdc-menu-surface" role="listbox">
     <ul class="mdc-list">
-      <li class="mdc-list-item mdc-list-item--selected" value="" aria-selected="true"></option>
-      <li class="mdc-list" value="grains">
+      <li class="mdc-list-item mdc-list-item--selected" data-value="" aria-selected="true"></option>
+      <li class="mdc-list" data-value="grains">
         Bread, Cereal, Rice, and Pasta
       </li>
-      <li class="mdc-list" value="vegetables">
+      <li class="mdc-list" data-value="vegetables">
         Vegetables
       </li>
-      <li class="mdc-list" value="fruit">
+      <li class="mdc-list" data-value="fruit">
         Fruit
       </li>
     </ul> 
@@ -83,6 +84,8 @@ The enhanced select uses an MDCMenu component to contain the list of options
   <div class="mdc-line-ripple"></div>
 </div>
 ```
+
+>NOTE: The `data-value` attribute is required for the enhanced select.
 
 ### Styles
 
@@ -173,14 +176,14 @@ setting the width of the `mdc-select__menu` element to match. This is best done 
   <div class="mdc-select__selected-text" role="combobox">Vegetables</div>
   <div class="mdc-select__menu demo-width-class mdc-menu mdc-menu-surface" role="listbox">
     <ul class="mdc-list">
-      <li class="mdc-list-item" value=""></option>
-      <li class="mdc-list" value="grains">
+      <li class="mdc-list-item" data-value=""></option>
+      <li class="mdc-list" data-value="grains">
         Bread, Cereal, Rice, and Pasta
       </li>
-      <li class="mdc-list mdc-list-item--selected" value="vegetables" aria-selected="true">
+      <li class="mdc-list mdc-list-item--selected" data-value="vegetables" aria-selected="true">
         Vegetables
       </li>
-      <li class="mdc-list" value="fruit">
+      <li class="mdc-list" data-value="fruit">
         Fruit
       </li>
     </ul> 
@@ -264,14 +267,14 @@ programmatically select a disabled list item in the enhanced select.
   <div class="mdc-select__selected-text" role="combobox">Vegetables</div>
   <div class="mdc-select__menu mdc-menu mdc-menu-surface" role="listbox">
     <ul class="mdc-list">
-      <li class="mdc-list-item" value=""></option>
-      <li class="mdc-list" value="grains">
+      <li class="mdc-list-item" data-value=""></option>
+      <li class="mdc-list" data-value="grains">
         Bread, Cereal, Rice, and Pasta
       </li>
-      <li class="mdc-list mdc-list-item--selected mdc-list-item--disabled" value="vegetables" aria-selected="true" aria-disabled="true">
+      <li class="mdc-list mdc-list-item--selected mdc-list-item--disabled" data-value="vegetables" aria-selected="true" aria-disabled="true">
         Vegetables
       </li>
-      <li class="mdc-list" value="fruit">
+      <li class="mdc-list" data-value="fruit">
         Fruit
       </li>
     </ul> 
@@ -324,7 +327,7 @@ The `MDCSelect` component API is modeled after a subset of the `HTMLSelectElemen
 
 | Property | Type | Description |
 | --- | --- | --- |
-| `value` | `string` | The `value` of the currently selected option. |
+| `value` | `string` | The `value`/`data-value` of the currently selected option. |
 | `selectedIndex` | `number` | The index of the currently selected option. Set to -1 if no option is currently selected. Changing this property will update the select element. |
 | `disabled` | `boolean` | Whether or not the component is disabled. Settings this sets the disabled state on the component. |
 
@@ -345,7 +348,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `hasClass(className: string) => boolean` | Returns true if the root element has the className in its classList. |
 | `activateBottomLine() => void` | Activates the bottom line component. |
 | `deactivateBottomLine() => void` | Deactivates the bottom line component. |
-| `getValue() => string` | Returns the value selected on the `select` element. |
+| `getValue() => string` | Returns the value selected `option` on the `select` element and the `data-value` of the selected list item on the enhanced select. |
 | `isRtl() => boolean` | Returns true if a parent of the root element is in RTL. |
 | `floatLabel(value: boolean) => void` | Floats or defloats label. |
 | `getLabelWidth() => number` | Returns the offsetWidth of the label element. |
