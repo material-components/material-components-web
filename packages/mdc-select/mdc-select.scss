@@ -228,5 +228,5 @@
 
 .mdc-select__menu .mdc-list .mdc-list-item--selected {
   @include mdc-theme-prop(color, on-surface);
-  @include mdc-states;
+  @include mdc-states(on-surface);
 }

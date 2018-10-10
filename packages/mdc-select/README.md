@@ -60,13 +60,15 @@ npm install @material/select
 ```
 
 The enhanced select uses an MDCMenu component to contain the list of options, but uses the `data-value` attribute
-instead of `value`. 
+instead of `value`. The enhanced select requires that you set the `width` of the root element (containing the
+`mdc-select`) element as well as setting the width of the `mdc-select__menu` element to match. This is best done
+through the use of another class (ex. `demo-width-class`).
 
 ```html
-<div class="mdc-select">
+<div class="mdc-select demo-width-class">
   <i class="mdc-select__dropdown-icon"></i>
   <div class="mdc-select__selected-text" role="combobox"></div>
-  <div class="mdc-select__menu mdc-menu mdc-menu-surface" role="listbox">
+  <div class="mdc-select__menu mdc-menu mdc-menu-surface demo-width-class" role="listbox">
     <ul class="mdc-list">
       <li class="mdc-list-item mdc-list-item--selected" data-value="" aria-selected="true"></option>
       <li class="mdc-list" data-value="grains">
@@ -102,6 +104,11 @@ When using the enhanced select, you will also require the menu components.
 @import "@material/menu-surface/mdc-menu-surface";
 @import "@material/menu/mdc-menu";
 @import "@material/select/mdc-select";
+
+.demo-width-class {
+  width: 400px;
+}
+
 ```
 
 ### JavaScript Instantiation
@@ -358,7 +365,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `openMenu() => void` | Causes the menu element in the enhanced select to open. |
 | `closeMenu() => void` | Causes the menu element in the enhanced select to close. |
 | `setValue(value: string) => void` | Sets the value of the select or text content of the selected-text element. |
-| `isMenuOpen() => boolean` | Returns true if the menu is currently opened. |
+| `isMenuOpen() => boolean` | Returns true if the menu is currently opened in the enhanced select. |
 | `setSelectedIndex(index: number) => void` | Selects the option or list item at the specified index. |
 | `setDisabled(isDisabled: boolean) => void` | Enables or disables the native or enhanced select. |
 | `setRippleCenter(normalizedX: number) => void` | Sets the line ripple center to the provided normalizedX value. |
