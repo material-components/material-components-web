@@ -352,12 +352,8 @@ class MDCSelect extends MDCComponent {
     return {
       getValue: () => {
         const listItem = this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR);
-        if (listItem) {
-          if (listItem.hasAttribute('data-value')) {
-            return listItem.getAttribute('data-value');
-          } else {
-            return listItem.textContent.trim();
-          }
+        if (listItem && listItem.hasAttribute('data-value')) {
+          return listItem.getAttribute('data-value');
         }
         return '';
       },
