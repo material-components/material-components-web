@@ -24,7 +24,7 @@
 @import "../../../../packages/mdc-theme/color-palette";
 @import "../mixins";
 
-$custom-elevation-color: $material-color-red-300;
+$custom-elevation-color: $material-color-red-300 !default;
 
 .test-cell--elevation {
   @include test-cell-size(111, 131);

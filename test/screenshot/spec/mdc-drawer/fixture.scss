@@ -28,7 +28,7 @@
 @import "../../../../packages/mdc-list/mixins";
 @import "../../../../packages/mdc-theme/color-palette";
 
-$custom-drawer-color: $material-color-orange-900;
+$custom-drawer-color: $material-color-orange-900 !default;
 
 .test-viewport--drawer {
   display: flex;

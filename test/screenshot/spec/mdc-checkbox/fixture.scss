@@ -24,7 +24,7 @@
 @import "../../../../packages/mdc-theme/color-palette";
 @import "../mixins";
 
-$custom-checkbox-color: $material-color-red-300;
+$custom-checkbox-color: $material-color-red-300 !default;
 
 .test-cell--checkbox {
   @include test-cell-size(91);

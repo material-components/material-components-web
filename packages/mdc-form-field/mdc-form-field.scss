@@ -24,7 +24,7 @@
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
 
-$mdc-form-field-item-spacing: 4px;
+$mdc-form-field-item-spacing: 4px !default;
 
 // stylelint-disable selector-max-type
 .mdc-form-field {

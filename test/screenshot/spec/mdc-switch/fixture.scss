@@ -24,7 +24,7 @@
 @import "../../../../packages/mdc-theme/color-palette";
 @import "../mixins";
 
-$custom-switch-color: $material-color-red-500;
+$custom-switch-color: $material-color-red-500 !default;
 
 .test-cell--switch {
   @include test-cell-size(101);

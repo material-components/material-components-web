@@ -24,7 +24,7 @@
 @import "../../../../packages/mdc-theme/color-palette";
 @import "../mixins";
 
-$custom-card-color: $material-color-red-300;
+$custom-card-color: $material-color-red-300 !default;
 
 .test-cell--card-without-media {
   @include test-cell-size(341, 111);

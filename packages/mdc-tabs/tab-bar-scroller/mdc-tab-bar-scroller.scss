@@ -24,7 +24,7 @@
 @import "@material/theme/mixins";
 @import "@material/rtl/mixins";
 
-$mdc-tab-bar-scroller-indicator-width: 48px;
+$mdc-tab-bar-scroller-indicator-width: 48px !default;
 
 // postcss-bem-linter: define tab-bar-scroller
 

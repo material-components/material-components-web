@@ -24,8 +24,8 @@
 @import "../../../../packages/mdc-theme/color-palette";
 @import "../mixins";
 
-$custom-chip-fill-color: $material-color-red-500;
-$custom-chip-ink-color: $material-color-blue-500;
+$custom-chip-fill-color: $material-color-red-500 !default;
+$custom-chip-ink-color: $material-color-blue-500 !default;
 
 .test-cell--chip {
   @include test-cell-size(321, 111);

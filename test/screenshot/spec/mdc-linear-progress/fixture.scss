@@ -24,7 +24,7 @@
 @import "../../../../packages/mdc-theme/color-palette";
 @import "../mixins";
 
-$custom-linear-progress-color: $material-color-red-300;
+$custom-linear-progress-color: $material-color-red-300 !default;
 
 .test-cell--linear-progress {
   @include test-cell-size(341, 61);

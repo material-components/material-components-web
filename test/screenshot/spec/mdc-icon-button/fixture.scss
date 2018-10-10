@@ -25,8 +25,8 @@
 @import "../../../../packages/mdc-theme/mdc-theme";
 @import "../mixins";
 
-$custom-icon-button-icon-ink-color: $material-color-red-500;
-$custom-icon-button-size: 36px;
+$custom-icon-button-icon-ink-color: $material-color-red-500 !default;
+$custom-icon-button-size: 36px !default;
 
 .test-cell--icon-button {
   @include test-cell-size(91);

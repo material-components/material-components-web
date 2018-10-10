@@ -24,7 +24,7 @@
 @import "../../../../packages/mdc-theme/color-palette";
 @import "../mixins";
 
-$custom-radio-color: $material-color-red-300;
+$custom-radio-color: $material-color-red-300 !default;
 
 .test-cell--radio {
   @include test-cell-size(71, 91);

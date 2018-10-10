@@ -100,9 +100,6 @@
   }
 }
 
-$mdc-fab-icon-enter-delay_: 90ms;
-$mdc-fab-icon-enter-duration_: 180ms;
-
 @mixin mdc-fab-base_ {
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;

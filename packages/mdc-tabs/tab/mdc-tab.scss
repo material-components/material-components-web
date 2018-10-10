@@ -27,8 +27,8 @@
 @import "./mixins";
 @import "../mixins";
 
-$mdc-tab-with-text-height: 48px;
-$mdc-tab-with-icon-and-text-height: 72px;
+$mdc-tab-with-text-height: 48px !default;
+$mdc-tab-with-icon-and-text-height: 72px !default;
 
 @mixin mdc-tabs-icon-tab-content {
   display: block;

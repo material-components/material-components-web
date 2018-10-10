@@ -328,3 +328,4 @@ rules:
   scss/at-else-empty-line-before: never
   scss/at-if-closing-brace-newline-after: always-last-in-chain
   scss/at-if-closing-brace-space-after: always-intermediate
+  scss/dollar-variable-default: [true, {"ignore": "local"}]

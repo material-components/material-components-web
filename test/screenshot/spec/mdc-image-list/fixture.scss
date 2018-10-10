@@ -22,7 +22,7 @@
 
 @import "../../../../packages/mdc-image-list/mixins";
 
-$custom-image-list-shape-radius: 8px;
+$custom-image-list-shape-radius: 8px !default;
 
 .test-image-list--standard {
   @include mdc-image-list-standard-columns(3);

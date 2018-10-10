@@ -24,10 +24,10 @@
 @import "../../../../packages/mdc-theme/color-palette";
 @import "../mixins";
 
-$custom-button-color: $material-color-red-300;
-$custom-button-custom-shape-radius: 50%;
-$custom-button-custom-outline-width: 4px;
-$custom-button-custom-horizontal-padding: 24px;
+$custom-button-color: $material-color-red-300 !default;
+$custom-button-custom-shape-radius: 50% !default;
+$custom-button-custom-outline-width: 4px !default;
+$custom-button-custom-horizontal-padding: 24px !default;
 
 .test-cell--button {
   @include test-cell-size(171, 71);

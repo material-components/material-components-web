@@ -105,10 +105,6 @@
   @include mdc-typography-overflow-ellipsis;
 }
 
-$mdc-list-item-primary-text-baseline-height_: 32px;
-$mdc-list-item-secondary-text-baseline-height_: 20px;
-$mdc-list-dense-item-primary-text-baseline-height_: 24px;
-
 .mdc-list-item__primary-text {
   @include mdc-typography-overflow-ellipsis;
   @include mdc-typography-baseline-top($mdc-list-item-primary-text-baseline-height_);

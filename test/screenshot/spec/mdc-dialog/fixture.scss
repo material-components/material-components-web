@@ -24,7 +24,7 @@
 @import "../../../../packages/mdc-theme/color-palette";
 @import "../mixins";
 
-$custom-dialog-color: $material-color-red-300;
+$custom-dialog-color: $material-color-red-300 !default;
 
 @include test-browser-selector-edge {
   .test-dialog__title,
