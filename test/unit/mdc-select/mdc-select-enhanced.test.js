@@ -545,7 +545,7 @@ test('adapter#getValue returns the selected element value', () => {
   document.body.removeChild(menuSurface);
 });
 
-test('adapter#setValue sets the list item to selected when the value is found in the list', () => {
+test('adapter#setValue sets the list item to selected when the data-value is found in the list', () => {
   const hasMockFoundation = true;
   const hasMockMenu = false;
   const hasOutline = false;
