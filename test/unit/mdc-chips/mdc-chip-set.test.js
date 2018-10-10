@@ -26,8 +26,8 @@ import {assert} from 'chai';
 import domEvents from 'dom-events';
 import td from 'testdouble';
 
-import {MDCChipSet, MDCChipSetFoundation} from '../../../packages/mdc-chips/chip-set';
-import {MDCChipFoundation} from '../../../packages/mdc-chips/chip';
+import {MDCChipSet, MDCChipSetFoundation} from '../../../packages/mdc-chips/chip-set/index';
+import {MDCChipFoundation} from '../../../packages/mdc-chips/chip/index';
 
 const getFixture = () => bel`
   <div class="mdc-chip-set">
@@ -93,6 +93,9 @@ test('#initialSyncWithDOM sets up event handlers', () => {
   domEvents.emit(root, MDCChipFoundation.strings.INTERACTION_EVENT);
   td.verify(mockFoundation.handleChipInteraction(td.matchers.anything()), {times: 1});
 
+  domEvents.emit(root, MDCChipFoundation.strings.SELECTION_EVENT);
+  td.verify(mockFoundation.handleChipSelection(td.matchers.anything()), {times: 1});
+
   domEvents.emit(root, MDCChipFoundation.strings.REMOVAL_EVENT);
   td.verify(mockFoundation.handleChipRemoval(td.matchers.anything()), {times: 1});
 });
@@ -103,6 +106,9 @@ test('#destroy removes event handlers', () => {
 
   domEvents.emit(root, MDCChipFoundation.strings.INTERACTION_EVENT);
   td.verify(mockFoundation.handleChipInteraction(td.matchers.anything()), {times: 0});
+
+  domEvents.emit(root, MDCChipFoundation.strings.SELECTION_EVENT);
+  td.verify(mockFoundation.handleChipSelection(td.matchers.anything()), {times: 0});
 
   domEvents.emit(root, MDCChipFoundation.strings.REMOVAL_EVENT);
   td.verify(mockFoundation.handleChipRemoval(td.matchers.anything()), {times: 0});

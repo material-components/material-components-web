@@ -16,7 +16,7 @@ path: /catalog/menus/
   </a>
 </div>-->
 
-A menu displays a list of choices on a temporary surface. They appear when users interact with a button, action, 
+A menu displays a list of choices on a temporary surface. They appear when users interact with a button, action,
 or other control.
 
 ## Design & API Documentation
@@ -67,7 +67,7 @@ npm install @material/menu
 import {MDCMenu} from '@material/menu';
 
 const menu = new MDCMenu(document.querySelector('.mdc-menu'));
-menu.show();
+menu.open = true;
 ```
 
 > See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
@@ -225,8 +225,6 @@ Method Signature | Description
 `getParentElement(element: HTMLElement) => ?HTMLElement` | Returns the `.parentElement` element of the `element` provided.
 `getSelectedElementIndex(element: HTMLElement) => number` | Returns the `index` value of the element within the selection group provided, `element` that contains the `mdc-menu-item--selected` class.
 `notifySelected(index: number) => void` | Emits a `MDCMenu:selected` event for the element at the `index` specified.
-`getCheckboxAtIndex(index: number) => ?HTMLElement` | Returns the checkbox element contained within the element at the `index` specified.
-`toggleCheckbox(checkbox: HTMLElement) => void` | Toggles the `checkbox` element provided and triggers a `change` event for the element.
 
 ### `MDCMenuFoundation`
 

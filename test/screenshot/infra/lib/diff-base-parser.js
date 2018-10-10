@@ -217,6 +217,7 @@ class DiffBaseParser {
 
     const logInfo = {travisBranch, travisTag, travisPrNumber, travisPrBranch, travisPrSha, travisCommit};
     const author = await this.gitRepo_.getCommitAuthor(commit, getStackTrace('getTravisGitRevision', logInfo));
+    const date = await this.gitRepo_.getCommitDate(commit, getStackTrace('getTravisGitRevision', logInfo));
 
     if (travisPrNumber) {
       return GitRevision.create({
@@ -224,9 +225,9 @@ class DiffBaseParser {
         golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
         commit,
         author,
+        date,
         branch: travisPrBranch || travisBranch,
         pr_number: travisPrNumber,
-        pr_file_paths: await this.getTestablePrFilePaths_(travisPrNumber),
       });
     }
 
@@ -236,6 +237,7 @@ class DiffBaseParser {
         golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
         commit,
         author,
+        date,
         tag: travisTag,
       });
     }
@@ -246,33 +248,12 @@ class DiffBaseParser {
         golden_json_file_path: GOLDEN_JSON_RELATIVE_PATH,
         commit,
         author,
+        date,
         branch: travisBranch,
       });
     }
 
     return null;
-  }
-
-  /**
-   * @param {number} prNumber
-   * @return {!Promise<!Array<string>>}
-   * @private
-   */
-  async getTestablePrFilePaths_(prNumber) {
-    /** @type {!Array<!github.proto.PullRequestFile>} */
-    const allPrFiles = await this.gitHubApi_.getPullRequestFiles(prNumber);
-
-    return allPrFiles
-      .filter((prFile) => {
-        const isMarkdownFile = () => prFile.filename.endsWith('.md');
-        const isDemosFile = () => prFile.filename.startsWith('demos/');
-        const isDocsFile = () => prFile.filename.startsWith('docs/');
-        const isUnitTestFile = () => prFile.filename.startsWith('test/unit/');
-        const isIgnoredFile = isMarkdownFile() || isDemosFile() || isDocsFile() || isUnitTestFile();
-        return !isIgnoredFile;
-      })
-      .map((prFile) => prFile.filename)
-    ;
   }
 
   /**
@@ -310,6 +291,7 @@ class DiffBaseParser {
    */
   async createCommitDiffBase_(commit, goldenJsonFilePath) {
     const author = await this.gitRepo_.getCommitAuthor(commit, getStackTrace('createCommitDiffBase_'));
+    const date = await this.gitRepo_.getCommitDate(commit, getStackTrace('createCommitDiffBase_'));
 
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
@@ -319,6 +301,7 @@ class DiffBaseParser {
         golden_json_file_path: goldenJsonFilePath,
         commit,
         author,
+        date,
       }),
     });
   }
@@ -335,6 +318,7 @@ class DiffBaseParser {
     const branch = remoteRef.substr(remote.length + 1); // add 1 for forward-slash separator
     const commit = await this.gitRepo_.getFullCommitHash(remoteRef);
     const author = await this.gitRepo_.getCommitAuthor(commit, getStackTrace('createRemoteBranchDiffBase_'));
+    const date = await this.gitRepo_.getCommitDate(commit, getStackTrace('createRemoteBranchDiffBase_'));
 
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
@@ -344,6 +328,7 @@ class DiffBaseParser {
         golden_json_file_path: goldenJsonFilePath,
         commit,
         author,
+        date,
         remote,
         branch,
       }),
@@ -359,6 +344,7 @@ class DiffBaseParser {
   async createRemoteTagDiffBase_(tagRef, goldenJsonFilePath) {
     const commit = await this.gitRepo_.getFullCommitHash(tagRef);
     const author = await this.gitRepo_.getCommitAuthor(commit, getStackTrace('createRemoteTagDiffBase_'));
+    const date = await this.gitRepo_.getCommitDate(commit, getStackTrace('createRemoteTagDiffBase_'));
 
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
@@ -368,6 +354,7 @@ class DiffBaseParser {
         golden_json_file_path: goldenJsonFilePath,
         commit,
         author,
+        date,
         remote: 'origin',
         tag: tagRef,
       }),
@@ -383,6 +370,7 @@ class DiffBaseParser {
   async createLocalBranchDiffBase_(branch, goldenJsonFilePath) {
     const commit = await this.gitRepo_.getFullCommitHash(branch);
     const author = await this.gitRepo_.getCommitAuthor(commit, getStackTrace('createLocalBranchDiffBase_'));
+    const date = await this.gitRepo_.getCommitDate(commit, getStackTrace('createLocalBranchDiffBase_'));
 
     return DiffBase.create({
       type: DiffBase.Type.GIT_REVISION,
@@ -392,6 +380,7 @@ class DiffBaseParser {
         golden_json_file_path: goldenJsonFilePath,
         commit,
         author,
+        date,
         branch,
       }),
     });

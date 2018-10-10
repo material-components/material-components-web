@@ -129,7 +129,6 @@ See [here](helper-text/) for more information on using helper text.
 Leading and trailing icons can be added within the default or outlined variant of MDC Text Field as visual indicators as
 well as interaction targets. See [here](icon/) for more information on using icons.
 
-
 ### HTML5 Validation
 
 `MDCTextFieldFoundation` provides validity styling by using the `:invalid` and `:required` attributes provided
@@ -199,7 +198,7 @@ Mixin | Description
 
 Mixin | Description
 --- | ---
-`mdc-text-field-corner-radius($radius)` | Customizes the border radius for the text field.
+`mdc-text-field-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to boxed text field variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `mdc-text-field-fill-color($color)` | Customizes the background color of the text field.
 `mdc-text-field-bottom-line-color($color)` | Customizes the text field bottom line color except the outlined and textarea variants.
 `mdc-text-field-hover-bottom-line-color($color)` | Customizes the hover text field bottom line color except the outlined and textarea variants.
@@ -212,13 +211,13 @@ Mixin | Description
 `mdc-text-field-focused-outline-color($color)` | Customizes the outline border color when the text field is focused.
 `mdc-text-field-hover-outline-color($color)` | Customizes the outline border color when the text field is hovered.
 `mdc-text-field-outline-color($color)` | Customizes the border color of the outlined text field.
-`mdc-text-field-outline-corner-radius($radius)` | Sets the border radius of of the outlined text field variant.
+`mdc-text-field-outline-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to outlined text field variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 
 #### Mixins for Textarea
 
 Mixin | Description
 --- | ---
-`mdc-text-field-textarea-corner-radius($radius)` | Customizes the border radius for a `<textarea>` variant.
+`mdc-text-field-textarea-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to text area variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `mdc-text-field-textarea-fill-color($color)` | Customizes the color of the background of the textarea.
 `mdc-text-field-textarea-stroke-color($color)` | Customizes the color of the border of the textarea.
 
@@ -233,13 +232,25 @@ Mixin | Description
 
 Property | Value Type | Description
 --- | --- | ---
-`value` | String | Proxies to the foundation's `getValue`/`setValue` methods.
-`disabled` | Boolean | Proxies to the foundation's `isDisabled`/`setDisabled` methods.
-`useNativeValidation` | Boolean (write-only) | Proxies to the foundation's `setUseNativeValidation` method.
-`valid` | Boolean | Proxies to the foundation's `isValid`/`setValid` methods.
-`required` | Boolean | Proxies to the foundation's `isRequired`/`setRequired` methods.
-`helperTextContent` | String | Proxies to the foundation's `setHelperTextContent` method when set.
-`ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCTextField` initializes; this only applies to the default Text Field, and is `null` for other variants.
+`value` | string | Proxies to the foundation's `getValue`/`setValue` methods.
+`disabled` | boolean | Proxies to the foundation's `isDisabled`/`setDisabled` methods.
+`useNativeValidation` | boolean (write-only) | Proxies to the foundation's `setUseNativeValidation` method.
+`valid` | boolean | Proxies to the foundation's `isValid`/`setValid` methods.
+`helperTextContent` | string (write-only)| Proxies to the foundation's `setHelperTextContent` method when set.
+`ripple` | `MDCRipple` (write-only) | The `MDCRipple` instance for the root element that `MDCTextField` initializes; this only applies to the default Text Field, and is `null` for other variants.
+`leadingIconAriaLabel` | string (write-only) | Proxies to the foundation's `setLeadingIconAriaLabel` method.
+`trailingIconAriaLabel` | string (write-only) | Proxies to the foundation's `setTrailingIconAriaLabel` method.
+`leadingIconContent` | string (write-only) | Proxies to the foundation's `setLeadingIconContent` method.
+`trailingIconContent` | string (write-only) | Proxies to the foundation's `setTrailingIconContent` method.
+
+In addition to the above, the following properties proxy to the `input` element's properties of the same name:
+
+* `required`
+* `minLength`
+* `maxLength`
+* `min`
+* `max`
+* `step`
 
 Method Signature | Description
 --- | ---
@@ -289,15 +300,15 @@ Method Signature | Description
 `isValid() => boolean` | Returns the component's current validity state (either native or custom, depending on how `setUseNativeValidation()` was configured).
 `isDisabled() => boolean` | Returns whether or not the input is disabled.
 `setDisabled(disabled: boolean) => void` | Updates the input's disabled state.
-`isRequired() => boolean` | Returns whether the input is required.
-`setRequired(isRequired: boolean)` | Sets whether the input is required.
 `handleTextFieldInteraction(evt: Event) => void` | Handles click and keydown events originating from inside the Text Field component.
 `handleValidationAttributeChange(attributesList: !Array<string>) => void` | Handles validation attribute changes.
 `activateFocus() => void` | Activates the focus state of the Text Field. Normally called in response to the input focus event.
 `deactivateFocus() => void` | Deactivates the focus state of the Text Field. Normally called in response to the input blur event.
 `setHelperTextContent(content: string) => void` | Sets the content of the helper text.
-`setIconAriaLabel(label: string) => void` | Sets the aria label of the icon.
-`setIconContent(content: string) => void` | Sets the text content of the icon.
+`setLeadingIconAriaLabel(label: string) => void` | Sets the aria label of the leading icon.
+`setLeadingIconContent(content: string) => void` | Sets the text content of the leading icon.
+`setTrailingIconAriaLabel(label: string) => void` | Sets the aria label of the trailing icon.
+`setTrailingIconContent(content: string) => void` | Sets the text content of the trailing icon.
 `notchOutline(openNotch: boolean) => void` | Opens/closes the notched outline.
 
 `MDCTextFieldFoundation` supports multiple optional sub-elements: helper text and icon. The foundations of these sub-elements must be passed in as constructor arguments to `MDCTextFieldFoundation`.

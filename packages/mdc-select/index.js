@@ -145,7 +145,7 @@ class MDCSelect extends MDCComponent {
       this.outline_ = outlineFactory(outlineElement);
     }
 
-    if (this.root_.classList.contains(cssClasses.BOX)) {
+    if (!this.root_.classList.contains(cssClasses.OUTLINED)) {
       this.ripple = this.initRipple_();
     }
   }
