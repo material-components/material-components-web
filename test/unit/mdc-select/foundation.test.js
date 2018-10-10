@@ -167,7 +167,7 @@ test('#handleFocus calls adapter.activateBottomLine()', () => {
   td.verify(mockAdapter.activateBottomLine(), {times: 1});
 });
 
-test('#handleFocus does not call adapter.activateBottomLine() if isMenuOpen=true', () => {
+test('#handleFocus calls adapter.activateBottomLine() if isMenuOpen=true', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.isMenuOpen()).thenReturn(true);
   foundation.handleFocus();
@@ -216,7 +216,7 @@ test('#handleClick opens the menu if the select is focused and isMenuOpen=false'
   td.verify(mockAdapter.openMenu(), {times: 1});
 });
 
-test('#handleKeydown calls adapter.openMenu if valid keys is pressed, menu is not open and select is focused',
+test('#handleKeydown calls adapter.openMenu if valid keys are pressed, menu is not open and select is focused',
   () => {
     const {foundation, mockAdapter} = setupTest();
     const preventDefault = td.func();
@@ -273,6 +273,10 @@ test('#handleKeydown does not call adapter.openMenu if menu is opened', () => {
   event.keyCode = 13;
   foundation.handleKeydown(event);
   event.keyCode = 32;
+  foundation.handleKeydown(event);
+  event.keyCode = 38; // Up
+  foundation.handleKeydown(event);
+  event.keyCode = 40; // Down
   foundation.handleKeydown(event);
   td.verify(mockAdapter.openMenu(), {times: 0});
   td.verify(preventDefault(), {times: 0});

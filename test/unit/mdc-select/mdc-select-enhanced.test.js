@@ -83,11 +83,11 @@ function getFixture() {
       <i class="mdc-select__dropdown-icon"></i>
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
       <ul class="mdc-list">
-        <li class="mdc-list-item"></li>
-        <li class="mdc-list-item" value="orange">          
+        <li class="mdc-list-item" data-value=""></li>
+        <li class="mdc-list-item" data-value="orange">          
           Orange
         </li>
-        <li class="mdc-list-item" value="apple">
+        <li class="mdc-list-item" data-value="apple">
           Apple
         </li> 
       </ul>
@@ -105,11 +105,11 @@ function getOutlineFixture() {
       <i class="mdc-select__dropdown-icon"></i>
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
       <ul class="mdc-list">
-        <li class="mdc-list-item"></li>
-        <li class="mdc-list-item" value="orange">          
+        <li class="mdc-list-item" data-value=""></li>
+        <li class="mdc-list-item" data-value="orange">          
           Orange
         </li>
-        <li class="mdc-list-item" value="apple">
+        <li class="mdc-list-item" data-value="apple">
           Apple
         </li> 
       </ul>
@@ -251,11 +251,11 @@ test('#initialSyncWithDOM sets the selected index if an option has the selected 
       <div class="mdc-select__selected-text"></div>
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
       <ul class="mdc-list">
-        <li class="mdc-list-item"></li>
-        <li class="mdc-list-item mdc-list-item--selected" value="orange">          
+        <li class="mdc-list-item" data-value=""></li>
+        <li class="mdc-list-item mdc-list-item--selected" data-value="orange">          
           Orange
         </li>
-        <li class="mdc-list-item" value="apple">
+        <li class="mdc-list-item" data-value="apple">
           Apple
         </li> 
       </ul>
@@ -275,11 +275,11 @@ test('#initialSyncWithDOM disables the select if the disabled class is found', (
       <div class="mdc-select__selected-text"></div>
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
       <ul class="mdc-list">
-        <li class="mdc-list-item mdc-list-item--selected"></li>
-        <li class="mdc-list-item" value="orange">          
+        <li class="mdc-list-item mdc-list-item--selected" data-value=""></li>
+        <li class="mdc-list-item" data-value="orange">          
           Orange
         </li>
-        <li class="mdc-list-item" value="apple">
+        <li class="mdc-list-item" data-value="apple">
           Apple
         </li> 
       </ul>
@@ -402,11 +402,11 @@ test('adapter_#floatLabel does not throw error if label does not exist', () => {
       <div class="mdc-select__selected-text"></div>
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
       <ul class="mdc-list">
-        <li class="mdc-list-item mdc-list-item--selected"></li>
-        <li class="mdc-list-item" value="orange">          
+        <li class="mdc-list-item mdc-list-item--selected" data-value=""></li>
+        <li class="mdc-list-item" data-value="orange">          
           Orange
         </li>
-        <li class="mdc-list-item" value="apple">
+        <li class="mdc-list-item" data-value="apple">
           Apple
         </li> 
       </ul>
@@ -427,11 +427,11 @@ test('adapter#activateBottomLine and adapter.deactivateBottomLine ' +
       <div class="mdc-select__selected-text"></div>
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
       <ul class="mdc-list">
-        <li class="mdc-list-item mdc-list-item--selected"></li>
-        <li class="mdc-list-item" value="orange">          
+        <li class="mdc-list-item mdc-list-item--selected" data-value=""></li>
+        <li class="mdc-list-item" data-value="orange">          
           Orange
         </li>
-        <li class="mdc-list-item" value="apple">
+        <li class="mdc-list-item" data-value="apple">
           Apple
         </li> 
       </ul>
@@ -536,28 +536,12 @@ test('adapter#getValue returns the selected element value', () => {
   const hasOutline = false;
   const hasLabel = true;
   const {component, menuSurface} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-  const textValue = menuSurface.querySelectorAll('.mdc-list-item')[1].getAttribute('value');
+  const textValue = menuSurface.querySelectorAll('.mdc-list-item')[1].getAttribute('data-value');
   const adapter = component.getDefaultFoundation().adapter_;
   adapter.setSelectedIndex(1);
   const value = adapter.getValue();
 
   assert.equal(value, textValue);
-  document.body.removeChild(menuSurface);
-});
-
-test('adapter#getValue returns the text content of the list item if no value attribute is present', () => {
-  const hasMockFoundation = true;
-  const hasMockMenu = false;
-  const hasOutline = false;
-  const hasLabel = true;
-  const {component, menuSurface} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-  const listItem = menuSurface.querySelectorAll('.mdc-list-item')[1];
-  listItem.removeAttribute('value');
-  const adapter = component.getDefaultFoundation().adapter_;
-  adapter.setSelectedIndex(1);
-  const value = adapter.getValue();
-
-  assert.equal(value, listItem.textContent.trim());
   document.body.removeChild(menuSurface);
 });
 
@@ -567,7 +551,7 @@ test('adapter#setValue sets the list item to selected when the value is found in
   const hasOutline = false;
   const hasLabel = true;
   const {component, menuSurface} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-  const listItemValue = menuSurface.querySelectorAll('.mdc-list-item')[1].getAttribute('value');
+  const listItemValue = menuSurface.querySelectorAll('.mdc-list-item')[1].getAttribute('data-value');
   const adapter = component.getDefaultFoundation().adapter_;
   adapter.setValue(listItemValue);
 
@@ -575,19 +559,19 @@ test('adapter#setValue sets the list item to selected when the value is found in
   document.body.removeChild(menuSurface);
 });
 
-test('adapter#setValue sets the selectedElement_ to the value if the value attribute is not found in the list', () => {
+
+test('adapter#setValue clears the selected item if the element is not found', () => {
   const hasMockFoundation = true;
   const hasMockMenu = false;
   const hasOutline = false;
   const hasLabel = true;
   const {component, menuSurface} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-  const listItem = menuSurface.querySelectorAll('.mdc-list-item')[1];
-  const listItemValue = listItem.getAttribute('value');
-  listItem.removeAttribute('value');
+  const listItemValue = menuSurface.querySelectorAll('.mdc-list-item')[1].getAttribute('data-value');
   const adapter = component.getDefaultFoundation().adapter_;
   adapter.setValue(listItemValue);
+  adapter.setValue(listItemValue + '1');
 
-  assert.equal(adapter.getValue(), listItemValue);
+  assert.equal(adapter.getValue(), '');
   document.body.removeChild(menuSurface);
 });
 
@@ -600,8 +584,8 @@ test('adapter#openMenu causes the menu to open', () => {
   document.body.appendChild(fixture);
   const adapter = component.getDefaultFoundation().adapter_;
   adapter.openMenu();
-  adapter.openMenu();
   assert.isTrue(mockMenu.open);
+  adapter.openMenu();
   document.body.removeChild(fixture);
 });
 
@@ -653,14 +637,14 @@ test('adapter#setDisabled adds the --disabled class to the root element', () => 
   const hasMockMenu = true;
   const hasOutline = false;
   const hasLabel = true;
-  const {fixture, component} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  const {fixture, component, selectedText} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   document.body.appendChild(fixture);
   const adapter = component.getDefaultFoundation().adapter_;
-  assert.isFalse(fixture.classList.contains(MDCSelectFoundation.cssClasses.DISABLED));
+  assert.equal(selectedText.tabIndex, 0);
   adapter.setDisabled(true);
-  assert.isTrue(fixture.classList.contains(MDCSelectFoundation.cssClasses.DISABLED));
+  assert.equal(selectedText.tabIndex, -1);
   adapter.setDisabled(false);
-  assert.isFalse(fixture.classList.contains(MDCSelectFoundation.cssClasses.DISABLED));
+  assert.equal(selectedText.tabIndex, 0);
   document.body.removeChild(fixture);
 });
 
@@ -745,40 +729,40 @@ test(`#destroy removes the listener for the ${MDCMenuFoundation.strings.SELECTED
   document.body.removeChild(fixture);
 });
 
-test('#destroy removes the mouseup listener', () => {
+test('#destroy removes the mousedown listener', () => {
   const {bottomLine, component, fixture} = setupTest();
   const event = document.createEvent('MouseEvent');
   const clientX = 200;
   const clientY = 200;
 
   component.destroy();
-  // IE11 mouseup event.
-  event.initMouseEvent('mouseup', true, true, window, 0, 0, 0, clientX, clientY, false, false, false, false, 0, null);
+  // IE11 mousedown event.
+  event.initMouseEvent('mousedown', true, true, window, 0, 0, 0, clientX, clientY, false, false, false, false, 0, null);
   fixture.querySelector('.mdc-select__selected-text').dispatchEvent(event);
 
   td.verify(bottomLine.setRippleCenter(200), {times: 0});
 });
 
-test('mouseup on the select sets the line ripple origin', () => {
+test('mousedown on the select sets the line ripple origin', () => {
   const {bottomLine, fixture} = setupTest();
   const event = document.createEvent('MouseEvent');
   const clientX = 200;
   const clientY = 200;
-  // IE11 mouseup event.
-  event.initMouseEvent('mouseup', true, true, window, 0, 0, 0, clientX, clientY, false, false, false, false, 0, null);
+  // IE11 mousedown event.
+  event.initMouseEvent('mousedown', true, true, window, 0, 0, 0, clientX, clientY, false, false, false, false, 0, null);
   fixture.querySelector('.mdc-select__selected-text').dispatchEvent(event);
 
   td.verify(bottomLine.setRippleCenter(200), {times: 1});
 });
 
-test('mouseup on the select does nothing if the it does not have a lineRipple', () => {
+test('mousedown on the select does nothing if the it does not have a lineRipple', () => {
   const hasOutline = true;
   const {bottomLine, fixture} = setupTest(hasOutline);
   const event = document.createEvent('MouseEvent');
   const clientX = 200;
   const clientY = 200;
-  // IE11 mouseup event.
-  event.initMouseEvent('mouseup', true, true, window, 0, 0, 0, clientX, clientY, false, false, false, false, 0, null);
+  // IE11 mousedown event.
+  event.initMouseEvent('mousedown', true, true, window, 0, 0, 0, clientX, clientY, false, false, false, false, 0, null);
   fixture.querySelector('.mdc-select__selected-text').dispatchEvent(event);
 
   td.verify(bottomLine.setRippleCenter(200), {times: 0});
