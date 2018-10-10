@@ -49,7 +49,7 @@ test('default adapter returns a complete adapter implementation', () => {
     'addClass', 'removeClass', 'hasClass', 'floatLabel', 'activateBottomLine',
     'deactivateBottomLine', 'getValue',
     'isRtl', 'hasLabel', 'getLabelWidth', 'hasOutline',
-    'notchOutline', 'closeOutline',
+    'notchOutline', 'closeOutline', 'checkValidity'
   ]);
 });
 

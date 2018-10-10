@@ -31,6 +31,9 @@ import MDCSelectFoundation from './foundation';
 import MDCSelectAdapter from './adapter';
 import {cssClasses, strings} from './constants';
 
+
+const VALIDATION_ATTR_WHITELIST = ['required'];
+
 /**
  * @extends MDCComponent<!MDCSelectFoundation>
  */
@@ -58,6 +61,8 @@ class MDCSelect extends MDCComponent {
     this.handleBlur_;
     /** @private {!Function} */
     this.handleClick_;
+    /** @private {!MutationObserver} */
+    this.validationObserver_;
   }
 
   /**
@@ -132,6 +137,11 @@ class MDCSelect extends MDCComponent {
     lineRippleFactory = (el) => new MDCLineRipple(el),
     outlineFactory = (el) => new MDCNotchedOutline(el)) {
     this.nativeControl_ = this.root_.querySelector(strings.NATIVE_CONTROL_SELECTOR);
+
+    if (this.nativeControl_) {
+      this.addMutationObserverForInvalid();
+    }
+
     const labelElement = this.root_.querySelector(strings.LABEL_SELECTOR);
     if (labelElement) {
       this.label_ = labelFactory(labelElement);
@@ -205,6 +215,9 @@ class MDCSelect extends MDCComponent {
     if (this.outline_) {
       this.outline_.destroy();
     }
+    if (this.validationObserver_) {
+      this.validationObserver_.disconnect();
+    }
 
     super.destroy();
   }
@@ -230,6 +243,7 @@ class MDCSelect extends MDCComponent {
             this.lineRipple_.deactivate();
           }
         },
+        checkValidity: () => this.nativeControl_.checkValidity(),
       },
       this.getOutlineAdapterMethods_(),
       this.getLabelAdapterMethods_())
@@ -291,6 +305,44 @@ class MDCSelect extends MDCComponent {
     const xCoordinate = evt.clientX;
     const normalizedX = xCoordinate - targetClientRect.left;
     this.lineRipple_.setRippleCenter(normalizedX);
+  }
+
+
+  addMutationObserverForInvalid() {
+    const observerHandler = (attributesList) => {
+      attributesList.some((attributeName) => {
+        if (VALIDATION_ATTR_WHITELIST.indexOf(attributeName) > -1) {
+          this.setRequired(true);
+          return true;
+        }
+      });
+    };
+
+    const getAttributesList = (mutationsList) => mutationsList.map((mutation) => mutation.attributeName);
+    const observer = new MutationObserver((mutationsList) => observerHandler(getAttributesList(mutationsList)));
+    observer.observe(this.nativeControl_, {attributes: true});
+
+    this.validationObserver_ = observer;
+
+    if (this.nativeControl_.required || this.root_.classList.contains(cssClasses.REQUIRED)) {
+      this.nativeControl_.required = true;
+    }
+  };
+
+  setValid(isValid) {
+    this.foundation_.setValid(isValid);
+  }
+
+  checkValidity() {
+    this.foundation_.checkValidity();
+  }
+
+  setRequired(isRequired) {
+    if (isRequired) {
+      this.root_.classList.add(cssClasses.REQUIRED);
+    } else {
+      this.root_.classList.remove(cssClasses.REQUIRED);
+    }
   }
 }
 

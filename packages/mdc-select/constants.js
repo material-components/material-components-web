@@ -26,6 +26,8 @@ const cssClasses = {
   DISABLED: 'mdc-select--disabled',
   ROOT: 'mdc-select',
   OUTLINED: 'mdc-select--outlined',
+  INVALID: 'mdc-select--invalid',
+  REQUIRED: 'mdc-select--required',
 };
 
 /** @enum {string} */

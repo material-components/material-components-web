@@ -67,6 +67,7 @@ class MDCSelectFoundation extends MDCFoundation {
       hasOutline: () => false,
       notchOutline: (/* labelWidth: number, isRtl: boolean */) => {},
       closeOutline: () => {},
+      checkValidity: () => {},
     });
   }
 
@@ -115,6 +116,12 @@ class MDCSelectFoundation extends MDCFoundation {
   handleBlur() {
     this.handleChange();
     this.adapter_.removeClass('mdc-select--focused');
+    const isRequired = this.adapter_.hasClass(cssClasses.REQUIRED);
+
+    if (isRequired) {
+      this.setValid(this.checkValidity());
+    }
+
     this.adapter_.deactivateBottomLine();
   }
 
@@ -135,6 +142,18 @@ class MDCSelectFoundation extends MDCFoundation {
     } else {
       this.adapter_.closeOutline();
     }
+  }
+
+  setValid(isValid) {
+    if (isValid) {
+      this.adapter_.removeClass(cssClasses.INVALID);
+    } else {
+      this.adapter_.addClass(cssClasses.INVALID);
+    }
+  }
+
+  checkValidity() {
+    return this.adapter_.checkValidity();
   }
 }
 

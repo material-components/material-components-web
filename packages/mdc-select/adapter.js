@@ -118,6 +118,12 @@ class MDCSelectAdapter {
    * Closes notch in outline element, if the outline exists.
    */
   closeOutline() {}
+
+  /**
+   * Checks if the select is currently valid.
+   * @return {boolean} isValid
+   */
+  checkValidity() {}
 }
 
 export default MDCSelectAdapter;

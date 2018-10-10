@@ -21,6 +21,7 @@
 //
 
 @import "@material/animation/variables";
+@import "@material/theme/variables";
 
 $mdc-select-arrow-padding: 26px;
 $mdc-select-label-padding: 16px;
@@ -53,3 +54,12 @@ $mdc-select-outlined-label-position-y: 130%;
 $mdc-select-outlined-dense-label-position-y: 110%;
 
 $mdc-select-dropdown-transition-duration: 150ms;
+
+// Error colors
+$mdc-select-label-error-color: error;
+$mdc-select-focused-label-error-color: error;
+$mdc-select-dropdown-error-color: mdc-theme-prop-value(error);
+$mdc-select-bottom-line-idle-error-color: mdc-theme-prop-value(error);
+$mdc-select-bottom-line-hover-error-color: mdc-theme-prop-value(error);
+$mdc-select-outlined-idle-error-border: error;
+$mdc-select-outlined-hover-error-border: error;
