@@ -519,7 +519,7 @@ test('#destroy removes the mousedown listener', () => {
   td.verify(bottomLine.setRippleCenter(200), {times: 0});
 });
 
-test.only('keydown is not added to the native select when initialized', () => {
+test('keydown is not added to the native select when initialized', () => {
   const {component, fixture} = setupTest();
   component.foundation_.handleKeydown = td.func();
   document.body.appendChild(fixture);
