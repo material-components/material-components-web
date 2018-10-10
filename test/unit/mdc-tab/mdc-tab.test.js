@@ -27,13 +27,13 @@ import td from 'testdouble';
 import domEvents from 'dom-events';
 
 import {createMockRaf} from '../helpers/raf';
-import {MDCTab, MDCTabFoundation} from '../../../packages/mdc-tab';
+import {MDCTab, MDCTabFoundation} from '../../../packages/mdc-tab/index';
 
 const getFixture = () => bel`
   <button class="mdc-tab" aria-selected="false" role="tab">
     <span class="mdc-tab__content">
       <span class="mdc-tab__text-label">Foo</span>
-      <span class="mdc-tab__icon"></span>
+      <span class="mdc-tab__icon" aria-hidden="true"></span>
     </span>
     <span class="mdc-tab__ripple"></span>
     <span class="mdc-tab-indicator">

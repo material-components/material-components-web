@@ -69,3 +69,5 @@ enableAnimationCheckboxEl.addEventListener('change', (evt) => {
 window.addEventListener('popstate', checkUrlParams);
 
 checkUrlParams();
+
+window.mdc.testFixture.notifyDomReady();

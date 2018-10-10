@@ -93,7 +93,9 @@ class IndexCommand {
 <!doctype html>
 <html>
   <head>
+    <meta charset="utf-8">
     <title>${parentDirName}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
       body {
         font-family: "Roboto Mono", Consolas, monospace;
@@ -139,6 +141,18 @@ class IndexCommand {
     <main class="index-main">
       ${linkMarkup}
     </main>
+    <script>
+      (function() {
+        if (window.location.search.indexOf('dir=rtl') > -1) {
+          document.documentElement.setAttribute('dir', 'rtl');
+        }
+        
+        var linkEls = [].slice.call(document.querySelectorAll('a[href]'));
+        linkEls.forEach(function(linkEl) {
+          linkEl.setAttribute('href', linkEl.getAttribute('href') + window.location.search);
+        });
+      })();
+    </script>
   </body>
 </html>
       `.trim();

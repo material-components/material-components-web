@@ -30,7 +30,6 @@ const cssClasses = {
 /** @enum {string} */
 const strings = {
   ARIA_PRESSED: 'aria-pressed',
-  ARIA_LABEL: 'aria-label',
   CHANGE_EVENT: 'MDCIconButtonToggle:change',
 };
 

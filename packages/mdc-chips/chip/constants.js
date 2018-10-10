@@ -25,6 +25,7 @@
 const strings = {
   ENTRY_ANIMATION_NAME: 'mdc-chip-entry',
   INTERACTION_EVENT: 'MDCChip:interaction',
+  SELECTION_EVENT: 'MDCChip:selection',
   TRAILING_ICON_INTERACTION_EVENT: 'MDCChip:trailingIconInteraction',
   REMOVAL_EVENT: 'MDCChip:removal',
   CHECKMARK_SELECTOR: '.mdc-chip__checkmark',

@@ -26,7 +26,7 @@ import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
 
-import {MDCFormField} from '../../../packages/mdc-form-field';
+import {MDCFormField} from '../../../packages/mdc-form-field/index';
 
 function getFixture() {
   return bel`

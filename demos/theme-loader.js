@@ -22,7 +22,7 @@
  */
 
 (function() {
-  var TRUSTED_THEMES = ['baseline', 'black', 'dark', 'shrine'];
+  var TRUSTED_THEMES = ['baseline', 'dark'];
   var DEFAULT_THEME = TRUSTED_THEMES[0];
   var PRIVATE_TYPE_MARKER = {};
 
