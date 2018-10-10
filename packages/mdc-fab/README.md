@@ -39,13 +39,15 @@ npm install @material/fab
 
 ### Load Material Icons
 
-We recommend you load [Material Icons](https://material.io/icons/) from Google Fonts
+We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts:
 
 ```html
 <head>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 ```
+
+However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any other icon library you wish.
 
 ### HTML Structure
 
@@ -76,6 +78,19 @@ const fabRipple = new MDCRipple(document.querySelector('.mdc-fab'));
 ```
 
 > See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
+
+## Variants
+
+### Extended FAB
+
+```html
+<button class="mdc-fab mdc-fab--extended">
+  <span class="material-icons mdc-fab__icon">add</span>
+  <span class="mdc-fab__label">Create</span>
+</button>
+```
+
+> _NOTE:_ The extended FAB must contain label where as the icon is optional. The icon and label may be specified in whichever order is appropriate based on context.
 
 ## Style Customization
 
@@ -114,6 +129,7 @@ Mixin | Description
 `mdc-fab-ink-color($color)` | Sets the ink color to the given color
 `mdc-fab-extended-padding($icon-padding, $label-padding)` | Sets the padding on both sides of the icon, and between the label and the edge of the FAB. In cases where there is no icon, `$label-padding` will apply to both sides.
 `mdc-fab-extended-label-padding($label-padding)` | Sets the label side padding for Extended FAB. Useful when styling an Extended FAB with no icon.
+`mdc-fab-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to all FAB variants with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 
 The ripple effect for the FAB component is styled using [MDC Ripple](../mdc-ripple) mixins.
 

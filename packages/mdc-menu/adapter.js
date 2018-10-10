@@ -1,30 +1,33 @@
 /**
  * @license
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
  * Adapter for MDC Menu. Provides an interface for managing
- * - classes
- * - dom
- * - focus
- * - position
- * - dimensions
- * - event handlers
+ * - selected element classes
+ * - get focused elements
+ * - toggling a checkbox inside a list item
  *
  * Additionally, provides type information for the adapter to the Closure
  * compiler.
@@ -37,128 +40,76 @@
  * @record
  */
 class MDCMenuAdapter {
-  /** @param {string} className */
-  addClass(className) {}
-
-  /** @param {string} className */
-  removeClass(className) {}
-
   /**
+   * Adds a class to the element at the index provided.
+   * @param {number} index
    * @param {string} className
-   * @return {boolean}
    */
-  hasClass(className) {}
-
-  /** @return {boolean} */
-  hasNecessaryDom() {}
+  addClassToElementAtIndex(index, className) {}
 
   /**
-   * @param {EventTarget} target
-   * @param {string} attributeName
-   * @return {string}
+   * Removes a class from the element at the index provided
+   * @param {number} index
+   * @param {string} className
    */
-  getAttributeForEventTarget(target, attributeName) {}
-
-  /** @return {{ width: number, height: number }} */
-  getInnerDimensions() {}
-
-  /** @return {boolean} */
-  hasAnchor() {}
-
-  /** @return {{width: number, height: number, top: number, right: number, bottom: number, left: number}} */
-  getAnchorDimensions() {}
-
-  /** @return {{ width: number, height: number }} */
-  getWindowDimensions() {}
-
-  /** @return {number} */
-  getNumberOfItems() {}
+  removeClassFromElementAtIndex(index, className) {}
 
   /**
-   * @param {string} type
-   * @param {function(!Event)} handler
-   */
-  registerInteractionHandler(type, handler) {}
-
-  /**
-   * @param {string} type
-   * @param {function(!Event)} handler
-   */
-  deregisterInteractionHandler(type, handler) {}
-
-  /** @param {function(!Event)} handler */
-  registerBodyClickHandler(handler) {}
-
-  /** @param {function(!Event)} handler */
-  deregisterBodyClickHandler(handler) {}
-
-  /**
-   * @param {EventTarget} target
-   * @return {number}
-   */
-  getIndexForEventTarget(target) {}
-
-  /** @param {{index: number}} evtData */
-  notifySelected(evtData) {}
-
-  notifyCancel() {}
-
-  saveFocus() {}
-
-  restoreFocus() {}
-
-  /** @return {boolean} */
-  isFocused() {}
-
-  focus() {}
-
-  /** @return {number} */
-  getFocusedItemIndex() /* number */ {}
-
-  /** @param {number} index */
-  focusItemAtIndex(index) {}
-
-  /** @return {boolean} */
-  isRtl() {}
-
-  /** @param {string} origin */
-  setTransformOrigin(origin) {}
-
-  /** @param {{
-  *   top: (string|undefined),
-  *   right: (string|undefined),
-  *   bottom: (string|undefined),
-  *   left: (string|undefined)
-  * }} position */
-  setPosition(position) {}
-
-  /** @param {string} height */
-  setMaxHeight(height) {}
-
-  /**
+   * Adds an attribute, with value, to the element at the index provided.
    * @param {number} index
    * @param {string} attr
    * @param {string} value
    */
-  setAttrForOptionAtIndex(index, attr, value) {}
+  addAttributeToElementAtIndex(index, attr, value) {}
 
   /**
+   * Removes an attribute from an element at the index provided.
    * @param {number} index
    * @param {string} attr
    */
-  rmAttrForOptionAtIndex(index, attr) {}
+  removeAttributeFromElementAtIndex(index, attr) {}
 
   /**
-   * @param {number} index
+   * Returns true if the element contains the className.
+   * @param {?HTMLElement} element
    * @param {string} className
+   * @return {boolean} true if the element contains the className
    */
-  addClassForOptionAtIndex(index, className) {}
+  elementContainsClass(element, className) {}
 
   /**
-   * @param {number} index
-   * @param {string} className
+   * Closes the menu-surface.
    */
-  rmClassForOptionAtIndex(index, className) {}
+  closeSurface() {}
+
+  /**
+   * Returns the index for the element provided.
+   * @param {?HTMLElement} element
+   * @return {number} index of the element in the list or -1 if it is not in the list.
+   */
+  getElementIndex(element) {}
+
+  /**
+   * Returns the parentElement of the provided element.
+   * @param {?HTMLElement} element
+   * @return {?HTMLElement} parentElement of the element provided.
+   */
+  getParentElement(element) {}
+
+  /**
+   * Returns the element within the selectionGroup containing the selected element class.
+   * @param {!HTMLElement} selectionGroup
+   * @return {number} element within the selectionGroup that contains the selected element class.
+   */
+  getSelectedElementIndex(selectionGroup) {}
+
+  /**
+   * Emits an event using the evtData.
+   * @param {{
+ *    index: number
+ *   }} evtData
+   */
+  notifySelected(evtData) {}
 }
 
 export {MDCMenuAdapter};

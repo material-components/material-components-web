@@ -1,17 +1,24 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2016 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 /**
@@ -43,7 +50,31 @@ const MASTER_PKG = require(path.join(process.env.PWD, MASTER_PKG_PATH));
 // These few MDC packages work as foundation or utility packages, and are not
 // directly included in webpack or the material-component-web module. But they
 // are necessary since other MDC packages depend on them.
-const CSS_WHITELIST = ['base', 'animation', 'auto-init', 'rtl', 'selection-control'];
+const CSS_WHITELIST = [
+  'base',
+  'animation',
+  'auto-init',
+  'dom',
+  'rtl',
+  'selection-control',
+  'shape',
+];
+
+// List of packages that are intentionally not included in the MCW package's dependencies
+const NOT_MCW_DEP = [
+  'tabs', // Deprecated; CSS classes conflict with tab and tab-bar
+];
+
+const NOT_AUTOINIT = [
+  'auto-init',
+  'base',
+  'dom',
+  'selection-control',
+  'tab', // Only makes sense in context of tab-bar
+  'tab-indicator', // Only makes sense in context of tab-bar
+  'tab-scroller', // Only makes sense in context of tab-bar
+  'tabs', // Deprecated
+];
 
 main();
 
@@ -127,15 +158,17 @@ function checkDependencyAddedInMDCPackage() {
 }
 
 function checkPkgDependencyAddedInMDCPackage() {
-  assert.notEqual(typeof MASTER_PKG.dependencies[pkg.name], 'undefined',
-    'FAILURE: Component ' + pkg.name + ' is not a denpendency for MDC Web. ' +
-    'Please add ' + pkg.name +' to ' + MASTER_PKG_PATH + '\' dependencies before commit.');
+  if (NOT_MCW_DEP.indexOf(getPkgName()) === -1) {
+    assert.notEqual(typeof MASTER_PKG.dependencies[pkg.name], 'undefined',
+      'FAILURE: Component ' + pkg.name + ' is not a denpendency for MDC Web. ' +
+      'Please add ' + pkg.name +' to ' + MASTER_PKG_PATH + '\' dependencies before commit.');
+  }
 }
 
 function checkCSSDependencyAddedInMDCPackage() {
   const name = getPkgName();
   const nameMDC = `mdc-${name}`;
-  if (CSS_WHITELIST.indexOf(name) === -1) {
+  if (CSS_WHITELIST.indexOf(name) === -1 && NOT_MCW_DEP.indexOf(name) === -1) {
     const src = fs.readFileSync(path.join(process.env.PWD, MASTER_CSS_PATH), 'utf8');
     const cssRules = cssom.parse(src).cssRules;
     const cssRule = path.join(pkg.name, nameMDC);
@@ -150,9 +183,8 @@ function checkCSSDependencyAddedInMDCPackage() {
 
 function checkJSDependencyAddedInMDCPackage() {
   const NOT_IMPORTED = ['animation'];
-  const NOT_AUTOINIT = ['auto-init', 'base', 'selection-control'];
   const name = getPkgName();
-  if (typeof(pkg.main) !== 'undefined' && NOT_IMPORTED.indexOf(name) === -1) {
+  if (typeof(pkg.main) !== 'undefined' && NOT_IMPORTED.indexOf(name) === -1 && NOT_MCW_DEP.indexOf(name) === -1) {
     const nameCamel = camelCase(pkg.name.replace('@material/', ''));
     const src = fs.readFileSync(path.join(process.env.PWD, MASTER_JS_PATH), 'utf8');
     const ast = recast.parse(src, {
@@ -193,6 +225,8 @@ function checkAutoInitAddedInMDCPackage(ast) {
   let nameCamel = camelCase(pkg.name.replace('@material/', ''));
   if (nameCamel === 'textfield') {
     nameCamel = 'textField';
+  } else if (nameCamel === 'switch') {
+    nameCamel = 'switchControl';
   }
   let autoInitedCount = 0;
   traverse(ast, {
@@ -216,6 +250,8 @@ function checkComponentExportedAddedInMDCPackage(ast) {
   let nameCamel = camelCase(pkg.name.replace('@material/', ''));
   if (nameCamel === 'textfield') {
     nameCamel = 'textField';
+  } else if (nameCamel === 'switch') {
+    nameCamel = 'switchControl';
   }
   let isExported = false;
   traverse(ast, {

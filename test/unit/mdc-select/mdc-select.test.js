@@ -1,17 +1,24 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2016 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import {assert} from 'chai';
@@ -21,14 +28,19 @@ import td from 'testdouble';
 import {createMockRaf} from '../helpers/raf';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 
-import {MDCRipple, MDCRippleFoundation} from '../../../packages/mdc-ripple';
-import {MDCSelect} from '../../../packages/mdc-select';
+import {MDCRipple, MDCRippleFoundation} from '../../../packages/mdc-ripple/index';
+import {MDCSelect} from '../../../packages/mdc-select/index';
 import {cssClasses} from '../../../packages/mdc-select/constants';
-import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline';
+import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline/index';
+
+const LABEL_WIDTH = 100;
 
 class FakeLabel {
   constructor() {
     this.float = td.func('label.float');
+    this.getWidth = td.func('label.getWidth');
+
+    td.when(this.getWidth()).thenReturn(LABEL_WIDTH);
   }
 }
 
@@ -36,12 +48,14 @@ class FakeBottomLine {
   constructor() {
     this.activate = td.func('bottomLine.activate');
     this.deactivate = td.func('bottomLine.deactivate');
+    this.setRippleCenter = td.func('bottomLine.setRippleCenter');
   }
 }
 
 class FakeOutline {
   constructor() {
     this.destroy = td.func('.destroy');
+    this.notch = td.func('.notch');
   }
 }
 
@@ -63,9 +77,9 @@ function getFixture() {
   `;
 }
 
-function getBoxFixture() {
+function getOutlineFixture() {
   return bel`
-    <div class="mdc-select mdc-select--box">
+    <div class="mdc-select mdc-select--outlined">
       <select class="mdc-select__native-control">
         <option value="orange">
           Orange
@@ -75,7 +89,12 @@ function getBoxFixture() {
         </option>
       </select>
       <label class="mdc-floating-label">Pick a Food Group</label>
-      <div class="mdc-line-ripple"></div>
+      <div class="mdc-notched-outline">
+        <svg>
+          <path class="mdc-notched-outline__path">
+        </svg>
+      </div>   
+      <div class="mdc-notched-outline__idle"/>
     </div>
   `;
 }
@@ -86,14 +105,19 @@ test('attachTo returns a component instance', () => {
   assert.isOk(MDCSelect.attachTo(getFixture()) instanceof MDCSelect);
 });
 
-function setupTest() {
+function setupTest(hasOutline = false, hasLabel = true) {
   const bottomLine = new FakeBottomLine();
   const label = new FakeLabel();
-  const fixture = getFixture();
+  const fixture = hasOutline ? getOutlineFixture() : getFixture();
   const nativeControl = fixture.querySelector('.mdc-select__native-control');
   const labelEl = fixture.querySelector('.mdc-floating-label');
   const bottomLineEl = fixture.querySelector('.mdc-line-ripple');
   const outline = new FakeOutline();
+
+  if (!hasLabel) {
+    fixture.removeChild(labelEl);
+  }
+
   const component = new MDCSelect(fixture, /* foundation */ undefined, () => label, () => bottomLine, () => outline);
 
   return {fixture, nativeControl, label, labelEl, bottomLine, bottomLineEl, component, outline};
@@ -106,7 +130,7 @@ test('#get/setSelectedIndex', () => {
   assert.equal(component.selectedIndex, 1);
 });
 
-test('#get/setDisabled', () => {
+test('#get/set disabled', () => {
   const {component} = setupTest();
   assert.isFalse(component.disabled);
   component.disabled = true;
@@ -126,6 +150,27 @@ test('#set value sets the value on the <select>', () => {
   const {component, nativeControl} = setupTest();
   component.value = 'orange';
   assert.equal(nativeControl.value, 'orange');
+});
+
+test('#set value calls foundation.handleChange', () => {
+  const {component} = setupTest();
+  component.foundation_.handleChange = td.func();
+  component.value = 'orange';
+  td.verify(component.foundation_.handleChange(), {times: 1});
+});
+
+test('#set selectedIndex calls foundation.handleChange', () => {
+  const {component} = setupTest();
+  component.foundation_.handleChange = td.func();
+  component.selectedIndex = 1;
+  td.verify(component.foundation_.handleChange(), {times: 1});
+});
+
+test('#set disabled calls foundation.updateDisabledStyle', () => {
+  const {component} = setupTest();
+  component.foundation_.updateDisabledStyle = td.func();
+  component.disabled = true;
+  td.verify(component.foundation_.updateDisabledStyle(true), {times: 1});
 });
 
 test('#initialSyncWithDOM sets the selected index if an option has the selected attr', () => {
@@ -240,13 +285,13 @@ test('#adapter.isRtl returns true when the root element is in an RTL context' +
   document.body.removeChild(wrapper);
 });
 
-test(`instantiates ripple when ${cssClasses.BOX} class is present`, function() {
+test('instantiates ripple', function() {
   if (!supportsCssVariables(window, true)) {
     this.skip(); // eslint-disable-line no-invalid-this
     return;
   }
 
-  const fixture = getBoxFixture();
+  const fixture = getFixture();
   const raf = createMockRaf();
 
   const component = MDCSelect.attachTo(fixture);
@@ -264,13 +309,13 @@ test(`#constructor instantiates an outline on the ${cssClasses.OUTLINE_SELECTOR}
   assert.instanceOf(component.outline_, MDCNotchedOutline);
 });
 
-test(`handles ripple focus properly when ${cssClasses.BOX} class is present`, function() {
+test('handles ripple focus properly', function() {
   if (!supportsCssVariables(window, true)) {
     this.skip(); // eslint-disable-line no-invalid-this
     return;
   }
 
-  const fixture = getBoxFixture();
+  const fixture = getFixture();
   const raf = createMockRaf();
 
   MDCSelect.attachTo(fixture);
@@ -291,7 +336,7 @@ test('#destroy removes the ripple', function() {
     return;
   }
 
-  const fixture = getBoxFixture();
+  const fixture = getFixture();
   const raf = createMockRaf();
 
   const component = new MDCSelect(fixture);
@@ -312,8 +357,9 @@ test('#destroy cleans up the outline if present', () => {
   td.verify(outline.destroy());
 });
 
-test(`does not instantiate ripple when ${cssClasses.BOX} class is not present`, () => {
-  const {component} = setupTest();
+test(`does not instantiate ripple when ${cssClasses.OUTLINED} class is present`, () => {
+  const hasOutline = true;
+  const {component} = setupTest(hasOutline);
   assert.isUndefined(component.ripple);
 });
 
@@ -338,37 +384,117 @@ test('adapter#deactivateBottomLine removes active class from the bottom line', (
   td.verify(bottomLine.deactivate());
 });
 
-test('adapter#registerInteractionHandler adds an event listener to the nativeControl element', () => {
-  const {component, nativeControl} = setupTest();
-  const listener = td.func('eventlistener');
-  component.getDefaultFoundation().adapter_.registerInteractionHandler('click', listener);
-  domEvents.emit(nativeControl, 'click');
-  td.verify(listener(td.matchers.anything()));
+test('adapter#notchOutline proxies labelWidth and isRtl to the outline', () => {
+  const hasOutline = true;
+  const {component, outline} = setupTest(hasOutline);
+  const isRtl = false;
+
+  component.getDefaultFoundation().adapter_.notchOutline(LABEL_WIDTH, isRtl);
+  td.verify(outline.notch(LABEL_WIDTH, isRtl), {times: 1});
 });
 
-test('adapter#deregisterInteractionHandler removes an event listener from the nativeControl element', () => {
-  const {component, nativeControl} = setupTest();
-  const listener = td.func('eventlistener');
-  nativeControl.addEventListener('click', listener);
-  component.getDefaultFoundation().adapter_.deregisterInteractionHandler('click', listener);
-  domEvents.emit(nativeControl, 'click');
-  td.verify(listener(td.matchers.anything()), {times: 0});
+test('adapter#notchOutline does not proxy values to the outline if it does not exist', () => {
+  const hasOutline = false;
+  const {component, outline} = setupTest(hasOutline);
+  const isRtl = false;
+
+  component.getDefaultFoundation().adapter_.notchOutline(LABEL_WIDTH, isRtl);
+  td.verify(outline.notch(LABEL_WIDTH, isRtl), {times: 0});
 });
 
-test('adapter#setValue sets the value of the select to the correct option', () => {
-  const {nativeControl, component} = setupTest();
-  component.getDefaultFoundation().adapter_.setValue('orange');
-  assert.equal(nativeControl.value, 'orange');
-});
-
-test('adapter#getValue returns the nativeControl value', () => {
-  const {nativeControl, component} = setupTest();
-  nativeControl.value = 'orange';
-  assert.equal(component.getDefaultFoundation().adapter_.getValue(), 'orange');
-});
-
-test('adapter#getSelectedIndex returns selected index', () => {
+test('adapter#getLabelWidth returns the width of the label', () => {
   const {component} = setupTest();
-  component.selectedIndex = 1;
-  assert.equal(component.getDefaultFoundation().adapter_.getSelectedIndex(), 1);
+  assert.equal(component.getDefaultFoundation().adapter_.getLabelWidth(), LABEL_WIDTH);
+});
+
+test('adapter#getLabelWidth returns 0 if the label does not exist', () => {
+  const hasOutline = true;
+  const hasLabel = false;
+  const {component} = setupTest(hasOutline, hasLabel);
+
+  assert.equal(component.getDefaultFoundation().adapter_.getLabelWidth(), 0);
+});
+
+test('change event triggers foundation.handleChange()', () => {
+  const {component, nativeControl} = setupTest();
+  component.foundation_.handleChange = td.func();
+  domEvents.emit(nativeControl, 'change');
+  td.verify(component.foundation_.handleChange(), {times: 1});
+});
+
+test('focus event triggers foundation.handleFocus()', () => {
+  const {component, nativeControl} = setupTest();
+  component.foundation_.handleFocus = td.func();
+  domEvents.emit(nativeControl, 'focus');
+  td.verify(component.foundation_.handleFocus(), {times: 1});
+});
+
+test('blur event triggers foundation.handleBlur()', () => {
+  const {component, nativeControl} = setupTest();
+  component.foundation_.handleBlur = td.func();
+  domEvents.emit(nativeControl, 'blur');
+  td.verify(component.foundation_.handleBlur(), {times: 1});
+});
+
+test('#destroy removes the change handler', () => {
+  const {component, nativeControl} = setupTest();
+  component.foundation_.handleChange = td.func();
+  component.destroy();
+  domEvents.emit(nativeControl, 'change');
+  td.verify(component.foundation_.handleChange(), {times: 0});
+});
+
+test('#destroy removes the focus handler', () => {
+  const {component, nativeControl} = setupTest();
+  component.foundation_.handleFocus = td.func();
+  component.destroy();
+  domEvents.emit(nativeControl, 'focus');
+  td.verify(component.foundation_.handleFocus(), {times: 0});
+});
+
+test('#destroy removes the blur handler', () => {
+  const {component, nativeControl} = setupTest();
+  component.foundation_.handleBlur = td.func();
+  component.destroy();
+  domEvents.emit(nativeControl, 'blur');
+  td.verify(component.foundation_.handleBlur(), {times: 0});
+});
+
+test('mousedown on the select sets the line ripple origin', () => {
+  const {bottomLine, fixture} = setupTest();
+  const event = document.createEvent('MouseEvent');
+  const clientX = 200;
+  const clientY = 200;
+  // IE11 mousedown event.
+  event.initMouseEvent('mousedown', true, true, window, 0, 0, 0, clientX, clientY, false, false, false, false, 0, null);
+  fixture.querySelector('select').dispatchEvent(event);
+
+  td.verify(bottomLine.setRippleCenter(200), {times: 1});
+});
+
+test('mousedown on the select does nothing if the it does not have a lineRipple', () => {
+  const hasOutline = true;
+  const {bottomLine, fixture} = setupTest(hasOutline);
+  const event = document.createEvent('MouseEvent');
+  const clientX = 200;
+  const clientY = 200;
+  // IE11 mousedown event.
+  event.initMouseEvent('mousedown', true, true, window, 0, 0, 0, clientX, clientY, false, false, false, false, 0, null);
+  fixture.querySelector('select').dispatchEvent(event);
+
+  td.verify(bottomLine.setRippleCenter(200), {times: 0});
+});
+
+test('#destroy removes the mousedown listener', () => {
+  const {bottomLine, component, fixture} = setupTest();
+  const event = document.createEvent('MouseEvent');
+  const clientX = 200;
+  const clientY = 200;
+
+  component.destroy();
+  // IE11 mousedown event.
+  event.initMouseEvent('mousedown', true, true, window, 0, 0, 0, clientX, clientY, false, false, false, false, 0, null);
+  fixture.querySelector('select').dispatchEvent(event);
+
+  td.verify(bottomLine.setRippleCenter(200), {times: 0});
 });

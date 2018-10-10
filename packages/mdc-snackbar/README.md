@@ -206,6 +206,7 @@ The adapter for snackbars must provide the following functions, with correct sig
 | `setActionText(actionText: string) => void` | Set the text content of the action element. |
 | `setMessageText(message: string) => void` | Set the text content of the message element. |
 | `setFocus() => void` | Sets focus on the action button. |
+| `isFocused() => boolean` | Detects focus on the action button. |
 | `visibilityIsHidden() => boolean` | Returns document.hidden property. |
 | `registerBlurHandler(handler: EventListener) => void` | Registers an event handler to be called when a `blur` event is triggered on the action button |
 | `deregisterBlurHandler(handler: EventListener) => void` | Deregisters a `blur` event handler from the actionButton |

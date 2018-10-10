@@ -1,16 +1,22 @@
-// Copyright 2016 Google Inc. All Rights Reserved.
+// Copyright 2016 Google Inc.
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-//      http://www.apache.org/licenses/LICENSE-2.0
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
@@ -88,29 +94,51 @@
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
+  fill: currentColor;
 }
 
 .mdc-list-item__meta {
   @include mdc-rtl-reflexive-property(margin, auto, 0, ".mdc-list-item");
 }
 
-.mdc-list-item__text,
-.mdc-list-item__secondary-text {
+.mdc-list-item__text {
   @include mdc-typography-overflow-ellipsis;
+}
+
+$mdc-list-item-primary-text-baseline-height_: 32px;
+$mdc-list-item-secondary-text-baseline-height_: 20px;
+$mdc-list-dense-item-primary-text-baseline-height_: 24px;
+
+.mdc-list-item__primary-text {
+  @include mdc-typography-overflow-ellipsis;
+  @include mdc-typography-baseline-top($mdc-list-item-primary-text-baseline-height_);
+  @include mdc-typography-baseline-bottom($mdc-list-item-secondary-text-baseline-height_);
 
   display: block;
+
+  // stylelint-disable plugin/selector-bem-pattern
+  .mdc-list--dense & {
+    @include mdc-typography-baseline-top($mdc-list-dense-item-primary-text-baseline-height_);
+    @include mdc-typography-baseline-bottom($mdc-list-item-secondary-text-baseline-height_);
+  }
+  // stylelint-enable plugin/selector-bem-pattern
 }
 
 .mdc-list-item__secondary-text {
   @include mdc-typography(body2);
-}
+  @include mdc-typography-overflow-ellipsis;
+  @include mdc-typography-baseline-top($mdc-list-item-secondary-text-baseline-height_);
 
-// Match the font size to the primary text when dense
-// stylelint-disable plugin/selector-bem-pattern
-.mdc-list--dense .mdc-list-item__secondary-text {
-  font-size: inherit;
+  display: block;
+
+  // stylelint-disable plugin/selector-bem-pattern
+  .mdc-list--dense & {
+    @include mdc-typography-baseline-top($mdc-list-item-secondary-text-baseline-height_);
+
+    font-size: inherit;
+  }
+  // stylelint-enable plugin/selector-bem-pattern
 }
-// stylelint-enable plugin/selector-bem-pattern
 
 // stylelint-disable plugin/selector-bem-pattern
 .mdc-list--dense .mdc-list-item {
@@ -131,6 +159,10 @@
   border-radius: 50%;
 }
 
+.mdc-list--two-line .mdc-list-item__text {
+  align-self: flex-start;
+}
+
 .mdc-list--two-line .mdc-list-item {
   height: 72px;
 }
@@ -140,7 +172,7 @@
 }
 
 .mdc-list--avatar-list.mdc-list--dense .mdc-list-item {
-  height: 48px;
+  height: 60px;
 }
 
 .mdc-list--avatar-list.mdc-list--dense .mdc-list-item__graphic {

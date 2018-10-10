@@ -1,98 +1,113 @@
-/*
- * Copyright 2018 Google Inc. All Rights Reserved.
+/**
+ * @license
+ * Copyright 2018 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      https://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 'use strict';
 
-const Cli = require('./lib/cli');
-const Duration = require('./lib/duration');
-const {ExitCode} = require('./lib/constants');
+const Cli = require('./infra/lib/cli');
+const CliColor = require('./infra/lib/logger').colors;
+const Duration = require('./infra/lib/duration');
+const {ExitCode} = require('./infra/lib/constants');
+const {formatError} = require('./infra/lib/stacktrace');
 
-const COMMAND_MAP = {
-  async approve() {
-    return require('./commands/approve').runAsync();
+const COMMANDS = {
+  get approve() {
+    return require('./infra/commands/approve');
   },
-
-  async build() {
-    return require('./commands/build').runAsync();
+  get build() {
+    return require('./infra/commands/build');
   },
-
-  async clean() {
-    return require('./commands/clean').runAsync();
+  get clean() {
+    return require('./infra/commands/clean');
   },
-
-  async demo() {
-    return require('./commands/demo').runAsync();
+  get demo() {
+    return require('./infra/commands/demo');
   },
-
-  async proto() {
-    return require('./commands/proto').runAsync();
+  get index() {
+    return require('./infra/commands/index');
   },
-
-  async serve() {
-    return require('./commands/serve').runAsync();
+  get proto() {
+    return require('./infra/commands/proto');
   },
-
-  async test() {
-    return require('./commands/test').runAsync();
+  get serve() {
+    return require('./infra/commands/serve');
+  },
+  get test() {
+    return require('./infra/commands/test');
   },
 };
 
-async function run() {
+async function runAsync() {
   const cli = new Cli();
-  const cmd = COMMAND_MAP[cli.command];
+  const CmdClass = COMMANDS[cli.command];
 
-  if (cmd) {
-    const isOnline = await cli.isOnline();
-    if (!isOnline) {
-      console.log('Offline mode!');
-    }
-
-    cmd().then(
-      (exitCode = 0) => {
-        if (exitCode !== 0) {
-          process.exit(exitCode);
-        }
-      },
-      (err) => {
-        console.error(err);
-        process.exit(ExitCode.UNKNOWN_ERROR);
-      }
-    );
-  } else {
+  if (!CmdClass) {
     console.error(`Error: Unknown command: '${cli.command}'`);
-    process.exit(ExitCode.UNSUPPORTED_CLI_COMMAND);
+    exit(ExitCode.UNSUPPORTED_CLI_COMMAND);
+    return;
   }
+
+  const cmd = new CmdClass();
+  const isOnline = await cli.checkIsOnline();
+  if (!isOnline) {
+    console.log('Offline mode!');
+  }
+
+  cmd.runAsync().then(
+    (exitCode = ExitCode.OK) => {
+      if (exitCode !== ExitCode.OK) {
+        exit(exitCode);
+      }
+    },
+    (err) => {
+      console.error('\n\n' + CliColor.bold.red('ERROR:'), formatError(err));
+      exit(ExitCode.UNKNOWN_ERROR);
+    }
+  );
 }
 
 const startTimeMs = new Date();
 
+// TODO(acdvorak): Create a centralized class to manage global exit handlers
 process.on('exit', () => {
   const elapsedTimeHuman = Duration.elapsed(startTimeMs, new Date()).toHumanShort();
   console.log(`\nRun time: ${elapsedTimeHuman}\n`);
 });
 
-process.on('unhandledRejection', (error) => {
+// TODO(acdvorak): Create a centralized class to manage global exit handlers
+process.on('unhandledRejection', (err) => {
   const message = [
     'UnhandledPromiseRejectionWarning: Unhandled promise rejection.',
     'This error originated either by throwing inside of an async function without a catch block,',
     'or by rejecting a promise which was not handled with .catch().',
   ].join(' ');
+  console.error('\n');
   console.error(message);
-  console.error(error);
-  process.exit(ExitCode.UNHANDLED_PROMISE_REJECTION);
+  console.error(formatError(err));
+  exit(ExitCode.UNHANDLED_PROMISE_REJECTION);
 });
 
-run();
+function exit(code) {
+  process.exitCode = code;
+}
+
+runAsync();

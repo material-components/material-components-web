@@ -9,8 +9,8 @@ path: /catalog/input-controls/select-menus/
 ## Important - Default Style Deprecation Notice
 
 The existing default select style will be changed in an upcoming release. The Material spec indicates that
-the default style will be the filled variant (currently referred to as the box variant). This will become the  
-default style. Continuing to add the `mdc-select--box` class to the select will result in no change. 
+the default style will be the filled variant (currently referred to as the box variant). This will become the
+default style. Continuing to add the `mdc-select--box` class to the select will result in no change.
 
 # Select Menus
 
@@ -83,24 +83,9 @@ See [Importing the JS component](../../docs/importing-js.md) for more informatio
 
 ## Variants
 
-### Select Box
-
-The Select Box variant uses the same markup as the standard variant, with the addition of the `mdc-select--box`
-modifier class on the root element.
-
-```html
-<div class="mdc-select mdc-select--box">
-  <select class="mdc-select__native-control">
-    ...
-  </select>
-  <label class="mdc-floating-label">Pick a Food Group</label>
-  <div class="mdc-line-ripple"></div>
-</div>
-```
-
 ### Outlined Select
 
-The Select Outlined variant uses the `mdc-notched-outline` in place of the `mdc-line-ripple` element and adds the 
+The Select Outlined variant uses the `mdc-notched-outline` in place of the `mdc-line-ripple` element and adds the
 `mdc-select--outlined` modifier class on the root element.
 
 ```html
@@ -198,7 +183,6 @@ Since MDC Select uses native `<select>` and `<option>` elements, simply add the 
 | Class | Description |
 | --- | --- |
 | `mdc-select` | Mandatory. |
-| `mdc-select--box` | Optional. Styles the select as a box select. |
 | `mdc-select--disabled` | Optional. Styles the select as disabled. This class should be applied to the root element when the `disabled` attribute is applied to the `<select>` element. |
 | `mdc-select--outlined` | Optional. Styles the select as outlined select. |
 | `mdc-select__native-control` | Mandatory. The native `<select>` element. |
@@ -215,8 +199,12 @@ Mixin | Description
 `mdc-select-focused-label-color($color)` | Customizes the label color of the select when focused.
 `mdc-select-bottom-line-color($color)` | Customizes the color of the default bottom line of the select.
 `mdc-select-focused-bottom-line-color($color)` | Customizes the color of the bottom line of the select when focused.
-`mdc-select-hover-bottom-line-color($color)` | Customizes the color of the bottom line when select is hovered.
-`mdc-select-outline-corner-radius($color)` | Customizes the color of the notched outline when select is focused.
+`mdc-select-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to boxed select variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`mdc-select-hover-bottom-line-color($color)` | Customizes the color of the bottom line when the select is hovered.
+`mdc-select-outline-color($color)` | Customizes the color of the notched outline.
+`mdc-select-outline-shape-radius($radius, $rtl-reflexive)` | Sets the border radius of of the outlined select variant. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`mdc-select-focused-outline-color($color)` | Customizes the color of the outline of the select when focused.
+`mdc-select-hover-outline-color($color)` | Customizes the color of the outline when the select is hovered.
 
 > NOTE: To further customize the floating label, please see the [floating label documentation](./../mdc-floating-label/README.md).
 
@@ -244,22 +232,24 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | --- | --- |
 | `addClass(className: string) => void` | Adds a class to the root element. |
 | `removeClass(className: string) => void` | Removes a class from the root element. |
-| `floatLabel(value: boolean) => void` | Floats or defloats label. |
+| `hasClass(className: string) => boolean` | Returns true if the root element has the className in its classList. |
 | `activateBottomLine() => void` | Activates the bottom line component. |
 | `deactivateBottomLine() => void` | Deactivates the bottom line component. |
-| `setDisabled(disabled: boolean) => void` | Sets the `disabled` property of the `<select>` element. |
-| `registerInteractionHandler(type: string, handler: EventListener) => void` | Adds an event listener `handler` for event type `type` on the `<select>` element. |
-| `deregisterInteractionHandler(type: string, handler: EventListener) => void` | Removes an event listener `handler` for event type `type` on the `<select>` element. |
-| `getSelectedIndex() => number` | Returns the selected index of the `<select>` element. |
-| `setSelectedIndex(index: number) => void` | Sets the selected index of the `<select>` element. |
-| `getValue() => string` | Returns the value selected on the `<select>` element. |
-| `setValue(value: string) => void` | Sets the value of the `<select>` element. |
+| `getValue() => string` | Returns the value selected on the `select` element. |
+| `isRtl() => boolean` | Returns true if a parent of the root element is in RTL. |
+| `hasLabel() => boolean` | Returns true if the `select` has a label associated with it. |
+| `floatLabel(value: boolean) => void` | Floats or defloats label. |
+| `getLabelWidth() => number` | Returns the offsetWidth of the label element. |
+| `hasOutline() => boolean` | Returns true if the `select` has the notched outline element. |
+| `notchOutline(labelWidth: number, isRtl, boolean) => void` | Switches the notched outline element to its "notched state." |
+| `closeOutline() => void` | Switches the notched outline element to its closed state. |
 
 ### `MDCSelectFoundation`
 
 | Method Signature | Description |
 | --- | --- |
 | `notchOutline(openNotch: boolean) => void` | Opens/closes the notched outline. |
-| `setValue(value: string) => void` | Sets the value of the component. |
-| `setDisabled(disabled: boolean) => void` | Adds/removes disabled class, and sets disabled attribute on the component. |
-| `setSelectedIndex(selectedIndex: number) => void` | Sets the selected index of the component. |
+| `updateDisabledStyle(disabled: boolean) => void` | Updates appearance based on disabled state. This must be called whenever the `disabled` state changes. |
+| `handleFocus() => void` | Handles a focus event on the `select` element. |
+| `handleBlur() => void` | Handles a blur event on the `select` element. |
+| `handleChange() => void` | Handles a change to the `select` element's value. This must be called both for `change` events and programmatic changes requested via the component API. |

@@ -1,24 +1,30 @@
 /**
  * @license
- * Copyright 2017 Google Inc. All Rights Reserved.
+ * Copyright 2017 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import MDCFoundation from '@material/base/foundation';
 import MDCChipSetAdapter from './adapter';
 // eslint-disable-next-line no-unused-vars
-import {MDCChipFoundation, MDCChipInteractionEventType} from '../chip/foundation';
+import {MDCChipInteractionEventType, MDCChipSelectionEventType, MDCChipRemovalEventType} from '../chip/foundation';
 import {strings, cssClasses} from './constants';
 
 /**
@@ -44,9 +50,8 @@ class MDCChipSetFoundation extends MDCFoundation {
   static get defaultAdapter() {
     return /** @type {!MDCChipSetAdapter} */ ({
       hasClass: () => {},
-      registerInteractionHandler: () => {},
-      deregisterInteractionHandler: () => {},
       removeChip: () => {},
+      setSelected: () => {},
     });
   }
 
@@ -57,88 +62,95 @@ class MDCChipSetFoundation extends MDCFoundation {
     super(Object.assign(MDCChipSetFoundation.defaultAdapter, adapter));
 
     /**
-     * The selected chips in the set. Only used for choice chip set or filter chip set.
-     * @private {!Array<!MDCChipFoundation>}
+     * The ids of the selected chips in the set. Only used for choice chip set or filter chip set.
+     * @private {!Array<string>}
      */
-    this.selectedChips_ = [];
-
-    /** @private {function(!MDCChipInteractionEventType): undefined} */
-    this.chipInteractionHandler_ = (evt) => this.handleChipInteraction_(evt);
-    /** @private {function(!MDCChipInteractionEventType): undefined} */
-    this.chipRemovalHandler_ = (evt) => this.handleChipRemoval_(evt);
-  }
-
-  init() {
-    this.adapter_.registerInteractionHandler(
-      MDCChipFoundation.strings.INTERACTION_EVENT, this.chipInteractionHandler_);
-    this.adapter_.registerInteractionHandler(
-      MDCChipFoundation.strings.REMOVAL_EVENT, this.chipRemovalHandler_);
-  }
-
-  destroy() {
-    this.adapter_.deregisterInteractionHandler(
-      MDCChipFoundation.strings.INTERACTION_EVENT, this.chipInteractionHandler_);
-    this.adapter_.deregisterInteractionHandler(
-      MDCChipFoundation.strings.REMOVAL_EVENT, this.chipRemovalHandler_);
+    this.selectedChipIds_ = [];
   }
 
   /**
-   * Selects the given chip. Deselects all other chips if the chip set is of the choice variant.
-   * @param {!MDCChipFoundation} chipFoundation
+   * Returns an array of the IDs of all selected chips.
+   * @return {!Array<string>}
    */
-  select(chipFoundation) {
-    if (this.adapter_.hasClass(cssClasses.CHOICE)) {
-      this.deselectAll_();
+  getSelectedChipIds() {
+    return this.selectedChipIds_;
+  }
+
+  /**
+   * Toggles selection of the chip with the given id.
+   * @param {string} chipId
+   */
+  toggleSelect(chipId) {
+    if (this.selectedChipIds_.indexOf(chipId) >= 0) {
+      this.deselect(chipId);
+    } else {
+      this.select(chipId);
     }
-    chipFoundation.setSelected(true);
-    this.selectedChips_.push(chipFoundation);
   }
 
   /**
-   * Deselects the given chip.
-   * @param {!MDCChipFoundation} chipFoundation
+   * Selects the chip with the given id. Deselects all other chips if the chip set is of the choice variant.
+   * @param {string} chipId
    */
-  deselect(chipFoundation) {
-    const index = this.selectedChips_.indexOf(chipFoundation);
+  select(chipId) {
+    if (this.selectedChipIds_.indexOf(chipId) >= 0) {
+      return;
+    }
+
+    if (this.adapter_.hasClass(cssClasses.CHOICE) && this.selectedChipIds_.length > 0) {
+      const previouslySelectedChip = this.selectedChipIds_[0];
+      this.selectedChipIds_.length = 0;
+      this.adapter_.setSelected(previouslySelectedChip, false);
+    }
+    this.selectedChipIds_.push(chipId);
+    this.adapter_.setSelected(chipId, true);
+  }
+
+  /**
+   * Deselects the chip with the given id.
+   * @param {string} chipId
+   */
+  deselect(chipId) {
+    const index = this.selectedChipIds_.indexOf(chipId);
     if (index >= 0) {
-      this.selectedChips_.splice(index, 1);
+      this.selectedChipIds_.splice(index, 1);
+      this.adapter_.setSelected(chipId, false);
     }
-    chipFoundation.setSelected(false);
-  }
-
-  /** Deselects all selected chips. */
-  deselectAll_() {
-    this.selectedChips_.forEach((chipFoundation) => {
-      chipFoundation.setSelected(false);
-    });
-    this.selectedChips_.length = 0;
   }
 
   /**
    * Handles a chip interaction event
    * @param {!MDCChipInteractionEventType} evt
-   * @private
    */
-  handleChipInteraction_(evt) {
-    const chipFoundation = evt.detail.chip.foundation;
+  handleChipInteraction(evt) {
+    const {chipId} = evt.detail;
     if (this.adapter_.hasClass(cssClasses.CHOICE) || this.adapter_.hasClass(cssClasses.FILTER)) {
-      if (chipFoundation.isSelected()) {
-        this.deselect(chipFoundation);
-      } else {
-        this.select(chipFoundation);
-      }
+      this.toggleSelect(chipId);
+    }
+  }
+
+  /**
+   * Handles a chip selection event, used to handle discrepancy when selection state is set directly on the Chip.
+   * @param {!MDCChipSelectionEventType} evt
+   */
+  handleChipSelection(evt) {
+    const {chipId, selected} = evt.detail;
+    const chipIsSelected = this.selectedChipIds_.indexOf(chipId) >= 0;
+    if (selected && !chipIsSelected) {
+      this.select(chipId);
+    } else if (!selected && chipIsSelected) {
+      this.deselect(chipId);
     }
   }
 
   /**
    * Handles the event when a chip is removed.
-   * @param {!MDCChipInteractionEventType} evt
-   * @private
+   * @param {!MDCChipRemovalEventType} evt
    */
-  handleChipRemoval_(evt) {
-    const {chip} = evt.detail;
-    this.deselect(chip.foundation);
-    this.adapter_.removeChip(chip);
+  handleChipRemoval(evt) {
+    const {chipId} = evt.detail;
+    this.deselect(chipId);
+    this.adapter_.removeChip(chipId);
   }
 }
 

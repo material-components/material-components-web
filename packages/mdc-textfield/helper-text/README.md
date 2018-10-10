@@ -27,6 +27,8 @@ Helper text gives context about a field’s input, such as how the input will be
 <p class="mdc-text-field-helper-text" aria-hidden="true">
 ```
 
+> NOTE: Make sure there are no white-space characters before helper text content.
+
 ### Styles
 
 ```scss

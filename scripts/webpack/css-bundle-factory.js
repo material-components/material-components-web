@@ -1,17 +1,24 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2016 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 /**
@@ -154,14 +161,18 @@ class CssBundleFactory {
         'mdc.linear-progress': getAbsolutePath('/packages/mdc-linear-progress/mdc-linear-progress.scss'),
         'mdc.list': getAbsolutePath('/packages/mdc-list/mdc-list.scss'),
         'mdc.menu': getAbsolutePath('/packages/mdc-menu/mdc-menu.scss'),
+        'mdc.menu-surface': getAbsolutePath('/packages/mdc-menu-surface/mdc-menu-surface.scss'),
         'mdc.notched-outline': getAbsolutePath('/packages/mdc-notched-outline/mdc-notched-outline.scss'),
         'mdc.radio': getAbsolutePath('/packages/mdc-radio/mdc-radio.scss'),
         'mdc.ripple': getAbsolutePath('/packages/mdc-ripple/mdc-ripple.scss'),
         'mdc.select': getAbsolutePath('/packages/mdc-select/mdc-select.scss'),
-        'mdc.shape': getAbsolutePath('/packages/mdc-shape/mdc-shape.scss'),
         'mdc.slider': getAbsolutePath('/packages/mdc-slider/mdc-slider.scss'),
         'mdc.snackbar': getAbsolutePath('/packages/mdc-snackbar/mdc-snackbar.scss'),
         'mdc.switch': getAbsolutePath('/packages/mdc-switch/mdc-switch.scss'),
+        'mdc.tab': getAbsolutePath('/packages/mdc-tab/mdc-tab.scss'),
+        'mdc.tab-bar': getAbsolutePath('/packages/mdc-tab-bar/mdc-tab-bar.scss'),
+        'mdc.tab-indicator': getAbsolutePath('/packages/mdc-tab-indicator/mdc-tab-indicator.scss'),
+        'mdc.tab-scroller': getAbsolutePath('/packages/mdc-tab-scroller/mdc-tab-scroller.scss'),
         'mdc.tabs': getAbsolutePath('/packages/mdc-tabs/mdc-tabs.scss'),
         'mdc.textfield': getAbsolutePath('/packages/mdc-textfield/mdc-text-field.scss'),
         'mdc.theme': getAbsolutePath('/packages/mdc-theme/mdc-theme.scss'),

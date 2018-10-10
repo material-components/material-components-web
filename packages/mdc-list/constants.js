@@ -1,32 +1,45 @@
 /**
  * @license
- * Copyright 2018 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 /** @enum {string} */
 const cssClasses = {
+  ROOT: 'mdc-list',
   LIST_ITEM_CLASS: 'mdc-list-item',
   LIST_ITEM_SELECTED_CLASS: 'mdc-list-item--selected',
+  LIST_ITEM_ACTIVATED_CLASS: 'mdc-list-item--activated',
 };
 
 /** @enum {string} */
 const strings = {
   ARIA_ORIENTATION: 'aria-orientation',
-  ARIA_ORIENTATION_VERTICAL: 'vertical',
+  ARIA_ORIENTATION_HORIZONTAL: 'horizontal',
   ARIA_SELECTED: 'aria-selected',
-  FOCUSABLE_CHILD_ELEMENTS: 'button:not(:disabled), a',
+  CHECKBOX_RADIO_SELECTOR: 'input[type="checkbox"]:not(:disabled), input[type="radio"]:not(:disabled)',
+  CHILD_ELEMENTS_TO_TOGGLE_TABINDEX: `.${cssClasses.LIST_ITEM_CLASS} button:not(:disabled), 
+  .${cssClasses.LIST_ITEM_CLASS} a`,
+  FOCUSABLE_CHILD_ELEMENTS: `.${cssClasses.LIST_ITEM_CLASS} button:not(:disabled), .${cssClasses.LIST_ITEM_CLASS} a,
+  .${cssClasses.LIST_ITEM_CLASS} input[type="radio"]:not(:disabled),
+  .${cssClasses.LIST_ITEM_CLASS} input[type="checkbox"]:not(:disabled)`,
   ENABLED_ITEMS_SELECTOR: '.mdc-list-item:not(.mdc-list-item--disabled)',
 };
 

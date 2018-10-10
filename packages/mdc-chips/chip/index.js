@@ -1,18 +1,24 @@
 /**
  * @license
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2016 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import MDCComponent from '@material/base/component';
@@ -21,6 +27,8 @@ import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
 import MDCChipAdapter from './adapter';
 import {MDCChipFoundation} from './foundation';
 import {strings} from './constants';
+
+const INTERACTION_EVENTS = ['click', 'keydown'];
 
 /**
  * @extends {MDCComponent<!MDCChipFoundation>}
@@ -33,10 +41,21 @@ class MDCChip extends MDCComponent {
   constructor(...args) {
     super(...args);
 
+    /** @type {string} */
+    this.id;
     /** @private {?Element} */
     this.leadingIcon_;
+    /** @private {?Element} */
+    this.trailingIcon_;
     /** @private {!MDCRipple} */
     this.ripple_;
+
+    /** @private {?function(?Event): undefined} */
+    this.handleInteraction_;
+    /** @private {?function(!Event): undefined} */
+    this.handleTransitionEnd_;
+    /** @private {function(!Event): undefined} */
+    this.handleTrailingIconInteraction_;
   }
 
   /**
@@ -47,8 +66,11 @@ class MDCChip extends MDCComponent {
     return new MDCChip(root);
   }
 
-  initialize() {
+  initialize(
+    rippleFactory = (el, foundation) => new MDCRipple(el, foundation)) {
+    this.id = this.root_.id;
     this.leadingIcon_ = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
+    this.trailingIcon_ = this.root_.querySelector(strings.TRAILING_ICON_SELECTOR);
 
     // Adjust ripple size for chips with animated growing width. This applies when filter chips without
     // a leading icon are selected, and a leading checkmark will cause the chip width to expand.
@@ -63,37 +85,60 @@ class MDCChip extends MDCComponent {
           return {height, width};
         },
       });
-      this.ripple_ = new MDCRipple(this.root_, new MDCRippleFoundation(adapter));
+      this.ripple_ = rippleFactory(this.root_, new MDCRippleFoundation(adapter));
     } else {
-      this.ripple_ = new MDCRipple(this.root_);
+      this.ripple_ = rippleFactory(this.root_);
+    }
+  }
+
+  initialSyncWithDOM() {
+    this.handleInteraction_ = (evt) => this.foundation_.handleInteraction(evt);
+    this.handleTransitionEnd_ = (evt) => this.foundation_.handleTransitionEnd(evt);
+    this.handleTrailingIconInteraction_ = (evt) => this.foundation_.handleTrailingIconInteraction(evt);
+
+    INTERACTION_EVENTS.forEach((evtType) => {
+      this.root_.addEventListener(evtType, this.handleInteraction_);
+    });
+    this.root_.addEventListener('transitionend', this.handleTransitionEnd_);
+
+    if (this.trailingIcon_) {
+      INTERACTION_EVENTS.forEach((evtType) => {
+        this.trailingIcon_.addEventListener(evtType, this.handleTrailingIconInteraction_);
+      });
     }
   }
 
   destroy() {
     this.ripple_.destroy();
+
+    INTERACTION_EVENTS.forEach((evtType) => {
+      this.root_.removeEventListener(evtType, this.handleInteraction_);
+    });
+    this.root_.removeEventListener('transitionend', this.handleTransitionEnd_);
+
+    if (this.trailingIcon_) {
+      INTERACTION_EVENTS.forEach((evtType) => {
+        this.trailingIcon_.removeEventListener(evtType, this.handleTrailingIconInteraction_);
+      });
+    }
+
     super.destroy();
   }
 
   /**
-   * Returns true if the chip is selected.
+   * Returns whether the chip is selected.
    * @return {boolean}
    */
-  isSelected() {
+  get selected() {
     return this.foundation_.isSelected();
   }
 
   /**
-   * Begins the exit animation which leads to removal of the chip.
+   * Sets selected state on the chip.
+   * @param {boolean} selected
    */
-  beginExit() {
-    this.foundation_.beginExit();
-  }
-
-  /**
-   * @return {!MDCChipFoundation}
-   */
-  get foundation() {
-    return this.foundation_;
+  set selected(selected) {
+    this.foundation_.setSelected(selected);
   }
 
   /**
@@ -109,7 +154,14 @@ class MDCChip extends MDCComponent {
    * @param {boolean} shouldRemove
    */
   set shouldRemoveOnTrailingIconClick(shouldRemove) {
-    return this.foundation_.setShouldRemoveOnTrailingIconClick(shouldRemove);
+    this.foundation_.setShouldRemoveOnTrailingIconClick(shouldRemove);
+  }
+
+  /**
+   * Begins the exit animation which leads to removal of the chip.
+   */
+  beginExit() {
+    this.foundation_.beginExit();
   }
 
   /**
@@ -131,24 +183,13 @@ class MDCChip extends MDCComponent {
         }
       },
       eventTargetHasClass: (target, className) => target.classList.contains(className),
-      registerEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
-      deregisterEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
-      registerTrailingIconInteractionHandler: (evtType, handler) => {
-        const trailingIconEl = this.root_.querySelector(strings.TRAILING_ICON_SELECTOR);
-        if (trailingIconEl) {
-          trailingIconEl.addEventListener(evtType, handler);
-        }
-      },
-      deregisterTrailingIconInteractionHandler: (evtType, handler) => {
-        const trailingIconEl = this.root_.querySelector(strings.TRAILING_ICON_SELECTOR);
-        if (trailingIconEl) {
-          trailingIconEl.removeEventListener(evtType, handler);
-        }
-      },
-      notifyInteraction: () => this.emit(strings.INTERACTION_EVENT, {chip: this}, true /* shouldBubble */),
+      notifyInteraction: () => this.emit(strings.INTERACTION_EVENT, {chipId: this.id}, true /* shouldBubble */),
+      notifySelection: (selected) => this.emit(
+        strings.SELECTION_EVENT, {chipId: this.id, selected: selected}, true /* shouldBubble */),
       notifyTrailingIconInteraction: () => this.emit(
-        strings.TRAILING_ICON_INTERACTION_EVENT, {chip: this}, true /* shouldBubble */),
-      notifyRemoval: () => this.emit(strings.REMOVAL_EVENT, {chip: this, root: this.root_}, true /* shouldBubble */),
+        strings.TRAILING_ICON_INTERACTION_EVENT, {chipId: this.id}, true /* shouldBubble */),
+      notifyRemoval: () =>
+        this.emit(strings.REMOVAL_EVENT, {chipId: this.id, root: this.root_}, true /* shouldBubble */),
       getComputedStyleValue: (propertyName) => window.getComputedStyle(this.root_).getPropertyValue(propertyName),
       setStyleProperty: (propertyName, value) => this.root_.style.setProperty(propertyName, value),
     })));

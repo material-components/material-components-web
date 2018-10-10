@@ -82,6 +82,18 @@ If you'd like to maintain a consistent width and height across cards, you'll nee
 }
 ```
 
+#### Icons
+
+We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts:
+
+```html
+<head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+```
+
+However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any other icon library you wish.
+
 #### Content blocks
 
 Cards are composed of different content blocks, which are typically laid out vertically.
@@ -121,14 +133,13 @@ above, or with icon buttons, as below:
 
 ```html
 <div class="mdc-card__actions">
-  <button class="mdc-icon-button material-icons mdc-card__action mdc-card__action--icon"
+  <button class="mdc-icon-button mdc-card__action mdc-card__action--icon"
      aria-pressed="false"
      aria-label="Add to favorites"
-     title="Add to favorites"
-     data-toggle-on-content="favorite"
-     data-toggle-on-label="Remove from favorites"
-     data-toggle-off-content="favorite_border"
-     data-toggle-off-label="Add to favorites">favorite_border</button>
+     title="Add to favorites">
+   <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite</i>
+   <i class="material-icons mdc-icon-button__icon">favorite_border</i>
+  </button>
   <button class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="Share">share</button>
   <button class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="More options">more_vert</button>
 </div>
@@ -173,26 +184,26 @@ elements:
 
 CSS Class | Description
 --- | ---
-`mdc-card` | Mandatory, for the card element
-`mdc-card--outlined` | Removes the shadow and displays a hairline outline instead
-`mdc-card__primary-action` | The main tappable area of the card. Typically contains most (or all) card content _except_ `mdc-card__actions`. Only applicable to cards that have a primary action that the main surface should trigger.
-`mdc-card__media` | Media area that displays a custom `background-image` with `background-size: cover`
-`mdc-card__media--square` | Automatically scales the media area's height to equal its width
-`mdc-card__media--16-9` | Automatically scales the media area's height according to its width, maintaining a 16:9 aspect ratio
-`mdc-card__media-content` | An absolutely-positioned box the same size as the media area, for displaying a title or icon on top of the `background-image`
-`mdc-card__actions` | Row containing action buttons and/or icons
-`mdc-card__actions--full-bleed` | Removes the action area's padding and causes its only child (an `mdc-card__action` element) to consume 100% of the action area's width
-`mdc-card__action-buttons` | A group of action buttons, displayed on the left side of the card (in LTR), adjacent to `mdc-card__action-icons`
-`mdc-card__action-icons` | A group of supplemental action icons, displayed on the right side of the card (in LTR), adjacent to `__action-buttons`
-`mdc-card__action` | An individual action button or icon
-`mdc-card__action--button` | An action button with text
-`mdc-card__action--icon` | An action icon with no text
+`mdc-card` | Mandatory. The main card element.
+`mdc-card--outlined` | Optional. Removes the shadow and displays a hairline outline instead.
+`mdc-card__primary-action` | Optional. The main tappable area of the card. Typically contains most (or all) card content _except_ `mdc-card__actions`. Only applicable to cards that have a primary action that the main surface should trigger.
+`mdc-card__media` | Optional. Media area that displays a custom `background-image` with `background-size: cover`.
+`mdc-card__media--square` | Optional. Automatically scales the media area's height to equal its width.
+`mdc-card__media--16-9` | Optional. Automatically scales the media area's height according to its width, maintaining a 16:9 aspect ratio.
+`mdc-card__media-content` | Optional. An absolutely-positioned box the same size as the media area, for displaying a title or icon on top of the `background-image`.
+`mdc-card__actions` | Optional. Row containing action buttons and/or icons.
+`mdc-card__actions--full-bleed` | Optional. Removes the action area's padding and causes its only child (an `mdc-card__action` element) to consume 100% of the action area's width.
+`mdc-card__action-buttons` | Optional. A group of action buttons, displayed on the left side of the card (in LTR), adjacent to `mdc-card__action-icons`.
+`mdc-card__action-icons` | Optional. A group of supplemental action icons, displayed on the right side of the card (in LTR), adjacent to `__action-buttons`.
+`mdc-card__action` | Optional. An individual action button or icon.
+`mdc-card__action--button` | Optional. An action button with text.
+`mdc-card__action--icon` | Optional. An action icon with no text. We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts.
 
 ### Sass Mixins
 
 Mixin | Description
 --- | ---
-`mdc-card-fill-color($color)` | Sets the fill color of a card
-`mdc-card-outline($color, $thickness)` | Sets the color and thickness of a card's outline (but does _not_ remove its shadow)
-`mdc-card-corner-radius($radius)` | Sets the corner radius of a card
-`mdc-card-media-aspect-ratio($x, $y)` | Maintains the given aspect ratio on a `mdc-card__media` subelement by dynamically scaling its height relative to its width
+`mdc-card-fill-color($color)` | Sets the fill color of a card.
+`mdc-card-outline($color, $thickness)` | Sets the color and thickness of a card's outline (but does _not_ remove its shadow).
+`mdc-card-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to card with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`mdc-card-media-aspect-ratio($x, $y)` | Maintains the given aspect ratio on a `mdc-card__media` subelement by dynamically scaling its height relative to its width.

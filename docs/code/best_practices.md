@@ -1,8 +1,8 @@
 # Best Practices
 
 MDC Web follows naming and documentation best practices to keep our code
-consistent, and our APIs user friendly. We follow isolation best practices to
-keep our code loosely coupled. And we follow performace best practices to keep
+consistent, and our APIs user-friendly. We follow isolation best practices to
+keep our code loosely coupled. And we follow performance best practices to keep
 our components fast.
 
 ### Naming

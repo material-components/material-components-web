@@ -48,7 +48,7 @@ npm install @material/typography
 
 ### HTML Structure
 
-We recommend you load Roboto from Google Fonts:
+We recommend using Roboto from Google Fonts:
 
 ```html
 <head>
@@ -97,6 +97,8 @@ Mixin | Description
 `mdc-typography-base` | Sets the font to Roboto
 `mdc-typography($style)` | Applies one of the typography styles, including setting the font to Roboto
 `mdc-typography-overflow-ellipsis` | Truncates overflow text to one line with an ellipsis
+`mdc-typography-baseline-top($distance)` | Sets the baseline height of a text element from top.
+`mdc-typography-baseline-bottom($distance)` | Sets the distance from text baseline to bottom. This mixin should be combined with `mdc-typography-baseline-top` when setting baseline distance to following text element.
 
 > **A note about `mdc-typography-overflow-ellipsis`**, `mdc-typography-overflow-ellipsis` should only be used if the element is `display: block` or `display: inline-block`.
 
@@ -143,13 +145,14 @@ $mdc-typography-font-family: "Arial, Helvetica, sans-serif";
 @import ...
 ```
 
-Example: Overriding the `font-family` property for `headline1` and `headline2`.
+Example: Overriding the `font-family` property for `headline1` and `font-family` and `font-size` for `headline2`.
 ```scss
 $mdc-typography-styles-headline1: (
-  font-family: "Arial, Helvetica, sans-serif";
+  font-family: unquote("Arial, Helvetica, sans-serif")
 );
 $mdc-typography-styles-headline2: (
-  font-family: "Arial, Helvetica, sans-serif";
+  font-family: unquote("Arial, Helvetica, sans-serif"),
+  font-size: 3.25rem
 );
 
 ...
