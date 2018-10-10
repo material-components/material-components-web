@@ -36,6 +36,11 @@ MDC Web strives to seamlessly incorporate into a wider range of usage contexts, 
 > A list of changes is always available in the [CHANGELOG](./CHANGELOG.md),
 > and a tentative schedule of what we are working on next is available in the [ROADMAP](./ROADMAP.md).
 
+> Note: Material Components Web marks all Sass non-local variables as !default so that users may override them if
+> absolutely required. All Sass variables are private API and may change in both breaking and non-breaking change
+> releases. We make no guarantees that overriding Sass variables will continue to work between each release. This is
+> only provided as a way for users to override the default variables if required.
+
 ## Quick start
 
 > Note: This guide assumes you have Node.js and npm installed locally.
