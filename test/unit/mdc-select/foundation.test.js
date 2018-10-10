@@ -62,12 +62,14 @@ test('#setDisabled(true) calls adapter.addClass', () => {
   const {mockAdapter, foundation} = setupTest();
   foundation.setDisabled(true);
   td.verify(mockAdapter.setDisabled(true));
+  td.verify(mockAdapter.addClass(cssClasses.DISABLED));
 });
 
 test('#setDisabled(false) calls adapter.removeClass', () => {
   const {mockAdapter, foundation} = setupTest();
   foundation.setDisabled(false);
   td.verify(mockAdapter.setDisabled(false));
+  td.verify(mockAdapter.removeClass(cssClasses.DISABLED));
 });
 
 test('#notchOutline updates the SVG path of the outline element', () => {
@@ -211,7 +213,7 @@ test('#handleClick sets the ripple center if isMenuOpen=false', () => {
 test('#handleClick opens the menu if the select is focused and isMenuOpen=false', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.isMenuOpen()).thenReturn(false);
-  td.when(mockAdapter.hasClass(td.matchers.anything())).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.FOCUSED)).thenReturn(true);
   foundation.handleClick(0);
   td.verify(mockAdapter.openMenu(), {times: 1});
 });
