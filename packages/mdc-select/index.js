@@ -363,7 +363,7 @@ class MDCSelect extends MDCComponent {
       },
       setValue: (value) => {
         const element = /** @type {HTMLElement} */ (this.menuElement_.querySelector(`[data-value="${value}"]`));
-        this.setEnhancedSelectedIndex_(this.menu_.items.indexOf(element));
+        this.setEnhancedSelectedIndex_(element ? this.menu_.items.indexOf(element) : -1);
       },
       openMenu: () => {
         if (this.menu_ && !this.menu_.open) {
