@@ -749,4 +749,5 @@ test('on any other keydown does nothing', () => {
 
   td.verify(evt.preventDefault(), {times: 0});
   assert.equal(foundation.getValue(), 50);
+  raf.restore();
 });

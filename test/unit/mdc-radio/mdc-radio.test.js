@@ -72,6 +72,7 @@ if (supportsCssVariables(window)) {
     component.destroy();
     raf.flush();
     assert.isNotOk(root.classList.contains('mdc-ripple-upgraded'));
+    raf.restore();
   });
 }
 

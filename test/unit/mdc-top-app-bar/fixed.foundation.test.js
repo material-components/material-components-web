@@ -80,6 +80,7 @@ test('fixed top app bar: class is added once when page is scrolled from the top'
   scrollHandler();
 
   td.verify(mockAdapter.addClass(MDCTopAppBarFoundation.cssClasses.FIXED_SCROLLED_CLASS), {times: 1});
+  mockRaf.restore();
 });
 
 test('fixed top app bar: class is removed once when page is scrolled to the top', () => {
@@ -101,4 +102,5 @@ test('fixed top app bar: class is removed once when page is scrolled to the top'
   scrollHandler();
 
   td.verify(mockAdapter.removeClass(MDCTopAppBarFoundation.cssClasses.FIXED_SCROLLED_CLASS), {times: 1});
+  mockRaf.restore();
 });

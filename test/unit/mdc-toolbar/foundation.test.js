@@ -92,6 +92,7 @@ test('#destroy calls component event deregistrations', () => {
   foundation.destroy();
   td.verify(mockAdapter.deregisterResizeHandler(resizeHandler));
   td.verify(mockAdapter.deregisterScrollHandler(scrollHandler));
+  mockRaf.restore();
 });
 
 test('#updateAdjustElementStyles adjust margin-top for fixed toolbar', () => {
@@ -165,6 +166,7 @@ test('on scroll handles no flexible height case', () => {
 
   td.verify(mockAdapter.notifyChange({
     flexibleExpansionRatio: td.matchers.argThat((flexExpansionRatio) => approximate(flexExpansionRatio, 0, 0.001))}));
+  mockRaf.restore();
 });
 
 const scrollEventMock =

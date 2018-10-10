@@ -75,6 +75,7 @@ test('#destroy cancels pending setTimeout for #open', () => {
   foundation.destroy();
 
   td.verify(mockAdapter.addClass(cssClasses.OPENING), {times: 0});
+  mockRaf.restore();
 });
 
 test('#open does nothing if drawer is already open', () => {
@@ -101,19 +102,19 @@ test('#open does nothing if drawer is closing', () => {
 test('#open adds appropriate classes and saves focus', () => {
   const {foundation, mockAdapter} = setupTest();
   const mockRaf = createMockRaf();
-  const clock = lolex.install();
+  const clock = lolex.install({toFake: ['setTimeout', 'clearTimeout']});
 
   foundation.open();
   mockRaf.flush();
-  clock.tick(0);
+  clock.tick(100);
 
   try {
     td.verify(mockAdapter.addClass(cssClasses.OPEN), {times: 1});
     td.verify(mockAdapter.addClass(cssClasses.OPENING), {times: 1});
     td.verify(mockAdapter.saveFocus(), {times: 1});
   } finally {
-    mockRaf.restore();
     clock.uninstall();
+    mockRaf.restore();
   }
 });
 

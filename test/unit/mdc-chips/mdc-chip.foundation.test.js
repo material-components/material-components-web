@@ -139,6 +139,7 @@ test('#handleTransitionEnd animates width if chip is exiting on chip opacity tra
 
   raf.flush();
   td.verify(mockAdapter.setStyleProperty('width', '0'));
+  raf.restore();
 });
 
 test(`#handleTransitionEnd adds ${cssClasses.HIDDEN_LEADING_ICON} class to leading icon ` +

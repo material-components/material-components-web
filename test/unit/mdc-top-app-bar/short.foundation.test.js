@@ -89,6 +89,7 @@ test('short top app bar: class is added once when page is scrolled from the top'
   scrollHandler();
 
   td.verify(mockAdapter.addClass(MDCTopAppBarFoundation.cssClasses.SHORT_COLLAPSED_CLASS), {times: 1});
+  mockRaf.restore();
 });
 
 test('short top app bar: class is removed once when page is scrolled to the top', () => {
@@ -110,6 +111,7 @@ test('short top app bar: class is removed once when page is scrolled to the top'
   scrollHandler();
 
   td.verify(mockAdapter.removeClass(MDCTopAppBarFoundation.cssClasses.SHORT_COLLAPSED_CLASS), {times: 1});
+  mockRaf.restore();
 });
 
 test('short top app bar: class is added if it has an action item', () => {

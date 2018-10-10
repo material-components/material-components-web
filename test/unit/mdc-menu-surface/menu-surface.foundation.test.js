@@ -139,7 +139,7 @@ testFoundation('#open adds the open class to the menu surface', ({foundation, mo
 
 testFoundation('#open removes the animation class at the end of the animation',
   ({foundation, mockAdapter, mockRaf}) => {
-    const clock = lolex.install();
+    const clock = lolex.install({toFake: ['setTimeout', 'clearTimeout']});
     foundation.open();
     td.verify(mockAdapter.addClass(cssClasses.ANIMATING_OPEN));
     mockRaf.flush();
@@ -147,16 +147,18 @@ testFoundation('#open removes the animation class at the end of the animation',
     clock.tick(numbers.TRANSITION_OPEN_DURATION);
     mockRaf.flush();
     td.verify(mockAdapter.removeClass(cssClasses.ANIMATING_OPEN));
+    clock.uninstall();
   });
 
 testFoundation('#open emits the open event at the end of the animation', ({foundation, mockAdapter, mockRaf}) => {
-  const clock = lolex.install();
+  const clock = lolex.install({toFake: ['setTimeout', 'clearTimeout']});
   foundation.open();
   mockRaf.flush();
   mockRaf.flush();
   clock.tick(numbers.TRANSITION_OPEN_DURATION);
   mockRaf.flush();
   td.verify(mockAdapter.notifyOpen());
+  clock.uninstall();
 });
 
 testFoundation('#open emits the open event when setQuickOpen is true', ({foundation, mockAdapter, mockRaf}) => {
@@ -535,7 +537,7 @@ testFoundation('#close removes the open class from the menu surface', ({foundati
 
 testFoundation('#close removes the animation class at the end of the animation',
   ({foundation, mockAdapter, mockRaf}) => {
-    const clock = lolex.install();
+    const clock = lolex.install({toFake: ['setTimeout', 'clearTimeout']});
     foundation.close();
     mockRaf.flush();
     mockRaf.flush();
@@ -544,16 +546,18 @@ testFoundation('#close removes the animation class at the end of the animation',
     mockRaf.flush();
     td.verify(mockAdapter.removeClass(cssClasses.ANIMATING_CLOSED));
     td.verify(mockAdapter.notifyClose());
+    clock.uninstall();
   });
 
 testFoundation('#close emits the close event at the end of the animation', ({foundation, mockAdapter, mockRaf}) => {
-  const clock = lolex.install();
+  const clock = lolex.install({toFake: ['setTimeout', 'clearTimeout']});
   foundation.close();
   mockRaf.flush();
   mockRaf.flush();
   clock.tick(numbers.TRANSITION_CLOSE_DURATION);
   mockRaf.flush();
   td.verify(mockAdapter.notifyClose());
+  clock.uninstall();
 });
 
 testFoundation('#close emits the close event when quickOpen is true', ({foundation, mockAdapter, mockRaf}) => {
@@ -625,7 +629,7 @@ test('#isOpen returns false when the menu surface is initiated without the open 
 
 test('#handleKeydown with Escape key closes the menu surface and sends close event', () => {
   const {foundation, mockAdapter} = setupTest();
-  const clock = lolex.install();
+  const clock = lolex.install({toFake: ['setTimeout', 'clearTimeout']});
   const raf = createMockRaf();
   const target = {};
   const event = {target, key: 'Escape'};
@@ -643,7 +647,7 @@ test('#handleKeydown with Escape key closes the menu surface and sends close eve
 
 test('#handleKeydown with Tab key on the last element, it moves to the first', () => {
   const {foundation, mockAdapter} = setupTest();
-  const clock = lolex.install();
+  const clock = lolex.install({toFake: ['setTimeout', 'clearTimeout']});
   const raf = createMockRaf();
   const target = {};
   const event = {target, key: 'Tab', preventDefault: () => {}};
@@ -662,7 +666,7 @@ test('#handleKeydown with Tab key on the last element, it moves to the first', (
 
 test('#handleKeydown with Shift+Tab keys on the first element, it moves to the last', () => {
   const {foundation, mockAdapter} = setupTest();
-  const clock = lolex.install();
+  const clock = lolex.install({toFake: ['setTimeout', 'clearTimeout']});
   const raf = createMockRaf();
   const target = {};
   const event = {target, key: 'Tab', shiftKey: true, preventDefault: () => {}};
@@ -681,7 +685,7 @@ test('#handleKeydown with Shift+Tab keys on the first element, it moves to the l
 
 test('#handleKeydown on any other key, do not prevent default on the event', () => {
   const {foundation} = setupTest();
-  const clock = lolex.install();
+  const clock = lolex.install({toFake: ['setTimeout', 'clearTimeout']});
   const raf = createMockRaf();
   const target = {};
   const preventDefault = td.func('event.preventDefault');
@@ -704,7 +708,7 @@ test('#handleBodyClick event closes the menu surface', () => {
   const mockEvt = {
     target: {},
   };
-  const clock = lolex.install();
+  const clock = lolex.install({toFake: ['setTimeout', 'clearTimeout']});
 
   td.when(mockAdapter.hasClass(MDCMenuSurfaceFoundation.cssClasses.OPEN)).thenReturn(true);
   td.when(mockAdapter.isElementInContainer(td.matchers.anything())).thenReturn(false);

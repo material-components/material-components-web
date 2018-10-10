@@ -217,10 +217,11 @@ test('top app bar : resize events should set isCurrentlyBeingResized_ to true', 
   resizeHandler();
 
   assert.isTrue(foundation.isCurrentlyBeingResized_);
+  mockRaf.restore();
 });
 
 test('top app bar : resize events throttle multiple calls of throttledResizeHandler_ ', () => {
-  const clock = lolex.install();
+  const clock = lolex.install({toFake: ['setTimeout', 'clearTimeout']});
   const mockRaf = createMockRaf();
   const {foundation, mockAdapter} = setupTest();
   const {resizeHandler} = createMockHandlers(foundation, mockAdapter, mockRaf);
@@ -231,10 +232,12 @@ test('top app bar : resize events throttle multiple calls of throttledResizeHand
   resizeHandler();
   clock.tick(numbers.DEBOUNCE_THROTTLE_RESIZE_TIME_MS);
   assert.isTrue(!foundation.resizeThrottleId_);
+  clock.uninstall();
+  mockRaf.restore();
 });
 
 test('top app bar : resize events debounce changing isCurrentlyBeingResized_ to false ', () => {
-  const clock = lolex.install();
+  const clock = lolex.install({toFake: ['setTimeout', 'clearTimeout']});
   const mockRaf = createMockRaf();
   const {foundation, mockAdapter} = setupTest();
   const {resizeHandler} = createMockHandlers(foundation, mockAdapter, mockRaf);
@@ -249,4 +252,6 @@ test('top app bar : resize events debounce changing isCurrentlyBeingResized_ to 
   assert.isTrue(foundation.isCurrentlyBeingResized_);
   clock.tick(150);
   assert.isFalse(foundation.isCurrentlyBeingResized_);
+  clock.uninstall();
+  mockRaf.restore();
 });

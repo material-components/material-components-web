@@ -73,6 +73,7 @@ test('#destroy cleans up tab\'s ripple in browsers that support it', function() 
   component.destroy();
   raf.flush();
   assert.isNotOk(root.classList.contains('mdc-ripple-upgraded'));
+  raf.restore();
 });
 
 test('#get computedWidth returns computed width of tab', () => {

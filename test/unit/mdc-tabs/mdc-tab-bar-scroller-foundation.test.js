@@ -83,6 +83,7 @@ test('#init removes enabled class from indicators if tab bar doesn\'t overflow',
 
   td.verify(mockAdapter.removeClassFromBackIndicator(INDICATOR_ENABLED));
   td.verify(mockAdapter.removeClassFromForwardIndicator(INDICATOR_ENABLED));
+  raf.restore();
 });
 
 test('#init adds enabled class to forward if tab bar overflows', () => {
@@ -97,6 +98,7 @@ test('#init adds enabled class to forward if tab bar overflows', () => {
   raf.flush();
 
   td.verify(mockAdapter.addClassToForwardIndicator(INDICATOR_ENABLED));
+  raf.restore();
 });
 
 test('#destroy deregisters event handlers', () => {
@@ -139,6 +141,7 @@ test('#scrollForward moves the tab bar forward', () => {
   foundation.scrollForward();
   raf.flush();
   td.verify(mockAdapter.setTransformStyleForTabBar('translateX(-600px)'));
+  raf.restore();
 });
 
 test('#scrollForward moves the tab bar forward if last tab is partially occluded', () => {
@@ -159,6 +162,7 @@ test('#scrollForward moves the tab bar forward if last tab is partially occluded
   foundation.scrollForward();
   raf.flush();
   td.verify(mockAdapter.setTransformStyleForTabBar('translateX(-600px)'));
+  raf.restore();
 });
 
 test('#scrollBack moves the tab bar back', () => {
@@ -182,6 +186,7 @@ test('#scrollBack moves the tab bar back', () => {
   raf.flush();
 
   td.verify(mockAdapter.setTransformStyleForTabBar('translateX(-600px)'));
+  raf.restore();
 });
 
 test('#scrollBack removes indicator enabled state if at first tab', () => {
@@ -208,6 +213,7 @@ test('#scrollBack removes indicator enabled state if at first tab', () => {
   raf.flush();
 
   td.verify(mockAdapter.removeClassFromBackIndicator(INDICATOR_ENABLED));
+  raf.restore();
 });
 
 test('#scrollForward moves the tab bar forward in RTL context', () => {
@@ -229,6 +235,7 @@ test('#scrollForward moves the tab bar forward in RTL context', () => {
   foundation.scrollForward();
   raf.flush();
   td.verify(mockAdapter.setTransformStyleForTabBar('translateX(600px)'));
+  raf.restore();
 });
 
 test('#scrollBack moves the tab bar back in RTL context', () => {
@@ -253,6 +260,7 @@ test('#scrollBack moves the tab bar back in RTL context', () => {
   raf.flush();
 
   td.verify(mockAdapter.setTransformStyleForTabBar('translateX(600px)'));
+  raf.restore();
 });
 
 test('#layout sets indicator enabled states if tab bar overflows', () => {
@@ -269,6 +277,7 @@ test('#layout sets indicator enabled states if tab bar overflows', () => {
   raf.flush();
 
   td.verify(mockAdapter.addClassToForwardIndicator(INDICATOR_ENABLED));
+  raf.restore();
 });
 
 test('#layout removes indicator enabled states if tab bar does not overflow', () => {
@@ -285,6 +294,7 @@ test('#layout removes indicator enabled states if tab bar does not overflow', ()
   raf.flush();
 
   td.verify(mockAdapter.removeClassFromForwardIndicator(INDICATOR_ENABLED));
+  raf.restore();
 });
 
 test('focus event sets the scrollLeft property', () => {
@@ -309,6 +319,7 @@ test('focus event sets the scrollLeft property', () => {
   tabEvent(mockEvent);
 
   td.verify(mockAdapter.setScrollLeftForScrollFrame(td.matchers.isA(Number)));
+  raf.restore();
 });
 
 test('focus scrolls back if right edge of tab is less than or equal to the current translate offset', () => {
@@ -344,6 +355,7 @@ test('focus scrolls back if right edge of tab is less than or equal to the curre
   raf.flush();
 
   td.verify(mockAdapter.setTransformStyleForTabBar(td.matchers.anything()));
+  raf.restore();
 });
 
 test('focus scrolls forward if right edge of tab is greater than the current translate offset' +
@@ -378,6 +390,7 @@ test('focus scrolls forward if right edge of tab is greater than the current tra
   raf.flush();
 
   td.verify(mockAdapter.setTransformStyleForTabBar(td.matchers.anything()));
+  raf.restore();
 });
 
 test('mousedown does not move the tab bar if tab is only partially occluded', () => {
@@ -412,6 +425,7 @@ test('mousedown does not move the tab bar if tab is only partially occluded', ()
   raf.flush();
 
   td.verify(mockAdapter.setTransformStyleForTabBar('translateX(0px)'));
+  raf.restore();
 });
 
 test('touching does not move the tab bar if tab is only partially occluded', () => {
@@ -446,6 +460,7 @@ test('touching does not move the tab bar if tab is only partially occluded', () 
   raf.flush();
 
   td.verify(mockAdapter.setTransformStyleForTabBar('translateX(0px)'));
+  raf.restore();
 });
 
 test('focus inRTL scrolls back if left edge of tab is greater than or equal to tab bar width minus the offset', () => {
@@ -482,6 +497,7 @@ test('focus inRTL scrolls back if left edge of tab is greater than or equal to t
   raf.flush();
 
   td.verify(mockAdapter.setTransformStyleForTabBar(td.matchers.anything()));
+  raf.restore();
 });
 
 test('focus in RTL context scrolls forward if distance between the right edge of tab ' +
@@ -520,4 +536,5 @@ test('focus in RTL context scrolls forward if distance between the right edge of
   raf.flush();
 
   td.verify(mockAdapter.setTransformStyleForTabBar(td.matchers.anything()));
+  raf.restore();
 });
