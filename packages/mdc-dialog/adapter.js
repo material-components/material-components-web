@@ -65,9 +65,6 @@ class MDCDialogAdapter {
    */
   eventTargetMatches(target, selector) {}
 
-  /** @return {!ClientRect} */
-  computeBoundingRect() {}
-
   trapFocus() {}
   releaseFocus() {}
 

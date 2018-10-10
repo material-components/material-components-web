@@ -30,7 +30,7 @@ import {createMockRaf} from '../helpers/raf';
 import {TRANSFORM_PROP} from './helpers';
 
 import {cssClasses, strings} from '../../../packages/mdc-slider/constants';
-import {MDCSlider} from '../../../packages/mdc-slider';
+import {MDCSlider} from '../../../packages/mdc-slider/index';
 
 suite('MDCSlider');
 

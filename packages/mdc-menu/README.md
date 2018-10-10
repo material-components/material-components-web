@@ -16,7 +16,7 @@ path: /catalog/menus/
   </a>
 </div>-->
 
-A menu displays a list of choices on a temporary surface. They appear when users interact with a button, action, 
+A menu displays a list of choices on a temporary surface. They appear when users interact with a button, action,
 or other control.
 
 ## Design & API Documentation
@@ -67,7 +67,7 @@ npm install @material/menu
 import {MDCMenu} from '@material/menu';
 
 const menu = new MDCMenu(document.querySelector('.mdc-menu'));
-menu.show();
+menu.open = true;
 ```
 
 > See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.

@@ -85,6 +85,7 @@ class TestFixture {
       this.notifyWebDriver_();
     });
 
+    this.detectRtl_();
     this.listenForAnimationEvents_();
     this.listenForResizeEvents_();
     this.preventEmptyHashLinkNavigation_();
@@ -353,10 +354,10 @@ class TestFixture {
       return rect.bottom - borderBottomWidth;
     }
     if (side === 'left') {
-      return rect.left + borderLeftWidth;
+      return rect.left + borderLeftWidth - (this.isRtl_() ? scrollbarWidth : 0);
     }
     if (side === 'right') {
-      return rect.right - borderRightWidth + scrollbarWidth;
+      return rect.right - borderRightWidth + (this.isRtl_() ? 0 : scrollbarWidth);
     }
 
     if (side === 'first-baseline' || side === 'last-baseline') {
@@ -517,6 +518,21 @@ remove the 'test-viewport--mobile' class from the '<main class="test-viewport">'
     const qs = new URLSearchParams(window.location.search);
     const val = parseInt(qs.get(name), 10);
     return isFinite(val) ? val : defaultValue;
+  }
+
+  detectRtl_() {
+    if (this.isRtl_()) {
+      document.documentElement.setAttribute('dir', 'rtl');
+    }
+  }
+
+  /**
+   * @return {boolean}
+   * @private
+   */
+  isRtl_() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('dir') === 'rtl';
   }
 }
 

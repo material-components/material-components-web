@@ -24,7 +24,7 @@
 import bel from 'bel';
 import {assert} from 'chai';
 
-import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline';
+import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline/index';
 
 const getFixture = () => bel`
   <div class="mdc-notched-outline">

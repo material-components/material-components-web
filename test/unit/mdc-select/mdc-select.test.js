@@ -28,10 +28,10 @@ import td from 'testdouble';
 import {createMockRaf} from '../helpers/raf';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 
-import {MDCRipple, MDCRippleFoundation} from '../../../packages/mdc-ripple';
-import {MDCSelect} from '../../../packages/mdc-select';
+import {MDCRipple, MDCRippleFoundation} from '../../../packages/mdc-ripple/index';
+import {MDCSelect} from '../../../packages/mdc-select/index';
 import {cssClasses} from '../../../packages/mdc-select/constants';
-import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline';
+import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline/index';
 
 const LABEL_WIDTH = 100;
 

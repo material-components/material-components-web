@@ -1,3 +1,18 @@
+<a name="0.40.1"></a>
+## [0.40.1](https://github.com/material-components/material-components-web/compare/v0.40.0...v0.40.1) (2018-10-08)
+
+
+### Bug Fixes
+
+* **checkbox:** Added missing clearTimeout call to destroy method ([#3674](https://github.com/material-components/material-components-web/issues/3674)) ([6706919](https://github.com/material-components/material-components-web/commit/6706919))
+* **chips:** Notify ChipSet when selected is set directly on the Chip ([#3601](https://github.com/material-components/material-components-web/issues/3601)) ([773e0f0](https://github.com/material-components/material-components-web/commit/773e0f0))
+* **dialog:** Wait for rAF/timeout to apply open class ([#3682](https://github.com/material-components/material-components-web/issues/3682)) ([3206521](https://github.com/material-components/material-components-web/commit/3206521))
+* **drawer:** Use rAF/setTimeout for opening class ([#3683](https://github.com/material-components/material-components-web/issues/3683)) ([8c8dee8](https://github.com/material-components/material-components-web/commit/8c8dee8))
+* **floating-label:** Enforce text alignment ([#3684](https://github.com/material-components/material-components-web/issues/3684)) ([19d0ca1](https://github.com/material-components/material-components-web/commit/19d0ca1))
+* **ripple:** Transition background-color to avoid flashes ([#3693](https://github.com/material-components/material-components-web/issues/3693)) ([17a5828](https://github.com/material-components/material-components-web/commit/17a5828))
+
+
+
 <a name="0.40.0"></a>
 # [0.40.0](https://github.com/material-components/material-components-web/compare/v0.39.0...v0.40.0) (2018-09-24)
 

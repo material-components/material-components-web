@@ -26,9 +26,9 @@ import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
 
-import {MDCDrawer} from '../../../packages/mdc-drawer';
+import {MDCDrawer} from '../../../packages/mdc-drawer/index';
 import {strings, cssClasses} from '../../../packages/mdc-drawer/constants';
-import {MDCListFoundation} from '../../../packages/mdc-list';
+import {MDCListFoundation} from '../../../packages/mdc-list/index';
 import MDCDismissibleDrawerFoundation from '../../../packages/mdc-drawer/dismissible/foundation';
 
 function getFixture(variantClass) {
@@ -243,13 +243,6 @@ test('adapter#releaseFocus releases focus on root element after trap focus', () 
   component.getDefaultFoundation().adapter_.releaseFocus();
 
   td.verify(mockFocusTrapInstance.deactivate());
-});
-
-test('adapter#computeBoundingRect calls getBoundingClientRect() on root', () => {
-  const {root, component} = setupTest();
-  document.body.appendChild(root);
-  assert.deepEqual(component.getDefaultFoundation().adapter_.computeBoundingRect(), root.getBoundingClientRect());
-  document.body.removeChild(root);
 });
 
 test('adapter#notifyOpen emits drawer open event', () => {
