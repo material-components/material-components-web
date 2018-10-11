@@ -25,7 +25,7 @@
 @import "../mixins";
 
 .test-cell--select {
-  @include test-cell-size(301, 121);
+  @include test-cell-size(321, 121);
 }
 
 .custom-select-ink-color {
@@ -57,5 +57,5 @@
 }
 
 .custom-enhanced-select-width {
-  width: 275px;
+  width: 300px;
 }

@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2018 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,33 +22,9 @@
  */
 
 /** @enum {string} */
-const cssClasses = {
-  DISABLED: 'mdc-select--disabled',
-  ROOT: 'mdc-select',
-  OUTLINED: 'mdc-select--outlined',
-  FOCUSED: 'mdc-select--focused',
-  SELECTED_ITEM_CLASS: 'mdc-list-item--selected',
-  WITH_LEADING_ICON: 'mdc-select--with-leading-icon',
-};
-
-/** @enum {string} */
 const strings = {
-  CHANGE_EVENT: 'MDCSelect:change',
-  SELECTED_ITEM_SELECTOR: `.${cssClasses.SELECTED_ITEM_CLASS}`,
-  LEADING_ICON_SELECTOR: '.mdc-select__icon',
-  SELECTED_TEXT_SELECTOR: '.mdc-select__selected-text',
-  MENU_SELECTOR: '.mdc-select__menu',
-  LINE_RIPPLE_SELECTOR: '.mdc-line-ripple',
-  LABEL_SELECTOR: '.mdc-floating-label',
-  NATIVE_CONTROL_SELECTOR: '.mdc-select__native-control',
-  OUTLINE_SELECTOR: '.mdc-notched-outline',
-  ENHANCED_VALUE_ATTR: 'data-value',
-  ARIA_SELECTED_ATTR: 'aria-selected',
+  ICON_EVENT: 'MDCSelect:icon',
+  ICON_ROLE: 'button',
 };
 
-/** @enum {number} */
-const numbers = {
-  LABEL_SCALE: 0.75,
-};
-
-export {cssClasses, strings, numbers};
+export {strings};

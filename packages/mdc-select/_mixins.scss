@@ -26,6 +26,7 @@
 @import "@material/shape/functions";
 @import "@material/line-ripple/mixins";
 @import "@material/notched-outline/mixins";
+@import "./icon/mixins";
 @import "./variables";
 
 // Public
@@ -192,7 +193,6 @@
   &:not(.mdc-select--focused) .mdc-select__selected-text:hover ~ {
     @include mdc-notched-outline-idle-color($color);
 
-    // stylelint-disable-next-line selector-max-specificity
     .mdc-notched-outline {
       @include mdc-notched-outline-color($color);
     }
@@ -219,24 +219,8 @@
   }
 }
 
-@mixin mdc-select-leading-icon-layout_ ($position, $padding) {
-  .mdc-select__icon {
-    @include mdc-rtl-reflexive-position(left, $position);
-  }
-
-  // Move the input's position, to allow room for the icon
-  .mdc-select__native-control,
-  .mdc-select__selected-text {
-    @include mdc-rtl-reflexive-property(padding, $padding /* left-value */, 32px /* right-value */);
-  }
-
-  .mdc-floating-label {
-    @include mdc-rtl-reflexive-position(left, $padding);
-  }
-}
-
 @mixin mdc-select-with-leading-icon_ {
-  @include mdc-select-leading-icon-layout_(16px, 48px);
+  @include mdc-select-icon-horizontal-position_(16px, 48px);
 
   &.mdc-select--outlined {
     @include mdc-floating-label-float-position($mdc-select-outlined-label-position-y, $mdc-select-outlined-with-leading-icon-label-position-x);
@@ -249,16 +233,6 @@
 
   &.mdc-select__menu .mdc-list-item__text {
     @include mdc-rtl-reflexive-property(padding, 32px /* left-value */, 32px /* right-value */);
-  }
-}
-
-@mixin mdc-select-icon_ {
-  .mdc-select__icon {
-    @include mdc-theme-prop(color, $mdc-select-icon-color);
-
-    position: absolute;
-    bottom: 16px;
-    cursor: pointer;
   }
 }
 
@@ -287,7 +261,6 @@
       text-indent: -2px;
     }
 
-    // stylelint-disable-next-line selector-max-type, plugin/selector-bem-pattern
     > option {
       @include mdc-theme-prop(background-color, surface);
 
@@ -321,7 +294,6 @@
     @include mdc-select-dd-arrow-svg-bg_($mdc-select-dropdown-color, $mdc-select-disabled-dropdown-opacity);
   }
 
-  // stylelint-disable-next-line plugin/selector-bem-pattern
   .mdc-line-ripple {
     display: none;
   }
@@ -330,11 +302,11 @@
     @include mdc-theme-prop(color, $mdc-select-disabled-icon-color);
   }
 
-  // stylelint-disable-next-line plugin/selector-bem-pattern
   .mdc-select__native-control,
   .mdc-select__selected-text {
+    @include mdc-theme-prop(color, $mdc-select-disabled-ink-color);
+
     border-bottom-style: dotted;
-    color: $mdc-select-disabled-ink-color;
   }
 
   .mdc-select__selected-text {
@@ -344,7 +316,6 @@
   &.mdc-select--outlined {
     @include mdc-select-container-fill-color_(transparent);
 
-    // stylelint-disable-next-line plugin/selector-bem-pattern
     .mdc-select__native-control,
     .mdc-select__selected-text {
       border-bottom-style: none;
@@ -387,7 +358,10 @@
     padding-top: 14px;
   }
 
-  // stylelint-disable-next-line plugin/selector-bem-pattern
+  .mdc-select__icon {
+    z-index: 2;
+  }
+
   .mdc-floating-label {
     bottom: 20px;
     line-height: 1.15rem;

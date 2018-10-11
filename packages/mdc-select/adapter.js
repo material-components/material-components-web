@@ -23,6 +23,14 @@
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
+
+/**
+ * @typedef {{
+ *   leadingIcon: (!MDCSelectIconFoundation|undefined),
+ * }}
+ */
+let FoundationMapType;
+
 /**
  * Adapter for MDC Select. Provides an interface for managing
  * - classes
@@ -162,4 +170,4 @@ class MDCSelectAdapter {
   notifyChange(evtData) {}
 }
 
-export default MDCSelectAdapter;
+export {MDCSelectAdapter, FoundationMapType};

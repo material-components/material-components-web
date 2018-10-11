@@ -23,7 +23,7 @@
 
 import {MDCFoundation} from '@material/base/index';
 /* eslint-disable no-unused-vars */
-import MDCSelectAdapter from './adapter';
+import {MDCSelectAdapter, FoundationMapType} from './adapter';
 /* eslint-enable no-unused-vars */
 import {cssClasses, strings, numbers} from './constants';
 
@@ -79,9 +79,13 @@ class MDCSelectFoundation extends MDCFoundation {
 
   /**
    * @param {!MDCSelectAdapter} adapter
+   * @param {!FoundationMapType=} foundationMap Map from subcomponent names to their subfoundations.
    */
-  constructor(adapter) {
+  constructor(adapter, foundationMap = /** @type {!FoundationMapType} */ ({})) {
     super(Object.assign(MDCSelectFoundation.defaultAdapter, adapter));
+
+    /** @type {!MDCSelectIconFoundation|undefined} */
+    this.leadingIcon_ = foundationMap.leadingIcon;
   }
 
   setSelectedIndex(index) {
@@ -105,6 +109,10 @@ class MDCSelectFoundation extends MDCFoundation {
     isDisabled ? this.adapter_.addClass(cssClasses.DISABLED) : this.adapter_.removeClass(cssClasses.DISABLED);
     this.adapter_.setDisabled(isDisabled);
     this.adapter_.closeMenu();
+
+    if (this.leadingIcon_) {
+      this.leadingIcon_.setDisabled(isDisabled);
+    }
   }
 
   layout() {
@@ -183,6 +191,26 @@ class MDCSelectFoundation extends MDCFoundation {
       this.adapter_.notchOutline(labelWidth, isRtl);
     } else if (!isFocused) {
       this.adapter_.closeOutline();
+    }
+  }
+
+  /**
+   * Sets the aria label of the leading icon.
+   * @param {string} label
+   */
+  setLeadingIconAriaLabel(label) {
+    if (this.leadingIcon_) {
+      this.leadingIcon_.setAriaLabel(label);
+    }
+  }
+
+  /**
+   * Sets the text content of the leading icon.
+   * @param {string} content
+   */
+  setLeadingIconContent(content) {
+    if (this.leadingIcon_) {
+      this.leadingIcon_.setContent(content);
     }
   }
 }
