@@ -45,7 +45,6 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
       removeClass: (/* className: string */) => {},
       hasClass: (/* className: string */) => {},
       elementHasClass: (/* element: !Element, className: string */) => {},
-      computeBoundingRect: () => {},
       notifyClose: () => {},
       notifyOpen: () => {},
       saveFocus: () => {},
@@ -54,6 +53,25 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
       trapFocus: () => {},
       releaseFocus: () => {},
     });
+  }
+
+  constructor(adapter) {
+    super(Object.assign(MDCDismissibleDrawerFoundation.defaultAdapter, adapter));
+
+    /** @private {number} */
+    this.animationFrame_ = 0;
+
+    /** @private {number} */
+    this.animationTimer_ = 0;
+  }
+
+  destroy() {
+    if (this.animationFrame_) {
+      cancelAnimationFrame(this.animationFrame_);
+    }
+    if (this.animationTimer_) {
+      clearTimeout(this.animationTimer_);
+    }
   }
 
   /**
@@ -66,8 +84,11 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
 
     this.adapter_.addClass(cssClasses.OPEN);
     this.adapter_.addClass(cssClasses.ANIMATE);
-    this.adapter_.computeBoundingRect(); // Force reflow.
-    this.adapter_.addClass(cssClasses.OPENING);
+
+    // Wait a frame once display is no longer "none", to establish basis for animation
+    this.runNextAnimationFrame_(() => {
+      this.adapter_.addClass(cssClasses.OPENING);
+    });
 
     this.adapter_.saveFocus();
   }
@@ -159,6 +180,20 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
     this.adapter_.removeClass(ANIMATE);
     this.adapter_.removeClass(OPENING);
     this.adapter_.removeClass(CLOSING);
+  }
+
+  /**
+   * Runs the given logic on the next animation frame, using setTimeout to factor in Firefox reflow behavior.
+   * @param {Function} callback
+   * @private
+   */
+  runNextAnimationFrame_(callback) {
+    cancelAnimationFrame(this.animationFrame_);
+    this.animationFrame_ = requestAnimationFrame(() => {
+      this.animationFrame_ = 0;
+      clearTimeout(this.animationTimer_);
+      this.animationTimer_ = setTimeout(callback, 0);
+    });
   }
 }
 

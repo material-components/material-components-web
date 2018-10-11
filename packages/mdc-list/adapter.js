@@ -88,6 +88,13 @@ class MDCListAdapter {
    * @param {!Element} ele
    */
   followHref(ele) {}
+
+  /**
+   * Toggles the checkbox or radio button within a list item.
+   * @param {number} index
+   * @return {boolean} true if a radio button or checkbox was present.
+   */
+  toggleCheckbox(index) {}
 }
 
 export default MDCListAdapter;

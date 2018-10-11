@@ -73,6 +73,16 @@ Run the pre-release script:
 This will ensure you can publish/tag, build all release files, and ensure all tests
 pass prior to releasing (lerna will update versions for us in the next step).
 
+## Disable 2FA
+
+If you have two-factor authentication enabled on your NPM account (you should), you'll need to temporarily disable it:
+
+```bash
+npm profile disable-2fa
+```
+
+See Lerna issues [#1137](https://github.com/lerna/lerna/issues/1137) and [#1091](https://github.com/lerna/lerna/issues/1091) for more information.
+
 ## Publish to npm
 
 ### For Pre-releases
@@ -118,6 +128,16 @@ When lerna prompts for version, choose Patch.
 
 Be sure to include the command-line flag; `--skip-git` avoids immediately applying a git tag, which we will do later
 after updating the changelog.
+
+## Enable 2FA
+
+If you temporarily disabled two-factor authentication on your NPM account, you'll need to re-enable it:
+
+```bash
+npm profile enable-2fa auth-and-writes
+```
+
+See Lerna issues [#1137](https://github.com/lerna/lerna/issues/1137) and [#1091](https://github.com/lerna/lerna/issues/1091) for more information.
 
 ## Commit Version Bumps
 
@@ -199,7 +219,7 @@ git push
 
 1. Update the `material-components-web` dependency in the catalog's `package.json` to the new patch version
 1. Run `npm start` and glance through the catalog pages to make sure everything looks normal
-1. Send a PR for the dependency update, then run `npm deploy` once it's merged to master
+1. Send a PR for the dependency update, then run `npm run deploy` once it's merged to master
 
 ### For Minor Releases
 
@@ -246,12 +266,3 @@ MDC React repository, with the "required for sync" label.
 Our markdown documentation is transformed and mirrored to the Develop section of material.io.
 
 Currently, this requires some manual work by the Tools team, so we need to notify them to update the site content.
-
-## (Deprecated) Deploy Catalog Server
-
-> Note: We now promote the [MDC Web Catalog](https://github.com/material-components/material-components-web-catalog)
-> instead. The old catalog server is no longer linked from our documentation.
-
-`MDC_ENV=development npm run build:demos && gcloud app deploy`
-
-[Double check it is live](https://material-components-web.appspot.com/)

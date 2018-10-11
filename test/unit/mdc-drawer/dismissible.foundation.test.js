@@ -24,10 +24,12 @@
 import {assert} from 'chai';
 import bel from 'bel';
 import td from 'testdouble';
+import lolex from 'lolex';
 
 import MDCDismissibleDrawerFoundation from '../../../packages/mdc-drawer/dismissible/foundation';
 import {strings, cssClasses} from '../../../packages/mdc-drawer/constants';
 import {verifyDefaultAdapter} from '../helpers/foundation';
+import {createMockRaf} from '../helpers/raf';
 
 suite('MDCDismissibleDrawerFoundation');
 
@@ -50,9 +52,29 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCDismissibleDrawerFoundation, [
-    'hasClass', 'addClass', 'removeClass', 'elementHasClass', 'computeBoundingRect', 'saveFocus', 'restoreFocus',
+    'hasClass', 'addClass', 'removeClass', 'elementHasClass', 'saveFocus', 'restoreFocus',
     'focusActiveNavigationItem', 'notifyClose', 'notifyOpen', 'trapFocus', 'releaseFocus',
   ]);
+});
+
+test('#destroy cancels pending rAF for #open', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.open();
+  foundation.destroy();
+
+  td.verify(mockAdapter.addClass(cssClasses.OPENING), {times: 0});
+});
+
+test('#destroy cancels pending setTimeout for #open', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const mockRaf = createMockRaf();
+
+  foundation.open();
+  mockRaf.flush();
+  foundation.destroy();
+
+  td.verify(mockAdapter.addClass(cssClasses.OPENING), {times: 0});
 });
 
 test('#open does nothing if drawer is already open', () => {
@@ -78,9 +100,21 @@ test('#open does nothing if drawer is closing', () => {
 
 test('#open adds appropriate classes and saves focus', () => {
   const {foundation, mockAdapter} = setupTest();
+  const mockRaf = createMockRaf();
+  const clock = lolex.install();
+
   foundation.open();
-  td.verify(mockAdapter.addClass(cssClasses.OPEN), {times: 1});
-  td.verify(mockAdapter.saveFocus(), {times: 1});
+  mockRaf.flush();
+  clock.tick(0);
+
+  try {
+    td.verify(mockAdapter.addClass(cssClasses.OPEN), {times: 1});
+    td.verify(mockAdapter.addClass(cssClasses.OPENING), {times: 1});
+    td.verify(mockAdapter.saveFocus(), {times: 1});
+  } finally {
+    mockRaf.restore();
+    clock.uninstall();
+  }
 });
 
 test('#close does nothing if drawer is already closed', () => {

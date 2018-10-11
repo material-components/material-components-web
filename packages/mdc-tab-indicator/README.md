@@ -82,21 +82,34 @@ The Tab Indicator may transition in one of two ways:
 </span>
 ```
 
-#### Fading Icon Indicator
+#### Icon Indicators
 
-You can use [Material Icons](https://material.io/icons/) from Google Fonts within your Fading Icon Indicator, or you can use your own icons.
+We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts:
+
+```html
+<head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+```
+
+However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any other icon library you wish.
+
+Remember to include `aria-hidden="true"`, since the active indicator is already signified via the
+`aria-selected` attribute on the tab.
+
+##### Fading Icon Indicator
 
 ```html
 <span class="mdc-tab-indicator mdc-tab-indicator--fade">
-  <span class="mdc-tab-indicator__content mdc-tab-indicator__content--icon material-icons">star</span>
+  <span class="mdc-tab-indicator__content mdc-tab-indicator__content--icon material-icons" aria-hidden="true">star</span>
 </span>
 ```
 
-#### Sliding Icon Indicator
+##### Sliding Icon Indicator
 
 ```html
 <span class="mdc-tab-indicator">
-  <span class="mdc-tab-indicator__content mdc-tab-indicator__content--icon material-icons">star</span>
+  <span class="mdc-tab-indicator__content mdc-tab-indicator__content--icon material-icons" aria-hidden="true">star</span>
 </span>
 ```
 

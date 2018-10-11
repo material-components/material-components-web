@@ -4,11 +4,11 @@ MDC Web team members write and review code in this repository.
 They work with other Material Design Engineers (Android and iOS)
 and Designers to write design docs.
 
-The APIs across Web, Android, and iOS are expected to match, and the final code
-is expected to match [spec](https://material.io/guidelines).
+The components across Web, Android, iOS, and Flutter are expected to match [spec](https://material.io/design).
 
-MDC Web uses a two week sprint system to prioritize our feature requests and
-tech debt. Tasks are prioritized on our [Pivotal tracker](#pivotal).
+Material Design follows a monthly release cycle. Within those releases, MDC Web uses a 2-3 week sprint system to
+prioritize feature requests and tech debt. Accepted tasks are prioritized within
+[milestones](https://github.com/material-components/material-components-web/milestones).
 
 ![MDC Web Feedback Loops](feedback.jpg?raw=true)
 
@@ -17,19 +17,3 @@ tech debt. Tasks are prioritized on our [Pivotal tracker](#pivotal).
 Contributors submit PRs through GitHub. MDC Web team members review the code
 and documentation before merging it to master. Both code and documentation
 are immediately available on GitHub once it is merged.
-
-### Pivotal
-
-[Pivotal Backlog + Icebox](https://www.pivotaltracker.com/n/projects/1664011)
-
-All feature requests, and chores are filed in the Icebox. Once a week, the
-Scrum Master moves these tasks into the Backlog. A Pivotal
-story can have the following status:
-
-* Unstarted: no branch for this feature
-* Started: there is a branch for this feature
-* Delivered: there is a PR for this feature
-* Accepted: the PR is merged!
-
-Each Pivotal story is pointed before it is included in a sprint.
-Points represent both complexity and ambiguity in completing the story.

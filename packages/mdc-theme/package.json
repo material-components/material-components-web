@@ -1,7 +1,7 @@
 {
   "name": "@material/theme",
   "description": "The Material Components for the web theming system",
-  "version": "0.39.1",
+  "version": "0.40.1",
   "license": "MIT",
   "keywords": [
     "material components",

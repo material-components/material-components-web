@@ -24,7 +24,7 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
-import {getCorrectPropertyName} from '../../../packages/mdc-animation';
+import {getCorrectPropertyName} from '../../../packages/mdc-animation/index';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {createMockRaf} from '../helpers/raf';
 import {setupFoundationTest} from '../helpers/setup';

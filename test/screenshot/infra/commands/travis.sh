@@ -44,6 +44,8 @@ function maybe_extract_api_credentials() {
     -in test/screenshot/infra/auth/travis.tar.enc -out test/screenshot/infra/auth/travis.tar -d
 
   tar -xf test/screenshot/infra/auth/travis.tar -C test/screenshot/infra/auth/
+
+  export GOOGLE_APPLICATION_CREDENTIALS="$PWD/test/screenshot/infra/auth/gcs.json"
 }
 
 function install_and_authorize_gcloud_sdk() {

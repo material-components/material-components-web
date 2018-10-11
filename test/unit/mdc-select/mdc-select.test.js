@@ -28,10 +28,10 @@ import td from 'testdouble';
 import {createMockRaf} from '../helpers/raf';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 
-import {MDCRipple, MDCRippleFoundation} from '../../../packages/mdc-ripple';
-import {MDCSelect} from '../../../packages/mdc-select';
+import {MDCRipple, MDCRippleFoundation} from '../../../packages/mdc-ripple/index';
+import {MDCSelect} from '../../../packages/mdc-select/index';
 import {cssClasses} from '../../../packages/mdc-select/constants';
-import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline';
+import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline/index';
 
 const LABEL_WIDTH = 100;
 
@@ -64,23 +64,6 @@ function getFixture() {
     <div class="mdc-select">
       <select class="mdc-select__native-control">
         <option value="" disabled selected></option>
-        <option value="orange">
-          Orange
-        </option>
-        <option value="apple">
-          Apple
-        </option>
-      </select>
-      <label class="mdc-floating-label">Pick a Food Group</label>
-      <div class="mdc-line-ripple"></div>
-    </div>
-  `;
-}
-
-function getBoxFixture() {
-  return bel`
-    <div class="mdc-select mdc-select--box">
-      <select class="mdc-select__native-control">
         <option value="orange">
           Orange
         </option>
@@ -302,13 +285,13 @@ test('#adapter.isRtl returns true when the root element is in an RTL context' +
   document.body.removeChild(wrapper);
 });
 
-test(`instantiates ripple when ${cssClasses.BOX} class is present`, function() {
+test('instantiates ripple', function() {
   if (!supportsCssVariables(window, true)) {
     this.skip(); // eslint-disable-line no-invalid-this
     return;
   }
 
-  const fixture = getBoxFixture();
+  const fixture = getFixture();
   const raf = createMockRaf();
 
   const component = MDCSelect.attachTo(fixture);
@@ -326,13 +309,13 @@ test(`#constructor instantiates an outline on the ${cssClasses.OUTLINE_SELECTOR}
   assert.instanceOf(component.outline_, MDCNotchedOutline);
 });
 
-test(`handles ripple focus properly when ${cssClasses.BOX} class is present`, function() {
+test('handles ripple focus properly', function() {
   if (!supportsCssVariables(window, true)) {
     this.skip(); // eslint-disable-line no-invalid-this
     return;
   }
 
-  const fixture = getBoxFixture();
+  const fixture = getFixture();
   const raf = createMockRaf();
 
   MDCSelect.attachTo(fixture);
@@ -353,7 +336,7 @@ test('#destroy removes the ripple', function() {
     return;
   }
 
-  const fixture = getBoxFixture();
+  const fixture = getFixture();
   const raf = createMockRaf();
 
   const component = new MDCSelect(fixture);
@@ -374,8 +357,9 @@ test('#destroy cleans up the outline if present', () => {
   td.verify(outline.destroy());
 });
 
-test(`does not instantiate ripple when ${cssClasses.BOX} class is not present`, () => {
-  const {component} = setupTest();
+test(`does not instantiate ripple when ${cssClasses.OUTLINED} class is present`, () => {
+  const hasOutline = true;
+  const {component} = setupTest(hasOutline);
   assert.isUndefined(component.ripple);
 });
 
