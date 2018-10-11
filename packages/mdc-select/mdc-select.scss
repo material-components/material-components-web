@@ -83,7 +83,17 @@
     }
   }
 
+  &__selected-text {
+    min-width: 200px;
+    padding-top: 22px;
+  }
+
   &__native-control {
+    padding-top: 20px;
+  }
+
+  &__native-control,
+  &__selected-text {
     @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
     @include mdc-typography(subtitle1);
 
@@ -108,9 +118,8 @@
       color: inherit; // Override default user agent stylesheet
     }
 
+    box-sizing: border-box;
     width: 100%;
-    height: 56px;
-    padding-top: 20px;
     padding-bottom: 4px;
     border: none;
     border-bottom: 1px solid;
@@ -143,7 +152,8 @@
   border: none;
   overflow: visible;
 
-  .mdc-select__native-control {
+  .mdc-select__native-control,
+  .mdc-select__selected-text {
     @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
 
     display: flex;
@@ -152,6 +162,10 @@
     border: none;
     background-color: transparent;
     z-index: 1;
+  }
+
+  .mdc-select__selected-text {
+    padding-top: 14px;
   }
 
   // stylelint-disable-next-line plugin/selector-bem-pattern
@@ -185,16 +199,22 @@
   }
 
   // stylelint-disable-next-line plugin/selector-bem-pattern
-  .mdc-select__native-control {
+  .mdc-select__native-control,
+  .mdc-select__selected-text {
     border-bottom-style: dotted;
     color: $mdc-select-disabled-ink-color;
+  }
+
+  .mdc-select__selected-text {
+    pointer-events: none;
   }
 
   &.mdc-select--outlined {
     @include mdc-select-container-fill-color_(transparent);
 
     // stylelint-disable-next-line plugin/selector-bem-pattern
-    .mdc-select__native-control {
+    .mdc-select__native-control,
+    .mdc-select__selected-text {
       border-bottom-style: none;
     }
 
@@ -203,4 +223,9 @@
 
   cursor: default;
   pointer-events: none;
+}
+
+.mdc-select__menu .mdc-list .mdc-list-item--selected {
+  @include mdc-theme-prop(color, on-surface);
+  @include mdc-states(on-surface);
 }

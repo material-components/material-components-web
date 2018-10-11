@@ -59,14 +59,21 @@ class MDCSelectFoundation extends MDCFoundation {
       hasClass: (/* className: string */) => false,
       activateBottomLine: () => {},
       deactivateBottomLine: () => {},
+      setValue: () => {},
       getValue: () => {},
       isRtl: () => false,
-      hasLabel: () => false,
       floatLabel: (/* value: boolean */) => {},
       getLabelWidth: () => {},
       hasOutline: () => false,
       notchOutline: (/* labelWidth: number, isRtl: boolean */) => {},
       closeOutline: () => {},
+      openMenu: () => {},
+      closeMenu: () => {},
+      isMenuOpen: () => {},
+      setSelectedIndex: () => {},
+      setDisabled: () => {},
+      setRippleCenter: () => {},
+      notifyChange: () => {},
     });
   }
 
@@ -77,45 +84,86 @@ class MDCSelectFoundation extends MDCFoundation {
     super(Object.assign(MDCSelectFoundation.defaultAdapter, adapter));
   }
 
-  /**
-   * Updates the styles of the select to show the disasbled state.
-   * @param {boolean} disabled
-   */
-  updateDisabledStyle(disabled) {
-    const {DISABLED} = MDCSelectFoundation.cssClasses;
-    if (disabled) {
-      this.adapter_.addClass(DISABLED);
-    } else {
-      this.adapter_.removeClass(DISABLED);
-    }
+  setSelectedIndex(index) {
+    this.adapter_.setSelectedIndex(index);
+    this.adapter_.closeMenu();
+    const didChange = true;
+    this.handleChange(didChange);
+  }
+
+  setValue(value) {
+    this.adapter_.setValue(value);
+    const didChange = true;
+    this.handleChange(didChange);
+  }
+
+  getValue() {
+    return this.adapter_.getValue();
+  }
+
+  setDisabled(isDisabled) {
+    isDisabled ? this.adapter_.addClass(cssClasses.DISABLED) : this.adapter_.removeClass(cssClasses.DISABLED);
+    this.adapter_.setDisabled(isDisabled);
+    this.adapter_.closeMenu();
+  }
+
+  layout() {
+    const openNotch = this.getValue().length > 0;
+    this.notchOutline(openNotch);
   }
 
   /**
    * Handles value changes, via change event or programmatic updates.
    */
-  handleChange() {
-    const optionHasValue = this.adapter_.getValue().length > 0;
+  handleChange(didChange) {
+    const value = this.getValue();
+    const optionHasValue = value.length > 0;
     this.adapter_.floatLabel(optionHasValue);
     this.notchOutline(optionHasValue);
+    if (didChange) {
+      this.adapter_.notifyChange({value});
+    }
   }
 
   /**
-   * Handles focus events from root element.
+   * Handles focus events from select element.
    */
   handleFocus() {
+    this.adapter_.addClass(cssClasses.FOCUSED);
     this.adapter_.floatLabel(true);
     this.notchOutline(true);
-    this.adapter_.addClass('mdc-select--focused');
     this.adapter_.activateBottomLine();
   }
 
   /**
-   * Handles blur events from root element.
+   * Handles blur events from select element.
    */
   handleBlur() {
-    this.handleChange();
-    this.adapter_.removeClass('mdc-select--focused');
+    if (this.adapter_.isMenuOpen()) return;
+    this.adapter_.removeClass(cssClasses.FOCUSED);
+    this.handleChange(false);
     this.adapter_.deactivateBottomLine();
+  }
+
+  handleClick(normalizedX) {
+    if (this.adapter_.isMenuOpen()) return;
+    this.adapter_.setRippleCenter(normalizedX);
+
+    this.adapter_.openMenu();
+  }
+
+  handleKeydown(event) {
+    if (this.adapter_.isMenuOpen()) return;
+
+    const isEnter = event.key === 'Enter' || event.keyCode === 13;
+    const isSpace = event.key === 'Space' || event.keyCode === 32;
+    const arrowUp = event.key === 'ArrowUp' || event.keyCode === 38;
+    const arrowDown = event.key === 'ArrowDown' || event.keyCode === 40;
+
+    if (this.adapter_.hasClass(cssClasses.FOCUSED) && (isEnter || isSpace || arrowUp || arrowDown)) {
+      this.adapter_.openMenu();
+      event.preventDefault();
+    }
   }
 
   /**

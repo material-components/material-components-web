@@ -56,6 +56,7 @@ class FakeOutline {
   constructor() {
     this.destroy = td.func('.destroy');
     this.notch = td.func('.notch');
+    this.closeNotch = td.func('.notch');
   }
 }
 
@@ -156,21 +157,21 @@ test('#set value calls foundation.handleChange', () => {
   const {component} = setupTest();
   component.foundation_.handleChange = td.func();
   component.value = 'orange';
-  td.verify(component.foundation_.handleChange(), {times: 1});
+  td.verify(component.foundation_.handleChange(true), {times: 1});
 });
 
 test('#set selectedIndex calls foundation.handleChange', () => {
   const {component} = setupTest();
   component.foundation_.handleChange = td.func();
   component.selectedIndex = 1;
-  td.verify(component.foundation_.handleChange(), {times: 1});
+  td.verify(component.foundation_.handleChange(true), {times: 1});
 });
 
-test('#set disabled calls foundation.updateDisabledStyle', () => {
+test('#set disabled calls foundation.setDisabled', () => {
   const {component} = setupTest();
-  component.foundation_.updateDisabledStyle = td.func();
+  component.foundation_.setDisabled = td.func();
   component.disabled = true;
-  td.verify(component.foundation_.updateDisabledStyle(true), {times: 1});
+  td.verify(component.foundation_.setDisabled(true), {times: 1});
 });
 
 test('#initialSyncWithDOM sets the selected index if an option has the selected attr', () => {
@@ -230,7 +231,7 @@ test('adapter#hasClass returns true if a class exists on the root element', () =
   assert.isTrue(component.getDefaultFoundation().adapter_.hasClass('foo'));
 });
 
-test('adapter_.floatLabel does not throw error if label does not exist', () => {
+test('adapter_#floatLabel does not throw error if label does not exist', () => {
   const fixture = bel`
     <div class="mdc-select">
       <select class="mdc-select__native-control">
@@ -249,7 +250,7 @@ test('adapter_.floatLabel does not throw error if label does not exist', () => {
     () => component.getDefaultFoundation().adapter_.floatLabel('foo'));
 });
 
-test('adapter.activateBottomLine and adapter.deactivateBottomLine ' +
+test('adapter#activateBottomLine and adapter.deactivateBottomLine ' +
   'does not throw error if bottomLine does not exist', () => {
   const fixture = bel`
     <div class="mdc-select">
@@ -272,7 +273,7 @@ test('adapter.activateBottomLine and adapter.deactivateBottomLine ' +
 });
 
 
-test('#adapter.isRtl returns true when the root element is in an RTL context' +
+test('adapter#isRtl returns true when the root element is in an RTL context' +
   'and false otherwise', () => {
   const wrapper = bel`<div dir="rtl"></div>`;
   const {fixture, component} = setupTest();
@@ -283,6 +284,25 @@ test('#adapter.isRtl returns true when the root element is in an RTL context' +
   assert.isTrue(component.getDefaultFoundation().adapter_.isRtl());
 
   document.body.removeChild(wrapper);
+});
+
+test('adapter#setDisabled sets the select to be disabled', () => {
+  const {component, nativeControl} = setupTest();
+  const adapter = component.getDefaultFoundation().adapter_;
+  assert.isFalse(nativeControl.disabled);
+  adapter.setDisabled(true);
+  assert.isTrue(nativeControl.disabled);
+  adapter.setDisabled(false);
+  assert.isFalse(nativeControl.disabled);
+});
+
+test('adapter#setSelectedIndex sets the select selected index to the index specified', () => {
+  const {component, nativeControl} = setupTest();
+  const adapter = component.getDefaultFoundation().adapter_;
+  adapter.setSelectedIndex(1);
+  assert.equal(nativeControl.selectedIndex, 1);
+  adapter.setSelectedIndex(2);
+  assert.equal(nativeControl.selectedIndex, 2);
 });
 
 test('instantiates ripple', function() {
@@ -415,11 +435,11 @@ test('adapter#getLabelWidth returns 0 if the label does not exist', () => {
   assert.equal(component.getDefaultFoundation().adapter_.getLabelWidth(), 0);
 });
 
-test('change event triggers foundation.handleChange()', () => {
+test('change event triggers foundation.handleChange(true)', () => {
   const {component, nativeControl} = setupTest();
   component.foundation_.handleChange = td.func();
   domEvents.emit(nativeControl, 'change');
-  td.verify(component.foundation_.handleChange(), {times: 1});
+  td.verify(component.foundation_.handleChange(true), {times: 1});
 });
 
 test('focus event triggers foundation.handleFocus()', () => {
@@ -441,7 +461,7 @@ test('#destroy removes the change handler', () => {
   component.foundation_.handleChange = td.func();
   component.destroy();
   domEvents.emit(nativeControl, 'change');
-  td.verify(component.foundation_.handleChange(), {times: 0});
+  td.verify(component.foundation_.handleChange(true), {times: 0});
 });
 
 test('#destroy removes the focus handler', () => {
@@ -497,4 +517,13 @@ test('#destroy removes the mousedown listener', () => {
   fixture.querySelector('select').dispatchEvent(event);
 
   td.verify(bottomLine.setRippleCenter(200), {times: 0});
+});
+
+test('keydown is not added to the native select when initialized', () => {
+  const {component, fixture} = setupTest();
+  component.foundation_.handleKeydown = td.func();
+  document.body.appendChild(fixture);
+  domEvents.emit(fixture.querySelector('.mdc-select__native-control'), 'keydown');
+  td.verify(component.foundation_.handleKeydown(td.matchers.anything()), {times: 0});
+  document.body.removeChild(fixture);
 });

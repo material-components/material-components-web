@@ -45,7 +45,7 @@
 
 @mixin mdc-select-focused-label-color($color) {
   &:not(.mdc-select--disabled) {
-    .mdc-select__native-control:focus ~ .mdc-floating-label {
+    &.mdc-select--focused .mdc-floating-label {
       @include mdc-floating-label-ink-color(mdc-theme-prop-value($color));
     }
   }
@@ -132,20 +132,27 @@
 
 // Private
 @mixin mdc-select-focused-line-ripple_ {
-  .mdc-select__native-control:focus ~ .mdc-line-ripple {
+  &.mdc-select--focused .mdc-line-ripple {
     @content;
   }
 }
 
 @mixin mdc-select-focused-outline_ {
-  .mdc-select__native-control:focus ~ .mdc-notched-outline {
+  &.mdc-select--focused .mdc-notched-outline {
     @include mdc-notched-outline-stroke-width(2px);
     @content;
   }
 }
 
+@mixin mdc-select-focused-outline-idle_ {
+  &.mdc-select--focused {
+    @content;
+  }
+}
+
 @mixin mdc-select-ink-color_($color) {
-  .mdc-select__native-control {
+  .mdc-select__native-control,
+  .mdc-select__selected-text {
     @include mdc-theme-prop(color, $color);
   }
 }
@@ -155,7 +162,8 @@
 }
 
 @mixin mdc-select-bottom-line-color_($color) {
-  .mdc-select__native-control {
+  .mdc-select__native-control,
+  .mdc-select__selected-text {
     @include mdc-select-native-control-bottom-line-color_($color);
   }
 }
@@ -187,7 +195,8 @@
 }
 
 @mixin mdc-select-hover-outline-color_($color) {
-  &:not(.mdc-select__native-control:focus) .mdc-select__native-control:hover ~ {
+  &:not(.mdc-select--focused) .mdc-select__native-control:hover ~,
+  &:not(.mdc-select--focused) .mdc-select__selected-text:hover ~ {
     @include mdc-notched-outline-idle-color($color);
 
     // stylelint-disable-next-line selector-max-specificity
@@ -200,6 +209,10 @@
 @mixin mdc-select-focused-outline-color_($color) {
   @include mdc-select-focused-outline_ {
     @include mdc-notched-outline-color($color);
+  }
+
+  @include mdc-select-focused-outline-idle_ {
+    @include mdc-notched-outline-idle-color($color);
   }
 }
 
