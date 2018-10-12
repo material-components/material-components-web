@@ -22,7 +22,8 @@
  */
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
-
+// eslint-disable-next-line no-unused-vars
+import {MDCSelectIconFoundation} from './icon/index';
 
 /**
  * @typedef {{

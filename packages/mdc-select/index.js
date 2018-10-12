@@ -27,11 +27,14 @@ import {MDCLineRipple} from '@material/line-ripple/index';
 import {MDCMenu} from '@material/menu/index';
 import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
 import {MDCNotchedOutline} from '@material/notched-outline/index';
-
 import MDCSelectFoundation from './foundation';
-import {MDCSelectAdapter} from './adapter';
-import {MDCSelectIcon} from './icon/index';
 import {cssClasses, strings} from './constants';
+
+/* eslint-disable no-unused-vars */
+import {MDCSelectAdapter, FoundationMapType} from './adapter';
+import {MDCSelectIcon, MDCSelectIconFoundation} from './icon/index';
+/* eslint-enable no-unused-vars */
+
 // Closure has issues with {this as that} syntax.
 import * as menuSurfaceConstants from '@material/menu-surface/constants';
 import * as menuConstants from '@material/menu/constants';

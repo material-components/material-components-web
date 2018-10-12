@@ -79,6 +79,8 @@
     pointer-events: none;
 
     .mdc-select--focused & {
+      @include mdc-select-dd-arrow-svg-bg_(mdc-theme-prop-value(primary), 1);
+
       transform: rotate(180deg) translateY(-5px);
       transition: transform $mdc-select-dropdown-transition-duration $mdc-animation-standard-curve-timing-function;
     }
@@ -100,13 +102,7 @@
   @include mdc-select-outlined_;
 }
 
-@include mdc-select-text-and-control_
-
-.mdc-select--focused {
-  .mdc-select__dropdown-icon {
-    @include mdc-select-dd-arrow-svg-bg_(mdc-theme-prop-value(primary), 1);
-  }
-}
+@include mdc-select-text-and-control_();
 
 .mdc-select--disabled {
   @include mdc-select-disabled_;
@@ -114,11 +110,6 @@
 
 .mdc-select--with-leading-icon {
   @include mdc-select-with-leading-icon_;
-}
-
-.mdc-select__menu .mdc-list .mdc-list-item--selected {
-  @include mdc-theme-prop(color, on-surface);
-  @include mdc-states;
 }
 
 .mdc-select__menu .mdc-list .mdc-list-item--selected {

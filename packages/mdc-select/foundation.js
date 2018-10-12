@@ -24,6 +24,7 @@
 import {MDCFoundation} from '@material/base/index';
 /* eslint-disable no-unused-vars */
 import {MDCSelectAdapter, FoundationMapType} from './adapter';
+import {MDCSelectIconFoundation} from './icon/index';
 /* eslint-enable no-unused-vars */
 import {cssClasses, strings, numbers} from './constants';
 

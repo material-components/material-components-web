@@ -32,7 +32,6 @@ import {MDCRipple, MDCRippleFoundation} from '../../../packages/mdc-ripple/index
 import {MDCSelect} from '../../../packages/mdc-select/index';
 import {cssClasses} from '../../../packages/mdc-select/constants';
 import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline/index';
-import {MDCTextField, MDCTextFieldIcon} from '../../../packages/mdc-textfield/index';
 import {MDCSelectIcon} from '../../../packages/mdc-select/icon';
 
 const LABEL_WIDTH = 100;
