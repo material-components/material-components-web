@@ -118,6 +118,10 @@ class MDCTab extends MDCComponent {
     return this.foundation_.isActive();
   }
 
+  set focusOnActivate(focusOnActivate) {
+    this.foundation_.setFocusOnActivate(focusOnActivate);
+  }
+
   /**
    * Activates the tab
    * @param {!ClientRect=} computeIndicatorClientRect
