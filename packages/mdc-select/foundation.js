@@ -126,8 +126,12 @@ class MDCSelectFoundation extends MDCFoundation {
   handleChange(didChange) {
     const value = this.getValue();
     const optionHasValue = value.length > 0;
-    this.adapter_.floatLabel(optionHasValue);
     this.notchOutline(optionHasValue);
+
+    if (!this.adapter_.hasClass(cssClasses.FOCUSED)) {
+      this.adapter_.floatLabel(optionHasValue);
+    }
+
     if (didChange) {
       this.adapter_.notifyChange({value});
     }

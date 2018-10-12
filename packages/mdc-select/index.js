@@ -337,7 +337,8 @@ class MDCSelect extends MDCComponent {
         this.getCommonAdapterMethods_(),
         this.getOutlineAdapterMethods_(),
         this.getLabelAdapterMethods_())
-      )
+      ),
+      this.getFoundationMap_()
     );
   }
 
