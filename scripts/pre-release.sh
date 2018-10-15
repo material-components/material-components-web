@@ -28,26 +28,41 @@ function log() {
   echo '\033[36m[pre-release]\033[0m' "$@"
 }
 
+function fail() {
+  echo '\033[31mFAILURE:\033[0m' "$@"
+}
+
 log "Running pre-flight sanity checks..."
 
 log "Checking that you can publish to npm..."
 NPM_USER=$(npm whoami)
 if ! npm team ls material:developers | grep -q $NPM_USER; then
-  echo "FAILURE: You are not (yet?) part of the material:developers org. Please get in touch" \
+  fail "You are not (yet?) part of the material:developers org. Please get in touch" \
        "with the MDC Web core team to rectify this"
+  exit 1
+fi
+
+log "Checking that npm two-factor authentication is disabled..."
+NPM_TFA=$(npm profile get --parseable | grep '^tfa' | awk '{ print $2 }')
+if [[ "$NPM_TFA" != 'disabled' ]]; then
+  fail "Two-factor authentication (2FA) is enabled on your NPM account, which prevents publishing."
+  echo "To temporarily disable it, edit your Profile Settings on https://www.npmjs.com/, or run the following command:"
+  echo "    npm profile disable-2fa"
+  echo "After publishing, re-enable 2FA on https://www.npmjs.com/, or run the following command:"
+  echo "    npm profile enable-2fa auth-and-writes"
   exit 1
 fi
 
 log "Checking that you can access GitHub via SSH..."
 if ! ssh -T git@github.com 2>&1 | grep -q "You've successfully authenticated"; then
-  echo "FAILURE: It does not look like you can access github. Please ensure that the command" \
+  fail "It does not look like you can access github. Please ensure that the command" \
        "ssh -T git@github.com works for you"
   exit 1
 fi
 
 log "Checking that you can deploy the MDC Web demo site..."
 if ! gcloud config get-value project 2>/dev/null | grep -q material-components-web; then
-  echo "FAILURE: Your gcloud project is not configured for MDC Web. Please run gcloud config set" \
+  fail "Your gcloud project is not configured for MDC Web. Please run gcloud config set" \
        "project material-components-web and ensure it exits successfully"
   exit 1
 fi
