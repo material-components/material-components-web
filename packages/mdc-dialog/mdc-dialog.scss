@@ -69,6 +69,7 @@
 .mdc-dialog__container {
   display: flex;
   flex-direction: row; // IE 11
+  justify-content: space-around;
   box-sizing: border-box;
   transform: scale(.8);
   opacity: 0;
