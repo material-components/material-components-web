@@ -44,7 +44,7 @@ Components are categorized as small, medium and large in shape system. Overridin
 Variable | Description
 --- | ---
 `$mdc-shape-small-component-radius` | Rounded shape radius size for small components. Default value `4px`.
-`$mdc-shape-medium-component-radius` | Rounded shape radius size for medium components. Default value `8px`.
+`$mdc-shape-medium-component-radius` | Rounded shape radius size for medium components. Default value `4px`.
 `$mdc-shape-large-component-radius` | Rounded shape radius size for large components. Default value `0`.
 
 Please refer [Material Design guidelines: Shape](https://material.io/go/design-shape) to learn about how components are categorized.
