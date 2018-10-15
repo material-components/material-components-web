@@ -66,6 +66,7 @@ class FakeTab {
     this.computeIndicatorClientRect = td.function();
     this.computeDimensions = td.function();
     this.active = false;
+    this.focusOnActivate = true;
   }
 }
 
@@ -108,6 +109,34 @@ function setupTest() {
   const component = new MDCTabBar(root, undefined, (el) => new FakeTab(el), (el) => new FakeTabScroller(el));
   return {root, component};
 }
+
+function setupMockFoundationTest() {
+  const root = getFixture();
+  const MockFoundationConstructor = td.constructor(MDCTabBarFoundation);
+  const mockFoundation = new MockFoundationConstructor();
+  const component = new MDCTabBar(root, mockFoundation, (el) => new FakeTab(el), (el) => new FakeTabScroller(el));
+  return {root, component, mockFoundation};
+}
+
+test('focusOnActivate setter updates setting on all tabs', () => {
+  const {component} = setupTest();
+
+  component.focusOnActivate = false;
+  component.tabList_.forEach((tab) => assert.isFalse(tab.focusOnActivate));
+
+  component.focusOnActivate = true;
+  component.tabList_.forEach((tab) => assert.isTrue(tab.focusOnActivate));
+});
+
+test('useAutomaticActivation setter calls foundation#setUseAutomaticActivation', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+
+  component.useAutomaticActivation = false;
+  td.verify(mockFoundation.setUseAutomaticActivation(false));
+
+  component.useAutomaticActivation = true;
+  td.verify(mockFoundation.setUseAutomaticActivation(true));
+});
 
 test('#adapter.scrollTo calls scrollTo of the child tab scroller', () => {
   const {component} = setupTest();

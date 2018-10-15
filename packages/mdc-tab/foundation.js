@@ -72,8 +72,8 @@ class MDCTabFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCTabFoundation.defaultAdapter, adapter));
 
-    /** @private {function(?Event): undefined} */
-    this.handleClick_ = () => this.handleClick();
+    /** @private {boolean} */
+    this.focusOnActivate_ = true;
   }
 
   /**
@@ -94,6 +94,14 @@ class MDCTabFoundation extends MDCFoundation {
   }
 
   /**
+   * Sets whether the tab should focus itself when activated
+   * @param {boolean} focusOnActivate
+   */
+  setFocusOnActivate(focusOnActivate) {
+    this.focusOnActivate_ = focusOnActivate;
+  }
+
+  /**
    * Activates the Tab
    * @param {!ClientRect=} previousIndicatorClientRect
    */
@@ -102,7 +110,9 @@ class MDCTabFoundation extends MDCFoundation {
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'true');
     this.adapter_.setAttr(strings.TABINDEX, '0');
     this.adapter_.activateIndicator(previousIndicatorClientRect);
-    this.adapter_.focus();
+    if (this.focusOnActivate_) {
+      this.adapter_.focus();
+    }
   }
 
   /**
