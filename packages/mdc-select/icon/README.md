@@ -15,7 +15,10 @@ Icons describe the type of input a select requires. They can also be interaction
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/go/design-selects#selects-layout">Material Design guidelines: Text Fields Layout</a>
+    <a href="https://material.io/go/design-text-fields">Material Design guidelines: Text Fields</a>
+  </li>
+  <li class="icon-list-item icon-list-item--link">
+    <a href="https://material-components.github.io/material-components-web-catalog/#/component/select">Demo</a>
   </li>
 </ul>
 

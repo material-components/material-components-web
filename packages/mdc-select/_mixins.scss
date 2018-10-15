@@ -224,10 +224,10 @@
 
   &.mdc-select--outlined {
     @include mdc-floating-label-float-position($mdc-select-outlined-label-position-y, $mdc-select-outlined-with-leading-icon-label-position-x);
-    @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon);
+    @include mdc-floating-label-shake-animation(select-outlined-leading-icon);
 
     @include mdc-rtl {
-      @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon-rtl);
+      @include mdc-floating-label-shake-animation(select-outlined-leading-icon-rtl);
     }
   }
 

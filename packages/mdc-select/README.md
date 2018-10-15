@@ -404,4 +404,4 @@ Event Name | Data | Description
 --- | --- | ---
 `MDCSelect:change` | `{value: string, index: number}` | Used to indicate when an element has been selected. This event also includes the value of the item and the index.
 
-`MDCTextFieldFoundation` supports an optional icon sub-element. The foundation of the icon must be passed in as constructor arguments to `MDCSelectFoundation`.
+`MDCSelectFoundation` supports an optional icon sub-element. The foundation of the icon must be passed in as constructor arguments to `MDCSelectFoundation`.

@@ -24,17 +24,13 @@
 
 // Public mixins
 
-@mixin mdc-select-icon-color_($color) {
-  .mdc-select__icon {
-    @include mdc-theme-prop(color, $color);
-  }
-}
-
 @mixin mdc-select-icon-color($color) {
   &:not(.mdc-select--disabled) {
     @include mdc-select-icon-color_($color);
   }
 }
+
+// Private mixins
 
 @mixin mdc-select-icon_ {
   @include mdc-select-icon-color(on-surface);
@@ -56,7 +52,11 @@
   }
 }
 
-// Private mixins
+@mixin mdc-select-icon-color_($color) {
+  .mdc-select__icon {
+    @include mdc-theme-prop(color, $color);
+  }
+}
 
 @mixin mdc-select-icon-horizontal-position_($iconPosition, $inputPadding) {
   .mdc-select__icon {

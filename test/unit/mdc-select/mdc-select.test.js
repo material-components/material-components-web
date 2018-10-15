@@ -200,6 +200,26 @@ test('#set leadingIconContent calls foundation.setLeadingIconAriaLabel', () => {
   td.verify(component.foundation_.setLeadingIconContent('hello_world'), {times: 1});
 });
 
+test(`#initialize does not add the ${cssClasses.WITH_LEADING_ICON} class if there is no leading icon`, () => {
+  const fixture = bel`
+    <div class="mdc-select">
+      <select class="mdc-select__native-control">
+        <option value="orange">
+          Orange
+        </option>
+        <option value="apple" selected>
+          Apple
+        </option>
+      </select>
+      <label class="mdc-floating-label">Pick a Food Group</label>
+      <div class="mdc-line-ripple"></div>
+    </div>
+  `;
+  const component = new MDCSelect(fixture, /* foundation */ undefined);
+  assert.isFalse(fixture.classList.contains(cssClasses.WITH_LEADING_ICON));
+  component.destroy();
+});
+
 test('#initialSyncWithDOM sets the selected index if an option has the selected attr', () => {
   const fixture = bel`
     <div class="mdc-select">

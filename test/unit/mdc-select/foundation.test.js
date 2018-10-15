@@ -363,13 +363,13 @@ test('#setLeadingIconContent sets the content of the leading icon element', () =
 test('#setLeadingIconAriaLabel does nothing if the leading icon element is undefined', () => {
   const hasLeadingIcon = false;
   const {foundation, leadingIcon} = setupTest(hasLeadingIcon);
-  foundation.setLeadingIconAriaLabel('foo');
+  assert.doesNotThrow(() => foundation.setLeadingIconAriaLabel('foo'));
   td.verify(leadingIcon.setAriaLabel('foo'), {times: 0});
 });
 
 test('#setLeadingIconContent does nothing if the leading icon element is undefined', () => {
   const hasLeadingIcon = false;
   const {foundation, leadingIcon} = setupTest(hasLeadingIcon);
-  foundation.setLeadingIconContent('foo');
+  assert.doesNotThrow(() => foundation.setLeadingIconContent('foo'));
   td.verify(leadingIcon.setContent('foo'), {times: 0});
 });

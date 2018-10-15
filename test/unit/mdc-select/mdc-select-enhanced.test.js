@@ -280,6 +280,33 @@ test('#set leadingIconContent calls foundation.setLeadingIconAriaLabel', () => {
   td.verify(mockFoundation.setLeadingIconContent('hello_world'), {times: 1});
 });
 
+test(`#initialize does not add the ${cssClasses.WITH_LEADING_ICON} class if there is no leading icon`, () => {
+  const fixture = bel`
+    <div class="mdc-select">
+      <div class="mdc-select__selected-text"></div>
+      <div class="mdc-select__menu mdc-menu mdc-menu-surface">
+      <ul class="mdc-list">
+        <li class="mdc-list-item" data-value=""></li>
+        <li class="mdc-list-item mdc-list-item--selected" data-value="orange">          
+          Orange
+        </li>
+        <li class="mdc-list-item" data-value="apple">
+          Apple
+        </li> 
+      </ul>
+      </div>
+      <label class="mdc-floating-label">Pick a Food Group</label>
+      <div class="mdc-line-ripple"></div>
+    </div>
+  `;
+  const menuSurface = fixture.querySelector('.mdc-select__menu');
+  const component = new MDCSelect(fixture, /* foundation */ undefined);
+  assert.isFalse(fixture.classList.contains(cssClasses.WITH_LEADING_ICON));
+  assert.isFalse(menuSurface.classList.contains(cssClasses.WITH_LEADING_ICON));
+  component.destroy();
+  document.body.removeChild(document.querySelector('.mdc-select__menu'));
+});
+
 test('#initialSyncWithDOM sets the selected index if an option has the selected class', () => {
   const fixture = bel`
     <div class="mdc-select">
