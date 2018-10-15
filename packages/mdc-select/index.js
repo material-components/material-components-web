@@ -27,10 +27,14 @@ import {MDCLineRipple} from '@material/line-ripple/index';
 import {MDCMenu} from '@material/menu/index';
 import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
 import {MDCNotchedOutline} from '@material/notched-outline/index';
-
 import MDCSelectFoundation from './foundation';
-import MDCSelectAdapter from './adapter';
 import {cssClasses, strings} from './constants';
+
+/* eslint-disable no-unused-vars */
+import {MDCSelectAdapter, FoundationMapType} from './adapter';
+import {MDCSelectIcon, MDCSelectIconFoundation} from './icon/index';
+/* eslint-enable no-unused-vars */
+
 // Closure has issues with {this as that} syntax.
 import * as menuSurfaceConstants from '@material/menu-surface/constants';
 import * as menuConstants from '@material/menu/constants';
@@ -48,6 +52,8 @@ class MDCSelect extends MDCComponent {
     this.nativeControl_;
     /** @private {?Element} */
     this.selectedText_;
+    /** @private {?MDCSelectIcon} */
+    this.leadingIcon_;
     /** @private {?Element} */
     this.menuElement_;
     /** @type {?MDCMenu} */
@@ -139,6 +145,22 @@ class MDCSelect extends MDCComponent {
   }
 
   /**
+   * Sets the aria label of the leading icon.
+   * @param {string} label
+   */
+  set leadingIconAriaLabel(label) {
+    this.foundation_.setLeadingIconAriaLabel(label);
+  }
+
+  /**
+   * Sets the text content of the leading icon.
+   * @param {string} content
+   */
+  set leadingIconContent(content) {
+    this.foundation_.setLeadingIconContent(content);
+  }
+
+  /**
    * Recomputes the outline SVG path for the outline element.
    */
   layout() {
@@ -151,12 +173,14 @@ class MDCSelect extends MDCComponent {
    * @param {(function(!Element): !MDCFloatingLabel)=} labelFactory A function which creates a new MDCFloatingLabel.
    * @param {(function(!Element): !MDCNotchedOutline)=} outlineFactory A function which creates a new MDCNotchedOutline.
    * @param {(function(!Element): !MDCMenu)=} menuFactory A function which creates a new MDCMenu.
+   * @param {(function(!Element): !MDCSelectIcon)=} iconFactory A function which creates a new MDCSelectIcon.
    */
   initialize(
     labelFactory = (el) => new MDCFloatingLabel(el),
     lineRippleFactory = (el) => new MDCLineRipple(el),
     outlineFactory = (el) => new MDCNotchedOutline(el),
-    menuFactory = (el) => new MDCMenu(el)) {
+    menuFactory = (el) => new MDCMenu(el),
+    iconFactory = (el) => new MDCSelectIcon(el)) {
     this.nativeControl_ = /** @type {HTMLElement} */ (this.root_.querySelector(strings.NATIVE_CONTROL_SELECTOR));
     this.selectedText_ = /** @type {HTMLElement} */ (this.root_.querySelector(strings.SELECTED_TEXT_SELECTOR));
 
@@ -174,6 +198,16 @@ class MDCSelect extends MDCComponent {
     const outlineElement = this.root_.querySelector(strings.OUTLINE_SELECTOR);
     if (outlineElement) {
       this.outline_ = outlineFactory(outlineElement);
+    }
+
+    const leadingIcon = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
+    if (leadingIcon) {
+      this.root_.classList.add(cssClasses.WITH_LEADING_ICON);
+      this.leadingIcon_ = iconFactory(leadingIcon);
+
+      if (this.menuElement_) {
+        this.menuElement_.classList.add(cssClasses.WITH_LEADING_ICON);
+      }
     }
 
     if (!this.root_.classList.contains(cssClasses.OUTLINED)) {
@@ -306,7 +340,8 @@ class MDCSelect extends MDCComponent {
         this.getCommonAdapterMethods_(),
         this.getOutlineAdapterMethods_(),
         this.getLabelAdapterMethods_())
-      )
+      ),
+      this.getFoundationMap_()
     );
   }
 
@@ -486,6 +521,16 @@ class MDCSelect extends MDCComponent {
     const targetClientRect = evt.target.getBoundingClientRect();
     const xCoordinate = evt.clientX;
     return xCoordinate - targetClientRect.left;
+  }
+
+  /**
+   * Returns a map of all subcomponents to subfoundations.
+   * @return {!FoundationMapType}
+   */
+  getFoundationMap_() {
+    return {
+      leadingIcon: this.leadingIcon_ ? this.leadingIcon_.foundation : undefined,
+    };
   }
 }
 

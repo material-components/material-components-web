@@ -23,7 +23,8 @@
 
 import {MDCFoundation} from '@material/base/index';
 /* eslint-disable no-unused-vars */
-import MDCSelectAdapter from './adapter';
+import {MDCSelectAdapter, FoundationMapType} from './adapter';
+import {MDCSelectIconFoundation} from './icon/index';
 /* eslint-enable no-unused-vars */
 import {cssClasses, strings, numbers} from './constants';
 
@@ -79,9 +80,13 @@ class MDCSelectFoundation extends MDCFoundation {
 
   /**
    * @param {!MDCSelectAdapter} adapter
+   * @param {!FoundationMapType=} foundationMap Map from subcomponent names to their subfoundations.
    */
-  constructor(adapter) {
+  constructor(adapter, foundationMap = /** @type {!FoundationMapType} */ ({})) {
     super(Object.assign(MDCSelectFoundation.defaultAdapter, adapter));
+
+    /** @type {!MDCSelectIconFoundation|undefined} */
+    this.leadingIcon_ = foundationMap.leadingIcon;
   }
 
   setSelectedIndex(index) {
@@ -105,6 +110,10 @@ class MDCSelectFoundation extends MDCFoundation {
     isDisabled ? this.adapter_.addClass(cssClasses.DISABLED) : this.adapter_.removeClass(cssClasses.DISABLED);
     this.adapter_.setDisabled(isDisabled);
     this.adapter_.closeMenu();
+
+    if (this.leadingIcon_) {
+      this.leadingIcon_.setDisabled(isDisabled);
+    }
   }
 
   layout() {
@@ -118,8 +127,12 @@ class MDCSelectFoundation extends MDCFoundation {
   handleChange(didChange) {
     const value = this.getValue();
     const optionHasValue = value.length > 0;
-    this.adapter_.floatLabel(optionHasValue);
     this.notchOutline(optionHasValue);
+
+    if (!this.adapter_.hasClass(cssClasses.FOCUSED)) {
+      this.adapter_.floatLabel(optionHasValue);
+    }
+
     if (didChange) {
       this.adapter_.notifyChange({value});
     }
@@ -174,14 +187,35 @@ class MDCSelectFoundation extends MDCFoundation {
     if (!this.adapter_.hasOutline()) {
       return;
     }
+    const isFocused = this.adapter_.hasClass(cssClasses.FOCUSED);
 
     if (openNotch) {
       const labelScale = numbers.LABEL_SCALE;
       const labelWidth = this.adapter_.getLabelWidth() * labelScale;
       const isRtl = this.adapter_.isRtl();
       this.adapter_.notchOutline(labelWidth, isRtl);
-    } else {
+    } else if (!isFocused) {
       this.adapter_.closeOutline();
+    }
+  }
+
+  /**
+   * Sets the aria label of the leading icon.
+   * @param {string} label
+   */
+  setLeadingIconAriaLabel(label) {
+    if (this.leadingIcon_) {
+      this.leadingIcon_.setAriaLabel(label);
+    }
+  }
+
+  /**
+   * Sets the text content of the leading icon.
+   * @param {string} content
+   */
+  setLeadingIconContent(content) {
+    if (this.leadingIcon_) {
+      this.leadingIcon_.setContent(content);
     }
   }
 }

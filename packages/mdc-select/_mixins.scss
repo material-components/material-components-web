@@ -27,6 +27,7 @@
 @import "@material/line-ripple/mixins";
 @import "@material/notched-outline/mixins";
 @import "@material/notched-outline/functions";
+@import "./icon/mixins";
 @import "./variables";
 
 // Public
@@ -199,7 +200,6 @@
   &:not(.mdc-select--focused) .mdc-select__selected-text:hover ~ {
     @include mdc-notched-outline-idle-color($color);
 
-    // stylelint-disable-next-line selector-max-specificity
     .mdc-notched-outline {
       @include mdc-notched-outline-color($color);
     }
@@ -223,5 +223,155 @@
     bottom: 12px;
     line-height: 1.75rem;
     pointer-events: none;
+  }
+}
+
+@mixin mdc-select-with-leading-icon_ {
+  @include mdc-select-icon-horizontal-position_(16px, 48px);
+
+  &.mdc-select--outlined {
+    @include mdc-floating-label-float-position($mdc-select-outlined-label-position-y, $mdc-select-outlined-with-leading-icon-label-position-x);
+    @include mdc-floating-label-shake-animation(select-outlined-leading-icon);
+
+    @include mdc-rtl {
+      @include mdc-floating-label-shake-animation(select-outlined-leading-icon-rtl);
+    }
+  }
+
+  &.mdc-select__menu .mdc-list-item__text {
+    @include mdc-rtl-reflexive-property(padding, 32px /* left-value */, 32px /* right-value */);
+  }
+}
+
+@mixin mdc-select-text-and-control_ {
+  .mdc-select__selected-text {
+    min-width: 200px;
+    padding-top: 22px;
+  }
+
+  .mdc-select__native-control,
+  .mdc-select__selected-text {
+    @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
+    @include mdc-typography(subtitle1);
+
+    &::-ms-expand {
+      display: none;
+    }
+
+    &::-ms-value {
+      background-color: transparent;
+      color: inherit;
+    }
+
+    // counteracts the extra text padding that Firefox adds by default
+    @-moz-document url-prefix("") {
+      text-indent: -2px;
+    }
+
+    > option {
+      @include mdc-theme-prop(background-color, surface);
+
+      color: inherit; // Override default user agent stylesheet
+    }
+
+    box-sizing: border-box;
+    width: 100%;
+    height: $mdc-select-height;
+    padding-top: 20px;
+    padding-bottom: 4px;
+    border: none;
+    border-bottom: 1px solid;
+    outline: none;
+    background-color: transparent;
+    color: inherit; // Override default user agent stylesheet
+    white-space: nowrap;
+    cursor: pointer;
+    appearance: none;
+  }
+}
+
+@mixin mdc-select-disabled_ {
+  @include mdc-select-container-fill-color_($mdc-select-disabled-fill-color);
+
+  .mdc-floating-label {
+    @include mdc-floating-label-ink-color($mdc-select-disabled-label-color);
+  }
+
+  .mdc-select__dropdown-icon {
+    @include mdc-select-dd-arrow-svg-bg_($mdc-select-dropdown-color, $mdc-select-disabled-dropdown-opacity);
+  }
+
+  .mdc-line-ripple {
+    display: none;
+  }
+
+  .mdc-select__icon {
+    @include mdc-theme-prop(color, $mdc-select-disabled-icon-color);
+  }
+
+  .mdc-select__native-control,
+  .mdc-select__selected-text {
+    @include mdc-theme-prop(color, $mdc-select-disabled-ink-color);
+
+    border-bottom-style: dotted;
+  }
+
+  .mdc-select__selected-text {
+    pointer-events: none;
+  }
+
+  &.mdc-select--outlined {
+    @include mdc-select-container-fill-color_(transparent);
+
+    .mdc-select__native-control,
+    .mdc-select__selected-text {
+      border-bottom-style: none;
+    }
+
+    @include mdc-select-outline-color_($mdc-select-outlined-disabled-border);
+  }
+
+  cursor: default;
+  pointer-events: none;
+}
+
+@mixin mdc-select-outlined_ {
+  @include mdc-select-container-fill-color(transparent);
+  @include mdc-select-outline-color($mdc-select-outlined-idle-border);
+  @include mdc-select-hover-outline-color($mdc-select-outlined-hover-border);
+  @include mdc-select-focused-outline-color(primary);
+  @include mdc-floating-label-float-position($mdc-select-outlined-label-position-y);
+  @include mdc-floating-label-shake-animation(text-field-outlined);
+  @include mdc-select-outline-shape-radius(medium);
+  @include mdc-states-base-color(transparent);
+  @include mdc-select-container-fill-color(transparent);
+
+  border: none;
+  overflow: visible;
+
+  .mdc-select__native-control,
+  .mdc-select__selected-text {
+    @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
+
+    display: flex;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    border: none;
+    background-color: transparent;
+    z-index: 1;
+  }
+
+  .mdc-select__selected-text {
+    padding-top: 14px;
+  }
+
+  .mdc-select__icon {
+    z-index: 2;
+  }
+
+  .mdc-floating-label {
+    bottom: 20px;
+    line-height: 1.15rem;
+    pointer-events: auto;
   }
 }

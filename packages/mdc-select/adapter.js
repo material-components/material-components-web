@@ -22,6 +22,15 @@
  */
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
+// eslint-disable-next-line no-unused-vars
+import {MDCSelectIconFoundation} from './icon/index';
+
+/**
+ * @typedef {{
+ *   leadingIcon: (!MDCSelectIconFoundation|undefined),
+ * }}
+ */
+let FoundationMapType;
 
 /**
  * Adapter for MDC Select. Provides an interface for managing
@@ -162,4 +171,4 @@ class MDCSelectAdapter {
   notifyChange(evtData) {}
 }
 
-export default MDCSelectAdapter;
+export {MDCSelectAdapter, FoundationMapType};

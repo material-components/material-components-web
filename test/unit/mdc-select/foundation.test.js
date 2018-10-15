@@ -24,7 +24,6 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
-import {setupFoundationTest} from '../helpers/setup';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 
 import MDCSelectFoundation from '../../../packages/mdc-select/foundation';
@@ -52,10 +51,24 @@ test('default adapter returns a complete adapter implementation', () => {
   ]);
 });
 
-function setupTest() {
-  const {mockAdapter, foundation} = setupFoundationTest(MDCSelectFoundation);
+function setupTest(hasLeadingIcon = true) {
+  const mockAdapter = td.object(MDCSelectFoundation.defaultAdapter);
+  const leadingIcon = td.object({
+    setDisabled: () => {},
+    setAriaLabel: () => {},
+    setContent: () => {},
+    registerInteractionHandler: () => {},
+    deregisterInteractionHandler: () => {},
+    handleInteraction: () => {},
+  });
+  const foundationMap = {
+    leadingIcon: hasLeadingIcon ? leadingIcon : undefined,
+  };
+
   td.when(mockAdapter.getValue()).thenReturn('');
-  return {mockAdapter, foundation};
+
+  const foundation = new MDCSelectFoundation(mockAdapter, foundationMap);
+  return {foundation, mockAdapter, leadingIcon};
 }
 
 test('#setDisabled(true) calls adapter.addClass', () => {
@@ -70,6 +83,12 @@ test('#setDisabled(false) calls adapter.removeClass', () => {
   foundation.setDisabled(false);
   td.verify(mockAdapter.setDisabled(false));
   td.verify(mockAdapter.removeClass(cssClasses.DISABLED));
+});
+
+test('#setDisabled sets disabled on leading icon', () => {
+  const {foundation, leadingIcon} = setupTest();
+  foundation.setDisabled(true);
+  td.verify(leadingIcon.setDisabled(true));
 });
 
 test('#notchOutline updates the SVG path of the outline element', () => {
@@ -99,12 +118,21 @@ test('#notchOutline does nothing if no label is present', () => {
 });
 
 test('#notchOutline calls updates notched outline to return to idle state when ' +
-  'openNotch is false', () => {
+  'openNotch is false and not focused', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasOutline()).thenReturn(true);
 
   foundation.notchOutline(false);
   td.verify(mockAdapter.closeOutline());
+});
+
+test('#notchOutline does not close the notch if the select is still focused', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasOutline()).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.FOCUSED)).thenReturn(true);
+
+  foundation.notchOutline(false);
+  td.verify(mockAdapter.closeOutline(), {times: 0});
 });
 
 test('#handleChange calls adapter.floatLabel(true) when there is a value', () => {
@@ -115,12 +143,21 @@ test('#handleChange calls adapter.floatLabel(true) when there is a value', () =>
   td.verify(mockAdapter.floatLabel(true), {times: 1});
 });
 
-test('#handleChange calls adapter.floatLabel(false) when there is no value', () => {
+test('#handleChange calls adapter.floatLabel(false) when there is no value and the select is not focused', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getValue()).thenReturn('');
 
   foundation.handleChange();
   td.verify(mockAdapter.floatLabel(false), {times: 1});
+});
+
+test('#handleChange does not call adapter.floatLabel(false) when there is no value if the select is focused', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getValue()).thenReturn('');
+  td.when(mockAdapter.hasClass(cssClasses.FOCUSED)).thenReturn(true);
+
+  foundation.handleChange();
+  td.verify(mockAdapter.floatLabel(false), {times: 0});
 });
 
 test('#handleChange calls foundation.notchOutline(true) when there is a value', () => {
@@ -305,9 +342,34 @@ test('#layout calls notchOutline(true) if value is not an empty string', () => {
 });
 
 test('#layout calls notchOutline(false) if value is an empty string', () => {
-  const {foundation, mockAdapter} = setupTest();
+  const {foundation} = setupTest();
   foundation.notchOutline = td.func();
-  td.when(mockAdapter.getValue()).thenReturn('');
   foundation.layout();
   td.verify(foundation.notchOutline(false), {times: 1});
+});
+
+test('#setLeadingIconAriaLabel sets the aria-label of the leading icon element', () => {
+  const {foundation, leadingIcon} = setupTest();
+  foundation.setLeadingIconAriaLabel('foo');
+  td.verify(leadingIcon.setAriaLabel('foo'), {times: 1});
+});
+
+test('#setLeadingIconContent sets the content of the leading icon element', () => {
+  const {foundation, leadingIcon} = setupTest();
+  foundation.setLeadingIconContent('foo');
+  td.verify(leadingIcon.setContent('foo'), {times: 1});
+});
+
+test('#setLeadingIconAriaLabel does nothing if the leading icon element is undefined', () => {
+  const hasLeadingIcon = false;
+  const {foundation, leadingIcon} = setupTest(hasLeadingIcon);
+  assert.doesNotThrow(() => foundation.setLeadingIconAriaLabel('foo'));
+  td.verify(leadingIcon.setAriaLabel('foo'), {times: 0});
+});
+
+test('#setLeadingIconContent does nothing if the leading icon element is undefined', () => {
+  const hasLeadingIcon = false;
+  const {foundation, leadingIcon} = setupTest(hasLeadingIcon);
+  assert.doesNotThrow(() => foundation.setLeadingIconContent('foo'));
+  td.verify(leadingIcon.setContent('foo'), {times: 0});
 });

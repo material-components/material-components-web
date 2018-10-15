@@ -291,6 +291,11 @@ programmatically select a disabled list item in the enhanced select.
 </div>
 ```
 
+### Select with Leading  Icons
+
+Leading icons can be added within the default or outlined variant of MDC Select as visual indicators as
+well as interaction targets. See [here](icon/) for more information on using icons.
+
 ## Style Customization
 
 #### CSS Classes
@@ -300,10 +305,12 @@ programmatically select a disabled list item in the enhanced select.
 | `mdc-select` | Mandatory. |
 | `mdc-select__menu` | Mandatory when using the enhanced select. This class should be placed on the `mdc-menu` element within the `mdc-select` element. |
 | `mdc-select__dropdown-icon` | Mandatory. Should be placed on an `i` element within the `mdc-select` element. Used for the dropdown arrow svg and animation.
+| `mdc-select__icon` | Optional. Should be placed on an `i` or `svg` element within the `mdc-select` element. Used for the leading icon. 
 | `mdc-select--disabled` | Optional. Styles the select as disabled. This class should be applied to the root element when the `disabled` attribute is applied to the `<select>` element. |
 | `mdc-select--outlined` | Optional. Styles the select as outlined select. |
 | `mdc-select__native-control` | Mandatory for the native select. The native `<select>` element. |
 | `mdc-select__selected-text` | Mandatory for the enhanced select. This class should be placed on a `div` within the `mdc-select` element. |
+| `mdc-select--with-leading-icon` | Styles the select as a select with a leading icon. |
 
 > Note: To further customize the [MDCMenu](./../mdc-menu) or the [MDCList](./../mdc-list) component contained within the select, please refer to their respective documentation.
 
@@ -334,9 +341,11 @@ The `MDCSelect` component API is modeled after a subset of the `HTMLSelectElemen
 
 | Property | Type | Description |
 | --- | --- | --- |
-| `value` | `string` | The `value`/`data-value` of the currently selected option. |
-| `selectedIndex` | `number` | The index of the currently selected option. Set to -1 if no option is currently selected. Changing this property will update the select element. |
-| `disabled` | `boolean` | Whether or not the component is disabled. Settings this sets the disabled state on the component. |
+| `value` | string | The `value`/`data-value` of the currently selected option. |
+| `selectedIndex` | number | The index of the currently selected option. Set to -1 if no option is currently selected. Changing this property will update the select element. |
+| `disabled` | boolean | Whether or not the component is disabled. Settings this sets the disabled state on the component. |
+| `leadingIconAriaLabel` | string (write-only) | Proxies to the foundation's `setLeadingIconAriaLabel` method. |
+| `leadingIconContent` | string (write-only) | Proxies to the foundation's `setLeadingIconContent` method. |
 
 ### Events
 
@@ -386,9 +395,13 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `setValue(value: string) => void` | Handles setting the value through the adapter and causes the label to float and outline to notch if needed. |
 | `getValue() => string` | Handles getting the value through the adapter. |
 | `layout() => void` | Handles determining if the notched outline should be notched. |
+| `setLeadingIconAriaLabel(label: string) => void` | Sets the aria label of the leading icon. |
+| `setLeadingIconContent(content: string) => void` | Sets the text content of the leading icon. |
 
 ### Events
 
 Event Name | Data | Description
 --- | --- | ---
 `MDCSelect:change` | `{value: string, index: number}` | Used to indicate when an element has been selected. This event also includes the value of the item and the index.
+
+`MDCSelectFoundation` supports an optional icon sub-element. The foundation of the icon must be passed in as constructor arguments to `MDCSelectFoundation`.

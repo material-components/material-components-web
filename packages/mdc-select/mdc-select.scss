@@ -31,10 +31,11 @@
 @import "@material/ripple/common";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
+@import "./icon/mdc-select-icon";
 
 // postcss-bem-linter: define select
 .mdc-select {
-  @include mdc-select-container-fill-color($mdc-select-box-fill-color);
+  @include mdc-select-container-fill-color($mdc-select-fill-color);
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;
   // Select intentionally omits press ripple, so each state needs to be specified individually.
@@ -78,57 +79,15 @@
     pointer-events: none;
 
     .mdc-select--focused & {
+      @include mdc-select-dd-arrow-svg-bg_(mdc-theme-prop-value(primary), 1);
+
       transform: rotate(180deg) translateY(-5px);
       transition: transform $mdc-select-dropdown-transition-duration $mdc-animation-standard-curve-timing-function;
     }
   }
 
-  &__selected-text {
-    min-width: 200px;
-    padding-top: 22px;
-  }
-
   &__native-control {
     padding-top: 20px;
-  }
-
-  &__native-control,
-  &__selected-text {
-    @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
-    @include mdc-typography(subtitle1);
-
-    &::-ms-expand {
-      display: none;
-    }
-
-    &::-ms-value {
-      background-color: transparent;
-      color: inherit;
-    }
-
-    // counteracts the extra text padding that Firefox adds by default
-    @-moz-document url-prefix("") {
-      text-indent: -2px;
-    }
-
-    // stylelint-disable-next-line selector-max-type, plugin/selector-bem-pattern
-    > option {
-      @include mdc-theme-prop(background-color, surface);
-
-      color: inherit; // Override default user agent stylesheet
-    }
-
-    box-sizing: border-box;
-    width: 100%;
-    padding-bottom: 4px;
-    border: none;
-    border-bottom: 1px solid;
-    outline: none;
-    background-color: transparent;
-    color: inherit; // Override default user agent stylesheet
-    white-space: nowrap;
-    cursor: pointer;
-    appearance: none;
   }
 
   @include mdc-select-focused-line-ripple_ {
@@ -140,92 +99,24 @@
 }
 
 .mdc-select--outlined {
-  @include mdc-select-container-fill-color(transparent);
-  @include mdc-select-outline-color($mdc-select-outlined-idle-border);
-  @include mdc-select-hover-outline-color($mdc-select-outlined-hover-border);
-  @include mdc-select-focused-outline-color(primary);
-  @include mdc-floating-label-shake-animation(text-field-outlined);
-  @include mdc-select-outline-shape-radius(medium);
-  @include mdc-states-base-color(transparent);
-  @include mdc-select-container-fill-color(transparent);
-
-  border: none;
-  overflow: visible;
-
-  .mdc-select__native-control,
-  .mdc-select__selected-text {
-    @include mdc-rtl-reflexive-property(padding, $mdc-select-label-padding, $mdc-select-arrow-padding);
-
-    display: flex;
-    padding-top: 12px;
-    padding-bottom: 12px;
-    border: none;
-    background-color: transparent;
-    z-index: 1;
-  }
-
-  .mdc-select__selected-text {
-    padding-top: 14px;
-  }
-
-  // stylelint-disable-next-line plugin/selector-bem-pattern
-  .mdc-floating-label {
-    bottom: 20px;
-    line-height: 1.15rem;
-    pointer-events: auto;
-  }
+  @include mdc-select-outlined_;
 }
 
-.mdc-select--focused {
-  .mdc-select__dropdown-icon {
-    @include mdc-select-dd-arrow-svg-bg_(mdc-theme-prop-value(primary), 1);
-  }
-}
+@include mdc-select-text-and-control_();
 
 .mdc-select--disabled {
-  @include mdc-select-container-fill-color_($mdc-select-box-disabled-fill-color);
+  @include mdc-select-disabled_;
+}
 
-  .mdc-floating-label {
-    @include mdc-floating-label-ink-color($mdc-select-disabled-label-color);
-  }
-
-  .mdc-select__dropdown-icon {
-    @include mdc-select-dd-arrow-svg-bg_($mdc-select-dropdown-color, $mdc-select-disabled-dropdown-opacity);
-  }
-
-  // stylelint-disable-next-line plugin/selector-bem-pattern
-  .mdc-line-ripple {
-    display: none;
-  }
-
-  // stylelint-disable-next-line plugin/selector-bem-pattern
-  .mdc-select__native-control,
-  .mdc-select__selected-text {
-    border-bottom-style: dotted;
-    color: $mdc-select-disabled-ink-color;
-  }
-
-  .mdc-select__selected-text {
-    pointer-events: none;
-  }
-
-  &.mdc-select--outlined {
-    @include mdc-select-container-fill-color_(transparent);
-
-    // stylelint-disable-next-line plugin/selector-bem-pattern
-    .mdc-select__native-control,
-    .mdc-select__selected-text {
-      border-bottom-style: none;
-    }
-
-    @include mdc-select-outline-color_($mdc-select-outlined-disabled-border);
-  }
-
-  cursor: default;
-  pointer-events: none;
+.mdc-select--with-leading-icon {
+  @include mdc-select-with-leading-icon_;
 }
 
 .mdc-select__menu .mdc-list .mdc-list-item--selected {
   @include mdc-theme-prop(color, on-surface);
   @include mdc-states(on-surface);
 }
+
+@include mdc-floating-label-shake-keyframes(select-outlined-leading-icon, $mdc-select-outlined-label-position-y, $mdc-select-outlined-with-leading-icon-label-position-x);
+@include mdc-floating-label-shake-keyframes(select-outlined-leading-icon-rtl, $mdc-select-outlined-label-position-y, -$mdc-select-outlined-with-leading-icon-label-position-x);
+

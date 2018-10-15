@@ -28,21 +28,23 @@ $mdc-select-height: 56px;
 
 $mdc-select-ink-color: rgba(mdc-theme-prop-value(on-surface), .87);
 $mdc-select-dropdown-color: mdc-theme-prop-value(on-surface);
-$mdc-select-disabled-ink-color: rgba(mdc-theme-prop-value(on-surface), .37);
-$mdc-select-dropdown-opacity: .54;
-$mdc-select-disabled-dropdown-opacity: .37;
-
+$mdc-select-icon-color: rgba(mdc-theme-prop-value(on-surface), .54);
 $mdc-select-label-color: rgba(mdc-theme-prop-value(on-surface), .6);
 $mdc-select-focused-label-color: rgba(mdc-theme-prop-value(primary), .87);
-$mdc-select-disabled-label-color: rgba(mdc-theme-prop-value(on-surface), .37);
-
 $mdc-select-bottom-line-idle-color: rgba(mdc-theme-prop-value(on-surface), .42);
 $mdc-select-bottom-line-hover-color: rgba(mdc-theme-prop-value(on-surface), .87);
 
-$mdc-select-box-fill-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 4%);
-$mdc-select-box-disabled-fill-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 2%);
+$mdc-select-fill-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 4%);
 
 $mdc-select-outlined-idle-border: rgba(mdc-theme-prop-value(on-surface), .24);
+$mdc-select-dropdown-opacity: .54;
+
+// Disabled Styles
+$mdc-select-disabled-label-color: rgba(mdc-theme-prop-value(on-surface), .37);
+$mdc-select-disabled-icon-color: rgba(mdc-theme-prop-value(on-surface), .37);
+$mdc-select-disabled-ink-color: rgba(mdc-theme-prop-value(on-surface), .37);
+$mdc-select-disabled-fill-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 2%);
+$mdc-select-disabled-dropdown-opacity: .37;
 
 // should be .06 after mdc-select opacity is applied
 $mdc-select-outlined-disabled-border: rgba(mdc-theme-prop-value(on-surface), .16);
@@ -52,5 +54,6 @@ $mdc-select-label-position-y: 40%;
 $mdc-select-outline-label-offset: 16px;
 $mdc-select-outlined-label-position-y: 130%;
 $mdc-select-outlined-dense-label-position-y: 110%;
+$mdc-select-outlined-with-leading-icon-label-position-x: 32px;
 
 $mdc-select-dropdown-transition-duration: 150ms;
