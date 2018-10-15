@@ -32,6 +32,7 @@ import {MDCRipple, MDCRippleFoundation} from '../../../packages/mdc-ripple/index
 import {MDCSelect} from '../../../packages/mdc-select/index';
 import {cssClasses} from '../../../packages/mdc-select/constants';
 import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline/index';
+import {MDCSelectIcon} from '../../../packages/mdc-select/icon';
 
 const LABEL_WIDTH = 100;
 
@@ -60,10 +61,18 @@ class FakeOutline {
   }
 }
 
+class FakeIcon {
+  constructor() {
+    this.destroy = td.func('.destroy');
+    this.foundation = td.func('.foundation');
+  }
+}
+
 function getFixture() {
   return bel`
     <div class="mdc-select">
-      <select class="mdc-select__native-control">
+     <i class="material-icons mdc-select__icon">code</i>
+     <select class="mdc-select__native-control">
         <option value="" disabled selected></option>
         <option value="orange">
           Orange
@@ -81,6 +90,7 @@ function getFixture() {
 function getOutlineFixture() {
   return bel`
     <div class="mdc-select mdc-select--outlined">
+      <i class="material-icons mdc-select__icon">code</i>
       <select class="mdc-select__native-control">
         <option value="orange">
           Orange
@@ -114,14 +124,16 @@ function setupTest(hasOutline = false, hasLabel = true) {
   const labelEl = fixture.querySelector('.mdc-floating-label');
   const bottomLineEl = fixture.querySelector('.mdc-line-ripple');
   const outline = new FakeOutline();
+  const icon = new FakeIcon();
 
   if (!hasLabel) {
     fixture.removeChild(labelEl);
   }
 
-  const component = new MDCSelect(fixture, /* foundation */ undefined, () => label, () => bottomLine, () => outline);
+  const component = new MDCSelect(fixture, /* foundation */ undefined,
+    () => label, () => bottomLine, () => outline, () => icon);
 
-  return {fixture, nativeControl, label, labelEl, bottomLine, bottomLineEl, component, outline};
+  return {fixture, nativeControl, label, labelEl, bottomLine, bottomLineEl, component, outline, icon};
 }
 
 test('#get/setSelectedIndex', () => {
@@ -172,6 +184,40 @@ test('#set disabled calls foundation.setDisabled', () => {
   component.foundation_.setDisabled = td.func();
   component.disabled = true;
   td.verify(component.foundation_.setDisabled(true), {times: 1});
+});
+
+test('#set leadingIconAriaLabel calls foundation.setLeadingIconAriaLabel', () => {
+  const {component} = setupTest();
+  component.foundation_.setLeadingIconAriaLabel = td.func();
+  component.leadingIconAriaLabel = true;
+  td.verify(component.foundation_.setLeadingIconAriaLabel(true), {times: 1});
+});
+
+test('#set leadingIconContent calls foundation.setLeadingIconAriaLabel', () => {
+  const {component} = setupTest();
+  component.foundation_.setLeadingIconContent = td.func();
+  component.leadingIconContent = 'hello_world';
+  td.verify(component.foundation_.setLeadingIconContent('hello_world'), {times: 1});
+});
+
+test(`#initialize does not add the ${cssClasses.WITH_LEADING_ICON} class if there is no leading icon`, () => {
+  const fixture = bel`
+    <div class="mdc-select">
+      <select class="mdc-select__native-control">
+        <option value="orange">
+          Orange
+        </option>
+        <option value="apple" selected>
+          Apple
+        </option>
+      </select>
+      <label class="mdc-floating-label">Pick a Food Group</label>
+      <div class="mdc-line-ripple"></div>
+    </div>
+  `;
+  const component = new MDCSelect(fixture, /* foundation */ undefined);
+  assert.isFalse(fixture.classList.contains(cssClasses.WITH_LEADING_ICON));
+  component.destroy();
 });
 
 test('#initialSyncWithDOM sets the selected index if an option has the selected attr', () => {
@@ -526,4 +572,10 @@ test('keydown is not added to the native select when initialized', () => {
   domEvents.emit(fixture.querySelector('.mdc-select__native-control'), 'keydown');
   td.verify(component.foundation_.handleKeydown(td.matchers.anything()), {times: 0});
   document.body.removeChild(fixture);
+});
+
+test('#constructor instantiates a leading icon if an icon element is present', () => {
+  const root = getFixture();
+  const component = new MDCSelect(root);
+  assert.instanceOf(component.leadingIcon_, MDCSelectIcon);
 });

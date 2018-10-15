@@ -36,6 +36,7 @@ import {MDCMenu, MDCMenuFoundation} from '../../../packages/mdc-menu/index';
 import {MDCMenuSurfaceFoundation} from '../../../packages/mdc-menu-surface/index';
 import MDCSelectFoundation from '../../../packages/mdc-select/foundation';
 import MDCListFoundation from '../../../packages/mdc-list/foundation';
+import {MDCSelectIcon} from '../../../packages/mdc-select/icon';
 
 const LABEL_WIDTH = 100;
 
@@ -76,9 +77,18 @@ class FakeMenu {
   }
 }
 
+class FakeIcon {
+  constructor() {
+    this.destroy = td.func('.destroy');
+    this.foundation = td.func('.foundation');
+    this.setDisabled = td.func('.foundation');
+  }
+}
+
 function getFixture() {
   return bel`
     <div class="mdc-select">
+    <i class="mdc-select__icon material-icons">code</i>
       <div class="mdc-select__selected-text"></div>
       <i class="mdc-select__dropdown-icon"></i>
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
@@ -101,6 +111,7 @@ function getFixture() {
 function getOutlineFixture() {
   return bel`
     <div class="mdc-select mdc-select--outlined">
+      <i class="mdc-select__icon material-icons">code</i>
       <div class="mdc-select__selected-text"></div>
       <i class="mdc-select__dropdown-icon"></i>
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
@@ -145,6 +156,7 @@ function setupTest(hasOutline = false, hasLabel = true, hasMockFoundation = fals
   const mockMenu = new FakeMenu();
 
   const outline = new FakeOutline();
+  const icon = new FakeIcon();
 
   if (!hasLabel) {
     fixture.removeChild(labelEl);
@@ -155,10 +167,11 @@ function setupTest(hasOutline = false, hasLabel = true, hasMockFoundation = fals
     () => label,
     () => bottomLine,
     () => outline,
-    hasMockMenu ? () => mockMenu : (el) => new MDCMenu(el));
+    hasMockMenu ? () => mockMenu : (el) => new MDCMenu(el),
+    () => icon);
 
   return {fixture, selectedText, label, labelEl, bottomLine, bottomLineEl, component, outline, menuSurface,
-    mockFoundation, mockMenu};
+    mockFoundation, mockMenu, icon};
 }
 
 function setupWithMockFoundation() {
@@ -192,13 +205,15 @@ test('#get/setSelectedIndex 2x removes previously selected element', () => {
 });
 
 test('#get/set disabled', () => {
-  const {component, fixture} = setupTest();
+  const hasMockFoundation = true;
+  const hasMockMenu = true;
+  const hasOutline = false;
+  const hasLabel = true;
+  const {component, mockFoundation} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   component.disabled = true;
-  assert.isTrue(component.disabled);
-  assert.isTrue(fixture.classList.contains(cssClasses.DISABLED));
+  td.verify(mockFoundation.setDisabled(true), {times: 1});
   component.disabled = false;
-  assert.isFalse(component.disabled);
-  assert.isFalse(fixture.classList.contains(cssClasses.DISABLED));
+  td.verify(mockFoundation.setDisabled(false), {times: 1});
 });
 
 test('#get value', () => {
@@ -243,6 +258,53 @@ test('#set disabled calls foundation.setDisabled', () => {
   const {component, mockFoundation} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   component.disabled = true;
   td.verify(mockFoundation.setDisabled(true), {times: 1});
+});
+
+test('#set leadingIconAriaLabel calls foundation.setLeadingIconAriaLabel', () => {
+  const hasMockFoundation = true;
+  const hasMockMenu = true;
+  const hasOutline = false;
+  const hasLabel = true;
+  const {component, mockFoundation} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  component.leadingIconAriaLabel = true;
+  td.verify(mockFoundation.setLeadingIconAriaLabel(true), {times: 1});
+});
+
+test('#set leadingIconContent calls foundation.setLeadingIconAriaLabel', () => {
+  const hasMockFoundation = true;
+  const hasMockMenu = true;
+  const hasOutline = false;
+  const hasLabel = true;
+  const {component, mockFoundation} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  component.leadingIconContent = 'hello_world';
+  td.verify(mockFoundation.setLeadingIconContent('hello_world'), {times: 1});
+});
+
+test(`#initialize does not add the ${cssClasses.WITH_LEADING_ICON} class if there is no leading icon`, () => {
+  const fixture = bel`
+    <div class="mdc-select">
+      <div class="mdc-select__selected-text"></div>
+      <div class="mdc-select__menu mdc-menu mdc-menu-surface">
+      <ul class="mdc-list">
+        <li class="mdc-list-item" data-value=""></li>
+        <li class="mdc-list-item mdc-list-item--selected" data-value="orange">          
+          Orange
+        </li>
+        <li class="mdc-list-item" data-value="apple">
+          Apple
+        </li> 
+      </ul>
+      </div>
+      <label class="mdc-floating-label">Pick a Food Group</label>
+      <div class="mdc-line-ripple"></div>
+    </div>
+  `;
+  const menuSurface = fixture.querySelector('.mdc-select__menu');
+  const component = new MDCSelect(fixture, /* foundation */ undefined);
+  assert.isFalse(fixture.classList.contains(cssClasses.WITH_LEADING_ICON));
+  assert.isFalse(menuSurface.classList.contains(cssClasses.WITH_LEADING_ICON));
+  component.destroy();
+  document.body.removeChild(document.querySelector('.mdc-select__menu'));
 });
 
 test('#initialSyncWithDOM sets the selected index if an option has the selected class', () => {
@@ -894,4 +956,14 @@ test('menu surface selected event causes the select to update', () => {
 
   document.body.removeChild(menuSurface);
   document.body.removeChild(fixture);
+});
+
+test('#constructor instantiates a leading icon if an icon element is present', () => {
+  const root = getFixture();
+  const menu = root.querySelector('.mdc-select__menu');
+  const component = new MDCSelect(root);
+  assert.instanceOf(component.leadingIcon_, MDCSelectIcon);
+  assert.isTrue(menu.classList.contains(cssClasses.WITH_LEADING_ICON));
+  assert.isTrue(root.classList.contains(cssClasses.WITH_LEADING_ICON));
+  document.body.removeChild(menu);
 });
