@@ -95,7 +95,7 @@ class MDCTabFoundation extends MDCFoundation {
 
   /**
    * Sets whether the tab should focus itself when activated
-   * @param {boolean}
+   * @param {boolean} focusOnActivate
    */
   setFocusOnActivate(focusOnActivate) {
     this.focusOnActivate_ = focusOnActivate;
