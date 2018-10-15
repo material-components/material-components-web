@@ -75,10 +75,24 @@ test('#activate activates the indicator', () => {
   td.verify(mockAdapter.activateIndicator({width: 100, left: 200}));
 });
 
-test('#activate focuses the root node', () => {
+test('#activate focuses the root node by default', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.activate({width: 100, left: 200});
   td.verify(mockAdapter.focus());
+});
+
+test('#activate focuses the root node if focusOnActivate is true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setFocusOnActivate(true);
+  foundation.activate({width: 100, left: 200});
+  td.verify(mockAdapter.focus());
+});
+
+test('#activate does not focus the root node if focusOnActivate is false', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setFocusOnActivate(false);
+  foundation.activate({width: 100, left: 200});
+  td.verify(mockAdapter.focus(), {times: 0});
 });
 
 test('#deactivate does nothing if not active', () => {
