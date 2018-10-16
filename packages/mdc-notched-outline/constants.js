@@ -32,4 +32,10 @@ const cssClasses = {
   OUTLINE_NOTCHED: 'mdc-notched-outline--notched',
 };
 
-export {cssClasses, strings};
+/** @enum {number} */
+const numbers = {
+  FLOATING_LABEL_SIDE_PADDING: 4,
+  LEADING_STROKE_LENGTH: 8,
+};
+
+export {cssClasses, strings, numbers};

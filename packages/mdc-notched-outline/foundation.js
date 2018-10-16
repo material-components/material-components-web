@@ -23,7 +23,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 import MDCNotchedOutlineAdapter from './adapter';
-import {cssClasses, strings} from './constants';
+import {cssClasses, strings, numbers} from './constants';
 
 /**
  * @extends {MDCFoundation<!MDCNotchedOutlineAdapter>}
@@ -98,12 +98,12 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
     const width = this.adapter_.getWidth();
     const height = this.adapter_.getHeight();
     const cornerWidth = radius + 1.2;
-    const leadingStrokeLength = Math.abs(12 - cornerWidth);
+    const leadingStrokeLength = numbers.LEADING_STROKE_LENGTH;
 
     // If the notchWidth is 0, the the notched outline doesn't need to add padding.
     let paddedNotchWidth = 0;
     if (notchWidth > 0) {
-      paddedNotchWidth = notchWidth + 8;
+      paddedNotchWidth = notchWidth + 2 * numbers.FLOATING_LABEL_SIDE_PADDING;
     }
 
     // The right, bottom, and left sides of the outline follow the same SVG path.
@@ -125,7 +125,7 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
       path = 'M' + (width - cornerWidth - leadingStrokeLength) + ',' + 1
         + 'h' + leadingStrokeLength
         + pathMiddle
-        + 'h' + (width - (2 * cornerWidth) - paddedNotchWidth - leadingStrokeLength);
+        + 'h' + (width - (2 * cornerWidth) - paddedNotchWidth - leadingStrokeLength + 12);
     }
 
     this.adapter_.setOutlinePathAttr(path);
