@@ -183,7 +183,7 @@ setting the width of the `mdc-select__menu` element to match. This is best done 
   <div class="mdc-select__selected-text" role="combobox">Vegetables</div>
   <div class="mdc-select__menu demo-width-class mdc-menu mdc-menu-surface" role="listbox">
     <ul class="mdc-list">
-      <li class="mdc-list-item" data-value=""></option>
+      <li class="mdc-list-item" data-value=""></li>
       <li class="mdc-list" data-value="grains">
         Bread, Cereal, Rice, and Pasta
       </li>
@@ -274,7 +274,7 @@ programmatically select a disabled list item in the enhanced select.
   <div class="mdc-select__selected-text" role="combobox">Vegetables</div>
   <div class="mdc-select__menu mdc-menu mdc-menu-surface" role="listbox">
     <ul class="mdc-list">
-      <li class="mdc-list-item" data-value=""></option>
+      <li class="mdc-list-item" data-value=""></li>
       <li class="mdc-list" data-value="grains">
         Bread, Cereal, Rice, and Pasta
       </li>
@@ -287,6 +287,35 @@ programmatically select a disabled list item in the enhanced select.
     </ul> 
   </div>
   <label class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</label>
+  <div class="mdc-line-ripple"></div>
+</div>
+```
+
+#### Enhanced Select Accessibility (a11y)
+
+In order to have an accessible component for users, it's recommended that you follow the WAI-ARIA example for
+[Collapsible Dropdown Listbox](https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html). An
+example of the enhanced select component with all the necessary aria attributes is listed below.
+
+```html
+<div class="mdc-select">
+  <i class="mdc-select__dropdown-icon"></i>
+  <div id="demo-selected-text" class="mdc-select__selected-text" role="button" aria-haspopup="listbox" aria-labelledby="demo-label demo-selected-text">Vegetables</div>
+  <div class="mdc-select__menu mdc-menu mdc-menu-surface" role="listbox">
+    <ul class="mdc-list">
+      <li class="mdc-list-item" data-value="" role="option"></li>
+      <li class="mdc-list" data-value="grains" role="option">
+        Bread, Cereal, Rice, and Pasta
+      </li>
+      <li class="mdc-list mdc-list-item--selected mdc-list-item--disabled" data-value="vegetables" aria-selected="true" aria-disabled="true" role="option">
+        Vegetables
+      </li>
+      <li class="mdc-list" data-value="fruit" role="option">
+        Fruit
+      </li>
+    </ul> 
+  </div>
+  <label id="demo-label" class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</label>
   <div class="mdc-line-ripple"></div>
 </div>
 ```

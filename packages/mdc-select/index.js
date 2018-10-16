@@ -264,6 +264,7 @@ class MDCSelect extends MDCComponent {
       // will return false if the menu is still closing and this method listens to the closed event which
       // occurs after the menu is already closed.
       this.menuOpened_ = false;
+      this.selectedText_.removeAttribute('aria-expanded');
       if (document.activeElement !== this.selectedText_) {
         this.foundation_.handleBlur();
       }
@@ -367,7 +368,10 @@ class MDCSelect extends MDCComponent {
       setSelectedIndex: (index) => {
         this.nativeControl_.selectedIndex = index;
       },
-      setDisabled: (isDisabled) => this.nativeControl_.disabled = isDisabled,
+      setDisabled: (isDisabled) => {
+        this.nativeControl_.disabled = isDisabled;
+        this.nativeControl_.setAttribute('aria-disabled', isDisabled.toString());
+      },
     };
   }
 
@@ -401,6 +405,7 @@ class MDCSelect extends MDCComponent {
         if (this.menu_ && !this.menu_.open) {
           this.menu_.open = true;
           this.menuOpened_ = true;
+          this.selectedText_.setAttribute('aria-expanded', 'true');
         }
       },
       closeMenu: () => {
@@ -414,6 +419,7 @@ class MDCSelect extends MDCComponent {
       },
       setDisabled: (isDisabled) => {
         this.selectedText_.setAttribute('tabindex', isDisabled ? '-1' : '0');
+        this.selectedText_.setAttribute('aria-disabled', isDisabled.toString());
       },
     };
   }
