@@ -172,7 +172,8 @@ class MDCSelectFoundation extends MDCFoundation {
     this.handleChange(false);
     this.adapter_.deactivateBottomLine();
     if (this.helperText_) {
-      this.helperText_.setValidity(true);
+      // Will handle validity checking in a followup PR.
+      this.helperText_.setValidity(true /* isValid */);
     }
   }
 

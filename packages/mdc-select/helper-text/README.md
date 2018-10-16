@@ -4,7 +4,7 @@ layout: detail
 section: components
 excerpt: "The helper text provides supplemental information and/or validation messages to users"
 iconId: menu
-path: /catalog/input-controls/select-menus/
+path: /catalog/input-controls/select-menus/helper-text/
 -->
 
 # Select Helper Text
@@ -15,7 +15,7 @@ Helper text gives context about a select, such as how the selection will be used
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/go/design-selects">Material Design guidelines: Text Fields</a>
+    <a href="https://material.io/go/design-text-fields">Material Design guidelines: Text Fields</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components.github.io/material-components-web-catalog/#/component/select">Demo</a>
@@ -51,14 +51,14 @@ const helperText = new MDCSelectHelperText(document.querySelector('.mdc-select-h
 
 Note that in every example where the helper text is dependent on the state of the `select` element, we
 assign an id to the `mdc-select-helper-text` element and set that id to the value of the
-`aria-controls` and `aria-describedby` attributes on the `select` element. We recommend doing this as well as it will
-help indicate to assistive devices that the display of the helper text is dependent on the interaction with
-the `select` element.
+`aria-controls` and `aria-describedby` attributes on the element with either the `mdc-select__native-control` or
+`mdc-select__selected-text` class. We recommend doing this as well as it will help indicate to assistive devices that
+the display of the helper text is dependent on the interaction with the MDCSelect component.
 
 ```html
 <div class="mdc-select">
   <i class="mdc-select__dropdown-icon"></i>
-  <select id="native-select-control" class="mdc-select__native-control">
+  <select id="native-select-control" class="mdc-select__native-control" aria-controls="username-helper-text" aria-describedby="username-helper-text">
     <option value="" disabled selected></option>
     <option value="grains">
       Bread, Cereal, Rice, and Pasta
