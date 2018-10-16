@@ -43,6 +43,7 @@ import * as radio from '@material/radio/index';
 import * as ripple from '@material/ripple/index';
 import * as select from '@material/select/index';
 import * as selectionControl from '@material/selection-control/index';
+import * as sideSheet from '@material/side-sheet/index';
 import * as slider from '@material/slider/index';
 import * as snackbar from '@material/snackbar/index';
 import * as switchControl from '@material/switch/index';
@@ -77,6 +78,7 @@ autoInit.register('MDCTextField', textField.MDCTextField);
 autoInit.register('MDCMenu', menu.MDCMenu);
 autoInit.register('MDCMenuSurface', menuSurface.MDCMenuSurface);
 autoInit.register('MDCSelect', select.MDCSelect);
+autoInit.register('MDCSideSheet', sideSheet.MDCSideSheet);
 autoInit.register('MDCSlider', slider.MDCSlider);
 autoInit.register('MDCSwitch', switchControl.MDCSwitch);
 autoInit.register('MDCToolbar', toolbar.MDCToolbar);
@@ -106,6 +108,7 @@ export {
   ripple,
   select,
   selectionControl,
+  sideSheet,
   slider,
   switchControl,
   snackbar,

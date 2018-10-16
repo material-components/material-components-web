@@ -44,6 +44,7 @@
     "@material/select": "^0.40.1",
     "@material/selection-control": "^0.40.1",
     "@material/shape": "^0.40.1",
+    "@material/side-sheet": "^0.0.0",
     "@material/slider": "^0.40.1",
     "@material/snackbar": "^0.40.1",
     "@material/switch": "^0.40.1",

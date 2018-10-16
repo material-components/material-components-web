@@ -1,0 +1,56 @@
+//
+// Copyright 2017 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+@import "@material/theme/variables";
+
+// Colors
+$mdc-side-sheet-title-ink-color: mdc-theme-prop-value(on-surface);
+$mdc-side-sheet-subtitle-ink-color: mdc-theme-prop-value(on-surface);
+$mdc-side-sheet-item-inactive-ink-color: mdc-theme-prop-value(on-surface);
+$mdc-side-sheet-item-activated-ink-color: mdc-theme-prop-value(primary);
+$mdc-side-sheet-divider-color: mdc-theme-prop-value(on-surface);
+$mdc-side-sheet-surface-fill-color: mdc-theme-prop-value(surface);
+
+// Opacity
+$mdc-side-sheet-title-ink-opacity: mdc-theme-text-emphasis(high);
+$mdc-side-sheet-subtitle-ink-opacity: mdc-theme-text-emphasis(medium);
+$mdc-side-sheet-item-inactive-icon-ink-opacity: mdc-theme-text-emphasis(medium);
+$mdc-side-sheet-item-inactive-text-ink-opacity: mdc-theme-text-emphasis(high);
+$mdc-side-sheet-item-active-icon-ink-opacity: 1;
+$mdc-side-sheet-item-active-text-ink-opacity: mdc-theme-text-emphasis(high);
+$mdc-side-sheet-divider-opacity: .12;
+
+// Widths
+$mdc-side-sheet-width: 256px;
+$mdc-side-sheet-list-item-spacing: 4px;
+$mdc-side-sheet-surface-padding: 16px;
+
+// Animations
+$mdc-side-sheet-animation-enter: 250ms;
+$mdc-side-sheet-animation-exit: 200ms;
+
+// Scrim
+$mdc-side-sheet-modal-scrim-color: mdc-theme-prop-value(on-surface);
+$mdc-side-sheet-modal-scrim-opacity: .32;
+
+$mdc-side-sheet-z-index: 6;
+$mdc-side-sheet-modal-elevation: 16;
