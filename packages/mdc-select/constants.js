@@ -33,6 +33,7 @@ const cssClasses = {
 
 /** @enum {string} */
 const strings = {
+  ARIA_CONTROLS: 'aria-controls',
   CHANGE_EVENT: 'MDCSelect:change',
   SELECTED_ITEM_SELECTOR: `.${cssClasses.SELECTED_ITEM_CLASS}`,
   LEADING_ICON_SELECTOR: '.mdc-select__icon',

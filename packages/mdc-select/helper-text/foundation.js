@@ -99,13 +99,13 @@ class MDCSelectHelperTextFoundation extends MDCFoundation {
   }
 
   /**
-   * Sets the validity of the helper text based on the input validity.
-   * @param {boolean} inputIsValid
+   * Sets the validity of the helper text based on the select validity.
+   * @param {boolean} selectIsValid
    */
-  setValidity(inputIsValid) {
+  setValidity(selectIsValid) {
     const helperTextIsPersistent = this.adapter_.hasClass(cssClasses.HELPER_TEXT_PERSISTENT);
     const helperTextIsValidationMsg = this.adapter_.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
-    const validationMsgNeedsDisplay = helperTextIsValidationMsg && !inputIsValid;
+    const validationMsgNeedsDisplay = helperTextIsValidationMsg && !selectIsValid;
 
     if (validationMsgNeedsDisplay) {
       this.adapter_.setAttr(strings.ROLE, 'alert');
