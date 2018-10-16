@@ -22,11 +22,11 @@
 
 @import "@material/animation/functions";
 @import "@material/rtl/mixins";
-@import "../variables";
 @import "../mixins";
+@import "../variables";
 
 .mdc-side-sheet--dismissible {
-  @include mdc-rtl-reflexive-position(left, 0);
+  @include mdc-side-sheet-dismissible_;
 
   display: none;
   position: absolute;
@@ -38,7 +38,7 @@
 }
 
 .mdc-side-sheet-app-content {
-  @include mdc-rtl-reflexive-box(margin, left, 0);
+  @include mdc-side-sheet-app-content_;
 
   position: relative;
 }

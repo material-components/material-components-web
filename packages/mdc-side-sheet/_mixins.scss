@@ -20,10 +20,14 @@
 // THE SOFTWARE.
 //
 
-@import "@material/theme/mixins";
 @import "@material/ripple/mixins";
 @import "@material/shape/mixins";
+@import "@material/theme/mixins";
 @import "./variables";
+
+//
+// Public
+//
 
 @mixin mdc-side-sheet-stroke-color($color, $opacity: $mdc-side-sheet-stroke-opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
@@ -46,7 +50,7 @@
 @mixin mdc-side-sheet-scrim-fill-color($color) {
   $value: rgba(mdc-theme-prop-value($color), $mdc-side-sheet-modal-scrim-opacity);
 
-  + .mdc-side-sheet-scrim {
+  ~ .mdc-side-sheet-scrim {
     @include mdc-theme-prop(background-color, $value);
   }
 }
@@ -76,10 +80,123 @@
   z-index: $value;
 }
 
-@mixin mdc-side-sheet-width($width) {
+@mixin mdc-side-sheet-width($width, $side: trailing) {
   width: $width;
 
-  &.mdc-side-sheet--open:not(.mdc-side-sheet--closing) + .mdc-side-sheet-app-content {
-    @include mdc-rtl-reflexive-box(margin, left, $width);
+  &.mdc-side-sheet--open:not(.mdc-side-sheet--closing) ~ .mdc-side-sheet-app-content {
+    @if $side == "leading" {
+      @include mdc-rtl-reflexive-box(margin, left, $width);
+    } @else if $side == "trailing" {
+      @include mdc-rtl-reflexive-box(margin, right, $width);
+    } @else {
+      @error "mdc-side-sheet-width() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
+    }
+  }
+}
+
+//
+// Private
+//
+
+@mixin mdc-side-sheet-stroke-right_($width) {
+  border-right-width: $width;
+  border-left-width: 0;
+  border-right-style: solid;
+  border-left-style: none;
+}
+
+@mixin mdc-side-sheet-stroke-left_($width) {
+  border-right-width: 0;
+  border-left-width: $width;
+  border-right-style: none;
+  border-left-style: solid;
+}
+
+@mixin mdc-side-sheet-stroke-width_($width, $side: trailing) {
+  @if $side == "leading" {
+    @include mdc-side-sheet-stroke-right_($width);
+
+    @include mdc-rtl {
+      @include mdc-side-sheet-stroke-left_($width);
+    }
+  } @else if $side == "trailing" {
+    @include mdc-side-sheet-stroke-left_($width);
+
+    @include mdc-rtl {
+      @include mdc-side-sheet-stroke-right_($width);
+    }
+  } @else {
+    @error "mdc-side-sheet-stroke_() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
+  }
+}
+
+@mixin mdc-side-sheet-base_($side: trailing) {
+  $xFactor: if($side == "leading", 1, -1);
+
+  order: if($side == "leading", 0, 1);
+
+  &--animate {
+    transform: translateX(-100% * $xFactor);
+
+    @include mdc-rtl {
+      transform: translateX(100% * $xFactor);
+    }
+  }
+
+  &--opening {
+    transform: translateX(0);
+
+    // Required to level the specificity with animate class.
+    @include mdc-rtl {
+      transform: translateX(0);
+    }
+  }
+
+  &--closing {
+    transform: translateX(-100% * $xFactor);
+
+    @include mdc-rtl {
+      transform: translateX(100% * $xFactor);
+    }
+  }
+}
+
+@mixin mdc-side-sheet-scrim_($side: trailing) {
+  @if $side == "leading" {
+    left: 0;
+  } @else if $side == "trailing" {
+    right: 0;
+  } @else {
+    @error "mdc-side-sheet-scrim_() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
+  }
+}
+
+@mixin mdc-side-sheet-modal_($side: trailing) {
+  @if $side == "leading" {
+    @include mdc-rtl-reflexive-position(left, 0);
+  } @else if $side == "trailing" {
+    @include mdc-rtl-reflexive-position(right, 0);
+  } @else {
+    @error "mdc-side-sheet-modal_() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
+  }
+}
+
+@mixin mdc-side-sheet-dismissible_($side: trailing) {
+  @if $side == "leading" {
+    @include mdc-rtl-reflexive-position(left, 0);
+  } @else if $side == "trailing" {
+    @include mdc-rtl-reflexive-position(right, 0);
+  } @else {
+    @error "mdc-side-sheet-dismissible_() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
+  }
+}
+
+@mixin mdc-side-sheet-app-content_($side: trailing) {
+  @if $side == "leading" {
+    @include mdc-rtl-reflexive-box(margin, left, 0);
+  } @else if $side == "trailing" {
+    @include mdc-rtl-reflexive-box(margin, right, 0);
+  } @else {
+    @error "mdc-side-sheet-app-content_() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
   }
 }

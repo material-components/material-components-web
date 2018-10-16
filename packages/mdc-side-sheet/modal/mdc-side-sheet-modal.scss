@@ -29,7 +29,7 @@
 .mdc-side-sheet--modal {
   @include mdc-side-sheet-scrim-fill-color($mdc-side-sheet-modal-scrim-color);
   @include mdc-elevation($mdc-side-sheet-modal-elevation);
-  @include mdc-rtl-reflexive-position(left, 0);
+  @include mdc-side-sheet-modal_;
 
   display: none;
   position: fixed;
@@ -40,10 +40,11 @@
 }
 
 .mdc-side-sheet-scrim {
+  @include mdc-side-sheet-scrim_;
+
   display: none;
   position: fixed;
   top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
   transition-property: opacity;

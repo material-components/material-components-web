@@ -23,16 +23,18 @@
 @import "@material/animation/functions";
 @import "@material/animation/variables";
 @import "@material/rtl/mixins";
+@import "@material/theme/mixins";
+@import "@material/theme/variables";
 @import "@material/typography/mixins";
 @import "@material/typography/variables";
-@import "@material/theme/variables";
-@import "@material/theme/mixins";
-@import "./variables";
 @import "./mixins";
+@import "./variables";
 
 // postcss-bem-linter: define side-sheet
 
 .mdc-side-sheet {
+  @include mdc-side-sheet-base_;
+  @include mdc-side-sheet-stroke-width_(1px);
   @include mdc-side-sheet-stroke-color($mdc-side-sheet-stroke-color);
   @include mdc-side-sheet-surface-fill-color($mdc-side-sheet-surface-fill-color);
   @include mdc-side-sheet-shape-radius(large);
@@ -46,47 +48,19 @@
   height: 100%;
   transition-property: transform;
   transition-timing-function: $mdc-animation-standard-curve-timing-function;
-  border-right-width: 1px;
-  border-right-style: solid;
   overflow: hidden;
-
-  @include mdc-rtl {
-    border-right-width: 0;
-    border-left-width: 1px;
-    border-right-style: none;
-    border-left-style: solid;
-  }
 }
 
 .mdc-side-sheet--open {
   transition: mdc-animation-standard(transform, $mdc-side-sheet-animation-enter);
 }
 
-.mdc-side-sheet--animate {
-  transform: translateX(-100%);
-
-  @include mdc-rtl {
-    transform: translateX(100%);
-  }
-}
-
 .mdc-side-sheet--opening {
-  transform: translateX(0);
   transition-duration: $mdc-side-sheet-animation-enter;
-
-  // Required to level the specificity with animate class.
-  @include mdc-rtl {
-    transform: translateX(0);
-  }
 }
 
 .mdc-side-sheet--closing {
-  transform: translateX(-100%);
   transition-duration: $mdc-side-sheet-animation-exit;
-
-  @include mdc-rtl {
-    transform: translateX(100%);
-  }
 }
 
 .mdc-side-sheet__content {
