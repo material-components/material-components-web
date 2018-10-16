@@ -33,20 +33,11 @@ npm install @material/side-sheet
 ```html
 <aside class="mdc-side-sheet">
   <div class="mdc-side-sheet__content">
-    <nav class="mdc-list">
-      <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
-        <span class="mdc-list-item__text">Inbox</span>
-      </a>
-      <a class="mdc-list-item" href="#">
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
-        <span class="mdc-list-item__text">Outgoing</span>
-      </a>
-      <a class="mdc-list-item" href="#">
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
-        <span class="mdc-list-item__text">Drafts</span>
-      </a>
-    </nav>
+    <div><label><input type="checkbox"> Events</label></div>
+    <div><label><input type="checkbox" checked> Personal</label></div>
+    <div><label><input type="checkbox" checked> Projects</label></div>
+    <div><label><input type="checkbox"> Reminders</label></div>
+    <div><label><input type="checkbox"> Work</label></div>
   </div>
 </aside>
 ```
@@ -67,20 +58,9 @@ However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any 
 
 ```scss
 @import "@material/side-sheet/mdc-side-sheet";
-@import "@material/list/mdc-list";
 ```
 
 ### JavaScript Instantiation
-
-For permanently visible side-sheet, the list must be instantiated for appropriate keyboard interaction:
-
-```js
-import {MDCList} from "@material/list";
-const list = MDCList.attachTo(document.querySelector('.mdc-list'));
-list.wrapFocus = true;
-```
-
-Other variants use the `MDCSideSheet` component, which will instantiate `MDCList` automatically:
 
 ```js
 import {MDCSideSheet} from "@material/side-sheet";
@@ -88,77 +68,6 @@ const sideSheet = MDCSideSheet.attachTo(document.querySelector('.mdc-side-sheet'
 ```
 
 ## Variants
-
-### Side Sheet with separate list groups
-
-```html
-<aside class="mdc-side-sheet">
-  <div class="mdc-side-sheet__content">
-    <nav class="mdc-list">
-      <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
-        <span class="mdc-list-item__text">Inbox</span>
-      </a>
-      <a class="mdc-list-item" href="#">
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>
-        <span class="mdc-list-item__text">Star</span>
-      </a>
-      <a class="mdc-list-item" href="#">
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
-        <span class="mdc-list-item__text">Sent Mail</span>
-      </a>
-      <a class="mdc-list-item" href="#">
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
-        <span class="mdc-list-item__text">Drafts</span>
-      </a>
-
-      <hr class="mdc-list-divider">
-      <h6 class="mdc-list-group__subheader">Labels</h6>
-      <a class="mdc-list-item" href="#">
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
-        <span class="mdc-list-item__text">Family</span>
-      </a>
-      <a class="mdc-list-item" href="#">
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
-        <span class="mdc-list-item__text">Friends</span>
-      </a>
-      <a class="mdc-list-item" href="#">
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">bookmark</i>
-        <span class="mdc-list-item__text">Work</span>
-      </a>
-    </nav>
-  </div>
-</aside>
-```
-
-### Side Sheet with Header
-
-Side Sheets can contain a header element which will not scroll with the rest of the side-sheet content. Things like account switchers and titles should live in the header element.
-
-```html
-<aside class="mdc-side-sheet">
-  <div class="mdc-side-sheet__header">
-    <h3 class="mdc-side-sheet__title">Mail</h3>
-    <h6 class="mdc-side-sheet__subtitle">email@material.io</h6>
-  </div>
-  <div class="mdc-side-sheet__content">
-    <nav class="mdc-list">
-      <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
-        <span class="mdc-list-item__text">Inbox</span>
-      </a>
-      <a class="mdc-list-item" href="#">
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
-        <span class="mdc-list-item__text">Outgoing</span>
-      </a>
-      <a class="mdc-list-item" href="#">
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
-        <span class="mdc-list-item__text">Drafts</span>
-      </a>
-    </nav>
-  </div>
-</aside>
-```
 
 ### Dismissible Side Sheet
 
@@ -168,20 +77,11 @@ Dismissible side sheets are by default hidden off screen, and can slide into vie
 <body>
   <aside class="mdc-side-sheet mdc-side-sheet--dismissible">
     <div class="mdc-side-sheet__content">
-      <nav class="mdc-list">
-        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
-          <span class="mdc-list-item__text">Inbox</span>
-        </a>
-        <a class="mdc-list-item" href="#">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
-          <span class="mdc-list-item__text">Outgoing</span>
-        </a>
-        <a class="mdc-list-item" href="#">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
-          <span class="mdc-list-item__text">Drafts</span>
-        </a>
-      </nav>
+      <div><label><input type="checkbox"> Events</label></div>
+      <div><label><input type="checkbox" checked> Personal</label></div>
+      <div><label><input type="checkbox" checked> Projects</label></div>
+      <div><label><input type="checkbox"> Reminders</label></div>
+      <div><label><input type="checkbox"> Work</label></div>
     </div>
   </aside>
 
@@ -191,7 +91,7 @@ Dismissible side sheets are by default hidden off screen, and can slide into vie
 </body>
 ```
 
-> Apply the `mdc-side-sheet-app-content` class to the sibling element after the side-sheet for the open/close animations to work.
+> Apply the `mdc-side-sheet-app-content` class to the sibling element after the side-sheet for the open/close animations to work.\
 
 #### Usage with Top App Bar
 
@@ -203,19 +103,12 @@ In the following example, the `mdc-side-sheet__content` and `main-content` eleme
 <body>
   <aside class="mdc-side-sheet mdc-side-sheet--dismissible">
     <div class="mdc-side-sheet__content">
-      <div class="mdc-list">
-        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
-          <span class="mdc-list-item__text">Inbox</span>
-        </a>
-        <a class="mdc-list-item" href="#">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
-          <span class="mdc-list-item__text">Outgoing</span>
-        </a>
-        <a class="mdc-list-item" href="#">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
-          <span class="mdc-list-item__text">Drafts</span>
-        </a>
+      <div class="mdc-side-sheet__content">
+        <div><label><input type="checkbox"> Events</label></div>
+        <div><label><input type="checkbox" checked> Personal</label></div>
+        <div><label><input type="checkbox" checked> Projects</label></div>
+        <div><label><input type="checkbox"> Reminders</label></div>
+        <div><label><input type="checkbox"> Work</label></div>
       </div>
     </div>
   </aside>
@@ -283,24 +176,16 @@ Modal side sheets are elevated above most of the app's UI and don't affect the s
 <body>
   <aside class="mdc-side-sheet mdc-side-sheet--modal">
     <div class="mdc-side-sheet__content">
-      <nav class="mdc-list">
-        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
-          <span class="mdc-list-item__text">Inbox</span>
-        </a>
-        <a class="mdc-list-item" href="#">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
-          <span class="mdc-list-item__text">Outgoing</span>
-        </a>
-        <a class="mdc-list-item" href="#">
-          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
-          <span class="mdc-list-item__text">Drafts</span>
-        </a>
-      </nav>
+      <div><label><input type="checkbox"> Events</label></div>
+      <div><label><input type="checkbox" checked> Personal</label></div>
+      <div><label><input type="checkbox" checked> Projects</label></div>
+      <div><label><input type="checkbox"> Reminders</label></div>
+      <div><label><input type="checkbox"> Work</label></div>
     </div>
   </aside>
 
   <div class="mdc-side-sheet-scrim"></div>
+
   <div>Main Content</div>
 </body>
 ```
