@@ -64,7 +64,7 @@ $custom-side-sheet-color: $material-color-orange-900;
 }
 
 .custom-side-sheet--fill-color-accessible {
-  @include mdc-side-sheet-fill-color-accessible(darkcyan);
+  @include mdc-side-sheet-surface-fill-color-accessible(darkcyan);
 }
 
 .custom-side-sheet--width {

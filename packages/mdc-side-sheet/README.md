@@ -84,7 +84,7 @@ Other variants use the `MDCSideSheet` component, which will instantiate `MDCList
 
 ```js
 import {MDCSideSheet} from "@material/side-sheet";
-const side-sheet = MDCSideSheet.attachTo(document.querySelector('.mdc-side-sheet'));
+const sideSheet = MDCSideSheet.attachTo(document.querySelector('.mdc-side-sheet'));
 ```
 
 ## Variants
@@ -271,7 +271,7 @@ import {MDCTopAppBar} from "@material/top-app-bar";
 const topAppBar = MDCTopAppBar.attachTo(document.getElementById('app-bar'));
 topAppBar.setScrollTarget(document.getElementById('main-content'));
 topAppBar.listen('MDCTopAppBar:nav', () => {
-  side-sheet.open = !side-sheet.open;
+  sideSheet.open = !sideSheet.open;
 });
 ```
 
@@ -313,16 +313,13 @@ Modal side sheets are elevated above most of the app's UI and don't affect the s
 
 Class | Description
 --- | ---
-`mdc-side-sheet` |  Mandatory.
-`mdc-side-sheet__header` | Non-scrollable element that exists at the top of the side-sheet.
-`mdc-side-sheet__content` | Scrollable content area of the side-sheet.
-`mdc-side-sheet__title` | Title text element of the side-sheet.
-`mdc-side-sheet__subtitle` | Subtitle text element of the side-sheet.
+`mdc-side-sheet` | Mandatory.
 `mdc-side-sheet--dismissible` | Dismissible side-sheet variant class.
 `mdc-side-sheet--modal` | Modal side-sheet variant class.
 `mdc-side-sheet--open` | If present, indicates that the dismissible side-sheet is in the open position.
 `mdc-side-sheet--opening` | Applied while the side-sheet is animating from the closed to the open position.
 `mdc-side-sheet--closing` | Applied while the side-sheet is animating from the open to the closed position.
+`mdc-side-sheet__content` | Scrollable content area of the side-sheet.
 `mdc-side-sheet-app-content` | Dismissible variant only. Sibling element that is resized when the side-sheet opens/closes.
 `mdc-side-sheet-scrim` | Modal variant only. Used for the overlay on the app content.
 
@@ -331,20 +328,12 @@ Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-side-sheet-border-color($color)` | Sets border color of `mdc-side-sheet` surface.
-`mdc-side-sheet-divider-color($color)` | Sets divider color found between list groups.
-`mdc-side-sheet-fill-color-accessible($color)` | Sets the fill color to `$color`, and list item and icon ink colors to an accessible color relative to `$color`.
+`mdc-side-sheet-ink-color` | Sets the ink color of text within the side sheet.
 `mdc-side-sheet-surface-fill-color($color)` | Sets the background color of `mdc-side-sheet`.
-`mdc-side-sheet-title-ink-color($color)` | Sets the ink color of `mdc-side-sheet__title`.
-`mdc-side-sheet-subtitle-ink-color` | Sets side-sheet subtitle and list subheader ink color.
-`mdc-side-sheet-item-icon-ink-color($color)` | Sets side-sheet list item graphic icon ink color.
-`mdc-side-sheet-item-text-ink-color($color)` | Sets side-sheet list item text ink color.
-`mdc-side-sheet-item-activated-icon-ink-color($color)` | Sets activated side-sheet list item icon ink color.
-`mdc-side-sheet-item-activated-text-ink-color($color)` | Sets activated side-sheet list item text ink color.
-`mdc-side-sheet-shape-radius($radius)` | Sets the rounded shape to side-sheet with given radius size. `$radius` can be single radius or list of 2 radius values for trailing-top and trailing-bottom. Automatically flips the radius values in RTL context.
-`mdc-side-sheet-item-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to side-sheet navigation item with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to true.
-`mdc-side-sheet-activated-overlay-color($color)` | Sets the overlay color of the activated side-sheet list item.
+`mdc-side-sheet-surface-fill-color-accessible($color)` | Sets the fill color to `$color`, and text ink color to an accessible color relative to `$color`.
 `mdc-side-sheet-scrim-fill-color($color)` | Sets the fill color of `mdc-side-sheet-scrim`.
+`mdc-side-sheet-stroke-color($color)` | Sets border color of `mdc-side-sheet` surface.
+`mdc-side-sheet-shape-radius($radius)` | Sets the rounded shape to side-sheet with given radius size. `$radius` can be single radius or list of 2 radius values for trailing-top and trailing-bottom. Automatically flips the radius values in RTL context.
 `mdc-side-sheet-z-index($value)` | Sets the z index of side-sheet. Side Sheet stays on top of top app bar except for clipped variant of side-sheet.
 `mdc-side-sheet-width($width)` | Sets the width of the side-sheet. In the case of the dismissible variant, also sets margin required for `mdc-side-sheet-app-content`.
 
@@ -380,7 +369,7 @@ const listEl = document.querySelector('.mdc-side-sheet .mdc-list');
 const mainContentEl = document.querySelector('.main-content');
 
 listEl.addEventListener('click', (event) => {
-  side-sheet.open = false;
+  sideSheet.open = false;
 });
 
 document.body.addEventListener('MDCSideSheet:closed', () => {

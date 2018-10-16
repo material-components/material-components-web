@@ -28,10 +28,8 @@ window.mdc.testFixture.fontsLoaded.then(() => {
   const dismissibleSideSheetSelector = [DISMISSIBLE, MODAL].map((className) => `.${className}`).join(', ');
   const dismissibleSideSheetEl = document.querySelector(dismissibleSideSheetSelector);
 
-  // Don't instantiate permanent drawers
+  // Don't instantiate permanent side sheets
   if (!dismissibleSideSheetEl) {
-    const list = mdc.list.MDCList.attachTo(document.querySelector('.mdc-list'));
-    list.wrapFocus = true;
     return;
   }
 

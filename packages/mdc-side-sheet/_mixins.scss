@@ -21,25 +21,14 @@
 //
 
 @import "@material/theme/mixins";
-@import "@material/list/mixins";
 @import "@material/ripple/mixins";
 @import "@material/shape/mixins";
 @import "./variables";
 
-@mixin mdc-side-sheet-activated-overlay-color($color) {
-  :not(.mdc-list--non-interactive) > .mdc-list-item {
-    @include mdc-states-activated($color);
-  }
-}
-
-@mixin mdc-side-sheet-border-color($color) {
-  $value: rgba(mdc-theme-prop-value($color), $mdc-side-sheet-divider-opacity);
+@mixin mdc-side-sheet-stroke-color($color, $opacity: $mdc-side-sheet-stroke-opacity) {
+  $value: rgba(mdc-theme-prop-value($color), $opacity);
 
   @include mdc-theme-prop(border-color, $value);
-}
-
-@mixin mdc-side-sheet-item-shape-radius($radius, $rtl-reflexive: true) {
-  @include mdc-list-item-shape-radius($radius, $rtl-reflexive);
 }
 
 @mixin mdc-side-sheet-shape-radius($radius) {
@@ -54,67 +43,19 @@
   @include mdc-shape-radius($radius, $rtl-reflexive: true);
 }
 
-@mixin mdc-side-sheet-divider-color($color) {
-  $value: rgba(mdc-theme-prop-value($color), $mdc-side-sheet-divider-opacity);
+@mixin mdc-side-sheet-scrim-fill-color($color) {
+  $value: rgba(mdc-theme-prop-value($color), $mdc-side-sheet-modal-scrim-opacity);
 
-  @include mdc-list-divider-color($value);
+  + .mdc-side-sheet-scrim {
+    @include mdc-theme-prop(background-color, $value);
+  }
 }
 
-@mixin mdc-side-sheet-title-ink-color($color) {
-  $value: rgba(mdc-theme-prop-value($color), $mdc-side-sheet-title-ink-opacity);
+@mixin mdc-side-sheet-ink-color($color, $opacity: $mdc-side-sheet-ink-opacity) {
+  $value: rgba(mdc-theme-prop-value($color), $opacity);
 
   .mdc-side-sheet__title {
     @include mdc-theme-prop(color, $value);
-  }
-}
-
-@mixin mdc-side-sheet-subtitle-ink-color($color) {
-  $value: rgba(mdc-theme-prop-value($color), $mdc-side-sheet-subtitle-ink-opacity);
-
-  @include mdc-list-group-subheader-ink-color($value);
-
-  .mdc-side-sheet__subtitle {
-    @include mdc-theme-prop(color, $value);
-  }
-}
-
-@mixin mdc-side-sheet-fill-color-accessible($color) {
-  $accessibleColor: mdc-theme-accessible-ink-color($color);
-
-  @include mdc-side-sheet-title-ink-color($accessibleColor);
-  @include mdc-side-sheet-subtitle-ink-color($accessibleColor);
-  @include mdc-side-sheet-item-text-ink-color($accessibleColor);
-  @include mdc-side-sheet-item-icon-ink-color($accessibleColor);
-  @include mdc-side-sheet-surface-fill-color($color);
-}
-
-@mixin mdc-side-sheet-item-icon-ink-color($color) {
-  $value: rgba(mdc-theme-prop-value($color), $mdc-side-sheet-item-inactive-icon-ink-opacity);
-
-  @include mdc-list-item-graphic-ink-color($value);
-}
-
-@mixin mdc-side-sheet-item-activated-icon-ink-color($color) {
-  $value: rgba(mdc-theme-prop-value($color), $mdc-side-sheet-item-active-icon-ink-opacity);
-
-  .mdc-list-item--activated {
-    @include mdc-list-item-graphic-ink-color($value);
-  }
-}
-
-@mixin mdc-side-sheet-item-activated-text-ink-color($color) {
-  $value: rgba(mdc-theme-prop-value($color), $mdc-side-sheet-item-active-text-ink-opacity);
-
-  .mdc-list-item--activated {
-    @include mdc-list-item-primary-text-ink-color($value);
-  }
-}
-
-@mixin mdc-side-sheet-item-text-ink-color($color) {
-  $value: rgba(mdc-theme-prop-value($color), $mdc-side-sheet-item-inactive-text-ink-opacity);
-
-  .mdc-list-item {
-    @include mdc-list-item-primary-text-ink-color($value);
   }
 }
 
@@ -124,12 +65,11 @@
   @include mdc-theme-prop(background-color, $value);
 }
 
-@mixin mdc-side-sheet-scrim-fill-color($color) {
-  $value: rgba(mdc-theme-prop-value($color), $mdc-side-sheet-modal-scrim-opacity);
+@mixin mdc-side-sheet-surface-fill-color-accessible($color) {
+  $accessibleColor: mdc-theme-accessible-ink-color($color);
 
-  + .mdc-side-sheet-scrim {
-    @include mdc-theme-prop(background-color, $value);
-  }
+  @include mdc-side-sheet-ink-color($accessibleColor);
+  @include mdc-side-sheet-surface-fill-color($color);
 }
 
 @mixin mdc-side-sheet-z-index($value) {

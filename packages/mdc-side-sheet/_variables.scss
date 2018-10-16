@@ -23,25 +23,16 @@
 @import "@material/theme/variables";
 
 // Colors
-$mdc-side-sheet-title-ink-color: mdc-theme-prop-value(on-surface);
-$mdc-side-sheet-subtitle-ink-color: mdc-theme-prop-value(on-surface);
-$mdc-side-sheet-item-inactive-ink-color: mdc-theme-prop-value(on-surface);
-$mdc-side-sheet-item-activated-ink-color: mdc-theme-prop-value(primary);
-$mdc-side-sheet-divider-color: mdc-theme-prop-value(on-surface);
 $mdc-side-sheet-surface-fill-color: mdc-theme-prop-value(surface);
+$mdc-side-sheet-ink-color: mdc-theme-prop-value(on-surface);
+$mdc-side-sheet-stroke-color: mdc-theme-prop-value(on-surface);
 
 // Opacity
-$mdc-side-sheet-title-ink-opacity: mdc-theme-text-emphasis(high);
-$mdc-side-sheet-subtitle-ink-opacity: mdc-theme-text-emphasis(medium);
-$mdc-side-sheet-item-inactive-icon-ink-opacity: mdc-theme-text-emphasis(medium);
-$mdc-side-sheet-item-inactive-text-ink-opacity: mdc-theme-text-emphasis(high);
-$mdc-side-sheet-item-active-icon-ink-opacity: 1;
-$mdc-side-sheet-item-active-text-ink-opacity: mdc-theme-text-emphasis(high);
-$mdc-side-sheet-divider-opacity: .12;
+$mdc-side-sheet-ink-opacity: mdc-theme-text-emphasis(high);
+$mdc-side-sheet-stroke-opacity: .12;
 
 // Widths
 $mdc-side-sheet-width: 256px;
-$mdc-side-sheet-list-item-spacing: 4px;
 $mdc-side-sheet-surface-padding: 16px;
 
 // Animations
