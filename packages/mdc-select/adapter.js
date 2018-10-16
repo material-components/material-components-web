@@ -22,9 +22,10 @@
  */
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
-// eslint-disable-next-line no-unused-vars
+/* eslint-disable no-unused-vars */
 import {MDCSelectIconFoundation} from './icon/index';
 import {MDCSelectHelperTextFoundation} from './helper-text/index';
+/* eslint-enable no-unused-vars */
 
 /**
  * @typedef {{
