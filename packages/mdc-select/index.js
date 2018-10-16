@@ -33,12 +33,12 @@ import {cssClasses, strings} from './constants';
 /* eslint-disable no-unused-vars */
 import {MDCSelectAdapter, FoundationMapType} from './adapter';
 import {MDCSelectIcon, MDCSelectIconFoundation} from './icon/index';
+import {MDCSelectHelperText, MDCSelectHelperTextFoundation} from './helper-text/index';
 /* eslint-enable no-unused-vars */
 
 // Closure has issues with {this as that} syntax.
 import * as menuSurfaceConstants from '@material/menu-surface/constants';
 import * as menuConstants from '@material/menu/constants';
-import {MDCSelectHelperText} from './helper-text';
 
 /**
  * @extends MDCComponent<!MDCSelectFoundation>
@@ -55,7 +55,7 @@ class MDCSelect extends MDCComponent {
     this.selectedText_;
     /** @private {?MDCSelectIcon} */
     this.leadingIcon_;
-    /** @private {?MDCHelperText} */
+    /** @private {?MDCSelectHelperText} */
     this.helperText_;
     /** @private {?Element} */
     this.menuElement_;
@@ -161,6 +161,14 @@ class MDCSelect extends MDCComponent {
    */
   set leadingIconContent(content) {
     this.foundation_.setLeadingIconContent(content);
+  }
+
+  /**
+   * Sets the text content of the helper text.
+   * @param {string} content
+   */
+  set helperTextContent(content) {
+    this.foundation_.setHelperTextContent(content);
   }
 
   /**

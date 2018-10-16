@@ -28,16 +28,16 @@ import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
 import MDCSelectHelperTextFoundation from '../../../packages/mdc-select/helper-text/foundation';
 
-const {cssClasses} = MDCSelectHelperTextFoundation;
+const {cssClasses, strings} = MDCSelectHelperTextFoundation;
 
 suite('MDCSelectHelperTextFoundation');
 
 test('exports cssClasses', () => {
-  assert.isOk('cssClasses' in MDCSelectHelperTextFoundation);
+  assert.deepEqual(MDCSelectHelperTextFoundation.cssClasses, cssClasses);
 });
 
 test('exports strings', () => {
-  assert.isOk('strings' in MDCSelectHelperTextFoundation);
+  assert.deepEqual(MDCSelectHelperTextFoundation.strings, strings);
 });
 
 test('defaultAdapter returns a complete adapter implementation', () => {

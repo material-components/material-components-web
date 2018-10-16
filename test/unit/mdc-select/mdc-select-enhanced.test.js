@@ -37,6 +37,7 @@ import {MDCMenuSurfaceFoundation} from '../../../packages/mdc-menu-surface/index
 import MDCSelectFoundation from '../../../packages/mdc-select/foundation';
 import MDCListFoundation from '../../../packages/mdc-list/foundation';
 import {MDCSelectIcon} from '../../../packages/mdc-select/icon';
+import {MDCSelectHelperText} from '../../../packages/mdc-select/helper-text';
 
 const LABEL_WIDTH = 100;
 
@@ -80,8 +81,12 @@ class FakeMenu {
 class FakeIcon {
   constructor() {
     this.destroy = td.func('.destroy');
-    this.foundation = td.func('.foundation');
-    this.setDisabled = td.func('.foundation');
+  }
+}
+
+class FakeHelperText {
+  constructor() {
+    this.destroy = td.func('.destroy');
   }
 }
 
@@ -110,30 +115,40 @@ function getFixture() {
 
 function getOutlineFixture() {
   return bel`
-    <div class="mdc-select mdc-select--outlined">
-      <i class="mdc-select__icon material-icons">code</i>
-      <div class="mdc-select__selected-text"></div>
-      <i class="mdc-select__dropdown-icon"></i>
-      <div class="mdc-select__menu mdc-menu mdc-menu-surface">
-      <ul class="mdc-list">
-        <li class="mdc-list-item" data-value=""></li>
-        <li class="mdc-list-item" data-value="orange">          
-          Orange
-        </li>
-        <li class="mdc-list-item" data-value="apple">
-          Apple
-        </li> 
-      </ul>
+      <div class="mdc-select mdc-select--outlined">
+        <i class="mdc-select__icon material-icons">code</i>
+        <div class="mdc-select__selected-text"></div>
+        <i class="mdc-select__dropdown-icon"></i>
+        <div class="mdc-select__menu mdc-menu mdc-menu-surface">
+        <ul class="mdc-list">
+          <li class="mdc-list-item" data-value=""></li>
+          <li class="mdc-list-item" data-value="orange">          
+            Orange
+          </li>
+          <li class="mdc-list-item" data-value="apple">
+            Apple
+          </li> 
+        </ul>
+        </div>
+        <label class="mdc-floating-label">Pick a Food Group</label>
+        <div class="mdc-notched-outline">
+          <svg>
+            <path class="mdc-notched-outline__path">
+          </svg>
+        </div>   
+        <div class="mdc-notched-outline__idle"/>
       </div>
-      <label class="mdc-floating-label">Pick a Food Group</label>
-      <div class="mdc-notched-outline">
-        <svg>
-          <path class="mdc-notched-outline__path">
-        </svg>
-      </div>   
-      <div class="mdc-notched-outline__idle"/>
-    </div>
   `;
+}
+
+function getHelperTextFixture() {
+  const containerDiv = document.createElement('div');
+  const root = getFixture();
+  root.querySelector('.mdc-select__selected-text').setAttribute('aria-controls', 'test-helper-text');
+  containerDiv.appendChild(root);
+  containerDiv.innerHTML = containerDiv.innerHTML
+    + '<p class="mdc-select-helper-text" id="test-helper-text">Hello World</p>';
+  return containerDiv;
 }
 
 suite('MDCSelect-Enhanced');
@@ -157,6 +172,7 @@ function setupTest(hasOutline = false, hasLabel = true, hasMockFoundation = fals
 
   const outline = new FakeOutline();
   const icon = new FakeIcon();
+  const helperText = new FakeHelperText();
 
   if (!hasLabel) {
     fixture.removeChild(labelEl);
@@ -168,10 +184,11 @@ function setupTest(hasOutline = false, hasLabel = true, hasMockFoundation = fals
     () => bottomLine,
     () => outline,
     hasMockMenu ? () => mockMenu : (el) => new MDCMenu(el),
-    () => icon);
+    () => icon,
+    () => helperText);
 
   return {fixture, selectedText, label, labelEl, bottomLine, bottomLineEl, component, outline, menuSurface,
-    mockFoundation, mockMenu, icon};
+    mockFoundation, mockMenu, icon, helperText};
 }
 
 function setupWithMockFoundation() {
@@ -278,6 +295,13 @@ test('#set leadingIconContent calls foundation.setLeadingIconAriaLabel', () => {
   const {component, mockFoundation} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   component.leadingIconContent = 'hello_world';
   td.verify(mockFoundation.setLeadingIconContent('hello_world'), {times: 1});
+});
+
+test('#set helperTextContent calls foundation.setHelperTextContent', () => {
+  const {component} = setupTest();
+  component.foundation_.setHelperTextContent = td.func();
+  component.helperTextContent = 'hello_world';
+  td.verify(component.foundation_.setHelperTextContent('hello_world'), {times: 1});
 });
 
 test(`#initialize does not add the ${cssClasses.WITH_LEADING_ICON} class if there is no leading icon`, () => {
@@ -966,4 +990,38 @@ test('#constructor instantiates a leading icon if an icon element is present', (
   assert.isTrue(menu.classList.contains(cssClasses.WITH_LEADING_ICON));
   assert.isTrue(root.classList.contains(cssClasses.WITH_LEADING_ICON));
   document.body.removeChild(menu);
+});
+
+test('#constructor instantiates the helper text if present', () => {
+  const container = getHelperTextFixture();
+  document.body.appendChild(container);
+  const component = new MDCSelect(container.querySelector('.mdc-select'));
+
+  assert.instanceOf(component.helperText_, MDCSelectHelperText);
+  document.body.removeChild(container);
+  document.body.removeChild(document.querySelector('.mdc-select__menu'));
+});
+
+test('#constructor does not instantiate the helper text if the aria-controls id does not match an element', () => {
+  const container = getHelperTextFixture();
+  // Change ID of helper-text element.
+  container.querySelector('.mdc-select-helper-text').id = 'hello-world';
+  document.body.appendChild(container);
+
+  const component = new MDCSelect(container.querySelector('.mdc-select'));
+
+  assert.isUndefined(component.helperText_);
+  document.body.removeChild(container);
+  document.body.removeChild(document.querySelector('.mdc-select__menu'));
+});
+
+test('#destroy destroys the helper text if it exists', () => {
+  const container = getHelperTextFixture();
+  document.body.appendChild(container);
+  const component = new MDCSelect(container.querySelector('.mdc-select'));
+  component.helperText_.destroy = td.func('.destroy');
+  component.destroy();
+
+  td.verify(component.helperText_.destroy(), {times: 1});
+  document.body.removeChild(container);
 });
