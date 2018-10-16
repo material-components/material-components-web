@@ -884,7 +884,7 @@ test('menu surface closed event does not call foundation.handleBlur if selected-
   menuSurface.dispatchEvent(event);
 
   td.verify(mockFoundation.handleBlur(), {times: 0});
-  assert.isTrue(selectedText.getAttribute('aria-expanded') === 'false');
+  assert.isFalse(selectedText.hasAttribute('aria-expanded'));
   document.body.removeChild(fixture);
   document.body.removeChild(menuSurface);
 });
