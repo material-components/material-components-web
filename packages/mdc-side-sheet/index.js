@@ -25,7 +25,6 @@ import {MDCComponent} from '@material/base/index';
 import MDCDismissibleSideSheetFoundation from './dismissible/foundation';
 import MDCModalSideSheetFoundation from './modal/foundation';
 import MDCSideSheetAdapter from './adapter';
-import {MDCList} from '@material/list/index';
 import MDCListFoundation from '@material/list/foundation';
 import {strings} from './constants';
 import * as util from './util';
@@ -62,9 +61,6 @@ class MDCSideSheet extends MDCComponent {
 
     /** @private {?Function} */
     this.handleScrimClick_;
-
-    /** @private {?MDCList} */
-    this.list_;
   }
 
   /**
@@ -95,14 +91,7 @@ class MDCSideSheet extends MDCComponent {
     }
   }
 
-  initialize(
-    focusTrapFactory = createFocusTrap,
-    listFactory = (el) => new MDCList(el)) {
-    const listEl = /** @type {!Element} */ (this.root_.querySelector(`.${MDCListFoundation.cssClasses.ROOT}`));
-    if (listEl) {
-      this.list_ = listFactory(listEl);
-      this.list_.wrapFocus = true;
-    }
+  initialize(focusTrapFactory = createFocusTrap) {
     this.focusTrapFactory_ = focusTrapFactory;
   }
 
@@ -127,10 +116,6 @@ class MDCSideSheet extends MDCComponent {
   destroy() {
     this.root_.removeEventListener('keydown', this.handleKeydown_);
     this.root_.removeEventListener('transitionend', this.handleTransitionEnd_);
-
-    if (this.list_) {
-      this.list_.destroy();
-    }
 
     const {MODAL} = MDCDismissibleSideSheetFoundation.cssClasses;
     if (this.root_.classList.contains(MODAL)) {
