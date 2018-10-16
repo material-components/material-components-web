@@ -35,13 +35,27 @@
   @include mdc-theme-prop(border-color, $value);
 }
 
-@mixin mdc-side-sheet-shape-radius($radius) {
+@mixin mdc-side-sheet-shape-radius($radius, $side: trailing) {
   @if length($radius) > 2 {
-    @error "Invalid radius: '#{$radius}' component doesn't allow customizing all corners";
-  } @else if length($radius) == 2 {
-    $radius: 0 nth($radius, 1) nth($radius, 2) 0;
+    @error "Invalid radius: '#{$radius}'. Component doesn't allow customizing all corners.";
+  }
+
+  @if $side != "leading" and $side != "trailing" {
+    @error "mdc-side-sheet-shape-radius() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
+  }
+
+  @if $side == "leading" {
+    @if length($radius) == 2 {
+      $radius: 0 nth($radius, 1) nth($radius, 2) 0;
+    } @else {
+      $radius: 0 $radius $radius 0;
+    }
   } @else {
-    $radius: 0 $radius $radius 0;
+    @if length($radius) == 2 {
+      $radius: nth($radius, 1) 0 0 nth($radius, 2);
+    } @else {
+      $radius: $radius 0 0 $radius;
+    }
   }
 
   @include mdc-shape-radius($radius, $rtl-reflexive: true);
