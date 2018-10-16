@@ -70,7 +70,7 @@ let PointType;
 const ACTIVATION_EVENT_TYPES = ['touchstart', 'pointerdown', 'mousedown', 'keydown'];
 
 // Deactivation events registered on documentElement when a pointer-related down event occurs
-const POINTER_DEACTIVATION_EVENT_TYPES = ['touchend', 'pointerup', 'mouseup'];
+const POINTER_DEACTIVATION_EVENT_TYPES = ['touchend', 'pointerup', 'mouseup', 'contextmenu'];
 
 // Tracks activations that have occurred on the current frame, to avoid simultaneous nested activations
 /** @type {!Array<!EventTarget>} */
