@@ -120,7 +120,7 @@ test('adapter#removeClass removes a class from the root element', () => {
   assert.isFalse(root.classList.contains('foo'));
 });
 
-test('#adapter.setNativeControlDisabled sets the native control element disabled', () => {
+test('#adapter.setNativeControlDisabled sets the native control element\'s disabled property to true', () => {
   const {root, component} = setupTest();
   const radio = root.querySelector(NATIVE_CONTROL_SELECTOR);
 
@@ -128,7 +128,7 @@ test('#adapter.setNativeControlDisabled sets the native control element disabled
   assert.isTrue(radio.disabled);
 });
 
-test('#adapter.setNativeControlDisabled returns false when checkbox is not disabled', () => {
+test('#adapter.setNativeControlDisabled sets the native control element\'s disabled property to false', () => {
   const {root, component} = setupTest();
   const radio = root.querySelector(NATIVE_CONTROL_SELECTOR);
   radio.disabled = true;

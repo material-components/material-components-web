@@ -128,7 +128,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 
 Method Signature | Description
 --- | ---
-`setNativeControlDisabled() => void` | Sets the input to disabled
+`setNativeControlDisabled(disabled: boolean) => void` | Sets the input's `disabled` property to the given value
 `addClass(className: string) => void` | Adds a class to the root element
 `removeClass(className: string) => void` | Removes a class from the root element
 
