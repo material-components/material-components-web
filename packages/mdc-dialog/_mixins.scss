@@ -74,7 +74,7 @@
 @mixin mdc-dialog-max-width($max-width, $margin) {
   $max-size-calc-expr: calc(100vw - #{$margin * 2});
 
-  .mdc-dialog__container {
+  .mdc-dialog__surface {
     @if $max-width {
       $max-width-breakpoint: $max-width + ($margin * 2);
 
