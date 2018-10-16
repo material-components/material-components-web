@@ -47,7 +47,8 @@
         ],
         "url_regex_patterns": [
           "mdc-dialog",
-          "mdc-drawer"
+          "mdc-drawer",
+          "mdc-side-sheet"
         ],
         "custom_config": {
           "skip_all": true
