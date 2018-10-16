@@ -56,7 +56,7 @@
 
 @mixin mdc-floating-label-float-position($positionY, $positionX: 0%, $scale: .75) {
   .mdc-floating-label--float-above {
-    @if $positionX == 0 {
+    @if $positionX == 0% or $positionX == 0 {
       transform: translateY(-1 * $positionY) scale($scale);
     } @else {
       transform: translateY(-1 * $positionY) translateX(-1 * $positionX) scale($scale);
