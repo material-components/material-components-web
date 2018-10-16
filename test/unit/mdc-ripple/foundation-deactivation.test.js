@@ -81,6 +81,29 @@ testFoundation('runs deactivation UX on pointerup after pointerdown', ({foundati
   clock.uninstall();
 });
 
+testFoundation('runs deactivation UX on contextmenu after pointerdown', ({foundation, adapter, mockRaf}) => {
+  const handlers = captureHandlers(adapter, 'registerInteractionHandler');
+  const documentHandlers = captureHandlers(adapter, 'registerDocumentInteractionHandler');
+  const clock = lolex.install();
+  foundation.init();
+  mockRaf.flush();
+
+  handlers.pointerdown({pageX: 0, pageY: 0});
+  mockRaf.flush();
+
+  documentHandlers.contextmenu();
+  mockRaf.flush();
+  clock.tick(DEACTIVATION_TIMEOUT_MS);
+
+  td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
+  td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION));
+
+  clock.tick(numbers.FG_DEACTIVATION_MS);
+  td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION));
+
+  clock.uninstall();
+});
+
 testFoundation('runs deactivation UX on mouseup after mousedown', ({foundation, adapter, mockRaf}) => {
   const handlers = captureHandlers(adapter, 'registerInteractionHandler');
   const documentHandlers = captureHandlers(adapter, 'registerDocumentInteractionHandler');
@@ -92,6 +115,29 @@ testFoundation('runs deactivation UX on mouseup after mousedown', ({foundation, 
   mockRaf.flush();
 
   documentHandlers.mouseup();
+  mockRaf.flush();
+  clock.tick(DEACTIVATION_TIMEOUT_MS);
+
+  td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
+  td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION));
+
+  clock.tick(numbers.FG_DEACTIVATION_MS);
+  td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION));
+
+  clock.uninstall();
+});
+
+testFoundation('runs deactivation UX on contextmenu after mousedown', ({foundation, adapter, mockRaf}) => {
+  const handlers = captureHandlers(adapter, 'registerInteractionHandler');
+  const documentHandlers = captureHandlers(adapter, 'registerDocumentInteractionHandler');
+  const clock = lolex.install();
+  foundation.init();
+  mockRaf.flush();
+
+  handlers.mousedown({pageX: 0, pageY: 0});
+  mockRaf.flush();
+
+  documentHandlers.contextmenu();
   mockRaf.flush();
   clock.tick(DEACTIVATION_TIMEOUT_MS);
 
