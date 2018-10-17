@@ -51,20 +51,20 @@
   transition-timing-function: $mdc-animation-standard-curve-timing-function;
   z-index: $mdc-side-sheet-z-index - 1;
 
-  .mdc-side-sheet--open + & {
+  .mdc-side-sheet--open ~ & {
     display: block;
   }
 
-  .mdc-side-sheet--animate + & {
+  .mdc-side-sheet--animate ~ & {
     opacity: 0;
   }
 
-  .mdc-side-sheet--opening + & {
+  .mdc-side-sheet--opening ~ & {
     transition-duration: $mdc-side-sheet-animation-enter;
     opacity: 1;
   }
 
-  .mdc-side-sheet--closing + & {
+  .mdc-side-sheet--closing ~ & {
     transition-duration: $mdc-side-sheet-animation-exit;
     opacity: 0;
   }
