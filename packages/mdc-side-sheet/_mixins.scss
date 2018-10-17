@@ -72,9 +72,7 @@
 @mixin mdc-side-sheet-ink-color($color, $opacity: $mdc-side-sheet-ink-opacity) {
   $value: rgba(mdc-theme-prop-value($color), $opacity);
 
-  .mdc-side-sheet__title {
-    @include mdc-theme-prop(color, $value);
-  }
+  @include mdc-theme-prop(color, $value);
 }
 
 @mixin mdc-side-sheet-surface-fill-color($color) {
