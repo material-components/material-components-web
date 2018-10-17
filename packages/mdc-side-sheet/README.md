@@ -85,7 +85,7 @@ Dismissible side sheets are by default hidden off screen, and can slide into vie
 </body>
 ```
 
-> Apply the `mdc-side-sheet-app-content` class to the sibling element after the side-sheet for the open/close animations to work.\
+> Apply the `mdc-side-sheet-app-content` class to a subsequent sibling element after the side-sheet for the open/close animations to work.\
 
 #### Usage with Top App Bar
 
