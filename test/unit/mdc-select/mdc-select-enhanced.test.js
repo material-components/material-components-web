@@ -141,27 +141,19 @@ function getOutlineFixture() {
   `;
 }
 
-function getHelperTextFixture() {
+function getHelperTextFixture(root = getFixture()) {
   const containerDiv = document.createElement('div');
-  const root = getFixture();
   root.querySelector('.mdc-select__selected-text').setAttribute('aria-controls', 'test-helper-text');
   containerDiv.appendChild(root);
-  containerDiv.innerHTML = containerDiv.innerHTML
-    + '<p class="mdc-select-helper-text" id="test-helper-text">Hello World</p>';
+  containerDiv.appendChild(bel`<p class="mdc-select-helper-text" id="test-helper-text">Hello World</p>`);
   return containerDiv;
 }
 
-suite('MDCSelect-Enhanced');
-
-test('attachTo returns a component instance', () => {
-  assert.isOk(MDCSelect.attachTo(getFixture()) instanceof MDCSelect);
-  document.body.removeChild(document.querySelector('.mdc-select__menu'));
-});
-
-function setupTest(hasOutline = false, hasLabel = true, hasMockFoundation = false, hasMockMenu = true) {
+function setupTest(hasOutline = false, hasLabel = true, hasMockFoundation = false, hasMockMenu = true, hasHelperText = false) {
   const bottomLine = new FakeBottomLine();
   const label = new FakeLabel();
   const fixture = hasOutline ? getOutlineFixture() : getFixture();
+  const container = hasHelperText ? getHelperTextFixture(fixture) : null;
   const selectedText = fixture.querySelector('.mdc-select__selected-text');
   const labelEl = fixture.querySelector('.mdc-floating-label');
   const bottomLineEl = fixture.querySelector('.mdc-line-ripple');
@@ -178,6 +170,10 @@ function setupTest(hasOutline = false, hasLabel = true, hasMockFoundation = fals
     fixture.removeChild(labelEl);
   }
 
+  if (container) {
+    document.body.appendChild(container);
+  }
+
   const component = new MDCSelect(fixture,
     hasMockFoundation ? mockFoundation : undefined,
     () => label,
@@ -188,12 +184,19 @@ function setupTest(hasOutline = false, hasLabel = true, hasMockFoundation = fals
     () => helperText);
 
   return {fixture, selectedText, label, labelEl, bottomLine, bottomLineEl, component, outline, menuSurface,
-    mockFoundation, mockMenu, icon, helperText};
+    mockFoundation, mockMenu, icon, helperText, container};
 }
 
 function setupWithMockFoundation() {
   return setupTest(false, true, true);
 }
+
+suite('MDCSelect-Enhanced');
+
+test('attachTo returns a component instance', () => {
+  assert.isOk(MDCSelect.attachTo(getFixture()) instanceof MDCSelect);
+  document.body.removeChild(document.querySelector('.mdc-select__menu'));
+});
 
 test('#get/setSelectedIndex', () => {
   const hasMockFoundation = false;
@@ -992,36 +995,41 @@ test('#constructor instantiates a leading icon if an icon element is present', (
   document.body.removeChild(menu);
 });
 
-test('#constructor instantiates the helper text if present', () => {
-  const container = getHelperTextFixture();
-  document.body.appendChild(container);
-  const component = new MDCSelect(container.querySelector('.mdc-select'));
 
-  assert.instanceOf(component.helperText_, MDCSelectHelperText);
+test('#constructor instantiates the helper text if present', () => {
+  const hasMockFoundation = true;
+  const hasMockMenu = true;
+  const hasLabel = true;
+  const hasOutline = false;
+  const hasHelperText = true;
+  const {container, helperText} = setupTest(hasLabel, hasOutline, hasMockFoundation, hasMockMenu,
+    hasHelperText);
+
+  assert.instanceOf(helperText, FakeHelperText);
   document.body.removeChild(container);
-  document.body.removeChild(document.querySelector('.mdc-select__menu'));
 });
 
 test('#constructor does not instantiate the helper text if the aria-controls id does not match an element', () => {
-  const container = getHelperTextFixture();
-  // Change ID of helper-text element.
-  container.querySelector('.mdc-select-helper-text').id = 'hello-world';
-  document.body.appendChild(container);
+  const containerDiv = getHelperTextFixture();
+  containerDiv.querySelector('.mdc-select-helper-text').id = 'hello-world';
+  document.body.appendChild(containerDiv);
 
-  const component = new MDCSelect(container.querySelector('.mdc-select'));
+  const component = new MDCSelect(containerDiv.querySelector('.mdc-select'));
 
   assert.isUndefined(component.helperText_);
-  document.body.removeChild(container);
-  document.body.removeChild(document.querySelector('.mdc-select__menu'));
+  document.body.removeChild(containerDiv);
 });
 
 test('#destroy destroys the helper text if it exists', () => {
-  const container = getHelperTextFixture();
-  document.body.appendChild(container);
-  const component = new MDCSelect(container.querySelector('.mdc-select'));
-  component.helperText_.destroy = td.func('.destroy');
-  component.destroy();
+  const hasMockFoundation = true;
+  const hasMockMenu = true;
+  const hasLabel = true;
+  const hasOutline = false;
+  const hasHelperText = true;
+  const {container, helperText, component} = setupTest(hasLabel, hasOutline, hasMockFoundation, hasMockMenu,
+    hasHelperText);
 
-  td.verify(component.helperText_.destroy(), {times: 1});
+  component.destroy();
+  td.verify(helperText.destroy(), {times: 1});
   document.body.removeChild(container);
 });

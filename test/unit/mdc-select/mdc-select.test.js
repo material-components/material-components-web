@@ -116,13 +116,11 @@ function getOutlineFixture() {
   `;
 }
 
-function getHelperTextFixture() {
+function getHelperTextFixture(root = getFixture()) {
   const containerDiv = document.createElement('div');
-  const root = getFixture();
   root.querySelector('.mdc-select__native-control').setAttribute('aria-controls', 'test-helper-text');
   containerDiv.appendChild(root);
-  containerDiv.innerHTML = containerDiv.innerHTML
-    + '<p class="mdc-select-helper-text" id="test-helper-text">Hello World</p>';
+  containerDiv.appendChild(bel`<p class="mdc-select-helper-text" id="test-helper-text">Hello World</p>`);
   return containerDiv;
 }
 
@@ -132,10 +130,11 @@ test('attachTo returns a component instance', () => {
   assert.isOk(MDCSelect.attachTo(getFixture()) instanceof MDCSelect);
 });
 
-function setupTest(hasOutline = false, hasLabel = true) {
+function setupTest(hasOutline = false, hasLabel = true, hasHelperText = false) {
   const bottomLine = new FakeBottomLine();
   const label = new FakeLabel();
   const fixture = hasOutline ? getOutlineFixture() : getFixture();
+  const container = hasHelperText ? getHelperTextFixture(fixture) : null;
   const nativeControl = fixture.querySelector('.mdc-select__native-control');
   const labelEl = fixture.querySelector('.mdc-floating-label');
   const bottomLineEl = fixture.querySelector('.mdc-line-ripple');
@@ -147,10 +146,15 @@ function setupTest(hasOutline = false, hasLabel = true) {
     fixture.removeChild(labelEl);
   }
 
+  if (container) {
+    document.body.appendChild(container);
+  }
+
   const component = new MDCSelect(fixture, /* foundation */ undefined,
     () => label, () => bottomLine, () => outline, () => icon, () => helperText);
 
-  return {fixture, nativeControl, label, labelEl, bottomLine, bottomLineEl, component, outline, icon, helperText};
+  return {fixture, nativeControl, label, labelEl, bottomLine, bottomLineEl, component, outline, icon, helperText,
+    container};
 }
 
 test('#get/setSelectedIndex', () => {
@@ -605,13 +609,13 @@ test('#constructor instantiates a leading icon if an icon element is present', (
 });
 
 test('#constructor instantiates the helper text if present', () => {
-  const containerDiv = getHelperTextFixture();
-  document.body.appendChild(containerDiv);
+  const hasLabel = true;
+  const hasOutline = false;
+  const hasHelperText = true;
+  const {container, helperText} = setupTest(hasLabel, hasOutline, hasHelperText);
 
-  const component = new MDCSelect(containerDiv.querySelector('.mdc-select'));
-
-  assert.instanceOf(component.helperText_, MDCSelectHelperText);
-  document.body.removeChild(containerDiv);
+  assert.instanceOf(helperText, FakeHelperText);
+  document.body.removeChild(container);
 });
 
 test('#constructor does not instantiate the helper text if the aria-controls id does not match an element', () => {
@@ -626,13 +630,11 @@ test('#constructor does not instantiate the helper text if the aria-controls id 
 });
 
 test('#destroy destroys the helper text if it exists', () => {
-  const containerDiv = getHelperTextFixture();
-  document.body.appendChild(containerDiv);
-
-  const component = new MDCSelect(containerDiv.querySelector('.mdc-select'));
-  component.helperText_.destroy = td.func('.destroy');
+  const hasLabel = true;
+  const hasOutline = false;
+  const hasHelperText = true;
+  const {container, helperText, component} = setupTest(hasLabel, hasOutline, hasHelperText);
   component.destroy();
-
-  td.verify(component.helperText_.destroy(), {times: 1});
-  document.body.removeChild(containerDiv);
+  td.verify(helperText.destroy(), {times: 1});
+  document.body.removeChild(container);
 });
