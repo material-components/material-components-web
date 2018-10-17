@@ -21,11 +21,10 @@
  * THE SOFTWARE.
  */
 
-import MDCSideSheetAdapter from '../adapter';
 import MDCDismissibleSideSheetFoundation from '../dismissible/foundation';
 
 /**
- * @extends {MDCDismissibleSideSheetFoundation<!MDCSideSheetAdapter>}
+ * @extends {MDCDismissibleSideSheetFoundation}
  */
 class MDCModalSideSheetFoundation extends MDCDismissibleSideSheetFoundation {
   /**
