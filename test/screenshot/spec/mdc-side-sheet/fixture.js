@@ -36,7 +36,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
   /** @type {!MDCSideSheet} */
   const sideSheet = mdc.sideSheet.MDCSideSheet.attachTo(dismissibleSideSheetEl);
 
-  const menuButtonEl = document.querySelector('#test-side-sheet-menu-button');
+  const menuButtonEl = document.querySelector('#test-side-sheet-filter-button');
   if (menuButtonEl) {
     menuButtonEl.addEventListener('click', () => {
       sideSheet.open = !sideSheet.open;
