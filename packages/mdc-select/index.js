@@ -368,10 +368,7 @@ class MDCSelect extends MDCComponent {
       setSelectedIndex: (index) => {
         this.nativeControl_.selectedIndex = index;
       },
-      setDisabled: (isDisabled) => {
-        this.nativeControl_.disabled = isDisabled;
-        this.nativeControl_.setAttribute('aria-disabled', isDisabled.toString());
-      },
+      setDisabled: (isDisabled) => this.nativeControl_.disabled = isDisabled,
     };
   }
 

@@ -67,7 +67,7 @@ through the use of another class (ex. `demo-width-class`).
 ```html
 <div class="mdc-select demo-width-class">
   <i class="mdc-select__dropdown-icon"></i>
-  <div class="mdc-select__selected-text" role="combobox"></div>
+  <div class="mdc-select__selected-text"></div>
   <div class="mdc-select__menu mdc-menu mdc-menu-surface demo-width-class" role="listbox">
     <ul class="mdc-list">
       <li class="mdc-list-item mdc-list-item--selected" data-value="" aria-selected="true"></option>
@@ -233,7 +233,7 @@ For the enhanced select, you can simply add the `mdc-select--disabled` class to 
 ```html
 <div class="mdc-select mdc-select--disabled">
   <i class="mdc-select__dropdown-icon"></i>
-  <div class="mdc-select__selected-text" role="combobox"></div>  
+  <div class="mdc-select__selected-text"></div>  
   <div class="mdc-select__menu mdc-menu mdc-menu-surface" role="listbox">
     ...
   </div>
