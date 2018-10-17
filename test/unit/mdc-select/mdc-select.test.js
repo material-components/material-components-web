@@ -612,9 +612,9 @@ test('#constructor instantiates the helper text if present', () => {
   const hasLabel = true;
   const hasOutline = false;
   const hasHelperText = true;
-  const {container, helperText} = setupTest(hasLabel, hasOutline, hasHelperText);
+  const {container, component} = setupTest(hasLabel, hasOutline, hasHelperText);
 
-  assert.instanceOf(helperText, FakeHelperText);
+  assert.instanceOf(component.helperText_, FakeHelperText);
   document.body.removeChild(container);
 });
 
