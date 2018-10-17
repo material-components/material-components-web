@@ -48,9 +48,7 @@
   height: 100%;
   transition-property: transform;
   transition-timing-function: $mdc-animation-standard-curve-timing-function;
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
 }
 
 .mdc-side-sheet--open {
@@ -63,6 +61,12 @@
 
 .mdc-side-sheet--closing {
   transition-duration: $mdc-side-sheet-animation-exit;
+}
+
+.mdc-side-sheet__content {
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 // postcss-bem-linter: end
