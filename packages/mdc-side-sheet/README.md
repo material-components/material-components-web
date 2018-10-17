@@ -32,9 +32,7 @@ npm install @material/side-sheet
 
 ```html
 <aside class="mdc-side-sheet">
-  <div class="mdc-side-sheet__content">
-    ...
-  </div>
+  ...
 </aside>
 ```
 
@@ -74,9 +72,7 @@ Dismissible side sheets are by default hidden off screen, and can slide into vie
 ```html
 <body>
   <aside class="mdc-side-sheet mdc-side-sheet--dismissible">
-    <div class="mdc-side-sheet__content">
-      ...
-    </div>
+    ...
   </aside>
 
   <div class="mdc-side-sheet-app-content">
@@ -91,16 +87,12 @@ Dismissible side sheets are by default hidden off screen, and can slide into vie
 
 In cases where the side sheet occupies the full viewport height, some styles must be applied to get the dismissible side sheet and the content below the top app bar to independently scroll and work in all browsers.
 
-In the following example, the `mdc-side-sheet__content` and `main-content` elements should scroll independently of each other. The `mdc-side-sheet--dismissible` and `mdc-side-sheet-app-content` elements should then sit side-by-side. The markup looks something like this:
+In the following example, the `mdc-side-sheet` and `main-content` elements should scroll independently of each other. The `mdc-side-sheet--dismissible` and `mdc-side-sheet-app-content` elements should then sit side-by-side. The markup looks something like this:
 
 ```html
 <body>
   <aside class="mdc-side-sheet mdc-side-sheet--dismissible">
-    <div class="mdc-side-sheet__content">
-      <div class="mdc-side-sheet__content">
-        ...
-      </div>
-    </div>
+    ...
   </aside>
 
   <div class="mdc-side-sheet-app-content">
@@ -165,9 +157,7 @@ Modal side sheets are elevated above the rest of the app's UI and don't affect t
 ```html
 <body>
   <aside class="mdc-side-sheet mdc-side-sheet--modal">
-    <div class="mdc-side-sheet__content">
-      ...
-    </div>
+    ...
   </aside>
 
   <div class="mdc-side-sheet-scrim"></div>
@@ -190,7 +180,6 @@ Class | Description
 `mdc-side-sheet--open` | If present, indicates that the dismissible side sheet is in the open position.
 `mdc-side-sheet--opening` | Applied while the side sheet is animating from the closed to the open position.
 `mdc-side-sheet--closing` | Applied while the side sheet is animating from the open to the closed position.
-`mdc-side-sheet__content` | Scrollable content area of the side sheet.
 `mdc-side-sheet-app-content` | Dismissible variant only. Sibling element that is resized when the side sheet opens/closes.
 `mdc-side-sheet-scrim` | Modal variant only. Used for the overlay on the app content.
 
