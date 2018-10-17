@@ -180,7 +180,7 @@ setting the width of the `mdc-select__menu` element to match. This is best done 
 ```html
 <div class="mdc-select demo-width-class">
   <i class="mdc-select__dropdown-icon"></i>
-  <div class="mdc-select__selected-text" role="combobox">Vegetables</div>
+  <div class="mdc-select__selected-text">Vegetables</div>
   <div class="mdc-select__menu demo-width-class mdc-menu mdc-menu-surface" role="listbox">
     <ul class="mdc-list">
       <li class="mdc-list-item" data-value=""></li>
@@ -271,7 +271,7 @@ programmatically select a disabled list item in the enhanced select.
 ```html
 <div class="mdc-select">
   <i class="mdc-select__dropdown-icon"></i>
-  <div class="mdc-select__selected-text" role="combobox">Vegetables</div>
+  <div class="mdc-select__selected-text">Vegetables</div>
   <div class="mdc-select__menu mdc-menu mdc-menu-surface" role="listbox">
     <ul class="mdc-list">
       <li class="mdc-list-item" data-value=""></li>
