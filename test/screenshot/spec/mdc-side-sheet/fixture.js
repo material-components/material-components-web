@@ -22,6 +22,7 @@
  */
 
 import {MDCDismissibleSideSheetFoundation} from '../../../../packages/mdc-side-sheet/index';
+import * as ponyfill from '../../../../packages/mdc-dom/ponyfill';
 
 window.mdc.testFixture.fontsLoaded.then(() => {
   const {DISMISSIBLE, MODAL} = MDCDismissibleSideSheetFoundation.cssClasses;
@@ -36,12 +37,12 @@ window.mdc.testFixture.fontsLoaded.then(() => {
   /** @type {!MDCSideSheet} */
   const sideSheet = mdc.sideSheet.MDCSideSheet.attachTo(dismissibleSideSheetEl);
 
-  const menuButtonEl = document.querySelector('#test-side-sheet-filter-button');
-  if (menuButtonEl) {
-    menuButtonEl.addEventListener('click', () => {
+  document.addEventListener('click', (evt) => {
+    const {target} = evt;
+    if (ponyfill.closest(target, '.test-side-sheet-toggle-button')) {
       sideSheet.open = !sideSheet.open;
-    });
-  }
+    }
+  });
 
   window.mdc.testFixture.notifyDomReady();
 });

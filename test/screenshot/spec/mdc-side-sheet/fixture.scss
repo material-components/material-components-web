@@ -59,6 +59,16 @@ $custom-side-sheet-color: $material-color-orange-900;
   overflow: auto;
 }
 
+.test-side-sheet > :first-child,
+.test-side-sheet__content > :first-child {
+  margin-top: 0;
+}
+
+.test-side-sheet > :last-child,
+.test-side-sheet__content > :last-child {
+  margin-bottom: 0;
+}
+
 .custom-side-sheet--fill-color {
   @include mdc-side-sheet-surface-fill-color(pink);
 }
