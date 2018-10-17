@@ -59,12 +59,12 @@ $custom-side-sheet-color: $material-color-red-600;
   overflow: auto;
 }
 
-.test-side-sheet > :first-child,
+// Remove top margin from first paragraph element to avoid giving the false impression that __content has padding.
 .test-side-sheet__content > :first-child {
   margin-top: 0;
 }
 
-.test-side-sheet > :last-child,
+// Remove bottom margin from last paragraph element to avoid giving the false impression that __content has padding.
 .test-side-sheet__content > :last-child {
   margin-bottom: 0;
 }
