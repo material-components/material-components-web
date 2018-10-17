@@ -61,8 +61,8 @@
   @include mdc-shape-radius($radius, $rtl-reflexive: true);
 }
 
-@mixin mdc-side-sheet-scrim-fill-color($color) {
-  $value: rgba(mdc-theme-prop-value($color), $mdc-side-sheet-modal-scrim-opacity);
+@mixin mdc-side-sheet-scrim-fill-color($color, $opacity: $mdc-side-sheet-modal-scrim-opacity) {
+  $value: rgba(mdc-theme-prop-value($color), $opacity);
 
   ~ .mdc-side-sheet-scrim {
     @include mdc-theme-prop(background-color, $value);
