@@ -40,11 +40,10 @@
 }
 
 .mdc-side-sheet-scrim {
-  @include mdc-side-sheet-scrim_;
-
   display: none;
   position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   transition-property: opacity;

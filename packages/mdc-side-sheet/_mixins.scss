@@ -173,16 +173,6 @@
   }
 }
 
-@mixin mdc-side-sheet-scrim_($side: trailing) {
-  @if $side == leading {
-    left: 0;
-  } @else if $side == trailing {
-    right: 0;
-  } @else {
-    @error "mdc-side-sheet-scrim_() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
-  }
-}
-
 @mixin mdc-side-sheet-modal_($side: trailing) {
   @if $side == leading {
     @include mdc-rtl-reflexive-position(left, 0);
