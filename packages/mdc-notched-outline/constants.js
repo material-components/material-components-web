@@ -23,8 +23,7 @@
 
 /** @enum {string} */
 const strings = {
-  PATH_SELECTOR: '.mdc-notched-outline__path',
-  IDLE_OUTLINE_SELECTOR: '.mdc-notched-outline__idle',
+  NOTCH_SELECTOR: '.mdc-notched-outline__notch',
 };
 
 /** @enum {string} */

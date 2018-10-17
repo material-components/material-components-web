@@ -35,18 +35,6 @@
  */
 class MDCNotchedOutlineAdapter {
   /**
-   * Returns the width of the root element.
-   * @return {number}
-   */
-  getWidth() {}
-
-  /**
-   * Returns the height of the root element.
-   * @return {number}
-   */
-  getHeight() {}
-
-  /**
    * Adds a class to the root element.
    * @param {string} className
    */
@@ -57,12 +45,6 @@ class MDCNotchedOutlineAdapter {
    * @param {string} className
    */
   removeClass(className) {}
-
-  /**
-   * Sets the "d" attribute of the outline element's SVG path.
-   * @param {string} value
-   */
-  setOutlinePathAttr(value) {}
 
   /**
    * Returns the idle outline element's computed style value of the given css property `propertyName`.

@@ -30,19 +30,41 @@
 }
 
 @mixin mdc-notched-outline-color($color) {
-  .mdc-notched-outline__path {
-    @include mdc-theme-prop(stroke, $color);
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    @include mdc-theme-prop(border-color, $color);
   }
 }
 
 @mixin mdc-notched-outline-stroke-width($width) {
-  .mdc-notched-outline__path {
-    stroke-width: $width;
+  // TODO: Should the idle width be configurable too?
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border-width: $width;
   }
 }
 
 @mixin mdc-notched-outline-shape-radius($radius, $rtl-reflexive: false) {
   @include mdc-shape-radius($radius, $rtl-reflexive);
+
+  // TODO: Handle rtl-reflexive properly...since leading/trailing WILL flip by default
+  .mdc-notched-outline__leading {
+    $masked-radius: mdc-shape-prop-value_(mdc-shape-mask-radius($radius, 1 0 0 1));
+    $max-radius: 0;
+    @each $r in $masked-radius {
+      $max-radius: max($max-radius, $r);
+    }
+
+    @include mdc-shape-radius($masked-radius);
+
+    width: $max-radius;
+  }
+
+  .mdc-notched-outline__trailing {
+    @include mdc-shape-radius(mdc-shape-mask-radius($radius, 0 1 1 0));
+  }
 }
 
 @mixin mdc-notched-outline-idle-shape-radius($radius, $rtl-reflexive: false) {

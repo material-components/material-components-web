@@ -32,12 +32,23 @@ import {strings} from './constants';
  * @final
  */
 class MDCNotchedOutline extends MDCComponent {
+  constructor(...args) {
+    super(...args);
+
+    /** @private {?Element} */
+    this.notch_;
+  }
+
   /**
    * @param {!Element} root
    * @return {!MDCNotchedOutline}
    */
   static attachTo(root) {
     return new MDCNotchedOutline(root);
+  }
+
+  initialize() {
+    this.notch_ = this.root_.querySelector(strings.NOTCH_SELECTOR);
   }
 
   /**
@@ -47,7 +58,7 @@ class MDCNotchedOutline extends MDCComponent {
     * will be right justified in outline path, otherwise left justified.
     */
   notch(notchWidth, isRtl) {
-    this.foundation_.notch(notchWidth, isRtl);
+    this.foundation_.notch(notchWidth);
   }
 
   /**
@@ -62,18 +73,9 @@ class MDCNotchedOutline extends MDCComponent {
    */
   getDefaultFoundation() {
     return new MDCNotchedOutlineFoundation({
-      getWidth: () => this.root_.offsetWidth,
-      getHeight: () => this.root_.offsetHeight,
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-      setOutlinePathAttr: (value) => {
-        const path = this.root_.querySelector(strings.PATH_SELECTOR);
-        path.setAttribute('d', value);
-      },
-      getIdleOutlineStyleValue: (propertyName) => {
-        const idleOutlineElement = this.root_.parentNode.querySelector(strings.IDLE_OUTLINE_SELECTOR);
-        return window.getComputedStyle(idleOutlineElement).getPropertyValue(propertyName);
-      },
+      setNotchWidth: (width) => this.notch_.style.width = width + 'px',
     });
   }
 }

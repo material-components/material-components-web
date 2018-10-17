@@ -36,41 +36,47 @@
     box-sizing: border-box;
     width: 100%;
     height: 100%;
+    transition: opacity $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function;
   }
 
   .mdc-notched-outline {
-    transition: opacity $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function;
+    display: flex;
+    align-items: stretch;
     opacity: 0;
-    text-align: left;
+    text-align: left; // TODO: is this needed?
     overflow: hidden;
 
     @include mdc-rtl {
       text-align: right;
     }
-
-    // stylelint-disable selector-max-type
-    svg {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-    }
-    // stylelint-enable selector-max-type
   }
 
   .mdc-notched-outline__idle {
-    transition:
-      opacity $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function,
-      border-color $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function;
     border: 1px solid;
     opacity: 1;
   }
 
-  .mdc-notched-outline__path {
-    stroke-width: 1px;
-    transition:
-      stroke $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function,
-      stroke-width $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function;
-    fill: transparent;
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__trailing {
+    box-sizing: border-box;
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+  }
+
+  .mdc-notched-outline__leading {
+    @include mdc-rtl-reflexive-property(border, 1px solid, none);
+  }
+
+  .mdc-notched-outline__trailing {
+    @include mdc-rtl-reflexive-property(border, none, 1px solid);
+
+    flex-grow: 1;
+  }
+
+  .mdc-notched-outline__notch {
+    box-sizing: content-box; // Apply padding in addition to width
+    padding: 0 $mdc-notched-outline-notch-gutter-size;
+    border-bottom: 1px solid;
   }
 
   .mdc-notched-outline--notched {
