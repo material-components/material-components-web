@@ -20,9 +20,12 @@
 // THE SOFTWARE.
 //
 
-@import "@material/ripple/mixins";
+@import "@material/animation/functions";
+@import "@material/animation/variables";
+@import "@material/rtl/mixins";
 @import "@material/shape/mixins";
 @import "@material/theme/mixins";
+@import "@material/typography/mixins";
 @import "./variables";
 
 //
@@ -110,6 +113,136 @@
 // Private
 //
 
+@mixin mdc-side-sheet-base_($side: trailing) {
+  @include mdc-typography-base;
+
+  $flexOrder: if($side == leading, 0, 1);
+  $xFactor: if($side == leading, 1, -1);
+
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  order: $flexOrder;
+  box-sizing: border-box;
+  height: 100%;
+  transition-property: transform;
+  transition-timing-function: $mdc-animation-standard-curve-timing-function;
+  overflow: hidden;
+
+  #{&}--open {
+    transition: mdc-animation-standard(transform, $mdc-side-sheet-animation-enter);
+  }
+
+  #{&}--animate {
+    transform: translateX(-100% * $xFactor);
+
+    @include mdc-rtl {
+      transform: translateX(100% * $xFactor);
+    }
+  }
+
+  #{&}--opening {
+    transform: translateX(0);
+    transition-duration: $mdc-side-sheet-animation-enter;
+
+    // Required to level the specificity with animate class.
+    @include mdc-rtl {
+      transform: translateX(0);
+    }
+  }
+
+  #{&}--closing {
+    transform: translateX(-100% * $xFactor);
+    transition-duration: $mdc-side-sheet-animation-exit;
+
+    @include mdc-rtl {
+      transform: translateX(100% * $xFactor);
+    }
+  }
+}
+
+@mixin mdc-side-sheet-dismissible_($rootClass, $side: trailing) {
+  display: none;
+  position: absolute;
+  top: 0;
+
+  &.#{$rootClass}--open {
+    display: flex;
+  }
+
+  @if $side == leading {
+    @include mdc-rtl-reflexive-position(left, 0);
+  } @else if $side == trailing {
+    @include mdc-rtl-reflexive-position(right, 0);
+  } @else {
+    @error "mdc-side-sheet-dismissible_() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
+  }
+}
+
+@mixin mdc-side-sheet-modal_($rootClass, $side: trailing) {
+  display: none;
+  position: fixed;
+
+  &.#{$rootClass}--open {
+    display: flex;
+  }
+
+  @if $side == leading {
+    @include mdc-rtl-reflexive-position(left, 0);
+  } @else if $side == trailing {
+    @include mdc-rtl-reflexive-position(right, 0);
+  } @else {
+    @error "mdc-side-sheet-modal_() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
+  }
+}
+
+@mixin mdc-side-sheet-content_ {
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@mixin mdc-side-sheet-scrim_($rootClass) {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition-property: opacity;
+  transition-timing-function: $mdc-animation-standard-curve-timing-function;
+
+  .#{$rootClass}--open ~ & {
+    display: block;
+  }
+
+  .#{$rootClass}--animate ~ & {
+    opacity: 0;
+  }
+
+  .#{$rootClass}--opening ~ & {
+    transition-duration: $mdc-side-sheet-animation-enter;
+    opacity: 1;
+  }
+
+  .#{$rootClass}--closing ~ & {
+    transition-duration: $mdc-side-sheet-animation-exit;
+    opacity: 0;
+  }
+}
+
+@mixin mdc-side-sheet-app-content_($side: trailing) {
+  position: relative;
+
+  @if $side == leading {
+    @include mdc-rtl-reflexive-box(margin, left, 0);
+  } @else if $side == trailing {
+    @include mdc-rtl-reflexive-box(margin, right, 0);
+  } @else {
+    @error "mdc-side-sheet-app-content_() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
+  }
+}
+
 @mixin mdc-side-sheet-stroke-right_($width) {
   border-right-width: $width;
   border-left-width: 0;
@@ -139,66 +272,5 @@
     }
   } @else {
     @error "mdc-side-sheet-stroke_() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
-  }
-}
-
-@mixin mdc-side-sheet-base_($side: trailing) {
-  $xFactor: if($side == leading, 1, -1);
-
-  order: if($side == leading, 0, 1);
-
-  &--animate {
-    transform: translateX(-100% * $xFactor);
-
-    @include mdc-rtl {
-      transform: translateX(100% * $xFactor);
-    }
-  }
-
-  &--opening {
-    transform: translateX(0);
-
-    // Required to level the specificity with animate class.
-    @include mdc-rtl {
-      transform: translateX(0);
-    }
-  }
-
-  &--closing {
-    transform: translateX(-100% * $xFactor);
-
-    @include mdc-rtl {
-      transform: translateX(100% * $xFactor);
-    }
-  }
-}
-
-@mixin mdc-side-sheet-modal_($side: trailing) {
-  @if $side == leading {
-    @include mdc-rtl-reflexive-position(left, 0);
-  } @else if $side == trailing {
-    @include mdc-rtl-reflexive-position(right, 0);
-  } @else {
-    @error "mdc-side-sheet-modal_() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
-  }
-}
-
-@mixin mdc-side-sheet-dismissible_($side: trailing) {
-  @if $side == leading {
-    @include mdc-rtl-reflexive-position(left, 0);
-  } @else if $side == trailing {
-    @include mdc-rtl-reflexive-position(right, 0);
-  } @else {
-    @error "mdc-side-sheet-dismissible_() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
-  }
-}
-
-@mixin mdc-side-sheet-app-content_($side: trailing) {
-  @if $side == leading {
-    @include mdc-rtl-reflexive-box(margin, left, 0);
-  } @else if $side == trailing {
-    @include mdc-rtl-reflexive-box(margin, right, 0);
-  } @else {
-    @error "mdc-side-sheet-app-content_() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
   }
 }
