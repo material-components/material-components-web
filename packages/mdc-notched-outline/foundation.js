@@ -125,7 +125,7 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
       path = 'M' + (width - cornerWidth - leadingStrokeLength) + ',' + 1
         + 'h' + leadingStrokeLength
         + pathMiddle
-        + 'h' + (width - (2 * cornerWidth) - paddedNotchWidth - leadingStrokeLength + 12);
+        + 'h' + (width - (2 * cornerWidth) - paddedNotchWidth - leadingStrokeLength);
     }
 
     this.adapter_.setOutlinePathAttr(path);

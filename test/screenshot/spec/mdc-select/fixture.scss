@@ -45,7 +45,7 @@
 }
 
 .custom-select-shape-radius {
-  @include mdc-select-shape-radius(10px);
+  @include mdc-select-shape-radius(50%);
 }
 
 .custom-select-outline-color {
@@ -53,5 +53,5 @@
 }
 
 .custom-select-outline-shape-radius {
-  @include mdc-select-outline-shape-radius(10px);
+  @include mdc-select-outline-shape-radius(50%);
 }

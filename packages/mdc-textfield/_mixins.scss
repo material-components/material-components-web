@@ -23,6 +23,7 @@
 @import "@material/floating-label/mixins";
 @import "@material/line-ripple/mixins";
 @import "@material/notched-outline/mixins";
+@import "@material/notched-outline/variables";
 @import "@material/theme/mixins";
 @import "@material/shape/mixins";
 @import "@material/shape/functions";
@@ -247,8 +248,8 @@
 
   @include mdc-notched-outline-idle-shape-radius($resolved-radius, $rtl-reflexive);
 
-  $cornerSize: mdc-shape-prop-value_($resolved-radius);
-  $positionX: $cornerSize + $mdc-text-field-outline-leading-notch-length + $mdc-text-field-outline-float-label-padding;
+  $cornerSize: mdc-shape-prop-value($resolved-radius);
+  $positionX: $cornerSize + $mdc-notched-outline-leading-notch-length + $mdc-notched-outline-notch-gutter-size;
   $labelPositionOffset: - $mdc-text-field-outline-label-offset + $positionX;
   @include mdc-floating-label-float-position($mdc-text-field-outlined-label-position-y, -1 * ($labelPositionOffset));
 }
