@@ -96,7 +96,7 @@ class MDCSideSheet extends MDCComponent {
   }
 
   initialSyncWithDOM() {
-    const {MODAL, OPEN} = MDCDismissibleSideSheetFoundation.cssClasses;
+    const {MODAL} = MDCDismissibleSideSheetFoundation.cssClasses;
 
     if (this.root_.classList.contains(MODAL)) {
       const {SCRIM_SELECTOR} = MDCDismissibleSideSheetFoundation.strings;
@@ -111,10 +111,6 @@ class MDCSideSheet extends MDCComponent {
 
     this.root_.addEventListener('keydown', this.handleKeydown_);
     this.root_.addEventListener('transitionend', this.handleTransitionEnd_);
-
-    if (this.root_.classList.contains(OPEN)) {
-      this.foundation_.open();
-    }
   }
 
   destroy() {

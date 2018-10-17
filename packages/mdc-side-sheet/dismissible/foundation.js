@@ -78,12 +78,7 @@ class MDCDismissibleSideSheetFoundation extends MDCFoundation {
    * Function to open the side-sheet.
    */
   open() {
-    if (this.isOpen()) {
-      this.handleTransitionEnd_();
-      return;
-    }
-
-    if (this.isOpening() || this.isClosing()) {
+    if (this.isOpen() || this.isOpening() || this.isClosing()) {
       return;
     }
 
@@ -163,23 +158,13 @@ class MDCDismissibleSideSheetFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   handleTransitionEnd(evt) {
-    const {ROOT} = cssClasses;
+    const {OPENING, CLOSING, OPEN, ANIMATE, ROOT} = cssClasses;
 
     // In Edge, transitionend on ripple pseudo-elements yields a target without classList, so check for Element first.
     const isElement = evt.target instanceof Element;
     if (!isElement || !this.adapter_.elementHasClass(/** @type {!Element} */ (evt.target), ROOT)) {
       return;
     }
-
-    this.handleTransitionEnd_();
-  }
-
-  /**
-   * Handles a transition end event on the root element.
-   * @private
-   */
-  handleTransitionEnd_() {
-    const {OPENING, CLOSING, OPEN, ANIMATE} = cssClasses;
 
     if (this.isClosing()) {
       this.adapter_.removeClass(OPEN);
