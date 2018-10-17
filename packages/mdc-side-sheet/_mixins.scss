@@ -40,11 +40,11 @@
     @error "Invalid radius: '#{$radius}'. Component doesn't allow customizing all corners.";
   }
 
-  @if $side != "leading" and $side != "trailing" {
+  @if $side != leading and $side != trailing {
     @error "mdc-side-sheet-shape-radius() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
   }
 
-  @if $side == "leading" {
+  @if $side == leading {
     @if length($radius) == 2 {
       $radius: 0 nth($radius, 1) nth($radius, 2) 0;
     } @else {
@@ -98,9 +98,9 @@
   width: $width;
 
   &.mdc-side-sheet--open:not(.mdc-side-sheet--closing) ~ .mdc-side-sheet-app-content {
-    @if $side == "leading" {
+    @if $side == leading {
       @include mdc-rtl-reflexive-box(margin, left, $width);
-    } @else if $side == "trailing" {
+    } @else if $side == trailing {
       @include mdc-rtl-reflexive-box(margin, right, $width);
     } @else {
       @error "mdc-side-sheet-width() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
@@ -127,13 +127,13 @@
 }
 
 @mixin mdc-side-sheet-stroke-width_($width, $side: trailing) {
-  @if $side == "leading" {
+  @if $side == leading {
     @include mdc-side-sheet-stroke-right_($width);
 
     @include mdc-rtl {
       @include mdc-side-sheet-stroke-left_($width);
     }
-  } @else if $side == "trailing" {
+  } @else if $side == trailing {
     @include mdc-side-sheet-stroke-left_($width);
 
     @include mdc-rtl {
@@ -145,9 +145,9 @@
 }
 
 @mixin mdc-side-sheet-base_($side: trailing) {
-  $xFactor: if($side == "leading", 1, -1);
+  $xFactor: if($side == leading, 1, -1);
 
-  order: if($side == "leading", 0, 1);
+  order: if($side == leading, 0, 1);
 
   &--animate {
     transform: translateX(-100% * $xFactor);
@@ -176,9 +176,9 @@
 }
 
 @mixin mdc-side-sheet-scrim_($side: trailing) {
-  @if $side == "leading" {
+  @if $side == leading {
     left: 0;
-  } @else if $side == "trailing" {
+  } @else if $side == trailing {
     right: 0;
   } @else {
     @error "mdc-side-sheet-scrim_() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
@@ -186,9 +186,9 @@
 }
 
 @mixin mdc-side-sheet-modal_($side: trailing) {
-  @if $side == "leading" {
+  @if $side == leading {
     @include mdc-rtl-reflexive-position(left, 0);
-  } @else if $side == "trailing" {
+  } @else if $side == trailing {
     @include mdc-rtl-reflexive-position(right, 0);
   } @else {
     @error "mdc-side-sheet-modal_() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
@@ -196,9 +196,9 @@
 }
 
 @mixin mdc-side-sheet-dismissible_($side: trailing) {
-  @if $side == "leading" {
+  @if $side == leading {
     @include mdc-rtl-reflexive-position(left, 0);
-  } @else if $side == "trailing" {
+  } @else if $side == trailing {
     @include mdc-rtl-reflexive-position(right, 0);
   } @else {
     @error "mdc-side-sheet-dismissible_() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
@@ -206,9 +206,9 @@
 }
 
 @mixin mdc-side-sheet-app-content_($side: trailing) {
-  @if $side == "leading" {
+  @if $side == leading {
     @include mdc-rtl-reflexive-box(margin, left, 0);
-  } @else if $side == "trailing" {
+  } @else if $side == trailing {
     @include mdc-rtl-reflexive-box(margin, right, 0);
   } @else {
     @error "mdc-side-sheet-app-content_() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
