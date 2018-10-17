@@ -34,7 +34,6 @@ const cssClasses = {
 
 /** @enum {string} */
 const strings = {
-  APP_CONTENT_SELECTOR: '.mdc-side-sheet-app-content',
   SCRIM_SELECTOR: '.mdc-side-sheet-scrim',
   CLOSE_EVENT: 'MDCSideSheet:closed',
   OPEN_EVENT: 'MDCSideSheet:opened',
