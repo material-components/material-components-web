@@ -40,6 +40,7 @@
   @include mdc-side-sheet-shape-radius(large);
   @include mdc-side-sheet-z-index($mdc-side-sheet-z-index);
   @include mdc-side-sheet-width($mdc-side-sheet-width);
+  @include mdc-typography-base;
 
   display: flex;
   flex-direction: column;
