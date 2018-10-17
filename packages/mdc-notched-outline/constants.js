@@ -34,7 +34,7 @@ const cssClasses = {
 
 /** @enum {number} */
 const numbers = {
-  FLOATING_LABEL_SIDE_PADDING: 4,
+  NOTCH_GUTTER_SIZE: 4,
   LEADING_STROKE_LENGTH: 8,
 };
 

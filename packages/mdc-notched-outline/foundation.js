@@ -40,6 +40,11 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
     return cssClasses;
   }
 
+  /** @return enum {number} */
+  static get numbers() {
+    return numbers;
+  }
+
   /**
    * {@see MDCNotchedOutlineAdapter} for typing information on parameters and return
    * types.
@@ -103,7 +108,7 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
     // If the notchWidth is 0, the the notched outline doesn't need to add padding.
     let paddedNotchWidth = 0;
     if (notchWidth > 0) {
-      paddedNotchWidth = notchWidth + 2 * numbers.FLOATING_LABEL_SIDE_PADDING;
+      paddedNotchWidth = notchWidth + 2 * numbers.NOTCH_GUTTER_SIZE;
     }
 
     // The right, bottom, and left sides of the outline follow the same SVG path.
