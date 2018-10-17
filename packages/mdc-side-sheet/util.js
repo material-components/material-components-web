@@ -31,9 +31,9 @@ import createFocusTrap from 'focus-trap';
 function createFocusTrapInstance(surfaceEl, focusTrapFactory = createFocusTrap) {
   return focusTrapFactory(surfaceEl, {
     clickOutsideDeactivates: true,
-    initialFocus: false, // Navigation side-sheet handles focusing on active nav item.
-    escapeDeactivates: false, // Navigation side-sheet handles ESC.
-    returnFocusOnDeactivate: false, // Navigation side-sheet handles restore focus.
+    initialFocus: false, // Side sheet handles focusing on active nav item.
+    escapeDeactivates: false, // Side sheet handles ESC.
+    returnFocusOnDeactivate: false, // Side sheet handles restore focus.
   });
 }
 
