@@ -113,7 +113,7 @@ class MDCMenuFoundation extends MDCFoundation {
   handleAction_(evt) {
     const listItem = this.getListItem_(/** @type {HTMLElement} */ (evt.target));
     if (listItem) {
-      this.handleSelection_(listItem);
+      this.handleSelection(listItem);
       this.preventDefaultEvent_(evt);
     }
   }
@@ -121,9 +121,8 @@ class MDCMenuFoundation extends MDCFoundation {
   /**
    * Handler for a selected list item.
    * @param {?HTMLElement} listItem
-   * @private
    */
-  handleSelection_(listItem) {
+  handleSelection(listItem) {
     const index = this.adapter_.getElementIndex(listItem);
     if (index < 0) {
       return;
