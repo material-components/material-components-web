@@ -72,6 +72,13 @@ module.exports = {
    */
   SELENIUM_KILL_WAIT_MS: 30 * 1000, // 30 seconds
 
+  /**
+   * Number of milliseconds to wait between sending status updates over the network
+   * (e.g., creating GitHub Status Checks, writing to Google Cloud Datastore).
+   * @type {number}
+   */
+  STATUS_UPDATE_THROTTLE_INTERVAL_MS: 5000, // 5 seconds
+
   ExitCode: {
     OK: 0,
 

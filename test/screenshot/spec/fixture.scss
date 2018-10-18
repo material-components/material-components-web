@@ -82,6 +82,12 @@ $test-layout-cell-grid-color: #ddd;
     height: 100%;
     transform: translateX(calc(-100% + 4px));
   }
+
+  @media screen and (-ms-high-contrast: active) {
+    .test-container--edge-fonts .test-font--redact-all {
+      visibility: hidden;
+    }
+  }
 }
 
 .test-viewport {
