@@ -122,7 +122,14 @@
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+
+  // Scrim and app content styles rely on the CSS sibling selector (~), which means the side sheet element needs to come
+  // first in the source order. Unfortunately, this causes permanent side sheets to be displayed on the leading side of
+  // the page instead of the trailing side. Setting `order` corrects the visual layout of the page; however,
+  // screen readers and tab order are unaffected by this property, so we need to find a better long term solution.
   order: $flexOrder;
+
+  // stylelint-disable-next-line declaration-empty-line-before
   box-sizing: border-box;
   height: 100%;
   transition-property: transform;
