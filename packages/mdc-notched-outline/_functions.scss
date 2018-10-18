@@ -20,9 +20,9 @@
 // THE SOFTWARE.
 //
 
-$mdc-notched-outline-transition-duration: 150ms;
-// Keep this in sync with constants.numbers.MIN_LEADING_STROKE_EDGE_POSITION
-$mdc-notched-outline-leading-notch-edge-position: 12px;
-// The gap between the stroke end and floating label
-// Keep this in sync with constants.numbers.NOTCH_GUTTER_SIZE
-$mdc-notched-outline-notch-gutter-size: 4px;
+@import "./variables";
+
+@function mdc-notched-outline-get-notch-padded-position($cornerSize) {
+  $leadingStrokeLength: max(0, $mdc-notched-outline-leading-notch-edge-position - $cornerSize);
+  @return $cornerSize + $leadingStrokeLength + $mdc-notched-outline-notch-gutter-size + 1.2;
+}

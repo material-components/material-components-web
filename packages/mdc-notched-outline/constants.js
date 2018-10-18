@@ -35,7 +35,7 @@ const cssClasses = {
 /** @enum {number} */
 const numbers = {
   NOTCH_GUTTER_SIZE: 4,
-  LEADING_STROKE_LENGTH: 8,
+  MIN_LEADING_STROKE_EDGE_POSITION: 12,
 };
 
 export {cssClasses, strings, numbers};

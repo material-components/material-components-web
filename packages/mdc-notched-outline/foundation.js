@@ -103,7 +103,7 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
     const width = this.adapter_.getWidth();
     const height = this.adapter_.getHeight();
     const cornerWidth = radius + 1.2;
-    const leadingStrokeLength = numbers.LEADING_STROKE_LENGTH - 1.2;
+    const leadingStrokeLength = Math.max(0, numbers.MIN_LEADING_STROKE_EDGE_POSITION - radius - 1.2);
 
     // If the notchWidth is 0, the the notched outline doesn't need to add padding.
     let paddedNotchWidth = 0;
