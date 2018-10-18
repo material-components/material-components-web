@@ -215,6 +215,7 @@ class CssBundleFactory {
           options: {
             sourceMap: true,
             includePaths: [getAbsolutePath('/packages/material-components-web/node_modules')],
+            implementation: require('node-sass'),
           },
         },
       ],
