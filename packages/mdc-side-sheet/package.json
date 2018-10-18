@@ -1,0 +1,26 @@
+{
+  "name": "@material/side-sheet",
+  "version": "0.0.0",
+  "description": "The Material Components Web side sheet component",
+  "license": "MIT",
+  "keywords": [
+    "material components",
+    "material design",
+    "side sheet"
+  ],
+  "main": "dist/mdc.side-sheet.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/material-components/material-components-web.git"
+  },
+  "dependencies": {
+    "@material/animation": "^0.40.1",
+    "@material/base": "^0.40.1",
+    "@material/elevation": "^0.40.1",
+    "@material/rtl": "^0.40.1",
+    "@material/shape": "^0.40.1",
+    "@material/theme": "^0.40.1",
+    "@material/typography": "^0.40.1",
+    "focus-trap": "^3.0.0"
+  }
+}

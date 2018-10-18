@@ -166,6 +166,7 @@ class CssBundleFactory {
         'mdc.radio': getAbsolutePath('/packages/mdc-radio/mdc-radio.scss'),
         'mdc.ripple': getAbsolutePath('/packages/mdc-ripple/mdc-ripple.scss'),
         'mdc.select': getAbsolutePath('/packages/mdc-select/mdc-select.scss'),
+        'mdc.side-sheet': getAbsolutePath('/packages/mdc-side-sheet/mdc-side-sheet.scss'),
         'mdc.slider': getAbsolutePath('/packages/mdc-slider/mdc-slider.scss'),
         'mdc.snackbar': getAbsolutePath('/packages/mdc-snackbar/mdc-snackbar.scss'),
         'mdc.switch': getAbsolutePath('/packages/mdc-switch/mdc-switch.scss'),
