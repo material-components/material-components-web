@@ -291,6 +291,12 @@ programmatically select a disabled list item in the enhanced select.
 </div>
 ```
 
+### Select with Helper Text
+
+The helper text provides supplemental information and/or validation messages to users. It appears when the select
+element is focused and disappears on blur by default, or it can be persistent.
+See [here](helper-text/) for more information on using helper text.
+
 ### Select with Leading  Icons
 
 Leading icons can be added within the default or outlined variant of MDC Select as visual indicators as
@@ -346,7 +352,7 @@ The `MDCSelect` component API is modeled after a subset of the `HTMLSelectElemen
 | `disabled` | boolean | Whether or not the component is disabled. Settings this sets the disabled state on the component. |
 | `leadingIconAriaLabel` | string (write-only) | Proxies to the foundation's `setLeadingIconAriaLabel` method. |
 | `leadingIconContent` | string (write-only) | Proxies to the foundation's `setLeadingIconContent` method. |
-
+| `helperTextContent` | string (write-only)| Proxies to the foundation's `setHelperTextContent` method when set. |
 ### Events
 
 The MDC Select JS component emits a `MDCSelect:change` event when the selected option changes as the result of a user action.
@@ -397,11 +403,11 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `layout() => void` | Handles determining if the notched outline should be notched. |
 | `setLeadingIconAriaLabel(label: string) => void` | Sets the aria label of the leading icon. |
 | `setLeadingIconContent(content: string) => void` | Sets the text content of the leading icon. |
-
+| `setHelperTextContent(content: string) => void` | Sets the content of the helper text. |
 ### Events
 
 Event Name | Data | Description
 --- | --- | ---
 `MDCSelect:change` | `{value: string, index: number}` | Used to indicate when an element has been selected. This event also includes the value of the item and the index.
 
-`MDCSelectFoundation` supports an optional icon sub-element. The foundation of the icon must be passed in as constructor arguments to `MDCSelectFoundation`.
+`MDCSelectFoundation` supports multiple optional sub-elements: helper text and icon. The foundations of these sub-elements must be passed in as constructor arguments to `MDCSelectFoundation`.

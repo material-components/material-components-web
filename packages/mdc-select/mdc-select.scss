@@ -32,6 +32,8 @@
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
 @import "./icon/mdc-select-icon";
+@import "./helper-text/mdc-select-helper-text";
+@import "./helper-text/mixins";
 
 // postcss-bem-linter: define select
 .mdc-select {
@@ -45,6 +47,7 @@
   @include mdc-select-ink-color($mdc-select-ink-color);
   @include mdc-select-label-color($mdc-select-label-color);
   @include mdc-select-bottom-line-color($mdc-select-bottom-line-idle-color);
+  @include mdc-select-helper-text-color($mdc-select-helper-text-color);
   @include mdc-select-shape-radius(medium);
 
   // Focused state colors
@@ -98,11 +101,12 @@
   }
 }
 
+@include mdc-select-helper-text_;
+@include mdc-select-text-and-control_();
+
 .mdc-select--outlined {
   @include mdc-select-outlined_;
 }
-
-@include mdc-select-text-and-control_();
 
 .mdc-select--disabled {
   @include mdc-select-disabled_;

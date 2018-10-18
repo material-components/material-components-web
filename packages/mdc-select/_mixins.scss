@@ -375,3 +375,23 @@
     pointer-events: auto;
   }
 }
+
+@mixin mdc-select-helper-text_ {
+  .mdc-select-helper-text {
+    // stylelint-disable plugin/selector-bem-pattern
+    .mdc-select + & {
+      margin-right: 12px;
+      margin-left: 12px;
+    }
+
+    .mdc-select--outlined + & {
+      margin-right: 16px;
+      margin-left: 16px;
+    }
+    // stylelint-enable plugin/selector-bem-pattern
+  }
+
+  .mdc-select--focused + .mdc-select-helper-text:not(.mdc-select-helper-text--validation-msg) {
+    opacity: 1;
+  }
+}
