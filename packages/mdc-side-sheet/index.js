@@ -25,7 +25,6 @@ import {MDCComponent} from '@material/base/index';
 import MDCDismissibleSideSheetFoundation from './dismissible/foundation';
 import MDCModalSideSheetFoundation from './modal/foundation';
 import MDCSideSheetAdapter from './adapter';
-import MDCListFoundation from '@material/list/foundation';
 import {strings} from './constants';
 import * as util from './util';
 import createFocusTrap from 'focus-trap';
