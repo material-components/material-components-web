@@ -142,9 +142,9 @@ class MDCSideSheet extends MDCComponent {
         }
       },
       focusActiveNavigationItem: () => {
-        const activeNavItemEl = this.root_.querySelector(`.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`);
-        if (activeNavItemEl) {
-          activeNavItemEl.focus();
+        const firstFocusableEl = this.root_.querySelector('a, button, input'); // TODO(acdvorak): Use `tabbable`
+        if (firstFocusableEl) {
+          firstFocusableEl.focus();
         }
       },
       notifyClose: () => this.emit(strings.CLOSE_EVENT, {}, true /* shouldBubble */),
