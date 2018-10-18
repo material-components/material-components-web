@@ -51,7 +51,7 @@ test('default adapter returns a complete adapter implementation', () => {
   ]);
 });
 
-function setupTest(hasLeadingIcon = true) {
+function setupTest(hasLeadingIcon = true, hasHelperText = false) {
   const mockAdapter = td.object(MDCSelectFoundation.defaultAdapter);
   const leadingIcon = td.object({
     setDisabled: () => {},
@@ -61,14 +61,22 @@ function setupTest(hasLeadingIcon = true) {
     deregisterInteractionHandler: () => {},
     handleInteraction: () => {},
   });
+  const helperText = td.object({
+    setContent: () => {},
+    setPersistent: () => {},
+    setValidation: () => {},
+    showToScreenReader: () => {},
+    setValidity: () => {},
+  });
   const foundationMap = {
     leadingIcon: hasLeadingIcon ? leadingIcon : undefined,
+    helperText: hasHelperText ? helperText : undefined,
   };
 
   td.when(mockAdapter.getValue()).thenReturn('');
 
   const foundation = new MDCSelectFoundation(mockAdapter, foundationMap);
-  return {foundation, mockAdapter, leadingIcon};
+  return {foundation, mockAdapter, leadingIcon, helperText};
 }
 
 test('#setDisabled(true) calls adapter.addClass', () => {
@@ -206,6 +214,14 @@ test('#handleFocus calls adapter.activateBottomLine()', () => {
   td.verify(mockAdapter.activateBottomLine(), {times: 1});
 });
 
+test('#handleFocus calls helperText.showToScreenReader', () => {
+  const hasIcon = true;
+  const hasHelperText = true;
+  const {foundation, helperText} = setupTest(hasIcon, hasHelperText);
+  foundation.handleFocus();
+  td.verify(helperText.showToScreenReader(), {times: 1});
+});
+
 test('#handleFocus calls adapter.activateBottomLine() if isMenuOpen=true', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.isMenuOpen()).thenReturn(true);
@@ -231,6 +247,15 @@ test('#handleBlur does not call deactivateBottomLine if isMenuOpen=true', () => 
   td.when(mockAdapter.isMenuOpen()).thenReturn(true);
   foundation.handleBlur();
   td.verify(mockAdapter.deactivateBottomLine(), {times: 0});
+});
+
+test('#handleBlur calls helperText.setValidity(true) if menu is not open', () => {
+  const hasIcon = true;
+  const hasHelperText = true;
+  const {foundation, mockAdapter, helperText} = setupTest(hasIcon, hasHelperText);
+  td.when(mockAdapter.isMenuOpen()).thenReturn(false);
+  foundation.handleBlur();
+  td.verify(helperText.setValidity(true), {times: 1});
 });
 
 test('#handleClick does nothing if isMenuOpen=true', () => {
@@ -372,4 +397,19 @@ test('#setLeadingIconContent does nothing if the leading icon element is undefin
   const {foundation, leadingIcon} = setupTest(hasLeadingIcon);
   assert.doesNotThrow(() => foundation.setLeadingIconContent('foo'));
   td.verify(leadingIcon.setContent('foo'), {times: 0});
+});
+
+test('#setHelperTextContent sets the content of the helper text element', () => {
+  const hasIcon = false;
+  const hasHelperText = true;
+  const {foundation, helperText} = setupTest(hasIcon, hasHelperText);
+  foundation.setHelperTextContent('foo');
+  td.verify(helperText.setContent('foo'));
+});
+
+test('#setHelperTextContent does not throw an error if there is no helperText element', () => {
+  const hasIcon = false;
+  const hasHelperText = false;
+  const {foundation} = setupTest(hasIcon, hasHelperText);
+  assert.doesNotThrow(() => foundation.setHelperTextContent('foo'));
 });

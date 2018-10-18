@@ -25,6 +25,7 @@ import {MDCFoundation} from '@material/base/index';
 /* eslint-disable no-unused-vars */
 import {MDCSelectAdapter, FoundationMapType} from './adapter';
 import {MDCSelectIconFoundation} from './icon/index';
+import {MDCSelectHelperTextFoundation} from './helper-text/index';
 /* eslint-enable no-unused-vars */
 import {cssClasses, strings, numbers} from './constants';
 
@@ -87,6 +88,8 @@ class MDCSelectFoundation extends MDCFoundation {
 
     /** @type {!MDCSelectIconFoundation|undefined} */
     this.leadingIcon_ = foundationMap.leadingIcon;
+    /** @type {!MDCSelectHelperTextFoundation|undefined} */
+    this.helperText_ = foundationMap.helperText;
   }
 
   setSelectedIndex(index) {
@@ -113,6 +116,15 @@ class MDCSelectFoundation extends MDCFoundation {
 
     if (this.leadingIcon_) {
       this.leadingIcon_.setDisabled(isDisabled);
+    }
+  }
+
+  /**
+   * @param {string} content Sets the content of the helper text.
+   */
+  setHelperTextContent(content) {
+    if (this.helperText_) {
+      this.helperText_.setContent(content);
     }
   }
 
@@ -146,6 +158,9 @@ class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.floatLabel(true);
     this.notchOutline(true);
     this.adapter_.activateBottomLine();
+    if (this.helperText_) {
+      this.helperText_.showToScreenReader();
+    }
   }
 
   /**
@@ -156,6 +171,10 @@ class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.removeClass(cssClasses.FOCUSED);
     this.handleChange(false);
     this.adapter_.deactivateBottomLine();
+    if (this.helperText_) {
+      // Will handle validity checking in a followup PR.
+      this.helperText_.setValidity(true /* isValid */);
+    }
   }
 
   handleClick(normalizedX) {

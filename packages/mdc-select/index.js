@@ -33,6 +33,7 @@ import {cssClasses, strings} from './constants';
 /* eslint-disable no-unused-vars */
 import {MDCSelectAdapter, FoundationMapType} from './adapter';
 import {MDCSelectIcon, MDCSelectIconFoundation} from './icon/index';
+import {MDCSelectHelperText, MDCSelectHelperTextFoundation} from './helper-text/index';
 /* eslint-enable no-unused-vars */
 
 // Closure has issues with {this as that} syntax.
@@ -54,6 +55,8 @@ class MDCSelect extends MDCComponent {
     this.selectedText_;
     /** @private {?MDCSelectIcon} */
     this.leadingIcon_;
+    /** @private {?MDCSelectHelperText} */
+    this.helperText_;
     /** @private {?Element} */
     this.menuElement_;
     /** @type {?MDCMenu} */
@@ -161,6 +164,14 @@ class MDCSelect extends MDCComponent {
   }
 
   /**
+   * Sets the text content of the helper text.
+   * @param {string} content
+   */
+  set helperTextContent(content) {
+    this.foundation_.setHelperTextContent(content);
+  }
+
+  /**
    * Recomputes the outline SVG path for the outline element.
    */
   layout() {
@@ -174,13 +185,16 @@ class MDCSelect extends MDCComponent {
    * @param {(function(!Element): !MDCNotchedOutline)=} outlineFactory A function which creates a new MDCNotchedOutline.
    * @param {(function(!Element): !MDCMenu)=} menuFactory A function which creates a new MDCMenu.
    * @param {(function(!Element): !MDCSelectIcon)=} iconFactory A function which creates a new MDCSelectIcon.
+   * @param {(function(!Element): !MDCSelectHelperText)=} helperTextFactory A function which creates a new
+   * MDCSelectHelperText.
    */
   initialize(
     labelFactory = (el) => new MDCFloatingLabel(el),
     lineRippleFactory = (el) => new MDCLineRipple(el),
     outlineFactory = (el) => new MDCNotchedOutline(el),
     menuFactory = (el) => new MDCMenu(el),
-    iconFactory = (el) => new MDCSelectIcon(el)) {
+    iconFactory = (el) => new MDCSelectIcon(el),
+    helperTextFactory = (el) => new MDCSelectHelperText(el)) {
     this.nativeControl_ = /** @type {HTMLElement} */ (this.root_.querySelector(strings.NATIVE_CONTROL_SELECTOR));
     this.selectedText_ = /** @type {HTMLElement} */ (this.root_.querySelector(strings.SELECTED_TEXT_SELECTOR));
 
@@ -207,6 +221,13 @@ class MDCSelect extends MDCComponent {
 
       if (this.menuElement_) {
         this.menuElement_.classList.add(cssClasses.WITH_LEADING_ICON);
+      }
+    }
+    const element = this.nativeControl_ ? this.nativeControl_ : this.selectedText_;
+    if (element.hasAttribute(strings.ARIA_CONTROLS)) {
+      const helperTextElement = document.getElementById(element.getAttribute(strings.ARIA_CONTROLS));
+      if (helperTextElement) {
+        this.helperText_ = helperTextFactory(helperTextElement);
       }
     }
 
@@ -325,6 +346,12 @@ class MDCSelect extends MDCComponent {
     }
     if (this.outline_) {
       this.outline_.destroy();
+    }
+    if (this.leadingIcon_) {
+      this.leadingIcon_.destroy();
+    }
+    if (this.helperText_) {
+      this.helperText_.destroy();
     }
 
     super.destroy();
@@ -530,6 +557,7 @@ class MDCSelect extends MDCComponent {
   getFoundationMap_() {
     return {
       leadingIcon: this.leadingIcon_ ? this.leadingIcon_.foundation : undefined,
+      helperText: this.helperText_ ? this.helperText_.foundation : undefined,
     };
   }
 }
