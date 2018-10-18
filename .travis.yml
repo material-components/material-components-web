@@ -1,10 +1,9 @@
 language: node_js
 
-# Opt-in to Travis's container infrastructure. This potentially makes builds less flaky, and easier to debug.
-# - https://docs.travis-ci.com/user/reference/trusty/#container-based-with-sudo-false
-# - https://docs.travis-ci.com/user/common-build-problems/#troubleshooting-locally-in-a-docker-image
-# - https://blog.travis-ci.com/2014-12-17-faster-builds-with-container-based-infrastructure/#what-benefits-does-this-new-infrastructure-have
-sudo: false
+# Force Travis CI to run jobs in VMs instead of Docker containers.
+# - https://blog.travis-ci.com/2018-10-04-combining-linux-infrastructures
+# - https://docs.travis-ci.com/user/reference/trusty/#fully-virtualized-via-sudo-required
+sudo: required
 
 branches:
   # Only run Travis on:

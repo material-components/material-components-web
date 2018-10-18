@@ -39,17 +39,17 @@ class MDCRadio extends MDCComponent {
 
   /** @return {boolean} */
   get checked() {
-    return this.foundation_.isChecked();
+    return this.nativeControl_.checked;
   }
 
   /** @param {boolean} checked */
   set checked(checked) {
-    this.foundation_.setChecked(checked);
+    this.nativeControl_.checked = checked;
   }
 
   /** @return {boolean} */
   get disabled() {
-    return this.foundation_.isDisabled();
+    return this.nativeControl_.disabled;
   }
 
   /** @param {boolean} disabled */
@@ -59,12 +59,12 @@ class MDCRadio extends MDCComponent {
 
   /** @return {?string} */
   get value() {
-    return this.foundation_.getValue();
+    return this.nativeControl_.value;
   }
 
   /** @param {?string} value */
   set value(value) {
-    this.foundation_.setValue(value);
+    this.nativeControl_.value = value;
   }
 
   /** @return {!MDCRipple} */
@@ -118,7 +118,7 @@ class MDCRadio extends MDCComponent {
     return new MDCRadioFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-      getNativeControl: () => this.root_.querySelector(MDCRadioFoundation.strings.NATIVE_CONTROL_SELECTOR),
+      setNativeControlDisabled: (disabled) => this.nativeControl_.disabled = disabled,
     });
   }
 }
