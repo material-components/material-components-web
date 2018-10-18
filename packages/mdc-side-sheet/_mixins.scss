@@ -169,42 +169,38 @@
   }
 }
 
-@mixin mdc-side-sheet-dismissible_($side: trailing) {
-  &--dismissible {
-    display: none;
-    position: absolute;
-    top: 0;
+@mixin mdc-side-sheet-dismissible_($rootClass, $side: trailing) {
+  display: none;
+  position: absolute;
+  top: 0;
 
-    @if $side == leading {
-      @include mdc-rtl-reflexive-position(left, 0);
-    } @else if $side == trailing {
-      @include mdc-rtl-reflexive-position(right, 0);
-    } @else {
-      @error "mdc-side-sheet-dismissible_() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
-    }
+  &.#{$rootClass}--open {
+    display: flex;
   }
 
-  &--dismissible#{&}--open {
-    display: flex;
+  @if $side == leading {
+    @include mdc-rtl-reflexive-position(left, 0);
+  } @else if $side == trailing {
+    @include mdc-rtl-reflexive-position(right, 0);
+  } @else {
+    @error "mdc-side-sheet-dismissible_() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
   }
 }
 
-@mixin mdc-side-sheet-modal_($side: trailing) {
-  &--modal {
-    display: none;
-    position: fixed;
+@mixin mdc-side-sheet-modal_($rootClass, $side: trailing) {
+  display: none;
+  position: fixed;
 
-    @if $side == leading {
-      @include mdc-rtl-reflexive-position(left, 0);
-    } @else if $side == trailing {
-      @include mdc-rtl-reflexive-position(right, 0);
-    } @else {
-      @error "mdc-side-sheet-modal_() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
-    }
+  &.#{$rootClass}--open {
+    display: flex;
   }
 
-  &--modal#{&}--open {
-    display: flex;
+  @if $side == leading {
+    @include mdc-rtl-reflexive-position(left, 0);
+  } @else if $side == trailing {
+    @include mdc-rtl-reflexive-position(right, 0);
+  } @else {
+    @error "mdc-side-sheet-modal_() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
   }
 }
 
@@ -214,37 +210,33 @@
   -webkit-overflow-scrolling: touch;
 }
 
-@mixin mdc-side-sheet-scrim_ {
-  // stylelint-disable selector-max-type
-  &-scrim {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    transition-property: opacity;
-    transition-timing-function: $mdc-animation-standard-curve-timing-function;
-  }
+@mixin mdc-side-sheet-scrim_($rootClass) {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition-property: opacity;
+  transition-timing-function: $mdc-animation-standard-curve-timing-function;
 
-  &--open ~ &-scrim {
+  .#{$rootClass}--open ~ & {
     display: block;
   }
 
-  &--animate ~ &-scrim {
+  .#{$rootClass}--animate ~ & {
     opacity: 0;
   }
 
-  &--opening ~ &-scrim {
+  .#{$rootClass}--opening ~ & {
     transition-duration: $mdc-side-sheet-animation-enter;
     opacity: 1;
   }
 
-  &--closing ~ &-scrim {
+  .#{$rootClass}--closing ~ & {
     transition-duration: $mdc-side-sheet-animation-exit;
     opacity: 0;
   }
-  // stylelint-enable selector-max-type
 }
 
 @mixin mdc-side-sheet-app-content_($side: trailing) {
