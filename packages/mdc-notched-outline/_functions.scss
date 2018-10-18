@@ -30,6 +30,6 @@
 // mdc-notched-outline-get-notch-padded-position(4px) => 21.2px
 //
 @function mdc-notched-outline-get-notch-padded-position($cornerSize) {
-  $leadingStrokeLength: max(0, $mdc-notched-outline-leading-notch-edge-position - $cornerSize - 1.2);
+  $leadingStrokeLength: max(0, $mdc-notched-outline-min-leading-stroke-edge-position - $cornerSize - 1.2);
   @return $cornerSize + $leadingStrokeLength + $mdc-notched-outline-notch-gutter-size + 1.2;
 }
