@@ -67,7 +67,7 @@ through the use of another class (ex. `demo-width-class`).
 ```html
 <div class="mdc-select demo-width-class">
   <i class="mdc-select__dropdown-icon"></i>
-  <div class="mdc-select__selected-text" role="combobox"></div>
+  <div class="mdc-select__selected-text"></div>
   <div class="mdc-select__menu mdc-menu mdc-menu-surface demo-width-class" role="listbox">
     <ul class="mdc-list">
       <li class="mdc-list-item mdc-list-item--selected" data-value="" aria-selected="true"></option>
@@ -180,10 +180,10 @@ setting the width of the `mdc-select__menu` element to match. This is best done 
 ```html
 <div class="mdc-select demo-width-class">
   <i class="mdc-select__dropdown-icon"></i>
-  <div class="mdc-select__selected-text" role="combobox">Vegetables</div>
+  <div class="mdc-select__selected-text">Vegetables</div>
   <div class="mdc-select__menu demo-width-class mdc-menu mdc-menu-surface" role="listbox">
     <ul class="mdc-list">
-      <li class="mdc-list-item" data-value=""></option>
+      <li class="mdc-list-item" data-value=""></li>
       <li class="mdc-list" data-value="grains">
         Bread, Cereal, Rice, and Pasta
       </li>
@@ -233,7 +233,7 @@ For the enhanced select, you can simply add the `mdc-select--disabled` class to 
 ```html
 <div class="mdc-select mdc-select--disabled">
   <i class="mdc-select__dropdown-icon"></i>
-  <div class="mdc-select__selected-text" role="combobox"></div>  
+  <div class="mdc-select__selected-text"></div>  
   <div class="mdc-select__menu mdc-menu mdc-menu-surface" role="listbox">
     ...
   </div>
@@ -271,10 +271,10 @@ programmatically select a disabled list item in the enhanced select.
 ```html
 <div class="mdc-select">
   <i class="mdc-select__dropdown-icon"></i>
-  <div class="mdc-select__selected-text" role="combobox">Vegetables</div>
+  <div class="mdc-select__selected-text">Vegetables</div>
   <div class="mdc-select__menu mdc-menu mdc-menu-surface" role="listbox">
     <ul class="mdc-list">
-      <li class="mdc-list-item" data-value=""></option>
+      <li class="mdc-list-item" data-value=""></li>
       <li class="mdc-list" data-value="grains">
         Bread, Cereal, Rice, and Pasta
       </li>
@@ -296,6 +296,35 @@ programmatically select a disabled list item in the enhanced select.
 The helper text provides supplemental information and/or validation messages to users. It appears when the select
 element is focused and disappears on blur by default, or it can be persistent.
 See [here](helper-text/) for more information on using helper text.
+
+#### Enhanced Select Accessibility (a11y)
+
+In order to have an accessible component for users, it's recommended that you follow the WAI-ARIA example for
+[Collapsible Dropdown Listbox](https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html). An
+example of the enhanced select component with all the necessary aria attributes is listed below.
+
+```html
+<div class="mdc-select">
+  <i class="mdc-select__dropdown-icon"></i>
+  <div id="demo-selected-text" class="mdc-select__selected-text" role="button" aria-haspopup="listbox" aria-labelledby="demo-label demo-selected-text">Vegetables</div>
+  <div class="mdc-select__menu mdc-menu mdc-menu-surface" role="listbox">
+    <ul class="mdc-list">
+      <li class="mdc-list-item" data-value="" role="option"></li>
+      <li class="mdc-list" data-value="grains" role="option">
+        Bread, Cereal, Rice, and Pasta
+      </li>
+      <li class="mdc-list mdc-list-item--selected mdc-list-item--disabled" data-value="vegetables" aria-selected="true" aria-disabled="true" role="option">
+        Vegetables
+      </li>
+      <li class="mdc-list" data-value="fruit" role="option">
+        Fruit
+      </li>
+    </ul> 
+  </div>
+  <label id="demo-label" class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</label>
+  <div class="mdc-line-ripple"></div>
+</div>
+```
 
 ### Select with Leading  Icons
 

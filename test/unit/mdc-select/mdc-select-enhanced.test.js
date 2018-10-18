@@ -669,11 +669,13 @@ test('adapter#openMenu causes the menu to open', () => {
   const hasMockMenu = true;
   const hasOutline = false;
   const hasLabel = true;
-  const {fixture, component, mockMenu} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  const {fixture, component, mockMenu, selectedText} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   document.body.appendChild(fixture);
   const adapter = component.getDefaultFoundation().adapter_;
   adapter.openMenu();
   assert.isTrue(mockMenu.open);
+  assert.isTrue(selectedText.hasAttribute('aria-expanded'));
+  assert.isTrue(selectedText.getAttribute('aria-expanded') === 'true');
   adapter.openMenu();
   document.body.removeChild(fixture);
 });
@@ -731,8 +733,10 @@ test('adapter#setDisabled adds the --disabled class to the root element', () => 
   const adapter = component.getDefaultFoundation().adapter_;
   assert.equal(selectedText.tabIndex, 0);
   adapter.setDisabled(true);
+  assert.equal(selectedText.getAttribute('aria-disabled'), 'true');
   assert.equal(selectedText.tabIndex, -1);
   adapter.setDisabled(false);
+  assert.equal(selectedText.getAttribute('aria-disabled'), 'false');
   assert.equal(selectedText.tabIndex, 0);
   document.body.removeChild(fixture);
 });
@@ -898,7 +902,8 @@ test('menu surface closed event does not call foundation.handleBlur if selected-
   const hasMockMenu = false;
   const hasOutline = false;
   const hasLabel = true;
-  const {fixture, menuSurface, mockFoundation} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  const {fixture, menuSurface, mockFoundation, selectedText} = setupTest(hasOutline, hasLabel,
+    hasMockFoundation, hasMockMenu);
   document.body.appendChild(fixture);
   fixture.querySelector('.mdc-select__selected-text').focus();
   const event = document.createEvent('Event');
@@ -906,7 +911,9 @@ test('menu surface closed event does not call foundation.handleBlur if selected-
   menuSurface.dispatchEvent(event);
 
   td.verify(mockFoundation.handleBlur(), {times: 0});
+  assert.isFalse(selectedText.hasAttribute('aria-expanded'));
   document.body.removeChild(fixture);
+  document.body.removeChild(menuSurface);
 });
 
 test('menu surface closed event calls foundation.handleBlur if selected-text is not focused', () => {
