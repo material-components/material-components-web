@@ -136,11 +136,12 @@
   transition-timing-function: $mdc-animation-standard-curve-timing-function;
   overflow: hidden;
 
-  #{&}--open {
+  // stylelint-disable-next-line selector-max-type
+  &--open {
     transition: mdc-animation-standard(transform, $mdc-side-sheet-animation-enter);
   }
 
-  #{&}--animate {
+  &--animate {
     transform: translateX(-100% * $xFactor);
 
     @include mdc-rtl {
@@ -148,7 +149,7 @@
     }
   }
 
-  #{&}--opening {
+  &--opening {
     transform: translateX(0);
     transition-duration: $mdc-side-sheet-animation-enter;
 
@@ -158,7 +159,7 @@
     }
   }
 
-  #{&}--closing {
+  &--closing {
     transform: translateX(-100% * $xFactor);
     transition-duration: $mdc-side-sheet-animation-exit;
 
