@@ -33,7 +33,6 @@ import {MDCSelect} from '../../../packages/mdc-select/index';
 import {cssClasses} from '../../../packages/mdc-select/constants';
 import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline/index';
 import {MDCSelectIcon} from '../../../packages/mdc-select/icon/index';
-import {MDCSelectHelperText} from '../../../packages/mdc-select/helper-text/index';
 
 const LABEL_WIDTH = 100;
 
@@ -151,7 +150,7 @@ function setupTest(hasOutline = false, hasLabel = true, hasHelperText = false) {
   }
 
   const component = new MDCSelect(fixture, /* foundation */ undefined,
-    () => label, () => bottomLine, () => outline, () => icon, () => helperText);
+    () => label, () => bottomLine, () => outline, /* MDCMenu */ undefined, () => icon, () => helperText);
 
   return {fixture, nativeControl, label, labelEl, bottomLine, bottomLineEl, component, outline, icon, helperText,
     container};
@@ -634,6 +633,7 @@ test('#destroy destroys the helper text if it exists', () => {
   const hasOutline = false;
   const hasHelperText = true;
   const {container, helperText, component} = setupTest(hasLabel, hasOutline, hasHelperText);
+
   component.destroy();
   td.verify(helperText.destroy(), {times: 1});
   document.body.removeChild(container);

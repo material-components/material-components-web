@@ -37,7 +37,6 @@ import {MDCMenuSurfaceFoundation} from '../../../packages/mdc-menu-surface/index
 import MDCSelectFoundation from '../../../packages/mdc-select/foundation';
 import MDCListFoundation from '../../../packages/mdc-list/foundation';
 import {MDCSelectIcon} from '../../../packages/mdc-select/icon';
-import {MDCSelectHelperText} from '../../../packages/mdc-select/helper-text';
 
 const LABEL_WIDTH = 100;
 
@@ -149,7 +148,8 @@ function getHelperTextFixture(root = getFixture()) {
   return containerDiv;
 }
 
-function setupTest(hasOutline = false, hasLabel = true, hasMockFoundation = false, hasMockMenu = true, hasHelperText = false) {
+function setupTest(hasOutline = false, hasLabel = true, hasMockFoundation = false,
+  hasMockMenu = true, hasHelperText = false) {
   const bottomLine = new FakeBottomLine();
   const label = new FakeLabel();
   const fixture = hasOutline ? getOutlineFixture() : getFixture();
