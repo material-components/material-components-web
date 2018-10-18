@@ -20,30 +20,16 @@
 // THE SOFTWARE.
 //
 
-@import "../../../../packages/mdc-textfield/mixins";
-@import "../../../../packages/mdc-theme/color-palette";
-@import "../mixins";
+@import "./variables";
 
-.test-cell--textfield {
-  @include test-cell-size(301, 121);
-}
-
-.test-cell--textarea {
-  @include test-cell-size(301, 181);
-}
-
-.test-shaped-text-field {
-  @include mdc-text-field-shape-radius(50%);
-}
-
-.test-shaped-text-field--outline {
-  @include mdc-text-field-outline-shape-radius(50%);
-}
-
-// Work around MS Edge rendering bug.
-// TODO(acdvorak): Create and link to GitHub issue
-@supports (-ms-ime-align:auto) {
-  .test-text-field__input {
-    transform: translateX(.1px);
-  }
+//
+// Returns the notch padded position based on given radius. This is 'x' position where the floating label starts.
+//
+// Examples:
+//
+// mdc-notched-outline-get-notch-padded-position(4px) => 21.2px
+//
+@function mdc-notched-outline-get-notch-padded-position($cornerSize) {
+  $leadingStrokeLength: max(0, $mdc-notched-outline-min-leading-stroke-edge-position - $cornerSize - 1.2);
+  @return $cornerSize + $leadingStrokeLength + $mdc-notched-outline-notch-gutter-size + 1.2;
 }
