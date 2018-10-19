@@ -48,7 +48,7 @@ test('default adapter returns a complete adapter implementation', () => {
     'addClass', 'removeClass', 'hasClass', 'floatLabel', 'activateBottomLine', 'deactivateBottomLine', 'getValue',
     'isRtl', 'getLabelWidth', 'hasOutline', 'notchOutline', 'closeOutline', 'isMenuOpen', 'openMenu',
     'closeMenu', 'setDisabled', 'setSelectedIndex', 'setValue', 'setRippleCenter', 'notifyChange',
-    'checkValidity',
+    'checkValidity', 'setValid',
   ]);
 });
 
@@ -254,7 +254,9 @@ test('#handleBlur calls helperText.setValidity(true) if menu is not open', () =>
   const hasIcon = true;
   const hasHelperText = true;
   const {foundation, mockAdapter, helperText} = setupTest(hasIcon, hasHelperText);
+  td.when(mockAdapter.hasClass(cssClasses.REQUIRED)).thenReturn(true);
   td.when(mockAdapter.isMenuOpen()).thenReturn(false);
+  td.when(mockAdapter.checkValidity()).thenReturn(true);
   foundation.handleBlur();
   td.verify(helperText.setValidity(true), {times: 1});
 });

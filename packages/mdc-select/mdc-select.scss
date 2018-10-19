@@ -113,6 +113,7 @@
   @include mdc-select-bottom-line-color($mdc-select-bottom-line-idle-error-color);
   @include mdc-select-focused-bottom-line-color(error);
   @include mdc-select-focused-label-color($mdc-select-focused-label-error-color);
+  @include mdc-select-helper-text-validation-color(error);
 
   // Hover state colors
   @include mdc-select-hover-bottom-line-color($mdc-select-bottom-line-hover-error-color);
@@ -125,6 +126,10 @@
 
   .mdc-select__dropdown-icon {
     @include mdc-select-dd-arrow-svg-bg_($mdc-select-dropdown-error-color, 1);
+  }
+
+  + .mdc-select-helper-text--validation-msg {
+    opacity: 1;
   }
 }
 

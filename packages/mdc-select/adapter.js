@@ -178,6 +178,12 @@ class MDCSelectAdapter {
    * @return {boolean} isValid
    */
   checkValidity() {}
+
+  /**
+   * Adds/Removes the invalid class.
+   * @param {boolean} isValid
+   */
+  setValid(isValid) {}
 }
 
 export {MDCSelectAdapter, FoundationMapType};

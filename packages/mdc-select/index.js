@@ -40,7 +40,7 @@ import {MDCSelectHelperText, MDCSelectHelperTextFoundation} from './helper-text/
 import * as menuSurfaceConstants from '@material/menu-surface/constants';
 import * as menuConstants from '@material/menu/constants';
 
-const VALIDATION_ATTR_WHITELIST = ['required'];
+const VALIDATION_ATTR_WHITELIST = ['required', 'aria-required'];
 
 /**
  * @extends MDCComponent<!MDCSelectFoundation>
@@ -176,6 +176,37 @@ class MDCSelect extends MDCComponent {
   }
 
   /**
+   * Sets the current invalid state of the select.
+   * @param {boolean} isValid
+   */
+  setValid(isValid) {
+    if (this.selectedText_) {
+      this.selectedText_.setAttribute('aria-invalid', isValid.toString());
+    }
+
+    this.foundation_.setValid(isValid);
+  }
+
+  /**
+   * Checks if the select is in a valid state.
+   */
+  checkValidity() {
+    this.foundation_.checkValidity();
+  }
+
+  /**
+   * Sets the control to the required state.
+   * @param {boolean} isRequired
+   */
+  setRequired(isRequired) {
+    if (this.nativeControl_) {
+      this.nativeControl_.required = isRequired;
+    } else {
+      this.selectedText_.setAttribute('aria-required', isRequired.toString());
+    }
+  }
+
+  /**
    * Recomputes the outline SVG path for the outline element.
    */
   layout() {
@@ -204,10 +235,6 @@ class MDCSelect extends MDCComponent {
 
     if (this.selectedText_) {
       this.enhancedSelectSetup_(menuFactory);
-    }
-
-    if (this.nativeControl_) {
-      this.addMutationObserverForInvalid();
     }
 
     const labelElement = this.root_.querySelector(strings.LABEL_SELECTOR);
@@ -243,6 +270,10 @@ class MDCSelect extends MDCComponent {
     if (!this.root_.classList.contains(cssClasses.OUTLINED)) {
       this.ripple = this.initRipple_();
     }
+
+    // The required state needs to be sync'd before the mutation observer is added.
+    this.initialSyncRequiredState_();
+    this.addMutationObserverForRequired_();
   }
 
   /**
@@ -281,7 +312,10 @@ class MDCSelect extends MDCComponent {
     this.handleChange_ = () => this.foundation_.handleChange(/* didChange */ true);
     this.handleFocus_ = () => this.foundation_.handleFocus();
     this.handleBlur_ = () => this.foundation_.handleBlur();
-    this.handleClick_ = (evt) => this.foundation_.handleClick(this.getNormalizedXCoordinate_(evt));
+    this.handleClick_ = (evt) => {
+      if (this.selectedText_) this.selectedText_.focus();
+      this.foundation_.handleClick(this.getNormalizedXCoordinate_(evt));
+    };
     this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt);
     this.handleMenuSelected_ = (evtData) => this.selectedIndex = evtData.detail.index;
     this.handleMenuOpened_ = () => {
@@ -408,6 +442,9 @@ class MDCSelect extends MDCComponent {
         this.nativeControl_.selectedIndex = index;
       },
       setDisabled: (isDisabled) => this.nativeControl_.disabled = isDisabled,
+      setValid: (isValid) => {
+        isValid ? this.root_.classList.remove('mdc-select--invalid') : this.root_.classList.add('mdc-select--invalid');
+      },
       checkValidity: () => this.nativeControl_.checkValidity(),
     };
   }
@@ -457,6 +494,17 @@ class MDCSelect extends MDCComponent {
       setDisabled: (isDisabled) => {
         this.selectedText_.setAttribute('tabindex', isDisabled ? '-1' : '0');
         this.selectedText_.setAttribute('aria-disabled', isDisabled.toString());
+      },
+      checkValidity: () => {
+        if (this.root_.classList.contains('mdc-select--required')) {
+          return this.selectedIndex !== -1;
+        } else {
+          return true;
+        }
+      },
+      setValid: (isValid) => {
+        this.selectedText_.setAttribute('aria-invalid', isValid.toString());
+        isValid ? this.root_.classList.remove('mdc-select--invalid') : this.root_.classList.add('mdc-select--invalid');
       },
     };
   }
@@ -577,12 +625,29 @@ class MDCSelect extends MDCComponent {
     };
   }
 
+  initialSyncRequiredState_() {
+    const element = this.nativeControl_ ? this.nativeControl_ : this.selectedText_;
+    const isRequired = element.required || element.getAttribute('aria-required') === 'true'
+      || this.root_.classList.contains(cssClasses.REQUIRED);
+    if (isRequired) {
+      if (this.nativeControl_) {
+        this.nativeControl_.required = true;
+      } else {
+        this.selectedText_.setAttribute('aria-required', 'true');
+      }
+      this.root_.classList.add(cssClasses.REQUIRED);
+    }
+  }
 
-  addMutationObserverForInvalid() {
+  addMutationObserverForRequired_() {
     const observerHandler = (attributesList) => {
       attributesList.some((attributeName) => {
         if (VALIDATION_ATTR_WHITELIST.indexOf(attributeName) > -1) {
-          this.setRequired(true);
+          if (this.selectedText_) {
+            this.setRequired(this.selectedText_.getAttribute('aria-required') === 'true');
+          } else {
+            this.setRequired(true);
+          }
           return true;
         }
       });
@@ -590,30 +655,10 @@ class MDCSelect extends MDCComponent {
 
     const getAttributesList = (mutationsList) => mutationsList.map((mutation) => mutation.attributeName);
     const observer = new MutationObserver((mutationsList) => observerHandler(getAttributesList(mutationsList)));
-    observer.observe(this.nativeControl_, {attributes: true});
-
+    const element = this.nativeControl_ ? this.nativeControl_ : this.selectedText_;
+    observer.observe(element, {attributes: true});
     this.validationObserver_ = observer;
-
-    if (this.nativeControl_.required || this.root_.classList.contains(cssClasses.REQUIRED)) {
-      this.nativeControl_.required = true;
-    }
   };
-
-  setValid(isValid) {
-    this.foundation_.setValid(isValid);
-  }
-
-  checkValidity() {
-    this.foundation_.checkValidity();
-  }
-
-  setRequired(isRequired) {
-    if (isRequired) {
-      this.root_.classList.add(cssClasses.REQUIRED);
-    } else {
-      this.root_.classList.remove(cssClasses.REQUIRED);
-    }
-  }
 }
 
 export {MDCSelect, MDCSelectFoundation};

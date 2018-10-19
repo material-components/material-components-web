@@ -33,6 +33,7 @@ import {MDCSelect} from '../../../packages/mdc-select/index';
 import {cssClasses} from '../../../packages/mdc-select/constants';
 import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline/index';
 import {MDCSelectIcon} from '../../../packages/mdc-select/icon/index';
+import {MDCSelectHelperTextFoundation} from '../../../packages/mdc-select/helper-text/index';
 
 const LABEL_WIDTH = 100;
 
@@ -617,6 +618,15 @@ test('#constructor instantiates the helper text if present', () => {
   document.body.removeChild(container);
 });
 
+test('#constructor instantiates the helper text and passes the helper text foundation to MDCSelectFoundation', () => {
+  const root = getFixture();
+  const container = getHelperTextFixture(root);
+  document.body.appendChild(container);
+  const component = new MDCSelect(root);
+  assert.instanceOf(component.getDefaultFoundation().helperText_, MDCSelectHelperTextFoundation);
+  document.body.removeChild(container);
+});
+
 test('#constructor does not instantiate the helper text if the aria-controls id does not match an element', () => {
   const containerDiv = getHelperTextFixture();
   containerDiv.querySelector('.mdc-select-helper-text').id = 'hello-world';
@@ -638,3 +648,5 @@ test('#destroy destroys the helper text if it exists', () => {
   td.verify(helperText.destroy(), {times: 1});
   document.body.removeChild(container);
 });
+
+
