@@ -24,7 +24,7 @@
 @import "./functions";
 
 @mixin mdc-shape-radius($radius, $rtl-reflexive: false) {
-  border-radius: mdc-shape-prop-value_($radius);
+  border-radius: mdc-shape-prop-value($radius);
 
   @if ($rtl-reflexive) {
     @include mdc-rtl {

@@ -23,6 +23,7 @@
 @import "@material/floating-label/mixins";
 @import "@material/line-ripple/mixins";
 @import "@material/notched-outline/mixins";
+@import "@material/notched-outline/functions";
 @import "@material/theme/mixins";
 @import "@material/shape/mixins";
 @import "@material/shape/functions";
@@ -246,13 +247,19 @@
   }
 
   @include mdc-notched-outline-idle-shape-radius($resolved-radius, $rtl-reflexive);
+
+  $cornerSize: mdc-shape-prop-value($resolved-radius);
+  $positionX: mdc-notched-outline-get-notch-padded-position($cornerSize);
+  $labelPositionOffset: - $mdc-text-field-outline-label-offset + $positionX;
+  @include mdc-floating-label-float-position($mdc-text-field-outlined-label-position-y, -1 * ($labelPositionOffset));
 }
 
 @mixin mdc-text-field-floating-label_ {
   .mdc-floating-label {
-    @include mdc-rtl-reflexive-position(left, 16px);
+    @include mdc-rtl-reflexive-position(left, 12px);
 
     bottom: 20px;
+    pointer-events: none;
   }
 
   &:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) {
@@ -307,7 +314,6 @@
   @include mdc-text-field-outline-color($mdc-text-field-outlined-idle-border);
   @include mdc-text-field-hover-outline-color($mdc-text-field-outlined-hover-border);
   @include mdc-text-field-focused-outline-color(primary);
-  @include mdc-floating-label-float-position($mdc-text-field-outlined-label-position-y);
   @include mdc-floating-label-shake-animation(text-field-outlined);
   @include mdc-text-field-outline-shape-radius(small);
   @include mdc-states-base-color(transparent);
@@ -329,7 +335,7 @@
   }
 
   .mdc-floating-label {
-    @include mdc-rtl-reflexive-position(left, 16px);
+    @include mdc-rtl-reflexive-position(left, $mdc-text-field-outline-label-offset);
 
     width: auto;
   }
