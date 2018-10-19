@@ -22,6 +22,7 @@
 
 @import "@material/animation/functions";
 @import "@material/animation/variables";
+@import "@material/elevation/mixins";
 @import "@material/rtl/mixins";
 @import "@material/shape/mixins";
 @import "@material/theme/mixins";
@@ -32,8 +33,8 @@
 // Public
 //
 
-@mixin mdc-side-sheet-stroke-color($color, $opacity: $mdc-side-sheet-stroke-opacity) {
-  $value: rgba(mdc-theme-prop-value($color), $opacity);
+@mixin mdc-side-sheet-outline-color($color) {
+  $value: rgba(mdc-theme-prop-value($color), $mdc-side-sheet-outline-opacity);
 
   @include mdc-theme-prop(border-color, $value);
 }
@@ -64,24 +65,22 @@
   @include mdc-shape-radius($radius, $rtl-reflexive: true);
 }
 
-@mixin mdc-side-sheet-scrim-fill-color($color, $opacity: $mdc-side-sheet-modal-scrim-opacity) {
-  $value: rgba(mdc-theme-prop-value($color), $opacity);
+@mixin mdc-side-sheet-scrim-fill-color($color) {
+  $value: rgba(mdc-theme-prop-value($color), $mdc-side-sheet-modal-scrim-opacity);
 
   ~ .mdc-side-sheet-scrim {
     @include mdc-theme-prop(background-color, $value);
   }
 }
 
-@mixin mdc-side-sheet-ink-color($color, $opacity: $mdc-side-sheet-ink-opacity) {
-  $value: rgba(mdc-theme-prop-value($color), $opacity);
+@mixin mdc-side-sheet-ink-color($color) {
+  $value: rgba(mdc-theme-prop-value($color), $mdc-side-sheet-ink-opacity);
 
   @include mdc-theme-prop(color, $value);
 }
 
 @mixin mdc-side-sheet-surface-fill-color($color) {
-  $value: mdc-theme-prop-value($color);
-
-  @include mdc-theme-prop(background-color, $value);
+  @include mdc-theme-prop(background-color, $color);
 }
 
 @mixin mdc-side-sheet-surface-fill-color-accessible($color) {
@@ -98,14 +97,8 @@
 @mixin mdc-side-sheet-width($width, $side: trailing) {
   width: $width;
 
-  &.mdc-side-sheet--open:not(.mdc-side-sheet--closing) ~ .mdc-side-sheet-app-content {
-    @if $side == leading {
-      @include mdc-rtl-reflexive-box(margin, left, $width);
-    } @else if $side == trailing {
-      @include mdc-rtl-reflexive-box(margin, right, $width);
-    } @else {
-      @error "mdc-side-sheet-width() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
-    }
+  &.mdc-side-sheet--open:not(&--closing) ~ .mdc-side-sheet-app-content {
+    @include mdc-side-sheet-app-content-margin_($width, $side);
   }
 }
 
@@ -113,21 +106,12 @@
 // Private
 //
 
-@mixin mdc-side-sheet-base_($side: trailing) {
+@mixin mdc-side-sheet-base_() {
   @include mdc-typography-base;
-
-  $flexOrder: if($side == leading, 0, 1);
-  $xFactor: if($side == leading, 1, -1);
 
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-
-  // Scrim and app content styles rely on the CSS sibling selector (~), which means the side sheet element needs to come
-  // first in the source order. Unfortunately, this causes permanent side sheets to be displayed on the leading side of
-  // the page instead of the trailing side. Setting `order` corrects the visual layout of the page; however,
-  // screen readers and tab order are unaffected by this property, so we need to find a better long term solution.
-  order: $flexOrder;
 
   // stylelint-disable-next-line declaration-empty-line-before
   box-sizing: border-box;
@@ -140,6 +124,10 @@
   &--open {
     transition: mdc-animation-standard(transform, $mdc-side-sheet-animation-enter);
   }
+}
+
+@mixin mdc-side-sheet-transitions_($side: trailing) {
+  $xFactor: if($side == leading, 1, -1);
 
   &--animate {
     transform: translateX(-100% * $xFactor);
@@ -188,6 +176,8 @@
 }
 
 @mixin mdc-side-sheet-modal_($rootClass, $side: trailing) {
+  @include mdc-elevation($mdc-side-sheet-modal-elevation);
+
   display: none;
   position: fixed;
 
@@ -201,6 +191,16 @@
     @include mdc-rtl-reflexive-position(right, 0);
   } @else {
     @error "mdc-side-sheet-modal_() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
+  }
+}
+
+@mixin mdc-side-sheet-app-content-margin_($width, $side) {
+  @if $side == leading {
+    @include mdc-rtl-reflexive-box(margin, left, $width);
+  } @else if $side == trailing {
+    @include mdc-rtl-reflexive-box(margin, right, $width);
+  } @else {
+    @error "$side must be 'leading' or 'trailing', but got '#{$side}'";
   }
 }
 
@@ -219,6 +219,7 @@
   height: 100%;
   transition-property: opacity;
   transition-timing-function: $mdc-animation-standard-curve-timing-function;
+  z-index: $mdc-side-sheet-z-index - 1;
 
   .#{$rootClass}--open ~ & {
     display: block;
@@ -239,46 +240,40 @@
   }
 }
 
-@mixin mdc-side-sheet-app-content_($side: trailing) {
+@mixin mdc-side-sheet-app-content_() {
   position: relative;
-
-  @if $side == leading {
-    @include mdc-rtl-reflexive-box(margin, left, 0);
-  } @else if $side == trailing {
-    @include mdc-rtl-reflexive-box(margin, right, 0);
-  } @else {
-    @error "mdc-side-sheet-app-content_() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
-  }
+  margin-left: 0;
+  margin-right: 0;
 }
 
-@mixin mdc-side-sheet-stroke-right_($width) {
+@mixin mdc-side-sheet-outline-right_($width) {
   border-right-width: $width;
   border-left-width: 0;
   border-right-style: solid;
   border-left-style: none;
 }
 
-@mixin mdc-side-sheet-stroke-left_($width) {
+@mixin mdc-side-sheet-outline-left_($width) {
   border-right-width: 0;
   border-left-width: $width;
   border-right-style: none;
   border-left-style: solid;
 }
 
-@mixin mdc-side-sheet-stroke-width_($width, $side: trailing) {
+@mixin mdc-side-sheet-outline-width_($width, $side: trailing) {
   @if $side == leading {
-    @include mdc-side-sheet-stroke-right_($width);
+    @include mdc-side-sheet-outline-right_($width);
 
     @include mdc-rtl {
-      @include mdc-side-sheet-stroke-left_($width);
+      @include mdc-side-sheet-outline-left_($width);
     }
   } @else if $side == trailing {
-    @include mdc-side-sheet-stroke-left_($width);
+    @include mdc-side-sheet-outline-left_($width);
 
     @include mdc-rtl {
-      @include mdc-side-sheet-stroke-right_($width);
+      @include mdc-side-sheet-outline-right_($width);
     }
   } @else {
-    @error "mdc-side-sheet-stroke_() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
+    @error "mdc-side-sheet-outline-width_() mixin: $side must be 'leading' or 'trailing', but got '#{$side}'";
   }
 }
