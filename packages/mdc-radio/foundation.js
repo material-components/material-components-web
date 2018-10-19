@@ -47,56 +47,19 @@ class MDCRadioFoundation extends MDCFoundation {
     return /** @type {!MDCRadioAdapter} */ ({
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
-      getNativeControl: () => /* !MDCSelectionControlState */ {},
+      setNativeControlDisabled: (/* disabled: boolean */) => {},
     });
-  }
-
-  /** @return {boolean} */
-  isChecked() {
-    return this.getNativeControl_().checked;
-  }
-
-  /** @param {boolean} checked */
-  setChecked(checked) {
-    this.getNativeControl_().checked = checked;
-  }
-
-  /** @return {boolean} */
-  isDisabled() {
-    return this.getNativeControl_().disabled;
   }
 
   /** @param {boolean} disabled */
   setDisabled(disabled) {
     const {DISABLED} = MDCRadioFoundation.cssClasses;
-    this.getNativeControl_().disabled = disabled;
+    this.adapter_.setNativeControlDisabled(disabled);
     if (disabled) {
       this.adapter_.addClass(DISABLED);
     } else {
       this.adapter_.removeClass(DISABLED);
     }
-  }
-
-  /** @return {?string} */
-  getValue() {
-    return this.getNativeControl_().value;
-  }
-
-  /** @param {?string} value */
-  setValue(value) {
-    this.getNativeControl_().value = value;
-  }
-
-  /**
-   * @return {!MDCSelectionControlState}
-   * @private
-   */
-  getNativeControl_() {
-    return this.adapter_.getNativeControl() || {
-      checked: false,
-      disabled: false,
-      value: null,
-    };
   }
 }
 

@@ -26,6 +26,7 @@
 @import "@material/shape/functions";
 @import "@material/line-ripple/mixins";
 @import "@material/notched-outline/mixins";
+@import "@material/notched-outline/functions";
 @import "./variables";
 
 // Public
@@ -112,15 +113,21 @@
   // this is because .mdc-notched-outline and .mdc-notched-outline__idle
   // are siblings. .mdc-notched-outline__idle needs to be a child of
   // .mdc-notched-outline in order to remedy this issue.
+  $resolved-radius: mdc-shape-resolve-percentage-radius($mdc-select-height, $radius);
   .mdc-notched-outline {
-    @include mdc-notched-outline-shape-radius(mdc-shape-resolve-percentage-radius($mdc-select-height, $radius), $rtl-reflexive);
+    @include mdc-notched-outline-shape-radius($resolved-radius, $rtl-reflexive);
   }
 
-  @include mdc-notched-outline-idle-shape-radius(mdc-shape-resolve-percentage-radius($mdc-select-height, $radius), $rtl-reflexive);
+  @include mdc-notched-outline-idle-shape-radius($resolved-radius, $rtl-reflexive);
 
   &__native-control {
-    @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-select-height, $radius), $rtl-reflexive);
+    @include mdc-shape-radius($resolved-radius, $rtl-reflexive);
   }
+
+  $cornerSize: mdc-shape-prop-value($resolved-radius);
+  $positionX: mdc-notched-outline-get-notch-padded-position($cornerSize);
+  $labelPositionOffset: - $mdc-select-outline-label-offset + $positionX;
+  @include mdc-floating-label-float-position($mdc-select-outlined-label-position-y, -1 * ($labelPositionOffset));
 }
 
 // Private
@@ -198,7 +205,7 @@
 
 @mixin mdc-select-floating-label_ {
   .mdc-floating-label {
-    @include mdc-rtl-reflexive-position(left, 16px);
+    @include mdc-rtl-reflexive-position(left, $mdc-select-outline-label-offset);
 
     bottom: 12px;
     line-height: 1.75rem;

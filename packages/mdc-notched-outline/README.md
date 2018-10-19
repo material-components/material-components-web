@@ -80,6 +80,13 @@ Mixin | Description
 `mdc-notched-outline-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to notched outline element with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `mdc-notched-outline-idle-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to notched outline element in idle state with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 
+
+### Sass Functions
+
+Function | Description
+--- | ---
+`mdc-notched-outline-get-notch-padded-position($cornerSize)` | Returns the notch padded position based on given radius. This is 'x' position where the floating label starts.
+
 #### Calling Mixins with Parent Selectors
 
 Because notched-outline has sibling elements, you need to call the "idle" Sass mixins with parent selectors.

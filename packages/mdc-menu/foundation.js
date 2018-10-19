@@ -27,7 +27,7 @@ import {cssClasses, strings} from './constants';
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
 import MDCListFoundation from '@material/list/foundation';
 
-const ELEMENTS_KEY_ALLOWED_IN = ['input', 'button', 'textarea', 'select'];
+const ELEMENTS_KEY_ALLOWED_IN = ['input', 'button', 'textarea', 'select', 'a'];
 
 /**
  * @extends {MDCFoundation<!MDCMenuAdapter>}
