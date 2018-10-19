@@ -21,3 +21,8 @@
 //
 
 $mdc-notched-outline-transition-duration: 150ms;
+// Keep this in sync with constants.numbers.MIN_LEADING_STROKE_EDGE_POSITION
+$mdc-notched-outline-min-leading-stroke-edge-position: 12px;
+// The gap between the stroke end and floating label
+// Keep this in sync with constants.numbers.NOTCH_GUTTER_SIZE
+$mdc-notched-outline-notch-gutter-size: 4px;
