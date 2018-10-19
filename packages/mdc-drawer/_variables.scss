@@ -44,13 +44,4 @@ $mdc-drawer-width: 256px;
 $mdc-drawer-list-item-spacing: 4px;
 $mdc-drawer-surface-padding: 16px;
 
-// Animations
-$mdc-drawer-animation-enter: 250ms;
-$mdc-drawer-animation-exit: 200ms;
-
-// Scrim
-$mdc-drawer-modal-scrim-color: mdc-theme-prop-value(on-surface);
-$mdc-drawer-modal-scrim-opacity: .32;
-
 $mdc-drawer-z-index: 6;
-$mdc-drawer-modal-elevation: 16;

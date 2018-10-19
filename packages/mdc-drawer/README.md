@@ -68,6 +68,8 @@ However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any 
 ```scss
 @import "@material/drawer/mdc-drawer";
 @import "@material/list/mdc-list";
+// For dismissible drawer, include mdc-side-sheet for the shared mdc-side-sheet-app-content class
+@import "@material/side-sheet/mdc-side-sheet";
 ```
 
 ### JavaScript Instantiation
@@ -185,19 +187,22 @@ Dismissible drawers are by default hidden off screen, and can slide into view. D
     </div>
   </aside>
 
-  <div class="mdc-drawer-app-content">
+  <div class="mdc-side-sheet-app-content">
     App Content
   </div>
 </body>
 ```
 
-> Apply the `mdc-drawer-app-content` class to the sibling element after the drawer for the open/close animations to work.
+> The main content of your page/app should reside in a `mdc-side-sheet-app-content` sibling element after the drawer,
+> in order to adjust appropriately when the drawer opens and closes.
+> This element is shared with [MDC Side Sheet](../mdc-side-sheet), since the Navigation Drawer component is a
+> specialization of Side Sheet on the leading side of app content.
 
 #### Usage with Top App Bar
 
 In cases where the drawer occupies the full viewport height, some styles must be applied to get the dismissible drawer and the content below the top app bar to independently scroll and work in all browsers.
 
-In the following example, the `mdc-drawer__content` and `main-content` elements should scroll independently of each other. The `mdc-drawer--dismissible` and `mdc-drawer-app-content` elements should then sit side-by-side. The markup looks something like this:
+In the following example, the `mdc-drawer__content` and `main-content` elements should scroll independently of each other. The `mdc-drawer--dismissible` and `mdc-side-sheet-app-content` elements should then sit side-by-side. The markup looks something like this:
 
 ```html
 <body>
@@ -220,7 +225,7 @@ In the following example, the `mdc-drawer__content` and `main-content` elements 
     </div>
   </aside>
 
-  <div class="mdc-drawer-app-content">
+  <div class="mdc-side-sheet-app-content">
     <header class="mdc-top-app-bar app-bar" id="app-bar">
       <div class="mdc-top-app-bar__row">
         <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
@@ -249,7 +254,7 @@ body {
   height: 100vh;
 }
 
-.mdc-drawer-app-content {
+.mdc-side-sheet-app-content {
   flex: auto;
   overflow: auto;
 }
@@ -323,7 +328,6 @@ Class | Description
 `mdc-drawer--open` | If present, indicates that the dismissible drawer is in the open position.
 `mdc-drawer--opening` | Applied while the drawer is animating from the closed to the open position.
 `mdc-drawer--closing` | Applied while the drawer is animating from the open to the closed position.
-`mdc-drawer-app-content` | Dismissible variant only. Sibling element that is resized when the drawer opens/closes.
 `mdc-drawer-scrim` | Modal variant only. Used for the overlay on the app content.
 
 
@@ -346,7 +350,7 @@ Mixin | Description
 `mdc-drawer-activated-overlay-color($color)` | Sets the overlay color of the activated drawer list item.
 `mdc-drawer-scrim-fill-color($color)` | Sets the fill color of `mdc-drawer-scrim`.
 `mdc-drawer-z-index($value)` | Sets the z index of drawer. Drawer stays on top of top app bar except for clipped variant of drawer.
-`mdc-drawer-width($width)` | Sets the width of the drawer. In the case of the dismissible variant, also sets margin required for `mdc-drawer-app-content`.
+`mdc-drawer-width($width)` | Sets the width of the drawer. In the case of the dismissible variant, also sets margin required for `mdc-side-sheet-app-content`.
 
 ## Accessibility
 
