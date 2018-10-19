@@ -266,7 +266,7 @@ class StatusNotifier {
       state = GitHubApi.PullRequestState.SUCCESS;
       description = `All ${strTotal} screenshots match PR's golden.json`;
     } else if (shieldState === ShieldState.FAILED) {
-      state = GitHubApi.PullRequestState.SUCCESS;
+      state = GitHubApi.PullRequestState.FAILURE;
       description = `${strChanged} screenshot${changedPlural} differ from PR's golden.json`;
     } else {
       state = GitHubApi.PullRequestState.PENDING;
