@@ -510,29 +510,6 @@ class MDCSelect extends MDCComponent {
   }
 
   /**
-   * Sets the selected index of the enhanced menu.
-   * @param {number} index
-   * @private
-   */
-  setEnhancedSelectedIndex_(index) {
-    const selectedItem = this.menu_.items[index];
-    this.selectedText_.textContent = selectedItem ? selectedItem.textContent.trim() : '';
-    const previouslySelected = this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR);
-
-    if (previouslySelected) {
-      previouslySelected.classList.remove(cssClasses.SELECTED_ITEM_CLASS);
-      previouslySelected.removeAttribute(strings.ARIA_SELECTED_ATTR);
-    }
-
-    if (selectedItem) {
-      selectedItem.classList.add(cssClasses.SELECTED_ITEM_CLASS);
-      selectedItem.setAttribute(strings.ARIA_SELECTED_ATTR, 'true');
-    }
-
-    this.layout();
-  }
-
-  /**
    * @return {!{
    *   addClass: function(string): void,
    *   removeClass: function(string): void,
@@ -625,6 +602,29 @@ class MDCSelect extends MDCComponent {
     };
   }
 
+  /**
+   * Sets the selected index of the enhanced menu.
+   * @param {number} index
+   * @private
+   */
+  setEnhancedSelectedIndex_(index) {
+    const selectedItem = this.menu_.items[index];
+    this.selectedText_.textContent = selectedItem ? selectedItem.textContent.trim() : '';
+    const previouslySelected = this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR);
+
+    if (previouslySelected) {
+      previouslySelected.classList.remove(cssClasses.SELECTED_ITEM_CLASS);
+      previouslySelected.removeAttribute(strings.ARIA_SELECTED_ATTR);
+    }
+
+    if (selectedItem) {
+      selectedItem.classList.add(cssClasses.SELECTED_ITEM_CLASS);
+      selectedItem.setAttribute(strings.ARIA_SELECTED_ATTR, 'true');
+    }
+
+    this.layout();
+  }
+
   initialSyncRequiredState_() {
     const element = this.nativeControl_ ? this.nativeControl_ : this.selectedText_;
     const isRequired = element.required || element.getAttribute('aria-required') === 'true'
@@ -645,9 +645,8 @@ class MDCSelect extends MDCComponent {
         if (VALIDATION_ATTR_WHITELIST.indexOf(attributeName) > -1) {
           if (this.selectedText_) {
             this.setRequired(this.selectedText_.getAttribute('aria-required') === 'true');
-          } else {
-            this.setRequired(true);
           }
+          this.root_.classList.add('mdc-select--required');
           return true;
         }
       });

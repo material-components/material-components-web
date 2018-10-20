@@ -30,7 +30,7 @@ import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 
 import {MDCRipple, MDCRippleFoundation} from '../../../packages/mdc-ripple/index';
 import {MDCSelect} from '../../../packages/mdc-select/index';
-import {cssClasses} from '../../../packages/mdc-select/constants';
+import {cssClasses, strings} from '../../../packages/mdc-select/constants';
 import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline/index';
 import {MDCSelectIcon} from '../../../packages/mdc-select/icon/index';
 import {MDCSelectHelperTextFoundation} from '../../../packages/mdc-select/helper-text/index';
@@ -649,4 +649,23 @@ test('#destroy destroys the helper text if it exists', () => {
   document.body.removeChild(container);
 });
 
+test(`MutationObserver adds ${cssClasses.REQUIRED} class to the parent when required attribute is added`, () => {
+  const hasLabel = true;
+  const hasOutline = false;
+  const hasHelperText = false;
+  const {fixture} = setupTest(hasLabel, hasOutline, hasHelperText);
+  assert.isFalse(fixture.classList.contains(cssClasses.REQUIRED));
+  fixture.querySelector(strings.NATIVE_CONTROL_SELECTOR).setAttribute('required', 'true');
+  setTimeout(assert.isTrue(fixture.classList.contains(cssClasses.REQUIRED)), 0);
+});
 
+test(`MutationObserver removes ${cssClasses.REQUIRED} class from the parent when required attribute is removed`, () => {
+  const hasLabel = true;
+  const hasOutline = false;
+  const hasHelperText = false;
+  const {fixture} = setupTest(hasLabel, hasOutline, hasHelperText);
+  fixture.querySelector(strings.NATIVE_CONTROL_SELECTOR).setAttribute('required', 'true');
+  setTimeout(assert.isTrue(fixture.classList.contains(cssClasses.REQUIRED)), 0);
+  fixture.querySelector(strings.NATIVE_CONTROL_SELECTOR).removeAttribute('required');
+  setTimeout(assert.isTrue(fixture.classList.contains(cssClasses.REQUIRED)), 0);
+});
