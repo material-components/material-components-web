@@ -644,9 +644,12 @@ class MDCSelect extends MDCComponent {
       attributesList.some((attributeName) => {
         if (VALIDATION_ATTR_WHITELIST.indexOf(attributeName) > -1) {
           if (this.selectedText_) {
-            this.setRequired(this.selectedText_.getAttribute('aria-required') === 'true');
+            if (this.selectedText_.getAttribute('aria-required')) {
+              this.root_.classList.add('mdc-select--required');
+            }
+          } else {
+            this.root_.classList.add('mdc-select--required');
           }
-          this.root_.classList.add('mdc-select--required');
           return true;
         }
       });
