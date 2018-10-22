@@ -199,7 +199,11 @@ class MDCSelect extends MDCComponent {
     if (this.nativeControl_) {
       this.nativeControl_.required = isRequired;
     } else {
-      this.selectedText_.setAttribute('aria-required', isRequired.toString());
+      if (isRequired) {
+        this.selectedText_.setAttribute('aria-required', isRequired.toString());
+      } else {
+        this.selectedText_.removeAttribute('aria-required');
+      }
     }
   }
 
@@ -211,7 +215,7 @@ class MDCSelect extends MDCComponent {
     if (this.nativeControl_) {
       return this.nativeControl_.required;
     } else {
-      return this.selectedText_.hgetAttribute('aria-required') === 'true';
+      return this.selectedText_.getAttribute('aria-required') === 'true';
     }
   }
 
