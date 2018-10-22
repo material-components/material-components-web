@@ -179,19 +179,15 @@ class MDCSelect extends MDCComponent {
    * Sets the current invalid state of the select.
    * @param {boolean} isValid
    */
-  setValid(isValid) {
-    if (this.selectedText_) {
-      this.selectedText_.setAttribute('aria-invalid', isValid.toString());
-    }
-
+  set valid(isValid) {
     this.foundation_.setValid(isValid);
   }
 
   /**
    * Checks if the select is in a valid state.
    */
-  checkValidity() {
-    this.foundation_.checkValidity();
+  get valid() {
+    return this.foundation_.isValid();
   }
 
   /**
@@ -443,7 +439,7 @@ class MDCSelect extends MDCComponent {
       },
       setDisabled: (isDisabled) => this.nativeControl_.disabled = isDisabled,
       setValid: (isValid) => {
-        isValid ? this.root_.classList.remove('mdc-select--invalid') : this.root_.classList.add('mdc-select--invalid');
+        isValid ? this.root_.classList.remove(cssClasses.INVALID) : this.root_.classList.add(cssClasses.INVALID);
       },
       checkValidity: () => this.nativeControl_.checkValidity(),
     };
@@ -496,15 +492,17 @@ class MDCSelect extends MDCComponent {
         this.selectedText_.setAttribute('aria-disabled', isDisabled.toString());
       },
       checkValidity: () => {
-        if (this.root_.classList.contains('mdc-select--required')) {
-          return this.selectedIndex !== -1;
+        if (this.root_.classList.contains(cssClasses.REQUIRED)) {
+          // See notes for required attribute under https://www.w3.org/TR/html52/sec-forms.html#the-select-element
+          // TL;DR: Invalid if no index is selected, or if the first index is selected and has an empty value.
+          return this.selectedIndex !== -1 && (this.selectedIndex !== 0 || this.value);
         } else {
           return true;
         }
       },
       setValid: (isValid) => {
-        this.selectedText_.setAttribute('aria-invalid', isValid.toString());
-        isValid ? this.root_.classList.remove('mdc-select--invalid') : this.root_.classList.add('mdc-select--invalid');
+        this.selectedText_.setAttribute('aria-invalid', (!isValid).toString());
+        isValid ? this.root_.classList.remove(cssClasses.INVALID) : this.root_.classList.add(cssClasses.INVALID);
       },
     };
   }
@@ -645,10 +643,10 @@ class MDCSelect extends MDCComponent {
         if (VALIDATION_ATTR_WHITELIST.indexOf(attributeName) > -1) {
           if (this.selectedText_) {
             if (this.selectedText_.getAttribute('aria-required')) {
-              this.root_.classList.add('mdc-select--required');
+              this.root_.classList.add(cssClasses.REQUIRED);
             }
           } else {
-            this.root_.classList.add('mdc-select--required');
+            this.root_.classList.add(cssClasses.REQUIRED);
           }
           return true;
         }

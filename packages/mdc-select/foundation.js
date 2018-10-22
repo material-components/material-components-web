@@ -153,9 +153,9 @@ class MDCSelectFoundation extends MDCFoundation {
       this.adapter_.notifyChange({value});
 
       if (isRequired) {
-        this.setValid(this.checkValidity());
+        this.setValid(this.isValid());
         if (this.helperText_) {
-          this.helperText_.setValidity(this.checkValidity());
+          this.helperText_.setValidity(this.isValid());
         }
       }
     }
@@ -186,9 +186,9 @@ class MDCSelectFoundation extends MDCFoundation {
     const isRequired = this.adapter_.hasClass(cssClasses.REQUIRED);
 
     if (isRequired) {
-      this.setValid(this.checkValidity());
+      this.setValid(this.isValid());
       if (this.helperText_) {
-        this.helperText_.setValidity(this.checkValidity());
+        this.helperText_.setValidity(this.isValid());
       }
     }
   }
@@ -258,7 +258,7 @@ class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.setValid(isValid);
   }
 
-  checkValidity() {
+  isValid() {
     return this.adapter_.checkValidity();
   }
 }
