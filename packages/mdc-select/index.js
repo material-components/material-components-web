@@ -185,6 +185,7 @@ class MDCSelect extends MDCComponent {
 
   /**
    * Checks if the select is in a valid state.
+   * @return {boolean}
    */
   get valid() {
     return this.foundation_.isValid();
@@ -194,11 +195,23 @@ class MDCSelect extends MDCComponent {
    * Sets the control to the required state.
    * @param {boolean} isRequired
    */
-  setRequired(isRequired) {
+  set required(isRequired) {
     if (this.nativeControl_) {
       this.nativeControl_.required = isRequired;
     } else {
       this.selectedText_.setAttribute('aria-required', isRequired.toString());
+    }
+  }
+
+  /**
+   * Returns whether the select is required.
+   * @return {boolean}
+   */
+  get required() {
+    if (this.nativeControl_) {
+      return this.nativeControl_.required;
+    } else {
+      return this.selectedText_.hgetAttribute('aria-required') === 'true';
     }
   }
 
