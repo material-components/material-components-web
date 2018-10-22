@@ -98,12 +98,12 @@ function getFixture() {
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
       <ul class="mdc-list">
         <li class="mdc-list-item" data-value=""></li>
-        <li class="mdc-list-item" data-value="orange">          
+        <li class="mdc-list-item" data-value="orange">
           Orange
         </li>
         <li class="mdc-list-item" data-value="apple">
           Apple
-        </li> 
+        </li>
       </ul>
       </div>
       <label class="mdc-floating-label">Pick a Food Group</label>
@@ -121,12 +121,12 @@ function getOutlineFixture() {
         <div class="mdc-select__menu mdc-menu mdc-menu-surface">
         <ul class="mdc-list">
           <li class="mdc-list-item" data-value=""></li>
-          <li class="mdc-list-item" data-value="orange">          
+          <li class="mdc-list-item" data-value="orange">
             Orange
           </li>
           <li class="mdc-list-item" data-value="apple">
             Apple
-          </li> 
+          </li>
         </ul>
         </div>
         <label class="mdc-floating-label">Pick a Food Group</label>
@@ -134,7 +134,7 @@ function getOutlineFixture() {
           <svg>
             <path class="mdc-notched-outline__path">
           </svg>
-        </div>   
+        </div>
         <div class="mdc-notched-outline__idle"/>
       </div>
   `;
@@ -260,6 +260,30 @@ test('#set value calls foundation.setValue', () => {
   td.verify(mockFoundation.setValue('orange'), {times: 1});
 });
 
+test('#get valid forwards to foundation', () => {
+  const hasMockFoundation = true;
+  const hasMockMenu = false;
+  const hasOutline = false;
+  const hasLabel = true;
+  const {component, mockFoundation} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+
+  component.valid;
+  td.verify(mockFoundation.isValid());
+});
+
+test('#set valid forwards to foundation', () => {
+  const hasMockFoundation = true;
+  const hasMockMenu = false;
+  const hasOutline = false;
+  const hasLabel = true;
+  const {component, mockFoundation} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+
+  component.valid = false;
+  td.verify(mockFoundation.setValid(false));
+  component.valid = true;
+  td.verify(mockFoundation.setValid(true));
+});
+
 test('#set selectedIndex calls foundation.selectedIndex', () => {
   const hasMockFoundation = true;
   const hasMockMenu = true;
@@ -314,12 +338,12 @@ test(`#initialize does not add the ${cssClasses.WITH_LEADING_ICON} class if ther
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
       <ul class="mdc-list">
         <li class="mdc-list-item" data-value=""></li>
-        <li class="mdc-list-item mdc-list-item--selected" data-value="orange">          
+        <li class="mdc-list-item mdc-list-item--selected" data-value="orange">
           Orange
         </li>
         <li class="mdc-list-item" data-value="apple">
           Apple
-        </li> 
+        </li>
       </ul>
       </div>
       <label class="mdc-floating-label">Pick a Food Group</label>
@@ -341,12 +365,12 @@ test('#initialSyncWithDOM sets the selected index if an option has the selected 
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
       <ul class="mdc-list">
         <li class="mdc-list-item" data-value=""></li>
-        <li class="mdc-list-item mdc-list-item--selected" data-value="orange">          
+        <li class="mdc-list-item mdc-list-item--selected" data-value="orange">
           Orange
         </li>
         <li class="mdc-list-item" data-value="apple">
           Apple
-        </li> 
+        </li>
       </ul>
       </div>
       <label class="mdc-floating-label">Pick a Food Group</label>
@@ -365,12 +389,12 @@ test('#initialSyncWithDOM disables the select if the disabled class is found', (
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
       <ul class="mdc-list">
         <li class="mdc-list-item mdc-list-item--selected" data-value=""></li>
-        <li class="mdc-list-item" data-value="orange">          
+        <li class="mdc-list-item" data-value="orange">
           Orange
         </li>
         <li class="mdc-list-item" data-value="apple">
           Apple
-        </li> 
+        </li>
       </ul>
       </div>
       <label class="mdc-floating-label">Pick a Food Group</label>
@@ -485,19 +509,19 @@ test('adapter#hasClass returns true if a class exists on the root element', () =
   assert.isTrue(component.getDefaultFoundation().adapter_.hasClass('foo'));
 });
 
-test('adapter_#floatLabel does not throw error if label does not exist', () => {
+test('adapter#floatLabel does not throw error if label does not exist', () => {
   const fixture = bel`
     <div class="mdc-select">
       <div class="mdc-select__selected-text"></div>
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
       <ul class="mdc-list">
         <li class="mdc-list-item mdc-list-item--selected" data-value=""></li>
-        <li class="mdc-list-item" data-value="orange">          
+        <li class="mdc-list-item" data-value="orange">
           Orange
         </li>
         <li class="mdc-list-item" data-value="apple">
           Apple
-        </li> 
+        </li>
       </ul>
       </div>
       <div class="mdc-line-ripple"></div>
@@ -517,12 +541,12 @@ test('adapter#activateBottomLine and adapter.deactivateBottomLine ' +
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
       <ul class="mdc-list">
         <li class="mdc-list-item mdc-list-item--selected" data-value=""></li>
-        <li class="mdc-list-item" data-value="orange">          
+        <li class="mdc-list-item" data-value="orange">
           Orange
         </li>
         <li class="mdc-list-item" data-value="apple">
           Apple
-        </li> 
+        </li>
       </ul>
       </div>
       <label class="mdc-floating-label">Pick a Food Group</label>
@@ -739,6 +763,61 @@ test('adapter#setDisabled adds the --disabled class to the root element', () => 
   assert.equal(selectedText.getAttribute('aria-disabled'), 'false');
   assert.equal(selectedText.tabIndex, 0);
   document.body.removeChild(fixture);
+});
+
+test('adapter#checkValidity returns false when required class is present and selectedIndex is -1', () => {
+  const hasMockFoundation = true;
+  const hasMockMenu = false;
+  const hasOutline = false;
+  const hasLabel = true;
+  const {component, fixture} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  const adapter = component.getDefaultFoundation().adapter_;
+
+  fixture.classList.add(cssClasses.REQUIRED);
+  component.selectedIndex = -1;
+  assert.equal(adapter.checkValidity(), false);
+});
+
+test('adapter#checkValidity returns false when required class is present and placeholder option is selected', () => {
+  const hasMockFoundation = true;
+  const hasMockMenu = false;
+  const hasOutline = false;
+  const hasLabel = true;
+  const {component, fixture} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  const adapter = component.getDefaultFoundation().adapter_;
+
+  fixture.classList.add(cssClasses.REQUIRED);
+  component.selectedIndex = 0;
+  assert.equal(adapter.checkValidity(), false);
+});
+
+test('adapter#setValid updates aria-invalid attribute properly', () => {
+  const hasMockFoundation = true;
+  const hasMockMenu = false;
+  const hasOutline = false;
+  const hasLabel = true;
+  const {component, selectedText} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  const adapter = component.getDefaultFoundation().adapter_;
+
+  adapter.setValid(false);
+  assert.strictEqual(selectedText.getAttribute('aria-invalid'), 'true');
+  adapter.setValid(true);
+  assert.strictEqual(selectedText.getAttribute('aria-invalid'), 'false');
+});
+
+test(`adapter#setValid applies $cssClasses.INVALID properly`, () => {
+  const hasMockFoundation = true;
+  const hasMockMenu = false;
+  const hasOutline = false;
+  const hasLabel = true;
+  const {component, fixture, selectedText} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  const adapter = component.getDefaultFoundation().adapter_;
+
+  adapter.setValid(false);
+  assert.isTrue(fixture.classList.contains(cssClasses.INVALID));
+
+  adapter.setValid(true);
+  assert.isFalse(fixture.classList.contains(cssClasses.INVALID));
 });
 
 test('change event triggers foundation.handleChange()', () => {
