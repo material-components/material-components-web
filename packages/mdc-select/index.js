@@ -509,7 +509,8 @@ class MDCSelect extends MDCComponent {
         this.selectedText_.setAttribute('aria-disabled', isDisabled.toString());
       },
       checkValidity: () => {
-        if (this.root_.classList.contains(cssClasses.REQUIRED)) {
+        const classList = this.root_.classList;
+        if (classList.contains(cssClasses.REQUIRED) && !classList.contains(cssClasses.DISABLED)) {
           // See notes for required attribute under https://www.w3.org/TR/html52/sec-forms.html#the-select-element
           // TL;DR: Invalid if no index is selected, or if the first index is selected and has an empty value.
           return this.selectedIndex !== -1 && (this.selectedIndex !== 0 || this.value);

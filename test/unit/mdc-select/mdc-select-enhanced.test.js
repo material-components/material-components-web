@@ -817,6 +817,22 @@ test('adapter#checkValidity returns true regardless if required class is not pre
   assert.equal(adapter.checkValidity(), true);
 });
 
+test('adapter#checkValidity returns true regardless if disabled class is present', () => {
+  const hasMockFoundation = true;
+  const hasMockMenu = false;
+  const hasOutline = false;
+  const hasLabel = true;
+  const {component, fixture} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  const adapter = component.getDefaultFoundation().adapter_;
+
+  fixture.classList.add(cssClasses.REQUIRED);
+  fixture.classList.add(cssClasses.DISABLED);
+  component.selectedIndex = -1;
+  assert.equal(adapter.checkValidity(), true);
+  component.selectedIndex = 0;
+  assert.equal(adapter.checkValidity(), true);
+});
+
 test('adapter#setValid updates aria-invalid attribute properly', () => {
   const hasMockFoundation = true;
   const hasMockMenu = false;
