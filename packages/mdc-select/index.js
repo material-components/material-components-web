@@ -642,11 +642,17 @@ class MDCSelect extends MDCComponent {
       attributesList.some((attributeName) => {
         if (VALIDATION_ATTR_WHITELIST.indexOf(attributeName) > -1) {
           if (this.selectedText_) {
-            if (this.selectedText_.getAttribute('aria-required')) {
+            if (this.selectedText_.getAttribute('aria-required') === 'true') {
               this.root_.classList.add(cssClasses.REQUIRED);
+            } else {
+              this.root_.classList.remove(cssClasses.REQUIRED);
             }
           } else {
-            this.root_.classList.add(cssClasses.REQUIRED);
+            if (this.nativeControl_.required) {
+              this.root_.classList.add(cssClasses.REQUIRED);
+            } else {
+              this.root_.classList.remove(cssClasses.REQUIRED);
+            }
           }
           return true;
         }
