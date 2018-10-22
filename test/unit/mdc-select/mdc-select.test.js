@@ -110,7 +110,7 @@ function getOutlineFixture() {
         <svg>
           <path class="mdc-notched-outline__path">
         </svg>
-      </div>   
+      </div>
       <div class="mdc-notched-outline__idle"/>
     </div>
   `;
@@ -649,23 +649,36 @@ test('#destroy destroys the helper text if it exists', () => {
   document.body.removeChild(container);
 });
 
-test(`MutationObserver adds ${cssClasses.REQUIRED} class to the parent when required attribute is added`, () => {
+test(`MutationObserver adds ${cssClasses.REQUIRED} class to the parent when required attribute is added`, (done) => {
   const hasLabel = true;
   const hasOutline = false;
   const hasHelperText = false;
-  const {fixture} = setupTest(hasLabel, hasOutline, hasHelperText);
+  const {fixture, nativeControl} = setupTest(hasLabel, hasOutline, hasHelperText);
   assert.isFalse(fixture.classList.contains(cssClasses.REQUIRED));
-  fixture.querySelector(strings.NATIVE_CONTROL_SELECTOR).setAttribute('required', 'true');
-  setTimeout(assert.isTrue(fixture.classList.contains(cssClasses.REQUIRED)), 0);
+
+  nativeControl.setAttribute('required', 'true');
+
+  // MutationObservers are queued as microtasks and fire asynchronously
+  setTimeout(() => {
+    assert.isTrue(fixture.classList.contains(cssClasses.REQUIRED));
+    done();
+  }, 0);
 });
 
-test(`MutationObserver removes ${cssClasses.REQUIRED} class from the parent when required attribute is removed`, () => {
+test(`MutationObserver removes ${cssClasses.REQUIRED} class from the parent when required attribute is removed`, (done) => {
   const hasLabel = true;
   const hasOutline = false;
   const hasHelperText = false;
-  const {fixture} = setupTest(hasLabel, hasOutline, hasHelperText);
-  fixture.querySelector(strings.NATIVE_CONTROL_SELECTOR).setAttribute('required', 'true');
-  setTimeout(assert.isTrue(fixture.classList.contains(cssClasses.REQUIRED)), 0);
-  fixture.querySelector(strings.NATIVE_CONTROL_SELECTOR).removeAttribute('required');
-  setTimeout(assert.isTrue(fixture.classList.contains(cssClasses.REQUIRED)), 0);
+  const {fixture, nativeControl} = setupTest(hasLabel, hasOutline, hasHelperText);
+
+  nativeControl.setAttribute('required', 'true');
+  setTimeout(() => {
+    assert.isTrue(fixture.classList.contains(cssClasses.REQUIRED));
+
+    fixture.querySelector(strings.NATIVE_CONTROL_SELECTOR).removeAttribute('required');
+    setTimeout(() => {
+      assert.isFalse(fixture.classList.contains(cssClasses.REQUIRED));
+      done();
+    }, 0);
+  }, 0);
 });
