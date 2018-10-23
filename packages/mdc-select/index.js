@@ -55,6 +55,8 @@ class MDCSelect extends MDCComponent {
     this.nativeControl_;
     /** @private {?Element} */
     this.selectedText_;
+    /** @private {?Element} */
+    this.hiddenInput_;
     /** @private {?MDCSelectIcon} */
     this.leadingIcon_;
     /** @private {?MDCSelectHelperText} */
@@ -296,6 +298,7 @@ class MDCSelect extends MDCComponent {
   enhancedSelectSetup_(menuFactory) {
     const isDisabled = this.root_.classList.contains(cssClasses.DISABLED);
     this.selectedText_.setAttribute('tabindex', isDisabled ? '-1' : '0');
+    this.hiddenInput_ = this.root_.querySelector(strings.HIDDEN_INPUT_SELECTOR);
     this.menuElement_ = /** @type {HTMLElement} */ (this.root_.querySelector(strings.MENU_SELECTOR));
     this.menu_ = menuFactory(this.menuElement_);
     this.menu_.hoistMenuToBody();
@@ -364,7 +367,12 @@ class MDCSelect extends MDCComponent {
       this.menu_.listen(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
       this.menu_.listen(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
 
-      if (this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)) {
+      if (this.hiddenInput_ && this.hiddenInput_.value) {
+        // If the hidden input already has a value, use it to restore the select's value.
+        // This can happen e.g. if the user goes back or (in some browsers) refreshes the page.
+        const enhancedAdapterMethods = this.getEnhancedSelectAdapterMethods_();
+        enhancedAdapterMethods.setValue(this.hiddenInput_.value);
+      } else if (this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)) {
         // If an element is selected, the select should set the initial selected text.
         const enhancedAdapterMethods = this.getEnhancedSelectAdapterMethods_();
         enhancedAdapterMethods.setValue(enhancedAdapterMethods.getValue());
@@ -484,8 +492,8 @@ class MDCSelect extends MDCComponent {
         return '';
       },
       setValue: (value) => {
-        const element = /** @type {HTMLElement} */
-        (this.menuElement_.querySelector(`[${strings.ENHANCED_VALUE_ATTR}="${value}"]`));
+        const element =
+          /** @type {HTMLElement} */ (this.menuElement_.querySelector(`[${strings.ENHANCED_VALUE_ATTR}="${value}"]`));
         this.setEnhancedSelectedIndex_(element ? this.menu_.items.indexOf(element) : -1);
       },
       openMenu: () => {
@@ -507,6 +515,9 @@ class MDCSelect extends MDCComponent {
       setDisabled: (isDisabled) => {
         this.selectedText_.setAttribute('tabindex', isDisabled ? '-1' : '0');
         this.selectedText_.setAttribute('aria-disabled', isDisabled.toString());
+        if (this.hiddenInput_) {
+          this.hiddenInput_.disabled = isDisabled;
+        }
       },
       checkValidity: () => {
         const classList = this.root_.classList;
@@ -636,6 +647,12 @@ class MDCSelect extends MDCComponent {
     if (selectedItem) {
       selectedItem.classList.add(cssClasses.SELECTED_ITEM_CLASS);
       selectedItem.setAttribute(strings.ARIA_SELECTED_ATTR, 'true');
+    }
+
+    // Synchronize hidden input's value with data-value attribute of selected item.
+    // This code path is also followed when setting value directly, so this covers all cases.
+    if (this.hiddenInput_) {
+      this.hiddenInput_.value = selectedItem ? selectedItem.getAttribute(strings.ENHANCED_VALUE_ATTR) || '' : '';
     }
 
     this.layout();
