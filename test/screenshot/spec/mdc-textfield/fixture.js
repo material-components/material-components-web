@@ -26,5 +26,11 @@ window.mdc.testFixture.fontsLoaded.then(() => {
     mdc.textField.MDCTextField.attachTo(el);
   });
 
+  const firstFocusField = document.querySelector('.mdc-text-field--focused input, .mdc-text-field--focused textarea');
+  if (firstFocusField) {
+    // Programmatically focus to get :focus applied
+    firstFocusField.focus();
+  }
+
   window.mdc.testFixture.notifyDomReady();
 });
