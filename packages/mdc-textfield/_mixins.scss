@@ -206,7 +206,7 @@
   @include mdc-text-field-label-color($mdc-text-field-focused-label-color);
 
   @include mdc-required-text-field-label-asterisk_ {
-    color: $mdc-text-field-error;
+    @include mdc-theme-prop(color, $mdc-text-field-error);
   }
 
   + .mdc-text-field-helper-text:not(.mdc-text-field-helper-text--validation-msg) {
