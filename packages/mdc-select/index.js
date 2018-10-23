@@ -276,6 +276,7 @@ class MDCSelect extends MDCComponent {
     this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt);
     this.handleMenuSelected_ = (evtData) => this.selectedIndex = evtData.detail.index;
     this.handleMenuOpened_ = () => {
+      // Menu should open to the last selected element.
       if (this.selectedIndex >= 0) {
         this.menu_.items[this.selectedIndex].focus();
       }
@@ -304,7 +305,6 @@ class MDCSelect extends MDCComponent {
     if (this.menuElement_) {
       this.selectedText_.addEventListener('keydown', this.handleKeydown_);
       this.menu_.listen(menuSurfaceConstants.strings.CLOSED_EVENT, this.handleMenuClosed_);
-      // Menu should open to the last selected element.
       this.menu_.listen(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
       this.menu_.listen(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
 
