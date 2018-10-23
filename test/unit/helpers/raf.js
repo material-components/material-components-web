@@ -25,15 +25,15 @@
 // that gives control over to when animation frames are executed. It works a lot like lolex, but for rAF.
 //
 // ```js
-// const raf = createMockRaf(); // window.{rAF,cAF} are not stubbed out.
+// const clock = installClock(); // window.{rAF,cAF} are not stubbed out.
 // const id1 = requestAnimationFrame(() => {
 //   console.log('first frame')
 //   requestAnimationFrame(() => console.log('first frame inner'));
 // });
 // const id2 = requestAnimationFrame(() => console.log('second frame'));
 // cancelAnimationFrame(id2);
-// raf.flush(); // logs "first frame"
-// raf.flush(); // logs "first frame inner"
+// clock.runToFrame(); // logs "first frame"
+// clock.runToFrame(); // logs "first frame inner"
 // raf.restore(); // window.{rAF,cAF} set back to normal.
 // ```
 export function createMockRaf() {

@@ -24,7 +24,7 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
-import {createMockRaf} from '../helpers/raf';
+import {install as installClock} from '../helpers/clock';
 import {setupFoundationTest} from '../helpers/setup';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import MDCGridListFoundation from '../../../packages/mdc-grid-list/foundation';
@@ -66,20 +66,19 @@ test('#destroy calls component event deregistrations', () => {
 
 test('#align center does not set the container width if there are no tiles', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
   td.when(mockAdapter.getNumberOfTiles()).thenReturn(0);
   foundation.init();
 
   foundation.alignCenter();
-  mockRaf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.setStyleForTilesElement(), {times: 0, ignoreExtraArgs: true});
-  mockRaf.restore();
 });
 
 test('#align center sets the container width to fit tiles inside', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
   const listOffsetWidth = 1005;
   const tileOffsetWidth = 200;
   const tilesWidth = Math.floor(listOffsetWidth / tileOffsetWidth) * tileOffsetWidth;
@@ -88,29 +87,26 @@ test('#align center sets the container width to fit tiles inside', () => {
   foundation.init();
 
   foundation.alignCenter();
-  mockRaf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.setStyleForTilesElement('width', `${tilesWidth}px`));
-  mockRaf.restore();
 });
 
 test('#alignCenter debounces calls within the same frame', () => {
   const {foundation} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
   foundation.alignCenter();
   foundation.alignCenter();
   foundation.alignCenter();
-  assert.equal(mockRaf.pendingFrames.length, 1);
-  mockRaf.restore();
+  assert.equal(clock.countTimers(), 1);
 });
 
 test('#alignCenter resets debounce latch when alignCenter frame is run', () => {
   const {foundation} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
 
   foundation.alignCenter();
-  mockRaf.flush();
+  clock.runToFrame();
   foundation.alignCenter();
-  assert.equal(mockRaf.pendingFrames.length, 1);
-  mockRaf.restore();
+  assert.equal(clock.countTimers(), 1);
 });

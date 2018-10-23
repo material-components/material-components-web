@@ -27,7 +27,7 @@ import td from 'testdouble';
 import {assert} from 'chai';
 
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
-import {createMockRaf} from '../helpers/raf';
+import {install as installClock} from '../helpers/clock';
 import {MDCIconButtonToggle, MDCIconButtonToggleFoundation} from '../../../packages/mdc-icon-button/index';
 import {MDCRipple} from '../../../packages/mdc-ripple/index';
 import {cssClasses} from '../../../packages/mdc-ripple/constants';
@@ -58,21 +58,19 @@ test('attachTo initializes and returns a MDCIconButtonToggle instance', () => {
 
 if (supportsCssVariables(window)) {
   test('#constructor initializes the ripple on the root element', () => {
-    const raf = createMockRaf();
+    const clock = installClock();
     const {root} = setupTest();
-    raf.flush();
+    clock.runToFrame();
     assert.isTrue(root.classList.contains('mdc-ripple-upgraded'));
-    raf.restore();
   });
 
   test('#destroy removes the ripple', () => {
-    const raf = createMockRaf();
+    const clock = installClock();
     const {root, component} = setupTest();
-    raf.flush();
+    clock.runToFrame();
     component.destroy();
-    raf.flush();
+    clock.runToFrame();
     assert.isFalse(root.classList.contains('mdc-ripple-upgraded'));
-    raf.restore();
   });
 }
 

@@ -25,7 +25,7 @@ import {assert} from 'chai';
 import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
-import {createMockRaf} from '../helpers/raf';
+import {install as installClock} from '../helpers/clock';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 
 import {MDCRipple, MDCRippleFoundation} from '../../../packages/mdc-ripple/index';
@@ -93,7 +93,7 @@ function getOutlineFixture() {
         <svg>
           <path class="mdc-notched-outline__path">
         </svg>
-      </div>   
+      </div>
       <div class="mdc-notched-outline__idle"/>
     </div>
   `;
@@ -292,14 +292,13 @@ test('instantiates ripple', function() {
   }
 
   const fixture = getFixture();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   const component = MDCSelect.attachTo(fixture);
-  raf.flush();
+  clock.runToFrame();
 
   assert.instanceOf(component.ripple, MDCRipple);
   assert.isTrue(fixture.classList.contains(MDCRippleFoundation.cssClasses.ROOT));
-  raf.restore();
 });
 
 test(`#constructor instantiates an outline on the ${cssClasses.OUTLINE_SELECTOR} element if present`, () => {
@@ -316,18 +315,17 @@ test('handles ripple focus properly', function() {
   }
 
   const fixture = getFixture();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   MDCSelect.attachTo(fixture);
-  raf.flush();
+  clock.runToFrame();
 
   const nativeControl = fixture.querySelector('.mdc-select__native-control');
 
   domEvents.emit(nativeControl, 'focus');
-  raf.flush();
+  clock.runToFrame();
 
   assert.isTrue(fixture.classList.contains(MDCRippleFoundation.cssClasses.BG_FOCUSED));
-  raf.restore();
 });
 
 test('#destroy removes the ripple', function() {
@@ -337,17 +335,16 @@ test('#destroy removes the ripple', function() {
   }
 
   const fixture = getFixture();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   const component = new MDCSelect(fixture);
-  raf.flush();
+  clock.runToFrame();
 
   assert.isTrue(fixture.classList.contains(MDCRippleFoundation.cssClasses.ROOT));
   component.destroy();
-  raf.flush();
+  clock.runToFrame();
 
   assert.isFalse(fixture.classList.contains(MDCRippleFoundation.cssClasses.ROOT));
-  raf.restore();
 });
 
 test('#destroy cleans up the outline if present', () => {

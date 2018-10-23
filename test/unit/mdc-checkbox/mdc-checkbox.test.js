@@ -26,8 +26,8 @@ import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
 
+import {install as installClock} from '../helpers/clock';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
-import {createMockRaf} from '../helpers/raf';
 import {MDCCheckbox} from '../../../packages/mdc-checkbox/index';
 import {MDCRipple} from '../../../packages/mdc-ripple/index';
 import {strings} from '../../../packages/mdc-checkbox/constants';
@@ -65,28 +65,26 @@ suite('MDCCheckbox');
 
 if (supportsCssVariables(window)) {
   test('#constructor initializes the root element with a ripple', () => {
-    const raf = createMockRaf();
+    const clock = installClock();
     const {root} = setupTest();
-    raf.flush();
+    clock.runToFrame();
     assert.isOk(root.classList.contains('mdc-ripple-upgraded'));
-    raf.restore();
   });
 
   test('#destroy removes the ripple', () => {
-    const raf = createMockRaf();
+    const clock = installClock();
     const {root, component} = setupTest();
-    raf.flush();
+    clock.runToFrame();
     component.destroy();
-    raf.flush();
+    clock.runToFrame();
     assert.isNotOk(root.classList.contains('mdc-ripple-upgraded'));
-    raf.restore();
   });
 
   test('(regression) activates ripple on keydown when the input element surface is active', () => {
-    const raf = createMockRaf();
+    const clock = installClock();
     const {root} = setupTest();
     const input = root.querySelector('input');
-    raf.flush();
+    clock.runToFrame();
 
     const fakeMatches = td.func('.matches');
     td.when(fakeMatches(':active')).thenReturn(true);
@@ -94,10 +92,9 @@ if (supportsCssVariables(window)) {
 
     assert.isTrue(root.classList.contains('mdc-ripple-upgraded'));
     domEvents.emit(input, 'keydown');
-    raf.flush();
+    clock.runToFrame();
 
     assert.isTrue(root.classList.contains('mdc-ripple-upgraded--foreground-activation'));
-    raf.restore();
   });
 }
 

@@ -26,7 +26,7 @@ import td from 'testdouble';
 
 import {setupFoundationTest} from '../helpers/setup';
 import {verifyDefaultAdapter} from '../helpers/foundation';
-import {createMockRaf} from '../helpers/raf';
+import {install as installClock} from '../helpers/clock';
 
 import MDCTabBarScrollerFoundation from '../../../packages/mdc-tabs/tab-bar-scroller/foundation';
 
@@ -72,33 +72,31 @@ test('#init registers event handlers', () => {
 
 test('#init removes enabled class from indicators if tab bar doesn\'t overflow', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
   const {INDICATOR_ENABLED} = MDCTabBarScrollerFoundation.cssClasses;
 
   td.when(mockAdapter.getOffsetWidthForScrollFrame()).thenReturn(200);
   td.when(mockAdapter.getOffsetWidthForTabBar()).thenReturn(100);
 
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.removeClassFromBackIndicator(INDICATOR_ENABLED));
   td.verify(mockAdapter.removeClassFromForwardIndicator(INDICATOR_ENABLED));
-  raf.restore();
 });
 
 test('#init adds enabled class to forward if tab bar overflows', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
   const {INDICATOR_ENABLED} = MDCTabBarScrollerFoundation.cssClasses;
 
   td.when(mockAdapter.getOffsetWidthForScrollFrame()).thenReturn(60);
   td.when(mockAdapter.getOffsetWidthForTabBar()).thenReturn(100);
 
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.addClassToForwardIndicator(INDICATOR_ENABLED));
-  raf.restore();
 });
 
 test('#destroy deregisters event handlers', () => {
@@ -125,7 +123,7 @@ test('#scrollBack prevents default if evt is passed as argument', () => {
 
 test('#scrollForward moves the tab bar forward', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
   const numTabs = 4;
   const tabWidth = 200;
   const scrollFrameWidth = 600;
@@ -139,14 +137,13 @@ test('#scrollForward moves the tab bar forward', () => {
   td.when(mockAdapter.getOffsetWidthForScrollFrame()).thenReturn(scrollFrameWidth);
 
   foundation.scrollForward();
-  raf.flush();
+  clock.runToFrame();
   td.verify(mockAdapter.setTransformStyleForTabBar('translateX(-600px)'));
-  raf.restore();
 });
 
 test('#scrollForward moves the tab bar forward if last tab is partially occluded', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
   const numTabs = 4;
   const tabWidth = 200;
   const scrollFrameWidth = 780;
@@ -160,14 +157,13 @@ test('#scrollForward moves the tab bar forward if last tab is partially occluded
   td.when(mockAdapter.getOffsetWidthForScrollFrame()).thenReturn(scrollFrameWidth);
 
   foundation.scrollForward();
-  raf.flush();
+  clock.runToFrame();
   td.verify(mockAdapter.setTransformStyleForTabBar('translateX(-600px)'));
-  raf.restore();
 });
 
 test('#scrollBack moves the tab bar back', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
   const numTabs = 4;
   const tabWidth = 200;
   const scrollFrameWidth = 600;
@@ -181,18 +177,17 @@ test('#scrollBack moves the tab bar back', () => {
   td.when(mockAdapter.getOffsetWidthForScrollFrame()).thenReturn(scrollFrameWidth);
 
   foundation.scrollForward();
-  raf.flush();
+  clock.runToFrame();
   foundation.scrollBack();
-  raf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.setTransformStyleForTabBar('translateX(-600px)'));
-  raf.restore();
 });
 
 test('#scrollBack removes indicator enabled state if at first tab', () => {
   const {foundation, mockAdapter} = setupTest();
   const {INDICATOR_ENABLED} = MDCTabBarScrollerFoundation.cssClasses;
-  const raf = createMockRaf();
+  const clock = installClock();
   const numTabs = 4;
   const tabWidth = 200;
   const scrollFrameWidth = 300;
@@ -206,19 +201,18 @@ test('#scrollBack removes indicator enabled state if at first tab', () => {
   td.when(mockAdapter.getOffsetWidthForScrollFrame()).thenReturn(scrollFrameWidth);
 
   foundation.scrollForward();
-  raf.flush();
+  clock.runToFrame();
   foundation.scrollBack();
-  raf.flush();
+  clock.runToFrame();
   foundation.scrollBack();
-  raf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.removeClassFromBackIndicator(INDICATOR_ENABLED));
-  raf.restore();
 });
 
 test('#scrollForward moves the tab bar forward in RTL context', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
   const numTabs = 4;
   const tabWidth = 200;
   const scrollFrameWidth = 750;
@@ -233,14 +227,13 @@ test('#scrollForward moves the tab bar forward in RTL context', () => {
   td.when(mockAdapter.getOffsetWidthForScrollFrame()).thenReturn(scrollFrameWidth);
 
   foundation.scrollForward();
-  raf.flush();
+  clock.runToFrame();
   td.verify(mockAdapter.setTransformStyleForTabBar('translateX(600px)'));
-  raf.restore();
 });
 
 test('#scrollBack moves the tab bar back in RTL context', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
   const numTabs = 4;
   const tabWidth = 200;
   const scrollFrameWidth = 300;
@@ -255,17 +248,16 @@ test('#scrollBack moves the tab bar back in RTL context', () => {
   td.when(mockAdapter.getOffsetWidthForScrollFrame()).thenReturn(scrollFrameWidth);
 
   foundation.scrollForward();
-  raf.flush();
+  clock.runToFrame();
   foundation.scrollBack();
-  raf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.setTransformStyleForTabBar('translateX(600px)'));
-  raf.restore();
 });
 
 test('#layout sets indicator enabled states if tab bar overflows', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
   const {INDICATOR_ENABLED} = MDCTabBarScrollerFoundation.cssClasses;
   const scrollFrameWidth = 60;
   const tabBarWidth = 100;
@@ -274,15 +266,14 @@ test('#layout sets indicator enabled states if tab bar overflows', () => {
   td.when(mockAdapter.getOffsetWidthForTabBar()).thenReturn(tabBarWidth);
 
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.addClassToForwardIndicator(INDICATOR_ENABLED));
-  raf.restore();
 });
 
 test('#layout removes indicator enabled states if tab bar does not overflow', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
   const {INDICATOR_ENABLED} = MDCTabBarScrollerFoundation.cssClasses;
   const scrollFrameWidth = 200;
   const tabBarWidth = 100;
@@ -291,10 +282,9 @@ test('#layout removes indicator enabled states if tab bar does not overflow', ()
   td.when(mockAdapter.getOffsetWidthForTabBar()).thenReturn(tabBarWidth);
 
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.removeClassFromForwardIndicator(INDICATOR_ENABLED));
-  raf.restore();
 });
 
 test('focus event sets the scrollLeft property', () => {
@@ -319,12 +309,11 @@ test('focus event sets the scrollLeft property', () => {
   tabEvent(mockEvent);
 
   td.verify(mockAdapter.setScrollLeftForScrollFrame(td.matchers.isA(Number)));
-  raf.restore();
 });
 
 test('focus scrolls back if right edge of tab is less than or equal to the current translate offset', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
   const evtType = 'focus';
   const mockEvent = {
     type: 'focus',
@@ -352,16 +341,15 @@ test('focus scrolls back if right edge of tab is less than or equal to the curre
   foundation.init();
   foundation.scrollForward();
   tabEvent(mockEvent);
-  raf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.setTransformStyleForTabBar(td.matchers.anything()));
-  raf.restore();
 });
 
 test('focus scrolls forward if right edge of tab is greater than the current translate offset' +
   'plus the scroll frame width', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
   const mockEvent = {
     type: 'focus',
     target: {
@@ -387,15 +375,14 @@ test('focus scrolls forward if right edge of tab is greater than the current tra
 
   foundation.init();
   tabEvent(mockEvent);
-  raf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.setTransformStyleForTabBar(td.matchers.anything()));
-  raf.restore();
 });
 
 test('mousedown does not move the tab bar if tab is only partially occluded', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
   const evtType = 'mousedown';
   const mockEvent = {
     type: 'mousedown',
@@ -422,15 +409,14 @@ test('mousedown does not move the tab bar if tab is only partially occluded', ()
 
   foundation.init();
   tabEvent(mockEvent);
-  raf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.setTransformStyleForTabBar('translateX(0px)'));
-  raf.restore();
 });
 
 test('touching does not move the tab bar if tab is only partially occluded', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
   const evtType = 'touchstart';
   const mockEvent = {
     type: 'touchstart',
@@ -457,15 +443,14 @@ test('touching does not move the tab bar if tab is only partially occluded', () 
 
   foundation.init();
   tabEvent(mockEvent);
-  raf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.setTransformStyleForTabBar('translateX(0px)'));
-  raf.restore();
 });
 
 test('focus inRTL scrolls back if left edge of tab is greater than or equal to tab bar width minus the offset', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
   const evtType = 'focus';
   const mockEvent = {
     type: 'focus',
@@ -494,17 +479,16 @@ test('focus inRTL scrolls back if left edge of tab is greater than or equal to t
 
   foundation.init();
   tabEvent(mockEvent);
-  raf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.setTransformStyleForTabBar(td.matchers.anything()));
-  raf.restore();
 });
 
 test('focus in RTL context scrolls forward if distance between the right edge of tab ' +
   'and the right edge of the tab bar is greater than or equal to the ' +
   'scroll frame width plus the translate offset', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
   const evtType = 'focus';
   const mockEvent = {
     type: 'focus',
@@ -533,8 +517,7 @@ test('focus in RTL context scrolls forward if distance between the right edge of
 
   foundation.init();
   tabEvent(mockEvent);
-  raf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.setTransformStyleForTabBar(td.matchers.anything()));
-  raf.restore();
 });

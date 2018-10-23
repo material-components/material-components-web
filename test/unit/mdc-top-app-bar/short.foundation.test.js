@@ -25,7 +25,7 @@ import td from 'testdouble';
 
 import MDCShortTopAppBarFoundation from '../../../packages/mdc-top-app-bar/short/foundation';
 import MDCTopAppBarFoundation from '../../../packages/mdc-top-app-bar/foundation';
-import {createMockRaf} from '../helpers/raf';
+import {install as installClock} from '../helpers/clock';
 
 suite('MDCShortTopAppBarFoundation');
 
@@ -37,14 +37,14 @@ const setupTest = () => {
   return {foundation, mockAdapter};
 };
 
-const createMockHandlers = (foundation, mockAdapter, mockRaf) => {
+const createMockHandlers = (foundation, mockAdapter, clock) => {
   let scrollHandler;
   td.when(mockAdapter.registerScrollHandler(td.matchers.isA(Function))).thenDo((fn) => {
     scrollHandler = fn;
   });
 
   foundation.init();
-  mockRaf.flush();
+  clock.runToFrame();
   td.reset();
   return {scrollHandler};
 };
@@ -75,32 +75,31 @@ test('short top app bar: scroll listener is not registered if collapsed class ex
 
 test('short top app bar: class is added once when page is scrolled from the top', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS)).thenReturn(true);
   td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_COLLAPSED_CLASS)).thenReturn(false);
   td.when(mockAdapter.getTotalActionItems()).thenReturn(0);
   td.when(mockAdapter.getViewportScrollY()).thenReturn(0);
 
-  const {scrollHandler} = createMockHandlers(foundation, mockAdapter, mockRaf);
+  const {scrollHandler} = createMockHandlers(foundation, mockAdapter, clock);
   td.when(mockAdapter.getViewportScrollY()).thenReturn(1);
 
   scrollHandler();
   scrollHandler();
 
   td.verify(mockAdapter.addClass(MDCTopAppBarFoundation.cssClasses.SHORT_COLLAPSED_CLASS), {times: 1});
-  mockRaf.restore();
 });
 
 test('short top app bar: class is removed once when page is scrolled to the top', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS)).thenReturn(true);
   td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_COLLAPSED_CLASS)).thenReturn(false);
   td.when(mockAdapter.getTotalActionItems()).thenReturn(0);
 
-  const {scrollHandler} = createMockHandlers(foundation, mockAdapter, mockRaf);
+  const {scrollHandler} = createMockHandlers(foundation, mockAdapter, clock);
   // Apply the collapsed class
   td.when(mockAdapter.getViewportScrollY()).thenReturn(1);
   scrollHandler();
@@ -111,7 +110,6 @@ test('short top app bar: class is removed once when page is scrolled to the top'
   scrollHandler();
 
   td.verify(mockAdapter.removeClass(MDCTopAppBarFoundation.cssClasses.SHORT_COLLAPSED_CLASS), {times: 1});
-  mockRaf.restore();
 });
 
 test('short top app bar: class is added if it has an action item', () => {
