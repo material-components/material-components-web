@@ -452,7 +452,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `setSelectedIndex(index: number) => void` | Selects the option or list item at the specified index. |
 | `setDisabled(isDisabled: boolean) => void` | Enables or disables the native or enhanced select. |
 | `setRippleCenter(normalizedX: number) => void` | Sets the line ripple center to the provided normalizedX value. |
-| `notifyChange({value: string}: Object) => void` | Emits the `MDCSelect:change` event when an element is selected. |
+| `notifyChange(value: string) => void` | Emits the `MDCSelect:change` event when an element is selected. |
 | `checkValidity() => boolean` | Returns whether the component is currently valid, using the native select's `checkValidity` or equivalent logic for the enhanced select. |
 | `setValid(isValid: boolean) => void` | Adds or removes invalid styles. |
 

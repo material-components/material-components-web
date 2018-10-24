@@ -545,7 +545,7 @@ class MDCSelect extends MDCComponent {
    *   setRippleCenter: function(number): void,
    *   activateBottomLine: function(): void,
    *   deactivateBottomLine: function(): void,
-   *   notifyChange: function(!{value: string}): void
+   *   notifyChange: function(string): void
    * }}
    * @private
    */
@@ -558,9 +558,9 @@ class MDCSelect extends MDCComponent {
       setRippleCenter: (normalizedX) => this.lineRipple_ && this.lineRipple_.setRippleCenter(normalizedX),
       activateBottomLine: () => this.lineRipple_ && this.lineRipple_.activate(),
       deactivateBottomLine: () => this.lineRipple_ && this.lineRipple_.deactivate(),
-      notifyChange: (evtData) => {
-        evtData.index = this.selectedIndex;
-        this.emit(strings.CHANGE_EVENT, evtData, true /* shouldBubble  */);
+      notifyChange: (value) => {
+        const index = this.selectedIndex;
+        this.emit(strings.CHANGE_EVENT, {value, index}, true /* shouldBubble  */);
       },
     };
   }
