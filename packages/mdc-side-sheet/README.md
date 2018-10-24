@@ -86,7 +86,7 @@ Dismissible side sheets are by default hidden off screen, and can slide into vie
 ```
 
 > The main content of your page/app should reside in a `mdc-side-sheet-app-content` sibling element after the side sheet,
-> in order to adjust appropriately when the drawer opens and closes.
+> in order to adjust appropriately when the side sheet opens and closes.
 
 #### Usage with Top App Bar
 
