@@ -251,11 +251,14 @@ testFoundation('waits until activation UX timer runs before removing active fill
     clock.runToFrame();
 
     documentHandlers.mouseup();
-    clock.runToFrame();
-    clock.tick(DEACTIVATION_TIMEOUT_MS - 1);
-
+    // Test conditions slightly before the timeout lapses (subtracting ~2 frames due to runToFrame above)
+    clock.tick(DEACTIVATION_TIMEOUT_MS - 32);
     td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 1});
     td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION), {times: 0});
+
+    clock.tick(32);
+    td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
+    td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION), {times: 1});
   });
 
 testFoundation('waits until actual deactivation UX is needed if animation finishes before deactivating',
