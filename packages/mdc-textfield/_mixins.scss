@@ -60,17 +60,14 @@
     // background between the two borders in each corner when the
     // textarea is focused. This also means we need to guard against
     // invalid output.
-    $radius-value: $radius;
+    $radius-value: mdc-shape-prop-value($radius);
+    $trimmed-radius-value: ();
 
-    @if type-of($radius) == "list" {
-      $radius-value: ();
-
-      @each $corner in $radius {
-        $radius-value: append($radius-value, max($corner - 2, 0));
-      }
+    @each $corner in $radius-value {
+      $trimmed-radius-value: append($trimmed-radius-value, max($corner - 2, 0));
     }
 
-    @include mdc-shape-radius($radius-value, $rtl-reflexive);
+    @include mdc-shape-radius($trimmed-radius-value, $rtl-reflexive);
   }
 }
 
