@@ -90,7 +90,6 @@ test('#constructor sets the default disabled state to enabled', () => {
 test('#init registers all necessary event handlers for the component', () => {
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
-  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({width: 0, left: 0});
   foundation.init();
@@ -247,7 +246,6 @@ test('#setupTrackMarker does execute if discrete slider does not display markers
 
 test('#layout re-computes the bounding rect for the component on each call', () => {
   const {foundation, mockAdapter} = setupTest();
-  const clock = installClock();
   let numComputations = 0;
 
   // NOTE: Using a counter for numComputations here since we do indeed need to stub

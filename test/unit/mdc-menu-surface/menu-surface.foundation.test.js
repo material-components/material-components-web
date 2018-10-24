@@ -115,13 +115,13 @@ test('#init throws error when the root class is not present', () => {
 });
 
 testFoundation('#open adds the animation class to start an animation',
-  ({foundation, mockAdapter, clock}) => {
+  ({foundation, mockAdapter}) => {
     foundation.open();
     td.verify(mockAdapter.addClass(cssClasses.ANIMATING_OPEN), {times: 1});
   });
 
 testFoundation('#open does not add the animation class to start an animation when setQuickOpen is true',
-  ({foundation, mockAdapter, clock}) => {
+  ({foundation, mockAdapter}) => {
     foundation.setQuickOpen(true);
     foundation.open();
     td.verify(mockAdapter.addClass(cssClasses.ANIMATING_OPEN), {times: 0});

@@ -4,7 +4,7 @@ let instance;
 
 function install() {
   if (instance) {
-    console.log('An instance already exists! Destroying it first...');
+    console.log('A clock instance already exists! Uninstalling it first...');
     instance.uninstall();
   }
   instance = lolex.install();

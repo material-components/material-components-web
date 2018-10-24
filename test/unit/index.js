@@ -25,6 +25,8 @@
 
 import {uninstall as uninstallClock} from './helpers/clock';
 
+// Hooks are valuable for ensuring we restore native functions after each test
+// eslint-disable-next-line mocha/no-hooks
 afterEach(() => {
   uninstallClock();
 });

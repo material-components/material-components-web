@@ -335,7 +335,6 @@ test('change handler gracefully exits when getNativeControl() returns nothing', 
 
 test('"checked" property change hook works correctly', () => {
   const {foundation, mockAdapter, nativeControl} = setupTest();
-  const clock = installClock();
   td.when(mockAdapter.isAttachedToDOM()).thenReturn(true);
   td.when(mockAdapter.hasNativeControl()).thenReturn(true);
 
@@ -355,7 +354,6 @@ test('"checked" property change hook works correctly', () => {
 
 test('"indeterminate" property change hook works correctly', () => {
   const {foundation, mockAdapter, nativeControl} = setupTest();
-  const clock = installClock();
   td.when(mockAdapter.isAttachedToDOM()).thenReturn(true);
   td.when(mockAdapter.hasNativeControl()).thenReturn(true);
 
