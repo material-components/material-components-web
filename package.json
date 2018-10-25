@@ -189,6 +189,7 @@
           "rtl",
           "select",
           "selection-control",
+          "side-sheet",
           "shape",
           "slider",
           "snackbar",

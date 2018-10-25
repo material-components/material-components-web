@@ -85,7 +85,8 @@ Dismissible side sheets are by default hidden off screen, and can slide into vie
 </body>
 ```
 
-> Apply the `mdc-side-sheet-app-content` class to a subsequent sibling element after the side-sheet for the open/close animations to work.\
+> The main content of your page/app should reside in a `mdc-side-sheet-app-content` sibling element after the side sheet,
+> in order to adjust appropriately when the side sheet opens and closes.
 
 #### Usage with Top App Bar
 
@@ -201,7 +202,7 @@ Mixin | Description
 `mdc-side-sheet-surface-fill-color($color)` | Sets the background color of `mdc-side-sheet`.
 `mdc-side-sheet-surface-fill-color-accessible($color)` | Sets the fill color to `$color`, and text ink color to an accessible color relative to `$color`.
 `mdc-side-sheet-scrim-fill-color($color)` | Sets the fill color of `mdc-side-sheet-scrim`.
-`mdc-side-sheet-stroke-color($color)` | Sets border color of `mdc-side-sheet` surface.
+`mdc-side-sheet-outline-color($color)` | Sets border color of `mdc-side-sheet` surface.
 `mdc-side-sheet-shape-radius($radius)` | Sets the rounded shape to side sheet with given radius size. `$radius` can be single radius or list of 2 radius values for trailing-top and trailing-bottom. Automatically flips the radius values in RTL context.
 `mdc-side-sheet-z-index($value)` | Sets the z index of side sheet. Side Sheet stays on top of top app bar except for clipped variant of side sheet.
 `mdc-side-sheet-width($width)` | Sets the width of the side sheet. In the case of the dismissible variant, also sets margin required for `mdc-side-sheet-app-content`.

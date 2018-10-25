@@ -81,8 +81,8 @@ $custom-side-sheet-color: $material-color-red-600;
   @include mdc-side-sheet-shape-radius(40px);
 }
 
-.custom-side-sheet--stroke-color {
-  @include mdc-side-sheet-stroke-color($custom-side-sheet-color, 1);
+.custom-side-sheet--outline-color {
+  @include mdc-side-sheet-outline-color($custom-side-sheet-color);
 }
 
 .custom-side-sheet--surface-fill-color {

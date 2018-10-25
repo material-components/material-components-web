@@ -25,11 +25,11 @@
 // Colors
 $mdc-side-sheet-surface-fill-color: mdc-theme-prop-value(surface);
 $mdc-side-sheet-ink-color: mdc-theme-prop-value(on-surface);
-$mdc-side-sheet-stroke-color: mdc-theme-prop-value(on-surface);
+$mdc-side-sheet-outline-color: mdc-theme-prop-value(on-surface);
 
 // Opacity
 $mdc-side-sheet-ink-opacity: mdc-theme-text-emphasis(high);
-$mdc-side-sheet-stroke-opacity: .12;
+$mdc-side-sheet-outline-opacity: .12;
 
 // Widths
 $mdc-side-sheet-width: 256px;
