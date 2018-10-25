@@ -420,11 +420,6 @@ Event Name | Data | Description
 --- | --- | ---
 `MDCSelect:change` | `{value: string, index: number}` | Used to indicate when an element has been selected. This event also includes the value of the item and the index.
 
-
-### Events
-
-The MDC Select JS component emits a `MDCSelect:change` event when the selected option changes as the result of a user action.
-
 ## Usage within Web Frameworks
 
 If you are using a JavaScript framework, such as React or Angular, you can create a Select for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
