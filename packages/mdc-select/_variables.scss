@@ -61,10 +61,4 @@ $mdc-select-outlined-with-leading-icon-label-position-x: 32px;
 $mdc-select-dropdown-transition-duration: 150ms;
 
 // Error colors
-$mdc-select-label-error-color: error;
-$mdc-select-focused-label-error-color: error;
-$mdc-select-dropdown-error-color: mdc-theme-prop-value(error);
-$mdc-select-bottom-line-idle-error-color: mdc-theme-prop-value(error);
-$mdc-select-bottom-line-hover-error-color: mdc-theme-prop-value(error);
-$mdc-select-outlined-idle-error-border: error;
-$mdc-select-outlined-hover-error-border: error;
+$mdc-select-error-color: error;
