@@ -138,7 +138,7 @@ class MDCSelectFoundation extends MDCFoundation {
   /**
    * Handles value changes, via change event or programmatic updates.
    */
-  handleChange(didChange) {
+  handleChange(didChange = true) {
     const value = this.getValue();
     const optionHasValue = value.length > 0;
     const isRequired = this.adapter_.hasClass(cssClasses.REQUIRED);
@@ -150,7 +150,7 @@ class MDCSelectFoundation extends MDCFoundation {
     }
 
     if (didChange) {
-      this.adapter_.notifyChange({value});
+      this.adapter_.notifyChange(value);
 
       if (isRequired) {
         this.setValid(this.isValid());

@@ -30,7 +30,7 @@ import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 
 import {MDCRipple, MDCRippleFoundation} from '../../../packages/mdc-ripple/index';
 import {MDCSelect} from '../../../packages/mdc-select/index';
-import {cssClasses} from '../../../packages/mdc-select/constants';
+import {cssClasses, strings} from '../../../packages/mdc-select/constants';
 import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline/index';
 import {MDCMenu, MDCMenuFoundation} from '../../../packages/mdc-menu/index';
 import {MDCMenuSurfaceFoundation} from '../../../packages/mdc-menu-surface/index';
@@ -92,7 +92,8 @@ class FakeHelperText {
 function getFixture() {
   return bel`
     <div class="mdc-select">
-    <i class="mdc-select__icon material-icons">code</i>
+      <input type="hidden" name="enhanced-select">
+      <i class="mdc-select__icon material-icons">code</i>
       <div class="mdc-select__selected-text"></div>
       <i class="mdc-select__dropdown-icon"></i>
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
@@ -114,29 +115,30 @@ function getFixture() {
 
 function getOutlineFixture() {
   return bel`
-      <div class="mdc-select mdc-select--outlined">
-        <i class="mdc-select__icon material-icons">code</i>
-        <div class="mdc-select__selected-text"></div>
-        <i class="mdc-select__dropdown-icon"></i>
-        <div class="mdc-select__menu mdc-menu mdc-menu-surface">
-        <ul class="mdc-list">
-          <li class="mdc-list-item" data-value=""></li>
-          <li class="mdc-list-item" data-value="orange">
-            Orange
-          </li>
-          <li class="mdc-list-item" data-value="apple">
-            Apple
-          </li>
-        </ul>
-        </div>
-        <label class="mdc-floating-label">Pick a Food Group</label>
-        <div class="mdc-notched-outline">
-          <svg>
-            <path class="mdc-notched-outline__path">
-          </svg>
-        </div>
-        <div class="mdc-notched-outline__idle"/>
+    <div class="mdc-select mdc-select--outlined">
+      <input type="hidden" name="enhanced-select">
+      <i class="mdc-select__icon material-icons">code</i>
+      <div class="mdc-select__selected-text"></div>
+      <i class="mdc-select__dropdown-icon"></i>
+      <div class="mdc-select__menu mdc-menu mdc-menu-surface">
+      <ul class="mdc-list">
+        <li class="mdc-list-item" data-value=""></li>
+        <li class="mdc-list-item" data-value="orange">
+          Orange
+        </li>
+        <li class="mdc-list-item" data-value="apple">
+          Apple
+        </li>
+      </ul>
       </div>
+      <label class="mdc-floating-label">Pick a Food Group</label>
+      <div class="mdc-notched-outline">
+        <svg>
+          <path class="mdc-notched-outline__path">
+        </svg>
+      </div>
+      <div class="mdc-notched-outline__idle"/>
+    </div>
   `;
 }
 
@@ -149,15 +151,16 @@ function getHelperTextFixture(root = getFixture()) {
 }
 
 function setupTest(hasOutline = false, hasLabel = true, hasMockFoundation = false,
-  hasMockMenu = true, hasHelperText = false) {
+  hasMockMenu = true, hasHelperText = false, hasHiddenInput = true) {
   const bottomLine = new FakeBottomLine();
   const label = new FakeLabel();
   const fixture = hasOutline ? getOutlineFixture() : getFixture();
   const container = hasHelperText ? getHelperTextFixture(fixture) : null;
-  const selectedText = fixture.querySelector('.mdc-select__selected-text');
-  const labelEl = fixture.querySelector('.mdc-floating-label');
-  const bottomLineEl = fixture.querySelector('.mdc-line-ripple');
-  const menuSurface = fixture.querySelector('.mdc-select__menu');
+  const hiddenInput = fixture.querySelector(strings.HIDDEN_INPUT_SELECTOR);
+  const selectedText = fixture.querySelector(strings.SELECTED_TEXT_SELECTOR);
+  const labelEl = fixture.querySelector(strings.LABEL_SELECTOR);
+  const bottomLineEl = fixture.querySelector(strings.LINE_RIPPLE_SELECTOR);
+  const menuSurface = fixture.querySelector(strings.MENU_SELECTOR);
   const MockFoundationConstructor = td.constructor(MDCSelectFoundation);
   const mockFoundation = new MockFoundationConstructor();
   const mockMenu = new FakeMenu();
@@ -168,6 +171,10 @@ function setupTest(hasOutline = false, hasLabel = true, hasMockFoundation = fals
 
   if (!hasLabel) {
     fixture.removeChild(labelEl);
+  }
+
+  if (!hasHiddenInput) {
+    fixture.removeChild(hiddenInput);
   }
 
   if (container) {
@@ -183,7 +190,7 @@ function setupTest(hasOutline = false, hasLabel = true, hasMockFoundation = fals
     () => icon,
     () => helperText);
 
-  return {fixture, selectedText, label, labelEl, bottomLine, bottomLineEl, component, outline, menuSurface,
+  return {fixture, selectedText, hiddenInput, label, labelEl, bottomLine, bottomLineEl, component, outline, menuSurface,
     mockFoundation, mockMenu, icon, helperText, container};
 }
 
@@ -389,6 +396,14 @@ test('#initialSyncWithDOM sets the selected index if an option has the selected 
       <div class="mdc-line-ripple"></div>
     </div>
   `;
+  const component = new MDCSelect(fixture, /* foundation */ undefined);
+  assert.equal(component.selectedIndex, 1);
+  document.body.removeChild(document.querySelector('.mdc-select__menu'));
+});
+
+test('#initialSyncWithDOM sets the selected index if the hidden input has a value', () => {
+  const fixture = getFixture();
+  fixture.querySelector(strings.HIDDEN_INPUT_SELECTOR).value = 'orange';
   const component = new MDCSelect(fixture, /* foundation */ undefined);
   assert.equal(component.selectedIndex, 1);
   document.body.removeChild(document.querySelector('.mdc-select__menu'));
@@ -675,28 +690,45 @@ test('adapter#setValue sets the list item to selected when the data-value is fou
   const hasMockMenu = false;
   const hasOutline = false;
   const hasLabel = true;
-  const {component, menuSurface} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  const {component, hiddenInput, menuSurface} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   const listItemValue = menuSurface.querySelectorAll('.mdc-list-item')[1].getAttribute('data-value');
   const adapter = component.getDefaultFoundation().adapter_;
   adapter.setValue(listItemValue);
 
   assert.equal(adapter.getValue(), listItemValue);
+  assert.equal(hiddenInput.value, listItemValue);
   document.body.removeChild(menuSurface);
 });
 
+test('adapter#setValue does not throw if hidden input is absent', () => {
+  const hasMockFoundation = true;
+  const hasMockMenu = false;
+  const hasOutline = false;
+  const hasLabel = true;
+  const hasHelperText = false;
+  const hasHiddenInput = false;
+  const {component, menuSurface} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  const listItemValue = menuSurface.querySelectorAll('.mdc-list-item')[1].getAttribute('data-value');
+  const adapter = component.getDefaultFoundation().adapter_;
+
+  assert.doesNotThrow(() => adapter.setValue(listItemValue));
+  assert.equal(adapter.getValue(), listItemValue);
+  document.body.removeChild(menuSurface);
+});
 
 test('adapter#setValue clears the selected item if the element is not found', () => {
   const hasMockFoundation = true;
   const hasMockMenu = false;
   const hasOutline = false;
   const hasLabel = true;
-  const {component, menuSurface} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  const {component, hiddenInput, menuSurface} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   const listItemValue = menuSurface.querySelectorAll('.mdc-list-item')[1].getAttribute('data-value');
   const adapter = component.getDefaultFoundation().adapter_;
   adapter.setValue(listItemValue);
   adapter.setValue(listItemValue + '1');
 
   assert.equal(adapter.getValue(), '');
+  assert.equal(hiddenInput.value, '');
   document.body.removeChild(menuSurface);
 });
 
@@ -759,21 +791,53 @@ test('adapter#setSelectedIndex adds the --selected class to the list item at the
   document.body.removeChild(menuSurface);
 });
 
-test('adapter#setDisabled adds the --disabled class to the root element', () => {
+test('adapter#setDisabled adds the --disabled class to the root element and syncs hidden input', () => {
   const hasMockFoundation = true;
   const hasMockMenu = true;
   const hasOutline = false;
   const hasLabel = true;
-  const {fixture, component, selectedText} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  const {fixture, component, selectedText, hiddenInput} =
+    setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   document.body.appendChild(fixture);
   const adapter = component.getDefaultFoundation().adapter_;
+
   assert.equal(selectedText.tabIndex, 0);
+  assert.isFalse(hiddenInput.disabled);
+
   adapter.setDisabled(true);
   assert.equal(selectedText.getAttribute('aria-disabled'), 'true');
   assert.equal(selectedText.tabIndex, -1);
+  assert.isTrue(hiddenInput.disabled);
+
   adapter.setDisabled(false);
   assert.equal(selectedText.getAttribute('aria-disabled'), 'false');
   assert.equal(selectedText.tabIndex, 0);
+  assert.isFalse(hiddenInput.disabled);
+
+  document.body.removeChild(fixture);
+});
+
+test('adapter#setDisabled does not throw when hidden input is absent', () => {
+  const hasMockFoundation = true;
+  const hasMockMenu = true;
+  const hasOutline = false;
+  const hasLabel = true;
+  const hasHelperText = false;
+  const hasHiddenInput = false;
+  const {fixture, component, selectedText} =
+    setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+
+  document.body.appendChild(fixture);
+  const adapter = component.getDefaultFoundation().adapter_;
+
+  assert.doesNotThrow(() => adapter.setDisabled(true));
+  assert.equal(selectedText.getAttribute('aria-disabled'), 'true');
+  assert.equal(selectedText.tabIndex, -1);
+
+  assert.doesNotThrow(() => adapter.setDisabled(false));
+  assert.equal(selectedText.getAttribute('aria-disabled'), 'false');
+  assert.equal(selectedText.tabIndex, 0);
+
   document.body.removeChild(fixture);
 });
 
