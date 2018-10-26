@@ -45,6 +45,7 @@
     overflow: hidden;
 
     @include mdc-rtl {
+      /* @noflip */
       text-align: right;
     }
 
