@@ -291,7 +291,7 @@ attribute to the hidden `<input>` element if present.
   <input type="hidden" name="enhanced-select" disabled>
   <i class="mdc-select__dropdown-icon"></i>
   <div class="mdc-select__selected-text"></div>
-  <div class="mdc-select__menu mdc-menu mdc-menu-surface" role="listbox">
+  <div class="mdc-select__menu mdc-menu mdc-menu-surface">
     ...
   </div>
   <span class="mdc-floating-label">Pick a Food Group</label>
@@ -330,13 +330,13 @@ programmatically select a disabled list item in the enhanced select.
   <input type="hidden" name="enhanced-select">
   <i class="mdc-select__dropdown-icon"></i>
   <div class="mdc-select__selected-text">Vegetables</div>
-  <div class="mdc-select__menu mdc-menu mdc-menu-surface" role="listbox">
+  <div class="mdc-select__menu mdc-menu mdc-menu-surface">
     <ul class="mdc-list">
       <li class="mdc-list-item" data-value=""></li>
       <li class="mdc-list-item" data-value="grains">
         Bread, Cereal, Rice, and Pasta
       </li>
-      <li class="mdc-list-item mdc-list-item--selected mdc-list-item--disabled" data-value="vegetables" aria-selected="true" aria-disabled="true">
+      <li class="mdc-list-item mdc-list-item--selected mdc-list-item--disabled" data-value="vegetables">
         Vegetables
       </li>
       <li class="mdc-list-item" data-value="fruit">
