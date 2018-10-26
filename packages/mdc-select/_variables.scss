@@ -21,6 +21,7 @@
 //
 
 @import "@material/animation/variables";
+@import "@material/theme/variables";
 
 $mdc-select-arrow-padding: 26px;
 $mdc-select-label-padding: 16px;
@@ -58,3 +59,6 @@ $mdc-select-outlined-dense-label-position-y: 110%;
 $mdc-select-outlined-with-leading-icon-label-position-x: 32px;
 
 $mdc-select-dropdown-transition-duration: 150ms;
+
+// Error colors
+$mdc-select-error-color: error;

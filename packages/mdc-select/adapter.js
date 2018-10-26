@@ -167,11 +167,21 @@ class MDCSelectAdapter {
 
   /**
    * Emits a change event when an element is selected.
-   * @param {!{
- *    value: string
- *   }} evtData
+   * @param {string} value
    */
-  notifyChange(evtData) {}
+  notifyChange(value) {}
+
+  /**
+   * Checks if the select is currently valid.
+   * @return {boolean} isValid
+   */
+  checkValidity() {}
+
+  /**
+   * Adds/Removes the invalid class.
+   * @param {boolean} isValid
+   */
+  setValid(isValid) {}
 }
 
 export {MDCSelectAdapter, FoundationMapType};

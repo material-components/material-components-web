@@ -29,6 +29,8 @@ const cssClasses = {
   FOCUSED: 'mdc-select--focused',
   SELECTED_ITEM_CLASS: 'mdc-list-item--selected',
   WITH_LEADING_ICON: 'mdc-select--with-leading-icon',
+  INVALID: 'mdc-select--invalid',
+  REQUIRED: 'mdc-select--required',
 };
 
 /** @enum {string} */
@@ -38,6 +40,7 @@ const strings = {
   SELECTED_ITEM_SELECTOR: `.${cssClasses.SELECTED_ITEM_CLASS}`,
   LEADING_ICON_SELECTOR: '.mdc-select__icon',
   SELECTED_TEXT_SELECTOR: '.mdc-select__selected-text',
+  HIDDEN_INPUT_SELECTOR: 'input[type="hidden"]',
   MENU_SELECTOR: '.mdc-select__menu',
   LINE_RIPPLE_SELECTOR: '.mdc-line-ripple',
   LABEL_SELECTOR: '.mdc-floating-label',

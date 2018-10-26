@@ -108,6 +108,39 @@
   @include mdc-select-outlined_;
 }
 
+.mdc-select--invalid {
+  @include mdc-select-label-color($mdc-select-error-color);
+  @include mdc-select-bottom-line-color($mdc-select-error-color);
+  @include mdc-select-focused-bottom-line-color($mdc-select-error-color);
+  @include mdc-select-focused-label-color($mdc-select-error-color);
+  @include mdc-select-helper-text-validation-color($mdc-select-error-color);
+
+  // Hover state colors
+  @include mdc-select-hover-bottom-line-color($mdc-select-error-color);
+
+  &.mdc-select--outlined {
+    @include mdc-select-outline-color($mdc-select-error-color);
+    @include mdc-select-hover-outline-color($mdc-select-error-color);
+    @include mdc-select-focused-outline-color($mdc-select-error-color);
+  }
+
+  .mdc-select__dropdown-icon {
+    @include mdc-select-dd-arrow-svg-bg_($mdc-select-error-color, 1);
+  }
+
+  // stylelint-disable-next-line plugin/selector-bem-pattern
+  + .mdc-select-helper-text--validation-msg {
+    opacity: 1;
+  }
+}
+
+.mdc-select--required {
+  // stylelint-disable-next-line plugin/selector-bem-pattern
+  .mdc-floating-label::after {
+    content: "*";
+  }
+}
+
 .mdc-select--disabled {
   @include mdc-select-disabled_;
 }

@@ -40,6 +40,8 @@ import {MDCSelectHelperText, MDCSelectHelperTextFoundation} from './helper-text/
 import * as menuSurfaceConstants from '@material/menu-surface/constants';
 import * as menuConstants from '@material/menu/constants';
 
+const VALIDATION_ATTR_WHITELIST = ['required', 'aria-required'];
+
 /**
  * @extends MDCComponent<!MDCSelectFoundation>
  */
@@ -53,6 +55,8 @@ class MDCSelect extends MDCComponent {
     this.nativeControl_;
     /** @private {?Element} */
     this.selectedText_;
+    /** @private {?Element} */
+    this.hiddenInput_;
     /** @private {?MDCSelectIcon} */
     this.leadingIcon_;
     /** @private {?MDCSelectHelperText} */
@@ -87,6 +91,8 @@ class MDCSelect extends MDCComponent {
     this.handleMenuSelected_;
     /** @private {boolean} */
     this.menuOpened_ = false;
+    /** @private {!MutationObserver} */
+    this.validationObserver_;
   }
 
   /**
@@ -172,6 +178,50 @@ class MDCSelect extends MDCComponent {
   }
 
   /**
+   * Sets the current invalid state of the select.
+   * @param {boolean} isValid
+   */
+  set valid(isValid) {
+    this.foundation_.setValid(isValid);
+  }
+
+  /**
+   * Checks if the select is in a valid state.
+   * @return {boolean}
+   */
+  get valid() {
+    return this.foundation_.isValid();
+  }
+
+  /**
+   * Sets the control to the required state.
+   * @param {boolean} isRequired
+   */
+  set required(isRequired) {
+    if (this.nativeControl_) {
+      this.nativeControl_.required = isRequired;
+    } else {
+      if (isRequired) {
+        this.selectedText_.setAttribute('aria-required', isRequired.toString());
+      } else {
+        this.selectedText_.removeAttribute('aria-required');
+      }
+    }
+  }
+
+  /**
+   * Returns whether the select is required.
+   * @return {boolean}
+   */
+  get required() {
+    if (this.nativeControl_) {
+      return this.nativeControl_.required;
+    } else {
+      return this.selectedText_.getAttribute('aria-required') === 'true';
+    }
+  }
+
+  /**
    * Recomputes the outline SVG path for the outline element.
    */
   layout() {
@@ -201,6 +251,7 @@ class MDCSelect extends MDCComponent {
     if (this.selectedText_) {
       this.enhancedSelectSetup_(menuFactory);
     }
+
     const labelElement = this.root_.querySelector(strings.LABEL_SELECTOR);
     if (labelElement) {
       this.label_ = labelFactory(labelElement);
@@ -234,6 +285,10 @@ class MDCSelect extends MDCComponent {
     if (!this.root_.classList.contains(cssClasses.OUTLINED)) {
       this.ripple = this.initRipple_();
     }
+
+    // The required state needs to be sync'd before the mutation observer is added.
+    this.initialSyncRequiredState_();
+    this.addMutationObserverForRequired_();
   }
 
   /**
@@ -243,6 +298,7 @@ class MDCSelect extends MDCComponent {
   enhancedSelectSetup_(menuFactory) {
     const isDisabled = this.root_.classList.contains(cssClasses.DISABLED);
     this.selectedText_.setAttribute('tabindex', isDisabled ? '-1' : '0');
+    this.hiddenInput_ = this.root_.querySelector(strings.HIDDEN_INPUT_SELECTOR);
     this.menuElement_ = /** @type {HTMLElement} */ (this.root_.querySelector(strings.MENU_SELECTOR));
     this.menu_ = menuFactory(this.menuElement_);
     this.menu_.hoistMenuToBody();
@@ -272,7 +328,10 @@ class MDCSelect extends MDCComponent {
     this.handleChange_ = () => this.foundation_.handleChange(/* didChange */ true);
     this.handleFocus_ = () => this.foundation_.handleFocus();
     this.handleBlur_ = () => this.foundation_.handleBlur();
-    this.handleClick_ = (evt) => this.foundation_.handleClick(this.getNormalizedXCoordinate_(evt));
+    this.handleClick_ = (evt) => {
+      if (this.selectedText_) this.selectedText_.focus();
+      this.foundation_.handleClick(this.getNormalizedXCoordinate_(evt));
+    };
     this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt);
     this.handleMenuSelected_ = (evtData) => this.selectedIndex = evtData.detail.index;
     this.handleMenuOpened_ = () => {
@@ -308,7 +367,12 @@ class MDCSelect extends MDCComponent {
       this.menu_.listen(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
       this.menu_.listen(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
 
-      if (this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)) {
+      if (this.hiddenInput_ && this.hiddenInput_.value) {
+        // If the hidden input already has a value, use it to restore the select's value.
+        // This can happen e.g. if the user goes back or (in some browsers) refreshes the page.
+        const enhancedAdapterMethods = this.getEnhancedSelectAdapterMethods_();
+        enhancedAdapterMethods.setValue(this.hiddenInput_.value);
+      } else if (this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)) {
         // If an element is selected, the select should set the initial selected text.
         const enhancedAdapterMethods = this.getEnhancedSelectAdapterMethods_();
         enhancedAdapterMethods.setValue(enhancedAdapterMethods.getValue());
@@ -354,6 +418,9 @@ class MDCSelect extends MDCComponent {
     if (this.helperText_) {
       this.helperText_.destroy();
     }
+    if (this.validationObserver_) {
+      this.validationObserver_.disconnect();
+    }
 
     super.destroy();
   }
@@ -396,6 +463,10 @@ class MDCSelect extends MDCComponent {
         this.nativeControl_.selectedIndex = index;
       },
       setDisabled: (isDisabled) => this.nativeControl_.disabled = isDisabled,
+      setValid: (isValid) => {
+        isValid ? this.root_.classList.remove(cssClasses.INVALID) : this.root_.classList.add(cssClasses.INVALID);
+      },
+      checkValidity: () => this.nativeControl_.checkValidity(),
     };
   }
 
@@ -421,8 +492,8 @@ class MDCSelect extends MDCComponent {
         return '';
       },
       setValue: (value) => {
-        const element = /** @type {HTMLElement} */
-        (this.menuElement_.querySelector(`[${strings.ENHANCED_VALUE_ATTR}="${value}"]`));
+        const element =
+          /** @type {HTMLElement} */ (this.menuElement_.querySelector(`[${strings.ENHANCED_VALUE_ATTR}="${value}"]`));
         this.setEnhancedSelectedIndex_(element ? this.menu_.items.indexOf(element) : -1);
       },
       openMenu: () => {
@@ -444,31 +515,25 @@ class MDCSelect extends MDCComponent {
       setDisabled: (isDisabled) => {
         this.selectedText_.setAttribute('tabindex', isDisabled ? '-1' : '0');
         this.selectedText_.setAttribute('aria-disabled', isDisabled.toString());
+        if (this.hiddenInput_) {
+          this.hiddenInput_.disabled = isDisabled;
+        }
+      },
+      checkValidity: () => {
+        const classList = this.root_.classList;
+        if (classList.contains(cssClasses.REQUIRED) && !classList.contains(cssClasses.DISABLED)) {
+          // See notes for required attribute under https://www.w3.org/TR/html52/sec-forms.html#the-select-element
+          // TL;DR: Invalid if no index is selected, or if the first index is selected and has an empty value.
+          return this.selectedIndex !== -1 && (this.selectedIndex !== 0 || this.value);
+        } else {
+          return true;
+        }
+      },
+      setValid: (isValid) => {
+        this.selectedText_.setAttribute('aria-invalid', (!isValid).toString());
+        isValid ? this.root_.classList.remove(cssClasses.INVALID) : this.root_.classList.add(cssClasses.INVALID);
       },
     };
-  }
-
-  /**
-   * Sets the selected index of the enhanced menu.
-   * @param {number} index
-   * @private
-   */
-  setEnhancedSelectedIndex_(index) {
-    const selectedItem = this.menu_.items[index];
-    this.selectedText_.textContent = selectedItem ? selectedItem.textContent.trim() : '';
-    const previouslySelected = this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR);
-
-    if (previouslySelected) {
-      previouslySelected.classList.remove(cssClasses.SELECTED_ITEM_CLASS);
-      previouslySelected.removeAttribute(strings.ARIA_SELECTED_ATTR);
-    }
-
-    if (selectedItem) {
-      selectedItem.classList.add(cssClasses.SELECTED_ITEM_CLASS);
-      selectedItem.setAttribute(strings.ARIA_SELECTED_ATTR, 'true');
-    }
-
-    this.layout();
   }
 
   /**
@@ -480,7 +545,7 @@ class MDCSelect extends MDCComponent {
    *   setRippleCenter: function(number): void,
    *   activateBottomLine: function(): void,
    *   deactivateBottomLine: function(): void,
-   *   notifyChange: function(!{value: string}): void
+   *   notifyChange: function(string): void
    * }}
    * @private
    */
@@ -493,9 +558,9 @@ class MDCSelect extends MDCComponent {
       setRippleCenter: (normalizedX) => this.lineRipple_ && this.lineRipple_.setRippleCenter(normalizedX),
       activateBottomLine: () => this.lineRipple_ && this.lineRipple_.activate(),
       deactivateBottomLine: () => this.lineRipple_ && this.lineRipple_.deactivate(),
-      notifyChange: (evtData) => {
-        evtData.index = this.selectedIndex;
-        this.emit(strings.CHANGE_EVENT, evtData, true /* shouldBubble  */);
+      notifyChange: (value) => {
+        const index = this.selectedIndex;
+        this.emit(strings.CHANGE_EVENT, {value, index}, true /* shouldBubble  */);
       },
     };
   }
@@ -563,6 +628,78 @@ class MDCSelect extends MDCComponent {
       helperText: this.helperText_ ? this.helperText_.foundation : undefined,
     };
   }
+
+  /**
+   * Sets the selected index of the enhanced menu.
+   * @param {number} index
+   * @private
+   */
+  setEnhancedSelectedIndex_(index) {
+    const selectedItem = this.menu_.items[index];
+    this.selectedText_.textContent = selectedItem ? selectedItem.textContent.trim() : '';
+    const previouslySelected = this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR);
+
+    if (previouslySelected) {
+      previouslySelected.classList.remove(cssClasses.SELECTED_ITEM_CLASS);
+      previouslySelected.removeAttribute(strings.ARIA_SELECTED_ATTR);
+    }
+
+    if (selectedItem) {
+      selectedItem.classList.add(cssClasses.SELECTED_ITEM_CLASS);
+      selectedItem.setAttribute(strings.ARIA_SELECTED_ATTR, 'true');
+    }
+
+    // Synchronize hidden input's value with data-value attribute of selected item.
+    // This code path is also followed when setting value directly, so this covers all cases.
+    if (this.hiddenInput_) {
+      this.hiddenInput_.value = selectedItem ? selectedItem.getAttribute(strings.ENHANCED_VALUE_ATTR) || '' : '';
+    }
+
+    this.layout();
+  }
+
+  initialSyncRequiredState_() {
+    const element = this.nativeControl_ ? this.nativeControl_ : this.selectedText_;
+    const isRequired = element.required || element.getAttribute('aria-required') === 'true'
+      || this.root_.classList.contains(cssClasses.REQUIRED);
+    if (isRequired) {
+      if (this.nativeControl_) {
+        this.nativeControl_.required = true;
+      } else {
+        this.selectedText_.setAttribute('aria-required', 'true');
+      }
+      this.root_.classList.add(cssClasses.REQUIRED);
+    }
+  }
+
+  addMutationObserverForRequired_() {
+    const observerHandler = (attributesList) => {
+      attributesList.some((attributeName) => {
+        if (VALIDATION_ATTR_WHITELIST.indexOf(attributeName) > -1) {
+          if (this.selectedText_) {
+            if (this.selectedText_.getAttribute('aria-required') === 'true') {
+              this.root_.classList.add(cssClasses.REQUIRED);
+            } else {
+              this.root_.classList.remove(cssClasses.REQUIRED);
+            }
+          } else {
+            if (this.nativeControl_.required) {
+              this.root_.classList.add(cssClasses.REQUIRED);
+            } else {
+              this.root_.classList.remove(cssClasses.REQUIRED);
+            }
+          }
+          return true;
+        }
+      });
+    };
+
+    const getAttributesList = (mutationsList) => mutationsList.map((mutation) => mutation.attributeName);
+    const observer = new MutationObserver((mutationsList) => observerHandler(getAttributesList(mutationsList)));
+    const element = this.nativeControl_ ? this.nativeControl_ : this.selectedText_;
+    observer.observe(element, {attributes: true});
+    this.validationObserver_ = observer;
+  };
 }
 
 export {MDCSelect, MDCSelectFoundation};

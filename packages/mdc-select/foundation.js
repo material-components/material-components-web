@@ -76,6 +76,8 @@ class MDCSelectFoundation extends MDCFoundation {
       setDisabled: () => {},
       setRippleCenter: () => {},
       notifyChange: () => {},
+      checkValidity: () => {},
+      setValid: () => {},
     });
   }
 
@@ -136,9 +138,11 @@ class MDCSelectFoundation extends MDCFoundation {
   /**
    * Handles value changes, via change event or programmatic updates.
    */
-  handleChange(didChange) {
+  handleChange(didChange = true) {
     const value = this.getValue();
     const optionHasValue = value.length > 0;
+    const isRequired = this.adapter_.hasClass(cssClasses.REQUIRED);
+
     this.notchOutline(optionHasValue);
 
     if (!this.adapter_.hasClass(cssClasses.FOCUSED)) {
@@ -146,7 +150,14 @@ class MDCSelectFoundation extends MDCFoundation {
     }
 
     if (didChange) {
-      this.adapter_.notifyChange({value});
+      this.adapter_.notifyChange(value);
+
+      if (isRequired) {
+        this.setValid(this.isValid());
+        if (this.helperText_) {
+          this.helperText_.setValidity(this.isValid());
+        }
+      }
     }
   }
 
@@ -171,9 +182,14 @@ class MDCSelectFoundation extends MDCFoundation {
     this.adapter_.removeClass(cssClasses.FOCUSED);
     this.handleChange(false);
     this.adapter_.deactivateBottomLine();
-    if (this.helperText_) {
-      // Will handle validity checking in a followup PR.
-      this.helperText_.setValidity(true /* isValid */);
+
+    const isRequired = this.adapter_.hasClass(cssClasses.REQUIRED);
+
+    if (isRequired) {
+      this.setValid(this.isValid());
+      if (this.helperText_) {
+        this.helperText_.setValidity(this.isValid());
+      }
     }
   }
 
@@ -236,6 +252,14 @@ class MDCSelectFoundation extends MDCFoundation {
     if (this.leadingIcon_) {
       this.leadingIcon_.setContent(content);
     }
+  }
+
+  setValid(isValid) {
+    this.adapter_.setValid(isValid);
+  }
+
+  isValid() {
+    return this.adapter_.checkValidity();
   }
 }
 

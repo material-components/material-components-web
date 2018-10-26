@@ -30,9 +30,10 @@ import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 
 import {MDCRipple, MDCRippleFoundation} from '../../../packages/mdc-ripple/index';
 import {MDCSelect} from '../../../packages/mdc-select/index';
-import {cssClasses} from '../../../packages/mdc-select/constants';
+import {cssClasses, strings} from '../../../packages/mdc-select/constants';
 import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline/index';
 import {MDCSelectIcon} from '../../../packages/mdc-select/icon/index';
+import {MDCSelectHelperTextFoundation} from '../../../packages/mdc-select/helper-text/index';
 
 const LABEL_WIDTH = 100;
 
@@ -109,7 +110,7 @@ function getOutlineFixture() {
         <svg>
           <path class="mdc-notched-outline__path">
         </svg>
-      </div>   
+      </div>
       <div class="mdc-notched-outline__idle"/>
     </div>
   `;
@@ -168,6 +169,15 @@ test('#get/set disabled', () => {
   assert.isFalse(component.disabled);
   component.disabled = true;
   assert.isTrue(component.disabled);
+});
+
+test('#get/set required', () => {
+  const {component, nativeControl} = setupTest();
+  assert.isFalse(component.required);
+
+  component.required = true;
+  assert.isTrue(component.required);
+  assert.isTrue(nativeControl.required);
 });
 
 test('#get value', () => {
@@ -378,6 +388,23 @@ test('adapter#setSelectedIndex sets the select selected index to the index speci
   assert.equal(nativeControl.selectedIndex, 2);
 });
 
+test('adapter#notifyChange emits event with index and value', () => {
+  const {component, nativeControl} = setupTest();
+  nativeControl.options[0].selected = false;
+  nativeControl.options[1].selected = true;
+
+  let detail;
+  component.listen(strings.CHANGE_EVENT, (event) => {
+    detail = event.detail;
+  });
+
+  const value = nativeControl.options[1].value;
+  component.getDefaultFoundation().adapter_.notifyChange(value);
+  assert.isDefined(detail);
+  assert.equal(detail.index, 1);
+  assert.equal(detail.value, value);
+});
+
 test('instantiates ripple', function() {
   if (!supportsCssVariables(window, true)) {
     this.skip(); // eslint-disable-line no-invalid-this
@@ -508,6 +535,19 @@ test('adapter#getLabelWidth returns 0 if the label does not exist', () => {
   assert.equal(component.getDefaultFoundation().adapter_.getLabelWidth(), 0);
 });
 
+test(`adapter#setValid applies ${cssClasses.INVALID} properly`, () => {
+  const hasOutline = false;
+  const hasLabel = true;
+  const {component, fixture} = setupTest(hasOutline, hasLabel);
+  const adapter = component.getDefaultFoundation().adapter_;
+
+  adapter.setValid(false);
+  assert.isTrue(fixture.classList.contains(cssClasses.INVALID));
+
+  adapter.setValid(true);
+  assert.isFalse(fixture.classList.contains(cssClasses.INVALID));
+});
+
 test('change event triggers foundation.handleChange(true)', () => {
   const {component, nativeControl} = setupTest();
   component.foundation_.handleChange = td.func();
@@ -617,6 +657,15 @@ test('#constructor instantiates the helper text if present', () => {
   document.body.removeChild(container);
 });
 
+test('#constructor instantiates the helper text and passes the helper text foundation to MDCSelectFoundation', () => {
+  const root = getFixture();
+  const container = getHelperTextFixture(root);
+  document.body.appendChild(container);
+  const component = new MDCSelect(root);
+  assert.instanceOf(component.getDefaultFoundation().helperText_, MDCSelectHelperTextFoundation);
+  document.body.removeChild(container);
+});
+
 test('#constructor does not instantiate the helper text if the aria-controls id does not match an element', () => {
   const containerDiv = getHelperTextFixture();
   containerDiv.querySelector('.mdc-select-helper-text').id = 'hello-world';
@@ -638,3 +687,40 @@ test('#destroy destroys the helper text if it exists', () => {
   td.verify(helperText.destroy(), {times: 1});
   document.body.removeChild(container);
 });
+
+/* eslint-disable mocha/no-skipped-tests, max-len */
+// These are currently skipped due to rAF being improperly cleaned up somewhere in our tests
+test.skip(`MutationObserver adds ${cssClasses.REQUIRED} class to the parent when required attribute is added`, (done) => {
+  const hasLabel = true;
+  const hasOutline = false;
+  const hasHelperText = false;
+  const {fixture, nativeControl} = setupTest(hasLabel, hasOutline, hasHelperText);
+  assert.isFalse(fixture.classList.contains(cssClasses.REQUIRED));
+
+  nativeControl.setAttribute('required', 'true');
+
+  // MutationObservers are queued as microtasks and fire asynchronously
+  setTimeout(() => {
+    assert.isTrue(fixture.classList.contains(cssClasses.REQUIRED));
+    done();
+  }, 0);
+});
+
+test.skip(`MutationObserver removes ${cssClasses.REQUIRED} class from the parent when required attribute is removed`, (done) => {
+  const hasLabel = true;
+  const hasOutline = false;
+  const hasHelperText = false;
+  const {fixture, nativeControl} = setupTest(hasLabel, hasOutline, hasHelperText);
+
+  nativeControl.setAttribute('required', 'true');
+  setTimeout(() => {
+    assert.isTrue(fixture.classList.contains(cssClasses.REQUIRED));
+
+    fixture.querySelector(strings.NATIVE_CONTROL_SELECTOR).removeAttribute('required');
+    setTimeout(() => {
+      assert.isFalse(fixture.classList.contains(cssClasses.REQUIRED));
+      done();
+    }, 0);
+  }, 0);
+});
+/* eslint-enable mocha/no-skipped-tests, max-len */
