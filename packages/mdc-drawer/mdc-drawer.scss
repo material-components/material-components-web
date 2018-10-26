@@ -22,6 +22,7 @@
 
 @import "@material/side-sheet/mixins";
 @import "@material/side-sheet/variables";
+@import "@material/top-app-bar/variables";
 @import "@material/typography/mixins";
 @import "./mixins";
 @import "./variables";
@@ -90,7 +91,7 @@
 .mdc-drawer__header {
   flex-shrink: 0;
   box-sizing: border-box;
-  min-height: 64px; // same as $mdc-top-app-bar-row-height
+  min-height: $mdc-top-app-bar-row-height;
   padding: 0 $mdc-drawer-surface-padding 4px;
 }
 
