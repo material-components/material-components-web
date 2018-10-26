@@ -705,8 +705,6 @@ test('adapter#setValue does not throw if hidden input is absent', () => {
   const hasMockMenu = false;
   const hasOutline = false;
   const hasLabel = true;
-  const hasHelperText = false;
-  const hasHiddenInput = false;
   const {component, menuSurface} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   const listItemValue = menuSurface.querySelectorAll('.mdc-list-item')[1].getAttribute('data-value');
   const adapter = component.getDefaultFoundation().adapter_;
@@ -822,8 +820,6 @@ test('adapter#setDisabled does not throw when hidden input is absent', () => {
   const hasMockMenu = true;
   const hasOutline = false;
   const hasLabel = true;
-  const hasHelperText = false;
-  const hasHiddenInput = false;
   const {fixture, component, selectedText} =
     setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
 
@@ -872,7 +868,7 @@ test('adapter#checkValidity returns true regardless if required class is not pre
   const hasMockMenu = false;
   const hasOutline = false;
   const hasLabel = true;
-  const {component, fixture} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  const {component} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   const adapter = component.getDefaultFoundation().adapter_;
 
   component.selectedIndex = -1;
@@ -911,7 +907,7 @@ test('adapter#setValid updates aria-invalid attribute properly', () => {
   assert.strictEqual(selectedText.getAttribute('aria-invalid'), 'false');
 });
 
-test(`adapter#setValid applies $cssClasses.INVALID properly`, () => {
+test(`adapter#setValid applies ${cssClasses.INVALID} properly`, () => {
   const hasMockFoundation = true;
   const hasMockMenu = false;
   const hasOutline = false;
@@ -1226,6 +1222,7 @@ test('#destroy destroys the helper text if it exists', () => {
   document.body.removeChild(container);
 });
 
+/* eslint-disable mocha/no-skipped-tests, max-len */
 // These are currently skipped due to rAF being improperly cleaned up somewhere in our tests
 test.skip(`MutationObserver adds ${cssClasses.REQUIRED} class to the parent when aria-required attribute is added`, (done) => {
   const hasLabel = true;
@@ -1260,3 +1257,4 @@ test.skip(`MutationObserver removes ${cssClasses.REQUIRED} class from the parent
     }, 0);
   }, 0);
 });
+/* eslint-enable mocha/no-skipped-tests, max-len */

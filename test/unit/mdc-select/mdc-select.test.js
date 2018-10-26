@@ -535,7 +535,7 @@ test('adapter#getLabelWidth returns 0 if the label does not exist', () => {
   assert.equal(component.getDefaultFoundation().adapter_.getLabelWidth(), 0);
 });
 
-test(`adapter#setValid applies $cssClasses.INVALID properly`, () => {
+test(`adapter#setValid applies ${cssClasses.INVALID} properly`, () => {
   const hasOutline = false;
   const hasLabel = true;
   const {component, fixture} = setupTest(hasOutline, hasLabel);
@@ -688,6 +688,7 @@ test('#destroy destroys the helper text if it exists', () => {
   document.body.removeChild(container);
 });
 
+/* eslint-disable mocha/no-skipped-tests, max-len */
 // These are currently skipped due to rAF being improperly cleaned up somewhere in our tests
 test.skip(`MutationObserver adds ${cssClasses.REQUIRED} class to the parent when required attribute is added`, (done) => {
   const hasLabel = true;
@@ -722,3 +723,4 @@ test.skip(`MutationObserver removes ${cssClasses.REQUIRED} class from the parent
     }, 0);
   }, 0);
 });
+/* eslint-enable mocha/no-skipped-tests, max-len */

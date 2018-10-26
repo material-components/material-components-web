@@ -128,6 +128,7 @@
     @include mdc-select-dd-arrow-svg-bg_($mdc-select-error-color, 1);
   }
 
+  // stylelint-disable-next-line plugin/selector-bem-pattern
   + .mdc-select-helper-text--validation-msg {
     opacity: 1;
   }
