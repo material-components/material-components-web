@@ -388,6 +388,23 @@ test('adapter#setSelectedIndex sets the select selected index to the index speci
   assert.equal(nativeControl.selectedIndex, 2);
 });
 
+test('adapter#notifyChange emits event with index and value', () => {
+  const {component, nativeControl} = setupTest();
+  nativeControl.options[0].selected = false;
+  nativeControl.options[1].selected = true;
+
+  let detail;
+  component.listen(strings.CHANGE_EVENT, (event) => {
+    detail = event.detail;
+  });
+
+  const value = nativeControl.options[1].value;
+  component.getDefaultFoundation().adapter_.notifyChange(value);
+  assert.isDefined(detail);
+  assert.equal(detail.index, 1);
+  assert.equal(detail.value, value);
+});
+
 test('instantiates ripple', function() {
   if (!supportsCssVariables(window, true)) {
     this.skip(); // eslint-disable-line no-invalid-this
