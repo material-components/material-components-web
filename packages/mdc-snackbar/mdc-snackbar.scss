@@ -21,7 +21,9 @@
 //
 
 @import "@material/animation/functions";
+@import "@material/button/mixins";
 @import "@material/elevation/mixins";
+@import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
 @import "@material/shape/mixins";
 @import "@material/theme/functions";
@@ -36,36 +38,27 @@
   @include mdc-snackbar-surface-color(surface);
   @include mdc-snackbar-overlay-color(on-surface);
   @include mdc-snackbar-label-ink-color(surface);
-  @include mdc-snackbar-elevation(6);
-  @include mdc-snackbar-shape-radius(small);
+  @include mdc-elevation(6);
+  @include mdc-shape-radius(small);
 
+  display: flex;
   position: fixed;
   bottom: 8px; // 24px for "wide" layout on desktop/tablet
   left: 50%;
+  align-items: center;
+  justify-content: flex-start;
   box-sizing: border-box;
-  transform: /*translateX(-50%)*/ scale(.8);
+  transform: translateX(-50%) scale(.8);
   opacity: 0;
 
-  //background-color: $mdc-snackbar-background-color;
-  //color: $mdc-snackbar-foreground-color;
-  //will-change: transform;
-  //pointer-events: auto;
+  // pointer-events: none; // TODO(acdvorak): Use this for centering w/ display: flex?
 
-  //@media (max-width: ($mdc-snackbar-tablet-breakpoint - 1)) {
-  //  left: 0;
-  //  width: 100%;
-  //  transform: translate(0, 100%);
-  //}
-  //
-  //@media (min-width: $mdc-snackbar-tablet-breakpoint) {
-  //  min-width: 288px;
-  //  max-width: 568px;
-  //  border-radius: 2px;
-  //}
+  // Prevent __overlay's background-color from bleeding past container's border-radius
+  overflow: hidden;
 }
 
 .mdc-snackbar--open {
-  transform: /*translateX(-50%)*/ scale(1); // TODO(acdvorak): Find a better way to prevent GPU/CPU jank
+  transform: translateX(-50%) scale(1); // TODO(acdvorak): Find a better way to prevent GPU/CPU jank
   transition:
     mdc-animation-enter(opacity, 150ms),
     mdc-animation-enter(transform, 150ms);
@@ -73,21 +66,8 @@
 }
 
 .mdc-snackbar--closing {
-  transform: /*translateX(-50%)*/ scale(1); // TODO(acdvorak): Find a better way to prevent GPU/CPU jank
+  transform: translateX(-50%) scale(1); // TODO(acdvorak): Find a better way to prevent GPU/CPU jank
   transition: mdc-animation-exit-permanent(opacity, 75ms, 150ms);
-}
-
-.mdc-snackbar__container {
-  display: flex;
-  position: relative;
-  //left: -50%;
-  transform: translateX(-50%) scale(1);
-  align-items: center;
-  justify-content: flex-start;
-  box-sizing: border-box;
-
-  // Prevent __overlay's background-color from bleeding past container's border-radius
-  overflow: hidden;
 }
 
 .mdc-snackbar__overlay {
@@ -97,7 +77,6 @@
   bottom: 0;
   left: 0;
   box-sizing: border-box;
-  //z-index: -1;
 }
 
 .mdc-snackbar__label {
@@ -114,6 +93,12 @@
 
   position: relative; // z-index above __overlay
   box-sizing: border-box;
+}
+
+.mdc-snackbar__action-button {
+  // TODO(acdvorak): How should we implement this?
+  @include mdc-button-ink-color(#bb86fc);
+  @include mdc-states-base-color(#bb86fc);
 }
 
 // postcss-bem-linter: end

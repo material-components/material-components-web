@@ -21,7 +21,6 @@
 //
 
 @import "@material/animation/functions";
-@import "@material/elevation/mixins";
 @import "@material/rtl/mixins";
 @import "@material/theme/functions";
 @import "@material/theme/mixins";
@@ -30,9 +29,7 @@
 @import "./variables";
 
 @mixin mdc-snackbar-surface-color($color: surface) {
-  .mdc-snackbar__container {
-    @include mdc-theme-prop(background-color, $color);
-  }
+  @include mdc-theme-prop(background-color, $color);
 }
 
 @mixin mdc-snackbar-overlay-color($color: on-surface, $opacity: .8) {
@@ -59,12 +56,12 @@
   }
 }
 
-@mixin mdc-snackbar-min-width($min-width: "???") {
-  ;
+@mixin mdc-snackbar-min-width($min-width: 123px) {
+  min-width: $min-width;
 }
 
 @mixin mdc-snackbar-max-width($max-width: 672px) {
-  ;
+  max-width: $max-width;
 }
 
 @mixin mdc-snackbar-viewport-alignment($align: center) {
@@ -73,17 +70,5 @@
 
 @mixin mdc-snackbar-viewport-margins($margins: 24px 24px 24px) {
   ;
-}
-
-@mixin mdc-snackbar-elevation($z-index) {
-  .mdc-snackbar__container {
-    @include mdc-elevation($z-index);
-  }
-}
-
-@mixin mdc-snackbar-shape-radius($radius) {
-  .mdc-snackbar__container {
-    @include mdc-shape-radius($radius);
-  }
 }
 
