@@ -23,7 +23,8 @@
 @import "@material/theme/mixins";
 @import "@material/list/mixins";
 @import "@material/ripple/mixins";
-@import "@material/shape/mixins";
+@import "@material/side-sheet/mixins";
+@import "@material/side-sheet/variables";
 @import "./variables";
 
 @mixin mdc-drawer-activated-overlay-color($color) {
@@ -32,10 +33,8 @@
   }
 }
 
-@mixin mdc-drawer-border-color($color) {
-  $value: rgba(mdc-theme-prop-value($color), $mdc-drawer-divider-opacity);
-
-  @include mdc-theme-prop(border-color, $value);
+@mixin mdc-drawer-outline-color($color) {
+  @include mdc-side-sheet-outline-color($color);
 }
 
 @mixin mdc-drawer-item-shape-radius($radius, $rtl-reflexive: true) {
@@ -43,15 +42,7 @@
 }
 
 @mixin mdc-drawer-shape-radius($radius) {
-  @if length($radius) > 2 {
-    @error "Invalid radius: '#{$radius}' component doesn't allow customizing all corners";
-  } @else if length($radius) == 2 {
-    $radius: 0 nth($radius, 1) nth($radius, 2) 0;
-  } @else {
-    $radius: 0 $radius $radius 0;
-  }
-
-  @include mdc-shape-radius($radius, $rtl-reflexive: true);
+  @include mdc-side-sheet-shape-radius($radius, leading);
 }
 
 @mixin mdc-drawer-divider-color($color) {
@@ -119,13 +110,11 @@
 }
 
 @mixin mdc-drawer-surface-fill-color($color) {
-  $value: mdc-theme-prop-value($color);
-
-  @include mdc-theme-prop(background-color, $value);
+  @include mdc-side-sheet-surface-fill-color($color);
 }
 
 @mixin mdc-drawer-scrim-fill-color($color) {
-  $value: rgba(mdc-theme-prop-value($color), $mdc-drawer-modal-scrim-opacity);
+  $value: rgba(mdc-theme-prop-value($color), $mdc-side-sheet-modal-scrim-opacity);
 
   + .mdc-drawer-scrim {
     @include mdc-theme-prop(background-color, $value);
@@ -139,7 +128,7 @@
 @mixin mdc-drawer-width($width) {
   width: $width;
 
-  &.mdc-drawer--open:not(.mdc-drawer--closing) + .mdc-drawer-app-content {
-    @include mdc-rtl-reflexive-box(margin, left, $width);
+  &.mdc-drawer--open:not(&--closing) ~ .mdc-side-sheet-app-content {
+    @include mdc-side-sheet-app-content-margin_($width, leading);
   }
 }
