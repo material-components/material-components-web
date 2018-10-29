@@ -36,6 +36,10 @@ export class MDCSnackbar extends MDCComponent {
     this.foundation_.show(data);
   }
 
+  hide() {
+    this.foundation_.hide();
+  }
+
   getDefaultFoundation() {
     const {
       TEXT_SELECTOR,
@@ -74,13 +78,5 @@ export class MDCSnackbar extends MDCComponent {
       notifyShow: () => this.emit(MDCSnackbarFoundation.strings.SHOW_EVENT),
       notifyHide: () => this.emit(MDCSnackbarFoundation.strings.HIDE_EVENT),
     });
-  }
-
-  get dismissesOnAction() {
-    return this.foundation_.dismissesOnAction();
-  }
-
-  set dismissesOnAction(dismissesOnAction) {
-    this.foundation_.setDismissOnAction(dismissesOnAction);
   }
 }

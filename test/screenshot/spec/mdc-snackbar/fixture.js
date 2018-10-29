@@ -23,7 +23,14 @@
 
 window.mdc.testFixture.fontsLoaded.then(() => {
   [].forEach.call(document.querySelectorAll('.mdc-snackbar'), (el) => {
-    mdc.snackbar.MDCSnackbar.attachTo(el);
+    const snackbar = mdc.snackbar.MDCSnackbar.attachTo(el);
+
+    const openButtonEl = document.querySelector(`[data-test-snackbar-id="${el.id}"]`);
+    if (openButtonEl) {
+      openButtonEl.addEventListener('click', () => snackbar.show());
+    }
+
+    snackbar.show();
   });
 
   window.mdc.testFixture.notifyDomReady();

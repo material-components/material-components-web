@@ -42,7 +42,11 @@
 
   <body class="test-container">
     <main class="test-viewport test-viewport--gridlines test-viewport--center">
+
+      <button class="test-snackbar-open-button" data-test-snackbar-id="test-snackbar" autofocus>Open Snackbar</button>
+
       <div class="mdc-snackbar mdc-snackbar--open"
+           id="test-snackbar"
            aria-live="polite"
            aria-atomic="true"
            aria-hidden="true">
@@ -54,6 +58,7 @@
           </div>
         </div>
       </div>
+
     </main>
 
     <!-- Automatically provides/replaces `Promise` if missing or broken. -->

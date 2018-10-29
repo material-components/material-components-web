@@ -16,6 +16,9 @@
   "dependencies": {
     "@material/animation": "^0.40.1",
     "@material/base": "^0.40.1",
+    "@material/button": "^0.40.1",
+    "@material/dom": "^0.40.0",
+    "@material/ripple": "^0.40.1",
     "@material/rtl": "^0.40.1",
     "@material/theme": "^0.40.1",
     "@material/typography": "^0.40.1"
