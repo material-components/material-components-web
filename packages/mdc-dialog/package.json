@@ -1,6 +1,6 @@
 {
   "name": "@material/dialog",
-  "version": "0.40.1",
+  "version": "0.41.0",
   "description": "The Material Components Web dialog component",
   "license": "MIT",
   "keywords": [
@@ -15,15 +15,15 @@
     "url": "https://github.com/material-components/material-components-web.git"
   },
   "dependencies": {
-    "@material/animation": "^0.40.1",
-    "@material/base": "^0.40.1",
-    "@material/dom": "^0.40.0",
-    "@material/elevation": "^0.40.1",
-    "@material/ripple": "^0.40.1",
+    "@material/animation": "^0.41.0",
+    "@material/base": "^0.41.0",
+    "@material/dom": "^0.41.0",
+    "@material/elevation": "^0.41.0",
+    "@material/ripple": "^0.41.0",
     "@material/rtl": "^0.40.1",
-    "@material/shape": "^0.40.1",
-    "@material/theme": "^0.40.1",
-    "@material/typography": "^0.40.1",
+    "@material/shape": "^0.41.0",
+    "@material/theme": "^0.41.0",
+    "@material/typography": "^0.41.0",
     "focus-trap": "^2.3.0"
   },
   "publishConfig": {
