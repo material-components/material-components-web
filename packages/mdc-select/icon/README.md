@@ -4,7 +4,7 @@ layout: detail
 section: components
 excerpt: "Icons describe the type of input a select requires"
 iconId: text_field
-path: /catalog/input-controls/select/icon/
+path: /catalog/input-controls/select-menus/icon/
 -->
 
 # Select Icon
