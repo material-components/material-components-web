@@ -22,10 +22,8 @@
 
 @import "@material/animation/functions";
 @import "@material/button/mixins";
-@import "@material/elevation/mixins";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
-@import "@material/shape/mixins";
 @import "@material/theme/functions";
 @import "@material/theme/mixins";
 @import "@material/theme/variables";
@@ -35,39 +33,57 @@
 
 // postcss-bem-linter: define snackbar
 .mdc-snackbar {
-  @include mdc-snackbar-surface-color(surface);
-  @include mdc-snackbar-overlay-color(on-surface);
-  @include mdc-snackbar-label-ink-color(surface);
-  @include mdc-elevation(6);
-  @include mdc-shape-radius(small);
+  @include mdc-snackbar-viewport-margin(8px); // TODO(acdvorak): 24px for "wide" layout
 
   display: flex;
   position: fixed;
-  bottom: 8px; // 24px for "wide" layout on desktop/tablet
-  left: 50%;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+@at-root {
+  @include mdc-snackbar-surface-color(surface);
+  @include mdc-snackbar-overlay-color(on-surface);
+  @include mdc-snackbar-label-ink-color(surface);
+  @include mdc-snackbar-min-width(344px); // TODO(acdvorak): What's the correct value?
+  @include mdc-snackbar-max-width(672px);
+  @include mdc-snackbar-elevation(6);
+  @include mdc-snackbar-shape-radius(small);
+}
+
+.mdc-snackbar--leading {
+  justify-content: flex-start;
+}
+
+.mdc-snackbar__container {
+  display: flex;
   align-items: center;
   justify-content: flex-start;
   box-sizing: border-box;
-  transform: translateX(-50%) scale(.8);
+  transform: scale(.8);
   opacity: 0;
+  pointer-events: auto;
 
-  // pointer-events: none; // TODO(acdvorak): Use this for centering w/ display: flex?
-
-  // Prevent __overlay's background-color from bleeding past container's border-radius
+  // Prevent mdc-snackbar__overlay's background-color from bleeding past the container's border-radius
   overflow: hidden;
-}
 
-.mdc-snackbar--open {
-  transform: translateX(-50%) scale(1); // TODO(acdvorak): Find a better way to prevent GPU/CPU jank
-  transition:
-    mdc-animation-enter(opacity, 150ms),
-    mdc-animation-enter(transform, 150ms);
-  opacity: 1;
-}
+  .mdc-snackbar--open & {
+    transform: scale(1);
+    transition:
+      mdc-animation-enter(opacity, 150ms),
+      mdc-animation-enter(transform, 150ms);
+    opacity: 1;
+  }
 
-.mdc-snackbar--closing {
-  transform: translateX(-50%) scale(1); // TODO(acdvorak): Find a better way to prevent GPU/CPU jank
-  transition: mdc-animation-exit-permanent(opacity, 75ms, 150ms);
+  .mdc-snackbar--closing & {
+    transform: scale(1);
+    transition: mdc-animation-exit-permanent(opacity, 75ms, 150ms);
+  }
 }
 
 .mdc-snackbar__overlay {
@@ -82,16 +98,18 @@
 .mdc-snackbar__label {
   @include mdc-typography(body2);
 
-  position: relative; // z-index above __overlay
+  position: relative; // z-index above mdc-snackbar__overlay
+  flex-grow: 1;
   box-sizing: border-box;
   margin: 0;
-  padding: 14px 16px; // TODO(acdvorak): Should be 16px on all sides, but we need height of snackbar to be 48px
+  padding: 14px 16px; // TODO(acdvorak): "14px" needed for 48px height
 }
 
 .mdc-snackbar__actions {
   @include mdc-rtl-reflexive-property(margin, 0, 8px);
 
-  position: relative; // z-index above __overlay
+  position: relative; // z-index above mdc-snackbar__overlay
+  flex-shrink: 0;
   box-sizing: border-box;
 }
 

@@ -20,19 +20,19 @@
 // THE SOFTWARE.
 //
 
-@import "@material/animation/functions";
-@import "@material/rtl/mixins";
+@import "@material/elevation/mixins";
 @import "@material/theme/functions";
 @import "@material/theme/mixins";
 @import "@material/theme/variables";
-@import "@material/typography/mixins";
 @import "./variables";
 
-@mixin mdc-snackbar-surface-color($color: surface) {
-  @include mdc-theme-prop(background-color, $color);
+@mixin mdc-snackbar-surface-color($color) {
+  .mdc-snackbar__container {
+    @include mdc-theme-prop(background-color, $color);
+  }
 }
 
-@mixin mdc-snackbar-overlay-color($color: on-surface, $opacity: .8) {
+@mixin mdc-snackbar-overlay-color($color, $opacity: .8) {
   .mdc-snackbar__overlay {
     $opacity-value: if(type-of($opacity) == number, $opacity, mdc-theme-text-emphasis($opacity));
     $color-value: rgba(mdc-theme-prop-value($color), $opacity-value);
@@ -41,7 +41,7 @@
   }
 }
 
-@mixin mdc-snackbar-label-ink-color($color: surface, $opacity: high) {
+@mixin mdc-snackbar-label-ink-color($color, $opacity: high) {
   .mdc-snackbar__label {
     $opacity-value: if(type-of($opacity) == number, $opacity, mdc-theme-text-emphasis($opacity));
     $color-value: rgba(mdc-theme-prop-value($color), $opacity-value);
@@ -50,25 +50,30 @@
   }
 }
 
-@mixin mdc-snackbar-label-padding($padding: 16px) {
-  .mdc-snackbar__label {
-    padding: $padding;
+@mixin mdc-snackbar-min-width($min-width) {
+  .mdc-snackbar__container {
+    min-width: $min-width;
   }
 }
 
-@mixin mdc-snackbar-min-width($min-width: 123px) {
-  min-width: $min-width;
+@mixin mdc-snackbar-max-width($max-width) {
+  .mdc-snackbar__container {
+    max-width: $max-width;
+  }
 }
 
-@mixin mdc-snackbar-max-width($max-width: 672px) {
-  max-width: $max-width;
+@mixin mdc-snackbar-viewport-margin($margin) {
+  margin: $margin;
 }
 
-@mixin mdc-snackbar-viewport-alignment($align: center) {
-  ;
+@mixin mdc-snackbar-elevation($z-index) {
+  .mdc-snackbar__container {
+    @include mdc-elevation($z-index);
+  }
 }
 
-@mixin mdc-snackbar-viewport-margins($margins: 24px 24px 24px) {
-  ;
+@mixin mdc-snackbar-shape-radius($radius) {
+  .mdc-snackbar__container {
+    @include mdc-shape-radius($radius);
+  }
 }
-
