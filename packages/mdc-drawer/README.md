@@ -305,7 +305,7 @@ Modal drawers are elevated above most of the app's UI and don't affect the scree
 </body>
 ```
 
-> The `mdc-drawer-scrim` next sibling element protects the app's UI from interactions while the drawer is open.
+> The `mdc-drawer-scrim` next sibling element is **required**, to protect the app's UI from interactions while the modal drawer is open.
 
 ## Style Customization
 
@@ -323,8 +323,8 @@ Class | Description
 `mdc-drawer--open` | If present, indicates that the dismissible drawer is in the open position.
 `mdc-drawer--opening` | Applied while the drawer is animating from the closed to the open position.
 `mdc-drawer--closing` | Applied while the drawer is animating from the open to the closed position.
-`mdc-drawer-app-content` | Dismissible variant only. Sibling element that is resized when the drawer opens/closes.
-`mdc-drawer-scrim` | Modal variant only. Used for the overlay on the app content.
+`mdc-drawer-app-content` | Mandatory for dismissible variant only. Sibling element that is resized when the drawer opens/closes.
+`mdc-drawer-scrim` | Mandatory for modal variant only. Used for the overlay on the app content.
 
 
 ### Sass Mixins
