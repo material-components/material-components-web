@@ -1,7 +1,7 @@
 {
   "name": "@material/base",
   "description": "The set of base classes for Material Components for the web",
-  "version": "0.40.1",
+  "version": "0.41.0",
   "license": "MIT",
   "main": "dist/mdc.base.js",
   "repository": {
