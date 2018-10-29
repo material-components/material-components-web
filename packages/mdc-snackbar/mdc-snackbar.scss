@@ -93,22 +93,23 @@
   bottom: 0;
   left: 0;
   box-sizing: border-box;
+  z-index: -1;
 }
 
 .mdc-snackbar__label {
   @include mdc-typography(body2);
 
-  position: relative; // z-index above mdc-snackbar__overlay
   flex-grow: 1;
   box-sizing: border-box;
   margin: 0;
-  padding: 14px 16px; // TODO(acdvorak): "14px" needed for 48px height
+
+  // 14px top/bottom padding needed to make the height 48px.
+  padding: 14px 16px;
 }
 
 .mdc-snackbar__actions {
   @include mdc-rtl-reflexive-property(margin, 0, 8px);
 
-  position: relative; // z-index above mdc-snackbar__overlay
   flex-shrink: 0;
   box-sizing: border-box;
 }
