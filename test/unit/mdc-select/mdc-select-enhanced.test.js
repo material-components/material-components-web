@@ -1219,7 +1219,7 @@ test('#destroy destroys the helper text if it exists', () => {
   document.body.removeChild(container);
 });
 
-test(`MutationObserver adds ${cssClasses.REQUIRED} class to the parent when aria-required attribute is added`, (done) => {
+test(`MutationObserver adds ${cssClasses.REQUIRED} class to parent when aria-required attr is added`, (done) => {
   const hasLabel = true;
   const hasOutline = false;
   const hasHelperText = false;
@@ -1235,7 +1235,7 @@ test(`MutationObserver adds ${cssClasses.REQUIRED} class to the parent when aria
   }, 0);
 });
 
-test(`MutationObserver removes ${cssClasses.REQUIRED} class from the parent when aria-required attribute is removed`, (done) => {
+test(`MutationObserver removes ${cssClasses.REQUIRED} class from parent when aria-required attr is removed`, (done) => {
   const hasLabel = true;
   const hasOutline = false;
   const hasHelperText = false;
