@@ -51,7 +51,7 @@ npm install @material/drawer
 </aside>
 ```
 
-#### Menu Icon
+#### Icons
 
 We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts:
 

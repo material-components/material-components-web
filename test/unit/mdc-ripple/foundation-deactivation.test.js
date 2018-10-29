@@ -74,6 +74,26 @@ testFoundation('runs deactivation UX on pointerup after pointerdown', ({foundati
   td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION));
 });
 
+testFoundation('runs deactivation UX on contextmenu after pointerdown', ({foundation, adapter, clock}) => {
+  const handlers = captureHandlers(adapter, 'registerInteractionHandler');
+  const documentHandlers = captureHandlers(adapter, 'registerDocumentInteractionHandler');
+  foundation.init();
+  clock.runToFrame();
+
+  handlers.pointerdown({pageX: 0, pageY: 0});
+  clock.runToFrame();
+
+  documentHandlers.contextmenu();
+  clock.runToFrame();
+  clock.tick(DEACTIVATION_TIMEOUT_MS);
+
+  td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
+  td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION));
+
+  clock.tick(numbers.FG_DEACTIVATION_MS);
+  td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION));
+});
+
 testFoundation('runs deactivation UX on mouseup after mousedown', ({foundation, adapter, clock}) => {
   const handlers = captureHandlers(adapter, 'registerInteractionHandler');
   const documentHandlers = captureHandlers(adapter, 'registerDocumentInteractionHandler');
@@ -84,6 +104,26 @@ testFoundation('runs deactivation UX on mouseup after mousedown', ({foundation, 
   clock.runToFrame();
 
   documentHandlers.mouseup();
+  clock.runToFrame();
+  clock.tick(DEACTIVATION_TIMEOUT_MS);
+
+  td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION), {times: 2});
+  td.verify(adapter.addClass(cssClasses.FG_DEACTIVATION));
+
+  clock.tick(numbers.FG_DEACTIVATION_MS);
+  td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION));
+});
+
+testFoundation('runs deactivation UX on contextmenu after mousedown', ({foundation, adapter, clock}) => {
+  const handlers = captureHandlers(adapter, 'registerInteractionHandler');
+  const documentHandlers = captureHandlers(adapter, 'registerDocumentInteractionHandler');
+  foundation.init();
+  clock.runToFrame();
+
+  handlers.mousedown({pageX: 0, pageY: 0});
+  clock.runToFrame();
+
+  documentHandlers.contextmenu();
   clock.runToFrame();
   clock.tick(DEACTIVATION_TIMEOUT_MS);
 

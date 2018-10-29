@@ -104,9 +104,9 @@
 //
 // Examples:
 //
-// mdc-shape-prop-value_(small) => 4px
+// mdc-shape-prop-value(small) => 4px
 //
-@function mdc-shape-prop-value_($radius) {
+@function mdc-shape-prop-value($radius) {
   @if type-of($radius) == "list" {
     @if length($radius) > 4 {
       @error "Invalid radius: '#{$radius}' is more than 4 values";
