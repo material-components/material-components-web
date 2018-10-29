@@ -21,152 +21,99 @@
 //
 
 @import "@material/animation/functions";
+@import "@material/elevation/mixins";
 @import "@material/rtl/mixins";
+@import "@material/shape/mixins";
+@import "@material/theme/functions";
 @import "@material/theme/mixins";
+@import "@material/theme/variables";
 @import "@material/typography/mixins";
+@import "./mixins";
 @import "./variables";
 
 // postcss-bem-linter: define snackbar
 .mdc-snackbar {
-  display: flex;
+  @include mdc-snackbar-surface-color(surface);
+  @include mdc-snackbar-overlay-color(on-surface);
+  @include mdc-snackbar-label-ink-color(surface);
+  @include mdc-snackbar-elevation(6);
+  @include mdc-snackbar-shape-radius(small);
+
   position: fixed;
-  bottom: 0;
+  bottom: 8px; // 24px for "wide" layout on desktop/tablet
   left: 50%;
-  align-items: center;
-  justify-content: flex-start;
   box-sizing: border-box;
-  padding-right: 24px;
-  padding-left: 24px;
-  transform: translate(-50%, 100%);
-  transition: mdc-animation-exit-permanent(transform, .25s);
-  background-color: $mdc-snackbar-background-color;
-  pointer-events: none;
-  will-change: transform;
-
-  @media (max-width: ($mdc-snackbar-tablet-breakpoint - 1)) {
-    left: 0;
-    width: 100%;
-    transform: translate(0, 100%);
-  }
-
-  @media (min-width: $mdc-snackbar-tablet-breakpoint) {
-    min-width: 288px;
-    max-width: 568px;
-    border-radius: 2px;
-  }
-}
-
-.mdc-snackbar--align-start {
-  @media (min-width: $mdc-snackbar-tablet-breakpoint) {
-    @include mdc-rtl-reflexive-position(left, 24px);
-
-    bottom: 24px;
-    transform: translate(0, 200%);
-  }
-
-  @media (max-width: ($mdc-snackbar-tablet-breakpoint - 1)) {
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    transform: translate(0, 100%);
-  }
-}
-
-.mdc-snackbar--active {
-  transform: translate(0);
-  transition: mdc-animation-enter(transform, .25s);
-  pointer-events: auto;
-
-  &:not(.mdc-snackbar--align-start) {
-    transform: translate(-50%, 0);
-
-    @media (max-width: ($mdc-snackbar-tablet-breakpoint - 1)) {
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      transform: translate(0);
-    }
-  }
-}
-
-.mdc-snackbar__action-wrapper {
-  @include mdc-rtl-reflexive-property(padding, 24px, 0);
-}
-
-.mdc-snackbar--action-on-bottom {
-  flex-direction: column;
-}
-
-.mdc-snackbar__text {
-  @include mdc-typography(body1);
-  @include mdc-rtl-reflexive-box(margin, right, auto, ".mdc-snackbar");
-
-  display: flex;
-  align-items: center;
-  height: 48px;
-  transition: mdc-animation-exit-permanent(opacity, .3s);
+  transform: /*translateX(-50%)*/ scale(.8);
   opacity: 0;
-  color: $mdc-snackbar-foreground-color;
 
-  @media (min-width: $mdc-snackbar-tablet-breakpoint) {
-    @include mdc-rtl-reflexive-property(padding, 0, 24px);
-  }
+  //background-color: $mdc-snackbar-background-color;
+  //color: $mdc-snackbar-foreground-color;
+  //will-change: transform;
+  //pointer-events: auto;
+
+  //@media (max-width: ($mdc-snackbar-tablet-breakpoint - 1)) {
+  //  left: 0;
+  //  width: 100%;
+  //  transform: translate(0, 100%);
+  //}
+  //
+  //@media (min-width: $mdc-snackbar-tablet-breakpoint) {
+  //  min-width: 288px;
+  //  max-width: 568px;
+  //  border-radius: 2px;
+  //}
 }
 
-.mdc-snackbar--action-on-bottom .mdc-snackbar__text {
-  margin-right: inherit;
-}
-
-.mdc-snackbar--action-on-bottom .mdc-snackbar__action-wrapper {
-  @include mdc-rtl-reflexive-box(margin, left, auto);
-
-  flex-direction: column;
-  justify-content: flex-start;
-  margin-top: -12px;
-  margin-bottom: 8px;
-}
-
-.mdc-snackbar--multiline .mdc-snackbar__text {
-  height: 80px;
-}
-
-.mdc-snackbar__action-button {
-  @include mdc-typography(button);
-  @include mdc-theme-prop(color, secondary);
-
-  padding: 0;
-  transition: mdc-animation-exit-permanent(opacity, .3s);
-  border: none;
-  outline: none;
-  background-color: transparent;
-  opacity: 0;
-  user-select: none;
-  -webkit-appearance: none;
-  visibility: hidden;
-
-  &::-moz-focus-inner {
-    border: 0;
-  }
-
-  &:hover {
-    cursor: pointer;
-  }
-
-  &:not([aria-hidden]) {
-    visibility: inherit;
-  }
-}
-
-.mdc-snackbar--active .mdc-snackbar__text,
-.mdc-snackbar--active .mdc-snackbar__action-button:not([aria-hidden]) {
-  transition: mdc-animation-exit-permanent(opacity, .3s);
+.mdc-snackbar--open {
+  transform: /*translateX(-50%)*/ scale(1); // TODO(acdvorak): Find a better way to prevent GPU/CPU jank
+  transition:
+    mdc-animation-enter(opacity, 150ms),
+    mdc-animation-enter(transform, 150ms);
   opacity: 1;
 }
 
-// stylelint-disable plugin/selector-bem-pattern
-.mdc-snackbar--multiline.mdc-snackbar--action-on-bottom .mdc-snackbar__text {
-  margin: 0;
+.mdc-snackbar--closing {
+  transform: /*translateX(-50%)*/ scale(1); // TODO(acdvorak): Find a better way to prevent GPU/CPU jank
+  transition: mdc-animation-exit-permanent(opacity, 75ms, 150ms);
 }
-// stylelint-enable plugin/selector-bem-pattern
+
+.mdc-snackbar__container {
+  display: flex;
+  position: relative;
+  //left: -50%;
+  transform: translateX(-50%) scale(1);
+  align-items: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
+
+  // Prevent __overlay's background-color from bleeding past container's border-radius
+  overflow: hidden;
+}
+
+.mdc-snackbar__overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  box-sizing: border-box;
+  //z-index: -1;
+}
+
+.mdc-snackbar__label {
+  @include mdc-typography(body2);
+
+  position: relative; // z-index above __overlay
+  box-sizing: border-box;
+  margin: 0;
+  padding: 14px 16px; // TODO(acdvorak): Should be 16px on all sides, but we need height of snackbar to be 48px
+}
+
+.mdc-snackbar__actions {
+  @include mdc-rtl-reflexive-property(margin, 0, 8px);
+
+  position: relative; // z-index above __overlay
+  box-sizing: border-box;
+}
 
 // postcss-bem-linter: end
