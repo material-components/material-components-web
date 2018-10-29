@@ -73,7 +73,9 @@ For the native select, you can simply include the `mdc-select` Sass file.
 ### JavaScript Instantiation
 
 ```js
-const select = new mdc.select.MDCSelect(document.querySelector('.mdc-select'));
+import {MDCSelect} from '@material/select';
+
+const select = new MDCSelect(document.querySelector('.mdc-select'));
 
 select.listen('MDCSelect:change', () => {
   alert(`Selected option at index ${select.selectedIndex} with value "${select.value}"`);
