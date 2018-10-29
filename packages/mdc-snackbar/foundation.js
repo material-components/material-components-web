@@ -102,6 +102,6 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     this.adapter_.addClass('mdc-snackbar--closing');
     this.adapter_.removeClass('mdc-snackbar--open');
 
-    setTimeout(() => this.adapter_.removeClass('mdc-snackbar--closing'), 2500);
+    setTimeout(() => this.adapter_.removeClass('mdc-snackbar--closing'), numbers.ANIMATION_EXIT_TIME_MS);
   }
 }

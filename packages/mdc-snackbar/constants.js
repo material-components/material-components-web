@@ -40,4 +40,5 @@ export const strings = {
 
 export const numbers = {
   MESSAGE_TIMEOUT: 2750,
+  ANIMATION_EXIT_TIME_MS: 75 + 150, // TODO(acdvorak): Verify that 150ms delay is intentional in motion spec
 };
