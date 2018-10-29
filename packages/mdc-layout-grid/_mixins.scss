@@ -27,7 +27,7 @@
   }
   $min: map-get($mdc-layout-grid-breakpoints, $size);
 
-  @return if($min != 0, $min, null);
+  @return if($min > 0, $min, null);
 }
 
 // returns the upper grid boundary or null if the largest grid is selected

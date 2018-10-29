@@ -25,7 +25,7 @@ import MDCDrawerAdapter from '../adapter';
 import MDCDismissibleDrawerFoundation from '../dismissible/foundation';
 
 /**
- * @extends {MDCDismissibleDrawerFoundation<!MDCDrawerAdapter>}
+ * @extends {MDCDismissibleDrawerFoundation}
  */
 class MDCModalDrawerFoundation extends MDCDismissibleDrawerFoundation {
   /**

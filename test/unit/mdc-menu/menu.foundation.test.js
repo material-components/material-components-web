@@ -484,3 +484,14 @@ test('Click event inside of a child element of a selection group (but not a list
     {times: 0});
   clock.uninstall();
 });
+
+test('#handleSelection: should invoke notifySelected on selected item.', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const event = {target: 'My Element', preventDefault: td.func('preventDefault')};
+  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
+  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(2);
+
+  foundation.handleSelection(event.target);
+
+  td.verify(mockAdapter.notifySelected({index: 2}), {times: 1});
+});

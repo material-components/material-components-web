@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc.
+// Copyright 2018 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,35 +20,17 @@
 // THE SOFTWARE.
 //
 
-@import "./common";
-@import "../packages/mdc-button/mdc-button";
-@import "../packages/mdc-select/mdc-select";
+@import "./variables";
 
-// stylelint-disable selector-class-pattern
-.demo-select-custom-colors {
-  @include mdc-select-ink-color(blue);
-  @include mdc-select-label-color(rgba(blue, .6));
-  @include mdc-select-bottom-line-color(rgba(blue, .5));
+//
+// Returns the notch padded position based on given radius. This is 'x' position where the floating label starts.
+//
+// Examples:
+//
+// mdc-notched-outline-get-notch-padded-position(4px) => 21.2px
+//
+@function mdc-notched-outline-get-notch-padded-position($cornerSize) {
+  $leadingStrokeLength: max(0, $mdc-notched-outline-min-leading-stroke-edge-position - $cornerSize - 1.2);
 
-  // Focused colors
-  @include mdc-select-focused-bottom-line-color(green);
-  @include mdc-select-focused-label-color(green);
-
-  // Hover colors
-  @include mdc-select-hover-bottom-line-color(rgba(blue, .87));
+  @return $cornerSize + $leadingStrokeLength + $mdc-notched-outline-notch-gutter-size + 1.2;
 }
-
-.demo-select-custom-colors.mdc-select--box {
-  @include mdc-select-container-fill-color(rgba(blue, .1));
-}
-
-.demo-select-custom-colors.mdc-select--outlined {
-  @include mdc-select-outline-color(rgba(blue, .6));
-  @include mdc-select-hover-outline-color(rgba(blue, .87));
-  @include mdc-select-focused-outline-color(green);
-}
-
-.button-container {
-  margin: 8px 0;
-}
-// stylelint-enable selector-class-pattern
