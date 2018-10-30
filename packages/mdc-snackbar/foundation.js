@@ -97,7 +97,23 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
 
   show(data) {
     this.adapter_.unsetAriaHidden();
+    this.adapter_.unsetActionAriaHidden();
     this.adapter_.addClass('mdc-snackbar--open');
+
+    const labelText = this.adapter_.getLabelText();
+
+    // Clear `textContent` to force a DOM mutation that will be detected by screen readers.
+    // `aria-live` elements are only announced when the element's `textContent` *changes*,
+    // so snackbars sent to the browser in the initial HTML response won't be read unless we
+    // clear the element's `textContent` first.
+    // Similarly, displaying the same message twice in a row doesn't trigger a DOM mutation event,
+    // so screen readers won't announce the second message unless we clear `textContent`.
+    // TODO(acdvorak): Can we just append a dummy HTML element like `<div>.</div>` and then immediately remove it?
+    this.adapter_.setLabelText('');
+
+    setTimeout(() => {
+      this.adapter_.setLabelText(labelText);
+    }, 1); // non-zero timer to make VoiceOver and NVDA work
   }
 
   hide() {
