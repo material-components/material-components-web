@@ -1,27 +1,33 @@
 /**
-  * @license
-  * Copyright 2018 Google Inc. All Rights Reserved.
-  *
-  * Licensed under the Apache License, Version 2.0 (the "License")
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *      http://www.apache.org/licenses/LICENSE-2.0
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-*/
+ * @license
+ * Copyright 2018 Google Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 
 import bel from 'bel';
 import {assert} from 'chai';
 import td from 'testdouble';
 import domEvents from 'dom-events';
 
-import {MDCTabBar, MDCTabBarFoundation} from '../../../packages/mdc-tab-bar';
-import {MDCTabFoundation} from '../../../packages/mdc-tab';
+import {MDCTabBar, MDCTabBarFoundation} from '../../../packages/mdc-tab-bar/index';
+import {MDCTabFoundation} from '../../../packages/mdc-tab/index';
 
 const getFixture = () => bel`
   <div class="mdc-tab-bar">
@@ -60,6 +66,7 @@ class FakeTab {
     this.computeIndicatorClientRect = td.function();
     this.computeDimensions = td.function();
     this.active = false;
+    this.focusOnActivate = true;
   }
 }
 
@@ -102,6 +109,34 @@ function setupTest() {
   const component = new MDCTabBar(root, undefined, (el) => new FakeTab(el), (el) => new FakeTabScroller(el));
   return {root, component};
 }
+
+function setupMockFoundationTest() {
+  const root = getFixture();
+  const MockFoundationConstructor = td.constructor(MDCTabBarFoundation);
+  const mockFoundation = new MockFoundationConstructor();
+  const component = new MDCTabBar(root, mockFoundation, (el) => new FakeTab(el), (el) => new FakeTabScroller(el));
+  return {root, component, mockFoundation};
+}
+
+test('focusOnActivate setter updates setting on all tabs', () => {
+  const {component} = setupTest();
+
+  component.focusOnActivate = false;
+  component.tabList_.forEach((tab) => assert.isFalse(tab.focusOnActivate));
+
+  component.focusOnActivate = true;
+  component.tabList_.forEach((tab) => assert.isTrue(tab.focusOnActivate));
+});
+
+test('useAutomaticActivation setter calls foundation#setUseAutomaticActivation', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+
+  component.useAutomaticActivation = false;
+  td.verify(mockFoundation.setUseAutomaticActivation(false));
+
+  component.useAutomaticActivation = true;
+  td.verify(mockFoundation.setUseAutomaticActivation(true));
+});
 
 test('#adapter.scrollTo calls scrollTo of the child tab scroller', () => {
   const {component} = setupTest();
@@ -165,10 +200,10 @@ test('#adapter.getTabDimensionsAtIndex calls computeDimensions on the tab at the
   td.verify(component.tabList_[0].computeDimensions(), {times: 1});
 });
 
-test('#adapter.getActiveTabIndex returns the index of the active tab', () => {
+test('#adapter.getPreviousActiveTabIndex returns the index of the active tab', () => {
   const {component} = setupTest();
   component.tabList_[1].active = true;
-  assert.strictEqual(component.getDefaultFoundation().adapter_.getActiveTabIndex(), 1);
+  assert.strictEqual(component.getDefaultFoundation().adapter_.getPreviousActiveTabIndex(), 1);
 });
 
 test('#adapter.getIndexOfTab returns the index of the given tab', () => {

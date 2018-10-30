@@ -69,6 +69,8 @@ CSS Class | Description
 `mdc-tab-scroller--align-end` | Optional. Sets the elements inside the scroll content element to be aligned to the end of the scroll content element.
 `mdc-tab-scroller--align-center` | Optional. Sets the elements inside the scroll content element to be aligned to the center of the scroll content element.
 
+> _NOTE_: The `align` modifier classes are only applicable when the contents do not meet or exceed the width of the Tab Scroller and Tab Bar (i.e., most commonly, when `mdc-tab--min-width` is used on each tab).
+
 ## `MDCTabScroller` Methods
 
 Method Signature | Description

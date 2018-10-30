@@ -1,17 +1,24 @@
 /**
- * Copyright 2018 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2018 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import {assert} from 'chai';
@@ -21,7 +28,7 @@ import domEvents from 'dom-events';
 
 import {MDCMenu, MDCMenuFoundation} from '../../../packages/mdc-menu/index';
 import {Corner} from '../../../packages/mdc-menu-surface/constants';
-import {MDCListFoundation} from '../../../packages/mdc-list';
+import {MDCListFoundation} from '../../../packages/mdc-list/index';
 import {MDCMenuSurfaceFoundation} from '../../../packages/mdc-menu-surface/foundation';
 
 function getFixture(open) {
@@ -45,7 +52,7 @@ class FakeList {
     this.root = root;
     this.destroy = td.func('.destroy');
     this.itemsContainer = td.func('.root_');
-    this.listElements_ = [].slice.call(root.querySelectorAll('.mdc-list-item'));
+    this.listElements = [].slice.call(root.querySelectorAll('.mdc-list-item'));
   }
 }
 
@@ -172,28 +179,28 @@ test('setQuickOpen', () => {
 test('items returns all menu items', () => {
   const {root, component, list} = setupTestWithFakes();
   const items = [].slice.call(root.querySelectorAll('[role="menuitem"]'));
-  list.listElements_ = items;
+  list.listElements = items;
   assert.deepEqual(component.items, items);
 });
 
 test('items returns nothing if list is not defined', () => {
   const {root, component, list} = setupTestWithFakes();
   const items = [].slice.call(root.querySelectorAll('[role="menuitem"]'));
-  list.listElements_ = items;
+  list.listElements = items;
   assert.deepEqual(component.items, items);
 });
 
 test('getOptionByIndex', () => {
   const {root, component, list} = setupTestWithFakes();
   const items = [].slice.call(root.querySelectorAll('[role="menuitem"]'));
-  list.listElements_ = items;
+  list.listElements = items;
   assert.deepEqual(component.getOptionByIndex(0), items[0]);
 });
 
 test('getOptionByIndex returns null if index is > list length', () => {
   const {root, component, list} = setupTestWithFakes();
   const items = [].slice.call(root.querySelectorAll('[role="menuitem"]'));
-  list.listElements_ = items;
+  list.listElements = items;
   assert.isNull(component.getOptionByIndex(items.length));
 });
 
@@ -261,7 +268,7 @@ test('menu surface opened event causes no element to be focused if the list is e
 
 test('open=true does not throw an error if there are no items in the list to focus', () => {
   const {component, root, list} = setupTestWithFakes();
-  list.listElements_ = [];
+  list.listElements = [];
   document.body.appendChild(root);
   root.querySelector('.mdc-list-item');
   assert.doesNotThrow(() => {
@@ -367,34 +374,4 @@ test('adapter#notifySelected emits an event for a selected element', () => {
   root.addEventListener(MDCMenuFoundation.strings.SELECTED_EVENT, handler);
   component.getDefaultFoundation().adapter_.notifySelected(0);
   td.verify(handler(td.matchers.anything()));
-});
-
-test('adapter#getCheckboxAtIndex returns a checkbox inside a list item at the index specified', () => {
-  const {root, component} = setupTest();
-  const checkbox = document.createElement('input');
-  checkbox.type = 'checkbox';
-  checkbox.checked = false;
-  const firstItem = root.querySelector('.mdc-list-item');
-  firstItem.appendChild(checkbox);
-
-  assert.equal(component.getDefaultFoundation().adapter_.getCheckboxAtIndex(0), checkbox);
-});
-
-test('adapter#getCheckboxAtIndex returns null if a checkbox does not exist in the element at index specified', () => {
-  const {component} = setupTest();
-  assert.isNull(component.getDefaultFoundation().adapter_.getCheckboxAtIndex(0));
-});
-
-test('adapter#toggleCheckbox toggles a checkbox', () => {
-  const {root, component} = setupTest();
-  document.body.appendChild(root);
-  const checkbox = document.createElement('input');
-  checkbox.type = 'checkbox';
-  checkbox.checked = false;
-  const firstItem = root.querySelector('.mdc-list-item');
-  firstItem.appendChild(checkbox);
-
-  component.getDefaultFoundation().adapter_.toggleCheckbox(checkbox);
-  assert.isTrue(checkbox.checked);
-  document.body.removeChild(root);
 });

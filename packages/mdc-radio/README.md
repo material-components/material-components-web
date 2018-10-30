@@ -77,7 +77,7 @@ formField.input = radio;
 
 ## Variants
 
-### Disabled 
+### Disabled
 
 To disable a radio button, add the `mdc-radio--disabled` class to the root element and set the `disabled` attribute on the `<input>` element.
 Disabled radio buttons cannot be interacted with and have no visual interaction effect.
@@ -116,9 +116,9 @@ In browsers that fully support CSS custom properties, the above mixins will work
 
 Property | Value Type | Description
 --- | --- | ---
-`checked` | Boolean | Proxies to the foundation's `isChecked`/`setChecked` methods
-`disabled` | Boolean | Proxies to the foundation's `isDisabled/setDisabled` methods
-`value` | String | Proxies to the foundation's `getValue/setValue` methods
+`checked` | Boolean | Setter/getter for the radio's checked state
+`disabled` | Boolean | Setter/getter for the radio's disabled state. Setter proxies to foundation's `setDisabled` method
+`value` | String | Setter/getter for the radio's value
 
 ## Usage within Web Frameworks
 
@@ -126,19 +126,14 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 
 ### `MDCRadioAdapter`
 
-| Method Signature | Description |
-| --- | --- |
-| `getNativeControl() => HTMLInputElement?` | Returns the native radio control, if available |
-| `addClass(className: string) => void` | Adds a class to the root element |
-| `removeClass(className: string) => void` | Removes a class from the root element |
+Method Signature | Description
+--- | ---
+`setNativeControlDisabled(disabled: boolean) => void` | Sets the input's `disabled` property to the given value
+`addClass(className: string) => void` | Adds a class to the root element
+`removeClass(className: string) => void` | Removes a class from the root element
 
 ### `MDCRadioFoundation`
 
-| Method Signature | Description |
-| --- | --- |
-| `isChecked() => boolean` | Returns whether the native control is checked, or `false` if there's no native control |
-| `setChecked(checked: boolean) => void` | Sets the checked value of the native control |
-| `isDisabled() => boolean` | Returns whether the native control is disabled, or `false` if there's no native control |
-| `setDisabled(disabled: boolean) => void` | Sets the disabled value of the native control |
-| `getValue() => string` | Returns the value of the native control, or `null` if there's no native control |
-| `setValue(value: string) => void` | Sets the value of the native control |
+Method Signature | Description
+--- | ---
+`setDisabled(disabled: boolean) => void` | Sets the disabled value of the native control

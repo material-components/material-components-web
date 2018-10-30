@@ -1,17 +1,23 @@
 //
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2017 Google Inc.
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-//      http://www.apache.org/licenses/LICENSE-2.0
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 //
 
 @import "@material/animation/functions";
@@ -27,15 +33,12 @@
 .mdc-chip {
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;
-  @include mdc-chip-corner-radius($mdc-chip-border-radius-default);
+  @include mdc-chip-shape-radius(50%);
   @include mdc-chip-fill-color($mdc-chip-fill-color-default);
   @include mdc-chip-ink-color($mdc-chip-ink-color-default);
-  @include mdc-chip-leading-icon-color($mdc-chip-icon-color);
-  @include mdc-chip-trailing-icon-color($mdc-chip-icon-color);
-  @include mdc-chip-leading-icon-size($mdc-chip-leading-icon-size);
-  @include mdc-chip-trailing-icon-size($mdc-chip-trailing-icon-size);
   @include mdc-typography(body2);
   @include mdc-chip-height($mdc-chip-height-default);
+  @include mdc-chip-leading-icon-margin();
 
   display: inline-flex;
   position: relative;
@@ -51,12 +54,16 @@
   }
 }
 
+@at-root {
+  @include mdc-chip-leading-icon-color($mdc-chip-icon-color);
+  @include mdc-chip-trailing-icon-color($mdc-chip-icon-color);
+  @include mdc-chip-leading-icon-size($mdc-chip-leading-icon-size);
+  @include mdc-chip-trailing-icon-size($mdc-chip-trailing-icon-size);
+  @include mdc-chip-trailing-icon-margin();
+}
+
 .mdc-chip--exit {
-  transition:
-    opacity 75ms $mdc-animation-standard-curve-timing-function,
-    width 150ms $mdc-animation-deceleration-curve-timing-function,
-    padding 100ms linear,
-    margin 100ms linear;
+  transition: $mdc-chip-exit-transition;
   opacity: 0;
 }
 
@@ -70,14 +77,8 @@
   vertical-align: middle;
 }
 
-.mdc-chip__icon--trailing {
-  margin: 0 -4px 0 4px;
-}
-
-.mdc-chip__checkmark,
-.mdc-chip__icon--leading {
+.mdc-chip__checkmark {
   height: $mdc-chip-leading-icon-size;
-  margin: -4px 4px -4px -4px;
 }
 
 .mdc-chip__checkmark-path {

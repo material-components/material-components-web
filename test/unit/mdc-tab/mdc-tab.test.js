@@ -1,17 +1,24 @@
 /**
- * Copyright 2018 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2018 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import bel from 'bel';
@@ -19,14 +26,14 @@ import {assert} from 'chai';
 import td from 'testdouble';
 import domEvents from 'dom-events';
 
-import {createMockRaf} from '../helpers/raf';
-import {MDCTab, MDCTabFoundation} from '../../../packages/mdc-tab';
+import {install as installClock} from '../helpers/clock';
+import {MDCTab, MDCTabFoundation} from '../../../packages/mdc-tab/index';
 
 const getFixture = () => bel`
   <button class="mdc-tab" aria-selected="false" role="tab">
     <span class="mdc-tab__content">
       <span class="mdc-tab__text-label">Foo</span>
-      <span class="mdc-tab__icon"></span>
+      <span class="mdc-tab__icon" aria-hidden="true"></span>
     </span>
     <span class="mdc-tab__ripple"></span>
     <span class="mdc-tab-indicator">
@@ -67,13 +74,12 @@ test('click handler is removed during destroy', () => {
 });
 
 test('#destroy removes the ripple', () => {
-  const raf = createMockRaf();
+  const clock = installClock();
   const {component, root} = setupTest();
-  raf.flush();
+  clock.runToFrame();
   component.destroy();
-  raf.flush();
+  clock.runToFrame();
   assert.isNotOk(root.classList.contains('mdc-ripple-upgraded'));
-  raf.restore();
 });
 
 test('#adapter.addClass adds a class to the root element', () => {
@@ -158,10 +164,16 @@ function setupMockFoundationTest(root = getFixture()) {
   return {root, component, mockFoundation};
 }
 
-test('#active getter calls isActive', () => {
+test('#active getter calls foundation.isActive', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
   component.active;
   td.verify(mockFoundation.isActive(), {times: 1});
+});
+
+test('#focusOnActivate setter calls foundation.setFocusOnActivate', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.focusOnActivate = false;
+  td.verify(mockFoundation.setFocusOnActivate(false), {times: 1});
 });
 
 test('#activate() calls activate', () => {

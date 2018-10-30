@@ -1,17 +1,24 @@
-/*
- * Copyright 2018 Google Inc. All Rights Reserved.
+/**
+ * @license
+ * Copyright 2018 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      https://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 module.exports = {
@@ -48,6 +55,12 @@ module.exports = {
   CBT_CONCURRENCY_MAX_WAIT_MS: 10 * 60 * 1000, // 10 minutes
 
   /**
+   * Maximum number of times to retry a failed HTTP request to CBT.
+   * @type {number}
+   */
+  CBT_HTTP_MAX_RETRIES: 5,
+
+  /**
    * Number of milliseconds a Selenium test should wait to receive commands before being considered "stalled".
    * @type {number}
    */
@@ -58,6 +71,13 @@ module.exports = {
    * @type {number}
    */
   SELENIUM_KILL_WAIT_MS: 30 * 1000, // 30 seconds
+
+  /**
+   * Number of milliseconds to wait between sending status updates over the network
+   * (e.g., creating GitHub Status Checks, writing to Google Cloud Datastore).
+   * @type {number}
+   */
+  STATUS_UPDATE_THROTTLE_INTERVAL_MS: 5000, // 5 seconds
 
   ExitCode: {
     OK: 0,

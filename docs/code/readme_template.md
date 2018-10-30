@@ -17,7 +17,7 @@ Copy the snippet and replace the following
   * `ICON_ID`: id for the icon representing the component
   * `SCREENSHOT_NAME`: name of the screenshot image of the component
   * `SCREENSHOT_WIDTH`: width of the screenshot image of the component
-  * `LINK_TO_CATALOG_SERVER`: link to the component page on [Demo Catalog](https://material-components-web.appspot.com/)
+  * `LINK_TO_CATALOG_SERVER`: link to the component page on [Catalog](https://material-components.github.io/material-components-web-catalog/)
 * Usage sections
   * `BASIC_USAGE_SECTION`: see [README standards on Basic Usage](readme_standards.md#basic-usage)
   * `VARIANTS_SECTION`: see [README standards on Variants](readme_standards.md#variants)

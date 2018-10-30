@@ -29,7 +29,7 @@ team know NOT to merge PRs during this release process.
 Check out the master branch and update:
 
 ```
-git checkout master && git pull
+git checkout master && git pull && git fetch --tags
 ```
 
 This will pull the latest tags and `master` commits into your local repository.
@@ -73,20 +73,35 @@ Run the pre-release script:
 This will ensure you can publish/tag, build all release files, and ensure all tests
 pass prior to releasing (lerna will update versions for us in the next step).
 
+## Disable 2FA
+
+If you have two-factor authentication enabled on your NPM account (you should), you'll need to temporarily disable it:
+
+```bash
+npm profile disable-2fa
+```
+
+See Lerna issues [#1137](https://github.com/lerna/lerna/issues/1137) and [#1091](https://github.com/lerna/lerna/issues/1091) for more information.
+
 ## Publish to npm
 
 ### For Pre-releases
 
 ```
-$(npm bin)/lerna publish --skip-git --npm-tag=next
+$(npm bin)/lerna publish --skip-git --npm-tag=next --since=<previous-patch-tag>
 ```
 
-When lerna prompts for version, choose Prerelease.
+When lerna prompts for version, choose **Pre-minor** for the first pre-release in a cycle, or **Prerelease** for
+subsequent pre-releases.
+(The resulting version number should always have the same minor version as the next planned release.)
 
 Be sure to include the command-line flags:
 
 * `--skip-git` avoids immediately applying a git tag, which we will do later after updating the changelog
 * `--npm-tag=next` avoids updating the `latest` tag on npm, since pre-releases should not be installed by default
+* `--since=<previous-patch-tag>` (e.g. `--since=v0.36.1`) forces lerna to diff against the latest patch; otherwise,
+  it diffs against the previous minor release which may cause some packages without changes to be published (this
+  happens when bugfix releases aren't tagged from the master branch)
 
 ### For Minor Releases
 
@@ -101,7 +116,7 @@ Be sure to include the command-line flags:
 * `--skip-git` avoids immediately applying a git tag, which we will do later after updating the changelog
 * `--since=<previous-patch-tag>` (e.g. `--since=v0.36.1`) forces lerna to diff against the latest patch; otherwise,
   it diffs against the previous minor release which may cause some packages without changes to be published (this
-  happens because bugfix releases aren't tagged from the master branch)
+  happens when bugfix releases aren't tagged from the master branch)
 
 ### For Patch Releases
 
@@ -113,6 +128,16 @@ When lerna prompts for version, choose Patch.
 
 Be sure to include the command-line flag; `--skip-git` avoids immediately applying a git tag, which we will do later
 after updating the changelog.
+
+## Enable 2FA
+
+If you temporarily disabled two-factor authentication on your NPM account, you'll need to re-enable it:
+
+```bash
+npm profile enable-2fa auth-and-writes
+```
+
+See Lerna issues [#1137](https://github.com/lerna/lerna/issues/1137) and [#1091](https://github.com/lerna/lerna/issues/1091) for more information.
 
 ## Commit Version Bumps
 
@@ -126,38 +151,23 @@ git commit -am "chore: Publish"
 
 ## Update Changelog and Create Git Tag
 
-### For Pre-Releases and Patch Releases
-
 It's recommended to generate the changelog prior to running the post-release script so you can double-check the changes
 before it creates a tag:
 
 ```
 npm run changelog
 git diff # Review the changelog and make sure it looks OK
-./scripts/post-release.sh # This will commit the changelog diff and then create a tag
 ```
 
-### For Minor Releases
+In certain cases, there are some typical edits to make the changelog easier to read:
 
-First, update the changelog without committing it:
+* **For a minor release or pre-release after an off-master patch release:**
+  Remove any duplicated items in the new minor release that were already listed under patch releases.
+* **For a minor release after any pre-releases:**
+  Bring any changes from any prior pre-releases under their respective headings for the new final release, then
+  remove the pre-release headings ([example](https://github.com/material-components/material-components-web/commit/13fd6784))
 
-```
-npm run changelog
-```
-
-Next, edit the changelog:
-
-* Bring any changes from any prior pre-releases under their respective headings for the new final release
-* Remove headings for the pre-releases
-* Remove any duplicated items in the new minor release that were already listed under patch releases
-
-See [this v0.36.0 commit](https://github.com/material-components/material-components-web/commit/13fd6784866864839d0d287b3703b3beb0888d9c)
-for an example of the resulting changes after moving the pre-release notes.
-
-This will make the changelog easier to read, since users won't be interested in the pre-releases once the final is
-tagged, and shouldn't need to read the new release's changes across multiple headings.
-
-Finally, run the post-release script to commit the updated changelog and apply a git tag:
+Once you're sure about the changes, run the `post-release` script to commit and create an annotated git tag:
 
 ```
 ./scripts/post-release.sh
@@ -169,7 +179,8 @@ Finally, run the post-release script to commit the updated changelog and apply a
 
 You will need to temporarily alter Github's master branch protection in order to push after the release:
 
-1. Go to the [settings page](https://github.com/material-components/material-components-web/settings/branches/master)
+1. Go to the [Branches settings page](https://github.com/material-components/material-components-web/settings/branches)
+1. Under Branch Protection Rules, click Edit next to `master`
 1. Uncheck "Include administrators"
 1. Click "Save changes"
 1. Perform the process outlined in one of the sections below
@@ -177,13 +188,18 @@ You will need to temporarily alter Github's master branch protection in order to
 
 ### For Pre-releases and Minor Releases
 
-`git push origin master && git push origin <tag>`
+```
+git push origin master <tag>
+```
 
 This will ensure the new commits *and* tag are pushed to the remote git repository.
+(e.g. `git push origin master v0.39.0`)
 
 ### For Patch Releases
 
-`git push origin <tag>`
+```
+git push origin <tag>
+```
 
 We don't need to push a branch for bugfix releases since we only cherry-pick commits for them at release time and they
 are not tagged from master (which contains all commits, not just bugfixes).
@@ -203,7 +219,7 @@ git push
 
 1. Update the `material-components-web` dependency in the catalog's `package.json` to the new patch version
 1. Run `npm start` and glance through the catalog pages to make sure everything looks normal
-1. Send a PR for the dependency update, then run `npm deploy` once it's merged to master
+1. Send a PR for the dependency update, then run `npm run deploy` once it's merged to master
 
 ### For Minor Releases
 
@@ -233,16 +249,11 @@ Below is the process when a `next` branch is used:
 1. Reset the `next` branch against master to be reused for the next release (this will change the `next` branch's history):
    1. `git checkout next`
    1. `git fetch origin && git reset --hard origin/master`
-   1. Temporarily turn off branch protection *completely* for the `next` branch (to enable force-push)
+   1. [Temporarily unprotect the next branch](https://github.com/material-components/material-components-web-catalog/settings/branches)
+      by changing the `[mn][ae][sx]t*` rule match to just `master`
+      (this looks weird, but GitHub chose to use limited fnmatch syntax rather than RegExp, for some reason)
    1. `git push -f origin next`
-   1. Re-protect the `next` branch - check the following, then click Save changes:
-      * Protect this branch
-      * Require pull request reviews before merging
-      * Require status checks to pass before merging
-      * Require branches to be up to date before merging
-      * cla/google status check
-      * Include administrators
-      * Restrict who can push to this branch
+   1. Re-protect the `next` branch by changing the `master` rule match back to `[mn][ae][sx]t*`
 
 ## Log Issues in MDC React Repository
 
@@ -255,12 +266,3 @@ MDC React repository, with the "required for sync" label.
 Our markdown documentation is transformed and mirrored to the Develop section of material.io.
 
 Currently, this requires some manual work by the Tools team, so we need to notify them to update the site content.
-
-## (Deprecated) Deploy Catalog Server
-
-> Note: We now promote the [MDC Web Catalog](https://github.com/material-components/material-components-web-catalog)
-> instead. The old catalog server is no longer linked from our documentation.
-
-`MDC_ENV=development npm run build:demos && gcloud app deploy`
-
-[Double check it is live](https://material-components-web.appspot.com/)

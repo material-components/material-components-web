@@ -1,8 +1,8 @@
 {
   "name": "@material/theme",
   "description": "The Material Components for the web theming system",
-  "version": "0.38.0",
-  "license": "Apache-2.0",
+  "version": "0.41.0",
+  "license": "MIT",
   "keywords": [
     "material components",
     "material design",

@@ -1,17 +1,24 @@
 /**
- * Copyright 2017 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2017 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 /**
@@ -211,8 +218,26 @@ function transform(srcFile, rootDir) {
   }
 
   // Specify goog.module after the @license comment and append newline at the end of the file.
-  // First, get the first occurence of a multiline comment terminator with 0 or more preceding whitespace characters.
+  // First, get the first occurrence of a multiline comment terminator with 0 or more preceding whitespace characters.
   const result = /\s*\*\//.exec(outputCode);
+
+  if (!result) {
+    const data = JSON.stringify({
+      srcFile,
+      pathbasedPackageName,
+      packageStr,
+      outputCode,
+    }, null, 2);
+
+    const message = `
+Missing multiline comment terminator!
+
+${data}
+`.trim();
+
+    throw new Error(message);
+  }
+
   // Then, get the index of that first matching character set plus the length of the matching characters, plus one
   // extra character for more space. We now have the position at which we need to inject the "goog.module(...)"
   // declaration and can assemble the module-declared code. Yay!
@@ -244,7 +269,8 @@ function patchNodeForDeclarationSource(source, srcFile, rootDir, node) {
   if (isThirdPartyModule) {
     assert(source.indexOf('@material') < 0, '@material/* import sources should have already been rewritten');
     patchDefaultImportIfNeeded(node);
-    resolvedSource = `goog:mdc.thirdparty.${camelCase(source)}`;
+    resolvedSource = `mdc.thirdparty.${camelCase(source)}`;
+    return resolvedSource;
   } else {
     const normPath = path.normalize(path.dirname(srcFile), source);
     const needsClosureModuleRootResolution = path.isAbsolute(source) || fs.statSync(normPath).isDirectory();
@@ -253,13 +279,14 @@ function patchNodeForDeclarationSource(source, srcFile, rootDir, node) {
         basedir: path.dirname(srcFile),
       }));
     }
+
+    const packageParts = resolvedSource.replace('mdc-', '').replace(/-/g, '').replace('.js', '').split('/');
+    const packageStr = 'mdc.' + packageParts.join('.').replace('.index', '');
+    if (packageStr in defaultTypesMap) {
+      return defaultTypesMap[packageStr];
+    }
+    return packageStr;
   }
-  const packageParts = resolvedSource.replace('mdc-', '').replace(/-/g, '').replace('.js', '').split('/');
-  const packageStr = 'mdc.' + packageParts.join('.').replace('.index', '');
-  if (packageStr in defaultTypesMap) {
-    return defaultTypesMap[packageStr];
-  }
-  return packageStr;
 }
 
 function patchDefaultImportIfNeeded(node) {

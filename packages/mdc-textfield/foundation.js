@@ -1,18 +1,24 @@
 /**
  * @license
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2016 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import MDCFoundation from '@material/base/foundation';
@@ -104,7 +110,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
     /** @type {!MDCTextFieldHelperTextFoundation|undefined} */
     this.helperText_ = foundationMap.helperText;
     /** @type {!MDCTextFieldIconFoundation|undefined} */
-    this.icon_ = foundationMap.icon;
+    this.leadingIcon_ = foundationMap.leadingIcon;
+    /** @type {!MDCTextFieldIconFoundation|undefined} */
+    this.trailingIcon_ = foundationMap.trailingIcon;
 
     /** @private {boolean} */
     this.isFocused_ = false;
@@ -346,22 +354,42 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * Sets the aria label of the icon.
+   * Sets the aria label of the leading icon.
    * @param {string} label
    */
-  setIconAriaLabel(label) {
-    if (this.icon_) {
-      this.icon_.setAriaLabel(label);
+  setLeadingIconAriaLabel(label) {
+    if (this.leadingIcon_) {
+      this.leadingIcon_.setAriaLabel(label);
     }
   }
 
   /**
-   * Sets the text content of the icon.
+   * Sets the text content of the leading icon.
    * @param {string} content
    */
-  setIconContent(content) {
-    if (this.icon_) {
-      this.icon_.setContent(content);
+  setLeadingIconContent(content) {
+    if (this.leadingIcon_) {
+      this.leadingIcon_.setContent(content);
+    }
+  }
+
+  /**
+   * Sets the aria label of the trailing icon.
+   * @param {string} label
+   */
+  setTrailingIconAriaLabel(label) {
+    if (this.trailingIcon_) {
+      this.trailingIcon_.setAriaLabel(label);
+    }
+  }
+
+  /**
+   * Sets the text content of the trailing icon.
+   * @param {string} content
+   */
+  setTrailingIconContent(content) {
+    if (this.trailingIcon_) {
+      this.trailingIcon_.setContent(content);
     }
   }
 
@@ -426,8 +454,13 @@ class MDCTextFieldFoundation extends MDCFoundation {
     } else {
       this.adapter_.removeClass(DISABLED);
     }
-    if (this.icon_) {
-      this.icon_.setDisabled(isDisabled);
+
+    if (this.leadingIcon_) {
+      this.leadingIcon_.setDisabled(isDisabled);
+    }
+
+    if (this.trailingIcon_) {
+      this.trailingIcon_.setDisabled(isDisabled);
     }
   }
 

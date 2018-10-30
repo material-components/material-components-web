@@ -1,26 +1,33 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2016 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import {assert} from 'chai';
 import bel from 'bel';
 
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
-import {createMockRaf} from '../helpers/raf';
-import {MDCRadio, MDCRadioFoundation} from '../../../packages/mdc-radio';
-import {MDCRipple} from '../../../packages/mdc-ripple';
+import {install as installClock} from '../helpers/clock';
+import {MDCRadio, MDCRadioFoundation} from '../../../packages/mdc-radio/index';
+import {MDCRipple} from '../../../packages/mdc-ripple/index';
 
 const {NATIVE_CONTROL_SELECTOR} = MDCRadioFoundation.strings;
 
@@ -51,19 +58,18 @@ test('attachTo initializes and returns a MDCRadio instance', () => {
 
 if (supportsCssVariables(window)) {
   test('#constructor initializes the root element with a ripple', () => {
-    const raf = createMockRaf();
+    const clock = installClock();
     const {root} = setupTest();
-    raf.flush();
+    clock.runToFrame();
     assert.isOk(root.classList.contains('mdc-ripple-upgraded'));
-    raf.restore();
   });
 
   test('#destroy removes the ripple', () => {
-    const raf = createMockRaf();
+    const clock = installClock();
     const {root, component} = setupTest();
-    raf.flush();
+    clock.runToFrame();
     component.destroy();
-    raf.flush();
+    clock.runToFrame();
     assert.isNotOk(root.classList.contains('mdc-ripple-upgraded'));
   });
 }
@@ -100,9 +106,32 @@ test('get ripple returns a MDCRipple instance', () => {
   assert.isOk(component.ripple instanceof MDCRipple);
 });
 
-test('#adapter.getNativeControl() returns the native radio element', () => {
+test('adapter#addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
-  assert.equal(
-    component.getDefaultFoundation().adapter_.getNativeControl(), root.querySelector(NATIVE_CONTROL_SELECTOR)
-  );
+  component.getDefaultFoundation().adapter_.addClass('foo');
+  assert.isTrue(root.classList.contains('foo'));
+});
+
+test('adapter#removeClass removes a class from the root element', () => {
+  const {root, component} = setupTest();
+  root.classList.add('foo');
+  component.getDefaultFoundation().adapter_.removeClass('foo');
+  assert.isFalse(root.classList.contains('foo'));
+});
+
+test('#adapter.setNativeControlDisabled sets the native control element\'s disabled property to true', () => {
+  const {root, component} = setupTest();
+  const radio = root.querySelector(NATIVE_CONTROL_SELECTOR);
+
+  component.getDefaultFoundation().adapter_.setNativeControlDisabled(true);
+  assert.isTrue(radio.disabled);
+});
+
+test('#adapter.setNativeControlDisabled sets the native control element\'s disabled property to false', () => {
+  const {root, component} = setupTest();
+  const radio = root.querySelector(NATIVE_CONTROL_SELECTOR);
+  radio.disabled = true;
+
+  component.getDefaultFoundation().adapter_.setNativeControlDisabled(false);
+  assert.isFalse(radio.disabled);
 });

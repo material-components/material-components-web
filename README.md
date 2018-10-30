@@ -1,6 +1,8 @@
+[![Version](https://img.shields.io/npm/v/material-components-web.svg)](https://www.npmjs.com/package/material-components-web)
 [![Build Status](https://travis-ci.com/material-components/material-components-web.svg?branch=master)](https://travis-ci.com/material-components/material-components-web/)
 [![codecov](https://codecov.io/gh/material-components/material-components-web/branch/master/graph/badge.svg)](https://codecov.io/gh/material-components/material-components-web)
 [![Chat](https://img.shields.io/discord/259087343246508035.svg)](https://discord.gg/material-components)
+[![Screenshots](https://us-central1-material-components-web.cloudfunctions.net/screenshot-shield-svg)](https://us-central1-material-components-web.cloudfunctions.net/screenshot-shield-url)
 
 # Material Components for the web
 
@@ -27,6 +29,12 @@ Material Components for the web is the successor to [Material Design Lite](https
 MDC Web strives to seamlessly incorporate into a wider range of usage contexts, from simple static websites to complex, JavaScript-heavy applications to hybrid client/server rendering systems. In short, whether you're already heavily invested in another framework or not, it should be easy to incorporate Material Components into your site in a lightweight, idiomatic fashion.
 
 **[Demos](https://material-components.github.io/material-components-web-catalog)** (updated with every release)
+
+> Note: Material Components Web follows semver and is still in version 0.x, which means it is regularly subject to
+> breaking changes. We typically follow a 2-week release schedule which includes one minor release per month with
+> breaking changes, and intermediate patch releases with bug fixes.
+> A list of changes is always available in the [CHANGELOG](./CHANGELOG.md),
+> and a tentative schedule of what we are working on next is available in the [ROADMAP](./ROADMAP.md).
 
 ## Quick start
 
@@ -89,9 +97,13 @@ npm install @material/ripple
 Then import the ES2015 file for @material/ripple into your application, and initialize an MDCRipple with a DOM element:
 
 ```js
-import {MDCRipple} from '@material/ripple';
+import {MDCRipple} from '@material/ripple/index';
 const ripple = new MDCRipple(document.querySelector('.foo-button'));
 ```
+
+> Note: Import `@material/ripple/index` if you wish to transpile MDC Web's ES2015 sources as part of your build process.
+> If your build toolchain is configured to only transpile your own sources, import `@material/ripple` instead, which will
+> reference the distributed UMD module instead.
 
 This will produce a Material Design ripple on the button!
 
@@ -105,6 +117,10 @@ This will produce a Material Design ripple on the button!
 - [Contributing](CONTRIBUTING.md)
 - [Material.io](https://www.material.io) (external site)
 - [Material Design Guidelines](https://material.io/guidelines) (external site)
+
+## Need help?
+
+We're constantly trying to improve our components. If Github Issues don't fit your needs, then please visit us on our [Discord Channel](https://discord.gg/material-components).
 
 ## Browser support
 

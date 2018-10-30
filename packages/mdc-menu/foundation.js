@@ -1,18 +1,24 @@
 /**
  * @license
- * Copyright 2018 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import MDCFoundation from '@material/base/foundation';
@@ -21,7 +27,7 @@ import {cssClasses, strings} from './constants';
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
 import MDCListFoundation from '@material/list/foundation';
 
-const ELEMENTS_KEY_ALLOWED_IN = ['input', 'button', 'textarea', 'select'];
+const ELEMENTS_KEY_ALLOWED_IN = ['input', 'button', 'textarea', 'select', 'a'];
 
 /**
  * @extends {MDCFoundation<!MDCMenuAdapter>}
@@ -54,8 +60,6 @@ class MDCMenuFoundation extends MDCFoundation {
       getParentElement: () => {},
       getSelectedElementIndex: () => {},
       notifySelected: () => {},
-      getCheckboxAtIndex: () => {},
-      toggleCheckbox: () => {},
     });
   }
 
@@ -109,7 +113,7 @@ class MDCMenuFoundation extends MDCFoundation {
   handleAction_(evt) {
     const listItem = this.getListItem_(/** @type {HTMLElement} */ (evt.target));
     if (listItem) {
-      this.handleSelection_(listItem);
+      this.handleSelection(listItem);
       this.preventDefaultEvent_(evt);
     }
   }
@@ -117,9 +121,8 @@ class MDCMenuFoundation extends MDCFoundation {
   /**
    * Handler for a selected list item.
    * @param {?HTMLElement} listItem
-   * @private
    */
-  handleSelection_(listItem) {
+  handleSelection(listItem) {
     const index = this.adapter_.getElementIndex(listItem);
     if (index < 0) {
       return;
@@ -127,11 +130,6 @@ class MDCMenuFoundation extends MDCFoundation {
 
     this.adapter_.notifySelected({index});
     this.adapter_.closeSurface();
-
-    const checkbox = this.adapter_.getCheckboxAtIndex(index);
-    if (checkbox) {
-      this.adapter_.toggleCheckbox(/** @type {!HTMLElement} */ (checkbox));
-    }
 
     // Wait for the menu to close before adding/removing classes that affect styles.
     this.closeAnimationEndTimerId_ = setTimeout(() => {
@@ -174,7 +172,7 @@ class MDCMenuFoundation extends MDCFoundation {
 
     // Iterate through ancestors until we find the group or get to the list.
     while (!isGroup && !this.adapter_.elementContainsClass(parent, MDCListFoundation.cssClasses.ROOT)) {
-      parent = this.adapter_.getParentElement(listItem);
+      parent = this.adapter_.getParentElement(parent);
       isGroup = this.adapter_.elementContainsClass(parent, cssClasses.MENU_SELECTION_GROUP);
     }
 

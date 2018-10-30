@@ -1,18 +1,24 @@
 /**
  * @license
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2016 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import {getCorrectEventName} from '@material/animation/index';
@@ -50,6 +56,17 @@ class MDCCheckbox extends MDCComponent {
 
     /** @private {!MDCRipple} */
     this.ripple_ = this.initRipple_();
+    /** @private {!Function} */
+    this.handleChange_;
+    /** @private {!Function} */
+    this.handleAnimationEnd_;
+  }
+
+  initialSyncWithDOM() {
+    this.handleChange_ = () => this.foundation_.handleChange();
+    this.handleAnimationEnd_= () => this.foundation_.handleAnimationEnd();
+    this.nativeCb_.addEventListener('change', this.handleChange_);
+    this.listen(getCorrectEventName(window, 'animationend'), this.handleAnimationEnd_);
   }
 
   /**
@@ -75,13 +92,11 @@ class MDCCheckbox extends MDCComponent {
       removeClass: (className) => this.root_.classList.remove(className),
       setNativeControlAttr: (attr, value) => this.nativeCb_.setAttribute(attr, value),
       removeNativeControlAttr: (attr) => this.nativeCb_.removeAttribute(attr),
-      registerAnimationEndHandler:
-        (handler) => this.root_.addEventListener(getCorrectEventName(window, 'animationend'), handler),
-      deregisterAnimationEndHandler:
-        (handler) => this.root_.removeEventListener(getCorrectEventName(window, 'animationend'), handler),
-      registerChangeHandler: (handler) => this.nativeCb_.addEventListener('change', handler),
-      deregisterChangeHandler: (handler) => this.nativeCb_.removeEventListener('change', handler),
       getNativeControl: () => this.nativeCb_,
+      isIndeterminate: () => this.indeterminate,
+      isChecked: () => this.checked,
+      hasNativeControl: () => !!this.nativeCb_,
+      setNativeControlDisabled: (disabled) => this.nativeCb_.disabled = disabled,
       forceLayout: () => this.root_.offsetWidth,
       isAttachedToDOM: () => Boolean(this.root_.parentNode),
     });
@@ -94,27 +109,27 @@ class MDCCheckbox extends MDCComponent {
 
   /** @return {boolean} */
   get checked() {
-    return this.foundation_.isChecked();
+    return this.nativeCb_.checked;
   }
 
   /** @param {boolean} checked */
   set checked(checked) {
-    this.foundation_.setChecked(checked);
+    this.nativeCb_.checked = checked;
   }
 
   /** @return {boolean} */
   get indeterminate() {
-    return this.foundation_.isIndeterminate();
+    return this.nativeCb_.indeterminate;
   }
 
   /** @param {boolean} indeterminate */
   set indeterminate(indeterminate) {
-    this.foundation_.setIndeterminate(indeterminate);
+    this.nativeCb_.indeterminate = indeterminate;
   }
 
   /** @return {boolean} */
   get disabled() {
-    return this.foundation_.isDisabled();
+    return this.nativeCb_.disabled;
   }
 
   /** @param {boolean} disabled */
@@ -124,16 +139,18 @@ class MDCCheckbox extends MDCComponent {
 
   /** @return {?string} */
   get value() {
-    return this.foundation_.getValue();
+    return this.nativeCb_.value;
   }
 
   /** @param {?string} value */
   set value(value) {
-    this.foundation_.setValue(value);
+    this.nativeCb_.value = value;
   }
 
   destroy() {
     this.ripple_.destroy();
+    this.nativeCb_.removeEventListener('change', this.handleChange_);
+    this.unlisten(getCorrectEventName(window, 'animationend'), this.handleAnimationEnd_);
     super.destroy();
   }
 }

@@ -98,6 +98,9 @@ message GitRevision {
   // author = "Alice" and committer = "Bob".
   User author = 8;
   User committer = 9;
+
+  // Raw date string returned by git. E.g.: "2018-10-03 21:12:43 -0700"
+  string date = 10;
 }
 
 message User {
@@ -185,6 +188,11 @@ message UserAgent {
 
   string browser_icon_url = 18;
   string os_icon_url = 19;
+
+  repeated string raw_options = 22;
+  bool is_high_contrast_mode = 23;
+  bool is_font_smoothing_disabled = 24;
+  bool is_rtl = 25;
 }
 
 message Screenshots {
@@ -260,9 +268,17 @@ message Screenshot {
   TestFile actual_image_file = 9;
   TestFile diff_image_file = 10;
   DiffImageResult diff_image_result = 11;
+  CropResult crop_result = 15;
 
   uint32 retry_count = 12;
   FlakeConfig flake_config = 13;
+}
+
+message CropResult {
+  uint32 uncropped_width = 1;
+  uint32 uncropped_height = 2;
+  uint32 cropped_width = 3;
+  uint32 cropped_height = 4;
 }
 
 message FlakeConfig {

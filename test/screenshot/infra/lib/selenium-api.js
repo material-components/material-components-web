@@ -1,17 +1,24 @@
-/*
- * Copyright 2018 Google Inc. All Rights Reserved.
+/**
+ * @license
+ * Copyright 2018 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      https://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 'use strict';
@@ -26,20 +33,21 @@ const path = require('path');
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const seleniumProto = require('../proto/selenium.pb').selenium.proto;
 
-const {Screenshot, TestFile, UserAgent} = mdcProto;
+const {CropResult, Screenshot, TestFile, UserAgent} = mdcProto;
 const {CaptureState, InclusionType} = Screenshot;
 const {BrowserVendorType, Navigator} = UserAgent;
 const {RawCapabilities} = seleniumProto;
 
+const Analytics = require('./analytics');
 const CbtApi = require('./cbt-api');
 const Cli = require('./cli');
 const CliColor = require('./logger').colors;
 const Constants = require('./constants');
 const Duration = require('./duration');
-const GitHubApi = require('./github-api');
 const ImageCropper = require('./image-cropper');
 const ImageDiffer = require('./image-differ');
 const LocalStorage = require('./local-storage');
+const StatusNotifier = require('./status-notifier');
 const getStackTrace = require('./stacktrace')('SeleniumApi');
 const {Browser, Builder, By, logging, until} = require('selenium-webdriver');
 const {CBT_CONCURRENCY_POLL_INTERVAL_MS, CBT_CONCURRENCY_MAX_WAIT_MS, ExitCode} = Constants;
@@ -58,19 +66,24 @@ const CliStatuses = {
   STARTING: {name: 'Starting', color: CliColor.green},
   STARTED: {name: 'Started', color: CliColor.bold.green},
   GET: {name: 'Get', color: CliColor.bold.white},
-  CROP: {name: 'Crop', color: CliColor.white},
   PASS: {name: 'Pass', color: CliColor.green},
   ADD: {name: 'Add', color: CliColor.bgGreen.black},
   FAIL: {name: 'Fail', color: CliColor.red},
   RETRY: {name: 'Retry', color: CliColor.magenta},
   CAPTURED: {name: 'Captured', color: CliColor.bold.grey},
   FINISHED: {name: 'Finished', color: CliColor.bold.green},
-  FAILED: {name: 'Failed', color: CliColor.bold.red},
+  ERROR: {name: 'Error', color: CliColor.bold.red},
   QUITTING: {name: 'Quitting', color: CliColor.white},
 };
 
 class SeleniumApi {
   constructor() {
+    /**
+     * @type {!Analytics}
+     * @private
+     */
+    this.analytics_ = new Analytics();
+
     /**
      * @type {!CbtApi}
      * @private
@@ -82,12 +95,6 @@ class SeleniumApi {
      * @private
      */
     this.cli_ = new Cli();
-
-    /**
-     * @type {!GitHubApi}
-     * @private
-     */
-    this.gitHubApi_ = new GitHubApi();
 
     /**
      * @type {!ImageCropper}
@@ -112,6 +119,12 @@ class SeleniumApi {
      * @private
      */
     this.seleniumSessionIds_ = new Set();
+
+    /**
+     * @type {!StatusNotifier}
+     * @private
+     */
+    this.statusNotifier_ = new StatusNotifier();
 
     /**
      * @type {number}
@@ -173,6 +186,8 @@ class SeleniumApi {
   async captureAllPages(reportData) {
     /** @type {string|undefined} */
     let stackTrace;
+
+    this.statusNotifier_.initialize(reportData);
 
     try {
       stackTrace = getStackTrace('captureAllPages');
@@ -292,7 +307,7 @@ class SeleniumApi {
       this.logSession_(CliStatuses.FINISHED, userAgent);
     } catch (err) {
       runtimeError = new VError(err, stackTrace);
-      this.logSession_(CliStatuses.FAILED, userAgent);
+      this.logSession_(CliStatuses.ERROR, userAgent);
     } finally {
       this.numSessionsEnded_++;
       this.logSession_(CliStatuses.QUITTING, userAgent);
@@ -379,14 +394,19 @@ class SeleniumApi {
         return Math.min(cliParallels, available);
       }
 
-      // If nobody else is running any tests, run half the number of concurrent tests allowed by our CBT account.
-      // This gives us _some_ parallelism while still allowing other users to run their tests.
-      if (active === 0) {
-        return Math.ceil(max / 2);
+      if (this.isBusinessHours_()) {
+        // Nobody else is running tests.
+        if (active === 0) {
+          // Run half the number of concurrent tests allowed by our CBT account.
+          // This gives us _some_ parallelism while ensuring that other users can run their tests too.
+          return Math.floor(max / 2);
+        }
+
+        // Somebody else is running tests, so only run one test at a time.
+        return 1;
       }
 
-      // If someone else is already running tests, only run one test at a time.
-      return 1;
+      return available;
     }
   }
 
@@ -490,7 +510,7 @@ class SeleniumApi {
     if (this.cli_.isOnline()) {
       return this.cbtApi_.getDesiredCapabilities({meta, userAgent});
     }
-    return this.createDesiredCapabilitiesOffline_({userAgent});
+    return this.createOfflineDesiredCapabilities_({userAgent});
   }
 
   /**
@@ -498,7 +518,7 @@ class SeleniumApi {
    * @return {!selenium.proto.RawCapabilities}
    * @private
    */
-  createDesiredCapabilitiesOffline_({userAgent}) {
+  createOfflineDesiredCapabilities_({userAgent}) {
     const browserVendorMap = {
       [BrowserVendorType.CHROME]: Browser.CHROME,
       [BrowserVendorType.EDGE]: Browser.EDGE,
@@ -565,9 +585,11 @@ class SeleniumApi {
   getImageFileNameSuffix_(userAgent) {
     /* eslint-disable camelcase */
     const {os_name, browser_name, browser_version} = userAgent.navigator;
-    return [os_name, browser_name, browser_version].map((value) => {
-      // TODO(acdvorak): Clean this up
-      return value.toLowerCase().replace(/\..+$/, '').replace(/[^a-z0-9]+/ig, '');
+    return [os_name, browser_name, browser_version, ...userAgent.raw_options].map((value) => {
+      return value.toLowerCase()
+        .replace(/\..+$/, '') // Remove minor/path version numbers (e.g., "3.2.1" -> "3")
+        .replace(/[^a-z0-9]+/ig, '') // Remove all non-alphanumeric characters
+      ;
     }).join('_');
     /* eslint-enable camelcase */
   }
@@ -609,23 +631,18 @@ class SeleniumApi {
       for (const screenshot of screenshotQueue) {
         screenshot.capture_state = CaptureState.RUNNING;
 
-        /** @type {!mdc.proto.DiffImageResult} */
-        const diffImageResult = await this.takeScreenshotWithRetries_({driver, screenshot, meta});
-
         if (this.isKillRequested_ || this.isKilled_) {
           return null;
         }
 
-        screenshot.capture_state = CaptureState.DIFFED;
-        screenshot.diff_image_result = diffImageResult;
-        screenshot.diff_image_file = diffImageResult.diff_image_file;
+        await this.takeScreenshotWithRetries_({driver, screenshot, meta});
 
         this.numPending_--;
         this.numCompleted_++;
 
-        const message = `${screenshot.actual_html_file.public_url} > ${screenshot.user_agent.alias}`;
+        const message = this.createStatusMessage_(screenshot);
 
-        if (diffImageResult.has_changed) {
+        if (screenshot.diff_image_result.has_changed) {
           changedScreenshots.push(screenshot);
           this.numChanged_++;
           this.logStatus_(CliStatuses.FAIL, message);
@@ -682,53 +699,44 @@ class SeleniumApi {
    * @param {!IWebDriver} driver
    * @param {!mdc.proto.Screenshot} screenshot
    * @param {!mdc.proto.ReportMeta} meta
-   * @return {!Promise<?mdc.proto.DiffImageResult>}
+   * @return {!Promise<void>}
    * @private
    */
   async takeScreenshotWithRetries_({driver, screenshot, meta}) {
-    /** @type {?mdc.proto.DiffImageResult} */
-    let diffImageResult = null;
-    let changedPixelCount = 0;
-    let changedPixelFraction = 0;
-
     const maxRetries = screenshot.flake_config.max_retries;
     const maxPixelFraction = screenshot.flake_config.max_changed_pixel_fraction_to_retry;
-    const userAgent = screenshot.user_agent;
+
+    const getChangedPixelFraction = () => {
+      return screenshot.diff_image_result ? screenshot.diff_image_result.changed_pixel_fraction : 0;
+    };
 
     while (true) {
+      if (this.isKillRequested_ || this.isKilled_) {
+        return;
+      }
+
       const isRetryCountExceeded = screenshot.retry_count > maxRetries;
-      const isPixelFractionExceeded = changedPixelFraction > maxPixelFraction;
+      const isPixelFractionExceeded = getChangedPixelFraction() > maxPixelFraction;
       if (isRetryCountExceeded || isPixelFractionExceeded) {
         break;
       }
 
-      if (this.isKillRequested_ || this.isKilled_) {
-        return null;
-      }
-
       if (screenshot.retry_count > 0) {
-        // TODO(acdvorak): Print this info when a test fails.
-        const {width, height} = diffImageResult.diff_image_dimensions;
-        const whichMsg = `${screenshot.actual_html_file.public_url} > ${userAgent.alias}`;
-        const countMsg = `attempt ${screenshot.retry_count} of ${maxRetries}`;
-        const pixelMsg = `${changedPixelCount.toLocaleString()} pixels differed`;
-        const deltaMsg = `${diffImageResult.changed_pixel_percentage}% of ${width}x${height}`;
-        this.logStatus_(CliStatuses.RETRY, `${whichMsg} (${countMsg}). ${pixelMsg} (${deltaMsg})`);
+        this.logRetry_(screenshot);
       }
 
       screenshot.actual_image_file = await this.takeScreenshotWithoutRetries_({meta, screenshot, driver});
-      diffImageResult = await this.imageDiffer_.compareOneScreenshot({meta, screenshot});
+      screenshot.diff_image_result = await this.imageDiffer_.compareOneScreenshot({meta, screenshot});
+      screenshot.diff_image_file = screenshot.diff_image_result.diff_image_file;
 
-      if (!diffImageResult.has_changed) {
+      if (!screenshot.diff_image_result.has_changed) {
         break;
       }
 
-      changedPixelCount = diffImageResult.changed_pixel_count;
-      changedPixelFraction = diffImageResult.changed_pixel_fraction;
       screenshot.retry_count++;
     }
 
-    return diffImageResult;
+    screenshot.capture_state = CaptureState.DIFFED;
   }
 
   /**
@@ -767,19 +775,27 @@ class SeleniumApi {
     const userAgent = screenshot.user_agent;
     const flakeConfig = screenshot.flake_config;
 
-    const qsParams = new URLSearchParams({
+    const extraParams = {
       font_face_observer_timeout_ms: flakeConfig.font_face_observer_timeout_ms,
       fonts_loaded_reflow_delay_ms: flakeConfig.fonts_loaded_reflow_delay_ms,
-    });
-    const urlWithQsParams = `${url}?${qsParams}`;
+      dir: userAgent.is_rtl ? 'rtl' : 'ltr',
+    };
 
-    this.logStatus_(CliStatuses.GET, `${urlWithQsParams} > ${userAgent.alias}...`);
+    const urlWithParams = this.analytics_.getUrl({
+      url,
+      source: 'cbt',
+      medium: 'selenium',
+      extraParams,
+    });
+
+    this.logStatus_(CliStatuses.GET, `${this.createUrlAliasMessage_(urlWithParams, userAgent)}...`);
 
     const isOnline = this.cli_.isOnline();
     const fontLoadTimeoutMs = isOnline ? flakeConfig.font_face_observer_timeout_ms : 500;
 
-    await driver.get(urlWithQsParams);
-    await driver.wait(until.elementLocated(By.css('[data-fonts-loaded]')), fontLoadTimeoutMs).catch(() => 0);
+    await driver.get(urlWithParams);
+    const domReadyCssSelector = '[data-fonts-loaded][data-animations-settled][data-dom-ready]';
+    await driver.wait(until.elementLocated(By.css(domReadyCssSelector)), fontLoadTimeoutMs).catch(() => {});
 
     const delayMs = flakeConfig.retry_delay_ms;
     if (delayMs > 0) {
@@ -795,10 +811,12 @@ class SeleniumApi {
     const {width: uncroppedWidth, height: uncroppedHeight} = uncroppedJimpImage.bitmap;
     const {width: croppedWidth, height: croppedHeight} = croppedJimpImage.bitmap;
 
-    const message =
-      `${urlWithQsParams} > ${userAgent.alias} screenshot from ` +
-      `${uncroppedWidth}x${uncroppedHeight} to ${croppedWidth}x${croppedHeight}`;
-    this.logStatus_(CliStatuses.CROP, message);
+    screenshot.crop_result = CropResult.create({
+      uncropped_width: uncroppedWidth,
+      uncropped_height: uncroppedHeight,
+      cropped_width: croppedWidth,
+      cropped_height: croppedHeight,
+    });
 
     return croppedImageBuffer;
   }
@@ -922,18 +940,112 @@ class SeleniumApi {
   }
 
   /**
+   * @param {!mdc.proto.Screenshot} screenshot
+   * @return {string}
+   * @private
+   */
+  createStatusMessage_(screenshot) {
+    const actualHtmlFileUrlPlain = this.analytics_.getUrl({
+      url: screenshot.actual_html_file.public_url,
+      source: 'cli',
+      medium: 'progress',
+    });
+
+    let cropColor = '';
+    if (screenshot.crop_result && screenshot.crop_result.uncropped_height > 0) {
+      const {
+        cropped_height: croppedHeight,
+        cropped_width: croppedWidth,
+        uncropped_height: uncroppedHeight,
+        uncropped_width: uncroppedWidth,
+      } = screenshot.crop_result;
+
+      const from = CliColor.bold(`${uncroppedWidth}x${uncroppedHeight}`);
+      const to = CliColor.bold(`${croppedWidth}x${croppedHeight}`);
+
+      if (croppedHeight === uncroppedHeight && croppedWidth === uncroppedWidth) {
+        cropColor = ` (${from}, not cropped)`;
+      } else {
+        cropColor = ` (cropped from ${from} to ${to})`;
+      }
+    }
+
+    return this.createUrlAliasMessage_(actualHtmlFileUrlPlain, screenshot.user_agent) + cropColor;
+  }
+
+  /**
+   * @param {string} url
+   * @param {!mdc.proto.UserAgent} userAgent
+   * @return {string}
+   * @private
+   */
+  createUrlAliasMessage_(url, userAgent) {
+    const userAgentColor = CliColor.bold.italic;
+    return `${this.cli_.colorizeUrl(url)} > ${userAgentColor(userAgent.alias)}`;
+  }
+
+  /**
+   * @return {boolean}
+   * @private
+   */
+  isBusinessHours_() {
+    const MORNING_HOUR = 6; // 6am PT = 9am ET
+    const EVENING_HOUR = 18; // 6pm PT = 9pm ET
+    const SATURDAY = 6;
+    const SUNDAY = 0;
+
+    // Travis CI runs in the Pacific Time Zone (America/Los_Angeles). See scripts/travis-env-vars.sh.
+    const nowDate = new Date();
+    const nowHour = nowDate.getHours();
+
+    const isWeekDay = nowDate.getDay() > SUNDAY || nowDate.getDay() < SATURDAY;
+    const is9to5 = nowHour > MORNING_HOUR && nowHour < EVENING_HOUR;
+
+    return isWeekDay && is9to5;
+  }
+
+  /**
    * @param {!CliStatus} status
    * @param {!mdc.proto.UserAgent} userAgent
    * @private
    */
   logSession_(status, userAgent) {
     const navigator = userAgent.navigator;
-    const browser = CliColor.bold(`${navigator.browser_name} ${navigator.browser_version}`);
+    const options = userAgent.raw_options.length > 0 ? ` (${userAgent.raw_options.join(', ')})` : '';
+    const browser = CliColor.bold(`${navigator.browser_name} ${navigator.browser_version}${options}`);
     const os = `${navigator.os_name} ${navigator.os_version}`;
     const sessionId = userAgent.selenium_session_id;
-    const publicCbtUrl = CliColor.underline(userAgent.selenium_result_url);
+    const publicCbtUrl = CliColor.yellow.underline(userAgent.selenium_result_url);
 
     this.logStatus_(status, `${browser} on ${os}! - video: ${publicCbtUrl} (Selenium session ID: ${sessionId})`);
+  }
+
+  /**
+   * @param {!mdc.proto.Screenshot} screenshot
+   * @private
+   */
+  logRetry_(screenshot) {
+    const diffImageResult = screenshot.diff_image_result;
+    const maxRetries = screenshot.flake_config.max_retries;
+    const changedPixelCount = diffImageResult.changed_pixel_count;
+    const userAgent = screenshot.user_agent;
+    const {width, height} = diffImageResult.diff_image_dimensions;
+
+    const actualHtmlFileUrl = this.analytics_.getUrl({
+      url: screenshot.actual_html_file.public_url,
+      source: 'cli',
+      medium: 'progress',
+    });
+
+    const bold = CliColor.bold;
+    const magenta = CliColor.bold.magenta;
+
+    const whichMsg = this.createUrlAliasMessage_(actualHtmlFileUrl, userAgent);
+    const countMsg = `attempt ${magenta(screenshot.retry_count)} of ${magenta(maxRetries)}`;
+    const pixelMsg = `${bold(changedPixelCount.toLocaleString())} pixels differed`;
+    const deltaMsg = `${bold(`${diffImageResult.changed_pixel_percentage}%`)} of ${bold(`${width}x${height}`)}`;
+
+    this.logStatus_(CliStatuses.RETRY, `${whichMsg} (${countMsg}). ${pixelMsg} (${deltaMsg})`);
   }
 
   /**
@@ -954,43 +1066,36 @@ class SeleniumApi {
     const statusName = status.name.toUpperCase();
     const paddingSpaces = ''.padStart(maxStatusWidth - statusName.length, ' ');
 
-    console.log(eraseCurrentLine + paddingSpaces + status.color(statusName) + ':', ...args);
+    const pending = this.numPending_;
+    const completed = this.numCompleted_;
+    const changed = this.numChanged_;
+    const total = pending + completed;
+    const percent = (total === 0 ? 0 : (100 * completed / total).toFixed(1));
+
+    const plainDiffs = `${changed.toLocaleString()} diff${(changed === 1 ? '' : 's')}`;
+    const colorDiffs = changed > 0 ? ` - ${CliColor.bold.red(plainDiffs)}` : '';
+    const colorCaptured = CliStatuses.CAPTURED.color(CliStatuses.CAPTURED.name.toUpperCase());
+    const colorCompleted = completed.toLocaleString();
+    const colorTotal = total.toLocaleString();
+    const colorPercent = CliColor.bold.white(`${percent}%`);
+
+    const isTravis = process.env.TRAVIS === 'true';
+    const colorProgressTravis = isTravis
+      ? ` [${colorCompleted} of ${colorTotal} - ${colorPercent}${colorDiffs}]`
+      : '';
+    console.log(eraseCurrentLine + paddingSpaces + status.color(statusName) + colorProgressTravis + ':', ...args);
 
     if (this.isKillRequested_) {
       return;
     }
 
-    const numDone = this.numCompleted_;
-    const strDone = numDone.toLocaleString();
+    this.statusNotifier_.running();
 
-    const numTotal = numDone + this.numPending_;
-    const strTotal = numTotal.toLocaleString();
-
-    const numChanged = this.numChanged_;
-    const strChanged = numChanged.toLocaleString();
-
-    const numPercent = numTotal > 0 ? (100 * numDone / numTotal) : 0;
-    const strPercent = numPercent.toFixed(1);
-
-    if (process.env.TRAVIS === 'true') {
-      this.gitHubApi_.setPullRequestStatusManual({
-        state: GitHubApi.PullRequestState.PENDING,
-        description: `${strDone} of ${strTotal} (${strPercent}%) - ${strChanged} diff${numChanged === 1 ? '' : 's'}`,
-      });
-      return;
+    if (!isTravis) {
+      process.stdout.write(
+        `${colorCaptured}: ${colorCompleted} of ${colorTotal} screenshots (${colorPercent} complete)${colorDiffs}`
+      );
     }
-
-    const pending = this.numPending_;
-    const completed = numDone;
-    const total = pending + completed;
-    const percent = (total === 0 ? 0 : (100 * completed / total).toFixed(1));
-
-    const colorCaptured = CliStatuses.CAPTURED.color(CliStatuses.CAPTURED.name.toUpperCase());
-    const colorCompleted = CliColor.bold.white(completed.toLocaleString());
-    const colorTotal = CliColor.bold.white(total.toLocaleString());
-    const colorPercent = CliColor.bold.white(`${percent}%`);
-
-    process.stdout.write(`${colorCaptured}: ${colorCompleted} of ${colorTotal} screenshots (${colorPercent} complete)`);
   }
 }
 

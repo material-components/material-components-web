@@ -1,17 +1,24 @@
-/*
- * Copyright 2018 Google Inc. All Rights Reserved.
+/**
+ * @license
+ * Copyright 2018 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 const VError = require('verror');
@@ -37,10 +44,10 @@ const MDC_CBT_USERNAME = process.env.MDC_CBT_USERNAME;
 const MDC_CBT_AUTHKEY = process.env.MDC_CBT_AUTHKEY;
 const REST_API_BASE_URL = 'https://crossbrowsertesting.com/api/v3';
 const SELENIUM_SERVER_URL = `http://${MDC_CBT_USERNAME}:${MDC_CBT_AUTHKEY}@hub.crossbrowsertesting.com:80/wd/hub`;
-const {ExitCode, SELENIUM_ZOMBIE_SESSION_DURATION_MS} = require('./constants');
+const {ExitCode, CBT_HTTP_MAX_RETRIES, SELENIUM_ZOMBIE_SESSION_DURATION_MS} = require('./constants');
 
 /** @type {?Promise<!Array<!cbt.proto.CbtDevice>>} */
-let allBrowsersPromise;
+let allDevicesPromise;
 
 class CbtApi {
   constructor() {
@@ -129,21 +136,21 @@ https://crossbrowsertesting.com/account
    * @return {!Promise<!Array<!cbt.proto.CbtDevice>>}
    */
   async fetchAvailableDevices() {
-    if (allBrowsersPromise) {
-      return allBrowsersPromise;
+    if (allDevicesPromise) {
+      return allDevicesPromise;
     }
 
-    this.logger_.debug('Fetching browsers from CBT...');
+    this.logger_.debug('Fetching devices and browsers from CBT...');
 
     const stackTrace = getStackTrace('fetchAvailableDevices');
-    allBrowsersPromise = this.sendRequest_(stackTrace, 'GET', '/selenium/browsers');
+    allDevicesPromise = this.sendRequest_(stackTrace, 'GET', '/selenium/browsers');
 
     /** @type {!Array<!cbt.proto.CbtDevice>} */
-    const allBrowsers = await allBrowsersPromise;
+    const allDevices = await allDevicesPromise;
 
-    this.logger_.debug(`Fetched ${allBrowsers.length} browsers from CBT!`);
+    this.logger_.debug(`Fetched ${allDevices.length} devices from CBT!`);
 
-    return allBrowsers;
+    return allDevices;
   }
 
   /**
@@ -163,9 +170,12 @@ https://crossbrowsertesting.com/account
    */
   async setTestScore({seleniumSessionId, changedScreenshots}) {
     const stackTrace = getStackTrace('fetchAvailableDevices');
-    await this.sendRequest_(stackTrace, 'PUT', `/selenium/${seleniumSessionId}`, {
+    return this.sendRequest_(stackTrace, 'PUT', `/selenium/${seleniumSessionId}`, {
       action: 'set_score',
       score: changedScreenshots.length === 0 ? 'pass' : 'fail',
+    }).catch((reason) => {
+      console.error(CliColor.red('ERROR:'), reason);
+      console.error(getStackTrace('setTestScore'));
     });
   }
 
@@ -185,6 +195,9 @@ https://crossbrowsertesting.com/account
     const defaultCaps = {
       name: `${cbtTestName} - `,
       build: cbtBuildName,
+
+      high_contrast: userAgent.is_high_contrast_mode ? 'black' : false,
+      font_smoothing: userAgent.is_font_smoothing_disabled !== true,
 
       // TODO(acdvorak): Expose these as CLI flags
       record_video: true,
@@ -394,7 +407,7 @@ https://crossbrowsertesting.com/account
       'GET', '/selenium?active=true&num=100'
     );
 
-    const activeSeleniumTestIds = listResponse.selenium.map((test) => test.selenium_test_id);
+    const activeSeleniumTestIds = listResponse.selenium.map((test) => test.selenium_session_id);
 
     /** @type {!Array<!CbtSeleniumInfoResponse>} */
     const infoResponses = await Promise.all(activeSeleniumTestIds.map((seleniumTestId) => {
@@ -402,23 +415,26 @@ https://crossbrowsertesting.com/account
       return this.sendRequest_(infoStackTrace, 'GET', `/selenium/${seleniumTestId}`);
     }));
 
-    const stalledSeleniumTestIds = [];
+    const stalledSeleniumSessionIds = [];
 
     for (const infoResponse of infoResponses) {
       const lastCommand = infoResponse.commands[infoResponse.commands.length - 1];
-      if (!lastCommand) {
-        continue;
+      let timestampMs = null;
+
+      if (lastCommand) {
+        // At least one Selenium command was received.
+        timestampMs = new Date(lastCommand.date_issued).getTime();
+      } else {
+        // No Selenium commands have been received yet.
+        timestampMs = new Date(infoResponse.start_date || infoResponse.startup_finish_date).getTime();
       }
 
-      const commandTimestampMs = new Date(lastCommand.date_issued).getTime();
-      if (!Duration.hasElapsed(SELENIUM_ZOMBIE_SESSION_DURATION_MS, commandTimestampMs)) {
-        continue;
+      if (timestampMs > 0 && Duration.hasElapsed(SELENIUM_ZOMBIE_SESSION_DURATION_MS, timestampMs)) {
+        stalledSeleniumSessionIds.push(infoResponse.selenium_session_id);
       }
-
-      stalledSeleniumTestIds.push(infoResponse.selenium_test_id);
     }
 
-    await this.killSeleniumTests(stalledSeleniumTestIds);
+    await this.killSeleniumTests(stalledSeleniumSessionIds);
   }
 
   /**
@@ -457,10 +473,11 @@ https://crossbrowsertesting.com/account
    * @param {string} method
    * @param {string} endpoint
    * @param {!Object=} body
+   * @param {number=} retryCount
    * @return {!Promise<!Object<string, *>|!Array<*>>}
    * @private
    */
-  async sendRequest_(stackTrace, method, endpoint, body = undefined) {
+  async sendRequest_(stackTrace, method, endpoint, body = undefined, retryCount = 0) {
     const uri = `${REST_API_BASE_URL}${endpoint}`;
 
     if (this.cli_.isOffline()) {
@@ -483,8 +500,32 @@ https://crossbrowsertesting.com/account
         json: true, // Automatically stringify the request body and parse the response body as JSON
       });
     } catch (err) {
+      if (++retryCount <= CBT_HTTP_MAX_RETRIES) {
+        this.logRetry_(method, uri, err, stackTrace, retryCount);
+        return this.sendRequest_(stackTrace, method, endpoint, body, retryCount);
+      }
       throw new VError(err, `CBT API request failed: ${method} ${uri}:\n${stackTrace}`);
     }
+  }
+
+  logRetry_(method, uri, err, stackTrace, retryCount) {
+    const colorLabel = CliColor.magenta('CBT API request failed:');
+    const colorMethod = CliColor.bold(method);
+    const colorUri = CliColor.underline(uri);
+    console.error('');
+    console.error('');
+    console.error(`${colorLabel} ${colorMethod} ${colorUri}`);
+    console.error('');
+    console.error(err);
+    console.error('');
+    console.error(stackTrace);
+    console.error('');
+
+    const colorRetrying = CliColor.magenta('Retrying request');
+    const colorAttemptCount = CliColor.bold.magenta(retryCount);
+    const colorMaxRetries = CliColor.bold.magenta(CBT_HTTP_MAX_RETRIES);
+    console.error(`${colorRetrying} (attempt ${colorAttemptCount} of ${colorMaxRetries})...`);
+    console.error('');
   }
 }
 

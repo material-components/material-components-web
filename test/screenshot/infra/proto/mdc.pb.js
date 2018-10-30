@@ -1428,6 +1428,7 @@ $root.mdc = (function() {
              * @property {number|null} [pr_number] GitRevision pr_number
              * @property {mdc.proto.IUser|null} [author] GitRevision author
              * @property {mdc.proto.IUser|null} [committer] GitRevision committer
+             * @property {string|null} [date] GitRevision date
              */
 
             /**
@@ -1518,6 +1519,14 @@ $root.mdc = (function() {
             GitRevision.prototype.committer = null;
 
             /**
+             * GitRevision date.
+             * @member {string} date
+             * @memberof mdc.proto.GitRevision
+             * @instance
+             */
+            GitRevision.prototype.date = "";
+
+            /**
              * Creates a new GitRevision instance using the specified properties.
              * @function create
              * @memberof mdc.proto.GitRevision
@@ -1559,6 +1568,8 @@ $root.mdc = (function() {
                     $root.mdc.proto.User.encode(message.author, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
                 if (message.committer != null && message.hasOwnProperty("committer"))
                     $root.mdc.proto.User.encode(message.committer, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
+                if (message.date != null && message.hasOwnProperty("date"))
+                    writer.uint32(/* id 10, wireType 2 =*/82).string(message.date);
                 return writer;
             };
 
@@ -1619,6 +1630,9 @@ $root.mdc = (function() {
                         break;
                     case 9:
                         message.committer = $root.mdc.proto.User.decode(reader, reader.uint32());
+                        break;
+                    case 10:
+                        message.date = reader.string();
                         break;
                     default:
                         reader.skipType(tag & 7);
@@ -1695,6 +1709,9 @@ $root.mdc = (function() {
                     if (error)
                         return "committer." + error;
                 }
+                if (message.date != null && message.hasOwnProperty("date"))
+                    if (!$util.isString(message.date))
+                        return "date: string expected";
                 return null;
             };
 
@@ -1758,6 +1775,8 @@ $root.mdc = (function() {
                         throw TypeError(".mdc.proto.GitRevision.committer: object expected");
                     message.committer = $root.mdc.proto.User.fromObject(object.committer);
                 }
+                if (object.date != null)
+                    message.date = String(object.date);
                 return message;
             };
 
@@ -1784,6 +1803,7 @@ $root.mdc = (function() {
                     object.pr_number = 0;
                     object.author = null;
                     object.committer = null;
+                    object.date = "";
                 }
                 if (message.type != null && message.hasOwnProperty("type"))
                     object.type = options.enums === String ? $root.mdc.proto.GitRevision.Type[message.type] : message.type;
@@ -1803,6 +1823,8 @@ $root.mdc = (function() {
                     object.author = $root.mdc.proto.User.toObject(message.author, options);
                 if (message.committer != null && message.hasOwnProperty("committer"))
                     object.committer = $root.mdc.proto.User.toObject(message.committer, options);
+                if (message.date != null && message.hasOwnProperty("date"))
+                    object.date = message.date;
                 return object;
             };
 
@@ -2583,6 +2605,10 @@ $root.mdc = (function() {
              * @property {string|null} [image_filename_suffix] UserAgent image_filename_suffix
              * @property {string|null} [browser_icon_url] UserAgent browser_icon_url
              * @property {string|null} [os_icon_url] UserAgent os_icon_url
+             * @property {Array.<string>|null} [raw_options] UserAgent raw_options
+             * @property {boolean|null} [is_high_contrast_mode] UserAgent is_high_contrast_mode
+             * @property {boolean|null} [is_font_smoothing_disabled] UserAgent is_font_smoothing_disabled
+             * @property {boolean|null} [is_rtl] UserAgent is_rtl
              */
 
             /**
@@ -2594,6 +2620,7 @@ $root.mdc = (function() {
              * @param {mdc.proto.IUserAgent=} [properties] Properties to set
              */
             function UserAgent(properties) {
+                this.raw_options = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         if (properties[keys[i]] != null)
@@ -2769,6 +2796,38 @@ $root.mdc = (function() {
             UserAgent.prototype.os_icon_url = "";
 
             /**
+             * UserAgent raw_options.
+             * @member {Array.<string>} raw_options
+             * @memberof mdc.proto.UserAgent
+             * @instance
+             */
+            UserAgent.prototype.raw_options = $util.emptyArray;
+
+            /**
+             * UserAgent is_high_contrast_mode.
+             * @member {boolean} is_high_contrast_mode
+             * @memberof mdc.proto.UserAgent
+             * @instance
+             */
+            UserAgent.prototype.is_high_contrast_mode = false;
+
+            /**
+             * UserAgent is_font_smoothing_disabled.
+             * @member {boolean} is_font_smoothing_disabled
+             * @memberof mdc.proto.UserAgent
+             * @instance
+             */
+            UserAgent.prototype.is_font_smoothing_disabled = false;
+
+            /**
+             * UserAgent is_rtl.
+             * @member {boolean} is_rtl
+             * @memberof mdc.proto.UserAgent
+             * @instance
+             */
+            UserAgent.prototype.is_rtl = false;
+
+            /**
              * Creates a new UserAgent instance using the specified properties.
              * @function create
              * @memberof mdc.proto.UserAgent
@@ -2834,6 +2893,15 @@ $root.mdc = (function() {
                     writer.uint32(/* id 20, wireType 2 =*/162).string(message.selenium_session_id);
                 if (message.selenium_result_url != null && message.hasOwnProperty("selenium_result_url"))
                     writer.uint32(/* id 21, wireType 2 =*/170).string(message.selenium_result_url);
+                if (message.raw_options != null && message.raw_options.length)
+                    for (var i = 0; i < message.raw_options.length; ++i)
+                        writer.uint32(/* id 22, wireType 2 =*/178).string(message.raw_options[i]);
+                if (message.is_high_contrast_mode != null && message.hasOwnProperty("is_high_contrast_mode"))
+                    writer.uint32(/* id 23, wireType 0 =*/184).bool(message.is_high_contrast_mode);
+                if (message.is_font_smoothing_disabled != null && message.hasOwnProperty("is_font_smoothing_disabled"))
+                    writer.uint32(/* id 24, wireType 0 =*/192).bool(message.is_font_smoothing_disabled);
+                if (message.is_rtl != null && message.hasOwnProperty("is_rtl"))
+                    writer.uint32(/* id 25, wireType 0 =*/200).bool(message.is_rtl);
                 return writer;
             };
 
@@ -2930,6 +2998,20 @@ $root.mdc = (function() {
                         break;
                     case 19:
                         message.os_icon_url = reader.string();
+                        break;
+                    case 22:
+                        if (!(message.raw_options && message.raw_options.length))
+                            message.raw_options = [];
+                        message.raw_options.push(reader.string());
+                        break;
+                    case 23:
+                        message.is_high_contrast_mode = reader.bool();
+                        break;
+                    case 24:
+                        message.is_font_smoothing_disabled = reader.bool();
+                        break;
+                    case 25:
+                        message.is_rtl = reader.bool();
                         break;
                     default:
                         reader.skipType(tag & 7);
@@ -3065,6 +3147,22 @@ $root.mdc = (function() {
                 if (message.os_icon_url != null && message.hasOwnProperty("os_icon_url"))
                     if (!$util.isString(message.os_icon_url))
                         return "os_icon_url: string expected";
+                if (message.raw_options != null && message.hasOwnProperty("raw_options")) {
+                    if (!Array.isArray(message.raw_options))
+                        return "raw_options: array expected";
+                    for (var i = 0; i < message.raw_options.length; ++i)
+                        if (!$util.isString(message.raw_options[i]))
+                            return "raw_options: string[] expected";
+                }
+                if (message.is_high_contrast_mode != null && message.hasOwnProperty("is_high_contrast_mode"))
+                    if (typeof message.is_high_contrast_mode !== "boolean")
+                        return "is_high_contrast_mode: boolean expected";
+                if (message.is_font_smoothing_disabled != null && message.hasOwnProperty("is_font_smoothing_disabled"))
+                    if (typeof message.is_font_smoothing_disabled !== "boolean")
+                        return "is_font_smoothing_disabled: boolean expected";
+                if (message.is_rtl != null && message.hasOwnProperty("is_rtl"))
+                    if (typeof message.is_rtl !== "boolean")
+                        return "is_rtl: boolean expected";
                 return null;
             };
 
@@ -3203,6 +3301,19 @@ $root.mdc = (function() {
                     message.browser_icon_url = String(object.browser_icon_url);
                 if (object.os_icon_url != null)
                     message.os_icon_url = String(object.os_icon_url);
+                if (object.raw_options) {
+                    if (!Array.isArray(object.raw_options))
+                        throw TypeError(".mdc.proto.UserAgent.raw_options: array expected");
+                    message.raw_options = [];
+                    for (var i = 0; i < object.raw_options.length; ++i)
+                        message.raw_options[i] = String(object.raw_options[i]);
+                }
+                if (object.is_high_contrast_mode != null)
+                    message.is_high_contrast_mode = Boolean(object.is_high_contrast_mode);
+                if (object.is_font_smoothing_disabled != null)
+                    message.is_font_smoothing_disabled = Boolean(object.is_font_smoothing_disabled);
+                if (object.is_rtl != null)
+                    message.is_rtl = Boolean(object.is_rtl);
                 return message;
             };
 
@@ -3219,6 +3330,8 @@ $root.mdc = (function() {
                 if (!options)
                     options = {};
                 var object = {};
+                if (options.arrays || options.defaults)
+                    object.raw_options = [];
                 if (options.defaults) {
                     object.alias = "";
                     object.form_factor_name = "";
@@ -3241,6 +3354,9 @@ $root.mdc = (function() {
                     object.os_icon_url = "";
                     object.selenium_session_id = "";
                     object.selenium_result_url = "";
+                    object.is_high_contrast_mode = false;
+                    object.is_font_smoothing_disabled = false;
+                    object.is_rtl = false;
                 }
                 if (message.alias != null && message.hasOwnProperty("alias"))
                     object.alias = message.alias;
@@ -3284,6 +3400,17 @@ $root.mdc = (function() {
                     object.selenium_session_id = message.selenium_session_id;
                 if (message.selenium_result_url != null && message.hasOwnProperty("selenium_result_url"))
                     object.selenium_result_url = message.selenium_result_url;
+                if (message.raw_options && message.raw_options.length) {
+                    object.raw_options = [];
+                    for (var j = 0; j < message.raw_options.length; ++j)
+                        object.raw_options[j] = message.raw_options[j];
+                }
+                if (message.is_high_contrast_mode != null && message.hasOwnProperty("is_high_contrast_mode"))
+                    object.is_high_contrast_mode = message.is_high_contrast_mode;
+                if (message.is_font_smoothing_disabled != null && message.hasOwnProperty("is_font_smoothing_disabled"))
+                    object.is_font_smoothing_disabled = message.is_font_smoothing_disabled;
+                if (message.is_rtl != null && message.hasOwnProperty("is_rtl"))
+                    object.is_rtl = message.is_rtl;
                 return object;
             };
 
@@ -5545,6 +5672,7 @@ $root.mdc = (function() {
              * @property {mdc.proto.ITestFile|null} [actual_image_file] Screenshot actual_image_file
              * @property {mdc.proto.ITestFile|null} [diff_image_file] Screenshot diff_image_file
              * @property {mdc.proto.IDiffImageResult|null} [diff_image_result] Screenshot diff_image_result
+             * @property {mdc.proto.ICropResult|null} [crop_result] Screenshot crop_result
              * @property {number|null} [retry_count] Screenshot retry_count
              * @property {mdc.proto.IFlakeConfig|null} [flake_config] Screenshot flake_config
              */
@@ -5661,6 +5789,14 @@ $root.mdc = (function() {
             Screenshot.prototype.diff_image_result = null;
 
             /**
+             * Screenshot crop_result.
+             * @member {mdc.proto.ICropResult|null|undefined} crop_result
+             * @memberof mdc.proto.Screenshot
+             * @instance
+             */
+            Screenshot.prototype.crop_result = null;
+
+            /**
              * Screenshot retry_count.
              * @member {number} retry_count
              * @memberof mdc.proto.Screenshot
@@ -5728,6 +5864,8 @@ $root.mdc = (function() {
                     $root.mdc.proto.FlakeConfig.encode(message.flake_config, writer.uint32(/* id 13, wireType 2 =*/106).fork()).ldelim();
                 if (message.is_url_skipped_by_cli != null && message.hasOwnProperty("is_url_skipped_by_cli"))
                     writer.uint32(/* id 14, wireType 0 =*/112).bool(message.is_url_skipped_by_cli);
+                if (message.crop_result != null && message.hasOwnProperty("crop_result"))
+                    $root.mdc.proto.CropResult.encode(message.crop_result, writer.uint32(/* id 15, wireType 2 =*/122).fork()).ldelim();
                 return writer;
             };
 
@@ -5797,6 +5935,9 @@ $root.mdc = (function() {
                         break;
                     case 11:
                         message.diff_image_result = $root.mdc.proto.DiffImageResult.decode(reader, reader.uint32());
+                        break;
+                    case 15:
+                        message.crop_result = $root.mdc.proto.CropResult.decode(reader, reader.uint32());
                         break;
                     case 12:
                         message.retry_count = reader.uint32();
@@ -5904,6 +6045,11 @@ $root.mdc = (function() {
                     var error = $root.mdc.proto.DiffImageResult.verify(message.diff_image_result);
                     if (error)
                         return "diff_image_result." + error;
+                }
+                if (message.crop_result != null && message.hasOwnProperty("crop_result")) {
+                    var error = $root.mdc.proto.CropResult.verify(message.crop_result);
+                    if (error)
+                        return "crop_result." + error;
                 }
                 if (message.retry_count != null && message.hasOwnProperty("retry_count"))
                     if (!$util.isInteger(message.retry_count))
@@ -6013,6 +6159,11 @@ $root.mdc = (function() {
                         throw TypeError(".mdc.proto.Screenshot.diff_image_result: object expected");
                     message.diff_image_result = $root.mdc.proto.DiffImageResult.fromObject(object.diff_image_result);
                 }
+                if (object.crop_result != null) {
+                    if (typeof object.crop_result !== "object")
+                        throw TypeError(".mdc.proto.Screenshot.crop_result: object expected");
+                    message.crop_result = $root.mdc.proto.CropResult.fromObject(object.crop_result);
+                }
                 if (object.retry_count != null)
                     message.retry_count = object.retry_count >>> 0;
                 if (object.flake_config != null) {
@@ -6051,6 +6202,7 @@ $root.mdc = (function() {
                     object.retry_count = 0;
                     object.flake_config = null;
                     object.is_url_skipped_by_cli = false;
+                    object.crop_result = null;
                 }
                 if (message.is_runnable != null && message.hasOwnProperty("is_runnable"))
                     object.is_runnable = message.is_runnable;
@@ -6080,6 +6232,8 @@ $root.mdc = (function() {
                     object.flake_config = $root.mdc.proto.FlakeConfig.toObject(message.flake_config, options);
                 if (message.is_url_skipped_by_cli != null && message.hasOwnProperty("is_url_skipped_by_cli"))
                     object.is_url_skipped_by_cli = message.is_url_skipped_by_cli;
+                if (message.crop_result != null && message.hasOwnProperty("crop_result"))
+                    object.crop_result = $root.mdc.proto.CropResult.toObject(message.crop_result, options);
                 return object;
             };
 
@@ -6135,6 +6289,260 @@ $root.mdc = (function() {
             })();
 
             return Screenshot;
+        })();
+
+        proto.CropResult = (function() {
+
+            /**
+             * Properties of a CropResult.
+             * @memberof mdc.proto
+             * @interface ICropResult
+             * @property {number|null} [uncropped_width] CropResult uncropped_width
+             * @property {number|null} [uncropped_height] CropResult uncropped_height
+             * @property {number|null} [cropped_width] CropResult cropped_width
+             * @property {number|null} [cropped_height] CropResult cropped_height
+             */
+
+            /**
+             * Constructs a new CropResult.
+             * @memberof mdc.proto
+             * @classdesc Represents a CropResult.
+             * @implements ICropResult
+             * @constructor
+             * @param {mdc.proto.ICropResult=} [properties] Properties to set
+             */
+            function CropResult(properties) {
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
+            }
+
+            /**
+             * CropResult uncropped_width.
+             * @member {number} uncropped_width
+             * @memberof mdc.proto.CropResult
+             * @instance
+             */
+            CropResult.prototype.uncropped_width = 0;
+
+            /**
+             * CropResult uncropped_height.
+             * @member {number} uncropped_height
+             * @memberof mdc.proto.CropResult
+             * @instance
+             */
+            CropResult.prototype.uncropped_height = 0;
+
+            /**
+             * CropResult cropped_width.
+             * @member {number} cropped_width
+             * @memberof mdc.proto.CropResult
+             * @instance
+             */
+            CropResult.prototype.cropped_width = 0;
+
+            /**
+             * CropResult cropped_height.
+             * @member {number} cropped_height
+             * @memberof mdc.proto.CropResult
+             * @instance
+             */
+            CropResult.prototype.cropped_height = 0;
+
+            /**
+             * Creates a new CropResult instance using the specified properties.
+             * @function create
+             * @memberof mdc.proto.CropResult
+             * @static
+             * @param {mdc.proto.ICropResult=} [properties] Properties to set
+             * @returns {mdc.proto.CropResult} CropResult instance
+             */
+            CropResult.create = function create(properties) {
+                return new CropResult(properties);
+            };
+
+            /**
+             * Encodes the specified CropResult message. Does not implicitly {@link mdc.proto.CropResult.verify|verify} messages.
+             * @function encode
+             * @memberof mdc.proto.CropResult
+             * @static
+             * @param {mdc.proto.ICropResult} message CropResult message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            CropResult.encode = function encode(message, writer) {
+                if (!writer)
+                    writer = $Writer.create();
+                if (message.uncropped_width != null && message.hasOwnProperty("uncropped_width"))
+                    writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.uncropped_width);
+                if (message.uncropped_height != null && message.hasOwnProperty("uncropped_height"))
+                    writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.uncropped_height);
+                if (message.cropped_width != null && message.hasOwnProperty("cropped_width"))
+                    writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.cropped_width);
+                if (message.cropped_height != null && message.hasOwnProperty("cropped_height"))
+                    writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.cropped_height);
+                return writer;
+            };
+
+            /**
+             * Encodes the specified CropResult message, length delimited. Does not implicitly {@link mdc.proto.CropResult.verify|verify} messages.
+             * @function encodeDelimited
+             * @memberof mdc.proto.CropResult
+             * @static
+             * @param {mdc.proto.ICropResult} message CropResult message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            CropResult.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes a CropResult message from the specified reader or buffer.
+             * @function decode
+             * @memberof mdc.proto.CropResult
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {mdc.proto.CropResult} CropResult
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            CropResult.decode = function decode(reader, length) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader.create(reader);
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.mdc.proto.CropResult();
+                while (reader.pos < end) {
+                    var tag = reader.uint32();
+                    switch (tag >>> 3) {
+                    case 1:
+                        message.uncropped_width = reader.uint32();
+                        break;
+                    case 2:
+                        message.uncropped_height = reader.uint32();
+                        break;
+                    case 3:
+                        message.cropped_width = reader.uint32();
+                        break;
+                    case 4:
+                        message.cropped_height = reader.uint32();
+                        break;
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                return message;
+            };
+
+            /**
+             * Decodes a CropResult message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
+             * @memberof mdc.proto.CropResult
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @returns {mdc.proto.CropResult} CropResult
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            CropResult.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = new $Reader(reader);
+                return this.decode(reader, reader.uint32());
+            };
+
+            /**
+             * Verifies a CropResult message.
+             * @function verify
+             * @memberof mdc.proto.CropResult
+             * @static
+             * @param {Object.<string,*>} message Plain object to verify
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+             */
+            CropResult.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
+                if (message.uncropped_width != null && message.hasOwnProperty("uncropped_width"))
+                    if (!$util.isInteger(message.uncropped_width))
+                        return "uncropped_width: integer expected";
+                if (message.uncropped_height != null && message.hasOwnProperty("uncropped_height"))
+                    if (!$util.isInteger(message.uncropped_height))
+                        return "uncropped_height: integer expected";
+                if (message.cropped_width != null && message.hasOwnProperty("cropped_width"))
+                    if (!$util.isInteger(message.cropped_width))
+                        return "cropped_width: integer expected";
+                if (message.cropped_height != null && message.hasOwnProperty("cropped_height"))
+                    if (!$util.isInteger(message.cropped_height))
+                        return "cropped_height: integer expected";
+                return null;
+            };
+
+            /**
+             * Creates a CropResult message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof mdc.proto.CropResult
+             * @static
+             * @param {Object.<string,*>} object Plain object
+             * @returns {mdc.proto.CropResult} CropResult
+             */
+            CropResult.fromObject = function fromObject(object) {
+                if (object instanceof $root.mdc.proto.CropResult)
+                    return object;
+                var message = new $root.mdc.proto.CropResult();
+                if (object.uncropped_width != null)
+                    message.uncropped_width = object.uncropped_width >>> 0;
+                if (object.uncropped_height != null)
+                    message.uncropped_height = object.uncropped_height >>> 0;
+                if (object.cropped_width != null)
+                    message.cropped_width = object.cropped_width >>> 0;
+                if (object.cropped_height != null)
+                    message.cropped_height = object.cropped_height >>> 0;
+                return message;
+            };
+
+            /**
+             * Creates a plain object from a CropResult message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof mdc.proto.CropResult
+             * @static
+             * @param {mdc.proto.CropResult} message CropResult
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            CropResult.toObject = function toObject(message, options) {
+                if (!options)
+                    options = {};
+                var object = {};
+                if (options.defaults) {
+                    object.uncropped_width = 0;
+                    object.uncropped_height = 0;
+                    object.cropped_width = 0;
+                    object.cropped_height = 0;
+                }
+                if (message.uncropped_width != null && message.hasOwnProperty("uncropped_width"))
+                    object.uncropped_width = message.uncropped_width;
+                if (message.uncropped_height != null && message.hasOwnProperty("uncropped_height"))
+                    object.uncropped_height = message.uncropped_height;
+                if (message.cropped_width != null && message.hasOwnProperty("cropped_width"))
+                    object.cropped_width = message.cropped_width;
+                if (message.cropped_height != null && message.hasOwnProperty("cropped_height"))
+                    object.cropped_height = message.cropped_height;
+                return object;
+            };
+
+            /**
+             * Converts this CropResult to JSON.
+             * @function toJSON
+             * @memberof mdc.proto.CropResult
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            CropResult.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            return CropResult;
         })();
 
         proto.FlakeConfig = (function() {

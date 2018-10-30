@@ -1,27 +1,33 @@
 /**
- * Copyright 2017 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2017 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import {assert} from 'chai';
 import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
-import {createMockRaf} from '../helpers/raf';
+import {install as installClock} from '../helpers/clock';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
-import {MDCTab} from '../../../packages/mdc-tabs/tab';
-import {MDCTabFoundation} from '../../../packages/mdc-tabs/tab';
+import {MDCTab, MDCTabFoundation} from '../../../packages/mdc-tabs/tab/index';
 import {cssClasses, strings} from '../../../packages/mdc-tabs/tab/constants';
 
 function getFixture() {
@@ -49,11 +55,10 @@ test('#constructor initializes the root element with a ripple in browsers that s
     this.skip(); // eslint-disable-line no-invalid-this
     return;
   }
-  const raf = createMockRaf();
+  const clock = installClock();
   const {root} = setupTest();
-  raf.flush();
+  clock.runToFrame();
   assert.isOk(root.classList.contains('mdc-ripple-upgraded'));
-  raf.restore();
 });
 
 test('#destroy cleans up tab\'s ripple in browsers that support it', function() {
@@ -61,11 +66,11 @@ test('#destroy cleans up tab\'s ripple in browsers that support it', function() 
     this.skip(); // eslint-disable-line no-invalid-this
     return;
   }
-  const raf = createMockRaf();
+  const clock = installClock();
   const {root, component} = setupTest();
-  raf.flush();
+  clock.runToFrame();
   component.destroy();
-  raf.flush();
+  clock.runToFrame();
   assert.isNotOk(root.classList.contains('mdc-ripple-upgraded'));
 });
 
