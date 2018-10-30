@@ -204,7 +204,7 @@ The adapter for snackbars must provide the following functions, with correct sig
 | `setActionAriaHidden() => void` | Sets `aria-hidden="true"` on the action element. |
 | `unsetActionAriaHidden() => void` | Removes the `aria-hidden` attribute from the action element. |
 | `setActionText(actionText: string) => void` | Set the text content of the action element. |
-| `setMessageText(message: string) => void` | Set the text content of the message element. |
+| `setLabelText(message: string) => void` | Set the text content of the message element. |
 | `setFocus() => void` | Sets focus on the action button. |
 | `isFocused() => boolean` | Detects focus on the action button. |
 | `visibilityIsHidden() => boolean` | Returns document.hidden property. |

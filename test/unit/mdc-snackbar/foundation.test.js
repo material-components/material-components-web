@@ -51,7 +51,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   assert.equal(methods.length, Object.keys(defaultAdapter).length, 'Every adapter key must be a function');
   assert.deepEqual(methods, [
     'addClass', 'removeClass', 'setAriaHidden', 'unsetAriaHidden', 'setActionAriaHidden',
-    'unsetActionAriaHidden', 'setActionText', 'setMessageText', 'setFocus', 'isFocused', 'visibilityIsHidden',
+    'unsetActionAriaHidden', 'setActionText', 'setLabelText', 'setFocus', 'isFocused', 'visibilityIsHidden',
     'registerCapturedBlurHandler', 'deregisterCapturedBlurHandler', 'registerVisibilityChangeHandler',
     'deregisterVisibilityChangeHandler', 'registerCapturedInteractionHandler',
     'deregisterCapturedInteractionHandler', 'registerActionClickHandler',
@@ -169,7 +169,7 @@ test('#show should set the message text', () => {
 
   foundation.init();
   foundation.show({message: 'Message Deleted'});
-  td.verify(mockAdapter.setMessageText('Message Deleted'));
+  td.verify(mockAdapter.setLabelText('Message Deleted'));
 });
 
 test('#show should make the foundation active', () => {
@@ -251,8 +251,8 @@ test('#show while snackbar is already showing will queue the data object.', () =
     message: 'Message Archived',
   });
 
-  td.verify(mockAdapter.setMessageText('Message Deleted'));
-  td.verify(mockAdapter.setMessageText('Message Archived'), {times: 0});
+  td.verify(mockAdapter.setLabelText('Message Deleted'));
+  td.verify(mockAdapter.setLabelText('Message Archived'), {times: 0});
 });
 
 test('#show while snackbar is already showing will show after the timeout and transition end', () => {
@@ -275,12 +275,12 @@ test('#show while snackbar is already showing will show after the timeout and tr
     message: 'Message Archived',
   });
 
-  td.verify(mockAdapter.setMessageText('Message Archived'), {times: 0});
+  td.verify(mockAdapter.setLabelText('Message Archived'), {times: 0});
 
   clock.tick(numbers.MESSAGE_TIMEOUT);
   transEndHandler();
 
-  td.verify(mockAdapter.setMessageText('Message Archived'));
+  td.verify(mockAdapter.setLabelText('Message Archived'));
   clock.uninstall();
 });
 

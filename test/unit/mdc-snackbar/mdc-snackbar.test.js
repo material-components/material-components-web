@@ -115,9 +115,9 @@ test('foundationAdapter#unsetAriaHidden removes "aria-hidden" from the root elem
   assert.isNotOk(root.getAttribute('aria-hidden'));
 });
 
-test('foundationAdapter#setMessageText sets the text content of the text element', () => {
+test('foundationAdapter#setLabelText sets the text content of the text element', () => {
   const {root, component} = setupTest();
-  component.getDefaultFoundation().adapter_.setMessageText('Message Deleted');
+  component.getDefaultFoundation().adapter_.setLabelText('Message Deleted');
   assert.equal(root.querySelector(strings.TEXT_SELECTOR).textContent, 'Message Deleted');
 });
 

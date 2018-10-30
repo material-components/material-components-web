@@ -31,8 +31,8 @@ export const cssClasses = {
 };
 
 export const strings = {
-  TEXT_SELECTOR: '.mdc-snackbar__text',
-  ACTION_WRAPPER_SELECTOR: '.mdc-snackbar__action-wrapper',
+  TEXT_SELECTOR: '.mdc-snackbar__label',
+  ACTION_WRAPPER_SELECTOR: '.mdc-snackbar__actions',
   ACTION_BUTTON_SELECTOR: '.mdc-snackbar__action-button',
   SHOW_EVENT: 'MDCSnackbar:show',
   HIDE_EVENT: 'MDCSnackbar:hide',
