@@ -25,7 +25,7 @@ import {assert} from 'chai';
 import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
-import {createMockRaf} from '../helpers/raf';
+import {install as installClock} from '../helpers/clock';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 
 import {MDCRipple, MDCRippleFoundation} from '../../../packages/mdc-ripple/index';
@@ -412,14 +412,13 @@ test('instantiates ripple', function() {
   }
 
   const fixture = getFixture();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   const component = MDCSelect.attachTo(fixture);
-  raf.flush();
+  clock.runToFrame();
 
   assert.instanceOf(component.ripple, MDCRipple);
   assert.isTrue(fixture.classList.contains(MDCRippleFoundation.cssClasses.ROOT));
-  raf.restore();
 });
 
 test(`#constructor instantiates an outline on the ${cssClasses.OUTLINE_SELECTOR} element if present`, () => {
@@ -436,18 +435,17 @@ test('handles ripple focus properly', function() {
   }
 
   const fixture = getFixture();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   MDCSelect.attachTo(fixture);
-  raf.flush();
+  clock.runToFrame();
 
   const nativeControl = fixture.querySelector('.mdc-select__native-control');
 
   domEvents.emit(nativeControl, 'focus');
-  raf.flush();
+  clock.runToFrame();
 
   assert.isTrue(fixture.classList.contains(MDCRippleFoundation.cssClasses.BG_FOCUSED));
-  raf.restore();
 });
 
 test('#destroy removes the ripple', function() {
@@ -457,17 +455,16 @@ test('#destroy removes the ripple', function() {
   }
 
   const fixture = getFixture();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   const component = new MDCSelect(fixture);
-  raf.flush();
+  clock.runToFrame();
 
   assert.isTrue(fixture.classList.contains(MDCRippleFoundation.cssClasses.ROOT));
   component.destroy();
-  raf.flush();
+  clock.runToFrame();
 
   assert.isFalse(fixture.classList.contains(MDCRippleFoundation.cssClasses.ROOT));
-  raf.restore();
 });
 
 test('#destroy cleans up the outline if present', () => {
@@ -688,9 +685,7 @@ test('#destroy destroys the helper text if it exists', () => {
   document.body.removeChild(container);
 });
 
-/* eslint-disable mocha/no-skipped-tests, max-len */
-// These are currently skipped due to rAF being improperly cleaned up somewhere in our tests
-test.skip(`MutationObserver adds ${cssClasses.REQUIRED} class to the parent when required attribute is added`, (done) => {
+test(`MutationObserver adds ${cssClasses.REQUIRED} class to the parent when required attribute is added`, (done) => {
   const hasLabel = true;
   const hasOutline = false;
   const hasHelperText = false;
@@ -706,7 +701,7 @@ test.skip(`MutationObserver adds ${cssClasses.REQUIRED} class to the parent when
   }, 0);
 });
 
-test.skip(`MutationObserver removes ${cssClasses.REQUIRED} class from the parent when required attribute is removed`, (done) => {
+test(`MutationObserver removes ${cssClasses.REQUIRED} class from the parent when required attr is removed`, (done) => {
   const hasLabel = true;
   const hasOutline = false;
   const hasHelperText = false;
@@ -723,4 +718,3 @@ test.skip(`MutationObserver removes ${cssClasses.REQUIRED} class from the parent
     }, 0);
   }, 0);
 });
-/* eslint-enable mocha/no-skipped-tests, max-len */

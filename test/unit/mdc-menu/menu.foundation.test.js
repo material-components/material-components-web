@@ -25,8 +25,7 @@ import {assert} from 'chai';
 import td from 'testdouble';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
-import {createMockRaf} from '../helpers/raf';
-import lolex from 'lolex';
+import {install as installClock} from '../helpers/clock';
 import {MDCMenuFoundation} from '../../../packages/mdc-menu/foundation';
 import MDCListFoundation from '../../../packages/mdc-list/foundation';
 import {cssClasses, strings} from '../../../packages/mdc-menu/constants';
@@ -34,8 +33,8 @@ import {numbers} from '../../../packages/mdc-menu-surface/constants';
 
 function setupTest() {
   const {foundation, mockAdapter} = setupFoundationTest(MDCMenuFoundation);
-  const mockRaf = createMockRaf();
-  return {foundation, mockAdapter, mockRaf};
+  const clock = installClock();
+  return {foundation, mockAdapter, clock};
 }
 
 const listClasses = MDCListFoundation.cssClasses;
@@ -208,8 +207,7 @@ test('handleKeydown space/enter key inside of a list item not inside of the menu
 test('handleKeydown space/enter key inside of a selection group ' +
   'with additional markup does not cause loop', () => {
   // This test will timeout of there is an endless loop in the selection group logic.
-  const {foundation, mockAdapter} = setupTest();
-  const clock = lolex.install();
+  const {foundation, mockAdapter, clock} = setupTest();
   const parentElement = {};
   const event = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
   td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
@@ -224,12 +222,10 @@ test('handleKeydown space/enter key inside of a selection group ' +
   clock.tick(numbers.TRANSITION_CLOSE_DURATION);
 
   td.verify(mockAdapter.closeSurface(), {times: 2});
-  clock.uninstall();
 });
 
 test('handleKeydown space/enter key inside of a selection group with another element selected', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const clock = lolex.install();
+  const {foundation, mockAdapter, clock} = setupTest();
   const event = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
   td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
   td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
@@ -244,12 +240,10 @@ test('handleKeydown space/enter key inside of a selection group with another ele
 
   td.verify(mockAdapter.removeClassFromElementAtIndex(0, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 2});
   td.verify(mockAdapter.addClassToElementAtIndex(0, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 2});
-  clock.uninstall();
 });
 
 test('handleKeydown space/enter key inside of a selection group with no element selected', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const clock = lolex.install();
+  const {foundation, mockAdapter, clock} = setupTest();
   const event = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
   td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
   td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
@@ -265,13 +259,11 @@ test('handleKeydown space/enter key inside of a selection group with no element 
   td.verify(mockAdapter.removeClassFromElementAtIndex(td.matchers.isA(Number), cssClasses.MENU_SELECTED_LIST_ITEM),
     {times: 0});
   td.verify(mockAdapter.addClassToElementAtIndex(0, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 2});
-  clock.uninstall();
 });
 
 test('handleKeydown space/enter key inside of a child element of a list item in a selection group with no ' +
   'element selected', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const clock = lolex.install();
+  const {foundation, mockAdapter, clock} = setupTest();
   const event = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
   td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
   td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
@@ -287,13 +279,11 @@ test('handleKeydown space/enter key inside of a child element of a list item in 
   td.verify(mockAdapter.removeClassFromElementAtIndex(td.matchers.isA(Number), cssClasses.MENU_SELECTED_LIST_ITEM),
     {times: 0});
   td.verify(mockAdapter.addClassToElementAtIndex(0, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 2});
-  clock.uninstall();
 });
 
 test('handleKeydown space/enter key inside of a child element of a selection group (but not a list item) with no ' +
   'element selected', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const clock = lolex.install();
+  const {foundation, mockAdapter, clock} = setupTest();
   const event = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
   td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
   td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
@@ -311,7 +301,6 @@ test('handleKeydown space/enter key inside of a child element of a selection gro
     {times: 0});
   td.verify(mockAdapter.addClassToElementAtIndex(td.matchers.isA(Number), cssClasses.MENU_SELECTED_LIST_ITEM),
     {times: 0});
-  clock.uninstall();
 });
 
 // Clicks
@@ -408,8 +397,7 @@ test('Click event inside of a list item not inside of the menu', () => {
 });
 
 test('Click event inside of a selection group with another element selected', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const clock = lolex.install();
+  const {foundation, mockAdapter, clock} = setupTest();
   const event = {target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
   td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
   td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
@@ -422,12 +410,10 @@ test('Click event inside of a selection group with another element selected', ()
 
   td.verify(mockAdapter.removeClassFromElementAtIndex(0, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 1});
   td.verify(mockAdapter.addClassToElementAtIndex(0, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 1});
-  clock.uninstall();
 });
 
 test('Click event inside of a selection group with no element selected', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const clock = lolex.install();
+  const {foundation, mockAdapter, clock} = setupTest();
   const event = {target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
   td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
   td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
@@ -441,12 +427,10 @@ test('Click event inside of a selection group with no element selected', () => {
   td.verify(mockAdapter.removeClassFromElementAtIndex(td.matchers.isA(Number), cssClasses.MENU_SELECTED_LIST_ITEM),
     {times: 0});
   td.verify(mockAdapter.addClassToElementAtIndex(0, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 1});
-  clock.uninstall();
 });
 
 test('Click event inside of a child element of a list item in a selection group with no element selected', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const clock = lolex.install();
+  const {foundation, mockAdapter, clock} = setupTest();
   const event = {target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
   td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
   td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
@@ -460,13 +444,11 @@ test('Click event inside of a child element of a list item in a selection group 
   td.verify(mockAdapter.removeClassFromElementAtIndex(td.matchers.isA(Number), cssClasses.MENU_SELECTED_LIST_ITEM),
     {times: 0});
   td.verify(mockAdapter.addClassToElementAtIndex(0, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 1});
-  clock.uninstall();
 });
 
 test('Click event inside of a child element of a selection group (but not a list item) with no element ' +
   'selected', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const clock = lolex.install();
+  const {foundation, mockAdapter, clock} = setupTest();
   const event = {target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
   td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
   td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
@@ -482,7 +464,6 @@ test('Click event inside of a child element of a selection group (but not a list
     {times: 0});
   td.verify(mockAdapter.addClassToElementAtIndex(td.matchers.isA(Number), cssClasses.MENU_SELECTED_LIST_ITEM),
     {times: 0});
-  clock.uninstall();
 });
 
 test('#handleSelection: should invoke notifySelected on selected item.', () => {

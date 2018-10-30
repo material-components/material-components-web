@@ -26,7 +26,7 @@ import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
 
-import {createMockRaf} from '../helpers/raf';
+import {install as installClock} from '../helpers/clock';
 import {TRANSFORM_PROP} from './helpers';
 
 import {cssClasses, strings} from '../../../packages/mdc-slider/constants';
@@ -99,12 +99,12 @@ test('get/set disabled', () => {
 });
 
 test('#layout lays out the component', () => {
-  const raf = createMockRaf();
+  const clock = installClock();
   const {root, component} = setupTest();
-  raf.flush();
+  clock.runToFrame();
 
   component.value = 50;
-  raf.flush();
+  clock.runToFrame();
 
   Object.assign(root.style, {
     position: 'absolute',
@@ -115,13 +115,12 @@ test('#layout lays out the component', () => {
 
   document.body.appendChild(root);
   component.layout();
-  raf.flush();
+  clock.runToFrame();
 
   const thumbContainer = root.querySelector(strings.THUMB_CONTAINER_SELECTOR);
   assert.include(thumbContainer.style.getPropertyValue(TRANSFORM_PROP), 'translateX(50px)');
 
   document.body.removeChild(root);
-  raf.restore();
 });
 
 test('#initialSyncWithDOM syncs the min property with aria-valuemin', () => {

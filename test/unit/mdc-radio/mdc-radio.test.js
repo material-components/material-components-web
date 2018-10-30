@@ -25,7 +25,7 @@ import {assert} from 'chai';
 import bel from 'bel';
 
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
-import {createMockRaf} from '../helpers/raf';
+import {install as installClock} from '../helpers/clock';
 import {MDCRadio, MDCRadioFoundation} from '../../../packages/mdc-radio/index';
 import {MDCRipple} from '../../../packages/mdc-ripple/index';
 
@@ -58,19 +58,18 @@ test('attachTo initializes and returns a MDCRadio instance', () => {
 
 if (supportsCssVariables(window)) {
   test('#constructor initializes the root element with a ripple', () => {
-    const raf = createMockRaf();
+    const clock = installClock();
     const {root} = setupTest();
-    raf.flush();
+    clock.runToFrame();
     assert.isOk(root.classList.contains('mdc-ripple-upgraded'));
-    raf.restore();
   });
 
   test('#destroy removes the ripple', () => {
-    const raf = createMockRaf();
+    const clock = installClock();
     const {root, component} = setupTest();
-    raf.flush();
+    clock.runToFrame();
     component.destroy();
-    raf.flush();
+    clock.runToFrame();
     assert.isNotOk(root.classList.contains('mdc-ripple-upgraded'));
   });
 }

@@ -25,7 +25,7 @@ import {assert} from 'chai';
 import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
-import {createMockRaf} from '../helpers/raf';
+import {install as installClock} from '../helpers/clock';
 import {strings} from '../../../packages/mdc-dialog/constants';
 import {MDCDialog, MDCDialogFoundation, util} from '../../../packages/mdc-dialog/index';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
@@ -162,14 +162,13 @@ test('#initialize attaches ripple elements to all footer buttons', function() {
     return;
   }
 
-  const raf = createMockRaf();
+  const clock = installClock();
   const {yesButton, noButton, cancelButton} = setupTest();
-  raf.flush();
+  clock.runToFrame();
 
   assert.isTrue(yesButton.classList.contains('mdc-ripple-upgraded'));
   assert.isTrue(noButton.classList.contains('mdc-ripple-upgraded'));
   assert.isTrue(cancelButton.classList.contains('mdc-ripple-upgraded'));
-  raf.restore();
 });
 
 test('#destroy cleans up all ripples on footer buttons', function() {
@@ -178,17 +177,16 @@ test('#destroy cleans up all ripples on footer buttons', function() {
     return;
   }
 
-  const raf = createMockRaf();
+  const clock = installClock();
   const {component, yesButton, noButton, cancelButton} = setupTest();
-  raf.flush();
+  clock.runToFrame();
 
   component.destroy();
-  raf.flush();
+  clock.runToFrame();
 
   assert.isFalse(yesButton.classList.contains('mdc-ripple-upgraded'));
   assert.isFalse(noButton.classList.contains('mdc-ripple-upgraded'));
   assert.isFalse(cancelButton.classList.contains('mdc-ripple-upgraded'));
-  raf.restore();
 });
 
 test('#open forwards to MDCDialogFoundation#open', () => {
