@@ -87,7 +87,9 @@
   @include mdc-list-item-primary-text-ink-color(text-disabled-on-background);
 }
 
-.mdc-list-item__graphic {
+// Extra specificity is to override .material-icons display style if used in conjunction with mdc-list-item__graphic
+// stylelint-disable plugin/selector-bem-pattern
+.mdc-list .mdc-list-item__graphic {
   @include mdc-list-graphic-size_(24px);
 
   display: inline-flex;
@@ -96,6 +98,7 @@
   justify-content: center;
   fill: currentColor;
 }
+// stylelint-enable plugin/selector-bem-pattern
 
 .mdc-list-item__meta {
   @include mdc-rtl-reflexive-property(margin, auto, 0, ".mdc-list-item");
