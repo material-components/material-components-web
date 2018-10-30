@@ -1,6 +1,6 @@
 {
   "name": "@material/top-app-bar",
-  "version": "0.40.1",
+  "version": "0.41.0",
   "description": "The Material Components for the web top app bar component",
   "license": "MIT",
   "main": "dist/mdc.topAppBar.js",
@@ -16,14 +16,14 @@
     "topappbar"
   ],
   "dependencies": {
-    "@material/animation": "^0.40.1",
-    "@material/base": "^0.40.1",
-    "@material/elevation": "^0.40.1",
-    "@material/ripple": "^0.40.1",
+    "@material/animation": "^0.41.0",
+    "@material/base": "^0.41.0",
+    "@material/elevation": "^0.41.0",
+    "@material/ripple": "^0.41.0",
     "@material/rtl": "^0.40.1",
-    "@material/shape": "^0.40.1",
-    "@material/theme": "^0.40.1",
-    "@material/typography": "^0.40.1"
+    "@material/shape": "^0.41.0",
+    "@material/theme": "^0.41.0",
+    "@material/typography": "^0.41.0"
   },
   "publishConfig": {
     "access": "public"

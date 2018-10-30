@@ -42,6 +42,8 @@
     transition:
       transform $mdc-floating-label-transition-duration $mdc-animation-standard-curve-timing-function,
       color $mdc-floating-label-transition-duration $mdc-animation-standard-curve-timing-function;
+
+    /* @alternate */
     line-height: 1.15rem;
     text-align: left;
     text-overflow: ellipsis;

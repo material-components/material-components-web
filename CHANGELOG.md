@@ -1,3 +1,47 @@
+<a name="0.41.0"></a>
+# [0.41.0](https://github.com/material-components/material-components-web/compare/v0.40.0...v0.41.0) (2018-10-29)
+
+
+### Bug Fixes
+
+* **dialog:** Apply max-width to same element as min-width ([#3749](https://github.com/material-components/material-components-web/issues/3749)) ([2dac7e1](https://github.com/material-components/material-components-web/commit/2dac7e1))
+* **drawer:** link to the es6 component js file in screenshot spec ([#3696](https://github.com/material-components/material-components-web/issues/3696)) ([8d96a72](https://github.com/material-components/material-components-web/commit/8d96a72))
+* **drawer:** Remove redundant style ([#3731](https://github.com/material-components/material-components-web/issues/3731)) ([716da5a](https://github.com/material-components/material-components-web/commit/716da5a))
+* **drawer:** Remove unnecessary Closure annotation ([#3935](https://github.com/material-components/material-components-web/issues/3935)) ([61128be](https://github.com/material-components/material-components-web/commit/61128be))
+* **floating-label:** Add alternate tag ([#3993](https://github.com/material-components/material-components-web/issues/3993)) ([6307071](https://github.com/material-components/material-components-web/commit/6307071))
+* **list:** Peace out whitespace ([#3997](https://github.com/material-components/material-components-web/issues/3997)) ([19b5152](https://github.com/material-components/material-components-web/commit/19b5152))
+* **menu:** Allow anchor links as menu list items ([#3680](https://github.com/material-components/material-components-web/issues/3680)) ([d312271](https://github.com/material-components/material-components-web/commit/d312271))
+* **notched-outline:** Add noflip annotation ([#3994](https://github.com/material-components/material-components-web/issues/3994)) ([c60d42b](https://github.com/material-components/material-components-web/commit/c60d42b))
+* **notched-outline:** Auto position the notch and floating label based on corner size ([#3929](https://github.com/material-components/material-components-web/issues/3929)) ([06daf52](https://github.com/material-components/material-components-web/commit/06daf52))
+* **radio:** remove getNativeControl from adapter ([#3785](https://github.com/material-components/material-components-web/issues/3785)) ([476130e](https://github.com/material-components/material-components-web/commit/476130e))
+* **ripple:** Deactivate on contextmenu event ([#3759](https://github.com/material-components/material-components-web/issues/3759)) ([4d76e3f](https://github.com/material-components/material-components-web/commit/4d76e3f))
+* **shape:** Rename surface term with component. ([#3761](https://github.com/material-components/material-components-web/issues/3761)) ([81bb919](https://github.com/material-components/material-components-web/commit/81bb919))
+* Future-proof Sass usage ([#3921](https://github.com/material-components/material-components-web/issues/3921)) ([6fa2269](https://github.com/material-components/material-components-web/commit/6fa2269))
+* **text-field:** Fix textarea-shape-radius mixin behavior for input ([#3982](https://github.com/material-components/material-components-web/issues/3982)) ([1167289](https://github.com/material-components/material-components-web/commit/1167289))
+* **textfield:** Use theme mixin for asterisk color ([#3952](https://github.com/material-components/material-components-web/issues/3952)) ([981b37e](https://github.com/material-components/material-components-web/commit/981b37e))
+* **theme:** Make $mdc-theme-on-error dark if $mdc-theme-error is light ([#3678](https://github.com/material-components/material-components-web/issues/3678)) ([5b1348c](https://github.com/material-components/material-components-web/commit/5b1348c))
+* **typography:** Add alternate tag for line-height ([#3992](https://github.com/material-components/material-components-web/issues/3992)) ([f6acae8](https://github.com/material-components/material-components-web/commit/f6acae8))
+
+
+### Features
+
+* Update default npm export to ES5 js files ([#3245](https://github.com/material-components/material-components-web/issues/3245)) ([514f9f8](https://github.com/material-components/material-components-web/commit/514f9f8))
+* **chips:** Make deselect and toggleSelect private. Update handleChipInteraction/Removal API ([#3617](https://github.com/material-components/material-components-web/issues/3617)) ([73ab5a0](https://github.com/material-components/material-components-web/commit/73ab5a0))
+* **menu:** Expose handleSelection API to public ([#3950](https://github.com/material-components/material-components-web/issues/3950)) ([7f02a64](https://github.com/material-components/material-components-web/commit/7f02a64))
+* **select:** Add enhanced select variant ([#3949](https://github.com/material-components/material-components-web/issues/3949)) ([35697a5](https://github.com/material-components/material-components-web/commit/35697a5))
+* **tab-bar:** Add focusOnActivate flag ([#3748](https://github.com/material-components/material-components-web/issues/3748)) ([313618a](https://github.com/material-components/material-components-web/commit/313618a))
+
+
+### BREAKING CHANGES
+
+* Anyone intending to build MDC Web's ES2015+ sources must directly import `@material/foo/index`. `@material/foo` will now resolve to UMD modules.
+* **select:** Several adapter APIs were added to support the enhanced variant. The drop-down arrow is now its own element. The change event is now MDCSelect:change for all variants. See the README for full details.
+* **radio:** Removed getNativeControl from adapter, and subsequent foundation methods that called getNativeControl. Foundation methods removed: isChecked, setChecked, isDisabled, getValue, setValue.
+* **shape:** Renamed shape global variables from `$mdc-shape-*-surface-radius` to `$mdc-shape-*-component-radius`
+* **chips:** deselect and toggleSelect are private methods. handleChipInteraction and handleChipRemoval now accept chipId instead of an event.
+
+
+
 <a name="0.40.1"></a>
 ## [0.40.1](https://github.com/material-components/material-components-web/compare/v0.40.0...v0.40.1) (2018-10-08)
 

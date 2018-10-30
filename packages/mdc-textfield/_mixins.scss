@@ -60,17 +60,14 @@
     // background between the two borders in each corner when the
     // textarea is focused. This also means we need to guard against
     // invalid output.
-    $radius-value: $radius;
+    $radius-value: mdc-shape-prop-value($radius);
+    $trimmed-radius-value: ();
 
-    @if type-of($radius) == "list" {
-      $radius-value: ();
-
-      @each $corner in $radius {
-        $radius-value: append($radius-value, max($corner - 2, 0));
-      }
+    @each $corner in $radius-value {
+      $trimmed-radius-value: append($trimmed-radius-value, max($corner - 2, 0));
     }
 
-    @include mdc-shape-radius($radius-value, $rtl-reflexive);
+    @include mdc-shape-radius($trimmed-radius-value, $rtl-reflexive);
   }
 }
 
@@ -206,7 +203,7 @@
   @include mdc-text-field-label-color($mdc-text-field-focused-label-color);
 
   @include mdc-required-text-field-label-asterisk_ {
-    color: $mdc-text-field-error;
+    @include mdc-theme-prop(color, $mdc-text-field-error);
   }
 
   + .mdc-text-field-helper-text:not(.mdc-text-field-helper-text--validation-msg) {
@@ -251,6 +248,7 @@
   $cornerSize: mdc-shape-prop-value($resolved-radius);
   $positionX: mdc-notched-outline-get-notch-padded-position($cornerSize);
   $labelPositionOffset: - $mdc-text-field-outline-label-offset + $positionX;
+
   @include mdc-floating-label-float-position($mdc-text-field-outlined-label-position-y, -1 * ($labelPositionOffset));
 }
 
