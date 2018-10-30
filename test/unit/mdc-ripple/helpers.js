@@ -24,7 +24,7 @@
 import td from 'testdouble';
 
 import {setupFoundationTest} from '../helpers/setup';
-import {createMockRaf} from '../helpers/raf';
+import {install as installClock} from '../helpers/clock';
 import MDCRippleFoundation from '../../../packages/mdc-ripple/foundation';
 
 export function setupTest(isCssVarsSupported = true) {
@@ -43,9 +43,8 @@ export function testFoundation(desc, isCssVarsSupported, runTests) {
 
   test(desc, () => {
     const {adapter, foundation} = setupTest(isCssVarsSupported);
-    const mockRaf = createMockRaf();
-    runTests({adapter, foundation, mockRaf});
-    mockRaf.restore();
+    const clock = installClock();
+    runTests({adapter, foundation, clock});
   });
 }
 
