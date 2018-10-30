@@ -10,7 +10,7 @@ path: /docs/importing-js/
 
 Most components ship with Component / Foundation classes which are used to provide a full-fidelity Material Design component. Depending on what technology you use in your stack, there are several ways to import the JavaScript.
 
-## ES2015
+### ES2015
 
 ```js
 import {MDCFoo, MDCFooFoundation} from '@material/foo';
@@ -32,7 +32,7 @@ as well as your own. You will also need to include babel's
 
 See the [Getting Started guide](getting-started.md) for more details on setting up an environment.
 
-## CommonJS
+### CommonJS
 
 ```js
 const mdcFoo = require('mdc-foo');
@@ -40,7 +40,7 @@ const MDCFoo = mdcFoo.MDCFoo;
 const MDCFooFoundation = mdcFoo.MDCFooFoundation;
 ```
 
-## AMD
+### AMD
 
 ```js
 require(['path/to/mdc-foo'], mdcFoo => {
@@ -49,9 +49,27 @@ require(['path/to/mdc-foo'], mdcFoo => {
 });
 ```
 
-## Global
+### Global
 
 ```js
 const MDCFoo = mdc.foo.MDCFoo;
 const MDCFooFoundation = mdc.foo.MDCFooFoundation;
+```
+
+## Instantiating Components via CSS Selector Queries
+
+Many of the examples across the MDC Web documentation demonstrate how to create a component instance for a single element in a page:
+
+```js
+const foo = new MDCFoo(document.querySelector('.mdc-foo'));
+```
+
+This assumes there is one element of interest on the entire page, because `document.querySelector` always returns at most one element (the first match it finds).
+
+To instantiate components for **multiple** elements at once, use `querySelectorAll`:
+
+```js
+const foos = [].map.call(document.querySelectorAll('.mdc-foo'), function(el) {
+  return new MDCFoo(el);
+});
 ```
