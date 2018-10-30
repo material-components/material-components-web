@@ -254,6 +254,7 @@ In addition to the above, the following properties proxy to the `input` element'
 
 Method Signature | Description
 --- | ---
+`focus() => void` | Focuses the `input` or `textarea` element.
 `layout() => void` | Adjusts the dimensions and positions for all sub-elements.
 
 ## Usage Within Frameworks

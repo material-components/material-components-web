@@ -270,6 +270,15 @@ test('#initialSyncWithDom sets disabled if input element is not disabled', () =>
   assert.isNotOk(component.disabled);
 });
 
+test('#focus calls focus on the input element', () => {
+  const {root, component} = setupTest();
+  const input = root.querySelector('.mdc-text-field__input');
+  input.focus = td.func('focus');
+  component.focus();
+
+  td.verify(input.focus(), {times: 1});
+});
+
 test('get/set disabled updates the input element', () => {
   const {root, component} = setupTest();
   const input = root.querySelector('.mdc-text-field__input');
