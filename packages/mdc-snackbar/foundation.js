@@ -95,6 +95,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
   }
 
   show(data) {
+    this.adapter_.unsetAriaHidden();
     this.adapter_.addClass('mdc-snackbar--open');
   }
 
