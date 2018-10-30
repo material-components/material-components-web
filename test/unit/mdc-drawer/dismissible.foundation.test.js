@@ -24,12 +24,11 @@
 import {assert} from 'chai';
 import bel from 'bel';
 import td from 'testdouble';
-import lolex from 'lolex';
 
 import MDCDismissibleDrawerFoundation from '../../../packages/mdc-drawer/dismissible/foundation';
 import {strings, cssClasses} from '../../../packages/mdc-drawer/constants';
 import {verifyDefaultAdapter} from '../helpers/foundation';
-import {createMockRaf} from '../helpers/raf';
+import {install as installClock} from '../helpers/clock';
 
 suite('MDCDismissibleDrawerFoundation');
 
@@ -68,10 +67,10 @@ test('#destroy cancels pending rAF for #open', () => {
 
 test('#destroy cancels pending setTimeout for #open', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
 
   foundation.open();
-  mockRaf.flush();
+  clock.runToFrame();
   foundation.destroy();
 
   td.verify(mockAdapter.addClass(cssClasses.OPENING), {times: 0});
@@ -100,21 +99,15 @@ test('#open does nothing if drawer is closing', () => {
 
 test('#open adds appropriate classes and saves focus', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
-  const clock = lolex.install();
+  const clock = installClock();
 
   foundation.open();
-  mockRaf.flush();
-  clock.tick(0);
+  clock.runToFrame();
+  clock.tick(100);
 
-  try {
-    td.verify(mockAdapter.addClass(cssClasses.OPEN), {times: 1});
-    td.verify(mockAdapter.addClass(cssClasses.OPENING), {times: 1});
-    td.verify(mockAdapter.saveFocus(), {times: 1});
-  } finally {
-    mockRaf.restore();
-    clock.uninstall();
-  }
+  td.verify(mockAdapter.addClass(cssClasses.OPEN), {times: 1});
+  td.verify(mockAdapter.addClass(cssClasses.OPENING), {times: 1});
+  td.verify(mockAdapter.saveFocus(), {times: 1});
 });
 
 test('#close does nothing if drawer is already closed', () => {

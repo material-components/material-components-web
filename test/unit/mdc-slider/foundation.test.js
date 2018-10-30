@@ -26,7 +26,7 @@ import td from 'testdouble';
 
 import {getCorrectPropertyName} from '../../../packages/mdc-animation/index';
 import {verifyDefaultAdapter} from '../helpers/foundation';
-import {createMockRaf} from '../helpers/raf';
+import {install as installClock} from '../helpers/clock';
 import {setupFoundationTest} from '../helpers/setup';
 
 import {cssClasses} from '../../../packages/mdc-slider/constants';
@@ -90,7 +90,6 @@ test('#constructor sets the default disabled state to enabled', () => {
 test('#init registers all necessary event handlers for the component', () => {
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
-  const raf = createMockRaf();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({width: 0, left: 0});
   foundation.init();
@@ -105,54 +104,46 @@ test('#init registers all necessary event handlers for the component', () => {
   td.verify(mockAdapter.registerThumbContainerInteractionHandler('pointerdown', isA(Function)));
   td.verify(mockAdapter.registerThumbContainerInteractionHandler('touchstart', isA(Function)));
   td.verify(mockAdapter.registerResizeHandler(isA(Function)));
-
-  raf.restore();
 });
 
 test('#init checks if slider is discrete and if display track markers', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({width: 100, left: 200});
   foundation.init();
 
-  raf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.hasClass(cssClasses.IS_DISCRETE));
   td.verify(mockAdapter.hasClass(cssClasses.HAS_TRACK_MARKER));
-
-  raf.restore();
 });
 
 test('#init sets step to one if slider is discrete but step is zero', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({width: 100, left: 200});
   td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
   foundation.init();
 
-  raf.flush();
+  clock.runToFrame();
 
   assert.equal(foundation.getStep(), 1);
-
-  raf.restore();
 });
 
 test('#init performs an initial layout of the component', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
   const {anything} = td.matchers;
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({width: 100, left: 200});
   foundation.init();
 
-  raf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.setThumbContainerStyleProperty(anything(), anything()));
   td.verify(mockAdapter.setTrackStyleProperty(anything(), anything()));
-
-  raf.restore();
 });
 
 test('#destroy deregisters all component event handlers registered during init()', () => {
@@ -175,13 +166,13 @@ test('#destroy deregisters all component event handlers registered during init()
 
 test('#setupTrackMarker appends correct number of markers to discrete slider with markers', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
   td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.HAS_TRACK_MARKER)).thenReturn(true);
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   const numMarkers = 10;
   foundation.setMax(100);
@@ -191,19 +182,17 @@ test('#setupTrackMarker appends correct number of markers to discrete slider wit
 
   td.verify(mockAdapter.removeTrackMarkers());
   td.verify(mockAdapter.appendTrackMarkers(numMarkers));
-
-  raf.restore();
 });
 
 test('#setupTrackMarker append one excessive marker if distance is indivisible to step', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
   td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.HAS_TRACK_MARKER)).thenReturn(true);
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   const numMarkers = 12;
   foundation.setMax(100);
@@ -213,20 +202,18 @@ test('#setupTrackMarker append one excessive marker if distance is indivisible t
 
   td.verify(mockAdapter.removeTrackMarkers());
   td.verify(mockAdapter.appendTrackMarkers(numMarkers));
-
-  raf.restore();
 });
 
 test('#setupTrackMarker does execute if it is continuous slider', () => {
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
   td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(false);
   td.when(mockAdapter.hasClass(cssClasses.HAS_TRACK_MARKER)).thenReturn(true);
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setMax(100);
   foundation.setMin(0);
@@ -235,20 +222,18 @@ test('#setupTrackMarker does execute if it is continuous slider', () => {
 
   td.verify(mockAdapter.removeTrackMarkers(), {times: 0});
   td.verify(mockAdapter.appendTrackMarkers(isA(Number)), {times: 0});
-
-  raf.restore();
 });
 
 test('#setupTrackMarker does execute if discrete slider does not display markers', () => {
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
   td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.HAS_TRACK_MARKER)).thenReturn(false);
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setMax(100);
   foundation.setMin(0);
@@ -257,13 +242,10 @@ test('#setupTrackMarker does execute if discrete slider does not display markers
 
   td.verify(mockAdapter.removeTrackMarkers(), {times: 0});
   td.verify(mockAdapter.appendTrackMarkers(isA(Number)), {times: 0});
-
-  raf.restore();
 });
 
 test('#layout re-computes the bounding rect for the component on each call', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
   let numComputations = 0;
 
   // NOTE: Using a counter for numComputations here since we do indeed need to stub
@@ -278,45 +260,39 @@ test('#layout re-computes the bounding rect for the component on each call', () 
   foundation.layout();
 
   assert.equal(numComputations, 2);
-
-  raf.restore();
 });
 
 test('#layout re-updates the UI for the current value', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn(
     {left: 0, width: 50}, {left: 0, width: 100});
 
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   const halfMaxValue = 50;
   foundation.setValue(halfMaxValue);
-  raf.flush();
+  clock.runToFrame();
   // Sanity check
   td.verify(mockAdapter.setThumbContainerStyleProperty(TRANSFORM_PROP, 'translateX(25px) translateX(-50%)'));
 
   foundation.layout();
-  raf.flush();
+  clock.runToFrame();
   td.verify(mockAdapter.setThumbContainerStyleProperty(TRANSFORM_PROP, 'translateX(50px) translateX(-50%)'));
-
-  raf.restore();
 });
 
 test('#getValue/#setValue retrieves / sets the max value, respectively', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setValue(10);
   assert.equal(foundation.getValue(), 10);
-
-  raf.restore();
 });
 
 test('#getValue returns the current value of the slider (0 by default)', () => {
@@ -326,32 +302,30 @@ test('#getValue returns the current value of the slider (0 by default)', () => {
 
 test('#setValue does nothing if the value being set is the same as the current value', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setValue(50);
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setValue(50);
-  raf.flush();
+  clock.runToFrame();
 
   td.verify(
     mockAdapter.setThumbContainerStyleProperty(TRANSFORM_PROP, 'translateX(50px) translateX(-50%)'),
     {times: 1});
-
-  raf.restore();
 });
 
 test('#setValue quantizes the given value to the nearest step value when a step is set', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setStep(1);
 
@@ -360,394 +334,346 @@ test('#setValue quantizes the given value to the nearest step value when a step 
 
   foundation.setValue(2.6);
   assert.equal(foundation.getValue(), 3);
-
-  raf.restore();
 });
 
 test('#setValue does not quantize the given value if the value is set to the minimum value', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setMin(5);
   foundation.setStep(10);
   foundation.setValue(5);
 
   assert.equal(foundation.getValue(), 5);
-
-  raf.restore();
 });
 
 test('#setValue does not quantize the given value if the value is set to the maximum value', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setMax(102);
   foundation.setStep(20);
   foundation.setValue(102);
 
   assert.equal(foundation.getValue(), 102);
-
-  raf.restore();
 });
 
 test('#setValue clamps the value to the minimum value if given value is less than the minimum', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setValue(foundation.getMin() - 1);
 
   assert.equal(foundation.getValue(), foundation.getMin());
-
-  raf.restore();
 });
 
 test('#setValue clamps the value to the maximum value if given value is less than the maximum', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setValue(foundation.getMax() + 1);
 
   assert.equal(foundation.getValue(), foundation.getMax());
-
-  raf.restore();
 });
 
 test('#setValue updates "aria-valuenow" with the current value', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setValue(10);
 
   td.verify(mockAdapter.setAttribute('aria-valuenow', '10'));
-
-  raf.restore();
 });
 
 test('#setValue updates the slider thumb to represent the current value of the slider', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setValue(75);
-  raf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.setThumbContainerStyleProperty(TRANSFORM_PROP, 'translateX(75px) translateX(-50%)'));
-
-  raf.restore();
 });
 
 test('#setValue updates the slider track to represent the current value of the slider', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setValue(75);
-  raf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.setTrackStyleProperty(TRANSFORM_PROP, 'scaleX(0.75)'));
-
-  raf.restore();
 });
 
 test('#setValue respects the width of the slider when setting the thumb container transform', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 200});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setValue(75);
-  raf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.setThumbContainerStyleProperty(TRANSFORM_PROP, 'translateX(150px) translateX(-50%)'));
-
-  raf.restore();
 });
 
 test('#setValue flips the slider thumb position across the X-axis when in an RTL context', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
   td.when(mockAdapter.isRTL()).thenReturn(true);
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setValue(75);
-  raf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.setThumbContainerStyleProperty(TRANSFORM_PROP, 'translateX(25px) translateX(-50%)'));
-
-  raf.restore();
 });
 
 test('#setValue does not cause any events to be fired', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({width: 0, left: 0});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setValue(20);
 
   td.verify(mockAdapter.notifyInput(), {times: 0});
   td.verify(mockAdapter.notifyChange(), {times: 0});
-
-  raf.restore();
 });
 
 test('#getMax/#setMax retrieves / sets the maximum value, respectively', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setMax(50);
   assert.equal(foundation.getMax(), 50);
-
-  raf.restore();
 });
 
 test('#setMax throws if the maximum value given is less than the minimum value', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setMin(50);
   assert.throws(() => foundation.setMax(49));
-
-  raf.restore();
 });
 
 test('#setMax clamps the value to the new maximum if above the new maximum', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setValue(100);
   foundation.setMax(50);
 
   assert.equal(foundation.getValue(), 50);
   td.verify(mockAdapter.setAttribute('aria-valuenow', '50'));
-
-  raf.restore();
 });
 
 test('#setMax updates the slider\'s UI when clamping the value to a new maximum', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setValue(50);
-  raf.flush();
+  clock.runToFrame();
   // Sanity check
   td.verify(mockAdapter.setTrackStyleProperty(TRANSFORM_PROP, 'scaleX(0.5)'));
 
   foundation.setMax(50);
-  raf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.setThumbContainerStyleProperty(TRANSFORM_PROP, 'translateX(100px) translateX(-50%)'));
   td.verify(mockAdapter.setTrackStyleProperty(TRANSFORM_PROP, 'scaleX(1)'));
-
-  raf.restore();
 });
 
 test('#setMax updates "aria-valuemax" to the new maximum', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setMax(50);
 
   td.verify(mockAdapter.setAttribute('aria-valuemax', '50'));
-
-  raf.restore();
 });
 
 test('#setMax re-renders track markers if slider is discrete and displays markers', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
   const {isA} = td.matchers;
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
   td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.HAS_TRACK_MARKER)).thenReturn(true);
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setMax(50);
 
   td.verify(mockAdapter.removeTrackMarkers());
   td.verify(mockAdapter.appendTrackMarkers(isA(Number)));
-
-  raf.restore();
 });
 
 
 test('#getMin/#setMin retrieves / sets the minimum value, respectively', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setMin(10);
   assert.equal(foundation.getMin(), 10);
-
-  raf.restore();
 });
 
 test('#setMin throws if the minimum value given is greater than the maximum value', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setMax(10);
   assert.throws(() => foundation.setMin(11));
-
-  raf.restore();
 });
 
 test('#setMin clamps the value to the new minimum if above the new minimum', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setValue(5);
   foundation.setMin(10);
 
   assert.equal(foundation.getValue(), 10);
   td.verify(mockAdapter.setAttribute('aria-valuenow', '10'));
-
-  raf.restore();
 });
 
 test('#setMin updates the slider\'s UI when clamping the value to a new minimum', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setValue(10);
-  raf.flush();
+  clock.runToFrame();
   // Sanity check
   td.verify(mockAdapter.setTrackStyleProperty(TRANSFORM_PROP, 'scaleX(0.1)'));
 
   foundation.setMin(10);
-  raf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.setThumbContainerStyleProperty(TRANSFORM_PROP, 'translateX(0px) translateX(-50%)'));
   td.verify(mockAdapter.setTrackStyleProperty(TRANSFORM_PROP, 'scaleX(0)'));
-
-  raf.restore();
 });
 
 test('#setMin updates "aria-valuemin" to the new minimum', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setMin(10);
 
   td.verify(mockAdapter.setAttribute('aria-valuemin', '10'));
-
-  raf.restore();
 });
 
 test('#setMin re-renders track markers if slider is discrete and displays markers', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
   const {isA} = td.matchers;
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
   td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.HAS_TRACK_MARKER)).thenReturn(true);
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setMin(10);
 
   td.verify(mockAdapter.removeTrackMarkers());
   td.verify(mockAdapter.appendTrackMarkers(isA(Number)));
-
-  raf.restore();
 });
 
 test('#getStep/#setStep retrieves / sets the step value, respectively', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setStep(2);
   assert.equal(foundation.getStep(), 2);
-
-  raf.restore();
 });
 
 test('#setStep allows floating-point values to be used as step values', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setStep(0.2);
 
@@ -756,78 +682,68 @@ test('#setStep allows floating-point values to be used as step values', () => {
 
   foundation.setValue(1.52);
   assert.equal(foundation.getValue(), 1.6);
-
-  raf.restore();
 });
 
 test('#setStep throws if the step value given is less than 0', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   assert.throws(() => foundation.setStep(-1));
-
-  raf.restore();
 });
 
 test('#setStep set discrete slider step to 1 if the provided step is invalid', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 0});
   td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setStep(0.5);
 
   assert.equal(foundation.getStep(), 1);
-
-  raf.restore();
 });
 
 test('#setStep updates the slider\'s UI when altering the step value', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setValue(9.8);
-  raf.flush();
+  clock.runToFrame();
   // Sanity check
   td.verify(mockAdapter.setTrackStyleProperty(TRANSFORM_PROP, 'scaleX(0.098)'));
 
   foundation.setStep(1);
-  raf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.setThumbContainerStyleProperty(TRANSFORM_PROP, 'translateX(10px) translateX(-50%)'));
   td.verify(mockAdapter.setTrackStyleProperty(TRANSFORM_PROP, 'scaleX(0.1)'));
-
-  raf.restore();
 });
 
 test('#setStep re-renders track markers if slider is discrete and displays markers', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
   const {isA} = td.matchers;
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
   td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.HAS_TRACK_MARKER)).thenReturn(true);
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setStep(10);
 
   td.verify(mockAdapter.removeTrackMarkers());
   td.verify(mockAdapter.appendTrackMarkers(isA(Number)));
-
-  raf.restore();
 });
 
 test('#isDisabled/#setDisabled retrieves / sets the disabled state, respectively', () => {

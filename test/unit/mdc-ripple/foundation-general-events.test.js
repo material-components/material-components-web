@@ -30,7 +30,7 @@ import {cssClasses, strings} from '../../../packages/mdc-ripple/constants';
 
 suite('MDCRippleFoundation - General Events');
 
-testFoundation('re-lays out the component on resize event for unbounded ripple', ({foundation, adapter, mockRaf}) => {
+testFoundation('re-lays out the component on resize event for unbounded ripple', ({foundation, adapter, clock}) => {
   td.when(adapter.isUnbounded()).thenReturn(true);
   td.when(adapter.computeBoundingRect()).thenReturn({
     width: 100,
@@ -44,7 +44,7 @@ testFoundation('re-lays out the component on resize event for unbounded ripple',
     resizeHandler = handler;
   });
   foundation.init();
-  mockRaf.flush();
+  clock.runToFrame();
 
   const isResizeHandlerFunction = typeof resizeHandler === 'function';
   assert.isOk(isResizeHandlerFunction, 'sanity check for resize handler');
@@ -56,12 +56,12 @@ testFoundation('re-lays out the component on resize event for unbounded ripple',
   td.verify(adapter.updateCssVariable(strings.VAR_FG_SIZE, '120px'));
 
   resizeHandler();
-  mockRaf.flush();
+  clock.runToFrame();
 
   td.verify(adapter.updateCssVariable(strings.VAR_FG_SIZE, '60px'));
 });
 
-testFoundation('debounces layout within the same frame on resize', ({foundation, adapter, mockRaf}) => {
+testFoundation('debounces layout within the same frame on resize', ({foundation, adapter, clock}) => {
   td.when(adapter.isUnbounded()).thenReturn(true);
   td.when(adapter.computeBoundingRect()).thenReturn({
     width: 100,
@@ -75,7 +75,7 @@ testFoundation('debounces layout within the same frame on resize', ({foundation,
     resizeHandler = handler;
   });
   foundation.init();
-  mockRaf.flush();
+  clock.runToFrame();
   const isResizeHandlerFunction = typeof resizeHandler === 'function';
   assert.isOk(isResizeHandlerFunction, 'sanity check for resize handler');
   if (!isResizeHandlerFunction) {
@@ -86,7 +86,7 @@ testFoundation('debounces layout within the same frame on resize', ({foundation,
   resizeHandler();
   resizeHandler();
   resizeHandler();
-  mockRaf.flush();
+  clock.runToFrame();
   td.verify(
     adapter.updateCssVariable(strings.VAR_FG_SIZE, td.matchers.isA(String)),
     {
@@ -95,22 +95,22 @@ testFoundation('debounces layout within the same frame on resize', ({foundation,
   );
 });
 
-testFoundation('activates the background on focus', ({foundation, adapter, mockRaf}) => {
+testFoundation('activates the background on focus', ({foundation, adapter, clock}) => {
   const handlers = captureHandlers(adapter, 'registerInteractionHandler');
   foundation.init();
-  mockRaf.flush();
+  clock.runToFrame();
 
   handlers.focus();
-  mockRaf.flush();
+  clock.runToFrame();
   td.verify(adapter.addClass(cssClasses.BG_FOCUSED));
 });
 
-testFoundation('deactivates the background on blur', ({foundation, adapter, mockRaf}) => {
+testFoundation('deactivates the background on blur', ({foundation, adapter, clock}) => {
   const handlers = captureHandlers(adapter, 'registerInteractionHandler');
   foundation.init();
-  mockRaf.flush();
+  clock.runToFrame();
 
   handlers.blur();
-  mockRaf.flush();
+  clock.runToFrame();
   td.verify(adapter.removeClass(cssClasses.BG_FOCUSED));
 });
