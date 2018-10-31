@@ -160,62 +160,6 @@ Drawers can contain a header element which will not scroll with the rest of the 
 </aside>
 ```
 
-### Drawer Below Top App Bar
-
-Drawers can appear below the `mdc-top-app-bar`. The markup looks like this:
-
-
-```html
-<body>
-  <header class="mdc-top-app-bar app-bar" id="app-bar">
-    <div class="mdc-top-app-bar__row">
-      <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-        <a href="#" class="demo-menu material-icons mdc-top-app-bar__navigation-icon">menu</a>
-        <span class="mdc-top-app-bar__title">Dismissible Drawer</span>
-      </section>
-    </div>
-  </header>
-
-  <div class="mdc-top-app-bar--fixed-adjust below-top-app-bar-container">
-    <aside class="mdc-drawer mdc-drawer--dismissible">
-      <div class="mdc-drawer__content">
-        <div class="mdc-list">
-          <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
-            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
-            <span class="mdc-list-item__text">Inbox</span>
-          </a>
-          <a class="mdc-list-item" href="#">
-            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
-            <span class="mdc-list-item__text">Outgoing</span>
-          </a>
-          <a class="mdc-list-item" href="#">
-            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
-            <span class="mdc-list-item__text">Drafts</span>
-          </a>
-        </div>
-      </div>
-    </aside>
-
-    <div class="mdc-drawer-app-content">
-      <main class="main-content" id="main-content">
-        App Content
-      </main>
-    </div>
-  </div>
-</body>
-```
-
-The CSS to match this case looks like this:
-
-```scss
-// Note: these styles do not account for any paddings/margins that you may need.
-
-.below-top-app-bar-container {
-  display: flex;
-  height: 100vh;
-}
-```
-
 ### Dismissible Drawer
 
 Dismissible drawers are by default hidden off screen, and can slide into view. Dismissible drawers should be used when navigation is not common, and the main app content is prioritized.
@@ -365,6 +309,7 @@ body {
 .app-bar {
   position: absolute;
 }
+
 
 The JavaScript to toggle the drawer when the navigation button is clicked looks like this:
 
