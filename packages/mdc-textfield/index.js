@@ -370,6 +370,13 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
+   * Focuses the input element.
+   */
+  focus() {
+    this.input_.focus();
+  }
+
+  /**
    * Recomputes the outline SVG path for the outline element.
    */
   layout() {
