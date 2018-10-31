@@ -107,7 +107,7 @@ If you are using the enhanced select within an HTML form, you can include a hidd
   <div class="mdc-select__selected-text"></div>
   <div class="mdc-select__menu mdc-menu mdc-menu-surface demo-width-class">
     <ul class="mdc-list">
-      <li class="mdc-list-item mdc-list-item--selected" data-value="" aria-selected="true"></option>
+      <li class="mdc-list-item mdc-list-item--selected" data-value="" aria-selected="true"></li>
       <li class="mdc-list-item" data-value="grains">
         Bread, Cereal, Rice, and Pasta
       </li>
@@ -119,7 +119,7 @@ If you are using the enhanced select within an HTML form, you can include a hidd
       </li>
     </ul>
   </div>
-  <span class="mdc-floating-label">Pick a Food Group</label>
+  <span class="mdc-floating-label">Pick a Food Group</span>
   <div class="mdc-line-ripple"></div>
 </div>
 ```
