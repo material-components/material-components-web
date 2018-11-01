@@ -82,7 +82,7 @@ By default, the input will be positioned before the label. You can position the 
 
 Property | Value Type | Description
 --- | --- | ---
-`input` | String | Gets and sets the form field input.
+`input` | String | Gets and sets the form field input. 
 
 In order for the label ripple integration to work correctly, the `input` property needs to be set to a valid instance of an MDC Web input element which exposes a `ripple` getter. No action is taken if the `input` property is not set or the input instance doesn't expose a `ripple` getter.
 
