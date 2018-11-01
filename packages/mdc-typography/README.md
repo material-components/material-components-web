@@ -124,7 +124,7 @@ These styles can be used as the `$style` argument for the `mdc-typography` mixin
 
 #### Overriding Styles
 
-All styles can be overridden using Sass global variables _before_ the component is imported by setting a global
+All styles can be overridden using Sass global variables _before_ the component is imported by setting a global 
 variable named `$mdc-typography-styles-{style}`. The variable should be assigned a map that contains all the properties
 you want to override for a particular style.
 
@@ -139,7 +139,7 @@ $mdc-typography-styles-button: (
 @import "@material/button/mdc-button";
 ```
 
-Example: Overriding the global `font-family` property.
+Example: Overriding the global `font-family` property. 
 ```scss
 $mdc-typography-font-family: "Arial, Helvetica, sans-serif";
 
