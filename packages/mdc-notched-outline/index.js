@@ -25,7 +25,6 @@ import MDCComponent from '@material/base/component';
 
 import MDCNotchedOutlineAdapter from './adapter';
 import MDCNotchedOutlineFoundation from './foundation';
-import {strings} from './constants';
 
 /**
  * @extends {MDCComponent<!MDCNotchedOutlineFoundation>}
@@ -39,9 +38,17 @@ class MDCNotchedOutline extends MDCComponent {
   static attachTo(root) {
     return new MDCNotchedOutline(root);
   }
+  /** @param {...?} args */
+  constructor(...args) {
+    super(...args);
+    /** @private {Element} */
+    this.notchElement_;
+  }
 
   initialSyncWithDOM() {
     const label = this.root_.querySelector('.mdc-floating-label');
+    this.notchElement_ = this.root_.querySelector('.mdc-notched-outline__notch');
+
     if (label) {
       label.style.transitionDuration = '0s';
       label.classList.add('mdc-floating-label--upgraded');
@@ -70,13 +77,11 @@ class MDCNotchedOutline extends MDCComponent {
    * @return {!MDCNotchedOutlineFoundation}
    */
   getDefaultFoundation() {
-    return new MDCNotchedOutlineFoundation({
+    return new MDCNotchedOutlineFoundation( /** @type {MDCNotchedOutlineAdapter} */ ({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-      setWidth: (width) => this.root_.querySelector('.mdc-notched-outline__notch').style.width = width + 'px',
-      removeWidth: () => this.root_.querySelector('.mdc-notched-outline__notch').style.width = '',
-
-    });
+      setNotchWidthProperty: (width) => this.notchElement_.style.setProperty('width', width > 0 ? width + 'px' : '0'),
+    }));
   }
 }
 

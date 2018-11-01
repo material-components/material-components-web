@@ -426,7 +426,7 @@
 
   // Translate above the top of the input, and compensate for the amount of offset needed
   // to position the label within the bounds of the inset padding.
-  @include mdc-floating-label-float-position($mdc-text-field-textarea-label-position-y, 0%, $mdc-text-field-textarea-label-scale);
+  @include mdc-floating-label-float-position($mdc-text-field-outlined-label-position-y, 0%);
   @include mdc-floating-label-shake-animation(textarea);
   @include mdc-states-base-color(transparent);
   @include mdc-text-field-fill-color(transparent);

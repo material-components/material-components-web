@@ -52,14 +52,9 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
    */
   static get defaultAdapter() {
     return /** @type {!MDCNotchedOutlineAdapter} */ ({
-      getWidth: () => {},
-      getHeight: () => {},
-      setWidth: () => {},
-      removeWidth: () => {},
       addClass: () => {},
       removeClass: () => {},
-      setOutlinePathAttr: () => {},
-      getIdleOutlineStyleValue: () => {},
+      setNotchWidthProperty: () => {},
     });
   }
 
@@ -74,16 +69,15 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
    * Adds the outline notched selector and updates the notch width
    * calculated based off of notchWidth and isRtl.
    * @param {number} notchWidth
-   * @param {boolean=} isRtl
    */
-  notch(notchWidth, isRtl = false) {
+  notch(notchWidth) {
     const {OUTLINE_NOTCHED} = MDCNotchedOutlineFoundation.cssClasses;
 
     if (notchWidth > 0) {
       notchWidth += 8; // Add padding from left/right.
     }
 
-    this.adapter_.setWidth(notchWidth);
+    this.adapter_.setNotchWidthProperty(notchWidth);
     this.adapter_.addClass(OUTLINE_NOTCHED);
   }
 
@@ -93,7 +87,7 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
   closeNotch() {
     const {OUTLINE_NOTCHED} = MDCNotchedOutlineFoundation.cssClasses;
     this.adapter_.removeClass(OUTLINE_NOTCHED);
-    this.adapter_.removeWidth();
+    this.adapter_.setNotchWidthProperty(0);
   }
 }
 

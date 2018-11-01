@@ -126,11 +126,7 @@
     @include mdc-shape-radius($resolved-radius, $rtl-reflexive);
   }
 
-  $cornerSize: mdc-shape-prop-value($resolved-radius);
-  $positionX: mdc-notched-outline-get-notch-padded-position($cornerSize);
-  $labelPositionOffset: - $mdc-select-outline-label-offset + $positionX;
-
-  @include mdc-floating-label-float-position($mdc-select-outlined-label-position-y, -1 * ($labelPositionOffset));
+  @include mdc-floating-label-float-position($mdc-select-outlined-label-position-y, 0);
 }
 
 // Private
@@ -221,11 +217,13 @@
 
 @mixin mdc-select-floating-label_ {
   .mdc-floating-label {
-    @include mdc-rtl-reflexive-position(left, $mdc-select-outline-label-offset);
-
     bottom: 12px;
     line-height: 1.75rem;
     pointer-events: none;
+  }
+
+  &:not(.mdc-select--outlined) .mdc-floating-label {
+    @include mdc-rtl-reflexive-position(left, $mdc-select-outline-label-offset);
   }
 }
 
@@ -372,7 +370,6 @@
   }
 
   .mdc-floating-label {
-    bottom: 20px;
     line-height: 1.15rem;
     pointer-events: auto;
   }

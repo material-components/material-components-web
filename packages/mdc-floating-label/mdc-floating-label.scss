@@ -73,10 +73,10 @@
     cursor: auto;
   }
 
-  .mdc-floating-label--upgraded {
-    .mdc-floating-label--float-above {
-    }
-  }
+  //.mdc-floating-label--upgraded {
+  //  .mdc-floating-label--float-above {
+  //  }
+  //}
 
   @at-root {
     @include mdc-floating-label-float-position($mdc-floating-label-position-y);
