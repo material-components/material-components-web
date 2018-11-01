@@ -1,3 +1,5 @@
+# 🔥🌈⚡️ Are you a part of the Material Design web community? Help us improve by filling out this 10 minute <a href='https://bit.ly/materialwebsurvey'>survey</a>. 🔥🌈⚡️
+
 [![Version](https://img.shields.io/npm/v/material-components-web.svg)](https://www.npmjs.com/package/material-components-web)
 [![Build Status](https://travis-ci.com/material-components/material-components-web.svg?branch=master)](https://travis-ci.com/material-components/material-components-web/)
 [![codecov](https://codecov.io/gh/material-components/material-components-web/branch/master/graph/badge.svg)](https://codecov.io/gh/material-components/material-components-web)
