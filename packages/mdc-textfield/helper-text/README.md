@@ -1,5 +1,3 @@
->  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
-
 <!--docs:
 title: "Text Field Helper Text"
 layout: detail
@@ -8,6 +6,8 @@ excerpt: "The helper text provides supplemental information and/or validation me
 iconId: text_field
 path: /catalog/input-controls/text-field/helper-text/
 -->
+
+>  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
 
 # Text Field Helper Text
 

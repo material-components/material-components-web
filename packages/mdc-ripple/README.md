@@ -1,5 +1,3 @@
->  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
-
 <!--docs:
 title: "Ripples"
 layout: detail
@@ -8,6 +6,8 @@ excerpt: "Ink ripple touch feedback effect."
 iconId: ripple
 path: /catalog/ripples/
 -->
+
+>  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
 
 # Ripple
 

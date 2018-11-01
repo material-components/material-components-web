@@ -1,5 +1,3 @@
->  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
-
 <!--docs:
 title: "Icon Buttons"
 layout: detail
@@ -7,6 +5,8 @@ section: components
 iconId: button
 path: /catalog/buttons/icon-buttons/
 -->
+
+>  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
 
 # Icon Buttons
 

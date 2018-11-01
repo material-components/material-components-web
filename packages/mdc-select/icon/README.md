@@ -1,5 +1,3 @@
->  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
-
 <!--docs:
 title: "Select Icon"
 layout: detail
@@ -8,6 +6,8 @@ excerpt: "Icons describe the type of input a select requires"
 iconId: text_field
 path: /catalog/input-controls/select-menus/icon/
 -->
+
+>  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
 
 # Select Icon
 

@@ -1,5 +1,3 @@
->  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
-
 <!--docs:
 title: "Floating Action Button"
 layout: detail
@@ -8,6 +6,8 @@ excerpt: "A floating action button represents the primary action in an applicati
 iconId: button
 path: /catalog/buttons/floating-action-buttons/
 -->
+
+>  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
 
 # Floating Action Button
 

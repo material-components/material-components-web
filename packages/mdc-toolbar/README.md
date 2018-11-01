@@ -1,5 +1,3 @@
->  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
-
 <!--docs:
 title: "Toolbars"
 layout: detail
@@ -8,6 +6,8 @@ excerpt: "A container for multiple rows of items such as application title, navi
 iconId: toolbar
 path: /catalog/toolbar/
 -->
+
+>  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
 
 ## Important - Deprecation Notice
 

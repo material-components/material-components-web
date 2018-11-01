@@ -1,5 +1,3 @@
->  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
-
 <!--docs:
 title: "Drawers"
 layout: detail
@@ -8,6 +6,8 @@ excerpt: "Permanent, dismissible, and modal drawers."
 iconId: side_navigation
 path: /catalog/drawers/
 -->
+
+>  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
 
 # Drawers
 

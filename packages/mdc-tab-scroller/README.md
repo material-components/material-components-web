@@ -1,5 +1,3 @@
->  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
-
 <!--docs:
 title: "Tab Scroller"
 layout: detail
@@ -8,6 +6,8 @@ excerpt: "Allows for smooth native and animated scrolling of tabs."
 iconId: tabs
 path: /catalog/tabs/scroller/
 -->
+
+>  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
 
 # Tab Scroller
 

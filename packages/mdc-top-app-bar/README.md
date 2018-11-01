@@ -1,5 +1,3 @@
->  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
-
 <!--docs:
 title: "Top App Bar"
 layout: detail
@@ -8,6 +6,8 @@ excerpt: "A container for items such as application title, navigation icon, and 
 iconId: toolbar
 path: /catalog/top-app-bar/
 -->
+
+>  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
 
 # Top App Bar
 

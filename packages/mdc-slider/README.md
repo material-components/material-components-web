@@ -1,5 +1,3 @@
->  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
-
 <!--docs:
 title: "Sliders"
 layout: detail
@@ -8,6 +6,8 @@ excerpt: "A select over a range of values by moving the slider thumb."
 iconId: slider
 path: /catalog/input-controls/sliders/
 -->
+
+>  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
 
 # Slider
 

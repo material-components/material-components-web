@@ -1,5 +1,3 @@
->  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
-
 <!--docs:
 title: "Chips"
 layout: detail
@@ -8,6 +6,8 @@ excerpt: "Chips are compact elements that represent an attribute, text, entity, 
 iconId: chip
 path: /catalog/chips/
 -->
+
+>  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
 
 # Chips
 

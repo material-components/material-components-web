@@ -1,5 +1,3 @@
->  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
-
 <!--docs:
 title: "Notched Outline"
 layout: detail
@@ -8,6 +6,8 @@ excerpt: "The notched outline is a border around either a Text Field or Select e
 iconId: text_field
 path: /catalog/input-controls/notched-outline/
 -->
+
+>  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
 
 # Notched Outline
 

@@ -1,5 +1,3 @@
->  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
-
 <!--docs:
 title: "Snackbars"
 layout: detail
@@ -8,6 +6,8 @@ excerpt: "Snackbars provide brief messages about app processes at the bottom of 
 iconId: toast
 path: /catalog/snackbars/
 -->
+
+>  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
 
 # Snackbars
 

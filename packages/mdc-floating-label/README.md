@@ -1,5 +1,3 @@
->  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
-
 <!--docs:
 title: "Floating Label"
 layout: detail
@@ -7,6 +5,8 @@ section: components
 excerpt: "An animated text caption for a Text Field or Select."
 path: /catalog/input-controls/floating-label/
 -->
+
+>  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
 
 # Floating Label
 

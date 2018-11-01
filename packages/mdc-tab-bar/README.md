@@ -1,5 +1,3 @@
->  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
-
 <!--docs:
 title: "Tab Bar"
 layout: detail
@@ -8,6 +6,8 @@ excerpt: "Manages a set of Tabs."
 iconId: tabs
 path: /catalog/tabs/tab-bar/
 -->
+
+>  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
 
 # Tab Bar
 

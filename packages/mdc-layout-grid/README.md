@@ -1,5 +1,3 @@
->  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
-
 <!--docs:
 title: "Layout Grid"
 layout: detail
@@ -8,6 +6,8 @@ excerpt: "A CSS only responsive grid."
 iconId: responsive_layout
 path: /catalog/layout-grid/
 -->
+
+>  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
 
 # Layout Grid
 

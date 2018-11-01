@@ -1,5 +1,3 @@
->  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
-
 <!--docs:
 title: "Tab"
 layout: detail
@@ -8,6 +6,8 @@ excerpt: "Governs the visibility of one of several groups of content."
 iconId: tabs
 path: /catalog/tabs/tab/
 -->
+
+>  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
 
 # Tab
 

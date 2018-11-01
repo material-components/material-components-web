@@ -1,5 +1,3 @@
->  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
-
 <!--docs:
 title: "Animation"
 layout: detail
@@ -8,6 +6,8 @@ excerpt: "Animation timing curves and utilities for smooth and consistent motion
 iconId: animation
 path: /catalog/animation/
 -->
+
+>  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
 
 # Animation
 

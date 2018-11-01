@@ -1,5 +1,3 @@
->  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
-
 <!--docs:
 title: "Checkboxes"
 layout: detail
@@ -8,6 +6,8 @@ excerpt: "Checkboxes allow the user to select multiple options from a set."
 iconId: selection_control
 path: /catalog/input-controls/checkboxes/
 -->
+
+>  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
 
 # Checkboxes
 

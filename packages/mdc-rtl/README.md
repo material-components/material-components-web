@@ -1,5 +1,3 @@
->  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
-
 <!--docs:
 title: "RTL"
 layout: detail
@@ -7,6 +5,8 @@ section: components
 excerpt: "Right-to-left and bi-directional text layout via SCSS helpers."
 path: /catalog/rtl/
 -->
+
+>  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
 
 # RTL
 

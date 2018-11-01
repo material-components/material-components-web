@@ -1,5 +1,3 @@
->  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
-
 <!--docs:
 title: "Line Ripple"
 layout: detail
@@ -7,6 +5,8 @@ section: components
 excerpt: "The line ripple is used to highlight user-specified input above it."
 path: /catalog/input-controls/line-ripple/
 -->
+
+>  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
 
 # Line Ripple
 

@@ -1,5 +1,3 @@
->  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
-
 <!--docs:
 title: "DOM"
 layout: detail
@@ -7,6 +5,8 @@ section: components
 excerpt: "Provides commonly-used utilities for inspecting, traversing, and manipulating the DOM."
 path: /catalog/dom/
 -->
+
+>  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
 
 # DOM
 

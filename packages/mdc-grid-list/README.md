@@ -1,5 +1,3 @@
->  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
-
 <!--docs:
 title: "Grid Lists"
 layout: detail
@@ -8,6 +6,8 @@ excerpt: "An RTL-aware Material Design grid list component."
 iconId: card
 path: /catalog/grid-lists/
 -->
+
+>  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
 
 ## Important - Deprecation Notice
 

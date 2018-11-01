@@ -1,5 +1,3 @@
->  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
-
 <!--docs:
 title: "Elevation"
 layout: detail
@@ -8,6 +6,8 @@ excerpt: "Shadows and elevation as Sass mixins and CSS classes."
 iconId: shadow
 path: /catalog/elevation/
 -->
+
+>  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
 
 # Elevation
 

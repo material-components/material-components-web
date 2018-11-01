@@ -1,5 +1,3 @@
->  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
-
 <!--docs:
 title: "Tab Indicator"
 layout: detail
@@ -8,6 +6,8 @@ excerpt: "A visual guide that shows which Tab is active."
 iconId: tabs
 path: /catalog/tabs/indicator/
 -->
+
+>  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
 
 # Tab Indicator
 
