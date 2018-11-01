@@ -25,6 +25,8 @@ import MDCComponent from '@material/base/component';
 
 import MDCNotchedOutlineAdapter from './adapter';
 import MDCNotchedOutlineFoundation from './foundation';
+import {MDCFloatingLabelFoundation} from '@material/floating-label/index';
+import {strings} from './constants';
 
 /**
  * @extends {MDCComponent<!MDCNotchedOutlineFoundation>}
@@ -46,12 +48,12 @@ class MDCNotchedOutline extends MDCComponent {
   }
 
   initialSyncWithDOM() {
-    const label = this.root_.querySelector('.mdc-floating-label');
-    this.notchElement_ = this.root_.querySelector('.mdc-notched-outline__notch');
+    const label = this.root_.querySelector('.' + MDCFloatingLabelFoundation.cssClasses.ROOT);
+    this.notchElement_ = this.root_.querySelector(strings.NOTCH_ELEMENT_SELECTOR);
 
     if (label) {
       label.style.transitionDuration = '0s';
-      label.classList.add('mdc-floating-label--upgraded');
+      label.classList.add(MDCFloatingLabelFoundation.cssClasses.UPGRADED);
       setTimeout(() => label.style.transitionDuration = '', 0);
     }
   }

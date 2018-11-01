@@ -23,8 +23,7 @@
 
 /** @enum {string} */
 const strings = {
-  PATH_SELECTOR: '.mdc-notched-outline__path',
-  IDLE_OUTLINE_SELECTOR: '.mdc-notched-outline__idle',
+  NOTCH_ELEMENT_SELECTOR: '.mdc-notched-outline__notch',
 };
 
 /** @enum {string} */
@@ -32,10 +31,4 @@ const cssClasses = {
   OUTLINE_NOTCHED: 'mdc-notched-outline--notched',
 };
 
-/** @enum {number} */
-const numbers = {
-  NOTCH_GUTTER_SIZE: 4,
-  MIN_LEADING_STROKE_EDGE_POSITION: 12,
-};
-
-export {cssClasses, strings, numbers};
+export {cssClasses, strings};

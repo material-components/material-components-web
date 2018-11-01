@@ -23,7 +23,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 import MDCNotchedOutlineAdapter from './adapter';
-import {cssClasses, strings, numbers} from './constants';
+import {cssClasses, strings} from './constants';
 
 /**
  * @extends {MDCFoundation<!MDCNotchedOutlineAdapter>}
@@ -38,11 +38,6 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
   /** @return enum {string} */
   static get cssClasses() {
     return cssClasses;
-  }
-
-  /** @return enum {number} */
-  static get numbers() {
-    return numbers;
   }
 
   /**
@@ -67,7 +62,7 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
 
   /**
    * Adds the outline notched selector and updates the notch width
-   * calculated based off of notchWidth and isRtl.
+   * calculated based off of notchWidth.
    * @param {number} notchWidth
    */
   notch(notchWidth) {
