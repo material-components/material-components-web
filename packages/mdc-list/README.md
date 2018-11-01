@@ -276,7 +276,7 @@ the list item is not focused. When the list item receives focus, the aforementio
 list. The `Arrow`, `Home`, and `End` keys should be used for navigating internal list elements. If
 `singleSelection=true`, the list will allow the user to use the `Space` or `Enter` keys to select or deselect a list
 item. The MDCList will perform the following actions for each key press. Since list interaction will toggle a radio
-button or checkbox within the list item, the list will not toggle `tabindex` for those elements.
+button or checkbox within the list item, the list will not toggle `tabindex` for those elements. 
 
 Key | Action
 --- | ---
