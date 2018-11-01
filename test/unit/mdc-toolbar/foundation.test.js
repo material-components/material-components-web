@@ -24,7 +24,7 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
-import {createMockRaf} from '../helpers/raf';
+import {install as installClock} from '../helpers/clock';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
 import MDCToolbarFoundation from '../../../packages/mdc-toolbar/foundation';
@@ -61,7 +61,7 @@ const approximate = (value, expected, delta) => {
   return Math.abs(value - expected) < delta;
 };
 
-const createMockHandlers = (foundation, mockAdapter, mockRaf) => {
+const createMockHandlers = (foundation, mockAdapter, clock) => {
   let resizeHandler;
   let scrollHandler;
   td.when(mockAdapter.registerScrollHandler(td.matchers.isA(Function))).thenDo((fn) => {
@@ -71,7 +71,7 @@ const createMockHandlers = (foundation, mockAdapter, mockRaf) => {
     resizeHandler = fn;
   });
   foundation.init();
-  mockRaf.flush();
+  clock.runToFrame();
   td.reset();
   return {resizeHandler, scrollHandler};
 };
@@ -86,8 +86,8 @@ test('#init calls component event registrations', () => {
 
 test('#destroy calls component event deregistrations', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
-  const {resizeHandler, scrollHandler} = createMockHandlers(foundation, mockAdapter, mockRaf);
+  const clock = installClock();
+  const {resizeHandler, scrollHandler} = createMockHandlers(foundation, mockAdapter, clock);
 
   foundation.destroy();
   td.verify(mockAdapter.deregisterResizeHandler(resizeHandler));
@@ -126,53 +126,51 @@ test('#updateAdjustElementStyles does not adjust margin-top for non-fixed toolba
 
 test('on scroll debounces calls within the same frame', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
-  const {scrollHandler} = createMockHandlers(foundation, mockAdapter, mockRaf);
+  const clock = installClock();
+  const {scrollHandler} = createMockHandlers(foundation, mockAdapter, clock);
 
   scrollHandler();
   scrollHandler();
   scrollHandler();
-  assert.equal(mockRaf.pendingFrames.length, 1);
-  mockRaf.restore();
+  assert.equal(clock.countTimers(), 1);
 });
 
 test('on scroll resets debounce latch when scroll frame is run', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
-  const {scrollHandler} = createMockHandlers(foundation, mockAdapter, mockRaf);
+  const clock = installClock();
+  const {scrollHandler} = createMockHandlers(foundation, mockAdapter, clock);
 
   scrollHandler();
-  mockRaf.flush();
+  clock.runToFrame();
   scrollHandler();
 
-  assert.equal(mockRaf.pendingFrames.length, 1);
-  mockRaf.restore();
+  assert.equal(clock.countTimers(), 1);
 });
 
 test('on scroll handles no flexible height case', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
 
   setDeviceDesktop(mockAdapter);
   td.when(mockAdapter.getFirstRowElementOffsetHeight()).thenReturn(numbers.TOOLBAR_ROW_HEIGHT);
   td.when(mockAdapter.getOffsetHeight()).thenReturn(numbers.TOOLBAR_ROW_HEIGHT);
-  const {scrollHandler} = createMockHandlers(foundation, mockAdapter, mockRaf);
+  const {scrollHandler} = createMockHandlers(foundation, mockAdapter, clock);
 
   td.when(mockAdapter.getViewportScrollY()).thenReturn(1);
 
   scrollHandler();
-  mockRaf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.notifyChange({
     flexibleExpansionRatio: td.matchers.argThat((flexExpansionRatio) => approximate(flexExpansionRatio, 0, 0.001))}));
 });
 
 const scrollEventMock =
-  (foundation, mockAdapter, mockRaf, {isOutOfThreshold=false, flexExpansionRatio=0} = {}) => {
+  (foundation, mockAdapter, clock, {isOutOfThreshold=false, flexExpansionRatio=0} = {}) => {
     setDeviceDesktop(mockAdapter);
     td.when(mockAdapter.getFirstRowElementOffsetHeight()).thenReturn(numbers.TOOLBAR_ROW_HEIGHT * 3);
     td.when(mockAdapter.getOffsetHeight()).thenReturn(numbers.TOOLBAR_ROW_HEIGHT * 4);
-    const {scrollHandler} = createMockHandlers(foundation, mockAdapter, mockRaf);
+    const {scrollHandler} = createMockHandlers(foundation, mockAdapter, clock);
 
     const flexibleExpansionHeight = numbers.TOOLBAR_ROW_HEIGHT * 2;
     const maxTranslateYDistance = numbers.TOOLBAR_ROW_HEIGHT;
@@ -189,47 +187,44 @@ const scrollEventMock =
     }
 
     scrollHandler();
-    mockRaf.flush();
+    clock.runToFrame();
   };
 
 test('on scroll will not execute if we scrolled out of Threshold the first time', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
 
-  scrollEventMock(foundation, mockAdapter, mockRaf, {isOutOfThreshold: true});
+  scrollEventMock(foundation, mockAdapter, clock, {isOutOfThreshold: true});
 
   td.verify(mockAdapter.notifyChange({flexibleExpansionRatio: td.matchers.isA(Number)}));
-  mockRaf.restore();
 });
 
 test('on scroll will not execute if we scrolled out of Threshold the second time', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
 
-  scrollEventMock(foundation, mockAdapter, mockRaf, {isOutOfThreshold: true});
+  scrollEventMock(foundation, mockAdapter, clock, {isOutOfThreshold: true});
   td.reset();
-  scrollEventMock(foundation, mockAdapter, mockRaf, {isOutOfThreshold: true});
+  scrollEventMock(foundation, mockAdapter, clock, {isOutOfThreshold: true});
 
   td.verify(mockAdapter.notifyChange({flexibleExpansionRatio: td.matchers.isA(Number)}), {times: 0});
-  mockRaf.restore();
 });
 
 test('on scroll will execute if we have not scrolled out of Threshold', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
 
-  scrollEventMock(foundation, mockAdapter, mockRaf);
+  scrollEventMock(foundation, mockAdapter, clock);
 
   td.verify(mockAdapter.notifyChange({flexibleExpansionRatio: td.matchers.isA(Number)}));
-  mockRaf.restore();
 });
 
 test('on scroll takes correct action for scrollable flexible header when flexible space fully expaned', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.hasClass(cssClasses.TOOLBAR_ROW_FLEXIBLE)).thenReturn(true);
-  scrollEventMock(foundation, mockAdapter, mockRaf, {flexExpansionRatio: 1});
+  scrollEventMock(foundation, mockAdapter, clock, {flexExpansionRatio: 1});
 
   td.verify(mockAdapter.notifyChange({
     flexibleExpansionRatio: td.matchers.argThat((flexExpansionRatio) => approximate(flexExpansionRatio, 1, 0.001))}));
@@ -241,15 +236,14 @@ test('on scroll takes correct action for scrollable flexible header when flexibl
   td.verify(mockAdapter.setStyleForFlexibleRowElement('height', td.matchers.anything()), {times: 0});
   td.verify(mockAdapter.setStyleForTitleElement('transform', td.matchers.anything()), {times: 0});
   td.verify(mockAdapter.setStyleForTitleElement('font-size', td.matchers.anything()), {times: 0});
-  mockRaf.restore();
 });
 
 test('on scroll take correct action for scrollable flexible header when flexible space shrinked', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.hasClass(cssClasses.TOOLBAR_ROW_FLEXIBLE)).thenReturn(true);
-  scrollEventMock(foundation, mockAdapter, mockRaf, {flexExpansionRatio: 0});
+  scrollEventMock(foundation, mockAdapter, clock, {flexExpansionRatio: 0});
 
   td.verify(mockAdapter.notifyChange({
     flexibleExpansionRatio: td.matchers.argThat((flexExpansionRatio) => approximate(flexExpansionRatio, 0, 0.001))}));
@@ -261,15 +255,14 @@ test('on scroll take correct action for scrollable flexible header when flexible
   td.verify(mockAdapter.setStyleForFlexibleRowElement('height', td.matchers.anything()), {times: 0});
   td.verify(mockAdapter.setStyleForTitleElement('transform', td.matchers.anything()), {times: 0});
   td.verify(mockAdapter.setStyleForTitleElement('font-size', td.matchers.anything()), {times: 0});
-  mockRaf.restore();
 });
 
 test('on scroll take correct action for scrollable flexible header when flexible space in transition', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.hasClass(cssClasses.TOOLBAR_ROW_FLEXIBLE)).thenReturn(true);
-  scrollEventMock(foundation, mockAdapter, mockRaf, {flexExpansionRatio: 0.5});
+  scrollEventMock(foundation, mockAdapter, clock, {flexExpansionRatio: 0.5});
 
   td.verify(mockAdapter.notifyChange({
     flexibleExpansionRatio: td.matchers.argThat((flexExpansionRatio) => approximate(flexExpansionRatio, 0.5, 0.001))}));
@@ -281,16 +274,15 @@ test('on scroll take correct action for scrollable flexible header when flexible
   td.verify(mockAdapter.setStyleForFlexibleRowElement('height', td.matchers.anything()), {times: 0});
   td.verify(mockAdapter.setStyleForTitleElement('transform', td.matchers.anything()), {times: 0});
   td.verify(mockAdapter.setStyleForTitleElement('font-size', td.matchers.anything()), {times: 0});
-  mockRaf.restore();
 });
 
 test('on scroll take correct action for fixed flexible header when flexible space fully expaned', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.hasClass(cssClasses.TOOLBAR_ROW_FLEXIBLE)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.FIXED)).thenReturn(true);
-  scrollEventMock(foundation, mockAdapter, mockRaf, {flexExpansionRatio: 1});
+  scrollEventMock(foundation, mockAdapter, clock, {flexExpansionRatio: 1});
 
   td.verify(mockAdapter.notifyChange({
     flexibleExpansionRatio: td.matchers.argThat((flexExpansionRatio) => approximate(flexExpansionRatio, 1, 0.001))}));
@@ -302,16 +294,15 @@ test('on scroll take correct action for fixed flexible header when flexible spac
   td.verify(mockAdapter.setStyleForFlexibleRowElement('height', td.matchers.anything()));
   td.verify(mockAdapter.setStyleForTitleElement('transform', td.matchers.anything()), {times: 0});
   td.verify(mockAdapter.setStyleForTitleElement('font-size', td.matchers.anything()), {times: 0});
-  mockRaf.restore();
 });
 
 test('on scroll take correct action for fixed flexible header when flexible space shrinked', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.hasClass(cssClasses.TOOLBAR_ROW_FLEXIBLE)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.FIXED)).thenReturn(true);
-  scrollEventMock(foundation, mockAdapter, mockRaf, {flexExpansionRatio: 0});
+  scrollEventMock(foundation, mockAdapter, clock, {flexExpansionRatio: 0});
 
   td.verify(mockAdapter.notifyChange({
     flexibleExpansionRatio: td.matchers.argThat((flexExpansionRatio) => approximate(flexExpansionRatio, 0, 0.001))}));
@@ -323,16 +314,15 @@ test('on scroll take correct action for fixed flexible header when flexible spac
   td.verify(mockAdapter.setStyleForFlexibleRowElement('height', td.matchers.anything()));
   td.verify(mockAdapter.setStyleForTitleElement('transform', td.matchers.anything()), {times: 0});
   td.verify(mockAdapter.setStyleForTitleElement('font-size', td.matchers.anything()), {times: 0});
-  mockRaf.restore();
 });
 
 test('on scroll take correct action for fixed flexible header when flexible space in transition', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.hasClass(cssClasses.TOOLBAR_ROW_FLEXIBLE)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.FIXED)).thenReturn(true);
-  scrollEventMock(foundation, mockAdapter, mockRaf, {flexExpansionRatio: 0.5});
+  scrollEventMock(foundation, mockAdapter, clock, {flexExpansionRatio: 0.5});
 
   td.verify(mockAdapter.notifyChange({
     flexibleExpansionRatio: td.matchers.argThat((flexExpansionRatio) => approximate(flexExpansionRatio, 0.5, 0.001))}));
@@ -344,17 +334,16 @@ test('on scroll take correct action for fixed flexible header when flexible spac
   td.verify(mockAdapter.setStyleForFlexibleRowElement('height', td.matchers.anything()));
   td.verify(mockAdapter.setStyleForTitleElement('transform', td.matchers.anything()), {times: 0});
   td.verify(mockAdapter.setStyleForTitleElement('font-size', td.matchers.anything()), {times: 0});
-  mockRaf.restore();
 });
 
 test('on scroll take correct action for fixed last row flexible header when flexible space fully expaned', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.hasClass(cssClasses.TOOLBAR_ROW_FLEXIBLE)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.FIXED)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.FIXED_LASTROW)).thenReturn(true);
-  scrollEventMock(foundation, mockAdapter, mockRaf, {flexExpansionRatio: 1});
+  scrollEventMock(foundation, mockAdapter, clock, {flexExpansionRatio: 1});
 
   td.verify(mockAdapter.notifyChange({
     flexibleExpansionRatio: td.matchers.argThat((flexExpansionRatio) => approximate(flexExpansionRatio, 1, 0.001))}));
@@ -366,17 +355,16 @@ test('on scroll take correct action for fixed last row flexible header when flex
   td.verify(mockAdapter.setStyleForFlexibleRowElement('height', td.matchers.anything()));
   td.verify(mockAdapter.setStyleForTitleElement('transform', td.matchers.anything()), {times: 0});
   td.verify(mockAdapter.setStyleForTitleElement('font-size', td.matchers.anything()), {times: 0});
-  mockRaf.restore();
 });
 
 test('on scroll take correct action for fixed last row flexible header when flexible space shrinked', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.hasClass(cssClasses.TOOLBAR_ROW_FLEXIBLE)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.FIXED)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.FIXED_LASTROW)).thenReturn(true);
-  scrollEventMock(foundation, mockAdapter, mockRaf, {flexExpansionRatio: 0});
+  scrollEventMock(foundation, mockAdapter, clock, {flexExpansionRatio: 0});
 
   td.verify(mockAdapter.notifyChange({
     flexibleExpansionRatio: td.matchers.argThat((flexExpansionRatio) => approximate(flexExpansionRatio, 0, 0.001))}));
@@ -389,17 +377,16 @@ test('on scroll take correct action for fixed last row flexible header when flex
   td.verify(mockAdapter.addClass(cssClasses.FIXED_AT_LAST_ROW), {times: 0});
   td.verify(mockAdapter.setStyleForTitleElement('transform', td.matchers.anything()), {times: 0});
   td.verify(mockAdapter.setStyleForTitleElement('font-size', td.matchers.anything()), {times: 0});
-  mockRaf.restore();
 });
 
 test('on scroll take correct action for fixed last row flexible header when other rows scrolled out already', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.hasClass(cssClasses.TOOLBAR_ROW_FLEXIBLE)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.FIXED)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.FIXED_LASTROW)).thenReturn(true);
-  scrollEventMock(foundation, mockAdapter, mockRaf, {isOutOfThreshold: true});
+  scrollEventMock(foundation, mockAdapter, clock, {isOutOfThreshold: true});
 
   td.verify(mockAdapter.notifyChange({
     flexibleExpansionRatio: td.matchers.argThat((flexExpansionRatio) => approximate(flexExpansionRatio, 0, 0.001))}));
@@ -412,17 +399,16 @@ test('on scroll take correct action for fixed last row flexible header when othe
   td.verify(mockAdapter.addClass(cssClasses.FIXED_AT_LAST_ROW));
   td.verify(mockAdapter.setStyleForTitleElement('transform', td.matchers.anything()), {times: 0});
   td.verify(mockAdapter.setStyleForTitleElement('font-size', td.matchers.anything()), {times: 0});
-  mockRaf.restore();
 });
 
 test('on scroll take correct action for fixed last row flexible header when flexible space in transition', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.hasClass(cssClasses.TOOLBAR_ROW_FLEXIBLE)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.FIXED)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.FIXED_LASTROW)).thenReturn(true);
-  scrollEventMock(foundation, mockAdapter, mockRaf, {flexExpansionRatio: 0.5});
+  scrollEventMock(foundation, mockAdapter, clock, {flexExpansionRatio: 0.5});
 
   td.verify(mockAdapter.notifyChange({
     flexibleExpansionRatio: td.matchers.argThat((flexExpansionRatio) => approximate(flexExpansionRatio, 0.5, 0.001))}));
@@ -434,14 +420,13 @@ test('on scroll take correct action for fixed last row flexible header when flex
   td.verify(mockAdapter.setStyleForFlexibleRowElement('height', td.matchers.anything()));
   td.verify(mockAdapter.setStyleForTitleElement('transform', td.matchers.anything()), {times: 0});
   td.verify(mockAdapter.setStyleForTitleElement('font-size', td.matchers.anything()), {times: 0});
-  mockRaf.restore();
 });
 
 test('on scroll take correct action for non-flexible scrollable header', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
 
-  scrollEventMock(foundation, mockAdapter, mockRaf, {flexExpansionRatio: 0});
+  scrollEventMock(foundation, mockAdapter, clock, {flexExpansionRatio: 0});
 
   td.verify(mockAdapter.notifyChange({
     flexibleExpansionRatio: td.matchers.argThat((flexExpansionRatio) => approximate(flexExpansionRatio, 0, 0.001))}));
@@ -453,15 +438,14 @@ test('on scroll take correct action for non-flexible scrollable header', () => {
   td.verify(mockAdapter.setStyleForFlexibleRowElement('height', td.matchers.anything()), {times: 0});
   td.verify(mockAdapter.setStyleForTitleElement('transform', td.matchers.anything()), {times: 0});
   td.verify(mockAdapter.setStyleForTitleElement('font-size', td.matchers.anything()), {times: 0});
-  mockRaf.restore();
 });
 
 test('on scroll take correct action for non-flexible fixed header', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.hasClass(cssClasses.FIXED)).thenReturn(true);
-  scrollEventMock(foundation, mockAdapter, mockRaf, {flexExpansionRatio: 0});
+  scrollEventMock(foundation, mockAdapter, clock, {flexExpansionRatio: 0});
 
   td.verify(mockAdapter.notifyChange({
     flexibleExpansionRatio: td.matchers.argThat((flexExpansionRatio) => approximate(flexExpansionRatio, 0, 0.001))}));
@@ -473,16 +457,15 @@ test('on scroll take correct action for non-flexible fixed header', () => {
   td.verify(mockAdapter.setStyleForFlexibleRowElement('height', td.matchers.anything()), {times: 0});
   td.verify(mockAdapter.setStyleForTitleElement('transform', td.matchers.anything()), {times: 0});
   td.verify(mockAdapter.setStyleForTitleElement('font-size', td.matchers.anything()), {times: 0});
-  mockRaf.restore();
 });
 
 test('on scroll take correct action for non-flexible fixed last row only header', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.hasClass(cssClasses.FIXED)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.FIXED_LASTROW)).thenReturn(true);
-  scrollEventMock(foundation, mockAdapter, mockRaf, {flexExpansionRatio: 0});
+  scrollEventMock(foundation, mockAdapter, clock, {flexExpansionRatio: 0});
 
   td.verify(mockAdapter.notifyChange({
     flexibleExpansionRatio: td.matchers.argThat((flexExpansionRatio) => approximate(flexExpansionRatio, 0, 0.001))}));
@@ -494,73 +477,67 @@ test('on scroll take correct action for non-flexible fixed last row only header'
   td.verify(mockAdapter.setStyleForFlexibleRowElement('height', td.matchers.anything()), {times: 0});
   td.verify(mockAdapter.setStyleForTitleElement('transform', td.matchers.anything()), {times: 0});
   td.verify(mockAdapter.setStyleForTitleElement('font-size', td.matchers.anything()), {times: 0});
-  mockRaf.restore();
 });
 
 test('on scroll take correct action for flexible scrollable header with default behavior', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.hasClass(cssClasses.TOOLBAR_ROW_FLEXIBLE)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.FLEXIBLE_DEFAULT_BEHAVIOR)).thenReturn(true);
-  scrollEventMock(foundation, mockAdapter, mockRaf, {flexExpansionRatio: 0});
+  scrollEventMock(foundation, mockAdapter, clock, {flexExpansionRatio: 0});
 
   td.verify(mockAdapter.setStyleForTitleElement('transform', td.matchers.anything()), {times: 0});
   td.verify(mockAdapter.setStyleForTitleElement('font-size', td.matchers.anything()));
-  mockRaf.restore();
 });
 
 test('on scroll take correct action for flexible fixed last row only header with default behavior', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.hasClass(cssClasses.TOOLBAR_ROW_FLEXIBLE)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.FIXED)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.FIXED_LASTROW)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.FLEXIBLE_DEFAULT_BEHAVIOR)).thenReturn(true);
-  scrollEventMock(foundation, mockAdapter, mockRaf, {flexExpansionRatio: 0});
+  scrollEventMock(foundation, mockAdapter, clock, {flexExpansionRatio: 0});
 
   td.verify(mockAdapter.setStyleForTitleElement('font-size', td.matchers.anything()));
-  mockRaf.restore();
 });
 
 test('on scroll take correct action for flexible fixed header with default behavior', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
 
   td.when(mockAdapter.hasClass(cssClasses.TOOLBAR_ROW_FLEXIBLE)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.FIXED)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.FLEXIBLE_DEFAULT_BEHAVIOR)).thenReturn(true);
-  scrollEventMock(foundation, mockAdapter, mockRaf, {flexExpansionRatio: 0});
+  scrollEventMock(foundation, mockAdapter, clock, {flexExpansionRatio: 0});
 
   td.verify(mockAdapter.setStyleForTitleElement('font-size', td.matchers.anything()));
-  mockRaf.restore();
 });
 
 test('on resize debounces calls within the same frame', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
-  const {resizeHandler} = createMockHandlers(foundation, mockAdapter, mockRaf);
+  const clock = installClock();
+  const {resizeHandler} = createMockHandlers(foundation, mockAdapter, clock);
 
   resizeHandler();
   resizeHandler();
   resizeHandler();
-  assert.equal(mockRaf.pendingFrames.length, 1);
-  mockRaf.restore();
+  assert.equal(clock.countTimers(), 1);
 });
 
 test('on resize resets debounce latch when checkRowHeight_ frame is run', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
-  const {resizeHandler} = createMockHandlers(foundation, mockAdapter, mockRaf);
+  const clock = installClock();
+  const {resizeHandler} = createMockHandlers(foundation, mockAdapter, clock);
 
   resizeHandler();
-  // Calling mockRaf twice because on resize also calls requestAnimationFrame
-  mockRaf.flush();
-  mockRaf.flush();
+  // Calling runToFrame twice because on resize also calls requestAnimationFrame
+  clock.runToFrame();
+  clock.runToFrame();
   resizeHandler();
-  assert.equal(mockRaf.pendingFrames.length, 1);
-  mockRaf.restore();
+  assert.equal(clock.countTimers(), 1);
 });
 
 const setDeviceDesktop = (mockAdapter, {isDesktop = true} = {}) => {
@@ -570,8 +547,8 @@ const setDeviceDesktop = (mockAdapter, {isDesktop = true} = {}) => {
 
 test('on resize do not call update style if screen width does not go below breakpoint', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
-  const {resizeHandler} = createMockHandlers(foundation, mockAdapter, mockRaf);
+  const clock = installClock();
+  const {resizeHandler} = createMockHandlers(foundation, mockAdapter, clock);
 
   foundation.updateAdjustElementStyles = td.function();
 
@@ -579,23 +556,21 @@ test('on resize do not call update style if screen width does not go below break
   td.reset();
 
   resizeHandler();
-  mockRaf.flush();
+  clock.runToFrame();
 
   td.verify(foundation.updateAdjustElementStyles(), {times: 0});
-  mockRaf.restore();
 });
 
 test('on resize call update style if screen width go below breakpoint', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
-  const {resizeHandler} = createMockHandlers(foundation, mockAdapter, mockRaf);
+  const clock = installClock();
+  const {resizeHandler} = createMockHandlers(foundation, mockAdapter, clock);
   setDeviceDesktop(mockAdapter, {isDesktop: false});
 
   foundation.updateAdjustElementStyles = td.function();
 
   resizeHandler();
-  mockRaf.flush();
+  clock.runToFrame();
 
   td.verify(foundation.updateAdjustElementStyles());
-  mockRaf.restore();
 });

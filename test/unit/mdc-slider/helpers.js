@@ -23,7 +23,7 @@
 
 import {getCorrectPropertyName} from '../../../packages/mdc-animation/index';
 import {captureHandlers} from '../helpers/foundation';
-import {createMockRaf} from '../helpers/raf';
+import {install as installClock} from '../helpers/clock';
 import {setupFoundationTest} from '../helpers/setup';
 
 import MDCSliderFoundation from '../../../packages/mdc-slider/foundation';
@@ -32,12 +32,12 @@ export const TRANSFORM_PROP = getCorrectPropertyName(window, 'transform');
 
 export function setupEventTest() {
   const {foundation, mockAdapter} = setupFoundationTest(MDCSliderFoundation);
-  const raf = createMockRaf();
+  const clock = installClock();
 
   return {
     foundation,
     mockAdapter,
-    raf,
+    clock,
     rootHandlers: captureHandlers(mockAdapter, 'registerInteractionHandler'),
     thumbContainerHandlers: captureHandlers(mockAdapter, 'registerThumbContainerInteractionHandler'),
     bodyHandlers: captureHandlers(mockAdapter, 'registerBodyInteractionHandler'),

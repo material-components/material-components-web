@@ -248,6 +248,7 @@
   $cornerSize: mdc-shape-prop-value($resolved-radius);
   $positionX: mdc-notched-outline-get-notch-padded-position($cornerSize);
   $labelPositionOffset: - $mdc-text-field-outline-label-offset + $positionX;
+
   @include mdc-floating-label-float-position($mdc-text-field-outlined-label-position-y, -1 * ($labelPositionOffset));
 }
 
