@@ -1,4 +1,4 @@
-# 🔥🌈⚡️ Are you a part of the Material Design web community? Help us improve by filling out this 10 minute <a href='https://bit.ly/materialwebsurvey'>survey</a>. 🔥🌈⚡️
+> Help us improve Material Design Components for Web: <a href='https://bit.ly/materialwebsurvey'>Take our survey</a>
 
 <!--docs:
 title: "Cards"
