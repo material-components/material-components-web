@@ -575,9 +575,9 @@ class MDCSelect extends MDCComponent {
   getOutlineAdapterMethods_() {
     return {
       hasOutline: () => !!this.outline_,
-      notchOutline: (labelWidth, isRtl) => {
+      notchOutline: (labelWidth) => {
         if (this.outline_) {
-          this.outline_.notch(labelWidth, isRtl);
+          this.outline_.notch(labelWidth);
         }
       },
       closeOutline: () => {

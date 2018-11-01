@@ -119,12 +119,10 @@ class MDCSelectAdapter {
   hasOutline() {}
 
   /**
-   * Updates SVG Path and outline element based on the
-   * label element width and RTL context, if the outline exists.
+   * Only implement if outline element exists.
    * @param {number} labelWidth
-   * @param {boolean=} isRtl
    */
-  notchOutline(labelWidth, isRtl) {}
+  notchOutline(labelWidth) {}
 
   /**
    * Closes notch in outline element, if the outline exists.

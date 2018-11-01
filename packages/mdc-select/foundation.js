@@ -67,7 +67,7 @@ class MDCSelectFoundation extends MDCFoundation {
       floatLabel: (/* value: boolean */) => {},
       getLabelWidth: () => {},
       hasOutline: () => false,
-      notchOutline: (/* labelWidth: number, isRtl: boolean */) => {},
+      notchOutline: (/* labelWidth: number, */) => {},
       closeOutline: () => {},
       openMenu: () => {},
       closeMenu: () => {},
@@ -227,8 +227,7 @@ class MDCSelectFoundation extends MDCFoundation {
     if (openNotch) {
       const labelScale = numbers.LABEL_SCALE;
       const labelWidth = this.adapter_.getLabelWidth() * labelScale;
-      const isRtl = this.adapter_.isRtl();
-      this.adapter_.notchOutline(labelWidth, isRtl);
+      this.adapter_.notchOutline(labelWidth);
     } else if (!isFocused) {
       this.adapter_.closeOutline();
     }
