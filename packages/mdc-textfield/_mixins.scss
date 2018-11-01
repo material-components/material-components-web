@@ -44,31 +44,7 @@
 }
 
 @mixin mdc-text-field-textarea-shape-radius($radius, $rtl-reflexive: false) {
-  @include mdc-shape-radius($radius, $rtl-reflexive);
-
-  .mdc-floating-label {
-    // Bottom corners are square to prevent weird edge cases
-    // where text would be visible outside of the curve.
-    $masked-radius: mdc-shape-mask-radius($radius, 1 1 0 0);
-
-    @include mdc-shape-radius($masked-radius, $rtl-reflexive);
-  }
-
-  .mdc-text-field__input {
-    // The input element is required to have 2 pixels shaved off
-    // of the radius of its parent. This prevents an ugly space of
-    // background between the two borders in each corner when the
-    // textarea is focused. This also means we need to guard against
-    // invalid output.
-    $radius-value: mdc-shape-prop-value($radius);
-    $trimmed-radius-value: ();
-
-    @each $corner in $radius-value {
-      $trimmed-radius-value: append($trimmed-radius-value, max($corner - 2, 0));
-    }
-
-    @include mdc-shape-radius($trimmed-radius-value, $rtl-reflexive);
-  }
+  @include mdc-notched-outline-shape-radius($radius, $rtl-reflexive);
 }
 
 @mixin mdc-text-field-ink-color($color) {
@@ -243,8 +219,6 @@
     @include mdc-notched-outline-shape-radius($resolved-radius, $rtl-reflexive);
   }
 
-  @include mdc-notched-outline-idle-shape-radius($resolved-radius, $rtl-reflexive);
-
   $cornerSize: mdc-shape-prop-value($resolved-radius);
   $positionX: mdc-notched-outline-get-notch-padded-position($cornerSize);
   $labelPositionOffset: - $mdc-text-field-outline-label-offset + $positionX;
@@ -254,15 +228,14 @@
 
 @mixin mdc-text-field-floating-label_ {
   .mdc-floating-label {
-    @include mdc-rtl-reflexive-position(left, 12px);
-
-    bottom: 20px;
     pointer-events: none;
   }
 
   &:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) {
     .mdc-floating-label {
-      // @include mdc-floating-label-max-width(calc(100% - #{$mdc-text-field-icon-padding}));
+      @include mdc-rtl-reflexive-position(left, 12px);
+
+      top: 20px;
       max-width: calc(100% - #{$mdc-text-field-icon-padding});
     }
   }
@@ -330,12 +303,6 @@
 
   .mdc-text-field__icon {
     z-index: 2;
-  }
-
-  .mdc-floating-label {
-    @include mdc-rtl-reflexive-position(left, $mdc-text-field-outline-label-offset);
-
-    width: auto;
   }
 }
 
@@ -446,17 +413,6 @@
 @mixin mdc-text-field-textarea-disabled_ {
   @include mdc-text-field-textarea-stroke-color_($mdc-textarea-disabled-border-color);
   @include mdc-text-field-textarea-fill-color_($mdc-textarea-disabled-background);
-
-  border-bottom-width: 1px;
-  border-style: solid;
-
-  .mdc-text-field__input {
-    border: 1px solid transparent;
-  }
-
-  .mdc-floating-label {
-    @include mdc-floating-label-fill-color($mdc-textarea-disabled-background);
-  }
 }
 
 @mixin mdc-text-field-textarea-invalid_ {
@@ -466,6 +422,7 @@
 @mixin mdc-text-field-textarea_ {
   @include mdc-text-field-textarea-shape-radius(small);
   @include mdc-text-field-textarea-stroke-color($mdc-textarea-border);
+  @include mdc-text-field-focused-outline-color(primary);
 
   // Translate above the top of the input, and compensate for the amount of offset needed
   // to position the label within the bounds of the inset padding.
@@ -478,35 +435,31 @@
   $label-offset-y: $padding-inset + 2;
   $label-offset-x: $padding-inset;
 
-  display: flex;
+  display: inline-flex;
   width: auto;
   height: auto;
   transition: none;
-  border: 1px solid;
-  overflow: hidden;
+  overflow: visible;
 
   .mdc-text-field__input {
     align-self: auto;
-    box-sizing: content-box;
+    box-sizing: border-box;
     height: auto;
-    margin: 0;
-    padding: $padding-inset;
-    padding-top: $padding-inset * 2;
-    border: 1px solid transparent;
+    margin: $padding-inset/2 1px 1px 0;
+    padding: 0 $padding-inset $padding-inset;
+    border: none;
   }
 
   .mdc-floating-label {
-    @include mdc-floating-label-fill-color($mdc-textarea-background);
-    @include mdc-rtl-reflexive(left, 1px, right, 0);
-    @include mdc-rtl-reflexive-property(margin, 8px, 0);
-
     top: $label-offset-y;
     bottom: auto;
     width: auto;
-    margin-top: 2px;
-    padding: 12px 8px 8px 8px;
     line-height: 1.15;
     pointer-events: none;
+  }
+
+  &.mdc-text-field--focused {
+    @include mdc-text-field-outlined-focused_;
   }
 }
 

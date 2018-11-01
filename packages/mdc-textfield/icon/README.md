@@ -80,11 +80,10 @@ In outlined text field:
   <input type="text" id="my-input" class="mdc-text-field__input">
   <label for="my-input" class="mdc-floating-label">Your Name</label>
   <div class="mdc-notched-outline">
-    <svg>
-      <path class="mdc-notched-outline__path"/>
-    </svg>
+    <div class="mdc-notched-outline__leading"></div>
+    <div class="mdc-notched-outline__notch"></div>
+    <div class="mdc-notched-outline__trailing"></div>
   </div>
-  <div class="mdc-notched-outline__idle"></div>
 </div>
 ```
 
@@ -109,11 +108,10 @@ In outlined text field:
   <label for="my-input" class="mdc-floating-label">Your Name</label>
   <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
   <div class="mdc-notched-outline">
-    <svg>
-      <path class="mdc-notched-outline__path"/>
-    </svg>
+    <div class="mdc-notched-outline__leading"></div>
+    <div class="mdc-notched-outline__notch"></div>
+    <div class="mdc-notched-outline__trailing"></div>
   </div>
-  <div class="mdc-notched-outline__idle"></div>
 </div>
 ```
 
@@ -140,11 +138,10 @@ In outlined text field:
   <label for="my-input" class="mdc-floating-label">Phone Number</label>
   <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">clear</i>
   <div class="mdc-notched-outline">
-    <svg>
-      <path class="mdc-notched-outline__path"/>
-    </svg>
+   <div class="mdc-notched-outline__leading"></div>
+    <div class="mdc-notched-outline__notch"></div>
+    <div class="mdc-notched-outline__trailing"></div>
   </div>
-  <div class="mdc-notched-outline__idle"></div>
 </div>
 ```
 

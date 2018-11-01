@@ -188,11 +188,10 @@ same.
   <!-- Other elements from the native or enhanced select remain. -->
   <label class="mdc-floating-label">Pick a Food Group</label>
    <div class="mdc-notched-outline">
-     <svg>
-       <path class="mdc-notched-outline__path"></path>
-     </svg>
+     <div class="mdc-notched-outline__leading"></div>
+     <div class="mdc-notched-outline__notch"></div>
+     <div class="mdc-notched-outline__trailing"></div>
    </div>
-   <div class="mdc-notched-outline__idle"></div>
 </div>
 ```
 

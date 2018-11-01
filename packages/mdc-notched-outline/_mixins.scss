@@ -22,6 +22,7 @@
 
 @import "@material/theme/mixins";
 @import "@material/shape/mixins";
+@import "@material/rtl/mixins";
 
 @mixin mdc-notched-outline-idle-color($color) {
   .mdc-notched-outline__idle {
@@ -30,19 +31,36 @@
 }
 
 @mixin mdc-notched-outline-color($color) {
-  .mdc-notched-outline__path {
-    @include mdc-theme-prop(stroke, $color);
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    @include mdc-theme-prop(border-color, $color);
   }
 }
 
 @mixin mdc-notched-outline-stroke-width($width) {
-  .mdc-notched-outline__path {
-    stroke-width: $width;
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border-width: $width;
   }
 }
 
 @mixin mdc-notched-outline-shape-radius($radius, $rtl-reflexive: false) {
   @include mdc-shape-radius($radius, $rtl-reflexive);
+  $radius: mdc-shape-prop-value($radius);
+
+  .mdc-notched-outline__leading {
+    @include mdc-rtl-reflexive(border-radius, 0 $radius $radius 0, border-radius, $radius 0 0 $radius);
+
+    @if ($radius > 12px) {
+      width: $radius;
+    }
+  }
+
+  .mdc-notched-outline__trailing {
+    @include mdc-rtl-reflexive(border-radius, $radius 0 0 $radius, border-radius, 0 $radius $radius 0);
+  }
 }
 
 @mixin mdc-notched-outline-idle-shape-radius($radius, $rtl-reflexive: false) {

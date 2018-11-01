@@ -40,6 +40,15 @@ class MDCNotchedOutline extends MDCComponent {
     return new MDCNotchedOutline(root);
   }
 
+  initialSyncWithDOM() {
+    const label = this.root_.querySelector('.mdc-floating-label');
+    if (label) {
+      label.style.transitionDuration = '0s';
+      label.classList.add('mdc-floating-label--upgraded');
+      setTimeout(() => label.style.transitionDuration = '', 0);
+    }
+  }
+
   /**
     * Updates outline selectors and SVG path to open notch.
     * @param {number} notchWidth The notch width in the outline.
@@ -62,18 +71,11 @@ class MDCNotchedOutline extends MDCComponent {
    */
   getDefaultFoundation() {
     return new MDCNotchedOutlineFoundation({
-      getWidth: () => this.root_.offsetWidth,
-      getHeight: () => this.root_.offsetHeight,
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-      setOutlinePathAttr: (value) => {
-        const path = this.root_.querySelector(strings.PATH_SELECTOR);
-        path.setAttribute('d', value);
-      },
-      getIdleOutlineStyleValue: (propertyName) => {
-        const idleOutlineElement = this.root_.parentNode.querySelector(strings.IDLE_OUTLINE_SELECTOR);
-        return window.getComputedStyle(idleOutlineElement).getPropertyValue(propertyName);
-      },
+      setWidth: (width) => this.root_.querySelector('.mdc-notched-outline__notch').style.width = width + 'px',
+      removeWidth: () => this.root_.querySelector('.mdc-notched-outline__notch').style.width = '',
+
     });
   }
 }

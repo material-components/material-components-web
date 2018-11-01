@@ -34,11 +34,10 @@ npm install @material/notched-outline
 
 ```html
 <div class="mdc-notched-outline">
-  <svg>
-    <path class="mdc-notched-outline__path"/>
-  </svg>
+  <div class="mdc-notched-outline__leading"></div>
+  <div class="mdc-notched-outline__notch"></div>
+  <div class="mdc-notched-outline__trailing"></div>
 </div>
-<div class="mdc-notched-outline__idle"></div>
 ```
 
 > For usage within a text field see [here](../mdc-textfield/README.md#outlined).
@@ -95,11 +94,10 @@ Consider the following example HTML:
 ```html
 <div class="foo__parent">
   <div class="mdc-notched-outline foo__child">
-    <svg>
-      <path class="mdc-notched-outline__path"/>
-    </svg>
+    <div class="mdc-notched-outline__leading"></div>
+    <div class="mdc-notched-outline__notch"></div>
+    <div class="mdc-notched-outline__trailing"></div>
   </div>
-  <div class="mdc-notched-outline__idle"></div>
 </div>
 ```
 In order to customize any "non-idle" part of notched-outline, use the .foo__child CSS selector:

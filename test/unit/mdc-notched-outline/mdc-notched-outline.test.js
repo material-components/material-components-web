@@ -28,9 +28,9 @@ import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline/index';
 
 const getFixture = () => bel`
   <div class="mdc-notched-outline">
-    <svg>
-      <path class="mdc-notched-outline__path">
-    </svg>
+    <div class="mdc-notched-outline__leading"></div>
+    <div class="mdc-notched-outline__notch"></div>
+    <div class="mdc-notched-outline__trailing"></div>
   </div>
 `;
 
