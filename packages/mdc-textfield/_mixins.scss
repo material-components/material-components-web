@@ -248,12 +248,18 @@
 
   &.mdc-text-field--outlined {
     .mdc-floating-label {
-      @include mdc-rtl-reflexive-position(left, 0);
+      @include mdc-rtl-reflexive-position(left, 4px);
+
+      top: 17px;
     }
 
     &.mdc-text-field--with-leading-icon {
       .mdc-floating-label {
         @include mdc-rtl-reflexive-position(left, ($mdc-text-field-icon-padding - $mdc-notched-outline-leading-width));
+
+        &--float-above {
+          @include mdc-rtl-reflexive-position(left, ($mdc-text-field-icon-padding - $mdc-notched-outline-leading-width) + 4px);
+        }
       }
     }
   }

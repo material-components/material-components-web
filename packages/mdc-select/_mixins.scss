@@ -217,28 +217,39 @@
 
 @mixin mdc-select-floating-label_ {
   .mdc-floating-label {
-    @include mdc-rtl-reflexive-position(left, $mdc-select-outline-label-offset);
+    @include mdc-rtl-reflexive-position(left, 16px);
 
-    top: 18px;
+    top: 21px;
     pointer-events: none;
+  }
+
+  &.mdc-select--with-leading-icon {
+    .mdc-floating-label {
+      @include mdc-rtl-reflexive-position(left, $mdc-select-icon-padding);
+    }
   }
 
   &.mdc-select--outlined {
     .mdc-floating-label {
-      @include mdc-rtl-reflexive-position(left, 0);
-    }
-    &.mdc-select--with-leading-icon .mdc-floating-label {
-      @include mdc-rtl-reflexive-position(left, 32px);
-    }
-  }
+      @include mdc-rtl-reflexive-position(left, 4px);
 
-  &.mdc-select--with-leading-icon .mdc-floating-label {
-    @include mdc-rtl-reflexive-position(left, 48px);
+      top: 17px;
+    }
+
+    &.mdc-select--with-leading-icon {
+      .mdc-floating-label {
+        @include mdc-rtl-reflexive-position(left, ($mdc-select-icon-padding - $mdc-notched-outline-leading-width));
+
+        &--float-above {
+          @include mdc-rtl-reflexive-position(left, ($mdc-select-icon-padding - $mdc-notched-outline-leading-width) + 4px);
+        }
+      }
+    }
   }
 }
 
 @mixin mdc-select-with-leading-icon_ {
-  @include mdc-select-icon-horizontal-position_(16px, 48px);
+  @include mdc-select-icon-horizontal-position_(16px, $mdc-select-icon-padding);
 
   &.mdc-select--outlined {
     @include mdc-floating-label-float-position($mdc-select-outlined-label-position-y, $mdc-select-outlined-with-leading-icon-label-position-x);

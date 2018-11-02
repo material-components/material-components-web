@@ -68,19 +68,19 @@
 
     &__notch {
       width: auto;
-      padding: 0 4px;
     }
 
     .mdc-floating-label {
       display: inline-block;
       position: relative;
-      top: 18px;
+      top: 17px;
       bottom: auto;
     }
   }
 
   .mdc-notched-outline--notched {
     .mdc-notched-outline__notch {
+      padding: 0 8px 0 0;
       border-top: none;
     }
   }
