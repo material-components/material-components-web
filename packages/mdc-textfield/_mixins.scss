@@ -227,16 +227,35 @@
 }
 
 @mixin mdc-text-field-floating-label_ {
+
   .mdc-floating-label {
+    @include mdc-rtl-reflexive-position(left, 12px);
+
+    top: 18px;
     pointer-events: none;
   }
 
-  &:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) {
+  &.mdc-text-field--with-leading-icon {
     .mdc-floating-label {
-      @include mdc-rtl-reflexive-position(left, 12px);
+      @include mdc-rtl-reflexive-position(left, $mdc-text-field-icon-padding);
+    }
+  }
 
-      top: 20px;
-      max-width: calc(100% - #{$mdc-text-field-icon-padding});
+  &.mdc-text-field--outlined {
+    .mdc-floating-label {
+      @include mdc-rtl-reflexive-position(left, 0);
+    }
+
+    &.mdc-text-field--with-leading-icon {
+      .mdc-floating-label {
+        @include mdc-rtl-reflexive-position(left, ($mdc-text-field-icon-padding - $mdc-notched-outline-leading-width));
+      }
+    }
+  }
+
+  &.mdc-text-field--textarea {
+    .mdc-floating-label {
+      @include mdc-rtl-reflexive-position(left, 0);
     }
   }
 }

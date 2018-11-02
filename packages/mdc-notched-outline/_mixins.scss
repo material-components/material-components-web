@@ -23,6 +23,7 @@
 @import "@material/theme/mixins";
 @import "@material/shape/mixins";
 @import "@material/rtl/mixins";
+@import "./variables";
 
 @mixin mdc-notched-outline-idle-color($color) {
   .mdc-notched-outline__idle {
@@ -53,7 +54,7 @@
   .mdc-notched-outline__leading {
     @include mdc-rtl-reflexive(border-radius, 0 $radius $radius 0, border-radius, $radius 0 0 $radius);
 
-    @if ($radius > 12px) {
+    @if ($radius > $mdc-notched-outline-leading-width) {
       width: $radius;
     }
   }

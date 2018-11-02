@@ -31,6 +31,8 @@
   .mdc-notched-outline {
     display: flex;
     position: absolute;
+    right: 0;
+    left: 0;
     box-sizing: border-box;
     width: 100%;
     height: 100%;
@@ -55,7 +57,7 @@
     &__leading {
       @include mdc-rtl-reflexive-property(border, 1px solid black, none);
 
-      width: 12px;
+      width: $mdc-notched-outline-leading-width;
     }
 
     &__trailing {
