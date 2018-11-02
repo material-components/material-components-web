@@ -109,28 +109,37 @@ class MDCListFoundation extends MDCFoundation {
 
   /** @param {number} index */
   setSelectedIndex(index) {
-    if (index === this.selectedIndex_) {
+    if (index === this.selectedIndex_ ||
+       (index < 0 && index >= this.adapter_.getListItemCount())) {
       return;
     }
 
-    const className = this.useActivatedClass_
-      ? cssClasses.LIST_ITEM_ACTIVATED_CLASS : cssClasses.LIST_ITEM_SELECTED_CLASS;
+    const hasCheckboxOrRadio = this.adapter_.hasCheckboxOrRadioAtIndex(index);
+    const hasCheckbox = this.adapter_.hasCheckboxAtIndex(index);
+    const selectedClassName = this.useActivatedClass_ ? cssClasses.LIST_ITEM_ACTIVATED_CLASS : cssClasses.LIST_ITEM_SELECTED_CLASS;
+    const ariaAttribute = hasCheckboxOrRadio ? strings.ARIA_CHECKED : strings.ARIA_SELECTED;
+    const ariaAttributeValue = hasCheckbox ? this.adapter_.isCheckboxCheckedAtIndex(this.selectedIndex_) : true;
 
     if (this.selectedIndex_ >= 0) {
-      this.adapter_.removeAttributeForElementIndex(this.selectedIndex_, strings.ARIA_SELECTED);
-      this.adapter_.removeClassForElementIndex(this.selectedIndex_, className);
+      if (!hasCheckbox) {
+        this.adapter_.removeAttributeForElementIndex(this.selectedIndex_, ariaAttribute);
+      }
+
+      if (!hasCheckboxOrRadio) {
+        this.adapter_.removeClassForElementIndex(this.selectedIndex_, selectedClassName);
+      }
       this.adapter_.setAttributeForElementIndex(this.selectedIndex_, 'tabindex', -1);
     }
 
-    if (index >= 0 && this.adapter_.getListItemCount() > index) {
-      this.selectedIndex_ = index;
-      this.adapter_.setAttributeForElementIndex(this.selectedIndex_, strings.ARIA_SELECTED, true);
-      this.adapter_.addClassForElementIndex(this.selectedIndex_, className);
-      this.adapter_.setAttributeForElementIndex(this.selectedIndex_, 'tabindex', 0);
+    this.selectedIndex_ = index;
+    this.adapter_.setAttributeForElementIndex(this.selectedIndex_, ariaAttribute, ariaAttributeValue);
+    if (!hasCheckboxOrRadio) {
+      this.adapter_.addClassForElementIndex(this.selectedIndex_, selectedClassName);
+    }
+    this.adapter_.setAttributeForElementIndex(this.selectedIndex_, 'tabindex', 0);
 
-      if (this.selectedIndex_ !== 0) {
-        this.adapter_.setAttributeForElementIndex(0, 'tabindex', -1);
-      }
+    if (this.selectedIndex_ !== 0) {
+      this.adapter_.setAttributeForElementIndex(0, 'tabindex', -1);
     }
   }
 
@@ -198,7 +207,6 @@ class MDCListFoundation extends MDCFoundation {
       if (isRootListItem) {
         if (this.isSingleSelectionList_) {
           // Check if the space key was pressed on the list item or a child element.
-          this.setSelectedIndex(currentIndex);
           this.preventDefaultEvent_(evt);
         }
 
@@ -206,9 +214,10 @@ class MDCListFoundation extends MDCFoundation {
         this.adapter_.followHref(currentIndex);
       }
 
-      const checkboxFound = this.adapter_.toggleCheckbox(listItemIndex);
+      this.setSelectedIndex(currentIndex);
 
-      if (checkboxFound) {
+      if (this.adapter_.hasCheckboxOrRadioAtIndex(listItemIndex)) {
+        this.adapter_.toggleCheckboxOrRadioAtIndex(listItemIndex);
         this.preventDefaultEvent_(evt);
       }
     }
@@ -223,12 +232,10 @@ class MDCListFoundation extends MDCFoundation {
     if (index === -1) return;
 
     if (toggleCheckbox) {
-      this.adapter_.toggleCheckbox(index);
+      this.adapter_.toggleCheckboxOrRadioAtIndex(index);
     }
 
-    if (this.isSingleSelectionList_) {
-      this.setSelectedIndex(index);
-    }
+    this.setSelectedIndex(index);
   }
 
   /**
@@ -289,6 +296,16 @@ class MDCListFoundation extends MDCFoundation {
     const lastIndex = this.adapter_.getListItemCount() - 1;
     if (lastIndex >= 0) {
       this.adapter_.focusItemAtIndex(lastIndex);
+    }
+  }
+
+  /**
+   * @param {number} selectedIndex
+   * @param {boolean} isCheckboxOrRadio
+   */
+  setAriaAttributes_(selectedIndex, isCheckboxOrRadio) {
+    if (isCheckboxOrRadio) {
+      this.adapter_.setAttribute
     }
   }
 }

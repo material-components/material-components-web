@@ -244,22 +244,35 @@ class MDCList extends MDCComponent {
           listItem.click();
         }
       },
-      toggleCheckbox: (index) => {
-        let checkboxOrRadioExists = false;
+      hasCheckboxOrRadioAtIndex: (index) => {
         const listItem = this.listElements[index];
-        const elementsToToggle =
-          [].slice.call(listItem.querySelectorAll(strings.CHECKBOX_RADIO_SELECTOR));
-        elementsToToggle.forEach((element) => {
+        return !!listItem.querySelector(strings.CHECKBOX_RADIO_SELECTOR);
+      },
+      hasCheckboxAtIndex: (index) => {
+        const listItem = this.listElements[index];
+        return !!listItem.querySelector(strings.CHECKBOX_SELECTOR);
+      },
+      isCheckboxCheckedAtIndex: (index) => {
+        const listItem = this.listElements[index];
+        const toggleEl = listItem.querySelector(strings.CHECKBOX_SELECTOR);
+
+        if (toggleEl) {
+          return toggleEl.checked;
+        }
+      },
+      toggleCheckboxOrRadioAtIndex: (index) => {
+        const listItem = this.listElements[index];
+        const toggleEl = listItem.querySelector(strings.CHECKBOX_RADIO_SELECTOR);
+
+        if (!toggleEl.checked || toggleEl.type !== 'radio') {
+          toggleEl.checked = !toggleEl.checked;
+
           const event = document.createEvent('Event');
           event.initEvent('change', true, true);
+          toggleEl.dispatchEvent(event);
+        }
 
-          if (!element.checked || element.type !== 'radio') {
-            element.checked = !element.checked;
-            element.dispatchEvent(event);
-          }
-          checkboxOrRadioExists = true;
-        });
-        return checkboxOrRadioExists;
+        return toggleEl.checked;
       },
     })));
   }

@@ -21,28 +21,11 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
-const cssClasses = {
-  ROOT: 'mdc-list',
-  LIST_ITEM_CLASS: 'mdc-list-item',
-  LIST_ITEM_SELECTED_CLASS: 'mdc-list-item--selected',
-  LIST_ITEM_ACTIVATED_CLASS: 'mdc-list-item--activated',
-};
+window.mdc.testFixture.fontsLoaded.then(() => {
+  [].forEach.call(document.querySelectorAll('.mdc-list'), (el) => {
+    const list = mdc.list.MDCList.attachTo(el);
+    list.singleSelection = true;
+  });
 
-/** @enum {string} */
-const strings = {
-  ARIA_ORIENTATION: 'aria-orientation',
-  ARIA_ORIENTATION_HORIZONTAL: 'horizontal',
-  ARIA_CHECKED: 'aria-checked',
-  ARIA_SELECTED: 'aria-selected',
-  CHECKBOX_SELECTOR: 'input[type="checkbox"]:not(:disabled)',
-  CHECKBOX_RADIO_SELECTOR: 'input[type="checkbox"]:not(:disabled), input[type="radio"]:not(:disabled)',
-  CHILD_ELEMENTS_TO_TOGGLE_TABINDEX: `.${cssClasses.LIST_ITEM_CLASS} button:not(:disabled),
-  .${cssClasses.LIST_ITEM_CLASS} a`,
-  FOCUSABLE_CHILD_ELEMENTS: `.${cssClasses.LIST_ITEM_CLASS} button:not(:disabled), .${cssClasses.LIST_ITEM_CLASS} a,
-  .${cssClasses.LIST_ITEM_CLASS} input[type="radio"]:not(:disabled),
-  .${cssClasses.LIST_ITEM_CLASS} input[type="checkbox"]:not(:disabled)`,
-  ENABLED_ITEMS_SELECTOR: '.mdc-list-item:not(.mdc-list-item--disabled)',
-};
-
-export {strings, cssClasses};
+  window.mdc.testFixture.notifyDomReady();
+});
