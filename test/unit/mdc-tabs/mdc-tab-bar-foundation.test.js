@@ -26,7 +26,7 @@ import td from 'testdouble';
 
 import {setupFoundationTest} from '../helpers/setup';
 import {verifyDefaultAdapter, captureHandlers} from '../helpers/foundation';
-import {createMockRaf} from '../helpers/raf';
+import {install as installClock} from '../helpers/clock';
 
 import MDCTabBarFoundation from '../../../packages/mdc-tabs/tab-bar/foundation';
 
@@ -92,16 +92,14 @@ test('#init sets active tab if index of active tab on init() is > 0', () => {
 
 test('#init sets styles for indicator', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
 
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.setStyleForIndicator('transform', td.matchers.isA(String)));
   td.verify(mockAdapter.setStyleForIndicator('transition', td.matchers.isA(String)));
   td.verify(mockAdapter.setStyleForIndicator('visibility', td.matchers.isA(String)));
-
-  raf.restore();
 });
 
 test('#destroy removes class from tabs', () => {
@@ -148,7 +146,7 @@ test('#switchToTabAtIndex throws if index is out of bounds', () => {
 
 test('#switchToTabAtIndex makes tab active', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
   const numTabs = 2;
   const tabToSwitchTo = 1;
   const shouldNotify = true;
@@ -156,11 +154,10 @@ test('#switchToTabAtIndex makes tab active', () => {
   td.when(mockAdapter.getNumberOfTabs()).thenReturn(numTabs);
 
   foundation.switchToTabAtIndex(tabToSwitchTo, shouldNotify);
-  raf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.setTabActiveAtIndex(tabToSwitchTo, shouldNotify));
   td.verify(mockAdapter.notifyChange(td.matchers.anything()));
-  raf.restore();
 });
 
 test('#getActiveTabIndex returns the active tab index', () => {

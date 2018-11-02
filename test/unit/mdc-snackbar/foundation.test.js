@@ -22,8 +22,8 @@
  */
 
 import {assert} from 'chai';
-import lolex from 'lolex';
 import td from 'testdouble';
+import {install as installClock} from '../helpers/clock';
 import MDCSnackbarFoundation from '../../../packages/mdc-snackbar/foundation';
 import {cssClasses, strings, numbers} from '../../../packages/mdc-snackbar/constants';
 
@@ -256,7 +256,7 @@ test('#show while snackbar is already showing will queue the data object.', () =
 });
 
 test('#show while snackbar is already showing will show after the timeout and transition end', () => {
-  const clock = lolex.install();
+  const clock = installClock();
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
 
@@ -281,11 +281,10 @@ test('#show while snackbar is already showing will show after the timeout and tr
   transEndHandler();
 
   td.verify(mockAdapter.setMessageText('Message Archived'));
-  clock.uninstall();
 });
 
 test('#show will remove active class after the timeout', () => {
-  const clock = lolex.install();
+  const clock = installClock();
   const {foundation, mockAdapter} = setupTest();
 
   foundation.init();
@@ -297,11 +296,10 @@ test('#show will remove active class after the timeout', () => {
   clock.tick(numbers.MESSAGE_TIMEOUT);
 
   td.verify(mockAdapter.removeClass(cssClasses.ACTIVE));
-  clock.uninstall();
 });
 
 test('#show will add an transition end handler after the timeout', () => {
-  const clock = lolex.install();
+  const clock = installClock();
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
 
@@ -314,11 +312,10 @@ test('#show will add an transition end handler after the timeout', () => {
   clock.tick(numbers.MESSAGE_TIMEOUT);
 
   td.verify(mockAdapter.registerTransitionEndHandler(isA(Function)));
-  clock.uninstall();
 });
 
 test('#show will clean up snackbar after the timeout and transition end', () => {
-  const clock = lolex.install();
+  const clock = installClock();
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
 
@@ -344,8 +341,6 @@ test('#show will clean up snackbar after the timeout and transition end', () => 
   td.verify(mockAdapter.removeClass(cssClasses.MULTILINE));
   td.verify(mockAdapter.removeClass(cssClasses.ACTION_ON_BOTTOM));
   td.verify(mockAdapter.deregisterTransitionEndHandler(transEndHandler));
-
-  clock.uninstall();
 });
 
 test('#show calls adapter.registerVisibilityChangeHandler() with a function', () => {
@@ -462,7 +457,7 @@ test('focus hijacks the snackbar timeout if no click or touchstart occurs', () =
 
 test('focus does not hijack the snackbar timeout if it occurs as a result' +
   'of a mousedown or touchstart', () => {
-  const clock = lolex.install();
+  const clock = installClock();
   const {foundation, mockAdapter} = setupTest();
   const mockFocusEvent = {type: 'focus'};
   const mockMouseEvent = {type: 'mousedown'};
@@ -485,11 +480,10 @@ test('focus does not hijack the snackbar timeout if it occurs as a result' +
   clock.tick(numbers.MESSAGE_TIMEOUT);
 
   td.verify(mockAdapter.removeClass(cssClasses.ACTIVE));
-  clock.uninstall();
 });
 
 test('blur resets the snackbar timeout', () => {
-  const clock = lolex.install();
+  const clock = installClock();
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
   const mockBlurEvent = {type: 'blur'};
@@ -515,6 +509,4 @@ test('blur resets the snackbar timeout', () => {
   blurEvent(mockBlurEvent);
   clock.tick(numbers.MESSAGE_TIMEOUT);
   td.verify(mockAdapter.removeClass(cssClasses.ACTIVE));
-
-  clock.uninstall();
 });

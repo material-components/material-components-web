@@ -26,7 +26,7 @@ import bel from 'bel';
 import td from 'testdouble';
 
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
-import {createMockRaf} from '../helpers/raf';
+import {install as installClock} from '../helpers/clock';
 import {MDCSwitchFoundation, MDCSwitch} from '../../../packages/mdc-switch/index';
 import {MDCRipple} from '../../../packages/mdc-ripple/index';
 
@@ -60,19 +60,18 @@ test('attachTo initializes and returns a MDCSwitch instance', () => {
 
 if (supportsCssVariables(window)) {
   test('#constructor initializes the root element with a ripple', () => {
-    const raf = createMockRaf();
+    const clock = installClock();
     const {rippleSurface} = setupTest();
-    raf.flush();
+    clock.runToFrame();
     assert.isOk(rippleSurface.classList.contains('mdc-ripple-upgraded'));
-    raf.restore();
   });
 
   test('#destroy removes the ripple', () => {
-    const raf = createMockRaf();
+    const clock = installClock();
     const {component, rippleSurface} = setupTest();
-    raf.flush();
+    clock.runToFrame();
     component.destroy();
-    raf.flush();
+    clock.runToFrame();
     assert.isNotOk(rippleSurface.classList.contains('mdc-ripple-upgraded'));
   });
 }

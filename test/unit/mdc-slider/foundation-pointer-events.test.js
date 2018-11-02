@@ -39,325 +39,290 @@ createTestSuiteForPointerEvents('touchstart', 'touchmove', 'touchend', (pageX) =
 
 function createTestSuiteForPointerEvents(downEvt, moveEvt, upEvt, pageXObj = (pageX) => ({pageX})) {
   test(`on ${downEvt} sets the value of the slider using the X coordinate of the event`, () => {
-    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+    const {foundation, mockAdapter, clock, rootHandlers} = setupTest();
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     foundation.init();
-    raf.flush();
+    clock.runToFrame();
 
     rootHandlers[downEvt](pageXObj(50));
-    raf.flush();
+    clock.runToFrame();
 
     assert.equal(foundation.getValue(), 50);
     td.verify(mockAdapter.setThumbContainerStyleProperty(TRANSFORM_PROP, 'translateX(50px) translateX(-50%)'));
     td.verify(mockAdapter.setTrackStyleProperty(TRANSFORM_PROP, 'scaleX(0.5)'));
-
-    raf.restore();
   });
 
   test(`on ${downEvt} offsets the value by the X position of the slider element`, () => {
-    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+    const {foundation, mockAdapter, clock, rootHandlers} = setupTest();
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 10, width: 100});
     foundation.init();
-    raf.flush();
+    clock.runToFrame();
 
     rootHandlers[downEvt](pageXObj(50));
-    raf.flush();
+    clock.runToFrame();
 
     assert.equal(foundation.getValue(), 40);
     td.verify(mockAdapter.setThumbContainerStyleProperty(TRANSFORM_PROP, 'translateX(40px) translateX(-50%)'));
     td.verify(mockAdapter.setTrackStyleProperty(TRANSFORM_PROP, 'scaleX(0.4)'));
-
-    raf.restore();
   });
 
   test(`on ${downEvt} takes RTL into account when computing the slider\'s value using the X ` +
        'coordinate of the event', () => {
-    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+    const {foundation, mockAdapter, clock, rootHandlers} = setupTest();
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     td.when(mockAdapter.isRTL()).thenReturn(true);
     foundation.init();
-    raf.flush();
+    clock.runToFrame();
 
     rootHandlers[downEvt](pageXObj(25));
-    raf.flush();
+    clock.runToFrame();
 
     assert.equal(foundation.getValue(), 75);
     td.verify(mockAdapter.setThumbContainerStyleProperty(TRANSFORM_PROP, 'translateX(25px) translateX(-50%)'));
     td.verify(mockAdapter.setTrackStyleProperty(TRANSFORM_PROP, 'scaleX(0.75)'));
-
-    raf.restore();
   });
 
   test(`on ${downEvt} adds the mdc-slider--active class to the root element`, () => {
-    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+    const {foundation, mockAdapter, clock, rootHandlers} = setupTest();
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     foundation.init();
-    raf.flush();
+    clock.runToFrame();
 
     rootHandlers[downEvt](pageXObj(50));
-    raf.flush();
+    clock.runToFrame();
 
     td.verify(mockAdapter.addClass(cssClasses.ACTIVE));
-
-    raf.restore();
   });
 
   test(`on ${downEvt} adds mdc-slider--in-transit class to the root element if the thumb container ` +
        'isn\'t the target', () => {
-    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+    const {foundation, mockAdapter, clock, rootHandlers} = setupTest();
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     foundation.init();
-    raf.flush();
+    clock.runToFrame();
 
     rootHandlers[downEvt](pageXObj(50));
-    raf.flush();
+    clock.runToFrame();
 
     td.verify(mockAdapter.addClass(cssClasses.IN_TRANSIT));
-
-    raf.restore();
   });
 
   test(`on ${downEvt} does not add mdc-slider--in-transit class to the root element if the thumb container ` +
        'is the target', () => {
-    const {foundation, mockAdapter, raf, thumbContainerHandlers} = setupTest();
+    const {foundation, mockAdapter, clock, thumbContainerHandlers} = setupTest();
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     foundation.init();
-    raf.flush();
+    clock.runToFrame();
 
     thumbContainerHandlers[downEvt](pageXObj(2));
-    raf.flush();
+    clock.runToFrame();
 
     td.verify(mockAdapter.addClass(cssClasses.IN_TRANSIT), {times: 0});
-
-    raf.restore();
   });
 
   test(`on ${downEvt} removes the mdc-slider--in-transit class when the thumb container finishes transitioning`, () => {
-    const {foundation, mockAdapter, raf, rootHandlers, thumbContainerHandlers} = setupTest();
+    const {foundation, mockAdapter, clock, rootHandlers, thumbContainerHandlers} = setupTest();
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     foundation.init();
-    raf.flush();
+    clock.runToFrame();
 
     rootHandlers[downEvt](pageXObj(2));
-    raf.flush();
+    clock.runToFrame();
 
     // Sanity check
     td.verify(mockAdapter.addClass(cssClasses.IN_TRANSIT));
 
     thumbContainerHandlers[TRANSITION_END_EVT]();
     td.verify(mockAdapter.removeClass(cssClasses.IN_TRANSIT));
-
-    raf.restore();
   });
 
   test(`on ${downEvt} notifies the client of an input event`, () => {
-    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+    const {foundation, mockAdapter, clock, rootHandlers} = setupTest();
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     foundation.init();
-    raf.flush();
+    clock.runToFrame();
 
     rootHandlers[downEvt](pageXObj(50));
-    raf.flush();
+    clock.runToFrame();
 
     td.verify(mockAdapter.notifyInput());
-
-    raf.restore();
   });
 
   test(`on ${downEvt} notifies discrete slider pin value marker to change value`, () => {
-    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+    const {foundation, mockAdapter, clock, rootHandlers} = setupTest();
     const {isA} = td.matchers;
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
     foundation.init();
-    raf.flush();
+    clock.runToFrame();
 
     rootHandlers[downEvt](pageXObj(50));
-    raf.flush();
+    clock.runToFrame();
 
     td.verify(mockAdapter.setMarkerValue(isA(Number)));
-
-    raf.restore();
   });
 
   test(`on ${downEvt} attaches event handlers for ${moveEvt} and all *up/end events to the document body`, () => {
-    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+    const {foundation, mockAdapter, clock, rootHandlers} = setupTest();
     const {isA} = td.matchers;
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     foundation.init();
-    raf.flush();
+    clock.runToFrame();
 
     rootHandlers[downEvt](pageXObj(50));
-    raf.flush();
+    clock.runToFrame();
 
     td.verify(mockAdapter.registerBodyInteractionHandler(moveEvt, isA(Function)));
     td.verify(mockAdapter.registerBodyInteractionHandler('mouseup', isA(Function)));
     td.verify(mockAdapter.registerBodyInteractionHandler('pointerup', isA(Function)));
     td.verify(mockAdapter.registerBodyInteractionHandler('touchend', isA(Function)));
-    raf.restore();
   });
 
   test('on ${downEvt} does nothing if the component is disabled', () => {
-    const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+    const {foundation, mockAdapter, clock, rootHandlers} = setupTest();
     const {anything} = td.matchers;
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     foundation.init();
-    raf.flush();
+    clock.runToFrame();
 
     const valueBeforeEvent = foundation.getValue();
     foundation.setDisabled(true);
 
     rootHandlers[downEvt](pageXObj(50));
-    raf.flush();
+    clock.runToFrame();
 
     assert.equal(foundation.getValue(), valueBeforeEvent);
     td.verify(mockAdapter.addClass(cssClasses.ACTIVE), {times: 0});
     // These should only happen once during initialization
     td.verify(mockAdapter.setThumbContainerStyleProperty(anything(), anything()), {times: 1});
     td.verify(mockAdapter.setTrackStyleProperty(anything(), anything()), {times: 1});
-
-    raf.restore();
   });
 
   test(`on body ${moveEvt} prevents default behavior`, () => {
-    const {foundation, mockAdapter, raf, rootHandlers, bodyHandlers} = setupTest();
+    const {foundation, mockAdapter, clock, rootHandlers, bodyHandlers} = setupTest();
     const preventDefault = td.func('evt.preventDefault');
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     foundation.init();
-    raf.flush();
+    clock.runToFrame();
 
     rootHandlers[downEvt](pageXObj(49));
     bodyHandlers[moveEvt](
       Object.assign({preventDefault}, pageXObj(50))
     );
-    raf.flush();
+    clock.runToFrame();
 
     td.verify(preventDefault());
-
-    raf.restore();
   });
 
   test(`on body ${moveEvt} updates the slider\'s value based on the X coordinate of the event`, () => {
-    const {foundation, mockAdapter, raf, rootHandlers, bodyHandlers} = setupTest();
+    const {foundation, mockAdapter, clock, rootHandlers, bodyHandlers} = setupTest();
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     foundation.init();
-    raf.flush();
+    clock.runToFrame();
 
     rootHandlers[downEvt](pageXObj(49));
     bodyHandlers[moveEvt](Object.assign({
       preventDefault: () => {},
     }, pageXObj(50)));
-    raf.flush();
+    clock.runToFrame();
 
     assert.equal(foundation.getValue(), 50);
     td.verify(mockAdapter.setThumbContainerStyleProperty(TRANSFORM_PROP, 'translateX(50px) translateX(-50%)'));
     td.verify(mockAdapter.setTrackStyleProperty(TRANSFORM_PROP, 'scaleX(0.5)'));
-
-    raf.restore();
   });
 
   test(`on body ${moveEvt} notifies the client of an input event`, () => {
-    const {foundation, mockAdapter, raf, rootHandlers, bodyHandlers} = setupTest();
+    const {foundation, mockAdapter, clock, rootHandlers, bodyHandlers} = setupTest();
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     foundation.init();
-    raf.flush();
+    clock.runToFrame();
 
     rootHandlers[downEvt](pageXObj(49));
     bodyHandlers[moveEvt](Object.assign({
       preventDefault: () => {},
     }, pageXObj(50)));
-    raf.flush();
+    clock.runToFrame();
 
     // Once on mousedown, once on mousemove
     td.verify(mockAdapter.notifyInput(), {times: 2});
-
-    raf.restore();
   });
 
   test(`on body ${moveEvt} notifies discrete slider pin value marker to change value`, () => {
-    const {foundation, mockAdapter, raf, rootHandlers, bodyHandlers} = setupTest();
+    const {foundation, mockAdapter, clock, rootHandlers, bodyHandlers} = setupTest();
     const {isA} = td.matchers;
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     td.when(mockAdapter.hasClass(cssClasses.IS_DISCRETE)).thenReturn(true);
     foundation.init();
-    raf.flush();
+    clock.runToFrame();
 
     rootHandlers[downEvt](pageXObj(49));
     bodyHandlers[moveEvt](Object.assign({
       preventDefault: () => {},
     }, pageXObj(50)));
-    raf.flush();
+    clock.runToFrame();
 
     // Once on mousedown, once on mousemove
     td.verify(mockAdapter.setMarkerValue(isA(Number)), {times: 2});
-
-    raf.restore();
   });
 
   test(`on body ${upEvt} removes the mdc-slider--active class from the component`, () => {
-    const {foundation, mockAdapter, raf, rootHandlers, bodyHandlers} = setupTest();
+    const {foundation, mockAdapter, clock, rootHandlers, bodyHandlers} = setupTest();
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     foundation.init();
-    raf.flush();
+    clock.runToFrame();
 
     rootHandlers[downEvt](pageXObj(50));
-    raf.flush();
+    clock.runToFrame();
     bodyHandlers[upEvt]();
 
     td.verify(mockAdapter.removeClass(cssClasses.ACTIVE));
-
-    raf.restore();
   });
 
   test(`on body ${upEvt} removes the ${moveEvt} and all *up/end event handlers from the document body`, () => {
-    const {foundation, mockAdapter, raf, rootHandlers, bodyHandlers} = setupTest();
+    const {foundation, mockAdapter, clock, rootHandlers, bodyHandlers} = setupTest();
     const {isA} = td.matchers;
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     foundation.init();
-    raf.flush();
+    clock.runToFrame();
 
     rootHandlers[downEvt](pageXObj(50));
-    raf.flush();
+    clock.runToFrame();
     bodyHandlers[upEvt]();
 
     td.verify(mockAdapter.deregisterBodyInteractionHandler(moveEvt, isA(Function)));
     td.verify(mockAdapter.deregisterBodyInteractionHandler('mouseup', isA(Function)));
     td.verify(mockAdapter.deregisterBodyInteractionHandler('pointerup', isA(Function)));
     td.verify(mockAdapter.deregisterBodyInteractionHandler('touchend', isA(Function)));
-
-    raf.restore();
   });
 
   test(`on body ${upEvt} notifies the client of a change event`, () => {
-    const {foundation, mockAdapter, raf, rootHandlers, bodyHandlers} = setupTest();
+    const {foundation, mockAdapter, clock, rootHandlers, bodyHandlers} = setupTest();
 
     td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
     foundation.init();
-    raf.flush();
+    clock.runToFrame();
 
     rootHandlers[downEvt](pageXObj(50));
-    raf.flush();
+    clock.runToFrame();
     bodyHandlers[upEvt]();
 
     td.verify(mockAdapter.notifyChange());
-
-    raf.restore();
   });
 }

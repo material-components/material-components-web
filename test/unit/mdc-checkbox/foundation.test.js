@@ -23,9 +23,9 @@
 
 import {assert} from 'chai';
 import bel from 'bel';
-import lolex from 'lolex';
 import td from 'testdouble';
 
+import {install as installClock} from '../helpers/clock';
 import {setupFoundationTest} from '../helpers/setup';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import MDCCheckboxFoundation from '../../../packages/mdc-checkbox/foundation';
@@ -259,7 +259,7 @@ testChangeHandler('no transition classes applied when no state change', [
 ], cssClasses.ANIM_UNCHECKED_CHECKED, {times: 1});
 
 test('animation end handler removes animation class after short delay', () => {
-  const clock = lolex.install();
+  const clock = installClock();
   const {ANIM_UNCHECKED_CHECKED} = cssClasses;
   const {mockAdapter, foundation} = setupTest();
 
@@ -272,12 +272,10 @@ test('animation end handler removes animation class after short delay', () => {
   clock.tick(numbers.ANIM_END_LATCH_MS);
   td.verify(mockAdapter.removeClass(ANIM_UNCHECKED_CHECKED), {times: 1});
   assert.isFalse(foundation.enableAnimationEndHandler_);
-
-  clock.uninstall();
 });
 
 test('animation end is debounced if event is called twice', () => {
-  const clock = lolex.install();
+  const clock = installClock();
   const {ANIM_UNCHECKED_CHECKED} = cssClasses;
   const {mockAdapter, foundation} = setupChangeHandlerTest();
   foundation.enableAnimationEndHandler_ = true;
@@ -291,8 +289,6 @@ test('animation end is debounced if event is called twice', () => {
 
   clock.tick(numbers.ANIM_END_LATCH_MS);
   td.verify(mockAdapter.removeClass(ANIM_UNCHECKED_CHECKED), {times: 1});
-
-  clock.uninstall();
 });
 
 test('change handler triggers layout for changes within the same frame to correctly restart anims', () => {
@@ -339,7 +335,6 @@ test('change handler gracefully exits when getNativeControl() returns nothing', 
 
 test('"checked" property change hook works correctly', () => {
   const {foundation, mockAdapter, nativeControl} = setupTest();
-  const clock = lolex.install();
   td.when(mockAdapter.isAttachedToDOM()).thenReturn(true);
   td.when(mockAdapter.hasNativeControl()).thenReturn(true);
 
@@ -355,13 +350,10 @@ test('"checked" property change hook works correctly', () => {
     nativeControl.checked = !nativeControl.checked;
     td.verify(mockAdapter.addClass(cssClasses.ANIM_UNCHECKED_CHECKED));
   });
-
-  clock.uninstall();
 });
 
 test('"indeterminate" property change hook works correctly', () => {
   const {foundation, mockAdapter, nativeControl} = setupTest();
-  const clock = lolex.install();
   td.when(mockAdapter.isAttachedToDOM()).thenReturn(true);
   td.when(mockAdapter.hasNativeControl()).thenReturn(true);
 
@@ -378,6 +370,4 @@ test('"indeterminate" property change hook works correctly', () => {
     nativeControl.indeterminate = !nativeControl.indeterminate;
     td.verify(mockAdapter.addClass(cssClasses.ANIM_UNCHECKED_INDETERMINATE));
   });
-
-  clock.uninstall();
 });

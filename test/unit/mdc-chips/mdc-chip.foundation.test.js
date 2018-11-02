@@ -24,8 +24,8 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
+import {install as installClock} from '../helpers/clock';
 import {verifyDefaultAdapter} from '../helpers/foundation';
-import {createMockRaf} from '../helpers/raf';
 import {setupFoundationTest} from '../helpers/setup';
 import {MDCChipFoundation} from '../../../packages/mdc-chips/chip/foundation';
 
@@ -121,7 +121,7 @@ test('#handleTransitionEnd notifies removal of chip on width transition end', ()
 
 test('#handleTransitionEnd animates width if chip is exiting on chip opacity transition end', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
   const mockEvt = {
     type: 'transitionend',
     target: {},
@@ -132,12 +132,12 @@ test('#handleTransitionEnd animates width if chip is exiting on chip opacity tra
 
   foundation.handleTransitionEnd(mockEvt);
 
-  raf.flush();
+  clock.runToFrame();
   td.verify(mockAdapter.setStyleProperty('width', '100px'));
   td.verify(mockAdapter.setStyleProperty('padding', '0'));
   td.verify(mockAdapter.setStyleProperty('margin', '0'));
 
-  raf.flush();
+  clock.runToFrame();
   td.verify(mockAdapter.setStyleProperty('width', '0'));
 });
 
