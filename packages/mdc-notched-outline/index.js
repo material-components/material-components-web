@@ -51,9 +51,9 @@ class MDCNotchedOutline extends MDCComponent {
     const label = this.root_.querySelector('.' + MDCFloatingLabelFoundation.cssClasses.ROOT);
     this.notchElement_ = this.root_.querySelector(strings.NOTCH_ELEMENT_SELECTOR);
 
-    if (label) {
+    if (this.notchElement_) {
       label.style.transitionDuration = '0s';
-      label.classList.add(MDCFloatingLabelFoundation.cssClasses.UPGRADED);
+      this.notchElement_.classList.add('mdc-notched-outline--upgraded');
       setTimeout(() => label.style.transitionDuration = '', 0);
     }
   }
