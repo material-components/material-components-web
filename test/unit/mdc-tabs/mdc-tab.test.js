@@ -25,7 +25,7 @@ import {assert} from 'chai';
 import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
-import {createMockRaf} from '../helpers/raf';
+import {install as installClock} from '../helpers/clock';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 import {MDCTab, MDCTabFoundation} from '../../../packages/mdc-tabs/tab/index';
 import {cssClasses, strings} from '../../../packages/mdc-tabs/tab/constants';
@@ -55,11 +55,10 @@ test('#constructor initializes the root element with a ripple in browsers that s
     this.skip(); // eslint-disable-line no-invalid-this
     return;
   }
-  const raf = createMockRaf();
+  const clock = installClock();
   const {root} = setupTest();
-  raf.flush();
+  clock.runToFrame();
   assert.isOk(root.classList.contains('mdc-ripple-upgraded'));
-  raf.restore();
 });
 
 test('#destroy cleans up tab\'s ripple in browsers that support it', function() {
@@ -67,11 +66,11 @@ test('#destroy cleans up tab\'s ripple in browsers that support it', function() 
     this.skip(); // eslint-disable-line no-invalid-this
     return;
   }
-  const raf = createMockRaf();
+  const clock = installClock();
   const {root, component} = setupTest();
-  raf.flush();
+  clock.runToFrame();
   component.destroy();
-  raf.flush();
+  clock.runToFrame();
   assert.isNotOk(root.classList.contains('mdc-ripple-upgraded'));
 });
 

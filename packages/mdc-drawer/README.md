@@ -252,6 +252,7 @@ body {
 .mdc-drawer-app-content {
   flex: auto;
   overflow: auto;
+  position: relative;
 }
 
 .main-content {

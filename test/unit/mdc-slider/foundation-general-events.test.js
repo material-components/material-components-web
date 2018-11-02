@@ -29,58 +29,52 @@ import {TRANSFORM_PROP, setupEventTest as setupTest} from './helpers';
 suite('MDCSliderFoundation - General Events');
 
 test('on focus adds the mdc-slider--focus class to the root element', () => {
-  const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+  const {foundation, mockAdapter, clock, rootHandlers} = setupTest();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({width: 0, left: 0});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   rootHandlers.focus();
 
   td.verify(mockAdapter.addClass(cssClasses.FOCUS));
-
-  raf.restore();
 });
 
 test('on focus does not add mdc-slider--focus after a pointer event', () => {
-  const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+  const {foundation, mockAdapter, clock, rootHandlers} = setupTest();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   rootHandlers.mousedown({pageX: 50});
-  raf.flush();
+  clock.runToFrame();
   rootHandlers.focus();
 
   td.verify(mockAdapter.addClass(cssClasses.FOCUS), {times: 0});
-
-  raf.restore();
 });
 
 test('on blur removes the mdc-slider--focus class', () => {
-  const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+  const {foundation, mockAdapter, clock, rootHandlers} = setupTest();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   rootHandlers.blur();
 
   td.verify(mockAdapter.removeClass(cssClasses.FOCUS));
-
-  raf.restore();
 });
 
 test('on blur resets the focusability UX of the component after an initial pointer event', () => {
-  const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+  const {foundation, mockAdapter, clock, rootHandlers} = setupTest();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   rootHandlers.mousedown({pageX: 50});
-  raf.flush();
+  clock.runToFrame();
   rootHandlers.focus();
   // Sanity check
   td.verify(mockAdapter.addClass(cssClasses.FOCUS), {times: 0});
@@ -89,12 +83,10 @@ test('on blur resets the focusability UX of the component after an initial point
   rootHandlers.focus();
 
   td.verify(mockAdapter.addClass(cssClasses.FOCUS));
-
-  raf.restore();
 });
 
 test('on window resize re-lays out the component', () => {
-  const {foundation, mockAdapter, raf} = setupTest();
+  const {foundation, mockAdapter, clock} = setupTest();
   const {isA} = td.matchers;
   let resizeHandler;
 
@@ -106,17 +98,15 @@ test('on window resize re-lays out the component', () => {
     {left: 0, width: 50}
   );
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setValue(50);
-  raf.flush();
+  clock.runToFrame();
   // Sanity check
   td.verify(mockAdapter.setThumbContainerStyleProperty(TRANSFORM_PROP, 'translateX(50px) translateX(-50%)'));
 
   resizeHandler();
-  raf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.setThumbContainerStyleProperty(TRANSFORM_PROP, 'translateX(25px) translateX(-50%)'));
-
-  raf.restore();
 });
