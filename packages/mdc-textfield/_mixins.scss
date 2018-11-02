@@ -227,7 +227,6 @@
 }
 
 @mixin mdc-text-field-floating-label_ {
-
   .mdc-floating-label {
     @include mdc-rtl-reflexive-position(left, 12px);
 
@@ -241,6 +240,12 @@
     }
   }
 
+  &.mdc-text-field--textarea {
+    .mdc-floating-label {
+      @include mdc-rtl-reflexive-position(left, 0);
+    }
+  }
+
   &.mdc-text-field--outlined {
     .mdc-floating-label {
       @include mdc-rtl-reflexive-position(left, 0);
@@ -250,12 +255,6 @@
       .mdc-floating-label {
         @include mdc-rtl-reflexive-position(left, ($mdc-text-field-icon-padding - $mdc-notched-outline-leading-width));
       }
-    }
-  }
-
-  &.mdc-text-field--textarea {
-    .mdc-floating-label {
-      @include mdc-rtl-reflexive-position(left, 0);
     }
   }
 }
