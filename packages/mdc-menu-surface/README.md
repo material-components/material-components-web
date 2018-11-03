@@ -7,7 +7,7 @@ iconId: menu
 path: /catalog/menu-surface/
 -->
 
->  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
+> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
 
 # Menu Surface
 
