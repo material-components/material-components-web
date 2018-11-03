@@ -29,8 +29,6 @@ window.mdc.testFixture.fontsLoaded.then(() => {
     if (openButtonEl) {
       openButtonEl.addEventListener('click', () => snackbar.show());
     }
-
-    snackbar.show();
   });
 
   window.mdc.testFixture.notifyDomReady();

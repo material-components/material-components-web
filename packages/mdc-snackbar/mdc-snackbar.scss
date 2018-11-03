@@ -44,6 +44,8 @@
   justify-content: center;
   box-sizing: border-box;
   pointer-events: none;
+  z-index: 9; // TODO(acdvorak)
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 @at-root {
@@ -67,7 +69,6 @@
   box-sizing: border-box;
   transform: scale(.8);
   opacity: 0;
-  pointer-events: auto;
 
   // Prevent mdc-snackbar__overlay's background-color from bleeding past the container's border-radius
   overflow: hidden;
@@ -78,6 +79,7 @@
       mdc-animation-enter(opacity, 150ms),
       mdc-animation-enter(transform, 150ms);
     opacity: 1;
+    pointer-events: auto;
   }
 
   .mdc-snackbar--closing & {

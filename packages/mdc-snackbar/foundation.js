@@ -36,18 +36,14 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
 
   static get defaultAdapter() {
     return {
+      announce: (/* message: string */) => {},
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
       setAriaHidden: () => {},
       unsetAriaHidden: () => {},
-      setActionAriaHidden: () => {},
-      unsetActionAriaHidden: () => {},
-      setActionText: (/* actionText: string */) => {},
-      getLabelText: () => {},
-      setLabelText: (/* message: string */) => {},
-      setFocus: () => {},
-      isFocused: () => /* boolean */ false,
       visibilityIsHidden: () => /* boolean */ false,
+      registerSurfaceClickHandler: (/* handler: EventListener */) => {},
+      deregisterSurfaceClickHandler: (/* handler: EventListener */) => {},
       registerCapturedBlurHandler: (/* handler: EventListener */) => {},
       deregisterCapturedBlurHandler: (/* handler: EventListener */) => {},
       registerVisibilityChangeHandler: (/* handler: EventListener */) => {},
@@ -83,43 +79,41 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
         this.hide();
       }
     };
+
+    this.surfaceClickHandler_ = () => {
+      this.hide();
+    };
   }
 
   init() {
+    this.adapter_.registerSurfaceClickHandler(this.surfaceClickHandler_);
     this.adapter_.registerActionClickHandler(this.actionClickHandler_);
     this.adapter_.setAriaHidden();
-    this.adapter_.setActionAriaHidden();
   }
 
   destroy() {
+    this.adapter_.deregisterSurfaceClickHandler(this.surfaceClickHandler_);
     this.adapter_.deregisterActionClickHandler(this.actionClickHandler_);
   }
 
-  show(data) {
+  show() {
+    const {OPEN} = MDCSnackbarFoundation.cssClasses;
+
     this.adapter_.unsetAriaHidden();
-    this.adapter_.unsetActionAriaHidden();
-    this.adapter_.addClass('mdc-snackbar--open');
-
-    const labelText = this.adapter_.getLabelText();
-
-    // Clear `textContent` to force a DOM mutation that will be detected by screen readers.
-    // `aria-live` elements are only announced when the element's `textContent` *changes*,
-    // so snackbars sent to the browser in the initial HTML response won't be read unless we
-    // clear the element's `textContent` first.
-    // Similarly, displaying the same message twice in a row doesn't trigger a DOM mutation event,
-    // so screen readers won't announce the second message unless we clear `textContent`.
-    // TODO(acdvorak): Can we just append a dummy HTML element like `<div>.</div>` and then immediately remove it?
-    this.adapter_.setLabelText('');
-
-    setTimeout(() => {
-      this.adapter_.setLabelText(labelText);
-    }, 1); // non-zero timer to make VoiceOver and NVDA work
+    this.adapter_.addClass(OPEN);
+    this.adapter_.announce();
   }
 
   hide() {
-    this.adapter_.addClass('mdc-snackbar--closing');
-    this.adapter_.removeClass('mdc-snackbar--open');
+    const {OPEN, CLOSING} = MDCSnackbarFoundation.cssClasses;
 
-    setTimeout(() => this.adapter_.removeClass('mdc-snackbar--closing'), numbers.ANIMATION_EXIT_TIME_MS);
+    const transitionEndHandler = () => {
+      this.adapter_.removeClass(CLOSING);
+      this.adapter_.deregisterTransitionEndHandler(transitionEndHandler);
+    };
+    this.adapter_.registerTransitionEndHandler(transitionEndHandler);
+
+    this.adapter_.addClass(CLOSING);
+    this.adapter_.removeClass(OPEN);
   }
 }

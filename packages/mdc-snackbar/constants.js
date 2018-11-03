@@ -25,13 +25,15 @@ export const cssClasses = {
   TEXT: 'mdc-snackbar__text',
   ACTION_WRAPPER: 'mdc-snackbar__action-wrapper',
   ACTION_BUTTON: 'mdc-snackbar__action-button',
-  ACTIVE: 'mdc-snackbar--active',
+  OPEN: 'mdc-snackbar--open',
+  CLOSING: 'mdc-snackbar--closing',
   MULTILINE: 'mdc-snackbar--multiline',
   ACTION_ON_BOTTOM: 'mdc-snackbar--action-on-bottom',
 };
 
 export const strings = {
-  TEXT_SELECTOR: '.mdc-snackbar__label',
+  CONTAINER_SELECTOR: '.mdc-snackbar__container',
+  LABEL_SELECTOR: '.mdc-snackbar__label',
   ACTION_WRAPPER_SELECTOR: '.mdc-snackbar__actions',
   ACTION_BUTTON_SELECTOR: '.mdc-snackbar__action-button',
   SHOW_EVENT: 'MDCSnackbar:show',
