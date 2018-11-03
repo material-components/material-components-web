@@ -22,7 +22,7 @@
  */
 
 import {MDCFoundation} from '@material/base/index';
-import {cssClasses, strings, numbers} from './constants';
+import {cssClasses, strings} from './constants';
 import * as ponyfill from '@material/dom/ponyfill';
 
 export default class MDCSnackbarFoundation extends MDCFoundation {
@@ -48,6 +48,8 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
       deregisterCapturedBlurHandler: (/* handler: EventListener */) => {},
       registerVisibilityChangeHandler: (/* handler: EventListener */) => {},
       deregisterVisibilityChangeHandler: (/* handler: EventListener */) => {},
+      registerKeyDownHandler: (/* handler: EventListener */) => {},
+      deregisterKeyDownHandler: (/* handler: EventListener */) => {},
       registerCapturedInteractionHandler: (/* evtType: string, handler: EventListener */) => {},
       deregisterCapturedInteractionHandler: (/* evtType: string, handler: EventListener */) => {},
       registerActionClickHandler: (/* handler: EventListener */) => {},
@@ -83,15 +85,23 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     this.surfaceClickHandler_ = () => {
       this.hide();
     };
+
+    this.keyDownHandler_ = (evt) => {
+      if (evt.key === 'Escape' || evt.keyCode === 27) {
+        this.hide();
+      }
+    };
   }
 
   init() {
+    this.adapter_.registerKeyDownHandler(this.keyDownHandler_);
     this.adapter_.registerSurfaceClickHandler(this.surfaceClickHandler_);
     this.adapter_.registerActionClickHandler(this.actionClickHandler_);
     this.adapter_.setAriaHidden();
   }
 
   destroy() {
+    this.adapter_.deregisterKeyDownHandler(this.keyDownHandler_);
     this.adapter_.deregisterSurfaceClickHandler(this.surfaceClickHandler_);
     this.adapter_.deregisterActionClickHandler(this.actionClickHandler_);
   }
