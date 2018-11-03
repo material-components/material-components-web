@@ -6,7 +6,7 @@ excerpt: "An animated text caption for a Text Field or Select."
 path: /catalog/input-controls/floating-label/
 -->
 
->  ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a target='_blank' href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a> (opens a new tab). ✨
+>  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
 
 # Floating Label
 

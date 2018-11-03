@@ -6,7 +6,7 @@ excerpt: "Right-to-left and bi-directional text layout via SCSS helpers."
 path: /catalog/rtl/
 -->
 
->  ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a target='_blank' href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a> (opens a new tab). ✨
+>  Are you a part of the Material Design web community? Help us improve by filling out ✨<a href='https://bit.ly/materialwebsurvey'>**this 10 minute survey**</a>✨.
 
 # RTL
 
