@@ -1,0 +1,14 @@
+{
+  "name": "@material/a11y",
+  "description": "Accessibility utilities for Material Components for the web",
+  "version": "0.0.0",
+  "license": "MIT",
+  "main": "dist/mdc.a11y.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/material-components/material-components-web.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
