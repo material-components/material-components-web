@@ -43,6 +43,7 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
+  transform: translateY(100vh);
   pointer-events: none;
   z-index: 9; // TODO(acdvorak)
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -60,6 +61,11 @@
 
 .mdc-snackbar--leading {
   justify-content: flex-start;
+}
+
+.mdc-snackbar--open,
+.mdc-snackbar--closing {
+  transform: none;
 }
 
 .mdc-snackbar__container {
