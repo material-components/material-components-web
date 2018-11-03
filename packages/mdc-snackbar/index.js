@@ -74,9 +74,11 @@ export class MDCSnackbar extends MDCComponent {
       }
     };
 
-    const announce = () => {
+    const localAnnounce = () => {
+      const {ARIA_LIVE_DELAY_MS} = MDCSnackbarFoundation.numbers;
       const labelEl = getLabel();
       const labelText = labelEl.textContent;
+      const ariaLive = this.root_.getAttribute('aria-live');
 
       // Clear `textContent` to force a DOM mutation that will be detected by screen readers.
       // `aria-live` elements are only announced when the element's `textContent` *changes*,
@@ -85,10 +87,25 @@ export class MDCSnackbar extends MDCComponent {
       // Similarly, displaying the same message twice in a row doesn't trigger a DOM mutation event,
       // so screen readers won't announce the second message unless we clear `textContent`.
       // TODO(acdvorak): Can we just append a dummy HTML element like `<div>.</div>` and then immediately remove it?
-      labelEl.textContent = '';
-      setTimeout(() => labelEl.textContent = labelText, 1); // Uses non-zero timer to make VoiceOver and NVDA work
 
-      this.announcer_.say(getLabel().textContent);
+      // Works in NVDA+IE11 ~95% of the time.
+      // There seems to be a race condition that sometimes announces the empty text.
+      this.root_.setAttribute('aria-live', 'off');
+      // const textNode = document.createTextNode(' ');
+      // labelEl.appendChild(textNode);
+      labelEl.textContent = '';
+      setTimeout(() => {
+        this.root_.setAttribute('aria-live', ariaLive);
+        // labelEl.removeChild(textNode);
+        labelEl.textContent = labelText;
+      }, ARIA_LIVE_DELAY_MS); // Uses non-zero timer to make VoiceOver and NVDA work
+    };
+
+    const announce = () => {
+      localAnnounce();
+
+      // Doesn't work in NVDA+IE11
+      // this.announcer_.say(getLabel().textContent);
     };
 
     /* eslint brace-style: "off" */
@@ -105,6 +122,8 @@ export class MDCSnackbar extends MDCComponent {
       deregisterCapturedBlurHandler: (handler) => withActionBtn((el) => el.removeEventListener('blur', handler, true)),
       registerVisibilityChangeHandler: (handler) => document.addEventListener('visibilitychange', handler),
       deregisterVisibilityChangeHandler: (handler) => document.removeEventListener('visibilitychange', handler),
+      registerKeyDownHandler: (handler) => document.addEventListener('keydown', handler),
+      deregisterKeyDownHandler: (handler) => document.removeEventListener('keydown', handler),
       registerCapturedInteractionHandler: (evt, handler) => document.body.addEventListener(evt, handler, true),
       deregisterCapturedInteractionHandler: (evt, handler) => document.body.removeEventListener(evt, handler, true),
       registerActionClickHandler: (handler) => withActionBtn((el) => el.addEventListener('click', handler)),

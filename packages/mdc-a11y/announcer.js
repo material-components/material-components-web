@@ -61,8 +61,12 @@ class MDCAnnouncer {
     // Similarly, displaying the same message twice in a row doesn't trigger a DOM mutation event,
     // so screen readers won't announce the second message unless we clear `textContent`.
     // TODO(acdvorak): Can we just append a dummy HTML element like `<div>.</div>` and then immediately remove it?
+    liveRegion.setAttribute('aria-live', 'off');
     liveRegion.textContent = '';
-    setTimeout(() => liveRegion.textContent = message, 1); // Uses non-zero timer to make VoiceOver and NVDA work
+    setTimeout(() => {
+      liveRegion.setAttribute('aria-live', priority);
+      liveRegion.textContent = message;
+    }, 500); // Timer must be >= ~500ms to make NVDA work
   }
 
   /**

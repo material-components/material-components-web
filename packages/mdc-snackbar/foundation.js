@@ -100,8 +100,8 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     const {OPEN} = MDCSnackbarFoundation.cssClasses;
 
     this.adapter_.unsetAriaHidden();
-    this.adapter_.addClass(OPEN);
     this.adapter_.announce();
+    this.adapter_.addClass(OPEN);
   }
 
   hide() {

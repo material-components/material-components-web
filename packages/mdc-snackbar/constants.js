@@ -43,4 +43,12 @@ export const strings = {
 export const numbers = {
   MESSAGE_TIMEOUT: 2750,
   ANIMATION_EXIT_TIME_MS: 75 + 150, // TODO(acdvorak): Verify that 150ms delay is intentional in motion spec
+
+  /**
+   * Number of milliseconds to wait between temporarily clearing the label text in the DOM
+   * and subsequently restoring it. This is necessary to force the NVDA screen reader to
+   * pick up the `aria-live` content change and announce it to the user.
+   * IMPORTANT: Value must be <= $delay in mdc-snackbar.scss.
+   */
+  ARIA_LIVE_DELAY_MS: 5,
 };
