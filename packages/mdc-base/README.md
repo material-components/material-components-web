@@ -6,7 +6,7 @@ excerpt: "Base foundation and component classes."
 path: /catalog/base/
 -->
 
->  ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a target="_blank" href="https://bit.ly/materialwebsurvey">**10 minute survey**</a> (opens a new tab). ✨
+>  ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a target='_blank' href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a> (opens a new tab). ✨
 
 # Base
 
