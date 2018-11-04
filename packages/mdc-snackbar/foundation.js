@@ -62,15 +62,15 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     this.surfaceClickHandler_ = (evt) => {
       if (this.adapter_.isActionButton(evt)) {
         this.adapter_.notifyAction();
-        this.hide(strings.REASON_ACTION_CLICK);
+        this.close(strings.REASON_ACTION_CLICK);
       } else {
-        this.hide(strings.REASON_SURFACE_CLICK);
+        this.close(strings.REASON_SURFACE_CLICK);
       }
     };
 
     this.keyDownHandler_ = (evt) => {
       if (evt.key === 'Escape' || evt.keyCode === 27) {
-        this.hide(strings.REASON_ESCAPE_KEY);
+        this.close(strings.REASON_ESCAPE_KEY);
       }
     };
   }
@@ -95,14 +95,14 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     }
   }
 
-  show() {
+  open() {
     const {OPEN, CLOSING} = MDCSnackbarFoundation.cssClasses;
 
     this.clearTimers_();
 
     // TODO(acdvorak): Make timeout duration a constant and/or parameterizable.
     // TODO(acdvorak): Set timeout dynamically depending on # of characters?
-    this.timer_ = setTimeout(() => this.hide(strings.REASON_TIMEOUT), 4000);
+    this.timer_ = setTimeout(() => this.close(strings.REASON_TIMEOUT), 4000);
 
     this.transitionEndHandler_ = () => {
       this.adapter_.notifyOpened();
@@ -117,7 +117,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     this.adapter_.notifyOpening();
   }
 
-  hide(reason = strings.REASON_PROGRAMMATIC) {
+  close(reason = strings.REASON_PROGRAMMATIC) {
     const {OPEN, CLOSING} = MDCSnackbarFoundation.cssClasses;
     if (!this.adapter_.hasClass(OPEN)) {
       return;

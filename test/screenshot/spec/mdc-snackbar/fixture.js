@@ -27,7 +27,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
 
     const openButtonEl = document.querySelector(`[data-test-snackbar-id="${el.id}"]`);
     if (openButtonEl) {
-      openButtonEl.addEventListener('click', () => snackbar.show());
+      openButtonEl.addEventListener('click', () => snackbar.open());
     }
 
     const {

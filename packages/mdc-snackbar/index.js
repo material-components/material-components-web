@@ -34,12 +34,12 @@ export class MDCSnackbar extends MDCComponent {
     return new MDCSnackbar(root);
   }
 
-  show() {
-    this.foundation_.show();
+  open() {
+    this.foundation_.open();
   }
 
-  hide() {
-    this.foundation_.hide();
+  close() {
+    this.foundation_.close();
   }
 
   getDefaultFoundation() {
