@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc.
+// Copyright 2018 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -33,6 +33,7 @@
 
 // postcss-bem-linter: define snackbar
 .mdc-snackbar {
+  @include mdc-snackbar-z-index($mdc-snackbar-z-index);
   @include mdc-snackbar-viewport-margin(8px); // TODO(acdvorak): 24px for "wide" layout
 
   display: flex;
@@ -43,9 +44,8 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  transform: translateY(100vh);
-  pointer-events: none;
-  z-index: 9; // TODO(acdvorak)
+  transform: translateY(100vh); // Prevent snackbar from receiving mouse events while closed
+  pointer-events: none; // Always ignore mouse events on the root layout element
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
@@ -99,7 +99,7 @@
       mdc-animation-enter(opacity, $enter-duration-from-motion-spec, $enter-delay-for-a11y),
       mdc-animation-enter(transform, $enter-duration-from-motion-spec, $enter-delay-for-a11y);
     opacity: 1;
-    pointer-events: auto;
+    pointer-events: auto; // Allow mouse events on container element while snackbar is open
   }
 
   .mdc-snackbar--closing & {

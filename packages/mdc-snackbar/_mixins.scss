@@ -30,6 +30,10 @@
 // Public
 //
 
+@mixin mdc-snackbar-z-index($z-index) {
+  z-index: $z-index;
+}
+
 @mixin mdc-snackbar-viewport-margin($margin) {
   margin: $margin;
 }

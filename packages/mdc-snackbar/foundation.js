@@ -98,7 +98,6 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     this.clearTimers_();
 
     // TODO(acdvorak): Make timeout duration parameterizable?
-    // TODO(acdvorak): Set timeout dynamically depending on # of characters?
     this.timer_ = setTimeout(() => this.close(strings.REASON_TIMEOUT), AUTO_DISMISS_TIMEOUT_MS);
 
     this.registerOneTimeTransitionEndHandler_(() => {
