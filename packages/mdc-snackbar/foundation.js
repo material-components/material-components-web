@@ -63,6 +63,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCSnackbarFoundation.defaultAdapter, adapter));
 
+    // TODO(acdvorak): Disable automatic timeout on mousedown/touchstart? Would give users more time to copy label text.
     this.surfaceClickHandler_ = (evt) => {
       if (this.isActionButtonEl_(evt.target)) {
         this.close(strings.REASON_ACTION);
@@ -100,7 +101,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     // TODO(acdvorak): Make timeout duration parameterizable?
     this.timer_ = setTimeout(() => this.close(strings.REASON_TIMEOUT), AUTO_DISMISS_TIMEOUT_MS);
 
-    this.registerOneTimeTransitionEndHandler_(() => {
+    this.setTransitionEndHandler_(() => {
       this.adapter_.notifyOpened();
     });
 
@@ -119,7 +120,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
 
     this.clearTimers_();
 
-    this.registerOneTimeTransitionEndHandler_(() => {
+    this.setTransitionEndHandler_(() => {
       this.adapter_.removeClass(CLOSING);
       this.adapter_.notifyClosed(reason);
     });
@@ -134,13 +135,13 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
    * @param {function(): undefined} handler
    * @private
    */
-  registerOneTimeTransitionEndHandler_(handler) {
+  setTransitionEndHandler_(handler) {
     if (this.transitionEndHandler_) {
       this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
     }
 
     this.transitionEndHandler_ = (evt) => {
-      // Ignore `transitionend` events that bubble up from the action button's ripple.
+      // Ignore `transitionend` events that bubble up from the action button ripple.
       if (!this.isContainerEl_(evt.target)) {
         return;
       }
