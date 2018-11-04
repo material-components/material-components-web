@@ -40,15 +40,16 @@ export function announce(rootEl, labelEl) {
   // Similarly, displaying the same snackbar message twice in a row doesn't trigger a DOM mutation event,
   // so screen readers won't announce the second message unless we first clear `textContent`.
   //
-  // This technique has been tested with and is confirmed to work in:
-  // - JAWS 18.0 & 2019:
-  //     - Chrome 70
-  //     - Firefox 60 (ESR)
-  //     - IE 11
-  // - NVDA 2017 & 2018
-  //     - Chrome 70
-  //     - Firefox 60 (ESR)
-  //     - IE 11
+  // This technique has been tested and is confirmed to work reliably in:
+  //
+  //   * JAWS 18.0 & 2019:
+  //       - Chrome 70
+  //       - Firefox 60 (ESR)
+  //       - IE 11
+  //   * NVDA 2017 & 2018:
+  //       - Chrome 70
+  //       - Firefox 60 (ESR)
+  //       - IE 11
   labelEl.textContent = '';
 
   setTimeout(() => {
