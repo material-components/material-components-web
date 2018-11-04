@@ -64,7 +64,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     super(Object.assign(MDCSnackbarFoundation.defaultAdapter, adapter));
 
     this.surfaceClickHandler_ = (evt) => {
-      if (this.isActionButton_(evt.target)) {
+      if (this.isActionButtonEl_(evt.target)) {
         this.close(strings.REASON_ACTION);
       } else {
         this.close(strings.REASON_SURFACE);
@@ -88,55 +88,6 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     this.adapter_.deregisterKeyDownHandler(this.keyDownHandler_);
     this.adapter_.deregisterSurfaceClickHandler(this.surfaceClickHandler_);
     this.clearTimers_();
-  }
-
-  /**
-   * @param {!Element} target
-   * @return {boolean}
-   * @private
-   */
-  isContainer_(target) {
-    const {CONTAINER_SELECTOR} = strings;
-    return ponyfill.matches(target, CONTAINER_SELECTOR);
-  }
-
-  /**
-   * @param {!Element} target
-   * @return {boolean}
-   * @private
-   */
-  isActionButton_(target) {
-    const {ACTION_BUTTON_SELECTOR} = strings;
-    return Boolean(ponyfill.closest(target, ACTION_BUTTON_SELECTOR));
-  }
-
-  /** @private */
-  clearTimers_() {
-    clearTimeout(this.timer_);
-    if (this.transitionEndHandler_) {
-      this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
-    }
-  }
-
-  /**
-   * @param {function(): undefined} handler
-   * @private
-   */
-  registerOneTimeTransitionEndHandler_(handler) {
-    if (this.transitionEndHandler_) {
-      this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
-    }
-
-    this.transitionEndHandler_ = (evt) => {
-      // Ignore `transitionend` events that bubble up from the action button's ripple.
-      if (!this.isContainer_(evt.target)) {
-        return;
-      }
-      handler();
-      this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
-    };
-
-    this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
   }
 
   // TODO(acdvorak): Multiple consecutive calls to `open()` cause visible flicker due to `aria-live` delay in util.js.
@@ -174,10 +125,59 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
       this.adapter_.notifyClosed(reason);
     });
 
-    // TODO(acdvorak): Prevent action button from being tab focusable. display:none when hidden?
+    // TODO(acdvorak): Prevent action button from being tab-focusable. Set to display:none when hidden?
     // TODO(acdvorak): Where should focus go when action button is clicked?
     this.adapter_.addClass(CLOSING);
     this.adapter_.removeClass(OPEN);
     this.adapter_.notifyClosing(reason);
+  }
+
+  /**
+   * @param {function(): undefined} handler
+   * @private
+   */
+  registerOneTimeTransitionEndHandler_(handler) {
+    if (this.transitionEndHandler_) {
+      this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
+    }
+
+    this.transitionEndHandler_ = (evt) => {
+      // Ignore `transitionend` events that bubble up from the action button's ripple.
+      if (!this.isContainerEl_(evt.target)) {
+        return;
+      }
+      handler();
+      this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
+    };
+
+    this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
+  }
+
+  /** @private */
+  clearTimers_() {
+    clearTimeout(this.timer_);
+    if (this.transitionEndHandler_) {
+      this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
+    }
+  }
+
+  /**
+   * @param {!Element} target
+   * @return {boolean}
+   * @private
+   */
+  isContainerEl_(target) {
+    const {CONTAINER_SELECTOR} = strings;
+    return ponyfill.matches(target, CONTAINER_SELECTOR);
+  }
+
+  /**
+   * @param {!Element} target
+   * @return {boolean}
+   * @private
+   */
+  isActionButtonEl_(target) {
+    const {ACTION_BUTTON_SELECTOR} = strings;
+    return Boolean(ponyfill.closest(target, ACTION_BUTTON_SELECTOR));
   }
 }
