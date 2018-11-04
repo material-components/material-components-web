@@ -31,14 +31,13 @@ window.mdc.testFixture.fontsLoaded.then(() => {
     }
 
     const {
-      ACTION_EVENT,
       OPENING_EVENT,
       OPENED_EVENT,
       CLOSING_EVENT,
       CLOSED_EVENT,
     } = mdc.snackbar.MDCSnackbarFoundation.strings;
 
-    [ACTION_EVENT, OPENING_EVENT, OPENED_EVENT, CLOSING_EVENT, CLOSED_EVENT].forEach((eventName) => {
+    [OPENING_EVENT, OPENED_EVENT, CLOSING_EVENT, CLOSED_EVENT].forEach((eventName) => {
       snackbar.listen(eventName, (evt) => console.log(evt.type, evt.detail));
     });
   });

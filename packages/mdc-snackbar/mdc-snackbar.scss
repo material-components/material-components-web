@@ -76,32 +76,39 @@
   transform: scale(.8);
   opacity: 0;
 
-  // Prevent mdc-snackbar__overlay's background-color from bleeding past the container's border-radius
+  // Prevents mdc-snackbar__overlay's background-color from bleeding past the
+  // container's border-radius.
+  // N.B.: This does not work in Safari. The mdc-snackbar-shape-radius() mixin
+  // contains a Safari-specific workaround.
   overflow: hidden;
 
   .mdc-snackbar--open & {
-    // Not in motion spec; needed for a11y.
-    // In order to force the NVDA screen reader to announce the snackbar,
-    // we have to remove the label text from the DOM for at least 5ms.
-    // Unfortunately, this creates a visual flicker. To avoid the flicker,
-    // we simply delay the animation by the same amount of time.
-    // IMPORTANT: Value must be >= ARIA_LIVE_DELAY_MS.
-    $delay: 25ms;
+    // Specified in the motion spec for snackbar.
+    $enter-duration-from-motion-spec: 150ms;
+
+    // Not in motion spec; needed for accessibility.
+    // To force NVDA to announce the snackbar message to the user, we have to
+    // temporarily clear the label text from the DOM for at least 200ms.
+    // Unfortunately, this creates visual flicker. To avoid the flicker,
+    // we simply delay the animation until after the label text is restored.
+    // IMPORTANT: Value must be >= `ARIA_LIVE_DELAY_MS` in constants.js.
+    $enter-delay-for-a11y: 200ms;
 
     transform: scale(1);
     transition:
-      mdc-animation-enter(opacity, 150ms, $delay),
-      mdc-animation-enter(transform, 150ms, $delay);
+      mdc-animation-enter(opacity, $enter-duration-from-motion-spec, $enter-delay-for-a11y),
+      mdc-animation-enter(transform, $enter-duration-from-motion-spec, $enter-delay-for-a11y);
     opacity: 1;
     pointer-events: auto;
   }
 
   .mdc-snackbar--closing & {
-    // From the motion spec for snackbar.
-    $delay: 150ms;
+    // Specified in the motion spec for snackbar.
+    $exit-duration-from-motion-spec: 75ms;
+    $exit-delay-from-motion-spec: 150ms;
 
     transform: scale(1);
-    transition: mdc-animation-exit-permanent(opacity, 75ms, $delay);
+    transition: mdc-animation-exit-permanent(opacity, $exit-duration-from-motion-spec, $exit-delay-from-motion-spec);
   }
 }
 

@@ -37,27 +37,26 @@ export const strings = {
   LABEL_SELECTOR: '.mdc-snackbar__label',
   ACTION_WRAPPER_SELECTOR: '.mdc-snackbar__actions',
   ACTION_BUTTON_SELECTOR: '.mdc-snackbar__action-button',
-  ACTION_EVENT: 'MDCSnackbar:action',
   OPENING_EVENT: 'MDCSnackbar:opening',
   OPENED_EVENT: 'MDCSnackbar:opened',
   CLOSING_EVENT: 'MDCSnackbar:closing',
   CLOSED_EVENT: 'MDCSnackbar:closed',
-  REASON_ESCAPE_KEY: 'escape_key',
-  REASON_ACTION_CLICK: 'action_click',
-  REASON_SURFACE_CLICK: 'surface_click',
+  REASON_ESCAPE: 'escape',
+  REASON_ACTION: 'action',
+  REASON_SURFACE: 'surface',
   REASON_TIMEOUT: 'timeout',
   REASON_PROGRAMMATIC: 'programmatic',
 };
 
 export const numbers = {
-  MESSAGE_TIMEOUT: 2750,
-  ANIMATION_EXIT_TIME_MS: 75 + 150, // TODO(acdvorak): Verify that 150ms delay is intentional in motion spec
+  AUTO_DISMISS_TIMEOUT_MS: 4000,
 
   /**
-   * Number of milliseconds to wait between temporarily clearing the label text in the DOM
-   * and subsequently restoring it. This is necessary to force the NVDA screen reader to
-   * pick up the `aria-live` content change and announce it to the user.
-   * IMPORTANT: Value must be <= $delay in mdc-snackbar.scss.
+   * Number of milliseconds to wait between temporarily clearing the label text
+   * in the DOM and subsequently restoring it. This is necessary to force NVDA
+   * to pick up the `aria-live` content change and announce it to the user.
+   * IMPORTANT: Value must be <= `$enter-delay-for-a11y` in mdc-snackbar.scss.
+   * TODO(acdvorak): Calling `open()` twice in a row results in visible flicker.
    */
-  ARIA_LIVE_DELAY_MS: 5,
+  ARIA_LIVE_DELAY_MS: 200,
 };

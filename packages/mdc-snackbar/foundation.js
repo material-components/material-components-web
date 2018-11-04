@@ -22,7 +22,7 @@
  */
 
 import {MDCFoundation} from '@material/base/index';
-import {cssClasses, strings} from './constants';
+import {cssClasses, strings, numbers} from './constants';
 
 export default class MDCSnackbarFoundation extends MDCFoundation {
   static get cssClasses() {
@@ -33,6 +33,10 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     return strings;
   }
 
+  static get numbers() {
+    return numbers;
+  }
+
   static get defaultAdapter() {
     return {
       announce: (/* message: string */) => {},
@@ -40,6 +44,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
       isActionButton: (/* evt: !Event */) => /* boolean */ false,
+      isContainer: (/* evt: !Event */) => /* boolean */ false,
       setAriaHidden: () => {},
       unsetAriaHidden: () => {},
       registerSurfaceClickHandler: (/* handler: EventListener */) => {},
@@ -48,7 +53,6 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
       deregisterKeyDownHandler: (/* handler: EventListener */) => {},
       registerTransitionEndHandler: (/* handler: EventListener */) => {},
       deregisterTransitionEndHandler: (/* handler: EventListener */) => {},
-      notifyAction: () => {},
       notifyOpening: () => {},
       notifyOpened: () => {},
       notifyClosing: (/* reason: string */) => {},
@@ -61,16 +65,15 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
 
     this.surfaceClickHandler_ = (evt) => {
       if (this.adapter_.isActionButton(evt)) {
-        this.adapter_.notifyAction();
-        this.close(strings.REASON_ACTION_CLICK);
+        this.close(strings.REASON_ACTION);
       } else {
-        this.close(strings.REASON_SURFACE_CLICK);
+        this.close(strings.REASON_SURFACE);
       }
     };
 
     this.keyDownHandler_ = (evt) => {
       if (evt.key === 'Escape' || evt.keyCode === 27) {
-        this.close(strings.REASON_ESCAPE_KEY);
+        this.close(strings.REASON_ESCAPE);
       }
     };
   }
@@ -95,20 +98,36 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     }
   }
 
-  open() {
-    const {OPEN, CLOSING} = MDCSnackbarFoundation.cssClasses;
-
-    this.clearTimers_();
-
-    // TODO(acdvorak): Make timeout duration a constant and/or parameterizable.
-    // TODO(acdvorak): Set timeout dynamically depending on # of characters?
-    this.timer_ = setTimeout(() => this.close(strings.REASON_TIMEOUT), 4000);
-
-    this.transitionEndHandler_ = () => {
-      this.adapter_.notifyOpened();
+  /**
+   * @param {function(): undefined} handler
+   * @private
+   */
+  registerOneTimeTransitionEndHandler_(handler) {
+    this.transitionEndHandler_ = (evt) => {
+      // Ignore `transitionend` events that bubble up from the action button's ripple.
+      if (!this.adapter_.isContainer(evt)) {
+        return;
+      }
+      handler();
       this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
     };
     this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
+  }
+
+  // TODO(acdvorak): Multiple consecutive calls to `open()` cause visible flicker due to `aria-live` delay in util.js.
+  open() {
+    const {OPEN, CLOSING} = cssClasses;
+    const {AUTO_DISMISS_TIMEOUT_MS} = numbers;
+
+    this.clearTimers_();
+
+    // TODO(acdvorak): Make timeout duration parameterizable?
+    // TODO(acdvorak): Set timeout dynamically depending on # of characters?
+    this.timer_ = setTimeout(() => this.close(strings.REASON_TIMEOUT), AUTO_DISMISS_TIMEOUT_MS);
+
+    this.registerOneTimeTransitionEndHandler_(() => {
+      this.adapter_.notifyOpened();
+    });
 
     this.adapter_.unsetAriaHidden();
     this.adapter_.announce();
@@ -118,20 +137,20 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
   }
 
   close(reason = strings.REASON_PROGRAMMATIC) {
-    const {OPEN, CLOSING} = MDCSnackbarFoundation.cssClasses;
+    const {OPEN, CLOSING} = cssClasses;
     if (!this.adapter_.hasClass(OPEN)) {
       return;
     }
 
     this.clearTimers_();
 
-    this.transitionEndHandler_ = () => {
+    this.registerOneTimeTransitionEndHandler_(() => {
       this.adapter_.removeClass(CLOSING);
       this.adapter_.notifyClosed(reason);
-      this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
-    };
-    this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
+    });
 
+    // TODO(acdvorak): Prevent action button from being tab focusable. display:none when hidden?
+    // TODO(acdvorak): Where should focus go when action button is clicked?
     this.adapter_.addClass(CLOSING);
     this.adapter_.removeClass(OPEN);
     this.adapter_.notifyClosing(reason);
