@@ -125,8 +125,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
       this.adapter_.notifyClosed(reason);
     });
 
-    // TODO(acdvorak): Prevent action button from being tab-focusable. Set to display:none when hidden?
-    // TODO(acdvorak): Where should focus go when action button is clicked?
+    this.adapter_.setAriaHidden();
     this.adapter_.addClass(CLOSING);
     this.adapter_.removeClass(OPEN);
     this.adapter_.notifyClosing(reason);

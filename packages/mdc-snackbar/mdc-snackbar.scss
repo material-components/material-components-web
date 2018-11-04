@@ -123,6 +123,7 @@
 }
 
 .mdc-snackbar__label {
+  @include mdc-snackbar-focusable-subelement_($display: block);
   @include mdc-typography(body2);
 
   flex-grow: 1;
@@ -134,6 +135,7 @@
 }
 
 .mdc-snackbar__actions {
+  @include mdc-snackbar-focusable-subelement_($display: block);
   @include mdc-rtl-reflexive-property(margin, 0, 8px);
 
   flex-shrink: 0;

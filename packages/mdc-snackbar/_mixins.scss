@@ -26,6 +26,10 @@
 @import "@material/theme/variables";
 @import "./variables";
 
+//
+// Public
+//
+
 @mixin mdc-snackbar-viewport-margin($margin) {
   margin: $margin;
 }
@@ -80,4 +84,20 @@
 
     @include mdc-theme-prop(color, $color-value);
   }
+}
+
+//
+// Private
+//
+
+// Prevents label text and action button from being keyboard-focusable or linear-navigable when the snackbar is closed.
+@mixin mdc-snackbar-focusable-subelement_($display) {
+  display: none;
+
+  // stylelint-disable plugin/selector-bem-pattern
+  .mdc-snackbar--open &,
+  .mdc-snackbar--closing & {
+    display: $display;
+  }
+  // stylelint-enable plugin/selector-bem-pattern
 }
