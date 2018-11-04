@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc.
+// Copyright 2018 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,4 +20,7 @@
 // THE SOFTWARE.
 //
 
+$mdc-snackbar-viewport-margin-narrow: 8px !default;
+$mdc-snackbar-viewport-margin-wide: 24px !default;
+$mdc-snackbar-padding: 8px !default;
 $mdc-snackbar-z-index: 9 !default; // TODO(acdvorak): What's the correct value?

@@ -46,7 +46,7 @@
       <button class="test-snackbar-open-button" data-test-snackbar-id="test-snackbar--with-action" autofocus>Action</button>
       <button class="test-snackbar-open-button" data-test-snackbar-id="test-snackbar--no-action">No action</button>
       <button class="test-snackbar-open-button" data-test-snackbar-id="test-snackbar--stacked"><code>--stacked</code></button>
-      <button class="test-snackbar-open-button" data-test-snackbar-id="test-snackbar--multiline"><code>--multiline</code></button>
+      <button class="test-snackbar-open-button" data-test-snackbar-id="test-snackbar--wide"><code>--wide</code></button>
       <button class="test-snackbar-open-button" data-test-snackbar-id="test-snackbar--leading"><code>--leading</code></button>
 
       <div class="mdc-snackbar"
@@ -81,25 +81,23 @@
            aria-hidden="true">
         <div class="mdc-snackbar__container">
           <div class="mdc-snackbar__overlay"></div>
-          <div class="mdc-snackbar__label">Can't send photo. Retry in 5 seconds.</div>
+          <div class="mdc-snackbar__label">This item already has the label "travel". You can add a new label.</div>
           <div class="mdc-snackbar__actions">
-            <button type="button" class="mdc-button mdc-snackbar__action-button">Retry</button>
+            <button type="button" class="mdc-button mdc-snackbar__action-button">Add a new label</button>
           </div>
         </div>
       </div>
 
-      <div class="mdc-snackbar mdc-snackbar--multiline"
-           id="test-snackbar--multiline"
+      <div class="mdc-snackbar mdc-snackbar--wide"
+           id="test-snackbar--wide"
            aria-live="polite"
            aria-atomic="true"
            aria-hidden="true">
         <div class="mdc-snackbar__container">
           <div class="mdc-snackbar__overlay"></div>
           <div class="mdc-snackbar__label">
-            Message could not be sent due to a server error.
-            Please try again in a few minutes.
-            Maybe go get a cup of coffee while you wait?
-            And bring me one while you're at it.
+            Connection timed out. Showing the latest locally saved version of this document.
+            Edits made while offline will not be visible to other users until network connectivity is restored.
           </div>
         </div>
       </div>
@@ -111,9 +109,9 @@
            aria-hidden="true">
         <div class="mdc-snackbar__container">
           <div class="mdc-snackbar__overlay"></div>
-          <div class="mdc-snackbar__label">Can't send photo. Retry in 5 seconds.</div>
+          <div class="mdc-snackbar__label">Your photo has been archived.</div>
           <div class="mdc-snackbar__actions">
-            <button type="button" class="mdc-button mdc-snackbar__action-button">Retry</button>
+            <button type="button" class="mdc-button mdc-snackbar__action-button">Undo</button>
           </div>
         </div>
       </div>

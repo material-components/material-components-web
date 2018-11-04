@@ -34,7 +34,7 @@
 // postcss-bem-linter: define snackbar
 .mdc-snackbar {
   @include mdc-snackbar-z-index($mdc-snackbar-z-index);
-  @include mdc-snackbar-viewport-margin(8px); // TODO(acdvorak): 24px for "wide" layout
+  @include mdc-snackbar-viewport-margin($mdc-snackbar-viewport-margin-narrow);
 
   display: flex;
   position: fixed;
@@ -59,6 +59,10 @@
   @include mdc-snackbar-shape-radius(small);
 }
 
+.mdc-snackbar--wide {
+  @include mdc-snackbar-viewport-margin($mdc-snackbar-viewport-margin-wide);
+}
+
 .mdc-snackbar--leading {
   justify-content: flex-start;
 }
@@ -81,6 +85,11 @@
   // N.B.: This does not work in Safari. The mdc-snackbar-shape-radius() mixin
   // contains a Safari-specific workaround.
   overflow: hidden;
+
+  .mdc-snackbar--stacked & {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
   .mdc-snackbar--open & {
     // Specified in the motion spec for snackbar.
@@ -136,10 +145,15 @@
 
 .mdc-snackbar__actions {
   @include mdc-snackbar-focusable-subelement_($display: block);
-  @include mdc-rtl-reflexive-property(margin, 0, 8px);
+  @include mdc-rtl-reflexive-property(margin, 0, $mdc-snackbar-padding);
 
   flex-shrink: 0;
   box-sizing: border-box;
+
+  .mdc-snackbar--stacked & {
+    align-self: flex-end;
+    margin-bottom: $mdc-snackbar-padding;
+  }
 }
 
 .mdc-snackbar__action-button {
