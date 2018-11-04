@@ -45,8 +45,9 @@
 
       <button class="test-snackbar-open-button" data-test-snackbar-id="test-snackbar--with-action" autofocus>Action</button>
       <button class="test-snackbar-open-button" data-test-snackbar-id="test-snackbar--no-action">No action</button>
-      <button class="test-snackbar-open-button" data-test-snackbar-id="test-snackbar--stacked">Stacked</button>
-      <button class="test-snackbar-open-button" data-test-snackbar-id="test-snackbar--multiline">Multiline</button>
+      <button class="test-snackbar-open-button" data-test-snackbar-id="test-snackbar--stacked"><code>--stacked</code></button>
+      <button class="test-snackbar-open-button" data-test-snackbar-id="test-snackbar--multiline"><code>--multiline</code></button>
+      <button class="test-snackbar-open-button" data-test-snackbar-id="test-snackbar--leading"><code>--leading</code></button>
 
       <div class="mdc-snackbar"
            id="test-snackbar--with-action"
@@ -99,6 +100,20 @@
             Please try again in a few minutes.
             Maybe go get a cup of coffee while you wait?
             And bring me one while you're at it.
+          </div>
+        </div>
+      </div>
+
+      <div class="mdc-snackbar mdc-snackbar--leading"
+           id="test-snackbar--leading"
+           aria-live="polite"
+           aria-atomic="true"
+           aria-hidden="true">
+        <div class="mdc-snackbar__container">
+          <div class="mdc-snackbar__overlay"></div>
+          <div class="mdc-snackbar__label">Can't send photo. Retry in 5 seconds.</div>
+          <div class="mdc-snackbar__actions">
+            <button type="button" class="mdc-button mdc-snackbar__action-button">Retry</button>
           </div>
         </div>
       </div>
