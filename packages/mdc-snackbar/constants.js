@@ -37,8 +37,16 @@ export const strings = {
   LABEL_SELECTOR: '.mdc-snackbar__label',
   ACTION_WRAPPER_SELECTOR: '.mdc-snackbar__actions',
   ACTION_BUTTON_SELECTOR: '.mdc-snackbar__action-button',
-  SHOW_EVENT: 'MDCSnackbar:show',
-  HIDE_EVENT: 'MDCSnackbar:hide',
+  ACTION_EVENT: 'MDCSnackbar:action',
+  OPENING_EVENT: 'MDCSnackbar:opening',
+  OPENED_EVENT: 'MDCSnackbar:opened',
+  CLOSING_EVENT: 'MDCSnackbar:closing',
+  CLOSED_EVENT: 'MDCSnackbar:closed',
+  REASON_ESCAPE_KEY: 'escape_key',
+  REASON_ACTION_CLICK: 'action_click',
+  REASON_SURFACE_CLICK: 'surface_click',
+  REASON_TIMEOUT: 'timeout',
+  REASON_PROGRAMMATIC: 'programmatic',
 };
 
 export const numbers = {

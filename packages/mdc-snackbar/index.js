@@ -25,6 +25,7 @@ import {MDCComponent} from '@material/base/index';
 import MDCSnackbarFoundation from './foundation';
 import {announce} from './util';
 import {getCorrectEventName} from '@material/animation/index';
+import * as ponyfill from '@material/dom/ponyfill';
 
 export {MDCSnackbarFoundation};
 
@@ -42,44 +43,30 @@ export class MDCSnackbar extends MDCComponent {
   }
 
   getDefaultFoundation() {
-    const {LABEL_SELECTOR, ACTION_BUTTON_SELECTOR} = MDCSnackbarFoundation.strings;
+    const {CONTAINER_SELECTOR, LABEL_SELECTOR, ACTION_BUTTON_SELECTOR} = MDCSnackbarFoundation.strings;
     const transitionEndEventName = getCorrectEventName(window, 'transitionend');
-
-    const getLabel = () => this.root_.querySelector(LABEL_SELECTOR);
-    const getActionButton = () => this.root_.querySelector(ACTION_BUTTON_SELECTOR);
-
-    const withActionBtn = (callback) => {
-      const actionButtonEl = getActionButton();
-      if (actionButtonEl) {
-        callback(actionButtonEl);
-      }
-    };
+    const getContainerEl = () => this.root_.querySelector(CONTAINER_SELECTOR);
 
     /* eslint brace-style: "off" */
     return new MDCSnackbarFoundation({
-      announce: () => announce(this.root_, getLabel()),
+      announce: () => announce(this.root_, this.root_.querySelector(LABEL_SELECTOR)),
+      hasClass: (className) => this.root_.classList.contains(className),
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-      hasClass: (className) => this.root_.classList.contains(className),
+      isActionButton: (evt) => Boolean(ponyfill.closest(evt.target, ACTION_BUTTON_SELECTOR)),
       setAriaHidden: () => this.root_.setAttribute('aria-hidden', 'true'),
       unsetAriaHidden: () => this.root_.removeAttribute('aria-hidden'),
-      visibilityIsHidden: () => document.hidden,
-      registerSurfaceClickHandler: (handler) => this.root_.addEventListener('click', handler),
-      deregisterSurfaceClickHandler: (handler) => this.root_.removeEventListener('click', handler),
-      registerCapturedBlurHandler: (handler) => withActionBtn((el) => el.addEventListener('blur', handler, true)),
-      deregisterCapturedBlurHandler: (handler) => withActionBtn((el) => el.removeEventListener('blur', handler, true)),
-      registerVisibilityChangeHandler: (handler) => document.addEventListener('visibilitychange', handler),
-      deregisterVisibilityChangeHandler: (handler) => document.removeEventListener('visibilitychange', handler),
+      registerSurfaceClickHandler: (handler) => getContainerEl().addEventListener('click', handler),
+      deregisterSurfaceClickHandler: (handler) => getContainerEl().removeEventListener('click', handler),
       registerKeyDownHandler: (handler) => document.addEventListener('keydown', handler),
       deregisterKeyDownHandler: (handler) => document.removeEventListener('keydown', handler),
-      registerCapturedInteractionHandler: (evt, handler) => document.body.addEventListener(evt, handler, true),
-      deregisterCapturedInteractionHandler: (evt, handler) => document.body.removeEventListener(evt, handler, true),
-      registerActionClickHandler: (handler) => withActionBtn((el) => el.addEventListener('click', handler)),
-      deregisterActionClickHandler: (handler) => withActionBtn((el) => el.removeEventListener('click', handler)),
       registerTransitionEndHandler: (handler) => this.root_.addEventListener(transitionEndEventName, handler),
       deregisterTransitionEndHandler: (handler) => this.root_.removeEventListener(transitionEndEventName, handler),
-      notifyShow: () => this.emit(MDCSnackbarFoundation.strings.SHOW_EVENT),
-      notifyHide: () => this.emit(MDCSnackbarFoundation.strings.HIDE_EVENT),
+      notifyAction: () => this.emit(MDCSnackbarFoundation.strings.ACTION_EVENT),
+      notifyOpening: () => this.emit(MDCSnackbarFoundation.strings.OPENING_EVENT),
+      notifyOpened: () => this.emit(MDCSnackbarFoundation.strings.OPENED_EVENT),
+      notifyClosing: (reason) => this.emit(MDCSnackbarFoundation.strings.CLOSING_EVENT, {reason}),
+      notifyClosed: (reason) => this.emit(MDCSnackbarFoundation.strings.CLOSED_EVENT, {reason}),
     });
   }
 }

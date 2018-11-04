@@ -23,7 +23,6 @@
 
 import {MDCFoundation} from '@material/base/index';
 import {cssClasses, strings} from './constants';
-import * as ponyfill from '@material/dom/ponyfill';
 
 export default class MDCSnackbarFoundation extends MDCFoundation {
   static get cssClasses() {
@@ -37,59 +36,41 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
   static get defaultAdapter() {
     return {
       announce: (/* message: string */) => {},
+      hasClass: (/* className: string */) => /* boolean */ false,
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
-      hasClass: (/* className: string */) => /* boolean */ false,
+      isActionButton: (/* evt: !Event */) => /* boolean */ false,
       setAriaHidden: () => {},
       unsetAriaHidden: () => {},
-      visibilityIsHidden: () => /* boolean */ false,
       registerSurfaceClickHandler: (/* handler: EventListener */) => {},
       deregisterSurfaceClickHandler: (/* handler: EventListener */) => {},
-      registerCapturedBlurHandler: (/* handler: EventListener */) => {},
-      deregisterCapturedBlurHandler: (/* handler: EventListener */) => {},
-      registerVisibilityChangeHandler: (/* handler: EventListener */) => {},
-      deregisterVisibilityChangeHandler: (/* handler: EventListener */) => {},
       registerKeyDownHandler: (/* handler: EventListener */) => {},
       deregisterKeyDownHandler: (/* handler: EventListener */) => {},
-      registerCapturedInteractionHandler: (/* evtType: string, handler: EventListener */) => {},
-      deregisterCapturedInteractionHandler: (/* evtType: string, handler: EventListener */) => {},
-      registerActionClickHandler: (/* handler: EventListener */) => {},
-      deregisterActionClickHandler: (/* handler: EventListener */) => {},
       registerTransitionEndHandler: (/* handler: EventListener */) => {},
       deregisterTransitionEndHandler: (/* handler: EventListener */) => {},
-      notifyShow: () => {},
-      notifyHide: () => {},
+      notifyAction: () => {},
+      notifyOpening: () => {},
+      notifyOpened: () => {},
+      notifyClosing: (/* reason: string */) => {},
+      notifyClosed: (/* reason: string */) => {},
     };
-  }
-
-  get active() {
-    return this.active_;
   }
 
   constructor(adapter) {
     super(Object.assign(MDCSnackbarFoundation.defaultAdapter, adapter));
 
-    this.visibilitychangeHandler_ = () => {
-      // clearTimeout(this.timeoutId_);
-
-      if (!this.adapter_.visibilityIsHidden()) {
-        // setTimeout(this.cleanup_.bind(this), this.snackbarData_.timeout || numbers.MESSAGE_TIMEOUT);
+    this.surfaceClickHandler_ = (evt) => {
+      if (this.adapter_.isActionButton(evt)) {
+        this.adapter_.notifyAction();
+        this.hide(strings.REASON_ACTION_CLICK);
+      } else {
+        this.hide(strings.REASON_SURFACE_CLICK);
       }
-    };
-
-    this.actionClickHandler_ = (evt) => {
-      if (ponyfill.closest(evt.target, '.mdc-snackbar__action-button')) {
-        this.hide();
-      }
-    };
-
-    this.surfaceClickHandler_ = () => {
-      this.hide();
     };
 
     this.keyDownHandler_ = (evt) => {
       if (evt.key === 'Escape' || evt.keyCode === 27) {
-        this.hide();
+        this.hide(strings.REASON_ESCAPE_KEY);
       }
     };
   }
@@ -97,38 +78,62 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
   init() {
     this.adapter_.registerKeyDownHandler(this.keyDownHandler_);
     this.adapter_.registerSurfaceClickHandler(this.surfaceClickHandler_);
-    this.adapter_.registerActionClickHandler(this.actionClickHandler_);
     this.adapter_.setAriaHidden();
   }
 
   destroy() {
     this.adapter_.deregisterKeyDownHandler(this.keyDownHandler_);
     this.adapter_.deregisterSurfaceClickHandler(this.surfaceClickHandler_);
-    this.adapter_.deregisterActionClickHandler(this.actionClickHandler_);
+    this.clearTimers_();
+  }
+
+  /** @private */
+  clearTimers_() {
+    clearTimeout(this.timer_);
+    if (this.transitionEndHandler_) {
+      this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
+    }
   }
 
   show() {
     const {OPEN, CLOSING} = MDCSnackbarFoundation.cssClasses;
 
+    this.clearTimers_();
+
+    // TODO(acdvorak): Make timeout duration a constant and/or parameterizable.
+    // TODO(acdvorak): Set timeout dynamically depending on # of characters?
+    this.timer_ = setTimeout(() => this.hide(strings.REASON_TIMEOUT), 4000);
+
+    this.transitionEndHandler_ = () => {
+      this.adapter_.notifyOpened();
+      this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
+    };
+    this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
+
     this.adapter_.unsetAriaHidden();
     this.adapter_.announce();
     this.adapter_.addClass(OPEN);
     this.adapter_.removeClass(CLOSING);
+    this.adapter_.notifyOpening();
   }
 
-  hide() {
+  hide(reason = strings.REASON_PROGRAMMATIC) {
     const {OPEN, CLOSING} = MDCSnackbarFoundation.cssClasses;
     if (!this.adapter_.hasClass(OPEN)) {
       return;
     }
 
-    const transitionEndHandler = () => {
+    this.clearTimers_();
+
+    this.transitionEndHandler_ = () => {
       this.adapter_.removeClass(CLOSING);
-      this.adapter_.deregisterTransitionEndHandler(transitionEndHandler);
+      this.adapter_.notifyClosed(reason);
+      this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
     };
-    this.adapter_.registerTransitionEndHandler(transitionEndHandler);
+    this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
 
     this.adapter_.addClass(CLOSING);
     this.adapter_.removeClass(OPEN);
+    this.adapter_.notifyClosing(reason);
   }
 }

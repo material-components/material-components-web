@@ -29,6 +29,18 @@ window.mdc.testFixture.fontsLoaded.then(() => {
     if (openButtonEl) {
       openButtonEl.addEventListener('click', () => snackbar.show());
     }
+
+    const {
+      ACTION_EVENT,
+      OPENING_EVENT,
+      OPENED_EVENT,
+      CLOSING_EVENT,
+      CLOSED_EVENT,
+    } = mdc.snackbar.MDCSnackbarFoundation.strings;
+
+    [ACTION_EVENT, OPENING_EVENT, OPENED_EVENT, CLOSING_EVENT, CLOSED_EVENT].forEach((eventName) => {
+      snackbar.listen(eventName, (evt) => console.log(evt.type, evt.detail));
+    });
   });
 
   window.mdc.testFixture.notifyDomReady();
