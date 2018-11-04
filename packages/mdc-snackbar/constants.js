@@ -49,7 +49,9 @@ export const strings = {
 };
 
 export const numbers = {
-  AUTO_DISMISS_TIMEOUT_MS: 4000,
+  MIN_AUTO_DISMISS_TIMEOUT_MS: 4000,
+  MAX_AUTO_DISMISS_TIMEOUT_MS: 10000,
+  DEFAULT_AUTO_DISMISS_TIMEOUT_MS: 5000,
 
   /**
    * Number of milliseconds to wait between temporarily clearing the label text
