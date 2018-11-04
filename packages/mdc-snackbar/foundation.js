@@ -65,7 +65,15 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCSnackbarFoundation.defaultAdapter, adapter));
 
-    // TODO(acdvorak): Disable automatic timeout on mousedown/touchstart? Would give users more time to copy label text.
+    this.surfaceTouchStartHandler_ = () => {
+      // If the user needs to copy the snackbar's label text (e.g., to file a bug report), they will click and drag
+      // on the surface (or long-press on mobile).
+      // When the user starts interacting with the surface, disable the automatic dismissal timeout to give the user
+      // enough time to highlight and copy the desired text.
+      // The user can close the snackbar by clicking anywhere on the surface.
+      clearTimeout(this.autoDismissTimer_);
+    };
+
     this.surfaceClickHandler_ = (evt) => {
       if (this.isActionButtonEl_(evt.target)) {
         this.close(strings.REASON_ACTION);
@@ -78,10 +86,6 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
       if (evt.key === 'Escape' || evt.keyCode === 27) {
         this.close(strings.REASON_ESCAPE);
       }
-    };
-
-    this.surfaceTouchStartHandler_ = () => {
-      clearTimeout(this.autoDismissTimer_);
     };
 
     this.transitionEndHandler_ = null;
