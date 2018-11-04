@@ -39,6 +39,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
       announce: (/* message: string */) => {},
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
+      hasClass: (/* className: string */) => /* boolean */ false,
       setAriaHidden: () => {},
       unsetAriaHidden: () => {},
       visibilityIsHidden: () => /* boolean */ false,
@@ -107,15 +108,19 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
   }
 
   show() {
-    const {OPEN} = MDCSnackbarFoundation.cssClasses;
+    const {OPEN, CLOSING} = MDCSnackbarFoundation.cssClasses;
 
     this.adapter_.unsetAriaHidden();
     this.adapter_.announce();
     this.adapter_.addClass(OPEN);
+    this.adapter_.removeClass(CLOSING);
   }
 
   hide() {
     const {OPEN, CLOSING} = MDCSnackbarFoundation.cssClasses;
+    if (this.adapter_.hasClass(OPEN) || this.adapter_.hasClass(CLOSING)) {
+      return;
+    }
 
     const transitionEndHandler = () => {
       this.adapter_.removeClass(CLOSING);
