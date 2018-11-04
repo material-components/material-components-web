@@ -118,7 +118,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
 
   hide() {
     const {OPEN, CLOSING} = MDCSnackbarFoundation.cssClasses;
-    if (this.adapter_.hasClass(OPEN) || this.adapter_.hasClass(CLOSING)) {
+    if (!this.adapter_.hasClass(OPEN)) {
       return;
     }
 
