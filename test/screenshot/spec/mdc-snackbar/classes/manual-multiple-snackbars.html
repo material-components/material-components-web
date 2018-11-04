@@ -43,12 +43,13 @@
   <body class="test-container">
     <main class="test-viewport test-viewport--gridlines test-viewport--center">
 
-      <button class="test-snackbar-open-button" data-test-snackbar-id="test-snackbar-1" autofocus>Open Snackbar 1</button>
-
-      <button class="test-snackbar-open-button" data-test-snackbar-id="test-snackbar-2">Open Snackbar 2</button>
+      <button class="test-snackbar-open-button" data-test-snackbar-id="test-snackbar--with-action" autofocus>Action</button>
+      <button class="test-snackbar-open-button" data-test-snackbar-id="test-snackbar--no-action">No action</button>
+      <button class="test-snackbar-open-button" data-test-snackbar-id="test-snackbar--stacked">Stacked</button>
+      <button class="test-snackbar-open-button" data-test-snackbar-id="test-snackbar--multiline">Multiline</button>
 
       <div class="mdc-snackbar"
-           id="test-snackbar-1"
+           id="test-snackbar--with-action"
            aria-live="polite"
            aria-atomic="true"
            aria-hidden="true">
@@ -62,13 +63,43 @@
       </div>
 
       <div class="mdc-snackbar"
-           id="test-snackbar-2"
+           id="test-snackbar--no-action"
            aria-live="polite"
            aria-atomic="true"
            aria-hidden="true">
         <div class="mdc-snackbar__container">
           <div class="mdc-snackbar__overlay"></div>
           <div class="mdc-snackbar__label">Message sent.</div>
+        </div>
+      </div>
+
+      <div class="mdc-snackbar mdc-snackbar--stacked"
+           id="test-snackbar--stacked"
+           aria-live="polite"
+           aria-atomic="true"
+           aria-hidden="true">
+        <div class="mdc-snackbar__container">
+          <div class="mdc-snackbar__overlay"></div>
+          <div class="mdc-snackbar__label">Can't send photo. Retry in 5 seconds.</div>
+          <div class="mdc-snackbar__actions">
+            <button type="button" class="mdc-button mdc-snackbar__action-button">Retry</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="mdc-snackbar mdc-snackbar--multiline"
+           id="test-snackbar--multiline"
+           aria-live="polite"
+           aria-atomic="true"
+           aria-hidden="true">
+        <div class="mdc-snackbar__container">
+          <div class="mdc-snackbar__overlay"></div>
+          <div class="mdc-snackbar__label">
+            Message could not be sent due to a server error.
+            Please try again in a few minutes.
+            Maybe go get a cup of coffee while you wait?
+            And bring me one while you're at it.
+          </div>
         </div>
       </div>
 
