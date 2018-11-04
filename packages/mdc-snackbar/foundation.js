@@ -47,12 +47,14 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
       containsNode: (/* target: !Element */) => /* boolean */ false,
       setAriaHidden: () => {},
       unsetAriaHidden: () => {},
-      registerSurfaceClickHandler: (/* handler: EventListener */) => {},
-      deregisterSurfaceClickHandler: (/* handler: EventListener */) => {},
-      registerKeyDownHandler: (/* handler: EventListener */) => {},
-      deregisterKeyDownHandler: (/* handler: EventListener */) => {},
-      registerTransitionEndHandler: (/* handler: EventListener */) => {},
-      deregisterTransitionEndHandler: (/* handler: EventListener */) => {},
+      registerSurfaceHandler: (/* eventName: string, handler: !EventListener */) => {},
+      deregisterSurfaceHandler: (/* eventName: string, handler: !EventListener */) => {},
+      registerSurfaceClickHandler: (/* handler: !EventListener */) => {},
+      deregisterSurfaceClickHandler: (/* handler: !EventListener */) => {},
+      registerKeyDownHandler: (/* handler: !EventListener */) => {},
+      deregisterKeyDownHandler: (/* handler: !EventListener */) => {},
+      registerTransitionEndHandler: (/* handler: !EventListener */) => {},
+      deregisterTransitionEndHandler: (/* handler: !EventListener */) => {},
       notifyOpening: () => {},
       notifyOpened: () => {},
       notifyClosing: (/* reason: string */) => {},
@@ -77,17 +79,29 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
         this.close(strings.REASON_ESCAPE);
       }
     };
+
+    this.surfaceTouchStartHandler_ = () => {
+      clearTimeout(this.autoDismissTimer_);
+    };
+
+    this.transitionEndHandler_ = null;
   }
 
   init() {
     this.adapter_.registerKeyDownHandler(this.keyDownHandler_);
     this.adapter_.registerSurfaceClickHandler(this.surfaceClickHandler_);
+    ['touchstart', 'pointerdown', 'mousedown'].forEach((eventName) => {
+      this.adapter_.registerSurfaceHandler(eventName, this.surfaceTouchStartHandler_);
+    });
     this.adapter_.setAriaHidden();
   }
 
   destroy() {
     this.adapter_.deregisterKeyDownHandler(this.keyDownHandler_);
     this.adapter_.deregisterSurfaceClickHandler(this.surfaceClickHandler_);
+    ['touchstart', 'pointerdown', 'mousedown'].forEach((eventName) => {
+      this.adapter_.deregisterSurfaceHandler(eventName, this.surfaceTouchStartHandler_);
+    });
     this.clearTimers_();
   }
 
@@ -99,7 +113,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     this.clearTimers_();
 
     // TODO(acdvorak): Make timeout duration parameterizable?
-    this.timer_ = setTimeout(() => this.close(strings.REASON_TIMEOUT), AUTO_DISMISS_TIMEOUT_MS);
+    this.autoDismissTimer_ = setTimeout(() => this.close(strings.REASON_TIMEOUT), AUTO_DISMISS_TIMEOUT_MS);
 
     this.setTransitionEndHandler_(() => {
       this.adapter_.notifyOpened();
@@ -154,10 +168,11 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
 
   /** @private */
   clearTimers_() {
-    clearTimeout(this.timer_);
+    clearTimeout(this.autoDismissTimer_);
     if (this.transitionEndHandler_) {
       this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
     }
+    this.transitionEndHandler_ = null;
   }
 
   /**

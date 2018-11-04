@@ -55,6 +55,8 @@ export class MDCSnackbar extends MDCComponent {
       containsNode: (target) => this.root_.contains(target),
       setAriaHidden: () => this.root_.setAttribute('aria-hidden', 'true'),
       unsetAriaHidden: () => this.root_.removeAttribute('aria-hidden'),
+      registerSurfaceHandler: (eventName, handler) => getContainerEl().addEventListener(eventName, handler),
+      deregisterSurfaceHandler: (eventName, handler) => getContainerEl().removeEventListener(eventName, handler),
       registerSurfaceClickHandler: (handler) => getContainerEl().addEventListener('click', handler),
       deregisterSurfaceClickHandler: (handler) => getContainerEl().removeEventListener('click', handler),
       registerKeyDownHandler: (handler) => document.addEventListener('keydown', handler),
