@@ -56,7 +56,6 @@ export const numbers = {
    * in the DOM and subsequently restoring it. This is necessary to force NVDA
    * to pick up the `aria-live` content change and announce it to the user.
    * IMPORTANT: Value must be <= `$enter-delay-for-a11y` in mdc-snackbar.scss.
-   * TODO(acdvorak): Calling `open()` twice in a row results in visible flicker.
    */
   ARIA_LIVE_DELAY_MS: 200,
 };
