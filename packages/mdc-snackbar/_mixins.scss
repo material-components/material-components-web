@@ -73,7 +73,10 @@
 }
 
 @mixin mdc-snackbar-shape-radius($radius) {
-  .mdc-snackbar__container {
+  // The .mdc-snackbar__overlay selector is needed to prevent the overlay's background-color from leaking past the
+  // border-radius of the .mdc-snackbar__container element in Safari 12 (and possibly other versions).
+  .mdc-snackbar__container,
+  .mdc-snackbar__overlay {
     @include mdc-shape-radius($radius);
   }
 }
