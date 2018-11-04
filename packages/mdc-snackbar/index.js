@@ -25,7 +25,6 @@ import {MDCComponent} from '@material/base/index';
 import MDCSnackbarFoundation from './foundation';
 import {announce} from './util';
 import {getCorrectEventName} from '@material/animation/index';
-import * as ponyfill from '@material/dom/ponyfill';
 
 export {MDCSnackbarFoundation};
 
@@ -43,7 +42,7 @@ export class MDCSnackbar extends MDCComponent {
   }
 
   getDefaultFoundation() {
-    const {CONTAINER_SELECTOR, LABEL_SELECTOR, ACTION_BUTTON_SELECTOR} = MDCSnackbarFoundation.strings;
+    const {CONTAINER_SELECTOR, LABEL_SELECTOR} = MDCSnackbarFoundation.strings;
     const transitionEndEventName = getCorrectEventName(window, 'transitionend');
     const getContainerEl = () => this.root_.querySelector(CONTAINER_SELECTOR);
 
@@ -53,8 +52,7 @@ export class MDCSnackbar extends MDCComponent {
       hasClass: (className) => this.root_.classList.contains(className),
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-      isActionButton: (evt) => Boolean(ponyfill.closest(evt.target, ACTION_BUTTON_SELECTOR)),
-      isContainer: (evt) => ponyfill.matches(evt.target, CONTAINER_SELECTOR),
+      containsNode: (target) => this.root_.contains(target),
       setAriaHidden: () => this.root_.setAttribute('aria-hidden', 'true'),
       unsetAriaHidden: () => this.root_.removeAttribute('aria-hidden'),
       registerSurfaceClickHandler: (handler) => getContainerEl().addEventListener('click', handler),

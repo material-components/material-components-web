@@ -23,6 +23,7 @@
 
 import {MDCFoundation} from '@material/base/index';
 import {cssClasses, strings, numbers} from './constants';
+import * as ponyfill from '@material/dom/ponyfill';
 
 export default class MDCSnackbarFoundation extends MDCFoundation {
   static get cssClasses() {
@@ -43,8 +44,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
       hasClass: (/* className: string */) => /* boolean */ false,
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
-      isActionButton: (/* evt: !Event */) => /* boolean */ false,
-      isContainer: (/* evt: !Event */) => /* boolean */ false,
+      containsNode: (/* target: !Element */) => /* boolean */ false,
       setAriaHidden: () => {},
       unsetAriaHidden: () => {},
       registerSurfaceClickHandler: (/* handler: EventListener */) => {},
@@ -64,7 +64,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     super(Object.assign(MDCSnackbarFoundation.defaultAdapter, adapter));
 
     this.surfaceClickHandler_ = (evt) => {
-      if (this.adapter_.isActionButton(evt)) {
+      if (this.isActionButton_(evt.target)) {
         this.close(strings.REASON_ACTION);
       } else {
         this.close(strings.REASON_SURFACE);
@@ -90,6 +90,26 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     this.clearTimers_();
   }
 
+  /**
+   * @param {!Element} target
+   * @return {boolean}
+   * @private
+   */
+  isContainer_(target) {
+    const {CONTAINER_SELECTOR} = strings;
+    return ponyfill.matches(target, CONTAINER_SELECTOR);
+  }
+
+  /**
+   * @param {!Element} target
+   * @return {boolean}
+   * @private
+   */
+  isActionButton_(target) {
+    const {ACTION_BUTTON_SELECTOR} = strings;
+    return Boolean(ponyfill.closest(target, ACTION_BUTTON_SELECTOR));
+  }
+
   /** @private */
   clearTimers_() {
     clearTimeout(this.timer_);
@@ -103,14 +123,19 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
    * @private
    */
   registerOneTimeTransitionEndHandler_(handler) {
+    if (this.transitionEndHandler_) {
+      this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
+    }
+
     this.transitionEndHandler_ = (evt) => {
       // Ignore `transitionend` events that bubble up from the action button's ripple.
-      if (!this.adapter_.isContainer(evt)) {
+      if (!this.isContainer_(evt.target)) {
         return;
       }
       handler();
       this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
     };
+
     this.adapter_.registerTransitionEndHandler(this.transitionEndHandler_);
   }
 
