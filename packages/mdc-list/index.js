@@ -161,7 +161,7 @@ class MDCList extends MDCComponent {
   initializeListType() {
     // Automatically set single selection if selected/activated classes are present.
     const preselectedElement =
-      this.root_.querySelector(`.${cssClasses.LIST_ITEM_ACTIVATED_CLASS}, .${cssClasses.LIST_ITEM_SELECTED_CLASS}`);
+      this.root_.querySelector(`.${cssClasses.LIST_ITEM_ACTIVATED_CLASS}, .${cssClasses.LIST_ITEM_SELECTED_CLASS}, [aria-checked="true"]`);
 
     if (preselectedElement) {
       if (preselectedElement.classList.contains(cssClasses.LIST_ITEM_ACTIVATED_CLASS)) {
@@ -255,22 +255,16 @@ class MDCList extends MDCComponent {
       isCheckboxCheckedAtIndex: (index) => {
         const listItem = this.listElements[index];
         const toggleEl = listItem.querySelector(strings.CHECKBOX_SELECTOR);
-
-        if (toggleEl) {
-          return toggleEl.checked;
-        }
+        return toggleEl.checked;
       },
-      toggleCheckboxOrRadioAtIndex: (index) => {
+      setCheckedCheckboxOrRadioAtIndex: (index, isChecked) => {
         const listItem = this.listElements[index];
         const toggleEl = listItem.querySelector(strings.CHECKBOX_RADIO_SELECTOR);
+        toggleEl.checked = isChecked;
 
-        if (!toggleEl.checked || toggleEl.type !== 'radio') {
-          toggleEl.checked = !toggleEl.checked;
-
-          const event = document.createEvent('Event');
-          event.initEvent('change', true, true);
-          toggleEl.dispatchEvent(event);
-        }
+        const event = document.createEvent('Event');
+        event.initEvent('change', true, true);
+        toggleEl.dispatchEvent(event);
 
         return toggleEl.checked;
       },

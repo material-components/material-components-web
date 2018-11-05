@@ -25,6 +25,12 @@
 @import "../../../../packages/mdc-theme/variables";
 @import "../mixins";
 
-.custom-list {
+.test-list-baseline {
   background: mdc-theme-prop-value(surface);
+  width: 100%;
+}
+
+.test-radio-list,
+.test-checkbox-list {
+  width: 100%;
 }
