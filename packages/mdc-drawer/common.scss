@@ -106,10 +106,6 @@
   }
 }
 
-.mdc-drawer--open {
-  transition: mdc-animation-standard(transform, $mdc-drawer-animation-enter);
-}
-
 .mdc-drawer--animate {
   transform: translateX(-100%);
 
