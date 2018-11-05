@@ -160,8 +160,10 @@ class MDCList extends MDCComponent {
 
   initializeListType() {
     // Automatically set single selection if selected/activated classes are present.
-    const preselectedElement =
-      this.root_.querySelector(`.${cssClasses.LIST_ITEM_ACTIVATED_CLASS}, .${cssClasses.LIST_ITEM_SELECTED_CLASS}, [aria-checked="true"]`);
+    const preSelectedSelector = `.${cssClasses.LIST_ITEM_ACTIVATED_CLASS},
+                                    .${cssClasses.LIST_ITEM_SELECTED_CLASS},
+                                    ${strings.IS_ARIA_CHECKED}`;
+    const preselectedElement = this.root_.querySelector(preSelectedSelector);
 
     if (preselectedElement) {
       if (preselectedElement.classList.contains(cssClasses.LIST_ITEM_ACTIVATED_CLASS)) {
@@ -265,8 +267,6 @@ class MDCList extends MDCComponent {
         const event = document.createEvent('Event');
         event.initEvent('change', true, true);
         toggleEl.dispatchEvent(event);
-
-        return toggleEl.checked;
       },
     })));
   }

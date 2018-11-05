@@ -39,7 +39,7 @@ npm install @material/list
 ### HTML Structure
 
 ```html
-<ul class="mdc-list" aria-orientation="vertical">
+<ul class="mdc-list">
   <li class="mdc-list-item">
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
@@ -61,7 +61,7 @@ in the double line list style as defined by
 [the spec](https://material.io/design/components/lists.html#specs) (see "Double line").
 
 ```html
-<ul class="mdc-list mdc-list--two-line" aria-orientation="vertical">
+<ul class="mdc-list mdc-list--two-line">
   <li class="mdc-list-item">
     <span class="mdc-list-item__text">
       <span class="mdc-list-item__primary-text">First-line text</span>
@@ -92,7 +92,7 @@ Multiple related lists can be grouped together using the `mdc-list-group` class 
 ```html
 <div class="mdc-list-group">
   <h3 class="mdc-list-group__subheader">List 1</h3>
-  <ul class="mdc-list" aria-orientation="vertical">
+  <ul class="mdc-list">
     <li class="mdc-list-item">
       <span class="mdc-list-item__text">line item</span>
     </li>
@@ -104,7 +104,7 @@ Multiple related lists can be grouped together using the `mdc-list-group` class 
     </li>
   </ul>
   <h3 class="mdc-list-group__subheader">List 2</h3>
-  <ul class="mdc-list" aria-orientation="vertical">
+  <ul class="mdc-list">
     <li class="mdc-list-item">
       <span class="mdc-list-item__text">line item</span>
     </li>
@@ -123,7 +123,7 @@ Multiple related lists can be grouped together using the `mdc-list-group` class 
 MDC List contains an `mdc-list-divider` class which can be used as full-width or inset subdivisions either within lists themselves, or standalone between related groups of content.
 
 ```html
-<ul class="mdc-list" aria-orientation="vertical">
+<ul class="mdc-list">
   <li class="mdc-list-item">
     <span class="mdc-list-item__text">Item 1 - Division 1</span>
   </li>
@@ -145,7 +145,7 @@ MDC List contains an `mdc-list-divider` class which can be used as full-width or
 OR
 
 ```html
-<ul class="mdc-list" aria-orientation="vertical">
+<ul class="mdc-list">
   <li class="mdc-list-item">
     <span class="mdc-list-item__text">Item 1 - List 1</span>
   </li>
@@ -154,7 +154,7 @@ OR
   </li>
 </ul>
 <hr class="mdc-list-divider">
-<ul class="mdc-list" aria-orientation="vertical">
+<ul class="mdc-list">
   <li class="mdc-list-item">
     <span class="mdc-list-item__text">Item 1 - List 2</span>
   </li>
@@ -170,14 +170,14 @@ MDC List can handle selecting/deselecting list elements based on click or keyboa
 single list item to become selected and any other previous selected element to become deselected.
 
 ```html
-<ul id="my-list" class="mdc-list" aria-orientation="vertical">
-  <li class="mdc-list-item" tabindex="0">
+<ul id="my-list" class="mdc-list" role="listbox">
+  <li class="mdc-list-item" role="option" tabindex="0">
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
-  <li class="mdc-list-item">
+  <li class="mdc-list-item" role="option">
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
-  <li class="mdc-list-item">
+  <li class="mdc-list-item" role="option">
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
 </ul>
@@ -196,14 +196,14 @@ the `mdc-list-item--selected` or `mdc-list-item--activated` class and `aria-sele
 creating the list.
 
 ```html
-<ul id="my-list" class="mdc-list" aria-orientation="vertical">
-  <li class="mdc-list-item">
+<ul id="my-list" class="mdc-list" role="listbox">
+  <li class="mdc-list-item" role="option" aria-selected="false">
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
-  <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" tabindex="0">
+  <li class="mdc-list-item mdc-list-item--selected" role="option" aria-selected="true" tabindex="0">
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
-  <li class="mdc-list-item">
+  <li class="mdc-list-item" role="option" aria-selected="false">
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
 </ul>
@@ -271,10 +271,10 @@ within the list component. You should not add `tabindex` to any of the `li` elem
 As the user navigates through the list, any `button` and `a` elements within the list will receive `tabindex="-1"` when
 the list item is not focused. When the list item receives focus, the aforementioned elements will receive
 `tabIndex="0"`. This allows for the user to tab through list item elements and then tab to the first element after the
-list. The `Arrow`, `Home`, and `End` keys should be used for navigating internal list elements. If 
+list. The `Arrow`, `Home`, and `End` keys should be used for navigating internal list elements. If
 `singleSelection=true`, the list will allow the user to use the `Space` or `Enter` keys to select or deselect a list
 item. The MDCList will perform the following actions for each key press. Since list interaction will toggle a radio
-button or checkbox within the list item, the list will not toggle `tabindex` for those elements. 
+button or checkbox within the list item, the list will not toggle `tabindex` for those elements.
 
 Key | Action
 --- | ---
@@ -355,7 +355,10 @@ Method Signature | Description
 `focusItemAtIndex(index: Number) => void` | Focuses the list item at the `index` value specified.
 `setTabIndexForListItemChildren(index: Number, value: Number) => void` | Sets the `tabindex` attribute to `value` for each child button or anchor element in the list item at the `index` specified.
 `followHref(element: Element) => void` | If the given element has an href, follows the link.
-`toggleCheckbox(index: number) => boolean` | Toggles a checkbox and radio button in the list item and returns true/false if one was found.
+`hasCheckboxOrRadioAtIndex(index: number) => boolean` | Returns true if radio button or checkbox is present at given list item index.
+`hasCheckboxAtIndex(index: number) => boolean` | Returns true if checkbox is present at given list item index.
+`isCheckboxCheckedAtIndex(index: number) => boolean` | Returns true if checkbox inside a list item is checked.
+`setCheckedCheckboxOrRadioAtIndex(index: number, isChecked: boolean) => void` | Sets the checked status of checkbox or radio at given list item index.
 
 ### `MDCListFoundation`
 

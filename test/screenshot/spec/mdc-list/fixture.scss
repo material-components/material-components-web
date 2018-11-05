@@ -25,11 +25,11 @@
 @import "../../../../packages/mdc-theme/variables";
 @import "../mixins";
 
-.test-list-baseline {
-  background: mdc-theme-prop-value(surface);
-  width: 100%;
+.test-cell--list {
+  @include test-cell-size(321, 521);
 }
 
+.test-list-baseline,
 .test-radio-list,
 .test-checkbox-list {
   width: 100%;

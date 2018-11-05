@@ -54,7 +54,10 @@ class MDCListFoundation extends MDCFoundation {
       focusItemAtIndex: () => {},
       setTabIndexForListItemChildren: () => {},
       followHref: () => {},
-      toggleCheckbox: () => {},
+      hasCheckboxOrRadioAtIndex: () => {},
+      hasCheckboxAtIndex: () => {},
+      isCheckboxCheckedAtIndex: () => {},
+      setCheckedCheckboxOrRadioAtIndex: () => {},
     });
   }
 
@@ -115,11 +118,10 @@ class MDCListFoundation extends MDCFoundation {
 
     const prevSelectedIndex = this.selectedIndex_;
     const hasCheckboxOrRadio = this.adapter_.hasCheckboxOrRadioAtIndex(index);
-    const hasCheckbox = this.adapter_.hasCheckboxAtIndex(index);
-    const selectedClassName = this.useActivatedClass_ ? cssClasses.LIST_ITEM_ACTIVATED_CLASS : cssClasses.LIST_ITEM_SELECTED_CLASS;
     const ariaAttribute = hasCheckboxOrRadio ? strings.ARIA_CHECKED : strings.ARIA_SELECTED;
 
     // Update aria attributes
+    const hasCheckbox = this.adapter_.hasCheckboxAtIndex(index);
     if (!hasCheckbox) {
       this.adapter_.setAttributeForElementIndex(prevSelectedIndex, ariaAttribute, false);
     }
@@ -127,6 +129,9 @@ class MDCListFoundation extends MDCFoundation {
     this.adapter_.setAttributeForElementIndex(index, ariaAttribute, ariaAttributeValue ? 'true' : 'false');
 
     // Update class names
+    const selectedClassName = this.useActivatedClass_ ?
+                                  cssClasses.LIST_ITEM_ACTIVATED_CLASS :
+                                  cssClasses.LIST_ITEM_SELECTED_CLASS;
     if (!hasCheckboxOrRadio) {
       this.adapter_.removeClassForElementIndex(prevSelectedIndex, selectedClassName);
       this.adapter_.addClassForElementIndex(index, selectedClassName);
@@ -296,10 +301,12 @@ class MDCListFoundation extends MDCFoundation {
   }
 
   /**
-   * Toggles checkbox or radio at give index.
+   * Toggles checkbox or radio at give index. Radio doesn't change the checked state if it is already checked.
    * @param {number} index
    */
   toggleCheckboxOrRadioAtIndex_(index) {
+    if (!this.adapter_.hasCheckboxOrRadioAtIndex(index)) return;
+
     let isChecked = true;
     if (this.adapter_.hasCheckboxAtIndex(index)) {
       isChecked = !this.adapter_.isCheckboxCheckedAtIndex(index);
