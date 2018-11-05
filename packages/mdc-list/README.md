@@ -215,6 +215,131 @@ var list = new mdc.list.MDCList(listEle);
 list.singleSelection = true;
 ```
 
+### List with radio group
+
+When rendering list radio group with pre-selected radio button the selected list item should contain `aria-checked` set to `true` and the native radio input element contains `checked` attribute, all other list items should have `aria-checked` set to `false`. The list root contains `role="radiogroup"` whereas each list item within radio group contains `role="radio"`.
+
+```html
+<ul class="mdc-list" role="radiogroup">
+  <li class="mdc-list-item" role="radio" aria-checked="false">
+    <span class="mdc-list-item__graphic">
+      <div class="mdc-radio">
+        <input class="mdc-radio__native-control"
+              type="radio"
+              id="demo-list-radio-item-1"
+              name="demo-list-radio-item-group"
+              value="1">
+        <div class="mdc-radio__background">
+          <div class="mdc-radio__outer-circle"></div>
+          <div class="mdc-radio__inner-circle"></div>
+        </div>
+      </div>
+    </span>
+    <label class="mdc-list-item__text" for="demo-list-radio-item-1">Option 1</label>
+  </li>
+  <li class="mdc-list-item" role="radio" aria-checked="true" tabindex="0">
+    <span class="mdc-list-item__graphic">
+      <div class="mdc-radio">
+        <input class="mdc-radio__native-control"
+              type="radio"
+              id="demo-list-radio-item-2"
+              name="demo-list-radio-item-group"
+              value="2"
+              checked>
+        <div class="mdc-radio__background">
+          <div class="mdc-radio__outer-circle"></div>
+          <div class="mdc-radio__inner-circle"></div>
+        </div>
+      </div>
+    </span>
+    <label class="mdc-list-item__text" for="demo-list-radio-item-2">Option 2</label>
+  </li>
+  <li class="mdc-list-item" role="radio" aria-checked="false">
+    <span class="mdc-list-item__graphic">
+      <div class="mdc-radio">
+        <input class="mdc-radio__native-control"
+              type="radio"
+              id="demo-list-radio-item-3"
+              name="demo-list-radio-item-group"
+              value="3">
+        <div class="mdc-radio__background">
+          <div class="mdc-radio__outer-circle"></div>
+          <div class="mdc-radio__inner-circle"></div>
+        </div>
+      </div>
+    </span>
+    <label class="mdc-list-item__text" for="demo-list-radio-item-3">Option 3</label>
+  </li>
+</ul>
+```
+
+### List with checkbox items
+
+When rendering list with checkbox items all pre-selected list items should contain `aria-checked` set to `true` and the native checkbox input element should contain `checked` attribute, all other list items should have `aria-checked` set to `false`. Each list item in checkbox list contains `role="checkbox"` attribute.
+
+```html
+<ul class="mdc-list">
+  <li class="mdc-list-item" role="checkbox" aria-checked="false">
+    <span class="mdc-list-item__graphic">
+      <div class="mdc-checkbox">
+        <input type="checkbox"
+                class="mdc-checkbox__native-control"
+                id="demo-list-checkbox-item-1"  />
+        <div class="mdc-checkbox__background">
+          <svg class="mdc-checkbox__checkmark"
+                viewBox="0 0 24 24">
+            <path class="mdc-checkbox__checkmark-path"
+                  fill="none"
+                  d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+          </svg>
+          <div class="mdc-checkbox__mixedmark"></div>
+        </div>
+      </div>
+    </span>
+    <label class="mdc-list-item__text" for="demo-list-checkbox-item-1">Option 1</label>
+  </li>
+  <li class="mdc-list-item" role="checkbox" aria-checked="true" tabindex="0">
+    <span class="mdc-list-item__graphic">
+        <div class="mdc-checkbox">
+            <input type="checkbox"
+                    class="mdc-checkbox__native-control"
+                    id="demo-list-checkbox-item-2"
+                    checked />
+            <div class="mdc-checkbox__background">
+              <svg class="mdc-checkbox__checkmark"
+                    viewBox="0 0 24 24">
+                <path class="mdc-checkbox__checkmark-path"
+                      fill="none"
+                      d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+              </svg>
+              <div class="mdc-checkbox__mixedmark"></div>
+            </div>
+          </div>
+    </span>
+    <label class="mdc-list-item__text" for="demo-list-checkbox-item-2">Option 2</label>
+  </li>
+  <li class="mdc-list-item" role="checkbox" aria-checked="false">
+    <span class="mdc-list-item__graphic">
+        <div class="mdc-checkbox">
+            <input type="checkbox"
+                    class="mdc-checkbox__native-control"
+                    id="demo-list-checkbox-item-3" />
+            <div class="mdc-checkbox__background">
+              <svg class="mdc-checkbox__checkmark"
+                    viewBox="0 0 24 24">
+                <path class="mdc-checkbox__checkmark-path"
+                      fill="none"
+                      d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+              </svg>
+              <div class="mdc-checkbox__mixedmark"></div>
+            </div>
+          </div>
+    </span>
+    <label class="mdc-list-item__text" for="demo-list-checkbox-item-3">Option 3</label>
+  </li>
+</ul>
+```
+
 ## Style Customization
 
 ### CSS Classes

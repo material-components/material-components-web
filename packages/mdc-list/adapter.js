@@ -108,7 +108,7 @@ class MDCListAdapter {
   isCheckboxCheckedAtIndex(index) {}
 
   /**
-   * Sets the checked status of checkbox or radio at given list item idnex.
+   * Sets the checked status of checkbox or radio at given list item index.
    * @param {number} index
    * @param {boolean} isChecked
    */
