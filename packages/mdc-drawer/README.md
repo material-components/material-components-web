@@ -243,7 +243,7 @@ In the following example, the `mdc-drawer__content` and `main-content` elements 
 
 ##### Dismissible Drawer Below Top App Bar
 
-In cases where the drawer appears below the top app bar you will want to follow the markup shown below. The `mdc-drawer__content` and `main-content` elements will also scroll independently of each other. The `mdc-top-app-bar` and `mdc-top-app-bar--fixed-adjust` will be sit sibling to each other. The `mdc-top-app-bar--fixed-adjust` element will contain the `mdc-drawer--dismissible` and `mdc-drawer-app-content` elements.
+In cases where the drawer appears below the top app bar you will want to follow the markup shown below. The `mdc-drawer__content` and `main-content` elements will also scroll independently of each other. The `mdc-top-app-bar`, `mdc-drawer` and `mdc-drawer-app-content` will be sibling to each other. The `mdc-top-app-bar--fixed-adjust` helper class will be applied to `mdc-drawer` and `mdc-drawer-app-content` elements to adjust the position with top app bar.
 
 ```html
 <body>
