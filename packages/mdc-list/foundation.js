@@ -130,8 +130,8 @@ class MDCListFoundation extends MDCFoundation {
 
     // Update class names
     const selectedClassName = this.useActivatedClass_ ?
-                                  cssClasses.LIST_ITEM_ACTIVATED_CLASS :
-                                  cssClasses.LIST_ITEM_SELECTED_CLASS;
+      cssClasses.LIST_ITEM_ACTIVATED_CLASS :
+      cssClasses.LIST_ITEM_SELECTED_CLASS;
     if (!hasCheckboxOrRadio) {
       this.adapter_.removeClassForElementIndex(prevSelectedIndex, selectedClassName);
       this.adapter_.addClassForElementIndex(index, selectedClassName);
