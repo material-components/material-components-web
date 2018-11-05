@@ -311,6 +311,7 @@ body {
 .mdc-top-app-bar {
   z-index: 7;
 }
+```
 
 The JavaScript to toggle the drawer when the navigation button is clicked looks like this:
 
