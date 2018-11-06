@@ -47,7 +47,6 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
       containsNode: (/* target: !Element */) => /* boolean */ false,
       setAriaHidden: () => {},
       unsetAriaHidden: () => {},
-      getAutoDismissTimeoutMs: () => 0,
       registerSurfaceHandler: (/* eventName: string, handler: !EventListener */) => {},
       deregisterSurfaceHandler: (/* eventName: string, handler: !EventListener */) => {},
       registerSurfaceClickHandler: (/* handler: !EventListener */) => {},
@@ -90,6 +89,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     };
 
     this.transitionEndHandler_ = null;
+    this.timeoutMs_ = numbers.DEFAULT_AUTO_DISMISS_TIMEOUT_MS;
   }
 
   init() {
@@ -110,6 +110,29 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     this.clearTimers_();
   }
 
+  /**
+   * @return {number}
+   */
+  get timeoutMs() {
+    return this.timeoutMs_;
+  }
+
+  /**
+   * @param {number} timeoutMs
+   */
+  set timeoutMs(timeoutMs) {
+    const {
+      MIN_AUTO_DISMISS_TIMEOUT_MS: minValue,
+      MAX_AUTO_DISMISS_TIMEOUT_MS: maxValue,
+    } = numbers;
+
+    if (timeoutMs <= maxValue && timeoutMs >= minValue) {
+      this.timeoutMs_ = timeoutMs;
+    } else {
+      throw new Error(`timeoutMs must be an integer in the range ${minValue}–${maxValue}`);
+    }
+  }
+
   // TODO(acdvorak): Multiple consecutive calls to `open()` cause visible flicker due to `aria-live` delay in util.js.
   open() {
     const {OPEN, CLOSING} = cssClasses;
@@ -117,7 +140,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     this.clearTimers_();
 
     // TODO(acdvorak): Make timeout duration parameterizable?
-    this.autoDismissTimer_ = setTimeout(() => this.close(strings.REASON_TIMEOUT), this.getTimeoutDuration_());
+    this.autoDismissTimer_ = setTimeout(() => this.close(strings.REASON_TIMEOUT), this.timeoutMs);
 
     this.setTransitionEndHandler_(() => {
       this.adapter_.notifyOpened();
@@ -147,49 +170,6 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     this.adapter_.addClass(CLOSING);
     this.adapter_.removeClass(OPEN);
     this.adapter_.notifyClosing(reason);
-  }
-
-  getTimeoutDuration_() {
-    const {
-      MIN_AUTO_DISMISS_TIMEOUT_MS: minValue,
-      MAX_AUTO_DISMISS_TIMEOUT_MS: maxValue,
-      DEFAULT_AUTO_DISMISS_TIMEOUT_MS: defaultValue,
-    } = numbers;
-
-    const customValueStr = this.adapter_.getAutoDismissTimeoutMs();
-    if (customValueStr === null) {
-      return defaultValue;
-    }
-
-    const customValueNum = parseInt(customValueStr, 10);
-    if (!isFinite(customValueNum)) {
-      console.warn(
-        `Invalid snackbar timeout: "${customValueStr}". ` +
-        `Using default value: ${defaultValue}. ` +
-        `Timeout must be an integer (in milliseconds) in the range ${minValue}–${maxValue}.`
-      );
-      return defaultValue;
-    }
-
-    if (customValueNum > maxValue) {
-      console.warn(
-        `Invalid snackbar timeout: "${customValueStr}". ` +
-        `Using nearest value: ${maxValue}. ` +
-        `Timeout must be an integer (in milliseconds) in the range ${minValue}–${maxValue}.`
-      );
-      return maxValue;
-    }
-
-    if (customValueNum < minValue) {
-      console.warn(
-        `Invalid snackbar timeout: "${customValueStr}". ` +
-        `Using nearest value: ${minValue}. ` +
-        `Timeout must be an integer (in milliseconds) in the range ${minValue}–${maxValue}.`
-      );
-      return minValue;
-    }
-
-    return customValueNum;
   }
 
   /**

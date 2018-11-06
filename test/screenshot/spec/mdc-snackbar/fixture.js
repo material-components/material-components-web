@@ -22,10 +22,11 @@
  */
 
 window.mdc.testFixture.fontsLoaded.then(() => {
-  [].forEach.call(document.querySelectorAll('.mdc-snackbar'), (el) => {
-    const snackbar = mdc.snackbar.MDCSnackbar.attachTo(el);
+  [].forEach.call(document.querySelectorAll('.mdc-snackbar'), (rootEl) => {
+    /** @type {!MDCSnackbar} */
+    const snackbar = mdc.snackbar.MDCSnackbar.attachTo(rootEl);
 
-    const openButtonEl = document.querySelector(`[data-test-snackbar-id="${el.id}"]`);
+    const openButtonEl = document.querySelector(`[data-test-snackbar-id="${rootEl.id}"]`);
     if (openButtonEl) {
       openButtonEl.addEventListener('click', () => snackbar.open());
     }
@@ -40,6 +41,11 @@ window.mdc.testFixture.fontsLoaded.then(() => {
     [OPENING_EVENT, OPENED_EVENT, CLOSING_EVENT, CLOSED_EVENT].forEach((eventName) => {
       snackbar.listen(eventName, (evt) => console.log(evt.type, evt.detail));
     });
+
+    const timeoutMs = parseInt(rootEl.getAttribute('data-test-snackbar-timeout-ms'), 10);
+    if (timeoutMs > 0) {
+      snackbar.timeoutMs = timeoutMs;
+    }
   });
 
   window.mdc.testFixture.notifyDomReady();
