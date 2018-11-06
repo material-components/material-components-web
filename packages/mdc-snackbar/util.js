@@ -30,6 +30,10 @@ export function announce(rootEl, labelEl) {
   const labelText = labelEl.textContent;
   const priority = rootEl.getAttribute('aria-live');
 
+  if (!labelText) {
+    return;
+  }
+
   // Temporarily disable `aria-live` to prevent NVDA from announcing an empty message.
   // If the snackbar has an action button, clearing `textContent` will cause NVDA to
   // announce the button, but not the label.
