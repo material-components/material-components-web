@@ -62,6 +62,29 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     };
   }
 
+  /**
+   * @return {number}
+   */
+  get timeoutMs() {
+    return this.timeoutMs_;
+  }
+
+  /**
+   * @param {number} timeoutMs
+   */
+  set timeoutMs(timeoutMs) {
+    const {
+      MIN_AUTO_DISMISS_TIMEOUT_MS: minValue,
+      MAX_AUTO_DISMISS_TIMEOUT_MS: maxValue,
+    } = numbers;
+
+    if (timeoutMs <= maxValue && timeoutMs >= minValue) {
+      this.timeoutMs_ = timeoutMs;
+    } else {
+      throw new Error(`timeoutMs must be an integer in the range ${minValue}–${maxValue}`);
+    }
+  }
+
   constructor(adapter) {
     super(Object.assign(MDCSnackbarFoundation.defaultAdapter, adapter));
 
@@ -119,44 +142,12 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
   }
 
   init() {
-    this.adapter_.registerKeyDownHandler(this.keyDownHandler_);
-    this.adapter_.registerSurfaceClickHandler(this.surfaceClickHandler_);
-    ['touchstart', 'pointerdown', 'mousedown'].forEach((eventName) => {
-      this.adapter_.registerSurfaceHandler(eventName, this.surfaceTouchStartHandler_);
-    });
     this.adapter_.setAriaHidden();
   }
 
   destroy() {
-    this.adapter_.deregisterKeyDownHandler(this.keyDownHandler_);
-    this.adapter_.deregisterSurfaceClickHandler(this.surfaceClickHandler_);
-    ['touchstart', 'pointerdown', 'mousedown'].forEach((eventName) => {
-      this.adapter_.deregisterSurfaceHandler(eventName, this.surfaceTouchStartHandler_);
-    });
     this.clearTimers_();
-  }
-
-  /**
-   * @return {number}
-   */
-  get timeoutMs() {
-    return this.timeoutMs_;
-  }
-
-  /**
-   * @param {number} timeoutMs
-   */
-  set timeoutMs(timeoutMs) {
-    const {
-      MIN_AUTO_DISMISS_TIMEOUT_MS: minValue,
-      MAX_AUTO_DISMISS_TIMEOUT_MS: maxValue,
-    } = numbers;
-
-    if (timeoutMs <= maxValue && timeoutMs >= minValue) {
-      this.timeoutMs_ = timeoutMs;
-    } else {
-      throw new Error(`timeoutMs must be an integer in the range ${minValue}–${maxValue}`);
-    }
+    this.deregisterEventHandlers_();
   }
 
   // TODO(acdvorak): Multiple consecutive calls to `open()` cause visible flicker due to `aria-live` delay in util.js.
@@ -174,6 +165,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     this.adapter_.addClass(OPEN);
     this.adapter_.removeClass(CLOSING);
     this.adapter_.notifyOpening();
+    this.registerEventHandlers_();
   }
 
   /**
@@ -181,9 +173,6 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
    */
   close(reason = strings.REASON_PROGRAMMATIC) {
     const {OPEN, CLOSING} = cssClasses;
-    if (!this.adapter_.hasClass(OPEN)) {
-      return;
-    }
 
     this.clearTimers_();
     this.setTransitionEndHandler_(() => {
@@ -195,6 +184,23 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     this.adapter_.addClass(CLOSING);
     this.adapter_.removeClass(OPEN);
     this.adapter_.notifyClosing(reason);
+    this.deregisterEventHandlers_();
+  }
+
+  registerEventHandlers_() {
+    this.adapter_.registerKeyDownHandler(this.keyDownHandler_);
+    this.adapter_.registerSurfaceClickHandler(this.surfaceClickHandler_);
+    ['touchstart', 'pointerdown', 'mousedown'].forEach((eventName) => {
+      this.adapter_.registerSurfaceHandler(eventName, this.surfaceTouchStartHandler_);
+    });
+  }
+
+  deregisterEventHandlers_() {
+    this.adapter_.deregisterKeyDownHandler(this.keyDownHandler_);
+    this.adapter_.deregisterSurfaceClickHandler(this.surfaceClickHandler_);
+    ['touchstart', 'pointerdown', 'mousedown'].forEach((eventName) => {
+      this.adapter_.deregisterSurfaceHandler(eventName, this.surfaceTouchStartHandler_);
+    });
   }
 
   /**
