@@ -65,6 +65,27 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCSnackbarFoundation.defaultAdapter, adapter));
 
+    /**
+     * @type {number}
+     * @private
+     */
+    this.timeoutMs_ = numbers.DEFAULT_AUTO_DISMISS_TIMEOUT_MS;
+
+    /**
+     * @type {?number}
+     * @private
+     */
+    this.autoDismissTimer_ = null;
+
+    /**
+     * @type {?function(evt: !Event): undefined}
+     * @private
+     */
+    this.transitionEndHandler_ = null;
+
+    /**
+     * @private
+     */
     this.surfaceTouchStartHandler_ = () => {
       // If the user needs to copy the snackbar's label text (e.g., to file a bug report), they will click and drag
       // on the surface (or long-press on mobile).
@@ -74,22 +95,27 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
       clearTimeout(this.autoDismissTimer_);
     };
 
+    /**
+     * @param {!MouseEvent} evt
+     * @private
+     */
     this.surfaceClickHandler_ = (evt) => {
-      if (this.isActionButtonEl_(evt.target)) {
+      if (this.isActionButtonEl_(/** @type {!Element} */ (evt.target))) {
         this.close(strings.REASON_ACTION);
       } else {
         this.close(strings.REASON_SURFACE);
       }
     };
 
+    /**
+     * @param {!KeyboardEvent} evt
+     * @private
+     */
     this.keyDownHandler_ = (evt) => {
       if (evt.key === 'Escape' || evt.keyCode === 27) {
         this.close(strings.REASON_ESCAPE);
       }
     };
-
-    this.transitionEndHandler_ = null;
-    this.timeoutMs_ = numbers.DEFAULT_AUTO_DISMISS_TIMEOUT_MS;
   }
 
   init() {
@@ -138,13 +164,10 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     const {OPEN, CLOSING} = cssClasses;
 
     this.clearTimers_();
-
-    // TODO(acdvorak): Make timeout duration parameterizable?
-    this.autoDismissTimer_ = setTimeout(() => this.close(strings.REASON_TIMEOUT), this.timeoutMs);
-
     this.setTransitionEndHandler_(() => {
       this.adapter_.notifyOpened();
     });
+    this.autoDismissTimer_ = setTimeout(() => this.close(strings.REASON_TIMEOUT), this.timeoutMs);
 
     this.adapter_.unsetAriaHidden();
     this.adapter_.announce();
@@ -153,6 +176,9 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     this.adapter_.notifyOpening();
   }
 
+  /**
+   * @param {string=} reason
+   */
   close(reason = strings.REASON_PROGRAMMATIC) {
     const {OPEN, CLOSING} = cssClasses;
     if (!this.adapter_.hasClass(OPEN)) {
@@ -160,7 +186,6 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     }
 
     this.clearTimers_();
-
     this.setTransitionEndHandler_(() => {
       this.adapter_.removeClass(CLOSING);
       this.adapter_.notifyClosed(reason);
