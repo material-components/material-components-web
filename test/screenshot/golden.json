@@ -557,11 +557,11 @@
     }
   },
   "spec/mdc-drawer/classes/dismissible-below-top-app-bar.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/10/31/20_39_25_363/spec/mdc-drawer/classes/dismissible-below-top-app-bar.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/06/18_54_18_117/spec/mdc-drawer/classes/dismissible-below-top-app-bar.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/10/31/20_39_25_363/spec/mdc-drawer/classes/dismissible-below-top-app-bar.html.windows_chrome_69.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/10/31/20_39_25_363/spec/mdc-drawer/classes/dismissible-below-top-app-bar.html.windows_firefox_62.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/10/31/20_39_25_363/spec/mdc-drawer/classes/dismissible-below-top-app-bar.html.windows_ie_11.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/06/18_54_18_117/spec/mdc-drawer/classes/dismissible-below-top-app-bar.html.windows_chrome_69.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/06/18_54_18_117/spec/mdc-drawer/classes/dismissible-below-top-app-bar.html.windows_firefox_62.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/06/18_54_18_117/spec/mdc-drawer/classes/dismissible-below-top-app-bar.html.windows_ie_11.png"
     }
   },
   "spec/mdc-drawer/classes/dismissible.html": {
