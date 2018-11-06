@@ -92,32 +92,17 @@
   }
 
   .mdc-snackbar--open & {
-    // Specified in the motion spec for snackbar.
-    $enter-duration-from-motion-spec: 150ms;
-
-    // Not in motion spec; needed for accessibility.
-    // To force NVDA to announce the snackbar message to the user, we have to
-    // temporarily clear the label text from the DOM for at least 200ms.
-    // Unfortunately, this creates visual flicker. To avoid the flicker,
-    // we simply delay the animation until after the label text is restored.
-    // IMPORTANT: Value must be >= `ARIA_LIVE_DELAY_MS` in constants.js.
-    $enter-delay-for-a11y: 200ms;
-
     transform: scale(1);
     transition:
-      mdc-animation-enter(opacity, $enter-duration-from-motion-spec, $enter-delay-for-a11y),
-      mdc-animation-enter(transform, $enter-duration-from-motion-spec, $enter-delay-for-a11y);
+      mdc-animation-enter(opacity, $mdc-snackbar-enter-duration_),
+      mdc-animation-enter(transform, $mdc-snackbar-enter-duration_);
     opacity: 1;
     pointer-events: auto; // Allow mouse events on container element while snackbar is open
   }
 
   .mdc-snackbar--closing & {
-    // Specified in the motion spec for snackbar.
-    $exit-duration-from-motion-spec: 75ms;
-    $exit-delay-from-motion-spec: 150ms;
-
     transform: scale(1);
-    transition: mdc-animation-exit-permanent(opacity, $exit-duration-from-motion-spec, $exit-delay-from-motion-spec);
+    transition: mdc-animation-exit-permanent(opacity, $mdc-snackbar-exit-duration_, $mdc-snackbar-exit-delay_);
   }
 }
 
@@ -141,6 +126,11 @@
 
   // 14px top/bottom padding needed to make the height 48px.
   padding: 14px 16px;
+}
+
+.mdc-snackbar__label::before {
+  display: inline;
+  content: attr(data-mdc-snackbar-label-text);
 }
 
 .mdc-snackbar__actions {

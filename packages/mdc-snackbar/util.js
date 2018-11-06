@@ -21,9 +21,10 @@
  * THE SOFTWARE.
  */
 
-import {numbers} from './constants';
+import {numbers, strings} from './constants';
 
 const {ARIA_LIVE_DELAY_MS} = numbers;
+const {LABEL_TEXT_ATTR} = strings;
 
 export function announce(rootEl, labelEl) {
   const labelText = labelEl.textContent;
@@ -31,7 +32,7 @@ export function announce(rootEl, labelEl) {
 
   // Temporarily disable `aria-live` to prevent NVDA from announcing an empty message.
   // If the snackbar has an action button, clearing `textContent` will cause NVDA to
-  // announce the button text only (without the label text).
+  // announce the button, but not the label.
   rootEl.setAttribute('aria-live', 'off');
 
   // Temporarily clear `textContent` to force a DOM mutation event that will be detected by screen readers.
@@ -52,9 +53,18 @@ export function announce(rootEl, labelEl) {
   //       - IE 11
   labelEl.textContent = '';
 
+  // Prevent visual jank by temporarily displaying the label text in the ::before pseudo-element.
+  // CSS generated content is normally announced by screen readers (except in IE 11; see
+  // https://tink.uk/accessibility-support-for-css-generated-content/). However, we previously disabled `aria-live`,
+  // so this DOM update will be ignored by screen readers.
+  labelEl.setAttribute(LABEL_TEXT_ATTR, labelText);
+
   setTimeout(() => {
-    // Allow screen readers to announce changes to the DOM.
+    // Allow screen readers to announce changes to the DOM again.
     rootEl.setAttribute('aria-live', priority);
+
+    // Remove the message from the ::before pseudo-element.
+    labelEl.removeAttribute(LABEL_TEXT_ATTR);
 
     // Restore the original label text, which will be announced by screen readers.
     labelEl.textContent = labelText;

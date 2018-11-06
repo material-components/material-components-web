@@ -20,7 +20,20 @@
 // THE SOFTWARE.
 //
 
+//
+// Public
+//
+
 $mdc-snackbar-viewport-margin-narrow: 8px !default;
 $mdc-snackbar-viewport-margin-wide: 24px !default;
 $mdc-snackbar-padding: 8px !default;
 $mdc-snackbar-z-index: 9 !default; // TODO(acdvorak): What's the correct value?
+
+//
+// Private
+//
+
+$mdc-snackbar-enter-duration_: 150ms;
+$mdc-snackbar-enter-delay_: 0ms;
+$mdc-snackbar-exit-duration_: 75ms;
+$mdc-snackbar-exit-delay_: 150ms;

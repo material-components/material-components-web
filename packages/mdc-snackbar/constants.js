@@ -37,6 +37,7 @@ export const strings = {
   LABEL_SELECTOR: '.mdc-snackbar__label',
   ACTION_WRAPPER_SELECTOR: '.mdc-snackbar__actions',
   ACTION_BUTTON_SELECTOR: '.mdc-snackbar__action-button',
+  LABEL_TEXT_ATTR: 'data-mdc-snackbar-label-text',
   OPENING_EVENT: 'MDCSnackbar:opening',
   OPENED_EVENT: 'MDCSnackbar:opened',
   CLOSING_EVENT: 'MDCSnackbar:closing',
@@ -57,7 +58,8 @@ export const numbers = {
    * Number of milliseconds to wait between temporarily clearing the label text
    * in the DOM and subsequently restoring it. This is necessary to force NVDA
    * to pick up the `aria-live` content change and announce it to the user.
-   * IMPORTANT: Value must be <= `$enter-delay-for-a11y` in mdc-snackbar.scss.
+   * Most browsers only need a ~5 millisecond delay, but IE 11 requires
+   * at least 200ms to detect the DOM mutation.
    */
   ARIA_LIVE_DELAY_MS: 200,
 };
