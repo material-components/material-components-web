@@ -160,12 +160,12 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     });
     this.autoDismissTimer_ = setTimeout(() => this.close(strings.REASON_TIMEOUT), this.timeoutMs);
 
+    this.registerEventHandlers_();
     this.adapter_.unsetAriaHidden();
     this.adapter_.announce();
     this.adapter_.addClass(OPEN);
     this.adapter_.removeClass(CLOSING);
     this.adapter_.notifyOpening();
-    this.registerEventHandlers_();
   }
 
   /**
@@ -180,11 +180,11 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
       this.adapter_.notifyClosed(reason);
     });
 
+    this.deregisterEventHandlers_();
     this.adapter_.setAriaHidden();
     this.adapter_.addClass(CLOSING);
     this.adapter_.removeClass(OPEN);
     this.adapter_.notifyClosing(reason);
-    this.deregisterEventHandlers_();
   }
 
   registerEventHandlers_() {
