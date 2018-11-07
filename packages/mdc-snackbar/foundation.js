@@ -41,18 +41,22 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
   static get defaultAdapter() {
     return {
       announce: (/* message: string */) => {},
+
       hasClass: (/* className: string */) => /* boolean */ false,
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
       containsNode: (/* target: !Element */) => /* boolean */ false,
+
       setAriaHidden: () => {},
       unsetAriaHidden: () => {},
-      registerSurfaceClickHandler: (/* handler: !EventListener */) => {},
-      deregisterSurfaceClickHandler: (/* handler: !EventListener */) => {},
+
       registerKeyDownHandler: (/* handler: !EventListener */) => {},
       deregisterKeyDownHandler: (/* handler: !EventListener */) => {},
+      registerSurfaceClickHandler: (/* handler: !EventListener */) => {},
+      deregisterSurfaceClickHandler: (/* handler: !EventListener */) => {},
       registerTransitionEndHandler: (/* handler: !EventListener */) => {},
       deregisterTransitionEndHandler: (/* handler: !EventListener */) => {},
+
       notifyOpening: () => {},
       notifyOpened: () => {},
       notifyClosing: (/* reason: string */) => {},
@@ -135,18 +139,24 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
 
   init() {
     this.adapter_.setAriaHidden();
+    this.adapter_.registerSurfaceClickHandler(this.surfaceClickHandler_);
   }
 
   destroy() {
     const {OPEN, CLOSING} = cssClasses;
     this.clearAutoDismissTimer_();
-    this.deregisterEventHandlers_();
+    this.adapter_.deregisterKeyDownHandler(this.keyDownHandler_);
+    this.adapter_.deregisterSurfaceClickHandler(this.surfaceClickHandler_);
+    this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
     this.adapter_.removeClass(OPEN);
     this.adapter_.removeClass(CLOSING);
   }
 
   open() {
     const {OPEN, CLOSING} = cssClasses;
+    if (this.adapter_.hasClass(OPEN)) {
+      return;
+    }
 
     this.clearAutoDismissTimer_();
     this.setTransitionEndHandler_(() => {
@@ -154,7 +164,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     });
     this.autoDismissTimer_ = setTimeout(() => this.close(strings.REASON_DISMISS), this.timeoutMs);
 
-    this.registerEventHandlers_();
+    this.adapter_.registerKeyDownHandler(this.keyDownHandler_);
     this.adapter_.unsetAriaHidden();
     this.adapter_.announce();
     this.adapter_.addClass(OPEN);
@@ -167,6 +177,9 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
    */
   close(reason = '') {
     const {OPEN, CLOSING} = cssClasses;
+    if (!this.adapter_.hasClass(OPEN)) {
+      return;
+    }
 
     this.clearAutoDismissTimer_();
     this.setTransitionEndHandler_(() => {
@@ -174,24 +187,11 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
       this.adapter_.notifyClosed(reason);
     });
 
-    this.deregisterEventHandlers_();
+    this.adapter_.deregisterKeyDownHandler(this.keyDownHandler_);
     this.adapter_.setAriaHidden();
     this.adapter_.addClass(CLOSING);
     this.adapter_.removeClass(OPEN);
     this.adapter_.notifyClosing(reason);
-  }
-
-  /** @private */
-  registerEventHandlers_() {
-    this.adapter_.registerKeyDownHandler(this.keyDownHandler_);
-    this.adapter_.registerSurfaceClickHandler(this.surfaceClickHandler_);
-  }
-
-  /** @private */
-  deregisterEventHandlers_() {
-    this.adapter_.deregisterKeyDownHandler(this.keyDownHandler_);
-    this.adapter_.deregisterSurfaceClickHandler(this.surfaceClickHandler_);
-    this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
   }
 
   /**

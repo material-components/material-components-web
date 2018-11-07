@@ -63,18 +63,22 @@ export class MDCSnackbar extends MDCComponent {
     /* eslint brace-style: "off" */
     return new MDCSnackbarFoundation({
       announce: () => announce(this.root_, this.root_.querySelector(LABEL_SELECTOR)),
+
       hasClass: (className) => this.root_.classList.contains(className),
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       containsNode: (target) => this.root_.contains(target),
+
       setAriaHidden: () => this.root_.setAttribute('aria-hidden', 'true'),
       unsetAriaHidden: () => this.root_.removeAttribute('aria-hidden'),
-      registerSurfaceClickHandler: (handler) => getSurfaceEl().addEventListener('click', handler),
-      deregisterSurfaceClickHandler: (handler) => getSurfaceEl().removeEventListener('click', handler),
+
       registerKeyDownHandler: (handler) => document.addEventListener('keydown', handler),
       deregisterKeyDownHandler: (handler) => document.removeEventListener('keydown', handler),
+      registerSurfaceClickHandler: (handler) => getSurfaceEl().addEventListener('click', handler),
+      deregisterSurfaceClickHandler: (handler) => getSurfaceEl().removeEventListener('click', handler),
       registerTransitionEndHandler: (handler) => this.root_.addEventListener(transitionEndEventName, handler),
       deregisterTransitionEndHandler: (handler) => this.root_.removeEventListener(transitionEndEventName, handler),
+
       notifyOpening: () => this.emit(MDCSnackbarFoundation.strings.OPENING_EVENT),
       notifyOpened: () => this.emit(MDCSnackbarFoundation.strings.OPENED_EVENT),
       notifyClosing: (reason) => this.emit(MDCSnackbarFoundation.strings.CLOSING_EVENT, {reason}),
