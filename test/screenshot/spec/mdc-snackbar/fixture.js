@@ -22,13 +22,30 @@
  */
 
 window.mdc.testFixture.fontsLoaded.then(() => {
+  const queue = [];
+
+  function enqueue(fn) {
+    queue.push(fn);
+    if (queue.length === 1) {
+      fn();
+    }
+  }
+
+  function dequeue() {
+    queue.shift();
+    const nextFn = queue[0];
+    if (nextFn) {
+      nextFn();
+    }
+  }
+
   [].forEach.call(document.querySelectorAll('.mdc-snackbar'), (rootEl) => {
     /** @type {!MDCSnackbar} */
     const snackbar = mdc.snackbar.MDCSnackbar.attachTo(rootEl);
 
     const openButtonEl = document.querySelector(`[data-test-snackbar-id="${rootEl.id}"]`);
     if (openButtonEl) {
-      openButtonEl.addEventListener('click', () => snackbar.open());
+      openButtonEl.addEventListener('click', () => enqueue(() => snackbar.open()));
     }
 
     const {
@@ -41,6 +58,8 @@ window.mdc.testFixture.fontsLoaded.then(() => {
     [OPENING_EVENT, OPENED_EVENT, CLOSING_EVENT, CLOSED_EVENT].forEach((eventName) => {
       snackbar.listen(eventName, (evt) => console.log(evt.type, evt.detail));
     });
+
+    snackbar.listen(CLOSED_EVENT, dequeue);
 
     const timeoutMs = parseInt(rootEl.getAttribute('data-test-snackbar-timeout-ms'), 10);
     if (timeoutMs > 0) {
