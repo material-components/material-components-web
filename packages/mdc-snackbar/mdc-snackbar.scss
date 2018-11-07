@@ -198,3 +198,15 @@
 }
 
 // postcss-bem-linter: end
+
+.mdc-snackbar-ie11-detector {
+  // Only IE 11 and Edge support `-ms-high-contrast`.
+  @media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
+    position: relative;
+  }
+
+  // IE 11 does not understand CSS `@supports`.
+  @supports (color: transparent) {
+    position: static;
+  }
+}

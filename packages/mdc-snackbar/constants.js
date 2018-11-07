@@ -47,10 +47,8 @@ export const numbers = {
 
   /**
    * Number of milliseconds to wait between temporarily clearing the label text
-   * in the DOM and subsequently restoring it. This is necessary to force NVDA
+   * in the DOM and subsequently restoring it. This is necessary to force IE 11
    * to pick up the `aria-live` content change and announce it to the user.
-   * Most browsers only need a ~5 millisecond delay, but IE 11 requires
-   * at least 200ms to detect the DOM mutation.
    */
-  ARIA_LIVE_DELAY_MS: 200,
+  ARIA_LIVE_IE11_DELAY_MS: 1000,
 };
