@@ -44,8 +44,20 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  transform: translateY(100vh); // Prevent snackbar from receiving mouse events while closed
-  pointer-events: none; // Always ignore mouse events on the root layout element
+
+  // Prevent snackbar from A) receiving mouse events while closed, and B) being visible during elastic scrolling.
+  transform: translateY(200vh);
+
+  // Ignore mouse events on the root layout element.
+  pointer-events: none;
+
+  // Mobile Safari only supports `rgba` values for this property; named values like `transparent` are ignored.
+  // From Apple's docs:
+  // > This property obeys the alpha value, if specified.
+  // > If you don’t specify an alpha value, Safari on iOS applies a default alpha value to the color.
+  // > To disable tap highlighting, set the alpha value to 0 (invisible).
+  // > If you set the alpha value to 1.0 (opaque), the element is not visible when tapped.
+  // See https://github.com/ben-eb/postcss-colormin/issues/1
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
