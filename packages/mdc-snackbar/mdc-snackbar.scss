@@ -88,16 +88,17 @@
 
 .mdc-snackbar__surface {
   display: flex;
+
+  // Non-static positioning is required to make `overflow: hidden` work in Safari.
+  // See https://bugs.webkit.org/show_bug.cgi?id=98538#c5
+  position: relative;
   align-items: center;
   justify-content: flex-start;
   box-sizing: border-box;
   transform: scale(.8);
   opacity: 0;
 
-  // Prevents mdc-snackbar__overlay's background-color from bleeding past the
-  // surface's border-radius.
-  // N.B.: This does not work in Safari. The mdc-snackbar-shape-radius() mixin
-  // contains a Safari-specific workaround.
+  // Prevent mdc-snackbar__overlay's background-color from bleeding past the surface's border-radius.
   overflow: hidden;
 
   .mdc-snackbar--stacked & {
