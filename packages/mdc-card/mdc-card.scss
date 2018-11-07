@@ -31,7 +31,7 @@
 
 .mdc-card {
   @include mdc-card-fill-color(surface);
-  @include mdc-card-shape-radius(small);
+  @include mdc-card-shape-radius(medium);
   @include mdc-elevation(2);
   @include mdc-card-container-layout_;
 }
