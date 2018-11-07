@@ -215,12 +215,15 @@ class MDCListFoundation extends MDCFoundation {
         this.adapter_.followHref(currentIndex);
       }
 
-      if (this.adapter_.hasCheckboxOrRadioAtIndex(listItemIndex)) {
+      const hasCheckboxOrRadio = this.adapter_.hasCheckboxOrRadioAtIndex(listItemIndex);
+      if (hasCheckboxOrRadio) {
         this.toggleCheckboxOrRadioAtIndex_(listItemIndex);
         this.preventDefaultEvent_(evt);
       }
 
-      this.setSelectedIndex(currentIndex);
+      if (this.isSingleSelectionList_ || hasCheckboxOrRadio) {
+        this.setSelectedIndex(currentIndex);
+      }
     }
   }
 
@@ -236,7 +239,9 @@ class MDCListFoundation extends MDCFoundation {
       this.toggleCheckboxOrRadioAtIndex_(index);
     }
 
-    this.setSelectedIndex(index);
+    if (this.isSingleSelectionList_ || this.adapter_.hasCheckboxOrRadioAtIndex(index)) {
+      this.setSelectedIndex(index);
+    }
   }
 
   /**
