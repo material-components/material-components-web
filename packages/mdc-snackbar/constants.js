@@ -33,7 +33,7 @@ export const cssClasses = {
 };
 
 export const strings = {
-  CONTAINER_SELECTOR: '.mdc-snackbar__container',
+  CONTAINER_SELECTOR: '.mdc-snackbar__surface',
   LABEL_SELECTOR: '.mdc-snackbar__label',
   ACTION_WRAPPER_SELECTOR: '.mdc-snackbar__actions',
   ACTION_BUTTON_SELECTOR: '.mdc-snackbar__action-button',

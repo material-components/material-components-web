@@ -22,6 +22,7 @@
 
 @import "@material/animation/functions";
 @import "@material/button/mixins";
+@import "@material/icon-button/mixins";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
 @import "@material/theme/functions";
@@ -46,6 +47,7 @@
   box-sizing: border-box;
 
   // Prevent snackbar from A) receiving mouse events while closed, and B) being visible during elastic scrolling.
+  // We can't use `display: none` on the root or surface elements because it prevents CSS transitions from animating.
   transform: translateY(200vh);
 
   // Ignore mouse events on the root layout element.
@@ -62,13 +64,13 @@
 }
 
 @at-root {
-  @include mdc-snackbar-surface-color(surface);
-  @include mdc-snackbar-overlay-color(on-surface);
-  @include mdc-snackbar-label-ink-color(surface);
-  @include mdc-snackbar-min-width(344px); // TODO(acdvorak): What's the correct value?
-  @include mdc-snackbar-max-width(672px);
-  @include mdc-snackbar-elevation(6);
-  @include mdc-snackbar-shape-radius(small);
+  @include mdc-snackbar-surface-fill-color($mdc-snackbar-surface-fill-color);
+  @include mdc-snackbar-overlay-fill-color($mdc-snackbar-overlay-fill-color);
+  @include mdc-snackbar-label-ink-color($mdc-snackbar-label-ink-color);
+  @include mdc-snackbar-min-width($mdc-snackbar-min-width);
+  @include mdc-snackbar-max-width($mdc-snackbar-max-width);
+  @include mdc-snackbar-elevation($mdc-snackbar-elevation);
+  @include mdc-snackbar-shape-radius($mdc-snackbar-shape-radius);
 }
 
 .mdc-snackbar--wide {
@@ -84,7 +86,7 @@
   transform: none;
 }
 
-.mdc-snackbar__container {
+.mdc-snackbar__surface {
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -93,7 +95,7 @@
   opacity: 0;
 
   // Prevents mdc-snackbar__overlay's background-color from bleeding past the
-  // container's border-radius.
+  // surface's border-radius.
   // N.B.: This does not work in Safari. The mdc-snackbar-shape-radius() mixin
   // contains a Safari-specific workaround.
   overflow: hidden;
@@ -109,7 +111,7 @@
       mdc-animation-enter(opacity, $mdc-snackbar-enter-duration_),
       mdc-animation-enter(transform, $mdc-snackbar-enter-duration_);
     opacity: 1;
-    pointer-events: auto; // Allow mouse events on container element while snackbar is open
+    pointer-events: auto; // Allow mouse events on surface element while snackbar is open
   }
 
   .mdc-snackbar--closing & {
@@ -129,28 +131,45 @@
 }
 
 .mdc-snackbar__label {
-  @include mdc-snackbar-focusable-subelement_($display: block);
   @include mdc-typography(body2);
 
+  display: none;
   flex-grow: 1;
   box-sizing: border-box;
   margin: 0;
 
   // 14px top/bottom padding needed to make the height 48px.
   padding: 14px 16px;
+
+  // stylelint-disable plugin/selector-bem-pattern
+  .mdc-snackbar--open &,
+  .mdc-snackbar--closing & {
+    display: block;
+  }
+  // stylelint-enable plugin/selector-bem-pattern
 }
 
+// Used to prevent visual jank when announcing label text to screen readers.
+// See the `announce()` function in util.js for details.
 .mdc-snackbar__label::before {
   display: inline;
   content: attr(data-mdc-snackbar-label-text);
 }
 
 .mdc-snackbar__actions {
-  @include mdc-snackbar-focusable-subelement_($display: block);
   @include mdc-rtl-reflexive-property(margin, 0, $mdc-snackbar-padding);
 
+  display: none;
   flex-shrink: 0;
+  align-items: center;
   box-sizing: border-box;
+
+  // stylelint-disable plugin/selector-bem-pattern
+  .mdc-snackbar--open &,
+  .mdc-snackbar--closing & {
+    display: flex;
+  }
+  // stylelint-enable plugin/selector-bem-pattern
 
   .mdc-snackbar--stacked & {
     align-self: flex-end;
@@ -159,9 +178,22 @@
 }
 
 .mdc-snackbar__action-button {
-  // TODO(acdvorak): How should we implement this?
-  @include mdc-button-ink-color(#bb86fc);
-  @include mdc-states-base-color(#bb86fc);
+  @include mdc-button-ink-color($mdc-snackbar-action-button-ink-color);
+  @include mdc-states($mdc-snackbar-action-button-ink-color);
+}
+
+.mdc-snackbar__action-icon {
+  @include mdc-icon-button-ink-color(surface);
+}
+
+// Two selectors are needed to increase specificity above `.material-icons`.
+// stylelint-disable-next-line selector-class-pattern
+.mdc-snackbar__action-icon.material-icons {
+  @include mdc-icon-button-size($mdc-snackbar-action-icon-size);
+}
+
+.mdc-snackbar__action-button + .mdc-snackbar__action-icon {
+  @include mdc-rtl-reflexive-property(margin, $mdc-snackbar-padding, 0);
 }
 
 // postcss-bem-linter: end

@@ -26,10 +26,6 @@
 @import "@material/theme/variables";
 @import "./variables";
 
-//
-// Public
-//
-
 @mixin mdc-snackbar-z-index($z-index) {
   z-index: $z-index;
 }
@@ -39,19 +35,19 @@
 }
 
 @mixin mdc-snackbar-min-width($min-width) {
-  .mdc-snackbar__container {
+  .mdc-snackbar__surface {
     min-width: $min-width;
   }
 }
 
 @mixin mdc-snackbar-max-width($max-width) {
-  .mdc-snackbar__container {
+  .mdc-snackbar__surface {
     max-width: $max-width;
   }
 }
 
 @mixin mdc-snackbar-elevation($z-index) {
-  .mdc-snackbar__container {
+  .mdc-snackbar__surface {
     @include mdc-elevation($z-index);
   }
 }
@@ -59,20 +55,20 @@
 @mixin mdc-snackbar-shape-radius($radius) {
   // The mdc-snackbar__overlay selector is needed to prevent the overlay's
   // background-color from leaking past the border-radius of the
-  // mdc-snackbar__container element in Safari 12 (and possibly other versions).
-  .mdc-snackbar__container,
+  // mdc-snackbar__surface element in Safari 12 (and possibly other versions).
+  .mdc-snackbar__surface,
   .mdc-snackbar__overlay {
     @include mdc-shape-radius($radius);
   }
 }
 
-@mixin mdc-snackbar-surface-color($color) {
-  .mdc-snackbar__container {
+@mixin mdc-snackbar-surface-fill-color($color) {
+  .mdc-snackbar__surface {
     @include mdc-theme-prop(background-color, $color);
   }
 }
 
-@mixin mdc-snackbar-overlay-color($color, $opacity: .8) {
+@mixin mdc-snackbar-overlay-fill-color($color, $opacity: .8) {
   .mdc-snackbar__overlay {
     $opacity-value: if(type-of($opacity) == number, $opacity, mdc-theme-text-emphasis($opacity));
     $color-value: rgba(mdc-theme-prop-value($color), $opacity-value);
@@ -88,20 +84,4 @@
 
     @include mdc-theme-prop(color, $color-value);
   }
-}
-
-//
-// Private
-//
-
-// Prevents label text and action button from being keyboard-focusable or linear-navigable when the snackbar is closed.
-@mixin mdc-snackbar-focusable-subelement_($display) {
-  display: none;
-
-  // stylelint-disable plugin/selector-bem-pattern
-  .mdc-snackbar--open &,
-  .mdc-snackbar--closing & {
-    display: $display;
-  }
-  // stylelint-enable plugin/selector-bem-pattern
 }
