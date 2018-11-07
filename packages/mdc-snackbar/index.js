@@ -55,6 +55,52 @@ export class MDCSnackbar extends MDCComponent {
     this.foundation_.timeoutMs = timeoutMs;
   }
 
+  /**
+   * @return {boolean}
+   */
+  get closeOnEscape() {
+    return this.foundation_.closeOnEscape;
+  }
+
+  /**
+   * @param {boolean} closeOnEscape
+   */
+  set closeOnEscape(closeOnEscape) {
+    this.foundation_.closeOnEscape = closeOnEscape;
+  }
+
+  /**
+   * @return {string}
+   */
+  get labelText() {
+    const {LABEL_SELECTOR} = MDCSnackbarFoundation.strings;
+    return this.root_.querySelector(LABEL_SELECTOR).textContent;
+  }
+
+  /**
+   * @param {string} labelText
+   */
+  set labelText(labelText) {
+    const {LABEL_SELECTOR} = MDCSnackbarFoundation.strings;
+    this.root_.querySelector(LABEL_SELECTOR).textContent = labelText;
+  }
+
+  /**
+   * @return {string}
+   */
+  get actionButtonText() {
+    const {ACTION_BUTTON_SELECTOR} = MDCSnackbarFoundation.strings;
+    return this.root_.querySelector(ACTION_BUTTON_SELECTOR).textContent;
+  }
+
+  /**
+   * @param {string} actionButtonText
+   */
+  set actionButtonText(actionButtonText) {
+    const {ACTION_BUTTON_SELECTOR} = MDCSnackbarFoundation.strings;
+    this.root_.querySelector(ACTION_BUTTON_SELECTOR).textContent = actionButtonText;
+  }
+
   getDefaultFoundation() {
     const {SURFACE_SELECTOR, LABEL_SELECTOR} = MDCSnackbarFoundation.strings;
     const transitionEndEventName = getCorrectEventName(window, 'transitionend');
