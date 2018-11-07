@@ -22,31 +22,22 @@
  */
 
 export const cssClasses = {
-  ROOT: 'mdc-snackbar',
-  TEXT: 'mdc-snackbar__text',
-  ACTION_WRAPPER: 'mdc-snackbar__action-wrapper',
-  ACTION_BUTTON: 'mdc-snackbar__action-button',
   OPEN: 'mdc-snackbar--open',
   CLOSING: 'mdc-snackbar--closing',
-  MULTILINE: 'mdc-snackbar--multiline',
-  ACTION_ON_BOTTOM: 'mdc-snackbar--action-on-bottom',
 };
 
 export const strings = {
-  CONTAINER_SELECTOR: '.mdc-snackbar__surface',
+  SURFACE_SELECTOR: '.mdc-snackbar__surface',
   LABEL_SELECTOR: '.mdc-snackbar__label',
-  ACTION_WRAPPER_SELECTOR: '.mdc-snackbar__actions',
   ACTION_BUTTON_SELECTOR: '.mdc-snackbar__action-button',
+  ACTION_ICON_SELECTOR: '.mdc-snackbar__action-icon',
   LABEL_TEXT_ATTR: 'data-mdc-snackbar-label-text',
   OPENING_EVENT: 'MDCSnackbar:opening',
   OPENED_EVENT: 'MDCSnackbar:opened',
   CLOSING_EVENT: 'MDCSnackbar:closing',
   CLOSED_EVENT: 'MDCSnackbar:closed',
-  REASON_ESCAPE: 'escape',
   REASON_ACTION: 'action',
-  REASON_SURFACE: 'surface',
-  REASON_TIMEOUT: 'timeout',
-  REASON_PROGRAMMATIC: 'programmatic',
+  REASON_DISMISS: 'dismiss',
 };
 
 export const numbers = {

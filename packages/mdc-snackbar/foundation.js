@@ -22,7 +22,7 @@
  */
 
 import {MDCFoundation} from '@material/base/index';
-import {cssClasses, strings, numbers} from './constants';
+import {cssClasses, numbers, strings} from './constants';
 import * as ponyfill from '@material/dom/ponyfill';
 
 export default class MDCSnackbarFoundation extends MDCFoundation {
@@ -47,8 +47,6 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
       containsNode: (/* target: !Element */) => /* boolean */ false,
       setAriaHidden: () => {},
       unsetAriaHidden: () => {},
-      registerSurfaceHandler: (/* eventName: string, handler: !EventListener */) => {},
-      deregisterSurfaceHandler: (/* eventName: string, handler: !EventListener */) => {},
       registerSurfaceClickHandler: (/* handler: !EventListener */) => {},
       deregisterSurfaceClickHandler: (/* handler: !EventListener */) => {},
       registerKeyDownHandler: (/* handler: !EventListener */) => {},
@@ -89,6 +87,11 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     super(Object.assign(MDCSnackbarFoundation.defaultAdapter, adapter));
 
     /**
+     * @type {boolean}
+     */
+    this.closeOnEscape = true;
+
+    /**
      * @type {number}
      * @private
      */
@@ -107,26 +110,15 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     this.transitionEndHandler_ = null;
 
     /**
-     * @private
-     */
-    this.surfaceTouchStartHandler_ = () => {
-      // If the user needs to copy the snackbar's label text (e.g., to file a bug report), they will click and drag
-      // on the surface (or long-press on mobile).
-      // When the user starts interacting with the surface, disable the automatic dismissal timeout to give the user
-      // enough time to highlight and copy the desired text.
-      // The user can close the snackbar by clicking anywhere on the surface.
-      clearTimeout(this.autoDismissTimer_);
-    };
-
-    /**
      * @param {!MouseEvent} evt
      * @private
      */
     this.surfaceClickHandler_ = (evt) => {
-      if (this.isActionButtonEl_(/** @type {!Element} */ (evt.target))) {
+      const target = /** @type {!Element} */ (evt.target);
+      if (this.isActionButtonEl_(target)) {
         this.close(strings.REASON_ACTION);
-      } else {
-        this.close(strings.REASON_SURFACE);
+      } else if (this.isActionIconEl_(target)) {
+        this.close(strings.REASON_DISMISS);
       }
     };
 
@@ -135,8 +127,8 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
      * @private
      */
     this.keyDownHandler_ = (evt) => {
-      if (evt.key === 'Escape' || evt.keyCode === 27) {
-        this.close(strings.REASON_ESCAPE);
+      if (this.closeOnEscape && (evt.key === 'Escape' || evt.keyCode === 27)) {
+        this.close(strings.REASON_DISMISS);
       }
     };
   }
@@ -146,19 +138,21 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
   }
 
   destroy() {
-    this.clearTimers_();
+    const {OPEN, CLOSING} = cssClasses;
+    this.clearAutoDismissTimer_();
     this.deregisterEventHandlers_();
+    this.adapter_.removeClass(OPEN);
+    this.adapter_.removeClass(CLOSING);
   }
 
-  // TODO(acdvorak): Multiple consecutive calls to `open()` cause visible flicker due to `aria-live` delay in util.js.
   open() {
     const {OPEN, CLOSING} = cssClasses;
 
-    this.clearTimers_();
+    this.clearAutoDismissTimer_();
     this.setTransitionEndHandler_(() => {
       this.adapter_.notifyOpened();
     });
-    this.autoDismissTimer_ = setTimeout(() => this.close(strings.REASON_TIMEOUT), this.timeoutMs);
+    this.autoDismissTimer_ = setTimeout(() => this.close(strings.REASON_DISMISS), this.timeoutMs);
 
     this.registerEventHandlers_();
     this.adapter_.unsetAriaHidden();
@@ -171,10 +165,10 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
   /**
    * @param {string=} reason
    */
-  close(reason = strings.REASON_PROGRAMMATIC) {
+  close(reason = '') {
     const {OPEN, CLOSING} = cssClasses;
 
-    this.clearTimers_();
+    this.clearAutoDismissTimer_();
     this.setTransitionEndHandler_(() => {
       this.adapter_.removeClass(CLOSING);
       this.adapter_.notifyClosed(reason);
@@ -187,20 +181,17 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     this.adapter_.notifyClosing(reason);
   }
 
+  /** @private */
   registerEventHandlers_() {
     this.adapter_.registerKeyDownHandler(this.keyDownHandler_);
     this.adapter_.registerSurfaceClickHandler(this.surfaceClickHandler_);
-    ['touchstart', 'pointerdown', 'mousedown'].forEach((eventName) => {
-      this.adapter_.registerSurfaceHandler(eventName, this.surfaceTouchStartHandler_);
-    });
   }
 
+  /** @private */
   deregisterEventHandlers_() {
     this.adapter_.deregisterKeyDownHandler(this.keyDownHandler_);
     this.adapter_.deregisterSurfaceClickHandler(this.surfaceClickHandler_);
-    ['touchstart', 'pointerdown', 'mousedown'].forEach((eventName) => {
-      this.adapter_.deregisterSurfaceHandler(eventName, this.surfaceTouchStartHandler_);
-    });
+    this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
   }
 
   /**
@@ -208,13 +199,12 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
    * @private
    */
   setTransitionEndHandler_(handler) {
-    if (this.transitionEndHandler_) {
-      this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
-    }
+    this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
 
     this.transitionEndHandler_ = (evt) => {
-      // Ignore `transitionend` events that bubble up from the action button ripple.
-      if (!this.isContainerEl_(evt.target)) {
+      const target = /** @type {!Element} */ (evt.target);
+      // Ignore `transitionend` events that bubble up from action button/icon ripple states.
+      if (!this.isSurfaceEl_(target)) {
         return;
       }
       handler();
@@ -225,12 +215,8 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
   }
 
   /** @private */
-  clearTimers_() {
+  clearAutoDismissTimer_() {
     clearTimeout(this.autoDismissTimer_);
-    if (this.transitionEndHandler_) {
-      this.adapter_.deregisterTransitionEndHandler(this.transitionEndHandler_);
-    }
-    this.transitionEndHandler_ = null;
   }
 
   /**
@@ -238,9 +224,9 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
    * @return {boolean}
    * @private
    */
-  isContainerEl_(target) {
-    const {CONTAINER_SELECTOR} = strings;
-    return ponyfill.matches(target, CONTAINER_SELECTOR);
+  isSurfaceEl_(target) {
+    const {SURFACE_SELECTOR} = strings;
+    return ponyfill.matches(target, SURFACE_SELECTOR);
   }
 
   /**
@@ -251,5 +237,15 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
   isActionButtonEl_(target) {
     const {ACTION_BUTTON_SELECTOR} = strings;
     return Boolean(ponyfill.closest(target, ACTION_BUTTON_SELECTOR));
+  }
+
+  /**
+   * @param {!Element} target
+   * @return {boolean}
+   * @private
+   */
+  isActionIconEl_(target) {
+    const {ACTION_ICON_SELECTOR} = strings;
+    return Boolean(ponyfill.closest(target, ACTION_ICON_SELECTOR));
   }
 }

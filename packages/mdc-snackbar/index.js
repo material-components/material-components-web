@@ -25,7 +25,6 @@ import {MDCComponent} from '@material/base/index';
 import MDCSnackbarFoundation from './foundation';
 import {announce} from './util';
 import {getCorrectEventName} from '@material/animation/index';
-import {numbers} from "./constants";
 
 export {MDCSnackbarFoundation};
 
@@ -57,9 +56,9 @@ export class MDCSnackbar extends MDCComponent {
   }
 
   getDefaultFoundation() {
-    const {CONTAINER_SELECTOR, LABEL_SELECTOR} = MDCSnackbarFoundation.strings;
+    const {SURFACE_SELECTOR, LABEL_SELECTOR} = MDCSnackbarFoundation.strings;
     const transitionEndEventName = getCorrectEventName(window, 'transitionend');
-    const getContainerEl = () => this.root_.querySelector(CONTAINER_SELECTOR);
+    const getSurfaceEl = () => this.root_.querySelector(SURFACE_SELECTOR);
 
     /* eslint brace-style: "off" */
     return new MDCSnackbarFoundation({
@@ -70,10 +69,8 @@ export class MDCSnackbar extends MDCComponent {
       containsNode: (target) => this.root_.contains(target),
       setAriaHidden: () => this.root_.setAttribute('aria-hidden', 'true'),
       unsetAriaHidden: () => this.root_.removeAttribute('aria-hidden'),
-      registerSurfaceHandler: (eventName, handler) => getContainerEl().addEventListener(eventName, handler),
-      deregisterSurfaceHandler: (eventName, handler) => getContainerEl().removeEventListener(eventName, handler),
-      registerSurfaceClickHandler: (handler) => getContainerEl().addEventListener('click', handler),
-      deregisterSurfaceClickHandler: (handler) => getContainerEl().removeEventListener('click', handler),
+      registerSurfaceClickHandler: (handler) => getSurfaceEl().addEventListener('click', handler),
+      deregisterSurfaceClickHandler: (handler) => getSurfaceEl().removeEventListener('click', handler),
       registerKeyDownHandler: (handler) => document.addEventListener('keydown', handler),
       deregisterKeyDownHandler: (handler) => document.removeEventListener('keydown', handler),
       registerTransitionEndHandler: (handler) => this.root_.addEventListener(transitionEndEventName, handler),
