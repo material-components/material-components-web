@@ -27,7 +27,6 @@ const {ARIA_LIVE_IE11_DELAY_MS} = numbers;
 const {LABEL_TEXT_ATTR} = strings;
 
 export function announce(rootEl, labelEl) {
-  const role = rootEl.getAttribute('role');
   const priority = rootEl.getAttribute('aria-live');
   const labelText = labelEl.textContent.trim(); // Ignore `&nbsp;` (see below)
   if (!labelText) {
@@ -37,7 +36,6 @@ export function announce(rootEl, labelEl) {
   // Temporarily disable `aria-live` to prevent NVDA from announcing an empty message.
   // If the snackbar has an action button, clearing `textContent` will cause NVDA to
   // announce the button, but not the label.
-  rootEl.setAttribute('role', 'none');
   rootEl.setAttribute('aria-live', 'off');
 
   // Temporarily clear `textContent` to force a DOM mutation event that will be detected by screen readers.
@@ -57,12 +55,10 @@ export function announce(rootEl, labelEl) {
   //       - Firefox 60 (ESR)
   //       - IE 11
   //
-  // TODO(acdvorak): Is `role="alert"` necessary?
-  labelEl.textContent = '';
-
   // The `&nbsp;` is necessary for JAWS and NVDA in Chrome when NOT using `role="alert"`.
-  // Note: Setting `position: absolute`, `opacity: 0`, or `height: 0` prevents Chrome from announcing the message.
-  // labelEl.innerHTML = '<span style="display: inline-block; width: 0; height: 1px;">&nbsp;</span>';
+  // The wrapper `<span>` visually hides the space character so that it doesn't cause jank when added/removed.
+  // N.B.: Setting `position: absolute`, `opacity: 0`, or `height: 0` prevents Chrome from announcing the message.
+  labelEl.innerHTML = '<span style="display: inline-block; width: 0; height: 1px;">&nbsp;</span>';
 
   // Prevent visual jank by temporarily displaying the label text in the ::before pseudo-element.
   // CSS generated content is normally announced by screen readers
@@ -73,7 +69,6 @@ export function announce(rootEl, labelEl) {
   // TODO(acdvorak): Experiment with nested setTimeout() calls to see if we can avoid ARIA_LIVE_IE11_DELAY_MS.
   setTimeout(() => {
     // Allow screen readers to announce changes to the DOM again.
-    rootEl.setAttribute('role', role);
     rootEl.setAttribute('aria-live', priority);
 
     // Remove the message from the ::before pseudo-element.
@@ -81,7 +76,7 @@ export function announce(rootEl, labelEl) {
 
     // Restore the original label text, which will be announced by screen readers.
     labelEl.textContent = labelText;
-  }, isIE11() ? ARIA_LIVE_IE11_DELAY_MS : 0);
+  }, isIE11() ? ARIA_LIVE_IE11_DELAY_MS : 1); // non-zero value for NVDA+Firefox
 }
 
 function isIE11() {
