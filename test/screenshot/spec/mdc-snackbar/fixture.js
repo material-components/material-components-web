@@ -35,7 +35,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
     queue.shift();
     const nextFn = queue[0];
     if (nextFn) {
-      nextFn();
+      setTimeout(nextFn, 250); // Insert a brief delay between queued snackbars (it's less visually jarring)
     }
   }
 
