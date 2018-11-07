@@ -39,6 +39,9 @@ window.mdc.testFixture.fontsLoaded.then(() => {
     }
   }
 
+  // Export snackbar instances to `window` for manual testing/debugging in dev tools
+  window.mdc.testFixture.snackbars = [];
+
   [].forEach.call(document.querySelectorAll('.mdc-snackbar'), (rootEl) => {
     /** @type {!MDCSnackbar} */
     const snackbar = mdc.snackbar.MDCSnackbar.attachTo(rootEl);
@@ -65,6 +68,8 @@ window.mdc.testFixture.fontsLoaded.then(() => {
     if (timeoutMs > 0) {
       snackbar.timeoutMs = timeoutMs;
     }
+
+    window.mdc.testFixture.snackbars.push(snackbar);
   });
 
   window.mdc.testFixture.notifyDomReady();
