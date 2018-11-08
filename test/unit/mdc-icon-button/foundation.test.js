@@ -1,17 +1,24 @@
 /**
- * Copyright 2018 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2018 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import {assert} from 'chai';
@@ -21,38 +28,35 @@ import {setupFoundationTest} from '../helpers/setup';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import MDCIconButtonToggleFoundation from '../../../packages/mdc-icon-button/foundation';
 
-const {strings} = MDCIconButtonToggleFoundation;
+const {strings, cssClasses} = MDCIconButtonToggleFoundation;
 
 suite('MDCIconButtonToggleFoundation');
 
 test('exports strings', () => {
-  assert.isOk('strings' in MDCIconButtonToggleFoundation);
+  assert.isTrue('strings' in MDCIconButtonToggleFoundation);
 });
 
 test('exports cssClasses', () => {
-  assert.isOk('cssClasses' in MDCIconButtonToggleFoundation);
+  assert.isTrue('cssClasses' in MDCIconButtonToggleFoundation);
 });
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCIconButtonToggleFoundation, [
-    'addClass', 'removeClass',
-    'setText', 'getAttr', 'setAttr', 'notifyChange',
+    'addClass', 'removeClass', 'hasClass', 'setAttr', 'notifyChange',
   ]);
 });
 
 const setupTest = () => setupFoundationTest(MDCIconButtonToggleFoundation);
 
-test('#constructor sets on to false', () => {
-  const {mockAdapter} = setupTest();
-  td.when(mockAdapter.getAttr(strings.ARIA_PRESSED)).thenReturn('false');
-  const foundation = new MDCIconButtonToggleFoundation(mockAdapter);
+test(`isOn is false if hasClass{${cssClasses.ICON_BUTTON_ON}) returns false`, () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.ICON_BUTTON_ON)).thenReturn(false);
   assert.isFalse(foundation.isOn());
 });
 
-test('#constructor sets on to true if the toggle is pressed', () => {
-  const {mockAdapter} = setupTest();
-  td.when(mockAdapter.getAttr(strings.ARIA_PRESSED)).thenReturn('true');
-  const foundation = new MDCIconButtonToggleFoundation(mockAdapter);
+test(`isOn is true if hasClass{${cssClasses.ICON_BUTTON_ON}) returns true`, () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.ICON_BUTTON_ON)).thenReturn(true);
   assert.isTrue(foundation.isOn());
 });
 
@@ -66,142 +70,43 @@ test('#handleClick calls #toggle', () => {
 
 test('#handleClick calls notifyChange', () => {
   const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.ICON_BUTTON_ON)).thenReturn(true);
   foundation.init();
   foundation.handleClick();
   td.verify(mockAdapter.notifyChange({isOn: true}), {times: 1});
 });
 
 test('#toggle flips on', () => {
-  const {foundation} = setupTest();
+  const {foundation, mockAdapter} = setupTest();
   foundation.init();
+  td.when(mockAdapter.hasClass(cssClasses.ICON_BUTTON_ON)).thenReturn(true, false);
 
   foundation.toggle();
-  assert.isOk(foundation.isOn());
+  td.verify(mockAdapter.removeClass(cssClasses.ICON_BUTTON_ON), {times: 1});
   foundation.toggle();
-  assert.isNotOk(foundation.isOn());
+  td.verify(mockAdapter.addClass(cssClasses.ICON_BUTTON_ON), {times: 1});
 });
 
 test('#toggle accepts boolean argument denoting toggle state', () => {
-  const {foundation} = setupTest();
+  const {foundation, mockAdapter} = setupTest();
   foundation.init();
 
   foundation.toggle(false);
-  assert.isNotOk(foundation.isOn());
+  td.verify(mockAdapter.removeClass(cssClasses.ICON_BUTTON_ON), {times: 1});
   foundation.toggle(true);
-  assert.isOk(foundation.isOn());
+  td.verify(mockAdapter.addClass(cssClasses.ICON_BUTTON_ON), {times: 1});
 });
 
 test('#toggle sets "aria-pressed" to true when toggled on', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.init();
 
   foundation.toggle(true);
   td.verify(mockAdapter.setAttr(strings.ARIA_PRESSED, 'true'));
 });
 
-test('#toggle removes cssClass in "data-toggle-off-class" if specified when toggled on', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const cssClass = 'toggle-off-css-class';
-  td.when(mockAdapter.getAttr(strings.DATA_TOGGLE_OFF_CLASS)).thenReturn(cssClass);
-  foundation.init();
-
-  foundation.toggle(true);
-  td.verify(mockAdapter.removeClass(cssClass));
-});
-
-test('#toggle adds cssClass in "data-toggle-on-class" if specified when toggled on', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const cssClass = 'toggle-on-css-class';
-  td.when(mockAdapter.getAttr(strings.DATA_TOGGLE_ON_CLASS)).thenReturn(cssClass);
-  foundation.init();
-
-  foundation.toggle(true);
-  td.verify(mockAdapter.addClass(cssClass));
-});
-
-test('#toggle sets text to content in "data-toggle-on-content" if specified when toggled on', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const content = 'toggle on content';
-  td.when(mockAdapter.getAttr(strings.DATA_TOGGLE_ON_CONTENT)).thenReturn(content);
-  foundation.init();
-
-  foundation.toggle(true);
-  td.verify(mockAdapter.setText(content));
-});
-
-test('#toggle sets aria-label to label in "data-toggle-on" if specified when toggled on', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const label = 'toggle on label';
-  td.when(mockAdapter.getAttr(strings.DATA_TOGGLE_ON_LABEL)).thenReturn(label);
-  foundation.init();
-
-  foundation.toggle(true);
-  td.verify(mockAdapter.setAttr(strings.ARIA_LABEL, label));
-});
-
 test('#toggle sets "aria-pressed" to false when toggled off', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.init();
 
   foundation.toggle(false);
-  td.verify(mockAdapter.setAttr(strings.ARIA_PRESSED, 'false'));
-});
-
-test('#toggle removes cssClass in "data-toggle-on-class" if specified when toggled off', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const cssClass = 'toggle-on-css-class';
-  td.when(mockAdapter.getAttr(strings.DATA_TOGGLE_ON_CLASS)).thenReturn(cssClass);
-  foundation.init();
-
-  foundation.toggle(false);
-  td.verify(mockAdapter.removeClass(cssClass));
-});
-
-test('#toggle adds cssClass in "data-toggle-off-class" if specified when toggled off', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const cssClass = 'toggle-off-css-class';
-  td.when(mockAdapter.getAttr(strings.DATA_TOGGLE_OFF_CLASS)).thenReturn(cssClass);
-  foundation.init();
-
-  foundation.toggle(false);
-  td.verify(mockAdapter.addClass(cssClass));
-});
-
-test('#toggle sets text to content in "data-toggle-off-content" if specified when toggled off', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const content = 'toggle off content';
-  td.when(mockAdapter.getAttr(strings.DATA_TOGGLE_OFF_CONTENT)).thenReturn(content);
-  foundation.init();
-
-  foundation.toggle(false);
-  td.verify(mockAdapter.setText(content));
-});
-
-test('#toggle sets aria-label to label in "data-toggle-off-label" if specified when toggled off', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const label = 'toggle off label';
-  td.when(mockAdapter.getAttr(strings.DATA_TOGGLE_OFF_LABEL)).thenReturn(label);
-  foundation.init();
-
-  foundation.toggle(false);
-  td.verify(mockAdapter.setAttr(strings.ARIA_LABEL, label));
-});
-
-test('#refreshToggleData syncs the foundation state with data-toggle-on, data-toggle-off', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getAttr(strings.DATA_TOGGLE_ON_CLASS)).thenReturn('first-class-on');
-  td.when(mockAdapter.getAttr(strings.DATA_TOGGLE_OFF_CLASS)).thenReturn('first-class-off');
-  foundation.init();
-
-  foundation.toggle(true);
-  td.verify(mockAdapter.addClass('first-class-on'));
-  td.verify(mockAdapter.removeClass('first-class-off'));
-
-  td.when(mockAdapter.getAttr(strings.DATA_TOGGLE_ON_CLASS)).thenReturn('second-class-on');
-  td.when(mockAdapter.getAttr(strings.DATA_TOGGLE_OFF_CLASS)).thenReturn('second-class-off');
-  foundation.refreshToggleData();
-
-  foundation.toggle(true);
-  td.verify(mockAdapter.addClass('second-class-on'));
-  td.verify(mockAdapter.removeClass('second-class-off'));
+  td.verify(mockAdapter.setAttr(strings.ARIA_PRESSED, 'false'), {times: 1});
 });

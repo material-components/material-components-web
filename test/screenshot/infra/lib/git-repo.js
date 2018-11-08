@@ -1,17 +1,24 @@
 /**
- * Copyright 2018 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2018 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 'use strict';
@@ -22,10 +29,18 @@ const simpleGit = require('simple-git/promise');
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const {User} = mdcProto;
 
+const Logger = require('./logger');
+
 let hasFetched = false;
 
 class GitRepo {
   constructor(workingDirPath = undefined) {
+    /**
+     * @type {!Logger}
+     * @private
+     */
+    this.logger_ = new Logger();
+
     /**
      * @type {!SimpleGit}
      * @private
@@ -57,7 +72,7 @@ class GitRepo {
     }
     hasFetched = true;
 
-    console.log('Fetching remote git commits...');
+    this.logger_.debug('Fetching remote git commits...');
 
     const prFetchRef = '+refs/pull/*/head:refs/remotes/origin/pr/*';
     const existingFetchRefs = (await this.exec_('raw', ['config', '--get-all', 'remote.origin.fetch'])).split('\n');
@@ -72,6 +87,8 @@ class GitRepo {
       const serialized = JSON.stringify(args);
       throw new VError(err, `Failed to run GitRepo.fetch(${serialized})`);
     }
+
+    this.logger_.debug('Fetched remote git commits!');
   }
 
   /**
@@ -79,7 +96,7 @@ class GitRepo {
    * @return {!Promise<string>}
    */
   async getFullCommitHash(ref = 'HEAD') {
-    const hash = this.exec_('revparse', [ref]);
+    const hash = await this.exec_('revparse', [ref]);
     if (!hash) {
       throw new Error(`Unable to get commit hash for git ref "${ref}"`);
     }
@@ -91,7 +108,7 @@ class GitRepo {
    * @return {!Promise<string>}
    */
   async getBranchName(ref = 'HEAD') {
-    const branch = this.exec_('revparse', ['--abbrev-ref', ref]);
+    const branch = await this.exec_('revparse', ['--abbrev-ref', ref]);
     if (!branch) {
       throw new Error(`Unable to get branch name for git ref "${ref}"`);
     }
@@ -110,7 +127,7 @@ class GitRepo {
    * @return {!Promise<string>}
    */
   async getFullSymbolicName(ref = 'HEAD') {
-    const fullName = this.exec_('revparse', ['--symbolic-full-name', ref]);
+    const fullName = await this.exec_('revparse', ['--symbolic-full-name', ref]);
     if (!fullName) {
       throw new Error(`Unable to get full symbolic name for git ref "${ref}"`);
     }
@@ -125,7 +142,7 @@ class GitRepo {
    */
   async getFileAtRevision(filePath, revision = 'master') {
     try {
-      return this.repo_.show([`${revision}:${filePath}`]);
+      return await this.repo_.show([`${revision}:${filePath}`]);
     } catch (err) {
       const serialized = JSON.stringify(args);
       throw new VError(err, `Failed to run GitRepo.getFileAtRevision(${serialized})`);
@@ -148,7 +165,7 @@ class GitRepo {
    */
   async getStatus() {
     try {
-      return this.repo_.status();
+      return await this.repo_.status();
     } catch (err) {
       throw new VError(err, 'Failed to run GitRepo.getStatus()');
     }
@@ -173,8 +190,25 @@ class GitRepo {
    * @return {!Promise<!Array<string>>}
    */
   async getIgnoredPaths(filePaths) {
+    this.logger_.debug(`Finding files ignored by git from ${filePaths.length.toLocaleString()} paths...`);
+    const batchSize = 1000;
+    const allIgnoredPaths = [];
+    // If we try to pass too many file paths to git, glibc throws "Error: spawn E2BIG".
+    for (let i = 0; i < filePaths.length; i += batchSize) {
+      const curIgnoredPaths = await this.getIgnoredPathsImpl_(filePaths.slice(i, i + batchSize));
+      allIgnoredPaths.push(...curIgnoredPaths);
+    }
+    this.logger_.debug(`Found ${allIgnoredPaths.length.toLocaleString()} file paths ignored by git!`);
+    return allIgnoredPaths;
+  }
+
+  /**
+   * @param {!Array<string>} filePaths
+   * @return {!Promise<!Array<string>>}
+   */
+  async getIgnoredPathsImpl_(filePaths) {
     try {
-      return this.repo_.checkIgnore(filePaths);
+      return await this.repo_.checkIgnore(filePaths);
     } catch (err) {
       throw new VError(err, `Unable to check gitignore status of ${filePaths.length} file paths`);
     }
@@ -204,6 +238,29 @@ class GitRepo {
       name: logEntry.author_name,
       email: logEntry.author_email,
     });
+  }
+
+  /**
+   * @param {string} commit
+   * @param {string} stackTrace
+   * @return {!Promise<string>}
+   */
+  async getCommitDate(commit, stackTrace) {
+    /** @type {!Array<!DefaultLogFields>} */
+    let logEntries;
+
+    try {
+      logEntries = await this.getLog([commit]);
+    } catch (err) {
+      throw new VError(err, `Unable to get date for commit "${commit}":\n${stackTrace}`);
+    }
+
+    const logEntry = logEntries[0];
+    if (!logEntry) {
+      throw new VError(err, `Unable to get date for commit "${commit}":\n${stackTrace}`);
+    }
+
+    return logEntry.date;
   }
 
   /**

@@ -7,6 +7,8 @@ iconId: shadow
 path: /catalog/elevation/
 -->
 
+> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
+
 # Elevation
 
 <!--<div class="article__asset">
@@ -63,9 +65,9 @@ Function | Description
 
 Variable | Description
 --- | ---
-`mdc-elevation-property` | Default property for elevation transitions
-`mdc-elevation-transition-duration` | Default duration value for elevation transitions
-`mdc-elevation-transition-timing-function` | Default easing value for elevation transitions
+`$mdc-elevation-property` | Default property for elevation transitions
+`$mdc-elevation-transition-duration` | Default duration value for elevation transitions
+`$mdc-elevation-transition-timing-function` | Default easing value for elevation transitions
 
 If you need more configurability over your transitions, use the `mdc-elevation-transition-value` function in conjunction with the exported sass variables.
 

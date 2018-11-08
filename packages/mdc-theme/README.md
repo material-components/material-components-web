@@ -7,6 +7,8 @@ iconId: theme
 path: /catalog/theme/
 -->
 
+> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
+
 # Theme
 
 The Material Design color system can be used to create a color scheme that reflects your brand or style.
@@ -178,4 +180,16 @@ Params:
 ```scss
 @debug mdc-theme-accessible-ink-color(secondary); // rgba(0, 0, 0, .87) (text-primary-on-light)
 @debug mdc-theme-accessible-ink-color(blue);      // white              (text-primary-on-dark)
+```
+#### `mdc-theme-text-emphasis($emphasis)`
+
+Returns opacity value for given emphasis.
+
+Params:
+
+- `$emphasis`: Type of emphasis such as `high`, `medium` & `disabled`.
+
+```scss
+@debug mdc-theme-text-emphasis(high); // .87
+@debug mdc-theme-text-emphasis(disabled); // .38
 ```

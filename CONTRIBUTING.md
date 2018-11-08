@@ -24,7 +24,7 @@ We strive to make developing Material Components Web as frictionless as possible
 
 ### Setting up your development environment
 
-You'll need a recent version of [nodejs](https://nodejs.org/en/) to work on MDC Web. We [test our builds](https://travis-ci.org/material-components/material-components-web) using both the latest and LTS node versions, so use of one of those is recommended. You can use [nvm](https://github.com/creationix/nvm) to easily install and manage different versions of node on your system.
+You'll need a recent version of [nodejs](https://nodejs.org/en/) to work on MDC Web. We [test our builds](https://travis-ci.com/material-components/material-components-web) using both the latest and LTS node versions, so use of one of those is recommended. You can use [nvm](https://github.com/creationix/nvm) to easily install and manage different versions of node on your system.
 
 > **NOTE**: If you expect to commit updated or new dependencies, please ensure you are using npm 5, which will
 > also update `package-lock.json` correctly when you install or upgrade packages.
@@ -106,7 +106,7 @@ npm run test:closure # Runs closure build tests against all closurized files
 
 #### Running Tests across browsers
 
-If you're making big changes or developing new components, we encourage you to be a good citizen and test your changes across browsers! A super simple way to do this is to use [sauce labs](https://saucelabs.com/), which is how we tests our collaborator PRs on TravisCI:
+If you're making big changes or developing new components, we encourage you to be a good citizen and test your changes across browsers! A super simple way to do this is to use [sauce labs](https://saucelabs.com/), which is how we test our collaborator PRs on TravisCI:
 
 1. [Sign up](https://saucelabs.com/beta/signup) for a sauce labs account (choose "Open Sauce" as your selected plan; [it's free](https://saucelabs.com/opensauce/)!)
 2. [Download sauce connect](https://wiki.saucelabs.com/display/DOCS/Sauce+Connect+Proxy) for your OS and make sure that the `bin` folder in the downloaded zip is somewhere on your `$PATH`.

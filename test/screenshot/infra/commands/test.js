@@ -1,17 +1,24 @@
-/*
- * Copyright 2018 Google Inc. All Rights Reserved.
+/**
+ * @license
+ * Copyright 2018 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      https://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 'use strict';
@@ -20,7 +27,10 @@ const VError = require('verror');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const GitRevision = mdcProto.GitRevision;
+const InclusionType = mdcProto.Screenshot.InclusionType;
+const ReportData = mdcProto.ReportData;
 
+const Analytics = require('../lib/analytics');
 const BuildCommand = require('./build');
 const Cli = require('../lib/cli');
 const CliColor = require('../lib/logger').colors;
@@ -30,17 +40,20 @@ const Duration = require('../lib/duration');
 const GitHubApi = require('../lib/github-api');
 const ImageDiffer = require('../lib/image-differ');
 const Logger = require('../lib/logger');
+const StatusNotifier = require('../lib/status-notifier');
 const getStackTrace = require('../lib/stacktrace')('TestCommand');
 const {ExitCode} = require('../lib/constants');
 
 // TODO(acdvorak): Refactor most of this class out into a separate file
 class TestCommand {
   constructor() {
+    this.analytics_ = new Analytics();
     this.cli_ = new Cli();
     this.diffBaseParser_ = new DiffBaseParser();
     this.gitHubApi_ = new GitHubApi();
     this.imageDiffer_ = new ImageDiffer();
-    this.logger_ = new Logger(__filename);
+    this.logger_ = new Logger();
+    this.statusNotifier_ = new StatusNotifier();
   }
 
   /**
@@ -58,30 +71,23 @@ class TestCommand {
     const snapshotDiffBase = await this.diffBaseParser_.parseGoldenDiffBase();
     const snapshotGitRev = snapshotDiffBase.git_revision;
 
-    const isTravisPr = snapshotGitRev && snapshotGitRev.type === GitRevision.Type.TRAVIS_PR;
-    const isTestable = isTravisPr ? snapshotGitRev.pr_file_paths.length > 0 : true;
-
-    if (!isTestable) {
-      this.logUntestablePr_(snapshotGitRev.pr_number);
-      return ExitCode.OK;
-    }
-
     // TODO(acdvorak): Find a better word than "local"
     /** @type {!mdc.proto.ReportData} */
-    const localDiffReportData = await this.diffAgainstLocal_(snapshotDiffBase);
-    const localDiffExitCode = this.getExitCode_(localDiffReportData);
-    if (localDiffExitCode !== ExitCode.OK) {
-      this.logTestResults_(localDiffReportData);
-      return localDiffExitCode;
+    const localReportData = await this.diffAgainstLocal_(snapshotDiffBase);
+    const localExitCode = this.getExitCode_(localReportData);
+    if (localExitCode !== ExitCode.OK) {
+      this.logTestResults_(localReportData);
+      return localExitCode;
     }
 
+    const isTravisPr = snapshotGitRev && snapshotGitRev.type === GitRevision.Type.TRAVIS_PR;
     if (isTravisPr) {
       /** @type {!mdc.proto.ReportData} */
-      const masterDiffReportData = await this.diffAgainstMaster_({localDiffReportData, snapshotGitRev});
-      this.logTestResults_(localDiffReportData);
-      this.logTestResults_(masterDiffReportData);
+      const masterReportData = await this.diffAgainstMaster_({localReportData, snapshotGitRev});
+      this.logTestResults_(localReportData);
+      this.logTestResults_(masterReportData);
     } else {
-      this.logTestResults_(localDiffReportData);
+      this.logTestResults_(localReportData);
     }
 
     // Diffs against master shouldn't fail the Travis job.
@@ -94,31 +100,35 @@ class TestCommand {
   }
 
   /**
-   * @param {!mdc.proto.DiffBase} goldenDiffBase
+   * @param {!mdc.proto.DiffBase} snapshotDiffBase
    * @return {!Promise<!mdc.proto.ReportData>}
    * @private
    */
-  async diffAgainstLocal_(goldenDiffBase) {
+  async diffAgainstLocal_(snapshotDiffBase) {
     const controller = new Controller();
 
     /** @type {!mdc.proto.ReportData} */
-    const reportData = await controller.initForCapture(goldenDiffBase);
+    const reportData = await controller.initForCapture(snapshotDiffBase);
+
+    this.statusNotifier_.initialize(reportData);
 
     try {
-      await this.gitHubApi_.setPullRequestStatusAuto(reportData);
+      await this.statusNotifier_.starting();
+
       await controller.uploadAllAssets(reportData);
       await controller.captureAllPages(reportData);
 
       controller.populateMaps(reportData);
 
-      await controller.uploadAllImages(reportData);
+      await controller.uploadAllScreenshotImages(reportData);
+      await controller.uploadAllDiffImages(reportData);
       await controller.generateReportPage(reportData);
 
-      await this.gitHubApi_.setPullRequestStatusAuto(reportData);
+      await this.statusNotifier_.finished();
 
       this.logComparisonResults_(reportData);
     } catch (err) {
-      await this.gitHubApi_.setPullRequestError();
+      await this.statusNotifier_.error();
       throw new VError(err, getStackTrace('diffAgainstLocal_'));
     }
 
@@ -127,45 +137,50 @@ class TestCommand {
 
   /**
    * TODO(acdvorak): Rename this method
-   * @param {!mdc.proto.DiffBase} goldenDiffBase
+   * @param {!mdc.proto.ReportData} localReportData
+   * @param {!mdc.proto.DiffBase} masterDiffBase
    * @param {!Array<!mdc.proto.Screenshot>} capturedScreenshots
    * @param {string} startTimeIsoUtc
    * @return {!Promise<!mdc.proto.ReportData>}
    * @private
    */
-  async diffAgainstMasterImpl_({goldenDiffBase, capturedScreenshots, startTimeIsoUtc}) {
+  async diffAgainstMasterImpl_({localReportData, masterDiffBase, capturedScreenshots, startTimeIsoUtc}) {
     const controller = new Controller();
 
     /** @type {!mdc.proto.ReportData} */
-    const reportData = await controller.initForCapture(goldenDiffBase);
+    const masterReportData = await controller.initForCapture(masterDiffBase);
+
+    const localReportDataWithMasterUploadDir = ReportData.create(localReportData);
+    localReportDataWithMasterUploadDir.meta.remote_upload_base_dir = masterReportData.meta.remote_upload_base_dir;
 
     try {
-      await controller.uploadAllAssets(reportData);
-      await this.copyAndCompareScreenshots_({reportData, capturedScreenshots, startTimeIsoUtc});
+      await controller.uploadAllAssets(masterReportData);
+      await controller.uploadAllScreenshotImages(localReportDataWithMasterUploadDir);
+      await this.copyAndCompareScreenshots_({masterReportData, capturedScreenshots, startTimeIsoUtc});
 
-      controller.populateMaps(reportData);
+      controller.populateMaps(masterReportData);
 
-      await controller.uploadAllImages(reportData);
-      await controller.generateReportPage(reportData);
+      await controller.uploadAllDiffImages(masterReportData);
+      await controller.generateReportPage(masterReportData);
 
-      this.logComparisonResults_(reportData);
+      this.logComparisonResults_(masterReportData);
     } catch (err) {
-      await this.gitHubApi_.setPullRequestError();
+      await this.statusNotifier_.error();
       throw new VError(err, getStackTrace('diffAgainstMasterImpl_'));
     }
 
-    return reportData;
+    return masterReportData;
   }
 
   /**
    * TODO(acdvorak): Rename this method
-   * @param {!mdc.proto.ReportData} localDiffReportData
+   * @param {!mdc.proto.ReportData} localReportData
    * @param {!mdc.proto.GitRevision} snapshotGitRev
    * @return {!Promise<!mdc.proto.ReportData>}
    * @private
    */
-  async diffAgainstMaster_({localDiffReportData, snapshotGitRev}) {
-    const localScreenshots = localDiffReportData.screenshots;
+  async diffAgainstMaster_({localReportData, snapshotGitRev}) {
+    const localScreenshots = localReportData.screenshots;
 
     /** @type {!Array<!mdc.proto.Screenshot>} */
     const capturedScreenshots = [].concat(
@@ -179,89 +194,117 @@ class TestCommand {
     const masterDiffBase = await this.diffBaseParser_.parseMasterDiffBase();
 
     /** @type {!mdc.proto.ReportData} */
-    const masterDiffReportData = await this.diffAgainstMasterImpl_({
-      goldenDiffBase: masterDiffBase,
+    const masterReportData = await this.diffAgainstMasterImpl_({
+      localReportData,
+      masterDiffBase,
       capturedScreenshots,
-      startTimeIsoUtc: localDiffReportData.meta.start_time_iso_utc,
+      startTimeIsoUtc: localReportData.meta.start_time_iso_utc,
     });
 
     const prNumber = snapshotGitRev.pr_number;
-    const comment = this.getPrComment_({masterDiffReportData, snapshotGitRev});
+    const comment = this.getPrComment_({masterReportData, snapshotGitRev});
     await this.gitHubApi_.createPullRequestComment({prNumber, comment});
 
-    return masterDiffReportData;
+    return masterReportData;
   }
 
   /**
-   * @param {!mdc.proto.ReportData} reportData
+   * @param {!mdc.proto.ReportData} masterReportData
    * @param {!Array<!mdc.proto.Screenshot>} capturedScreenshots
    * @param {string} startTimeIsoUtc
    * @return {!Promise<void>}
    * @private
    */
-  async copyAndCompareScreenshots_({reportData, capturedScreenshots, startTimeIsoUtc}) {
+  async copyAndCompareScreenshots_({masterReportData, capturedScreenshots, startTimeIsoUtc}) {
     const num = capturedScreenshots.length;
     const plural = num === 1 ? '' : 's';
     this.logger_.foldStart('screenshot.compare_master', `Comparing ${num} screenshot${plural} to master`);
 
-    const promises = [];
-    const screenshots = reportData.screenshots;
-    const masterScreenshots = screenshots.actual_screenshot_list;
+    const comparisonFunctions = [];
+    const masterScreenshotSets = masterReportData.screenshots;
+    const masterScreenshotList = masterScreenshotSets.actual_screenshot_list;
 
-    for (const masterScreenshot of masterScreenshots) {
+    masterScreenshotSets.added_screenshot_list.length = 0;
+    masterScreenshotSets.changed_screenshot_list.length = 0;
+    masterScreenshotSets.unchanged_screenshot_list.length = 0;
+    masterScreenshotSets.comparable_screenshot_list.length = 0;
+
+    for (const masterScreenshot of masterScreenshotList) {
       for (const capturedScreenshot of capturedScreenshots) {
         if (capturedScreenshot.html_file_path !== masterScreenshot.html_file_path ||
             capturedScreenshot.user_agent.alias !== masterScreenshot.user_agent.alias) {
           continue;
         }
-        promises.push(new Promise(async (resolve) => {
+
+        comparisonFunctions.push(async (resolve) => {
+          masterScreenshot.user_agent = capturedScreenshot.user_agent;
           masterScreenshot.actual_html_file = capturedScreenshot.actual_html_file;
           masterScreenshot.actual_image_file = capturedScreenshot.actual_image_file;
           masterScreenshot.capture_state = capturedScreenshot.capture_state;
 
-          /** @type {!mdc.proto.DiffImageResult} */
-          const diffImageResult = await this.imageDiffer_.compareOneScreenshot({
-            meta: reportData.meta,
-            screenshot: masterScreenshot,
-          });
-
-          masterScreenshot.diff_image_result = diffImageResult;
-          masterScreenshot.diff_image_file = diffImageResult.diff_image_file;
-
-          if (diffImageResult.has_changed) {
-            reportData.screenshots.changed_screenshot_list.push(masterScreenshot);
+          if (masterScreenshot.inclusion_type === InclusionType.ADD) {
+            masterScreenshotSets.added_screenshot_list.push(masterScreenshot);
           } else {
-            reportData.screenshots.unchanged_screenshot_list.push(masterScreenshot);
+            /** @type {!mdc.proto.DiffImageResult} */
+            const diffImageResult = await this.imageDiffer_.compareOneScreenshot({
+              meta: masterReportData.meta,
+              screenshot: masterScreenshot,
+            });
+
+            masterScreenshot.diff_image_result = diffImageResult;
+            masterScreenshot.diff_image_file = diffImageResult.diff_image_file;
+
+            if (diffImageResult.has_changed) {
+              masterScreenshotSets.changed_screenshot_list.push(masterScreenshot);
+            } else {
+              masterScreenshotSets.unchanged_screenshot_list.push(masterScreenshot);
+            }
+
+            masterScreenshotSets.comparable_screenshot_list.push(masterScreenshot);
           }
-          reportData.screenshots.comparable_screenshot_list.push(masterScreenshot);
 
           resolve();
-        }));
+        });
       }
     }
 
-    await Promise.all(promises);
+    // When there are a lot of images (~400 or more), comparing all of them in parallel causes timeouts and OOMs.
+    // To avoid this, we compare images in batches of 50 at a time.
+    // See https://github.com/material-components/material-components-web/issues/3555
+    let startIndex = 0;
+    while (comparisonFunctions.length > 0) {
+      const promises = comparisonFunctions.splice(0, 50).map((comparisonFunction) => new Promise(comparisonFunction));
+      const endIndex = startIndex + promises.length - 1;
+      this.logger_.debug(`Comparing screenshots ${startIndex + 1}–${endIndex + 1}...`);
+      await Promise.all(promises);
+      startIndex += promises.length;
+    }
 
     const endTimeIsoUtc = new Date().toISOString();
-    reportData.meta.start_time_iso_utc = startTimeIsoUtc;
-    reportData.meta.end_time_iso_utc = endTimeIsoUtc;
-    reportData.meta.duration_ms = Duration.elapsed(startTimeIsoUtc, endTimeIsoUtc).toMillis();
+    masterReportData.meta.start_time_iso_utc = startTimeIsoUtc;
+    masterReportData.meta.end_time_iso_utc = endTimeIsoUtc;
+    masterReportData.meta.duration_ms = Duration.elapsed(startTimeIsoUtc, endTimeIsoUtc).toMillis();
 
+    this.logger_.log('');
     this.logger_.foldEnd('screenshot.compare_master');
   }
 
   /**
-   * @param {!mdc.proto.ReportData} masterDiffReportData
+   * @param {!mdc.proto.ReportData} masterReportData
    * @param {!mdc.proto.GitRevision} snapshotGitRev
    * @return {string}
    * @private
    */
-  getPrComment_({masterDiffReportData, snapshotGitRev}) {
-    const masterReportPageUrl = masterDiffReportData.meta.report_html_file.public_url;
-    const masterScreenshots = masterDiffReportData.screenshots;
-    const masterGitRev = masterDiffReportData.meta.golden_diff_base.git_revision;
+  getPrComment_({masterReportData, snapshotGitRev}) {
+    const masterReportPageUrl = this.analytics_.getUrl({
+      url: masterReportData.meta.report_html_file.public_url,
+      source: 'github',
+      medium: 'pr_comment',
+    });
+    const masterScreenshots = masterReportData.screenshots;
+    const masterGitRev = masterReportData.meta.golden_diff_base.git_revision;
 
-    const numTotal = masterScreenshots.actual_screenshot_list.length;
+    const numTotal = masterScreenshots.runnable_screenshot_list.length;
     const numChanged =
       masterScreenshots.changed_screenshot_list.length +
       masterScreenshots.added_screenshot_list.length +
@@ -270,7 +313,7 @@ class TestCommand {
 
     if (numChanged === 0) {
       const range = `commit ${snapshotGitRev.commit} vs. \`${masterGitRev.branch}\``;
-      return `**All ${numTotal} screenshot tests passed** for ${range}! 💯🎉`;
+      return `**All [${numTotal} screenshot tests](${masterReportPageUrl}) passed** for ${range}! 💯🎉`;
     }
 
     const listMarkdown = [
@@ -285,9 +328,10 @@ class TestCommand {
       ),
     ].filter((str) => Boolean(str)).join('\n\n');
 
-
     return `
-### Screenshot test report ⚠️
+🤖 Beep boop!
+
+### Screenshot test report 🚦
 
 **${numChanged}** screenshot${plural} changed from \`${masterGitRev.branch}\` on commit ${snapshotGitRev.commit}:
 
@@ -318,7 +362,11 @@ ${listMarkdown}
     const listItemMarkdown = Object.entries(screenshotMap).map(([htmlFilePath, screenshotList]) => {
       const browserIconMarkup = this.getAllBrowserIcons_(screenshotList.screenshots);
       const firstScreenshot = screenshotList.screenshots[0];
-      const htmlFileUrl = (firstScreenshot.actual_html_file || firstScreenshot.expected_html_file).public_url;
+      const htmlFileUrl = this.analytics_.getUrl({
+        url: (firstScreenshot.actual_html_file || firstScreenshot.expected_html_file).public_url,
+        source: 'github',
+        medium: 'pr_comment',
+      });
 
       return `
 * [\`${htmlFilePath}\`](${htmlFileUrl}) ${browserIconMarkup}
@@ -350,7 +398,11 @@ ${listItemMarkdown}
    */
   getOneBrowserIcon_(screenshot) {
     const imgFile = screenshot.diff_image_file || screenshot.actual_image_file || screenshot.expected_image_file;
-    const linkUrl = imgFile.public_url;
+    const linkUrl = this.analytics_.getUrl({
+      url: imgFile.public_url,
+      source: 'github',
+      medium: 'pr_comment',
+    });
 
     const untrimmed = `
 <a href="${linkUrl}"
@@ -395,26 +447,12 @@ ${listItemMarkdown}
    */
   logExternalPr_() {
     this.logger_.warn(`
-
 ${CliColor.bold.red('Screenshot tests are not supported on external PRs for security reasons.')}
 
 See ${CliColor.underline('https://docs.travis-ci.com/user/pull-requests/#Pull-Requests-and-Security-Restrictions')}
 for more information.
 
 ${CliColor.bold.red('Skipping screenshot tests.')}
-`);
-  }
-
-  /**
-   * @param {number} prNumber
-   * @private
-   */
-  logUntestablePr_(prNumber) {
-    this.logger_.warn(`
-
-${CliColor.underline(`PR #${prNumber}`)} does not contain any testable source file changes.
-
-${CliColor.bold.green('Skipping screenshot tests.')}
 `);
   }
 
@@ -451,7 +489,11 @@ ${CliColor.bold.green('Skipping screenshot tests.')}
     const snapshotDisplayName = this.getDisplayName_(reportData.meta.snapshot_diff_base);
 
     const changedMsg = `${numChanges} screenshot${numChanges === 1 ? '' : 's'} changed!`;
-    const reportPageUrl = reportData.meta.report_html_file.public_url;
+    const reportPageUrl = this.analytics_.getUrl({
+      url: reportData.meta.report_html_file.public_url,
+      source: 'cli',
+      medium: 'test_results',
+    });
 
     const headingPlain = 'Screenshot Test Results';
     const headingColor = CliColor.bold(headingPlain);

@@ -1426,9 +1426,9 @@ $root.mdc = (function() {
              * @property {string|null} [branch] GitRevision branch
              * @property {string|null} [tag] GitRevision tag
              * @property {number|null} [pr_number] GitRevision pr_number
-             * @property {Array.<string>|null} [pr_file_paths] GitRevision pr_file_paths
              * @property {mdc.proto.IUser|null} [author] GitRevision author
              * @property {mdc.proto.IUser|null} [committer] GitRevision committer
+             * @property {string|null} [date] GitRevision date
              */
 
             /**
@@ -1440,7 +1440,6 @@ $root.mdc = (function() {
              * @param {mdc.proto.IGitRevision=} [properties] Properties to set
              */
             function GitRevision(properties) {
-                this.pr_file_paths = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         if (properties[keys[i]] != null)
@@ -1504,14 +1503,6 @@ $root.mdc = (function() {
             GitRevision.prototype.pr_number = 0;
 
             /**
-             * GitRevision pr_file_paths.
-             * @member {Array.<string>} pr_file_paths
-             * @memberof mdc.proto.GitRevision
-             * @instance
-             */
-            GitRevision.prototype.pr_file_paths = $util.emptyArray;
-
-            /**
              * GitRevision author.
              * @member {mdc.proto.IUser|null|undefined} author
              * @memberof mdc.proto.GitRevision
@@ -1526,6 +1517,14 @@ $root.mdc = (function() {
              * @instance
              */
             GitRevision.prototype.committer = null;
+
+            /**
+             * GitRevision date.
+             * @member {string} date
+             * @memberof mdc.proto.GitRevision
+             * @instance
+             */
+            GitRevision.prototype.date = "";
 
             /**
              * Creates a new GitRevision instance using the specified properties.
@@ -1565,13 +1564,12 @@ $root.mdc = (function() {
                     writer.uint32(/* id 6, wireType 2 =*/50).string(message.tag);
                 if (message.pr_number != null && message.hasOwnProperty("pr_number"))
                     writer.uint32(/* id 7, wireType 0 =*/56).uint32(message.pr_number);
-                if (message.pr_file_paths != null && message.pr_file_paths.length)
-                    for (var i = 0; i < message.pr_file_paths.length; ++i)
-                        writer.uint32(/* id 8, wireType 2 =*/66).string(message.pr_file_paths[i]);
                 if (message.author != null && message.hasOwnProperty("author"))
-                    $root.mdc.proto.User.encode(message.author, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
+                    $root.mdc.proto.User.encode(message.author, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
                 if (message.committer != null && message.hasOwnProperty("committer"))
-                    $root.mdc.proto.User.encode(message.committer, writer.uint32(/* id 10, wireType 2 =*/82).fork()).ldelim();
+                    $root.mdc.proto.User.encode(message.committer, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
+                if (message.date != null && message.hasOwnProperty("date"))
+                    writer.uint32(/* id 10, wireType 2 =*/82).string(message.date);
                 return writer;
             };
 
@@ -1628,15 +1626,13 @@ $root.mdc = (function() {
                         message.pr_number = reader.uint32();
                         break;
                     case 8:
-                        if (!(message.pr_file_paths && message.pr_file_paths.length))
-                            message.pr_file_paths = [];
-                        message.pr_file_paths.push(reader.string());
-                        break;
-                    case 9:
                         message.author = $root.mdc.proto.User.decode(reader, reader.uint32());
                         break;
-                    case 10:
+                    case 9:
                         message.committer = $root.mdc.proto.User.decode(reader, reader.uint32());
+                        break;
+                    case 10:
+                        message.date = reader.string();
                         break;
                     default:
                         reader.skipType(tag & 7);
@@ -1703,13 +1699,6 @@ $root.mdc = (function() {
                 if (message.pr_number != null && message.hasOwnProperty("pr_number"))
                     if (!$util.isInteger(message.pr_number))
                         return "pr_number: integer expected";
-                if (message.pr_file_paths != null && message.hasOwnProperty("pr_file_paths")) {
-                    if (!Array.isArray(message.pr_file_paths))
-                        return "pr_file_paths: array expected";
-                    for (var i = 0; i < message.pr_file_paths.length; ++i)
-                        if (!$util.isString(message.pr_file_paths[i]))
-                            return "pr_file_paths: string[] expected";
-                }
                 if (message.author != null && message.hasOwnProperty("author")) {
                     var error = $root.mdc.proto.User.verify(message.author);
                     if (error)
@@ -1720,6 +1709,9 @@ $root.mdc = (function() {
                     if (error)
                         return "committer." + error;
                 }
+                if (message.date != null && message.hasOwnProperty("date"))
+                    if (!$util.isString(message.date))
+                        return "date: string expected";
                 return null;
             };
 
@@ -1773,13 +1765,6 @@ $root.mdc = (function() {
                     message.tag = String(object.tag);
                 if (object.pr_number != null)
                     message.pr_number = object.pr_number >>> 0;
-                if (object.pr_file_paths) {
-                    if (!Array.isArray(object.pr_file_paths))
-                        throw TypeError(".mdc.proto.GitRevision.pr_file_paths: array expected");
-                    message.pr_file_paths = [];
-                    for (var i = 0; i < object.pr_file_paths.length; ++i)
-                        message.pr_file_paths[i] = String(object.pr_file_paths[i]);
-                }
                 if (object.author != null) {
                     if (typeof object.author !== "object")
                         throw TypeError(".mdc.proto.GitRevision.author: object expected");
@@ -1790,6 +1775,8 @@ $root.mdc = (function() {
                         throw TypeError(".mdc.proto.GitRevision.committer: object expected");
                     message.committer = $root.mdc.proto.User.fromObject(object.committer);
                 }
+                if (object.date != null)
+                    message.date = String(object.date);
                 return message;
             };
 
@@ -1806,8 +1793,6 @@ $root.mdc = (function() {
                 if (!options)
                     options = {};
                 var object = {};
-                if (options.arrays || options.defaults)
-                    object.pr_file_paths = [];
                 if (options.defaults) {
                     object.type = options.enums === String ? "UNKNOWN" : 0;
                     object.golden_json_file_path = "";
@@ -1818,6 +1803,7 @@ $root.mdc = (function() {
                     object.pr_number = 0;
                     object.author = null;
                     object.committer = null;
+                    object.date = "";
                 }
                 if (message.type != null && message.hasOwnProperty("type"))
                     object.type = options.enums === String ? $root.mdc.proto.GitRevision.Type[message.type] : message.type;
@@ -1833,15 +1819,12 @@ $root.mdc = (function() {
                     object.tag = message.tag;
                 if (message.pr_number != null && message.hasOwnProperty("pr_number"))
                     object.pr_number = message.pr_number;
-                if (message.pr_file_paths && message.pr_file_paths.length) {
-                    object.pr_file_paths = [];
-                    for (var j = 0; j < message.pr_file_paths.length; ++j)
-                        object.pr_file_paths[j] = message.pr_file_paths[j];
-                }
                 if (message.author != null && message.hasOwnProperty("author"))
                     object.author = $root.mdc.proto.User.toObject(message.author, options);
                 if (message.committer != null && message.hasOwnProperty("committer"))
                     object.committer = $root.mdc.proto.User.toObject(message.committer, options);
+                if (message.date != null && message.hasOwnProperty("date"))
+                    object.date = message.date;
                 return object;
             };
 
@@ -2614,12 +2597,18 @@ $root.mdc = (function() {
              * @property {selenium.proto.IRawCapabilities|null} [desired_capabilities] UserAgent desired_capabilities
              * @property {selenium.proto.IRawCapabilities|null} [actual_capabilities] UserAgent actual_capabilities
              * @property {mdc.proto.UserAgent.INavigator|null} [navigator] UserAgent navigator
+             * @property {string|null} [selenium_session_id] UserAgent selenium_session_id
+             * @property {string|null} [selenium_result_url] UserAgent selenium_result_url
              * @property {boolean|null} [is_enabled_by_cli] UserAgent is_enabled_by_cli
              * @property {boolean|null} [is_available_locally] UserAgent is_available_locally
              * @property {boolean|null} [is_runnable] UserAgent is_runnable
              * @property {string|null} [image_filename_suffix] UserAgent image_filename_suffix
              * @property {string|null} [browser_icon_url] UserAgent browser_icon_url
              * @property {string|null} [os_icon_url] UserAgent os_icon_url
+             * @property {Array.<string>|null} [raw_options] UserAgent raw_options
+             * @property {boolean|null} [is_high_contrast_mode] UserAgent is_high_contrast_mode
+             * @property {boolean|null} [is_font_smoothing_disabled] UserAgent is_font_smoothing_disabled
+             * @property {boolean|null} [is_rtl] UserAgent is_rtl
              */
 
             /**
@@ -2631,6 +2620,7 @@ $root.mdc = (function() {
              * @param {mdc.proto.IUserAgent=} [properties] Properties to set
              */
             function UserAgent(properties) {
+                this.raw_options = [];
                 if (properties)
                     for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                         if (properties[keys[i]] != null)
@@ -2742,6 +2732,22 @@ $root.mdc = (function() {
             UserAgent.prototype.navigator = null;
 
             /**
+             * UserAgent selenium_session_id.
+             * @member {string} selenium_session_id
+             * @memberof mdc.proto.UserAgent
+             * @instance
+             */
+            UserAgent.prototype.selenium_session_id = "";
+
+            /**
+             * UserAgent selenium_result_url.
+             * @member {string} selenium_result_url
+             * @memberof mdc.proto.UserAgent
+             * @instance
+             */
+            UserAgent.prototype.selenium_result_url = "";
+
+            /**
              * UserAgent is_enabled_by_cli.
              * @member {boolean} is_enabled_by_cli
              * @memberof mdc.proto.UserAgent
@@ -2788,6 +2794,38 @@ $root.mdc = (function() {
              * @instance
              */
             UserAgent.prototype.os_icon_url = "";
+
+            /**
+             * UserAgent raw_options.
+             * @member {Array.<string>} raw_options
+             * @memberof mdc.proto.UserAgent
+             * @instance
+             */
+            UserAgent.prototype.raw_options = $util.emptyArray;
+
+            /**
+             * UserAgent is_high_contrast_mode.
+             * @member {boolean} is_high_contrast_mode
+             * @memberof mdc.proto.UserAgent
+             * @instance
+             */
+            UserAgent.prototype.is_high_contrast_mode = false;
+
+            /**
+             * UserAgent is_font_smoothing_disabled.
+             * @member {boolean} is_font_smoothing_disabled
+             * @memberof mdc.proto.UserAgent
+             * @instance
+             */
+            UserAgent.prototype.is_font_smoothing_disabled = false;
+
+            /**
+             * UserAgent is_rtl.
+             * @member {boolean} is_rtl
+             * @memberof mdc.proto.UserAgent
+             * @instance
+             */
+            UserAgent.prototype.is_rtl = false;
 
             /**
              * Creates a new UserAgent instance using the specified properties.
@@ -2851,6 +2889,19 @@ $root.mdc = (function() {
                     writer.uint32(/* id 18, wireType 2 =*/146).string(message.browser_icon_url);
                 if (message.os_icon_url != null && message.hasOwnProperty("os_icon_url"))
                     writer.uint32(/* id 19, wireType 2 =*/154).string(message.os_icon_url);
+                if (message.selenium_session_id != null && message.hasOwnProperty("selenium_session_id"))
+                    writer.uint32(/* id 20, wireType 2 =*/162).string(message.selenium_session_id);
+                if (message.selenium_result_url != null && message.hasOwnProperty("selenium_result_url"))
+                    writer.uint32(/* id 21, wireType 2 =*/170).string(message.selenium_result_url);
+                if (message.raw_options != null && message.raw_options.length)
+                    for (var i = 0; i < message.raw_options.length; ++i)
+                        writer.uint32(/* id 22, wireType 2 =*/178).string(message.raw_options[i]);
+                if (message.is_high_contrast_mode != null && message.hasOwnProperty("is_high_contrast_mode"))
+                    writer.uint32(/* id 23, wireType 0 =*/184).bool(message.is_high_contrast_mode);
+                if (message.is_font_smoothing_disabled != null && message.hasOwnProperty("is_font_smoothing_disabled"))
+                    writer.uint32(/* id 24, wireType 0 =*/192).bool(message.is_font_smoothing_disabled);
+                if (message.is_rtl != null && message.hasOwnProperty("is_rtl"))
+                    writer.uint32(/* id 25, wireType 0 =*/200).bool(message.is_rtl);
                 return writer;
             };
 
@@ -2924,6 +2975,12 @@ $root.mdc = (function() {
                     case 13:
                         message.navigator = $root.mdc.proto.UserAgent.Navigator.decode(reader, reader.uint32());
                         break;
+                    case 20:
+                        message.selenium_session_id = reader.string();
+                        break;
+                    case 21:
+                        message.selenium_result_url = reader.string();
+                        break;
                     case 14:
                         message.is_enabled_by_cli = reader.bool();
                         break;
@@ -2941,6 +2998,20 @@ $root.mdc = (function() {
                         break;
                     case 19:
                         message.os_icon_url = reader.string();
+                        break;
+                    case 22:
+                        if (!(message.raw_options && message.raw_options.length))
+                            message.raw_options = [];
+                        message.raw_options.push(reader.string());
+                        break;
+                    case 23:
+                        message.is_high_contrast_mode = reader.bool();
+                        break;
+                    case 24:
+                        message.is_font_smoothing_disabled = reader.bool();
+                        break;
+                    case 25:
+                        message.is_rtl = reader.bool();
                         break;
                     default:
                         reader.skipType(tag & 7);
@@ -3052,6 +3123,12 @@ $root.mdc = (function() {
                     if (error)
                         return "navigator." + error;
                 }
+                if (message.selenium_session_id != null && message.hasOwnProperty("selenium_session_id"))
+                    if (!$util.isString(message.selenium_session_id))
+                        return "selenium_session_id: string expected";
+                if (message.selenium_result_url != null && message.hasOwnProperty("selenium_result_url"))
+                    if (!$util.isString(message.selenium_result_url))
+                        return "selenium_result_url: string expected";
                 if (message.is_enabled_by_cli != null && message.hasOwnProperty("is_enabled_by_cli"))
                     if (typeof message.is_enabled_by_cli !== "boolean")
                         return "is_enabled_by_cli: boolean expected";
@@ -3070,6 +3147,22 @@ $root.mdc = (function() {
                 if (message.os_icon_url != null && message.hasOwnProperty("os_icon_url"))
                     if (!$util.isString(message.os_icon_url))
                         return "os_icon_url: string expected";
+                if (message.raw_options != null && message.hasOwnProperty("raw_options")) {
+                    if (!Array.isArray(message.raw_options))
+                        return "raw_options: array expected";
+                    for (var i = 0; i < message.raw_options.length; ++i)
+                        if (!$util.isString(message.raw_options[i]))
+                            return "raw_options: string[] expected";
+                }
+                if (message.is_high_contrast_mode != null && message.hasOwnProperty("is_high_contrast_mode"))
+                    if (typeof message.is_high_contrast_mode !== "boolean")
+                        return "is_high_contrast_mode: boolean expected";
+                if (message.is_font_smoothing_disabled != null && message.hasOwnProperty("is_font_smoothing_disabled"))
+                    if (typeof message.is_font_smoothing_disabled !== "boolean")
+                        return "is_font_smoothing_disabled: boolean expected";
+                if (message.is_rtl != null && message.hasOwnProperty("is_rtl"))
+                    if (typeof message.is_rtl !== "boolean")
+                        return "is_rtl: boolean expected";
                 return null;
             };
 
@@ -3192,6 +3285,10 @@ $root.mdc = (function() {
                         throw TypeError(".mdc.proto.UserAgent.navigator: object expected");
                     message.navigator = $root.mdc.proto.UserAgent.Navigator.fromObject(object.navigator);
                 }
+                if (object.selenium_session_id != null)
+                    message.selenium_session_id = String(object.selenium_session_id);
+                if (object.selenium_result_url != null)
+                    message.selenium_result_url = String(object.selenium_result_url);
                 if (object.is_enabled_by_cli != null)
                     message.is_enabled_by_cli = Boolean(object.is_enabled_by_cli);
                 if (object.is_available_locally != null)
@@ -3204,6 +3301,19 @@ $root.mdc = (function() {
                     message.browser_icon_url = String(object.browser_icon_url);
                 if (object.os_icon_url != null)
                     message.os_icon_url = String(object.os_icon_url);
+                if (object.raw_options) {
+                    if (!Array.isArray(object.raw_options))
+                        throw TypeError(".mdc.proto.UserAgent.raw_options: array expected");
+                    message.raw_options = [];
+                    for (var i = 0; i < object.raw_options.length; ++i)
+                        message.raw_options[i] = String(object.raw_options[i]);
+                }
+                if (object.is_high_contrast_mode != null)
+                    message.is_high_contrast_mode = Boolean(object.is_high_contrast_mode);
+                if (object.is_font_smoothing_disabled != null)
+                    message.is_font_smoothing_disabled = Boolean(object.is_font_smoothing_disabled);
+                if (object.is_rtl != null)
+                    message.is_rtl = Boolean(object.is_rtl);
                 return message;
             };
 
@@ -3220,6 +3330,8 @@ $root.mdc = (function() {
                 if (!options)
                     options = {};
                 var object = {};
+                if (options.arrays || options.defaults)
+                    object.raw_options = [];
                 if (options.defaults) {
                     object.alias = "";
                     object.form_factor_name = "";
@@ -3240,6 +3352,11 @@ $root.mdc = (function() {
                     object.image_filename_suffix = "";
                     object.browser_icon_url = "";
                     object.os_icon_url = "";
+                    object.selenium_session_id = "";
+                    object.selenium_result_url = "";
+                    object.is_high_contrast_mode = false;
+                    object.is_font_smoothing_disabled = false;
+                    object.is_rtl = false;
                 }
                 if (message.alias != null && message.hasOwnProperty("alias"))
                     object.alias = message.alias;
@@ -3279,6 +3396,21 @@ $root.mdc = (function() {
                     object.browser_icon_url = message.browser_icon_url;
                 if (message.os_icon_url != null && message.hasOwnProperty("os_icon_url"))
                     object.os_icon_url = message.os_icon_url;
+                if (message.selenium_session_id != null && message.hasOwnProperty("selenium_session_id"))
+                    object.selenium_session_id = message.selenium_session_id;
+                if (message.selenium_result_url != null && message.hasOwnProperty("selenium_result_url"))
+                    object.selenium_result_url = message.selenium_result_url;
+                if (message.raw_options && message.raw_options.length) {
+                    object.raw_options = [];
+                    for (var j = 0; j < message.raw_options.length; ++j)
+                        object.raw_options[j] = message.raw_options[j];
+                }
+                if (message.is_high_contrast_mode != null && message.hasOwnProperty("is_high_contrast_mode"))
+                    object.is_high_contrast_mode = message.is_high_contrast_mode;
+                if (message.is_font_smoothing_disabled != null && message.hasOwnProperty("is_font_smoothing_disabled"))
+                    object.is_font_smoothing_disabled = message.is_font_smoothing_disabled;
+                if (message.is_rtl != null && message.hasOwnProperty("is_rtl"))
+                    object.is_rtl = message.is_rtl;
                 return object;
             };
 
@@ -5529,6 +5661,7 @@ $root.mdc = (function() {
              * @memberof mdc.proto
              * @interface IScreenshot
              * @property {boolean|null} [is_runnable] Screenshot is_runnable
+             * @property {boolean|null} [is_url_skipped_by_cli] Screenshot is_url_skipped_by_cli
              * @property {mdc.proto.Screenshot.InclusionType|null} [inclusion_type] Screenshot inclusion_type
              * @property {mdc.proto.Screenshot.CaptureState|null} [capture_state] Screenshot capture_state
              * @property {mdc.proto.IUserAgent|null} [user_agent] Screenshot user_agent
@@ -5539,8 +5672,9 @@ $root.mdc = (function() {
              * @property {mdc.proto.ITestFile|null} [actual_image_file] Screenshot actual_image_file
              * @property {mdc.proto.ITestFile|null} [diff_image_file] Screenshot diff_image_file
              * @property {mdc.proto.IDiffImageResult|null} [diff_image_result] Screenshot diff_image_result
+             * @property {mdc.proto.ICropResult|null} [crop_result] Screenshot crop_result
              * @property {number|null} [retry_count] Screenshot retry_count
-             * @property {number|null} [max_retries] Screenshot max_retries
+             * @property {mdc.proto.IFlakeConfig|null} [flake_config] Screenshot flake_config
              */
 
             /**
@@ -5565,6 +5699,14 @@ $root.mdc = (function() {
              * @instance
              */
             Screenshot.prototype.is_runnable = false;
+
+            /**
+             * Screenshot is_url_skipped_by_cli.
+             * @member {boolean} is_url_skipped_by_cli
+             * @memberof mdc.proto.Screenshot
+             * @instance
+             */
+            Screenshot.prototype.is_url_skipped_by_cli = false;
 
             /**
              * Screenshot inclusion_type.
@@ -5647,6 +5789,14 @@ $root.mdc = (function() {
             Screenshot.prototype.diff_image_result = null;
 
             /**
+             * Screenshot crop_result.
+             * @member {mdc.proto.ICropResult|null|undefined} crop_result
+             * @memberof mdc.proto.Screenshot
+             * @instance
+             */
+            Screenshot.prototype.crop_result = null;
+
+            /**
              * Screenshot retry_count.
              * @member {number} retry_count
              * @memberof mdc.proto.Screenshot
@@ -5655,12 +5805,12 @@ $root.mdc = (function() {
             Screenshot.prototype.retry_count = 0;
 
             /**
-             * Screenshot max_retries.
-             * @member {number} max_retries
+             * Screenshot flake_config.
+             * @member {mdc.proto.IFlakeConfig|null|undefined} flake_config
              * @memberof mdc.proto.Screenshot
              * @instance
              */
-            Screenshot.prototype.max_retries = 0;
+            Screenshot.prototype.flake_config = null;
 
             /**
              * Creates a new Screenshot instance using the specified properties.
@@ -5710,8 +5860,12 @@ $root.mdc = (function() {
                     $root.mdc.proto.DiffImageResult.encode(message.diff_image_result, writer.uint32(/* id 11, wireType 2 =*/90).fork()).ldelim();
                 if (message.retry_count != null && message.hasOwnProperty("retry_count"))
                     writer.uint32(/* id 12, wireType 0 =*/96).uint32(message.retry_count);
-                if (message.max_retries != null && message.hasOwnProperty("max_retries"))
-                    writer.uint32(/* id 13, wireType 0 =*/104).uint32(message.max_retries);
+                if (message.flake_config != null && message.hasOwnProperty("flake_config"))
+                    $root.mdc.proto.FlakeConfig.encode(message.flake_config, writer.uint32(/* id 13, wireType 2 =*/106).fork()).ldelim();
+                if (message.is_url_skipped_by_cli != null && message.hasOwnProperty("is_url_skipped_by_cli"))
+                    writer.uint32(/* id 14, wireType 0 =*/112).bool(message.is_url_skipped_by_cli);
+                if (message.crop_result != null && message.hasOwnProperty("crop_result"))
+                    $root.mdc.proto.CropResult.encode(message.crop_result, writer.uint32(/* id 15, wireType 2 =*/122).fork()).ldelim();
                 return writer;
             };
 
@@ -5749,6 +5903,9 @@ $root.mdc = (function() {
                     case 1:
                         message.is_runnable = reader.bool();
                         break;
+                    case 14:
+                        message.is_url_skipped_by_cli = reader.bool();
+                        break;
                     case 2:
                         message.inclusion_type = reader.int32();
                         break;
@@ -5779,11 +5936,14 @@ $root.mdc = (function() {
                     case 11:
                         message.diff_image_result = $root.mdc.proto.DiffImageResult.decode(reader, reader.uint32());
                         break;
+                    case 15:
+                        message.crop_result = $root.mdc.proto.CropResult.decode(reader, reader.uint32());
+                        break;
                     case 12:
                         message.retry_count = reader.uint32();
                         break;
                     case 13:
-                        message.max_retries = reader.uint32();
+                        message.flake_config = $root.mdc.proto.FlakeConfig.decode(reader, reader.uint32());
                         break;
                     default:
                         reader.skipType(tag & 7);
@@ -5823,6 +5983,9 @@ $root.mdc = (function() {
                 if (message.is_runnable != null && message.hasOwnProperty("is_runnable"))
                     if (typeof message.is_runnable !== "boolean")
                         return "is_runnable: boolean expected";
+                if (message.is_url_skipped_by_cli != null && message.hasOwnProperty("is_url_skipped_by_cli"))
+                    if (typeof message.is_url_skipped_by_cli !== "boolean")
+                        return "is_url_skipped_by_cli: boolean expected";
                 if (message.inclusion_type != null && message.hasOwnProperty("inclusion_type"))
                     switch (message.inclusion_type) {
                     default:
@@ -5883,12 +6046,19 @@ $root.mdc = (function() {
                     if (error)
                         return "diff_image_result." + error;
                 }
+                if (message.crop_result != null && message.hasOwnProperty("crop_result")) {
+                    var error = $root.mdc.proto.CropResult.verify(message.crop_result);
+                    if (error)
+                        return "crop_result." + error;
+                }
                 if (message.retry_count != null && message.hasOwnProperty("retry_count"))
                     if (!$util.isInteger(message.retry_count))
                         return "retry_count: integer expected";
-                if (message.max_retries != null && message.hasOwnProperty("max_retries"))
-                    if (!$util.isInteger(message.max_retries))
-                        return "max_retries: integer expected";
+                if (message.flake_config != null && message.hasOwnProperty("flake_config")) {
+                    var error = $root.mdc.proto.FlakeConfig.verify(message.flake_config);
+                    if (error)
+                        return "flake_config." + error;
+                }
                 return null;
             };
 
@@ -5906,6 +6076,8 @@ $root.mdc = (function() {
                 var message = new $root.mdc.proto.Screenshot();
                 if (object.is_runnable != null)
                     message.is_runnable = Boolean(object.is_runnable);
+                if (object.is_url_skipped_by_cli != null)
+                    message.is_url_skipped_by_cli = Boolean(object.is_url_skipped_by_cli);
                 switch (object.inclusion_type) {
                 case "UNKNOWN":
                 case 0:
@@ -5987,10 +6159,18 @@ $root.mdc = (function() {
                         throw TypeError(".mdc.proto.Screenshot.diff_image_result: object expected");
                     message.diff_image_result = $root.mdc.proto.DiffImageResult.fromObject(object.diff_image_result);
                 }
+                if (object.crop_result != null) {
+                    if (typeof object.crop_result !== "object")
+                        throw TypeError(".mdc.proto.Screenshot.crop_result: object expected");
+                    message.crop_result = $root.mdc.proto.CropResult.fromObject(object.crop_result);
+                }
                 if (object.retry_count != null)
                     message.retry_count = object.retry_count >>> 0;
-                if (object.max_retries != null)
-                    message.max_retries = object.max_retries >>> 0;
+                if (object.flake_config != null) {
+                    if (typeof object.flake_config !== "object")
+                        throw TypeError(".mdc.proto.Screenshot.flake_config: object expected");
+                    message.flake_config = $root.mdc.proto.FlakeConfig.fromObject(object.flake_config);
+                }
                 return message;
             };
 
@@ -6020,7 +6200,9 @@ $root.mdc = (function() {
                     object.diff_image_file = null;
                     object.diff_image_result = null;
                     object.retry_count = 0;
-                    object.max_retries = 0;
+                    object.flake_config = null;
+                    object.is_url_skipped_by_cli = false;
+                    object.crop_result = null;
                 }
                 if (message.is_runnable != null && message.hasOwnProperty("is_runnable"))
                     object.is_runnable = message.is_runnable;
@@ -6046,8 +6228,12 @@ $root.mdc = (function() {
                     object.diff_image_result = $root.mdc.proto.DiffImageResult.toObject(message.diff_image_result, options);
                 if (message.retry_count != null && message.hasOwnProperty("retry_count"))
                     object.retry_count = message.retry_count;
-                if (message.max_retries != null && message.hasOwnProperty("max_retries"))
-                    object.max_retries = message.max_retries;
+                if (message.flake_config != null && message.hasOwnProperty("flake_config"))
+                    object.flake_config = $root.mdc.proto.FlakeConfig.toObject(message.flake_config, options);
+                if (message.is_url_skipped_by_cli != null && message.hasOwnProperty("is_url_skipped_by_cli"))
+                    object.is_url_skipped_by_cli = message.is_url_skipped_by_cli;
+                if (message.crop_result != null && message.hasOwnProperty("crop_result"))
+                    object.crop_result = $root.mdc.proto.CropResult.toObject(message.crop_result, options);
                 return object;
             };
 
@@ -6103,6 +6289,580 @@ $root.mdc = (function() {
             })();
 
             return Screenshot;
+        })();
+
+        proto.CropResult = (function() {
+
+            /**
+             * Properties of a CropResult.
+             * @memberof mdc.proto
+             * @interface ICropResult
+             * @property {number|null} [uncropped_width] CropResult uncropped_width
+             * @property {number|null} [uncropped_height] CropResult uncropped_height
+             * @property {number|null} [cropped_width] CropResult cropped_width
+             * @property {number|null} [cropped_height] CropResult cropped_height
+             */
+
+            /**
+             * Constructs a new CropResult.
+             * @memberof mdc.proto
+             * @classdesc Represents a CropResult.
+             * @implements ICropResult
+             * @constructor
+             * @param {mdc.proto.ICropResult=} [properties] Properties to set
+             */
+            function CropResult(properties) {
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
+            }
+
+            /**
+             * CropResult uncropped_width.
+             * @member {number} uncropped_width
+             * @memberof mdc.proto.CropResult
+             * @instance
+             */
+            CropResult.prototype.uncropped_width = 0;
+
+            /**
+             * CropResult uncropped_height.
+             * @member {number} uncropped_height
+             * @memberof mdc.proto.CropResult
+             * @instance
+             */
+            CropResult.prototype.uncropped_height = 0;
+
+            /**
+             * CropResult cropped_width.
+             * @member {number} cropped_width
+             * @memberof mdc.proto.CropResult
+             * @instance
+             */
+            CropResult.prototype.cropped_width = 0;
+
+            /**
+             * CropResult cropped_height.
+             * @member {number} cropped_height
+             * @memberof mdc.proto.CropResult
+             * @instance
+             */
+            CropResult.prototype.cropped_height = 0;
+
+            /**
+             * Creates a new CropResult instance using the specified properties.
+             * @function create
+             * @memberof mdc.proto.CropResult
+             * @static
+             * @param {mdc.proto.ICropResult=} [properties] Properties to set
+             * @returns {mdc.proto.CropResult} CropResult instance
+             */
+            CropResult.create = function create(properties) {
+                return new CropResult(properties);
+            };
+
+            /**
+             * Encodes the specified CropResult message. Does not implicitly {@link mdc.proto.CropResult.verify|verify} messages.
+             * @function encode
+             * @memberof mdc.proto.CropResult
+             * @static
+             * @param {mdc.proto.ICropResult} message CropResult message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            CropResult.encode = function encode(message, writer) {
+                if (!writer)
+                    writer = $Writer.create();
+                if (message.uncropped_width != null && message.hasOwnProperty("uncropped_width"))
+                    writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.uncropped_width);
+                if (message.uncropped_height != null && message.hasOwnProperty("uncropped_height"))
+                    writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.uncropped_height);
+                if (message.cropped_width != null && message.hasOwnProperty("cropped_width"))
+                    writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.cropped_width);
+                if (message.cropped_height != null && message.hasOwnProperty("cropped_height"))
+                    writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.cropped_height);
+                return writer;
+            };
+
+            /**
+             * Encodes the specified CropResult message, length delimited. Does not implicitly {@link mdc.proto.CropResult.verify|verify} messages.
+             * @function encodeDelimited
+             * @memberof mdc.proto.CropResult
+             * @static
+             * @param {mdc.proto.ICropResult} message CropResult message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            CropResult.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes a CropResult message from the specified reader or buffer.
+             * @function decode
+             * @memberof mdc.proto.CropResult
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {mdc.proto.CropResult} CropResult
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            CropResult.decode = function decode(reader, length) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader.create(reader);
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.mdc.proto.CropResult();
+                while (reader.pos < end) {
+                    var tag = reader.uint32();
+                    switch (tag >>> 3) {
+                    case 1:
+                        message.uncropped_width = reader.uint32();
+                        break;
+                    case 2:
+                        message.uncropped_height = reader.uint32();
+                        break;
+                    case 3:
+                        message.cropped_width = reader.uint32();
+                        break;
+                    case 4:
+                        message.cropped_height = reader.uint32();
+                        break;
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                return message;
+            };
+
+            /**
+             * Decodes a CropResult message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
+             * @memberof mdc.proto.CropResult
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @returns {mdc.proto.CropResult} CropResult
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            CropResult.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = new $Reader(reader);
+                return this.decode(reader, reader.uint32());
+            };
+
+            /**
+             * Verifies a CropResult message.
+             * @function verify
+             * @memberof mdc.proto.CropResult
+             * @static
+             * @param {Object.<string,*>} message Plain object to verify
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+             */
+            CropResult.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
+                if (message.uncropped_width != null && message.hasOwnProperty("uncropped_width"))
+                    if (!$util.isInteger(message.uncropped_width))
+                        return "uncropped_width: integer expected";
+                if (message.uncropped_height != null && message.hasOwnProperty("uncropped_height"))
+                    if (!$util.isInteger(message.uncropped_height))
+                        return "uncropped_height: integer expected";
+                if (message.cropped_width != null && message.hasOwnProperty("cropped_width"))
+                    if (!$util.isInteger(message.cropped_width))
+                        return "cropped_width: integer expected";
+                if (message.cropped_height != null && message.hasOwnProperty("cropped_height"))
+                    if (!$util.isInteger(message.cropped_height))
+                        return "cropped_height: integer expected";
+                return null;
+            };
+
+            /**
+             * Creates a CropResult message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof mdc.proto.CropResult
+             * @static
+             * @param {Object.<string,*>} object Plain object
+             * @returns {mdc.proto.CropResult} CropResult
+             */
+            CropResult.fromObject = function fromObject(object) {
+                if (object instanceof $root.mdc.proto.CropResult)
+                    return object;
+                var message = new $root.mdc.proto.CropResult();
+                if (object.uncropped_width != null)
+                    message.uncropped_width = object.uncropped_width >>> 0;
+                if (object.uncropped_height != null)
+                    message.uncropped_height = object.uncropped_height >>> 0;
+                if (object.cropped_width != null)
+                    message.cropped_width = object.cropped_width >>> 0;
+                if (object.cropped_height != null)
+                    message.cropped_height = object.cropped_height >>> 0;
+                return message;
+            };
+
+            /**
+             * Creates a plain object from a CropResult message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof mdc.proto.CropResult
+             * @static
+             * @param {mdc.proto.CropResult} message CropResult
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            CropResult.toObject = function toObject(message, options) {
+                if (!options)
+                    options = {};
+                var object = {};
+                if (options.defaults) {
+                    object.uncropped_width = 0;
+                    object.uncropped_height = 0;
+                    object.cropped_width = 0;
+                    object.cropped_height = 0;
+                }
+                if (message.uncropped_width != null && message.hasOwnProperty("uncropped_width"))
+                    object.uncropped_width = message.uncropped_width;
+                if (message.uncropped_height != null && message.hasOwnProperty("uncropped_height"))
+                    object.uncropped_height = message.uncropped_height;
+                if (message.cropped_width != null && message.hasOwnProperty("cropped_width"))
+                    object.cropped_width = message.cropped_width;
+                if (message.cropped_height != null && message.hasOwnProperty("cropped_height"))
+                    object.cropped_height = message.cropped_height;
+                return object;
+            };
+
+            /**
+             * Converts this CropResult to JSON.
+             * @function toJSON
+             * @memberof mdc.proto.CropResult
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            CropResult.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            return CropResult;
+        })();
+
+        proto.FlakeConfig = (function() {
+
+            /**
+             * Properties of a FlakeConfig.
+             * @memberof mdc.proto
+             * @interface IFlakeConfig
+             * @property {number|null} [max_retries] FlakeConfig max_retries
+             * @property {number|null} [retry_delay_ms] FlakeConfig retry_delay_ms
+             * @property {number|null} [min_changed_pixel_count] FlakeConfig min_changed_pixel_count
+             * @property {number|null} [max_changed_pixel_fraction_to_retry] FlakeConfig max_changed_pixel_fraction_to_retry
+             * @property {number|null} [font_face_observer_timeout_ms] FlakeConfig font_face_observer_timeout_ms
+             * @property {number|null} [fonts_loaded_reflow_delay_ms] FlakeConfig fonts_loaded_reflow_delay_ms
+             * @property {boolean|null} [skip_all] FlakeConfig skip_all
+             */
+
+            /**
+             * Constructs a new FlakeConfig.
+             * @memberof mdc.proto
+             * @classdesc Represents a FlakeConfig.
+             * @implements IFlakeConfig
+             * @constructor
+             * @param {mdc.proto.IFlakeConfig=} [properties] Properties to set
+             */
+            function FlakeConfig(properties) {
+                if (properties)
+                    for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                        if (properties[keys[i]] != null)
+                            this[keys[i]] = properties[keys[i]];
+            }
+
+            /**
+             * FlakeConfig max_retries.
+             * @member {number} max_retries
+             * @memberof mdc.proto.FlakeConfig
+             * @instance
+             */
+            FlakeConfig.prototype.max_retries = 0;
+
+            /**
+             * FlakeConfig retry_delay_ms.
+             * @member {number} retry_delay_ms
+             * @memberof mdc.proto.FlakeConfig
+             * @instance
+             */
+            FlakeConfig.prototype.retry_delay_ms = 0;
+
+            /**
+             * FlakeConfig min_changed_pixel_count.
+             * @member {number} min_changed_pixel_count
+             * @memberof mdc.proto.FlakeConfig
+             * @instance
+             */
+            FlakeConfig.prototype.min_changed_pixel_count = 0;
+
+            /**
+             * FlakeConfig max_changed_pixel_fraction_to_retry.
+             * @member {number} max_changed_pixel_fraction_to_retry
+             * @memberof mdc.proto.FlakeConfig
+             * @instance
+             */
+            FlakeConfig.prototype.max_changed_pixel_fraction_to_retry = 0;
+
+            /**
+             * FlakeConfig font_face_observer_timeout_ms.
+             * @member {number} font_face_observer_timeout_ms
+             * @memberof mdc.proto.FlakeConfig
+             * @instance
+             */
+            FlakeConfig.prototype.font_face_observer_timeout_ms = 0;
+
+            /**
+             * FlakeConfig fonts_loaded_reflow_delay_ms.
+             * @member {number} fonts_loaded_reflow_delay_ms
+             * @memberof mdc.proto.FlakeConfig
+             * @instance
+             */
+            FlakeConfig.prototype.fonts_loaded_reflow_delay_ms = 0;
+
+            /**
+             * FlakeConfig skip_all.
+             * @member {boolean} skip_all
+             * @memberof mdc.proto.FlakeConfig
+             * @instance
+             */
+            FlakeConfig.prototype.skip_all = false;
+
+            /**
+             * Creates a new FlakeConfig instance using the specified properties.
+             * @function create
+             * @memberof mdc.proto.FlakeConfig
+             * @static
+             * @param {mdc.proto.IFlakeConfig=} [properties] Properties to set
+             * @returns {mdc.proto.FlakeConfig} FlakeConfig instance
+             */
+            FlakeConfig.create = function create(properties) {
+                return new FlakeConfig(properties);
+            };
+
+            /**
+             * Encodes the specified FlakeConfig message. Does not implicitly {@link mdc.proto.FlakeConfig.verify|verify} messages.
+             * @function encode
+             * @memberof mdc.proto.FlakeConfig
+             * @static
+             * @param {mdc.proto.IFlakeConfig} message FlakeConfig message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            FlakeConfig.encode = function encode(message, writer) {
+                if (!writer)
+                    writer = $Writer.create();
+                if (message.max_retries != null && message.hasOwnProperty("max_retries"))
+                    writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.max_retries);
+                if (message.retry_delay_ms != null && message.hasOwnProperty("retry_delay_ms"))
+                    writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.retry_delay_ms);
+                if (message.min_changed_pixel_count != null && message.hasOwnProperty("min_changed_pixel_count"))
+                    writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.min_changed_pixel_count);
+                if (message.max_changed_pixel_fraction_to_retry != null && message.hasOwnProperty("max_changed_pixel_fraction_to_retry"))
+                    writer.uint32(/* id 4, wireType 1 =*/33).double(message.max_changed_pixel_fraction_to_retry);
+                if (message.font_face_observer_timeout_ms != null && message.hasOwnProperty("font_face_observer_timeout_ms"))
+                    writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.font_face_observer_timeout_ms);
+                if (message.fonts_loaded_reflow_delay_ms != null && message.hasOwnProperty("fonts_loaded_reflow_delay_ms"))
+                    writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.fonts_loaded_reflow_delay_ms);
+                if (message.skip_all != null && message.hasOwnProperty("skip_all"))
+                    writer.uint32(/* id 7, wireType 0 =*/56).bool(message.skip_all);
+                return writer;
+            };
+
+            /**
+             * Encodes the specified FlakeConfig message, length delimited. Does not implicitly {@link mdc.proto.FlakeConfig.verify|verify} messages.
+             * @function encodeDelimited
+             * @memberof mdc.proto.FlakeConfig
+             * @static
+             * @param {mdc.proto.IFlakeConfig} message FlakeConfig message or plain object to encode
+             * @param {$protobuf.Writer} [writer] Writer to encode to
+             * @returns {$protobuf.Writer} Writer
+             */
+            FlakeConfig.encodeDelimited = function encodeDelimited(message, writer) {
+                return this.encode(message, writer).ldelim();
+            };
+
+            /**
+             * Decodes a FlakeConfig message from the specified reader or buffer.
+             * @function decode
+             * @memberof mdc.proto.FlakeConfig
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @param {number} [length] Message length if known beforehand
+             * @returns {mdc.proto.FlakeConfig} FlakeConfig
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            FlakeConfig.decode = function decode(reader, length) {
+                if (!(reader instanceof $Reader))
+                    reader = $Reader.create(reader);
+                var end = length === undefined ? reader.len : reader.pos + length, message = new $root.mdc.proto.FlakeConfig();
+                while (reader.pos < end) {
+                    var tag = reader.uint32();
+                    switch (tag >>> 3) {
+                    case 1:
+                        message.max_retries = reader.uint32();
+                        break;
+                    case 2:
+                        message.retry_delay_ms = reader.uint32();
+                        break;
+                    case 3:
+                        message.min_changed_pixel_count = reader.uint32();
+                        break;
+                    case 4:
+                        message.max_changed_pixel_fraction_to_retry = reader.double();
+                        break;
+                    case 5:
+                        message.font_face_observer_timeout_ms = reader.uint32();
+                        break;
+                    case 6:
+                        message.fonts_loaded_reflow_delay_ms = reader.uint32();
+                        break;
+                    case 7:
+                        message.skip_all = reader.bool();
+                        break;
+                    default:
+                        reader.skipType(tag & 7);
+                        break;
+                    }
+                }
+                return message;
+            };
+
+            /**
+             * Decodes a FlakeConfig message from the specified reader or buffer, length delimited.
+             * @function decodeDelimited
+             * @memberof mdc.proto.FlakeConfig
+             * @static
+             * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+             * @returns {mdc.proto.FlakeConfig} FlakeConfig
+             * @throws {Error} If the payload is not a reader or valid buffer
+             * @throws {$protobuf.util.ProtocolError} If required fields are missing
+             */
+            FlakeConfig.decodeDelimited = function decodeDelimited(reader) {
+                if (!(reader instanceof $Reader))
+                    reader = new $Reader(reader);
+                return this.decode(reader, reader.uint32());
+            };
+
+            /**
+             * Verifies a FlakeConfig message.
+             * @function verify
+             * @memberof mdc.proto.FlakeConfig
+             * @static
+             * @param {Object.<string,*>} message Plain object to verify
+             * @returns {string|null} `null` if valid, otherwise the reason why it is not
+             */
+            FlakeConfig.verify = function verify(message) {
+                if (typeof message !== "object" || message === null)
+                    return "object expected";
+                if (message.max_retries != null && message.hasOwnProperty("max_retries"))
+                    if (!$util.isInteger(message.max_retries))
+                        return "max_retries: integer expected";
+                if (message.retry_delay_ms != null && message.hasOwnProperty("retry_delay_ms"))
+                    if (!$util.isInteger(message.retry_delay_ms))
+                        return "retry_delay_ms: integer expected";
+                if (message.min_changed_pixel_count != null && message.hasOwnProperty("min_changed_pixel_count"))
+                    if (!$util.isInteger(message.min_changed_pixel_count))
+                        return "min_changed_pixel_count: integer expected";
+                if (message.max_changed_pixel_fraction_to_retry != null && message.hasOwnProperty("max_changed_pixel_fraction_to_retry"))
+                    if (typeof message.max_changed_pixel_fraction_to_retry !== "number")
+                        return "max_changed_pixel_fraction_to_retry: number expected";
+                if (message.font_face_observer_timeout_ms != null && message.hasOwnProperty("font_face_observer_timeout_ms"))
+                    if (!$util.isInteger(message.font_face_observer_timeout_ms))
+                        return "font_face_observer_timeout_ms: integer expected";
+                if (message.fonts_loaded_reflow_delay_ms != null && message.hasOwnProperty("fonts_loaded_reflow_delay_ms"))
+                    if (!$util.isInteger(message.fonts_loaded_reflow_delay_ms))
+                        return "fonts_loaded_reflow_delay_ms: integer expected";
+                if (message.skip_all != null && message.hasOwnProperty("skip_all"))
+                    if (typeof message.skip_all !== "boolean")
+                        return "skip_all: boolean expected";
+                return null;
+            };
+
+            /**
+             * Creates a FlakeConfig message from a plain object. Also converts values to their respective internal types.
+             * @function fromObject
+             * @memberof mdc.proto.FlakeConfig
+             * @static
+             * @param {Object.<string,*>} object Plain object
+             * @returns {mdc.proto.FlakeConfig} FlakeConfig
+             */
+            FlakeConfig.fromObject = function fromObject(object) {
+                if (object instanceof $root.mdc.proto.FlakeConfig)
+                    return object;
+                var message = new $root.mdc.proto.FlakeConfig();
+                if (object.max_retries != null)
+                    message.max_retries = object.max_retries >>> 0;
+                if (object.retry_delay_ms != null)
+                    message.retry_delay_ms = object.retry_delay_ms >>> 0;
+                if (object.min_changed_pixel_count != null)
+                    message.min_changed_pixel_count = object.min_changed_pixel_count >>> 0;
+                if (object.max_changed_pixel_fraction_to_retry != null)
+                    message.max_changed_pixel_fraction_to_retry = Number(object.max_changed_pixel_fraction_to_retry);
+                if (object.font_face_observer_timeout_ms != null)
+                    message.font_face_observer_timeout_ms = object.font_face_observer_timeout_ms >>> 0;
+                if (object.fonts_loaded_reflow_delay_ms != null)
+                    message.fonts_loaded_reflow_delay_ms = object.fonts_loaded_reflow_delay_ms >>> 0;
+                if (object.skip_all != null)
+                    message.skip_all = Boolean(object.skip_all);
+                return message;
+            };
+
+            /**
+             * Creates a plain object from a FlakeConfig message. Also converts values to other types if specified.
+             * @function toObject
+             * @memberof mdc.proto.FlakeConfig
+             * @static
+             * @param {mdc.proto.FlakeConfig} message FlakeConfig
+             * @param {$protobuf.IConversionOptions} [options] Conversion options
+             * @returns {Object.<string,*>} Plain object
+             */
+            FlakeConfig.toObject = function toObject(message, options) {
+                if (!options)
+                    options = {};
+                var object = {};
+                if (options.defaults) {
+                    object.max_retries = 0;
+                    object.retry_delay_ms = 0;
+                    object.min_changed_pixel_count = 0;
+                    object.max_changed_pixel_fraction_to_retry = 0;
+                    object.font_face_observer_timeout_ms = 0;
+                    object.fonts_loaded_reflow_delay_ms = 0;
+                    object.skip_all = false;
+                }
+                if (message.max_retries != null && message.hasOwnProperty("max_retries"))
+                    object.max_retries = message.max_retries;
+                if (message.retry_delay_ms != null && message.hasOwnProperty("retry_delay_ms"))
+                    object.retry_delay_ms = message.retry_delay_ms;
+                if (message.min_changed_pixel_count != null && message.hasOwnProperty("min_changed_pixel_count"))
+                    object.min_changed_pixel_count = message.min_changed_pixel_count;
+                if (message.max_changed_pixel_fraction_to_retry != null && message.hasOwnProperty("max_changed_pixel_fraction_to_retry"))
+                    object.max_changed_pixel_fraction_to_retry = options.json && !isFinite(message.max_changed_pixel_fraction_to_retry) ? String(message.max_changed_pixel_fraction_to_retry) : message.max_changed_pixel_fraction_to_retry;
+                if (message.font_face_observer_timeout_ms != null && message.hasOwnProperty("font_face_observer_timeout_ms"))
+                    object.font_face_observer_timeout_ms = message.font_face_observer_timeout_ms;
+                if (message.fonts_loaded_reflow_delay_ms != null && message.hasOwnProperty("fonts_loaded_reflow_delay_ms"))
+                    object.fonts_loaded_reflow_delay_ms = message.fonts_loaded_reflow_delay_ms;
+                if (message.skip_all != null && message.hasOwnProperty("skip_all"))
+                    object.skip_all = message.skip_all;
+                return object;
+            };
+
+            /**
+             * Converts this FlakeConfig to JSON.
+             * @function toJSON
+             * @memberof mdc.proto.FlakeConfig
+             * @instance
+             * @returns {Object.<string,*>} JSON object
+             */
+            FlakeConfig.prototype.toJSON = function toJSON() {
+                return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+            };
+
+            return FlakeConfig;
         })();
 
         proto.Dimensions = (function() {

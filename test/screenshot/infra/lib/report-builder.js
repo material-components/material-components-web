@@ -1,17 +1,24 @@
-/*
- * Copyright 2018 Google Inc. All Rights Reserved.
+/**
+ * @license
+ * Copyright 2018 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      https://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 'use strict';
@@ -26,15 +33,15 @@ const path = require('path');
 const serveIndex = require('serve-index');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
-const {Approvals, DiffImageResult, Dimensions, GitStatus, GoldenScreenshot, LibraryVersion} = mdcProto;
+const {Approvals, DiffImageResult, Dimensions, FlakeConfig, GitStatus, GoldenScreenshot, LibraryVersion} = mdcProto;
 const {ReportData, ReportMeta, Screenshot, Screenshots, ScreenshotList, TestFile, User, UserAgents} = mdcProto;
 const {InclusionType, CaptureState} = Screenshot;
 
+const Analytics = require('./analytics');
 const CbtApi = require('./cbt-api');
 const Cli = require('./cli');
 const DiffBaseParser = require('./diff-base-parser');
 const FileCache = require('./file-cache');
-const GitHubApi = require('./github-api');
 const GitRepo = require('./git-repo');
 const LocalStorage = require('./local-storage');
 const Logger = require('./logger');
@@ -47,6 +54,12 @@ const TEMP_DIR = os.tmpdir();
 
 class ReportBuilder {
   constructor() {
+    /**
+     * @type {!Analytics}
+     * @private
+     */
+    this.analytics_ = new Analytics();
+
     /**
      * @type {!CbtApi}
      * @private
@@ -72,12 +85,6 @@ class ReportBuilder {
     this.fileCache_ = new FileCache();
 
     /**
-     * @type {!GitHubApi}
-     * @private
-     */
-    this.gitHubApi_ = new GitHubApi();
-
-    /**
      * @type {!GitRepo}
      * @private
      */
@@ -99,7 +106,7 @@ class ReportBuilder {
      * @type {!Logger}
      * @private
      */
-    this.logger_ = new Logger(__filename);
+    this.logger_ = new Logger();
 
     /**
      * @type {!UserAgentStore}
@@ -114,7 +121,7 @@ class ReportBuilder {
    */
   async initForApproval({runReportJsonUrl}) {
     /** @type {!mdc.proto.TestFile} */
-    const runReportJsonFile = await this.fileCache_.downloadUrlToDisk(runReportJsonUrl, 'utf8');
+    const runReportJsonFile = await this.fileCache_.getFile({uri: runReportJsonUrl, encoding: 'utf8'});
     /** @type {!mdc.proto.ReportData} */
     const reportData = ReportData.fromObject(require(runReportJsonFile.absolute_path));
     reportData.approvals = Approvals.create();
@@ -128,7 +135,7 @@ class ReportBuilder {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async initForCapture(goldenDiffBase) {
-    this.logger_.foldStart('screenshot.init', 'ReportBuilder#initForCapture()');
+    this.logger_.foldStart('screenshot.init', 'ReportBuilder.initForCapture()');
 
     if (this.cli_.isOnline()) {
       await this.cbtApi_.fetchAvailableDevices();
@@ -136,6 +143,7 @@ class ReportBuilder {
 
     /** @type {!mdc.proto.ReportMeta} */
     const reportMeta = await this.createReportMetaProto_(goldenDiffBase);
+
     /** @type {!mdc.proto.UserAgents} */
     const userAgents = await this.createUserAgentsProto_();
 
@@ -146,6 +154,7 @@ class ReportBuilder {
       await this.startTemporaryHttpServer_(reportMeta);
     }
 
+    /** @type {!mdc.proto.Screenshots} */
     const screenshots = await this.createScreenshotsProto_({reportMeta, userAgents, goldenDiffBase});
 
     const reportData = ReportData.create({
@@ -167,6 +176,7 @@ class ReportBuilder {
    * @return {!Promise<!mdc.proto.ReportData>}
    */
   async initForDemo() {
+    // TODO(acdvorak): Pass `goldenDiffBase` argument
     return ReportData.create({
       meta: await this.createReportMetaProto_(),
     });
@@ -300,18 +310,24 @@ class ReportBuilder {
   }
 
   /**
+   * TODO(acdvorak): Figure out how to handle offline mode for prefetching and diffing
+   * TODO(acdvorak): Cache downloaded images on Travis
    * @param {!mdc.proto.ReportData} reportData
    * @return {!Promise<void>}
    * @private
    */
   async prefetchGoldenImages_(reportData) {
-    // TODO(acdvorak): Figure out how to handle offline mode for prefetching and diffing
-    console.log('Fetching golden images...');
+    const expectedScreenshots = reportData.screenshots.expected_screenshot_list;
+
+    this.logger_.debug(`Fetching ${expectedScreenshots.length.toLocaleString()} golden images...`);
+
     await Promise.all(
-      reportData.screenshots.expected_screenshot_list.map((expectedScreenshot) => {
+      expectedScreenshots.map((expectedScreenshot) => {
         return this.prefetchScreenshotImages_(expectedScreenshot);
       })
     );
+
+    this.logger_.debug(`Fetched ${expectedScreenshots.length.toLocaleString()} golden images!`);
   }
 
   /**
@@ -334,7 +350,7 @@ class ReportBuilder {
     await Promise.all(
       urls
         .filter((url) => Boolean(url))
-        .map((url) => this.fileCache_.downloadUrlToDisk(url))
+        .map((url) => this.fileCache_.getFile({uri: url}))
     );
   }
 
@@ -528,7 +544,7 @@ class ReportBuilder {
 
   /**
    * @param {!mdc.proto.ReportMeta} reportMeta
-   * @param {!mdc.proto.UserAgents} allUserAgents
+   * @param {!mdc.proto.UserAgents} userAgents
    * @param {!mdc.proto.DiffBase} goldenDiffBase
    * @return {!Promise<!mdc.proto.Screenshots>}
    * @private
@@ -543,6 +559,8 @@ class ReportBuilder {
     /** @type {!Array<!mdc.proto.Screenshot>} */
     const actualScreenshots = await this.getActualScreenshots_({goldenFile, reportMeta, userAgents});
 
+    this.pruneUserAgentsWithNoUrls_({actualScreenshots, userAgents});
+
     // TODO(acdvorak): Rename `Screenshots`
     return this.sortAndGroupScreenshots_(userAgents, Screenshots.create({
       expected_screenshot_list: expectedScreenshots,
@@ -553,6 +571,30 @@ class ReportBuilder {
       removed_screenshot_list: await this.getRemovedScreenshots_({expectedScreenshots, actualScreenshots}),
       comparable_screenshot_list: this.getComparableScreenshots_({expectedScreenshots, actualScreenshots}),
     }));
+  }
+
+  /**
+   * @param {!Array<!mdc.proto.Screenshot>} actualScreenshots
+   * @param {!mdc.proto.UserAgents} userAgents
+   * @private
+   */
+  pruneUserAgentsWithNoUrls_({actualScreenshots, userAgents}) {
+    const actualScreenshotUserAgentAliases = new Set();
+    actualScreenshots.forEach((actualScreenshot) => {
+      if (actualScreenshot.is_runnable) {
+        actualScreenshotUserAgentAliases.add(actualScreenshot.user_agent.alias);
+      }
+    });
+    const runnableUAs = userAgents.runnable_user_agents;
+    const skippedUAs = userAgents.skipped_user_agents;
+    let i = runnableUAs.length;
+    while (i--) {
+      const userAgent = runnableUAs[i];
+      if (!actualScreenshotUserAgentAliases.has(userAgent.alias)) {
+        runnableUAs.splice(i, 1);
+        skippedUAs.push(userAgent);
+      }
+    }
   }
 
   /**
@@ -610,10 +652,6 @@ class ReportBuilder {
    * @private
    */
   async getExpectedScreenshots_(goldenFile) {
-    const downloadFileAndGetPath = async (url) => {
-      return (await this.fileCache_.downloadUrlToDisk(url)).absolute_path;
-    };
-
     /** @type {!Array<!mdc.proto.Screenshot>} */
     const expectedScreenshots = [];
     const goldenScreenshots = goldenFile.getGoldenScreenshots();
@@ -624,12 +662,12 @@ class ReportBuilder {
         expected_html_file: TestFile.create({
           public_url: goldenScreenshot.html_file_url,
           relative_path: goldenScreenshot.html_file_path,
-          absolute_path: await downloadFileAndGetPath(goldenScreenshot.html_file_url),
+          absolute_path: this.fileCache_.getAbsolutePath(goldenScreenshot.html_file_url),
         }),
         expected_image_file: TestFile.create({
           public_url: goldenScreenshot.screenshot_image_url,
           relative_path: goldenScreenshot.screenshot_image_path,
-          absolute_path: await downloadFileAndGetPath(goldenScreenshot.screenshot_image_url),
+          absolute_path: this.fileCache_.getAbsolutePath(goldenScreenshot.screenshot_image_url),
         }),
         user_agent: await this.userAgentStore_.getUserAgent(goldenScreenshot.user_agent_alias),
       });
@@ -666,31 +704,83 @@ class ReportBuilder {
       });
 
       for (const userAgent of allUserAgents) {
-        const maxRetries = this.cli_.isOnline() ? this.cli_.retries : 0;
         const userAgentAlias = userAgent.alias;
-        const isScreenshotRunnable = isHtmlFileRunnable && userAgent.is_runnable;
+        const flakeConfig = this.getFlakeConfig_({userAgent, htmlFilePath});
+        const isScreenshotRunnable = isHtmlFileRunnable && userAgent.is_runnable && !flakeConfig.skip_all;
         const expectedScreenshotImageUrl = goldenFile.getScreenshotImageUrl({htmlFilePath, userAgentAlias});
 
         /** @type {?mdc.proto.TestFile} */
         const expectedImageFile =
           expectedScreenshotImageUrl
-            ? await this.fileCache_.downloadUrlToDisk(expectedScreenshotImageUrl)
+            ? await this.fileCache_.getFile({uri: expectedScreenshotImageUrl, download: false})
             : null;
 
         allScreenshots.push(Screenshot.create({
           is_runnable: isScreenshotRunnable,
+          is_url_skipped_by_cli: !isHtmlFileRunnable,
           user_agent: userAgent,
           html_file_path: htmlFilePath,
           expected_html_file: expectedHtmlFile,
           actual_html_file: actualHtmlFile,
           expected_image_file: expectedImageFile,
           retry_count: 0,
-          max_retries: maxRetries,
+          flake_config: flakeConfig,
         }));
       }
     }
 
     return allScreenshots;
+  }
+
+  /**
+   * @param {!mdc.proto.UserAgent} userAgent
+   * @param {string} htmlFilePath
+   * @return {!mdc.proto.FlakeConfig}
+   * @private
+   */
+  getFlakeConfig_({userAgent, htmlFilePath}) {
+    const diffingJson = require('../../diffing.json');
+    const flakeConfig = FlakeConfig.fromObject(diffingJson.flaky_test_config.global_config);
+
+    /**
+     * @param {?Array<string>} patterns
+     * @return {!Array<!RegExp>}
+     */
+    function toRegExpArray(patterns) {
+      if (!patterns) {
+        return [];
+      }
+      return patterns.map((pattern) => new RegExp(pattern));
+    }
+
+    for (const override of diffingJson.flaky_test_config.config_overrides) {
+      const browserRegexPatterns = toRegExpArray(override.browser_regex_patterns);
+      const urlRegexPatterns = toRegExpArray(override.url_regex_patterns);
+
+      const isBrowserMatch =
+        browserRegexPatterns.length === 0 ||
+        browserRegexPatterns.some((regexp) => regexp.test(userAgent.alias));
+
+      const isUrlMatch =
+        urlRegexPatterns.length === 0 ||
+        urlRegexPatterns.some((regexp) => regexp.test(htmlFilePath));
+
+      if (!isBrowserMatch || !isUrlMatch) {
+        continue;
+      }
+
+      Object.assign(flakeConfig, override.custom_config);
+    }
+
+    if (!this.cli_.isOnline()) {
+      flakeConfig.max_retries = 0;
+    }
+
+    if (Number.isFinite(this.cli_.retries)) {
+      flakeConfig.max_retries = this.cli_.retries;
+    }
+
+    return flakeConfig;
   }
 
   /**
@@ -762,7 +852,7 @@ class ReportBuilder {
 
       if (!actualScreenshot) {
         const expectedImageUrl = expectedScreenshot.expected_image_file.public_url;
-        const expectedJimpImage = await Jimp.read(await this.fileCache_.downloadFileToBuffer(expectedImageUrl));
+        const expectedJimpImage = await Jimp.read(await this.fileCache_.getBuffer({uri: expectedImageUrl}));
         const {width, height} = expectedJimpImage.bitmap;
         expectedScreenshot.diff_image_result = DiffImageResult.create({
           expected_image_dimensions: Dimensions.create({width, height}),
@@ -911,8 +1001,12 @@ class ReportBuilder {
     if (count > 0) {
       for (const screenshot of screenshots) {
         const htmlFile = screenshot.actual_html_file || screenshot.expected_html_file;
-        const publicUrl = htmlFile.public_url;
-        console.log(`  - ${publicUrl} > ${screenshot.user_agent.alias}`);
+        const publicUrl = this.analytics_.getUrl({
+          url: htmlFile.public_url,
+          source: 'cli',
+          medium: 'inventory',
+        });
+        console.log(`  - ${this.cli_.colorizeUrl(publicUrl)} > ${screenshot.user_agent.alias}`);
       }
     }
     console.log();

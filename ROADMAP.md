@@ -1,23 +1,20 @@
 # MDC Web Roadmap
-We release a new version of MDC Web every 2 weeks. We also limit our breaking changes to one release at the end of the month. This roadmap is based on the more general [material components roadmap](https://github.com/material-components/material-components/blob/develop/ROADMAP.md), but specific to MDC Web.
+We release a new version of MDC Web every 2 weeks. We also limit our breaking changes to one release at the end of the month.
+This roadmap contains tentative plans for MDC Web releases in the near future, based on the more general
+[Material Components roadmap](https://github.com/material-components/material-components/blob/develop/ROADMAP.md).
 
 ## Current Release
-### 0.37.0 - June 2018
-- Improved accessibility support for list
-- New extended FAB
-- New outlined variant of select
 
-## Upcoming Releases
-### 0.38.0 - July 2018
-- New tabs
-- New switch
+### 0.41.0 - October 2018 (R20)
+- Enhanced Select variant (MDC Select using MDC Menu)
 
-### 0.39.0 - August 2018
-- [Shape Theme](https://material.io/go/design-shape) released 
-- New navigation drawer
-- New menu
+## Future Releases
 
-### 0.40.0 through 0.42.0 - Forecast for September-November
-- New Sheet types – Additional components that extends the capabilities and usage patterns of sheets
-- Color Theme: Dark – capability for apps to adjust their color schemes to maximum usable darkness that is still aesthetically appealing
-- New navigation patterns
+### 0.42.0 - November 2018 (R21)
+- SVG-less Notched Outline
+- Dialog and List improvements
+- Updated Snackbar
+
+### 0.43.0 - December 2018
+
+- Polish and bug fixes

@@ -1,17 +1,24 @@
 /**
- * Copyright 2018 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2018 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import bel from 'bel';
@@ -20,9 +27,9 @@ import td from 'testdouble';
 import {assert} from 'chai';
 
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
-import {createMockRaf} from '../helpers/raf';
-import {MDCIconButtonToggle, MDCIconButtonToggleFoundation} from '../../../packages/mdc-icon-button';
-import {MDCRipple} from '../../../packages/mdc-ripple';
+import {install as installClock} from '../helpers/clock';
+import {MDCIconButtonToggle, MDCIconButtonToggleFoundation} from '../../../packages/mdc-icon-button/index';
+import {MDCRipple} from '../../../packages/mdc-ripple/index';
 import {cssClasses} from '../../../packages/mdc-ripple/constants';
 
 function getFixture() {
@@ -31,22 +38,9 @@ function getFixture() {
   `;
 }
 
-function getIconFixture() {
-  return bel`
-    <i id="icon"></i>
-  `;
-}
-
-function setupTest({tabIndex = undefined, useInnerIconElement = false, createMockFoundation = false} = {}) {
+function setupTest({createMockFoundation = false} = {}) {
   const root = getFixture();
-  if (useInnerIconElement) {
-    const icon = getIconFixture();
-    root.dataset.iconInnerSelector = `#${icon.id}`;
-    root.appendChild(icon);
-  }
-  if (tabIndex !== undefined) {
-    root.tabIndex = tabIndex;
-  }
+
   let mockFoundation;
   if (createMockFoundation) {
     const MockFoundationCtor = td.constructor(MDCIconButtonToggleFoundation);
@@ -59,103 +53,54 @@ function setupTest({tabIndex = undefined, useInnerIconElement = false, createMoc
 suite('MDCIconButtonToggle');
 
 test('attachTo initializes and returns a MDCIconButtonToggle instance', () => {
-  assert.isOk(MDCIconButtonToggle.attachTo(document.createElement('i')) instanceof MDCIconButtonToggle);
+  assert.isTrue(MDCIconButtonToggle.attachTo(document.createElement('i')) instanceof MDCIconButtonToggle);
 });
 
 if (supportsCssVariables(window)) {
   test('#constructor initializes the ripple on the root element', () => {
-    const raf = createMockRaf();
+    const clock = installClock();
     const {root} = setupTest();
-    raf.flush();
-    assert.isOk(root.classList.contains('mdc-ripple-upgraded'));
-    raf.restore();
+    clock.runToFrame();
+    assert.isTrue(root.classList.contains('mdc-ripple-upgraded'));
   });
 
   test('#destroy removes the ripple', () => {
-    const raf = createMockRaf();
+    const clock = installClock();
     const {root, component} = setupTest();
-    raf.flush();
+    clock.runToFrame();
     component.destroy();
-    raf.flush();
-    assert.isNotOk(root.classList.contains('mdc-ripple-upgraded'));
-    raf.restore();
+    clock.runToFrame();
+    assert.isFalse(root.classList.contains('mdc-ripple-upgraded'));
   });
 }
 
 test('set/get on', () => {
   const {root, component} = setupTest();
   component.on = true;
-  assert.isOk(component.on);
+  assert.isTrue(component.on);
   assert.equal(root.getAttribute('aria-pressed'), 'true');
 
   component.on = false;
-  assert.isNotOk(component.on);
+  assert.isFalse(component.on);
   assert.equal(root.getAttribute('aria-pressed'), 'false');
-});
-
-
-test('#refreshToggleData proxies to foundation.refreshToggleData()', () => {
-  const MockIconToggleFoundation = td.constructor(MDCIconButtonToggleFoundation);
-  const root = document.createElement('i');
-  const foundation = new MockIconToggleFoundation();
-  const component = new MDCIconButtonToggle(root, foundation);
-  component.refreshToggleData();
-  td.verify(foundation.refreshToggleData());
-});
-
-test('intially set to on if root has aria-pressed=true', () => {
-  const root = bel`<button class="mdc-icon-button" aria-pressed="true"></button>`;
-  const component = new MDCIconButtonToggle(root);
-  assert.isOk(component.on);
 });
 
 test('get ripple returns a MDCRipple instance', () => {
   const {component} = setupTest();
-  assert.isOk(component.ripple instanceof MDCRipple);
+  assert.isTrue(component.ripple instanceof MDCRipple);
 });
 
 test('#adapter.addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
-  assert.isOk(root.classList.contains('foo'));
-});
-
-test('#adapter.addClass adds a class to the inner icon element when used', () => {
-  const {root, component} = setupTest({useInnerIconElement: true});
-  component.getDefaultFoundation().adapter_.addClass('foo');
-  assert.isOk(root.querySelector('#icon').classList.contains('foo'));
+  assert.isTrue(root.classList.contains('foo'));
 });
 
 test('#adapter.removeClass removes a class from the root element', () => {
   const {root, component} = setupTest();
   root.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
-  assert.isNotOk(root.classList.contains('foo'));
-});
-
-test('#adapter.removeClass adds a class to the inner icon element when used', () => {
-  const {root, component} = setupTest({useInnerIconElement: true});
-  root.querySelector('#icon').classList.add('foo');
-  component.getDefaultFoundation().adapter_.removeClass('foo');
-  assert.isNotOk(root.querySelector('#icon').classList.contains('foo'));
-});
-
-test('#adapter.setText sets the text content of the root element', () => {
-  const {root, component} = setupTest();
-  component.getDefaultFoundation().adapter_.setText('foo');
-  assert.equal(root.textContent, 'foo');
-});
-
-test('#adapter.setText sets the text content of the inner icon element when used', () => {
-  const {root, component} = setupTest({useInnerIconElement: true});
-  component.getDefaultFoundation().adapter_.setText('foo');
-  assert.equal(root.querySelector('#icon').textContent, 'foo');
-});
-
-test('#adapter.getAttr retrieves an attribute from the root element', () => {
-  const {root, component} = setupTest();
-  root.setAttribute('aria-label', 'hello');
-  assert.equal(component.getDefaultFoundation().adapter_.getAttr('aria-label'), 'hello');
+  assert.isFalse(root.classList.contains('foo'));
 });
 
 test('#adapter.setAttr sets an attribute on the root element', () => {
@@ -175,13 +120,13 @@ test(`#adapter.notifyChange broadcasts a ${MDCIconButtonToggleFoundation.strings
 test('assert keydown does not trigger ripple', () => {
   const {root} = setupTest();
   domEvents.emit(root, 'keydown');
-  assert.isNotOk(root.classList.contains(cssClasses.FG_ACTIVATION));
+  assert.isFalse(root.classList.contains(cssClasses.FG_ACTIVATION));
 });
 
 test('assert keyup does not trigger ripple', () => {
   const {root} = setupTest();
   domEvents.emit(root, 'keyup');
-  assert.isNotOk(root.classList.contains(cssClasses.FG_ACTIVATION));
+  assert.isFalse(root.classList.contains(cssClasses.FG_ACTIVATION));
 });
 
 test('click handler is added to root element', () => {

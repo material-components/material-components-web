@@ -12,12 +12,6 @@ function log_error() {
   fi
 }
 
-function print_travis_env_vars() {
-  echo
-  env | grep TRAVIS
-  echo
-}
-
 function maybe_add_git_branch() {
   if [[ -n "$1" ]]; then
     # https://github.com/marionebl/commitlint/issues/6#issuecomment-231186598
@@ -50,15 +44,19 @@ function maybe_extract_api_credentials() {
     -in test/screenshot/infra/auth/travis.tar.enc -out test/screenshot/infra/auth/travis.tar -d
 
   tar -xf test/screenshot/infra/auth/travis.tar -C test/screenshot/infra/auth/
+
+  export GOOGLE_APPLICATION_CREDENTIALS="$PWD/test/screenshot/infra/auth/gcs.json"
 }
 
 function install_and_authorize_gcloud_sdk() {
   which gcloud 2>&1 > /dev/null
 
   if [[ $? == 0 ]]; then
+    echo
     echo 'gcloud already installed'
     echo
   else
+    echo
     echo 'gcloud not installed'
     echo
 
@@ -69,12 +67,13 @@ function install_and_authorize_gcloud_sdk() {
     # The gcloud installer runs `tar -C "$install_dir" -zxvf "$download_dst"`, which generates a lot of noisy output.
     # Filter out all lines from `tar`.
     /tmp/gcp-sdk.bash | grep -v -E '^google-cloud-sdk/'
+
+    gcloud components install gsutil
+    gcloud components update gsutil
   fi
 
   gcloud auth activate-service-account --key-file test/screenshot/infra/auth/gcs.json
   gcloud config set project material-components-web
-  gcloud components install gsutil
-  gcloud components update gsutil
 }
 
 function maybe_install_gcloud_sdk() {
@@ -96,7 +95,6 @@ function maybe_install_gcloud_sdk() {
 }
 
 if [[ "$TEST_SUITE" == 'screenshot' ]]; then
-  print_travis_env_vars
   maybe_fetch_git_branches
   maybe_extract_api_credentials
   maybe_install_gcloud_sdk

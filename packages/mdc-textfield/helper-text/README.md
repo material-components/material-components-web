@@ -7,6 +7,8 @@ iconId: text_field
 path: /catalog/input-controls/text-field/helper-text/
 -->
 
+> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
+
 # Text Field Helper Text
 
 Helper text gives context about a field’s input, such as how the input will be used. It should be visible either persistently or only on focus.
@@ -26,6 +28,8 @@ Helper text gives context about a field’s input, such as how the input will be
 ```html
 <p class="mdc-text-field-helper-text" aria-hidden="true">
 ```
+
+> NOTE: Make sure there are no white-space characters before helper text content.
 
 ### Styles
 

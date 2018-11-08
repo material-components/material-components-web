@@ -1,22 +1,29 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2016 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import {assert} from 'chai';
-import lolex from 'lolex';
 import td from 'testdouble';
+import {install as installClock} from '../helpers/clock';
 import MDCSnackbarFoundation from '../../../packages/mdc-snackbar/foundation';
 import {cssClasses, strings, numbers} from '../../../packages/mdc-snackbar/constants';
 
@@ -44,7 +51,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   assert.equal(methods.length, Object.keys(defaultAdapter).length, 'Every adapter key must be a function');
   assert.deepEqual(methods, [
     'addClass', 'removeClass', 'setAriaHidden', 'unsetAriaHidden', 'setActionAriaHidden',
-    'unsetActionAriaHidden', 'setActionText', 'setMessageText', 'setFocus', 'visibilityIsHidden',
+    'unsetActionAriaHidden', 'setActionText', 'setMessageText', 'setFocus', 'isFocused', 'visibilityIsHidden',
     'registerCapturedBlurHandler', 'deregisterCapturedBlurHandler', 'registerVisibilityChangeHandler',
     'deregisterVisibilityChangeHandler', 'registerCapturedInteractionHandler',
     'deregisterCapturedInteractionHandler', 'registerActionClickHandler',
@@ -249,7 +256,7 @@ test('#show while snackbar is already showing will queue the data object.', () =
 });
 
 test('#show while snackbar is already showing will show after the timeout and transition end', () => {
-  const clock = lolex.install();
+  const clock = installClock();
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
 
@@ -274,11 +281,10 @@ test('#show while snackbar is already showing will show after the timeout and tr
   transEndHandler();
 
   td.verify(mockAdapter.setMessageText('Message Archived'));
-  clock.uninstall();
 });
 
 test('#show will remove active class after the timeout', () => {
-  const clock = lolex.install();
+  const clock = installClock();
   const {foundation, mockAdapter} = setupTest();
 
   foundation.init();
@@ -290,11 +296,10 @@ test('#show will remove active class after the timeout', () => {
   clock.tick(numbers.MESSAGE_TIMEOUT);
 
   td.verify(mockAdapter.removeClass(cssClasses.ACTIVE));
-  clock.uninstall();
 });
 
 test('#show will add an transition end handler after the timeout', () => {
-  const clock = lolex.install();
+  const clock = installClock();
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
 
@@ -307,11 +312,10 @@ test('#show will add an transition end handler after the timeout', () => {
   clock.tick(numbers.MESSAGE_TIMEOUT);
 
   td.verify(mockAdapter.registerTransitionEndHandler(isA(Function)));
-  clock.uninstall();
 });
 
 test('#show will clean up snackbar after the timeout and transition end', () => {
-  const clock = lolex.install();
+  const clock = installClock();
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
 
@@ -337,8 +341,6 @@ test('#show will clean up snackbar after the timeout and transition end', () => 
   td.verify(mockAdapter.removeClass(cssClasses.MULTILINE));
   td.verify(mockAdapter.removeClass(cssClasses.ACTION_ON_BOTTOM));
   td.verify(mockAdapter.deregisterTransitionEndHandler(transEndHandler));
-
-  clock.uninstall();
 });
 
 test('#show calls adapter.registerVisibilityChangeHandler() with a function', () => {
@@ -455,7 +457,7 @@ test('focus hijacks the snackbar timeout if no click or touchstart occurs', () =
 
 test('focus does not hijack the snackbar timeout if it occurs as a result' +
   'of a mousedown or touchstart', () => {
-  const clock = lolex.install();
+  const clock = installClock();
   const {foundation, mockAdapter} = setupTest();
   const mockFocusEvent = {type: 'focus'};
   const mockMouseEvent = {type: 'mousedown'};
@@ -478,11 +480,10 @@ test('focus does not hijack the snackbar timeout if it occurs as a result' +
   clock.tick(numbers.MESSAGE_TIMEOUT);
 
   td.verify(mockAdapter.removeClass(cssClasses.ACTIVE));
-  clock.uninstall();
 });
 
 test('blur resets the snackbar timeout', () => {
-  const clock = lolex.install();
+  const clock = installClock();
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
   const mockBlurEvent = {type: 'blur'};
@@ -508,6 +509,4 @@ test('blur resets the snackbar timeout', () => {
   blurEvent(mockBlurEvent);
   clock.tick(numbers.MESSAGE_TIMEOUT);
   td.verify(mockAdapter.removeClass(cssClasses.ACTIVE));
-
-  clock.uninstall();
 });

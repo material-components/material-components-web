@@ -1,17 +1,24 @@
-/*
- * Copyright 2018 Google Inc. All Rights Reserved.
+/**
+ * @license
+ * Copyright 2018 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      https://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 'use strict';
@@ -69,7 +76,8 @@ class UserAgentStore {
    * @private
    */
   async parseAlias_(alias) {
-    const matchArray = /^([a-z]+)_([a-z]+)_([a-z]+)@([a-z0-9.]+)$/.exec(alias);
+    const aliasRegExp = /^([a-z]+)_([a-z]+)_([a-z]+)@([a-z0-9.]+)((?:_(?:highcontrast|disablefontsmoothing|rtl))*)$/;
+    const matchArray = aliasRegExp.exec(alias);
     if (!matchArray) {
       // TODO(acdvorak): Better error message
       throw new Error(`
@@ -79,7 +87,7 @@ Expected format: 'desktop_windows_chrome@latest'.
       );
     }
 
-    const [, formFactorName, osVendorName, browserVendorName, browserVersionName] = matchArray;
+    const [, formFactorName, osVendorName, browserVendorName, browserVersionName, optionString] = matchArray;
 
     const getEnumKeysLowerCase = (enumeration) => {
       return Object.keys(enumeration).filter((key) => key !== 'UNKNOWN').map((key) => key.toLowerCase());
@@ -139,6 +147,12 @@ Expected browser vendor to be one of [${validBrowserVendors}], but got '${browse
     const browserIconUrl = this.getBrowserIconUrl_(browserVendorType);
     const osIconUrl = this.getOsIconUrl_(browserVendorType);
 
+    /**
+     * Skip the first leading underscore (e.g., "_highcontrast_rtl" -> ["highcontrast", "rtl"]).
+     * @type {!Array<string>}
+     */
+    const options = optionString.split('_').slice(1);
+
     return UserAgent.create({
       alias,
 
@@ -159,6 +173,11 @@ Expected browser vendor to be one of [${validBrowserVendors}], but got '${browse
 
       browser_icon_url: browserIconUrl,
       os_icon_url: osIconUrl,
+
+      raw_options: options,
+      is_high_contrast_mode: options.includes('highcontrast'),
+      is_font_smoothing_disabled: options.includes('disablefontsmoothing'),
+      is_rtl: options.includes('rtl'),
     });
   }
 
@@ -200,11 +219,11 @@ Expected browser vendor to be one of [${validBrowserVendors}], but got '${browse
   getBrowserIconUrl_(browserVendorType) {
     /* eslint-disable max-len */
     const map = {
-      [BrowserVendorType.CHROME]: 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.10.0/chrome/chrome.svg',
-      [BrowserVendorType.EDGE]: 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.10.0/edge/edge.svg',
-      [BrowserVendorType.FIREFOX]: 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.10.0/firefox/firefox.svg',
-      [BrowserVendorType.IE]: 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.10.0/archive/internet-explorer_9-11/internet-explorer_9-11.svg',
-      [BrowserVendorType.SAFARI]: 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.10.0/safari/safari.png',
+      [BrowserVendorType.CHROME]: 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.10.0/chrome/chrome_16x16.png',
+      [BrowserVendorType.EDGE]: 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.10.0/edge/edge_16x16.png',
+      [BrowserVendorType.FIREFOX]: 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.10.0/firefox/firefox_16x16.png',
+      [BrowserVendorType.IE]: 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.10.0/archive/internet-explorer_9-11/internet-explorer_9-11_16x16.png',
+      [BrowserVendorType.SAFARI]: 'https://cdnjs.cloudflare.com/ajax/libs/browser-logos/45.10.0/safari/safari_16x16.png',
     };
     /* eslint-enable max-len */
     return map[browserVendorType];

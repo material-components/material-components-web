@@ -1,23 +1,30 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2016 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import {assert} from 'chai';
 import td from 'testdouble';
 
-import {createMockRaf} from '../helpers/raf';
+import {install as installClock} from '../helpers/clock';
 import {setupFoundationTest} from '../helpers/setup';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import MDCGridListFoundation from '../../../packages/mdc-grid-list/foundation';
@@ -59,20 +66,19 @@ test('#destroy calls component event deregistrations', () => {
 
 test('#align center does not set the container width if there are no tiles', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
   td.when(mockAdapter.getNumberOfTiles()).thenReturn(0);
   foundation.init();
 
   foundation.alignCenter();
-  mockRaf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.setStyleForTilesElement(), {times: 0, ignoreExtraArgs: true});
-  mockRaf.restore();
 });
 
 test('#align center sets the container width to fit tiles inside', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
   const listOffsetWidth = 1005;
   const tileOffsetWidth = 200;
   const tilesWidth = Math.floor(listOffsetWidth / tileOffsetWidth) * tileOffsetWidth;
@@ -81,29 +87,26 @@ test('#align center sets the container width to fit tiles inside', () => {
   foundation.init();
 
   foundation.alignCenter();
-  mockRaf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.setStyleForTilesElement('width', `${tilesWidth}px`));
-  mockRaf.restore();
 });
 
 test('#alignCenter debounces calls within the same frame', () => {
   const {foundation} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
   foundation.alignCenter();
   foundation.alignCenter();
   foundation.alignCenter();
-  assert.equal(mockRaf.pendingFrames.length, 1);
-  mockRaf.restore();
+  assert.equal(clock.countTimers(), 1);
 });
 
 test('#alignCenter resets debounce latch when alignCenter frame is run', () => {
   const {foundation} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
 
   foundation.alignCenter();
-  mockRaf.flush();
+  clock.runToFrame();
   foundation.alignCenter();
-  assert.equal(mockRaf.pendingFrames.length, 1);
-  mockRaf.restore();
+  assert.equal(clock.countTimers(), 1);
 });

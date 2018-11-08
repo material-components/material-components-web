@@ -92,13 +92,15 @@ message GitRevision {
   string branch = 5;
   string tag = 6;
   uint32 pr_number = 7;
-  repeated string pr_file_paths = 8;
 
   // "author" is the person who created the PR; "committer" is the person who created the commit.
   // E.g., if Alice creates a PR and Bob clicks "Update branch" in the GitHub UI, then
   // author = "Alice" and committer = "Bob".
-  User author = 9;
-  User committer = 10;
+  User author = 8;
+  User committer = 9;
+
+  // Raw date string returned by git. E.g.: "2018-10-03 21:12:43 -0700"
+  string date = 10;
 }
 
 message User {
@@ -174,6 +176,8 @@ message UserAgent {
   RawCapabilities desired_capabilities = 11;
   RawCapabilities actual_capabilities = 12;
   Navigator navigator = 13;
+  string selenium_session_id = 20;
+  string selenium_result_url = 21;
 
   bool is_enabled_by_cli = 14;
   bool is_available_locally = 15;
@@ -184,6 +188,11 @@ message UserAgent {
 
   string browser_icon_url = 18;
   string os_icon_url = 19;
+
+  repeated string raw_options = 22;
+  bool is_high_contrast_mode = 23;
+  bool is_font_smoothing_disabled = 24;
+  bool is_rtl = 25;
 }
 
 message Screenshots {
@@ -247,6 +256,7 @@ message Screenshot {
   }
 
   bool is_runnable = 1;
+  bool is_url_skipped_by_cli = 14;
   InclusionType inclusion_type = 2;
   CaptureState capture_state = 3;
   UserAgent user_agent = 4;
@@ -258,9 +268,27 @@ message Screenshot {
   TestFile actual_image_file = 9;
   TestFile diff_image_file = 10;
   DiffImageResult diff_image_result = 11;
+  CropResult crop_result = 15;
 
   uint32 retry_count = 12;
-  uint32 max_retries = 13;
+  FlakeConfig flake_config = 13;
+}
+
+message CropResult {
+  uint32 uncropped_width = 1;
+  uint32 uncropped_height = 2;
+  uint32 cropped_width = 3;
+  uint32 cropped_height = 4;
+}
+
+message FlakeConfig {
+  uint32 max_retries = 1;
+  uint32 retry_delay_ms = 2;
+  uint32 min_changed_pixel_count = 3;
+  double max_changed_pixel_fraction_to_retry = 4;
+  uint32 font_face_observer_timeout_ms = 5;
+  uint32 fonts_loaded_reflow_delay_ms = 6;
+  bool skip_all = 7;
 }
 
 message Dimensions {

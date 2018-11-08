@@ -7,6 +7,8 @@ iconId: text_field
 path: /catalog/input-controls/notched-outline/
 -->
 
+> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
+
 # Notched Outline
 
 The notched outline is a border around all sides of either a Text Field or Select component. This is used for the Outlined variant of either a Text Field or Select.
@@ -21,6 +23,12 @@ The notched outline is a border around all sides of either a Text Field or Selec
     <a href="https://material-components.github.io/material-components-web-catalog/#/component/text-field">Demo with Notched Outline on Text Field</a>
   </li>
 </ul>
+
+## Installation
+
+```
+npm install @material/notched-outline
+```
 
 ## Basic Usage
 
@@ -71,8 +79,15 @@ Mixin | Description
 `mdc-notched-outline-color($color)` | Customizes the border color of the notched outlined.
 `mdc-notched-outline-idle-color($color)` | Customizes the border color of the idle outline.
 `mdc-notched-outline-stroke-width($width)` | Changes notched outline width to a specified pixel value.
-`mdc-notched-outline-corner-radius($radius)` | Sets the corner radius of the notched outline element to the given number.
-`mdc-notched-outline-idle-corner-radius($radius)` | Sets the corner radius of the notched outline element in idle state.
+`mdc-notched-outline-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to notched outline element with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`mdc-notched-outline-idle-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to notched outline element in idle state with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+
+
+### Sass Functions
+
+Function | Description
+--- | ---
+`mdc-notched-outline-get-notch-padded-position($cornerSize)` | Returns the notch padded position based on given radius. This is 'x' position where the floating label starts.
 
 #### Calling Mixins with Parent Selectors
 
