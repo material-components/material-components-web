@@ -50,5 +50,5 @@ export const numbers = {
    * in the DOM and subsequently restoring it. This is necessary to force IE 11
    * to pick up the `aria-live` content change and announce it to the user.
    */
-  ARIA_LIVE_IE11_DELAY_MS: 200,
+  ARIA_LIVE_DELAY_MS: 1000,
 };
