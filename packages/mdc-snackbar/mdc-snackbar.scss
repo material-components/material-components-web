@@ -132,7 +132,7 @@
 }
 
 .mdc-snackbar__label {
-  @include mdc-typography(body2);
+  @include mdc-typography($mdc-snackbar-label-type-scale);
 
   display: none;
   flex-grow: 1;
@@ -184,7 +184,7 @@
 }
 
 .mdc-snackbar__action-icon {
-  @include mdc-icon-button-ink-color(surface);
+  @include mdc-icon-button-ink-color($mdc-snackbar-action-icon-ink-color);
 }
 
 // Two selectors are needed to increase specificity above `.material-icons`.

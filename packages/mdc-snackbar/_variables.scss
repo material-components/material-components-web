@@ -32,12 +32,16 @@ $mdc-snackbar-surface-fill-color: surface !default;
 $mdc-snackbar-overlay-fill-color: on-surface !default;
 $mdc-snackbar-label-ink-color: surface !default;
 $mdc-snackbar-action-button-ink-color: #bb86fc !default;
+$mdc-snackbar-action-icon-ink-color: surface !default;
+
+$mdc-snackbar-label-type-scale: body2 !default;
 $mdc-snackbar-action-icon-size: 18px !default;
 $mdc-snackbar-min-width: 344px !default;
 $mdc-snackbar-max-width: 672px !default;
 $mdc-snackbar-viewport-margin-narrow: 8px !default;
 $mdc-snackbar-viewport-margin-wide: 24px !default;
 $mdc-snackbar-padding: 8px !default;
+
 $mdc-snackbar-elevation: 6 !default;
 $mdc-snackbar-shape-radius: small !default; // Key from $mdc-shape-category-values or CSS length value (e.g., 4px)
 $mdc-snackbar-z-index: 8 !default; // One above mdc-dialog
