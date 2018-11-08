@@ -40,12 +40,11 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
 
   static get defaultAdapter() {
     return {
-      announce: (/* message: string */) => {},
+      announce: () => {},
 
       hasClass: (/* className: string */) => /* boolean */ false,
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
-      containsNode: (/* target: !Element */) => /* boolean */ false,
 
       setAriaHidden: () => {},
       unsetAriaHidden: () => {},
