@@ -242,7 +242,7 @@
 
   &.mdc-text-field--textarea {
     .mdc-floating-label {
-      @include mdc-rtl-reflexive-position(left, 0);
+      @include mdc-rtl-reflexive-position(left, 4px);
     }
   }
 
@@ -335,8 +335,9 @@
   // "notched" outline to have the same color. This covers two cases:
   // 1) text field renders with NO value in the "idle" state
   // 2) text field renders with a value in the "notched" state
-  @include mdc-notched-outline-idle-color($color);
-  @include mdc-notched-outline-color($color);
+  .mdc-notched-outline {
+    @include mdc-notched-outline-color($color);
+  }
 }
 
 @mixin mdc-text-field-hover-outline-color_($color) {
