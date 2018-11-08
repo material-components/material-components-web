@@ -148,7 +148,6 @@ class MDCDialogFoundation extends MDCFoundation {
 
     this.isOpen_ = false;
     this.adapter_.notifyClosing(action);
-    this.adapter_.releaseFocus();
     this.adapter_.addClass(cssClasses.CLOSING);
     this.adapter_.removeClass(cssClasses.OPEN);
     this.adapter_.removeBodyClass(cssClasses.SCROLL_LOCK);
@@ -274,6 +273,7 @@ class MDCDialogFoundation extends MDCFoundation {
     this.animationTimer_ = 0;
     this.adapter_.removeClass(cssClasses.OPENING);
     this.adapter_.removeClass(cssClasses.CLOSING);
+    this.adapter_.releaseFocus();
   }
 
   /**
