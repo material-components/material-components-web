@@ -88,3 +88,17 @@ $custom-dialog-color: $material-color-red-300;
   @include mdc-dialog-min-width(600px);
   @include mdc-dialog-max-width(300px, 30px);
 }
+
+.test-viewport--drawer {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.test-drawer-app-content--center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
