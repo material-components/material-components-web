@@ -120,39 +120,6 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     this.transitionEndHandler_ = null;
   }
 
-  /**
-   * @param {!Event} evt
-   */
-  handleTransitionEnd(evt) {
-    if (this.transitionEndHandler_) {
-      this.transitionEndHandler_(evt);
-      this.transitionEndHandler_ = null;
-    }
-  }
-
-  /**
-   * @param {!MouseEvent} evt
-   * @private
-   */
-  handleInteraction(evt) {
-    const target = /** @type {!Element} */ (evt.target);
-    if (this.isActionButtonEl_(target)) {
-      this.close(strings.REASON_ACTION);
-    } else if (this.isActionIconEl_(target)) {
-      this.close(strings.REASON_DISMISS);
-    }
-  }
-
-  /**
-   * @param {!KeyboardEvent} evt
-   * @private
-   */
-  handleDocumentKeyDown(evt) {
-    if (this.closeOnEscape && (evt.key === 'Escape' || evt.keyCode === 27)) {
-      this.close(strings.REASON_DISMISS);
-    }
-  }
-
   init() {
     this.adapter_.setAriaHidden();
   }
@@ -212,6 +179,39 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     this.adapter_.addClass(CLOSING);
     this.adapter_.removeClass(OPEN);
     this.adapter_.notifyClosing(reason);
+  }
+
+  /**
+   * @param {!Event} evt
+   */
+  handleTransitionEnd(evt) {
+    if (this.transitionEndHandler_) {
+      this.transitionEndHandler_(evt);
+      this.transitionEndHandler_ = null;
+    }
+  }
+
+  /**
+   * @param {!MouseEvent} evt
+   * @private
+   */
+  handleInteraction(evt) {
+    const target = /** @type {!Element} */ (evt.target);
+    if (this.isActionButtonEl_(target)) {
+      this.close(strings.REASON_ACTION);
+    } else if (this.isActionIconEl_(target)) {
+      this.close(strings.REASON_DISMISS);
+    }
+  }
+
+  /**
+   * @param {!KeyboardEvent} evt
+   * @private
+   */
+  handleDocumentKeyDown(evt) {
+    if (this.closeOnEscape && (evt.key === 'Escape' || evt.keyCode === 27)) {
+      this.close(strings.REASON_DISMISS);
+    }
   }
 
   /**
