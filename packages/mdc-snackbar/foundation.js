@@ -92,6 +92,14 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     this.closeOnEscape_ = closeOnEscape;
   }
 
+  /**
+   * @return {boolean}
+   */
+  get isOpen() {
+    const {OPEN} = cssClasses;
+    return this.adapter_.hasClass(OPEN);
+  }
+
   constructor(adapter) {
     super(Object.assign(MDCSnackbarFoundation.defaultAdapter, adapter));
 
@@ -130,14 +138,6 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     this.adapter_.setAriaHidden();
     this.adapter_.removeClass(OPEN);
     this.adapter_.removeClass(CLOSING);
-  }
-
-  /**
-   * @return {boolean}
-   */
-  get isOpen() {
-    const {OPEN} = cssClasses;
-    return this.adapter_.hasClass(OPEN);
   }
 
   open() {
