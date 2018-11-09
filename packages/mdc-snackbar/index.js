@@ -33,39 +33,6 @@ export class MDCSnackbar extends MDCComponent {
     return new MDCSnackbar(root);
   }
 
-  initialSyncWithDOM() {
-    this.handleTransitionEnd_ = this.foundation_.handleTransitionEnd.bind(this.foundation_);
-    this.handleInteraction_ = this.foundation_.handleInteraction.bind(this.foundation_);
-    this.handleDocumentKeyDown_ = this.foundation_.handleDocumentKeyDown.bind(this.foundation_);
-
-    this.registerTransitionEndHandler_(this.handleTransitionEnd_);
-  }
-
-  destroy() {
-    super.destroy();
-    this.deregisterTransitionEndHandler_(this.handleTransitionEnd_);
-    this.deregisterInteractionHandler_(this.handleInteraction_);
-    this.deregisterDocumentKeyDownHandler_(this.handleDocumentKeyDown_);
-  }
-
-  open() {
-    if (this.foundation_.isOpen) {
-      return;
-    }
-    this.registerInteractionHandler_(this.handleInteraction_);
-    this.registerDocumentKeyDownHandler_(this.handleDocumentKeyDown_);
-    this.foundation_.open();
-  }
-
-  close() {
-    if (!this.foundation_.isOpen) {
-      return;
-    }
-    this.deregisterInteractionHandler_(this.handleInteraction_);
-    this.deregisterDocumentKeyDownHandler_(this.handleDocumentKeyDown_);
-    this.foundation_.close();
-  }
-
   /**
    * @return {number}
    */
@@ -127,6 +94,48 @@ export class MDCSnackbar extends MDCComponent {
   }
 
   /**
+   * @return {!HTMLElement}
+   * @private
+   */
+  get surfaceEl_() {
+    const {SURFACE_SELECTOR} = MDCSnackbarFoundation.strings;
+    return this.root_.querySelector(SURFACE_SELECTOR);
+  }
+
+  initialSyncWithDOM() {
+    this.handleTransitionEnd_ = this.foundation_.handleTransitionEnd.bind(this.foundation_);
+    this.handleInteraction_ = this.foundation_.handleInteraction.bind(this.foundation_);
+    this.handleDocumentKeyDown_ = this.foundation_.handleDocumentKeyDown.bind(this.foundation_);
+
+    this.registerTransitionEndHandler_(this.handleTransitionEnd_);
+  }
+
+  destroy() {
+    super.destroy();
+    this.deregisterTransitionEndHandler_(this.handleTransitionEnd_);
+    this.deregisterInteractionHandler_(this.handleInteraction_);
+    this.deregisterDocumentKeyDownHandler_(this.handleDocumentKeyDown_);
+  }
+
+  open() {
+    if (this.foundation_.isOpen) {
+      return;
+    }
+    this.registerInteractionHandler_(this.handleInteraction_);
+    this.registerDocumentKeyDownHandler_(this.handleDocumentKeyDown_);
+    this.foundation_.open();
+  }
+
+  close() {
+    if (!this.foundation_.isOpen) {
+      return;
+    }
+    this.deregisterInteractionHandler_(this.handleInteraction_);
+    this.deregisterDocumentKeyDownHandler_(this.handleDocumentKeyDown_);
+    this.foundation_.close();
+  }
+
+  /**
    * @return {!MDCSnackbarFoundation}
    */
   getDefaultFoundation() {
@@ -147,15 +156,6 @@ export class MDCSnackbar extends MDCComponent {
       notifyClosing: (reason) => this.emit(MDCSnackbarFoundation.strings.CLOSING_EVENT, {reason}),
       notifyClosed: (reason) => this.emit(MDCSnackbarFoundation.strings.CLOSED_EVENT, {reason}),
     });
-  }
-
-  /**
-   * @return {!HTMLElement}
-   * @private
-   */
-  get surfaceEl_() {
-    const {SURFACE_SELECTOR} = MDCSnackbarFoundation.strings;
-    return this.root_.querySelector(SURFACE_SELECTOR);
   }
 
   /**
