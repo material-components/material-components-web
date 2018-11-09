@@ -35,7 +35,7 @@ const strings = {
   ARIA_ORIENTATION_HORIZONTAL: 'horizontal',
   ARIA_SELECTED: 'aria-selected',
   ARIA_CHECKED: 'aria-checked',
-  IS_ARIA_CHECKED: '[aria-checked="true"]',
+  ARIA_CHECKED_RADIO_SELECTOR: '[role="radio"][aria-checked="true"]',
   CHECKBOX_SELECTOR: 'input[type="checkbox"]:not(:disabled)',
   CHECKBOX_RADIO_SELECTOR: 'input[type="checkbox"]:not(:disabled), input[type="radio"]:not(:disabled)',
   CHILD_ELEMENTS_TO_TOGGLE_TABINDEX: `.${cssClasses.LIST_ITEM_CLASS} button:not(:disabled),

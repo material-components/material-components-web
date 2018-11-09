@@ -162,7 +162,7 @@ class MDCList extends MDCComponent {
     // Automatically set single selection if selected/activated classes are present.
     const preSelectedSelector = `.${cssClasses.LIST_ITEM_ACTIVATED_CLASS},
                                     .${cssClasses.LIST_ITEM_SELECTED_CLASS},
-                                    ${strings.IS_ARIA_CHECKED}`;
+                                    ${strings.ARIA_CHECKED_RADIO_SELECTOR}`;
     const preselectedElement = this.root_.querySelector(preSelectedSelector);
 
     if (preselectedElement) {
