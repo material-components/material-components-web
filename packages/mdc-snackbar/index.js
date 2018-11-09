@@ -33,11 +33,36 @@ export class MDCSnackbar extends MDCComponent {
     return new MDCSnackbar(root);
   }
 
+  initialSyncWithDOM() {
+    this.handleTransitionEnd_ = this.foundation_.handleTransitionEnd.bind(this.foundation_);
+    this.handleInteraction_ = this.foundation_.handleInteraction.bind(this.foundation_);
+    this.handleDocumentKeyDown_ = this.foundation_.handleDocumentKeyDown.bind(this.foundation_);
+
+    this.registerTransitionEndHandler_(this.handleTransitionEnd_);
+  }
+
+  destroy() {
+    super.destroy();
+    this.deregisterTransitionEndHandler_(this.handleTransitionEnd_);
+    this.deregisterInteractionHandler_(this.handleInteraction_);
+    this.deregisterDocumentKeyDownHandler_(this.handleDocumentKeyDown_);
+  }
+
   open() {
+    if (this.foundation_.isOpen) {
+      return;
+    }
+    this.registerInteractionHandler_(this.handleInteraction_);
+    this.registerDocumentKeyDownHandler_(this.handleDocumentKeyDown_);
     this.foundation_.open();
   }
 
   close() {
+    if (!this.foundation_.isOpen) {
+      return;
+    }
+    this.deregisterInteractionHandler_(this.handleInteraction_);
+    this.deregisterDocumentKeyDownHandler_(this.handleDocumentKeyDown_);
     this.foundation_.close();
   }
 
@@ -101,33 +126,83 @@ export class MDCSnackbar extends MDCComponent {
     this.root_.querySelector(ACTION_BUTTON_SELECTOR).textContent = actionButtonText;
   }
 
+  /**
+   * @return {!MDCSnackbarFoundation}
+   */
   getDefaultFoundation() {
-    const {SURFACE_SELECTOR, LABEL_SELECTOR} = MDCSnackbarFoundation.strings;
-    const transitionEndEventName = getCorrectEventName(window, 'transitionend');
-    const getSurfaceEl = () => this.root_.querySelector(SURFACE_SELECTOR);
+    const {LABEL_SELECTOR} = MDCSnackbarFoundation.strings;
 
     /* eslint brace-style: "off" */
     return new MDCSnackbarFoundation({
       announce: () => announce(this.root_, this.root_.querySelector(LABEL_SELECTOR)),
+      setAriaHidden: () => this.root_.setAttribute('aria-hidden', 'true'),
+      unsetAriaHidden: () => this.root_.removeAttribute('aria-hidden'),
 
       hasClass: (className) => this.root_.classList.contains(className),
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-
-      setAriaHidden: () => this.root_.setAttribute('aria-hidden', 'true'),
-      unsetAriaHidden: () => this.root_.removeAttribute('aria-hidden'),
-
-      registerKeyDownHandler: (handler) => document.addEventListener('keydown', handler),
-      deregisterKeyDownHandler: (handler) => document.removeEventListener('keydown', handler),
-      registerSurfaceClickHandler: (handler) => getSurfaceEl().addEventListener('click', handler),
-      deregisterSurfaceClickHandler: (handler) => getSurfaceEl().removeEventListener('click', handler),
-      registerTransitionEndHandler: (handler) => this.root_.addEventListener(transitionEndEventName, handler),
-      deregisterTransitionEndHandler: (handler) => this.root_.removeEventListener(transitionEndEventName, handler),
 
       notifyOpening: () => this.emit(MDCSnackbarFoundation.strings.OPENING_EVENT),
       notifyOpened: () => this.emit(MDCSnackbarFoundation.strings.OPENED_EVENT),
       notifyClosing: (reason) => this.emit(MDCSnackbarFoundation.strings.CLOSING_EVENT, {reason}),
       notifyClosed: (reason) => this.emit(MDCSnackbarFoundation.strings.CLOSED_EVENT, {reason}),
     });
+  }
+
+  /**
+   * @return {!HTMLElement}
+   * @private
+   */
+  get surfaceEl_() {
+    const {SURFACE_SELECTOR} = MDCSnackbarFoundation.strings;
+    return this.root_.querySelector(SURFACE_SELECTOR);
+  }
+
+  /**
+   * @param {!EventListener} handler
+   * @private
+   */
+  registerTransitionEndHandler_(handler) {
+    this.root_.addEventListener(getCorrectEventName(window, 'transitionend'), handler);
+  }
+
+  /**
+   * @param {!EventListener} handler
+   * @private
+   */
+  deregisterTransitionEndHandler_(handler) {
+    this.root_.removeEventListener(getCorrectEventName(window, 'transitionend'), handler);
+  }
+
+  /**
+   * @param {!EventListener} handler
+   * @private
+   */
+  registerInteractionHandler_(handler) {
+    this.surfaceEl_.addEventListener('click', handler);
+  }
+
+  /**
+   * @param {!EventListener} handler
+   * @private
+   */
+  deregisterInteractionHandler_(handler) {
+    this.surfaceEl_.removeEventListener('click', handler);
+  }
+
+  /**
+   * @param {!EventListener} handler
+   * @private
+   */
+  registerDocumentKeyDownHandler_(handler) {
+    document.addEventListener('keydown', handler);
+  }
+
+  /**
+   * @param {!EventListener} handler
+   * @private
+   */
+  deregisterDocumentKeyDownHandler_(handler) {
+    document.removeEventListener('keydown', handler);
   }
 }
