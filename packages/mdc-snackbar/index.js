@@ -62,6 +62,13 @@ export class MDCSnackbar extends MDCComponent {
   }
 
   /**
+   * @return {boolean}
+   */
+  get isOpen() {
+    return this.foundation_.isOpen;
+  }
+
+  /**
    * @return {string}
    */
   get labelText() {

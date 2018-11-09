@@ -96,8 +96,8 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
    * @return {boolean}
    */
   get isOpen() {
-    const {OPEN} = cssClasses;
-    return this.adapter_.hasClass(OPEN);
+    const {OPEN, CLOSING} = cssClasses;
+    return this.adapter_.hasClass(OPEN) || this.adapter_.hasClass(CLOSING);
   }
 
   constructor(adapter) {
