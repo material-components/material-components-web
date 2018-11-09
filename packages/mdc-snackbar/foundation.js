@@ -127,6 +127,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
   destroy() {
     const {OPEN, CLOSING} = cssClasses;
     this.clearAutoDismissTimer_();
+    this.adapter_.setAriaHidden();
     this.adapter_.removeClass(OPEN);
     this.adapter_.removeClass(CLOSING);
   }
