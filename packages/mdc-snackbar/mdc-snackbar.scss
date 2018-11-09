@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc.
+// Copyright 2018 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -21,152 +21,180 @@
 //
 
 @import "@material/animation/functions";
+@import "@material/button/mixins";
+@import "@material/icon-button/mixins";
+@import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
+@import "@material/theme/functions";
 @import "@material/theme/mixins";
+@import "@material/theme/variables";
 @import "@material/typography/mixins";
+@import "./mixins";
 @import "./variables";
 
 // postcss-bem-linter: define snackbar
 .mdc-snackbar {
+  @include mdc-snackbar-z-index($mdc-snackbar-z-index);
+  @include mdc-snackbar-viewport-margin($mdc-snackbar-viewport-margin-narrow);
+
   display: flex;
   position: fixed;
+  right: 0;
   bottom: 0;
-  left: 50%;
+  left: 0;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+
+  // Prevent snackbar from A) receiving mouse events while closed, and B) being visible during elastic scrolling.
+  // We can't use `display: none` on the root or surface elements because it prevents CSS transitions from animating.
+  transform: translateY(200vh);
+
+  // Ignore mouse events on the root layout element.
+  pointer-events: none;
+
+  // Mobile Safari only supports `rgba` values for this property; named values like `transparent` are ignored.
+  // From Apple's docs:
+  // > This property obeys the alpha value, if specified.
+  // > If you don’t specify an alpha value, Safari on iOS applies a default alpha value to the color.
+  // > To disable tap highlighting, set the alpha value to 0 (invisible).
+  // > If you set the alpha value to 1.0 (opaque), the element is not visible when tapped.
+  // See https://github.com/ben-eb/postcss-colormin/issues/1
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+@at-root {
+  @include mdc-snackbar-surface-fill-color($mdc-snackbar-surface-fill-color);
+  @include mdc-snackbar-overlay-fill-color($mdc-snackbar-overlay-fill-color);
+  @include mdc-snackbar-label-ink-color($mdc-snackbar-label-ink-color);
+  @include mdc-snackbar-min-width($mdc-snackbar-min-width);
+  @include mdc-snackbar-max-width($mdc-snackbar-max-width);
+  @include mdc-snackbar-elevation($mdc-snackbar-elevation);
+  @include mdc-snackbar-shape-radius($mdc-snackbar-shape-radius);
+}
+
+.mdc-snackbar--wide {
+  @include mdc-snackbar-viewport-margin($mdc-snackbar-viewport-margin-wide);
+}
+
+.mdc-snackbar--leading {
+  justify-content: flex-start;
+}
+
+.mdc-snackbar--open,
+.mdc-snackbar--closing {
+  transform: none;
+}
+
+.mdc-snackbar__surface {
+  display: flex;
+
+  // Non-static positioning is required to make `overflow: hidden` work in Safari.
+  // See https://bugs.webkit.org/show_bug.cgi?id=98538#c5
+  position: relative;
   align-items: center;
   justify-content: flex-start;
   box-sizing: border-box;
-  padding-right: 24px;
-  padding-left: 24px;
-  transform: translate(-50%, 100%);
-  transition: mdc-animation-exit-permanent(transform, .25s);
-  background-color: $mdc-snackbar-background-color;
-  pointer-events: none;
-  will-change: transform;
-
-  @media (max-width: ($mdc-snackbar-tablet-breakpoint - 1)) {
-    left: 0;
-    width: 100%;
-    transform: translate(0, 100%);
-  }
-
-  @media (min-width: $mdc-snackbar-tablet-breakpoint) {
-    min-width: 288px;
-    max-width: 568px;
-    border-radius: 2px;
-  }
-}
-
-.mdc-snackbar--align-start {
-  @media (min-width: $mdc-snackbar-tablet-breakpoint) {
-    @include mdc-rtl-reflexive-position(left, 24px);
-
-    bottom: 24px;
-    transform: translate(0, 200%);
-  }
-
-  @media (max-width: ($mdc-snackbar-tablet-breakpoint - 1)) {
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    transform: translate(0, 100%);
-  }
-}
-
-.mdc-snackbar--active {
-  transform: translate(0);
-  transition: mdc-animation-enter(transform, .25s);
-  pointer-events: auto;
-
-  &:not(.mdc-snackbar--align-start) {
-    transform: translate(-50%, 0);
-
-    @media (max-width: ($mdc-snackbar-tablet-breakpoint - 1)) {
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      transform: translate(0);
-    }
-  }
-}
-
-.mdc-snackbar__action-wrapper {
-  @include mdc-rtl-reflexive-property(padding, 24px, 0);
-}
-
-.mdc-snackbar--action-on-bottom {
-  flex-direction: column;
-}
-
-.mdc-snackbar__text {
-  @include mdc-typography(body1);
-  @include mdc-rtl-reflexive-box(margin, right, auto, ".mdc-snackbar");
-
-  display: flex;
-  align-items: center;
-  height: 48px;
-  transition: mdc-animation-exit-permanent(opacity, .3s);
+  transform: scale(.8);
   opacity: 0;
-  color: $mdc-snackbar-foreground-color;
 
-  @media (min-width: $mdc-snackbar-tablet-breakpoint) {
-    @include mdc-rtl-reflexive-property(padding, 0, 24px);
+  // Prevent mdc-snackbar__overlay's background-color from bleeding past the surface's border-radius.
+  overflow: hidden;
+
+  .mdc-snackbar--stacked & {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .mdc-snackbar--open & {
+    transform: scale(1);
+    transition:
+      mdc-animation-enter(opacity, $mdc-snackbar-enter-duration_),
+      mdc-animation-enter(transform, $mdc-snackbar-enter-duration_);
+    opacity: 1;
+    pointer-events: auto; // Allow mouse events on surface element while snackbar is open
+  }
+
+  .mdc-snackbar--closing & {
+    transform: scale(1);
+    transition: mdc-animation-exit-permanent(opacity, $mdc-snackbar-exit-duration_, $mdc-snackbar-exit-delay_);
   }
 }
 
-.mdc-snackbar--action-on-bottom .mdc-snackbar__text {
-  margin-right: inherit;
+.mdc-snackbar__overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  box-sizing: border-box;
+  z-index: -1;
 }
 
-.mdc-snackbar--action-on-bottom .mdc-snackbar__action-wrapper {
-  @include mdc-rtl-reflexive-box(margin, left, auto);
+.mdc-snackbar__label {
+  @include mdc-typography($mdc-snackbar-label-type-scale);
 
-  flex-direction: column;
-  justify-content: flex-start;
-  margin-top: -12px;
-  margin-bottom: 8px;
+  display: none;
+  flex-grow: 1;
+  box-sizing: border-box;
+  margin: 0;
+
+  // 14px top/bottom padding needed to make the height 48px.
+  padding: 14px 16px;
+
+  // stylelint-disable plugin/selector-bem-pattern
+  .mdc-snackbar--open &,
+  .mdc-snackbar--closing & {
+    display: block;
+  }
+  // stylelint-enable plugin/selector-bem-pattern
 }
 
-.mdc-snackbar--multiline .mdc-snackbar__text {
-  height: 80px;
+// Used to prevent visual jank when announcing label text to screen readers.
+// See the `announce()` function in util.js for details.
+.mdc-snackbar__label::before {
+  display: inline;
+  content: attr(data-mdc-snackbar-label-text);
+}
+
+.mdc-snackbar__actions {
+  @include mdc-rtl-reflexive-property(margin, 0, $mdc-snackbar-padding);
+
+  display: none;
+  flex-shrink: 0;
+  align-items: center;
+  box-sizing: border-box;
+
+  // stylelint-disable plugin/selector-bem-pattern
+  .mdc-snackbar--open &,
+  .mdc-snackbar--closing & {
+    display: flex;
+  }
+  // stylelint-enable plugin/selector-bem-pattern
+
+  .mdc-snackbar--stacked & {
+    align-self: flex-end;
+    margin-bottom: $mdc-snackbar-padding;
+  }
 }
 
 .mdc-snackbar__action-button {
-  @include mdc-typography(button);
-  @include mdc-theme-prop(color, secondary);
-
-  padding: 0;
-  transition: mdc-animation-exit-permanent(opacity, .3s);
-  border: none;
-  outline: none;
-  background-color: transparent;
-  opacity: 0;
-  user-select: none;
-  -webkit-appearance: none;
-  visibility: hidden;
-
-  &::-moz-focus-inner {
-    border: 0;
-  }
-
-  &:hover {
-    cursor: pointer;
-  }
-
-  &:not([aria-hidden]) {
-    visibility: inherit;
-  }
+  @include mdc-button-ink-color($mdc-snackbar-action-button-ink-color);
+  @include mdc-states($mdc-snackbar-action-button-ink-color);
 }
 
-.mdc-snackbar--active .mdc-snackbar__text,
-.mdc-snackbar--active .mdc-snackbar__action-button:not([aria-hidden]) {
-  transition: mdc-animation-exit-permanent(opacity, .3s);
-  opacity: 1;
+.mdc-snackbar__action-icon {
+  @include mdc-icon-button-ink-color($mdc-snackbar-action-icon-ink-color);
 }
 
-// stylelint-disable plugin/selector-bem-pattern
-.mdc-snackbar--multiline.mdc-snackbar--action-on-bottom .mdc-snackbar__text {
-  margin: 0;
+// Two selectors are needed to increase specificity above `.material-icons`.
+// stylelint-disable-next-line selector-class-pattern
+.mdc-snackbar__action-icon.material-icons {
+  @include mdc-icon-button-size($mdc-snackbar-action-icon-size);
 }
-// stylelint-enable plugin/selector-bem-pattern
+
+.mdc-snackbar__action-button + .mdc-snackbar__action-icon {
+  @include mdc-rtl-reflexive-property(margin, $mdc-snackbar-padding, 0);
+}
 
 // postcss-bem-linter: end
