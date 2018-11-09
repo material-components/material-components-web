@@ -188,7 +188,6 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
   handleTransitionEnd(evt) {
     if (this.transitionEndHandler_) {
       this.transitionEndHandler_(evt);
-      this.transitionEndHandler_ = null;
     }
   }
 
@@ -227,6 +226,7 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
         return;
       }
       handler();
+      this.transitionEndHandler_ = null;
     };
   }
 

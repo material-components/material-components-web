@@ -115,6 +115,7 @@ export class MDCSnackbar extends MDCComponent {
     this.handleDocumentKeyDown_ = this.foundation_.handleDocumentKeyDown.bind(this.foundation_);
 
     this.registerTransitionEndHandler_(this.handleTransitionEnd_);
+    this.registerInteractionHandler_(this.handleInteraction_);
   }
 
   destroy() {
@@ -128,7 +129,6 @@ export class MDCSnackbar extends MDCComponent {
     if (this.foundation_.isOpen) {
       return;
     }
-    this.registerInteractionHandler_(this.handleInteraction_);
     this.registerDocumentKeyDownHandler_(this.handleDocumentKeyDown_);
     this.foundation_.open();
   }
@@ -137,7 +137,6 @@ export class MDCSnackbar extends MDCComponent {
     if (!this.foundation_.isOpen) {
       return;
     }
-    this.deregisterInteractionHandler_(this.handleInteraction_);
     this.deregisterDocumentKeyDownHandler_(this.handleDocumentKeyDown_);
     this.foundation_.close();
   }
