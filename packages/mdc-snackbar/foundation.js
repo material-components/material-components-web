@@ -78,19 +78,34 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     }
   }
 
+  /**
+   * @return {boolean}
+   */
+  get closeOnEscape() {
+    return this.closeOnEscape_;
+  }
+
+  /**
+   * @param {boolean} closeOnEscape
+   */
+  set closeOnEscape(closeOnEscape) {
+    this.closeOnEscape_ = closeOnEscape;
+  }
+
   constructor(adapter) {
     super(Object.assign(MDCSnackbarFoundation.defaultAdapter, adapter));
-
-    /**
-     * @type {boolean}
-     */
-    this.closeOnEscape = true;
 
     /**
      * @type {number}
      * @private
      */
     this.timeoutMs_ = numbers.DEFAULT_AUTO_DISMISS_TIMEOUT_MS;
+
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this.closeOnEscape_ = true;
 
     /**
      * @type {?number}
