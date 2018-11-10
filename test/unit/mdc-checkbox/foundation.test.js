@@ -41,7 +41,6 @@ const DESC_UNDEFINED = {
 function setupTest() {
   const {foundation, mockAdapter} = setupFoundationTest(MDCCheckboxFoundation);
   const nativeControl = bel`<input type="checkbox">`;
-  td.when(mockAdapter.getNativeControl()).thenReturn(nativeControl);
   return {foundation, mockAdapter, nativeControl};
 }
 
@@ -116,7 +115,7 @@ test('exports numbers', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCCheckboxFoundation, [
-    'addClass', 'removeClass', 'setNativeControlAttr', 'removeNativeControlAttr', 'getNativeControl',
+    'addClass', 'removeClass', 'setNativeControlAttr', 'removeNativeControlAttr',
     'forceLayout', 'isAttachedToDOM', 'isIndeterminate', 'isChecked', 'hasNativeControl', 'setNativeControlDisabled',
   ]);
 });
@@ -136,12 +135,6 @@ test('#init adds aria-checked="mixed" if checkbox is initially indeterminate', (
   td.verify(mockAdapter.setNativeControlAttr('aria-checked', strings.ARIA_CHECKED_INDETERMINATE_VALUE));
 });
 
-test('#init handles case where getNativeControl() does not return anything', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getNativeControl()).thenReturn(undefined);
-  assert.doesNotThrow(() => foundation.init());
-});
-
 test('#init handles case when WebIDL attrs cannot be overridden (Safari)', () => {
   const {foundation, nativeControl} = setupTest();
   withMockCheckboxDescriptorReturning(DESC_UNDEFINED, () => {
@@ -157,14 +150,6 @@ test('#init handles case when property descriptors are not returned at all (Andr
   withMockCheckboxDescriptorReturning(undefined, () => {
     assert.doesNotThrow(() => foundation.init());
   });
-});
-
-test('#destroy handles case where getNativeControl() does not return anything', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.init();
-
-  td.when(mockAdapter.getNativeControl()).thenReturn(undefined);
-  assert.doesNotThrow(() => foundation.destroy());
 });
 
 test('#destroy handles case when WebIDL attrs cannot be overridden (Safari)', () => {
@@ -326,48 +311,4 @@ test('change handler does not add animation classes for bogus changes (init -> u
 
   change({checked: false, indeterminate: false});
   td.verify(mockAdapter.addClass(animClassArg), {times: 0});
-});
-
-test('change handler gracefully exits when getNativeControl() returns nothing', () => {
-  const {change} = setupChangeHandlerTest();
-  assert.doesNotThrow(() => change(undefined));
-});
-
-test('"checked" property change hook works correctly', () => {
-  const {foundation, mockAdapter, nativeControl} = setupTest();
-  td.when(mockAdapter.isAttachedToDOM()).thenReturn(true);
-  td.when(mockAdapter.hasNativeControl()).thenReturn(true);
-
-  withMockCheckboxDescriptorReturning({
-    get: () => {},
-    set: () => {},
-    enumerable: false,
-    configurable: true,
-  }, () => {
-    foundation.init();
-    td.when(mockAdapter.isChecked()).thenReturn(true);
-    td.when(mockAdapter.isIndeterminate()).thenReturn(false);
-    nativeControl.checked = !nativeControl.checked;
-    td.verify(mockAdapter.addClass(cssClasses.ANIM_UNCHECKED_CHECKED));
-  });
-});
-
-test('"indeterminate" property change hook works correctly', () => {
-  const {foundation, mockAdapter, nativeControl} = setupTest();
-  td.when(mockAdapter.isAttachedToDOM()).thenReturn(true);
-  td.when(mockAdapter.hasNativeControl()).thenReturn(true);
-
-  withMockCheckboxDescriptorReturning({
-    get: () => {},
-    set: () => {},
-    enumerable: false,
-    configurable: true,
-  }, () => {
-    foundation.init();
-    td.when(mockAdapter.isChecked()).thenReturn(false);
-    td.when(mockAdapter.isIndeterminate()).thenReturn(true);
-
-    nativeControl.indeterminate = !nativeControl.indeterminate;
-    td.verify(mockAdapter.addClass(cssClasses.ANIM_UNCHECKED_INDETERMINATE));
-  });
 });

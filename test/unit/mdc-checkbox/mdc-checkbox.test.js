@@ -191,12 +191,6 @@ test('adapter#removeNativeControlAttr removes an attribute from the input elemen
   assert.isFalse(cb.hasAttribute('aria-checked'));
 });
 
-test('adapter#getNativeControl returns the native checkbox element', () => {
-  const {root, component} = setupTest();
-  const nativeCb = root.querySelector(strings.NATIVE_CONTROL_SELECTOR);
-  assert.equal(component.getDefaultFoundation().adapter_.getNativeControl(), nativeCb);
-});
-
 test('adapter#forceLayout touches "offsetWidth" on the root in order to force layout', () => {
   const {root, component} = setupTest();
   const mockGetter = td.func('.offsetWidth');
@@ -262,4 +256,17 @@ test('#adapter.setNativeControlDisabled returns false when checkbox is not disab
   const {cb, component} = setupTest();
   component.getDefaultFoundation().adapter_.setNativeControlDisabled(false);
   assert.isFalse(cb.disabled);
+});
+
+
+test('"checked" property change hook works correctly', () => {
+  const {cb, component} = setupTest();
+  cb.checked = true;
+  assert.isTrue(component.checked);
+});
+
+test('"indeterminate" property change hook works correctly', () => {
+  const {cb, component} = setupTest();
+  cb.indeterminate = true;
+  assert.isTrue(component.indeterminate);
 });
