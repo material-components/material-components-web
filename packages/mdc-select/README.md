@@ -109,7 +109,7 @@ If you are using the enhanced select within an HTML form, you can include a hidd
   <div class="mdc-select__selected-text"></div>
   <div class="mdc-select__menu mdc-menu mdc-menu-surface demo-width-class">
     <ul class="mdc-list">
-      <li class="mdc-list-item mdc-list-item--selected" data-value="" aria-selected="true"></option>
+      <li class="mdc-list-item mdc-list-item--selected" data-value="" aria-selected="true"></li>
       <li class="mdc-list-item" data-value="grains">
         Bread, Cereal, Rice, and Pasta
       </li>
@@ -121,7 +121,7 @@ If you are using the enhanced select within an HTML form, you can include a hidd
       </li>
     </ul>
   </div>
-  <span class="mdc-floating-label">Pick a Food Group</label>
+  <span class="mdc-floating-label">Pick a Food Group</span>
   <div class="mdc-line-ripple"></div>
 </div>
 ```
@@ -174,7 +174,7 @@ The following is an example of the enhanced select component with all of the nec
       </li>
     </ul>
   </div>
-  <span id="demo-label" class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</label>
+  <span id="demo-label" class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
   <div class="mdc-line-ripple"></div>
 </div>
 ```
@@ -248,7 +248,7 @@ enhanced select also needs the text from the selected element copied to the `mdc
       </li>
     </ul>
   </div>
-  <span class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</label>
+  <span class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
   <div class="mdc-line-ripple"></div>
 </div>
 ```
@@ -298,7 +298,7 @@ attribute to the hidden `<input>` element if present.
   <div class="mdc-select__menu mdc-menu mdc-menu-surface">
     ...
   </div>
-  <span class="mdc-floating-label">Pick a Food Group</label>
+  <span class="mdc-floating-label">Pick a Food Group</span>
   <div class="mdc-line-ripple"></div>
 </div>
 ```
@@ -348,7 +348,7 @@ programmatically select a disabled list item in the enhanced select.
       </li>
     </ul>
   </div>
-  <span class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</label>
+  <span class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
   <div class="mdc-line-ripple"></div>
 </div>
 ```
