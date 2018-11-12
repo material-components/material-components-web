@@ -24,7 +24,7 @@
 @import "@material/shape/mixins";
 @import "@material/theme/functions";
 @import "@material/theme/mixins";
-@import "@material/theme/variables";
+@import "@material/theme/variables"; // for mdc-theme-prop-value() and mdc-theme-text-emphasis()
 @import "./variables";
 
 @mixin mdc-snackbar-z-index($z-index) {
@@ -54,34 +54,27 @@
 }
 
 @mixin mdc-snackbar-shape-radius($radius) {
-  // The mdc-snackbar__overlay selector is needed to prevent the overlay's
-  // background-color from leaking past the border-radius of the
-  // mdc-snackbar__surface element in Safari 12 (and possibly other versions).
   .mdc-snackbar__surface {
     @include mdc-shape-radius($radius);
   }
 }
 
-@mixin mdc-snackbar-surface-fill-color($color) {
+@mixin mdc-snackbar-fill-color($overlay-color, $overlay-opacity, $surface-color: surface) {
   .mdc-snackbar__surface {
-    @include mdc-theme-prop(background-color, $color);
+    @include mdc-theme-prop(background-color, $surface-color);
   }
-}
 
-@mixin mdc-snackbar-overlay-fill-color($color, $opacity: .8) {
   .mdc-snackbar__overlay {
-    $opacity-value: if(type-of($opacity) == number, $opacity, mdc-theme-text-emphasis($opacity));
-    $color-value: rgba(mdc-theme-prop-value($color), $opacity-value);
-
-    @include mdc-theme-prop(background-color, $color-value);
+    @include mdc-theme-prop(background-color, rgba(mdc-theme-prop-value($overlay-color), $overlay-opacity));
   }
 }
 
-@mixin mdc-snackbar-label-ink-color($color, $opacity: high) {
-  .mdc-snackbar__label {
-    $opacity-value: if(type-of($opacity) == number, $opacity, mdc-theme-text-emphasis($opacity));
-    $color-value: rgba(mdc-theme-prop-value($color), $opacity-value);
+@mixin mdc-snackbar-label-ink-color($color, $opacity) {
+  @if type-of($opacity) != number {
+    $opacity: mdc-theme-text-emphasis($opacity);
+  }
 
-    @include mdc-theme-prop(color, $color-value);
+  .mdc-snackbar__label {
+    @include mdc-theme-prop(color, rgba(mdc-theme-prop-value($color), $opacity));
   }
 }

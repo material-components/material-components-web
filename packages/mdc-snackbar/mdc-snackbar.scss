@@ -64,9 +64,12 @@
 }
 
 @at-root {
-  @include mdc-snackbar-surface-fill-color($mdc-snackbar-surface-fill-color);
-  @include mdc-snackbar-overlay-fill-color($mdc-snackbar-overlay-fill-color);
-  @include mdc-snackbar-label-ink-color($mdc-snackbar-label-ink-color);
+  @include mdc-snackbar-fill-color(
+    $mdc-snackbar-overlay-fill-color,
+    $mdc-snackbar-overlay-fill-opacity,
+    $mdc-snackbar-surface-fill-color
+  );
+  @include mdc-snackbar-label-ink-color($mdc-snackbar-label-ink-color, $mdc-snackbar-label-ink-opacity);
   @include mdc-snackbar-min-width($mdc-snackbar-min-width);
   @include mdc-snackbar-max-width($mdc-snackbar-max-width);
   @include mdc-snackbar-elevation($mdc-snackbar-elevation);
@@ -109,15 +112,15 @@
   .mdc-snackbar--open & {
     transform: scale(1);
     transition:
-      mdc-animation-enter(opacity, $mdc-snackbar-enter-duration_),
-      mdc-animation-enter(transform, $mdc-snackbar-enter-duration_);
+      mdc-animation-enter(opacity, $mdc-snackbar-enter-duration),
+      mdc-animation-enter(transform, $mdc-snackbar-enter-duration);
     opacity: 1;
     pointer-events: auto; // Allow mouse events on surface element while snackbar is open
   }
 
   .mdc-snackbar--closing & {
     transform: scale(1);
-    transition: mdc-animation-exit-permanent(opacity, $mdc-snackbar-exit-duration_, $mdc-snackbar-exit-delay_);
+    transition: mdc-animation-exit-permanent(opacity, $mdc-snackbar-exit-duration, $mdc-snackbar-exit-delay);
   }
 }
 
