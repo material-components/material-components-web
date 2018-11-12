@@ -129,7 +129,7 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
    * @return {boolean}
    */
   isOpening() {
-    return this.adapter_.hasClass(cssClasses.OPENING);
+    return this.adapter_.hasClass(cssClasses.OPENING) || this.adapter_.hasClass(cssClasses.ANIMATE);
   }
 
   /**
