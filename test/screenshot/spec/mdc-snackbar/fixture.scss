@@ -30,8 +30,12 @@ $custom-snackbar-color: $material-color-red-500;
   @include mdc-snackbar-elevation(16);
 }
 
+.custom-snackbar--fill-color {
+  @include mdc-snackbar-fill-color($custom-snackbar-color, 1);
+}
+
 .custom-snackbar--label-ink-color {
-  @include mdc-snackbar-label-ink-color($custom-snackbar-color);
+  @include mdc-snackbar-label-ink-color($custom-snackbar-color, 1);
 }
 
 .custom-snackbar--max-width {
@@ -42,16 +46,8 @@ $custom-snackbar-color: $material-color-red-500;
   @include mdc-snackbar-min-width(800px);
 }
 
-.custom-snackbar--overlay-fill-color {
-  @include mdc-snackbar-overlay-fill-color($custom-snackbar-color);
-}
-
 .custom-snackbar--shape-radius {
   @include mdc-snackbar-shape-radius(10px);
-}
-
-.custom-snackbar--surface-fill-color {
-  @include mdc-snackbar-surface-fill-color($custom-snackbar-color);
 }
 
 .custom-snackbar--viewport-margin {
