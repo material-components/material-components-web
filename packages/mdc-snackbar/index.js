@@ -165,7 +165,7 @@ class MDCSnackbar extends MDCComponent {
    * @private
    */
   registerTransitionEndHandler_(handler) {
-    this.root_.addEventListener(getCorrectEventName(window, 'transitionend'), handler);
+    this.listen(getCorrectEventName(window, 'transitionend'), handler);
   }
 
   /**
@@ -173,7 +173,7 @@ class MDCSnackbar extends MDCComponent {
    * @private
    */
   deregisterTransitionEndHandler_(handler) {
-    this.root_.removeEventListener(getCorrectEventName(window, 'transitionend'), handler);
+    this.unlisten(getCorrectEventName(window, 'transitionend'), handler);
   }
 
   /**
