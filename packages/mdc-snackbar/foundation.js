@@ -24,7 +24,6 @@
 import {MDCFoundation} from '@material/base/index';
 import MDCSnackbarAdapter from './adapter';
 import {cssClasses, numbers, strings} from './constants';
-import * as ponyfill from '@material/dom/ponyfill';
 
 class MDCSnackbarFoundation extends MDCFoundation {
   static get cssClasses() {
@@ -47,6 +46,10 @@ class MDCSnackbarFoundation extends MDCFoundation {
       hasClass: (/* className: string */) => /* boolean */ false,
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
+
+      isSurface: (/* target: !Element */) => false,
+      isActionButton: (/* target: !Element */) => false,
+      isActionIcon: (/* target: !Element */) => false,
 
       notifyOpening: () => {},
       notifyOpened: () => {},
@@ -194,9 +197,9 @@ class MDCSnackbarFoundation extends MDCFoundation {
    */
   handleInteraction(evt) {
     const target = /** @type {!Element} */ (evt.target);
-    if (this.isActionButtonEl_(target)) {
+    if (this.adapter_.isActionButton(target)) {
       this.close(strings.REASON_ACTION);
-    } else if (this.isActionIconEl_(target)) {
+    } else if (this.adapter_.isActionIcon(target)) {
       this.close(strings.REASON_DISMISS);
     }
   }
@@ -219,7 +222,7 @@ class MDCSnackbarFoundation extends MDCFoundation {
     this.transitionEndHandler_ = (evt) => {
       const target = /** @type {!Element} */ (evt.target);
       // Ignore `transitionend` events that bubble up from action button/icon ripple states.
-      if (!this.isSurfaceEl_(target)) {
+      if (!this.adapter_.isSurface(target)) {
         return;
       }
       handler();
@@ -230,36 +233,6 @@ class MDCSnackbarFoundation extends MDCFoundation {
   /** @private */
   clearAutoDismissTimer_() {
     clearTimeout(this.autoDismissTimer_);
-  }
-
-  /**
-   * @param {!Element} target
-   * @return {boolean}
-   * @private
-   */
-  isSurfaceEl_(target) {
-    const {SURFACE_SELECTOR} = strings;
-    return ponyfill.matches(target, SURFACE_SELECTOR);
-  }
-
-  /**
-   * @param {!Element} target
-   * @return {boolean}
-   * @private
-   */
-  isActionButtonEl_(target) {
-    const {ACTION_BUTTON_SELECTOR} = strings;
-    return Boolean(ponyfill.closest(target, ACTION_BUTTON_SELECTOR));
-  }
-
-  /**
-   * @param {!Element} target
-   * @return {boolean}
-   * @private
-   */
-  isActionIconEl_(target) {
-    const {ACTION_ICON_SELECTOR} = strings;
-    return Boolean(ponyfill.closest(target, ACTION_ICON_SELECTOR));
   }
 }
 

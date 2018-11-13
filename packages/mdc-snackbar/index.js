@@ -24,6 +24,8 @@
 import {MDCComponent} from '@material/base/index';
 import MDCSnackbarFoundation from './foundation';
 import {getCorrectEventName} from '@material/animation/index';
+import {strings} from "./constants";
+import * as ponyfill from "@material/dom/ponyfill";
 
 class MDCSnackbar extends MDCComponent {
   static attachTo(root) {
@@ -76,11 +78,17 @@ class MDCSnackbar extends MDCComponent {
    * @return {!MDCSnackbarFoundation}
    */
   getDefaultFoundation() {
+    const {SURFACE_SELECTOR, ACTION_BUTTON_SELECTOR, ACTION_ICON_SELECTOR} = strings;
+
     /* eslint brace-style: "off" */
     return new MDCSnackbarFoundation({
       hasClass: (className) => this.root_.classList.contains(className),
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
+
+      isSurface: (target) => ponyfill.matches(target, SURFACE_SELECTOR),
+      isActionButton: (target) => Boolean(ponyfill.closest(target, ACTION_BUTTON_SELECTOR)),
+      isActionIcon: (target) => Boolean(ponyfill.closest(target, ACTION_ICON_SELECTOR)),
 
       notifyOpening: () => this.emit(MDCSnackbarFoundation.strings.OPENING_EVENT),
       notifyOpened: () => this.emit(MDCSnackbarFoundation.strings.OPENED_EVENT),
