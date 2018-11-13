@@ -154,6 +154,7 @@ class MDCDialogFoundation extends MDCFoundation {
 
     clearTimeout(this.animationTimer_);
     this.animationTimer_ = setTimeout(() => {
+      this.adapter_.releaseFocus();
       this.handleAnimationTimerEnd_();
       this.adapter_.notifyClosed(action);
     }, numbers.DIALOG_ANIMATION_CLOSE_TIME_MS);
@@ -273,7 +274,6 @@ class MDCDialogFoundation extends MDCFoundation {
     this.animationTimer_ = 0;
     this.adapter_.removeClass(cssClasses.OPENING);
     this.adapter_.removeClass(cssClasses.CLOSING);
-    this.adapter_.releaseFocus();
   }
 
   /**
