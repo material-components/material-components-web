@@ -101,7 +101,7 @@ class MDCSnackbarFoundation extends MDCFoundation {
     const {OPEN, CLOSING} = cssClasses;
 
     this.clearAutoDismissTimer_();
-    this.setTransitionEndHandler_(() => {
+    this.setOneTimeTransitionEndHandler_(() => {
       this.adapter_.notifyOpened();
     });
     this.autoDismissTimer_ = setTimeout(() => this.close(strings.REASON_DISMISS), this.timeoutMs);
@@ -124,7 +124,7 @@ class MDCSnackbarFoundation extends MDCFoundation {
     const {OPEN, CLOSING} = cssClasses;
 
     this.clearAutoDismissTimer_();
-    this.setTransitionEndHandler_(() => {
+    this.setOneTimeTransitionEndHandler_(() => {
       this.adapter_.removeClass(CLOSING);
       this.adapter_.notifyClosed(reason);
     });
@@ -215,7 +215,7 @@ class MDCSnackbarFoundation extends MDCFoundation {
    * @param {function(): undefined} handler
    * @private
    */
-  setTransitionEndHandler_(handler) {
+  setOneTimeTransitionEndHandler_(handler) {
     this.transitionEndHandler_ = (evt) => {
       const target = /** @type {!Element} */ (evt.target);
       // Ignore `transitionend` events that bubble up from action button/icon ripple states.
