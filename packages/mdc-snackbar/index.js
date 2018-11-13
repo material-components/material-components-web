@@ -24,8 +24,8 @@
 import {MDCComponent} from '@material/base/index';
 import MDCSnackbarFoundation from './foundation';
 import {getCorrectEventName} from '@material/animation/index';
-import {strings} from "./constants";
-import * as ponyfill from "@material/dom/ponyfill";
+import {strings} from './constants';
+import * as ponyfill from '@material/dom/ponyfill';
 
 class MDCSnackbar extends MDCComponent {
   static attachTo(root) {
