@@ -25,9 +25,7 @@ import {MDCComponent} from '@material/base/index';
 import MDCSnackbarFoundation from './foundation';
 import {getCorrectEventName} from '@material/animation/index';
 
-export {MDCSnackbarFoundation};
-
-export class MDCSnackbar extends MDCComponent {
+class MDCSnackbar extends MDCComponent {
   static attachTo(root) {
     return new MDCSnackbar(root);
   }
@@ -210,3 +208,5 @@ export class MDCSnackbar extends MDCComponent {
     document.removeEventListener('keydown', handler);
   }
 }
+
+export {MDCSnackbar, MDCSnackbarFoundation};

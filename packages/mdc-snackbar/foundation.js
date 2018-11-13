@@ -26,7 +26,7 @@ import MDCSnackbarAdapter from './adapter';
 import {cssClasses, numbers, strings} from './constants';
 import * as ponyfill from '@material/dom/ponyfill';
 
-export default class MDCSnackbarFoundation extends MDCFoundation {
+class MDCSnackbarFoundation extends MDCFoundation {
   static get cssClasses() {
     return cssClasses;
   }
@@ -262,3 +262,5 @@ export default class MDCSnackbarFoundation extends MDCFoundation {
     return Boolean(ponyfill.closest(target, ACTION_ICON_SELECTOR));
   }
 }
+
+export default MDCSnackbarFoundation;
