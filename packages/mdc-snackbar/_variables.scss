@@ -24,13 +24,10 @@
 @import "@material/theme/variables"; // for mdc-theme-prop-value() function
 @import "@material/theme/color-palette";
 
-$mdc-snackbar-surface-fill-color: surface !default;
-$mdc-snackbar-overlay-fill-color: on-surface !default;
-$mdc-snackbar-overlay-fill-opacity: .8 !default;
-$mdc-snackbar-label-ink-color: surface !default;
-$mdc-snackbar-label-ink-opacity: high !default; // Key from $mdc-theme-text-emphasis or numeric value (e.g., 0.87)
+$mdc-snackbar-fill-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 80%) !default;
+$mdc-snackbar-label-ink-color: rgba(mdc-theme-prop-value(surface), mdc-theme-text-emphasis(high)) !default;
+$mdc-snackbar-action-icon-ink-color: rgba(mdc-theme-prop-value(surface), mdc-theme-text-emphasis(high)) !default;
 $mdc-snackbar-action-button-ink-color: #bb86fc !default;
-$mdc-snackbar-action-icon-ink-color: surface !default;
 
 $mdc-snackbar-label-type-scale: body2 !default;
 $mdc-snackbar-action-icon-size: 18px !default;

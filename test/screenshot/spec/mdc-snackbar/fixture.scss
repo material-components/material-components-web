@@ -22,7 +22,6 @@
 
 @import "../../../../packages/mdc-snackbar/mixins";
 @import "../../../../packages/mdc-theme/color-palette";
-@import "../mixins";
 
 $custom-snackbar-color: $material-color-red-500;
 
@@ -31,11 +30,11 @@ $custom-snackbar-color: $material-color-red-500;
 }
 
 .custom-snackbar--fill-color {
-  @include mdc-snackbar-fill-color($custom-snackbar-color, 1);
+  @include mdc-snackbar-fill-color($custom-snackbar-color);
 }
 
 .custom-snackbar--label-ink-color {
-  @include mdc-snackbar-label-ink-color($custom-snackbar-color, 1);
+  @include mdc-snackbar-label-ink-color($custom-snackbar-color);
 }
 
 .custom-snackbar--max-width {

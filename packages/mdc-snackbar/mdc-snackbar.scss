@@ -25,9 +25,6 @@
 @import "@material/icon-button/mixins";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
-@import "@material/theme/functions";
-@import "@material/theme/mixins";
-@import "@material/theme/variables";
 @import "@material/typography/mixins";
 @import "./mixins";
 @import "./variables";
@@ -64,12 +61,8 @@
 }
 
 @at-root {
-  @include mdc-snackbar-fill-color(
-    $mdc-snackbar-overlay-fill-color,
-    $mdc-snackbar-overlay-fill-opacity,
-    $mdc-snackbar-surface-fill-color
-  );
-  @include mdc-snackbar-label-ink-color($mdc-snackbar-label-ink-color, $mdc-snackbar-label-ink-opacity);
+  @include mdc-snackbar-fill-color($mdc-snackbar-fill-color);
+  @include mdc-snackbar-label-ink-color($mdc-snackbar-label-ink-color);
   @include mdc-snackbar-min-width($mdc-snackbar-min-width);
   @include mdc-snackbar-max-width($mdc-snackbar-max-width);
   @include mdc-snackbar-elevation($mdc-snackbar-elevation);
@@ -101,9 +94,6 @@
   transform: scale(.8);
   opacity: 0;
 
-  // Prevent mdc-snackbar__overlay's background-color from bleeding past the surface's border-radius.
-  overflow: hidden;
-
   .mdc-snackbar--stacked & {
     flex-direction: column;
     align-items: flex-start;
@@ -122,16 +112,6 @@
     transform: scale(1);
     transition: mdc-animation-exit-permanent(opacity, $mdc-snackbar-exit-duration, $mdc-snackbar-exit-delay);
   }
-}
-
-.mdc-snackbar__overlay {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  box-sizing: border-box;
-  z-index: -1;
 }
 
 .mdc-snackbar__label {

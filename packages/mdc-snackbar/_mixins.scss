@@ -27,12 +27,22 @@
 @import "@material/theme/variables"; // for mdc-theme-prop-value() and mdc-theme-text-emphasis()
 @import "./variables";
 
-@mixin mdc-snackbar-z-index($z-index) {
-  z-index: $z-index;
+@mixin mdc-snackbar-fill-color($color) {
+  .mdc-snackbar__surface {
+    @include mdc-theme-prop(background-color, $color);
+  }
 }
 
-@mixin mdc-snackbar-viewport-margin($margin) {
-  margin: $margin;
+@mixin mdc-snackbar-label-ink-color($color) {
+  .mdc-snackbar__label {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-snackbar-shape-radius($radius) {
+  .mdc-snackbar__surface {
+    @include mdc-shape-radius($radius);
+  }
 }
 
 @mixin mdc-snackbar-min-width($min-width) {
@@ -53,28 +63,10 @@
   }
 }
 
-@mixin mdc-snackbar-shape-radius($radius) {
-  .mdc-snackbar__surface {
-    @include mdc-shape-radius($radius);
-  }
+@mixin mdc-snackbar-viewport-margin($margin) {
+  margin: $margin;
 }
 
-@mixin mdc-snackbar-fill-color($overlay-color, $overlay-opacity, $surface-color: surface) {
-  .mdc-snackbar__surface {
-    @include mdc-theme-prop(background-color, $surface-color);
-  }
-
-  .mdc-snackbar__overlay {
-    @include mdc-theme-prop(background-color, rgba(mdc-theme-prop-value($overlay-color), $overlay-opacity));
-  }
-}
-
-@mixin mdc-snackbar-label-ink-color($color, $opacity) {
-  @if type-of($opacity) != number {
-    $opacity: mdc-theme-text-emphasis($opacity);
-  }
-
-  .mdc-snackbar__label {
-    @include mdc-theme-prop(color, rgba(mdc-theme-prop-value($color), $opacity));
-  }
+@mixin mdc-snackbar-z-index($z-index) {
+  z-index: $z-index;
 }
