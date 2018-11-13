@@ -32,12 +32,26 @@ class MDCSnackbar extends MDCComponent {
     return new MDCSnackbar(root);
   }
 
+  constructor(...args) {
+    super(...args);
+
+    /** @type {!HTMLElement} */
+    this.surfaceEl_;
+
+    /** @private {!Function} */
+    this.handleTransitionEnd_;
+
+    /** @private {!Function} */
+    this.handleInteraction_;
+
+    /** @private {!Function} */
+    this.handleDocumentKeyDown_;
+  }
+
   initialSyncWithDOM() {
     const {SURFACE_SELECTOR} = MDCSnackbarFoundation.strings;
 
-    /** @type {!HTMLElement} */
     this.surfaceEl_ = this.root_.querySelector(SURFACE_SELECTOR);
-
     this.handleTransitionEnd_ = this.foundation_.handleTransitionEnd.bind(this.foundation_);
     this.handleInteraction_ = this.foundation_.handleInteraction.bind(this.foundation_);
     this.handleDocumentKeyDown_ = this.foundation_.handleDocumentKeyDown.bind(this.foundation_);
