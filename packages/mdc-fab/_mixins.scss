@@ -89,17 +89,13 @@
 }
 
 @mixin mdc-fab-shape-radius($radius, $rtl-reflexive: false) {
-  @include mdc-shape-radius($radius, $rtl-reflexive);
-
-  &.mdc-fab--mini {
+  &:not(.mdc-fab--extended) {
     @include mdc-shape-radius($radius, $rtl-reflexive);
   }
 }
 
 @mixin mdc-fab-extended-shape-radius($radius, $rtl-reflexive: false) {
-  &.mdc-fab--extended {
-    @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-fab-extended-height, $radius), $rtl-reflexive);
-  }
+  @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-fab-extended-height, $radius), $rtl-reflexive);
 }
 
 $mdc-fab-icon-enter-delay_: 90ms;
