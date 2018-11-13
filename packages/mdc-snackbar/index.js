@@ -93,35 +93,35 @@ class MDCSnackbar extends MDCComponent {
    * @return {number}
    */
   get timeoutMs() {
-    return this.foundation_.timeoutMs;
+    return this.foundation_.getTimeoutMs();
   }
 
   /**
    * @param {number} timeoutMs
    */
   set timeoutMs(timeoutMs) {
-    this.foundation_.timeoutMs = timeoutMs;
+    this.foundation_.setTimeoutMs(timeoutMs);
   }
 
   /**
    * @return {boolean}
    */
   get closeOnEscape() {
-    return this.foundation_.closeOnEscape;
+    return this.foundation_.getCloseOnEscape();
   }
 
   /**
    * @param {boolean} closeOnEscape
    */
   set closeOnEscape(closeOnEscape) {
-    this.foundation_.closeOnEscape = closeOnEscape;
+    this.foundation_.setCloseOnEscape(closeOnEscape);
   }
 
   /**
    * @return {boolean}
    */
   get isOpen() {
-    return this.foundation_.isOpen;
+    return this.foundation_.isOpen();
   }
 
   /**

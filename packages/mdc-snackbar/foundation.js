@@ -94,7 +94,7 @@ class MDCSnackbarFoundation extends MDCFoundation {
   }
 
   open() {
-    if (this.isOpen) {
+    if (this.isOpen()) {
       return;
     }
 
@@ -104,7 +104,7 @@ class MDCSnackbarFoundation extends MDCFoundation {
     this.setOneTimeTransitionEndHandler_(() => {
       this.adapter_.notifyOpened();
     });
-    this.autoDismissTimer_ = setTimeout(() => this.close(strings.REASON_DISMISS), this.timeoutMs);
+    this.autoDismissTimer_ = setTimeout(() => this.close(strings.REASON_DISMISS), this.getTimeoutMs());
 
     this.adapter_.addClass(OPEN);
     this.adapter_.removeClass(CLOSING);
@@ -117,7 +117,7 @@ class MDCSnackbarFoundation extends MDCFoundation {
    *     client-specific values may also be used if desired.
    */
   close(reason = '') {
-    if (!this.isOpen) {
+    if (!this.isOpen()) {
       return;
     }
 
@@ -137,14 +137,14 @@ class MDCSnackbarFoundation extends MDCFoundation {
   /**
    * @return {number}
    */
-  get timeoutMs() {
+  getTimeoutMs() {
     return this.timeoutMs_;
   }
 
   /**
    * @param {number} timeoutMs
    */
-  set timeoutMs(timeoutMs) {
+  setTimeoutMs(timeoutMs) {
     const {
       MIN_AUTO_DISMISS_TIMEOUT_MS: minValue,
       MAX_AUTO_DISMISS_TIMEOUT_MS: maxValue,
@@ -160,21 +160,21 @@ class MDCSnackbarFoundation extends MDCFoundation {
   /**
    * @return {boolean}
    */
-  get closeOnEscape() {
+  getCloseOnEscape() {
     return this.closeOnEscape_;
   }
 
   /**
    * @param {boolean} closeOnEscape
    */
-  set closeOnEscape(closeOnEscape) {
+  setCloseOnEscape(closeOnEscape) {
     this.closeOnEscape_ = closeOnEscape;
   }
 
   /**
    * @return {boolean}
    */
-  get isOpen() {
+  isOpen() {
     const {OPEN, CLOSING} = cssClasses;
     return this.adapter_.hasClass(OPEN) || this.adapter_.hasClass(CLOSING);
   }
@@ -206,7 +206,7 @@ class MDCSnackbarFoundation extends MDCFoundation {
    * @private
    */
   handleDocumentKeyDown(evt) {
-    if (this.closeOnEscape && (evt.key === 'Escape' || evt.keyCode === 27)) {
+    if (this.getCloseOnEscape() && (evt.key === 'Escape' || evt.keyCode === 27)) {
       this.close(strings.REASON_DISMISS);
     }
   }
