@@ -7,8 +7,6 @@ iconId: menu
 path: /catalog/menus/
 -->
 
-> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
-
 # Menus
 
 <!--<div class="article__asset">
@@ -194,6 +192,7 @@ Property | Value Type | Description
 `open` | Boolean | Proxies to the menu surface's `open` property.
 `items` | Array<Element> | Proxies to the list to query for all `.mdc-list-item` elements.
 `quickOpen` | Boolean | Proxies to the menu surface `quickOpen` property.
+`wrapFocus` | Boolean | Proxies to list's `wrapFocus` property.
 
 Method Signature | Description
 --- | ---

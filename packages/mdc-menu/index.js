@@ -99,6 +99,16 @@ class MDCMenu extends MDCComponent {
     this.menuSurface_.open = value;
   }
 
+  /** @return {boolean} */
+  get wrapFocus() {
+    return this.list_.wrapFocus;
+  }
+
+  /** @param {boolean} value */
+  set wrapFocus(value) {
+    this.list_.wrapFocus = value;
+  }
+
   /**
    * @param {!Corner} corner Default anchor corner alignment of top-left
    *     menu corner.

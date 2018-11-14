@@ -7,8 +7,6 @@ iconId: tabs
 path: /catalog/tabs/scroller/
 -->
 
-> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
-
 # Tab Scroller
 
 A Tab Scroller allows for smooth native and animated scrolling of tabs.

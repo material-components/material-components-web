@@ -5,8 +5,6 @@ section: components
 path: /catalog/input-controls/form-fields/
 -->
 
-> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
-
 # Form Fields
 
 MDC Form Field aligns an MDC Web form field (for example, a checkbox) with its label and makes it RTL-aware. It also activates a [ripple](../mdc-ripple) effect upon interacting with the label.
@@ -82,7 +80,7 @@ By default, the input will be positioned before the label. You can position the 
 
 Property | Value Type | Description
 --- | --- | ---
-`input` | String | Gets and sets the form field input.
+`input` | String | Gets and sets the form field input. 
 
 In order for the label ripple integration to work correctly, the `input` property needs to be set to a valid instance of an MDC Web input element which exposes a `ripple` getter. No action is taken if the `input` property is not set or the input instance doesn't expose a `ripple` getter.
 
