@@ -6,8 +6,6 @@ excerpt: "Provides commonly-used utilities for inspecting, traversing, and manip
 path: /catalog/dom/
 -->
 
-> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
-
 # DOM
 
 MDC DOM provides commonly-used utilities for inspecting, traversing, and manipulating the DOM.
