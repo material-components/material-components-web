@@ -24,6 +24,7 @@
 @import "@material/line-ripple/mixins";
 @import "@material/notched-outline/mixins";
 @import "@material/notched-outline/functions";
+@import "@material/notched-outline/variables";
 @import "@material/theme/mixins";
 @import "@material/shape/mixins";
 @import "@material/shape/functions";
@@ -245,13 +246,13 @@
 
   &--textarea {
     .mdc-floating-label {
-      @include mdc-rtl-reflexive-position(left, $mdc-text-field-notched-outline-padding);
+      @include mdc-rtl-reflexive-position(left, $mdc-notched-outline-padding);
     }
   }
 
   &--outlined {
     .mdc-floating-label {
-      @include mdc-rtl-reflexive-position(left, $mdc-text-field-notched-outline-padding);
+      @include mdc-rtl-reflexive-position(left, $mdc-notched-outline-padding);
 
       top: 17px;
     }
@@ -261,7 +262,7 @@
         @include mdc-rtl-reflexive-position(left, ($mdc-text-field-icon-padding - $mdc-notched-outline-leading-width));
 
         &--float-above {
-          @include mdc-rtl-reflexive-position(left, ($mdc-text-field-icon-padding - $mdc-notched-outline-leading-width) + $mdc-text-field-notched-outline-padding);
+          @include mdc-rtl-reflexive-position(left, ($mdc-text-field-icon-padding - $mdc-notched-outline-leading-width) + $mdc-notched-outline-padding);
         }
       }
     }

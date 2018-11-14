@@ -27,6 +27,7 @@
 @import "@material/line-ripple/mixins";
 @import "@material/notched-outline/mixins";
 @import "@material/notched-outline/functions";
+@import "@material/notched-outline/variables";
 @import "./icon/mixins";
 @import "./variables";
 
@@ -231,17 +232,17 @@
 
   &.mdc-select--outlined {
     .mdc-floating-label {
-      @include mdc-rtl-reflexive-position(left, 4px);
+      @include mdc-rtl-reflexive-position(left, $mdc-notched-outline-padding);
 
       top: 17px;
     }
 
     &.mdc-select--with-leading-icon {
       .mdc-floating-label {
-        @include mdc-rtl-reflexive-position(left, ($mdc-select-icon-padding - $mdc-notched-outline-leading-width));
+        @include mdc-rtl-reflexive-position(left, $mdc-select-icon-padding - $mdc-notched-outline-leading-width);
 
         &--float-above {
-          @include mdc-rtl-reflexive-position(left, ($mdc-select-icon-padding - $mdc-notched-outline-leading-width) + $mdc-notched-outline-padding);
+          @include mdc-rtl-reflexive-position(left, $mdc-select-icon-padding - $mdc-notched-outline-leading-width);
         }
       }
     }
@@ -250,9 +251,9 @@
 
 @mixin mdc-select-with-leading-icon_ {
   @include mdc-select-icon-horizontal-position_(16px, $mdc-select-icon-padding);
-  @include mdc-floating-label-outlined-float-position($mdc-select-outlined-label-position-y, $mdc-select-outlined-with-leading-icon-label-position-x);
 
   &.mdc-select--outlined {
+    @include mdc-floating-label-outlined-float-position($mdc-select-outlined-label-position-y, $mdc-select-outlined-with-leading-icon-label-position-x);
     @include mdc-floating-label-shake-animation(select-outlined-leading-icon);
 
     @include mdc-rtl {
