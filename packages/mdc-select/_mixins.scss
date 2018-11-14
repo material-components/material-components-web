@@ -241,7 +241,7 @@
         @include mdc-rtl-reflexive-position(left, ($mdc-select-icon-padding - $mdc-notched-outline-leading-width));
 
         &--float-above {
-          @include mdc-rtl-reflexive-position(left, ($mdc-select-icon-padding - $mdc-notched-outline-leading-width) + 4px);
+          @include mdc-rtl-reflexive-position(left, ($mdc-select-icon-padding - $mdc-notched-outline-leading-width) + $mdc-notched-outline-padding);
         }
       }
     }

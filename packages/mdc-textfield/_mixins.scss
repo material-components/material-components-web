@@ -245,13 +245,13 @@
 
   &--textarea {
     .mdc-floating-label {
-      @include mdc-rtl-reflexive-position(left, 4px);
+      @include mdc-rtl-reflexive-position(left, $mdc-text-field-notched-outline-padding);
     }
   }
 
   &--outlined {
     .mdc-floating-label {
-      @include mdc-rtl-reflexive-position(left, 4px);
+      @include mdc-rtl-reflexive-position(left, $mdc-text-field-notched-outline-padding);
 
       top: 17px;
     }
@@ -261,7 +261,7 @@
         @include mdc-rtl-reflexive-position(left, ($mdc-text-field-icon-padding - $mdc-notched-outline-leading-width));
 
         &--float-above {
-          @include mdc-rtl-reflexive-position(left, ($mdc-text-field-icon-padding - $mdc-notched-outline-leading-width) + 4px);
+          @include mdc-rtl-reflexive-position(left, ($mdc-text-field-icon-padding - $mdc-notched-outline-leading-width) + $mdc-text-field-notched-outline-padding);
         }
       }
     }
