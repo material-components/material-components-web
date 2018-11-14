@@ -78,10 +78,11 @@ In outlined text field:
 <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon">
   <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
   <input type="text" id="my-input" class="mdc-text-field__input">
-  <label for="my-input" class="mdc-floating-label">Your Name</label>
   <div class="mdc-notched-outline">
     <div class="mdc-notched-outline__leading"></div>
-    <div class="mdc-notched-outline__notch"></div>
+    <div class="mdc-notched-outline__notch">
+      <label for="my-input" class="mdc-floating-label">Your Name</label>
+    </div>
     <div class="mdc-notched-outline__trailing"></div>
   </div>
 </div>
@@ -105,11 +106,12 @@ In outlined text field:
 ```html
 <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-trailing-icon">
   <input type="text" id="my-input" class="mdc-text-field__input">
-  <label for="my-input" class="mdc-floating-label">Your Name</label>
   <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
   <div class="mdc-notched-outline">
     <div class="mdc-notched-outline__leading"></div>
-    <div class="mdc-notched-outline__notch"></div>
+    <div class="mdc-notched-outline__notch">
+      <label for="my-input" class="mdc-floating-label">Your Name</label>
+    </div>
     <div class="mdc-notched-outline__trailing"></div>
   </div>
 </div>
@@ -135,11 +137,12 @@ In outlined text field:
 <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon">
   <i class="material-icons mdc-text-field__icon">phone</i>
   <input type="text" id="my-input" class="mdc-text-field__input">
-  <label for="my-input" class="mdc-floating-label">Phone Number</label>
   <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">clear</i>
   <div class="mdc-notched-outline">
    <div class="mdc-notched-outline__leading"></div>
-    <div class="mdc-notched-outline__notch"></div>
+    <div class="mdc-notched-outline__notch">
+      <label for="my-input" class="mdc-floating-label">Phone Number</label>
+    </div>
     <div class="mdc-notched-outline__trailing"></div>
   </div>
 </div>

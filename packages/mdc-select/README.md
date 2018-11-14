@@ -186,10 +186,11 @@ same.
 ```html
 <div class="mdc-select mdc-select--outlined">
   <!-- Other elements from the native or enhanced select remain. -->
-  <label class="mdc-floating-label">Pick a Food Group</label>
    <div class="mdc-notched-outline">
      <div class="mdc-notched-outline__leading"></div>
-     <div class="mdc-notched-outline__notch"></div>
+     <div class="mdc-notched-outline__notch">
+       <label class="mdc-floating-label">Pick a Food Group</label>
+     </div>
      <div class="mdc-notched-outline__trailing"></div>
    </div>
 </div>
