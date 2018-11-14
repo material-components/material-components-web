@@ -7,8 +7,6 @@ iconId: list
 path: /catalog/lists/
 -->
 
-> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
-
 # Lists
 
 <!--<div class="article__asset">
@@ -273,10 +271,10 @@ within the list component. You should not add `tabindex` to any of the `li` elem
 As the user navigates through the list, any `button` and `a` elements within the list will receive `tabindex="-1"` when
 the list item is not focused. When the list item receives focus, the aforementioned elements will receive
 `tabIndex="0"`. This allows for the user to tab through list item elements and then tab to the first element after the
-list. The `Arrow`, `Home`, and `End` keys should be used for navigating internal list elements. If
+list. The `Arrow`, `Home`, and `End` keys should be used for navigating internal list elements. If 
 `singleSelection=true`, the list will allow the user to use the `Space` or `Enter` keys to select or deselect a list
 item. The MDCList will perform the following actions for each key press. Since list interaction will toggle a radio
-button or checkbox within the list item, the list will not toggle `tabindex` for those elements.
+button or checkbox within the list item, the list will not toggle `tabindex` for those elements. 
 
 Key | Action
 --- | ---
