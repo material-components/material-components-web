@@ -201,8 +201,11 @@
 }
 
 @mixin mdc-required-text-field-label-asterisk_() {
-  .mdc-text-field__input:required ~ .mdc-notched-outline .mdc-floating-label::after {
-    @content;
+  .mdc-text-field__input:required ~ {
+    .mdc-notched-outline .mdc-floating-label::after,
+    .mdc-floating-label::after {
+      @content;
+    }
   }
 }
 
@@ -228,7 +231,7 @@
 
 @mixin mdc-text-field-floating-label_ {
   .mdc-floating-label {
-    @include mdc-rtl-reflexive-position(left, 12px);
+    @include mdc-rtl-reflexive-position(left, 16px);
 
     top: 18px;
     pointer-events: none;
