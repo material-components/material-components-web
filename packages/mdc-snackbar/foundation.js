@@ -192,24 +192,24 @@ class MDCSnackbarFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {!MouseEvent} evt
+   * @param {!KeyboardEvent} evt
    * @private
    */
-  handleInteraction(evt) {
-    const target = /** @type {!Element} */ (evt.target);
-    if (this.adapter_.isActionButton(target)) {
-      this.close(strings.REASON_ACTION);
-    } else if (this.adapter_.isActionIcon(target)) {
+  handleKeyDown(evt) {
+    if (this.getCloseOnEscape() && (evt.key === 'Escape' || evt.keyCode === 27)) {
       this.close(strings.REASON_DISMISS);
     }
   }
 
   /**
-   * @param {!KeyboardEvent} evt
+   * @param {!MouseEvent} evt
    * @private
    */
-  handleDocumentKeyDown(evt) {
-    if (this.getCloseOnEscape() && (evt.key === 'Escape' || evt.keyCode === 27)) {
+  handleSurfaceClick(evt) {
+    const target = /** @type {!Element} */ (evt.target);
+    if (this.adapter_.isActionButton(target)) {
+      this.close(strings.REASON_ACTION);
+    } else if (this.adapter_.isActionIcon(target)) {
       this.close(strings.REASON_DISMISS);
     }
   }

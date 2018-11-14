@@ -42,36 +42,33 @@ class MDCSnackbar extends MDCComponent {
     this.handleTransitionEnd_;
 
     /** @private {!Function} */
-    this.handleInteraction_;
+    this.handleKeyDown_;
 
     /** @private {!Function} */
-    this.handleDocumentKeyDown_;
+    this.handleSurfaceClick_;
   }
 
   initialSyncWithDOM() {
     const {SURFACE_SELECTOR} = MDCSnackbarFoundation.strings;
 
     this.surfaceEl_ = this.root_.querySelector(SURFACE_SELECTOR);
-    this.handleTransitionEnd_ = this.foundation_.handleTransitionEnd.bind(this.foundation_);
-    this.handleInteraction_ = this.foundation_.handleInteraction.bind(this.foundation_);
-    this.handleDocumentKeyDown_ = this.foundation_.handleDocumentKeyDown.bind(this.foundation_);
+    this.handleTransitionEnd_ = (evt) => this.foundation_.handleTransitionEnd(evt);
+    this.handleKeyDown_ = (evt) => this.foundation_.handleKeyDown(evt);
+    this.handleSurfaceClick_ = (evt) => this.foundation_.handleSurfaceClick(evt);
 
     this.registerTransitionEndHandler_(this.handleTransitionEnd_);
-    this.registerInteractionHandler_(this.handleInteraction_);
+    this.registerKeyDownHandler_(this.handleKeyDown_);
+    this.registerSurfaceClickHandler_(this.handleSurfaceClick_);
   }
 
   destroy() {
     super.destroy();
     this.deregisterTransitionEndHandler_(this.handleTransitionEnd_);
-    this.deregisterInteractionHandler_(this.handleInteraction_);
-    this.deregisterDocumentKeyDownHandler_(this.handleDocumentKeyDown_);
+    this.deregisterKeyDownHandler_(this.handleKeyDown_);
+    this.deregisterSurfaceClickHandler_(this.handleSurfaceClick_);
   }
 
   open() {
-    if (this.isOpen) {
-      return;
-    }
-    this.registerDocumentKeyDownHandler_(this.handleDocumentKeyDown_);
     this.foundation_.open();
   }
 
@@ -81,10 +78,6 @@ class MDCSnackbar extends MDCComponent {
    *     client-specific values may also be used if desired.
    */
   close(reason = '') {
-    if (!this.isOpen) {
-      return;
-    }
-    this.deregisterDocumentKeyDownHandler_(this.handleDocumentKeyDown_);
     this.foundation_.close(reason);
   }
 
@@ -198,7 +191,23 @@ class MDCSnackbar extends MDCComponent {
    * @param {!EventListener} handler
    * @private
    */
-  registerInteractionHandler_(handler) {
+  registerKeyDownHandler_(handler) {
+    this.listen('keydown', handler);
+  }
+
+  /**
+   * @param {!EventListener} handler
+   * @private
+   */
+  deregisterKeyDownHandler_(handler) {
+    this.unlisten('keydown', handler);
+  }
+
+  /**
+   * @param {!EventListener} handler
+   * @private
+   */
+  registerSurfaceClickHandler_(handler) {
     this.surfaceEl_.addEventListener('click', handler);
   }
 
@@ -206,24 +215,8 @@ class MDCSnackbar extends MDCComponent {
    * @param {!EventListener} handler
    * @private
    */
-  deregisterInteractionHandler_(handler) {
+  deregisterSurfaceClickHandler_(handler) {
     this.surfaceEl_.removeEventListener('click', handler);
-  }
-
-  /**
-   * @param {!EventListener} handler
-   * @private
-   */
-  registerDocumentKeyDownHandler_(handler) {
-    document.addEventListener('keydown', handler);
-  }
-
-  /**
-   * @param {!EventListener} handler
-   * @private
-   */
-  deregisterDocumentKeyDownHandler_(handler) {
-    document.removeEventListener('keydown', handler);
   }
 }
 
