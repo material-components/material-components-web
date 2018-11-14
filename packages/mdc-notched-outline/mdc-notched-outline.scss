@@ -55,13 +55,13 @@
     }
 
     &__leading {
-      @include mdc-rtl-reflexive-property(border, 1px solid black, none);
+      @include mdc-rtl-reflexive-property(border, 1px solid, none);
 
       width: $mdc-notched-outline-leading-width;
     }
 
     &__trailing {
-      @include mdc-rtl-reflexive-property(border, none, 1px solid black);
+      @include mdc-rtl-reflexive-property(border, none, 1px solid);
 
       flex-grow: 1;
     }

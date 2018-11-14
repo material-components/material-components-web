@@ -126,7 +126,7 @@
     @include mdc-shape-radius($resolved-radius, $rtl-reflexive);
   }
 
-  @include mdc-floating-label-float-position($mdc-select-outlined-label-position-y, 0);
+  @include mdc-floating-label-outlined-float-position($mdc-select-outlined-label-position-y, 0);
 }
 
 // Private
@@ -217,7 +217,7 @@
 
 @mixin mdc-select-floating-label_ {
   .mdc-floating-label {
-    @include mdc-rtl-reflexive-position(left, 16px);
+    @include mdc-rtl-reflexive-position(left, $mdc-select-outline-label-offset);
 
     top: 21px;
     pointer-events: none;
@@ -250,9 +250,9 @@
 
 @mixin mdc-select-with-leading-icon_ {
   @include mdc-select-icon-horizontal-position_(16px, $mdc-select-icon-padding);
+  @include mdc-floating-label-outlined-float-position($mdc-select-outlined-label-position-y, $mdc-select-outlined-with-leading-icon-label-position-x);
 
   &.mdc-select--outlined {
-    @include mdc-floating-label-float-position($mdc-select-outlined-label-position-y, $mdc-select-outlined-with-leading-icon-label-position-x);
     @include mdc-floating-label-shake-animation(select-outlined-leading-icon);
 
     @include mdc-rtl {

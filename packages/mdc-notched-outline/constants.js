@@ -29,6 +29,7 @@ const strings = {
 /** @enum {string} */
 const cssClasses = {
   OUTLINE_NOTCHED: 'mdc-notched-outline--notched',
+  OUTLINE_UPGRADED: 'mdc-notched-outline--upgraded',
 };
 
 export {cssClasses, strings};

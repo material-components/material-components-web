@@ -26,7 +26,7 @@ import MDCComponent from '@material/base/component';
 import MDCNotchedOutlineAdapter from './adapter';
 import MDCNotchedOutlineFoundation from './foundation';
 import {MDCFloatingLabelFoundation} from '@material/floating-label/index';
-import {strings} from './constants';
+import {cssClasses, strings} from './constants';
 
 /**
  * @extends {MDCComponent<!MDCNotchedOutlineFoundation>}
@@ -53,8 +53,8 @@ class MDCNotchedOutline extends MDCComponent {
 
     if (this.notchElement_) {
       label.style.transitionDuration = '0s';
-      this.notchElement_.classList.add('mdc-notched-outline--upgraded');
-      setTimeout(() => label.style.transitionDuration = '', 0);
+      this.notchElement_.classList.add(cssClasses.OUTLINE_UPGRADED);
+      requestAnimationFrame(() => label.style.transitionDuration = '');
     }
   }
 

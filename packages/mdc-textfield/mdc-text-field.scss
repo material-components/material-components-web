@@ -65,8 +65,8 @@
   @include mdc-text-field-floating-label_;
   // The following mixins will be removed after select is updated to default to the box.
   @include mdc-floating-label-float-position($mdc-text-field-label-position-y);
-  @include mdc-floating-label-shake-animation(text-field-box);
-  @include mdc-floating-label-shake-keyframes(text-field-box, $mdc-text-field-label-position-y);
+  @include mdc-floating-label-shake-animation(text-field);
+  @include mdc-floating-label-shake-keyframes(text-field, $mdc-text-field-label-position-y + 14%);
 
   display: inline-flex;
   position: relative;
