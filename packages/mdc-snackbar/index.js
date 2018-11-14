@@ -23,7 +23,6 @@
 
 import {MDCComponent} from '@material/base/index';
 import MDCSnackbarFoundation from './foundation';
-import {getCorrectEventName} from '@material/animation/index';
 import {strings} from './constants';
 import * as ponyfill from '@material/dom/ponyfill';
 
@@ -179,7 +178,7 @@ class MDCSnackbar extends MDCComponent {
    * @private
    */
   registerTransitionEndHandler_(handler) {
-    this.listen(getCorrectEventName(window, 'transitionend'), handler);
+    this.listen('transitionend', handler);
   }
 
   /**
@@ -187,7 +186,7 @@ class MDCSnackbar extends MDCComponent {
    * @private
    */
   deregisterTransitionEndHandler_(handler) {
-    this.unlisten(getCorrectEventName(window, 'transitionend'), handler);
+    this.unlisten('transitionend', handler);
   }
 
   /**
