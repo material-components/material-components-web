@@ -7,8 +7,6 @@ iconId: ripple
 path: /catalog/ripples/
 -->
 
-> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
-
 # Ripple
 
 MDC Ripple provides the JavaScript and CSS required to provide components (or any element at all) with a material "ink ripple" interaction effect. It is designed to be efficient, uninvasive, and usable without adding any extra DOM to your elements.

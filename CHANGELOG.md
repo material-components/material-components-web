@@ -1,3 +1,15 @@
+<a name="0.41.1"></a>
+## [0.41.1](https://github.com/material-components/material-components-web/compare/v0.41.0...v0.41.1) (2018-11-14)
+
+
+### Bug Fixes
+
+* **card:** Corrected baseline shape value of card small => medium ([#4060](https://github.com/material-components/material-components-web/issues/4060)) ([875b159](https://github.com/material-components/material-components-web/commit/875b159))
+* **drawer:** allow drawer below top app bar ([#4028](https://github.com/material-components/material-components-web/issues/4028)) ([1eff602](https://github.com/material-components/material-components-web/commit/1eff602))
+* **drawer:** Fix issue where drawer fires opened event twice. ([#4027](https://github.com/material-components/material-components-web/issues/4027)) ([4a5a8e2](https://github.com/material-components/material-components-web/commit/4a5a8e2))
+
+
+
 <a name="0.41.0"></a>
 # [0.41.0](https://github.com/material-components/material-components-web/compare/v0.40.0...v0.41.0) (2018-10-29)
 

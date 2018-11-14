@@ -1,5 +1,3 @@
-> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
-
 # Material Components Web (MDC Web)
 
 This package contains the master library for Material Components Web. It simply wraps all of its

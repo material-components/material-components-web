@@ -7,8 +7,6 @@ iconId: side_navigation
 path: /catalog/drawers/
 -->
 
-> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
-
 # Drawers
 
 The MDC Navigation Drawer is used to organize access to destinations and other functionality on an app.
