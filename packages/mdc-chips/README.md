@@ -7,8 +7,6 @@ iconId: chip
 path: /catalog/chips/
 -->
 
-> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
-
 # Chips
 
 <!--<div class="article__asset">

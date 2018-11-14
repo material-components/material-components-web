@@ -7,8 +7,6 @@ iconId: text_field
 path: /catalog/input-controls/text-field/icon/
 -->
 
-> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
-
 # Text Field Icon
 
 Icons describe the type of input a text field requires. They can also be interaction targets.

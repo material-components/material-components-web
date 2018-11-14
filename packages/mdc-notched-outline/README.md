@@ -7,8 +7,6 @@ iconId: text_field
 path: /catalog/input-controls/notched-outline/
 -->
 
-> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
-
 # Notched Outline
 
 The notched outline is a border around all sides of either a Text Field or Select component. This is used for the Outlined variant of either a Text Field or Select.

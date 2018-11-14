@@ -7,8 +7,6 @@ iconId: text_field
 path: /catalog/input-controls/select-menus/icon/
 -->
 
-> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
-
 # Select Icon
 
 Icons describe the type of input a select requires. They can also be interaction targets.
