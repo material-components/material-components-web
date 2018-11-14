@@ -203,8 +203,8 @@
 
 @mixin mdc-required-text-field-label-asterisk_() {
   .mdc-text-field__input:required ~ {
-    .mdc-notched-outline .mdc-floating-label::after,
-    .mdc-floating-label::after {
+    .mdc-floating-label::after,
+    .mdc-notched-outline .mdc-floating-label::after {
       @content;
     }
   }
@@ -491,11 +491,6 @@
   &.mdc-text-field--focused {
     @include mdc-text-field-outlined-focused_;
   }
-
-  &.mdc-text-field--invalid {
-
-  }
-
 }
 
 // Customization
