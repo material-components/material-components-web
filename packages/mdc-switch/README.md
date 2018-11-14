@@ -6,8 +6,6 @@ iconId: switch
 path: /catalog/input-controls/switches/
 -->
 
-> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
-
 # Switches
 
 <!--<div class="article__asset">

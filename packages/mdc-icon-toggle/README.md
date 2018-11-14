@@ -6,8 +6,6 @@ iconId: button
 path: /catalog/buttons/icon-toggle-buttons/
 -->
 
-> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
-
 ## Important - Deprecation Notice
 
 The existing `MDCIconToggle` component and styles will be removed in a future release. Some of its functionality

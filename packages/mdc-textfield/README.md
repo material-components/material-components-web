@@ -6,8 +6,6 @@ iconId: text_field
 path: /catalog/input-controls/text-field/
 -->
 
-> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
-
 # Text Field
 
 Text fields allow users to input, edit, and select text.
