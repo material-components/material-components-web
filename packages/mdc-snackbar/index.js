@@ -27,6 +27,17 @@ import {getCorrectEventName} from '@material/animation/index';
 import {strings} from './constants';
 import * as ponyfill from '@material/dom/ponyfill';
 
+const {
+  SURFACE_SELECTOR,
+  LABEL_SELECTOR,
+  ACTION_BUTTON_SELECTOR,
+  ACTION_ICON_SELECTOR,
+  OPENING_EVENT,
+  OPENED_EVENT,
+  CLOSING_EVENT,
+  CLOSED_EVENT,
+} = strings;
+
 class MDCSnackbar extends MDCComponent {
   static attachTo(root) {
     return new MDCSnackbar(root);
@@ -49,8 +60,6 @@ class MDCSnackbar extends MDCComponent {
   }
 
   initialSyncWithDOM() {
-    const {SURFACE_SELECTOR} = MDCSnackbarFoundation.strings;
-
     this.surfaceEl_ = this.root_.querySelector(SURFACE_SELECTOR);
     this.handleTransitionEnd_ = (evt) => this.foundation_.handleTransitionEnd(evt);
     this.handleKeyDown_ = (evt) => this.foundation_.handleKeyDown(evt);
@@ -85,8 +94,6 @@ class MDCSnackbar extends MDCComponent {
    * @return {!MDCSnackbarFoundation}
    */
   getDefaultFoundation() {
-    const {SURFACE_SELECTOR, ACTION_BUTTON_SELECTOR, ACTION_ICON_SELECTOR} = strings;
-
     /* eslint brace-style: "off" */
     return new MDCSnackbarFoundation({
       hasClass: (className) => this.root_.classList.contains(className),
@@ -97,10 +104,10 @@ class MDCSnackbar extends MDCComponent {
       isActionButton: (target) => Boolean(ponyfill.closest(target, ACTION_BUTTON_SELECTOR)),
       isActionIcon: (target) => Boolean(ponyfill.closest(target, ACTION_ICON_SELECTOR)),
 
-      notifyOpening: () => this.emit(MDCSnackbarFoundation.strings.OPENING_EVENT),
-      notifyOpened: () => this.emit(MDCSnackbarFoundation.strings.OPENED_EVENT),
-      notifyClosing: (reason) => this.emit(MDCSnackbarFoundation.strings.CLOSING_EVENT, {reason}),
-      notifyClosed: (reason) => this.emit(MDCSnackbarFoundation.strings.CLOSED_EVENT, {reason}),
+      notifyOpening: () => this.emit(OPENING_EVENT),
+      notifyOpened: () => this.emit(OPENED_EVENT),
+      notifyClosing: (reason) => this.emit(CLOSING_EVENT, {reason}),
+      notifyClosed: (reason) => this.emit(CLOSED_EVENT, {reason}),
     });
   }
 
@@ -143,7 +150,6 @@ class MDCSnackbar extends MDCComponent {
    * @return {string}
    */
   get labelText() {
-    const {LABEL_SELECTOR} = MDCSnackbarFoundation.strings;
     return this.root_.querySelector(LABEL_SELECTOR).textContent;
   }
 
@@ -151,7 +157,6 @@ class MDCSnackbar extends MDCComponent {
    * @param {string} labelText
    */
   set labelText(labelText) {
-    const {LABEL_SELECTOR} = MDCSnackbarFoundation.strings;
     this.root_.querySelector(LABEL_SELECTOR).textContent = labelText;
   }
 
@@ -159,7 +164,6 @@ class MDCSnackbar extends MDCComponent {
    * @return {string}
    */
   get actionButtonText() {
-    const {ACTION_BUTTON_SELECTOR} = MDCSnackbarFoundation.strings;
     return this.root_.querySelector(ACTION_BUTTON_SELECTOR).textContent;
   }
 
@@ -167,7 +171,6 @@ class MDCSnackbar extends MDCComponent {
    * @param {string} actionButtonText
    */
   set actionButtonText(actionButtonText) {
-    const {ACTION_BUTTON_SELECTOR} = MDCSnackbarFoundation.strings;
     this.root_.querySelector(ACTION_BUTTON_SELECTOR).textContent = actionButtonText;
   }
 
