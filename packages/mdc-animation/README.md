@@ -7,8 +7,6 @@ iconId: animation
 path: /catalog/animation/
 -->
 
-> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
-
 # Animation
 
 Material in motion is responsive and natural. Use these easing curves and duration patterns to create smooth and consistent motion.
