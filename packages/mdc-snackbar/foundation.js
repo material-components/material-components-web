@@ -115,7 +115,7 @@ class MDCSnackbarFoundation extends MDCFoundation {
    */
   close(reason = '') {
     if (!this.isOpen_) {
-      // Avoid redundant close calls (and events), e.g. from keydown on elements that inherently emit click
+      // Avoid redundant close calls (and events), e.g. repeated interactions as the snackbar is animating closed
       return;
     }
 
