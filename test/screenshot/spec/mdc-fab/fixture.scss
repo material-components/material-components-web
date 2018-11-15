@@ -43,3 +43,11 @@
 .custom-fab--extended-label-padding {
   @include mdc-fab-extended-label-padding(24px);
 }
+
+.custom-fab-shape-radius {
+  @include mdc-fab-shape-radius(50% 0 0 0);
+}
+
+.custom-fab-extended-shape-radius {
+  @include mdc-fab-extended-shape-radius(25%);
+}

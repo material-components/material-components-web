@@ -7,8 +7,6 @@ iconId: tabs
 path: /catalog/tabs/legacy/
 -->
 
-> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
-
 ## Important - Deprecation Notice
 
 The `mdc-tabs` package is deprecated and no longer maintained, and is no longer included in the all-in-one

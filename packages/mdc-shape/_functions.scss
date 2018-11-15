@@ -173,11 +173,6 @@
 
 @function mdc-shape-is-valid-radius-value_($radius) {
   $is-number: type-of($radius) == "number";
-  $is-percentage: $is-number and unit($radius) == "%";
 
-  @if $is-percentage {
-    @return false;
-  } @else {
-    @return $is-number or str_index($radius, "var(") or str_index($radius, "calc(");
-  }
+  @return $is-number or str_index($radius, "var(") or str_index($radius, "calc(");
 }

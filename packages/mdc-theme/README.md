@@ -7,8 +7,6 @@ iconId: theme
 path: /catalog/theme/
 -->
 
-> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
-
 # Theme
 
 The Material Design color system can be used to create a color scheme that reflects your brand or style.
