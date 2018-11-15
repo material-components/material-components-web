@@ -50,7 +50,7 @@ class MDCSnackbar extends MDCComponent {
   }
 
   initialSyncWithDOM() {
-    this.surfaceEl_ = this.root_.querySelector(SURFACE_SELECTOR);
+    this.surfaceEl_ = /** @type {!HTMLElement} */ (this.root_.querySelector(SURFACE_SELECTOR));
 
     this.handleKeyDown_ = (evt) => this.foundation_.handleKeyDown(evt);
     this.handleSurfaceClick_ = (evt) => {
@@ -92,8 +92,8 @@ class MDCSnackbar extends MDCComponent {
     return new MDCSnackbarFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-      notifyOpening: () => this.emit(OPENING_EVENT),
-      notifyOpened: () => this.emit(OPENED_EVENT),
+      notifyOpening: () => this.emit(OPENING_EVENT, {}),
+      notifyOpened: () => this.emit(OPENED_EVENT, {}),
       notifyClosing: (reason) => this.emit(CLOSING_EVENT, reason ? {reason} : {}),
       notifyClosed: (reason) => this.emit(CLOSED_EVENT, reason ? {reason} : {}),
     });
@@ -163,7 +163,7 @@ class MDCSnackbar extends MDCComponent {
   }
 
   /**
-   * @param {!EventListener} handler
+   * @param {!Function} handler
    * @private
    */
   registerKeyDownHandler_(handler) {
@@ -171,7 +171,7 @@ class MDCSnackbar extends MDCComponent {
   }
 
   /**
-   * @param {!EventListener} handler
+   * @param {!Function} handler
    * @private
    */
   deregisterKeyDownHandler_(handler) {
@@ -179,7 +179,7 @@ class MDCSnackbar extends MDCComponent {
   }
 
   /**
-   * @param {!EventListener} handler
+   * @param {!Function} handler
    * @private
    */
   registerSurfaceClickHandler_(handler) {
@@ -187,7 +187,7 @@ class MDCSnackbar extends MDCComponent {
   }
 
   /**
-   * @param {!EventListener} handler
+   * @param {!Function} handler
    * @private
    */
   deregisterSurfaceClickHandler_(handler) {
