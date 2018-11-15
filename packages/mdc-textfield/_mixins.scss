@@ -367,6 +367,14 @@
 
 @mixin mdc-text-field-with-leading-icon_ {
   @include mdc-text-field-icon-horizontal-position_(left, $mdc-text-field-icon-position, $mdc-text-field-icon-padding);
+
+  .mdc-floating-label {
+    @include mdc-rtl-reflexive-position(left, $mdc-text-field-icon-padding);
+
+    &--float-above {
+      @include mdc-rtl-reflexive-position(left, $mdc-text-field-icon-padding);
+    }
+  }
 }
 
 @mixin mdc-text-field-dense-with-leading-icon_ {
@@ -374,11 +382,16 @@
 }
 
 @mixin mdc-text-field-outlined-with-leading-icon_ {
-  @include mdc-floating-label-outlined-float-position($mdc-text-field-outlined-label-position-y, $mdc-text-field-outlined-with-leading-icon-label-position-x);
+  @include mdc-text-field-icon-horizontal-position_(left, $mdc-text-field-icon-position, $mdc-text-field-icon-padding);
+  @include mdc-floating-label-outlined-float-position($mdc-text-field-outlined-label-position-y, 32px);
   @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon);
 
   @include mdc-rtl {
     @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon-rtl);
+  }
+
+  .mdc-floating-label {
+    @include mdc-rtl-reflexive-position(left, $mdc-text-field-icon-padding - $mdc-notched-outline-leading-width);
   }
 }
 
