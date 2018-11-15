@@ -53,13 +53,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
       openButtonEl.addEventListener('click', () => enqueue(() => snackbar.open()));
     }
 
-    const {
-      OPENING_EVENT,
-      OPENED_EVENT,
-      CLOSING_EVENT,
-      CLOSED_EVENT,
-    } = mdc.snackbar.MDCSnackbarFoundation.strings;
-
+    const {OPENING_EVENT, OPENED_EVENT, CLOSING_EVENT, CLOSED_EVENT} = mdc.snackbar.MDCSnackbarFoundation.strings;
     [OPENING_EVENT, OPENED_EVENT, CLOSING_EVENT, CLOSED_EVENT].forEach((eventName) => {
       snackbar.listen(eventName, (evt) => console.log(evt.type, evt.detail));
     });
