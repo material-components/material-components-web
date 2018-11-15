@@ -9,38 +9,50 @@
 Material Components for the web (MDC Web) helps developers execute [Material Design](https://www.material.io).
 Developed by a core team of engineers and UX designers at Google, these components enable a reliable development workflow to build beautiful and functional web projects.
 
-Material Components for the web is the successor to [Material Design Lite](https://getmdl.io/), and has 3 high-level goals:
-
-- Production-ready components consumable in an a-la-carte fashion
-- Best-in-class performance and adherence to the [Material Design guidelines](https://material.io/guidelines)
-- Seamless integration with other JS frameworks and libraries
-  - [Material Components for React](https://github.com/material-components/material-components-web-react): MDC Web integration for React (using [foundations/adapters](./docs/integrating-into-frameworks.md#the-advanced-approach-using-foundations-and-adapters))
-  - [Material Web Components](https://github.com/material-components/material-components-web-components): MDC Web integration for Web Components (using [vanilla components](./docs/integrating-into-frameworks.md#the-simple-approach-wrapping-mdc-web-vanilla-components))
-  - Additional third-party integrations
-    - [Preact Material Components](https://github.com/prateekbh/preact-material-components)
-    - [RMWC: React Material Web Components](https://github.com/jamesmfriedman/rmwc)
-    - [Angular MDC](https://github.com/trimox/angular-mdc-web)
-    - [Blox Material](https://blox.src.zone/material): Angular Integration Library.
-    - [Vue MDC Adapter](https://github.com/stasson/vue-mdc-adapter): MDC Web Integration for Vue.js (using [foundations/adapters](./docs/integrating-into-frameworks.md#the-advanced-approach-using-foundations-and-adapters).)
-    - [Material Components Vue](https://github.com/matsp/material-components-vue): MDC Web Integration for Vue.js (using [vanilla components](./docs/integrating-into-frameworks.md#the-simple-approach-wrapping-mdc-web-vanilla-components))
-    - [BalmUI](https://material.balmjs.com/): Next Generation Material UI for Vue.js
-    - [Ember Material Components](https://github.com/onehilltech/ember-cli-mdc): MDC Web integration for Ember (using [vanilla components](./docs/integrating-into-frameworks.md#the-simple-approach-wrapping-mdc-web-vanilla-components))
-
-  - More coming soon! Feel free to submit a pull request adding your library to this list, so long as you meet our [criteria](docs/integrating-into-frameworks.md).
-
 MDC Web strives to seamlessly incorporate into a wider range of usage contexts, from simple static websites to complex, JavaScript-heavy applications to hybrid client/server rendering systems. In short, whether you're already heavily invested in another framework or not, it should be easy to incorporate Material Components into your site in a lightweight, idiomatic fashion.
 
-**[Demos](https://material-components.github.io/material-components-web-catalog)** (updated with every release)
-
-> Note: Material Components Web follows semver and is still in version 0.x, which means it is regularly subject to
+> NOTE: Material Components Web follows semver and is still in version 0.x, which means it is regularly subject to
 > breaking changes. We typically follow a 2-week release schedule which includes one minor release per month with
 > breaking changes, and intermediate patch releases with bug fixes.
-> A list of changes is always available in the [CHANGELOG](./CHANGELOG.md),
-> and a tentative schedule of what we are working on next is available in the [ROADMAP](./ROADMAP.md).
+
+# Important links
+
+
+* [Demos](https://material-components.github.io/material-components-web-catalog)
+* [Changelog](./CHANGELOG.md)
+* [Roadmap](./ROADMAP.md)
 
 ## Quick start
 
-> Note: This guide assumes you have Node.js and npm installed locally.
+### Using via CDN
+
+#### HTML
+
+```html
+<link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+<script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+```
+
+Sample usage to render text field:
+
+```html
+<div class="mdc-text-field">
+  <input type="text" id="my-text-field" class="mdc-text-field__input">
+  <label class="mdc-floating-label" for="my-text-field">Hint text</label>
+  <div class="mdc-line-ripple"></div>
+</div>
+```
+
+#### JavaScript
+
+```js
+var textField = document.querySelector('.mdc-text-field');
+mdc.textField.MDCTextField.attachTo(textField);
+```
+
+This'll initialize text field component on single `.mdc-text-field` element.
+
+Please see [quick start demo](https://codepen.io/abhiomkar/pen/gQWarJ) on codepen for working example.
 
 ### Include CSS for a component
 
@@ -146,3 +158,32 @@ Additional continuous integration services courtesy of:
 
 - [Travis CI](https://travis-ci.com/)
 - [Sauce Labs](https://saucelabs.com/)
+
+
+
+
+
+
+
+
+---
+
+
+Material Components for the web is the successor to [Material Design Lite](https://getmdl.io/), and has 3 high-level goals:
+
+- Production-ready components consumable in an a-la-carte fashion
+- Best-in-class performance and adherence to the [Material Design guidelines](https://material.io/guidelines)
+- Seamless integration with other JS frameworks and libraries
+  - [Material Components for React](https://github.com/material-components/material-components-web-react): MDC Web integration for React (using [foundations/adapters](./docs/integrating-into-frameworks.md#the-advanced-approach-using-foundations-and-adapters))
+  - [Material Web Components](https://github.com/material-components/material-components-web-components): MDC Web integration for Web Components (using [vanilla components](./docs/integrating-into-frameworks.md#the-simple-approach-wrapping-mdc-web-vanilla-components))
+  - Additional third-party integrations
+    - [Preact Material Components](https://github.com/prateekbh/preact-material-components)
+    - [RMWC: React Material Web Components](https://github.com/jamesmfriedman/rmwc)
+    - [Angular MDC](https://github.com/trimox/angular-mdc-web)
+    - [Blox Material](https://blox.src.zone/material): Angular Integration Library.
+    - [Vue MDC Adapter](https://github.com/stasson/vue-mdc-adapter): MDC Web Integration for Vue.js (using [foundations/adapters](./docs/integrating-into-frameworks.md#the-advanced-approach-using-foundations-and-adapters).)
+    - [Material Components Vue](https://github.com/matsp/material-components-vue): MDC Web Integration for Vue.js (using [vanilla components](./docs/integrating-into-frameworks.md#the-simple-approach-wrapping-mdc-web-vanilla-components))
+    - [BalmUI](https://material.balmjs.com/): Next Generation Material UI for Vue.js
+    - [Ember Material Components](https://github.com/onehilltech/ember-cli-mdc): MDC Web integration for Ember (using [vanilla components](./docs/integrating-into-frameworks.md#the-simple-approach-wrapping-mdc-web-vanilla-components))
+
+  - More coming soon! Feel free to submit a pull request adding your library to this list, so long as you meet our [criteria](docs/integrating-into-frameworks.md).
