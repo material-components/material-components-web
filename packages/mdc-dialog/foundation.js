@@ -102,10 +102,6 @@ class MDCDialogFoundation extends MDCFoundation {
       this.close(strings.DESTROY_ACTION);
     }
 
-    if (this.animationFrame_) {
-      cancelAnimationFrame(this.animationFrame_);
-    }
-
     if (this.animationTimer_) {
       clearTimeout(this.animationTimer_);
       this.handleAnimationTimerEnd_();
@@ -152,6 +148,9 @@ class MDCDialogFoundation extends MDCFoundation {
     this.adapter_.addClass(cssClasses.CLOSING);
     this.adapter_.removeClass(cssClasses.OPEN);
     this.adapter_.removeBodyClass(cssClasses.SCROLL_LOCK);
+
+    cancelAnimationFrame(this.animationFrame_);
+    this.animationFrame_ = 0;
 
     clearTimeout(this.animationTimer_);
     this.animationTimer_ = setTimeout(() => {
