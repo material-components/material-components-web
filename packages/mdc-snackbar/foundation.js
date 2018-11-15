@@ -181,7 +181,6 @@ class MDCSnackbarFoundation extends MDCFoundation {
 
   /**
    * @param {!KeyboardEvent} evt
-   * @private
    */
   handleKeyDown(evt) {
     if (this.getCloseOnEscape() && (evt.key === 'Escape' || evt.keyCode === 27)) {
@@ -191,7 +190,6 @@ class MDCSnackbarFoundation extends MDCFoundation {
 
   /**
    * @param {!MouseEvent} evt
-   * @private
    */
   handleActionButtonClick(evt) {
     this.close(REASON_ACTION);
@@ -199,7 +197,6 @@ class MDCSnackbarFoundation extends MDCFoundation {
 
   /**
    * @param {!MouseEvent} evt
-   * @private
    */
   handleActionIconClick(evt) {
     this.close(REASON_DISMISS);
