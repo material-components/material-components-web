@@ -50,7 +50,6 @@ class MDCSnackbarFoundation extends MDCFoundation {
     return /** @type {!MDCSnackbarAdapter} */ ({
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
-
       notifyOpening: () => {},
       notifyOpened: () => {},
       notifyClosing: (/* reason: string */) => {},

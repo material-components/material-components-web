@@ -92,7 +92,6 @@ class MDCSnackbar extends MDCComponent {
     return new MDCSnackbarFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-
       notifyOpening: () => this.emit(OPENING_EVENT),
       notifyOpened: () => this.emit(OPENED_EVENT),
       notifyClosing: (reason) => this.emit(CLOSING_EVENT, {reason}),
