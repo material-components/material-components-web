@@ -84,4 +84,10 @@
       border-top: none;
     }
   }
+
+  .mdc-notched-outline--no-label {
+    .mdc-notched-outline__notch {
+      padding: 0;
+    }
+  }
 }

@@ -238,12 +238,6 @@
     pointer-events: none;
   }
 
-  &--with-leading-icon {
-    .mdc-floating-label {
-      @include mdc-rtl-reflexive-position(left, $mdc-text-field-icon-padding);
-    }
-  }
-
   &--textarea {
     .mdc-floating-label {
       @include mdc-rtl-reflexive-position(left, $mdc-notched-outline-padding);
