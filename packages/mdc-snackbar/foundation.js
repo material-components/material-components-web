@@ -107,7 +107,9 @@ class MDCSnackbarFoundation extends MDCFoundation {
       this.animationTimer_ = setTimeout(() => {
         this.handleAnimationTimerEnd_();
         this.adapter_.notifyOpened();
-        this.autoDismissTimer_ = setTimeout(() => this.close(REASON_DISMISS), this.getTimeoutMs());
+        this.autoDismissTimer_ = setTimeout(() => {
+          this.close(REASON_DISMISS);
+        }, this.getTimeoutMs());
       }, numbers.SNACKBAR_ANIMATION_OPEN_TIME_MS);
     });
   }
