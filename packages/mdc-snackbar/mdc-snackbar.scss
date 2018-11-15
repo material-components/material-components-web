@@ -34,7 +34,7 @@
   @include mdc-snackbar-z-index($mdc-snackbar-z-index);
   @include mdc-snackbar-viewport-margin($mdc-snackbar-viewport-margin-narrow);
 
-  display: flex;
+  display: none;
   position: fixed;
   right: 0;
   bottom: 0;
@@ -42,10 +42,6 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-
-  // Prevent snackbar from A) receiving mouse events while closed, and B) being visible during elastic scrolling.
-  // We can't use `display: none` on the root or surface elements because it prevents CSS transitions from animating.
-  transform: translateY(200vh);
 
   // Ignore mouse events on the root layout element.
   pointer-events: none;
@@ -70,17 +66,18 @@
   @include mdc-snackbar-shape-radius($mdc-snackbar-shape-radius);
 }
 
+.mdc-snackbar--opening,
+.mdc-snackbar--open,
+.mdc-snackbar--closing {
+  display: flex;
+}
+
 .mdc-snackbar--wide {
   @include mdc-snackbar-viewport-margin($mdc-snackbar-viewport-margin-wide);
 }
 
 .mdc-snackbar--leading {
   justify-content: flex-start;
-}
-
-.mdc-snackbar--open,
-.mdc-snackbar--closing {
-  transform: none;
 }
 
 .mdc-snackbar__surface {
@@ -90,11 +87,6 @@
   box-sizing: border-box;
   transform: scale(.8);
   opacity: 0;
-
-  .mdc-snackbar--stacked & {
-    flex-direction: column;
-    align-items: flex-start;
-  }
 
   .mdc-snackbar--open & {
     transform: scale(1);
@@ -108,6 +100,11 @@
   .mdc-snackbar--closing & {
     transform: scale(1);
     transition: mdc-animation-exit-permanent(opacity, $mdc-snackbar-exit-duration, $mdc-snackbar-exit-delay);
+  }
+
+  .mdc-snackbar--stacked & {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 

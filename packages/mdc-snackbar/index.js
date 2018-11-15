@@ -27,14 +27,8 @@ import {strings} from './constants';
 import * as ponyfill from '@material/dom/ponyfill';
 
 const {
-  SURFACE_SELECTOR,
-  LABEL_SELECTOR,
-  ACTION_BUTTON_SELECTOR,
-  ACTION_ICON_SELECTOR,
-  OPENING_EVENT,
-  OPENED_EVENT,
-  CLOSING_EVENT,
-  CLOSED_EVENT,
+  SURFACE_SELECTOR, LABEL_SELECTOR, ACTION_BUTTON_SELECTOR, ACTION_ICON_SELECTOR,
+  OPENING_EVENT, OPENED_EVENT, CLOSING_EVENT, CLOSED_EVENT,
 } = strings;
 
 class MDCSnackbar extends MDCComponent {
@@ -49,9 +43,6 @@ class MDCSnackbar extends MDCComponent {
     this.surfaceEl_;
 
     /** @private {!Function} */
-    this.handleTransitionEnd_;
-
-    /** @private {!Function} */
     this.handleKeyDown_;
 
     /** @private {!Function} */
@@ -60,18 +51,22 @@ class MDCSnackbar extends MDCComponent {
 
   initialSyncWithDOM() {
     this.surfaceEl_ = this.root_.querySelector(SURFACE_SELECTOR);
-    this.handleTransitionEnd_ = (evt) => this.foundation_.handleTransitionEnd(evt);
-    this.handleKeyDown_ = (evt) => this.foundation_.handleKeyDown(evt);
-    this.handleSurfaceClick_ = (evt) => this.foundation_.handleSurfaceClick(evt);
 
-    this.registerTransitionEndHandler_(this.handleTransitionEnd_);
+    this.handleKeyDown_ = (evt) => this.foundation_.handleKeyDown(evt);
+    this.handleSurfaceClick_ = (evt) => {
+      if (this.isActionButton_(evt.target)) {
+        this.foundation_.handleActionButtonClick(evt);
+      } else if (this.isActionIcon_(evt.target)) {
+        this.foundation_.handleActionIconClick(evt);
+      }
+    };
+
     this.registerKeyDownHandler_(this.handleKeyDown_);
     this.registerSurfaceClickHandler_(this.handleSurfaceClick_);
   }
 
   destroy() {
     super.destroy();
-    this.deregisterTransitionEndHandler_(this.handleTransitionEnd_);
     this.deregisterKeyDownHandler_(this.handleKeyDown_);
     this.deregisterSurfaceClickHandler_(this.handleSurfaceClick_);
   }
@@ -95,13 +90,8 @@ class MDCSnackbar extends MDCComponent {
   getDefaultFoundation() {
     /* eslint brace-style: "off" */
     return new MDCSnackbarFoundation({
-      hasClass: (className) => this.root_.classList.contains(className),
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-
-      isSurface: (target) => ponyfill.matches(target, SURFACE_SELECTOR),
-      isActionButton: (target) => Boolean(ponyfill.closest(target, ACTION_BUTTON_SELECTOR)),
-      isActionIcon: (target) => Boolean(ponyfill.closest(target, ACTION_ICON_SELECTOR)),
 
       notifyOpening: () => this.emit(OPENING_EVENT),
       notifyOpened: () => this.emit(OPENED_EVENT),
@@ -177,22 +167,6 @@ class MDCSnackbar extends MDCComponent {
    * @param {!EventListener} handler
    * @private
    */
-  registerTransitionEndHandler_(handler) {
-    this.listen('transitionend', handler);
-  }
-
-  /**
-   * @param {!EventListener} handler
-   * @private
-   */
-  deregisterTransitionEndHandler_(handler) {
-    this.unlisten('transitionend', handler);
-  }
-
-  /**
-   * @param {!EventListener} handler
-   * @private
-   */
   registerKeyDownHandler_(handler) {
     this.listen('keydown', handler);
   }
@@ -219,6 +193,24 @@ class MDCSnackbar extends MDCComponent {
    */
   deregisterSurfaceClickHandler_(handler) {
     this.surfaceEl_.removeEventListener('click', handler);
+  }
+
+  /**
+   * @param {!Element} target
+   * @return {boolean}
+   * @private
+   */
+  isActionButton_(target) {
+    return Boolean(ponyfill.closest(target, ACTION_BUTTON_SELECTOR));
+  }
+
+  /**
+   * @param {!Element} target
+   * @return {boolean}
+   * @private
+   */
+  isActionIcon_(target) {
+    return Boolean(ponyfill.closest(target, ACTION_ICON_SELECTOR));
   }
 }
 

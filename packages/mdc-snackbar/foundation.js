@@ -21,9 +21,14 @@
  * THE SOFTWARE.
  */
 
+/* eslint no-unused-vars: ["error", {"argsIgnorePattern": "evt", "varsIgnorePattern": "Adapter$"}] */
+
 import {MDCFoundation} from '@material/base/index';
 import MDCSnackbarAdapter from './adapter';
 import {cssClasses, numbers, strings} from './constants';
+
+const {OPENING, OPEN, CLOSING} = cssClasses;
+const {REASON_ACTION, REASON_DISMISS} = strings;
 
 class MDCSnackbarFoundation extends MDCFoundation {
   static get cssClasses() {
@@ -43,13 +48,8 @@ class MDCSnackbarFoundation extends MDCFoundation {
    */
   static get defaultAdapter() {
     return /** @type {!MDCSnackbarAdapter} */ ({
-      hasClass: (/* className: string */) => /* boolean */ false,
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
-
-      isSurface: (/* target: !Element */) => false,
-      isActionButton: (/* target: !Element */) => false,
-      isActionIcon: (/* target: !Element */) => false,
 
       notifyOpening: () => {},
       notifyOpened: () => {},
@@ -64,54 +64,49 @@ class MDCSnackbarFoundation extends MDCFoundation {
   constructor(adapter) {
     super(Object.assign(MDCSnackbarFoundation.defaultAdapter, adapter));
 
-    /**
-     * @type {number}
-     * @private
-     */
-    this.timeoutMs_ = numbers.DEFAULT_AUTO_DISMISS_TIMEOUT_MS;
+    /** @private {boolean} */
+    this.isOpen_ = false;
 
-    /**
-     * @type {boolean}
-     * @private
-     */
+    /** @private {number} */
+    this.animationFrame_ = 0;
+
+    /** @private {number} */
+    this.animationTimer_ = 0;
+
+    /** @private {number} */
+    this.autoDismissTimer_ = 0;
+
+    /** @private {number} */
+    this.autoDismissTimeoutMs_ = numbers.DEFAULT_AUTO_DISMISS_TIMEOUT_MS;
+
+    /** @private {boolean} */
     this.closeOnEscape_ = true;
-
-    /**
-     * @type {?number}
-     * @private
-     */
-    this.autoDismissTimer_ = null;
-
-    /**
-     * @type {?function(evt: !Event): undefined}
-     * @private
-     */
-    this.transitionEndHandler_ = null;
   }
 
   destroy() {
-    const {OPEN, CLOSING} = cssClasses;
     this.clearAutoDismissTimer_();
+    this.adapter_.removeClass(OPENING);
     this.adapter_.removeClass(OPEN);
     this.adapter_.removeClass(CLOSING);
   }
 
   open() {
-    if (this.isOpen()) {
-      return;
-    }
-
-    const {OPEN, CLOSING} = cssClasses;
-
     this.clearAutoDismissTimer_();
-    this.setOneTimeTransitionEndHandler_(() => {
-      this.adapter_.notifyOpened();
-    });
-    this.autoDismissTimer_ = setTimeout(() => this.close(strings.REASON_DISMISS), this.getTimeoutMs());
-
-    this.adapter_.addClass(OPEN);
-    this.adapter_.removeClass(CLOSING);
+    this.isOpen_ = true;
     this.adapter_.notifyOpening();
+    this.adapter_.removeClass(CLOSING);
+    this.adapter_.addClass(OPENING);
+
+    // Wait a frame once display is no longer "none", to establish basis for animation
+    this.runNextAnimationFrame_(() => {
+      this.adapter_.addClass(OPEN);
+
+      this.animationTimer_ = setTimeout(() => {
+        this.handleAnimationTimerEnd_();
+        this.adapter_.notifyOpened();
+        this.autoDismissTimer_ = setTimeout(() => this.close(REASON_DISMISS), this.getTimeoutMs());
+      }, numbers.SNACKBAR_ANIMATION_OPEN_TIME_MS);
+    });
   }
 
   /**
@@ -120,41 +115,52 @@ class MDCSnackbarFoundation extends MDCFoundation {
    *     client-specific values may also be used if desired.
    */
   close(reason = '') {
-    if (!this.isOpen()) {
+    if (!this.isOpen_) {
+      // Avoid redundant close calls (and events), e.g. from keydown on elements that inherently emit click
       return;
     }
 
-    const {OPEN, CLOSING} = cssClasses;
-
+    cancelAnimationFrame(this.animationFrame_);
+    this.animationFrame_ = 0;
     this.clearAutoDismissTimer_();
-    this.setOneTimeTransitionEndHandler_(() => {
-      this.adapter_.removeClass(CLOSING);
-      this.adapter_.notifyClosed(reason);
-    });
 
-    this.adapter_.addClass(CLOSING);
-    this.adapter_.removeClass(OPEN);
+    this.isOpen_ = false;
     this.adapter_.notifyClosing(reason);
+    this.adapter_.addClass(cssClasses.CLOSING);
+    this.adapter_.removeClass(cssClasses.OPEN);
+    this.adapter_.removeClass(cssClasses.OPENING);
+
+    clearTimeout(this.animationTimer_);
+    this.animationTimer_ = setTimeout(() => {
+      this.handleAnimationTimerEnd_();
+      this.adapter_.notifyClosed(reason);
+    }, numbers.SNACKBAR_ANIMATION_CLOSE_TIME_MS);
+  }
+
+  /**
+   * @return {boolean}
+   */
+  isOpen() {
+    return this.isOpen_;
   }
 
   /**
    * @return {number}
    */
   getTimeoutMs() {
-    return this.timeoutMs_;
+    return this.autoDismissTimeoutMs_;
   }
 
   /**
    * @param {number} timeoutMs
    */
   setTimeoutMs(timeoutMs) {
-    const {
-      MIN_AUTO_DISMISS_TIMEOUT_MS: minValue,
-      MAX_AUTO_DISMISS_TIMEOUT_MS: maxValue,
-    } = numbers;
+    // Use shorter variable names to make the code more readable
+    const minValue = numbers.MIN_AUTO_DISMISS_TIMEOUT_MS;
+    const maxValue = numbers.MAX_AUTO_DISMISS_TIMEOUT_MS;
 
     if (timeoutMs <= maxValue && timeoutMs >= minValue) {
-      this.timeoutMs_ = timeoutMs;
+      this.autoDismissTimeoutMs_ = timeoutMs;
     } else {
       throw new Error(`timeoutMs must be an integer in the range ${minValue}–${maxValue}, but got '${timeoutMs}'`);
     }
@@ -175,29 +181,12 @@ class MDCSnackbarFoundation extends MDCFoundation {
   }
 
   /**
-   * @return {boolean}
-   */
-  isOpen() {
-    const {OPEN, CLOSING} = cssClasses;
-    return this.adapter_.hasClass(OPEN) || this.adapter_.hasClass(CLOSING);
-  }
-
-  /**
-   * @param {!Event} evt
-   */
-  handleTransitionEnd(evt) {
-    if (this.transitionEndHandler_) {
-      this.transitionEndHandler_(evt);
-    }
-  }
-
-  /**
    * @param {!KeyboardEvent} evt
    * @private
    */
   handleKeyDown(evt) {
     if (this.getCloseOnEscape() && (evt.key === 'Escape' || evt.keyCode === 27)) {
-      this.close(strings.REASON_DISMISS);
+      this.close(REASON_DISMISS);
     }
   }
 
@@ -205,34 +194,43 @@ class MDCSnackbarFoundation extends MDCFoundation {
    * @param {!MouseEvent} evt
    * @private
    */
-  handleSurfaceClick(evt) {
-    const target = /** @type {!Element} */ (evt.target);
-    if (this.adapter_.isActionButton(target)) {
-      this.close(strings.REASON_ACTION);
-    } else if (this.adapter_.isActionIcon(target)) {
-      this.close(strings.REASON_DISMISS);
-    }
+  handleActionButtonClick(evt) {
+    this.close(REASON_ACTION);
   }
 
   /**
-   * @param {function(): undefined} handler
+   * @param {!MouseEvent} evt
    * @private
    */
-  setOneTimeTransitionEndHandler_(handler) {
-    this.transitionEndHandler_ = (evt) => {
-      const target = /** @type {!Element} */ (evt.target);
-      // Ignore `transitionend` events that bubble up from action button/icon ripple states.
-      if (!this.adapter_.isSurface(target)) {
-        return;
-      }
-      handler();
-      this.transitionEndHandler_ = null;
-    };
+  handleActionIconClick(evt) {
+    this.close(REASON_DISMISS);
   }
 
   /** @private */
   clearAutoDismissTimer_() {
     clearTimeout(this.autoDismissTimer_);
+    this.autoDismissTimer_ = 0;
+  }
+
+  /** @private */
+  handleAnimationTimerEnd_() {
+    this.animationTimer_ = 0;
+    this.adapter_.removeClass(cssClasses.OPENING);
+    this.adapter_.removeClass(cssClasses.CLOSING);
+  }
+
+  /**
+   * Runs the given logic on the next animation frame, using setTimeout to factor in Firefox reflow behavior.
+   * @param {Function} callback
+   * @private
+   */
+  runNextAnimationFrame_(callback) {
+    cancelAnimationFrame(this.animationFrame_);
+    this.animationFrame_ = requestAnimationFrame(() => {
+      this.animationFrame_ = 0;
+      clearTimeout(this.animationTimer_);
+      this.animationTimer_ = setTimeout(callback, 0);
+    });
   }
 }
 

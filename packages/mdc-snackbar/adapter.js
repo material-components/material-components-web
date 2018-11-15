@@ -39,35 +39,11 @@
  * @record
  */
 class MDCSnackbarAdapter {
-  /**
-   * @param {string} className
-   * @return {boolean}
-   */
-  hasClass(className) {}
-
   /** @param {string} className */
   addClass(className) {}
 
   /** @param {string} className */
   removeClass(className) {}
-
-  /**
-   * @param {!Element} target
-   * @return {boolean}
-   */
-  isSurface(target) {}
-
-  /**
-   * @param {!Element} target
-   * @return {boolean}
-   */
-  isActionButton(target) {}
-
-  /**
-   * @param {!Element} target
-   * @return {boolean}
-   */
-  isActionIcon(target) {}
 
   notifyOpening() {}
   notifyOpened() {}
