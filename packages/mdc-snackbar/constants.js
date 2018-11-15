@@ -21,13 +21,13 @@
  * THE SOFTWARE.
  */
 
-export const cssClasses = {
+const cssClasses = {
   OPENING: 'mdc-snackbar--opening',
   OPEN: 'mdc-snackbar--open',
   CLOSING: 'mdc-snackbar--closing',
 };
 
-export const strings = {
+const strings = {
   SURFACE_SELECTOR: '.mdc-snackbar__surface',
   LABEL_SELECTOR: '.mdc-snackbar__label',
   ACTION_BUTTON_SELECTOR: '.mdc-snackbar__action-button',
@@ -41,10 +41,12 @@ export const strings = {
   REASON_DISMISS: 'dismiss',
 };
 
-export const numbers = {
+const numbers = {
   MIN_AUTO_DISMISS_TIMEOUT_MS: 4000,
   MAX_AUTO_DISMISS_TIMEOUT_MS: 10000,
   DEFAULT_AUTO_DISMISS_TIMEOUT_MS: 5000,
   SNACKBAR_ANIMATION_OPEN_TIME_MS: 150,
   SNACKBAR_ANIMATION_CLOSE_TIME_MS: 225,
 };
+
+export {cssClasses, strings, numbers};
