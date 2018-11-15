@@ -84,6 +84,10 @@ class MDCSnackbarFoundation extends MDCFoundation {
 
   destroy() {
     this.clearAutoDismissTimer_();
+    cancelAnimationFrame(this.animationFrame_);
+    this.animationFrame_ = 0;
+    clearTimeout(this.animationTimer_);
+    this.animationTimer_ = 0;
     this.adapter_.removeClass(OPENING);
     this.adapter_.removeClass(OPEN);
     this.adapter_.removeClass(CLOSING);
