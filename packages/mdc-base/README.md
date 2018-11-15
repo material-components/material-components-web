@@ -6,8 +6,6 @@ excerpt: "Base foundation and component classes."
 path: /catalog/base/
 -->
 
-> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
-
 # Base
 
 MDC Base contains core foundation and component classes that serve as the base classes for all of MDC Web's foundation classes and components (respectively).

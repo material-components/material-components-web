@@ -243,9 +243,14 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   setTransformOrigin(evt) {
-    const targetClientRect = evt.target.getBoundingClientRect();
-    const evtCoords = {x: evt.clientX, y: evt.clientY};
-    const normalizedX = evtCoords.x - targetClientRect.left;
+    let targetEvent;
+    if (evt.touches) {
+      targetEvent = evt.touches[0];
+    } else {
+      targetEvent = evt;
+    }
+    const targetClientRect = targetEvent.target.getBoundingClientRect();
+    const normalizedX = targetEvent.clientX - targetClientRect.left;
     this.adapter_.setLineRippleTransformOrigin(normalizedX);
   }
 
