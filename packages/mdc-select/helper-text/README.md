@@ -7,8 +7,6 @@ iconId: menu
 path: /catalog/input-controls/select-menus/helper-text/
 -->
 
-> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
-
 # Select Helper Text
 
 Helper text gives context about a select, such as how the selection will be used. It should be visible either persistently or only on focus.

@@ -25,6 +25,10 @@ import {strings} from '../../../../packages/mdc-dialog/constants';
 
 window.mdc.testFixture.fontsLoaded.then(() => {
   class DialogFixture {
+    get dialog() {
+      return this.dialogInstance_;
+    }
+
     /** @param {!HTMLElement} dialogEl */
     initialize(dialogEl) {
       /**
@@ -390,8 +394,9 @@ window.mdc.testFixture.fontsLoaded.then(() => {
     }
   }
 
-  [].forEach.call(document.querySelectorAll('.mdc-dialog'), (dialogEl) => {
+  mdc.testFixture.dialogs = [].map.call(document.querySelectorAll('.mdc-dialog'), (dialogEl) => {
     const dialogFixture = new DialogFixture();
     dialogFixture.initialize(dialogEl);
+    return dialogFixture.dialog;
   });
 });
