@@ -272,7 +272,7 @@
     }
 
     > option {
-      @include mdc-theme-prop(background-color, surface);
+      @include mdc-theme-prop(background-color, surface, $edgeOptOut: true);
 
       color: inherit; // Override default user agent stylesheet
     }
