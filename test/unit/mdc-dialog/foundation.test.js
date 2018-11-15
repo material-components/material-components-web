@@ -125,7 +125,7 @@ test('#open adds CSS classes after rAF', () => {
   td.verify(mockAdapter.addClass(cssClasses.OPEN), {times: 0});
   td.verify(mockAdapter.addBodyClass(cssClasses.SCROLL_LOCK), {times: 0});
 
-  // Note: #open has exactly one rAF call, but for some reason it doesn't lapse without advancing the lolex clock twice.
+  // Note: #open uses a combination of rAF and setTimeout due to Firefox behavior, so we need to wait 2 ticks
   clock.runToFrame();
   clock.runToFrame();
   td.verify(mockAdapter.addClass(cssClasses.OPEN));
@@ -151,7 +151,7 @@ test('#close cancels rAF scheduled by open if still pending', () => {
   td.reset();
   foundation.close();
 
-  // Note: #open has exactly one rAF call, but for some reason it doesn't lapse without advancing the lolex clock twice.
+  // Note: #open uses a combination of rAF and setTimeout due to Firefox behavior, so we need to wait 2 ticks
   clock.runToFrame();
   clock.runToFrame();
   td.verify(mockAdapter.addClass(cssClasses.OPEN), {times: 0});
