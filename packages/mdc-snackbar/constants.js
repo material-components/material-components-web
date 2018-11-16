@@ -32,21 +32,32 @@ const strings = {
   LABEL_SELECTOR: '.mdc-snackbar__label',
   ACTION_BUTTON_SELECTOR: '.mdc-snackbar__action-button',
   ACTION_ICON_SELECTOR: '.mdc-snackbar__action-icon',
-  LABEL_TEXT_ATTR: 'data-mdc-snackbar-label-text',
+
   OPENING_EVENT: 'MDCSnackbar:opening',
   OPENED_EVENT: 'MDCSnackbar:opened',
   CLOSING_EVENT: 'MDCSnackbar:closing',
   CLOSED_EVENT: 'MDCSnackbar:closed',
+
   REASON_ACTION: 'action',
   REASON_DISMISS: 'dismiss',
+
+  ARIA_LIVE_LABEL_TEXT_ATTR: 'data-mdc-snackbar-label-text',
 };
 
 const numbers = {
   MIN_AUTO_DISMISS_TIMEOUT_MS: 4000,
   MAX_AUTO_DISMISS_TIMEOUT_MS: 10000,
   DEFAULT_AUTO_DISMISS_TIMEOUT_MS: 5000,
+
   SNACKBAR_ANIMATION_OPEN_TIME_MS: 150,
   SNACKBAR_ANIMATION_CLOSE_TIME_MS: 225,
+
+  /**
+   * Number of milliseconds to wait between temporarily clearing the label text
+   * in the DOM and subsequently restoring it. This is necessary to force IE 11
+   * to pick up the `aria-live` content change and announce it to the user.
+   */
+  ARIA_LIVE_DELAY_MS: 1000,
 };
 
 export {cssClasses, strings, numbers};

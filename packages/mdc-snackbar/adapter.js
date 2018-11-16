@@ -45,6 +45,8 @@ class MDCSnackbarAdapter {
   /** @param {string} className */
   removeClass(className) {}
 
+  announce() {}
+
   notifyOpening() {}
   notifyOpened() {}
 
