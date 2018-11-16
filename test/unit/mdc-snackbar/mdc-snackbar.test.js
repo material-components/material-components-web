@@ -218,7 +218,7 @@ test('set labelText forwards to MDCSnackbarFoundation#setActionButtonText', () =
   assert.equal(component.labelText, 'foo');
 });
 
-test('get actionButtonText returns label textContent', () => {
+test('get actionButtonText returns button textContent', () => {
   const {component, actionButton} = setupTestWithMocks();
 
   assert.equal(component.actionButtonText, actionButton.textContent);
