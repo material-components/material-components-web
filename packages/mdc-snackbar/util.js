@@ -26,15 +26,19 @@ import {numbers, strings} from './constants';
 const {ARIA_LIVE_DELAY_MS} = numbers;
 const {ARIA_LIVE_LABEL_TEXT_ATTR} = strings;
 
-export function announce(rootEl, labelEl) {
-  const priority = rootEl.getAttribute('aria-live');
+/**
+ * @param {!HTMLElement} ariaEl
+ * @param {!HTMLElement=} labelEl
+ */
+export function announce(ariaEl, labelEl = ariaEl) {
+  const priority = ariaEl.getAttribute('aria-live');
   const labelText = labelEl.textContent.trim(); // Ignore `&nbsp;` (see below)
   if (!labelText) {
     return;
   }
 
   // Temporarily disable `aria-live` to prevent JAWS+Firefox from announcing the message twice.
-  rootEl.setAttribute('aria-live', 'off');
+  ariaEl.setAttribute('aria-live', 'off');
 
   // Temporarily clear `textContent` to force a DOM mutation event that will be detected by screen readers.
   // `aria-live` elements are only announced when the element's `textContent` *changes*, so snackbars
@@ -71,10 +75,9 @@ export function announce(rootEl, labelEl) {
   // however, `aria-live` is turned off, so this DOM update will be ignored by screen readers.
   labelEl.setAttribute(ARIA_LIVE_LABEL_TEXT_ATTR, labelText);
 
-  // TODO(acdvorak): Experiment with nested setTimeout() calls to see if we can avoid ARIA_LIVE_DELAY_MS.
   setTimeout(() => {
     // Allow screen readers to announce changes to the DOM again.
-    rootEl.setAttribute('aria-live', priority);
+    ariaEl.setAttribute('aria-live', priority);
 
     // Remove the message from the ::before pseudo-element.
     labelEl.removeAttribute(ARIA_LIVE_LABEL_TEXT_ATTR);
