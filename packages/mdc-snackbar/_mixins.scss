@@ -39,9 +39,9 @@
   }
 }
 
-@mixin mdc-snackbar-shape-radius($radius) {
+@mixin mdc-snackbar-shape-radius($radius, $rtl-reflexive: false) {
   .mdc-snackbar__surface {
-    @include mdc-shape-radius($radius);
+    @include mdc-shape-radius($radius, $rtl-reflexive: false);
   }
 }
 
