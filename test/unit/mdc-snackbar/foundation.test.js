@@ -47,7 +47,7 @@ test('exports numbers', () => {
 
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSnackbarFoundation, [
-    'addClass', 'removeClass', 'notifyOpening', 'notifyOpened', 'notifyClosing', 'notifyClosed',
+    'addClass', 'removeClass', 'announce', 'notifyOpening', 'notifyOpened', 'notifyClosing', 'notifyClosed',
   ]);
 });
 

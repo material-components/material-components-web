@@ -30,7 +30,7 @@ const {ARIA_LIVE_LABEL_TEXT_ATTR} = strings;
  * @param {!HTMLElement} ariaEl
  * @param {!HTMLElement=} labelEl
  */
-export function announce(ariaEl, labelEl = ariaEl) {
+function announce(ariaEl, labelEl = ariaEl) {
   const priority = ariaEl.getAttribute('aria-live');
   const labelText = labelEl.textContent.trim(); // Ignore `&nbsp;` (see below)
   if (!labelText) {
@@ -86,3 +86,5 @@ export function announce(ariaEl, labelEl = ariaEl) {
     labelEl.textContent = labelText;
   }, ARIA_LIVE_DELAY_MS);
 }
+
+export {announce};
