@@ -58,11 +58,11 @@ function announce(ariaEl, labelEl = ariaEl) {
   //
   // This technique has been tested in:
   //
-  //   * JAWS 18.0 & 2019:
+  //   * JAWS 2019:
   //       - Chrome 70
   //       - Firefox 60 (ESR)
   //       - IE 11
-  //   * NVDA 2017 & 2018:
+  //   * NVDA 2018:
   //       - Chrome 70
   //       - Firefox 60 (ESR)
   //       - IE 11
