@@ -17,23 +17,50 @@ MDC Web strives to seamlessly incorporate into a wider range of usage contexts, 
 
 # Important links
 
-
-* [Demos](https://material-components.github.io/material-components-web-catalog)
-* [Changelog](./CHANGELOG.md)
-* [Roadmap](./ROADMAP.md)
+- [Getting Started Guide](docs/getting-started.md)
+- [Demos](https://material-components.github.io/material-components-web-catalog)
+- [MDC Web on other frameworks](FRAMEWORKS.md)
+- [Contributing](CONTRIBUTING.md)
+- [Material Design Guidelines](https://material.io/guidelines) (external site)
+- [Changelog](./CHANGELOG.md)
+- [Roadmap](./ROADMAP.md)
 
 ## Quick start
 
-### Using via CDN
-
-#### HTML
+#### Using via CDN
 
 ```html
+<!-- Required styles for MDC Web -->
 <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+
+<!-- Render textfield component -->
+<div class="mdc-text-field">
+  <input type="text" id="my-text-field" class="mdc-text-field__input">
+  <label class="mdc-floating-label" for="my-text-field">Hint text</label>
+  <div class="mdc-line-ripple"></div>
+</div>
+
+<!-- Required MDC Web JavaScript library -->
 <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+<!-- Instantiate single textfield component rendered in the document -->
+<script>
+  mdc.textField.MDCTextField.attachTo(document.querySelector('.mdc-text-field'));
+</script>
 ```
 
-Sample usage to render text field:
+> Please see [quick start demo](https://codepen.io/abhiomkar/pen/gQWarJ) on codepen for full example.
+
+#### Using NPM
+
+Install textfield node module to your project.
+
+```
+npm install @material/textfield
+```
+
+**HTML**
+
+Sample usage of text field component. Please see [MDC Textfield](packages/mdc-textfield) component page for more options.
 
 ```html
 <div class="mdc-text-field">
@@ -43,147 +70,35 @@ Sample usage to render text field:
 </div>
 ```
 
-#### JavaScript
+**CSS**
 
-```js
-var textField = document.querySelector('.mdc-text-field');
-mdc.textField.MDCTextField.attachTo(textField);
-```
-
-This'll initialize text field component on single `.mdc-text-field` element.
-
-Please see [quick start demo](https://codepen.io/abhiomkar/pen/gQWarJ) on codepen for working example.
-
-### Include CSS for a component
-
-> Note: This guide assumes you have webpack configured to compile Sass into CSS. See the [getting started guide](docs/getting-started.md) for pointers on how to configure webpack.
-
-To include the Sass files for the Material Design button, install the Node dependency:
-
-```
-npm install @material/button
-```
-
-Then import the Sass files for `@material/button` into your application. You can also use Sass mixins to customize the button:
+Load styles required for text field component.
 
 ```scss
-@import "@material/button/mdc-button";
-
-.foo-button {
-  @include mdc-button-ink-color(teal);
-  @include mdc-states(teal);
-}
+@import "@material/textfield/mdc-text-field";
 ```
 
-You also need to configure sass-loader to understand the `@material` imports used by MDC Web. Update your `webpack.config.js` by changing `{ loader: 'sass-loader' }` to:
+**JavaScript**
+
+Import `MDCTextField` module to instantiate text field component.
 
 ```js
-{
-  loader: 'sass-loader',
-  options: {
-    includePaths: ['./node_modules']
-  }
-}
+import {MDCTextField} from '@material/textfield/index';
+const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
 ```
 
-`@material/button` has [documentation](packages/mdc-button/README.md) about the required HTML for a button. Update your application's HTML to include the MDC Button markup, and add the `foo-button` class to the element:
+This'll initialize text field component on a single `.mdc-text-field` element.
 
-```html
-<button class="foo-button mdc-button">
-  Button
-</button>
-```
-
-This will produce a customized Material Design button!
-
-<img src="docs/button.png" alt="Button" width="90" height="36">
-
-### Include JavaScript for a component
-
-> Note: This guide assumes you have webpack configured to compile ES2015 into JavaScript. See the [getting started guide](docs/getting-started.md) for pointers on how to configure webpack.
-
-To include the ES2015 files for the Material Design ripple, install the dependency:
-
-```
-npm install @material/ripple
-```
-
-Then import the ES2015 file for @material/ripple into your application, and initialize an MDCRipple with a DOM element:
-
-```js
-import {MDCRipple} from '@material/ripple/index';
-const ripple = new MDCRipple(document.querySelector('.foo-button'));
-```
-
-> Note: Import `@material/ripple/index` if you wish to transpile MDC Web's ES2015 sources as part of your build process.
-> If your build toolchain is configured to only transpile your own sources, import `@material/ripple` instead, which will
-> reference the distributed UMD module instead.
-
-This will produce a Material Design ripple on the button!
-
-<img src="docs/button_with_ripple.png" alt="Button with Ripple" width="90" height="36">
-
-## Useful links
-
-- [Getting Started Guide](docs/getting-started.md)
-- [All Components](packages/)
-- [Demos](demos/)
-- [Contributing](CONTRIBUTING.md)
-- [Material.io](https://www.material.io) (external site)
-- [Material Design Guidelines](https://material.io/guidelines) (external site)
+> Please see [getting started guide](docs/getting-started.md) for pointers on how to configure webpack to bundle JavaScript & CSS.
 
 ## Need help?
 
 We're constantly trying to improve our components. If Github Issues don't fit your needs, then please visit us on our [Discord Channel](https://discord.gg/material-components).
 
-## Browser support
-
-We officially support the last two versions of every major browser. Specifically, we test on the following browsers:
-
-- **Chrome** on Android, Windows, macOS, and Linux
-- **Firefox** on Windows, macOS, and Linux
-- **Safari** on iOS and macOS
-- **Edge** on Windows
-- **IE 11** on Windows
-
 ## Thank you
 
-Fast, reliable [automated screenshot testing](test/screenshot/) is generously provided by:
+Third-party services that we use and thankful of:
 
-[![CrossBrowserTesting logo](test/screenshot/static/images/cbt-logo.png)](https://crossbrowsertesting.com/)
-
-Free for open source projects!
-
-Additional continuous integration services courtesy of:
-
-- [Travis CI](https://travis-ci.com/)
-- [Sauce Labs](https://saucelabs.com/)
-
-
-
-
-
-
-
-
----
-
-
-Material Components for the web is the successor to [Material Design Lite](https://getmdl.io/), and has 3 high-level goals:
-
-- Production-ready components consumable in an a-la-carte fashion
-- Best-in-class performance and adherence to the [Material Design guidelines](https://material.io/guidelines)
-- Seamless integration with other JS frameworks and libraries
-  - [Material Components for React](https://github.com/material-components/material-components-web-react): MDC Web integration for React (using [foundations/adapters](./docs/integrating-into-frameworks.md#the-advanced-approach-using-foundations-and-adapters))
-  - [Material Web Components](https://github.com/material-components/material-components-web-components): MDC Web integration for Web Components (using [vanilla components](./docs/integrating-into-frameworks.md#the-simple-approach-wrapping-mdc-web-vanilla-components))
-  - Additional third-party integrations
-    - [Preact Material Components](https://github.com/prateekbh/preact-material-components)
-    - [RMWC: React Material Web Components](https://github.com/jamesmfriedman/rmwc)
-    - [Angular MDC](https://github.com/trimox/angular-mdc-web)
-    - [Blox Material](https://blox.src.zone/material): Angular Integration Library.
-    - [Vue MDC Adapter](https://github.com/stasson/vue-mdc-adapter): MDC Web Integration for Vue.js (using [foundations/adapters](./docs/integrating-into-frameworks.md#the-advanced-approach-using-foundations-and-adapters).)
-    - [Material Components Vue](https://github.com/matsp/material-components-vue): MDC Web Integration for Vue.js (using [vanilla components](./docs/integrating-into-frameworks.md#the-simple-approach-wrapping-mdc-web-vanilla-components))
-    - [BalmUI](https://material.balmjs.com/): Next Generation Material UI for Vue.js
-    - [Ember Material Components](https://github.com/onehilltech/ember-cli-mdc): MDC Web integration for Ember (using [vanilla components](./docs/integrating-into-frameworks.md#the-simple-approach-wrapping-mdc-web-vanilla-components))
-
-  - More coming soon! Feel free to submit a pull request adding your library to this list, so long as you meet our [criteria](docs/integrating-into-frameworks.md).
+- [CrossBrowserTesting](https://crossbrowsertesting.com/) for screenshot testing.
+- [Travis CI](https://travis-ci.com/) for CI.
+- [Sauce Labs](https://saucelabs.com/) for unit testing.
