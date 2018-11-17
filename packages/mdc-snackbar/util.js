@@ -66,6 +66,7 @@ function announce(ariaEl, labelEl = ariaEl) {
   //       - Chrome 70
   //       - Firefox 60 (ESR)
   //       - IE 11
+  //   * ChromeVox 53
   labelEl.textContent = '';
   labelEl.innerHTML = '<span style="display: inline-block; width: 0; height: 1px;">&nbsp;</span>';
 

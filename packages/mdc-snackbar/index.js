@@ -233,4 +233,4 @@ class MDCSnackbar extends MDCComponent {
   }
 }
 
-export {MDCSnackbar, MDCSnackbarFoundation};
+export {MDCSnackbar, MDCSnackbarFoundation, util};
