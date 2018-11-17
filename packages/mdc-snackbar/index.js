@@ -24,7 +24,7 @@
 import {MDCComponent} from '@material/base/index';
 import MDCSnackbarFoundation from './foundation';
 import {strings} from './constants';
-import {announce} from './util';
+import * as util from './util';
 import * as ponyfill from '@material/dom/ponyfill';
 
 const {
@@ -49,11 +49,21 @@ class MDCSnackbar extends MDCComponent {
     /** @type {!HTMLElement} */
     this.actionButtonEl_;
 
+    /** @type {function(!HTMLElement, !HTMLElement=): void} */
+    this.announce_;
+
     /** @private {!Function} */
     this.handleKeyDown_;
 
     /** @private {!Function} */
     this.handleSurfaceClick_;
+  }
+
+  /**
+   * @param {function(): function(!HTMLElement, !HTMLElement=):void} announceFactory
+   */
+  initialize(announceFactory = () => util.announce) {
+    this.announce_ = announceFactory();
   }
 
   initialSyncWithDOM() {
@@ -101,7 +111,7 @@ class MDCSnackbar extends MDCComponent {
     return new MDCSnackbarFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-      announce: () => announce(this.labelEl_),
+      announce: () => this.announce_(this.labelEl_),
       notifyOpening: () => this.emit(OPENING_EVENT, {}),
       notifyOpened: () => this.emit(OPENED_EVENT, {}),
       notifyClosing: (reason) => this.emit(CLOSING_EVENT, reason ? {reason} : {}),

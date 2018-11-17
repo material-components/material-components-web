@@ -92,6 +92,13 @@ test('#destroy cancels all timers', () => {
   td.verify(foundation.close(strings.REASON_DISMISS), {times: 0});
 });
 
+test('#open announces text to screen readers', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.open();
+  td.verify(mockAdapter.announce(), {times: 1});
+});
+
 test('#open adds CSS classes after rAF', () => {
   const {foundation, mockAdapter} = setupTest();
   const clock = installClock();
