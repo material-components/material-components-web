@@ -47,7 +47,7 @@ test('exports numbers', () => {
 
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSnackbarFoundation, [
-    'addClass', 'removeClass', 'notifyOpening', 'notifyOpened', 'notifyClosing', 'notifyClosed',
+    'addClass', 'removeClass', 'announce', 'notifyOpening', 'notifyOpened', 'notifyClosing', 'notifyClosed',
   ]);
 });
 
@@ -90,6 +90,13 @@ test('#destroy cancels all timers', () => {
 
   clock.runToFrame();
   td.verify(foundation.close(strings.REASON_DISMISS), {times: 0});
+});
+
+test('#open announces text to screen readers', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.open();
+  td.verify(mockAdapter.announce(), {times: 1});
 });
 
 test('#open adds CSS classes after rAF', () => {

@@ -48,12 +48,11 @@
 
       <div class="mdc-snackbar mdc-snackbar--wide mdc-snackbar--open"
            id="test-snackbar--wide"
-           role="status"
-           aria-live="polite"
-           aria-hidden="true"
            data-test-snackbar-timeout-ms="10000">
         <div class="mdc-snackbar__surface">
-          <div class="mdc-snackbar__label">
+          <div class="mdc-snackbar__label"
+               role="status"
+               aria-live="polite">
             Connection timed out. Showing the latest locally saved version of this document.
             Edits made while offline will not be visible to other users until network connectivity is restored.
           </div>

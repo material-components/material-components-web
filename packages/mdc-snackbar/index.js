@@ -24,6 +24,7 @@
 import {MDCComponent} from '@material/base/index';
 import MDCSnackbarFoundation from './foundation';
 import {strings} from './constants';
+import * as util from './util';
 import * as ponyfill from '@material/dom/ponyfill';
 
 const {
@@ -42,6 +43,15 @@ class MDCSnackbar extends MDCComponent {
     /** @type {!HTMLElement} */
     this.surfaceEl_;
 
+    /** @type {!HTMLElement} */
+    this.labelEl_;
+
+    /** @type {!HTMLElement} */
+    this.actionButtonEl_;
+
+    /** @type {function(!HTMLElement, !HTMLElement=): void} */
+    this.announce_;
+
     /** @private {!Function} */
     this.handleKeyDown_;
 
@@ -49,8 +59,17 @@ class MDCSnackbar extends MDCComponent {
     this.handleSurfaceClick_;
   }
 
+  /**
+   * @param {function(): function(!HTMLElement, !HTMLElement=):void} announceFactory
+   */
+  initialize(announceFactory = () => util.announce) {
+    this.announce_ = announceFactory();
+  }
+
   initialSyncWithDOM() {
     this.surfaceEl_ = /** @type {!HTMLElement} */ (this.root_.querySelector(SURFACE_SELECTOR));
+    this.labelEl_ = /** @type {!HTMLElement} */ (this.root_.querySelector(LABEL_SELECTOR));
+    this.actionButtonEl_ = /** @type {!HTMLElement} */ (this.root_.querySelector(ACTION_BUTTON_SELECTOR));
 
     this.handleKeyDown_ = (evt) => this.foundation_.handleKeyDown(evt);
     this.handleSurfaceClick_ = (evt) => {
@@ -92,6 +111,7 @@ class MDCSnackbar extends MDCComponent {
     return new MDCSnackbarFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
+      announce: () => this.announce_(this.labelEl_),
       notifyOpening: () => this.emit(OPENING_EVENT, {}),
       notifyOpened: () => this.emit(OPENED_EVENT, {}),
       notifyClosing: (reason) => this.emit(CLOSING_EVENT, reason ? {reason} : {}),
@@ -138,28 +158,28 @@ class MDCSnackbar extends MDCComponent {
    * @return {string}
    */
   get labelText() {
-    return this.root_.querySelector(LABEL_SELECTOR).textContent;
+    return this.labelEl_.textContent;
   }
 
   /**
    * @param {string} labelText
    */
   set labelText(labelText) {
-    this.root_.querySelector(LABEL_SELECTOR).textContent = labelText;
+    this.labelEl_.textContent = labelText;
   }
 
   /**
    * @return {string}
    */
   get actionButtonText() {
-    return this.root_.querySelector(ACTION_BUTTON_SELECTOR).textContent;
+    return this.actionButtonEl_.textContent;
   }
 
   /**
    * @param {string} actionButtonText
    */
   set actionButtonText(actionButtonText) {
-    this.root_.querySelector(ACTION_BUTTON_SELECTOR).textContent = actionButtonText;
+    this.actionButtonEl_.textContent = actionButtonText;
   }
 
   /**

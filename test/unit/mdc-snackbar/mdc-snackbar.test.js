@@ -34,11 +34,11 @@ import {MDCSnackbar, MDCSnackbarFoundation} from '../../../packages/mdc-snackbar
 function getFixture() {
   return bel`
     <div>
-      <div class="mdc-snackbar"
-           role="status"
-           aria-live="polite">
+      <div class="mdc-snackbar">
         <div class="mdc-snackbar__surface">
-          <div class="mdc-snackbar__label">Can't send photo. Retry in 5 seconds.</div>
+          <div class="mdc-snackbar__label"
+               role="status"
+               aria-live="polite">Can't send photo. Retry in 5 seconds.</div>
           <div class="mdc-snackbar__actions">
             <button type="button" class="mdc-button mdc-snackbar__action-button">Retry</button>
             <button class="mdc-icon-button mdc-snackbar__action-icon material-icons" title="Dismiss">close</button>
@@ -66,8 +66,9 @@ function setupTest(fixture = getFixture()) {
   const actions = fixture.querySelector('.mdc-snackbar__actions');
   const actionButton = fixture.querySelector('.mdc-snackbar__action-button');
   const actionIcon = fixture.querySelector('.mdc-snackbar__action-icon');
-  const component = new MDCSnackbar(root);
-  return {component, root, surface, label, actions, actionButton, actionIcon};
+  const announce = td.func('announce');
+  const component = new MDCSnackbar(root, undefined, () => announce);
+  return {component, announce, root, surface, label, actions, actionButton, actionIcon};
 }
 
 /**
@@ -91,10 +92,12 @@ function setupTestWithMocks(fixture = getFixture()) {
   /** @type {!MDCSnackbarFoundation} */
   const mockFoundation = new MockFoundationCtor();
 
-  /** @type {!MDCSnackbar} */
-  const component = new MDCSnackbar(root, mockFoundation);
+  const announce = td.func('announce');
 
-  return {component, mockFoundation, root, surface, label, actions, actionButton, actionIcon};
+  /** @type {!MDCSnackbar} */
+  const component = new MDCSnackbar(root, mockFoundation, () => announce);
+
+  return {component, mockFoundation, announce, root, surface, label, actions, actionButton, actionIcon};
 }
 
 suite('MDCSnackbar');
@@ -147,6 +150,13 @@ test('clicking on surface does nothing', () => {
   td.verify(mockFoundation.handleActionIconClick(td.matchers.isA(Event)), {times: 0});
   td.verify(mockFoundation.close(td.matchers.anything()), {times: 0});
   component.destroy();
+});
+
+test('#open announces to screen readers', () => {
+  const {component, announce, label} = setupTest();
+
+  component.open();
+  td.verify(announce(label), {times: 1});
 });
 
 test('#open forwards to MDCSnackbarFoundation#open', () => {

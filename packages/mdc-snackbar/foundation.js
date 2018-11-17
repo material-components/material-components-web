@@ -50,6 +50,7 @@ class MDCSnackbarFoundation extends MDCFoundation {
     return /** @type {!MDCSnackbarAdapter} */ ({
       addClass: (/* className: string */) => {},
       removeClass: (/* className: string */) => {},
+      announce: () => {},
       notifyOpening: () => {},
       notifyOpened: () => {},
       notifyClosing: (/* reason: string */) => {},
@@ -99,6 +100,7 @@ class MDCSnackbarFoundation extends MDCFoundation {
     this.adapter_.notifyOpening();
     this.adapter_.removeClass(CLOSING);
     this.adapter_.addClass(OPENING);
+    this.adapter_.announce();
 
     // Wait a frame once display is no longer "none", to establish basis for animation
     this.runNextAnimationFrame_(() => {
