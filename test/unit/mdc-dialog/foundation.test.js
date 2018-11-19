@@ -117,14 +117,17 @@ test('#destroy cancels layout handling if called on same frame as layout', () =>
   td.verify(mockAdapter.isContentScrollable(), {times: 0});
 });
 
-test('#open adds CSS classes', () => {
+test('#open adds CSS classes after rAF', () => {
   const {foundation, mockAdapter} = setupTest();
   const clock = installClock();
 
   foundation.open();
-  clock.runToFrame();
-  clock.tick(100);
+  td.verify(mockAdapter.addClass(cssClasses.OPEN), {times: 0});
+  td.verify(mockAdapter.addBodyClass(cssClasses.SCROLL_LOCK), {times: 0});
 
+  // Note: #open uses a combination of rAF and setTimeout due to Firefox behavior, so we need to wait 2 ticks
+  clock.runToFrame();
+  clock.runToFrame();
   td.verify(mockAdapter.addClass(cssClasses.OPEN));
   td.verify(mockAdapter.addBodyClass(cssClasses.SCROLL_LOCK));
 });
@@ -138,6 +141,20 @@ test('#close removes CSS classes', () => {
 
   td.verify(mockAdapter.removeClass(cssClasses.OPEN));
   td.verify(mockAdapter.removeBodyClass(cssClasses.SCROLL_LOCK));
+});
+
+test('#close cancels rAF scheduled by open if still pending', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const clock = installClock();
+
+  foundation.open();
+  td.reset();
+  foundation.close();
+
+  // Note: #open uses a combination of rAF and setTimeout due to Firefox behavior, so we need to wait 2 ticks
+  clock.runToFrame();
+  clock.runToFrame();
+  td.verify(mockAdapter.addClass(cssClasses.OPEN), {times: 0});
 });
 
 test('#open adds the opening class to start an animation, and removes it after the animation is done', () => {
