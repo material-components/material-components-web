@@ -304,6 +304,7 @@ class MDCSelect extends MDCComponent {
     this.menu_.hoistMenuToBody();
     this.menu_.setAnchorElement(/** @type {!HTMLElement} */ (this.root_));
     this.menu_.setAnchorCorner(menuSurfaceConstants.Corner.BOTTOM_START);
+    this.menu_.wrapFocus = false;
   }
 
   /**

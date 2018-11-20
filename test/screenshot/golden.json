@@ -423,12 +423,12 @@
     }
   },
   "spec/mdc-dialog/classes/baseline-simple.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/baseline-simple.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/10/30/19_55_44_006/spec/mdc-dialog/classes/baseline-simple.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/baseline-simple.html.windows_chrome_69.png",
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/10/30/19_55_44_006/spec/mdc-dialog/classes/baseline-simple.html.windows_chrome_69.png",
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/baseline-simple.html.windows_edge_17.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/baseline-simple.html.windows_firefox_62.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/baseline-simple.html.windows_ie_11.png"
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/10/30/19_55_44_006/spec/mdc-dialog/classes/baseline-simple.html.windows_firefox_62.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/10/30/19_55_44_006/spec/mdc-dialog/classes/baseline-simple.html.windows_ie_11.png"
     }
   },
   "spec/mdc-dialog/classes/manual-window-resize.html": {
@@ -679,6 +679,24 @@
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/17/22_50_36_536/spec/mdc-fab/mixins/extended-padding.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/17/22_50_36_536/spec/mdc-fab/mixins/extended-padding.html.windows_firefox_61.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/07/17/22_50_36_536/spec/mdc-fab/mixins/extended-padding.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-fab/mixins/extended-shape-radius.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/13/20_59_35_867/spec/mdc-fab/mixins/extended-shape-radius.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/13/20_59_35_867/spec/mdc-fab/mixins/extended-shape-radius.html.windows_chrome_69.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/13/20_59_35_867/spec/mdc-fab/mixins/extended-shape-radius.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/13/20_59_35_867/spec/mdc-fab/mixins/extended-shape-radius.html.windows_firefox_62.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/13/20_59_35_867/spec/mdc-fab/mixins/extended-shape-radius.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-fab/mixins/shape-radius.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/13/20_59_35_867/spec/mdc-fab/mixins/shape-radius.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/13/20_59_35_867/spec/mdc-fab/mixins/shape-radius.html.windows_chrome_69.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/13/20_59_35_867/spec/mdc-fab/mixins/shape-radius.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/13/20_59_35_867/spec/mdc-fab/mixins/shape-radius.html.windows_firefox_62.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/13/20_59_35_867/spec/mdc-fab/mixins/shape-radius.html.windows_ie_11.png"
     }
   },
   "spec/mdc-icon-button/classes/baseline-icon-button-toggle.html": {

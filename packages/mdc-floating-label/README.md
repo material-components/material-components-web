@@ -6,8 +6,6 @@ excerpt: "An animated text caption for a Text Field or Select."
 path: /catalog/input-controls/floating-label/
 -->
 
-> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
-
 # Floating Label
 
 Floating labels display the type of input a field requires. Every Text Field and Select should have a label, except for full-width text fields, which use the input's `placeholder` attribute instead. Labels are aligned with the input line and always visible. They can be resting (when a field is inactive and empty) or floating. The label is a text caption or description for the Text Field.

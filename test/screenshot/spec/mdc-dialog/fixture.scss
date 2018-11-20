@@ -48,6 +48,12 @@ $custom-dialog-color: $material-color-red-300;
   font-size: 100%; // stylelint-disable-line declaration-property-unit-whitelist
 }
 
+// stylelint-disable-next-line selector-class-pattern
+.test-dialog--simple .mdc-list-item__graphic {
+  background-color: rgba(0, 0, 0, .3);
+  color: #fff;
+}
+
 .test-dialog--container-fill-color {
   @include mdc-dialog-container-fill-color($custom-dialog-color);
 }

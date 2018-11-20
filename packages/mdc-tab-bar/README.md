@@ -7,8 +7,6 @@ iconId: tabs
 path: /catalog/tabs/tab-bar/
 -->
 
-> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
-
 # Tab Bar
 
 Tabs organize and allow navigation between groups of content that are related and at the same level of hierarchy.
