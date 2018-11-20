@@ -308,7 +308,7 @@ Method Signature | Description
 Property | Value Type | Description
 --- | --- | ---
 `chips` | Array<`MDCChip`> | An array of the `MDCChip` objects that represent chips in the set
-`selectedChipIds` | `boolean` (read-only) | An array of the IDs of all selected chips.
+`selectedChipIds` | `boolean` (read-only) | An array of the IDs of all selected chips
 
 ## Usage within Web Frameworks
 
