@@ -19,9 +19,11 @@ MDC Web strives to seamlessly incorporate into a wider range of usage contexts, 
 
 - [Getting Started Guide](docs/getting-started.md)
 - [Demos](https://material-components.github.io/material-components-web-catalog)
-- [MDC Web on other frameworks](FRAMEWORKS.md)
+- [MDC Web on other frameworks](docs/framework-wrappers.md)
 - [Contributing](CONTRIBUTING.md)
 - [Material Design Guidelines](https://material.io/guidelines) (external site)
+- [Supported browsers](docs/supported-browsers.md)
+- [All Components](packages/)
 - [Changelog](./CHANGELOG.md)
 - [Roadmap](./ROADMAP.md)
 
@@ -89,6 +91,8 @@ const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
 
 This'll initialize text field component on a single `.mdc-text-field` element.
 
+> Please see [quick start demo](https://stackblitz.com/edit/mdc-web-quick-start-demo) on stackblitz for full example.
+
 > Please see [getting started guide](docs/getting-started.md) for pointers on how to configure webpack to bundle JavaScript & CSS.
 
 ## Need help?
@@ -97,8 +101,10 @@ We're constantly trying to improve our components. If Github Issues don't fit yo
 
 ## Thank you
 
-Third-party services that we use and thankful of:
+Third-party services that we use and thankful to:
 
-- [CrossBrowserTesting](https://crossbrowsertesting.com/) for screenshot testing.
 - [Travis CI](https://travis-ci.com/) for CI.
 - [Sauce Labs](https://saucelabs.com/) for unit testing.
+- [CrossBrowserTesting](https://crossbrowsertesting.com/) for screenshot testing.
+
+<a href="https://crossbrowsertesting.com/"><img src="test/screenshot/static/images/cbt-logo.png" alt="CrossBrowserTesting logo" width="180" /></a>
