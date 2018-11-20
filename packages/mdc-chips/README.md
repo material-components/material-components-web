@@ -304,11 +304,11 @@ Event Name | `event.detail` | Description
 Method Signature | Description
 --- | ---
 `addChip(chipEl: Element) => void` | Adds a new `MDCChip` instance to the chip set based on the given `mdc-chip` element
-`getSelectedChipIds() => boolean` | Returns an array of the IDs of all selected chips
 
 Property | Value Type | Description
 --- | --- | ---
 `chips` | Array<`MDCChip`> | An array of the `MDCChip` objects that represent chips in the set
+`selectedChipIds` | `boolean` (read-only) | Proxies to foundation's `getSelectedChipIds` method.
 
 ## Usage within Web Frameworks
 
