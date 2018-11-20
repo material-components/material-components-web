@@ -308,7 +308,7 @@ Method Signature | Description
 Property | Value Type | Description
 --- | --- | ---
 `chips` | Array<`MDCChip`> | An array of the `MDCChip` objects that represent chips in the set
-`selectedChipIds` | `boolean` (read-only) | Proxies to foundation's `getSelectedChipIds` method.
+`selectedChipIds` | `boolean` (read-only) | Proxies to foundation's `getSelectedChipIds` method
 
 ## Usage within Web Frameworks
 
