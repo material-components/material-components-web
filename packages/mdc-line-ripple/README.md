@@ -6,8 +6,6 @@ excerpt: "The line ripple is used to highlight user-specified input above it."
 path: /catalog/input-controls/line-ripple/
 -->
 
-> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
-
 # Line Ripple
 
 The line ripple is used to highlight user-specified input above it. When a line ripple is active, the line’s color and thickness changes.

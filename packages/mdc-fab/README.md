@@ -7,8 +7,6 @@ iconId: button
 path: /catalog/buttons/floating-action-buttons/
 -->
 
-> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
-
 # Floating Action Button
 
 <!--<div class="article__asset">
@@ -131,7 +129,8 @@ Mixin | Description
 `mdc-fab-ink-color($color)` | Sets the ink color to the given color
 `mdc-fab-extended-padding($icon-padding, $label-padding)` | Sets the padding on both sides of the icon, and between the label and the edge of the FAB. In cases where there is no icon, `$label-padding` will apply to both sides.
 `mdc-fab-extended-label-padding($label-padding)` | Sets the label side padding for Extended FAB. Useful when styling an Extended FAB with no icon.
-`mdc-fab-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to all FAB variants with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`mdc-fab-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to only regular & mini FAB variants with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`mdc-fab-extended-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to only Extended FAB variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 
 The ripple effect for the FAB component is styled using [MDC Ripple](../mdc-ripple) mixins.
 

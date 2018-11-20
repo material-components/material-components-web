@@ -52,6 +52,7 @@ class FakeList {
     this.root = root;
     this.destroy = td.func('.destroy');
     this.itemsContainer = td.func('.root_');
+    this.wrapFocus = true;
     this.listElements = [].slice.call(root.querySelectorAll('.mdc-list-item'));
   }
 }
@@ -156,6 +157,15 @@ test('get/set open', () => {
 
   component.open = false;
   assert.isFalse(menuSurface.open);
+});
+
+test('wrapFocus proxies to MDCList#wrapFocus property', () => {
+  const {component, list} = setupTestWithFakes();
+
+  assert.isTrue(component.wrapFocus);
+
+  component.wrapFocus = false;
+  assert.isFalse(list.wrapFocus);
 });
 
 test('setAnchorCorner proxies to the MDCMenuSurface#setAnchorCorner method', () => {
