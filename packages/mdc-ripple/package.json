@@ -16,6 +16,7 @@
   "dependencies": {
     "@material/animation": "^0.41.0",
     "@material/base": "^0.41.0",
+    "@material/feature-targeting": "file:../mdc-feature-targeting/material-feature-targeting-0.40.1.tgz",
     "@material/theme": "^0.41.0"
   }
 }

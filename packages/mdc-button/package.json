@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@material/elevation": "^0.41.0",
+    "@material/feature-targeting": "file:../mdc-feature-targeting/material-feature-targeting-0.40.1.tgz",
     "@material/ripple": "^0.42.0",
     "@material/rtl": "^0.42.0",
     "@material/shape": "^0.42.0",
