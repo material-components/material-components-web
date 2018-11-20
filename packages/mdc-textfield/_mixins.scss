@@ -223,13 +223,15 @@
     @include mdc-notched-outline-shape-radius($resolved-radius, $rtl-reflexive);
   }
 
-  @if ($resolved-radius > $mdc-notched-outline-leading-width) {
+  $radius-pixels: mdc-shape-prop-value($resolved-radius);
+
+  @if ($radius-pixels > $mdc-notched-outline-leading-width) {
     .mdc-text-field__input {
-      @include mdc-rtl-reflexive-property(padding, $resolved-radius + $mdc-notched-outline-padding, 0);
+      @include mdc-rtl-reflexive-property(padding, $radius-pixels + $mdc-notched-outline-padding, 0);
     }
 
     + .mdc-text-field-helper-text {
-      @include mdc-rtl-reflexive-property(margin, $resolved-radius + $mdc-notched-outline-padding, $mdc-text-field-outline-label-offset);
+      @include mdc-rtl-reflexive-property(margin, $radius-pixels + $mdc-notched-outline-padding, $mdc-text-field-outline-label-offset);
     }
   }
 }

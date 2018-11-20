@@ -63,9 +63,3 @@
     @include mdc-rtl-reflexive(border-radius, $radius 0 0 $radius, border-radius, 0 $radius $radius 0);
   }
 }
-
-@mixin mdc-notched-outline-idle-shape-radius($radius, $rtl-reflexive: false) {
-  .mdc-notched-outline__idle {
-    @include mdc-shape-radius($radius, $rtl-reflexive);
-  }
-}

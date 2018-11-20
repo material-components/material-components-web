@@ -77,7 +77,6 @@ Mixin | Description
 `mdc-notched-outline-idle-color($color)` | Customizes the border color of the idle outline.
 `mdc-notched-outline-stroke-width($width)` | Changes notched outline width to a specified pixel value.
 `mdc-notched-outline-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to notched outline element with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
-`mdc-notched-outline-idle-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to notched outline element in idle state with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 
 
 ### Sass Functions

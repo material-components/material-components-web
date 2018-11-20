@@ -121,13 +121,21 @@
     @include mdc-notched-outline-shape-radius($resolved-radius, $rtl-reflexive);
   }
 
-  @include mdc-notched-outline-idle-shape-radius($resolved-radius, $rtl-reflexive);
-
-  &__native-control {
+  .mdc-select__native-control {
     @include mdc-shape-radius($resolved-radius, $rtl-reflexive);
   }
 
-  @include mdc-floating-label-outlined-float-position($mdc-select-outlined-label-position-y, 0);
+  $radius-pixels: mdc-shape-prop-value($resolved-radius);
+
+  @if ($radius-pixels > $mdc-notched-outline-leading-width) {
+    .mdc-select__native-control {
+      @include mdc-rtl-reflexive-property(padding, $radius-pixels + $mdc-notched-outline-padding, $mdc-select-arrow-padding);
+    }
+
+    + .mdc-select-helper-text {
+      @include mdc-rtl-reflexive-property(margin, $radius-pixels + $mdc-notched-outline-padding, $mdc-select-outline-label-offset);
+    }
+  }
 }
 
 // Private
@@ -367,6 +375,7 @@
   @include mdc-select-outline-shape-radius(medium);
   @include mdc-states-base-color(transparent);
   @include mdc-select-container-fill-color(transparent);
+  @include mdc-floating-label-outlined-float-position($mdc-select-outlined-label-position-y, 0);
 
   border: none;
   overflow: visible;
