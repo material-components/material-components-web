@@ -159,11 +159,10 @@ class MDCList extends MDCComponent {
   }
 
   initializeListType() {
-    // Automatically set single selection if selected/activated classes are present.
-    const preSelectedSelector = `.${cssClasses.LIST_ITEM_ACTIVATED_CLASS},
-                                    .${cssClasses.LIST_ITEM_SELECTED_CLASS},
-                                    ${strings.ARIA_CHECKED_RADIO_SELECTOR}`;
-    const preselectedElement = this.root_.querySelector(preSelectedSelector);
+    // Pre-selected list item in single selected list or checked list item if list with radio input.
+    const preselectedElement = this.root_.querySelector(`.${cssClasses.LIST_ITEM_ACTIVATED_CLASS},
+        .${cssClasses.LIST_ITEM_SELECTED_CLASS},
+        ${strings.ARIA_CHECKED_RADIO_SELECTOR}`);
 
     if (preselectedElement) {
       if (preselectedElement.classList.contains(cssClasses.LIST_ITEM_ACTIVATED_CLASS)) {
@@ -171,6 +170,8 @@ class MDCList extends MDCComponent {
       }
 
       this.singleSelection = true;
+
+      // Automatically set selected index if single select list type or list with radio inputs.
       this.selectedIndex = this.listElements.indexOf(preselectedElement);
     }
   }
