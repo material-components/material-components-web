@@ -54,7 +54,7 @@ class MDCListFoundation extends MDCFoundation {
       focusItemAtIndex: () => {},
       setTabIndexForListItemChildren: () => {},
       followHref: () => {},
-      hasCheckboxOrRadioAtIndex: () => {},
+      hasRadioAtIndex: () => {},
       hasCheckboxAtIndex: () => {},
       isCheckboxCheckedAtIndex: () => {},
       setCheckedCheckboxOrRadioAtIndex: () => {},
@@ -112,42 +112,74 @@ class MDCListFoundation extends MDCFoundation {
 
   /** @param {number} index */
   setSelectedIndex(index) {
-    if (index < 0 && index >= this.adapter_.getListItemCount()) {
-      return;
+    if (index < 0 && index >= this.adapter_.getListItemCount()) return;
+
+    if (this.adapter_.hasCheckboxAtIndex(index)) {
+      this.setAriaAttributesForCheckbox_(index);
+    } else if (this.adapter_.hasRadioAtIndex(index)) {
+      this.setAriaAttributesForRadio_(index);
+    } else {
+      this.setAriaAttributesForSingleSelect_(index);
+      this.setClassNamesForSingleSelect_(index);
     }
 
-    const prevSelectedIndex = this.selectedIndex_;
-    const hasCheckboxOrRadio = this.adapter_.hasCheckboxOrRadioAtIndex(index);
-
-    // Update aria attributes
-    const hasCheckbox = this.adapter_.hasCheckboxAtIndex(index);
-    const ariaAttribute = hasCheckboxOrRadio ? strings.ARIA_CHECKED : strings.ARIA_SELECTED;
-    if (prevSelectedIndex >= 0) {
-      if (!hasCheckbox) {
-        this.adapter_.setAttributeForElementIndex(prevSelectedIndex, ariaAttribute, false);
-      }
-    }
-    const ariaAttributeValue = hasCheckbox ? this.adapter_.isCheckboxCheckedAtIndex(index) : true;
-    this.adapter_.setAttributeForElementIndex(index, ariaAttribute, ariaAttributeValue ? 'true' : 'false');
-
-    // Update class names
-    const selectedClassName = this.useActivatedClass_ ?
-      cssClasses.LIST_ITEM_ACTIVATED_CLASS :
-      cssClasses.LIST_ITEM_SELECTED_CLASS;
-    if (!hasCheckboxOrRadio) {
-      if (prevSelectedIndex >= 0) {
-        this.adapter_.removeClassForElementIndex(prevSelectedIndex, selectedClassName);
-      }
-      this.adapter_.addClassForElementIndex(index, selectedClassName);
-    }
-
-    // Update tabindex
-    if (prevSelectedIndex >= 0) {
-      this.adapter_.setAttributeForElementIndex(prevSelectedIndex, 'tabindex', -1);
+    if (this.selectedIndex_ >= 0) {
+      this.adapter_.setAttributeForElementIndex(this.selectedIndex_, 'tabindex', -1);
     }
     this.adapter_.setAttributeForElementIndex(index, 'tabindex', 0);
 
     this.selectedIndex_ = index;
+  }
+
+  /**
+   * @param {number} index
+   * @private
+   */
+  setAriaAttributesForCheckbox_(index) {
+    const ariaAttributeValue = this.adapter_.isCheckboxCheckedAtIndex(index) ? 'true' : 'false';
+    this.adapter_.setAttributeForElementIndex(index, strings.ARIA_CHECKED, ariaAttributeValue);
+  }
+
+  /**
+   * @param {number} index
+   * @private
+   */
+  setAriaAttributesForRadio_(index) {
+    if (this.selectedIndex_) {
+      this.adapter_.setAttributeForElementIndex(this.selectedIndex_, strings.ARIA_CHECKED, false);
+    }
+
+    this.adapter_.setAttributeForElementIndex(index, strings.ARIA_CHECKED, 'true');
+  }
+
+  /**
+  * @param {number} index
+  * @private
+  */
+  setAriaAttributesForSingleSelect_(index) {
+    if (this.selectedIndex_) {
+      this.adapter_.setAttributeForElementIndex(this.selectedIndex_, strings.ARIA_SELECTED, false);
+    }
+
+    this.adapter_.setAttributeForElementIndex(index, strings.ARIA_CHECKED, 'true');
+  }
+
+  /**
+   * @param {number} index
+   * @private
+   */
+  setClassNamesForSingleSelect_(index) {
+    let selectedClassName = cssClasses.LIST_ITEM_SELECTED_CLASS;
+
+    if (this.useActivatedClass_) {
+      selectedClassName = cssClasses.LIST_ITEM_ACTIVATED_CLASS;
+    }
+
+    if (this.selectedIndex_ >= 0) {
+      this.adapter_.removeClassForElementIndex(this.selectedIndex_, selectedClassName);
+    }
+
+    this.adapter_.addClassForElementIndex(index, selectedClassName);
   }
 
   /**
@@ -221,7 +253,7 @@ class MDCListFoundation extends MDCFoundation {
         this.adapter_.followHref(currentIndex);
       }
 
-      const hasCheckboxOrRadio = this.adapter_.hasCheckboxOrRadioAtIndex(listItemIndex);
+      const hasCheckboxOrRadio = this.hasCheckboxOrRadioAtIndex_(listItemIndex);
       if (hasCheckboxOrRadio) {
         this.toggleCheckboxOrRadioAtIndex_(listItemIndex);
         this.preventDefaultEvent_(evt);
@@ -245,7 +277,7 @@ class MDCListFoundation extends MDCFoundation {
       this.toggleCheckboxOrRadioAtIndex_(index);
     }
 
-    if (this.isSingleSelectionList_ || this.adapter_.hasCheckboxOrRadioAtIndex(index)) {
+    if (this.isSingleSelectionList_ || this.hasCheckboxOrRadioAtIndex_(index)) {
       this.setSelectedIndex(index);
     }
   }
@@ -314,15 +346,25 @@ class MDCListFoundation extends MDCFoundation {
   /**
    * Toggles checkbox or radio at give index. Radio doesn't change the checked state if it is already checked.
    * @param {number} index
+   * @private
    */
   toggleCheckboxOrRadioAtIndex_(index) {
-    if (!this.adapter_.hasCheckboxOrRadioAtIndex(index)) return;
+    if (!this.hasCheckboxOrRadioAtIndex_(index)) return;
 
     let isChecked = true;
     if (this.adapter_.hasCheckboxAtIndex(index)) {
       isChecked = !this.adapter_.isCheckboxCheckedAtIndex(index);
     }
+
     this.adapter_.setCheckedCheckboxOrRadioAtIndex(index, isChecked);
+  }
+
+  /**
+   * @param {number} index
+   * @return {boolean} Return true if list item contains checkbox or radio input at given index.
+   */
+  hasCheckboxOrRadioAtIndex_(index) {
+    return this.adapter_.hasCheckboxAtIndex(index) || this.adapter_.hasRadioAtIndex(index);
   }
 }
 

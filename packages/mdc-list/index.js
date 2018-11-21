@@ -246,13 +246,13 @@ class MDCList extends MDCComponent {
           listItem.click();
         }
       },
-      hasCheckboxOrRadioAtIndex: (index) => {
-        const listItem = this.listElements[index];
-        return !!listItem.querySelector(strings.CHECKBOX_RADIO_SELECTOR);
-      },
       hasCheckboxAtIndex: (index) => {
         const listItem = this.listElements[index];
         return !!listItem.querySelector(strings.CHECKBOX_SELECTOR);
+      },
+      hasRadioAtIndex: (index) => {
+        const listItem = this.listElements[index];
+        return !!listItem.querySelector(strings.RADIO_SELECTOR);
       },
       isCheckboxCheckedAtIndex: (index) => {
         const listItem = this.listElements[index];
