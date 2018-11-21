@@ -205,7 +205,14 @@ test('#close deactivates focus trapping on the dialog surface', () => {
 
   foundation.open();
   td.reset();
+
+  const clock = installClock();
   foundation.close();
+
+  // Wait till setTimeout callback is executed.
+  clock.runToFrame();
+  clock.tick(100);
+  clock.tick(numbers.DIALOG_ANIMATION_OPEN_TIME_MS);
 
   td.verify(mockAdapter.releaseFocus());
 });
