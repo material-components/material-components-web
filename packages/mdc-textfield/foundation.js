@@ -86,7 +86,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
       deregisterValidationAttributeChangeHandler: () => {},
       getNativeInput: () => {},
       isFocused: () => {},
-      isRtl: () => {},
       activateLineRipple: () => {},
       deactivateLineRipple: () => {},
       setLineRippleTransformOrigin: () => {},

@@ -63,7 +63,6 @@ class MDCSelectFoundation extends MDCFoundation {
       deactivateBottomLine: () => {},
       setValue: () => {},
       getValue: () => {},
-      isRtl: () => false,
       floatLabel: (/* value: boolean */) => {},
       getLabelWidth: () => {},
       hasOutline: () => false,

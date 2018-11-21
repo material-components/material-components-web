@@ -477,8 +477,6 @@
   @include mdc-floating-label-outlined-float-position($mdc-text-field-outlined-label-position-y, 0%);
 
   $padding-inset: 16px;
-  $label-offset-y: $padding-inset + 2;
-  $label-offset-x: $padding-inset;
 
   display: inline-flex;
   width: auto;

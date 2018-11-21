@@ -141,12 +141,6 @@ class MDCTextFieldAdapter {
   isFocused() {}
 
   /**
-   * Returns true if the direction of the root element is set to RTL.
-   * @return {boolean}
-   */
-  isRtl() {}
-
-  /**
    * Activates the line ripple.
    */
   activateLineRipple() {}

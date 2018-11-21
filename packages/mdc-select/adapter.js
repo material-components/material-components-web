@@ -95,12 +95,6 @@ class MDCSelectAdapter {
   getValue() {}
 
   /**
-   * Returns true if the direction of the root element is set to RTL.
-   * @return {boolean}
-   */
-  isRtl() {}
-
-  /**
    * Floats label determined based off of the shouldFloat argument.
    * @param {boolean} shouldFloat
    */
