@@ -68,38 +68,6 @@
   }
 }
 
-@mixin mdc-floating-label-outlined-float-position($positionY, $positionX: 0%, $scale: .75) {
-  .mdc-floating-label--float-above {
-    font-size: ($scale * 1rem);
-
-    @if $positionX > 0 or $positionX < 0 {
-      transform: translateY(-1 * $positionY - 14%) translateX(-1 * $positionX) scale(1);
-
-      @include mdc-rtl {
-        transform: translateY(-1 * $positionY - 14%) translateX($positionX) scale(1);
-      }
-    } @else {
-      transform: translateY(-1 * $positionY - 14%) scale(1);
-    }
-  }
-
-  .mdc-notched-outline--upgraded {
-    .mdc-floating-label--float-above {
-      font-size: 1rem;
-
-      @if $positionX > 0 or $positionX < 0 {
-        transform: translateY(-1 * $positionY) translateX(-1 * $positionX) scale($scale);
-
-        @include mdc-rtl {
-          transform: translateY(-1 * $positionY) translateX($positionX) scale($scale);
-        }
-      } @else {
-        transform: translateY(-1 * $positionY) scale($scale);
-      }
-    }
-  }
-}
-
 @mixin mdc-floating-label-shake-animation($modifier) {
   .mdc-floating-label--shake {
     animation: mdc-floating-label-shake-float-above-#{$modifier} 250ms 1;

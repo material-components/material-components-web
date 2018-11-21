@@ -63,3 +63,19 @@
     @include mdc-rtl-reflexive(border-radius, $radius 0 0 $radius, border-radius, 0 $radius $radius 0);
   }
 }
+
+@mixin mdc-notched-outline-floating-label-position($positionY, $positionX: 0%, $scale: .75) {
+  @include mdc-floating-label-float-position($positionY + $mdc-notched-outline-label-adjust, $positionX, 1);
+
+  .mdc-floating-label--float-above {
+    font-size: ($scale * 1rem);
+  }
+
+  .mdc-notched-outline--upgraded {
+    @include mdc-floating-label-float-position($positionY, $positionX, $scale);
+
+    .mdc-floating-label--float-above {
+      font-size: 1rem;
+    }
+  }
+}

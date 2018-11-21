@@ -291,7 +291,7 @@
 }
 
 @mixin mdc-text-field-outlined-dense_ {
-  @include mdc-floating-label-outlined-float-position($mdc-text-field-outlined-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
+  @include mdc-notched-outline-floating-label-position($mdc-text-field-outlined-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
   @include mdc-floating-label-shake-animation(text-field-outlined-dense);
 
   height: 48px;
@@ -315,7 +315,7 @@
   @include mdc-text-field-focused-outline-color(primary);
   @include mdc-floating-label-shake-animation(text-field-outlined);
   @include mdc-text-field-outline-shape-radius(small);
-  @include mdc-floating-label-outlined-float-position($mdc-text-field-outlined-label-position-y);
+  @include mdc-notched-outline-floating-label-position($mdc-text-field-outlined-label-position-y);
   @include mdc-states-base-color(transparent);
   @include mdc-text-field-fill-color(transparent);
 
@@ -390,7 +390,7 @@
 
 @mixin mdc-text-field-outlined-with-leading-icon_ {
   @include mdc-text-field-icon-horizontal-position_(left, $mdc-text-field-icon-position, $mdc-text-field-icon-padding);
-  @include mdc-floating-label-outlined-float-position($mdc-text-field-outlined-label-position-y, 32px);
+  @include mdc-notched-outline-floating-label-position($mdc-text-field-outlined-label-position-y, 32px);
   @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon);
 
   @include mdc-rtl {
@@ -403,7 +403,7 @@
 }
 
 @mixin mdc-text-field-outlined-dense-with-leading-icon_ {
-  @include mdc-floating-label-outlined-float-position($mdc-text-field-outlined-dense-label-position-y, $mdc-text-field-outlined-dense-with-leading-icon-label-position-x, $mdc-text-field-dense-label-scale);
+  @include mdc-notched-outline-floating-label-position($mdc-text-field-outlined-dense-label-position-y, $mdc-text-field-outlined-dense-with-leading-icon-label-position-x, $mdc-text-field-dense-label-scale);
   @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon-dense);
 
   @include mdc-rtl {
@@ -474,7 +474,7 @@
   @include mdc-text-field-outline-shape-radius(small);
   @include mdc-states-base-color(transparent);
   @include mdc-text-field-fill-color(transparent);
-  @include mdc-floating-label-outlined-float-position($mdc-text-field-outlined-label-position-y, 0%);
+  @include mdc-notched-outline-floating-label-position($mdc-text-field-outlined-label-position-y, 0%);
 
   $padding-inset: 16px;
 
