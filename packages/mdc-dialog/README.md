@@ -436,6 +436,9 @@ a focus trapping solution for your component code.**
 
 [focus-trap]: https://github.com/davidtheclark/focus-trap
 
+> NOTE: iOS platform doesn't seem to register currently focused element via `document.activeElement` which causes releasing
+> focus to last focused element fail.
+
 #### `createFocusTrapInstance()`
 
 ```js

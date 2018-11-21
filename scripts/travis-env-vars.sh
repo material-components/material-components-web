@@ -78,7 +78,7 @@ print_all_changed_files
 
 if [[ "$TEST_SUITE" == 'unit' ]]; then
   # Only run unit tests if JS files changed
-  check_for_testable_files '^packages/.+\.js$' '^test/unit/.+\.js$'
+  check_for_testable_files '^karma\.conf\.js$' '^packages/.+\.js$' '^test/unit/.+\.js$'
 fi
 
 if [[ "$TEST_SUITE" == 'lint' ]]; then
