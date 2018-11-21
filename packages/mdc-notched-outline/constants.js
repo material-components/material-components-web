@@ -30,6 +30,7 @@ const strings = {
 const cssClasses = {
   OUTLINE_NOTCHED: 'mdc-notched-outline--notched',
   OUTLINE_UPGRADED: 'mdc-notched-outline--upgraded',
+  NO_LABEL: 'mdc-notched-outline--no-label',
 };
 
 export {cssClasses, strings};

@@ -55,6 +55,8 @@ class MDCNotchedOutline extends MDCComponent {
       label.style.transitionDuration = '0s';
       this.notchElement_.classList.add(cssClasses.OUTLINE_UPGRADED);
       requestAnimationFrame(() => label.style.transitionDuration = '');
+    } else if (this.notchElement_ && !label) {
+      this.notchElement_.classList.add(cssClasses.NO_LABEL);
     }
   }
 
