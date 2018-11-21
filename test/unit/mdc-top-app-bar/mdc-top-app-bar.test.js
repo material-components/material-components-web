@@ -62,7 +62,6 @@ function getFixture(removeIcon) {
       </header>
       <main class="mdc-top-app-bar-fixed-adjust">
       </main>
-      <div class="content">Content</div>
     </div>
   `;
 
@@ -292,8 +291,8 @@ test('adapter#getViewportScrollY returns scroll distance', () => {
 
 test('adapter#getViewportScrollY returns scroll distance when scrollTarget_ is not window', () => {
   const {component, fixture} = setupTest();
-  const content = fixture.querySelector('.content');
-  component.scrollTarget_ = content;
+  const content = {addEventListener: () => {}, scrollTop: 20};
+  component.setScrollTarget(content);
   assert.equal(component.getDefaultFoundation().adapter_.getViewportScrollY(), content.scrollTop);
 });
 
