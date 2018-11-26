@@ -11,21 +11,19 @@ Developed by a core team of engineers and UX designers at Google, these componen
 
 MDC Web strives to seamlessly incorporate into a wider range of usage contexts, from simple static websites to complex, JavaScript-heavy applications to hybrid client/server rendering systems. In short, whether you're already heavily invested in another framework or not, it should be easy to incorporate Material Components into your site in a lightweight, idiomatic fashion.
 
-MDC Web provides customizations in theming, shaping & typography and available in other [major web frameworks](docs/framework-wrappers.md).
-
-Material Components for the web is the successor to [Material Design Lite](https://getmdl.io/).
+Material Components for the web is the successor to [Material Design Lite](https://getmdl.io/). In addition to implementing the [Material Design guidelines](https://material.io/design), it provides more flexible theming customization, not only in terms of color, but also typography, shape, states, and more. It is also specifically [architected](docs/code/architecture.md) for adaptability to various [major web frameworks](docs/framework-wrappers.md).
 
 > NOTE: Material Components Web follows semver and is still in version 0.x, which means it is regularly subject to
 > breaking changes. We typically follow a 2-week release schedule which includes one minor release per month with
 > breaking changes, and intermediate patch releases with bug fixes.
 
-# Important links
+## Important links
 
 - [Getting Started Guide](docs/getting-started.md)
 - [Demos](https://material-components.github.io/material-components-web-catalog)
 - [MDC Web on other frameworks](docs/framework-wrappers.md)
 - [Contributing](CONTRIBUTING.md)
-- [Material Design Guidelines](https://material.io/guidelines) (external site)
+- [Material Design Guidelines](https://material.io/design) (external site)
 - [Supported browsers](docs/supported-browsers.md)
 - [All Components](packages/)
 - [Changelog](./CHANGELOG.md)
@@ -33,7 +31,7 @@ Material Components for the web is the successor to [Material Design Lite](https
 
 ## Quick start
 
-#### Using via CDN
+### Using via CDN
 
 ```html
 <!-- Required styles for MDC Web -->
@@ -56,7 +54,7 @@ Material Components for the web is the successor to [Material Design Lite](https
 
 > Please see [quick start demo](https://codepen.io/abhiomkar/pen/gQWarJ) on codepen for full example.
 
-#### Using NPM
+### Using NPM
 
 Install textfield node module to your project.
 
@@ -64,7 +62,7 @@ Install textfield node module to your project.
 npm install @material/textfield
 ```
 
-**HTML**
+#### HTML
 
 Sample usage of text field component. Please see [MDC Textfield](packages/mdc-textfield) component page for more options.
 
@@ -76,7 +74,7 @@ Sample usage of text field component. Please see [MDC Textfield](packages/mdc-te
 </div>
 ```
 
-**CSS**
+#### CSS
 
 Load styles required for text field component.
 
@@ -84,7 +82,7 @@ Load styles required for text field component.
 @import "@material/textfield/mdc-text-field";
 ```
 
-**JavaScript**
+#### JavaScript
 
 Import `MDCTextField` module to instantiate text field component.
 
@@ -105,10 +103,10 @@ We're constantly trying to improve our components. If Github Issues don't fit yo
 
 ## Thank you
 
-Third-party services that we use and thankful to:
+Third-party services that we use and are thankful to:
 
 - [Travis CI](https://travis-ci.com/) for CI.
 - [Sauce Labs](https://saucelabs.com/) for unit testing.
-- [CrossBrowserTesting](https://crossbrowsertesting.com/) for screenshot testing.
+- [CrossBrowserTesting](https://crossbrowsertesting.com/) for [screenshot testing](test/screenshot/).
 
 <a href="https://crossbrowsertesting.com/"><img src="test/screenshot/static/images/cbt-logo.png" alt="CrossBrowserTesting logo" width="180" /></a>
