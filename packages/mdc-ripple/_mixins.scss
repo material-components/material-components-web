@@ -89,12 +89,13 @@
 }
 
 @mixin mdc-states-base-color($color) {
-  // Opacity styles are here (rather than in mdc-ripple-surface) to ensure that opacity is re-initialized for
-  // cases where this mixin is used to override another inherited use of itself,
-  // without needing to re-include mdc-ripple-surface.
   &::before,
   &::after {
-    @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
+    @if alpha(mdc-theme-prop-value($color)) > 0 {
+      @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
+    } @else {
+      content: none;
+    }
   }
 }
 
