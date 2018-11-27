@@ -7,8 +7,6 @@ iconId: dialog
 path: /catalog/dialogs/
 -->
 
-> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
-
 # Dialog
 
 <!--<div class="article__asset">
@@ -437,6 +435,9 @@ The `MDCDialog` component uses the [focus-trap][] package to handle this.
 a focus trapping solution for your component code.**
 
 [focus-trap]: https://github.com/davidtheclark/focus-trap
+
+> NOTE: iOS platform doesn't seem to register currently focused element via `document.activeElement` which causes releasing
+> focus to last focused element fail.
 
 #### `createFocusTrapInstance()`
 

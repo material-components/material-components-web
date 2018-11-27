@@ -7,8 +7,6 @@ iconId: selection_control
 path: /catalog/input-controls/checkboxes/
 -->
 
-> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
-
 # Checkboxes
 
 <!--<div class="article__asset">

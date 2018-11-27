@@ -153,12 +153,21 @@ test(`#isOpen returns false when it lacks ${cssClasses.OPEN} class`, () => {
 
 test(`#isOpening returns true when it has ${cssClasses.OPENING} class`, () => {
   const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.ANIMATE)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.OPENING)).thenReturn(true);
+  assert.isTrue(foundation.isOpening());
+});
+
+test('#isOpening returns true when drawer just start animate', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.ANIMATE)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.OPENING)).thenReturn(false);
   assert.isTrue(foundation.isOpening());
 });
 
 test(`#isOpening returns false when it lacks ${cssClasses.OPENING} class`, () => {
   const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.ANIMATE)).thenReturn(false);
   td.when(mockAdapter.hasClass(cssClasses.OPENING)).thenReturn(false);
   assert.isFalse(foundation.isOpening());
 });

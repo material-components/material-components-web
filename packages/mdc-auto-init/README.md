@@ -6,8 +6,6 @@ excerpt: "Utilities for declarative, DOM-based initialization of components on s
 path: /catalog/auto-init/
 -->
 
-> ✨ Are you a part of the Material Design web community? Help us improve by filling out this <a href='https://bit.ly/materialwebsurvey'>**10 minute survey**</a>. ✨
-
 # Auto Init
 
 `mdc-auto-init` is a utility package that provides declarative, DOM-based method of initialization

@@ -90,12 +90,18 @@
 .mdc-list-item__graphic {
   @include mdc-list-graphic-size_(24px);
 
-  display: inline-flex;
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
   fill: currentColor;
 }
+
+// Extra specificity is to override .material-icons display style if used in conjunction with mdc-list-item__graphic
+// stylelint-disable plugin/selector-bem-pattern
+.mdc-list .mdc-list-item__graphic {
+  display: inline-flex;
+}
+// stylelint-enable plugin/selector-bem-pattern
 
 .mdc-list-item__meta {
   @include mdc-rtl-reflexive-property(margin, auto, 0, ".mdc-list-item");
