@@ -38,7 +38,6 @@
 
   // According to the mocks and stickersheet, the line-height is adjusted to 24px for text content,
   // same as for body1.
-
   /* @alternate */
   line-height: map-get(map-get($mdc-typography-styles, body1), line-height);
   list-style-type: none;

@@ -37,10 +37,8 @@ $mdc-form-field-item-spacing: 4px;
 
   > label {
     order: 0;
-
     /* @noflip */
     margin-right: auto;
-
     /* @noflip */
     padding-left: $mdc-form-field-item-spacing;
   }
@@ -49,7 +47,6 @@ $mdc-form-field-item-spacing: 4px;
     > label {
       /* @noflip */
       margin-left: auto;
-
       /* @noflip */
       padding-right: $mdc-form-field-item-spacing;
     }
@@ -59,10 +56,8 @@ $mdc-form-field-item-spacing: 4px;
 .mdc-form-field--align-end {
   > label {
     order: -1;
-
     /* @noflip */
     margin-left: auto;
-
     /* @noflip */
     padding-right: $mdc-form-field-item-spacing;
   }
@@ -71,7 +66,6 @@ $mdc-form-field-item-spacing: 4px;
     > label {
       /* @noflip */
       margin-right: auto;
-
       /* @noflip */
       padding-left: $mdc-form-field-item-spacing;
     }

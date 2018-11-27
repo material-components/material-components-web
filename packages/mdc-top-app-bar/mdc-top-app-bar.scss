@@ -89,10 +89,8 @@
 
 .mdc-top-app-bar--short {
   top: 0;
-
   /* @noflip */
   right: auto;
-
   /* @noflip */
   left: 0;
   width: 100%;
@@ -101,7 +99,6 @@
   @include mdc-rtl {
     /* @noflip */
     right: 0;
-
     /* @noflip */
     left: auto;
   }
