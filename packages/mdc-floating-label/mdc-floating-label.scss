@@ -37,7 +37,11 @@
 
     position: absolute;
     bottom: 8px;
+
+    /* @noflip */
     left: 0;
+
+    /* @noflip */
     transform-origin: left top;
     transition:
       transform $mdc-floating-label-transition-duration $mdc-animation-standard-curve-timing-function,
