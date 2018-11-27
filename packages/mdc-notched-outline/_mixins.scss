@@ -51,7 +51,7 @@
   $radius: mdc-shape-prop-value($radius);
 
   .mdc-notched-outline__leading {
-    @include mdc-rtl-reflexive(border-radius, 0 $radius $radius 0, border-radius, $radius 0 0 $radius);
+    @include mdc-shape-radius(mdc-shape-mask-radius($radius, 1 0 0 1), $rtl-reflexive: true);
 
     @if ($radius > $mdc-notched-outline-leading-width) {
       width: $radius;
@@ -59,7 +59,7 @@
   }
 
   .mdc-notched-outline__trailing {
-    @include mdc-rtl-reflexive(border-radius, $radius 0 0 $radius, border-radius, 0 $radius $radius 0);
+    @include mdc-shape-radius(mdc-shape-mask-radius($radius, 0 1 1 0), $rtl-reflexive: true);
   }
 }
 
