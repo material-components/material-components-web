@@ -105,6 +105,11 @@
   @include mdc-typography-overflow-ellipsis;
 }
 
+// Disable interaction on label elements that may automatically toggle correspoding checkbox / radio input.
+label.mdc-list-item__text[for] {
+  pointer-events: none;
+}
+
 $mdc-list-item-primary-text-baseline-height_: 32px;
 $mdc-list-item-secondary-text-baseline-height_: 20px;
 $mdc-list-dense-item-primary-text-baseline-height_: 24px;
