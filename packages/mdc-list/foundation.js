@@ -126,6 +126,8 @@ class MDCListFoundation extends MDCFoundation {
     if (this.selectedIndex_ >= 0 && this.selectedIndex_ !== index) {
       this.adapter_.setAttributeForElementIndex(this.selectedIndex_, 'tabindex', -1);
     } else if (this.selectedIndex_ === -1 && index !== 0) {
+      // If no list item was selected set first list item's tabindex to -1.
+      // Generally, tabindex is set to 0 on first list item of list that has no preselected items.
       this.adapter_.setAttributeForElementIndex(0, 'tabindex', -1);
     }
 
