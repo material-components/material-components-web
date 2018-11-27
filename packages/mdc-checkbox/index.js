@@ -44,12 +44,12 @@ class MDCCheckbox extends MDCComponent {
 
   /**
    * Returns the state of the native control element, or null if the native control element is not present.
-   * @return {?MDCSelectionControlState}
+   * @return {!MDCSelectionControlState}
    * @private
    */
   get nativeCb_() {
     const {NATIVE_CONTROL_SELECTOR} = MDCCheckboxFoundation.strings;
-    const cbEl = /** @type {?MDCSelectionControlState} */ (
+    const cbEl = /** @type {!MDCSelectionControlState} */ (
       this.root_.querySelector(NATIVE_CONTROL_SELECTOR));
     return cbEl;
   }
