@@ -271,12 +271,6 @@
       text-indent: -2px;
     }
 
-    > option {
-      @include mdc-theme-prop(background-color, surface);
-
-      color: inherit; // Override default user agent stylesheet
-    }
-
     box-sizing: border-box;
     width: 100%;
     height: $mdc-select-height;
