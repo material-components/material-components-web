@@ -123,9 +123,12 @@ class MDCListFoundation extends MDCFoundation {
       this.setClassNamesForSingleSelect_(index);
     }
 
-    if (this.selectedIndex_ >= 0) {
+    if (this.selectedIndex_ >= 0 && this.selectedIndex_ !== index) {
       this.adapter_.setAttributeForElementIndex(this.selectedIndex_, 'tabindex', -1);
+    } else if (this.selectedIndex_ === -1 && index !== 0) {
+      this.adapter_.setAttributeForElementIndex(0, 'tabindex', -1);
     }
+
     this.adapter_.setAttributeForElementIndex(index, 'tabindex', 0);
 
     this.selectedIndex_ = index;
@@ -145,8 +148,8 @@ class MDCListFoundation extends MDCFoundation {
    * @private
    */
   setAriaAttributesForRadio_(index) {
-    if (this.selectedIndex_) {
-      this.adapter_.setAttributeForElementIndex(this.selectedIndex_, strings.ARIA_CHECKED, false);
+    if (this.selectedIndex_ >= 0) {
+      this.adapter_.setAttributeForElementIndex(this.selectedIndex_, strings.ARIA_CHECKED, 'false');
     }
 
     this.adapter_.setAttributeForElementIndex(index, strings.ARIA_CHECKED, 'true');
@@ -157,11 +160,11 @@ class MDCListFoundation extends MDCFoundation {
   * @private
   */
   setAriaAttributesForSingleSelect_(index) {
-    if (this.selectedIndex_) {
-      this.adapter_.setAttributeForElementIndex(this.selectedIndex_, strings.ARIA_SELECTED, false);
+    if (this.selectedIndex_ >= 0 && this.selectedIndex_ !== index) {
+      this.adapter_.setAttributeForElementIndex(this.selectedIndex_, strings.ARIA_SELECTED, 'false');
     }
 
-    this.adapter_.setAttributeForElementIndex(index, strings.ARIA_CHECKED, 'true');
+    this.adapter_.setAttributeForElementIndex(index, strings.ARIA_SELECTED, 'true');
   }
 
   /**
@@ -249,18 +252,18 @@ class MDCListFoundation extends MDCFoundation {
           this.preventDefaultEvent_(evt);
         }
 
+        const hasCheckboxOrRadio = this.hasCheckboxOrRadioAtIndex_(listItemIndex);
+        if (hasCheckboxOrRadio) {
+          this.toggleCheckboxOrRadioAtIndex_(listItemIndex);
+          this.preventDefaultEvent_(evt);
+        }
+
+        if (this.isSingleSelectionList_ || hasCheckboxOrRadio) {
+          this.setSelectedIndex(currentIndex);
+        }
+
         // Explicitly activate links, since we're preventing default on Enter, and Space doesn't activate them.
         this.adapter_.followHref(currentIndex);
-      }
-
-      const hasCheckboxOrRadio = this.hasCheckboxOrRadioAtIndex_(listItemIndex);
-      if (hasCheckboxOrRadio) {
-        this.toggleCheckboxOrRadioAtIndex_(listItemIndex);
-        this.preventDefaultEvent_(evt);
-      }
-
-      if (this.isSingleSelectionList_ || hasCheckboxOrRadio) {
-        this.setSelectedIndex(currentIndex);
       }
     }
   }

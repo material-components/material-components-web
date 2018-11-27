@@ -91,9 +91,9 @@ class MDCListAdapter {
 
   /**
    * @param {number} index
-   * @return {boolean} Returns true if radio button or checkbox is present at given list item index.
+   * @return {boolean} Returns true if radio button is present at given list item index.
    */
-  hasCheckboxOrRadioAtIndex(index) {}
+  hasRadioAtIndex(index) {}
 
   /**
    * @param {number} index
