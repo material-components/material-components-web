@@ -40,7 +40,7 @@ npm install @material/list
 
 ```html
 <ul class="mdc-list">
-  <li class="mdc-list-item">
+  <li class="mdc-list-item" tabindex="0">
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
   <li class="mdc-list-item">
@@ -62,7 +62,7 @@ in the double line list style as defined by
 
 ```html
 <ul class="mdc-list mdc-list--two-line">
-  <li class="mdc-list-item">
+  <li class="mdc-list-item" tabindex="0">
     <span class="mdc-list-item__text">
       <span class="mdc-list-item__primary-text">First-line text</span>
       <span class="mdc-list-item__secondary-text">Second-line text</span>
@@ -93,7 +93,7 @@ Multiple related lists can be grouped together using the `mdc-list-group` class 
 <div class="mdc-list-group">
   <h3 class="mdc-list-group__subheader">List 1</h3>
   <ul class="mdc-list">
-    <li class="mdc-list-item">
+    <li class="mdc-list-item" tabindex="0">
       <span class="mdc-list-item__text">line item</span>
     </li>
     <li class="mdc-list-item">
@@ -124,7 +124,7 @@ MDC List contains an `mdc-list-divider` class which can be used as full-width or
 
 ```html
 <ul class="mdc-list">
-  <li class="mdc-list-item">
+  <li class="mdc-list-item" tabindex="0">
     <span class="mdc-list-item__text">Item 1 - Division 1</span>
   </li>
   <li class="mdc-list-item">
@@ -146,7 +146,7 @@ OR
 
 ```html
 <ul class="mdc-list">
-  <li class="mdc-list-item">
+  <li class="mdc-list-item" tabindex="0">
     <span class="mdc-list-item__text">Item 1 - List 1</span>
   </li>
   <li class="mdc-list-item">
@@ -391,7 +391,13 @@ Mixin | Description
 
 The MDCList JavaScript component implements the WAI-ARIA best practices for
 [Listbox](https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox). This includes overriding the default tab behavior
-within the list component. You should not add `tabindex` to any of the `li` elements in a list.
+within the list component.
+
+The `tabindex` should be set to `0` for first list item element or selected list item element, remaining list item elements should not have `tabindex` set to `true`.
+
+Use `role="listbox"` only for single selection list, without this role the `ul` element is implicitely `role="list"`.
+Do not use `aria-orientation` attribute for standard list (i.e., `role="list"`), use component's `vertical` property to set the orientation
+to vertical.
 
 As the user navigates through the list, any `button` and `a` elements within the list will receive `tabindex="-1"` when
 the list item is not focused. When the list item receives focus, the aforementioned elements will receive
@@ -430,7 +436,7 @@ skip over the entire list. If the list items contain sub-elements that are focus
 these should also receive `tabIndex="-1"`.
 
 ```html
-<ul id="my-list" class="mdc-list" aria-orientation="vertical">
+<ul id="my-list" class="mdc-list">
   <li class="mdc-list-item" tabindex="0">
     <span class="mdc-list-item__text">Single-line item</span>
     <button tabindex="-1"></button>
@@ -453,7 +459,7 @@ to `-1`. The foundation method `setSelectedIndex()` should be called with the in
 after the foundation is instantiated.
 
 ```html
-<ul id="my-list" class="mdc-list" aria-orientation="vertical">
+<ul id="my-list" class="mdc-list">
   <li class="mdc-list-item" tabindex="-1">
     <span class="mdc-list-item__text">Single-line item</span>
     <button tabindex="-1"></button>
@@ -480,7 +486,7 @@ Method Signature | Description
 `focusItemAtIndex(index: Number) => void` | Focuses the list item at the `index` value specified.
 `setTabIndexForListItemChildren(index: Number, value: Number) => void` | Sets the `tabindex` attribute to `value` for each child button or anchor element in the list item at the `index` specified.
 `followHref(element: Element) => void` | If the given element has an href, follows the link.
-`hasCheckboxOrRadioAtIndex(index: number) => boolean` | Returns true if radio button or checkbox is present at given list item index.
+`hasRadioAtIndex(index: number) => boolean` | Returns true if radio button is present at given list item index.
 `hasCheckboxAtIndex(index: number) => boolean` | Returns true if checkbox is present at given list item index.
 `isCheckboxCheckedAtIndex(index: number) => boolean` | Returns true if checkbox inside a list item is checked.
 `setCheckedCheckboxOrRadioAtIndex(index: number, isChecked: boolean) => void` | Sets the checked status of checkbox or radio at given list item index.
