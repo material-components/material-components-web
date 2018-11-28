@@ -701,7 +701,7 @@ test('#setSelectedIndex should bail out if not in the range', () => {
 });
 
 test('#setSelectedIndex should set aria attributes on new index and should not change aria attributes on previous' +
-    ' selected index', () => {
+    ' selected index for checkbox based list', () => {
   const {foundation, mockAdapter} = setupTest();
 
   td.when(mockAdapter.getListItemCount()).thenReturn(4);
@@ -713,5 +713,24 @@ test('#setSelectedIndex should set aria attributes on new index and should not c
   td.when(mockAdapter.hasCheckboxAtIndex(3)).thenReturn(true);
   td.when(mockAdapter.isCheckboxCheckedAtIndex(3)).thenReturn(true);
   foundation.setSelectedIndex(3);
-  td.verify(mockAdapter.setAttributeForElementIndex(3, strings.ARIA_CHECKED, 'false'), {times: 0});
+  td.verify(mockAdapter.setAttributeForElementIndex(2, strings.ARIA_CHECKED, 'false'), {times: 0});
+});
+
+test('#setSelectedIndex should set aria attributes on new index and should also set aria checked to false on previous' +
+    ' selected index for radio based list', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(5);
+  td.when(mockAdapter.hasRadioAtIndex(3)).thenReturn(true);
+  td.when(mockAdapter.hasCheckboxAtIndex(3)).thenReturn(false);
+  foundation.setSelectedIndex(3);
+  td.verify(mockAdapter.setAttributeForElementIndex(3, strings.ARIA_CHECKED, 'true'), {times: 1});
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(5);
+  td.when(mockAdapter.hasRadioAtIndex(4)).thenReturn(true);
+  td.when(mockAdapter.hasCheckboxAtIndex(4)).thenReturn(false);
+  foundation.setSelectedIndex(4);
+
+  td.verify(mockAdapter.setAttributeForElementIndex(4, strings.ARIA_CHECKED, 'true'), {times: 1});
+  td.verify(mockAdapter.setAttributeForElementIndex(3, strings.ARIA_CHECKED, 'false'), {times: 1});
 });
