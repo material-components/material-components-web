@@ -772,14 +772,18 @@ test('mousedown on the input sets the line ripple origin', () => {
 
 test('touchstart on the input sets the line ripple origin', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockEvt = {
-    target: {
-      getBoundingClientRect: () => {
-        return {};
+  const clientRectLeft = 50;
+  const clientX = 200;
+  const mockTouchStartEvent = {
+    touches: [{
+      target: {
+        getBoundingClientRect: () => {
+          return {left: clientRectLeft};
+        },
       },
-    },
-    clientX: 200,
-    clientY: 200,
+      clientX: clientX,
+      clientY: 200,
+    }],
   };
 
   let clickHandler;
@@ -788,9 +792,10 @@ test('touchstart on the input sets the line ripple origin', () => {
     .thenDo((evtType, handler) => clickHandler = handler);
 
   foundation.init();
-  clickHandler(mockEvt);
+  clickHandler(mockTouchStartEvent);
 
-  td.verify(mockAdapter.setLineRippleTransformOrigin(td.matchers.anything()));
+  const argMatcher = td.matchers.argThat((normalizedX) => (normalizedX === (clientX - clientRectLeft)));
+  td.verify(mockAdapter.setLineRippleTransformOrigin(argMatcher));
 });
 
 test('on validation attribute change calls styleValidity_', () => {
