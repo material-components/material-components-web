@@ -105,8 +105,8 @@
   @include mdc-typography-overflow-ellipsis;
 }
 
-// Disable interaction on label elements that may automatically toggle correspoding checkbox / radio input.
-label.mdc-list-item__text[for] {
+// Disable interaction on label elements that may automatically toggle corresponding checkbox / radio input.
+.mdc-list-item__text[for] {
   pointer-events: none;
 }
 
