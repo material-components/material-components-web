@@ -90,11 +90,29 @@ class MDCListAdapter {
   followHref(ele) {}
 
   /**
-   * Toggles the checkbox or radio button within a list item.
    * @param {number} index
-   * @return {boolean} true if a radio button or checkbox was present.
+   * @return {boolean} Returns true if radio button is present at given list item index.
    */
-  toggleCheckbox(index) {}
+  hasRadioAtIndex(index) {}
+
+  /**
+   * @param {number} index
+   * @return {boolean} Returns true if checkbox is present at given list item index.
+   */
+  hasCheckboxAtIndex(index) {}
+
+  /**
+   * @param {number} index
+   * @return {boolean} Returns true if checkbox inside a list item is checked.
+   */
+  isCheckboxCheckedAtIndex(index) {}
+
+  /**
+   * Sets the checked status of checkbox or radio at given list item index.
+   * @param {number} index
+   * @param {boolean} isChecked
+   */
+  setCheckedCheckboxOrRadioAtIndex(index, isChecked) {}
 }
 
 export default MDCListAdapter;
