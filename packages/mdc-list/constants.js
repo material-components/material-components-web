@@ -47,4 +47,7 @@ const strings = {
   ENABLED_ITEMS_SELECTOR: '.mdc-list-item:not(.mdc-list-item--disabled)',
 };
 
-export {strings, cssClasses};
+/** @typedef {number|!Array<number>} */
+let Index;
+
+export {strings, cssClasses, Index};

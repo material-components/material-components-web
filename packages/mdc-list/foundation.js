@@ -23,7 +23,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 import MDCListAdapter from './adapter';
-import {strings, cssClasses} from './constants';
+import {strings, cssClasses, Index} from './constants';
 
 const ELEMENTS_KEY_ALLOWED_IN = ['input', 'button', 'textarea', 'select'];
 
@@ -66,15 +66,19 @@ class MDCListFoundation extends MDCFoundation {
    */
   constructor(adapter) {
     super(Object.assign(MDCListFoundation.defaultAdapter, adapter));
-    /** {boolean} */
+    /** @private {boolean} */
     this.wrapFocus_ = false;
-    /** {boolean} */
+
+    /** @private {boolean} */
     this.isVertical_ = true;
-    /** {boolean} */
+
+    /** @private {boolean} */
     this.isSingleSelectionList_ = false;
-    /** {number} */
+
+    /** @private {Index} */
     this.selectedIndex_ = -1;
-    /** {boolean} */
+
+    /** @private {boolean} */
     this.useActivatedClass_ = false;
   }
 
@@ -108,6 +112,11 @@ class MDCListFoundation extends MDCFoundation {
    */
   setUseActivatedClass(useActivated) {
     this.useActivatedClass_ = useActivated;
+  }
+
+  /** @return {Index} */
+  getSelectedIndex() {
+    return this.selectedIndex_;
   }
 
   /** @param {number} index */
@@ -350,7 +359,7 @@ class MDCListFoundation extends MDCFoundation {
 
   /**
    * Toggles checkbox or radio at give index. Radio doesn't change the checked state if it is already checked.
-   * @param {number} index
+   * @param {Index} index
    * @private
    */
   toggleCheckboxOrRadioAtIndex_(index) {
