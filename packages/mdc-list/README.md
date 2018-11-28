@@ -275,10 +275,10 @@ When rendering list radio group with pre-selected radio button the selected list
 
 ### List with checkbox items
 
-When rendering list with checkbox items all pre-selected list items should contain `aria-checked` set to `true` and the native checkbox input element should contain `checked` attribute, all other list items should have `aria-checked` set to `false`. Each list item in checkbox list contains `role="checkbox"` attribute.
+When rendering list with checkbox items all pre-selected list items should contain `aria-checked` set to `true` and the native checkbox input element should contain `checked` attribute, all other list items should have `aria-checked` set to `false`. Each list item in checkbox list contains `role="checkbox"` attribute and the list root should contain `role="group"` and `aria-label` attributes.
 
 ```html
-<ul class="mdc-list">
+<ul class="mdc-list" role="group" aria-label="List with checkbox items">
   <li class="mdc-list-item" role="checkbox" aria-checked="false">
     <span class="mdc-list-item__graphic">
       <div class="mdc-checkbox">
