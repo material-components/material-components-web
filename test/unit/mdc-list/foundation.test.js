@@ -571,6 +571,17 @@ test('#handleKeydown space key is triggered and focused is moved to a different 
   td.verify(mockAdapter.setAttributeForElementIndex(2, 'tabindex', 0), {times: 1});
 });
 
+test('#handleKeydown bail out early if event origin doesnt have a mdc-list-item ancestor from the current list', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(-1);
+  const preventDefault = td.func('preventDefault');
+  const event = {key: 'ArrowDown', keyCode: 40, preventDefault};
+  foundation.handleKeydown(event, /** isRootListItem */ true, /** listItemIndex */ -1);
+
+  td.verify(preventDefault(), {times: 0});
+});
+
 test('#handleClick when singleSelection=false on a list item should not cause the list item to be selected', () => {
   const {foundation, mockAdapter} = setupTest();
 
