@@ -79,11 +79,9 @@ function setupChangeHandlerTest() {
   foundation.init();
 
   const change = (newState) => {
-    td.when(mockAdapter.hasNativeControl()).thenReturn(!!newState);
-    if (newState) {
-      td.when(mockAdapter.isChecked()).thenReturn(newState.checked);
-      td.when(mockAdapter.isIndeterminate()).thenReturn(newState.indeterminate);
-    }
+    td.when(mockAdapter.hasNativeControl()).thenReturn(true);
+    td.when(mockAdapter.isChecked()).thenReturn(newState.checked);
+    td.when(mockAdapter.isIndeterminate()).thenReturn(newState.indeterminate);
     foundation.handleChange();
   };
 
@@ -311,4 +309,12 @@ test('change handler does not add animation classes for bogus changes (init -> u
 
   change({checked: false, indeterminate: false});
   td.verify(mockAdapter.addClass(animClassArg), {times: 0});
+});
+
+test('change handler does not do anything if checkbox element is not found', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasNativeControl()).thenReturn(false);
+  assert.doesNotThrow(() => foundation.handleChange());
+  td.verify(mockAdapter.setNativeControlAttr(td.matchers.isA(String), td.matchers.isA(String)), {times: 0});
+  td.verify(mockAdapter.removeNativeControlAttr(td.matchers.isA(String)), {times: 0});
 });
