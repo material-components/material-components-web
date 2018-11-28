@@ -112,7 +112,7 @@ class MDCListFoundation extends MDCFoundation {
 
   /** @param {number} index */
   setSelectedIndex(index) {
-    if (index < 0 && index >= this.adapter_.getListItemCount()) return;
+    if (index < 0 || index >= this.adapter_.getListItemCount()) return;
 
     if (this.adapter_.hasCheckboxAtIndex(index)) {
       this.setAriaAttributesForCheckbox_(index);

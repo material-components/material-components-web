@@ -631,6 +631,31 @@ test('#handleClick proxies to the adapter#setCheckedCheckboxOrRadioAtIndex if to
   td.verify(mockAdapter.setCheckedCheckboxOrRadioAtIndex(0, true), {times: 1});
 });
 
+test('#handleClick checks the checkbox at index if it is present on list item', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  // Check
+  td.when(mockAdapter.hasCheckboxAtIndex(2)).thenReturn(true);
+  td.when(mockAdapter.isCheckboxCheckedAtIndex(2)).thenReturn(false);
+  foundation.handleClick(2, true);
+  td.verify(mockAdapter.setCheckedCheckboxOrRadioAtIndex(2, true), {times: 1});
+
+  // Uncheck
+  td.when(mockAdapter.isCheckboxCheckedAtIndex(2)).thenReturn(true);
+  foundation.handleClick(2, true);
+  td.verify(mockAdapter.setCheckedCheckboxOrRadioAtIndex(2, false), {times: 1});
+});
+
+test('#handleClick bails out if checkbox or radio is not present and if toggleCheckbox is true', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.hasCheckboxAtIndex(1)).thenReturn(false);
+  td.when(mockAdapter.hasRadioAtIndex(1)).thenReturn(false);
+
+  foundation.handleClick(2, true);
+  td.verify(mockAdapter.setCheckedCheckboxOrRadioAtIndex(1, td.matchers.anything()), {times: 0});
+});
+
 test('#focusFirstElement is called when the list is empty does not focus an element', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getListItemCount()).thenReturn(-1);
@@ -654,4 +679,28 @@ test('#setUseActivatedClass causes setSelectedIndex to use the --activated class
   foundation.setSelectedIndex(1);
 
   td.verify(mockAdapter.addClassForElementIndex(1, cssClasses.LIST_ITEM_ACTIVATED_CLASS), {times: 1});
+});
+
+test('#setSelectedIndex should bail out if not in the range', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
+  foundation.setSelectedIndex(-1);
+  td.verify(mockAdapter.setAttributeForElementIndex(-1, 'tabindex', 0), {times: 0});
+});
+
+test('#setSelectedIndex should set aria attributes on new index and should not change aria attributes on previous' +
+    ' selected index', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
+  td.when(mockAdapter.hasCheckboxAtIndex(2)).thenReturn(true);
+  td.when(mockAdapter.isCheckboxCheckedAtIndex(2)).thenReturn(true);
+  foundation.setSelectedIndex(2);
+  td.verify(mockAdapter.setAttributeForElementIndex(2, strings.ARIA_CHECKED, 'true'), {times: 1});
+
+  td.when(mockAdapter.hasCheckboxAtIndex(3)).thenReturn(true);
+  td.when(mockAdapter.isCheckboxCheckedAtIndex(3)).thenReturn(true);
+  foundation.setSelectedIndex(3);
+  td.verify(mockAdapter.setAttributeForElementIndex(3, strings.ARIA_CHECKED, 'false'), {times: 0});
 });
