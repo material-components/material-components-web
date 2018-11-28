@@ -393,7 +393,7 @@ The MDCList JavaScript component implements the WAI-ARIA best practices for
 [Listbox](https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox). This includes overriding the default tab behavior
 within the list component.
 
-The `tabindex` should be set to `0` for first list item element or selected list item element, remaining list item elements should not have `tabindex` set to `true`.
+The `tabindex` should be set to `0` for first list item element or selected list item element, remaining list item elements should not have `tabindex` set.
 
 Use `role="listbox"` only for single selection list, without this role the `ul` element is implicitely `role="list"`.
 Do not use `aria-orientation` attribute for standard list (i.e., `role="list"`), use component's `vertical` property to set the orientation
