@@ -196,7 +196,12 @@ class MDCList extends MDCComponent {
     this.foundation_.setSingleSelection(isSingleSelectionList);
   }
 
-  /** @param {number} index */
+  /** @return {!Index} */
+  get selectedIndex() {
+    return this.foundation_.getSelectedIndex();
+  }
+
+  /** @param {Index} index */
   set selectedIndex(index) {
     this.foundation_.setSelectedIndex(index);
   }
