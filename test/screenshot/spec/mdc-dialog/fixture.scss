@@ -48,6 +48,12 @@ $custom-dialog-color: $material-color-red-300;
   font-size: 100%; // stylelint-disable-line declaration-property-unit-whitelist
 }
 
+// stylelint-disable-next-line selector-class-pattern
+.test-dialog--simple .mdc-list-item__graphic {
+  background-color: rgba(0, 0, 0, .3);
+  color: #fff;
+}
+
 .test-dialog--container-fill-color {
   @include mdc-dialog-container-fill-color($custom-dialog-color);
 }
@@ -87,4 +93,18 @@ $custom-dialog-color: $material-color-red-300;
 .test-dialog--3717 {
   @include mdc-dialog-min-width(600px);
   @include mdc-dialog-max-width(300px, 30px);
+}
+
+.test-viewport--drawer {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.test-drawer-app-content--center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }

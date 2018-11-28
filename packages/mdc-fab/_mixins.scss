@@ -89,15 +89,13 @@
 }
 
 @mixin mdc-fab-shape-radius($radius, $rtl-reflexive: false) {
-  @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-fab-height, $radius), $rtl-reflexive);
-
-  &.mdc-fab--mini {
-    @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-fab-mini-height, $radius), $rtl-reflexive);
+  &:not(.mdc-fab--extended) {
+    @include mdc-shape-radius($radius, $rtl-reflexive);
   }
+}
 
-  &.mdc-fab--extended {
-    @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-fab-extended-height, $radius), $rtl-reflexive);
-  }
+@mixin mdc-fab-extended-shape-radius($radius, $rtl-reflexive: false) {
+  @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-fab-extended-height, $radius), $rtl-reflexive);
 }
 
 $mdc-fab-icon-enter-delay_: 90ms;
@@ -174,6 +172,7 @@ $mdc-fab-icon-enter-duration_: 180ms;
 
 @mixin mdc-fab--extended_ {
   @include mdc-typography(button);
+  @include mdc-fab-extended-shape-radius(50%);
   @include mdc-fab-extended-padding(
     $mdc-fab-extended-icon-padding,
     $mdc-fab-extended-label-padding);
