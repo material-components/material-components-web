@@ -340,16 +340,15 @@ class MDCListFoundation extends MDCFoundation {
     if (!this.hasCheckboxAtIndex_(index)) return;
 
     if (typeof index === 'number') {
-      let isChecked;
+      let isChecked = this.adapter_.isCheckboxCheckedAtIndex(index);
       if (this.programmaticSelection_) {
         isChecked = true;
-      } else {
-        isChecked = !this.adapter_.isCheckboxCheckedAtIndex(index);
+      } else if (this.toggleCheckbox_) {
+        isChecked = !isChecked;
       }
       if (this.toggleCheckbox_) {
         this.adapter_.setCheckedCheckboxOrRadioAtIndex(index, isChecked);
       }
-
       this.adapter_.setAttributeForElementIndex(index, strings.ARIA_CHECKED, isChecked ? 'true' : 'false');
     } else {
       for (let i = 0; i < this.adapter_.getListItemCount(); i++) {
