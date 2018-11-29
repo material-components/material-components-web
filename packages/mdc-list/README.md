@@ -340,6 +340,8 @@ When rendering list with checkbox items all pre-selected list items should conta
 </ul>
 ```
 
+The `selectedIndex` (that proxies foundation's `setSelectedState()`) accepts list of indexes in array format or single index to set the selection state. It overwrites the current state with new selected state whether it is a list of indexes or single index.
+
 ## Style Customization
 
 ### CSS Classes
@@ -498,7 +500,7 @@ Method Signature | Description
 `setWrapFocus(value: Boolean) => void` | Sets the list to allow the up arrow on the first element to focus the last element of the list and vice versa.
 `setVerticalOrientation(value: Boolean) => void` | Sets the list to an orientation causing the keys used for navigation to change. `true` results in the Up/Down arrow keys being used. `false` results in the Left/Right arrow keys being used.
 `setSingleSelection(value: Boolean) => void` | Sets the list to be a selection list. Enables the `enter` and `space` keys for selecting/deselecting a list item.
-`setSelectedIndex(index: Number) => void` | Toggles the `selected` state of the list item at index `index`.
+`setSelectedIndex(index: Index) => void` | Sets the selection state to given index or list of indexes if it is checkbox based list. See [constants.js](./constants.js) for `Index` type definition.
 `setUseActivated(useActivated: boolean) => void` | Sets the selection logic to apply/remove the `mdc-list-item--activated` class.
 `handleFocusIn(evt: Event) => void` | Handles the changing of `tabindex` to `0` for all button and anchor elements when a list item receives focus.
 `handleFocusOut(evt: Event) => void` | Handles the changing of `tabindex` to `-1` for all button and anchor elements when a list item loses focus.

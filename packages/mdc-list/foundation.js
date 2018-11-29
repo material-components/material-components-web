@@ -339,18 +339,10 @@ class MDCListFoundation extends MDCFoundation {
   setCheckboxAtIndex_(index) {
     if (!this.hasCheckboxAtIndex_(index)) return;
 
-    if (typeof index === 'number') {
-      let isChecked = this.adapter_.isCheckboxCheckedAtIndex(index);
-      if (this.programmaticSelection_) {
-        isChecked = true;
-      } else if (this.toggleCheckbox_) {
-        isChecked = !isChecked;
+    if (this.programmaticSelection_) {
+      if (typeof index === 'number') {
+        index = [index];
       }
-      if (this.toggleCheckbox_) {
-        this.adapter_.setCheckedCheckboxOrRadioAtIndex(index, isChecked);
-      }
-      this.adapter_.setAttributeForElementIndex(index, strings.ARIA_CHECKED, isChecked ? 'true' : 'false');
-    } else {
       for (let i = 0; i < this.adapter_.getListItemCount(); i++) {
         let isChecked = false;
         if (index.indexOf(i) >= 0) {
@@ -360,6 +352,16 @@ class MDCListFoundation extends MDCFoundation {
         this.adapter_.setCheckedCheckboxOrRadioAtIndex(i, isChecked);
         this.adapter_.setAttributeForElementIndex(i, strings.ARIA_CHECKED, isChecked ? 'true' : 'false');
       }
+    } else {
+      let isChecked = this.adapter_.isCheckboxCheckedAtIndex(index);
+      if (this.toggleCheckbox_) {
+        isChecked = !isChecked;
+      }
+      if (this.toggleCheckbox_) {
+        this.adapter_.setCheckedCheckboxOrRadioAtIndex(index, isChecked);
+      }
+
+      this.adapter_.setAttributeForElementIndex(index, strings.ARIA_CHECKED, isChecked ? 'true' : 'false');
     }
   }
 
@@ -418,31 +420,23 @@ class MDCListFoundation extends MDCFoundation {
    * @return {boolean}
    */
   isIndexValid_(index) {
-    const listSize = this.adapter_.getListItemCount();
-
     if (index instanceof Array) {
       if (!this.hasCheckboxAtIndex_(index)) {
         throw new Error('MDCListFoundation: Array of index is only supported for checkbox based list');
       }
       return index.some((i) => this.isIndexInRange_(i));
     } else {
-      return index >= 0 && index < listSize;
+      return this.isIndexInRange_(index);
     }
   }
 
   /**
    * @param {number} index
+   * @return {boolean}
    */
   isIndexInRange_(index) {
     const listSize = this.adapter_.getListItemCount();
-
-    if (index >= 0 && index < listSize) {
-      return true;
-    } else {
-      const lastIndex = listSize - 1;
-      throw new Error(`MDCListFoundation: Index is out of range.
-          Expected index between 0 and ${lastIndex}, actual index ${index}`);
-    }
+    return index >= 0 && index < listSize;
   }
 }
 
