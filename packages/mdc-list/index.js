@@ -25,7 +25,7 @@ import MDCComponent from '@material/base/component';
 import MDCListFoundation from './foundation';
 import MDCListAdapter from './adapter';
 import {matches} from '@material/dom/ponyfill';
-import {cssClasses, strings} from './constants';
+import {cssClasses, strings, Index} from './constants'; // eslint-disable-line no-unused-vars
 
 /**
  * @extends MDCComponent<!MDCListFoundation>
@@ -201,7 +201,7 @@ class MDCList extends MDCComponent {
     return this.foundation_.getSelectedIndex();
   }
 
-  /** @param {Index} index */
+  /** @param {!Index} index */
   set selectedIndex(index) {
     this.foundation_.setSelectedIndex(index);
   }

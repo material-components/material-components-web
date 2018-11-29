@@ -626,6 +626,7 @@ test('#handleClick when singleSelection=true on the first element when already s
   const {foundation, mockAdapter} = setupTest();
 
   td.when(mockAdapter.getFocusedElementIndex()).thenReturn(0);
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
   foundation.setSingleSelection(true);
   foundation.handleClick(0, false);
   foundation.handleClick(0, false);
@@ -637,6 +638,7 @@ test('#handleClick proxies to the adapter#setCheckedCheckboxOrRadioAtIndex if to
   const {foundation, mockAdapter} = setupTest();
 
   td.when(mockAdapter.hasRadioAtIndex(0)).thenReturn(true);
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
   foundation.handleClick(0, true);
 
   td.verify(mockAdapter.setCheckedCheckboxOrRadioAtIndex(0, true), {times: 1});
@@ -646,6 +648,7 @@ test('#handleClick checks the checkbox at index if it is present on list item', 
   const {foundation, mockAdapter} = setupTest();
 
   // Check
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
   td.when(mockAdapter.hasCheckboxAtIndex(2)).thenReturn(true);
   td.when(mockAdapter.isCheckboxCheckedAtIndex(2)).thenReturn(false);
   foundation.handleClick(2, true);

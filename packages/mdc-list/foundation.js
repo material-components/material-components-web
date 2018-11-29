@@ -23,7 +23,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 import MDCListAdapter from './adapter';
-import {strings, cssClasses, Index} from './constants';
+import {strings, cssClasses, Index} from './constants'; // eslint-disable-line no-unused-vars
 
 const ELEMENTS_KEY_ALLOWED_IN = ['input', 'button', 'textarea', 'select'];
 
@@ -132,9 +132,9 @@ class MDCListFoundation extends MDCFoundation {
     if (this.hasCheckboxAtIndex_(index)) {
       this.setCheckboxAtIndex_(index);
     } else if (this.adapter_.hasRadioAtIndex(index)) {
-      this.setRadioAtIndex_(index);
+      this.setRadioAtIndex_(/** @type {number} */ (index));
     } else {
-      this.setSingleSelectionAtIndex_(index);
+      this.setSingleSelectionAtIndex_(/** @type {number} */ (index));
     }
 
     this.setTabindexAtIndex_(index);
