@@ -66,10 +66,6 @@
   overflow: hidden;
   will-change: opacity, transform, color;
 
-  @include mdc-rtl {
-    background-position: left 10px center;
-  }
-
   &__dropdown-icon {
     @include mdc-select-dd-arrow-svg-bg_($mdc-select-dropdown-color, $mdc-select-dropdown-opacity);
     @include mdc-rtl-reflexive(left, auto, right, 8px);
