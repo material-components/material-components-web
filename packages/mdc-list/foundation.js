@@ -75,7 +75,7 @@ class MDCListFoundation extends MDCFoundation {
     /** @private {boolean} */
     this.isSingleSelectionList_ = false;
 
-    /** @private {Index} */
+    /** @private {!Index} */
     this.selectedIndex_ = -1;
 
     /** @private {boolean} */
@@ -120,12 +120,12 @@ class MDCListFoundation extends MDCFoundation {
     this.useActivatedClass_ = useActivated;
   }
 
-  /** @return {Index} */
+  /** @return {!Index} */
   getSelectedIndex() {
     return this.selectedIndex_;
   }
 
-  /** @param {Index} index */
+  /** @param {!Index} index */
   setSelectedIndex(index) {
     if (!this.isIndexValid_(index)) return;
 
@@ -232,6 +232,7 @@ class MDCListFoundation extends MDCFoundation {
     }
 
     this.programmaticSelection_ = true;
+    this.toggleCheckbox_ = true;
   }
 
   /**
@@ -332,30 +333,26 @@ class MDCListFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {Index} index
+   * @param {!Index} index
    * @private
    */
   setCheckboxAtIndex_(index) {
+    if (!this.hasCheckboxAtIndex_(index)) return;
+
     if (typeof index === 'number') {
-      if (!this.adapter_.hasCheckboxAtIndex(index)) return;
-
+      let isChecked;
       if (this.programmaticSelection_) {
-        if (this.toggleCheckbox_) {
-          this.adapter_.setCheckedCheckboxOrRadioAtIndex(index, true);
-        }
-        this.adapter_.setAttributeForElementIndex(index, strings.ARIA_CHECKED, 'true');
+        isChecked = true;
       } else {
-        const isChecked = !this.adapter_.isCheckboxCheckedAtIndex(index);
-        if (this.toggleCheckbox_) {
-          this.adapter_.setCheckedCheckboxOrRadioAtIndex(index, isChecked);
-        }
-
-        this.adapter_.setAttributeForElementIndex(index, strings.ARIA_CHECKED, isChecked ? 'true' : 'false');
+        isChecked = !this.adapter_.isCheckboxCheckedAtIndex(index);
       }
+      if (this.toggleCheckbox_) {
+        this.adapter_.setCheckedCheckboxOrRadioAtIndex(index, isChecked);
+      }
+
+      this.adapter_.setAttributeForElementIndex(index, strings.ARIA_CHECKED, isChecked ? 'true' : 'false');
     } else {
       for (let i = 0; i < this.adapter_.getListItemCount(); i++) {
-        if (!this.adapter_.hasCheckboxAtIndex(i)) return;
-
         let isChecked = false;
         if (index.indexOf(i) >= 0) {
           isChecked = true;
@@ -368,7 +365,7 @@ class MDCListFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {Index} index
+   * @param {!Index} index
    * @private
    */
   setTabindexAtIndex_(index) {
@@ -418,7 +415,7 @@ class MDCListFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {Index} index
+   * @param {!Index} index
    * @return {boolean}
    */
   isIndexValid_(index) {
