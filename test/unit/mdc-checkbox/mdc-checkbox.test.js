@@ -28,7 +28,7 @@ import td from 'testdouble';
 
 import {install as installClock} from '../helpers/clock';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
-import {MDCCheckbox} from '../../../packages/mdc-checkbox/index';
+import {MDCCheckbox, MDCCheckboxFoundation} from '../../../packages/mdc-checkbox/index';
 import {MDCRipple} from '../../../packages/mdc-ripple/index';
 import {strings} from '../../../packages/mdc-checkbox/constants';
 import {getMatchesProperty} from '../../../packages/mdc-ripple/util';
@@ -59,6 +59,15 @@ function setupTest() {
   const cb = root.querySelector(strings.NATIVE_CONTROL_SELECTOR);
   const component = new MDCCheckbox(root);
   return {root, cb, component};
+}
+
+function setupMockFoundationTest() {
+  const root = getFixture();
+  const cb = root.querySelector(strings.NATIVE_CONTROL_SELECTOR);
+  const MockFoundationConstructor = td.constructor(MDCCheckboxFoundation);
+  const mockFoundation = new MockFoundationConstructor();
+  const component = new MDCCheckbox(root, mockFoundation);
+  return {root, cb, component, mockFoundation};
 }
 
 suite('MDCCheckbox');
@@ -149,6 +158,18 @@ test('root animationend event calls #foundation.handleAnimationEnd', () => {
   td.verify(component.foundation_.handleAnimationEnd(), {times: 1});
 });
 
+test('"checked" property change hook calls foundation#handleChange', () => {
+  const {cb, mockFoundation} = setupMockFoundationTest();
+  cb.checked = true;
+  td.verify(mockFoundation.handleChange(), {times: 1});
+});
+
+test('"indeterminate" property change hook calls foundation#handleChange', () => {
+  const {cb, mockFoundation} = setupMockFoundationTest();
+  cb.indeterminate = true;
+  td.verify(mockFoundation.handleChange(), {times: 1});
+});
+
 test('checkbox change event handler is destroyed on #destroy', () => {
   const {cb, component} = setupTest();
   component.foundation_.handleChange = td.func();
@@ -163,6 +184,20 @@ test('root animationend event handler is destroyed on #destroy', () => {
   component.destroy();
   domEvents.emit(root, 'animationend');
   td.verify(component.foundation_.handleAnimationEnd(), {times: 0});
+});
+
+test('"checked" property change hook is removed on #destroy', () => {
+  const {component, cb, mockFoundation} = setupMockFoundationTest();
+  component.destroy();
+  cb.checked = true;
+  td.verify(mockFoundation.handleChange(), {times: 0});
+});
+
+test('"indeterminate" property change hook is removed on #destroy', () => {
+  const {component, cb, mockFoundation} = setupMockFoundationTest();
+  component.destroy();
+  cb.indeterminate = true;
+  td.verify(mockFoundation.handleChange(), {times: 0});
 });
 
 test('adapter#addClass adds a class to the root element', () => {
@@ -189,12 +224,6 @@ test('adapter#removeNativeControlAttr removes an attribute from the input elemen
   cb.setAttribute('aria-checked', 'mixed');
   component.getDefaultFoundation().adapter_.removeNativeControlAttr('aria-checked');
   assert.isFalse(cb.hasAttribute('aria-checked'));
-});
-
-test('adapter#getNativeControl returns the native checkbox element', () => {
-  const {root, component} = setupTest();
-  const nativeCb = root.querySelector(strings.NATIVE_CONTROL_SELECTOR);
-  assert.equal(component.getDefaultFoundation().adapter_.getNativeControl(), nativeCb);
 });
 
 test('adapter#forceLayout touches "offsetWidth" on the root in order to force layout', () => {
