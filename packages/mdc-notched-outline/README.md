@@ -35,12 +35,19 @@ npm install @material/notched-outline
 ```html
 <div class="mdc-notched-outline">
   <div class="mdc-notched-outline__leading"></div>
-  <div class="mdc-notched-outline__notch"></div>
+  <div class="mdc-notched-outline__notch">
+    <label class="mdc-floating-label">Label</label>
+  </div>
   <div class="mdc-notched-outline__trailing"></div>
 </div>
 ```
 
-> For usage within a text field see [here](../mdc-textfield/README.md#outlined).
+> Note that the [MDC Floating Label](../mdc-floating-label/README.md) component is placed inside the notch element when
+> used together with MDC Notched Outline.
+
+> See the [MDC Text Field](../mdc-textfield/README.md#outlined) and
+> [MDC Select](../mdc-select/README.md#outlined-select) documentation for
+> information on using Notched Outline in the context of those components.
 
 ### Styles
 
@@ -66,8 +73,9 @@ CSS Class | Description
 --- | ---
 `mdc-notched-outline` | Mandatory. Container for the SVG of the notched outline path.
 `mdc-notched-outline--notched` | Class to open notch outline.
-`mdc-notched-outline__path` | Mandatory. The path of the SVG of the notched outline.
-`mdc-notched-outline__idle` | Mandatory. The full outline when the notch is hidden.
+`mdc-notched-outline__leading` | Mandatory. Element representing the leading side of the notched outline (before the notch).
+`mdc-notched-outline__notch` | Mandatory. Element representing the notch.
+`mdc-notched-outline__trailing` | Mandatory. Element representing the trailing side of the notched outline (after the notch).
 
 ### Sass Mixins
 
@@ -77,6 +85,7 @@ Mixin | Description
 `mdc-notched-outline-idle-color($color)` | Customizes the border color of the idle outline.
 `mdc-notched-outline-stroke-width($width)` | Changes notched outline width to a specified pixel value.
 `mdc-notched-outline-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to notched outline element with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`mdc-notched-outline-floating-label-position($positionY, $positionX, $scale)` | Sets the position and scale of the floating label inside the notched outline.
 
 
 ### Sass Functions
@@ -116,7 +125,7 @@ But in order to customize any "idle" part of the notched-outline, you must use t
 
 Method Signature | Description
 --- | ---
-`notch(notchWidth: number, isRtl: boolean) => void` | Updates notched outline to open notch in outline path.
+`notch(notchWidth: number) => void` | Updates notched outline to open notch in outline path.
 `closeNotch() => void` | Updates the notched outline to close notch in outline path.
 
 ## Usage Within Frameworks
@@ -127,17 +136,13 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 
 Method Signature | Description
 --- | ---
-`getWidth() => number` | Returns the width of the notched outline element.
-`getHeight() => number` | Returns the height of the notched outline element.
 `addClass(className: string) => void` | Adds a class to the notched outline element.
 `removeClass(className: string) => void` | Removes a class from the notched outline element.
-`setOutlinePathAttr(value: string) => void` | Sets the "d" attribute of the notched outline element's SVG path.
-`getIdleOutlineStyleValue(propertyName: string) => string` | Returns the idle outline element's computed style value of a given css `propertyName`.
+`setNotchWidthProperty(width: number) => void` | Sets the width of the notch in pixels.
 
 ### `MDCNotchedOutlineFoundation`
 
 Method Signature | Description
 --- | ---
-`notch(notchWidth: number, isRtl: boolean) => void` | Adds the `mdc-notched-outline--notched` selector and updates the notched outline path based off notchWidth and isRtl.
+`notch(notchWidth: number) => void` | Adds the `mdc-notched-outline--notched` selector and updates the notched outline path based off notchWidth and isRtl.
 `closeNotch() => void` | Removes the outline notched selector.
-`updateSvgPath(notchWidth: number, isRtl: boolean) => void` | Updates the SVG path of the focus outline element calculated based off of the notchWidth. The notch will appear left justified, unless isRtl is true.
