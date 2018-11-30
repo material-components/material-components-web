@@ -85,7 +85,7 @@
     "handlebars": "^4.0.11",
     "htmllint-cli": "0.0.7",
     "husky": "^1.1.1",
-    "is-online": "^7.0.0",
+    "is-online": "^8.0.0",
     "istanbul": "^0.4.4",
     "istanbul-instrumenter-loader": "^3.0.0",
     "jimp": "^0.2.28",
