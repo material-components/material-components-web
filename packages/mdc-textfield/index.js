@@ -406,7 +406,7 @@ class MDCTextField extends MDCComponent {
         deregisterValidationAttributeChangeHandler: (observer) => observer.disconnect(),
         isFocused: () => {
           return document.activeElement === this.root_.querySelector(strings.INPUT_SELECTOR);
-        }
+        },
       },
       this.getInputAdapterMethods_(),
       this.getLabelAdapterMethods_(),
