@@ -231,14 +231,14 @@
     }
 
     + .mdc-text-field-helper-text {
-      @include mdc-rtl-reflexive-property(margin, $radius-pixels + $mdc-notched-outline-padding, $mdc-text-field-outline-label-offset);
+      @include mdc-rtl-reflexive-property(margin, $radius-pixels + $mdc-notched-outline-padding, $mdc-text-field-label-offset);
     }
   }
 }
 
 @mixin mdc-text-field-floating-label_ {
   .mdc-floating-label {
-    @include mdc-rtl-reflexive-position(left, 16px);
+    @include mdc-rtl-reflexive-position(left, $mdc-text-field-label-offset);
 
     top: 18px;
     pointer-events: none;
@@ -497,7 +497,6 @@
 
 @mixin mdc-text-field-textarea-stroke-color_($color) {
   @include mdc-notched-outline-color($color);
-
 }
 
 @mixin mdc-text-field-textarea-fill-color_($color) {
