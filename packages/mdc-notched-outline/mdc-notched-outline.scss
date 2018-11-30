@@ -82,10 +82,12 @@
   .mdc-notched-outline--notched {
     .mdc-notched-outline__notch {
       @include mdc-rtl {
-        padding: 0 0 0 8px;
+        padding-right: 0;
+        padding-left: 8px;
       }
 
-      padding: 0 8px 0 0;
+      padding-right: 8px;
+      padding-left: 0;
       border-top: none;
     }
   }

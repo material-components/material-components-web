@@ -25,12 +25,6 @@
 @import "@material/rtl/mixins";
 @import "./variables";
 
-@mixin mdc-notched-outline-idle-color($color) {
-  .mdc-notched-outline__idle {
-    @include mdc-theme-prop(border-color, $color);
-  }
-}
-
 @mixin mdc-notched-outline-color($color) {
   .mdc-notched-outline__leading,
   .mdc-notched-outline__notch,
@@ -63,7 +57,7 @@
   }
 }
 
-@mixin mdc-notched-outline-floating-label-position($positionY, $positionX: 0%, $scale: .75) {
+@mixin mdc-notched-outline-floating-label-float-position($positionY, $positionX: 0%, $scale: .75) {
   @include mdc-floating-label-float-position($positionY + $mdc-notched-outline-label-adjust, $positionX, 1);
 
   .mdc-floating-label--float-above {

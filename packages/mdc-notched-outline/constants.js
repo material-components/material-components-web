@@ -26,6 +26,12 @@ const strings = {
   NOTCH_ELEMENT_SELECTOR: '.mdc-notched-outline__notch',
 };
 
+/** @enum {number} */
+const numbers = {
+  // This should stay in sync with $mdc-notched-outline-padding * 2.
+  NOTCH_ELEMENT_PADDING: 8,
+};
+
 /** @enum {string} */
 const cssClasses = {
   OUTLINE_NOTCHED: 'mdc-notched-outline--notched',
@@ -33,4 +39,4 @@ const cssClasses = {
   NO_LABEL: 'mdc-notched-outline--no-label',
 };
 
-export {cssClasses, strings};
+export {cssClasses, numbers, strings};

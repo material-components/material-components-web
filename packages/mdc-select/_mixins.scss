@@ -195,19 +195,12 @@
 }
 
 @mixin mdc-select-outline-color_($color) {
-  // NOTE: outlined version of select wants the "idle" and
-  // "notched" outline to have the same color. This covers two cases:
-  // 1) text field renders with NO value in the "idle" state
-  // 2) text field renders with a value in the "notched" state
-  @include mdc-notched-outline-idle-color($color);
   @include mdc-notched-outline-color($color);
 }
 
 @mixin mdc-select-hover-outline-color_($color) {
   &:not(.mdc-select--focused) .mdc-select__native-control:hover ~,
   &:not(.mdc-select--focused) .mdc-select__selected-text:hover ~ {
-    @include mdc-notched-outline-idle-color($color);
-
     .mdc-notched-outline {
       @include mdc-notched-outline-color($color);
     }
@@ -217,10 +210,6 @@
 @mixin mdc-select-focused-outline-color_($color) {
   @include mdc-select-focused-outline_ {
     @include mdc-notched-outline-color($color);
-  }
-
-  @include mdc-select-focused-outline-idle_ {
-    @include mdc-notched-outline-idle-color($color);
   }
 }
 
@@ -261,7 +250,7 @@
   @include mdc-select-icon-horizontal-position_(16px, $mdc-select-icon-padding);
 
   &.mdc-select--outlined {
-    @include mdc-notched-outline-floating-label-position($mdc-select-outlined-label-position-y, $mdc-select-outlined-with-leading-icon-label-position-x);
+    @include mdc-notched-outline-floating-label-float-position($mdc-select-outlined-label-position-y, $mdc-select-outlined-with-leading-icon-label-position-x);
     @include mdc-floating-label-shake-animation(select-outlined-leading-icon);
 
     @include mdc-rtl {
@@ -369,7 +358,7 @@
   @include mdc-select-outline-shape-radius(medium);
   @include mdc-states-base-color(transparent);
   @include mdc-select-container-fill-color(transparent);
-  @include mdc-notched-outline-floating-label-position($mdc-select-outlined-label-position-y, 0);
+  @include mdc-notched-outline-floating-label-float-position($mdc-select-outlined-label-position-y, 0);
 
   border: none;
   overflow: visible;

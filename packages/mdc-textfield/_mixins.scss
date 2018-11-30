@@ -110,7 +110,7 @@
 
 @mixin mdc-text-field-outline-color($color) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-outline-color_($color);
+    @include mdc-notched-outline-color($color);
   }
 }
 
@@ -272,7 +272,7 @@
 // Outlined
 
 @mixin mdc-text-field-outlined-disabled_ {
-  @include mdc-text-field-outline-color_($mdc-text-field-outlined-disabled-border);
+  @include mdc-notched-outline-color($mdc-text-field-outlined-disabled-border);
   @include mdc-text-field-fill-color_(transparent);
 
   .mdc-text-field__input {
@@ -291,7 +291,7 @@
 }
 
 @mixin mdc-text-field-outlined-dense_ {
-  @include mdc-notched-outline-floating-label-position($mdc-text-field-outlined-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
+  @include mdc-notched-outline-floating-label-float-position($mdc-text-field-outlined-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
   @include mdc-floating-label-shake-animation(text-field-outlined-dense);
 
   height: 48px;
@@ -315,7 +315,7 @@
   @include mdc-text-field-focused-outline-color(primary);
   @include mdc-floating-label-shake-animation(text-field-outlined);
   @include mdc-text-field-outline-shape-radius(small);
-  @include mdc-notched-outline-floating-label-position($mdc-text-field-outlined-label-position-y);
+  @include mdc-notched-outline-floating-label-float-position($mdc-text-field-outlined-label-position-y);
   @include mdc-states-base-color(transparent);
   @include mdc-text-field-fill-color(transparent);
 
@@ -335,28 +335,10 @@
   }
 }
 
-@mixin mdc-text-field-outline-color_($color) {
-  // NOTE: outlined version of text-field wants the "idle" and
-  // "notched" outline to have the same color. This covers two cases:
-  // 1) text field renders with NO value in the "idle" state
-  // 2) text field renders with a value in the "notched" state
-  .mdc-notched-outline {
-    @include mdc-notched-outline-color($color);
-  }
-}
-
 @mixin mdc-text-field-hover-outline-color_($color) {
   &:not(.mdc-text-field--focused) {
     .mdc-text-field__input:hover ~,
     .mdc-text-field__icon:hover ~ {
-      @include mdc-notched-outline-idle-color($color);
-
-      // tldr; this doesn't break BEM:
-      // We need to wrap this mixin with the .mdc-notched-outline
-      // selector, because of the sibling selector '~'. The notched
-      // outline html structure has .mdc-notched-outline
-      // and .mdc-notched-outline__idle as siblings, while
-      // .mdc-notched-outline__path is a child of .mdc-notched-outline
       .mdc-notched-outline {
         @include mdc-notched-outline-color($color);
       }
@@ -377,10 +359,6 @@
 
   .mdc-floating-label {
     @include mdc-rtl-reflexive-position(left, $mdc-text-field-icon-padding);
-
-    &--float-above {
-      @include mdc-rtl-reflexive-position(left, $mdc-text-field-icon-padding);
-    }
   }
 }
 
@@ -390,7 +368,7 @@
 
 @mixin mdc-text-field-outlined-with-leading-icon_ {
   @include mdc-text-field-icon-horizontal-position_(left, $mdc-text-field-icon-position, $mdc-text-field-icon-padding);
-  @include mdc-notched-outline-floating-label-position($mdc-text-field-outlined-label-position-y, 32px);
+  @include mdc-notched-outline-floating-label-float-position($mdc-text-field-outlined-label-position-y, 32px);
   @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon);
 
   @include mdc-rtl {
@@ -403,7 +381,7 @@
 }
 
 @mixin mdc-text-field-outlined-dense-with-leading-icon_ {
-  @include mdc-notched-outline-floating-label-position($mdc-text-field-outlined-dense-label-position-y, $mdc-text-field-outlined-dense-with-leading-icon-label-position-x, $mdc-text-field-dense-label-scale);
+  @include mdc-notched-outline-floating-label-float-position($mdc-text-field-outlined-dense-label-position-y, $mdc-text-field-outlined-dense-with-leading-icon-label-position-x, $mdc-text-field-dense-label-scale);
   @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon-dense);
 
   @include mdc-rtl {
@@ -474,7 +452,7 @@
   @include mdc-text-field-outline-shape-radius(small);
   @include mdc-states-base-color(transparent);
   @include mdc-text-field-fill-color(transparent);
-  @include mdc-notched-outline-floating-label-position($mdc-text-field-outlined-label-position-y, 0%);
+  @include mdc-notched-outline-floating-label-float-position($mdc-text-field-outlined-label-position-y, 0%);
 
   $padding-inset: 16px;
 
@@ -518,7 +496,8 @@
 }
 
 @mixin mdc-text-field-textarea-stroke-color_($color) {
-  @include mdc-text-field-outline-color_($color);
+  @include mdc-notched-outline-color($color);
+
 }
 
 @mixin mdc-text-field-textarea-fill-color_($color) {

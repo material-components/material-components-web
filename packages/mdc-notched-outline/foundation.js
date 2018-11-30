@@ -23,7 +23,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 import MDCNotchedOutlineAdapter from './adapter';
-import {cssClasses, strings} from './constants';
+import {cssClasses, strings, numbers} from './constants';
 
 /**
  * @extends {MDCFoundation<!MDCNotchedOutlineAdapter>}
@@ -38,6 +38,11 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
   /** @return enum {string} */
   static get cssClasses() {
     return cssClasses;
+  }
+
+  /** @return enum {number} */
+  static get numbers() {
+    return numbers;
   }
 
   /**
@@ -69,7 +74,7 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
     const {OUTLINE_NOTCHED} = MDCNotchedOutlineFoundation.cssClasses;
 
     if (notchWidth > 0) {
-      notchWidth += 8; // Add padding from left/right.
+      notchWidth += numbers.NOTCH_ELEMENT_PADDING; // Add padding from left/right.
     }
 
     this.adapter_.setNotchWidthProperty(notchWidth);
