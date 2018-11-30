@@ -53,10 +53,8 @@
   height: 100%;
   transition-property: transform;
   transition-timing-function: $mdc-animation-standard-curve-timing-function;
-
   /* @noflip */
   border-right-width: 1px;
-
   /* @noflip */
   border-right-style: solid;
   overflow: hidden;
@@ -64,13 +62,10 @@
   @include mdc-rtl {
     /* @noflip */
     border-right-width: 0;
-
     /* @noflip */
     border-left-width: 1px;
-
     /* @noflip */
     border-right-style: none;
-
     /* @noflip */
     border-left-style: solid;
   }
