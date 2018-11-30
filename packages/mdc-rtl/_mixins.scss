@@ -258,14 +258,12 @@
 ) {
   /* @noflip */
   #{$left-property}: $left-value;
-
   /* @noflip */
   #{$right-property}: $right-value;
 
   @include mdc-rtl($root-selector) {
     /* @noflip */
     #{$left-property}: $right-value;
-
     /* @noflip */
     #{$right-property}: $left-value;
   }
