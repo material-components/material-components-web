@@ -355,8 +355,9 @@ CSS Class | Description
 `mdc-list-item__text` |	Mandatory. Wrapper for list item text content (displayed as middle column of the list item).
 `mdc-list-item__primary-text` | Optional, primary text for the list item. Should be the child of `mdc-list-item__text`.
 `mdc-list-item__secondary-text` | Optional, secondary text for the list item. Displayed below the primary text. Should be the child of `mdc-list-item__text`.
-`mdc-list-item--selected` | Optional, styles the row in an selected* state.
-`mdc-list-item--activated` | Optional, styles the row in an activated* state.
+`mdc-list-item--disabled` | Optional, styles the row in the disabled state.
+`mdc-list-item--selected` | Optional, styles the row in the selected* state.
+`mdc-list-item--activated` | Optional, styles the row in the activated* state.
 `mdc-list-item__graphic` | Optional, the first tile in the row (in LTR languages, the first column of the list item). Typically an icon or image.
 `mdc-list-item__meta`	| Optional, the last tile in the row (in LTR languages, the last column of the list item). Typically small text, icon. or image.
 `mdc-list-group` | Optional, wrapper around two or more mdc-list elements to be grouped together.
@@ -368,11 +369,10 @@ CSS Class | Description
 > NOTE: `mdc-list-divider` class can be used between list items (example 1) *OR* between two lists (example 2).
 
 > NOTE: the difference between selected and activated states:
-
-* *Selected* state should be implemented on the `.mdc-list-item` when it is likely to change soon. Eg., selecting one or more photos to share in Google Photos.
-* Multiple items can be selected at the same time when using the *selected* state.
-* *Activated* state is similar to selected state, however should only be implemented once within a specific list.
-* *Activated* state is more permanent than selected state, and will **NOT** change soon relative to the lifetime of the page.
+> * *Selected* state should be implemented on the `.mdc-list-item` when it is likely to frequently change due to user choice. Eg., selecting one or more photos to share in Google Photos.
+> * *Selected* state may apply to one or multiple items in a list at the same time.
+> * *Activated* state is more permanent than selected state, and will **NOT** change soon relative to the lifetime of the page. Common examples are navigation components such as the list within a navigation drawer.
+> * *Activated* state only applies to one item in a list at a given time.
 
 ### Sass Mixins
 
@@ -406,6 +406,8 @@ list. The `Arrow`, `Home`, and `End` keys should be used for navigating internal
 `singleSelection=true`, the list will allow the user to use the `Space` or `Enter` keys to select or deselect a list
 item. The MDCList will perform the following actions for each key press. Since list interaction will toggle a radio
 button or checkbox within the list item, the list will not toggle `tabindex` for those elements.
+
+Any disabled list items (with the `mdc-list-item--disabled` class applied) will be excluded from keyboard navigation.
 
 Key | Action
 --- | ---
