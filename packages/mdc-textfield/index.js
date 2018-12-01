@@ -428,7 +428,7 @@ class MDCTextField extends MDCComponent {
       shakeLabel: (shouldShake) => this.label_.shake(shouldShake),
       floatLabel: (shouldFloat) => this.label_.float(shouldFloat),
       hasLabel: () => !!this.label_,
-      getLabelWidth: () => this.label_.getWidth(),
+      getLabelWidth: () => this.label_ ? this.label_.getWidth() : 0,
     };
   }
 
