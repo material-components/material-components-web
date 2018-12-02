@@ -158,21 +158,27 @@ class MDCList extends MDCComponent {
     this.foundation_.handleClick(index, toggleCheckbox);
   }
 
+  /**
+   * Initialize selectedIndex value based on pre-selected checkbox list items, single selection or radio.
+   */
   initializeListType() {
-    // Pre-selected list item in single selected list or checked list item if list with radio input.
-    const preselectedElement = this.root_.querySelector(`.${cssClasses.LIST_ITEM_ACTIVATED_CLASS},
-        .${cssClasses.LIST_ITEM_SELECTED_CLASS},
-        ${strings.ARIA_CHECKED_RADIO_SELECTOR}`);
+    const checkboxListItems = this.root_.querySelectorAll(strings.ARIA_ROLE_CHECKBOX_SELECTOR);
+    const singleSelectedListItem = this.root_.querySelector(`.${cssClasses.LIST_ITEM_ACTIVATED_CLASS},
+        .${cssClasses.LIST_ITEM_SELECTED_CLASS}`);
+    const radioSelectedListItem = this.root_.querySelector(strings.ARIA_CHECKED_RADIO_SELECTOR);
 
-    if (preselectedElement) {
-      if (preselectedElement.classList.contains(cssClasses.LIST_ITEM_ACTIVATED_CLASS)) {
+    if (checkboxListItems.length) {
+      const preselectedItems = this.root_.querySelectorAll(strings.ARIA_CHECKED_CHECKBOX_SELECTOR);
+      this.selectedIndex = [...preselectedItems].map((listItem) => this.listElements.indexOf(listItem));
+    } else if (singleSelectedListItem) {
+      if (singleSelectedListItem.classList.contains(cssClasses.LIST_ITEM_ACTIVATED_CLASS)) {
         this.foundation_.setUseActivatedClass(true);
       }
 
       this.singleSelection = true;
-
-      // Automatically set selected index if single select list type or list with radio inputs.
-      this.selectedIndex = this.listElements.indexOf(preselectedElement);
+      this.selectedIndex = this.listElements.indexOf(singleSelectedListItem);
+    } else if (radioSelectedListItem) {
+      this.selectedIndex = this.listElements.indexOf(singleSelectedListItem);
     }
   }
 

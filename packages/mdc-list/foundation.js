@@ -178,6 +178,7 @@ class MDCListFoundation extends MDCFoundation {
     const isEnd = evt.key === 'End' || evt.keyCode === 35;
     const isEnter = evt.key === 'Enter' || evt.keyCode === 13;
     const isSpace = evt.key === 'Space' || evt.keyCode === 32;
+    this.programmaticSelection_ = false;
 
     let currentIndex = this.adapter_.getFocusedElementIndex();
     if (currentIndex === -1) {
@@ -204,7 +205,6 @@ class MDCListFoundation extends MDCFoundation {
     } else if (isEnter || isSpace) {
       if (isRootListItem) {
         if (this.isSingleSelectionList_ || this.hasCheckboxOrRadioAtIndex_(listItemIndex)) {
-          this.programmaticSelection_ = false;
           this.setSelectedIndex(currentIndex);
           this.preventDefaultEvent_(evt);
         }
@@ -223,11 +223,12 @@ class MDCListFoundation extends MDCFoundation {
    * @param {boolean} toggleCheckbox
    */
   handleClick(index, toggleCheckbox) {
-    if (!this.isIndexValid_(index)) return;
+    if (index === -1) return;
+
+    this.programmaticSelection_ = false;
+    this.toggleCheckbox_ = toggleCheckbox;
 
     if (this.isSingleSelectionList_ || this.hasCheckboxOrRadioAtIndex_(index)) {
-      this.programmaticSelection_ = false;
-      this.toggleCheckbox_ = toggleCheckbox;
       this.setSelectedIndex(index);
     }
 
@@ -340,9 +341,6 @@ class MDCListFoundation extends MDCFoundation {
     if (!this.hasCheckboxAtIndex_(index)) return;
 
     if (this.programmaticSelection_) {
-      if (typeof index === 'number') {
-        index = [index];
-      }
       for (let i = 0; i < this.adapter_.getListItemCount(); i++) {
         let isChecked = false;
         if (index.indexOf(i) >= 0) {
@@ -425,8 +423,13 @@ class MDCListFoundation extends MDCFoundation {
         throw new Error('MDCListFoundation: Array of index is only supported for checkbox based list');
       }
       return index.some((i) => this.isIndexInRange_(i));
-    } else {
+    } else if (typeof index === 'number') {
+      if (this.programmaticSelection_ && this.hasCheckboxAtIndex_(index)) {
+        throw new Error('MDCListFoundation: Expected array of index for checkbox based list but got number: ' + index);
+      }
       return this.isIndexInRange_(index);
+    } else {
+      return false;
     }
   }
 
