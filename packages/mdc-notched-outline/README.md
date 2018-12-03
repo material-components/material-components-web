@@ -86,33 +86,11 @@ Mixin | Description
 `mdc-notched-outline-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to notched outline element with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `mdc-notched-outline-floating-label-float-position($positionY, $positionX, $scale)` | Sets the position and scale of the floating label inside the notched outline.
 
-
 ### Sass Functions
 
 Function | Description
 --- | ---
 `mdc-notched-outline-get-notch-padded-position($cornerSize)` | Returns the notch padded position based on given radius. This is 'x' position where the floating label starts.
-
-#### Calling Mixins with Parent Selectors
-
-Because notched-outline has sibling elements, you need to call the Sass mixins with parent selectors.
-Consider the following example HTML:
-
-```html
-<div class="foo__parent">
-  <div class="mdc-notched-outline foo__child">
-    <div class="mdc-notched-outline__leading"></div>
-    <div class="mdc-notched-outline__notch"></div>
-    <div class="mdc-notched-outline__trailing"></div>
-  </div>
-</div>
-```
-In order to customize the notched-outline, use the .foo__child CSS selector:
-```scss
-.foo__child {
-  @include mdc-notched-outline-color($fooColor);
-}
-```
 
 ## `MDCNotchedOutline` Properties and Methods
 
