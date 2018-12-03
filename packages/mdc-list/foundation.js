@@ -452,14 +452,16 @@ class MDCListFoundation extends MDCFoundation {
    */
   setTabindexToSelectedItem_(index) {
     if (this.isSingleSelectionList_ || this.hasCheckboxOrRadioAtIndex_(index)) {
-      let firstSelectedIndex = -1;
+      let targetIndex = -1;
       if (typeof this.selectedIndex_ === 'number' && this.selectedIndex_ !== -1) {
-        firstSelectedIndex = this.selectedIndex_;
+        targetIndex = this.selectedIndex_;
       } else if (this.selectedIndex_ instanceof Array && this.selectedIndex_.length > 0) {
-        firstSelectedIndex = this.selectedIndex_[0];
+        targetIndex = this.selectedIndex_[0];
+      } else {
+        targetIndex = 0;
       }
 
-      this.setTabindexAtIndex_(firstSelectedIndex);
+      this.setTabindexAtIndex_(targetIndex);
     }
   }
 
