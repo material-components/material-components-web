@@ -52,6 +52,27 @@ npm install @material/list
 </ul>
 ```
 
+### JavaScript
+
+MDC List includes an optional JavaScript component which can be used for keyboard interaction and accessibility.
+
+```js
+import {MDCList} from '@material/list';
+
+const list = new MDCList(document.querySelector('.mdc-list'));
+```
+
+> See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
+
+Note that the JS component does _not_ automatically instantiate ripples on list items. If you wish to include the
+fully-upgraded ripple effect on list items, you must instantiate `MDCRipple` on each item:
+
+```js
+import {MDCRipple} from '@material/ripple';
+
+const listItemRipples = list.listElements.map((listItemEl) => new MDCRipple(listItemEl));
+```
+
 ## Variants
 
 ### Two-Line List
@@ -184,8 +205,7 @@ single list item to become selected and any other previous selected element to b
 ```
 
 ```js
-var listEle = document.getElementById('my-list');
-var list = new mdc.list.MDCList(listEle);
+const list = new MDCList(document.getElementById('my-list'));
 list.singleSelection = true;
 ```
 
@@ -210,8 +230,7 @@ creating the list.
 ```
 
 ```js
-var listEle = document.getElementById('my-list');
-var list = new mdc.list.MDCList(listEle);
+const list = new MDCList(document.getElementById('my-list'));
 list.singleSelection = true;
 ```
 
