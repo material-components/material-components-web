@@ -519,22 +519,6 @@ test('#handleKeydown space key is triggered 2x when singleSelection does not un-
   td.verify(mockAdapter.removeAttributeForElementIndex(0, strings.ARIA_SELECTED), {times: 0});
 });
 
-test('#handleKeydown space key is triggered when singleSelection is true on second ' +
-  'element updates first element tabindex', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const preventDefault = td.func('preventDefault');
-  const target = {classList: ['mdc-list-item']};
-  const event = {key: 'Space', target, preventDefault};
-
-  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(1);
-  td.when(mockAdapter.getListItemCount()).thenReturn(3);
-  foundation.setSingleSelection(true);
-  foundation.handleKeydown(event, true, 1);
-
-  td.verify(preventDefault(), {times: 1});
-  td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', 0), {times: 1});
-});
-
 test('#handleKeydown space key is triggered 2x when singleSelection is true on second ' +
   'element updates first element tabindex', () => {
   const {foundation, mockAdapter} = setupTest();
@@ -550,25 +534,6 @@ test('#handleKeydown space key is triggered 2x when singleSelection is true on s
 
   td.verify(preventDefault(), {times: 2});
   td.verify(mockAdapter.setAttributeForElementIndex(1, strings.ARIA_SELECTED, 'true'), {times: 2});
-  td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', 0), {times: 2});
-  td.verify(mockAdapter.setAttributeForElementIndex(0, 'tabindex', -1), {times: 1});
-});
-
-test('#handleKeydown space key is triggered and focused is moved to a different element', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const preventDefault = td.func('preventDefault');
-  const target = {classList: ['mdc-list-item']};
-  const event = {key: 'Space', target, preventDefault};
-
-  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(1);
-  td.when(mockAdapter.getListItemCount()).thenReturn(3);
-  foundation.setSingleSelection(true);
-  foundation.handleKeydown(event, true, 1);
-  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(2);
-  foundation.handleKeydown(event, true, 1);
-
-  td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', -1), {times: 1});
-  td.verify(mockAdapter.setAttributeForElementIndex(2, 'tabindex', 0), {times: 1});
 });
 
 test('#handleKeydown bail out early if event origin doesnt have a mdc-list-item ancestor from the current list', () => {
@@ -589,7 +554,8 @@ test('#handleClick when singleSelection=false on a list item should not cause th
   td.when(mockAdapter.getListItemCount()).thenReturn(3);
   foundation.handleClick(1, false);
 
-  td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', 0), {times: 0});
+  td.verify(mockAdapter.addClassForElementIndex(1, cssClasses.LIST_ITEM_SELECTED_CLASS), {times: 0});
+  td.verify(mockAdapter.addClassForElementIndex(1, cssClasses.LIST_ITEM_ACTIVATED_CLASS), {times: 0});
 });
 
 test('#handleClick when singleSelection=true on a list item should cause the list item to be selected', () => {
@@ -651,6 +617,9 @@ test('#handleClick checks the checkbox at index if it is present on list item', 
   td.when(mockAdapter.getListItemCount()).thenReturn(4);
   td.when(mockAdapter.hasCheckboxAtIndex(2)).thenReturn(true);
   td.when(mockAdapter.isCheckboxCheckedAtIndex(2)).thenReturn(false);
+  // Initialize selected index.
+  td.when(mockAdapter.hasCheckboxAtIndex(0)).thenReturn(true);
+  foundation.setSelectedIndex([]);
   foundation.handleClick(2, true);
   td.verify(mockAdapter.setCheckedCheckboxOrRadioAtIndex(2, true), {times: 1});
 
@@ -703,20 +672,20 @@ test('#setSelectedIndex should bail out if not in the range', () => {
   td.verify(mockAdapter.setAttributeForElementIndex(-1, 'tabindex', 0), {times: 0});
 });
 
-test('#setSelectedIndex should set aria attributes on new index and should not change aria attributes on previous' +
-    ' selected index for checkbox based list', () => {
+test('#setSelectedIndex should set aria checked true on new selected index and set aria checked false on previous '
+    + 'selected index for checkbox based list', () => {
   const {foundation, mockAdapter} = setupTest();
 
   td.when(mockAdapter.getListItemCount()).thenReturn(4);
   td.when(mockAdapter.hasCheckboxAtIndex(2)).thenReturn(true);
   td.when(mockAdapter.isCheckboxCheckedAtIndex(2)).thenReturn(true);
-  foundation.setSelectedIndex(2);
+  foundation.setSelectedIndex([2]);
   td.verify(mockAdapter.setAttributeForElementIndex(2, strings.ARIA_CHECKED, 'true'), {times: 1});
 
   td.when(mockAdapter.hasCheckboxAtIndex(3)).thenReturn(true);
   td.when(mockAdapter.isCheckboxCheckedAtIndex(3)).thenReturn(true);
-  foundation.setSelectedIndex(3);
-  td.verify(mockAdapter.setAttributeForElementIndex(2, strings.ARIA_CHECKED, 'false'), {times: 0});
+  foundation.setSelectedIndex([3]);
+  td.verify(mockAdapter.setAttributeForElementIndex(2, strings.ARIA_CHECKED, 'false'), {times: 1});
 });
 
 test('#setSelectedIndex should set aria attributes on new index and should also set aria checked to false on previous' +

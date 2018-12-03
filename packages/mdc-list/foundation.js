@@ -475,6 +475,11 @@ class MDCListFoundation extends MDCFoundation {
    */
   isIndexValid_(index) {
     if (index instanceof Array) {
+      const isFirstItemHasCheckbox = this.adapter_.getListItemCount() > 0 && this.adapter_.hasCheckboxAtIndex(0);
+      if (index.length === 0 && isFirstItemHasCheckbox) {
+        return true;
+      }
+
       if (!this.hasCheckboxAtIndex_(index)) {
         throw new Error('MDCListFoundation: Array of index is only supported for checkbox based list');
       }
