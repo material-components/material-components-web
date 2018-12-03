@@ -178,7 +178,7 @@ class MDCList extends MDCComponent {
       this.singleSelection = true;
       this.selectedIndex = this.listElements.indexOf(singleSelectedListItem);
     } else if (radioSelectedListItem) {
-      this.selectedIndex = this.listElements.indexOf(singleSelectedListItem);
+      this.selectedIndex = this.listElements.indexOf(radioSelectedListItem);
     }
   }
 
@@ -279,6 +279,9 @@ class MDCList extends MDCComponent {
         const event = document.createEvent('Event');
         event.initEvent('change', true, true);
         toggleEl.dispatchEvent(event);
+      },
+      isFocusInsideList: () => {
+        return this.root_.contains(document.activeElement);
       },
     })));
   }

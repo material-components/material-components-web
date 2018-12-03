@@ -78,6 +78,9 @@ class MDCListFoundation extends MDCFoundation {
     /** @private {!Index} */
     this.selectedIndex_ = -1;
 
+    /** @private {number} */
+    this.focusedItemIndex_ = -1;
+
     /** @private {boolean} */
     this.useActivatedClass_ = false;
 
@@ -158,6 +161,16 @@ class MDCListFoundation extends MDCFoundation {
     if (listItemIndex >= 0) {
       this.adapter_.setTabIndexForListItemChildren(listItemIndex, -1);
     }
+
+    /**
+     * Between Focusout & Focusin some browsers do not have focus on any element. Setting a delay to wait till the focus
+     * is moved to next element.
+     */
+    setTimeout(() => {
+      if (!this.adapter_.isFocusInsideList()) {
+        this.setTabindexToSelectedItem_(listItemIndex);
+      }
+    }, 0);
   }
 
   /**
@@ -178,6 +191,7 @@ class MDCListFoundation extends MDCFoundation {
     this.programmaticSelection_ = false;
 
     let currentIndex = this.adapter_.getFocusedElementIndex();
+    let nextIndex = -1;
     if (currentIndex === -1) {
       currentIndex = listItemIndex;
       if (currentIndex < 0) {
@@ -187,18 +201,20 @@ class MDCListFoundation extends MDCFoundation {
       }
     }
 
+    this.focusedItemIndex_ = currentIndex;
+
     if ((this.isVertical_ && arrowDown) || (!this.isVertical_ && arrowRight)) {
       this.preventDefaultEvent_(evt);
-      this.focusNextElement(currentIndex);
+      nextIndex = this.focusNextElement(currentIndex);
     } else if ((this.isVertical_ && arrowUp) || (!this.isVertical_ && arrowLeft)) {
       this.preventDefaultEvent_(evt);
-      this.focusPrevElement(currentIndex);
+      nextIndex = this.focusPrevElement(currentIndex);
     } else if (isHome) {
       this.preventDefaultEvent_(evt);
-      this.focusFirstElement();
+      nextIndex = this.focusFirstElement();
     } else if (isEnd) {
       this.preventDefaultEvent_(evt);
-      this.focusLastElement();
+      nextIndex = this.focusLastElement();
     } else if (isEnter || isSpace) {
       if (isRootListItem) {
         if (this.isSingleSelectionList_ || this.hasCheckboxOrRadioAtIndex_(listItemIndex)) {
@@ -211,7 +227,13 @@ class MDCListFoundation extends MDCFoundation {
       }
     }
 
+    if (nextIndex >= 0) {
+      this.setTabindexAtIndex_(nextIndex);
+      this.focusedItemIndex_ = nextIndex;
+    }
+
     this.programmaticSelection_ = true;
+    this.focusedItemIndex_ = currentIndex;
   }
 
   /**
@@ -229,8 +251,11 @@ class MDCListFoundation extends MDCFoundation {
       this.setSelectedIndex(index);
     }
 
+    this.setTabindexAtIndex_(index);
+
     this.programmaticSelection_ = true;
     this.toggleCheckbox_ = true;
+    this.focusedItemIndex_ = index;
   }
 
   /**
@@ -249,6 +274,7 @@ class MDCListFoundation extends MDCFoundation {
   /**
    * Focuses the next element on the list.
    * @param {number} index
+   * @return {number}
    */
   focusNextElement(index) {
     const count = this.adapter_.getListItemCount();
@@ -262,11 +288,14 @@ class MDCListFoundation extends MDCFoundation {
       }
     }
     this.adapter_.focusItemAtIndex(nextIndex);
+
+    return nextIndex;
   }
 
   /**
    * Focuses the previous element on the list.
    * @param {number} index
+   * @return {number}
    */
   focusPrevElement(index) {
     let prevIndex = index - 1;
@@ -279,18 +308,28 @@ class MDCListFoundation extends MDCFoundation {
       }
     }
     this.adapter_.focusItemAtIndex(prevIndex);
+
+    return prevIndex;
   }
 
+  /**
+   * @return {number}
+   */
   focusFirstElement() {
     if (this.adapter_.getListItemCount() > 0) {
       this.adapter_.focusItemAtIndex(0);
+      return 0;
     }
   }
 
+  /**
+   * @return {number}
+   */
   focusLastElement() {
     const lastIndex = this.adapter_.getListItemCount() - 1;
     if (lastIndex >= 0) {
       this.adapter_.focusItemAtIndex(lastIndex);
+      return lastIndex;
     }
   }
 
@@ -311,7 +350,6 @@ class MDCListFoundation extends MDCFoundation {
 
     this.adapter_.addClassForElementIndex(index, selectedClassName);
     this.adapter_.setAttributeForElementIndex(index, strings.ARIA_SELECTED, 'true');
-    this.setTabindexAtIndex_(index);
 
     this.selectedIndex_ = index;
   }
@@ -331,7 +369,6 @@ class MDCListFoundation extends MDCFoundation {
     }
 
     this.adapter_.setAttributeForElementIndex(index, strings.ARIA_CHECKED, 'true');
-    this.setTabindexAtIndex_(index);
 
     this.selectedIndex_ = index;
   }
@@ -371,44 +408,29 @@ class MDCListFoundation extends MDCFoundation {
       } else {
         this.selectedIndex_ = this.selectedIndex_.filter((i) => i !== index);
       }
-
-      this.setTabindexAtIndex_(index);
     }
   }
 
   /**
-   * @param {!Index} index
+   * @param {number} index
    * @private
    */
   setTabindexAtIndex_(index) {
-    let curIndex;
-    if (index instanceof Array) {
-      curIndex = index[index.length - 1];
-    } else {
-      curIndex = index;
-    }
-
-    let prevIndex;
-    if (this.selectedIndex_ instanceof Array) {
-      prevIndex = this.selectedIndex_[this.selectedIndex_.length - 1];
-    } else {
-      prevIndex = this.selectedIndex_;
-    }
-
-    if (prevIndex === -1 && curIndex !== 0) {
+    if (this.focusedItemIndex_ === -1 && index !== 0) {
       // If no list item was selected set first list item's tabindex to -1.
       // Generally, tabindex is set to 0 on first list item of list that has no preselected items.
       this.adapter_.setAttributeForElementIndex(0, 'tabindex', -1);
-    } else if (prevIndex >= 0 && prevIndex !== curIndex) {
-      this.adapter_.setAttributeForElementIndex(prevIndex, 'tabindex', -1);
+    } else if (this.focusedItemIndex_ >= 0 && this.focusedItemIndex_ !== index) {
+      this.adapter_.setAttributeForElementIndex(this.focusedItemIndex_, 'tabindex', -1);
     }
 
-    this.adapter_.setAttributeForElementIndex(curIndex, 'tabindex', 0);
+    this.adapter_.setAttributeForElementIndex(index, 'tabindex', 0);
   }
 
   /**
    * @param {!Index} index
    * @return {boolean}
+   * @private
    */
   hasCheckboxAtIndex_(index) {
     if (index instanceof Array) {
@@ -421,14 +443,35 @@ class MDCListFoundation extends MDCFoundation {
   /**
    * @param {number} index
    * @return {boolean} Return true if list item contains checkbox or radio input at given index.
+   * @private
    */
   hasCheckboxOrRadioAtIndex_(index) {
     return this.adapter_.hasCheckboxAtIndex(index) || this.adapter_.hasRadioAtIndex(index);
   }
 
   /**
+   * @param {number} index
+   * @private
+   */
+  setTabindexToSelectedItem_(index) {
+    if (this.isSingleSelectionList_ || this.hasCheckboxOrRadioAtIndex_(index)) {
+      let firstSelectedIndex = -1;
+      if (this.selectedIndex_ !== -1 || this.selectedIndex_.length > 0) {
+        if (this.selectedIndex_ instanceof Array) {
+          firstSelectedIndex = this.selectedIndex_[0];
+        } else {
+          firstSelectedIndex = this.selectedIndex_;
+        }
+      }
+
+      this.setTabindexAtIndex_(firstSelectedIndex);
+    }
+  }
+
+  /**
    * @param {!Index} index
    * @return {boolean}
+   * @private
    */
   isIndexValid_(index) {
     if (index instanceof Array) {
@@ -436,7 +479,7 @@ class MDCListFoundation extends MDCFoundation {
         throw new Error('MDCListFoundation: Array of index is only supported for checkbox based list');
       }
       return index.some((i) => this.isIndexInRange_(i));
-    } else if (typeof index === 'number') {
+    } else if (typeof index === 'number' && index !== -1) {
       if (this.programmaticSelection_ && this.hasCheckboxAtIndex_(index)) {
         throw new Error('MDCListFoundation: Expected array of index for checkbox based list but got number: ' + index);
       }
@@ -449,6 +492,7 @@ class MDCListFoundation extends MDCFoundation {
   /**
    * @param {number} index
    * @return {boolean}
+   * @private
    */
   isIndexInRange_(index) {
     const listSize = this.adapter_.getListItemCount();
