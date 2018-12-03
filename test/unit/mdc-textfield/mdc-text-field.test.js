@@ -26,12 +26,12 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 import {assert} from 'chai';
 
-import {MDCRipple} from '../../../packages/mdc-ripple';
-import {MDCLineRipple} from '../../../packages/mdc-line-ripple';
-import {MDCFloatingLabel} from '../../../packages/mdc-floating-label';
-import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline';
+import {MDCRipple} from '../../../packages/mdc-ripple/index';
+import {MDCLineRipple} from '../../../packages/mdc-line-ripple/index';
+import {MDCFloatingLabel} from '../../../packages/mdc-floating-label/index';
+import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline/index';
 import {MDCTextField, MDCTextFieldFoundation, MDCTextFieldHelperText,
-  MDCTextFieldIcon} from '../../../packages/mdc-textfield';
+  MDCTextFieldIcon} from '../../../packages/mdc-textfield/index';
 
 const {cssClasses} = MDCTextFieldFoundation;
 
@@ -268,6 +268,15 @@ test('#initialSyncWithDom sets disabled if input element is not disabled', () =>
   const {component} = setupTest();
   component.initialSyncWithDom();
   assert.isNotOk(component.disabled);
+});
+
+test('#focus calls focus on the input element', () => {
+  const {root, component} = setupTest();
+  const input = root.querySelector('.mdc-text-field__input');
+  input.focus = td.func('focus');
+  component.focus();
+
+  td.verify(input.focus(), {times: 1});
 });
 
 test('get/set disabled updates the input element', () => {

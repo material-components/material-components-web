@@ -67,6 +67,10 @@ class MDCTabBar extends MDCComponent {
     return new MDCTabBar(root);
   }
 
+  set focusOnActivate(focusOnActivate) {
+    this.tabList_.forEach((tab) => tab.focusOnActivate = focusOnActivate);
+  }
+
   set useAutomaticActivation(useAutomaticActivation) {
     this.foundation_.setUseAutomaticActivation(useAutomaticActivation);
   }
@@ -77,8 +81,7 @@ class MDCTabBar extends MDCComponent {
    */
   initialize(
     tabFactory = (el) => new MDCTab(el),
-    tabScrollerFactory = (el) => new MDCTabScroller(el),
-  ) {
+    tabScrollerFactory = (el) => new MDCTabScroller(el)) {
     this.tabFactory_ = tabFactory;
     this.tabScrollerFactory_ = tabScrollerFactory;
 

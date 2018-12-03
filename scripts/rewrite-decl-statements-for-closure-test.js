@@ -218,8 +218,26 @@ function transform(srcFile, rootDir) {
   }
 
   // Specify goog.module after the @license comment and append newline at the end of the file.
-  // First, get the first occurence of a multiline comment terminator with 0 or more preceding whitespace characters.
+  // First, get the first occurrence of a multiline comment terminator with 0 or more preceding whitespace characters.
   const result = /\s*\*\//.exec(outputCode);
+
+  if (!result) {
+    const data = JSON.stringify({
+      srcFile,
+      pathbasedPackageName,
+      packageStr,
+      outputCode,
+    }, null, 2);
+
+    const message = `
+Missing multiline comment terminator!
+
+${data}
+`.trim();
+
+    throw new Error(message);
+  }
+
   // Then, get the index of that first matching character set plus the length of the matching characters, plus one
   // extra character for more space. We now have the position at which we need to inject the "goog.module(...)"
   // declaration and can assemble the module-declared code. Yay!

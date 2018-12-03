@@ -166,7 +166,6 @@ class CssBundleFactory {
         'mdc.radio': getAbsolutePath('/packages/mdc-radio/mdc-radio.scss'),
         'mdc.ripple': getAbsolutePath('/packages/mdc-ripple/mdc-ripple.scss'),
         'mdc.select': getAbsolutePath('/packages/mdc-select/mdc-select.scss'),
-        'mdc.shape': getAbsolutePath('/packages/mdc-shape/mdc-shape.scss'),
         'mdc.slider': getAbsolutePath('/packages/mdc-slider/mdc-slider.scss'),
         'mdc.snackbar': getAbsolutePath('/packages/mdc-snackbar/mdc-snackbar.scss'),
         'mdc.switch': getAbsolutePath('/packages/mdc-switch/mdc-switch.scss'),
@@ -215,6 +214,8 @@ class CssBundleFactory {
           options: {
             sourceMap: true,
             includePaths: [getAbsolutePath('/packages/material-components-web/node_modules')],
+            implementation: require('dart-sass'),
+            fiber: require('fibers'),
           },
         },
       ],

@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# https://stackoverflow.com/a/27052708/467582
+export TZ=America/Los_Angeles
+
 CHANGED_FILE_PATHS=$(git diff --name-only "$TRAVIS_COMMIT_RANGE")
 
 if [[ -n "$CHANGED_FILE_PATHS" ]]; then
@@ -18,7 +21,10 @@ function log_warning() {
 
 function print_travis_env_vars() {
   echo
-  env | grep TRAVIS
+  echo "Shell date: $(date)"
+  echo "Node date: $(echo 'console.log(new Date().toString())' | node)"
+  echo
+  env | grep -E -e 'TRAVIS' -e '^(LANG|TERM|TZ)=' | sort
   echo
 }
 
@@ -72,12 +78,17 @@ print_all_changed_files
 
 if [[ "$TEST_SUITE" == 'unit' ]]; then
   # Only run unit tests if JS files changed
-  check_for_testable_files '^packages/.+\.js$' '^test/unit/.+\.js$'
+  check_for_testable_files '^karma\.conf\.js$' '^packages/.+\.js$' '^test/unit/.+\.js$'
 fi
 
 if [[ "$TEST_SUITE" == 'lint' ]]; then
-  # Only run linter if package JS/Sass files changed
+  # Only run linter if JS/Sass files changed
   check_for_testable_files '\.(js|css|scss)$'
+fi
+
+if [[ "$TEST_SUITE" == 'build' ]]; then
+  # Only run build if package JS/Sass files changed
+  check_for_testable_files '^packages/.+\.(js|css|scss)$'
 fi
 
 if [[ "$TEST_SUITE" == 'closure' ]]; then
@@ -91,6 +102,6 @@ if [[ "$TEST_SUITE" == 'site-generator' ]]; then
 fi
 
 if [[ "$TEST_SUITE" == 'screenshot' ]]; then
-  # Only run screenshot tests if package JS/Sass files, non-Markdown screenshot test files, or image files changed.
-  check_for_testable_files '^packages/.+\.(js|css|scss)$' '^test/screenshot/.+[^m][^d]$' '\.(png|jpg|jpeg|gif|svg)$'
+  # Only run screenshot tests if package JS/Sass files, screenshot test files, or image files changed.
+  check_for_testable_files '^packages/.+\.(js|css|scss)$' '^test/screenshot/' '\.(png|jpg|jpeg|gif|svg)$'
 fi

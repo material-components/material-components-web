@@ -28,7 +28,7 @@ import domEvents from 'dom-events';
 
 import {MDCMenu, MDCMenuFoundation} from '../../../packages/mdc-menu/index';
 import {Corner} from '../../../packages/mdc-menu-surface/constants';
-import {MDCListFoundation} from '../../../packages/mdc-list';
+import {MDCListFoundation} from '../../../packages/mdc-list/index';
 import {MDCMenuSurfaceFoundation} from '../../../packages/mdc-menu-surface/foundation';
 
 function getFixture(open) {
@@ -52,6 +52,7 @@ class FakeList {
     this.root = root;
     this.destroy = td.func('.destroy');
     this.itemsContainer = td.func('.root_');
+    this.wrapFocus = true;
     this.listElements = [].slice.call(root.querySelectorAll('.mdc-list-item'));
   }
 }
@@ -156,6 +157,15 @@ test('get/set open', () => {
 
   component.open = false;
   assert.isFalse(menuSurface.open);
+});
+
+test('wrapFocus proxies to MDCList#wrapFocus property', () => {
+  const {component, list} = setupTestWithFakes();
+
+  assert.isTrue(component.wrapFocus);
+
+  component.wrapFocus = false;
+  assert.isFalse(list.wrapFocus);
 });
 
 test('setAnchorCorner proxies to the MDCMenuSurface#setAnchorCorner method', () => {
@@ -374,34 +384,4 @@ test('adapter#notifySelected emits an event for a selected element', () => {
   root.addEventListener(MDCMenuFoundation.strings.SELECTED_EVENT, handler);
   component.getDefaultFoundation().adapter_.notifySelected(0);
   td.verify(handler(td.matchers.anything()));
-});
-
-test('adapter#getCheckboxAtIndex returns a checkbox inside a list item at the index specified', () => {
-  const {root, component} = setupTest();
-  const checkbox = document.createElement('input');
-  checkbox.type = 'checkbox';
-  checkbox.checked = false;
-  const firstItem = root.querySelector('.mdc-list-item');
-  firstItem.appendChild(checkbox);
-
-  assert.equal(component.getDefaultFoundation().adapter_.getCheckboxAtIndex(0), checkbox);
-});
-
-test('adapter#getCheckboxAtIndex returns null if a checkbox does not exist in the element at index specified', () => {
-  const {component} = setupTest();
-  assert.isNull(component.getDefaultFoundation().adapter_.getCheckboxAtIndex(0));
-});
-
-test('adapter#toggleCheckbox toggles a checkbox', () => {
-  const {root, component} = setupTest();
-  document.body.appendChild(root);
-  const checkbox = document.createElement('input');
-  checkbox.type = 'checkbox';
-  checkbox.checked = false;
-  const firstItem = root.querySelector('.mdc-list-item');
-  firstItem.appendChild(checkbox);
-
-  component.getDefaultFoundation().adapter_.toggleCheckbox(checkbox);
-  assert.isTrue(checkbox.checked);
-  document.body.removeChild(root);
 });

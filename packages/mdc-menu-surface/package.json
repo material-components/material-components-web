@@ -1,6 +1,6 @@
 {
   "name": "@material/menu-surface",
-  "version": "0.39.1",
+  "version": "0.41.0",
   "description": "The Material Components for the web menu surface component",
   "license": "MIT",
   "keywords": [
@@ -8,17 +8,18 @@
     "material design",
     "menu surface"
   ],
-  "main": "index.js",
+  "main": "dist/mdc.menuSurface.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git"
   },
   "dependencies": {
-    "@material/animation": "^0.39.0",
-    "@material/base": "^0.39.0",
-    "@material/elevation": "^0.39.1",
-    "@material/rtl": "^0.39.1",
-    "@material/theme": "^0.39.1"
+    "@material/animation": "^0.41.0",
+    "@material/base": "^0.41.0",
+    "@material/elevation": "^0.41.0",
+    "@material/rtl": "^0.40.1",
+    "@material/shape": "^0.41.0",
+    "@material/theme": "^0.41.0"
   },
   "publishConfig": {
     "access": "public"

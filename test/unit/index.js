@@ -23,6 +23,14 @@
 
 /** @fileoverview Bootstraps the test bundle for karma-webpack. */
 
+import {uninstall as uninstallClock} from './helpers/clock';
+
+// Hooks are valuable for ensuring we restore native functions after each test
+// eslint-disable-next-line mocha/no-hooks
+afterEach(() => {
+  uninstallClock();
+});
+
 // https://github.com/webpack/docs/wiki/context#requirecontext
 const testsContext = require.context(/* directory */ '.', /* useSubdirectories */ true, /\.test\.js$/);
 testsContext.keys().forEach(testsContext);

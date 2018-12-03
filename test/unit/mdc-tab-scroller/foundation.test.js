@@ -25,7 +25,7 @@ import {assert} from 'chai';
 import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
-import {createMockRaf} from '../helpers/raf';
+import {install as installClock} from '../helpers/clock';
 import {setupFoundationTest} from '../helpers/setup';
 import MDCTabScrollerFoundation from '../../../packages/mdc-tab-scroller/foundation';
 import MDCTabScrollerRTLDefault from '../../../packages/mdc-tab-scroller/rtl-default-scroller';
@@ -174,10 +174,9 @@ test('#scrollTo() sets the scroll property to the computed scrollX', () => {
 
 test(`#scrollTo() adds the ${MDCTabScrollerFoundation.cssClasses.ANIMATING} class in a rAF`, () => {
   const {foundation, mockAdapter} = setupScrollToTest();
-  const raf = createMockRaf();
+  const clock = installClock();
   foundation.scrollTo(100);
-  raf.flush();
-  raf.restore();
+  clock.runToFrame();
   td.verify(mockAdapter.addClass(MDCTabScrollerFoundation.cssClasses.ANIMATING), {times: 1});
 });
 
@@ -209,10 +208,9 @@ test(`#scrollTo() removes the ${MDCTabScrollerFoundation.cssClasses.ANIMATING} i
 
 test('#scrollTo() unsets the transform property in a rAF', () => {
   const {foundation, mockAdapter} = setupScrollToTest();
-  const raf = createMockRaf();
+  const clock = installClock();
   foundation.scrollTo(212);
-  raf.flush();
-  raf.restore();
+  clock.runToFrame();
   td.verify(mockAdapter.setScrollContentStyleProperty('transform', 'none'), {times: 1});
 });
 

@@ -46,17 +46,19 @@ npm install @material/dialog
      aria-labelledby="my-dialog-title"
      aria-describedby="my-dialog-content">
   <div class="mdc-dialog__container">
-    <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
-    <h2 class="mdc-dialog__title" id="my-dialog-title"><!--
-   -->Dialog Title<!--
- --></h2>
-    <section class="mdc-dialog__content" id="my-dialog-content">
-      Dialog body text goes here.
-    </section>
-    <footer class="mdc-dialog__actions">
-      <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">No</button>
-      <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">Yes</button>
-    </footer>
+    <div class="mdc-dialog__surface">
+      <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
+      <h2 class="mdc-dialog__title" id="my-dialog-title"><!--
+     -->Dialog Title<!--
+   --></h2>
+      <div class="mdc-dialog__content" id="my-dialog-content">
+        Dialog body text goes here.
+      </div>
+      <footer class="mdc-dialog__actions">
+        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">No</button>
+        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">Yes</button>
+      </footer>
+    </div>
   </div>
   <div class="mdc-dialog__scrim"></div>
 </div>
@@ -82,9 +84,20 @@ const dialog = new MDCDialog(document.querySelector('.mdc-dialog'));
 
 > See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
 
-> *NOTE*: MDC Dialog makes no assumptions about what will be added to the `mdc-dialog__content` element.
-> Any List, Checkboxes, etc. must also be instantiated.
-> Additionally, call `layout` on any components within the content when `MDCDialog:opened` is emitted.
+MDC Dialog makes no assumptions about what will be added to the `mdc-dialog__content` element. Any List, Checkboxes,
+etc. must also be instantiated. Additionally, call `layout` on any applicable components within the content when
+`MDCDialog:opened` is emitted.
+
+For example, to instantiate an MDC List inside of a Simple or Confirmation Dialog:
+
+```js
+import {MDCList} from '@material/list';
+const list = new MDCList(document.querySelector('.mdc-dialog .mdc-list'));
+
+dialog.listen('MDCDialog:opened', () => {
+  list.layout();
+});
+```
 
 ## Variants
 
@@ -99,25 +112,29 @@ The Simple Dialog contains a list of potential actions. It does not contain butt
      aria-labelledby="my-dialog-title"
      aria-describedby="my-dialog-content">
   <div class="mdc-dialog__container">
-    <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
-    <h2 class="mdc-dialog__title" id="my-dialog-title"><!--
-   -->Choose a Ringtone<!--
- --></h2>
-    <section class="mdc-dialog__content" id="my-dialog-content">
-      <ul class="mdc-list">
-        <li class="mdc-list-item">
-          <span class="mdc-list-item__text">None</span>
-        </li>
-        <li class="mdc-list-item">
-          <span class="mdc-list-item__text">Callisto</span>
-        </li>
-        <!-- ... -->
-      </ul>
-    </section>
+    <div class="mdc-dialog__surface">
+      <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
+      <h2 class="mdc-dialog__title" id="my-dialog-title"><!--
+     -->Choose a Ringtone<!--
+   --></h2>
+      <div class="mdc-dialog__content" id="my-dialog-content">
+        <ul class="mdc-list mdc-list--avatar-list">
+          <li class="mdc-list-item" tabindex="0" data-mdc-dialog-action="none">
+            <span class="mdc-list-item__text">None</span>
+          </li>
+          <li class="mdc-list-item" data-mdc-dialog-action="callisto">
+            <span class="mdc-list-item__text">Callisto</span>
+          </li>
+          <!-- ... -->
+        </ul>
+      </div>
+    </div>
   </div>
   <div class="mdc-dialog__scrim"></div>
 </div>
 ```
+
+> Note the inclusion of the `mdc-list--avatar-list` class, which aligns with the Simple Dialog spec.
 
 ### Confirmation Dialog
 
@@ -131,36 +148,39 @@ radio buttons (indicating single selection) or checkboxes (indicating multiple s
      aria-labelledby="my-dialog-title"
      aria-describedby="my-dialog-content">
   <div class="mdc-dialog__container">
-    <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
-    <h2 class="mdc-dialog__title" id="my-dialog-title"><!--
-   -->Choose a Ringtone<!--
- --></h2>
-    <section class="mdc-dialog__content" id="my-dialog-content">
-      <ul class="mdc-list">
-        <li class="mdc-list-item" tabindex="0">
-          <span class="mdc-list-item__graphic">
-            <div class="mdc-radio">
-              <input class="mdc-radio__native-control"
-                     type="radio"
-                     id="test-dialog-baseline-confirmation-radio-1"
-                     name="test-dialog-baseline-confirmation-radio-group"
-                     checked>
-              <div class="mdc-radio__background">
-                <div class="mdc-radio__outer-circle"></div>
-                <div class="mdc-radio__inner-circle"></div>
+    <div class="mdc-dialog__surface">
+      <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
+      <h2 class="mdc-dialog__title" id="my-dialog-title"><!--
+     -->Choose a Ringtone<!--
+   --></h2>
+      <div class="mdc-dialog__content" id="my-dialog-content">
+        <ul class="mdc-list">
+          <li class="mdc-list-item" tabindex="0">
+            <span class="mdc-list-item__graphic">
+              <div class="mdc-radio">
+                <input class="mdc-radio__native-control"
+                       type="radio"
+                       id="test-dialog-baseline-confirmation-radio-1"
+                       name="test-dialog-baseline-confirmation-radio-group"
+                       checked>
+                <div class="mdc-radio__background">
+                  <div class="mdc-radio__outer-circle"></div>
+                  <div class="mdc-radio__inner-circle"></div>
+                </div>
               </div>
-            </div>
-          </span>
-          <label id="test-dialog-baseline-confirmation-radio-1-label"
-                 for="test-dialog-baseline-confirmation-radio-1">None</label>
-        </li>
-        <!-- ... -->
-      </ul>
-    </section>
-    <footer class="mdc-dialog__actions">
-      <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">Cancel</button>
-      <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept">OK</button>
-    </footer>
+            </span>
+            <label id="test-dialog-baseline-confirmation-radio-1-label"
+                   for="test-dialog-baseline-confirmation-radio-1"
+                   class="mdc-list-item__text">None</label>
+          </li>
+          <!-- ... -->
+        </ul>
+      </div>
+      <footer class="mdc-dialog__actions">
+        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">Cancel</button>
+        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept">OK</button>
+      </footer>
+    </div>
   </div>
   <div class="mdc-dialog__scrim"></div>
 </div>
@@ -194,11 +214,75 @@ Any action buttons within the dialog which equate strictly to a dismissal with n
 `close` action; this will make it easy to handle all such interactions consistently, while separately handling other
 actions.
 
+#### Action Button Arrangement
+
+As indicated in the [Dialog design article](https://material.io/design/components/dialogs.html#anatomy), buttons within
+the `mdc-dialog__actions` element are arranged horizontally by default, with the confirming action _last_.
+
+In cases where the button text is too long for all buttons to fit on a single line, the buttons are stacked vertically,
+with the confirming action _first_.
+
+MDC Dialog detects and handles this automatically by default, reversing the buttons when applying the stacked layout.
+This automatic behavior can be disabled by setting `autoStackButtons` to `false` on the component instance:
+
+```js
+dialog.autoStackButtons = false;
+```
+
+This will also be disabled if the `mdc-dialog--stacked` modifier class is applied manually to the root element before the
+component is instantiated, but note that dialog action button labels are recommended to be short enough to fit on a
+single line if possible.
+
+#### Default Action Button
+
+MDC Dialog supports indicating that one of its action buttons represents the default action, triggered by pressing the
+Enter key. This can be used e.g. for single-choice Confirmation Dialogs to accelerate the process of making a selection,
+avoiding the need to tab through to the appropriate button to confirm the choice.
+
+To indicate that a button represents the default action, add the `mdc-dialog__button--default` modifier class.
+For example:
+
+```html
+...
+<footer class="mdc-dialog__actions">
+  <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">Cancel</button>
+  <button type="button" class="mdc-button mdc-dialog__button mdc-dialog__button--default" data-mdc-dialog-action="accept">OK</button>
+</footer>
+...
+```
+
 #### Actions and Selections
 
 Dialogs which require making a choice via selection controls should initially disable any button which performs an
 action if no choice is selected by default. MDC Dialog does not include built-in logic for this, since it aims to remain
 as unopinionated as possible regarding dialog contents, aside from relaying information on which action is taken.
+
+#### Accessibility
+
+##### Using `aria-hidden` as a fallback for `aria-modal`
+
+`aria-modal` is part of the ARIA 1.1 specification, and indicates to screen readers that they should confine themselves
+to a single element. MDC Dialog recommends adding `aria-modal="true"` to the root element of its DOM structure; however,
+not all user agents and screen readers properly honor this attribute.
+
+The fallback is to apply `aria-hidden="true"` to all static content behind the dialog, when the dialog is open. This will
+be easiest to achieve if all non-modal elements are under a single common ancestor under the body, so that `aria-hidden`
+can be applied to one element.
+
+```js
+dialog.listen('MDCDialog:opened', function() {
+  // Assuming contentElement references a common parent element with the rest of the page's content
+  contentElement.setAttribute('aria-hidden', 'true');
+});
+
+dialog.listen('MDCDialog:closing', function() {
+  contentElement.removeAttribute('aria-hidden');
+});
+```
+
+> Note: The example above intentionally listens to the **opened** (not opening) event and the **closing** (not closed)
+> event in order to avoid additional jumping between elements by screen readers due to one element becoming hidden
+> before others become visible.
 
 ## Style Customization
 
@@ -229,7 +313,7 @@ Mixin | Description
 `mdc-dialog-title-ink-color($color, $opacity)` | Sets the color of the dialog's title text.
 `mdc-dialog-content-ink-color($color, $opacity)` | Sets the color of the dialog's content text.
 `mdc-dialog-scroll-divider-color($color, $opacity)` | Sets the color of the dividers which display around scrollable content.
-`mdc-dialog-corner-radius($radius)` | Sets the corner radius to the given amount (defaults to 4px on all sides).
+`mdc-dialog-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to dialog surface with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `mdc-dialog-min-width($min-width)` | Sets the minimum width of the dialog (defaults to 280px).
 `mdc-dialog-max-width($max-width, $margin)` | Sets the maximum width of the dialog (defaults to 560px max width and 16px margins).
 `mdc-dialog-max-height($max-height, $margin)` | Sets the maximum height of the dialog (defaults to no max height and 16px margins).
@@ -243,6 +327,7 @@ Property | Value Type | Description
 `isOpen` | `boolean` (read-only) | Proxies to the foundation's `isOpen` method.
 `escapeKeyAction` | `string` | Proxies to the foundation's `getEscapeKeyAction` and `setEscapeKeyAction` methods.
 `scrimClickAction` | `string` | Proxies to the foundation's `getScrimClickAction` and `setScrimClickAction` methods.
+`autoStackButtons` | `boolean` | Proxies to the foundation's `getAutoStackButtons` and `setAutoStackButtons` methods.
 
 Method Signature | Description
 --- | ---
@@ -269,15 +354,17 @@ Method Signature | Description
 --- | ---
 `addClass(className: string) => void` | Adds a class to the root element.
 `removeClass(className: string) => void` | Removes a class from the root element.
+`hasClass(className: string) => boolean` | Returns whether the given class exists on the root element.
 `addBodyClass(className: string) => void` | Adds a class to the `<body>`.
 `removeBodyClass(className: string) => void` | Removes a class from the `<body>`.
-`eventTargetHasClass(target: !EventTarget, className: string) => void` | Returns `true` if the target element has the given CSS class, otherwise `false`.
-`computeBoundingRect()`: Forces the component to recalculate its layout; in the vanilla DOM implementation, this calls `computeBoundingClientRect`.
+`eventTargetMatches(target: !EventTarget, selector: string) => void` | Returns `true` if the target element matches the given CSS selector, otherwise `false`.
 `trapFocus() => void` | Sets up the DOM such that keyboard navigation is restricted to focusable elements within the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details).
 `releaseFocus() => void` | Removes any effects of focus trapping on the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details).
 `isContentScrollable() => boolean` | Returns `true` if `mdc-dialog__content` can be scrolled by the user, otherwise `false`.
 `areButtonsStacked() => boolean` | Returns `true` if `mdc-dialog__action` buttons (`mdc-dialog__button`) are stacked vertically, otherwise `false` if they are side-by-side.
-`getActionFromEvent(event: !Event) => ?string` | Retrieves the value of the `data-mdc-dialog-action` attribute from the given event's target.
+`getActionFromEvent(event: !Event) => ?string` | Retrieves the value of the `data-mdc-dialog-action` attribute from the given event's target, or an ancestor of the target.
+`clickDefaultButton() => void` | Invokes `click()` on the `mdc-dialog__button--default` element, if one exists in the dialog.
+`reverseButtons() => void` | Reverses the order of action buttons in the `mdc-dialog__actions` element. Used when switching between stacked and unstacked button layouts.
 `notifyOpening() => void` | Broadcasts an event denoting that the dialog has just started to open.
 `notifyOpened() => void` | Broadcasts an event denoting that the dialog has finished opening.
 `notifyClosing(action: string) {}` | Broadcasts an event denoting that the dialog has just started closing. If a non-empty `action` is passed, the event's `detail` object should include its value in the `action` property.
@@ -295,6 +382,8 @@ Method Signature | Description
 `setEscapeKeyAction(action: string)` | Sets the action reflected when the Escape key is pressed. Setting to `''` disables closing the dialog via Escape key.
 `getScrimClickAction() => string` | Returns the action reflected when the scrim is clicked.
 `setScrimClickAction(action: string)` | Sets the action reflected when the scrim is clicked. Setting to `''` disables closing the dialog via scrim click.
+`getAutoStackButtons() => boolean` | Returns whether stacked/unstacked action button layout is automatically handled during layout logic.
+`setAutoStackButtons(autoStack: boolean) => void` | Sets whether stacked/unstacked action button layout is automatically handled during layout logic.
 `handleClick(event: Event)` | Handles `click` events on or within the dialog's root element
 `handleDocumentKeydown(event: Event)` | Handles `keydown` events on or within the document while the dialog is open
 
@@ -315,7 +404,7 @@ External frameworks and libraries can use the following utility methods from the
 
 Method Signature | Description
 --- | ---
-`createFocusTrapInstance(surfaceEl: !Element, initialFocusEl: ?Element, focusTrapFactory: function(): !FocusTrap) => !FocusTrap` | Creates a properly configured [focus-trap][] instance.
+`createFocusTrapInstance(surfaceEl: !Element, focusTrapFactory: function(): !FocusTrap, initialFocusEl: ?Element) => !FocusTrap` | Creates a properly configured [focus-trap][] instance.
 `isScrollable(el) => boolean` | Determines if the given element is scrollable.
 `areTopsMisaligned(els) => boolean` | Determines if two or more of the given elements have different `offsetTop` values.
 
@@ -347,18 +436,22 @@ a focus trapping solution for your component code.**
 
 [focus-trap]: https://github.com/davidtheclark/focus-trap
 
+> NOTE: iOS platform doesn't seem to register currently focused element via `document.activeElement` which causes releasing
+> focus to last focused element fail.
+
 #### `createFocusTrapInstance()`
 
 ```js
 const {activate, deactivate} =
-  util.createFocusTrapInstance(surfaceEl, initialFocusEl, focusTrapFactory = require('focus-trap'));
+  util.createFocusTrapInstance(surfaceEl, focusTrapFactory, initialFocusEl);
 ```
 
-Given a dialog surface element, an initial element to focus, and an optional `focusTrap` factory
-function, such that:
+Given a dialog surface element an optional `focusTrap` factory function, and an optional initial element to focus,
+such that:
 
 * The focus is trapped within the `surfaceEl`
 * The `initialFocusEl` receives focus when the focus trap is activated
+    - If omitted, defaults to the first focusable element in `surfaceEl`
 * Closing the dialog in any way (including pressing Escape or clicking outside the dialog) deactivates focus trapping
 * Focus is returned to the previously focused element before the focus trap was activated
 

@@ -24,7 +24,7 @@
 import MDCFoundation from '@material/base/foundation';
 import MDCChipSetAdapter from './adapter';
 // eslint-disable-next-line no-unused-vars
-import {MDCChipInteractionEventType, MDCChipRemovalEventType} from '../chip/foundation';
+import {MDCChipInteractionEventType, MDCChipSelectionEventType, MDCChipRemovalEventType} from '../chip/foundation';
 import {strings, cssClasses} from './constants';
 
 /**
@@ -78,11 +78,12 @@ class MDCChipSetFoundation extends MDCFoundation {
 
   /**
    * Toggles selection of the chip with the given id.
+   * @private
    * @param {string} chipId
    */
-  toggleSelect(chipId) {
+  toggleSelect_(chipId) {
     if (this.selectedChipIds_.indexOf(chipId) >= 0) {
-      this.deselect(chipId);
+      this.deselect_(chipId);
     } else {
       this.select(chipId);
     }
@@ -98,18 +99,20 @@ class MDCChipSetFoundation extends MDCFoundation {
     }
 
     if (this.adapter_.hasClass(cssClasses.CHOICE) && this.selectedChipIds_.length > 0) {
-      this.adapter_.setSelected(this.selectedChipIds_[0], false);
+      const previouslySelectedChip = this.selectedChipIds_[0];
       this.selectedChipIds_.length = 0;
+      this.adapter_.setSelected(previouslySelectedChip, false);
     }
-    this.adapter_.setSelected(chipId, true);
     this.selectedChipIds_.push(chipId);
+    this.adapter_.setSelected(chipId, true);
   }
 
   /**
    * Deselects the chip with the given id.
+   * @private
    * @param {string} chipId
    */
-  deselect(chipId) {
+  deselect_(chipId) {
     const index = this.selectedChipIds_.indexOf(chipId);
     if (index >= 0) {
       this.selectedChipIds_.splice(index, 1);
@@ -119,22 +122,34 @@ class MDCChipSetFoundation extends MDCFoundation {
 
   /**
    * Handles a chip interaction event
-   * @param {!MDCChipInteractionEventType} evt
+   * @param {string} chipId
    */
-  handleChipInteraction(evt) {
-    const {chipId} = evt.detail;
+  handleChipInteraction(chipId) {
     if (this.adapter_.hasClass(cssClasses.CHOICE) || this.adapter_.hasClass(cssClasses.FILTER)) {
-      this.toggleSelect(chipId);
+      this.toggleSelect_(chipId);
+    }
+  }
+
+  /**
+   * Handles a chip selection event, used to handle discrepancy when selection state is set directly on the Chip.
+   * @param {string} chipId
+   * @param {boolean} selected
+   */
+  handleChipSelection(chipId, selected) {
+    const chipIsSelected = this.selectedChipIds_.indexOf(chipId) >= 0;
+    if (selected && !chipIsSelected) {
+      this.select(chipId);
+    } else if (!selected && chipIsSelected) {
+      this.deselect_(chipId);
     }
   }
 
   /**
    * Handles the event when a chip is removed.
-   * @param {!MDCChipRemovalEventType} evt
+   * @param {string} chipId
    */
-  handleChipRemoval(evt) {
-    const {chipId} = evt.detail;
-    this.deselect(chipId);
+  handleChipRemoval(chipId) {
+    this.deselect_(chipId);
     this.adapter_.removeChip(chipId);
   }
 }

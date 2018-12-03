@@ -24,8 +24,8 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
+import {install as installClock} from '../helpers/clock';
 import {verifyDefaultAdapter} from '../helpers/foundation';
-import {createMockRaf} from '../helpers/raf';
 import {setupFoundationTest} from '../helpers/setup';
 import {MDCChipFoundation} from '../../../packages/mdc-chips/chip/foundation';
 
@@ -45,7 +45,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCChipFoundation, [
     'addClass', 'removeClass', 'hasClass', 'addClassToLeadingIcon',
     'removeClassFromLeadingIcon', 'eventTargetHasClass', 'notifyInteraction',
-    'notifyTrailingIconInteraction', 'notifyRemoval',
+    'notifyTrailingIconInteraction', 'notifyRemoval', 'notifySelection',
     'getComputedStyleValue', 'setStyleProperty',
   ]);
 });
@@ -74,6 +74,18 @@ test('#setSelected removes mdc-chip--selected class if false', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setSelected(false);
   td.verify(mockAdapter.removeClass(cssClasses.SELECTED));
+});
+
+test('#setSelected removes calls adapter.notifySelection when selected is true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setSelected(true);
+  td.verify(mockAdapter.notifySelection(true));
+});
+
+test('#setSelected removes calls adapter.notifySelection when selected is false', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setSelected(false);
+  td.verify(mockAdapter.notifySelection(false));
 });
 
 test(`#beginExit adds ${cssClasses.CHIP_EXIT} class`, () => {
@@ -109,7 +121,7 @@ test('#handleTransitionEnd notifies removal of chip on width transition end', ()
 
 test('#handleTransitionEnd animates width if chip is exiting on chip opacity transition end', () => {
   const {foundation, mockAdapter} = setupTest();
-  const raf = createMockRaf();
+  const clock = installClock();
   const mockEvt = {
     type: 'transitionend',
     target: {},
@@ -120,12 +132,12 @@ test('#handleTransitionEnd animates width if chip is exiting on chip opacity tra
 
   foundation.handleTransitionEnd(mockEvt);
 
-  raf.flush();
+  clock.runToFrame();
   td.verify(mockAdapter.setStyleProperty('width', '100px'));
   td.verify(mockAdapter.setStyleProperty('padding', '0'));
   td.verify(mockAdapter.setStyleProperty('margin', '0'));
 
-  raf.flush();
+  clock.runToFrame();
   td.verify(mockAdapter.setStyleProperty('width', '0'));
 });
 

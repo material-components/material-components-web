@@ -99,6 +99,16 @@ class MDCMenu extends MDCComponent {
     this.menuSurface_.open = value;
   }
 
+  /** @return {boolean} */
+  get wrapFocus() {
+    return this.list_.wrapFocus;
+  }
+
+  /** @param {boolean} value */
+  set wrapFocus(value) {
+    this.list_.wrapFocus = value;
+  }
+
   /**
    * @param {!Corner} corner Default anchor corner alignment of top-left
    *     menu corner.
@@ -211,16 +221,6 @@ class MDCMenu extends MDCComponent {
         index: evtData.index,
         item: this.items[evtData.index],
       }),
-      getCheckboxAtIndex: (index) => {
-        const list = this.items;
-        return list[index].querySelector(strings.CHECKBOX_SELECTOR);
-      },
-      toggleCheckbox: (checkBox) => {
-        checkBox.checked = !checkBox.checked;
-        const event = document.createEvent('Event');
-        event.initEvent('change', false, true);
-        checkBox.dispatchEvent(event);
-      },
     });
   }
 }

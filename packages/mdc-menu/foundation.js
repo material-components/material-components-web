@@ -27,7 +27,7 @@ import {cssClasses, strings} from './constants';
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
 import MDCListFoundation from '@material/list/foundation';
 
-const ELEMENTS_KEY_ALLOWED_IN = ['input', 'button', 'textarea', 'select'];
+const ELEMENTS_KEY_ALLOWED_IN = ['input', 'button', 'textarea', 'select', 'a'];
 
 /**
  * @extends {MDCFoundation<!MDCMenuAdapter>}
@@ -60,8 +60,6 @@ class MDCMenuFoundation extends MDCFoundation {
       getParentElement: () => {},
       getSelectedElementIndex: () => {},
       notifySelected: () => {},
-      getCheckboxAtIndex: () => {},
-      toggleCheckbox: () => {},
     });
   }
 
@@ -115,7 +113,7 @@ class MDCMenuFoundation extends MDCFoundation {
   handleAction_(evt) {
     const listItem = this.getListItem_(/** @type {HTMLElement} */ (evt.target));
     if (listItem) {
-      this.handleSelection_(listItem);
+      this.handleSelection(listItem);
       this.preventDefaultEvent_(evt);
     }
   }
@@ -123,9 +121,8 @@ class MDCMenuFoundation extends MDCFoundation {
   /**
    * Handler for a selected list item.
    * @param {?HTMLElement} listItem
-   * @private
    */
-  handleSelection_(listItem) {
+  handleSelection(listItem) {
     const index = this.adapter_.getElementIndex(listItem);
     if (index < 0) {
       return;
@@ -133,11 +130,6 @@ class MDCMenuFoundation extends MDCFoundation {
 
     this.adapter_.notifySelected({index});
     this.adapter_.closeSurface();
-
-    const checkbox = this.adapter_.getCheckboxAtIndex(index);
-    if (checkbox) {
-      this.adapter_.toggleCheckbox(/** @type {!HTMLElement} */ (checkbox));
-    }
 
     // Wait for the menu to close before adding/removing classes that affect styles.
     this.closeAnimationEndTimerId_ = setTimeout(() => {

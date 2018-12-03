@@ -48,6 +48,8 @@ class MDCChipSet extends MDCComponent {
     /** @private {?function(?Event): undefined} */
     this.handleChipInteraction_;
     /** @private {?function(?Event): undefined} */
+    this.handleChipSelection_;
+    /** @private {?function(?Event): undefined} */
     this.handleChipRemoval_;
   }
 
@@ -75,10 +77,13 @@ class MDCChipSet extends MDCComponent {
       }
     });
 
-    this.handleChipInteraction_ = (evt) => this.foundation_.handleChipInteraction(evt);
-    this.handleChipRemoval_ = (evt) => this.foundation_.handleChipRemoval(evt);
+    this.handleChipInteraction_ = (evt) => this.foundation_.handleChipInteraction(evt.detail.chipId);
+    this.handleChipSelection_ = (evt) => this.foundation_.handleChipSelection(evt.detail.chipId, evt.detail.selected);
+    this.handleChipRemoval_ = (evt) => this.foundation_.handleChipRemoval(evt.detail.chipId);
     this.root_.addEventListener(
       MDCChipFoundation.strings.INTERACTION_EVENT, this.handleChipInteraction_);
+    this.root_.addEventListener(
+      MDCChipFoundation.strings.SELECTION_EVENT, this.handleChipSelection_);
     this.root_.addEventListener(
       MDCChipFoundation.strings.REMOVAL_EVENT, this.handleChipRemoval_);
   }
@@ -90,6 +95,8 @@ class MDCChipSet extends MDCComponent {
 
     this.root_.removeEventListener(
       MDCChipFoundation.strings.INTERACTION_EVENT, this.handleChipInteraction_);
+    this.root_.removeEventListener(
+      MDCChipFoundation.strings.SELECTION_EVENT, this.handleChipSelection_);
     this.root_.removeEventListener(
       MDCChipFoundation.strings.REMOVAL_EVENT, this.handleChipRemoval_);
 

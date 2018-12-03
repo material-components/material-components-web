@@ -55,6 +55,12 @@ module.exports = {
   CBT_CONCURRENCY_MAX_WAIT_MS: 10 * 60 * 1000, // 10 minutes
 
   /**
+   * Maximum number of times to retry a failed HTTP request to CBT.
+   * @type {number}
+   */
+  CBT_HTTP_MAX_RETRIES: 5,
+
+  /**
    * Number of milliseconds a Selenium test should wait to receive commands before being considered "stalled".
    * @type {number}
    */
@@ -65,6 +71,13 @@ module.exports = {
    * @type {number}
    */
   SELENIUM_KILL_WAIT_MS: 30 * 1000, // 30 seconds
+
+  /**
+   * Number of milliseconds to wait between sending status updates over the network
+   * (e.g., creating GitHub Status Checks, writing to Google Cloud Datastore).
+   * @type {number}
+   */
+  STATUS_UPDATE_THROTTLE_INTERVAL_MS: 5000, // 5 seconds
 
   ExitCode: {
     OK: 0,

@@ -23,10 +23,53 @@
 
 import {assert} from 'chai';
 import bel from 'bel';
+import td from 'testdouble';
 
-import {matches} from '../../../packages/mdc-dom/ponyfill';
+import {closest, matches} from '../../../packages/mdc-dom/ponyfill';
 
 suite('MDCDom - ponyfill');
+
+test('#closest returns result from native method if available', () => {
+  const mockElement = td.object({closest: () => {}});
+  const selector = '.foo';
+  td.when(mockElement.closest(selector)).thenReturn(mockElement);
+
+  assert.strictEqual(closest(mockElement, selector), mockElement);
+});
+
+test('#closest returns the element when the selector matches the element', () => {
+  const mockElement = td.object({matches: () => {}});
+  const selector = '.foo';
+  td.when(mockElement.matches(selector)).thenReturn(true);
+
+  assert.strictEqual(closest(mockElement, selector), mockElement);
+});
+
+test('#closest returns the parent element when the selector matches the parent element', () => {
+  const mockParentElement = td.object({matches: () => {}});
+  const mockChildElement = {
+    matches: td.func('mockChildElement#matches'),
+    parentElement: mockParentElement,
+  };
+  const selector = '.foo';
+  td.when(mockChildElement.matches(selector)).thenReturn(false);
+  td.when(mockParentElement.matches(selector)).thenReturn(true);
+
+  assert.strictEqual(closest(mockChildElement, selector), mockParentElement);
+});
+
+test('#closest returns null when there is no ancestor matching the selector', () => {
+  const mockParentElement = td.object({matches: () => {}});
+  const mockChildElement = {
+    matches: td.func('mockChildElement#matches'),
+    parentElement: mockParentElement,
+  };
+  const selector = '.foo';
+  td.when(mockChildElement.matches(selector)).thenReturn(false);
+  td.when(mockParentElement.matches(selector)).thenReturn(false);
+
+  assert.isNull(closest(mockChildElement, selector));
+});
 
 test('#matches returns true when the selector matches the element', () => {
   const element = bel`<div class="foo"></div>`;

@@ -22,6 +22,18 @@
  */
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
+/* eslint-disable no-unused-vars */
+import {MDCSelectIconFoundation} from './icon/index';
+import {MDCSelectHelperTextFoundation} from './helper-text/index';
+/* eslint-enable no-unused-vars */
+
+/**
+ * @typedef {{
+ *   leadingIcon: (!MDCSelectIconFoundation|undefined),
+ *   helperText: (!MDCSelectHelperTextFoundation|undefined),
+ * }}
+ */
+let FoundationMapType;
 
 /**
  * Adapter for MDC Select. Provides an interface for managing
@@ -71,6 +83,12 @@ class MDCSelectAdapter {
   deactivateBottomLine() {}
 
   /**
+   * Sets the value of the select.
+   * @param {string} value
+   */
+  setValue(value) {}
+
+  /**
    * Returns the selected value of the select element.
    * @return {string}
    */
@@ -81,12 +99,6 @@ class MDCSelectAdapter {
    * @return {boolean}
    */
   isRtl() {}
-
-  /**
-   * Returns true if label element exists, false if it doesn't.
-   * @return {boolean}
-   */
-  hasLabel() {}
 
   /**
    * Floats label determined based off of the shouldFloat argument.
@@ -118,6 +130,58 @@ class MDCSelectAdapter {
    * Closes notch in outline element, if the outline exists.
    */
   closeOutline() {}
+
+  /**
+   * Opens the menu.
+   */
+  openMenu() {}
+
+  /**
+   * Closes the menu.
+   */
+  closeMenu() {}
+
+  /**
+   * Returns true if the menu is currently open.
+   * @return {boolean}
+   */
+  isMenuOpen() {}
+
+  /**
+   * Sets the selected index of the select to the index provided.
+   * @param {number} index
+   */
+  setSelectedIndex(index) {}
+
+  /**
+   * Sets the select to disabled.
+   * @param {boolean} isDisabled
+   */
+  setDisabled(isDisabled) {}
+
+  /**
+   * Sets the line ripple transform origin center.
+   * @param {number} normalizedX
+   */
+  setRippleCenter(normalizedX) {}
+
+  /**
+   * Emits a change event when an element is selected.
+   * @param {string} value
+   */
+  notifyChange(value) {}
+
+  /**
+   * Checks if the select is currently valid.
+   * @return {boolean} isValid
+   */
+  checkValidity() {}
+
+  /**
+   * Adds/Removes the invalid class.
+   * @param {boolean} isValid
+   */
+  setValid(isValid) {}
 }
 
-export default MDCSelectAdapter;
+export {MDCSelectAdapter, FoundationMapType};

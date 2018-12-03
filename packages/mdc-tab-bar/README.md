@@ -40,7 +40,7 @@ npm install @material/tab-bar
       <div class="mdc-tab-scroller__scroll-content">
         <button class="mdc-tab mdc-tab--active" role="tab" aria-selected="true" tabindex="0">
           <span class="mdc-tab__content">
-            <span class="mdc-tab__icon material-icons">favorite</span>
+            <span class="mdc-tab__icon material-icons" aria-hidden="true">favorite</span>
             <span class="mdc-tab__text-label">Favorites</span>
           </span>
           <span class="mdc-tab-indicator mdc-tab-indicator--active">
@@ -96,6 +96,11 @@ Mixin | Description
 
 ## `MDCTabBar` Properties and Methods
 
+Property | Value Type | Description
+--- | --- | ---
+`focusOnActivate` | `boolean` (write-only) | Sets whether tabs focus themselves when activated. Defaults to `true`.
+`useAutomaticActivation` | `boolean` (write-only) | Sets how tabs activate in response to keyboard interaction. Automatic (`true`) activates as soon as a tab is focused with arrow keys; manual (`false`) activates only when the user presses space/enter. The default is automatic (`true`).
+
 Method Signature | Description
 --- | ---
 `activateTab(index: number) => void` | Activates the tab at the given index.
@@ -136,6 +141,7 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `activateTab(index: number) => void` | Activates the tab at the given index.
+`setUseAutomaticActivation(useAutomaticActivation: boolean) => void` | Sets how tabs activate in response to keyboard interaction. Automatic (`true`) activates as soon as a tab is focused with arrow keys; manual (`false`) activates only when the user presses space/enter.
 `handleKeyDown(evt: Event) => void` | Handles the logic for the `"keydown"` event.
 `handleTabInteraction(evt: Event) => void` | Handles the logic for the `"MDCTab:interacted"` event.
 `scrollIntoView(index: number) => void` | Scrolls the Tab at the given index into view.

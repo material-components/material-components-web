@@ -36,7 +36,7 @@ npm install @material/tab
 ```html
 <button class="mdc-tab" role="tab" aria-selected="false" tabindex="-1">
   <span class="mdc-tab__content">
-    <span class="mdc-tab__icon material-icons">favorite</span>
+    <span class="mdc-tab__icon material-icons" aria-hidden="true">favorite</span>
     <span class="mdc-tab__text-label">Favorites</span>
   </span>
   <span class="mdc-tab-indicator">
@@ -71,7 +71,7 @@ const tab = new MDCTab(document.querySelector('.mdc-tab'));
 ```html
 <button class="mdc-tab mdc-tab--active" role="tab" aria-selected="true">
   <span class="mdc-tab__content">
-    <span class="mdc-tab__icon material-icons">favorite</span>
+    <span class="mdc-tab__icon material-icons" aria-hidden="true">favorite</span>
     <span class="mdc-tab__text-label">Favorites</span>
   </span>
   <span class="mdc-tab-indicator mdc-tab-indicator--active">
@@ -89,7 +89,7 @@ set up to span only the content of the tab if it is instead placed _within_ the 
 ```html
 <button class="mdc-tab" role="tab" aria-selected="false" tabindex="-1">
   <span class="mdc-tab__content">
-    <span class="mdc-tab__icon material-icons">favorite</span>
+    <span class="mdc-tab__icon material-icons" aria-hidden="true">favorite</span>
     <span class="mdc-tab__text-label">Favorites</span>
     <span class="mdc-tab-indicator">
       <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
@@ -98,6 +98,18 @@ set up to span only the content of the tab if it is instead placed _within_ the 
   <span class="mdc-tab__ripple"></span>
 </button>
 ```
+
+### Tab Icons
+
+We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts:
+
+```html
+<head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+```
+
+However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any other icon library you wish.
 
 ## Style Customization
 
@@ -129,7 +141,8 @@ Mixin | Description
 
 Property | Value Type | Description
 --- | --- | ---
-`active` | `boolean` | Allows getting the active state of the tab.
+`active` | `boolean` (read-only) | Allows getting the active state of the tab.
+`focusOnActivate` | `boolean` (write-only) | Sets whether the tab should focus itself when activated. Defaults to `true`.
 
 Method Signature | Description
 --- | ---
@@ -170,6 +183,7 @@ Method Signature | Description
 --- | ---
 `handleClick() => void` | Handles the logic for the `"click"` event.
 `isActive() => boolean` | Returns whether the tab is active.
+`setFocusOnActivate(focusOnActivate: boolean) => void` | Sets whether the tab should focus itself when activated.
 `activate(previousIndicatorClientRect: ClientRect=) => void` | Activates the tab. `previousIndicatorClientRect` is an optional argument.
 `deactivate() => void` | Deactivates the tab.
 `computeDimensions() => MDCTabDimensions` | Returns the dimensions of the tab.

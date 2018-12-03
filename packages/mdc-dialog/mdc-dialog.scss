@@ -6,10 +6,10 @@
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions://
+// furnished to do so, subject to the following conditions:
 //
 // The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.//
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -52,11 +52,11 @@
   @include mdc-dialog-min-width($mdc-dialog-min-width);
   @include mdc-dialog-max-width($mdc-dialog-max-width, $mdc-dialog-margin);
   @include mdc-dialog-max-height(null, $mdc-dialog-margin);
-  @include mdc-dialog-corner-radius($mdc-dialog-corner-radius);
+  @include mdc-dialog-shape-radius(medium);
 
   // Use `display: none` instead of `visibility: hidden` to avoid recalculating layout when the dialog is closed.
   display: none;
-  z-index: 5;
+  z-index: $mdc-dialog-z-index;
 }
 
 .mdc-dialog__scrim {
@@ -69,6 +69,7 @@
 .mdc-dialog__container {
   display: flex;
   flex-direction: row; // IE 11
+  justify-content: space-around; // Ensure Safari centers the dialog (because it treats the container's width oddly)
   box-sizing: border-box;
   transform: scale(.8);
   opacity: 0;
@@ -98,14 +99,20 @@
   position: relative;
   flex-shrink: 0;
   box-sizing: border-box;
-  min-height: 64px;
   margin: 0;
-  padding: 0 24px 15px;
+  padding: 0 24px $mdc-dialog-title-bottom-padding;
   border-bottom: 1px solid transparent;
 
   @include mdc-rtl(".mdc-dialog") {
     text-align: right;
   }
+}
+
+// stylelint-disable-next-line plugin/selector-bem-pattern
+.mdc-dialog--scrollable .mdc-dialog__title {
+  // Adjust bottom padding to make title height align to spec when divider is present.
+  // (Titles for alert dialogs w/o dividers align based on text baseline instead. All spec values are divisible by 4.)
+  padding-bottom: $mdc-dialog-title-bottom-padding + 6px;
 }
 
 .mdc-dialog__content {
@@ -114,7 +121,7 @@
   flex-grow: 1;
   box-sizing: border-box;
   margin: 0;
-  padding: 10px 24px 20px;
+  padding: 20px 24px; // Note: the top padding is only 20px for dialogs without titles; see below for override
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 
@@ -127,6 +134,33 @@
   > :last-child {
     margin-bottom: 0;
   }
+}
+
+// stylelint-disable-next-line plugin/selector-bem-pattern
+.mdc-dialog__title + .mdc-dialog__content {
+  // Eliminate padding to bring as close to spec as possible, relying on title padding.
+  // (Spec seems inconsistent RE title/body spacing on alert vs. simple variants.)
+  padding-top: 0;
+}
+
+// stylelint-disable-next-line plugin/selector-bem-pattern
+.mdc-dialog--scrollable .mdc-dialog__content {
+  // Reduce and equalize vertical paddings when scrollable dividers are present
+  // (Note: this is intentionally after title + content to take precedence)
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+// stylelint-disable-next-line plugin/selector-bem-pattern
+.mdc-dialog__content .mdc-list:first-child:last-child {
+  // Override default .mdc-list padding for content consisting exclusively of a MDC List
+  padding: 6px 0 0; // Top padding balances with title height
+}
+
+// stylelint-disable-next-line plugin/selector-bem-pattern, selector-max-specificity
+.mdc-dialog--scrollable .mdc-dialog__content .mdc-list:first-child:last-child {
+  // Override default .mdc-list padding for content consisting exclusively of a MDC List
+  padding: 0;
 }
 
 .mdc-dialog__actions {
@@ -208,6 +242,7 @@
 
 // postcss-bem-linter: end
 
+// Class applied to body while dialog is open, to prevent scrolling behind the dialog
 .mdc-dialog-scroll-lock {
   overflow: hidden;
 }
