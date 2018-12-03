@@ -492,6 +492,7 @@ Method Signature | Description
 `hasCheckboxAtIndex(index: number) => boolean` | Returns true if checkbox is present at given list item index.
 `isCheckboxCheckedAtIndex(index: number) => boolean` | Returns true if checkbox inside a list item is checked.
 `setCheckedCheckboxOrRadioAtIndex(index: number, isChecked: boolean) => void` | Sets the checked status of checkbox or radio at given list item index.
+`isFocusInsideList() => boolean` | Returns true when the current focused element is inside list root.
 
 ### `MDCListFoundation`
 

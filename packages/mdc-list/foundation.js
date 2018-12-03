@@ -58,6 +58,7 @@ class MDCListFoundation extends MDCFoundation {
       hasCheckboxAtIndex: () => {},
       isCheckboxCheckedAtIndex: () => {},
       setCheckedCheckboxOrRadioAtIndex: () => {},
+      isFocusInsideList: () => {},
     });
   }
 
@@ -360,8 +361,6 @@ class MDCListFoundation extends MDCFoundation {
    * @private
    */
   setRadioAtIndex_(index) {
-    if (!this.adapter_.hasRadioAtIndex(index)) return;
-
     this.adapter_.setCheckedCheckboxOrRadioAtIndex(index, true);
 
     if (this.selectedIndex_ >= 0) {
@@ -378,8 +377,6 @@ class MDCListFoundation extends MDCFoundation {
    * @private
    */
   setCheckboxAtIndex_(index) {
-    if (!this.hasCheckboxAtIndex_(index)) return;
-
     if (this.programmaticSelection_) {
       for (let i = 0; i < this.adapter_.getListItemCount(); i++) {
         let isChecked = false;
@@ -456,12 +453,10 @@ class MDCListFoundation extends MDCFoundation {
   setTabindexToSelectedItem_(index) {
     if (this.isSingleSelectionList_ || this.hasCheckboxOrRadioAtIndex_(index)) {
       let firstSelectedIndex = -1;
-      if (this.selectedIndex_ !== -1 || this.selectedIndex_.length > 0) {
-        if (this.selectedIndex_ instanceof Array) {
-          firstSelectedIndex = this.selectedIndex_[0];
-        } else {
-          firstSelectedIndex = this.selectedIndex_;
-        }
+      if (typeof this.selectedIndex_ === 'number' && this.selectedIndex_ !== -1) {
+        firstSelectedIndex = this.selectedIndex_;
+      } else if (this.selectedIndex_ instanceof Array && this.selectedIndex_.length > 0) {
+        firstSelectedIndex = this.selectedIndex_[0];
       }
 
       this.setTabindexAtIndex_(firstSelectedIndex);
