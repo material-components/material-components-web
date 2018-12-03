@@ -92,13 +92,13 @@ included as part of the DOM structure of a full width text field.
 ```html
 <div class="mdc-text-field mdc-text-field--outlined">
   <input type="text" id="tf-outlined" class="mdc-text-field__input">
-  <label for="tf-outlined" class="mdc-floating-label">Your Name</label>
   <div class="mdc-notched-outline">
-    <svg>
-      <path class="mdc-notched-outline__path"/>
-    </svg>
+    <div class="mdc-notched-outline__leading"></div>
+    <div class="mdc-notched-outline__notch">
+      <label for="tf-outlined" class="mdc-floating-label">Your Name</label>
+    </div>
+    <div class="mdc-notched-outline__trailing"></div>
   </div>
-  <div class="mdc-notched-outline__idle"></div>
 </div>
 ```
 
