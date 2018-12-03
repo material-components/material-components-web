@@ -136,9 +136,6 @@ class MDCListFoundation extends MDCFoundation {
     } else {
       this.setSingleSelectionAtIndex_(/** @type {number} */ (index));
     }
-
-    this.setTabindexAtIndex_(index);
-    this.selectedIndex_ = index;
   }
 
   /**
@@ -314,6 +311,9 @@ class MDCListFoundation extends MDCFoundation {
 
     this.adapter_.addClassForElementIndex(index, selectedClassName);
     this.adapter_.setAttributeForElementIndex(index, strings.ARIA_SELECTED, 'true');
+    this.setTabindexAtIndex_(index);
+
+    this.selectedIndex_ = index;
   }
 
   /**
@@ -331,6 +331,9 @@ class MDCListFoundation extends MDCFoundation {
     }
 
     this.adapter_.setAttributeForElementIndex(index, strings.ARIA_CHECKED, 'true');
+    this.setTabindexAtIndex_(index);
+
+    this.selectedIndex_ = index;
   }
 
   /**
@@ -350,6 +353,8 @@ class MDCListFoundation extends MDCFoundation {
         this.adapter_.setCheckedCheckboxOrRadioAtIndex(i, isChecked);
         this.adapter_.setAttributeForElementIndex(i, strings.ARIA_CHECKED, isChecked ? 'true' : 'false');
       }
+
+      this.selectedIndex_ = index;
     } else {
       let isChecked = this.adapter_.isCheckboxCheckedAtIndex(index);
       if (this.toggleCheckbox_) {
@@ -360,6 +365,14 @@ class MDCListFoundation extends MDCFoundation {
       }
 
       this.adapter_.setAttributeForElementIndex(index, strings.ARIA_CHECKED, isChecked ? 'true' : 'false');
+
+      if (isChecked) {
+        this.selectedIndex_.push(index);
+      } else {
+        this.selectedIndex_ = this.selectedIndex_.filter((i) => i !== index);
+      }
+
+      this.setTabindexAtIndex_(index);
     }
   }
 
