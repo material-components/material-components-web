@@ -70,9 +70,7 @@ fully-upgraded ripple effect on list items, you must instantiate `MDCRipple` on 
 ```js
 import {MDCRipple} from '@material/ripple';
 
-[].forEach.call(document.querySelectorAll('.mdc-list-item'), function(listItemEl) {
-  MDCRipple.attachTo(listItemEl);
-});
+const listItemRipples = list.listElements.map((listItemEl) => new MDCRipple(listItemEl));
 ```
 
 ## Variants
@@ -207,7 +205,7 @@ single list item to become selected and any other previous selected element to b
 ```
 
 ```js
-var list = new MDCList(document.getElementById('my-list'));
+const list = new MDCList(document.getElementById('my-list'));
 list.singleSelection = true;
 ```
 
@@ -232,7 +230,7 @@ creating the list.
 ```
 
 ```js
-var list = new MDCList(document.getElementById('my-list'));
+const list = new MDCList(document.getElementById('my-list'));
 list.singleSelection = true;
 ```
 
