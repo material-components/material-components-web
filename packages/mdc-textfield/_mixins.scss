@@ -211,12 +211,6 @@
 }
 
 @mixin mdc-text-field-outline-shape-radius($radius, $rtl-reflexive: false) {
-  // NOTE: idle and notched state border radius mixins
-  // are broken into 2 different mixins, otherwise
-  // we would be overly specific (big no, no). The cause of
-  // this is because .mdc-notched-outline and .mdc-notched-outline__idle
-  // are siblings. .mdc-notched-outline__idle needs to be a child of
-  // .mdc-notched-outline in order to remedy this issue.
   $resolved-radius: mdc-shape-resolve-percentage-radius($mdc-text-field-height, $radius);
 
   .mdc-notched-outline {
