@@ -701,4 +701,6 @@ class MDCSelect extends MDCComponent {
   };
 }
 
-export {MDCSelect, MDCSelectFoundation};
+export {MDCSelect, MDCSelectFoundation,
+  MDCSelectHelperText, MDCSelectHelperTextFoundation,
+  MDCSelectIcon, MDCSelectIconFoundation};
