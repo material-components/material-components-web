@@ -185,7 +185,7 @@ class MDCListFoundation extends MDCFoundation {
      */
     setTimeout(() => {
       if (!this.adapter_.isFocusInsideList()) {
-        this.setTabindexToSelectedItem_(listItemIndex);
+        this.setTabindexToSelectedItem_();
       }
     }, 0);
   }
@@ -234,7 +234,7 @@ class MDCListFoundation extends MDCFoundation {
       nextIndex = this.focusLastElement();
     } else if (isEnter || isSpace) {
       if (isRootListItem) {
-        if (this.isSingleSelectionList_ || this.hasCheckboxOrRadioAtIndex_(listItemIndex)) {
+        if (this.isSelectableList_()) {
           this.setSelectedIndex(currentIndex);
           this.preventDefaultEvent_(evt);
         }
@@ -264,7 +264,7 @@ class MDCListFoundation extends MDCFoundation {
     this.programmaticSelection_ = false;
     this.toggleCheckbox_ = toggleCheckbox;
 
-    if (this.isSingleSelectionList_ || this.hasCheckboxOrRadioAtIndex_(index)) {
+    if (this.isSelectableList_()) {
       this.setSelectedIndex(index);
     }
 
@@ -415,6 +415,10 @@ class MDCListFoundation extends MDCFoundation {
 
       this.adapter_.setAttributeForElementIndex(index, strings.ARIA_CHECKED, isChecked ? 'true' : 'false');
 
+      if (this.selectedIndex_ === -1) {
+        this.selectedIndex_ = [];
+      }
+
       if (isChecked) {
         this.selectedIndex_.push(index);
       } else {
@@ -440,20 +444,19 @@ class MDCListFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {number} index
-   * @return {boolean} Return true if list item contains checkbox or radio input at given index.
+   * @return {boolean} Return true if it is single selectin list, checkbox list or radio list.
    * @private
    */
-  hasCheckboxOrRadioAtIndex_(index) {
-    return this.adapter_.hasCheckboxAtIndex(index) || this.adapter_.hasRadioAtIndex(index);
+  isSelectableList_() {
+    return this.isSingleSelectionList_ || this.isCheckboxList_ || this.isRadioList_;
   }
 
   /**
    * @param {number} index
    * @private
    */
-  setTabindexToSelectedItem_(index) {
-    if (this.isSingleSelectionList_ || this.hasCheckboxOrRadioAtIndex_(index)) {
+  setTabindexToSelectedItem_() {
+    if (this.isSelectableList_()) {
       let targetIndex = -1;
       if (typeof this.selectedIndex_ === 'number' && this.selectedIndex_ !== -1) {
         targetIndex = this.selectedIndex_;
@@ -477,7 +480,12 @@ class MDCListFoundation extends MDCFoundation {
       if (!this.isCheckboxList_) {
         throw new Error('MDCListFoundation: Array of index is only supported for checkbox based list');
       }
-      return index.some((i) => this.isIndexInRange_(i));
+
+      if (index.length === 0) {
+        return true;
+      } else {
+        return index.some((i) => this.isIndexInRange_(i));
+      }
     } else if (typeof index === 'number') {
       if (this.programmaticSelection_ && this.isCheckboxList_) {
         throw new Error('MDCListFoundation: Expected array of index for checkbox based list but got number: ' + index);
