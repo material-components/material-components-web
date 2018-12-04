@@ -385,13 +385,11 @@ CSS Class | Description
 `mdc-list-divider--padded` | Optional, leaves gaps on each side of divider to match padding of `list-item__meta`.
 `mdc-list-divider--inset` | Optional, increases the leading margin of the divider so that it does not intersect the avatar column.
 
-> NOTE: `mdc-list-divider` class can be used between list items (example 1) *OR* between two lists (example 2).
+> NOTE: The `mdc-list-divider` class can be used between list items *OR* between two lists (see respective examples under [List Dividers](#list-dividers)).
 
-> NOTE: the difference between selected and activated states:
-> * *Selected* state should be implemented on the `.mdc-list-item` when it is likely to frequently change due to user choice. Eg., selecting one or more photos to share in Google Photos.
-> * *Selected* state may apply to one or multiple items in a list at the same time.
+> NOTE: In Material Design, the selected and activated states apply in different, mutually-exclusive situations:
+> * *Selected* state should be applied on the `.mdc-list-item` when it is likely to frequently change due to user choice. E.g., selecting one or more photos to share in Google Photos.
 > * *Activated* state is more permanent than selected state, and will **NOT** change soon relative to the lifetime of the page. Common examples are navigation components such as the list within a navigation drawer.
-> * *Activated* state only applies to one item in a list at a given time.
 
 ### Sass Mixins
 
