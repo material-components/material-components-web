@@ -26,7 +26,7 @@
 @import "@material/shape/functions";
 @import "@material/line-ripple/mixins";
 @import "@material/notched-outline/mixins";
-@import "@material/notched-outline/functions";
+@import "@material/notched-outline/variables";
 @import "./icon/mixins";
 @import "./variables";
 
@@ -108,29 +108,27 @@
 }
 
 @mixin mdc-select-outline-shape-radius($radius, $rtl-reflexive: false) {
-  // NOTE: idle and notched state border radius mixins
-  // are broken into 2 different mixins, otherwise
-  // we would be overly specific (big no, no). The cause of
-  // this is because .mdc-notched-outline and .mdc-notched-outline__idle
-  // are siblings. .mdc-notched-outline__idle needs to be a child of
-  // .mdc-notched-outline in order to remedy this issue.
   $resolved-radius: mdc-shape-resolve-percentage-radius($mdc-select-height, $radius);
 
   .mdc-notched-outline {
     @include mdc-notched-outline-shape-radius($resolved-radius, $rtl-reflexive);
   }
 
-  @include mdc-notched-outline-idle-shape-radius($resolved-radius, $rtl-reflexive);
-
-  &__native-control {
+  .mdc-select__native-control {
     @include mdc-shape-radius($resolved-radius, $rtl-reflexive);
   }
 
-  $cornerSize: mdc-shape-prop-value($resolved-radius);
-  $positionX: mdc-notched-outline-get-notch-padded-position($cornerSize);
-  $labelPositionOffset: - $mdc-select-outline-label-offset + $positionX;
+  $radius-pixels: mdc-shape-prop-value($resolved-radius);
 
-  @include mdc-floating-label-float-position($mdc-select-outlined-label-position-y, -1 * ($labelPositionOffset));
+  @if ($radius-pixels > $mdc-notched-outline-leading-width) {
+    .mdc-select__native-control {
+      @include mdc-rtl-reflexive-property(padding, $radius-pixels + $mdc-notched-outline-padding, $mdc-select-arrow-padding);
+    }
+
+    + .mdc-select-helper-text {
+      @include mdc-rtl-reflexive-property(margin, $radius-pixels + $mdc-notched-outline-padding, $mdc-select-outline-label-offset);
+    }
+  }
 }
 
 // Private
@@ -190,19 +188,12 @@
 }
 
 @mixin mdc-select-outline-color_($color) {
-  // NOTE: outlined version of select wants the "idle" and
-  // "notched" outline to have the same color. This covers two cases:
-  // 1) text field renders with NO value in the "idle" state
-  // 2) text field renders with a value in the "notched" state
-  @include mdc-notched-outline-idle-color($color);
   @include mdc-notched-outline-color($color);
 }
 
 @mixin mdc-select-hover-outline-color_($color) {
   &:not(.mdc-select--focused) .mdc-select__native-control:hover ~,
   &:not(.mdc-select--focused) .mdc-select__selected-text:hover ~ {
-    @include mdc-notched-outline-idle-color($color);
-
     .mdc-notched-outline {
       @include mdc-notched-outline-color($color);
     }
@@ -213,27 +204,46 @@
   @include mdc-select-focused-outline_ {
     @include mdc-notched-outline-color($color);
   }
-
-  @include mdc-select-focused-outline-idle_ {
-    @include mdc-notched-outline-idle-color($color);
-  }
 }
 
 @mixin mdc-select-floating-label_ {
   .mdc-floating-label {
     @include mdc-rtl-reflexive-position(left, $mdc-select-outline-label-offset);
 
-    bottom: 12px;
-    line-height: 1.75rem;
+    top: 21px;
     pointer-events: none;
+  }
+
+  &.mdc-select--with-leading-icon {
+    .mdc-floating-label {
+      @include mdc-rtl-reflexive-position(left, $mdc-select-icon-padding);
+    }
+  }
+
+  &.mdc-select--outlined {
+    .mdc-floating-label {
+      @include mdc-rtl-reflexive-position(left, $mdc-notched-outline-padding);
+
+      top: 17px;
+    }
+
+    &.mdc-select--with-leading-icon {
+      .mdc-floating-label {
+        @include mdc-rtl-reflexive-position(left, $mdc-select-icon-padding - $mdc-notched-outline-leading-width);
+
+        &--float-above {
+          @include mdc-rtl-reflexive-position(left, $mdc-select-icon-padding - $mdc-notched-outline-leading-width);
+        }
+      }
+    }
   }
 }
 
 @mixin mdc-select-with-leading-icon_ {
-  @include mdc-select-icon-horizontal-position_(16px, 48px);
+  @include mdc-select-icon-horizontal-position_(16px, $mdc-select-icon-padding);
 
   &.mdc-select--outlined {
-    @include mdc-floating-label-float-position($mdc-select-outlined-label-position-y, $mdc-select-outlined-with-leading-icon-label-position-x);
+    @include mdc-notched-outline-floating-label-float-position($mdc-select-outlined-label-position-y, $mdc-select-outlined-with-leading-icon-label-position-x);
     @include mdc-floating-label-shake-animation(select-outlined-leading-icon);
 
     @include mdc-rtl {
@@ -341,6 +351,7 @@
   @include mdc-select-outline-shape-radius(medium);
   @include mdc-states-base-color(transparent);
   @include mdc-select-container-fill-color(transparent);
+  @include mdc-notched-outline-floating-label-float-position($mdc-select-outlined-label-position-y, 0);
 
   border: none;
   overflow: visible;
@@ -366,7 +377,6 @@
   }
 
   .mdc-floating-label {
-    bottom: 20px;
     line-height: 1.15rem;
     pointer-events: auto;
   }

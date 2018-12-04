@@ -23,12 +23,11 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Invalid Text Field Element - MDC Web Screenshot Test</title>
+    <title>Baseline Select (No JS) - MDC Web Screenshot Test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../../../out/mdc.textfield.css">
-    <link rel="stylesheet" href="../../../out/mdc.typography.css">
+    <link rel="stylesheet" href="../../../out/mdc.select.css">
     <link rel="stylesheet" href="../../../out/spec/fixture.css">
-    <link rel="stylesheet" href="../../../out/spec/mdc-textfield/fixture.css">
+    <link rel="stylesheet" href="../../../out/spec/mdc-select/fixture.css">
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118996389-2"></script>
@@ -40,55 +39,92 @@
     </script>
   </head>
 
-  <!--This screenshot test is used to check the error state of the text field. -->
   <body class="test-container">
     <main class="test-viewport test-viewport--mobile">
       <div class="test-layout">
 
-        <div class="test-cell test-cell--textfield">
-          <div class="mdc-text-field mdc-text-field--invalid mdc-text-field--with-trailing-icon mdc-text-field--with-leading-icon">
-            <i class="material-icons mdc-text-field__icon" role="button">3d_rotation</i>
-            <input type="text" id="filled-text-field" class="mdc-text-field__input test-text-field__input" required pattern=".{4,8}">
-            <label class="mdc-floating-label" for="filled-text-field">Label</label>
-            <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
+        <div class="test-cell test-cell--select">
+          <div class="mdc-select">
+            <select class="mdc-select__native-control" id="my-select">
+              <option selected></option>
+              <option value="grains">
+                Bread, Cereal, Rice, and Pasta
+              </option>
+              <option value="vegetables">
+                Vegetables
+              </option>
+              <option value="fruit">
+                Fruit
+              </option>
+            </select>
+            <label class="mdc-floating-label" for="my-select">Pick a Food Group</label>
+            <i class="mdc-select__dropdown-icon"></i>
             <div class="mdc-line-ripple"></div>
           </div>
         </div>
 
-        <div class="test-cell test-cell--textfield">
-          <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--invalid mdc-text-field--with-trailing-icon mdc-text-field--with-leading-icon">
-            <i class="material-icons mdc-text-field__icon" role="button">3d_rotation</i>
-            <input type="text" id="outlined-text-field" class="mdc-text-field__input test-text-field__input" required pattern=".{4,8}">
-            <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
+        <div class="test-cell test-cell--select">
+          <div class="mdc-select mdc-select--outlined">
+            <select class="mdc-select__native-control" id="my-select2">
+              <option selected></option>
+              <option value="grains">
+                Bread, Cereal, Rice, and Pasta
+              </option>
+              <option value="vegetables">
+                Vegetables
+              </option>
+              <option value="fruit">
+                Fruit
+              </option>
+            </select>
+            <i class="mdc-select__dropdown-icon"></i>
             <div class="mdc-notched-outline">
               <div class="mdc-notched-outline__leading"></div>
               <div class="mdc-notched-outline__notch">
-                <label for="outlined-text-field" class="mdc-floating-label">Label</label>
+                <label class="mdc-floating-label" for="my-select2">Pick a Food Group</label>
               </div>
               <div class="mdc-notched-outline__trailing"></div>
             </div>
           </div>
         </div>
 
-        <div class="test-cell test-cell--textfield">
-          <div class="mdc-text-field mdc-text-field--invalid mdc-text-field--with-trailing-icon mdc-text-field--with-leading-icon">
-            <i class="material-icons mdc-text-field__icon" role="button">3d_rotation</i>
-            <input type="text" id="filled-text-field-with-value" class="mdc-text-field__input test-text-field__input" value="Filled value" required pattern=".{4,8}">
-            <label for="filled-text-field-with-value" class="mdc-floating-label mdc-floating-label--float-above">Label</label>
-            <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
+        <div class="test-cell test-cell--select">
+          <div class="mdc-select">
+            <select class="mdc-select__native-control" id="my-select3">
+              <option value="grains" selected>
+                Bread, Cereal, Rice, and Pasta
+              </option>
+              <option value="vegetables">
+                Vegetables
+              </option>
+              <option value="fruit">
+                Fruit
+              </option>
+            </select>
+            <label class="mdc-floating-label mdc-floating-label--float-above" for="my-select3">Pick a Food Group</label>
+            <i class="mdc-select__dropdown-icon"></i>
             <div class="mdc-line-ripple"></div>
           </div>
         </div>
 
-        <div class="test-cell test-cell--textfield">
-          <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--invalid mdc-text-field--with-trailing-icon mdc-text-field--with-leading-icon">
-            <i class="material-icons mdc-text-field__icon" role="button">3d_rotation</i>
-            <input type="text" id="outlined-text-field-with-value" class="mdc-text-field__input test-text-field__input" value="Filled value" required pattern=".{4,8}">
-            <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
+        <div class="test-cell test-cell--select">
+          <div class="mdc-select mdc-select--outlined">
+            <select class="mdc-select__native-control" id="my-select4">
+              <option value="grains" selected>
+                Bread, Cereal, Rice, and Pasta
+              </option>
+              <option value="vegetables">
+                Vegetables
+              </option>
+              <option value="fruit">
+                Fruit
+              </option>
+            </select>
+            <i class="mdc-select__dropdown-icon"></i>
             <div class="mdc-notched-outline mdc-notched-outline--notched">
               <div class="mdc-notched-outline__leading"></div>
               <div class="mdc-notched-outline__notch">
-                <label for="outlined-text-field-with-value" class="mdc-floating-label mdc-floating-label--float-above">Label</label>
+                <label class="mdc-floating-label mdc-floating-label--float-above" for="my-select4">Pick a Food Group</label>
               </div>
               <div class="mdc-notched-outline__trailing"></div>
             </div>
@@ -104,6 +140,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fontfaceobserver/2.0.13/fontfaceobserver.standalone.js"></script>
     <script src="../../../out/material-components-web.js"></script>
     <script src="../../../out/spec/fixture.js"></script>
-    <script src="../../../out/spec/mdc-textfield/fixture.js"></script>
   </body>
 </html>

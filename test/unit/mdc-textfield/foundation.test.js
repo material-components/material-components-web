@@ -27,6 +27,7 @@ import td from 'testdouble';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import MDCTextFieldFoundation from '../../../packages/mdc-textfield/foundation';
 
+const LABEL_WIDTH = 100;
 const {cssClasses, numbers} = MDCTextFieldFoundation;
 
 suite('MDCTextFieldFoundation');
@@ -48,7 +49,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'addClass', 'removeClass', 'hasClass',
     'registerTextFieldInteractionHandler', 'deregisterTextFieldInteractionHandler',
     'registerInputInteractionHandler', 'deregisterInputInteractionHandler',
-    'getNativeInput', 'isFocused', 'isRtl', 'activateLineRipple', 'deactivateLineRipple',
+    'getNativeInput', 'isFocused', 'activateLineRipple', 'deactivateLineRipple',
     'setLineRippleTransformOrigin', 'shakeLabel', 'floatLabel', 'hasLabel', 'getLabelWidth',
     'registerValidationAttributeChangeHandler', 'deregisterValidationAttributeChangeHandler',
     'hasOutline', 'notchOutline', 'closeOutline',
@@ -427,28 +428,26 @@ test('#setTrailingIconContent sets the content of the trailing icon element', ()
   td.verify(trailingIcon.setContent('foo'));
 });
 
-test('#notchOutline updates the SVG path of the outline element', () => {
+test('#notchOutline updates the width of the outline element', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getLabelWidth()).thenReturn(30);
+  td.when(mockAdapter.getLabelWidth()).thenReturn(LABEL_WIDTH);
   td.when(mockAdapter.hasLabel()).thenReturn(true);
   td.when(mockAdapter.hasOutline()).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.DENSE)).thenReturn(false);
-  td.when(mockAdapter.isRtl()).thenReturn(false);
 
   foundation.notchOutline(true);
-  td.verify(mockAdapter.notchOutline(30 * numbers.LABEL_SCALE, false));
+  td.verify(mockAdapter.notchOutline(LABEL_WIDTH * numbers.LABEL_SCALE));
 });
 
-test('#notchOutline updates the SVG path of the outline element when dense', () => {
+test('#notchOutline updates width of the outline element when dense', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getLabelWidth()).thenReturn(30);
+  td.when(mockAdapter.getLabelWidth()).thenReturn(LABEL_WIDTH);
   td.when(mockAdapter.hasLabel()).thenReturn(true);
   td.when(mockAdapter.hasOutline()).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.DENSE)).thenReturn(true);
-  td.when(mockAdapter.isRtl()).thenReturn(false);
 
   foundation.notchOutline(true);
-  td.verify(mockAdapter.notchOutline(30 * numbers.DENSE_LABEL_SCALE, false));
+  td.verify(mockAdapter.notchOutline(LABEL_WIDTH * numbers.DENSE_LABEL_SCALE));
 });
 
 const setupBareBonesTest = () => {
@@ -467,17 +466,16 @@ test('#notchOutline does nothing if no outline is present', () => {
   td.verify(mockAdapter.notchOutline(td.matchers.anything()), {times: 0});
 });
 
-test('#notchOutline does nothing if no label is present', () => {
+test('#notchOutline width is set to 0 if no label is present', () => {
   const {foundation, mockAdapter} = setupBareBonesTest();
   td.when(mockAdapter.hasOutline()).thenReturn(true);
-  td.when(mockAdapter.hasLabel()).thenReturn(false);
+  td.when(mockAdapter.getLabelWidth()).thenReturn(0);
 
   foundation.notchOutline(true);
-  td.verify(mockAdapter.notchOutline(td.matchers.anything()), {times: 0});
+  td.verify(mockAdapter.notchOutline(0), {times: 1});
 });
 
-test('#notchOutline calls updates notched outline to return to idle state when ' +
-  'openNotch is false', () => {
+test('#notchOutline(false) closes the outline', () => {
   const {foundation, mockAdapter} = setupBareBonesTest();
   td.when(mockAdapter.hasLabel()).thenReturn(true);
   td.when(mockAdapter.hasOutline()).thenReturn(true);

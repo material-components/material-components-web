@@ -28,9 +28,9 @@ import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline/index';
 
 const getFixture = () => bel`
   <div class="mdc-notched-outline">
-    <svg>
-      <path class="mdc-notched-outline__path">
-    </svg>
+    <div class="mdc-notched-outline__leading"></div>
+    <div class="mdc-notched-outline__notch"></div>
+    <div class="mdc-notched-outline__trailing"></div>
   </div>
 `;
 
@@ -46,18 +46,6 @@ function setupTest() {
   return {root, component};
 }
 
-test('#adapter.getWidth returns the width of the element', () => {
-  const {root, component} = setupTest();
-  const width = component.getDefaultFoundation().adapter_.getWidth();
-  assert.equal(width, root.offsetWidth);
-});
-
-test('#adapter.getHeight returns the height of the element', () => {
-  const {root, component} = setupTest();
-  const height = component.getDefaultFoundation().adapter_.getHeight();
-  assert.equal(height, root.offsetHeight);
-});
-
 test('adapter#addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
@@ -70,24 +58,10 @@ test('adapter#removeClass removes a class to the root element', () => {
   assert.isFalse(root.classList.contains('foo'));
 });
 
-test('#adapter.setOutlinePathAttr sets the SVG path of the element', () => {
+test('#adapter.setNotchWidthProperty sets the width property on the notched element', () => {
   const {root, component} = setupTest();
-  component.getDefaultFoundation().adapter_.setOutlinePathAttr('M 0 1');
-  const path = root.querySelector('.mdc-notched-outline__path');
-  assert.equal(path.getAttribute('d'), 'M 0 1');
+  component.getDefaultFoundation().adapter_.setNotchWidthProperty(0);
+  const path = root.querySelector('.mdc-notched-outline__notch');
+  assert.equal('0px', path.style.width);
 });
 
-test('#adapter.getIdleOutlineStyleValue returns the value of the given property on the idle outline element', () => {
-  const outlineRoot = getFixture();
-  const root = bel`<div></div>`;
-  root.appendChild(outlineRoot);
-  root.appendChild(bel`<div class="mdc-notched-outline__idle"></div>`);
-  const idleOutline = root.querySelector('.mdc-notched-outline__idle');
-  idleOutline.style.width = '500px';
-
-  const component = new MDCNotchedOutline(outlineRoot);
-  assert.equal(
-    component.getDefaultFoundation().adapter_.getIdleOutlineStyleValue('width'),
-    getComputedStyle(idleOutline).getPropertyValue('width')
-  );
-});

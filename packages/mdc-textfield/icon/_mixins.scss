@@ -45,14 +45,6 @@
       @include mdc-rtl-reflexive-property(padding, $position /* left-value */, $padding  /* right-value */);
     }
   }
-
-  // Only move the label's position to allow room for the icon, if the icon is on the same side as the label.
-  // E.g., the icon is on left side in LTR context.
-  @if ($position-property == left) {
-    .mdc-floating-label {
-      @include mdc-rtl-reflexive-position($position-property, $padding);
-    }
-  }
 }
 
 @mixin mdc-text-field-icon-horizontal-position-two-icons_($position-left, $padding-left, $position-right, $padding-right) {
@@ -67,12 +59,6 @@
   // Move the input's position, to allow room for the icons.
   .mdc-text-field__input {
     @include mdc-rtl-reflexive-property(padding, $padding-left, $padding-right);
-  }
-
-  // Only move the label's position to allow room for the icon, if the icon is on the same
-  // side as the label. Aka the icon is on left side in a LTR context.
-  .mdc-floating-label {
-    @include mdc-rtl-reflexive(left, $padding-left, right, auto);
   }
 }
 
