@@ -68,12 +68,6 @@
 @mixin mdc-text-field-textarea-fill-color($color) {
   &:not(.mdc-text-field--disabled) {
     @include mdc-text-field-textarea-fill-color_($color);
-
-    // Automatically add label background color the same color as well to ensure
-    // the label can be seen if the input scrolls behind the label
-    .mdc-floating-label {
-      @include mdc-floating-label-fill-color($color);
-    }
   }
 }
 
