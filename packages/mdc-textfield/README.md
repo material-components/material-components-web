@@ -6,6 +6,11 @@ iconId: text_field
 path: /catalog/input-controls/text-field/
 -->
 
+## Important - Deprecation Notice
+
+The dense variant of the text field will be removed in an upcoming release. 
+See [github issue](https://github.com/material-components/material-components-web/issues/4142) for details.
+
 # Text Field
 
 Text fields allow users to input, edit, and select text.
