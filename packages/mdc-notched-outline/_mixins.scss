@@ -64,9 +64,12 @@
     font-size: ($scale * 1rem);
   }
 
+  // Two selectors to ensure we select the appropriate class when applied from this component or a parent component.
+  &.mdc-notched-outline--upgraded,
   .mdc-notched-outline--upgraded {
     @include mdc-floating-label-float-position($positionY, $positionX, $scale);
 
+    // stylelint-disable-next-line no-descending-specificity
     .mdc-floating-label--float-above {
       font-size: 1rem;
     }

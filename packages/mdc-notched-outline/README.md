@@ -86,12 +86,6 @@ Mixin | Description
 `mdc-notched-outline-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to notched outline element with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `mdc-notched-outline-floating-label-float-position($positionY, $positionX, $scale)` | Sets the position and scale of the floating label inside the notched outline.
 
-### Sass Functions
-
-Function | Description
---- | ---
-`mdc-notched-outline-get-notch-padded-position($cornerSize)` | Returns the notch padded position based on given radius. This is 'x' position where the floating label starts.
-
 ## `MDCNotchedOutline` Properties and Methods
 
 Method Signature | Description
