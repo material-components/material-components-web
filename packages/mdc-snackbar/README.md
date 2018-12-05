@@ -84,7 +84,7 @@ On larger screens, they can optionally be displayed on the _leading_ edge of the
 </div>
 ```
 
-### Stacked (tablet and desktop only)
+### Stacked
 
 Action buttons with long text should be positioned _below_ the label instead of along side it. This can be accomplished by adding the `mdc-snackbar--stacked` modifier class to the root element:
 
