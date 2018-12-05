@@ -159,8 +159,8 @@ Mixin | Description
 `mdc-snackbar-fill-color($color)` | Sets the fill color of the snackbar.
 `mdc-snackbar-label-ink-color($color)` | Sets the color of the snackbar's label text.
 `mdc-snackbar-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to snackbar surface with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
-`mdc-snackbar-min-width($min-width)` | Sets the minimum width of the snackbar (defaults to 344px).
-`mdc-snackbar-max-width($max-width)` | Sets the maximum width of the snackbar (defaults to 672px).
+`mdc-snackbar-min-width($min-width)` | Sets the minimum width of the snackbar (defaults to `344px`).
+`mdc-snackbar-max-width($max-width)` | Sets the maximum width of the snackbar (defaults to `672px`).
 `mdc-snackbar-elevation($z-index)` | Sets the elevation of the snackbar.
 `mdc-snackbar-viewport-margin($margin)` | Sets the distance between the snackbar and the viewport.
 `mdc-snackbar-z-index($z-index)` | Sets the `z-index` of the snackbar.
