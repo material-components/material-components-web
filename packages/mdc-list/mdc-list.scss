@@ -38,7 +38,6 @@
 
   // According to the mocks and stickersheet, the line-height is adjusted to 24px for text content,
   // same as for body1.
-
   /* @alternate */
   line-height: map-get(map-get($mdc-typography-styles, body1), line-height);
   list-style-type: none;
@@ -109,6 +108,11 @@
 
 .mdc-list-item__text {
   @include mdc-typography-overflow-ellipsis;
+}
+
+// Disable interaction on label elements that may automatically toggle corresponding checkbox / radio input.
+.mdc-list-item__text[for] {
+  pointer-events: none;
 }
 
 $mdc-list-item-primary-text-baseline-height_: 32px;

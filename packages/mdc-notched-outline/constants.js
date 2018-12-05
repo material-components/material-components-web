@@ -23,19 +23,20 @@
 
 /** @enum {string} */
 const strings = {
-  PATH_SELECTOR: '.mdc-notched-outline__path',
-  IDLE_OUTLINE_SELECTOR: '.mdc-notched-outline__idle',
+  NOTCH_ELEMENT_SELECTOR: '.mdc-notched-outline__notch',
+};
+
+/** @enum {number} */
+const numbers = {
+  // This should stay in sync with $mdc-notched-outline-padding * 2.
+  NOTCH_ELEMENT_PADDING: 8,
 };
 
 /** @enum {string} */
 const cssClasses = {
   OUTLINE_NOTCHED: 'mdc-notched-outline--notched',
+  OUTLINE_UPGRADED: 'mdc-notched-outline--upgraded',
+  NO_LABEL: 'mdc-notched-outline--no-label',
 };
 
-/** @enum {number} */
-const numbers = {
-  NOTCH_GUTTER_SIZE: 4,
-  MIN_LEADING_STROKE_EDGE_POSITION: 12,
-};
-
-export {cssClasses, strings, numbers};
+export {cssClasses, numbers, strings};

@@ -25,6 +25,7 @@
 const cssClasses = {
   LABEL_FLOAT_ABOVE: 'mdc-floating-label--float-above',
   LABEL_SHAKE: 'mdc-floating-label--shake',
+  ROOT: 'mdc-floating-label',
 };
 
 export {cssClasses};

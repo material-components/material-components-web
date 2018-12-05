@@ -106,6 +106,11 @@ Menus can contain a group of list items that can represent the selection state o
 </div>
 ```
 
+### Disabled Menu Items
+
+Menu items can be disabled by adding the `mdc-list-item--disabled` modifier class (from [MDC List](../mdc-list)).
+Disabled menu items will be excluded from keyboard navigation.
+
 ### Anchors and Positioning
 
 #### Anchored To Parent

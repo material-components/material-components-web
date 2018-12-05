@@ -1,6 +1,6 @@
 {
   "name": "@material/menu-surface",
-  "version": "0.41.0",
+  "version": "0.42.0",
   "description": "The Material Components for the web menu surface component",
   "license": "MIT",
   "keywords": [
@@ -17,8 +17,8 @@
     "@material/animation": "^0.41.0",
     "@material/base": "^0.41.0",
     "@material/elevation": "^0.41.0",
-    "@material/rtl": "^0.40.1",
-    "@material/shape": "^0.41.0",
+    "@material/rtl": "^0.42.0",
+    "@material/shape": "^0.42.0",
     "@material/theme": "^0.41.0"
   },
   "publishConfig": {

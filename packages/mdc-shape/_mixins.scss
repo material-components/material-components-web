@@ -24,11 +24,19 @@
 @import "./functions";
 
 @mixin mdc-shape-radius($radius, $rtl-reflexive: false) {
+  // Even if $rtl-reflexive is true, only emit RTL styles if we can't easily tell that the given radius is symmetrical
+  $needs-flip: $rtl-reflexive and length($radius) > 1;
+
+  @if ($needs-flip) {
+    /* @noflip */
+  }
+
   border-radius: mdc-shape-prop-value($radius);
 
-  @if ($rtl-reflexive) {
+  @if ($needs-flip) {
     @include mdc-rtl {
-      border-radius: mdc-shape-flip-radius($radius);
+      /* @noflip */
+      border-radius: mdc-shape-flip-radius(mdc-shape-prop-value($radius));
     }
   }
 }

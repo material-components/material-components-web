@@ -1,6 +1,6 @@
 {
   "name": "@material/tabs",
-  "version": "0.41.0",
+  "version": "0.42.0",
   "description": "The Material Components for the web tabs component",
   "license": "MIT",
   "main": "dist/mdc.tabs.js",
@@ -19,9 +19,9 @@
   "dependencies": {
     "@material/animation": "^0.41.0",
     "@material/base": "^0.41.0",
-    "@material/ripple": "^0.41.0",
-    "@material/rtl": "^0.40.1",
+    "@material/ripple": "^0.42.0",
+    "@material/rtl": "^0.42.0",
     "@material/theme": "^0.41.0",
-    "@material/typography": "^0.41.0"
+    "@material/typography": "^0.42.0"
   }
 }
