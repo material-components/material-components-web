@@ -80,17 +80,7 @@ On larger screens, they can optionally be displayed on the _leading_ edge of the
 
 ```html
 <div class="mdc-snackbar mdc-snackbar--leading">
-  <div class="mdc-snackbar__surface">
-    <div class="mdc-snackbar__label"
-         role="status"
-         aria-live="polite">
-      Your photo has been archived.
-    </div>
-    <div class="mdc-snackbar__actions">
-      <button type="button" class="mdc-button mdc-snackbar__action-button">Undo</button>
-      <button class="mdc-icon-button mdc-snackbar__action-icon material-icons" title="Dismiss">close</button>
-    </div>
-  </div>
+  ...
 </div>
 ```
 
@@ -100,17 +90,7 @@ Action buttons with long text should be positioned _below_ the label instead of 
 
 ```html
 <div class="mdc-snackbar mdc-snackbar--stacked">
-  <div class="mdc-snackbar__surface">
-    <div class="mdc-snackbar__label"
-         role="status"
-         aria-live="polite">
-      This item already has the label "travel". You can add a new label.
-    </div>
-    <div class="mdc-snackbar__actions">
-      <button type="button" class="mdc-button mdc-snackbar__action-button">Add a new label</button>
-      <button class="mdc-icon-button mdc-snackbar__action-icon material-icons" title="Dismiss">close</button>
-    </div>
-  </div>
+  ...
 </div>
 ```
 
@@ -120,17 +100,7 @@ To increase the margins between the snackbar and the viewport on larger screens,
 
 ```html
 <div class="mdc-snackbar mdc-snackbar--wide">
-  <div class="mdc-snackbar__surface">
-    <div class="mdc-snackbar__label"
-         role="status"
-         aria-live="polite">
-      Connection timed out. Showing the latest locally saved version of this document.
-      Edits made while offline will not be visible to other users until network connectivity is restored.
-    </div>
-    <div class="mdc-snackbar__actions">
-      <button class="mdc-icon-button mdc-snackbar__action-icon material-icons" title="Dismiss">close</button>
-    </div>
-  </div>
+  ...
 </div>
 ```
 
