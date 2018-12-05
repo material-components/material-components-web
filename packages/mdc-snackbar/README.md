@@ -145,8 +145,8 @@ CSS Class | Description
 `mdc-snackbar__actions` | Optional. Wraps the action button/icon elements, if present.
 `mdc-snackbar__action-button` | Optional. The action button.
 `mdc-snackbar__action-icon` | Optional. The dismiss ("X") icon.
-`mdc-snackbar--opening` | Optional. Indicates that the snackbar is open and visible.
-`mdc-snackbar--open` | Optional. Applied automatically when the snackbar is in the process of animating open.
+`mdc-snackbar--opening` | Optional. Applied automatically when the snackbar is in the process of animating open.
+`mdc-snackbar--open` | Optional. Indicates that the snackbar is open and visible.
 `mdc-snackbar--closing` | Optional. Applied automatically when the snackbar is in the process of animating closed.
 `mdc-snackbar--leading` | Optional. Positions the snackbar on the leading edge of the screen (left in LTR, right in RTL) instead of centered.
 `mdc-snackbar--stacked` | Optional. Positions the action button/icon below the label instead of along side it. Should only be applied to devices with large screens.
