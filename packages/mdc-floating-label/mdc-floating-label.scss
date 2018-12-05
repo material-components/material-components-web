@@ -36,13 +36,13 @@
     @include mdc-typography(subtitle1);
 
     position: absolute;
-    bottom: 8px;
+    /* @noflip */
     left: 0;
+    /* @noflip */
     transform-origin: left top;
     transition:
       transform $mdc-floating-label-transition-duration $mdc-animation-standard-curve-timing-function,
       color $mdc-floating-label-transition-duration $mdc-animation-standard-curve-timing-function;
-
     /* @alternate */
     line-height: 1.15rem;
     text-align: left;
@@ -57,13 +57,10 @@
     @include mdc-rtl {
       /* @noflip */
       right: 0;
-
       /* @noflip */
       left: auto;
-
       /* @noflip */
       transform-origin: right top;
-
       /* @noflip */
       text-align: right;
     }

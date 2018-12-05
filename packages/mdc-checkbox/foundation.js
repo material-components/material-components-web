@@ -28,9 +28,6 @@ import MDCCheckboxAdapter from './adapter';
 /* eslint-enable no-unused-vars */
 import {cssClasses, strings, numbers} from './constants';
 
-/** @const {!Array<string>} */
-const CB_PROTO_PROPS = ['checked', 'indeterminate'];
-
 /**
  * @extends {MDCFoundation<!MDCCheckboxAdapter>}
  */
@@ -57,7 +54,6 @@ class MDCCheckboxFoundation extends MDCFoundation {
       removeClass: (/* className: string */) => {},
       setNativeControlAttr: (/* attr: string, value: string */) => {},
       removeNativeControlAttr: (/* attr: string */) => {},
-      getNativeControl: () => /* !MDCSelectionControlState */ {},
       forceLayout: () => {},
       isAttachedToDOM: () => /* boolean */ {},
       isIndeterminate: () => /* boolean */ {},
@@ -88,12 +84,10 @@ class MDCCheckboxFoundation extends MDCFoundation {
     this.currentCheckState_ = this.determineCheckState_();
     this.updateAriaChecked_();
     this.adapter_.addClass(cssClasses.UPGRADED);
-    this.installPropertyChangeHooks_();
   }
 
   /** @override */
   destroy() {
-    this.uninstallPropertyChangeHooks_();
     clearTimeout(this.animEndLatchTimer_);
   }
 
@@ -126,44 +120,6 @@ class MDCCheckboxFoundation extends MDCFoundation {
    */
   handleChange() {
     this.transitionCheckState_();
-  }
-
-  /** @private */
-  installPropertyChangeHooks_() {
-    const nativeCb = this.getNativeControl_();
-    const cbProto = Object.getPrototypeOf(nativeCb);
-
-    CB_PROTO_PROPS.forEach((controlState) => {
-      const desc = Object.getOwnPropertyDescriptor(cbProto, controlState);
-      // We have to check for this descriptor, since some browsers (Safari) don't support its return.
-      // See: https://bugs.webkit.org/show_bug.cgi?id=49739
-      if (validDescriptor(desc)) {
-        const nativeCbDesc = /** @type {!ObjectPropertyDescriptor} */ ({
-          get: desc.get,
-          set: (state) => {
-            desc.set.call(nativeCb, state);
-            this.transitionCheckState_();
-          },
-          configurable: desc.configurable,
-          enumerable: desc.enumerable,
-        });
-        Object.defineProperty(nativeCb, controlState, nativeCbDesc);
-      }
-    });
-  }
-
-  /** @private */
-  uninstallPropertyChangeHooks_() {
-    const nativeCb = this.getNativeControl_();
-    const cbProto = Object.getPrototypeOf(nativeCb);
-
-    CB_PROTO_PROPS.forEach((controlState) => {
-      const desc = /** @type {!ObjectPropertyDescriptor} */ (
-        Object.getOwnPropertyDescriptor(cbProto, controlState));
-      if (validDescriptor(desc)) {
-        Object.defineProperty(nativeCb, controlState, desc);
-      }
-    });
   }
 
   /** @private */
@@ -265,27 +221,6 @@ class MDCCheckboxFoundation extends MDCFoundation {
       this.adapter_.removeNativeControlAttr(strings.ARIA_CHECKED_ATTR);
     }
   }
-
-  /**
-   * @return {!MDCSelectionControlState}
-   * @private
-   */
-  getNativeControl_() {
-    return this.adapter_.getNativeControl() || {
-      checked: false,
-      indeterminate: false,
-      disabled: false,
-      value: null,
-    };
-  }
-}
-
-/**
- * @param {ObjectPropertyDescriptor|undefined} inputPropDesc
- * @return {boolean}
- */
-function validDescriptor(inputPropDesc) {
-  return !!inputPropDesc && typeof inputPropDesc.set === 'function';
 }
 
 export default MDCCheckboxFoundation;

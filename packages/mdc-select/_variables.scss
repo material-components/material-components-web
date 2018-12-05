@@ -23,9 +23,10 @@
 @import "@material/animation/variables";
 @import "@material/theme/variables";
 
-$mdc-select-arrow-padding: 26px;
+$mdc-select-arrow-padding: 52px;
 $mdc-select-label-padding: 16px;
 $mdc-select-height: 56px;
+$mdc-select-icon-padding: 48px;
 
 $mdc-select-ink-color: rgba(mdc-theme-prop-value(on-surface), .87);
 $mdc-select-dropdown-color: mdc-theme-prop-value(on-surface);
@@ -52,7 +53,7 @@ $mdc-select-disabled-dropdown-opacity: .37;
 $mdc-select-outlined-disabled-border: rgba(mdc-theme-prop-value(on-surface), .16);
 $mdc-select-outlined-hover-border: rgba(mdc-theme-prop-value(on-surface), .87);
 
-$mdc-select-label-position-y: 40%;
+$mdc-select-label-position-y: 70%;
 $mdc-select-outline-label-offset: 16px;
 $mdc-select-outlined-label-position-y: 130%;
 $mdc-select-outlined-dense-label-position-y: 110%;

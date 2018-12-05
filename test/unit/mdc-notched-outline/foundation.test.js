@@ -28,13 +28,16 @@ import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
 import MDCNotchedOutlineFoundation from '../../../packages/mdc-notched-outline/foundation';
 
-const {cssClasses, strings} = MDCNotchedOutlineFoundation;
+const {cssClasses, numbers, strings} = MDCNotchedOutlineFoundation;
 
 suite('MDCNotchedOutlineFoundation');
 
-
 test('exports cssClasses', () => {
   assert.deepEqual(MDCNotchedOutlineFoundation.cssClasses, cssClasses);
+});
+
+test('exports numbers', () => {
+  assert.deepEqual(MDCNotchedOutlineFoundation.numbers, numbers);
 });
 
 test('exports strings', () => {
@@ -43,39 +46,23 @@ test('exports strings', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCNotchedOutlineFoundation, [
-    'addClass', 'removeClass', 'getWidth', 'getHeight',
-    'setOutlinePathAttr', 'getIdleOutlineStyleValue',
+    'addClass', 'removeClass', 'setNotchWidthProperty',
   ]);
 });
 
 const setupTest = () => setupFoundationTest(MDCNotchedOutlineFoundation);
 
-test('#notch sets the path of the outline element and adds the notch selector', () => {
+test('#notch adds the notched class and sets the width of the element', () => {
   const {foundation, mockAdapter} = setupTest();
   const notchWidth = 30;
   foundation.notch(notchWidth);
+  td.verify(mockAdapter.setNotchWidthProperty(notchWidth + MDCNotchedOutlineFoundation.numbers.NOTCH_ELEMENT_PADDING));
   td.verify(mockAdapter.addClass(MDCNotchedOutlineFoundation.cssClasses.OUTLINE_NOTCHED));
-  td.verify(mockAdapter.setOutlinePathAttr(td.matchers.anything()));
 });
 
-test('#closeNotch removes the notch selector', () => {
+test('#closeNotch removes the notch selector and resets the width to 0', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.closeNotch();
   td.verify(mockAdapter.removeClass(MDCNotchedOutlineFoundation.cssClasses.OUTLINE_NOTCHED));
-});
-
-test('#updateSvgPath_ sets the path of the outline element', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const notchWidth = 30;
-  const isRtl = true;
-  foundation.updateSvgPath_(notchWidth, isRtl);
-  td.verify(mockAdapter.setOutlinePathAttr(td.matchers.anything()));
-});
-
-test('#updateSvgPath_ sets the path of the outline element if not isRtl', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const notchWidth = 30;
-  const isRtl = false;
-  foundation.updateSvgPath_(notchWidth, isRtl);
-  td.verify(mockAdapter.setOutlinePathAttr(td.matchers.anything()));
+  td.verify(mockAdapter.setNotchWidthProperty(0));
 });

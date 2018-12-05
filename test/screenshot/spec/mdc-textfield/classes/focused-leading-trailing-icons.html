@@ -60,14 +60,14 @@
             <!-- The single space value is to overcome an issue where the component does not draw the SVG path when created unless there is a value. -->
             <i class="material-icons mdc-text-field__icon" role="button">3d_rotation</i>
             <input type="text" id="outlined-text-field" class="mdc-text-field__input test-text-field__input" value=" ">
-            <label for="outlined-text-field" class="mdc-floating-label mdc-floating-label--float-above">Label</label>
             <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
             <div class="mdc-notched-outline mdc-notched-outline--notched">
-              <svg>
-                <path class="mdc-notched-outline__path"/>
-              </svg>
+              <div class="mdc-notched-outline__leading"></div>
+              <div class="mdc-notched-outline__notch">
+                <label for="outlined-text-field" class="mdc-floating-label mdc-floating-label--float-above">Label</label>
+              </div>
+              <div class="mdc-notched-outline__trailing"></div>
             </div>
-            <div class="mdc-notched-outline__idle"></div>
           </div>
         </div>
 
@@ -85,14 +85,14 @@
           <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--focused mdc-text-field--with-trailing-icon mdc-text-field--with-leading-icon">
             <i class="material-icons mdc-text-field__icon" role="button">3d_rotation</i>
             <input type="text" id="outlined-text-field-with-value" class="mdc-text-field__input test-text-field__input" value="Filled value">
-            <label for="outlined-text-field-with-value" class="mdc-floating-label mdc-floating-label--float-above">Label</label>
             <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">event</i>
             <div class="mdc-notched-outline mdc-notched-outline--notched">
-              <svg>
-                <path class="mdc-notched-outline__path"/>
-              </svg>
+              <div class="mdc-notched-outline__leading"></div>
+              <div class="mdc-notched-outline__notch">
+                <label for="outlined-text-field-with-value" class="mdc-floating-label mdc-floating-label--float-above">Label</label>
+              </div>
+              <div class="mdc-notched-outline__trailing"></div>
             </div>
-            <div class="mdc-notched-outline__idle"></div>
           </div>
         </div>
 

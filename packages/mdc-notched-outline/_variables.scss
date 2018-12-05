@@ -26,3 +26,8 @@ $mdc-notched-outline-min-leading-stroke-edge-position: 12px;
 // The gap between the stroke end and floating label
 // Keep this in sync with constants.numbers.NOTCH_GUTTER_SIZE
 $mdc-notched-outline-notch-gutter-size: 4px;
+$mdc-notched-outline-leading-width: 12px;
+$mdc-notched-outline-padding: 4px;
+// This variable keeps the before/after JS label centered in the notch when the font-size is changed.
+$mdc-notched-outline-label-adjust: 14%;
+

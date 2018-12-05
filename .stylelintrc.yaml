@@ -4,6 +4,8 @@ plugins:
   - stylelint-scss
   - stylelint-order
 rules:
+  # Override stylelint-config-standard - we only use CSS comments for annotations that don't warrant an empty line
+  comment-empty-line-before: null
   # Follow best practices
   font-family-name-quotes: always-where-recommended
   # https://stackoverflow.com/a/34383157/467582

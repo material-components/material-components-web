@@ -1,7 +1,7 @@
 {
   "name": "@material/icon-button",
   "description": "The Material Components for the web icon button component",
-  "version": "0.41.0",
+  "version": "0.42.0",
   "license": "MIT",
   "main": "dist/mdc.iconButton.js",
   "keywords": [
@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@material/base": "^0.41.0",
-    "@material/ripple": "^0.41.0",
+    "@material/ripple": "^0.42.0",
     "@material/theme": "^0.41.0"
   },
   "publishConfig": {

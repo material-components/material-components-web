@@ -105,13 +105,13 @@ function getOutlineFixture() {
           Apple
         </option>
       </select>
-      <label class="mdc-floating-label">Pick a Food Group</label>
       <div class="mdc-notched-outline">
-        <svg>
-          <path class="mdc-notched-outline__path">
-        </svg>
+        <div class="mdc-notched-outline__leading"></div>
+        <div class="mdc-notched-outline__notch">
+          <label class="mdc-floating-label">Pick a Food Group</label>
+        </div>
+        <div class="mdc-notched-outline__trailing"></div>
       </div>
-      <div class="mdc-notched-outline__idle"/>
     </div>
   `;
 }
@@ -143,7 +143,7 @@ function setupTest(hasOutline = false, hasLabel = true, hasHelperText = false) {
   const helperText = new FakeHelperText();
 
   if (!hasLabel) {
-    fixture.removeChild(labelEl);
+    labelEl.parentElement.removeChild(labelEl);
   }
 
   if (container) {
@@ -355,20 +355,6 @@ test('adapter#activateBottomLine and adapter.deactivateBottomLine ' +
     () => component.getDefaultFoundation().adapter_.deactivateBottomLine());
 });
 
-
-test('adapter#isRtl returns true when the root element is in an RTL context' +
-  'and false otherwise', () => {
-  const wrapper = bel`<div dir="rtl"></div>`;
-  const {fixture, component} = setupTest();
-  assert.isFalse(component.getDefaultFoundation().adapter_.isRtl());
-
-  wrapper.appendChild(fixture);
-  document.body.appendChild(wrapper);
-  assert.isTrue(component.getDefaultFoundation().adapter_.isRtl());
-
-  document.body.removeChild(wrapper);
-});
-
 test('adapter#setDisabled sets the select to be disabled', () => {
   const {component, nativeControl} = setupTest();
   const adapter = component.getDefaultFoundation().adapter_;
@@ -422,8 +408,7 @@ test('instantiates ripple', function() {
 });
 
 test(`#constructor instantiates an outline on the ${cssClasses.OUTLINE_SELECTOR} element if present`, () => {
-  const root = getFixture();
-  root.appendChild(bel`<div class="mdc-notched-outline"></div>`);
+  const root = getOutlineFixture();
   const component = new MDCSelect(root);
   assert.instanceOf(component.outline_, MDCNotchedOutline);
 });
@@ -501,22 +486,20 @@ test('adapter#deactivateBottomLine removes active class from the bottom line', (
   td.verify(bottomLine.deactivate());
 });
 
-test('adapter#notchOutline proxies labelWidth and isRtl to the outline', () => {
+test('adapter#notchOutline proxies labelWidth to the outline', () => {
   const hasOutline = true;
   const {component, outline} = setupTest(hasOutline);
-  const isRtl = false;
 
-  component.getDefaultFoundation().adapter_.notchOutline(LABEL_WIDTH, isRtl);
-  td.verify(outline.notch(LABEL_WIDTH, isRtl), {times: 1});
+  component.getDefaultFoundation().adapter_.notchOutline(LABEL_WIDTH);
+  td.verify(outline.notch(LABEL_WIDTH), {times: 1});
 });
 
 test('adapter#notchOutline does not proxy values to the outline if it does not exist', () => {
   const hasOutline = false;
   const {component, outline} = setupTest(hasOutline);
-  const isRtl = false;
 
-  component.getDefaultFoundation().adapter_.notchOutline(LABEL_WIDTH, isRtl);
-  td.verify(outline.notch(LABEL_WIDTH, isRtl), {times: 0});
+  component.getDefaultFoundation().adapter_.notchOutline(LABEL_WIDTH);
+  td.verify(outline.notch(LABEL_WIDTH), {times: 0});
 });
 
 test('adapter#getLabelWidth returns the width of the label', () => {

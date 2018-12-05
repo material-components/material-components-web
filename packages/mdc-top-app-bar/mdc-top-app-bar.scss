@@ -89,13 +89,17 @@
 
 .mdc-top-app-bar--short {
   top: 0;
+  /* @noflip */
   right: auto;
+  /* @noflip */
   left: 0;
   width: 100%;
   transition: width 250ms $mdc-animation-standard-curve-timing-function;
 
   @include mdc-rtl {
+    /* @noflip */
     right: 0;
+    /* @noflip */
     left: auto;
   }
 

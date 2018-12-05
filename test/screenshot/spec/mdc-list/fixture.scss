@@ -20,17 +20,17 @@
 // THE SOFTWARE.
 //
 
-@import "./variables";
+@import "../../../../packages/mdc-list/mixins";
+@import "../../../../packages/mdc-theme/color-palette";
+@import "../../../../packages/mdc-theme/variables";
+@import "../mixins";
 
-//
-// Returns the notch padded position based on given radius. This is 'x' position where the floating label starts.
-//
-// Examples:
-//
-// mdc-notched-outline-get-notch-padded-position(4px) => 21.2px
-//
-@function mdc-notched-outline-get-notch-padded-position($cornerSize) {
-  $leadingStrokeLength: max(0, $mdc-notched-outline-min-leading-stroke-edge-position - $cornerSize - 1.2);
+.test-cell--list {
+  @include test-cell-size(321, 521);
+}
 
-  @return $cornerSize + $leadingStrokeLength + $mdc-notched-outline-notch-gutter-size + 1.2;
+.test-list-baseline,
+.test-radio-list,
+.test-checkbox-list {
+  width: 100%;
 }
