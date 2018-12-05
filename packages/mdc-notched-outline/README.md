@@ -71,8 +71,8 @@ const notchedOutline = new MDCNotchedOutline(document.querySelector('.mdc-notche
 
 CSS Class | Description
 --- | ---
-`mdc-notched-outline` | Mandatory. Container for the SVG of the notched outline path.
-`mdc-notched-outline--notched` | Class to open notch outline.
+`mdc-notched-outline` | Mandatory. Container for the outline's sides and notch.
+`mdc-notched-outline--notched` | Modifier class to open the notched outline.
 `mdc-notched-outline__leading` | Mandatory. Element representing the leading side of the notched outline (before the notch).
 `mdc-notched-outline__notch` | Mandatory. Element representing the notch.
 `mdc-notched-outline__trailing` | Mandatory. Element representing the trailing side of the notched outline (after the notch).
@@ -81,7 +81,7 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-notched-outline-color($color)` | Customizes the border color of the notched outlined.
+`mdc-notched-outline-color($color)` | Customizes the border color of the notched outline.
 `mdc-notched-outline-stroke-width($width)` | Changes notched outline width to a specified pixel value.
 `mdc-notched-outline-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to notched outline element with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `mdc-notched-outline-floating-label-float-position($positionY, $positionX, $scale)` | Sets the position and scale of the floating label inside the notched outline.
@@ -90,8 +90,8 @@ Mixin | Description
 
 Method Signature | Description
 --- | ---
-`notch(notchWidth: number) => void` | Updates notched outline to open notch in outline path.
-`closeNotch() => void` | Updates the notched outline to close notch in outline path.
+`notch(notchWidth: number) => void` | Opens the notch with the specified width.
+`closeNotch() => void` | Closes the notch, rendering a full outline.
 
 ## Usage Within Frameworks
 
@@ -109,5 +109,5 @@ Method Signature | Description
 
 Method Signature | Description
 --- | ---
-`notch(notchWidth: number) => void` | Adds the `mdc-notched-outline--notched` selector and updates the notched outline path based off notchWidth and isRtl.
-`closeNotch() => void` | Removes the outline notched selector.
+`notch(notchWidth: number) => void` | Adds the `mdc-notched-outline--notched` class and updates the notch element's style based on `notchWidth`.
+`closeNotch() => void` | Removes the `mdc-notched-outline--notched` class.
