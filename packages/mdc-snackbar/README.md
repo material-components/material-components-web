@@ -119,7 +119,7 @@ CSS Class | Description
 `mdc-snackbar--open` | Optional. Indicates that the snackbar is open and visible.
 `mdc-snackbar--closing` | Optional. Applied automatically when the snackbar is in the process of animating closed.
 `mdc-snackbar--leading` | Optional. Positions the snackbar on the leading edge of the screen (left in LTR, right in RTL) instead of centered.
-`mdc-snackbar--stacked` | Optional. Positions the action button/icon below the label instead of alongside it. Should only be applied to devices with large screens.
+`mdc-snackbar--stacked` | Optional. Positions the action button/icon below the label instead of alongside it.
 `mdc-snackbar--wide` | Optional. Increases the margins between the snackbar and the viewport. Should only be applied to devices with large screens.
 
 ### Sass Mixins
