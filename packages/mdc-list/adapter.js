@@ -47,6 +47,12 @@ class MDCListAdapter {
   /**
    * @param {number} index
    * @param {string} attribute
+   */
+  getAttributeForElementIndex(index, attr) {}
+
+  /**
+   * @param {number} index
+   * @param {string} attribute
    * @param {string} value
    */
   setAttributeForElementIndex(index, attribute, value) {}
@@ -113,6 +119,11 @@ class MDCListAdapter {
    * @param {boolean} isChecked
    */
   setCheckedCheckboxOrRadioAtIndex(index, isChecked) {}
+
+  /**
+   * Notifies user action on list item.
+   */
+  notifyAction(index) {}
 }
 
 export default MDCListAdapter;

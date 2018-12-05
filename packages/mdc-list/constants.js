@@ -45,6 +45,7 @@ const strings = {
   .${cssClasses.LIST_ITEM_CLASS} input[type="radio"]:not(:disabled),
   .${cssClasses.LIST_ITEM_CLASS} input[type="checkbox"]:not(:disabled)`,
   ENABLED_ITEMS_SELECTOR: '.mdc-list-item:not(.mdc-list-item--disabled)',
+  ACTION_EVENT: 'MDCList:action',
 };
 
 export {strings, cssClasses};

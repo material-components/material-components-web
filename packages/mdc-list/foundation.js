@@ -47,6 +47,7 @@ class MDCListFoundation extends MDCFoundation {
     return /** @type {!MDCListAdapter} */ ({
       getListItemCount: () => {},
       getFocusedElementIndex: () => {},
+      getAttributeForElementIndex: () => {},
       setAttributeForElementIndex: () => {},
       removeAttributeForElementIndex: () => {},
       addClassForElementIndex: () => {},
@@ -58,6 +59,7 @@ class MDCListFoundation extends MDCFoundation {
       hasCheckboxAtIndex: () => {},
       isCheckboxCheckedAtIndex: () => {},
       setCheckedCheckboxOrRadioAtIndex: () => {},
+      notifyAction: () => {},
     });
   }
 
@@ -265,7 +267,11 @@ class MDCListFoundation extends MDCFoundation {
         }
 
         // Explicitly activate links, since we're preventing default on Enter, and Space doesn't activate them.
-        this.adapter_.followHref(currentIndex);
+        if (this.adapter_.getAttributeForElementIndex(currentIndex, 'href')) {
+          this.adapter_.followHref(currentIndex);
+        } else {
+          this.adapter_.notifyAction(currentIndex);
+        }
       }
     }
   }
@@ -285,6 +291,8 @@ class MDCListFoundation extends MDCFoundation {
     if (this.isSingleSelectionList_ || this.hasCheckboxOrRadioAtIndex_(index)) {
       this.setSelectedIndex(index);
     }
+
+    this.adapter_.notifyAction(index);
   }
 
   /**

@@ -499,6 +499,7 @@ Method Signature | Description
 `getListItemCount() => Number` | Returns the total number of list items (elements with `mdc-list-item` class) that are direct children of the `root_` element.
 `getFocusedElementIndex() => Number` | Returns the `index` value of the currently focused element.
 `getListItemIndex(ele: Element) => Number` | Returns the `index` value of the provided `ele` element.
+`getAttributeForElementIndex(index: number, attr: string) => string` | Gets the `attr` attribute value for the list item at `index`.
 `setAttributeForElementIndex(index: Number, attr: String, value: String) => void` | Sets the `attr` attribute to `value` for the list item at `index`.
 `addClassForElementIndex(index: Number, className: String) => void` | Adds the `className` class to the list item at `index`.
 `removeClassForElementIndex(index: Number, className: String) => void` | Removes the `className` class to the list item at `index`.
@@ -509,6 +510,7 @@ Method Signature | Description
 `hasCheckboxAtIndex(index: number) => boolean` | Returns true if checkbox is present at given list item index.
 `isCheckboxCheckedAtIndex(index: number) => boolean` | Returns true if checkbox inside a list item is checked.
 `setCheckedCheckboxOrRadioAtIndex(index: number, isChecked: boolean) => void` | Sets the checked status of checkbox or radio at given list item index.
+`notifyAction(index: number) => void` | Notifies user action on list item including keyboard and mouse actions.
 
 ### `MDCListFoundation`
 
