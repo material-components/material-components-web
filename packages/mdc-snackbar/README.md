@@ -207,7 +207,7 @@ Method Signature | Description
 `addClass(className: string) => void` | Adds a class to the root element.
 `removeClass(className: string) => void` | Removes a class from the root element.
 `announce() => void` | Announces the snackbar's label text to screen reader users.
-`notifyOpening() => void` | Broadcasts an event denoting that the snackbar has just started to open.
+`notifyOpening() => void` | Broadcasts an event denoting that the snackbar has just started opening.
 `notifyOpened() => void` | Broadcasts an event denoting that the snackbar has finished opening.
 `notifyClosing(reason: string) {}` | Broadcasts an event denoting that the snackbar has just started closing. If a non-empty `reason` is passed, the event's `detail` object should include its value in the `reason` property.
 `notifyClosed(reason: string) {}` | Broadcasts an event denoting that the snackbar has finished closing. If a non-empty `reason` is passed, the event's `detail` object should include its value in the `reason` property.
