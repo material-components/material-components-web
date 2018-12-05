@@ -25,7 +25,7 @@
     "@material/drawer": "^0.42.0",
     "@material/elevation": "^0.41.0",
     "@material/fab": "^0.42.0",
-    "@material/feature-targeting": "file:../mdc-feature-targeting/material-feature-targeting-0.40.1.tgz",
+    "@material/feature-targeting": "0.0.0",
     "@material/floating-label": "^0.42.0",
     "@material/form-field": "^0.42.0",
     "@material/grid-list": "^0.42.0",
