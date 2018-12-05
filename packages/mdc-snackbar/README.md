@@ -104,6 +104,14 @@ To increase the margins between the snackbar and the viewport on larger screens,
 </div>
 ```
 
+Alternatively, you can call the `mdc-snackbar-viewport-margin` mixin from Sass:
+
+```scss
+.my-snackbar {
+  @include mdc-snackbar-viewport-margin(40px);
+}
+```
+
 ## Style Customization
 
 ### CSS Classes
