@@ -32,7 +32,7 @@
 .mdc-card {
   @include mdc-card-fill-color(surface);
   @include mdc-card-shape-radius(medium);
-  @include mdc-elevation(2);
+  @include mdc-elevation(1);
   @include mdc-card-container-layout_;
 }
 
@@ -178,9 +178,11 @@
   max-height: none;
   margin: 0;
   padding: 8px 16px;
+  /* @noflip */
   text-align: left;
 
   @include mdc-rtl {
+    /* @noflip */
     text-align: right;
   }
 }

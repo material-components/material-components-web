@@ -63,6 +63,8 @@ class MDCTopAppBar extends MDCComponent {
       ripple.unbounded = true;
       return ripple;
     });
+
+    this.scrollTarget_ = window;
   }
 
   destroy() {
@@ -118,8 +120,6 @@ class MDCTopAppBar extends MDCComponent {
         this.root_.querySelectorAll(strings.ACTION_ITEM_SELECTOR).length,
     })
     );
-
-    this.scrollTarget_ = window;
 
     /** @type {!MDCTopAppBarBaseFoundation} */
     let foundation;

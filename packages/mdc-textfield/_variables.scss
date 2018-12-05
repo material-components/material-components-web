@@ -53,13 +53,12 @@ $mdc-textarea-disabled-background: rgba(249, 249, 249, 1);
 
 $mdc-text-field-height: 56px;
 $mdc-text-field-label-position-y: 50%;
-$mdc-text-field-outline-label-offset: 16px;
+$mdc-text-field-label-offset: 16px;
 $mdc-text-field-dense-label-position-y: 70%;
-$mdc-text-field-dense-label-scale: .923;
+$mdc-text-field-dense-label-scale: .8;
 $mdc-text-field-outlined-label-position-y: 130%;
-$mdc-text-field-outlined-dense-label-position-y: 110%;
-$mdc-text-field-outlined-with-leading-icon-label-position-x: 32px;
+$mdc-text-field-outlined-dense-label-position-y: 120%;
+$mdc-text-field-outlined-with-leading-icon-label-position-x: 0;
 $mdc-text-field-outlined-dense-with-leading-icon-label-position-x: 21px;
-$mdc-text-field-textarea-label-position-y: 50%;
+$mdc-text-field-textarea-label-position-y: 130%;
 // Note that the scale factor is an eyeballed approximation of what's shown in the mocks.
-$mdc-text-field-textarea-label-scale: .923;

@@ -407,7 +407,6 @@ class MDCTextField extends MDCComponent {
         isFocused: () => {
           return document.activeElement === this.root_.querySelector(strings.INPUT_SELECTOR);
         },
-        isRtl: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
       },
       this.getInputAdapterMethods_(),
       this.getLabelAdapterMethods_(),
@@ -429,7 +428,7 @@ class MDCTextField extends MDCComponent {
       shakeLabel: (shouldShake) => this.label_.shake(shouldShake),
       floatLabel: (shouldFloat) => this.label_.float(shouldFloat),
       hasLabel: () => !!this.label_,
-      getLabelWidth: () => this.label_.getWidth(),
+      getLabelWidth: () => this.label_ ? this.label_.getWidth() : 0,
     };
   }
 
@@ -468,7 +467,7 @@ class MDCTextField extends MDCComponent {
    */
   getOutlineAdapterMethods_() {
     return {
-      notchOutline: (labelWidth, isRtl) => this.outline_.notch(labelWidth, isRtl),
+      notchOutline: (labelWidth) => this.outline_.notch(labelWidth),
       closeOutline: () => this.outline_.closeNotch(),
       hasOutline: () => !!this.outline_,
     };

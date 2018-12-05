@@ -141,12 +141,6 @@ class MDCTextFieldAdapter {
   isFocused() {}
 
   /**
-   * Returns true if the direction of the root element is set to RTL.
-   * @return {boolean}
-   */
-  isRtl() {}
-
-  /**
    * Activates the line ripple.
    */
   activateLineRipple() {}
@@ -197,12 +191,9 @@ class MDCTextFieldAdapter {
 
   /**
    * Only implement if outline element exists.
-   * Updates SVG Path and outline element based on the
-   * label element width and RTL context.
    * @param {number} labelWidth
-   * @param {boolean=} isRtl
    */
-  notchOutline(labelWidth, isRtl) {}
+  notchOutline(labelWidth) {}
 
   /**
    * Only implement if outline element exists.

@@ -1,3 +1,48 @@
+<a name="0.42.0"></a>
+# [0.42.0](https://github.com/material-components/material-components-web/compare/v0.41.0...v0.42.0) (2018-12-04)
+
+
+### Bug Fixes
+
+* **card:** Corrected baseline shape value of card small => medium ([#4060](https://github.com/material-components/material-components-web/issues/4060)) ([acb9443](https://github.com/material-components/material-components-web/commit/acb9443))
+* **card:** Update elevation to match spec ([#4040](https://github.com/material-components/material-components-web/issues/4040)) ([a6b028d](https://github.com/material-components/material-components-web/commit/a6b028d))
+* **checkbox:** remove adapter.getNativeCb and move property hooks to component ([#4073](https://github.com/material-components/material-components-web/issues/4073)) ([5ab68fe](https://github.com/material-components/material-components-web/commit/5ab68fe))
+* **dialog:** Cancel open's rAF when close is called ([#4087](https://github.com/material-components/material-components-web/issues/4087)) ([2516c25](https://github.com/material-components/material-components-web/commit/2516c25))
+* **dialog:** Release focus after style changes on close ([#4069](https://github.com/material-components/material-components-web/issues/4069)) ([e12997a](https://github.com/material-components/material-components-web/commit/e12997a))
+* **drawer:** allow drawer below top app bar ([#4028](https://github.com/material-components/material-components-web/issues/4028)) ([ebdb084](https://github.com/material-components/material-components-web/commit/ebdb084))
+* **drawer:** check for existence of ANIMATE class name in isOpening condition ([#4078](https://github.com/material-components/material-components-web/issues/4078)) ([a4fd0a6](https://github.com/material-components/material-components-web/commit/a4fd0a6))
+* **drawer:** Fix issue where drawer fires opened event twice. ([#4027](https://github.com/material-components/material-components-web/issues/4027)) ([72ef4e8](https://github.com/material-components/material-components-web/commit/72ef4e8))
+* **fab:** Separate mixins for regular FAB and Extended FAB ([#4082](https://github.com/material-components/material-components-web/issues/4082)) ([003e95f](https://github.com/material-components/material-components-web/commit/003e95f))
+* **list:** Fix font size and placement for avatar graphic ([#4021](https://github.com/material-components/material-components-web/issues/4021)) ([5abe685](https://github.com/material-components/material-components-web/commit/5abe685))
+* **list:** Update ARIA attributes for radio/checkbox based list ([#4055](https://github.com/material-components/material-components-web/issues/4055)) ([76b404e](https://github.com/material-components/material-components-web/commit/76b404e))
+* **ripple:** Suppress before/after when color is transparent ([#4112](https://github.com/material-components/material-components-web/issues/4112)) ([2e2b227](https://github.com/material-components/material-components-web/commit/2e2b227))
+* **select:** Add missing exports ([#4129](https://github.com/material-components/material-components-web/issues/4129)) ([dbc429a](https://github.com/material-components/material-components-web/commit/dbc429a))
+* **select:** Enhanced select doesn't wrap focus ([#4083](https://github.com/material-components/material-components-web/issues/4083)) ([c640d50](https://github.com/material-components/material-components-web/commit/c640d50))
+* **select:** Remove style customization for native select > option ([#4089](https://github.com/material-components/material-components-web/issues/4089)) ([379c522](https://github.com/material-components/material-components-web/commit/379c522))
+* **shape:** Add noflip comments, fix RTL for categories ([#4116](https://github.com/material-components/material-components-web/issues/4116)) ([62054f8](https://github.com/material-components/material-components-web/commit/62054f8))
+* **text-field:** Send client position to line ripple for touch events ([#4084](https://github.com/material-components/material-components-web/issues/4084)) ([95c0a98](https://github.com/material-components/material-components-web/commit/95c0a98))
+* **top-app-bar:** Move scroll target initialization; improve test ([#4106](https://github.com/material-components/material-components-web/issues/4106)) ([f799659](https://github.com/material-components/material-components-web/commit/f799659))
+
+
+### Code Refactoring
+
+* **notched-outline:** Refactor notched outline to use 3 divs ([#4035](https://github.com/material-components/material-components-web/issues/4035)) ([9741233](https://github.com/material-components/material-components-web/commit/9741233))
+
+
+### Features
+
+* **text-field:** Add focus API to component ([#4020](https://github.com/material-components/material-components-web/issues/4020)) ([edcb939](https://github.com/material-components/material-components-web/commit/edcb939))
+
+
+### BREAKING CHANGES
+
+* **notched-outline:** The notched outline has been changed from using an SVG for the outline to using 3 div elements. This approach resolves initial rendering issues as well as inconsistencies between the different types of outlines. Please refer to the [Readme](./packages/mdc-notched-outline/README.md) or the [screenshot test pages](./test/screenshot/spec/mdc-textfield/classes) for details and examples. 
+* **checkbox:** The component is now responsible for calling MDCCheckboxFoundation#handleChange when the checked and indeterminate properties change.
+* **list:** Replaced toggleCheckbox adapter method with setCheckedCheckboxOrRadioAtIndex and added 3 more new adapter methods for improved accessibility.
+* **fab:** Fab now has 2 separate mixins - `mdc-fab-shape-radius` for regular / mini Fab variants & `mdc-fab-extended-shape-radius` for Extended FAB variant.
+
+
+
 <a name="0.41.1"></a>
 ## [0.41.1](https://github.com/material-components/material-components-web/compare/v0.41.0...v0.41.1) (2018-11-14)
 

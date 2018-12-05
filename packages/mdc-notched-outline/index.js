@@ -25,7 +25,8 @@ import MDCComponent from '@material/base/component';
 
 import MDCNotchedOutlineAdapter from './adapter';
 import MDCNotchedOutlineFoundation from './foundation';
-import {strings} from './constants';
+import {MDCFloatingLabelFoundation} from '@material/floating-label/index';
+import {cssClasses, strings} from './constants';
 
 /**
  * @extends {MDCComponent<!MDCNotchedOutlineFoundation>}
@@ -39,15 +40,34 @@ class MDCNotchedOutline extends MDCComponent {
   static attachTo(root) {
     return new MDCNotchedOutline(root);
   }
+  /** @param {...?} args */
+  constructor(...args) {
+    super(...args);
+    /** @private {Element} */
+    this.notchElement_;
+  }
+
+  initialSyncWithDOM() {
+    const label = this.root_.querySelector('.' + MDCFloatingLabelFoundation.cssClasses.ROOT);
+    this.notchElement_ = this.root_.querySelector(strings.NOTCH_ELEMENT_SELECTOR);
+
+    if (label) {
+      label.style.transitionDuration = '0s';
+      this.root_.classList.add(cssClasses.OUTLINE_UPGRADED);
+      requestAnimationFrame(() => {
+        label.style.transitionDuration = '';
+      });
+    } else {
+      this.root_.classList.add(cssClasses.NO_LABEL);
+    }
+  }
 
   /**
     * Updates outline selectors and SVG path to open notch.
     * @param {number} notchWidth The notch width in the outline.
-    * @param {boolean=} isRtl Determines if outline is rtl. If rtl is true, notch
-    * will be right justified in outline path, otherwise left justified.
     */
-  notch(notchWidth, isRtl) {
-    this.foundation_.notch(notchWidth, isRtl);
+  notch(notchWidth) {
+    this.foundation_.notch(notchWidth);
   }
 
   /**
@@ -61,20 +81,12 @@ class MDCNotchedOutline extends MDCComponent {
    * @return {!MDCNotchedOutlineFoundation}
    */
   getDefaultFoundation() {
-    return new MDCNotchedOutlineFoundation({
-      getWidth: () => this.root_.offsetWidth,
-      getHeight: () => this.root_.offsetHeight,
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
-      setOutlinePathAttr: (value) => {
-        const path = this.root_.querySelector(strings.PATH_SELECTOR);
-        path.setAttribute('d', value);
-      },
-      getIdleOutlineStyleValue: (propertyName) => {
-        const idleOutlineElement = this.root_.parentNode.querySelector(strings.IDLE_OUTLINE_SELECTOR);
-        return window.getComputedStyle(idleOutlineElement).getPropertyValue(propertyName);
-      },
-    });
+    return new MDCNotchedOutlineFoundation(
+      /** @type {!MDCNotchedOutlineAdapter} */ (Object.assign({
+        addClass: (className) => this.root_.classList.add(className),
+        removeClass: (className) => this.root_.classList.remove(className),
+        setNotchWidthProperty: (width) => this.notchElement_.style.setProperty('width', width > 0 ? width + 'px' : '0'),
+      })));
   }
 }
 
