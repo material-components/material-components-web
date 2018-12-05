@@ -74,7 +74,7 @@ const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
 
 ### Stacked
 
-Action buttons with long text should be positioned _below_ the label instead of along side it. This can be accomplished by adding the `mdc-snackbar--stacked` modifier class to the root element:
+Action buttons with long text should be positioned _below_ the label instead of alongside it. This can be accomplished by adding the `mdc-snackbar--stacked` modifier class to the root element:
 
 ```html
 <div class="mdc-snackbar mdc-snackbar--stacked">
@@ -119,7 +119,7 @@ CSS Class | Description
 `mdc-snackbar--open` | Optional. Indicates that the snackbar is open and visible.
 `mdc-snackbar--closing` | Optional. Applied automatically when the snackbar is in the process of animating closed.
 `mdc-snackbar--leading` | Optional. Positions the snackbar on the leading edge of the screen (left in LTR, right in RTL) instead of centered.
-`mdc-snackbar--stacked` | Optional. Positions the action button/icon below the label instead of along side it. Should only be applied to devices with large screens.
+`mdc-snackbar--stacked` | Optional. Positions the action button/icon below the label instead of alongside it. Should only be applied to devices with large screens.
 `mdc-snackbar--wide` | Optional. Increases the margins between the snackbar and the viewport. Should only be applied to devices with large screens.
 
 ### Sass Mixins
