@@ -26,6 +26,7 @@ import {assert} from 'chai';
 import td from 'testdouble';
 import bel from 'bel';
 import {MDCList, MDCListFoundation} from '../../../packages/mdc-list/index';
+import {strings} from '../../../packages/mdc-list/constants';
 
 function getFixture() {
   return bel`
@@ -119,6 +120,16 @@ test('adapter#getFocusedElementIndex returns the index of the currently selected
   document.body.appendChild(root);
   root.querySelectorAll('.mdc-list-item')[0].focus();
   assert.equal(0, component.getDefaultFoundation().adapter_.getFocusedElementIndex());
+  document.body.removeChild(root);
+});
+
+test('adapter#getAttributeForElementIndex returns the attribute value of element index', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+  const targetNode = root.querySelectorAll('.mdc-list-item')[1];
+  const testUrl = 'http://test.url';
+  targetNode.setAttribute('href', testUrl);
+  assert.equal(testUrl, component.getDefaultFoundation().adapter_.getAttributeForElementIndex(1, 'href'));
   document.body.removeChild(root);
 });
 
@@ -433,4 +444,16 @@ test('adapter#setCheckedCheckboxOrRadioAtIndex toggles the radio on list item', 
   component.getDefaultFoundation().adapter_.setCheckedCheckboxOrRadioAtIndex(3, false);
   assert.isFalse(radio.checked);
   document.body.removeChild(root);
+});
+
+test('adapter#notifyAction emits action event', () => {
+  const {component} = setupTest();
+
+  const handler = td.func('notifyActionHandler');
+
+  component.listen(strings.ACTION_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyAction(3);
+  component.unlisten(strings.ACTION_EVENT, handler);
+
+  td.verify(handler(td.matchers.anything()));
 });

@@ -42,10 +42,10 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCListFoundation, [
-    'getListItemCount', 'getFocusedElementIndex', 'setAttributeForElementIndex',
+    'getListItemCount', 'getFocusedElementIndex', 'getAttributeForElementIndex', 'setAttributeForElementIndex',
     'removeAttributeForElementIndex', 'addClassForElementIndex', 'removeClassForElementIndex',
     'focusItemAtIndex', 'setTabIndexForListItemChildren', 'followHref', 'hasRadioAtIndex',
-    'hasCheckboxAtIndex', 'isCheckboxCheckedAtIndex', 'setCheckedCheckboxOrRadioAtIndex',
+    'hasCheckboxAtIndex', 'isCheckboxCheckedAtIndex', 'setCheckedCheckboxOrRadioAtIndex', 'notifyAction',
   ]);
 });
 
@@ -434,6 +434,7 @@ test('#handleKeydown space/enter key call adapter.followHref regardless of singl
   td.when(mockAdapter.getListItemCount()).thenReturn(3);
   td.when(mockAdapter.hasRadioAtIndex(0)).thenReturn(false);
   td.when(mockAdapter.hasCheckboxAtIndex(0)).thenReturn(false);
+  td.when(mockAdapter.getAttributeForElementIndex(0, 'href')).thenReturn('http://test.url');
   foundation.setSingleSelection(false);
   foundation.handleKeydown(event, true, 0);
   foundation.setSingleSelection(true);
@@ -470,6 +471,19 @@ test('#handleKeydown enter key does not cause preventDefault to be called if sin
   foundation.handleKeydown(event, true, 0);
 
   td.verify(preventDefault(), {times: 0});
+});
+
+test('#handleKeydown notifies of action when enter key pressed on list item ', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const preventDefault = td.func('preventDefault');
+  const target = {classList: ['mdc-list-item']};
+  const event = {key: 'Enter', target, preventDefault};
+
+  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(0);
+  td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  foundation.handleKeydown(event, true, 0);
+
+  td.verify(mockAdapter.notifyAction(0), {times: 1});
 });
 
 test('#handleKeydown space key is triggered when singleSelection is true selects the list item', () => {
@@ -590,6 +604,15 @@ test('#handleClick when singleSelection=false on a list item should not cause th
   foundation.handleClick(1, false);
 
   td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', 0), {times: 0});
+});
+
+test('#handleClick notifies of action when clicked on list item.', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  foundation.handleClick(1, false);
+
+  td.verify(mockAdapter.notifyAction(1), {times: 1});
 });
 
 test('#handleClick when singleSelection=true on a list item should cause the list item to be selected', () => {

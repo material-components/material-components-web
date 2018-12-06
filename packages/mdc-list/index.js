@@ -206,10 +206,7 @@ class MDCList extends MDCComponent {
     return new MDCListFoundation(/** @type {!MDCListAdapter} */ (Object.assign({
       getListItemCount: () => this.listElements.length,
       getFocusedElementIndex: () => this.listElements.indexOf(document.activeElement),
-      getAttributeForElementIndex: (index, attr) => {
-        const element = this.listElements[index];
-        return element.getAttribute(attr);
-      },
+      getAttributeForElementIndex: (index, attr) => this.listElements[index].getAttribute(attr),
       setAttributeForElementIndex: (index, attr, value) => {
         const element = this.listElements[index];
         if (element) {
