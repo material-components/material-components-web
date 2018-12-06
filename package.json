@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@google-cloud/datastore": "^2.0.0",
-    "@octokit/rest": "^15.9.4",
+    "@octokit/rest": "^16.1.0",
     "argparse": "^1.0.10",
     "ascii-table": "0.0.9",
     "autoprefixer": "^9.0.0",
