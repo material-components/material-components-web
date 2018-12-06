@@ -133,7 +133,7 @@ Method Signature | Description
 `getTabListLength() => number` | Returns the number of child Tab components.
 `getPreviousActiveTabIndex() => number` | Returns the index of the previously active Tab.
 `getFocusedTabIndex() => number` | Returns the index of the focused Tab.
-`getIndexOfTab(tab: MDCTab) => number` | Returns the index of the given Tab instance.
+`getIndexOfTabById(id: string) => number` | Returns the index of the given Tab ID.
 `notifyTabActivated(index: number) => void` | Emits the `MDCTabBar:activated` event.
 
 ### `MDCTabBarFoundation`

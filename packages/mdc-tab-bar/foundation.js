@@ -89,7 +89,7 @@ class MDCTabBarFoundation extends MDCFoundation {
       getTabDimensionsAtIndex: () => {},
       getPreviousActiveTabIndex: () => {},
       getFocusedTabIndex: () => {},
-      getIndexOfTabByID: () => {},
+      getIndexOfTabById: () => {},
       getTabListLength: () => {},
       notifyTabActivated: () => {},
     });
@@ -174,7 +174,7 @@ class MDCTabBarFoundation extends MDCFoundation {
    * @param {!Event} evt
    */
   handleTabInteraction(evt) {
-    this.adapter_.setActiveTab(this.adapter_.getIndexOfTabByID(evt.detail.tabId));
+    this.adapter_.setActiveTab(this.adapter_.getIndexOfTabById(evt.detail.tabId));
   }
 
   /**

@@ -208,10 +208,10 @@ test('#adapter.getPreviousActiveTabIndex returns the index of the active tab', (
   assert.strictEqual(component.getDefaultFoundation().adapter_.getPreviousActiveTabIndex(), 1);
 });
 
-test('#adapter.getIndexOfTabByID; returns the index of the given tab', () => {
+test('#adapter.getIndexOfTabById returns the index of the given tab', () => {
   const {component} = setupTest();
   const tab = component.tabList_[2];
-  assert.strictEqual(component.getDefaultFoundation().adapter_.getIndexOfTabByID(tab.id), 2);
+  assert.strictEqual(component.getDefaultFoundation().adapter_.getIndexOfTabById(tab.id), 2);
 });
 
 test('#adapter.getTabListLength returns the length of the tab list', () => {

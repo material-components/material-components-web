@@ -45,14 +45,8 @@ class MDCTabBar extends MDCComponent {
     /** @private {!Array<!MDCTab>} */
     this.tabList_;
 
-    /** @type {(function(!Element): !MDCTab)} */
-    this.tabFactory_;
-
     /** @private {?MDCTabScroller} */
     this.tabScroller_;
-
-    /** @type {(function(!Element): !MDCTabScroller)} */
-    this.tabScrollerFactory_;
 
     /** @private {?function(?Event): undefined} */
     this.handleTabInteraction_;
@@ -84,10 +78,8 @@ class MDCTabBar extends MDCComponent {
   initialize(
     tabFactory = (el) => new MDCTab(el),
     tabScrollerFactory = (el) => new MDCTabScroller(el)) {
-    this.tabFactory_ = tabFactory;
-    this.tabScrollerFactory_ = tabScrollerFactory;
-    this.tabList_ = this.instantiateTabs_(this.tabFactory_);
-    this.tabScroller_ = this.instantiateTabsScroller_(this.tabScrollerFactory_);
+    this.tabList_ = this.instantiateTabs_(tabFactory);
+    this.tabScroller_ = this.instantiateTabScroller_(tabScrollerFactory);
   }
 
   initialSyncWithDOM() {
@@ -144,7 +136,7 @@ class MDCTabBar extends MDCComponent {
           const activeElement = document.activeElement;
           return tabElements.indexOf(activeElement);
         },
-        getIndexOfTabByID: (id) => {
+        getIndexOfTabById: (id) => {
           for (let i = 0; i < this.tabList_.length; i++) {
             if (this.tabList_[i].id === id) {
               return i;
@@ -202,7 +194,7 @@ class MDCTabBar extends MDCComponent {
    * @return {!MDCTabScroller=}
    * @private
    */
-  instantiateTabsScroller_(tabScrollerFactory) {
+  instantiateTabScroller_(tabScrollerFactory) {
     const tabScrollerElement = this.root_.querySelector(MDCTabBarFoundation.strings.TAB_SCROLLER_SELECTOR);
     if (tabScrollerElement) {
       return tabScrollerFactory(tabScrollerElement);
