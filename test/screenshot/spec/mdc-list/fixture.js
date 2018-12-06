@@ -23,8 +23,7 @@
 
 window.mdc.testFixture.fontsLoaded.then(() => {
   [].forEach.call(document.querySelectorAll('.mdc-list'), (el) => {
-    const list = mdc.list.MDCList.attachTo(el);
-    console.log('selected: ', list.selectedIndex);
+    mdc.list.MDCList.attachTo(el);
   });
 
   window.mdc.testFixture.notifyDomReady();

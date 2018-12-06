@@ -661,22 +661,6 @@ test('#handleClick bails out if checkbox or radio is not present and if toggleCh
   td.verify(mockAdapter.setCheckedCheckboxOrRadioAtIndex(1, td.matchers.anything()), {times: 0});
 });
 
-test('#focusFirstElement is called when the list is empty does not focus an element', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getListItemCount()).thenReturn(-1);
-  foundation.focusFirstElement();
-
-  td.verify(mockAdapter.focusItemAtIndex(td.matchers.anything()), {times: 0});
-});
-
-test('#focusLastElement is called when the list is empty does not focus an element', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getListItemCount()).thenReturn(-1);
-  foundation.focusLastElement();
-
-  td.verify(mockAdapter.focusItemAtIndex(td.matchers.anything()), {times: 0});
-});
-
 test('#setUseActivatedClass causes setSelectedIndex to use the --activated class', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getListItemCount()).thenReturn(3);

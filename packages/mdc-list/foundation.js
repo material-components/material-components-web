@@ -86,9 +86,6 @@ class MDCListFoundation extends MDCFoundation {
     this.useActivatedClass_ = false;
 
     /** @private {boolean} */
-    this.programmaticSelection_ = true;
-
-    /** @private {boolean} */
     this.toggleCheckbox_ = true;
 
     /** @private {boolean} */
@@ -99,7 +96,7 @@ class MDCListFoundation extends MDCFoundation {
   }
 
   init() {
-    if (!this.adapter_.getListItemCount() > 0) return;
+    if (this.adapter_.getListItemCount() === 0) return;
 
     if (this.adapter_.hasCheckboxAtIndex(0)) {
       this.isCheckboxList_ = true;
@@ -197,6 +194,8 @@ class MDCListFoundation extends MDCFoundation {
    * @param {number} listItemIndex
    */
   handleKeydown(evt, isRootListItem, listItemIndex) {
+    if (this.adapter_.getListItemCount() === 0) return;
+
     const arrowLeft = evt.key === 'ArrowLeft' || evt.keyCode === 37;
     const arrowUp = evt.key === 'ArrowUp' || evt.keyCode === 38;
     const arrowRight = evt.key === 'ArrowRight' || evt.keyCode === 39;
@@ -205,7 +204,6 @@ class MDCListFoundation extends MDCFoundation {
     const isEnd = evt.key === 'End' || evt.keyCode === 35;
     const isEnter = evt.key === 'Enter' || evt.keyCode === 13;
     const isSpace = evt.key === 'Space' || evt.keyCode === 32;
-    this.programmaticSelection_ = false;
 
     let currentIndex = this.adapter_.getFocusedElementIndex();
     let nextIndex = -1;
@@ -235,7 +233,7 @@ class MDCListFoundation extends MDCFoundation {
     } else if (isEnter || isSpace) {
       if (isRootListItem) {
         if (this.isSelectableList_()) {
-          this.setSelectedIndex(currentIndex);
+          this.setSelectedIndexOnAction_(currentIndex);
           this.preventDefaultEvent_(evt);
         }
 
@@ -249,7 +247,6 @@ class MDCListFoundation extends MDCFoundation {
       this.focusedItemIndex_ = nextIndex;
     }
 
-    this.programmaticSelection_ = true;
     this.focusedItemIndex_ = currentIndex;
   }
 
@@ -261,16 +258,14 @@ class MDCListFoundation extends MDCFoundation {
   handleClick(index, toggleCheckbox) {
     if (index === -1) return;
 
-    this.programmaticSelection_ = false;
     this.toggleCheckbox_ = toggleCheckbox;
 
     if (this.isSelectableList_()) {
-      this.setSelectedIndex(index);
+      this.setSelectedIndexOnAction_(index);
     }
 
     this.setTabindexAtIndex_(index);
 
-    this.programmaticSelection_ = true;
     this.toggleCheckbox_ = true;
     this.focusedItemIndex_ = index;
   }
@@ -301,7 +296,7 @@ class MDCListFoundation extends MDCFoundation {
         nextIndex = 0;
       } else {
         // Return early because last item is already focused.
-        return;
+        return nextIndex;
       }
     }
     this.adapter_.focusItemAtIndex(nextIndex);
@@ -321,7 +316,7 @@ class MDCListFoundation extends MDCFoundation {
         prevIndex = this.adapter_.getListItemCount() - 1;
       } else {
         // Return early because first item is already focused.
-        return;
+        return prevIndex;
       }
     }
     this.adapter_.focusItemAtIndex(prevIndex);
@@ -333,10 +328,8 @@ class MDCListFoundation extends MDCFoundation {
    * @return {number}
    */
   focusFirstElement() {
-    if (this.adapter_.getListItemCount() > 0) {
-      this.adapter_.focusItemAtIndex(0);
-      return 0;
-    }
+    this.adapter_.focusItemAtIndex(0);
+    return 0;
   }
 
   /**
@@ -344,10 +337,8 @@ class MDCListFoundation extends MDCFoundation {
    */
   focusLastElement() {
     const lastIndex = this.adapter_.getListItemCount() - 1;
-    if (lastIndex >= 0) {
-      this.adapter_.focusItemAtIndex(lastIndex);
-      return lastIndex;
-    }
+    this.adapter_.focusItemAtIndex(lastIndex);
+    return lastIndex;
   }
 
   /**
@@ -389,42 +380,21 @@ class MDCListFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {!Index} index
+   * @param {!Array<number>} index
    * @private
    */
   setCheckboxAtIndex_(index) {
-    if (this.programmaticSelection_) {
-      for (let i = 0; i < this.adapter_.getListItemCount(); i++) {
-        let isChecked = false;
-        if (index.indexOf(i) >= 0) {
-          isChecked = true;
-        }
-
-        this.adapter_.setCheckedCheckboxOrRadioAtIndex(i, isChecked);
-        this.adapter_.setAttributeForElementIndex(i, strings.ARIA_CHECKED, isChecked ? 'true' : 'false');
+    for (let i = 0; i < this.adapter_.getListItemCount(); i++) {
+      let isChecked = false;
+      if (index.indexOf(i) >= 0) {
+        isChecked = true;
       }
 
-      this.selectedIndex_ = index;
-    } else {
-      let isChecked = this.adapter_.isCheckboxCheckedAtIndex(index);
-
-      if (this.toggleCheckbox_) {
-        isChecked = !isChecked;
-        this.adapter_.setCheckedCheckboxOrRadioAtIndex(index, isChecked);
-      }
-
-      this.adapter_.setAttributeForElementIndex(index, strings.ARIA_CHECKED, isChecked ? 'true' : 'false');
-
-      if (this.selectedIndex_ === -1) {
-        this.selectedIndex_ = [];
-      }
-
-      if (isChecked) {
-        this.selectedIndex_.push(index);
-      } else {
-        this.selectedIndex_ = this.selectedIndex_.filter((i) => i !== index);
-      }
+      this.adapter_.setCheckedCheckboxOrRadioAtIndex(i, isChecked);
+      this.adapter_.setAttributeForElementIndex(i, strings.ARIA_CHECKED, isChecked ? 'true' : 'false');
     }
+
+    this.selectedIndex_ = index;
   }
 
   /**
@@ -457,13 +427,11 @@ class MDCListFoundation extends MDCFoundation {
    */
   setTabindexToSelectedItem_() {
     if (this.isSelectableList_()) {
-      let targetIndex = -1;
+      let targetIndex = 0;
       if (typeof this.selectedIndex_ === 'number' && this.selectedIndex_ !== -1) {
         targetIndex = this.selectedIndex_;
       } else if (this.selectedIndex_ instanceof Array && this.selectedIndex_.length > 0) {
         targetIndex = this.selectedIndex_.reduce((currentIndex, minIndex) => Math.min(currentIndex, minIndex));
-      } else {
-        targetIndex = 0;
       }
 
       this.setTabindexAtIndex_(targetIndex);
@@ -487,7 +455,7 @@ class MDCListFoundation extends MDCFoundation {
         return index.some((i) => this.isIndexInRange_(i));
       }
     } else if (typeof index === 'number') {
-      if (this.programmaticSelection_ && this.isCheckboxList_) {
+      if (this.isCheckboxList_) {
         throw new Error('MDCListFoundation: Expected array of index for checkbox based list but got number: ' + index);
       }
       return this.isIndexInRange_(index);
@@ -504,6 +472,43 @@ class MDCListFoundation extends MDCFoundation {
   isIndexInRange_(index) {
     const listSize = this.adapter_.getListItemCount();
     return index >= 0 && index < listSize;
+  }
+
+  /**
+   * @param {number} index
+   * @private
+   */
+  setSelectedIndexOnAction_(index) {
+    if (this.isCheckboxList_) {
+      this.toggleCheckboxAtIndex_(index);
+    } else {
+      this.setSelectedIndex(index);
+    }
+  }
+
+  /**
+   * @param {number} index
+   * @private
+   */
+  toggleCheckboxAtIndex_(index) {
+    let isChecked = this.adapter_.isCheckboxCheckedAtIndex(index);
+
+    if (this.toggleCheckbox_) {
+      isChecked = !isChecked;
+      this.adapter_.setCheckedCheckboxOrRadioAtIndex(index, isChecked);
+    }
+
+    this.adapter_.setAttributeForElementIndex(index, strings.ARIA_CHECKED, isChecked ? 'true' : 'false');
+
+    if (this.selectedIndex_ === -1) {
+      this.selectedIndex_ = [];
+    }
+
+    if (isChecked) {
+      this.selectedIndex_.push(index);
+    } else {
+      this.selectedIndex_ = this.selectedIndex_.filter((i) => i !== index);
+    }
   }
 }
 

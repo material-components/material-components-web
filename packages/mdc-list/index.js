@@ -85,6 +85,8 @@ class MDCList extends MDCComponent {
     // Child button/a elements are not tabbable until the list item is focused.
     [].slice.call(this.root_.querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS))
       .forEach((ele) => ele.setAttribute('tabindex', -1));
+
+    this.foundation_.init();
   }
 
   /**
