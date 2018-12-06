@@ -94,6 +94,16 @@ On larger screens, they can optionally be displayed on the _leading_ edge of the
 </div>
 ```
 
+Alternatively, you can call the `mdc-snackbar-leading` mixin from Sass:
+
+```scss
+@media (min-width: 1024px) {
+  .my-snackbar {
+    @include mdc-snackbar-leading;
+  }
+}
+```
+
 ### Wide (tablet and desktop only)
 
 To increase the margins between the snackbar and the viewport on larger screens, add the `mdc-snackbar--wide` modifier class to the root element:
@@ -107,8 +117,10 @@ To increase the margins between the snackbar and the viewport on larger screens,
 Alternatively, you can call the `mdc-snackbar-viewport-margin` mixin from Sass:
 
 ```scss
-.my-snackbar {
-  @include mdc-snackbar-viewport-margin(40px);
+@media (min-width: 1024px) {
+  .my-snackbar {
+    @include mdc-snackbar-viewport-margin(40px);
+  }
 }
 ```
 
@@ -142,6 +154,7 @@ Mixin | Description
 `mdc-snackbar-elevation($z-index)` | Sets the elevation of the snackbar.
 `mdc-snackbar-viewport-margin($margin)` | Sets the distance between the snackbar and the viewport.
 `mdc-snackbar-z-index($z-index)` | Sets the `z-index` of the snackbar.
+`mdc-snackbar-leading()` | Positions the snackbar on the leading edge of the screen (left in LTR, right in RTL) instead of centered.
 
 > **NOTE**: The `mdc-snackbar__action-button` and `mdc-snackbar__action-icon` elements can be customized with [`mdc-button`](../mdc-button) and [`mdc-icon-button`](../mdc-icon-button) mixins.
 
