@@ -143,7 +143,7 @@ Mixin | Description
 `mdc-snackbar-viewport-margin($margin)` | Sets the distance between the snackbar and the viewport.
 `mdc-snackbar-z-index($z-index)` | Sets the `z-index` of the snackbar.
 
-> *NOTE*: The `mdc-snackbar__action-button` and `mdc-snackbar__action-icon` elements can be customized with [`mdc-button`](../mdc-button) and [`mdc-icon-button`](../mdc-icon-button) mixins.
+> **NOTE**: The `mdc-snackbar__action-button` and `mdc-snackbar__action-icon` elements can be customized with [`mdc-button`](../mdc-button) and [`mdc-icon-button`](../mdc-icon-button) mixins.
 
 ### Sass Variables
 
@@ -179,6 +179,8 @@ Property | Value Type | Description
 `closeOnEscape` | `boolean` | Gets/sets whether the snackbar closes when it is focused and the user presses the <kbd>ESC</kbd> key. Defaults to `true`.
 `labelText` | `string` | Gets/sets the `textContent` of the label element.
 `actionButtonText` | `string` | Gets/sets the `textContent` of the action button element.
+
+> **NOTE**: Setting `labelText` while the snackbar is open will cause screen readers to announce the new label. See [Screen Readers](#screen-readers) below for more information.
 
 ### `MDCSnackbar` Methods
 
@@ -243,15 +245,19 @@ External frameworks and libraries can use the following utility methods from the
 
 Method Signature | Description
 --- | ---
-`announce(ariaEl: !HTMLElement, labelEl: !HTMLElement=) => void` | Announces the label text to screen reader users*.
+`announce(ariaEl: !HTMLElement, labelEl: !HTMLElement=) => void` | Announces the label text to screen reader users.
 
-_\* Alternatively, frameworks can use [Closure Library's `goog.a11y.aria.Announcer#say()` method](https://github.com/google/closure-library/blob/bee9ced776b4700e8076a3466bd9d3f9ade2fb54/closure/goog/a11y/aria/announcer.js#L80)._
+> Alternatively, frameworks can use [Closure Library's `goog.a11y.aria.Announcer#say()` method](https://github.com/google/closure-library/blob/bee9ced776b4700e8076a3466bd9d3f9ade2fb54/closure/goog/a11y/aria/announcer.js#L80).
 
 ## Accessibility
 
 ### Screen Readers
 
 Snackbars automatically announce their label text to screen reader users with a ["polite" notification](https://www.w3.org/TR/wai-aria-1.1/#aria-live) when `open()` is called.
+
+However, screen readers only announce [ARIA Live Regions](https://mdn.io/ARIA_Live_Regions) when the element's `textContent` _changes_, so MDC Snackbar provides a `util.announce()` method to temporarily clear and then restore the label element's `textContent`.
+
+> **NOTE**: Setting `labelText` while the snackbar is open will cause screen readers to announce the new label.
 
 `util.announce()` supports the latest versions of the following screen readers and browsers:
 
