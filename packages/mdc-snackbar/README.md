@@ -187,7 +187,7 @@ Property | Value Type | Description
 Method Signature | Description
 --- | ---
 `open() => void` | Opens the snackbar.
-`close(reason: string?) => void` | Closes the snackbar, optionally with the specified reason indicating why it was closed.
+`close(reason: string=) => void` | Closes the snackbar, optionally with the specified reason indicating why it was closed.
 
 ### Events
 
