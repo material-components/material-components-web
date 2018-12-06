@@ -275,11 +275,11 @@ macOS VoiceOver is _not_ supported at this time.
 
 ### Dismiss Icon
 
-A dedicated dismiss icon is optional, but **strongly** recommended. If the snackbar gets permanently "stuck" on the screen for any reason (e.g., #1398), the user should be able to manually dismiss it.
+A dedicated dismiss icon is optional, but **strongly** recommended. If the snackbar gets permanently "stuck" on the screen for any reason (e.g., #1398), the user needs to be able to manually dismiss it.
 
 ### Dismiss Key
 
-When one of the snackbar's subelements has focus (e.g., the action button or dismiss icon), pressing the <kbd>ESC</kbd> key dismisses the snackbar.
+Pressing the <kbd>ESC</kbd> key while one of the snackbar's subelements has focus (e.g., the action button) will dismiss the snackbar.
 
 ### No JS Ripples
 
