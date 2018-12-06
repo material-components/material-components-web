@@ -168,7 +168,7 @@ class MDCTabBar extends MDCComponent {
 
   /**
    * Returns all the tab elements in a nice clean array
-   * @return {!Array<!HTMLElement>}
+   * @return {!Array<!Element>}
    * @private
    */
   getTabElements_() {
@@ -191,7 +191,7 @@ class MDCTabBar extends MDCComponent {
   /**
    * Instantiates tab scroller component on the child tab scroller element
    * @param {(function(!Element): !MDCTabScroller)} tabScrollerFactory
-   * @return {!MDCTabScroller=}
+   * @return {?MDCTabScroller}
    * @private
    */
   instantiateTabScroller_(tabScrollerFactory) {
@@ -199,6 +199,7 @@ class MDCTabBar extends MDCComponent {
     if (tabScrollerElement) {
       return tabScrollerFactory(tabScrollerElement);
     }
+    return null;
   }
 }
 
