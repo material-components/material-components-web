@@ -281,6 +281,8 @@ A dedicated dismiss icon is optional, but **strongly** recommended. If the snack
 
 Pressing the <kbd>ESC</kbd> key while one of the snackbar's subelements has focus (e.g., the action button) will dismiss the snackbar.
 
+To disable this behavior, set `closeOnEscape` to `false`.
+
 ### No JS Ripples
 
 The `mdc-snackbar__action-button` and `mdc-snackbar__action-icon` elements should _**not**_ have JavaScript-enabled [`MDCRipple`](../mdc-ripple) behavior.
