@@ -27,6 +27,7 @@ import {strings, cssClasses} from './constants';
 import {MDCMenuSurface, Corner} from '@material/menu-surface/index';
 import {MDCMenuSurfaceFoundation, AnchorMargin} from '@material/menu-surface/foundation';
 import {MDCList} from '@material/list/index';
+import {strings as listStrings} from '@material/list/constants';
 
 /**
  * @extends MDCComponent<!MDCMenuFoundation>
@@ -41,8 +42,10 @@ class MDCMenu extends MDCComponent {
     this.list_;
     /** @private {!Function} */
     this.handleKeydown_;
+
     /** @private {!Function} */
-    this.handleClick_;
+    this.handleItemAction_;
+
     /** @private {!Function} */
     this.afterOpenedCallback_;
   }
@@ -70,11 +73,11 @@ class MDCMenu extends MDCComponent {
   initialSyncWithDOM() {
     this.afterOpenedCallback_ = () => this.handleAfterOpened_();
     this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt);
-    this.handleClick_ = (evt) => this.foundation_.handleClick(evt);
+    this.handleItemAction_ = (evt) => this.foundation_.handleItemAction(this.items[evt.detail]);
 
     this.menuSurface_.listen(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, this.afterOpenedCallback_);
     this.listen('keydown', this.handleKeydown_);
-    this.listen('click', this.handleClick_);
+    this.listen(listStrings.ACTION_EVENT, this.handleItemAction_);
   }
 
   destroy() {
@@ -85,7 +88,7 @@ class MDCMenu extends MDCComponent {
     this.menuSurface_.destroy();
     this.menuSurface_.unlisten(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, this.afterOpenedCallback_);
     this.unlisten('keydown', this.handleKeydown_);
-    this.unlisten('click', this.handleClick_);
+    this.unlisten(listStrings.ACTION_EVENT, this.handleItemAction_);
     super.destroy();
   }
 
