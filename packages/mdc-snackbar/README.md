@@ -94,12 +94,12 @@ On larger screens, they can optionally be displayed on the _leading_ edge of the
 </div>
 ```
 
-Alternatively, you can call the `mdc-snackbar-leading` mixin from Sass:
+Alternatively, you can call the `mdc-snackbar-position-leading` mixin from Sass:
 
 ```scss
 @media (min-width: 1024px) {
   .my-snackbar {
-    @include mdc-snackbar-leading;
+    @include mdc-snackbar-position-leading;
   }
 }
 ```
@@ -154,7 +154,7 @@ Mixin | Description
 `mdc-snackbar-elevation($z-index)` | Sets the elevation of the snackbar.
 `mdc-snackbar-viewport-margin($margin)` | Sets the distance between the snackbar and the viewport.
 `mdc-snackbar-z-index($z-index)` | Sets the `z-index` of the snackbar.
-`mdc-snackbar-leading()` | Positions the snackbar on the leading edge of the screen (left in LTR, right in RTL) instead of centered.
+`mdc-snackbar-position-leading()` | Positions the snackbar on the leading edge of the screen (left in LTR, right in RTL) instead of centered.
 
 > **NOTE**: The `mdc-snackbar__action-button` and `mdc-snackbar__action-icon` elements can be customized with [`mdc-button`](../mdc-button) and [`mdc-icon-button`](../mdc-icon-button) mixins.
 
