@@ -182,7 +182,7 @@ class MDCListFoundation extends MDCFoundation {
      */
     setTimeout(() => {
       if (!this.adapter_.isFocusInsideList()) {
-        this.setTabindexToSelectedItem_();
+        this.setTabindexToFirstSelectedItem_();
       }
     }, 0);
   }
@@ -425,7 +425,7 @@ class MDCListFoundation extends MDCFoundation {
    * @param {number} index
    * @private
    */
-  setTabindexToSelectedItem_() {
+  setTabindexToFirstSelectedItem_() {
     if (this.isSelectableList_()) {
       let targetIndex = 0;
       if (typeof this.selectedIndex_ === 'number' && this.selectedIndex_ !== -1) {
