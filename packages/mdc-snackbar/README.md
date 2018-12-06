@@ -149,24 +149,24 @@ Mixin | Description
 
 Variable | Description
 --- | ---
-`$mdc-snackbar-fill-color` | Default fill color of the surface.
-`$mdc-snackbar-label-ink-color` | Default ink color of the label.
-`$mdc-snackbar-action-button-ink-color` | Default ink color of the action button.
-`$mdc-snackbar-action-icon-ink-color` | Default ink color of the dismiss icon.
-`$mdc-snackbar-label-type-scale` | Default type scale of the label text.
-`$mdc-snackbar-action-icon-size` | Default size of the action icon.
-`$mdc-snackbar-min-width` | Default `min-width` of the surface.
-`$mdc-snackbar-max-width` | Default `max-width` of the surface.
-`$mdc-snackbar-viewport-margin-narrow` | Default distance between the surface and the viewport.
-`$mdc-snackbar-viewport-margin-wide` | Default distance between the surface and the viewport when `mdc-snackbar--wide` is applied.
-`$mdc-snackbar-padding` | Default padding of the surface.
-`$mdc-snackbar-elevation` | Default elevation.
-`$mdc-snackbar-shape-radius` | Default shape radius.
-`$mdc-snackbar-z-index` | Default z-index.
-`$mdc-snackbar-enter-delay` | Default delay for enter animations.
-`$mdc-snackbar-enter-duration` | Default duration of enter animations.
-`$mdc-snackbar-exit-delay` | Default delay for exit animations.
-`$mdc-snackbar-exit-duration` | Default duration of exit animations.
+`$mdc-snackbar-fill-color` | Fill color of the surface.
+`$mdc-snackbar-label-ink-color` | Ink color of the label.
+`$mdc-snackbar-action-button-ink-color` | Ink color of the action button.
+`$mdc-snackbar-action-icon-ink-color` | Ink color of the dismiss icon.
+`$mdc-snackbar-label-type-scale` | Type scale of the label text.
+`$mdc-snackbar-action-icon-size` | Size of the action icon.
+`$mdc-snackbar-min-width` | `min-width` of the surface.
+`$mdc-snackbar-max-width` | `max-width` of the surface.
+`$mdc-snackbar-viewport-margin-narrow` | Distance between the surface and the viewport when `mdc-snackbar--wide` is *not* applied.
+`$mdc-snackbar-viewport-margin-wide` | Distance between the surface and the viewport when `mdc-snackbar--wide` *is* applied.
+`$mdc-snackbar-padding` | Padding of the surface.
+`$mdc-snackbar-elevation` | Elevation of the surface.
+`$mdc-snackbar-shape-radius` | Shape radius of the surface.
+`$mdc-snackbar-z-index` | Z-index of the surface.
+`$mdc-snackbar-enter-delay` | Delay before enter animations start.
+`$mdc-snackbar-enter-duration` | Duration of enter animations.
+`$mdc-snackbar-exit-delay` | Delay before exit animations start.
+`$mdc-snackbar-exit-duration` | Duration of exit animations.
 
 ## JavaScript API
 
