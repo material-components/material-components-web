@@ -94,14 +94,6 @@ class MDCMenuFoundation extends MDCFoundation {
    * @param {!Element} listItem
    */
   handleItemAction(listItem) {
-    this.handleSelection(listItem);
-  }
-
-  /**
-   * Handler for a selected list item.
-   * @param {?HTMLElement} listItem
-   */
-  handleSelection(listItem) {
     const index = this.adapter_.getElementIndex(listItem);
     if (index < 0) {
       return;
