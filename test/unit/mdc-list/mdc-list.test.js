@@ -123,16 +123,6 @@ test('adapter#getFocusedElementIndex returns the index of the currently selected
   document.body.removeChild(root);
 });
 
-test('adapter#getAttributeForElementIndex returns the attribute value of element index', () => {
-  const {root, component} = setupTest();
-  document.body.appendChild(root);
-  const targetNode = root.querySelectorAll('.mdc-list-item')[1];
-  const testUrl = 'http://test.url';
-  targetNode.setAttribute('href', testUrl);
-  assert.equal(testUrl, component.getDefaultFoundation().adapter_.getAttributeForElementIndex(1, 'href'));
-  document.body.removeChild(root);
-});
-
 test('adapter#setAttributeForElementIndex does nothing if the element at index does not exist', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
@@ -243,29 +233,6 @@ test('adapter#setTabIndexForListItemChildren sets the child button/a elements of
   assert.equal(1, listItems[1].querySelectorAll('[tabindex="0"]').length);
 
   document.body.removeChild(root);
-});
-
-test('adapter#followHref invokes click on element with href', () => {
-  const {root, component} = setupTest();
-  const anchorTag = document.createElement('a');
-  anchorTag.href = '#';
-  anchorTag.click = td.func('click');
-  anchorTag.classList.add('mdc-list-item');
-  root.appendChild(anchorTag);
-  component.getDefaultFoundation().adapter_.followHref(root.querySelectorAll('.mdc-list-item').length - 1);
-
-  td.verify(anchorTag.click(), {times: 1});
-});
-
-test('adapter#followHref does not invoke click on element without href', () => {
-  const {root, component} = setupTest();
-  const anchorTag = document.createElement('a');
-  anchorTag.click = td.func('click');
-  anchorTag.classList.add('mdc-list-item');
-  root.appendChild(anchorTag);
-  component.getDefaultFoundation().adapter_.followHref(root.querySelectorAll('.mdc-list-item').length - 1);
-
-  td.verify(anchorTag.click(), {times: 0});
 });
 
 test('layout adds tabindex=-1 to all list items without a tabindex', () => {
