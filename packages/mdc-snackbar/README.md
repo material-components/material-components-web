@@ -18,7 +18,7 @@ path: /catalog/snackbars/
 
 Snackbars provide brief messages about app processes at the bottom of the screen.
 
-## Design & Demo
+## Design & API Documentation
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
@@ -213,7 +213,7 @@ Event Name | `event.detail` | Description
 
 ### Usage Within Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a Snackbar for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please see [Integrating MDC Web into Frameworks](../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create a Snackbar for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
 #### `MDCSnackbarAdapter` Methods
 
