@@ -77,7 +77,7 @@
 }
 
 .mdc-snackbar--leading {
-  justify-content: flex-start;
+  @include mdc-snackbar-position-leading;
 }
 
 .mdc-snackbar__surface {

@@ -70,3 +70,7 @@
 @mixin mdc-snackbar-z-index($z-index) {
   z-index: $z-index;
 }
+
+@mixin mdc-snackbar-position-leading {
+  justify-content: flex-start;
+}
