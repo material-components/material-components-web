@@ -47,12 +47,6 @@ class MDCListAdapter {
   /**
    * @param {number} index
    * @param {string} attribute
-   */
-  getAttributeForElementIndex(index, attr) {}
-
-  /**
-   * @param {number} index
-   * @param {string} attribute
    * @param {string} value
    */
   setAttributeForElementIndex(index, attribute, value) {}
@@ -88,12 +82,6 @@ class MDCListAdapter {
    * @param {number} tabIndexValue
    */
   setTabIndexForListItemChildren(listItemIndex, tabIndexValue) {}
-
-  /**
-   * If the given element has an href, follows the link.
-   * @param {!Element} ele
-   */
-  followHref(ele) {}
 
   /**
    * @param {number} index

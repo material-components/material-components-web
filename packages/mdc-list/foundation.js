@@ -47,14 +47,12 @@ class MDCListFoundation extends MDCFoundation {
     return /** @type {!MDCListAdapter} */ ({
       getListItemCount: () => {},
       getFocusedElementIndex: () => {},
-      getAttributeForElementIndex: () => {},
       setAttributeForElementIndex: () => {},
       removeAttributeForElementIndex: () => {},
       addClassForElementIndex: () => {},
       removeClassForElementIndex: () => {},
       focusItemAtIndex: () => {},
       setTabIndexForListItemChildren: () => {},
-      followHref: () => {},
       hasRadioAtIndex: () => {},
       hasCheckboxAtIndex: () => {},
       isCheckboxCheckedAtIndex: () => {},
@@ -251,6 +249,9 @@ class MDCListFoundation extends MDCFoundation {
       this.focusLastElement();
     } else if (isEnter || isSpace) {
       if (isRootListItem) {
+        // Return early if enter key is pressed on anchor element which triggers synthetic MouseEvent event.
+        if (evt.target.tagName === 'A' && isEnter) return;
+
         if (this.isSingleSelectionList_) {
           // Check if the space key was pressed on the list item or a child element.
           this.preventDefaultEvent_(evt);
@@ -266,12 +267,7 @@ class MDCListFoundation extends MDCFoundation {
           this.setSelectedIndex(currentIndex);
         }
 
-        // Explicitly activate links, since we're preventing default on Enter, and Space doesn't activate them.
-        if (this.adapter_.getAttributeForElementIndex(currentIndex, 'href')) {
-          this.adapter_.followHref(currentIndex);
-        } else {
-          this.adapter_.notifyAction(currentIndex);
-        }
+        this.adapter_.notifyAction(currentIndex);
       }
     }
   }

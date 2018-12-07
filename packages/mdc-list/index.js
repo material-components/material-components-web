@@ -206,7 +206,6 @@ class MDCList extends MDCComponent {
     return new MDCListFoundation(/** @type {!MDCListAdapter} */ (Object.assign({
       getListItemCount: () => this.listElements.length,
       getFocusedElementIndex: () => this.listElements.indexOf(document.activeElement),
-      getAttributeForElementIndex: (index, attr) => this.listElements[index].getAttribute(attr),
       setAttributeForElementIndex: (index, attr, value) => {
         const element = this.listElements[index];
         if (element) {
@@ -241,12 +240,6 @@ class MDCList extends MDCComponent {
         const element = this.listElements[listItemIndex];
         const listItemChildren = [].slice.call(element.querySelectorAll(strings.CHILD_ELEMENTS_TO_TOGGLE_TABINDEX));
         listItemChildren.forEach((ele) => ele.setAttribute('tabindex', tabIndexValue));
-      },
-      followHref: (index) => {
-        const listItem = this.listElements[index];
-        if (listItem && listItem.href) {
-          listItem.click();
-        }
       },
       hasCheckboxAtIndex: (index) => {
         const listItem = this.listElements[index];
