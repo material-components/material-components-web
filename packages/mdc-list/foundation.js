@@ -194,8 +194,6 @@ class MDCListFoundation extends MDCFoundation {
    * @param {number} listItemIndex
    */
   handleKeydown(evt, isRootListItem, listItemIndex) {
-    if (this.adapter_.getListItemCount() === 0) return;
-
     const arrowLeft = evt.key === 'ArrowLeft' || evt.keyCode === 37;
     const arrowUp = evt.key === 'ArrowUp' || evt.keyCode === 38;
     const arrowRight = evt.key === 'ArrowRight' || evt.keyCode === 39;
@@ -258,15 +256,11 @@ class MDCListFoundation extends MDCFoundation {
   handleClick(index, toggleCheckbox) {
     if (index === -1) return;
 
-    this.toggleCheckbox_ = toggleCheckbox;
-
     if (this.isSelectableList_()) {
-      this.setSelectedIndexOnAction_(index);
+      this.setSelectedIndexOnAction_(index, toggleCheckbox);
     }
 
     this.setTabindexAtIndex_(index);
-
-    this.toggleCheckbox_ = true;
     this.focusedItemIndex_ = index;
   }
 
@@ -296,7 +290,7 @@ class MDCListFoundation extends MDCFoundation {
         nextIndex = 0;
       } else {
         // Return early because last item is already focused.
-        return nextIndex;
+        return index;
       }
     }
     this.adapter_.focusItemAtIndex(nextIndex);
@@ -316,7 +310,7 @@ class MDCListFoundation extends MDCFoundation {
         prevIndex = this.adapter_.getListItemCount() - 1;
       } else {
         // Return early because first item is already focused.
-        return prevIndex;
+        return index;
       }
     }
     this.adapter_.focusItemAtIndex(prevIndex);
@@ -476,11 +470,12 @@ class MDCListFoundation extends MDCFoundation {
 
   /**
    * @param {number} index
+   * @param {boolean=} toggleCheckbox
    * @private
    */
-  setSelectedIndexOnAction_(index) {
+  setSelectedIndexOnAction_(index, toggleCheckbox = true) {
     if (this.isCheckboxList_) {
-      this.toggleCheckboxAtIndex_(index);
+      this.toggleCheckboxAtIndex_(index, toggleCheckbox);
     } else {
       this.setSelectedIndex(index);
     }
@@ -488,18 +483,20 @@ class MDCListFoundation extends MDCFoundation {
 
   /**
    * @param {number} index
+   * @param {boolean} toggleCheckbox
    * @private
    */
-  toggleCheckboxAtIndex_(index) {
+  toggleCheckboxAtIndex_(index, toggleCheckbox) {
     let isChecked = this.adapter_.isCheckboxCheckedAtIndex(index);
 
-    if (this.toggleCheckbox_) {
+    if (toggleCheckbox) {
       isChecked = !isChecked;
       this.adapter_.setCheckedCheckboxOrRadioAtIndex(index, isChecked);
     }
 
     this.adapter_.setAttributeForElementIndex(index, strings.ARIA_CHECKED, isChecked ? 'true' : 'false');
 
+    // If none of the checkbox items are selected and selectedIndex is not initialized then provide a default value.
     if (this.selectedIndex_ === -1) {
       this.selectedIndex_ = [];
     }
