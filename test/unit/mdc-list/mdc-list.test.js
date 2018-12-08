@@ -314,7 +314,7 @@ test('singleSelection calls foundation setSingleSelection with the provided valu
   td.verify(mockFoundation.setSingleSelection(true), {times: 1});
 });
 
-test('selectedIndex pro setSelectedIndex on foundation', () => {
+test('selectedIndex calls setSelectedIndex on foundation', () => {
   const {component, mockFoundation} = setupTest();
   component.selectedIndex = 1;
   td.verify(mockFoundation.setSelectedIndex(1), {times: 1});

@@ -211,14 +211,6 @@ test('#handleFocusOut sets tabindex=0 to first selected index when focus leaves 
   td.verify(mockAdapter.setAttributeForElementIndex(2, 'tabindex', 0), {times: 1});
 });
 
-test('#handleKeydown should bail out early when list is empty', () => {
-  const {foundation, mockAdapter} = setupTest();
-
-  td.when(mockAdapter.getListItemCount()).thenReturn(0);
-  foundation.handleKeydown({}, true, 1);
-  td.verify(mockAdapter.getFocusedElementIndex(), {times: 0});
-});
-
 test('#handleKeydown does nothing if the key is not used for navigation', () => {
   const {foundation, mockAdapter} = setupTest();
   const preventDefault = td.func('preventDefault');
@@ -638,6 +630,66 @@ test('#handleKeydown bail out early if event origin doesnt have a mdc-list-item 
   foundation.handleKeydown(event, /** isRootListItem */ true, /** listItemIndex */ -1);
 
   td.verify(preventDefault(), {times: 0});
+});
+
+test('#focusNextElement focuses next list item and returns that index', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
+
+  assert.equal(3, foundation.focusNextElement(2));
+  td.verify(mockAdapter.focusItemAtIndex(3), {times: 1});
+});
+
+test('#focusNextElement focuses first list item when focus is on last list item when wrapFocus=true and returns that ' +
+    'index', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
+  foundation.setWrapFocus(true);
+
+  assert.equal(0, foundation.focusNextElement(3));
+  td.verify(mockAdapter.focusItemAtIndex(0), {times: 1});
+});
+
+test('#focusNextElement retains the focus on last item when wrapFocus=false and returns that index', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
+  foundation.setWrapFocus(false);
+
+  assert.equal(3, foundation.focusNextElement(3));
+  td.verify(mockAdapter.focusItemAtIndex(3), {times: 0});
+});
+
+test('#focusPrevElement focuses previous list item and returns that index', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
+
+  assert.equal(1, foundation.focusPrevElement(2));
+  td.verify(mockAdapter.focusItemAtIndex(1), {times: 1});
+});
+
+test('#focusPrevElement focuses last list item when focus is on first list item when wrapFocus=true and returns that ' +
+    'index', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
+  foundation.setWrapFocus(true);
+
+  assert.equal(3, foundation.focusPrevElement(0));
+  td.verify(mockAdapter.focusItemAtIndex(3), {times: 1});
+});
+
+test('#focusPrevElement retains the focus on first list item when wrapFocus=false and returns that index', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
+  foundation.setWrapFocus(false);
+
+  assert.equal(0, foundation.focusPrevElement(0));
+  td.verify(mockAdapter.focusItemAtIndex(3), {times: 0});
 });
 
 test('#handleClick when singleSelection=false on a list item should not cause the list item to be selected', () => {
