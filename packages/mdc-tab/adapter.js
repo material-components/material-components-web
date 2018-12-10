@@ -32,6 +32,16 @@
 let MDCTabDimensions;
 
 /**
+ * @typedef {{
+ *   detail: {
+ *     tabId: string,
+ *   },
+ *   bubbles: boolean,
+ * }}
+ */
+let MDCTabInteractionEventType;
+
+/**
  * Adapter for MDC Tab.
  *
  * Defines the shape of the adapter expected by the foundation. Implement this
@@ -112,4 +122,4 @@ class MDCTabAdapter {
   focus() {}
 }
 
-export {MDCTabDimensions, MDCTabAdapter};
+export {MDCTabDimensions, MDCTabInteractionEventType, MDCTabAdapter};

@@ -58,8 +58,10 @@ test('attachTo returns an MDCTabBar instance', () => {
   assert.isOk(MDCTabBar.attachTo(getFixture()) instanceof MDCTabBar);
 });
 
+let fakeTabIdCounter = 0;
 class FakeTab {
   constructor() {
+    this.id = `mdc-tab-${++fakeTabIdCounter}`;
     this.destroy = td.function();
     this.activate = td.function();
     this.deactivate = td.function();
@@ -206,10 +208,10 @@ test('#adapter.getPreviousActiveTabIndex returns the index of the active tab', (
   assert.strictEqual(component.getDefaultFoundation().adapter_.getPreviousActiveTabIndex(), 1);
 });
 
-test('#adapter.getIndexOfTab returns the index of the given tab', () => {
+test('#adapter.getIndexOfTabById returns the index of the given tab', () => {
   const {component} = setupTest();
   const tab = component.tabList_[2];
-  assert.strictEqual(component.getDefaultFoundation().adapter_.getIndexOfTab(tab), 2);
+  assert.strictEqual(component.getDefaultFoundation().adapter_.getIndexOfTabById(tab.id), 2);
 });
 
 test('#adapter.getTabListLength returns the length of the tab list', () => {
