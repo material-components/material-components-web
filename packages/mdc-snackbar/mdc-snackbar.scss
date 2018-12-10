@@ -99,7 +99,7 @@
 
   .mdc-snackbar--closing & {
     transform: scale(1);
-    transition: mdc-animation-exit-permanent(opacity, $mdc-snackbar-exit-duration, $mdc-snackbar-exit-delay);
+    transition: mdc-animation-exit-permanent(opacity, $mdc-snackbar-exit-duration);
   }
 
   .mdc-snackbar--stacked & {
