@@ -72,10 +72,6 @@
   display: flex;
 }
 
-.mdc-snackbar--wide {
-  @include mdc-snackbar-viewport-margin($mdc-snackbar-viewport-margin-wide);
-}
-
 .mdc-snackbar--leading {
   @include mdc-snackbar-position-leading;
 }

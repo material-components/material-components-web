@@ -45,9 +45,15 @@
   }
 }
 
-@mixin mdc-snackbar-min-width($min-width) {
+@mixin mdc-snackbar-min-width($min-width, $mobile-breakpoint: $mdc-snackbar-mobile-breakpoint) {
   .mdc-snackbar__surface {
     min-width: $min-width;
+
+    // The first media query ensures that snackbars are always 100% width on mobile devices, as required by the spec.
+    // The second media query prevents snackbars from being wider than the viewport for large min-width values.
+    @media (max-width: ($mobile-breakpoint - 1)), (max-width: ($min-width - 1)) {
+      min-width: 100%;
+    }
   }
 }
 
