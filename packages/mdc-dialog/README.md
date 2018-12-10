@@ -55,8 +55,12 @@ npm install @material/dialog
         Dialog body text goes here.
       </div>
       <footer class="mdc-dialog__actions">
-        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">No</button>
-        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">Yes</button>
+        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+          <span class="mdc-button__label">No</span>
+        </button>
+        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
+          <span class="mdc-button__label">Yes</span>
+        </button>
       </footer>
     </div>
   </div>
@@ -177,8 +181,12 @@ radio buttons (indicating single selection) or checkboxes (indicating multiple s
         </ul>
       </div>
       <footer class="mdc-dialog__actions">
-        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">Cancel</button>
-        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept">OK</button>
+        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
+          <span class="mdc-button__label">Cancel</span>
+        </button>
+        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept">
+          <span class="mdc-button__label">OK</span>
+        </button>
       </footer>
     </div>
   </div>
@@ -245,8 +253,12 @@ For example:
 ```html
 ...
 <footer class="mdc-dialog__actions">
-  <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">Cancel</button>
-  <button type="button" class="mdc-button mdc-dialog__button mdc-dialog__button--default" data-mdc-dialog-action="accept">OK</button>
+  <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
+    <span class="mdc-button__label">Cancel</span>
+  </button>
+  <button type="button" class="mdc-button mdc-dialog__button mdc-dialog__button--default" data-mdc-dialog-action="accept">
+    <span class="mdc-button__label">OK</span>
+  </button>
 </footer>
 ...
 ```
