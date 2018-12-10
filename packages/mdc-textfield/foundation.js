@@ -292,6 +292,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * @param {string} value The value to set on the input Element.
    */
   setValue(value) {
+    if (this.getValue() === value) return;
     this.getNativeInput_().value = value;
     const isValid = this.isValid();
     this.styleValidity_(isValid);
