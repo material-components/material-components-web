@@ -293,6 +293,8 @@
     color: inherit; // Override default user agent stylesheet
     white-space: nowrap;
     cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
     appearance: none;
   }
 }
