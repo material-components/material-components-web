@@ -82,6 +82,16 @@ Action buttons with long text should be positioned _below_ the label instead of 
 </div>
 ```
 
+Alternatively, you can call the `mdc-snackbar-layout-stacked` mixin from Sass:
+
+```scss
+@media (min-width: $mdc-snackbar-mobile-breakpoint) {
+  .my-snackbar {
+    @include mdc-snackbar-layout-stacked;
+  }
+}
+```
+
 ### Leading (tablet and desktop only)
 
 By default, snackbars are centered horizontally within the viewport.
@@ -146,6 +156,7 @@ Mixin | Description
 `mdc-snackbar-viewport-margin($margin)` | Sets the distance between the snackbar and the viewport.
 `mdc-snackbar-z-index($z-index)` | Sets the `z-index` of the snackbar.
 `mdc-snackbar-position-leading()` | Positions the snackbar on the leading edge of the screen (left in LTR, right in RTL) instead of centered.
+`mdc-snackbar-layout-stacked()` | Positions the action button/icon below the label instead of alongside it.
 
 > **NOTE**: The `mdc-snackbar__action-button` and `mdc-snackbar__action-icon` elements can be customized with [`mdc-button`](../mdc-button) and [`mdc-icon-button`](../mdc-icon-button) mixins.
 

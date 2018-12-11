@@ -80,3 +80,15 @@
 @mixin mdc-snackbar-position-leading {
   justify-content: flex-start;
 }
+
+@mixin mdc-snackbar-layout-stacked {
+  .mdc-snackbar__surface {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .mdc-snackbar__actions {
+    align-self: flex-end;
+    margin-bottom: $mdc-snackbar-padding;
+  }
+}
