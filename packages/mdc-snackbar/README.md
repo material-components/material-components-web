@@ -150,7 +150,7 @@ Mixin | Description
 `mdc-snackbar-fill-color($color)` | Sets the fill color of the snackbar.
 `mdc-snackbar-label-ink-color($color)` | Sets the color of the snackbar's label text.
 `mdc-snackbar-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to snackbar surface with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
-`mdc-snackbar-min-width($min-width)` | Sets the `min-width` of the surface on tablet/desktop devices. On mobile, the width is automatically set to 100%. To specify a custom breakpoint, override the `$mdc-snackbar-mobile-breakpoint` variable before calling this mixin.
+`mdc-snackbar-min-width($min-width, $mobile-breakpoint)` | Sets the `min-width` of the surface on tablet/desktop devices. On mobile, the width is automatically set to 100%.
 `mdc-snackbar-max-width($max-width)` | Sets the `max-width` of the snackbar.
 `mdc-snackbar-elevation($z-index)` | Sets the elevation of the snackbar.
 `mdc-snackbar-viewport-margin($margin)` | Sets the distance between the snackbar and the viewport.
