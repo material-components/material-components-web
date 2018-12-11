@@ -85,7 +85,7 @@ Action buttons with long text should be positioned _below_ the label instead of 
 Alternatively, you can call the `mdc-snackbar-layout-stacked` mixin from Sass:
 
 ```scss
-@media (min-width: $mdc-snackbar-mobile-breakpoint) {
+@media (max-width: $mdc-snackbar-mobile-breakpoint) {
   .my-snackbar {
     @include mdc-snackbar-layout-stacked;
   }
