@@ -82,6 +82,16 @@ Action buttons with long text should be positioned _below_ the label instead of 
 </div>
 ```
 
+Alternatively, you can call the `mdc-snackbar-layout-stacked` mixin from Sass:
+
+```scss
+@media (max-width: $mdc-snackbar-mobile-breakpoint) {
+  .my-snackbar {
+    @include mdc-snackbar-layout-stacked;
+  }
+}
+```
+
 ### Leading (tablet and desktop only)
 
 By default, snackbars are centered horizontally within the viewport.
@@ -97,7 +107,7 @@ On larger screens, they can optionally be displayed on the _leading_ edge of the
 Alternatively, you can call the `mdc-snackbar-position-leading` mixin from Sass:
 
 ```scss
-@media (min-width: 1024px) {
+@media (min-width: $mdc-snackbar-mobile-breakpoint) {
   .my-snackbar {
     @include mdc-snackbar-position-leading;
   }
@@ -106,20 +116,12 @@ Alternatively, you can call the `mdc-snackbar-position-leading` mixin from Sass:
 
 ### Wide (tablet and desktop only)
 
-To increase the margins between the snackbar and the viewport on larger screens, add the `mdc-snackbar--wide` modifier class to the root element:
-
-```html
-<div class="mdc-snackbar mdc-snackbar--wide">
-  ...
-</div>
-```
-
-Alternatively, you can call the `mdc-snackbar-viewport-margin` mixin from Sass:
+To increase the margins between the snackbar and the viewport on larger screens, call the `mdc-snackbar-viewport-margin` mixin inside a media query:
 
 ```scss
-@media (min-width: 1024px) {
+@media (min-width: $mdc-snackbar-mobile-breakpoint) {
   .my-snackbar {
-    @include mdc-snackbar-viewport-margin(40px);
+    @include mdc-snackbar-viewport-margin($mdc-snackbar-viewport-margin-wide);
   }
 }
 ```
@@ -140,7 +142,6 @@ CSS Class | Description
 `mdc-snackbar--closing` | Optional. Applied automatically when the snackbar is in the process of animating closed.
 `mdc-snackbar--leading` | Optional. Positions the snackbar on the leading edge of the screen (left in LTR, right in RTL) instead of centered.
 `mdc-snackbar--stacked` | Optional. Positions the action button/icon below the label instead of alongside it.
-`mdc-snackbar--wide` | Optional. Increases the margins between the snackbar and the viewport. Should only be applied to devices with large screens.
 
 ### Sass Mixins
 
@@ -149,12 +150,13 @@ Mixin | Description
 `mdc-snackbar-fill-color($color)` | Sets the fill color of the snackbar.
 `mdc-snackbar-label-ink-color($color)` | Sets the color of the snackbar's label text.
 `mdc-snackbar-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to snackbar surface with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
-`mdc-snackbar-min-width($min-width)` | Sets the minimum width of the snackbar (defaults to `344px`).
-`mdc-snackbar-max-width($max-width)` | Sets the maximum width of the snackbar (defaults to `672px`).
+`mdc-snackbar-min-width($min-width, $mobile-breakpoint)` | Sets the `min-width` of the surface on tablet/desktop devices. On mobile, the width is automatically set to 100%.
+`mdc-snackbar-max-width($max-width)` | Sets the `max-width` of the snackbar.
 `mdc-snackbar-elevation($z-index)` | Sets the elevation of the snackbar.
 `mdc-snackbar-viewport-margin($margin)` | Sets the distance between the snackbar and the viewport.
 `mdc-snackbar-z-index($z-index)` | Sets the `z-index` of the snackbar.
 `mdc-snackbar-position-leading()` | Positions the snackbar on the leading edge of the screen (left in LTR, right in RTL) instead of centered.
+`mdc-snackbar-layout-stacked()` | Positions the action button/icon below the label instead of alongside it.
 
 > **NOTE**: The `mdc-snackbar__action-button` and `mdc-snackbar__action-icon` elements can be customized with [`mdc-button`](../mdc-button) and [`mdc-icon-button`](../mdc-icon-button) mixins.
 
@@ -168,10 +170,11 @@ Variable | Description
 `$mdc-snackbar-action-icon-ink-color` | Ink color of the dismiss icon.
 `$mdc-snackbar-label-type-scale` | Type scale of the label text.
 `$mdc-snackbar-action-icon-size` | Size of the action icon.
-`$mdc-snackbar-min-width` | `min-width` of the surface.
+`$mdc-snackbar-min-width` | `min-width` of the surface on tablet/desktop devices. On mobile, the width is automatically set to 100%. To specify a custom breakpoint, override the `$mdc-snackbar-mobile-breakpoint` variable.
 `$mdc-snackbar-max-width` | `max-width` of the surface.
-`$mdc-snackbar-viewport-margin-narrow` | Distance between the surface and the viewport when `mdc-snackbar--wide` is *not* applied.
-`$mdc-snackbar-viewport-margin-wide` | Distance between the surface and the viewport when `mdc-snackbar--wide` *is* applied.
+`$mdc-snackbar-mobile-breakpoint` | Device width breakpoint for `@media` queries that target mobile devices.
+`$mdc-snackbar-viewport-margin-narrow` | Distance between the surface and the viewport on mobile devices. Used with the `mdc-snackbar-viewport-margin` mixin.
+`$mdc-snackbar-viewport-margin-wide` | Distance between the surface and the viewport on tablet and desktop devices. Used with the `mdc-snackbar-viewport-margin` mixin.
 `$mdc-snackbar-padding` | Padding of the surface.
 `$mdc-snackbar-elevation` | Elevation of the surface.
 `$mdc-snackbar-shape-radius` | Shape radius of the surface.
