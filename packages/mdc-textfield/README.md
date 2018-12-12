@@ -88,7 +88,13 @@ included as part of the DOM structure of a full width text field.
 ```html
 <div class="mdc-text-field mdc-text-field--textarea">
   <textarea id="textarea" class="mdc-text-field__input" rows="8" cols="40"></textarea>
-  <label for="textarea" class="mdc-floating-label">Textarea Label</label>
+  <div class="mdc-notched-outline">
+    <div class="mdc-notched-outline__leading"></div>
+    <div class="mdc-notched-outline__notch">
+      <label for="textarea" class="mdc-floating-label">Textarea Label</label>
+    </div>
+    <div class="mdc-notched-outline__trailing"></div>
+  </div>
 </div>
 ```
 
