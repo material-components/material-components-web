@@ -39,6 +39,7 @@
     /* @noflip */
     text-align: left;
     pointer-events: none;
+    max-width: 100%;
 
     @include mdc-rtl {
       /* @noflip */
@@ -69,6 +70,7 @@
 
     &__notch {
       width: auto;
+      max-width: 100%;
     }
 
     .mdc-floating-label {
@@ -76,6 +78,12 @@
       position: relative;
       top: 17px;
       bottom: auto;
+      max-width: 100%;
+    }
+
+    .mdc-floating-label--float-above {
+      max-width: calc(100% / .75);
+      text-overflow: clip;
     }
   }
 

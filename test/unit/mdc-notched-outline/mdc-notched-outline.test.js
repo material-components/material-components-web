@@ -60,8 +60,15 @@ test('adapter#removeClass removes a class to the root element', () => {
 
 test('#adapter.setNotchWidthProperty sets the width property on the notched element', () => {
   const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.setNotchWidthProperty(50);
+  const path = root.querySelector('.mdc-notched-outline__notch');
+  assert.equal('50px', path.style.width);
+});
+
+test('#adapter.setNotchWidthProperty removes the width property on the notched element when set to 0', () => {
+  const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setNotchWidthProperty(0);
   const path = root.querySelector('.mdc-notched-outline__notch');
-  assert.equal('0px', path.style.width);
+  assert.equal('', path.style.width);
 });
 
