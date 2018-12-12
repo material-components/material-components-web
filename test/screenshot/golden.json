@@ -1579,6 +1579,14 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/21/19_18_38_795/spec/mdc-textfield/classes/textarea-focused.html.windows_ie_11.png"
     }
   },
+  "spec/mdc-textfield/classes/textarea-fullwidth.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/12/12/17_48_24_713/spec/mdc-textfield/classes/textarea-fullwidth.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/12/12/17_48_24_713/spec/mdc-textfield/classes/textarea-fullwidth.html.windows_chrome_71.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/12/12/17_48_24_713/spec/mdc-textfield/classes/textarea-fullwidth.html.windows_firefox_63.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/12/12/17_48_24_713/spec/mdc-textfield/classes/textarea-fullwidth.html.windows_ie_11.png"
+    }
+  },
   "spec/mdc-textfield/classes/textarea-invalid.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/21/19_18_38_795/spec/mdc-textfield/classes/textarea-invalid.html?utm_source=golden_json",
     "screenshots": {
@@ -1596,10 +1604,10 @@
     }
   },
   "spec/mdc-textfield/issues/3332.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/21/19_18_38_795/spec/mdc-textfield/issues/3332.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/12/12/18_21_57_178/spec/mdc-textfield/issues/3332.html?utm_source=golden_json",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/21/19_18_38_795/spec/mdc-textfield/issues/3332.html.windows_chrome_70.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/21/19_18_38_795/spec/mdc-textfield/issues/3332.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/12/12/18_21_57_178/spec/mdc-textfield/issues/3332.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/21/19_18_38_795/spec/mdc-textfield/issues/3332.html.windows_firefox_63.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/21/19_18_38_795/spec/mdc-textfield/issues/3332.html.windows_ie_11.png"
     }
