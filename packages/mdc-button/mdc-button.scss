@@ -40,11 +40,15 @@
   .mdc-button__icon {
     @include mdc-button__icon_;
   }
+}
 
-  // stylelint-disable-next-line selector-no-qualifying-type
-  svg.mdc-button__icon {
-    @include mdc-button__icon-svg_;
-  }
+.mdc-button__label + .mdc-button__icon {
+  @include mdc-button__icon-trailing_;
+}
+
+// stylelint-disable-next-line selector-no-qualifying-type
+svg.mdc-button__icon {
+  @include mdc-button__icon-svg_;
 }
 
 .mdc-button--raised,
@@ -53,6 +57,10 @@
   .mdc-button__icon {
     // Icons inside contained buttons have different styles due to increased button padding
     @include mdc-button__icon-contained_;
+  }
+
+  .mdc-button__label + .mdc-button__icon {
+    @include mdc-button__icon-contained-trailing_;
   }
 }
 

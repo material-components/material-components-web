@@ -41,7 +41,7 @@ npm install @material/button
 
 ```html
 <button class="mdc-button">
-  Button
+  <span class="mdc-button__label">Button</span>
 </button>
 ```
 
@@ -92,7 +92,7 @@ To add an icon, add an element with the `mdc-button__icon` class inside the butt
 ```html
 <button class="mdc-button">
   <i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i>
-  Button
+  <span class="mdc-button__label">Button</span>
 </button>
 ```
 
@@ -103,9 +103,23 @@ It's also possible to use an SVG icon:
   <svg class="mdc-button__icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="...">
   ...
   </svg>
-  Button
+  <span class="mdc-button__label">Button</span>
 </button>
 ```
+
+#### Trailing Icon
+
+Certain icons make more sense to appear after the button's text label rather than before. This can be accomplished by
+putting the icon markup _after_ the `mdc-button__label` element.
+
+```html
+<button class="mdc-button">
+  <span class="mdc-button__label">Button</span>
+  <i class="material-icons mdc-button__icon" aria-hidden="true">favorite</i>
+</button>
+```
+
+> _NOTE_: The `mdc-button__label` element is _required_ in order for the trailing icon to be styled appropriately.
 
 ### Disabled
 
@@ -114,7 +128,7 @@ Disabled buttons cannot be interacted with and have no visual interaction effect
 
 ```html
 <button class="mdc-button" disabled>
-  Button
+  <span class="mdc-button__label">Button</span>
 </button>
 ```
 
@@ -129,7 +143,14 @@ CSS Class | Description
 `mdc-button--unelevated` | Optional. Styles a contained button that is flush with the surface.
 `mdc-button--outlined` | Optional. Styles an outlined button that is flush with the surface.
 `mdc-button--dense` | Optional. Makes the button text and container slightly smaller.
-`mdc-button__icon` | Optional. Indicates an icon element.
+`mdc-button__label` | Recommended.\* Indicates the element containing the button's text label.
+`mdc-button__icon` | Optional. Indicates the element containing the button's icon.
+
+> \*_NOTE_: The `mdc-button__label` element is required for buttons with a trailing icon, but it is currently optional for
+> buttons with no icon or a leading icon. In the latter cases, it is acceptable for the text label to simply exist
+> directly within the `mdc-button` element.
+> However, the `mdc-button__label` class may become mandatory for all cases in the future, so it is recommended to
+> always include it to be future-proof.
 
 ### Sass Mixins
 

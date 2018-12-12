@@ -43,31 +43,49 @@
     <main class="test-viewport test-viewport--mobile">
       <div class="test-layout">
         <div class="test-cell test-cell--button">
-          <button class="mdc-button mdc-button--dense">Button</button>
+          <button class="mdc-button mdc-button--dense">
+            <span class="mdc-button__label">Button</span>
+          </button>
         </div>
         <div class="test-cell test-cell--button">
-          <button class="mdc-button mdc-button--dense mdc-button--raised">Button</button>
+          <button class="mdc-button mdc-button--dense mdc-button--raised">
+            <span class="mdc-button__label">Button</span>
+          </button>
         </div>
         <div class="test-cell test-cell--button">
-          <button class="mdc-button mdc-button--dense mdc-button--unelevated">Button</button>
+          <button class="mdc-button mdc-button--dense mdc-button--unelevated">
+            <span class="mdc-button__label">Button</span>
+          </button>
         </div>
         <div class="test-cell test-cell--button">
-          <button class="mdc-button mdc-button--dense mdc-button--outlined">Button</button>
+          <button class="mdc-button mdc-button--dense mdc-button--outlined">
+            <span class="mdc-button__label">Button</span>
+          </button>
         </div>
 
+        <!-- Short labels to test min-width -->
         <div class="test-cell test-cell--button">
-          <button class="mdc-button mdc-button--dense">+</button><!-- test min-width -->
+          <button class="mdc-button mdc-button--dense">
+            <span class="mdc-button__label">+</span>
+          </button>
         </div>
         <div class="test-cell test-cell--button">
-          <button class="mdc-button mdc-button--dense mdc-button--raised">+</button><!-- test min-width -->
+          <button class="mdc-button mdc-button--dense mdc-button--raised">
+            <span class="mdc-button__label">+</span>
+          </button>
         </div>
         <div class="test-cell test-cell--button">
-          <button class="mdc-button mdc-button--dense mdc-button--unelevated">+</button><!-- test min-width -->
+          <button class="mdc-button mdc-button--dense mdc-button--unelevated">
+            <span class="mdc-button__label">+</span>
+          </button>
         </div>
         <div class="test-cell test-cell--button">
-          <button class="mdc-button mdc-button--dense mdc-button--outlined">+</button><!-- test min-width -->
+          <button class="mdc-button mdc-button--dense mdc-button--outlined">
+            <span class="mdc-button__label">+</span>
+          </button>
         </div>
 
+        <!-- Disabled variants intentionally have no mdc-button__label span to verify that leading icon works with or without it -->
         <div class="test-cell test-cell--button">
           <button class="mdc-button mdc-button--dense" disabled>Button</button>
         </div>
