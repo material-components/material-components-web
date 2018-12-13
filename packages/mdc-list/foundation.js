@@ -1,18 +1,24 @@
 /**
  * @license
- * Copyright 2018 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import MDCFoundation from '@material/base/foundation';
@@ -41,19 +47,24 @@ class MDCListFoundation extends MDCFoundation {
     return /** @type {!MDCListAdapter} */ ({
       getListItemCount: () => {},
       getFocusedElementIndex: () => {},
-      getListItemIndex: () => {},
       setAttributeForElementIndex: () => {},
       removeAttributeForElementIndex: () => {},
       addClassForElementIndex: () => {},
       removeClassForElementIndex: () => {},
       focusItemAtIndex: () => {},
-      isElementFocusable: () => {},
-      isListItem: () => {},
       setTabIndexForListItemChildren: () => {},
+      followHref: () => {},
+      hasRadioAtIndex: () => {},
+      hasCheckboxAtIndex: () => {},
+      isCheckboxCheckedAtIndex: () => {},
+      setCheckedCheckboxOrRadioAtIndex: () => {},
     });
   }
 
-  constructor(adapter = /** @type {!MDCListFoundation} */ ({})) {
+  /**
+   * @param {!MDCListAdapter=} adapter
+   */
+  constructor(adapter) {
     super(Object.assign(MDCListFoundation.defaultAdapter, adapter));
     /** {boolean} */
     this.wrapFocus_ = false;
@@ -63,6 +74,8 @@ class MDCListFoundation extends MDCFoundation {
     this.isSingleSelectionList_ = false;
     /** {number} */
     this.selectedIndex_ = -1;
+    /** {boolean} */
+    this.useActivatedClass_ = false;
   }
 
   /**
@@ -89,50 +102,97 @@ class MDCListFoundation extends MDCFoundation {
     this.isSingleSelectionList_ = value;
   }
 
+  /**
+   * Sets the useActivatedClass_ private variable.
+   * @param {boolean} useActivated
+   */
+  setUseActivatedClass(useActivated) {
+    this.useActivatedClass_ = useActivated;
+  }
+
   /** @param {number} index */
   setSelectedIndex(index) {
-    if (index === this.selectedIndex_) {
-      this.adapter_.removeAttributeForElementIndex(this.selectedIndex_, strings.ARIA_SELECTED);
-      this.adapter_.removeClassForElementIndex(this.selectedIndex_, cssClasses.LIST_ITEM_SELECTED_CLASS);
+    if (index < 0 || index >= this.adapter_.getListItemCount()) return;
 
-      // Used to reset the first element to tabindex=0 when deselecting a list item.
-      // If already on the first list item, leave tabindex at 0.
-      if (this.selectedIndex_ >= 0) {
-        this.adapter_.setAttributeForElementIndex(this.selectedIndex_, 'tabindex', -1);
-        this.adapter_.setAttributeForElementIndex(0, 'tabindex', 0);
-      }
-      this.selectedIndex_ = -1;
-      return;
+    if (this.adapter_.hasCheckboxAtIndex(index)) {
+      this.setAriaAttributesForCheckbox_(index);
+    } else if (this.adapter_.hasRadioAtIndex(index)) {
+      this.setAriaAttributesForRadio_(index);
+    } else {
+      this.setAriaAttributesForSingleSelect_(index);
+      this.setClassNamesForSingleSelect_(index);
+    }
+
+    if (this.selectedIndex_ >= 0 && this.selectedIndex_ !== index) {
+      this.adapter_.setAttributeForElementIndex(this.selectedIndex_, 'tabindex', -1);
+    } else if (this.selectedIndex_ === -1 && index !== 0) {
+      // If no list item was selected set first list item's tabindex to -1.
+      // Generally, tabindex is set to 0 on first list item of list that has no preselected items.
+      this.adapter_.setAttributeForElementIndex(0, 'tabindex', -1);
+    }
+
+    this.adapter_.setAttributeForElementIndex(index, 'tabindex', 0);
+
+    this.selectedIndex_ = index;
+  }
+
+  /**
+   * @param {number} index
+   * @private
+   */
+  setAriaAttributesForCheckbox_(index) {
+    const ariaAttributeValue = this.adapter_.isCheckboxCheckedAtIndex(index) ? 'true' : 'false';
+    this.adapter_.setAttributeForElementIndex(index, strings.ARIA_CHECKED, ariaAttributeValue);
+  }
+
+  /**
+   * @param {number} index
+   * @private
+   */
+  setAriaAttributesForRadio_(index) {
+    if (this.selectedIndex_ >= 0) {
+      this.adapter_.setAttributeForElementIndex(this.selectedIndex_, strings.ARIA_CHECKED, 'false');
+    }
+
+    this.adapter_.setAttributeForElementIndex(index, strings.ARIA_CHECKED, 'true');
+  }
+
+  /**
+  * @param {number} index
+  * @private
+  */
+  setAriaAttributesForSingleSelect_(index) {
+    if (this.selectedIndex_ >= 0 && this.selectedIndex_ !== index) {
+      this.adapter_.setAttributeForElementIndex(this.selectedIndex_, strings.ARIA_SELECTED, 'false');
+    }
+
+    this.adapter_.setAttributeForElementIndex(index, strings.ARIA_SELECTED, 'true');
+  }
+
+  /**
+   * @param {number} index
+   * @private
+   */
+  setClassNamesForSingleSelect_(index) {
+    let selectedClassName = cssClasses.LIST_ITEM_SELECTED_CLASS;
+
+    if (this.useActivatedClass_) {
+      selectedClassName = cssClasses.LIST_ITEM_ACTIVATED_CLASS;
     }
 
     if (this.selectedIndex_ >= 0) {
-      this.adapter_.removeAttributeForElementIndex(this.selectedIndex_, strings.ARIA_SELECTED);
-      this.adapter_.removeClassForElementIndex(this.selectedIndex_, cssClasses.LIST_ITEM_SELECTED_CLASS);
-      this.adapter_.setAttributeForElementIndex(this.selectedIndex_, 'tabindex', -1);
+      this.adapter_.removeClassForElementIndex(this.selectedIndex_, selectedClassName);
     }
 
-    if (index >= 0 && this.adapter_.getListItemCount() > index) {
-      this.selectedIndex_ = index;
-      this.adapter_.setAttributeForElementIndex(this.selectedIndex_, strings.ARIA_SELECTED, true);
-      this.adapter_.addClassForElementIndex(this.selectedIndex_, cssClasses.LIST_ITEM_SELECTED_CLASS);
-      this.adapter_.setAttributeForElementIndex(this.selectedIndex_, 'tabindex', 0);
-
-      if (this.selectedIndex_ !== 0) {
-        this.adapter_.setAttributeForElementIndex(0, 'tabindex', -1);
-      }
-    }
+    this.adapter_.addClassForElementIndex(index, selectedClassName);
   }
 
   /**
    * Focus in handler for the list items.
    * @param evt
+   * @param {number} listItemIndex
    */
-  handleFocusIn(evt) {
-    const listItem = this.getListItem_(evt.target);
-    if (!listItem) return;
-
-    const listItemIndex = this.adapter_.getListItemIndex(listItem);
-
+  handleFocusIn(evt, listItemIndex) {
     if (listItemIndex >= 0) {
       this.adapter_.setTabIndexForListItemChildren(listItemIndex, 0);
     }
@@ -141,12 +201,9 @@ class MDCListFoundation extends MDCFoundation {
   /**
    * Focus out handler for the list items.
    * @param {Event} evt
+   * @param {number} listItemIndex
    */
-  handleFocusOut(evt) {
-    const listItem = this.getListItem_(evt.target);
-    if (!listItem) return;
-    const listItemIndex = this.adapter_.getListItemIndex(listItem);
-
+  handleFocusOut(evt, listItemIndex) {
     if (listItemIndex >= 0) {
       this.adapter_.setTabIndexForListItemChildren(listItemIndex, -1);
     }
@@ -155,8 +212,10 @@ class MDCListFoundation extends MDCFoundation {
   /**
    * Key handler for the list.
    * @param {Event} evt
+   * @param {boolean} isRootListItem
+   * @param {number} listItemIndex
    */
-  handleKeydown(evt) {
+  handleKeydown(evt, isRootListItem, listItemIndex) {
     const arrowLeft = evt.key === 'ArrowLeft' || evt.keyCode === 37;
     const arrowUp = evt.key === 'ArrowUp' || evt.keyCode === 38;
     const arrowRight = evt.key === 'ArrowRight' || evt.keyCode === 39;
@@ -167,10 +226,8 @@ class MDCListFoundation extends MDCFoundation {
     const isSpace = evt.key === 'Space' || evt.keyCode === 32;
 
     let currentIndex = this.adapter_.getFocusedElementIndex();
-
     if (currentIndex === -1) {
-      currentIndex = this.adapter_.getListItemIndex(this.getListItem_(evt.target));
-
+      currentIndex = listItemIndex;
       if (currentIndex < 0) {
         // If this event doesn't have a mdc-list-item ancestor from the
         // current list (not from a sublist), return early.
@@ -190,24 +247,44 @@ class MDCListFoundation extends MDCFoundation {
     } else if (isEnd) {
       this.preventDefaultEvent_(evt);
       this.focusLastElement();
-    } else if (this.isSingleSelectionList_ && (isEnter || isSpace)) {
-      this.preventDefaultEvent_(evt);
-      // Check if the space key was pressed on the list item or a child element.
-      if (this.adapter_.isListItem(evt.target)) {
-        this.setSelectedIndex(currentIndex);
+    } else if (isEnter || isSpace) {
+      if (isRootListItem) {
+        if (this.isSingleSelectionList_) {
+          // Check if the space key was pressed on the list item or a child element.
+          this.preventDefaultEvent_(evt);
+        }
+
+        const hasCheckboxOrRadio = this.hasCheckboxOrRadioAtIndex_(listItemIndex);
+        if (hasCheckboxOrRadio) {
+          this.toggleCheckboxOrRadioAtIndex_(listItemIndex);
+          this.preventDefaultEvent_(evt);
+        }
+
+        if (this.isSingleSelectionList_ || hasCheckboxOrRadio) {
+          this.setSelectedIndex(currentIndex);
+        }
+
+        // Explicitly activate links, since we're preventing default on Enter, and Space doesn't activate them.
+        this.adapter_.followHref(currentIndex);
       }
     }
   }
 
   /**
    * Click handler for the list.
+   * @param {number} index
+   * @param {boolean} toggleCheckbox
    */
-  handleClick() {
-    const currentIndex = this.adapter_.getFocusedElementIndex();
+  handleClick(index, toggleCheckbox) {
+    if (index === -1) return;
 
-    if (currentIndex === -1) return;
+    if (toggleCheckbox) {
+      this.toggleCheckboxOrRadioAtIndex_(index);
+    }
 
-    this.setSelectedIndex(currentIndex);
+    if (this.isSingleSelectionList_ || this.hasCheckboxOrRadioAtIndex_(index)) {
+      this.setSelectedIndex(index);
+    }
   }
 
   /**
@@ -272,17 +349,27 @@ class MDCListFoundation extends MDCFoundation {
   }
 
   /**
-   * Utility method to find the first ancestor with the mdc-list-item class.
-   * @param {EventTarget} target
-   * @return {?Element}
+   * Toggles checkbox or radio at give index. Radio doesn't change the checked state if it is already checked.
+   * @param {number} index
    * @private
    */
-  getListItem_(target) {
-    while (!this.adapter_.isListItem(target)) {
-      if (!target.parentElement) return null;
-      target = target.parentElement;
+  toggleCheckboxOrRadioAtIndex_(index) {
+    if (!this.hasCheckboxOrRadioAtIndex_(index)) return;
+
+    let isChecked = true;
+    if (this.adapter_.hasCheckboxAtIndex(index)) {
+      isChecked = !this.adapter_.isCheckboxCheckedAtIndex(index);
     }
-    return target;
+
+    this.adapter_.setCheckedCheckboxOrRadioAtIndex(index, isChecked);
+  }
+
+  /**
+   * @param {number} index
+   * @return {boolean} Return true if list item contains checkbox or radio input at given index.
+   */
+  hasCheckboxOrRadioAtIndex_(index) {
+    return this.adapter_.hasCheckboxAtIndex(index) || this.adapter_.hasRadioAtIndex(index);
   }
 }
 

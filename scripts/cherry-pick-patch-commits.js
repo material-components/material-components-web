@@ -1,17 +1,24 @@
 /**
- * Copyright 2018 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2018 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 /**
@@ -34,6 +41,16 @@ const {spawnSync} = require('child_process');
 
 const CONFLICT_MESSAGE = 'after resolving the conflicts, mark the corrected paths';
 
+// simple-git defaults to only including subject + tag/branch (%s%d) in message, which adds noise and is not useful
+// for finding BREAKING CHANGEs (which are in body, %b).
+const logFormat = {
+  hash: '%H', // Contains full hash only, for cherry-picking
+  message: '%s\n\n%b', // Contains subject + body for passing to conventional-commits-parser
+  oneline: '%h %s', // Contains abbreviated hash + subject for summary lists
+};
+// Use a splitter that is very unlikely to be included in commit descriptions, to be used with the above format
+const logSplitter = ';;;';
+
 // Resolves to the most recent non-pre-release git tag.
 async function getMostRecentTag() {
   const tags = await simpleGit.tags();
@@ -42,23 +59,44 @@ async function getMostRecentTag() {
   return filteredTags[filteredTags.length - 1];
 }
 
+async function isCommitInHistory(commit) {
+  const branchSummary = await simpleGit.branch([
+    '--points-at', 'HEAD',
+    '--contains', commit,
+    '-v', // simpleGit.branch seems to require -v in order to work
+  ]);
+  return Object.keys(branchSummary.branches).some((key) => branchSummary.branches[key].current);
+}
+
+async function resolveCherryPick(tag) {
+  const info = await simpleGit.show(['--format=hash:%H', '-s', tag]);
+  const tagCommit = info.slice(info.indexOf('hash:') + 5).trim();
+
+  const cherryPickLog = await simpleGit.log({
+    'format': logFormat,
+    'splitter': logSplitter,
+    '--grep': `cherry picked from commit ${tagCommit}`,
+  });
+
+  if (cherryPickLog.all.length !== 1) {
+    throw new Error(`Unable to resolve a single cherry-pick commit from ${tag}`);
+  }
+
+  const resolvedCommit = cherryPickLog.all[0].hash;
+  console.log(`Resolved ${tag} to cherry-picked commit ${resolvedCommit} on current branch`);
+  return resolvedCommit;
+}
+
 // Resolves to an array of commits after the given tag, from earliest to latest (for proper cherry-picking).
-async function getCommitsAfterTag(tag) {
+async function getCommitsAfter(commit) {
   if (!args.includes('--no-fetch')) {
     await simpleGit.fetch();
   }
   const log = await simpleGit.log({
-    from: tag,
+    from: commit,
     to: 'origin/master',
-    // simple-git defaults to only including subject + tag/branch (%s%d) in message, which adds noise and is not useful
-    // for finding BREAKING CHANGEs (which are in body, %b).
-    format: {
-      hash: '%H', // Contains full hash only, for cherry-picking
-      message: '%s\n\n%b', // Contains subject + body for passing to conventional-commits-parser
-      oneline: '%h %s', // Contains abbreviated hash + subject for summary lists
-    },
-    // Use a splitter that is very unlikely to be included in commit descriptions
-    splitter: ';;;',
+    format: logFormat,
+    splitter: logSplitter,
   });
   return log.all.reverse();
 }
@@ -121,9 +159,14 @@ function logSingleLineCommit(logLine) {
 
 async function run() {
   const tag = args.find((arg) => arg[0] === 'v') || await getMostRecentTag();
-  const list = await getCommitsAfterTag(tag);
-  console.log(`Found ${list.length} commits after tag ${tag}`);
+  const isInHistory = await isCommitInHistory(tag);
+  const commit = isInHistory ? tag : await resolveCherryPick(tag);
+  const list = await getCommitsAfter(commit);
+  console.log(`Found ${list.length} commits after ${commit}`);
 
+  // Always cherry-pick on top of the last tag.
+  // If we used the cherry-picked master commit as base in the case of subsequent patches, we'd inherit
+  // non-patch commits from master between the last .0 release and the previous patch release.
   const results = await attemptCherryPicks(tag, list);
 
   console.log('');

@@ -21,6 +21,12 @@ The line ripple is used to highlight user-specified input above it. When a line 
   </li>
 </ul>
 
+## Installation
+
+```
+npm install @material/line-ripple
+```
+
 ## Basic Usage
 
 ### HTML Structure

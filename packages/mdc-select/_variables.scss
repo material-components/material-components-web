@@ -1,44 +1,65 @@
 //
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2017 Google Inc.
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
-//      http://www.apache.org/licenses/LICENSE-2.0
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 //
 
 @import "@material/animation/variables";
+@import "@material/theme/variables";
 
-$mdc-select-arrow-padding: 26px;
+$mdc-select-arrow-padding: 52px;
 $mdc-select-label-padding: 16px;
-$mdc-select-border-radius: 4px;
+$mdc-select-height: 56px;
+$mdc-select-icon-padding: 48px;
 
 $mdc-select-ink-color: rgba(mdc-theme-prop-value(on-surface), .87);
-$mdc-select-disabled-ink-color: rgba(mdc-theme-prop-value(on-surface), .37);
-$mdc-select-disabled-arrow-color: mdc-theme-prop-value(on-surface);
-
+$mdc-select-dropdown-color: mdc-theme-prop-value(on-surface);
+$mdc-select-icon-color: rgba(mdc-theme-prop-value(on-surface), .54);
 $mdc-select-label-color: rgba(mdc-theme-prop-value(on-surface), .6);
 $mdc-select-focused-label-color: rgba(mdc-theme-prop-value(primary), .87);
-$mdc-select-disabled-label-color: rgba(mdc-theme-prop-value(on-surface), .37);
-
 $mdc-select-bottom-line-idle-color: rgba(mdc-theme-prop-value(on-surface), .42);
 $mdc-select-bottom-line-hover-color: rgba(mdc-theme-prop-value(on-surface), .87);
+$mdc-select-helper-text-color: rgba(mdc-theme-prop-value(on-surface), .6);
 
-$mdc-select-box-fill-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 4%);
-$mdc-select-box-disabled-fill-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 2%);
+$mdc-select-fill-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 4%);
 
 $mdc-select-outlined-idle-border: rgba(mdc-theme-prop-value(on-surface), .24);
+$mdc-select-dropdown-opacity: .54;
+
+// Disabled Styles
+$mdc-select-disabled-label-color: rgba(mdc-theme-prop-value(on-surface), .37);
+$mdc-select-disabled-icon-color: rgba(mdc-theme-prop-value(on-surface), .37);
+$mdc-select-disabled-ink-color: rgba(mdc-theme-prop-value(on-surface), .37);
+$mdc-select-disabled-fill-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 2%);
+$mdc-select-disabled-dropdown-opacity: .37;
 
 // should be .06 after mdc-select opacity is applied
 $mdc-select-outlined-disabled-border: rgba(mdc-theme-prop-value(on-surface), .16);
 $mdc-select-outlined-hover-border: rgba(mdc-theme-prop-value(on-surface), .87);
 
+$mdc-select-label-position-y: 70%;
+$mdc-select-outline-label-offset: 16px;
 $mdc-select-outlined-label-position-y: 130%;
 $mdc-select-outlined-dense-label-position-y: 110%;
+$mdc-select-outlined-with-leading-icon-label-position-x: 32px;
+
+$mdc-select-dropdown-transition-duration: 150ms;
+
+// Error colors
+$mdc-select-error-color: error;

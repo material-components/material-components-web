@@ -21,6 +21,12 @@ Floating labels display the type of input a field requires. Every Text Field and
   </li>
 </ul>
 
+## Installation
+
+```
+npm install @material/floating-label
+```
+
 ## Basic Usage
 
 ### HTML Structure

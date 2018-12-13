@@ -1,23 +1,29 @@
 /**
  * @license
- * Copyright 2017 Google Inc. All Rights Reserved.
+ * Copyright 2017 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import MDCFoundation from '@material/base/foundation';
 import MDCNotchedOutlineAdapter from './adapter';
-import {cssClasses, strings} from './constants';
+import {cssClasses, strings, numbers} from './constants';
 
 /**
  * @extends {MDCFoundation<!MDCNotchedOutlineAdapter>}
@@ -34,6 +40,11 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
     return cssClasses;
   }
 
+  /** @return enum {number} */
+  static get numbers() {
+    return numbers;
+  }
+
   /**
    * {@see MDCNotchedOutlineAdapter} for typing information on parameters and return
    * types.
@@ -41,12 +52,9 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
    */
   static get defaultAdapter() {
     return /** @type {!MDCNotchedOutlineAdapter} */ ({
-      getWidth: () => {},
-      getHeight: () => {},
       addClass: () => {},
       removeClass: () => {},
-      setOutlinePathAttr: () => {},
-      getIdleOutlineStyleValue: () => {},
+      setNotchWidthProperty: () => {},
     });
   }
 
@@ -59,14 +67,18 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
 
   /**
    * Adds the outline notched selector and updates the notch width
-   * calculated based off of notchWidth and isRtl.
+   * calculated based off of notchWidth.
    * @param {number} notchWidth
-   * @param {boolean=} isRtl
    */
-  notch(notchWidth, isRtl = false) {
+  notch(notchWidth) {
     const {OUTLINE_NOTCHED} = MDCNotchedOutlineFoundation.cssClasses;
+
+    if (notchWidth > 0) {
+      notchWidth += numbers.NOTCH_ELEMENT_PADDING; // Add padding from left/right.
+    }
+
+    this.adapter_.setNotchWidthProperty(notchWidth);
     this.adapter_.addClass(OUTLINE_NOTCHED);
-    this.updateSvgPath_(notchWidth, isRtl);
   }
 
   /**
@@ -75,49 +87,7 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
   closeNotch() {
     const {OUTLINE_NOTCHED} = MDCNotchedOutlineFoundation.cssClasses;
     this.adapter_.removeClass(OUTLINE_NOTCHED);
-  }
-
-  /**
-   * Updates the SVG path of the focus outline element based on the notchWidth
-   * and the RTL context.
-   * @param {number} notchWidth
-   * @param {boolean=} isRtl
-   * @private
-   */
-  updateSvgPath_(notchWidth, isRtl) {
-    // Fall back to reading a specific corner's style because Firefox doesn't report the style on border-radius.
-    const radiusStyleValue = this.adapter_.getIdleOutlineStyleValue('border-radius') ||
-        this.adapter_.getIdleOutlineStyleValue('border-top-left-radius');
-    const radius = parseFloat(radiusStyleValue);
-    const width = this.adapter_.getWidth();
-    const height = this.adapter_.getHeight();
-    const cornerWidth = radius + 1.2;
-    const leadingStrokeLength = Math.abs(11 - cornerWidth);
-    const paddedNotchWidth = notchWidth + 8;
-
-    // The right, bottom, and left sides of the outline follow the same SVG path.
-    const pathMiddle = 'a' + radius + ',' + radius + ' 0 0 1 ' + radius + ',' + radius
-      + 'v' + (height - (2 * cornerWidth))
-      + 'a' + radius + ',' + radius + ' 0 0 1 ' + -radius + ',' + radius
-      + 'h' + (-width + (2 * cornerWidth))
-      + 'a' + radius + ',' + radius + ' 0 0 1 ' + -radius + ',' + -radius
-      + 'v' + (-height + (2 * cornerWidth))
-      + 'a' + radius + ',' + radius + ' 0 0 1 ' + radius + ',' + -radius;
-
-    let path;
-    if (!isRtl) {
-      path = 'M' + (cornerWidth + leadingStrokeLength + paddedNotchWidth) + ',' + 1
-        + 'h' + (width - (2 * cornerWidth) - paddedNotchWidth - leadingStrokeLength)
-        + pathMiddle
-        + 'h' + leadingStrokeLength;
-    } else {
-      path = 'M' + (width - cornerWidth - leadingStrokeLength) + ',' + 1
-        + 'h' + leadingStrokeLength
-        + pathMiddle
-        + 'h' + (width - (2 * cornerWidth) - paddedNotchWidth - leadingStrokeLength);
-    }
-
-    this.adapter_.setOutlinePathAttr(path);
+    this.adapter_.setNotchWidthProperty(0);
   }
 }
 

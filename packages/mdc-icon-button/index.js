@@ -1,18 +1,24 @@
 /**
  * @license
- * Copyright 2018 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import MDCComponent from '@material/base/component';
@@ -36,13 +42,6 @@ class MDCIconButtonToggle extends MDCComponent {
     this.handleClick_;
   }
 
-  /** @return {!Element} */
-  get iconEl_() {
-    const {'iconInnerSelector': sel} = this.root_.dataset;
-    return sel ?
-      /** @type {!Element} */ (this.root_.querySelector(sel)) : this.root_;
-  }
-
   /**
    * @return {!MDCRipple}
    * @private
@@ -62,18 +61,16 @@ class MDCIconButtonToggle extends MDCComponent {
   /** @return {!MDCIconButtonToggleFoundation} */
   getDefaultFoundation() {
     return new MDCIconButtonToggleFoundation({
-      addClass: (className) => this.iconEl_.classList.add(className),
-      removeClass: (className) => this.iconEl_.classList.remove(className),
-      setText: (text) => this.iconEl_.textContent = text,
-      getAttr: (name) => this.root_.getAttribute(name),
-      setAttr: (name, value) => this.root_.setAttribute(name, value),
+      addClass: (className) => this.root_.classList.add(className),
+      removeClass: (className) => this.root_.classList.remove(className),
+      hasClass: (className) => this.root_.classList.contains(className),
+      setAttr: (attrName, attrValue) => this.root_.setAttribute(attrName, attrValue),
       notifyChange: (evtData) => this.emit(MDCIconButtonToggleFoundation.strings.CHANGE_EVENT, evtData),
     });
   }
 
   initialSyncWithDOM() {
     this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
-    this.on = this.root_.getAttribute(MDCIconButtonToggleFoundation.strings.ARIA_PRESSED) === 'true';
     this.root_.addEventListener('click', this.handleClick_);
   }
 
@@ -90,10 +87,6 @@ class MDCIconButtonToggle extends MDCComponent {
   /** @param {boolean} isOn */
   set on(isOn) {
     this.foundation_.toggle(isOn);
-  }
-
-  refreshToggleData() {
-    this.foundation_.refreshToggleData();
   }
 }
 

@@ -1,17 +1,24 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2016 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import {assert} from 'chai';
@@ -47,33 +54,33 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   ]);
 });
 
-testFoundation(`#init calls adapter.addClass("${cssClasses.ROOT}")`, ({adapter, foundation, mockRaf}) => {
+testFoundation(`#init calls adapter.addClass("${cssClasses.ROOT}")`, ({adapter, foundation, clock}) => {
   foundation.init();
-  mockRaf.flush();
+  clock.runToFrame();
 
   td.verify(adapter.addClass(cssClasses.ROOT));
 });
 
-testFoundation('#init adds unbounded class when adapter indicates unbounded', ({adapter, foundation, mockRaf}) => {
+testFoundation('#init adds unbounded class when adapter indicates unbounded', ({adapter, foundation, clock}) => {
   td.when(adapter.isUnbounded()).thenReturn(true);
   foundation.init();
-  mockRaf.flush();
+  clock.runToFrame();
 
   td.verify(adapter.addClass(cssClasses.UNBOUNDED));
 });
 
 testFoundation('#init does not add unbounded class when adapter does not indicate unbounded (default)',
-  ({adapter, foundation, mockRaf}) => {
+  ({adapter, foundation, clock}) => {
     foundation.init();
-    mockRaf.flush();
+    clock.runToFrame();
 
     td.verify(adapter.addClass(cssClasses.UNBOUNDED), {times: 0});
   });
 
 testFoundation('#init gracefully exits when css variables are not supported', false,
-  ({foundation, adapter, mockRaf}) => {
+  ({foundation, adapter, clock}) => {
     foundation.init();
-    mockRaf.flush();
+    clock.runToFrame();
 
     td.verify(adapter.addClass(cssClasses.ROOT), {times: 0});
   });
@@ -98,11 +105,13 @@ testFoundation('#init does not register a resize handler for bounded ripple', ({
   td.verify(adapter.registerResizeHandler(td.matchers.isA(Function)), {times: 0});
 });
 
-testFoundation('#init does not register events if CSS custom properties not supported', ({foundation, adapter}) => {
+testFoundation('#init only registers focus/blur if CSS custom properties not supported', ({foundation, adapter}) => {
   td.when(adapter.browserSupportsCssVars()).thenReturn(false);
   foundation.init();
 
-  td.verify(adapter.registerInteractionHandler(td.matchers.isA(String), td.matchers.isA(Function)), {times: 0});
+  td.verify(adapter.registerInteractionHandler(td.matchers.isA(String), td.matchers.isA(Function)), {times: 2});
+  td.verify(adapter.registerInteractionHandler('focus', td.matchers.isA(Function)));
+  td.verify(adapter.registerInteractionHandler('blur', td.matchers.isA(Function)));
 });
 
 testFoundation('#destroy unregisters all bound interaction handlers', ({foundation, adapter}) => {
@@ -143,62 +152,75 @@ testFoundation('#destroy does not unregister resize handler for bounded ripple',
   td.verify(adapter.deregisterResizeHandler(td.matchers.isA(Function)), {times: 0});
 });
 
-testFoundation(`#destroy removes ${cssClasses.ROOT}`, ({foundation, adapter, mockRaf}) => {
+testFoundation(`#destroy removes ${cssClasses.ROOT}`, ({foundation, adapter, clock}) => {
   foundation.destroy();
-  mockRaf.flush();
+  clock.runToFrame();
   td.verify(adapter.removeClass(cssClasses.ROOT));
 });
 
-testFoundation(`#destroy removes ${cssClasses.UNBOUNDED}`, ({foundation, adapter, mockRaf}) => {
+testFoundation(`#destroy removes ${cssClasses.UNBOUNDED}`, ({foundation, adapter, clock}) => {
   foundation.destroy();
-  mockRaf.flush();
+  clock.runToFrame();
   td.verify(adapter.removeClass(cssClasses.UNBOUNDED));
 });
 
 testFoundation(`#destroy removes ${cssClasses.FG_ACTIVATION} if activation is interrupted`,
-  ({foundation, adapter, mockRaf}) => {
+  ({foundation, adapter, clock}) => {
     foundation.activationTimer_ = 1;
     foundation.destroy();
-    mockRaf.flush();
+    clock.runToFrame();
 
+    assert.equal(foundation.activationTimer_, 0);
     td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION));
   });
 
-testFoundation('#destroy removes all CSS variables', ({foundation, adapter, mockRaf}) => {
+testFoundation(`#destroy removes ${cssClasses.FG_DEACTIVATION} if deactivation is interrupted`,
+  ({foundation, adapter, clock}) => {
+    foundation.fgDeactivationRemovalTimer_ = 1;
+    foundation.destroy();
+    clock.runToFrame();
+
+    assert.equal(foundation.fgDeactivationRemovalTimer_, 0);
+    td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION));
+  });
+
+testFoundation('#destroy removes all CSS variables', ({foundation, adapter, clock}) => {
   const cssVars = Object.keys(strings).filter((s) => s.indexOf('VAR_') === 0).map((s) => strings[s]);
   foundation.destroy();
-  mockRaf.flush();
+  clock.runToFrame();
   cssVars.forEach((cssVar) => {
     td.verify(adapter.updateCssVariable(cssVar, null));
   });
 });
 
 testFoundation('#destroy clears the timer if activation is interrupted',
-  ({foundation, mockRaf}) => {
+  ({foundation, clock}) => {
     foundation.init();
-    mockRaf.flush();
+    clock.runToFrame();
 
     foundation.activationTimer_ = 1;
     foundation.destroy();
-    mockRaf.flush();
+    clock.runToFrame();
 
     assert.equal(foundation.activationTimer_, 0);
   });
 
-testFoundation('#destroy does nothing if CSS custom properties are not supported', ({foundation, adapter, mockRaf}) => {
+testFoundation('#destroy when CSS custom properties are not supported', ({foundation, adapter, clock}) => {
   const isA = td.matchers.isA;
   td.when(adapter.browserSupportsCssVars()).thenReturn(false);
   foundation.destroy();
-  mockRaf.flush();
+  clock.runToFrame();
 
-  td.verify(adapter.deregisterInteractionHandler(isA(String), isA(Function)), {times: 0});
-  td.verify(adapter.deregisterResizeHandler(isA(Function)), {times: 0});
+  // #destroy w/o CSS vars still calls event deregistration functions (to deregister focus/blur; the rest are no-ops)
+  td.verify(adapter.deregisterInteractionHandler('focus', isA(Function)));
+  td.verify(adapter.deregisterInteractionHandler('blur', isA(Function)));
+  // #destroy w/o CSS vars doesn't change any CSS classes or custom properties
   td.verify(adapter.removeClass(isA(String)), {times: 0});
   td.verify(adapter.updateCssVariable(isA(String), isA(String)), {times: 0});
 });
 
 testFoundation(`#layout sets ${strings.VAR_FG_SIZE} to the circumscribing circle's diameter`,
-  ({foundation, adapter, mockRaf}) => {
+  ({foundation, adapter, clock}) => {
     const width = 200;
     const height = 100;
     const maxSize = Math.max(width, height);
@@ -206,19 +228,19 @@ testFoundation(`#layout sets ${strings.VAR_FG_SIZE} to the circumscribing circle
 
     td.when(adapter.computeBoundingRect()).thenReturn({width, height});
     foundation.layout();
-    mockRaf.flush();
+    clock.runToFrame();
 
     td.verify(adapter.updateCssVariable(strings.VAR_FG_SIZE, `${initialSize}px`));
   });
 
 testFoundation(`#layout sets ${strings.VAR_FG_SCALE} based on the difference between the ` +
-               'proportion of the max radius and the initial size', ({foundation, adapter, mockRaf}) => {
+               'proportion of the max radius and the initial size', ({foundation, adapter, clock}) => {
   const width = 200;
   const height = 100;
 
   td.when(adapter.computeBoundingRect()).thenReturn({width, height});
   foundation.layout();
-  mockRaf.flush();
+  clock.runToFrame();
 
   const maxSize = Math.max(width, height);
   const initialSize = maxSize * numbers.INITIAL_ORIGIN_SCALE;
@@ -230,7 +252,7 @@ testFoundation(`#layout sets ${strings.VAR_FG_SCALE} based on the difference bet
 });
 
 testFoundation(`#layout centers via ${strings.VAR_LEFT} and ${strings.VAR_TOP} when unbounded`,
-  ({foundation, adapter, mockRaf}) => {
+  ({foundation, adapter, clock}) => {
     const width = 200;
     const height = 100;
     const maxSize = Math.max(width, height);
@@ -239,7 +261,7 @@ testFoundation(`#layout centers via ${strings.VAR_LEFT} and ${strings.VAR_TOP} w
     td.when(adapter.computeBoundingRect()).thenReturn({width, height});
     td.when(adapter.isUnbounded()).thenReturn(true);
     foundation.layout();
-    mockRaf.flush();
+    clock.runToFrame();
 
     td.verify(adapter.updateCssVariable(strings.VAR_LEFT,
       `${Math.round((width / 2) - (initialSize / 2))}px`));
@@ -247,18 +269,18 @@ testFoundation(`#layout centers via ${strings.VAR_LEFT} and ${strings.VAR_TOP} w
       `${Math.round((height / 2) - (initialSize / 2))}px`));
   });
 
-testFoundation('#layout debounces calls within the same frame', ({foundation, mockRaf}) => {
+testFoundation('#layout debounces calls within the same frame', ({foundation, clock}) => {
   foundation.layout();
   foundation.layout();
   foundation.layout();
-  assert.equal(mockRaf.pendingFrames.length, 1);
+  assert.equal(clock.countTimers(), 1);
 });
 
-testFoundation('#layout resets debounce latch when layout frame is run', ({foundation, mockRaf}) => {
+testFoundation('#layout resets debounce latch when layout frame is run', ({foundation, clock}) => {
   foundation.layout();
-  mockRaf.flush();
+  clock.runToFrame();
   foundation.layout();
-  assert.equal(mockRaf.pendingFrames.length, 1);
+  assert.equal(clock.countTimers(), 1);
 });
 
 testFoundation('#setUnbounded adds unbounded class when unbounded is truthy', ({adapter, foundation}) => {

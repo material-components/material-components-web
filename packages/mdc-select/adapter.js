@@ -1,21 +1,39 @@
 /**
  * @license
- * Copyright 2018 Google Inc. All Rights Reserved.
+ * Copyright 2018 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
+/* eslint-disable no-unused-vars */
+import {MDCSelectIconFoundation} from './icon/index';
+import {MDCSelectHelperTextFoundation} from './helper-text/index';
+/* eslint-enable no-unused-vars */
+
+/**
+ * @typedef {{
+ *   leadingIcon: (!MDCSelectIconFoundation|undefined),
+ *   helperText: (!MDCSelectHelperTextFoundation|undefined),
+ * }}
+ */
+let FoundationMapType;
 
 /**
  * Adapter for MDC Select. Provides an interface for managing
@@ -65,22 +83,16 @@ class MDCSelectAdapter {
   deactivateBottomLine() {}
 
   /**
+   * Sets the value of the select.
+   * @param {string} value
+   */
+  setValue(value) {}
+
+  /**
    * Returns the selected value of the select element.
    * @return {string}
    */
   getValue() {}
-
-  /**
-   * Returns true if the direction of the root element is set to RTL.
-   * @return {boolean}
-   */
-  isRtl() {}
-
-  /**
-   * Returns true if label element exists, false if it doesn't.
-   * @return {boolean}
-   */
-  hasLabel() {}
 
   /**
    * Floats label determined based off of the shouldFloat argument.
@@ -101,17 +113,67 @@ class MDCSelectAdapter {
   hasOutline() {}
 
   /**
-   * Updates SVG Path and outline element based on the
-   * label element width and RTL context, if the outline exists.
+   * Only implement if outline element exists.
    * @param {number} labelWidth
-   * @param {boolean=} isRtl
    */
-  notchOutline(labelWidth, isRtl) {}
+  notchOutline(labelWidth) {}
 
   /**
    * Closes notch in outline element, if the outline exists.
    */
   closeOutline() {}
+
+  /**
+   * Opens the menu.
+   */
+  openMenu() {}
+
+  /**
+   * Closes the menu.
+   */
+  closeMenu() {}
+
+  /**
+   * Returns true if the menu is currently open.
+   * @return {boolean}
+   */
+  isMenuOpen() {}
+
+  /**
+   * Sets the selected index of the select to the index provided.
+   * @param {number} index
+   */
+  setSelectedIndex(index) {}
+
+  /**
+   * Sets the select to disabled.
+   * @param {boolean} isDisabled
+   */
+  setDisabled(isDisabled) {}
+
+  /**
+   * Sets the line ripple transform origin center.
+   * @param {number} normalizedX
+   */
+  setRippleCenter(normalizedX) {}
+
+  /**
+   * Emits a change event when an element is selected.
+   * @param {string} value
+   */
+  notifyChange(value) {}
+
+  /**
+   * Checks if the select is currently valid.
+   * @return {boolean} isValid
+   */
+  checkValidity() {}
+
+  /**
+   * Adds/Removes the invalid class.
+   * @param {boolean} isValid
+   */
+  setValid(isValid) {}
 }
 
-export default MDCSelectAdapter;
+export {MDCSelectAdapter, FoundationMapType};

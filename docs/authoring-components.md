@@ -319,7 +319,7 @@ adapter is extremely straightforward as we can simply repurpose the methods we s
 ```js
 class RedblueToggle extends MDCComponent {
   get toggled() {
-    return this.foundations_.isToggled();
+    return this.foundation_.isToggled();
   }
 
   set toggled(toggled) {
@@ -525,7 +525,7 @@ For example, if you are building a checkbox component, `keywords` would include 
   "name": "@material/example",
   "version": "0.0.0",
   "description": "The Material Components for the web example component",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git"
@@ -547,22 +547,28 @@ We are required to put the following at the _top_ of _every source code file_, i
 demos, and demo html. The stanza is as follows:
 
 ```
-Copyright 2016 Google Inc. All Rights Reserved.
+Copyright <YEAR> Google Inc.
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-    http://www.apache.org/licenses/LICENSE-2.0
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
 ```
 
-Please put this in a comment at the top of every source file.
+Please put this in a comment at the top of every source file, replacing <YEAR> with the year the file was created.
 
 ### Scss
 
@@ -570,7 +576,7 @@ Please put this in a comment at the top of every source file.
 
 If variables and mixins are intended to be used outside of a single stylesheet, refactor them out
 into [sass partials](http://sass-lang.com/guide#topic-4). These files can then be included in other
-stylesheets without having extra CSS omitted both times. As a rule of thumb, _never `@import` sass
+stylesheets without having extra CSS omitted both times. As a rule of thumb, _never_ `@import` sass
 files which output CSS`, as it will most likely be duplicate output.
 
 #### Follow the BEM Pattern

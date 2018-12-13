@@ -1,17 +1,24 @@
 /**
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2016 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import {assert} from 'chai';
@@ -20,6 +27,7 @@ import td from 'testdouble';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import MDCTextFieldFoundation from '../../../packages/mdc-textfield/foundation';
 
+const LABEL_WIDTH = 100;
 const {cssClasses, numbers} = MDCTextFieldFoundation;
 
 suite('MDCTextFieldFoundation');
@@ -41,7 +49,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'addClass', 'removeClass', 'hasClass',
     'registerTextFieldInteractionHandler', 'deregisterTextFieldInteractionHandler',
     'registerInputInteractionHandler', 'deregisterInputInteractionHandler',
-    'getNativeInput', 'isFocused', 'isRtl', 'activateLineRipple', 'deactivateLineRipple',
+    'getNativeInput', 'isFocused', 'activateLineRipple', 'deactivateLineRipple',
     'setLineRippleTransformOrigin', 'shakeLabel', 'floatLabel', 'hasLabel', 'getLabelWidth',
     'registerValidationAttributeChangeHandler', 'deregisterValidationAttributeChangeHandler',
     'hasOutline', 'notchOutline', 'closeOutline',
@@ -55,7 +63,15 @@ const setupTest = () => {
     showToScreenReader: () => {},
     setValidity: () => {},
   });
-  const icon = td.object({
+  const leadingIcon = td.object({
+    setDisabled: () => {},
+    setAriaLabel: () => {},
+    setContent: () => {},
+    registerInteractionHandler: () => {},
+    deregisterInteractionHandler: () => {},
+    handleInteraction: () => {},
+  });
+  const trailingIcon = td.object({
     setDisabled: () => {},
     setAriaLabel: () => {},
     setContent: () => {},
@@ -65,10 +81,11 @@ const setupTest = () => {
   });
   const foundationMap = {
     helperText,
-    icon,
+    leadingIcon,
+    trailingIcon,
   };
   const foundation = new MDCTextFieldFoundation(mockAdapter, foundationMap);
-  return {foundation, mockAdapter, helperText, icon};
+  return {foundation, mockAdapter, helperText, leadingIcon, trailingIcon};
 };
 
 test('#constructor sets disabled to false', () => {
@@ -140,6 +157,17 @@ test('#setValue valid and invalid input', () => {
   td.verify(helperText.setValidity(true));
   td.verify(mockAdapter.shakeLabel(false));
   td.verify(mockAdapter.floatLabel(true));
+});
+
+test('#setValue with invalid status and empty value does not shake the label', () => {
+  const {foundation, mockAdapter, helperText} =
+    setupValueTest('', /* isValid */ false, undefined, true);
+
+  foundation.setValue('');
+  td.verify(mockAdapter.addClass(cssClasses.INVALID));
+  td.verify(helperText.setValidity(false));
+  td.verify(mockAdapter.shakeLabel(false));
+  td.verify(mockAdapter.floatLabel(false));
 });
 
 test('#setValue does not affect focused state', () => {
@@ -263,10 +291,16 @@ test('#setDisabled removes mdc-text-field--disabled when set to false', () => {
   td.verify(mockAdapter.removeClass(cssClasses.DISABLED));
 });
 
-test('#setDisabled sets disabled on icon', () => {
-  const {foundation, icon} = setupTest();
+test('#setDisabled sets disabled on leading icon', () => {
+  const {foundation, leadingIcon} = setupTest();
   foundation.setDisabled(true);
-  td.verify(icon.setDisabled(true));
+  td.verify(leadingIcon.setDisabled(true));
+});
+
+test('#setDisabled sets disabled on trailing icon', () => {
+  const {foundation, trailingIcon} = setupTest();
+  foundation.setDisabled(true);
+  td.verify(trailingIcon.setDisabled(true));
 });
 
 test('#setValid adds mdc-textfied--invalid when set to false', () => {
@@ -279,12 +313,6 @@ test('#setValid removes mdc-textfied--invalid when set to true', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setValid(true);
   td.verify(mockAdapter.removeClass(cssClasses.INVALID));
-});
-
-test('#init adds mdc-text-field--upgraded class', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.init();
-  td.verify(mockAdapter.addClass(cssClasses.UPGRADED));
 });
 
 test('#init focuses on input if adapter.isFocused is true', () => {
@@ -376,40 +404,50 @@ test('#setHelperTextContent sets the content of the helper text element', () => 
   td.verify(helperText.setContent('foo'));
 });
 
-test('#setIconAriaLabel sets the aria-label of the icon element', () => {
-  const {foundation, icon} = setupTest();
-  foundation.setIconAriaLabel('foo');
-  td.verify(icon.setAriaLabel('foo'));
+test('#setLeadingIconAriaLabel sets the aria-label of the leading icon element', () => {
+  const {foundation, leadingIcon} = setupTest();
+  foundation.setLeadingIconAriaLabel('foo');
+  td.verify(leadingIcon.setAriaLabel('foo'));
 });
 
-test('#setIconContent sets the content of the icon element', () => {
-  const {foundation, icon} = setupTest();
-  foundation.setIconContent('foo');
-  td.verify(icon.setContent('foo'));
+test('#setLeadingIconContent sets the content of the leading icon element', () => {
+  const {foundation, leadingIcon} = setupTest();
+  foundation.setLeadingIconContent('foo');
+  td.verify(leadingIcon.setContent('foo'));
 });
 
-test('#notchOutline updates the SVG path of the outline element', () => {
+test('#setTrailingIconAriaLabel sets the aria-label of the trailing icon element', () => {
+  const {foundation, trailingIcon} = setupTest();
+  foundation.setTrailingIconAriaLabel('foo');
+  td.verify(trailingIcon.setAriaLabel('foo'));
+});
+
+test('#setTrailingIconContent sets the content of the trailing icon element', () => {
+  const {foundation, trailingIcon} = setupTest();
+  foundation.setTrailingIconContent('foo');
+  td.verify(trailingIcon.setContent('foo'));
+});
+
+test('#notchOutline updates the width of the outline element', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getLabelWidth()).thenReturn(30);
+  td.when(mockAdapter.getLabelWidth()).thenReturn(LABEL_WIDTH);
   td.when(mockAdapter.hasLabel()).thenReturn(true);
   td.when(mockAdapter.hasOutline()).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.DENSE)).thenReturn(false);
-  td.when(mockAdapter.isRtl()).thenReturn(false);
 
   foundation.notchOutline(true);
-  td.verify(mockAdapter.notchOutline(30 * numbers.LABEL_SCALE, false));
+  td.verify(mockAdapter.notchOutline(LABEL_WIDTH * numbers.LABEL_SCALE));
 });
 
-test('#notchOutline updates the SVG path of the outline element when dense', () => {
+test('#notchOutline updates width of the outline element when dense', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getLabelWidth()).thenReturn(30);
+  td.when(mockAdapter.getLabelWidth()).thenReturn(LABEL_WIDTH);
   td.when(mockAdapter.hasLabel()).thenReturn(true);
   td.when(mockAdapter.hasOutline()).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.DENSE)).thenReturn(true);
-  td.when(mockAdapter.isRtl()).thenReturn(false);
 
   foundation.notchOutline(true);
-  td.verify(mockAdapter.notchOutline(30 * numbers.DENSE_LABEL_SCALE, false));
+  td.verify(mockAdapter.notchOutline(LABEL_WIDTH * numbers.DENSE_LABEL_SCALE));
 });
 
 const setupBareBonesTest = () => {
@@ -428,17 +466,16 @@ test('#notchOutline does nothing if no outline is present', () => {
   td.verify(mockAdapter.notchOutline(td.matchers.anything()), {times: 0});
 });
 
-test('#notchOutline does nothing if no label is present', () => {
+test('#notchOutline width is set to 0 if no label is present', () => {
   const {foundation, mockAdapter} = setupBareBonesTest();
   td.when(mockAdapter.hasOutline()).thenReturn(true);
-  td.when(mockAdapter.hasLabel()).thenReturn(false);
+  td.when(mockAdapter.getLabelWidth()).thenReturn(0);
 
   foundation.notchOutline(true);
-  td.verify(mockAdapter.notchOutline(td.matchers.anything()), {times: 0});
+  td.verify(mockAdapter.notchOutline(0), {times: 1});
 });
 
-test('#notchOutline calls updates notched outline to return to idle state when ' +
-  'openNotch is false', () => {
+test('#notchOutline(false) closes the outline', () => {
   const {foundation, mockAdapter} = setupBareBonesTest();
   td.when(mockAdapter.hasLabel()).thenReturn(true);
   td.when(mockAdapter.hasOutline()).thenReturn(true);
@@ -733,14 +770,18 @@ test('mousedown on the input sets the line ripple origin', () => {
 
 test('touchstart on the input sets the line ripple origin', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockEvt = {
-    target: {
-      getBoundingClientRect: () => {
-        return {};
+  const clientRectLeft = 50;
+  const clientX = 200;
+  const mockTouchStartEvent = {
+    touches: [{
+      target: {
+        getBoundingClientRect: () => {
+          return {left: clientRectLeft};
+        },
       },
-    },
-    clientX: 200,
-    clientY: 200,
+      clientX: clientX,
+      clientY: 200,
+    }],
   };
 
   let clickHandler;
@@ -749,9 +790,10 @@ test('touchstart on the input sets the line ripple origin', () => {
     .thenDo((evtType, handler) => clickHandler = handler);
 
   foundation.init();
-  clickHandler(mockEvt);
+  clickHandler(mockTouchStartEvent);
 
-  td.verify(mockAdapter.setLineRippleTransformOrigin(td.matchers.anything()));
+  const argMatcher = td.matchers.argThat((normalizedX) => (normalizedX === (clientX - clientRectLeft)));
+  td.verify(mockAdapter.setLineRippleTransformOrigin(argMatcher));
 });
 
 test('on validation attribute change calls styleValidity_', () => {
