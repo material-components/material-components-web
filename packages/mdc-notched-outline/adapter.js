@@ -51,6 +51,11 @@ class MDCNotchedOutlineAdapter {
    * @param {number} width
    */
   setNotchWidthProperty(width) {}
+
+  /**
+   * Removes the width style property from the notch element.
+   */
+  removeNotchWidthProperty() {}
 }
 
 export default MDCNotchedOutlineAdapter;

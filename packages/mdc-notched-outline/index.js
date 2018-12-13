@@ -85,13 +85,8 @@ class MDCNotchedOutline extends MDCComponent {
       /** @type {!MDCNotchedOutlineAdapter} */ (Object.assign({
         addClass: (className) => this.root_.classList.add(className),
         removeClass: (className) => this.root_.classList.remove(className),
-        setNotchWidthProperty: (width) => {
-          if (width === 0) {
-            this.notchElement_.style.removeProperty('width');
-          } else {
-            this.notchElement_.style.setProperty('width', width + 'px');
-          }
-        },
+        setNotchWidthProperty: (width) => this.notchElement_.style.setProperty('width', width + 'px'),
+        removeNotchWidthProperty: () => this.notchElement_.style.removeProperty('width'),
       })));
   }
 }
