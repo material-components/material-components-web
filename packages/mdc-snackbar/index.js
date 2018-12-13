@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2018 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,64 +23,214 @@
 
 import {MDCComponent} from '@material/base/index';
 import MDCSnackbarFoundation from './foundation';
-import {getCorrectEventName} from '@material/animation/index';
+import {strings} from './constants';
+import * as util from './util';
+import * as ponyfill from '@material/dom/ponyfill';
 
-export {MDCSnackbarFoundation};
+const {
+  SURFACE_SELECTOR, LABEL_SELECTOR, ACTION_BUTTON_SELECTOR, ACTION_ICON_SELECTOR,
+  OPENING_EVENT, OPENED_EVENT, CLOSING_EVENT, CLOSED_EVENT,
+} = strings;
 
-export class MDCSnackbar extends MDCComponent {
+class MDCSnackbar extends MDCComponent {
   static attachTo(root) {
     return new MDCSnackbar(root);
   }
 
-  show(data) {
-    this.foundation_.show(data);
+  constructor(...args) {
+    super(...args);
+
+    /** @type {!HTMLElement} */
+    this.surfaceEl_;
+
+    /** @type {!HTMLElement} */
+    this.labelEl_;
+
+    /** @type {!HTMLElement} */
+    this.actionButtonEl_;
+
+    /** @type {function(!HTMLElement, !HTMLElement=): void} */
+    this.announce_;
+
+    /** @private {!Function} */
+    this.handleKeyDown_;
+
+    /** @private {!Function} */
+    this.handleSurfaceClick_;
   }
 
-  getDefaultFoundation() {
-    const {
-      TEXT_SELECTOR,
-      ACTION_BUTTON_SELECTOR,
-    } = MDCSnackbarFoundation.strings;
-    const getText = () => this.root_.querySelector(TEXT_SELECTOR);
-    const getActionButton = () => this.root_.querySelector(ACTION_BUTTON_SELECTOR);
+  /**
+   * @param {function(): function(!HTMLElement, !HTMLElement=):void} announceFactory
+   */
+  initialize(announceFactory = () => util.announce) {
+    this.announce_ = announceFactory();
+  }
 
+  initialSyncWithDOM() {
+    this.surfaceEl_ = /** @type {!HTMLElement} */ (this.root_.querySelector(SURFACE_SELECTOR));
+    this.labelEl_ = /** @type {!HTMLElement} */ (this.root_.querySelector(LABEL_SELECTOR));
+    this.actionButtonEl_ = /** @type {!HTMLElement} */ (this.root_.querySelector(ACTION_BUTTON_SELECTOR));
+
+    this.handleKeyDown_ = (evt) => this.foundation_.handleKeyDown(evt);
+    this.handleSurfaceClick_ = (evt) => {
+      if (this.isActionButton_(evt.target)) {
+        this.foundation_.handleActionButtonClick(evt);
+      } else if (this.isActionIcon_(evt.target)) {
+        this.foundation_.handleActionIconClick(evt);
+      }
+    };
+
+    this.registerKeyDownHandler_(this.handleKeyDown_);
+    this.registerSurfaceClickHandler_(this.handleSurfaceClick_);
+  }
+
+  destroy() {
+    super.destroy();
+    this.deregisterKeyDownHandler_(this.handleKeyDown_);
+    this.deregisterSurfaceClickHandler_(this.handleSurfaceClick_);
+  }
+
+  open() {
+    this.foundation_.open();
+  }
+
+  /**
+   * @param {string=} reason Why the snackbar was closed. Value will be passed to CLOSING_EVENT and CLOSED_EVENT via the
+   *     `event.detail.reason` property. Standard values are REASON_ACTION and REASON_DISMISS, but custom
+   *     client-specific values may also be used if desired.
+   */
+  close(reason = '') {
+    this.foundation_.close(reason);
+  }
+
+  /**
+   * @return {!MDCSnackbarFoundation}
+   */
+  getDefaultFoundation() {
     /* eslint brace-style: "off" */
     return new MDCSnackbarFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-      setAriaHidden: () => this.root_.setAttribute('aria-hidden', 'true'),
-      unsetAriaHidden: () => this.root_.removeAttribute('aria-hidden'),
-      setActionAriaHidden: () => getActionButton().setAttribute('aria-hidden', 'true'),
-      unsetActionAriaHidden: () => getActionButton().removeAttribute('aria-hidden'),
-      setActionText: (text) => {getActionButton().textContent = text;},
-      setMessageText: (text) => {getText().textContent = text;},
-      setFocus: () => getActionButton().focus(),
-      isFocused: () => document.activeElement === getActionButton(),
-      visibilityIsHidden: () => document.hidden,
-      registerCapturedBlurHandler: (handler) => getActionButton().addEventListener('blur', handler, true),
-      deregisterCapturedBlurHandler: (handler) => getActionButton().removeEventListener('blur', handler, true),
-      registerVisibilityChangeHandler: (handler) => document.addEventListener('visibilitychange', handler),
-      deregisterVisibilityChangeHandler: (handler) => document.removeEventListener('visibilitychange', handler),
-      registerCapturedInteractionHandler: (evt, handler) =>
-        document.body.addEventListener(evt, handler, true),
-      deregisterCapturedInteractionHandler: (evt, handler) =>
-        document.body.removeEventListener(evt, handler, true),
-      registerActionClickHandler: (handler) => getActionButton().addEventListener('click', handler),
-      deregisterActionClickHandler: (handler) => getActionButton().removeEventListener('click', handler),
-      registerTransitionEndHandler:
-        (handler) => this.root_.addEventListener(getCorrectEventName(window, 'transitionend'), handler),
-      deregisterTransitionEndHandler:
-        (handler) => this.root_.removeEventListener(getCorrectEventName(window, 'transitionend'), handler),
-      notifyShow: () => this.emit(MDCSnackbarFoundation.strings.SHOW_EVENT),
-      notifyHide: () => this.emit(MDCSnackbarFoundation.strings.HIDE_EVENT),
+      announce: () => this.announce_(this.labelEl_),
+      notifyOpening: () => this.emit(OPENING_EVENT, {}),
+      notifyOpened: () => this.emit(OPENED_EVENT, {}),
+      notifyClosing: (reason) => this.emit(CLOSING_EVENT, reason ? {reason} : {}),
+      notifyClosed: (reason) => this.emit(CLOSED_EVENT, reason ? {reason} : {}),
     });
   }
 
-  get dismissesOnAction() {
-    return this.foundation_.dismissesOnAction();
+  /**
+   * @return {number}
+   */
+  get timeoutMs() {
+    return this.foundation_.getTimeoutMs();
   }
 
-  set dismissesOnAction(dismissesOnAction) {
-    this.foundation_.setDismissOnAction(dismissesOnAction);
+  /**
+   * @param {number} timeoutMs
+   */
+  set timeoutMs(timeoutMs) {
+    this.foundation_.setTimeoutMs(timeoutMs);
+  }
+
+  /**
+   * @return {boolean}
+   */
+  get closeOnEscape() {
+    return this.foundation_.getCloseOnEscape();
+  }
+
+  /**
+   * @param {boolean} closeOnEscape
+   */
+  set closeOnEscape(closeOnEscape) {
+    this.foundation_.setCloseOnEscape(closeOnEscape);
+  }
+
+  /**
+   * @return {boolean}
+   */
+  get isOpen() {
+    return this.foundation_.isOpen();
+  }
+
+  /**
+   * @return {string}
+   */
+  get labelText() {
+    return this.labelEl_.textContent;
+  }
+
+  /**
+   * @param {string} labelText
+   */
+  set labelText(labelText) {
+    this.labelEl_.textContent = labelText;
+  }
+
+  /**
+   * @return {string}
+   */
+  get actionButtonText() {
+    return this.actionButtonEl_.textContent;
+  }
+
+  /**
+   * @param {string} actionButtonText
+   */
+  set actionButtonText(actionButtonText) {
+    this.actionButtonEl_.textContent = actionButtonText;
+  }
+
+  /**
+   * @param {!Function} handler
+   * @private
+   */
+  registerKeyDownHandler_(handler) {
+    this.listen('keydown', handler);
+  }
+
+  /**
+   * @param {!Function} handler
+   * @private
+   */
+  deregisterKeyDownHandler_(handler) {
+    this.unlisten('keydown', handler);
+  }
+
+  /**
+   * @param {!Function} handler
+   * @private
+   */
+  registerSurfaceClickHandler_(handler) {
+    this.surfaceEl_.addEventListener('click', handler);
+  }
+
+  /**
+   * @param {!Function} handler
+   * @private
+   */
+  deregisterSurfaceClickHandler_(handler) {
+    this.surfaceEl_.removeEventListener('click', handler);
+  }
+
+  /**
+   * @param {!Element} target
+   * @return {boolean}
+   * @private
+   */
+  isActionButton_(target) {
+    return Boolean(ponyfill.closest(target, ACTION_BUTTON_SELECTOR));
+  }
+
+  /**
+   * @param {!Element} target
+   * @return {boolean}
+   * @private
+   */
+  isActionIcon_(target) {
+    return Boolean(ponyfill.closest(target, ACTION_ICON_SELECTOR));
   }
 }
+
+export {MDCSnackbar, MDCSnackbarFoundation, util};
