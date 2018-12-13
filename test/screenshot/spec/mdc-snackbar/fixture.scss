@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc.
+// Copyright 2018 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,9 +20,35 @@
 // THE SOFTWARE.
 //
 
-@import "./common";
-@import "../packages/mdc-button/mdc-button";
-@import "../packages/mdc-checkbox/mdc-checkbox";
-@import "../packages/mdc-form-field/mdc-form-field";
-@import "../packages/mdc-snackbar/mdc-snackbar";
-@import "../packages/mdc-textfield/mdc-text-field";
+@import "../../../../packages/mdc-snackbar/mixins";
+@import "../../../../packages/mdc-theme/color-palette";
+
+$custom-snackbar-color: $material-color-red-500;
+
+.custom-snackbar--elevation {
+  @include mdc-snackbar-elevation(16);
+}
+
+.custom-snackbar--fill-color {
+  @include mdc-snackbar-fill-color($custom-snackbar-color);
+}
+
+.custom-snackbar--label-ink-color {
+  @include mdc-snackbar-label-ink-color($custom-snackbar-color);
+}
+
+.custom-snackbar--max-width {
+  @include mdc-snackbar-max-width(200px);
+}
+
+.custom-snackbar--min-width {
+  @include mdc-snackbar-min-width(800px);
+}
+
+.custom-snackbar--shape-radius {
+  @include mdc-snackbar-shape-radius(10px);
+}
+
+.custom-snackbar--viewport-margin {
+  @include mdc-snackbar-viewport-margin(50px);
+}
