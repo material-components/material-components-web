@@ -22,9 +22,7 @@
 
 @import "@material/elevation/mixins";
 @import "@material/shape/mixins";
-@import "@material/theme/functions";
 @import "@material/theme/mixins";
-@import "@material/theme/variables"; // for mdc-theme-prop-value() and mdc-theme-text-emphasis()
 @import "./variables";
 
 @mixin mdc-snackbar-fill-color($color) {
