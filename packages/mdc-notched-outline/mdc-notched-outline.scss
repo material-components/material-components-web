@@ -82,7 +82,7 @@
     }
 
     &--upgraded .mdc-floating-label--float-above {
-      //max-width: calc(100% / .75);
+      max-width: calc(100% / .75);
       text-overflow: clip;
     }
   }
