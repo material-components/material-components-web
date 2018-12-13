@@ -49,8 +49,9 @@ const numbers = {
   MAX_AUTO_DISMISS_TIMEOUT_MS: 10000,
   DEFAULT_AUTO_DISMISS_TIMEOUT_MS: 5000,
 
+  // These variables need to be kept in sync with the values in _variables.scss.
   SNACKBAR_ANIMATION_OPEN_TIME_MS: 150,
-  SNACKBAR_ANIMATION_CLOSE_TIME_MS: 225,
+  SNACKBAR_ANIMATION_CLOSE_TIME_MS: 75,
 
   /**
    * Number of milliseconds to wait between temporarily clearing the label text
