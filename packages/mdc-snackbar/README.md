@@ -160,30 +160,6 @@ Mixin | Description
 
 > **NOTE**: The `mdc-snackbar__action-button` and `mdc-snackbar__action-icon` elements can be customized with [`mdc-button`](../mdc-button) and [`mdc-icon-button`](../mdc-icon-button) mixins.
 
-### Sass Variables
-
-Variable | Description
---- | ---
-`$mdc-snackbar-fill-color` | Fill color of the surface.
-`$mdc-snackbar-label-ink-color` | Ink color of the label.
-`$mdc-snackbar-action-button-ink-color` | Ink color of the action button.
-`$mdc-snackbar-action-icon-ink-color` | Ink color of the dismiss icon.
-`$mdc-snackbar-label-type-scale` | Type scale of the label text.
-`$mdc-snackbar-action-icon-size` | Size of the action icon.
-`$mdc-snackbar-min-width` | `min-width` of the surface on tablet/desktop devices. On mobile, the width is automatically set to 100%. To specify a custom breakpoint, override the `$mdc-snackbar-mobile-breakpoint` variable.
-`$mdc-snackbar-max-width` | `max-width` of the surface.
-`$mdc-snackbar-mobile-breakpoint` | Device width breakpoint for `@media` queries that target mobile devices.
-`$mdc-snackbar-viewport-margin-narrow` | Distance between the surface and the viewport on mobile devices. Used with the `mdc-snackbar-viewport-margin` mixin.
-`$mdc-snackbar-viewport-margin-wide` | Distance between the surface and the viewport on tablet and desktop devices. Used with the `mdc-snackbar-viewport-margin` mixin.
-`$mdc-snackbar-padding` | Padding of the surface.
-`$mdc-snackbar-elevation` | Elevation of the surface.
-`$mdc-snackbar-shape-radius` | Shape radius of the surface.
-`$mdc-snackbar-z-index` | Z-index of the surface.
-`$mdc-snackbar-enter-delay` | Delay before enter animations start.
-`$mdc-snackbar-enter-duration` | Duration of enter animations.
-`$mdc-snackbar-exit-delay` | Delay before exit animations start.
-`$mdc-snackbar-exit-duration` | Duration of exit animations.
-
 ## JavaScript API
 
 ### `MDCSnackbar` Properties
