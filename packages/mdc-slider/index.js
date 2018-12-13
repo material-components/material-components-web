@@ -180,6 +180,8 @@ class MDCSlider extends MDCComponent {
     const min = parseFloat(this.root_.getAttribute(strings.ARIA_VALUEMIN)) || this.min;
     const max = parseFloat(this.root_.getAttribute(strings.ARIA_VALUEMAX)) || this.max;
 
+    // min and max need to be set in the right order to avoid throwing an error
+    // when the new min is greater than the default max.
     if (min >= this.max) {
       this.max = max;
       this.min = min;
