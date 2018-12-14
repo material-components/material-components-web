@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2018 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,490 +23,333 @@
 
 import {assert} from 'chai';
 import td from 'testdouble';
+
+import {setupFoundationTest} from '../helpers/setup';
+import {verifyDefaultAdapter} from '../helpers/foundation';
+
+import {cssClasses, strings, numbers} from '../../../packages/mdc-snackbar/constants';
 import {install as installClock} from '../helpers/clock';
 import MDCSnackbarFoundation from '../../../packages/mdc-snackbar/foundation';
-import {cssClasses, strings, numbers} from '../../../packages/mdc-snackbar/constants';
-
-function setupTest() {
-  const mockAdapter = td.object(MDCSnackbarFoundation.defaultAdapter);
-
-  const foundation = new MDCSnackbarFoundation(mockAdapter);
-  return {foundation, mockAdapter};
-}
 
 suite('MDCSnackbarFoundation');
-
-test('exports strings', () => {
-  assert.deepEqual(MDCSnackbarFoundation.strings, strings);
-});
 
 test('exports cssClasses', () => {
   assert.deepEqual(MDCSnackbarFoundation.cssClasses, cssClasses);
 });
 
-test('defaultAdapter returns a complete adapter implementation', () => {
-  const {defaultAdapter} = MDCSnackbarFoundation;
-  const methods = Object.keys(defaultAdapter).filter((k) => typeof defaultAdapter[k] === 'function');
+test('exports strings', () => {
+  assert.deepEqual(MDCSnackbarFoundation.strings, strings);
+});
 
-  assert.equal(methods.length, Object.keys(defaultAdapter).length, 'Every adapter key must be a function');
-  assert.deepEqual(methods, [
-    'addClass', 'removeClass', 'setAriaHidden', 'unsetAriaHidden', 'setActionAriaHidden',
-    'unsetActionAriaHidden', 'setActionText', 'setMessageText', 'setFocus', 'isFocused', 'visibilityIsHidden',
-    'registerCapturedBlurHandler', 'deregisterCapturedBlurHandler', 'registerVisibilityChangeHandler',
-    'deregisterVisibilityChangeHandler', 'registerCapturedInteractionHandler',
-    'deregisterCapturedInteractionHandler', 'registerActionClickHandler',
-    'deregisterActionClickHandler', 'registerTransitionEndHandler',
-    'deregisterTransitionEndHandler',
-    'notifyShow', 'notifyHide',
+test('exports numbers', () => {
+  assert.deepEqual(MDCSnackbarFoundation.numbers, numbers);
+});
+
+test('default adapter returns a complete adapter implementation', () => {
+  verifyDefaultAdapter(MDCSnackbarFoundation, [
+    'addClass', 'removeClass', 'announce', 'notifyOpening', 'notifyOpened', 'notifyClosing', 'notifyClosed',
   ]);
-  // Test default methods
-  methods.forEach((m) => assert.doesNotThrow(defaultAdapter[m]));
 });
 
-test('#init calls adapter.registerActionClickHandler() with an action click handler function', () => {
+/**
+ * @return {{mockAdapter: !MDCSnackbarAdapter, foundation: !MDCSnackbarFoundation}}
+ */
+function setupTest() {
+  const adapterFoundationPair = /** @type {{mockAdapter: !MDCSnackbarAdapter, foundation: !MDCSnackbarFoundation}} */ (
+    setupFoundationTest(MDCSnackbarFoundation)
+  );
+  adapterFoundationPair.foundation.init();
+  return adapterFoundationPair;
+}
+
+test('#destroy removes all animating and open classes', () => {
   const {foundation, mockAdapter} = setupTest();
-  const {isA} = td.matchers;
 
-  foundation.init();
-  td.verify(mockAdapter.registerActionClickHandler(isA(Function)));
-});
-
-test('#destroy calls adapter.deregisterActionClickHandler() with a registerActionClickHandler function', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const {isA} = td.matchers;
-
-  let changeHandler;
-  td.when(mockAdapter.registerActionClickHandler(isA(Function))).thenDo(function(handler) {
-    changeHandler = handler;
-  });
-  foundation.init();
-
+  foundation.open();
   foundation.destroy();
-  td.verify(mockAdapter.deregisterActionClickHandler(changeHandler));
+
+  td.verify(mockAdapter.removeClass(cssClasses.OPENING));
+  td.verify(mockAdapter.removeClass(cssClasses.OPEN));
+  td.verify(mockAdapter.removeClass(cssClasses.CLOSING));
 });
 
-test('#destroy calls adapter.deregisterVisibilityChangeHandler() with a function', () => {
+test('#destroy cancels all timers', () => {
   const {foundation, mockAdapter} = setupTest();
-  const {isA} = td.matchers;
+  const clock = installClock();
+  foundation.close = td.func('close');
 
+  foundation.open();
   foundation.destroy();
-  td.verify(mockAdapter.deregisterVisibilityChangeHandler(isA(Function)));
-});
 
-test('#destroy calls adapter.deregisterCapturedBlurHandler() with a function', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const {isA} = td.matchers;
+  // Note: #open uses a combination of rAF and setTimeout due to Firefox behavior, so we need to wait 2 ticks
+  clock.runToFrame();
+  clock.runToFrame();
 
-  foundation.destroy();
-  td.verify(mockAdapter.deregisterCapturedBlurHandler(isA(Function)));
-});
-
-test('#destroy calls adapter.deregisterCapturedInteractionHandler() with an event type and function 3 times', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const {isA} = td.matchers;
-
-  foundation.destroy();
-  td.verify(mockAdapter.deregisterCapturedInteractionHandler(isA(String), isA(Function)), {times: 3});
-});
-
-test('#init calls adapter.setAriaHidden to ensure snackbar starts hidden', () => {
-  const {foundation, mockAdapter} = setupTest();
-
-  foundation.init();
-  td.verify(mockAdapter.setAriaHidden());
-});
-
-test('#init calls adapter.setActionAriaHidden to ensure snackbar action starts hidden', () => {
-  const {foundation, mockAdapter} = setupTest();
-
-  foundation.init();
-  td.verify(mockAdapter.setActionAriaHidden());
-});
-
-test('#show without a data object throws an error', () => {
-  const {foundation} = setupTest();
-
-  foundation.init();
-  assert.throws(() => foundation.show(), Error);
-});
-
-test('#show without a message throws an error', () => {
-  const {foundation} = setupTest();
-
-  foundation.init();
-  assert.throws(() => foundation.show({}), Error);
-});
-
-test('#show with an actionHandler but no actionText throws an error', () => {
-  const {foundation} = setupTest();
-
-  foundation.init();
-  const data = {
-    message: 'Message Deleted',
-    actionHandler: () => {},
-  };
-  assert.throws(() => foundation.show(data), Error);
-});
-
-test('#show should add the active class', () => {
-  const {foundation, mockAdapter} = setupTest();
-
-  foundation.init();
-  foundation.show({message: 'Message Deleted'});
-  td.verify(mockAdapter.addClass(cssClasses.ACTIVE));
-});
-
-test('#show should call foundation#unsetAriaHidden() to show the snackbar', () => {
-  const {foundation, mockAdapter} = setupTest();
-
-  foundation.init();
-  foundation.show({message: 'Message Deleted'});
-  td.verify(mockAdapter.unsetAriaHidden());
-});
-
-test('#show should set the message text', () => {
-  const {foundation, mockAdapter} = setupTest();
-
-  foundation.init();
-  foundation.show({message: 'Message Deleted'});
-  td.verify(mockAdapter.setMessageText('Message Deleted'));
-});
-
-test('#show should make the foundation active', () => {
-  const {foundation} = setupTest();
-
-  foundation.init();
-  foundation.show({message: 'Message Deleted'});
-  assert.equal(foundation.active, true);
-});
-
-test('#show with action text and handler should set the action text', () => {
-  const {foundation, mockAdapter} = setupTest();
-
-  foundation.init();
-  foundation.show({
-    message: 'Message Deleted',
-    actionText: 'Undo',
-    actionHandler: () => {},
-  });
-
-  td.verify(mockAdapter.setActionText('Undo'));
-});
-
-test('#show with action text and handler should unset action aria-hidden', () => {
-  const {foundation, mockAdapter} = setupTest();
-
-  foundation.init();
-  foundation.show({
-    message: 'Message Deleted',
-    actionText: 'Undo',
-    actionHandler: () => {},
-  });
-
-  td.verify(mockAdapter.unsetActionAriaHidden());
-});
-
-test('#show({ mutliline: true }) should add multiline modifier', () => {
-  const {foundation, mockAdapter} = setupTest();
-
-  foundation.init();
-  foundation.show({message: 'Message Deleted', multiline: true});
-  td.verify(mockAdapter.addClass(cssClasses.MULTILINE));
-});
-
-test('#show({ mutliline: true, actionOnBottom: true }) should add action-on-bottom modifier', () => {
-  const {foundation, mockAdapter} = setupTest();
-
-  foundation.init();
-  foundation.show({
-    message: 'Message Deleted',
-    multiline: true,
-    actionOnBottom: true,
-  });
-
-  td.verify(mockAdapter.addClass(cssClasses.ACTION_ON_BOTTOM));
-});
-
-test('#show({ mutliline: false, actionOnBottom: true }) does not add action-on-bottom modifier', () => {
-  const {foundation, mockAdapter} = setupTest();
-
-  foundation.init();
-  foundation.show({
-    message: 'Message Deleted',
-    actionOnBottom: true,
-  });
-
-  td.verify(mockAdapter.addClass(cssClasses.ACTION_ON_BOTTOM), {times: 0});
-});
-
-test('#show while snackbar is already showing will queue the data object.', () => {
-  const {foundation, mockAdapter} = setupTest();
-
-  foundation.init();
-  foundation.show({
-    message: 'Message Deleted',
-  });
-
-  foundation.show({
-    message: 'Message Archived',
-  });
-
-  td.verify(mockAdapter.setMessageText('Message Deleted'));
-  td.verify(mockAdapter.setMessageText('Message Archived'), {times: 0});
-});
-
-test('#show while snackbar is already showing will show after the timeout and transition end', () => {
-  const clock = installClock();
-  const {foundation, mockAdapter} = setupTest();
-  const {isA} = td.matchers;
-
-  let transEndHandler;
-  td.when(mockAdapter.registerTransitionEndHandler(isA(Function)))
-    .thenDo((handler) => {
-      transEndHandler = handler;
-    });
-
-  foundation.init();
-  foundation.show({
-    message: 'Message Deleted',
-  });
-
-  foundation.show({
-    message: 'Message Archived',
-  });
-
-  td.verify(mockAdapter.setMessageText('Message Archived'), {times: 0});
-
-  clock.tick(numbers.MESSAGE_TIMEOUT);
-  transEndHandler();
-
-  td.verify(mockAdapter.setMessageText('Message Archived'));
-});
-
-test('#show will remove active class after the timeout', () => {
-  const clock = installClock();
-  const {foundation, mockAdapter} = setupTest();
-
-  foundation.init();
-
-  foundation.show({
-    message: 'Message Deleted',
-  });
-
-  clock.tick(numbers.MESSAGE_TIMEOUT);
-
-  td.verify(mockAdapter.removeClass(cssClasses.ACTIVE));
-});
-
-test('#show will add an transition end handler after the timeout', () => {
-  const clock = installClock();
-  const {foundation, mockAdapter} = setupTest();
-  const {isA} = td.matchers;
-
-  foundation.init();
-
-  foundation.show({
-    message: 'Message Deleted',
-  });
-
-  clock.tick(numbers.MESSAGE_TIMEOUT);
-
-  td.verify(mockAdapter.registerTransitionEndHandler(isA(Function)));
-});
-
-test('#show will clean up snackbar after the timeout and transition end', () => {
-  const clock = installClock();
-  const {foundation, mockAdapter} = setupTest();
-  const {isA} = td.matchers;
-
-  foundation.init();
-
-  let transEndHandler;
-  td.when(mockAdapter.registerTransitionEndHandler(isA(Function)))
-    .thenDo((handler) => {
-      transEndHandler = handler;
-    });
-
-  foundation.show({
-    message: 'Message Deleted',
-    actionText: 'Undo',
-    multiline: true,
-    actionOnBottom: true,
-    actionHandler: () => {},
-  });
-
-  clock.tick(numbers.MESSAGE_TIMEOUT);
-  transEndHandler();
-
-  td.verify(mockAdapter.removeClass(cssClasses.MULTILINE));
-  td.verify(mockAdapter.removeClass(cssClasses.ACTION_ON_BOTTOM));
-  td.verify(mockAdapter.deregisterTransitionEndHandler(transEndHandler));
-});
-
-test('#show calls adapter.registerVisibilityChangeHandler() with a function', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const {isA} = td.matchers;
-
-  foundation.show({message: 'foo'});
-  td.verify(mockAdapter.registerVisibilityChangeHandler(isA(Function)));
-});
-
-test('#show calls adapter.registerCapturedBlurHandler() with a function', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const {isA} = td.matchers;
-
-  foundation.show({message: 'foo'});
-  td.verify(mockAdapter.registerCapturedBlurHandler(isA(Function)));
-});
-
-test('#show calls adapter.registerCapturedInteractionHandler() with an event type and function 3 times', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const {isA} = td.matchers;
-
-  foundation.show({message: 'foo'});
-  td.verify(mockAdapter.registerCapturedInteractionHandler(isA(String), isA(Function)), {times: 3});
-});
-
-test('snackbar is dismissed after action button is pressed', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const {isA} = td.matchers;
-
-  let actionClickHandler;
-  td.when(mockAdapter.registerActionClickHandler(isA(Function)))
-    .thenDo((handler) => {
-      actionClickHandler = handler;
-    });
-
-  foundation.init();
-
+  td.verify(mockAdapter.addClass(cssClasses.OPEN), {times: 0});
   td.reset();
 
-  foundation.show({
-    message: 'Message Deleted',
-    actionText: 'Undo',
-    actionHandler: () => {},
-  });
-
-  actionClickHandler();
-
-  td.verify(mockAdapter.removeClass(cssClasses.ACTIVE));
+  clock.runToFrame();
+  td.verify(foundation.close(strings.REASON_DISMISS), {times: 0});
 });
 
-test('snackbar is not dismissed after action button is pressed if setDismissOnAction(false) was called before', () => {
+test('#open announces text to screen readers', () => {
   const {foundation, mockAdapter} = setupTest();
-  const {isA} = td.matchers;
 
-  let actionClickHandler;
-  td.when(mockAdapter.registerActionClickHandler(isA(Function)))
-    .thenDo((handler) => {
-      actionClickHandler = handler;
-    });
+  foundation.open();
+  td.verify(mockAdapter.announce(), {times: 1});
+});
 
-  foundation.init();
-  foundation.setDismissOnAction(false);
+test('#open adds CSS classes after rAF', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const clock = installClock();
 
+  foundation.open();
+  td.verify(mockAdapter.addClass(cssClasses.OPEN), {times: 0});
+
+  // Note: #open uses a combination of rAF and setTimeout due to Firefox behavior, so we need to wait 2 ticks
+  clock.runToFrame();
+  clock.runToFrame();
+  td.verify(mockAdapter.addClass(cssClasses.OPEN));
+});
+
+test('#close removes CSS classes', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.open();
+  td.reset();
+  foundation.close();
+
+  td.verify(mockAdapter.removeClass(cssClasses.OPEN));
+});
+
+test('#close cancels rAF scheduled by open if still pending', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const clock = installClock();
+
+  foundation.open();
+  td.reset();
+  foundation.close();
+
+  // Note: #open uses a combination of rAF and setTimeout due to Firefox behavior, so we need to wait 2 ticks
+  clock.runToFrame();
+  clock.runToFrame();
+  td.verify(mockAdapter.addClass(cssClasses.OPEN), {times: 0});
+});
+
+test('#open adds the opening class to start an animation, and removes it after the animation is done', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const clock = installClock();
+
+  foundation.open();
+  clock.runToFrame();
+  clock.tick(100);
+
+  td.verify(mockAdapter.addClass(cssClasses.OPENING));
+  td.verify(mockAdapter.removeClass(cssClasses.OPENING), {times: 0});
+  clock.tick(numbers.SNACKBAR_ANIMATION_OPEN_TIME_MS);
+  td.verify(mockAdapter.removeClass(cssClasses.OPENING));
+});
+
+test('#close adds the closing class to start an animation, and removes it after the animation is done', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const clock = installClock();
+
+  foundation.open();
+  clock.tick(numbers.SNACKBAR_ANIMATION_OPEN_TIME_MS);
+  td.reset();
+  foundation.close();
+
+  td.verify(mockAdapter.addClass(cssClasses.CLOSING));
+  td.verify(mockAdapter.removeClass(cssClasses.CLOSING), {times: 0});
+  clock.tick(numbers.SNACKBAR_ANIMATION_CLOSE_TIME_MS);
+  td.verify(mockAdapter.removeClass(cssClasses.CLOSING));
+});
+
+test('#open emits "opening" and "opened" events', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const clock = installClock();
+
+  foundation.open();
+  clock.runToFrame();
+  clock.tick(100);
+
+  td.verify(mockAdapter.notifyOpening(), {times: 1});
+  clock.tick(numbers.SNACKBAR_ANIMATION_OPEN_TIME_MS);
+  td.verify(mockAdapter.notifyOpened(), {times: 1});
+});
+
+test('#close emits "closing" and "closed" events', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const clock = installClock();
+
+  foundation.open();
+  clock.tick(numbers.SNACKBAR_ANIMATION_OPEN_TIME_MS);
+  td.reset();
+  foundation.close();
+
+  td.verify(mockAdapter.notifyClosing(''), {times: 1});
+  clock.tick(numbers.SNACKBAR_ANIMATION_CLOSE_TIME_MS);
+  td.verify(mockAdapter.notifyClosed(''), {times: 1});
+
+  foundation.open();
+  clock.tick(numbers.SNACKBAR_ANIMATION_OPEN_TIME_MS);
   td.reset();
 
-  foundation.show({
-    message: 'Message Deleted',
-    actionText: 'Undo',
-    actionHandler: () => {},
-  });
-
-  actionClickHandler();
-
-  td.verify(mockAdapter.removeClass(cssClasses.ACTIVE), {times: 0});
+  const reason = 'reason';
+  foundation.close(reason);
+  td.verify(mockAdapter.notifyClosing(reason), {times: 1});
+  clock.tick(numbers.SNACKBAR_ANIMATION_CLOSE_TIME_MS);
+  td.verify(mockAdapter.notifyClosed(reason), {times: 1});
 });
 
-test('snackbar is not dismissed if action button gets focus', () => {
+test('#close does nothing if the snackbar is already closed', () => {
   const {foundation, mockAdapter} = setupTest();
-  const evtType = 'focus';
-  const mockEvent = {type: 'focus'};
-  let focusEvent;
-
-  td.when(mockAdapter.registerCapturedInteractionHandler(evtType, td.matchers.isA(Function)))
-    .thenDo((evtType, handler) => {
-      focusEvent = handler;
-    });
-
-  foundation.init();
-  foundation.show({message: 'foo'});
-  focusEvent(mockEvent);
-
-  foundation.show({message: 'foo'});
-
-  td.verify(mockAdapter.removeClass(cssClasses.ACTIVE), {times: 0});
-});
-
-test('focus hijacks the snackbar timeout if no click or touchstart occurs', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const mockEvent = {type: 'focus'};
-  let tabEvent;
-
-  td.when(mockAdapter.registerCapturedInteractionHandler(mockEvent.type, td.matchers.isA(Function)))
-    .thenDo((evt, handler) => {
-      tabEvent = handler;
-    });
-
-  foundation.init();
-  foundation.show({message: 'foo'});
-  tabEvent(mockEvent);
-
-  td.verify(mockAdapter.removeClass(cssClasses.ACTIVE), {times: 0});
-});
-
-test('focus does not hijack the snackbar timeout if it occurs as a result' +
-  'of a mousedown or touchstart', () => {
   const clock = installClock();
-  const {foundation, mockAdapter} = setupTest();
-  const mockFocusEvent = {type: 'focus'};
-  const mockMouseEvent = {type: 'mousedown'};
-  let focusEvent;
-  let mouseEvent;
 
-  td.when(mockAdapter.registerCapturedInteractionHandler(mockFocusEvent.type, td.matchers.isA(Function)))
-    .thenDo((evt, handler) => {
-      focusEvent = handler;
-    });
-  td.when(mockAdapter.registerCapturedInteractionHandler(mockMouseEvent.type, td.matchers.isA(Function)))
-    .thenDo((evt, handler) => {
-      mouseEvent = handler;
-    });
-
-  foundation.init();
-  foundation.show({message: 'foo'});
-  mouseEvent(mockMouseEvent);
-  focusEvent(mockFocusEvent);
-  clock.tick(numbers.MESSAGE_TIMEOUT);
-
-  td.verify(mockAdapter.removeClass(cssClasses.ACTIVE));
+  foundation.close();
+  clock.runToFrame();
+  clock.tick(numbers.SNACKBAR_ANIMATION_CLOSE_TIME_MS);
+  td.verify(mockAdapter.removeClass(cssClasses.OPEN), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.OPENING), {times: 0});
+  td.verify(mockAdapter.addClass(cssClasses.CLOSING), {times: 0});
+  td.verify(mockAdapter.notifyClosing(''), {times: 0});
+  td.verify(mockAdapter.notifyClosed(''), {times: 0});
 });
 
-test('blur resets the snackbar timeout', () => {
+test('#open automatically dismisses snackbar after timeout', () => {
+  const {foundation} = setupTest();
   const clock = installClock();
-  const {foundation, mockAdapter} = setupTest();
-  const {isA} = td.matchers;
-  const mockBlurEvent = {type: 'blur'};
-  const mockFocusEvent = {type: 'focus'};
-  let focusEvent;
-  let blurEvent;
+  foundation.close = td.func('close');
 
-  td.when(mockAdapter.registerCapturedInteractionHandler(mockFocusEvent.type, td.matchers.isA(Function)))
-    .thenDo((evt, handler) => {
-      focusEvent = handler;
-    });
-  td.when(mockAdapter.registerCapturedBlurHandler(isA(Function)))
-    .thenDo((handler) => {
-      blurEvent = handler;
-    });
+  foundation.open();
 
-  foundation.init();
-  foundation.show({message: 'foo'});
-  focusEvent(mockFocusEvent);
-  // Sanity Check
-  td.verify(mockAdapter.removeClass(cssClasses.ACTIVE), {times: 0});
+  // Note: #open uses a combination of rAF and setTimeout due to Firefox behavior, so we need to wait 2 ticks
+  clock.runToFrame();
+  clock.runToFrame();
 
-  blurEvent(mockBlurEvent);
-  clock.tick(numbers.MESSAGE_TIMEOUT);
-  td.verify(mockAdapter.removeClass(cssClasses.ACTIVE));
+  // Auto-dismiss timeout
+  clock.tick(numbers.SNACKBAR_ANIMATION_OPEN_TIME_MS);
+  clock.tick(foundation.getTimeoutMs());
+
+  td.verify(foundation.close(strings.REASON_DISMISS), {times: 1});
+});
+
+test('#isOpen returns false when the snackbar has never been opened', () => {
+  const {foundation} = setupTest();
+  assert.isFalse(foundation.isOpen());
+});
+
+test('#isOpen returns true when the snackbar is open', () => {
+  const {foundation} = setupTest();
+
+  foundation.open();
+
+  assert.isTrue(foundation.isOpen());
+});
+
+test('#isOpen returns false when the snackbar is closed after being open', () => {
+  const {foundation} = setupTest();
+
+  foundation.open();
+  foundation.close();
+
+  assert.isFalse(foundation.isOpen());
+});
+
+test('escape keydown closes snackbar when closeOnEscape is true (via key property)', () => {
+  const {foundation} = setupTest();
+  foundation.close = td.func('close');
+
+  foundation.open();
+  foundation.handleKeyDown({key: 'Escape'});
+
+  td.verify(foundation.close(strings.REASON_DISMISS));
+});
+
+test('escape keydown closes snackbar when closeOnEscape is true (via keyCode property)', () => {
+  const {foundation} = setupTest();
+  foundation.close = td.func('close');
+
+  foundation.open();
+  foundation.handleKeyDown({keyCode: 27});
+
+  td.verify(foundation.close(strings.REASON_DISMISS));
+});
+
+test('escape keydown does not close snackbar when closeOnEscape is false (via key property)', () => {
+  const {foundation} = setupTest();
+  foundation.close = td.func('close');
+  foundation.setCloseOnEscape(false);
+
+  foundation.open();
+  foundation.handleKeyDown({key: 'Escape'});
+
+  td.verify(foundation.close(strings.REASON_DISMISS), {times: 0});
+});
+
+test('escape keydown does not close snackbar when closeOnEscape is false (via keyCode property)', () => {
+  const {foundation} = setupTest();
+  foundation.close = td.func('close');
+  foundation.setCloseOnEscape(false);
+
+  foundation.open();
+  foundation.handleKeyDown({keyCode: 27});
+
+  td.verify(foundation.close(strings.REASON_DISMISS), {times: 0});
+});
+
+test('keydown does nothing when key other than escape is pressed', () => {
+  const {foundation} = setupTest();
+  foundation.close = td.func('close');
+
+  foundation.open();
+  foundation.handleKeyDown({key: 'Enter'});
+
+  td.verify(foundation.close(strings.REASON_DISMISS), {times: 0});
+});
+
+test(`#handleActionButtonClick closes the snackbar with reason "${strings.REASON_ACTION}"`, () => {
+  const {foundation} = setupTest();
+  foundation.close = td.func('close');
+
+  foundation.open();
+  foundation.handleActionButtonClick({});
+
+  td.verify(foundation.close(strings.REASON_ACTION));
+});
+
+test(`#handleActionIconClick closes the snackbar with reason "${strings.REASON_DISMISS}"`, () => {
+  const {foundation} = setupTest();
+  foundation.close = td.func('close');
+
+  foundation.open();
+  foundation.handleActionIconClick({});
+
+  td.verify(foundation.close(strings.REASON_DISMISS));
+});
+
+test('#setTimeoutMs throws an error for values outside the min/max range', () => {
+  const {foundation} = setupTest();
+  assert.throws(() => foundation.setTimeoutMs(numbers.MIN_AUTO_DISMISS_TIMEOUT_MS - 1));
+  assert.throws(() => foundation.setTimeoutMs(numbers.MAX_AUTO_DISMISS_TIMEOUT_MS + 1));
+});
+
+test('#getTimeoutMs returns the default value', () => {
+  const {foundation} = setupTest();
+  assert.equal(foundation.getTimeoutMs(), numbers.DEFAULT_AUTO_DISMISS_TIMEOUT_MS);
+});
+
+test('#getTimeoutMs returns the value set by setTimeoutMs', () => {
+  const {foundation} = setupTest();
+  const timeoutMs = numbers.MAX_AUTO_DISMISS_TIMEOUT_MS - 1;
+  foundation.setTimeoutMs(timeoutMs);
+  assert.equal(foundation.getTimeoutMs(), timeoutMs);
+});
+
+test('#getCloseOnEscape returns the value set by setCloseOnEscape', () => {
+  const {foundation} = setupTest();
+  foundation.setCloseOnEscape(false);
+  assert.equal(foundation.getCloseOnEscape(), false);
+  foundation.setCloseOnEscape(true);
+  assert.equal(foundation.getCloseOnEscape(), true);
 });
