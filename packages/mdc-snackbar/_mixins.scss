@@ -1,0 +1,92 @@
+//
+// Copyright 2018 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+@import "@material/elevation/mixins";
+@import "@material/shape/mixins";
+@import "@material/theme/mixins";
+@import "./variables";
+
+@mixin mdc-snackbar-fill-color($color) {
+  .mdc-snackbar__surface {
+    @include mdc-theme-prop(background-color, $color);
+  }
+}
+
+@mixin mdc-snackbar-label-ink-color($color) {
+  .mdc-snackbar__label {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-snackbar-shape-radius($radius, $rtl-reflexive: false) {
+  .mdc-snackbar__surface {
+    @include mdc-shape-radius($radius, $rtl-reflexive);
+  }
+}
+
+@mixin mdc-snackbar-min-width($min-width, $mobile-breakpoint: $mdc-snackbar-mobile-breakpoint) {
+  .mdc-snackbar__surface {
+    min-width: $min-width;
+
+    // The first media query ensures that snackbars are always 100% width on mobile devices, as required by the spec.
+    // The second media query prevents snackbars from being wider than the viewport for large min-width values.
+    @media (max-width: $mobile-breakpoint), (max-width: $min-width) {
+      min-width: 100%;
+    }
+  }
+}
+
+@mixin mdc-snackbar-max-width($max-width) {
+  .mdc-snackbar__surface {
+    max-width: $max-width;
+  }
+}
+
+@mixin mdc-snackbar-elevation($z-index) {
+  .mdc-snackbar__surface {
+    @include mdc-elevation($z-index);
+  }
+}
+
+@mixin mdc-snackbar-viewport-margin($margin) {
+  margin: $margin;
+}
+
+@mixin mdc-snackbar-z-index($z-index) {
+  z-index: $z-index;
+}
+
+@mixin mdc-snackbar-position-leading {
+  justify-content: flex-start;
+}
+
+@mixin mdc-snackbar-layout-stacked {
+  .mdc-snackbar__surface {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .mdc-snackbar__actions {
+    align-self: flex-end;
+    margin-bottom: $mdc-snackbar-padding;
+  }
+}
