@@ -43,9 +43,9 @@ Components are categorized as small, medium and large in shape system. Overridin
 
 Variable | Description
 --- | ---
-`$mdc-shape-small-surface-radius` | Rounded shape radius size for small surface components. Default value `4px`.
-`$mdc-shape-medium-surface-radius` | Rounded shape radius size for medium surface components. Default value `8px`.
-`$mdc-shape-large-surface-radius` | Rounded shape radius size for large surface components. Default value `0`.
+`$mdc-shape-small-component-radius` | Rounded shape radius size for small components. Default value `4px`.
+`$mdc-shape-medium-component-radius` | Rounded shape radius size for medium components. Default value `4px`.
+`$mdc-shape-large-component-radius` | Rounded shape radius size for large components. Default value `0`.
 
 Please refer [Material Design guidelines: Shape](https://material.io/go/design-shape) to learn about how components are categorized.
 
@@ -64,6 +64,7 @@ Function | Description
 `mdc-shape-flip-radius($radius)` | Flips the radius values in RTL context. `$radius` is list of 2-4 corner values.
 `mdc-shape-resolve-percentage-radius($component-height, $radius)` | Calculates the absolute radius value based on its component height. Use this for fixed height components only.
 `mdc-shape-mask-radius($radius, $masked-corners)` | Accepts radius number or list of 2-4 radius values and returns 4 value list with masked corners as mentioned in `$masked-corners`.
+`mdc-shape-prop-value($radius)` | Returns `$radius` value of shape category - `large`, `medium` or `small`. Otherwise, it returns the `$radius` itself if valid. `$radius` can be a single value or list of up to 4.
 
 ### Additional Information
 

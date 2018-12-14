@@ -53,14 +53,20 @@
   height: 100%;
   transition-property: transform;
   transition-timing-function: $mdc-animation-standard-curve-timing-function;
+  /* @noflip */
   border-right-width: 1px;
+  /* @noflip */
   border-right-style: solid;
   overflow: hidden;
 
   @include mdc-rtl {
+    /* @noflip */
     border-right-width: 0;
+    /* @noflip */
     border-left-width: 1px;
+    /* @noflip */
     border-right-style: none;
+    /* @noflip */
     border-left-style: solid;
   }
 
@@ -104,10 +110,6 @@
   .mdc-list-item__graphic {
     pointer-events: none;
   }
-}
-
-.mdc-drawer--open {
-  transition: mdc-animation-standard(transform, $mdc-drawer-animation-enter);
 }
 
 .mdc-drawer--animate {

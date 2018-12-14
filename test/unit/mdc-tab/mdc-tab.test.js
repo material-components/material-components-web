@@ -26,7 +26,7 @@ import {assert} from 'chai';
 import td from 'testdouble';
 import domEvents from 'dom-events';
 
-import {createMockRaf} from '../helpers/raf';
+import {install as installClock} from '../helpers/clock';
 import {MDCTab, MDCTabFoundation} from '../../../packages/mdc-tab/index';
 
 const getFixture = () => bel`
@@ -74,13 +74,12 @@ test('click handler is removed during destroy', () => {
 });
 
 test('#destroy removes the ripple', () => {
-  const raf = createMockRaf();
+  const clock = installClock();
   const {component, root} = setupTest();
-  raf.flush();
+  clock.runToFrame();
   component.destroy();
-  raf.flush();
+  clock.runToFrame();
   assert.isNotOk(root.classList.contains('mdc-ripple-upgraded'));
-  raf.restore();
 });
 
 test('#adapter.addClass adds a class to the root element', () => {
@@ -165,10 +164,16 @@ function setupMockFoundationTest(root = getFixture()) {
   return {root, component, mockFoundation};
 }
 
-test('#active getter calls isActive', () => {
+test('#active getter calls foundation.isActive', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
   component.active;
   td.verify(mockFoundation.isActive(), {times: 1});
+});
+
+test('#focusOnActivate setter calls foundation.setFocusOnActivate', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.focusOnActivate = false;
+  td.verify(mockFoundation.setFocusOnActivate(false), {times: 1});
 });
 
 test('#activate() calls activate', () => {

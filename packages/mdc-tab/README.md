@@ -141,7 +141,8 @@ Mixin | Description
 
 Property | Value Type | Description
 --- | --- | ---
-`active` | `boolean` | Allows getting the active state of the tab.
+`active` | `boolean` (read-only) | Allows getting the active state of the tab.
+`focusOnActivate` | `boolean` (write-only) | Sets whether the tab should focus itself when activated. Defaults to `true`.
 
 Method Signature | Description
 --- | ---
@@ -153,7 +154,7 @@ Method Signature | Description
 
 Event Name | Event Data Structure | Description
 --- | --- | ---
-`MDCTab:interacted` | `{"detail": {"tab": MDCTab}}` | Emitted when the Tab is interacted with, regardless of its active state. Used by parent components to know which Tab to activate.
+`MDCTab:interacted` | `{"detail": {"tabId": string}}` | Emitted when the Tab is interacted with, regardless of its active state. Used by parent components to know which Tab to activate.
 
 ## Usage within Web Frameworks
 
@@ -182,6 +183,7 @@ Method Signature | Description
 --- | ---
 `handleClick() => void` | Handles the logic for the `"click"` event.
 `isActive() => boolean` | Returns whether the tab is active.
+`setFocusOnActivate(focusOnActivate: boolean) => void` | Sets whether the tab should focus itself when activated.
 `activate(previousIndicatorClientRect: ClientRect=) => void` | Activates the tab. `previousIndicatorClientRect` is an optional argument.
 `deactivate() => void` | Deactivates the tab.
 `computeDimensions() => MDCTabDimensions` | Returns the dimensions of the tab.

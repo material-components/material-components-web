@@ -55,8 +55,12 @@ npm install @material/dialog
         Dialog body text goes here.
       </div>
       <footer class="mdc-dialog__actions">
-        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">No</button>
-        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">Yes</button>
+        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+          <span class="mdc-button__label">No</span>
+        </button>
+        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
+          <span class="mdc-button__label">Yes</span>
+        </button>
       </footer>
     </div>
   </div>
@@ -177,8 +181,12 @@ radio buttons (indicating single selection) or checkboxes (indicating multiple s
         </ul>
       </div>
       <footer class="mdc-dialog__actions">
-        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">Cancel</button>
-        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept">OK</button>
+        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
+          <span class="mdc-button__label">Cancel</span>
+        </button>
+        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept">
+          <span class="mdc-button__label">OK</span>
+        </button>
       </footer>
     </div>
   </div>
@@ -245,8 +253,12 @@ For example:
 ```html
 ...
 <footer class="mdc-dialog__actions">
-  <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">Cancel</button>
-  <button type="button" class="mdc-button mdc-dialog__button mdc-dialog__button--default" data-mdc-dialog-action="accept">OK</button>
+  <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
+    <span class="mdc-button__label">Cancel</span>
+  </button>
+  <button type="button" class="mdc-button mdc-dialog__button mdc-dialog__button--default" data-mdc-dialog-action="accept">
+    <span class="mdc-button__label">OK</span>
+  </button>
 </footer>
 ...
 ```
@@ -256,6 +268,33 @@ For example:
 Dialogs which require making a choice via selection controls should initially disable any button which performs an
 action if no choice is selected by default. MDC Dialog does not include built-in logic for this, since it aims to remain
 as unopinionated as possible regarding dialog contents, aside from relaying information on which action is taken.
+
+#### Accessibility
+
+##### Using `aria-hidden` as a fallback for `aria-modal`
+
+`aria-modal` is part of the ARIA 1.1 specification, and indicates to screen readers that they should confine themselves
+to a single element. MDC Dialog recommends adding `aria-modal="true"` to the root element of its DOM structure; however,
+not all user agents and screen readers properly honor this attribute.
+
+The fallback is to apply `aria-hidden="true"` to all static content behind the dialog, when the dialog is open. This will
+be easiest to achieve if all non-modal elements are under a single common ancestor under the body, so that `aria-hidden`
+can be applied to one element.
+
+```js
+dialog.listen('MDCDialog:opened', function() {
+  // Assuming contentElement references a common parent element with the rest of the page's content
+  contentElement.setAttribute('aria-hidden', 'true');
+});
+
+dialog.listen('MDCDialog:closing', function() {
+  contentElement.removeAttribute('aria-hidden');
+});
+```
+
+> Note: The example above intentionally listens to the **opened** (not opening) event and the **closing** (not closed)
+> event in order to avoid additional jumping between elements by screen readers due to one element becoming hidden
+> before others become visible.
 
 ## Style Customization
 
@@ -408,6 +447,9 @@ The `MDCDialog` component uses the [focus-trap][] package to handle this.
 a focus trapping solution for your component code.**
 
 [focus-trap]: https://github.com/davidtheclark/focus-trap
+
+> NOTE: iOS platform doesn't seem to register currently focused element via `document.activeElement` which causes releasing
+> focus to last focused element fail.
 
 #### `createFocusTrapInstance()`
 

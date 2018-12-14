@@ -43,8 +43,8 @@
               https://github.com/material-components/material-components-web/issues/3496
         -->
         <div class="test-cell test-cell--select">
-          <div class="mdc-select mdc-select--outlined">
-            <select class="mdc-select__native-control" id="my-select" autofocus>
+          <div class="mdc-select mdc-select--outlined mdc-select--focused">
+            <select class="mdc-select__native-control" id="my-select" aria-label="No label" title="No label" autofocus>
               <option value="grains" selected>
                 Bread, Cereal, Rice, and Pasta
               </option>
@@ -52,12 +52,12 @@
                 Vegetables
               </option>
             </select>
-            <div class="mdc-notched-outline mdc-notched-outline--notched">
-              <svg>
-                <path class="mdc-notched-outline__path"/>
-              </svg>
+            <i class="mdc-select__dropdown-icon"></i>
+            <div class="mdc-notched-outline mdc-notched-outline--notched mdc-notched-outline--no-label">
+              <div class="mdc-notched-outline__leading"></div>
+              <div class="mdc-notched-outline__notch"></div>
+              <div class="mdc-notched-outline__trailing"></div>
             </div>
-            <div class="mdc-notched-outline__idle"></div>
           </div>
         </div>
 

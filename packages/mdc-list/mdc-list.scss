@@ -38,7 +38,6 @@
 
   // According to the mocks and stickersheet, the line-height is adjusted to 24px for text content,
   // same as for body1.
-
   /* @alternate */
   line-height: map-get(map-get($mdc-typography-styles, body1), line-height);
   list-style-type: none;
@@ -90,12 +89,18 @@
 .mdc-list-item__graphic {
   @include mdc-list-graphic-size_(24px);
 
-  display: inline-flex;
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
   fill: currentColor;
 }
+
+// Extra specificity is to override .material-icons display style if used in conjunction with mdc-list-item__graphic
+// stylelint-disable plugin/selector-bem-pattern
+.mdc-list .mdc-list-item__graphic {
+  display: inline-flex;
+}
+// stylelint-enable plugin/selector-bem-pattern
 
 .mdc-list-item__meta {
   @include mdc-rtl-reflexive-property(margin, auto, 0, ".mdc-list-item");
@@ -103,6 +108,11 @@
 
 .mdc-list-item__text {
   @include mdc-typography-overflow-ellipsis;
+}
+
+// Disable interaction on label elements that may automatically toggle corresponding checkbox / radio input.
+.mdc-list-item__text[for] {
+  pointer-events: none;
 }
 
 $mdc-list-item-primary-text-baseline-height_: 32px;

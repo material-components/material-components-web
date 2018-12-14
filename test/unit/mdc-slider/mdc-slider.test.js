@@ -26,7 +26,7 @@ import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
 
-import {createMockRaf} from '../helpers/raf';
+import {install as installClock} from '../helpers/clock';
 import {TRANSFORM_PROP} from './helpers';
 
 import {cssClasses, strings} from '../../../packages/mdc-slider/constants';
@@ -99,12 +99,12 @@ test('get/set disabled', () => {
 });
 
 test('#layout lays out the component', () => {
-  const raf = createMockRaf();
+  const clock = installClock();
   const {root, component} = setupTest();
-  raf.flush();
+  clock.runToFrame();
 
   component.value = 50;
-  raf.flush();
+  clock.runToFrame();
 
   Object.assign(root.style, {
     position: 'absolute',
@@ -115,13 +115,12 @@ test('#layout lays out the component', () => {
 
   document.body.appendChild(root);
   component.layout();
-  raf.flush();
+  clock.runToFrame();
 
   const thumbContainer = root.querySelector(strings.THUMB_CONTAINER_SELECTOR);
   assert.include(thumbContainer.style.getPropertyValue(TRANSFORM_PROP), 'translateX(50px)');
 
   document.body.removeChild(root);
-  raf.restore();
 });
 
 test('#initialSyncWithDOM syncs the min property with aria-valuemin', () => {
@@ -154,6 +153,16 @@ test('#initialSyncWithDOM adds an aria-valuemax attribute if not present', () =>
 
   const component = new MDCSlider(root);
   assert.equal(root.getAttribute('aria-valuemax'), String(component.max));
+});
+
+test('#initialSyncWithDOM syncs a custom range with aria-valuemin and aria-valuemax', () => {
+  const root = getFixture();
+  root.setAttribute('aria-valuemin', '2001');
+  root.setAttribute('aria-valuemax', '2017');
+
+  const component = new MDCSlider(root);
+  assert.equal(component.min, 2001);
+  assert.equal(component.max, 2017);
 });
 
 test('#initialSyncWithDOM syncs the value property with aria-valuenow for continuous slider', () => {

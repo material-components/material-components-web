@@ -106,6 +106,11 @@ Menus can contain a group of list items that can represent the selection state o
 </div>
 ```
 
+### Disabled Menu Items
+
+Menu items can be disabled by adding the `mdc-list-item--disabled` modifier class (from [MDC List](../mdc-list)).
+Disabled menu items will be excluded from keyboard navigation.
+
 ### Anchors and Positioning
 
 #### Anchored To Parent
@@ -183,6 +188,8 @@ Mixin | Description
 --- | ---
 `mdc-menu-width($width)` | Used to set the `width` of the menu. When used without units (e.g. `4` or `5`) it computes the `width` by multiplying by the base width (`56px`). When used with units (e.g. `240px`, `15%`, or `calc(200px + 10px)` it sets the `width` to the exact value provided.
 
+> See [Menu Surface](../mdc-menu-surface/README.md#sass-mixins) and [List](../mdc-list/README.md#sass-mixins) documentation for additional style customization options.
+
 ## `MDCMenu` Properties and Methods
 
 See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
@@ -192,6 +199,7 @@ Property | Value Type | Description
 `open` | Boolean | Proxies to the menu surface's `open` property.
 `items` | Array<Element> | Proxies to the list to query for all `.mdc-list-item` elements.
 `quickOpen` | Boolean | Proxies to the menu surface `quickOpen` property.
+`wrapFocus` | Boolean | Proxies to list's `wrapFocus` property.
 
 Method Signature | Description
 --- | ---
@@ -232,6 +240,7 @@ Method Signature | Description
 --- | ---
 `handleKeydown(evt: Event) => void` | Event handler for the `keydown` events within the menu.
 `handleClick(evt: Event) => void` | Event handler for the `click` events within the menu.
+`handleSelection(listItem: Element) => void` | Handler for a selected list item. Use this instead of `handleClick` when you don't have access to list item click event.
 
 ### Events
 

@@ -50,6 +50,10 @@ $custom-drawer-color: $material-color-orange-900;
   position: absolute;
 }
 
+.test-drawer-top-app-bar--dismissible {
+  z-index: 7;
+}
+
 .test-drawer-main-content {
   display: block; // Needed for IE 11
   box-sizing: border-box;

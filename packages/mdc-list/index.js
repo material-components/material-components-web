@@ -159,9 +159,10 @@ class MDCList extends MDCComponent {
   }
 
   initializeListType() {
-    // Automatically set single selection if selected/activated classes are present.
-    const preselectedElement =
-      this.root_.querySelector(`.${cssClasses.LIST_ITEM_ACTIVATED_CLASS}, .${cssClasses.LIST_ITEM_SELECTED_CLASS}`);
+    // Pre-selected list item in single selected list or checked list item if list with radio input.
+    const preselectedElement = this.root_.querySelector(`.${cssClasses.LIST_ITEM_ACTIVATED_CLASS},
+        .${cssClasses.LIST_ITEM_SELECTED_CLASS},
+        ${strings.ARIA_CHECKED_RADIO_SELECTOR}`);
 
     if (preselectedElement) {
       if (preselectedElement.classList.contains(cssClasses.LIST_ITEM_ACTIVATED_CLASS)) {
@@ -169,6 +170,8 @@ class MDCList extends MDCComponent {
       }
 
       this.singleSelection = true;
+
+      // Automatically set selected index if single select list type or list with radio inputs.
       this.selectedIndex = this.listElements.indexOf(preselectedElement);
     }
   }
@@ -244,22 +247,27 @@ class MDCList extends MDCComponent {
           listItem.click();
         }
       },
-      toggleCheckbox: (index) => {
-        let checkboxOrRadioExists = false;
+      hasCheckboxAtIndex: (index) => {
         const listItem = this.listElements[index];
-        const elementsToToggle =
-          [].slice.call(listItem.querySelectorAll(strings.CHECKBOX_RADIO_SELECTOR));
-        elementsToToggle.forEach((element) => {
-          const event = document.createEvent('Event');
-          event.initEvent('change', true, true);
+        return !!listItem.querySelector(strings.CHECKBOX_SELECTOR);
+      },
+      hasRadioAtIndex: (index) => {
+        const listItem = this.listElements[index];
+        return !!listItem.querySelector(strings.RADIO_SELECTOR);
+      },
+      isCheckboxCheckedAtIndex: (index) => {
+        const listItem = this.listElements[index];
+        const toggleEl = listItem.querySelector(strings.CHECKBOX_SELECTOR);
+        return toggleEl.checked;
+      },
+      setCheckedCheckboxOrRadioAtIndex: (index, isChecked) => {
+        const listItem = this.listElements[index];
+        const toggleEl = listItem.querySelector(strings.CHECKBOX_RADIO_SELECTOR);
+        toggleEl.checked = isChecked;
 
-          if (!element.checked || element.type !== 'radio') {
-            element.checked = !element.checked;
-            element.dispatchEvent(event);
-          }
-          checkboxOrRadioExists = true;
-        });
-        return checkboxOrRadioExists;
+        const event = document.createEvent('Event');
+        event.initEvent('change', true, true);
+        toggleEl.dispatchEvent(event);
       },
     })));
   }

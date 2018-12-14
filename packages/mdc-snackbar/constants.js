@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2018 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,24 +20,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-export const cssClasses = {
-  ROOT: 'mdc-snackbar',
-  TEXT: 'mdc-snackbar__text',
-  ACTION_WRAPPER: 'mdc-snackbar__action-wrapper',
-  ACTION_BUTTON: 'mdc-snackbar__action-button',
-  ACTIVE: 'mdc-snackbar--active',
-  MULTILINE: 'mdc-snackbar--multiline',
-  ACTION_ON_BOTTOM: 'mdc-snackbar--action-on-bottom',
+
+const cssClasses = {
+  OPENING: 'mdc-snackbar--opening',
+  OPEN: 'mdc-snackbar--open',
+  CLOSING: 'mdc-snackbar--closing',
 };
 
-export const strings = {
-  TEXT_SELECTOR: '.mdc-snackbar__text',
-  ACTION_WRAPPER_SELECTOR: '.mdc-snackbar__action-wrapper',
+const strings = {
+  SURFACE_SELECTOR: '.mdc-snackbar__surface',
+  LABEL_SELECTOR: '.mdc-snackbar__label',
   ACTION_BUTTON_SELECTOR: '.mdc-snackbar__action-button',
-  SHOW_EVENT: 'MDCSnackbar:show',
-  HIDE_EVENT: 'MDCSnackbar:hide',
+  ACTION_ICON_SELECTOR: '.mdc-snackbar__action-icon',
+
+  OPENING_EVENT: 'MDCSnackbar:opening',
+  OPENED_EVENT: 'MDCSnackbar:opened',
+  CLOSING_EVENT: 'MDCSnackbar:closing',
+  CLOSED_EVENT: 'MDCSnackbar:closed',
+
+  REASON_ACTION: 'action',
+  REASON_DISMISS: 'dismiss',
+
+  ARIA_LIVE_LABEL_TEXT_ATTR: 'data-mdc-snackbar-label-text',
 };
 
-export const numbers = {
-  MESSAGE_TIMEOUT: 2750,
+const numbers = {
+  MIN_AUTO_DISMISS_TIMEOUT_MS: 4000,
+  MAX_AUTO_DISMISS_TIMEOUT_MS: 10000,
+  DEFAULT_AUTO_DISMISS_TIMEOUT_MS: 5000,
+
+  // These variables need to be kept in sync with the values in _variables.scss.
+  SNACKBAR_ANIMATION_OPEN_TIME_MS: 150,
+  SNACKBAR_ANIMATION_CLOSE_TIME_MS: 75,
+
+  /**
+   * Number of milliseconds to wait between temporarily clearing the label text
+   * in the DOM and subsequently restoring it. This is necessary to force IE 11
+   * to pick up the `aria-live` content change and announce it to the user.
+   */
+  ARIA_LIVE_DELAY_MS: 1000,
 };
+
+export {cssClasses, strings, numbers};

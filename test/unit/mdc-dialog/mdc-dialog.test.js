@@ -25,7 +25,7 @@ import {assert} from 'chai';
 import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
-import {createMockRaf} from '../helpers/raf';
+import {install as installClock} from '../helpers/clock';
 import {strings} from '../../../packages/mdc-dialog/constants';
 import {MDCDialog, MDCDialogFoundation, util} from '../../../packages/mdc-dialog/index';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
@@ -48,12 +48,15 @@ function getFixture() {
               Let Google help apps determine location.
             </section>
             <footer class="mdc-dialog__actions">
-              <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="cancel"
-                      type="button">Cancel</button>
-              <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no"
-                      type="button">No</button>
-              <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes"
-                      type="button">Yes</button>
+              <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="cancel" type="button">
+                <span class="mdc-button__label">Cancel</span>
+              </button>
+              <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no" type="button">
+                <span class="mdc-button__label">No</span>
+              </button>
+              <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" type="button">
+                <span class="mdc-button__label">Yes</span>
+              </button>
             </footer>
           </div>
         </div>
@@ -162,14 +165,13 @@ test('#initialize attaches ripple elements to all footer buttons', function() {
     return;
   }
 
-  const raf = createMockRaf();
+  const clock = installClock();
   const {yesButton, noButton, cancelButton} = setupTest();
-  raf.flush();
+  clock.runToFrame();
 
   assert.isTrue(yesButton.classList.contains('mdc-ripple-upgraded'));
   assert.isTrue(noButton.classList.contains('mdc-ripple-upgraded'));
   assert.isTrue(cancelButton.classList.contains('mdc-ripple-upgraded'));
-  raf.restore();
 });
 
 test('#destroy cleans up all ripples on footer buttons', function() {
@@ -178,17 +180,16 @@ test('#destroy cleans up all ripples on footer buttons', function() {
     return;
   }
 
-  const raf = createMockRaf();
+  const clock = installClock();
   const {component, yesButton, noButton, cancelButton} = setupTest();
-  raf.flush();
+  clock.runToFrame();
 
   component.destroy();
-  raf.flush();
+  clock.runToFrame();
 
   assert.isFalse(yesButton.classList.contains('mdc-ripple-upgraded'));
   assert.isFalse(noButton.classList.contains('mdc-ripple-upgraded'));
   assert.isFalse(cancelButton.classList.contains('mdc-ripple-upgraded'));
-  raf.restore();
 });
 
 test('#open forwards to MDCDialogFoundation#open', () => {

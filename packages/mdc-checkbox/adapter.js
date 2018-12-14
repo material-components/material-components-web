@@ -62,9 +62,6 @@ class MDCCheckboxAdapter {
    */
   removeNativeControlAttr(attr) {}
 
-  /** @return {!MDCSelectionControlState} */
-  getNativeControl() {}
-
   forceLayout() {}
 
   /** @return {boolean} */

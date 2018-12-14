@@ -6,6 +6,11 @@ iconId: text_field
 path: /catalog/input-controls/text-field/
 -->
 
+## Important - Deprecation Notice
+
+The dense variant of the text field will be removed in an upcoming release. 
+See [github issue](https://github.com/material-components/material-components-web/issues/4142) for details.
+
 # Text Field
 
 Text fields allow users to input, edit, and select text.
@@ -83,7 +88,13 @@ included as part of the DOM structure of a full width text field.
 ```html
 <div class="mdc-text-field mdc-text-field--textarea">
   <textarea id="textarea" class="mdc-text-field__input" rows="8" cols="40"></textarea>
-  <label for="textarea" class="mdc-floating-label">Textarea Label</label>
+  <div class="mdc-notched-outline">
+    <div class="mdc-notched-outline__leading"></div>
+    <div class="mdc-notched-outline__notch">
+      <label for="textarea" class="mdc-floating-label">Textarea Label</label>
+    </div>
+    <div class="mdc-notched-outline__trailing"></div>
+  </div>
 </div>
 ```
 
@@ -92,13 +103,13 @@ included as part of the DOM structure of a full width text field.
 ```html
 <div class="mdc-text-field mdc-text-field--outlined">
   <input type="text" id="tf-outlined" class="mdc-text-field__input">
-  <label for="tf-outlined" class="mdc-floating-label">Your Name</label>
   <div class="mdc-notched-outline">
-    <svg>
-      <path class="mdc-notched-outline__path"/>
-    </svg>
+    <div class="mdc-notched-outline__leading"></div>
+    <div class="mdc-notched-outline__notch">
+      <label for="tf-outlined" class="mdc-floating-label">Your Name</label>
+    </div>
+    <div class="mdc-notched-outline__trailing"></div>
   </div>
-  <div class="mdc-notched-outline__idle"></div>
 </div>
 ```
 
@@ -254,6 +265,7 @@ In addition to the above, the following properties proxy to the `input` element'
 
 Method Signature | Description
 --- | ---
+`focus() => void` | Focuses the `input` or `textarea` element.
 `layout() => void` | Adjusts the dimensions and positions for all sub-elements.
 
 ## Usage Within Frameworks
@@ -276,9 +288,8 @@ Method Signature | Description
 `deregisterValidationAttributeChangeHandler(!MutationObserver) => void` | Disconnects a validation attribute observer on the input element.
 `getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}?` | Returns an object representing the native text input element, with a similar API shape.
 `isFocused() => boolean` | Returns whether the input is focused.
-`isRtl() => boolean` | Returns whether the direction of the root element is set to RTL.
 `hasOutline() => boolean` | Returns whether there is an outline element.
-`notchOutline(labelWidth: number, isRtl: boolean) => void` | Updates the notched outline path to open the notch and update the notch width for the label element.
+`notchOutline(labelWidth: number) => void` | Updates the notched outline path to open the notch and update the notch width for the label element.
 `closeOutline() => void` | Closes the notch in the notched outline element.
 
 #### `MDCTextFieldAdapter.getNativeInput()`

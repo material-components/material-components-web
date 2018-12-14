@@ -270,6 +270,15 @@ test('#initialSyncWithDom sets disabled if input element is not disabled', () =>
   assert.isNotOk(component.disabled);
 });
 
+test('#focus calls focus on the input element', () => {
+  const {root, component} = setupTest();
+  const input = root.querySelector('.mdc-text-field__input');
+  input.focus = td.func('focus');
+  component.focus();
+
+  td.verify(input.focus(), {times: 1});
+});
+
 test('get/set disabled updates the input element', () => {
   const {root, component} = setupTest();
   const input = root.querySelector('.mdc-text-field__input');
@@ -392,19 +401,6 @@ test('#adapter.getNativeInput returns the component input element', () => {
     component.getDefaultFoundation().adapter_.getNativeInput(),
     root.querySelector('.mdc-text-field__input')
   );
-});
-
-test('#adapter.isRtl returns true when the root element is in an RTL context' +
-    'and false otherwise', () => {
-  const wrapper = bel`<div dir="rtl"></div>`;
-  const {root, component} = setupTest();
-  assert.isFalse(component.getDefaultFoundation().adapter_.isRtl());
-
-  wrapper.appendChild(root);
-  document.body.appendChild(wrapper);
-  assert.isTrue(component.getDefaultFoundation().adapter_.isRtl());
-
-  document.body.removeChild(wrapper);
 });
 
 test('#adapter.activateLineRipple calls the activate method on the line ripple', () => {

@@ -61,7 +61,6 @@
 
   &.mdc-ripple-upgraded::after {
     top: 0;
-
     /* @noflip */
     left: 0;
     transform: scale(0);
@@ -70,7 +69,6 @@
 
   &.mdc-ripple-upgraded--unbounded::after {
     top: var(--mdc-ripple-top, 0);
-
     /* @noflip */
     left: var(--mdc-ripple-left, 0);
   }
@@ -89,12 +87,15 @@
 }
 
 @mixin mdc-states-base-color($color) {
-  // Opacity styles are here (rather than in mdc-ripple-surface) to ensure that opacity is re-initialized for
-  // cases where this mixin is used to override another inherited use of itself,
-  // without needing to re-include mdc-ripple-surface.
   &::before,
   &::after {
-    @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
+    @if alpha(mdc-theme-prop-value($color)) > 0 {
+      @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
+    } @else {
+      // If a color with 0 alpha is specified, don't render the ripple pseudo-elements at all.
+      // This avoids unnecessary transitions and overflow.
+      content: none;
+    }
   }
 }
 
@@ -186,7 +187,6 @@
   &::before,
   &::after {
     top: calc(50% - #{$radius});
-
     /* @noflip */
     left: calc(50% - #{$radius});
     width: $radius * 2;
@@ -203,7 +203,6 @@
   &::before,
   &::after {
     top: calc(50% - #{$radius / 2});
-
     /* @noflip */
     left: calc(50% - #{$radius / 2});
     width: $radius;
@@ -213,7 +212,6 @@
   &.mdc-ripple-upgraded::before,
   &.mdc-ripple-upgraded::after {
     top: var(--mdc-ripple-top, calc(50% - #{$radius / 2}));
-
     /* @noflip */
     left: var(--mdc-ripple-left, calc(50% - #{$radius / 2}));
     width: var(--mdc-ripple-fg-size, $radius);

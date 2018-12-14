@@ -104,9 +104,9 @@
 //
 // Examples:
 //
-// mdc-shape-prop-value_(small) => 4px
+// mdc-shape-prop-value(small) => 4px
 //
-@function mdc-shape-prop-value_($radius) {
+@function mdc-shape-prop-value($radius) {
   @if type-of($radius) == "list" {
     @if length($radius) > 4 {
       @error "Invalid radius: '#{$radius}' is more than 4 values";
@@ -173,11 +173,6 @@
 
 @function mdc-shape-is-valid-radius-value_($radius) {
   $is-number: type-of($radius) == "number";
-  $is-percentage: $is-number and unit($radius) == "%";
 
-  @if $is-percentage {
-    @return false;
-  } @else {
-    @return $is-number or str_index($radius, "var(") or str_index($radius, "calc(");
-  }
+  @return $is-number or str_index($radius, "var(") or str_index($radius, "calc(");
 }

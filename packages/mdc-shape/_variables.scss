@@ -21,13 +21,13 @@
 //
 
 // Shape categories
-$mdc-shape-small-surface-radius: 4px !default;
-$mdc-shape-medium-surface-radius: 4px !default;
-$mdc-shape-large-surface-radius: 0 !default;
+$mdc-shape-small-component-radius: 4px !default;
+$mdc-shape-medium-component-radius: 4px !default;
+$mdc-shape-large-component-radius: 0 !default;
 
 // Shape category mapping.
 $mdc-shape-category-values: (
-  small: $mdc-shape-small-surface-radius,
-  medium: $mdc-shape-medium-surface-radius,
-  large: $mdc-shape-large-surface-radius,
+  small: $mdc-shape-small-component-radius,
+  medium: $mdc-shape-medium-component-radius,
+  large: $mdc-shape-large-component-radius,
 );

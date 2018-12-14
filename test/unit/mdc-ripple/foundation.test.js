@@ -54,33 +54,33 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   ]);
 });
 
-testFoundation(`#init calls adapter.addClass("${cssClasses.ROOT}")`, ({adapter, foundation, mockRaf}) => {
+testFoundation(`#init calls adapter.addClass("${cssClasses.ROOT}")`, ({adapter, foundation, clock}) => {
   foundation.init();
-  mockRaf.flush();
+  clock.runToFrame();
 
   td.verify(adapter.addClass(cssClasses.ROOT));
 });
 
-testFoundation('#init adds unbounded class when adapter indicates unbounded', ({adapter, foundation, mockRaf}) => {
+testFoundation('#init adds unbounded class when adapter indicates unbounded', ({adapter, foundation, clock}) => {
   td.when(adapter.isUnbounded()).thenReturn(true);
   foundation.init();
-  mockRaf.flush();
+  clock.runToFrame();
 
   td.verify(adapter.addClass(cssClasses.UNBOUNDED));
 });
 
 testFoundation('#init does not add unbounded class when adapter does not indicate unbounded (default)',
-  ({adapter, foundation, mockRaf}) => {
+  ({adapter, foundation, clock}) => {
     foundation.init();
-    mockRaf.flush();
+    clock.runToFrame();
 
     td.verify(adapter.addClass(cssClasses.UNBOUNDED), {times: 0});
   });
 
 testFoundation('#init gracefully exits when css variables are not supported', false,
-  ({foundation, adapter, mockRaf}) => {
+  ({foundation, adapter, clock}) => {
     foundation.init();
-    mockRaf.flush();
+    clock.runToFrame();
 
     td.verify(adapter.addClass(cssClasses.ROOT), {times: 0});
   });
@@ -152,64 +152,64 @@ testFoundation('#destroy does not unregister resize handler for bounded ripple',
   td.verify(adapter.deregisterResizeHandler(td.matchers.isA(Function)), {times: 0});
 });
 
-testFoundation(`#destroy removes ${cssClasses.ROOT}`, ({foundation, adapter, mockRaf}) => {
+testFoundation(`#destroy removes ${cssClasses.ROOT}`, ({foundation, adapter, clock}) => {
   foundation.destroy();
-  mockRaf.flush();
+  clock.runToFrame();
   td.verify(adapter.removeClass(cssClasses.ROOT));
 });
 
-testFoundation(`#destroy removes ${cssClasses.UNBOUNDED}`, ({foundation, adapter, mockRaf}) => {
+testFoundation(`#destroy removes ${cssClasses.UNBOUNDED}`, ({foundation, adapter, clock}) => {
   foundation.destroy();
-  mockRaf.flush();
+  clock.runToFrame();
   td.verify(adapter.removeClass(cssClasses.UNBOUNDED));
 });
 
 testFoundation(`#destroy removes ${cssClasses.FG_ACTIVATION} if activation is interrupted`,
-  ({foundation, adapter, mockRaf}) => {
+  ({foundation, adapter, clock}) => {
     foundation.activationTimer_ = 1;
     foundation.destroy();
-    mockRaf.flush();
+    clock.runToFrame();
 
     assert.equal(foundation.activationTimer_, 0);
     td.verify(adapter.removeClass(cssClasses.FG_ACTIVATION));
   });
 
 testFoundation(`#destroy removes ${cssClasses.FG_DEACTIVATION} if deactivation is interrupted`,
-  ({foundation, adapter, mockRaf}) => {
+  ({foundation, adapter, clock}) => {
     foundation.fgDeactivationRemovalTimer_ = 1;
     foundation.destroy();
-    mockRaf.flush();
+    clock.runToFrame();
 
     assert.equal(foundation.fgDeactivationRemovalTimer_, 0);
     td.verify(adapter.removeClass(cssClasses.FG_DEACTIVATION));
   });
 
-testFoundation('#destroy removes all CSS variables', ({foundation, adapter, mockRaf}) => {
+testFoundation('#destroy removes all CSS variables', ({foundation, adapter, clock}) => {
   const cssVars = Object.keys(strings).filter((s) => s.indexOf('VAR_') === 0).map((s) => strings[s]);
   foundation.destroy();
-  mockRaf.flush();
+  clock.runToFrame();
   cssVars.forEach((cssVar) => {
     td.verify(adapter.updateCssVariable(cssVar, null));
   });
 });
 
 testFoundation('#destroy clears the timer if activation is interrupted',
-  ({foundation, mockRaf}) => {
+  ({foundation, clock}) => {
     foundation.init();
-    mockRaf.flush();
+    clock.runToFrame();
 
     foundation.activationTimer_ = 1;
     foundation.destroy();
-    mockRaf.flush();
+    clock.runToFrame();
 
     assert.equal(foundation.activationTimer_, 0);
   });
 
-testFoundation('#destroy when CSS custom properties are not supported', ({foundation, adapter, mockRaf}) => {
+testFoundation('#destroy when CSS custom properties are not supported', ({foundation, adapter, clock}) => {
   const isA = td.matchers.isA;
   td.when(adapter.browserSupportsCssVars()).thenReturn(false);
   foundation.destroy();
-  mockRaf.flush();
+  clock.runToFrame();
 
   // #destroy w/o CSS vars still calls event deregistration functions (to deregister focus/blur; the rest are no-ops)
   td.verify(adapter.deregisterInteractionHandler('focus', isA(Function)));
@@ -220,7 +220,7 @@ testFoundation('#destroy when CSS custom properties are not supported', ({founda
 });
 
 testFoundation(`#layout sets ${strings.VAR_FG_SIZE} to the circumscribing circle's diameter`,
-  ({foundation, adapter, mockRaf}) => {
+  ({foundation, adapter, clock}) => {
     const width = 200;
     const height = 100;
     const maxSize = Math.max(width, height);
@@ -228,19 +228,19 @@ testFoundation(`#layout sets ${strings.VAR_FG_SIZE} to the circumscribing circle
 
     td.when(adapter.computeBoundingRect()).thenReturn({width, height});
     foundation.layout();
-    mockRaf.flush();
+    clock.runToFrame();
 
     td.verify(adapter.updateCssVariable(strings.VAR_FG_SIZE, `${initialSize}px`));
   });
 
 testFoundation(`#layout sets ${strings.VAR_FG_SCALE} based on the difference between the ` +
-               'proportion of the max radius and the initial size', ({foundation, adapter, mockRaf}) => {
+               'proportion of the max radius and the initial size', ({foundation, adapter, clock}) => {
   const width = 200;
   const height = 100;
 
   td.when(adapter.computeBoundingRect()).thenReturn({width, height});
   foundation.layout();
-  mockRaf.flush();
+  clock.runToFrame();
 
   const maxSize = Math.max(width, height);
   const initialSize = maxSize * numbers.INITIAL_ORIGIN_SCALE;
@@ -252,7 +252,7 @@ testFoundation(`#layout sets ${strings.VAR_FG_SCALE} based on the difference bet
 });
 
 testFoundation(`#layout centers via ${strings.VAR_LEFT} and ${strings.VAR_TOP} when unbounded`,
-  ({foundation, adapter, mockRaf}) => {
+  ({foundation, adapter, clock}) => {
     const width = 200;
     const height = 100;
     const maxSize = Math.max(width, height);
@@ -261,7 +261,7 @@ testFoundation(`#layout centers via ${strings.VAR_LEFT} and ${strings.VAR_TOP} w
     td.when(adapter.computeBoundingRect()).thenReturn({width, height});
     td.when(adapter.isUnbounded()).thenReturn(true);
     foundation.layout();
-    mockRaf.flush();
+    clock.runToFrame();
 
     td.verify(adapter.updateCssVariable(strings.VAR_LEFT,
       `${Math.round((width / 2) - (initialSize / 2))}px`));
@@ -269,18 +269,18 @@ testFoundation(`#layout centers via ${strings.VAR_LEFT} and ${strings.VAR_TOP} w
       `${Math.round((height / 2) - (initialSize / 2))}px`));
   });
 
-testFoundation('#layout debounces calls within the same frame', ({foundation, mockRaf}) => {
+testFoundation('#layout debounces calls within the same frame', ({foundation, clock}) => {
   foundation.layout();
   foundation.layout();
   foundation.layout();
-  assert.equal(mockRaf.pendingFrames.length, 1);
+  assert.equal(clock.countTimers(), 1);
 });
 
-testFoundation('#layout resets debounce latch when layout frame is run', ({foundation, mockRaf}) => {
+testFoundation('#layout resets debounce latch when layout frame is run', ({foundation, clock}) => {
   foundation.layout();
-  mockRaf.flush();
+  clock.runToFrame();
   foundation.layout();
-  assert.equal(mockRaf.pendingFrames.length, 1);
+  assert.equal(clock.countTimers(), 1);
 });
 
 testFoundation('#setUnbounded adds unbounded class when unbounded is truthy', ({adapter, foundation}) => {

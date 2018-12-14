@@ -384,45 +384,53 @@ test('keydown handler is removed from the root element on destroy', () => {
   td.verify(mockFoundation.handleKeydown(event, true, 0), {times: 0});
 });
 
-test('adapter#toggleCheckbox toggles a checkbox', () => {
+test('adapter#hasRadioAtIndex return true or false based on presense of radio button on list item', () => {
+  const {component} = setupTest();
+
+  assert.isTrue(component.getDefaultFoundation().adapter_.hasRadioAtIndex(3));
+  assert.isFalse(component.getDefaultFoundation().adapter_.hasRadioAtIndex(0));
+});
+
+test('adapter#hasCheckboxAtIndex return true or false based on presense of checkbox button on list item', () => {
+  const {component} = setupTest();
+
+  assert.isTrue(component.getDefaultFoundation().adapter_.hasCheckboxAtIndex(2));
+  assert.isFalse(component.getDefaultFoundation().adapter_.hasCheckboxAtIndex(0));
+});
+
+test('adapter#isCheckboxCheckedAtIndex returns true or false based if checkbox is checked on a list item', () => {
+  const {root, component} = setupTest();
+
+  assert.isFalse(component.getDefaultFoundation().adapter_.isCheckboxCheckedAtIndex(2));
+  document.body.appendChild(root);
+  const checkbox = root.querySelector('input[type="checkbox"]');
+  checkbox.checked = true;
+  assert.isTrue(component.getDefaultFoundation().adapter_.isCheckboxCheckedAtIndex(2));
+  document.body.removeChild(root);
+});
+
+test('adapter#setCheckedCheckboxOrRadioAtIndex toggles the checkbox on list item', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
   const checkbox = root.querySelector('input[type="checkbox"]');
 
-  const checkboxReturnValue = component.getDefaultFoundation().adapter_.toggleCheckbox(2);
+  component.getDefaultFoundation().adapter_.setCheckedCheckboxOrRadioAtIndex(2, true);
   assert.isTrue(checkbox.checked);
-  assert.isTrue(checkboxReturnValue);
+
+  component.getDefaultFoundation().adapter_.setCheckedCheckboxOrRadioAtIndex(2, false);
+  assert.isFalse(checkbox.checked);
   document.body.removeChild(root);
 });
 
-test('adapter#toggleCheckbox toggles a radio button', () => {
+test('adapter#setCheckedCheckboxOrRadioAtIndex toggles the radio on list item', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
   const radio = root.querySelector('input[type="radio"]');
 
-  const checkboxReturnValue = component.getDefaultFoundation().adapter_.toggleCheckbox(3);
+  component.getDefaultFoundation().adapter_.setCheckedCheckboxOrRadioAtIndex(3, true);
   assert.isTrue(radio.checked);
-  assert.isTrue(checkboxReturnValue);
-  document.body.removeChild(root);
-});
 
-test('adapter#toggleCheckbox does not toggle a radio button if it is already checked', () => {
-  const {root, component} = setupTest();
-  document.body.appendChild(root);
-  const radio = root.querySelector('input[type="radio"]');
-
-  const checkboxReturnValue = component.getDefaultFoundation().adapter_.toggleCheckbox(3);
-  component.getDefaultFoundation().adapter_.toggleCheckbox(3);
-  assert.isTrue(radio.checked);
-  assert.isTrue(checkboxReturnValue);
-  document.body.removeChild(root);
-});
-
-test('adapter#toggleCheckbox returns false if no checkbox or radio button is present', () => {
-  const {root, component} = setupTest();
-  document.body.appendChild(root);
-
-  const checkboxReturnValue = component.getDefaultFoundation().adapter_.toggleCheckbox(0);
-  assert.isFalse(checkboxReturnValue);
+  component.getDefaultFoundation().adapter_.setCheckedCheckboxOrRadioAtIndex(3, false);
+  assert.isFalse(radio.checked);
   document.body.removeChild(root);
 });

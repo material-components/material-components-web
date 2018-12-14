@@ -23,7 +23,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 import MDCNotchedOutlineAdapter from './adapter';
-import {cssClasses, strings} from './constants';
+import {cssClasses, strings, numbers} from './constants';
 
 /**
  * @extends {MDCFoundation<!MDCNotchedOutlineAdapter>}
@@ -40,6 +40,11 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
     return cssClasses;
   }
 
+  /** @return enum {number} */
+  static get numbers() {
+    return numbers;
+  }
+
   /**
    * {@see MDCNotchedOutlineAdapter} for typing information on parameters and return
    * types.
@@ -47,12 +52,9 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
    */
   static get defaultAdapter() {
     return /** @type {!MDCNotchedOutlineAdapter} */ ({
-      getWidth: () => {},
-      getHeight: () => {},
       addClass: () => {},
       removeClass: () => {},
-      setOutlinePathAttr: () => {},
-      getIdleOutlineStyleValue: () => {},
+      setNotchWidthProperty: () => {},
     });
   }
 
@@ -65,14 +67,18 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
 
   /**
    * Adds the outline notched selector and updates the notch width
-   * calculated based off of notchWidth and isRtl.
+   * calculated based off of notchWidth.
    * @param {number} notchWidth
-   * @param {boolean=} isRtl
    */
-  notch(notchWidth, isRtl = false) {
+  notch(notchWidth) {
     const {OUTLINE_NOTCHED} = MDCNotchedOutlineFoundation.cssClasses;
+
+    if (notchWidth > 0) {
+      notchWidth += numbers.NOTCH_ELEMENT_PADDING; // Add padding from left/right.
+    }
+
+    this.adapter_.setNotchWidthProperty(notchWidth);
     this.adapter_.addClass(OUTLINE_NOTCHED);
-    this.updateSvgPath_(notchWidth, isRtl);
   }
 
   /**
@@ -81,54 +87,7 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
   closeNotch() {
     const {OUTLINE_NOTCHED} = MDCNotchedOutlineFoundation.cssClasses;
     this.adapter_.removeClass(OUTLINE_NOTCHED);
-  }
-
-  /**
-   * Updates the SVG path of the focus outline element based on the notchWidth
-   * and the RTL context.
-   * @param {number} notchWidth
-   * @param {boolean=} isRtl
-   * @private
-   */
-  updateSvgPath_(notchWidth, isRtl) {
-    // Fall back to reading a specific corner's style because Firefox doesn't report the style on border-radius.
-    const radiusStyleValue = this.adapter_.getIdleOutlineStyleValue('border-radius') ||
-        this.adapter_.getIdleOutlineStyleValue('border-top-left-radius');
-    const radius = parseFloat(radiusStyleValue);
-    const width = this.adapter_.getWidth();
-    const height = this.adapter_.getHeight();
-    const cornerWidth = radius + 1.2;
-    const leadingStrokeLength = Math.abs(12 - cornerWidth);
-
-    // If the notchWidth is 0, the the notched outline doesn't need to add padding.
-    let paddedNotchWidth = 0;
-    if (notchWidth > 0) {
-      paddedNotchWidth = notchWidth + 8;
-    }
-
-    // The right, bottom, and left sides of the outline follow the same SVG path.
-    const pathMiddle = 'a' + radius + ',' + radius + ' 0 0 1 ' + radius + ',' + radius
-      + 'v' + (height - (2 * cornerWidth))
-      + 'a' + radius + ',' + radius + ' 0 0 1 ' + -radius + ',' + radius
-      + 'h' + (-width + (2 * cornerWidth))
-      + 'a' + radius + ',' + radius + ' 0 0 1 ' + -radius + ',' + -radius
-      + 'v' + (-height + (2 * cornerWidth))
-      + 'a' + radius + ',' + radius + ' 0 0 1 ' + radius + ',' + -radius;
-
-    let path;
-    if (!isRtl) {
-      path = 'M' + (cornerWidth + leadingStrokeLength + paddedNotchWidth) + ',' + 1
-        + 'h' + (width - (2 * cornerWidth) - paddedNotchWidth - leadingStrokeLength)
-        + pathMiddle
-        + 'h' + leadingStrokeLength;
-    } else {
-      path = 'M' + (width - cornerWidth - leadingStrokeLength) + ',' + 1
-        + 'h' + leadingStrokeLength
-        + pathMiddle
-        + 'h' + (width - (2 * cornerWidth) - paddedNotchWidth - leadingStrokeLength);
-    }
-
-    this.adapter_.setOutlinePathAttr(path);
+    this.adapter_.setNotchWidthProperty(0);
   }
 }
 
