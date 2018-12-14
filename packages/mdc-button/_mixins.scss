@@ -147,12 +147,20 @@
   vertical-align: top;
 }
 
+@mixin mdc-button__icon-trailing_ {
+  @include mdc-rtl-reflexive-box(margin, left, 8px);
+}
+
 @mixin mdc-button__icon-svg_ {
   fill: currentColor;
 }
 
 @mixin mdc-button__icon-contained_ {
   @include mdc-rtl-reflexive-property(margin, -4px, 8px);
+}
+
+@mixin mdc-button__icon-contained-trailing_ {
+  @include mdc-rtl-reflexive-property(margin, 8px, -4px);
 }
 
 @mixin mdc-button--outlined_() {

@@ -188,6 +188,8 @@ Mixin | Description
 --- | ---
 `mdc-menu-width($width)` | Used to set the `width` of the menu. When used without units (e.g. `4` or `5`) it computes the `width` by multiplying by the base width (`56px`). When used with units (e.g. `240px`, `15%`, or `calc(200px + 10px)` it sets the `width` to the exact value provided.
 
+> See [Menu Surface](../mdc-menu-surface/README.md#sass-mixins) and [List](../mdc-list/README.md#sass-mixins) documentation for additional style customization options.
+
 ## `MDCMenu` Properties and Methods
 
 See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.

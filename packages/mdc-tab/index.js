@@ -26,7 +26,7 @@ import MDCComponent from '@material/base/component';
 /* eslint-disable no-unused-vars */
 import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
 import {MDCTabIndicator, MDCTabIndicatorFoundation} from '@material/tab-indicator/index';
-import {MDCTabAdapter, MDCTabDimensions} from './adapter';
+import {MDCTabAdapter, MDCTabDimensions, MDCTabInteractionEventType} from './adapter';
 /* eslint-enable no-unused-vars */
 
 import MDCTabFoundation from './foundation';
@@ -41,6 +41,9 @@ class MDCTab extends MDCComponent {
    */
   constructor(...args) {
     super(...args);
+
+    /** @type {string} */
+    this.id;
     /** @private {?MDCRipple} */
     this.ripple_;
     /** @private {?MDCTabIndicator} */
@@ -63,6 +66,7 @@ class MDCTab extends MDCComponent {
   initialize(
     rippleFactory = (el, foundation) => new MDCRipple(el, foundation),
     tabIndicatorFactory = (el) => new MDCTabIndicator(el)) {
+    this.id = this.root_.id;
     const rippleSurface = this.root_.querySelector(MDCTabFoundation.strings.RIPPLE_SELECTOR);
     const rippleAdapter = Object.assign(MDCRipple.createAdapter(/** @type {!RippleCapableSurface} */ (this)), {
       addClass: (className) => rippleSurface.classList.add(className),
@@ -101,7 +105,8 @@ class MDCTab extends MDCComponent {
         hasClass: (className) => this.root_.classList.contains(className),
         activateIndicator: (previousIndicatorClientRect) => this.tabIndicator_.activate(previousIndicatorClientRect),
         deactivateIndicator: () => this.tabIndicator_.deactivate(),
-        notifyInteracted: () => this.emit(MDCTabFoundation.strings.INTERACTED_EVENT, {tab: this}, true /* bubble */),
+        notifyInteracted: () => this.emit(
+          MDCTabFoundation.strings.INTERACTED_EVENT, {tabId: this.id}, true /* bubble */),
         getOffsetLeft: () => this.root_.offsetLeft,
         getOffsetWidth: () => this.root_.offsetWidth,
         getContentOffsetLeft: () => this.content_.offsetLeft,

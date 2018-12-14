@@ -292,7 +292,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * @param {string} value The value to set on the input Element.
    */
   setValue(value) {
-    this.getNativeInput_().value = value;
+    // Prevent Safari from moving the caret to the end of the input when the value has not changed.
+    if (this.getValue() !== value) {
+      this.getNativeInput_().value = value;
+    }
     const isValid = this.isValid();
     this.styleValidity_(isValid);
     if (this.adapter_.hasLabel()) {
