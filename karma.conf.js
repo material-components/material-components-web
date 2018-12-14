@@ -66,6 +66,7 @@ module.exports = function(config) {
     colors: true,
     logLevel: config.LOG_INFO,
     browsers: browsers,
+    commandTimeout: 1000 * 60 * 3,
     browserDisconnectTimeout: 40000,
     browserNoActivityTimeout: 120000,
     captureTimeout: 240000,
@@ -121,12 +122,21 @@ module.exports = function(config) {
       accessKey: process.env.SAUCE_ACCESS_KEY,
     };
 
+    const sauceConnectOptions = {
+      verbose: true,
+      verboseDebugging: true,
+      doctor: true,
+      connectRetries: 5,
+      connectRetryTimeout: 1000 * 60 * 3,
+    };
+
     if (USING_TRAVISCI) {
       // See https://github.com/karma-runner/karma-sauce-launcher/issues/73
-      Object.assign(sauceLabsConfig, {
+      Object.assign(sauceLabsConfig, sauceConnectOptions, {
         testName: 'Material Components Web Unit Tests - CI',
         tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
-        startConnect: false,
+        // startConnect: false,
+        connectOptions: sauceConnectOptions,
       });
     }
 
@@ -135,6 +145,11 @@ module.exports = function(config) {
       // Attempt to de-flake Sauce Labs tests on TravisCI.
       transports: ['polling'],
       browserDisconnectTolerance: 3,
+      verbose: true,
+      verboseDebugging: true,
+      doctor: true,
+      connectRetries: 5,
+      connectRetryTimeout: 1000 * 60 * 3,
     });
   }
 };
