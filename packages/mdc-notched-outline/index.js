@@ -1,25 +1,32 @@
 /**
  * @license
- * Copyright 2017 Google Inc. All Rights Reserved.
+ * Copyright 2017 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import MDCComponent from '@material/base/component';
 
 import MDCNotchedOutlineAdapter from './adapter';
 import MDCNotchedOutlineFoundation from './foundation';
-import {strings} from './constants';
+import {MDCFloatingLabelFoundation} from '@material/floating-label/index';
+import {cssClasses, strings} from './constants';
 
 /**
  * @extends {MDCComponent<!MDCNotchedOutlineFoundation>}
@@ -33,19 +40,38 @@ class MDCNotchedOutline extends MDCComponent {
   static attachTo(root) {
     return new MDCNotchedOutline(root);
   }
+  /** @param {...?} args */
+  constructor(...args) {
+    super(...args);
+    /** @private {Element} */
+    this.notchElement_;
+  }
 
-  /**
-    * Updates outline selectors and SVG path to open notch.
-    * @param {number} notchWidth The notch width in the outline.
-    * @param {boolean=} isRtl Determines if outline is rtl. If rtl is true, notch
-    * will be right justified in outline path, otherwise left justified.
-    */
-  notch(notchWidth, isRtl) {
-    this.foundation_.notch(notchWidth, isRtl);
+  initialSyncWithDOM() {
+    const label = this.root_.querySelector('.' + MDCFloatingLabelFoundation.cssClasses.ROOT);
+    this.notchElement_ = this.root_.querySelector(strings.NOTCH_ELEMENT_SELECTOR);
+
+    if (label) {
+      label.style.transitionDuration = '0s';
+      this.root_.classList.add(cssClasses.OUTLINE_UPGRADED);
+      requestAnimationFrame(() => {
+        label.style.transitionDuration = '';
+      });
+    } else {
+      this.root_.classList.add(cssClasses.NO_LABEL);
+    }
   }
 
   /**
-   * Updates the outline selectors to close notch and return it to idle state.
+    * Updates classes and styles to open the notch to the specified width.
+    * @param {number} notchWidth The notch width in the outline.
+    */
+  notch(notchWidth) {
+    this.foundation_.notch(notchWidth);
+  }
+
+  /**
+   * Updates classes and styles to close the notch.
    */
   closeNotch() {
     this.foundation_.closeNotch();
@@ -55,20 +81,12 @@ class MDCNotchedOutline extends MDCComponent {
    * @return {!MDCNotchedOutlineFoundation}
    */
   getDefaultFoundation() {
-    return new MDCNotchedOutlineFoundation({
-      getWidth: () => this.root_.offsetWidth,
-      getHeight: () => this.root_.offsetHeight,
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
-      setOutlinePathAttr: (value) => {
-        const path = this.root_.querySelector(strings.PATH_SELECTOR);
-        path.setAttribute('d', value);
-      },
-      getIdleOutlineStyleValue: (propertyName) => {
-        const idleOutlineElement = this.root_.parentNode.querySelector(strings.IDLE_OUTLINE_SELECTOR);
-        return window.getComputedStyle(idleOutlineElement).getPropertyValue(propertyName);
-      },
-    });
+    return new MDCNotchedOutlineFoundation(
+      /** @type {!MDCNotchedOutlineAdapter} */ (Object.assign({
+        addClass: (className) => this.root_.classList.add(className),
+        removeClass: (className) => this.root_.classList.remove(className),
+        setNotchWidthProperty: (width) => this.notchElement_.style.setProperty('width', width > 0 ? width + 'px' : '0'),
+      })));
   }
 }
 

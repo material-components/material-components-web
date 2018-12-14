@@ -1,18 +1,24 @@
 /**
  * @license
- * Copyright 2016 Google Inc. All Rights Reserved.
+ * Copyright 2016 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 /**
@@ -91,7 +97,7 @@ function supportsCssVariables(windowObj, forceRefresh = false) {
  * Determine whether the current browser supports passive event listeners, and if so, use them.
  * @param {!Window=} globalObj
  * @param {boolean=} forceRefresh
- * @return {boolean|{passive: boolean}}
+ * @return {boolean|!EventListenerOptions}
  */
 function applyPassive(globalObj = window, forceRefresh = false) {
   if (supportsPassive_ === undefined || forceRefresh) {
@@ -99,23 +105,38 @@ function applyPassive(globalObj = window, forceRefresh = false) {
     try {
       globalObj.document.addEventListener('test', null, {get passive() {
         isSupported = true;
+        return isSupported;
       }});
     } catch (e) { }
 
     supportsPassive_ = isSupported;
   }
 
-  return supportsPassive_ ? {passive: true} : false;
+  return supportsPassive_
+    ? /** @type {!EventListenerOptions} */ ({passive: true})
+    : false;
 }
 
 /**
  * @param {!Object} HTMLElementPrototype
- * @return {!Array<string>}
+ * @return {string}
  */
 function getMatchesProperty(HTMLElementPrototype) {
-  return [
-    'webkitMatchesSelector', 'msMatchesSelector', 'matches',
-  ].filter((p) => p in HTMLElementPrototype).pop();
+  /**
+   * Order is important because we return the first existing method we find.
+   * Do not change the order of the items in the below array.
+   */
+  const matchesMethods = ['matches', 'webkitMatchesSelector', 'msMatchesSelector'];
+  let method = 'matches';
+  for (let i = 0; i < matchesMethods.length; i++) {
+    const matchesMethod = matchesMethods[i];
+    if (matchesMethod in HTMLElementPrototype) {
+      method = matchesMethod;
+      break;
+    }
+  }
+
+  return method;
 }
 
 /**
@@ -133,9 +154,11 @@ function getNormalizedEventCoords(ev, pageOffset, clientRect) {
   let normalizedY;
   // Determine touch point relative to the ripple container.
   if (ev.type === 'touchstart') {
+    ev = /** @type {!TouchEvent} */ (ev);
     normalizedX = ev.changedTouches[0].pageX - documentX;
     normalizedY = ev.changedTouches[0].pageY - documentY;
   } else {
+    ev = /** @type {!MouseEvent} */ (ev);
     normalizedX = ev.pageX - documentX;
     normalizedY = ev.pageY - documentY;
   }

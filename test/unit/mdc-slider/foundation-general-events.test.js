@@ -1,17 +1,24 @@
 /**
- * Copyright 2017 Google Inc. All Rights Reserved.
+ * @license
+ * Copyright 2017 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- *you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 import td from 'testdouble';
@@ -22,58 +29,52 @@ import {TRANSFORM_PROP, setupEventTest as setupTest} from './helpers';
 suite('MDCSliderFoundation - General Events');
 
 test('on focus adds the mdc-slider--focus class to the root element', () => {
-  const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+  const {foundation, mockAdapter, clock, rootHandlers} = setupTest();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({width: 0, left: 0});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   rootHandlers.focus();
 
   td.verify(mockAdapter.addClass(cssClasses.FOCUS));
-
-  raf.restore();
 });
 
 test('on focus does not add mdc-slider--focus after a pointer event', () => {
-  const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+  const {foundation, mockAdapter, clock, rootHandlers} = setupTest();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   rootHandlers.mousedown({pageX: 50});
-  raf.flush();
+  clock.runToFrame();
   rootHandlers.focus();
 
   td.verify(mockAdapter.addClass(cssClasses.FOCUS), {times: 0});
-
-  raf.restore();
 });
 
 test('on blur removes the mdc-slider--focus class', () => {
-  const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+  const {foundation, mockAdapter, clock, rootHandlers} = setupTest();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   rootHandlers.blur();
 
   td.verify(mockAdapter.removeClass(cssClasses.FOCUS));
-
-  raf.restore();
 });
 
 test('on blur resets the focusability UX of the component after an initial pointer event', () => {
-  const {foundation, mockAdapter, raf, rootHandlers} = setupTest();
+  const {foundation, mockAdapter, clock, rootHandlers} = setupTest();
 
   td.when(mockAdapter.computeBoundingRect()).thenReturn({left: 0, width: 100});
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   rootHandlers.mousedown({pageX: 50});
-  raf.flush();
+  clock.runToFrame();
   rootHandlers.focus();
   // Sanity check
   td.verify(mockAdapter.addClass(cssClasses.FOCUS), {times: 0});
@@ -82,12 +83,10 @@ test('on blur resets the focusability UX of the component after an initial point
   rootHandlers.focus();
 
   td.verify(mockAdapter.addClass(cssClasses.FOCUS));
-
-  raf.restore();
 });
 
 test('on window resize re-lays out the component', () => {
-  const {foundation, mockAdapter, raf} = setupTest();
+  const {foundation, mockAdapter, clock} = setupTest();
   const {isA} = td.matchers;
   let resizeHandler;
 
@@ -99,17 +98,15 @@ test('on window resize re-lays out the component', () => {
     {left: 0, width: 50}
   );
   foundation.init();
-  raf.flush();
+  clock.runToFrame();
 
   foundation.setValue(50);
-  raf.flush();
+  clock.runToFrame();
   // Sanity check
   td.verify(mockAdapter.setThumbContainerStyleProperty(TRANSFORM_PROP, 'translateX(50px) translateX(-50%)'));
 
   resizeHandler();
-  raf.flush();
+  clock.runToFrame();
 
   td.verify(mockAdapter.setThumbContainerStyleProperty(TRANSFORM_PROP, 'translateX(25px) translateX(-50%)'));
-
-  raf.restore();
 });

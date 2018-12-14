@@ -1,19 +1,25 @@
 /**
-  * @license
-  * Copyright 2018 Google Inc. All Rights Reserved.
-  *
-  * Licensed under the Apache License, Version 2.0 (the "License")
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *      http://www.apache.org/licenses/LICENSE-2.0
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+ * @license
+ * Copyright 2018 Google Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 
 import MDCComponent from '@material/base/component';
 
@@ -22,6 +28,8 @@ import {MDCTabScroller} from '@material/tab-scroller/index';
 
 import MDCTabBarAdapter from './adapter';
 import MDCTabBarFoundation from './foundation';
+
+let tabIdCounter = 0;
 
 /**
  * @extends {MDCComponent<!MDCTabBarFoundation>}
@@ -37,14 +45,8 @@ class MDCTabBar extends MDCComponent {
     /** @private {!Array<!MDCTab>} */
     this.tabList_;
 
-    /** @type {(function(!Element): !MDCTab)} */
-    this.tabFactory_;
-
     /** @private {?MDCTabScroller} */
     this.tabScroller_;
-
-    /** @type {(function(!Element): !MDCTabScroller)} */
-    this.tabScrollerFactory_;
 
     /** @private {?function(?Event): undefined} */
     this.handleTabInteraction_;
@@ -61,6 +63,10 @@ class MDCTabBar extends MDCComponent {
     return new MDCTabBar(root);
   }
 
+  set focusOnActivate(focusOnActivate) {
+    this.tabList_.forEach((tab) => tab.focusOnActivate = focusOnActivate);
+  }
+
   set useAutomaticActivation(useAutomaticActivation) {
     this.foundation_.setUseAutomaticActivation(useAutomaticActivation);
   }
@@ -71,17 +77,9 @@ class MDCTabBar extends MDCComponent {
    */
   initialize(
     tabFactory = (el) => new MDCTab(el),
-    tabScrollerFactory = (el) => new MDCTabScroller(el),
-  ) {
-    this.tabFactory_ = tabFactory;
-    this.tabScrollerFactory_ = tabScrollerFactory;
-
-    this.tabList_ = this.getTabElements_().map((el) => this.tabFactory_(el));
-
-    const tabScrollerElement = this.root_.querySelector(MDCTabBarFoundation.strings.TAB_SCROLLER_SELECTOR);
-    if (tabScrollerElement) {
-      this.tabScroller_ = this.tabScrollerFactory_(tabScrollerElement);
-    }
+    tabScrollerFactory = (el) => new MDCTabScroller(el)) {
+    this.tabList_ = this.instantiateTabs_(tabFactory);
+    this.tabScroller_ = this.instantiateTabScroller_(tabScrollerFactory);
   }
 
   initialSyncWithDOM() {
@@ -90,6 +88,13 @@ class MDCTabBar extends MDCComponent {
 
     this.root_.addEventListener(MDCTabFoundation.strings.INTERACTED_EVENT, this.handleTabInteraction_);
     this.root_.addEventListener('keydown', this.handleKeyDown_);
+
+    for (let i = 0; i < this.tabList_.length; i++) {
+      if (this.tabList_[i].active) {
+        this.scrollIntoView(i);
+        break;
+      }
+    }
   }
 
   destroy() {
@@ -112,12 +117,13 @@ class MDCTabBar extends MDCComponent {
         getScrollContentWidth: () => this.tabScroller_.getScrollContentWidth(),
         getOffsetWidth: () => this.root_.offsetWidth,
         isRTL: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
+        setActiveTab: (index) => this.foundation_.activateTab(index),
         activateTabAtIndex: (index, clientRect) => this.tabList_[index].activate(clientRect),
         deactivateTabAtIndex: (index) => this.tabList_[index].deactivate(),
         focusTabAtIndex: (index) => this.tabList_[index].focus(),
         getTabIndicatorClientRectAtIndex: (index) => this.tabList_[index].computeIndicatorClientRect(),
         getTabDimensionsAtIndex: (index) => this.tabList_[index].computeDimensions(),
-        getActiveTabIndex: () => {
+        getPreviousActiveTabIndex: () => {
           for (let i = 0; i < this.tabList_.length; i++) {
             if (this.tabList_[i].active) {
               return i;
@@ -130,7 +136,14 @@ class MDCTabBar extends MDCComponent {
           const activeElement = document.activeElement;
           return tabElements.indexOf(activeElement);
         },
-        getIndexOfTab: (tabToFind) => this.tabList_.indexOf(tabToFind),
+        getIndexOfTabById: (id) => {
+          for (let i = 0; i < this.tabList_.length; i++) {
+            if (this.tabList_[i].id === id) {
+              return i;
+            }
+          }
+          return -1;
+        },
         getTabListLength: () => this.tabList_.length,
         notifyTabActivated: (index) => this.emit(MDCTabBarFoundation.strings.TAB_ACTIVATED_EVENT, {index}, true),
       })
@@ -153,8 +166,40 @@ class MDCTabBar extends MDCComponent {
     this.foundation_.scrollIntoView(index);
   }
 
+  /**
+   * Returns all the tab elements in a nice clean array
+   * @return {!Array<!Element>}
+   * @private
+   */
   getTabElements_() {
     return [].slice.call(this.root_.querySelectorAll(MDCTabBarFoundation.strings.TAB_SELECTOR));
+  }
+
+  /**
+   * Instantiates tab components on all child tab elements
+   * @param {(function(!Element): !MDCTab)} tabFactory
+   * @return {!Array<!MDCTab>}
+   * @private
+   */
+  instantiateTabs_(tabFactory) {
+    return this.getTabElements_().map((el) => {
+      el.id = el.id || `mdc-tab-${++tabIdCounter}`;
+      return tabFactory(el);
+    });
+  }
+
+  /**
+   * Instantiates tab scroller component on the child tab scroller element
+   * @param {(function(!Element): !MDCTabScroller)} tabScrollerFactory
+   * @return {?MDCTabScroller}
+   * @private
+   */
+  instantiateTabScroller_(tabScrollerFactory) {
+    const tabScrollerElement = this.root_.querySelector(MDCTabBarFoundation.strings.TAB_SCROLLER_SELECTOR);
+    if (tabScrollerElement) {
+      return tabScrollerFactory(tabScrollerElement);
+    }
+    return null;
   }
 }
 

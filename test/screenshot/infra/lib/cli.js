@@ -1,17 +1,24 @@
-/*
- * Copyright 2018 Google Inc. All Rights Reserved.
+/**
+ * @license
+ * Copyright 2018 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 'use strict';
@@ -22,6 +29,7 @@ const {ApprovalId} = mdcProto;
 const argparse = require('argparse');
 const checkIsOnline = require('is-online');
 
+const CliColor = require('./logger').colors;
 const Duration = require('./duration');
 const {GOLDEN_JSON_RELATIVE_PATH} = require('./constants');
 
@@ -57,6 +65,21 @@ class Cli {
     this.initTestCommand_();
 
     this.args_ = this.rootParser_.parseArgs();
+  }
+
+  /**
+   * @param {string} url
+   * @return {string}
+   */
+  colorizeUrl(url) {
+    return url.replace(/^([^?]+)(\?.*)?$/, (substring, resourcePlain, queryPlain) => {
+      const resourceColor = CliColor.reset(resourcePlain);
+      if (queryPlain) {
+        const queryColor = CliColor.dim(queryPlain);
+        return `${resourceColor}${queryColor}`;
+      }
+      return resourceColor;
+    });
   }
 
   /**
@@ -247,24 +270,20 @@ If a local dev server is not already running, one will be started for the durati
     this.addArg_(subparser, {
       optionNames: ['--parallels'],
       type: 'integer',
-      defaultValue: 0,
       description: `
 Maximum number of browser VMs to run in parallel (subject to our CBT plan limit and VM availability).
-A value of '0' will start 3 browsers if nobody else is running tests, or 1 browser if other tests are already running.
-IMPORTANT: To ensure that multiple developers can run their tests simultaneously, do not set this value higher than 1
-during normal business hours when other people are likely to be running tests.
+If no value is specified, the default is to start 2 browsers if nobody else is running tests, or 1 browser if other
+tests are already running.
+IMPORTANT: To ensure that multiple developers can run their tests simultaneously, DO NOT set this value during normal
+business hours.
 `,
     });
 
     this.addArg_(subparser, {
       optionNames: ['--retries'],
       type: 'integer',
-      defaultValue: 3,
       description: `
-Number of times to retry a screenshot that comes back with diffs. If you're not expecting any diffs, automatically
-retrying screenshots can help decrease noise from flaky browser rendering. However, if you're making a change that
-intentionally affects the rendered output, there's no point slowing down the test by retrying a bunch of screenshots
-that you know are going to have diffs.
+Number of times to retry a screenshot that has diffs. Overrides values from 'test/screenshot/diffing.json'.
 `,
     });
 
@@ -339,12 +358,12 @@ E.g.: '--browser=chrome,-mobile' is the same as '--browser=chrome --browser=-mob
     return this.args_['--diff-base'];
   }
 
-  /** @return {number} */
+  /** @return {?number} */
   get parallels() {
     return this.args_['--parallels'];
   }
 
-  /** @return {number} */
+  /** @return {?number} */
   get retries() {
     return this.args_['--retries'];
   }
