@@ -1721,12 +1721,12 @@
     }
   },
   "spec/mdc-textfield/issues/4170.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/12/12/22_24_38_091/spec/mdc-textfield/issues/4170.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/12/14/20_21_36_901/spec/mdc-textfield/issues/4170.html?utm_source=golden_json",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/12/12/22_24_38_091/spec/mdc-textfield/issues/4170.html.windows_chrome_71.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/12/12/22_24_38_091/spec/mdc-textfield/issues/4170.html.windows_edge_17.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/12/14/20_21_36_901/spec/mdc-textfield/issues/4170.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/12/12/22_24_38_091/spec/mdc-textfield/issues/4170.html.windows_firefox_63.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/12/12/22_24_38_091/spec/mdc-textfield/issues/4170.html.windows_ie_11.png"
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/12/14/20_21_36_901/spec/mdc-textfield/issues/4170.html.windows_ie_11.png"
     }
   },
   "spec/mdc-textfield/mixins/outline-shape-radius.html": {

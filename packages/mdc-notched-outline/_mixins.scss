@@ -52,6 +52,12 @@
     }
   }
 
+  @if ($radius > $mdc-notched-outline-leading-width) {
+    .mdc-notched-outline__notch {
+      max-width: calc(100% - #{$radius} * 2);
+    }
+  }
+
   .mdc-notched-outline__trailing {
     @include mdc-shape-radius(mdc-shape-mask-radius($radius, 0 1 1 0), $rtl-reflexive: true);
   }

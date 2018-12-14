@@ -55,6 +55,7 @@ test('adapter#addClass adds a class to the root element', () => {
 test('adapter#removeClass removes a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.removeClass('foo');
+  component.getDefaultFoundation().adapter_.setNotchWidthProperty(50);
   component.getDefaultFoundation().adapter_.removeNotchWidthProperty();
   const path = root.querySelector('.mdc-notched-outline__notch');
   assert.equal('', path.style.width);
