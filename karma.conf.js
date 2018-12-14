@@ -143,13 +143,13 @@ module.exports = function(config) {
     config.set({
       sauceLabs: sauceLabsConfig,
       // Attempt to de-flake Sauce Labs tests on TravisCI.
-      transports: ['polling'],
+      // transports: ['polling'],
       browserDisconnectTolerance: 3,
       verbose: true,
       verboseDebugging: true,
       doctor: true,
       connectRetries: 5,
-      connectRetryTimeout: 1000 * 60 * 3,
+      // connectRetryTimeout: 1000 * 60 * 3,
     });
   }
 };
