@@ -64,7 +64,7 @@
     @include mdc-rtl-reflexive-box(padding, left, 56px);
   }
 
-  // Extra specificity required because list-item graphic needed to increase specificity.
+  // Extra specificity required to override `display` property on `mdc-list-item__graphic`.
   .mdc-menu__selection-group-icon {
     @include mdc-rtl-reflexive-position(left, 16px);
 
