@@ -82,6 +82,10 @@
       max-width: 100%;
     }
 
+    .mdc-floating-label--float-above {
+      text-overflow: clip;
+    }
+
     &--upgraded .mdc-floating-label--float-above {
       max-width: calc(100% / .75);
     }
