@@ -84,13 +84,13 @@ Menus can contain a group of list items that can represent the selection state o
     <li>
       <ul class="mdc-menu__selection-group">
         <li class="mdc-list-item" role="menuitem">
-          <span class="mdc-menu__selection-group-icon">
+          <span class="mdc-list-item__graphic mdc-menu__selection-group-icon">
             ...
           </span>
           <span class="mdc-list-item__text">Single</span>
         </li>
         <li class="mdc-list-item" role="menuitem">
-          <span class="mdc-menu__selection-group-icon">
+          <span class="mdc-list-item__graphic mdc-menu__selection-group-icon">
            ...
           </span>
           <span class="mdc-list-item__text">1.15</span>
