@@ -155,6 +155,16 @@ test('#initialSyncWithDOM adds an aria-valuemax attribute if not present', () =>
   assert.equal(root.getAttribute('aria-valuemax'), String(component.max));
 });
 
+test('#initialSyncWithDOM syncs a custom range with aria-valuemin and aria-valuemax', () => {
+  const root = getFixture();
+  root.setAttribute('aria-valuemin', '2001');
+  root.setAttribute('aria-valuemax', '2017');
+
+  const component = new MDCSlider(root);
+  assert.equal(component.min, 2001);
+  assert.equal(component.max, 2017);
+});
+
 test('#initialSyncWithDOM syncs the value property with aria-valuenow for continuous slider', () => {
   const root = getFixture();
   root.setAttribute('aria-valuenow', '30');
