@@ -43,13 +43,15 @@
 }
 
 @mixin mdc-notched-outline-shape-radius($radius, $rtl-reflexive: false) {
-  $radius: mdc-shape-prop-value($radius);
-
   .mdc-notched-outline__leading {
-    @include mdc-shape-radius(mdc-shape-mask-radius($radius, 1 0 0 1), $rtl-reflexive: true);
+    $masked-radius: mdc-shape-mask-radius($radius, 1 0 0 1);
 
-    @if ($radius > $mdc-notched-outline-leading-width) {
-      width: $radius;
+    @include mdc-shape-radius($masked-radius, $rtl-reflexive: $rtl-reflexive);
+
+    $max-leading-radius: mdc-shape-max-corner-radius($masked-radius);
+
+    @if ($max-leading-radius > $mdc-notched-outline-leading-width) {
+      width: $max-leading-radius;
     }
   }
 
@@ -60,7 +62,7 @@
   }
 
   .mdc-notched-outline__trailing {
-    @include mdc-shape-radius(mdc-shape-mask-radius($radius, 0 1 1 0), $rtl-reflexive: true);
+    @include mdc-shape-radius(mdc-shape-mask-radius($radius, 0 1 1 0), $rtl-reflexive: $rtl-reflexive);
   }
 }
 
