@@ -48,7 +48,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'getOffsetWidth', 'isRTL', 'setActiveTab',
     'activateTabAtIndex', 'deactivateTabAtIndex', 'focusTabAtIndex',
     'getTabIndicatorClientRectAtIndex', 'getTabDimensionsAtIndex',
-    'getPreviousActiveTabIndex', 'getFocusedTabIndex', 'getIndexOfTab', 'getTabListLength',
+    'getPreviousActiveTabIndex', 'getFocusedTabIndex', 'getIndexOfTabById', 'getTabListLength',
     'notifyTabActivated',
   ]);
 });
