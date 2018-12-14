@@ -6,10 +6,10 @@
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions://
+// furnished to do so, subject to the following conditions:
 //
 // The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.//
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -24,11 +24,19 @@
 @import "./functions";
 
 @mixin mdc-shape-radius($radius, $rtl-reflexive: false) {
-  border-radius: mdc-shape-prop-value_($radius);
+  // Even if $rtl-reflexive is true, only emit RTL styles if we can't easily tell that the given radius is symmetrical
+  $needs-flip: $rtl-reflexive and length($radius) > 1;
 
-  @if ($rtl-reflexive) {
+  @if ($needs-flip) {
+    /* @noflip */
+  }
+
+  border-radius: mdc-shape-prop-value($radius);
+
+  @if ($needs-flip) {
     @include mdc-rtl {
-      border-radius: mdc-shape-flip-radius($radius);
+      /* @noflip */
+      border-radius: mdc-shape-flip-radius(mdc-shape-prop-value($radius));
     }
   }
 }

@@ -25,11 +25,10 @@ import {assert} from 'chai';
 import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
-import {MDCTabBar} from '../../../packages/mdc-tabs/tab-bar';
-import {MDCTabBarFoundation} from '../../../packages/mdc-tabs/tab-bar';
+import {MDCTabBar, MDCTabBarFoundation} from '../../../packages/mdc-tabs/tab-bar/index';
 import {strings} from '../../../packages/mdc-tabs/tab-bar/constants';
 import {strings as tabStrings} from '../../../packages/mdc-tabs/tab/constants';
-import {createMockRaf} from '../helpers/raf';
+import {install as installClock} from '../helpers/clock';
 
 class MockTab {
   constructor() {
@@ -92,16 +91,15 @@ test('#get activeTab returns active tab', () => {
 });
 
 test('#set activeTab makes a tab the active tab', () => {
-  const raf = createMockRaf();
+  const clock = installClock();
   const {component} = setupTest();
   const tab = new MockTab();
   component.tabs.push(tab);
 
   component.activeTab = tab;
-  raf.flush();
+  clock.runToFrame();
 
   assert.isTrue(tab.isActive);
-  raf.restore();
 });
 
 test('#get activeTabIndex returns active tab', () => {
@@ -114,16 +112,15 @@ test('#get activeTabIndex returns active tab', () => {
 });
 
 test('#set activeTabIndex makes a tab at a given index the active tab', () => {
-  const raf = createMockRaf();
+  const clock = installClock();
   const {component} = setupTest();
   const tab = new MockTab();
   component.tabs.push(tab);
 
   component.activeTabIndex = component.tabs.indexOf(tab);
-  raf.flush();
+  clock.runToFrame();
 
   assert.isTrue(tab.isActive);
-  raf.restore();
 });
 
 test('adapter#addClass adds a class to the root element', () => {
@@ -147,15 +144,14 @@ test(`adapter#bindOnMDCTabSelectedEvent adds event listener for ${tabStrings.SEL
   const adapter = component.getDefaultFoundation().adapter_;
   const tab = new MockTab();
   component.tabs.push(tab);
-  const raf = createMockRaf();
+  const clock = installClock();
 
   adapter.bindOnMDCTabSelectedEvent();
   domEvents.emit(root, tabStrings.SELECTED_EVENT, {detail: {tab}});
 
-  raf.flush();
+  clock.runToFrame();
 
   assert.isTrue(tab.isActive);
-  raf.restore();
 });
 
 test(`on ${tabStrings.SELECTED_EVENT} if tab is not in tab bar, throw Error`, () => {
@@ -179,18 +175,17 @@ test('adapter#unbindOnMDCTabSelectedEvent removes listener from component', () =
   const adapter = component.getDefaultFoundation().adapter_;
   const tab = new MockTab();
   component.tabs.push(tab);
-  const raf = createMockRaf();
+  const clock = installClock();
   const handler = td.func('custom handler');
 
   component.listen(tabStrings.SELECTED_EVENT, handler);
   adapter.unbindOnMDCTabSelectedEvent();
   domEvents.emit(tab.root, tabStrings.SELECTED_EVENT, {detail: {tab}});
 
-  raf.flush();
+  clock.runToFrame();
 
   td.verify(handler(td.matchers.anything()), {times: 0});
   assert.isFalse(tab.isActive);
-  raf.restore();
 });
 
 test('adapter#registerResizeHandler adds resize listener to the component', () => {

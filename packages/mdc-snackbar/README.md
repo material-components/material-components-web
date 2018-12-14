@@ -12,7 +12,7 @@ path: /catalog/snackbars/
 <!--<div class="article__asset">
   <a class="article__asset-link"
      href="https://material-components.github.io/material-components-web-catalog/#/component/snackbar">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/snackbars.png" width="336" alt="Snackbars screenshot">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/snackbars.png" width="336" alt="Snackbar screenshot">
   </a>
 </div>-->
 
@@ -22,7 +22,7 @@ Snackbars provide brief messages about app processes at the bottom of the screen
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/go/design-snackbar">Material Design guidelines: Snackbars & toasts</a>
+    <a href="https://material.io/go/design-snackbar">Material Design guidelines: Snackbars</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components.github.io/material-components-web-catalog/#/component/snackbar">Demo</a>
@@ -35,199 +35,248 @@ Snackbars provide brief messages about app processes at the bottom of the screen
 npm install @material/snackbar
 ```
 
-## Usage
+## Basic Usage
 
-### Snackbar DOM
+### HTML Structure
 
 ```html
-<div class="mdc-snackbar"
-     aria-live="assertive"
-     aria-atomic="true"
-     aria-hidden="true">
-  <div class="mdc-snackbar__text"></div>
-  <div class="mdc-snackbar__action-wrapper">
-    <button type="button" class="mdc-snackbar__action-button"></button>
+<div class="mdc-snackbar">
+  <div class="mdc-snackbar__surface">
+    <div class="mdc-snackbar__label"
+         role="status"
+         aria-live="polite">
+      Can't send photo. Retry in 5 seconds.
+    </div>
+    <div class="mdc-snackbar__actions">
+      <button type="button" class="mdc-button mdc-snackbar__action-button">Retry</button>
+      <button class="mdc-icon-button mdc-snackbar__action-icon material-icons" title="Dismiss">close</button>
+    </div>
   </div>
 </div>
 ```
 
-### Start Aligned Snackbars (tablet and desktop only)
+### Styles
 
-MDC Snackbar can be start aligned (including in RTL contexts). To create a start-aligned
-snackbar, add the `mdc-snackbar--align-start` modifier class to the root element.
-
-```html
-<div class="mdc-snackbar mdc-snackbar--align-start"
-     aria-live="assertive"
-     aria-atomic="true"
-     aria-hidden="true">
-  <div class="mdc-snackbar__text"></div>
-  <div class="mdc-snackbar__action-wrapper">
-    <button type="button" class="mdc-snackbar__action-button"></button>
-  </div>
-</div>
+```scss
+@import "@material/snackbar/mdc-snackbar";
 ```
 
-### Using the JS Component
-
-MDC Snackbar ships with a Component / Foundation combo which provides the API for showing snackbar
-messages with optional action.
-
-#### Including in code
-
-##### ES2015
-
-```javascript
-import {MDCSnackbar, MDCSnackbarFoundation} from '@material/snackbar';
-```
-
-##### CommonJS
-
-```javascript
-const mdcSnackbar = require('mdc-snackbar');
-const MDCSnackbar = mdcSnackbar.MDCSnackbar;
-const MDCSnackbarFoundation = mdcSnackbar.MDCSnackbarFoundation;
-```
-
-##### AMD
-
-```javascript
-require(['path/to/mdc-snackbar'], mdcSnackbar => {
-  const MDCSnackbar = mdcSnackbar.MDCSnackbar;
-  const MDCSnackbarFoundation = mdcSnackbar.MDCSnackbarFoundation;
-});
-```
-
-##### Global
-
-```javascript
-const MDCSnackbar = mdc.snackbar.MDCSnackbar;
-const MDCSnackbarFoundation = mdc.snackbar.MDCSnackbarFoundation;
-```
-
-#### Automatic Instantiation
-
-If you do not care about retaining the component instance for the snackbar, simply call `attachTo()`
-and pass it a DOM element.
-
-```javascript
-mdc.snackbar.MDCSnackbar.attachTo(document.querySelector('.mdc-snackbar'));
-```
-
-#### Manual Instantiation
-
-Snackbars can easily be initialized using their default constructors as well, similar to `attachTo`.
-
-```javascript
-import {MDCSnackbar} from '@material/snackbar';
-
-const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
-```
-
-#### Handling events
-
-When snackbar is shown or dismissed, the component will emit a `MDCSnackbar:show` or
-`MDCSnackbar:hide` custom event with no data attached.
-
-### Showing a message and action
-
-Once you have obtained an MDCSnackbar instance attached to the DOM, you can use
-the `show` method to trigger the display of a message with optional action. The
-`show`  method takes an object for snackbar data. The table below shows the
-properties and their usage.
-
-| Property | Effect | Remarks | Type |
-|-----------|--------|---------|---------|
-| message   | The text message to display. | Required | String |
-| timeout   | The amount of time in milliseconds to show the snackbar. | Optional (default 2750) | Integer |
-| actionHandler | The function to execute when the action is clicked. | Optional | Function |
-| actionText | The text to display for the action button. | Required if actionHandler is set |  String |
-| multiline | Whether to show the snackbar with space for multiple lines of text | Optional |  Boolean |
-| actionOnBottom | Whether to show the action below the multiple lines of text | Optional, applies when multiline is true |  Boolean |
-
-### Responding to a Snackbar Action
-
-To respond to a snackbar action, assign a function to the optional `actionHandler` property in the object that gets passed to the `show` method. If you choose to set this property, you *must _also_* set the `actionText` property.
-
-```html
-<div class="mdc-snackbar"
-     aria-live="assertive"
-     aria-atomic="true"
-     aria-hidden="true">
-  <div class="mdc-snackbar__text"></div>
-  <div class="mdc-snackbar__action-wrapper">
-    <button type="button" class="mdc-snackbar__action-button"></button>
-  </div>
-</div>
-```
+### JavaScript Instantiation
 
 ```js
 import {MDCSnackbar} from '@material/snackbar';
-
 const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
-const dataObj = {
-  message: messageInput.value,
-  actionText: 'Undo',
-  actionHandler: function () {
-    console.log('my cool function');
+```
+
+> See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
+
+## Variants
+
+### Stacked
+
+Action buttons with long text should be positioned _below_ the label instead of alongside it. This can be accomplished by adding the `mdc-snackbar--stacked` modifier class to the root element:
+
+```html
+<div class="mdc-snackbar mdc-snackbar--stacked">
+  ...
+</div>
+```
+
+Alternatively, you can call the `mdc-snackbar-layout-stacked` mixin from Sass:
+
+```scss
+@media (max-width: $mdc-snackbar-mobile-breakpoint) {
+  .my-snackbar {
+    @include mdc-snackbar-layout-stacked;
   }
-};
-
-snackbar.show(dataObj);
+}
 ```
 
+### Leading (tablet and desktop only)
 
-### Keep snackbar when the action button is pressed
+By default, snackbars are centered horizontally within the viewport.
 
-By default the snackbar will be dimissed when the user presses the action button.
-If you want the snackbar to remain visible until the timeout is reached (regardless of
-whether the user pressed the action button or not) you can set the `dismissesOnAction`
-property to `false`:
+On larger screens, they can optionally be displayed on the _leading_ edge of the screen (the left side in LTR, or the right side in RTL) by adding the `mdc-snackbar--leading` modifier class to the root element:
 
+```html
+<div class="mdc-snackbar mdc-snackbar--leading">
+  ...
+</div>
 ```
-const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
-snackbar.dismissesOnAction = false
+
+Alternatively, you can call the `mdc-snackbar-position-leading` mixin from Sass:
+
+```scss
+@media (min-width: $mdc-snackbar-mobile-breakpoint) {
+  .my-snackbar {
+    @include mdc-snackbar-position-leading;
+  }
+}
 ```
 
-### Using the Foundation Class
+### Wide (tablet and desktop only)
 
-MDC Snackbar ships with an `MDCSnackbarFoundation` class that external frameworks and libraries can
-use to integrate the component. As with all foundation classes, an adapter object must be provided.
-The adapter for snackbars must provide the following functions, with correct signatures:
+To increase the margins between the snackbar and the viewport on larger screens, call the `mdc-snackbar-viewport-margin` mixin inside a media query:
 
-| Method Signature | Description |
-| --- | --- |
-| `addClass(className: string) => void` | Adds a class to the root element. |
-| `removeClass(className: string) => void` | Removes a class from the root element. |
-| `setAriaHidden() => void` | Sets `aria-hidden="true"` on the root element. |
-| `unsetAriaHidden() => void` | Removes the `aria-hidden` attribute from the root element. |
-| `setActionAriaHidden() => void` | Sets `aria-hidden="true"` on the action element. |
-| `unsetActionAriaHidden() => void` | Removes the `aria-hidden` attribute from the action element. |
-| `setActionText(actionText: string) => void` | Set the text content of the action element. |
-| `setMessageText(message: string) => void` | Set the text content of the message element. |
-| `setFocus() => void` | Sets focus on the action button. |
-| `isFocused() => boolean` | Detects focus on the action button. |
-| `visibilityIsHidden() => boolean` | Returns document.hidden property. |
-| `registerBlurHandler(handler: EventListener) => void` | Registers an event handler to be called when a `blur` event is triggered on the action button |
-| `deregisterBlurHandler(handler: EventListener) => void` | Deregisters a `blur` event handler from the actionButton |
-| `registerVisibilityChangeHandler(handler: EventListener) => void` | Registers an event handler to be called when a 'visibilitychange' event occurs |
-| `deregisterVisibilityChangeHandler(handler: EventListener) => void` | Deregisters an event handler to be called when a 'visibilitychange' event occurs |
-| `registerCapturedInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event handler to be called when the given event type is triggered on the `body` |
-| `deregisterCapturedInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event handler from the `body` |
-| `registerActionClickHandler(handler: EventListener) => void` | Registers an event handler to be called when a `click` event is triggered on the action element. |
-| `deregisterActionClickHandler(handler: EventListener) => void` | Deregisters an event handler from a `click` event on the action element. This will only be called with handlers that have previously been passed to `registerActionClickHandler` calls. |
-| `registerTransitionEndHandler(handler: EventListener) => void` | Registers an event handler to be called when an `transitionend` event is triggered on the root element. Note that you must account for vendor prefixes in order for this to work correctly. |
-| `deregisterTransitionEndHandler(handler: EventListener) => void` | Deregisters an event handler from an `transitionend` event listener. This will only be called with handlers that have previously been passed to `registerTransitionEndHandler` calls. |
-| `notifyShow() => void` | Dispatches an event notifying listeners that the snackbar has been shown. |
-| `notifyHide() => void` | Dispatches an event notifying listeners that the snackbar has been hidden. |
-
-## Avoiding Flash-Of-Unstyled-Content (FOUC)
-
-If you are loading the `mdc-snackbar` CSS asynchronously, you may experience a brief flash-of-unstyled-content (FOUC) due to the
-snackbar's translate transition running once the CSS loads. To avoid this temporary FOUC, you can add the following simple style
-before the `mdc-snackbar` CSS is loaded:
-
-```css
-.mdc-snackbar { transform: translateY(100%); }
+```scss
+@media (min-width: $mdc-snackbar-mobile-breakpoint) {
+  .my-snackbar {
+    @include mdc-snackbar-viewport-margin($mdc-snackbar-viewport-margin-wide);
+  }
+}
 ```
-This will move the snackbar offscreen until the CSS is fully loaded and avoids a translate transition upon load.
+
+## Style Customization
+
+### CSS Classes
+
+CSS Class | Description
+--- | ---
+`mdc-snackbar` | Mandatory. Container for the snackbar elements.
+`mdc-snackbar__label` | Mandatory. Message text.
+`mdc-snackbar__actions` | Optional. Wraps the action button/icon elements, if present.
+`mdc-snackbar__action-button` | Optional. The action button.
+`mdc-snackbar__action-icon` | Optional. The dismiss ("X") icon.
+`mdc-snackbar--opening` | Optional. Applied automatically when the snackbar is in the process of animating open.
+`mdc-snackbar--open` | Optional. Indicates that the snackbar is open and visible.
+`mdc-snackbar--closing` | Optional. Applied automatically when the snackbar is in the process of animating closed.
+`mdc-snackbar--leading` | Optional. Positions the snackbar on the leading edge of the screen (left in LTR, right in RTL) instead of centered.
+`mdc-snackbar--stacked` | Optional. Positions the action button/icon below the label instead of alongside it.
+
+### Sass Mixins
+
+Mixin | Description
+--- | ---
+`mdc-snackbar-fill-color($color)` | Sets the fill color of the snackbar.
+`mdc-snackbar-label-ink-color($color)` | Sets the color of the snackbar's label text.
+`mdc-snackbar-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to snackbar surface with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
+`mdc-snackbar-min-width($min-width, $mobile-breakpoint)` | Sets the `min-width` of the surface on tablet/desktop devices. On mobile, the width is automatically set to 100%.
+`mdc-snackbar-max-width($max-width)` | Sets the `max-width` of the snackbar.
+`mdc-snackbar-elevation($z-index)` | Sets the elevation of the snackbar.
+`mdc-snackbar-viewport-margin($margin)` | Sets the distance between the snackbar and the viewport.
+`mdc-snackbar-z-index($z-index)` | Sets the `z-index` of the snackbar.
+`mdc-snackbar-position-leading()` | Positions the snackbar on the leading edge of the screen (left in LTR, right in RTL) instead of centered.
+`mdc-snackbar-layout-stacked()` | Positions the action button/icon below the label instead of alongside it.
+
+> **NOTE**: The `mdc-snackbar__action-button` and `mdc-snackbar__action-icon` elements can be customized with [`mdc-button`](../mdc-button) and [`mdc-icon-button`](../mdc-icon-button) mixins.
+
+## JavaScript API
+
+### `MDCSnackbar` Properties
+
+Property | Value Type | Description
+--- | --- | ---
+`isOpen` | `boolean` (read-only) | Gets whether the snackbar is currently open.
+`timeoutMs` | `number` | Gets/sets the automatic dismiss timeout in milliseconds. Value must be between `4000` and `10000` or an error will be thrown. Defaults to `5000` (5 seconds).
+`closeOnEscape` | `boolean` | Gets/sets whether the snackbar closes when it is focused and the user presses the <kbd>ESC</kbd> key. Defaults to `true`.
+`labelText` | `string` | Gets/sets the `textContent` of the label element.
+`actionButtonText` | `string` | Gets/sets the `textContent` of the action button element.
+
+> **NOTE**: Setting `labelText` while the snackbar is open will cause screen readers to announce the new label. See [Screen Readers](#screen-readers) below for more information.
+
+### `MDCSnackbar` Methods
+
+Method Signature | Description
+--- | ---
+`open() => void` | Opens the snackbar.
+`close(reason: string=) => void` | Closes the snackbar, optionally with the specified reason indicating why it was closed.
+
+### Events
+
+Event Name | `event.detail` | Description
+--- | --- | ---
+`MDCSnackbar:opening` | `{}` | Indicates when the snackbar begins its opening animation.
+`MDCSnackbar:opened` | `{}` | Indicates when the snackbar finishes its opening animation.
+`MDCSnackbar:closing` | `{reason: ?string}` | Indicates when the snackbar begins its closing animation. `reason` contains the reason why the snackbar closed (`dismiss` or `action`).
+`MDCSnackbar:closed` | `{reason: ?string}` | Indicates when the snackbar finishes its closing animation. `reason` contains the reason why the snackbar closed (`dismiss` or `action`).
+
+### Usage Within Frameworks
+
+If you are using a JavaScript framework, such as React or Angular, you can create a Snackbar for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+
+#### `MDCSnackbarAdapter` Methods
+
+Method Signature | Description
+--- | ---
+`addClass(className: string) => void` | Adds a class to the root element.
+`removeClass(className: string) => void` | Removes a class from the root element.
+`announce() => void` | Announces the snackbar's label text to screen reader users.
+`notifyOpening() => void` | Broadcasts an event denoting that the snackbar has just started opening.
+`notifyOpened() => void` | Broadcasts an event denoting that the snackbar has finished opening.
+`notifyClosing(reason: string) {}` | Broadcasts an event denoting that the snackbar has just started closing. If a non-empty `reason` is passed, the event's `detail` object should include its value in the `reason` property.
+`notifyClosed(reason: string) {}` | Broadcasts an event denoting that the snackbar has finished closing. If a non-empty `reason` is passed, the event's `detail` object should include its value in the `reason` property.
+
+#### `MDCSnackbarFoundation` Methods
+
+Method Signature | Description
+--- | ---
+`open()` | Opens the snackbar.
+`close(action: string)` | Closes the snackbar, optionally with the specified action indicating why it was closed.
+`isOpen() => boolean` | Returns whether the snackbar is open.
+`getTimeoutMs() => number` | Returns the automatic dismiss timeout in milliseconds.
+`setTimeoutMs(timeoutMs: number)` | Sets the automatic dismiss timeout in milliseconds. Value must be between `4000` and `10000` or an error will be thrown.
+`getCloseOnEscape() => boolean` | Returns whether the snackbar closes when it is focused and the user presses the <kbd>ESC</kbd> key.
+`setCloseOnEscape(closeOnEscape: boolean) => void` | Sets whether the snackbar closes when it is focused and the user presses the <kbd>ESC</kbd> key.
+`handleKeyDown(event: !KeyEvent)` | Handles `keydown` events on or within the snackbar's root element.
+`handleActionButtonClick(event: !MouseEvent)` | Handles `click` events on or within the action button.
+`handleActionIconClick(event: !MouseEvent)` | Handles `click` events on or within the dismiss icon.
+
+#### Event Handlers
+
+When wrapping the Snackbar foundation, the following events must be bound to the indicated foundation methods:
+
+Event | Target | Foundation Handler | Register | Deregister
+--- | --- | --- | --- | ---
+`keydown` | `.mdc-snackbar` | `handleKeyDown` | During initialization | During destruction
+`click` | `.mdc-snackbar__action-button` | `handleActionButtonClick` | During initialization | During destruction
+`click` | `.mdc-snackbar__action-icon` | `handleActionIconClick` | During initialization | During destruction
+
+#### The Util API
+
+External frameworks and libraries can use the following utility methods from the `util` module when implementing their own component.
+
+Method Signature | Description
+--- | ---
+`announce(ariaEl: !HTMLElement, labelEl: !HTMLElement=) => void` | Announces the label text to screen reader users.
+
+> Alternatively, frameworks can use [Closure Library's `goog.a11y.aria.Announcer#say()` method](https://github.com/google/closure-library/blob/bee9ced776b4700e8076a3466bd9d3f9ade2fb54/closure/goog/a11y/aria/announcer.js#L80).
+
+## Accessibility
+
+### Screen Readers
+
+Snackbars automatically announce their label text to screen reader users with a ["polite" notification](https://www.w3.org/TR/wai-aria-1.1/#aria-live) when `open()` is called.
+
+However, screen readers only announce [ARIA Live Regions](https://mdn.io/ARIA_Live_Regions) when the element's `textContent` _changes_, so MDC Snackbar provides a `util.announce()` method to temporarily clear and then restore the label element's `textContent`.
+
+> **NOTE**: Setting `labelText` while the snackbar is open will cause screen readers to announce the new label.
+
+`util.announce()` supports the latest versions of the following screen readers and browsers:
+
+* [ChromeVox](https://chrome.google.com/webstore/detail/chromevox/kgejglhpjiefppelpmljglcjbhoiplfn)
+* [NVDA](https://www.nvaccess.org/):
+    - Chrome
+    - Firefox
+    - IE 11
+* [JAWS](https://www.freedomscientific.com/Products/Blindness/JAWS):
+    - Chrome
+    - Firefox
+    - IE 11
+
+macOS VoiceOver is _not_ supported at this time.
+
+### Dismiss Icon
+
+A dedicated dismiss icon is optional, but **strongly** recommended. If the snackbar gets permanently "stuck" on the screen for any reason (e.g., #1398), the user needs to be able to manually dismiss it.
+
+### Dismiss Key
+
+Pressing the <kbd>ESC</kbd> key while one of the snackbar's subelements has focus (e.g., the action button) will dismiss the snackbar.
+
+To disable this behavior, set `closeOnEscape` to `false`.
+
+### No JS Ripples
+
+The `mdc-snackbar__action-button` and `mdc-snackbar__action-icon` elements should _**not**_ have JavaScript-enabled [`MDCRipple`](../mdc-ripple) behavior.
+
+When combined with the snackbar's exit animation, ripples cause too much motion, which can be distracting or disorienting for users.

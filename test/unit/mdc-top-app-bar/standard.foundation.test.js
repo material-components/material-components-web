@@ -26,8 +26,7 @@ import td from 'testdouble';
 
 import MDCTopAppBarFoundation from '../../../packages/mdc-top-app-bar/standard/foundation';
 import {numbers} from '../../../packages/mdc-top-app-bar/constants';
-import {createMockRaf} from '../helpers/raf';
-import lolex from 'lolex';
+import {install as installClock} from '../helpers/clock';
 
 suite('MDCTopAppBarFoundation');
 
@@ -41,7 +40,7 @@ const setupTest = () => {
   return {foundation, mockAdapter};
 };
 
-const createMockHandlers = (foundation, mockAdapter, mockRaf) => {
+const createMockHandlers = (foundation, mockAdapter, clock) => {
   let scrollHandler;
   let resizeHandler;
   td.when(mockAdapter.registerScrollHandler(td.matchers.isA(Function))).thenDo((fn) => {
@@ -52,7 +51,7 @@ const createMockHandlers = (foundation, mockAdapter, mockRaf) => {
   });
 
   foundation.init();
-  mockRaf.flush();
+  clock.runToFrame();
   td.reset();
   return {scrollHandler, resizeHandler};
 };
@@ -209,9 +208,9 @@ test('top app bar : topAppBarScrollHandler_ scrolling does not generate a ' +
 });
 
 test('top app bar : resize events should set isCurrentlyBeingResized_ to true', () => {
-  const mockRaf = createMockRaf();
+  const clock = installClock();
   const {foundation, mockAdapter} = setupTest();
-  const {resizeHandler} = createMockHandlers(foundation, mockAdapter, mockRaf);
+  const {resizeHandler} = createMockHandlers(foundation, mockAdapter, clock);
 
   foundation.init();
   resizeHandler();
@@ -220,10 +219,9 @@ test('top app bar : resize events should set isCurrentlyBeingResized_ to true', 
 });
 
 test('top app bar : resize events throttle multiple calls of throttledResizeHandler_ ', () => {
-  const clock = lolex.install();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
   const {foundation, mockAdapter} = setupTest();
-  const {resizeHandler} = createMockHandlers(foundation, mockAdapter, mockRaf);
+  const {resizeHandler} = createMockHandlers(foundation, mockAdapter, clock);
 
   foundation.init();
   resizeHandler();
@@ -234,10 +232,9 @@ test('top app bar : resize events throttle multiple calls of throttledResizeHand
 });
 
 test('top app bar : resize events debounce changing isCurrentlyBeingResized_ to false ', () => {
-  const clock = lolex.install();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
   const {foundation, mockAdapter} = setupTest();
-  const {resizeHandler} = createMockHandlers(foundation, mockAdapter, mockRaf);
+  const {resizeHandler} = createMockHandlers(foundation, mockAdapter, clock);
 
   foundation.init();
 

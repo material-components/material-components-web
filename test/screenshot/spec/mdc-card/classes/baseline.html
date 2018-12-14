@@ -42,63 +42,25 @@
     </script>
   </head>
 
-  <body class="test-container mdc-typography">
+  <body class="test-container">
     <main class="test-viewport test-viewport--mobile">
 
-      <div class="mdc-card test-card test-card--basic">
-        <div class="test-card__content">
-          Elevated
-        </div>
-      </div>
-
-      <div class="mdc-card mdc-card--outlined test-card test-card--basic">
-        <div class="test-card__content">
-          Outlined
-        </div>
-      </div>
-
-      <div class="mdc-card test-card">
-        <a class="mdc-card__primary-action" href="#" onclick="return false">
-          <div class="mdc-card__media mdc-card__media--16-9 test-card__media">
-            <div class="test-card__media-content">
-              Media: 16x9<br>
-              Width: unset
+      <div class="test-layout">
+        <div class="test-cell test-cell--card-without-media">
+          <div class="mdc-card test-card test-card--basic">
+            <div class="test-card__content">
+              Elevated
             </div>
           </div>
-        </a>
-        <div class="mdc-card__actions">
-          <div class="mdc-card__action-buttons">
-            <button class="mdc-button mdc-card__action mdc-card__action--button">Yes</button>
-            <button class="mdc-button mdc-card__action mdc-card__action--button">No</button>
-          </div>
-          <div class="mdc-card__action-icons">
-            <button class="mdc-icon-button mdc-card__action mdc-card__action--icon"
-                    aria-pressed="false"
-                    style="--mdc-ripple-fg-size: 28.8px; --mdc-ripple-fg-scale: 1.66667; --mdc-ripple-left: 10px; --mdc-ripple-top: 10px;">
-              <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite</i>
-              <i class="material-icons mdc-icon-button__icon">favorite_border</i>
-            </button>
-            <button class="mdc-icon-button material-icons mdc-card__action mdc-card__action--icon"
-                    data-mdc-ripple-is-unbounded
-                    title="Share"
-                    style="--mdc-ripple-fg-size: 28.8px; --mdc-ripple-fg-scale: 1.66667; --mdc-ripple-left: 10px; --mdc-ripple-top: 10px;">share</button>
-            <button class="mdc-icon-button material-icons mdc-card__action mdc-card__action--icon"
-                    data-mdc-ripple-is-unbounded
-                    title="More options"
-                    style="--mdc-ripple-fg-size: 28.8px; --mdc-ripple-fg-scale: 1.66667; --mdc-ripple-left: 10px; --mdc-ripple-top: 10px;">more_vert</button>
-          </div>
         </div>
-      </div>
 
-      <div class="mdc-card test-card test-card--square">
-        <a class="mdc-card__primary-action" href="#" onclick="return false">
-          <div class="mdc-card__media mdc-card__media--square test-card__media">
-            <div class="test-card__media-content">
-              Media: Square<br>
-              Width: 145px
+        <div class="test-cell test-cell--card-without-media">
+          <div class="mdc-card mdc-card--outlined test-card test-card--basic">
+            <div class="test-card__content">
+              Outlined
             </div>
           </div>
-        </a>
+        </div>
       </div>
 
     </main>

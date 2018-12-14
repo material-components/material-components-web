@@ -48,8 +48,8 @@ class MDCRadioAdapter {
   /** @param {string} className */
   removeClass(className) {}
 
-  /** @return {!MDCSelectionControlState} */
-  getNativeControl() {}
+  /** @param {boolean} disabled */
+  setNativeControlDisabled(disabled) {}
 }
 
 export default MDCRadioAdapter;

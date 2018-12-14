@@ -25,6 +25,10 @@ import {strings} from '../../../../packages/mdc-dialog/constants';
 
 window.mdc.testFixture.fontsLoaded.then(() => {
   class DialogFixture {
+    get dialog() {
+      return this.dialogInstance_;
+    }
+
     /** @param {!HTMLElement} dialogEl */
     initialize(dialogEl) {
       /**
@@ -98,6 +102,8 @@ window.mdc.testFixture.fontsLoaded.then(() => {
       const isSideBySide = () => !isStacked();
       const isScrollable = () => dialogEl.classList.contains('mdc-dialog--scrollable');
       const isNotScrollable = () => !isScrollable();
+      const isRTL = () => Boolean(document.querySelector('[dir=rtl]'));
+      const isLTR = () => !isRTL();
 
       const anyTitleEl = document.querySelector('.mdc-dialog__title');
       const oneLineTitleEl = document.querySelector(
@@ -258,6 +264,17 @@ window.mdc.testFixture.fontsLoaded.then(() => {
           toSide: 'right',
           specDistancePx: 8,
           displayTargetEl: actionsEl,
+          conditionFn: isLTR,
+        },
+        {
+          name: 'Actions padding left',
+          fromEl: lastButtonEl,
+          fromSide: 'left',
+          toEl: actionsEl,
+          toSide: 'left',
+          specDistancePx: 8,
+          displayTargetEl: actionsEl,
+          conditionFn: isRTL,
         },
         {
           name: 'Actions height (side-by-side)',
@@ -272,9 +289,9 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         {
           name: 'Actions button margin (side-by-side)',
           fromEl: secondLastButtonEl,
-          fromSide: 'right',
+          fromSide: isLTR() ? 'right' : 'left',
           toEl: lastButtonEl,
-          toSide: 'left',
+          toSide: isLTR() ? 'left' : 'right',
           specDistancePx: 8,
           displayAlignment: 'bottom',
           conditionFn: isSideBySide,
@@ -316,9 +333,9 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         {
           name: 'Simple list item label margin',
           fromEl: listItemGraphicEl,
-          fromSide: 'right',
+          fromSide: isLTR() ? 'right' : 'left',
           toEl: listItemLabelEl,
-          toSide: 'left',
+          toSide: isLTR() ? 'left' : 'right',
           specDistancePx: 16, // NOTE: Dialog spec says this is 20, but that is inconsistent with List spec.
           flipLabel: false,
           conditionFn: isSimple,
@@ -351,9 +368,9 @@ window.mdc.testFixture.fontsLoaded.then(() => {
         {
           name: 'Confirmation list item label margin',
           fromEl: listItemGraphicEl,
-          fromSide: 'right',
+          fromSide: isLTR() ? 'right' : 'left',
           toEl: listItemLabelEl,
-          toSide: 'left',
+          toSide: isLTR() ? 'left' : 'right',
           specDistancePx: 32,
           flipLabel: false,
           conditionFn: isConfirmation,
@@ -377,8 +394,9 @@ window.mdc.testFixture.fontsLoaded.then(() => {
     }
   }
 
-  [].forEach.call(document.querySelectorAll('.mdc-dialog'), (dialogEl) => {
+  mdc.testFixture.dialogs = [].map.call(document.querySelectorAll('.mdc-dialog'), (dialogEl) => {
     const dialogFixture = new DialogFixture();
     dialogFixture.initialize(dialogEl);
+    return dialogFixture.dialog;
   });
 });

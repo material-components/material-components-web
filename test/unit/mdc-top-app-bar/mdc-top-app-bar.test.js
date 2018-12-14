@@ -26,7 +26,7 @@ import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
 
-import {MDCTopAppBar} from '../../../packages/mdc-top-app-bar';
+import {MDCTopAppBar} from '../../../packages/mdc-top-app-bar/index';
 import {strings} from '../../../packages/mdc-top-app-bar/constants';
 import MDCTopAppBarFoundation from '../../../packages/mdc-top-app-bar/foundation';
 import MDCFixedTopAppBarFoundation from '../../../packages/mdc-top-app-bar/fixed/foundation';
@@ -62,7 +62,6 @@ function getFixture(removeIcon) {
       </header>
       <main class="mdc-top-app-bar-fixed-adjust">
       </main>
-      <div class="content">Content</div>
     </div>
   `;
 
@@ -291,10 +290,10 @@ test('adapter#getViewportScrollY returns scroll distance', () => {
 });
 
 test('adapter#getViewportScrollY returns scroll distance when scrollTarget_ is not window', () => {
-  const {component, fixture} = setupTest();
-  const content = fixture.querySelector('.content');
-  component.scrollTarget_ = content;
-  assert.equal(component.getDefaultFoundation().adapter_.getViewportScrollY(), content.scrollTop);
+  const {component} = setupTest();
+  const mockContent = {addEventListener: () => {}, scrollTop: 20};
+  component.setScrollTarget(mockContent);
+  assert.equal(component.getDefaultFoundation().adapter_.getViewportScrollY(), mockContent.scrollTop);
 });
 
 test('adapter#getTotalActionItems returns the number of action items on the opposite side of the menu', () => {

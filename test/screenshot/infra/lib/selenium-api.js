@@ -44,10 +44,10 @@ const Cli = require('./cli');
 const CliColor = require('./logger').colors;
 const Constants = require('./constants');
 const Duration = require('./duration');
-const GitHubApi = require('./github-api');
 const ImageCropper = require('./image-cropper');
 const ImageDiffer = require('./image-differ');
 const LocalStorage = require('./local-storage');
+const StatusNotifier = require('./status-notifier');
 const getStackTrace = require('./stacktrace')('SeleniumApi');
 const {Browser, Builder, By, logging, until} = require('selenium-webdriver');
 const {CBT_CONCURRENCY_POLL_INTERVAL_MS, CBT_CONCURRENCY_MAX_WAIT_MS, ExitCode} = Constants;
@@ -97,12 +97,6 @@ class SeleniumApi {
     this.cli_ = new Cli();
 
     /**
-     * @type {!GitHubApi}
-     * @private
-     */
-    this.gitHubApi_ = new GitHubApi();
-
-    /**
      * @type {!ImageCropper}
      * @private
      */
@@ -125,6 +119,12 @@ class SeleniumApi {
      * @private
      */
     this.seleniumSessionIds_ = new Set();
+
+    /**
+     * @type {!StatusNotifier}
+     * @private
+     */
+    this.statusNotifier_ = new StatusNotifier();
 
     /**
      * @type {number}
@@ -186,6 +186,8 @@ class SeleniumApi {
   async captureAllPages(reportData) {
     /** @type {string|undefined} */
     let stackTrace;
+
+    this.statusNotifier_.initialize(reportData);
 
     try {
       stackTrace = getStackTrace('captureAllPages');
@@ -392,14 +394,19 @@ class SeleniumApi {
         return Math.min(cliParallels, available);
       }
 
-      // If nobody else is running any tests, run half the number of concurrent tests allowed by our CBT account.
-      // This gives us _some_ parallelism while still allowing other users to run their tests.
-      if (active === 0) {
-        return Math.floor(max / 2);
+      if (this.isBusinessHours_()) {
+        // Nobody else is running tests.
+        if (active === 0) {
+          // Run half the number of concurrent tests allowed by our CBT account.
+          // This gives us _some_ parallelism while ensuring that other users can run their tests too.
+          return Math.floor(max / 2);
+        }
+
+        // Somebody else is running tests, so only run one test at a time.
+        return 1;
       }
 
-      // If someone else is already running tests, only run one test at a time.
-      return 1;
+      return available;
     }
   }
 
@@ -503,7 +510,7 @@ class SeleniumApi {
     if (this.cli_.isOnline()) {
       return this.cbtApi_.getDesiredCapabilities({meta, userAgent});
     }
-    return this.createDesiredCapabilitiesOffline_({userAgent});
+    return this.createOfflineDesiredCapabilities_({userAgent});
   }
 
   /**
@@ -511,7 +518,7 @@ class SeleniumApi {
    * @return {!selenium.proto.RawCapabilities}
    * @private
    */
-  createDesiredCapabilitiesOffline_({userAgent}) {
+  createOfflineDesiredCapabilities_({userAgent}) {
     const browserVendorMap = {
       [BrowserVendorType.CHROME]: Browser.CHROME,
       [BrowserVendorType.EDGE]: Browser.EDGE,
@@ -578,9 +585,11 @@ class SeleniumApi {
   getImageFileNameSuffix_(userAgent) {
     /* eslint-disable camelcase */
     const {os_name, browser_name, browser_version} = userAgent.navigator;
-    return [os_name, browser_name, browser_version].map((value) => {
-      // TODO(acdvorak): Clean this up
-      return value.toLowerCase().replace(/\..+$/, '').replace(/[^a-z0-9]+/ig, '');
+    return [os_name, browser_name, browser_version, ...userAgent.raw_options].map((value) => {
+      return value.toLowerCase()
+        .replace(/\..+$/, '') // Remove minor/path version numbers (e.g., "3.2.1" -> "3")
+        .replace(/[^a-z0-9]+/ig, '') // Remove all non-alphanumeric characters
+      ;
     }).join('_');
     /* eslint-enable camelcase */
   }
@@ -766,22 +775,25 @@ class SeleniumApi {
     const userAgent = screenshot.user_agent;
     const flakeConfig = screenshot.flake_config;
 
-    const urlWithQsParams = this.analytics_.getUrl({
+    const extraParams = {
+      font_face_observer_timeout_ms: flakeConfig.font_face_observer_timeout_ms,
+      fonts_loaded_reflow_delay_ms: flakeConfig.fonts_loaded_reflow_delay_ms,
+      dir: userAgent.is_rtl ? 'rtl' : 'ltr',
+    };
+
+    const urlWithParams = this.analytics_.getUrl({
       url,
       source: 'cbt',
-      type: 'selenium',
-      extraParams: {
-        font_face_observer_timeout_ms: flakeConfig.font_face_observer_timeout_ms,
-        fonts_loaded_reflow_delay_ms: flakeConfig.fonts_loaded_reflow_delay_ms,
-      },
+      medium: 'selenium',
+      extraParams,
     });
 
-    this.logStatus_(CliStatuses.GET, `${this.createUrlAliasMessage_(urlWithQsParams, userAgent)}...`);
+    this.logStatus_(CliStatuses.GET, `${this.createUrlAliasMessage_(urlWithParams, userAgent)}...`);
 
     const isOnline = this.cli_.isOnline();
     const fontLoadTimeoutMs = isOnline ? flakeConfig.font_face_observer_timeout_ms : 500;
 
-    await driver.get(urlWithQsParams);
+    await driver.get(urlWithParams);
     const domReadyCssSelector = '[data-fonts-loaded][data-animations-settled][data-dom-ready]';
     await driver.wait(until.elementLocated(By.css(domReadyCssSelector)), fontLoadTimeoutMs).catch(() => {});
 
@@ -936,7 +948,7 @@ class SeleniumApi {
     const actualHtmlFileUrlPlain = this.analytics_.getUrl({
       url: screenshot.actual_html_file.public_url,
       source: 'cli',
-      type: 'progress',
+      medium: 'progress',
     });
 
     let cropColor = '';
@@ -973,13 +985,34 @@ class SeleniumApi {
   }
 
   /**
+   * @return {boolean}
+   * @private
+   */
+  isBusinessHours_() {
+    const MORNING_HOUR = 6; // 6am PT = 9am ET
+    const EVENING_HOUR = 18; // 6pm PT = 9pm ET
+    const SATURDAY = 6;
+    const SUNDAY = 0;
+
+    // Travis CI runs in the Pacific Time Zone (America/Los_Angeles). See scripts/travis-env-vars.sh.
+    const nowDate = new Date();
+    const nowHour = nowDate.getHours();
+
+    const isWeekDay = nowDate.getDay() > SUNDAY || nowDate.getDay() < SATURDAY;
+    const is9to5 = nowHour > MORNING_HOUR && nowHour < EVENING_HOUR;
+
+    return isWeekDay && is9to5;
+  }
+
+  /**
    * @param {!CliStatus} status
    * @param {!mdc.proto.UserAgent} userAgent
    * @private
    */
   logSession_(status, userAgent) {
     const navigator = userAgent.navigator;
-    const browser = CliColor.bold(`${navigator.browser_name} ${navigator.browser_version}`);
+    const options = userAgent.raw_options.length > 0 ? ` (${userAgent.raw_options.join(', ')})` : '';
+    const browser = CliColor.bold(`${navigator.browser_name} ${navigator.browser_version}${options}`);
     const os = `${navigator.os_name} ${navigator.os_version}`;
     const sessionId = userAgent.selenium_session_id;
     const publicCbtUrl = CliColor.yellow.underline(userAgent.selenium_result_url);
@@ -1001,7 +1034,7 @@ class SeleniumApi {
     const actualHtmlFileUrl = this.analytics_.getUrl({
       url: screenshot.actual_html_file.public_url,
       source: 'cli',
-      type: 'progress',
+      medium: 'progress',
     });
 
     const bold = CliColor.bold;
@@ -1033,43 +1066,36 @@ class SeleniumApi {
     const statusName = status.name.toUpperCase();
     const paddingSpaces = ''.padStart(maxStatusWidth - statusName.length, ' ');
 
-    console.log(eraseCurrentLine + paddingSpaces + status.color(statusName) + ':', ...args);
+    const pending = this.numPending_;
+    const completed = this.numCompleted_;
+    const changed = this.numChanged_;
+    const total = pending + completed;
+    const percent = (total === 0 ? 0 : (100 * completed / total).toFixed(1));
+
+    const plainDiffs = `${changed.toLocaleString()} diff${(changed === 1 ? '' : 's')}`;
+    const colorDiffs = changed > 0 ? ` - ${CliColor.bold.red(plainDiffs)}` : '';
+    const colorCaptured = CliStatuses.CAPTURED.color(CliStatuses.CAPTURED.name.toUpperCase());
+    const colorCompleted = completed.toLocaleString();
+    const colorTotal = total.toLocaleString();
+    const colorPercent = CliColor.bold.white(`${percent}%`);
+
+    const isTravis = process.env.TRAVIS === 'true';
+    const colorProgressTravis = isTravis
+      ? ` [${colorCompleted} of ${colorTotal} - ${colorPercent}${colorDiffs}]`
+      : '';
+    console.log(eraseCurrentLine + paddingSpaces + status.color(statusName) + colorProgressTravis + ':', ...args);
 
     if (this.isKillRequested_) {
       return;
     }
 
-    const numDone = this.numCompleted_;
-    const strDone = numDone.toLocaleString();
+    this.statusNotifier_.running();
 
-    const numTotal = numDone + this.numPending_;
-    const strTotal = numTotal.toLocaleString();
-
-    const numChanged = this.numChanged_;
-    const strChanged = numChanged.toLocaleString();
-
-    const numPercent = numTotal > 0 ? (100 * numDone / numTotal) : 0;
-    const strPercent = numPercent.toFixed(1);
-
-    if (process.env.TRAVIS === 'true') {
-      this.gitHubApi_.setPullRequestStatusManual({
-        state: GitHubApi.PullRequestState.PENDING,
-        description: `${strDone} of ${strTotal} (${strPercent}%) - ${strChanged} diff${numChanged === 1 ? '' : 's'}`,
-      });
-      return;
+    if (!isTravis) {
+      process.stdout.write(
+        `${colorCaptured}: ${colorCompleted} of ${colorTotal} screenshots (${colorPercent} complete)${colorDiffs}`
+      );
     }
-
-    const pending = this.numPending_;
-    const completed = numDone;
-    const total = pending + completed;
-    const percent = (total === 0 ? 0 : (100 * completed / total).toFixed(1));
-
-    const colorCaptured = CliStatuses.CAPTURED.color(CliStatuses.CAPTURED.name.toUpperCase());
-    const colorCompleted = CliColor.bold.white(completed.toLocaleString());
-    const colorTotal = CliColor.bold.white(total.toLocaleString());
-    const colorPercent = CliColor.bold.white(`${percent}%`);
-
-    process.stdout.write(`${colorCaptured}: ${colorCompleted} of ${colorTotal} screenshots (${colorPercent} complete)`);
   }
 }
 

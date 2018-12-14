@@ -73,6 +73,12 @@ However, the Material Design guidelines do not recommend having a deeply nested 
 </div>
 ```
 
+### Styles
+
+```scss
+@import "@material/layout-grid/mdc-layout-grid";
+```
+
 ### CSS Classes
 
 CSS Class | Description

@@ -51,7 +51,7 @@ npm install @material/drawer
 </aside>
 ```
 
-#### Menu Icon
+#### Icons
 
 We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts:
 
@@ -195,6 +195,8 @@ Dismissible drawers are by default hidden off screen, and can slide into view. D
 
 #### Usage with Top App Bar
 
+##### Dismissible Drawer Full Height Drawer
+
 In cases where the drawer occupies the full viewport height, some styles must be applied to get the dismissible drawer and the content below the top app bar to independently scroll and work in all browsers.
 
 In the following example, the `mdc-drawer__content` and `main-content` elements should scroll independently of each other. The `mdc-drawer--dismissible` and `mdc-drawer-app-content` elements should then sit side-by-side. The markup looks something like this:
@@ -239,7 +241,48 @@ In the following example, the `mdc-drawer__content` and `main-content` elements 
 </body>
 ```
 
-The CSS to match it looks like this:
+##### Dismissible Drawer Below Top App Bar
+
+In cases where the drawer appears below the top app bar you will want to follow the markup shown below. The `mdc-drawer__content` and `main-content` elements will also scroll independently of each other. The `mdc-top-app-bar`, `mdc-drawer` and `mdc-drawer-app-content` will be sibling to each other. The `mdc-top-app-bar--fixed-adjust` helper class will be applied to `mdc-drawer` and `mdc-drawer-app-content` elements to adjust the position with top app bar.
+
+```html
+<body>
+  <header class="mdc-top-app-bar app-bar" id="app-bar">
+    <div class="mdc-top-app-bar__row">
+      <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+        <a href="#" class="demo-menu material-icons mdc-top-app-bar__navigation-icon">menu</a>
+        <span class="mdc-top-app-bar__title">Dismissible Drawer</span>
+      </section>
+    </div>
+  </header>
+  <aside class="mdc-drawer mdc-drawer--dismissible mdc-top-app-bar--fixed-adjust">
+    <div class="mdc-drawer__content">
+      <div class="mdc-list">
+        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
+          <span class="mdc-list-item__text">Inbox</span>
+        </a>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
+          <span class="mdc-list-item__text">Outgoing</span>
+        </a>
+        <a class="mdc-list-item" href="#">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
+          <span class="mdc-list-item__text">Drafts</span>
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <div class="mdc-drawer-app-content mdc-top-app-bar--fixed-adjust">
+    <main class="main-content" id="main-content">
+      App Content
+    </main>
+  </div>
+</body>
+```
+
+The CSS to match either case looks like this:
 
 ```scss
 // Note: these styles do not account for any paddings/margins that you may need.
@@ -252,6 +295,7 @@ body {
 .mdc-drawer-app-content {
   flex: auto;
   overflow: auto;
+  position: relative;
 }
 
 .main-content {
@@ -262,6 +306,11 @@ body {
 .app-bar {
   position: absolute;
 }
+
+// only apply this style if below top app bar
+.mdc-top-app-bar {
+  z-index: 7;
+}
 ```
 
 The JavaScript to toggle the drawer when the navigation button is clicked looks like this:
@@ -271,7 +320,7 @@ import {MDCTopAppBar} from "@material/top-app-bar";
 const topAppBar = MDCTopAppBar.attachTo(document.getElementById('app-bar'));
 topAppBar.setScrollTarget(document.getElementById('main-content'));
 topAppBar.listen('MDCTopAppBar:nav', () => {
-    drawer.open = !drawer.open;
+  drawer.open = !drawer.open;
 });
 ```
 
@@ -305,7 +354,7 @@ Modal drawers are elevated above most of the app's UI and don't affect the scree
 </body>
 ```
 
-> The `mdc-drawer-scrim` next sibling element protects the app's UI from interactions while the drawer is open.
+> The `mdc-drawer-scrim` next sibling element is **required**, to protect the app's UI from interactions while the modal drawer is open.
 
 ## Style Customization
 
@@ -323,8 +372,8 @@ Class | Description
 `mdc-drawer--open` | If present, indicates that the dismissible drawer is in the open position.
 `mdc-drawer--opening` | Applied while the drawer is animating from the closed to the open position.
 `mdc-drawer--closing` | Applied while the drawer is animating from the open to the closed position.
-`mdc-drawer-app-content` | Dismissible variant only. Sibling element that is resized when the drawer opens/closes.
-`mdc-drawer-scrim` | Modal variant only. Used for the overlay on the app content.
+`mdc-drawer-app-content` | Mandatory for dismissible variant only. Sibling element that is resized when the drawer opens/closes.
+`mdc-drawer-scrim` | Mandatory for modal variant only. Used for the overlay on the app content.
 
 
 ### Sass Mixins
@@ -413,7 +462,6 @@ Method Signature | Description
 `hasClass(className: string) => boolean` | Returns true if the root element contains the given `className`.
 `removeClass(className: string) => void` | Removes a class from the root element.
 `elementHasClass(element: !Element, className: string) => boolean` | Returns true if the an element contains the given class.
-`computeBoundingRect() => !ClientRect` | Returns the ClientRect for the root element.
 `saveFocus() => void` | Saves the focus of currently active element.
 `restoreFocus() => void` | Restores focus to element previously saved with 'saveFocus'.
 `focusActiveNavigationItem() => void` | Focuses the active / selected navigation item.

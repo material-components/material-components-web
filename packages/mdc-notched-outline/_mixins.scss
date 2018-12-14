@@ -6,10 +6,10 @@
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions://
+// furnished to do so, subject to the following conditions:
 //
 // The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.//
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -22,31 +22,56 @@
 
 @import "@material/theme/mixins";
 @import "@material/shape/mixins";
+@import "@material/rtl/mixins";
+@import "./variables";
 
-@mixin mdc-notched-outline-idle-color($color) {
-  .mdc-notched-outline__idle {
+@mixin mdc-notched-outline-color($color) {
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
     @include mdc-theme-prop(border-color, $color);
   }
 }
 
-@mixin mdc-notched-outline-color($color) {
-  .mdc-notched-outline__path {
-    @include mdc-theme-prop(stroke, $color);
-  }
-}
-
 @mixin mdc-notched-outline-stroke-width($width) {
-  .mdc-notched-outline__path {
-    stroke-width: $width;
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border-width: $width;
   }
 }
 
 @mixin mdc-notched-outline-shape-radius($radius, $rtl-reflexive: false) {
-  @include mdc-shape-radius($radius, $rtl-reflexive);
+  $radius: mdc-shape-prop-value($radius);
+
+  .mdc-notched-outline__leading {
+    @include mdc-shape-radius(mdc-shape-mask-radius($radius, 1 0 0 1), $rtl-reflexive: true);
+
+    @if ($radius > $mdc-notched-outline-leading-width) {
+      width: $radius;
+    }
+  }
+
+  .mdc-notched-outline__trailing {
+    @include mdc-shape-radius(mdc-shape-mask-radius($radius, 0 1 1 0), $rtl-reflexive: true);
+  }
 }
 
-@mixin mdc-notched-outline-idle-shape-radius($radius, $rtl-reflexive: false) {
-  .mdc-notched-outline__idle {
-    @include mdc-shape-radius($radius, $rtl-reflexive);
+@mixin mdc-notched-outline-floating-label-float-position($positionY, $positionX: 0%, $scale: .75) {
+  @include mdc-floating-label-float-position($positionY + $mdc-notched-outline-label-adjust, $positionX, 1);
+
+  .mdc-floating-label--float-above {
+    font-size: ($scale * 1rem);
+  }
+
+  // Two selectors to ensure we select the appropriate class when applied from this component or a parent component.
+  &.mdc-notched-outline--upgraded,
+  .mdc-notched-outline--upgraded {
+    @include mdc-floating-label-float-position($positionY, $positionX, $scale);
+
+    // stylelint-disable-next-line no-descending-specificity
+    .mdc-floating-label--float-above {
+      font-size: 1rem;
+    }
   }
 }

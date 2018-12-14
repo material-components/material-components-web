@@ -23,13 +23,12 @@
 
 import {assert} from 'chai';
 import td from 'testdouble';
-import lolex from 'lolex';
 
 import {setupFoundationTest} from '../helpers/setup';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 
 import {cssClasses, strings, numbers} from '../../../packages/mdc-dialog/constants';
-import {createMockRaf} from '../helpers/raf';
+import {install as installClock} from '../helpers/clock';
 import MDCDialogFoundation from '../../../packages/mdc-dialog/foundation';
 
 const ENTER_EVENTS = [
@@ -61,7 +60,7 @@ test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCDialogFoundation, [
     'addClass', 'removeClass', 'hasClass',
     'addBodyClass', 'removeBodyClass', 'eventTargetMatches',
-    'computeBoundingRect', 'trapFocus', 'releaseFocus',
+    'trapFocus', 'releaseFocus',
     'isContentScrollable', 'areButtonsStacked', 'getActionFromEvent', 'clickDefaultButton', 'reverseButtons',
     'notifyOpening', 'notifyOpened', 'notifyClosing', 'notifyClosed',
   ]);
@@ -106,11 +105,29 @@ test('#destroy removes animating classes if called when the dialog is animating'
   td.verify(mockAdapter.removeClass(cssClasses.CLOSING));
 });
 
-test('#open adds CSS classes', () => {
+test('#destroy cancels layout handling if called on same frame as layout', () => {
   const {foundation, mockAdapter} = setupTest();
+  const clock = installClock();
+
+  foundation.layout();
+  foundation.destroy();
+  clock.runToFrame();
+
+  td.verify(mockAdapter.areButtonsStacked(), {times: 0});
+  td.verify(mockAdapter.isContentScrollable(), {times: 0});
+});
+
+test('#open adds CSS classes after rAF', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const clock = installClock();
 
   foundation.open();
+  td.verify(mockAdapter.addClass(cssClasses.OPEN), {times: 0});
+  td.verify(mockAdapter.addBodyClass(cssClasses.SCROLL_LOCK), {times: 0});
 
+  // Note: #open uses a combination of rAF and setTimeout due to Firefox behavior, so we need to wait 2 ticks
+  clock.runToFrame();
+  clock.runToFrame();
   td.verify(mockAdapter.addClass(cssClasses.OPEN));
   td.verify(mockAdapter.addBodyClass(cssClasses.SCROLL_LOCK));
 });
@@ -126,53 +143,61 @@ test('#close removes CSS classes', () => {
   td.verify(mockAdapter.removeBodyClass(cssClasses.SCROLL_LOCK));
 });
 
-test('#open adds the opening class to start an animation, and removes it after the animation is done', () => {
+test('#close cancels rAF scheduled by open if still pending', () => {
   const {foundation, mockAdapter} = setupTest();
-  const clock = lolex.install();
-
-  foundation.open();
-
-  try {
-    td.verify(mockAdapter.addClass(cssClasses.OPENING));
-    td.verify(mockAdapter.removeClass(cssClasses.OPENING), {times: 0});
-    clock.tick(numbers.DIALOG_ANIMATION_OPEN_TIME_MS);
-    td.verify(mockAdapter.removeClass(cssClasses.OPENING));
-  } finally {
-    clock.uninstall();
-  }
-});
-
-test('#close adds the closing class to start an animation, and removes it after the animation is done', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const clock = lolex.install();
+  const clock = installClock();
 
   foundation.open();
   td.reset();
   foundation.close();
 
-  try {
-    td.verify(mockAdapter.addClass(cssClasses.CLOSING));
-    td.verify(mockAdapter.removeClass(cssClasses.CLOSING), {times: 0});
-    clock.tick(numbers.DIALOG_ANIMATION_OPEN_TIME_MS);
-    td.verify(mockAdapter.removeClass(cssClasses.CLOSING));
-  } finally {
-    clock.uninstall();
-  }
+  // Note: #open uses a combination of rAF and setTimeout due to Firefox behavior, so we need to wait 2 ticks
+  clock.runToFrame();
+  clock.runToFrame();
+  td.verify(mockAdapter.addClass(cssClasses.OPEN), {times: 0});
+});
+
+test('#open adds the opening class to start an animation, and removes it after the animation is done', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const clock = installClock();
+
+  foundation.open();
+  clock.runToFrame();
+  clock.tick(100);
+
+  td.verify(mockAdapter.addClass(cssClasses.OPENING));
+  td.verify(mockAdapter.removeClass(cssClasses.OPENING), {times: 0});
+  clock.tick(numbers.DIALOG_ANIMATION_OPEN_TIME_MS);
+  td.verify(mockAdapter.removeClass(cssClasses.OPENING));
+});
+
+test('#close adds the closing class to start an animation, and removes it after the animation is done', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const clock = installClock();
+
+  foundation.open();
+  clock.tick(numbers.DIALOG_ANIMATION_OPEN_TIME_MS);
+  td.reset();
+  foundation.close();
+
+  td.verify(mockAdapter.addClass(cssClasses.CLOSING));
+  td.verify(mockAdapter.removeClass(cssClasses.CLOSING), {times: 0});
+  clock.tick(numbers.DIALOG_ANIMATION_OPEN_TIME_MS);
+  td.verify(mockAdapter.removeClass(cssClasses.CLOSING));
 });
 
 test('#open activates focus trapping on the dialog surface', () => {
   const {foundation, mockAdapter} = setupTest();
-  const clock = lolex.install();
+  const clock = installClock();
 
   foundation.open();
 
+  // Wait for application of opening class and setting of additional timeout prior to full open animation timeout
+  clock.runToFrame();
+  clock.tick(100);
   clock.tick(numbers.DIALOG_ANIMATION_OPEN_TIME_MS);
 
-  try {
-    td.verify(mockAdapter.trapFocus());
-  } finally {
-    clock.uninstall();
-  }
+  td.verify(mockAdapter.trapFocus());
 });
 
 test('#close deactivates focus trapping on the dialog surface', () => {
@@ -180,50 +205,53 @@ test('#close deactivates focus trapping on the dialog surface', () => {
 
   foundation.open();
   td.reset();
+
+  const clock = installClock();
   foundation.close();
+
+  // Wait till setTimeout callback is executed.
+  clock.runToFrame();
+  clock.tick(100);
+  clock.tick(numbers.DIALOG_ANIMATION_OPEN_TIME_MS);
 
   td.verify(mockAdapter.releaseFocus());
 });
 
 test('#open emits "opening" and "opened" events', () => {
   const {foundation, mockAdapter} = setupTest();
-  const clock = lolex.install();
+  const clock = installClock();
 
   foundation.open();
+  clock.runToFrame();
+  clock.tick(100);
 
-  try {
-    td.verify(mockAdapter.notifyOpening(), {times: 1});
-    clock.tick(numbers.DIALOG_ANIMATION_OPEN_TIME_MS);
-    td.verify(mockAdapter.notifyOpened(), {times: 1});
-  } finally {
-    clock.uninstall();
-  }
+  td.verify(mockAdapter.notifyOpening(), {times: 1});
+  clock.tick(numbers.DIALOG_ANIMATION_OPEN_TIME_MS);
+  td.verify(mockAdapter.notifyOpened(), {times: 1});
 });
 
 test('#close emits "closing" and "closed" events', () => {
   const {foundation, mockAdapter} = setupTest();
-  const clock = lolex.install();
+  const clock = installClock();
 
   foundation.open();
+  clock.tick(numbers.DIALOG_ANIMATION_OPEN_TIME_MS);
   td.reset();
   foundation.close();
 
-  try {
-    td.verify(mockAdapter.notifyClosing(''), {times: 1});
-    clock.tick(numbers.DIALOG_ANIMATION_CLOSE_TIME_MS);
-    td.verify(mockAdapter.notifyClosed(''), {times: 1});
+  td.verify(mockAdapter.notifyClosing(''), {times: 1});
+  clock.tick(numbers.DIALOG_ANIMATION_CLOSE_TIME_MS);
+  td.verify(mockAdapter.notifyClosed(''), {times: 1});
 
-    foundation.open();
-    td.reset();
+  foundation.open();
+  clock.tick(numbers.DIALOG_ANIMATION_OPEN_TIME_MS);
+  td.reset();
 
-    const action = 'action';
-    foundation.close(action);
-    td.verify(mockAdapter.notifyClosing(action), {times: 1});
-    clock.tick(numbers.DIALOG_ANIMATION_CLOSE_TIME_MS);
-    td.verify(mockAdapter.notifyClosed(action), {times: 1});
-  } finally {
-    clock.uninstall();
-  }
+  const action = 'action';
+  foundation.close(action);
+  td.verify(mockAdapter.notifyClosing(action), {times: 1});
+  clock.tick(numbers.DIALOG_ANIMATION_CLOSE_TIME_MS);
+  td.verify(mockAdapter.notifyClosed(action), {times: 1});
 });
 
 test('#close does nothing if the dialog is already closed', () => {
@@ -261,87 +289,74 @@ test('#isOpen returns false when the dialog is closed after being open', () => {
 
 test('#open recalculates layout', () => {
   const {foundation} = setupTest();
+  const clock = installClock();
+
   foundation.layout = td.func('layout');
 
   foundation.open();
+  clock.runToFrame();
+  clock.tick(100);
 
   td.verify(foundation.layout());
 });
 
 test(`#layout removes ${cssClasses.STACKED} class, detects stacked buttons, and adds class`, () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
   td.when(mockAdapter.areButtonsStacked()).thenReturn(true);
 
   foundation.layout();
-  mockRaf.flush();
+  clock.runToFrame();
 
-  try {
-    td.verify(mockAdapter.removeClass(cssClasses.STACKED));
-    td.verify(mockAdapter.addClass(cssClasses.STACKED));
-  } finally {
-    mockRaf.restore();
-  }
+  td.verify(mockAdapter.removeClass(cssClasses.STACKED));
+  td.verify(mockAdapter.addClass(cssClasses.STACKED));
 });
 
 test(`#layout removes ${cssClasses.STACKED} class, detects unstacked buttons, and does not add class`, () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
   td.when(mockAdapter.areButtonsStacked()).thenReturn(false);
 
   foundation.layout();
-  mockRaf.flush();
+  clock.runToFrame();
 
-  try {
-    td.verify(mockAdapter.removeClass(cssClasses.STACKED));
-    td.verify(mockAdapter.addClass(cssClasses.STACKED), {times: 0});
-  } finally {
-    mockRaf.restore();
-  }
+  td.verify(mockAdapter.removeClass(cssClasses.STACKED));
+  td.verify(mockAdapter.addClass(cssClasses.STACKED), {times: 0});
 });
 
 test(`#layout does nothing to ${cssClasses.STACKED} class if autoStackButtons is false`, () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
   td.when(mockAdapter.areButtonsStacked()).thenReturn(true);
 
   foundation.setAutoStackButtons(false);
   foundation.layout();
-  mockRaf.flush();
+  clock.runToFrame();
 
-  try {
-    td.verify(mockAdapter.addClass(cssClasses.STACKED), {times: 0});
-    td.verify(mockAdapter.removeClass(cssClasses.STACKED), {times: 0});
-  } finally {
-    mockRaf.restore();
-  }
+  td.verify(mockAdapter.addClass(cssClasses.STACKED), {times: 0});
+  td.verify(mockAdapter.removeClass(cssClasses.STACKED), {times: 0});
 });
 
 test('#layout adds scrollable class when content is scrollable', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
   td.when(mockAdapter.isContentScrollable()).thenReturn(true);
 
   foundation.layout();
-  mockRaf.flush();
+  clock.runToFrame();
 
-  try {
-    td.verify(mockAdapter.addClass(cssClasses.SCROLLABLE));
-  } finally {
-    mockRaf.restore();
-  }
+  td.verify(mockAdapter.addClass(cssClasses.SCROLLABLE));
 });
 
 test('#layout removes scrollable class when content is not scrollable', () => {
   const {foundation, mockAdapter} = setupTest();
-  const mockRaf = createMockRaf();
+  const clock = installClock();
   td.when(mockAdapter.isContentScrollable()).thenReturn(false);
 
   foundation.layout();
 
-  mockRaf.flush();
+  clock.runToFrame();
   td.verify(mockAdapter.removeClass(cssClasses.SCROLLABLE));
-  mockRaf.restore();
 });
 
 test(`interaction closes dialog when ${strings.ACTION_ATTRIBUTE} attribute is present`, () => {

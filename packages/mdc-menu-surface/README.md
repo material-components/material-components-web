@@ -148,6 +148,13 @@ Mixin | Description
 `mdc-menu-surface-fill-color($color)` | Sets the `background-color` property of the `mdc-menu-surface`.
 `mdc-menu-surface-shape-radius($radius, $rtl-reflexive)` | Sets the rounded shape to menu surface with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 
+## Constants & Types
+
+Constant Name | Description
+--- | ---
+`Corner` | Enum for representing an element corner for positioning the menu-surface. See [constants.js](./constants.js).
+`AnchorMargin` | Margin values representing the distance from anchor point that the menu surface should be shown. See [foundation.js](./foundation.js).
+
 ## `MDCMenuSurface` Properties and Methods
 
 Property | Value Type | Description
@@ -209,7 +216,7 @@ Method Signature | Description
 
 Method Signature | Description
 --- | ---
-`setAnchorCorner(corder: Corner) => void` | Sets the corner that the menu surface will be anchored to. See [constants.js](./constants.js)
+`setAnchorCorner(corner: Corner) => void` | Sets the corner that the menu surface will be anchored to. See [constants.js](./constants.js)
 `setAnchorMargin(margin: AnchorMargin) => void` | Sets the distance from the anchor point that the menu surface should be shown.
 `setIsHoisted(isHoisted: boolean) => void` | Sets whether the menu surface has been hoisted to the body so that the offsets are calculated relative to the page and not the anchor.
 `setFixedPosition(isFixed: boolean) => void` | Sets whether the menu surface is using fixed positioning.

@@ -6,10 +6,10 @@
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions://
+// furnished to do so, subject to the following conditions:
 //
 // The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.//
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -21,13 +21,13 @@
 //
 
 // Shape categories
-$mdc-shape-small-surface-radius: 4px !default;
-$mdc-shape-medium-surface-radius: 4px !default;
-$mdc-shape-large-surface-radius: 0 !default;
+$mdc-shape-small-component-radius: 4px !default;
+$mdc-shape-medium-component-radius: 4px !default;
+$mdc-shape-large-component-radius: 0 !default;
 
 // Shape category mapping.
 $mdc-shape-category-values: (
-  small: $mdc-shape-small-surface-radius,
-  medium: $mdc-shape-medium-surface-radius,
-  large: $mdc-shape-large-surface-radius,
+  small: $mdc-shape-small-component-radius,
+  medium: $mdc-shape-medium-component-radius,
+  large: $mdc-shape-large-component-radius,
 );

@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# https://stackoverflow.com/a/27052708/467582
+export TZ=America/Los_Angeles
+
 CHANGED_FILE_PATHS=$(git diff --name-only "$TRAVIS_COMMIT_RANGE")
 
 if [[ -n "$CHANGED_FILE_PATHS" ]]; then
@@ -18,7 +21,10 @@ function log_warning() {
 
 function print_travis_env_vars() {
   echo
-  env | grep TRAVIS
+  echo "Shell date: $(date)"
+  echo "Node date: $(echo 'console.log(new Date().toString())' | node)"
+  echo
+  env | grep -E -e 'TRAVIS' -e '^(LANG|TERM|TZ)=' | sort
   echo
 }
 
@@ -72,7 +78,7 @@ print_all_changed_files
 
 if [[ "$TEST_SUITE" == 'unit' ]]; then
   # Only run unit tests if JS files changed
-  check_for_testable_files '^packages/.+\.js$' '^test/unit/.+\.js$'
+  check_for_testable_files '^karma\.conf\.js$' '^packages/.+\.js$' '^test/unit/.+\.js$'
 fi
 
 if [[ "$TEST_SUITE" == 'lint' ]]; then

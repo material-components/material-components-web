@@ -28,6 +28,7 @@ import td from 'testdouble';
 import MDCDismissibleDrawerFoundation from '../../../packages/mdc-drawer/dismissible/foundation';
 import {strings, cssClasses} from '../../../packages/mdc-drawer/constants';
 import {verifyDefaultAdapter} from '../helpers/foundation';
+import {install as installClock} from '../helpers/clock';
 
 suite('MDCDismissibleDrawerFoundation');
 
@@ -50,9 +51,29 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCDismissibleDrawerFoundation, [
-    'hasClass', 'addClass', 'removeClass', 'elementHasClass', 'computeBoundingRect', 'saveFocus', 'restoreFocus',
+    'hasClass', 'addClass', 'removeClass', 'elementHasClass', 'saveFocus', 'restoreFocus',
     'focusActiveNavigationItem', 'notifyClose', 'notifyOpen', 'trapFocus', 'releaseFocus',
   ]);
+});
+
+test('#destroy cancels pending rAF for #open', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.open();
+  foundation.destroy();
+
+  td.verify(mockAdapter.addClass(cssClasses.OPENING), {times: 0});
+});
+
+test('#destroy cancels pending setTimeout for #open', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const clock = installClock();
+
+  foundation.open();
+  clock.runToFrame();
+  foundation.destroy();
+
+  td.verify(mockAdapter.addClass(cssClasses.OPENING), {times: 0});
 });
 
 test('#open does nothing if drawer is already open', () => {
@@ -78,8 +99,14 @@ test('#open does nothing if drawer is closing', () => {
 
 test('#open adds appropriate classes and saves focus', () => {
   const {foundation, mockAdapter} = setupTest();
+  const clock = installClock();
+
   foundation.open();
+  clock.runToFrame();
+  clock.tick(100);
+
   td.verify(mockAdapter.addClass(cssClasses.OPEN), {times: 1});
+  td.verify(mockAdapter.addClass(cssClasses.OPENING), {times: 1});
   td.verify(mockAdapter.saveFocus(), {times: 1});
 });
 
@@ -126,12 +153,21 @@ test(`#isOpen returns false when it lacks ${cssClasses.OPEN} class`, () => {
 
 test(`#isOpening returns true when it has ${cssClasses.OPENING} class`, () => {
   const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.ANIMATE)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.OPENING)).thenReturn(true);
+  assert.isTrue(foundation.isOpening());
+});
+
+test('#isOpening returns true when drawer just start animate', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.ANIMATE)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.OPENING)).thenReturn(false);
   assert.isTrue(foundation.isOpening());
 });
 
 test(`#isOpening returns false when it lacks ${cssClasses.OPENING} class`, () => {
   const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.ANIMATE)).thenReturn(false);
   td.when(mockAdapter.hasClass(cssClasses.OPENING)).thenReturn(false);
   assert.isFalse(foundation.isOpening());
 });
