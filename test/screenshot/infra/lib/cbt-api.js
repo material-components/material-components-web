@@ -34,6 +34,7 @@ const {CbtAccount, CbtActiveTestCounts, CbtConcurrencyStats} = cbtProto;
 const {RawCapabilities} = seleniumProto;
 
 const Cli = require('./cli');
+/** @type {!AnsiColor} */
 const CliColor = require('./logger').colors;
 const DiffBaseParser = require('./diff-base-parser');
 const Duration = require('./duration');
@@ -400,14 +401,21 @@ https://crossbrowsertesting.com/account
    */
   async killZombieSeleniumTests() {
     // NOTE: This only returns Selenium tests running on the authenticated CBT user's account.
-    // It does NOT return Selenium tests running under other users.
+    // It does NOT return Selenium tests running under other CBT user accounts.
     /** @type {!CbtSeleniumListResponse} */
     const listResponse = await this.sendRequest_(
       getStackTrace('killZombieSeleniumTests'),
       'GET', '/selenium?active=true&num=100'
     );
 
-    const activeSeleniumTestIds = listResponse.selenium.map((test) => test.selenium_session_id);
+    if (!listResponse.selenium) {
+      this.warnMalformedResponse_(listResponse, 'list');
+      return;
+    }
+
+    this.logSeleniumSessions_(listResponse.selenium, 'Active Selenium sessions');
+
+    const activeSeleniumTestIds = listResponse.selenium.map((session) => session.selenium_test_id);
 
     /** @type {!Array<!CbtSeleniumInfoResponse>} */
     const infoResponses = await Promise.all(activeSeleniumTestIds.map((seleniumTestId) => {
@@ -415,9 +423,17 @@ https://crossbrowsertesting.com/account
       return this.sendRequest_(infoStackTrace, 'GET', `/selenium/${seleniumTestId}`);
     }));
 
-    const stalledSeleniumSessionIds = [];
+    this.logSeleniumSessions_(infoResponses, 'Selenium sessions info');
 
-    for (const infoResponse of infoResponses) {
+    const stalledSeleniumTestIds = [];
+
+    for (let i = 0; i < infoResponses.length; i++) {
+      const infoResponse = infoResponses[i];
+      if (!infoResponse.commands) {
+        this.warnMalformedResponse_(infoResponse, 'info', activeSeleniumTestIds[i]);
+        continue;
+      }
+
       const lastCommand = infoResponse.commands[infoResponse.commands.length - 1];
       let timestampMs = null;
 
@@ -430,31 +446,31 @@ https://crossbrowsertesting.com/account
       }
 
       if (timestampMs > 0 && Duration.hasElapsed(SELENIUM_ZOMBIE_SESSION_DURATION_MS, timestampMs)) {
-        stalledSeleniumSessionIds.push(infoResponse.selenium_session_id);
+        stalledSeleniumTestIds.push(infoResponse.selenium_test_id);
       }
     }
 
-    await this.killSeleniumTests(stalledSeleniumSessionIds);
+    await this.killSeleniumTests(stalledSeleniumTestIds);
   }
 
   /**
-   * @param {!Array<string>} seleniumTestIds
+   * @param {!Array<number|string>} seleniumTestOrSessionIds
    * @param {boolean=} silent
    * @return {!Promise<void>}
    */
-  async killSeleniumTests(seleniumTestIds, silent = false) {
-    await Promise.all(seleniumTestIds.map(async (seleniumTestId) => {
+  async killSeleniumTests(seleniumTestOrSessionIds, silent = false) {
+    await Promise.all(seleniumTestOrSessionIds.map(async (seleniumTestOrSessionId) => {
       const log = (colorVerb) => {
         if (silent) {
           return;
         }
-        console.log(`${colorVerb} Selenium session ${CliColor.bold(seleniumTestId)}`);
+        console.log(`${colorVerb} Selenium test ID ${CliColor.bold(seleniumTestOrSessionId)}`);
       };
 
       log(CliColor.magenta('Killing'));
 
       const stackTrace = getStackTrace('killSeleniumTests');
-      const requestPromise = this.sendRequest_(stackTrace, 'DELETE', `/selenium/${seleniumTestId}`).then(
+      const requestPromise = this.sendRequest_(stackTrace, 'DELETE', `/selenium/${seleniumTestOrSessionId}`).then(
         () => {
           log(CliColor.bold.magenta('Killed'));
         },
@@ -466,6 +482,8 @@ https://crossbrowsertesting.com/account
 
       return await requestPromise;
     }));
+
+    console.log('');
   }
 
   /**
@@ -526,6 +544,44 @@ https://crossbrowsertesting.com/account
     const colorMaxRetries = CliColor.bold.magenta(CBT_HTTP_MAX_RETRIES);
     console.error(`${colorRetrying} (attempt ${colorAttemptCount} of ${colorMaxRetries})...`);
     console.error('');
+  }
+
+  /**
+   * @param {!Array<!CbtSeleniumListItem|!CbtSeleniumInfoResponse>} sessions
+   * @param {string} description
+   * @private
+   */
+  logSeleniumSessions_(sessions, description) {
+    const jsonStr = JSON.stringify(sessions.map((session) => {
+      return {
+        selenium_test_id: session.selenium_test_id,
+        selenium_session_id: session.selenium_session_id,
+        start_date: session.start_date,
+        startup_finish_date: session.startup_finish_date,
+        finish_date: session.finish_date,
+        active: session.active,
+        state: session.state,
+        show_result_web_url: session.show_result_web_url,
+        show_result_public_url: session.show_result_public_url,
+        commands: session.commands ? session.commands.length : undefined,
+      };
+    }), null, 2);
+
+    const descriptionColor = CliColor.cyan(description);
+    console.log(`${descriptionColor}:\n\n${jsonStr}\n`);
+  }
+
+  /**
+   * @param {?Object} httpResponseBody
+   * @param {string} friendlyName
+   * @param {string=} seleniumTestId
+   * @private
+   */
+  warnMalformedResponse_(httpResponseBody, friendlyName, seleniumTestId = undefined) {
+    const warning = CliColor.magenta('WARNING');
+    const whatFor = seleniumTestId ? ` for Selenium test ID ${seleniumTestId}` : '';
+    const jsonStr = JSON.stringify(httpResponseBody, null, 2);
+    console.warn(`${warning}: Malformed ${friendlyName} response from CBT${whatFor}:\n\n${jsonStr}\n`);
   }
 }
 
