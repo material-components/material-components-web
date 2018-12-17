@@ -63,13 +63,14 @@
   .mdc-list-item {
     @include mdc-rtl-reflexive-box(padding, left, 56px);
   }
-}
 
-.mdc-menu__selection-group-icon {
-  @include mdc-rtl-reflexive-position(left, 16px);
+  // Extra specificity required to override `display` property on `mdc-list-item__graphic`.
+  .mdc-menu__selection-group-icon {
+    @include mdc-rtl-reflexive-position(left, 16px);
 
-  display: none;
-  position: absolute;
+    display: none;
+    position: absolute;
+  }
 }
 
 // stylelint-disable-next-line plugin/selector-bem-pattern
