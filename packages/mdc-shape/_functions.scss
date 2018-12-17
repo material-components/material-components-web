@@ -171,6 +171,13 @@
     if(nth($masked-corners, 4) == 1, nth($radius, 4), 0);
 }
 
+//
+// Resolves a MDC Shape radius value and returns the value of the largest corner.
+//
+@function mdc-shape-max-corner-radius($radius) {
+  @return max(mdc-shape-unpack-radius(mdc-shape-prop-value($radius))...);
+}
+
 @function mdc-shape-prop-corner-value_($radius) {
   @if map-has-key($mdc-shape-category-values, $radius) {
     @return map-get($mdc-shape-category-values, $radius);
