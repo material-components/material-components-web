@@ -64,7 +64,7 @@ module.exports = {
    * Number of milliseconds a Selenium test should wait to receive commands before being considered "stalled".
    * @type {number}
    */
-  SELENIUM_ZOMBIE_SESSION_DURATION_MS: 2 * 60 * 1000, // 2 minutes
+  SELENIUM_ZOMBIE_SESSION_DURATION_MS: 20 * 60 * 1000, // 20 minutes
 
   /**
    * Number of milliseconds to wait for Selenium tests to start before killing them when an error occurs.
