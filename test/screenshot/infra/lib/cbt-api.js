@@ -563,7 +563,6 @@ https://crossbrowsertesting.com/account
         state: session.state,
         show_result_web_url: session.show_result_web_url,
         show_result_public_url: session.show_result_public_url,
-        caps: session.caps,
         commands: session.commands ? session.commands.length : undefined,
       };
     }), null, 2);
