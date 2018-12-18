@@ -67,7 +67,7 @@
     "css-loader": "^2.0.0",
     "cssom": "^0.3.2",
     "cz-conventional-changelog": "^2.0.0",
-    "dart-sass": "^1.14.3",
+    "dart-sass": "^1.15.2",
     "debounce": "^1.1.0",
     "del": "^3.0.0",
     "del-cli": "^1.0.0",
