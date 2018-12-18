@@ -56,6 +56,8 @@ Material Components for the web is the successor to [Material Design Lite](https
 
 ### Using NPM
 
+> This guide assumes you have webpack configured to compile Sass into CSS. To configure webpack, please see the full [getting started guide](docs/getting-started.md). If you don't want to walk through the entire guide, check out the [Material Starter Kit](https://glitch.com/~material-starter-kit) for the final result.
+
 Install textfield node module to your project.
 
 ```
@@ -95,7 +97,12 @@ This'll initialize text field component on a single `.mdc-text-field` element.
 
 > Please see [quick start demo](https://stackblitz.com/edit/mdc-web-quick-start-demo) on stackblitz for full example.
 
-> Please see [getting started guide](docs/getting-started.md) for pointers on how to configure webpack to bundle JavaScript & CSS.
+
+## Examples using MDC Web
+
+[Shrine](https://glitch.com/~material-example-app-shrine) - An e-commerce app using Text Field, Button, Drawer, List, Image List and Material Theming capabilities 
+
+[Adopt a Pup](https://glitch.com/~adopt-a-pup) - A pet adoption app using Top App Bar, Tabs, Layout Grid, Card, Text Field, Chips, and Material Theming capabilities
 
 ## Need help?
 

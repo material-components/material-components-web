@@ -50,6 +50,8 @@ However, for optimal results, we recommend consuming MDC Web's ES2015 modules an
 
 This section walks through how to [install MDC Web Node modules](https://www.npmjs.com/org/material), and bundle the Sass and JavaScript from those Node modules in your [webpack](https://webpack.js.org/) configuration.
 
+If you don't want to walk through this guide, check out the [Material Starter Kit](https://glitch.com/~material-starter-kit) for the final result.
+
 > Note: This guide assumes you have Node.js and npm installed locally.
 
 ### Step 1: Webpack with Sass
