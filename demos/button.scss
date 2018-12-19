@@ -63,7 +63,7 @@
 }
 
 /** Get all styles except color and typography */
-@include mdc-button(mdc-all(mdc-without(color), mdc-without(typography)));
+@include mdc-button(mdc-feature-all(mdc-feature-without(color), mdc-feature-without(typography)));
 
 /** Get color styles */
 @include mdc-button(color);

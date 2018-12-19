@@ -32,9 +32,9 @@
 @import "@material/shape/functions";
 @import "./variables";
 
-@mixin mdc-button($query: mdc-all()) {
-  $feat-color: mdc-create-feature-target($query, color);
-  $feat-structure: mdc-create-feature-target($query, structure);
+@mixin mdc-button($query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+  $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-ripple-common($query);
 
@@ -42,19 +42,19 @@
   .mdc-button {
     @include mdc-button-base_($query);
 
-    @include mdc-targets($feat-structure) {
+    @include mdc-feature-targets($feat-structure) {
       @include mdc-button-shape-radius(small);
       // I've put this under structure because it doesn't depend on the theme.
       @include mdc-button-container-fill-color(transparent);
     }
 
-    @include mdc-targets($feat-color) {
+    @include mdc-feature-targets($feat-color) {
       @include mdc-button-ink-color(primary);
     }
 
     @include mdc-states(primary, false, $query);
 
-    @include mdc-targets($feat-structure) {
+    @include mdc-feature-targets($feat-structure) {
       // The icon CSS class overrides styles defined in the .material-icons CSS
       // class, which is loaded separately so the order of CSS definitions is not
       // guaranteed. Therefore, increase specifity by nesting this class to ensure
@@ -70,7 +70,7 @@
     }
   }
 
-  @include mdc-targets($feat-structure) {
+  @include mdc-feature-targets($feat-structure) {
     .mdc-button__label + .mdc-button__icon {
       @include mdc-button__icon-trailing_;
     }
@@ -93,7 +93,7 @@
   .mdc-button--unelevated {
     @include mdc-button--filled_($query);
 
-    @include mdc-targets($feat-color) {
+    @include mdc-feature-targets($feat-color) {
       @include mdc-button-container-fill-color(primary);
       @include mdc-button-ink-color(on-primary);
     }
@@ -108,16 +108,16 @@
   .mdc-button--outlined {
     @include mdc-button--outlined_($query);
 
-    @include mdc-targets($feat-structure) {
+    @include mdc-feature-targets($feat-structure) {
       @include mdc-button-outline-width(2px);
     }
 
-    @include mdc-targets($feat-color) {
+    @include mdc-feature-targets($feat-color) {
       @include mdc-button-outline-color(primary);
     }
   }
 
-  @include mdc-targets($feat-structure) {
+  @include mdc-feature-targets($feat-structure) {
     .mdc-button--dense {
       @include mdc-button--dense_;
     }
@@ -187,18 +187,18 @@
   border-width: $outline-width;
 }
 
-@mixin mdc-button-base_($query: mdc-all()) {
-  $feat-color: mdc-create-feature-target($query, color);
-  $feat-structure: mdc-create-feature-target($query, structure);
-  $feat-typography: mdc-create-feature-target($query, typography);
+@mixin mdc-button-base_($query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+  $feat-structure: mdc-feature-create-target($query, structure);
+  $feat-typography: mdc-feature-create-target($query, typography);
 
-  @include mdc-targets($feat-typography) {
+  @include mdc-feature-targets($feat-typography) {
     @include mdc-typography(button);
   }
 
   @include mdc-ripple-surface($query);
 
-  @include mdc-targets($feat-structure) {
+  @include mdc-feature-targets($feat-structure) {
     @include mdc-ripple-radius-bounded;
     @include mdc-button-horizontal-padding($mdc-button-horizontal-padding);
 
@@ -234,13 +234,13 @@
   }
 
   &:disabled {
-    @include mdc-targets($feat-color) {
+    @include mdc-feature-targets($feat-color) {
       @include mdc-theme-prop(background-color, transparent);
 
       color: $mdc-button-disabled-ink-color;
     }
 
-    @include mdc-targets($feat-structure) {
+    @include mdc-feature-targets($feat-structure) {
       cursor: default;
       pointer-events: none;
     }
@@ -273,30 +273,30 @@
   @include mdc-rtl-reflexive-property(margin, 8px, -4px);
 }
 
-@mixin mdc-button--outlined_($query: mdc-all()) {
-  $feat-color: mdc-create-feature-target($query, color);
-  $feat-structure: mdc-create-feature-target($query, structure);
+@mixin mdc-button--outlined_($query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+  $feat-structure: mdc-feature-create-target($query, structure);
 
-  @include mdc-targets($feat-structure) {
+  @include mdc-feature-targets($feat-structure) {
     border-style: solid;
   }
 
-  @include mdc-targets($feat-color) {
+  @include mdc-feature-targets($feat-color) {
     &:disabled {
       border-color: $mdc-button-disabled-ink-color;
     }
   }
 }
 
-@mixin mdc-button--filled_($query: mdc-all()) {
-  $feat-color: mdc-create-feature-target($query, color);
-  $feat-structure: mdc-create-feature-target($query, structure);
+@mixin mdc-button--filled_($query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+  $feat-structure: mdc-feature-create-target($query, structure);
 
-  @include mdc-targets($feat-structure) {
+  @include mdc-feature-targets($feat-structure) {
     @include mdc-button-horizontal-padding($mdc-button-contained-horizontal-padding);
   }
 
-  @include mdc-targets($feat-color) {
+  @include mdc-feature-targets($feat-color) {
     &:disabled {
       background-color: rgba(mdc-theme-prop-value(on-surface), .12);
       color: $mdc-button-disabled-ink-color;
@@ -304,19 +304,19 @@
   }
 }
 
-@mixin mdc-button--raised_($query: mdc-all()) {
-  $feat-animation: mdc-create-feature-target($query, animation);
-  $feat-color: mdc-create-feature-target($query, color);
+@mixin mdc-button--raised_($query: mdc-feature-all()) {
+  $feat-animation: mdc-feature-create-target($query, animation);
+  $feat-color: mdc-feature-create-target($query, color);
 
-  @include mdc-targets($feat-color) {
+  @include mdc-feature-targets($feat-color) {
     @include mdc-elevation(2);
   }
 
-  @include mdc-targets($feat-animation) {
+  @include mdc-feature-targets($feat-animation) {
     transition: mdc-elevation-transition-value();
   }
 
-  @include mdc-targets($feat-color) {
+  @include mdc-feature-targets($feat-color) {
     &:hover,
     &:focus {
       @include mdc-elevation(4);

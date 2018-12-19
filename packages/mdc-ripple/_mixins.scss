@@ -29,20 +29,20 @@
 @import "./keyframes";
 @import "./variables";
 
-@mixin mdc-ripple-common($query: mdc-all()) {
-  $feat-animation: mdc-create-feature-target($query, animation);
-  $feat-structure: mdc-create-feature-target($query, structure);
+@mixin mdc-ripple-common($query: mdc-feature-all()) {
+  $feat-animation: mdc-feature-create-target($query, animation);
+  $feat-structure: mdc-feature-create-target($query, structure);
 
   // Ensure that styles needed by any component using MDC Ripple are emitted, but only once.
   // (Every component using MDC Ripple imports these mixins, but doesn't necessarily import
   // mdc-ripple.scss.)
-  @include mdc-targets($feat-animation) {
+  @include mdc-feature-targets($feat-animation) {
     @include mdc-base-emit-once("mdc-ripple/common/animation") {
       @include mdc-ripple-keyframes_;
     }
   }
 
-  @include mdc-targets($feat-structure) {
+  @include mdc-feature-targets($feat-structure) {
     @include mdc-base-emit-once("mdc-ripple/common/structure") {
       // Styles used to detect buggy behavior of CSS custom properties in Edge.
       // See: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11495448/
@@ -61,11 +61,11 @@
   }
 }
 
-@mixin mdc-ripple-surface($query: mdc-all()) {
-  $feat-animation: mdc-create-feature-target($query, animation);
-  $feat-structure: mdc-create-feature-target($query, structure);
+@mixin mdc-ripple-surface($query: mdc-feature-all()) {
+  $feat-animation: mdc-feature-create-target($query, animation);
+  $feat-structure: mdc-feature-create-target($query, structure);
 
-  @include mdc-targets($feat-structure) {
+  @include mdc-feature-targets($feat-structure) {
     --mdc-ripple-fg-size: 0;
     --mdc-ripple-left: 0;
     --mdc-ripple-top: 0;
@@ -87,21 +87,21 @@
   }
 
   &::before {
-    @include mdc-targets($feat-animation) {
+    @include mdc-feature-targets($feat-animation) {
       // Also transition background-color to avoid unnatural color flashes when toggling activated/selected state
       transition:
         opacity $mdc-states-wash-duration linear,
         background-color $mdc-states-wash-duration linear;
     }
 
-    @include mdc-targets($feat-structure) {
+    @include mdc-feature-targets($feat-structure) {
       z-index: 1; // Ensure that the ripple wash for hover/focus states is displayed on top of positioned child elements
     }
   }
 
   // Common styles for upgraded surfaces (some of these depend on custom properties set via JS or other mixins)
 
-  @include mdc-targets($feat-structure) {
+  @include mdc-feature-targets($feat-structure) {
     &.mdc-ripple-upgraded::before {
       transform: scale(var(--mdc-ripple-fg-scale, 1));
     }
@@ -121,7 +121,7 @@
     }
   }
 
-  @include mdc-targets($feat-animation) {
+  @include mdc-feature-targets($feat-animation) {
     &.mdc-ripple-upgraded--foreground-activation::after {
       animation:
         $mdc-ripple-translate-duration mdc-ripple-fg-radius-in forwards,
@@ -130,11 +130,11 @@
   }
 
   &.mdc-ripple-upgraded--foreground-deactivation::after {
-    @include mdc-targets($feat-animation) {
+    @include mdc-feature-targets($feat-animation) {
       animation: $mdc-ripple-fade-out-duration mdc-ripple-fg-opacity-out;
     }
 
-    @include mdc-targets($feat-structure) {
+    @include mdc-feature-targets($feat-structure) {
       // Retain transform from mdc-ripple-fg-radius-in activation
       transform: translate(var(--mdc-ripple-fg-translate-end, 0)) scale(var(--mdc-ripple-fg-scale, 1));
     }
@@ -161,9 +161,9 @@
   }
 }
 
-@mixin mdc-states-focus-opacity($opacity, $has-nested-focusable-element: false, $query: mdc-all()) {
-  $feat-animation: mdc-create-feature-target($query, animation);
-  $feat-structure: mdc-create-feature-target($query, structure);
+@mixin mdc-states-focus-opacity($opacity, $has-nested-focusable-element: false, $query: mdc-feature-all()) {
+  $feat-animation: mdc-feature-create-target($query, animation);
+  $feat-structure: mdc-feature-create-target($query, structure);
 
   // Focus overrides hover by reusing the ::before pseudo-element.
   // :focus-within generally works on non-MS browsers and matches when a *child* of the element has focus.
@@ -179,42 +179,42 @@
   #{$cssOnlyFocusSelector},
   &.mdc-ripple-upgraded--background-focused::before {
     // Note that this duration is only effective on focus, not blur
-    @include mdc-targets($feat-animation) {
+    @include mdc-feature-targets($feat-animation) {
       transition-duration: 75ms;
     }
 
-    @include mdc-targets($feat-structure) {
+    @include mdc-feature-targets($feat-structure) {
       opacity: $opacity;
     }
   }
 }
 
-@mixin mdc-states-press-opacity($opacity, $query: mdc-all()) {
-  $feat-animation: mdc-create-feature-target($query, animation);
-  $feat-structure: mdc-create-feature-target($query, structure);
+@mixin mdc-states-press-opacity($opacity, $query: mdc-feature-all()) {
+  $feat-animation: mdc-feature-create-target($query, animation);
+  $feat-structure: mdc-feature-create-target($query, structure);
 
   // Styles for non-upgraded (CSS-only) stateful surfaces
 
   &:not(.mdc-ripple-upgraded) {
     // Apply press additively by using the ::after pseudo-element
-    @include mdc-targets($feat-animation) {
+    @include mdc-feature-targets($feat-animation) {
       &::after {
         transition: opacity $mdc-ripple-fade-out-duration linear;
       }
     }
 
     &:active::after {
-      @include mdc-targets($feat-animation) {
+      @include mdc-feature-targets($feat-animation) {
         transition-duration: $mdc-ripple-fade-in-duration;
       }
 
-      @include mdc-targets($feat-structure) {
+      @include mdc-feature-targets($feat-structure) {
         opacity: $opacity;
       }
     }
   }
 
-  @include mdc-targets($feat-structure) {
+  @include mdc-feature-targets($feat-structure) {
     &.mdc-ripple-upgraded {
       --mdc-ripple-fg-opacity: #{$opacity};
     }
@@ -223,7 +223,7 @@
 
 // Simple mixin for base states which automatically selects opacity values based on whether the ink color is
 // light or dark.
-@mixin mdc-states($color: mdc-theme-prop-value(on-surface), $has-nested-focusable-element: false, $query: mdc-all()) {
+@mixin mdc-states($color: mdc-theme-prop-value(on-surface), $has-nested-focusable-element: false, $query: mdc-feature-all()) {
   @include mdc-states-interactions_($color, $has-nested-focusable-element, 0, $query);
 }
 
@@ -299,15 +299,15 @@
   }
 }
 
-@mixin mdc-states-interactions_($color, $has-nested-focusable-element, $opacity-modifier: 0, $query: mdc-all()) {
-  $feat-color: mdc-create-feature-target($query, color);
-  $feat-structure: mdc-create-feature-target($query, structure);
+@mixin mdc-states-interactions_($color, $has-nested-focusable-element, $opacity-modifier: 0, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+  $feat-structure: mdc-feature-create-target($query, structure);
 
-  @include mdc-targets($feat-color) {
+  @include mdc-feature-targets($feat-color) {
     @include mdc-states-base-color($color);
   }
 
-  @include mdc-targets($feat-structure) {
+  @include mdc-feature-targets($feat-structure) {
     @include mdc-states-hover-opacity(mdc-states-opacity($color, hover) + $opacity-modifier);
   }
 
