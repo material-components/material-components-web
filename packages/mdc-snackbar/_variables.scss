@@ -25,8 +25,8 @@
 
 $mdc-snackbar-fill-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 80%) !default;
 $mdc-snackbar-label-ink-color: rgba(mdc-theme-prop-value(surface), mdc-theme-text-emphasis(high)) !default;
-$mdc-snackbar-action-icon-ink-color: rgba(mdc-theme-prop-value(surface), mdc-theme-text-emphasis(high)) !default;
-$mdc-snackbar-action-button-ink-color: #bb86fc !default;
+$mdc-snackbar-action-ink-color: #bb86fc !default;
+$mdc-snackbar-dismiss-ink-color: rgba(mdc-theme-prop-value(surface), mdc-theme-text-emphasis(high)) !default;
 
 $mdc-snackbar-label-type-scale: body2 !default;
 $mdc-snackbar-action-icon-size: 18px !default;

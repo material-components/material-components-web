@@ -130,22 +130,22 @@
   box-sizing: border-box;
 }
 
-.mdc-snackbar__action-button {
-  @include mdc-button-ink-color($mdc-snackbar-action-button-ink-color);
-  @include mdc-states($mdc-snackbar-action-button-ink-color);
+.mdc-snackbar__action {
+  @include mdc-button-ink-color($mdc-snackbar-action-ink-color);
+  @include mdc-states($mdc-snackbar-action-ink-color);
 }
 
-.mdc-snackbar__action-icon {
-  @include mdc-icon-button-ink-color($mdc-snackbar-action-icon-ink-color);
+.mdc-snackbar__dismiss {
+  @include mdc-icon-button-ink-color($mdc-snackbar-dismiss-ink-color);
 }
 
 // Two selectors are needed to increase specificity above `.material-icons`.
 // stylelint-disable-next-line selector-class-pattern
-.mdc-snackbar__action-icon.mdc-snackbar__action-icon {
+.mdc-snackbar__dismiss.mdc-snackbar__dismiss {
   @include mdc-icon-button-size($mdc-snackbar-action-icon-size);
 }
 
-.mdc-snackbar__action-button + .mdc-snackbar__action-icon {
+.mdc-snackbar__action + .mdc-snackbar__dismiss {
   @include mdc-rtl-reflexive-property(margin, $mdc-snackbar-padding, 0);
 }
 
