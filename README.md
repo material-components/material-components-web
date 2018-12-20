@@ -56,7 +56,7 @@ Material Components for the web is the successor to [Material Design Lite](https
 
 ### Using NPM
 
-> This guide assumes you have webpack configured to compile Sass into CSS. To configure webpack, please see the full [getting started guide](docs/getting-started.md). If you don't want to walk through the entire guide, check out the [Material Starter Kit](https://glitch.com/~material-starter-kit) for the final result.
+> This guide assumes you have webpack configured to compile Sass into CSS. To configure webpack, please see the full [getting started guide](docs/getting-started.md). You can also see the final code and result in the [Material Starter Kit](https://glitch.com/~material-starter-kit).
 
 Install textfield node module to your project.
 
@@ -100,7 +100,7 @@ This'll initialize text field component on a single `.mdc-text-field` element.
 
 ## Examples using MDC Web
 
-[Shrine](https://glitch.com/~material-example-app-shrine) - An e-commerce app using Text Field, Button, Drawer, List, Image List and Material Theming capabilities 
+[Shrine](https://glitch.com/~material-example-app-shrine) - An e-commerce app using Text Field, Button, Drawer, List, Image List and Material Theming capabilities. You can build Shrine from scratch by walking through the Google Developers Codelabs [MDC-101 Web](https://codelabs.developers.google.com/codelabs/mdc-101-web), [MDC-102 Web](https://codelabs.developers.google.com/codelabs/mdc-102-web), and [MDC-103 Web](https://codelabs.developers.google.com/codelabs/mdc-103-web).
 
 [Adopt a Pup](https://glitch.com/~adopt-a-pup) - A pet adoption app using Top App Bar, Tabs, Layout Grid, Card, Text Field, Chips, and Material Theming capabilities
 
