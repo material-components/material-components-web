@@ -86,7 +86,7 @@ class MDCList extends MDCComponent {
     [].slice.call(this.root_.querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS))
       .forEach((ele) => ele.setAttribute('tabindex', -1));
 
-    this.foundation_.init();
+    this.foundation_.layout();
   }
 
   /**

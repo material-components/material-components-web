@@ -86,16 +86,13 @@ class MDCListFoundation extends MDCFoundation {
     this.useActivatedClass_ = false;
 
     /** @private {boolean} */
-    this.toggleCheckbox_ = true;
-
-    /** @private {boolean} */
     this.isCheckboxList_ = false;
 
     /** @private {boolean} */
     this.isRadioList_ = false;
   }
 
-  init() {
+  layout() {
     if (this.adapter_.getListItemCount() === 0) return;
 
     if (this.adapter_.hasCheckboxAtIndex(0)) {
@@ -420,16 +417,17 @@ class MDCListFoundation extends MDCFoundation {
    * @private
    */
   setTabindexToFirstSelectedItem_() {
+    let targetIndex = 0;
+
     if (this.isSelectableList_()) {
-      let targetIndex = 0;
       if (typeof this.selectedIndex_ === 'number' && this.selectedIndex_ !== -1) {
         targetIndex = this.selectedIndex_;
       } else if (this.selectedIndex_ instanceof Array && this.selectedIndex_.length > 0) {
         targetIndex = this.selectedIndex_.reduce((currentIndex, minIndex) => Math.min(currentIndex, minIndex));
       }
-
-      this.setTabindexAtIndex_(targetIndex);
     }
+
+    this.setTabindexAtIndex_(targetIndex);
   }
 
   /**

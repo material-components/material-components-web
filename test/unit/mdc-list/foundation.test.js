@@ -67,11 +67,11 @@ Object.defineProperty(Array.prototype, 'contains',
 
 const setupTest = () => setupFoundationTest(MDCListFoundation);
 
-test('#init should bail out early when list is empty', () => {
+test('#layout should bail out early when list is empty', () => {
   const {foundation, mockAdapter} = setupTest();
 
   td.when(mockAdapter.getListItemCount()).thenReturn(0);
-  foundation.init();
+  foundation.layout();
 
   td.verify(mockAdapter.hasCheckboxAtIndex(0), {times: 0});
 });
