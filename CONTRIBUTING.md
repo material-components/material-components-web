@@ -6,11 +6,10 @@ Here are the guidelines we'd like you to follow:
 - [General Contributing Guidelines](#general-contributing-guidelines)
 - [Development Process](#development-process)
   - [Setting up your development environment](#setting-up-your-development-environment)
-  - [Building Components](#building-components)
+  - [Building components](#building-components)
   - [Running the development server](#running-the-development-server)
   - [Building MDC Web](#building-mdc-web)
   - [Linting / Testing / Coverage Enforcement](#linting--testing--coverage-enforcement)
-    - [Running Tests across browsers](#running-tests-across-browsers)
   - [Coding Style](#coding-style)
   - [Submitting Pull Requests](#submitting-pull-requests)
 
@@ -24,19 +23,25 @@ We strive to make developing Material Components Web as frictionless as possible
 
 ### Setting up your development environment
 
-You'll need a recent version of [nodejs](https://nodejs.org/en/) to work on MDC Web. We [test our builds](https://travis-ci.com/material-components/material-components-web) using both the latest and LTS node versions, so use of one of those is recommended. You can use [nvm](https://github.com/creationix/nvm) to easily install and manage different versions of node on your system.
+You'll need a recent version of [Node.js](https://nodejs.org/) to work on MDC Web. We typically perform local development against the latest LTS (i.e. even-major-numbered) release.
 
-> **NOTE**: If you expect to commit updated or new dependencies, please ensure you are using npm 5, which will
-> also update `package-lock.json` correctly when you install or upgrade packages.
+> _NOTE_: You can use [nvm](https://github.com/creationix/nvm) to easily install and manage different versions of node on your system.
 
-Once node is installed, simply clone our repo (or your fork of it) and run `npm install`
+> _NOTE_: If you expect to commit updated or new dependencies, please ensure you are using the latest stable version of npm, which will update `package-lock.json` appropriately as well. (Run `npm i -g npm` to update.)
+
+Once Node.js is installed, simply clone our repo (or your fork of it) and install its dependencies:
 
 ```
 git clone git@github.com:material-components/material-components-web.git  # or a path to your fork
-cd material-components-web && npm i
+cd material-components-web
+npm i
 ```
 
-### Building Components
+### Building components
+
+> **NOTE**: Before building a new component, it is important to open (or comment on) an issue to confirm that the component is appropriate to be contributed to MDC Web, as the core team must then
+> share responsibility in maintaining it. Components not featured within the Material Design guidelines, or features with overly complex or specific use cases, are likely to be declined,
+> as MDC Web's goal is to provide baseline implementations of components and systems appearing in the guidelines. In these cases, you are encouraged to create your own "contrib" repository instead.
 
 Each component requires the following items in order to be complete:
 
@@ -51,31 +56,37 @@ Each component requires the following items in order to be complete:
   etc.) before they even reach the PR stage, meaning faster review and merge times :smile:.
 - A **foundation class** which is integrated into actual components
 - A **component class** using vanilla JS + SCSS
-- A **README.md** in its subdir which contains developer documentation on the component, including usage.
-- A **set of unit tests** within `test/unit/` with adequate coverage (which we enforce automatically).
-- A **demo page** within `demos/` that shows example usage of the component.
+- A **README.md** in its subfolder which contains developer documentation on the component, following the [template](docs/code/readme_template.md) and [standards](docs/code/readme_standards.md)
+- A **set of unit tests** within `test/unit/` with adequate coverage (which we enforce automatically)
+- **Screenshot test pages** within `test/screenshot/spec/` that shows example usage of the component, including its variant classes and mixins
 
 You can find much more information with respect to building components within our [authoring components guide](./docs/authoring-components.md)
 
-### Running development server
+### Running the development server
 
-#### Local development server
+#### Screenshot tests
+
+MDC Web has a full screenshot testing infrastructure. For development, you can run a development server that serves the screenshot tests and updates when JS/SCSS is changed:
+
+```
+npm start
+```
+
+The screenshot test pages are served at http://localhost:8080.
+
+See the [screenshot test documentation](test/screenshot) for more information, and look under [test/screenshot/spec](test/screenshot/spec) to see existing components' screenshot test pages for examples.
+
+All new components should include screenshot test pages.
+
+#### Local demos (legacy)
+
+Some components do not yet have screenshot tests. These components typically still have demo pages under the `demos` folder, which is served using the `dev` task:
 
 ```
 npm run dev
-open http://localhost:8080
 ```
 
-`npm run dev` runs a [webpack-dev-server](https://webpack.github.io/docs/webpack-dev-server.html) instance that uses `demos/` as its content base. This should aid you in initial development of a component. It's served on port 8080.
-
-#### App Engine development server
-
-```
-MDC_ENV=development npm run build:demos && gcloud app deploy app.yaml --project google.com:mdc-web-dev --version $USER
-gcloud app browse
-```
-
-The above script will build and deploy the app to MDC Web's dev server with your userid as its version number, you can switch to your version by prepending `$USER-dot-` to the URL opened when you run `gcloud app browse`. This would be helpful if we need to share work-in-progress work within teams and designers.
+The demos are served at http://localhost:8080.
 
 ### Building MDC Web
 
@@ -97,27 +108,16 @@ npm run fix:js # Runs eslint with the --fix option enabled
 npm run fix:css # Runs stylefmt, which helps fix simple stylelint errors
 npm run fix # Runs both of the above commands in parallel
 
-npm run test:watch # Runs karma on Chrome, re-running when source files change
-
 npm test # Lints all files, runs karma, runs closure tests, and then runs coverage enforcement checks.
 npm run test:unit # Only runs the karma tests
+npm run test:watch # Runs the karma tests on Chrome, re-running when source files change
 npm run test:closure # Runs closure build tests against all closurized files
 ```
 
-#### Running Tests across browsers
+When running `npm run test:watch`, you can use the "DEBUG" button in the browser that is opened to open a separate debugging window which will show all test results in the browser.
 
-If you're making big changes or developing new components, we encourage you to be a good citizen and test your changes across browsers! A super simple way to do this is to use [sauce labs](https://saucelabs.com/), which is how we test our collaborator PRs on TravisCI:
-
-1. [Sign up](https://saucelabs.com/beta/signup) for a sauce labs account (choose "Open Sauce" as your selected plan; [it's free](https://saucelabs.com/opensauce/)!)
-2. [Download sauce connect](https://wiki.saucelabs.com/display/DOCS/Sauce+Connect+Proxy) for your OS and make sure that the `bin` folder in the downloaded zip is somewhere on your `$PATH`.
-3. Navigate to your dashboard, scroll down to where it says "Access Key", and click "Show"
-4. Enter your password when prompted
-5. Copy your access key
-6. Run `SAUCE_USERNAME=<your-saucelabs-username> SAUCE_ACCESS_KEY=<your-saucelabs-access-key> npm test`
-
-This will have karma run our unit tests across all browsers we support, and ensure your changes will not introduce regressions.
-
-Alternatively, you can run `npm run test:watch` and manually open browsers / use VMs / use emulators to test your changes.
+You can add `?grep=...` to the debug URL in order to only run tests whose suite/test name include a given string. Additionally, you can click the arrow to the right of any test result to only run that test.
+This can be very helpful for debugging failing unit tests.
 
 ### Coding Style
 
@@ -132,11 +132,7 @@ When submitting PRs for large changes, be sure to include an adequate background
 so that reviewers of the PR know what the changes entail at a high-level, the motivations for making
 these changes, and what they affect.
 
-If you've done some experimental work on your branch/fork and committed these via `git commit --no-verify`, you can rebase them into one correctly-formatted commit before submitting.
-
-Finally, it helps to make sure that your branch/fork is up to date with what's currently on master. You can ensure this by running `git pull --rebase origin master` on your branch.
-
-> **NOTE**: Please do _not merge_ master into your branch. _Always_ `pull --rebase` instead. This ensures a linear history by always putting the work you've done after the work that's already on master, regardless of the date in which those commits were made.
+Finally, it helps to make sure that your branch/fork is up to date with what's currently on master. You can ensure this by running `git pull --rebase origin master` on your branch before opening a PR.
 
 [js-style-guide]: https://google.github.io/styleguide/jsguide.html
 [css-style-guide]: https://github.com/material-components/material-components-web/blob/master/.stylelintrc.yaml
