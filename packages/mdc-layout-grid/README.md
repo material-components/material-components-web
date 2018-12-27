@@ -145,21 +145,21 @@ Mixin | Description
 
 Generates CSS for a grid container on certain device type. The mixin takes three parameters:
 
-- `$size`: the target platform: `desktop`, `tablet` or `phone`.
+- `$type-of-device`: the target platform: `desktop`, `tablet` or `phone`.
 - `$margin`: the size of the grid margin.
 - `$max-width` (optional): the maximum width of the grid, at which point space stops being distributed by the columns.
 
 #### `mdc-layout-grid-inner($type-of-device, $margin, $max-width)`
 
 Generates CSS for a grid cell wrapper on certain device type. The mixin takes three parameters:
-- `$size`: the target platform: `desktop`, `tablet` or `phone`.
+- `$type-of-device`: the target platform: `desktop`, `tablet` or `phone`.
 - `$margin`: the size of the grid margin.
 - `$gutter`: the size of the gutter between cells.
 
 #### `mdc-layout-grid-cell($type-of-device, $default-span, $gutter)`
 
 Generates CSS for a grid cell on certain device type. The mixin takes three parameters:
-- `$size`: the target platform: `desktop`, `tablet` or `phone`.
+- `$type-of-device`: the target platform: `desktop`, `tablet` or `phone`.
 - `$default-span` (optional, default 4): how many columns this cell should span (1 to 12).
 - `$gutter`: the size of the gutter between cells. Be sure to use the same value as for the parent grid.
 
@@ -168,7 +168,7 @@ Generates CSS for a grid cell on certain device type. The mixin takes three para
 #### `mdc-layout-grid-fixed-column-width($type-of-device, $margin, $gutter, $column-width)`
 
 Generates CSS for a fixed column width container on certain device type. The mixin takes four parameters:
-- `$size`: the target platform: `desktop`, `tablet` or `phone`.
+- `$type-of-device`: the target platform: `desktop`, `tablet` or `phone`.
 - `$margin`: the size of the grid margin.
 - `$gutter`: the size of the gutter between cells.
 - `$column-width`: the width of the column within the grid.
