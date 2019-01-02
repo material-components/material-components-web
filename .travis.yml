@@ -34,7 +34,7 @@ matrix:
     env:
       - TEST_SUITE=lint
     script:
-      - if has_testable_files; then npm run lint; else log_untestable_files; fi
+      - if has_testable_files; then npm run lint && npm run test:feature-targeting; else log_untestable_files; fi
 
   - node_js: 8
     env:
