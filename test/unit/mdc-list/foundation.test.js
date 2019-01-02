@@ -145,7 +145,7 @@ test('#handleFocusOut sets tabindex=0 to selected item when focus leaves single 
   td.when(mockAdapter.hasCheckboxAtIndex(0)).thenReturn(false);
   td.when(mockAdapter.hasRadioAtIndex(0)).thenReturn(false);
   foundation.setSingleSelection(true);
-  foundation.init();
+  foundation.layout();
 
   td.when(mockAdapter.isFocusInsideList()).thenReturn(false);
 
@@ -179,7 +179,7 @@ test('#handleFocusOut does not set tabindex=0 to selected list item when focus m
 
   td.when(mockAdapter.getListItemCount()).thenReturn(4);
   foundation.setSingleSelection(true);
-  foundation.init();
+  foundation.layout();
 
   td.when(mockAdapter.isFocusInsideList()).thenReturn(true);
 
@@ -197,7 +197,7 @@ test('#handleFocusOut sets tabindex=0 to first selected index when focus leaves 
 
   td.when(mockAdapter.getListItemCount()).thenReturn(4);
   td.when(mockAdapter.hasCheckboxAtIndex(0)).thenReturn(true);
-  foundation.init();
+  foundation.layout();
 
   td.when(mockAdapter.isFocusInsideList()).thenReturn(false);
 
@@ -483,7 +483,7 @@ test('#handleKeydown space/enter key cause event.preventDefault when singleSelec
   td.when(mockAdapter.hasRadioAtIndex(0)).thenReturn(true);
   td.when(mockAdapter.hasCheckboxAtIndex(0)).thenReturn(false);
   foundation.setSingleSelection(false);
-  foundation.init();
+  foundation.layout();
   foundation.handleKeydown(event, true, 0);
   event.key = 'Enter';
   foundation.handleKeydown(event, true, 0);
@@ -659,7 +659,7 @@ test('#focusNextElement retains the focus on last item when wrapFocus=false and 
   foundation.setWrapFocus(false);
 
   assert.equal(3, foundation.focusNextElement(3));
-  td.verify(mockAdapter.focusItemAtIndex(3), {times: 0});
+  td.verify(mockAdapter.focusItemAtIndex(td.matchers.isA(Number)), {times: 0});
 });
 
 test('#focusPrevElement focuses previous list item and returns that index', () => {
@@ -689,7 +689,7 @@ test('#focusPrevElement retains the focus on first list item when wrapFocus=fals
   foundation.setWrapFocus(false);
 
   assert.equal(0, foundation.focusPrevElement(0));
-  td.verify(mockAdapter.focusItemAtIndex(3), {times: 0});
+  td.verify(mockAdapter.focusItemAtIndex(td.matchers.isA(Number)), {times: 0});
 });
 
 test('#handleClick when singleSelection=false on a list item should not cause the list item to be selected', () => {
@@ -750,7 +750,7 @@ test('#handleClick when toggleCheckbox=false does not change the checkbox state'
 
   td.when(mockAdapter.hasCheckboxAtIndex(0)).thenReturn(true);
   td.when(mockAdapter.getListItemCount()).thenReturn(4);
-  foundation.init();
+  foundation.layout();
   foundation.handleClick(2, false);
 
   td.when(mockAdapter.isCheckboxCheckedAtIndex(2)).thenReturn(false);
@@ -762,7 +762,7 @@ test('#handleClick proxies to the adapter#setCheckedCheckboxOrRadioAtIndex if to
 
   td.when(mockAdapter.hasRadioAtIndex(0)).thenReturn(true);
   td.when(mockAdapter.getListItemCount()).thenReturn(4);
-  foundation.init();
+  foundation.layout();
   foundation.handleClick(0, true);
 
   td.verify(mockAdapter.setCheckedCheckboxOrRadioAtIndex(0, true), {times: 1});
@@ -773,7 +773,7 @@ test('#handleClick checks the checkbox at index if it is present on list item', 
 
   td.when(mockAdapter.getListItemCount()).thenReturn(4);
   td.when(mockAdapter.hasCheckboxAtIndex(0)).thenReturn(true);
-  foundation.init();
+  foundation.layout();
 
   // Check
   td.when(mockAdapter.isCheckboxCheckedAtIndex(2)).thenReturn(false);
@@ -827,7 +827,7 @@ test('#setSelectedIndex should set aria checked true on new selected index and s
 
   td.when(mockAdapter.getListItemCount()).thenReturn(4);
   td.when(mockAdapter.hasCheckboxAtIndex(0)).thenReturn(true);
-  foundation.init();
+  foundation.layout();
 
   td.when(mockAdapter.isCheckboxCheckedAtIndex(2)).thenReturn(true);
   foundation.setSelectedIndex([2]);
@@ -844,7 +844,7 @@ test('#setSelectedIndex should set aria attributes on new index and should also 
 
   td.when(mockAdapter.getListItemCount()).thenReturn(5);
   td.when(mockAdapter.hasRadioAtIndex(0)).thenReturn(true);
-  foundation.init();
+  foundation.layout();
 
   foundation.setSelectedIndex(3);
   td.verify(mockAdapter.setAttributeForElementIndex(3, strings.ARIA_CHECKED, 'true'), {times: 1});
@@ -871,7 +871,7 @@ test('#setSelectedIndex throws error when array of index is set on radio based l
 
   td.when(mockAdapter.getListItemCount()).thenReturn(4);
   td.when(mockAdapter.hasRadioAtIndex(0)).thenReturn(true);
-  foundation.init();
+  foundation.layout();
 
   assert.throws(() => foundation.setSelectedIndex([0, 1, 2]), Error);
 });
@@ -881,7 +881,7 @@ test('#setSelectedIndex throws error when single index number is set on multi-se
 
   td.when(mockAdapter.getListItemCount()).thenReturn(4);
   td.when(mockAdapter.hasCheckboxAtIndex(0)).thenReturn(true);
-  foundation.init();
+  foundation.layout();
 
   assert.throws(() => foundation.setSelectedIndex(2), Error);
 });
@@ -891,7 +891,7 @@ test('#setSelectedIndex deselects all checkboxes when selected index is set to [
 
   td.when(mockAdapter.getListItemCount()).thenReturn(4);
   td.when(mockAdapter.hasCheckboxAtIndex(0)).thenReturn(true);
-  foundation.init();
+  foundation.layout();
 
   foundation.setSelectedIndex([]);
   td.verify(mockAdapter.setCheckedCheckboxOrRadioAtIndex(td.matchers.anything(), false), {times: 4});
@@ -910,7 +910,7 @@ test('#getSelectedIndex should be in-sync with setter method for multi-select ch
 
   td.when(mockAdapter.getListItemCount()).thenReturn(4);
   td.when(mockAdapter.hasCheckboxAtIndex(0)).thenReturn(true);
-  foundation.init();
+  foundation.layout();
 
   foundation.setSelectedIndex([0, 2, 3]);
   assert.deepEqual([0, 2, 3], foundation.getSelectedIndex());
