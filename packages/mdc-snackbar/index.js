@@ -28,7 +28,7 @@ import * as util from './util';
 import * as ponyfill from '@material/dom/ponyfill';
 
 const {
-  SURFACE_SELECTOR, LABEL_SELECTOR, ACTION_BUTTON_SELECTOR, ACTION_ICON_SELECTOR,
+  SURFACE_SELECTOR, LABEL_SELECTOR, ACTION_SELECTOR, DISMISS_SELECTOR,
   OPENING_EVENT, OPENED_EVENT, CLOSING_EVENT, CLOSED_EVENT,
 } = strings;
 
@@ -47,7 +47,7 @@ class MDCSnackbar extends MDCComponent {
     this.labelEl_;
 
     /** @type {!HTMLElement} */
-    this.actionButtonEl_;
+    this.actionEl_;
 
     /** @type {function(!HTMLElement, !HTMLElement=): void} */
     this.announce_;
@@ -69,7 +69,7 @@ class MDCSnackbar extends MDCComponent {
   initialSyncWithDOM() {
     this.surfaceEl_ = /** @type {!HTMLElement} */ (this.root_.querySelector(SURFACE_SELECTOR));
     this.labelEl_ = /** @type {!HTMLElement} */ (this.root_.querySelector(LABEL_SELECTOR));
-    this.actionButtonEl_ = /** @type {!HTMLElement} */ (this.root_.querySelector(ACTION_BUTTON_SELECTOR));
+    this.actionEl_ = /** @type {!HTMLElement} */ (this.root_.querySelector(ACTION_SELECTOR));
 
     this.handleKeyDown_ = (evt) => this.foundation_.handleKeyDown(evt);
     this.handleSurfaceClick_ = (evt) => {
@@ -172,14 +172,14 @@ class MDCSnackbar extends MDCComponent {
    * @return {string}
    */
   get actionButtonText() {
-    return this.actionButtonEl_.textContent;
+    return this.actionEl_.textContent;
   }
 
   /**
    * @param {string} actionButtonText
    */
   set actionButtonText(actionButtonText) {
-    this.actionButtonEl_.textContent = actionButtonText;
+    this.actionEl_.textContent = actionButtonText;
   }
 
   /**
@@ -220,7 +220,7 @@ class MDCSnackbar extends MDCComponent {
    * @private
    */
   isActionButton_(target) {
-    return Boolean(ponyfill.closest(target, ACTION_BUTTON_SELECTOR));
+    return Boolean(ponyfill.closest(target, ACTION_SELECTOR));
   }
 
   /**
@@ -229,7 +229,7 @@ class MDCSnackbar extends MDCComponent {
    * @private
    */
   isActionIcon_(target) {
-    return Boolean(ponyfill.closest(target, ACTION_ICON_SELECTOR));
+    return Boolean(ponyfill.closest(target, DISMISS_SELECTOR));
   }
 }
 
