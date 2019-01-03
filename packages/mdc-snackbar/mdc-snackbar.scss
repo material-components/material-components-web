@@ -142,7 +142,7 @@
 // Two selectors are needed to increase specificity above `.material-icons`.
 // stylelint-disable-next-line selector-class-pattern
 .mdc-snackbar__dismiss.mdc-snackbar__dismiss {
-  @include mdc-icon-button-size($mdc-snackbar-action-icon-size);
+  @include mdc-icon-button-size($mdc-snackbar-dismiss-icon-size);
 }
 
 .mdc-snackbar__action + .mdc-snackbar__dismiss {
