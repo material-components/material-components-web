@@ -48,8 +48,7 @@ npm install @material/snackbar
       Can't send photo. Retry in 5 seconds.
     </div>
     <div class="mdc-snackbar__actions">
-      <button type="button" class="mdc-button mdc-snackbar__action-button">Retry</button>
-      <button class="mdc-icon-button mdc-snackbar__action-icon material-icons" title="Dismiss">close</button>
+      <button type="button" class="mdc-button mdc-snackbar__action">Retry</button>
     </div>
   </div>
 </div>
@@ -135,8 +134,8 @@ CSS Class | Description
 `mdc-snackbar` | Mandatory. Container for the snackbar elements.
 `mdc-snackbar__label` | Mandatory. Message text.
 `mdc-snackbar__actions` | Optional. Wraps the action button/icon elements, if present.
-`mdc-snackbar__action-button` | Optional. The action button.
-`mdc-snackbar__action-icon` | Optional. The dismiss ("X") icon.
+`mdc-snackbar__action` | Optional. The action button.
+`mdc-snackbar__dismiss` | Optional. The dismiss ("X") icon.
 `mdc-snackbar--opening` | Optional. Applied automatically when the snackbar is in the process of animating open.
 `mdc-snackbar--open` | Optional. Indicates that the snackbar is open and visible.
 `mdc-snackbar--closing` | Optional. Applied automatically when the snackbar is in the process of animating closed.
@@ -158,7 +157,7 @@ Mixin | Description
 `mdc-snackbar-position-leading()` | Positions the snackbar on the leading edge of the screen (left in LTR, right in RTL) instead of centered.
 `mdc-snackbar-layout-stacked()` | Positions the action button/icon below the label instead of alongside it.
 
-> **NOTE**: The `mdc-snackbar__action-button` and `mdc-snackbar__action-icon` elements can be customized with [`mdc-button`](../mdc-button) and [`mdc-icon-button`](../mdc-icon-button) mixins.
+> **NOTE**: The `mdc-snackbar__action` and `mdc-snackbar__dismiss` elements can be further customized with [`mdc-button`](../mdc-button) and [`mdc-icon-button`](../mdc-icon-button) mixins.
 
 ## JavaScript API
 
@@ -228,8 +227,8 @@ When wrapping the Snackbar foundation, the following events must be bound to the
 Event | Target | Foundation Handler | Register | Deregister
 --- | --- | --- | --- | ---
 `keydown` | `.mdc-snackbar` | `handleKeyDown` | During initialization | During destruction
-`click` | `.mdc-snackbar__action-button` | `handleActionButtonClick` | During initialization | During destruction
-`click` | `.mdc-snackbar__action-icon` | `handleActionIconClick` | During initialization | During destruction
+`click` | `.mdc-snackbar__action` | `handleActionButtonClick` | During initialization | During destruction
+`click` | `.mdc-snackbar__dismiss` | `handleActionIconClick` | During initialization | During destruction
 
 #### The Util API
 
@@ -267,16 +266,16 @@ macOS VoiceOver is _not_ supported at this time.
 
 ### Dismiss Icon
 
-A dedicated dismiss icon is optional, but **strongly** recommended. If the snackbar gets permanently "stuck" on the screen for any reason (e.g., #1398), the user needs to be able to manually dismiss it.
+Snackbars are intended to dismiss on their own after a few seconds, but a dedicated dismiss icon may be optionally included as well for accessibility purposes.
 
 ### Dismiss Key
 
-Pressing the <kbd>ESC</kbd> key while one of the snackbar's subelements has focus (e.g., the action button) will dismiss the snackbar.
+Pressing the <kbd>ESC</kbd> key while one of the snackbar's child elements has focus (e.g., the action button) will dismiss the snackbar.
 
 To disable this behavior, set `closeOnEscape` to `false`.
 
 ### No JS Ripples
 
-The `mdc-snackbar__action-button` and `mdc-snackbar__action-icon` elements should _**not**_ have JavaScript-enabled [`MDCRipple`](../mdc-ripple) behavior.
+The `mdc-snackbar__action` and `mdc-snackbar__dismiss` elements should _**not**_ have JavaScript-enabled [`MDCRipple`](../mdc-ripple) behavior.
 
 When combined with the snackbar's exit animation, ripples cause too much motion, which can be distracting or disorienting for users.
