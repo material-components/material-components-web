@@ -197,10 +197,10 @@ creating the list.
 
 ```html
 <ul id="my-list" class="mdc-list" role="listbox">
-  <li class="mdc-list-item" role="option" aria-selected="false" tabindex="0">
+  <li class="mdc-list-item" role="option" aria-selected="false">
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
-  <li class="mdc-list-item mdc-list-item--selected" role="option" aria-selected="true">
+  <li class="mdc-list-item mdc-list-item--selected" role="option" aria-selected="true" tabindex="0">
     <span class="mdc-list-item__text">Single-line item</span>
   </li>
   <li class="mdc-list-item" role="option" aria-selected="false">
@@ -221,7 +221,7 @@ When rendering list radio group with pre-selected radio button the selected list
 
 ```html
 <ul class="mdc-list" role="radiogroup">
-  <li class="mdc-list-item" role="radio" aria-checked="false" tabindex="0">
+  <li class="mdc-list-item" role="radio" aria-checked="false">
     <span class="mdc-list-item__graphic">
       <div class="mdc-radio">
         <input class="mdc-radio__native-control"
@@ -237,7 +237,7 @@ When rendering list radio group with pre-selected radio button the selected list
     </span>
     <label class="mdc-list-item__text" for="demo-list-radio-item-1">Option 1</label>
   </li>
-  <li class="mdc-list-item" role="radio" aria-checked="true">
+  <li class="mdc-list-item" role="radio" aria-checked="true" tabindex="0">
     <span class="mdc-list-item__graphic">
       <div class="mdc-radio">
         <input class="mdc-radio__native-control"
@@ -279,7 +279,7 @@ When rendering list with checkbox items all pre-selected list items should conta
 
 ```html
 <ul class="mdc-list" role="group" aria-label="List with checkbox items">
-  <li class="mdc-list-item" role="checkbox" aria-checked="false" tabindex="0">
+  <li class="mdc-list-item" role="checkbox" aria-checked="false">
     <span class="mdc-list-item__graphic">
       <div class="mdc-checkbox">
         <input type="checkbox"
@@ -298,7 +298,7 @@ When rendering list with checkbox items all pre-selected list items should conta
     </span>
     <label class="mdc-list-item__text" for="demo-list-checkbox-item-1">Option 1</label>
   </li>
-  <li class="mdc-list-item" role="checkbox" aria-checked="true">
+  <li class="mdc-list-item" role="checkbox" aria-checked="true" tabindex="0">
     <span class="mdc-list-item__graphic">
         <div class="mdc-checkbox">
             <input type="checkbox"
