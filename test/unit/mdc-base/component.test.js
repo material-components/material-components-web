@@ -25,7 +25,7 @@ import {assert} from 'chai';
 import domEvents from 'dom-events';
 import td from 'testdouble';
 
-import {MDCComponent} from '../../../packages/mdc-base/index';
+import MDCComponent from '../../../packages/mdc-base/component';
 
 class FakeComponent extends MDCComponent {
   get root() {
