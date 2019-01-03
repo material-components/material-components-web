@@ -55,8 +55,12 @@ npm install @material/dialog
         Dialog body text goes here.
       </div>
       <footer class="mdc-dialog__actions">
-        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">No</button>
-        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">Yes</button>
+        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+          <span class="mdc-button__label">No</span>
+        </button>
+        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
+          <span class="mdc-button__label">Yes</span>
+        </button>
       </footer>
     </div>
   </div>
@@ -177,8 +181,12 @@ radio buttons (indicating single selection) or checkboxes (indicating multiple s
         </ul>
       </div>
       <footer class="mdc-dialog__actions">
-        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">Cancel</button>
-        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept">OK</button>
+        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
+          <span class="mdc-button__label">Cancel</span>
+        </button>
+        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept">
+          <span class="mdc-button__label">OK</span>
+        </button>
       </footer>
     </div>
   </div>
@@ -245,8 +253,12 @@ For example:
 ```html
 ...
 <footer class="mdc-dialog__actions">
-  <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">Cancel</button>
-  <button type="button" class="mdc-button mdc-dialog__button mdc-dialog__button--default" data-mdc-dialog-action="accept">OK</button>
+  <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
+    <span class="mdc-button__label">Cancel</span>
+  </button>
+  <button type="button" class="mdc-button mdc-dialog__button mdc-dialog__button--default" data-mdc-dialog-action="accept">
+    <span class="mdc-button__label">OK</span>
+  </button>
 </footer>
 ...
 ```
@@ -384,7 +396,7 @@ Method Signature | Description
 `setScrimClickAction(action: string)` | Sets the action reflected when the scrim is clicked. Setting to `''` disables closing the dialog via scrim click.
 `getAutoStackButtons() => boolean` | Returns whether stacked/unstacked action button layout is automatically handled during layout logic.
 `setAutoStackButtons(autoStack: boolean) => void` | Sets whether stacked/unstacked action button layout is automatically handled during layout logic.
-`handleClick(event: Event)` | Handles `click` events on or within the dialog's root element
+`handleInteraction(event: Event)` | Handles `click` and `keydown` events on or within the dialog's root element
 `handleDocumentKeydown(event: Event)` | Handles `keydown` events on or within the document while the dialog is open
 
 #### Event Handlers
@@ -393,7 +405,7 @@ When wrapping the Dialog foundation, the following events must be bound to the i
 
 Event | Target | Foundation Handler | Register | Deregister
 --- | --- | --- | --- | ---
-`click` | `.mdc-dialog` (root) | `handleClick` | During initialization | During destruction
+`click` | `.mdc-dialog` (root) | `handleInteraction` | During initialization | During destruction
 `keydown` | `document` | `handleDocumentKeydown` | On `MDCDialog:opening` | On `MDCDialog:closing`
 `resize` | `window` | `layout` | On `MDCDialog:opening` | On `MDCDialog:closing`
 `orientationchange` | `window` | `layout` | On `MDCDialog:opening` | On `MDCDialog:closing`

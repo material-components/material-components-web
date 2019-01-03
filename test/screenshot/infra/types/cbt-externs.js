@@ -115,6 +115,7 @@
  *   selenium_test_id: string,
  *   selenium_session_id: string,
  *   start_date: string,
+ *   startup_finish_date: string,
  *   finish_date: ?string,
  *   test_score: string,
  *   active: boolean,
@@ -127,6 +128,7 @@
  *   resolution: !CbtSeleniumResolution,
  *   os: !CbtSeleniumOs,
  *   browser: !CbtSeleniumBrowser,
+ *   caps: !Object<string, string>,
  * }} CbtSeleniumListItem
  */
 
@@ -135,11 +137,11 @@
  *   selenium_test_id: string,
  *   selenium_session_id: string,
  *   start_date: string,
+ *   startup_finish_date: string,
  *   finish_date: ?string,
  *   test_score: string,
  *   active: boolean,
  *   state: string,
- *   startup_finish_date: string,
  *   url: string,
  *   client_platform: string,
  *   client_browser: string,
@@ -165,5 +167,6 @@
  *   snapshots: !Array<?>,
  *   networks: !Array<!CbtSeleniumNetwork>,
  *   commands: !Array<!CbtSeleniumNetwork>,
+ *   caps: !Object<string, string>,
  * }} CbtSeleniumInfoResponse
  */

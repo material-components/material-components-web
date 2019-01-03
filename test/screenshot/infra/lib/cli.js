@@ -272,10 +272,9 @@ If a local dev server is not already running, one will be started for the durati
       type: 'integer',
       description: `
 Maximum number of browser VMs to run in parallel (subject to our CBT plan limit and VM availability).
-If no value is specified, the default is to start 2 browsers if nobody else is running tests, or 1 browser if other
-tests are already running.
-IMPORTANT: To ensure that multiple developers can run their tests simultaneously, DO NOT set this value during normal
-business hours.
+If no value is specified, the default behavior is to start half the number of available browsers.
+IMPORTANT: To ensure that other developers can run their tests too, DO NOT override this value during
+normal business hours.
 `,
     });
 
