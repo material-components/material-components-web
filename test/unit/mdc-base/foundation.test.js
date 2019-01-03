@@ -22,7 +22,7 @@
  */
 
 import {assert} from 'chai';
-import {MDCFoundation} from '../../../packages/mdc-base/index';
+import MDCFoundation from '../../../packages/mdc-base/foundation';
 
 class FakeFoundation extends MDCFoundation {
   get adapter() {

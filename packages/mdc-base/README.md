@@ -62,7 +62,7 @@ MDCFoundation provides the basic mechanisms for implementing foundation classes.
 - Provide `init()` and `destroy()` lifecycle methods
 
 ```javascript
-import {MDCFoundation} from '@material/base';
+import MDCFoundation from '@material/base/foundation';
 
 export default class MyFoundation extends MDCFoundation {
   static get cssClasses() {
