@@ -42,7 +42,7 @@
 }
 
 @mixin mdc-notched-outline-shape-radius($radius, $rtl-reflexive: false) {
-  $radius: mdc-shape-prop-value($radius);
+  $radius: mdc-shape-prop-value_($radius);
 
   .mdc-notched-outline__leading {
     @include mdc-shape-radius(mdc-shape-mask-radius($radius, 1 0 0 1), $rtl-reflexive: true);
