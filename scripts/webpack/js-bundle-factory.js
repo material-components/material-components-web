@@ -51,6 +51,7 @@ class JsBundleFactory {
     {
       bundleName,
       chunks,
+      extensions = ['.ts', '.js', '.json'],
       chunkGlobConfig: {
         inputDirectory = null,
         filePathPattern = '**/*.js',
@@ -75,9 +76,15 @@ class JsBundleFactory {
         libraryTarget: 'umd',
         library,
       },
+      resolve: {
+        extensions,
+      },
       devtool: 'source-map',
       module: {
         rules: [{
+          test: /\.ts$/,
+          loader: 'ts-loader',
+        }, {
           test: /\.js$/,
           exclude: /node_modules/,
           loader: 'babel-loader',
