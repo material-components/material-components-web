@@ -46,7 +46,7 @@ test('exports strings', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCNotchedOutlineFoundation, [
-    'addClass', 'removeClass', 'setNotchWidthProperty',
+    'addClass', 'removeClass', 'setNotchWidthProperty', 'removeNotchWidthProperty',
   ]);
 });
 
@@ -60,9 +60,9 @@ test('#notch adds the notched class and sets the width of the element', () => {
   td.verify(mockAdapter.addClass(MDCNotchedOutlineFoundation.cssClasses.OUTLINE_NOTCHED));
 });
 
-test('#closeNotch removes the notch selector and resets the width to 0', () => {
+test('#closeNotch removes the notch selector and removes the width property', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.closeNotch();
   td.verify(mockAdapter.removeClass(MDCNotchedOutlineFoundation.cssClasses.OUTLINE_NOTCHED));
-  td.verify(mockAdapter.setNotchWidthProperty(0));
+  td.verify(mockAdapter.removeNotchWidthProperty());
 });
