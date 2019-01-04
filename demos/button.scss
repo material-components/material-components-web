@@ -25,7 +25,6 @@
 @import "../packages/mdc-button/mixins";
 @import "../packages/mdc-button/variables";
 @import "../packages/mdc-checkbox/mdc-checkbox";
-@import "../packages/mdc-feature-targeting/functions";
 @import "../packages/mdc-form-field/mdc-form-field";
 @import "../packages/mdc-ripple/mixins";
 
@@ -61,12 +60,3 @@
 .demo-icon-color {
   @include mdc-button-icon-color(orange);
 }
-
-/** Get all styles except color and typography */
-@include mdc-button(mdc-feature-all(mdc-feature-without(color), mdc-feature-without(typography)));
-
-/** Get color styles */
-@include mdc-button(color);
-
-/** Get typography styles */
-@include mdc-button(typography);
