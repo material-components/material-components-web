@@ -40,8 +40,8 @@ function getFixture() {
                role="status"
                aria-live="polite">Can't send photo. Retry in 5 seconds.</div>
           <div class="mdc-snackbar__actions">
-            <button type="button" class="mdc-button mdc-snackbar__action-button">Retry</button>
-            <button class="mdc-icon-button mdc-snackbar__action-icon material-icons" title="Dismiss">close</button>
+            <button type="button" class="mdc-button mdc-snackbar__action">Retry</button>
+            <button class="mdc-icon-button mdc-snackbar__dismiss material-icons" title="Dismiss">close</button>
           </div>
         </div>
       </div>
@@ -61,11 +61,11 @@ function getFixture() {
  */
 function setupTest(fixture = getFixture()) {
   const root = fixture.querySelector('.mdc-snackbar');
-  const surface = fixture.querySelector('.mdc-snackbar__surface');
-  const label = fixture.querySelector('.mdc-snackbar__label');
+  const surface = fixture.querySelector(strings.SURFACE_SELECTOR);
+  const label = fixture.querySelector(strings.LABEL_SELECTOR);
   const actions = fixture.querySelector('.mdc-snackbar__actions');
-  const actionButton = fixture.querySelector('.mdc-snackbar__action-button');
-  const actionIcon = fixture.querySelector('.mdc-snackbar__action-icon');
+  const actionButton = fixture.querySelector(strings.ACTION_SELECTOR);
+  const actionIcon = fixture.querySelector(strings.DISMISS_SELECTOR);
   const announce = td.func('announce');
   const component = new MDCSnackbar(root, undefined, () => announce);
   return {component, announce, root, surface, label, actions, actionButton, actionIcon};
@@ -81,11 +81,11 @@ function setupTest(fixture = getFixture()) {
  */
 function setupTestWithMocks(fixture = getFixture()) {
   const root = fixture.querySelector('.mdc-snackbar');
-  const surface = fixture.querySelector('.mdc-snackbar__surface');
-  const label = fixture.querySelector('.mdc-snackbar__label');
+  const surface = fixture.querySelector(strings.SURFACE_SELECTOR);
+  const label = fixture.querySelector(strings.LABEL_SELECTOR);
   const actions = fixture.querySelector('.mdc-snackbar__actions');
-  const actionButton = fixture.querySelector('.mdc-snackbar__action-button');
-  const actionIcon = fixture.querySelector('.mdc-snackbar__action-icon');
+  const actionButton = fixture.querySelector(strings.ACTION_SELECTOR);
+  const actionIcon = fixture.querySelector(strings.DISMISS_SELECTOR);
 
   const MockFoundationCtor = td.constructor(MDCSnackbarFoundation);
 

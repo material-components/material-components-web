@@ -30,8 +30,8 @@ const cssClasses = {
 const strings = {
   SURFACE_SELECTOR: '.mdc-snackbar__surface',
   LABEL_SELECTOR: '.mdc-snackbar__label',
-  ACTION_BUTTON_SELECTOR: '.mdc-snackbar__action-button',
-  ACTION_ICON_SELECTOR: '.mdc-snackbar__action-icon',
+  ACTION_SELECTOR: '.mdc-snackbar__action',
+  DISMISS_SELECTOR: '.mdc-snackbar__dismiss',
 
   OPENING_EVENT: 'MDCSnackbar:opening',
   OPENED_EVENT: 'MDCSnackbar:opened',
