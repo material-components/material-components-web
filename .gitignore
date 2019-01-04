@@ -8,3 +8,4 @@ out
 .idea
 *.sw*
 .closure-tmp
+.vscode

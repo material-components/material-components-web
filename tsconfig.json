@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["es5"],
+    "lib": ["es5", "dom"],
     "noEmitOnError": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
