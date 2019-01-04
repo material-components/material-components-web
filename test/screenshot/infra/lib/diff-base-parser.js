@@ -101,7 +101,7 @@ class DiffBaseParser {
     const parsedDiffBase = await this.parseDiffBase_(rawDiffBase);
     const parsedBranch = parsedDiffBase.git_revision ? parsedDiffBase.git_revision.branch : null;
 
-    if (isOnline && isRealBranch(parsedBranch)) {
+    if (isOnline && isRealBranch(parsedBranch) && process.env.TRAVIS) {
       const prNumber = await this.gitHubApi_.getPullRequestNumber(parsedBranch);
       if (prNumber) {
         parsedDiffBase.git_revision.pr_number = prNumber;

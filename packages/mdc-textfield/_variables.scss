@@ -19,46 +19,46 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-$mdc-text-field-error: error;
-$mdc-text-field-fullwidth-bottom-line-color: rgba(mdc-theme-prop-value(on-surface), .12);
-$mdc-text-field-disabled-border: rgba(mdc-theme-prop-value(on-surface), .06);
-$mdc-text-field-disabled-icon: rgba(mdc-theme-prop-value(on-surface), .3);
-$mdc-text-field-bottom-line-hover: rgba(mdc-theme-prop-value(on-surface), .87);
-$mdc-text-field-bottom-line-idle: rgba(mdc-theme-prop-value(on-surface), .42);
-$mdc-text-field-label: rgba(mdc-theme-prop-value(on-surface), .6);
+$mdc-text-field-error: error !default;
+$mdc-text-field-fullwidth-bottom-line-color: rgba(mdc-theme-prop-value(on-surface), .12) !default;
+$mdc-text-field-disabled-border: rgba(mdc-theme-prop-value(on-surface), .06) !default;
+$mdc-text-field-disabled-icon: rgba(mdc-theme-prop-value(on-surface), .3) !default;
+$mdc-text-field-bottom-line-hover: rgba(mdc-theme-prop-value(on-surface), .87) !default;
+$mdc-text-field-bottom-line-idle: rgba(mdc-theme-prop-value(on-surface), .42) !default;
+$mdc-text-field-label: rgba(mdc-theme-prop-value(on-surface), .6) !default;
 
-$mdc-text-field-ink-color: rgba(mdc-theme-prop-value(on-surface), .87);
-$mdc-text-field-helper-text-color: rgba(mdc-theme-prop-value(on-surface), .6);
-$mdc-text-field-icon-color: rgba(mdc-theme-prop-value(on-surface), .54);
-$mdc-text-field-focused-label-color: rgba(mdc-theme-prop-value(primary), .87);
+$mdc-text-field-ink-color: rgba(mdc-theme-prop-value(on-surface), .87) !default;
+$mdc-text-field-helper-text-color: rgba(mdc-theme-prop-value(on-surface), .6) !default;
+$mdc-text-field-icon-color: rgba(mdc-theme-prop-value(on-surface), .54) !default;
+$mdc-text-field-focused-label-color: rgba(mdc-theme-prop-value(primary), .87) !default;
 
-$mdc-text-field-disabled-label-color: rgba(mdc-theme-prop-value(on-surface), .37);
-$mdc-text-field-disabled-ink-color: rgba(mdc-theme-prop-value(on-surface), .37);
-$mdc-text-field-disabled-helper-text-color: rgba(mdc-theme-prop-value(on-surface), .37);
+$mdc-text-field-disabled-label-color: rgba(mdc-theme-prop-value(on-surface), .37) !default;
+$mdc-text-field-disabled-ink-color: rgba(mdc-theme-prop-value(on-surface), .37) !default;
+$mdc-text-field-disabled-helper-text-color: rgba(mdc-theme-prop-value(on-surface), .37) !default;
 
-$mdc-text-field-background: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 4%);
-$mdc-text-field-disabled-background: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 2%);
-$mdc-text-field-secondary-text: rgba(mdc-theme-prop-value(on-surface), .6);
+$mdc-text-field-background: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 4%) !default;
+$mdc-text-field-disabled-background: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 2%) !default;
+$mdc-text-field-secondary-text: rgba(mdc-theme-prop-value(on-surface), .6) !default;
 
-$mdc-text-field-outlined-idle-border: rgba(mdc-theme-prop-value(on-surface), .24);
-$mdc-text-field-outlined-disabled-border: rgba(mdc-theme-prop-value(on-surface), .06);
-$mdc-text-field-outlined-hover-border: rgba(mdc-theme-prop-value(on-surface), .87);
+$mdc-text-field-outlined-idle-border: rgba(mdc-theme-prop-value(on-surface), .24) !default;
+$mdc-text-field-outlined-disabled-border: rgba(mdc-theme-prop-value(on-surface), .06) !default;
+$mdc-text-field-outlined-hover-border: rgba(mdc-theme-prop-value(on-surface), .87) !default;
 
-$mdc-textarea-border: rgba(mdc-theme-prop-value(on-surface), .73);
-$mdc-textarea-background: rgba(mdc-theme-prop-value(surface), 1);
-$mdc-textarea-disabled-border-color: rgba(mdc-theme-prop-value(on-surface), .26);
+$mdc-textarea-border: rgba(mdc-theme-prop-value(on-surface), .73) !default;
+$mdc-textarea-background: rgba(mdc-theme-prop-value(surface), 1) !default;
+$mdc-textarea-disabled-border-color: rgba(mdc-theme-prop-value(on-surface), .26) !default;
 // cannot be transparent because multiline textarea input
 // will make text unreadable
-$mdc-textarea-disabled-background: rgba(249, 249, 249, 1);
+$mdc-textarea-disabled-background: rgba(249, 249, 249, 1) !default;
 
-$mdc-text-field-height: 56px;
-$mdc-text-field-label-position-y: 50%;
-$mdc-text-field-label-offset: 16px;
-$mdc-text-field-dense-label-position-y: 70%;
-$mdc-text-field-dense-label-scale: .8;
-$mdc-text-field-outlined-label-position-y: 130%;
-$mdc-text-field-outlined-dense-label-position-y: 120%;
-$mdc-text-field-outlined-with-leading-icon-label-position-x: 0;
-$mdc-text-field-outlined-dense-with-leading-icon-label-position-x: 21px;
-$mdc-text-field-textarea-label-position-y: 130%;
+$mdc-text-field-height: 56px !default;
+$mdc-text-field-label-position-y: 50% !default;
+$mdc-text-field-label-offset: 16px !default;
+$mdc-text-field-dense-label-position-y: 70% !default;
+$mdc-text-field-dense-label-scale: .8 !default;
+$mdc-text-field-outlined-label-position-y: 130% !default;
+$mdc-text-field-outlined-dense-label-position-y: 120% !default;
+$mdc-text-field-outlined-with-leading-icon-label-position-x: 0 !default;
+$mdc-text-field-outlined-dense-with-leading-icon-label-position-x: 21px !default;
+$mdc-text-field-textarea-label-position-y: 130% !default;
 // Note that the scale factor is an eyeballed approximation of what's shown in the mocks.

@@ -1195,30 +1195,30 @@
     }
   },
   "spec/mdc-snackbar/classes/baseline-without-action.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/12/05/21_03_57_990/spec/mdc-snackbar/classes/baseline-without-action.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2018/12/20/16_29_02_542/spec/mdc-snackbar/classes/baseline-without-action.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/11/13/01_26_33_478/spec/mdc-snackbar/classes/baseline-without-action.html.windows_chrome_69.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/11/13/02_34_48_408/spec/mdc-snackbar/classes/baseline-without-action.html.windows_edge_17.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/12/05/21_03_57_990/spec/mdc-snackbar/classes/baseline-without-action.html.windows_firefox_63.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/11/13/01_26_33_478/spec/mdc-snackbar/classes/baseline-without-action.html.windows_ie_11.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2018/12/20/16_29_02_542/spec/mdc-snackbar/classes/baseline-without-action.html.windows_chrome_71.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2018/12/20/16_29_02_542/spec/mdc-snackbar/classes/baseline-without-action.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2018/12/20/16_29_02_542/spec/mdc-snackbar/classes/baseline-without-action.html.windows_firefox_63.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2018/12/20/16_29_02_542/spec/mdc-snackbar/classes/baseline-without-action.html.windows_ie_11.png"
     }
   },
   "spec/mdc-snackbar/classes/leading.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/12/05/21_03_57_990/spec/mdc-snackbar/classes/leading.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2018/12/20/16_29_02_542/spec/mdc-snackbar/classes/leading.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/11/13/01_26_33_478/spec/mdc-snackbar/classes/leading.html.windows_chrome_69.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/11/13/02_34_48_408/spec/mdc-snackbar/classes/leading.html.windows_edge_17.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/12/05/21_03_57_990/spec/mdc-snackbar/classes/leading.html.windows_firefox_63.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/11/13/01_26_33_478/spec/mdc-snackbar/classes/leading.html.windows_ie_11.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2018/12/20/16_29_02_542/spec/mdc-snackbar/classes/leading.html.windows_chrome_71.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2018/12/20/16_29_02_542/spec/mdc-snackbar/classes/leading.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2018/12/20/16_29_02_542/spec/mdc-snackbar/classes/leading.html.windows_firefox_63.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2018/12/20/16_29_02_542/spec/mdc-snackbar/classes/leading.html.windows_ie_11.png"
     }
   },
   "spec/mdc-snackbar/classes/stacked.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/12/05/21_03_57_990/spec/mdc-snackbar/classes/stacked.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2018/12/20/16_29_02_542/spec/mdc-snackbar/classes/stacked.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/11/13/01_26_33_478/spec/mdc-snackbar/classes/stacked.html.windows_chrome_69.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/11/13/02_34_48_408/spec/mdc-snackbar/classes/stacked.html.windows_edge_17.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/12/05/21_03_57_990/spec/mdc-snackbar/classes/stacked.html.windows_firefox_63.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/11/13/01_26_33_478/spec/mdc-snackbar/classes/stacked.html.windows_ie_11.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2018/12/20/16_29_02_542/spec/mdc-snackbar/classes/stacked.html.windows_chrome_71.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2018/12/20/16_29_02_542/spec/mdc-snackbar/classes/stacked.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2018/12/20/16_29_02_542/spec/mdc-snackbar/classes/stacked.html.windows_firefox_63.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/kfranqueiro/2018/12/20/16_29_02_542/spec/mdc-snackbar/classes/stacked.html.windows_ie_11.png"
     }
   },
   "spec/mdc-snackbar/mixins/elevation.html": {
