@@ -104,6 +104,7 @@ Method Signature | Description
 `addClass(className: string) => void` | Adds a class to the notched outline element.
 `removeClass(className: string) => void` | Removes a class from the notched outline element.
 `setNotchWidthProperty(width: number) => void` | Sets the width of the notch in pixels.
+`removeNotchWidthProperty() => void` | Removes the width property from the notch element.
 
 ### `MDCNotchedOutlineFoundation`
 

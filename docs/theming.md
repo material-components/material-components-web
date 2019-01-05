@@ -249,6 +249,10 @@ provide, as part of the Sass definitions in `mdc-theme`. Pretty simple!
 the [color section](https://material.io/go/design-theming) in the Material Design spec to inform your pick of an
 alternative palette.
 
+If you want to go a step further with your theming then you can override any SASS variable throughout the codebase by
+redefining it in your application's SASS file. Exercise caution when doing this, however, as modifying internal variables
+may have unintended consequences.
+
 
 ### Step 4: Changing the theme with CSS Custom Properties
 

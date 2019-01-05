@@ -20,25 +20,25 @@
 // THE SOFTWARE.
 //
 
-$mdc-toolbar-row-height: 64px;
-$mdc-toolbar-mobile-row-height: 56px;
-$mdc-toolbar-mobile-landscape-row-height: 48px;
+$mdc-toolbar-row-height: 64px !default;
+$mdc-toolbar-mobile-row-height: 56px !default;
+$mdc-toolbar-mobile-landscape-row-height: 48px !default;
 
-$mdc-toolbar-element-section-padding: 8px;
-$mdc-toolbar-element-mobile-section-padding: 4px;
+$mdc-toolbar-element-section-padding: 8px !default;
+$mdc-toolbar-element-mobile-section-padding: 4px !default;
 
-$mdc-toolbar-element-horizontal-padding-desktop: 24px;
-$mdc-toolbar-element-horizontal-padding-mobile: 16px;
-$mdc-toolbar-title-margin-to-menu-icon-desktop: 8px;
-$mdc-toolbar-title-margin-to-menu-icon-mobile: 16px;
+$mdc-toolbar-element-horizontal-padding-desktop: 24px !default;
+$mdc-toolbar-element-horizontal-padding-mobile: 16px !default;
+$mdc-toolbar-title-margin-to-menu-icon-desktop: 8px !default;
+$mdc-toolbar-title-margin-to-menu-icon-mobile: 16px !default;
 
 $mdc-toolbar-ratio-to-extend-flexible: 4 !default;
 
-$mdc-toolbar-mobile-landscape-width-breakpoint: 959px;
-$mdc-toolbar-mobile-breakpoint: 599px;
+$mdc-toolbar-mobile-landscape-width-breakpoint: 959px !default;
+$mdc-toolbar-mobile-breakpoint: 599px !default;
 
-$mdc-toolbar-icon-padding: 12px;
-$mdc-toolbar-section-horizontal-padding: 12px;
-$mdc-toolbar-mobile-section-horizontal-padding: 4px;
+$mdc-toolbar-icon-padding: 12px !default;
+$mdc-toolbar-section-horizontal-padding: 12px !default;
+$mdc-toolbar-mobile-section-horizontal-padding: 4px !default;
 
-$mdc-toolbar-icon-size: 24px;
+$mdc-toolbar-icon-size: 24px !default;
