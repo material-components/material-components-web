@@ -26,6 +26,7 @@ import {assert} from 'chai';
 import td from 'testdouble';
 import bel from 'bel';
 import {MDCList, MDCListFoundation} from '../../../packages/mdc-list/index';
+import {cssClasses} from '../../../packages/mdc-list/constants';
 
 function getFixture() {
   return bel`
@@ -104,6 +105,32 @@ test('#initializeListType calls the foundation if the --activated class is prese
   component.initializeListType();
   td.verify(mockFoundation.setUseActivatedClass(true), {times: 1});
   td.verify(mockFoundation.setSingleSelection(true), {times: 1});
+});
+
+test('#initializeListType populates selectedIndex based on preselected checkbox items', () => {
+  const {root, component, mockFoundation} = setupTest();
+  const listElements = root.querySelectorAll(`.${cssClasses.LIST_ITEM_CLASS}`);
+  [].map.call(listElements, (itemEl) => itemEl.setAttribute('role', 'checkbox'));
+
+  listElements[2].setAttribute('aria-checked', 'true');
+  component.initializeListType();
+  td.verify(mockFoundation.setSelectedIndex([2]), {times: 1});
+});
+
+test('#initializeListType populates selectedIndex based on preselected radio item', () => {
+  const {root, component, mockFoundation} = setupTest();
+  const listElements = root.querySelectorAll(`.${cssClasses.LIST_ITEM_CLASS}`);
+  listElements[3].setAttribute('role', 'radio');
+  listElements[3].setAttribute('aria-checked', 'true');
+
+  component.initializeListType();
+  td.verify(mockFoundation.setSelectedIndex(3), {times: 1});
+});
+
+test('#initializeListType does not populate selectedIndex when no item is selected', () => {
+  const {component, mockFoundation} = setupTest();
+  component.initializeListType();
+  td.verify(mockFoundation.setSelectedIndex(td.matchers.anything()), {times: 0});
 });
 
 test('adapter#getListItemCount returns correct number of list items', () => {
@@ -289,6 +316,13 @@ test('selectedIndex calls setSelectedIndex on foundation', () => {
   const {component, mockFoundation} = setupTest();
   component.selectedIndex = 1;
   td.verify(mockFoundation.setSelectedIndex(1), {times: 1});
+});
+
+test('#selectedIndex getter proxies foundations getSelectedIndex method', () => {
+  const {component, mockFoundation} = setupTest();
+
+  td.when(mockFoundation.getSelectedIndex()).thenReturn(3);
+  assert.equal(3, component.selectedIndex);
 });
 
 test('handleClick handler is added to root element', () => {
