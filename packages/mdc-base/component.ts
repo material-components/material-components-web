@@ -21,9 +21,9 @@
  * THE SOFTWARE.
  */
 
-import {MDCFoundation} from "./foundation";
+import MDCFoundation from "./foundation";
 
-export class MDCComponent<FoundationType extends MDCFoundation> {
+class MDCComponent<FoundationType extends MDCFoundation> {
 
   static attachTo(root: Element): MDCComponent<MDCFoundation<{}>> {
     // Subclasses which extend MDCBase should provide an attachTo() method that takes a root element and
@@ -36,7 +36,12 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
   protected root_: Element;
   protected foundation_: FoundationType;
 
-  constructor(root: Element, foundation?: FoundationType, ...args: any[]) {
+  constructor(
+    root: Element,
+    foundation?: FoundationType,
+    // tslint:disable-next-line:no-any a component can pass in anything it needs to the constructor
+    ...args: any[]
+  ) {
     this.root_ = root;
     this.initialize(...args);
     // Note that we initialize foundation here and not within the constructor's default param so that
@@ -46,7 +51,8 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
     this.initialSyncWithDOM();
   }
 
-  initialize(...args: any[]) {
+  // tslint:disable-next-line:no-any a component can pass in anything it needs to the constructor
+  initialize(..._args: any[]) {
     // Subclasses can override this to do any additional setup work that would be considered part of a
     // "constructor". Essentially, it is a hook into the parent constructor before the foundation is
     // initialized. Any additional arguments besides root and foundation will be passed in here.
@@ -96,8 +102,8 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
     let evt;
     if (typeof CustomEvent === "function") {
       evt = new CustomEvent(evtType, {
-        detail: evtData,
         bubbles: shouldBubble,
+        detail: evtData,
       });
     } else {
       evt = document.createEvent("CustomEvent");
@@ -107,3 +113,5 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
     this.root_.dispatchEvent(evt);
   }
 }
+
+export default MDCComponent;

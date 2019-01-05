@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-export class MDCFoundation<AdapterType = {}> {
+class MDCFoundation<AdapterType = {}> {
   static get cssClasses(): {} {
     // Classes extending MDCFoundation should implement this method to return an object which exports every
     // CSS class the foundation class needs as a property. e.g. {ACTIVE: 'mdc-component--active'}
@@ -61,3 +61,5 @@ export class MDCFoundation<AdapterType = {}> {
     // Subclasses should override this method to perform de-initialization routines (de-registering events, etc.)
   }
 }
+
+export default MDCFoundation;
