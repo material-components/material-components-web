@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-class MDCFoundation<AdapterType = {}> {
+class MDCFoundation<AdapterType extends {} = {}> {
   static get cssClasses(): {} {
     // Classes extending MDCFoundation should implement this method to return an object which exports every
     // CSS class the foundation class needs as a property. e.g. {ACTIVE: 'mdc-component--active'}
@@ -49,7 +49,7 @@ class MDCFoundation<AdapterType = {}> {
 
   protected adapter_: AdapterType;
 
-  constructor(adapter: AdapterType) {
+  constructor(adapter: AdapterType = {} as AdapterType) {
     this.adapter_ = adapter;
   }
 

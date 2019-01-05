@@ -5,5 +5,11 @@
   ],
   "rules": {
     "no-default-export": false
+  },
+  "linterOptions": {
+    "exclude": [
+      "node_modules/**/*.{j,t}s",
+      "**/node_modules/**/*.{j,t}s"
+    ]
   }
 }
