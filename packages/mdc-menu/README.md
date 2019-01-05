@@ -84,13 +84,13 @@ Menus can contain a group of list items that can represent the selection state o
     <li>
       <ul class="mdc-menu__selection-group">
         <li class="mdc-list-item" role="menuitem">
-          <span class="mdc-menu__selection-group-icon">
+          <span class="mdc-list-item__graphic mdc-menu__selection-group-icon">
             ...
           </span>
           <span class="mdc-list-item__text">Single</span>
         </li>
         <li class="mdc-list-item" role="menuitem">
-          <span class="mdc-menu__selection-group-icon">
+          <span class="mdc-list-item__graphic mdc-menu__selection-group-icon">
            ...
           </span>
           <span class="mdc-list-item__text">1.15</span>
@@ -105,6 +105,11 @@ Menus can contain a group of list items that can represent the selection state o
   </ul>
 </div>
 ```
+
+### Disabled Menu Items
+
+Menu items can be disabled by adding the `mdc-list-item--disabled` modifier class (from [MDC List](../mdc-list)).
+Disabled menu items will be excluded from keyboard navigation.
 
 ### Anchors and Positioning
 
@@ -182,6 +187,8 @@ CSS Class | Description
 Mixin | Description
 --- | ---
 `mdc-menu-width($width)` | Used to set the `width` of the menu. When used without units (e.g. `4` or `5`) it computes the `width` by multiplying by the base width (`56px`). When used with units (e.g. `240px`, `15%`, or `calc(200px + 10px)` it sets the `width` to the exact value provided.
+
+> See [Menu Surface](../mdc-menu-surface/README.md#sass-mixins) and [List](../mdc-list/README.md#sass-mixins) documentation for additional style customization options.
 
 ## `MDCMenu` Properties and Methods
 

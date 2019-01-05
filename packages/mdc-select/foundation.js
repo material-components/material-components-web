@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {MDCFoundation} from '@material/base/index';
+import MDCFoundation from '@material/base/foundation';
 /* eslint-disable no-unused-vars */
 import {MDCSelectAdapter, FoundationMapType} from './adapter';
 import {MDCSelectIconFoundation} from './icon/index';
@@ -63,11 +63,10 @@ class MDCSelectFoundation extends MDCFoundation {
       deactivateBottomLine: () => {},
       setValue: () => {},
       getValue: () => {},
-      isRtl: () => false,
       floatLabel: (/* value: boolean */) => {},
       getLabelWidth: () => {},
       hasOutline: () => false,
-      notchOutline: (/* labelWidth: number, isRtl: boolean */) => {},
+      notchOutline: (/* labelWidth: number, */) => {},
       closeOutline: () => {},
       openMenu: () => {},
       closeMenu: () => {},
@@ -227,8 +226,7 @@ class MDCSelectFoundation extends MDCFoundation {
     if (openNotch) {
       const labelScale = numbers.LABEL_SCALE;
       const labelWidth = this.adapter_.getLabelWidth() * labelScale;
-      const isRtl = this.adapter_.isRtl();
-      this.adapter_.notchOutline(labelWidth, isRtl);
+      this.adapter_.notchOutline(labelWidth);
     } else if (!isFocused) {
       this.adapter_.closeOutline();
     }

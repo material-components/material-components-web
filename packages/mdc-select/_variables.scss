@@ -23,42 +23,43 @@
 @import "@material/animation/variables";
 @import "@material/theme/variables";
 
-$mdc-select-arrow-padding: 26px;
-$mdc-select-label-padding: 16px;
-$mdc-select-height: 56px;
+$mdc-select-arrow-padding: 52px !default;
+$mdc-select-label-padding: 16px !default;
+$mdc-select-height: 56px !default;
+$mdc-select-icon-padding: 48px !default;
 
-$mdc-select-ink-color: rgba(mdc-theme-prop-value(on-surface), .87);
-$mdc-select-dropdown-color: mdc-theme-prop-value(on-surface);
-$mdc-select-icon-color: rgba(mdc-theme-prop-value(on-surface), .54);
-$mdc-select-label-color: rgba(mdc-theme-prop-value(on-surface), .6);
-$mdc-select-focused-label-color: rgba(mdc-theme-prop-value(primary), .87);
-$mdc-select-bottom-line-idle-color: rgba(mdc-theme-prop-value(on-surface), .42);
-$mdc-select-bottom-line-hover-color: rgba(mdc-theme-prop-value(on-surface), .87);
-$mdc-select-helper-text-color: rgba(mdc-theme-prop-value(on-surface), .6);
+$mdc-select-ink-color: rgba(mdc-theme-prop-value(on-surface), .87) !default;
+$mdc-select-dropdown-color: mdc-theme-prop-value(on-surface) !default;
+$mdc-select-icon-color: rgba(mdc-theme-prop-value(on-surface), .54) !default;
+$mdc-select-label-color: rgba(mdc-theme-prop-value(on-surface), .6) !default;
+$mdc-select-focused-label-color: rgba(mdc-theme-prop-value(primary), .87) !default;
+$mdc-select-bottom-line-idle-color: rgba(mdc-theme-prop-value(on-surface), .42) !default;
+$mdc-select-bottom-line-hover-color: rgba(mdc-theme-prop-value(on-surface), .87) !default;
+$mdc-select-helper-text-color: rgba(mdc-theme-prop-value(on-surface), .6) !default;
 
-$mdc-select-fill-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 4%);
+$mdc-select-fill-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 4%) !default;
 
-$mdc-select-outlined-idle-border: rgba(mdc-theme-prop-value(on-surface), .24);
-$mdc-select-dropdown-opacity: .54;
+$mdc-select-outlined-idle-border: rgba(mdc-theme-prop-value(on-surface), .24) !default;
+$mdc-select-dropdown-opacity: .54 !default;
 
 // Disabled Styles
-$mdc-select-disabled-label-color: rgba(mdc-theme-prop-value(on-surface), .37);
-$mdc-select-disabled-icon-color: rgba(mdc-theme-prop-value(on-surface), .37);
-$mdc-select-disabled-ink-color: rgba(mdc-theme-prop-value(on-surface), .37);
-$mdc-select-disabled-fill-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 2%);
-$mdc-select-disabled-dropdown-opacity: .37;
+$mdc-select-disabled-label-color: rgba(mdc-theme-prop-value(on-surface), .37) !default;
+$mdc-select-disabled-icon-color: rgba(mdc-theme-prop-value(on-surface), .37) !default;
+$mdc-select-disabled-ink-color: rgba(mdc-theme-prop-value(on-surface), .37) !default;
+$mdc-select-disabled-fill-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 2%) !default;
+$mdc-select-disabled-dropdown-opacity: .37 !default;
 
 // should be .06 after mdc-select opacity is applied
-$mdc-select-outlined-disabled-border: rgba(mdc-theme-prop-value(on-surface), .16);
-$mdc-select-outlined-hover-border: rgba(mdc-theme-prop-value(on-surface), .87);
+$mdc-select-outlined-disabled-border: rgba(mdc-theme-prop-value(on-surface), .16) !default;
+$mdc-select-outlined-hover-border: rgba(mdc-theme-prop-value(on-surface), .87) !default;
 
-$mdc-select-label-position-y: 40%;
-$mdc-select-outline-label-offset: 16px;
-$mdc-select-outlined-label-position-y: 130%;
-$mdc-select-outlined-dense-label-position-y: 110%;
-$mdc-select-outlined-with-leading-icon-label-position-x: 32px;
+$mdc-select-label-position-y: 70% !default;
+$mdc-select-outline-label-offset: 16px !default;
+$mdc-select-outlined-label-position-y: 130% !default;
+$mdc-select-outlined-dense-label-position-y: 110% !default;
+$mdc-select-outlined-with-leading-icon-label-position-x: 32px !default;
 
-$mdc-select-dropdown-transition-duration: 150ms;
+$mdc-select-dropdown-transition-duration: 150ms !default;
 
 // Error colors
-$mdc-select-error-color: error;
+$mdc-select-error-color: error !default;

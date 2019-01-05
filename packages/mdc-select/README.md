@@ -186,13 +186,13 @@ same.
 ```html
 <div class="mdc-select mdc-select--outlined">
   <!-- Other elements from the native or enhanced select remain. -->
-  <label class="mdc-floating-label">Pick a Food Group</label>
    <div class="mdc-notched-outline">
-     <svg>
-       <path class="mdc-notched-outline__path"></path>
-     </svg>
+     <div class="mdc-notched-outline__leading"></div>
+     <div class="mdc-notched-outline__notch">
+       <label class="mdc-floating-label">Pick a Food Group</label>
+     </div>
+     <div class="mdc-notched-outline__trailing"></div>
    </div>
-   <div class="mdc-notched-outline__idle"></div>
 </div>
 ```
 
@@ -436,11 +436,10 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `activateBottomLine() => void` | Activates the bottom line component. |
 | `deactivateBottomLine() => void` | Deactivates the bottom line component. |
 | `getValue() => string` | Returns the value selected `option` on the `select` element and the `data-value` of the selected list item on the enhanced select. |
-| `isRtl() => boolean` | Returns true if a parent of the root element is in RTL. |
 | `floatLabel(value: boolean) => void` | Floats or defloats label. |
 | `getLabelWidth() => number` | Returns the offsetWidth of the label element. |
 | `hasOutline() => boolean` | Returns true if the `select` has the notched outline element. |
-| `notchOutline(labelWidth: number, isRtl, boolean) => void` | Switches the notched outline element to its "notched state." |
+| `notchOutline(labelWidth: number) => void` | Switches the notched outline element to its "notched state." |
 | `closeOutline() => void` | Switches the notched outline element to its closed state. |
 | `openMenu() => void` | Causes the menu element in the enhanced select to open. |
 | `closeMenu() => void` | Causes the menu element in the enhanced select to close. |

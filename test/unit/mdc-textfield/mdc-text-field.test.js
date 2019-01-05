@@ -403,19 +403,6 @@ test('#adapter.getNativeInput returns the component input element', () => {
   );
 });
 
-test('#adapter.isRtl returns true when the root element is in an RTL context' +
-    'and false otherwise', () => {
-  const wrapper = bel`<div dir="rtl"></div>`;
-  const {root, component} = setupTest();
-  assert.isFalse(component.getDefaultFoundation().adapter_.isRtl());
-
-  wrapper.appendChild(root);
-  document.body.appendChild(wrapper);
-  assert.isTrue(component.getDefaultFoundation().adapter_.isRtl());
-
-  document.body.removeChild(wrapper);
-});
-
 test('#adapter.activateLineRipple calls the activate method on the line ripple', () => {
   const {component, lineRipple} = setupTest();
   component.getDefaultFoundation().adapter_.activateLineRipple();

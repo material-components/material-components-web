@@ -138,7 +138,7 @@ class GitHubApi {
 
     try {
       stackTrace = getStackTrace('getPullRequestNumber');
-      allPrsResponse = await this.octokit_.pullRequests.getAll({
+      allPrsResponse = await this.octokit_.pulls.list({
         owner: 'material-components',
         repo: 'material-components-web',
         per_page: 100,
@@ -163,7 +163,7 @@ class GitHubApi {
 
     try {
       stackTrace = getStackTrace('getPullRequestBaseBranch');
-      prResponse = await this.octokit_.pullRequests.get({
+      prResponse = await this.octokit_.pulls.get({
         owner: 'material-components',
         repo: 'material-components-web',
         number: prNumber,

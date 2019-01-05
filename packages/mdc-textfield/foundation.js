@@ -86,7 +86,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
       deregisterValidationAttributeChangeHandler: () => {},
       getNativeInput: () => {},
       isFocused: () => {},
-      isRtl: () => {},
       activateLineRipple: () => {},
       deactivateLineRipple: () => {},
       setLineRippleTransformOrigin: () => {},
@@ -213,8 +212,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
       const isDense = this.adapter_.hasClass(cssClasses.DENSE);
       const labelScale = isDense ? numbers.DENSE_LABEL_SCALE : numbers.LABEL_SCALE;
       const labelWidth = this.adapter_.getLabelWidth() * labelScale;
-      const isRtl = this.adapter_.isRtl();
-      this.adapter_.notchOutline(labelWidth, isRtl);
+      this.adapter_.notchOutline(labelWidth);
     } else {
       this.adapter_.closeOutline();
     }
@@ -294,7 +292,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
    * @param {string} value The value to set on the input Element.
    */
   setValue(value) {
-    this.getNativeInput_().value = value;
+    // Prevent Safari from moving the caret to the end of the input when the value has not changed.
+    if (this.getValue() !== value) {
+      this.getNativeInput_().value = value;
+    }
     const isValid = this.isValid();
     this.styleValidity_(isValid);
     if (this.adapter_.hasLabel()) {

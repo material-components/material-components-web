@@ -69,7 +69,7 @@ $mdc-theme-text-emphasis: (
   high: .87,
   medium: .6,
   disabled: .38,
-);
+) !default;
 
 @function mdc-theme-ink-color-for-fill_($text-style, $fill-color) {
   $contrast-tone: mdc-theme-contrast-tone($fill-color);
@@ -114,7 +114,7 @@ $mdc-theme-property-values: (
   text-hint-on-dark: mdc-theme-ink-color-for-fill_(hint, dark),
   text-disabled-on-dark: mdc-theme-ink-color-for-fill_(disabled, dark),
   text-icon-on-dark: mdc-theme-ink-color-for-fill_(icon, dark)
-);
+) !default;
 
 // If `$style` is a color (a literal color value, `currentColor`, or a CSS custom property), it is returned verbatim.
 // Otherwise, `$style` is treated as a theme property name, and the corresponding value from

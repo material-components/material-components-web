@@ -63,10 +63,6 @@
 
   // Floating Label
   @include mdc-text-field-floating-label_;
-  // The following mixins will be removed after select is updated to default to the box.
-  @include mdc-floating-label-float-position($mdc-text-field-label-position-y);
-  @include mdc-floating-label-shake-animation(text-field-box);
-  @include mdc-floating-label-shake-keyframes(text-field-box, $mdc-text-field-label-position-y);
 
   display: inline-flex;
   position: relative;
@@ -83,7 +79,7 @@
   box-sizing: border-box;
   width: 100%;
   height: 100%;
-  padding: 20px 12px 6px;
+  padding: 20px 16px 6px;
   transition: mdc-text-field-transition(opacity);
   border: none;
   border-bottom: 1px solid;
@@ -254,4 +250,4 @@
 @include mdc-floating-label-shake-keyframes(text-field-outlined-leading-icon-dense, $mdc-text-field-outlined-dense-label-position-y, $mdc-text-field-outlined-dense-with-leading-icon-label-position-x, $mdc-text-field-dense-label-scale);
 @include mdc-floating-label-shake-keyframes(text-field-outlined-leading-icon-rtl, $mdc-text-field-outlined-label-position-y, -$mdc-text-field-outlined-with-leading-icon-label-position-x);
 @include mdc-floating-label-shake-keyframes(text-field-outlined-leading-icon-dense-rtl, $mdc-text-field-outlined-dense-label-position-y, -$mdc-text-field-outlined-dense-with-leading-icon-label-position-x, $mdc-text-field-dense-label-scale);
-@include mdc-floating-label-shake-keyframes(textarea, $mdc-text-field-textarea-label-position-y, 0%, $mdc-text-field-textarea-label-scale);
+@include mdc-floating-label-shake-keyframes(textarea, $mdc-text-field-textarea-label-position-y, 0%);

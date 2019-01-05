@@ -20,17 +20,35 @@
 // THE SOFTWARE.
 //
 
-@import "./variables";
+@import "../../../../packages/mdc-snackbar/mixins";
+@import "../../../../packages/mdc-theme/color-palette";
 
-//
-// Returns the notch padded position based on given radius. This is 'x' position where the floating label starts.
-//
-// Examples:
-//
-// mdc-notched-outline-get-notch-padded-position(4px) => 21.2px
-//
-@function mdc-notched-outline-get-notch-padded-position($cornerSize) {
-  $leadingStrokeLength: max(0, $mdc-notched-outline-min-leading-stroke-edge-position - $cornerSize - 1.2);
+$custom-snackbar-color: $material-color-red-500;
 
-  @return $cornerSize + $leadingStrokeLength + $mdc-notched-outline-notch-gutter-size + 1.2;
+.custom-snackbar--elevation {
+  @include mdc-snackbar-elevation(16);
+}
+
+.custom-snackbar--fill-color {
+  @include mdc-snackbar-fill-color($custom-snackbar-color);
+}
+
+.custom-snackbar--label-ink-color {
+  @include mdc-snackbar-label-ink-color($custom-snackbar-color);
+}
+
+.custom-snackbar--max-width {
+  @include mdc-snackbar-max-width(200px);
+}
+
+.custom-snackbar--min-width {
+  @include mdc-snackbar-min-width(800px);
+}
+
+.custom-snackbar--shape-radius {
+  @include mdc-snackbar-shape-radius(10px);
+}
+
+.custom-snackbar--viewport-margin {
+  @include mdc-snackbar-viewport-margin(50px);
 }

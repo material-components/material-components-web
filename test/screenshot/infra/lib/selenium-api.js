@@ -395,17 +395,12 @@ class SeleniumApi {
       }
 
       if (this.isBusinessHours_()) {
-        // Nobody else is running tests.
-        if (active === 0) {
-          // Run half the number of concurrent tests allowed by our CBT account.
-          // This gives us _some_ parallelism while ensuring that other users can run their tests too.
-          return Math.floor(max / 2);
-        }
-
-        // Somebody else is running tests, so only run one test at a time.
-        return 1;
+        // Run half the number of concurrent tests allowed by our CBT account.
+        // This gives us _some_ parallelism while ensuring that other users can run their tests too.
+        return Math.floor(available / 2) || 1;
       }
 
+      // Outside of normal business hours, we can be greedy and take up all available parallels.
       return available;
     }
   }

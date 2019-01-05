@@ -25,7 +25,6 @@
 
 /* eslint-disable no-unused-vars */
 import {MDCTabDimensions} from '@material/tab/adapter';
-import {MDCTab} from '@material/tab/index';
 /* eslint-enable no-unused-vars */
 
 /**
@@ -134,10 +133,10 @@ class MDCTabBarAdapter {
 
   /**
    * Returns the index of the given tab
-   * @param {!MDCTab} tab The tab whose index to determin
+   * @param {string} id The ID of the tab whose index to determine
    * @return {number}
    */
-  getIndexOfTab(tab) {}
+  getIndexOfTabById(id) {}
 
   /**
    * Emits the MDCTabBar:activated event
