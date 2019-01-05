@@ -171,7 +171,7 @@ class MDCList extends MDCComponent {
 
     if (checkboxListItems.length) {
       const preselectedItems = this.root_.querySelectorAll(strings.ARIA_CHECKED_CHECKBOX_SELECTOR);
-      this.selectedIndex = [...preselectedItems].map((listItem) => this.listElements.indexOf(listItem));
+      this.selectedIndex = [].map.call(preselectedItems, (listItem) => this.listElements.indexOf(listItem));
     } else if (singleSelectedListItem) {
       if (singleSelectedListItem.classList.contains(cssClasses.LIST_ITEM_ACTIVATED_CLASS)) {
         this.foundation_.setUseActivatedClass(true);
