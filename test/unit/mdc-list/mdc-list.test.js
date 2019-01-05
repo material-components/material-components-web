@@ -107,12 +107,10 @@ test('#initializeListType calls the foundation if the --activated class is prese
   td.verify(mockFoundation.setSingleSelection(true), {times: 1});
 });
 
-test('#initializeListType populates selectedIndex based on preselects checkbox items', () => {
+test('#initializeListType populates selectedIndex based on preselected checkbox items', () => {
   const {root, component, mockFoundation} = setupTest();
   const listElements = root.querySelectorAll(`.${cssClasses.LIST_ITEM_CLASS}`);
-  for (const itemEl of listElements) {
-    itemEl.setAttribute('role', 'checkbox');
-  }
+  [].forEach.call(listElements, (itemEl) => itemEl.setAttribute('role', 'checkbox'));
 
   listElements[2].setAttribute('aria-checked', 'true');
   component.initializeListType();
