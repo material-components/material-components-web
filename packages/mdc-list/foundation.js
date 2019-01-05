@@ -144,7 +144,7 @@ class MDCListFoundation extends MDCFoundation {
     if (!this.isIndexValid_(index)) return;
 
     if (this.isCheckboxList_) {
-      this.setCheckboxAtIndex_(index);
+      this.setCheckboxAtIndex_(/** @type {!Array<number>} */ (index));
     } else if (this.isRadioList_) {
       this.setRadioAtIndex_(/** @type {number} */ (index));
     } else {
@@ -412,10 +412,7 @@ class MDCListFoundation extends MDCFoundation {
     return this.isSingleSelectionList_ || this.isCheckboxList_ || this.isRadioList_;
   }
 
-  /**
-   * @param {number} index
-   * @private
-   */
+  /** @private */
   setTabindexToFirstSelectedItem_() {
     let targetIndex = 0;
 
