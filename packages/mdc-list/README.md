@@ -359,7 +359,7 @@ When rendering list with checkbox items all pre-selected list items should conta
 </ul>
 ```
 
-The `selectedIndex` (that proxies foundation's `setSelectedState()`) accepts list of indexes in array format or single index to set the selection state. It overwrites the current state with new selected state whether it is a list of indexes or single index.
+The `selectedIndex` (that proxies foundation's `setSelectedState()`) accepts list of indexes in array format for list with checkbox items to set the selection state. It overwrites the current state with new selected state.
 
 ## Style Customization
 

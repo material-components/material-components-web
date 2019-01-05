@@ -211,8 +211,6 @@ class MDCListFoundation extends MDCFoundation {
       }
     }
 
-    this.focusedItemIndex_ = currentIndex;
-
     if ((this.isVertical_ && arrowDown) || (!this.isVertical_ && arrowRight)) {
       this.preventDefaultEvent_(evt);
       nextIndex = this.focusNextElement(currentIndex);
@@ -237,12 +235,12 @@ class MDCListFoundation extends MDCFoundation {
       }
     }
 
+    this.focusedItemIndex_ = currentIndex;
+
     if (nextIndex >= 0) {
       this.setTabindexAtIndex_(nextIndex);
       this.focusedItemIndex_ = nextIndex;
     }
-
-    this.focusedItemIndex_ = currentIndex;
   }
 
   /**
@@ -354,7 +352,7 @@ class MDCListFoundation extends MDCFoundation {
   }
 
   /**
-   * Toggles checkbox or radio at give index. Radio doesn't change the checked state if it is already checked.
+   * Toggles radio at give index. Radio doesn't change the checked state if it is already checked.
    * @param {number} index
    * @private
    */
