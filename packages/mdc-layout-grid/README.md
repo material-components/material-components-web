@@ -133,42 +133,42 @@ modifiers will have no effect when the grid already fills its container.
 
 Mixin | Description
 --- | ---
-`mdc-layout-grid($type-of-device, $margin, $max-width)` | Generates CSS for a grid container on certain device type
-`mdc-layout-grid-inner($type-of-device, $margin, $gutter)` | Generates CSS for a grid cell wrapper on certain device type
-`mdc-layout-grid-cell($type-of-device, $default-span, $gutter)` | Generates CSS for a grid cell on certain device type
-`mdc-layout-grid-fixed-column-width($type-of-device, $margin, $gutter, $column-width)` | Generates CSS for a fixed column width container on certain device type
+`mdc-layout-grid($size, $margin, $max-width)` | Generates CSS for a grid container on certain device type
+`mdc-layout-grid-inner($size, $margin, $gutter)` | Generates CSS for a grid cell wrapper on certain device type
+`mdc-layout-grid-cell($size, $default-span, $gutter)` | Generates CSS for a grid cell on certain device type
+`mdc-layout-grid-fixed-column-width($size, $margin, $gutter, $column-width)` | Generates CSS for a fixed column width container on certain device type
 `mdc-layout-grid-cell-order($order)` | Reorders a cell inside a grid
 `mdc-layout-grid-cell-align($position)` | Aligns a cell vertically inside a grid
 
 
-#### `mdc-layout-grid($type-of-device, $margin, $max-width)`
+#### `mdc-layout-grid($size, $margin, $max-width)`
 
 Generates CSS for a grid container on certain device type. The mixin takes three parameters:
 
-- `$type-of-device`: the target platform: `desktop`, `tablet` or `phone`.
+- `$size`: the target platform: `desktop`, `tablet` or `phone`.
 - `$margin`: the size of the grid margin.
 - `$max-width` (optional): the maximum width of the grid, at which point space stops being distributed by the columns.
 
-#### `mdc-layout-grid-inner($type-of-device, $margin, $max-width)`
+#### `mdc-layout-grid-inner($size, $margin, $max-width)`
 
 Generates CSS for a grid cell wrapper on certain device type. The mixin takes three parameters:
-- `$type-of-device`: the target platform: `desktop`, `tablet` or `phone`.
+- `$size`: the target platform: `desktop`, `tablet` or `phone`.
 - `$margin`: the size of the grid margin.
 - `$gutter`: the size of the gutter between cells.
 
-#### `mdc-layout-grid-cell($type-of-device, $default-span, $gutter)`
+#### `mdc-layout-grid-cell($size, $default-span, $gutter)`
 
 Generates CSS for a grid cell on certain device type. The mixin takes three parameters:
-- `$type-of-device`: the target platform: `desktop`, `tablet` or `phone`.
+- `$size`: the target platform: `desktop`, `tablet` or `phone`.
 - `$default-span` (optional, default 4): how many columns this cell should span (1 to 12).
 - `$gutter`: the size of the gutter between cells. Be sure to use the same value as for the parent grid.
 
 > Note even though size is passed in as one of the arguments, it won't apply any `media-query` rules. It is set for using the correct CSS custom properties to overriden the margin and gutter at runtime (See [Margins and gutters](#margins-and-gutters) section for detail).
 
-#### `mdc-layout-grid-fixed-column-width($type-of-device, $margin, $gutter, $column-width)`
+#### `mdc-layout-grid-fixed-column-width($size, $margin, $gutter, $column-width)`
 
 Generates CSS for a fixed column width container on certain device type. The mixin takes four parameters:
-- `$type-of-device`: the target platform: `desktop`, `tablet` or `phone`.
+- `$size`: the target platform: `desktop`, `tablet` or `phone`.
 - `$margin`: the size of the grid margin.
 - `$gutter`: the size of the gutter between cells.
 - `$column-width`: the width of the column within the grid.
