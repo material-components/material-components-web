@@ -29,6 +29,7 @@ import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
 import MDCListFoundation from '../../../packages/mdc-list/foundation';
 import {strings, cssClasses} from '../../../packages/mdc-list/constants';
+import {install as installClock} from '../helpers/clock';
 
 suite('MDCListFoundation');
 
@@ -46,6 +47,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'removeAttributeForElementIndex', 'addClassForElementIndex', 'removeClassForElementIndex',
     'focusItemAtIndex', 'setTabIndexForListItemChildren', 'followHref', 'hasRadioAtIndex',
     'hasCheckboxAtIndex', 'isCheckboxCheckedAtIndex', 'setCheckedCheckboxOrRadioAtIndex',
+    'isFocusInsideList',
   ]);
 });
 
@@ -64,6 +66,15 @@ Object.defineProperty(Array.prototype, 'contains',
   });
 
 const setupTest = () => setupFoundationTest(MDCListFoundation);
+
+test('#layout should bail out early when list is empty', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(0);
+  foundation.layout();
+
+  td.verify(mockAdapter.hasCheckboxAtIndex(0), {times: 0});
+});
 
 test('#handleFocusIn switches list item button/a elements to tabindex=0', () => {
   const {foundation, mockAdapter} = setupTest();
@@ -125,6 +136,79 @@ test('#handleFocusOut does nothing if mdc-list-item is not on element or ancesto
   foundation.handleFocusOut(event, -1);
 
   td.verify(mockAdapter.setTabIndexForListItemChildren(td.matchers.anything(), td.matchers.anything()), {times: 0});
+});
+
+test('#handleFocusOut sets tabindex=0 to selected item when focus leaves single selection list', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
+  td.when(mockAdapter.hasCheckboxAtIndex(0)).thenReturn(false);
+  td.when(mockAdapter.hasRadioAtIndex(0)).thenReturn(false);
+  foundation.setSingleSelection(true);
+  foundation.layout();
+
+  td.when(mockAdapter.isFocusInsideList()).thenReturn(false);
+
+  foundation.setSelectedIndex(2); // Selected index values may not be in sequence.
+  const clock = installClock();
+  const target = {classList: ['']};
+  const event = {target};
+  foundation.handleFocusOut(event, 3);
+  clock.runToFrame();
+  td.verify(mockAdapter.setAttributeForElementIndex(2, 'tabindex', 0), {times: 1});
+});
+
+test('#handleFocusOut sets tabindex=0 to first item when focus leaves single selection list that has no '
+    + 'selection', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.setSingleSelection(true);
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
+  td.when(mockAdapter.isFocusInsideList()).thenReturn(false);
+
+  const clock = installClock();
+  const target = {classList: ['']};
+  const event = {target};
+  foundation.handleFocusOut(event, 3);
+  clock.runToFrame();
+  td.verify(mockAdapter.setAttributeForElementIndex(0, 'tabindex', 0), {times: 1});
+});
+
+test('#handleFocusOut does not set tabindex=0 to selected list item when focus moves to next list item.', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
+  foundation.setSingleSelection(true);
+  foundation.layout();
+
+  td.when(mockAdapter.isFocusInsideList()).thenReturn(true);
+
+  foundation.setSelectedIndex(2);
+  const clock = installClock();
+  const target = {classList: ['']};
+  const event = {target};
+  foundation.handleFocusOut(event, 3);
+  clock.runToFrame();
+  td.verify(mockAdapter.setAttributeForElementIndex(2, 'tabindex', 0), {times: 0});
+});
+
+test('#handleFocusOut sets tabindex=0 to first selected index when focus leaves checkbox based list', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
+  td.when(mockAdapter.hasCheckboxAtIndex(0)).thenReturn(true);
+  foundation.layout();
+
+  td.when(mockAdapter.isFocusInsideList()).thenReturn(false);
+
+  foundation.setSelectedIndex([3, 2]); // Selected index values may not be in sequence.
+  const target = {classList: ['']};
+  const event = {target};
+
+  const clock = installClock();
+  foundation.handleFocusOut(event, 2);
+  clock.runToFrame();
+  td.verify(mockAdapter.setAttributeForElementIndex(2, 'tabindex', 0), {times: 1});
 });
 
 test('#handleKeydown does nothing if the key is not used for navigation', () => {
@@ -399,6 +483,7 @@ test('#handleKeydown space/enter key cause event.preventDefault when singleSelec
   td.when(mockAdapter.hasRadioAtIndex(0)).thenReturn(true);
   td.when(mockAdapter.hasCheckboxAtIndex(0)).thenReturn(false);
   foundation.setSingleSelection(false);
+  foundation.layout();
   foundation.handleKeydown(event, true, 0);
   event.key = 'Enter';
   foundation.handleKeydown(event, true, 0);
@@ -519,22 +604,6 @@ test('#handleKeydown space key is triggered 2x when singleSelection does not un-
   td.verify(mockAdapter.removeAttributeForElementIndex(0, strings.ARIA_SELECTED), {times: 0});
 });
 
-test('#handleKeydown space key is triggered when singleSelection is true on second ' +
-  'element updates first element tabindex', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const preventDefault = td.func('preventDefault');
-  const target = {classList: ['mdc-list-item']};
-  const event = {key: 'Space', target, preventDefault};
-
-  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(1);
-  td.when(mockAdapter.getListItemCount()).thenReturn(3);
-  foundation.setSingleSelection(true);
-  foundation.handleKeydown(event, true, 1);
-
-  td.verify(preventDefault(), {times: 1});
-  td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', 0), {times: 1});
-});
-
 test('#handleKeydown space key is triggered 2x when singleSelection is true on second ' +
   'element updates first element tabindex', () => {
   const {foundation, mockAdapter} = setupTest();
@@ -550,25 +619,6 @@ test('#handleKeydown space key is triggered 2x when singleSelection is true on s
 
   td.verify(preventDefault(), {times: 2});
   td.verify(mockAdapter.setAttributeForElementIndex(1, strings.ARIA_SELECTED, 'true'), {times: 2});
-  td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', 0), {times: 2});
-  td.verify(mockAdapter.setAttributeForElementIndex(0, 'tabindex', -1), {times: 1});
-});
-
-test('#handleKeydown space key is triggered and focused is moved to a different element', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const preventDefault = td.func('preventDefault');
-  const target = {classList: ['mdc-list-item']};
-  const event = {key: 'Space', target, preventDefault};
-
-  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(1);
-  td.when(mockAdapter.getListItemCount()).thenReturn(3);
-  foundation.setSingleSelection(true);
-  foundation.handleKeydown(event, true, 1);
-  td.when(mockAdapter.getFocusedElementIndex()).thenReturn(2);
-  foundation.handleKeydown(event, true, 1);
-
-  td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', -1), {times: 1});
-  td.verify(mockAdapter.setAttributeForElementIndex(2, 'tabindex', 0), {times: 1});
 });
 
 test('#handleKeydown bail out early if event origin doesnt have a mdc-list-item ancestor from the current list', () => {
@@ -582,6 +632,66 @@ test('#handleKeydown bail out early if event origin doesnt have a mdc-list-item 
   td.verify(preventDefault(), {times: 0});
 });
 
+test('#focusNextElement focuses next list item and returns that index', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
+
+  assert.equal(3, foundation.focusNextElement(2));
+  td.verify(mockAdapter.focusItemAtIndex(3), {times: 1});
+});
+
+test('#focusNextElement focuses first list item when focus is on last list item when wrapFocus=true and returns that ' +
+    'index', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
+  foundation.setWrapFocus(true);
+
+  assert.equal(0, foundation.focusNextElement(3));
+  td.verify(mockAdapter.focusItemAtIndex(0), {times: 1});
+});
+
+test('#focusNextElement retains the focus on last item when wrapFocus=false and returns that index', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
+  foundation.setWrapFocus(false);
+
+  assert.equal(3, foundation.focusNextElement(3));
+  td.verify(mockAdapter.focusItemAtIndex(td.matchers.isA(Number)), {times: 0});
+});
+
+test('#focusPrevElement focuses previous list item and returns that index', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
+
+  assert.equal(1, foundation.focusPrevElement(2));
+  td.verify(mockAdapter.focusItemAtIndex(1), {times: 1});
+});
+
+test('#focusPrevElement focuses last list item when focus is on first list item when wrapFocus=true and returns that ' +
+    'index', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
+  foundation.setWrapFocus(true);
+
+  assert.equal(3, foundation.focusPrevElement(0));
+  td.verify(mockAdapter.focusItemAtIndex(3), {times: 1});
+});
+
+test('#focusPrevElement retains the focus on first list item when wrapFocus=false and returns that index', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
+  foundation.setWrapFocus(false);
+
+  assert.equal(0, foundation.focusPrevElement(0));
+  td.verify(mockAdapter.focusItemAtIndex(td.matchers.isA(Number)), {times: 0});
+});
+
 test('#handleClick when singleSelection=false on a list item should not cause the list item to be selected', () => {
   const {foundation, mockAdapter} = setupTest();
 
@@ -589,7 +699,8 @@ test('#handleClick when singleSelection=false on a list item should not cause th
   td.when(mockAdapter.getListItemCount()).thenReturn(3);
   foundation.handleClick(1, false);
 
-  td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', 0), {times: 0});
+  td.verify(mockAdapter.addClassForElementIndex(1, cssClasses.LIST_ITEM_SELECTED_CLASS), {times: 0});
+  td.verify(mockAdapter.addClassForElementIndex(1, cssClasses.LIST_ITEM_ACTIVATED_CLASS), {times: 0});
 });
 
 test('#handleClick when singleSelection=true on a list item should cause the list item to be selected', () => {
@@ -626,6 +737,7 @@ test('#handleClick when singleSelection=true on the first element when already s
   const {foundation, mockAdapter} = setupTest();
 
   td.when(mockAdapter.getFocusedElementIndex()).thenReturn(0);
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
   foundation.setSingleSelection(true);
   foundation.handleClick(0, false);
   foundation.handleClick(0, false);
@@ -633,10 +745,24 @@ test('#handleClick when singleSelection=true on the first element when already s
   td.verify(mockAdapter.setAttributeForElementIndex(0, 'tabindex', 0), {times: 2});
 });
 
+test('#handleClick when toggleCheckbox=false does not change the checkbox state', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.hasCheckboxAtIndex(0)).thenReturn(true);
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
+  foundation.layout();
+  foundation.handleClick(2, false);
+
+  td.when(mockAdapter.isCheckboxCheckedAtIndex(2)).thenReturn(false);
+  td.verify(mockAdapter.setCheckedCheckboxOrRadioAtIndex(2, true), {times: 0});
+});
+
 test('#handleClick proxies to the adapter#setCheckedCheckboxOrRadioAtIndex if toggleCheckbox is true', () => {
   const {foundation, mockAdapter} = setupTest();
 
   td.when(mockAdapter.hasRadioAtIndex(0)).thenReturn(true);
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
+  foundation.layout();
   foundation.handleClick(0, true);
 
   td.verify(mockAdapter.setCheckedCheckboxOrRadioAtIndex(0, true), {times: 1});
@@ -645,8 +771,11 @@ test('#handleClick proxies to the adapter#setCheckedCheckboxOrRadioAtIndex if to
 test('#handleClick checks the checkbox at index if it is present on list item', () => {
   const {foundation, mockAdapter} = setupTest();
 
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
+  td.when(mockAdapter.hasCheckboxAtIndex(0)).thenReturn(true);
+  foundation.layout();
+
   // Check
-  td.when(mockAdapter.hasCheckboxAtIndex(2)).thenReturn(true);
   td.when(mockAdapter.isCheckboxCheckedAtIndex(2)).thenReturn(false);
   foundation.handleClick(2, true);
   td.verify(mockAdapter.setCheckedCheckboxOrRadioAtIndex(2, true), {times: 1});
@@ -667,22 +796,6 @@ test('#handleClick bails out if checkbox or radio is not present and if toggleCh
   td.verify(mockAdapter.setCheckedCheckboxOrRadioAtIndex(1, td.matchers.anything()), {times: 0});
 });
 
-test('#focusFirstElement is called when the list is empty does not focus an element', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getListItemCount()).thenReturn(-1);
-  foundation.focusFirstElement();
-
-  td.verify(mockAdapter.focusItemAtIndex(td.matchers.anything()), {times: 0});
-});
-
-test('#focusLastElement is called when the list is empty does not focus an element', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.getListItemCount()).thenReturn(-1);
-  foundation.focusLastElement();
-
-  td.verify(mockAdapter.focusItemAtIndex(td.matchers.anything()), {times: 0});
-});
-
 test('#setUseActivatedClass causes setSelectedIndex to use the --activated class', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getListItemCount()).thenReturn(3);
@@ -692,7 +805,7 @@ test('#setUseActivatedClass causes setSelectedIndex to use the --activated class
   td.verify(mockAdapter.addClassForElementIndex(1, cssClasses.LIST_ITEM_ACTIVATED_CLASS), {times: 1});
 });
 
-test('#setSelectedIndex should bail out if not in the range', () => {
+test('#setSelectedIndex should bail out early if not in the range', () => {
   const {foundation, mockAdapter} = setupTest();
 
   td.when(mockAdapter.getListItemCount()).thenReturn(4);
@@ -700,20 +813,29 @@ test('#setSelectedIndex should bail out if not in the range', () => {
   td.verify(mockAdapter.setAttributeForElementIndex(-1, 'tabindex', 0), {times: 0});
 });
 
-test('#setSelectedIndex should set aria attributes on new index and should not change aria attributes on previous' +
-    ' selected index for checkbox based list', () => {
+test('#setSelectedIndex should bail out early if index is string or invalid', () => {
   const {foundation, mockAdapter} = setupTest();
 
   td.when(mockAdapter.getListItemCount()).thenReturn(4);
-  td.when(mockAdapter.hasCheckboxAtIndex(2)).thenReturn(true);
+  foundation.setSelectedIndex('some_random_input');
+  td.verify(mockAdapter.setAttributeForElementIndex(-1, 'tabindex', 0), {times: 0});
+});
+
+test('#setSelectedIndex should set aria checked true on new selected index and set aria checked false on previous '
+    + 'selected index for checkbox based list', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
+  td.when(mockAdapter.hasCheckboxAtIndex(0)).thenReturn(true);
+  foundation.layout();
+
   td.when(mockAdapter.isCheckboxCheckedAtIndex(2)).thenReturn(true);
-  foundation.setSelectedIndex(2);
+  foundation.setSelectedIndex([2]);
   td.verify(mockAdapter.setAttributeForElementIndex(2, strings.ARIA_CHECKED, 'true'), {times: 1});
 
-  td.when(mockAdapter.hasCheckboxAtIndex(3)).thenReturn(true);
   td.when(mockAdapter.isCheckboxCheckedAtIndex(3)).thenReturn(true);
-  foundation.setSelectedIndex(3);
-  td.verify(mockAdapter.setAttributeForElementIndex(2, strings.ARIA_CHECKED, 'false'), {times: 0});
+  foundation.setSelectedIndex([3]);
+  td.verify(mockAdapter.setAttributeForElementIndex(2, strings.ARIA_CHECKED, 'false'), {times: 1});
 });
 
 test('#setSelectedIndex should set aria attributes on new index and should also set aria checked to false on previous' +
@@ -721,16 +843,75 @@ test('#setSelectedIndex should set aria attributes on new index and should also 
   const {foundation, mockAdapter} = setupTest();
 
   td.when(mockAdapter.getListItemCount()).thenReturn(5);
-  td.when(mockAdapter.hasRadioAtIndex(3)).thenReturn(true);
-  td.when(mockAdapter.hasCheckboxAtIndex(3)).thenReturn(false);
+  td.when(mockAdapter.hasRadioAtIndex(0)).thenReturn(true);
+  foundation.layout();
+
   foundation.setSelectedIndex(3);
   td.verify(mockAdapter.setAttributeForElementIndex(3, strings.ARIA_CHECKED, 'true'), {times: 1});
 
-  td.when(mockAdapter.getListItemCount()).thenReturn(5);
-  td.when(mockAdapter.hasRadioAtIndex(4)).thenReturn(true);
-  td.when(mockAdapter.hasCheckboxAtIndex(4)).thenReturn(false);
   foundation.setSelectedIndex(4);
-
   td.verify(mockAdapter.setAttributeForElementIndex(4, strings.ARIA_CHECKED, 'true'), {times: 1});
   td.verify(mockAdapter.setAttributeForElementIndex(3, strings.ARIA_CHECKED, 'false'), {times: 1});
+});
+
+test('#setSelectedIndex removes selected/activated class name and sets aria-selected to false from previously selected '
+    + 'list item', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
+  foundation.setSelectedIndex(2);
+
+  foundation.setSelectedIndex(3);
+  td.verify(mockAdapter.removeClassForElementIndex(2, cssClasses.LIST_ITEM_SELECTED_CLASS), {times: 1});
+  td.verify(mockAdapter.setAttributeForElementIndex(2, strings.ARIA_SELECTED, 'false'), {times: 1});
+});
+
+test('#setSelectedIndex throws error when array of index is set on radio based list', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
+  td.when(mockAdapter.hasRadioAtIndex(0)).thenReturn(true);
+  foundation.layout();
+
+  assert.throws(() => foundation.setSelectedIndex([0, 1, 2]), Error);
+});
+
+test('#setSelectedIndex throws error when single index number is set on multi-select checkbox based list', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
+  td.when(mockAdapter.hasCheckboxAtIndex(0)).thenReturn(true);
+  foundation.layout();
+
+  assert.throws(() => foundation.setSelectedIndex(2), Error);
+});
+
+test('#setSelectedIndex deselects all checkboxes when selected index is set to []', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
+  td.when(mockAdapter.hasCheckboxAtIndex(0)).thenReturn(true);
+  foundation.layout();
+
+  foundation.setSelectedIndex([]);
+  td.verify(mockAdapter.setCheckedCheckboxOrRadioAtIndex(td.matchers.anything(), false), {times: 4});
+});
+
+test('#getSelectedIndex should be in-sync with setter method', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
+  foundation.setSelectedIndex(2);
+  assert.equal(2, foundation.getSelectedIndex());
+});
+
+test('#getSelectedIndex should be in-sync with setter method for multi-select checkbox based list', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(4);
+  td.when(mockAdapter.hasCheckboxAtIndex(0)).thenReturn(true);
+  foundation.layout();
+
+  foundation.setSelectedIndex([0, 2, 3]);
+  assert.deepEqual([0, 2, 3], foundation.getSelectedIndex());
 });
