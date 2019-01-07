@@ -229,11 +229,6 @@ class MDCListFoundation extends MDCFoundation {
         if (evt.target.tagName === 'A' && isEnter) return;
         this.preventDefaultEvent_(evt);
 
-        const hasCheckboxOrRadio = this.hasCheckboxOrRadioAtIndex_(listItemIndex);
-        if (hasCheckboxOrRadio) {
-          this.toggleCheckboxOrRadioAtIndex_(listItemIndex);
-        }
-
         if (this.isSelectableList_()) {
           this.setSelectedIndexOnAction_(currentIndex);
         }
