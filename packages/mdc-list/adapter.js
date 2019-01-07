@@ -47,12 +47,6 @@ class MDCListAdapter {
   /**
    * @param {number} index
    * @param {string} attribute
-   */
-  getAttributeForElementIndex(index, attr) {}
-
-  /**
-   * @param {number} index
-   * @param {string} attribute
    * @param {string} value
    */
   setAttributeForElementIndex(index, attribute, value) {}
@@ -90,12 +84,6 @@ class MDCListAdapter {
   setTabIndexForListItemChildren(listItemIndex, tabIndexValue) {}
 
   /**
-   * If the given element has an href, follows the link.
-   * @param {!Element} ele
-   */
-  followHref(ele) {}
-
-  /**
    * @param {number} index
    * @return {boolean} Returns true if radio button is present at given list item index.
    */
@@ -124,6 +112,11 @@ class MDCListAdapter {
    * Notifies user action on list item.
    */
   notifyAction(index) {}
+
+  /**
+   * @return {boolean} Returns true when the current focused element is inside list root.
+   */
+  isFocusInsideList() {}
 }
 
 export default MDCListAdapter;

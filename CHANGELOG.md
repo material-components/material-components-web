@@ -1,3 +1,17 @@
+<a name="0.42.1"></a>
+## [0.42.1](https://github.com/material-components/material-components-web/compare/v0.42.0...v0.42.1) (2018-12-17)
+
+
+### Bug Fixes
+
+* **menu:** Increase specificity of selection group class ([#4172](https://github.com/material-components/material-components-web/issues/4172)) ([870b234](https://github.com/material-components/material-components-web/commit/870b234))
+* **menu-surface:** Raise z-index over MDC Dialog ([#4185](https://github.com/material-components/material-components-web/issues/4185)) ([49233a8](https://github.com/material-components/material-components-web/commit/49233a8))
+* **slider:** Don't throw error when markup min is greater than default max ([#3315](https://github.com/material-components/material-components-web/issues/3315)) ([8d461be](https://github.com/material-components/material-components-web/commit/8d461be)), closes [#2269](https://github.com/material-components/material-components-web/issues/2269)
+* **text-field:** Don't move caret when value has not changed ([#4160](https://github.com/material-components/material-components-web/issues/4160)) ([31f5d9c](https://github.com/material-components/material-components-web/commit/31f5d9c))
+* **text-field:** Restrict resize to vertical for full width text area ([#4167](https://github.com/material-components/material-components-web/issues/4167)) ([8e6b968](https://github.com/material-components/material-components-web/commit/8e6b968))
+
+
+
 <a name="0.42.0"></a>
 # [0.42.0](https://github.com/material-components/material-components-web/compare/v0.41.0...v0.42.0) (2018-12-04)
 

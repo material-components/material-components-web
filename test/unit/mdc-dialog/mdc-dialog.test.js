@@ -48,12 +48,15 @@ function getFixture() {
               Let Google help apps determine location.
             </section>
             <footer class="mdc-dialog__actions">
-              <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="cancel"
-                      type="button">Cancel</button>
-              <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no"
-                      type="button">No</button>
-              <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes"
-                      type="button">Yes</button>
+              <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="cancel" type="button">
+                <span class="mdc-button__label">Cancel</span>
+              </button>
+              <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no" type="button">
+                <span class="mdc-button__label">No</span>
+              </button>
+              <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" type="button">
+                <span class="mdc-button__label">Yes</span>
+              </button>
             </footer>
           </div>
         </div>

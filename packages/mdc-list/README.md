@@ -359,6 +359,8 @@ When rendering list with checkbox items all pre-selected list items should conta
 </ul>
 ```
 
+The `selectedIndex` (that proxies foundation's `setSelectedState()`) accepts list of indexes in array format for list with checkbox items to set the selection state. It overwrites the current state with new selected state.
+
 ## Style Customization
 
 ### CSS Classes
@@ -499,18 +501,17 @@ Method Signature | Description
 `getListItemCount() => Number` | Returns the total number of list items (elements with `mdc-list-item` class) that are direct children of the `root_` element.
 `getFocusedElementIndex() => Number` | Returns the `index` value of the currently focused element.
 `getListItemIndex(ele: Element) => Number` | Returns the `index` value of the provided `ele` element.
-`getAttributeForElementIndex(index: number, attr: string) => string` | Gets the `attr` attribute value for the list item at `index`.
 `setAttributeForElementIndex(index: Number, attr: String, value: String) => void` | Sets the `attr` attribute to `value` for the list item at `index`.
 `addClassForElementIndex(index: Number, className: String) => void` | Adds the `className` class to the list item at `index`.
 `removeClassForElementIndex(index: Number, className: String) => void` | Removes the `className` class to the list item at `index`.
 `focusItemAtIndex(index: Number) => void` | Focuses the list item at the `index` value specified.
 `setTabIndexForListItemChildren(index: Number, value: Number) => void` | Sets the `tabindex` attribute to `value` for each child button or anchor element in the list item at the `index` specified.
-`followHref(element: Element) => void` | If the given element has an href, follows the link.
 `hasRadioAtIndex(index: number) => boolean` | Returns true if radio button is present at given list item index.
 `hasCheckboxAtIndex(index: number) => boolean` | Returns true if checkbox is present at given list item index.
 `isCheckboxCheckedAtIndex(index: number) => boolean` | Returns true if checkbox inside a list item is checked.
 `setCheckedCheckboxOrRadioAtIndex(index: number, isChecked: boolean) => void` | Sets the checked status of checkbox or radio at given list item index.
 `notifyAction(index: number) => void` | Notifies user action on list item including keyboard and mouse actions.
+`isFocusInsideList() => boolean` | Returns true if the current focused element is inside list root.
 
 ### `MDCListFoundation`
 
@@ -519,13 +520,14 @@ Method Signature | Description
 `setWrapFocus(value: Boolean) => void` | Sets the list to allow the up arrow on the first element to focus the last element of the list and vice versa.
 `setVerticalOrientation(value: Boolean) => void` | Sets the list to an orientation causing the keys used for navigation to change. `true` results in the Up/Down arrow keys being used. `false` results in the Left/Right arrow keys being used.
 `setSingleSelection(value: Boolean) => void` | Sets the list to be a selection list. Enables the `enter` and `space` keys for selecting/deselecting a list item.
-`setSelectedIndex(index: Number) => void` | Toggles the `selected` state of the list item at index `index`.
+`getSelectedIndex() => Index` | Gets the current selection state by returning selected index or list of indexes for checkbox based list. See [constants.js](./constants.js) for `Index` type definition.
+`setSelectedIndex(index: Index) => void` | Sets the selection state to given index or list of indexes if it is checkbox based list. See [constants.js](./constants.js) for `Index` type definition.
 `setUseActivated(useActivated: boolean) => void` | Sets the selection logic to apply/remove the `mdc-list-item--activated` class.
 `handleFocusIn(evt: Event) => void` | Handles the changing of `tabindex` to `0` for all button and anchor elements when a list item receives focus.
 `handleFocusOut(evt: Event) => void` | Handles the changing of `tabindex` to `-1` for all button and anchor elements when a list item loses focus.
 `handleKeydown(evt: Event) => void` | Handles determining if a focus action should occur when a key event is triggered.
 `handleClick(evt: Event) => void` | Handles toggling the selected/deselected state for a list item when clicked. This method is only used by the single selection list.
-`focusNextElement(index: Number) => void` | Handles focusing the next element using the current `index`.
-`focusPrevElement(index: Number) => void` | Handles focusing the previous element using the current `index`.
-`focusFirstElement() => void` | Handles focusing the first element in a list.
-`focusLastElement() => void` | Handles focusing the last element in a list.
+`focusNextElement(index: number) => number` | Handles focusing the next element using the current `index`. Returns focused element index.
+`focusPrevElement(index: number) => number` | Handles focusing the previous element using the current `index`. Returns focused element index.
+`focusFirstElement() => number` | Handles focusing the first element in a list. Returns focused element index.
+`focusLastElement() => number` | Handles focusing the last element in a list. Returns focused element index.

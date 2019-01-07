@@ -63,7 +63,7 @@ class MDCNotchedOutline extends MDCComponent {
   }
 
   /**
-    * Updates outline selectors and SVG path to open notch.
+    * Updates classes and styles to open the notch to the specified width.
     * @param {number} notchWidth The notch width in the outline.
     */
   notch(notchWidth) {
@@ -71,7 +71,7 @@ class MDCNotchedOutline extends MDCComponent {
   }
 
   /**
-   * Updates the outline selectors to close notch and return it to idle state.
+   * Updates classes and styles to close the notch.
    */
   closeNotch() {
     this.foundation_.closeNotch();
@@ -85,7 +85,8 @@ class MDCNotchedOutline extends MDCComponent {
       /** @type {!MDCNotchedOutlineAdapter} */ (Object.assign({
         addClass: (className) => this.root_.classList.add(className),
         removeClass: (className) => this.root_.classList.remove(className),
-        setNotchWidthProperty: (width) => this.notchElement_.style.setProperty('width', width > 0 ? width + 'px' : '0'),
+        setNotchWidthProperty: (width) => this.notchElement_.style.setProperty('width', width + 'px'),
+        removeNotchWidthProperty: () => this.notchElement_.style.removeProperty('width'),
       })));
   }
 }

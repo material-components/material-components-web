@@ -423,6 +423,10 @@
       padding: 0;
     }
   }
+
+  &.mdc-text-field--textarea .mdc-text-field__input {
+    resize: vertical;
+  }
 }
 
 @mixin mdc-text-field-fullwidth-invalid_ {

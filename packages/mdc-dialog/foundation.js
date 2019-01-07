@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {MDCFoundation} from '@material/base/index';
+import MDCFoundation from '@material/base/foundation';
 import MDCDialogAdapter from './adapter';
 import {cssClasses, numbers, strings} from './constants';
 

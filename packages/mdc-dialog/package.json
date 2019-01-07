@@ -24,7 +24,7 @@
     "@material/shape": "^0.42.0",
     "@material/theme": "^0.41.0",
     "@material/typography": "^0.42.0",
-    "focus-trap": "^2.3.0"
+    "focus-trap": "^4.0.2"
   },
   "publishConfig": {
     "access": "public"

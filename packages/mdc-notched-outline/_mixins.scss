@@ -22,6 +22,7 @@
 
 @import "@material/theme/mixins";
 @import "@material/shape/mixins";
+@import "@material/shape/functions";
 @import "@material/rtl/mixins";
 @import "./variables";
 
@@ -49,6 +50,12 @@
 
     @if ($radius > $mdc-notched-outline-leading-width) {
       width: $radius;
+    }
+  }
+
+  @if ($radius > $mdc-notched-outline-leading-width) {
+    .mdc-notched-outline__notch {
+      max-width: calc(100% - #{$radius} * 2);
     }
   }
 

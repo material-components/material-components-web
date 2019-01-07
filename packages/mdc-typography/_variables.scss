@@ -28,7 +28,7 @@ $mdc-typography-base: (
   font-family: $mdc-typography-font-family,
   -moz-osx-font-smoothing: grayscale,
   -webkit-font-smoothing: antialiased,
-);
+) !default;
 
 $mdc-typography-font-weight-values: (
   thin: 100,
