@@ -251,16 +251,11 @@ class MDCListFoundation extends MDCFoundation {
       if (isRootListItem) {
         // Return early if enter key is pressed on anchor element which triggers synthetic MouseEvent event.
         if (evt.target.tagName === 'A' && isEnter) return;
-
-        if (this.isSingleSelectionList_) {
-          // Check if the space key was pressed on the list item or a child element.
-          this.preventDefaultEvent_(evt);
-        }
+        this.preventDefaultEvent_(evt);
 
         const hasCheckboxOrRadio = this.hasCheckboxOrRadioAtIndex_(listItemIndex);
         if (hasCheckboxOrRadio) {
           this.toggleCheckboxOrRadioAtIndex_(listItemIndex);
-          this.preventDefaultEvent_(evt);
         }
 
         if (this.isSingleSelectionList_ || hasCheckboxOrRadio) {
