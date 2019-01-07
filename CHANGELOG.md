@@ -1,3 +1,34 @@
+<a name="0.43.0"></a>
+# [0.43.0](https://github.com/material-components/material-components-web/compare/v0.42.0...v0.43.0) (2019-01-07)
+
+
+### Bug Fixes
+
+* **drawer:** Upgrade focus-trap version in drawer & dialog ([#4217](https://github.com/material-components/material-components-web/issues/4217)) ([ea37b07](https://github.com/material-components/material-components-web/commit/ea37b07))
+* **list:** Accept array of index for selectedIndex API ([#4124](https://github.com/material-components/material-components-web/issues/4124)) ([be070a4](https://github.com/material-components/material-components-web/commit/be070a4))
+* **notched-outline:** Fix label overflow ([#4171](https://github.com/material-components/material-components-web/issues/4171)) ([145db1f](https://github.com/material-components/material-components-web/commit/145db1f))
+* **notched-outline:** fix missing shape functions import ([#4224](https://github.com/material-components/material-components-web/issues/4224)) ([96f663e](https://github.com/material-components/material-components-web/commit/96f663e))
+* **package:** Add source-map files to npm releases ([#4206](https://github.com/material-components/material-components-web/issues/4206)) ([9d6375b](https://github.com/material-components/material-components-web/commit/9d6375b))
+* **snackbar:** Rename action/dismiss classes and revise docs/tests ([#4203](https://github.com/material-components/material-components-web/issues/4203)) ([673dba2](https://github.com/material-components/material-components-web/commit/673dba2))
+
+
+### Features
+
+* **button:** Add trailing icon support via label element ([#4159](https://github.com/material-components/material-components-web/issues/4159)) ([fa41579](https://github.com/material-components/material-components-web/commit/fa41579))
+* **checkbox:** Declare all Sass variables as `!default` ([de6c833](https://github.com/material-components/material-components-web/commit/de6c833)), closes [#3708](https://github.com/material-components/material-components-web/issues/3708)
+* **snackbar:** Update to match latest design guidelines ([#4166](https://github.com/material-components/material-components-web/issues/4166)) ([33d30e6](https://github.com/material-components/material-components-web/commit/33d30e6)), closes [#4005](https://github.com/material-components/material-components-web/issues/4005) [#3981](https://github.com/material-components/material-components-web/issues/3981) [#2916](https://github.com/material-components/material-components-web/issues/2916) [#2628](https://github.com/material-components/material-components-web/issues/2628) [#1466](https://github.com/material-components/material-components-web/issues/1466) [#1398](https://github.com/material-components/material-components-web/issues/1398) [#1258](https://github.com/material-components/material-components-web/issues/1258) [#11](https://github.com/material-components/material-components-web/issues/11) [#2813](https://github.com/material-components/material-components-web/issues/2813)
+* **tab:** Get tabs by their ID ([#4149](https://github.com/material-components/material-components-web/issues/4149)) ([2d35220](https://github.com/material-components/material-components-web/commit/2d35220))
+
+
+### BREAKING CHANGES
+
+* **list:** Introduced new adapter `isFocusInsideList` for MDC List for improved accessibility.
+* **snackbar:** Snackbar's DOM and APIs have changed to match the latest design guidelines. See the Snackbar documentation for more information.
+* **button:** We recommend placing each button's text label within a mdc-button__label element. This does not immediately break existing MDC Button usage, but updating is recommended to future-proof against potential upcoming changes.
+* **tab:** MDCTabBar#getIndexOfTab(tab: MDCTab): boolean is now MDCTabBar#getIndexOfTabByID(id: string): boolean
+
+
+
 <a name="0.42.1"></a>
 ## [0.42.1](https://github.com/material-components/material-components-web/compare/v0.42.0...v0.42.1) (2018-12-17)
 
@@ -50,7 +81,7 @@
 
 ### BREAKING CHANGES
 
-* **notched-outline:** The notched outline has been changed from using an SVG for the outline to using 3 div elements. This approach resolves initial rendering issues as well as inconsistencies between the different types of outlines. Please refer to the [Readme](./packages/mdc-notched-outline/README.md) or the [screenshot test pages](./test/screenshot/spec/mdc-textfield/classes) for details and examples. 
+* **notched-outline:** The notched outline has been changed from using an SVG for the outline to using 3 div elements. This approach resolves initial rendering issues as well as inconsistencies between the different types of outlines. Please refer to the [Readme](./packages/mdc-notched-outline/README.md) or the [screenshot test pages](./test/screenshot/spec/mdc-textfield/classes) for details and examples.
 * **checkbox:** The component is now responsible for calling MDCCheckboxFoundation#handleChange when the checked and indeterminate properties change.
 * **list:** Replaced toggleCheckbox adapter method with setCheckedCheckboxOrRadioAtIndex and added 3 more new adapter methods for improved accessibility.
 * **fab:** Fab now has 2 separate mixins - `mdc-fab-shape-radius` for regular / mini Fab variants & `mdc-fab-extended-shape-radius` for Extended FAB variant.
