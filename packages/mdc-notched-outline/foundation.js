@@ -55,6 +55,7 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
       addClass: () => {},
       removeClass: () => {},
       setNotchWidthProperty: () => {},
+      removeNotchWidthProperty: () => {},
     });
   }
 
@@ -87,7 +88,7 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
   closeNotch() {
     const {OUTLINE_NOTCHED} = MDCNotchedOutlineFoundation.cssClasses;
     this.adapter_.removeClass(OUTLINE_NOTCHED);
-    this.adapter_.setNotchWidthProperty(0);
+    this.adapter_.removeNotchWidthProperty();
   }
 }
 

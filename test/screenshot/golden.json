@@ -1729,6 +1729,15 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/12/13/21_05_36_273/spec/mdc-textfield/issues/3332.html.windows_ie_11.png"
     }
   },
+  "spec/mdc-textfield/issues/4170.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/12/14/21_55_25_855/spec/mdc-textfield/issues/4170.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/12/14/21_55_25_855/spec/mdc-textfield/issues/4170.html.windows_chrome_71.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/12/14/21_55_25_855/spec/mdc-textfield/issues/4170.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/12/14/21_55_25_855/spec/mdc-textfield/issues/4170.html.windows_firefox_63.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/12/14/21_55_25_855/spec/mdc-textfield/issues/4170.html.windows_ie_11.png"
+    }
+  },
   "spec/mdc-textfield/mixins/outline-shape-radius.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/30/05_20_17_198/spec/mdc-textfield/mixins/outline-shape-radius.html?utm_source=golden_json",
     "screenshots": {

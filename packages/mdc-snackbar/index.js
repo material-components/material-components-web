@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {MDCComponent} from '@material/base/index';
+import MDCComponent from '@material/base/component';
 import MDCSnackbarFoundation from './foundation';
 import {strings} from './constants';
 import * as util from './util';

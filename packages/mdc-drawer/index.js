@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-import {MDCComponent} from '@material/base/index';
+import MDCComponent from '@material/base/component';
 import MDCDismissibleDrawerFoundation from './dismissible/foundation';
 import MDCModalDrawerFoundation from './modal/foundation';
 import MDCDrawerAdapter from './adapter';

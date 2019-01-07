@@ -112,6 +112,11 @@ class MDCListAdapter {
    * Notifies user action on list item.
    */
   notifyAction(index) {}
+
+  /**
+   * @return {boolean} Returns true when the current focused element is inside list root.
+   */
+  isFocusInsideList() {}
 }
 
 export default MDCListAdapter;
