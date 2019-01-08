@@ -1,7 +1,7 @@
 {
   "name": "@material/elevation",
   "description": "Material Components for the web mixins + CSS Classes for Material Design elevation",
-  "version": "0.41.0",
+  "version": "0.43.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -14,6 +14,6 @@
   },
   "dependencies": {
     "@material/animation": "^0.41.0",
-    "@material/theme": "^0.41.0"
+    "@material/theme": "^0.43.0"
   }
 }
