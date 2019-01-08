@@ -7,7 +7,7 @@
     "build:demos": "npm run clean && mkdirp build && webpack --config=demos/webpack.config.js --progress --colors",
     "build:min": "mkdirp build && cross-env MDC_ENV=production webpack -p --progress --colors",
     "changelog": "standard-changelog -i CHANGELOG.md -k packages/material-components-web/package.json",
-    "clean": "del-cli build/** build .closure-tmp/** .closure-tmp",
+    "clean": "del-cli build/** build .typescript-tmp/** .typescript-tmp",
     "clean:site": "del-cli .site-generator-tmp/** .site-generator-tmp",
     "dist": "npm run build && npm run build:min",
     "dev": "npm run clean && cross-env MDC_ENV=development webpack-dev-server --config=demos/webpack.config.js --progress --inline --hot --host 0.0.0.0",
@@ -23,7 +23,7 @@
     "lint": "npm-run-all --parallel lint:*",
     "postinstall": "lerna bootstrap",
     "pretest": "npm run lint",
-    "test": "npm run test:unit && npm run test:closure && npm run test:dependency && npm run build && npm run clean",
+    "test": "npm run test:unit && npm run test:dependency && npm run build && npm run clean",
     "posttest": "istanbul report --root coverage text-summary && istanbul check-coverage --lines 95 --statements 95 --branches 95 --functions 95",
     "screenshot:approve": "node test/screenshot/run.js approve",
     "screenshot:build": "node test/screenshot/run.js build",
@@ -38,11 +38,11 @@
     "start": "npm-run-all --parallel screenshot:serve screenshot:watch",
     "test:watch": "karma start --auto-watch",
     "test:unit": "karma start --single-run",
-    "test:closure": "./scripts/closure-test.sh",
     "test:dependency": "./scripts/dependency-test.sh",
     "test:site": "npm run clean:site && ./scripts/site-generator-test.sh"
   },
   "devDependencies": {
+    "@babel/parser": "^7.2.3",
     "@google-cloud/datastore": "^2.0.0",
     "@octokit/rest": "^16.1.0",
     "argparse": "^1.0.10",
@@ -54,7 +54,6 @@
     "babel-preset-es2015": "^6.9.0",
     "babel-traverse": "^6.24.1",
     "babel-types": "^6.24.1",
-    "babylon": "^6.16.1",
     "bel": "^6.0.0",
     "camel-case": "^3.0.0",
     "chai": "^4.0.2",
@@ -221,7 +220,7 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "closureWhitelist": [
+  "typescriptWhitelist": [
     "mdc-animation",
     "mdc-base",
     "mdc-checkbox",

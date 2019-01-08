@@ -140,7 +140,7 @@ class JsBundleFactory {
       chunks: {
         animation: getAbsolutePath('/packages/mdc-animation/index.js'),
         autoInit: getAbsolutePath('/packages/mdc-auto-init/index.js'),
-        base: getAbsolutePath('/packages/mdc-base/index.js'),
+        base: getAbsolutePath('/packages/mdc-base/index.ts'),
         checkbox: getAbsolutePath('/packages/mdc-checkbox/index.js'),
         chips: getAbsolutePath('/packages/mdc-chips/index.js'),
         dialog: getAbsolutePath('/packages/mdc-dialog/index.js'),

@@ -80,7 +80,7 @@ const fs = require('fs');
 const path = require('path');
 
 const {default: traverse} = require('babel-traverse');
-const babylon = require('babylon');
+const parser = require('@babel/parser');
 const camelCase = require('camel-case');
 const glob = require('glob');
 const recast = require('recast');
@@ -97,7 +97,7 @@ function main(argv) {
   }
 
   const rootDir = path.resolve(process.argv[2]);
-  const srcFiles = glob.sync(`${rootDir}/**/*.js`);
+  const srcFiles = glob.sync(`${rootDir}/**/*.{js,ts}`);
 
   // first pass, construct a map of default exports (adapters, foundations,
   // components).
@@ -111,14 +111,21 @@ function main(argv) {
   console.log('\rTransform pass completed. ' + srcFiles.length + ' files written.\n');
 }
 
+function getAstFromCodeString(codeString) {
+  return recast.parse(codeString, {
+    parser: {
+      parse: (code) => parser.parse(code, {
+        sourceType: 'module',
+        plugins: ['typescript'],
+      }),
+    },
+  });
+}
+
 function visit(srcFile, rootDir) {
   const src = fs.readFileSync(srcFile, 'utf8');
   logProgress(`[processing] ${srcFile}`);
-  const ast = recast.parse(src, {
-    parser: {
-      parse: (code) => babylon.parse(code, {sourceType: 'module'}),
-    },
-  });
+  const ast = getAstFromCodeString(src);
 
   traverse(ast, {
     ExportDefaultDeclaration(path) {
@@ -134,11 +141,7 @@ function visit(srcFile, rootDir) {
 
 function transform(srcFile, rootDir) {
   const src = fs.readFileSync(srcFile, 'utf8');
-  const ast = recast.parse(src, {
-    parser: {
-      parse: (code) => babylon.parse(code, {sourceType: 'module'}),
-    },
-  });
+  const ast = getAstFromCodeString(src);
 
   traverse(ast, {
     ExportNamedDeclaration(path) {
@@ -277,10 +280,15 @@ function patchNodeForDeclarationSource(source, srcFile, rootDir, node) {
     if (needsClosureModuleRootResolution) {
       resolvedSource = path.relative(rootDir, resolve.sync(source, {
         basedir: path.dirname(srcFile),
+        extensions: ['.ts', '.js'],
       }));
     }
-
-    const packageParts = resolvedSource.replace('mdc-', '').replace(/-/g, '').replace('.js', '').split('/');
+    const packageParts = resolvedSource
+      .replace('mdc-', '')
+      .replace(/-/g, '')
+      .replace('.js', '')
+      .replace('.ts', '')
+      .split('/');
     const packageStr = 'mdc.' + packageParts.join('.').replace('.index', '');
     if (packageStr in defaultTypesMap) {
       return defaultTypesMap[packageStr];
@@ -301,7 +309,12 @@ function patchDefaultImportIfNeeded(node) {
 
 function getPathbasedPackage(rootDir, srcFile) {
   const relativePath = path.relative(rootDir, srcFile);
-  const packageParts = relativePath.replace('mdc-', '').replace(/-/g, '').replace('.js', '').split('/');
+  const packageParts = relativePath
+    .replace('mdc-', '')
+    .replace(/-/g, '')
+    .replace('.js', '')
+    .replace('.ts', '')
+    .split('/');
   const packageStr = 'mdc.' + packageParts.join('.').replace('.index', '');
   return packageStr;
 }

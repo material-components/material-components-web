@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["es5", "dom"],
+    "lib": ["es5", "es6", "dom"],
     "noEmitOnError": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
@@ -11,7 +11,7 @@
     "preserveConstEnums": true,
     "stripInternal": true,
     "sourceMap": true,
-    "target": "es5",
+    "target": "es6",
     "newLine": "lf",
     "types": []
   }
