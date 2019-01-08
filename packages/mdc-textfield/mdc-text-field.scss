@@ -101,7 +101,7 @@
     box-shadow: none;
   }
 
-  // Keeps autofill behind notched outline
+  // Keep Chrome autofill behind the notched outline
   &:-webkit-autofill {
     z-index: auto !important;
   }
