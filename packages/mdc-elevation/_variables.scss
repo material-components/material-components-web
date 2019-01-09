@@ -22,10 +22,10 @@
 
 @import "@material/animation/variables";
 
-$mdc-elevation-baseline-color: black;
-$mdc-elevation-umbra-opacity: .2;
-$mdc-elevation-penumbra-opacity: .14;
-$mdc-elevation-ambient-opacity: .12;
+$mdc-elevation-baseline-color: black !default;
+$mdc-elevation-umbra-opacity: .2 !default;
+$mdc-elevation-penumbra-opacity: .14 !default;
+$mdc-elevation-ambient-opacity: .12 !default;
 
 $mdc-elevation-umbra-map: (
   0: "0px 0px 0px 0px",
@@ -53,7 +53,7 @@ $mdc-elevation-umbra-map: (
   22: "0px 10px 14px -6px",
   23: "0px 11px 14px -7px",
   24: "0px 11px 15px -7px"
-);
+) !default;
 
 $mdc-elevation-penumbra-map: (
   0: "0px 0px 0px 0px",
@@ -81,7 +81,7 @@ $mdc-elevation-penumbra-map: (
   22: "0px 22px 35px 3px",
   23: "0px 23px 36px 3px",
   24: "0px 24px 38px 3px"
-);
+) !default;
 
 $mdc-elevation-ambient-map: (
   0: "0px 0px 0px 0px",
@@ -109,7 +109,7 @@ $mdc-elevation-ambient-map: (
   22: "0px 8px 42px 7px",
   23: "0px 9px 44px 8px",
   24: "0px 9px 46px 8px"
-);
+) !default;
 
 // The css property used for elevation. In most cases this should not be changed. It is exposed
 // as a variable for abstraction / easy use when needing to reference the property directly, for

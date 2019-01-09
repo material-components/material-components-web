@@ -113,6 +113,11 @@ class MDCListAdapter {
    * @param {boolean} isChecked
    */
   setCheckedCheckboxOrRadioAtIndex(index, isChecked) {}
+
+  /**
+   * @return {boolean} Returns true when the current focused element is inside list root.
+   */
+  isFocusInsideList() {}
 }
 
 export default MDCListAdapter;

@@ -23,34 +23,34 @@
 @import "@material/theme/variables";
 
 // Colors
-$mdc-drawer-title-ink-color: mdc-theme-prop-value(on-surface);
-$mdc-drawer-subtitle-ink-color: mdc-theme-prop-value(on-surface);
-$mdc-drawer-item-inactive-ink-color: mdc-theme-prop-value(on-surface);
-$mdc-drawer-item-activated-ink-color: mdc-theme-prop-value(primary);
-$mdc-drawer-divider-color: mdc-theme-prop-value(on-surface);
-$mdc-drawer-surface-fill-color: mdc-theme-prop-value(surface);
+$mdc-drawer-title-ink-color: mdc-theme-prop-value(on-surface) !default;
+$mdc-drawer-subtitle-ink-color: mdc-theme-prop-value(on-surface) !default;
+$mdc-drawer-item-inactive-ink-color: mdc-theme-prop-value(on-surface) !default;
+$mdc-drawer-item-activated-ink-color: mdc-theme-prop-value(primary) !default;
+$mdc-drawer-divider-color: mdc-theme-prop-value(on-surface) !default;
+$mdc-drawer-surface-fill-color: mdc-theme-prop-value(surface) !default;
 
 // Opacity
-$mdc-drawer-title-ink-opacity: mdc-theme-text-emphasis(high);
-$mdc-drawer-subtitle-ink-opacity: mdc-theme-text-emphasis(medium);
-$mdc-drawer-item-inactive-icon-ink-opacity: mdc-theme-text-emphasis(medium);
-$mdc-drawer-item-inactive-text-ink-opacity: mdc-theme-text-emphasis(high);
-$mdc-drawer-item-active-icon-ink-opacity: 1;
-$mdc-drawer-item-active-text-ink-opacity: mdc-theme-text-emphasis(high);
-$mdc-drawer-divider-opacity: .12;
+$mdc-drawer-title-ink-opacity: mdc-theme-text-emphasis(high) !default;
+$mdc-drawer-subtitle-ink-opacity: mdc-theme-text-emphasis(medium) !default;
+$mdc-drawer-item-inactive-icon-ink-opacity: mdc-theme-text-emphasis(medium) !default;
+$mdc-drawer-item-inactive-text-ink-opacity: mdc-theme-text-emphasis(high) !default;
+$mdc-drawer-item-active-icon-ink-opacity: 1 !default;
+$mdc-drawer-item-active-text-ink-opacity: mdc-theme-text-emphasis(high) !default;
+$mdc-drawer-divider-opacity: .12 !default;
 
 // Widths
-$mdc-drawer-width: 256px;
-$mdc-drawer-list-item-spacing: 4px;
-$mdc-drawer-surface-padding: 16px;
+$mdc-drawer-width: 256px !default;
+$mdc-drawer-list-item-spacing: 4px !default;
+$mdc-drawer-surface-padding: 16px !default;
 
 // Animations
-$mdc-drawer-animation-enter: 250ms;
-$mdc-drawer-animation-exit: 200ms;
+$mdc-drawer-animation-enter: 250ms !default;
+$mdc-drawer-animation-exit: 200ms !default;
 
 // Scrim
-$mdc-drawer-modal-scrim-color: mdc-theme-prop-value(on-surface);
-$mdc-drawer-modal-scrim-opacity: .32;
+$mdc-drawer-modal-scrim-color: mdc-theme-prop-value(on-surface) !default;
+$mdc-drawer-modal-scrim-opacity: .32 !default;
 
-$mdc-drawer-z-index: 6;
-$mdc-drawer-modal-elevation: 16;
+$mdc-drawer-z-index: 6 !default;
+$mdc-drawer-modal-elevation: 16 !default;

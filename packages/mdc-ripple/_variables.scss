@@ -20,10 +20,10 @@
 // THE SOFTWARE.
 //
 
-$mdc-ripple-fade-in-duration: 75ms;
-$mdc-ripple-fade-out-duration: 150ms;
-$mdc-ripple-translate-duration: 225ms;
-$mdc-states-wash-duration: 15ms;
+$mdc-ripple-fade-in-duration: 75ms !default;
+$mdc-ripple-fade-out-duration: 150ms !default;
+$mdc-ripple-translate-duration: 225ms !default;
+$mdc-states-wash-duration: 15ms !default;
 
 $mdc-ripple-dark-ink-opacities: (
   hover: .04,
@@ -43,5 +43,5 @@ $mdc-ripple-light-ink-opacities: (
 
 // Legacy
 
-$mdc-ripple-pressed-dark-ink-opacity: .16;
-$mdc-ripple-pressed-light-ink-opacity: .32;
+$mdc-ripple-pressed-dark-ink-opacity: .16 !default;
+$mdc-ripple-pressed-light-ink-opacity: .32 !default;
