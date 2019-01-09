@@ -34,6 +34,7 @@ import MDCTextFieldFoundation from './foundation';
 /* eslint-disable no-unused-vars */
 import {MDCLineRipple, MDCLineRippleFoundation} from '@material/line-ripple/index';
 import {MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation} from './helper-text/index';
+import {cssClasses as helperTextCssClasses} from './helper-text/constants';
 import {MDCTextFieldIcon, MDCTextFieldIconFoundation} from './icon/index';
 import {MDCFloatingLabel, MDCFloatingLabelFoundation} from '@material/floating-label/index';
 import {MDCNotchedOutline, MDCNotchedOutlineFoundation} from '@material/notched-outline/index';
@@ -109,12 +110,11 @@ class MDCTextField extends MDCComponent {
     if (outlineElement) {
       this.outline_ = outlineFactory(outlineElement);
     }
-    if (this.input_.hasAttribute(strings.ARIA_CONTROLS)) {
-      const helperTextElement = document.getElementById(this.input_.getAttribute(strings.ARIA_CONTROLS));
-      if (helperTextElement) {
-        this.helperText_ = helperTextFactory(helperTextElement);
-      }
+
+    if (this.root_.nextElementSibling && this.root_.nextElementSibling.classList.contains(helperTextCssClasses.ROOT)) {
+      this.helperText_ = helperTextFactory(this.root_.nextElementSibling);
     }
+
     const iconElements = this.root_.querySelectorAll(strings.ICON_SELECTOR);
     if (iconElements.length > 0) {
       if (iconElements.length > 1) { // Has both icons.

@@ -28,18 +28,23 @@
 
 .mdc-text-field-helper-text {
   @include mdc-typography(caption);
-  @include mdc-typography-baseline-top(16px);
 
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
   margin: 0;
+}
+
+.mdc-text-field-helper-text__text {
   transition: mdc-text-field-transition(opacity);
   opacity: 0;
   will-change: opacity;
-}
 
-.mdc-text-field-helper-text--persistent {
-  transition: none;
-  opacity: 1;
-  will-change: initial;
+  .mdc-text-field-helper-text--persistent & {
+    transition: none;
+    opacity: 1;
+    will-change: initial;
+  }
 }
 
 // postcss-bem-linter: end

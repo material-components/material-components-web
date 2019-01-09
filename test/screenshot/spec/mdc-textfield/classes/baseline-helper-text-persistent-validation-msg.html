@@ -46,7 +46,8 @@
 
         <div class="test-cell test-cell--textfield">
           <div class="mdc-text-field mdc-text-field--outlined">
-            <input type="text" id="outlined-text-field" class="mdc-text-field__input test-text-field__input">
+            <input type="text" id="outlined-text-field" class="mdc-text-field__input test-text-field__input"
+                maxlength="10" aria-controls="example-1-helper-text" aria-describedby="example-1-helper-text">
             <div class="mdc-notched-outline">
               <div class="mdc-notched-outline__leading"></div>
               <div class="mdc-notched-outline__notch">
@@ -55,7 +56,10 @@
               <div class="mdc-notched-outline__trailing"></div>
             </div>
           </div>
-          <p class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg" aria-hidden="true">Helper Text</p>
+          <div class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg" aria-hidden="true">
+            <div id="example-1-helper-text" class="mdc-text-field-helper-text__text">Helper Text</div>
+            <div class="mdc-text-field-helper-text__counter">0/10</div>
+          </div>
         </div>
 
         <div class="test-cell test-cell--textfield">

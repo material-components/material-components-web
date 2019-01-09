@@ -26,6 +26,8 @@ import MDCComponent from '@material/base/component';
 import MDCTextFieldHelperTextAdapter from './adapter';
 import MDCTextFieldHelperTextFoundation from './foundation';
 
+import {strings} from './constants';
+
 /**
  * @extends {MDCComponent<!MDCTextFieldHelperTextFoundation>}
  * @final
@@ -50,15 +52,21 @@ class MDCTextFieldHelperText extends MDCComponent {
    * @return {!MDCTextFieldHelperTextFoundation}
    */
   getDefaultFoundation() {
+    const textEl = this.root_.querySelector(strings.TEXT_SELECTOR);
+    const counterEl = this.root_.querySelector(strings.COUNTER_SELECTOR);
     return new MDCTextFieldHelperTextFoundation(/** @type {!MDCTextFieldHelperTextAdapter} */ (Object.assign({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
-      setAttr: (attr, value) => this.root_.setAttribute(attr, value),
-      removeAttr: (attr) => this.root_.removeAttribute(attr),
-      setContent: (content) => {
-        this.root_.textContent = content;
+      setTextAttr: (attr, value) => textEl.setAttribute(attr, value),
+      removeTextAttr: (attr) => textEl.removeAttribute(attr),
+      setTextContent: (content) => {
+        textEl.textContent = content;
       },
+      setCounterContent: (content) => {
+        counterEl.textContent = content;
+      },
+      hasCounter: () => !!counterEl,
     })));
   }
 }

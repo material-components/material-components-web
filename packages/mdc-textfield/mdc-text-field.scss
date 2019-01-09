@@ -189,18 +189,23 @@
 
 .mdc-text-field-helper-text {
   // stylelint-disable plugin/selector-bem-pattern
+
+  & {
+    padding-top: 4px;
+  }
+
   .mdc-text-field--dense + & {
     margin-bottom: 4px;
   }
 
   .mdc-text-field + & {
-    margin-right: 12px;
-    margin-left: 12px;
+    padding-right: 12px;
+    padding-left: 12px;
   }
 
   .mdc-text-field--outlined + & {
-    margin-right: 16px;
-    margin-left: 16px;
+    padding-right: 16px;
+    padding-left: 16px;
   }
 
   // stylelint-enable plugin/selector-bem-pattern

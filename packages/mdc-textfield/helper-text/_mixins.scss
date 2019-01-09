@@ -40,10 +40,14 @@
   + .mdc-text-field-helper-text {
     @include mdc-theme-prop(color, $color);
   }
+
+  + .mdc-text-field-helper-text .mdc-text-field-helper-text__counter {
+    @include mdc-theme-prop(color, $color);
+  }
 }
 
 @mixin mdc-text-field-helper-text-validation-color_($color) {
-  &.mdc-text-field--invalid + .mdc-text-field-helper-text--validation-msg {
+  &.mdc-text-field--invalid + .mdc-text-field-helper-text--validation-msg .mdc-text-field-helper-text__text {
     @include mdc-theme-prop(color, $color);
   }
 }

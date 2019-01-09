@@ -130,7 +130,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     /** @private {function(): undefined} */
     this.inputBlurHandler_ = () => this.deactivateFocus();
     /** @private {function(): undefined} */
-    this.inputInputHandler_ = () => this.autoCompleteFocus();
+    this.inputInputHandler_ = () => this.handleInput();
     /** @private {function(!Event): undefined} */
     this.setPointerXOffset_ = (evt) => this.setTransformOrigin(evt);
     /** @private {function(!Event): undefined} */
@@ -161,6 +161,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     });
     this.validationObserver_ =
         this.adapter_.registerValidationAttributeChangeHandler(this.validationAttributeChangeHandler_);
+    this.setHelperTextCounterContent_(this.getValue().length);
   }
 
   destroy() {
@@ -195,6 +196,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
       if (VALIDATION_ATTR_WHITELIST.indexOf(attributeName) > -1) {
         this.styleValidity_(true);
         return true;
+      }
+
+      if (attributeName === 'maxlength') {
+        this.setHelperTextCounterContent_(this.getValue().length);
       }
     });
   }
@@ -250,6 +255,11 @@ class MDCTextFieldFoundation extends MDCFoundation {
     const targetClientRect = targetEvent.target.getBoundingClientRect();
     const normalizedX = targetEvent.clientX - targetClientRect.left;
     this.adapter_.setLineRippleTransformOrigin(normalizedX);
+  }
+
+  handleInput() {
+    this.autoCompleteFocus();
+    this.setHelperTextCounterContent_(this.getValue().length);
   }
 
   /**
@@ -356,6 +366,15 @@ class MDCTextFieldFoundation extends MDCFoundation {
   setHelperTextContent(content) {
     if (this.helperText_) {
       this.helperText_.setContent(content);
+    }
+  }
+
+  setHelperTextCounterContent_(curLength) {
+    const maxLength = this.getNativeInput_().maxLength;
+    if (maxLength === -1) return;
+
+    if (this.helperText_ && this.helperText_.hasCounter()) {
+      this.helperText_.setCounterValue(curLength, maxLength);
     }
   }
 
