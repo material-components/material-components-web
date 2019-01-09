@@ -105,7 +105,7 @@ function main(argv) {
   logProgress('');
   console.log('\rVisit pass completed. ' + Object.keys(defaultTypesMap).length + ' default types found.\n');
 
-  // second pass, rewrite exports, rewrite imports with goog.require, and add goog.module declarations
+  // second pass rewrite imports with relative file path declarations
   srcFiles.forEach((srcFile) => transform(srcFile, rootDir));
   logProgress('');
   console.log('\rTransform pass completed. ' + srcFiles.length + ' files written.\n');
@@ -144,28 +144,11 @@ function transform(srcFile, rootDir) {
   const ast = getAstFromCodeString(src);
 
   traverse(ast, {
-    ExportNamedDeclaration(path) {
-      const properties = [];
-      path.node.specifiers.forEach((specifier) => {
-        properties.push(t.objectProperty(specifier.exported, specifier.exported, false, true, []));
-      });
-      const right = t.objectExpression(properties);
-      const expression = t.assignmentExpression('=', t.identifier('exports'), right);
-      path.replaceWith(t.expressionStatement(expression));
-    },
-  });
-
-  traverse(ast, {
-    ExportDefaultDeclaration(path) {
-      const expression = t.assignmentExpression('=', t.identifier('exports'), path.node.declaration);
-      path.replaceWith(t.expressionStatement(expression));
-    },
-  });
-
-  traverse(ast, {
     ImportDeclaration(path) {
       const callee = t.memberExpression(t.identifier('goog'), t.identifier('require'), false);
       const packageStr = rewriteDeclarationSource(path.node, srcFile, rootDir);
+      // console.log(' ')
+      // console.log(packageStr)
       const callExpression = t.callExpression(callee, [t.stringLiteral(packageStr)]);
 
       let variableDeclaratorId;
@@ -181,6 +164,7 @@ function transform(srcFile, rootDir) {
 
       const variableDeclarator = t.variableDeclarator(variableDeclaratorId, callExpression);
       const variableDeclaration = t.variableDeclaration('const', [variableDeclarator]);
+
       // Preserve comments above import statements, since this is most likely
       // the license comment.
       if (path.node.comments && path.node.comments.length > 0) {
@@ -190,19 +174,14 @@ function transform(srcFile, rootDir) {
           variableDeclaration.comments.push({type: 'CommentBlock', value: commentValue});
         }
       }
-      path.replaceWith(variableDeclaration);
-    },
+      // console.log('')
+      // console.log(variableDeclaration)
 
-    ClassMethod(path) {
-      // Remove any statements from abstract function bodies.
-      // Closure doesn't like seeing this, but we like to include a throw statement for non-closure clients.
-      if (path.node.comments && path.node.comments.some((comment) => comment.value.includes('@abstract'))) {
-        path.node.body.body = [];
-      }
+      path.replaceWith(variableDeclaration);
     },
   });
 
-  let {code: outputCode} = recast.print(ast, {
+  const {code: outputCode} = recast.print(ast, {
     objectCurlySpacing: false,
     quote: 'single',
     trailingComma: {
@@ -244,8 +223,8 @@ ${data}
   // Then, get the index of that first matching character set plus the length of the matching characters, plus one
   // extra character for more space. We now have the position at which we need to inject the "goog.module(...)"
   // declaration and can assemble the module-declared code. Yay!
-  const pos = result.index + result[0].length + 1;
-  outputCode = outputCode.substr(0, pos) + '\ngoog.module(\'' + packageStr + '\');\n' + outputCode.substr(pos);
+  // const pos = result.index + result[0].length + 1;
+  // outputCode = outputCode.substr(0, pos) + '\ngoog.module(\'' + packageStr + '\');\n' + outputCode.substr(pos);
   fs.writeFileSync(srcFile, outputCode, 'utf8');
   logProgress(`[rewrite] ${srcFile}`);
 }
@@ -266,6 +245,7 @@ function rewriteDeclarationSource(node, srcFile, rootDir) {
 
 function patchNodeForDeclarationSource(source, srcFile, rootDir, node) {
   let resolvedSource = source;
+  const basedir = path.dirname(srcFile);
   // See: https://nodejs.org/api/modules.html#modules_all_together (step 3)
   const wouldLoadAsFileOrDir = ['./', '/', '../'].some((s) => source.indexOf(s) === 0);
   const isThirdPartyModule = !wouldLoadAsFileOrDir;
@@ -275,14 +255,19 @@ function patchNodeForDeclarationSource(source, srcFile, rootDir, node) {
     resolvedSource = `mdc.thirdparty.${camelCase(source)}`;
     return resolvedSource;
   } else {
-    const normPath = path.normalize(path.dirname(srcFile), source);
-    const needsClosureModuleRootResolution = path.isAbsolute(source) || fs.statSync(normPath).isDirectory();
-    if (needsClosureModuleRootResolution) {
-      resolvedSource = path.relative(rootDir, resolve.sync(source, {
-        basedir: path.dirname(srcFile),
-        extensions: ['.ts', '.js'],
-      }));
-    }
+    // const normPath = path.normalize(basedir, source);
+    // console.log('normPath')
+    // console.log(normPath)
+    rootDir = path.resolve(__dirname, '../.typescript-tmp/packages');
+    const fileDir = resolve.sync(source, {
+      basedir,
+      extensions: ['.ts', '.js'],
+    });
+    resolvedSource = path.relative(rootDir, fileDir);
+
+    console.log('--resolvedSource');
+    console.log(fileDir);
+
     const packageParts = resolvedSource
       .replace('mdc-', '')
       .replace(/-/g, '')
