@@ -370,12 +370,12 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   setHelperTextCounterContent_(curLength) {
+    if (!this.helperText_) return;
+
     const maxLength = this.getNativeInput_().maxLength;
     if (maxLength === -1) return;
 
-    if (this.helperText_ && this.helperText_.hasCounter()) {
-      this.helperText_.setCounterValue(curLength, maxLength);
-    }
+    this.helperText_.setCounterValue(curLength, maxLength);
   }
 
   /**

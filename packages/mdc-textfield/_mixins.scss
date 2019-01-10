@@ -176,9 +176,7 @@
     @include mdc-theme-prop(color, $mdc-text-field-error);
   }
 
-  + .mdc-text-field-helper-text:not(.mdc-text-field-helper-text--validation-msg) {
-    opacity: 1;
-  }
+  @include mdc-text-field-helper-text-focused;
 }
 
 @mixin mdc-text-field-dense_ {
@@ -456,6 +454,7 @@
   @include mdc-states-base-color(transparent);
   @include mdc-text-field-fill-color(transparent);
   @include mdc-notched-outline-floating-label-float-position($mdc-text-field-outlined-label-position-y, 0%);
+  @include mdc-text-field-helper-text-counter-position(16px, 16px);
 
   $padding-inset: 16px;
 

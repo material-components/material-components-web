@@ -55,3 +55,24 @@
 .mdc-text-field-helper-text {
   width: 100%;
 }
+
+.mdc-text-field-character-counter + .mdc-text-field__input {
+  margin-bottom: 32px;
+}
+
+.mdc-text-field-character-counter {
+  position: absolute;
+  padding: 8px 16px 8px 0;
+  display: flex;
+  bottom: 0;
+  right: 0;
+  text-align: right;
+
+
+  font-family: Roboto, sans-serif;
+  font-size: 0.75rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+  letter-spacing: 0.0333333333em;
+  color: rgba(0, 0, 0, 0.6);
+}

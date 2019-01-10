@@ -69,7 +69,13 @@ class MDCTextFieldHelperTextFoundation extends MDCFoundation {
    * @param {string} content
    */
   setTextContent(content) {
+    if (!this.hasText()) return;
+
     this.adapter_.setTextContent(content);
+  }
+
+  hasText() {
+    return this.adapter_.hasText();
   }
 
   hasCounter() {
@@ -77,6 +83,8 @@ class MDCTextFieldHelperTextFoundation extends MDCFoundation {
   }
 
   setCounterValue(curLength, maxLength) {
+    if (!this.hasCounter()) return;
+
     curLength = Math.min(curLength, maxLength);
     this.adapter_.setCounterContent(`${curLength}/${maxLength}`);
   }
@@ -104,6 +112,8 @@ class MDCTextFieldHelperTextFoundation extends MDCFoundation {
 
   /** Makes the helper text visible to the screen reader. */
   showToScreenReader() {
+    if (!this.hasText()) return;
+
     this.adapter_.removeTextAttr(strings.ARIA_HIDDEN);
   }
 
@@ -112,6 +122,8 @@ class MDCTextFieldHelperTextFoundation extends MDCFoundation {
    * @param {boolean} inputIsValid
    */
   setValidity(inputIsValid) {
+    if (!this.hasText()) return;
+
     const helperTextIsPersistent = this.adapter_.hasClass(cssClasses.HELPER_TEXT_PERSISTENT);
     const helperTextIsValidationMsg = this.adapter_.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
     const validationMsgNeedsDisplay = helperTextIsValidationMsg && !inputIsValid;

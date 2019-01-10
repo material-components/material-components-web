@@ -23,53 +23,41 @@
 
 import MDCComponent from '@material/base/component';
 
-import MDCTextFieldHelperTextAdapter from './adapter';
-import MDCTextFieldHelperTextFoundation from './foundation';
+import MDCTextFieldCharacterCounterAdapter from './adapter';
+import MDCTextFieldCharacterCounterFoundation from './foundation';
 
 import {strings} from './constants';
 
 /**
- * @extends {MDCComponent<!MDCTextFieldHelperTextFoundation>}
+ * @extends {MDCComponent<!MDCTextFieldCharacterCounterFoundation>}
  * @final
  */
-class MDCTextFieldHelperText extends MDCComponent {
+class MDCTextFieldCharacterCounter extends MDCComponent {
   /**
    * @param {!Element} root
-   * @return {!MDCTextFieldHelperText}
+   * @return {!MDCTextFieldCharacterCounter}
    */
   static attachTo(root) {
-    return new MDCTextFieldHelperText(root);
+    return new MDCTextFieldCharacterCounter(root);
   }
 
   /**
-   * @return {!MDCTextFieldHelperTextFoundation}
+   * @return {!MDCTextFieldCharacterCounterFoundation}
    */
   get foundation() {
     return this.foundation_;
   }
 
   /**
-   * @return {!MDCTextFieldHelperTextFoundation}
+   * @return {!MDCTextFieldCharacterCounterFoundation}
    */
   getDefaultFoundation() {
-    const textEl = this.root_.querySelector(strings.TEXT_SELECTOR);
-    const counterEl = this.root_.querySelector(strings.COUNTER_SELECTOR);
-    return new MDCTextFieldHelperTextFoundation(/** @type {!MDCTextFieldHelperTextAdapter} */ (Object.assign({
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
-      hasClass: (className) => this.root_.classList.contains(className),
-      setTextAttr: (attr, value) => textEl.setAttribute(attr, value),
-      removeTextAttr: (attr) => textEl.removeAttribute(attr),
-      setTextContent: (content) => {
-        textEl.textContent = content;
+    return new MDCTextFieldCharacterCounterFoundation(/** @type {!MDCTextFieldCharacterCounterAdapter} */ (Object.assign({
+      setContent: (content) => {
+        this.root_.textContent = content;
       },
-      setCounterContent: (content) => {
-        counterEl.textContent = content;
-      },
-      hasText: () => !!textEl,
-      hasCounter: () => !!counterEl,
     })));
   }
 }
 
-export {MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation};
+export {MDCTextFieldCharacterCounter, MDCTextFieldCharacterCounterFoundation};
