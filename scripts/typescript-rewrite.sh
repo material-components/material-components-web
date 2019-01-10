@@ -30,10 +30,10 @@ function log() {
 
 TYPESCRIPT_TMP=.typescript-tmp
 TYPESCRIPT_PKGDIR=$TYPESCRIPT_TMP/packages
-CLOSURIZED_PKGS=$(node -e "console.log(require('./package.json').typescriptWhitelist.join(' '))")
+TYPESCRIPT_PKGS=$(node -e "console.log(require('./package.json').typescriptWhitelist.join(' '))")
 
-if [ -z "$CLOSURIZED_PKGS" ]; then
-  echo "No closurized packages to rewrite!"
+if [ -z "$TYPESCRIPT_PKGS" ]; then
+  echo "No typescript packages to rewrite!"
   exit 0
 fi
 
@@ -41,7 +41,7 @@ log "Prepping whitelisted packages for JS rewrite"
 
 rm -fr $TYPESCRIPT_TMP/**
 mkdir -p $TYPESCRIPT_PKGDIR
-for pkg in $CLOSURIZED_PKGS; do
+for pkg in $TYPESCRIPT_PKGS; do
   cp -r "packages/$pkg" $TYPESCRIPT_PKGDIR
 done
 rm -fr $TYPESCRIPT_PKGDIR/**/{node_modules,dist}

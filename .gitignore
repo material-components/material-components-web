@@ -9,3 +9,4 @@ out
 *.sw*
 .closure-tmp
 .vscode
+.typescript-tmp
