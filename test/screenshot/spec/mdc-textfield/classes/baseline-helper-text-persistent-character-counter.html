@@ -23,7 +23,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Invalid/Focused Text Field Element - MDC Web Screenshot Test</title>
+    <title>Baseline Text Field Element - MDC Web Screenshot Test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../../../out/mdc.textfield.css">
     <link rel="stylesheet" href="../../../out/mdc.typography.css">
@@ -31,16 +31,15 @@
     <link rel="stylesheet" href="../../../out/spec/mdc-textfield/fixture.css">
   </head>
 
-  <!-- This screenshot test is used to check the error and focused state of the text field. -->
   <body class="test-container">
     <main class="test-viewport test-viewport--mobile">
       <div class="test-layout">
 
         <div class="test-cell test-cell--textfield">
-          <div class="mdc-text-field mdc-text-field--invalid mdc-text-field--focused">
-            <input type="text" id="filled-text-field" class="mdc-text-field__input test-text-field__input" required pattern=".{4,8}" maxlength="8">
+          <div class="mdc-text-field">
+            <input type="text" id="filled-text-field" class="mdc-text-field__input test-text-field__input" maxlength="10">
             <label class="mdc-floating-label" for="filled-text-field">Label</label>
-            <div class="mdc-line-ripple mdc-line-ripple--active"></div>
+            <div class="mdc-line-ripple"></div>
           </div>
           <div class="mdc-text-field-helper-line">
             <div id="example-1-helper-text" class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg">Helper Text</div>
@@ -49,13 +48,13 @@
         </div>
 
         <div class="test-cell test-cell--textfield">
-          <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--invalid mdc-text-field--focused">
-            <!-- The single space value is to overcome an issue where the component does not draw the SVG path when created unless there is a value. -->
-            <input type="text" id="outlined-text-field" class="mdc-text-field__input test-text-field__input" value=" " required pattern=".{4,8}" maxlength="8">
-            <div class="mdc-notched-outline mdc-notched-outline--notched">
+          <div class="mdc-text-field mdc-text-field--outlined">
+            <input type="text" id="outlined-text-field" class="mdc-text-field__input test-text-field__input"
+                maxlength="10" aria-controls="example-1-helper-text" aria-describedby="example-1-helper-text">
+            <div class="mdc-notched-outline">
               <div class="mdc-notched-outline__leading"></div>
               <div class="mdc-notched-outline__notch">
-                <label for="outlined-text-field" class="mdc-floating-label mdc-floating-label--float-above">Label</label>
+                <label for="outlined-text-field" class="mdc-floating-label">Label</label>
               </div>
               <div class="mdc-notched-outline__trailing"></div>
             </div>
@@ -67,20 +66,19 @@
         </div>
 
         <div class="test-cell test-cell--textfield">
-          <div class="mdc-text-field mdc-text-field--invalid mdc-text-field--focused">
-            <input type="text" id="filled-text-field-with-value" class="mdc-text-field__input test-text-field__input" value="Filled value" required pattern=".{4,8}" maxlength="24">
+          <div class="mdc-text-field">
+            <input type="text" id="filled-text-field-with-value" class="mdc-text-field__input test-text-field__input" value="Filled value" maxlength="25">
             <label for="filled-text-field-with-value" class="mdc-floating-label mdc-floating-label--float-above">Label</label>
-            <div class="mdc-line-ripple mdc-line-ripple--active"></div>
+            <div class="mdc-line-ripple"></div>
           </div>
           <div class="mdc-text-field-helper-line">
             <div id="example-1-helper-text" class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg">Helper Text</div>
-            <div class="mdc-text-field-character-counter">0/24</div>
+            <div class="mdc-text-field-character-counter">0/25</div>
           </div>
         </div>
-
         <div class="test-cell test-cell--textfield">
-          <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--invalid mdc-text-field--focused">
-            <input type="text" id="outlined-text-field-with-value" class="mdc-text-field__input test-text-field__input" value="Filled value" required pattern=".{4,8}" maxlength="24">
+          <div class="mdc-text-field mdc-text-field--outlined">
+            <input type="text" id="outlined-text-field-with-value" class="mdc-text-field__input test-text-field__input" value="Filled value" maxlength="25">
             <div class="mdc-notched-outline mdc-notched-outline--notched">
               <div class="mdc-notched-outline__leading"></div>
               <div class="mdc-notched-outline__notch">
@@ -91,10 +89,9 @@
           </div>
           <div class="mdc-text-field-helper-line">
             <div id="example-1-helper-text" class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg">Helper Text</div>
-            <div class="mdc-text-field-character-counter">0/24</div>
+            <div class="mdc-text-field-character-counter">0/25</div>
           </div>
-        </div>
-
+          </div>
       </div>
     </main>
 

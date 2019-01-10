@@ -22,30 +22,14 @@
 
 // Public mixins
 
-@mixin mdc-text-field-helper-text-color($color) {
+@mixin mdc-text-field-character-counter-color($color) {
   &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-helper-text-color_($color);
+    @include mdc-text-field-character-counter-color_($color);
   }
 }
 
-@mixin mdc-text-field-helper-text-validation-color($color) {
-  &:not(.mdc-text-field--disabled) {
-    @include mdc-text-field-helper-text-validation-color_($color);
-  }
-}
-
-@mixin mdc-text-field-helper-text-focused {
-  + .mdc-text-field-helper-text:not(.mdc-text-field-helper-text--validation-msg) .mdc-text-field-helper-text__text {
-    opacity: 1;
-  }
-}
-
-@mixin mdc-text-field-helper-text-counter-position($xOffset, $yOffset) {
-  + .mdc-text-field-helper-text .mdc-text-field-helper-text__text {
-    position: absolute;
-  }
-
-  + .mdc-text-field-helper-text .mdc-text-field-helper-text__counter {
+@mixin mdc-text-field-character-counter-position($xOffset, $yOffset) {
+  .mdc-text-field-character-counter {
     position: absolute;
     right: $xOffset;
     bottom: $yOffset;
@@ -54,18 +38,9 @@
 
 // Private mixins
 
-@mixin mdc-text-field-helper-text-color_($color) {
-  + .mdc-text-field-helper-text {
-    @include mdc-theme-prop(color, $color);
-  }
-
-  + .mdc-text-field-helper-text .mdc-text-field-helper-text__counter {
-    @include mdc-theme-prop(color, $color);
-  }
-}
-
-@mixin mdc-text-field-helper-text-validation-color_($color) {
-  &.mdc-text-field--invalid + .mdc-text-field-helper-text--validation-msg .mdc-text-field-helper-text__text {
+@mixin mdc-text-field-character-counter-color_($color) {
+  .mdc-text-field-character-counter,
+  + .mdc-text-field-helper-line .mdc-text-field-character-counter {
     @include mdc-theme-prop(color, $color);
   }
 }

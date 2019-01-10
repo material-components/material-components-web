@@ -22,18 +22,18 @@
  */
 
 /** @enum {string} */
-const strings = {
-  ARIA_HIDDEN: 'aria-hidden',
-  ROLE: 'role',
-  TEXT_SELECTOR: '.mdc-text-field-helper-text__text',
-  COUNTER_SELECTOR: '.mdc-text-field-helper-text__counter',
-};
-
-/** @enum {string} */
 const cssClasses = {
   ROOT: 'mdc-text-field-helper-text',
   HELPER_TEXT_PERSISTENT: 'mdc-text-field-helper-text--persistent',
   HELPER_TEXT_VALIDATION_MSG: 'mdc-text-field-helper-text--validation-msg',
+  HELPER_LINE: 'mdc-text-field-helper-line',
+};
+
+/** @enum {string} */
+const strings = {
+  ARIA_HIDDEN: 'aria-hidden',
+  ROLE: 'role',
+  ROOT_SELECTOR: `.${cssClasses.ROOT}`,
 };
 
 export {strings, cssClasses};

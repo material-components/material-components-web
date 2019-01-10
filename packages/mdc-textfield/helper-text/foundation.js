@@ -68,29 +68,12 @@ class MDCTextFieldHelperTextFoundation extends MDCFoundation {
    * Sets the content of the helper text field.
    * @param {string} content
    */
-  setTextContent(content) {
-    if (!this.hasText()) return;
-
-    this.adapter_.setTextContent(content);
-  }
-
-  hasText() {
-    return this.adapter_.hasText();
-  }
-
-  hasCounter() {
-    return this.adapter_.hasCounter();
-  }
-
-  setCounterValue(curLength, maxLength) {
-    if (!this.hasCounter()) return;
-
-    curLength = Math.min(curLength, maxLength);
-    this.adapter_.setCounterContent(`${curLength}/${maxLength}`);
+  setContent(content) {
+    this.adapter_.setContent(content);
   }
 
   /** @param {boolean} isPersistent Sets the persistency of the helper text. */
-  setTextPersistent(isPersistent) {
+  setPersistent(isPersistent) {
     if (isPersistent) {
       this.adapter_.addClass(cssClasses.HELPER_TEXT_PERSISTENT);
     } else {
@@ -112,9 +95,7 @@ class MDCTextFieldHelperTextFoundation extends MDCFoundation {
 
   /** Makes the helper text visible to the screen reader. */
   showToScreenReader() {
-    if (!this.hasText()) return;
-
-    this.adapter_.removeTextAttr(strings.ARIA_HIDDEN);
+    this.adapter_.removeAttr(strings.ARIA_HIDDEN);
   }
 
   /**
@@ -122,16 +103,14 @@ class MDCTextFieldHelperTextFoundation extends MDCFoundation {
    * @param {boolean} inputIsValid
    */
   setValidity(inputIsValid) {
-    if (!this.hasText()) return;
-
     const helperTextIsPersistent = this.adapter_.hasClass(cssClasses.HELPER_TEXT_PERSISTENT);
     const helperTextIsValidationMsg = this.adapter_.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
     const validationMsgNeedsDisplay = helperTextIsValidationMsg && !inputIsValid;
 
     if (validationMsgNeedsDisplay) {
-      this.adapter_.setTextAttr(strings.ROLE, 'alert');
+      this.adapter_.setAttr(strings.ROLE, 'alert');
     } else {
-      this.adapter_.removeTextAttr(strings.ROLE);
+      this.adapter_.removeAttr(strings.ROLE);
     }
 
     if (!helperTextIsPersistent && !validationMsgNeedsDisplay) {
@@ -144,7 +123,7 @@ class MDCTextFieldHelperTextFoundation extends MDCFoundation {
    * @private
    */
   hide_() {
-    this.adapter_.setTextAttr(strings.ARIA_HIDDEN, 'true');
+    this.adapter_.setAttr(strings.ARIA_HIDDEN, 'true');
   }
 }
 

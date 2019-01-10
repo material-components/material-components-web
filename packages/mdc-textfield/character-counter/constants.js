@@ -22,13 +22,13 @@
  */
 
 /** @enum {string} */
-const strings = {
-  ROOT_SELECTOR: `.${cssClasses.ROOT}`,
+const cssClasses = {
+  ROOT: 'mdc-text-field-character-counter',
 };
 
 /** @enum {string} */
-const cssClasses = {
-  ROOT: 'mdc-text-field-character-counter',
+const strings = {
+  ROOT_SELECTOR: `.${cssClasses.ROOT}`,
 };
 
 export {strings, cssClasses};

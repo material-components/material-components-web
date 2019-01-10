@@ -34,7 +34,9 @@ import MDCTextFieldFoundation from './foundation';
 /* eslint-disable no-unused-vars */
 import {MDCLineRipple, MDCLineRippleFoundation} from '@material/line-ripple/index';
 import {MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation} from './helper-text/index';
-import {cssClasses as helperTextCssClasses} from './helper-text/constants';
+import {MDCTextFieldCharacterCounter, MDCTextFieldCharacterCounterFoundation} from './character-counter/index';
+import {strings as helperTextStrings} from './helper-text/constants';
+import {strings as characterCounterStrings} from './character-counter/constants';
 import {MDCTextFieldIcon, MDCTextFieldIconFoundation} from './icon/index';
 import {MDCFloatingLabel, MDCFloatingLabelFoundation} from '@material/floating-label/index';
 import {MDCNotchedOutline, MDCNotchedOutlineFoundation} from '@material/notched-outline/index';
@@ -83,6 +85,8 @@ class MDCTextField extends MDCComponent {
    * creates a new MDCLineRipple.
    * @param {(function(!Element): !MDCTextFieldHelperText)=} helperTextFactory A function which
    * creates a new MDCTextFieldHelperText.
+   * @param {(function(!Element): !MDCTextFieldCharacterCounter)=} characterCounterFactory A function which
+   * creates a new MDCTextFieldCharacterCounter.
    * @param {(function(!Element): !MDCTextFieldIcon)=} iconFactory A function which
    * creates a new MDCTextFieldIcon.
    * @param {(function(!Element): !MDCFloatingLabel)=} labelFactory A function which
@@ -94,6 +98,7 @@ class MDCTextField extends MDCComponent {
     rippleFactory = (el, foundation) => new MDCRipple(el, foundation),
     lineRippleFactory = (el) => new MDCLineRipple(el),
     helperTextFactory = (el) => new MDCTextFieldHelperText(el),
+    characterCounterFactory = (el) => new MDCTextFieldCharacterCounter(el),
     iconFactory = (el) => new MDCTextFieldIcon(el),
     labelFactory = (el) => new MDCFloatingLabel(el),
     outlineFactory = (el) => new MDCNotchedOutline(el)) {
@@ -111,8 +116,20 @@ class MDCTextField extends MDCComponent {
       this.outline_ = outlineFactory(outlineElement);
     }
 
-    if (this.root_.nextElementSibling && this.root_.nextElementSibling.classList.contains(helperTextCssClasses.ROOT)) {
-      this.helperText_ = helperTextFactory(this.root_.nextElementSibling);
+    const nextElementSibling = this.root_.nextElementSibling;
+    const hasHelperLine = (nextElementSibling && nextElementSibling.classList.contains(cssClasses.HELPER_LINE));
+    const helperTextEl = hasHelperLine && nextElementSibling.querySelector(helperTextStrings.ROOT_SELECTOR);
+    if (helperTextEl) {
+      this.helperText_ = helperTextFactory(helperTextEl);
+    }
+
+    let characterCounterEl = this.root_.querySelector(characterCounterStrings.ROOT_SELECTOR);
+    if (!characterCounterEl) {
+      characterCounterEl = hasHelperLine && nextElementSibling.querySelector(characterCounterStrings.ROOT_SELECTOR);
+    }
+
+    if (characterCounterEl) {
+      this.characterCounter_ = characterCounterFactory(characterCounterEl);
     }
 
     const iconElements = this.root_.querySelectorAll(strings.ICON_SELECTOR);
@@ -152,6 +169,9 @@ class MDCTextField extends MDCComponent {
     }
     if (this.helperText_) {
       this.helperText_.destroy();
+    }
+    if (this.characterCounter_) {
+      this.characterCounter_.destroy();
     }
     if (this.leadingIcon_) {
       this.leadingIcon_.destroy();
@@ -495,6 +515,7 @@ class MDCTextField extends MDCComponent {
   getFoundationMap_() {
     return {
       helperText: this.helperText_ ? this.helperText_.foundation : undefined,
+      characterCounter: this.characterCounter_ ? this.characterCounter_.foundation : undefined,
       leadingIcon: this.leadingIcon_ ? this.leadingIcon_.foundation : undefined,
       trailingIcon: this.trailingIcon_ ? this.trailingIcon_.foundation : undefined,
     };
@@ -503,4 +524,5 @@ class MDCTextField extends MDCComponent {
 
 export {MDCTextField, MDCTextFieldFoundation,
   MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation,
+  MDCTextFieldCharacterCounter, MDCTextFieldCharacterCounterFoundation,
   MDCTextFieldIcon, MDCTextFieldIconFoundation};

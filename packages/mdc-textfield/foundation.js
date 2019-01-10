@@ -24,6 +24,7 @@
 import MDCFoundation from '@material/base/foundation';
 /* eslint-disable no-unused-vars */
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
+import MDCTextFieldCharacterCounterFoundation from './character-counter/foundation';
 import MDCTextFieldIconFoundation from './icon/foundation';
 /* eslint-enable no-unused-vars */
 import {MDCTextFieldAdapter, NativeInputType, FoundationMapType} from './adapter';
@@ -108,6 +109,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
     /** @type {!MDCTextFieldHelperTextFoundation|undefined} */
     this.helperText_ = foundationMap.helperText;
+    /** @type {!MDCTextFieldCharacterCounterFoundation|undefined} */
+    this.characterCounter_ = foundationMap.characterCounter;
     /** @type {!MDCTextFieldIconFoundation|undefined} */
     this.leadingIcon_ = foundationMap.leadingIcon;
     /** @type {!MDCTextFieldIconFoundation|undefined} */
@@ -161,7 +164,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     });
     this.validationObserver_ =
         this.adapter_.registerValidationAttributeChangeHandler(this.validationAttributeChangeHandler_);
-    this.setHelperTextCounterContent_(this.getValue().length);
+    this.setCharacterCounter_(this.getValue().length);
   }
 
   destroy() {
@@ -199,7 +202,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
       }
 
       if (attributeName === 'maxlength') {
-        this.setHelperTextCounterContent_(this.getValue().length);
+        this.setCharacterCounter_(this.getValue().length);
       }
     });
   }
@@ -259,7 +262,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
   handleInput() {
     this.autoCompleteFocus();
-    this.setHelperTextCounterContent_(this.getValue().length);
+    this.setCharacterCounter_(this.getValue().length);
   }
 
   /**
@@ -369,13 +372,13 @@ class MDCTextFieldFoundation extends MDCFoundation {
     }
   }
 
-  setHelperTextCounterContent_(curLength) {
-    if (!this.helperText_) return;
+  setCharacterCounter_(curLength) {
+    if (!this.characterCounter_) return;
 
     const maxLength = this.getNativeInput_().maxLength;
     if (maxLength === -1) return;
 
-    this.helperText_.setCounterValue(curLength, maxLength);
+    this.characterCounter_.setCounterValue(curLength, maxLength);
   }
 
   /**
