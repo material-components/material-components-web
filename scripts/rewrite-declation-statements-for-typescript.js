@@ -92,14 +92,7 @@ function main(argv) {
   const srcFiles = glob.sync(`${rootDir}/**/*.{js,ts}`);
 
   srcFiles.forEach((srcFile) => transform(srcFile, rootDir));
-  // for debugging
-  // srcFiles.forEach((srcFile, i) => console.log(srcFile, i));
-  // srcFiles.forEach((srcFile, i) => {
-  //   if (i === 27) {
-  //     transform(srcFile, rootDir);
-  //   }
-  // });
-  // logProgress('');
+  logProgress('');
   console.log('\rTransform pass completed. ' + srcFiles.length + ' files written.\n');
 }
 
@@ -122,8 +115,7 @@ function transform(srcFile, rootDir) {
     ImportDeclaration(path) {
       const packageStr = rewriteDeclarationSource(path.node, srcFile, rootDir);
       const {value: sourceValue} = path.node.source;
-      
-      // if 3rd p and contains mdc.thirdparty. return
+
       const hasThirdPartyTransformed = sourceValue.includes(THIRD_PARTY_PATH);
       if (sourceValue !== packageStr && !hasThirdPartyTransformed) {
         const importDeclaration = t.importDeclaration(path.node.specifiers, t.stringLiteral(packageStr));
