@@ -100,6 +100,11 @@
   &:invalid {
     box-shadow: none;
   }
+
+  // Keep Chrome autofill behind the notched outline
+  &:-webkit-autofill {
+    z-index: auto !important;
+  }
 }
 // stylelint-disable-next-line plugin/selector-bem-pattern
 // Move label when text-field gets auto-filled in Chrome.
