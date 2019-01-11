@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,6 @@
 import MDCFoundation from '@material/base/foundation';
 import MDCTextFieldCharacterCounterAdapter from './adapter';
 import {cssClasses, strings} from './constants';
-
 
 /**
  * @extends {MDCFoundation<!MDCTextFieldCharacterCounterAdapter>}
@@ -59,6 +58,10 @@ class MDCTextFieldCharacterCounterFoundation extends MDCFoundation {
     super(Object.assign(MDCTextFieldCharacterCounterFoundation.defaultAdapter, adapter));
   }
 
+  /**
+   * @param {number} curLength
+   * @param {number} maxLength
+   */
   setCounterValue(curLength, maxLength) {
     curLength = Math.min(curLength, maxLength);
     this.adapter_.setContent(`${curLength}/${maxLength}`);

@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,8 +26,6 @@ import MDCComponent from '@material/base/component';
 import MDCTextFieldCharacterCounterAdapter from './adapter';
 import MDCTextFieldCharacterCounterFoundation from './foundation';
 
-import {strings} from './constants';
-
 /**
  * @extends {MDCComponent<!MDCTextFieldCharacterCounterFoundation>}
  * @final
@@ -52,11 +50,12 @@ class MDCTextFieldCharacterCounter extends MDCComponent {
    * @return {!MDCTextFieldCharacterCounterFoundation}
    */
   getDefaultFoundation() {
-    return new MDCTextFieldCharacterCounterFoundation(/** @type {!MDCTextFieldCharacterCounterAdapter} */ (Object.assign({
-      setContent: (content) => {
-        this.root_.textContent = content;
-      },
-    })));
+    return new MDCTextFieldCharacterCounterFoundation(
+      /** @type {!MDCTextFieldCharacterCounterAdapter} */ (Object.assign({
+        setContent: (content) => {
+          this.root_.textContent = content;
+        },
+      })));
   }
 }
 

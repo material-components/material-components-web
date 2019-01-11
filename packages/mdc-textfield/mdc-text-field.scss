@@ -196,22 +196,13 @@
 
   // stylelint-disable plugin/selector-bem-pattern
 
-  & {
-    padding-top: 4px;
-  }
-
   .mdc-text-field--dense + & {
     margin-bottom: 4px;
   }
 
   .mdc-text-field + & {
-    padding-right: 12px;
-    padding-left: 12px;
-  }
-
-  .mdc-text-field--outlined + & {
-    padding-right: 16px;
-    padding-left: 16px;
+    padding-right: $mdc-text-field-helper-line-padding;
+    padding-left: $mdc-text-field-helper-line-padding;
   }
 
   // stylelint-enable plugin/selector-bem-pattern

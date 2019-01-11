@@ -116,6 +116,7 @@ class MDCTextField extends MDCComponent {
       this.outline_ = outlineFactory(outlineElement);
     }
 
+    // Helper text
     const nextElementSibling = this.root_.nextElementSibling;
     const hasHelperLine = (nextElementSibling && nextElementSibling.classList.contains(cssClasses.HELPER_LINE));
     const helperTextEl = hasHelperLine && nextElementSibling.querySelector(helperTextStrings.ROOT_SELECTOR);
@@ -123,6 +124,7 @@ class MDCTextField extends MDCComponent {
       this.helperText_ = helperTextFactory(helperTextEl);
     }
 
+    // Character counter
     let characterCounterEl = this.root_.querySelector(characterCounterStrings.ROOT_SELECTOR);
     if (!characterCounterEl) {
       characterCounterEl = hasHelperLine && nextElementSibling.querySelector(characterCounterStrings.ROOT_SELECTOR);

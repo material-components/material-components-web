@@ -43,6 +43,7 @@ let NativeInputType;
 /**
  * @typedef {{
  *   helperText: (!MDCTextFieldHelperTextFoundation|undefined),
+ *   characterCounter: (!MDCTextFieldCharacterCounterFoundation|undefined),
  *   leadingIcon: (!MDCTextFieldIconFoundation|undefined),
  *   trailingIcon: (!MDCTextFieldIconFoundation|undefined),
  * }}

@@ -178,7 +178,9 @@
     @include mdc-theme-prop(color, $mdc-text-field-error);
   }
 
-  @include mdc-text-field-helper-text-focused;
+  + .mdc-text-field-helper-line .mdc-text-field-helper-text:not(.mdc-text-field-helper-text--validation-msg) {
+    opacity: 1;
+  }
 }
 
 @mixin mdc-text-field-dense_ {
@@ -221,8 +223,8 @@
       @include mdc-rtl-reflexive-property(padding, $radius-pixels + $mdc-notched-outline-padding, 0);
     }
 
-    + .mdc-text-field-helper-line .mdc-text-field-helper-text {
-      @include mdc-rtl-reflexive-property(margin, $radius-pixels + $mdc-notched-outline-padding, $mdc-text-field-label-offset);
+    + .mdc-text-field-helper-line {
+      @include mdc-rtl-reflexive-property(padding, $radius-pixels + $mdc-notched-outline-padding, $radius-pixels);
     }
   }
 }
@@ -476,7 +478,7 @@
   }
 
   .mdc-text-field-character-counter + .mdc-text-field__input {
-    margin-bottom: 28px;
+    margin-bottom: 28px; // Leaves space for character counter if it exists.
     padding-bottom: 0;
   }
 

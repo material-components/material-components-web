@@ -53,7 +53,7 @@ class MDCTextFieldHelperTextFoundation extends MDCFoundation {
       hasClass: () => {},
       setAttr: () => {},
       removeAttr: () => {},
-      setTextContent: () => {},
+      setContent: () => {},
     });
   }
 

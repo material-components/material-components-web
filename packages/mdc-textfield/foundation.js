@@ -200,11 +200,11 @@ class MDCTextFieldFoundation extends MDCFoundation {
         this.styleValidity_(true);
         return true;
       }
-
-      if (attributeName === 'maxlength') {
-        this.setCharacterCounter_(this.getValue().length);
-      }
     });
+
+    if (attributesList.indexOf('maxlength') > -1) {
+      this.setCharacterCounter_(this.getValue().length);
+    }
   }
 
   /**
@@ -260,6 +260,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
     this.adapter_.setLineRippleTransformOrigin(normalizedX);
   }
 
+  /**
+   * Handles input change of text input and text area.
+   */
   handleInput() {
     this.autoCompleteFocus();
     this.setCharacterCounter_(this.getValue().length);
@@ -372,6 +375,11 @@ class MDCTextFieldFoundation extends MDCFoundation {
     }
   }
 
+  /**
+   * Sets character counter values that shows characters used and the total character limit.
+   * @param {number} curLength
+   * @private
+   */
   setCharacterCounter_(curLength) {
     if (!this.characterCounter_) return;
 

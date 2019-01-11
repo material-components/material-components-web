@@ -34,12 +34,6 @@
   }
 }
 
-@mixin mdc-text-field-helper-text-focused {
-  + .mdc-text-field-helper-line .mdc-text-field-helper-text:not(.mdc-text-field-helper-text--validation-msg) {
-    opacity: 1;
-  }
-}
-
 // Private mixins
 
 @mixin mdc-text-field-helper-text-color_($color) {

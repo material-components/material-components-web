@@ -26,8 +26,6 @@ import MDCComponent from '@material/base/component';
 import MDCTextFieldHelperTextAdapter from './adapter';
 import MDCTextFieldHelperTextFoundation from './foundation';
 
-import {strings} from './constants';
-
 /**
  * @extends {MDCComponent<!MDCTextFieldHelperTextFoundation>}
  * @final

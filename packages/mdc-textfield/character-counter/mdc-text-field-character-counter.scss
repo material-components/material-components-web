@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc.
+// Copyright 2019 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
 //
 
 @import "../functions";
-@import "@material/theme/mixins";
 @import "@material/typography/mixins";
 
 // postcss-bem-linter: define text-field-character-counter
@@ -29,7 +28,7 @@
 .mdc-text-field-character-counter {
   @include mdc-typography(caption);
 
-  margin-left: auto;
+  margin-left: auto; // Keep flex item align to right on absence of helper text.
 }
 
 // postcss-bem-linter: end
