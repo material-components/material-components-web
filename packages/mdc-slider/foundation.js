@@ -772,19 +772,12 @@ class MDCSliderFoundation extends MDCFoundation {
     const topLobeHorizontal = this.value_.toString().length > 2 ? localeStringWidth - (2 * digitWidth) : 0;
     const extraHorizontalWidth = topLobeHorizontal - 30;
     if(extraHorizontalWidth > 0) {
-      let extraHorizontalWidthLeft = extraHorizontalWidth / 2;
-      let extraHorizontalWidthRight = extraHorizontalWidth / 2;
-      if (this.adapter_.isRTL()) {
-        const temp = extraHorizontalWidthRight;
-        extraHorizontalWidthRight = extraHorizontalWidthLeft;
-        extraHorizontalWidthLeft = temp;
+      const extraHorizontalWidthSide = extraHorizontalWidth / 2;
+      if (translatePx - MAX_TOP_NECK_WIDTH < extraHorizontalWidthSide) {
+        extraTranslateValue = extraHorizontalWidthSide - translatePx + MAX_TOP_NECK_WIDTH;
       }
-
-      if (translatePx - MAX_TOP_NECK_WIDTH < extraHorizontalWidthLeft) {
-        extraTranslateValue = extraHorizontalWidthLeft - translatePx + MAX_TOP_NECK_WIDTH;
-      }
-      if (this.rect_.width - translatePx - MAX_TOP_NECK_WIDTH < extraHorizontalWidthRight) {
-        extraTranslateValue = -(extraHorizontalWidthRight - (this.rect_.width - translatePx - MAX_TOP_NECK_WIDTH));
+      if (this.rect_.width - translatePx - MAX_TOP_NECK_WIDTH < extraHorizontalWidthSide) {
+        extraTranslateValue = -(extraHorizontalWidthSide - (this.rect_.width - translatePx - MAX_TOP_NECK_WIDTH));
       }
     }
 
