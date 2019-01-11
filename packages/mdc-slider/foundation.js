@@ -144,7 +144,7 @@ class MDCSliderFoundation extends MDCFoundation {
     /** @private {function(): undefined} */
     this.windowResizeHandler_ = () => this.layout();
 
-    //For testing path calculations
+    // For testing path calculations
     /** @private {number} */
     this.pathTotalHorizontalDistance_ = 0;
     /** @private {number} */
@@ -699,7 +699,7 @@ class MDCSliderFoundation extends MDCFoundation {
         this.pathLeftTopNeckCenterYPos_ = Math.sqrt(Math.pow(TOP_LOBE_RADIUS + TOP_NECK_RADIUS, 2) -
           Math.pow(MAX_TOP_NECK_WIDTH - topLobeHorizontalLeft/2, 2));
 
-        pointI.x = MAX_TOP_NECK_WIDTH - TOP_NECK_RADIUS + 
+        pointI.x = MAX_TOP_NECK_WIDTH - TOP_NECK_RADIUS +
           (Math.cos(this.pathLeftTopNeckTheta_) * TOP_NECK_RADIUS) + OFFSET_X;
         pointI.y = TOP_LOBE_RADIUS +
           (this.pathLeftTopNeckCenterYPos_ - (Math.sin(this.pathLeftTopNeckTheta_) * TOP_NECK_RADIUS)) + OFFSET_Y;
@@ -771,7 +771,7 @@ class MDCSliderFoundation extends MDCFoundation {
     let extraTranslateValue = 0;
     const topLobeHorizontal = this.value_.toString().length > 2 ? localeStringWidth - (2 * digitWidth) : 0;
     const extraHorizontalWidth = topLobeHorizontal - 30;
-    if(extraHorizontalWidth > 0) {
+    if (extraHorizontalWidth > 0) {
       const extraHorizontalWidthSide = extraHorizontalWidth / 2;
       if (translatePx - MAX_TOP_NECK_WIDTH < extraHorizontalWidthSide) {
         extraTranslateValue = extraHorizontalWidthSide - translatePx + MAX_TOP_NECK_WIDTH;

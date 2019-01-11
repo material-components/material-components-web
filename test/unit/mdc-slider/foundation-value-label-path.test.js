@@ -45,8 +45,8 @@ test('path calculated correctly with label at beginning of slider', () => {
   const extraHorizontalWidth = Math.max(labelHorizontalWidth - MAX_TOP_LOBE_HORIZONTAL, 0);
   const topNeckTheta = Math.acos((MAX_TOP_NECK_WIDTH - topLobeHorizontal/2)/(TOP_LOBE_RADIUS + TOP_NECK_RADIUS));
   const topNeckCenterYPos = Math.sqrt(Math.pow(TOP_LOBE_RADIUS + TOP_NECK_RADIUS, 2) -
-      Math.pow(MAX_TOP_NECK_WIDTH - topLobeHorizontal/2, 2));
-  
+    Math.pow(MAX_TOP_NECK_WIDTH - topLobeHorizontal/2, 2));
+
   const translatePx = 0;
   const leftTopNeckTheta = Math.acos((MAX_TOP_NECK_WIDTH - translatePx)/(TOP_LOBE_RADIUS + TOP_NECK_RADIUS));
   const leftTopNeckCenterYPos = Math.sqrt(Math.pow(TOP_LOBE_RADIUS + TOP_NECK_RADIUS, 2) -
@@ -57,7 +57,7 @@ test('path calculated correctly with label at beginning of slider', () => {
   assert.equal(foundation.pathLeftTopNeckTheta_, leftTopNeckTheta);
   assert.equal(foundation.pathLeftTopNeckCenterYPos_, leftTopNeckCenterYPos);
   assert.equal(foundation.pathRightTopNeckTheta_, topNeckTheta);
-  assert.equal(foundation.pathRightTopNeckCenterYPos_, topNeckCenterYPos);  
+  assert.equal(foundation.pathRightTopNeckCenterYPos_, topNeckCenterYPos);
 });
 
 test('path calculated correctly with label in middle of slider', () => {
@@ -73,8 +73,8 @@ test('path calculated correctly with label in middle of slider', () => {
   const extraHorizontalWidth = Math.max(labelHorizontalWidth - MAX_TOP_LOBE_HORIZONTAL, 0);
   const topNeckTheta = Math.acos((MAX_TOP_NECK_WIDTH - topLobeHorizontal/2)/(TOP_LOBE_RADIUS + TOP_NECK_RADIUS));
   const topNeckCenterYPos = Math.sqrt(Math.pow(TOP_LOBE_RADIUS + TOP_NECK_RADIUS, 2) -
-      Math.pow(MAX_TOP_NECK_WIDTH - topLobeHorizontal/2, 2));
-  
+    Math.pow(MAX_TOP_NECK_WIDTH - topLobeHorizontal/2, 2));
+
   const translatePx = 500;
   foundation.calcPath_(translatePx);
 
@@ -82,7 +82,7 @@ test('path calculated correctly with label in middle of slider', () => {
   assert.equal(foundation.pathLeftTopNeckTheta_, topNeckTheta);
   assert.equal(foundation.pathLeftTopNeckCenterYPos_, topNeckCenterYPos);
   assert.equal(foundation.pathRightTopNeckTheta_, topNeckTheta);
-  assert.equal(foundation.pathRightTopNeckCenterYPos_, topNeckCenterYPos);  
+  assert.equal(foundation.pathRightTopNeckCenterYPos_, topNeckCenterYPos);
 });
 
 test('path calculated correctly with label at end of slider', () => {
@@ -98,8 +98,8 @@ test('path calculated correctly with label at end of slider', () => {
   const extraHorizontalWidth = Math.max(labelHorizontalWidth - MAX_TOP_LOBE_HORIZONTAL, 0);
   const topNeckTheta = Math.acos((MAX_TOP_NECK_WIDTH - topLobeHorizontal/2)/(TOP_LOBE_RADIUS + TOP_NECK_RADIUS));
   const topNeckCenterYPos = Math.sqrt(Math.pow(TOP_LOBE_RADIUS + TOP_NECK_RADIUS, 2) -
-      Math.pow(MAX_TOP_NECK_WIDTH - topLobeHorizontal/2, 2));
-  
+    Math.pow(MAX_TOP_NECK_WIDTH - topLobeHorizontal/2, 2));
+
   const translatePx = 1000;
   const rightTopNeckTheta =
     Math.acos((MAX_TOP_NECK_WIDTH - (foundation.rect_.width - translatePx))/(TOP_LOBE_RADIUS + TOP_NECK_RADIUS));
@@ -111,5 +111,5 @@ test('path calculated correctly with label at end of slider', () => {
   assert.equal(foundation.pathLeftTopNeckTheta_, topNeckTheta);
   assert.equal(foundation.pathLeftTopNeckCenterYPos_, topNeckCenterYPos);
   assert.equal(foundation.pathRightTopNeckTheta_, rightTopNeckTheta);
-  assert.equal(foundation.pathRightTopNeckCenterYPos_, rightTopNeckCenterYPos);  
+  assert.equal(foundation.pathRightTopNeckCenterYPos_, rightTopNeckCenterYPos);
 });
