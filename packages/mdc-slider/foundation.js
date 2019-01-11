@@ -538,35 +538,40 @@ class MDCSliderFoundation extends MDCFoundation {
 
   /**
    * Calculates the value label path
+   * @param {number} translatePx
    * @return {string}
    */
   calcPath_(translatePx) {
     const digitWidth = this.adapter_.getDigitWidth();
     const localeStringWidth = this.calcLocaleStringWidth_();
-    const maxTopLobeHorizontal = 30;
+    // The maximum horizontal distance at the top of the top-lobe before extra
+    // horizontal distance must be added to the bottom of the top-lobe
+    const MAX_TOP_LOBE_HORIZONTAL = 30;
 
-    // Less than 2 characters does not need to add horizontal space
+    // The width of the label beyond 2 characters. If the label is <=2 characters then
+    // no horizontal distance needs to be added.
     const labelHorizontalWidth = this.value_.toString().length > 2 ? localeStringWidth - (2 * digitWidth) : 0;
-    // The distance added to widen the top lobe
-    const topLobeHorizontal = Math.min(labelHorizontalWidth, maxTopLobeHorizontal);
-    // Value to add to the sides of the toplobe to adjust for big numbers
-    const extraHorizontalWidth = Math.max(labelHorizontalWidth - maxTopLobeHorizontal, 0);
+    const topLobeHorizontal = Math.min(labelHorizontalWidth, MAX_TOP_LOBE_HORIZONTAL);
+    // The extra horizontal distance to add to the bottom of the top-lobe
+    const extraHorizontalWidth = Math.max(labelHorizontalWidth - MAX_TOP_LOBE_HORIZONTAL, 0);
+    // Note: total horizontal distance added to the top-lobe = topLobeHorizontal + extraHorizontalWidth
 
-    // Distributes the extra length to left and right
+    // Distribute the extra horizontal distance for the bottom of the top-lobe to left and right sides equally
     let extraHorizontalWidthLeft = extraHorizontalWidth / 2;
     let extraHorizontalWidthRight = extraHorizontalWidth / 2;
 
-    // Max width of one side of the top lobe neck arc
-    // Used for when there is extraHorizontalWidth meaning that the arc is at its max width and
-    // for finding the top neck corner theta since (topNeckArcWidth - topLobeHorizontal/2) affects the theta
-    const topNeckArcWidth = 15;
-    // If the thumb is reaching the ends of the slider then edit the left and right to make sure
-    // it does not bleed off the screen.
-    const distanceFromLeft =
-      this.adapter_.isRTL() ? this.rect_.width - translatePx - topNeckArcWidth : translatePx - topNeckArcWidth;
-    const distanceFromRight =
-      this.adapter_.isRTL() ? translatePx - topNeckArcWidth : this.rect_.width - translatePx - topNeckArcWidth;
+    // Max width of one side of the top-lobe neck. When extraHorizontalWidth > 0 that means
+    // the left side and right side of the neck are at their max width.
+    const MAX_TOP_NECK_WIDTH = 15;
 
+    // The horizontal distance from the start of the slider to the start of the left neck arc
+    const distanceFromLeft =
+      this.adapter_.isRTL() ? this.rect_.width - translatePx - MAX_TOP_NECK_WIDTH : translatePx - MAX_TOP_NECK_WIDTH;
+    // The horizontal distance from the end of the right neck arc to the end of the slider
+    const distanceFromRight =
+      this.adapter_.isRTL() ? translatePx - MAX_TOP_NECK_WIDTH : this.rect_.width - translatePx - MAX_TOP_NECK_WIDTH;
+    // If the thumb is reaching the ends of the slider then edit extraHorizontalWidthLeft and
+    // extraHorizontalWidthRight so it does not bleed off the screen.
     if (distanceFromLeft < extraHorizontalWidthLeft) {
       extraHorizontalWidthRight = extraHorizontalWidth - distanceFromLeft;
       extraHorizontalWidthLeft = distanceFromLeft;
@@ -577,146 +582,150 @@ class MDCSliderFoundation extends MDCFoundation {
     }
 
     // These constants define the shape of the default value label.
-    // The value label changes shape based on the size of
-    // the text: The top lobe spreads horizontally, and the
-    // top arc on the neck moves down to keep it merging smoothly
-    // with the top lobe as it expands.
+    // The value label changes shape based on the size of the text: the top-lobe widens horizontally, and the neck of
+    // the top-lobe creates a narrower arc (smaller circle) to merge the top-lobe and stem smoothly as it expands.
 
-    // Radius of the top lobe of the value indicator.
-    const topLobeRadius = 16;
-    // Radius of the top neck of the value indicator.
-    const topNeckRadius = 14;
-    // X position for the right side of the stem
-    const rightStemX = 17;
+    // Radius of the top-lobe
+    const TOP_LOBE_RADIUS = 16;
+    // Radius of one side of the neck of the top-lobe
+    const TOP_NECK_RADIUS = 14;
     // X position for the left side of the stem
-    const leftStemX = 15;
-    // Angle of the top neck corner
-    const topNeckCornerTheta = Math.acos((topNeckArcWidth - topLobeHorizontal/2)/(topLobeRadius+topNeckRadius));
-    // Y position of the top neck corner
-    const topNeckCornerCenterY = Math.sqrt(Math.pow(topLobeRadius+topNeckRadius, 2) -
-      Math.pow(topNeckArcWidth - topLobeHorizontal/2, 2));
-    // Distance between the top lobe and the bottom lobe
-    const centersDifference = 40;
-    // Radius of the bottom lobe
-    const bottomLobeRadius = 6;
-    // Radius of the bottom neck
-    const bottomNeckRadius = 4.5;
-    // Angle of the bottom neck (50 degrees)
-    const bottomNeckTheta = 5 * Math.PI / 18;
-    // Height of the bottom neck, used for the math below
-    const bottomNeckHeight = Math.sin(bottomNeckTheta) * (bottomLobeRadius+bottomNeckRadius);
-    // Height of value label
-    const valueLabelHeight = topLobeRadius + centersDifference + bottomLobeRadius;
+    const STEM_LEFT_XPOS = 15;
+    // X position for the right side of the stem
+    const STEM_RIGHT_XPOS = 17;
+    // Angle of the neck of the top-lobe
+    const topNeckTheta = Math.acos((MAX_TOP_NECK_WIDTH - topLobeHorizontal/2)/(TOP_LOBE_RADIUS + TOP_NECK_RADIUS));
+    // Y position of the center of neck of the top-lobe
+    const topNeckCenterYPos = Math.sqrt(Math.pow(TOP_LOBE_RADIUS + TOP_NECK_RADIUS, 2) -
+      Math.pow(MAX_TOP_NECK_WIDTH - topLobeHorizontal/2, 2));
+
+    // Distance between the center of the top-lobe and center of the bottom-lobe
+    const CENTERS_DISTANCE = 40;
+
+    // Radius of the bottom-lobe
+    const BOTTOM_LOBE_RADIUS = 6;
+    // Radius of one side of the neck of the bottom-lobe
+    const BOTTOM_NECK_RADIUS = 4.5;
+    // Angle of the neck of the bottom-lobe (50 degrees)
+    const BOTTOM_NECK_THETA = 5 * Math.PI / 18;
+    // Height of the neck of the bottom-lobe
+    const bottomNeckHeight = Math.sin(BOTTOM_NECK_THETA) * (BOTTOM_LOBE_RADIUS+BOTTOM_NECK_RADIUS);
+
+    // Total height of value label
+    const valueLabelHeight = TOP_LOBE_RADIUS + CENTERS_DISTANCE + BOTTOM_LOBE_RADIUS;
     // Offset values to adjust the value label to the svg of the thumb.
-    const offsetY = -39;
-    const offsetX = 1;
+    const OFFSET_Y = -39;
+    const OFFSET_X = 1;
 
     // Each point that is needed to create the path is created here.
     const pointA = {
-      x: rightStemX + (topNeckRadius - (Math.cos(topNeckCornerTheta) * topNeckRadius)) + offsetX,
-      y: topLobeRadius + (topNeckCornerCenterY - (Math.sin(topNeckCornerTheta) * topNeckRadius)) + offsetY,
+      x: STEM_RIGHT_XPOS + (TOP_NECK_RADIUS - (Math.cos(topNeckTheta) * TOP_NECK_RADIUS)) + OFFSET_X,
+      y: TOP_LOBE_RADIUS + (topNeckCenterYPos - (Math.sin(topNeckTheta) * TOP_NECK_RADIUS)) + OFFSET_Y,
     };
     const pointB = {
-      x: rightStemX + offsetX,
-      y: topLobeRadius + topNeckCornerCenterY + offsetY,
+      x: STEM_RIGHT_XPOS + OFFSET_X,
+      y: TOP_LOBE_RADIUS + topNeckCenterYPos + OFFSET_Y,
     };
     const pointC = {
-      x: rightStemX + offsetX,
-      y: topLobeRadius + centersDifference - bottomNeckHeight + offsetY,
+      x: STEM_RIGHT_XPOS + OFFSET_X,
+      y: TOP_LOBE_RADIUS + CENTERS_DISTANCE - bottomNeckHeight + OFFSET_Y,
     };
     const pointD = {
-      x: rightStemX + bottomNeckRadius - (Math.cos(bottomNeckTheta) * bottomNeckRadius) + 1 + offsetX,
-      y: (topLobeRadius + centersDifference - bottomNeckHeight) +
-         (Math.sin(bottomNeckTheta) * bottomNeckRadius) + offsetY,
+      x: STEM_RIGHT_XPOS + BOTTOM_NECK_RADIUS - (Math.cos(BOTTOM_NECK_THETA) * BOTTOM_NECK_RADIUS) + 1 + OFFSET_X,
+      y: (TOP_LOBE_RADIUS + CENTERS_DISTANCE - bottomNeckHeight) +
+         (Math.sin(BOTTOM_NECK_THETA) * BOTTOM_NECK_RADIUS) + OFFSET_Y,
     };
     const pointE = {
-      x: topLobeRadius + offsetX,
-      y: valueLabelHeight + offsetY,
+      x: TOP_LOBE_RADIUS + OFFSET_X,
+      y: valueLabelHeight + OFFSET_Y,
     };
     const pointF = {
-      x: leftStemX - bottomNeckRadius + (Math.cos(bottomNeckTheta) * bottomNeckRadius) - 1 + offsetX,
-      y: (topLobeRadius + centersDifference - bottomNeckHeight) +
-         (Math.sin(bottomNeckTheta) * bottomNeckRadius) + offsetY,
+      x: STEM_LEFT_XPOS - BOTTOM_NECK_RADIUS + (Math.cos(BOTTOM_NECK_THETA) * BOTTOM_NECK_RADIUS) - 1 + OFFSET_X,
+      y: (TOP_LOBE_RADIUS + CENTERS_DISTANCE - bottomNeckHeight) +
+         (Math.sin(BOTTOM_NECK_THETA) * BOTTOM_NECK_RADIUS) + OFFSET_Y,
     };
     const pointG = {
-      x: leftStemX + offsetX,
-      y: topLobeRadius + centersDifference - bottomNeckHeight + offsetY,
+      x: STEM_LEFT_XPOS + OFFSET_X,
+      y: TOP_LOBE_RADIUS + CENTERS_DISTANCE - bottomNeckHeight + OFFSET_Y,
     };
     const pointH = {
-      x: leftStemX + offsetX,
-      y: topLobeRadius + topNeckCornerCenterY + offsetY,
+      x: STEM_LEFT_XPOS + OFFSET_X,
+      y: TOP_LOBE_RADIUS + topNeckCenterYPos + OFFSET_Y,
     };
     const pointI = {
-      x: leftStemX - topNeckRadius + (Math.cos(topNeckCornerTheta) * topNeckRadius) + offsetX,
-      y: topLobeRadius + (topNeckCornerCenterY - (Math.sin(topNeckCornerTheta) * topNeckRadius)) + offsetY,
+      x: STEM_LEFT_XPOS - TOP_NECK_RADIUS + (Math.cos(topNeckTheta) * TOP_NECK_RADIUS) + OFFSET_X,
+      y: TOP_LOBE_RADIUS + (topNeckCenterYPos - (Math.sin(topNeckTheta) * TOP_NECK_RADIUS)) + OFFSET_Y,
     };
     const start = {
-      x: topLobeRadius + (topLobeHorizontal / 2) + offsetX,
-      y: 0 + offsetY,
+      x: TOP_LOBE_RADIUS + (topLobeHorizontal / 2) + OFFSET_X,
+      y: 0 + OFFSET_Y,
     };
     const end = {
-      x: topLobeRadius - (topLobeHorizontal / 2) + offsetX,
-      y: 0 + offsetY,
+      x: TOP_LOBE_RADIUS - (topLobeHorizontal / 2) + OFFSET_X,
+      y: 0 + OFFSET_Y,
     };
 
-    // If there is extra, update the start, end, and pointA X positions for correct path
+    // If there is any extra horizontal distance, update the start, end, and pointA X positions
     if (extraHorizontalWidth > 0) {
       start.x = start.x + extraHorizontalWidthRight;
-      end.x = end.x - extraHorizontalWidthLeft;
       pointA.x = pointA.x + extraHorizontalWidthRight;
+      end.x = end.x - extraHorizontalWidthLeft;
     }
 
-    // When the slider reaches a certain point close to the edges the extra on the side closest to the edge
-    // is negative and the angles of the neck need to be updates to create smooth value label
-    if (extraHorizontalWidthLeft < 0 && extraHorizontalWidth > 0) {
-      const topLobeHorizontalLeft = this.adapter_.isRTL() ? (this.rect_.width - translatePx) * 2 : translatePx * 2;
+    // When the slider reaches the edge of the slider, the extra horizontal distance on the side closest to the edge
+    // is negative and the angles of the neck needs to be updated to create smooth value label
+    if (extraHorizontalWidth > 0) {
+      if (extraHorizontalWidthLeft < 0) {
+        const topLobeHorizontalLeft = this.adapter_.isRTL() ? (this.rect_.width - translatePx) * 2 : translatePx * 2;
 
-      const leftTopNeckCornerTheta =
-        Math.acos((topNeckArcWidth - (topLobeHorizontalLeft)/2)/(topLobeRadius+topNeckRadius));
-      const leftTopNeckCornerCenterY = Math.sqrt(Math.pow(topLobeRadius+topNeckRadius, 2) -
-        Math.pow(topNeckArcWidth - (topLobeHorizontalLeft)/2, 2));
+        const leftTopNeckTheta =
+          Math.acos((MAX_TOP_NECK_WIDTH - topLobeHorizontalLeft/2)/(TOP_LOBE_RADIUS + TOP_NECK_RADIUS));
+        const leftTopNeckCornerCenterY = Math.sqrt(Math.pow(TOP_LOBE_RADIUS + TOP_NECK_RADIUS, 2) -
+          Math.pow(MAX_TOP_NECK_WIDTH - topLobeHorizontalLeft/2, 2));
 
-      pointI.x = topNeckArcWidth - topNeckRadius + (Math.cos(leftTopNeckCornerTheta) * topNeckRadius) + offsetX;
-      pointI.y =
-        topLobeRadius + (leftTopNeckCornerCenterY - (Math.sin(leftTopNeckCornerTheta) * topNeckRadius)) + offsetY;
-      pointH.y = topLobeRadius + leftTopNeckCornerCenterY + offsetY;
+        pointI.x = MAX_TOP_NECK_WIDTH - TOP_NECK_RADIUS + (Math.cos(leftTopNeckTheta) * TOP_NECK_RADIUS) + OFFSET_X;
+        pointI.y =
+          TOP_LOBE_RADIUS + (leftTopNeckCornerCenterY - (Math.sin(leftTopNeckTheta) * TOP_NECK_RADIUS)) + OFFSET_Y;
+        pointH.y = TOP_LOBE_RADIUS + leftTopNeckCornerCenterY + OFFSET_Y;
+      }
+      if (extraHorizontalWidthRight < 0) {
+        const topLobeHorizontalRight = this.adapter_.isRTL() ? translatePx * 2 : (this.rect_.width - translatePx) * 2;
+
+        const rightTopNeckTheta =
+          Math.acos((MAX_TOP_NECK_WIDTH - topLobeHorizontalRight/2)/(TOP_LOBE_RADIUS + TOP_NECK_RADIUS));
+        const rightTopNeckCornerCenterY = Math.sqrt(Math.pow(TOP_LOBE_RADIUS + TOP_NECK_RADIUS, 2) -
+          Math.pow(MAX_TOP_NECK_WIDTH - topLobeHorizontalRight/2, 2));
+
+        pointA.x = STEM_RIGHT_XPOS + (TOP_NECK_RADIUS - (Math.cos(rightTopNeckTheta) * TOP_NECK_RADIUS)) + OFFSET_X;
+        pointA.y =
+          TOP_LOBE_RADIUS + (rightTopNeckCornerCenterY - (Math.sin(rightTopNeckTheta) * TOP_NECK_RADIUS)) + OFFSET_Y;
+        pointB.y = TOP_LOBE_RADIUS + rightTopNeckCornerCenterY + OFFSET_Y;
+      }
     }
-    if (extraHorizontalWidthRight < 0 && extraHorizontalWidth > 0) {
-      const topLobeHorizontalRight = this.adapter_.isRTL() ? translatePx * 2 : (this.rect_.width - translatePx) * 2;
 
-      const leftTopNeckCornerTheta =
-        Math.acos((topNeckArcWidth - (topLobeHorizontalRight)/2)/(topLobeRadius+topNeckRadius));
-      const leftTopNeckCornerCenterY = Math.sqrt(Math.pow(topLobeRadius+topNeckRadius, 2) -
-        Math.pow(topNeckArcWidth - (topLobeHorizontalRight)/2, 2));
-
-      pointA.x = rightStemX + (topNeckRadius - (Math.cos(leftTopNeckCornerTheta) * topNeckRadius)) + offsetX;
-      pointA.y =
-        topLobeRadius + (leftTopNeckCornerCenterY - (Math.sin(leftTopNeckCornerTheta) * topNeckRadius)) + offsetY,
-      pointB.y = topLobeRadius + leftTopNeckCornerCenterY + offsetY;
-    }
-
-    // Path is created with string concatenation
+    // Draw right side of the top-lobe
     let path = 'M ' + start.x + ' ' + start.y
-      + ' A ' + topLobeRadius + ' ' + topLobeRadius + ' 0 0 1 ' + pointA.x + ' ' + pointA.y;
-    // If there is extra right that needs to be added, it is added here
+      + ' A ' + TOP_LOBE_RADIUS + ' ' + TOP_LOBE_RADIUS + ' 0 0 1 ' + pointA.x + ' ' + pointA.y;
+    // Add extra horizontal distance on the right side
     if (extraHorizontalWidth > 0 && extraHorizontalWidthRight > 0) {
       path = path + ' L ' + (pointA.x - extraHorizontalWidthRight) + ' ' + pointA.y;
     }
-    // The path continues to be concatenated here
-    path = path + ' A ' + topNeckRadius + ' ' + topNeckRadius + ' 0 0 0 ' + pointB.x + ' ' + pointB.y
+    // Draw the neck, stem, and bottom lobe
+    path = path + ' A ' + TOP_NECK_RADIUS + ' ' + TOP_NECK_RADIUS + ' 0 0 0 ' + pointB.x + ' ' + pointB.y
       + ' L ' + pointC.x + ' ' + pointC.y
-      + ' A ' + bottomNeckRadius + ' ' + bottomNeckRadius + ' 0 0 0 ' + pointD.x + ' ' + pointD.y
-      + ' A ' + bottomLobeRadius + ' ' + bottomLobeRadius + ' 0 0 1 ' + pointE.x + ' ' + pointE.y
-      + ' A ' + bottomLobeRadius + ' ' + bottomLobeRadius + ' 0 0 1 ' + pointF.x + ' ' + pointF.y
-      + ' A ' + bottomNeckRadius + ' ' + bottomNeckRadius + ' 0 0 0 ' + pointG.x + ' ' + pointG.y
+      + ' A ' + BOTTOM_NECK_RADIUS + ' ' + BOTTOM_NECK_RADIUS + ' 0 0 0 ' + pointD.x + ' ' + pointD.y
+      + ' A ' + BOTTOM_LOBE_RADIUS + ' ' + BOTTOM_LOBE_RADIUS + ' 0 0 1 ' + pointE.x + ' ' + pointE.y
+      + ' A ' + BOTTOM_LOBE_RADIUS + ' ' + BOTTOM_LOBE_RADIUS + ' 0 0 1 ' + pointF.x + ' ' + pointF.y
+      + ' A ' + BOTTOM_NECK_RADIUS + ' ' + BOTTOM_NECK_RADIUS + ' 0 0 0 ' + pointG.x + ' ' + pointG.y
       + ' L ' + pointH.x + ' ' + pointH.y
-      + ' A ' + topNeckRadius + ' ' + topNeckRadius + ' 0 0 0 ' + pointI.x + ' ' + pointI.y;
-    // If there is extra left that needs to be added, it is added here
+      + ' A ' + TOP_NECK_RADIUS + ' ' + TOP_NECK_RADIUS + ' 0 0 0 ' + pointI.x + ' ' + pointI.y;
+    // Add extra horizontal distance on the left side
     if (extraHorizontalWidth > 0 && extraHorizontalWidthLeft > 0) {
       path = path + ' L ' + (pointI.x - extraHorizontalWidthLeft) + ' ' + pointI.y;
     }
-    // Path is finished off here
-    path = path + ' A ' + topLobeRadius + ' ' + topLobeRadius + ' 0 0 1 ' + end.x + ' ' + end.y + ' Z';
+    // Draw left side of the top-lobe and finish path
+    path = path + ' A ' + TOP_LOBE_RADIUS + ' ' + TOP_LOBE_RADIUS + ' 0 0 1 ' + end.x + ' ' + end.y + ' Z';
+
     return path;
   }
 
@@ -731,8 +740,8 @@ class MDCSliderFoundation extends MDCFoundation {
     let topLobeHorizontal = 0;
     // Max width of one side of the top lobe neck arc
     // Used for when there is extraHorizontalWidth meaning that the arc is at its max width and
-    // for finding the top neck corner theta since (topNeckArcWidth - topLobeHorizontal/2) affects the theta
-    const topNeckArcWidth = 15;
+    // for finding the top neck corner theta since (MAX_TOP_NECK_WIDTH - topLobeHorizontal/2) affects the theta
+    const MAX_TOP_NECK_WIDTH = 15;
     const digitWidth = this.adapter_.getDigitWidth();
     // The workspace of the svg element width
     const svgWidth = 34;
@@ -755,11 +764,11 @@ class MDCSliderFoundation extends MDCFoundation {
       extraHorizontalWidthRight = extraHorizontalWidthLeft;
       extraHorizontalWidthLeft = temp;
     }
-    if (translatePx - topNeckArcWidth < extraHorizontalWidthLeft && topLobeHorizontal > 30) {
-      extraTranslateValue = extraHorizontalWidthLeft - translatePx + topNeckArcWidth;
+    if (translatePx - MAX_TOP_NECK_WIDTH < extraHorizontalWidthLeft && topLobeHorizontal > 30) {
+      extraTranslateValue = extraHorizontalWidthLeft - translatePx + MAX_TOP_NECK_WIDTH;
     }
-    if (this.rect_.width - translatePx - topNeckArcWidth < extraHorizontalWidthRight && topLobeHorizontal > 30) {
-      extraTranslateValue = -(extraHorizontalWidthRight - (this.rect_.width - translatePx - topNeckArcWidth));
+    if (this.rect_.width - translatePx - MAX_TOP_NECK_WIDTH < extraHorizontalWidthRight && topLobeHorizontal > 30) {
+      extraTranslateValue = -(extraHorizontalWidthRight - (this.rect_.width - translatePx - MAX_TOP_NECK_WIDTH));
     }
     if (this.adapter_.isRTL()) {
       extraTranslateValue = -extraTranslateValue;
