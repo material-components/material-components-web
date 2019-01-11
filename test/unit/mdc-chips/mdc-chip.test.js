@@ -281,10 +281,10 @@ test('adapter#hasLeadingIcon returns false if the chip does not have a leading i
   assert.isFalse(component.getDefaultFoundation().adapter_.hasLeadingIcon());
 });
 
-test('adapter#getBoundingClientRect calls getBoundingClientRect on the root element', () => {
+test('adapter#getRootBoundingClientRect calls getBoundingClientRect on the root element', () => {
   const {root, component} = setupTest();
   root.getBoundingClientRect = td.func();
-  component.getDefaultFoundation().adapter_.getBoundingClientRect();
+  component.getDefaultFoundation().adapter_.getRootBoundingClientRect();
   td.verify(root.getBoundingClientRect(), {times: 1});
 });
 

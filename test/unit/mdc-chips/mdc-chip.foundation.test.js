@@ -47,7 +47,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'removeClassFromLeadingIcon', 'eventTargetHasClass', 'notifyInteraction',
     'notifyTrailingIconInteraction', 'notifyRemoval', 'notifySelection',
     'getComputedStyleValue', 'setStyleProperty', 'hasLeadingIcon',
-    'getBoundingClientRect', 'getCheckmarkBoundingClientRect',
+    'getRootBoundingClientRect', 'getCheckmarkBoundingClientRect',
   ]);
 });
 
@@ -89,37 +89,37 @@ test('#setSelected removes calls adapter.notifySelection when selected is false'
   td.verify(mockAdapter.notifySelection(false));
 });
 
-test('#computeBoundingRect returns adapter.getBoundingClientRect when there is no checkmark bounding rect', () => {
+test('#getDimensions returns adapter.getRootBoundingClientRect when there is no checkmark bounding rect', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getCheckmarkBoundingClientRect()).thenReturn(null);
   const boundingRect = {width: 10, height: 10};
-  td.when(mockAdapter.getBoundingClientRect()).thenReturn(boundingRect);
+  td.when(mockAdapter.getRootBoundingClientRect()).thenReturn(boundingRect);
 
-  assert.strictEqual(foundation.computeBoundingRect(), boundingRect);
+  assert.strictEqual(foundation.getDimensions(), boundingRect);
 });
 
-test('#computeBoundingRect factors in the checkmark bounding rect when it exists and there is no leading icon', () => {
+test('#getDimensions factors in the checkmark bounding rect when it exists and there is no leading icon', () => {
   const {foundation, mockAdapter} = setupTest();
   const boundingRect = {width: 10, height: 10};
   const checkmarkBoundingRect = {width: 5, height: 5};
   td.when(mockAdapter.getCheckmarkBoundingClientRect()).thenReturn(checkmarkBoundingRect);
-  td.when(mockAdapter.getBoundingClientRect()).thenReturn(boundingRect);
+  td.when(mockAdapter.getRootBoundingClientRect()).thenReturn(boundingRect);
   td.when(mockAdapter.hasLeadingIcon()).thenReturn(false);
 
-  const computedBoundingRect = foundation.computeBoundingRect();
-  assert.equal(computedBoundingRect.height, boundingRect.height);
-  assert.equal(computedBoundingRect.width, boundingRect.width + checkmarkBoundingRect.height);
+  const dimensions = foundation.getDimensions();
+  assert.equal(dimensions.height, boundingRect.height);
+  assert.equal(dimensions.width, boundingRect.width + checkmarkBoundingRect.height);
 });
 
-test('#computeBoundingRect returns adapter.getBoundingClientRect when there is a checkmark and a leading icon', () => {
+test('#getDimensions returns adapter.getRootBoundingClientRect when there is a checkmark and a leading icon', () => {
   const {foundation, mockAdapter} = setupTest();
   const checkmarkBoundingRect = {width: 5, height: 5};
   td.when(mockAdapter.getCheckmarkBoundingClientRect()).thenReturn(checkmarkBoundingRect);
   const boundingRect = {width: 10, height: 10};
-  td.when(mockAdapter.getBoundingClientRect()).thenReturn(boundingRect);
+  td.when(mockAdapter.getRootBoundingClientRect()).thenReturn(boundingRect);
   td.when(mockAdapter.hasLeadingIcon()).thenReturn(true);
 
-  assert.strictEqual(foundation.computeBoundingRect(), boundingRect);
+  assert.strictEqual(foundation.getDimensions(), boundingRect);
 });
 
 test(`#beginExit adds ${cssClasses.CHIP_EXIT} class`, () => {

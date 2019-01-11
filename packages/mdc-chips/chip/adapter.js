@@ -120,7 +120,7 @@ class MDCChipAdapter {
    * Returns the bounding client rect of the root element.
    * @return {!ClientRect}
    */
-  getBoundingClientRect() {}
+  getRootBoundingClientRect() {}
 
   /**
    * Returns the bounding client rect of the checkmark element or null if it doesn't exist.

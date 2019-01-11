@@ -76,7 +76,7 @@ class MDCChip extends MDCComponent {
     this.checkmark_ = this.root_.querySelector(strings.CHECKMARK_SELECTOR);
 
     const adapter = Object.assign(MDCRipple.createAdapter(this), {
-      computeBoundingRect: () => this.foundation_.computeBoundingRect(),
+      computeBoundingRect: () => this.foundation_.getDimensions(),
     });
     this.ripple_ = rippleFactory(this.root_, new MDCRippleFoundation(adapter));
   }
@@ -183,7 +183,7 @@ class MDCChip extends MDCComponent {
       getComputedStyleValue: (propertyName) => window.getComputedStyle(this.root_).getPropertyValue(propertyName),
       setStyleProperty: (propertyName, value) => this.root_.style.setProperty(propertyName, value),
       hasLeadingIcon: () => !!this.leadingIcon_,
-      getBoundingClientRect: () => this.root_.getBoundingClientRect(),
+      getRootBoundingClientRect: () => this.root_.getBoundingClientRect(),
       getCheckmarkBoundingClientRect: () => this.checkmark_ ? this.checkmark_.getBoundingClientRect() : null,
     })));
   }
