@@ -14,14 +14,46 @@
  * limitations under the License.
  */
 
+import {assert} from 'chai';
 import td from 'testdouble';
 
-import {setupEventTest as setupTest} from './helpers';
+import {setupFoundationTest} from '../helpers/setup';
+
+import MDCSliderFoundation from '../../../packages/mdc-slider/foundation';
 
 suite.only('MDCSliderFoundation - Value Label Path');
 
+const setupTest = () => setupFoundationTest(MDCSliderFoundation);
+
+const DIGIT_WIDTH = 9;
+const COMMA_WIDTH = 3;
+const MAX_TOP_LOBE_HORIZONTAL = 30;
+const TOP_LOBE_RADIUS = 16;
+const TOP_NECK_RADIUS = 14;
+const MAX_TOP_NECK_WIDTH = 15;
+
 test('total horizontal distance added to the top-lobe', () => {
-  const {foundation, mockAdapter, raf} = setupTest();
-  // total horizontal distance added to the top-lobe =: topLobeHorizontal + extraHorizontalWidth
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getDigitWidth()).thenReturn(DIGIT_WIDTH);
+  td.when(mockAdapter.getCommaWidth()).thenReturn(COMMA_WIDTH);
+  foundation.rect_ = 1000;
+
+  foundation.value_ = 10000000000; // 10,000,000,000
+  const numCommas = 3;
+  const labelHorizontalWidth = ('10000000000'.length - 2) * DIGIT_WIDTH + numCommas * COMMA_WIDTH;
+  const topLobeHorizontal = Math.min(labelHorizontalWidth, MAX_TOP_LOBE_HORIZONTAL);
+  const topNeckTheta = Math.acos((MAX_TOP_NECK_WIDTH - topLobeHorizontal/2)/(TOP_LOBE_RADIUS + TOP_NECK_RADIUS));
+  const topNeckCenterYPos = Math.sqrt(Math.pow(TOP_LOBE_RADIUS + TOP_NECK_RADIUS, 2) -
+      Math.pow(MAX_TOP_NECK_WIDTH - topLobeHorizontal/2, 2));
   
+  const leftTopNeckTheta = Math.acos(MAX_TOP_NECK_WIDTH/(TOP_LOBE_RADIUS + TOP_NECK_RADIUS));
+  const leftTopNeckCenterYPos = Math.sqrt(Math.pow(TOP_LOBE_RADIUS + TOP_NECK_RADIUS, 2) -
+    Math.pow(MAX_TOP_NECK_WIDTH, 2));
+
+  foundation.calcPath_(0);
+  assert.equal(foundation.pathTotalHorizontalDistance_, 90);
+  assert.equal(foundation.pathLeftTopNeckTheta_, leftTopNeckTheta);
+  assert.equal(foundation.pathLeftTopNeckCenterYPos_, leftTopNeckCenterYPos);
+  assert.equal(foundation.pathRightTopNeckTheta_, topNeckTheta);
+  assert.equal(foundation.pathRightTopNeckCenterYPos_, topNeckCenterYPos);  
 });

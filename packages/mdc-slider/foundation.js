@@ -143,6 +143,18 @@ class MDCSliderFoundation extends MDCFoundation {
     this.keydownHandler_ = (evt) => this.handleKeydown(evt);
     /** @private {function(): undefined} */
     this.windowResizeHandler_ = () => this.layout();
+
+    //For testing path calculations
+    /** @private {number} */
+    this.pathTotalHorizontalDistance_ = 0;
+    /** @private {number} */
+    this.pathLeftTopNeckTheta_ = 0;
+    /** @private {number} */
+    this.pathLeftTopNeckCenterYPos_ = 0;
+    /** @private {number} */
+    this.pathRightTopNeckTheta_ = 0;
+    /** @private {number} */
+    this.pathRightTopNeckCenterYPos_ = 0;
   }
 
   init() {
@@ -554,7 +566,7 @@ class MDCSliderFoundation extends MDCFoundation {
     const topLobeHorizontal = Math.min(labelHorizontalWidth, MAX_TOP_LOBE_HORIZONTAL);
     // The extra horizontal distance to add to the bottom of the top-lobe
     const extraHorizontalWidth = Math.max(labelHorizontalWidth - MAX_TOP_LOBE_HORIZONTAL, 0);
-    // Note: total horizontal distance added to the top-lobe = topLobeHorizontal + extraHorizontalWidth
+    this.pathTotalHorizontalDistance_ = topLobeHorizontal + extraHorizontalWidth;
 
     // Distribute the extra horizontal distance for the bottom of the top-lobe to left and right sides equally
     let extraHorizontalWidthLeft = extraHorizontalWidth / 2;
@@ -674,32 +686,38 @@ class MDCSliderFoundation extends MDCFoundation {
 
     // When the slider reaches the edge of the slider, the extra horizontal distance on the side closest to the edge
     // is negative and the angles of the neck needs to be updated to create smooth value label
+    this.pathLeftTopNeckTheta_ = topNeckTheta;
+    this.pathLeftTopNeckCenterYPos_ = topNeckCenterYPos;
+    this.pathRightTopNeckTheta_ = topNeckTheta;
+    this.pathRightTopNeckCenterYPos_ = topNeckCenterYPos;
     if (extraHorizontalWidth > 0) {
       if (extraHorizontalWidthLeft < 0) {
         const topLobeHorizontalLeft = this.adapter_.isRTL() ? (this.rect_.width - translatePx) * 2 : translatePx * 2;
 
-        const leftTopNeckTheta =
+        this.pathLeftTopNeckTheta_ =
           Math.acos((MAX_TOP_NECK_WIDTH - topLobeHorizontalLeft/2)/(TOP_LOBE_RADIUS + TOP_NECK_RADIUS));
-        const leftTopNeckCornerCenterY = Math.sqrt(Math.pow(TOP_LOBE_RADIUS + TOP_NECK_RADIUS, 2) -
+        this.pathLeftTopNeckCenterYPos_ = Math.sqrt(Math.pow(TOP_LOBE_RADIUS + TOP_NECK_RADIUS, 2) -
           Math.pow(MAX_TOP_NECK_WIDTH - topLobeHorizontalLeft/2, 2));
 
-        pointI.x = MAX_TOP_NECK_WIDTH - TOP_NECK_RADIUS + (Math.cos(leftTopNeckTheta) * TOP_NECK_RADIUS) + OFFSET_X;
-        pointI.y =
-          TOP_LOBE_RADIUS + (leftTopNeckCornerCenterY - (Math.sin(leftTopNeckTheta) * TOP_NECK_RADIUS)) + OFFSET_Y;
-        pointH.y = TOP_LOBE_RADIUS + leftTopNeckCornerCenterY + OFFSET_Y;
+        pointI.x = MAX_TOP_NECK_WIDTH - TOP_NECK_RADIUS + 
+          (Math.cos(this.pathLeftTopNeckTheta_) * TOP_NECK_RADIUS) + OFFSET_X;
+        pointI.y = TOP_LOBE_RADIUS +
+          (this.pathLeftTopNeckCenterYPos_ - (Math.sin(this.pathLeftTopNeckTheta_) * TOP_NECK_RADIUS)) + OFFSET_Y;
+        pointH.y = TOP_LOBE_RADIUS + this.pathLeftTopNeckCenterYPos_ + OFFSET_Y;
       }
       if (extraHorizontalWidthRight < 0) {
         const topLobeHorizontalRight = this.adapter_.isRTL() ? translatePx * 2 : (this.rect_.width - translatePx) * 2;
 
-        const rightTopNeckTheta =
+        this.pathRightTopNeckTheta_ =
           Math.acos((MAX_TOP_NECK_WIDTH - topLobeHorizontalRight/2)/(TOP_LOBE_RADIUS + TOP_NECK_RADIUS));
-        const rightTopNeckCornerCenterY = Math.sqrt(Math.pow(TOP_LOBE_RADIUS + TOP_NECK_RADIUS, 2) -
+        this.pathRightTopNeckCenterYPos_ = Math.sqrt(Math.pow(TOP_LOBE_RADIUS + TOP_NECK_RADIUS, 2) -
           Math.pow(MAX_TOP_NECK_WIDTH - topLobeHorizontalRight/2, 2));
 
-        pointA.x = STEM_RIGHT_XPOS + (TOP_NECK_RADIUS - (Math.cos(rightTopNeckTheta) * TOP_NECK_RADIUS)) + OFFSET_X;
-        pointA.y =
-          TOP_LOBE_RADIUS + (rightTopNeckCornerCenterY - (Math.sin(rightTopNeckTheta) * TOP_NECK_RADIUS)) + OFFSET_Y;
-        pointB.y = TOP_LOBE_RADIUS + rightTopNeckCornerCenterY + OFFSET_Y;
+        pointA.x = STEM_RIGHT_XPOS +
+          (TOP_NECK_RADIUS - (Math.cos(this.pathRightTopNeckTheta_) * TOP_NECK_RADIUS)) + OFFSET_X;
+        pointA.y = TOP_LOBE_RADIUS +
+          (this.pathRightTopNeckCenterYPos_ - (Math.sin(this.pathRightTopNeckTheta_) * TOP_NECK_RADIUS)) + OFFSET_Y;
+        pointB.y = TOP_LOBE_RADIUS + this.pathRightTopNeckCenterYPos_ + OFFSET_Y;
       }
     }
 
