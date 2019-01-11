@@ -735,44 +735,43 @@ class MDCSliderFoundation extends MDCFoundation {
    * @return {number}
    */
   calcValueLabelTextXValue_(translatePx) {
-    const localeStringWidth = this.calcLocaleStringWidth_();
-    let extraTranslateValue = 0;
-    let topLobeHorizontal = 0;
-    // Max width of one side of the top lobe neck arc
-    // Used for when there is extraHorizontalWidth meaning that the arc is at its max width and
-    // for finding the top neck corner theta since (MAX_TOP_NECK_WIDTH - topLobeHorizontal/2) affects the theta
-    const MAX_TOP_NECK_WIDTH = 15;
-    const digitWidth = this.adapter_.getDigitWidth();
     // The workspace of the svg element width
-    const svgWidth = 34;
+    const SVG_WIDTH = 34;
+    const digitWidth = this.adapter_.getDigitWidth();
+    const localeStringWidth = this.calcLocaleStringWidth_();
+    // Max width of one side of the top-lobe neck. When extraHorizontalWidth > 0 that means
+    // the left side and right side of the neck are at their max width.
+    const MAX_TOP_NECK_WIDTH = 15;
 
-    // Calculates default translateX value for the size of the text
-    let xValue = (svgWidth - localeStringWidth) / 2;
+    // Default translateX value for the size of the text
+    let xValue = (SVG_WIDTH - localeStringWidth) / 2;
     if (this.adapter_.isRTL()) {
       xValue = xValue + localeStringWidth;
     }
 
-    // Calculates any extra translate value on either side if the slider is near the ends
-    if (this.value_.toString().length > 2) {
-      topLobeHorizontal = localeStringWidth - (2 * digitWidth);
-    }
+    // Add extra translate value on either side if the slider is near the ends
+    let extraTranslateValue = 0;
+    const topLobeHorizontal = this.value_.toString().length > 2 ? localeStringWidth - (2 * digitWidth) : 0;
     const extraHorizontalWidth = topLobeHorizontal - 30;
-    let extraHorizontalWidthLeft = extraHorizontalWidth / 2;
-    let extraHorizontalWidthRight = extraHorizontalWidth / 2;
+    if(extraHorizontalWidth > 0) {
+      let extraHorizontalWidthLeft = extraHorizontalWidth / 2;
+      let extraHorizontalWidthRight = extraHorizontalWidth / 2;
+      if (this.adapter_.isRTL()) {
+        const temp = extraHorizontalWidthRight;
+        extraHorizontalWidthRight = extraHorizontalWidthLeft;
+        extraHorizontalWidthLeft = temp;
+      }
+
+      if (translatePx - MAX_TOP_NECK_WIDTH < extraHorizontalWidthLeft) {
+        extraTranslateValue = extraHorizontalWidthLeft - translatePx + MAX_TOP_NECK_WIDTH;
+      }
+      if (this.rect_.width - translatePx - MAX_TOP_NECK_WIDTH < extraHorizontalWidthRight) {
+        extraTranslateValue = -(extraHorizontalWidthRight - (this.rect_.width - translatePx - MAX_TOP_NECK_WIDTH));
+      }
+    }
+
     if (this.adapter_.isRTL()) {
-      const temp = extraHorizontalWidthRight;
-      extraHorizontalWidthRight = extraHorizontalWidthLeft;
-      extraHorizontalWidthLeft = temp;
-    }
-    if (translatePx - MAX_TOP_NECK_WIDTH < extraHorizontalWidthLeft && topLobeHorizontal > 30) {
-      extraTranslateValue = extraHorizontalWidthLeft - translatePx + MAX_TOP_NECK_WIDTH;
-    }
-    if (this.rect_.width - translatePx - MAX_TOP_NECK_WIDTH < extraHorizontalWidthRight && topLobeHorizontal > 30) {
-      extraTranslateValue = -(extraHorizontalWidthRight - (this.rect_.width - translatePx - MAX_TOP_NECK_WIDTH));
-    }
-    if (this.adapter_.isRTL()) {
-      extraTranslateValue = -extraTranslateValue;
-      extraTranslateValue -= svgWidth;
+      extraTranslateValue = -extraTranslateValue - SVG_WIDTH;
     }
     return xValue + extraTranslateValue;
   }
