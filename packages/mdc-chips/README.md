@@ -336,7 +336,7 @@ Method Signature | Description
 `setStyleProperty(propertyName: string, value: string) => void` | Sets the property value of the given style property on the root element
 `hasLeadingIcon() => boolean` | Returns whether the chip has a leading icon
 `getRootBoundingClientRect() => ClientRect` | Returns the bounding client rect of the root element
-`getCheckmarkBoundingClientRect() => ClientRect | null` | Returns the bounding client rect of the checkmark element or null if it doesn't exist
+`getCheckmarkBoundingClientRect() => ?ClientRect` | Returns the bounding client rect of the checkmark element or null if it doesn't exist
 
 > \*_NOTE_: `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target chip's ID, and must be observable by the parent `mdc-chip-set` element (e.g. via DOM event bubbling).
 
