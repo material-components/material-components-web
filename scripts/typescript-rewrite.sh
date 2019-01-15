@@ -30,7 +30,41 @@ function log() {
 
 TYPESCRIPT_TMP=.typescript-tmp
 TYPESCRIPT_PKGDIR=$TYPESCRIPT_TMP/packages
-TYPESCRIPT_PKGS=$(node -e "console.log(require('./package.json').typescriptWhitelist.join(' '))")
+declare -a TYPESCRIPT_PKGS=(
+  "mdc-animation"
+  "mdc-base"
+  "mdc-card"
+  "mdc-checkbox"
+  "mdc-chips"
+  "mdc-dialog"
+  "mdc-dom"
+  "mdc-drawer"
+  "mdc-elevation"
+  "mdc-fab"
+  "mdc-floating-label"
+  "mdc-form-field"
+  "mdc-icon-button"
+  "mdc-icon-toggle"
+  "mdc-line-ripple"
+  "mdc-list"
+  "mdc-menu"
+  "mdc-menu-surface"
+  "mdc-notched-outline"
+  "mdc-radio"
+  "mdc-ripple"
+  "mdc-rtl"
+  "mdc-selection-control"
+  "mdc-shape"
+  "mdc-slider"
+  "mdc-switch"
+  "mdc-tab"
+  "mdc-tab-bar"
+  "mdc-tab-indicator"
+  "mdc-tab-scroller"
+  "mdc-textfield"
+  "mdc-theme"
+  "mdc-typography"
+)
 
 if [ -z "$TYPESCRIPT_PKGS" ]; then
   echo "No typescript packages to rewrite!"
@@ -41,10 +75,10 @@ log "Prepping whitelisted packages for JS rewrite"
 
 rm -fr $TYPESCRIPT_TMP/**
 mkdir -p $TYPESCRIPT_PKGDIR
-for pkg in $TYPESCRIPT_PKGS; do
+for pkg in "${TYPESCRIPT_PKGS[@]}"; do
   cp -r "packages/$pkg" $TYPESCRIPT_PKGDIR
 done
 rm -fr $TYPESCRIPT_PKGDIR/**/{node_modules,dist}
-
+ 
 log "Rewriting all import statements to be internal typescript compatible"
 node scripts/rewrite-declation-statements-for-typescript.js $TYPESCRIPT_PKGDIR

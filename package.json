@@ -220,37 +220,6 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "typescriptWhitelist": [
-    "mdc-animation",
-    "mdc-base",
-    "mdc-checkbox",
-    "mdc-chips",
-    "mdc-dialog",
-    "mdc-dom",
-    "mdc-drawer",
-    "mdc-floating-label",
-    "mdc-form-field",
-    "mdc-icon-button",
-    "mdc-icon-toggle",
-    "mdc-line-ripple",
-    "mdc-list",
-    "mdc-menu",
-    "mdc-menu-surface",
-    "mdc-notched-outline",
-    "mdc-radio",
-    "mdc-ripple",
-    "mdc-select",
-    "mdc-selection-control",
-    "mdc-slider",
-    "mdc-snackbar",
-    "mdc-switch",
-    "mdc-tab",
-    "mdc-tab-indicator",
-    "mdc-tab-scroller",
-    "mdc-tab-bar",
-    "mdc-textfield",
-    "mdc-top-app-bar"
-  ],
   "husky": {
     "hooks": {
       "commit-msg": "validate-commit-msg"
