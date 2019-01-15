@@ -187,7 +187,7 @@
   border-width: $outline-width;
 }
 
-@mixin mdc-button-base_($query: mdc-feature-all()) {
+@mixin mdc-button-base_($query) {
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
   $feat-typography: mdc-feature-create-target($query, typography);
@@ -273,7 +273,7 @@
   @include mdc-rtl-reflexive-property(margin, 8px, -4px);
 }
 
-@mixin mdc-button--outlined_($query: mdc-feature-all()) {
+@mixin mdc-button--outlined_($query) {
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
 
@@ -288,7 +288,7 @@
   }
 }
 
-@mixin mdc-button--filled_($query: mdc-feature-all()) {
+@mixin mdc-button--filled_($query) {
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
 
@@ -304,7 +304,7 @@
   }
 }
 
-@mixin mdc-button--raised_($query: mdc-feature-all()) {
+@mixin mdc-button--raised_($query) {
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-color: mdc-feature-create-target($query, color);
 
