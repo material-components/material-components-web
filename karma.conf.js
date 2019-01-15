@@ -98,14 +98,17 @@ module.exports = function(config) {
         // Cover source files when not debugging tests. Otherwise, omit coverage instrumenting to get
         // uncluttered source maps.
         rules: webpackConfig.module.rules.concat([config.singleRun ? {
-          test: /\.js$/,
+          enforce: 'post',
+          test: /\.(js|ts)?$/,
           include: path.resolve('./packages'),
+          use: {
+            loader: 'istanbul-instrumenter-loader',
+            options: {esModules: true, produceSourceMap: true},
+          },
           exclude: [
             /node_modules/,
             /adapter.js/,
           ],
-          loader: 'istanbul-instrumenter-loader',
-          query: {esModules: true},
         } : undefined]).filter(Boolean),
       }),
     }),
