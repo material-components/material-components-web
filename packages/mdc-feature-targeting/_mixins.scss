@@ -3,7 +3,6 @@
 // Mixin that annotates the contained styles as applying to specific cross-cutting features
 // indicated by the given list of feature targets.
 @mixin mdc-feature-targets($feature-targets...) {
-  $valid: mdc-feature-verify-target_($feature-targets...);
   $parsed-targets: mdc-feature-parse-targets($feature-targets);
 
   @if mdc-feature-is-query-satisfied_(map-get($parsed-targets, query), map-get($parsed-targets, available)) {
