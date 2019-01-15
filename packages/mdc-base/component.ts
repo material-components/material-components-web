@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2019 Google Inc.
+ * Copyright 2016 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import MDCFoundation from "./foundation";
+import MDCFoundation from './foundation';
 
 class MDCComponent<FoundationType extends MDCFoundation> {
 
@@ -51,7 +51,7 @@ class MDCComponent<FoundationType extends MDCFoundation> {
     this.initialSyncWithDOM();
   }
 
-  // tslint:disable-next-line:no-any a component can pass in anything it needs to the constructor
+  // tslint:disable-next-line:no-any a component can pass in anything it needs to the initialize
   initialize(..._args: any[]) {
     // Subclasses can override this to do any additional setup work that would be considered part of a
     // "constructor". Essentially, it is a hook into the parent constructor before the foundation is
@@ -61,8 +61,8 @@ class MDCComponent<FoundationType extends MDCFoundation> {
   getDefaultFoundation(): FoundationType {
     // Subclasses must override this method to return a properly configured foundation class for the
     // component.
-    throw new Error("Subclasses must override getDefaultFoundation to return a properly configured " +
-      "foundation class");
+    throw new Error('Subclasses must override getDefaultFoundation to return a properly configured ' +
+      'foundation class');
   }
 
   initialSyncWithDOM() {
@@ -100,13 +100,13 @@ class MDCComponent<FoundationType extends MDCFoundation> {
    */
   emit(evtType: string, evtData: object, shouldBubble = false) {
     let evt;
-    if (typeof CustomEvent === "function") {
+    if (typeof CustomEvent === 'function') {
       evt = new CustomEvent(evtType, {
         bubbles: shouldBubble,
         detail: evtData,
       });
     } else {
-      evt = document.createEvent("CustomEvent");
+      evt = document.createEvent('CustomEvent');
       evt.initCustomEvent(evtType, shouldBubble, false, evtData);
     }
 

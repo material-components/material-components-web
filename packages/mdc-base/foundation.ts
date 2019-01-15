@@ -22,19 +22,19 @@
  */
 
 class MDCFoundation<AdapterType extends {} = {}> {
-  static get cssClasses(): {} {
+  static get cssClasses(): {[key: string]: string} {
     // Classes extending MDCFoundation should implement this method to return an object which exports every
     // CSS class the foundation class needs as a property. e.g. {ACTIVE: 'mdc-component--active'}
     return {};
   }
 
-  static get strings(): {} {
+  static get strings(): {[key: string]: string} {
     // Classes extending MDCFoundation should implement this method to return an object which exports all
     // semantic strings as constants. e.g. {ARIA_ROLE: 'tablist'}
     return {};
   }
 
-  static get numbers(): {} {
+  static get numbers(): {[key: string]: number} {
     // Classes extending MDCFoundation should implement this method to return an object which exports all
     // of its semantic numbers as constants. e.g. {ANIMATION_DELAY_MS: 350}
     return {};

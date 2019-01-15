@@ -4,7 +4,9 @@
     "gts/tslint.json"
   ],
   "rules": {
-    "no-default-export": false
+    "no-default-export": false,
+    "quotemark": [true, "single"],
+    "eofline": true
   },
   "linterOptions": {
     "exclude": [

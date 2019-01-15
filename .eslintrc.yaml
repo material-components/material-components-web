@@ -15,6 +15,7 @@ rules:
   quotes: [error, single, {"avoidEscape": true}]
   no-var: error
   curly: error
+  eol-last: [error, "always"]
   no-floating-decimal: error
   no-unused-vars:
     - error
