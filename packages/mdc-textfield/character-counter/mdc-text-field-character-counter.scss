@@ -27,6 +27,7 @@
 
 .mdc-text-field-character-counter {
   @include mdc-typography(caption);
+  @include mdc-typography-baseline-top(16px);
 
   margin-left: auto; // Keep flex item align to right on absence of helper text.
 }
