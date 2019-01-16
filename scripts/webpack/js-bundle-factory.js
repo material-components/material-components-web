@@ -51,7 +51,7 @@ class JsBundleFactory {
     {
       bundleName,
       chunks,
-      extensions = ['.ts', '.js', '.json'],
+      extensions = ['.ts', '.js'],
       chunkGlobConfig: {
         inputDirectory = null,
         filePathPattern = '**/*.js',

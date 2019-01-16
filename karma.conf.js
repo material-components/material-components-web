@@ -74,7 +74,6 @@ module.exports = function(config) {
 
     coverageIstanbulReporter: {
       dir: 'coverage',
-      skipFilesWithNoCoverage: true,
       reporters: [
         {type: 'lcovonly', subdir: '.'},
         {type: 'json', subdir: '.', file: 'coverage.json'},
@@ -100,7 +99,7 @@ module.exports = function(config) {
         // uncluttered source maps.
         rules: webpackConfig.module.rules.concat([config.singleRun ? {
           enforce: 'post',
-          test: /\.(js|ts)?$/,
+          test: /\.(js|ts)$/,
           include: path.resolve('./packages'),
           use: {
             loader: 'istanbul-instrumenter-loader',
