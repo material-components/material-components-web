@@ -60,6 +60,9 @@ class MDCChipFoundation extends MDCFoundation {
       notifyRemoval: () => {},
       getComputedStyleValue: () => {},
       setStyleProperty: () => {},
+      hasLeadingIcon: () => {},
+      getRootBoundingClientRect: () => {},
+      getCheckmarkBoundingClientRect: () => {},
     });
   }
 
@@ -107,6 +110,22 @@ class MDCChipFoundation extends MDCFoundation {
    */
   setShouldRemoveOnTrailingIconClick(shouldRemove) {
     this.shouldRemoveOnTrailingIconClick_ = shouldRemove;
+  }
+
+  /** @return {!ClientRect} */
+  getDimensions() {
+    // When a chip has a checkmark and not a leading icon, the bounding rect changes in size depending on the current
+    // size of the checkmark.
+    if (!this.adapter_.hasLeadingIcon() && this.adapter_.getCheckmarkBoundingClientRect() !== null) {
+      const height = this.adapter_.getRootBoundingClientRect().height;
+      // The checkmark's width is initially set to 0, so use the checkmark's height as a proxy since the checkmark
+      // should always be square.
+      const width =
+          this.adapter_.getRootBoundingClientRect().width + this.adapter_.getCheckmarkBoundingClientRect().height;
+      return /** @type {!ClientRect} */ ({height, width});
+    } else {
+      return this.adapter_.getRootBoundingClientRect();
+    }
   }
 
   /**

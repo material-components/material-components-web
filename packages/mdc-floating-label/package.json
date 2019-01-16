@@ -1,7 +1,7 @@
 {
   "name": "@material/floating-label",
   "description": "The Material Components for the web floating-label component",
-  "version": "0.42.0",
+  "version": "0.43.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -21,7 +21,7 @@
     "@material/animation": "^0.41.0",
     "@material/base": "^0.41.0",
     "@material/rtl": "^0.42.0",
-    "@material/theme": "^0.41.0",
-    "@material/typography": "^0.42.0"
+    "@material/theme": "^0.43.0",
+    "@material/typography": "^0.43.0"
   }
 }
