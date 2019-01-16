@@ -95,6 +95,7 @@
     "karma": "^3.0.0",
     "karma-chrome-launcher": "^2.0.0",
     "karma-coverage": "^1.1.0",
+    "karma-coverage-istanbul-reporter": "^2.0.4",
     "karma-firefox-launcher": "^1.0.0",
     "karma-mocha": "^1.3.0",
     "karma-sauce-launcher": "^1.0.0",
@@ -224,8 +225,5 @@
     "hooks": {
       "commit-msg": "validate-commit-msg"
     }
-  },
-  "dependencies": {
-    "karma-coverage-istanbul-reporter": "^2.0.4"
   }
 }

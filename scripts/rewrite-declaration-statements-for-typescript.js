@@ -22,7 +22,7 @@
  */
 
 /**
- * @fileoverview Rewrites JS to match relative path format. That means
+ * @fileoverview Rewrites JS and TS to match relative path format. That means
  *  * Rewrite import FooConstants from '@material/foo/constants' to import FooConstants from './../foo/index'
  *  * Rewrite import {FooFoundation} from '@material/foo' to import {FooFoundation} from './mdc-foo/index'
  *
@@ -34,9 +34,9 @@
  * ```
  * becomes
  * ```js
- * import [<SPECIFIERS> from] '$PKG.<RESOLVED_FILE_NAMESPACE>';
+ * import [<SPECIFIERS> from] '../<RELATIVE_PATH>/$PKG[/files...]';
  * ```
- * The RESOLVED_FILE_NAMESPACE is a namespace matching the directory structure.
+ * The RELATIVE_PATH is the path relative from the current working file.
  *
  * This script also handles third-party dependencies, e.g.
  *
@@ -61,9 +61,6 @@
  * ```js
  * import {default: someDefaultExport} from 'mdc.thirdparty.thirdPartyLib'
  * ```
- *
- * Note that for third-party modules, they must be defined in closure_externs.js. See that file for more info.
- * Also note that this works on `export .... from ...` as well.
  */
 
 const assert = require('assert');
@@ -76,7 +73,7 @@ const camelCase = require('camel-case');
 const glob = require('glob');
 const recast = require('recast');
 const resolve = require('resolve');
-const t = require('babel-types');
+const types = require('babel-types');
 
 const THIRD_PARTY_PATH = 'mdc.thirdparty.';
 
@@ -118,7 +115,7 @@ function transform(srcFile, rootDir) {
 
       const hasThirdPartyTransformed = sourceValue.includes(THIRD_PARTY_PATH);
       if (sourceValue !== packageStr && !hasThirdPartyTransformed) {
-        const importDeclaration = t.importDeclaration(path.node.specifiers, t.stringLiteral(packageStr));
+        const importDeclaration = types.importDeclaration(path.node.specifiers, types.stringLiteral(packageStr));
         // Preserve comments above import statements, since this is most likely
         // the license comment.
         if (path.node.comments && path.node.comments.length > 0) {
@@ -163,6 +160,7 @@ function rewriteDeclarationSource(node, srcFile, rootDir) {
   return patchNodeForDeclarationSource(source, srcFile, rootDir, node);
 }
 
+// See: https://nodejs.org/api/modules.html#modules_all_together (step 3)
 function isThirdPartyModule(source) {
   const wouldLoadAsFileOrDir = ['./', '/', '../'].some((s) => source.indexOf(s) === 0);
   return !wouldLoadAsFileOrDir;
@@ -171,7 +169,6 @@ function isThirdPartyModule(source) {
 function patchNodeForDeclarationSource(source, srcFile, rootDir, node) {
   let resolvedSource = source;
   const basedir = path.dirname(srcFile);
-  // See: https://nodejs.org/api/modules.html#modules_all_together (step 3)
   if (isThirdPartyModule(source)) {
     // for focus-trap
     assert(source.indexOf('@material') < 0, '@material/* import sources should have already been rewritten');
@@ -185,21 +182,19 @@ function patchNodeForDeclarationSource(source, srcFile, rootDir, node) {
     });
     const srcDirectory = path.dirname(srcFile);
     resolvedSource = path.relative(srcDirectory, fileDir);
-
     const packageStr = resolvedSource
       .replace('.js', '')
-      .replace('.ts', '')
-      .replace('.index', '');
-    return `./${packageStr}`;
+      .replace('.ts', '');
+    return packageStr;
   }
 }
 
 function patchDefaultImportIfNeeded(node) {
   const defaultImportSpecifierIndex =
-      node.specifiers.findIndex(t.isImportDefaultSpecifier);
+      node.specifiers.findIndex(types.isImportDefaultSpecifier);
   if (defaultImportSpecifierIndex >= 0) {
     const defaultImportSpecifier = node.specifiers[defaultImportSpecifierIndex];
-    const defaultPropImportSpecifier = t.importSpecifier(defaultImportSpecifier.local, t.identifier('default'));
+    const defaultPropImportSpecifier = types.importSpecifier(defaultImportSpecifier.local, types.identifier('default'));
     node.specifiers[defaultImportSpecifierIndex] = defaultPropImportSpecifier;
   }
 }

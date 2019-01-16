@@ -91,11 +91,6 @@ if [[ "$TEST_SUITE" == 'build' ]]; then
   check_for_testable_files '^packages/.+\.(js|ts|css|scss)$'
 fi
 
-if [[ "$TEST_SUITE" == 'typescript' ]]; then
-  # Only run typescript test if package JS files changed
-  check_for_testable_files '^packages/.+\.(js|ts)$'
-fi
-
 if [[ "$TEST_SUITE" == 'site-generator' ]]; then
   # Only run site-generator test if docs, Markdown, or image files changed
   check_for_testable_files '^docs/' '\.md$' '\.(png|jpg|jpeg|gif|svg)$'

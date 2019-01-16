@@ -43,4 +43,4 @@ done
 rm -fr $TYPESCRIPT_PKGDIR/**/{node_modules,dist}
  
 log "Rewriting all import statements to be internal typescript compatible"
-node scripts/rewrite-declation-statements-for-typescript.js $TYPESCRIPT_PKGDIR
+node scripts/rewrite-declaration-statements-for-typescript.js $TYPESCRIPT_PKGDIR
