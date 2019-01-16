@@ -224,5 +224,8 @@
     "hooks": {
       "commit-msg": "validate-commit-msg"
     }
+  },
+  "dependencies": {
+    "karma-coverage-istanbul-reporter": "^2.0.4"
   }
 }

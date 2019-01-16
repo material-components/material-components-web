@@ -61,7 +61,7 @@ module.exports = function(config) {
     preprocessors: {
       'test/unit/index.js': ['webpack', 'sourcemap'],
     },
-    reporters: ['dots', 'coverage'],
+    reporters: ['dots', 'coverage-istanbul'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
@@ -72,8 +72,9 @@ module.exports = function(config) {
     concurrency: USING_SL ? 4 : Infinity,
     customLaunchers: customLaunchers,
 
-    coverageReporter: {
+    coverageIstanbulReporter: {
       dir: 'coverage',
+      skipFilesWithNoCoverage: true,
       reporters: [
         {type: 'lcovonly', subdir: '.'},
         {type: 'json', subdir: '.', file: 'coverage.json'},
