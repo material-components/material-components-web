@@ -169,6 +169,8 @@ function isThirdPartyModule(source) {
 function patchNodeForDeclarationSource(source, srcFile, rootDir, node) {
   let resolvedSource = source;
   const basedir = path.dirname(srcFile);
+  // TODO: This section of code will need to be revisited when a third party module is used internally.
+  // currently we haven't built interal dialog or drawer to actually use this rewrite correctly.
   if (isThirdPartyModule(source)) {
     // for focus-trap
     assert(source.indexOf('@material') < 0, '@material/* import sources should have already been rewritten');
