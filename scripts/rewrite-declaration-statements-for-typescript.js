@@ -187,7 +187,7 @@ function patchNodeForDeclarationSource(source, srcFile, rootDir, node) {
     const packageStr = resolvedSource
       .replace('.js', '')
       .replace('.ts', '');
-    return packageStr;
+    return `./${packageStr}`;
   }
 }
 
