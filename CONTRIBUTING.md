@@ -101,7 +101,6 @@ npm run test:watch # Runs karma on Chrome, re-running when source files change
 
 npm test # Lints all files, runs karma, runs typescript tests, and then runs coverage enforcement checks.
 npm run test:unit # Only runs the karma tests
-npm run test:typescript # Runs typescript build tests against all typescript files
 ```
 
 #### Running Tests across browsers
