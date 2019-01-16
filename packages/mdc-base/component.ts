@@ -51,7 +51,7 @@ class MDCComponent<FoundationType extends MDCFoundation> {
     this.initialSyncWithDOM();
   }
 
-  // tslint:disable-next-line:no-any a component can pass in anything it needs to the initialize
+  // tslint:disable-next-line:no-any a component can pass in anything it needs to initialize
   initialize(..._args: any[]) {
     // Subclasses can override this to do any additional setup work that would be considered part of a
     // "constructor". Essentially, it is a hook into the parent constructor before the foundation is
