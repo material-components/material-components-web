@@ -55,6 +55,7 @@ const CSS_WHITELIST = [
   'animation',
   'auto-init',
   'dom',
+  'feature-targeting',
   'rtl',
   'selection-control',
   'shape',
