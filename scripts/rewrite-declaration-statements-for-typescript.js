@@ -59,7 +59,7 @@
  * becomes
  *
  * ```js
- * import {default: someDefaultExport} from 'mdc.thirdparty.thirdPartyLib'
+ * import {default as someDefaultExport} from 'mdc.thirdparty.thirdPartyLib'
  * ```
  */
 
@@ -160,8 +160,8 @@ function rewriteDeclarationSource(node, srcFile, rootDir) {
   return patchNodeForDeclarationSource(source, srcFile, rootDir, node);
 }
 
-// See: https://nodejs.org/api/modules.html#modules_all_together (step 3)
 function isThirdPartyModule(source) {
+  // See: https://nodejs.org/api/modules.html#modules_all_together (step 3)
   const wouldLoadAsFileOrDir = ['./', '/', '../'].some((s) => source.indexOf(s) === 0);
   return !wouldLoadAsFileOrDir;
 }
