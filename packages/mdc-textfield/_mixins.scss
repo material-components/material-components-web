@@ -458,7 +458,7 @@
   @include mdc-states-base-color(transparent);
   @include mdc-text-field-fill-color(transparent);
   @include mdc-notched-outline-floating-label-float-position($mdc-text-field-outlined-label-position-y, 0%);
-  @include mdc-text-field-character-counter-position(16px, 12px);
+  @include mdc-text-field-character-counter-position(16px, 13px);
 
   $padding-inset: 16px;
 

@@ -9,4 +9,4 @@ path: /catalog/input-controls/text-field/character-counter/
 
 # Text Field Character Counter
 
-Character counter is used if there is a character limit. They display the ratio of characters used and the total character limit.
+Character counter is used if there is a character limit. It displays the ratio of characters used and the total character limit.

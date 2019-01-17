@@ -59,12 +59,12 @@ class MDCTextFieldCharacterCounterFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {number} curLength
+   * @param {number} currentLength
    * @param {number} maxLength
    */
-  setCounterValue(curLength, maxLength) {
-    curLength = Math.min(curLength, maxLength);
-    this.adapter_.setContent(`${curLength}/${maxLength}`);
+  setCounterValue(currentLength, maxLength) {
+    currentLength = Math.min(currentLength, maxLength);
+    this.adapter_.setContent(`${currentLength}/${maxLength}`);
   }
 }
 

@@ -377,16 +377,16 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
   /**
    * Sets character counter values that shows characters used and the total character limit.
-   * @param {number} curLength
+   * @param {number} currentLength
    * @private
    */
-  setCharacterCounter_(curLength) {
+  setCharacterCounter_(currentLength) {
     if (!this.characterCounter_) return;
 
     const maxLength = this.getNativeInput_().maxLength;
     if (maxLength === -1) return;
 
-    this.characterCounter_.setCounterValue(curLength, maxLength);
+    this.characterCounter_.setCounterValue(currentLength, maxLength);
   }
 
   /**
