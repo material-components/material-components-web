@@ -73,12 +73,12 @@ module.exports = function(config) {
     customLaunchers: customLaunchers,
 
     coverageIstanbulReporter: {
-      dir: 'coverage',
-      reporters: [
-        {type: 'lcovonly', subdir: '.'},
-        {type: 'json', subdir: '.', file: 'coverage.json'},
-        {type: 'html'},
-      ],
+      'dir': 'coverage',
+      'reports': ['html', 'lcovonly', 'json'],
+      'report-config': {
+        lcovonly: {subdir: '.'},
+        json: {subdir: '.', file: 'coverage.json'},
+      },
     },
 
     client: {
