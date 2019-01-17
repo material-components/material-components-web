@@ -39,7 +39,7 @@
 // Private mixins
 
 @mixin mdc-text-field-character-counter-color_($color) {
-  // Character counter is may be placed inside mdc-textfield element (for textarea variant ) or
+  // Character counter is placed inside mdc-textfield element (for textarea variant ) or
   // inside helper line which is sibling to mdc-textfield.
   .mdc-text-field-character-counter,
   + .mdc-text-field-helper-line .mdc-text-field-character-counter {
