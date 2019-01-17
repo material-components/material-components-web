@@ -82,6 +82,7 @@ class Globber {
   getChunks({filePathPattern, inputDirectory = this.pathResolver_.getProjectRootAbsolutePath()}) {
     const chunks = {};
     const inputDirectoryAbsolutePath = this.pathResolver_.getAbsolutePath(inputDirectory);
+
     this.getAbsolutePaths(inputDirectory, filePathPattern).forEach((absolutePathToInputFile) => {
       const relativePath = this.pathResolver_.getRelativePath(absolutePathToInputFile, inputDirectoryAbsolutePath);
       const relativePathWithoutExtension = this.pathResolver_.removeFileExtension(relativePath);
