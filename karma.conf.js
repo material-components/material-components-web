@@ -50,6 +50,17 @@ const SAUCE_LAUNCHERS = {
 
 const customLaunchers = Object.assign({}, USING_SL ? SAUCE_LAUNCHERS : {}, HEADLESS_LAUNCHERS);
 const browsers = USING_TRAVISCI ? Object.keys(customLaunchers) : ['Chrome'];
+const istanbulInstrumentLoader = {
+  use: [{
+    loader: 'istanbul-instrumenter-loader',
+    options: {esModules: true},
+  }],
+  exclude: [
+    /node_modules/,
+    /adapter.js/,
+    /constants.js/,
+  ],
+};
 
 module.exports = function(config) {
   config.set({
@@ -93,23 +104,17 @@ module.exports = function(config) {
     },
 
     webpack: Object.assign({}, webpackConfig, {
-      devtool: 'inline-source-map',
       module: Object.assign({}, webpackConfig.module, {
         // Cover source files when not debugging tests. Otherwise, omit coverage instrumenting to get
         // uncluttered source maps.
-        rules: webpackConfig.module.rules.concat([config.singleRun ? {
+        rules: webpackConfig.module.rules.concat(config.singleRun ? [Object.assign({
           enforce: 'post',
-          test: /\.(js|ts)$/,
+          test: /\.(ts)$/,
           include: path.resolve('./packages'),
-          use: {
-            loader: 'istanbul-instrumenter-loader',
-            options: {esModules: true, produceSourceMap: true},
-          },
-          exclude: [
-            /node_modules/,
-            /adapter.js/,
-          ],
-        } : undefined]).filter(Boolean),
+        }, istanbulInstrumentLoader), Object.assign({
+          test: /\.(js)$/,
+          include: path.resolve('./packages'),
+        }, istanbulInstrumentLoader)] : []).filter((config) => !!config.length),
       }),
     }),
 
