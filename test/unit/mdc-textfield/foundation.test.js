@@ -516,6 +516,7 @@ test('on input does nothing if input event preceded by keydown event', () => {
   };
   const mockInput = {
     disabled: false,
+    value: '',
   };
   let keydown;
   let input;
@@ -715,6 +716,7 @@ test('on keydown sets receivedUserInput to true when input is enabled', () => {
     });
   td.when(mockAdapter.getNativeInput()).thenReturn({
     disabled: false,
+    value: '',
   });
   foundation.init();
   assert.equal(foundation.receivedUserInput_, false);
@@ -729,6 +731,7 @@ test('on click does not set receivedUserInput if input is disabled', () => {
   };
   const mockInput = {
     disabled: true,
+    value: '',
   };
   let click;
 
