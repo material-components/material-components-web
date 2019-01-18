@@ -21,7 +21,7 @@
 
 // Creates a feature target from the given feature query and targeted feature.
 @function mdc-feature-create-target($feature-query, $targeted-feature) {
-  $feature-target: (target: $targeted-feature, query: $feature-query);
+  $feature-target: (query: $feature-query, target: $targeted-feature);
   $valid: mdc-feature-verify-target_($feature-target);
 
   @return $feature-target;

@@ -44,17 +44,9 @@
 
     @include mdc-feature-targets($feat-structure) {
       @include mdc-button-shape-radius(small);
-      // I've put this under structure because it doesn't depend on the theme.
+      // This fits under structure because it doesn't depend on the theme.
       @include mdc-button-container-fill-color(transparent);
-    }
 
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-button-ink-color(primary);
-    }
-
-    @include mdc-states(primary, false, $query);
-
-    @include mdc-feature-targets($feat-structure) {
       // The icon CSS class overrides styles defined in the .material-icons CSS
       // class, which is loaded separately so the order of CSS definitions is not
       // guaranteed. Therefore, increase specifity by nesting this class to ensure
@@ -63,6 +55,13 @@
         @include mdc-button__icon_;
       }
     }
+
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-button-ink-color(primary);
+    }
+
+    @include mdc-states(primary, false, $query);
+
   }
 
   @include mdc-feature-targets($feat-structure) {
