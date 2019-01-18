@@ -27,6 +27,8 @@
 
 'use strict';
 
+const path = require('path');
+
 class JsBundleFactory {
   constructor({
     env,
@@ -63,8 +65,17 @@ class JsBundleFactory {
         library,
       },
       plugins = [],
+      tsConfigFilePath = path.resolve(__dirname, '../../tsconfig.json'),
     }) {
     chunks = chunks || this.globber_.getChunks({inputDirectory, filePathPattern});
+
+    const babelLoader = {
+      loader: 'babel-loader',
+      options: {
+        cacheDirectory: true,
+        presets: [['es2015', {modules: false}]],
+      },
+    };
 
     return {
       name: bundleName,
@@ -83,14 +94,18 @@ class JsBundleFactory {
       module: {
         rules: [{
           test: /\.ts$/,
-          loader: 'ts-loader',
+          exclude: /node_modules/,
+          use: [
+            babelLoader,
+            {
+              loader: 'ts-loader',
+              options: {configFile: tsConfigFilePath},
+            },
+          ],
         }, {
           test: /\.js$/,
           exclude: /node_modules/,
-          loader: 'babel-loader',
-          options: {
-            cacheDirectory: true,
-          },
+          use: [babelLoader],
         }],
       },
       plugins: [

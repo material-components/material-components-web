@@ -90,6 +90,13 @@ module.exports = function(config) {
         lcovonly: {subdir: '.'},
         json: {subdir: '.', file: 'coverage.json'},
       },
+      'emitWarning': false,
+      'thresholds': {
+        statements: 95,
+        branches: 95,
+        lines: 95,
+        functions: 95,
+      },
     },
 
     client: {
@@ -114,7 +121,7 @@ module.exports = function(config) {
         }, istanbulInstrumentLoader), Object.assign({
           test: /\.(js)$/,
           include: path.resolve('./packages'),
-        }, istanbulInstrumentLoader)] : []).filter((config) => !!config.length),
+        }, istanbulInstrumentLoader)] : []),
       }),
     }),
 
