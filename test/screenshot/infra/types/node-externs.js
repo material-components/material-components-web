@@ -81,8 +81,8 @@
 
 /**
  * @typedef {{
- *   pid: number,
- *   ppid: number,
+ *   pid: string,
+ *   ppid: string,
  *   command: string,
  *   arguments: !Array<string>,
  * }} PsNodeProcess
