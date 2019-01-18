@@ -21,6 +21,6 @@
  * THE SOFTWARE.
  */
 
-import * as ponyfill from './ponyfill';
+import * as ponyfill from './ponyfill.ts';
 
 export {ponyfill};
