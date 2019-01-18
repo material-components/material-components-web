@@ -89,6 +89,7 @@
     "istanbul": "^0.4.4",
     "istanbul-instrumenter-loader": "^3.0.0",
     "jimp": "^0.2.28",
+    "jsdom": "^13.1.0",
     "json-stable-stringify": "^1.0.1",
     "karma": "^3.0.0",
     "karma-chrome-launcher": "^2.0.0",
