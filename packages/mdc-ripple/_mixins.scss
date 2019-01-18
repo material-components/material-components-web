@@ -197,8 +197,8 @@
 
   &:not(.mdc-ripple-upgraded) {
     // Apply press additively by using the ::after pseudo-element
-    @include mdc-feature-targets($feat-animation) {
-      &::after {
+    &::after {
+      @include mdc-feature-targets($feat-animation) {
         transition: opacity $mdc-ripple-fade-out-duration linear;
       }
     }

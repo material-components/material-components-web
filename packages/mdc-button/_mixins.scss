@@ -61,7 +61,6 @@
     }
 
     @include mdc-states(primary, false, $query);
-
   }
 
   @include mdc-feature-targets($feat-structure) {
@@ -116,8 +115,8 @@
     }
   }
 
-  @include mdc-feature-targets($feat-structure) {
-    .mdc-button--dense {
+  .mdc-button--dense {
+    @include mdc-feature-targets($feat-structure) {
       @include mdc-button--dense_;
     }
   }
@@ -309,13 +308,7 @@
 
   @include mdc-feature-targets($feat-color) {
     @include mdc-elevation(2);
-  }
 
-  @include mdc-feature-targets($feat-animation) {
-    transition: mdc-elevation-transition-value();
-  }
-
-  @include mdc-feature-targets($feat-color) {
     &:hover,
     &:focus {
       @include mdc-elevation(4);
@@ -328,6 +321,10 @@
     &:disabled {
       @include mdc-elevation(0);
     }
+  }
+
+  @include mdc-feature-targets($feat-animation) {
+    transition: mdc-elevation-transition-value();
   }
 }
 
