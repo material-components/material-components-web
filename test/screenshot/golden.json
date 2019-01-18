@@ -134,13 +134,13 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/12/10/17_38_00_089/spec/mdc-button/mixins/icon-color.html.windows_ie_11.png"
     }
   },
-  "spec/mdc-button/mixins/blink-color.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/01/18/05_18_25_441/spec/mdc-button/mixins/blink-color.html?utm_source=golden_json",
+  "spec/mdc-button/mixins/ink-color.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/09/13/21_47_32_548/spec/mdc-button/mixins/ink-color.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/01/18/05_18_25_441/spec/mdc-button/mixins/blink-color.html.windows_chrome_71.png",
-      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/01/18/05_18_25_441/spec/mdc-button/mixins/blink-color.html.windows_edge_17.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/01/18/05_18_25_441/spec/mdc-button/mixins/blink-color.html.windows_firefox_64.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/01/18/05_18_25_441/spec/mdc-button/mixins/blink-color.html.windows_ie_11.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/09/13/21_47_32_548/spec/mdc-button/mixins/ink-color.html.windows_chrome_69.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/09/13/21_47_32_548/spec/mdc-button/mixins/ink-color.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/09/13/21_47_32_548/spec/mdc-button/mixins/ink-color.html.windows_firefox_62.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/abhiomkar/2018/09/13/21_47_32_548/spec/mdc-button/mixins/ink-color.html.windows_ie_11.png"
     }
   },
   "spec/mdc-button/mixins/shape-radius.html": {
