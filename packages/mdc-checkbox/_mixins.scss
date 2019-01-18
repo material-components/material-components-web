@@ -34,6 +34,8 @@
 //
 
 @mixin mdc-checkbox($query: mdc-feature-all()) {
+  // postcss-bem-linter: define checkbox
+
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
@@ -57,14 +59,11 @@
     }
   }
 
-  @include mdc-feature-targets($feat-color) {
-    @include mdc-checkbox-ink-color($mdc-checkbox-mark-color);
-    @include mdc-checkbox-focus-indicator-color($mdc-checkbox-baseline-theme-color);
-  }
-
   @include mdc-checkbox-container-colors($query: $query);
 
   @include mdc-feature-targets($feat-color) {
+    @include mdc-checkbox-ink-color($mdc-checkbox-mark-color);
+    @include mdc-checkbox-focus-indicator-color($mdc-checkbox-baseline-theme-color);
     @include mdc-checkbox-disabled-container-color_;
   }
 
@@ -174,6 +173,8 @@
       }
     }
   }
+
+  // postcss-bem-linter: end
 }
 
 @mixin mdc-checkbox-container-colors(
@@ -422,6 +423,7 @@
     box-sizing: border-box;
     width: $mdc-checkbox-ui-pct;
     height: $mdc-checkbox-ui-pct;
+    will-change: background-color, border-color;
   }
 
   @include mdc-feature-targets($feat-animation) {
@@ -436,10 +438,6 @@
     border-radius: 2px;
     background-color: transparent;
     pointer-events: none;
-  }
-
-  @include mdc-feature-targets($feat-animation) {
-    will-change: background-color, border-color;
   }
 }
 
@@ -461,21 +459,15 @@
     width: 100%;
     height: 100%;
     transform: scale(0, 0);
-  }
-
-  @include mdc-feature-targets($feat-animation) {
-    transition: mdc-checkbox-transition-exit(opacity), mdc-checkbox-transition-exit(transform);
-  }
-
-  @include mdc-feature-targets($feat-structure) {
     border-radius: 50%;
     opacity: 0;
     pointer-events: none;
     content: "";
+    will-change: opacity, transform;
   }
 
   @include mdc-feature-targets($feat-animation) {
-    will-change: opacity, transform;
+    transition: mdc-checkbox-transition-exit(opacity), mdc-checkbox-transition-exit(transform);
   }
 }
 
@@ -485,16 +477,13 @@
 
   @include mdc-feature-targets($feat-structure) {
     transform: scale(2.75, 2.75);
+    opacity: $mdc-checkbox-focus-indicator-opacity;
   }
 
   @include mdc-feature-targets($feat-animation) {
     transition:
       mdc-checkbox-transition-enter(opacity, 0ms, 80ms),
       mdc-checkbox-transition-enter(transform, 0ms, 80ms);
-  }
-
-  @include mdc-feature-targets($feat-structure) {
-    opacity: $mdc-checkbox-focus-indicator-opacity;
   }
 }
 
@@ -526,18 +515,15 @@
     @include mdc-checkbox__child--cover-parent_;
 
     width: 100%;
-  }
-
-  @include mdc-feature-targets($feat-animation) {
-    transition: mdc-checkbox-transition-exit(opacity, 0ms, $mdc-checkbox-transition-duration * 2);
-  }
-
-  @include mdc-feature-targets($feat-structure) {
     opacity: 0;
 
     .mdc-checkbox--upgraded & {
       opacity: 1;
     }
+  }
+
+  @include mdc-feature-targets($feat-animation) {
+    transition: mdc-checkbox-transition-exit(opacity, 0ms, $mdc-checkbox-transition-duration * 2);
   }
 }
 
@@ -562,16 +548,13 @@
 
   @include mdc-feature-targets($feat-structure) {
     transform: rotate(45deg);
+    opacity: 0;
   }
 
   @include mdc-feature-targets($feat-animation) {
     transition:
       mdc-checkbox-transition-exit(opacity, 0ms, $mdc-checkbox-transition-duration),
       mdc-checkbox-transition-exit(transform, 0ms, $mdc-checkbox-transition-duration);
-  }
-
-  @include mdc-feature-targets($feat-structure) {
-    opacity: 0;
   }
 }
 
@@ -612,16 +595,13 @@
     width: 100%;
     height: 0;
     transform: scaleX(0) rotate(0deg);
+    border-width: floor($mdc-checkbox-mark-stroke-size) / 2;
+    border-style: solid;
+    opacity: 0;
   }
 
   @include mdc-feature-targets($feat-animation) {
     transition: mdc-checkbox-transition-exit(opacity), mdc-checkbox-transition-exit(transform);
-  }
-
-  @include mdc-feature-targets($feat-structure) {
-    border-width: floor($mdc-checkbox-mark-stroke-size) / 2;
-    border-style: solid;
-    opacity: 0;
   }
 }
 

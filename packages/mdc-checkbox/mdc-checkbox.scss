@@ -21,9 +21,4 @@
 //
 
 @import "./mixins";
-
-// postcss-bem-linter: define checkbox
-
 @include mdc-checkbox;
-
-// postcss-bem-linter: end
