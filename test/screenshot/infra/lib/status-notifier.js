@@ -23,7 +23,6 @@
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const CaptureState = mdcProto.Screenshot.CaptureState;
-const InclusionType = mdcProto.Screenshot.InclusionType;
 const {ThrottleType, ShieldState} = require('../types/status-types');
 const {STATUS_UPDATE_THROTTLE_INTERVAL_MS} = require('./constants');
 
