@@ -74,6 +74,7 @@
     --mdc-ripple-fg-translate-start: 0;
 
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    will-change: transform, opacity;
 
     &::before,
     &::after {
@@ -83,10 +84,6 @@
       pointer-events: none;
       content: "";
     }
-  }
-
-  @include mdc-feature-targets($feat-animation) {
-    will-change: transform, opacity;
   }
 
   &::before {
