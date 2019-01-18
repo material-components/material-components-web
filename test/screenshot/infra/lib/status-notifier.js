@@ -165,25 +165,13 @@ class StatusNotifier {
      * @param {!mdc.proto.Screenshot} screenshot
      * @return {boolean}
      */
-    const isAdded = (screenshot) => screenshot.inclusion_type === InclusionType.ADD;
-
-    /**
-     * @param {!mdc.proto.Screenshot} screenshot
-     * @return {boolean}
-     */
-    const isRemoved = (screenshot) => screenshot.inclusion_type === InclusionType.REMOVE;
-
-    /**
-     * @param {!mdc.proto.Screenshot} screenshot
-     * @return {boolean}
-     */
     const isFinished = (screenshot) => screenshot.capture_state === CaptureState.DIFFED;
 
     const numScreenshotsTotal = runnableScreenshots.length;
     const numScreenshotsFinished = runnableScreenshots.filter(isFinished).length;
     const numDiffs = runnableScreenshots.filter(hasDiffs).length;
-    const numAdded = runnableScreenshots.filter(isAdded).length;
-    const numRemoved = runnableScreenshots.filter(isRemoved).length;
+    const numAdded = this.reportData_.screenshots.added_screenshot_list.length;
+    const numRemoved = this.reportData_.screenshots.removed_screenshot_list.length;
     const numChanged = numDiffs + numAdded + numRemoved;
     const isTerminal = numScreenshotsFinished === numScreenshotsTotal;
     const isPassed = isTerminal && numChanged === 0;
