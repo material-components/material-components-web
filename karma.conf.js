@@ -57,8 +57,8 @@ const istanbulInstrumenterLoader = {
   }],
   exclude: [
     /node_modules/,
-    /adapter.(j|t)s$/,
-    /constants.(j|t)s$/,
+    /adapter.[jt]s$/,
+    /constants.[jt]s$/,
   ],
   include: path.resolve('./packages'),
 };
