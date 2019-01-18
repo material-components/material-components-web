@@ -25,7 +25,7 @@ import {assert} from 'chai';
 import bel from 'bel';
 import td from 'testdouble';
 
-import {closest, matches} from '../../../packages/mdc-dom/ponyfill';
+import {closest, matches} from '../../../packages/mdc-dom/ponyfill.ts';
 
 suite('MDCDom - ponyfill');
 
