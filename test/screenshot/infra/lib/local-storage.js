@@ -213,6 +213,13 @@ class LocalStorage {
   }
 
   /**
+   * @param {string|!Array<string>} pathPatterns
+   */
+  deleteSync(pathPatterns) {
+    del.sync(pathPatterns);
+  }
+
+  /**
    * @param {string} filePath
    * @return {!Promise<boolean>}
    */

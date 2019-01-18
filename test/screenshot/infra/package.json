@@ -3,7 +3,7 @@
   "description": "Google Cloud Functions for MDC Web",
   "main": "index.js",
   "dependencies": {
-    "@google-cloud/datastore": "^2.0.0",
+    "@google-cloud/datastore": "^3.0.1",
     "protobufjs": "^6.8.8",
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
