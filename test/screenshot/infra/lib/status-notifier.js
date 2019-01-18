@@ -23,6 +23,7 @@
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const CaptureState = mdcProto.Screenshot.CaptureState;
+const InclusionType = mdcProto.Screenshot.InclusionType;
 const {ThrottleType, ShieldState} = require('../types/status-types');
 const {STATUS_UPDATE_THROTTLE_INTERVAL_MS} = require('./constants');
 
@@ -164,11 +165,26 @@ class StatusNotifier {
      * @param {!mdc.proto.Screenshot} screenshot
      * @return {boolean}
      */
+    const isAdded = (screenshot) => screenshot.inclusion_type === InclusionType.ADD;
+
+    /**
+     * @param {!mdc.proto.Screenshot} screenshot
+     * @return {boolean}
+     */
+    const isRemoved = (screenshot) => screenshot.inclusion_type === InclusionType.REMOVE;
+
+    /**
+     * @param {!mdc.proto.Screenshot} screenshot
+     * @return {boolean}
+     */
     const isFinished = (screenshot) => screenshot.capture_state === CaptureState.DIFFED;
 
     const numScreenshotsTotal = runnableScreenshots.length;
     const numScreenshotsFinished = runnableScreenshots.filter(isFinished).length;
-    const numChanged = runnableScreenshots.filter(hasDiffs).length;
+    const numDiffs = runnableScreenshots.filter(hasDiffs).length;
+    const numAdded = runnableScreenshots.filter(isAdded).length;
+    const numRemoved = runnableScreenshots.filter(isRemoved).length;
+    const numChanged = numDiffs + numAdded + numRemoved;
     const isTerminal = numScreenshotsFinished === numScreenshotsTotal;
     const isPassed = isTerminal && numChanged === 0;
     const isFailed = isTerminal && numChanged > 0;
