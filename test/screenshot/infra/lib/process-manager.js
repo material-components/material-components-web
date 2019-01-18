@@ -25,9 +25,18 @@
 
 const childProcess = require('child_process');
 const ps = require('ps-node');
+const LocalStorage = require('../lib/local-storage');
 const {ExitCode} = require('../lib/constants');
 
 class ProcessManager {
+  constructor() {
+    /**
+     * @type {!LocalStorage}
+     * @private
+     */
+    this.localStorage_ = new LocalStorage();
+  }
+
   /**
    * @param {string} cmd
    * @param {!Array<string>} args
@@ -83,43 +92,60 @@ class ProcessManager {
   }
 
   /**
-   * @param {string} commandName
-   * @param {string} argumentPattern Regular expression
-   * @return {!Promise<!Array<!PsNodeProcess>>}
+   * @param {string} pidFilePath
+   * @param {string=} commandName
+   * @param {string=} argumentPattern Regular expression
+   * @return {!Promise<?string>}
    */
-  async getRunningProcessesInPwdAsync(commandName, argumentPattern) {
+  async getRunningPid(pidFilePath, commandName = undefined, argumentPattern = undefined) {
+    /** @type {string} */
+    const pid = await this.localStorage_.readTextFile(pidFilePath).then((content) => content.trim(), () => null);
+    if (!pid) {
+      return null;
+    }
+
     return new Promise((resolve, reject) => {
       ps.lookup(
         {
+          pid,
           command: commandName,
           arguments: argumentPattern, // Regular expression
         },
         /**
          * @param {?*} err
-         * @param {?Array<!PsNodeProcess>} unfiltered
+         * @param {?Array<!PsNodeProcess>} procs
          */
-        (err, unfiltered) => {
+        /* eslint-disable no-unused-vars */
+        (err, procs) => {
           if (err) {
-            reject(err);
-            return;
+            return reject(err);
           }
 
-          unfiltered.forEach((proc) => {
-            proc.pid = Number(proc.pid);
-            proc.ppid = Number(proc.ppid);
-          });
+          // Process is still running
+          if (procs.find((proc) => proc.pid === pid)) {
+            return resolve(pid);
+          }
 
-          const filtered = unfiltered.filter((proc) => {
-            const [script] = proc['arguments'];
-            return (
-              proc.pid !== process.pid &&
-              script.startsWith(process.env.PWD)
-            );
-          });
-
-          resolve(filtered);
-        });
+          return resolve(null);
+        }
+      );
     });
+  }
+
+  /**
+   * @param {string} pidFilePath
+   * @param {number|string} pid
+   * @return {!Promise<void>}
+   */
+  async setRunningPid(pidFilePath, pid) {
+    await this.localStorage_.writeTextFile(pidFilePath, String(pid));
+  }
+
+  /**
+   * @param {string} pidFilePath
+   */
+  deletePidFileSync(pidFilePath) {
+    this.localStorage_.deleteSync(pidFilePath);
   }
 }
 
