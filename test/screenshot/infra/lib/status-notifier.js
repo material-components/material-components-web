@@ -168,7 +168,10 @@ class StatusNotifier {
 
     const numScreenshotsTotal = runnableScreenshots.length;
     const numScreenshotsFinished = runnableScreenshots.filter(isFinished).length;
-    const numChanged = runnableScreenshots.filter(hasDiffs).length;
+    const numDiffs = runnableScreenshots.filter(hasDiffs).length;
+    const numAdded = this.reportData_.screenshots.added_screenshot_list.length;
+    const numRemoved = this.reportData_.screenshots.removed_screenshot_list.length;
+    const numChanged = numDiffs + numAdded + numRemoved;
     const isTerminal = numScreenshotsFinished === numScreenshotsTotal;
     const isPassed = isTerminal && numChanged === 0;
     const isFailed = isTerminal && numChanged > 0;
@@ -267,7 +270,7 @@ class StatusNotifier {
       description = `All ${strTotal} screenshots match PR's golden.json`;
     } else if (shieldState === ShieldState.FAILED) {
       state = GitHubApi.PullRequestState.FAILURE;
-      description = `${strChanged} screenshot${changedPlural} differ from PR's golden.json`;
+      description = `${strChanged} screenshot${changedPlural} differ${changedPlural ? '' : 's'} from PR's golden.json`;
     } else {
       state = GitHubApi.PullRequestState.PENDING;
       description = `${strDone} of ${strTotal} (${strPercent}) - ${strChanged} diff${changedPlural}`;
