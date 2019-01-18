@@ -38,6 +38,7 @@
     "test:unit": "karma start --single-run",
     "test:closure": "./scripts/closure-test.sh",
     "test:dependency": "./scripts/dependency-test.sh",
+    "test:feature-targeting": "node test/scss/verify-feature-targeting.js",
     "test:site": "npm run clean:site && ./scripts/site-generator-test.sh"
   },
   "devDependencies": {
@@ -173,6 +174,7 @@
           "drawer",
           "elevation",
           "fab",
+          "feature-targeting",
           "floating-label",
           "form-field",
           "grid-list",
