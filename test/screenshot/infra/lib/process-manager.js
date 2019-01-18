@@ -34,7 +34,7 @@ class ProcessManager {
      * @type {!LocalStorage}
      * @private
      */
-    this.locaStorage_ = new LocalStorage();
+    this.localStorage_ = new LocalStorage();
   }
 
   /**
@@ -99,7 +99,7 @@ class ProcessManager {
    */
   async getRunningPid(pidFilePath, commandName = undefined, argumentPattern = undefined) {
     /** @type {string} */
-    const pid = await this.locaStorage_.readTextFile(pidFilePath).then((content) => content.trim(), () => null);
+    const pid = await this.localStorage_.readTextFile(pidFilePath).then((content) => content.trim(), () => null);
     if (!pid) {
       return null;
     }
@@ -137,7 +137,7 @@ class ProcessManager {
    * @return {!Promise<void>}
    */
   async setRunningPid(pidFilePath) {
-    await this.locaStorage_.writeTextFile(pidFilePath, String(process.pid));
+    await this.localStorage_.writeTextFile(pidFilePath, String(process.pid));
   }
 }
 
