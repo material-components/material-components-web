@@ -8,3 +8,5 @@ out
 .idea
 *.sw*
 .closure-tmp
+.vscode
+.typescript-tmp

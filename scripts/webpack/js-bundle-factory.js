@@ -27,6 +27,8 @@
 
 'use strict';
 
+const path = require('path');
+
 class JsBundleFactory {
   constructor({
     env,
@@ -51,6 +53,7 @@ class JsBundleFactory {
     {
       bundleName,
       chunks,
+      extensions = ['.ts', '.js'],
       chunkGlobConfig: {
         inputDirectory = null,
         filePathPattern = '**/*.js',
@@ -62,8 +65,16 @@ class JsBundleFactory {
         library,
       },
       plugins = [],
+      tsConfigFilePath = path.resolve(__dirname, '../../tsconfig.json'),
     }) {
     chunks = chunks || this.globber_.getChunks({inputDirectory, filePathPattern});
+
+    const babelLoader = {
+      loader: 'babel-loader',
+      options: {
+        cacheDirectory: true,
+      },
+    };
 
     return {
       name: bundleName,
@@ -75,15 +86,25 @@ class JsBundleFactory {
         libraryTarget: 'umd',
         library,
       },
+      resolve: {
+        extensions,
+      },
       devtool: 'source-map',
       module: {
         rules: [{
+          test: /\.ts$/,
+          exclude: /node_modules/,
+          use: [
+            babelLoader,
+            {
+              loader: 'ts-loader',
+              options: {configFile: tsConfigFilePath},
+            },
+          ],
+        }, {
           test: /\.js$/,
           exclude: /node_modules/,
-          loader: 'babel-loader',
-          options: {
-            cacheDirectory: true,
-          },
+          use: [babelLoader],
         }],
       },
       plugins: [
@@ -133,7 +154,7 @@ class JsBundleFactory {
       chunks: {
         animation: getAbsolutePath('/packages/mdc-animation/index.js'),
         autoInit: getAbsolutePath('/packages/mdc-auto-init/index.js'),
-        base: getAbsolutePath('/packages/mdc-base/index.js'),
+        base: getAbsolutePath('/packages/mdc-base/index.ts'),
         checkbox: getAbsolutePath('/packages/mdc-checkbox/index.js'),
         chips: getAbsolutePath('/packages/mdc-chips/index.js'),
         dialog: getAbsolutePath('/packages/mdc-dialog/index.js'),

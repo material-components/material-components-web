@@ -22,7 +22,7 @@
  */
 
 import autoInit from '@material/auto-init/index';
-import * as base from '@material/base/index';
+import * as base from '@material/base/index.ts';
 import * as checkbox from '@material/checkbox/index';
 import * as chips from '@material/chips/index';
 import * as dialog from '@material/dialog/index';
