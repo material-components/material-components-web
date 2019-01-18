@@ -21,44 +21,35 @@
  * THE SOFTWARE.
  */
 
-/**
- * @template A
- */
-class MDCFoundation {
-  /** @return enum{cssClasses} */
-  static get cssClasses() {
+class MDCFoundation<AdapterType extends {} = {}> {
+  static get cssClasses(): {[key: string]: string} {
     // Classes extending MDCFoundation should implement this method to return an object which exports every
     // CSS class the foundation class needs as a property. e.g. {ACTIVE: 'mdc-component--active'}
     return {};
   }
 
-  /** @return enum{strings} */
-  static get strings() {
+  static get strings(): {[key: string]: string} {
     // Classes extending MDCFoundation should implement this method to return an object which exports all
     // semantic strings as constants. e.g. {ARIA_ROLE: 'tablist'}
     return {};
   }
 
-  /** @return enum{numbers} */
-  static get numbers() {
+  static get numbers(): {[key: string]: number} {
     // Classes extending MDCFoundation should implement this method to return an object which exports all
     // of its semantic numbers as constants. e.g. {ANIMATION_DELAY_MS: 350}
     return {};
   }
 
-  /** @return {!Object} */
-  static get defaultAdapter() {
+  static get defaultAdapter(): {} {
     // Classes extending MDCFoundation may choose to implement this getter in order to provide a convenient
     // way of viewing the necessary methods of an adapter. In the future, this could also be used for adapter
     // validation.
     return {};
   }
 
-  /**
-   * @param {A=} adapter
-   */
-  constructor(adapter = {}) {
-    /** @protected {!A} */
+  protected adapter_: AdapterType;
+
+  constructor(adapter: AdapterType = {} as AdapterType) {
     this.adapter_ = adapter;
   }
 

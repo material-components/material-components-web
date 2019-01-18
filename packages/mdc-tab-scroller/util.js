@@ -56,7 +56,7 @@ function computeHorizontalScrollbarHeight(documentObj, shouldCacheResult = true)
 
 /**
  * @param {!Object} HTMLElementPrototype
- * @return {!Array<string>}
+ * @return {string}
  */
 function getMatchesProperty(HTMLElementPrototype) {
   return [

@@ -334,6 +334,9 @@ Method Signature | Description
 `notifyRemoval() => void` | Notifies the Chip Set that the chip will be removed\*\*\*
 `getComputedStyleValue(propertyName: string) => string` | Returns the computed property value of the given style property on the root element
 `setStyleProperty(propertyName: string, value: string) => void` | Sets the property value of the given style property on the root element
+`hasLeadingIcon() => boolean` | Returns whether the chip has a leading icon
+`getRootBoundingClientRect() => ClientRect` | Returns the bounding client rect of the root element
+`getCheckmarkBoundingClientRect() => ?ClientRect` | Returns the bounding client rect of the checkmark element or null if it doesn't exist
 
 > \*_NOTE_: `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target chip's ID, and must be observable by the parent `mdc-chip-set` element (e.g. via DOM event bubbling).
 
@@ -359,6 +362,7 @@ Method Signature | Description
 `setSelected(selected: boolean) => void` | Sets the chip's selected state
 `getShouldRemoveOnTrailingIconClick() => boolean` | Returns whether a trailing icon click should trigger exit/removal of the chip
 `setShouldRemoveOnTrailingIconClick(shouldRemove: boolean) => void` | Sets whether a trailing icon click should trigger exit/removal of the chip
+`getDimensions() => ClientRect` | Returns the dimensions of the chip. This is used for applying ripple to the chip.
 `beginExit() => void` | Begins the exit animation which leads to removal of the chip
 `handleInteraction(evt: Event) => void` | Handles an interaction event on the root element
 `handleTransitionEnd(evt: Event) => void` | Handles a transition end event on the root element

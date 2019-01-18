@@ -23,49 +23,42 @@
 
 import MDCFoundation from './foundation';
 
-/**
- * @template F
- */
-class MDCComponent {
-  /**
-   * @param {!Element} root
-   * @return {!MDCComponent}
-   */
-  static attachTo(root) {
+class MDCComponent<FoundationType extends MDCFoundation> {
+
+  static attachTo(root: Element): MDCComponent<MDCFoundation<{}>> {
     // Subclasses which extend MDCBase should provide an attachTo() method that takes a root element and
     // returns an instantiated component with its root set to that element. Also note that in the cases of
     // subclasses, an explicit foundation class will not have to be passed in; it will simply be initialized
     // from getDefaultFoundation().
-    return new MDCComponent(root, new MDCFoundation());
+    return new MDCComponent(root, new MDCFoundation({}));
   }
 
-  /**
-   * @param {!Element} root
-   * @param {F=} foundation
-   * @param {...?} args
-   */
-  constructor(root, foundation = undefined, ...args) {
-    /** @protected {!Element} */
+  protected root_: Element;
+  protected foundation_: FoundationType;
+
+  constructor(
+    root: Element,
+    foundation?: FoundationType,
+    // tslint:disable-next-line:no-any a component can pass in anything it needs to the constructor
+    ...args: any[]
+  ) {
     this.root_ = root;
     this.initialize(...args);
     // Note that we initialize foundation here and not within the constructor's default param so that
     // this.root_ is defined and can be used within the foundation class.
-    /** @protected {!F} */
     this.foundation_ = foundation === undefined ? this.getDefaultFoundation() : foundation;
     this.foundation_.init();
     this.initialSyncWithDOM();
   }
 
-  initialize(/* ...args */) {
+  // tslint:disable-next-line:no-any a component can pass in anything it needs to initialize
+  initialize(..._args: any[]) {
     // Subclasses can override this to do any additional setup work that would be considered part of a
     // "constructor". Essentially, it is a hook into the parent constructor before the foundation is
     // initialized. Any additional arguments besides root and foundation will be passed in here.
   }
 
-  /**
-   * @return {!F} foundation
-   */
-  getDefaultFoundation() {
+  getDefaultFoundation(): FoundationType {
     // Subclasses must override this method to return a properly configured foundation class for the
     // component.
     throw new Error('Subclasses must override getDefaultFoundation to return a properly configured ' +
@@ -88,36 +81,29 @@ class MDCComponent {
   /**
    * Wrapper method to add an event listener to the component's root element. This is most useful when
    * listening for custom events.
-   * @param {string} evtType
-   * @param {!Function} handler
    */
-  listen(evtType, handler) {
+  listen(evtType: string, handler: EventListener) {
     this.root_.addEventListener(evtType, handler);
   }
 
   /**
    * Wrapper method to remove an event listener to the component's root element. This is most useful when
    * unlistening for custom events.
-   * @param {string} evtType
-   * @param {!Function} handler
    */
-  unlisten(evtType, handler) {
+  unlisten(evtType: string, handler: EventListener) {
     this.root_.removeEventListener(evtType, handler);
   }
 
   /**
    * Fires a cross-browser-compatible custom event from the component root of the given type,
    * with the given data.
-   * @param {string} evtType
-   * @param {!Object} evtData
-   * @param {boolean=} shouldBubble
    */
-  emit(evtType, evtData, shouldBubble = false) {
+  emit(evtType: string, evtData: object, shouldBubble = false) {
     let evt;
     if (typeof CustomEvent === 'function') {
       evt = new CustomEvent(evtType, {
-        detail: evtData,
         bubbles: shouldBubble,
+        detail: evtData,
       });
     } else {
       evt = document.createEvent('CustomEvent');

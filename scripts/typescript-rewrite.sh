@@ -25,26 +25,22 @@
 set -e
 
 function log() {
-  echo -e "\033[36m[closure-rewrite]\033[0m" "$@"
+  echo -e "\033[36m[typescript-rewrite]\033[0m" "$@"
 }
 
-CLOSURE_TMP=.closure-tmp
-CLOSURE_PKGDIR=$CLOSURE_TMP/packages
-CLOSURIZED_PKGS=$(node -e "console.log(require('./package.json').closureWhitelist.join(' '))")
-
-if [ -z "$CLOSURIZED_PKGS" ]; then
-  echo "No closurized packages to rewrite!"
-  exit 0
-fi
+TYPESCRIPT_TMP=.typescript-tmp
+TYPESCRIPT_PKGDIR=$TYPESCRIPT_TMP/packages
 
 log "Prepping whitelisted packages for JS rewrite"
 
-rm -fr $CLOSURE_TMP/**
-mkdir -p $CLOSURE_PKGDIR
-for pkg in $CLOSURIZED_PKGS; do
-  cp -r "packages/$pkg" $CLOSURE_PKGDIR
+rm -fr $TYPESCRIPT_TMP/**
+mkdir -p $TYPESCRIPT_PKGDIR
+for pkg in $(find ./packages -maxdepth 1 -type d); do
+  if [[ $pkg == *"mdc-"* ]]; then
+    cp -r $pkg $TYPESCRIPT_PKGDIR
+  fi
 done
-rm -fr $CLOSURE_PKGDIR/**/{node_modules,dist}
-
-log "Rewriting all import statements to be closure compatible"
-node scripts/rewrite-decl-statements-for-closure-test.js $CLOSURE_PKGDIR
+rm -fr $TYPESCRIPT_PKGDIR/**/{node_modules,dist}
+ 
+log "Rewriting all import statements to be internal typescript compatible"
+node scripts/rewrite-declaration-statements-for-typescript.js $TYPESCRIPT_PKGDIR

@@ -33,7 +33,7 @@ const fs = require('fs');
 const path = require('path');
 
 const {default: traverse} = require('babel-traverse');
-const babylon = require('babylon');
+const parser = require('@babel/parser');
 const camelCase = require('camel-case');
 const cssom = require('cssom');
 const recast = require('recast');
@@ -189,7 +189,7 @@ function checkJSDependencyAddedInMDCPackage() {
     const src = fs.readFileSync(path.join(process.env.PWD, MASTER_JS_PATH), 'utf8');
     const ast = recast.parse(src, {
       parser: {
-        parse: (code) => babylon.parse(code, {sourceType: 'module'}),
+        parse: (code) => parser.parse(code, {sourceType: 'module'}),
       },
     });
     assert(checkComponentImportedAddedInMDCPackage(ast), 'FAILURE: Component ' +
@@ -212,7 +212,9 @@ function checkComponentImportedAddedInMDCPackage(ast) {
     'ImportDeclaration'({node}) {
       if (node.source) {
         const source = node.source.value;
-        if (source === pkg.name + '/index') {
+        const pkgFile = pkg.name + '/index';
+        // TODO: remove `.ts` when typescript rewrite is complete.
+        if (source === pkgFile || source === pkgFile + '.ts') {
           isImported = true;
         }
       }

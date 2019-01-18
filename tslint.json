@@ -1,0 +1,17 @@
+{
+  "extends": [
+    "tslint:recommended",
+    "gts/tslint.json"
+  ],
+  "rules": {
+    "no-default-export": false,
+    "quotemark": [true, "single"],
+    "eofline": true
+  },
+  "linterOptions": {
+    "exclude": [
+      "node_modules/**/*.{j,t}s",
+      "**/node_modules/**/*.{j,t}s"
+    ]
+  }
+}
