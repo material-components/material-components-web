@@ -50,16 +50,17 @@ const SAUCE_LAUNCHERS = {
 
 const customLaunchers = Object.assign({}, USING_SL ? SAUCE_LAUNCHERS : {}, HEADLESS_LAUNCHERS);
 const browsers = USING_TRAVISCI ? Object.keys(customLaunchers) : ['Chrome'];
-const istanbulInstrumentLoader = {
+const istanbulInstrumenterLoader = {
   use: [{
     loader: 'istanbul-instrumenter-loader',
     options: {esModules: true},
   }],
   exclude: [
     /node_modules/,
-    /adapter.js/,
-    /constants.js/,
+    /adapter.(j|t)s$/,
+    /constants.(j|t)s$/,
   ],
+  include: path.resolve('./packages'),
 };
 
 module.exports = function(config) {
@@ -90,6 +91,7 @@ module.exports = function(config) {
         lcovonly: {subdir: '.'},
         json: {subdir: '.', file: 'coverage.json'},
       },
+      // 'emitWarning' causes the tests to fail if the thresholds are not met
       'emitWarning': false,
       'thresholds': {
         statements: 95,
@@ -116,12 +118,10 @@ module.exports = function(config) {
         // uncluttered source maps.
         rules: webpackConfig.module.rules.concat(config.singleRun ? [Object.assign({
           enforce: 'post',
-          test: /\.(ts)$/,
-          include: path.resolve('./packages'),
-        }, istanbulInstrumentLoader), Object.assign({
-          test: /\.(js)$/,
-          include: path.resolve('./packages'),
-        }, istanbulInstrumentLoader)] : []),
+          test: /\.ts$/,
+        }, istanbulInstrumenterLoader), Object.assign({
+          test: /\.js$/,
+        }, istanbulInstrumenterLoader)] : []),
       }),
     }),
 
