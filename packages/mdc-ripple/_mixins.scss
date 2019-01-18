@@ -163,7 +163,8 @@
 
 @mixin mdc-states-focus-opacity($opacity, $has-nested-focusable-element: false, $query: mdc-feature-all()) {
   $feat-animation: mdc-feature-create-target($query, animation);
-  $feat-structure: mdc-feature-create-target($query, structure);
+  // Opacity falls under color because the chosen opacity is color-dependent in typical usage
+  $feat-color: mdc-feature-create-target($query, color);
 
   // Focus overrides hover by reusing the ::before pseudo-element.
   // :focus-within generally works on non-MS browsers and matches when a *child* of the element has focus.
@@ -183,7 +184,7 @@
       transition-duration: 75ms;
     }
 
-    @include mdc-feature-targets($feat-structure) {
+    @include mdc-feature-targets($feat-color) {
       opacity: $opacity;
     }
   }
@@ -191,7 +192,8 @@
 
 @mixin mdc-states-press-opacity($opacity, $query: mdc-feature-all()) {
   $feat-animation: mdc-feature-create-target($query, animation);
-  $feat-structure: mdc-feature-create-target($query, structure);
+  // Opacity falls under color because the chosen opacity is color-dependent in typical usage
+  $feat-color: mdc-feature-create-target($query, color);
 
   // Styles for non-upgraded (CSS-only) stateful surfaces
 
@@ -208,13 +210,13 @@
         transition-duration: $mdc-ripple-fade-in-duration;
       }
 
-      @include mdc-feature-targets($feat-structure) {
+      @include mdc-feature-targets($feat-color) {
         opacity: $opacity;
       }
     }
   }
 
-  @include mdc-feature-targets($feat-structure) {
+  @include mdc-feature-targets($feat-color) {
     &.mdc-ripple-upgraded {
       --mdc-ripple-fg-opacity: #{$opacity};
     }
@@ -301,13 +303,9 @@
 
 @mixin mdc-states-interactions_($color, $has-nested-focusable-element, $opacity-modifier: 0, $query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
-  $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-feature-targets($feat-color) {
     @include mdc-states-base-color($color);
-  }
-
-  @include mdc-feature-targets($feat-structure) {
     @include mdc-states-hover-opacity(mdc-states-opacity($color, hover) + $opacity-modifier);
   }
 
