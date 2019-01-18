@@ -33,6 +33,7 @@ const IndexCommand = require('./index');
 const Logger = require('../lib/logger');
 const ProcessManager = require('../lib/process-manager');
 const ProtoCommand = require('./proto');
+const {ExitCode} = require('../lib/constants');
 const {TEST_DIR_RELATIVE_PATH, BUILD_PID_FILE_PATH_RELATIVE} = require('../lib/constants');
 
 class BuildCommand {
@@ -172,7 +173,26 @@ class BuildCommand {
    * @private
    */
   async setRunningProcessId_() {
-    await this.processManager_.setRunningPid(BUILD_PID_FILE_PATH_RELATIVE);
+    await this.processManager_.setRunningPid(BUILD_PID_FILE_PATH_RELATIVE, process.pid);
+
+    const exit = (code, err) => {
+      if (err) {
+        console.error(err);
+      }
+      this.processManager_.deletePidFileSync(BUILD_PID_FILE_PATH_RELATIVE);
+      process.exit(code);
+    };
+
+    // TODO(acdvorak): Create a centralized class to manage global exit handlers?
+
+    // catches ctrl+c event
+    process.on('SIGINT', () => exit(ExitCode.SIGINT));
+
+    // catches "kill pid"
+    process.on('SIGTERM', () => exit(ExitCode.SIGTERM));
+
+    process.on('uncaughtException', (err) => exit(ExitCode.UNCAUGHT_EXCEPTION, err));
+    process.on('unhandledRejection', (err) => exit(ExitCode.UNHANDLED_PROMISE_REJECTION, err));
   }
 }
 

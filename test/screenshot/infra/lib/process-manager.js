@@ -134,10 +134,18 @@ class ProcessManager {
 
   /**
    * @param {string} pidFilePath
+   * @param {number|string} pid
    * @return {!Promise<void>}
    */
-  async setRunningPid(pidFilePath) {
-    await this.localStorage_.writeTextFile(pidFilePath, String(process.pid));
+  async setRunningPid(pidFilePath, pid) {
+    await this.localStorage_.writeTextFile(pidFilePath, String(pid));
+  }
+
+  /**
+   * @param {string} pidFilePath
+   */
+  deletePidFileSync(pidFilePath) {
+    this.localStorage_.deleteSync(pidFilePath);
   }
 }
 
