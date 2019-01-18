@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {getCorrectEventName} from '@material/animation/index';
+import {getCorrectEventName} from '@material/animation/index.ts';
 import MDCComponent from '@material/base/component';
 /* eslint-disable no-unused-vars */
 import {MDCSelectionControlState, MDCSelectionControl} from '@material/selection-control/index';

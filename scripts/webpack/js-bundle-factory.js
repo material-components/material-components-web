@@ -152,7 +152,7 @@ class JsBundleFactory {
     return this.createCustomJs({
       bundleName: 'main-js-a-la-carte',
       chunks: {
-        animation: getAbsolutePath('/packages/mdc-animation/index.js'),
+        animation: getAbsolutePath('/packages/mdc-animation/index.ts'),
         autoInit: getAbsolutePath('/packages/mdc-auto-init/index.js'),
         base: getAbsolutePath('/packages/mdc-base/index.ts'),
         checkbox: getAbsolutePath('/packages/mdc-checkbox/index.js'),

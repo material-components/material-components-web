@@ -24,7 +24,7 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
-import {getCorrectPropertyName} from '../../../packages/mdc-animation/index';
+import {getCorrectPropertyName} from '../../../packages/mdc-animation/index.ts';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {install as installClock} from '../helpers/clock';
 import {setupFoundationTest} from '../helpers/setup';

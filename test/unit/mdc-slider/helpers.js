@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {getCorrectPropertyName} from '../../../packages/mdc-animation/index';
+import {getCorrectPropertyName} from '../../../packages/mdc-animation/index.ts';
 import {captureHandlers} from '../helpers/foundation';
 import {install as installClock} from '../helpers/clock';
 import {setupFoundationTest} from '../helpers/setup';

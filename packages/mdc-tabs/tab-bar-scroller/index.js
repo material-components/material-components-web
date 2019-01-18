@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {getCorrectPropertyName} from '@material/animation/index';
+import {getCorrectPropertyName} from '@material/animation/index.ts';
 import MDCComponent from '@material/base/component';
 
 import {MDCTabBar} from '../tab-bar/index';
