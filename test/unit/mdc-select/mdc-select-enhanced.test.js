@@ -33,7 +33,7 @@ import {MDCSelect} from '../../../packages/mdc-select/index';
 import {cssClasses, strings} from '../../../packages/mdc-select/constants';
 import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline/index';
 import {MDCMenu, MDCMenuFoundation} from '../../../packages/mdc-menu/index';
-import {MDCMenuSurfaceFoundation} from '../../../packages/mdc-menu-surface/index';
+import {MDCMenuSurfaceFoundation} from '../../../packages/mdc-menu-surface';
 import MDCSelectFoundation from '../../../packages/mdc-select/foundation';
 import MDCListFoundation from '../../../packages/mdc-list/foundation';
 import {MDCSelectIcon} from '../../../packages/mdc-select/icon';

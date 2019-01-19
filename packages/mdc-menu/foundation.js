@@ -24,7 +24,7 @@
 import MDCFoundation from '@material/base/foundation';
 import {MDCMenuAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
-import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
+import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation.ts';
 import MDCListFoundation from '@material/list/foundation';
 
 const ELEMENTS_KEY_ALLOWED_IN = ['input', 'button', 'textarea', 'select', 'a'];

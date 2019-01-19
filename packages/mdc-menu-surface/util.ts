@@ -21,16 +21,12 @@
  * THE SOFTWARE.
  */
 
-/** @type {string|undefined} */
-let storedTransformPropertyName_;
+let storedTransformPropertyName_: string | undefined;
 
 /**
  * Returns the name of the correct transform property to use on the current browser.
- * @param {!Window} globalObj
- * @param {boolean=} forceRefresh
- * @return {string}
  */
-function getTransformPropertyName(globalObj, forceRefresh = false) {
+function getTransformPropertyName(globalObj: Window, forceRefresh = false): string {
   if (storedTransformPropertyName_ === undefined || forceRefresh) {
     const el = globalObj.document.createElement('div');
     const transformPropertyName = ('transform' in el.style ? 'transform' : 'webkitTransform');

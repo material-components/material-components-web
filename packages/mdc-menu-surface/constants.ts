@@ -21,7 +21,8 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
+// tslint:disable:object-literal-sort-keys no-bitwise
+
 const cssClasses = {
   ANCHOR: 'mdc-menu-surface--anchor',
   ANIMATING_CLOSED: 'mdc-menu-surface--animating-closed',
@@ -31,36 +32,38 @@ const cssClasses = {
   ROOT: 'mdc-menu-surface',
 };
 
-/** @enum {string} */
 const strings = {
-  CLOSED_EVENT: 'MDCMenuSurface:closed',
   OPENED_EVENT: 'MDCMenuSurface:opened',
-  FOCUSABLE_ELEMENTS: 'button:not(:disabled), [href]:not([aria-disabled="true"]), input:not(:disabled), ' +
-  'select:not(:disabled), textarea:not(:disabled), [tabindex]:not([tabindex="-1"]):not([aria-disabled="true"])',
+  CLOSED_EVENT: 'MDCMenuSurface:closed',
+  FOCUSABLE_ELEMENTS: [
+    'button:not(:disabled)', '[href]:not([aria-disabled="true"])', 'input:not(:disabled)',
+    'select:not(:disabled)', 'textarea:not(:disabled)', '[tabindex]:not([tabindex="-1"]):not([aria-disabled="true"])',
+  ].join(', '),
 };
 
-/** @enum {number} */
 const numbers = {
-  // Total duration of menu-surface open animation.
+  /** Total duration of menu-surface open animation. */
   TRANSITION_OPEN_DURATION: 120,
-  // Total duration of menu-surface close animation.
+
+  /** Total duration of menu-surface close animation. */
   TRANSITION_CLOSE_DURATION: 75,
-  // Margin left to the edge of the viewport when menu-surface is at maximum possible height.
+
+  /** Margin left to the edge of the viewport when menu-surface is at maximum possible height. */
   MARGIN_TO_EDGE: 32,
-  // Ratio of anchor width to menu-surface width for switching from corner positioning to center positioning.
+
+  /** Ratio of anchor width to menu-surface width for switching from corner positioning to center positioning. */
   ANCHOR_TO_MENU_SURFACE_WIDTH_RATIO: 0.67,
 };
 
 /**
  * Enum for bits in the {@see Corner) bitmap.
- * @enum {number}
  */
-const CornerBit = {
-  BOTTOM: 1,
-  CENTER: 2,
-  RIGHT: 4,
-  FLIP_RTL: 8,
-};
+enum CornerBit {
+  BOTTOM = 1,
+  CENTER = 2,
+  RIGHT = 4,
+  FLIP_RTL = 8,
+}
 
 /**
  * Enum for representing an element corner for positioning the menu-surface.
@@ -68,18 +71,16 @@ const CornerBit = {
  * The START constants map to LEFT if element directionality is left
  * to right and RIGHT if the directionality is right to left.
  * Likewise END maps to RIGHT or LEFT depending on the directionality.
- *
- * @enum {number}
  */
-const Corner = {
-  TOP_LEFT: 0,
-  TOP_RIGHT: CornerBit.RIGHT,
-  BOTTOM_LEFT: CornerBit.BOTTOM,
-  BOTTOM_RIGHT: CornerBit.BOTTOM | CornerBit.RIGHT,
-  TOP_START: CornerBit.FLIP_RTL,
-  TOP_END: CornerBit.FLIP_RTL | CornerBit.RIGHT,
-  BOTTOM_START: CornerBit.BOTTOM | CornerBit.FLIP_RTL,
-  BOTTOM_END: CornerBit.BOTTOM | CornerBit.RIGHT | CornerBit.FLIP_RTL,
-};
+enum Corner {
+  TOP_LEFT = 0,
+  TOP_RIGHT = CornerBit.RIGHT,
+  BOTTOM_LEFT = CornerBit.BOTTOM,
+  BOTTOM_RIGHT = CornerBit.BOTTOM | CornerBit.RIGHT,
+  TOP_START = CornerBit.FLIP_RTL,
+  TOP_END = CornerBit.FLIP_RTL | CornerBit.RIGHT,
+  BOTTOM_START = CornerBit.BOTTOM | CornerBit.FLIP_RTL,
+  BOTTOM_END = CornerBit.BOTTOM | CornerBit.RIGHT | CornerBit.FLIP_RTL,
+}
 
 export {cssClasses, strings, numbers, CornerBit, Corner};
