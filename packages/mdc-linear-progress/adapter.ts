@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,13 +21,13 @@
  * THE SOFTWARE.
  */
 
-export const cssClasses = {
-  CLOSED_CLASS: 'mdc-linear-progress--closed',
-  INDETERMINATE_CLASS: 'mdc-linear-progress--indeterminate',
-  REVERSED_CLASS: 'mdc-linear-progress--reversed',
-};
+interface MDCLinearProgressAdapter {
+  addClass(className: string): void;
+  getBuffer(): HTMLElement;
+  getPrimaryBar(): HTMLElement;
+  hasClass(className: string): boolean;
+  removeClass(className: string): void;
+  setStyle(el: HTMLElement, styleProperty: string, value: string): void;
+}
 
-export const strings = {
-  PRIMARY_BAR_SELECTOR: '.mdc-linear-progress__primary-bar',
-  BUFFER_SELECTOR: '.mdc-linear-progress__buffer',
-};
+export default MDCLinearProgressAdapter;
