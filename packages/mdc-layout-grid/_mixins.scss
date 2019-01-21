@@ -153,7 +153,7 @@
     align-self: flex-start;
 
     @supports (display: grid) {
-      align-self: start;
+      align-self: flex-start;
     }
   }
 
@@ -165,7 +165,7 @@
     align-self: flex-end;
 
     @supports (display: grid) {
-      align-self: end;
+      align-self: flex-end;
     }
   }
 

@@ -64,7 +64,7 @@
 
   display: flex;
   position: relative;
-  align-items: start;
+  align-items: flex-start;
   justify-content: center;
   box-sizing: border-box;
   width: $mdc-toolbar-icon-size + $mdc-toolbar-icon-padding * 2;
