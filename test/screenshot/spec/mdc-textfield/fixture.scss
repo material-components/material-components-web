@@ -48,6 +48,7 @@
   }
 }
 
+// stylelint-disable selector-class-pattern
 .mdc-text-field {
   width: 100%;
 }
@@ -55,3 +56,4 @@
 .mdc-text-field-helper-line {
   width: 100%;
 }
+// stylelint-enable selector-class-pattern

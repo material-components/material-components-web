@@ -188,13 +188,11 @@
 }
 
 // postcss-bem-linter: define text-field-helper-text
-
+// stylelint-disable plugin/selector-bem-pattern
 .mdc-text-field-helper-line {
   display: flex;
   justify-content: space-between;
   box-sizing: border-box;
-
-  // stylelint-disable plugin/selector-bem-pattern
 
   .mdc-text-field--dense + & {
     margin-bottom: 4px;
@@ -204,10 +202,8 @@
     padding-right: $mdc-text-field-helper-line-padding;
     padding-left: $mdc-text-field-helper-line-padding;
   }
-
-  // stylelint-enable plugin/selector-bem-pattern
 }
-
+// stylelint-enable plugin/selector-bem-pattern
 // postcss-bem-linter: end
 
 // mdc-form-field tweaks to align text field label correctly
