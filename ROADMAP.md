@@ -5,16 +5,22 @@ This roadmap contains tentative plans for MDC Web releases in the near future, b
 
 ## Current Release
 
-### 0.41.0 - October 2018 (R20)
-- Enhanced Select variant (MDC Select using MDC Menu)
+### 0.43.0 - January 2019
 
-## Future Releases
+* MDC Button: Trailing icon support
+* MDC Snackbar: Updates to match current guidelines
 
-### 0.42.0 - November 2018 (R21)
-- SVG-less Notched Outline
-- Dialog and List improvements
-- Updated Snackbar
+### 0.44.0 - February 2019
 
-### 0.43.0 - December 2018
+* MDC Text Field: Character counter support
+* MDC Text Field: Independent label support
 
-- Polish and bug fixes
+### 0.45.0 - March 2019
+
+We are working on two major conversion projects during Q1 of 2019. We ideally want to complete them before March, but
+they could realistically slip to the April release. Both conversions are aiming for minimal (ideally zero) breaking changes.
+
+* TypeScript conversion ([#4225](https://github.com/material-components/material-components-web/issues/4225))
+  * Ongoing throughout Q1 2019, but only released at the end once all packages are converted
+* SCSS restructure to allow selectively including styles via mixins ([#4227](https://github.com/material-components/material-components-web/issues/4227))
+  * Ongoing and gradually present in releases throughout Q1 2019
