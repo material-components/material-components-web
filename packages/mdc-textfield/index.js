@@ -35,8 +35,6 @@ import MDCTextFieldFoundation from './foundation';
 import {MDCLineRipple, MDCLineRippleFoundation} from '@material/line-ripple/index';
 import {MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation} from './helper-text/index';
 import {MDCTextFieldCharacterCounter, MDCTextFieldCharacterCounterFoundation} from './character-counter/index';
-import {strings as helperTextStrings} from './helper-text/constants';
-import {strings as characterCounterStrings} from './character-counter/constants';
 import {MDCTextFieldIcon, MDCTextFieldIconFoundation} from './icon/index';
 import {MDCFloatingLabel, MDCFloatingLabelFoundation} from '@material/floating-label/index';
 import {MDCNotchedOutline, MDCNotchedOutlineFoundation} from '@material/notched-outline/index';
@@ -60,6 +58,8 @@ class MDCTextField extends MDCComponent {
     this.lineRipple_;
     /** @private {?MDCTextFieldHelperText} */
     this.helperText_;
+    /** @private {?MDCTextFieldCharacterCounter} */
+    this.characterCounter_;
     /** @private {?MDCTextFieldIcon} */
     this.leadingIcon_;
     /** @private {?MDCTextFieldIcon} */
@@ -117,6 +117,7 @@ class MDCTextField extends MDCComponent {
     }
 
     // Helper text
+    const helperTextStrings = MDCTextFieldHelperTextFoundation.strings;
     const nextElementSibling = this.root_.nextElementSibling;
     const hasHelperLine = (nextElementSibling && nextElementSibling.classList.contains(cssClasses.HELPER_LINE));
     const helperTextEl = hasHelperLine && nextElementSibling.querySelector(helperTextStrings.ROOT_SELECTOR);
@@ -125,9 +126,11 @@ class MDCTextField extends MDCComponent {
     }
 
     // Character counter
+    const characterCounterStrings = MDCTextFieldCharacterCounterFoundation.strings;
     let characterCounterEl = this.root_.querySelector(characterCounterStrings.ROOT_SELECTOR);
-    if (!characterCounterEl) {
-      characterCounterEl = hasHelperLine && nextElementSibling.querySelector(characterCounterStrings.ROOT_SELECTOR);
+    // If character counter is not found in root element search in sibling element.
+    if (!characterCounterEl && hasHelperLine) {
+      characterCounterEl = nextElementSibling.querySelector(characterCounterStrings.ROOT_SELECTOR);
     }
 
     if (characterCounterEl) {

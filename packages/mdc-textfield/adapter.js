@@ -23,6 +23,8 @@
 
 /* eslint-disable no-unused-vars */
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
+/* eslint-disable no-unused-vars */
+import MDCTextFieldCharacterCounterFoundation from './character-counter/foundation';
 import MDCTextFieldIconFoundation from './icon/foundation';
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
