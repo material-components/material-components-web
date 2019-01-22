@@ -35,7 +35,7 @@
  */
 class MDCTextFieldCharacterCounterAdapter {
   /**
-   * Sets the text content for the character counter root element.
+   * Sets the text content of character counter element.
    * @param {string} content
    */
   setContent(content) {}

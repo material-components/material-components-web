@@ -20,6 +20,8 @@
 // THE SOFTWARE.
 //
 
+@import "@material/rtl/mixins";
+
 // Public mixins
 
 @mixin mdc-text-field-character-counter-color($color) {
@@ -30,8 +32,9 @@
 
 @mixin mdc-text-field-character-counter-position($xOffset, $yOffset) {
   .mdc-text-field-character-counter {
+    @include mdc-rtl-reflexive-position(right, $xOffset);
+
     position: absolute;
-    right: $xOffset;
     bottom: $yOffset;
   }
 }
