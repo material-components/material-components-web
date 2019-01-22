@@ -21,53 +21,88 @@
  * THE SOFTWARE.
  */
 
-interface VendorPropertyMap {
-  [key: string]: VendorProperty;
+enum StandardCssPropertyName {
+  ANIMATION = 'animation',
+  TRANSFORM = 'transform',
+  TRANSITION = 'transition',
 }
 
-interface VendorProperty {
-  noPrefix: string;
-  styleProperty?: string;
-  webkitPrefix: string;
+enum PrefixedCssPropertyName {
+  WEBKIT_ANIMATION = '-webkit-animation',
+  WEBKIT_TRANSFORM = '-webkit-transform',
+  WEBKIT_TRANSITION = '-webkit-transition',
+}
+
+enum StandardJsEventType {
+  ANIMATION_END = 'animationend',
+  ANIMATION_ITERATION = 'animationiteration',
+  ANIMATION_START = 'animationstart',
+  TRANSITION_END = 'transitionend',
+}
+
+enum PrefixedJsEventType {
+  WEBKIT_ANIMATION_END = 'webkitAnimationEnd',
+  WEBKIT_ANIMATION_ITERATION = 'webkitAnimationIteration',
+  WEBKIT_ANIMATION_START = 'webkitAnimationStart',
+  WEBKIT_TRANSITION_END = 'webkitTransitionEnd',
+}
+
+interface CssVendorPropertyMap {
+  [key: string]: CssVendorProperty;
+}
+
+interface JsVendorPropertyMap {
+  [key: string]: JsVendorProperty;
+}
+
+interface CssVendorProperty {
+  prefixed: PrefixedCssPropertyName;
+  standard: StandardCssPropertyName;
+}
+
+interface JsVendorProperty {
+  cssProperty: StandardCssPropertyName;
+  prefixed: PrefixedJsEventType;
+  standard: StandardJsEventType;
 }
 
 const transformStyleProperties = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'MSTransform'];
 
-const eventTypeMap: VendorPropertyMap = {
-  animationend: {
-    noPrefix: 'animationend',
-    styleProperty: 'animation',
-    webkitPrefix: 'webkitAnimationEnd',
+const cssPropertyNameMap: CssVendorPropertyMap = {
+  [StandardCssPropertyName.ANIMATION]: {
+    prefixed: PrefixedCssPropertyName.WEBKIT_ANIMATION,
+    standard: StandardCssPropertyName.ANIMATION,
   },
-  animationiteration: {
-    noPrefix: 'animationiteration',
-    styleProperty: 'animation',
-    webkitPrefix: 'webkitAnimationIteration',
+  [StandardCssPropertyName.TRANSFORM]: {
+    prefixed: PrefixedCssPropertyName.WEBKIT_TRANSFORM,
+    standard: StandardCssPropertyName.TRANSFORM,
   },
-  animationstart: {
-    noPrefix: 'animationstart',
-    styleProperty: 'animation',
-    webkitPrefix: 'webkitAnimationStart',
-  },
-  transitionend: {
-    noPrefix: 'transitionend',
-    styleProperty: 'transition',
-    webkitPrefix: 'webkitTransitionEnd',
+  [StandardCssPropertyName.TRANSITION]: {
+    prefixed: PrefixedCssPropertyName.WEBKIT_TRANSITION,
+    standard: StandardCssPropertyName.TRANSITION,
   },
 };
 
-const cssPropertyMap: VendorPropertyMap = {
-  animation: {
-    noPrefix: 'animation',
-    webkitPrefix: '-webkit-animation',
+const jsEventTypeMap: JsVendorPropertyMap = {
+  [StandardJsEventType.ANIMATION_END]: {
+    cssProperty: StandardCssPropertyName.ANIMATION,
+    prefixed: PrefixedJsEventType.WEBKIT_ANIMATION_END,
+    standard: StandardJsEventType.ANIMATION_END,
   },
-  transform: {
-    noPrefix: 'transform',
-    webkitPrefix: '-webkit-transform',
+  [StandardJsEventType.ANIMATION_ITERATION]: {
+    cssProperty: StandardCssPropertyName.ANIMATION,
+    prefixed: PrefixedJsEventType.WEBKIT_ANIMATION_ITERATION,
+    standard: StandardJsEventType.ANIMATION_ITERATION,
   },
-  transition: {
-    noPrefix: 'transition',
-    webkitPrefix: '-webkit-transition',
+  [StandardJsEventType.ANIMATION_START]: {
+    cssProperty: StandardCssPropertyName.ANIMATION,
+    prefixed: PrefixedJsEventType.WEBKIT_ANIMATION_START,
+    standard: StandardJsEventType.ANIMATION_START,
+  },
+  [StandardJsEventType.TRANSITION_END]: {
+    cssProperty: StandardCssPropertyName.TRANSITION,
+    prefixed: PrefixedJsEventType.WEBKIT_TRANSITION_END,
+    standard: StandardJsEventType.TRANSITION_END,
   },
 };
 
@@ -75,24 +110,34 @@ function isWindow(windowObj: Window): boolean {
   return Boolean(windowObj.document) && typeof windowObj.document.createElement === 'function';
 }
 
-function getCorrectEventName(windowObj: Window, eventType: string): string {
-  if (isWindow(windowObj) && eventType in eventTypeMap) {
+function getCorrectPropertyName(windowObj: Window, cssProperty: StandardCssPropertyName):
+    StandardCssPropertyName | PrefixedCssPropertyName {
+  if (isWindow(windowObj) && cssProperty in cssPropertyNameMap) {
     const el = windowObj.document.createElement('div');
-    const {noPrefix, webkitPrefix, styleProperty} = eventTypeMap[eventType];
-    const isStandard = styleProperty in el.style;
-    return isStandard ? noPrefix : webkitPrefix;
-  }
-  return eventType;
-}
-
-function getCorrectPropertyName(windowObj: Window, cssProperty: string): string {
-  if (isWindow(windowObj) && cssProperty in cssPropertyMap) {
-    const el = windowObj.document.createElement('div');
-    const {noPrefix, webkitPrefix} = cssPropertyMap[cssProperty];
-    const isStandard = noPrefix in el.style;
-    return isStandard ? noPrefix : webkitPrefix;
+    const {standard, prefixed} = cssPropertyNameMap[cssProperty];
+    const isStandard = standard in el.style;
+    return isStandard ? standard : prefixed;
   }
   return cssProperty;
 }
 
-export {transformStyleProperties, getCorrectEventName, getCorrectPropertyName};
+function getCorrectEventName(windowObj: Window, eventType: StandardJsEventType):
+    StandardJsEventType | PrefixedJsEventType {
+  if (isWindow(windowObj) && eventType in jsEventTypeMap) {
+    const el = windowObj.document.createElement('div');
+    const {standard, prefixed, cssProperty} = jsEventTypeMap[eventType];
+    const isStandard = cssProperty in el.style;
+    return isStandard ? standard : prefixed;
+  }
+  return eventType;
+}
+
+export {
+  PrefixedCssPropertyName,
+  StandardCssPropertyName,
+  PrefixedJsEventType,
+  StandardJsEventType,
+  getCorrectEventName,
+  getCorrectPropertyName,
+  transformStyleProperties,
+};

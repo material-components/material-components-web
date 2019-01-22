@@ -21,13 +21,15 @@
  * THE SOFTWARE.
  */
 
-import {getCorrectPropertyName} from '@material/animation/index.ts';
+import {StandardCssPropertyName, getCorrectPropertyName} from '@material/animation/index.ts';
 import MDCComponent from '@material/base/component';
 
 import {MDCTabBar} from '../tab-bar/index';
 import MDCTabBarScrollerFoundation from './foundation';
 
 export {MDCTabBarScrollerFoundation};
+
+const {TRANSFORM} = StandardCssPropertyName;
 
 export class MDCTabBarScroller extends MDCComponent {
   static attachTo(root) {
@@ -81,7 +83,7 @@ export class MDCTabBarScroller extends MDCComponent {
       setScrollLeftForScrollFrame: (scrollLeftAmount) => this.scrollFrame_.scrollLeft = scrollLeftAmount,
       getOffsetWidthForTabBar: () => this.tabBarEl_.offsetWidth,
       setTransformStyleForTabBar: (value) => {
-        this.tabBarEl_.style.setProperty(getCorrectPropertyName(window, 'transform'), value);
+        this.tabBarEl_.style.setProperty(getCorrectPropertyName(window, TRANSFORM), value);
       },
       getOffsetLeftForEventTarget: (target) => target.offsetLeft,
       getOffsetWidthForEventTarget: (target) => target.offsetWidth,

@@ -102,5 +102,51 @@ const eventToListenFor = getCorrectEventName(window, 'animationstart');
 
 Method Signature | Description
 --- | ---
-`getCorrectEventName(windowObj, eventType)` | Returns a JavaScript event name, prefixed if necessary
-`getCorrectPropertyName(windowObj, eventType)` | Returns a CSS property name, prefixed if necessary
+`getCorrectEventName(windowObj: Window, eventType: StandardJsEventType) => StandardJsEventType \| PrefixedJsEventType` | Returns a JavaScript event name, prefixed if necessary
+`getCorrectPropertyName(windowObj: Window, cssProperty: StandardCssPropertyName) => StandardCssPropertyName \| PrefixedCssPropertyName` | Returns a CSS property name, prefixed if necessary
+
+## Usage within Web Frameworks
+
+If you are using a JavaScript framework, such as React or Angular, you can create a Dialog for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+
+### `StandardCssPropertyName`
+
+Enum passed to and returned by `getCorrectPropertyName()`.
+
+Key | Value
+--- | ---
+`ANIMATION` | `animation`
+`TRANSFORM` | `transform`
+`TRANSITION` | `transition`
+
+### `PrefixedCssPropertyName`
+
+Enum returned by `getCorrectPropertyName()`.
+
+Key | Value
+--- | ---
+`WEBKIT_ANIMATION` | `-webkit-animation`
+`WEBKIT_TRANSFORM` | `-webkit-transform`
+`WEBKIT_TRANSITION` | `-webkit-transition`
+
+### `StandardJsEventType`
+
+Enum passed to and returned by `getCorrectEventName()`.
+
+Key | Value
+--- | ---
+`ANIMATION_END` | `animationend`
+`ANIMATION_ITERATION` | `animationiteration`
+`ANIMATION_START` | `animationstart`
+`TRANSITION_END` | `transitionend`
+
+### `PrefixedJsEventType`
+
+Enum returned by `getCorrectEventName()`.
+
+Key | Value
+--- | ---
+`WEBKIT_ANIMATION_END` | `webkitAnimationEnd`
+`WEBKIT_ANIMATION_ITERATION` | `webkitAnimationIteration`
+`WEBKIT_ANIMATION_START` | `webkitAnimationStart`
+`WEBKIT_TRANSITION_END` | `webkitTransitionEnd`

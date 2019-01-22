@@ -24,7 +24,7 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
-import {getCorrectPropertyName} from '../../../packages/mdc-animation/index.ts';
+import {StandardCssPropertyName, getCorrectPropertyName} from '../../../packages/mdc-animation/index.ts';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {install as installClock} from '../helpers/clock';
 import {setupFoundationTest} from '../helpers/setup';
@@ -32,9 +32,11 @@ import {setupFoundationTest} from '../helpers/setup';
 import {cssClasses} from '../../../packages/mdc-slider/constants';
 import MDCSliderFoundation from '../../../packages/mdc-slider/foundation';
 
+const {TRANSFORM} = StandardCssPropertyName;
+
 suite('MDCSliderFoundation');
 
-const TRANSFORM_PROP = getCorrectPropertyName(window, 'transform');
+const TRANSFORM_PROP = getCorrectPropertyName(window, TRANSFORM);
 
 test('exports cssClasses', () => {
   assert.property(MDCSliderFoundation, 'cssClasses');
