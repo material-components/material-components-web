@@ -68,41 +68,52 @@ interface JsVendorProperty {
 
 const transformStyleProperties = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'MSTransform'];
 
+// Destructure enum members to make their usages more readable.
+const {WEBKIT_ANIMATION, WEBKIT_TRANSFORM, WEBKIT_TRANSITION} = PrefixedCssPropertyName;
+const {ANIMATION, TRANSFORM, TRANSITION} = StandardCssPropertyName;
+const {
+  WEBKIT_ANIMATION_END,
+  WEBKIT_ANIMATION_ITERATION,
+  WEBKIT_ANIMATION_START,
+  WEBKIT_TRANSITION_END,
+} = PrefixedJsEventType;
+const {ANIMATION_END, ANIMATION_ITERATION, ANIMATION_START, TRANSITION_END} = StandardJsEventType;
+
 const cssPropertyNameMap: CssVendorPropertyMap = {
-  [StandardCssPropertyName.ANIMATION]: {
-    prefixed: PrefixedCssPropertyName.WEBKIT_ANIMATION,
-    standard: StandardCssPropertyName.ANIMATION,
+  [ANIMATION]: {
+    prefixed: WEBKIT_ANIMATION,
+    standard: ANIMATION,
   },
-  [StandardCssPropertyName.TRANSFORM]: {
-    prefixed: PrefixedCssPropertyName.WEBKIT_TRANSFORM,
-    standard: StandardCssPropertyName.TRANSFORM,
+  [TRANSFORM]: {
+    prefixed: WEBKIT_TRANSFORM,
+    standard: TRANSFORM,
   },
-  [StandardCssPropertyName.TRANSITION]: {
-    prefixed: PrefixedCssPropertyName.WEBKIT_TRANSITION,
-    standard: StandardCssPropertyName.TRANSITION,
+  [TRANSITION]: {
+    prefixed: WEBKIT_TRANSITION,
+    standard: TRANSITION,
   },
 };
 
 const jsEventTypeMap: JsVendorPropertyMap = {
-  [StandardJsEventType.ANIMATION_END]: {
-    cssProperty: StandardCssPropertyName.ANIMATION,
-    prefixed: PrefixedJsEventType.WEBKIT_ANIMATION_END,
-    standard: StandardJsEventType.ANIMATION_END,
+  [ANIMATION_END]: {
+    cssProperty: ANIMATION,
+    prefixed: WEBKIT_ANIMATION_END,
+    standard: ANIMATION_END,
   },
-  [StandardJsEventType.ANIMATION_ITERATION]: {
-    cssProperty: StandardCssPropertyName.ANIMATION,
-    prefixed: PrefixedJsEventType.WEBKIT_ANIMATION_ITERATION,
-    standard: StandardJsEventType.ANIMATION_ITERATION,
+  [ANIMATION_ITERATION]: {
+    cssProperty: ANIMATION,
+    prefixed: WEBKIT_ANIMATION_ITERATION,
+    standard: ANIMATION_ITERATION,
   },
-  [StandardJsEventType.ANIMATION_START]: {
-    cssProperty: StandardCssPropertyName.ANIMATION,
-    prefixed: PrefixedJsEventType.WEBKIT_ANIMATION_START,
-    standard: StandardJsEventType.ANIMATION_START,
+  [ANIMATION_START]: {
+    cssProperty: ANIMATION,
+    prefixed: WEBKIT_ANIMATION_START,
+    standard: ANIMATION_START,
   },
-  [StandardJsEventType.TRANSITION_END]: {
-    cssProperty: StandardCssPropertyName.TRANSITION,
-    prefixed: PrefixedJsEventType.WEBKIT_TRANSITION_END,
-    standard: StandardJsEventType.TRANSITION_END,
+  [TRANSITION_END]: {
+    cssProperty: TRANSITION,
+    prefixed: WEBKIT_TRANSITION_END,
+    standard: TRANSITION_END,
   },
 };
 

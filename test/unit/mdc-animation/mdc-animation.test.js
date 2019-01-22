@@ -33,6 +33,7 @@ import {
   getCorrectEventName,
 } from '../../../packages/mdc-animation/index.ts';
 
+// Destructure enum members to make their usages more readable.
 const {WEBKIT_ANIMATION, WEBKIT_TRANSFORM, WEBKIT_TRANSITION} = PrefixedCssPropertyName;
 const {ANIMATION, TRANSFORM, TRANSITION} = StandardCssPropertyName;
 const {
