@@ -22,6 +22,7 @@
 
 @import "../../../../packages/mdc-textfield/mixins";
 @import "../../../../packages/mdc-theme/color-palette";
+@import "../../../../packages/mdc-typography/mixins";
 @import "../mixins";
 
 .test-cell--textfield {
@@ -46,4 +47,41 @@
   .test-text-field__input {
     transform: translateX(.1px);
   }
+}
+
+@function density($size) {
+  $pxSize: $size * 4;
+  @return #{$pxSize}px;
+}
+
+@mixin mdc-text-field-cozy {
+  @include mdc-floating-label-float-position(14%, 0%, .75);
+  height: density(13);
+
+  .mdc-floating-label {
+    @include mdc-typography-baseline-top(30px);
+  }
+}
+
+@mixin mdc-text-field-compact {
+  @include mdc-floating-label-float-position(16%, 0%, .75);
+  height: density(12);
+  
+  .mdc-text-field__icon {
+    height: density(5);
+    width: density(5);
+    font-size: density(5);
+  }
+
+  .mdc-floating-label {
+    @include mdc-typography-baseline-top(28px);
+  }
+}
+
+.cozy-text-field {
+  @include mdc-text-field-cozy;
+}
+
+.compact-text-field {
+  @include mdc-text-field-compact;
 }

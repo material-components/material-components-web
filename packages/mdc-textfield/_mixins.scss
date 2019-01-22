@@ -230,8 +230,9 @@
 @mixin mdc-text-field-floating-label_ {
   .mdc-floating-label {
     @include mdc-rtl-reflexive-position(left, $mdc-text-field-label-offset);
+    @include mdc-typography-baseline-top(32px);
 
-    top: 18px;
+    // top: 18px;
     pointer-events: none;
   }
 
@@ -245,7 +246,7 @@
     .mdc-floating-label {
       @include mdc-rtl-reflexive-position(left, $mdc-notched-outline-padding);
 
-      top: 17px;
+      // top: 17px;
     }
 
     &--with-leading-icon {
@@ -475,7 +476,7 @@
   }
 
   .mdc-floating-label {
-    top: 17px;
+    // top: 17px;
     bottom: auto;
     width: auto;
     pointer-events: none;

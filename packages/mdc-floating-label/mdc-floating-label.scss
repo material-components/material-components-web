@@ -49,7 +49,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     cursor: text;
-    overflow: hidden;
+    // overflow: hidden;
     // Force the label into its own layer to prevent visible layer promotion adjustments
     // when the ripple is activated behind it.
     will-change: transform;
