@@ -28,7 +28,7 @@ $mdc-feature-targets-context_: false;
 // Mixin that annotates the contained styles as applying to specific cross-cutting features
 // indicated by the given list of feature targets.
 @mixin mdc-feature-targets($feature-targets...) {
-  // Prevent accidnetal nesting of this mixin, which could lead to unexpected results.
+  // Prevent accidental nesting of this mixin, which could lead to unexpected results.
   @if $mdc-feature-targets-context_ {
     @error "mdc-feature-targets must not be used inside of another mdc-feature-targets block";
   }
