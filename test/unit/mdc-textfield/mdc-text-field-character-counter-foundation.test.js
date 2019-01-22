@@ -31,11 +31,11 @@ import MDCTextFieldCharacterCounterFoundation from '../../../packages/mdc-textfi
 suite('MDCTextFieldCharacterCounterFoundation');
 
 test('exports cssClasses', () => {
-  assert.isOk('cssClasses' in MDCTextFieldCharacterCounterFoundation);
+  assert.isOk(MDCTextFieldCharacterCounterFoundation.cssClasses);
 });
 
 test('exports strings', () => {
-  assert.isOk('strings' in MDCTextFieldCharacterCounterFoundation);
+  assert.isOk(MDCTextFieldCharacterCounterFoundation.strings);
 });
 
 test('defaultAdapter returns a complete adapter implementation', () => {
@@ -49,11 +49,11 @@ const setupTest = () => setupFoundationTest(MDCTextFieldCharacterCounterFoundati
 test('#setContent sets the content of the character counter element', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setCounterValue(12, 20);
-  td.verify(mockAdapter.setContent('12/20'));
+  td.verify(mockAdapter.setContent('12 / 20'));
 });
 
 test('#setContent current length does not exceed character count limit', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setCounterValue(24, 20);
-  td.verify(mockAdapter.setContent('20/20'));
+  td.verify(mockAdapter.setContent('20 / 20'));
 });

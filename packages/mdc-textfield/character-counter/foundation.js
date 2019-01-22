@@ -64,7 +64,7 @@ class MDCTextFieldCharacterCounterFoundation extends MDCFoundation {
    */
   setCounterValue(currentLength, maxLength) {
     currentLength = Math.min(currentLength, maxLength);
-    this.adapter_.setContent(`${currentLength}/${maxLength}`);
+    this.adapter_.setContent(`${currentLength} / ${maxLength}`);
   }
 }
 

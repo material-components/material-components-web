@@ -44,6 +44,6 @@ function setupTest() {
 
 test('#adapter.setContent sets the text content of the element', () => {
   const {root, component} = setupTest();
-  component.getDefaultFoundation().adapter_.setContent('5/10');
-  assert.equal(root.textContent, '5/10');
+  component.getDefaultFoundation().adapter_.setContent('5 / 10');
+  assert.equal(root.textContent, '5 / 10');
 });

@@ -30,9 +30,10 @@ import {MDCRipple} from '../../../packages/mdc-ripple/index';
 import {MDCLineRipple} from '../../../packages/mdc-line-ripple/index';
 import {MDCFloatingLabel} from '../../../packages/mdc-floating-label/index';
 import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline/index';
-import {MDCTextField, MDCTextFieldFoundation, MDCTextFieldHelperText,
+import {MDCTextField, MDCTextFieldFoundation, MDCTextFieldHelperText, MDCTextFieldCharacterCounter,
   MDCTextFieldIcon} from '../../../packages/mdc-textfield/index';
 import {cssClasses as helperTextCssClasses} from '../../../packages/mdc-textfield/helper-text/constants';
+import {cssClasses as characterCounterCssClasses} from '../../../packages/mdc-textfield/character-counter/constants';
 
 const {cssClasses} = MDCTextFieldFoundation;
 
@@ -44,6 +45,16 @@ const getFixture = () => bel`
     <div class="mdc-line-ripple"></div>
   </div>
 `;
+
+const getHelperLineWithHelperText = () => bel`
+    <div class="${cssClasses.HELPER_LINE}">
+      <div class="${helperTextCssClasses.ROOT}">helper text</div>
+    </div>`;
+
+const getHelperLineWithCharacterCounter = () => bel`
+<div class="${cssClasses.HELPER_LINE}">
+  <div class="${characterCounterCssClasses.ROOT}">helper text</div>
+</div>`;
 
 suite('MDCTextField');
 
@@ -134,12 +145,7 @@ test('#constructor instantiates a line ripple on the `.mdc-line-ripple` element 
   assert.instanceOf(component.lineRipple_, MDCLineRipple);
 });
 
-const getHelperLineWithHelperText = () => bel`
-    <div class="${cssClasses.HELPER_LINE}">
-      <div class="${helperTextCssClasses.ROOT}">helper text</div>
-    </div>`;
-
-test('#constructor instantiates a helper text on the element child of sibling element helper line if present', () => {
+test('#constructor instantiates a helper text if present', () => {
   const root = getFixture();
   const helperText = getHelperLineWithHelperText();
   document.body.appendChild(root);
@@ -148,6 +154,17 @@ test('#constructor instantiates a helper text on the element child of sibling el
   assert.instanceOf(component.helperText_, MDCTextFieldHelperText);
   document.body.removeChild(root);
   document.body.removeChild(helperText);
+});
+
+test('#constructor instantiates a character counter if present', () => {
+  const root = getFixture();
+  const characterCounter = getHelperLineWithCharacterCounter();
+  document.body.appendChild(root);
+  document.body.appendChild(characterCounter);
+  const component = new MDCTextField(root);
+  assert.instanceOf(component.characterCounter_, MDCTextFieldCharacterCounter);
+  document.body.removeChild(root);
+  document.body.removeChild(characterCounter);
 });
 
 test('#constructor instantiates a leading icon if an icon element is present', () => {
@@ -218,7 +235,7 @@ function setupTest(root = getFixture()) {
     () => label,
     () => outline
   );
-  return {root, component, lineRipple, helperText, icon, label, outline};
+  return {root, component, lineRipple, helperText, characterCounter, icon, label, outline};
 }
 
 test('#destroy cleans up the ripple if present', () => {
@@ -245,6 +262,18 @@ test('#destroy cleans up the helper text if present', () => {
   td.verify(helperText.destroy());
   document.body.removeChild(root);
   document.body.removeChild(helperTextElement);
+});
+
+test('#destroy cleans up the character counter if present', () => {
+  const root = getFixture();
+  const characterCounterElement = getHelperLineWithCharacterCounter();
+  document.body.appendChild(root);
+  document.body.appendChild(characterCounterElement);
+  const {component, characterCounter} = setupTest(root);
+  component.destroy();
+  td.verify(characterCounter.destroy());
+  document.body.removeChild(root);
+  document.body.removeChild(characterCounterElement);
 });
 
 test('#destroy cleans up the icon if present', () => {
