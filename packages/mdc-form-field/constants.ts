@@ -21,12 +21,10 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
 const cssClasses = {
   ROOT: 'mdc-form-field',
 };
 
-/** @enum {string} */
 const strings = {
   LABEL_SELECTOR: '.mdc-form-field > label',
 };
