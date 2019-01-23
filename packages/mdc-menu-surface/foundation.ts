@@ -32,13 +32,14 @@ import {
 import {Corner, CornerBit, cssClasses, numbers, strings} from './constants';
 
 interface AutoLayoutMeasurements {
-  viewport: MenuSize;
+  // TODO(acdvorak): Rename and ensure types are correct/appropriate
+  viewportSize: MenuSize;
   viewportDistance: MenuPosition;
   anchorHeight: number;
   anchorWidth: number;
   surfaceHeight: number;
   surfaceWidth: number;
-  bodyDimensions: MenuSize;
+  bodySize: MenuSize;
   windowScroll: DOMPointInit;
 }
 
@@ -271,8 +272,8 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
    */
   private getAutoLayoutMeasurements_(): AutoLayoutMeasurements {
     let anchorRect = this.adapter_.getAnchorDimensions();
-    const viewport = this.adapter_.getWindowDimensions();
-    const bodyDimensions = this.adapter_.getBodyDimensions();
+    const bodySize = this.adapter_.getBodyDimensions();
+    const viewportSize = this.adapter_.getWindowDimensions();
     const windowScroll = this.adapter_.getWindowScroll();
 
     if (!anchorRect) {
@@ -287,14 +288,14 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
     }
 
     return {
-      viewport,
-      bodyDimensions,
+      bodySize,
+      viewportSize,
       windowScroll,
       viewportDistance: {
         top: anchorRect.top,
-        right: viewport.width - anchorRect.right,
+        right: viewportSize.width - anchorRect.right,
         left: anchorRect.left,
-        bottom: viewport.height - anchorRect.bottom,
+        bottom: viewportSize.height - anchorRect.bottom,
       },
       anchorHeight: anchorRect.height,
       anchorWidth: anchorRect.width,
@@ -363,7 +364,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
       // when we calculate the right value (`adjustPositionForHoistedElement_`) based on the element position,
       // the right property is correct.
       if (this.isHoistedElement_ || this.isFixedPosition_) {
-        return rightOffset - (this.measurements_.viewport.width - this.measurements_.bodyDimensions.width);
+        return rightOffset - (this.measurements_.viewportSize.width - this.measurements_.bodySize.width);
       }
 
       return rightOffset;
@@ -457,29 +458,29 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
   private adjustPositionForHoistedElement_(position: MenuPosition) {
     const {windowScroll, viewportDistance} = this.measurements_;
 
-    for (const prop in position) {
-      if (position.hasOwnProperty(prop)) {
-        // Hoisted surfaces need to have the anchor elements location on the page added to the
-        // position properties for proper alignment on the body.
-        if (viewportDistance.hasOwnProperty(prop)) {
-          position[prop] = position[prop] + viewportDistance[prop];
-        }
+    const props = Object.keys(position) as Array<keyof MenuPosition>;
 
-        // Surfaces that are absolutely positioned need to have additional calculations for scroll
-        // and bottom positioning.
-        if (!this.isFixedPosition_) {
-          if (prop === 'top') {
-            position[prop] += windowScroll.y;
-          } else if (prop === 'bottom') {
-            position[prop] -= windowScroll.y;
-          } else if (prop === 'left') {
-            position[prop] += windowScroll.x;
-          } else if (prop === 'right') {
-            position[prop] -= windowScroll.x;
-          }
+    props.forEach((prop) => {
+      // Hoisted surfaces need to have the anchor elements location on the page added to the
+      // position properties for proper alignment on the body.
+      if (viewportDistance.hasOwnProperty(prop)) {
+        position[prop] += viewportDistance[prop];
+      }
+
+      // Surfaces that are absolutely positioned need to have additional calculations for scroll
+      // and bottom positioning.
+      if (!this.isFixedPosition_) {
+        if (prop === 'top') {
+          position[prop] += windowScroll.y;
+        } else if (prop === 'bottom') {
+          position[prop] -= windowScroll.y;
+        } else if (prop === 'left') {
+          position[prop] += windowScroll.x;
+        } else if (prop === 'right') {
+          position[prop] -= windowScroll.x;
         }
       }
-    }
+    });
   }
 
   /**

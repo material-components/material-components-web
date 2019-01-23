@@ -192,6 +192,7 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
       getWindowScroll: () => {
         return {x: window.pageXOffset, y: window.pageYOffset};
       },
+      // TODO(acdvorak): Parse strings for backward compatibility? If not, breaking change. Separate PR?
       setPosition: (position) => {
         this.root_.style.left = 'left' in position ? `${position.left}px` : null;
         this.root_.style.right = 'right' in position ? `${position.right}px` : null;

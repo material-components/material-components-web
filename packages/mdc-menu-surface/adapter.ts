@@ -83,9 +83,6 @@ interface MenuPosition {
   right?: number;
   bottom?: number;
   left?: number;
-
-  // TODO(acdvorak): Remove this and find a better way than for...in with hasOwnProperty().
-  [key: string]: number;
 }
 
 interface MenuSize {
