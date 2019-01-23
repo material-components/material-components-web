@@ -7,6 +7,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "alwaysStrict": true,
+    "strict": true,
     "pretty": true,
     "preserveConstEnums": true,
     "stripInternal": true,
