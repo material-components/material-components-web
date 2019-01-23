@@ -37,16 +37,14 @@ export default class MDCLinearProgressFoundation extends MDCFoundation<MDCLinear
   }
 
   static get defaultAdapter(): MDCLinearProgressAdapter {
-    /* tslint:disable:no-empty */
     return {
-      addClass: (_className: string) => {},
+      addClass: (_className: string) => undefined,
       getBuffer: () => null,
       getPrimaryBar: () => null,
       hasClass: (_className: string) => false,
-      removeClass: (_className: string) => {},
-      setStyle: (_el: HTMLElement, _styleProperty: string, _value: string) => {},
+      removeClass: (_className: string) => undefined,
+      setStyle: (_el: HTMLElement, _styleProperty: string, _value: string) => undefined,
     };
-    /* tslint:enable:no-empty */
   }
 
   private isDeterminate_: boolean;
@@ -102,7 +100,7 @@ export default class MDCLinearProgressFoundation extends MDCFoundation<MDCLinear
   }
 
   private setScale_(el: HTMLElement, scaleValue: number) {
-    const value = 'scaleX(' + scaleValue + ')';
+    const value = `scaleX(${scaleValue})`;
     transformStyleProperties.forEach((transformStyleProperty) => {
       this.adapter_.setStyle(el, transformStyleProperty, value);
     });
