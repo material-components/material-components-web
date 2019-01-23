@@ -21,6 +21,8 @@
  * THE SOFTWARE.
  */
 
+import {MenuDimensions, MenuPosition} from './constants';
+
 /**
  * Adapter for MDCMenuSurface. Provides an interface for managing
  * - classes
@@ -78,20 +80,4 @@ interface MDCMenuSurfaceAdapter {
   notifyOpen(): void;
 }
 
-interface MenuPosition {
-  top?: number;
-  right?: number;
-  bottom?: number;
-  left?: number;
-}
-
-interface MenuDimensions {
-  width: number;
-  height: number;
-}
-
-export {
-  MDCMenuSurfaceAdapter,
-  MenuDimensions,
-  MenuPosition,
-};
+export {MDCMenuSurfaceAdapter};

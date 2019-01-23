@@ -83,4 +83,16 @@ enum Corner {
   BOTTOM_END = CornerBit.BOTTOM | CornerBit.RIGHT | CornerBit.FLIP_RTL,
 }
 
-export {cssClasses, strings, numbers, CornerBit, Corner};
+interface MenuPosition {
+  top?: number;
+  right?: number;
+  bottom?: number;
+  left?: number;
+}
+
+interface MenuDimensions {
+  width: number;
+  height: number;
+}
+
+export {cssClasses, strings, numbers, CornerBit, Corner, MenuDimensions, MenuPosition};

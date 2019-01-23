@@ -153,7 +153,7 @@ Mixin | Description
 Constant Name | Description
 --- | ---
 `Corner` | Enum for representing an element corner for positioning the menu-surface. See [constants.js](constants.ts).
-`MenuPosition` | Margin values representing the distance from anchor point that the menu surface should be shown. See [foundation.js](foundation.ts).
+`MenuPosition` | Margin values representing the distance from anchor point that the menu surface should be shown. See [constants.js](constants.ts).
 
 ## `MDCMenuSurface` Properties and Methods
 

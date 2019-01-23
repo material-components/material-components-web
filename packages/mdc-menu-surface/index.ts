@@ -22,8 +22,8 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {Corner, CornerBit, cssClasses, strings} from './constants';
-import {MDCMenuSurfaceFoundation, MenuPosition} from './foundation';
+import {Corner, CornerBit, MenuPosition, cssClasses, strings} from './constants';
+import {MDCMenuSurfaceFoundation} from './foundation';
 import * as util from './util';
 
 type RegisterFunction = () => void;

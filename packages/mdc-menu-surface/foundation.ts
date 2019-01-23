@@ -24,12 +24,8 @@
 // tslint:disable:no-bitwise object-literal-sort-keys
 
 import MDCFoundation from '@material/base/foundation';
-import {
-  MDCMenuSurfaceAdapter,
-  MenuDimensions,
-  MenuPosition,
-} from './adapter';
-import {Corner, CornerBit, cssClasses, numbers, strings} from './constants';
+import {MDCMenuSurfaceAdapter} from './adapter';
+import {Corner, CornerBit, cssClasses, MenuDimensions, MenuPosition, numbers, strings} from './constants';
 
 interface AutoLayoutMeasurements {
   viewportSize: MenuDimensions;
@@ -497,5 +493,4 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
   }
 }
 
-// TODO(acdvorak): Should `MenuPosition` be exported here?
-export {MDCMenuSurfaceFoundation, MenuPosition};
+export {MDCMenuSurfaceFoundation};
