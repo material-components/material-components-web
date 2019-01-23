@@ -105,11 +105,7 @@ Method Signature | Description
 `getCorrectEventName(windowObj: Window, eventType: StandardJsEventType) => StandardJsEventType \| PrefixedJsEventType` | Returns a JavaScript event name, prefixed if necessary
 `getCorrectPropertyName(windowObj: Window, cssProperty: StandardCssPropertyName) => StandardCssPropertyName \| PrefixedCssPropertyName` | Returns a CSS property name, prefixed if necessary
 
-## Usage within Web Frameworks
-
-If you are using a JavaScript framework, such as React or Angular, you can create a Dialog for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
-
-### `StandardCssPropertyName`
+#### `StandardCssPropertyName`
 
 Enum passed to and returned by `getCorrectPropertyName()`.
 
@@ -119,7 +115,7 @@ Key | Value
 `TRANSFORM` | `transform`
 `TRANSITION` | `transition`
 
-### `PrefixedCssPropertyName`
+#### `PrefixedCssPropertyName`
 
 Enum returned by `getCorrectPropertyName()`.
 
@@ -129,7 +125,7 @@ Key | Value
 `WEBKIT_TRANSFORM` | `-webkit-transform`
 `WEBKIT_TRANSITION` | `-webkit-transition`
 
-### `StandardJsEventType`
+#### `StandardJsEventType`
 
 Enum passed to and returned by `getCorrectEventName()`.
 
@@ -140,7 +136,7 @@ Key | Value
 `ANIMATION_START` | `animationstart`
 `TRANSITION_END` | `transitionend`
 
-### `PrefixedJsEventType`
+#### `PrefixedJsEventType`
 
 Enum returned by `getCorrectEventName()`.
 
