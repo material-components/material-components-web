@@ -49,39 +49,42 @@
   }
 }
 
+$mdc-text-field-baseline-height-density: 14;
+$mdc-text-field-baseline-icon-density: 6;
+$mdc-text-field-baseline-label-position-y: 11%;
+$mdc-text-field-baseline-label-height:32;
+
 @function density($size) {
   $pxSize: $size * 4;
   @return #{$pxSize}px;
 }
 
-@mixin mdc-text-field-cozy {
-  @include mdc-floating-label-float-position(14%, 0%, .75);
-  height: density(13);
+@mixin mdc-text-field-density($scale) {
+  height: density($mdc-text-field-baseline-height-density + $scale);
+  
+  .mdc-text-field__icon {
+    $icon-density: $mdc-text-field-baseline-icon-density - floor($scale/2);
+    height: density($icon-density);
+    width: density($icon-density);
+    font-size: density($icon-density);
+  }
 
+  $label-position-y: $mdc-text-field-baseline-label-position-y - $scale * 2%;
+  @include mdc-floating-label-float-position($label-position-y, 0%, .75);
   .mdc-floating-label {
-    @include mdc-typography-baseline-top(30px);
+    $label-height: $mdc-text-field-baseline-label-height + $scale * 2; 
+    @include mdc-typography-baseline-top(#{$label-height}px);
   }
 }
 
-@mixin mdc-text-field-compact {
-  @include mdc-floating-label-float-position(16%, 0%, .75);
-  height: density(12);
-  
-  .mdc-text-field__icon {
-    height: density(5);
-    width: density(5);
-    font-size: density(5);
-  }
-
-  .mdc-floating-label {
-    @include mdc-typography-baseline-top(28px);
-  }
+.mdc-text-field {
+  @include mdc-text-field-density(0);
 }
 
 .cozy-text-field {
-  @include mdc-text-field-cozy;
+  @include mdc-text-field-density(-1);
 }
 
 .compact-text-field {
-  @include mdc-text-field-compact;
+  @include mdc-text-field-density(-2);
 }
