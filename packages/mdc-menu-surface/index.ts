@@ -138,7 +138,7 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
   }
 
   setAnchorMargin(margin: MenuPosition) {
-    this.foundation_.setAnchorMargin(margin);  //
+    this.foundation_.setAnchorMargin(margin);
   }
 
   getDefaultFoundation(): MDCMenuSurfaceFoundation {
