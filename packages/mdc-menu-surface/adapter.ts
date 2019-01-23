@@ -50,10 +50,10 @@ interface MDCMenuSurfaceAdapter {
   isLastElementFocused(): boolean;
   isRtl(): boolean;
 
-  getInnerDimensions(): MenuSize;
+  getInnerDimensions(): MenuDimensions;
   getAnchorDimensions(): ClientRect | null;
-  getWindowDimensions(): MenuSize;
-  getBodyDimensions(): MenuSize;
+  getWindowDimensions(): MenuDimensions;
+  getBodyDimensions(): MenuDimensions;
   getWindowScroll(): DOMPointInit;
   setPosition(position: MenuPosition): void;
   setMaxHeight(height: string): void;
@@ -85,13 +85,13 @@ interface MenuPosition {
   left?: number;
 }
 
-interface MenuSize {
+interface MenuDimensions {
   width: number;
   height: number;
 }
 
 export {
   MDCMenuSurfaceAdapter,
+  MenuDimensions,
   MenuPosition,
-  MenuSize,
 };

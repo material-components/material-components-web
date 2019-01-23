@@ -26,17 +26,17 @@
 import MDCFoundation from '@material/base/foundation';
 import {
   MDCMenuSurfaceAdapter,
+  MenuDimensions,
   MenuPosition,
-  MenuSize,
 } from './adapter';
 import {Corner, CornerBit, cssClasses, numbers, strings} from './constants';
 
 interface AutoLayoutMeasurements {
-  viewportSize: MenuSize;
+  viewportSize: MenuDimensions;
   viewportDistance: MenuPosition;
-  anchorSize: MenuSize;
-  surfaceSize: MenuSize;
-  bodySize: MenuSize;
+  anchorSize: MenuDimensions;
+  surfaceSize: MenuDimensions;
+  bodySize: MenuDimensions;
   windowScroll: DOMPointInit;
 }
 
@@ -96,7 +96,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
   private openAnimationEndTimerId_: number;
   private closeAnimationEndTimerId_: number;
   private animationRequestId_: number;
-  private dimensions_: MenuSize;
+  private dimensions_: MenuDimensions;
   private anchorCorner_: Corner;
   private anchorMargin_: MenuPosition;
   private measurements_: AutoLayoutMeasurements;
