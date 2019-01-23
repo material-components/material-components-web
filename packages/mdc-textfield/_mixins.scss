@@ -105,10 +105,6 @@
   &:not(.mdc-text-field--disabled) {
     @include mdc-notched-outline-color($color);
   }
-
-  &:not(.mdc-text-field--disabled) .mdc-text-field__outline {
-    border-color: $color;
-  }
 }
 
 @mixin mdc-text-field-hover-outline-color($color) {
@@ -218,10 +214,6 @@
     @include mdc-notched-outline-shape-radius($resolved-radius, $rtl-reflexive);
   }
 
-  .mdc-text-field__outline {
-    @include mdc-shape-radius($resolved-radius, $rtl-reflexive);
-  }
-
   $radius-pixels: mdc-shape-prop-value($resolved-radius);
 
   @if ($radius-pixels > $mdc-notched-outline-leading-width) {
@@ -287,10 +279,6 @@
 
 @mixin mdc-text-field-outlined-focused_ {
   @include mdc-notched-outline-stroke-width(2px);
-
-  .mdc-text-field__outline {
-    border-width: 2px;
-  }
 }
 
 @mixin mdc-text-field-outlined-dense_ {
@@ -345,10 +333,6 @@
       .mdc-notched-outline {
         @include mdc-notched-outline-color($color);
       }
-
-      .mdc-text-field__outline {
-        @include mdc-theme-prop(border-color, $color);
-      }
     }
   }
 }
@@ -356,10 +340,6 @@
 @mixin mdc-text-field-focused-outline-color_($color) {
   &.mdc-text-field--focused {
     @include mdc-notched-outline-color($color);
-
-    .mdc-text-field__outline {
-      @include mdc-theme-prop(border-color, $color);
-    }
   }
 }
 

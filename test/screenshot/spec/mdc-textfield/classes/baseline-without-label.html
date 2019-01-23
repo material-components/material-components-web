@@ -54,7 +54,10 @@
         <div class="test-cell test-cell--textfield">
           <div class="mdc-text-field mdc-text-field--outlined">
             <input type="text" id="outlined-text-field" class="mdc-text-field__input test-text-field__input" placeholder="Placeholder text">
-            <div class="mdc-text-field__outline"></div>
+            <div class="mdc-notched-outline">
+              <div class="mdc-notched-outline__leading"></div>
+              <div class="mdc-notched-outline__trailing"></div>
+            </div>
           </div>
         </div>
 
@@ -69,11 +72,8 @@
         <div class="test-cell test-cell--textfield">
           <div class="mdc-text-field mdc-text-field--outlined">
             <input type="text" id="outlined-text-field-with-value" class="mdc-text-field__input test-text-field__input" value="Filled value">
-            <div class="mdc-notched-outline mdc-notched-outline--notched">
+            <div class="mdc-notched-outline">
               <div class="mdc-notched-outline__leading"></div>
-              <div class="mdc-notched-outline__notch">
-                <label for="outlined-text-field-with-value" class="mdc-floating-label mdc-floating-label--float-above">Label</label>
-              </div>
               <div class="mdc-notched-outline__trailing"></div>
             </div>
           </div>
