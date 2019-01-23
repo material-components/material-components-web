@@ -25,7 +25,11 @@ import {cssClasses, strings, numbers} from './constants';
 import MDCSliderAdapter from './adapter';
 
 import {getCorrectEventName, getCorrectPropertyName} from '@material/animation/index.ts';
+import {StandardCssPropertyName, StandardJsEventType} from '@material/animation/index.ts';
 import MDCFoundation from '@material/base/foundation';
+
+const {TRANSFORM} = StandardCssPropertyName;
+const {TRANSITION_END} = StandardJsEventType;
 
 /** @enum {string} */
 const KEY_IDS = {
@@ -185,8 +189,7 @@ class MDCSliderFoundation extends MDCFoundation {
 
       if (indivisible) {
         const lastStepRatio = (max - numMarkers * step) / step + 1;
-        const flex = getCorrectPropertyName(window, 'flex');
-        this.adapter_.setLastTrackMarkersStyleProperty(flex, String(lastStepRatio));
+        this.adapter_.setLastTrackMarkersStyleProperty('flex-grow', String(lastStepRatio));
       }
     }
   }
@@ -521,8 +524,8 @@ class MDCSliderFoundation extends MDCFoundation {
       translatePx = this.rect_.width - translatePx;
     }
 
-    const transformProp = getCorrectPropertyName(window, 'transform');
-    const transitionendEvtName = getCorrectEventName(window, 'transitionend');
+    const transformProp = getCorrectPropertyName(window, TRANSFORM);
+    const transitionendEvtName = getCorrectEventName(window, TRANSITION_END);
 
     if (this.inTransit_) {
       const onTransitionEnd = () => {

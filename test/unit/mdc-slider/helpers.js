@@ -21,14 +21,14 @@
  * THE SOFTWARE.
  */
 
-import {getCorrectPropertyName} from '../../../packages/mdc-animation/index.ts';
+import {StandardCssPropertyName, getCorrectPropertyName} from '../../../packages/mdc-animation/index.ts';
 import {captureHandlers} from '../helpers/foundation';
 import {install as installClock} from '../helpers/clock';
 import {setupFoundationTest} from '../helpers/setup';
 
 import MDCSliderFoundation from '../../../packages/mdc-slider/foundation';
 
-export const TRANSFORM_PROP = getCorrectPropertyName(window, 'transform');
+export const TRANSFORM_PROP = getCorrectPropertyName(window, StandardCssPropertyName.TRANSFORM);
 
 export function setupEventTest() {
   const {foundation, mockAdapter} = setupFoundationTest(MDCSliderFoundation);
