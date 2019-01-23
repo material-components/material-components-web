@@ -52,29 +52,38 @@
 $mdc-text-field-baseline-height-density: 14;
 $mdc-text-field-baseline-icon-density: 6;
 $mdc-text-field-baseline-label-position-y: 11%;
-$mdc-text-field-baseline-label-height:32;
+$mdc-text-field-baseline-outlined-label-position-y: 55%;
+$mdc-text-field-baseline-label-height: 32;
 
 @function density($size) {
   $pxSize: $size * 4;
   @return #{$pxSize}px;
 }
 
-@mixin mdc-text-field-density($scale) {
-  height: density($mdc-text-field-baseline-height-density + $scale);
+@mixin mdc-text-field-density($scale, $variant: filled) {
+  $height-density: $mdc-text-field-baseline-height-density + $scale;
+  height: density($height-density);
   
   .mdc-text-field__icon {
-    $icon-density: $mdc-text-field-baseline-icon-density - floor($scale/2);
+    $icon-density: $mdc-text-field-baseline-icon-density + ($scale / abs($scale)) * floor(abs($scale)/2);
     height: density($icon-density);
     width: density($icon-density);
     font-size: density($icon-density);
+    bottom: density(($height-density - $icon-density) / 2);
   }
 
   $label-position-y: $mdc-text-field-baseline-label-position-y - $scale * 2%;
-  @include mdc-floating-label-float-position($label-position-y, 0%, .75);
+  @if $variant == outlined {
+    $label-position-y: $mdc-text-field-baseline-outlined-label-position-y;
+  }
   .mdc-floating-label {
     $label-height: $mdc-text-field-baseline-label-height + $scale * 2; 
     @include mdc-typography-baseline-top(#{$label-height}px);
   }
+
+  @include mdc-floating-label-float-position($label-position-y);
+  @include mdc-floating-label-shake-keyframes(text-field-density-#{$scale}-#{$variant}, $label-position-y);
+  @include mdc-floating-label-shake-animation(text-field-density-#{$scale}-#{$variant});
 }
 
 .mdc-text-field {
@@ -83,8 +92,16 @@ $mdc-text-field-baseline-label-height:32;
 
 .cozy-text-field {
   @include mdc-text-field-density(-1);
+
+  &.mdc-text-field--outlined {
+    @include mdc-text-field-density(-1, outlined);
+  }
 }
 
 .compact-text-field {
   @include mdc-text-field-density(-2);
+
+  &.mdc-text-field--outlined {
+    @include mdc-text-field-density(-2, outlined);
+  }
 }
