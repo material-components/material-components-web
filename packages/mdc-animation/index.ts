@@ -66,8 +66,6 @@ interface JsVendorProperty {
   standard: StandardJsEventType;
 }
 
-const transformStyleProperties = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'MSTransform'];
-
 // Destructure enum members to make their usages more readable.
 const {WEBKIT_ANIMATION, WEBKIT_TRANSFORM, WEBKIT_TRANSITION} = PrefixedCssPropertyName;
 const {ANIMATION, TRANSFORM, TRANSITION} = StandardCssPropertyName;
@@ -150,5 +148,4 @@ export {
   StandardJsEventType,
   getCorrectEventName,
   getCorrectPropertyName,
-  transformStyleProperties,
 };

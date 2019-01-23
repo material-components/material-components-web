@@ -28,6 +28,6 @@ export const cssClasses = {
 };
 
 export const strings = {
-  PRIMARY_BAR_SELECTOR: '.mdc-linear-progress__primary-bar',
   BUFFER_SELECTOR: '.mdc-linear-progress__buffer',
+  PRIMARY_BAR_SELECTOR: '.mdc-linear-progress__primary-bar',
 };
