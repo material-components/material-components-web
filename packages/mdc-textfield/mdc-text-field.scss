@@ -88,9 +88,14 @@
   appearance: none;
 
   &::placeholder {
-    transition: mdc-text-field-transition(color);
-    opacity: 1;
+    transition: mdc-text-field-transition(opacity);
+    opacity: 0;
     color: $mdc-text-field-placeholder-ink-color;
+  }
+
+  .mdc-text-field--no-label &::placeholder,
+  &:focus::placeholder {
+    opacity: 1;
   }
 
   // Center aligns the text input placeholder and value for only filled variant.
