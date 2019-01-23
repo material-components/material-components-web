@@ -44,18 +44,18 @@ interface MDCMenuSurfaceAdapter {
   hasClass(className: string): boolean;
   hasAnchor(): boolean;
 
-  isElementInContainer(el: Element): boolean;
+  isElementInContainer(el: HTMLElement): boolean;
   isFocused(): boolean;
   isFirstElementFocused(): boolean;
   isLastElementFocused(): boolean;
   isRtl(): boolean;
 
-  getInnerDimensions(): MDCMenuSurfaceSize;
-  getAnchorDimensions(): MDCMenuSurfaceRect;
-  getWindowDimensions(): MDCMenuSurfaceSize;
-  getBodyDimensions(): MDCMenuSurfaceSize;
-  getWindowScroll(): MDCMenuSurfacePoint;
-  setPosition(position: MDCMenuSurfacePositionInput): void;
+  getInnerDimensions(): MenuSize;
+  getAnchorDimensions(): MenuRect;
+  getWindowDimensions(): MenuSize;
+  getBodyDimensions(): MenuSize;
+  getWindowScroll(): DOMPointInit;
+  setPosition(position: MenuPositionInput): void;
   setMaxHeight(height: string): void;
   setTransformOrigin(origin: string): void;
 
@@ -80,52 +80,46 @@ interface MDCMenuSurfaceAdapter {
 
 // TODO(acdvorak): Should properties be readonly?
 
-interface MDCMenuSurfacePositionInput {
-  /*readonly*/ top?: number | string;
-  /*readonly*/ right?: number | string;
-  /*readonly*/ bottom?: number | string;
-  /*readonly*/ left?: number | string;
+interface MenuPositionInput {
+  top?: number | string;
+  right?: number | string;
+  bottom?: number | string;
+  left?: number | string;
 
   // TODO(acdvorak): Remove this and find a better way than for...in with hasOwnProperty().
   [key: string]: number | string;
 }
 
-interface MDCMenuSurfacePositionOutput {
-  /*readonly*/ top: number;
-  /*readonly*/ right: number;
-  /*readonly*/ bottom: number;
-  /*readonly*/ left: number;
+interface MenuPositionOutput {
+  top: number;
+  right: number;
+  bottom: number;
+  left: number;
 
   // TODO(acdvorak): Remove this and find a better way than for...in with hasOwnProperty().
   [key: string]: number;
 }
 
-interface MDCMenuSurfaceRect {
-  /*readonly*/ top: number;
-  /*readonly*/ right: number;
-  /*readonly*/ bottom: number;
-  /*readonly*/ left: number;
-  /*readonly*/ width: number;
-  /*readonly*/ height: number;
-  /*readonly*/ x?: number;
-  /*readonly*/ y?: number;
+interface MenuRect {
+  top: number;
+  right: number;
+  bottom: number;
+  left: number;
+  width: number;
+  height: number;
+  x?: number;
+  y?: number;
 }
 
-interface MDCMenuSurfaceSize {
-  /*readonly*/ width: number;
-  /*readonly*/ height: number;
-}
-
-interface MDCMenuSurfacePoint {
-  /*readonly*/ x: number;
-  /*readonly*/ y: number;
+interface MenuSize {
+  width: number;
+  height: number;
 }
 
 // TODO(acdvorak): Export with {} syntax in other component PRs
 export {
   MDCMenuSurfaceAdapter,
-  MDCMenuSurfacePoint,
-  MDCMenuSurfacePositionInput,
-  MDCMenuSurfacePositionOutput,
-  MDCMenuSurfaceSize,
+  MenuPositionInput,
+  MenuPositionOutput,
+  MenuSize,
 };

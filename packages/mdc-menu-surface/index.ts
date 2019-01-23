@@ -143,15 +143,15 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
     const rootEl = this.root_ as HTMLElement;
 
     return new MDCMenuSurfaceFoundation({
-      addClass: (className: string) => this.root_.classList.add(className),
-      removeClass: (className: string) => this.root_.classList.remove(className),
-      hasClass: (className: string) => this.root_.classList.contains(className),
+      addClass: (className) => this.root_.classList.add(className),
+      removeClass: (className) => this.root_.classList.remove(className),
+      hasClass: (className) => this.root_.classList.contains(className),
       hasAnchor: () => !!this.anchorElement,
       notifyClose: () => this.emit(MDCMenuSurfaceFoundation.strings.CLOSED_EVENT, {}),
       notifyOpen: () => this.emit(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, {}),
-      isElementInContainer: (el: Element) => this.root_ === el || this.root_.contains(el),
+      isElementInContainer: (el) => this.root_.contains(el),
       isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
-      setTransformOrigin: (origin: string) => {
+      setTransformOrigin: (origin) => {
         const propertyName = `${util.getTransformPropertyName(window)}-origin`;
         rootEl.style.setProperty(propertyName, origin);
       },

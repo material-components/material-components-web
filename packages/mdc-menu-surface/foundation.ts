@@ -26,25 +26,24 @@
 import MDCFoundation from '@material/base/foundation';
 import {
   MDCMenuSurfaceAdapter,
-  MDCMenuSurfacePoint,
-  MDCMenuSurfacePositionInput,
-  MDCMenuSurfacePositionOutput,
-  MDCMenuSurfaceSize,
+  MenuPositionInput,
+  MenuPositionOutput,
+  MenuSize,
 } from './adapter';
 import {Corner, CornerBit, cssClasses, numbers, strings} from './constants';
 
 // TODO(acdvorak): Remove this alias
-type AnchorMargin = MDCMenuSurfacePositionOutput;
+type AnchorMargin = MenuPositionOutput;
 
 interface AutoLayoutMeasurements {
-  viewport: MDCMenuSurfaceSize;
-  viewportDistance: MDCMenuSurfacePositionOutput;
+  viewport: MenuSize;
+  viewportDistance: MenuPositionOutput;
   anchorHeight: number;
   anchorWidth: number;
   surfaceHeight: number;
   surfaceWidth: number;
-  bodyDimensions: MDCMenuSurfaceSize;
-  windowScroll: MDCMenuSurfacePoint;
+  bodyDimensions: MenuSize;
+  windowScroll: DOMPointInit;
 }
 
 class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
@@ -105,14 +104,14 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
   private openAnimationEndTimerId_: number;
   private closeAnimationEndTimerId_: number;
   private animationRequestId_: number;
-  private dimensions_: MDCMenuSurfaceSize;
+  private dimensions_: MenuSize;
   private anchorCorner_: Corner;
   private anchorMargin_: AnchorMargin;
   private measurements_: AutoLayoutMeasurements;
   private isQuickOpen_: boolean;
   private isHoistedElement_: boolean;
   private isFixedPosition_: boolean;
-  private position_: MDCMenuSurfacePoint;
+  private position_: DOMPointInit;
 
   constructor(adapter: MDCMenuSurfaceAdapter) {
     super(Object.assign(MDCMenuSurfaceFoundation.defaultAdapter, adapter));
@@ -246,7 +245,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
 
   /** Handle clicks and close if not within menu-surface element. */
   handleBodyClick(evt: MouseEvent) {
-    const el = evt.target as Element;
+    const el = evt.target as HTMLElement;
     if (this.adapter_.isElementInContainer(el)) {
       return;
     }
@@ -439,7 +438,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
     const verticalOffset = this.getVerticalOriginOffset_(corner);
     const {anchorWidth, surfaceWidth} = this.measurements_;
 
-    const position: MDCMenuSurfacePositionInput = {
+    const position: MenuPositionInput = {
       [horizontalAlignment]: horizontalOffset ? horizontalOffset : '0',
       [verticalAlignment]: verticalOffset ? verticalOffset : '0',
     };
@@ -470,7 +469,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
   }
 
   /** Calculates the offsets for positioning the menu-surface when the menu-surface has been hoisted to the body. */
-  private adjustPositionForHoistedElement_(position: MDCMenuSurfacePositionInput) {
+  private adjustPositionForHoistedElement_(position: MenuPositionInput) {
     const {windowScroll, viewportDistance} = this.measurements_;
 
     for (const prop in position) {
@@ -507,14 +506,14 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
    * focused on or within the menu surface when it is closed.
    */
   private maybeRestoreFocus_() {
-    if (this.adapter_.isFocused() || this.adapter_.isElementInContainer(document.activeElement)) {
+    if (this.adapter_.isFocused() || this.adapter_.isElementInContainer(document.activeElement as HTMLElement)) {
       this.adapter_.restoreFocus();
     }
   }
 
   /**
    * isFinite that doesn't force conversion to number type.
-   * Equivalent to Number.isFinite in ES2015, but is not included in IE11.
+   * Equivalent to Number.isFinite in ES2015, which is not supported in IE.
    */
   private typeCheckisFinite_(num: number): boolean {
     return typeof num === 'number' && isFinite(num);
