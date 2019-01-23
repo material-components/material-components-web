@@ -78,8 +78,8 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
       this.setFixedPosition(true);
     }
 
-    this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt as KeyboardEvent);
-    this.handleBodyClick_ = (evt) => this.foundation_.handleBodyClick(evt as MouseEvent);
+    this.handleKeydown_ = (evt: KeyboardEvent) => this.foundation_.handleKeydown(evt);
+    this.handleBodyClick_ = (evt: MouseEvent) => this.foundation_.handleBodyClick(evt);
 
     this.registerBodyClickListener_ = () => document.body.addEventListener('click', this.handleBodyClick_);
     this.deregisterBodyClickListener_ = () => document.body.removeEventListener('click', this.handleBodyClick_);
