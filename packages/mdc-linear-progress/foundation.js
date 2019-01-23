@@ -22,7 +22,7 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import {transformStyleProperties} from '@material/animation/index';
+import {transformStyleProperties} from '@material/animation/index.ts';
 
 import {cssClasses, strings} from './constants';
 

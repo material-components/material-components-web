@@ -95,12 +95,54 @@ Function | Description
 These functions handle prefixing across various browsers
 
 ```js
-import {getCorrectEventName} from '@material/animation';
+import {getCorrectEventName, StandardJsEventType} from '@material/animation';
 
-const eventToListenFor = getCorrectEventName(window, 'animationstart');
+const eventToListenFor = getCorrectEventName(window, StandardJsEventType.ANIMATION_START);
 ```
 
 Method Signature | Description
 --- | ---
-`getCorrectEventName(windowObj, eventType)` | Returns a JavaScript event name, prefixed if necessary
-`getCorrectPropertyName(windowObj, eventType)` | Returns a CSS property name, prefixed if necessary
+`getCorrectEventName(windowObj: Window, eventType: StandardJsEventType) => StandardJsEventType \| PrefixedJsEventType` | Returns a JavaScript event name, prefixed if necessary
+`getCorrectPropertyName(windowObj: Window, cssProperty: StandardCssPropertyName) => StandardCssPropertyName \| PrefixedCssPropertyName` | Returns a CSS property name, prefixed if necessary
+
+#### `StandardCssPropertyName`
+
+Enum passed to and returned by `getCorrectPropertyName()`.
+
+Key | Value
+--- | ---
+`ANIMATION` | `animation`
+`TRANSFORM` | `transform`
+`TRANSITION` | `transition`
+
+#### `PrefixedCssPropertyName`
+
+Enum returned by `getCorrectPropertyName()`.
+
+Key | Value
+--- | ---
+`WEBKIT_ANIMATION` | `-webkit-animation`
+`WEBKIT_TRANSFORM` | `-webkit-transform`
+`WEBKIT_TRANSITION` | `-webkit-transition`
+
+#### `StandardJsEventType`
+
+Enum passed to and returned by `getCorrectEventName()`.
+
+Key | Value
+--- | ---
+`ANIMATION_END` | `animationend`
+`ANIMATION_ITERATION` | `animationiteration`
+`ANIMATION_START` | `animationstart`
+`TRANSITION_END` | `transitionend`
+
+#### `PrefixedJsEventType`
+
+Enum returned by `getCorrectEventName()`.
+
+Key | Value
+--- | ---
+`WEBKIT_ANIMATION_END` | `webkitAnimationEnd`
+`WEBKIT_ANIMATION_ITERATION` | `webkitAnimationIteration`
+`WEBKIT_ANIMATION_START` | `webkitAnimationStart`
+`WEBKIT_TRANSITION_END` | `webkitTransitionEnd`
