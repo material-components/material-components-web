@@ -26,7 +26,7 @@ import * as base from '@material/base/index.ts';
 import * as checkbox from '@material/checkbox/index';
 import * as chips from '@material/chips/index';
 import * as dialog from '@material/dialog/index';
-import * as dom from '@material/dom/index';
+import * as dom from '@material/dom/index.ts';
 import * as drawer from '@material/drawer/index';
 import * as floatingLabel from '@material/floating-label/index';
 import * as formField from '@material/form-field/index';

@@ -1,5 +1,5 @@
 //
-// Copyright 2016 Google Inc.
+// Copyright 2019 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,5 +20,14 @@
 // THE SOFTWARE.
 //
 
-@import "./mixins";
-@include mdc-button;
+@import "./functions";
+
+// Mixin that annotates the contained styles as applying to specific cross-cutting features
+// indicated by the given list of feature targets.
+@mixin mdc-feature-targets($feature-targets...) {
+  $parsed-targets: mdc-feature-parse-targets($feature-targets);
+
+  @if mdc-feature-is-query-satisfied_(map-get($parsed-targets, query), map-get($parsed-targets, available)) {
+    @content;
+  }
+}

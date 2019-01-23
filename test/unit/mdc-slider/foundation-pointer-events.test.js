@@ -24,14 +24,14 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
-import {getCorrectEventName} from '../../../packages/mdc-animation/index';
+import {StandardJsEventType, getCorrectEventName} from '../../../packages/mdc-animation/index.ts';
 
 import {cssClasses} from '../../../packages/mdc-slider/constants';
 import {TRANSFORM_PROP, setupEventTest as setupTest} from './helpers';
 
 suite('MDCSliderFoundation - pointer events');
 
-const TRANSITION_END_EVT = getCorrectEventName(window, 'transitionend');
+const TRANSITION_END_EVT = getCorrectEventName(window, StandardJsEventType.TRANSITION_END);
 
 createTestSuiteForPointerEvents('mousedown', 'mousemove', 'mouseup');
 createTestSuiteForPointerEvents('pointerdown', 'pointermove', 'pointerup');
