@@ -138,7 +138,7 @@ Add class name `mdc-text-field--no-label` and remove the label element from the 
 
 ```html
 <div class="mdc-text-field mdc-text-field--no-label">
-  <input type="text" id="my-text-field" class="mdc-text-field__input" placeholder="Placeholder text" aria-label="Label">
+  <input type="text" class="mdc-text-field__input" placeholder="Placeholder text" aria-label="Label">
   <div class="mdc-line-ripple"></div>
 </div>
 ```
@@ -147,7 +147,7 @@ Add class name `mdc-text-field--no-label` and remove the label element from the 
 
 ```html
 <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
-  <input type="text" id="tf-outlined" class="mdc-text-field__input" aria-label="Label">
+  <input type="text" class="mdc-text-field__input" aria-label="Label">
   <div class="mdc-notched-outline">
     <div class="mdc-notched-outline__leading"></div>
     <div class="mdc-notched-outline__trailing"></div>
@@ -159,7 +159,7 @@ Add class name `mdc-text-field--no-label` and remove the label element from the 
 
 ```html
 <div class="mdc-text-field mdc-text-field--textarea mdc-text-field--no-label">
-  <textarea id="textarea" class="mdc-text-field__input" rows="8" cols="40" aria-label="Label"></textarea>
+  <textarea class="mdc-text-field__input" rows="8" cols="40" aria-label="Label"></textarea>
   <div class="mdc-notched-outline">
     <div class="mdc-notched-outline__leading"></div>
     <div class="mdc-notched-outline__trailing"></div>
