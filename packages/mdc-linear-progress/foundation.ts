@@ -21,11 +21,12 @@
  * THE SOFTWARE.
  */
 
-import {transformStyleProperties} from '@material/animation';
+import {getCorrectPropertyName, StandardCssPropertyName} from '@material/animation';
 import MDCFoundation from '@material/base/foundation';
 import MDCLinearProgressAdapter from './adapter';
-
 import {cssClasses, strings} from './constants';
+
+const {TRANSFORM} = StandardCssPropertyName;
 
 export default class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgressAdapter> {
   static get cssClasses() {
@@ -104,8 +105,6 @@ export default class MDCLinearProgressFoundation extends MDCFoundation<MDCLinear
       return;
     }
     const value = `scaleX(${scaleValue})`;
-    transformStyleProperties.forEach((transformStyleProperty) => {
-      this.adapter_.setStyle(el, transformStyleProperty, value);
-    });
+    this.adapter_.setStyle(el, getCorrectPropertyName(window, TRANSFORM), value);
   }
 }
