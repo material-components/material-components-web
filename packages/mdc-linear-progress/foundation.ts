@@ -23,7 +23,7 @@
 
 import {getCorrectPropertyName, StandardCssPropertyName} from '@material/animation';
 import MDCFoundation from '@material/base/foundation';
-import MDCLinearProgressAdapter from './adapter';
+import {MDCLinearProgressAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
 const {TRANSFORM} = StandardCssPropertyName;
