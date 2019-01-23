@@ -99,7 +99,10 @@ export default class MDCLinearProgressFoundation extends MDCFoundation<MDCLinear
     this.adapter_.addClass(cssClasses.CLOSED_CLASS);
   }
 
-  private setScale_(el: HTMLElement, scaleValue: number) {
+  private setScale_(el: HTMLElement | null, scaleValue: number) {
+    if (!el) {
+      return;
+    }
     const value = `scaleX(${scaleValue})`;
     transformStyleProperties.forEach((transformStyleProperty) => {
       this.adapter_.setStyle(el, transformStyleProperty, value);

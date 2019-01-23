@@ -23,8 +23,8 @@
 
 interface MDCLinearProgressAdapter {
   addClass(className: string): void;
-  getBuffer(): HTMLElement;
-  getPrimaryBar(): HTMLElement;
+  getBuffer(): HTMLElement | null;
+  getPrimaryBar(): HTMLElement | null;
   hasClass(className: string): boolean;
   removeClass(className: string): void;
   setStyle(el: HTMLElement, styleProperty: string, value: string): void;
