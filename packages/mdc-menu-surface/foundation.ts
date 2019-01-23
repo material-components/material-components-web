@@ -177,7 +177,6 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
     this.isQuickOpen_ = quickOpen;
   }
 
-  /** @return {boolean} */
   isOpen() {
     return this.isOpen_;
   }
