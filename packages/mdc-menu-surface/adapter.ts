@@ -51,11 +51,11 @@ interface MDCMenuSurfaceAdapter {
   isRtl(): boolean;
 
   getInnerDimensions(): MenuSize;
-  getAnchorDimensions(): MenuRect;
+  getAnchorDimensions(): ClientRect | null;
   getWindowDimensions(): MenuSize;
   getBodyDimensions(): MenuSize;
   getWindowScroll(): DOMPointInit;
-  setPosition(position: MenuPositionInput): void;
+  setPosition(position: MenuPosition): void;
   setMaxHeight(height: string): void;
   setTransformOrigin(origin: string): void;
 
@@ -78,37 +78,14 @@ interface MDCMenuSurfaceAdapter {
   notifyOpen(): void;
 }
 
-// TODO(acdvorak): Should properties be readonly?
-
-interface MenuPositionInput {
-  top?: number | string;
-  right?: number | string;
-  bottom?: number | string;
-  left?: number | string;
-
-  // TODO(acdvorak): Remove this and find a better way than for...in with hasOwnProperty().
-  [key: string]: number | string;
-}
-
-interface MenuPositionOutput {
-  top: number;
-  right: number;
-  bottom: number;
-  left: number;
+interface MenuPosition {
+  top?: number;
+  right?: number;
+  bottom?: number;
+  left?: number;
 
   // TODO(acdvorak): Remove this and find a better way than for...in with hasOwnProperty().
   [key: string]: number;
-}
-
-interface MenuRect {
-  top: number;
-  right: number;
-  bottom: number;
-  left: number;
-  width: number;
-  height: number;
-  x?: number;
-  y?: number;
 }
 
 interface MenuSize {
@@ -116,10 +93,8 @@ interface MenuSize {
   height: number;
 }
 
-// TODO(acdvorak): Export with {} syntax in other component PRs
 export {
   MDCMenuSurfaceAdapter,
-  MenuPositionInput,
-  MenuPositionOutput,
+  MenuPosition,
   MenuSize,
 };

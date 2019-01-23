@@ -362,7 +362,7 @@ test('adapter#getAnchorDimensions returns undefined if there is no anchor elemen
   const {root, component} = setupTest(true);
   document.body.appendChild(root);
   component.initialSyncWithDOM();
-  assert.isUndefined(component.getDefaultFoundation().adapter_.getAnchorDimensions());
+  assert.isNull(component.getDefaultFoundation().adapter_.getAnchorDimensions());
   document.body.removeChild(root);
 });
 
@@ -466,10 +466,10 @@ test('adapter#setTransformOrigin sets the correct transform origin on the menu s
 
 test('adapter#setPosition sets the correct position on the menu surface element', () => {
   const {root, component} = setupTest();
-  component.getDefaultFoundation().adapter_.setPosition({top: '10px', left: '11px'});
+  component.getDefaultFoundation().adapter_.setPosition({top: 10, left: 11});
   assert.equal(root.style.top, '10px');
   assert.equal(root.style.left, '11px');
-  component.getDefaultFoundation().adapter_.setPosition({bottom: '10px', right: '11px'});
+  component.getDefaultFoundation().adapter_.setPosition({bottom: 10, right: 11});
   assert.equal(root.style.bottom, '10px');
   assert.equal(root.style.right, '11px');
 });

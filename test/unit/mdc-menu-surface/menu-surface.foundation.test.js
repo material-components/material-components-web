@@ -170,7 +170,7 @@ testFoundation('#open from small anchor in center of viewport, default (TOP_STAR
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('right top'));
-    td.verify(mockAdapter.setPosition({right: '0', top: '0'}));
+    td.verify(mockAdapter.setPosition({right: 0, top: 0}));
   });
 
 testFoundation('#open from small anchor in center of viewport, TOP_END anchor corner, RTL',
@@ -180,7 +180,7 @@ testFoundation('#open from small anchor in center of viewport, TOP_END anchor co
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('right top'));
-    td.verify(mockAdapter.setPosition({right: '40px', top: '0'}));
+    td.verify(mockAdapter.setPosition({right: 40, top: 0}));
   });
 
 testFoundation('#open from small anchor in center of viewport, BOTTOM_START anchor corner, RTL',
@@ -190,7 +190,7 @@ testFoundation('#open from small anchor in center of viewport, BOTTOM_START anch
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('right top'));
-    td.verify(mockAdapter.setPosition({right: '0', top: '20px'}));
+    td.verify(mockAdapter.setPosition({right: 0, top: 20}));
   });
 
 testFoundation('#open from small anchor in center of viewport, BOTTOM_END anchor corner, RTL',
@@ -200,7 +200,7 @@ testFoundation('#open from small anchor in center of viewport, BOTTOM_END anchor
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('right top'));
-    td.verify(mockAdapter.setPosition({right: '40px', top: '20px'}));
+    td.verify(mockAdapter.setPosition({right: 40, top: 20}));
   });
 
 testFoundation('#open from small anchor in top left of viewport, default (TOP_START) anchor corner, LTR',
@@ -209,7 +209,7 @@ testFoundation('#open from small anchor in top left of viewport, default (TOP_ST
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('left top'));
-    td.verify(mockAdapter.setPosition({left: '0', top: '0'}));
+    td.verify(mockAdapter.setPosition({left: 0, top: 0}));
   });
 
 testFoundation('#open from small anchor in top left of viewport, TOP_END anchor corner, LTR',
@@ -219,7 +219,7 @@ testFoundation('#open from small anchor in top left of viewport, TOP_END anchor 
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('left top'));
-    td.verify(mockAdapter.setPosition({left: '40px', top: '0'}));
+    td.verify(mockAdapter.setPosition({left: 40, top: 0}));
   });
 
 testFoundation('#open from small anchor in top left of viewport, BOTTOM_START anchor corner, LTR',
@@ -229,7 +229,7 @@ testFoundation('#open from small anchor in top left of viewport, BOTTOM_START an
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('left top'));
-    td.verify(mockAdapter.setPosition({left: '0', top: '20px'}));
+    td.verify(mockAdapter.setPosition({left: 0, top: 20}));
   });
 
 testFoundation('#open from small anchor in top left of viewport, BOTTOM_END anchor corner, LTR',
@@ -239,7 +239,7 @@ testFoundation('#open from small anchor in top left of viewport, BOTTOM_END anch
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('left top'));
-    td.verify(mockAdapter.setPosition({left: '40px', top: '20px'}));
+    td.verify(mockAdapter.setPosition({left: 40, top: 20}));
   });
 
 testFoundation('#open from small anchor in right bottom of viewport, default (TOP_START) anchor corner, LTR',
@@ -248,7 +248,7 @@ testFoundation('#open from small anchor in right bottom of viewport, default (TO
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('right bottom'));
-    td.verify(mockAdapter.setPosition({right: '0', bottom: '0'}));
+    td.verify(mockAdapter.setPosition({right: 0, bottom: 0}));
   });
 
 testFoundation('#open from small anchor in right bottom of viewport, TOP_END anchor corner, LTR',
@@ -258,7 +258,7 @@ testFoundation('#open from small anchor in right bottom of viewport, TOP_END anc
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('right bottom'));
-    td.verify(mockAdapter.setPosition({right: '40px', bottom: '0'}));
+    td.verify(mockAdapter.setPosition({right: 40, bottom: 0}));
   });
 
 testFoundation('#open from small anchor in right bottom of viewport, BOTTOM_START anchor corner, LTR',
@@ -268,7 +268,7 @@ testFoundation('#open from small anchor in right bottom of viewport, BOTTOM_STAR
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('right bottom'));
-    td.verify(mockAdapter.setPosition({right: '0', bottom: '20px'}));
+    td.verify(mockAdapter.setPosition({right: 0, bottom: 20}));
   });
 
 testFoundation('#open from small anchor in right bottom of viewport, BOTTOM_END anchor corner, LTR',
@@ -278,7 +278,7 @@ testFoundation('#open from small anchor in right bottom of viewport, BOTTOM_END 
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('right bottom'));
-    td.verify(mockAdapter.setPosition({right: '40px', bottom: '20px'}));
+    td.verify(mockAdapter.setPosition({right: 40, bottom: 20}));
   });
 
 testFoundation('#open from small anchor in top left of viewport, fixed position, no scroll',
@@ -288,7 +288,7 @@ testFoundation('#open from small anchor in top left of viewport, fixed position,
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('left top'));
-    td.verify(mockAdapter.setPosition({left: '20px', top: '20px'}));
+    td.verify(mockAdapter.setPosition({left: 20, top: 20}));
   });
 
 testFoundation('#open from small anchor in top left of viewport, absolute position, no scroll',
@@ -297,7 +297,7 @@ testFoundation('#open from small anchor in top left of viewport, absolute positi
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('left top'));
-    td.verify(mockAdapter.setPosition({left: '0', top: '0'}));
+    td.verify(mockAdapter.setPosition({left: 0, top: 0}));
   });
 
 testFoundation('#open from anchor in top left of viewport, absolute position, hoisted menu surface, no scroll',
@@ -307,7 +307,7 @@ testFoundation('#open from anchor in top left of viewport, absolute position, ho
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('left top'));
-    td.verify(mockAdapter.setPosition({left: '20px', top: '20px'}));
+    td.verify(mockAdapter.setPosition({left: 20, top: 20}));
   });
 
 testFoundation('#open from small anchor in top left of viewport, fixed position, scrollX/scrollY 5px/10px',
@@ -317,7 +317,7 @@ testFoundation('#open from small anchor in top left of viewport, fixed position,
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('left top'));
-    td.verify(mockAdapter.setPosition({left: '20px', top: '20px'}));
+    td.verify(mockAdapter.setPosition({left: 20, top: 20}));
   });
 
 testFoundation('#open from small anchor in top left of viewport, absolute position, scrollX/scrollY 5px/10px',
@@ -326,7 +326,7 @@ testFoundation('#open from small anchor in top left of viewport, absolute positi
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('left top'));
-    td.verify(mockAdapter.setPosition({left: '0', top: '0'}));
+    td.verify(mockAdapter.setPosition({left: 0, top: 0}));
   });
 
 testFoundation('#open from anchor in top left of viewport, absolute position, hoisted menu surface, scrollX/scrollY ' +
@@ -336,7 +336,7 @@ testFoundation('#open from anchor in top left of viewport, absolute position, ho
   foundation.open();
   clock.runToFrame();
   td.verify(mockAdapter.setTransformOrigin('left top'));
-  td.verify(mockAdapter.setPosition({left: '25px', top: '30px'}));
+  td.verify(mockAdapter.setPosition({left: 25, top: 30}));
 });
 
 testFoundation('#open in absolute position at x/y=100, absolute position, hoisted menu surface, scrollX/scrollY ' +
@@ -349,7 +349,7 @@ testFoundation('#open in absolute position at x/y=100, absolute position, hoiste
   foundation.open();
   clock.runToFrame();
   td.verify(mockAdapter.setTransformOrigin('left top'));
-  td.verify(mockAdapter.setPosition({left: '105px', top: '110px'}));
+  td.verify(mockAdapter.setPosition({left: 105, top: 110}));
 });
 
 testFoundation('#open in absolute position at x/y=100, fixed position, hoisted menu surface, scrollY/scrollY 5px/10px',
@@ -363,7 +363,7 @@ testFoundation('#open in absolute position at x/y=100, fixed position, hoisted m
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('left top'));
-    td.verify(mockAdapter.setPosition({left: '100px', top: '100px'}));
+    td.verify(mockAdapter.setPosition({left: 100, top: 100}));
   });
 
 testFoundation('#open from small anchor in left bottom of viewport, default (TOP_START) anchor corner, RTL',
@@ -372,7 +372,7 @@ testFoundation('#open from small anchor in left bottom of viewport, default (TOP
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('left bottom'));
-    td.verify(mockAdapter.setPosition({left: '0', bottom: '0'}));
+    td.verify(mockAdapter.setPosition({left: 0, bottom: 0}));
   });
 
 testFoundation('#open from small anchor in left bottom of viewport, TOP_END anchor corner, RTL',
@@ -382,7 +382,7 @@ testFoundation('#open from small anchor in left bottom of viewport, TOP_END anch
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('left bottom'));
-    td.verify(mockAdapter.setPosition({left: '40px', bottom: '0'}));
+    td.verify(mockAdapter.setPosition({left: 40, bottom: 0}));
   });
 
 testFoundation('#open from small anchor in left bottom of viewport, BOTTOM_START anchor corner, RTL',
@@ -392,7 +392,7 @@ testFoundation('#open from small anchor in left bottom of viewport, BOTTOM_START
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('left bottom'));
-    td.verify(mockAdapter.setPosition({left: '0', bottom: '20px'}));
+    td.verify(mockAdapter.setPosition({left: 0, bottom: 20}));
   });
 
 testFoundation('#open from small anchor in left bottom of viewport, BOTTOM_END anchor corner, RTL',
@@ -402,7 +402,7 @@ testFoundation('#open from small anchor in left bottom of viewport, BOTTOM_END a
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('left bottom'));
-    td.verify(mockAdapter.setPosition({left: '40px', bottom: '20px'}));
+    td.verify(mockAdapter.setPosition({left: 40, bottom: 20}));
   });
 
 testFoundation('#open tall surface from small anchor in left above middle of viewport, BOTTOM_START anchor corner, LTR',
@@ -412,7 +412,7 @@ testFoundation('#open tall surface from small anchor in left above middle of vie
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('left top'));
-    td.verify(mockAdapter.setPosition({left: '0', top: '20px'}));
+    td.verify(mockAdapter.setPosition({left: 0, top: 20}));
     td.verify(mockAdapter.setMaxHeight('548px'));
   });
 
@@ -423,7 +423,7 @@ testFoundation('#open tall surface from small anchor in left below middle of vie
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('left bottom'));
-    td.verify(mockAdapter.setPosition({left: '0', bottom: '20px'}));
+    td.verify(mockAdapter.setPosition({left: 0, bottom: 20}));
     td.verify(mockAdapter.setMaxHeight('568px'));
   });
 
@@ -434,7 +434,7 @@ testFoundation('#open from wide anchor center of viewport, TOP_START anchor corn
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('center top'));
-    td.verify(mockAdapter.setPosition({left: '0', top: '0'}));
+    td.verify(mockAdapter.setPosition({left: 0, top: 0}));
   });
 
 testFoundation('#open from wide anchor center of viewport, TOP_END anchor corner, LTR',
@@ -444,7 +444,7 @@ testFoundation('#open from wide anchor center of viewport, TOP_END anchor corner
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('center top'));
-    td.verify(mockAdapter.setPosition({left: '150px', top: '0'}));
+    td.verify(mockAdapter.setPosition({left: 150, top: 0}));
   });
 
 testFoundation('#open from wide anchor center of viewport, BOTTOM_START anchor corner, RTL',
@@ -454,7 +454,7 @@ testFoundation('#open from wide anchor center of viewport, BOTTOM_START anchor c
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('center top'));
-    td.verify(mockAdapter.setPosition({right: '0', top: '20px'}));
+    td.verify(mockAdapter.setPosition({right: 0, top: 20}));
   });
 
 testFoundation('#open from wide anchor center of viewport, BOTTOM_END anchor corner, RTL',
@@ -464,7 +464,7 @@ testFoundation('#open from wide anchor center of viewport, BOTTOM_END anchor cor
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('center top'));
-    td.verify(mockAdapter.setPosition({right: '150px', top: '20px'}));
+    td.verify(mockAdapter.setPosition({right: 150, top: 20}));
   });
 
 testFoundation('#open from wide anchor top left of viewport, TOP_END anchor corner, RTL',
@@ -474,7 +474,7 @@ testFoundation('#open from wide anchor top left of viewport, TOP_END anchor corn
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('center top'));
-    td.verify(mockAdapter.setPosition({left: '150px', top: '0'}));
+    td.verify(mockAdapter.setPosition({left: 150, top: 0}));
   });
 
 testFoundation('#open anchors the surface to the bottom left in LTR when not close to the bottom edge with margin',
@@ -485,7 +485,7 @@ testFoundation('#open anchors the surface to the bottom left in LTR when not clo
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('left top'));
-    td.verify(mockAdapter.setPosition({left: '7px', top: '30px'}));
+    td.verify(mockAdapter.setPosition({left: 7, top: 30}));
   });
 
 testFoundation('#open anchors the surface to the bottom left in LTR when close to the bottom edge with margin',
@@ -496,7 +496,7 @@ testFoundation('#open anchors the surface to the bottom left in LTR when close t
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('left bottom'));
-    td.verify(mockAdapter.setPosition({left: '7px', bottom: '15px'}));
+    td.verify(mockAdapter.setPosition({left: 7, bottom: 15}));
   });
 
 testFoundation('#open anchors the surface to the bottom left in RTL when close to the bottom & right edge with margin',
@@ -507,7 +507,7 @@ testFoundation('#open anchors the surface to the bottom left in RTL when close t
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('right bottom'));
-    td.verify(mockAdapter.setPosition({right: '7px', bottom: '15px'}));
+    td.verify(mockAdapter.setPosition({right: 7, bottom: 15}));
   });
 
 testFoundation('#close adds the animation class to start an animation', ({foundation, mockAdapter}) => {

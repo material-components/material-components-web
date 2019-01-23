@@ -26,7 +26,7 @@
 
 import MDCComponent from '@material/base/component';
 import {Corner, CornerBit, cssClasses, strings} from './constants';
-import {AnchorMargin, MDCMenuSurfaceFoundation} from './foundation';
+import {MDCMenuSurfaceFoundation, MenuPosition} from './foundation';
 import * as util from './util';
 
 type RegisterFunction = () => void;
@@ -36,8 +36,15 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
     return new MDCMenuSurface(root);
   }
 
+  anchorElement: HTMLElement;
+
+  /**
+   * TODO(acdvorak): Should we change the type of root_ to HTMLElement? What other kind of element could it be?
+   * SVGElement appears to have the same methods/properties (at least the ones we care about).
+   */
+  protected root_: HTMLElement;
+
   private previousFocus_: HTMLElement;
-  private anchorElement: HTMLElement;
   private firstFocusableElement_: HTMLElement | null;
   private lastFocusableElement_: HTMLElement | null;
   private handleKeydown_: EventListener;
@@ -133,15 +140,11 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
     this.foundation_.setAnchorCorner(corner);
   }
 
-  setAnchorMargin(margin: AnchorMargin) {
+  setAnchorMargin(margin: MenuPosition) {
     this.foundation_.setAnchorMargin(margin);  //
   }
 
   getDefaultFoundation(): MDCMenuSurfaceFoundation {
-    // TODO(acdvorak): Should we change the type of root_ to HTMLElement? What other kind of element could it be?
-    // SVGElement appears to have the same methods/properties (at least the ones we care about).
-    const rootEl = this.root_ as HTMLElement;
-
     return new MDCMenuSurfaceFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
@@ -153,7 +156,7 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
       isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
       setTransformOrigin: (origin) => {
         const propertyName = `${util.getTransformPropertyName(window)}-origin`;
-        rootEl.style.setProperty(propertyName, origin);
+        this.root_.style.setProperty(propertyName, origin);
       },
 
       isFocused: () => document.activeElement === this.root_,
@@ -177,9 +180,9 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
           this.lastFocusableElement_ && this.lastFocusableElement_.focus && this.lastFocusableElement_.focus(),
 
       getInnerDimensions: () => {
-        return {width: rootEl.offsetWidth, height: rootEl.offsetHeight};
+        return {width: this.root_.offsetWidth, height: this.root_.offsetHeight};
       },
-      getAnchorDimensions: () => this.anchorElement && this.anchorElement.getBoundingClientRect(),
+      getAnchorDimensions: () => this.anchorElement ? this.anchorElement.getBoundingClientRect() : null,
       getWindowDimensions: () => {
         return {width: window.innerWidth, height: window.innerHeight};
       },
@@ -190,16 +193,16 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
         return {x: window.pageXOffset, y: window.pageYOffset};
       },
       setPosition: (position) => {
-        rootEl.style.left = 'left' in position ? String(position.left) : null;
-        rootEl.style.right = 'right' in position ? String(position.right) : null;
-        rootEl.style.top = 'top' in position ? String(position.top) : null;
-        rootEl.style.bottom = 'bottom' in position ? String(position.bottom) : null;
+        this.root_.style.left = 'left' in position ? `${position.left}px` : null;
+        this.root_.style.right = 'right' in position ? `${position.right}px` : null;
+        this.root_.style.top = 'top' in position ? `${position.top}px` : null;
+        this.root_.style.bottom = 'bottom' in position ? `${position.bottom}px` : null;
       },
       setMaxHeight: (height) => {
-        rootEl.style.maxHeight = height;
+        this.root_.style.maxHeight = height;
       },
     });
   }
 }
 
-export {MDCMenuSurfaceFoundation, MDCMenuSurface, AnchorMargin, Corner, CornerBit, util};
+export {MDCMenuSurfaceFoundation, MDCMenuSurface, MenuPosition, Corner, CornerBit, util};

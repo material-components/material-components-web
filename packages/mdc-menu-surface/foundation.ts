@@ -26,18 +26,14 @@
 import MDCFoundation from '@material/base/foundation';
 import {
   MDCMenuSurfaceAdapter,
-  MenuPositionInput,
-  MenuPositionOutput,
+  MenuPosition,
   MenuSize,
 } from './adapter';
 import {Corner, CornerBit, cssClasses, numbers, strings} from './constants';
 
-// TODO(acdvorak): Remove this alias
-type AnchorMargin = MenuPositionOutput;
-
 interface AutoLayoutMeasurements {
   viewport: MenuSize;
-  viewportDistance: MenuPositionOutput;
+  viewportDistance: MenuPosition;
   anchorHeight: number;
   anchorWidth: number;
   surfaceHeight: number;
@@ -67,10 +63,9 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
    * {@see MDCMenuSurfaceAdapter} for typing information on parameters and return types.
    */
   static get defaultAdapter(): MDCMenuSurfaceAdapter {
-    // tslint:disable:no-empty
     return {
-      addClass: () => {},
-      removeClass: () => {},
+      addClass: () => undefined,
+      removeClass: () => undefined,
       hasClass: () => false,
       hasAnchor: () => false,
 
@@ -85,19 +80,18 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
       getWindowDimensions: () => null,
       getBodyDimensions: () => null,
       getWindowScroll: () => null,
-      setPosition: () => {},
-      setMaxHeight: () => {},
-      setTransformOrigin: () => {},
+      setPosition: () => undefined,
+      setMaxHeight: () => undefined,
+      setTransformOrigin: () => undefined,
 
-      saveFocus: () => {},
-      restoreFocus: () => {},
-      focusFirstElement: () => {},
-      focusLastElement: () => {},
+      saveFocus: () => undefined,
+      restoreFocus: () => undefined,
+      focusFirstElement: () => undefined,
+      focusLastElement: () => undefined,
 
-      notifyClose: () => {},
-      notifyOpen: () => {},
+      notifyClose: () => undefined,
+      notifyOpen: () => undefined,
     };
-    // tslint:enable:no-empty
   }
 
   private isOpen_: boolean;
@@ -106,7 +100,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
   private animationRequestId_: number;
   private dimensions_: MenuSize;
   private anchorCorner_: Corner;
-  private anchorMargin_: AnchorMargin;
+  private anchorMargin_: MenuPosition;
   private measurements_: AutoLayoutMeasurements;
   private isQuickOpen_: boolean;
   private isHoistedElement_: boolean;
@@ -158,11 +152,11 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
   /**
    * @param margin Set of margin values from anchor.
    */
-  setAnchorMargin(margin: AnchorMargin) {
-    this.anchorMargin_.top = typeof margin.top === 'number' ? margin.top : 0;
-    this.anchorMargin_.right = typeof margin.right === 'number' ? margin.right : 0;
-    this.anchorMargin_.bottom = typeof margin.bottom === 'number' ? margin.bottom : 0;
-    this.anchorMargin_.left = typeof margin.left === 'number' ? margin.left : 0;
+  setAnchorMargin(margin: MenuPosition) {
+    this.anchorMargin_.top = margin.top || 0;
+    this.anchorMargin_.right = margin.right || 0;
+    this.anchorMargin_.bottom = margin.bottom || 0;
+    this.anchorMargin_.left = margin.left || 0;
   }
 
   /** Used to indicate if the menu-surface is hoisted to the body. */
@@ -289,8 +283,6 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
         left: this.position_.x,
         width: 0,
         height: 0,
-        x: this.position_.x,
-        y: this.position_.y,
       };
     }
 
@@ -438,9 +430,9 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
     const verticalOffset = this.getVerticalOriginOffset_(corner);
     const {anchorWidth, surfaceWidth} = this.measurements_;
 
-    const position: MenuPositionInput = {
-      [horizontalAlignment]: horizontalOffset ? horizontalOffset : '0',
-      [verticalAlignment]: verticalOffset ? verticalOffset : '0',
+    const position: MenuPosition = {
+      [horizontalAlignment]: horizontalOffset ? horizontalOffset : 0,
+      [verticalAlignment]: verticalOffset ? verticalOffset : 0,
     };
 
     // Center align when anchor width is comparable or greater than menu surface, otherwise keep corner.
@@ -453,13 +445,6 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
       this.adjustPositionForHoistedElement_(position);
     }
 
-    for (const prop in position) {
-      if (position.hasOwnProperty(prop) && position[prop] !== '0') {
-        // tslint:disable-next-line:ban
-        position[prop] = `${parseInt(String(position[prop]), 10)}px`;
-      }
-    }
-
     this.adapter_.setTransformOrigin(`${horizontalAlignment} ${verticalAlignment}`);
     this.adapter_.setPosition(position);
     this.adapter_.setMaxHeight(maxMenuSurfaceHeight ? maxMenuSurfaceHeight + 'px' : '');
@@ -469,34 +454,30 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
   }
 
   /** Calculates the offsets for positioning the menu-surface when the menu-surface has been hoisted to the body. */
-  private adjustPositionForHoistedElement_(position: MenuPositionInput) {
+  private adjustPositionForHoistedElement_(position: MenuPosition) {
     const {windowScroll, viewportDistance} = this.measurements_;
 
     for (const prop in position) {
       if (position.hasOwnProperty(prop)) {
-        // tslint:disable:ban
-
         // Hoisted surfaces need to have the anchor elements location on the page added to the
         // position properties for proper alignment on the body.
         if (viewportDistance.hasOwnProperty(prop)) {
-          position[prop] = parseInt(String(position[prop]), 10) + viewportDistance[prop];
+          position[prop] = position[prop] + viewportDistance[prop];
         }
 
         // Surfaces that are absolutely positioned need to have additional calculations for scroll
         // and bottom positioning.
         if (!this.isFixedPosition_) {
           if (prop === 'top') {
-            position[prop] = parseInt(String(position[prop]), 10) + windowScroll.y;
+            position[prop] += windowScroll.y;
           } else if (prop === 'bottom') {
-            position[prop] = parseInt(String(position[prop]), 10) - windowScroll.y;
+            position[prop] -= windowScroll.y;
           } else if (prop === 'left') {
-            position[prop] = parseInt(String(position[prop]), 10) + windowScroll.x;
+            position[prop] += windowScroll.x;
           } else if (prop === 'right') {
-            position[prop] = parseInt(String(position[prop]), 10) - windowScroll.x;
+            position[prop] -= windowScroll.x;
           }
         }
-
-        // tslint:enable:ban
       }
     }
   }
@@ -520,4 +501,5 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
   }
 }
 
-export {MDCMenuSurfaceFoundation, AnchorMargin};
+// TODO(acdvorak): Should `MenuPosition` be exported here?
+export {MDCMenuSurfaceFoundation, MenuPosition};
