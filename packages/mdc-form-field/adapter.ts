@@ -21,39 +21,15 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
-
-/**
- * Adapter for MDC Form Field. Provides an interface for managing
- * - event handlers
- * - ripple activation
- *
- * Additionally, provides type information for the adapter to the Closure
- * compiler.
- *
- * Implement this adapter for your framework of choice to delegate updates to
- * the component in your framework of choice. See architecture documentation
- * for more details.
- * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
- *
- * @record
- */
-class MDCFormFieldAdapter {
-  /**
-   * @param {string} type
-   * @param {!EventListener} handler
-   */
-  registerInteractionHandler(type, handler) {}
-
-  /**
-   * @param {string} type
-   * @param {!EventListener} handler
-   */
-  deregisterInteractionHandler(type, handler) {}
-
-  activateInputRipple() {}
-
-  deactivateInputRipple() {}
+interface MDCFormFieldAdapter {
+  activateInputRipple(): void;
+  deactivateInputRipple(): void;
+  deregisterInteractionHandler<K extends keyof GlobalEventHandlersEventMap>(
+    type: K, handler: (evt: GlobalEventHandlersEventMap[K],
+  ) => void): void;
+  registerInteractionHandler<K extends keyof GlobalEventHandlersEventMap>(
+    type: K, handler: (evt: GlobalEventHandlersEventMap[K],
+  ) => void): void;
 }
 
 export default MDCFormFieldAdapter;
