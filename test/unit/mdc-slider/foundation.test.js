@@ -32,11 +32,9 @@ import {setupFoundationTest} from '../helpers/setup';
 import {cssClasses} from '../../../packages/mdc-slider/constants';
 import MDCSliderFoundation from '../../../packages/mdc-slider/foundation';
 
-const {TRANSFORM} = StandardCssPropertyName;
-
 suite('MDCSliderFoundation');
 
-const TRANSFORM_PROP = getCorrectPropertyName(window, TRANSFORM);
+const TRANSFORM_PROP = getCorrectPropertyName(window, StandardCssPropertyName.TRANSFORM);
 
 test('exports cssClasses', () => {
   assert.property(MDCSliderFoundation, 'cssClasses');

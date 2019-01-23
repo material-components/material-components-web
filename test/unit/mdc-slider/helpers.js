@@ -28,9 +28,7 @@ import {setupFoundationTest} from '../helpers/setup';
 
 import MDCSliderFoundation from '../../../packages/mdc-slider/foundation';
 
-const {TRANSFORM} = StandardCssPropertyName;
-
-export const TRANSFORM_PROP = getCorrectPropertyName(window, TRANSFORM);
+export const TRANSFORM_PROP = getCorrectPropertyName(window, StandardCssPropertyName.TRANSFORM);
 
 export function setupEventTest() {
   const {foundation, mockAdapter} = setupFoundationTest(MDCSliderFoundation);
