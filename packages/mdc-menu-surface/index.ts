@@ -21,9 +21,6 @@
  * THE SOFTWARE.
  */
 
-// TODO(acdvorak): Should we disable object-literal-sort-keys globally?
-// tslint:disable:object-literal-sort-keys
-
 import MDCComponent from '@material/base/component';
 import {Corner, CornerBit, cssClasses, strings} from './constants';
 import {MDCMenuSurfaceFoundation, MenuPosition} from './foundation';
@@ -145,6 +142,7 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
   }
 
   getDefaultFoundation(): MDCMenuSurfaceFoundation {
+    // tslint:disable:object-literal-sort-keys
     return new MDCMenuSurfaceFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
@@ -192,7 +190,6 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
       getWindowScroll: () => {
         return {x: window.pageXOffset, y: window.pageYOffset};
       },
-      // TODO(acdvorak): Parse strings for backward compatibility? If not, breaking change. Separate PR?
       setPosition: (position) => {
         this.root_.style.left = 'left' in position ? `${position.left}px` : null;
         this.root_.style.right = 'right' in position ? `${position.right}px` : null;
@@ -203,6 +200,7 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
         this.root_.style.maxHeight = height;
       },
     });
+    // tslint:enable:object-literal-sort-keys
   }
 }
 

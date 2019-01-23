@@ -33,8 +33,8 @@ const cssClasses = {
 };
 
 const strings = {
-  OPENED_EVENT: 'MDCMenuSurface:opened',
   CLOSED_EVENT: 'MDCMenuSurface:closed',
+  OPENED_EVENT: 'MDCMenuSurface:opened',
   FOCUSABLE_ELEMENTS: [
     'button:not(:disabled)', '[href]:not([aria-disabled="true"])', 'input:not(:disabled)',
     'select:not(:disabled)', 'textarea:not(:disabled)', '[tabindex]:not([tabindex="-1"]):not([aria-disabled="true"])',
