@@ -1,3 +1,5 @@
 @import "@material/feature-targeting/functions";
 @import "@material/button/mixins";
+@import "@material/checkbox/mixins";
 @include mdc-button($query: mdc-feature-any());
+@include mdc-checkbox($query: mdc-feature-any());
