@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {getCorrectPropertyName, StandardCssPropertyName} from '@material/animation';
+import {getCorrectPropertyName, StandardCssPropertyName} from '@material/animation/index';
 import MDCFoundation from '@material/base/foundation';
 import {MDCLinearProgressAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
@@ -48,9 +48,10 @@ export default class MDCLinearProgressFoundation extends MDCFoundation<MDCLinear
     };
   }
 
-  private isDeterminate_: boolean;
-  private isReversed_: boolean;
-  private progress_: number;
+  // https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-7.html
+  private isDeterminate_!: boolean;
+  private isReversed_!: boolean;
+  private progress_!: number;
 
   init() {
     this.isDeterminate_ = !this.adapter_.hasClass(cssClasses.INDETERMINATE_CLASS);
