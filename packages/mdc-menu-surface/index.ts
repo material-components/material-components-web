@@ -35,8 +35,6 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
 
   anchorElement!: HTMLElement | null;
 
-  protected root_!: HTMLElement;
-
   private previousFocus_!: HTMLElement | SVGElement | null;
   private firstFocusableElement_!: HTMLElement | SVGElement | null;
   private lastFocusableElement_!: HTMLElement | SVGElement | null;
@@ -142,6 +140,8 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
   }
 
   getDefaultFoundation(): MDCMenuSurfaceFoundation {
+    const rootEl = this.root_ as HTMLElement;
+
     // tslint:disable:object-literal-sort-keys
     return new MDCMenuSurfaceFoundation({
       addClass: (className) => this.root_.classList.add(className),
@@ -154,15 +154,15 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
       isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
       setTransformOrigin: (origin) => {
         const propertyName = `${util.getTransformPropertyName(window)}-origin`;
-        this.root_.style.setProperty(propertyName, origin);
+        rootEl.style.setProperty(propertyName, origin);
       },
 
-      isFocused: () => document.activeElement === this.root_,
+      isFocused: () => document.activeElement === rootEl,
       saveFocus: () => {
         this.previousFocus_ = document.activeElement as HTMLElement | SVGElement;
       },
       restoreFocus: () => {
-        if (this.root_.contains(document.activeElement)) {
+        if (rootEl.contains(document.activeElement)) {
           if (this.previousFocus_ && this.previousFocus_.focus) {
             this.previousFocus_.focus();
           }
@@ -178,7 +178,7 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
           this.lastFocusableElement_ && this.lastFocusableElement_.focus && this.lastFocusableElement_.focus(),
 
       getInnerDimensions: () => {
-        return {width: this.root_.offsetWidth, height: this.root_.offsetHeight};
+        return {width: rootEl.offsetWidth, height: rootEl.offsetHeight};
       },
       getAnchorDimensions: () => this.anchorElement ? this.anchorElement.getBoundingClientRect() : null,
       getWindowDimensions: () => {
@@ -191,13 +191,13 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
         return {x: window.pageXOffset, y: window.pageYOffset};
       },
       setPosition: (position) => {
-        this.root_.style.left = 'left' in position ? `${position.left}px` : null;
-        this.root_.style.right = 'right' in position ? `${position.right}px` : null;
-        this.root_.style.top = 'top' in position ? `${position.top}px` : null;
-        this.root_.style.bottom = 'bottom' in position ? `${position.bottom}px` : null;
+        rootEl.style.left = 'left' in position ? `${position.left}px` : null;
+        rootEl.style.right = 'right' in position ? `${position.right}px` : null;
+        rootEl.style.top = 'top' in position ? `${position.top}px` : null;
+        rootEl.style.bottom = 'bottom' in position ? `${position.bottom}px` : null;
       },
       setMaxHeight: (height) => {
-        this.root_.style.maxHeight = height;
+        rootEl.style.maxHeight = height;
       },
     });
     // tslint:enable:object-literal-sort-keys

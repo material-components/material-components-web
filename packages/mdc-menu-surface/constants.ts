@@ -95,4 +95,9 @@ interface MenuDimensions {
   height: number;
 }
 
-export {cssClasses, strings, numbers, CornerBit, Corner, MenuDimensions, MenuPosition};
+interface MenuPoint {
+  x: number;
+  y: number;
+}
+
+export {cssClasses, strings, numbers, CornerBit, Corner, MenuDimensions, MenuPoint, MenuPosition};
