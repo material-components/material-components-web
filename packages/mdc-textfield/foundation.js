@@ -25,9 +25,11 @@ import MDCFoundation from '@material/base/foundation';
 /* eslint-disable no-unused-vars */
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
 import MDCTextFieldIconFoundation from './icon/foundation';
+import MDCFloatingLabelFoundation from '@material/floating-label/index';
 /* eslint-enable no-unused-vars */
 import {MDCTextFieldAdapter, NativeInputType, FoundationMapType} from './adapter';
 import {cssClasses, strings, numbers, VALIDATION_ATTR_WHITELIST, ALWAYS_FLOAT_TYPES} from './constants';
+
 
 /**
  * @extends {MDCFoundation<!MDCTextFieldAdapter>}
@@ -108,6 +110,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
     /** @type {!MDCTextFieldHelperTextFoundation|undefined} */
     this.helperText_ = foundationMap.helperText;
+    /** @type {!MDCFloatingLabelFoundation|undefined} */
+    this.label_ = foundationMap.label;
     /** @type {!MDCTextFieldIconFoundation|undefined} */
     this.leadingIcon_ = foundationMap.leadingIcon;
     /** @type {!MDCTextFieldIconFoundation|undefined} */
@@ -356,6 +360,15 @@ class MDCTextFieldFoundation extends MDCFoundation {
   setHelperTextContent(content) {
     if (this.helperText_) {
       this.helperText_.setContent(content);
+    }
+  }
+
+  /**
+   * @param {string} content Sets the content of the label.
+   */
+  setLabelContent(content) {
+    if (this.label_) {
+      this.label_.setContent(content);
     }
   }
 

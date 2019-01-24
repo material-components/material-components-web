@@ -370,6 +370,14 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
+   * Sets the label element content.
+   * @param {string} content
+   */
+  set labelContent(content) {
+    this.foundation_.setLabelContent(content);
+  }
+
+  /**
    * Focuses the input element.
    */
   focus() {

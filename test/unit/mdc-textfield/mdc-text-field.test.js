@@ -325,6 +325,13 @@ test('set iconContent has no effect when no icon element is present', () => {
   });
 });
 
+test('set labelContent has no effect when no label element is present', () => {
+  const {component} = setupTest();
+  assert.doesNotThrow(() => {
+    component.labelContent = 'foo';
+  });
+});
+
 test('#adapter.addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
@@ -468,6 +475,12 @@ test('get/set valid', () => {
   td.verify(mockFoundation.isValid());
   component.valid = true;
   td.verify(mockFoundation.setValid(true));
+});
+
+test('get/set label content', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.labelContent = 'foo';
+  td.verify(mockFoundation.setLabelContent('foo'));
 });
 
 test('get/set required', () => {
