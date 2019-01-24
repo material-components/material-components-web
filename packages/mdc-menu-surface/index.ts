@@ -169,9 +169,9 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
         }
       },
       isFirstElementFocused: () =>
-          this.firstFocusableElement_ && this.firstFocusableElement_ === document.activeElement,
+          this.firstFocusableElement_ ? this.firstFocusableElement_ === document.activeElement : false,
       isLastElementFocused: () =>
-          this.lastFocusableElement_ && this.lastFocusableElement_ === document.activeElement,
+          this.lastFocusableElement_ ? this.lastFocusableElement_ === document.activeElement : false,
       focusFirstElement: () =>
           this.firstFocusableElement_ && this.firstFocusableElement_.focus && this.firstFocusableElement_.focus(),
       focusLastElement: () =>
