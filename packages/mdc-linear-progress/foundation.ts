@@ -48,7 +48,7 @@ export default class MDCLinearProgressFoundation extends MDCFoundation<MDCLinear
     };
   }
 
-  // https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-7.html
+  // https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-7.html#strict-class-initialization
   private isDeterminate_!: boolean;
   private isReversed_!: boolean;
   private progress_!: number;
