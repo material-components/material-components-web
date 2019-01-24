@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {StandardJsEventType, getCorrectEventName} from '@material/animation/index.ts';
+import {getCorrectEventName} from '@material/animation/index.ts';
 import MDCComponent from '@material/base/component';
 /* eslint-disable no-unused-vars */
 import {MDCSelectionControlState, MDCSelectionControl} from '@material/selection-control/index';
@@ -32,8 +32,6 @@ import {getMatchesProperty} from '@material/ripple/util';
 
 /** @const {!Array<string>} */
 const CB_PROTO_PROPS = ['checked', 'indeterminate'];
-
-const {ANIMATION_END} = StandardJsEventType;
 
 /**
  * @extends MDCComponent<!MDCCheckboxFoundation>
@@ -71,7 +69,7 @@ class MDCCheckbox extends MDCComponent {
     this.handleChange_ = () => this.foundation_.handleChange();
     this.handleAnimationEnd_= () => this.foundation_.handleAnimationEnd();
     this.nativeCb_.addEventListener('change', this.handleChange_);
-    this.listen(getCorrectEventName(window, ANIMATION_END), this.handleAnimationEnd_);
+    this.listen(getCorrectEventName(window, 'animationend'), this.handleAnimationEnd_);
     this.installPropertyChangeHooks_();
   }
 
@@ -193,7 +191,7 @@ class MDCCheckbox extends MDCComponent {
   destroy() {
     this.ripple_.destroy();
     this.nativeCb_.removeEventListener('change', this.handleChange_);
-    this.unlisten(getCorrectEventName(window, ANIMATION_END), this.handleAnimationEnd_);
+    this.unlisten(getCorrectEventName(window, 'animationend'), this.handleAnimationEnd_);
     this.uninstallPropertyChangeHooks_();
     super.destroy();
   }

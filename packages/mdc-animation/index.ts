@@ -21,31 +21,18 @@
  * THE SOFTWARE.
  */
 
-enum StandardCssPropertyName {
-  ANIMATION = 'animation',
-  TRANSFORM = 'transform',
-  TRANSITION = 'transition',
-}
-
-enum PrefixedCssPropertyName {
-  WEBKIT_ANIMATION = '-webkit-animation',
-  WEBKIT_TRANSFORM = '-webkit-transform',
-  WEBKIT_TRANSITION = '-webkit-transition',
-}
-
-enum StandardJsEventType {
-  ANIMATION_END = 'animationend',
-  ANIMATION_ITERATION = 'animationiteration',
-  ANIMATION_START = 'animationstart',
-  TRANSITION_END = 'transitionend',
-}
-
-enum PrefixedJsEventType {
-  WEBKIT_ANIMATION_END = 'webkitAnimationEnd',
-  WEBKIT_ANIMATION_ITERATION = 'webkitAnimationIteration',
-  WEBKIT_ANIMATION_START = 'webkitAnimationStart',
-  WEBKIT_TRANSITION_END = 'webkitTransitionEnd',
-}
+type StandardCssPropertyName = (
+    'animation' | 'transform' | 'transition'
+);
+type PrefixedCssPropertyName = (
+    '-webkit-animation' | '-webkit-transform' | '-webkit-transition'
+);
+type StandardJsEventType = (
+    'animationend' | 'animationiteration' | 'animationstart' | 'transitionend'
+);
+type PrefixedJsEventType = (
+    'webkitAnimationEnd' | 'webkitAnimationIteration' | 'webkitAnimationStart' | 'webkitTransitionEnd'
+);
 
 interface CssVendorPropertyMap {
   [key: string]: CssVendorProperty;
@@ -68,52 +55,41 @@ interface JsVendorProperty {
 
 const transformStyleProperties = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'MSTransform'];
 
-// Destructure enum members to make their usages more readable.
-const {WEBKIT_ANIMATION, WEBKIT_TRANSFORM, WEBKIT_TRANSITION} = PrefixedCssPropertyName;
-const {ANIMATION, TRANSFORM, TRANSITION} = StandardCssPropertyName;
-const {
-  WEBKIT_ANIMATION_END,
-  WEBKIT_ANIMATION_ITERATION,
-  WEBKIT_ANIMATION_START,
-  WEBKIT_TRANSITION_END,
-} = PrefixedJsEventType;
-const {ANIMATION_END, ANIMATION_ITERATION, ANIMATION_START, TRANSITION_END} = StandardJsEventType;
-
 const cssPropertyNameMap: CssVendorPropertyMap = {
-  [ANIMATION]: {
-    prefixed: WEBKIT_ANIMATION,
-    standard: ANIMATION,
+  animation: {
+    prefixed: '-webkit-animation',
+    standard: 'animation',
   },
-  [TRANSFORM]: {
-    prefixed: WEBKIT_TRANSFORM,
-    standard: TRANSFORM,
+  transform: {
+    prefixed: '-webkit-transform',
+    standard: 'transform',
   },
-  [TRANSITION]: {
-    prefixed: WEBKIT_TRANSITION,
-    standard: TRANSITION,
+  transition: {
+    prefixed: '-webkit-transition',
+    standard: 'transition',
   },
 };
 
 const jsEventTypeMap: JsVendorPropertyMap = {
-  [ANIMATION_END]: {
-    cssProperty: ANIMATION,
-    prefixed: WEBKIT_ANIMATION_END,
-    standard: ANIMATION_END,
+  animationend: {
+    cssProperty: 'animation',
+    prefixed: 'webkitAnimationEnd',
+    standard: 'animationend',
   },
-  [ANIMATION_ITERATION]: {
-    cssProperty: ANIMATION,
-    prefixed: WEBKIT_ANIMATION_ITERATION,
-    standard: ANIMATION_ITERATION,
+  animationiteration: {
+    cssProperty: 'animation',
+    prefixed: 'webkitAnimationIteration',
+    standard: 'animationiteration',
   },
-  [ANIMATION_START]: {
-    cssProperty: ANIMATION,
-    prefixed: WEBKIT_ANIMATION_START,
-    standard: ANIMATION_START,
+  animationstart: {
+    cssProperty: 'animation',
+    prefixed: 'webkitAnimationStart',
+    standard: 'animationstart',
   },
-  [TRANSITION_END]: {
-    cssProperty: TRANSITION,
-    prefixed: WEBKIT_TRANSITION_END,
-    standard: TRANSITION_END,
+  transitionend: {
+    cssProperty: 'transition',
+    prefixed: 'webkitTransitionEnd',
+    standard: 'transitionend',
   },
 };
 
