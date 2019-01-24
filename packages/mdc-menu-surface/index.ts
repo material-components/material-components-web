@@ -22,7 +22,7 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {Corner, CornerBit, MenuPosition, cssClasses, strings} from './constants';
+import {Corner, CornerBit, cssClasses, MenuPosition, strings} from './constants';
 import {MDCMenuSurfaceFoundation} from './foundation';
 import * as util from './util';
 
