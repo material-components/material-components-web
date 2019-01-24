@@ -53,8 +53,6 @@ interface JsVendorProperty {
   standard: StandardJsEventType;
 }
 
-const transformStyleProperties = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'MSTransform'];
-
 const cssPropertyNameMap: CssVendorPropertyMap = {
   animation: {
     prefixed: '-webkit-animation',
@@ -126,5 +124,4 @@ export {
   StandardJsEventType,
   getCorrectEventName,
   getCorrectPropertyName,
-  transformStyleProperties,
 };

@@ -26,24 +26,24 @@ import MDCLinearProgressFoundation from './foundation';
 
 export {MDCLinearProgressFoundation};
 
-export class MDCLinearProgress extends MDCComponent {
-  static attachTo(root) {
+export class MDCLinearProgress extends MDCComponent<MDCLinearProgressFoundation> {
+  static attachTo(root: Element) {
     return new MDCLinearProgress(root);
   }
 
-  set determinate(value) {
+  set determinate(value: boolean) {
     this.foundation_.setDeterminate(value);
   }
 
-  set progress(value) {
+  set progress(value: number) {
     this.foundation_.setProgress(value);
   }
 
-  set buffer(value) {
+  set buffer(value: number) {
     this.foundation_.setBuffer(value);
   }
 
-  set reverse(value) {
+  set reverse(value: boolean) {
     this.foundation_.setReverse(value);
   }
 
@@ -57,12 +57,12 @@ export class MDCLinearProgress extends MDCComponent {
 
   getDefaultFoundation() {
     return new MDCLinearProgressFoundation({
-      addClass: (className) => this.root_.classList.add(className),
-      getPrimaryBar: () => this.root_.querySelector(MDCLinearProgressFoundation.strings.PRIMARY_BAR_SELECTOR),
+      addClass: (className: string) => this.root_.classList.add(className),
       getBuffer: () => this.root_.querySelector(MDCLinearProgressFoundation.strings.BUFFER_SELECTOR),
-      hasClass: (className) => this.root_.classList.contains(className),
-      removeClass: (className) => this.root_.classList.remove(className),
-      setStyle: (el, styleProperty, value) => el.style[styleProperty] = value,
+      getPrimaryBar: () => this.root_.querySelector(MDCLinearProgressFoundation.strings.PRIMARY_BAR_SELECTOR),
+      hasClass: (className: string) => this.root_.classList.contains(className),
+      removeClass: (className: string) => this.root_.classList.remove(className),
+      setStyle: (el: HTMLElement, styleProperty: string, value: string) => el.style.setProperty(styleProperty, value),
     });
   }
 }

@@ -21,12 +21,14 @@
  * THE SOFTWARE.
  */
 
+import {getCorrectPropertyName, StandardCssPropertyName} from '@material/animation';
 import MDCFoundation from '@material/base/foundation';
-import {transformStyleProperties} from '@material/animation/index.ts';
-
+import {MDCLinearProgressAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-export default class MDCLinearProgressFoundation extends MDCFoundation {
+const {TRANSFORM} = StandardCssPropertyName;
+
+export default class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgressAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
@@ -35,30 +37,30 @@ export default class MDCLinearProgressFoundation extends MDCFoundation {
     return strings;
   }
 
-  static get defaultAdapter() {
+  static get defaultAdapter(): MDCLinearProgressAdapter {
     return {
-      addClass: (/* className: string */) => {},
-      getPrimaryBar: () => /* el: Element */ {},
-      getBuffer: () => /* el: Element */ {},
-      hasClass: (/* className: string */) => false,
-      removeClass: (/* className: string */) => {},
-      setStyle: (/* el: Element, styleProperty: string, value: string */) => {},
+      addClass: (_className: string) => undefined,
+      getBuffer: () => null,
+      getPrimaryBar: () => null,
+      hasClass: (_className: string) => false,
+      removeClass: (_className: string) => undefined,
+      setStyle: (_el: HTMLElement, _styleProperty: string, _value: string) => undefined,
     };
   }
 
-  constructor(adapter) {
-    super(Object.assign(MDCLinearProgressFoundation.defaultAdapter, adapter));
-  }
+  private isDeterminate_: boolean;
+  private isReversed_: boolean;
+  private progress_: number;
 
   init() {
-    this.determinate_ = !this.adapter_.hasClass(cssClasses.INDETERMINATE_CLASS);
-    this.reverse_ = this.adapter_.hasClass(cssClasses.REVERSED_CLASS);
+    this.isDeterminate_ = !this.adapter_.hasClass(cssClasses.INDETERMINATE_CLASS);
+    this.isReversed_ = this.adapter_.hasClass(cssClasses.REVERSED_CLASS);
     this.progress_ = 0;
   }
 
-  setDeterminate(isDeterminate) {
-    this.determinate_ = isDeterminate;
-    if (this.determinate_) {
+  setDeterminate(isDeterminate: boolean) {
+    this.isDeterminate_ = isDeterminate;
+    if (this.isDeterminate_) {
       this.adapter_.removeClass(cssClasses.INDETERMINATE_CLASS);
       this.setScale_(this.adapter_.getPrimaryBar(), this.progress_);
     } else {
@@ -68,22 +70,22 @@ export default class MDCLinearProgressFoundation extends MDCFoundation {
     }
   }
 
-  setProgress(value) {
+  setProgress(value: number) {
     this.progress_ = value;
-    if (this.determinate_) {
+    if (this.isDeterminate_) {
       this.setScale_(this.adapter_.getPrimaryBar(), value);
     }
   }
 
-  setBuffer(value) {
-    if (this.determinate_) {
+  setBuffer(value: number) {
+    if (this.isDeterminate_) {
       this.setScale_(this.adapter_.getBuffer(), value);
     }
   }
 
-  setReverse(isReversed) {
-    this.reverse_ = isReversed;
-    if (this.reverse_) {
+  setReverse(isReversed: boolean) {
+    this.isReversed_ = isReversed;
+    if (this.isReversed_) {
       this.adapter_.addClass(cssClasses.REVERSED_CLASS);
     } else {
       this.adapter_.removeClass(cssClasses.REVERSED_CLASS);
@@ -98,10 +100,11 @@ export default class MDCLinearProgressFoundation extends MDCFoundation {
     this.adapter_.addClass(cssClasses.CLOSED_CLASS);
   }
 
-  setScale_(el, scaleValue) {
-    const value = 'scaleX(' + scaleValue + ')';
-    transformStyleProperties.forEach((transformStyleProperty) => {
-      this.adapter_.setStyle(el, transformStyleProperty, value);
-    });
+  private setScale_(el: HTMLElement | null, scaleValue: number) {
+    if (!el) {
+      return;
+    }
+    const value = `scaleX(${scaleValue})`;
+    this.adapter_.setStyle(el, getCorrectPropertyName(window, TRANSFORM), value);
   }
 }
