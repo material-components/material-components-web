@@ -30,12 +30,12 @@ interface MsElement extends Element {
   msMatchesSelector(selector: string): boolean;
 }
 
-function closest(element: HTMLElement, selector: string): HTMLElement | null {
+function closest(element: Element, selector: string): Element | null {
   if (element.closest) {
-    return element.closest(selector) as HTMLElement;
+    return element.closest(selector);
   }
 
-  let el: HTMLElement | null = element;
+  let el: Element | null = element;
   while (el) {
     if (matches(el, selector)) {
       return el;
