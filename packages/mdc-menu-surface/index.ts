@@ -33,21 +33,18 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
     return new MDCMenuSurface(root);
   }
 
-  anchorElement: HTMLElement | null;
+  anchorElement!: HTMLElement | null;
 
-  /**
-   * TODO(acdvorak): Should we change the type of root_ to HTMLElement? What other kind of element could it be?
-   * SVGElement appears to have the same methods/properties (at least the ones we care about).
-   */
-  protected root_: HTMLElement;
+  protected root_!: HTMLElement;
 
-  private previousFocus_: HTMLElement | SVGElement | null;
-  private firstFocusableElement_: HTMLElement | SVGElement | null;
-  private lastFocusableElement_: HTMLElement | SVGElement | null;
-  private handleKeydown_: EventListener;
-  private handleBodyClick_: EventListener;
-  private registerBodyClickListener_: RegisterFunction;
-  private deregisterBodyClickListener_: RegisterFunction;
+  private previousFocus_!: HTMLElement | SVGElement | null;
+  private firstFocusableElement_!: HTMLElement | SVGElement | null;
+  private lastFocusableElement_!: HTMLElement | SVGElement | null;
+
+  private handleKeydown_!: EventListener;
+  private handleBodyClick_!: EventListener;
+  private registerBodyClickListener_!: RegisterFunction;
+  private deregisterBodyClickListener_!: RegisterFunction;
 
   get open(): boolean {
     return this.foundation_.isOpen();
@@ -70,16 +67,19 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
   }
 
   initialSyncWithDOM() {
-    if (this.root_.parentElement && this.root_.parentElement.classList.contains(cssClasses.ANCHOR)) {
-      this.anchorElement = this.root_.parentElement;
-    }
+    const hasAnchorParent = this.root_.parentElement && this.root_.parentElement.classList.contains(cssClasses.ANCHOR);
+
+    this.anchorElement = hasAnchorParent ? this.root_.parentElement : null;
+    this.previousFocus_ = null;
+    this.firstFocusableElement_ = null;
+    this.lastFocusableElement_ = null;
 
     if (this.root_.classList.contains(cssClasses.FIXED)) {
       this.setFixedPosition(true);
     }
 
-    this.handleKeydown_ = (evt: KeyboardEvent) => this.foundation_.handleKeydown(evt);
-    this.handleBodyClick_ = (evt: MouseEvent) => this.foundation_.handleBodyClick(evt);
+    this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt as KeyboardEvent);
+    this.handleBodyClick_ = (evt) => this.foundation_.handleBodyClick(evt as MouseEvent);
 
     this.registerBodyClickListener_ = () => document.body.addEventListener('click', this.handleBodyClick_);
     this.deregisterBodyClickListener_ = () => document.body.removeEventListener('click', this.handleBodyClick_);
@@ -101,7 +101,7 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
    * body to overcome any overflow:hidden issues.
    */
   hoistMenuToBody() {
-    document.body.appendChild(this.root_.parentElement.removeChild(this.root_));
+    document.body.appendChild(this.root_);
     this.setIsHoisted(true);
   }
 
