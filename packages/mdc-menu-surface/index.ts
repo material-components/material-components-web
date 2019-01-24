@@ -33,7 +33,7 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
     return new MDCMenuSurface(root);
   }
 
-  anchorElement!: HTMLElement | null;
+  anchorElement!: Element | null;
 
   private previousFocus_!: HTMLElement | SVGElement | null;
   private firstFocusableElement_!: HTMLElement | SVGElement | null;
@@ -50,10 +50,9 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
 
   set open(value: boolean) {
     if (value) {
-      const focusableElements = this.root_.querySelectorAll(strings.FOCUSABLE_ELEMENTS);
-      this.firstFocusableElement_ = focusableElements.length > 0 ? focusableElements[0] as HTMLElement : null;
-      this.lastFocusableElement_ = focusableElements.length > 0 ?
-        focusableElements[focusableElements.length - 1] as HTMLElement : null;
+      const focusableElements = this.root_.querySelectorAll<HTMLElement | SVGElement>(strings.FOCUSABLE_ELEMENTS);
+      this.firstFocusableElement_ = focusableElements[0] || null;
+      this.lastFocusableElement_ = focusableElements[focusableElements.length - 1] || null;
       this.foundation_.open();
     } else {
       this.foundation_.close();
@@ -65,9 +64,10 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
   }
 
   initialSyncWithDOM() {
-    const hasAnchorParent = this.root_.parentElement && this.root_.parentElement.classList.contains(cssClasses.ANCHOR);
+    const parentEl = this.root_.parentElement;
+    const hasParentAnchor = parentEl && parentEl.classList.contains(cssClasses.ANCHOR);
 
-    this.anchorElement = hasAnchorParent ? this.root_.parentElement : null;
+    this.anchorElement = hasParentAnchor ? parentEl : null;
     this.previousFocus_ = null;
     this.firstFocusableElement_ = null;
     this.lastFocusableElement_ = null;
@@ -109,7 +109,7 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
   }
 
   /** Sets the element that the menu-surface is anchored to. */
-  setMenuSurfaceAnchorElement(element: HTMLElement) {
+  setMenuSurfaceAnchorElement(element: Element) {
     this.anchorElement = element;
   }
 

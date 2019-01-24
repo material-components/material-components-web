@@ -46,7 +46,7 @@ interface MDCMenuSurfaceAdapter {
   hasClass(className: string): boolean;
   hasAnchor(): boolean;
 
-  isElementInContainer(el: HTMLElement): boolean;
+  isElementInContainer(el: Element): boolean;
   isFocused(): boolean;
   isFirstElementFocused(): boolean;
   isLastElementFocused(): boolean;

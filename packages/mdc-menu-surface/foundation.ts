@@ -233,7 +233,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
 
   /** Handle clicks and close if not within menu-surface element. */
   handleBodyClick(evt: MouseEvent) {
-    const el = evt.target as HTMLElement;
+    const el = evt.target as Element;
     if (this.adapter_.isElementInContainer(el)) {
       return;
     }
@@ -538,7 +538,10 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
    * focused on or within the menu surface when it is closed.
    */
   private maybeRestoreFocus_() {
-    if (this.adapter_.isFocused() || this.adapter_.isElementInContainer(document.activeElement as HTMLElement)) {
+    // TODO(acdvorak): adapter_.isFocused() is unnecessary. Element.contains() already covers that use case.
+    const isRootFocused = this.adapter_.isFocused();
+    const childHasFocus = document.activeElement && this.adapter_.isElementInContainer(document.activeElement);
+    if (isRootFocused || childHasFocus) {
       this.adapter_.restoreFocus();
     }
   }

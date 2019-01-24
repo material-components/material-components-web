@@ -194,7 +194,7 @@ Method Signature | Description
 `hasAnchor: () => boolean` | Returns whether the menu surface has an anchor for positioning.
 `notifyClose() => void` | Dispatches an event notifying listeners that the menu surface has been closed.
 `notifyOpen() => void` | Dispatches an event notifying listeners that the menu surface has been opened.
-`isElementInContainer(el: HTMLElement) => boolean` | Returns true if the `el` Element is inside the `mdc-menu-surface` container.
+`isElementInContainer(el: Element) => boolean` | Returns true if the `el` Element is inside the `mdc-menu-surface` container.
 `isRtl() => boolean` | Returns boolean indicating whether the current environment is RTL.
 `setTransformOrigin(value: string) => void` | Sets the transform origin for the menu surface element.
 `isFocused() => boolean` | Returns a boolean value indicating whether the root element of the menu surface is focused.
