@@ -269,7 +269,7 @@ Then configure webpack to convert `app.js` into `bundle.js` by modifying the fol
      filename: 'bundle.js',
    }
    ```
-3. Add the `babel-loader` object to the rules array after the `scss-loader` object:
+3. Add the `babel-loader` object to the rules array after the `sass-loader` object:
    ```js
    {
      test: /\.js$/,
