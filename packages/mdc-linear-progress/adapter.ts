@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,35 +21,13 @@
  * THE SOFTWARE.
  */
 
-/**
- * @fileoverview A "ponyfill" is a polyfill that doesn't modify the global prototype chain.
- * This makes ponyfills safer than traditional polyfills, especially for libraries like MDC.
- */
-
-interface MsElement extends Element {
-  msMatchesSelector(selector: string): boolean;
+interface MDCLinearProgressAdapter {
+  addClass(className: string): void;
+  getBuffer(): HTMLElement | null;
+  getPrimaryBar(): HTMLElement | null;
+  hasClass(className: string): boolean;
+  removeClass(className: string): void;
+  setStyle(el: HTMLElement, styleProperty: string, value: string): void;
 }
 
-function closest(element: Element, selector: string): Element | null {
-  if (element.closest) {
-    return element.closest(selector);
-  }
-
-  let el: Element | null = element;
-  while (el) {
-    if (matches(el, selector)) {
-      return el;
-    }
-    el = el.parentElement;
-  }
-  return null;
-}
-
-function matches(element: Element, selector: string): boolean {
-  const nativeMatches = element.matches
-      || element.webkitMatchesSelector
-      || (element as MsElement).msMatchesSelector;
-  return nativeMatches.call(element, selector);
-}
-
-export {closest, matches};
+export {MDCLinearProgressAdapter};

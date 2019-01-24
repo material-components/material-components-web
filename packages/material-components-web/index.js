@@ -33,7 +33,7 @@ import * as formField from '@material/form-field/index';
 import * as gridList from '@material/grid-list/index';
 import * as iconButton from '@material/icon-button/index';
 import * as iconToggle from '@material/icon-toggle/index';
-import * as linearProgress from '@material/linear-progress/index';
+import * as linearProgress from '@material/linear-progress/index.ts';
 import * as lineRipple from '@material/line-ripple/index';
 import * as list from '@material/list/index';
 import * as menu from '@material/menu/index';
