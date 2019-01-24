@@ -45,7 +45,7 @@ import * as select from '@material/select/index';
 import * as selectionControl from '@material/selection-control/index.ts';
 import * as slider from '@material/slider/index';
 import * as snackbar from '@material/snackbar/index';
-import * as switchControl from '@material/switch/index';
+import * as switchControl from '@material/switch/index.ts';
 import * as tab from '@material/tab/index';
 import * as tabBar from '@material/tab-bar/index';
 import * as tabIndicator from '@material/tab-indicator/index';

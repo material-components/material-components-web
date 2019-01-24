@@ -62,4 +62,4 @@ class MDCFoundation<AdapterType extends {} = {}> {
   }
 }
 
-export default MDCFoundation;
+export {MDCFoundation as default, MDCFoundation};
