@@ -164,52 +164,52 @@
       // Instead of delaying the animation, we simply multiply its length by 2 and begin the
       // animation at 50% in order to prevent a flash of styles applied to a checked checkmark
       // as the background is fading in before the animation begins.
-      animation: $mdc-checkbox-transition-duration * 2 linear 0s mdc-checkbox-unchecked-checked-checkmark-path;
+      animation: mdc-checkbox-unchecked-checked-checkmark-path $mdc-checkbox-transition-duration * 2 linear 0s;
       transition: none;
     }
   }
 
   &-unchecked-indeterminate {
     .mdc-checkbox__mixedmark {
-      animation: $mdc-checkbox-transition-duration linear 0s mdc-checkbox-unchecked-indeterminate-mixedmark;
+      animation: mdc-checkbox-unchecked-indeterminate-mixedmark $mdc-checkbox-transition-duration linear 0s;
       transition: none;
     }
   }
 
   &-checked-unchecked {
     .mdc-checkbox__checkmark-path {
-      animation: $mdc-checkbox-transition-duration linear 0s mdc-checkbox-checked-unchecked-checkmark-path;
+      animation: mdc-checkbox-checked-unchecked-checkmark-path $mdc-checkbox-transition-duration linear 0s;
       transition: none;
     }
   }
 
   &-checked-indeterminate {
     .mdc-checkbox__checkmark {
-      animation: $mdc-checkbox-transition-duration linear 0s mdc-checkbox-checked-indeterminate-checkmark;
+      animation: mdc-checkbox-checked-indeterminate-checkmark $mdc-checkbox-transition-duration linear 0s;
       transition: none;
     }
 
     .mdc-checkbox__mixedmark {
-      animation: $mdc-checkbox-transition-duration linear 0s mdc-checkbox-checked-indeterminate-mixedmark;
+      animation: mdc-checkbox-checked-indeterminate-mixedmark $mdc-checkbox-transition-duration linear 0s;
       transition: none;
     }
   }
 
   &-indeterminate-checked {
     .mdc-checkbox__checkmark {
-      animation: $mdc-checkbox-indeterminate-change-duration_ linear 0s mdc-checkbox-indeterminate-checked-checkmark;
+      animation: mdc-checkbox-indeterminate-checked-checkmark $mdc-checkbox-indeterminate-change-duration_ linear 0s;
       transition: none;
     }
 
     .mdc-checkbox__mixedmark {
-      animation: $mdc-checkbox-indeterminate-change-duration_ linear 0s mdc-checkbox-indeterminate-checked-mixedmark;
+      animation: mdc-checkbox-indeterminate-checked-mixedmark $mdc-checkbox-indeterminate-change-duration_ linear 0s;
       transition: none;
     }
   }
 
   &-indeterminate-unchecked {
     .mdc-checkbox__mixedmark {
-      animation: $mdc-checkbox-indeterminate-change-duration_ * .6 linear 0s mdc-checkbox-indeterminate-unchecked-mixedmark;
+      animation: mdc-checkbox-indeterminate-unchecked-mixedmark $mdc-checkbox-indeterminate-change-duration_ * .6 linear 0s;
       transition: none;
     }
   }
