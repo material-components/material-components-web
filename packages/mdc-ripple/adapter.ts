@@ -21,8 +21,6 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
-
 /**
  * Adapter for MDC Ripple. Provides an interface for managing
  * - classes
@@ -42,75 +40,54 @@
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  *
- * @record
  */
-class MDCRippleAdapter {
-  /** @return {boolean} */
-  browserSupportsCssVars() {}
 
-  /** @return {boolean} */
-  isUnbounded() {}
+interface WindowPageOffset {
+  x: number;
+  y: number;
+}
 
-  /** @return {boolean} */
-  isSurfaceActive() {}
+interface MDCRippleAdapter {
+  browserSupportsCssVars(): boolean;
 
-  /** @return {boolean} */
-  isSurfaceDisabled() {}
+  isUnbounded(): boolean;
 
-  /** @param {string} className */
-  addClass(className) {}
+  isSurfaceActive(): boolean;
 
-  /** @param {string} className */
-  removeClass(className) {}
+  isSurfaceDisabled(): boolean;
 
-  /** @param {!EventTarget} target */
-  containsEventTarget(target) {}
+  addClass(className: string): void;
 
-  /**
-   * @param {string} evtType
-   * @param {!Function} handler
-   */
-  registerInteractionHandler(evtType, handler) {}
+  removeClass(className: string): void;
 
-  /**
-   * @param {string} evtType
-   * @param {!Function} handler
-   */
-  deregisterInteractionHandler(evtType, handler) {}
+  containsEventTarget(target: EventTarget): boolean;
 
-  /**
-   * @param {string} evtType
-   * @param {!Function} handler
-   */
-  registerDocumentInteractionHandler(evtType, handler) {}
+  registerInteractionHandler<K extends keyof GlobalEventHandlersEventMap>(
+    evtType: K, handler: (evt: GlobalEventHandlersEventMap[K]) => void,
+  ): void;
 
-  /**
-   * @param {string} evtType
-   * @param {!Function} handler
-   */
-  deregisterDocumentInteractionHandler(evtType, handler) {}
+  deregisterInteractionHandler<K extends keyof GlobalEventHandlersEventMap>(
+    evtType: K, handler: (evt: GlobalEventHandlersEventMap[K]) => void,
+  ): void;
 
-  /**
-   * @param {!Function} handler
-   */
-  registerResizeHandler(handler) {}
+  registerDocumentInteractionHandler<K extends keyof GlobalEventHandlersEventMap>(
+    evtType: K, handler: (evt: GlobalEventHandlersEventMap[K]) => void,
+  ): void;
 
-  /**
-   * @param {!Function} handler
-   */
-  deregisterResizeHandler(handler) {}
+  deregisterDocumentInteractionHandler<K extends keyof GlobalEventHandlersEventMap>(
+    evtType: K, handler: (evt: GlobalEventHandlersEventMap[K]) => void,
+  ): void;
 
-  /**
-   * @param {string} varName
-   * @param {?number|string} value
-   */
-  updateCssVariable(varName, value) {}
+  registerResizeHandler(handler: (evt: GlobalEventHandlersEventMap['resize']) => void): void;
 
-  /** @return {!ClientRect} */
-  computeBoundingRect() {}
+  deregisterResizeHandler(handler: (evt: GlobalEventHandlersEventMap['resize']) => void): void;
 
-  /** @return {{x: number, y: number}} */
-  getWindowPageOffset() {}
+  updateCssVariable(varName: string, value?: number|string): void;
+
+  computeBoundingRect(): ClientRect;
+
+  getWindowPageOffset(): WindowPageOffset;
 }
 
 export default MDCRippleAdapter;
+export {WindowPageOffset};

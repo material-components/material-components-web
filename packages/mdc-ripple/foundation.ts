@@ -23,48 +23,22 @@
 
 import MDCFoundation from '@material/base/foundation';
 import MDCRippleAdapter from './adapter';
-import {cssClasses, strings, numbers} from './constants';
+import {cssClasses, numbers, strings} from './constants';
 import {getNormalizedEventCoords} from './util';
 
-/**
- * @typedef {{
- *   isActivated: (boolean|undefined),
- *   hasDeactivationUXRun: (boolean|undefined),
- *   wasActivatedByPointer: (boolean|undefined),
- *   wasElementMadeActive: (boolean|undefined),
- *   activationEvent: (!Event|undefined),
- *   isProgrammatic: (boolean|undefined)
- * }}
- */
-let ActivationStateType;
+interface ActivationStateType {
+  isActivated?: boolean;
+  hasDeactivationUXRun?: boolean;
+  wasActivatedByPointer?: boolean;
+  wasElementMadeActive?: boolean;
+  activationEvent?: Event;
+  isProgrammatic?: boolean;
+}
 
-/**
- * @typedef {{
- *   activate: (string|undefined),
- *   deactivate: (string|undefined),
- *   focus: (string|undefined),
- *   blur: (string|undefined)
- * }}
- */
-let ListenerInfoType;
-
-/**
- * @typedef {{
- *   activate: function(!Event),
- *   deactivate: function(!Event=),
- *   focus: function(),
- *   blur: function()
- * }}
- */
-let ListenersType;
-
-/**
- * @typedef {{
- *   x: number,
- *   y: number
- * }}
- */
-let PointType;
+interface PointType {
+  x: number;
+  y: number;
+}
 
 // Activation events registered on the root element of each instance for activation
 const ACTIVATION_EVENT_TYPES = ['touchstart', 'pointerdown', 'mousedown', 'keydown'];
@@ -94,26 +68,26 @@ class MDCRippleFoundation extends MDCFoundation {
 
   static get defaultAdapter() {
     return {
-      browserSupportsCssVars: () => /* boolean - cached */ {},
-      isUnbounded: () => /* boolean */ {},
-      isSurfaceActive: () => /* boolean */ {},
-      isSurfaceDisabled: () => /* boolean */ {},
-      addClass: (/* className: string */) => {},
-      removeClass: (/* className: string */) => {},
-      containsEventTarget: (/* target: !EventTarget */) => {},
-      registerInteractionHandler: (/* evtType: string, handler: EventListener */) => {},
-      deregisterInteractionHandler: (/* evtType: string, handler: EventListener */) => {},
-      registerDocumentInteractionHandler: (/* evtType: string, handler: EventListener */) => {},
-      deregisterDocumentInteractionHandler: (/* evtType: string, handler: EventListener */) => {},
-      registerResizeHandler: (/* handler: EventListener */) => {},
-      deregisterResizeHandler: (/* handler: EventListener */) => {},
-      updateCssVariable: (/* varName: string, value: string */) => {},
-      computeBoundingRect: () => /* ClientRect */ {},
-      getWindowPageOffset: () => /* {x: number, y: number} */ {},
+      addClass: () => undefined,
+      browserSupportsCssVars: () => false,
+      computeBoundingRect: () => ({}),
+      containsEventTarget: () => false,
+      deregisterDocumentInteractionHandler: () => undefined,
+      deregisterInteractionHandler: () => undefined,
+      deregisterResizeHandler: () => undefined,
+      getWindowPageOffset: () => ({}),
+      isSurfaceActive: () => false,
+      isSurfaceDisabled: () => false,
+      isUnbounded: () => false,
+      registerDocumentInteractionHandler: () => undefined,
+      registerInteractionHandler: () => undefined,
+      registerResizeHandler: () => undefined,
+      removeClass: () => undefined,
+      updateCssVariable: () => undefined,
     };
   }
 
-  constructor(adapter) {
+  constructor(adapter: MDCRippleAdapter) {
     super(Object.assign(MDCRippleFoundation.defaultAdapter, adapter));
 
     /** @private {number} */
