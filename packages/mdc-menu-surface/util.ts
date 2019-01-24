@@ -21,19 +21,19 @@
  * THE SOFTWARE.
  */
 
-let storedTransformPropertyName_: string | undefined;
+type CssTransformPropertyName = ('transform' | 'webkitTransform');
+
+let cachedCssTransformPropertyName_: CssTransformPropertyName | undefined;
 
 /**
  * Returns the name of the correct transform property to use on the current browser.
  */
-function getTransformPropertyName(globalObj: Window, forceRefresh = false): string {
-  if (storedTransformPropertyName_ === undefined || forceRefresh) {
+function getTransformPropertyName(globalObj: Window, forceRefresh = false): CssTransformPropertyName {
+  if (cachedCssTransformPropertyName_ === undefined || forceRefresh) {
     const el = globalObj.document.createElement('div');
-    const transformPropertyName = ('transform' in el.style ? 'transform' : 'webkitTransform');
-    storedTransformPropertyName_ = transformPropertyName;
+    cachedCssTransformPropertyName_ = 'transform' in el.style ? 'transform' : 'webkitTransform';
   }
-
-  return storedTransformPropertyName_;
+  return cachedCssTransformPropertyName_;
 }
 
 export {getTransformPropertyName};
