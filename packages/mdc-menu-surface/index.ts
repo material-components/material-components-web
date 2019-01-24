@@ -33,7 +33,7 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
     return new MDCMenuSurface(root);
   }
 
-  anchorElement: HTMLElement;
+  anchorElement: HTMLElement | null;
 
   /**
    * TODO(acdvorak): Should we change the type of root_ to HTMLElement? What other kind of element could it be?
@@ -41,9 +41,9 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
    */
   protected root_: HTMLElement;
 
-  private previousFocus_: HTMLElement;
-  private firstFocusableElement_: HTMLElement | null;
-  private lastFocusableElement_: HTMLElement | null;
+  private previousFocus_: HTMLElement | SVGElement | null;
+  private firstFocusableElement_: HTMLElement | SVGElement | null;
+  private lastFocusableElement_: HTMLElement | SVGElement | null;
   private handleKeydown_: EventListener;
   private handleBodyClick_: EventListener;
   private registerBodyClickListener_: RegisterFunction;
@@ -159,7 +159,7 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
 
       isFocused: () => document.activeElement === this.root_,
       saveFocus: () => {
-        this.previousFocus_ = document.activeElement as HTMLElement;
+        this.previousFocus_ = document.activeElement as HTMLElement | SVGElement;
       },
       restoreFocus: () => {
         if (this.root_.contains(document.activeElement)) {
