@@ -94,9 +94,6 @@
   }
 }
 
-//
-// Public
-//
 @mixin mdc-menu-width($width) {
   @if unitless($width) {
     width: $width * $mdc-menu-width-base;
