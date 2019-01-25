@@ -42,7 +42,7 @@
  *
  */
 
-interface WindowPageOffset {
+interface Point {
   x: number;
   y: number;
 }
@@ -60,7 +60,7 @@ interface MDCRippleAdapter {
 
   removeClass(className: string): void;
 
-  containsEventTarget(target: EventTarget): boolean;
+  containsEventTarget(target: EventTarget | null): boolean;
 
   registerInteractionHandler<K extends keyof GlobalEventHandlersEventMap>(
     evtType: K, handler: (evt: GlobalEventHandlersEventMap[K]) => void,
@@ -82,12 +82,12 @@ interface MDCRippleAdapter {
 
   deregisterResizeHandler(handler: (evt: GlobalEventHandlersEventMap['resize']) => void): void;
 
-  updateCssVariable(varName: string, value?: number|string): void;
+  updateCssVariable(varName: string, value: string|null): void;
 
   computeBoundingRect(): ClientRect;
 
-  getWindowPageOffset(): WindowPageOffset;
+  getWindowPageOffset(): Point;
 }
 
 export default MDCRippleAdapter;
-export {WindowPageOffset};
+export {Point};
