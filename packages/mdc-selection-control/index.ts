@@ -21,26 +21,18 @@
  * THE SOFTWARE.
  */
 
-/* eslint-disable no-unused-vars */
-import {MDCRipple} from '@material/ripple/index';
-/* eslint-enable no-unused-vars */
+// @ts-ignore no-declaration file, will update when ripple is fixed
+import {MDCRipple} from '@material/ripple/index.js';
 
-/**
- * @typedef {{
- *   checked: boolean,
- *   indeterminate: boolean,
- *   disabled: boolean,
- *   value: ?string
- * }}
- */
-let MDCSelectionControlState;
+interface MDCSelectionControlState {
+  checked: boolean;
+  indeterminate: boolean;
+  disabled: boolean;
+  value?: string;
+}
 
-/**
- * @record
- */
-class MDCSelectionControl {
-  /** @return {?MDCRipple} */
-  get ripple() {}
+interface MDCSelectionControl {
+  readonly ripple: MDCRipple | undefined;
 }
 
 export {MDCSelectionControlState, MDCSelectionControl};
