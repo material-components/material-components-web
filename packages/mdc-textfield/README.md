@@ -134,7 +134,7 @@ To disable the text field, add the `disabled` attribute to the `<input>` element
 A text field doesn’t require a label if a separate but clear label indicator is already displayed adjacent to the text field.
 Add class name `mdc-text-field--no-label` and remove the label element from the structure.
 
-**Filled**
+#### Filled
 
 ```html
 <div class="mdc-text-field mdc-text-field--no-label">
@@ -143,7 +143,7 @@ Add class name `mdc-text-field--no-label` and remove the label element from the 
 </div>
 ```
 
-**Outlined**
+#### Outlined
 
 ```html
 <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
@@ -155,7 +155,7 @@ Add class name `mdc-text-field--no-label` and remove the label element from the 
 </div>
 ```
 
-**Textarea**
+#### Textarea
 
 ```html
 <div class="mdc-text-field mdc-text-field--textarea mdc-text-field--no-label">
