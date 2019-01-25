@@ -24,6 +24,7 @@
 /* eslint-disable no-unused-vars */
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
 import MDCTextFieldIconFoundation from './icon/foundation';
+import MDCFloatingLabelFoundation from '@material/floating-label/index';
 
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
@@ -43,6 +44,7 @@ let NativeInputType;
 /**
  * @typedef {{
  *   helperText: (!MDCTextFieldHelperTextFoundation|undefined),
+ *   label: (!MDCFloatingLabelFoundation|undefined,)
  *   leadingIcon: (!MDCTextFieldIconFoundation|undefined),
  *   trailingIcon: (!MDCTextFieldIconFoundation|undefined),
  * }}

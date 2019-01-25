@@ -40,7 +40,7 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCFloatingLabelFoundation, [
-    'addClass', 'removeClass', 'getWidth',
+    'addClass', 'removeClass', 'getWidth', 'setContent',
     'registerInteractionHandler', 'deregisterInteractionHandler',
   ]);
 });

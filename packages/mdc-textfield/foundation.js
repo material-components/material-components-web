@@ -30,7 +30,6 @@ import MDCFloatingLabelFoundation from '@material/floating-label/index';
 import {MDCTextFieldAdapter, NativeInputType, FoundationMapType} from './adapter';
 import {cssClasses, strings, numbers, VALIDATION_ATTR_WHITELIST, ALWAYS_FLOAT_TYPES} from './constants';
 
-
 /**
  * @extends {MDCFoundation<!MDCTextFieldAdapter>}
  * @final
@@ -107,7 +106,6 @@ class MDCTextFieldFoundation extends MDCFoundation {
    */
   constructor(adapter, foundationMap = /** @type {!FoundationMapType} */ ({})) {
     super(Object.assign(MDCTextFieldFoundation.defaultAdapter, adapter));
-
     /** @type {!MDCTextFieldHelperTextFoundation|undefined} */
     this.helperText_ = foundationMap.helperText;
     /** @type {!MDCFloatingLabelFoundation|undefined} */

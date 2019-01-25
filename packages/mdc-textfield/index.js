@@ -502,9 +502,10 @@ class MDCTextField extends MDCComponent {
    */
   getFoundationMap_() {
     return {
-      helperText: this.helperText_ ? this.helperText_.foundation : undefined,
-      leadingIcon: this.leadingIcon_ ? this.leadingIcon_.foundation : undefined,
-      trailingIcon: this.trailingIcon_ ? this.trailingIcon_.foundation : undefined,
+      helperText: this.helperText_ ? this.helperText_.foundation_ : undefined,
+      label: this.label_ ? this.label_.foundation_ : undefined,
+      leadingIcon: this.leadingIcon_ ? this.leadingIcon_.foundation_ : undefined,
+      trailingIcon: this.trailingIcon_ ? this.trailingIcon_.foundation_ : undefined,
     };
   }
 }

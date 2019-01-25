@@ -53,6 +53,12 @@ class MDCFloatingLabelAdapter {
   getWidth() {}
 
   /**
+   * Sets the text content for the label element.
+   * @param {string} content
+   */
+  setContent(content) { }
+
+  /**
    * Registers an event listener on the root element for a given event.
    * @param {string} evtType
    * @param {function(!Event): undefined} handler

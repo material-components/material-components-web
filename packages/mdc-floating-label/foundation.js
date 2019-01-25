@@ -45,6 +45,7 @@ class MDCFloatingLabelFoundation extends MDCFoundation {
       addClass: () => {},
       removeClass: () => {},
       getWidth: () => {},
+      setContent: () => {},
       registerInteractionHandler: () => {},
       deregisterInteractionHandler: () => {},
     });
@@ -74,6 +75,14 @@ class MDCFloatingLabelFoundation extends MDCFoundation {
    */
   getWidth() {
     return this.adapter_.getWidth();
+  }
+
+  /**
+   * Sets the content of the label field.
+   * @param {string} content
+   */
+  setContent(content) {
+    this.adapter_.setContent(content);
   }
 
   /**

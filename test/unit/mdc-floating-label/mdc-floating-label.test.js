@@ -81,3 +81,10 @@ test('#adapter.getWidth returns the width of the label element', () => {
   const {root, component} = setupTest();
   assert.equal(component.getDefaultFoundation().adapter_.getWidth(), root.offsetWidth);
 });
+
+test('#adapter.setContent sets the content of the label element', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.setContent('foo');
+  assert.equal(root.textContent, 'foo');
+});
+

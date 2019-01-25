@@ -63,6 +63,14 @@ const setupTest = () => {
     showToScreenReader: () => {},
     setValidity: () => {},
   });
+  const label = td.object({
+    addClass: () => {},
+    removeClass: () => {},
+    getWidth: () => {},
+    setContent: () => {},
+    registerInteractionHandler: () => {},
+    deregisterInteractionHandler: () => {},
+  });
   const leadingIcon = td.object({
     setDisabled: () => {},
     setAriaLabel: () => {},
@@ -81,11 +89,12 @@ const setupTest = () => {
   });
   const foundationMap = {
     helperText,
+    label,
     leadingIcon,
     trailingIcon,
   };
   const foundation = new MDCTextFieldFoundation(mockAdapter, foundationMap);
-  return {foundation, mockAdapter, helperText, leadingIcon, trailingIcon};
+  return {foundation, mockAdapter, helperText, label, leadingIcon, trailingIcon};
 };
 
 test('#constructor sets disabled to false', () => {
@@ -402,6 +411,12 @@ test('#setHelperTextContent sets the content of the helper text element', () => 
   const {foundation, helperText} = setupTest();
   foundation.setHelperTextContent('foo');
   td.verify(helperText.setContent('foo'));
+});
+
+test('#setLabelContent sets the content of the label element', () => {
+  const {foundation, label} = setupTest();
+  foundation.setLabelContent('foo');
+  td.verify(label.setContent('foo'));
 });
 
 test('#setLeadingIconAriaLabel sets the aria-label of the leading icon element', () => {

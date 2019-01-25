@@ -71,6 +71,9 @@ class MDCFloatingLabel extends MDCComponent {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       getWidth: () => this.root_.scrollWidth,
+      setContent: (content) => {
+        this.root_.textContent = content;
+      },
       registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
     });
