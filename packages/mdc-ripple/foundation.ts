@@ -78,7 +78,7 @@ class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
     return {
       addClass: () => undefined,
       browserSupportsCssVars: () => true,
-      computeBoundingRect: () => new ClientRect(),
+      computeBoundingRect: () => undefined,
       containsEventTarget: () => true,
       deregisterDocumentInteractionHandler: () => undefined,
       deregisterInteractionHandler: () => undefined,

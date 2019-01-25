@@ -106,7 +106,7 @@ export function applyPassive(globalObj: Window = window, forceRefresh = false):
         isSupported = true;
         return isSupported;
       }});
-    // tslint:disable-next-line:no-empty TODO: add error case to this block
+    // tslint:disable-next-line:no-empty cannot throw error because of tests. tslint also disables console.logs
     } catch (e) {}
 
     supportsPassive_ = isSupported;
@@ -130,20 +130,28 @@ export type VendorMatchesFunctionName = 'webkitMatchesSelector' | 'msMatchesSele
 export type MatchesFunctionName = VendorMatchesFunctionName | 'matches';
 
 export function getMatchesProperty(htmlElementPrototype: {}): MatchesFunctionName {
-  const matches =
-      [
-        'webkitMatchesSelector',
-        'msMatchesSelector',
-      ].filter((p) => p in htmlElementPrototype)
-          .pop();
-  if (matches !== undefined) {
-    return matches as VendorMatchesFunctionName;
+  /**
+   * Order is important because we return the first existing method we find.
+   * Do not change the order of the items in the below array.
+   */
+
+  const matchesMethods: MatchesFunctionName[] = ['matches', 'webkitMatchesSelector', 'msMatchesSelector'];
+  let method: MatchesFunctionName = 'matches';
+  for (const matchesMethod of matchesMethods) {
+    if (matchesMethod in htmlElementPrototype) {
+      method = matchesMethod;
+      break;
+    }
   }
-  return 'matches';
+
+  return method;
 }
 
 export function getNormalizedEventCoords(
     ev: Event | undefined, pageOffset: Point, clientRect: ClientRect): Point {
+  if (!ev) {
+    return {x: 0, y: 0};
+  }
   const {x, y} = pageOffset;
   const documentX = x + clientRect.left;
   const documentY = y + clientRect.top;
@@ -151,12 +159,14 @@ export function getNormalizedEventCoords(
   let normalizedX;
   let normalizedY;
   // Determine touch point relative to the ripple container.
-  if (ev instanceof TouchEvent && ev.type === 'touchstart') {
-    normalizedX = ev.changedTouches[0].pageX - documentX;
-    normalizedY = ev.changedTouches[0].pageY - documentY;
-  } else if (ev instanceof MouseEvent) {
-    normalizedX = ev.pageX - documentX;
-    normalizedY = ev.pageY - documentY;
+  if (ev.type === 'touchstart') {
+    const e = ev as TouchEvent;
+    normalizedX = e.changedTouches[0].pageX - documentX;
+    normalizedY = e.changedTouches[0].pageY - documentY;
+  } else {
+    const e = ev as MouseEvent;
+    normalizedX = e.pageX - documentX;
+    normalizedY = e.pageY - documentY;
   }
   if (normalizedX === undefined || normalizedY === undefined) {
     throw new Error('Event coordinates not defined');

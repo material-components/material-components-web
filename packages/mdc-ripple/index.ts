@@ -73,8 +73,7 @@ class MDCRipple extends MDCComponent<MDCRippleFoundation> implements
       getWindowPageOffset: () => ({x: window.pageXOffset, y: window.pageYOffset}),
       isSurfaceActive: () => {
         const root = instance.root_;
-        const matches = root[MATCHES as 'matches'];
-        return matches(':active');
+        return root[MATCHES as 'matches'](':active');
       },
       isSurfaceDisabled: () => Boolean(instance.disabled),
       isUnbounded: () => Boolean(instance.unbounded),
