@@ -1,7 +1,7 @@
 {
   "name": "@material/list",
   "description": "The Material Components for the web list component",
-  "version": "0.42.0",
+  "version": "0.43.0",
   "license": "MIT",
   "main": "dist/mdc.list.js",
   "keywords": [
@@ -16,10 +16,10 @@
   "dependencies": {
     "@material/base": "^0.41.0",
     "@material/dom": "^0.41.0",
-    "@material/ripple": "^0.42.0",
+    "@material/ripple": "^0.43.0",
     "@material/rtl": "^0.42.0",
-    "@material/shape": "^0.42.0",
-    "@material/theme": "^0.41.0",
-    "@material/typography": "^0.42.0"
+    "@material/shape": "^0.43.0",
+    "@material/theme": "^0.43.0",
+    "@material/typography": "^0.43.0"
   }
 }

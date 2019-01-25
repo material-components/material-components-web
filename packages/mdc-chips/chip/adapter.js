@@ -109,6 +109,24 @@ class MDCChipAdapter {
    * @param {string} value
    */
   setStyleProperty(propertyName, value) {}
+
+  /**
+   * Returns whether the chip has a leading icon.
+   * @return {boolean}
+   */
+  hasLeadingIcon() {}
+
+  /**
+   * Returns the bounding client rect of the root element.
+   * @return {!ClientRect}
+   */
+  getRootBoundingClientRect() {}
+
+  /**
+   * Returns the bounding client rect of the checkmark element or null if it doesn't exist.
+   * @return {?ClientRect}
+   */
+  getCheckmarkBoundingClientRect() {}
 }
 
 export default MDCChipAdapter;

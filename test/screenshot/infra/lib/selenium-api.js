@@ -29,6 +29,7 @@ const Jimp = require('jimp');
 const VError = require('verror');
 const UserAgentParser = require('useragent');
 const path = require('path');
+const {JSDOM} = require('jsdom');
 
 const mdcProto = require('../proto/mdc.pb').mdc.proto;
 const seleniumProto = require('../proto/selenium.pb').selenium.proto;
@@ -612,8 +613,8 @@ class SeleniumApi {
 
     // TODO(acdvorak): Find a better way to do this
     const screenshotQueues = [
-      [true, screenshotQueueAll.filter((screenshot) => this.isSmallComponent_(screenshot.html_file_path))],
-      [false, screenshotQueueAll.filter((screenshot) => !this.isSmallComponent_(screenshot.html_file_path))],
+      [true, screenshotQueueAll.filter((screenshot) => this.isSmallComponent_(screenshot.actual_html_file))],
+      [false, screenshotQueueAll.filter((screenshot) => !this.isSmallComponent_(screenshot.actual_html_file))],
     ];
 
     for (const [isSmallComponent, screenshotQueue] of screenshotQueues) {
@@ -657,17 +658,18 @@ class SeleniumApi {
   }
 
   /**
-   * @param {string} url
+   * @param {!mdc.proto.TestFile} actualHtmlFile
    * @return {boolean}
    * @private
    */
-  isSmallComponent_(url) {
-    // TODO(acdvorak): Find a better way to do this
-    const smallComponentNames = [
-      'animation', 'button', 'card', 'checkbox', 'chips', 'elevation', 'fab', 'icon-button', 'icon-toggle',
-      'list', 'menu', 'radio', 'ripple', 'select', 'switch', 'textfield', 'theme', 'tooltip', 'typography',
-    ];
-    return new RegExp(`/mdc-(${smallComponentNames.join('|')})/`).test(url);
+  isSmallComponent_(actualHtmlFile) {
+    const htmlStr = this.localStorage_.readTextFileSync(actualHtmlFile.absolute_path);
+    const jsdom = new JSDOM(htmlStr);
+
+    /** @type {!Document} */
+    const document = jsdom.window.document;
+
+    return Boolean(document.querySelector('.test-viewport--mobile'));
   }
 
   /**

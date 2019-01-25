@@ -21,6 +21,8 @@
 //
 
 @import "@material/elevation/mixins";
+@import "@material/feature-targeting/functions";
+@import "@material/feature-targeting/mixins";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
 @import "@material/theme/functions";
@@ -29,6 +31,97 @@
 @import "@material/shape/mixins";
 @import "@material/shape/functions";
 @import "./variables";
+
+@mixin mdc-button($query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-ripple-common($query);
+
+  // postcss-bem-linter: define button
+  .mdc-button {
+    @include mdc-button-base_($query);
+
+    @include mdc-feature-targets($feat-structure) {
+      @include mdc-button-shape-radius(small);
+      // This fits under structure because it doesn't depend on the theme.
+      @include mdc-button-container-fill-color(transparent);
+
+      // The icon CSS class overrides styles defined in the .material-icons CSS
+      // class, which is loaded separately so the order of CSS definitions is not
+      // guaranteed. Therefore, increase specifity by nesting this class to ensure
+      // overrides apply.
+      .mdc-button__icon {
+        @include mdc-button__icon_;
+      }
+    }
+
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-button-ink-color(primary);
+    }
+
+    @include mdc-states(primary, false, $query);
+  }
+
+  @include mdc-feature-targets($feat-structure) {
+    .mdc-button__label + .mdc-button__icon {
+      @include mdc-button__icon-trailing_;
+    }
+
+    // stylelint-disable-next-line selector-no-qualifying-type
+    svg.mdc-button__icon {
+      @include mdc-button__icon-svg_;
+    }
+
+    .mdc-button--raised,
+    .mdc-button--unelevated,
+    .mdc-button--outlined {
+      .mdc-button__icon {
+        // Icons inside contained buttons have different styles due to increased button padding
+        @include mdc-button__icon-contained_;
+      }
+
+      .mdc-button__label + .mdc-button__icon {
+        @include mdc-button__icon-contained-trailing_;
+      }
+    }
+  }
+
+  .mdc-button--raised,
+  .mdc-button--unelevated {
+    @include mdc-button--filled_($query);
+
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-button-container-fill-color(primary);
+      @include mdc-button-ink-color(on-primary);
+    }
+
+    @include mdc-states(on-primary, false, $query);
+  }
+
+  .mdc-button--raised {
+    @include mdc-button--raised_($query);
+  }
+
+  .mdc-button--outlined {
+    @include mdc-button--outlined_($query);
+
+    @include mdc-feature-targets($feat-structure) {
+      @include mdc-button-outline-width(2px);
+    }
+
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-button-outline-color(primary);
+    }
+  }
+
+  .mdc-button--dense {
+    @include mdc-feature-targets($feat-structure) {
+      @include mdc-button--dense_;
+    }
+  }
+  // postcss-bem-linter: end
+}
 
 @mixin mdc-button-filled-accessible($container-fill-color) {
   $fill-tone: mdc-theme-tone($container-fill-color);
@@ -92,48 +185,63 @@
   border-width: $outline-width;
 }
 
-@mixin mdc-button-base_() {
-  @include mdc-typography(button);
-  @include mdc-ripple-surface;
-  @include mdc-ripple-radius-bounded;
-  @include mdc-button-horizontal-padding($mdc-button-horizontal-padding);
+@mixin mdc-button-base_($query) {
+  $feat-color: mdc-feature-create-target($query, color);
+  $feat-structure: mdc-feature-create-target($query, structure);
+  $feat-typography: mdc-feature-create-target($query, typography);
 
-  display: inline-flex;
-  position: relative;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  min-width: 64px;
-  height: $mdc-button-height;
-  border: none;
-  outline: none;
-  /* @alternate */
-  line-height: inherit;
-  user-select: none;
-  -webkit-appearance: none;
-  overflow: hidden;
-  vertical-align: middle;
-
-  &::-moz-focus-inner {
-    padding: 0;
-    border: 0;
+  @include mdc-feature-targets($feat-typography) {
+    @include mdc-typography(button);
   }
 
-  // postcss-bem-linter: ignore
-  &:active {
+  @include mdc-ripple-surface($query);
+
+  @include mdc-feature-targets($feat-structure) {
+    @include mdc-ripple-radius-bounded;
+    @include mdc-button-horizontal-padding($mdc-button-horizontal-padding);
+
+    display: inline-flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-width: 64px;
+    height: $mdc-button-height;
+    border: none;
     outline: none;
-  }
+    /* @alternate */
+    line-height: inherit;
+    user-select: none;
+    -webkit-appearance: none;
+    overflow: hidden;
+    vertical-align: middle;
 
-  &:hover {
-    cursor: pointer;
+    &::-moz-focus-inner {
+      padding: 0;
+      border: 0;
+    }
+
+    // postcss-bem-linter: ignore
+    &:active {
+      outline: none;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   &:disabled {
-    @include mdc-theme-prop(background-color, transparent);
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(background-color, transparent);
 
-    color: $mdc-button-disabled-ink-color;
-    cursor: default;
-    pointer-events: none;
+      color: $mdc-button-disabled-ink-color;
+    }
+
+    @include mdc-feature-targets($feat-structure) {
+      cursor: default;
+      pointer-events: none;
+    }
   }
 }
 
@@ -163,39 +271,60 @@
   @include mdc-rtl-reflexive-property(margin, 8px, -4px);
 }
 
-@mixin mdc-button--outlined_() {
-  border-style: solid;
+@mixin mdc-button--outlined_($query) {
+  $feat-color: mdc-feature-create-target($query, color);
+  $feat-structure: mdc-feature-create-target($query, structure);
 
-  &:disabled {
-    border-color: $mdc-button-disabled-ink-color;
+  @include mdc-feature-targets($feat-structure) {
+    border-style: solid;
+  }
+
+  @include mdc-feature-targets($feat-color) {
+    &:disabled {
+      border-color: $mdc-button-disabled-ink-color;
+    }
   }
 }
 
-@mixin mdc-button--filled_() {
-  @include mdc-button-horizontal-padding($mdc-button-contained-horizontal-padding);
+@mixin mdc-button--filled_($query) {
+  $feat-color: mdc-feature-create-target($query, color);
+  $feat-structure: mdc-feature-create-target($query, structure);
 
-  &:disabled {
-    background-color: rgba(mdc-theme-prop-value(on-surface), .12);
-    color: $mdc-button-disabled-ink-color;
+  @include mdc-feature-targets($feat-structure) {
+    @include mdc-button-horizontal-padding($mdc-button-contained-horizontal-padding);
+  }
+
+  @include mdc-feature-targets($feat-color) {
+    &:disabled {
+      background-color: rgba(mdc-theme-prop-value(on-surface), .12);
+      color: $mdc-button-disabled-ink-color;
+    }
   }
 }
 
-@mixin mdc-button--raised_() {
-  @include mdc-elevation(2);
+@mixin mdc-button--raised_($query) {
+  $feat-animation: mdc-feature-create-target($query, animation);
+  $feat-color: mdc-feature-create-target($query, color);
 
-  transition: mdc-elevation-transition-value();
+  @include mdc-feature-targets($feat-color) {
+    @include mdc-elevation(2);
 
-  &:hover,
-  &:focus {
-    @include mdc-elevation(4);
+    &:hover,
+    &:focus {
+      @include mdc-elevation(4);
+    }
+
+    &:active {
+      @include mdc-elevation(8);
+    }
+
+    &:disabled {
+      @include mdc-elevation(0);
+    }
   }
 
-  &:active {
-    @include mdc-elevation(8);
-  }
-
-  &:disabled {
-    @include mdc-elevation(0);
+  @include mdc-feature-targets($feat-animation) {
+    transition: mdc-elevation-transition-value();
   }
 }
 
