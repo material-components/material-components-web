@@ -20,9 +20,220 @@
 // THE SOFTWARE.
 //
 
+@import "@material/animation/functions";
+@import "@material/feature-targeting/functions";
+@import "@material/feature-targeting/mixins";
+@import "@material/ripple/mixins";
+@import "@material/ripple/variables";
 @import "@material/theme/mixins";
 @import "@material/theme/variables";
+@import "./functions";
 @import "./variables";
+
+@mixin mdc-radio($query: mdc-feature-all()) {
+  // postcss-bem-linter: define radio
+
+  $feat-animation: mdc-feature-create-target($query, animation);
+  $feat-color: mdc-feature-create-target($query, color);
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-ripple-common($query);
+
+  .mdc-radio {
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-radio-unchecked-stroke-color($mdc-radio-unchecked-color);
+      @include mdc-radio-checked-stroke-color($mdc-radio-baseline-theme-color);
+      @include mdc-radio-ink-color($mdc-radio-baseline-theme-color);
+      @include mdc-radio-focus-indicator-color($mdc-radio-baseline-theme-color);
+    }
+
+    @include mdc-ripple-surface($query);
+
+    @include mdc-feature-targets($feat-structure) {
+      @include mdc-ripple-radius-unbounded;
+    }
+
+    @include mdc-states($mdc-radio-baseline-theme-color, $query: $query);
+
+    @include mdc-feature-targets($feat-structure) {
+      display: inline-block;
+      position: relative;
+      flex: 0 0 auto;
+      box-sizing: border-box;
+      width: $mdc-radio-touch-area;
+      height: $mdc-radio-touch-area;
+      padding: ($mdc-radio-touch-area - $mdc-radio-ui-size) / 2;
+      cursor: pointer;
+      /* @alternate */
+      will-change: opacity, transform, border-color, color;
+    }
+
+    // Container for radio circles and ripple.
+    &__background {
+      @include mdc-feature-targets($feat-structure) {
+        display: inline-block;
+        position: absolute;
+        left: ($mdc-radio-touch-area - $mdc-radio-ui-size) / 2;
+        box-sizing: border-box;
+        width: $mdc-radio-ui-pct;
+        height: $mdc-radio-ui-pct;
+
+        &::before {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          transform: scale(0, 0);
+          border-radius: 50%;
+          opacity: 0;
+          pointer-events: none;
+          content: "";
+        }
+      }
+
+      @include mdc-feature-targets($feat-animation) {
+        &::before {
+          transition: mdc-radio-exit(opacity), mdc-radio-exit(transform);
+        }
+      }
+    }
+
+    &__outer-circle {
+      @include mdc-feature-targets($feat-structure) {
+        position: absolute;
+        top: 0;
+        left: 0;
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        border-width: 2px;
+        border-style: solid;
+        border-radius: 50%;
+      }
+
+      @include mdc-feature-targets($feat-animation) {
+        transition: mdc-radio-exit(border-color);
+      }
+    }
+
+    &__inner-circle {
+      @include mdc-feature-targets($feat-structure) {
+        position: absolute;
+        top: 0;
+        left: 0;
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        transform: scale(0, 0);
+        border-width: 10px;
+        border-style: solid;
+        border-radius: 50%;
+      }
+
+      @include mdc-feature-targets($feat-animation) {
+        transition: mdc-radio-exit(transform), mdc-radio-exit(border-color);
+      }
+    }
+
+    @include mdc-feature-targets($feat-structure) {
+      &__native-control {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        opacity: 0;
+        cursor: inherit;
+        z-index: 1;
+      }
+
+      // stylelint-disable plugin/selector-bem-pattern
+
+      &.mdc-ripple-upgraded--background-focused {
+        .mdc-radio__background::before {
+          content: none;
+        }
+      }
+
+      // stylelint-enable plugin/selector-bem-pattern
+    }
+  }
+
+  @include mdc-feature-targets($feat-animation) {
+    .mdc-radio__native-control:checked,
+    .mdc-radio__native-control:disabled {
+      + .mdc-radio__background {
+        transition: mdc-radio-enter(opacity), mdc-radio-enter(transform);
+
+        .mdc-radio__outer-circle {
+          transition: mdc-radio-enter(border-color);
+        }
+
+        .mdc-radio__inner-circle {
+          transition: mdc-radio-enter(transform), mdc-radio-enter(border-color);
+        }
+      }
+    }
+  }
+
+  @include mdc-feature-targets($feat-structure) {
+    .mdc-radio--disabled {
+      cursor: default;
+      pointer-events: none;
+    }
+  }
+
+  .mdc-radio__native-control:checked {
+    + .mdc-radio__background {
+      .mdc-radio__inner-circle {
+        @include mdc-feature-targets($feat-structure) {
+          transform: scale(.5);
+        }
+
+        @include mdc-feature-targets($feat-animation) {
+          transition: mdc-radio-enter(transform), mdc-radio-enter(border-color);
+        }
+      }
+    }
+  }
+
+  .mdc-radio__native-control:disabled,
+  [aria-disabled="true"] .mdc-radio__native-control {
+    + .mdc-radio__background {
+      @include mdc-feature-targets($feat-structure) {
+        cursor: default;
+      }
+
+      @include mdc-feature-targets($feat-color) {
+        .mdc-radio__outer-circle {
+          border-color: $mdc-radio-circle-color;
+        }
+
+        .mdc-radio__inner-circle {
+          border-color: $mdc-radio-circle-color;
+        }
+      }
+    }
+  }
+
+  .mdc-radio__native-control:focus {
+    + .mdc-radio__background::before {
+      @include mdc-feature-targets($feat-structure) {
+        transform: scale(2, 2);
+        opacity: map-get($mdc-ripple-dark-ink-opacities, focus);
+      }
+
+      @include mdc-feature-targets($feat-animation) {
+        transition: mdc-radio-enter(opacity), mdc-radio-enter(transform);
+      }
+    }
+  }
+
+  // postcss-bem-linter: end
+}
 
 @mixin mdc-radio-unchecked-stroke-color($color) {
   // stylelint-disable-next-line selector-max-specificity
