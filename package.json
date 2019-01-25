@@ -38,10 +38,11 @@
     "test:unit": "karma start --single-run",
     "test:closure": "./scripts/closure-test.sh",
     "test:dependency": "./scripts/dependency-test.sh",
+    "test:feature-targeting": "node test/scss/verify-feature-targeting.js",
     "test:site": "npm run clean:site && ./scripts/site-generator-test.sh"
   },
   "devDependencies": {
-    "@google-cloud/datastore": "^2.0.0",
+    "@google-cloud/datastore": "^3.0.1",
     "@octokit/rest": "^16.1.0",
     "argparse": "^1.0.10",
     "ascii-table": "0.0.9",
@@ -89,6 +90,7 @@
     "istanbul": "^0.4.4",
     "istanbul-instrumenter-loader": "^3.0.0",
     "jimp": "^0.2.28",
+    "jsdom": "^13.1.0",
     "json-stable-stringify": "^1.0.1",
     "karma": "^3.0.0",
     "karma-chrome-launcher": "^2.0.0",
@@ -172,6 +174,7 @@
           "drawer",
           "elevation",
           "fab",
+          "feature-targeting",
           "floating-label",
           "form-field",
           "grid-list",

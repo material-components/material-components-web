@@ -1,12 +1,12 @@
 {
-  "name": "@material/shape",
-  "description": "Shape utilities for Material Components for the web",
-  "version": "0.43.0",
+  "name": "@material/feature-targeting",
+  "description": "Material Components for the web Feature Targeting Scss helpers",
+  "version": "0.0.0",
   "license": "MIT",
   "keywords": [
     "material components",
     "material design",
-    "shape"
+    "feature targeting"
   ],
   "repository": {
     "type": "git",

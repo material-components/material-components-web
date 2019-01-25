@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-const Datastore = require('@google-cloud/datastore');
+const {Datastore} = require('@google-cloud/datastore');
 const {ShieldState} = require('../types/status-types');
 
 const KIND = 'ScreenshotStatus';

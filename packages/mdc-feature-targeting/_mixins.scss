@@ -1,5 +1,5 @@
 //
-// Copyright 2016 Google Inc.
+// Copyright 2019 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,5 +20,25 @@
 // THE SOFTWARE.
 //
 
-@import "./mixins";
-@include mdc-radio;
+@import "./functions";
+
+// Tracks whether the current context is inside a `mdc-feature-targets` mixin.
+$mdc-feature-targets-context_: false;
+
+// Mixin that annotates the contained styles as applying to specific cross-cutting features
+// indicated by the given list of feature targets.
+@mixin mdc-feature-targets($feature-targets...) {
+  // Prevent accidental nesting of this mixin, which could lead to unexpected results.
+  @if $mdc-feature-targets-context_ {
+    @error "mdc-feature-targets must not be used inside of another mdc-feature-targets block";
+  }
+
+  $mdc-feature-targets-context_: true !global;
+  $parsed-targets: mdc-feature-parse-targets($feature-targets);
+
+  @if mdc-feature-is-query-satisfied_(map-get($parsed-targets, query), map-get($parsed-targets, available)) {
+    @content;
+  }
+
+  $mdc-feature-targets-context_: false !global;
+}

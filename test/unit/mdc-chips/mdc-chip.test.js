@@ -29,6 +29,8 @@ import td from 'testdouble';
 import {MDCRipple} from '../../../packages/mdc-ripple/index';
 import {MDCChip, MDCChipFoundation} from '../../../packages/mdc-chips/chip/index';
 
+const {CHECKMARK_SELECTOR} = MDCChipFoundation.strings;
+
 const getFixture = () => bel`
   <div class="mdc-chip">
     <div class="mdc-chip__text">Chip content</div>
@@ -264,6 +266,41 @@ test('adapter#setStyleProperty sets a style property on the root element', () =>
   const color = 'blue';
   component.getDefaultFoundation().adapter_.setStyleProperty('color', color);
   assert.equal(root.style.getPropertyValue('color'), color);
+});
+
+test('adapter#hasLeadingIcon returns true if the chip has a leading icon', () => {
+  const root = getFixtureWithCheckmark();
+  addLeadingIcon(root);
+  const component = new MDCChip(root);
+
+  assert.isTrue(component.getDefaultFoundation().adapter_.hasLeadingIcon());
+});
+
+test('adapter#hasLeadingIcon returns false if the chip does not have a leading icon', () => {
+  const {component} = setupTest();
+  assert.isFalse(component.getDefaultFoundation().adapter_.hasLeadingIcon());
+});
+
+test('adapter#getRootBoundingClientRect calls getBoundingClientRect on the root element', () => {
+  const {root, component} = setupTest();
+  root.getBoundingClientRect = td.func();
+  component.getDefaultFoundation().adapter_.getRootBoundingClientRect();
+  td.verify(root.getBoundingClientRect(), {times: 1});
+});
+
+test('adapter#getCheckmarkBoundingClientRect calls getBoundingClientRect on the checkmark element if it exists', () => {
+  const root = getFixtureWithCheckmark();
+  const component = new MDCChip(root);
+  const checkmark = root.querySelector(CHECKMARK_SELECTOR);
+
+  checkmark.getBoundingClientRect = td.func();
+  component.getDefaultFoundation().adapter_.getCheckmarkBoundingClientRect();
+  td.verify(checkmark.getBoundingClientRect(), {times: 1});
+});
+
+test('adapter#getCheckmarkBoundingClientRect returns null when there is no checkmark element', () => {
+  const {component} = setupTest();
+  assert.isNull(component.getDefaultFoundation().adapter_.getCheckmarkBoundingClientRect());
 });
 
 test('#get selected proxies to foundation', () => {

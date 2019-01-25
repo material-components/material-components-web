@@ -37,6 +37,11 @@ module.exports = {
   GOLDEN_JSON_RELATIVE_PATH: 'test/screenshot/golden.json',
 
   /**
+   * Path to the plain text file in which the process ID of `npm run screenshot:build` will be read/written.
+   */
+  BUILD_PID_FILE_PATH_RELATIVE: 'test/screenshot/.mdc.build.pid',
+
+  /**
    * Name of the Google Cloud Storage bucket to use for public file uploads.
    * @type {string}
    */
