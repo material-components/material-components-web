@@ -254,12 +254,6 @@ class MDCList extends MDCComponent {
         const listItemChildren = [].slice.call(element.querySelectorAll(strings.CHILD_ELEMENTS_TO_TOGGLE_TABINDEX));
         listItemChildren.forEach((ele) => ele.setAttribute('tabindex', tabIndexValue));
       },
-      followHref: (index) => {
-        const listItem = this.listElements[index];
-        if (listItem && listItem.href) {
-          listItem.click();
-        }
-      },
       hasCheckboxAtIndex: (index) => {
         const listItem = this.listElements[index];
         return !!listItem.querySelector(strings.CHECKBOX_SELECTOR);
@@ -281,6 +275,9 @@ class MDCList extends MDCComponent {
         const event = document.createEvent('Event');
         event.initEvent('change', true, true);
         toggleEl.dispatchEvent(event);
+      },
+      notifyAction: (index) => {
+        this.emit(strings.ACTION_EVENT, index, /** shouldBubble */ true);
       },
       isFocusInsideList: () => {
         return this.root_.contains(document.activeElement);
