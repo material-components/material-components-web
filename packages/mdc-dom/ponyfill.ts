@@ -35,7 +35,7 @@ function closest(element: Element, selector: string): Element | null {
     return element.closest(selector);
   }
 
-  let el = element;
+  let el: Element | null = element;
   while (el) {
     if (matches(el, selector)) {
       return el;
