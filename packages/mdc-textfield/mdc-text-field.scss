@@ -95,7 +95,7 @@
 
   // Always show placeholder for text field without label and show only on focused state when label is present.
   .mdc-text-field--no-label &::placeholder,
-  &:focus::placeholder {
+  .mdc-text-field--focused &::placeholder {
     opacity: 1;
   }
 
