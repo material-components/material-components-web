@@ -22,7 +22,7 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {MDCSelectionControl} from '@material/selection-control/index.js';
+import {MDCSelectionControl} from '@material/selection-control/index';
 import MDCFormFieldFoundation from './foundation';
 
 /**
@@ -33,17 +33,17 @@ class MDCFormField extends MDCComponent<MDCFormFieldFoundation> {
     return new MDCFormField(root);
   }
 
-  private input_: MDCSelectionControl;
+  private input_?: MDCSelectionControl;
 
-  set input(input: MDCSelectionControl) {
+  set input(input: MDCSelectionControl | undefined) {
     this.input_ = input;
   }
 
-  get input(): MDCSelectionControl {
+  get input(): MDCSelectionControl | undefined {
     return this.input_;
   }
 
-  private get label_(): Element | undefined {
+  private get label_(): Element | null {
     const {LABEL_SELECTOR} = MDCFormFieldFoundation.strings;
     return this.root_.querySelector(LABEL_SELECTOR);
   }
@@ -60,8 +60,8 @@ class MDCFormField extends MDCComponent<MDCFormFieldFoundation> {
           this.input_.ripple.deactivate();
         }
       },
-      deregisterInteractionHandler: (type, handler) => this.label_.removeEventListener(type, handler),
-      registerInteractionHandler: (type, handler) => this.label_.addEventListener(type, handler),
+      deregisterInteractionHandler: (type, handler) => this.label_ && this.label_.removeEventListener(type, handler),
+      registerInteractionHandler: (type, handler) => this.label_ && this.label_.addEventListener(type, handler),
     });
   }
 }
