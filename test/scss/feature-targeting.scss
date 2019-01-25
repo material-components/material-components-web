@@ -19,6 +19,9 @@
   @include mdc-button-horizontal-padding(0, $query: mdc-feature-any());
   @include mdc-button-outline-width(0, $query: mdc-feature-any());
 
+  // Card
+  @include mdc-card($query: mdc-feature-any());
+
   // Checkbox
   @include mdc-checkbox($query: mdc-feature-any());
   @include mdc-checkbox-container-colors($query: mdc-feature-any());
