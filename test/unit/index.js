@@ -33,4 +33,4 @@ afterEach(() => {
 
 // https://github.com/webpack/docs/wiki/context#requirecontext
 const testsContext = require.context(/* directory */ '.', /* useSubdirectories */ true, /\.test\.js$/);
-testsContext.keys().forEach(testsContext);
+testsContext.keys().forEach((t) => (t.includes('mdc-select') || t.includes('mdc-ripple')) && testsContext(t));
