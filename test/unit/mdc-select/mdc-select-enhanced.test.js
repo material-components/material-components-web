@@ -478,7 +478,7 @@ test('handles ripple focus properly', function() {
   document.body.removeChild(document.querySelector('.mdc-select__menu'));
 });
 
-test('#destroy removes the ripple', function() {
+test.only('#destroy removes the ripple', function() {
   if (!supportsCssVariables(window, true)) {
     this.skip(); // eslint-disable-line no-invalid-this
     return;
