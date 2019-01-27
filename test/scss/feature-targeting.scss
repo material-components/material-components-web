@@ -8,6 +8,7 @@
 @import "@material/ripple/mixins";
 @import "@material/typography/mixins";
 @import "@material/switch/mixins";
+@import "@material/list/mixins";
 
 .mdc-test {
   // Button
@@ -78,4 +79,7 @@
   @include mdc-switch-toggled-on-thumb-color(on-surface, $query: mdc-feature-any());
   @include mdc-switch-toggled-off-track-color(on-surface, $query: mdc-feature-any());
   @include mdc-switch-toggled-off-thumb-color(on-surface, $query: mdc-feature-any());
+
+  // List
+  @include mdc-list($query: mdc-feature-any());
 }
