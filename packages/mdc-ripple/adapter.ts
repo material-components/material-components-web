@@ -42,6 +42,9 @@
  *
  */
 
+type EventType = keyof GlobalEventHandlersEventMap;
+type SpecificEventListener<K extends EventType> = (evt: GlobalEventHandlersEventMap[K]) => void;
+
 interface Point {
   x: number;
   y: number;
@@ -62,21 +65,13 @@ interface MDCRippleAdapter {
 
   containsEventTarget(target: EventTarget | null): boolean;
 
-  registerInteractionHandler<K extends keyof GlobalEventHandlersEventMap>(
-    evtType: K, handler: (evt: GlobalEventHandlersEventMap[K]) => void,
-  ): void;
+  registerInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 
-  deregisterInteractionHandler<K extends keyof GlobalEventHandlersEventMap>(
-    evtType: K, handler: (evt: GlobalEventHandlersEventMap[K]) => void,
-  ): void;
+  deregisterInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 
-  registerDocumentInteractionHandler<K extends keyof GlobalEventHandlersEventMap>(
-    evtType: K, handler: (evt: GlobalEventHandlersEventMap[K]) => void,
-  ): void;
+  registerDocumentInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 
-  deregisterDocumentInteractionHandler<K extends keyof GlobalEventHandlersEventMap>(
-    evtType: K, handler: (evt: GlobalEventHandlersEventMap[K]) => void,
-  ): void;
+  deregisterDocumentInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 
   registerResizeHandler(handler: (evt: GlobalEventHandlersEventMap['resize']) => void): void;
 
@@ -89,5 +84,4 @@ interface MDCRippleAdapter {
   getWindowPageOffset(): Point;
 }
 
-export default MDCRippleAdapter;
-export {Point};
+export {MDCRippleAdapter as default, Point};
