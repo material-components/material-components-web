@@ -1,7 +1,7 @@
 {
   "name": "material-components-web",
   "description": "Modular and customizable Material Design UI components for the web",
-  "version": "0.43.0",
+  "version": "0.43.1",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -49,10 +49,10 @@
     "@material/snackbar": "^0.43.0",
     "@material/switch": "^0.43.0",
     "@material/tab": "^0.43.0",
-    "@material/tab-bar": "^0.43.0",
+    "@material/tab-bar": "^0.43.1",
     "@material/tab-indicator": "^0.43.0",
-    "@material/tab-scroller": "^0.43.0",
-    "@material/textfield": "^0.43.0",
+    "@material/tab-scroller": "^0.43.1",
+    "@material/textfield": "^0.43.1",
     "@material/theme": "^0.43.0",
     "@material/toolbar": "^0.43.0",
     "@material/top-app-bar": "^0.43.0",
