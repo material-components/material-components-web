@@ -21,41 +21,5 @@
  * THE SOFTWARE.
  */
 
-/**
- * @fileoverview A "ponyfill" is a polyfill that doesn't modify the global prototype chain.
- * This makes ponyfills safer than traditional polyfills, especially for libraries like MDC.
- */
-
-interface MsElement extends Element {
-  msMatchesSelector(selector: string): boolean;
-}
-
-declare global {
-  interface Window {
-    CSS: CSS;
-  }
-}
-
-function closest(element: Element, selector: string): Element | null {
-  if (element.closest) {
-    return element.closest(selector);
-  }
-
-  let el: Element | null = element;
-  while (el) {
-    if (matches(el, selector)) {
-      return el;
-    }
-    el = el.parentElement;
-  }
-  return null;
-}
-
-function matches(element: Element, selector: string): boolean {
-  const nativeMatches = element.matches
-      || element.webkitMatchesSelector
-      || (element as MsElement).msMatchesSelector;
-  return nativeMatches.call(element, selector);
-}
-
-export {closest, matches, MsElement};
+export type EventType = keyof GlobalEventHandlersEventMap;
+export type SpecificEventListener<K extends EventType> = (evt: GlobalEventHandlersEventMap[K]) => void;

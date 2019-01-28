@@ -42,8 +42,7 @@
  *
  */
 
-type EventType = keyof GlobalEventHandlersEventMap;
-type SpecificEventListener<K extends EventType> = (evt: GlobalEventHandlersEventMap[K]) => void;
+import {EventType, SpecificEventListener} from '@material/dom/index';
 
 interface Point {
   x: number;

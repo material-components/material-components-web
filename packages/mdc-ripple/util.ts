@@ -21,15 +21,7 @@
  * THE SOFTWARE.
  */
 import {MsElement} from '@material/dom/ponyfill';
-import {Point} from './adapter';
-
-interface CssObject {
-  supports(prop: string, value?: string): boolean;
-}
-
-interface CssWindow extends Window {
-  CSS?: CssObject;
-}
+import {Point} from './adapter';`
 
 /**
  * Stores result from supportsCssVariables to avoid redundant processing to
@@ -62,7 +54,7 @@ function detectEdgePseudoVarBug(windowObj: Window): boolean {
 }
 
 /** Checks whether the browser supports Css Variables. */
-export function supportsCssVariables(windowObj: CssWindow, forceRefresh = false): boolean {
+export function supportsCssVariables(windowObj: Window, forceRefresh = false): boolean {
   let supportsCssVars = supportsCssVariables_;
   if (typeof supportsCssVariables_ === 'boolean' && !forceRefresh) {
     return Boolean(supportsCssVariables_);
