@@ -29,10 +29,10 @@
 @import "@material/rtl/mixins";
 @import "./variables";
 
-
 //
 // Public
 //
+
 @mixin mdc-menu-surface($query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
@@ -64,7 +64,6 @@
       position: fixed;
     }
   }
-
   // postcss-bem-linter: end
 }
 
@@ -80,10 +79,10 @@
   @include mdc-shape-radius($radius, $rtl-reflexive);
 }
 
-
 //
 // Private
 //
+
 @mixin mdc-menu-surface-base_($query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
   $feat-animation: mdc-feature-create-target($query, animation);
@@ -107,6 +106,7 @@
       outline: none;
     }
 
+    // stylelint-disable-next-line selector-max-type
     &--open {
       display: inline-block;
       transform: scale(1);
@@ -124,8 +124,7 @@
     @include mdc-feature-targets($feat-animation) {
       transition:
         opacity $mdc-menu-surface-fade-in-duration linear,
-        transform $mdc-menu-surface-scale-duration
-          $mdc-animation-deceleration-curve-timing-function;
+        transform $mdc-menu-surface-scale-duration $mdc-animation-deceleration-curve-timing-function;
     }
   }
 
@@ -139,5 +138,4 @@
       transition: opacity $mdc-menu-surface-fade-out-duration linear;
     }
   }
-
 }
