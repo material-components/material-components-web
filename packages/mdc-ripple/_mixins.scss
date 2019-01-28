@@ -124,14 +124,14 @@
   @include mdc-feature-targets($feat-animation) {
     &.mdc-ripple-upgraded--foreground-activation::after {
       animation:
-        $mdc-ripple-translate-duration mdc-ripple-fg-radius-in forwards,
-        $mdc-ripple-fade-in-duration mdc-ripple-fg-opacity-in forwards;
+        mdc-ripple-fg-radius-in $mdc-ripple-translate-duration forwards,
+        mdc-ripple-fg-opacity-in $mdc-ripple-fade-in-duration forwards;
     }
   }
 
   &.mdc-ripple-upgraded--foreground-deactivation::after {
     @include mdc-feature-targets($feat-animation) {
-      animation: $mdc-ripple-fade-out-duration mdc-ripple-fg-opacity-out;
+      animation: mdc-ripple-fg-opacity-out $mdc-ripple-fade-out-duration;
     }
 
     @include mdc-feature-targets($feat-structure) {

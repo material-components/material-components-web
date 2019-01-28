@@ -1,3 +1,12 @@
+<a name="0.43.1"></a>
+## [0.43.1](https://github.com/material-components/material-components-web/compare/v0.43.0...v0.43.1) (2019-01-22)
+
+
+### Bug Fixes
+
+* **text-field:** Reset z-index property of chrome autofill box ([#4232](https://github.com/material-components/material-components-web/issues/4232)) ([9e06b77](https://github.com/material-components/material-components-web/commit/9e06b77))
+
+
 <a name="0.43.0"></a>
 # [0.43.0](https://github.com/material-components/material-components-web/compare/v0.42.0...v0.43.0) (2019-01-07)
 

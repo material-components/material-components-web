@@ -171,7 +171,7 @@ class MDCTabBarFoundation extends MDCFoundation {
 
   /**
    * Handles the MDCTab:interacted event
-   * @param {!Event} evt
+   * @param {!CustomEvent} evt
    */
   handleTabInteraction(evt) {
     this.adapter_.setActiveTab(this.adapter_.getIndexOfTabById(evt.detail.tabId));
