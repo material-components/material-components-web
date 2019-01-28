@@ -32,12 +32,7 @@ import {MDCListFoundation} from '../../../packages/mdc-list/index';
 import MDCDismissibleDrawerFoundation from '../../../packages/mdc-drawer/dismissible/foundation';
 
 function getFixture(options) {
-  let scrimEl = '';
-  if (options.variantClass === cssClasses.MODAL) {
-    scrimEl = '<div class="mdc-drawer-scrim"></div>';
-  }
-
-  const htmlStructure = `
+  const drawerEl = bel`
     <div class="mdc-drawer ${options.variantClass}">
       <div class="mdc-drawer__content">
         <div class="mdc-list-group">
@@ -49,15 +44,23 @@ function getFixture(options) {
         </div>
       </div>
     </div>
-    ${scrimEl}
     `;
+  const scrimEl = bel`<div class="mdc-drawer-scrim"></div>`;
+  const isModal = options.variantClass === cssClasses.MODAL;
 
   if (options.shadowRoot) {
     const fragment = document.createDocumentFragment();
-    fragment.appendChild(bel`${htmlStructure}`);
+    fragment.appendChild(drawerEl);
+    if (isModal) {
+      fragment.appendChild(scrimEl);
+    }
     return fragment;
   } else {
-    return bel`<div class="body-content">${htmlStructure}</div>`;
+    return bel`
+      <div class="body-content">
+        ${drawerEl}
+        ${isModal ? scrimEl : ''}
+      </div>`;
   }
 }
 
