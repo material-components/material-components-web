@@ -42,7 +42,7 @@
   .mdc-card {
     @include mdc-feature-targets($feat-structure) {
       @include mdc-card-shape-radius(medium);
-      @include mdc-card-actions-layout_;
+      @include mdc-card-container-layout_;
     }
 
     @include mdc-feature-targets($feat-color) {
