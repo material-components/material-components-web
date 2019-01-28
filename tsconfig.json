@@ -9,7 +9,6 @@
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "alwaysStrict": true,
     "noErrorTruncation": true,
     "noEmitOnError": false,
     "importHelpers": true,

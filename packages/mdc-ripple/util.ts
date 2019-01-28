@@ -68,18 +68,21 @@ export function supportsCssVariables(windowObj: CssWindow, forceRefresh = false)
     return Boolean(supportsCssVariables_);
   }
 
-  if (!windowObj.CSS || typeof windowObj.CSS.supports !== 'function') {
-    supportsCssVariables_ = false;
+  const supportsFunctionPresent = windowObj.CSS && typeof windowObj.CSS.supports === 'function';
+  if (!supportsFunctionPresent) {
     return false;
   }
 
-  const explicitlySupportsCssVars =
-      windowObj.CSS.supports('--css-vars', 'yes');
+  const {CSS} = windowObj;
+  const explicitlySupportsCssVars = CSS
+    && CSS.supports('--css-vars', 'yes');
   // See: https://bugs.webkit.org/show_bug.cgi?id=154669
   // See: README section on Safari
-  const weAreFeatureDetectingSafari10plus =
-      (windowObj.CSS.supports('(--css-vars: yes)') &&
-       windowObj.CSS.supports('color', '#00000000'));
+  const weAreFeatureDetectingSafari10plus = (
+    CSS &&
+    CSS.supports('(--css-vars: yes)') &&
+    CSS.supports('color', '#00000000')
+  );
 
   if (explicitlySupportsCssVars || weAreFeatureDetectingSafari10plus) {
     supportsCssVars = !detectEdgePseudoVarBug(windowObj);
