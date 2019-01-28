@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 import {MsElement} from '@material/dom/ponyfill';
-import {Point} from './adapter';`
+import {Point} from './adapter';
 
 /**
  * Stores result from supportsCssVariables to avoid redundant processing to
