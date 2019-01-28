@@ -184,7 +184,7 @@ inside of text field component.
 </div>
 ```
 
-Helper text and Character counter are optional subcomponents of text field that can co-exist independantly.
+Helper text and Character counter are optional subcomponents of text field that can co-exist independently.
 It is recommended that `.mdc-text-field` and `.mdc-text-field-helper-line` elements have same width for correct layout.
 
 ### Text Field with Leading and Trailing Icons

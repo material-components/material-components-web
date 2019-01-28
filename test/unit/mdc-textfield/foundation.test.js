@@ -883,8 +883,8 @@ test('#handleInput updates character counter on text input', () => {
 });
 
 
-test('#handleInput does not update character counter if maxLength HTML attribute is not found in input element', () => {
-  const {foundation, mockAdapter, characterCounter} = setupTest();
+test('#handleInput throws error when maxLength HTML attribute is not found in input element', () => {
+  const {foundation, mockAdapter} = setupTest();
 
   const nativeInput = {
     type: 'text',
@@ -896,8 +896,7 @@ test('#handleInput does not update character counter if maxLength HTML attribute
   };
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
 
-  foundation.handleInput();
-  td.verify(characterCounter.setCounterValue(td.matchers.anything(), td.matchers.anything()), {times: 0});
+  assert.throws(() => foundation.handleInput());
 });
 
 test('#handleValidationAttributeChange sets character counter when maxlength attribute value is changed in input ' +

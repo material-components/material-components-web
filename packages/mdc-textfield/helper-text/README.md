@@ -27,7 +27,7 @@ Helper text gives context about a field’s input, such as how the input will be
 <div class="mdc-text-field-helper-text" aria-hidden="true">helper text</div>
 ```
 
-> NOTE: Place this inside `.mdc-text-field-helper-line` element which is a immediate sibling of `.mdc-text-field`.
+> NOTE: Place this inside `.mdc-text-field-helper-line` element which is an immediate sibling of `.mdc-text-field`.
 
 ### Styles
 

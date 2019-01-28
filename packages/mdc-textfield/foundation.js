@@ -384,7 +384,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
     if (!this.characterCounter_) return;
 
     const maxLength = this.getNativeInput_().maxLength;
-    if (maxLength === -1) return;
+    if (maxLength === -1) {
+      throw new Error('MDCTextFieldFoundation: Expected maxlength html property on text input or textarea.');
+    }
 
     this.characterCounter_.setCounterValue(currentLength, maxLength);
   }

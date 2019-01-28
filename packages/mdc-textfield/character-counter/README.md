@@ -27,7 +27,7 @@ Character counter is used if there is a character limit. It displays the ratio o
 <div class="mdc-text-field-character-counter">0 / 140</div>
 ```
 
-> NOTE: Place this inside `.mdc-text-field-helper-line` for single line mdc text field which is a immediate sibling of `.mdc-text-field` and
+> NOTE: Place this inside `.mdc-text-field-helper-line` for single line mdc text field which is an immediate sibling of `.mdc-text-field` and
 > place it as first element of `.mdc-text-field` for multi-line text field variant (textarea).
 
 ### Styles
@@ -56,7 +56,7 @@ CSS Class | Description
 
 Mixin | Description
 --- | ---
-`mdc-text-field-character-counter-color($color)` | Customizes the color of the character counter following a text-field.
+`mdc-text-field-character-counter-color($color)` | Customizes the color of the character counter associated with text field.
 `mdc-text-field-character-counter-position($xOffset, $yOffset)` | Positions the character counter element inside text field. Used only for textarea variant.
 
 ## `MDCTextFieldCharacterCounter` Properties and Methods
@@ -67,7 +67,7 @@ Property | Value Type | Description
 
 ## Usage Within Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a Helper Text for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create a Character Counter for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../../docs/integrating-into-frameworks.md).
 
 ### `MDCTextFieldCharacterCounterAdapter`
 
@@ -79,4 +79,4 @@ Method Signature | Description
 
 Method Signature | Description
 --- | ---
-`setCounterValue(currentLength: string, maxLength) => void` | Sets the character counter values including characters used and total character limit.
+`setCounterValue(currentLength: number, maxLength: number) => void` | Sets the character counter values including characters used and total character limit.

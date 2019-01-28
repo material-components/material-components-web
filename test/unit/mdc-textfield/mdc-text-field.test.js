@@ -47,14 +47,14 @@ const getFixture = () => bel`
 `;
 
 const getHelperLineWithHelperText = () => bel`
-    <div class="${cssClasses.HELPER_LINE}">
-      <div class="${helperTextCssClasses.ROOT}">helper text</div>
-    </div>`;
+  <div class="${cssClasses.HELPER_LINE}">
+    <div class="${helperTextCssClasses.ROOT}">helper text</div>
+  </div>`;
 
 const getHelperLineWithCharacterCounter = () => bel`
-<div class="${cssClasses.HELPER_LINE}">
-  <div class="${characterCounterCssClasses.ROOT}">helper text</div>
-</div>`;
+  <div class="${cssClasses.HELPER_LINE}">
+    <div class="${characterCounterCssClasses.ROOT}">helper text</div>
+  </div>`;
 
 suite('MDCTextField');
 
@@ -160,6 +160,7 @@ test('#constructor instantiates a character counter if present', () => {
   const root = getFixture();
   const characterCounter = getHelperLineWithCharacterCounter();
   document.body.appendChild(root);
+  root.querySelector('input').maxLength = 12;
   document.body.appendChild(characterCounter);
   const component = new MDCTextField(root);
   assert.instanceOf(component.characterCounter_, MDCTextFieldCharacterCounter);
