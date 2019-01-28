@@ -27,14 +27,14 @@ import td from 'testdouble';
 
 import * as util from '../../../packages/mdc-drawer/util';
 
-suite('MDCDrawer - util');
+suite('MDCDrawerUtil');
 
 test('#createFocusTrapInstance creates a properly configured focus trap instance', () => {
   const rootEl = bel`<div></div>`;
   const focusTrapFactory = td.func('focusTrapFactory');
   const properlyConfiguredFocusTrapInstance = {};
   td.when(focusTrapFactory(rootEl, {
-    clickOutsideDeactivates: true,
+    clickOutsideDeactivates: false,
     initialFocus: false,
     escapeDeactivates: false,
     returnFocusOnDeactivate: false,

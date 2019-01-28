@@ -30,7 +30,7 @@ import createFocusTrap from 'focus-trap';
  */
 function createFocusTrapInstance(surfaceEl, focusTrapFactory = createFocusTrap) {
   return focusTrapFactory(surfaceEl, {
-    clickOutsideDeactivates: true,
+    clickOutsideDeactivates: false, // Navigation drawer handles dismissing the drawer when clicked outside.
     initialFocus: false, // Navigation drawer handles focusing on active nav item.
     escapeDeactivates: false, // Navigation drawer handles ESC.
     returnFocusOnDeactivate: false, // Navigation drawer handles restore focus.
