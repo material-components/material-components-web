@@ -42,8 +42,6 @@
  *
  */
 
-import {EventType, SpecificEventListener} from '@material/dom/index';
-
 interface Point {
   x: number;
   y: number;

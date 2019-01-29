@@ -20,7 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-import {MsElement} from '@material/dom/ponyfill';
 import {Point} from './adapter';
 
 /**
@@ -114,7 +113,7 @@ export function applyPassive(globalObj: Window = window, forceRefresh = false):
 export function getMatchesFunction(htmlElementPrototype: HTMLElement): (selector: string) => boolean {
   if (htmlElementPrototype.webkitMatchesSelector) {
     return htmlElementPrototype.webkitMatchesSelector;
-  } else if ((htmlElementPrototype as Element as MsElement).msMatchesSelector) {
+  } else if (htmlElementPrototype.msMatchesSelector) {
     return htmlElementPrototype.webkitMatchesSelector;
   } else {
     return htmlElementPrototype.matches;
