@@ -88,7 +88,20 @@
   appearance: none;
 
   &::placeholder {
-    transition: mdc-text-field-transition(color);
+    transition: mdc-text-field-transition(opacity);
+    opacity: 0;
+    color: $mdc-text-field-placeholder-ink-color;
+  }
+
+  // Override the placeholder styles in IE with important rule to improve specificity.
+  // stylelint-disable-next-line selector-no-vendor-prefix
+  &:-ms-input-placeholder {
+    color: $mdc-text-field-placeholder-ink-color !important;
+  }
+
+  // Always show placeholder for text field without label and show only on focused state when label is present.
+  .mdc-text-field--no-label &::placeholder,
+  .mdc-text-field--focused &::placeholder {
     opacity: 1;
   }
 
@@ -104,6 +117,11 @@
   // Keep Chrome autofill behind the notched outline
   &:-webkit-autofill {
     z-index: auto !important;
+  }
+
+  // Vertically center aligns the text input placeholder and value for only filled variant.
+  .mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) & {
+    padding: 16px;
   }
 }
 // stylelint-disable-next-line plugin/selector-bem-pattern

@@ -1374,6 +1374,15 @@
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/21/19_18_38_795/spec/mdc-textfield/classes/baseline-no-js.html.windows_ie_11.png"
     }
   },
+  "spec/mdc-textfield/classes/baseline-placeholder.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/01/28/23_00_53_388/spec/mdc-textfield/classes/baseline-placeholder.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/01/28/23_00_53_388/spec/mdc-textfield/classes/baseline-placeholder.html.windows_chrome_71.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/01/28/23_00_53_388/spec/mdc-textfield/classes/baseline-placeholder.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/01/28/23_00_53_388/spec/mdc-textfield/classes/baseline-placeholder.html.windows_firefox_64.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/01/28/23_00_53_388/spec/mdc-textfield/classes/baseline-placeholder.html.windows_ie_11.png"
+    }
+  },
   "spec/mdc-textfield/classes/baseline-trailing-icon.html": {
     "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/21/19_18_38_795/spec/mdc-textfield/classes/baseline-trailing-icon.html?utm_source=golden_json",
     "screenshots": {
@@ -1381,6 +1390,15 @@
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/21/19_18_38_795/spec/mdc-textfield/classes/baseline-trailing-icon.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/21/19_18_38_795/spec/mdc-textfield/classes/baseline-trailing-icon.html.windows_firefox_63.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/21/19_18_38_795/spec/mdc-textfield/classes/baseline-trailing-icon.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-textfield/classes/baseline-without-label.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/01/28/23_00_53_388/spec/mdc-textfield/classes/baseline-without-label.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/01/28/23_00_53_388/spec/mdc-textfield/classes/baseline-without-label.html.windows_chrome_71.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/01/28/23_00_53_388/spec/mdc-textfield/classes/baseline-without-label.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/01/28/23_00_53_388/spec/mdc-textfield/classes/baseline-without-label.html.windows_firefox_64.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/01/28/23_00_53_388/spec/mdc-textfield/classes/baseline-without-label.html.windows_ie_11.png"
     }
   },
   "spec/mdc-textfield/classes/baseline.html": {
@@ -1516,6 +1534,15 @@
       "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/21/19_18_38_795/spec/mdc-textfield/classes/focused-leading-trailing-icons.html.windows_edge_17.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/21/19_18_38_795/spec/mdc-textfield/classes/focused-leading-trailing-icons.html.windows_firefox_63.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/21/19_18_38_795/spec/mdc-textfield/classes/focused-leading-trailing-icons.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-textfield/classes/focused-placeholder.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/01/29/15_51_27_987/spec/mdc-textfield/classes/focused-placeholder.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/01/29/15_51_27_987/spec/mdc-textfield/classes/focused-placeholder.html.windows_chrome_71.png",
+      "desktop_windows_edge@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/01/29/15_51_27_987/spec/mdc-textfield/classes/focused-placeholder.html.windows_edge_17.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/01/29/15_51_27_987/spec/mdc-textfield/classes/focused-placeholder.html.windows_firefox_64.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/01/29/15_51_27_987/spec/mdc-textfield/classes/focused-placeholder.html.windows_ie_11.png"
     }
   },
   "spec/mdc-textfield/classes/focused-trailing-icon.html": {
@@ -1710,6 +1737,14 @@
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/21/19_18_38_795/spec/mdc-textfield/classes/textarea-invalid.html.windows_chrome_70.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/21/19_18_38_795/spec/mdc-textfield/classes/textarea-invalid.html.windows_firefox_63.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/21/19_18_38_795/spec/mdc-textfield/classes/textarea-invalid.html.windows_ie_11.png"
+    }
+  },
+  "spec/mdc-textfield/classes/textarea-without-label.html": {
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/01/28/23_00_53_388/spec/mdc-textfield/classes/textarea-without-label.html?utm_source=golden_json",
+    "screenshots": {
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/01/28/23_00_53_388/spec/mdc-textfield/classes/textarea-without-label.html.windows_chrome_71.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/01/28/23_00_53_388/spec/mdc-textfield/classes/textarea-without-label.html.windows_firefox_64.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/01/28/23_00_53_388/spec/mdc-textfield/classes/textarea-without-label.html.windows_ie_11.png"
     }
   },
   "spec/mdc-textfield/classes/textarea.html": {
