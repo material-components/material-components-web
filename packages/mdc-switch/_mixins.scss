@@ -21,7 +21,6 @@
 //
 
 @import "@material/theme/mixins";
-@import "@material/ripple/common";
 @import "@material/ripple/mixins";
 @import "@material/rtl/mixins";
 @import "@material/elevation/mixins";
@@ -35,11 +34,13 @@
 // Public
 //
 @mixin mdc-switch($query: mdc-feature-all()) {
-  // postcss-bem-linter: define checkbox
+  // postcss-bem-linter: define switch
 
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-ripple-common($query);
 
   .mdc-switch {
     @include mdc-feature-targets($feat-structure) {
@@ -51,7 +52,14 @@
       @include mdc-switch-toggled-on-thumb-color($mdc-switch-baseline-theme-color);
       @include mdc-switch-toggled-off-track-color($mdc-switch-toggled-off-track-color);
       @include mdc-switch-toggled-off-thumb-color($mdc-switch-toggled-off-thumb-color);
-      @include mdc-switch-toggled-off-ripple-color($mdc-switch-toggled-off-ripple-color);
+    }
+
+    @include mdc-switch-toggled-off-ripple-color($mdc-switch-toggled-off-ripple-color, $query);
+  }
+
+  .mdc-switch__native-control {
+    @include mdc-feature-targets($feat-structure) {
+      @include mdc-switch__native-control_;
     }
   }
 
@@ -61,10 +69,6 @@
 
   .mdc-switch__thumb-underlay {
     @include mdc-switch__thumb-underlay_($query);
-  }
-
-  .mdc-switch__native-control {
-    @include mdc-switch__native-control_($query);
   }
 
   .mdc-switch__thumb {
@@ -104,16 +108,26 @@
   // postcss-bem-linter: end
 }
 
-@mixin mdc-switch-toggled-on-color($color) {
-  @include mdc-switch-toggled-on-track-color($color);
-  @include mdc-switch-toggled-on-thumb-color($color);
-  @include mdc-switch-toggled-on-ripple-color($color);
+@mixin mdc-switch-toggled-on-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  @include mdc-feature-targets($feat-color) {
+    @include mdc-switch-toggled-on-track-color($color);
+    @include mdc-switch-toggled-on-thumb-color($color);
+  }
+
+  @include mdc-switch-toggled-on-ripple-color($color, $query);
 }
 
-@mixin mdc-switch-toggled-off-color($color) {
-  @include mdc-switch-toggled-off-track-color($color);
-  @include mdc-switch-toggled-off-thumb-color($color);
-  @include mdc-switch-toggled-off-ripple-color($color);
+@mixin mdc-switch-toggled-off-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  @include mdc-feature-targets($feat-color) {
+    @include mdc-switch-toggled-off-track-color($color);
+    @include mdc-switch-toggled-off-thumb-color($color);
+  }
+
+  @include mdc-switch-toggled-off-ripple-color($color, $query);
 }
 
 @mixin mdc-switch-toggled-on-track-color($color) {
@@ -130,9 +144,9 @@
   }
 }
 
-@mixin mdc-switch-toggled-on-ripple-color($color) {
+@mixin mdc-switch-toggled-on-ripple-color($color, $query: mdc-feature-all()) {
   &.mdc-switch--checked .mdc-switch__thumb-underlay {
-    @include mdc-states($color);
+    @include mdc-states($color, false, $query);
   }
 }
 
@@ -150,9 +164,9 @@
   }
 }
 
-@mixin mdc-switch-toggled-off-ripple-color($color) {
+@mixin mdc-switch-toggled-off-ripple-color($color, $query: mdc-feature-all()) {
   &:not(.mdc-switch--checked) .mdc-switch__thumb-underlay {
-    @include mdc-states($color);
+    @include mdc-states($color, false, $query);
   }
 }
 
@@ -194,11 +208,11 @@
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
 
+  @include mdc-ripple-surface($query);
   @include mdc-states($mdc-switch-baseline-theme-color, false, $query);
 
   @include mdc-feature-targets($feat-structure) {
     @include mdc-rtl-reflexive-position(left, $mdc-switch-tap-target-initial-position);
-    @include mdc-ripple-surface();
     @include mdc-ripple-radius-unbounded;
 
     display: flex;
@@ -220,29 +234,28 @@
   }
 }
 
-@mixin mdc-switch__native-control_($query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
+@mixin mdc-switch__native-control_ {
+  @include mdc-rtl-reflexive-position(left, 0);
 
-  @include mdc-feature-targets($feat-structure) {
-    @include mdc-rtl-reflexive-position(left, 0);
-
-    position: absolute;
-    top: 0;
-    width: $mdc-switch-native-control-width;
-    height: $mdc-switch-tap-target-size;
-    margin: 0;
-    opacity: 0;
-    cursor: pointer;
-    pointer-events: auto;
-  }
+  position: absolute;
+  top: 0;
+  width: $mdc-switch-native-control-width;
+  height: $mdc-switch-tap-target-size;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+  pointer-events: auto;
 }
 
 @mixin mdc-switch__thumb_($query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
+  $feat-color: mdc-feature-create-target($query, color);
 
   @include mdc-feature-targets($feat-structure) {
     @include mdc-elevation(2);
+  }
 
+  @include mdc-feature-targets($feat-structure) {
     box-sizing: border-box;
     width: $mdc-switch-thumb-diameter;
     height: $mdc-switch-thumb-diameter;
