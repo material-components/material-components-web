@@ -44,9 +44,10 @@
 
     @include mdc-feature-targets($feat-color) {
       @include mdc-elevation(8);
-      @include mdc-menu-surface-fill-color(surface);
-      @include mdc-menu-surface-ink-color(on-surface);
     }
+
+    @include mdc-menu-surface-fill-color(surface, $query);
+    @include mdc-menu-surface-ink-color(on-surface, $query);
 
     @include mdc-feature-targets($feat-structure) {
       @include mdc-rtl-reflexive-property(transform-origin, top left, top right);
@@ -67,12 +68,20 @@
   // postcss-bem-linter: end
 }
 
-@mixin mdc-menu-surface-ink-color($color) {
-  @include mdc-theme-prop(color, $color);
+@mixin mdc-menu-surface-ink-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  @include mdc-feature-targets($feat-color) {
+    @include mdc-theme-prop(color, $color);
+  }
 }
 
-@mixin mdc-menu-surface-fill-color($color) {
-  @include mdc-theme-prop(background-color, $color);
+@mixin mdc-menu-surface-fill-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  @include mdc-feature-targets($feat-color) {
+    @include mdc-theme-prop(background-color, $color);
+  }
 }
 
 @mixin mdc-menu-surface-shape-radius($radius, $rtl-reflexive: false) {

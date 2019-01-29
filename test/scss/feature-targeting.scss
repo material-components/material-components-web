@@ -81,5 +81,6 @@
   @include mdc-switch-toggled-off-thumb-color(on-surface, $query: mdc-feature-any());
 
   // Menu surface
-  @include mdc-menu-surface($query: mdc-feature-any());
+  @include mdc-menu-surface-fill-color(surface, $query: mdc-feature-any());
+  @include mdc-menu-surface-ink-color(on-surface, $query: mdc-feature-any());
 }
