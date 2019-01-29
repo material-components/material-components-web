@@ -88,6 +88,10 @@ class MDCRipple extends MDCComponent<MDCRippleFoundation> implements
   }
 
   disabled = false;
+  /**
+   * this line may seem redundent, but without this the TS compiler does not
+   * think that `this` is of type RippleCapableSurface
+   */
   root_: Element = this.root_;
   private unbounded_?: boolean;
 
