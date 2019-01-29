@@ -133,8 +133,7 @@ To disable the text field, add the `disabled` attribute to the `<input>` element
 
 The helper text provides supplemental information and/or validation messages to users. It appears on input field focus
 and disappears on input field blur by default, or it can be persistent. Helper text should be rendered inside `.mdc-text-field-helper-line` element
-which is immediate sibling of `.mdc-text-field`.
-See [here](helper-text/) for more information on using helper text.
+which is immediate sibling of `.mdc-text-field`. See [here](helper-text/) for more information on using helper text.
 
 ```html
 <div class="mdc-text-field">
@@ -151,6 +150,7 @@ See [here](helper-text/) for more information on using helper text.
 
 Character counter is used if there is a character limit. It displays the ratio of characters used and the total character limit.
 Helper text should be rendered inside `.mdc-text-field-helper-line` element which is immediate sibling of `.mdc-text-field`.
+See [here](character-counter/) for more information on using character counter.
 
 ```html
 <div class="mdc-text-field">
@@ -162,8 +162,6 @@ Helper text should be rendered inside `.mdc-text-field-helper-line` element whic
   <div class="mdc-text-field-character-counter">0 / 10</div>
 </div>
 ```
-
-See [here](character-counter/) for more information on using character counter.
 
 ### Multi-line Text Field (Textarea) with Character Counter
 
