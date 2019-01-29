@@ -43,7 +43,6 @@
   <body class="test-container">
     <main class="test-viewport test-viewport--mobile">
       <div class="test-layout">
-
         <div class="test-cell test-cell--textfield">
           <div class="mdc-text-field mdc-text-field--focused">
             <input type="text" id="filled-text-field" class="mdc-text-field__input test-text-field__input" placeholder="Placeholder text">
@@ -51,8 +50,24 @@
             <div class="mdc-line-ripple mdc-line-ripple--active"></div>
           </div>
         </div>
+        <div class="test-cell test-cell--textfield">
+          <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--focused">
+            <!-- The empty value is to overcome an issue where the component does not draw the SVG path when created unless there is a value. -->
+            <input type="text" id="outlined-text-field" class="mdc-text-field__input test-text-field__input" value=" "
+              placeholder="Placeholder text">
+            <div class="mdc-notched-outline mdc-notched-outline--notched">
+              <div class="mdc-notched-outline__leading"></div>
+              <div class="mdc-notched-outline__notch">
+                <label for="outlined-text-field" class="mdc-floating-label mdc-floating-label--float-above">Label</label>
+              </div>
+              <div class="mdc-notched-outline__trailing"></div>
+            </div>
+          </div>
+        </div>
+      </div>
       </div>
     </main>
+  </body>
 
     <!-- Automatically provides/replaces `Promise` if missing or broken. -->
     <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.js"></script>
