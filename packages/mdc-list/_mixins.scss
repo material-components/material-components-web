@@ -34,6 +34,7 @@
 @mixin mdc-list($query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
+  $feat-typography: mdc-feature-create-target($query, typography);
 
   $item-primary-text-baseline-height: 32px;
   $item-secondary-text-baseline-height: 20px;
@@ -147,8 +148,11 @@
   }
 
   .mdc-list-item__secondary-text {
-    @include mdc-feature-targets($feat-structure) {
+    @include mdc-feature-targets($feat-typography) {
       @include mdc-typography(body2);
+    }
+
+    @include mdc-feature-targets($feat-structure) {
       @include mdc-typography-overflow-ellipsis;
       @include mdc-typography-baseline-top($item-secondary-text-baseline-height);
 
@@ -285,9 +289,11 @@
     $mdc-list-subheader-margin:
       ($mdc-list-subheader-virtual-height - $mdc-list-subheader-leading) / 2;
 
-    @include mdc-feature-targets($feat-structure) {
+    @include mdc-feature-targets($feat-typography) {
       @include mdc-typography(subtitle1);
+    }
 
+    @include mdc-feature-targets($feat-structure) {
       margin: $mdc-list-subheader-margin $mdc-list-side-padding;
     }
   }
@@ -346,17 +352,20 @@
 @mixin mdc-list-base_($query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
+  $feat-typography: mdc-feature-create-target($query, typography);
 
-  @include mdc-feature-targets($feat-structure) {
+  @include mdc-feature-targets($feat-typography) {
     @include mdc-typography(subtitle1);
-
-    margin: 0;
-    padding: 8px 0;
 
     // According to the mocks and stickersheet, the line-height is
     // adjusted to 24px for text content, same as for body1.
     /* @alternate */
     line-height: map-get(map-get($mdc-typography-styles, body1), line-height);
+  }
+
+  @include mdc-feature-targets($feat-structure) {
+    margin: 0;
+    padding: 8px 0;
     list-style-type: none;
   }
 
