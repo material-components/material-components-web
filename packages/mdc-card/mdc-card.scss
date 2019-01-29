@@ -49,6 +49,7 @@
   @include mdc-card-media-aspect-ratio-base_;
 
   position: relative; // Child element `__media-content` has `position: absolute`
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   background-repeat: no-repeat;
   background-position: center;
@@ -79,6 +80,7 @@
   right: 0;
   bottom: 0;
   left: 0;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -133,7 +135,13 @@
 .mdc-card__action-icons {
   @include mdc-theme-prop(color, text-icon-on-background);
 
+  -webkit-box-flex: 1;
+
+  -ms-flex-positive: 1;
+
   flex-grow: 1;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
   justify-content: flex-end;
 }
 
@@ -148,8 +156,15 @@
 .mdc-card__action {
   @include mdc-card-actions-layout_(inline-flex);
 
+  -webkit-box-pack: center;
+
+  -ms-flex-pack: center;
+
   justify-content: center;
   cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
 
   &:focus {
@@ -172,6 +187,8 @@
 }
 
 .mdc-card__actions--full-bleed .mdc-card__action--button {
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
   justify-content: space-between;
   width: 100%;
   height: auto;
