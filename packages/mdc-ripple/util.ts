@@ -20,24 +20,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+import {Point} from './adapter';
 
 /**
- * Stores result from supportsCssVariables to avoid redundant processing to detect CSS custom variable support.
- * @private {boolean|undefined}
+ * Stores result from supportsCssVariables to avoid redundant processing to
+ * detect CSS custom variable support.
  */
-let supportsCssVariables_;
+let supportsCssVariables_: boolean|undefined;
 
 /**
- * Stores result from applyPassive to avoid redundant processing to detect passive event listener support.
- * @private {boolean|undefined}
+ * Stores result from applyPassive to avoid redundant processing to detect
+ * passive event listener support.
  */
-let supportsPassive_;
+let supportsPassive_: boolean|undefined;
 
-/**
- * @param {!Window} windowObj
- * @return {boolean}
- */
-function detectEdgePseudoVarBug(windowObj) {
+function detectEdgePseudoVarBug(windowObj: Window): boolean {
   // Detect versions of Edge with buggy var() support
   // See: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11495448/
   const document = windowObj.document;
@@ -55,82 +52,87 @@ function detectEdgePseudoVarBug(windowObj) {
   return hasPseudoVarBug;
 }
 
-/**
- * @param {!Window} windowObj
- * @param {boolean=} forceRefresh
- * @return {boolean|undefined}
- */
-
-function supportsCssVariables(windowObj, forceRefresh = false) {
-  let supportsCssVariables = supportsCssVariables_;
+/** Checks whether the browser supports Css Variables. */
+export function supportsCssVariables(windowObj: Window, forceRefresh = false): boolean {
+  let supportsCssVars = supportsCssVariables_;
   if (typeof supportsCssVariables_ === 'boolean' && !forceRefresh) {
-    return supportsCssVariables;
+    return Boolean(supportsCssVariables_);
   }
 
   const supportsFunctionPresent = windowObj.CSS && typeof windowObj.CSS.supports === 'function';
   if (!supportsFunctionPresent) {
-    return;
+    return false;
   }
 
-  const explicitlySupportsCssVars = windowObj.CSS.supports('--css-vars', 'yes');
+  const {CSS} = windowObj;
+  const explicitlySupportsCssVars = CSS
+    && CSS.supports('--css-vars', 'yes');
   // See: https://bugs.webkit.org/show_bug.cgi?id=154669
   // See: README section on Safari
   const weAreFeatureDetectingSafari10plus = (
-    windowObj.CSS.supports('(--css-vars: yes)') &&
-    windowObj.CSS.supports('color', '#00000000')
+    CSS &&
+    CSS.supports('(--css-vars: yes)') &&
+    CSS.supports('color', '#00000000')
   );
 
   if (explicitlySupportsCssVars || weAreFeatureDetectingSafari10plus) {
-    supportsCssVariables = !detectEdgePseudoVarBug(windowObj);
+    supportsCssVars = !detectEdgePseudoVarBug(windowObj);
   } else {
-    supportsCssVariables = false;
+    supportsCssVars = false;
   }
 
   if (!forceRefresh) {
-    supportsCssVariables_ = supportsCssVariables;
+    supportsCssVariables_ = supportsCssVars;
   }
-  return supportsCssVariables;
+  return supportsCssVars;
 }
 
-//
 /**
- * Determine whether the current browser supports passive event listeners, and if so, use them.
- * @param {!Window=} globalObj
- * @param {boolean=} forceRefresh
- * @return {boolean|!EventListenerOptions}
+ * Determine whether the current browser supports passive event listeners, and
+ * if so, use them.
  */
-function applyPassive(globalObj = window, forceRefresh = false) {
+export function applyPassive(globalObj: Window = window, forceRefresh = false):
+    boolean|EventListenerOptions {
   if (supportsPassive_ === undefined || forceRefresh) {
     let isSupported = false;
     try {
-      globalObj.document.addEventListener('test', null, {get passive() {
+      globalObj.document.addEventListener('test', () => undefined, {get passive() {
         isSupported = true;
         return isSupported;
       }});
-    } catch (e) { }
+    // tslint:disable-next-line:no-empty cannot throw error because of tests. tslint also disables console.logs
+    } catch (e) {}
 
     supportsPassive_ = isSupported;
   }
 
-  return supportsPassive_
-    ? /** @type {!EventListenerOptions} */ ({passive: true})
-    : false;
+  return supportsPassive_ ? {passive: true} as EventListenerOptions : false;
 }
 
-/**
- * @param {!Object} HTMLElementPrototype
- * @return {string}
- */
-function getMatchesProperty(HTMLElementPrototype) {
+/** Gets the matches function from an element. */
+export function getMatchesFunction(htmlElementPrototype: HTMLElement): (selector: string) => boolean {
+  if (htmlElementPrototype.webkitMatchesSelector) {
+    return htmlElementPrototype.webkitMatchesSelector;
+  } else if (htmlElementPrototype.msMatchesSelector) {
+    return htmlElementPrototype.webkitMatchesSelector;
+  } else {
+    return htmlElementPrototype.matches;
+  }
+}
+
+export type VendorMatchesFunctionName = 'webkitMatchesSelector' | 'msMatchesSelector';
+export type MatchesFunctionName = VendorMatchesFunctionName | 'matches';
+
+export function getMatchesProperty(htmlElementPrototype: {}): MatchesFunctionName {
   /**
    * Order is important because we return the first existing method we find.
    * Do not change the order of the items in the below array.
    */
-  const matchesMethods = ['matches', 'webkitMatchesSelector', 'msMatchesSelector'];
-  let method = 'matches';
-  for (let i = 0; i < matchesMethods.length; i++) {
-    const matchesMethod = matchesMethods[i];
-    if (matchesMethod in HTMLElementPrototype) {
+
+  const matchesMethods: MatchesFunctionName[] = ['matches', 'webkitMatchesSelector', 'msMatchesSelector'];
+  let method: MatchesFunctionName = 'matches';
+  for (const matchesMethod of matchesMethods) {
+    if (matchesMethod in htmlElementPrototype) {
       method = matchesMethod;
       break;
     }
@@ -139,13 +141,11 @@ function getMatchesProperty(HTMLElementPrototype) {
   return method;
 }
 
-/**
- * @param {!Event} ev
- * @param {{x: number, y: number}} pageOffset
- * @param {!ClientRect} clientRect
- * @return {{x: number, y: number}}
- */
-function getNormalizedEventCoords(ev, pageOffset, clientRect) {
+export function getNormalizedEventCoords(
+    ev: Event | undefined, pageOffset: Point, clientRect: ClientRect): Point {
+  if (!ev) {
+    return {x: 0, y: 0};
+  }
   const {x, y} = pageOffset;
   const documentX = x + clientRect.left;
   const documentY = y + clientRect.top;
@@ -154,16 +154,17 @@ function getNormalizedEventCoords(ev, pageOffset, clientRect) {
   let normalizedY;
   // Determine touch point relative to the ripple container.
   if (ev.type === 'touchstart') {
-    ev = /** @type {!TouchEvent} */ (ev);
-    normalizedX = ev.changedTouches[0].pageX - documentX;
-    normalizedY = ev.changedTouches[0].pageY - documentY;
+    const e = ev as TouchEvent;
+    normalizedX = e.changedTouches[0].pageX - documentX;
+    normalizedY = e.changedTouches[0].pageY - documentY;
   } else {
-    ev = /** @type {!MouseEvent} */ (ev);
-    normalizedX = ev.pageX - documentX;
-    normalizedY = ev.pageY - documentY;
+    const e = ev as MouseEvent;
+    normalizedX = e.pageX - documentX;
+    normalizedY = e.pageY - documentY;
+  }
+  if (normalizedX === undefined || normalizedY === undefined) {
+    throw new Error('Event coordinates not defined');
   }
 
   return {x: normalizedX, y: normalizedY};
 }
-
-export {supportsCssVariables, applyPassive, getMatchesProperty, getNormalizedEventCoords};
