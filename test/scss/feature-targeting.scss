@@ -1,10 +1,33 @@
-@import "@material/feature-targeting/functions";
 @import "@material/button/mixins";
 @import "@material/checkbox/mixins";
-@import "@material/radio/mixins";
+@import "@material/feature-targeting/functions";
 @import "@material/menu/mixins";
+@import "@material/radio/mixins";
+@import "@material/typography/mixins";
+
+// Button
 
 @include mdc-button($query: mdc-feature-any());
+
+// Checkbox
+
 @include mdc-checkbox($query: mdc-feature-any());
-@include mdc-radio($query: mdc-feature-any());
+
+// Menu
+
 @include mdc-menu($query: mdc-feature-any());
+
+// Radio
+
+@include mdc-radio($query: mdc-feature-any());
+
+// Typography
+
+@include mdc-typography-base($query: mdc-feature-any());
+@include mdc-typography(button, $query: mdc-feature-any());
+@include mdc-typography-overflow-ellipsis($query: mdc-feature-any());
+
+div {
+  @include mdc-typography-baseline-top(0, $query: mdc-feature-any());
+  @include mdc-typography-baseline-bottom(0, $query: mdc-feature-any());
+}

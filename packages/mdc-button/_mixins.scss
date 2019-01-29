@@ -164,10 +164,16 @@
 }
 
 @mixin mdc-button-shape-radius($radius, $rtl-reflexive: false) {
-  @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-button-height, $radius), $rtl-reflexive);
+  @include mdc-shape-radius(
+    mdc-shape-resolve-percentage-radius($mdc-button-height, $radius),
+    $rtl-reflexive
+  );
 
   &.mdc-button--dense {
-    @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-dense-button-height, $radius), $rtl-reflexive);
+    @include mdc-shape-radius(
+      mdc-shape-resolve-percentage-radius($mdc-dense-button-height, $radius),
+      $rtl-reflexive
+    );
   }
 }
 
@@ -176,7 +182,10 @@
   padding: 0 $padding 0 $padding;
 }
 
-@mixin mdc-button-outline-width($outline-width, $padding: $mdc-button-contained-horizontal-padding) {
+@mixin mdc-button-outline-width(
+  $outline-width,
+  $padding: $mdc-button-contained-horizontal-padding
+) {
   // Note: Adjust padding to maintain consistent width with non-outlined buttons
   $padding-value: max($padding - $outline-width, 0);
 
@@ -190,10 +199,7 @@
   $feat-structure: mdc-feature-create-target($query, structure);
   $feat-typography: mdc-feature-create-target($query, typography);
 
-  @include mdc-feature-targets($feat-typography) {
-    @include mdc-typography(button);
-  }
-
+  @include mdc-typography(button, $query);
   @include mdc-ripple-surface($query);
 
   @include mdc-feature-targets($feat-structure) {
