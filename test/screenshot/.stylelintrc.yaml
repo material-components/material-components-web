@@ -3,7 +3,6 @@ rules:
   # CSS
   custom-media-pattern: "^(?:test|custom|report)-.+"
   custom-property-pattern: "^(?:test|custom|report)-.+"
-  max-line-length: 120
   selector-class-pattern:
     - "^(?:test|custom|report)-.+"
     - resolveNestedSelectors: true
