@@ -21,36 +21,32 @@
  * THE SOFTWARE.
  */
 
-/** @const {string} */
 const ROOT = 'mdc-checkbox';
 
-/** @enum {string} */
-const cssClasses = {
-  UPGRADED: 'mdc-checkbox--upgraded',
-  CHECKED: 'mdc-checkbox--checked',
-  INDETERMINATE: 'mdc-checkbox--indeterminate',
-  DISABLED: 'mdc-checkbox--disabled',
-  ANIM_UNCHECKED_CHECKED: 'mdc-checkbox--anim-unchecked-checked',
-  ANIM_UNCHECKED_INDETERMINATE: 'mdc-checkbox--anim-unchecked-indeterminate',
-  ANIM_CHECKED_UNCHECKED: 'mdc-checkbox--anim-checked-unchecked',
+const cssClasses: {[key: string]: string} = {
   ANIM_CHECKED_INDETERMINATE: 'mdc-checkbox--anim-checked-indeterminate',
+  ANIM_CHECKED_UNCHECKED: 'mdc-checkbox--anim-checked-unchecked',
   ANIM_INDETERMINATE_CHECKED: 'mdc-checkbox--anim-indeterminate-checked',
   ANIM_INDETERMINATE_UNCHECKED: 'mdc-checkbox--anim-indeterminate-unchecked',
+  ANIM_UNCHECKED_CHECKED: 'mdc-checkbox--anim-unchecked-checked',
+  ANIM_UNCHECKED_INDETERMINATE: 'mdc-checkbox--anim-unchecked-indeterminate',
+  CHECKED: 'mdc-checkbox--checked',
+  DISABLED: 'mdc-checkbox--disabled',
+  INDETERMINATE: 'mdc-checkbox--indeterminate',
+  UPGRADED: 'mdc-checkbox--upgraded',
 };
 
-/** @enum {string} */
-const strings = {
-  NATIVE_CONTROL_SELECTOR: `.${ROOT}__native-control`,
-  TRANSITION_STATE_INIT: 'init',
-  TRANSITION_STATE_CHECKED: 'checked',
-  TRANSITION_STATE_UNCHECKED: 'unchecked',
-  TRANSITION_STATE_INDETERMINATE: 'indeterminate',
+const strings: {[key: string]: string} = {
   ARIA_CHECKED_ATTR: 'aria-checked',
   ARIA_CHECKED_INDETERMINATE_VALUE: 'mixed',
+  NATIVE_CONTROL_SELECTOR: `.${ROOT}__native-control`,
+  TRANSITION_STATE_CHECKED: 'checked',
+  TRANSITION_STATE_INDETERMINATE: 'indeterminate',
+  TRANSITION_STATE_INIT: 'init',
+  TRANSITION_STATE_UNCHECKED: 'unchecked',
 };
 
-/** @enum {number} */
-const numbers = {
+const numbers: {[key: string]: number} = {
   ANIM_END_LATCH_MS: 250,
 };
 

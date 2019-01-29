@@ -22,16 +22,11 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-/* eslint-disable no-unused-vars */
 import {MDCSelectionControlState} from '@material/selection-control/index';
 import MDCCheckboxAdapter from './adapter';
-/* eslint-enable no-unused-vars */
-import {cssClasses, strings, numbers} from './constants';
+import {cssClasses, numbers, strings} from './constants';
 
-/**
- * @extends {MDCFoundation<!MDCCheckboxAdapter>}
- */
-class MDCCheckboxFoundation extends MDCFoundation {
+class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
   /** @return enum {cssClasses} */
   static get cssClasses() {
     return cssClasses;
@@ -47,52 +42,49 @@ class MDCCheckboxFoundation extends MDCFoundation {
     return numbers;
   }
 
-  /** @return {!MDCCheckboxAdapter} */
-  static get defaultAdapter() {
-    return /** @type {!MDCCheckboxAdapter} */ ({
-      addClass: (/* className: string */) => {},
-      removeClass: (/* className: string */) => {},
-      setNativeControlAttr: (/* attr: string, value: string */) => {},
-      removeNativeControlAttr: (/* attr: string */) => {},
-      forceLayout: () => {},
-      isAttachedToDOM: () => /* boolean */ {},
-      isIndeterminate: () => /* boolean */ {},
-      isChecked: () => /* boolean */ {},
-      hasNativeControl: () => /* boolean */ {},
-      setNativeControlDisabled: (/* disabled: boolean */) => {},
-    });
+  static get defaultAdapter(): MDCCheckboxAdapter {
+    return {
+      addClass: () => undefined,
+      forceLayout: () => undefined,
+      hasNativeControl: () => false,
+      isAttachedToDOM: () => false,
+      isChecked: () => false,
+      isIndeterminate: () => false,
+      removeClass: () => undefined,
+      removeNativeControlAttr: () => undefined,
+      setNativeControlAttr: () => undefined,
+      setNativeControlDisabled: () => undefined,
+    };
   }
 
-  constructor(adapter) {
+  private currentCheckState_: string;
+  private currentAnimationClass_: string;
+  private animEndLatchTimer_: number;
+  private enableAnimationEndHandler_: boolean;
+
+  constructor(adapter: MDCCheckboxAdapter) {
     super(Object.assign(MDCCheckboxFoundation.defaultAdapter, adapter));
 
-    /** @private {string} */
     this.currentCheckState_ = strings.TRANSITION_STATE_INIT;
 
-    /** @private {string} */
     this.currentAnimationClass_ = '';
 
-    /** @private {number} */
     this.animEndLatchTimer_ = 0;
 
-    /** @private {boolean} */
     this.enableAnimationEndHandler_ = false;
   }
 
-  /** @override */
   init() {
     this.currentCheckState_ = this.determineCheckState_();
     this.updateAriaChecked_();
     this.adapter_.addClass(cssClasses.UPGRADED);
   }
 
-  /** @override */
   destroy() {
     clearTimeout(this.animEndLatchTimer_);
   }
 
-  /** @param {boolean} disabled */
-  setDisabled(disabled) {
+  setDisabled(disabled: boolean) {
     this.adapter_.setNativeControlDisabled(disabled);
     if (disabled) {
       this.adapter_.addClass(cssClasses.DISABLED);

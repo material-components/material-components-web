@@ -40,23 +40,20 @@
 
 interface MDCCheckboxAdapter {
   addClass(className: string): void;
+  forceLayout(): void;
+  hasNativeControl(): boolean;
+  isAttachedToDOM(): boolean;
+  isChecked(): boolean;
+  isIndeterminate(): boolean;
   removeClass(className: string): void;
-
+  /**
+   * Removes an attribute from the input element.
+   */
+  removeNativeControlAttr(attr: string): void;
   /**
    * Sets an attribute with a given value on the input element.
    */
   setNativeControlAttr(attr: string, value: string): void;
-
-  /**
-   * Removes an attribute from the input element.
-   * @param {string} attr
-   */
-  removeNativeControlAttr(attr: string): void;
-  forceLayout(): void;
-  isAttachedToDOM(): boolean;
-  isIndeterminate(): boolean;
-  isChecked(): boolean;
-  hasNativeControl(): boolean;
   setNativeControlDisabled(disabled: boolean): void;
 }
 
