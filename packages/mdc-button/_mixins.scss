@@ -303,21 +303,19 @@
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-color: mdc-feature-create-target($query, color);
 
-  @include mdc-feature-targets($feat-color) {
-    @include mdc-elevation(2);
+  @include mdc-elevation(2, $query: $query);
 
-    &:hover,
-    &:focus {
-      @include mdc-elevation(4);
-    }
+  &:hover,
+  &:focus {
+    @include mdc-elevation(4, $query: $query);
+  }
 
-    &:active {
-      @include mdc-elevation(8);
-    }
+  &:active {
+    @include mdc-elevation(8, $query: $query);
+  }
 
-    &:disabled {
-      @include mdc-elevation(0);
-    }
+  &:disabled {
+    @include mdc-elevation(0, $query: $query);
   }
 
   @include mdc-feature-targets($feat-animation) {
