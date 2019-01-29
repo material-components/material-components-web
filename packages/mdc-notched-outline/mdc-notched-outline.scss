@@ -54,6 +54,7 @@
       border-top: 1px solid;
       border-bottom: 1px solid;
       pointer-events: none;
+      transition: border $mdc-notched-outline-transition-duration $mdc-animation-standard-curve-timing-function;
     }
 
     &__leading {
