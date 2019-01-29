@@ -26,5 +26,10 @@ window.mdc.testFixture.fontsLoaded.then(() => {
     mdc.textField.MDCTextField.attachTo(el);
   });
 
+  // Fixes the wide notched outline issue.
+  [].forEach.call(document.querySelectorAll('.mdc-text-field__input[value=" "]'), (el) => {
+    el.value = '';
+  });
+
   window.mdc.testFixture.notifyDomReady();
 });
