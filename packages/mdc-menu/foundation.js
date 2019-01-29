@@ -91,7 +91,7 @@ class MDCMenuFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {!Element} listItem
+   * @param {!HTMLElement} listItem
    */
   handleItemAction(listItem) {
     const index = this.adapter_.getElementIndex(listItem);

@@ -239,7 +239,7 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `handleKeydown(evt: Event) => void` | Event handler for the `keydown` events within the menu.
-`handleItemAction(index: number) => void` | Event handler for list's action event.
+`handleItemAction(listItem: !HTMLElement) => void` | Event handler for list's action event.
 
 ### Events
 
