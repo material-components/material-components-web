@@ -190,10 +190,7 @@
   $feat-structure: mdc-feature-create-target($query, structure);
   $feat-typography: mdc-feature-create-target($query, typography);
 
-  @include mdc-feature-targets($feat-typography) {
-    @include mdc-typography(button);
-  }
-
+  @include mdc-typography(button, $query);
   @include mdc-ripple-surface($query);
 
   @include mdc-feature-targets($feat-structure) {
