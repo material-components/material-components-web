@@ -48,4 +48,4 @@ function matches(element: Element, selector: string): boolean {
   return nativeMatches.call(element, selector);
 }
 
-export {closest, matches, MsElement};
+export {closest, matches};

@@ -21,5 +21,5 @@
  * THE SOFTWARE.
  */
 
-export type EventType = keyof GlobalEventHandlersEventMap;
-export type SpecificEventListener<K extends EventType> = (evt: GlobalEventHandlersEventMap[K]) => void;
+declare type EventType = keyof GlobalEventHandlersEventMap;
+declare type SpecificEventListener<K extends EventType> = (evt: GlobalEventHandlersEventMap[K]) => void;
