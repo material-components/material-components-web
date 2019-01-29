@@ -1,5 +1,6 @@
 @import "@material/button/mixins";
 @import "@material/checkbox/mixins";
+@import "@material/elevation/mixins";
 @import "@material/feature-targeting/functions";
 @import "@material/menu/mixins";
 @import "@material/radio/mixins";
@@ -12,6 +13,10 @@
 // Checkbox
 
 @include mdc-checkbox($query: mdc-feature-any());
+
+// Elevation
+
+@include mdc-elevation(0, $query: mdc-feature-any());
 
 // Menu
 
