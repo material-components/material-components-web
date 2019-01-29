@@ -41,7 +41,7 @@
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  *
  */
-import {EventType, SpecificEventListener} from '@material/dom';
+import {EventType, SpecificEventListener} from '@material/dom/index';
 
 interface Point {
   x: number;
@@ -71,9 +71,9 @@ interface MDCRippleAdapter {
 
   deregisterDocumentInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 
-  registerResizeHandler(handler: (evt: GlobalEventHandlersEventMap['resize']) => void): void;
+  registerResizeHandler(handler: SpecificEventListener<'resize'>): void;
 
-  deregisterResizeHandler(handler: (evt: GlobalEventHandlersEventMap['resize']) => void): void;
+  deregisterResizeHandler(handler: SpecificEventListener<'resize'>): void;
 
   updateCssVariable(varName: string, value: string|null): void;
 
