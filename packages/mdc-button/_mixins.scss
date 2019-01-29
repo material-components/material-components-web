@@ -192,9 +192,9 @@
 
   @include mdc-typography(button, $query);
   @include mdc-ripple-surface($query);
+  @include mdc-ripple-radius-bounded($query: $query);
 
   @include mdc-feature-targets($feat-structure) {
-    @include mdc-ripple-radius-bounded;
     @include mdc-button-horizontal-padding($mdc-button-horizontal-padding);
 
     display: inline-flex;
