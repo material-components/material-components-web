@@ -129,6 +129,44 @@ To disable the text field, add the `disabled` attribute to the `<input>` element
 </div>
 ```
 
+### Text Field without label
+
+A text field doesn’t require a label if a separate but clear label indicator is already displayed adjacent to the text field.
+Add class name `mdc-text-field--no-label` and remove the label element from the structure.
+
+#### Filled
+
+```html
+<div class="mdc-text-field mdc-text-field--no-label">
+  <input type="text" class="mdc-text-field__input" placeholder="Placeholder text" aria-label="Label">
+  <div class="mdc-line-ripple"></div>
+</div>
+```
+
+#### Outlined
+
+```html
+<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
+  <input type="text" class="mdc-text-field__input" aria-label="Label">
+  <div class="mdc-notched-outline">
+    <div class="mdc-notched-outline__leading"></div>
+    <div class="mdc-notched-outline__trailing"></div>
+  </div>
+</div>
+```
+
+#### Textarea
+
+```html
+<div class="mdc-text-field mdc-text-field--textarea mdc-text-field--no-label">
+  <textarea class="mdc-text-field__input" rows="8" cols="40" aria-label="Label"></textarea>
+  <div class="mdc-notched-outline">
+    <div class="mdc-notched-outline__leading"></div>
+    <div class="mdc-notched-outline__trailing"></div>
+  </div>
+</div>
+```
+
 ### Text Field with Helper Text
 
 The helper text provides supplemental information and/or validation messages to users. It appears on input field focus
@@ -237,6 +275,7 @@ CSS Class | Description
 `mdc-text-field--with-leading-icon` | Styles the text field as a text field with a leading icon.
 `mdc-text-field--with-trailing-icon` | Styles the text field as a text field with a trailing icon.
 `mdc-text-field--focused` | Styles the text field as a text field in focus.
+`mdc-text-field--no-label` | Styles the text field that has no label.
 `mdc-text-field-helper-line` | Styles the container of helper text and character counter elements.
 
 ### Sass Mixins
