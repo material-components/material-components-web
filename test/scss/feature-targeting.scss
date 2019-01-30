@@ -18,7 +18,6 @@
   @include mdc-button-shape-radius(0, $query: mdc-feature-any());
   @include mdc-button-horizontal-padding(0, $query: mdc-feature-any());
   @include mdc-button-outline-width(0, $query: mdc-feature-any());
-}
 
   // Checkbox
   @include mdc-checkbox($query: mdc-feature-any());
