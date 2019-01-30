@@ -21,6 +21,19 @@
  * THE SOFTWARE.
  */
 
+ /**
+  * Adapter for MDC Form Field. Provides an interface for managing
+  * - event handlers
+  * - ripple activation
+  *
+  * Additionally, provides type information for the adapter to the Closure
+  * Implement this adapter for your framework of choice to delegate updates to
+  * the component in your framework of choice. See architecture documentation
+  * for more details.
+  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
+  *
+  */
+
 interface MDCFormFieldAdapter {
   activateInputRipple(): void;
   deactivateInputRipple(): void;
