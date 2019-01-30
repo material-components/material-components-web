@@ -53,10 +53,7 @@
 
     @include mdc-ripple-surface($query);
     @include mdc-states($mdc-checkbox-baseline-theme-color, $query: $query);
-
-    @include mdc-feature-targets($feat-structure) {
-      @include mdc-ripple-radius-unbounded;
-    }
+    @include mdc-ripple-radius-unbounded($query: $query);
   }
 
   @include mdc-checkbox-container-colors($query: $query);
