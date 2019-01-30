@@ -25,28 +25,23 @@ import MDCComponent from '@material/base/component';
 import MDCIconButtonToggleFoundation from './foundation';
 import {MDCRipple} from '@material/ripple/index';
 
-/**
- * @extends {MDCComponent<!MDCIconButtonToggleFoundation>}
- */
-class MDCIconButtonToggle extends MDCComponent {
-  static attachTo(root) {
+class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundation> {
+  static attachTo(root: Element) {
     return new MDCIconButtonToggle(root);
   }
 
+  private ripple_: MDCRipple;
+  private handleClick_ = () => {};
+
+  // tslint:disable-next-line:no-any a component can pass in anything it needs to the constructor
   constructor(...args) {
     super(...args);
 
-    /** @private {!MDCRipple} */
     this.ripple_ = this.initRipple_();
-    /** @private {!Function} */
-    this.handleClick_;
+    this.handleClick_ = () => this.foundation_.handleClick();
   }
 
-  /**
-   * @return {!MDCRipple}
-   * @private
-   */
-  initRipple_() {
+  private initRipple_(): MDCRipple {
     const ripple = new MDCRipple(this.root_);
     ripple.unbounded = true;
     return ripple;
@@ -58,8 +53,7 @@ class MDCIconButtonToggle extends MDCComponent {
     super.destroy();
   }
 
-  /** @return {!MDCIconButtonToggleFoundation} */
-  getDefaultFoundation() {
+  getDefaultFoundation(): MDCIconButtonToggleFoundation {
     return new MDCIconButtonToggleFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
@@ -70,22 +64,18 @@ class MDCIconButtonToggle extends MDCComponent {
   }
 
   initialSyncWithDOM() {
-    this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
     this.root_.addEventListener('click', this.handleClick_);
   }
 
-  /** @return {!MDCRipple} */
-  get ripple() {
+  get ripple(): MDCRipple {
     return this.ripple_;
   }
 
-  /** @return {boolean} */
-  get on() {
+  get on(): boolean {
     return this.foundation_.isOn();
   }
 
-  /** @param {boolean} isOn */
-  set on(isOn) {
+  set on(isOn: boolean) {
     this.foundation_.toggle(isOn);
   }
 }

@@ -22,19 +22,15 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-/* eslint-disable no-unused-vars */
-import {MDCIconButtonToggleAdapter, IconButtonToggleEvent} from './adapter';
+import {MDCIconButtonToggleAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-/**
- * @extends {MDCFoundation<!MDCIconButtonToggleAdapter>}
- */
-class MDCIconButtonToggleFoundation extends MDCFoundation {
-  static get cssClasses() {
+class MDCIconButtonToggleFoundation extends MDCFoundation<MDCIconButtonToggleAdapter> {
+  static get cssClasses(): {[key: string]: string} {
     return cssClasses;
   }
 
-  static get strings() {
+  static get strings(): {[key: string]: string} {
     return strings;
   }
 
@@ -48,11 +44,8 @@ class MDCIconButtonToggleFoundation extends MDCFoundation {
     };
   }
 
-  constructor(adapter) {
+  constructor(adapter: MDCIconButtonToggleAdapter) {
     super(Object.assign(MDCIconButtonToggleFoundation.defaultAdapter, adapter));
-
-    /** @private {boolean} */
-    this.disabled_ = false;
   }
 
   init() {
@@ -61,16 +54,14 @@ class MDCIconButtonToggleFoundation extends MDCFoundation {
 
   handleClick() {
     this.toggle();
-    this.adapter_.notifyChange(/** @type {!IconButtonToggleEvent} */ ({isOn: this.isOn()}));
+    this.adapter_.notifyChange({isOn: this.isOn()});
   }
 
-  /** @return {boolean} */
-  isOn() {
+  isOn(): boolean {
     return this.adapter_.hasClass(cssClasses.ICON_BUTTON_ON);
   }
 
-  /** @param {boolean=} isOn */
-  toggle(isOn = !this.isOn()) {
+  toggle(isOn:boolean = !this.isOn()) {
     if (isOn) {
       this.adapter_.addClass(cssClasses.ICON_BUTTON_ON);
     } else {
@@ -80,8 +71,5 @@ class MDCIconButtonToggleFoundation extends MDCFoundation {
     this.adapter_.setAttr(strings.ARIA_PRESSED, `${isOn}`);
   }
 }
-
-/** @record */
-class IconButtonToggleState {}
 
 export default MDCIconButtonToggleFoundation;

@@ -21,8 +21,6 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
-
 /**
  * Adapter for MDC Icon Button Toggle. Provides an interface for managing
  * - classes
@@ -38,38 +36,22 @@
  * the component in your framework of choice. See architecture documentation
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
- *
- * @record
  */
 
-class MDCIconButtonToggleAdapter {
-  /** @param {string} className */
-  addClass(className) {}
+interface MDCIconButtonToggleAdapter {
+  addClass(className: string): void;
 
-  /** @param {string} className */
-  removeClass(className) {}
+  removeClass(className: string): void;
 
-  /**
-   * @param {string} className
-   * @return {boolean}
-   * */
-  hasClass(className) {}
+  hasClass(className: string): boolean;
 
-  /**
-   * @param {string} attrName
-   * @param {string} attrValue
-   */
-  setAttr(attrName, attrValue) {}
+  setAttr(attrName: string, attrValue: string): void;
 
-  /** @param {!IconButtonToggleEvent} evtData */
-  notifyChange(evtData) {}
+  notifyChange(evtData: IconButtonToggleEvent): void;
 }
 
-/**
- * @typedef {{
- *   isOn: boolean,
- * }}
- */
-let IconButtonToggleEvent;
+interface IconButtonToggleEvent {
+  isOn: boolean;
+};
 
 export {MDCIconButtonToggleAdapter, IconButtonToggleEvent};
