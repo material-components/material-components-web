@@ -22,7 +22,6 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import {MDCSelectionControlState} from '@material/selection-control/index';
 import MDCCheckboxAdapter from './adapter';
 import {cssClasses, numbers, strings} from './constants';
 
@@ -176,6 +175,7 @@ class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
     } = MDCCheckboxFoundation.cssClasses;
 
     switch (oldState) {
+    // @ts-ignore:no-switch-case-fall-through already existing fallthrough
     case TRANSITION_STATE_INIT:
       if (newState === TRANSITION_STATE_UNCHECKED) {
         return '';

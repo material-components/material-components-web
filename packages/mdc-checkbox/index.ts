@@ -24,11 +24,12 @@
 import {getCorrectEventName, StandardJsEventType} from '@material/animation/index';
 import MDCComponent from '@material/base/component';
 import {EventType, SpecificEventListener} from '@material/dom/index';
-import {getMatchesProperty} from '@material/ripple/util';
-import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
+import {MDCRipple, MDCRippleFoundation, RippleCapableSurface, util} from '@material/ripple/index';
 import {MDCSelectionControl, MDCSelectionControlState} from '@material/selection-control/index';
+
 import MDCCheckboxFoundation from './foundation';
 
+const {getMatchesProperty} = util;
 const CB_PROTO_PROPS: string[] = ['checked', 'indeterminate'];
 
 const {ANIMATION_END} = StandardJsEventType;
@@ -69,13 +70,32 @@ class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation>
     super.destroy();
   }
 
+  getDefaultFoundation(): MDCCheckboxFoundation {
+    return new MDCCheckboxFoundation({
+      addClass: (className) => this.root_.classList.add(className),
+      forceLayout: () => (this.root_ as HTMLElement).offsetWidth,
+      hasNativeControl: () => !!this.nativeCb_,
+      isAttachedToDOM: () => Boolean(this.root_.parentNode),
+      isChecked: () => this.checked,
+      isIndeterminate: () => this.indeterminate,
+      removeClass: (className) => this.root_.classList.remove(className),
+      removeNativeControlAttr: (attr) => this.nativeCb_.removeAttribute(attr),
+      setNativeControlAttr: (attr, value) => this.nativeCb_.setAttribute(attr, value),
+      setNativeControlDisabled: (disabled) => this.nativeCb_.disabled = disabled,
+    });
+  }
+
   private initRipple_(): MDCRipple {
     const MATCHES = getMatchesProperty(HTMLElement.prototype);
     const adapter = Object.assign(MDCRipple.createAdapter(this), {
-      deregisterInteractionHandler: (type, handler) => this.nativeCb_.removeEventListener(type, handler),
+      deregisterInteractionHandler:
+        <K extends EventType>(type: K, handler: SpecificEventListener<K>) =>
+          this.nativeCb_.removeEventListener(type, handler),
       isSurfaceActive: () => this.nativeCb_[MATCHES](':active'),
       isUnbounded: () => true,
-      registerInteractionHandler: (type, handler) => this.nativeCb_.addEventListener(type, handler),
+      registerInteractionHandler:
+        <K extends EventType>(type: K, handler: SpecificEventListener<K>) =>
+          this.nativeCb_.addEventListener(type, handler),
     });
     const foundation = new MDCRippleFoundation(adapter);
     return new MDCRipple(this.root_, foundation);
@@ -90,15 +110,15 @@ class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation>
       // We have to check for this descriptor, since some browsers (Safari) don't support its return.
       // See: https://bugs.webkit.org/show_bug.cgi?id=49739
       if (validDescriptor(desc)) {
-        const nativeCbDesc = /** @type {!ObjectPropertyDescriptor} */ ({
-          get: desc.get,
-          set: (state) => {
-            desc.set.call(nativeCb, state);
-            this.foundation_.handleChange();
-          },
+        const nativeCbDesc = {
           configurable: desc.configurable,
           enumerable: desc.enumerable,
-        });
+          get: desc.get,
+          set: (state: boolean) => {
+            desc.set!.call(nativeCb, state);
+            this.foundation_.handleChange();
+          },
+        };
         Object.defineProperty(nativeCb, controlState, nativeCbDesc);
       }
     });
@@ -109,25 +129,10 @@ class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation>
     const cbProto = Object.getPrototypeOf(nativeCb);
 
     CB_PROTO_PROPS.forEach((controlState) => {
-      const desc: PropertyDescriptor = Object.getOwnPropertyDescriptor(cbProto, controlState);
+      const desc = Object.getOwnPropertyDescriptor(cbProto, controlState);
       if (validDescriptor(desc)) {
         Object.defineProperty(nativeCb, controlState, desc);
       }
-    });
-  }
-
-  private getDefaultFoundation(): MDCCheckboxFoundation {
-    return new MDCCheckboxFoundation({
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
-      setNativeControlAttr: (attr, value) => this.nativeCb_.setAttribute(attr, value),
-      removeNativeControlAttr: (attr) => this.nativeCb_.removeAttribute(attr),
-      isIndeterminate: () => this.indeterminate,
-      isChecked: () => this.checked,
-      hasNativeControl: () => !!this.nativeCb_,
-      setNativeControlDisabled: (disabled) => this.nativeCb_.disabled = disabled,
-      forceLayout: () => this.root_.offsetWidth,
-      isAttachedToDOM: () => Boolean(this.root_.parentNode),
     });
   }
 
@@ -168,7 +173,7 @@ class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation>
   }
 }
 
-function validDescriptor(inputPropDesc: PropertyDescriptor|undefined): boolean {
+function validDescriptor(inputPropDesc: PropertyDescriptor | undefined): inputPropDesc is PropertyDescriptor {
   return !!inputPropDesc && typeof inputPropDesc.set === 'function';
 }
 
