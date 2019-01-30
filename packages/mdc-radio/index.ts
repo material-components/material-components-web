@@ -22,28 +22,26 @@
  */
 
 import MDCComponent from '@material/base/component';
-/* eslint-disable no-unused-vars */
-import {MDCSelectionControlState, MDCSelectionControl} from '@material/selection-control/index';
-/* eslint-enable no-unused-vars */
+import {RippleCapableSurface} from '@material/ripple/index';
+import {MDCSelectionControl} from '@material/selection-control/index';
+
 import MDCRadioFoundation from './foundation';
 import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
 
-/**
- * @extends MDCComponent<!MDCRadioFoundation>
- * @implements {MDCSelectionControl}
- */
-class MDCRadio extends MDCComponent {
-  static attachTo(root) {
+class MDCRadio extends MDCComponent<MDCRadioFoundation>
+  implements RippleCapableSurface, MDCSelectionControl {
+
+  static attachTo(root: HTMLElement) {
     return new MDCRadio(root);
   }
 
-  /** @return {boolean} */
-  get checked() {
-    return this.nativeControl_.checked;
+  root_!: Element;
+
+  get checked(): boolean {
+    return (this.nativeControl_ as HTMLInputElement)!.checked;
   }
 
-  /** @param {boolean} checked */
-  set checked(checked) {
+  set checked(checked: boolean) {
     this.nativeControl_.checked = checked;
   }
 
@@ -98,10 +96,8 @@ class MDCRadio extends MDCComponent {
 
   /**
    * Returns the state of the native control element, or null if the native control element is not present.
-   * @return {?MDCSelectionControlState}
-   * @private
    */
-  get nativeControl_() {
+  private get nativeControl_(): MDCSelectionControlState {
     const {NATIVE_CONTROL_SELECTOR} = MDCRadioFoundation.strings;
     const el = /** @type {?MDCSelectionControlState} */ (
       this.root_.querySelector(NATIVE_CONTROL_SELECTOR));

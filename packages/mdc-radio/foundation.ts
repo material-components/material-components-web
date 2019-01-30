@@ -22,37 +22,32 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-/* eslint-disable no-unused-vars */
-import {MDCSelectionControlState} from '@material/selection-control/index';
+
 import MDCRadioAdapter from './adapter';
-/* eslint-enable no-unused-vars */
 import {cssClasses, strings} from './constants';
 
 /**
  * @extends {MDCFoundation<!MDCRadioAdapter>}
  */
-class MDCRadioFoundation extends MDCFoundation {
-  /** @return enum {cssClasses} */
-  static get cssClasses() {
+class MDCRadioFoundation extends MDCFoundation<MDCRadioAdapter> {
+
+  static get cssClasses(): {[key: string]: string} {
     return cssClasses;
   }
 
-  /** @return enum {strings} */
-  static get strings() {
+  static get strings(): {[key: string]: string} {
     return strings;
   }
 
-  /** @return {!MDCRadioAdapter} */
-  static get defaultAdapter() {
-    return /** @type {!MDCRadioAdapter} */ ({
-      addClass: (/* className: string */) => {},
-      removeClass: (/* className: string */) => {},
-      setNativeControlDisabled: (/* disabled: boolean */) => {},
-    });
+  static get defaultAdapter(): MDCRadioAdapter {
+    return {
+      addClass: () => undefined,
+      removeClass: () => undefined,
+      setNativeControlDisabled: () => undefined,
+    };
   }
 
-  /** @param {boolean} disabled */
-  setDisabled(disabled) {
+  setDisabled(disabled: boolean) {
     const {DISABLED} = MDCRadioFoundation.cssClasses;
     this.adapter_.setNativeControlDisabled(disabled);
     if (disabled) {

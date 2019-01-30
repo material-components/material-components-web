@@ -21,11 +21,6 @@
  * THE SOFTWARE.
  */
 
-/* eslint-disable no-unused-vars */
-import {MDCSelectionControlState} from '@material/selection-control/index';
-
-/* eslint no-unused-vars: [2, {"args": "none"}] */
-
 /**
  * Adapter for MDC Radio. Provides an interface for managing
  * - classes
@@ -39,17 +34,12 @@ import {MDCSelectionControlState} from '@material/selection-control/index';
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  *
- * @record
  */
-class MDCRadioAdapter {
-  /** @param {string} className */
-  addClass(className) {}
 
-  /** @param {string} className */
-  removeClass(className) {}
-
-  /** @param {boolean} disabled */
-  setNativeControlDisabled(disabled) {}
+interface MDCRadioAdapter {
+  addClass(className: string): void;
+  removeClass(className: string): void;
+  setNativeControlDisabled(disabled: boolean): void;
 }
 
 export default MDCRadioAdapter;
