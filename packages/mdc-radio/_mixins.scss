@@ -48,11 +48,7 @@
     }
 
     @include mdc-ripple-surface($query);
-
-    @include mdc-feature-targets($feat-structure) {
-      @include mdc-ripple-radius-unbounded;
-    }
-
+    @include mdc-ripple-radius-unbounded($query: $query);
     @include mdc-states($mdc-radio-baseline-theme-color, $query: $query);
 
     @include mdc-feature-targets($feat-structure) {
