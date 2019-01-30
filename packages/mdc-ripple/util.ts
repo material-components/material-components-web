@@ -110,6 +110,17 @@ export function applyPassive(globalObj: Window = window, forceRefresh = false):
 export type VendorMatchesFunctionName = 'webkitMatchesSelector' | 'msMatchesSelector';
 export type MatchesFunctionName = VendorMatchesFunctionName | 'matches';
 
+/** Gets the matches function from an element. */
+export function getMatchesFunction(htmlElementPrototype: HTMLElement): (selector: string) => boolean {	
+  if (htmlElementPrototype.webkitMatchesSelector) {
+    return htmlElementPrototype.webkitMatchesSelector;
+  } else if (htmlElementPrototype.msMatchesSelector) {
+    return htmlElementPrototype.webkitMatchesSelector;
+  } else {
+    return htmlElementPrototype.matches;
+  }
+}
+
 export function getMatchesProperty(htmlElementPrototype: {}): MatchesFunctionName {
   /**
    * Order is important because we return the first existing method we find.
