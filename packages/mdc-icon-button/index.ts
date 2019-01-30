@@ -22,8 +22,8 @@
  */
 
 import MDCComponent from '@material/base/component';
-import MDCIconButtonToggleFoundation from './foundation';
 import {MDCRipple} from '@material/ripple/index';
+import MDCIconButtonToggleFoundation from './foundation';
 
 class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundation> {
   static attachTo(root: Element) {
@@ -31,7 +31,9 @@ class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundation> {
   }
 
   private ripple_: MDCRipple;
-  private handleClick_ = () => {};
+  // TODO: type for event handler?
+  // tslint:disable-next-line:no-empty
+  private handleClick_ = (() => {});
 
   // tslint:disable-next-line:no-any a component can pass in anything it needs to the constructor
   constructor(...args) {
@@ -39,12 +41,6 @@ class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundation> {
 
     this.ripple_ = this.initRipple_();
     this.handleClick_ = () => this.foundation_.handleClick();
-  }
-
-  private initRipple_(): MDCRipple {
-    const ripple = new MDCRipple(this.root_);
-    ripple.unbounded = true;
-    return ripple;
   }
 
   destroy() {
@@ -56,10 +52,10 @@ class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundation> {
   getDefaultFoundation(): MDCIconButtonToggleFoundation {
     return new MDCIconButtonToggleFoundation({
       addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
-      setAttr: (attrName, attrValue) => this.root_.setAttribute(attrName, attrValue),
       notifyChange: (evtData) => this.emit(MDCIconButtonToggleFoundation.strings.CHANGE_EVENT, evtData),
+      removeClass: (className) => this.root_.classList.remove(className),
+      setAttr: (attrName, attrValue) => this.root_.setAttribute(attrName, attrValue),
     });
   }
 
@@ -77,6 +73,12 @@ class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundation> {
 
   set on(isOn: boolean) {
     this.foundation_.toggle(isOn);
+  }
+
+  private initRipple_(): MDCRipple {
+    const ripple = new MDCRipple(this.root_);
+    ripple.unbounded = true;
+    return ripple;
   }
 }
 

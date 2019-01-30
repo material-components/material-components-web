@@ -22,8 +22,8 @@
  */
 
 const cssClasses = {
+  ICON_BUTTON_ON: 'mdc-icon-button--on',
   ROOT: 'mdc-icon-button',
-  ICON_BUTTON_ON: 'mdc-icon-button--on'
 };
 
 const strings = {

@@ -52,6 +52,6 @@ interface MDCIconButtonToggleAdapter {
 
 interface IconButtonToggleEvent {
   isOn: boolean;
-};
+}
 
 export {MDCIconButtonToggleAdapter, IconButtonToggleEvent};

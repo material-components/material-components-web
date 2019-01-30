@@ -36,11 +36,11 @@ class MDCIconButtonToggleFoundation extends MDCFoundation<MDCIconButtonToggleAda
 
   static get defaultAdapter() {
     return {
-      addClass: () => {},
-      removeClass: () => {},
-      hasClass: () => {},
-      setAttr: () => {},
-      notifyChange: () => {},
+      addClass: undefined,
+      hasClass: undefined,
+      notifyChange: undefined,
+      removeClass: undefined,
+      setAttr: undefined,
     };
   }
 
@@ -61,7 +61,7 @@ class MDCIconButtonToggleFoundation extends MDCFoundation<MDCIconButtonToggleAda
     return this.adapter_.hasClass(cssClasses.ICON_BUTTON_ON);
   }
 
-  toggle(isOn:boolean = !this.isOn()) {
+  toggle(isOn: boolean = !this.isOn()) {
     if (isOn) {
       this.adapter_.addClass(cssClasses.ICON_BUTTON_ON);
     } else {
