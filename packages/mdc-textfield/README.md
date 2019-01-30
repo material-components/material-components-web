@@ -6,11 +6,6 @@ iconId: text_field
 path: /catalog/input-controls/text-field/
 -->
 
-## Important - Deprecation Notice
-
-The dense variant of the text field will be removed in an upcoming release.
-See [github issue](https://github.com/material-components/material-components-web/issues/4142) for details.
-
 # Text Field
 
 Text fields allow users to input, edit, and select text.
@@ -221,11 +216,16 @@ CSS Class | Description
 `mdc-text-field--fullwidth` | Styles the text field as a full width text field.
 `mdc-text-field--textarea` | Indicates the text field is a `<textarea>`.
 `mdc-text-field--disabled` | Styles the text field as a disabled text field.
-`mdc-text-field--dense` | Styles the text field as a dense text field.
+`mdc-text-field--dense` | Styles the text field as a dense text field.\*
 `mdc-text-field--with-leading-icon` | Styles the text field as a text field with a leading icon.
 `mdc-text-field--with-trailing-icon` | Styles the text field as a text field with a trailing icon.
 `mdc-text-field--focused` | Styles the text field as a text field in focus.
 `mdc-text-field--no-label` | Styles the text field that has no label.
+
+#### Deprecation Notice
+
+\*The `--dense` variant of the text field will be removed in an upcoming release.
+See [github issue](https://github.com/material-components/material-components-web/issues/4142) for details.
 
 ### Sass Mixins
 
