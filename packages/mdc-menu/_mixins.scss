@@ -42,27 +42,35 @@
 
     @include mdc-feature-targets($feat-structure) {
       min-width: $mdc-menu-min-width;
+    }
 
-      .mdc-list-divider {
+    .mdc-list-divider {
+      @include mdc-feature-targets($feat-structure) {
         margin: 8px 0;
       }
+    }
 
-      .mdc-list-item {
+    .mdc-list-item {
+      @include mdc-feature-targets($feat-structure) {
         cursor: pointer;
         user-select: none;
       }
+    }
 
-      .mdc-list-item--disabled {
+    .mdc-list-item--disabled {
+      @include mdc-feature-targets($feat-structure) {
         cursor: auto;
       }
+    }
 
-      //stylelint-disable selector-max-type, selector-no-qualifying-type
-      a.mdc-list-item .mdc-list-item__text,
-      a.mdc-list-item .mdc-list-item__graphic {
+    //stylelint-disable selector-no-qualifying-type
+    a.mdc-list-item .mdc-list-item__text,
+    a.mdc-list-item .mdc-list-item__graphic {
+      @include mdc-feature-targets($feat-structure) {
         pointer-events: none;
       }
-      // stylelint-enable selector-max-type, selector-no-qualifying-type
     }
+    // stylelint-enable selector-no-qualifying-type
   }
 
   // postcss-bem-linter: define menu
@@ -70,13 +78,17 @@
     @include mdc-feature-targets($feat-structure) {
       padding: 0;
       fill: currentColor;
+    }
 
-      .mdc-list-item {
+    .mdc-list-item {
+      @include mdc-feature-targets($feat-structure) {
         @include mdc-rtl-reflexive-box(padding, left, 56px);
       }
+    }
 
-      // Extra specificity required to override `display` property on `mdc-list-item__graphic`.
-      .mdc-menu__selection-group-icon {
+    // Extra specificity required to override `display` property on `mdc-list-item__graphic`.
+    .mdc-menu__selection-group-icon {
+      @include mdc-feature-targets($feat-structure) {
         @include mdc-rtl-reflexive-position(left, 16px);
 
         display: none;
@@ -94,10 +106,14 @@
   }
 }
 
-@mixin mdc-menu-width($width) {
-  @if unitless($width) {
-    width: $width * $mdc-menu-width-base;
-  } @else {
-    width: $width;
+@mixin mdc-menu-width($width, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, color);
+
+  @include mdc-feature-targets($feat-structure) {
+    @if unitless($width) {
+      width: $width * $mdc-menu-width-base;
+    } @else {
+      width: $width;
+    }
   }
 }
