@@ -114,8 +114,7 @@ class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
     this.transitionCheckState_();
   }
 
-  /** @private */
-  transitionCheckState_() {
+  private transitionCheckState_() {
     if (!this.adapter_.hasNativeControl()) {
       return;
     }
@@ -147,11 +146,7 @@ class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
     }
   }
 
-  /**
-   * @return {string}
-   * @private
-   */
-  determineCheckState_() {
+  private determineCheckState_(): string {
     const {
       TRANSITION_STATE_INDETERMINATE,
       TRANSITION_STATE_CHECKED,
@@ -164,12 +159,7 @@ class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
     return this.adapter_.isChecked() ? TRANSITION_STATE_CHECKED : TRANSITION_STATE_UNCHECKED;
   }
 
-  /**
-   * @param {string} oldState
-   * @param {string} newState
-   * @return {string}
-   */
-  getTransitionAnimationClass_(oldState, newState) {
+  private getTransitionAnimationClass_(oldState: string, newState: string): string {
     const {
       TRANSITION_STATE_INIT,
       TRANSITION_STATE_CHECKED,
@@ -202,7 +192,7 @@ class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
     }
   }
 
-  updateAriaChecked_() {
+  private updateAriaChecked_() {
     // Ensure aria-checked is set to mixed if checkbox is in indeterminate state.
     if (this.adapter_.isIndeterminate()) {
       this.adapter_.setNativeControlAttr(

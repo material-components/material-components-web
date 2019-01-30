@@ -21,78 +21,67 @@
  * THE SOFTWARE.
  */
 
-import {StandardJsEventType, getCorrectEventName} from '@material/animation/index.ts';
+import {getCorrectEventName, StandardJsEventType} from '@material/animation/index';
 import MDCComponent from '@material/base/component';
-/* eslint-disable no-unused-vars */
-import {MDCSelectionControlState, MDCSelectionControl} from '@material/selection-control/index';
-/* eslint-enable no-unused-vars */
-import MDCCheckboxFoundation from './foundation';
-import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
+import {EventType, SpecificEventListener} from '@material/dom/index';
 import {getMatchesProperty} from '@material/ripple/util';
+import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
+import {MDCSelectionControl, MDCSelectionControlState} from '@material/selection-control/index';
+import MDCCheckboxFoundation from './foundation';
 
-/** @const {!Array<string>} */
-const CB_PROTO_PROPS = ['checked', 'indeterminate'];
+const CB_PROTO_PROPS: string[] = ['checked', 'indeterminate'];
 
 const {ANIMATION_END} = StandardJsEventType;
 
-/**
- * @extends MDCComponent<!MDCCheckboxFoundation>
- * @implements {MDCSelectionControl}
- */
-class MDCCheckbox extends MDCComponent {
-  static attachTo(root) {
+class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation>
+  implements MDCSelectionControl, RippleCapableSurface {
+  static attachTo(root: Element) {
     return new MDCCheckbox(root);
   }
 
   /**
    * Returns the state of the native control element, or null if the native control element is not present.
-   * @return {!MDCSelectionControlState}
-   * @private
    */
-  get nativeCb_() {
+  get nativeCb_(): MDCSelectionControlState {
     const {NATIVE_CONTROL_SELECTOR} = MDCCheckboxFoundation.strings;
-    const cbEl = /** @type {!MDCSelectionControlState} */ (
-      this.root_.querySelector(NATIVE_CONTROL_SELECTOR));
+    const cbEl = this.root_.querySelector(NATIVE_CONTROL_SELECTOR);
     return cbEl;
   }
 
-  constructor(...args) {
-    super(...args);
-
-    /** @private {!MDCRipple} */
-    this.ripple_ = this.initRipple_();
-    /** @private {!Function} */
-    this.handleChange_;
-    /** @private {!Function} */
-    this.handleAnimationEnd_;
-  }
+  root_!: Element;
+  private ripple_: MDCRipple = this.initRipple_();
+  private handleChange_!: () => void;
+  private handleAnimationEnd_!: () => void;
 
   initialSyncWithDOM() {
     this.handleChange_ = () => this.foundation_.handleChange();
-    this.handleAnimationEnd_= () => this.foundation_.handleAnimationEnd();
+    this.handleAnimationEnd_ = () => this.foundation_.handleAnimationEnd();
     this.nativeCb_.addEventListener('change', this.handleChange_);
     this.listen(getCorrectEventName(window, ANIMATION_END), this.handleAnimationEnd_);
     this.installPropertyChangeHooks_();
   }
 
-  /**
-   * @return {!MDCRipple}
-   * @private
-   */
-  initRipple_() {
+  destroy() {
+    this.ripple_.destroy();
+    this.nativeCb_.removeEventListener('change', this.handleChange_);
+    this.unlisten(getCorrectEventName(window, ANIMATION_END), this.handleAnimationEnd_);
+    this.uninstallPropertyChangeHooks_();
+    super.destroy();
+  }
+
+  private initRipple_(): MDCRipple {
     const MATCHES = getMatchesProperty(HTMLElement.prototype);
     const adapter = Object.assign(MDCRipple.createAdapter(this), {
-      isUnbounded: () => true,
-      isSurfaceActive: () => this.nativeCb_[MATCHES](':active'),
-      registerInteractionHandler: (type, handler) => this.nativeCb_.addEventListener(type, handler),
       deregisterInteractionHandler: (type, handler) => this.nativeCb_.removeEventListener(type, handler),
+      isSurfaceActive: () => this.nativeCb_[MATCHES](':active'),
+      isUnbounded: () => true,
+      registerInteractionHandler: (type, handler) => this.nativeCb_.addEventListener(type, handler),
     });
     const foundation = new MDCRippleFoundation(adapter);
     return new MDCRipple(this.root_, foundation);
   }
 
-  /** @private */
-  installPropertyChangeHooks_() {
+  private installPropertyChangeHooks_() {
     const nativeCb = this.nativeCb_;
     const cbProto = Object.getPrototypeOf(nativeCb);
 
@@ -115,22 +104,19 @@ class MDCCheckbox extends MDCComponent {
     });
   }
 
-  /** @private */
-  uninstallPropertyChangeHooks_() {
+  private uninstallPropertyChangeHooks_() {
     const nativeCb = this.nativeCb_;
     const cbProto = Object.getPrototypeOf(nativeCb);
 
     CB_PROTO_PROPS.forEach((controlState) => {
-      const desc = /** @type {!ObjectPropertyDescriptor} */ (
-        Object.getOwnPropertyDescriptor(cbProto, controlState));
+      const desc: PropertyDescriptor = Object.getOwnPropertyDescriptor(cbProto, controlState);
       if (validDescriptor(desc)) {
         Object.defineProperty(nativeCb, controlState, desc);
       }
     });
   }
 
-  /** @return {!MDCCheckboxFoundation} */
-  getDefaultFoundation() {
+  private getDefaultFoundation(): MDCCheckboxFoundation {
     return new MDCCheckboxFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
@@ -145,65 +131,44 @@ class MDCCheckbox extends MDCComponent {
     });
   }
 
-  /** @return {!MDCRipple} */
-  get ripple() {
+  get ripple(): MDCRipple {
     return this.ripple_;
   }
 
-  /** @return {boolean} */
-  get checked() {
+  get checked(): boolean {
     return this.nativeCb_.checked;
   }
 
-  /** @param {boolean} checked */
-  set checked(checked) {
+  set checked(checked: boolean) {
     this.nativeCb_.checked = checked;
   }
 
-  /** @return {boolean} */
-  get indeterminate() {
+  get indeterminate(): boolean {
     return this.nativeCb_.indeterminate;
   }
 
-  /** @param {boolean} indeterminate */
-  set indeterminate(indeterminate) {
+  set indeterminate(indeterminate: boolean) {
     this.nativeCb_.indeterminate = indeterminate;
   }
 
-  /** @return {boolean} */
-  get disabled() {
+  get disabled(): boolean {
     return this.nativeCb_.disabled;
   }
 
-  /** @param {boolean} disabled */
-  set disabled(disabled) {
+  set disabled(disabled: boolean) {
     this.foundation_.setDisabled(disabled);
   }
 
-  /** @return {?string} */
-  get value() {
+  get value(): string | undefined {
     return this.nativeCb_.value;
   }
 
-  /** @param {?string} value */
-  set value(value) {
+  set value(value: string | undefined) {
     this.nativeCb_.value = value;
-  }
-
-  destroy() {
-    this.ripple_.destroy();
-    this.nativeCb_.removeEventListener('change', this.handleChange_);
-    this.unlisten(getCorrectEventName(window, ANIMATION_END), this.handleAnimationEnd_);
-    this.uninstallPropertyChangeHooks_();
-    super.destroy();
   }
 }
 
-/**
- * @param {ObjectPropertyDescriptor|undefined} inputPropDesc
- * @return {boolean}
- */
-function validDescriptor(inputPropDesc) {
+function validDescriptor(inputPropDesc: PropertyDescriptor|undefined): boolean {
   return !!inputPropDesc && typeof inputPropDesc.set === 'function';
 }
 
