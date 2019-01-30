@@ -23,11 +23,8 @@
 
 import MDCComponent from '@material/base/component';
 import {MDCSelectionControl} from '@material/selection-control/index';
-import MDCFormFieldFoundation from './foundation';
+import {MDCFormFieldFoundation} from './foundation';
 
-/**
- * @extends MDCComponent<!MDCFormFieldFoundation>
- */
 class MDCFormField extends MDCComponent<MDCFormFieldFoundation> {
   static attachTo(root: HTMLElement) {
     return new MDCFormField(root);

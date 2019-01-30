@@ -22,7 +22,7 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import MDCFormFieldAdapter from './adapter';
+import {MDCFormFieldAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
 class MDCFormFieldFoundation extends MDCFoundation<MDCFormFieldAdapter> {
@@ -66,4 +66,4 @@ class MDCFormFieldFoundation extends MDCFoundation<MDCFormFieldAdapter> {
   }
 }
 
-export default MDCFormFieldFoundation;
+export {MDCFormFieldFoundation as default, MDCFormFieldFoundation};

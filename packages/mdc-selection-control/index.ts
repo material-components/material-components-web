@@ -21,8 +21,7 @@
  * THE SOFTWARE.
  */
 
-// @ts-ignore no-declaration file, will update when ripple is fixed
-import {MDCRipple} from '@material/ripple/index.js';
+import {MDCRipple} from '@material/ripple/index';
 
 interface MDCSelectionControlState {
   checked: boolean;

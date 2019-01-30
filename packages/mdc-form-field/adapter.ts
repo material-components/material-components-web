@@ -45,4 +45,4 @@ interface MDCFormFieldAdapter {
   ) => void): void;
 }
 
-export default MDCFormFieldAdapter;
+export {MDCFormFieldAdapter as default, MDCFormFieldAdapter};
