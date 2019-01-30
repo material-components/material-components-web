@@ -45,12 +45,10 @@ class MDCSwitchFoundation extends MDCFoundation<MDCSwitchAdapter> {
   /** The default Adapter for the switch. */
   static get defaultAdapter(): MDCSwitchAdapter {
     return {
-      // tslint:disable:no-empty
-      addClass: () => {},
-      removeClass: () => {},
-      setNativeControlChecked: () => {},
-      setNativeControlDisabled: () => {},
-      // tslint:disable:no-empty
+      addClass: () => undefined,
+      removeClass: () => undefined,
+      setNativeControlChecked: () => undefined,
+      setNativeControlDisabled: () => undefined,
     };
   }
 
