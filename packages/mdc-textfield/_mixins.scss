@@ -534,9 +534,4 @@
   .mdc-floating-label {
     @include mdc-floating-label-ink-color($color);
   }
-
-  // CSS-only version
-  .mdc-text-field__input::placeholder {
-    @include mdc-theme-prop(color, $color);
-  }
 }
