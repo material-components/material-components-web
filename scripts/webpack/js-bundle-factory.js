@@ -69,13 +69,6 @@ class JsBundleFactory {
     }) {
     chunks = chunks || this.globber_.getChunks({inputDirectory, filePathPattern});
 
-    const babelLoader = {
-      loader: 'babel-loader',
-      options: {
-        cacheDirectory: true,
-      },
-    };
-
     return {
       name: bundleName,
       entry: chunks,
@@ -95,16 +88,11 @@ class JsBundleFactory {
           test: /\.ts$/,
           exclude: /node_modules/,
           use: [
-            babelLoader,
             {
               loader: 'ts-loader',
               options: {configFile: tsConfigFilePath},
             },
           ],
-        }, {
-          test: /\.js$/,
-          exclude: /node_modules/,
-          use: [babelLoader],
         }],
       },
       plugins: [

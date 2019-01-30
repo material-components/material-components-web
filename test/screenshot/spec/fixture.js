@@ -23,7 +23,7 @@
 
 import 'url-search-params-polyfill';
 import bel from 'bel';
-import {ponyfill} from '../../../packages/mdc-dom';
+import {ponyfill} from '../../../packages/mdc-dom/index';
 
 window.mdc = window.mdc || {};
 
