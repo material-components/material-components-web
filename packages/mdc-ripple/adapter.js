@@ -21,6 +21,8 @@
  * THE SOFTWARE.
  */
 
+/* eslint no-unused-vars: [2, {"args": "none"}] */
+
 /**
  * Adapter for MDC Ripple. Provides an interface for managing
  * - classes
@@ -40,46 +42,75 @@
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  *
+ * @record
  */
-import {EventType, SpecificEventListener} from '@material/dom/index';
+class MDCRippleAdapter {
+  /** @return {boolean} */
+  browserSupportsCssVars() {}
 
-interface Point {
-  x: number;
-  y: number;
+  /** @return {boolean} */
+  isUnbounded() {}
+
+  /** @return {boolean} */
+  isSurfaceActive() {}
+
+  /** @return {boolean} */
+  isSurfaceDisabled() {}
+
+  /** @param {string} className */
+  addClass(className) {}
+
+  /** @param {string} className */
+  removeClass(className) {}
+
+  /** @param {!EventTarget} target */
+  containsEventTarget(target) {}
+
+  /**
+   * @param {string} evtType
+   * @param {!Function} handler
+   */
+  registerInteractionHandler(evtType, handler) {}
+
+  /**
+   * @param {string} evtType
+   * @param {!Function} handler
+   */
+  deregisterInteractionHandler(evtType, handler) {}
+
+  /**
+   * @param {string} evtType
+   * @param {!Function} handler
+   */
+  registerDocumentInteractionHandler(evtType, handler) {}
+
+  /**
+   * @param {string} evtType
+   * @param {!Function} handler
+   */
+  deregisterDocumentInteractionHandler(evtType, handler) {}
+
+  /**
+   * @param {!Function} handler
+   */
+  registerResizeHandler(handler) {}
+
+  /**
+   * @param {!Function} handler
+   */
+  deregisterResizeHandler(handler) {}
+
+  /**
+   * @param {string} varName
+   * @param {?number|string} value
+   */
+  updateCssVariable(varName, value) {}
+
+  /** @return {!ClientRect} */
+  computeBoundingRect() {}
+
+  /** @return {{x: number, y: number}} */
+  getWindowPageOffset() {}
 }
 
-interface MDCRippleAdapter {
-  browserSupportsCssVars(): boolean;
-
-  isUnbounded(): boolean;
-
-  isSurfaceActive(): boolean;
-
-  isSurfaceDisabled(): boolean;
-
-  addClass(className: string): void;
-
-  removeClass(className: string): void;
-
-  containsEventTarget(target: EventTarget | null): boolean;
-
-  registerInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
-
-  deregisterInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
-
-  registerDocumentInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
-
-  deregisterDocumentInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
-
-  registerResizeHandler(handler: SpecificEventListener<'resize'>): void;
-
-  deregisterResizeHandler(handler: SpecificEventListener<'resize'>): void;
-
-  updateCssVariable(varName: string, value: string|null): void;
-
-  computeBoundingRect(): ClientRect;
-
-  getWindowPageOffset(): Point;
-}
-
-export {MDCRippleAdapter as default, Point};
+export default MDCRippleAdapter;

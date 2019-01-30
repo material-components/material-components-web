@@ -21,7 +21,6 @@
  * THE SOFTWARE.
  */
 
-import {EventType, SpecificEventListener} from './events';
 import * as ponyfill from './ponyfill';
 
-export {ponyfill, EventType, SpecificEventListener};
+export {ponyfill};

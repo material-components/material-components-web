@@ -40,7 +40,7 @@ import * as menu from '@material/menu/index';
 import * as menuSurface from '@material/menu-surface/index';
 import * as notchedOutline from '@material/notched-outline/index';
 import * as radio from '@material/radio/index';
-import * as ripple from '@material/ripple/index.ts';
+import * as ripple from '@material/ripple/index';
 import * as select from '@material/select/index';
 import * as selectionControl from '@material/selection-control/index.ts';
 import * as slider from '@material/slider/index';

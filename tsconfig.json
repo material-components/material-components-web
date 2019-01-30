@@ -20,7 +20,6 @@
     "sourceMap": true,
     "target": "es5",
     "newLine": "lf",
-    "types": [],
-    "declaration": true
+    "types": []
   }
 }

@@ -26,6 +26,10 @@
  * This makes ponyfills safer than traditional polyfills, especially for libraries like MDC.
  */
 
+interface MsElement extends Element {
+  msMatchesSelector(selector: string): boolean;
+}
+
 function closest(element: Element, selector: string): Element | null {
   if (element.closest) {
     return element.closest(selector);
@@ -44,7 +48,7 @@ function closest(element: Element, selector: string): Element | null {
 function matches(element: Element, selector: string): boolean {
   const nativeMatches = element.matches
       || element.webkitMatchesSelector
-      || element.msMatchesSelector;
+      || (element as MsElement).msMatchesSelector;
   return nativeMatches.call(element, selector);
 }
 
