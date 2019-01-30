@@ -40,7 +40,7 @@ test('path calculated correctly with label at beginning of slider', () => {
 
   foundation.value_ = 10000000000; // 10,000,000,000
   const numCommas = 3;
-  const labelHorizontalWidth = ('10000000000'.length - 2) * DIGIT_WIDTH + numCommas * COMMA_WIDTH;
+  const labelHorizontalWidth = (String(foundation.value_).length - 2) * DIGIT_WIDTH + numCommas * COMMA_WIDTH;
   const topLobeHorizontal = Math.min(labelHorizontalWidth, MAX_TOP_LOBE_HORIZONTAL);
   const extraHorizontalWidth = Math.max(labelHorizontalWidth - MAX_TOP_LOBE_HORIZONTAL, 0);
   const topNeckTheta = Math.acos((MAX_TOP_NECK_WIDTH - topLobeHorizontal/2)/(TOP_LOBE_RADIUS + TOP_NECK_RADIUS));
@@ -68,7 +68,7 @@ test('path calculated correctly with label in middle of slider', () => {
 
   foundation.value_ = 10000000000; // 10,000,000,000
   const numCommas = 3;
-  const labelHorizontalWidth = ('10000000000'.length - 2) * DIGIT_WIDTH + numCommas * COMMA_WIDTH;
+  const labelHorizontalWidth = (String(foundation.value_).length - 2) * DIGIT_WIDTH + numCommas * COMMA_WIDTH;
   const topLobeHorizontal = Math.min(labelHorizontalWidth, MAX_TOP_LOBE_HORIZONTAL);
   const extraHorizontalWidth = Math.max(labelHorizontalWidth - MAX_TOP_LOBE_HORIZONTAL, 0);
   const topNeckTheta = Math.acos((MAX_TOP_NECK_WIDTH - topLobeHorizontal/2)/(TOP_LOBE_RADIUS + TOP_NECK_RADIUS));
@@ -93,7 +93,7 @@ test('path calculated correctly with label at end of slider', () => {
 
   foundation.value_ = 10000000000; // 10,000,000,000
   const numCommas = 3;
-  const labelHorizontalWidth = ('10000000000'.length - 2) * DIGIT_WIDTH + numCommas * COMMA_WIDTH;
+  const labelHorizontalWidth = (String(foundation.value_).length - 2) * DIGIT_WIDTH + numCommas * COMMA_WIDTH;
   const topLobeHorizontal = Math.min(labelHorizontalWidth, MAX_TOP_LOBE_HORIZONTAL);
   const extraHorizontalWidth = Math.max(labelHorizontalWidth - MAX_TOP_LOBE_HORIZONTAL, 0);
   const topNeckTheta = Math.acos((MAX_TOP_NECK_WIDTH - topLobeHorizontal/2)/(TOP_LOBE_RADIUS + TOP_NECK_RADIUS));
