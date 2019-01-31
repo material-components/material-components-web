@@ -25,7 +25,7 @@ import {getCorrectEventName, StandardJsEventType} from '@material/animation/inde
 import MDCComponent from '@material/base/component';
 import {EventType, SpecificEventListener} from '@material/dom/index';
 import {MDCRipple, MDCRippleFoundation, RippleCapableSurface, util} from '@material/ripple/index';
-import {MDCSelectionControl, MDCSelectionControlState} from '@material/selection-control/index';
+import {MDCSelectionControl} from '@material/selection-control/index';
 
 import MDCCheckboxFoundation from './foundation';
 
@@ -43,9 +43,12 @@ class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation>
   /**
    * Returns the state of the native control element, or null if the native control element is not present.
    */
-  get nativeCb_(): MDCSelectionControlState {
+  get nativeCb_(): HTMLInputElement {
     const {NATIVE_CONTROL_SELECTOR} = MDCCheckboxFoundation.strings;
-    const cbEl = this.root_.querySelector(NATIVE_CONTROL_SELECTOR);
+    const cbEl = this.root_.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
+    if (!cbEl) {
+      throw new Error(`Checkbox requires a ${NATIVE_CONTROL_SELECTOR} element`);
+    }
     return cbEl;
   }
 
@@ -91,7 +94,7 @@ class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation>
       deregisterInteractionHandler:
         <K extends EventType>(type: K, handler: SpecificEventListener<K>) =>
           this.nativeCb_.removeEventListener(type, handler),
-      isSurfaceActive: () => this.nativeCb_[MATCHES](':active'),
+      isSurfaceActive: () => this.nativeCb_[MATCHES as 'matches'](':active'),
       isUnbounded: () => true,
       registerInteractionHandler:
         <K extends EventType>(type: K, handler: SpecificEventListener<K>) =>
@@ -164,11 +167,11 @@ class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation>
     this.foundation_.setDisabled(disabled);
   }
 
-  get value(): string | undefined {
+  get value(): string {
     return this.nativeCb_.value;
   }
 
-  set value(value: string | undefined) {
+  set value(value: string) {
     this.nativeCb_.value = value;
   }
 }

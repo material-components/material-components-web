@@ -23,7 +23,7 @@
 
 const ROOT = 'mdc-checkbox';
 
-const cssClasses: {[key: string]: string} = {
+const cssClasses = {
   ANIM_CHECKED_INDETERMINATE: 'mdc-checkbox--anim-checked-indeterminate',
   ANIM_CHECKED_UNCHECKED: 'mdc-checkbox--anim-checked-unchecked',
   ANIM_INDETERMINATE_CHECKED: 'mdc-checkbox--anim-indeterminate-checked',
@@ -36,7 +36,7 @@ const cssClasses: {[key: string]: string} = {
   UPGRADED: 'mdc-checkbox--upgraded',
 };
 
-const strings: {[key: string]: string} = {
+const strings = {
   ARIA_CHECKED_ATTR: 'aria-checked',
   ARIA_CHECKED_INDETERMINATE_VALUE: 'mixed',
   NATIVE_CONTROL_SELECTOR: `.${ROOT}__native-control`,
@@ -46,7 +46,7 @@ const strings: {[key: string]: string} = {
   TRANSITION_STATE_UNCHECKED: 'unchecked',
 };
 
-const numbers: {[key: string]: number} = {
+const numbers = {
   ANIM_END_LATCH_MS: 250,
 };
 

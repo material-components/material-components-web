@@ -26,17 +26,14 @@ import MDCCheckboxAdapter from './adapter';
 import {cssClasses, numbers, strings} from './constants';
 
 class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
-  /** @return enum {cssClasses} */
   static get cssClasses() {
     return cssClasses;
   }
 
-  /** @return enum {strings} */
   static get strings() {
     return strings;
   }
 
-  /** @return enum {numbers} */
   static get numbers() {
     return numbers;
   }
@@ -56,21 +53,13 @@ class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
     };
   }
 
-  private currentCheckState_: string;
-  private currentAnimationClass_: string;
-  private animEndLatchTimer_: number;
-  private enableAnimationEndHandler_: boolean;
+  private currentCheckState_ = strings.TRANSITION_STATE_INIT;
+  private currentAnimationClass_ = '';
+  private animEndLatchTimer_ = 0;
+  private enableAnimationEndHandler_ = false;
 
   constructor(adapter: MDCCheckboxAdapter) {
     super(Object.assign(MDCCheckboxFoundation.defaultAdapter, adapter));
-
-    this.currentCheckState_ = strings.TRANSITION_STATE_INIT;
-
-    this.currentAnimationClass_ = '';
-
-    this.animEndLatchTimer_ = 0;
-
-    this.enableAnimationEndHandler_ = false;
   }
 
   init() {
