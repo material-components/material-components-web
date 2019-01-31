@@ -22,6 +22,6 @@
 
 @import "@material/animation/variables";
 
-@function mdc-text-field-transition($property) {
-  @return #{$property} 180ms $mdc-animation-standard-curve-timing-function;
+@function mdc-text-field-transition($property, $duration: 150ms) {
+  @return #{$property} #{$duration} $mdc-animation-standard-curve-timing-function;
 }
