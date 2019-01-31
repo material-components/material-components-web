@@ -33,6 +33,10 @@
 
   // Radio
   @include mdc-radio($query: mdc-feature-any());
+  @include mdc-radio-unchecked-stroke-color(red, $query: mdc-feature-any());
+  @include mdc-radio-checked-stroke-color(red, $query: mdc-feature-any());
+  @include mdc-radio-ink-color(red, $query: mdc-feature-any());
+  @include mdc-radio-focus-indicator-color(red, $query: mdc-feature-any());
 
   // Ripple
   @include mdc-ripple-common($query: mdc-feature-any());
