@@ -239,8 +239,7 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `handleKeydown(evt: Event) => void` | Event handler for the `keydown` events within the menu.
-`handleClick(evt: Event) => void` | Event handler for the `click` events within the menu.
-`handleSelection(listItem: Element) => void` | Handler for a selected list item. Use this instead of `handleClick` when you don't have access to list item click event.
+`handleItemAction(listItem: !HTMLElement) => void` | Event handler for list's action event.
 
 ### Events
 
