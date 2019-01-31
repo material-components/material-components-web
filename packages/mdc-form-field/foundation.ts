@@ -22,39 +22,34 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import MDCFormFieldAdapter from './adapter';
+import {MDCFormFieldAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-/**
- * @extends {MDCFoundation<!MDCFormFieldAdapter>}
- */
-class MDCFormFieldFoundation extends MDCFoundation {
-  /** @return enum {cssClasses} */
+class MDCFormFieldFoundation extends MDCFoundation<MDCFormFieldAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
 
-  /** @return enum {strings} */
   static get strings() {
     return strings;
   }
 
-  /** @return {!MDCFormFieldAdapter} */
-  static get defaultAdapter() {
+  static get defaultAdapter(): MDCFormFieldAdapter {
     return {
-      registerInteractionHandler: (/* type: string, handler: EventListener */) => {},
-      deregisterInteractionHandler: (/* type: string, handler: EventListener */) => {},
-      activateInputRipple: () => {},
-      deactivateInputRipple: () => {},
+      activateInputRipple: () => undefined,
+      deactivateInputRipple: () => undefined,
+      deregisterInteractionHandler: () => undefined,
+      registerInteractionHandler: () => undefined,
     };
   }
 
-  constructor(adapter) {
+  private clickHandler_: () => void;
+
+  constructor(adapter: MDCFormFieldAdapter) {
     super(Object.assign(MDCFormFieldFoundation.defaultAdapter, adapter));
 
     /** @private {!EventListener} */
-    this.clickHandler_ = /** @type {!EventListener} */ (
-      () => this.handleClick_());
+    this.clickHandler_ = () => this.handleClick_();
   }
 
   init() {
@@ -65,11 +60,10 @@ class MDCFormFieldFoundation extends MDCFoundation {
     this.adapter_.deregisterInteractionHandler('click', this.clickHandler_);
   }
 
-  /** @private */
-  handleClick_() {
+  private handleClick_() {
     this.adapter_.activateInputRipple();
     requestAnimationFrame(() => this.adapter_.deactivateInputRipple());
   }
 }
 
-export default MDCFormFieldFoundation;
+export {MDCFormFieldFoundation as default, MDCFormFieldFoundation};
