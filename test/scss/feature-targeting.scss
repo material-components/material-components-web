@@ -1,10 +1,53 @@
-@import "@material/feature-targeting/functions";
 @import "@material/button/mixins";
 @import "@material/checkbox/mixins";
-@import "@material/radio/mixins";
+@import "@material/elevation/mixins";
+@import "@material/feature-targeting/functions";
 @import "@material/menu/mixins";
+@import "@material/radio/mixins";
+@import "@material/ripple/mixins";
+@import "@material/typography/mixins";
 
-@include mdc-button($query: mdc-feature-any());
-@include mdc-checkbox($query: mdc-feature-any());
-@include mdc-radio($query: mdc-feature-any());
-@include mdc-menu($query: mdc-feature-any());
+.mdc-test {
+  // Button
+  @include mdc-button($query: mdc-feature-any());
+  @include mdc-button-filled-accessible(red, $query: mdc-feature-any());
+  @include mdc-button-container-fill-color(red, $query: mdc-feature-any());
+  @include mdc-button-outline-color(red, $query: mdc-feature-any());
+  @include mdc-button-icon-color(red, $query: mdc-feature-any());
+  @include mdc-button-ink-color(red, $query: mdc-feature-any());
+  @include mdc-button-shape-radius(0, $query: mdc-feature-any());
+  @include mdc-button-horizontal-padding(0, $query: mdc-feature-any());
+  @include mdc-button-outline-width(0, $query: mdc-feature-any());
+
+  // Checkbox
+  @include mdc-checkbox($query: mdc-feature-any());
+
+  // Elevation
+  @include mdc-elevation(0, $query: mdc-feature-any());
+
+  // Menu
+  @include mdc-menu($query: mdc-feature-any());
+
+  // Radio
+  @include mdc-radio($query: mdc-feature-any());
+
+  // Ripple
+  @include mdc-ripple-common($query: mdc-feature-any());
+  @include mdc-ripple-surface($query: mdc-feature-any());
+  @include mdc-states-base-color(red, $query: mdc-feature-any());
+  @include mdc-states-hover-opacity(1, $query: mdc-feature-any());
+  @include mdc-states-focus-opacity(1, $query: mdc-feature-any());
+  @include mdc-states-press-opacity(1, $query: mdc-feature-any());
+  @include mdc-states($query: mdc-feature-any());
+  @include mdc-states-activated(red, $query: mdc-feature-any());
+  @include mdc-states-selected(red, $query: mdc-feature-any());
+  @include mdc-ripple-radius-bounded($query: mdc-feature-any());
+  @include mdc-ripple-radius-unbounded($query: mdc-feature-any());
+
+  // Typography
+  @include mdc-typography-base($query: mdc-feature-any());
+  @include mdc-typography(button, $query: mdc-feature-any());
+  @include mdc-typography-overflow-ellipsis($query: mdc-feature-any());
+  @include mdc-typography-baseline-top(0, $query: mdc-feature-any());
+  @include mdc-typography-baseline-bottom(0, $query: mdc-feature-any());
+}
