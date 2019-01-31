@@ -450,7 +450,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
 
     const props = Object.keys(position) as Array<keyof MenuPosition>;
 
-    props.forEach((prop) => {
+    for (const prop of props) {
       let value = position[prop] || 0;
 
       // Hoisted surfaces need to have the anchor elements location on the page added to the
@@ -474,7 +474,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
       }
 
       position[prop] = value;
-    });
+    }
   }
 
   /**
