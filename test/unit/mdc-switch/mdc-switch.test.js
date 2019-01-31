@@ -27,7 +27,7 @@ import td from 'testdouble';
 
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 import {install as installClock} from '../helpers/clock';
-import {MDCSwitchFoundation, MDCSwitch} from '../../../packages/mdc-switch';
+import {MDCSwitchFoundation, MDCSwitch} from '../../../packages/mdc-switch/index';
 import {MDCRipple} from '../../../packages/mdc-ripple/index';
 
 const {NATIVE_CONTROL_SELECTOR, RIPPLE_SURFACE_SELECTOR} = MDCSwitchFoundation.strings;
