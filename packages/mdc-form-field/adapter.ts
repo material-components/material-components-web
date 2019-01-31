@@ -26,7 +26,6 @@
   * - event handlers
   * - ripple activation
   *
-  * Additionally, provides type information for the adapter to the Closure
   * Implement this adapter for your framework of choice to delegate updates to
   * the component in your framework of choice. See architecture documentation
   * for more details.
