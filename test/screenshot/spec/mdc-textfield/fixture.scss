@@ -40,6 +40,10 @@
   @include mdc-text-field-outline-shape-radius(50%);
 }
 
+.test-text-field-issues-3332 {
+  width: 201px;
+}
+
 // Work around MS Edge rendering bug.
 // TODO(acdvorak): Create and link to GitHub issue
 @supports (-ms-ime-align:auto) {
