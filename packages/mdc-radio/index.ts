@@ -47,23 +47,19 @@ class MDCRadio extends MDCComponent<MDCRadioFoundation>
     this.nativeControl_.checked = checked;
   }
 
-  /** @return {boolean} */
   get disabled() {
     return this.nativeControl_.disabled;
   }
 
-  /** @param {boolean} disabled */
-  set disabled(disabled) {
+  set disabled(disabled: boolean) {
     this.foundation_.setDisabled(disabled);
   }
 
-  /** @return {?string} */
   get value() {
     return this.nativeControl_.value;
   }
 
-  /** @param {?string} value */
-  set value(value) {
+  set value(value: string) {
     this.nativeControl_.value = value;
   }
 
@@ -71,10 +67,23 @@ class MDCRadio extends MDCComponent<MDCRadioFoundation>
     return this.ripple_;
   }
 
-  constructor(...args) {
-    super(...args);
-
+  // tslint:disable-next-line:no-any a component can pass in anything it needs to the constructor
+  constructor(root: Element, ...args: any[]) {
+    super(root, ...args);
     this.ripple_ = this.initRipple_();
+  }
+
+  destroy() {
+    this.ripple_.destroy();
+    super.destroy();
+  }
+
+  getDefaultFoundation() {
+    return new MDCRadioFoundation({
+      addClass: (className) => this.root_.classList.add(className),
+      removeClass: (className) => this.root_.classList.remove(className),
+      setNativeControlDisabled: (disabled) => this.nativeControl_.disabled = disabled,
+    });
   }
 
   private initRipple_(): MDCRipple {
@@ -104,21 +113,6 @@ class MDCRadio extends MDCComponent<MDCRadioFoundation>
     }
     return el;
   }
-
-  destroy() {
-    this.ripple_.destroy();
-    super.destroy();
-  }
-
-  /** @return {!MDCRadioFoundation} */
-  getDefaultFoundation() {
-    return new MDCRadioFoundation({
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
-      setNativeControlDisabled: (disabled) => this.nativeControl_.disabled = disabled,
-    });
-  }
 }
-
 
 export {MDCRadio, MDCRadioFoundation};
