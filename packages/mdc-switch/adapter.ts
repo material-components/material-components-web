@@ -21,35 +21,28 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
-
 /**
  * Adapter for MDC Switch. Provides an interface for managing
  * - classes
  * - dom
  *
- * Additionally, provides type information for the adapter to the Closure
- * compiler.
- *
  * Implement this adapter for your framework of choice to delegate updates to
  * the component in your framework of choice. See architecture documentation
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
- *
- * @record
  */
-class MDCSwitchAdapter {
-  /** @param {string} className */
-  addClass(className) {}
+interface MDCSwitchAdapter {
+  /** Adds a CSS class to the root element. */
+  addClass(className: string): void;
 
-  /** @param {string} className */
-  removeClass(className) {}
+  /** Removes a CSS class from the root element. */
+  removeClass(className: string): void;
 
-  /** @param {boolean} checked */
-  setNativeControlChecked(checked) {}
+  /** Sets checked state of the native HTML control underlying the switch. */
+  setNativeControlChecked(checked: boolean): void;
 
-  /** @param {boolean} disabled */
-  setNativeControlDisabled(disabled) {}
+  /** Sets the disabled state of the native HTML control underlying the switch. */
+  setNativeControlDisabled(disabled: boolean): void;
 }
 
-export default MDCSwitchAdapter;
+export {MDCSwitchAdapter as default, MDCSwitchAdapter};
