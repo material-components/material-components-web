@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc.
+ * Copyright 2016 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,26 +21,27 @@
  * THE SOFTWARE.
  */
 
-/* eslint-disable no-unused-vars */
-import {MDCRipple} from '@material/ripple/index';
-/* eslint-enable no-unused-vars */
-
 /**
- * @typedef {{
- *   checked: boolean,
- *   indeterminate: boolean,
- *   disabled: boolean,
- *   value: ?string
- * }}
+ * Adapter for MDC Form Field. Provides an interface for managing
+ * - event handlers
+ * - ripple activation
+ *
+ * Implement this adapter for your framework of choice to delegate updates to
+ * the component in your framework of choice. See architecture documentation
+ * for more details.
+ * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
+ *
  */
-let MDCSelectionControlState;
 
-/**
- * @record
- */
-class MDCSelectionControl {
-  /** @return {?MDCRipple} */
-  get ripple() {}
+interface MDCFormFieldAdapter {
+  activateInputRipple(): void;
+  deactivateInputRipple(): void;
+  deregisterInteractionHandler<K extends keyof GlobalEventHandlersEventMap>(
+    type: K, handler: (evt: GlobalEventHandlersEventMap[K],
+  ) => void): void;
+  registerInteractionHandler<K extends keyof GlobalEventHandlersEventMap>(
+    type: K, handler: (evt: GlobalEventHandlersEventMap[K],
+  ) => void): void;
 }
 
-export {MDCSelectionControlState, MDCSelectionControl};
+export {MDCFormFieldAdapter as default, MDCFormFieldAdapter};
