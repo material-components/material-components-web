@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@material/base": "^0.41.0",
+    "@material/dom": "^0.41.0",
     "@material/ripple": "^0.43.0",
     "@material/theme": "^0.43.0"
   },

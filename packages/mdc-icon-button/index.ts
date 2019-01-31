@@ -22,6 +22,7 @@
  */
 
 import MDCComponent from '@material/base/component';
+import {SpecificEventListener} from '@material/dom/index';
 import {MDCRipple} from '@material/ripple/index';
 import MDCIconButtonToggleFoundation from './foundation';
 
@@ -30,20 +31,10 @@ class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundation> {
     return new MDCIconButtonToggle(root);
   }
 
-  private ripple_: MDCRipple;
-  private handleClick_: EventListenerOrEventListenerObject;
+  root_!: HTMLElement;
 
-  constructor(
-    root: Element,
-    foundation?: MDCIconButtonToggleFoundation,
-    // tslint:disable-next-line:no-any a component can pass in anything it needs to the constructor
-    ...args: any[]
-  ) {
-    super(root, foundation, ...args);
-
-    this.ripple_ = this.initRipple_();
-    this.handleClick_ = () => this.foundation_.handleClick();
-  }
+  private ripple_!: MDCRipple;
+  private handleClick_!: SpecificEventListener<'click'>;
 
   destroy() {
     this.root_.removeEventListener('click', this.handleClick_);
@@ -62,6 +53,8 @@ class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundation> {
   }
 
   initialSyncWithDOM() {
+    this.ripple_ = this.initRipple_();
+    this.handleClick_ = () => this.foundation_.handleClick();
     this.root_.addEventListener('click', this.handleClick_);
   }
 
