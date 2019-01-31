@@ -95,54 +95,12 @@ Function | Description
 These functions handle prefixing across various browsers
 
 ```js
-import {getCorrectEventName, StandardJsEventType} from '@material/animation';
+import {getCorrectEventName} from '@material/animation';
 
-const eventToListenFor = getCorrectEventName(window, StandardJsEventType.ANIMATION_START);
+const eventToListenFor = getCorrectEventName(window, 'animationstart');
 ```
 
 Method Signature | Description
 --- | ---
-`getCorrectEventName(windowObj: Window, eventType: StandardJsEventType) => StandardJsEventType \| PrefixedJsEventType` | Returns a JavaScript event name, prefixed if necessary
-`getCorrectPropertyName(windowObj: Window, cssProperty: StandardCssPropertyName) => StandardCssPropertyName \| PrefixedCssPropertyName` | Returns a CSS property name, prefixed if necessary
-
-#### `StandardCssPropertyName`
-
-Enum passed to and returned by `getCorrectPropertyName()`.
-
-Key | Value
---- | ---
-`ANIMATION` | `animation`
-`TRANSFORM` | `transform`
-`TRANSITION` | `transition`
-
-#### `PrefixedCssPropertyName`
-
-Enum returned by `getCorrectPropertyName()`.
-
-Key | Value
---- | ---
-`WEBKIT_ANIMATION` | `-webkit-animation`
-`WEBKIT_TRANSFORM` | `-webkit-transform`
-`WEBKIT_TRANSITION` | `-webkit-transition`
-
-#### `StandardJsEventType`
-
-Enum passed to and returned by `getCorrectEventName()`.
-
-Key | Value
---- | ---
-`ANIMATION_END` | `animationend`
-`ANIMATION_ITERATION` | `animationiteration`
-`ANIMATION_START` | `animationstart`
-`TRANSITION_END` | `transitionend`
-
-#### `PrefixedJsEventType`
-
-Enum returned by `getCorrectEventName()`.
-
-Key | Value
---- | ---
-`WEBKIT_ANIMATION_END` | `webkitAnimationEnd`
-`WEBKIT_ANIMATION_ITERATION` | `webkitAnimationIteration`
-`WEBKIT_ANIMATION_START` | `webkitAnimationStart`
-`WEBKIT_TRANSITION_END` | `webkitTransitionEnd`
+`getCorrectEventName(windowObj: Window, eventType: StandardJsEventType) => StandardJsEventType \| PrefixedJsEventType` | Returns a JavaScript event name, prefixed if necessary. See [index.ts](index.ts) for supported values.
+`getCorrectPropertyName(windowObj: Window, cssProperty: StandardCssPropertyName) => StandardCssPropertyName \| PrefixedCssPropertyName` | Returns a CSS property name, prefixed if necessary. See [index.ts](index.ts) for supported values.
