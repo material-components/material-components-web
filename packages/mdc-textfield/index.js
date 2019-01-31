@@ -79,7 +79,7 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
-   * @param {(function(!Element): !MDCRipple)=} rippleFactory A function which
+   * @param {(function(!Element, MDCRippleFoundation): !MDCRipple)=} rippleFactory A function which
    * creates a new MDCRipple.
    * @param {(function(!Element): !MDCLineRipple)=} lineRippleFactory A function which
    * creates a new MDCLineRipple.
