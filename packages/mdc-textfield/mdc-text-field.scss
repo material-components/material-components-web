@@ -32,6 +32,7 @@
 @import "@material/typography/variables";
 @import "./functions";
 @import "./helper-text/mdc-text-field-helper-text";
+@import "./character-counter/mdc-text-field-character-counter";
 @import "./icon/mdc-text-field-icon";
 @import "./mixins";
 @import "./variables";
@@ -58,6 +59,7 @@
   @include mdc-text-field-line-ripple-color_(primary);
   @include mdc-text-field-fullwidth-bottom-line-color($mdc-text-field-fullwidth-bottom-line-color);
   @include mdc-text-field-helper-text-color($mdc-text-field-helper-text-color);
+  @include mdc-text-field-character-counter-color($mdc-text-field-helper-text-color);
   @include mdc-text-field-icon-color($mdc-text-field-icon-color);
   @include mdc-text-field-fill-color($mdc-text-field-background);
 
@@ -209,26 +211,22 @@
 }
 
 // postcss-bem-linter: define text-field-helper-text
+// stylelint-disable plugin/selector-bem-pattern
+.mdc-text-field-helper-line {
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
 
-.mdc-text-field-helper-text {
-  // stylelint-disable plugin/selector-bem-pattern
   .mdc-text-field--dense + & {
     margin-bottom: 4px;
   }
 
   .mdc-text-field + & {
-    margin-right: 12px;
-    margin-left: 12px;
+    padding-right: $mdc-text-field-helper-line-padding;
+    padding-left: $mdc-text-field-helper-line-padding;
   }
-
-  .mdc-text-field--outlined + & {
-    margin-right: 16px;
-    margin-left: 16px;
-  }
-
-  // stylelint-enable plugin/selector-bem-pattern
 }
-
+// stylelint-enable plugin/selector-bem-pattern
 // postcss-bem-linter: end
 
 // mdc-form-field tweaks to align text field label correctly
