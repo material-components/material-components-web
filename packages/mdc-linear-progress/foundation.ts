@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {getCorrectPropertyName} from '@material/animation';
+import {getCorrectPropertyName} from '@material/animation/index';
 import MDCFoundation from '@material/base/foundation';
 import {MDCLinearProgressAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
