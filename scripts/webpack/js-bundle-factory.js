@@ -171,7 +171,7 @@ class JsBundleFactory {
         menu: getAbsolutePath('/packages/mdc-menu/index.js'),
         menuSurface: getAbsolutePath('/packages/mdc-menu-surface/index.js'),
         notchedOutline: getAbsolutePath('/packages/mdc-notched-outline/index.js'),
-        radio: getAbsolutePath('/packages/mdc-radio/index.js'),
+        radio: getAbsolutePath('/packages/mdc-radio/index.ts'),
         ripple: getAbsolutePath('/packages/mdc-ripple/index.ts'),
         select: getAbsolutePath('/packages/mdc-select/index.js'),
         selectionControl: getAbsolutePath('/packages/mdc-selection-control/index.ts'),

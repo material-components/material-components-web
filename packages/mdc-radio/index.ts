@@ -22,11 +22,13 @@
  */
 
 import MDCComponent from '@material/base/component';
+import {EventType, SpecificEventListener} from '@material/dom/index';
 import {RippleCapableSurface} from '@material/ripple/index';
+import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
 import {MDCSelectionControl} from '@material/selection-control/index';
 
 import MDCRadioFoundation from './foundation';
-import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
+import { EventType } from '../../test/screenshot/out/spec/packages/mdc-dom';
 
 class MDCRadio extends MDCComponent<MDCRadioFoundation>
   implements RippleCapableSurface, MDCSelectionControl {
@@ -36,6 +38,8 @@ class MDCRadio extends MDCComponent<MDCRadioFoundation>
   }
 
   root_!: Element;
+  private ripple_: MDCRipple;
+  private nativeControl_: HTMLInputElement;
 
   get checked(): boolean {
     return (this.nativeControl_ as HTMLInputElement)!.checked;
@@ -65,30 +69,26 @@ class MDCRadio extends MDCComponent<MDCRadioFoundation>
     this.nativeControl_.value = value;
   }
 
-  /** @return {!MDCRipple} */
-  get ripple() {
+  get ripple(): MDCRipple {
     return this.ripple_;
   }
 
   constructor(...args) {
     super(...args);
 
-    /** @private {!MDCRipple} */
     this.ripple_ = this.initRipple_();
   }
 
-  /**
-   * @return {!MDCRipple}
-   * @private
-   */
-  initRipple_() {
+  private initRipple_(): MDCRipple {
     const adapter = Object.assign(MDCRipple.createAdapter(this), {
-      isUnbounded: () => true,
+      deregisterInteractionHandler:
+        <K extends EventType>(type: K, handler: SpecificEventListener<K>) =>
+          this.nativeControl_.removeEventListener(type, handler),
       // Radio buttons technically go "active" whenever there is *any* keyboard interaction. This is not the
       // UI we desire.
       isSurfaceActive: () => false,
+      isUnbounded: () => true,
       registerInteractionHandler: (type, handler) => this.nativeControl_.addEventListener(type, handler),
-      deregisterInteractionHandler: (type, handler) => this.nativeControl_.removeEventListener(type, handler),
     });
     const foundation = new MDCRippleFoundation(adapter);
     return new MDCRipple(this.root_, foundation);
