@@ -34,24 +34,19 @@
 //
 
 @mixin mdc-menu-surface($query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
-  $feat-animation: mdc-feature-create-target($query, animation);
 
   // postcss-bem-linter: define menu-surface
   .mdc-menu-surface {
     @include mdc-menu-surface-base_($query);
-
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-elevation(8);
-    }
+    @include mdc-elevation($z-value: 8, $query: $query);
 
     @include mdc-menu-surface-fill-color(surface, $query);
     @include mdc-menu-surface-ink-color(on-surface, $query);
+    @include mdc-menu-surface-shape-radius(medium, $query);
 
     @include mdc-feature-targets($feat-structure) {
       @include mdc-rtl-reflexive-property(transform-origin, top left, top right);
-      @include mdc-menu-surface-shape-radius(medium);
     }
   }
 
@@ -84,8 +79,12 @@
   }
 }
 
-@mixin mdc-menu-surface-shape-radius($radius, $rtl-reflexive: false) {
-  @include mdc-shape-radius($radius, $rtl-reflexive);
+@mixin mdc-menu-surface-shape-radius($radius, $rtl-reflexive: false, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-feature-targets($feat-structure) {
+    @include mdc-shape-radius($radius, $rtl-reflexive);
+  }
 }
 
 //

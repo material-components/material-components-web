@@ -83,4 +83,5 @@
   // Menu surface
   @include mdc-menu-surface-fill-color(surface, $query: mdc-feature-any());
   @include mdc-menu-surface-ink-color(on-surface, $query: mdc-feature-any());
+  @include mdc-menu-surface-shape-radius(medium, $query: mdc-feature-any());
 }
