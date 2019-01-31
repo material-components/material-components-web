@@ -22,7 +22,7 @@
 @import "../mixins";
 
 .test-cell--menu {
-  @include test-cell-size(260, 410);
+  @include test-cell-size(260, 510);
 
   position: relative;
 }
