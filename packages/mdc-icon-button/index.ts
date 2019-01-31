@@ -22,7 +22,6 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {SpecificEventListener} from '@material/dom/index';
 import {MDCRipple} from '@material/ripple/index';
 import MDCIconButtonToggleFoundation from './foundation';
 
@@ -32,7 +31,7 @@ class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundation> {
   }
 
   private ripple_: MDCRipple;
-  private handleClick_: SpecificEventListener<'click'>;
+  private handleClick_: EventListenerOrEventListenerObject;
 
   constructor(
     root: Element,
