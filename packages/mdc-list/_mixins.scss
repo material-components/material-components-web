@@ -51,13 +51,11 @@
     @include mdc-list-base_($query);
   }
 
-  @include mdc-feature-targets($feat-color) {
-    @include mdc-list-item-secondary-text-ink-color(text-secondary-on-background);
-    @include mdc-list-item-graphic-fill-color(transparent);
-    @include mdc-list-item-graphic-ink-color(text-icon-on-background);
-    @include mdc-list-item-meta-ink-color(text-hint-on-background);
-    @include mdc-list-group-subheader-ink-color(text-primary-on-background);
-  }
+  @include mdc-list-item-secondary-text-ink-color(text-secondary-on-background, $query);
+  @include mdc-list-item-graphic-fill-color(transparent, $query);
+  @include mdc-list-item-graphic-ink-color(text-icon-on-background, $query);
+  @include mdc-list-item-meta-ink-color(text-hint-on-background, $query);
+  @include mdc-list-group-subheader-ink-color(text-primary-on-background, $query);
 
   .mdc-list--dense {
     @include mdc-feature-targets($feat-structure) {
@@ -77,16 +75,12 @@
   // "Activated" is more permanent. E.g., the currently highlighted navigation destination in a drawer.
   .mdc-list-item--selected,
   .mdc-list-item--activated {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-list-item-primary-text-ink-color(primary);
-      @include mdc-list-item-graphic-ink-color(primary);
-    }
+    @include mdc-list-item-primary-text-ink-color(primary, $query);
+    @include mdc-list-item-graphic-ink-color(primary, $query);
   }
 
   .mdc-list-item--disabled {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-list-item-primary-text-ink-color(text-disabled-on-background);
-    }
+    @include mdc-list-item-primary-text-ink-color(text-disabled-on-background, $query);
   }
 
   .mdc-list-item__graphic {
@@ -117,9 +111,7 @@
   }
 
   .mdc-list-item__text {
-    @include mdc-feature-targets($feat-structure) {
-      @include mdc-typography-overflow-ellipsis;
-    }
+    @include mdc-typography-overflow-ellipsis($query);
   }
 
   // Disable interaction on label elements that may automatically
@@ -131,41 +123,40 @@
   }
 
   .mdc-list-item__primary-text {
+    @include mdc-typography-overflow-ellipsis($query);
+    @include mdc-typography-baseline-top($item-primary-text-baseline-height, $query);
+    @include mdc-typography-baseline-bottom($item-secondary-text-baseline-height, $query);
+    @include mdc-typography-baseline-top($dense-item-primary-text-baseline-height, $query);
+
     @include mdc-feature-targets($feat-structure) {
-      @include mdc-typography-overflow-ellipsis;
-      @include mdc-typography-baseline-top($item-primary-text-baseline-height);
-      @include mdc-typography-baseline-bottom($item-secondary-text-baseline-height);
-
       display: block;
-
-      // stylelint-disable plugin/selector-bem-pattern
-      .mdc-list--dense & {
-        @include mdc-typography-baseline-top($dense-item-primary-text-baseline-height);
-        @include mdc-typography-baseline-bottom($item-secondary-text-baseline-height);
-      }
-      // stylelint-enable plugin/selector-bem-pattern
     }
+
+    // stylelint-disable plugin/selector-bem-pattern
+    .mdc-list--dense & {
+      @include mdc-typography-baseline-bottom($item-secondary-text-baseline-height, $query);
+    }
+    // stylelint-enable plugin/selector-bem-pattern
   }
 
   .mdc-list-item__secondary-text {
-    @include mdc-feature-targets($feat-typography) {
-      @include mdc-typography(body2);
-    }
+    @include mdc-typography(body2, $query);
+    @include mdc-typography-overflow-ellipsis($query);
+    @include mdc-typography-baseline-top($item-secondary-text-baseline-height, $query);
 
     @include mdc-feature-targets($feat-structure) {
-      @include mdc-typography-overflow-ellipsis;
-      @include mdc-typography-baseline-top($item-secondary-text-baseline-height);
-
       display: block;
+    }
 
-      // stylelint-disable plugin/selector-bem-pattern
-      .mdc-list--dense & {
-        @include mdc-typography-baseline-top($item-secondary-text-baseline-height);
+    // stylelint-disable plugin/selector-bem-pattern
+    .mdc-list--dense & {
+      @include mdc-typography-baseline-top($item-secondary-text-baseline-height, $query);
 
+      @include mdc-feature-targets($feat-structure) {
         font-size: inherit;
       }
-      // stylelint-enable plugin/selector-bem-pattern
     }
+    // stylelint-enable plugin/selector-bem-pattern
   }
 
   // stylelint-disable plugin/selector-bem-pattern
@@ -249,9 +240,7 @@
 
   // Note: ideally we'd be able to hoist this to the top-level `$feat-color`, but doing so
   // will cause the `border` declaration on `.mdc-list-divider` above to override it.
-  @include mdc-feature-targets($feat-color) {
-    @include mdc-list-divider-color($divider-color);
-  }
+  @include mdc-list-divider-color($divider-color, $query);
 
   .mdc-list-divider--padded {
     @include mdc-feature-targets($feat-structure) {
@@ -289,59 +278,88 @@
     $mdc-list-subheader-margin:
       ($mdc-list-subheader-virtual-height - $mdc-list-subheader-leading) / 2;
 
-    @include mdc-feature-targets($feat-typography) {
-      @include mdc-typography(subtitle1);
-    }
-
+    @include mdc-typography(subtitle1, $query);
     @include mdc-feature-targets($feat-structure) {
       margin: $mdc-list-subheader-margin $mdc-list-side-padding;
     }
   }
 }
 
-@mixin mdc-list-item-primary-text-ink-color($color) {
-  @include mdc-theme-prop(color, $color);
+@mixin mdc-list-item-primary-text-ink-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  @include mdc-feature-targets($feat-color) {
+    @include mdc-theme-prop(color, $color);
+  }
 }
 
-@mixin mdc-list-item-secondary-text-ink-color($color) {
+@mixin mdc-list-item-secondary-text-ink-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
   .mdc-list-item__secondary-text {
-    @include mdc-theme-prop(color, $color);
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(color, $color);
+    }
   }
 }
 
-@mixin mdc-list-item-graphic-fill-color($color) {
+@mixin mdc-list-item-graphic-fill-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
   .mdc-list-item__graphic {
-    @include mdc-theme-prop(background-color, $color);
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(background-color, $color);
+    }
   }
 }
 
-@mixin mdc-list-item-graphic-ink-color($color) {
+@mixin mdc-list-item-graphic-ink-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
   .mdc-list-item__graphic {
-    @include mdc-theme-prop(color, $color);
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(color, $color);
+    }
   }
 }
 
-@mixin mdc-list-item-meta-ink-color($color) {
+@mixin mdc-list-item-meta-ink-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
   .mdc-list-item__meta {
-    @include mdc-theme-prop(color, $color);
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(color, $color);
+    }
   }
 }
 
-@mixin mdc-list-item-shape-radius($radius, $rtl-reflexive: false) {
+@mixin mdc-list-item-shape-radius($radius, $rtl-reflexive: false, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
   .mdc-list-item {
-    @include mdc-shape-radius($radius, $rtl-reflexive);
+    @include mdc-feature-targets($feat-structure) {
+      @include mdc-shape-radius($radius, $rtl-reflexive);
+    }
   }
 }
 
-@mixin mdc-list-divider-color($color) {
+@mixin mdc-list-divider-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
   .mdc-list-divider {
-    @include mdc-theme-prop(border-bottom-color, $color);
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(border-bottom-color, $color);
+    }
   }
 }
 
-@mixin mdc-list-group-subheader-ink-color($color) {
+@mixin mdc-list-group-subheader-ink-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
   .mdc-list-group__subheader {
-    @include mdc-theme-prop(color, $color);
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(color, $color);
+    }
   }
 }
 
@@ -354,9 +372,8 @@
   $feat-structure: mdc-feature-create-target($query, structure);
   $feat-typography: mdc-feature-create-target($query, typography);
 
+  @include mdc-typography(subtitle1, $query);
   @include mdc-feature-targets($feat-typography) {
-    @include mdc-typography(subtitle1);
-
     // According to the mocks and stickersheet, the line-height is
     // adjusted to 24px for text content, same as for body1.
     /* @alternate */
@@ -369,9 +386,7 @@
     list-style-type: none;
   }
 
-  @include mdc-feature-targets($feat-color) {
-    @include mdc-list-item-primary-text-ink-color(text-primary-on-background);
-  }
+  @include mdc-list-item-primary-text-ink-color(text-primary-on-background, $query);
 }
 
 @mixin mdc-list-item-base_ {
@@ -390,17 +405,11 @@
 
 // Ripple styles for an interactive list item (one that is enabled and inside an interactive list).
 @mixin mdc-list-item-interactive-ripple_($query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
-  $feat-structure: mdc-feature-create-target($query, structure);
-
   @include mdc-ripple-surface($query);
   @include mdc-states(mdc-theme-prop-value(on-surface), false, $query);
   @include mdc-states-activated(primary, false, $query);
   @include mdc-states-selected(primary, false, $query);
-
-  @include mdc-feature-targets($feat-structure) {
-    @include mdc-ripple-radius-bounded;
-  }
+  @include mdc-ripple-radius-bounded($query: $query);
 }
 
 // Sets the width and height of the graphic element, as well as calculates the margins for

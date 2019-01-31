@@ -82,4 +82,12 @@
 
   // List
   @include mdc-list($query: mdc-feature-any());
+  @include mdc-list-item-primary-text-ink-color(red, $query: mdc-feature-any());
+  @include mdc-list-item-secondary-text-ink-color(red, $query: mdc-feature-any());
+  @include mdc-list-item-graphic-fill-color(red, $query: mdc-feature-any());
+  @include mdc-list-item-graphic-ink-color(red, $query: mdc-feature-any());
+  @include mdc-list-item-meta-ink-color(red, $query: mdc-feature-any());
+  @include mdc-list-item-shape-radius(42, $rtl-reflexive: false, $query: mdc-feature-any());
+  @include mdc-list-divider-color(red, $query: mdc-feature-any());
+  @include mdc-list-group-subheader-ink-color(red, $query: mdc-feature-any());
 }
