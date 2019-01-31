@@ -23,19 +23,16 @@
 
 import MDCFoundation from '@material/base/foundation';
 
-import MDCRadioAdapter from './adapter';
+import {MDCRadioAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-/**
- * @extends {MDCFoundation<!MDCRadioAdapter>}
- */
 class MDCRadioFoundation extends MDCFoundation<MDCRadioAdapter> {
 
-  static get cssClasses(): {[key: string]: string} {
+  static get cssClasses() {
     return cssClasses;
   }
 
-  static get strings(): {[key: string]: string} {
+  static get strings() {
     return strings;
   }
 

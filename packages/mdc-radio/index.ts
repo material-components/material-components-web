@@ -28,7 +28,6 @@ import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
 import {MDCSelectionControl} from '@material/selection-control/index';
 
 import MDCRadioFoundation from './foundation';
-import { EventType } from '../../test/screenshot/out/spec/packages/mdc-dom';
 
 class MDCRadio extends MDCComponent<MDCRadioFoundation>
   implements RippleCapableSurface, MDCSelectionControl {
@@ -39,7 +38,6 @@ class MDCRadio extends MDCComponent<MDCRadioFoundation>
 
   root_!: Element;
   private ripple_: MDCRipple;
-  private nativeControl_: HTMLInputElement;
 
   get checked(): boolean {
     return (this.nativeControl_ as HTMLInputElement)!.checked;
@@ -88,7 +86,8 @@ class MDCRadio extends MDCComponent<MDCRadioFoundation>
       // UI we desire.
       isSurfaceActive: () => false,
       isUnbounded: () => true,
-      registerInteractionHandler: (type, handler) => this.nativeControl_.addEventListener(type, handler),
+      registerInteractionHandler: <K extends EventType>(type: K, handler: SpecificEventListener<K>) =>
+        this.nativeControl_.addEventListener(type, handler),
     });
     const foundation = new MDCRippleFoundation(adapter);
     return new MDCRipple(this.root_, foundation);
@@ -97,10 +96,12 @@ class MDCRadio extends MDCComponent<MDCRadioFoundation>
   /**
    * Returns the state of the native control element, or null if the native control element is not present.
    */
-  private get nativeControl_(): MDCSelectionControlState {
+  private get nativeControl_(): HTMLInputElement {
     const {NATIVE_CONTROL_SELECTOR} = MDCRadioFoundation.strings;
-    const el = /** @type {?MDCSelectionControlState} */ (
-      this.root_.querySelector(NATIVE_CONTROL_SELECTOR));
+    const el = this.root_.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
+    if (!el) {
+      throw new Error(`Radio component requires a ${NATIVE_CONTROL_SELECTOR} element`);
+    }
     return el;
   }
 
