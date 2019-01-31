@@ -171,7 +171,12 @@ $mdc-grid-list-tile-secondary-icon-size: 24px;
 
 .mdc-grid-list--with-icon-align-start {
   .mdc-grid-tile__secondary {
-    @include mdc-rtl-reflexive-property(padding, $mdc-grid-list-tile-secondary-padding * 2 + $mdc-grid-list-tile-secondary-icon-size, $mdc-grid-list-tile-secondary-padding-narrow, ".mdc-grid-list");
+    @include mdc-rtl-reflexive-property(
+      padding,
+      $mdc-grid-list-tile-secondary-padding * 2 + $mdc-grid-list-tile-secondary-icon-size,
+      $mdc-grid-list-tile-secondary-padding-narrow,
+      ".mdc-grid-list"
+    );
   }
 
   .mdc-grid-tile__icon {
@@ -183,7 +188,12 @@ $mdc-grid-list-tile-secondary-icon-size: 24px;
 
 .mdc-grid-list--with-icon-align-end {
   .mdc-grid-tile__secondary {
-    @include mdc-rtl-reflexive-property(padding, $mdc-grid-list-tile-secondary-padding, $mdc-grid-list-tile-secondary-padding * 2 + $mdc-grid-list-tile-secondary-icon-size, ".mdc-grid-list");
+    @include mdc-rtl-reflexive-property(
+      padding,
+      $mdc-grid-list-tile-secondary-padding,
+      $mdc-grid-list-tile-secondary-padding * 2 + $mdc-grid-list-tile-secondary-icon-size,
+      ".mdc-grid-list"
+    );
   }
 
   .mdc-grid-tile__icon {
