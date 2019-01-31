@@ -26,11 +26,11 @@ import {MDCIconButtonToggleAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
 class MDCIconButtonToggleFoundation extends MDCFoundation<MDCIconButtonToggleAdapter> {
-  static get cssClasses(): {[key: string]: string} {
+  static get cssClasses() {
     return cssClasses;
   }
 
-  static get strings(): {[key: string]: string} {
+  static get strings() {
     return strings;
   }
 
