@@ -34,13 +34,8 @@ type PrefixedJsEventType = (
     'webkitAnimationEnd' | 'webkitAnimationIteration' | 'webkitAnimationStart' | 'webkitTransitionEnd'
 );
 
-interface CssVendorPropertyMap {
-  [key: string]: CssVendorProperty;
-}
-
-interface JsVendorPropertyMap {
-  [key: string]: JsVendorProperty;
-}
+type CssVendorPropertyMap = { [K in StandardCssPropertyName]: CssVendorProperty };
+type JsVendorPropertyMap = { [K in StandardJsEventType]: JsVendorProperty };
 
 interface CssVendorProperty {
   prefixed: PrefixedCssPropertyName;
