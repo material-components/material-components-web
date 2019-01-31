@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,18 +21,24 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
-const cssClasses = {
-  ROOT: 'mdc-text-field-helper-text',
-  HELPER_TEXT_PERSISTENT: 'mdc-text-field-helper-text--persistent',
-  HELPER_TEXT_VALIDATION_MSG: 'mdc-text-field-helper-text--validation-msg',
-};
+/* eslint no-unused-vars: [2, {"args": "none"}] */
 
-/** @enum {string} */
-const strings = {
-  ARIA_HIDDEN: 'aria-hidden',
-  ROLE: 'role',
-  ROOT_SELECTOR: `.${cssClasses.ROOT}`,
-};
+/**
+ * Adapter for MDC Text Field Character Counter.
+ *
+ * Defines the shape of the adapter expected by the foundation. Implement this
+ * adapter to integrate the TextField character counter into your framework. See
+ * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
+ * for more information.
+ *
+ * @record
+ */
+class MDCTextFieldCharacterCounterAdapter {
+  /**
+   * Sets the text content of character counter element.
+   * @param {string} content
+   */
+  setContent(content) {}
+}
 
-export {strings, cssClasses};
+export default MDCTextFieldCharacterCounterAdapter;

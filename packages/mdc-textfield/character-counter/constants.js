@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,15 +23,11 @@
 
 /** @enum {string} */
 const cssClasses = {
-  ROOT: 'mdc-text-field-helper-text',
-  HELPER_TEXT_PERSISTENT: 'mdc-text-field-helper-text--persistent',
-  HELPER_TEXT_VALIDATION_MSG: 'mdc-text-field-helper-text--validation-msg',
+  ROOT: 'mdc-text-field-character-counter',
 };
 
 /** @enum {string} */
 const strings = {
-  ARIA_HIDDEN: 'aria-hidden',
-  ROLE: 'role',
   ROOT_SELECTOR: `.${cssClasses.ROOT}`,
 };
 

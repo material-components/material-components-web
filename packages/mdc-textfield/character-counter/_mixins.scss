@@ -1,5 +1,5 @@
 //
-// Copyright 2018 Google Inc.
+// Copyright 2019 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,44 +20,32 @@
 // THE SOFTWARE.
 //
 
-@import "../../../../packages/mdc-textfield/mixins";
-@import "../../../../packages/mdc-theme/color-palette";
-@import "../mixins";
+@import "@material/rtl/mixins";
 
-// stylelint-disable selector-class-pattern
-.mdc-text-field {
-  width: 100%;
+// Public mixins
+
+@mixin mdc-text-field-character-counter-color($color) {
+  &:not(.mdc-text-field--disabled) {
+    @include mdc-text-field-character-counter-color_($color);
+  }
 }
 
-.mdc-text-field-helper-line {
-  width: 100%;
-}
-// stylelint-enable selector-class-pattern
+@mixin mdc-text-field-character-counter-position($xOffset, $yOffset) {
+  .mdc-text-field-character-counter {
+    @include mdc-rtl-reflexive-position(right, $xOffset);
 
-.test-cell--textfield {
-  @include test-cell-size(301, 121);
-}
-
-.test-cell--textarea {
-  @include test-cell-size(301, 181);
+    position: absolute;
+    bottom: $yOffset;
+  }
 }
 
-.test-shaped-text-field {
-  @include mdc-text-field-shape-radius(50%);
-}
+// Private mixins
 
-.test-shaped-text-field--outline {
-  @include mdc-text-field-outline-shape-radius(50%);
-}
-
-.test-text-field-issues-3332 {
-  width: 201px;
-}
-
-// Work around MS Edge rendering bug.
-// TODO(acdvorak): Create and link to GitHub issue
-@supports (-ms-ime-align:auto) {
-  .test-text-field__input {
-    transform: translateX(.1px);
+@mixin mdc-text-field-character-counter-color_($color) {
+  // Character counter is placed inside mdc-textfield element (for textarea variant ) or
+  // inside helper line which is sibling to mdc-textfield.
+  .mdc-text-field-character-counter,
+  + .mdc-text-field-helper-line .mdc-text-field-character-counter {
+    @include mdc-theme-prop(color, $color);
   }
 }
