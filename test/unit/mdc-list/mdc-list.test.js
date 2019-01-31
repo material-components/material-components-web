@@ -26,7 +26,7 @@ import {assert} from 'chai';
 import td from 'testdouble';
 import bel from 'bel';
 import {MDCList, MDCListFoundation} from '../../../packages/mdc-list/index';
-import {cssClasses} from '../../../packages/mdc-list/constants';
+import {cssClasses, strings} from '../../../packages/mdc-list/constants';
 
 function getFixture() {
   return bel`
@@ -261,29 +261,6 @@ test('adapter#setTabIndexForListItemChildren sets the child button/a elements of
   document.body.removeChild(root);
 });
 
-test('adapter#followHref invokes click on element with href', () => {
-  const {root, component} = setupTest();
-  const anchorTag = document.createElement('a');
-  anchorTag.href = '#';
-  anchorTag.click = td.func('click');
-  anchorTag.classList.add('mdc-list-item');
-  root.appendChild(anchorTag);
-  component.getDefaultFoundation().adapter_.followHref(root.querySelectorAll('.mdc-list-item').length - 1);
-
-  td.verify(anchorTag.click(), {times: 1});
-});
-
-test('adapter#followHref does not invoke click on element without href', () => {
-  const {root, component} = setupTest();
-  const anchorTag = document.createElement('a');
-  anchorTag.click = td.func('click');
-  anchorTag.classList.add('mdc-list-item');
-  root.appendChild(anchorTag);
-  component.getDefaultFoundation().adapter_.followHref(root.querySelectorAll('.mdc-list-item').length - 1);
-
-  td.verify(anchorTag.click(), {times: 0});
-});
-
 test('layout adds tabindex=-1 to all list items without a tabindex', () => {
   const {root} = setupTest();
   assert.equal(0, root.querySelectorAll('.mdc-list-item:not([tabindex])').length);
@@ -467,4 +444,16 @@ test('adapter#setCheckedCheckboxOrRadioAtIndex toggles the radio on list item', 
   component.getDefaultFoundation().adapter_.setCheckedCheckboxOrRadioAtIndex(3, false);
   assert.isFalse(radio.checked);
   document.body.removeChild(root);
+});
+
+test('adapter#notifyAction emits action event', () => {
+  const {component} = setupTest();
+
+  const handler = td.func('notifyActionHandler');
+
+  component.listen(strings.ACTION_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyAction(3);
+  component.unlisten(strings.ACTION_EVENT, handler);
+
+  td.verify(handler(td.matchers.anything()));
 });

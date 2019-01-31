@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2018 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,39 +21,20 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
+/** CSS classes used by the switch. */
+const cssClasses = {
+  /** Class used for a switch that is in the "checked" (on) position. */
+  CHECKED: 'mdc-switch--checked',
+  /** Class used for a switch that is disabled. */
+  DISABLED: 'mdc-switch--disabled',
+};
 
-/**
- * Adapter for MDC Form Field. Provides an interface for managing
- * - event handlers
- * - ripple activation
- *
- * Additionally, provides type information for the adapter to the Closure
- * compiler.
- *
- * Implement this adapter for your framework of choice to delegate updates to
- * the component in your framework of choice. See architecture documentation
- * for more details.
- * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
- *
- * @record
- */
-class MDCFormFieldAdapter {
-  /**
-   * @param {string} type
-   * @param {!EventListener} handler
-   */
-  registerInteractionHandler(type, handler) {}
+/** String constants used by the switch. */
+const strings = {
+  /** A CSS selector used to locate the native HTML control for the switch.  */
+  NATIVE_CONTROL_SELECTOR: '.mdc-switch__native-control',
+  /** A CSS selector used to locate the ripple surface element for the switch. */
+  RIPPLE_SURFACE_SELECTOR: '.mdc-switch__thumb-underlay',
+};
 
-  /**
-   * @param {string} type
-   * @param {!EventListener} handler
-   */
-  deregisterInteractionHandler(type, handler) {}
-
-  activateInputRipple() {}
-
-  deactivateInputRipple() {}
-}
-
-export default MDCFormFieldAdapter;
+export {cssClasses, strings};

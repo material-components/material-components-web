@@ -22,50 +22,31 @@
  */
 
 import MDCComponent from '@material/base/component';
-import MDCFormFieldFoundation from './foundation';
-/* eslint-disable no-unused-vars */
 import {MDCSelectionControl} from '@material/selection-control/index';
-/* eslint-enable no-unused-vars */
+import {MDCFormFieldFoundation} from './foundation';
 
-/**
- * @extends MDCComponent<!MDCFormFieldFoundation>
- */
-class MDCFormField extends MDCComponent {
-  static attachTo(root) {
+class MDCFormField extends MDCComponent<MDCFormFieldFoundation> {
+  static attachTo(root: HTMLElement) {
     return new MDCFormField(root);
   }
 
-  /** @param {?MDCSelectionControl} input */
-  set input(input) {
+  private input_?: MDCSelectionControl;
+
+  set input(input: MDCSelectionControl | undefined) {
     this.input_ = input;
   }
 
-  /** @return {?MDCSelectionControl} */
-  get input() {
+  get input(): MDCSelectionControl | undefined {
     return this.input_;
   }
 
-  constructor(...args) {
-    super(...args);
-
-    /** @private {?MDCSelectionControl} */
-    this.input_;
-  }
-
-  /**
-   * @return {!Element}
-   * @private
-   */
-  get label_() {
+  private get label_(): Element | null {
     const {LABEL_SELECTOR} = MDCFormFieldFoundation.strings;
-    return /** @type {!Element} */ (this.root_.querySelector(LABEL_SELECTOR));
+    return this.root_.querySelector(LABEL_SELECTOR);
   }
 
-  /** @return {!MDCFormFieldFoundation} */
   getDefaultFoundation() {
     return new MDCFormFieldFoundation({
-      registerInteractionHandler: (type, handler) => this.label_.addEventListener(type, handler),
-      deregisterInteractionHandler: (type, handler) => this.label_.removeEventListener(type, handler),
       activateInputRipple: () => {
         if (this.input_ && this.input_.ripple) {
           this.input_.ripple.activate();
@@ -76,6 +57,8 @@ class MDCFormField extends MDCComponent {
           this.input_.ripple.deactivate();
         }
       },
+      deregisterInteractionHandler: (type, handler) => this.label_ && this.label_.removeEventListener(type, handler),
+      registerInteractionHandler: (type, handler) => this.label_ && this.label_.addEventListener(type, handler),
     });
   }
 }
