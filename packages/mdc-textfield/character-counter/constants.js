@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,17 +21,14 @@
  * THE SOFTWARE.
  */
 
-window.mdc.testFixture.fontsLoaded.then(() => {
-  const buttonEl = document.querySelector('.test-menu-button');
-  const menuEl = document.querySelector('.mdc-menu');
-  const menu = mdc.menu.MDCMenu.attachTo(menuEl);
-  menu.setAnchorCorner(mdc.menu.Corner.BOTTOM_LEFT);
-  menu.setAnchorElement(buttonEl);
-  menu.open = true;
+/** @enum {string} */
+const cssClasses = {
+  ROOT: 'mdc-text-field-character-counter',
+};
 
-  buttonEl.addEventListener('click', () => {
-    menu.open = !menu.open;
-  });
+/** @enum {string} */
+const strings = {
+  ROOT_SELECTOR: `.${cssClasses.ROOT}`,
+};
 
-  window.mdc.testFixture.notifyDomReady();
-});
+export {strings, cssClasses};

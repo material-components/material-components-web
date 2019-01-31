@@ -21,6 +21,9 @@
 
   // Checkbox
   @include mdc-checkbox($query: mdc-feature-any());
+  @include mdc-checkbox-container-colors($query: mdc-feature-any());
+  @include mdc-checkbox-ink-color(red, $query: mdc-feature-any());
+  @include mdc-checkbox-focus-indicator-color(red, $query: mdc-feature-any());
 
   // Elevation
   @include mdc-elevation(0, $query: mdc-feature-any());
@@ -30,6 +33,10 @@
 
   // Radio
   @include mdc-radio($query: mdc-feature-any());
+  @include mdc-radio-unchecked-stroke-color(red, $query: mdc-feature-any());
+  @include mdc-radio-checked-stroke-color(red, $query: mdc-feature-any());
+  @include mdc-radio-ink-color(red, $query: mdc-feature-any());
+  @include mdc-radio-focus-indicator-color(red, $query: mdc-feature-any());
 
   // Ripple
   @include mdc-ripple-common($query: mdc-feature-any());
