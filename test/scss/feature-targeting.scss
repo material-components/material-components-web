@@ -10,6 +10,14 @@
 .mdc-test {
   // Button
   @include mdc-button($query: mdc-feature-any());
+  @include mdc-button-filled-accessible(red, $query: mdc-feature-any());
+  @include mdc-button-container-fill-color(red, $query: mdc-feature-any());
+  @include mdc-button-outline-color(red, $query: mdc-feature-any());
+  @include mdc-button-icon-color(red, $query: mdc-feature-any());
+  @include mdc-button-ink-color(red, $query: mdc-feature-any());
+  @include mdc-button-shape-radius(0, $query: mdc-feature-any());
+  @include mdc-button-horizontal-padding(0, $query: mdc-feature-any());
+  @include mdc-button-outline-width(0, $query: mdc-feature-any());
 
   // Checkbox
   @include mdc-checkbox($query: mdc-feature-any());
