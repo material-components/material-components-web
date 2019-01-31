@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,17 +21,24 @@
  * THE SOFTWARE.
  */
 
-window.mdc.testFixture.fontsLoaded.then(() => {
-  const buttonEl = document.querySelector('.test-menu-button');
-  const menuEl = document.querySelector('.mdc-menu');
-  const menu = mdc.menu.MDCMenu.attachTo(menuEl);
-  menu.setAnchorCorner(mdc.menu.Corner.BOTTOM_LEFT);
-  menu.setAnchorElement(buttonEl);
-  menu.open = true;
+/* eslint no-unused-vars: [2, {"args": "none"}] */
 
-  buttonEl.addEventListener('click', () => {
-    menu.open = !menu.open;
-  });
+/**
+ * Adapter for MDC Text Field Character Counter.
+ *
+ * Defines the shape of the adapter expected by the foundation. Implement this
+ * adapter to integrate the TextField character counter into your framework. See
+ * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
+ * for more information.
+ *
+ * @record
+ */
+class MDCTextFieldCharacterCounterAdapter {
+  /**
+   * Sets the text content of character counter element.
+   * @param {string} content
+   */
+  setContent(content) {}
+}
 
-  window.mdc.testFixture.notifyDomReady();
-});
+export default MDCTextFieldCharacterCounterAdapter;
