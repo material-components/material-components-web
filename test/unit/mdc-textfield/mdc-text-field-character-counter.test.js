@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,17 +21,29 @@
  * THE SOFTWARE.
  */
 
-window.mdc.testFixture.fontsLoaded.then(() => {
-  const buttonEl = document.querySelector('.test-menu-button');
-  const menuEl = document.querySelector('.mdc-menu');
-  const menu = mdc.menu.MDCMenu.attachTo(menuEl);
-  menu.setAnchorCorner(mdc.menu.Corner.BOTTOM_LEFT);
-  menu.setAnchorElement(buttonEl);
-  menu.open = true;
+import bel from 'bel';
+import {assert} from 'chai';
 
-  buttonEl.addEventListener('click', () => {
-    menu.open = !menu.open;
-  });
+import {MDCTextFieldCharacterCounter} from '../../../packages/mdc-textfield/character-counter/index';
 
-  window.mdc.testFixture.notifyDomReady();
+const getFixture = () => bel`
+  <div class="mdc-text-field-character-counter">0/10</div>
+`;
+
+suite('MDCTextFieldCharacterCounter');
+
+test('attachTo returns an MDCTextFieldCharacterCounter instance', () => {
+  assert.isOk(MDCTextFieldCharacterCounter.attachTo(getFixture()) instanceof MDCTextFieldCharacterCounter);
+});
+
+function setupTest() {
+  const root = getFixture();
+  const component = new MDCTextFieldCharacterCounter(root);
+  return {root, component};
+}
+
+test('#adapter.setContent sets the text content of the element', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.setContent('5 / 10');
+  assert.equal(root.textContent, '5 / 10');
 });

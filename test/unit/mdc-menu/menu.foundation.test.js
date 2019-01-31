@@ -97,30 +97,24 @@ test('handleKeydown tab key causes the menu to close', () => {
   td.verify(mockAdapter.elementContainsClass(td.matchers.anything()), {times: 0});
 });
 
-test('handleKeydown space/enter key causes the menu to close', () => {
+test('handleItemAction item action causes the menu to close', () => {
   const {foundation, mockAdapter} = setupTest();
-  const event = {key: 'Space', target: 'My Element', preventDefault: td.func('preventDefault')};
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
-  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
+  const itemEl = document.createElement('li');
 
-  foundation.handleKeydown(event);
-  event.key = 'Enter';
-  foundation.handleKeydown(event);
+  td.when(mockAdapter.getElementIndex(itemEl)).thenReturn(0);
 
-  td.verify(mockAdapter.closeSurface(), {times: 2});
+  foundation.handleItemAction(itemEl);
+  td.verify(mockAdapter.closeSurface(), {times: 1});
 });
 
-test('handleKeydown space/enter key causes the menu to emit the selected item', () => {
+test('handleItemAction item action causes the menu to emit the selected event', () => {
   const {foundation, mockAdapter} = setupTest();
-  const event = {key: 'Space', target: 'My Element', preventDefault: td.func('preventDefault')};
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
-  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
+  const itemEl = document.createElement('li');
 
-  foundation.handleKeydown(event);
-  event.key = 'Enter';
-  foundation.handleKeydown(event);
+  td.when(mockAdapter.getElementIndex(itemEl)).thenReturn(0);
 
-  td.verify(mockAdapter.notifySelected({index: 0}), {times: 2});
+  foundation.handleItemAction(itemEl);
+  td.verify(mockAdapter.notifySelected({index: 0}), {times: 1});
 });
 
 test('handleKeydown space/enter key inside an input does not prevent default on the event', () => {
@@ -136,292 +130,50 @@ test('handleKeydown space/enter key inside an input does not prevent default on 
   td.verify(event.preventDefault(), {times: 0});
 });
 
-test('handleKeydown space/enter key inside a list item causes the preventDefault to be called', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const event = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
-  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
-
-  foundation.handleKeydown(event);
-  event.key = 'Enter';
-  foundation.handleKeydown(event);
-
-  td.verify(event.preventDefault(), {times: 2});
-});
-
-test('handleKeydown space/enter key not inside of a list item does nothing', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const event = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(false);
-  td.when(mockAdapter.getParentElement(event.target)).thenReturn(null);
-  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
-
-  foundation.handleKeydown(event);
-  event.key = 'Enter';
-  foundation.handleKeydown(event);
-
-  td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
-});
-
-test('handleKeydown space/enter key not inside of a child of a list item causes the list item to be selected', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const event = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(false, false);
-  td.when(mockAdapter.getParentElement(event.target)).thenReturn(event.target, null);
-  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(-1);
-
-  foundation.handleKeydown(event);
-  event.key = 'Enter';
-  foundation.handleKeydown(event);
-
-  td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
-});
-
-test('handleKeydown space/enter key inside of a child of a list item causes the list item to be selected', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const event = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(false, true);
-  td.when(mockAdapter.getParentElement(event.target)).thenReturn(event.target);
-  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
-
-  foundation.handleKeydown(event);
-  event.key = 'Enter';
-  foundation.handleKeydown(event);
-
-  td.verify(mockAdapter.notifySelected({index: 0}), {times: 2});
-});
-
-test('handleKeydown space/enter key inside of a list item not inside of the menu', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const event = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
-  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(-1);
-
-  foundation.handleKeydown(event);
-  event.key = 'Enter';
-  foundation.handleKeydown(event);
-
-  td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
-});
-
-test('handleKeydown space/enter key inside of a selection group ' +
+test('handleItemAction item action event inside of a selection group ' +
   'with additional markup does not cause loop', () => {
   // This test will timeout of there is an endless loop in the selection group logic.
   const {foundation, mockAdapter, clock} = setupTest();
   const parentElement = {};
-  const event = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
+  const itemEl = document.createElement('li');
+  td.when(mockAdapter.elementContainsClass(itemEl, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
   td.when(mockAdapter.elementContainsClass(td.matchers.anything(), listClasses.ROOT)).thenReturn(false, true);
-  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
+  td.when(mockAdapter.getElementIndex(itemEl)).thenReturn(0);
   td.when(mockAdapter.getParentElement(td.matchers.anything())).thenReturn(parentElement, null);
   td.when(mockAdapter.elementContainsClass(td.matchers.anything(), cssClasses.MENU_SELECTION_GROUP)).thenReturn(false);
 
-  foundation.handleKeydown(event);
-  event.key = 'Enter';
-  foundation.handleKeydown(event);
+  foundation.handleItemAction(itemEl);
   clock.tick(numbers.TRANSITION_CLOSE_DURATION);
-
-  td.verify(mockAdapter.closeSurface(), {times: 2});
-});
-
-test('handleKeydown space/enter key inside of a selection group with another element selected', () => {
-  const {foundation, mockAdapter, clock} = setupTest();
-  const event = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
-  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
-  td.when(mockAdapter.getParentElement(event.target)).thenReturn(event.target);
-  td.when(mockAdapter.elementContainsClass(event.target, cssClasses.MENU_SELECTION_GROUP)).thenReturn(true);
-  td.when(mockAdapter.getSelectedElementIndex(event.target)).thenReturn(0);
-
-  foundation.handleKeydown(event);
-  event.key = 'Enter';
-  foundation.handleKeydown(event);
-  clock.tick(numbers.TRANSITION_CLOSE_DURATION);
-
-  td.verify(mockAdapter.removeClassFromElementAtIndex(0, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 2});
-  td.verify(mockAdapter.addClassToElementAtIndex(0, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 2});
-});
-
-test('handleKeydown space/enter key inside of a selection group with no element selected', () => {
-  const {foundation, mockAdapter, clock} = setupTest();
-  const event = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
-  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
-  td.when(mockAdapter.getParentElement(event.target)).thenReturn(event.target);
-  td.when(mockAdapter.elementContainsClass(event.target, cssClasses.MENU_SELECTION_GROUP)).thenReturn(true);
-  td.when(mockAdapter.getSelectedElementIndex(event.target)).thenReturn(-1);
-
-  foundation.handleKeydown(event);
-  event.key = 'Enter';
-  foundation.handleKeydown(event);
-  clock.tick(numbers.TRANSITION_CLOSE_DURATION);
-
-  td.verify(mockAdapter.removeClassFromElementAtIndex(td.matchers.isA(Number), cssClasses.MENU_SELECTED_LIST_ITEM),
-    {times: 0});
-  td.verify(mockAdapter.addClassToElementAtIndex(0, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 2});
-});
-
-test('handleKeydown space/enter key inside of a child element of a list item in a selection group with no ' +
-  'element selected', () => {
-  const {foundation, mockAdapter, clock} = setupTest();
-  const event = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
-  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
-  td.when(mockAdapter.getParentElement(event.target)).thenReturn(event.target);
-  td.when(mockAdapter.elementContainsClass(event.target, cssClasses.MENU_SELECTION_GROUP)).thenReturn(false, true);
-  td.when(mockAdapter.getSelectedElementIndex(event.target)).thenReturn(-1);
-
-  foundation.handleKeydown(event);
-  event.key = 'Enter';
-  foundation.handleKeydown(event);
-  clock.tick(numbers.TRANSITION_CLOSE_DURATION);
-
-  td.verify(mockAdapter.removeClassFromElementAtIndex(td.matchers.isA(Number), cssClasses.MENU_SELECTED_LIST_ITEM),
-    {times: 0});
-  td.verify(mockAdapter.addClassToElementAtIndex(0, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 2});
-});
-
-test('handleKeydown space/enter key inside of a child element of a selection group (but not a list item) with no ' +
-  'element selected', () => {
-  const {foundation, mockAdapter, clock} = setupTest();
-  const event = {key: 'Space', target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
-  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
-  td.when(mockAdapter.getParentElement(event.target)).thenReturn(event.target);
-  td.when(mockAdapter.elementContainsClass(event.target, cssClasses.MENU_SELECTION_GROUP)).thenReturn(false);
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.ROOT)).thenReturn(false, true);
-  td.when(mockAdapter.getSelectedElementIndex(event.target)).thenReturn(-1);
-
-  foundation.handleKeydown(event);
-  event.key = 'Enter';
-  foundation.handleKeydown(event);
-  clock.tick(numbers.TRANSITION_CLOSE_DURATION);
-
-  td.verify(mockAdapter.removeClassFromElementAtIndex(td.matchers.isA(Number), cssClasses.MENU_SELECTED_LIST_ITEM),
-    {times: 0});
-  td.verify(mockAdapter.addClassToElementAtIndex(td.matchers.isA(Number), cssClasses.MENU_SELECTED_LIST_ITEM),
-    {times: 0});
-});
-
-// Clicks
-
-test('Click event causes the menu to close', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const event = {target: 'My Element', preventDefault: td.func('preventDefault')};
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
-  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
-
-  foundation.handleClick(event);
 
   td.verify(mockAdapter.closeSurface(), {times: 1});
 });
 
-test('Click event causes the menu to emit the selected item', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const event = {target: 'My Element', preventDefault: td.func('preventDefault')};
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
-  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
-
-  foundation.handleClick(event);
-
-  td.verify(mockAdapter.notifySelected({index: 0}), {times: 1});
-});
-
-test('Click event inside an input does not prevent default on the event', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const event = {target: {tagName: 'input'}, preventDefault: td.func('preventDefault')};
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
-  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
-
-  foundation.handleClick(event);
-
-  td.verify(event.preventDefault(), {times: 0});
-});
-
-test('Click event inside a list item causes preventDefault to be called', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const event = {target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
-  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
-
-  foundation.handleClick(event);
-
-  td.verify(event.preventDefault(), {times: 1});
-});
-
-test('Click event not inside of a list item does nothing', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const event = {target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(false);
-  td.when(mockAdapter.getParentElement(event.target)).thenReturn(null);
-  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
-
-  foundation.handleClick(event);
-
-  td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
-});
-
-test('Click event not inside of a child of a list item causes nothing to be selected', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const event = {target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(false, false);
-  td.when(mockAdapter.getParentElement(event.target)).thenReturn(event.target, null);
-  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(-1);
-
-  foundation.handleClick(event);
-
-  td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
-});
-
-test('Click event inside of a child of a list item causes the list item to be selected', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const event = {target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(false, true);
-  td.when(mockAdapter.getParentElement(event.target)).thenReturn(event.target);
-  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
-
-  foundation.handleClick(event);
-
-  td.verify(mockAdapter.notifySelected({index: 0}), {times: 1});
-});
-
-test('Click event inside of a list item not inside of the menu', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const event = {target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
-  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(-1);
-
-  foundation.handleClick(event);
-
-  td.verify(mockAdapter.notifySelected(td.matchers.anything()), {times: 0});
-});
-
-test('Click event inside of a selection group with another element selected', () => {
+test('handleItemAction item action event inside of a selection group with another element selected', () => {
   const {foundation, mockAdapter, clock} = setupTest();
-  const event = {target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
-  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
-  td.when(mockAdapter.getParentElement(event.target)).thenReturn(event.target);
-  td.when(mockAdapter.elementContainsClass(event.target, cssClasses.MENU_SELECTION_GROUP)).thenReturn(true);
-  td.when(mockAdapter.getSelectedElementIndex(event.target)).thenReturn(0);
+  const itemEl = document.createElement('li');
+  td.when(mockAdapter.elementContainsClass(itemEl, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
+  td.when(mockAdapter.getElementIndex(itemEl)).thenReturn(0);
+  td.when(mockAdapter.getParentElement(itemEl)).thenReturn(itemEl);
+  td.when(mockAdapter.elementContainsClass(itemEl, cssClasses.MENU_SELECTION_GROUP)).thenReturn(true);
+  td.when(mockAdapter.getSelectedElementIndex(itemEl)).thenReturn(0);
 
-  foundation.handleClick(event);
+  foundation.handleItemAction(itemEl);
   clock.tick(numbers.TRANSITION_CLOSE_DURATION);
 
   td.verify(mockAdapter.removeClassFromElementAtIndex(0, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 1});
   td.verify(mockAdapter.addClassToElementAtIndex(0, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 1});
 });
 
-test('Click event inside of a selection group with no element selected', () => {
+test('handleItemAction item action event inside of a selection group with no element selected', () => {
   const {foundation, mockAdapter, clock} = setupTest();
-  const event = {target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
-  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
-  td.when(mockAdapter.getParentElement(event.target)).thenReturn(event.target);
-  td.when(mockAdapter.elementContainsClass(event.target, cssClasses.MENU_SELECTION_GROUP)).thenReturn(true);
-  td.when(mockAdapter.getSelectedElementIndex(event.target)).thenReturn(-1);
+  const itemEl = document.createElement('li');
+  td.when(mockAdapter.elementContainsClass(itemEl, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
+  td.when(mockAdapter.getElementIndex(itemEl)).thenReturn(0);
+  td.when(mockAdapter.getParentElement(itemEl)).thenReturn(itemEl);
+  td.when(mockAdapter.elementContainsClass(itemEl, cssClasses.MENU_SELECTION_GROUP)).thenReturn(true);
+  td.when(mockAdapter.getSelectedElementIndex(itemEl)).thenReturn(-1);
 
-  foundation.handleClick(event);
+  foundation.handleItemAction(itemEl);
   clock.tick(numbers.TRANSITION_CLOSE_DURATION);
 
   td.verify(mockAdapter.removeClassFromElementAtIndex(td.matchers.isA(Number), cssClasses.MENU_SELECTED_LIST_ITEM),
@@ -429,16 +181,17 @@ test('Click event inside of a selection group with no element selected', () => {
   td.verify(mockAdapter.addClassToElementAtIndex(0, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 1});
 });
 
-test('Click event inside of a child element of a list item in a selection group with no element selected', () => {
+test('handleItemAction item action event inside of a child element of a list item in a selection group with no ' +
+  'element selected', () => {
   const {foundation, mockAdapter, clock} = setupTest();
-  const event = {target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
-  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
-  td.when(mockAdapter.getParentElement(event.target)).thenReturn(event.target);
-  td.when(mockAdapter.elementContainsClass(event.target, cssClasses.MENU_SELECTION_GROUP)).thenReturn(false, true);
-  td.when(mockAdapter.getSelectedElementIndex(event.target)).thenReturn(-1);
+  const itemEl = document.createElement('li');
+  td.when(mockAdapter.elementContainsClass(itemEl, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
+  td.when(mockAdapter.getElementIndex(itemEl)).thenReturn(0);
+  td.when(mockAdapter.getParentElement(itemEl)).thenReturn(itemEl);
+  td.when(mockAdapter.elementContainsClass(itemEl, cssClasses.MENU_SELECTION_GROUP)).thenReturn(false, true);
+  td.when(mockAdapter.getSelectedElementIndex(itemEl)).thenReturn(-1);
 
-  foundation.handleClick(event);
+  foundation.handleItemAction(itemEl);
   clock.tick(numbers.TRANSITION_CLOSE_DURATION);
 
   td.verify(mockAdapter.removeClassFromElementAtIndex(td.matchers.isA(Number), cssClasses.MENU_SELECTED_LIST_ITEM),
@@ -446,18 +199,18 @@ test('Click event inside of a child element of a list item in a selection group 
   td.verify(mockAdapter.addClassToElementAtIndex(0, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 1});
 });
 
-test('Click event inside of a child element of a selection group (but not a list item) with no element ' +
-  'selected', () => {
+test('handleItemAction item action event inside of a child element of a selection group (but not a list item) with ' +
+  'no element selected', () => {
   const {foundation, mockAdapter, clock} = setupTest();
-  const event = {target: {tagName: 'li'}, preventDefault: td.func('preventDefault')};
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
-  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(0);
-  td.when(mockAdapter.getParentElement(event.target)).thenReturn(event.target);
-  td.when(mockAdapter.elementContainsClass(event.target, cssClasses.MENU_SELECTION_GROUP)).thenReturn(false);
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.ROOT)).thenReturn(false, true);
-  td.when(mockAdapter.getSelectedElementIndex(event.target)).thenReturn(-1);
+  const itemEl = document.createElement('li');
+  td.when(mockAdapter.elementContainsClass(itemEl, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
+  td.when(mockAdapter.getElementIndex(itemEl)).thenReturn(0);
+  td.when(mockAdapter.getParentElement(itemEl)).thenReturn(itemEl);
+  td.when(mockAdapter.elementContainsClass(itemEl, cssClasses.MENU_SELECTION_GROUP)).thenReturn(false);
+  td.when(mockAdapter.elementContainsClass(itemEl, listClasses.ROOT)).thenReturn(false, true);
+  td.when(mockAdapter.getSelectedElementIndex(itemEl)).thenReturn(-1);
 
-  foundation.handleClick(event);
+  foundation.handleItemAction(itemEl);
   clock.tick(numbers.TRANSITION_CLOSE_DURATION);
 
   td.verify(mockAdapter.removeClassFromElementAtIndex(td.matchers.isA(Number), cssClasses.MENU_SELECTED_LIST_ITEM),
@@ -466,13 +219,96 @@ test('Click event inside of a child element of a selection group (but not a list
     {times: 0});
 });
 
-test('#handleSelection: should invoke notifySelected on selected item.', () => {
+// Item Action
+
+test('Item action event causes the menu to close', () => {
   const {foundation, mockAdapter} = setupTest();
-  const event = {target: 'My Element', preventDefault: td.func('preventDefault')};
-  td.when(mockAdapter.elementContainsClass(event.target, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
-  td.when(mockAdapter.getElementIndex(event.target)).thenReturn(2);
+  const itemEl = document.createElement('li');
+  td.when(mockAdapter.elementContainsClass(itemEl, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
+  td.when(mockAdapter.getElementIndex(itemEl)).thenReturn(0);
 
-  foundation.handleSelection(event.target);
+  foundation.handleItemAction(itemEl);
 
-  td.verify(mockAdapter.notifySelected({index: 2}), {times: 1});
+  td.verify(mockAdapter.closeSurface(), {times: 1});
+});
+
+test('item action event causes the menu to emit the selected item event', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const itemEl = document.createElement('li');
+  td.when(mockAdapter.elementContainsClass(itemEl, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
+  td.when(mockAdapter.getElementIndex(itemEl)).thenReturn(0);
+
+  foundation.handleItemAction(itemEl);
+
+  td.verify(mockAdapter.notifySelected({index: 0}), {times: 1});
+});
+
+test('item action event inside of a selection group with another element selected', () => {
+  const {foundation, mockAdapter, clock} = setupTest();
+  const itemEl = document.createElement('li');
+  td.when(mockAdapter.elementContainsClass(itemEl, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
+  td.when(mockAdapter.getElementIndex(itemEl)).thenReturn(0);
+  td.when(mockAdapter.getParentElement(itemEl)).thenReturn(itemEl);
+  td.when(mockAdapter.elementContainsClass(itemEl, cssClasses.MENU_SELECTION_GROUP)).thenReturn(true);
+  td.when(mockAdapter.getSelectedElementIndex(itemEl)).thenReturn(0);
+
+  foundation.handleItemAction(itemEl);
+  clock.tick(numbers.TRANSITION_CLOSE_DURATION);
+
+  td.verify(mockAdapter.removeClassFromElementAtIndex(0, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 1});
+  td.verify(mockAdapter.addClassToElementAtIndex(0, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 1});
+});
+
+test('item action event inside of a selection group with no element selected', () => {
+  const {foundation, mockAdapter, clock} = setupTest();
+  const itemEl = document.createElement('li');
+  td.when(mockAdapter.elementContainsClass(itemEl, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
+  td.when(mockAdapter.getElementIndex(itemEl)).thenReturn(0);
+  td.when(mockAdapter.getParentElement(itemEl)).thenReturn(itemEl);
+  td.when(mockAdapter.elementContainsClass(itemEl, cssClasses.MENU_SELECTION_GROUP)).thenReturn(true);
+  td.when(mockAdapter.getSelectedElementIndex(itemEl)).thenReturn(-1);
+
+  foundation.handleItemAction(itemEl);
+  clock.tick(numbers.TRANSITION_CLOSE_DURATION);
+
+  td.verify(mockAdapter.removeClassFromElementAtIndex(td.matchers.isA(Number), cssClasses.MENU_SELECTED_LIST_ITEM),
+    {times: 0});
+  td.verify(mockAdapter.addClassToElementAtIndex(0, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 1});
+});
+
+test('item action event inside of a child element of a list item in a selection group with no element selected', () => {
+  const {foundation, mockAdapter, clock} = setupTest();
+  const itemEl = document.createElement('li');
+  td.when(mockAdapter.elementContainsClass(itemEl, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
+  td.when(mockAdapter.getElementIndex(itemEl)).thenReturn(0);
+  td.when(mockAdapter.getParentElement(itemEl)).thenReturn(itemEl);
+  td.when(mockAdapter.elementContainsClass(itemEl, cssClasses.MENU_SELECTION_GROUP)).thenReturn(false, true);
+  td.when(mockAdapter.getSelectedElementIndex(itemEl)).thenReturn(-1);
+
+  foundation.handleItemAction(itemEl);
+  clock.tick(numbers.TRANSITION_CLOSE_DURATION);
+
+  td.verify(mockAdapter.removeClassFromElementAtIndex(td.matchers.isA(Number), cssClasses.MENU_SELECTED_LIST_ITEM),
+    {times: 0});
+  td.verify(mockAdapter.addClassToElementAtIndex(0, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 1});
+});
+
+test('item action event inside of a child element of a selection group (but not a list item) with no element ' +
+  'selected', () => {
+  const {foundation, mockAdapter, clock} = setupTest();
+  const itemEl = document.createElement('li');
+  td.when(mockAdapter.elementContainsClass(itemEl, listClasses.LIST_ITEM_CLASS)).thenReturn(true);
+  td.when(mockAdapter.getElementIndex(itemEl)).thenReturn(0);
+  td.when(mockAdapter.getParentElement(itemEl)).thenReturn(itemEl);
+  td.when(mockAdapter.elementContainsClass(itemEl, cssClasses.MENU_SELECTION_GROUP)).thenReturn(false);
+  td.when(mockAdapter.elementContainsClass(itemEl, listClasses.ROOT)).thenReturn(false, true);
+  td.when(mockAdapter.getSelectedElementIndex(itemEl)).thenReturn(-1);
+
+  foundation.handleItemAction(itemEl);
+  clock.tick(numbers.TRANSITION_CLOSE_DURATION);
+
+  td.verify(mockAdapter.removeClassFromElementAtIndex(td.matchers.isA(Number), cssClasses.MENU_SELECTED_LIST_ITEM),
+    {times: 0});
+  td.verify(mockAdapter.addClassToElementAtIndex(td.matchers.isA(Number), cssClasses.MENU_SELECTED_LIST_ITEM),
+    {times: 0});
 });
