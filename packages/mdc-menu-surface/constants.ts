@@ -21,8 +21,6 @@
  * THE SOFTWARE.
  */
 
-// tslint:disable:object-literal-sort-keys no-bitwise
-
 const cssClasses = {
   ANCHOR: 'mdc-menu-surface--anchor',
   ANIMATING_CLOSED: 'mdc-menu-surface--animating-closed',
@@ -32,6 +30,7 @@ const cssClasses = {
   ROOT: 'mdc-menu-surface',
 };
 
+// tslint:disable:object-literal-sort-keys
 const strings = {
   CLOSED_EVENT: 'MDCMenuSurface:closed',
   OPENED_EVENT: 'MDCMenuSurface:opened',
@@ -40,6 +39,7 @@ const strings = {
     'select:not(:disabled)', 'textarea:not(:disabled)', '[tabindex]:not([tabindex="-1"]):not([aria-disabled="true"])',
   ].join(', '),
 };
+// tslint:enable:object-literal-sort-keys
 
 const numbers = {
   /** Total duration of menu-surface open animation. */
@@ -76,11 +76,11 @@ enum Corner {
   TOP_LEFT = 0,
   TOP_RIGHT = CornerBit.RIGHT,
   BOTTOM_LEFT = CornerBit.BOTTOM,
-  BOTTOM_RIGHT = CornerBit.BOTTOM | CornerBit.RIGHT,
+  BOTTOM_RIGHT = CornerBit.BOTTOM | CornerBit.RIGHT, // tslint:disable-line:no-bitwise
   TOP_START = CornerBit.FLIP_RTL,
-  TOP_END = CornerBit.FLIP_RTL | CornerBit.RIGHT,
-  BOTTOM_START = CornerBit.BOTTOM | CornerBit.FLIP_RTL,
-  BOTTOM_END = CornerBit.BOTTOM | CornerBit.RIGHT | CornerBit.FLIP_RTL,
+  TOP_END = CornerBit.FLIP_RTL | CornerBit.RIGHT, // tslint:disable-line:no-bitwise
+  BOTTOM_START = CornerBit.BOTTOM | CornerBit.FLIP_RTL, // tslint:disable-line:no-bitwise
+  BOTTOM_END = CornerBit.BOTTOM | CornerBit.RIGHT | CornerBit.FLIP_RTL, // tslint:disable-line:no-bitwise
 }
 
 interface MenuDimensions {

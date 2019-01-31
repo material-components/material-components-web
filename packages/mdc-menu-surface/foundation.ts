@@ -21,18 +21,16 @@
  * THE SOFTWARE.
  */
 
-// tslint:disable:no-bitwise object-literal-sort-keys
-
 import MDCFoundation from '@material/base/foundation';
 import {MDCMenuSurfaceAdapter} from './adapter';
 import {Corner, CornerBit, cssClasses, MenuDimensions, MenuDistance, MenuPoint, numbers, strings} from './constants';
 
 interface AutoLayoutMeasurements {
-  viewportSize: MenuDimensions;
-  viewportDistance: MenuDistance;
   anchorSize: MenuDimensions;
-  surfaceSize: MenuDimensions;
   bodySize: MenuDimensions;
+  surfaceSize: MenuDimensions;
+  viewportDistance: MenuDistance;
+  viewportSize: MenuDimensions;
   windowScroll: MenuPoint;
 }
 
@@ -57,6 +55,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
    * {@see MDCMenuSurfaceAdapter} for typing information on parameters and return types.
    */
   static get defaultAdapter(): MDCMenuSurfaceAdapter {
+    // tslint:disable:object-literal-sort-keys
     return {
       addClass: () => undefined,
       removeClass: () => undefined,
@@ -86,6 +85,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
       notifyClose: () => undefined,
       notifyOpen: () => undefined,
     };
+    // tslint:enable:object-literal-sort-keys
   }
 
   private isOpen_: boolean;
@@ -264,8 +264,8 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
 
     const corner = this.getOriginCorner_();
     const maxMenuSurfaceHeight = this.getMenuSurfaceMaxHeight_(corner);
-    const verticalAlignment = (corner & CornerBit.BOTTOM) ? 'bottom' : 'top';
-    let horizontalAlignment = (corner & CornerBit.RIGHT) ? 'right' : 'left';
+    const verticalAlignment = this.hasBit_(corner, CornerBit.BOTTOM) ? 'bottom' : 'top';
+    let horizontalAlignment = this.hasBit_(corner, CornerBit.RIGHT) ? 'right' : 'left';
     const horizontalOffset = this.getHorizontalOriginOffset_(corner);
     const verticalOffset = this.getVerticalOriginOffset_(corner);
     const {anchorSize, surfaceSize} = this.measurements_;
@@ -299,6 +299,8 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
     const viewportSize = this.adapter_.getWindowDimensions();
     const windowScroll = this.adapter_.getWindowScroll();
 
+    // tslint:disable:object-literal-sort-keys
+
     if (!anchorRect) {
       anchorRect = {
         top: this.position_.y,
@@ -311,18 +313,20 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
     }
 
     return {
+      anchorSize: anchorRect,
       bodySize,
-      viewportSize,
-      windowScroll,
+      surfaceSize: this.dimensions_,
       viewportDistance: {
         top: anchorRect.top,
         right: viewportSize.width - anchorRect.right,
-        left: anchorRect.left,
         bottom: viewportSize.height - anchorRect.bottom,
+        left: anchorRect.left,
       },
-      anchorSize: anchorRect,
-      surfaceSize: this.dimensions_,
+      viewportSize,
+      windowScroll,
     };
+
+    // tslint:enable:object-literal-sort-keys
   }
 
   /**
@@ -334,7 +338,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
 
     const {viewportDistance, anchorSize, surfaceSize} = this.measurements_;
 
-    const isBottomAligned = Boolean(this.anchorCorner_ & CornerBit.BOTTOM);
+    const isBottomAligned = this.hasBit_(this.anchorCorner_, CornerBit.BOTTOM);
     const availableTop = isBottomAligned ? viewportDistance.top + anchorSize.height + this.anchorMargin_.bottom
       : viewportDistance.top + this.anchorMargin_.top;
     const availableBottom = isBottomAligned ? viewportDistance.bottom - this.anchorMargin_.bottom
@@ -343,12 +347,12 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
     const topOverflow = surfaceSize.height - availableTop;
     const bottomOverflow = surfaceSize.height - availableBottom;
     if (bottomOverflow > 0 && topOverflow < bottomOverflow) {
-      corner |= CornerBit.BOTTOM;
+      corner = this.setBit_(corner, CornerBit.BOTTOM);
     }
 
     const isRtl = this.adapter_.isRtl();
-    const isFlipRtl = Boolean(this.anchorCorner_ & CornerBit.FLIP_RTL);
-    const avoidHorizontalOverlap = Boolean(this.anchorCorner_ & CornerBit.RIGHT);
+    const isFlipRtl = this.hasBit_(this.anchorCorner_, CornerBit.FLIP_RTL);
+    const avoidHorizontalOverlap = this.hasBit_(this.anchorCorner_, CornerBit.RIGHT);
     const isAlignedRight = (avoidHorizontalOverlap && !isRtl) ||
       (!avoidHorizontalOverlap && isFlipRtl && isRtl);
     const availableLeft = isAlignedRight ? viewportDistance.left + anchorSize.width + this.anchorMargin_.right :
@@ -362,7 +366,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
     if ((leftOverflow < 0 && isAlignedRight && isRtl) ||
         (avoidHorizontalOverlap && !isAlignedRight && leftOverflow < 0) ||
         (rightOverflow > 0 && leftOverflow < rightOverflow)) {
-      corner |= CornerBit.RIGHT;
+      corner = this.setBit_(corner, CornerBit.RIGHT);
     }
 
     return corner;
@@ -376,19 +380,20 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
     const {viewportDistance} = this.measurements_;
 
     let maxHeight = 0;
-    const isBottomAligned = Boolean(corner & CornerBit.BOTTOM);
+    const isBottomAligned = this.hasBit_(corner, CornerBit.BOTTOM);
+    const isBottomAnchored = this.hasBit_(this.anchorCorner_, CornerBit.BOTTOM);
     const {MARGIN_TO_EDGE} = MDCMenuSurfaceFoundation.numbers;
 
     // When maximum height is not specified, it is handled from css.
     if (isBottomAligned) {
       maxHeight = viewportDistance.top + this.anchorMargin_.top - MARGIN_TO_EDGE;
-      if (!(this.anchorCorner_ & CornerBit.BOTTOM)) {
+      if (!isBottomAnchored) {
         maxHeight += this.measurements_.anchorSize.height;
       }
     } else {
       maxHeight =
           viewportDistance.bottom - this.anchorMargin_.bottom + this.measurements_.anchorSize.height - MARGIN_TO_EDGE;
-      if (this.anchorCorner_ & CornerBit.BOTTOM) {
+      if (isBottomAnchored) {
         maxHeight -= this.measurements_.anchorSize.height;
       }
     }
@@ -404,8 +409,8 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
     const {anchorSize} = this.measurements_;
 
     // isRightAligned corresponds to using the 'right' property on the surface.
-    const isRightAligned = Boolean(corner & CornerBit.RIGHT);
-    const avoidHorizontalOverlap = Boolean(this.anchorCorner_ & CornerBit.RIGHT);
+    const isRightAligned = this.hasBit_(corner, CornerBit.RIGHT);
+    const avoidHorizontalOverlap = this.hasBit_(this.anchorCorner_, CornerBit.RIGHT);
 
     if (isRightAligned) {
       const rightOffset =
@@ -430,8 +435,8 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
    */
   private getVerticalOriginOffset_(corner: Corner): number {
     const {anchorSize} = this.measurements_;
-    const isBottomAligned = Boolean(corner & CornerBit.BOTTOM);
-    const avoidVerticalOverlap = Boolean(this.anchorCorner_ & CornerBit.BOTTOM);
+    const isBottomAligned = this.hasBit_(corner, CornerBit.BOTTOM);
+    const avoidVerticalOverlap = this.hasBit_(this.anchorCorner_, CornerBit.BOTTOM);
 
     let y = 0;
     if (isBottomAligned) {
@@ -486,6 +491,14 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
     if (isRootFocused || childHasFocus) {
       this.adapter_.restoreFocus();
     }
+  }
+
+  private hasBit_(corner: Corner, bit: CornerBit): boolean {
+    return Boolean(corner & bit); // tslint:disable-line:no-bitwise
+  }
+
+  private setBit_(corner: Corner, bit: CornerBit): Corner {
+    return corner | bit; // tslint:disable-line:no-bitwise
   }
 
   /**
