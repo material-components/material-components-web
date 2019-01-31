@@ -90,6 +90,13 @@ interface MenuPosition {
   left?: number;
 }
 
+interface MenuDistance {
+  top: number;
+  right: number;
+  bottom: number;
+  left: number;
+}
+
 interface MenuDimensions {
   width: number;
   height: number;
@@ -100,4 +107,4 @@ interface MenuPoint {
   y: number;
 }
 
-export {cssClasses, strings, numbers, CornerBit, Corner, MenuDimensions, MenuPoint, MenuPosition};
+export {cssClasses, strings, numbers, CornerBit, Corner, MenuDimensions, MenuDistance, MenuPoint, MenuPosition};
