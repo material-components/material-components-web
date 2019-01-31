@@ -58,4 +58,10 @@
   // Switch
   @include mdc-switch-toggled-on-color(on-surface, $query: mdc-feature-any());
   @include mdc-switch-toggled-off-color(on-surface, $query: mdc-feature-any());
+  @include mdc-switch-toggled-on-ripple-color(on-surface, $query: mdc-feature-any());
+  @include mdc-switch-toggled-off-ripple-color(on-surface, $query: mdc-feature-any());
+  @include mdc-switch-toggled-on-track-color(on-surface, $query: mdc-feature-any());
+  @include mdc-switch-toggled-on-thumb-color(on-surface, $query: mdc-feature-any());
+  @include mdc-switch-toggled-off-track-color(on-surface, $query: mdc-feature-any());
+  @include mdc-switch-toggled-off-thumb-color(on-surface, $query: mdc-feature-any());
 }

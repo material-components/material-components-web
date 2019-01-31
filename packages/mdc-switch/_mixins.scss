@@ -37,7 +37,6 @@
   // postcss-bem-linter: define switch
 
   $feat-animation: mdc-feature-create-target($query, animation);
-  $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-ripple-common($query);
@@ -47,13 +46,10 @@
       @include mdc-switch-base_;
     }
 
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-switch-toggled-on-track-color($mdc-switch-baseline-theme-color);
-      @include mdc-switch-toggled-on-thumb-color($mdc-switch-baseline-theme-color);
-      @include mdc-switch-toggled-off-track-color($mdc-switch-toggled-off-track-color);
-      @include mdc-switch-toggled-off-thumb-color($mdc-switch-toggled-off-thumb-color);
-    }
-
+    @include mdc-switch-toggled-on-track-color($mdc-switch-baseline-theme-color, $query);
+    @include mdc-switch-toggled-on-thumb-color($mdc-switch-baseline-theme-color, $query);
+    @include mdc-switch-toggled-off-track-color($mdc-switch-toggled-off-track-color, $query);
+    @include mdc-switch-toggled-off-thumb-color($mdc-switch-toggled-off-thumb-color, $query);
     @include mdc-switch-toggled-off-ripple-color($mdc-switch-toggled-off-ripple-color, $query);
   }
 
@@ -109,38 +105,36 @@
 }
 
 @mixin mdc-switch-toggled-on-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
-
-  @include mdc-feature-targets($feat-color) {
-    @include mdc-switch-toggled-on-track-color($color);
-    @include mdc-switch-toggled-on-thumb-color($color);
-  }
-
+  @include mdc-switch-toggled-on-track-color($color, $query);
+  @include mdc-switch-toggled-on-thumb-color($color, $query);
   @include mdc-switch-toggled-on-ripple-color($color, $query);
 }
 
 @mixin mdc-switch-toggled-off-color($color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
-
-  @include mdc-feature-targets($feat-color) {
-    @include mdc-switch-toggled-off-track-color($color);
-    @include mdc-switch-toggled-off-thumb-color($color);
-  }
-
+  @include mdc-switch-toggled-off-track-color($color, $query);
+  @include mdc-switch-toggled-off-thumb-color($color, $query);
   @include mdc-switch-toggled-off-ripple-color($color, $query);
 }
 
-@mixin mdc-switch-toggled-on-track-color($color) {
+@mixin mdc-switch-toggled-on-track-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
   &.mdc-switch--checked .mdc-switch__track {
-    @include mdc-theme-prop(background-color, $color);
-    @include mdc-theme-prop(border-color, $color);
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(background-color, $color);
+      @include mdc-theme-prop(border-color, $color);
+    }
   }
 }
 
-@mixin mdc-switch-toggled-on-thumb-color($color) {
+@mixin mdc-switch-toggled-on-thumb-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
   &.mdc-switch--checked .mdc-switch__thumb {
-    @include mdc-theme-prop(background-color, $color);
-    @include mdc-theme-prop(border-color, $color);
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(background-color, $color);
+      @include mdc-theme-prop(border-color, $color);
+    }
   }
 }
 
@@ -150,17 +144,25 @@
   }
 }
 
-@mixin mdc-switch-toggled-off-track-color($color) {
+@mixin mdc-switch-toggled-off-track-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
   &:not(.mdc-switch--checked) .mdc-switch__track {
-    @include mdc-theme-prop(background-color, $color);
-    @include mdc-theme-prop(border-color, $color);
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(background-color, $color);
+      @include mdc-theme-prop(border-color, $color);
+    }
   }
 }
 
-@mixin mdc-switch-toggled-off-thumb-color($color) {
+@mixin mdc-switch-toggled-off-thumb-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
   &:not(.mdc-switch--checked) .mdc-switch__thumb {
-    @include mdc-theme-prop(background-color, $color);
-    @include mdc-theme-prop(border-color, $color);
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(background-color, $color);
+      @include mdc-theme-prop(border-color, $color);
+    }
   }
 }
 
@@ -210,10 +212,10 @@
 
   @include mdc-ripple-surface($query);
   @include mdc-states($mdc-switch-baseline-theme-color, false, $query);
+  @include mdc-ripple-radius-unbounded(100%, $query);
 
   @include mdc-feature-targets($feat-structure) {
     @include mdc-rtl-reflexive-position(left, $mdc-switch-tap-target-initial-position);
-    @include mdc-ripple-radius-unbounded;
 
     display: flex;
     position: absolute;
@@ -251,9 +253,7 @@
   $feat-structure: mdc-feature-create-target($query, structure);
   $feat-color: mdc-feature-create-target($query, color);
 
-  @include mdc-feature-targets($feat-structure) {
-    @include mdc-elevation(2);
-  }
+  @include mdc-elevation($z-value: 2, $query: $query);
 
   @include mdc-feature-targets($feat-structure) {
     box-sizing: border-box;
