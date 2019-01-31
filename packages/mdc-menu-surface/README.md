@@ -153,7 +153,9 @@ Mixin | Description
 Constant Name | Description
 --- | ---
 `Corner` | Enum for representing an element corner for positioning the menu-surface. See [constants.js](constants.ts).
-`MenuPosition` | Margin values representing the distance from anchor point that the menu surface should be shown. See [constants.js](constants.ts).
+`MenuDimensions` | Width/height of an element. See [constants.js](constants.ts).
+`MenuDistance` | Margin values representing the distance from anchor point that the menu surface should be shown. See [constants.js](constants.ts).
+`MenuPoint` | X/Y coordinates. See [constants.js](constants.ts).
 
 ## `MDCMenuSurface` Properties and Methods
 
@@ -165,7 +167,7 @@ Property | Value Type | Description
 Method Signature | Description
 --- | ---
 `setAnchorCorner(Corner) => void` | Proxies to the foundation's `setAnchorCorner(Corner)` method.
-`setAnchorMargin(MenuPosition) => void` | Proxies to the foundation's `setAnchorMargin(MenuPosition)` method.
+`setAnchorMargin(Partial<MenuDistance>) => void` | Proxies to the foundation's `setAnchorMargin(Partial<MenuDistance>)` method.
 `setFixedPosition(isFixed: boolean) => void` | Adds the `mdc-menu-surface--fixed` class to the `mdc-menu-surface` element. Proxies to the foundation's `setIsHoisted()` and `setFixedPosition()` methods.
 `setAbsolutePosition(x: number, y: number) => void` | Proxies to the foundation's `setAbsolutePosition(x, y)` method. Used to set the absolute x/y position of the menu on the page. Should only be used when the menu is hoisted to the body.
 `setMenuSurfaceAnchorElement(element: Element) => void` | Changes the element used as an anchor for `menu-surface` positioning logic. Should be used with conjunction with `hoistMenuToBody()`.
@@ -204,12 +206,12 @@ Method Signature | Description
 `isLastElementFocused() => boolean` | Returns a boolean value indicating if the last focusable element of the menu-surface is focused.
 `focusFirstElement() => void` | Focuses the first focusable element of the menu-surface.
 `focusLastElement() => void` | Focuses the last focusable element of the menu-surface.
-`getInnerDimensions() => {width: number, height: number}` | Returns an object with the items container width and height.
-`getAnchorDimensions() => {width: number, height: number, top: number, right: number, bottom: number, left: number}` | Returns an object with the dimensions and position of the anchor (same semantics as `DOMRect`).
-`getBodyDimensions() => {width: number, height: number}` | Returns an object with width and height of the body, in pixels.
-`getWindowDimensions() => {width: number, height: number}` | Returns an object with width and height of the viewport, in pixels.
-`getWindowScroll() => {x: number, y: number}` | Returns an object with the amount the body has been scrolled on the `x` and `y` axis.
-`setPosition(position: {top: string, right: string, bottom: string, left: string}) => void` | Sets the position of the menu surface element.
+`getInnerDimensions() => MenuDimensions` | Returns an object with the items container width and height.
+`getAnchorDimensions() => ClientRect \| null` | Returns an object with the dimensions and position of the anchor.
+`getBodyDimensions() => MenuDimensions` | Returns an object with width and height of the body, in pixels.
+`getWindowDimensions() => MenuDimensions` | Returns an object with width and height of the viewport, in pixels.
+`getWindowScroll() => MenuPoint` | Returns an object with the amount the body has been scrolled on the `x` and `y` axis.
+`setPosition(position: Partial<MenuDistance>) => void` | Sets the position of the menu surface element.
 `setMaxHeight(value: string) => void` | Sets `max-height` style for the menu surface element.
 
 ### `MDCMenuSurfaceFoundation`
@@ -217,12 +219,12 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `setAnchorCorner(corner: Corner) => void` | Sets the corner that the menu surface will be anchored to. See [constants.js](constants.ts)
-`setAnchorMargin(margin: MenuPosition) => void` | Sets the distance from the anchor point that the menu surface should be shown.
+`setAnchorMargin(margin: Partial<MenuDistance>) => void` | Sets the distance from the anchor point that the menu surface should be shown.
 `setIsHoisted(isHoisted: boolean) => void` | Sets whether the menu surface has been hoisted to the body so that the offsets are calculated relative to the page and not the anchor.
 `setFixedPosition(isFixed: boolean) => void` | Sets whether the menu surface is using fixed positioning.
 `setAbsolutePosition(x: number, y: numnber) => void` | Sets the absolute x/y position of the menu. Should only be used when the menu is hoisted or using fixed positioning.
-`handleBodyClick(event: Event) => void` | Method used as the callback function for the `click` event.
-`handleKeydown(event: Event) => void` | Method used as the callback function for the `keydown` events.
+`handleBodyClick(event: MouseEvent) => void` | Method used as the callback function for the `click` event.
+`handleKeydown(event: KeyboardEvent) => void` | Method used as the callback function for the `keydown` events.
 `open() => void` | Opens the menu surface.
 `close() => void` | Closes the menu.
 `isOpen() => boolean` | Returns a boolean indicating whether the menu surface is open.

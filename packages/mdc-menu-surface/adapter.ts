@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {MenuDimensions, MenuPoint, MenuPosition} from './constants';
+import {MenuDimensions, MenuDistance, MenuPoint} from './constants';
 
 /**
  * Adapter for MDCMenuSurface. Provides an interface for managing
@@ -57,7 +57,7 @@ interface MDCMenuSurfaceAdapter {
   getWindowDimensions(): MenuDimensions;
   getBodyDimensions(): MenuDimensions;
   getWindowScroll(): MenuPoint;
-  setPosition(position: MenuPosition): void;
+  setPosition(position: Partial<MenuDistance>): void;
   setMaxHeight(height: string): void;
   setTransformOrigin(origin: string): void;
 

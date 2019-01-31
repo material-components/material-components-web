@@ -25,9 +25,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 import {MDCMenuSurfaceAdapter} from './adapter';
-import {
-  Corner, CornerBit, cssClasses, MenuDimensions, MenuDistance, MenuPoint, MenuPosition, numbers, strings,
-} from './constants';
+import {Corner, CornerBit, cssClasses, MenuDimensions, MenuDistance, MenuPoint, numbers, strings} from './constants';
 
 interface AutoLayoutMeasurements {
   viewportSize: MenuDimensions;
@@ -147,7 +145,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
   /**
    * @param margin Set of margin values from anchor.
    */
-  setAnchorMargin(margin: MenuPosition) {
+  setAnchorMargin(margin: Partial<MenuDistance>) {
     this.anchorMargin_.top = margin.top || 0;
     this.anchorMargin_.right = margin.right || 0;
     this.anchorMargin_.bottom = margin.bottom || 0;
@@ -272,7 +270,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
     const verticalOffset = this.getVerticalOriginOffset_(corner);
     const {anchorSize, surfaceSize} = this.measurements_;
 
-    const position: MenuPosition = {
+    const position: Partial<MenuDistance> = {
       [horizontalAlignment]: horizontalOffset ? horizontalOffset : 0,
       [verticalAlignment]: verticalOffset ? verticalOffset : 0,
     };
@@ -445,10 +443,10 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
   }
 
   /** Calculates the offsets for positioning the menu-surface when the menu-surface has been hoisted to the body. */
-  private adjustPositionForHoistedElement_(position: MenuPosition) {
+  private adjustPositionForHoistedElement_(position: Partial<MenuDistance>) {
     const {windowScroll, viewportDistance} = this.measurements_;
 
-    const props = Object.keys(position) as Array<keyof MenuPosition>;
+    const props = Object.keys(position) as Array<keyof Partial<MenuDistance>>;
 
     for (const prop of props) {
       let value = position[prop] || 0;
