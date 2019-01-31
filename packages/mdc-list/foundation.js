@@ -53,11 +53,11 @@ class MDCListFoundation extends MDCFoundation {
       removeClassForElementIndex: () => {},
       focusItemAtIndex: () => {},
       setTabIndexForListItemChildren: () => {},
-      followHref: () => {},
       hasRadioAtIndex: () => {},
       hasCheckboxAtIndex: () => {},
       isCheckboxCheckedAtIndex: () => {},
       setCheckedCheckboxOrRadioAtIndex: () => {},
+      notifyAction: () => {},
       isFocusInsideList: () => {},
     });
   }
@@ -225,13 +225,15 @@ class MDCListFoundation extends MDCFoundation {
       nextIndex = this.focusLastElement();
     } else if (isEnter || isSpace) {
       if (isRootListItem) {
+        // Return early if enter key is pressed on anchor element which triggers synthetic MouseEvent event.
+        if (evt.target.tagName === 'A' && isEnter) return;
+        this.preventDefaultEvent_(evt);
+
         if (this.isSelectableList_()) {
           this.setSelectedIndexOnAction_(currentIndex);
-          this.preventDefaultEvent_(evt);
         }
 
-        // Explicitly activate links, since we're preventing default on Enter, and Space doesn't activate them.
-        this.adapter_.followHref(currentIndex);
+        this.adapter_.notifyAction(currentIndex);
       }
     }
 
@@ -254,6 +256,8 @@ class MDCListFoundation extends MDCFoundation {
     if (this.isSelectableList_()) {
       this.setSelectedIndexOnAction_(index, toggleCheckbox);
     }
+
+    this.adapter_.notifyAction(index);
 
     this.setTabindexAtIndex_(index);
     this.focusedItemIndex_ = index;

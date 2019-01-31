@@ -6,11 +6,6 @@ iconId: text_field
 path: /catalog/input-controls/text-field/
 -->
 
-## Important - Deprecation Notice
-
-The dense variant of the text field will be removed in an upcoming release. 
-See [github issue](https://github.com/material-components/material-components-web/issues/4142) for details.
-
 # Text Field
 
 Text fields allow users to input, edit, and select text.
@@ -129,6 +124,44 @@ To disable the text field, add the `disabled` attribute to the `<input>` element
 </div>
 ```
 
+### Text Field without label
+
+A text field doesn’t require a label if a separate but clear label indicator is already displayed adjacent to the text field.
+Add class name `mdc-text-field--no-label` and remove the label element from the structure.
+
+#### Filled
+
+```html
+<div class="mdc-text-field mdc-text-field--no-label">
+  <input type="text" class="mdc-text-field__input" placeholder="Placeholder text" aria-label="Label">
+  <div class="mdc-line-ripple"></div>
+</div>
+```
+
+#### Outlined
+
+```html
+<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
+  <input type="text" class="mdc-text-field__input" aria-label="Label">
+  <div class="mdc-notched-outline">
+    <div class="mdc-notched-outline__leading"></div>
+    <div class="mdc-notched-outline__trailing"></div>
+  </div>
+</div>
+```
+
+#### Textarea
+
+```html
+<div class="mdc-text-field mdc-text-field--textarea mdc-text-field--no-label">
+  <textarea class="mdc-text-field__input" rows="8" cols="40" aria-label="Label"></textarea>
+  <div class="mdc-notched-outline">
+    <div class="mdc-notched-outline__leading"></div>
+    <div class="mdc-notched-outline__trailing"></div>
+  </div>
+</div>
+```
+
 ### Text Field with Helper Text
 
 The helper text provides supplemental information and/or validation messages to users. It appears on input field focus
@@ -183,10 +216,16 @@ CSS Class | Description
 `mdc-text-field--fullwidth` | Styles the text field as a full width text field.
 `mdc-text-field--textarea` | Indicates the text field is a `<textarea>`.
 `mdc-text-field--disabled` | Styles the text field as a disabled text field.
-`mdc-text-field--dense` | Styles the text field as a dense text field.
+`mdc-text-field--dense` | Styles the text field as a dense text field.\*
 `mdc-text-field--with-leading-icon` | Styles the text field as a text field with a leading icon.
 `mdc-text-field--with-trailing-icon` | Styles the text field as a text field with a trailing icon.
 `mdc-text-field--focused` | Styles the text field as a text field in focus.
+`mdc-text-field--no-label` | Styles the text field that has no label.
+
+#### Deprecation Notice
+
+\*The `--dense` variant of the text field will be removed in an upcoming release.
+See [github issue](https://github.com/material-components/material-components-web/issues/4142) for details.
 
 ### Sass Mixins
 
