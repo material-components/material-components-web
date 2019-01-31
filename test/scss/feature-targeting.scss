@@ -30,6 +30,7 @@
 
   // Menu
   @include mdc-menu($query: mdc-feature-any());
+  @include mdc-menu-width(0, $query: mdc-feature-any());
 
   // Radio
   @include mdc-radio($query: mdc-feature-any());
