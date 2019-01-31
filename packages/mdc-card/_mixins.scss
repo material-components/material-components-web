@@ -40,22 +40,18 @@
   $feat-structure: mdc-feature-create-target($query, structure);
 
   .mdc-card {
-    @include mdc-feature-targets($feat-structure) {
-      @include mdc-card-shape-radius(medium);
-      @include mdc-card-container-layout_;
-    }
+    @include mdc-card-shape-radius(medium, $query: $query);
+    @include mdc-card-fill-color(surface, $query);
+    @include mdc-elevation(1, $query: $query);
 
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-card-fill-color(surface);
-      @include mdc-elevation(1);
+    @include mdc-feature-targets($feat-structure) {
+      @include mdc-card-container-layout_;
     }
   }
 
   .mdc-card--outlined {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-elevation(0);
-      @include mdc-card-outline($mdc-card-outline-color);
-    }
+    @include mdc-elevation(0, $query: $query);
+    @include mdc-card-outline($mdc-card-outline-color, $query: $query);
   }
 
   //
@@ -69,8 +65,10 @@
       background-repeat: no-repeat;
       background-position: center;
       background-size: cover;
+    }
 
-      &::before {
+    &::before {
+      @include mdc-feature-targets($feat-structure) {
         display: block;
         content: "";
       }
@@ -92,15 +90,11 @@
   }
 
   .mdc-card__media--square {
-    @include mdc-feature-targets($feat-structure) {
-      @include mdc-card-media-aspect-ratio(1, 1);
-    }
+    @include mdc-card-media-aspect-ratio(1, 1, $query);
   }
 
   .mdc-card__media--16-9 {
-    @include mdc-feature-targets($feat-structure) {
-      @include mdc-card-media-aspect-ratio(16, 9);
-    }
+    @include mdc-card-media-aspect-ratio(16, 9, $query);
   }
 
   .mdc-card__media-content {
@@ -120,10 +114,9 @@
 
   .mdc-card__primary-action {
     @include mdc-ripple-surface($query);
-    @include mdc-states($query: $query);
+    @include mdc-ripple-radius-bounded($query: $query);
 
     @include mdc-feature-targets($feat-structure) {
-      @include mdc-ripple-radius-bounded;
       @include mdc-card-container-layout_;
 
       position: relative; // Needed to prevent the ripple wash from overflowing the container in IE and Edge
@@ -133,6 +126,8 @@
       cursor: pointer;
       overflow: hidden;
     }
+
+    @include mdc-states($query: $query);
   }
 
   .mdc-card__primary-action:first-child {
@@ -203,8 +198,10 @@
       justify-content: center;
       cursor: pointer;
       user-select: none;
+    }
 
-      &:focus {
+    &:focus {
+      @include mdc-feature-targets($feat-structure) {
         outline: none;
       }
     }
@@ -219,8 +216,10 @@
       @include mdc-rtl-reflexive-box(margin, right, 8px);
 
       padding: 0 8px;
+    }
 
-      &:last-child {
+    &:last-child {
+      @include mdc-feature-targets($feat-structure) {
         @include mdc-rtl-reflexive-box(margin, right, 0);
       }
     }
@@ -236,8 +235,10 @@
       padding: 8px 16px;
       /* @noflip */
       text-align: left;
+    }
 
-      @include mdc-rtl {
+    @include mdc-rtl {
+      @include mdc-feature-targets($feat-structure) {
         /* @noflip */
         text-align: right;
       }
@@ -267,22 +268,44 @@
   // postcss-bem-linter: end
 }
 
-@mixin mdc-card-fill-color($color) {
-  @include mdc-theme-prop(background-color, $color);
+@mixin mdc-card-fill-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  @include mdc-feature-targets($feat-color) {
+    @include mdc-theme-prop(background-color, $color);
+  }
 }
 
-@mixin mdc-card-outline($color, $thickness: $mdc-card-outline-width) {
-  border: $thickness solid mdc-theme-prop-value($color);
+@mixin mdc-card-outline($color, $thickness: $mdc-card-outline-width, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-feature-targets($feat-structure) {
+    border-width: $thickness;
+    border-style: solid;
+  }
+
+  @include mdc-feature-targets($feat-color) {
+    border-color: mdc-theme-prop-value($color);
+  }
 }
 
-@mixin mdc-card-shape-radius($radius, $rtl-reflexive: false) {
-  @include mdc-shape-radius($radius, $rtl-reflexive);
+@mixin mdc-card-shape-radius($radius, $rtl-reflexive: false, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-feature-targets($feat-structure) {
+    @include mdc-shape-radius($radius, $rtl-reflexive);
+  }
 }
 
-@mixin mdc-card-media-aspect-ratio($x, $y) {
+@mixin mdc-card-media-aspect-ratio($x, $y, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
   &::before {
-    // This clever trick brought to you by: http://www.mademyday.de/css-height-equals-width-with-pure-css.html
-    margin-top: percentage($y / $x);
+    @include mdc-feature-targets($feat-structure) {
+      // This clever trick brought to you by: http://www.mademyday.de/css-height-equals-width-with-pure-css.html
+      margin-top: percentage($y / $x);
+    }
   }
 }
 
