@@ -22,6 +22,7 @@
  */
 
 import MDCComponent from '@material/base/component';
+import {SpecificEventListener} from '@material/dom/index';
 import {MDCRipple} from '@material/ripple/index';
 import MDCIconButtonToggleFoundation from './foundation';
 
@@ -31,13 +32,15 @@ class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundation> {
   }
 
   private ripple_: MDCRipple;
-  // TODO: type for event handler?
-  // tslint:disable-next-line:no-empty
-  private handleClick_ = (() => {});
+  private handleClick_: SpecificEventListener<'click'>;
 
-  // tslint:disable-next-line:no-any a component can pass in anything it needs to the constructor
-  constructor(...args) {
-    super(...args);
+  constructor(
+    root: Element,
+    foundation?: MDCIconButtonToggleFoundation,
+    // tslint:disable-next-line:no-any a component can pass in anything it needs to the constructor
+    ...args: any[]
+  ) {
+    super(root, foundation, ...args);
 
     this.ripple_ = this.initRipple_();
     this.handleClick_ = () => this.foundation_.handleClick();
