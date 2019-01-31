@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,39 +21,42 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
+import MDCComponent from '@material/base/component';
+
+import MDCTextFieldCharacterCounterAdapter from './adapter';
+import MDCTextFieldCharacterCounterFoundation from './foundation';
 
 /**
- * Adapter for MDC Form Field. Provides an interface for managing
- * - event handlers
- * - ripple activation
- *
- * Additionally, provides type information for the adapter to the Closure
- * compiler.
- *
- * Implement this adapter for your framework of choice to delegate updates to
- * the component in your framework of choice. See architecture documentation
- * for more details.
- * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
- *
- * @record
+ * @extends {MDCComponent<!MDCTextFieldCharacterCounterFoundation>}
+ * @final
  */
-class MDCFormFieldAdapter {
+class MDCTextFieldCharacterCounter extends MDCComponent {
   /**
-   * @param {string} type
-   * @param {!EventListener} handler
+   * @param {!Element} root
+   * @return {!MDCTextFieldCharacterCounter}
    */
-  registerInteractionHandler(type, handler) {}
+  static attachTo(root) {
+    return new MDCTextFieldCharacterCounter(root);
+  }
 
   /**
-   * @param {string} type
-   * @param {!EventListener} handler
+   * @return {!MDCTextFieldCharacterCounterFoundation}
    */
-  deregisterInteractionHandler(type, handler) {}
+  get foundation() {
+    return this.foundation_;
+  }
 
-  activateInputRipple() {}
-
-  deactivateInputRipple() {}
+  /**
+   * @return {!MDCTextFieldCharacterCounterFoundation}
+   */
+  getDefaultFoundation() {
+    return new MDCTextFieldCharacterCounterFoundation(
+      /** @type {!MDCTextFieldCharacterCounterAdapter} */ (Object.assign({
+        setContent: (content) => {
+          this.root_.textContent = content;
+        },
+      })));
+  }
 }
 
-export default MDCFormFieldAdapter;
+export {MDCTextFieldCharacterCounter, MDCTextFieldCharacterCounterFoundation};

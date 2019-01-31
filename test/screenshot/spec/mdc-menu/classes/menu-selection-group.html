@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="../../../out/mdc.list.css">
     <link rel="stylesheet" href="../../../out/mdc.menu-surface.css">
     <link rel="stylesheet" href="../../../out/mdc.menu.css">
+    <link rel="stylesheet" href="../../../out/mdc.button.css">
     <link rel="stylesheet" href="../../../out/spec/fixture.css">
     <link rel="stylesheet" href="../../../out/spec/mdc-menu/fixture.css">
 
@@ -45,77 +46,79 @@
     <main class="test-viewport test-viewport--mobile">
       <div class="test-layout">
         <div class="test-cell test-cell--menu">
-
-          <div class="mdc-menu mdc-menu-surface mdc-menu-surface--open" tabindex="-1" id="demo-menu">
-            <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
-              <li>
-                <ul class="mdc-menu__selection-group">
+          <div class="test-menu-button-container">
+            <button class="mdc-button test-menu-button">Open menu</button>
+              <div class="mdc-menu mdc-menu-surface mdc-menu-surface--open" tabindex="-1" id="demo-menu" style="left: 0px; top: 36px;">
+                <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
+                  <li>
+                    <ul class="mdc-menu__selection-group">
+                      <li class="mdc-list-item" role="menuitem">
+                        <span class="mdc-list-item__graphic mdc-menu__selection-group-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path fill="none" d="M0 0h24v24H0z"/>
+                            <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+                          </svg>
+                        </span>
+                        <span class="mdc-list-item__text">
+                          Single
+                        </span>
+                      </li>
+                      <li class="mdc-list-item mdc-list-item--disabled" role="menuitem">
+                        <span class="mdc-list-item__graphic mdc-menu__selection-group-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path fill="none" d="M0 0h24v24H0z"/>
+                            <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+                          </svg>
+                        </span>
+                        <span class="mdc-list-item__text">
+                          1.15
+                        </span>
+                      </li>
+                      <li class="mdc-list-item" role="menuitem">
+                        <span class="mdc-list-item__graphic mdc-menu__selection-group-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path fill="none" d="M0 0h24v24H0z"/>
+                            <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+                          </svg>
+                        </span>
+                        <span class="mdc-list-item__text">
+                          Double
+                        </span>
+                      </li>
+                      <li class="mdc-list-item mdc-menu-item--selected" role="menuitem">
+                        <span class="mdc-list-item__graphic mdc-menu__selection-group-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path fill="none" d="M0 0h24v24H0z"/>
+                            <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+                          </svg>
+                        </span>
+                        <span class="mdc-list-item__text">
+                          Custom: 1.2
+                        </span>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="mdc-list-divider" role="separator"></li>
                   <li class="mdc-list-item" role="menuitem">
-                    <span class="mdc-list-item__graphic mdc-menu__selection-group-icon">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                        <path fill="none" d="M0 0h24v24H0z"/>
-                        <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
-                      </svg>
-                    </span>
-                    <span class="mdc-list-item__text">
-                      Single
-                    </span>
-                  </li>
-                  <li class="mdc-list-item mdc-list-item--disabled" role="menuitem">
-                    <span class="mdc-list-item__graphic mdc-menu__selection-group-icon">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                        <path fill="none" d="M0 0h24v24H0z"/>
-                        <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
-                      </svg>
-                    </span>
-                    <span class="mdc-list-item__text">
-                      1.15
+                    <span class="mdc-list-item__text test-font--redact-all">
+                      Add space before paragraph
                     </span>
                   </li>
                   <li class="mdc-list-item" role="menuitem">
-                    <span class="mdc-list-item__graphic mdc-menu__selection-group-icon">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                        <path fill="none" d="M0 0h24v24H0z"/>
-                        <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
-                      </svg>
-                    </span>
-                    <span class="mdc-list-item__text">
-                      Double
+                    <span class="mdc-list-item__text test-font--redact-all">
+                      Add space after paragraph
                     </span>
                   </li>
-                  <li class="mdc-list-item mdc-menu-item--selected" role="menuitem">
-                    <span class="mdc-list-item__graphic mdc-menu__selection-group-icon">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                        <path fill="none" d="M0 0h24v24H0z"/>
-                        <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
-                      </svg>
-                    </span>
-                    <span class="mdc-list-item__text">
-                      Custom: 1.2
+                  <li class="mdc-list-divider" role="separator"></li>
+                  <li class="mdc-list-item" role="menuitem">
+                    <span class="mdc-list-item__text test-font--redact-all">
+                      Custom spacing...
                     </span>
                   </li>
                 </ul>
-              </li>
-              <li class="mdc-list-divider" role="separator"></li>
-              <li class="mdc-list-item" role="menuitem">
-                <span class="mdc-list-item__text test-font--redact-all">
-                  Add space before paragraph
-                </span>
-              </li>
-              <li class="mdc-list-item" role="menuitem">
-                <span class="mdc-list-item__text test-font--redact-all">
-                  Add space after paragraph
-                </span>
-              </li>
-              <li class="mdc-list-divider" role="separator"></li>
-              <li class="mdc-list-item" role="menuitem">
-                <span class="mdc-list-item__text test-font--redact-all">
-                  Custom spacing...
-                </span>
-              </li>
-            </ul>
+              </div>
+            </div>
           </div>
-
         </div>
       </div>
     </main>

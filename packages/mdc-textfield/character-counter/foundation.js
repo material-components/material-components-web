@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,54 +22,50 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import MDCFormFieldAdapter from './adapter';
+import MDCTextFieldCharacterCounterAdapter from './adapter';
 import {cssClasses, strings} from './constants';
 
 /**
- * @extends {MDCFoundation<!MDCFormFieldAdapter>}
+ * @extends {MDCFoundation<!MDCTextFieldCharacterCounterAdapter>}
+ * @final
  */
-class MDCFormFieldFoundation extends MDCFoundation {
-  /** @return enum {cssClasses} */
+class MDCTextFieldCharacterCounterFoundation extends MDCFoundation {
+  /** @return enum {string} */
   static get cssClasses() {
     return cssClasses;
   }
 
-  /** @return enum {strings} */
+  /** @return enum {string} */
   static get strings() {
     return strings;
   }
 
-  /** @return {!MDCFormFieldAdapter} */
+  /**
+   * {@see MDCTextFieldCharacterCounterAdapter} for typing information on parameters and return
+   * types.
+   * @return {!MDCTextFieldCharacterCounterAdapter}
+   */
   static get defaultAdapter() {
-    return {
-      registerInteractionHandler: (/* type: string, handler: EventListener */) => {},
-      deregisterInteractionHandler: (/* type: string, handler: EventListener */) => {},
-      activateInputRipple: () => {},
-      deactivateInputRipple: () => {},
-    };
+    return /** @type {!MDCTextFieldCharacterCounterAdapter} */ ({
+      setContent: () => {},
+    });
   }
 
+  /**
+   * @param {!MDCTextFieldCharacterCounterAdapter} adapter
+   */
   constructor(adapter) {
-    super(Object.assign(MDCFormFieldFoundation.defaultAdapter, adapter));
-
-    /** @private {!EventListener} */
-    this.clickHandler_ = /** @type {!EventListener} */ (
-      () => this.handleClick_());
+    super(Object.assign(MDCTextFieldCharacterCounterFoundation.defaultAdapter, adapter));
   }
 
-  init() {
-    this.adapter_.registerInteractionHandler('click', this.clickHandler_);
-  }
-
-  destroy() {
-    this.adapter_.deregisterInteractionHandler('click', this.clickHandler_);
-  }
-
-  /** @private */
-  handleClick_() {
-    this.adapter_.activateInputRipple();
-    requestAnimationFrame(() => this.adapter_.deactivateInputRipple());
+  /**
+   * @param {number} currentLength
+   * @param {number} maxLength
+   */
+  setCounterValue(currentLength, maxLength) {
+    currentLength = Math.min(currentLength, maxLength);
+    this.adapter_.setContent(`${currentLength} / ${maxLength}`);
   }
 }
 
-export default MDCFormFieldFoundation;
+export default MDCTextFieldCharacterCounterFoundation;

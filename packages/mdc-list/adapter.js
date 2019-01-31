@@ -84,12 +84,6 @@ class MDCListAdapter {
   setTabIndexForListItemChildren(listItemIndex, tabIndexValue) {}
 
   /**
-   * If the given element has an href, follows the link.
-   * @param {!Element} ele
-   */
-  followHref(ele) {}
-
-  /**
    * @param {number} index
    * @return {boolean} Returns true if radio button is present at given list item index.
    */
@@ -113,6 +107,11 @@ class MDCListAdapter {
    * @param {boolean} isChecked
    */
   setCheckedCheckboxOrRadioAtIndex(index, isChecked) {}
+
+  /**
+   * Notifies user action on list item.
+   */
+  notifyAction(index) {}
 
   /**
    * @return {boolean} Returns true when the current focused element is inside list root.

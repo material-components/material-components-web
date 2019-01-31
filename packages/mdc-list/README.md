@@ -506,11 +506,11 @@ Method Signature | Description
 `removeClassForElementIndex(index: Number, className: String) => void` | Removes the `className` class to the list item at `index`.
 `focusItemAtIndex(index: Number) => void` | Focuses the list item at the `index` value specified.
 `setTabIndexForListItemChildren(index: Number, value: Number) => void` | Sets the `tabindex` attribute to `value` for each child button or anchor element in the list item at the `index` specified.
-`followHref(element: Element) => void` | If the given element has an href, follows the link.
 `hasRadioAtIndex(index: number) => boolean` | Returns true if radio button is present at given list item index.
 `hasCheckboxAtIndex(index: number) => boolean` | Returns true if checkbox is present at given list item index.
 `isCheckboxCheckedAtIndex(index: number) => boolean` | Returns true if checkbox inside a list item is checked.
 `setCheckedCheckboxOrRadioAtIndex(index: number, isChecked: boolean) => void` | Sets the checked status of checkbox or radio at given list item index.
+`notifyAction(index: number) => void` | Notifies user action on list item including keyboard and mouse actions.
 `isFocusInsideList() => boolean` | Returns true if the current focused element is inside list root.
 
 ### `MDCListFoundation`

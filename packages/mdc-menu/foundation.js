@@ -27,8 +27,6 @@ import {cssClasses, strings} from './constants';
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
 import MDCListFoundation from '@material/list/foundation';
 
-const ELEMENTS_KEY_ALLOWED_IN = ['input', 'button', 'textarea', 'select', 'a'];
-
 /**
  * @extends {MDCFoundation<!MDCMenuAdapter>}
  */
@@ -85,44 +83,17 @@ class MDCMenuFoundation extends MDCFoundation {
    */
   handleKeydown(evt) {
     const {key, keyCode} = evt;
-
-    const isSpace = key === 'Space' || keyCode === 32;
-    const isEnter = key === 'Enter' || keyCode === 13;
     const isTab = key === 'Tab' || keyCode === 9;
 
-    if (isSpace || isEnter) {
-      this.handleAction_(evt);
-    } else if (isTab) {
+    if (isTab) {
       this.adapter_.closeSurface();
     }
   }
 
   /**
-   * Handler function for the click events.
-   * @param {!Event} evt
+   * @param {!HTMLElement} listItem
    */
-  handleClick(evt) {
-    this.handleAction_(evt);
-  }
-
-  /**
-   * Combined action handling for click/keypress events.
-   * @param {!Event} evt
-   * @private
-   */
-  handleAction_(evt) {
-    const listItem = this.getListItem_(/** @type {HTMLElement} */ (evt.target));
-    if (listItem) {
-      this.handleSelection(listItem);
-      this.preventDefaultEvent_(evt);
-    }
-  }
-
-  /**
-   * Handler for a selected list item.
-   * @param {?HTMLElement} listItem
-   */
-  handleSelection(listItem) {
+  handleItemAction(listItem) {
     const index = this.adapter_.getElementIndex(listItem);
     if (index < 0) {
       return;
@@ -202,20 +173,6 @@ class MDCMenuFoundation extends MDCFoundation {
     }
 
     return target;
-  }
-
-  /**
-   * Ensures that preventDefault is only called if the containing element doesn't
-   * consume the event, and it will cause an unintended scroll.
-   * @param {!Event} evt
-   * @private
-   */
-  preventDefaultEvent_(evt) {
-    const target = /** @type {!HTMLElement} */ (evt.target);
-    const tagName = `${target.tagName}`.toLowerCase();
-    if (ELEMENTS_KEY_ALLOWED_IN.indexOf(tagName) === -1) {
-      evt.preventDefault();
-    }
   }
 }
 
