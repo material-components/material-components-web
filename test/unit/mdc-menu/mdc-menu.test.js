@@ -81,7 +81,7 @@ function setupTestWithFakes(open = false) {
   const menuSurface = new FakeMenuSurface(root);
   menuSurface.open = open;
 
-  const MockFoundationCtor = td.constructor(MDCListFoundation);
+  const MockFoundationCtor = td.constructor(MDCMenuFoundation);
   const mockFoundation = new MockFoundationCtor();
 
   const list = new FakeList(root.querySelector('.mdc-list'));
@@ -119,10 +119,10 @@ test('attachTo initializes and returns a MDCMenu instance', () => {
   assert.isTrue(MDCMenu.attachTo(getFixture()) instanceof MDCMenu);
 });
 
-test('initialize registers event listener for click', () => {
+test('initialize registers event listener for list item action', () => {
   const {mockFoundation, root} = setupTestWithFakes();
-  domEvents.emit(root, 'click');
-  td.verify(mockFoundation.handleClick(td.matchers.isA(Event)), {times: 1});
+  domEvents.emit(root, MDCListFoundation.strings.ACTION_EVENT, {detail: 0});
+  td.verify(mockFoundation.handleItemAction(td.matchers.isA(Element)), {times: 1});
 });
 
 test('initialize registers event listener for keydown', () => {
@@ -135,8 +135,8 @@ test('destroy deregisters event listener for click', () => {
   const {component, mockFoundation, root} = setupTestWithFakes();
   component.destroy();
 
-  domEvents.emit(root, 'click');
-  td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 0});
+  domEvents.emit(root, MDCListFoundation.strings.ACTION_EVENT, {detail: 0});
+  td.verify(mockFoundation.handleItemAction(td.matchers.isA(Element)), {times: 0});
 });
 
 test('destroy deregisters event listener for keydown', () => {

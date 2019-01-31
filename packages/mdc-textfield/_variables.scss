@@ -31,6 +31,7 @@ $mdc-text-field-ink-color: rgba(mdc-theme-prop-value(on-surface), .87) !default;
 $mdc-text-field-helper-text-color: rgba(mdc-theme-prop-value(on-surface), .6) !default;
 $mdc-text-field-icon-color: rgba(mdc-theme-prop-value(on-surface), .54) !default;
 $mdc-text-field-focused-label-color: rgba(mdc-theme-prop-value(primary), .87) !default;
+$mdc-text-field-placeholder-ink-color: rgba(mdc-theme-prop-value(on-surface), .54) !default;
 
 $mdc-text-field-disabled-label-color: rgba(mdc-theme-prop-value(on-surface), .37) !default;
 $mdc-text-field-disabled-ink-color: rgba(mdc-theme-prop-value(on-surface), .37) !default;
@@ -61,4 +62,5 @@ $mdc-text-field-outlined-dense-label-position-y: 120% !default;
 $mdc-text-field-outlined-with-leading-icon-label-position-x: 0 !default;
 $mdc-text-field-outlined-dense-with-leading-icon-label-position-x: 21px !default;
 $mdc-text-field-textarea-label-position-y: 130% !default;
+$mdc-text-field-helper-line-padding: 16px;
 // Note that the scale factor is an eyeballed approximation of what's shown in the mocks.

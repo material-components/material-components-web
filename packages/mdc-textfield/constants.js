@@ -41,6 +41,7 @@ const cssClasses = {
   TEXTAREA: 'mdc-text-field--textarea',
   OUTLINED: 'mdc-text-field--outlined',
   WITH_LEADING_ICON: 'mdc-text-field--with-leading-icon',
+  HELPER_LINE: 'mdc-text-field-helper-line',
 };
 
 /** @enum {number} */
