@@ -20,53 +20,78 @@
 // THE SOFTWARE.
 //
 
+@import "@material/feature-targeting/functions";
+@import "@material/feature-targeting/mixins";
 @import "./variables";
 
-@mixin mdc-typography-base {
-  @each $key, $value in $mdc-typography-base {
-    #{$key}: $value;
+@mixin mdc-typography-base($query: mdc-feature-all()) {
+  $feat-typography: mdc-feature-create-target($query, typography);
+
+  @include mdc-feature-targets($feat-typography) {
+    @each $key, $value in $mdc-typography-base {
+      #{$key}: $value;
+    }
   }
 }
 
-@mixin mdc-typography($style) {
+@mixin mdc-typography($style, $query: mdc-feature-all()) {
+  $feat-typography: mdc-feature-create-target($query, typography);
   $style-props: map-get($mdc-typography-styles, $style);
 
   @if not map-has-key($mdc-typography-styles, $style) {
     @error "Invalid style specified! #{$style} doesn't exist. Choose one of #{map-keys($mdc-typography-styles)}";
   }
 
-  @each $key, $value in $style-props {
-    #{$key}: $value;
+  @include mdc-feature-targets($feat-typography) {
+    @each $key, $value in $style-props {
+      #{$key}: $value;
+    }
   }
 }
 
 // Element must be `display: block` or `display: inline-block` for this to work.
-@mixin mdc-typography-overflow-ellipsis {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
+@mixin mdc-typography-overflow-ellipsis($query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
 
-@mixin mdc-typography-baseline-top($distance) {
-  display: block;
-  margin-top: 0;
-  /* @alternate */
-  line-height: normal;
-
-  &::before {
-    @include mdc-typography-baseline-strut_($distance);
-
-    vertical-align: 0;
+  @include mdc-feature-targets($feat-structure) {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 }
 
-@mixin mdc-typography-baseline-bottom($distance) {
-  margin-bottom: -1 * $distance;
+@mixin mdc-typography-baseline-top($distance, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-feature-targets($feat-structure) {
+    display: block;
+    margin-top: 0;
+    /* @alternate */
+    line-height: normal;
+  }
+
+  &::before {
+    @include mdc-feature-targets($feat-structure) {
+      @include mdc-typography-baseline-strut_($distance);
+
+      vertical-align: 0;
+    }
+  }
+}
+
+@mixin mdc-typography-baseline-bottom($distance, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-feature-targets($feat-structure) {
+    margin-bottom: -1 * $distance;
+  }
 
   &::after {
-    @include mdc-typography-baseline-strut_($distance);
+    @include mdc-feature-targets($feat-structure) {
+      @include mdc-typography-baseline-strut_($distance);
 
-    vertical-align: -1 * $distance;
+      vertical-align: -1 * $distance;
+    }
   }
 }
 

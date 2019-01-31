@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,17 +21,42 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
-const cssClasses = {
-  CHECKED: 'mdc-switch--checked',
-  DISABLED: 'mdc-switch--disabled',
-};
+import MDCComponent from '@material/base/component';
 
-/** @enum {string} */
-const strings = {
-  NATIVE_CONTROL_SELECTOR: '.mdc-switch__native-control',
-  RIPPLE_SURFACE_SELECTOR: '.mdc-switch__thumb-underlay',
-};
+import MDCTextFieldCharacterCounterAdapter from './adapter';
+import MDCTextFieldCharacterCounterFoundation from './foundation';
 
+/**
+ * @extends {MDCComponent<!MDCTextFieldCharacterCounterFoundation>}
+ * @final
+ */
+class MDCTextFieldCharacterCounter extends MDCComponent {
+  /**
+   * @param {!Element} root
+   * @return {!MDCTextFieldCharacterCounter}
+   */
+  static attachTo(root) {
+    return new MDCTextFieldCharacterCounter(root);
+  }
 
-export {cssClasses, strings};
+  /**
+   * @return {!MDCTextFieldCharacterCounterFoundation}
+   */
+  get foundation() {
+    return this.foundation_;
+  }
+
+  /**
+   * @return {!MDCTextFieldCharacterCounterFoundation}
+   */
+  getDefaultFoundation() {
+    return new MDCTextFieldCharacterCounterFoundation(
+      /** @type {!MDCTextFieldCharacterCounterAdapter} */ (Object.assign({
+        setContent: (content) => {
+          this.root_.textContent = content;
+        },
+      })));
+  }
+}
+
+export {MDCTextFieldCharacterCounter, MDCTextFieldCharacterCounterFoundation};

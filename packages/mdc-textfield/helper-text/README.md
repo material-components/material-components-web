@@ -24,10 +24,10 @@ Helper text gives context about a field’s input, such as how the input will be
 ### HTML Structure
 
 ```html
-<p class="mdc-text-field-helper-text" aria-hidden="true">
+<div class="mdc-text-field-helper-text" aria-hidden="true">helper text</div>
 ```
 
-> NOTE: Make sure there are no white-space characters before helper text content.
+> NOTE: Place this inside `.mdc-text-field-helper-line` element which is an immediate sibling of `.mdc-text-field`.
 
 ### Styles
 
@@ -59,16 +59,12 @@ the input element.
   <label for="username" class="mdc-floating-label">Username</label>
   <div class="mdc-line-ripple"></div>
 </div>
-<p id="username-helper-text" class="mdc-text-field-helper-text" aria-hidden="true">
-  This will be displayed on your public profile
-</p>
+<div class="mdc-text-field-helper-line">
+  <div id="username-helper-text" class="mdc-text-field-helper-text" aria-hidden="true">
+    This will be displayed on your public profile
+  </div>
+</div>
 ```
-
-When using our vanilla JS component, if the browser sees that the input element has an `aria-controls`
-attribute, it will look for an element with the id specified and treat it as the text field's helper
-text element, taking care of adding/removing `aria-hidden` and other accessibility attributes. Adding
-and removing classes and attributes to the helper text element can also be done using the
-MDCTextFieldHelperText API, which is described below.
 
 ## Style Customization
 
