@@ -20,6 +20,8 @@
 // THE SOFTWARE.
 //
 
+@import "@material/feature-targeting/functions";
+@import "@material/feature-targeting/mixins";
 @import "@material/theme/variables";
 @import "./variables";
 
@@ -27,7 +29,7 @@
 // The $z-value must be between 0 and 24.
 // If $color has an alpha channel, it will be ignored and overridden. To increase the opacity of the shadow, use
 // $opacity-boost.
-@mixin mdc-elevation($z-value, $color: $mdc-elevation-baseline-color, $opacity-boost: 0) {
+@mixin mdc-elevation($z-value, $color: $mdc-elevation-baseline-color, $opacity-boost: 0, $query: mdc-feature-all()) {
   @if type-of($z-value) != number or not unitless($z-value) {
     @error "$z-value must be a unitless number, but received '#{$z-value}'";
   }
@@ -35,6 +37,8 @@
   @if $z-value < 0 or $z-value > 24 {
     @error "$z-value must be between 0 and 24, but received '#{$z-value}'";
   }
+
+  $feat-color: mdc-feature-create-target($query, color);
 
   $color: mdc-theme-prop-value($color);
 
@@ -46,10 +50,12 @@
   $penumbra-color: rgba($color, $mdc-elevation-penumbra-opacity + $opacity-boost);
   $ambient-color: rgba($color, $mdc-elevation-ambient-opacity + $opacity-boost);
 
-  box-shadow:
-    #{"#{$umbra-z-value} #{$umbra-color}"},
-    #{"#{$penumbra-z-value} #{$penumbra-color}"},
-    #{$ambient-z-value} $ambient-color;
+  @include mdc-feature-targets($feat-color) {
+    box-shadow:
+      #{"#{$umbra-z-value} #{$umbra-color}"},
+      #{"#{$penumbra-z-value} #{$penumbra-color}"},
+      #{$ambient-z-value} $ambient-color;
+  }
 }
 
 // Returns a string that can be used as the value for a `transition` property for elevation.
@@ -64,6 +70,7 @@
 // ```
 @function mdc-elevation-transition-value(
   $duration: $mdc-elevation-transition-duration,
-  $easing: $mdc-elevation-transition-timing-function) {
+  $easing: $mdc-elevation-transition-timing-function
+) {
   @return #{$mdc-elevation-property} #{$duration} #{$easing};
 }
