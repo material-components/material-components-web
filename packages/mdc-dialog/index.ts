@@ -22,11 +22,11 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {MDCRipple} from '@material/ripple/index';
 import {closest, matches} from '@material/dom/ponyfill';
+import {MDCRipple} from '@material/ripple/index';
+import * as createFocusTrap from 'focus-trap';
 import MDCDialogFoundation from './foundation';
 import * as util from './util';
-import * as createFocusTrap from 'focus-trap';
 
 import {SpecificEventListener} from '@material/dom/index';
 
@@ -78,7 +78,7 @@ class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   private initialFocusEl_: HTMLElement | null = null;
   private focusTrapFactory_!: (
     element: HTMLElement | string,
-    userOptions?: createFocusTrap.Options
+    userOptions?: createFocusTrap.Options,
   ) => createFocusTrap.FocusTrap;
 
   private focusTrap_!: createFocusTrap.FocusTrap;
@@ -92,7 +92,7 @@ class MDCDialog extends MDCComponent<MDCDialogFoundation> {
 
   private layout_!: () => void;
 
-  initialize (focusTrapFactory = createFocusTrap, initialFocusEl = null) {
+  initialize(focusTrapFactory = createFocusTrap, initialFocusEl = null) {
     this.container_ = this.root_.querySelector(strings.CONTAINER_SELECTOR) as HTMLElement;
     if (!this.container_) {
       throw new Error(`Dialog component requires a ${strings.CONTAINER_SELECTOR} container element`);
@@ -104,7 +104,8 @@ class MDCDialog extends MDCComponent<MDCDialogFoundation> {
     this.initialFocusEl_ = initialFocusEl;
     this.buttonRipples_ = [];
 
-    for (let i = 0, buttonEl; buttonEl = this.buttons_[i]; i++) {
+    for (let i = 0; i < this.buttons_.length; i++) {
+      const buttonEl = this.buttons_[i];
       this.buttonRipples_.push(new MDCRipple(buttonEl));
     }
   }
@@ -160,29 +161,32 @@ class MDCDialog extends MDCComponent<MDCDialogFoundation> {
 
   getDefaultFoundation() {
     return new MDCDialogFoundation({
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
-      hasClass: (className) => this.root_.classList.contains(className),
       addBodyClass: (className) => document.body.classList.add(className),
-      removeBodyClass: (className) => document.body.classList.remove(className),
-      eventTargetMatches: (target, selector) => {
-        if (!target) return false;
-        return matches(target as Element, selector);
-      },
-      trapFocus: () => this.focusTrap_.activate(),
-      releaseFocus: () => this.focusTrap_.deactivate(),
-      isContentScrollable: () => !!this.content_ && util.isScrollable(/** @type {!Element} */ (this.content_)),
+      addClass: (className) => this.root_.classList.add(className),
       areButtonsStacked: () => util.areTopsMisaligned(this.buttons_),
-      getActionFromEvent: (event: MouseEvent | KeyboardEvent) => {
-        if (!event.target) return '';
-        const element = closest(event.target as Element, `[${strings.ACTION_ATTRIBUTE}]`);
-        return element && element.getAttribute(strings.ACTION_ATTRIBUTE);
-      },
       clickDefaultButton: () => {
         if (this.defaultButton_) {
           this.defaultButton_.click();
         }
       },
+      eventTargetMatches: (target, selector) => {
+        if (!target) return false;
+        return matches(target as Element, selector);
+      },
+      getActionFromEvent: (event: MouseEvent | KeyboardEvent) => {
+        if (!event.target) return '';
+        const element = closest(event.target as Element, `[${strings.ACTION_ATTRIBUTE}]`);
+        return element && element.getAttribute(strings.ACTION_ATTRIBUTE);
+      },
+      hasClass: (className) => this.root_.classList.contains(className),
+      isContentScrollable: () => !!this.content_ && util.isScrollable(/** @type {!Element} */ (this.content_)),
+      notifyClosed: (action) => this.emit(strings.CLOSED_EVENT, action ? {action} : {}),
+      notifyClosing: (action) => this.emit(strings.CLOSING_EVENT, action ? {action} : {}),
+      notifyOpened: () => this.emit(strings.OPENED_EVENT, {}),
+      notifyOpening: () => this.emit(strings.OPENING_EVENT, {}),
+      releaseFocus: () => this.focusTrap_.deactivate(),
+      removeBodyClass: (className) => document.body.classList.remove(className),
+      removeClass: (className) => this.root_.classList.remove(className),
       reverseButtons: () => {
         this.buttons_.reverse();
         this.buttons_.forEach((button) => {
@@ -190,10 +194,7 @@ class MDCDialog extends MDCComponent<MDCDialogFoundation> {
           button.parentElement.appendChild(button);
         });
       },
-      notifyOpening: () => this.emit(strings.OPENING_EVENT, {}),
-      notifyOpened: () => this.emit(strings.OPENED_EVENT, {}),
-      notifyClosing: (action) => this.emit(strings.CLOSING_EVENT, action ? {action} : {}),
-      notifyClosed: (action) => this.emit(strings.CLOSED_EVENT, action ? {action} : {}),
+      trapFocus: () => this.focusTrap_.activate(),
     });
   }
 }

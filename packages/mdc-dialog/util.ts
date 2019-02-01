@@ -25,7 +25,7 @@ import * as createFocusTrap from 'focus-trap';
 
 type focusTrap = (
   element: HTMLElement | string,
-  userOptions?: createFocusTrap.Options
+  userOptions?: createFocusTrap.Options,
 ) => createFocusTrap.FocusTrap;
 
 function createFocusTrapInstance(
@@ -34,9 +34,9 @@ function createFocusTrapInstance(
   initialFocusEl: createFocusTrap.FocusTarget | null,
 ): createFocusTrap.FocusTrap {
   return focusTrapFactory(surfaceEl, ({
-    initialFocus: initialFocusEl,
-    escapeDeactivates: false, // Dialog foundation handles escape key
     clickOutsideDeactivates: true, // Allow handling of scrim clicks
+    escapeDeactivates: false, // Dialog foundation handles escape key
+    initialFocus: initialFocusEl,
   } as createFocusTrap.Options));
 }
 

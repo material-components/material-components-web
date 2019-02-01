@@ -40,23 +40,23 @@ class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
 
   static get defaultAdapter(): MDCDialogAdapter {
     return {
-      addClass: () => undefined,
-      removeClass: () => undefined,
-      hasClass: () => false,
       addBodyClass: () => undefined,
-      removeBodyClass: () => undefined,
-      eventTargetMatches: () => false,
-      trapFocus: () => undefined,
-      releaseFocus: () => undefined,
-      isContentScrollable: () => false,
+      addClass: () => undefined,
       areButtonsStacked: () => false,
-      getActionFromEvent: () => '',
       clickDefaultButton: () => undefined,
-      reverseButtons: () => undefined,
-      notifyOpening: () => undefined,
-      notifyOpened: () => undefined,
-      notifyClosing: () => undefined,
+      eventTargetMatches: () => false,
+      getActionFromEvent: () => '',
+      hasClass: () => false,
+      isContentScrollable: () => false,
       notifyClosed: () => undefined,
+      notifyClosing: () => undefined,
+      notifyOpened: () => undefined,
+      notifyOpening: () => undefined,
+      releaseFocus: () => undefined,
+      removeBodyClass: () => undefined,
+      removeClass: () => undefined,
+      reverseButtons: () => undefined,
+      trapFocus: () => undefined,
     };
   }
 

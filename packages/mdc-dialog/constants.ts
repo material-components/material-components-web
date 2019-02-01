@@ -31,31 +31,28 @@ const cssClasses = {
 };
 
 const strings = {
-  SCRIM_SELECTOR: '.mdc-dialog__scrim',
-  CONTAINER_SELECTOR: '.mdc-dialog__container',
-  SURFACE_SELECTOR: '.mdc-dialog__surface',
-  CONTENT_SELECTOR: '.mdc-dialog__content',
+  ACTION_ATTRIBUTE: 'data-mdc-dialog-action',
   BUTTON_SELECTOR: '.mdc-dialog__button',
+  CLOSE_ACTION: 'close',
+  CLOSED_EVENT: 'MDCDialog:closed',
+  CLOSING_EVENT: 'MDCDialog:closing',
+  CONTAINER_SELECTOR: '.mdc-dialog__container',
+  CONTENT_SELECTOR: '.mdc-dialog__content',
   DEFAULT_BUTTON_SELECTOR: '.mdc-dialog__button--default',
+  DESTROY_ACTION: 'destroy',
+  OPENED_EVENT: 'MDCDialog:opened',
+  OPENING_EVENT: 'MDCDialog:opening',
+  SCRIM_SELECTOR: '.mdc-dialog__scrim',
+  SURFACE_SELECTOR: '.mdc-dialog__surface',
   SUPPRESS_DEFAULT_PRESS_SELECTOR: [
     'textarea',
     '.mdc-menu .mdc-list-item',
   ].join(', '),
-
-  OPENING_EVENT: 'MDCDialog:opening',
-  OPENED_EVENT: 'MDCDialog:opened',
-  CLOSING_EVENT: 'MDCDialog:closing',
-  CLOSED_EVENT: 'MDCDialog:closed',
-
-  ACTION_ATTRIBUTE: 'data-mdc-dialog-action',
-
-  CLOSE_ACTION: 'close',
-  DESTROY_ACTION: 'destroy',
 };
 
 const numbers = {
-  DIALOG_ANIMATION_OPEN_TIME_MS: 150,
   DIALOG_ANIMATION_CLOSE_TIME_MS: 75,
+  DIALOG_ANIMATION_OPEN_TIME_MS: 150,
 };
 
-export {cssClasses, strings, numbers};
+export {cssClasses, numbers, strings};
