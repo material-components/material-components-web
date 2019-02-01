@@ -22,10 +22,10 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import MDCDialogAdapter from './adapter';
+import {MDCDialogAdapter} from './adapter';
 import {cssClasses, numbers, strings} from './constants';
 
-class MDCDialogFoundation extends MDCFoundation {
+class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
@@ -38,57 +38,39 @@ class MDCDialogFoundation extends MDCFoundation {
     return numbers;
   }
 
-  static get defaultAdapter() {
-    return /** @type {!MDCDialogAdapter} */ ({
-      addClass: (/* className: string */) => {},
-      removeClass: (/* className: string */) => {},
-      hasClass: (/* className: string */) => {},
-      addBodyClass: (/* className: string */) => {},
-      removeBodyClass: (/* className: string */) => {},
-      eventTargetMatches: (/* target: !EventTarget, selector: string */) => {},
-      trapFocus: () => {},
-      releaseFocus: () => {},
-      isContentScrollable: () => {},
-      areButtonsStacked: () => {},
-      getActionFromEvent: (/* event: !Event */) => {},
-      clickDefaultButton: () => {},
-      reverseButtons: () => {},
-      notifyOpening: () => {},
-      notifyOpened: () => {},
-      notifyClosing: (/* action: ?string */) => {},
-      notifyClosed: (/* action: ?string */) => {},
-    });
+  static get defaultAdapter(): MDCDialogAdapter {
+    return {
+      addClass: () => undefined,
+      removeClass: () => undefined,
+      hasClass: () => false,
+      addBodyClass: () => undefined,
+      removeBodyClass: () => undefined,
+      eventTargetMatches: () => false,
+      trapFocus: () => undefined,
+      releaseFocus: () => undefined,
+      isContentScrollable: () => false,
+      areButtonsStacked: () => false,
+      getActionFromEvent: () => '',
+      clickDefaultButton: () => undefined,
+      reverseButtons: () => undefined,
+      notifyOpening: () => undefined,
+      notifyOpened: () => undefined,
+      notifyClosing: () => undefined,
+      notifyClosed: () => undefined,
+    };
   }
 
-  /**
-   * @param {!MDCDialogAdapter=} adapter
-   */
-  constructor(adapter) {
+  private isOpen_ = false;
+  private animationFrame_ = 0;
+  private animationTimer_ = 0;
+  private layoutFrame_ = 0;
+  private escapeKeyAction_ = strings.CLOSE_ACTION;
+  private scrimClickAction_ = strings.CLOSE_ACTION;
+  private autoStackButtons_ = true;
+  private areButtonsStacked_ = false;
+
+  constructor(adapter: MDCDialogAdapter) {
     super(Object.assign(MDCDialogFoundation.defaultAdapter, adapter));
-
-    /** @private {boolean} */
-    this.isOpen_ = false;
-
-    /** @private {number} */
-    this.animationFrame_ = 0;
-
-    /** @private {number} */
-    this.animationTimer_ = 0;
-
-    /** @private {number} */
-    this.layoutFrame_ = 0;
-
-    /** @private {string} */
-    this.escapeKeyAction_ = strings.CLOSE_ACTION;
-
-    /** @private {string} */
-    this.scrimClickAction_ = strings.CLOSE_ACTION;
-
-    /** @private {boolean} */
-    this.autoStackButtons_ = true;
-
-    /** @private {boolean} */
-    this.areButtonsStacked_ = false;
   };
 
   init() {
@@ -133,9 +115,6 @@ class MDCDialogFoundation extends MDCFoundation {
     });
   }
 
-  /**
-   * @param {string=} action
-   */
   close(action = '') {
     if (!this.isOpen_) {
       // Avoid redundant close calls (and events), e.g. from keydown on elements that inherently emit click
@@ -168,28 +147,23 @@ class MDCDialogFoundation extends MDCFoundation {
     return this.escapeKeyAction_;
   }
 
-  /** @param {string} action */
-  setEscapeKeyAction(action) {
+  setEscapeKeyAction(action: string) {
     this.escapeKeyAction_ = action;
   }
 
-  /** @return {string} */
   getScrimClickAction() {
     return this.scrimClickAction_;
   }
 
-  /** @param {string} action */
-  setScrimClickAction(action) {
+  setScrimClickAction(action: string) {
     this.scrimClickAction_ = action;
   }
 
-  /** @return {boolean} */
   getAutoStackButtons() {
     return this.autoStackButtons_;
   }
 
-  /** @param {boolean} autoStack */
-  setAutoStackButtons(autoStack) {
+  setAutoStackButtons(autoStack: boolean) {
     this.autoStackButtons_ = autoStack;
   }
 
@@ -210,8 +184,49 @@ class MDCDialogFoundation extends MDCFoundation {
     this.detectScrollableContent_();
   }
 
-  /** @private */
-  detectStackedButtons_() {
+  handleInteraction(evt: MouseEvent | KeyboardEvent) {
+    const isClick = evt.type === 'click';
+    const isEnter = (evt as KeyboardEvent).key === 'Enter' || (evt as KeyboardEvent).keyCode === 13;
+
+    // Check for scrim click first since it doesn't require querying ancestors
+    if (isClick && this.adapter_.eventTargetMatches(evt.target, strings.SCRIM_SELECTOR) &&
+      this.scrimClickAction_ !== '') {
+      this.close(this.scrimClickAction_);
+    } else if (isClick || (evt as KeyboardEvent).key === 'Space' || (evt as KeyboardEvent).keyCode === 32 || isEnter) {
+      const action = this.adapter_.getActionFromEvent(evt);
+      if (action) {
+        this.close(action);
+      } else if (isEnter && !this.adapter_.eventTargetMatches(evt.target, strings.SUPPRESS_DEFAULT_PRESS_SELECTOR)) {
+        this.adapter_.clickDefaultButton();
+      }
+    }
+  }
+
+  handleDocumentKeydown(evt: KeyboardEvent) {
+    if ((evt.key === 'Escape' || evt.keyCode === 27) && this.escapeKeyAction_ !== '') {
+      this.close(this.escapeKeyAction_);
+    }
+  }
+
+  private handleAnimationTimerEnd_() {
+    this.animationTimer_ = 0;
+    this.adapter_.removeClass(cssClasses.OPENING);
+    this.adapter_.removeClass(cssClasses.CLOSING);
+  }
+
+  /**
+   * Runs the given logic on the next animation frame, using setTimeout to factor in Firefox reflow behavior.
+   */
+  private runNextAnimationFrame_(callback: () => void) {
+    cancelAnimationFrame(this.animationFrame_);
+    this.animationFrame_ = requestAnimationFrame(() => {
+      this.animationFrame_ = 0;
+      clearTimeout(this.animationTimer_);
+      this.animationTimer_ = setTimeout(callback, 0);
+    });
+  }
+
+  private detectStackedButtons_() {
     // Remove the class first to let us measure the buttons' natural positions.
     this.adapter_.removeClass(cssClasses.STACKED);
 
@@ -227,66 +242,12 @@ class MDCDialogFoundation extends MDCFoundation {
     }
   }
 
-  /** @private */
-  detectScrollableContent_() {
+  private detectScrollableContent_() {
     // Remove the class first to let us measure the natural height of the content.
     this.adapter_.removeClass(cssClasses.SCROLLABLE);
     if (this.adapter_.isContentScrollable()) {
       this.adapter_.addClass(cssClasses.SCROLLABLE);
     }
-  }
-
-  /**
-   * @param {!Event} evt
-   * @private
-   */
-  handleInteraction(evt) {
-    const isClick = evt.type === 'click';
-    const isEnter = evt.key === 'Enter' || evt.keyCode === 13;
-
-    // Check for scrim click first since it doesn't require querying ancestors
-    if (isClick && this.adapter_.eventTargetMatches(evt.target, strings.SCRIM_SELECTOR) &&
-      this.scrimClickAction_ !== '') {
-      this.close(this.scrimClickAction_);
-    } else if (isClick || evt.key === 'Space' || evt.keyCode === 32 || isEnter) {
-      const action = this.adapter_.getActionFromEvent(evt);
-      if (action) {
-        this.close(action);
-      } else if (isEnter && !this.adapter_.eventTargetMatches(evt.target, strings.SUPPRESS_DEFAULT_PRESS_SELECTOR)) {
-        this.adapter_.clickDefaultButton();
-      }
-    }
-  }
-
-  /**
-   * @param {!KeyboardEvent} evt
-   * @private
-   */
-  handleDocumentKeydown(evt) {
-    if ((evt.key === 'Escape' || evt.keyCode === 27) && this.escapeKeyAction_ !== '') {
-      this.close(this.escapeKeyAction_);
-    }
-  }
-
-  /** @private */
-  handleAnimationTimerEnd_() {
-    this.animationTimer_ = 0;
-    this.adapter_.removeClass(cssClasses.OPENING);
-    this.adapter_.removeClass(cssClasses.CLOSING);
-  }
-
-  /**
-   * Runs the given logic on the next animation frame, using setTimeout to factor in Firefox reflow behavior.
-   * @param {Function} callback
-   * @private
-   */
-  runNextAnimationFrame_(callback) {
-    cancelAnimationFrame(this.animationFrame_);
-    this.animationFrame_ = requestAnimationFrame(() => {
-      this.animationFrame_ = 0;
-      clearTimeout(this.animationTimer_);
-      this.animationTimer_ = setTimeout(callback, 0);
-    });
   }
 }
 

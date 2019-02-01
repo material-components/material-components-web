@@ -21,37 +21,27 @@
  * THE SOFTWARE.
  */
 
-import createFocusTrap from 'focus-trap';
+import createFocusTrap, {FocusTrap, FocusTarget, Options} from 'focus-trap';
 
-/**
- * @param {!Element} surfaceEl
- * @param {?Element=} initialFocusEl
- * @param {function(!Element, !FocusTrapCreateOptions): !FocusTrapInstance} focusTrapFactory
- * @return {!FocusTrapInstance}
- */
-function createFocusTrapInstance(surfaceEl, focusTrapFactory = createFocusTrap, initialFocusEl = null) {
-  return focusTrapFactory(surfaceEl, {
+function createFocusTrapInstance(
+  surfaceEl: HTMLElement,
+  focusTrapFactory = createFocusTrap,
+  initialFocusEl: FocusTarget | null,
+): FocusTrap {
+  return focusTrapFactory(surfaceEl, ({
     initialFocus: initialFocusEl,
     escapeDeactivates: false, // Dialog foundation handles escape key
     clickOutsideDeactivates: true, // Allow handling of scrim clicks
-  });
+  } as Options));
 }
 
-/**
- * @param {!Element} el
- * @return {boolean}
- */
-function isScrollable(el) {
+function isScrollable(el: HTMLElement): boolean {
   return el.scrollHeight > el.offsetHeight;
 }
 
-/**
- * @param {!Array<!Element>|!NodeList} els
- * @return {boolean}
- */
-function areTopsMisaligned(els) {
+function areTopsMisaligned(els: HTMLElement[]): boolean {
   const tops = new Set();
-  [].forEach.call(els, (el) => tops.add(el.offsetTop));
+  [].forEach.call(els, (el: HTMLElement) => tops.add(el.offsetTop));
   return tops.size > 1;
 }
 
