@@ -101,8 +101,8 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
   private anchorMargin_: MenuDistance = {top: 0, right: 0, bottom: 0, left: 0};
   private position_: MenuPoint = {x: 0, y: 0};
 
-  private dimensions_!: MenuDimensions; // initialized in open()
-  private measurements_!: AutoLayoutMeasurements; // initialized in open()
+  private dimensions_!: MenuDimensions; // assigned in open()
+  private measurements_!: AutoLayoutMeasurements; // assigned in open()
 
   constructor(adapter: MDCMenuSurfaceAdapter) {
     super(Object.assign(MDCMenuSurfaceFoundation.defaultAdapter, adapter));

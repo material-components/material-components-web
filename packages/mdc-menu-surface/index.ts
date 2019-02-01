@@ -34,25 +34,25 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
     return new MDCMenuSurface(root);
   }
 
-  anchorElement!: Element | null;
+  anchorElement: Element | null = null;
 
-  protected root_!: HTMLElement;
+  protected root_!: HTMLElement; // assigned in MDCComponent constructor
 
   private previousFocus_: HTMLElement | SVGElement | null = null;
   private firstFocusableElement_: HTMLElement | SVGElement | null = null;
   private lastFocusableElement_: HTMLElement | SVGElement | null = null;
 
-  private handleKeydown_!: SpecificEventListener<'keydown'>;
-  private handleBodyClick_!: SpecificEventListener<'click'>;
+  private handleKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
+  private handleBodyClick_!: SpecificEventListener<'click'>; // assigned in initialSyncWithDOM()
 
-  private registerBodyClickListener_!: RegisterFunction;
-  private deregisterBodyClickListener_!: RegisterFunction;
+  private registerBodyClickListener_!: RegisterFunction; // assigned in initialSyncWithDOM()
+  private deregisterBodyClickListener_!: RegisterFunction; // assigned in initialSyncWithDOM()
 
   initialSyncWithDOM() {
     const parentEl = this.root_.parentElement;
-    const hasParentAnchor = parentEl && parentEl.classList.contains(cssClasses.ANCHOR);
-
-    this.anchorElement = hasParentAnchor ? parentEl : null;
+    if (parentEl && parentEl.classList.contains(cssClasses.ANCHOR)) {
+      this.anchorElement = parentEl;
+    }
 
     if (this.root_.classList.contains(cssClasses.FIXED)) {
       this.setFixedPosition(true);
