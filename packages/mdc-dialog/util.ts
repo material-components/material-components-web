@@ -21,18 +21,23 @@
  * THE SOFTWARE.
  */
 
-import createFocusTrap, {FocusTrap, FocusTarget, Options} from 'focus-trap';
+import * as createFocusTrap from 'focus-trap';
+
+type focusTrap = (
+  element: HTMLElement | string,
+  userOptions?: createFocusTrap.Options
+) => createFocusTrap.FocusTrap;
 
 function createFocusTrapInstance(
   surfaceEl: HTMLElement,
-  focusTrapFactory = createFocusTrap,
-  initialFocusEl: FocusTarget | null,
-): FocusTrap {
+  focusTrapFactory: focusTrap = createFocusTrap as unknown as focusTrap,
+  initialFocusEl: createFocusTrap.FocusTarget | null,
+): createFocusTrap.FocusTrap {
   return focusTrapFactory(surfaceEl, ({
     initialFocus: initialFocusEl,
     escapeDeactivates: false, // Dialog foundation handles escape key
     clickOutsideDeactivates: true, // Allow handling of scrim clicks
-  } as Options));
+  } as createFocusTrap.Options));
 }
 
 function isScrollable(el: HTMLElement): boolean {
@@ -45,4 +50,4 @@ function areTopsMisaligned(els: HTMLElement[]): boolean {
   return tops.size > 1;
 }
 
-export {createFocusTrapInstance, isScrollable, areTopsMisaligned};
+export {focusTrap, createFocusTrapInstance, isScrollable, areTopsMisaligned};

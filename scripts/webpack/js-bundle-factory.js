@@ -149,7 +149,7 @@ class JsBundleFactory {
     }) {
     const getAbsolutePath = (...args) => this.pathResolver_.getAbsolutePath(...args);
 
-    return \this.createCustomJs({
+    return this.createCustomJs({
       bundleName: 'main-js-a-la-carte',
       chunks: {
         animation: getAbsolutePath('/packages/mdc-animation/index.ts'),

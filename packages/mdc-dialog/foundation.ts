@@ -71,13 +71,13 @@ class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
 
   constructor(adapter: MDCDialogAdapter) {
     super(Object.assign(MDCDialogFoundation.defaultAdapter, adapter));
-  };
+  }
 
   init() {
     if (this.adapter_.hasClass(cssClasses.STACKED)) {
       this.setAutoStackButtons(false);
     }
-  };
+  }
 
   destroy() {
     if (this.isOpen_) {

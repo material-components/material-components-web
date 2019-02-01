@@ -22,12 +22,12 @@
  */
 
 const cssClasses = {
+  CLOSING: 'mdc-dialog--closing',
   OPEN: 'mdc-dialog--open',
   OPENING: 'mdc-dialog--opening',
-  CLOSING: 'mdc-dialog--closing',
+  SCROLL_LOCK: 'mdc-dialog-scroll-lock',
   SCROLLABLE: 'mdc-dialog--scrollable',
   STACKED: 'mdc-dialog--stacked',
-  SCROLL_LOCK: 'mdc-dialog-scroll-lock',
 };
 
 const strings = {

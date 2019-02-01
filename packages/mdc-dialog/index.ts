@@ -23,48 +23,16 @@
 
 import MDCComponent from '@material/base/component';
 import {MDCRipple} from '@material/ripple/index';
-import {Options, FocusTrap} from 'focus-trap';
-
+import {closest, matches} from '@material/dom/ponyfill';
 import MDCDialogFoundation from './foundation';
 import * as util from './util';
-import {closest, matches} from '@material/dom/ponyfill';
+import * as createFocusTrap from 'focus-trap';
 
-import createFocusTrap from 'focus-trap';
 import {SpecificEventListener} from '@material/dom/index';
 
 const strings = MDCDialogFoundation.strings;
 
 class MDCDialog extends MDCComponent<MDCDialogFoundation> {
-
-  private buttonRipples_: MDCRipple[] = [];
-
-  private buttons_!: HTMLElement[];
-
-  private defaultButton_: HTMLElement | null = null;
-
-  private container_!: HTMLElement;
-
-  private content_: HTMLElement | null = null;;
-
-  private initialFocusEl_: HTMLElement | null = null;;
-
-  private focusTrapFactory_!: (element: string | HTMLElement, userOptions?: Options | undefined) => FocusTrap;
-
-  private focusTrap_!: FocusTrap;
-
-  private handleInteraction_!: SpecificEventListener<'click'|'keydown'>;
-
-  private handleDocumentKeydown_!: SpecificEventListener<'keydown'>;;
-
-  private handleOpening_!: () => void;
-
-  private handleClosing_!: () => void;
-
-  private layout_!: () => void;
-
-  static attachTo(root: HTMLElement) {
-    return new MDCDialog(root);
-  }
 
   get isOpen() {
     return this.foundation_.isOpen();
@@ -94,7 +62,37 @@ class MDCDialog extends MDCComponent<MDCDialogFoundation> {
     this.foundation_.setAutoStackButtons(autoStack);
   }
 
-  initialize(focusTrapFactory = createFocusTrap, initialFocusEl = null) {
+  static attachTo(root: HTMLElement) {
+    return new MDCDialog(root);
+  }
+
+  private buttonRipples_!: MDCRipple[];
+
+  private buttons_!: HTMLElement[];
+
+  private defaultButton_!: HTMLElement | null;
+
+  private container_!: HTMLElement;
+
+  private content_: HTMLElement | null = null;
+  private initialFocusEl_: HTMLElement | null = null;
+  private focusTrapFactory_!: (
+    element: HTMLElement | string,
+    userOptions?: createFocusTrap.Options
+  ) => createFocusTrap.FocusTrap;
+
+  private focusTrap_!: createFocusTrap.FocusTrap;
+
+  private handleInteraction_!: SpecificEventListener<'click'|'keydown'>;
+
+  private handleDocumentKeydown_!: SpecificEventListener<'keydown'>;
+  private handleOpening_!: () => void;
+
+  private handleClosing_!: () => void;
+
+  private layout_!: () => void;
+
+  initialize (focusTrapFactory = createFocusTrap, initialFocusEl = null) {
     this.container_ = this.root_.querySelector(strings.CONTAINER_SELECTOR) as HTMLElement;
     if (!this.container_) {
       throw new Error(`Dialog component requires a ${strings.CONTAINER_SELECTOR} container element`);
@@ -102,8 +100,9 @@ class MDCDialog extends MDCComponent<MDCDialogFoundation> {
     this.content_ = this.root_.querySelector(strings.CONTENT_SELECTOR);
     this.buttons_ = [].slice.call(this.root_.querySelectorAll(strings.BUTTON_SELECTOR));
     this.defaultButton_ = this.root_.querySelector(strings.DEFAULT_BUTTON_SELECTOR);
-    this.focusTrapFactory_ = focusTrapFactory;
+    this.focusTrapFactory_ = focusTrapFactory as unknown as util.focusTrap;
     this.initialFocusEl_ = initialFocusEl;
+    this.buttonRipples_ = [];
 
     for (let i = 0, buttonEl; buttonEl = this.buttons_[i]; i++) {
       this.buttonRipples_.push(new MDCRipple(buttonEl));
@@ -134,8 +133,8 @@ class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   }
 
   destroy() {
-    this.unlisten('click', this.handleInteraction_ as EventListener);;
-    this.unlisten('keydown', this.handleInteraction_ as EventListener);;
+    this.unlisten('click', this.handleInteraction_ as EventListener);
+    this.unlisten('keydown', this.handleInteraction_ as EventListener);
     this.unlisten(strings.OPENING_EVENT, this.handleOpening_);
     this.unlisten(strings.CLOSING_EVENT, this.handleClosing_);
     this.handleClosing_();
