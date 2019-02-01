@@ -41,8 +41,8 @@ TODO: Add more notes about how to isolate subsystems from component specifics
 * When typing Events and EventListeners, try using `EventType` and `SpecificEventListener` from the `@material/dom` package. both of the types extend from `GlobalEventHandlersEventMap`, which is a superset of HTMLElement Events (ie. MouseEvent, KeyboardEvent, etc.).
 
 #### When to use Node/Element/HTMLElement
-* `Node` is more generic than `Element`, while `Element` is more generic than `HTMLElement`
-* `Node` is mainly used for the document or comments/text
+* `Node` is more generic than `Element`, while `Element` is more generic than `HTMLElement`.
+* `Node` is mainly used for the document or comments/text.
 * `Element` should be used when the type in question could be `HTMLElement`, `SVGElement`, or others.
 * `HTMLElement` only pertains to DOM Nodes such as `<a>`, `<li>`, `<div>` just to name a few.
 * Use the most generic type that you think is possible during runtime.
