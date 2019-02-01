@@ -52,7 +52,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
   }
 
   /**
-   * {@see MDCMenuSurfaceAdapter} for typing information on parameters and return types.
+   * @see {@link MDCMenuSurfaceAdapter} for typing information on parameters and return types.
    */
   static get defaultAdapter(): MDCMenuSurfaceAdapter {
     // tslint:disable:object-literal-sort-keys
