@@ -7,6 +7,7 @@
 @import "@material/radio/mixins";
 @import "@material/ripple/mixins";
 @import "@material/typography/mixins";
+@import "@material/switch/mixins";
 
 .mdc-test {
   // Button
@@ -66,4 +67,15 @@
   @include mdc-typography-overflow-ellipsis($query: mdc-feature-any());
   @include mdc-typography-baseline-top(0, $query: mdc-feature-any());
   @include mdc-typography-baseline-bottom(0, $query: mdc-feature-any());
+
+  // Switch
+  @include mdc-switch($query: mdc-feature-any());
+  @include mdc-switch-toggled-on-color(on-surface, $query: mdc-feature-any());
+  @include mdc-switch-toggled-off-color(on-surface, $query: mdc-feature-any());
+  @include mdc-switch-toggled-on-ripple-color(on-surface, $query: mdc-feature-any());
+  @include mdc-switch-toggled-off-ripple-color(on-surface, $query: mdc-feature-any());
+  @include mdc-switch-toggled-on-track-color(on-surface, $query: mdc-feature-any());
+  @include mdc-switch-toggled-on-thumb-color(on-surface, $query: mdc-feature-any());
+  @include mdc-switch-toggled-off-track-color(on-surface, $query: mdc-feature-any());
+  @include mdc-switch-toggled-off-thumb-color(on-surface, $query: mdc-feature-any());
 }
