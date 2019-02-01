@@ -30,11 +30,11 @@ const cssClasses = {
 
 const strings = {
   ACTION_EVENT: 'MDCList:action',
+  ARIA_CHECKED: 'aria-checked',
   ARIA_CHECKED_CHECKBOX_SELECTOR: '[role="checkbox"][aria-checked="true"]',
   ARIA_CHECKED_RADIO_SELECTOR: '[role="radio"][aria-checked="true"]',
-  ARIA_CHECKED: 'aria-checked',
-  ARIA_ORIENTATION_HORIZONTAL: 'horizontal',
   ARIA_ORIENTATION: 'aria-orientation',
+  ARIA_ORIENTATION_HORIZONTAL: 'horizontal',
   ARIA_ROLE_CHECKBOX_SELECTOR: '[role="checkbox"]',
   ARIA_SELECTED: 'aria-selected',
   CHECKBOX_RADIO_SELECTOR: 'input[type="checkbox"]:not(:disabled), input[type="radio"]:not(:disabled)',

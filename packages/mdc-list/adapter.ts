@@ -57,7 +57,7 @@ interface MDCListAdapter {
   /**
    * @return Returns true if radio button is present at given list item index.
    */
-  hasRadioAtIndex(index: number): boolean
+  hasRadioAtIndex(index: number): boolean;
 
   /**
    * @return Returns true if checkbox is present at given list item index.
@@ -67,12 +67,12 @@ interface MDCListAdapter {
   /**
    * @return Returns true if checkbox inside a list item is checked.
    */
-  isCheckboxCheckedAtIndex(index: number): boolean
+  isCheckboxCheckedAtIndex(index: number): boolean;
 
   /**
    * Sets the checked status of checkbox or radio at given list item index.
    */
-  setCheckedCheckboxOrRadioAtIndex(index: number, isChecked: boolean): void
+  setCheckedCheckboxOrRadioAtIndex(index: number, isChecked: boolean): void;
 
   /**
    * Notifies user action on list item.

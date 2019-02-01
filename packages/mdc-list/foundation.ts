@@ -23,7 +23,7 @@
 
 import MDCFoundation from '@material/base/foundation';
 import {MDCListAdapter} from './adapter';
-import {strings, cssClasses, Index} from './constants';
+import {cssClasses, Index, strings} from './constants';
 
 const ELEMENTS_KEY_ALLOWED_IN = ['input', 'button', 'textarea', 'select'];
 
@@ -42,20 +42,20 @@ class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
 
   static get defaultAdapter(): MDCListAdapter {
     return {
-      getListItemCount: () => 0,
-      getFocusedElementIndex: () => 0,
-      setAttributeForElementIndex: () => undefined,
-      removeAttributeForElementIndex: () => undefined,
       addClassForElementIndex: () => undefined,
-      removeClassForElementIndex: () => undefined,
       focusItemAtIndex: () => undefined,
-      setTabIndexForListItemChildren: () => undefined,
-      hasRadioAtIndex: () => false,
+      getFocusedElementIndex: () => 0,
+      getListItemCount: () => 0,
       hasCheckboxAtIndex: () => false,
+      hasRadioAtIndex: () => false,
       isCheckboxCheckedAtIndex: () => false,
-      setCheckedCheckboxOrRadioAtIndex: () => undefined,
-      notifyAction: () => undefined,
       isFocusInsideList: () => false,
+      notifyAction: () => undefined,
+      removeAttributeForElementIndex: () => undefined,
+      removeClassForElementIndex: () => undefined,
+      setAttributeForElementIndex: () => undefined,
+      setCheckedCheckboxOrRadioAtIndex: () => undefined,
+      setTabIndexForListItemChildren: () => undefined,
     };
   }
 
