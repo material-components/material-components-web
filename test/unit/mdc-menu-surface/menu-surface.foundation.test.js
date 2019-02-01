@@ -43,6 +43,7 @@ function setupTest() {
 
 // Various anchor dimensions.
 const smallTopLeft = {height: 20, width: 40, top: 20, bottom: 40, left: 20, right: 60};
+const smallTopRight = {height: 20, width: 40, top: 20, bottom: 40, left: 920, right: 960};
 const smallBottomLeft = {height: 20, width: 40, top: 920, bottom: 940, left: 20, right: 60};
 const smallBottomRight = {height: 20, width: 40, top: 920, bottom: 940, left: 920, right: 960};
 const smallCenter = {height: 20, width: 40, top: 490, bottom: 510, left: 480, right: 520};
@@ -365,6 +366,20 @@ testFoundation('#open in absolute position at x/y=100, fixed position, hoisted m
     td.verify(mockAdapter.setPosition({left: 100, top: 100}));
   });
 
+testFoundation('#open in absolute position at x/y=INF, fixed position, hoisted menu surface, scrollY/scrollY 5px/10px',
+  ({foundation, mockAdapter, clock}) => {
+    initAnchorLayout(mockAdapter, smallTopLeft, true, 200, {x: 5, y: 10});
+    td.when(mockAdapter.hasAnchor()).thenReturn(false);
+    td.when(mockAdapter.getAnchorDimensions()).thenReturn(undefined);
+    foundation.setIsHoisted(true);
+    foundation.setFixedPosition(true);
+    foundation.setAbsolutePosition(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY);
+    foundation.open();
+    clock.runToFrame();
+    td.verify(mockAdapter.setTransformOrigin('left top'));
+    td.verify(mockAdapter.setPosition({left: 0, top: 0}));
+  });
+
 testFoundation('#open from small anchor in left bottom of viewport, default (TOP_START) anchor corner, RTL',
   ({foundation, mockAdapter, clock}) => {
     initAnchorLayout(mockAdapter, smallBottomLeft, true);
@@ -507,6 +522,71 @@ testFoundation('#open anchors the surface to the bottom left in RTL when close t
     clock.runToFrame();
     td.verify(mockAdapter.setTransformOrigin('right bottom'));
     td.verify(mockAdapter.setPosition({right: 7, bottom: 15}));
+  });
+
+testFoundation('#open anchors the surface to the top right in RTL when close to the top & right edge with margin',
+  ({foundation, mockAdapter, clock}) => {
+    initAnchorLayout(mockAdapter, smallTopRight, true);
+    foundation.setAnchorCorner(Corner.TOP_START);
+    foundation.setAnchorMargin({right: 7, top: 5});
+    foundation.open();
+    clock.runToFrame();
+    td.verify(mockAdapter.setPosition({right: 7, top: 5}));
+    td.verify(mockAdapter.setTransformOrigin('right top'));
+  });
+
+testFoundation('#open anchors hoisted surface to top right in RTL when near top right edge w/ margin',
+  ({foundation, mockAdapter, clock}) => {
+    const f = /** @type {!MDCMenuSurfaceFoundation} */ (foundation);
+    initAnchorLayout(mockAdapter, smallTopRight, true);
+    foundation.setAnchorCorner(Corner.TOP_START);
+    foundation.setAnchorMargin({right: 7, top: 5});
+    f.setIsHoisted(true);
+    foundation.open();
+    clock.runToFrame();
+    td.verify(mockAdapter.setPosition({right: 47, top: 25}));
+    td.verify(mockAdapter.setTransformOrigin('right top'));
+  });
+
+testFoundation('#open anchors hoisted surface to bottom left in RTL when near bottom left edge w/ margin',
+  ({foundation, mockAdapter, clock}) => {
+    const f = /** @type {!MDCMenuSurfaceFoundation} */ (foundation);
+    initAnchorLayout(mockAdapter, smallBottomLeft, true);
+    foundation.setAnchorCorner(Corner.BOTTOM_START);
+    foundation.setAnchorMargin({left: 7, bottom: 5});
+    f.setIsHoisted(true);
+    foundation.open();
+    clock.runToFrame();
+    td.verify(mockAdapter.setPosition({left: 27, bottom: 80}));
+    td.verify(mockAdapter.setTransformOrigin('left bottom'));
+  });
+
+testFoundation('#open anchors fixed-position surface to top right in RTL when near top right edge w/ margin',
+  ({foundation, mockAdapter, clock}) => {
+    const f = /** @type {!MDCMenuSurfaceFoundation} */ (foundation);
+    initAnchorLayout(mockAdapter, smallTopRight, true);
+    foundation.setAnchorCorner(Corner.TOP_START);
+    foundation.setAnchorMargin({right: 7, top: 5});
+    f.setFixedPosition(true);
+    foundation.open();
+    clock.runToFrame();
+    td.verify(mockAdapter.setPosition({right: 47, top: 25}));
+    td.verify(mockAdapter.setTransformOrigin('right top'));
+  });
+
+testFoundation('#open anchors absolutely-position surface to top right in RTL when near top right edge w/ margin',
+  ({foundation, mockAdapter, clock}) => {
+    const f = /** @type {!MDCMenuSurfaceFoundation} */ (foundation);
+    initAnchorLayout(mockAdapter, smallTopRight, true);
+    foundation.setAnchorCorner(Corner.TOP_START);
+    foundation.setAnchorMargin({right: 7, top: 5});
+    f.setIsHoisted(false);
+    f.setFixedPosition(false);
+    f.setAbsolutePosition(0, 0);
+    foundation.open();
+    clock.runToFrame();
+    td.verify(mockAdapter.setPosition({right: 7, top: 5}));
+    td.verify(mockAdapter.setTransformOrigin('right top'));
   });
 
 testFoundation('#close adds the animation class to start an animation', ({foundation, mockAdapter}) => {
@@ -658,6 +738,23 @@ test('#handleKeydown with Shift+Tab keys on the first element, it moves to the l
   clock.tick(numbers.SELECTED_TRIGGER_DELAY);
   clock.runToFrame();
   td.verify(mockAdapter.focusLastElement(), {times: 1});
+});
+
+test('#handleKeydown with Shift+Tab on middle element does not cause focus to wrap around to first/last', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const clock = installClock();
+  const target = {};
+  const event = {target, key: 'Tab', shiftKey: true, preventDefault: () => {}};
+
+  td.when(mockAdapter.isFirstElementFocused()).thenReturn(false);
+  td.when(mockAdapter.isLastElementFocused()).thenReturn(false);
+
+  foundation.init();
+  foundation.handleKeydown(event);
+  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
+  clock.runToFrame();
+  td.verify(mockAdapter.focusFirstElement(), {times: 0});
+  td.verify(mockAdapter.focusLastElement(), {times: 0});
 });
 
 test('#handleKeydown on any other key, do not prevent default on the event', () => {

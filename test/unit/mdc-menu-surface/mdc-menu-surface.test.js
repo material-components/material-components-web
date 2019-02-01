@@ -174,10 +174,16 @@ test('setAnchorCorner', () => {
   td.verify(mockFoundation.setAnchorCorner(Corner.TOP_START));
 });
 
-test('setAnchorMargin', () => {
+test('setAnchorMargin with all object properties defined', () => {
   const {component, mockFoundation} = setupTest();
   component.setAnchorMargin({top: 0, right: 0, bottom: 0, left: 0});
   td.verify(mockFoundation.setAnchorMargin({top: 0, right: 0, bottom: 0, left: 0}));
+});
+
+test('setAnchorMargin with empty object', () => {
+  const {component, mockFoundation} = setupTest();
+  component.setAnchorMargin({});
+  td.verify(mockFoundation.setAnchorMargin({}));
 });
 
 test('setQuickOpen', () => {

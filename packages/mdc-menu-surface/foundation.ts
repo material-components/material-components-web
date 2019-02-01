@@ -450,9 +450,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
 
       // Hoisted surfaces need to have the anchor elements location on the page added to the
       // position properties for proper alignment on the body.
-      if (viewportDistance.hasOwnProperty(prop)) {
-        value += viewportDistance[prop] || 0;
-      }
+      value += viewportDistance[prop];
 
       // Surfaces that are absolutely positioned need to have additional calculations for scroll
       // and bottom positioning.
@@ -463,7 +461,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
           value -= windowScroll.y;
         } else if (prop === 'left') {
           value += windowScroll.x;
-        } else if (prop === 'right') {
+        } else { // prop === 'right'
           value -= windowScroll.x;
         }
       }
