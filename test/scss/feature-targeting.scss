@@ -1,4 +1,5 @@
 @import "@material/button/mixins";
+@import "@material/card/mixins";
 @import "@material/checkbox/mixins";
 @import "@material/elevation/mixins";
 @import "@material/feature-targeting/functions";
@@ -20,6 +21,13 @@
   @include mdc-button-horizontal-padding(0, $query: mdc-feature-any());
   @include mdc-button-outline-width(0, $query: mdc-feature-any());
 
+  // Card
+  @include mdc-card($query: mdc-feature-any());
+  @include mdc-card-fill-color(red, $query: mdc-feature-any());
+  @include mdc-card-outline(red, $query: mdc-feature-any());
+  @include mdc-card-shape-radius(0, $query: mdc-feature-any());
+  @include mdc-card-media-aspect-ratio(1, 1, $query: mdc-feature-any());
+
   // Checkbox
   @include mdc-checkbox($query: mdc-feature-any());
   @include mdc-checkbox-container-colors($query: mdc-feature-any());
@@ -31,9 +39,14 @@
 
   // Menu
   @include mdc-menu($query: mdc-feature-any());
+  @include mdc-menu-width(0, $query: mdc-feature-any());
 
   // Radio
   @include mdc-radio($query: mdc-feature-any());
+  @include mdc-radio-unchecked-stroke-color(red, $query: mdc-feature-any());
+  @include mdc-radio-checked-stroke-color(red, $query: mdc-feature-any());
+  @include mdc-radio-ink-color(red, $query: mdc-feature-any());
+  @include mdc-radio-focus-indicator-color(red, $query: mdc-feature-any());
 
   // Ripple
   @include mdc-ripple-common($query: mdc-feature-any());
