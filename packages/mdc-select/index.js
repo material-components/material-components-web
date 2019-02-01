@@ -24,7 +24,7 @@
 import MDCComponent from '@material/base/component';
 import {MDCFloatingLabel} from '@material/floating-label/index';
 import {MDCLineRipple} from '@material/line-ripple/index';
-import {MDCMenu} from '@material/menu/index';
+import {MDCMenu} from '@material/menu/index.ts';
 import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
 import {MDCNotchedOutline} from '@material/notched-outline/index';
 import MDCSelectFoundation from './foundation';
@@ -38,7 +38,7 @@ import {MDCSelectHelperText, MDCSelectHelperTextFoundation} from './helper-text/
 
 // Closure has issues with {this as that} syntax.
 import * as menuSurfaceConstants from '@material/menu-surface/constants.ts';
-import * as menuConstants from '@material/menu/constants';
+import * as menuConstants from '@material/menu/constants.ts';
 
 const VALIDATION_ATTR_WHITELIST = ['required', 'aria-required'];
 

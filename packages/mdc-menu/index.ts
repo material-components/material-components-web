@@ -22,40 +22,23 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {MDCMenuFoundation} from './foundation';
-import {strings, cssClasses} from './constants';
-import {MDCMenuSurface, Corner} from '@material/menu-surface/index.ts';
-import {MDCMenuSurfaceFoundation, MenuPosition} from '@material/menu-surface/foundation.ts';
+import {SpecificEventListener} from '@material/dom/index';
 import {MDCList, MDCListFoundation} from '@material/list/index';
+import {MDCMenuSurfaceFoundation, MenuPosition} from '@material/menu-surface/foundation';
+import {Corner, MDCMenuSurface} from '@material/menu-surface/index';
+import {cssClasses, strings} from './constants';
+import {MDCMenuFoundation} from './foundation';
 
-/**
- * @extends MDCComponent<!MDCMenuFoundation>
- */
-class MDCMenu extends MDCComponent {
-  /** @param {...?} args */
-  constructor(...args) {
-    super(...args);
-    /** @private {!MDCMenuSurface} */
-    this.menuSurface_;
-    /** @private {!MDCList} */
-    this.list_;
-    /** @private {!Function} */
-    this.handleKeydown_;
-
-    /** @private {!Function} */
-    this.handleItemAction_;
-
-    /** @private {!Function} */
-    this.afterOpenedCallback_;
-  }
-
-  /**
-   * @param {!HTMLElement} root
-   * @return {!MDCMenu}
-   */
-  static attachTo(root) {
+class MDCMenu extends MDCComponent<MDCMenuFoundation> {
+  static attachTo(root: Element) {
     return new MDCMenu(root);
   }
+
+  private menuSurface_: MDCMenuSurface;
+  private list_: MDCList;
+  private handleKeydown_: SpecificEventListener<'keydown'>;
+  private handleItemAction_: SpecificEventListener<''>;
+  private afterOpenedCallback_: Function;
 
   initialize(
     menuSurfaceFactory = (el) => new MDCMenuSurface(el),
@@ -112,6 +95,21 @@ class MDCMenu extends MDCComponent {
   }
 
   /**
+   * Return the items within the menu. Note that this only contains the set of elements within
+   * the items container that are proper list items, and not supplemental / presentational DOM
+   * elements.
+   * @return {!Array<!HTMLElement>}
+   */
+  get items() {
+    return this.list_.listElements;
+  }
+
+  /** @param {boolean} quickOpen */
+  set quickOpen(quickOpen) {
+    this.menuSurface_.quickOpen = quickOpen;
+  }
+
+  /**
    * @param {!Corner} corner Default anchor corner alignment of top-left
    *     menu corner.
    */
@@ -127,16 +125,6 @@ class MDCMenu extends MDCComponent {
   }
 
   /**
-   * Return the items within the menu. Note that this only contains the set of elements within
-   * the items container that are proper list items, and not supplemental / presentational DOM
-   * elements.
-   * @return {!Array<!HTMLElement>}
-   */
-  get items() {
-    return this.list_.listElements;
-  }
-
-  /**
    * Return the item within the menu at the index specified.
    * @param {number} index
    * @return {?HTMLElement}
@@ -149,11 +137,6 @@ class MDCMenu extends MDCComponent {
     } else {
       return null;
     }
-  }
-
-  /** @param {boolean} quickOpen */
-  set quickOpen(quickOpen) {
-    this.menuSurface_.quickOpen = quickOpen;
   }
 
   /** @param {boolean} isFixed */

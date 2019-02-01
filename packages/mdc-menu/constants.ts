@@ -1,3 +1,5 @@
+import {MDCMenuSurface} from '@material/menu-surface';
+
 /**
  * @license
  * Copyright 2018 Google Inc.
@@ -21,19 +23,24 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
-const cssClasses = {
-  ROOT: 'mdc-menu',
-  MENU_SELECTED_LIST_ITEM: 'mdc-menu-item--selected',
-  MENU_SELECTION_GROUP: 'mdc-menu__selection-group',
-};
+interface MenuEventData {
+  index: number;
+}
 
-/** @enum {string} */
-const strings = {
-  SELECTED_EVENT: 'MDCMenu:selected',
-  ARIA_SELECTED_ATTR: 'aria-selected',
-  LIST_SELECTOR: '.mdc-list',
-  CHECKBOX_SELECTOR: 'input[type="checkbox"]',
-};
+type MenuSurfaceFactory = (el: Element) => MDCMenuSurface;
+type ListFactory = (el: Element) => MDCList;
 
-export {cssClasses, strings};
+enum cssClasses {
+  MENU_SELECTED_LIST_ITEM = 'mdc-menu-item--selected',
+  MENU_SELECTION_GROUP = 'mdc-menu__selection-group',
+  ROOT = 'mdc-menu',
+}
+
+enum strings {
+  ARIA_SELECTED_ATTR = 'aria-selected',
+  CHECKBOX_SELECTOR = 'input[type="checkbox"]',
+  LIST_SELECTOR = '.mdc-list',
+  SELECTED_EVENT = 'MDCMenu:selected',
+}
+
+export {cssClasses, MenuEventData, MenuSurfaceFactory, strings};

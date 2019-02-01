@@ -21,95 +21,47 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
+import {MenuEventData} from './constants';
 
 /**
- * Adapter for MDC Menu. Provides an interface for managing
- * - selected element classes
- * - get focused elements
- * - toggling a checkbox inside a list item
- *
- * Additionally, provides type information for the adapter to the Closure
- * compiler.
- *
  * Implement this adapter for your framework of choice to delegate updates to
  * the component in your framework of choice. See architecture documentation
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
- *
- * @record
  */
-class MDCMenuAdapter {
-  /**
-   * Adds a class to the element at the index provided.
-   * @param {number} index
-   * @param {string} className
-   */
-  addClassToElementAtIndex(index, className) {}
+interface MDCMenuAdapter {
+  /** Adds a class to the element at the index provided. */
+  addClassToElementAtIndex(index: number, className: string): void;
 
-  /**
-   * Removes a class from the element at the index provided
-   * @param {number} index
-   * @param {string} className
-   */
-  removeClassFromElementAtIndex(index, className) {}
+  /** Removes a class from the element at the index provided */
+  removeClassFromElementAtIndex(index: number, className: string): void;
 
-  /**
-   * Adds an attribute, with value, to the element at the index provided.
-   * @param {number} index
-   * @param {string} attr
-   * @param {string} value
-   */
-  addAttributeToElementAtIndex(index, attr, value) {}
+  /** Adds an attribute, with value, to the element at the index provided. */
+  addAttributeToElementAtIndex(index: number, attr: string, value: string): void;
 
-  /**
-   * Removes an attribute from an element at the index provided.
-   * @param {number} index
-   * @param {string} attr
-   */
-  removeAttributeFromElementAtIndex(index, attr) {}
+  /** Removes an attribute from an element at the index provided. */
+  removeAttributeFromElementAtIndex(index: number, attr: string): void;
 
-  /**
-   * Returns true if the element contains the className.
-   * @param {?HTMLElement} element
-   * @param {string} className
-   * @return {boolean} true if the element contains the className
-   */
-  elementContainsClass(element, className) {}
+  /** Returns true if the element contains the className. */
+  elementContainsClass(element: Element, className: string): boolean;
 
-  /**
-   * Closes the menu-surface.
-   */
-  closeSurface() {}
+  /** Closes the menu-surface. */
+  closeSurface(): void;
 
   /**
    * Returns the index for the element provided.
-   * @param {?HTMLElement} element
-   * @return {number} index of the element in the list or -1 if it is not in the list.
+   * @return Index of the element in the list or -1 if it is not in the list.
    */
-  getElementIndex(element) {}
+  getElementIndex(element: Element): number;
 
-  /**
-   * Returns the parentElement of the provided element.
-   * @param {?HTMLElement} element
-   * @return {?HTMLElement} parentElement of the element provided.
-   */
-  getParentElement(element) {}
+  /** Returns the parentElement of the provided element. */
+  getParentElement(element: Element): Element;
 
-  /**
-   * Returns the element within the selectionGroup containing the selected element class.
-   * @param {!HTMLElement} selectionGroup
-   * @return {number} element within the selectionGroup that contains the selected element class.
-   */
-  getSelectedElementIndex(selectionGroup) {}
+  /** Returns the element within the selectionGroup containing the selected element class. */
+  getSelectedElementIndex(selectionGroup: Element): number;
 
-  /**
-   * Emits an event using the evtData.
-   * @param {{
- *    index: number
- *   }} evtData
-   */
-  notifySelected(evtData) {}
+  /** Emit an event when a menu item is selected. */
+  notifySelected(evtData: MenuEventData): void;
 }
 
 export {MDCMenuAdapter};
