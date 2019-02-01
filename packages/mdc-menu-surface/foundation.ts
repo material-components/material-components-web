@@ -376,7 +376,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
     const isBottomAnchored = this.hasBit_(this.anchorCorner_, CornerBit.BOTTOM);
     const {MARGIN_TO_EDGE} = MDCMenuSurfaceFoundation.numbers;
 
-    // When maximum height is not specified, it is handled from css.
+    // When maximum height is not specified, it is handled from CSS.
     if (isBottomAligned) {
       maxHeight = viewportDistance.top + this.anchorMargin_.top - MARGIN_TO_EDGE;
       if (!isBottomAnchored) {
@@ -477,7 +477,6 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
    * focused on or within the menu surface when it is closed.
    */
   private maybeRestoreFocus_() {
-    // TODO(acdvorak): adapter_.isFocused() is unnecessary. Element.contains() already covers that use case.
     const isRootFocused = this.adapter_.isFocused();
     const childHasFocus = document.activeElement && this.adapter_.isElementInContainer(document.activeElement);
     if (isRootFocused || childHasFocus) {

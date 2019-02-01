@@ -53,12 +53,11 @@ const wideTopLeft = {height: 20, width: 150, top: 20, bottom: 40, left: 20, righ
 
 /**
  * Initializes viewport, anchor and menu surface dimensions. Viewport is 1000x1000. Default surface size is 100x200.
- * @param {Object} mockAdapter Mock double for the adapter.
- * @param {{height:number, width: number, top: number, bottom: number, left: number, right: number}} anchorDimensions
- *   Approximate viewport corner where anchor is located.
+ * @param {!MDCMenuSurfaceAdapter} mockAdapter Mock double for the adapter.
+ * @param {!ClientRect} anchorDimensions Approximate viewport corner where anchor is located.
  * @param {boolean=} isRtl Indicates whether layout is RTL.
  * @param {number=} menuSurfaceHeight Optional height of the menu surface.
- * @param {{x: number, y: number}} scrollValue Optional scroll values of the page.
+ * @param {!MenuPoint=} scrollValue Optional scroll values of the page.
  */
 function initAnchorLayout(mockAdapter, anchorDimensions, isRtl = false,
   menuSurfaceHeight = 200, scrollValue = {x: 0, y: 0}) {
