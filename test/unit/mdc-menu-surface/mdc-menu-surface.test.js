@@ -27,7 +27,7 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 
 import {MDCMenuSurface, MDCMenuSurfaceFoundation} from '../../../packages/mdc-menu-surface/index';
-import {strings, cssClasses, Corner} from '../../../packages/mdc-menu-surface/constants';
+import {Corner, cssClasses, strings} from '../../../packages/mdc-menu-surface/constants';
 import {getTransformPropertyName} from '../../../packages/mdc-menu-surface/util';
 
 function getFixture(open, fixedPosition = false) {
@@ -492,4 +492,36 @@ test('adapter#setMaxHeight sets the maxHeight style on the menu surface element'
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setMaxHeight('100px');
   assert.equal(root.style.maxHeight, '100px');
+});
+
+test('Pressing Shift+Tab on first element focuses the last menu surface element', () => {
+  const root = getFixture(true);
+  document.body.appendChild(root);
+  const firstItem = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[0];
+  const lastItem = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[1];
+  const component = new MDCMenuSurface(root);
+  component.open = true;
+
+  firstItem.focus();
+  component.getDefaultFoundation().handleKeydown({key: 'Tab', shiftKey: true, preventDefault: () => {}});
+  assert.equal(document.activeElement, lastItem);
+
+  component.open = false;
+  document.body.removeChild(root);
+});
+
+test('Pressing Tab on last element focuses the first menu surface element', () => {
+  const root = getFixture(true);
+  document.body.appendChild(root);
+  const firstItem = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[0];
+  const lastItem = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[1];
+  const component = new MDCMenuSurface(root);
+  component.open = true;
+
+  lastItem.focus();
+  component.getDefaultFoundation().handleKeydown({key: 'Tab', shiftKey: false, preventDefault: () => {}});
+  assert.equal(document.activeElement, firstItem);
+
+  component.open = false;
+  document.body.removeChild(root);
 });
