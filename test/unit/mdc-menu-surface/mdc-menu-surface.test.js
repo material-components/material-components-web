@@ -30,9 +30,12 @@ import {MDCMenuSurface, MDCMenuSurfaceFoundation} from '../../../packages/mdc-me
 import {strings, cssClasses, Corner} from '../../../packages/mdc-menu-surface/constants';
 import {getTransformPropertyName} from '../../../packages/mdc-menu-surface/util';
 
-function getFixture(open) {
+function getFixture(open, fixedPosition = false) {
+  const openClass = open ? 'mdc-menu-surface--open' : '';
+  const fixedClass = fixedPosition ? 'mdc-menu-surface--fixed' : '';
+
   return bel`
-    <div class="mdc-menu-surface ${open ? 'mdc-menu-surface--open' : ''}" tabindex="-1">
+    <div class="mdc-menu-surface ${openClass} ${fixedClass}" tabindex="-1">
       <ul class="mdc-list" role="menu">
         <li class="mdc-list-item" role="menuitem" tabindex="0">Item</a>
         <li role="separator"></li>
@@ -42,8 +45,8 @@ function getFixture(open) {
   `;
 }
 
-function setupTest(open = false) {
-  const root = getFixture(open);
+function setupTest(open = false, fixedPosition = false) {
+  const root = getFixture(open, fixedPosition);
   const MockFoundationConstructor = td.constructor(MDCMenuSurfaceFoundation);
   const mockFoundation = new MockFoundationConstructor();
   const component = new MDCMenuSurface(root, mockFoundation);
@@ -145,6 +148,11 @@ test('setIsHoisted', () => {
   const {component, mockFoundation} = setupTest();
   component.setIsHoisted(true);
   td.verify(mockFoundation.setIsHoisted(true));
+});
+
+test('setFixedPosition is called when CSS class is present', () => {
+  const {mockFoundation} = setupTest(false, true);
+  td.verify(mockFoundation.setFixedPosition(true));
 });
 
 test('setFixedPosition is true', () => {
