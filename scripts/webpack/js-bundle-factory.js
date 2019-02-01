@@ -162,7 +162,7 @@ class JsBundleFactory {
         drawer: getAbsolutePath('/packages/mdc-drawer/index.js'),
         floatingLabel: getAbsolutePath('/packages/mdc-floating-label/index.js'),
         formField: getAbsolutePath('/packages/mdc-form-field/index.ts'),
-        gridList: getAbsolutePath('/packages/mdc-grid-list/index.js'),
+        gridList: getAbsolutePath('/packages/mdc-grid-list/index.ts'),
         iconButton: getAbsolutePath('/packages/mdc-icon-button/index.js'),
         iconToggle: getAbsolutePath('/packages/mdc-icon-toggle/index.js'),
         list: getAbsolutePath('/packages/mdc-list/index.js'),

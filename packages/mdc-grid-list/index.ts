@@ -23,29 +23,31 @@
 
 import MDCComponent from '@material/base/component';
 
-import MDCGridListFoundation from './foundation';
+import {MDCGridListFoundation} from './foundation';
 
-export {MDCGridListFoundation};
-
-export class MDCGridList extends MDCComponent {
-  static attachTo(root) {
+class MDCGridList extends MDCComponent<MDCGridListFoundation> {
+  static attachTo(root: Element) {
     return new MDCGridList(root);
   }
 
   getDefaultFoundation() {
     return new MDCGridListFoundation({
-      getOffsetWidth: () => this.root_.offsetWidth,
+      deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
       getNumberOfTiles: () => {
         return this.root_.querySelectorAll(MDCGridListFoundation.strings.TILE_SELECTOR).length;
       },
+      getOffsetWidth: () => (this.root_ as HTMLElement).offsetWidth,
       getOffsetWidthForTileAtIndex: (index) => {
-        return this.root_.querySelectorAll(MDCGridListFoundation.strings.TILE_SELECTOR)[index].offsetWidth;
-      },
-      setStyleForTilesElement: (property, value) => {
-        this.root_.querySelector(MDCGridListFoundation.strings.TILES_SELECTOR).style[property] = value;
+        const tile = this.root_.querySelectorAll(MDCGridListFoundation.strings.TILE_SELECTOR)[index] as HTMLElement;
+        return tile.offsetWidth;
       },
       registerResizeHandler: (handler) => window.addEventListener('resize', handler),
-      deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
+      setStyleForTilesElement: (property, value) => {
+        const tile = this.root_.querySelector(MDCGridListFoundation.strings.TILES_SELECTOR) as HTMLElement;
+        tile.style[property] = value;
+      },
     });
   }
 }
+
+export {MDCGridList, MDCGridListFoundation};
