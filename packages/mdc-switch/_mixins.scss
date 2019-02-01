@@ -211,8 +211,8 @@
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-ripple-surface($query);
-  @include mdc-states($mdc-switch-baseline-theme-color, false, $query);
   @include mdc-ripple-radius-unbounded(100%, $query);
+  @include mdc-states($mdc-switch-baseline-theme-color, false, $query);
 
   @include mdc-feature-targets($feat-structure) {
     @include mdc-rtl-reflexive-position(left, $mdc-switch-tap-target-initial-position);
