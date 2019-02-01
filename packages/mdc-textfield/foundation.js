@@ -24,6 +24,7 @@
 import MDCFoundation from '@material/base/foundation';
 /* eslint-disable no-unused-vars */
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
+import MDCTextFieldCharacterCounterFoundation from './character-counter/foundation';
 import MDCTextFieldIconFoundation from './icon/foundation';
 /* eslint-enable no-unused-vars */
 import {MDCTextFieldAdapter, NativeInputType, FoundationMapType} from './adapter';
@@ -108,6 +109,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
     /** @type {!MDCTextFieldHelperTextFoundation|undefined} */
     this.helperText_ = foundationMap.helperText;
+    /** @type {!MDCTextFieldCharacterCounterFoundation|undefined} */
+    this.characterCounter_ = foundationMap.characterCounter;
     /** @type {!MDCTextFieldIconFoundation|undefined} */
     this.leadingIcon_ = foundationMap.leadingIcon;
     /** @type {!MDCTextFieldIconFoundation|undefined} */
@@ -130,7 +133,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     /** @private {function(): undefined} */
     this.inputBlurHandler_ = () => this.deactivateFocus();
     /** @private {function(): undefined} */
-    this.inputInputHandler_ = () => this.autoCompleteFocus();
+    this.inputInputHandler_ = () => this.handleInput();
     /** @private {function(!Event): undefined} */
     this.setPointerXOffset_ = (evt) => this.setTransformOrigin(evt);
     /** @private {function(!Event): undefined} */
@@ -161,6 +164,7 @@ class MDCTextFieldFoundation extends MDCFoundation {
     });
     this.validationObserver_ =
         this.adapter_.registerValidationAttributeChangeHandler(this.validationAttributeChangeHandler_);
+    this.setCharacterCounter_(this.getValue().length);
   }
 
   destroy() {
@@ -197,6 +201,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
         return true;
       }
     });
+
+    if (attributesList.indexOf('maxlength') > -1) {
+      this.setCharacterCounter_(this.getValue().length);
+    }
   }
 
   /**
@@ -250,6 +258,14 @@ class MDCTextFieldFoundation extends MDCFoundation {
     const targetClientRect = targetEvent.target.getBoundingClientRect();
     const normalizedX = targetEvent.clientX - targetClientRect.left;
     this.adapter_.setLineRippleTransformOrigin(normalizedX);
+  }
+
+  /**
+   * Handles input change of text input and text area.
+   */
+  handleInput() {
+    this.autoCompleteFocus();
+    this.setCharacterCounter_(this.getValue().length);
   }
 
   /**
@@ -357,6 +373,22 @@ class MDCTextFieldFoundation extends MDCFoundation {
     if (this.helperText_) {
       this.helperText_.setContent(content);
     }
+  }
+
+  /**
+   * Sets character counter values that shows characters used and the total character limit.
+   * @param {number} currentLength
+   * @private
+   */
+  setCharacterCounter_(currentLength) {
+    if (!this.characterCounter_) return;
+
+    const maxLength = this.getNativeInput_().maxLength;
+    if (maxLength === -1) {
+      throw new Error('MDCTextFieldFoundation: Expected maxlength html property on text input or textarea.');
+    }
+
+    this.characterCounter_.setCounterValue(currentLength, maxLength);
   }
 
   /**

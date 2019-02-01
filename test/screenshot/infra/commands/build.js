@@ -33,7 +33,8 @@ const IndexCommand = require('./index');
 const Logger = require('../lib/logger');
 const ProcessManager = require('../lib/process-manager');
 const ProtoCommand = require('./proto');
-const {TEST_DIR_RELATIVE_PATH} = require('../lib/constants');
+const {ExitCode} = require('../lib/constants');
+const {TEST_DIR_RELATIVE_PATH, BUILD_PID_FILE_PATH_RELATIVE} = require('../lib/constants');
 
 class BuildCommand {
   constructor() {
@@ -59,6 +60,7 @@ class BuildCommand {
       return;
     }
 
+    await this.setRunningProcessId_();
     await this.cleanCommand_.runAsync();
 
     this.logger_.foldStart('screenshot.build', 'Compiling source files');
@@ -159,22 +161,38 @@ class BuildCommand {
   }
 
   /**
-   * TODO(acvdorak): Store PID in local text file instead of scanning through running processes
-   * @return {!Promise<?number>}
+   * @return {!Promise<?string>}
    * @private
    */
   async getExistingProcessId_() {
-    /** @type {!Array<!PsNodeProcess>} */
-    const allProcs = await this.processManager_.getRunningProcessesInPwdAsync('node', 'build');
-    const buildProcs = allProcs.filter((proc) => {
-      const [script, command] = proc.arguments;
-      return (
-        script.endsWith('/run.js') &&
-        command === 'build'
-      );
-    });
+    return await this.processManager_.getRunningPid(BUILD_PID_FILE_PATH_RELATIVE, 'node', 'build');
+  }
 
-    return buildProcs.length > 0 ? buildProcs[0].pid : null;
+  /**
+   * @return {!Promise<void>}
+   * @private
+   */
+  async setRunningProcessId_() {
+    await this.processManager_.setRunningPid(BUILD_PID_FILE_PATH_RELATIVE, process.pid);
+
+    const exit = (code, err) => {
+      if (err) {
+        console.error(err);
+      }
+      this.processManager_.deletePidFileSync(BUILD_PID_FILE_PATH_RELATIVE);
+      process.exit(code);
+    };
+
+    // TODO(acdvorak): Create a centralized class to manage global exit handlers?
+
+    // catches ctrl+c event
+    process.on('SIGINT', () => exit(ExitCode.SIGINT));
+
+    // catches "kill pid"
+    process.on('SIGTERM', () => exit(ExitCode.SIGTERM));
+
+    process.on('uncaughtException', (err) => exit(ExitCode.UNCAUGHT_EXCEPTION, err));
+    process.on('unhandledRejection', (err) => exit(ExitCode.UNHANDLED_PROMISE_REJECTION, err));
   }
 }
 

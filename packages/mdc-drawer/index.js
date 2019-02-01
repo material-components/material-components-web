@@ -110,7 +110,7 @@ class MDCDrawer extends MDCComponent {
 
     if (this.root_.classList.contains(MODAL)) {
       const {SCRIM_SELECTOR} = MDCDismissibleDrawerFoundation.strings;
-      this.scrim_ = /** @type {!Element} */ (this.root_.parentElement.querySelector(SCRIM_SELECTOR));
+      this.scrim_ = /** @type {!Element} */ (this.root_.parentNode.querySelector(SCRIM_SELECTOR));
       this.handleScrimClick_ = () => /** @type {!MDCModalDrawerFoundation} */ (this.foundation_).handleScrimClick();
       this.scrim_.addEventListener('click', this.handleScrimClick_);
       this.focusTrap_ = util.createFocusTrapInstance(this.root_, this.focusTrapFactory_);

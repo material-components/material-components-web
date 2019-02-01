@@ -22,6 +22,7 @@ Material Components for the web is the successor to [Material Design Lite](https
 - [Getting Started Guide](docs/getting-started.md)
 - [Demos](https://material-components.github.io/material-components-web-catalog)
 - [MDC Web on other frameworks](docs/framework-wrappers.md)
+- [Examples using MDC Web](docs/examples.md)
 - [Contributing](CONTRIBUTING.md)
 - [Material Design Guidelines](https://material.io/design) (external site)
 - [Supported browsers](docs/supported-browsers.md)
@@ -55,6 +56,8 @@ Material Components for the web is the successor to [Material Design Lite](https
 > Please see [quick start demo](https://codepen.io/abhiomkar/pen/gQWarJ) on codepen for full example.
 
 ### Using NPM
+
+> This guide assumes you have webpack configured to compile Sass into CSS. To configure webpack, please see the full [getting started guide](docs/getting-started.md). You can also see the final code and result in the [Material Starter Kit](https://glitch.com/~material-starter-kit).
 
 Install textfield node module to your project.
 
@@ -94,8 +97,6 @@ const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
 This'll initialize text field component on a single `.mdc-text-field` element.
 
 > Please see [quick start demo](https://stackblitz.com/edit/mdc-web-quick-start-demo) on stackblitz for full example.
-
-> Please see [getting started guide](docs/getting-started.md) for pointers on how to configure webpack to bundle JavaScript & CSS.
 
 ## Need help?
 
