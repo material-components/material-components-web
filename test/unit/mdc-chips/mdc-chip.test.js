@@ -58,6 +58,30 @@ test('sets id on chip if attribute exists', () => {
   assert.equal(component.id, 'hello-chip');
 });
 
+test('#adapter.computeBoundingRect width includes checkmark if checkmark exists', () => {
+  const root = bel`
+    <div class="mdc-chip" id="hello-chip">
+      <div class="mdc-chip__checkmark" >
+        <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
+          <path class="mdc-chip__checkmark-path" fill="none" stroke="black"
+                d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+        </svg>
+      </div>
+      <div class="mdc-chip__text">Text</div>
+    </div>
+  `;
+  const component = new MDCChip(root);
+  const checkmarkEl = root.querySelector('.mdc-chip__checkmark');
+  const rippleBoundingRect = component.ripple_.foundation_.adapter_.computeBoundingRect();
+  assert.equal(rippleBoundingRect.width, root.getBoundingClientRect().width + checkmarkEl.getBoundingClientRect().height);
+});
+
+// test.only('#destroy destroys the ripple', () => {
+//   const {component} = setupTest();
+//   component.destroy();
+//   td.verify(component.ripple_.destroy());
+// });
+
 test('#adapter.hasClass returns true if class is set on chip set element', () => {
   const {root, component} = setupTest();
   root.classList.add('foo');
