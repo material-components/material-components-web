@@ -1,4 +1,5 @@
 @import "@material/button/mixins";
+@import "@material/card/mixins";
 @import "@material/checkbox/mixins";
 @import "@material/elevation/mixins";
 @import "@material/feature-targeting/functions";
@@ -18,6 +19,13 @@
   @include mdc-button-shape-radius(0, $query: mdc-feature-any());
   @include mdc-button-horizontal-padding(0, $query: mdc-feature-any());
   @include mdc-button-outline-width(0, $query: mdc-feature-any());
+
+  // Card
+  @include mdc-card($query: mdc-feature-any());
+  @include mdc-card-fill-color(red, $query: mdc-feature-any());
+  @include mdc-card-outline(red, $query: mdc-feature-any());
+  @include mdc-card-shape-radius(0, $query: mdc-feature-any());
+  @include mdc-card-media-aspect-ratio(1, 1, $query: mdc-feature-any());
 
   // Checkbox
   @include mdc-checkbox($query: mdc-feature-any());
