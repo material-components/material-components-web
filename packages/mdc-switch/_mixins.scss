@@ -29,10 +29,10 @@
 @import "./functions";
 @import "./variables";
 
-
 //
 // Public
 //
+
 @mixin mdc-switch($query: mdc-feature-all()) {
   // postcss-bem-linter: define switch
 
@@ -96,7 +96,7 @@
       }
 
       .mdc-switch__native-control {
-        @include mdc-switch__native-control-disabled_
+        @include mdc-switch__native-control-disabled_;
       }
     }
   }
@@ -267,7 +267,6 @@
   }
 }
 
-
 // Checked state
 
 @mixin mdc-switch__track-checked_ {
@@ -290,7 +289,6 @@
     transform: translateX($mdc-switch-thumb-active-margin);
   }
 }
-
 
 // Disabled state
 
