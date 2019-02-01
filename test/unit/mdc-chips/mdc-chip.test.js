@@ -73,14 +73,9 @@ test('#adapter.computeBoundingRect width includes checkmark if checkmark exists'
   const component = new MDCChip(root);
   const checkmarkEl = root.querySelector('.mdc-chip__checkmark');
   const rippleBoundingRect = component.ripple_.foundation_.adapter_.computeBoundingRect();
-  assert.equal(rippleBoundingRect.width, root.getBoundingClientRect().width + checkmarkEl.getBoundingClientRect().height);
+  assert.equal(rippleBoundingRect.width,
+    root.getBoundingClientRect().width + checkmarkEl.getBoundingClientRect().height);
 });
-
-// test.only('#destroy destroys the ripple', () => {
-//   const {component} = setupTest();
-//   component.destroy();
-//   td.verify(component.ripple_.destroy());
-// });
 
 test('#adapter.hasClass returns true if class is set on chip set element', () => {
   const {root, component} = setupTest();
