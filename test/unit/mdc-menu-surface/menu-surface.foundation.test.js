@@ -29,6 +29,9 @@ import {install as installClock} from '../helpers/clock';
 import {MDCMenuSurfaceFoundation} from '../../../packages/mdc-menu-surface/foundation';
 import {cssClasses, strings, numbers, Corner} from '../../../packages/mdc-menu-surface/constants';
 
+/**
+ * @return {{mockAdapter: !MDCMenuSurfaceAdapter, foundation: !MDCMenuSurfaceFoundation}}
+ */
 function setupTest() {
   const {foundation, mockAdapter} = setupFoundationTest(MDCMenuSurfaceFoundation);
   const size = {width: 500, height: 200};
@@ -71,6 +74,14 @@ function initAnchorLayout(mockAdapter, anchorDimensions, isRtl = false,
   td.when(mockAdapter.getWindowScroll()).thenReturn(scrollValue);
 }
 
+/**
+ * @param {string} desc
+ * @param {function({
+ *   mockAdapter: !MDCMenuSurfaceAdapter,
+ *   foundation: !MDCMenuSurfaceFoundation,
+ *   clock: {runToFrame: function(), tick: function(ms: number)},
+ * })} runTests
+ */
 function testFoundation(desc, runTests) {
   test(desc, () => {
     const {mockAdapter, foundation} = setupTest();
@@ -537,11 +548,10 @@ testFoundation('#open anchors the surface to the top right in RTL when close to 
 
 testFoundation('#open anchors hoisted surface to top right in RTL when near top right edge w/ margin',
   ({foundation, mockAdapter, clock}) => {
-    const f = /** @type {!MDCMenuSurfaceFoundation} */ (foundation);
     initAnchorLayout(mockAdapter, smallTopRight, true);
     foundation.setAnchorCorner(Corner.TOP_START);
     foundation.setAnchorMargin({right: 7, top: 5});
-    f.setIsHoisted(true);
+    foundation.setIsHoisted(true);
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setPosition({right: 47, top: 25}));
@@ -550,11 +560,10 @@ testFoundation('#open anchors hoisted surface to top right in RTL when near top 
 
 testFoundation('#open anchors hoisted surface to bottom left in RTL when near bottom left edge w/ margin',
   ({foundation, mockAdapter, clock}) => {
-    const f = /** @type {!MDCMenuSurfaceFoundation} */ (foundation);
     initAnchorLayout(mockAdapter, smallBottomLeft, true);
     foundation.setAnchorCorner(Corner.BOTTOM_START);
     foundation.setAnchorMargin({left: 7, bottom: 5});
-    f.setIsHoisted(true);
+    foundation.setIsHoisted(true);
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setPosition({left: 27, bottom: 80}));
@@ -563,11 +572,10 @@ testFoundation('#open anchors hoisted surface to bottom left in RTL when near bo
 
 testFoundation('#open anchors fixed-position surface to top right in RTL when near top right edge w/ margin',
   ({foundation, mockAdapter, clock}) => {
-    const f = /** @type {!MDCMenuSurfaceFoundation} */ (foundation);
     initAnchorLayout(mockAdapter, smallTopRight, true);
     foundation.setAnchorCorner(Corner.TOP_START);
     foundation.setAnchorMargin({right: 7, top: 5});
-    f.setFixedPosition(true);
+    foundation.setFixedPosition(true);
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setPosition({right: 47, top: 25}));
@@ -576,13 +584,12 @@ testFoundation('#open anchors fixed-position surface to top right in RTL when ne
 
 testFoundation('#open anchors absolutely-position surface to top right in RTL when near top right edge w/ margin',
   ({foundation, mockAdapter, clock}) => {
-    const f = /** @type {!MDCMenuSurfaceFoundation} */ (foundation);
     initAnchorLayout(mockAdapter, smallTopRight, true);
     foundation.setAnchorCorner(Corner.TOP_START);
     foundation.setAnchorMargin({right: 7, top: 5});
-    f.setIsHoisted(false);
-    f.setFixedPosition(false);
-    f.setAbsolutePosition(0, 0);
+    foundation.setIsHoisted(false);
+    foundation.setFixedPosition(false);
+    foundation.setAbsolutePosition(0, 0);
     foundation.open();
     clock.runToFrame();
     td.verify(mockAdapter.setPosition({right: 7, top: 5}));
