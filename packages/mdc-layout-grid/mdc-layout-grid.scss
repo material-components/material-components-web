@@ -79,6 +79,17 @@
       @include mdc-layout-grid-cell-order($i);
     }
   }
+    
+  //Order per device.
+  @each $size in map-keys($mdc-layout-grid-breakpoints) {
+    @for $i from 1 through map-get($mdc-layout-grid-columns, $upper-breakpoint) {
+      &--order-#{$i}-#{$size} {
+        @include mdc-layout-grid-media-query_($size) {
+          @include mdc-layout-grid-cell-order($i)
+        }
+      }
+    }
+  }
 
   // Alignment classes.
   &--align-top {
