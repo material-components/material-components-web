@@ -88,32 +88,24 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
     // tslint:enable:object-literal-sort-keys
   }
 
-  private isOpen_: boolean;
-  private openAnimationEndTimerId_: number;
-  private closeAnimationEndTimerId_: number;
-  private animationRequestId_: number;
+  private isOpen_ = false;
+  private isQuickOpen_ = false;
+  private isHoistedElement_ = false;
+  private isFixedPosition_ = false;
+
+  private openAnimationEndTimerId_ = 0;
+  private closeAnimationEndTimerId_ = 0;
+  private animationRequestId_ = 0;
+
+  private anchorCorner_: Corner = Corner.TOP_START;
+  private anchorMargin_: MenuDistance = {top: 0, right: 0, bottom: 0, left: 0};
+  private position_: MenuPoint = {x: 0, y: 0};
+
   private dimensions_!: MenuDimensions; // initialized in open()
-  private anchorCorner_: Corner;
-  private anchorMargin_: MenuDistance;
   private measurements_!: AutoLayoutMeasurements; // initialized in open()
-  private isQuickOpen_: boolean;
-  private isHoistedElement_: boolean;
-  private isFixedPosition_: boolean;
-  private position_: MenuPoint;
 
   constructor(adapter: MDCMenuSurfaceAdapter) {
     super(Object.assign(MDCMenuSurfaceFoundation.defaultAdapter, adapter));
-
-    this.isOpen_ = false;
-    this.openAnimationEndTimerId_ = 0;
-    this.closeAnimationEndTimerId_ = 0;
-    this.animationRequestId_ = 0;
-    this.anchorCorner_ = Corner.TOP_START;
-    this.anchorMargin_ = {top: 0, right: 0, bottom: 0, left: 0};
-    this.isQuickOpen_ = false;
-    this.isHoistedElement_ = false;
-    this.isFixedPosition_ = false;
-    this.position_ = {x: 0, y: 0};
   }
 
   init() {

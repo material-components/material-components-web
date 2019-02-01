@@ -38,42 +38,21 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
 
   protected root_!: HTMLElement;
 
-  private previousFocus_!: HTMLElement | SVGElement | null;
-  private firstFocusableElement_!: HTMLElement | SVGElement | null;
-  private lastFocusableElement_!: HTMLElement | SVGElement | null;
+  private previousFocus_: HTMLElement | SVGElement | null = null;
+  private firstFocusableElement_: HTMLElement | SVGElement | null = null;
+  private lastFocusableElement_: HTMLElement | SVGElement | null = null;
 
   private handleKeydown_!: SpecificEventListener<'keydown'>;
   private handleBodyClick_!: SpecificEventListener<'click'>;
+
   private registerBodyClickListener_!: RegisterFunction;
   private deregisterBodyClickListener_!: RegisterFunction;
-
-  get open(): boolean {
-    return this.foundation_.isOpen();
-  }
-
-  set open(value: boolean) {
-    if (value) {
-      const focusableElements = this.root_.querySelectorAll<HTMLElement | SVGElement>(strings.FOCUSABLE_ELEMENTS);
-      this.firstFocusableElement_ = focusableElements[0] || null;
-      this.lastFocusableElement_ = focusableElements[focusableElements.length - 1] || null;
-      this.foundation_.open();
-    } else {
-      this.foundation_.close();
-    }
-  }
-
-  set quickOpen(quickOpen: boolean) {
-    this.foundation_.setQuickOpen(quickOpen);
-  }
 
   initialSyncWithDOM() {
     const parentEl = this.root_.parentElement;
     const hasParentAnchor = parentEl && parentEl.classList.contains(cssClasses.ANCHOR);
 
     this.anchorElement = hasParentAnchor ? parentEl : null;
-    this.previousFocus_ = null;
-    this.firstFocusableElement_ = null;
-    this.lastFocusableElement_ = null;
 
     if (this.root_.classList.contains(cssClasses.FIXED)) {
       this.setFixedPosition(true);
@@ -95,6 +74,25 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
     this.root_.removeEventListener(strings.OPENED_EVENT, this.registerBodyClickListener_);
     this.root_.removeEventListener(strings.CLOSED_EVENT, this.deregisterBodyClickListener_);
     super.destroy();
+  }
+
+  get open(): boolean {
+    return this.foundation_.isOpen();
+  }
+
+  set open(value: boolean) {
+    if (value) {
+      const focusableElements = this.root_.querySelectorAll<HTMLElement | SVGElement>(strings.FOCUSABLE_ELEMENTS);
+      this.firstFocusableElement_ = focusableElements[0] || null;
+      this.lastFocusableElement_ = focusableElements[focusableElements.length - 1] || null;
+      this.foundation_.open();
+    } else {
+      this.foundation_.close();
+    }
+  }
+
+  set quickOpen(quickOpen: boolean) {
+    this.foundation_.setQuickOpen(quickOpen);
   }
 
   /**
