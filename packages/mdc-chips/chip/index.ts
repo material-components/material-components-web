@@ -25,27 +25,59 @@ import MDCComponent from '@material/base/component';
 import {SpecificEventListener} from '@material/dom/index';
 import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
 
-import {MDCChipFoundation} from './foundation';
 import {strings} from './constants';
+import {MDCChipFoundation} from './foundation';
 
-const INTERACTION_EVENTS: ('click' | 'keydown')[] = ['click', 'keydown'];
+const INTERACTION_EVENTS: Array<'click' | 'keydown'> = ['click', 'keydown'];
 
 class MDCChip extends MDCComponent<MDCChipFoundation> implements RippleCapableSurface {
 
-  id: string = '';
+  /**
+   * Returns whether the chip is selected.
+   */
+  get selected() {
+    return this.foundation_.isSelected();
+  }
+
+  /**
+   * Sets selected state on the chip.
+   */
+  set selected(selected: boolean) {
+    this.foundation_.setSelected(selected);
+  }
+
+  /**
+   * Returns whether a trailing icon click should trigger exit/removal of the chip.
+   */
+  get shouldRemoveOnTrailingIconClick() {
+    return this.foundation_.getShouldRemoveOnTrailingIconClick();
+  }
+
+  /**
+   * Sets whether a trailing icon click should trigger exit/removal of the chip.
+   */
+  set shouldRemoveOnTrailingIconClick(shouldRemove: boolean) {
+    this.foundation_.setShouldRemoveOnTrailingIconClick(shouldRemove);
+  }
+
+  get ripple() {
+    return this.ripple_;
+  }
+
+  static attachTo(root: Element) {
+    return new MDCChip(root);
+  }
+
+  id: string | undefined;
   root_!: HTMLElement;
-  private leadingIcon_: HTMLElement | null = null;
-  private trailingIcon_: HTMLElement | null = null;
-  private checkmark_: HTMLElement | null = null;
+  private leadingIcon_!: HTMLElement | null;
+  private trailingIcon_!: HTMLElement | null;
+  private checkmark_!: HTMLElement | null;
   private ripple_!: MDCRipple;
 
   private handleInteraction_!: SpecificEventListener<'click'|'keydown'>;
   private handleTransitionEnd_!: SpecificEventListener<'transitionend'>;
   private handleTrailingIconInteraction_!: SpecificEventListener<'click'|'keydown'>;
-
-  static attachTo(root: Element) {
-    return new MDCChip(root);
-  }
 
   initialize(
     rippleFactory = (el: Element, foundation: MDCRippleFoundation) => new MDCRipple(el, foundation)) {
@@ -63,7 +95,8 @@ class MDCChip extends MDCComponent<MDCChipFoundation> implements RippleCapableSu
   initialSyncWithDOM() {
     this.handleInteraction_ = (evt: MouseEvent | KeyboardEvent) => this.foundation_.handleInteraction(evt);
     this.handleTransitionEnd_ = (evt: TransitionEvent) => this.foundation_.handleTransitionEnd(evt);
-    this.handleTrailingIconInteraction_ = (evt: MouseEvent | KeyboardEvent) => this.foundation_.handleTrailingIconInteraction(evt);
+    this.handleTrailingIconInteraction_ = (evt: MouseEvent | KeyboardEvent) =>
+      this.foundation_.handleTrailingIconInteraction(evt);
 
     INTERACTION_EVENTS.forEach((evtType) => {
       this.root_.addEventListener(evtType, this.handleInteraction_);
@@ -95,34 +128,6 @@ class MDCChip extends MDCComponent<MDCChipFoundation> implements RippleCapableSu
   }
 
   /**
-   * Returns whether the chip is selected.
-   */
-  get selected() {
-    return this.foundation_.isSelected();
-  }
-
-  /**
-   * Sets selected state on the chip.
-   */
-  set selected(selected: boolean) {
-    this.foundation_.setSelected(selected);
-  }
-
-  /**
-   * Returns whether a trailing icon click should trigger exit/removal of the chip.
-   */
-  get shouldRemoveOnTrailingIconClick() {
-    return this.foundation_.getShouldRemoveOnTrailingIconClick();
-  }
-
-  /**
-   * Sets whether a trailing icon click should trigger exit/removal of the chip.
-   */
-  set shouldRemoveOnTrailingIconClick(shouldRemove: boolean) {
-    this.foundation_.setShouldRemoveOnTrailingIconClick(shouldRemove);
-  }
-
-  /**
    * Begins the exit animation which leads to removal of the chip.
    */
   beginExit() {
@@ -132,39 +137,36 @@ class MDCChip extends MDCComponent<MDCChipFoundation> implements RippleCapableSu
   getDefaultFoundation() {
     return new MDCChipFoundation({
       addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
-      hasClass: (className) => this.root_.classList.contains(className),
       addClassToLeadingIcon: (className) => {
         if (this.leadingIcon_) {
           this.leadingIcon_.classList.add(className);
-        }
-      },
-      removeClassFromLeadingIcon: (className) => {
-        if (this.leadingIcon_) {
-          this.leadingIcon_.classList.remove(className);
         }
       },
       eventTargetHasClass: (target, className) => {
         if (!target) return false;
         return (target as Element).classList.contains(className);
       },
-      notifyInteraction: () => this.emit(strings.INTERACTION_EVENT, {chipId: this.id}, true /* shouldBubble */),
+      getCheckmarkBoundingClientRect: () => this.checkmark_ ? this.checkmark_.getBoundingClientRect() : null,
+      getComputedStyleValue: (propertyName) => window.getComputedStyle(this.root_).getPropertyValue(propertyName),
+      getRootBoundingClientRect: () => this.root_.getBoundingClientRect(),
+      hasClass: (className) => this.root_.classList.contains(className),
+      hasLeadingIcon: () => !!this.leadingIcon_,
+      notifyInteraction: () => this.emit(
+        strings.INTERACTION_EVENT, {chipId: this.id}, true /* shouldBubble */),
+      notifyRemoval: () => this.emit(
+        strings.REMOVAL_EVENT, {chipId: this.id, root: this.root_}, true /* shouldBubble */),
       notifySelection: (selected) => this.emit(
-        strings.SELECTION_EVENT, {chipId: this.id, selected: selected}, true /* shouldBubble */),
+        strings.SELECTION_EVENT, {chipId: this.id, selected}, true /* shouldBubble */),
       notifyTrailingIconInteraction: () => this.emit(
         strings.TRAILING_ICON_INTERACTION_EVENT, {chipId: this.id}, true /* shouldBubble */),
-      notifyRemoval: () =>
-        this.emit(strings.REMOVAL_EVENT, {chipId: this.id, root: this.root_}, true /* shouldBubble */),
-      getComputedStyleValue: (propertyName) => window.getComputedStyle(this.root_).getPropertyValue(propertyName),
+      removeClass: (className) => this.root_.classList.remove(className),
+      removeClassFromLeadingIcon: (className) => {
+        if (this.leadingIcon_) {
+          this.leadingIcon_.classList.remove(className);
+        }
+      },
       setStyleProperty: (propertyName, value) => this.root_.style.setProperty(propertyName, value),
-      hasLeadingIcon: () => !!this.leadingIcon_,
-      getRootBoundingClientRect: () => this.root_.getBoundingClientRect(),
-      getCheckmarkBoundingClientRect: () => this.checkmark_ ? this.checkmark_.getBoundingClientRect() : null,
     });
-  }
-
-  get ripple() {
-    return this.ripple_;
   }
 }
 

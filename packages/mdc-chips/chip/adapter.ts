@@ -21,7 +21,6 @@
  * THE SOFTWARE.
  */
 
-
 /**
  * Defines the shape of the adapter expected by the foundation. Implement this
  * adapter to integrate the Chip into your framework. See

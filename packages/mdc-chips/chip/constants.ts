@@ -22,13 +22,13 @@
  */
 
 const strings = {
+  CHECKMARK_SELECTOR: '.mdc-chip__checkmark',
   ENTRY_ANIMATION_NAME: 'mdc-chip-entry',
   INTERACTION_EVENT: 'MDCChip:interaction',
+  LEADING_ICON_SELECTOR: '.mdc-chip__icon--leading',
+  REMOVAL_EVENT: 'MDCChip:removal',
   SELECTION_EVENT: 'MDCChip:selection',
   TRAILING_ICON_INTERACTION_EVENT: 'MDCChip:trailingIconInteraction',
-  REMOVAL_EVENT: 'MDCChip:removal',
-  CHECKMARK_SELECTOR: '.mdc-chip__checkmark',
-  LEADING_ICON_SELECTOR: '.mdc-chip__icon--leading',
   TRAILING_ICON_SELECTOR: '.mdc-chip__icon--trailing',
 };
 
@@ -37,8 +37,8 @@ const cssClasses = {
   CHIP_EXIT: 'mdc-chip--exit',
   HIDDEN_LEADING_ICON: 'mdc-chip__icon--leading-hidden',
   LEADING_ICON: 'mdc-chip__icon--leading',
-  TRAILING_ICON: 'mdc-chip__icon--trailing',
   SELECTED: 'mdc-chip--selected',
+  TRAILING_ICON: 'mdc-chip__icon--trailing',
 };
 
-export {strings, cssClasses};
+export {cssClasses, strings};

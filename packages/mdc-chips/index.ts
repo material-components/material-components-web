@@ -21,9 +21,9 @@
  * THE SOFTWARE.
  */
 
-import {MDCChipFoundation, MDCChip} from './chip/index';
-import {MDCChipInteractionEvent, MDCChipSelectionEvent, MDCChipRemovalEvent} from './chip/foundation';
-import {MDCChipSetFoundation, MDCChipSet} from './chip-set/index';
+import {MDCChipSet, MDCChipSetFoundation} from './chip-set/index';
+import {MDCChipInteractionEvent, MDCChipRemovalEvent, MDCChipSelectionEvent} from './chip/foundation';
+import {MDCChip, MDCChipFoundation} from './chip/index';
 
 export {
   MDCChipFoundation,
@@ -32,5 +32,5 @@ export {
   MDCChipSet,
   MDCChipInteractionEvent,
   MDCChipSelectionEvent,
-  MDCChipRemovalEvent
+  MDCChipRemovalEvent,
 };

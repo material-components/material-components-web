@@ -23,25 +23,32 @@
 
 import MDCComponent from '@material/base/component';
 
-import {MDCChipSetFoundation} from './foundation';
+import {MDCChipInteractionEvent, MDCChipRemovalEvent, MDCChipSelectionEvent} from '../chip/foundation';
 import {MDCChip, MDCChipFoundation} from '../chip/index';
-import {MDCChipInteractionEvent, MDCChipSelectionEvent, MDCChipRemovalEvent} from '../chip/foundation';
+import {MDCChipSetFoundation} from './foundation';
 
 let idCounter = 0;
 type ChipFactory = (el: Element) => MDCChip;
 
 class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
 
-  chips: MDCChip[] = [];
+  /**
+   * Returns an array of the IDs of all selected chips.
+   */
+  get selectedChipIds() {
+    return this.foundation_.getSelectedChipIds();
+  }
+
+  static attachTo(root: Element) {
+    return new MDCChipSet(root);
+  }
+
+  chips!: MDCChip[];
   private chipFactory_!: ((el: Element) => MDCChip);
 
   private handleChipInteraction_!: (evt: MDCChipInteractionEvent) => void;
   private handleChipSelection_!: (evt: MDCChipSelectionEvent) => void;
   private handleChipRemoval_!: (evt: MDCChipRemovalEvent) => void;
-
-  static attachTo(root: Element) {
-    return new MDCChipSet(root);
-  }
 
   /**
    * @param chipFactory A function which creates a new MDCChip.
@@ -53,7 +60,7 @@ class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
 
   initialSyncWithDOM() {
     this.chips.forEach((chip) => {
-      if (chip.selected) {
+      if (chip.id && chip.selected) {
         this.foundation_.select(chip.id);
       }
     });
@@ -92,13 +99,6 @@ class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
     this.chips.push(this.chipFactory_(chipEl));
   }
 
-  /**
-   * Returns an array of the IDs of all selected chips.
-   */
-  get selectedChipIds() {
-    return this.foundation_.getSelectedChipIds();
-  }
-
   getDefaultFoundation() {
     return new MDCChipSetFoundation({
       hasClass: (className) => this.root_.classList.contains(className),
@@ -122,7 +122,8 @@ class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
    * Instantiates chip components on all of the chip set's child chip elements.
    */
   instantiateChips_(chipFactory: ChipFactory): MDCChip[] {
-    const chipElements: Element[] = [].slice.call(this.root_.querySelectorAll(MDCChipSetFoundation.strings.CHIP_SELECTOR));
+    const chipElements: Element[] =
+      [].slice.call(this.root_.querySelectorAll(MDCChipSetFoundation.strings.CHIP_SELECTOR));
     return chipElements.map((el) => {
       el.id = el.id || `mdc-chip-${++idCounter}`;
       return chipFactory(el);

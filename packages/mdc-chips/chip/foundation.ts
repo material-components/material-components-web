@@ -23,9 +23,9 @@
 
 import MDCFoundation from '@material/base/foundation';
 import {MDCChipAdapter} from './adapter';
-import {strings, cssClasses} from './constants';
+import {cssClasses, strings} from './constants';
 
-const EmptyClientRect = {
+const emptyClientRect = {
   bottom: 0,
   height: 0,
   left: 0,
@@ -46,26 +46,26 @@ class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   static get defaultAdapter(): MDCChipAdapter {
     return {
       addClass: () => undefined,
-      removeClass: () => undefined,
-      hasClass: () => false,
       addClassToLeadingIcon: () => undefined,
-      removeClassFromLeadingIcon: () => undefined,
       eventTargetHasClass: () => false,
+      getCheckmarkBoundingClientRect: () => emptyClientRect,
+      getComputedStyleValue: () => '',
+      getRootBoundingClientRect: () => emptyClientRect,
+      hasClass: () => false,
+      hasLeadingIcon: () => false,
       notifyInteraction: () => undefined,
+      notifyRemoval: () => undefined,
       notifySelection: () => undefined,
       notifyTrailingIconInteraction: () => undefined,
-      notifyRemoval: () => undefined,
-      getComputedStyleValue: () => '',
+      removeClass: () => undefined,
+      removeClassFromLeadingIcon: () => undefined,
       setStyleProperty: () => undefined,
-      hasLeadingIcon: () => false,
-      getRootBoundingClientRect: () => EmptyClientRect,
-      getCheckmarkBoundingClientRect: () => EmptyClientRect,
     };
   }
-  
+
   /**
    * Whether a trailing icon click should immediately trigger exit/removal of the chip.
-   * */
+   */
   private shouldRemoveOnTrailingIconClick_ = true;
 
   constructor(adapter: MDCChipAdapter) {
@@ -189,17 +189,16 @@ class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
 }
 
 interface MDCChipInteractionEventDetail {
-  chipId: string,
+  chipId: string;
 }
 
-interface MDCChipSelectionEventDetail extends MDCChipInteractionEventDetail{
-  selected: boolean,
+interface MDCChipSelectionEventDetail extends MDCChipInteractionEventDetail {
+  selected: boolean;
 }
 
-interface MDCChipRemovalEventDetail extends MDCChipInteractionEventDetail{
-  root: Element,
+interface MDCChipRemovalEventDetail extends MDCChipInteractionEventDetail {
+  root: Element;
 }
-
 
 interface MDCChipInteractionEvent extends CustomEvent<MDCChipInteractionEventDetail> {}
 interface MDCChipSelectionEvent extends CustomEvent<MDCChipSelectionEventDetail> {}
