@@ -56,6 +56,7 @@
   @include mdc-typography-baseline-bottom(0, $query: mdc-feature-any());
 
   // Switch
+  @include mdc-switch($query: mdc-feature-any());
   @include mdc-switch-toggled-on-color(on-surface, $query: mdc-feature-any());
   @include mdc-switch-toggled-off-color(on-surface, $query: mdc-feature-any());
   @include mdc-switch-toggled-on-ripple-color(on-surface, $query: mdc-feature-any());
