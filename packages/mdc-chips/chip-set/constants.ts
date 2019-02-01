@@ -21,26 +21,13 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
 const strings = {
-  ENTRY_ANIMATION_NAME: 'mdc-chip-entry',
-  INTERACTION_EVENT: 'MDCChip:interaction',
-  SELECTION_EVENT: 'MDCChip:selection',
-  TRAILING_ICON_INTERACTION_EVENT: 'MDCChip:trailingIconInteraction',
-  REMOVAL_EVENT: 'MDCChip:removal',
-  CHECKMARK_SELECTOR: '.mdc-chip__checkmark',
-  LEADING_ICON_SELECTOR: '.mdc-chip__icon--leading',
-  TRAILING_ICON_SELECTOR: '.mdc-chip__icon--trailing',
+  CHIP_SELECTOR: '.mdc-chip',
 };
 
-/** @enum {string} */
 const cssClasses = {
-  CHECKMARK: 'mdc-chip__checkmark',
-  CHIP_EXIT: 'mdc-chip--exit',
-  HIDDEN_LEADING_ICON: 'mdc-chip__icon--leading-hidden',
-  LEADING_ICON: 'mdc-chip__icon--leading',
-  TRAILING_ICON: 'mdc-chip__icon--trailing',
-  SELECTED: 'mdc-chip--selected',
+  CHOICE: 'mdc-chip-set--choice',
+  FILTER: 'mdc-chip-set--filter',
 };
 
 export {strings, cssClasses};

@@ -22,78 +22,46 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import MDCChipSetAdapter from './adapter';
-// eslint-disable-next-line no-unused-vars
-import {MDCChipInteractionEventType, MDCChipSelectionEventType, MDCChipRemovalEventType} from '../chip/foundation';
+import {MDCChipSetAdapter} from './adapter';
 import {strings, cssClasses} from './constants';
 
-/**
- * @extends {MDCFoundation<!MDCChipSetAdapter>}
- * @final
- */
-class MDCChipSetFoundation extends MDCFoundation {
-  /** @return enum {string} */
+class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   static get strings() {
     return strings;
   }
 
-  /** @return enum {string} */
   static get cssClasses() {
     return cssClasses;
   }
 
-  /**
-   * {@see MDCChipSetAdapter} for typing information on parameters and return
-   * types.
-   * @return {!MDCChipSetAdapter}
-   */
-  static get defaultAdapter() {
-    return /** @type {!MDCChipSetAdapter} */ ({
-      hasClass: () => {},
-      removeChip: () => {},
-      setSelected: () => {},
-    });
+  static get defaultAdapter(): MDCChipSetAdapter {
+    return {
+      hasClass: () => false,
+      removeChip: () => undefined,
+      setSelected: () => undefined,
+    };
   }
 
   /**
-   * @param {!MDCChipSetAdapter} adapter
+   * The ids of the selected chips in the set. Only used for choice chip set or filter chip set.
    */
-  constructor(adapter) {
-    super(Object.assign(MDCChipSetFoundation.defaultAdapter, adapter));
+  private selectedChipIds_: string[] = [];
 
-    /**
-     * The ids of the selected chips in the set. Only used for choice chip set or filter chip set.
-     * @private {!Array<string>}
-     */
-    this.selectedChipIds_ = [];
+  constructor(adapter: MDCChipSetAdapter) {
+    super(Object.assign(MDCChipSetFoundation.defaultAdapter, adapter));
   }
 
   /**
    * Returns an array of the IDs of all selected chips.
-   * @return {!Array<string>}
    */
-  getSelectedChipIds() {
+  getSelectedChipIds(): string[] {
     return this.selectedChipIds_;
   }
 
   /**
-   * Toggles selection of the chip with the given id.
-   * @private
-   * @param {string} chipId
-   */
-  toggleSelect_(chipId) {
-    if (this.selectedChipIds_.indexOf(chipId) >= 0) {
-      this.deselect_(chipId);
-    } else {
-      this.select(chipId);
-    }
-  }
-
-  /**
    * Selects the chip with the given id. Deselects all other chips if the chip set is of the choice variant.
-   * @param {string} chipId
    */
-  select(chipId) {
+  select(chipId: string) {
     if (this.selectedChipIds_.indexOf(chipId) >= 0) {
       return;
     }
@@ -108,23 +76,9 @@ class MDCChipSetFoundation extends MDCFoundation {
   }
 
   /**
-   * Deselects the chip with the given id.
-   * @private
-   * @param {string} chipId
-   */
-  deselect_(chipId) {
-    const index = this.selectedChipIds_.indexOf(chipId);
-    if (index >= 0) {
-      this.selectedChipIds_.splice(index, 1);
-      this.adapter_.setSelected(chipId, false);
-    }
-  }
-
-  /**
    * Handles a chip interaction event
-   * @param {string} chipId
    */
-  handleChipInteraction(chipId) {
+  handleChipInteraction(chipId: string) {
     if (this.adapter_.hasClass(cssClasses.CHOICE) || this.adapter_.hasClass(cssClasses.FILTER)) {
       this.toggleSelect_(chipId);
     }
@@ -132,10 +86,8 @@ class MDCChipSetFoundation extends MDCFoundation {
 
   /**
    * Handles a chip selection event, used to handle discrepancy when selection state is set directly on the Chip.
-   * @param {string} chipId
-   * @param {boolean} selected
    */
-  handleChipSelection(chipId, selected) {
+  handleChipSelection(chipId: string, selected: boolean) {
     const chipIsSelected = this.selectedChipIds_.indexOf(chipId) >= 0;
     if (selected && !chipIsSelected) {
       this.select(chipId);
@@ -146,12 +98,33 @@ class MDCChipSetFoundation extends MDCFoundation {
 
   /**
    * Handles the event when a chip is removed.
-   * @param {string} chipId
    */
-  handleChipRemoval(chipId) {
+  handleChipRemoval(chipId: string) {
     this.deselect_(chipId);
     this.adapter_.removeChip(chipId);
   }
+
+  /**
+   * Deselects the chip with the given id.
+   */
+  private deselect_(chipId: string) {
+    const index = this.selectedChipIds_.indexOf(chipId);
+    if (index >= 0) {
+      this.selectedChipIds_.splice(index, 1);
+      this.adapter_.setSelected(chipId, false);
+    }
+  }
+
+  /**
+   * Toggles selection of the chip with the given id.
+   */
+  private toggleSelect_(chipId: string) {
+    if (this.selectedChipIds_.indexOf(chipId) >= 0) {
+      this.deselect_(chipId);
+    } else {
+      this.select(chipId);
+    }
+  }
 }
 
-export default MDCChipSetFoundation;
+export {MDCChipSetFoundation as default, MDCChipSetFoundation};

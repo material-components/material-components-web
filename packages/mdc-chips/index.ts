@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2017 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,15 +21,16 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
-const strings = {
-  CHIP_SELECTOR: '.mdc-chip',
-};
+import {MDCChipFoundation, MDCChip} from './chip/index';
+import {MDCChipInteractionEvent, MDCChipSelectionEvent, MDCChipRemovalEvent} from './chip/foundation';
+import {MDCChipSetFoundation, MDCChipSet} from './chip-set/index';
 
-/** @enum {string} */
-const cssClasses = {
-  CHOICE: 'mdc-chip-set--choice',
-  FILTER: 'mdc-chip-set--filter',
+export {
+  MDCChipFoundation,
+  MDCChip,
+  MDCChipSetFoundation,
+  MDCChipSet,
+  MDCChipInteractionEvent,
+  MDCChipSelectionEvent,
+  MDCChipRemovalEvent
 };
-
-export {strings, cssClasses};

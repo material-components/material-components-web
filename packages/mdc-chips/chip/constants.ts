@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc.
+ * Copyright 2016 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,24 @@
  * THE SOFTWARE.
  */
 
-import {MDCChipFoundation, MDCChip} from './chip/index';
-import {MDCChipSetFoundation, MDCChipSet} from './chip-set/index';
+const strings = {
+  ENTRY_ANIMATION_NAME: 'mdc-chip-entry',
+  INTERACTION_EVENT: 'MDCChip:interaction',
+  SELECTION_EVENT: 'MDCChip:selection',
+  TRAILING_ICON_INTERACTION_EVENT: 'MDCChip:trailingIconInteraction',
+  REMOVAL_EVENT: 'MDCChip:removal',
+  CHECKMARK_SELECTOR: '.mdc-chip__checkmark',
+  LEADING_ICON_SELECTOR: '.mdc-chip__icon--leading',
+  TRAILING_ICON_SELECTOR: '.mdc-chip__icon--trailing',
+};
 
-export {MDCChipFoundation, MDCChip, MDCChipSetFoundation, MDCChipSet};
+const cssClasses = {
+  CHECKMARK: 'mdc-chip__checkmark',
+  CHIP_EXIT: 'mdc-chip--exit',
+  HIDDEN_LEADING_ICON: 'mdc-chip__icon--leading-hidden',
+  LEADING_ICON: 'mdc-chip__icon--leading',
+  TRAILING_ICON: 'mdc-chip__icon--trailing',
+  SELECTED: 'mdc-chip--selected',
+};
+
+export {strings, cssClasses};
