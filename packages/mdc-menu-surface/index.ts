@@ -22,6 +22,7 @@
  */
 
 import MDCComponent from '@material/base/component';
+import {SpecificEventListener} from '@material/dom/index';
 import {Corner, CornerBit, cssClasses, MenuDimensions, MenuDistance, MenuPoint, strings} from './constants';
 import {MDCMenuSurfaceFoundation} from './foundation';
 import * as util from './util';
@@ -35,12 +36,14 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
 
   anchorElement!: Element | null;
 
+  protected root_!: HTMLElement;
+
   private previousFocus_!: HTMLElement | SVGElement | null;
   private firstFocusableElement_!: HTMLElement | SVGElement | null;
   private lastFocusableElement_!: HTMLElement | SVGElement | null;
 
-  private handleKeydown_!: EventListener;
-  private handleBodyClick_!: EventListener;
+  private handleKeydown_!: SpecificEventListener<'keydown'>;
+  private handleBodyClick_!: SpecificEventListener<'click'>;
   private registerBodyClickListener_!: RegisterFunction;
   private deregisterBodyClickListener_!: RegisterFunction;
 
@@ -76,8 +79,8 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
       this.setFixedPosition(true);
     }
 
-    this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt as KeyboardEvent);
-    this.handleBodyClick_ = (evt) => this.foundation_.handleBodyClick(evt as MouseEvent);
+    this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt);
+    this.handleBodyClick_ = (evt) => this.foundation_.handleBodyClick(evt);
 
     this.registerBodyClickListener_ = () => document.body.addEventListener('click', this.handleBodyClick_);
     this.deregisterBodyClickListener_ = () => document.body.removeEventListener('click', this.handleBodyClick_);
@@ -140,8 +143,6 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
   }
 
   getDefaultFoundation(): MDCMenuSurfaceFoundation {
-    const rootEl = this.root_ as HTMLElement;
-
     // tslint:disable:object-literal-sort-keys
     return new MDCMenuSurfaceFoundation({
       addClass: (className) => this.root_.classList.add(className),
@@ -154,15 +155,15 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
       isRtl: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
       setTransformOrigin: (origin) => {
         const propertyName = `${util.getTransformPropertyName(window)}-origin`;
-        rootEl.style.setProperty(propertyName, origin);
+        this.root_.style.setProperty(propertyName, origin);
       },
 
-      isFocused: () => document.activeElement === rootEl,
+      isFocused: () => document.activeElement === this.root_,
       saveFocus: () => {
         this.previousFocus_ = document.activeElement as HTMLElement | SVGElement;
       },
       restoreFocus: () => {
-        if (rootEl.contains(document.activeElement)) {
+        if (this.root_.contains(document.activeElement)) {
           if (this.previousFocus_ && this.previousFocus_.focus) {
             this.previousFocus_.focus();
           }
@@ -178,7 +179,7 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
           this.lastFocusableElement_ && this.lastFocusableElement_.focus && this.lastFocusableElement_.focus(),
 
       getInnerDimensions: () => {
-        return {width: rootEl.offsetWidth, height: rootEl.offsetHeight};
+        return {width: this.root_.offsetWidth, height: this.root_.offsetHeight};
       },
       getAnchorDimensions: () => this.anchorElement ? this.anchorElement.getBoundingClientRect() : null,
       getWindowDimensions: () => {
@@ -191,13 +192,13 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
         return {x: window.pageXOffset, y: window.pageYOffset};
       },
       setPosition: (position) => {
-        rootEl.style.left = 'left' in position ? `${position.left}px` : null;
-        rootEl.style.right = 'right' in position ? `${position.right}px` : null;
-        rootEl.style.top = 'top' in position ? `${position.top}px` : null;
-        rootEl.style.bottom = 'bottom' in position ? `${position.bottom}px` : null;
+        this.root_.style.left = 'left' in position ? `${position.left}px` : null;
+        this.root_.style.right = 'right' in position ? `${position.right}px` : null;
+        this.root_.style.top = 'top' in position ? `${position.top}px` : null;
+        this.root_.style.bottom = 'bottom' in position ? `${position.bottom}px` : null;
       },
       setMaxHeight: (height) => {
-        rootEl.style.maxHeight = height;
+        this.root_.style.maxHeight = height;
       },
     });
     // tslint:enable:object-literal-sort-keys
