@@ -40,23 +40,24 @@
   .mdc-menu-surface {
     @include mdc-menu-surface-base_($query);
     @include mdc-elevation($z-value: 8, $query: $query);
-
     @include mdc-menu-surface-fill-color(surface, $query);
     @include mdc-menu-surface-ink-color(on-surface, $query);
-    @include mdc-menu-surface-shape-radius(medium, $query);
+    @include mdc-menu-surface-shape-radius(medium, false, $query);
 
     @include mdc-feature-targets($feat-structure) {
       @include mdc-rtl-reflexive-property(transform-origin, top left, top right);
     }
   }
 
-  @include mdc-feature-targets($feat-structure) {
-    .mdc-menu-surface--anchor {
+  .mdc-menu-surface--anchor {
+    @include mdc-feature-targets($feat-structure) {
       position: relative;
       overflow: visible;
     }
+  }
 
-    .mdc-menu-surface--fixed {
+  .mdc-menu-surface--fixed {
+    @include mdc-feature-targets($feat-structure) {
       position: fixed;
     }
   }
@@ -109,13 +110,17 @@
     overflow: auto;
     will-change: transform, opacity;
     z-index: $mdc-menu-surface-z-index;
+  }
 
-    &:focus {
+  &:focus {
+    @include mdc-feature-targets($feat-structure) {
       outline: none;
     }
+  }
 
-    // stylelint-disable-next-line selector-max-type
-    &--open {
+  // stylelint-disable-next-line selector-max-type
+  &--open {
+    @include mdc-feature-targets($feat-structure) {
       display: inline-block;
       transform: scale(1);
       opacity: 1;
