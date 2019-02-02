@@ -42,23 +42,20 @@ interface MDCMenuAdapter {
   /** Removes an attribute from an element at the index provided. */
   removeAttributeFromElementAtIndex(index: number, attr: string): void;
 
-  /** Returns true if the element contains the className. */
-  elementContainsClass(element: Element, className: string): boolean;
+  /** @return true if the element contains the className. */
+  elementContainsClass(element: HTMLElement, className: string): boolean;
 
   /** Closes the menu-surface. */
   closeSurface(): void;
 
-  /**
-   * Returns the index for the element provided.
-   * @return Index of the element in the list or -1 if it is not in the list.
-   */
-  getElementIndex(element: Element): number;
+  /** @return Index of the element in the list or -1 if it is not in the list. */
+  getElementIndex(element: HTMLElement): number;
 
-  /** Returns the parentElement of the provided element. */
-  getParentElement(element: Element): Element;
+  /** @return The parentElement of the provided element. */
+  getParentElement(element: HTMLElement): HTMLElement | null;
 
-  /** Returns the element within the selectionGroup containing the selected element class. */
-  getSelectedElementIndex(selectionGroup: Element): number;
+  /** @return The element within the selectionGroup containing the selected element class. */
+  getSelectedElementIndex(selectionGroup: HTMLElement): number;
 
   /** Emit an event when a menu item is selected. */
   notifySelected(evtData: MenuEventData): void;

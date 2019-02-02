@@ -23,6 +23,18 @@ import {MDCMenuSurface} from '@material/menu-surface';
  * THE SOFTWARE.
  */
 
+import {MDCList} from '@material/list/index';
+
+// TODO(acdvorak): Remove after PR #4334 is merged
+interface ListActionEvent extends Event {
+  detail: number;
+}
+
+// TODO(acdvorak): Remove after PR #4334 is merged
+interface ListActionEventListener extends EventListener {
+  (evt: ListActionEvent): void;
+}
+
 interface MenuEventData {
   index: number;
 }
@@ -30,17 +42,17 @@ interface MenuEventData {
 type MenuSurfaceFactory = (el: Element) => MDCMenuSurface;
 type ListFactory = (el: Element) => MDCList;
 
-enum cssClasses {
-  MENU_SELECTED_LIST_ITEM = 'mdc-menu-item--selected',
-  MENU_SELECTION_GROUP = 'mdc-menu__selection-group',
-  ROOT = 'mdc-menu',
-}
+const cssClasses = {
+  MENU_SELECTED_LIST_ITEM: 'mdc-menu-item--selected',
+  MENU_SELECTION_GROUP: 'mdc-menu__selection-group',
+  ROOT: 'mdc-menu',
+};
 
-enum strings {
-  ARIA_SELECTED_ATTR = 'aria-selected',
-  CHECKBOX_SELECTOR = 'input[type="checkbox"]',
-  LIST_SELECTOR = '.mdc-list',
-  SELECTED_EVENT = 'MDCMenu:selected',
-}
+const strings = {
+  ARIA_SELECTED_ATTR: 'aria-selected',
+  CHECKBOX_SELECTOR: 'input[type="checkbox"]',
+  LIST_SELECTOR: '.mdc-list',
+  SELECTED_EVENT: 'MDCMenu:selected',
+};
 
-export {cssClasses, MenuEventData, MenuSurfaceFactory, strings};
+export {cssClasses, ListActionEvent, ListActionEventListener, ListFactory, MenuEventData, MenuSurfaceFactory, strings};

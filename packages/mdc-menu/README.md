@@ -204,13 +204,13 @@ Property | Value Type | Description
 Method Signature | Description
 --- | ---
 `setAnchorCorner(Corner) => void` | Proxies to the menu surface's `setAnchorCorner(Corner)` method.
-`setAnchorMargin(MenuPosition) => void` | Proxies to the menu surface's `setAnchorMargin(MenuPosition)` method.
+`setAnchorMargin(Partial<MenuDistance>) => void` | Proxies to the menu surface's `setAnchorMargin(Partial<MenuDistance>)` method.
 `setAbsolutePosition(x: number, y: number) => void` | Proxies to the menu surface's `setAbsolutePosition(x: number, y: number)` method.
 `setFixedPosition(isFixed: boolean) => void` | Proxies to the menu surface's `setFixedPosition(isFixed: boolean)` method.
 `hoistMenuToBody() => void` | Proxies to the menu surface's `hoistMenuToBody()` method.
 `setIsHoisted(isHoisted: boolean) => void` | Proxies to the menu surface's `setIsHoisted(isHoisted: boolean)` method.
-`setAnchorElement(element: HTMLElement) => void` | Proxies to the menu surface's `setAnchorElement(element)` method.
-`getOptionByIndex(index: number) => ?HTMLElement` | Returns the list item at the `index` specified.
+`setAnchorElement(element: Element) => void` | Proxies to the menu surface's `setAnchorElement(element)` method.
+`getOptionByIndex(index: number) => HTMLElement \| null` | Returns the list item at the `index` specified.
 `getDefaultFoundation() => MDCMenuFoundation` | Returns the foundation.
 
 > See [Menu Surface](../mdc-menu-surface/README.md) and [List](../mdc-list/README.md) documentation for more information on proxied methods and properties.

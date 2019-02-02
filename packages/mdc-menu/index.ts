@@ -22,11 +22,12 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {SpecificEventListener} from '@material/dom/index';
+// import {SpecificEventListener} from '@material/dom/index';
 import {MDCList, MDCListFoundation} from '@material/list/index';
-import {MDCMenuSurfaceFoundation, MenuPosition} from '@material/menu-surface/foundation';
+import {MenuDistance} from '@material/menu-surface/constants';
+import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
 import {Corner, MDCMenuSurface} from '@material/menu-surface/index';
-import {cssClasses, strings} from './constants';
+import {cssClasses, ListActionEvent, ListFactory, MenuSurfaceFactory, strings} from './constants';
 import {MDCMenuFoundation} from './foundation';
 
 class MDCMenu extends MDCComponent<MDCMenuFoundation> {
@@ -34,15 +35,17 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
     return new MDCMenu(root);
   }
 
-  private menuSurface_: MDCMenuSurface;
-  private list_: MDCList;
-  private handleKeydown_: SpecificEventListener<'keydown'>;
-  private handleItemAction_: SpecificEventListener<''>;
-  private afterOpenedCallback_: Function;
+  private menuSurface_!: MDCMenuSurface; // assigned in initialize()
+  private list_: MDCList | null = null;
+
+  // TODO(acdvorak): Figure out why SpecificEventListener<'keydown'> and ListActionEventListener blow up tsc.
+  private handleKeydown_!: EventListener; // assigned in initialSyncWithDOM()
+  private handleItemAction_!: EventListener; // assigned in initialSyncWithDOM()
+  private afterOpenedCallback_!: EventListener; // assigned in initialSyncWithDOM()
 
   initialize(
-    menuSurfaceFactory = (el) => new MDCMenuSurface(el),
-    listFactory = (el) => new MDCList(el)) {
+    menuSurfaceFactory: MenuSurfaceFactory = (el) => new MDCMenuSurface(el),
+    listFactory: ListFactory = (el) => new MDCList(el)) {
     this.menuSurface_ = menuSurfaceFactory(this.root_);
 
     const list = this.root_.querySelector(strings.LIST_SELECTOR);
@@ -53,12 +56,13 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   }
 
   initialSyncWithDOM() {
+    // TODO(acdvorak): Figure out why SpecificEventListener<'keydown'> and ListActionEventListener blow up tsc.
+    this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt as KeyboardEvent);
+    this.handleItemAction_ = (evt) => this.foundation_.handleItemAction(this.items[(evt as ListActionEvent).detail]);
     this.afterOpenedCallback_ = () => this.handleAfterOpened_();
-    this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt);
-    this.handleItemAction_ = (evt) => this.foundation_.handleItemAction(this.items[evt.detail]);
 
-    this.menuSurface_.listen(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, this.afterOpenedCallback_);
-    this.listen('keydown', this.handleKeydown_);
+    this.menuSurface_.listen(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, this.afterOpenedCallback_ as EventListener);
+    this.listen('keydown', this.handleKeydown_ as EventListener);
     this.listen(MDCListFoundation.strings.ACTION_EVENT, this.handleItemAction_);
   }
 
@@ -74,23 +78,19 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
     super.destroy();
   }
 
-  /** @return {boolean} */
-  get open() {
+  get open(): boolean {
     return this.menuSurface_.open;
   }
 
-  /** @param {boolean} value */
-  set open(value) {
+  set open(value: boolean) {
     this.menuSurface_.open = value;
   }
 
-  /** @return {boolean} */
-  get wrapFocus() {
+  get wrapFocus(): boolean {
     return this.list_.wrapFocus;
   }
 
-  /** @param {boolean} value */
-  set wrapFocus(value) {
+  set wrapFocus(value: boolean) {
     this.list_.wrapFocus = value;
   }
 
@@ -98,38 +98,30 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
    * Return the items within the menu. Note that this only contains the set of elements within
    * the items container that are proper list items, and not supplemental / presentational DOM
    * elements.
-   * @return {!Array<!HTMLElement>}
    */
-  get items() {
+  get items(): HTMLElement[] {
     return this.list_.listElements;
   }
 
-  /** @param {boolean} quickOpen */
-  set quickOpen(quickOpen) {
+  set quickOpen(quickOpen: boolean) {
     this.menuSurface_.quickOpen = quickOpen;
   }
 
   /**
-   * @param {!Corner} corner Default anchor corner alignment of top-left
-   *     menu corner.
+   * @param corner Default anchor corner alignment of top-left menu corner.
    */
-  setAnchorCorner(corner) {
+  setAnchorCorner(corner: Corner) {
     this.menuSurface_.setAnchorCorner(corner);
   }
 
-  /**
-   * @param {!MenuPosition} margin
-   */
-  setAnchorMargin(margin) {
+  setAnchorMargin(margin: Partial<MenuDistance>) {
     this.menuSurface_.setAnchorMargin(margin);
   }
 
   /**
-   * Return the item within the menu at the index specified.
-   * @param {number} index
-   * @return {?HTMLElement}
+   * @return The item within the menu at the index specified.
    */
-  getOptionByIndex(index) {
+  getOptionByIndex(index: number): HTMLElement | null {
     const items = this.items;
 
     if (index < items.length) {
@@ -139,8 +131,7 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
     }
   }
 
-  /** @param {boolean} isFixed */
-  setFixedPosition(isFixed) {
+  setFixedPosition(isFixed: boolean) {
     this.menuSurface_.setFixedPosition(isFixed);
   }
 
@@ -148,24 +139,16 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
     this.menuSurface_.hoistMenuToBody();
   }
 
-  /** @param {boolean} isHoisted */
-  setIsHoisted(isHoisted) {
+  setIsHoisted(isHoisted: boolean) {
     this.menuSurface_.setIsHoisted(isHoisted);
   }
 
-  /**
-   * @param {number} x
-   * @param {number} y
-   */
-  setAbsolutePosition(x, y) {
+  setAbsolutePosition(x: number, y: number) {
     this.menuSurface_.setAbsolutePosition(x, y);
   }
 
-  /**
-   * Sets the element that the menu-surface is anchored to.
-   * @param {!HTMLElement} element
-   */
-  setAnchorElement(element) {
+  /** Sets the element that the menu-surface is anchored to. */
+  setAnchorElement(element: Element) {
     this.menuSurface_.anchorElement = element;
   }
 
@@ -178,6 +161,7 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
 
   /** @return {!MDCMenuFoundation} */
   getDefaultFoundation() {
+    // tslint:disable:object-literal-sort-keys
     return new MDCMenuFoundation({
       addClassToElementAtIndex: (index, className) => {
         const list = this.items;
@@ -200,14 +184,16 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
       getElementIndex: (element) => this.items.indexOf(element),
       getParentElement: (element) => element.parentElement,
       getSelectedElementIndex: (selectionGroup) => {
-        return this.items.indexOf(selectionGroup.querySelector(`.${cssClasses.MENU_SELECTED_LIST_ITEM}`));
+        const selectedListItem = selectionGroup.querySelector<HTMLElement>(`.${cssClasses.MENU_SELECTED_LIST_ITEM}`);
+        return selectedListItem ? this.items.indexOf(selectedListItem) : -1;
       },
       notifySelected: (evtData) => this.emit(strings.SELECTED_EVENT, {
         index: evtData.index,
         item: this.items[evtData.index],
       }),
     });
+    // tslint:enable:object-literal-sort-keys
   }
 }
 
-export {MDCMenuFoundation, MDCMenu, MenuPosition, Corner};
+export {MDCMenuFoundation, MDCMenu, MenuDistance, Corner};
