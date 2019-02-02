@@ -126,7 +126,6 @@
     @include mdc-typography-overflow-ellipsis($query);
     @include mdc-typography-baseline-top($item-primary-text-baseline-height, $query);
     @include mdc-typography-baseline-bottom($item-secondary-text-baseline-height, $query);
-    @include mdc-typography-baseline-top($dense-item-primary-text-baseline-height, $query);
 
     @include mdc-feature-targets($feat-structure) {
       display: block;
@@ -134,6 +133,7 @@
 
     // stylelint-disable plugin/selector-bem-pattern
     .mdc-list--dense & {
+      @include mdc-typography-baseline-top($dense-item-primary-text-baseline-height, $query);
       @include mdc-typography-baseline-bottom($item-secondary-text-baseline-height, $query);
     }
     // stylelint-enable plugin/selector-bem-pattern
@@ -279,6 +279,7 @@
       ($mdc-list-subheader-virtual-height - $mdc-list-subheader-leading) / 2;
 
     @include mdc-typography(subtitle1, $query);
+
     @include mdc-feature-targets($feat-structure) {
       margin: $mdc-list-subheader-margin $mdc-list-side-padding;
     }
@@ -373,6 +374,7 @@
   $feat-typography: mdc-feature-create-target($query, typography);
 
   @include mdc-typography(subtitle1, $query);
+
   @include mdc-feature-targets($feat-typography) {
     // According to the mocks and stickersheet, the line-height is
     // adjusted to 24px for text content, same as for body1.
@@ -406,10 +408,10 @@
 // Ripple styles for an interactive list item (one that is enabled and inside an interactive list).
 @mixin mdc-list-item-interactive-ripple_($query: mdc-feature-all()) {
   @include mdc-ripple-surface($query);
+  @include mdc-ripple-radius-bounded($query: $query);
   @include mdc-states(mdc-theme-prop-value(on-surface), false, $query);
   @include mdc-states-activated(primary, false, $query);
   @include mdc-states-selected(primary, false, $query);
-  @include mdc-ripple-radius-bounded($query: $query);
 }
 
 // Sets the width and height of the graphic element, as well as calculates the margins for
