@@ -21,12 +21,12 @@
  * THE SOFTWARE.
  */
 
-import MDCComponent from '@material/base/component';
 // import {SpecificEventListener} from '@material/dom/index';
+import MDCComponent from '@material/base/component';
 import {MDCList, MDCListFoundation} from '@material/list/index';
-import {MenuDistance} from '@material/menu-surface/constants';
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
 import {Corner, MDCMenuSurface} from '@material/menu-surface/index';
+import {MenuDistance} from '@material/menu-surface/types';
 import {cssClasses, ListActionEvent, ListFactory, MenuSurfaceFactory, strings} from './constants';
 import {MDCMenuFoundation} from './foundation';
 
