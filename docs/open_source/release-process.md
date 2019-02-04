@@ -14,11 +14,6 @@ Releases and Branches documentation.
 
 This will log you into NPM.
 
-`gcloud init`
-
-This will log you into Google Cloud account. Choose `material-components-web`
-where necessary.
-
 ## Announce
 
 Ping the Slack announcements channel first! This will let other members of the
@@ -56,10 +51,10 @@ Read the output carefully:
 If you find you need to remove commits that should not have been cherry-picked, perform the following steps:
 
 1. Find the base tag that the cherry-pick script identified and used (find the "Checking out v0.x.y" line in the output)
-1. Run `git rebase -i <base tag>` - this will open the sequence of cherry-picked commits in an editor (probably vim)
-1. Find and delete lines for commits that should not have been included (in vim, type `dd` on the line in question)
-1. Save and exit (`:x` in vim)
-1. Re-check `git log` to confirm that the commits are no longer present
+2. Run `git rebase -i <base tag>` - this will open the sequence of cherry-picked commits in an editor (probably vim)
+3. Find and delete lines for commits that should not have been included (in vim, type `dd` on the line in question)
+4. Save and exit (`:x` in vim)
+5. Re-check `git log` to confirm that the commits are no longer present
 
 > Note: In the rare event that zero commits were skipped, you can simply checkout master and cut the release as you
 > would normally do for a minor release, and skip all of the cherry-picking back and forth.
@@ -84,24 +79,6 @@ npm profile disable-2fa
 See Lerna issues [#1137](https://github.com/lerna/lerna/issues/1137) and [#1091](https://github.com/lerna/lerna/issues/1091) for more information.
 
 ## Publish to npm
-
-### For Pre-releases
-
-```
-$(npm bin)/lerna publish --skip-git --npm-tag=next --since=<previous-patch-tag>
-```
-
-When lerna prompts for version, choose **Pre-minor** for the first pre-release in a cycle, or **Prerelease** for
-subsequent pre-releases.
-(The resulting version number should always have the same minor version as the next planned release.)
-
-Be sure to include the command-line flags:
-
-* `--skip-git` avoids immediately applying a git tag, which we will do later after updating the changelog
-* `--npm-tag=next` avoids updating the `latest` tag on npm, since pre-releases should not be installed by default
-* `--since=<previous-patch-tag>` (e.g. `--since=v0.36.1`) forces lerna to diff against the latest patch; otherwise,
-  it diffs against the previous minor release which may cause some packages without changes to be published (this
-  happens when bugfix releases aren't tagged from the master branch)
 
 ### For Minor Releases
 
@@ -161,11 +138,8 @@ git diff # Review the changelog and make sure it looks OK
 
 In certain cases, there are some typical edits to make the changelog easier to read:
 
-* **For a minor release or pre-release after an off-master patch release:**
+* **For a minor release after an off-master patch release:**
   Remove any duplicated items in the new minor release that were already listed under patch releases.
-* **For a minor release after any pre-releases:**
-  Bring any changes from any prior pre-releases under their respective headings for the new final release, then
-  remove the pre-release headings ([example](https://github.com/material-components/material-components-web/commit/13fd6784))
 
 Once you're sure about the changes, run the `post-release` script to commit and create an annotated git tag:
 
@@ -180,11 +154,11 @@ Once you're sure about the changes, run the `post-release` script to commit and 
 You will need to temporarily alter Github's master branch protection in order to push after the release:
 
 1. Go to the [Branches settings page](https://github.com/material-components/material-components-web/settings/branches)
-1. Under Branch Protection Rules, click Edit next to `master`
-1. Uncheck "Include administrators"
-1. Click "Save changes"
-1. Perform the process outlined in one of the sections below
-1. Don't forget to re-enable "Include administrators" & click "Save changes" afterwards
+2. Under Branch Protection Rules, click Edit next to `master`
+3. Uncheck "Include administrators"
+4. Click "Save changes"
+5. Perform the process outlined in one of the sections below
+6. Don't forget to re-enable "Include administrators" & click "Save changes" afterwards
 
 ### For Pre-releases and Minor Releases
 
