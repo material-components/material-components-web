@@ -9,6 +9,7 @@
 @import "@material/ripple/mixins";
 @import "@material/typography/mixins";
 @import "@material/switch/mixins";
+@import "@material/list/mixins";
 
 .mdc-test {
   // Button
@@ -38,11 +39,22 @@
   // Elevation
   @include mdc-elevation(0, $query: mdc-feature-any());
 
+  // List
+  @include mdc-list($query: mdc-feature-any());
+  @include mdc-list-item-primary-text-ink-color(red, $query: mdc-feature-any());
+  @include mdc-list-item-secondary-text-ink-color(red, $query: mdc-feature-any());
+  @include mdc-list-item-graphic-fill-color(red, $query: mdc-feature-any());
+  @include mdc-list-item-graphic-ink-color(red, $query: mdc-feature-any());
+  @include mdc-list-item-meta-ink-color(red, $query: mdc-feature-any());
+  @include mdc-list-item-shape-radius(42, $rtl-reflexive: false, $query: mdc-feature-any());
+  @include mdc-list-divider-color(red, $query: mdc-feature-any());
+  @include mdc-list-group-subheader-ink-color(red, $query: mdc-feature-any());
+
   // Menu
   @include mdc-menu($query: mdc-feature-any());
   @include mdc-menu-width(0, $query: mdc-feature-any());
 
-  // Menu surface
+  // Menu Surface
   @include mdc-menu-surface($query: mdc-feature-any());
   @include mdc-menu-surface-fill-color(surface, $query: mdc-feature-any());
   @include mdc-menu-surface-ink-color(on-surface, $query: mdc-feature-any());
@@ -68,13 +80,6 @@
   @include mdc-ripple-radius-bounded($query: mdc-feature-any());
   @include mdc-ripple-radius-unbounded($query: mdc-feature-any());
 
-  // Typography
-  @include mdc-typography-base($query: mdc-feature-any());
-  @include mdc-typography(button, $query: mdc-feature-any());
-  @include mdc-typography-overflow-ellipsis($query: mdc-feature-any());
-  @include mdc-typography-baseline-top(0, $query: mdc-feature-any());
-  @include mdc-typography-baseline-bottom(0, $query: mdc-feature-any());
-
   // Switch
   @include mdc-switch($query: mdc-feature-any());
   @include mdc-switch-toggled-on-color(on-surface, $query: mdc-feature-any());
@@ -85,4 +90,11 @@
   @include mdc-switch-toggled-on-thumb-color(on-surface, $query: mdc-feature-any());
   @include mdc-switch-toggled-off-track-color(on-surface, $query: mdc-feature-any());
   @include mdc-switch-toggled-off-thumb-color(on-surface, $query: mdc-feature-any());
+
+  // Typography
+  @include mdc-typography-base($query: mdc-feature-any());
+  @include mdc-typography(button, $query: mdc-feature-any());
+  @include mdc-typography-overflow-ellipsis($query: mdc-feature-any());
+  @include mdc-typography-baseline-top(0, $query: mdc-feature-any());
+  @include mdc-typography-baseline-bottom(0, $query: mdc-feature-any());
 }
