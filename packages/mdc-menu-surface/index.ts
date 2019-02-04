@@ -23,8 +23,9 @@
 
 import MDCComponent from '@material/base/component';
 import {SpecificEventListener} from '@material/dom/index';
-import {Corner, CornerBit, cssClasses, MenuDimensions, MenuDistance, MenuPoint, strings} from './constants';
+import {Corner, CornerBit, cssClasses, strings} from './constants';
 import {MDCMenuSurfaceFoundation} from './foundation';
+import {MenuDimensions, MenuDistance, MenuPoint} from './types';
 import * as util from './util';
 
 type RegisterFunction = () => void;

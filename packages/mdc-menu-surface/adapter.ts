@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {MenuDimensions, MenuDistance, MenuPoint} from './constants';
+import {MenuDimensions, MenuDistance, MenuPoint} from './types';
 
 /**
  * Implement this adapter for your framework of choice to delegate updates to
