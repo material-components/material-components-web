@@ -51,10 +51,10 @@ Read the output carefully:
 If you find you need to remove commits that should not have been cherry-picked, perform the following steps:
 
 1. Find the base tag that the cherry-pick script identified and used (find the "Checking out v0.x.y" line in the output)
-2. Run `git rebase -i <base tag>` - this will open the sequence of cherry-picked commits in an editor (probably vim)
-3. Find and delete lines for commits that should not have been included (in vim, type `dd` on the line in question)
-4. Save and exit (`:x` in vim)
-5. Re-check `git log` to confirm that the commits are no longer present
+1. Run `git rebase -i <base tag>` - this will open the sequence of cherry-picked commits in an editor (probably vim)
+1. Find and delete lines for commits that should not have been included (in vim, type `dd` on the line in question)
+1. Save and exit (`:x` in vim)
+1. Re-check `git log` to confirm that the commits are no longer present
 
 > Note: In the rare event that zero commits were skipped, you can simply checkout master and cut the release as you
 > would normally do for a minor release, and skip all of the cherry-picking back and forth.
@@ -154,11 +154,11 @@ Once you're sure about the changes, run the `post-release` script to commit and 
 You will need to temporarily alter Github's master branch protection in order to push after the release:
 
 1. Go to the [Branches settings page](https://github.com/material-components/material-components-web/settings/branches)
-2. Under Branch Protection Rules, click Edit next to `master`
-3. Uncheck "Include administrators"
-4. Click "Save changes"
-5. Perform the process outlined in one of the sections below
-6. Don't forget to re-enable "Include administrators" & click "Save changes" afterwards
+1. Under Branch Protection Rules, click Edit next to `master`
+1. Uncheck "Include administrators"
+1. Click "Save changes"
+1. Perform the process outlined in one of the sections below
+1. Don't forget to re-enable "Include administrators" & click "Save changes" afterwards
 
 ### For Pre-releases and Minor Releases
 
