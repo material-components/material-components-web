@@ -185,7 +185,7 @@ Individual `MDCChip` instances will emit a `MDCChip:removal` event once the exit
 
 ```js
 chipSet.listen('MDCChip:removal', function(event) {
-  chipSetEl.removeChild(event.root);
+  chipSetEl.removeChild(event.detail.root);
 });
 ```
 
