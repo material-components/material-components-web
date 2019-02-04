@@ -153,9 +153,12 @@ Mixin | Description
 Constant Name | Description
 --- | ---
 `Corner` | Enum for representing an element corner for positioning the menu-surface. See [constants.ts](constants.ts).
-`MenuDimensions` | Width/height of an element. See [constants.ts](constants.ts).
-`MenuDistance` | Margin values representing the distance from anchor point that the menu surface should be shown. See [constants.ts](constants.ts).
-`MenuPoint` | X/Y coordinates. See [constants.ts](constants.ts).
+
+Type Name | Description
+--- | ---
+`MenuDimensions` | Width/height of an element. See [types.ts](types.ts).
+`MenuDistance` | Margin values representing the distance from anchor point that the menu surface should be shown. See [types.ts](types.ts).
+`MenuPoint` | X/Y coordinates. See [types.ts](types.ts).
 
 ## `MDCMenuSurface` Properties and Methods
 
