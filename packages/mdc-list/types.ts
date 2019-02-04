@@ -26,8 +26,6 @@ interface ListActionEvent extends Event {
   detail: number;
 }
 
-interface ListActionEventListener extends EventListener {
-  (evt: ListActionEvent): void;
-}
+type ListActionEventListener = (evt: ListActionEvent) => void;
 
 export {ListActionEvent, ListActionEventListener};
