@@ -1,5 +1,6 @@
 @import "@material/button/mixins";
 @import "@material/card/mixins";
+@import "@material/menu-surface/mixins";
 @import "@material/checkbox/mixins";
 @import "@material/elevation/mixins";
 @import "@material/feature-targeting/functions";
@@ -40,6 +41,12 @@
   // Menu
   @include mdc-menu($query: mdc-feature-any());
   @include mdc-menu-width(0, $query: mdc-feature-any());
+
+  // Menu surface
+  @include mdc-menu-surface($query: mdc-feature-any());
+  @include mdc-menu-surface-fill-color(surface, $query: mdc-feature-any());
+  @include mdc-menu-surface-ink-color(on-surface, $query: mdc-feature-any());
+  @include mdc-menu-surface-shape-radius(medium, $query: mdc-feature-any());
 
   // Radio
   @include mdc-radio($query: mdc-feature-any());
