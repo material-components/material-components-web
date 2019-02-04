@@ -57,7 +57,8 @@ class MDCList extends MDCComponent<MDCListFoundation> {
     return new MDCList(root);
   }
 
-  root_!: HTMLElement;
+  protected root_!: HTMLElement;
+
   private handleKeydown_!: SpecificEventListener<'keydown'>;
   private handleClick_!: SpecificEventListener<'click'>;
   private focusInEventListener_!: (evt: Event) => void;
@@ -105,8 +106,10 @@ class MDCList extends MDCComponent<MDCListFoundation> {
    */
   initializeListType() {
     const checkboxListItems = this.root_.querySelectorAll(strings.ARIA_ROLE_CHECKBOX_SELECTOR);
-    const singleSelectedListItem = this.root_.querySelector(`.${cssClasses.LIST_ITEM_ACTIVATED_CLASS},
-        .${cssClasses.LIST_ITEM_SELECTED_CLASS}`);
+    const singleSelectedListItem = this.root_.querySelector(`
+      .${cssClasses.LIST_ITEM_ACTIVATED_CLASS},
+      .${cssClasses.LIST_ITEM_SELECTED_CLASS}
+    `);
     const radioSelectedListItem = this.root_.querySelector(strings.ARIA_CHECKED_RADIO_SELECTOR);
 
     if (checkboxListItems.length) {
@@ -191,7 +194,7 @@ class MDCList extends MDCComponent<MDCListFoundation> {
         const element = this.listElements[listItemIndex];
         const listItemChildren: Element[] =
           [].slice.call(element.querySelectorAll(strings.CHILD_ELEMENTS_TO_TOGGLE_TABINDEX));
-        listItemChildren.forEach((ele) => ele.setAttribute('tabindex', tabIndexValue));
+        listItemChildren.forEach((el) => el.setAttribute('tabindex', tabIndexValue));
       },
     });
   }
@@ -204,14 +207,15 @@ class MDCList extends MDCComponent<MDCListFoundation> {
     let eventTarget = evt.target as HTMLElement;
     let index = -1;
 
+    const eventTargetHasClass = (className: string) => eventTarget.classList.contains(className);
+
     // Find the first ancestor that is a list item or the list.
-    while (!eventTarget.classList.contains(cssClasses.LIST_ITEM_CLASS)
-    && !eventTarget.classList.contains(cssClasses.ROOT)) {
+    while (!eventTargetHasClass(cssClasses.LIST_ITEM_CLASS) && !eventTargetHasClass(cssClasses.ROOT)) {
       eventTarget = eventTarget.parentElement as HTMLElement;
     }
 
     // Get the index of the element if it is a list item.
-    if (eventTarget.classList.contains(cssClasses.LIST_ITEM_CLASS)) {
+    if (eventTargetHasClass(cssClasses.LIST_ITEM_CLASS)) {
       index = this.listElements.indexOf(eventTarget);
     }
 

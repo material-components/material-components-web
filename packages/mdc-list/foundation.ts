@@ -115,7 +115,9 @@ class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   }
 
   setSelectedIndex(index: Index) {
-    if (!this.isIndexValid_(index)) return;
+    if (!this.isIndexValid_(index)) {
+      return;
+    }
 
     if (this.isCheckboxList_) {
       this.setCheckboxAtIndex_(index as number[]);

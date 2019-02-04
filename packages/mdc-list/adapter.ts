@@ -29,7 +29,6 @@
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-
 interface MDCListAdapter {
   getListItemCount(): number;
 
@@ -55,17 +54,17 @@ interface MDCListAdapter {
   setTabIndexForListItemChildren(listItemIndex: number, tabIndexValue: string): void;
 
   /**
-   * @return Returns true if radio button is present at given list item index.
+   * @return true if radio button is present at given list item index.
    */
   hasRadioAtIndex(index: number): boolean;
 
   /**
-   * @return Returns true if checkbox is present at given list item index.
+   * @return true if checkbox is present at given list item index.
    */
   hasCheckboxAtIndex(index: number): boolean;
 
   /**
-   * @return Returns true if checkbox inside a list item is checked.
+   * @return true if checkbox inside a list item is checked.
    */
   isCheckboxCheckedAtIndex(index: number): boolean;
 
@@ -80,7 +79,7 @@ interface MDCListAdapter {
   notifyAction(index: number): void;
 
   /**
-   * @return Returns true when the current focused element is inside list root.
+   * @return true when the current focused element is inside list root.
    */
   isFocusInsideList(): boolean;
 }

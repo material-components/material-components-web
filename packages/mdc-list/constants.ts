@@ -39,12 +39,17 @@ const strings = {
   ARIA_SELECTED: 'aria-selected',
   CHECKBOX_RADIO_SELECTOR: 'input[type="checkbox"]:not(:disabled), input[type="radio"]:not(:disabled)',
   CHECKBOX_SELECTOR: 'input[type="checkbox"]:not(:disabled)',
-  CHILD_ELEMENTS_TO_TOGGLE_TABINDEX: `.${cssClasses.LIST_ITEM_CLASS} button:not(:disabled),
-  .${cssClasses.LIST_ITEM_CLASS} a`,
+  CHILD_ELEMENTS_TO_TOGGLE_TABINDEX: `
+    .${cssClasses.LIST_ITEM_CLASS} button:not(:disabled),
+    .${cssClasses.LIST_ITEM_CLASS} a
+  `,
   ENABLED_ITEMS_SELECTOR: '.mdc-list-item:not(.mdc-list-item--disabled)',
-  FOCUSABLE_CHILD_ELEMENTS: `.${cssClasses.LIST_ITEM_CLASS} button:not(:disabled), .${cssClasses.LIST_ITEM_CLASS} a,
-  .${cssClasses.LIST_ITEM_CLASS} input[type="radio"]:not(:disabled),
-  .${cssClasses.LIST_ITEM_CLASS} input[type="checkbox"]:not(:disabled)`,
+  FOCUSABLE_CHILD_ELEMENTS: `
+    .${cssClasses.LIST_ITEM_CLASS} button:not(:disabled),
+    .${cssClasses.LIST_ITEM_CLASS} a,
+    .${cssClasses.LIST_ITEM_CLASS} input[type="radio"]:not(:disabled),
+    .${cssClasses.LIST_ITEM_CLASS} input[type="checkbox"]:not(:disabled)
+  `,
   RADIO_SELECTOR: 'input[type="radio"]:not(:disabled)',
 };
 
