@@ -23,6 +23,9 @@
 
 import MDCFoundation from './foundation';
 
+// TODO(acdvorak): Move this type definition somewhere more sensible.
+type CustomEventListener<T extends Event> = (evt: T) => void;
+
 class MDCComponent<FoundationType extends MDCFoundation> {
 
   static attachTo(root: Element): MDCComponent<MDCFoundation<{}>> {
@@ -82,16 +85,16 @@ class MDCComponent<FoundationType extends MDCFoundation> {
    * Wrapper method to add an event listener to the component's root element. This is most useful when
    * listening for custom events.
    */
-  listen<T extends EventListener>(evtType: string, handler: T) {
-    this.root_.addEventListener(evtType, handler);
+  listen<T extends Event>(evtType: string, handler: EventListener | CustomEventListener<T>) {
+    this.root_.addEventListener(evtType, handler as EventListener);
   }
 
   /**
    * Wrapper method to remove an event listener to the component's root element. This is most useful when
    * unlistening for custom events.
    */
-  unlisten<T extends EventListener>(evtType: string, handler: T) {
-    this.root_.removeEventListener(evtType, handler);
+  unlisten<T extends Event>(evtType: string, handler: EventListener | CustomEventListener<T>) {
+    this.root_.removeEventListener(evtType, handler as EventListener);
   }
 
   /**
@@ -114,4 +117,4 @@ class MDCComponent<FoundationType extends MDCFoundation> {
   }
 }
 
-export {MDCComponent as default, MDCComponent};
+export {MDCComponent as default, MDCComponent, CustomEventListener};

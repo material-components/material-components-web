@@ -30,11 +30,6 @@ interface ListActionEvent extends Event {
   detail: number;
 }
 
-// TODO(acdvorak): Remove after PR #4334 is merged
-interface ListActionEventListener extends EventListener {
-  (evt: ListActionEvent): void;
-}
-
 interface MenuEventData {
   index: number;
 }
@@ -55,4 +50,4 @@ const strings = {
   SELECTED_EVENT: 'MDCMenu:selected',
 };
 
-export {cssClasses, ListActionEvent, ListActionEventListener, ListFactory, MenuEventData, MenuSurfaceFactory, strings};
+export {cssClasses, ListActionEvent, ListFactory, MenuEventData, MenuSurfaceFactory, strings};

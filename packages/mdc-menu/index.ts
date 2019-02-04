@@ -21,8 +21,9 @@
  * THE SOFTWARE.
  */
 
-// import {SpecificEventListener} from '@material/dom/index';
 import MDCComponent from '@material/base/component';
+import {CustomEventListener} from '@material/base/component';
+import {SpecificEventListener} from '@material/dom/index';
 import {MDCList, MDCListFoundation} from '@material/list/index';
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
 import {Corner, MDCMenuSurface} from '@material/menu-surface/index';
@@ -38,9 +39,8 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   private menuSurface_!: MDCMenuSurface; // assigned in initialize()
   private list_: MDCList | null = null;
 
-  // TODO(acdvorak): Figure out why SpecificEventListener<'keydown'> and ListActionEventListener blow up tsc.
-  private handleKeydown_!: EventListener; // assigned in initialSyncWithDOM()
-  private handleItemAction_!: EventListener; // assigned in initialSyncWithDOM()
+  private handleKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
+  private handleItemAction_!: CustomEventListener<ListActionEvent>; // assigned in initialSyncWithDOM()
   private afterOpenedCallback_!: EventListener; // assigned in initialSyncWithDOM()
 
   initialize(
@@ -56,13 +56,12 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   }
 
   initialSyncWithDOM() {
-    // TODO(acdvorak): Figure out why SpecificEventListener<'keydown'> and ListActionEventListener blow up tsc.
-    this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt as KeyboardEvent);
-    this.handleItemAction_ = (evt) => this.foundation_.handleItemAction(this.items[(evt as ListActionEvent).detail]);
+    this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt);
+    this.handleItemAction_ = (evt) => this.foundation_.handleItemAction(this.items[evt.detail]);
     this.afterOpenedCallback_ = () => this.handleAfterOpened_();
 
-    this.menuSurface_.listen(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, this.afterOpenedCallback_ as EventListener);
-    this.listen('keydown', this.handleKeydown_ as EventListener);
+    this.menuSurface_.listen(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, this.afterOpenedCallback_);
+    this.listen('keydown', this.handleKeydown_);
     this.listen(MDCListFoundation.strings.ACTION_EVENT, this.handleItemAction_);
   }
 
