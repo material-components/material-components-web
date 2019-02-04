@@ -1,7 +1,7 @@
 {
   "name": "@material/chips",
   "description": "The Material Components for the Web chips component",
-  "version": "0.43.0",
+  "version": "0.44.0",
   "license": "MIT",
   "main": "dist/mdc.chips.js",
   "keywords": [
@@ -19,11 +19,11 @@
   "dependencies": {
     "@material/animation": "^0.41.0",
     "@material/base": "^0.41.0",
-    "@material/checkbox": "^0.43.0",
-    "@material/elevation": "^0.43.0",
-    "@material/ripple": "^0.43.0",
+    "@material/checkbox": "^0.44.0",
+    "@material/elevation": "^0.44.0",
+    "@material/ripple": "^0.44.0",
     "@material/shape": "^0.43.0",
     "@material/theme": "^0.43.0",
-    "@material/typography": "^0.43.0"
+    "@material/typography": "^0.44.0"
   }
 }

@@ -1,7 +1,7 @@
 {
   "name": "@material/selection-control",
   "description": "The set of base classes for Material selection controls",
-  "version": "0.43.0",
+  "version": "0.44.0",
   "license": "MIT",
   "main": "dist/mdc.selectionControl.js",
   "repository": {
@@ -9,7 +9,7 @@
     "url": "https://github.com/material-components/material-components-web.git"
   },
   "dependencies": {
-    "@material/ripple": "^0.43.0"
+    "@material/ripple": "^0.44.0"
   },
   "publishConfig": {
     "access": "public"

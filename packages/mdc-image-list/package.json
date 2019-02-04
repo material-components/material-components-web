@@ -1,6 +1,6 @@
 {
   "name": "@material/image-list",
-  "version": "0.43.0",
+  "version": "0.44.0",
   "description": "The Material Components for the web image list component",
   "license": "MIT",
   "repository": {
@@ -15,7 +15,7 @@
   "dependencies": {
     "@material/shape": "^0.43.0",
     "@material/theme": "^0.43.0",
-    "@material/typography": "^0.43.0"
+    "@material/typography": "^0.44.0"
   },
   "publishConfig": {
     "access": "public"
