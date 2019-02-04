@@ -83,21 +83,4 @@ enum Corner {
   BOTTOM_END = CornerBit.BOTTOM | CornerBit.RIGHT | CornerBit.FLIP_RTL, // tslint:disable-line:no-bitwise
 }
 
-interface MenuDimensions {
-  width: number;
-  height: number;
-}
-
-interface MenuDistance {
-  top: number;
-  right: number;
-  bottom: number;
-  left: number;
-}
-
-interface MenuPoint {
-  x: number;
-  y: number;
-}
-
-export {cssClasses, strings, numbers, CornerBit, Corner, MenuDimensions, MenuDistance, MenuPoint};
+export {cssClasses, strings, numbers, CornerBit, Corner};
