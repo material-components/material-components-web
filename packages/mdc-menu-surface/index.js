@@ -247,7 +247,7 @@ class MDCMenuSurface extends MDCComponent {
       getInnerDimensions: () => {
         return {width: this.root_.offsetWidth, height: this.root_.offsetHeight};
       },
-      getAnchorDimensions: () => this.anchorElement && this.anchorElement.getBoundingClientRect(),
+      getAnchorDimensions: () => this.anchorElement ? this.anchorElement.getBoundingClientRect() : null,
       getWindowDimensions: () => {
         return {width: window.innerWidth, height: window.innerHeight};
       },
@@ -258,10 +258,10 @@ class MDCMenuSurface extends MDCComponent {
         return {x: window.pageXOffset, y: window.pageYOffset};
       },
       setPosition: (position) => {
-        this.root_.style.left = 'left' in position ? position.left : null;
-        this.root_.style.right = 'right' in position ? position.right : null;
-        this.root_.style.top = 'top' in position ? position.top : null;
-        this.root_.style.bottom = 'bottom' in position ? position.bottom : null;
+        this.root_.style.left = 'left' in position ? `${position.left}px` : '';
+        this.root_.style.right = 'right' in position ? `${position.right}px` : '';
+        this.root_.style.top = 'top' in position ? `${position.top}px` : '';
+        this.root_.style.bottom = 'bottom' in position ? `${position.bottom}px` : '';
       },
       setMaxHeight: (height) => {
         this.root_.style.maxHeight = height;

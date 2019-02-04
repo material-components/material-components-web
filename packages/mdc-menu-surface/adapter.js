@@ -113,10 +113,10 @@ class MDCMenuSurfaceAdapter {
   getWindowScroll() {}
 
   /** @param {!{
-  *   top: (string|undefined),
-  *   right: (string|undefined),
-  *   bottom: (string|undefined),
-  *   left: (string|undefined)
+  *   top: (number|undefined),
+  *   right: (number|undefined),
+  *   bottom: (number|undefined),
+  *   left: (number|undefined)
   * }} position */
   setPosition(position) {}
 

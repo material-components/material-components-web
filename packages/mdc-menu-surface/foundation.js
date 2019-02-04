@@ -425,8 +425,8 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     }
 
     for (const prop in position) {
-      if (position.hasOwnProperty(prop) && position[prop] !== '0') {
-        position[prop] = `${parseInt(position[prop], 10)}px`;
+      if (position.hasOwnProperty(prop)) {
+        position[prop] = parseInt(position[prop], 10);
       }
     }
 
