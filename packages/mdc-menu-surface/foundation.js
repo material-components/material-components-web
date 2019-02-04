@@ -23,10 +23,10 @@
 
 /**
  * @typedef {{
- *   top: (number|undefined),
- *   right: (number|undefined),
- *   bottom: (number|undefined),
- *   left: (number|undefined),
+ *   top: number,
+ *   right: number,
+ *   bottom: number,
+ *   left: number,
  * }}
  */
 let AnchorMargin;
