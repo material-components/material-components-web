@@ -41,7 +41,7 @@ let AnchorMargin;
  *   surfaceHeight: number,
  *   surfaceWidth: number,
  *   bodyDimensions,
- *   windowScroll,
+ *   windowScroll
  * }}
  */
 let AutoLayoutMeasurements;
@@ -410,8 +410,8 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     const horizontalOffset = this.getHorizontalOriginOffset_(corner);
     const verticalOffset = this.getVerticalOriginOffset_(corner);
     let position = {
-      [horizontalAlignment]: horizontalOffset ? horizontalOffset : '0',
-      [verticalAlignment]: verticalOffset ? verticalOffset : '0',
+      [horizontalAlignment]: horizontalOffset,
+      [verticalAlignment]: verticalOffset,
     };
     const {anchorWidth, surfaceWidth} = this.measures_;
     // Center align when anchor width is comparable or greater than menu surface, otherwise keep corner.
@@ -422,12 +422,6 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
     // If the menu-surface has been hoisted to the body, it's no longer relative to the anchor element
     if (this.hoistedElement_ || this.isFixedPosition_) {
       position = this.adjustPositionForHoistedElement_(position);
-    }
-
-    for (const prop in position) {
-      if (position.hasOwnProperty(prop) && position[prop] !== '0') {
-        position[prop] = `${parseInt(position[prop], 10)}px`;
-      }
     }
 
     this.adapter_.setTransformOrigin(`${horizontalAlignment} ${verticalAlignment}`);
@@ -442,16 +436,16 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
    * Calculates the offsets for positioning the menu-surface when the menu-surface has been
    * hoisted to the body.
    * @param {!{
-   *   top: (string|undefined),
-   *   right: (string|undefined),
-   *   bottom: (string|undefined),
-   *   left: (string|undefined)
+   *   top: (number|undefined),
+   *   right: (number|undefined),
+   *   bottom: (number|undefined),
+   *   left: (number|undefined)
    * }} position
    * @return {!{
-   *   top: (string|undefined),
-   *   right: (string|undefined),
-   *   bottom: (string|undefined),
-   *   left: (string|undefined)
+   *   top: (number|undefined),
+   *   right: (number|undefined),
+   *   bottom: (number|undefined),
+   *   left: (number|undefined)
    * }} position
    * @private
    */
@@ -463,20 +457,20 @@ class MDCMenuSurfaceFoundation extends MDCFoundation {
         // Hoisted surfaces need to have the anchor elements location on the page added to the
         // position properties for proper alignment on the body.
         if (viewportDistance.hasOwnProperty(prop)) {
-          position[prop] = parseInt(position[prop], 10) + viewportDistance[prop];
+          position[prop] += viewportDistance[prop];
         }
 
         // Surfaces that are absolutely positioned need to have additional calculations for scroll
         // and bottom positioning.
         if (!this.isFixedPosition_) {
           if (prop === 'top') {
-            position[prop] = parseInt(position[prop], 10) + windowScroll.y;
+            position[prop] += windowScroll.y;
           } else if (prop === 'bottom') {
-            position[prop] = parseInt(position[prop], 10) - windowScroll.y;
+            position[prop] -= windowScroll.y;
           } else if (prop === 'left') {
-            position[prop] = parseInt(position[prop], 10) + windowScroll.x;
+            position[prop] += windowScroll.x;
           } else if (prop === 'right') {
-            position[prop] = parseInt(position[prop], 10) - windowScroll.x;
+            position[prop] -= windowScroll.x;
           }
         }
       }
