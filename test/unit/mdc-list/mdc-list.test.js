@@ -449,11 +449,12 @@ test('adapter#setCheckedCheckboxOrRadioAtIndex toggles the radio on list item', 
 test('adapter#notifyAction emits action event', () => {
   const {component} = setupTest();
 
-  const handler = td.func('notifyActionHandler');
+  let detail = null;
+  const handler = (evt) => detail = evt.detail;
 
   component.listen(strings.ACTION_EVENT, handler);
   component.getDefaultFoundation().adapter_.notifyAction(3);
   component.unlisten(strings.ACTION_EVENT, handler);
 
-  td.verify(handler(td.matchers.anything()));
+  assert.deepEqual(detail, {index: 3});
 });
