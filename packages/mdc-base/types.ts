@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,17 +21,7 @@
  * THE SOFTWARE.
  */
 
-const cssClasses = {
-  MENU_SELECTED_LIST_ITEM: 'mdc-menu-item--selected',
-  MENU_SELECTION_GROUP: 'mdc-menu__selection-group',
-  ROOT: 'mdc-menu',
-};
-
-const strings = {
-  ARIA_SELECTED_ATTR: 'aria-selected',
-  CHECKBOX_SELECTOR: 'input[type="checkbox"]',
-  LIST_SELECTOR: '.mdc-list',
-  SELECTED_EVENT: 'MDCMenu:selected',
-};
-
-export {cssClasses, strings};
+// TODO(acdvorak): Remove these from mdc-dom package.
+export type EventType = keyof GlobalEventHandlersEventMap;
+export type SpecificEventListener<K extends EventType> = (evt: GlobalEventHandlersEventMap[K]) => void;
+export type CustomEventListener<E extends Event> = (evt: E) => void;

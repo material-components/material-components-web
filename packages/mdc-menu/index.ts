@@ -22,14 +22,14 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {CustomEventListener} from '@material/base/component';
-import {SpecificEventListener} from '@material/dom/index';
+import {CustomEventListener, SpecificEventListener} from '@material/base/types';
 import {MDCList, MDCListFoundation} from '@material/list/index';
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
 import {Corner, MDCMenuSurface} from '@material/menu-surface/index';
 import {MenuDistance} from '@material/menu-surface/types';
-import {cssClasses, ListActionEvent, ListFactory, MenuSurfaceFactory, strings} from './constants';
+import {cssClasses, strings} from './constants';
 import {MDCMenuFoundation} from './foundation';
+import {ListActionEvent, ListFactory, MenuItemComponentEventDetail, MenuSurfaceFactory} from './types';
 
 class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   static attachTo(root: Element) {
@@ -186,7 +186,7 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
         const selectedListItem = selectionGroup.querySelector<HTMLElement>(`.${cssClasses.MENU_SELECTED_LIST_ITEM}`);
         return selectedListItem ? this.items.indexOf(selectedListItem) : -1;
       },
-      notifySelected: (evtData) => this.emit(strings.SELECTED_EVENT, {
+      notifySelected: (evtData) => this.emit<MenuItemComponentEventDetail>(strings.SELECTED_EVENT, {
         index: evtData.index,
         item: this.items[evtData.index],
       }),

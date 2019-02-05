@@ -22,9 +22,7 @@
  */
 
 import MDCFoundation from './foundation';
-
-// TODO(acdvorak): Move this type definition somewhere more sensible.
-type CustomEventListener<T extends Event> = (evt: T) => void;
+import {CustomEventListener, EventType, SpecificEventListener} from './types';
 
 class MDCComponent<FoundationType extends MDCFoundation> {
 
@@ -85,23 +83,27 @@ class MDCComponent<FoundationType extends MDCFoundation> {
    * Wrapper method to add an event listener to the component's root element. This is most useful when
    * listening for custom events.
    */
-  listen<T extends Event>(evtType: string, handler: EventListener | CustomEventListener<T>) {
-    this.root_.addEventListener(evtType, handler as EventListener);
+  listen<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
+  listen<E extends Event>(evtType: string, handler: CustomEventListener<E>): void;
+  listen(evtType: string, handler: EventListener): void {
+    this.root_.addEventListener(evtType, handler);
   }
 
   /**
    * Wrapper method to remove an event listener to the component's root element. This is most useful when
    * unlistening for custom events.
    */
-  unlisten<T extends Event>(evtType: string, handler: EventListener | CustomEventListener<T>) {
-    this.root_.removeEventListener(evtType, handler as EventListener);
+  unlisten<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
+  unlisten<E extends Event>(evtType: string, handler: CustomEventListener<E>): void;
+  unlisten(evtType: string, handler: EventListener) {
+    this.root_.removeEventListener(evtType, handler);
   }
 
   /**
    * Fires a cross-browser-compatible custom event from the component root of the given type,
    * with the given data.
    */
-  emit(evtType: string, evtData: object, shouldBubble = false) {
+  emit<T>(evtType: string, evtData: T, shouldBubble = false) {
     let evt;
     if (typeof CustomEvent === 'function') {
       evt = new CustomEvent(evtType, {
@@ -117,4 +119,4 @@ class MDCComponent<FoundationType extends MDCFoundation> {
   }
 }
 
-export {MDCComponent as default, MDCComponent, CustomEventListener};
+export {MDCComponent as default, MDCComponent};

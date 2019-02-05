@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {MenuEventData} from './constants';
+import {MenuItemEventData} from './constants';
 
 /**
  * Implement this adapter for your framework of choice to delegate updates to
@@ -58,7 +58,7 @@ interface MDCMenuAdapter {
   getSelectedElementIndex(selectionGroup: HTMLElement): number;
 
   /** Emit an event when a menu item is selected. */
-  notifySelected(evtData: MenuEventData): void;
+  notifySelected(evtData: MenuItemEventData): void;
 }
 
 export {MDCMenuAdapter};

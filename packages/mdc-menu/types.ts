@@ -21,17 +21,27 @@
  * THE SOFTWARE.
  */
 
-const cssClasses = {
-  MENU_SELECTED_LIST_ITEM: 'mdc-menu-item--selected',
-  MENU_SELECTION_GROUP: 'mdc-menu__selection-group',
-  ROOT: 'mdc-menu',
-};
+import {MDCList} from '@material/list/index';
+import {MDCMenuSurface} from '@material/menu-surface/index';
 
-const strings = {
-  ARIA_SELECTED_ATTR: 'aria-selected',
-  CHECKBOX_SELECTOR: 'input[type="checkbox"]',
-  LIST_SELECTOR: '.mdc-list',
-  SELECTED_EVENT: 'MDCMenu:selected',
-};
+// TODO(acdvorak): Remove after PR #4334 is merged
+export interface ListActionEvent extends Event {
+  detail: number;
+}
 
-export {cssClasses, strings};
+/**
+ * Event properties used by the adapter and foundation.
+ */
+export interface MenuItemEventDetail {
+  index: number;
+}
+
+/**
+ * Event properties specific to the default component implementation.
+ */
+export interface MenuItemComponentEventDetail extends MenuItemEventDetail {
+  item: HTMLElement;
+}
+
+export type MenuSurfaceFactory = (el: Element) => MDCMenuSurface;
+export type ListFactory = (el: Element) => MDCList;
