@@ -50,10 +50,12 @@ class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements MDCSele
     return cbEl;
   }
 
-  root_!: Element;
+  // Public visibility for this property is required by RippleCapableSurface.
+  root_!: Element; // assigned in MDCComponent constructor
+
   private ripple_: MDCRipple = this.initRipple_();
-  private handleChange_!: () => void;
-  private handleAnimationEnd_!: () => void;
+  private handleChange_!: EventListener; // assigned in initialSyncWithDOM()
+  private handleAnimationEnd_!: EventListener; // assigned in initialSyncWithDOM()
 
   initialSyncWithDOM() {
     this.handleChange_ = () => this.foundation_.handleChange();
