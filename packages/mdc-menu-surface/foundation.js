@@ -26,7 +26,7 @@
  *   top: number,
  *   right: number,
  *   bottom: number,
- *   left: number,
+ *   left: number
  * }}
  */
 let AnchorMargin;
@@ -41,7 +41,7 @@ let AnchorMargin;
  *   surfaceHeight: number,
  *   surfaceWidth: number,
  *   bodyDimensions,
- *   windowScroll,
+ *   windowScroll
  * }}
  */
 let AutoLayoutMeasurements;
