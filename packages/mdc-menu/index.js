@@ -24,8 +24,8 @@
 import MDCComponent from '@material/base/component';
 import {MDCMenuFoundation} from './foundation';
 import {strings, cssClasses} from './constants';
-import {MDCMenuSurface, Corner} from '@material/menu-surface/index';
-import {MDCMenuSurfaceFoundation, AnchorMargin} from '@material/menu-surface/foundation';
+import {MDCMenuSurface, Corner} from '@material/menu-surface/index.ts';
+import {MDCMenuSurfaceFoundation, MenuDistance} from '@material/menu-surface/foundation.ts';
 import {MDCList, MDCListFoundation} from '@material/list/index';
 
 /**
@@ -120,7 +120,7 @@ class MDCMenu extends MDCComponent {
   }
 
   /**
-   * @param {!AnchorMargin} margin
+   * @param {!Partial<!MenuDistance>} margin
    */
   setAnchorMargin(margin) {
     this.menuSurface_.setAnchorMargin(margin);
@@ -227,4 +227,4 @@ class MDCMenu extends MDCComponent {
   }
 }
 
-export {MDCMenuFoundation, MDCMenu, AnchorMargin, Corner};
+export {MDCMenuFoundation, MDCMenu, MenuDistance, Corner};

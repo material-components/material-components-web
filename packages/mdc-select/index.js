@@ -37,7 +37,7 @@ import {MDCSelectHelperText, MDCSelectHelperTextFoundation} from './helper-text/
 /* eslint-enable no-unused-vars */
 
 // Closure has issues with {this as that} syntax.
-import * as menuSurfaceConstants from '@material/menu-surface/constants';
+import * as menuSurfaceConstants from '@material/menu-surface/constants.ts';
 import * as menuConstants from '@material/menu/constants';
 
 const VALIDATION_ATTR_WHITELIST = ['required', 'aria-required'];

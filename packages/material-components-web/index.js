@@ -37,7 +37,7 @@ import * as linearProgress from '@material/linear-progress/index.ts';
 import * as lineRipple from '@material/line-ripple/index';
 import * as list from '@material/list/index';
 import * as menu from '@material/menu/index';
-import * as menuSurface from '@material/menu-surface/index';
+import * as menuSurface from '@material/menu-surface/index.ts';
 import * as notchedOutline from '@material/notched-outline/index';
 import * as radio from '@material/radio/index';
 import * as ripple from '@material/ripple/index.ts';
