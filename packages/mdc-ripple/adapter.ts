@@ -41,7 +41,7 @@
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  *
  */
-import {EventType, SpecificEventListener} from '@material/dom/index';
+import {EventType, SpecificEventListener} from '@material/base/types';
 
 interface Point {
   x: number;
