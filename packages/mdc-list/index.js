@@ -277,7 +277,7 @@ class MDCList extends MDCComponent {
         toggleEl.dispatchEvent(event);
       },
       notifyAction: (index) => {
-        this.emit(strings.ACTION_EVENT, index, /** shouldBubble */ true);
+        this.emit(strings.ACTION_EVENT, {index}, /** shouldBubble */ true);
       },
       isFocusInsideList: () => {
         return this.root_.contains(document.activeElement);
