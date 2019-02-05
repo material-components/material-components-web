@@ -191,10 +191,10 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
         return {x: window.pageXOffset, y: window.pageYOffset};
       },
       setPosition: (position) => {
-        this.root_.style.left = 'left' in position ? `${position.left}px` : null;
-        this.root_.style.right = 'right' in position ? `${position.right}px` : null;
-        this.root_.style.top = 'top' in position ? `${position.top}px` : null;
-        this.root_.style.bottom = 'bottom' in position ? `${position.bottom}px` : null;
+        this.root_.style.left = 'left' in position ? `${position.left}px` : '';
+        this.root_.style.right = 'right' in position ? `${position.right}px` : '';
+        this.root_.style.top = 'top' in position ? `${position.top}px` : '';
+        this.root_.style.bottom = 'bottom' in position ? `${position.bottom}px` : '';
       },
       setMaxHeight: (height) => {
         this.root_.style.maxHeight = height;
