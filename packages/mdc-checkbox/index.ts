@@ -30,7 +30,7 @@ import {MDCSelectionControl} from '@material/selection-control/index';
 import MDCCheckboxFoundation from './foundation';
 
 const {getMatchesProperty} = util;
-const CB_PROTO_PROPS: string[] = ['checked', 'indeterminate'];
+const CB_PROTO_PROPS = ['checked', 'indeterminate'];
 
 class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements MDCSelectionControl, RippleCapableSurface {
 
