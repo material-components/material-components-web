@@ -209,7 +209,7 @@ Method Signature | Description
 `getBodyDimensions() => {width: number, height: number}` | Returns an object with width and height of the body, in pixels.
 `getWindowDimensions() => {width: number, height: number}` | Returns an object with width and height of the viewport, in pixels.
 `getWindowScroll() => {x: number, y: number}` | Returns an object with the amount the body has been scrolled on the `x` and `y` axis.
-`setPosition(position: {top: string, right: string, bottom: string, left: string}) => void` | Sets the position of the menu surface element.
+`setPosition(position: {top: number, right: number, bottom: number, left: number}) => void` | Sets the position of the menu surface element.
 `setMaxHeight(value: string) => void` | Sets `max-height` style for the menu surface element.
 
 ### `MDCMenuSurfaceFoundation`
