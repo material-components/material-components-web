@@ -21,11 +21,6 @@
  * THE SOFTWARE.
  */
 
-/* eslint-disable no-unused-vars */
-import {MDCSelectionControlState} from '@material/selection-control/index';
-
-/* eslint no-unused-vars: [2, {"args": "none"}] */
-
 /**
  * Adapter for MDC Checkbox. Provides an interface for managing
  * - classes
@@ -42,42 +37,24 @@ import {MDCSelectionControlState} from '@material/selection-control/index';
  *
  * @record
  */
-class MDCCheckboxAdapter {
-  /** @param {string} className */
-  addClass(className) {}
 
-  /** @param {string} className */
-  removeClass(className) {}
-
-  /**
-   * Sets an attribute with a given value on the input element.
-   * @param {string} attr
-   * @param {string} value
-   */
-  setNativeControlAttr(attr, value) {}
-
+interface MDCCheckboxAdapter {
+  addClass(className: string): void;
+  forceLayout(): void;
+  hasNativeControl(): boolean;
+  isAttachedToDOM(): boolean;
+  isChecked(): boolean;
+  isIndeterminate(): boolean;
+  removeClass(className: string): void;
   /**
    * Removes an attribute from the input element.
-   * @param {string} attr
    */
-  removeNativeControlAttr(attr) {}
-
-  forceLayout() {}
-
-  /** @return {boolean} */
-  isAttachedToDOM() {}
-
-  /** @return {boolean} */
-  isIndeterminate() {}
-
-  /** @return {boolean} */
-  isChecked() {}
-
-  /** @return {boolean} */
-  hasNativeControl() {}
-
-  /** @param {boolean} disabled */
-  setNativeControlDisabled(disabled) {}
+  removeNativeControlAttr(attr: string): void;
+  /**
+   * Sets an attribute with a given value on the input element.
+   */
+  setNativeControlAttr(attr: string, value: string): void;
+  setNativeControlDisabled(disabled: boolean): void;
 }
 
 export default MDCCheckboxAdapter;
