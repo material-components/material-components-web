@@ -110,18 +110,20 @@ class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements MDCSele
       const desc = Object.getOwnPropertyDescriptor(cbProto, controlState);
       // We have to check for this descriptor, since some browsers (Safari) don't support its return.
       // See: https://bugs.webkit.org/show_bug.cgi?id=49739
-      if (validDescriptor(desc)) {
-        const nativeCbDesc = {
-          configurable: desc.configurable,
-          enumerable: desc.enumerable,
-          get: desc.get,
-          set: (state: boolean) => {
-            desc.set!.call(nativeCb, state);
-            this.foundation_.handleChange();
-          },
-        };
-        Object.defineProperty(nativeCb, controlState, nativeCbDesc);
+      if (!validDescriptor(desc)) {
+        return;
       }
+
+      const nativeCbDesc = {
+        configurable: desc.configurable,
+        enumerable: desc.enumerable,
+        get: desc.get,
+        set: (state: boolean) => {
+          desc.set!.call(nativeCb, state);
+          this.foundation_.handleChange();
+        },
+      };
+      Object.defineProperty(nativeCb, controlState, nativeCbDesc);
     });
   }
 
@@ -131,9 +133,10 @@ class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements MDCSele
 
     CB_PROTO_PROPS.forEach((controlState) => {
       const desc = Object.getOwnPropertyDescriptor(cbProto, controlState);
-      if (validDescriptor(desc)) {
-        Object.defineProperty(nativeCb, controlState, desc);
+      if (!validDescriptor(desc)) {
+        return;
       }
+      Object.defineProperty(nativeCb, controlState, desc);
     });
   }
 
