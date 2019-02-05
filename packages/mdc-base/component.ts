@@ -85,7 +85,7 @@ class MDCComponent<FoundationType extends MDCFoundation> {
    */
   listen<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
   listen<E extends Event>(evtType: string, handler: CustomEventListener<E>): void;
-  listen(evtType: string, handler: EventListener): void {
+  listen(evtType: string, handler: EventListener) {
     this.root_.addEventListener(evtType, handler);
   }
 
