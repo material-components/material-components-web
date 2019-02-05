@@ -38,8 +38,6 @@
 const fs = require('fs');
 const path = require('path');
 
-const {parse, stringify} = require('scss-parser');
-const createQueryWrapper = require('query-ast');
 const glob = require('glob');
 
 main(process.argv);
@@ -56,41 +54,22 @@ function main(argv) {
 }
 
 function transform(srcFile, rootDir) {
-  const src = fs.readFileSync(srcFile, 'utf8');
-  const ast = parse(src);
+  console.log(`[rewrite] ${srcFile}`);
+  let src = fs.readFileSync(srcFile, 'utf8');
 
-  const $ = createQueryWrapper(ast);
-  $('atrule').has('atkeyword').find('string_double').replace((n) => {
-    if (n.parent.children[0].node.value === 'import') {
-      return {
-        type: 'string_double',
-        value: rewriteImportDeclaration(n.node.value, srcFile, rootDir),
-      };
+  src = src.replace(/@import "@material\/([^/]+)\/([^"]+)"/g, (match, modName, remainder) => {
+    const atMaterialReplacementPath = `${rootDir}/${modName}`;
+    const importSource = `${atMaterialReplacementPath}/${remainder}`;
+
+    let resolvedImportSource = importSource;
+    const needsClosureModuleRootResolution = path.isAbsolute(importSource);
+    if (needsClosureModuleRootResolution) {
+      const pathToImport = importSource.replace('@material', rootDir);
+      resolvedImportSource = path.relative(path.dirname(srcFile), pathToImport);
     }
-    return n.node;
+
+    return `@import "${resolvedImportSource}"`;
   });
 
-  const scss = stringify($().get(0));
-
-  fs.writeFileSync(srcFile, scss, 'utf8');
-  console.log(`[rewrite] ${srcFile}`);
-}
-
-function rewriteImportDeclaration(importSource, srcFile, rootDir) {
-  const pathParts = importSource.split('/');
-  const isMDCImport = pathParts[0] === '@material';
-  if (isMDCImport) {
-    const modName = pathParts[1]; // @material/<modName>
-    const atMaterialReplacementPath = `${rootDir}/${modName}`;
-    const rewrittenImportSource = [atMaterialReplacementPath].concat(pathParts.slice(2)).join('/');
-    importSource = rewrittenImportSource;
-  }
-
-  let resolvedImportSource = importSource;
-  const needsClosureModuleRootResolution = path.isAbsolute(importSource);
-  if (needsClosureModuleRootResolution) {
-    const pathToImport = importSource.replace('@material', rootDir);
-    resolvedImportSource = path.relative(path.dirname(srcFile), pathToImport);
-  }
-  return resolvedImportSource;
+  fs.writeFileSync(srcFile, src, 'utf8');
 }
