@@ -43,7 +43,7 @@ class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements MDCSele
    */
   get nativeCb_(): HTMLInputElement {
     const {NATIVE_CONTROL_SELECTOR} = MDCCheckboxFoundation.strings;
-    const cbEl = this.root_.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
+    const cbEl = this.root_.querySelector<HTMLInputElement>(NATIVE_CONTROL_SELECTOR);
     if (!cbEl) {
       throw new Error(`Checkbox requires a ${NATIVE_CONTROL_SELECTOR} element`);
     }
