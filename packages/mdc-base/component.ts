@@ -104,9 +104,9 @@ class MDCComponent<FoundationType extends MDCFoundation> {
    * with the given data.
    */
   emit<T>(evtType: string, evtData: T, shouldBubble = false) {
-    let evt;
+    let evt: CustomEvent<T>;
     if (typeof CustomEvent === 'function') {
-      evt = new CustomEvent(evtType, {
+      evt = new CustomEvent<T>(evtType, {
         bubbles: shouldBubble,
         detail: evtData,
       });
