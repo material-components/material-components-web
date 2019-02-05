@@ -22,7 +22,7 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {SpecificEventListener} from '@material/dom/index';
+import {SpecificEventListener} from '@material/base/types';
 import {matches} from '@material/dom/ponyfill';
 import {cssClasses, Index, strings} from './constants'; // eslint-disable-line no-unused-vars
 import {MDCListFoundation} from './foundation';
@@ -161,7 +161,7 @@ class MDCList extends MDCComponent<MDCListFoundation> {
         return this.root_.contains(document.activeElement);
       },
       notifyAction: (index) => {
-        this.emit(strings.ACTION_EVENT, index, /** shouldBubble */ true);
+        this.emit(strings.ACTION_EVENT, {index}, /** shouldBubble */ true);
       },
       removeAttributeForElementIndex: (index, attr) => {
         const element = this.listElements[index];
