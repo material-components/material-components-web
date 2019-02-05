@@ -40,13 +40,10 @@
   @include mdc-ripple-common($query);
 
   .mdc-radio {
-    @include mdc-feature-targets($feat-color) {
-      @include mdc-radio-unchecked-stroke-color($mdc-radio-unchecked-color);
-      @include mdc-radio-checked-stroke-color($mdc-radio-baseline-theme-color);
-      @include mdc-radio-ink-color($mdc-radio-baseline-theme-color);
-      @include mdc-radio-focus-indicator-color($mdc-radio-baseline-theme-color);
-    }
-
+    @include mdc-radio-unchecked-stroke-color($mdc-radio-unchecked-color, $query);
+    @include mdc-radio-checked-stroke-color($mdc-radio-baseline-theme-color, $query);
+    @include mdc-radio-ink-color($mdc-radio-baseline-theme-color, $query);
+    @include mdc-radio-focus-indicator-color($mdc-radio-baseline-theme-color, $query);
     @include mdc-ripple-surface($query);
     @include mdc-ripple-radius-unbounded($query: $query);
     @include mdc-states($mdc-radio-baseline-theme-color, $query: $query);
@@ -73,8 +70,10 @@
         box-sizing: border-box;
         width: $mdc-radio-ui-pct;
         height: $mdc-radio-ui-pct;
+      }
 
-        &::before {
+      &::before {
+        @include mdc-feature-targets($feat-structure) {
           position: absolute;
           top: 0;
           left: 0;
@@ -86,10 +85,8 @@
           pointer-events: none;
           content: "";
         }
-      }
 
-      @include mdc-feature-targets($feat-animation) {
-        &::before {
+        @include mdc-feature-targets($feat-animation) {
           transition: mdc-radio-exit(opacity), mdc-radio-exit(transform);
         }
       }
@@ -128,12 +125,14 @@
       }
 
       @include mdc-feature-targets($feat-animation) {
-        transition: mdc-radio-exit(transform), mdc-radio-exit(border-color);
+        transition:
+          mdc-radio-exit(transform),
+          mdc-radio-exit(border-color);
       }
     }
 
-    @include mdc-feature-targets($feat-structure) {
-      &__native-control {
+    &__native-control {
+      @include mdc-feature-targets($feat-structure) {
         position: absolute;
         top: 0;
         left: 0;
@@ -145,38 +144,47 @@
         cursor: inherit;
         z-index: 1;
       }
+    }
 
-      // stylelint-disable plugin/selector-bem-pattern
+    // stylelint-disable plugin/selector-bem-pattern
 
-      &.mdc-ripple-upgraded--background-focused {
-        .mdc-radio__background::before {
+    &.mdc-ripple-upgraded--background-focused {
+      .mdc-radio__background::before {
+        @include mdc-feature-targets($feat-structure) {
           content: none;
         }
       }
-
-      // stylelint-enable plugin/selector-bem-pattern
     }
+    // stylelint-enable plugin/selector-bem-pattern
   }
 
-  @include mdc-feature-targets($feat-animation) {
-    .mdc-radio__native-control:checked,
-    .mdc-radio__native-control:disabled {
-      + .mdc-radio__background {
-        transition: mdc-radio-enter(opacity), mdc-radio-enter(transform);
+  .mdc-radio__native-control:checked,
+  .mdc-radio__native-control:disabled {
+    + .mdc-radio__background {
+      @include mdc-feature-targets($feat-animation) {
+        transition:
+          mdc-radio-enter(opacity),
+          mdc-radio-enter(transform);
+      }
 
-        .mdc-radio__outer-circle {
+      .mdc-radio__outer-circle {
+        @include mdc-feature-targets($feat-animation) {
           transition: mdc-radio-enter(border-color);
         }
+      }
 
-        .mdc-radio__inner-circle {
-          transition: mdc-radio-enter(transform), mdc-radio-enter(border-color);
+      .mdc-radio__inner-circle {
+        @include mdc-feature-targets($feat-animation) {
+          transition:
+            mdc-radio-enter(transform),
+            mdc-radio-enter(border-color);
         }
       }
     }
   }
 
-  @include mdc-feature-targets($feat-structure) {
-    .mdc-radio--disabled {
+  .mdc-radio--disabled {
+    @include mdc-feature-targets($feat-structure) {
       cursor: default;
       pointer-events: none;
     }
@@ -190,7 +198,9 @@
         }
 
         @include mdc-feature-targets($feat-animation) {
-          transition: mdc-radio-enter(transform), mdc-radio-enter(border-color);
+          transition:
+            mdc-radio-enter(transform),
+            mdc-radio-enter(border-color);
         }
       }
     }
@@ -203,12 +213,14 @@
         cursor: default;
       }
 
-      @include mdc-feature-targets($feat-color) {
-        .mdc-radio__outer-circle {
+      .mdc-radio__outer-circle {
+        @include mdc-feature-targets($feat-color) {
           border-color: $mdc-radio-circle-color;
         }
+      }
 
-        .mdc-radio__inner-circle {
+      .mdc-radio__inner-circle {
+        @include mdc-feature-targets($feat-color) {
           border-color: $mdc-radio-circle-color;
         }
       }
@@ -223,7 +235,9 @@
       }
 
       @include mdc-feature-targets($feat-animation) {
-        transition: mdc-radio-enter(opacity), mdc-radio-enter(transform);
+        transition:
+          mdc-radio-enter(opacity),
+          mdc-radio-enter(transform);
       }
     }
   }
@@ -231,29 +245,45 @@
   // postcss-bem-linter: end
 }
 
-@mixin mdc-radio-unchecked-stroke-color($color) {
+@mixin mdc-radio-unchecked-stroke-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
   // stylelint-disable-next-line selector-max-specificity
   .mdc-radio__native-control:enabled:not(:checked) + .mdc-radio__background .mdc-radio__outer-circle {
-    @include mdc-theme-prop(border-color, $color);
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(border-color, $color);
+    }
   }
 }
 
-@mixin mdc-radio-checked-stroke-color($color) {
+@mixin mdc-radio-checked-stroke-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
   // stylelint-disable-next-line selector-max-specificity
   .mdc-radio__native-control:enabled:checked + .mdc-radio__background .mdc-radio__outer-circle {
-    @include mdc-theme-prop(border-color, $color);
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(border-color, $color);
+    }
   }
 }
 
-@mixin mdc-radio-ink-color($color) {
+@mixin mdc-radio-ink-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
   // stylelint-disable-next-line selector-max-specificity
   .mdc-radio__native-control:enabled + .mdc-radio__background .mdc-radio__inner-circle {
-    @include mdc-theme-prop(border-color, $color);
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(border-color, $color);
+    }
   }
 }
 
-@mixin mdc-radio-focus-indicator-color($color) {
+@mixin mdc-radio-focus-indicator-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
   .mdc-radio__background::before {
-    @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
+    }
   }
 }
