@@ -204,7 +204,7 @@ Property | Value Type | Description
 Method Signature | Description
 --- | ---
 `setAnchorCorner(Corner) => void` | Proxies to the menu surface's `setAnchorCorner(Corner)` method.
-`setAnchorMargin(AnchorMargin) => void` | Proxies to the menu surface's `setAnchorMargin(AnchorMargin)` method.
+`setAnchorMargin(Partial<MenuDistance>) => void` | Proxies to the menu surface's `setAnchorMargin(Partial<MenuDistance>)` method.
 `setAbsolutePosition(x: number, y: number) => void` | Proxies to the menu surface's `setAbsolutePosition(x: number, y: number)` method.
 `setFixedPosition(isFixed: boolean) => void` | Proxies to the menu surface's `setFixedPosition(isFixed: boolean)` method.
 `hoistMenuToBody() => void` | Proxies to the menu surface's `hoistMenuToBody()` method.
@@ -239,8 +239,7 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `handleKeydown(evt: Event) => void` | Event handler for the `keydown` events within the menu.
-`handleClick(evt: Event) => void` | Event handler for the `click` events within the menu.
-`handleSelection(listItem: Element) => void` | Handler for a selected list item. Use this instead of `handleClick` when you don't have access to list item click event.
+`handleItemAction(listItem: !HTMLElement) => void` | Event handler for list's action event.
 
 ### Events
 

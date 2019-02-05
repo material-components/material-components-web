@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {getCorrectEventName, StandardJsEventType} from '@material/animation/index';
+import {getCorrectEventName} from '@material/animation/index';
 import MDCComponent from '@material/base/component';
 import {EventType, SpecificEventListener} from '@material/dom/index';
 import {MDCRipple, MDCRippleFoundation, RippleCapableSurface, util} from '@material/ripple/index';
@@ -32,10 +32,8 @@ import MDCCheckboxFoundation from './foundation';
 const {getMatchesProperty} = util;
 const CB_PROTO_PROPS: string[] = ['checked', 'indeterminate'];
 
-const {ANIMATION_END} = StandardJsEventType;
+class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements MDCSelectionControl, RippleCapableSurface {
 
-class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation>
-  implements MDCSelectionControl, RippleCapableSurface {
   static attachTo(root: Element) {
     return new MDCCheckbox(root);
   }
@@ -61,14 +59,14 @@ class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation>
     this.handleChange_ = () => this.foundation_.handleChange();
     this.handleAnimationEnd_ = () => this.foundation_.handleAnimationEnd();
     this.nativeCb_.addEventListener('change', this.handleChange_);
-    this.listen(getCorrectEventName(window, ANIMATION_END), this.handleAnimationEnd_);
+    this.listen(getCorrectEventName(window, 'animationend'), this.handleAnimationEnd_);
     this.installPropertyChangeHooks_();
   }
 
   destroy() {
     this.ripple_.destroy();
     this.nativeCb_.removeEventListener('change', this.handleChange_);
-    this.unlisten(getCorrectEventName(window, ANIMATION_END), this.handleAnimationEnd_);
+    this.unlisten(getCorrectEventName(window, 'animationend'), this.handleAnimationEnd_);
     this.uninstallPropertyChangeHooks_();
     super.destroy();
   }
