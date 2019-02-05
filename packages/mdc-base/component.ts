@@ -103,7 +103,7 @@ class MDCComponent<FoundationType extends MDCFoundation> {
    * Fires a cross-browser-compatible custom event from the component root of the given type,
    * with the given data.
    */
-  emit<T>(evtType: string, evtData: T, shouldBubble = false) {
+  emit<T extends object>(evtType: string, evtData: T, shouldBubble = false) {
     let evt: CustomEvent<T>;
     if (typeof CustomEvent === 'function') {
       evt = new CustomEvent<T>(evtType, {
