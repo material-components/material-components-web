@@ -21,102 +21,67 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
-
 /**
  * Adapter for MDC List. Provides an interface for managing focus.
- *
- * Additionally, provides type information for the adapter to the Closure
- * compiler.
  *
  * Implement this adapter for your framework of choice to delegate updates to
  * the component in your framework of choice. See architecture documentation
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
- *
- * @record
  */
-class MDCListAdapter {
-  /** @return {number} */
-  getListItemCount() {}
+interface MDCListAdapter {
+  getListItemCount(): number;
 
-  /**
-   * @return {number} */
-  getFocusedElementIndex() {}
+  getFocusedElementIndex(): number;
 
-  /**
-   * @param {number} index
-   * @param {string} attribute
-   * @param {string} value
-   */
-  setAttributeForElementIndex(index, attribute, value) {}
+  setAttributeForElementIndex(index: number, attribute: string, value: string): void;
 
-  /**
-   * @param {number} index
-   * @param {string} attribute
-   */
-  removeAttributeForElementIndex(index, attribute) {}
+  removeAttributeForElementIndex(index: number, attribute: string): void;
 
-  /**
-   * @param {number} index
-   * @param {string} className
-   */
-  addClassForElementIndex(index, className) {}
+  addClassForElementIndex(index: number, className: string): void;
 
-  /**
-   * @param {number} index
-   * @param {string} className
-   */
-  removeClassForElementIndex(index, className) {}
+  removeClassForElementIndex(index: number, className: string): void;
 
   /**
    * Focuses list item at the index specified.
-   * @param {number} index
    */
-  focusItemAtIndex(index) {}
+  focusItemAtIndex(index: number): void;
 
   /**
    * Sets the tabindex to the value specified for all button/a element children of
    * the list item at the index specified.
-   * @param {number} listItemIndex
-   * @param {number} tabIndexValue
    */
-  setTabIndexForListItemChildren(listItemIndex, tabIndexValue) {}
+  setTabIndexForListItemChildren(listItemIndex: number, tabIndexValue: string): void;
 
   /**
-   * @param {number} index
-   * @return {boolean} Returns true if radio button is present at given list item index.
+   * @return true if radio button is present at given list item index.
    */
-  hasRadioAtIndex(index) {}
+  hasRadioAtIndex(index: number): boolean;
 
   /**
-   * @param {number} index
-   * @return {boolean} Returns true if checkbox is present at given list item index.
+   * @return true if checkbox is present at given list item index.
    */
-  hasCheckboxAtIndex(index) {}
+  hasCheckboxAtIndex(index: number): boolean;
 
   /**
-   * @param {number} index
-   * @return {boolean} Returns true if checkbox inside a list item is checked.
+   * @return true if checkbox inside a list item is checked.
    */
-  isCheckboxCheckedAtIndex(index) {}
+  isCheckboxCheckedAtIndex(index: number): boolean;
 
   /**
    * Sets the checked status of checkbox or radio at given list item index.
-   * @param {number} index
-   * @param {boolean} isChecked
    */
-  setCheckedCheckboxOrRadioAtIndex(index, isChecked) {}
+  setCheckedCheckboxOrRadioAtIndex(index: number, isChecked: boolean): void;
 
   /**
    * Notifies user action on list item.
    */
-  notifyAction(index) {}
+  notifyAction(index: number): void;
 
   /**
-   * @return {boolean} Returns true when the current focused element is inside list root.
+   * @return true when the current focused element is inside list root.
    */
-  isFocusInsideList() {}
+  isFocusInsideList(): boolean;
 }
 
-export default MDCListAdapter;
+export {MDCListAdapter as default, MDCListAdapter};
