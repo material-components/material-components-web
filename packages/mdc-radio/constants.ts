@@ -21,15 +21,13 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
 const strings = {
   NATIVE_CONTROL_SELECTOR: '.mdc-radio__native-control',
 };
 
-/** @enum {string} */
 const cssClasses = {
-  ROOT: 'mdc-radio',
   DISABLED: 'mdc-radio--disabled',
+  ROOT: 'mdc-radio',
 };
 
 export {strings, cssClasses};

@@ -500,4 +500,4 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
   }
 }
 
-export {MDCMenuSurfaceFoundation};
+export {MDCMenuSurfaceFoundation as default, MDCMenuSurfaceFoundation};
