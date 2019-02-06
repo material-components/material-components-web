@@ -24,11 +24,11 @@
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCListAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
-import {Index} from './types';
+import {ListIndex} from './types';
 
 const ELEMENTS_KEY_ALLOWED_IN = ['input', 'button', 'textarea', 'select'];
 
-function isNumberArray(selectedIndex: Index): selectedIndex is number[] {
+function isNumberArray(selectedIndex: ListIndex): selectedIndex is number[] {
   return selectedIndex instanceof Array;
 }
 
@@ -63,7 +63,7 @@ class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   private wrapFocus_ = false;
   private isVertical_ = true;
   private isSingleSelectionList_ = false;
-  private selectedIndex_: Index = -1;
+  private selectedIndex_: ListIndex = -1;
   private focusedItemIndex_ = -1;
   private useActivatedClass_ = false;
   private isCheckboxList_ = false;
@@ -111,11 +111,11 @@ class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     this.useActivatedClass_ = useActivated;
   }
 
-  getSelectedIndex(): Index {
+  getSelectedIndex(): ListIndex {
     return this.selectedIndex_;
   }
 
-  setSelectedIndex(index: Index) {
+  setSelectedIndex(index: ListIndex) {
     if (!this.isIndexValid_(index)) {
       return;
     }
@@ -322,7 +322,7 @@ class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     this.selectedIndex_ = index;
   }
 
-  private setCheckboxAtIndex_(index: Index) {
+  private setCheckboxAtIndex_(index: ListIndex) {
     for (let i = 0; i < this.adapter_.getListItemCount(); i++) {
       let isChecked = false;
       if ((index as number[]).indexOf(i) >= 0) {
@@ -369,7 +369,7 @@ class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     this.setTabindexAtIndex_(targetIndex);
   }
 
-  private isIndexValid_(index: Index) {
+  private isIndexValid_(index: ListIndex) {
     if (index instanceof Array) {
       if (!this.isCheckboxList_) {
         throw new Error('MDCListFoundation: Array of index is only supported for checkbox based list');

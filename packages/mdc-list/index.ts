@@ -23,10 +23,10 @@
 
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/index';
-import {matches} from '@material/dom/ponyfill';
+import * as ponyfill from '@material/dom/ponyfill';
 import {cssClasses, strings} from './constants';
 import {MDCListFoundation} from './foundation';
-import {Index} from './types';
+import {ListActionEventDetail, ListIndex} from './types';
 
 class MDCList extends MDCComponent<MDCListFoundation> {
   set vertical(value: boolean) {
@@ -45,11 +45,11 @@ class MDCList extends MDCComponent<MDCListFoundation> {
     this.foundation_.setSingleSelection(isSingleSelectionList);
   }
 
-  get selectedIndex(): Index {
+  get selectedIndex(): ListIndex {
     return this.foundation_.getSelectedIndex();
   }
 
-  set selectedIndex(index: Index) {
+  set selectedIndex(index: ListIndex) {
     this.foundation_.setSelectedIndex(index);
   }
 
@@ -57,31 +57,29 @@ class MDCList extends MDCComponent<MDCListFoundation> {
     return new MDCList(root);
   }
 
-  protected root_!: HTMLElement; // assigned in MDCComponent constructor
-
   private handleKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
   private handleClick_!: SpecificEventListener<'click'>; // assigned in initialSyncWithDOM()
-  private focusInEventListener_!: EventListener; // assigned in initialSyncWithDOM()
-  private focusOutEventListener_!: EventListener; // assigned in initialSyncWithDOM()
+  private focusInEventListener_!: SpecificEventListener<'focus'>; // assigned in initialSyncWithDOM()
+  private focusOutEventListener_!: SpecificEventListener<'focus'>; // assigned in initialSyncWithDOM()
 
   initialSyncWithDOM() {
     this.handleClick_ = this.handleClickEvent_.bind(this);
     this.handleKeydown_ = this.handleKeydownEvent_.bind(this);
     this.focusInEventListener_ = this.handleFocusInEvent_.bind(this);
     this.focusOutEventListener_ = this.handleFocusOutEvent_.bind(this);
-    this.root_.addEventListener('keydown', this.handleKeydown_);
-    this.root_.addEventListener('click', this.handleClick_);
-    this.root_.addEventListener('focusin', this.focusInEventListener_);
-    this.root_.addEventListener('focusout', this.focusOutEventListener_);
+    this.listen('keydown', this.handleKeydown_);
+    this.listen('click', this.handleClick_);
+    this.listen('focusin', this.focusInEventListener_);
+    this.listen('focusout', this.focusOutEventListener_);
     this.layout();
     this.initializeListType();
   }
 
   destroy() {
-    this.root_.removeEventListener('keydown', this.handleKeydown_);
-    this.root_.removeEventListener('click', this.handleClick_);
-    this.root_.removeEventListener('focusin', this.focusInEventListener_);
-    this.root_.removeEventListener('focusout', this.focusOutEventListener_);
+    this.unlisten('keydown', this.handleKeydown_);
+    this.unlisten('click', this.handleClick_);
+    this.unlisten('focusin', this.focusInEventListener_);
+    this.unlisten('focusout', this.focusOutEventListener_);
   }
 
   layout() {
@@ -142,7 +140,7 @@ class MDCList extends MDCComponent<MDCListFoundation> {
           element.focus();
         }
       },
-      getFocusedElementIndex: () => this.listElements.indexOf(document.activeElement as Element),
+      getFocusedElementIndex: () => this.listElements.indexOf(document.activeElement!),
       getListItemCount: () => this.listElements.length,
       hasCheckboxAtIndex: (index) => {
         const listItem = this.listElements[index];
@@ -154,14 +152,14 @@ class MDCList extends MDCComponent<MDCListFoundation> {
       },
       isCheckboxCheckedAtIndex: (index) => {
         const listItem = this.listElements[index];
-        const toggleEl = listItem.querySelector(strings.CHECKBOX_SELECTOR) as HTMLInputElement;
-        return toggleEl.checked;
+        const toggleEl = listItem.querySelector<HTMLInputElement>(strings.CHECKBOX_SELECTOR);
+        return toggleEl!.checked;
       },
       isFocusInsideList: () => {
         return this.root_.contains(document.activeElement);
       },
       notifyAction: (index) => {
-        this.emit(strings.ACTION_EVENT, {index}, /** shouldBubble */ true);
+        this.emit<ListActionEventDetail>(strings.ACTION_EVENT, {index}, /** shouldBubble */ true);
       },
       removeAttributeForElementIndex: (index, attr) => {
         const element = this.listElements[index];
@@ -183,12 +181,12 @@ class MDCList extends MDCComponent<MDCListFoundation> {
       },
       setCheckedCheckboxOrRadioAtIndex: (index, isChecked) => {
         const listItem = this.listElements[index];
-        const toggleEl = listItem.querySelector(strings.CHECKBOX_RADIO_SELECTOR) as HTMLInputElement;
-        toggleEl.checked = isChecked;
+        const toggleEl = listItem.querySelector<HTMLInputElement>(strings.CHECKBOX_RADIO_SELECTOR);
+        toggleEl!.checked = isChecked;
 
         const event = document.createEvent('Event');
         event.initEvent('change', true, true);
-        toggleEl.dispatchEvent(event);
+        toggleEl!.dispatchEvent(event);
       },
       setTabIndexForListItemChildren: (listItemIndex, tabIndexValue) => {
         const element = this.listElements[listItemIndex];
@@ -204,38 +202,31 @@ class MDCList extends MDCComponent<MDCListFoundation> {
    * there is no list item
    */
   private getListItemIndex_(evt: Event) {
-    let eventTarget = evt.target as HTMLElement;
-    let index = -1;
-
-    const eventTargetHasClass = (className: string) => eventTarget.classList.contains(className);
-
-    // Find the first ancestor that is a list item or the list.
-    while (!eventTargetHasClass(cssClasses.LIST_ITEM_CLASS) && !eventTargetHasClass(cssClasses.ROOT)) {
-      eventTarget = eventTarget.parentElement as HTMLElement;
-    }
+    const eventTarget = evt.target as Element;
+    const nearestParent = ponyfill.closest(eventTarget, `.${cssClasses.LIST_ITEM_CLASS}, .${cssClasses.ROOT}`);
 
     // Get the index of the element if it is a list item.
-    if (eventTargetHasClass(cssClasses.LIST_ITEM_CLASS)) {
-      index = this.listElements.indexOf(eventTarget);
+    if (nearestParent && ponyfill.matches(nearestParent, `.${cssClasses.LIST_ITEM_CLASS}`)) {
+      return this.listElements.indexOf(nearestParent);
     }
 
-    return index;
+    return -1;
   }
 
   /**
    * Used to figure out which element was clicked before sending the event to the foundation.
    */
-  private handleFocusInEvent_(evt: Event) {
+  private handleFocusInEvent_(evt: FocusEvent) {
     const index = this.getListItemIndex_(evt);
-    this.foundation_.handleFocusIn(evt as FocusEvent, index);
+    this.foundation_.handleFocusIn(evt, index);
   }
 
   /**
    * Used to figure out which element was clicked before sending the event to the foundation.
    */
-  private handleFocusOutEvent_(evt: Event) {
+  private handleFocusOutEvent_(evt: FocusEvent) {
     const index = this.getListItemIndex_(evt);
-    this.foundation_.handleFocusOut(evt as FocusEvent, index);
+    this.foundation_.handleFocusOut(evt, index);
   }
 
   /**
@@ -244,21 +235,22 @@ class MDCList extends MDCComponent<MDCListFoundation> {
    */
   private handleKeydownEvent_(evt: KeyboardEvent) {
     const index = this.getListItemIndex_(evt);
+    const target = evt.target as Element;
 
     if (index >= 0) {
-      this.foundation_.handleKeydown(
-        evt, (evt.target as Element).classList.contains(cssClasses.LIST_ITEM_CLASS), index);
+      this.foundation_.handleKeydown(evt, target.classList.contains(cssClasses.LIST_ITEM_CLASS), index);
     }
   }
 
   /**
    * Used to figure out which element was clicked before sending the event to the foundation.
    */
-  private handleClickEvent_(evt: Event) {
+  private handleClickEvent_(evt: MouseEvent) {
     const index = this.getListItemIndex_(evt);
+    const target = evt.target as Element;
 
     // Toggle the checkbox only if it's not the target of the event, or the checkbox will have 2 change events.
-    const toggleCheckbox = !matches(evt.target as Element, strings.CHECKBOX_RADIO_SELECTOR);
+    const toggleCheckbox = !ponyfill.matches(target, strings.CHECKBOX_RADIO_SELECTOR);
     this.foundation_.handleClick(index, toggleCheckbox);
   }
 }
