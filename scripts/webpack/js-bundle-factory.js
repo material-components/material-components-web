@@ -69,11 +69,11 @@ class JsBundleFactory {
     }) {
     chunks = chunks || this.globber_.getChunks({inputDirectory, filePathPattern});
 
-    const babelLoader = {	
-      loader: 'babel-loader',	
-      options: {	
-        cacheDirectory: true,	
-      },	
+    const babelLoader = {
+      loader: 'babel-loader',
+      options: {
+        cacheDirectory: true,
+      },
     };
 
     return {
