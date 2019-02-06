@@ -22,14 +22,10 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-/* eslint-disable no-unused-vars */
-import {MDCIconButtonToggleAdapter, IconButtonToggleEvent} from './adapter';
+import {MDCIconButtonToggleAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-/**
- * @extends {MDCFoundation<!MDCIconButtonToggleAdapter>}
- */
-class MDCIconButtonToggleFoundation extends MDCFoundation {
+class MDCIconButtonToggleFoundation extends MDCFoundation<MDCIconButtonToggleAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
@@ -38,21 +34,18 @@ class MDCIconButtonToggleFoundation extends MDCFoundation {
     return strings;
   }
 
-  static get defaultAdapter() {
+  static get defaultAdapter(): MDCIconButtonToggleAdapter {
     return {
-      addClass: () => {},
-      removeClass: () => {},
-      hasClass: () => {},
-      setAttr: () => {},
-      notifyChange: () => {},
+      addClass: () => undefined,
+      hasClass: () => false,
+      notifyChange: () => undefined,
+      removeClass: () => undefined,
+      setAttr: () => undefined,
     };
   }
 
-  constructor(adapter) {
+  constructor(adapter: MDCIconButtonToggleAdapter) {
     super(Object.assign(MDCIconButtonToggleFoundation.defaultAdapter, adapter));
-
-    /** @private {boolean} */
-    this.disabled_ = false;
   }
 
   init() {
@@ -61,16 +54,14 @@ class MDCIconButtonToggleFoundation extends MDCFoundation {
 
   handleClick() {
     this.toggle();
-    this.adapter_.notifyChange(/** @type {!IconButtonToggleEvent} */ ({isOn: this.isOn()}));
+    this.adapter_.notifyChange({isOn: this.isOn()});
   }
 
-  /** @return {boolean} */
-  isOn() {
+  isOn(): boolean {
     return this.adapter_.hasClass(cssClasses.ICON_BUTTON_ON);
   }
 
-  /** @param {boolean=} isOn */
-  toggle(isOn = !this.isOn()) {
+  toggle(isOn: boolean = !this.isOn()) {
     if (isOn) {
       this.adapter_.addClass(cssClasses.ICON_BUTTON_ON);
     } else {
@@ -81,7 +72,4 @@ class MDCIconButtonToggleFoundation extends MDCFoundation {
   }
 }
 
-/** @record */
-class IconButtonToggleState {}
-
-export default MDCIconButtonToggleFoundation;
+export {MDCIconButtonToggleFoundation as default, MDCIconButtonToggleFoundation};

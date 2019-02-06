@@ -21,13 +21,11 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
 const cssClasses = {
-  ROOT: 'mdc-icon-button',
   ICON_BUTTON_ON: 'mdc-icon-button--on',
+  ROOT: 'mdc-icon-button',
 };
 
-/** @enum {string} */
 const strings = {
   ARIA_PRESSED: 'aria-pressed',
   CHANGE_EVENT: 'MDCIconButtonToggle:change',
