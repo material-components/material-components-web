@@ -29,18 +29,19 @@ import {MDCSelectionControl} from '@material/selection-control/index';
 
 import MDCRadioFoundation from './foundation';
 
-class MDCRadio extends MDCComponent<MDCRadioFoundation>
-  implements RippleCapableSurface, MDCSelectionControl {
+class MDCRadio extends MDCComponent<MDCRadioFoundation> implements RippleCapableSurface, MDCSelectionControl {
 
-  static attachTo(root: HTMLElement) {
+  static attachTo(root: Element) {
     return new MDCRadio(root);
   }
 
-  root_!: Element;
-  private ripple_: MDCRipple;
+  // Public visibility for this property is required by RippleCapableSurface.
+  root_!: Element; // assigned in MDCComponent constructor
+
+  private readonly ripple_: MDCRipple = this.initRipple_();
 
   get checked(): boolean {
-    return (this.nativeControl_ as HTMLInputElement)!.checked;
+    return this.nativeControl_.checked;
   }
 
   set checked(checked: boolean) {
@@ -65,12 +66,6 @@ class MDCRadio extends MDCComponent<MDCRadioFoundation>
 
   get ripple(): MDCRipple {
     return this.ripple_;
-  }
-
-  // tslint:disable-next-line:no-any a component can pass in anything it needs to the constructor
-  constructor(root: Element, ...args: any[]) {
-    super(root, ...args);
-    this.ripple_ = this.initRipple_();
   }
 
   destroy() {
@@ -107,7 +102,7 @@ class MDCRadio extends MDCComponent<MDCRadioFoundation>
    */
   private get nativeControl_(): HTMLInputElement {
     const {NATIVE_CONTROL_SELECTOR} = MDCRadioFoundation.strings;
-    const el = this.root_.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
+    const el = this.root_.querySelector<HTMLInputElement>(NATIVE_CONTROL_SELECTOR);
     if (!el) {
       throw new Error(`Radio component requires a ${NATIVE_CONTROL_SELECTOR} element`);
     }
