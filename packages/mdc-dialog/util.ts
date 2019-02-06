@@ -25,9 +25,9 @@ import * as createFocusTrap from 'focus-trap';
 import {FocusTrapFactory} from './types';
 
 function createFocusTrapInstance(
-  surfaceEl: HTMLElement,
-  focusTrapFactory: FocusTrapFactory = createFocusTrap as unknown as FocusTrapFactory,
-  initialFocusEl: createFocusTrap.FocusTarget | null,
+    surfaceEl: HTMLElement,
+    focusTrapFactory: FocusTrapFactory = createFocusTrap as unknown as FocusTrapFactory,
+    initialFocusEl: createFocusTrap.FocusTarget | null,
 ): createFocusTrap.FocusTrap {
   return focusTrapFactory(surfaceEl, ({
     clickOutsideDeactivates: true, // Allow handling of scrim clicks
