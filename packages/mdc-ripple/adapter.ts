@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {EventType, SpecificEventListener} from '@material/dom/index';
+import {EventType, SpecificEventListener} from '@material/base/index';
 import {Point} from './types';
 
 /**
