@@ -27,12 +27,15 @@ import domEvents from 'dom-events';
 import td from 'testdouble';
 
 import {MDCMenuSurface, MDCMenuSurfaceFoundation} from '../../../packages/mdc-menu-surface/index';
-import {strings, cssClasses, Corner} from '../../../packages/mdc-menu-surface/constants';
+import {Corner, cssClasses, strings} from '../../../packages/mdc-menu-surface/constants';
 import {getTransformPropertyName} from '../../../packages/mdc-menu-surface/util';
 
-function getFixture(open) {
+function getFixture(open, fixedPosition = false) {
+  const openClass = open ? 'mdc-menu-surface--open' : '';
+  const fixedClass = fixedPosition ? 'mdc-menu-surface--fixed' : '';
+
   return bel`
-    <div class="mdc-menu-surface ${open ? 'mdc-menu-surface--open' : ''}" tabindex="-1">
+    <div class="mdc-menu-surface ${openClass} ${fixedClass}" tabindex="-1">
       <ul class="mdc-list" role="menu">
         <li class="mdc-list-item" role="menuitem" tabindex="0">Item</a>
         <li role="separator"></li>
@@ -42,8 +45,8 @@ function getFixture(open) {
   `;
 }
 
-function setupTest(open = false) {
-  const root = getFixture(open);
+function setupTest(open = false, fixedPosition = false) {
+  const root = getFixture(open, fixedPosition);
   const MockFoundationConstructor = td.constructor(MDCMenuSurfaceFoundation);
   const mockFoundation = new MockFoundationConstructor();
   const component = new MDCMenuSurface(root, mockFoundation);
@@ -147,6 +150,11 @@ test('setIsHoisted', () => {
   td.verify(mockFoundation.setIsHoisted(true));
 });
 
+test('setFixedPosition is called when CSS class is present', () => {
+  const {mockFoundation} = setupTest(false, true);
+  td.verify(mockFoundation.setFixedPosition(true));
+});
+
 test('setFixedPosition is true', () => {
   const {root, component, mockFoundation} = setupTest();
   component.setFixedPosition(true);
@@ -174,10 +182,16 @@ test('setAnchorCorner', () => {
   td.verify(mockFoundation.setAnchorCorner(Corner.TOP_START));
 });
 
-test('setAnchorMargin', () => {
+test('setAnchorMargin with all object properties defined', () => {
   const {component, mockFoundation} = setupTest();
   component.setAnchorMargin({top: 0, right: 0, bottom: 0, left: 0});
   td.verify(mockFoundation.setAnchorMargin({top: 0, right: 0, bottom: 0, left: 0}));
+});
+
+test('setAnchorMargin with empty object', () => {
+  const {component, mockFoundation} = setupTest();
+  component.setAnchorMargin({});
+  td.verify(mockFoundation.setAnchorMargin({}));
 });
 
 test('setQuickOpen', () => {
@@ -362,7 +376,7 @@ test('adapter#getAnchorDimensions returns undefined if there is no anchor elemen
   const {root, component} = setupTest(true);
   document.body.appendChild(root);
   component.initialSyncWithDOM();
-  assert.isUndefined(component.getDefaultFoundation().adapter_.getAnchorDimensions());
+  assert.isNull(component.getDefaultFoundation().adapter_.getAnchorDimensions());
   document.body.removeChild(root);
 });
 
@@ -466,10 +480,10 @@ test('adapter#setTransformOrigin sets the correct transform origin on the menu s
 
 test('adapter#setPosition sets the correct position on the menu surface element', () => {
   const {root, component} = setupTest();
-  component.getDefaultFoundation().adapter_.setPosition({top: '10px', left: '11px'});
+  component.getDefaultFoundation().adapter_.setPosition({top: 10, left: 11});
   assert.equal(root.style.top, '10px');
   assert.equal(root.style.left, '11px');
-  component.getDefaultFoundation().adapter_.setPosition({bottom: '10px', right: '11px'});
+  component.getDefaultFoundation().adapter_.setPosition({bottom: 10, right: 11});
   assert.equal(root.style.bottom, '10px');
   assert.equal(root.style.right, '11px');
 });
@@ -478,4 +492,36 @@ test('adapter#setMaxHeight sets the maxHeight style on the menu surface element'
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setMaxHeight('100px');
   assert.equal(root.style.maxHeight, '100px');
+});
+
+test('Pressing Shift+Tab on first element focuses the last menu surface element', () => {
+  const root = getFixture(true);
+  document.body.appendChild(root);
+  const firstItem = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[0];
+  const lastItem = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[1];
+  const component = new MDCMenuSurface(root);
+  component.open = true;
+
+  firstItem.focus();
+  component.getDefaultFoundation().handleKeydown({key: 'Tab', shiftKey: true, preventDefault: () => {}});
+  assert.equal(document.activeElement, lastItem);
+
+  component.open = false;
+  document.body.removeChild(root);
+});
+
+test('Pressing Tab on last element focuses the first menu surface element', () => {
+  const root = getFixture(true);
+  document.body.appendChild(root);
+  const firstItem = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[0];
+  const lastItem = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[1];
+  const component = new MDCMenuSurface(root);
+  component.open = true;
+
+  lastItem.focus();
+  component.getDefaultFoundation().handleKeydown({key: 'Tab', shiftKey: false, preventDefault: () => {}});
+  assert.equal(document.activeElement, firstItem);
+
+  component.open = false;
+  document.body.removeChild(root);
 });

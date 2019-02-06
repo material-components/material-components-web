@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,16 +21,7 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
-const cssClasses = {
-  ROOT: 'mdc-icon-button',
-  ICON_BUTTON_ON: 'mdc-icon-button--on',
-};
-
-/** @enum {string} */
-const strings = {
-  ARIA_PRESSED: 'aria-pressed',
-  CHANGE_EVENT: 'MDCIconButtonToggle:change',
-};
-
-export {cssClasses, strings};
+export interface Point {
+  x: number;
+  y: number;
+}

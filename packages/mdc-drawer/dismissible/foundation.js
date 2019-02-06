@@ -168,8 +168,8 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
 
     if (this.isClosing()) {
       this.adapter_.removeClass(OPEN);
-      this.adapter_.restoreFocus();
       this.closed();
+      this.adapter_.restoreFocus();
       this.adapter_.notifyClose();
     } else {
       this.adapter_.focusActiveNavigationItem();

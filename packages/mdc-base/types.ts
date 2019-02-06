@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,23 +21,6 @@
  * THE SOFTWARE.
  */
 
-/** @type {string|undefined} */
-let storedTransformPropertyName_;
-
-/**
- * Returns the name of the correct transform property to use on the current browser.
- * @param {!Window} globalObj
- * @param {boolean=} forceRefresh
- * @return {string}
- */
-function getTransformPropertyName(globalObj, forceRefresh = false) {
-  if (storedTransformPropertyName_ === undefined || forceRefresh) {
-    const el = globalObj.document.createElement('div');
-    const transformPropertyName = ('transform' in el.style ? 'transform' : 'webkitTransform');
-    storedTransformPropertyName_ = transformPropertyName;
-  }
-
-  return storedTransformPropertyName_;
-}
-
-export {getTransformPropertyName};
+export type EventType = keyof GlobalEventHandlersEventMap;
+export type SpecificEventListener<K extends EventType> = (evt: GlobalEventHandlersEventMap[K]) => void;
+export type CustomEventListener<E extends Event> = (evt: E) => void;

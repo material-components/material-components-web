@@ -21,63 +21,17 @@
  * THE SOFTWARE.
  */
 
-/* eslint-disable no-unused-vars */
-import {MDCSelectionControlState} from '@material/selection-control/index';
-
-/* eslint no-unused-vars: [2, {"args": "none"}] */
-
 /**
- * Adapter for MDC Checkbox. Provides an interface for managing
- * - classes
- * - dom
- * - event handlers
- *
- * Additionally, provides type information for the adapter to the Closure
- * compiler.
- *
+ * Defines the shape of the adapter expected by the foundation.
  * Implement this adapter for your framework of choice to delegate updates to
  * the component in your framework of choice. See architecture documentation
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
- *
- * @record
  */
-class MDCCheckboxAdapter {
-  /** @param {string} className */
-  addClass(className) {}
-
-  /** @param {string} className */
-  removeClass(className) {}
-
-  /**
-   * Sets an attribute with a given value on the input element.
-   * @param {string} attr
-   * @param {string} value
-   */
-  setNativeControlAttr(attr, value) {}
-
-  /**
-   * Removes an attribute from the input element.
-   * @param {string} attr
-   */
-  removeNativeControlAttr(attr) {}
-
-  forceLayout() {}
-
-  /** @return {boolean} */
-  isAttachedToDOM() {}
-
-  /** @return {boolean} */
-  isIndeterminate() {}
-
-  /** @return {boolean} */
-  isChecked() {}
-
-  /** @return {boolean} */
-  hasNativeControl() {}
-
-  /** @param {boolean} disabled */
-  setNativeControlDisabled(disabled) {}
+interface MDCRadioAdapter {
+  addClass(className: string): void;
+  removeClass(className: string): void;
+  setNativeControlDisabled(disabled: boolean): void;
 }
 
-export default MDCCheckboxAdapter;
+export {MDCRadioAdapter as default, MDCRadioAdapter};

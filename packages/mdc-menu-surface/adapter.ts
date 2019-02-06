@@ -21,6 +21,8 @@
  * THE SOFTWARE.
  */
 
+import {MenuDimensions, MenuDistance, MenuPoint} from './types';
+
 /**
  * Defines the shape of the adapter expected by the foundation.
  * Implement this adapter for your framework of choice to delegate updates to
@@ -28,26 +30,44 @@
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCSwitchAdapter {
-  /**
-   * Adds a CSS class to the root element.
-   */
+interface MDCMenuSurfaceAdapter {
   addClass(className: string): void;
-
-  /**
-   * Removes a CSS class from the root element.
-   */
   removeClass(className: string): void;
+  hasClass(className: string): boolean;
+  hasAnchor(): boolean;
 
-  /**
-   * Sets checked state of the native HTML control underlying the switch.
-   */
-  setNativeControlChecked(checked: boolean): void;
+  isElementInContainer(el: Element): boolean;
+  isFocused(): boolean;
+  isFirstElementFocused(): boolean;
+  isLastElementFocused(): boolean;
+  isRtl(): boolean;
 
-  /**
-   * Sets the disabled state of the native HTML control underlying the switch.
-   */
-  setNativeControlDisabled(disabled: boolean): void;
+  getInnerDimensions(): MenuDimensions;
+  getAnchorDimensions(): ClientRect | null;
+  getWindowDimensions(): MenuDimensions;
+  getBodyDimensions(): MenuDimensions;
+  getWindowScroll(): MenuPoint;
+  setPosition(position: Partial<MenuDistance>): void;
+  setMaxHeight(height: string): void;
+  setTransformOrigin(origin: string): void;
+
+  /** Saves the element that was focused before the menu surface was opened. */
+  saveFocus(): void;
+
+  /** Restores focus to the element that was focused before the menu surface was opened. */
+  restoreFocus(): void;
+
+  /** Focuses the first focusable element in the menu-surface. */
+  focusFirstElement(): void;
+
+  /** Focuses the first focusable element in the menu-surface. */
+  focusLastElement(): void;
+
+  /** Emits an event when the menu surface is closed. */
+  notifyClose(): void;
+
+  /** Emits an event when the menu surface is opened. */
+  notifyOpen(): void;
 }
 
-export {MDCSwitchAdapter as default, MDCSwitchAdapter};
+export {MDCMenuSurfaceAdapter as default, MDCMenuSurfaceAdapter};

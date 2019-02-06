@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2018 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,15 +21,19 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
-const strings = {
-  NATIVE_CONTROL_SELECTOR: '.mdc-radio__native-control',
-};
+type CssTransformPropertyName = ('transform' | 'webkitTransform');
 
-/** @enum {string} */
-const cssClasses = {
-  ROOT: 'mdc-radio',
-  DISABLED: 'mdc-radio--disabled',
-};
+let cachedCssTransformPropertyName_: CssTransformPropertyName | undefined;
 
-export {strings, cssClasses};
+/**
+ * Returns the name of the correct transform property to use on the current browser.
+ */
+function getTransformPropertyName(globalObj: Window, forceRefresh = false): CssTransformPropertyName {
+  if (cachedCssTransformPropertyName_ === undefined || forceRefresh) {
+    const el = globalObj.document.createElement('div');
+    cachedCssTransformPropertyName_ = 'transform' in el.style ? 'transform' : 'webkitTransform';
+  }
+  return cachedCssTransformPropertyName_;
+}
+
+export {getTransformPropertyName};

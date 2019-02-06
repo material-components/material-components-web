@@ -21,55 +21,25 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
+import {IconButtonToggleEvent} from './types';
 
 /**
- * Adapter for MDC Icon Button Toggle. Provides an interface for managing
- * - classes
- * - dom
- * - inner text
- * - event handlers
- * - event dispatch
- *
- * Additionally, provides type information for the adapter to the Closure
- * compiler.
- *
+ * Defines the shape of the adapter expected by the foundation.
  * Implement this adapter for your framework of choice to delegate updates to
  * the component in your framework of choice. See architecture documentation
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
- *
- * @record
  */
+interface MDCIconButtonToggleAdapter {
+  addClass(className: string): void;
 
-class MDCIconButtonToggleAdapter {
-  /** @param {string} className */
-  addClass(className) {}
+  removeClass(className: string): void;
 
-  /** @param {string} className */
-  removeClass(className) {}
+  hasClass(className: string): boolean;
 
-  /**
-   * @param {string} className
-   * @return {boolean}
-   * */
-  hasClass(className) {}
+  setAttr(attrName: string, attrValue: string): void;
 
-  /**
-   * @param {string} attrName
-   * @param {string} attrValue
-   */
-  setAttr(attrName, attrValue) {}
-
-  /** @param {!IconButtonToggleEvent} evtData */
-  notifyChange(evtData) {}
+  notifyChange(evtData: IconButtonToggleEvent): void;
 }
 
-/**
- * @typedef {{
- *   isOn: boolean,
- * }}
- */
-let IconButtonToggleEvent;
-
-export {MDCIconButtonToggleAdapter, IconButtonToggleEvent};
+export {MDCIconButtonToggleAdapter as default, MDCIconButtonToggleAdapter};
