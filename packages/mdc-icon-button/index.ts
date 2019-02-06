@@ -22,7 +22,7 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {SpecificEventListener} from '@material/dom/index';
+import {SpecificEventListener} from '@material/base/index';
 import {MDCRipple} from '@material/ripple/index';
 import MDCIconButtonToggleFoundation from './foundation';
 
