@@ -22,51 +22,44 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+import {MDCListFoundation} from '@material/list/foundation';
+import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
 import {MDCMenuAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
-import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation.ts';
-import {MDCListFoundation} from '@material/list/foundation';
 
-/**
- * @extends {MDCFoundation<!MDCMenuAdapter>}
- */
-class MDCMenuFoundation extends MDCFoundation {
-  /** @return enum{cssClasses} */
+class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
 
-  /** @return enum{strings} */
   static get strings() {
     return strings;
   }
 
+  private closeAnimationEndTimerId_ = 0;
+
   /**
-   * {@see MDCMenuAdapter} for typing information on parameters and return
-   * types.
-   * @return {!MDCMenuAdapter}
+   * @see {@link MDCMenuAdapter} for typing information on parameters and return types.
    */
-  static get defaultAdapter() {
-    return /** @type {!MDCMenuAdapter} */ ({
-      addClassToElementAtIndex: () => {},
-      removeClassFromElementAtIndex: () => {},
-      addAttributeToElementAtIndex: () => {},
-      removeAttributeFromElementAtIndex: () => {},
-      elementContainsClass: () => {},
-      closeSurface: () => {},
-      getElementIndex: () => {},
-      getParentElement: () => {},
-      getSelectedElementIndex: () => {},
-      notifySelected: () => {},
-    });
+  static get defaultAdapter(): MDCMenuAdapter {
+    // tslint:disable:object-literal-sort-keys
+    return {
+      addClassToElementAtIndex: () => undefined,
+      removeClassFromElementAtIndex: () => undefined,
+      addAttributeToElementAtIndex: () => undefined,
+      removeAttributeFromElementAtIndex: () => undefined,
+      elementContainsClass: () => false,
+      closeSurface: () => undefined,
+      getElementIndex: () => -1,
+      getParentElement: () => null,
+      getSelectedElementIndex: () => -1,
+      notifySelected: () => undefined,
+    };
+    // tslint:enable:object-literal-sort-keys
   }
 
-  /** @param {!MDCMenuAdapter} adapter */
-  constructor(adapter) {
+  constructor(adapter: MDCMenuAdapter) {
     super(Object.assign(MDCMenuFoundation.defaultAdapter, adapter));
-
-    /** @type {number} */
-    this.closeAnimationEndTimerId_ = 0;
   }
 
   destroy() {
@@ -77,11 +70,7 @@ class MDCMenuFoundation extends MDCFoundation {
     this.adapter_.closeSurface();
   }
 
-  /**
-   * Handler function for the keydown events.
-   * @param {!Event} evt
-   */
-  handleKeydown(evt) {
+  handleKeydown(evt: KeyboardEvent) {
     const {key, keyCode} = evt;
     const isTab = key === 'Tab' || keyCode === 9;
 
@@ -90,10 +79,7 @@ class MDCMenuFoundation extends MDCFoundation {
     }
   }
 
-  /**
-   * @param {!HTMLElement} listItem
-   */
-  handleItemAction(listItem) {
+  handleItemAction(listItem: Element) {
     const index = this.adapter_.getElementIndex(listItem);
     if (index < 0) {
       return;
@@ -105,21 +91,16 @@ class MDCMenuFoundation extends MDCFoundation {
     // Wait for the menu to close before adding/removing classes that affect styles.
     this.closeAnimationEndTimerId_ = setTimeout(() => {
       const selectionGroup = this.getSelectionGroup_(listItem);
-
-      if (selectionGroup !== null) {
-        this.handleSelectionGroup_(/** @type {!HTMLElement} */ (selectionGroup), index);
+      if (selectionGroup) {
+        this.handleSelectionGroup_(selectionGroup, index);
       }
     }, MDCMenuSurfaceFoundation.numbers.TRANSITION_CLOSE_DURATION);
   }
 
   /**
-   * Handles toggling the selected classes in a selection group when a
-   * selection is made.
-   * @param {!HTMLElement} selectionGroup
-   * @param {number} index The selected index value
-   * @private
+   * Handles toggling the selected classes in a selection group when a selection is made.
    */
-  handleSelectionGroup_(selectionGroup, index) {
+  private handleSelectionGroup_(selectionGroup: Element, index: number) {
     // De-select the previous selection in this group.
     const selectedIndex = this.adapter_.getSelectedElementIndex(selectionGroup);
     if (selectedIndex >= 0) {
@@ -133,18 +114,19 @@ class MDCMenuFoundation extends MDCFoundation {
 
   /**
    * Returns the parent selection group of an element if one exists.
-   * @param listItem
-   * @return {?HTMLElement} parent selection group element or null.
-   * @private
    */
-  getSelectionGroup_(listItem) {
+  private getSelectionGroup_(listItem: Element): Element | null {
     let parent = this.adapter_.getParentElement(listItem);
+    if (!parent) {
+      return null;
+    }
+
     let isGroup = this.adapter_.elementContainsClass(parent, cssClasses.MENU_SELECTION_GROUP);
 
     // Iterate through ancestors until we find the group or get to the list.
-    while (!isGroup && !this.adapter_.elementContainsClass(parent, MDCListFoundation.cssClasses.ROOT)) {
+    while (!isGroup && parent && !this.adapter_.elementContainsClass(parent, MDCListFoundation.cssClasses.ROOT)) {
       parent = this.adapter_.getParentElement(parent);
-      isGroup = this.adapter_.elementContainsClass(parent, cssClasses.MENU_SELECTION_GROUP);
+      isGroup = parent ? this.adapter_.elementContainsClass(parent, cssClasses.MENU_SELECTION_GROUP) : false;
     }
 
     if (isGroup) {
@@ -153,27 +135,6 @@ class MDCMenuFoundation extends MDCFoundation {
       return null;
     }
   }
-
-  /**
-   * Find the first ancestor with the mdc-list-item class.
-   * @param {?HTMLElement} target
-   * @return {?HTMLElement}
-   * @private
-   */
-  getListItem_(target) {
-    let isListItem = this.adapter_.elementContainsClass(target, MDCListFoundation.cssClasses.LIST_ITEM_CLASS);
-
-    while (!isListItem) {
-      target = this.adapter_.getParentElement(target);
-      if (target) {
-        isListItem = this.adapter_.elementContainsClass(target, MDCListFoundation.cssClasses.LIST_ITEM_CLASS);
-      } else { // target has no parent element.
-        return null;
-      }
-    }
-
-    return target;
-  }
 }
 
-export {MDCMenuFoundation};
+export {MDCMenuFoundation as default, MDCMenuFoundation};
