@@ -32,7 +32,6 @@ const {getMatchesProperty} = util;
 const CB_PROTO_PROPS = ['checked', 'indeterminate'];
 
 class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements MDCSelectionControl, RippleCapableSurface {
-
   static attachTo(root: Element) {
     return new MDCCheckbox(root);
   }

@@ -30,7 +30,6 @@ import {MDCSelectionControl} from '@material/selection-control/index';
 import {MDCRadioFoundation} from './foundation';
 
 class MDCRadio extends MDCComponent<MDCRadioFoundation> implements RippleCapableSurface, MDCSelectionControl {
-
   static attachTo(root: Element) {
     return new MDCRadio(root);
   }
