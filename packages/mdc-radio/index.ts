@@ -22,90 +22,50 @@
  */
 
 import MDCComponent from '@material/base/component';
-/* eslint-disable no-unused-vars */
-import {MDCSelectionControlState, MDCSelectionControl} from '@material/selection-control/index';
-/* eslint-enable no-unused-vars */
-import MDCRadioFoundation from './foundation';
+import {EventType, SpecificEventListener} from '@material/dom/index';
+import {RippleCapableSurface} from '@material/ripple/index';
 import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
+import {MDCSelectionControl} from '@material/selection-control/index';
 
-/**
- * @extends MDCComponent<!MDCRadioFoundation>
- * @implements {MDCSelectionControl}
- */
-class MDCRadio extends MDCComponent {
-  static attachTo(root) {
+import MDCRadioFoundation from './foundation';
+
+class MDCRadio extends MDCComponent<MDCRadioFoundation> implements RippleCapableSurface, MDCSelectionControl {
+
+  static attachTo(root: Element) {
     return new MDCRadio(root);
   }
 
-  /** @return {boolean} */
-  get checked() {
+  // Public visibility for this property is required by RippleCapableSurface.
+  root_!: Element; // assigned in MDCComponent constructor
+
+  private readonly ripple_: MDCRipple = this.initRipple_();
+
+  get checked(): boolean {
     return this.nativeControl_.checked;
   }
 
-  /** @param {boolean} checked */
-  set checked(checked) {
+  set checked(checked: boolean) {
     this.nativeControl_.checked = checked;
   }
 
-  /** @return {boolean} */
   get disabled() {
     return this.nativeControl_.disabled;
   }
 
-  /** @param {boolean} disabled */
-  set disabled(disabled) {
+  set disabled(disabled: boolean) {
     this.foundation_.setDisabled(disabled);
   }
 
-  /** @return {?string} */
   get value() {
     return this.nativeControl_.value;
   }
 
-  /** @param {?string} value */
-  set value(value) {
+  set value(value: string) {
     this.nativeControl_.value = value;
   }
 
-  /** @return {!MDCRipple} */
-  get ripple() {
+  get ripple(): MDCRipple {
     return this.ripple_;
-  }
-
-  constructor(...args) {
-    super(...args);
-
-    /** @private {!MDCRipple} */
-    this.ripple_ = this.initRipple_();
-  }
-
-  /**
-   * @return {!MDCRipple}
-   * @private
-   */
-  initRipple_() {
-    const adapter = Object.assign(MDCRipple.createAdapter(this), {
-      isUnbounded: () => true,
-      // Radio buttons technically go "active" whenever there is *any* keyboard interaction. This is not the
-      // UI we desire.
-      isSurfaceActive: () => false,
-      registerInteractionHandler: (type, handler) => this.nativeControl_.addEventListener(type, handler),
-      deregisterInteractionHandler: (type, handler) => this.nativeControl_.removeEventListener(type, handler),
-    });
-    const foundation = new MDCRippleFoundation(adapter);
-    return new MDCRipple(this.root_, foundation);
-  }
-
-  /**
-   * Returns the state of the native control element, or null if the native control element is not present.
-   * @return {?MDCSelectionControlState}
-   * @private
-   */
-  get nativeControl_() {
-    const {NATIVE_CONTROL_SELECTOR} = MDCRadioFoundation.strings;
-    const el = /** @type {?MDCSelectionControlState} */ (
-      this.root_.querySelector(NATIVE_CONTROL_SELECTOR));
-    return el;
   }
 
   destroy() {
@@ -113,7 +73,6 @@ class MDCRadio extends MDCComponent {
     super.destroy();
   }
 
-  /** @return {!MDCRadioFoundation} */
   getDefaultFoundation() {
     return new MDCRadioFoundation({
       addClass: (className) => this.root_.classList.add(className),
@@ -121,7 +80,34 @@ class MDCRadio extends MDCComponent {
       setNativeControlDisabled: (disabled) => this.nativeControl_.disabled = disabled,
     });
   }
-}
 
+  private initRipple_(): MDCRipple {
+    const adapter = Object.assign(MDCRipple.createAdapter(this), {
+      deregisterInteractionHandler:
+        <K extends EventType>(type: K, handler: SpecificEventListener<K>) =>
+          this.nativeControl_.removeEventListener(type, handler),
+      // Radio buttons technically go "active" whenever there is *any* keyboard interaction. This is not the
+      // UI we desire.
+      isSurfaceActive: () => false,
+      isUnbounded: () => true,
+      registerInteractionHandler: <K extends EventType>(type: K, handler: SpecificEventListener<K>) =>
+        this.nativeControl_.addEventListener(type, handler),
+    });
+    const foundation = new MDCRippleFoundation(adapter);
+    return new MDCRipple(this.root_, foundation);
+  }
+
+  /**
+   * Returns the state of the native control element, or null if the native control element is not present.
+   */
+  private get nativeControl_(): HTMLInputElement {
+    const {NATIVE_CONTROL_SELECTOR} = MDCRadioFoundation.strings;
+    const el = this.root_.querySelector<HTMLInputElement>(NATIVE_CONTROL_SELECTOR);
+    if (!el) {
+      throw new Error(`Radio component requires a ${NATIVE_CONTROL_SELECTOR} element`);
+    }
+    return el;
+  }
+}
 
 export {MDCRadio, MDCRadioFoundation};

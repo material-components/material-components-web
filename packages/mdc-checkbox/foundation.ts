@@ -194,4 +194,4 @@ class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
   }
 }
 
-export default MDCCheckboxFoundation;
+export {MDCCheckboxFoundation as default, MDCCheckboxFoundation};

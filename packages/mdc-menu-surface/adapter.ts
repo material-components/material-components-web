@@ -69,4 +69,4 @@ interface MDCMenuSurfaceAdapter {
   notifyOpen(): void;
 }
 
-export {MDCMenuSurfaceAdapter};
+export {MDCMenuSurfaceAdapter as default, MDCMenuSurfaceAdapter};
