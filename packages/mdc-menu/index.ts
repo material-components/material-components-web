@@ -29,7 +29,7 @@ import {Corner, MDCMenuSurface} from '@material/menu-surface/index';
 import {MenuDistance} from '@material/menu-surface/types';
 import {cssClasses, strings} from './constants';
 import {MDCMenuFoundation} from './foundation';
-import {ListFactory, MenuItemComponentEventDetail, MenuSurfaceFactory} from './types';
+import {DefaultMenuItemEventDetail, ListFactory, MenuSurfaceFactory} from './types';
 
 class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   static attachTo(root: Element) {
@@ -197,7 +197,7 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
         const selectedListItem = selectionGroup.querySelector(`.${cssClasses.MENU_SELECTED_LIST_ITEM}`);
         return selectedListItem ? this.items.indexOf(selectedListItem) : -1;
       },
-      notifySelected: (evtData) => this.emit<MenuItemComponentEventDetail>(strings.SELECTED_EVENT, {
+      notifySelected: (evtData) => this.emit<DefaultMenuItemEventDetail>(strings.SELECTED_EVENT, {
         index: evtData.index,
         item: this.items[evtData.index],
       }),

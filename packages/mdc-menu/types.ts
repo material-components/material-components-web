@@ -34,7 +34,7 @@ export interface MenuItemEventDetail {
 /**
  * Event properties specific to the default component implementation.
  */
-export interface MenuItemComponentEventDetail extends MenuItemEventDetail {
+export interface DefaultMenuItemEventDetail extends MenuItemEventDetail {
   item: Element;
 }
 
