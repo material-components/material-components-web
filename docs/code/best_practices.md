@@ -30,15 +30,31 @@ TODO: Add more notes about how to isolate subsystems from component specifics
 
 ### Typescript
 
+#### Definite assignment operator
+* MDC Web has other lifecycle methods (`initialize()` and `initSyncWithDom()`) that are not contained within the `constructor`.
+* Typescript compiler cannot infer that the other methods are run in conjunction, and will throw an error on properties not defined.
+* Feel free to use the `!` when you run into the error `<PROPERTY_NAME> has no initializer and is not definitely assigned in the constructor.`. ie.
+
+```
+private progress_!: number;
+
+init() {
+  this.progress_ = 0;
+}
+```
+
 #### type vs. interface
-* Always defer to using `interface` over `type` when defining a type. 
+* Prefer `interface` over `type` for defining types when possible.
 
 #### any vs. unknown vs. {}
 * Defer to using `unknown` over both `any` and `{}` types.
+
 * If you must choose between `any` and `{}` defer to `{}`.
 
 #### Events
-* When typing Events and EventListeners, try using `EventType` and `SpecificEventListener` from the `@material/dom` package. both of the types extend from `GlobalEventHandlersEventMap`, which is a superset of HTMLElement Events (ie. MouseEvent, KeyboardEvent, etc.).
+* `@material/dom` defines convenience types (`EventType` and `SpecificEventListener`) for working with events and event listeners.
+* Prefer to type as `EventType` over `string` when you expect that the string will be a standard event name (e.g. `click`, `keydown`).
+* Prefer to type as `SpecificEventListener` over `EventListener` when you know what type of event is being listened for (e.g. `SpecificEventHandler<'click'>`).
 
 #### When to use Node/Element/HTMLElement
 * `Node` is more generic than `Element`, while `Element` is more generic than `HTMLElement`.
