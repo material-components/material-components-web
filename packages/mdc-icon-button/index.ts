@@ -27,14 +27,19 @@ import {MDCRipple} from '@material/ripple/index';
 import MDCIconButtonToggleFoundation from './foundation';
 
 class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundation> {
-  static attachTo(root: Element) {
+  static attachTo(root: HTMLElement) {
     return new MDCIconButtonToggle(root);
   }
 
-  protected root_!: HTMLElement;
+  protected root_!: HTMLElement; // assigned in MDCComponent constructor
 
-  private ripple_!: MDCRipple;
-  private handleClick_!: SpecificEventListener<'click'>;
+  private ripple_: MDCRipple = this.initRipple_();
+  private handleClick_!: SpecificEventListener<'click'>; // assigned in initialSyncWithDOM()
+
+  initialSyncWithDOM() {
+    this.handleClick_ = () => this.foundation_.handleClick();
+    this.root_.addEventListener('click', this.handleClick_);
+  }
 
   destroy() {
     this.root_.removeEventListener('click', this.handleClick_);
@@ -50,12 +55,6 @@ class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundation> {
       removeClass: (className) => this.root_.classList.remove(className),
       setAttr: (attrName, attrValue) => this.root_.setAttribute(attrName, attrValue),
     });
-  }
-
-  initialSyncWithDOM() {
-    this.ripple_ = this.initRipple_();
-    this.handleClick_ = () => this.foundation_.handleClick();
-    this.root_.addEventListener('click', this.handleClick_);
   }
 
   get ripple(): MDCRipple {
