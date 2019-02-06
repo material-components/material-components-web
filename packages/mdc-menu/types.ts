@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,19 +21,22 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
-const cssClasses = {
-  ROOT: 'mdc-menu',
-  MENU_SELECTED_LIST_ITEM: 'mdc-menu-item--selected',
-  MENU_SELECTION_GROUP: 'mdc-menu__selection-group',
-};
+import {MDCList} from '@material/list/index';
+import {MDCMenuSurface} from '@material/menu-surface/index';
 
-/** @enum {string} */
-const strings = {
-  SELECTED_EVENT: 'MDCMenu:selected',
-  ARIA_SELECTED_ATTR: 'aria-selected',
-  LIST_SELECTOR: '.mdc-list',
-  CHECKBOX_SELECTOR: 'input[type="checkbox"]',
-};
+/**
+ * Event properties used by the adapter and foundation.
+ */
+export interface MenuItemEventDetail {
+  index: number;
+}
 
-export {cssClasses, strings};
+/**
+ * Event properties specific to the default component implementation.
+ */
+export interface DefaultMenuItemEventDetail extends MenuItemEventDetail {
+  item: Element;
+}
+
+export type MenuSurfaceFactory = (el: Element) => MDCMenuSurface;
+export type ListFactory = (el: Element) => MDCList;
