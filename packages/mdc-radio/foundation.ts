@@ -55,4 +55,4 @@ class MDCRadioFoundation extends MDCFoundation<MDCRadioAdapter> {
   }
 }
 
-export default MDCRadioFoundation;
+export {MDCRadioFoundation as default, MDCRadioFoundation};

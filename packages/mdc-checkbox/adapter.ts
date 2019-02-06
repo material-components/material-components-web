@@ -57,4 +57,4 @@ interface MDCCheckboxAdapter {
   setNativeControlDisabled(disabled: boolean): void;
 }
 
-export default MDCCheckboxAdapter;
+export {MDCCheckboxAdapter as default, MDCCheckboxAdapter};

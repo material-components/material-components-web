@@ -26,7 +26,7 @@ import MDCFoundation from '@material/base/foundation';
 import {MDCLinearProgressAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-export default class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgressAdapter> {
+class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgressAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
@@ -106,3 +106,5 @@ export default class MDCLinearProgressFoundation extends MDCFoundation<MDCLinear
     this.adapter_.setStyle(el, getCorrectPropertyName(window, 'transform'), value);
   }
 }
+
+export {MDCLinearProgressFoundation as default, MDCLinearProgressFoundation};
