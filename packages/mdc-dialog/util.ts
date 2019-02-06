@@ -36,8 +36,8 @@ function createFocusTrapInstance(
   } as FocusTrapLib.Options));
 }
 
-function isScrollable(el: HTMLElement): boolean {
-  return el.scrollHeight > el.offsetHeight;
+function isScrollable(el: HTMLElement | null): boolean {
+  return el ? el.scrollHeight > el.offsetHeight : false;
 }
 
 function areTopsMisaligned(els: HTMLElement[]): boolean {

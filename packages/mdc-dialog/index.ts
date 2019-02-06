@@ -162,7 +162,7 @@ class MDCDialog extends MDCComponent<MDCDialogFoundation> {
         return element && element.getAttribute(strings.ACTION_ATTRIBUTE);
       },
       hasClass: (className) => this.root_.classList.contains(className),
-      isContentScrollable: () => this.content_ ? util.isScrollable(this.content_) : false,
+      isContentScrollable: () => util.isScrollable(this.content_),
       notifyClosed: (action) => this.emit(strings.CLOSED_EVENT, action ? {action} : {}),
       notifyClosing: (action) => this.emit(strings.CLOSING_EVENT, action ? {action} : {}),
       notifyOpened: () => this.emit(strings.OPENED_EVENT, {}),
@@ -173,8 +173,7 @@ class MDCDialog extends MDCComponent<MDCDialogFoundation> {
       reverseButtons: () => {
         this.buttons_.reverse();
         this.buttons_.forEach((button) => {
-          if (!button.parentElement) return;
-          button.parentElement.appendChild(button);
+          button.parentElement!.appendChild(button);
         });
       },
       trapFocus: () => this.focusTrap_.activate(),

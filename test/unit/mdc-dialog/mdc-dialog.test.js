@@ -309,6 +309,7 @@ test('adapter#eventTargetMatches returns whether or not the target matches the s
 
   assert.isTrue(adapter.eventTargetMatches(target, '.existent-class'));
   assert.isFalse(adapter.eventTargetMatches(target, '.non-existent-class'));
+  assert.isFalse(adapter.eventTargetMatches(null, '.existent-class'));
 });
 
 test(`adapter#notifyOpening emits ${strings.OPENING_EVENT}`, () => {
@@ -418,6 +419,12 @@ test('adapter#areButtonsStacked returns result of util.areTopsMisaligned', () =>
   assert.strictEqual(
     component.getDefaultFoundation().adapter_.areButtonsStacked(),
     util.areTopsMisaligned([yesButton, noButton, cancelButton]));
+});
+
+test('adapter#getActionFromEvent returns an empty string when no event target is present', () => {
+  const {component} = setupTest();
+  const action = component.getDefaultFoundation().adapter_.getActionFromEvent({});
+  assert.equal(action, '');
 });
 
 test('adapter#getActionFromEvent returns attribute value on event target', () => {

@@ -416,9 +416,9 @@ External frameworks and libraries can use the following utility methods from the
 
 Method Signature | Description
 --- | ---
-`createFocusTrapInstance(surfaceEl: !Element, focusTrapFactory: function(): !FocusTrap, initialFocusEl: ?Element) => !FocusTrap` | Creates a properly configured [focus-trap][] instance.
-`isScrollable(el) => boolean` | Determines if the given element is scrollable.
-`areTopsMisaligned(els) => boolean` | Determines if two or more of the given elements have different `offsetTop` values.
+`createFocusTrapInstance(surfaceEl: Element, focusTrapFactory: function(): !FocusTrap, initialFocusEl: ?Element) => !FocusTrap` | Creates a properly configured [focus-trap][] instance.
+`isScrollable(el: Element \| null) => boolean` | Determines if the given element is scrollable.
+`areTopsMisaligned(els: Element[]) => boolean` | Determines if two or more of the given elements have different `offsetTop` values.
 
 ### Handling Focus Trapping
 
