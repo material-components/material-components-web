@@ -21,5 +21,7 @@
  * THE SOFTWARE.
  */
 
-export type EventType = keyof GlobalEventHandlersEventMap;
-export type SpecificEventListener<K extends EventType> = (evt: GlobalEventHandlersEventMap[K]) => void;
+export interface Point {
+  x: number;
+  y: number;
+}

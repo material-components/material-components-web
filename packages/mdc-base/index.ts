@@ -23,5 +23,6 @@
 
 import MDCComponent from './component';
 import MDCFoundation from './foundation';
+import {CustomEventListener, EventType, SpecificEventListener} from './types';
 
-export {MDCFoundation, MDCComponent};
+export {MDCFoundation, MDCComponent, CustomEventListener, EventType, SpecificEventListener};
