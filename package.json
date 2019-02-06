@@ -164,6 +164,7 @@
         "allowed": [
           "animation",
           "auto-init",
+          "banner",
           "base",
           "button",
           "card",

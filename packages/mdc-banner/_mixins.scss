@@ -23,7 +23,6 @@
 @import "@material/theme/variables";
 @import "./variables";
 
-
 @mixin mdc-banner-base {
   min-height: $mdc-banner-height;
 }
@@ -33,12 +32,12 @@
 }
 
 @mixin mdc-banner-container-layout {
+  @include mdc-rtl-reflexive-box(padding, left, 8px);
+
   display: flex;
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
-  padding-left: 24px;
-  padding-right: 8px;
 
   @media (max-width: $mdc-banner-mobile-breakpoint) {
     flex-wrap: wrap;
@@ -46,17 +45,34 @@
 }
 
 @mixin mdc-banner-content-layout {
-  padding: 8px;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  padding-right: 16px;
+  padding-left: 16px;
+
+  @media (max-width: $mdc-banner-mobile-breakpoint) {
+    padding-bottom: 4px;
+  }
+}
+
+@mixin mdc-banner-icon {
+  @include mdc-rtl-reflexive-box(margin, left, -8px);
+  @include mdc-rtl-reflexive-box(margin, right, 24px);
+
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
 }
 
 @mixin mdc-banner-actions-layout {
-  align-self: flex-end;
+  @include mdc-rtl-reflexive-box(margin, left, 74px);
+  @include mdc-rtl-reflexive-box(margin, right, 8px);
+
+  display: flex;
   flex-shrink: 0;
-  display: grid;
-  grid-template-columns: auto auto;
-  grid-gap: 8px;
   align-items: center;
-  margin-left: 90px;
+  align-self: flex-end;
   min-height: 52px;
 
   @media (max-width: $mdc-banner-mobile-breakpoint) {

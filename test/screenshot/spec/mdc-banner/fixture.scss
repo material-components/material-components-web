@@ -24,30 +24,6 @@
 @import "../../../../packages/mdc-theme/color-palette";
 @import "../mixins";
 
-$custom-elevation-color: $material-color-red-300;
-
-.test-cell--elevation {
-  @include test-cell-size(111, 131);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.test-elevation {
-  display: inline-flex;
-  position: relative;
-  top: -10px;
-  align-items: center;
-  justify-content: center;
-  width: 2em;
-  height: 2em;
-}
-
-.custom-elevation--color {
-  @include mdc-elevation(10, $custom-elevation-color);
-}
-
-.custom-elevation--color-boost {
-  @include mdc-elevation(10, $custom-elevation-color, .5);
+.test-banner {
+  margin: 12px 0;
 }

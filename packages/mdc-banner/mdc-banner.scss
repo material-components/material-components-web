@@ -26,7 +26,6 @@
 @import "./mixins";
 @import "./variables";
 
-
 .mdc-banner {
   @include mdc-banner-base;
   @include mdc-banner-fill-color(surface);
@@ -38,6 +37,18 @@
   @include mdc-banner-content-layout;
 }
 
+.mdc-banner__icon {
+  @include mdc-banner-icon;
+}
+
 .mdc-banner__actions {
   @include mdc-banner-actions-layout;
+}
+
+.mdc-banner__button {
+  @include mdc-rtl-reflexive-box(margin, left, 8px);
+
+  &:first-child {
+    @include mdc-rtl-reflexive-box(margin, left, 0);
+  }
 }
