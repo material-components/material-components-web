@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import MDCFoundation from './foundation';
+import {MDCFoundation} from './foundation';
 import {CustomEventListener, EventType, SpecificEventListener} from './types';
 
 class MDCComponent<FoundationType extends MDCFoundation> {

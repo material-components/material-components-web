@@ -25,3 +25,22 @@ export interface Point {
   x: number;
   y: number;
 }
+
+/**
+ * Options passed in when attaching a ripple to an object.
+ */
+export interface RippleAttachOpts {
+  isUnbounded?: boolean;
+}
+
+/**
+ * See Material Design spec for more details on when to use ripples.
+ * https://material.io/guidelines/motion/choreography.html#choreography-creation
+ * unbounded Whether or not the ripple bleeds out of the bounds of the element.
+ * disabled Whether or not the ripple is attached to a disabled component.
+ */
+export interface RippleCapableSurface {
+  readonly root_: Element;
+  unbounded?: boolean;
+  disabled?: boolean;
+}

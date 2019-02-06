@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import MDCComponent from '@material/base/component';
+import {MDCComponent} from '@material/base/component';
 
 import MDCSelectHelperTextAdapter from './adapter';
 import MDCSelectHelperTextFoundation from './foundation';

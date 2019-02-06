@@ -21,11 +21,11 @@
  * THE SOFTWARE.
  */
 
-import MDCFoundation from '@material/base/foundation';
+import {MDCFoundation} from '@material/base/foundation';
 import {MDCMenuAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation.ts';
-import MDCListFoundation from '@material/list/foundation';
+import {MDCListFoundation} from '@material/list/foundation';
 
 /**
  * @extends {MDCFoundation<!MDCMenuAdapter>}

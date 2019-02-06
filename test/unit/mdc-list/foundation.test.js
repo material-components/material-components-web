@@ -27,7 +27,7 @@ import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
-import MDCListFoundation from '../../../packages/mdc-list/foundation';
+import {MDCListFoundation} from '../../../packages/mdc-list/foundation';
 import {strings, cssClasses} from '../../../packages/mdc-list/constants';
 import {install as installClock} from '../helpers/clock';
 

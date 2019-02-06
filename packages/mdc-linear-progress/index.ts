@@ -21,12 +21,10 @@
  * THE SOFTWARE.
  */
 
-import MDCComponent from '@material/base/component';
-import MDCLinearProgressFoundation from './foundation';
+import {MDCComponent} from '@material/base/component';
+import {MDCLinearProgressFoundation} from './foundation';
 
-export {MDCLinearProgressFoundation};
-
-export class MDCLinearProgress extends MDCComponent<MDCLinearProgressFoundation> {
+class MDCLinearProgress extends MDCComponent<MDCLinearProgressFoundation> {
   static attachTo(root: Element) {
     return new MDCLinearProgress(root);
   }
@@ -66,3 +64,7 @@ export class MDCLinearProgress extends MDCComponent<MDCLinearProgressFoundation>
     });
   }
 }
+
+export {MDCLinearProgress as default, MDCLinearProgress};
+export * from './adapter';
+export * from './foundation';

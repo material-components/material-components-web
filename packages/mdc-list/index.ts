@@ -255,4 +255,7 @@ class MDCList extends MDCComponent<MDCListFoundation> {
   }
 }
 
-export {MDCList, MDCListFoundation};
+export {MDCList as default, MDCList};
+export * from './adapter';
+export * from './foundation';
+export * from './types';

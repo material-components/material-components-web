@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import MDCFoundation from '@material/base/foundation';
+import {MDCFoundation} from '@material/base/foundation';
 
 import {strings, numbers} from './constants';
 import MDCTabBarAdapter from './adapter';

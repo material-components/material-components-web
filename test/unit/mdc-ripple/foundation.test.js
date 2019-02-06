@@ -25,7 +25,7 @@ import {assert} from 'chai';
 import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
-import MDCRippleFoundation from '../../../packages/mdc-ripple/foundation';
+import {MDCRippleFoundation} from '../../../packages/mdc-ripple/foundation';
 import {cssClasses, strings, numbers} from '../../../packages/mdc-ripple/constants';
 
 import {testFoundation} from './helpers';

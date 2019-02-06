@@ -21,11 +21,11 @@
  * THE SOFTWARE.
  */
 
-import MDCComponent from '@material/base/component';
+import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/index';
-import {Corner, CornerBit, cssClasses, strings} from './constants';
+import {Corner, cssClasses, strings} from './constants';
 import {MDCMenuSurfaceFoundation} from './foundation';
-import {MenuDimensions, MenuDistance, MenuPoint} from './types';
+import {MenuDistance} from './types';
 import * as util from './util';
 
 type RegisterFunction = () => void;
@@ -204,4 +204,8 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
   }
 }
 
-export {MDCMenuSurfaceFoundation, MDCMenuSurface, MenuDimensions, MenuDistance, MenuPoint, Corner, CornerBit, util};
+export {MDCMenuSurface as default, MDCMenuSurface, util};
+export {Corner, CornerBit} from './constants';
+export * from './adapter';
+export * from './foundation';
+export * from './types';
