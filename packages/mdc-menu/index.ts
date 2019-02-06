@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import MDCComponent from '@material/base/component';
+import {MDCComponent} from '@material/base/component';
 import {CustomEventListener, SpecificEventListener} from '@material/base/types';
 import {ListActionEvent, MDCList, MDCListFoundation} from '@material/list/index';
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
