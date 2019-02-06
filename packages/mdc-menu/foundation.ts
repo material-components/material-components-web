@@ -99,7 +99,9 @@ class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     }, MDCMenuSurfaceFoundation.numbers.TRANSITION_CLOSE_DURATION);
   }
 
-  /** Handles toggling the selected classes in a selection group when a selection is made. */
+  /**
+   * Handles toggling the selected classes in a selection group when a selection is made.
+   */
   private handleSelectionGroup_(selectionGroup: HTMLElement, index: number) {
     // De-select the previous selection in this group.
     const selectedIndex = this.adapter_.getSelectedElementIndex(selectionGroup);
@@ -112,7 +114,9 @@ class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     this.adapter_.addAttributeToElementAtIndex(index, strings.ARIA_SELECTED_ATTR, 'true');
   }
 
-  /** Returns the parent selection group of an element if one exists. */
+  /**
+   * Returns the parent selection group of an element if one exists.
+   */
   private getSelectionGroup_(listItem: HTMLElement): HTMLElement | null {
     let parent = this.adapter_.getParentElement(listItem);
     if (!parent) {

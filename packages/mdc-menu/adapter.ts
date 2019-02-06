@@ -30,34 +30,54 @@ import {MenuItemEventDetail} from './types';
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
 interface MDCMenuAdapter {
-  /** Adds a class to the element at the index provided. */
+  /**
+   * Adds a class to the element at the index provided.
+   */
   addClassToElementAtIndex(index: number, className: string): void;
 
-  /** Removes a class from the element at the index provided */
+  /**
+   * Removes a class from the element at the index provided
+   */
   removeClassFromElementAtIndex(index: number, className: string): void;
 
-  /** Adds an attribute, with value, to the element at the index provided. */
+  /**
+   * Adds an attribute, with value, to the element at the index provided.
+   */
   addAttributeToElementAtIndex(index: number, attr: string, value: string): void;
 
-  /** Removes an attribute from an element at the index provided. */
+  /**
+   * Removes an attribute from an element at the index provided.
+   */
   removeAttributeFromElementAtIndex(index: number, attr: string): void;
 
-  /** @return true if the element contains the className. */
+  /**
+   * @return true if the element contains the className.
+   */
   elementContainsClass(element: HTMLElement, className: string): boolean;
 
-  /** Closes the menu-surface. */
+  /**
+   * Closes the menu-surface.
+   */
   closeSurface(): void;
 
-  /** @return Index of the element in the list or -1 if it is not in the list. */
+  /**
+   * @return Index of the element in the list or -1 if it is not in the list.
+   */
   getElementIndex(element: HTMLElement): number;
 
-  /** @return The parentElement of the provided element. */
+  /**
+   * @return The parentElement of the provided element.
+   */
   getParentElement(element: HTMLElement): HTMLElement | null;
 
-  /** @return The element within the selectionGroup containing the selected element class. */
+  /**
+   * @return The element within the selectionGroup containing the selected element class.
+   */
   getSelectedElementIndex(selectionGroup: HTMLElement): number;
 
-  /** Emit an event when a menu item is selected. */
+  /**
+   * Emit an event when a menu item is selected.
+   */
   notifySelected(evtData: MenuItemEventDetail): void;
 }
 

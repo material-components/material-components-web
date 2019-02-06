@@ -44,8 +44,8 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   private afterOpenedCallback_!: EventListener; // assigned in initialSyncWithDOM()
 
   initialize(
-    menuSurfaceFactory: MenuSurfaceFactory = (el) => new MDCMenuSurface(el),
-    listFactory: ListFactory = (el) => new MDCList(el)) {
+      menuSurfaceFactory: MenuSurfaceFactory = (el) => new MDCMenuSurface(el),
+      listFactory: ListFactory = (el) => new MDCList(el)) {
     this.menuSurface_ = menuSurfaceFactory(this.root_);
 
     const list = this.root_.querySelector(strings.LIST_SELECTOR);
@@ -146,7 +146,9 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
     this.menuSurface_.setAbsolutePosition(x, y);
   }
 
-  /** Sets the element that the menu-surface is anchored to. */
+  /**
+   * Sets the element that the menu-surface is anchored to.
+   */
   setAnchorElement(element: Element) {
     this.menuSurface_.anchorElement = element;
   }
@@ -158,7 +160,9 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
     }
   }
 
-  /** @return {!MDCMenuFoundation} */
+  /**
+   * @return {!MDCMenuFoundation}
+   */
   getDefaultFoundation() {
     // tslint:disable:object-literal-sort-keys
     return new MDCMenuFoundation({
