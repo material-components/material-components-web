@@ -24,7 +24,6 @@
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCDialogAdapter} from './adapter';
 import {cssClasses, numbers, strings} from './constants';
-import {isEnterKey, isEscapeKey, isSpaceKey} from './util';
 
 class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
   static get cssClasses() {
@@ -186,8 +185,8 @@ class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
 
   handleInteraction(evt: MouseEvent | KeyboardEvent) {
     const isClick = evt.type === 'click';
-    const isEnter = isEnterKey(evt);
-    const isSpace = isSpaceKey(evt);
+    const isEnter = (evt as KeyboardEvent).key === 'Enter' || (evt as KeyboardEvent).keyCode === 13;
+    const isSpace = (evt as KeyboardEvent).key === 'Space' || (evt as KeyboardEvent).keyCode === 32;
     const isScrim = this.adapter_.eventTargetMatches(evt.target, strings.SCRIM_SELECTOR);
     const isDefault = !this.adapter_.eventTargetMatches(evt.target, strings.SUPPRESS_DEFAULT_PRESS_SELECTOR);
 
@@ -205,7 +204,8 @@ class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
   }
 
   handleDocumentKeydown(evt: KeyboardEvent) {
-    if (isEscapeKey(evt) && this.escapeKeyAction_ !== '') {
+    const isEscape = evt.key === 'Escape' || evt.keyCode === 27;
+    if (isEscape && this.escapeKeyAction_ !== '') {
       this.close(this.escapeKeyAction_);
     }
   }
