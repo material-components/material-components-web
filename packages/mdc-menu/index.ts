@@ -21,58 +21,52 @@
  * THE SOFTWARE.
  */
 
-import MDCComponent from '@material/base/component';
+import {MDCComponent} from '@material/base/component';
+import {CustomEventListener, SpecificEventListener} from '@material/base/types';
+import {ListActionEvent, MDCList, MDCListFoundation} from '@material/list/index';
+import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
+import {Corner, MDCMenuSurface} from '@material/menu-surface/index';
+import {MenuDistance} from '@material/menu-surface/types';
+import {cssClasses, strings} from './constants';
 import {MDCMenuFoundation} from './foundation';
-import {strings, cssClasses} from './constants';
-import {MDCMenuSurface, Corner} from '@material/menu-surface/index.ts';
-import {MDCMenuSurfaceFoundation, MenuDistance} from '@material/menu-surface/foundation.ts';
-import {MDCList, MDCListFoundation} from '@material/list/index';
+import {DefaultMenuItemEventDetail, ListFactory, MenuSurfaceFactory} from './types';
 
-/**
- * @extends MDCComponent<!MDCMenuFoundation>
- */
-class MDCMenu extends MDCComponent {
-  /** @param {...?} args */
-  constructor(...args) {
-    super(...args);
-    /** @private {!MDCMenuSurface} */
-    this.menuSurface_;
-    /** @private {!MDCList} */
-    this.list_;
-    /** @private {!Function} */
-    this.handleKeydown_;
-
-    /** @private {!Function} */
-    this.handleItemAction_;
-
-    /** @private {!Function} */
-    this.afterOpenedCallback_;
-  }
-
-  /**
-   * @param {!HTMLElement} root
-   * @return {!MDCMenu}
-   */
-  static attachTo(root) {
+class MDCMenu extends MDCComponent<MDCMenuFoundation> {
+  static attachTo(root: Element) {
     return new MDCMenu(root);
   }
 
-  initialize(
-    menuSurfaceFactory = (el) => new MDCMenuSurface(el),
-    listFactory = (el) => new MDCList(el)) {
-    this.menuSurface_ = menuSurfaceFactory(this.root_);
+  private menuSurfaceFactory_!: MenuSurfaceFactory; // assigned in initialize()
+  private listFactory_!: ListFactory; // assigned in initialize()
 
-    const list = this.root_.querySelector(strings.LIST_SELECTOR);
-    if (list) {
-      this.list_ = listFactory(list);
-      this.list_.wrapFocus = true;
-    }
+  private menuSurface_!: MDCMenuSurface; // assigned in initialSyncWithDOM()
+  private list_!: MDCList | null; // assigned in initialSyncWithDOM()
+
+  private handleKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
+  private handleItemAction_!: CustomEventListener<ListActionEvent>; // assigned in initialSyncWithDOM()
+  private afterOpenedCallback_!: EventListener; // assigned in initialSyncWithDOM()
+
+  initialize(
+      menuSurfaceFactory: MenuSurfaceFactory = (el) => new MDCMenuSurface(el),
+      listFactory: ListFactory = (el) => new MDCList(el)) {
+    this.menuSurfaceFactory_ = menuSurfaceFactory;
+    this.listFactory_ = listFactory;
   }
 
   initialSyncWithDOM() {
-    this.afterOpenedCallback_ = () => this.handleAfterOpened_();
+    this.menuSurface_ = this.menuSurfaceFactory_(this.root_);
+
+    const list = this.root_.querySelector(strings.LIST_SELECTOR);
+    if (list) {
+      this.list_ = this.listFactory_(list);
+      this.list_.wrapFocus = true;
+    } else {
+      this.list_ = null;
+    }
+
     this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt);
-    this.handleItemAction_ = (evt) => this.foundation_.handleItemAction(this.items[evt.detail]);
+    this.handleItemAction_ = (evt) => this.foundation_.handleItemAction(this.items[evt.detail.index]);
+    this.afterOpenedCallback_ = () => this.handleAfterOpened_();
 
     this.menuSurface_.listen(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, this.afterOpenedCallback_);
     this.listen('keydown', this.handleKeydown_);
@@ -91,57 +85,52 @@ class MDCMenu extends MDCComponent {
     super.destroy();
   }
 
-  /** @return {boolean} */
-  get open() {
+  get open(): boolean {
     return this.menuSurface_.open;
   }
 
-  /** @param {boolean} value */
-  set open(value) {
+  set open(value: boolean) {
     this.menuSurface_.open = value;
   }
 
-  /** @return {boolean} */
-  get wrapFocus() {
-    return this.list_.wrapFocus;
+  get wrapFocus(): boolean {
+    return this.list_ ? this.list_.wrapFocus : false;
   }
 
-  /** @param {boolean} value */
-  set wrapFocus(value) {
-    this.list_.wrapFocus = value;
-  }
-
-  /**
-   * @param {!Corner} corner Default anchor corner alignment of top-left
-   *     menu corner.
-   */
-  setAnchorCorner(corner) {
-    this.menuSurface_.setAnchorCorner(corner);
-  }
-
-  /**
-   * @param {!Partial<!MenuDistance>} margin
-   */
-  setAnchorMargin(margin) {
-    this.menuSurface_.setAnchorMargin(margin);
+  set wrapFocus(value: boolean) {
+    if (this.list_) {
+      this.list_.wrapFocus = value;
+    }
   }
 
   /**
    * Return the items within the menu. Note that this only contains the set of elements within
    * the items container that are proper list items, and not supplemental / presentational DOM
    * elements.
-   * @return {!Array<!HTMLElement>}
    */
-  get items() {
-    return this.list_.listElements;
+  get items(): Element[] {
+    return this.list_ ? this.list_.listElements : [];
+  }
+
+  set quickOpen(quickOpen: boolean) {
+    this.menuSurface_.quickOpen = quickOpen;
   }
 
   /**
-   * Return the item within the menu at the index specified.
-   * @param {number} index
-   * @return {?HTMLElement}
+   * @param corner Default anchor corner alignment of top-left menu corner.
    */
-  getOptionByIndex(index) {
+  setAnchorCorner(corner: Corner) {
+    this.menuSurface_.setAnchorCorner(corner);
+  }
+
+  setAnchorMargin(margin: Partial<MenuDistance>) {
+    this.menuSurface_.setAnchorMargin(margin);
+  }
+
+  /**
+   * @return The item within the menu at the index specified.
+   */
+  getOptionByIndex(index: number): Element | null {
     const items = this.items;
 
     if (index < items.length) {
@@ -151,13 +140,7 @@ class MDCMenu extends MDCComponent {
     }
   }
 
-  /** @param {boolean} quickOpen */
-  set quickOpen(quickOpen) {
-    this.menuSurface_.quickOpen = quickOpen;
-  }
-
-  /** @param {boolean} isFixed */
-  setFixedPosition(isFixed) {
+  setFixedPosition(isFixed: boolean) {
     this.menuSurface_.setFixedPosition(isFixed);
   }
 
@@ -165,36 +148,30 @@ class MDCMenu extends MDCComponent {
     this.menuSurface_.hoistMenuToBody();
   }
 
-  /** @param {boolean} isHoisted */
-  setIsHoisted(isHoisted) {
+  setIsHoisted(isHoisted: boolean) {
     this.menuSurface_.setIsHoisted(isHoisted);
   }
 
-  /**
-   * @param {number} x
-   * @param {number} y
-   */
-  setAbsolutePosition(x, y) {
+  setAbsolutePosition(x: number, y: number) {
     this.menuSurface_.setAbsolutePosition(x, y);
   }
 
   /**
    * Sets the element that the menu-surface is anchored to.
-   * @param {!HTMLElement} element
    */
-  setAnchorElement(element) {
+  setAnchorElement(element: Element) {
     this.menuSurface_.anchorElement = element;
   }
 
   handleAfterOpened_() {
     const list = this.items;
     if (list.length > 0) {
-      list[0].focus();
+      (list[0] as HTMLElement).focus();
     }
   }
 
-  /** @return {!MDCMenuFoundation} */
-  getDefaultFoundation() {
+  getDefaultFoundation(): MDCMenuFoundation {
+    // tslint:disable:object-literal-sort-keys
     return new MDCMenuFoundation({
       addClassToElementAtIndex: (index, className) => {
         const list = this.items;
@@ -217,13 +194,15 @@ class MDCMenu extends MDCComponent {
       getElementIndex: (element) => this.items.indexOf(element),
       getParentElement: (element) => element.parentElement,
       getSelectedElementIndex: (selectionGroup) => {
-        return this.items.indexOf(selectionGroup.querySelector(`.${cssClasses.MENU_SELECTED_LIST_ITEM}`));
+        const selectedListItem = selectionGroup.querySelector(`.${cssClasses.MENU_SELECTED_LIST_ITEM}`);
+        return selectedListItem ? this.items.indexOf(selectedListItem) : -1;
       },
-      notifySelected: (evtData) => this.emit(strings.SELECTED_EVENT, {
+      notifySelected: (evtData) => this.emit<DefaultMenuItemEventDetail>(strings.SELECTED_EVENT, {
         index: evtData.index,
         item: this.items[evtData.index],
       }),
     });
+    // tslint:enable:object-literal-sort-keys
   }
 }
 

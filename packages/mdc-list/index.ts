@@ -26,7 +26,7 @@ import {SpecificEventListener} from '@material/base/index';
 import * as ponyfill from '@material/dom/ponyfill';
 import {cssClasses, strings} from './constants';
 import {MDCListFoundation} from './foundation';
-import {ListActionEventDetail, ListIndex} from './types';
+import {ListActionEvent, ListActionEventDetail, ListActionEventListener, ListIndex} from './types';
 
 class MDCList extends MDCComponent<MDCListFoundation> {
   set vertical(value: boolean) {
@@ -255,4 +255,4 @@ class MDCList extends MDCComponent<MDCListFoundation> {
   }
 }
 
-export {MDCList, MDCListFoundation};
+export {MDCList, MDCListFoundation, ListActionEvent, ListActionEventDetail, ListActionEventListener};
