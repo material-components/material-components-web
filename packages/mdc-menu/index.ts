@@ -39,8 +39,8 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   private menuSurfaceFactory_!: MenuSurfaceFactory; // assigned in initialize()
   private listFactory_!: ListFactory; // assigned in initialize()
 
-  private menuSurface_!: MDCMenuSurface; // assigned in initialize()
-  private list_!: MDCList | null; // assigned in initialize()
+  private menuSurface_!: MDCMenuSurface; // assigned in initialSyncWithDOM()
+  private list_!: MDCList | null; // assigned in initialSyncWithDOM()
 
   private handleKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
   private handleItemAction_!: CustomEventListener<ListActionEvent>; // assigned in initialSyncWithDOM()
@@ -170,10 +170,7 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
     }
   }
 
-  /**
-   * @return {!MDCMenuFoundation}
-   */
-  getDefaultFoundation() {
+  getDefaultFoundation(): MDCMenuFoundation {
     // tslint:disable:object-literal-sort-keys
     return new MDCMenuFoundation({
       addClassToElementAtIndex: (index, className) => {

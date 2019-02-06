@@ -26,10 +26,10 @@ import bel from 'bel';
 import td from 'testdouble';
 import domEvents from 'dom-events';
 
-import {MDCMenu, MDCMenuFoundation} from '../../../packages/mdc-menu/index.ts';
-import {Corner} from '../../../packages/mdc-menu-surface/constants.ts';
-import {MDCListFoundation} from '../../../packages/mdc-list/index.ts';
-import {MDCMenuSurfaceFoundation} from '../../../packages/mdc-menu-surface/foundation.ts';
+import {MDCMenu, MDCMenuFoundation} from '../../../packages/mdc-menu/index';
+import {Corner} from '../../../packages/mdc-menu-surface/constants';
+import {MDCListFoundation} from '../../../packages/mdc-list/index';
+import {MDCMenuSurfaceFoundation} from '../../../packages/mdc-menu-surface/foundation';
 
 function getFixture(open) {
   return bel`
