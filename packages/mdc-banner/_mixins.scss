@@ -47,8 +47,8 @@
 @mixin mdc-banner-content-layout {
   display: flex;
   padding-top: 16px;
-  padding-bottom: 16px;
   padding-right: 16px;
+  padding-bottom: 16px;
   padding-left: 16px;
 
   @media (max-width: $mdc-banner-mobile-breakpoint) {
