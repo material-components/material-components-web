@@ -22,22 +22,12 @@
  */
 
 /**
- * Adapter for MDC Checkbox. Provides an interface for managing
- * - classes
- * - dom
- * - event handlers
- *
- * Additionally, provides type information for the adapter to the Closure
- * compiler.
- *
+ * Defines the shape of the adapter expected by the foundation.
  * Implement this adapter for your framework of choice to delegate updates to
  * the component in your framework of choice. See architecture documentation
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
- *
- * @record
  */
-
 interface MDCCheckboxAdapter {
   addClass(className: string): void;
   forceLayout(): void;
@@ -46,15 +36,9 @@ interface MDCCheckboxAdapter {
   isChecked(): boolean;
   isIndeterminate(): boolean;
   removeClass(className: string): void;
-  /**
-   * Removes an attribute from the input element.
-   */
   removeNativeControlAttr(attr: string): void;
-  /**
-   * Sets an attribute with a given value on the input element.
-   */
   setNativeControlAttr(attr: string, value: string): void;
   setNativeControlDisabled(disabled: boolean): void;
 }
 
-export default MDCCheckboxAdapter;
+export {MDCCheckboxAdapter as default, MDCCheckboxAdapter};

@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2016 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,26 +28,10 @@
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCSwitchAdapter {
-  /**
-   * Adds a CSS class to the root element.
-   */
+interface MDCRadioAdapter {
   addClass(className: string): void;
-
-  /**
-   * Removes a CSS class from the root element.
-   */
   removeClass(className: string): void;
-
-  /**
-   * Sets checked state of the native HTML control underlying the switch.
-   */
-  setNativeControlChecked(checked: boolean): void;
-
-  /**
-   * Sets the disabled state of the native HTML control underlying the switch.
-   */
   setNativeControlDisabled(disabled: boolean): void;
 }
 
-export {MDCSwitchAdapter as default, MDCSwitchAdapter};
+export {MDCRadioAdapter as default, MDCRadioAdapter};

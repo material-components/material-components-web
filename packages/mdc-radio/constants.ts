@@ -21,35 +21,13 @@
  * THE SOFTWARE.
  */
 
-/* eslint-disable no-unused-vars */
-import {MDCSelectionControlState} from '@material/selection-control/index';
+const strings = {
+  NATIVE_CONTROL_SELECTOR: '.mdc-radio__native-control',
+};
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
+const cssClasses = {
+  DISABLED: 'mdc-radio--disabled',
+  ROOT: 'mdc-radio',
+};
 
-/**
- * Adapter for MDC Radio. Provides an interface for managing
- * - classes
- * - dom
- *
- * Additionally, provides type information for the adapter to the Closure
- * compiler.
- *
- * Implement this adapter for your framework of choice to delegate updates to
- * the component in your framework of choice. See architecture documentation
- * for more details.
- * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
- *
- * @record
- */
-class MDCRadioAdapter {
-  /** @param {string} className */
-  addClass(className) {}
-
-  /** @param {string} className */
-  removeClass(className) {}
-
-  /** @param {boolean} disabled */
-  setNativeControlDisabled(disabled) {}
-}
-
-export default MDCRadioAdapter;
+export {strings, cssClasses};
