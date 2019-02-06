@@ -29,3 +29,4 @@ export interface ListActionEvent extends Event {
 }
 
 export type ListActionEventListener = (evt: ListActionEvent) => void;
+export type Index = number | number[];

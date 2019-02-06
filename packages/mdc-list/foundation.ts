@@ -21,9 +21,10 @@
  * THE SOFTWARE.
  */
 
-import MDCFoundation from '@material/base/foundation';
+import {MDCFoundation} from '@material/base/foundation';
 import {MDCListAdapter} from './adapter';
-import {cssClasses, Index, strings} from './constants';
+import {cssClasses, strings} from './constants';
+import {Index} from './types';
 
 const ELEMENTS_KEY_ALLOWED_IN = ['input', 'button', 'textarea', 'select'];
 

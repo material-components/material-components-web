@@ -53,6 +53,4 @@ const strings = {
   RADIO_SELECTOR: 'input[type="radio"]:not(:disabled)',
 };
 
-type Index = number | number[];
-
-export {strings, cssClasses, Index};
+export {strings, cssClasses};

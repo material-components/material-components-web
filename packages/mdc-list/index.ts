@@ -21,11 +21,12 @@
  * THE SOFTWARE.
  */
 
-import MDCComponent from '@material/base/component';
+import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/index';
 import {matches} from '@material/dom/ponyfill';
-import {cssClasses, Index, strings} from './constants'; // eslint-disable-line no-unused-vars
+import {cssClasses, strings} from './constants';
 import {MDCListFoundation} from './foundation';
+import {Index} from './types';
 
 class MDCList extends MDCComponent<MDCListFoundation> {
   set vertical(value: boolean) {
