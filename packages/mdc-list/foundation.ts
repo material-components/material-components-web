@@ -301,8 +301,8 @@ class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     }
 
     if (this.selectedIndex_ >= 0 && this.selectedIndex_ !== index) {
-      this.adapter_.removeClassForElementIndex((this.selectedIndex_ as number), selectedClassName);
-      this.adapter_.setAttributeForElementIndex((this.selectedIndex_ as number), strings.ARIA_SELECTED, 'false');
+      this.adapter_.removeClassForElementIndex(this.selectedIndex_ as number, selectedClassName);
+      this.adapter_.setAttributeForElementIndex(this.selectedIndex_ as number, strings.ARIA_SELECTED, 'false');
     }
 
     this.adapter_.addClassForElementIndex(index, selectedClassName);
@@ -318,7 +318,7 @@ class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     this.adapter_.setCheckedCheckboxOrRadioAtIndex(index, true);
 
     if (this.selectedIndex_ >= 0) {
-      this.adapter_.setAttributeForElementIndex((this.selectedIndex_ as number), strings.ARIA_CHECKED, 'false');
+      this.adapter_.setAttributeForElementIndex(this.selectedIndex_ as number, strings.ARIA_CHECKED, 'false');
     }
 
     this.adapter_.setAttributeForElementIndex(index, strings.ARIA_CHECKED, 'true');
