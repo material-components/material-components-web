@@ -230,7 +230,7 @@ Method Signature | Description
 `elementContainsClass(element: Element, className: string) => boolean` | Returns true if the `element` contains the `className` class.
 `closeSurface() => void` | Closes the menu surface.
 `getElementIndex(element: Element) => number` | Returns the `index` value of the `element`.
-`getParentElement(element: Element) => ?Element` | Returns the `.parentElement` element of the `element` provided.
+`getParentElement(element: Element) => Element \| null` | Returns the `.parentElement` element of the `element` provided.
 `getSelectedElementIndex(element: Element) => number` | Returns the `index` value of the element within the selection group provided, `element` that contains the `mdc-menu-item--selected` class.
 `notifySelected(index: number) => void` | Emits a `MDCMenu:selected` event for the element at the `index` specified.
 
@@ -239,7 +239,7 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `handleKeydown(evt: Event) => void` | Event handler for the `keydown` events within the menu.
-`handleItemAction(listItem: !Element) => void` | Event handler for list's action event.
+`handleItemAction(listItem: Element) => void` | Event handler for list's action event.
 
 ### Events
 
