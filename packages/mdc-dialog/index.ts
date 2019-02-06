@@ -68,7 +68,7 @@ class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   private buttonRipples_!: MDCRipple[]; // assigned in initialize()
   private buttons_!: HTMLElement[]; // assigned in initialize()
   private container_!: HTMLElement; // assigned in initialize()
-  private content_: HTMLElement | null = null; // assigned in initialize()
+  private content_!: HTMLElement | null; // assigned in initialize()
   private defaultButton_!: HTMLElement | null; // assigned in initialize()
   private initialFocusEl_!: HTMLElement | null; // assigned in initialize()
 
