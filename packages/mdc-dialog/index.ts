@@ -154,7 +154,7 @@ class MDCDialog extends MDCComponent<MDCDialogFoundation> {
       areButtonsStacked: () => util.areTopsMisaligned(this.buttons_),
       clickDefaultButton: () => this.defaultButton_ && this.defaultButton_.click(),
       eventTargetMatches: (target, selector) => target ? matches(target as Element, selector) : false,
-      getActionFromEvent: (event: MouseEvent | KeyboardEvent) => {
+      getActionFromEvent: (event: Event) => {
         if (!event.target) {
           return '';
         }

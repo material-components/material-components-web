@@ -24,6 +24,7 @@
 import MDCFoundation from '@material/base/foundation';
 import {MDCDialogAdapter} from './adapter';
 import {cssClasses, numbers, strings} from './constants';
+import {isEnterKey, isEscapeKey, isSpaceKey} from './util';
 
 class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
   static get cssClasses() {
@@ -250,18 +251,6 @@ class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
       this.adapter_.addClass(cssClasses.SCROLLABLE);
     }
   }
-}
-
-function isEnterKey(evt: Event): boolean {
-  return (evt as KeyboardEvent).key === 'Enter' || (evt as KeyboardEvent).keyCode === 13;
-}
-
-function isSpaceKey(evt: Event): boolean {
-  return (evt as KeyboardEvent).key === 'Space' || (evt as KeyboardEvent).keyCode === 32;
-}
-
-function isEscapeKey(evt: Event): boolean {
-  return (evt as KeyboardEvent).key === 'Escape' || (evt as KeyboardEvent).keyCode === 27;
 }
 
 export {MDCDialogFoundation as default, MDCDialogFoundation};

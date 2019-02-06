@@ -46,4 +46,18 @@ function areTopsMisaligned(els: HTMLElement[]): boolean {
   return tops.size > 1;
 }
 
+// TODO(acdvorak): Move these functions to mdc-dom or mdc-base?
+function isEnterKey(evt: Event): boolean {
+  return (evt as KeyboardEvent).key === 'Enter' || (evt as KeyboardEvent).keyCode === 13;
+}
+
+function isSpaceKey(evt: Event): boolean {
+  return (evt as KeyboardEvent).key === 'Space' || (evt as KeyboardEvent).keyCode === 32;
+}
+
+function isEscapeKey(evt: Event): boolean {
+  return (evt as KeyboardEvent).key === 'Escape' || (evt as KeyboardEvent).keyCode === 27;
+}
+
 export {createFocusTrapInstance, isScrollable, areTopsMisaligned};
+export {isEnterKey, isSpaceKey, isEscapeKey};
