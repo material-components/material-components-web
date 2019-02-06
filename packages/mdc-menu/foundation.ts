@@ -80,8 +80,7 @@ class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     }
   }
 
-  // TODO(acdvorak): See if HTMLElement is really necessary, or if we can use Element instead
-  handleItemAction(listItem: HTMLElement) {
+  handleItemAction(listItem: Element) {
     const index = this.adapter_.getElementIndex(listItem);
     if (index < 0) {
       return;
@@ -102,7 +101,7 @@ class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
   /**
    * Handles toggling the selected classes in a selection group when a selection is made.
    */
-  private handleSelectionGroup_(selectionGroup: HTMLElement, index: number) {
+  private handleSelectionGroup_(selectionGroup: Element, index: number) {
     // De-select the previous selection in this group.
     const selectedIndex = this.adapter_.getSelectedElementIndex(selectionGroup);
     if (selectedIndex >= 0) {
@@ -117,7 +116,7 @@ class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
   /**
    * Returns the parent selection group of an element if one exists.
    */
-  private getSelectionGroup_(listItem: HTMLElement): HTMLElement | null {
+  private getSelectionGroup_(listItem: Element): Element | null {
     let parent = this.adapter_.getParentElement(listItem);
     if (!parent) {
       return null;

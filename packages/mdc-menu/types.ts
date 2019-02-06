@@ -24,11 +24,6 @@
 import {MDCList} from '@material/list/index';
 import {MDCMenuSurface} from '@material/menu-surface/index';
 
-// TODO(acdvorak): Remove after PR #4334 is merged
-export interface ListActionEvent extends Event {
-  detail: number;
-}
-
 /**
  * Event properties used by the adapter and foundation.
  */
@@ -40,7 +35,7 @@ export interface MenuItemEventDetail {
  * Event properties specific to the default component implementation.
  */
 export interface MenuItemComponentEventDetail extends MenuItemEventDetail {
-  item: HTMLElement;
+  item: Element;
 }
 
 export type MenuSurfaceFactory = (el: Element) => MDCMenuSurface;

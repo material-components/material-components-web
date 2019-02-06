@@ -23,21 +23,24 @@
 
 import MDCComponent from '@material/base/component';
 import {CustomEventListener, SpecificEventListener} from '@material/base/types';
-import {MDCList, MDCListFoundation} from '@material/list/index';
+import {ListActionEvent, MDCList, MDCListFoundation} from '@material/list/index';
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
 import {Corner, MDCMenuSurface} from '@material/menu-surface/index';
 import {MenuDistance} from '@material/menu-surface/types';
 import {cssClasses, strings} from './constants';
 import {MDCMenuFoundation} from './foundation';
-import {ListActionEvent, ListFactory, MenuItemComponentEventDetail, MenuSurfaceFactory} from './types';
+import {ListFactory, MenuItemComponentEventDetail, MenuSurfaceFactory} from './types';
 
 class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   static attachTo(root: Element) {
     return new MDCMenu(root);
   }
 
+  private menuSurfaceFactory_!: MenuSurfaceFactory; // assigned in initialize()
+  private listFactory_!: ListFactory; // assigned in initialize()
+
   private menuSurface_!: MDCMenuSurface; // assigned in initialize()
-  private list_: MDCList | null = null;
+  private list_!: MDCList | null; // assigned in initialize()
 
   private handleKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
   private handleItemAction_!: CustomEventListener<ListActionEvent>; // assigned in initialSyncWithDOM()
@@ -46,18 +49,23 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   initialize(
       menuSurfaceFactory: MenuSurfaceFactory = (el) => new MDCMenuSurface(el),
       listFactory: ListFactory = (el) => new MDCList(el)) {
-    this.menuSurface_ = menuSurfaceFactory(this.root_);
-
-    const list = this.root_.querySelector(strings.LIST_SELECTOR);
-    if (list) {
-      this.list_ = listFactory(list);
-      this.list_.wrapFocus = true;
-    }
+    this.menuSurfaceFactory_ = menuSurfaceFactory;
+    this.listFactory_ = listFactory;
   }
 
   initialSyncWithDOM() {
+    this.menuSurface_ = this.menuSurfaceFactory_(this.root_);
+
+    const list = this.root_.querySelector(strings.LIST_SELECTOR);
+    if (list) {
+      this.list_ = this.listFactory_(list);
+      this.list_.wrapFocus = true;
+    } else {
+      this.list_ = null;
+    }
+
     this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt);
-    this.handleItemAction_ = (evt) => this.foundation_.handleItemAction(this.items[evt.detail]);
+    this.handleItemAction_ = (evt) => this.foundation_.handleItemAction(this.items[evt.detail.index]);
     this.afterOpenedCallback_ = () => this.handleAfterOpened_();
 
     this.menuSurface_.listen(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, this.afterOpenedCallback_);
@@ -86,11 +94,13 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   }
 
   get wrapFocus(): boolean {
-    return this.list_.wrapFocus;
+    return this.list_ ? this.list_.wrapFocus : false;
   }
 
   set wrapFocus(value: boolean) {
-    this.list_.wrapFocus = value;
+    if (this.list_) {
+      this.list_.wrapFocus = value;
+    }
   }
 
   /**
@@ -98,8 +108,8 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
    * the items container that are proper list items, and not supplemental / presentational DOM
    * elements.
    */
-  get items(): HTMLElement[] {
-    return this.list_.listElements;
+  get items(): Element[] {
+    return this.list_ ? this.list_.listElements : [];
   }
 
   set quickOpen(quickOpen: boolean) {
@@ -120,7 +130,7 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   /**
    * @return The item within the menu at the index specified.
    */
-  getOptionByIndex(index: number): HTMLElement | null {
+  getOptionByIndex(index: number): Element | null {
     const items = this.items;
 
     if (index < items.length) {
@@ -156,7 +166,7 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   handleAfterOpened_() {
     const list = this.items;
     if (list.length > 0) {
-      list[0].focus();
+      (list[0] as HTMLElement).focus();
     }
   }
 
@@ -187,7 +197,7 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
       getElementIndex: (element) => this.items.indexOf(element),
       getParentElement: (element) => element.parentElement,
       getSelectedElementIndex: (selectionGroup) => {
-        const selectedListItem = selectionGroup.querySelector<HTMLElement>(`.${cssClasses.MENU_SELECTED_LIST_ITEM}`);
+        const selectedListItem = selectionGroup.querySelector(`.${cssClasses.MENU_SELECTED_LIST_ITEM}`);
         return selectedListItem ? this.items.indexOf(selectedListItem) : -1;
       },
       notifySelected: (evtData) => this.emit<MenuItemComponentEventDetail>(strings.SELECTED_EVENT, {

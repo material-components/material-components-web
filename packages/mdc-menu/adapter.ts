@@ -53,7 +53,7 @@ interface MDCMenuAdapter {
   /**
    * @return true if the element contains the className.
    */
-  elementContainsClass(element: HTMLElement, className: string): boolean;
+  elementContainsClass(element: Element, className: string): boolean;
 
   /**
    * Closes the menu-surface.
@@ -63,17 +63,17 @@ interface MDCMenuAdapter {
   /**
    * @return Index of the element in the list or -1 if it is not in the list.
    */
-  getElementIndex(element: HTMLElement): number;
+  getElementIndex(element: Element): number;
 
   /**
    * @return The parentElement of the provided element.
    */
-  getParentElement(element: HTMLElement): HTMLElement | null;
+  getParentElement(element: Element): Element | null;
 
   /**
    * @return The element within the selectionGroup containing the selected element class.
    */
-  getSelectedElementIndex(selectionGroup: HTMLElement): number;
+  getSelectedElementIndex(selectionGroup: Element): number;
 
   /**
    * Emit an event when a menu item is selected.

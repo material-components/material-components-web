@@ -28,7 +28,7 @@ import domEvents from 'dom-events';
 
 import {MDCMenu, MDCMenuFoundation} from '../../../packages/mdc-menu/index.ts';
 import {Corner} from '../../../packages/mdc-menu-surface/constants.ts';
-import {MDCListFoundation} from '../../../packages/mdc-list/index';
+import {MDCListFoundation} from '../../../packages/mdc-list/index.ts';
 import {MDCMenuSurfaceFoundation} from '../../../packages/mdc-menu-surface/foundation.ts';
 
 function getFixture(open) {
@@ -121,7 +121,7 @@ test('attachTo initializes and returns a MDCMenu instance', () => {
 
 test('initialize registers event listener for list item action', () => {
   const {mockFoundation, root} = setupTestWithFakes();
-  domEvents.emit(root, MDCListFoundation.strings.ACTION_EVENT, {detail: 0});
+  domEvents.emit(root, MDCListFoundation.strings.ACTION_EVENT, {detail: {index: 0}});
   td.verify(mockFoundation.handleItemAction(td.matchers.isA(Element)), {times: 1});
 });
 
@@ -135,7 +135,7 @@ test('destroy deregisters event listener for click', () => {
   const {component, mockFoundation, root} = setupTestWithFakes();
   component.destroy();
 
-  domEvents.emit(root, MDCListFoundation.strings.ACTION_EVENT, {detail: 0});
+  domEvents.emit(root, MDCListFoundation.strings.ACTION_EVENT, {detail: {index: 0}});
   td.verify(mockFoundation.handleItemAction(td.matchers.isA(Element)), {times: 0});
 });
 
