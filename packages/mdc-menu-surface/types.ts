@@ -21,21 +21,19 @@
  * THE SOFTWARE.
  */
 
-interface MenuDimensions {
+export interface MenuDimensions {
   width: number;
   height: number;
 }
 
-interface MenuDistance {
+export interface MenuDistance {
   top: number;
   right: number;
   bottom: number;
   left: number;
 }
 
-interface MenuPoint {
+export interface MenuPoint {
   x: number;
   y: number;
 }
-
-export {MenuDimensions, MenuDistance, MenuPoint};

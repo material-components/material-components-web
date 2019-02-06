@@ -21,11 +21,11 @@
  * THE SOFTWARE.
  */
 
-interface ListActionEvent extends Event {
-  /** Index of the list item that was activated. */
+export interface ListActionEvent extends Event {
+  /**
+   * Index of the list item that was activated.
+   */
   detail: number;
 }
 
-type ListActionEventListener = (evt: ListActionEvent) => void;
-
-export {ListActionEvent, ListActionEventListener};
+export type ListActionEventListener = (evt: ListActionEvent) => void;
