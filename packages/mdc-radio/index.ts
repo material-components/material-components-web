@@ -110,4 +110,6 @@ class MDCRadio extends MDCComponent<MDCRadioFoundation> implements RippleCapable
   }
 }
 
-export {MDCRadio, MDCRadioFoundation};
+export {MDCRadio as default, MDCRadio};
+export * from './adapter';
+export * from './foundation';
