@@ -24,8 +24,6 @@
 import {IconButtonToggleEvent} from './types';
 
 /**
- * Adapter for MDC Icon Button Toggle.
- *
  * Defines the shape of the adapter expected by the foundation.
  * Implement this adapter for your framework of choice to delegate updates to
  * the component in your framework of choice. See architecture documentation

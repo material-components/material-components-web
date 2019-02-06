@@ -31,7 +31,7 @@ class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundation> {
     return new MDCIconButtonToggle(root);
   }
 
-  root_!: HTMLElement;
+  protected root_!: HTMLElement;
 
   private ripple_!: MDCRipple;
   private handleClick_!: SpecificEventListener<'click'>;

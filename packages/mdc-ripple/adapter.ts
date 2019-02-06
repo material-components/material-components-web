@@ -22,13 +22,10 @@
  */
 
 import {EventType, SpecificEventListener} from '@material/dom/index';
-
-interface Point {
-  x: number;
-  y: number;
-}
+import {Point} from './types';
 
 /**
+ * Defines the shape of the adapter expected by the foundation.
  * Implement this adapter for your framework of choice to delegate updates to
  * the component in your framework of choice. See architecture documentation
  * for more details.
@@ -61,11 +58,11 @@ interface MDCRippleAdapter {
 
   deregisterResizeHandler(handler: SpecificEventListener<'resize'>): void;
 
-  updateCssVariable(varName: string, value: string|null): void;
+  updateCssVariable(varName: string, value: string | null): void;
 
   computeBoundingRect(): ClientRect;
 
   getWindowPageOffset(): Point;
 }
 
-export {MDCRippleAdapter as default, MDCRippleAdapter, Point};
+export {MDCRippleAdapter as default, MDCRippleAdapter};

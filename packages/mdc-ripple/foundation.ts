@@ -22,8 +22,9 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import MDCRippleAdapter, {Point} from './adapter';
+import MDCRippleAdapter from './adapter';
 import {cssClasses, numbers, strings} from './constants';
+import {Point} from './types';
 import {getNormalizedEventCoords} from './util';
 
 interface ActivationStateType {
