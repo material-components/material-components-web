@@ -21,6 +21,7 @@
  * THE SOFTWARE.
  */
 
+// TODO(acdvorak): Create PR to update all MDC imports to use {} syntax rather than default export
 import MDCFoundation from '@material/base/foundation';
 import MDCListFoundation from '@material/list/foundation';
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
@@ -79,6 +80,7 @@ class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     }
   }
 
+  // TODO(acdvorak): See if HTMLElement is really necessary, or if we can use Element instead
   handleItemAction(listItem: HTMLElement) {
     const index = this.adapter_.getElementIndex(listItem);
     if (index < 0) {
