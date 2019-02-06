@@ -23,7 +23,7 @@
 
 import {getCorrectEventName} from '@material/animation/index';
 import MDCComponent from '@material/base/component';
-import {EventType, SpecificEventListener} from '@material/base/types';
+import {EventType, SpecificEventListener} from '@material/base/index';
 import {MDCRipple, MDCRippleFoundation, RippleCapableSurface, util} from '@material/ripple/index';
 import {MDCSelectionControl} from '@material/selection-control/index';
 

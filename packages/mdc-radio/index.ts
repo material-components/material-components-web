@@ -22,7 +22,7 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {EventType, SpecificEventListener} from '@material/base/types';
+import {EventType, SpecificEventListener} from '@material/base/index';
 import {RippleCapableSurface} from '@material/ripple/index';
 import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
 import {MDCSelectionControl} from '@material/selection-control/index';
