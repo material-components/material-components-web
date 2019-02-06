@@ -132,12 +132,12 @@ test('assert keyup does not trigger ripple', () => {
 test('click handler is added to root element', () => {
   const {root, mockFoundation} = setupTest({createMockFoundation: true});
   domEvents.emit(root, 'click');
-  td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 1});
+  td.verify(mockFoundation.handleClick(), {times: 1});
 });
 
 test('click handler is removed from the root element on destroy', () => {
   const {root, component, mockFoundation} = setupTest({createMockFoundation: true});
   component.destroy();
   domEvents.emit(root, 'click');
-  td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 0});
+  td.verify(mockFoundation.handleClick(), {times: 0});
 });

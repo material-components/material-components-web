@@ -22,34 +22,23 @@
  */
 
 import MDCComponent from '@material/base/component';
-import MDCIconButtonToggleFoundation from './foundation';
+import {SpecificEventListener} from '@material/base/index';
 import {MDCRipple} from '@material/ripple/index';
+import MDCIconButtonToggleFoundation from './foundation';
 
-/**
- * @extends {MDCComponent<!MDCIconButtonToggleFoundation>}
- */
-class MDCIconButtonToggle extends MDCComponent {
-  static attachTo(root) {
+class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundation> {
+  static attachTo(root: HTMLElement) {
     return new MDCIconButtonToggle(root);
   }
 
-  constructor(...args) {
-    super(...args);
+  protected root_!: HTMLElement; // assigned in MDCComponent constructor
 
-    /** @private {!MDCRipple} */
-    this.ripple_ = this.initRipple_();
-    /** @private {!Function} */
-    this.handleClick_;
-  }
+  private ripple_: MDCRipple = this.initRipple_();
+  private handleClick_!: SpecificEventListener<'click'>; // assigned in initialSyncWithDOM()
 
-  /**
-   * @return {!MDCRipple}
-   * @private
-   */
-  initRipple_() {
-    const ripple = new MDCRipple(this.root_);
-    ripple.unbounded = true;
-    return ripple;
+  initialSyncWithDOM() {
+    this.handleClick_ = () => this.foundation_.handleClick();
+    this.root_.addEventListener('click', this.handleClick_);
   }
 
   destroy() {
@@ -58,35 +47,32 @@ class MDCIconButtonToggle extends MDCComponent {
     super.destroy();
   }
 
-  /** @return {!MDCIconButtonToggleFoundation} */
-  getDefaultFoundation() {
+  getDefaultFoundation(): MDCIconButtonToggleFoundation {
     return new MDCIconButtonToggleFoundation({
       addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
-      setAttr: (attrName, attrValue) => this.root_.setAttribute(attrName, attrValue),
       notifyChange: (evtData) => this.emit(MDCIconButtonToggleFoundation.strings.CHANGE_EVENT, evtData),
+      removeClass: (className) => this.root_.classList.remove(className),
+      setAttr: (attrName, attrValue) => this.root_.setAttribute(attrName, attrValue),
     });
   }
 
-  initialSyncWithDOM() {
-    this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
-    this.root_.addEventListener('click', this.handleClick_);
-  }
-
-  /** @return {!MDCRipple} */
-  get ripple() {
+  get ripple(): MDCRipple {
     return this.ripple_;
   }
 
-  /** @return {boolean} */
-  get on() {
+  get on(): boolean {
     return this.foundation_.isOn();
   }
 
-  /** @param {boolean} isOn */
-  set on(isOn) {
+  set on(isOn: boolean) {
     this.foundation_.toggle(isOn);
+  }
+
+  private initRipple_(): MDCRipple {
+    const ripple = new MDCRipple(this.root_);
+    ripple.unbounded = true;
+    return ripple;
   }
 }
 

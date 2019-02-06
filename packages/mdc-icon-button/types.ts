@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,46 +21,6 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
-
-/**
- * Defines the shape of the adapter expected by the foundation.
- * Implement this adapter for your framework of choice to delegate updates to
- * the component in your framework of choice. See architecture documentation
- * for more details.
- * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
- *
- * @record
- */
-
-class MDCIconButtonToggleAdapter {
-  /** @param {string} className */
-  addClass(className) {}
-
-  /** @param {string} className */
-  removeClass(className) {}
-
-  /**
-   * @param {string} className
-   * @return {boolean}
-   * */
-  hasClass(className) {}
-
-  /**
-   * @param {string} attrName
-   * @param {string} attrValue
-   */
-  setAttr(attrName, attrValue) {}
-
-  /** @param {!IconButtonToggleEvent} evtData */
-  notifyChange(evtData) {}
+export interface IconButtonToggleEvent {
+  isOn: boolean;
 }
-
-/**
- * @typedef {{
- *   isOn: boolean,
- * }}
- */
-let IconButtonToggleEvent;
-
-export {MDCIconButtonToggleAdapter, IconButtonToggleEvent};
