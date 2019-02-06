@@ -61,4 +61,4 @@ interface MDCMenuAdapter {
   notifySelected(evtData: MenuItemEventDetail): void;
 }
 
-export {MDCMenuAdapter};
+export {MDCMenuAdapter as default, MDCMenuAdapter};

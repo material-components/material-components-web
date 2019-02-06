@@ -133,4 +133,4 @@ class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
   }
 }
 
-export {MDCMenuFoundation};
+export {MDCMenuFoundation as default, MDCMenuFoundation};
