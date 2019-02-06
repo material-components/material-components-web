@@ -28,6 +28,7 @@ import {MDCRipple, MDCRippleFoundation, RippleCapableSurface, util} from '@mater
 import {MDCSelectionControl} from '@material/selection-control/index';
 
 import MDCCheckboxFoundation from './foundation';
+import MDCCheckboxAdapter from './adapter';
 
 const {getMatchesProperty} = util;
 const CB_PROTO_PROPS = ['checked', 'indeterminate'];
@@ -183,4 +184,4 @@ function validDescriptor(inputPropDesc: PropertyDescriptor | undefined): inputPr
   return !!inputPropDesc && typeof inputPropDesc.set === 'function';
 }
 
-export {MDCCheckboxFoundation, MDCCheckbox};
+export {MDCCheckboxFoundation, MDCCheckbox, MDCCheckboxAdapter};
