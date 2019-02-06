@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,32 +24,21 @@
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
- * Adapter for MDC Switch. Provides an interface for managing
- * - classes
- * - dom
+ * Adapter for MDC Text Field Character Counter.
  *
- * Additionally, provides type information for the adapter to the Closure
- * compiler.
- *
- * Implement this adapter for your framework of choice to delegate updates to
- * the component in your framework of choice. See architecture documentation
- * for more details.
- * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
+ * Defines the shape of the adapter expected by the foundation. Implement this
+ * adapter to integrate the TextField character counter into your framework. See
+ * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
+ * for more information.
  *
  * @record
  */
-class MDCSwitchAdapter {
-  /** @param {string} className */
-  addClass(className) {}
-
-  /** @param {string} className */
-  removeClass(className) {}
-
-  /** @param {boolean} checked */
-  setNativeControlChecked(checked) {}
-
-  /** @param {boolean} disabled */
-  setNativeControlDisabled(disabled) {}
+class MDCTextFieldCharacterCounterAdapter {
+  /**
+   * Sets the text content of character counter element.
+   * @param {string} content
+   */
+  setContent(content) {}
 }
 
-export default MDCSwitchAdapter;
+export default MDCTextFieldCharacterCounterAdapter;

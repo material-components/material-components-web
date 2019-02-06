@@ -33,7 +33,7 @@ const {cssClasses, numbers} = MDCTextFieldFoundation;
 suite('MDCTextFieldFoundation');
 
 test('exports strings', () => {
-  assert.isOk('strings' in MDCTextFieldFoundation);
+  assert.isOk(MDCTextFieldFoundation.strings);
 });
 
 test('exports cssClasses', () => {
@@ -63,6 +63,9 @@ const setupTest = () => {
     showToScreenReader: () => {},
     setValidity: () => {},
   });
+  const characterCounter = td.object({
+    setCounterValue: () => {},
+  });
   const leadingIcon = td.object({
     setDisabled: () => {},
     setAriaLabel: () => {},
@@ -81,11 +84,12 @@ const setupTest = () => {
   });
   const foundationMap = {
     helperText,
+    characterCounter,
     leadingIcon,
     trailingIcon,
   };
   const foundation = new MDCTextFieldFoundation(mockAdapter, foundationMap);
-  return {foundation, mockAdapter, helperText, leadingIcon, trailingIcon};
+  return {foundation, mockAdapter, helperText, characterCounter, leadingIcon, trailingIcon};
 };
 
 test('#constructor sets disabled to false', () => {
@@ -516,6 +520,7 @@ test('on input does nothing if input event preceded by keydown event', () => {
   };
   const mockInput = {
     disabled: false,
+    value: '',
   };
   let keydown;
   let input;
@@ -715,6 +720,7 @@ test('on keydown sets receivedUserInput to true when input is enabled', () => {
     });
   td.when(mockAdapter.getNativeInput()).thenReturn({
     disabled: false,
+    value: '',
   });
   foundation.init();
   assert.equal(foundation.receivedUserInput_, false);
@@ -729,6 +735,7 @@ test('on click does not set receivedUserInput if input is disabled', () => {
   };
   const mockInput = {
     disabled: true,
+    value: '',
   };
   let click;
 
@@ -849,4 +856,63 @@ test('label floats when type is date even if value is empty', () => {
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
   foundation.init();
   td.verify(mockAdapter.floatLabel(true));
+});
+
+test('#handleInput activates focus state', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  foundation.handleInput();
+  td.verify(mockAdapter.addClass(cssClasses.FOCUSED), {times: 1});
+});
+
+test('#handleInput updates character counter on text input', () => {
+  const {foundation, mockAdapter, characterCounter} = setupTest();
+
+  const nativeInput = {
+    type: 'text',
+    value: '12345678',
+    maxLength: 10,
+    validity: {
+      valid: true,
+    },
+  };
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+
+  foundation.handleInput();
+  td.verify(characterCounter.setCounterValue(8, 10), {times: 1});
+});
+
+
+test('#handleInput throws error when maxLength HTML attribute is not found in input element', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  const nativeInput = {
+    type: 'text',
+    value: '12345678',
+    validity: {
+      valid: true,
+    },
+    maxLength: -1,
+  };
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+
+  assert.throws(() => foundation.handleInput());
+});
+
+test('#handleValidationAttributeChange sets character counter when maxlength attribute value is changed in input ' +
+    'element', () => {
+  const {foundation, mockAdapter, characterCounter} = setupTest();
+
+  const nativeInput = {
+    type: 'text',
+    value: '12345678',
+    maxLength: 10,
+    validity: {
+      valid: true,
+    },
+  };
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+
+  foundation.handleValidationAttributeChange(['maxlength']);
+  td.verify(characterCounter.setCounterValue(8, 10), {times: 1});
 });

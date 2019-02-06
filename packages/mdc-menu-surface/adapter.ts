@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2018 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,63 +21,52 @@
  * THE SOFTWARE.
  */
 
-/* eslint-disable no-unused-vars */
-import {MDCSelectionControlState} from '@material/selection-control/index';
-
-/* eslint no-unused-vars: [2, {"args": "none"}] */
+import {MenuDimensions, MenuDistance, MenuPoint} from './types';
 
 /**
- * Adapter for MDC Checkbox. Provides an interface for managing
- * - classes
- * - dom
- * - event handlers
- *
- * Additionally, provides type information for the adapter to the Closure
- * compiler.
- *
  * Implement this adapter for your framework of choice to delegate updates to
  * the component in your framework of choice. See architecture documentation
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
- *
- * @record
  */
-class MDCCheckboxAdapter {
-  /** @param {string} className */
-  addClass(className) {}
+interface MDCMenuSurfaceAdapter {
+  addClass(className: string): void;
+  removeClass(className: string): void;
+  hasClass(className: string): boolean;
+  hasAnchor(): boolean;
 
-  /** @param {string} className */
-  removeClass(className) {}
+  isElementInContainer(el: Element): boolean;
+  isFocused(): boolean;
+  isFirstElementFocused(): boolean;
+  isLastElementFocused(): boolean;
+  isRtl(): boolean;
 
-  /**
-   * Sets an attribute with a given value on the input element.
-   * @param {string} attr
-   * @param {string} value
-   */
-  setNativeControlAttr(attr, value) {}
+  getInnerDimensions(): MenuDimensions;
+  getAnchorDimensions(): ClientRect | null;
+  getWindowDimensions(): MenuDimensions;
+  getBodyDimensions(): MenuDimensions;
+  getWindowScroll(): MenuPoint;
+  setPosition(position: Partial<MenuDistance>): void;
+  setMaxHeight(height: string): void;
+  setTransformOrigin(origin: string): void;
 
-  /**
-   * Removes an attribute from the input element.
-   * @param {string} attr
-   */
-  removeNativeControlAttr(attr) {}
+  /** Saves the element that was focused before the menu surface was opened. */
+  saveFocus(): void;
 
-  forceLayout() {}
+  /** Restores focus to the element that was focused before the menu surface was opened. */
+  restoreFocus(): void;
 
-  /** @return {boolean} */
-  isAttachedToDOM() {}
+  /** Focuses the first focusable element in the menu-surface. */
+  focusFirstElement(): void;
 
-  /** @return {boolean} */
-  isIndeterminate() {}
+  /** Focuses the first focusable element in the menu-surface. */
+  focusLastElement(): void;
 
-  /** @return {boolean} */
-  isChecked() {}
+  /** Emits an event when the menu surface is closed. */
+  notifyClose(): void;
 
-  /** @return {boolean} */
-  hasNativeControl() {}
-
-  /** @param {boolean} disabled */
-  setNativeControlDisabled(disabled) {}
+  /** Emits an event when the menu surface is opened. */
+  notifyOpen(): void;
 }
 
-export default MDCCheckboxAdapter;
+export {MDCMenuSurfaceAdapter};

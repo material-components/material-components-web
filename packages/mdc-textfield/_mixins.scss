@@ -28,6 +28,7 @@
 @import "@material/shape/mixins";
 @import "@material/shape/functions";
 @import "helper-text/mixins";
+@import "character-counter/mixins";
 @import "icon/mixins";
 @import "icon/variables";
 @import "./variables";
@@ -134,6 +135,7 @@
   @include mdc-text-field-ink-color_($mdc-text-field-disabled-ink-color);
   @include mdc-text-field-label-ink-color_($mdc-text-field-disabled-label-color);
   @include mdc-text-field-helper-text-color_($mdc-text-field-disabled-helper-text-color);
+  @include mdc-text-field-character-counter-color_($mdc-text-field-disabled-helper-text-color);
   @include mdc-text-field-icon-color_($mdc-text-field-disabled-icon);
   @include mdc-text-field-fullwidth-bottom-line-color_($mdc-text-field-fullwidth-bottom-line-color);
   @include mdc-text-field-fill-color_($mdc-text-field-disabled-background);
@@ -164,7 +166,7 @@
     }
   }
 
-  + .mdc-text-field-helper-text--validation-msg {
+  + .mdc-text-field-helper-line .mdc-text-field-helper-text--validation-msg {
     opacity: 1;
   }
 }
@@ -176,7 +178,7 @@
     @include mdc-theme-prop(color, $mdc-text-field-error);
   }
 
-  + .mdc-text-field-helper-text:not(.mdc-text-field-helper-text--validation-msg) {
+  + .mdc-text-field-helper-line .mdc-text-field-helper-text:not(.mdc-text-field-helper-text--validation-msg) {
     opacity: 1;
   }
 }
@@ -221,8 +223,8 @@
       @include mdc-rtl-reflexive-property(padding, $radius-pixels + $mdc-notched-outline-padding, 0);
     }
 
-    + .mdc-text-field-helper-text {
-      @include mdc-rtl-reflexive-property(margin, $radius-pixels + $mdc-notched-outline-padding, $mdc-text-field-label-offset);
+    + .mdc-text-field-helper-line {
+      @include mdc-rtl-reflexive-property(padding, $radius-pixels + $mdc-notched-outline-padding, $radius-pixels);
     }
   }
 }
@@ -456,6 +458,7 @@
   @include mdc-states-base-color(transparent);
   @include mdc-text-field-fill-color(transparent);
   @include mdc-notched-outline-floating-label-float-position($mdc-text-field-outlined-label-position-y, 0%);
+  @include mdc-text-field-character-counter-position(16px, 13px);
 
   $padding-inset: 16px;
 
@@ -472,6 +475,11 @@
     margin: $padding-inset/2 1px 1px 0;
     padding: 0 $padding-inset $padding-inset;
     border: none;
+  }
+
+  .mdc-text-field-character-counter + .mdc-text-field__input {
+    margin-bottom: 28px; // Leaves space for character counter if it exists.
+    padding-bottom: 0;
   }
 
   .mdc-floating-label {

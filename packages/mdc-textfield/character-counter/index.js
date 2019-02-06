@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,23 +21,42 @@
  * THE SOFTWARE.
  */
 
-/** @type {string|undefined} */
-let storedTransformPropertyName_;
+import MDCComponent from '@material/base/component';
+
+import MDCTextFieldCharacterCounterAdapter from './adapter';
+import MDCTextFieldCharacterCounterFoundation from './foundation';
 
 /**
- * Returns the name of the correct transform property to use on the current browser.
- * @param {!Window} globalObj
- * @param {boolean=} forceRefresh
- * @return {string}
+ * @extends {MDCComponent<!MDCTextFieldCharacterCounterFoundation>}
+ * @final
  */
-function getTransformPropertyName(globalObj, forceRefresh = false) {
-  if (storedTransformPropertyName_ === undefined || forceRefresh) {
-    const el = globalObj.document.createElement('div');
-    const transformPropertyName = ('transform' in el.style ? 'transform' : 'webkitTransform');
-    storedTransformPropertyName_ = transformPropertyName;
+class MDCTextFieldCharacterCounter extends MDCComponent {
+  /**
+   * @param {!Element} root
+   * @return {!MDCTextFieldCharacterCounter}
+   */
+  static attachTo(root) {
+    return new MDCTextFieldCharacterCounter(root);
   }
 
-  return storedTransformPropertyName_;
+  /**
+   * @return {!MDCTextFieldCharacterCounterFoundation}
+   */
+  get foundation() {
+    return this.foundation_;
+  }
+
+  /**
+   * @return {!MDCTextFieldCharacterCounterFoundation}
+   */
+  getDefaultFoundation() {
+    return new MDCTextFieldCharacterCounterFoundation(
+      /** @type {!MDCTextFieldCharacterCounterAdapter} */ (Object.assign({
+        setContent: (content) => {
+          this.root_.textContent = content;
+        },
+      })));
+  }
 }
 
-export {getTransformPropertyName};
+export {MDCTextFieldCharacterCounter, MDCTextFieldCharacterCounterFoundation};

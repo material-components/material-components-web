@@ -1,6 +1,6 @@
 {
   "name": "@material/drawer",
-  "version": "0.43.0",
+  "version": "0.44.0",
   "description": "The Material Components Web drawer component",
   "license": "MIT",
   "keywords": [
@@ -17,13 +17,13 @@
   "dependencies": {
     "@material/animation": "^0.41.0",
     "@material/base": "^0.41.0",
-    "@material/elevation": "^0.43.0",
-    "@material/list": "^0.43.0",
-    "@material/ripple": "^0.43.0",
+    "@material/elevation": "^0.44.0",
+    "@material/list": "^0.44.0",
+    "@material/ripple": "^0.44.0",
     "@material/rtl": "^0.42.0",
     "@material/shape": "^0.43.0",
     "@material/theme": "^0.43.0",
-    "@material/typography": "^0.43.0",
+    "@material/typography": "^0.44.0",
     "focus-trap": "^4.0.2"
   }
 }
