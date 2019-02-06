@@ -47,4 +47,4 @@ interface IconButtonToggleEvent {
   isOn: boolean;
 }
 
-export {MDCIconButtonToggleAdapter, IconButtonToggleEvent};
+export {MDCIconButtonToggleAdapter as default, MDCIconButtonToggleAdapter, IconButtonToggleEvent};

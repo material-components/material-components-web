@@ -34,13 +34,13 @@ class MDCIconButtonToggleFoundation extends MDCFoundation<MDCIconButtonToggleAda
     return strings;
   }
 
-  static get defaultAdapter() {
+  static get defaultAdapter(): MDCIconButtonToggleAdapter {
     return {
-      addClass: undefined,
-      hasClass: undefined,
-      notifyChange: undefined,
-      removeClass: undefined,
-      setAttr: undefined,
+      addClass: () => undefined,
+      hasClass: () => false,
+      notifyChange: () => undefined,
+      removeClass: () => undefined,
+      setAttr: () => undefined,
     };
   }
 
@@ -72,4 +72,4 @@ class MDCIconButtonToggleFoundation extends MDCFoundation<MDCIconButtonToggleAda
   }
 }
 
-export default MDCIconButtonToggleFoundation;
+export {MDCIconButtonToggleFoundation as default, MDCIconButtonToggleFoundation};
