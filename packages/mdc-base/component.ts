@@ -114,4 +114,4 @@ class MDCComponent<FoundationType extends MDCFoundation> {
   }
 }
 
-export default MDCComponent;
+export {MDCComponent as default, MDCComponent};

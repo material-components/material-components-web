@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,36 +24,21 @@
 /* eslint no-unused-vars: [2, {"args": "none"}] */
 
 /**
- * Adapter for MDC Form Field. Provides an interface for managing
- * - event handlers
- * - ripple activation
+ * Adapter for MDC Text Field Character Counter.
  *
- * Additionally, provides type information for the adapter to the Closure
- * compiler.
- *
- * Implement this adapter for your framework of choice to delegate updates to
- * the component in your framework of choice. See architecture documentation
- * for more details.
- * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
+ * Defines the shape of the adapter expected by the foundation. Implement this
+ * adapter to integrate the TextField character counter into your framework. See
+ * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
+ * for more information.
  *
  * @record
  */
-class MDCFormFieldAdapter {
+class MDCTextFieldCharacterCounterAdapter {
   /**
-   * @param {string} type
-   * @param {!EventListener} handler
+   * Sets the text content of character counter element.
+   * @param {string} content
    */
-  registerInteractionHandler(type, handler) {}
-
-  /**
-   * @param {string} type
-   * @param {!EventListener} handler
-   */
-  deregisterInteractionHandler(type, handler) {}
-
-  activateInputRipple() {}
-
-  deactivateInputRipple() {}
+  setContent(content) {}
 }
 
-export default MDCFormFieldAdapter;
+export default MDCTextFieldCharacterCounterAdapter;

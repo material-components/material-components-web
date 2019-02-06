@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2017 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,23 +21,12 @@
  * THE SOFTWARE.
  */
 
-/** @type {string|undefined} */
-let storedTransformPropertyName_;
+const cssClasses = {
+  ROOT: 'mdc-form-field',
+};
 
-/**
- * Returns the name of the correct transform property to use on the current browser.
- * @param {!Window} globalObj
- * @param {boolean=} forceRefresh
- * @return {string}
- */
-function getTransformPropertyName(globalObj, forceRefresh = false) {
-  if (storedTransformPropertyName_ === undefined || forceRefresh) {
-    const el = globalObj.document.createElement('div');
-    const transformPropertyName = ('transform' in el.style ? 'transform' : 'webkitTransform');
-    storedTransformPropertyName_ = transformPropertyName;
-  }
+const strings = {
+  LABEL_SELECTOR: '.mdc-form-field > label',
+};
 
-  return storedTransformPropertyName_;
-}
-
-export {getTransformPropertyName};
+export {cssClasses, strings};
