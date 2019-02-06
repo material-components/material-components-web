@@ -267,6 +267,32 @@ test('set autoStackButtons forwards to MDCDialogFoundation#setAutoStackButtons',
   td.verify(mockFoundation.setAutoStackButtons(false));
 });
 
+test('autoStackButtons adds scrollable class', () => {
+  const clock = installClock();
+  const fixture = getFixture();
+  const root = fixture.querySelector('.mdc-dialog');
+  const content = root.querySelector('.mdc-dialog__content');
+
+  // Simulate a scrollable content area
+  content.innerHTML = new Array(100).join(`<p>${content.textContent}</p>`);
+  content.style.height = '50px';
+  content.style.overflow = 'auto';
+
+  document.body.appendChild(fixture);
+
+  try {
+    const component = new MDCDialog(root);
+    component.autoStackButtons = false;
+    component.open();
+    clock.runToFrame();
+    clock.runToFrame();
+
+    assert.isTrue(root.classList.contains('mdc-dialog--scrollable'));
+  } finally {
+    document.body.removeChild(fixture);
+  }
+});
+
 test('adapter#addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
