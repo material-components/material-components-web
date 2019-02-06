@@ -30,4 +30,4 @@ interface MDCLinearProgressAdapter {
   setStyle(el: HTMLElement, styleProperty: string, value: string): void;
 }
 
-export {MDCLinearProgressAdapter};
+export {MDCLinearProgressAdapter as default, MDCLinearProgressAdapter};

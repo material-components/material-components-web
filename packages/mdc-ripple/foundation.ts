@@ -539,4 +539,4 @@ class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
   }
 }
 
-export default MDCRippleFoundation;
+export {MDCRippleFoundation as default, MDCRippleFoundation};
