@@ -22,13 +22,12 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {SpecificEventListener} from '@material/base/types';
+import {SpecificEventListener} from '@material/base/index';
 import {matches} from '@material/dom/ponyfill';
 import {cssClasses, Index, strings} from './constants'; // eslint-disable-line no-unused-vars
 import {MDCListFoundation} from './foundation';
 
 class MDCList extends MDCComponent<MDCListFoundation> {
-
   set vertical(value: boolean) {
     this.foundation_.setVerticalOrientation(value);
   }
@@ -57,12 +56,25 @@ class MDCList extends MDCComponent<MDCListFoundation> {
     return new MDCList(root);
   }
 
-  protected root_!: HTMLElement;
+  protected root_!: HTMLElement; // assigned in MDCComponent constructor
 
-  private handleKeydown_!: SpecificEventListener<'keydown'>;
-  private handleClick_!: SpecificEventListener<'click'>;
-  private focusInEventListener_!: (evt: Event) => void;
-  private focusOutEventListener_!: (evt: Event) => void;
+  private handleKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
+  private handleClick_!: SpecificEventListener<'click'>; // assigned in initialSyncWithDOM()
+  private focusInEventListener_!: EventListener; // assigned in initialSyncWithDOM()
+  private focusOutEventListener_!: EventListener; // assigned in initialSyncWithDOM()
+
+  initialSyncWithDOM() {
+    this.handleClick_ = this.handleClickEvent_.bind(this);
+    this.handleKeydown_ = this.handleKeydownEvent_.bind(this);
+    this.focusInEventListener_ = this.handleFocusInEvent_.bind(this);
+    this.focusOutEventListener_ = this.handleFocusOutEvent_.bind(this);
+    this.root_.addEventListener('keydown', this.handleKeydown_);
+    this.root_.addEventListener('click', this.handleClick_);
+    this.root_.addEventListener('focusin', this.focusInEventListener_);
+    this.root_.addEventListener('focusout', this.focusOutEventListener_);
+    this.layout();
+    this.initializeListType();
+  }
 
   destroy() {
     this.root_.removeEventListener('keydown', this.handleKeydown_);
@@ -71,32 +83,19 @@ class MDCList extends MDCComponent<MDCListFoundation> {
     this.root_.removeEventListener('focusout', this.focusOutEventListener_);
   }
 
-  initialSyncWithDOM() {
-    this.handleClick_ = this.handleClickEvent_.bind(this);
-    this.handleKeydown_ = this.handleKeydownEvent_.bind(this);
-    this.focusInEventListener_ = this.handleFocusInEvent_.bind(this);
-    this.focusOutEventListener_ = this.handleFocusOutEvent_.bind(this);
-    this.root_.addEventListener('keydown', this.handleKeydown_);
-    this.root_.addEventListener('focusin', this.focusInEventListener_);
-    this.root_.addEventListener('focusout', this.focusOutEventListener_);
-    this.root_.addEventListener('click', this.handleClick_);
-    this.layout();
-    this.initializeListType();
-  }
-
   layout() {
     const direction = this.root_.getAttribute(strings.ARIA_ORIENTATION);
     this.vertical = direction !== strings.ARIA_ORIENTATION_HORIZONTAL;
 
     // List items need to have at least tabindex=-1 to be focusable.
     [].slice.call(this.root_.querySelectorAll('.mdc-list-item:not([tabindex])'))
-      .forEach((ele: Element) => {
-        ele.setAttribute('tabindex', '-1');
+      .forEach((el: Element) => {
+        el.setAttribute('tabindex', '-1');
       });
 
     // Child button/a elements are not tabbable until the list item is focused.
     [].slice.call(this.root_.querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS))
-      .forEach((ele: Element) => ele.setAttribute('tabindex', '-1'));
+      .forEach((el: Element) => el.setAttribute('tabindex', '-1'));
 
     this.foundation_.layout();
   }
