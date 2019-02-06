@@ -196,7 +196,10 @@ class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     } else if (isEnter || isSpace) {
       if (isRootListItem) {
         // Return early if enter key is pressed on anchor element which triggers synthetic MouseEvent event.
-        if (evt.target && (evt.target as Element).tagName === 'A' && isEnter) return;
+        const target = evt.target as Element | null;
+        if (target && target.tagName === 'A' && isEnter) {
+          return;
+        }
         this.preventDefaultEvent_(evt);
 
         if (this.isSelectableList_()) {
@@ -284,7 +287,8 @@ class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    * consume the event, and it will cause an unintended scroll.
    */
   private preventDefaultEvent_(evt: KeyboardEvent) {
-    const tagName = `${(evt.target as Element).tagName}`.toLowerCase();
+    const target = evt.target as Element;
+    const tagName = `${target.tagName}`.toLowerCase();
     if (ELEMENTS_KEY_ALLOWED_IN.indexOf(tagName) === -1) {
       evt.preventDefault();
     }
@@ -322,10 +326,10 @@ class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     this.selectedIndex_ = index;
   }
 
-  private setCheckboxAtIndex_(index: ListIndex) {
+  private setCheckboxAtIndex_(index: number[]) {
     for (let i = 0; i < this.adapter_.getListItemCount(); i++) {
       let isChecked = false;
-      if ((index as number[]).indexOf(i) >= 0) {
+      if (index.indexOf(i) >= 0) {
         isChecked = true;
       }
 
@@ -333,7 +337,7 @@ class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       this.adapter_.setAttributeForElementIndex(i, strings.ARIA_CHECKED, isChecked ? 'true' : 'false');
     }
 
-    this.selectedIndex_ = index as number;
+    this.selectedIndex_ = index;
   }
 
   private setTabindexAtIndex_(index: number) {
@@ -414,15 +418,15 @@ class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     this.adapter_.setAttributeForElementIndex(index, strings.ARIA_CHECKED, isChecked ? 'true' : 'false');
 
     // If none of the checkbox items are selected and selectedIndex is not initialized then provide a default value.
-    if (this.selectedIndex_ === -1) {
-      this.selectedIndex_ = [];
-    }
+    let selectedIndexes = this.selectedIndex_ === -1 ? [] : (this.selectedIndex_ as number[]).slice();
 
     if (isChecked) {
-      (this.selectedIndex_ as number[]).push(index);
+      selectedIndexes.push(index);
     } else {
-      this.selectedIndex_ = (this.selectedIndex_ as number[]).filter((i) => i !== index);
+      selectedIndexes = selectedIndexes.filter((i) => i !== index);
     }
+
+    this.selectedIndex_ = selectedIndexes;
   }
 }
 
