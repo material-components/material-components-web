@@ -36,7 +36,7 @@ TODO: Add more notes about how to isolate subsystems from component specifics
 * Feel free to use the `!` when you run into the error `<PROPERTY_NAME> has no initializer and is not definitely assigned in the constructor.`. ie.
 
 ```
-private progress_!: number;
+private progress_!: number; // Assigned in init
 
 init() {
   this.progress_ = 0;
@@ -60,5 +60,5 @@ init() {
 * `Node` is more generic than `Element`, while `Element` is more generic than `HTMLElement`.
 * `Node` is mainly used for the document or comments/text.
 * `Element` should be used when the type in question could be `HTMLElement`, `SVGElement`, or others.
-* `HTMLElement` only pertains to DOM Nodes such as `<a>`, `<li>`, `<div>` just to name a few.
+* `HTMLElement` only pertains to DOM Elements such as `<a>`, `<li>`, `<div>` just to name a few.
 * Use the most generic type that you think is possible during runtime.
