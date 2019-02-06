@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,27 +21,6 @@
  * THE SOFTWARE.
  */
 
-import {IconButtonToggleEvent} from './types';
-
-/**
- * Adapter for MDC Icon Button Toggle.
- *
- * Defines the shape of the adapter expected by the foundation.
- * Implement this adapter for your framework of choice to delegate updates to
- * the component in your framework of choice. See architecture documentation
- * for more details.
- * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
- */
-interface MDCIconButtonToggleAdapter {
-  addClass(className: string): void;
-
-  removeClass(className: string): void;
-
-  hasClass(className: string): boolean;
-
-  setAttr(attrName: string, attrValue: string): void;
-
-  notifyChange(evtData: IconButtonToggleEvent): void;
+export interface IconButtonToggleEvent {
+  isOn: boolean;
 }
-
-export {MDCIconButtonToggleAdapter as default, MDCIconButtonToggleAdapter};
