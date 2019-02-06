@@ -52,7 +52,7 @@ init() {
 * If you must choose between `any` and `{}` defer to `{}`.
 
 #### Events
-* `@material/dom` defines convenience types (`EventType` and `SpecificEventListener`) for working with events and event listeners.
+* `@material/base` defines convenience types (`EventType` and `SpecificEventListener`) for working with events and event listeners.
 * Prefer to type as `EventType` over `string` when you expect that the string will be a standard event name (e.g. `click`, `keydown`).
 * Prefer to type as `SpecificEventListener` over `EventListener` when you know what type of event is being listened for (e.g. `SpecificEventHandler<'click'>`).
 
