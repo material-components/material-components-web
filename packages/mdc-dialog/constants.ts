@@ -25,16 +25,16 @@ const cssClasses = {
   CLOSING: 'mdc-dialog--closing',
   OPEN: 'mdc-dialog--open',
   OPENING: 'mdc-dialog--opening',
-  SCROLL_LOCK: 'mdc-dialog-scroll-lock',
   SCROLLABLE: 'mdc-dialog--scrollable',
+  SCROLL_LOCK: 'mdc-dialog-scroll-lock',
   STACKED: 'mdc-dialog--stacked',
 };
 
 const strings = {
   ACTION_ATTRIBUTE: 'data-mdc-dialog-action',
   BUTTON_SELECTOR: '.mdc-dialog__button',
-  CLOSE_ACTION: 'close',
   CLOSED_EVENT: 'MDCDialog:closed',
+  CLOSE_ACTION: 'close',
   CLOSING_EVENT: 'MDCDialog:closing',
   CONTAINER_SELECTOR: '.mdc-dialog__container',
   CONTENT_SELECTOR: '.mdc-dialog__content',
@@ -43,11 +43,11 @@ const strings = {
   OPENED_EVENT: 'MDCDialog:opened',
   OPENING_EVENT: 'MDCDialog:opening',
   SCRIM_SELECTOR: '.mdc-dialog__scrim',
-  SURFACE_SELECTOR: '.mdc-dialog__surface',
   SUPPRESS_DEFAULT_PRESS_SELECTOR: [
     'textarea',
     '.mdc-menu .mdc-list-item',
   ].join(', '),
+  SURFACE_SELECTOR: '.mdc-dialog__surface',
 };
 
 const numbers = {

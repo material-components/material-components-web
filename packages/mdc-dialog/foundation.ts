@@ -142,8 +142,7 @@ class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
     return this.isOpen_;
   }
 
-  /** @return {string} */
-  getEscapeKeyAction() {
+  getEscapeKeyAction(): string {
     return this.escapeKeyAction_;
   }
 
@@ -151,7 +150,7 @@ class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
     this.escapeKeyAction_ = action;
   }
 
-  getScrimClickAction() {
+  getScrimClickAction(): string {
     return this.scrimClickAction_;
   }
 
@@ -159,7 +158,7 @@ class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
     this.scrimClickAction_ = action;
   }
 
-  getAutoStackButtons() {
+  getAutoStackButtons(): boolean {
     return this.autoStackButtons_;
   }
 
@@ -186,24 +185,26 @@ class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
 
   handleInteraction(evt: MouseEvent | KeyboardEvent) {
     const isClick = evt.type === 'click';
-    const isEnter = (evt as KeyboardEvent).key === 'Enter' || (evt as KeyboardEvent).keyCode === 13;
+    const isEnter = isEnterKey(evt);
+    const isSpace = isSpaceKey(evt);
+    const isScrim = this.adapter_.eventTargetMatches(evt.target, strings.SCRIM_SELECTOR);
+    const isDefault = !this.adapter_.eventTargetMatches(evt.target, strings.SUPPRESS_DEFAULT_PRESS_SELECTOR);
 
     // Check for scrim click first since it doesn't require querying ancestors
-    if (isClick && this.adapter_.eventTargetMatches(evt.target, strings.SCRIM_SELECTOR) &&
-      this.scrimClickAction_ !== '') {
+    if (isClick && isScrim && this.scrimClickAction_ !== '') {
       this.close(this.scrimClickAction_);
-    } else if (isClick || (evt as KeyboardEvent).key === 'Space' || (evt as KeyboardEvent).keyCode === 32 || isEnter) {
+    } else if (isClick || isSpace || isEnter) {
       const action = this.adapter_.getActionFromEvent(evt);
       if (action) {
         this.close(action);
-      } else if (isEnter && !this.adapter_.eventTargetMatches(evt.target, strings.SUPPRESS_DEFAULT_PRESS_SELECTOR)) {
+      } else if (isEnter && isDefault) {
         this.adapter_.clickDefaultButton();
       }
     }
   }
 
   handleDocumentKeydown(evt: KeyboardEvent) {
-    if ((evt.key === 'Escape' || evt.keyCode === 27) && this.escapeKeyAction_ !== '') {
+    if (isEscapeKey(evt) && this.escapeKeyAction_ !== '') {
       this.close(this.escapeKeyAction_);
     }
   }
@@ -251,4 +252,16 @@ class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
   }
 }
 
-export default MDCDialogFoundation;
+function isEnterKey(evt: Event): boolean {
+  return (evt as KeyboardEvent).key === 'Enter' || (evt as KeyboardEvent).keyCode === 13;
+}
+
+function isSpaceKey(evt: Event): boolean {
+  return (evt as KeyboardEvent).key === 'Space' || (evt as KeyboardEvent).keyCode === 32;
+}
+
+function isEscapeKey(evt: Event): boolean {
+  return (evt as KeyboardEvent).key === 'Escape' || (evt as KeyboardEvent).keyCode === 27;
+}
+
+export {MDCDialogFoundation as default, MDCDialogFoundation};

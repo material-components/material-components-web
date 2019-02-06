@@ -30,6 +30,7 @@ import {strings} from '../../../packages/mdc-dialog/constants';
 import {MDCDialog, MDCDialogFoundation, util} from '../../../packages/mdc-dialog/index';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 
+/** @return {!HTMLElement} */
 function getFixture() {
   return bel`
     <div>
@@ -95,6 +96,13 @@ suite('MDCDialog');
 
 test('attachTo returns a component instance', () => {
   assert.instanceOf(MDCDialog.attachTo(getFixture().querySelector('.mdc-dialog')), MDCDialog);
+});
+
+test('attachTo throws an error when container element is missing', () => {
+  const fixture = getFixture();
+  const container = fixture.querySelector('.mdc-dialog__container');
+  container.parentElement.removeChild(container);
+  assert.throws(() => MDCDialog.attachTo(fixture.querySelector('.mdc-dialog')));
 });
 
 test('#initialSyncWithDOM registers click handler on the root element', () => {

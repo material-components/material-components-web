@@ -22,22 +22,18 @@
  */
 
 import * as createFocusTrap from 'focus-trap';
-
-type focusTrap = (
-  element: HTMLElement | string,
-  userOptions?: createFocusTrap.Options,
-) => createFocusTrap.FocusTrap;
+import {FocusTrapFactory, FocusTrapLib} from './types';
 
 function createFocusTrapInstance(
   surfaceEl: HTMLElement,
-  focusTrapFactory: focusTrap = createFocusTrap as unknown as focusTrap,
-  initialFocusEl: createFocusTrap.FocusTarget | null,
-): createFocusTrap.FocusTrap {
+  focusTrapFactory: FocusTrapFactory = createFocusTrap as unknown as FocusTrapFactory,
+  initialFocusEl: FocusTrapLib.FocusTarget | null,
+): FocusTrapLib.FocusTrap {
   return focusTrapFactory(surfaceEl, ({
     clickOutsideDeactivates: true, // Allow handling of scrim clicks
     escapeDeactivates: false, // Dialog foundation handles escape key
     initialFocus: initialFocusEl,
-  } as createFocusTrap.Options));
+  } as FocusTrapLib.Options));
 }
 
 function isScrollable(el: HTMLElement): boolean {
@@ -50,4 +46,4 @@ function areTopsMisaligned(els: HTMLElement[]): boolean {
   return tops.size > 1;
 }
 
-export {focusTrap, createFocusTrapInstance, isScrollable, areTopsMisaligned};
+export {createFocusTrapInstance, isScrollable, areTopsMisaligned};

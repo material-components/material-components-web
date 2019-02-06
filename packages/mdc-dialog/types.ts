@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,34 +21,12 @@
  * THE SOFTWARE.
  */
 
-/**
- * Defines the shape of the adapter expected by the foundation.
- * Implement this adapter for your framework of choice to delegate updates to
- * the component in your framework of choice. See architecture documentation
- * for more details.
- * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
- */
-interface MDCDialogAdapter {
-  addClass(className: string): void;
-  removeClass(className: string): void;
-  hasClass(className: string): boolean;
-  addBodyClass(className: string): void;
-  removeBodyClass(className: string): void;
-  eventTargetMatches(target: EventTarget | null, selector: string): boolean;
+import * as FocusTrapLib from 'focus-trap';
 
-  isContentScrollable(): boolean;
-  areButtonsStacked(): boolean;
-  getActionFromEvent(event: Event): string | null;
+// TODO(acdvorak): Centralize this in mdc-base or mdc-dom?
+export type FocusTrapFactory = (
+    element: HTMLElement | string,
+    userOptions?: FocusTrapLib.Options,
+) => FocusTrapLib.FocusTrap;
 
-  trapFocus(): void;
-  releaseFocus(): void;
-  clickDefaultButton(): void;
-  reverseButtons(): void;
-
-  notifyOpening(): void;
-  notifyOpened(): void;
-  notifyClosing(action: string): void;
-  notifyClosed(action: string): void;
-}
-
-export {MDCDialogAdapter as default, MDCDialogAdapter};
+export {FocusTrapLib};
