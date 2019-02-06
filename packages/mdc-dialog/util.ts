@@ -22,18 +22,18 @@
  */
 
 import * as createFocusTrap from 'focus-trap';
-import {FocusTrapFactory, FocusTrapLib} from './types';
+import {FocusTrapFactory} from './types';
 
 function createFocusTrapInstance(
   surfaceEl: HTMLElement,
   focusTrapFactory: FocusTrapFactory = createFocusTrap as unknown as FocusTrapFactory,
-  initialFocusEl: FocusTrapLib.FocusTarget | null,
-): FocusTrapLib.FocusTrap {
+  initialFocusEl: createFocusTrap.FocusTarget | null,
+): createFocusTrap.FocusTrap {
   return focusTrapFactory(surfaceEl, ({
     clickOutsideDeactivates: true, // Allow handling of scrim clicks
     escapeDeactivates: false, // Dialog foundation handles escape key
     initialFocus: initialFocusEl,
-  } as FocusTrapLib.Options));
+  } as createFocusTrap.Options));
 }
 
 function isScrollable(el: HTMLElement | null): boolean {

@@ -27,7 +27,7 @@ import {closest, matches} from '@material/dom/ponyfill';
 import {MDCRipple} from '@material/ripple/index';
 import * as createFocusTrap from 'focus-trap';
 import MDCDialogFoundation from './foundation';
-import {FocusTrapFactory, FocusTrapLib} from './types';
+import {FocusTrapFactory} from './types';
 import * as util from './util';
 
 const strings = MDCDialogFoundation.strings;
@@ -72,7 +72,7 @@ class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   private defaultButton_!: HTMLElement | null; // assigned in initialize()
   private initialFocusEl_!: HTMLElement | null; // assigned in initialize()
 
-  private focusTrap_!: FocusTrapLib.FocusTrap; // assigned in initialSyncWithDOM()
+  private focusTrap_!: createFocusTrap.FocusTrap; // assigned in initialSyncWithDOM()
   private focusTrapFactory_!: FocusTrapFactory; // assigned in initialize()
 
   private handleInteraction_!: SpecificEventListener<'click'|'keydown'>; // assigned in initialSyncWithDOM()

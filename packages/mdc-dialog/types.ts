@@ -28,5 +28,3 @@ export type FocusTrapFactory = (
     element: HTMLElement | string,
     userOptions?: FocusTrapLib.Options,
 ) => FocusTrapLib.FocusTrap;
-
-export {FocusTrapLib};
