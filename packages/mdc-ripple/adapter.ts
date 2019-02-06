@@ -21,33 +21,16 @@
  * THE SOFTWARE.
  */
 
+import {EventType, SpecificEventListener} from '@material/base/index';
+import {Point} from './types';
+
 /**
- * Adapter for MDC Ripple. Provides an interface for managing
- * - classes
- * - dom
- * - CSS variables
- * - position
- * - dimensions
- * - scroll position
- * - event handlers
- * - unbounded, active and disabled states
- *
- * Additionally, provides type information for the adapter to the Closure
- * compiler.
- *
+ * Defines the shape of the adapter expected by the foundation.
  * Implement this adapter for your framework of choice to delegate updates to
  * the component in your framework of choice. See architecture documentation
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
- *
  */
-import {EventType, SpecificEventListener} from '@material/dom/index';
-
-interface Point {
-  x: number;
-  y: number;
-}
-
 interface MDCRippleAdapter {
   browserSupportsCssVars(): boolean;
 
@@ -75,11 +58,11 @@ interface MDCRippleAdapter {
 
   deregisterResizeHandler(handler: SpecificEventListener<'resize'>): void;
 
-  updateCssVariable(varName: string, value: string|null): void;
+  updateCssVariable(varName: string, value: string | null): void;
 
   computeBoundingRect(): ClientRect;
 
   getWindowPageOffset(): Point;
 }
 
-export {MDCRippleAdapter as default, Point};
+export {MDCRippleAdapter as default, MDCRippleAdapter};

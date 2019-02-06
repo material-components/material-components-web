@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2016 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,32 +21,33 @@
  * THE SOFTWARE.
  */
 
-/**
- * @fileoverview A "ponyfill" is a polyfill that doesn't modify the global prototype chain.
- * This makes ponyfills safer than traditional polyfills, especially for libraries like MDC.
- */
+const ROOT = 'mdc-checkbox';
 
-function closest<T extends Element>(element: Element, selector: string): T | null;
-function closest(element: Element, selector: string): Element | null {
-  if (element.closest) {
-    return element.closest(selector);
-  }
+const cssClasses = {
+  ANIM_CHECKED_INDETERMINATE: 'mdc-checkbox--anim-checked-indeterminate',
+  ANIM_CHECKED_UNCHECKED: 'mdc-checkbox--anim-checked-unchecked',
+  ANIM_INDETERMINATE_CHECKED: 'mdc-checkbox--anim-indeterminate-checked',
+  ANIM_INDETERMINATE_UNCHECKED: 'mdc-checkbox--anim-indeterminate-unchecked',
+  ANIM_UNCHECKED_CHECKED: 'mdc-checkbox--anim-unchecked-checked',
+  ANIM_UNCHECKED_INDETERMINATE: 'mdc-checkbox--anim-unchecked-indeterminate',
+  CHECKED: 'mdc-checkbox--checked',
+  DISABLED: 'mdc-checkbox--disabled',
+  INDETERMINATE: 'mdc-checkbox--indeterminate',
+  UPGRADED: 'mdc-checkbox--upgraded',
+};
 
-  let el: Element | null = element;
-  while (el) {
-    if (matches(el, selector)) {
-      return el;
-    }
-    el = el.parentElement;
-  }
-  return null;
-}
+const strings = {
+  ARIA_CHECKED_ATTR: 'aria-checked',
+  ARIA_CHECKED_INDETERMINATE_VALUE: 'mixed',
+  NATIVE_CONTROL_SELECTOR: `.${ROOT}__native-control`,
+  TRANSITION_STATE_CHECKED: 'checked',
+  TRANSITION_STATE_INDETERMINATE: 'indeterminate',
+  TRANSITION_STATE_INIT: 'init',
+  TRANSITION_STATE_UNCHECKED: 'unchecked',
+};
 
-function matches(element: Element, selector: string): boolean {
-  const nativeMatches = element.matches
-      || element.webkitMatchesSelector
-      || element.msMatchesSelector;
-  return nativeMatches.call(element, selector);
-}
+const numbers = {
+  ANIM_END_LATCH_MS: 250,
+};
 
-export {closest, matches};
+export {cssClasses, strings, numbers};

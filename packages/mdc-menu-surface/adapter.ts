@@ -24,6 +24,7 @@
 import {MenuDimensions, MenuDistance, MenuPoint} from './types';
 
 /**
+ * Defines the shape of the adapter expected by the foundation.
  * Implement this adapter for your framework of choice to delegate updates to
  * the component in your framework of choice. See architecture documentation
  * for more details.
@@ -69,4 +70,4 @@ interface MDCMenuSurfaceAdapter {
   notifyOpen(): void;
 }
 
-export {MDCMenuSurfaceAdapter};
+export {MDCMenuSurfaceAdapter as default, MDCMenuSurfaceAdapter};

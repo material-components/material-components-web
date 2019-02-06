@@ -152,13 +152,13 @@ Mixin | Description
 
 Constant Name | Description
 --- | ---
-`Corner` | Enum for representing an element corner for positioning the menu-surface. See [constants.ts](constants.ts).
+`Corner` | Enum for representing an element corner for positioning the menu-surface. See [constants.ts](./constants.ts).
 
 Type Name | Description
 --- | ---
-`MenuDimensions` | Width/height of an element. See [types.ts](types.ts).
-`MenuDistance` | Margin values representing the distance from anchor point that the menu surface should be shown. See [types.ts](types.ts).
-`MenuPoint` | X/Y coordinates. See [types.ts](types.ts).
+`MenuDimensions` | Width/height of an element. See [types.ts](./types.ts).
+`MenuDistance` | Margin values representing the distance from anchor point that the menu surface should be shown. See [types.ts](./types.ts).
+`MenuPoint` | X/Y coordinates. See [types.ts](./types.ts).
 
 ## `MDCMenuSurface` Properties and Methods
 
@@ -221,7 +221,7 @@ Method Signature | Description
 
 Method Signature | Description
 --- | ---
-`setAnchorCorner(corner: Corner) => void` | Sets the corner that the menu surface will be anchored to. See [constants.ts](constants.ts)
+`setAnchorCorner(corner: Corner) => void` | Sets the corner that the menu surface will be anchored to. See [constants.ts](./constants.ts)
 `setAnchorMargin(margin: Partial<MenuDistance>) => void` | Sets the distance from the anchor point that the menu surface should be shown.
 `setIsHoisted(isHoisted: boolean) => void` | Sets whether the menu surface has been hoisted to the body so that the offsets are calculated relative to the page and not the anchor.
 `setFixedPosition(isFixed: boolean) => void` | Sets whether the menu surface is using fixed positioning.

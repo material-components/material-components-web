@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,32 +21,16 @@
  * THE SOFTWARE.
  */
 
-/**
- * @fileoverview A "ponyfill" is a polyfill that doesn't modify the global prototype chain.
- * This makes ponyfills safer than traditional polyfills, especially for libraries like MDC.
- */
-
-function closest<T extends Element>(element: Element, selector: string): T | null;
-function closest(element: Element, selector: string): Element | null {
-  if (element.closest) {
-    return element.closest(selector);
-  }
-
-  let el: Element | null = element;
-  while (el) {
-    if (matches(el, selector)) {
-      return el;
-    }
-    el = el.parentElement;
-  }
-  return null;
+export interface ListActionEventDetail {
+  /**
+   * Index of the list item that was activated.
+   */
+  index: number;
 }
 
-function matches(element: Element, selector: string): boolean {
-  const nativeMatches = element.matches
-      || element.webkitMatchesSelector
-      || element.msMatchesSelector;
-  return nativeMatches.call(element, selector);
+export interface ListActionEvent extends Event {
+  detail: ListActionEventDetail;
 }
 
-export {closest, matches};
+export type ListActionEventListener = (evt: ListActionEvent) => void;
+export type ListIndex = number | number[];

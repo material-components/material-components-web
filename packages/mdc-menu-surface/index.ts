@@ -22,7 +22,7 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {SpecificEventListener} from '@material/dom/index';
+import {SpecificEventListener} from '@material/base/index';
 import {Corner, CornerBit, cssClasses, strings} from './constants';
 import {MDCMenuSurfaceFoundation} from './foundation';
 import {MenuDimensions, MenuDistance, MenuPoint} from './types';

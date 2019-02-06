@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2019 Google Inc.
+ * Copyright 2016 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,5 +21,13 @@
  * THE SOFTWARE.
  */
 
-export type EventType = keyof GlobalEventHandlersEventMap;
-export type SpecificEventListener<K extends EventType> = (evt: GlobalEventHandlersEventMap[K]) => void;
+const strings = {
+  NATIVE_CONTROL_SELECTOR: '.mdc-radio__native-control',
+};
+
+const cssClasses = {
+  DISABLED: 'mdc-radio--disabled',
+  ROOT: 'mdc-radio',
+};
+
+export {strings, cssClasses};
