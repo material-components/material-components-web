@@ -72,7 +72,7 @@ class MDCMenu extends MDCComponent {
   initialSyncWithDOM() {
     this.afterOpenedCallback_ = () => this.handleAfterOpened_();
     this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt);
-    this.handleItemAction_ = (evt) => this.foundation_.handleItemAction(this.items[evt.detail]);
+    this.handleItemAction_ = (evt) => this.foundation_.handleItemAction(this.items[evt.detail.index]);
 
     this.menuSurface_.listen(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, this.afterOpenedCallback_);
     this.listen('keydown', this.handleKeydown_);
