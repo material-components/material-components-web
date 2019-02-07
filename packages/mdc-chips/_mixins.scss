@@ -82,7 +82,7 @@
   }
 }
 
-@mixin mdc-chip-outline($width: 1, $style: solid, $color: mdc-theme-prop-value(on-surface)) {
+@mixin mdc-chip-outline($width: 1px, $style: solid, $color: mdc-theme-prop-value(on-surface)) {
   @include mdc-chip-outline-width($width);
   @include mdc-chip-outline-style($style);
   @include mdc-chip-outline-color($color);

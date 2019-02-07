@@ -75,6 +75,16 @@ class FakeMenuSurface {
   }
 }
 
+/**
+ * @param {boolean=} open
+ * @return {{
+ *   component: !MDCMenu,
+ *   menuSurface: !MDCMenuSurface,
+ *   root: !HTMLElement,
+ *   list: !MDCList,
+ *   mockFoundation: !MDCMenuFoundation
+ * }}
+ */
 function setupTestWithFakes(open = false) {
   const root = getFixture(open);
 
@@ -89,6 +99,10 @@ function setupTestWithFakes(open = false) {
   return {root, component, menuSurface, list, mockFoundation};
 }
 
+/**
+ * @param {boolean=} open
+ * @return {{component: !MDCMenu, root: !HTMLElement}}
+ */
 function setupTest(open = false) {
   const root = getFixture(open);
 
@@ -274,6 +288,20 @@ test('menu surface opened event causes no element to be focused if the list is e
 
   assert.equal(document.activeElement, lastActiveElement);
   document.body.removeChild(root);
+});
+
+test('list item enter keydown emits a menu action event', () => {
+  const {root, component} = setupTest();
+  const fakeEnterKeyEvent = {key: 'Enter', target: {tagName: 'div'}, preventDefault: () => undefined};
+
+  let detail = undefined;
+  component.listen(MDCMenuFoundation.strings.SELECTED_EVENT, (evt) => detail = evt.detail);
+
+  document.body.appendChild(root);
+  component.list_.foundation_.handleKeydown(fakeEnterKeyEvent, /* isRootListItem */ true, /* listItemIndex */ 0);
+  document.body.removeChild(root);
+
+  assert.deepEqual(detail, {index: 0, item: component.items[0]});
 });
 
 test('open=true does not throw an error if there are no items in the list to focus', () => {

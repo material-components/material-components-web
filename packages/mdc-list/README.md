@@ -439,6 +439,28 @@ Key | Action
 `Space` | Will cause the currently focused list item to become selected/deselected if `singleSelection=true`.
 `Enter` | Will cause the currently focused list item to become selected/deselected if `singleSelection=true`.
 
+
+## `MDCList` Properties and Methods
+
+Property | Value Type | Description
+--- | --- | ---
+`vertical` | `boolean` (write-only) | Proxies to the foundation's `setVerticalOrientation()` method.
+`listElements` | `Array<Element>` (read-only) | Returns all enabled list item elements.
+`wrapFocus` | `boolean` (write-only) | Proxies to the foundation's `setWrapFocus()` method.
+`singleSelection` | `boolean` (write-only) | Proxies to the foundation's `setSingleSelection()` method.
+`selectedIndex` | `boolean` | Proxies to the foundation's `getSelectedIndex()` and `setSelectedIndex()` methods.
+
+Method Signature | Description
+--- | ---
+`layout() => void` | Recalculates layout and orientation.
+`initializeListType() => void` | Initialize `selectedIndex` value based on pre-selected checkbox list items, single selection or radio.
+
+### Events
+
+Event Name | `event.detail` | Description
+--- | --- | ---
+`MDCList:action` | `{index: number}` | Indicates that a list item with the specified index has been activated.
+
 ## Usage within Web Frameworks
 
 If you are using a JavaScript framework, such as React or Angular, you can create a List for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
