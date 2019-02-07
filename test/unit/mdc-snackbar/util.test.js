@@ -105,7 +105,7 @@ test('#announce second argument is optional', () => {
   clock.tick(ARIA_LIVE_DELAY_MS);
 
   assert.equal(ariaEl.textContent, labelText);
-  assert.equal(ariaEl.getAttribute(ARIA_LIVE_LABEL_TEXT_ATTR), null);
+  assert.isNull(ariaEl.getAttribute(ARIA_LIVE_LABEL_TEXT_ATTR));
   assert.equal(ariaEl.getAttribute('aria-live'), 'polite');
 });
 
@@ -123,6 +123,21 @@ test('#announce does nothing if textContent is empty', () => {
   util.announce(ariaEl, labelEl);
 
   assert.equal(labelEl.textContent.trim(), '');
-  assert.equal(labelEl.getAttribute(ARIA_LIVE_LABEL_TEXT_ATTR), null);
+  assert.isNull(labelEl.getAttribute(ARIA_LIVE_LABEL_TEXT_ATTR));
   assert.equal(ariaEl.getAttribute('aria-live'), 'polite');
+});
+
+test('#announce removes aria-live if it was not present', () => {
+  const fixture = bel`
+<div>
+  <div class="aria label" role="status">Foo</div>
+</div>`;
+  const clock = installClock();
+  const ariaEl = fixture.querySelector('.aria');
+
+  assert.isNull(ariaEl.getAttribute('aria-live'));
+  util.announce(ariaEl);
+  assert.equal(ariaEl.getAttribute('aria-live'), 'off');
+  clock.tick(ARIA_LIVE_DELAY_MS);
+  assert.isNull(ariaEl.getAttribute('aria-live'));
 });
