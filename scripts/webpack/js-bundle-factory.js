@@ -156,7 +156,7 @@ class JsBundleFactory {
         autoInit: getAbsolutePath('/packages/mdc-auto-init/index.js'),
         base: getAbsolutePath('/packages/mdc-base/index.ts'),
         checkbox: getAbsolutePath('/packages/mdc-checkbox/index.ts'),
-        chips: getAbsolutePath('/packages/mdc-chips/index.js'),
+        chips: getAbsolutePath('/packages/mdc-chips/index.ts'),
         dialog: getAbsolutePath('/packages/mdc-dialog/index.ts'),
         dom: getAbsolutePath('/packages/mdc-dom/index.ts'),
         drawer: getAbsolutePath('/packages/mdc-drawer/index.js'),
