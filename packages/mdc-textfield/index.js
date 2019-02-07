@@ -25,7 +25,7 @@ import MDCComponent from '@material/base/component';
 /* eslint-disable no-unused-vars */
 import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
 /* eslint-enable no-unused-vars */
-import {getMatchesProperty} from '@material/ripple/util';
+import {matches} from '@material/dom/ponyfill';
 
 
 import {cssClasses, strings} from './constants';
@@ -153,10 +153,9 @@ class MDCTextField extends MDCComponent {
 
     this.ripple = null;
     if (!this.root_.classList.contains(cssClasses.TEXTAREA) && !this.root_.classList.contains(cssClasses.OUTLINED)) {
-      const MATCHES = getMatchesProperty(HTMLElement.prototype);
       const adapter =
         Object.assign(MDCRipple.createAdapter(/** @type {!RippleCapableSurface} */ (this)), {
-          isSurfaceActive: () => this.input_[MATCHES](':active'),
+          isSurfaceActive: () => matches(/** @type {!Element} */ (this.input_), ':active'),
           registerInteractionHandler: (type, handler) => this.input_.addEventListener(type, handler),
           deregisterInteractionHandler: (type, handler) => this.input_.removeEventListener(type, handler),
         });
