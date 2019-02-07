@@ -34,6 +34,7 @@
 
 ### BREAKING CHANGES
 
+* **text-field:** Helper text must now be nested within `mdc-text-field-helper-line` element. Wrappers must account for the new `character-counter` sub-component. See the Text Field documentation for examples and more information.
 * **menu:** Replaced menu's foundation methods `handleClick` and `handleSelection` with `handleItemAction` to handle list item action (i.e., list's custom event `MDCList:action`)
 * **list:** Introduced new adapter method `getAttributeForElementIndex` to determine if target list item has `href` attribute and removed `followHref` adapter API.
 * **chips:** Adds 3 new chips adapter methods: hasLeadingIcon, getRootBoundingClientRect, and getCheckmarkBoundingClientRect. Also adds a new foundation method: getDimensions.
