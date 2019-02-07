@@ -122,4 +122,6 @@ class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCSelectio
   }
 }
 
-export {MDCSwitchFoundation, MDCSwitch};
+export {MDCSwitch as default, MDCSwitch};
+export * from './adapter';
+export * from './foundation';

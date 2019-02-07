@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import MDCFoundation from '@material/base/foundation';
+import {MDCFoundation} from '@material/base/foundation';
 /* eslint-disable no-unused-vars */
 import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
 import MDCTextFieldCharacterCounterFoundation from './character-counter/foundation';

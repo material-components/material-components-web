@@ -90,7 +90,7 @@
   appearance: none;
 
   &::placeholder {
-    transition: mdc-text-field-transition(opacity);
+    transition: mdc-text-field-transition(opacity, $duration: 67ms);
     opacity: 0;
     color: $mdc-text-field-placeholder-ink-color;
   }
@@ -104,6 +104,8 @@
   // Always show placeholder for text field without label and show only on focused state when label is present.
   .mdc-text-field--no-label &::placeholder,
   .mdc-text-field--focused &::placeholder {
+    transition-delay: 40ms;
+    transition-duration: 110ms;
     opacity: 1;
   }
 

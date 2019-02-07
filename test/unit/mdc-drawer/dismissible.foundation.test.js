@@ -273,3 +273,18 @@ test('#handleTransitionEnd doesn\'t do anything if event is emitted with a non-e
   td.verify(mockAdapter.notifyOpen(), {times: 0});
   td.verify(mockAdapter.notifyClose(), {times: 0});
 });
+
+test('#handleTransitionEnd calls .closed() before restoring the focus.', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.closed = td.function();
+
+  const mockEventTarget = bel`<div class="foo">bar</div>`;
+  td.when(mockAdapter.elementHasClass(mockEventTarget, cssClasses.ROOT)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.CLOSING)).thenReturn(true);
+  const executionOrder = [];
+  td.when(foundation.closed()).thenDo(() => executionOrder.push('closed'));
+  td.when(mockAdapter.restoreFocus()).thenDo(() => executionOrder.push('restoreFocus'));
+  foundation.handleTransitionEnd({target: mockEventTarget});
+
+  assert.deepEqual(executionOrder, ['closed', 'restoreFocus']);
+});

@@ -21,9 +21,10 @@
  * THE SOFTWARE.
  */
 
-import MDCFoundation from '@material/base/foundation';
-import MDCRippleAdapter, {Point} from './adapter';
+import {MDCFoundation} from '@material/base/foundation';
+import {MDCRippleAdapter} from './adapter';
 import {cssClasses, numbers, strings} from './constants';
+import {Point} from './types';
 import {getNormalizedEventCoords} from './util';
 
 interface ActivationStateType {
@@ -539,4 +540,4 @@ class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
   }
 }
 
-export default MDCRippleFoundation;
+export {MDCRippleFoundation as default, MDCRippleFoundation};

@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import MDCFoundation from '@material/base/foundation';
+import {MDCFoundation} from '@material/base/foundation';
 import {MDCFormFieldAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 

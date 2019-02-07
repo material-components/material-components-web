@@ -63,8 +63,8 @@ case.
 
 Every component comes with a complementary foundation class, which is usually called
 `MDCComponentFoundation`, where `MDCComponent` is the name of a component. For example, we have an
-[MDCMenuFoundation](../packages/mdc-menu/foundation.js) that is used by our
-[MDCMenu](../packages/mdc-menu/index.js) component, and which are both exported
+[MDCMenuFoundation](../packages/mdc-menu/foundation.ts) that is used by our
+[MDCMenu](../packages/mdc-menu/index.ts) component, and which are both exported
 publicly.
 
 In order to implement a component via a foundation, take the following steps:

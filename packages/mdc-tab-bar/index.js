@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import MDCComponent from '@material/base/component';
+import {MDCComponent} from '@material/base/component';
 
 import {MDCTab, MDCTabFoundation} from '@material/tab/index';
 import {MDCTabScroller} from '@material/tab-scroller/index';

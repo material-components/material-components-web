@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import MDCFoundation from '@material/base/foundation';
+import {MDCFoundation} from '@material/base/foundation';
 import MDCNotchedOutlineAdapter from './adapter';
 import {cssClasses, strings, numbers} from './constants';
 
