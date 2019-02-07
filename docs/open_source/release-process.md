@@ -160,7 +160,7 @@ You will need to temporarily alter Github's master branch protection in order to
 1. Perform the process outlined in one of the sections below
 1. Don't forget to re-enable "Include administrators" & click "Save changes" afterwards
 
-### For Pre-releases and Minor Releases
+### For Minor Releases
 
 ```
 git push origin master <tag>
@@ -197,10 +197,10 @@ git push
 
 ### For Minor Releases
 
-We typically maintain a `next` branch on the MDC Web Catalog repository which follows MDC Web pre-releases, to keep
-ahead of breaking changes in new releases.
+We typically maintain a `next` branch on the MDC Web Catalog repository which works ahead of MDC Web releases
+(using [this script](https://gist.github.com/kfranqueiro/d06c7073c5012de3edb6c5875d6a4a50)), to keep ahead of breaking changes.
 
-In the event no pre-releases were tagged, the above process for patch releases would be followed, but would require
+In the event no work was done on the `next` branch, the above process for patch releases would be followed, but would require
 checking for necessary updates to accommodate breaking changes in MDC Web.
 
 Below is the process when a `next` branch is used:
@@ -211,7 +211,7 @@ Below is the process when a `next` branch is used:
 1. Deal with any conflicts if necessary
 1. Update `package.json` to reference the newly-released minor version of `material-components-web`
 1. `rm -rf node_modules && npm i` to cause `package-lock.json` to update
-1. `npm start` and test the catalog, in case any further breaking changes occurred since the last pre-release
+1. `npm start` and test the catalog, in case any further breaking changes occurred since the updates on `next`
 1. `npm run build` to double-check that there are no unforeseen errors when building resources for deployment
 1. If necessary, perform additional changes and commit them to the chore branch
 1. Push the chore branch and send a pull request for one last review
@@ -231,7 +231,7 @@ Below is the process when a `next` branch is used:
 
 ## Log Issues in MDC React Repository
 
-MDC React does not currently maintain a branch that gets updated ahead of release against pre-releases.
+MDC React does not currently maintain a branch that gets updated ahead of release.
 After release, ensure that any breaking changes likely to require MDC React changes have issues logged on the
 MDC React repository, with the "required for sync" label.
 
