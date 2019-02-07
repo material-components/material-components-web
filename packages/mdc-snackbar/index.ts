@@ -165,4 +165,7 @@ class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
   }
 }
 
-export {MDCSnackbar, MDCSnackbarFoundation, util};
+export {MDCSnackbar as default, MDCSnackbar, util};
+export * from './adapter';
+export * from './foundation';
+export * from './types';
