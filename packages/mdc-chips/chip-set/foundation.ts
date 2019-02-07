@@ -54,8 +54,8 @@ class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   /**
    * Returns an array of the IDs of all selected chips.
    */
-  getSelectedChipIds(): string[] {
-    return this.selectedChipIds_;
+  getSelectedChipIds(): ReadonlyArray<string> {
+    return this.selectedChipIds_.slice();
   }
 
   /**

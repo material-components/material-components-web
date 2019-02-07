@@ -307,8 +307,8 @@ Method Signature | Description
 
 Property | Value Type | Description
 --- | --- | ---
-`chips` | `MDCChip[]` | An array of the `MDCChip` objects that represent chips in the set
-`selectedChipIds` | `string[]` (read-only) | An array of the IDs of all selected chips
+`chips` | `ReadonlyArray<MDCChip>` | An array of the `MDCChip` objects that represent chips in the set
+`selectedChipIds` | `ReadonlyArray<string>` | An array of the IDs of all selected chips
 
 ## Usage within Web Frameworks
 
@@ -382,7 +382,7 @@ Events | Element Selector | Foundation Handler
 
 Method Signature | Description
 --- | ---
-`getSelectedChipIds() => string[]` | Returns an array of the IDs of all selected chips
+`getSelectedChipIds() => ReadonlyArray<string>` | Returns an array of the IDs of all selected chips
 `select(chipId: string) => void` | Selects the chip with the given id
 `handleChipInteraction(chipId: string) => void` | Handles a custom `MDCChip:interaction` event on the root element
 `handleChipSelection(chipId: string, selected: boolean) => void` | Handles a custom `MDCChip:selection` event on the root element

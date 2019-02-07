@@ -145,10 +145,7 @@ class MDCChip extends MDCComponent<MDCChipFoundation> implements RippleCapableSu
           this.leadingIcon_.classList.add(className);
         }
       },
-      eventTargetHasClass: (target, className) => {
-        if (!target) return false;
-        return (target as Element).classList.contains(className);
-      },
+      eventTargetHasClass: (target, className) => target ? (target as Element).classList.contains(className) : false,
       getCheckmarkBoundingClientRect: () => this.checkmark_ ? this.checkmark_.getBoundingClientRect() : null,
       getComputedStyleValue: (propertyName) => window.getComputedStyle(this.root_).getPropertyValue(propertyName),
       getRootBoundingClientRect: () => this.root_.getBoundingClientRect(),
