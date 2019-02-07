@@ -53,9 +53,9 @@ class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
   }
 
   initialSyncWithDOM() {
-    this.surfaceEl_ = this.root_.querySelector<HTMLElement>(SURFACE_SELECTOR)!;
-    this.labelEl_ = this.root_.querySelector<HTMLElement>(LABEL_SELECTOR)!;
-    this.actionEl_ = this.root_.querySelector<HTMLElement>(ACTION_SELECTOR)!;
+    this.surfaceEl_ = this.root_.querySelector(SURFACE_SELECTOR)!;
+    this.labelEl_ = this.root_.querySelector(LABEL_SELECTOR)!;
+    this.actionEl_ = this.root_.querySelector(ACTION_SELECTOR)!;
 
     this.handleKeyDown_ = (evt) => this.foundation_.handleKeyDown(evt);
     this.handleSurfaceClick_ = (evt) => {
