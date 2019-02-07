@@ -37,13 +37,13 @@ class MDCGridList extends MDCComponent<MDCGridListFoundation> {
       },
       getOffsetWidth: () => (this.root_ as HTMLElement).offsetWidth,
       getOffsetWidthForTileAtIndex: (index) => {
-        const tile = this.root_.querySelectorAll<HTMLElement>(MDCGridListFoundation.strings.TILE_SELECTOR)[index];
-        return tile.offsetWidth;
+        const tileEl = this.root_.querySelectorAll<HTMLElement>(MDCGridListFoundation.strings.TILE_SELECTOR)[index];
+        return tileEl.offsetWidth;
       },
       registerResizeHandler: (handler) => window.addEventListener('resize', handler),
       setStyleForTilesElement: (property, value) => {
-        const tile = this.root_.querySelector<HTMLElement>(MDCGridListFoundation.strings.TILES_SELECTOR);
-        tile!.style[property] = value;
+        const tilesEl = this.root_.querySelector<HTMLElement>(MDCGridListFoundation.strings.TILES_SELECTOR);
+        tilesEl!.style[property] = value;
       },
     });
   }
