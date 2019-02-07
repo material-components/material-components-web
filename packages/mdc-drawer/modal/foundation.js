@@ -21,7 +21,6 @@
  * THE SOFTWARE.
  */
 
-import MDCDrawerAdapter from '../adapter';
 import MDCDismissibleDrawerFoundation from '../dismissible/foundation';
 
 /**

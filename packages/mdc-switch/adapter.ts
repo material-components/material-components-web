@@ -22,26 +22,31 @@
  */
 
 /**
- * Adapter for MDC Switch. Provides an interface for managing
- * - classes
- * - dom
- *
+ * Defines the shape of the adapter expected by the foundation.
  * Implement this adapter for your framework of choice to delegate updates to
  * the component in your framework of choice. See architecture documentation
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
 interface MDCSwitchAdapter {
-  /** Adds a CSS class to the root element. */
+  /**
+   * Adds a CSS class to the root element.
+   */
   addClass(className: string): void;
 
-  /** Removes a CSS class from the root element. */
+  /**
+   * Removes a CSS class from the root element.
+   */
   removeClass(className: string): void;
 
-  /** Sets checked state of the native HTML control underlying the switch. */
+  /**
+   * Sets checked state of the native HTML control underlying the switch.
+   */
   setNativeControlChecked(checked: boolean): void;
 
-  /** Sets the disabled state of the native HTML control underlying the switch. */
+  /**
+   * Sets the disabled state of the native HTML control underlying the switch.
+   */
   setNativeControlDisabled(disabled: boolean): void;
 }
 
