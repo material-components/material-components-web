@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc.
+ * Copyright 2016 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,38 +21,13 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
+const strings = {
+  CHIP_SELECTOR: '.mdc-chip',
+};
 
-/**
- * Adapter for MDC Chip Set.
- *
- * Defines the shape of the adapter expected by the foundation. Implement this
- * adapter to integrate the Chip Set into your framework. See
- * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
- * for more information.
- *
- * @record
- */
-class MDCChipSetAdapter {
-  /**
-   * Returns true if the root element contains the given class name.
-   * @param {string} className
-   * @return {boolean}
-   */
-  hasClass(className) {}
+const cssClasses = {
+  CHOICE: 'mdc-chip-set--choice',
+  FILTER: 'mdc-chip-set--filter',
+};
 
-  /**
-   * Removes the chip with the given id from the chip set.
-   * @param {string} chipId
-   */
-  removeChip(chipId) {}
-
-  /**
-   * Sets the selected state of the chip with the given id.
-   * @param {string} chipId
-   * @param {boolean} selected
-   */
-  setSelected(chipId, selected) {}
-}
-
-export default MDCChipSetAdapter;
+export {strings, cssClasses};

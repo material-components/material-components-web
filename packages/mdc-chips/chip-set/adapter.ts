@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2017 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,26 +21,28 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
-const strings = {
-  ENTRY_ANIMATION_NAME: 'mdc-chip-entry',
-  INTERACTION_EVENT: 'MDCChip:interaction',
-  SELECTION_EVENT: 'MDCChip:selection',
-  TRAILING_ICON_INTERACTION_EVENT: 'MDCChip:trailingIconInteraction',
-  REMOVAL_EVENT: 'MDCChip:removal',
-  CHECKMARK_SELECTOR: '.mdc-chip__checkmark',
-  LEADING_ICON_SELECTOR: '.mdc-chip__icon--leading',
-  TRAILING_ICON_SELECTOR: '.mdc-chip__icon--trailing',
-};
+/**
+ * Defines the shape of the adapter expected by the foundation.
+ * Implement this adapter for your framework of choice to delegate updates to
+ * the component in your framework of choice. See architecture documentation
+ * for more details.
+ * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
+ */
+interface MDCChipSetAdapter {
+  /**
+   * @return true if the root element contains the given class name.
+   */
+  hasClass(className: string): boolean;
 
-/** @enum {string} */
-const cssClasses = {
-  CHECKMARK: 'mdc-chip__checkmark',
-  CHIP_EXIT: 'mdc-chip--exit',
-  HIDDEN_LEADING_ICON: 'mdc-chip__icon--leading-hidden',
-  LEADING_ICON: 'mdc-chip__icon--leading',
-  TRAILING_ICON: 'mdc-chip__icon--trailing',
-  SELECTED: 'mdc-chip--selected',
-};
+  /**
+   * Removes the chip with the given id from the chip set.
+   */
+  removeChip(chipId: string): void;
 
-export {strings, cssClasses};
+  /**
+   * Sets the selected state of the chip with the given id.
+   */
+  setSelected(chipId: string, selected: boolean): void;
+}
+
+export {MDCChipSetAdapter as default, MDCChipSetAdapter};

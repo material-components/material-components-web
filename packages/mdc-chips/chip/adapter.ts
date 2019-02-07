@@ -21,112 +21,90 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
-
 /**
- * Adapter for MDC Chip.
- *
- * Defines the shape of the adapter expected by the foundation. Implement this
- * adapter to integrate the Chip into your framework. See
- * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
- * for more information.
- *
- * @record
+ * Defines the shape of the adapter expected by the foundation.
+ * Implement this adapter for your framework of choice to delegate updates to
+ * the component in your framework of choice. See architecture documentation
+ * for more details.
+ * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-class MDCChipAdapter {
+interface MDCChipAdapter {
   /**
    * Adds a class to the root element.
-   * @param {string} className
    */
-  addClass(className) {}
+  addClass(className: string): void;
 
   /**
    * Removes a class from the root element.
-   * @param {string} className
    */
-  removeClass(className) {}
+  removeClass(className: string): void;
 
   /**
-   * Returns true if the root element contains the given class.
-   * @param {string} className
-   * @return {boolean}
+   * @return true if the root element contains the given class.
    */
-  hasClass(className) {}
+  hasClass(className: string): boolean;
 
   /**
    * Adds a class to the leading icon element.
-   * @param {string} className
    */
-  addClassToLeadingIcon(className) {}
+  addClassToLeadingIcon(className: string): void;
 
   /**
    * Removes a class from the leading icon element.
-   * @param {string} className
    */
-  removeClassFromLeadingIcon(className) {}
+  removeClassFromLeadingIcon(className: string): void;
 
   /**
-   * Returns true if target has className, false otherwise.
-   * @param {!EventTarget} target
-   * @param {string} className
-   * @return {boolean}
+   * @return true if target has className, false otherwise.
    */
-  eventTargetHasClass(target, className) {}
+  eventTargetHasClass(target: EventTarget | null, className: string): boolean;
 
   /**
    * Emits a custom "MDCChip:interaction" event denoting the chip has been
    * interacted with (typically on click or keydown).
    */
-  notifyInteraction() {}
+  notifyInteraction(): void;
 
   /**
    * Emits a custom "MDCChip:selection" event denoting the chip has been selected or deselected.
-   * @param {boolean} selected
    */
-  notifySelection(selected) {}
+  notifySelection(selected: boolean): void;
 
   /**
    * Emits a custom "MDCChip:trailingIconInteraction" event denoting the trailing icon has been
    * interacted with (typically on click or keydown).
    */
-  notifyTrailingIconInteraction() {}
+  notifyTrailingIconInteraction(): void;
 
   /**
    * Emits a custom event "MDCChip:removal" denoting the chip will be removed.
    */
-  notifyRemoval() {}
+  notifyRemoval(): void;
 
   /**
-   * Returns the computed property value of the given style property on the root element.
-   * @param {string} propertyName
-   * @return {string}
+   * @return The computed property value of the given style property on the root element.
    */
-  getComputedStyleValue(propertyName) {}
+  getComputedStyleValue(propertyName: string): string;
 
   /**
    * Sets the property value of the given style property on the root element.
-   * @param {string} propertyName
-   * @param {string} value
    */
-  setStyleProperty(propertyName, value) {}
+  setStyleProperty(propertyName: string, value: string): void;
 
   /**
-   * Returns whether the chip has a leading icon.
-   * @return {boolean}
+   * @return Whether the chip has a leading icon.
    */
-  hasLeadingIcon() {}
+  hasLeadingIcon(): boolean;
 
   /**
-   * Returns the bounding client rect of the root element.
-   * @return {!ClientRect}
+   * @return The bounding client rect of the root element.
    */
-  getRootBoundingClientRect() {}
+  getRootBoundingClientRect(): ClientRect;
 
   /**
-   * Returns the bounding client rect of the checkmark element or null if it doesn't exist.
-   * @return {?ClientRect}
+   * @return The bounding client rect of the checkmark element or null if it doesn't exist.
    */
-  getCheckmarkBoundingClientRect() {}
+  getCheckmarkBoundingClientRect(): ClientRect | null;
 }
 
-export default MDCChipAdapter;
+export {MDCChipAdapter as default, MDCChipAdapter};
