@@ -44,8 +44,8 @@ class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   }
 
   chips!: MDCChip[];
-  private chipFactory_!: ((el: Element) => MDCChip);
 
+  private chipFactory_!: (el: Element) => MDCChip;
   private handleChipInteraction_!: (evt: MDCChipInteractionEvent) => void;
   private handleChipSelection_!: (evt: MDCChipSelectionEvent) => void;
   private handleChipRemoval_!: (evt: MDCChipRemovalEvent) => void;
