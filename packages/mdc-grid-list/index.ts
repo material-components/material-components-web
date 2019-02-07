@@ -22,7 +22,6 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-
 import {MDCGridListFoundation} from './foundation';
 
 class MDCGridList extends MDCComponent<MDCGridListFoundation> {
@@ -38,16 +37,18 @@ class MDCGridList extends MDCComponent<MDCGridListFoundation> {
       },
       getOffsetWidth: () => (this.root_ as HTMLElement).offsetWidth,
       getOffsetWidthForTileAtIndex: (index) => {
-        const tile = this.root_.querySelectorAll(MDCGridListFoundation.strings.TILE_SELECTOR)[index] as HTMLElement;
+        const tile = this.root_.querySelectorAll<HTMLElement>(MDCGridListFoundation.strings.TILE_SELECTOR)[index];
         return tile.offsetWidth;
       },
       registerResizeHandler: (handler) => window.addEventListener('resize', handler),
       setStyleForTilesElement: (property, value) => {
-        const tile = this.root_.querySelector(MDCGridListFoundation.strings.TILES_SELECTOR) as HTMLElement;
-        tile.style[property] = value;
+        const tile = this.root_.querySelector<HTMLElement>(MDCGridListFoundation.strings.TILES_SELECTOR);
+        tile!.style[property] = value;
       },
     });
   }
 }
 
-export {MDCGridList, MDCGridListFoundation};
+export {MDCGridList as default, MDCGridList};
+export * from './adapter';
+export * from './foundation';

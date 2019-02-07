@@ -41,12 +41,12 @@ class MDCGridListFoundation extends MDCFoundation<MDCGridListAdapter> {
     };
   }
 
-  private resizeHandler_: () => void;
+  private readonly resizeHandler_: EventListener;
   private resizeFrame_ = 0;
 
   constructor(adapter: MDCGridListAdapter) {
     super(Object.assign(MDCGridListFoundation.defaultAdapter, adapter));
-    this.resizeHandler_ = () => this.alignCenter();
+    this.resizeHandler_ = this.alignCenter.bind(this);
   }
 
   init() {
