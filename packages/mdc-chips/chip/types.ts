@@ -1,6 +1,8 @@
+import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
+
 /**
  * @license
- * Copyright 2017 Google Inc.
+ * Copyright 2016 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,28 +23,20 @@
  * THE SOFTWARE.
  */
 
-/**
- * Defines the shape of the adapter expected by the foundation.
- * Implement this adapter for your framework of choice to delegate updates to
- * the component in your framework of choice. See architecture documentation
- * for more details.
- * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
- */
-interface MDCChipSetAdapter {
-  /**
-   * @return true if the root element contains the given class name.
-   */
-  hasClass(className: string): boolean;
-
-  /**
-   * Removes the chip with the given id from the chip set.
-   */
-  removeChip(chipId: string): void;
-
-  /**
-   * Sets the selected state of the chip with the given id.
-   */
-  setSelected(chipId: string, selected: boolean): void;
+export interface MDCChipInteractionEventDetail {
+  chipId: string;
 }
 
-export {MDCChipSetAdapter as default, MDCChipSetAdapter};
+export interface MDCChipSelectionEventDetail extends MDCChipInteractionEventDetail {
+  selected: boolean;
+}
+
+export interface MDCChipRemovalEventDetail extends MDCChipInteractionEventDetail {
+  root: Element;
+}
+
+export interface MDCChipInteractionEvent extends CustomEvent<MDCChipInteractionEventDetail> {}
+export interface MDCChipSelectionEvent extends CustomEvent<MDCChipSelectionEventDetail> {}
+export interface MDCChipRemovalEvent extends CustomEvent<MDCChipRemovalEventDetail> {}
+
+export type RippleFactory = (el: Element, foundation: MDCRippleFoundation) => MDCRipple;

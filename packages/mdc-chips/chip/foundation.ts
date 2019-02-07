@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import MDCFoundation from '@material/base/foundation';
+import {MDCFoundation} from '@material/base/foundation';
 import {MDCChipAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
@@ -93,19 +93,19 @@ class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     this.shouldRemoveOnTrailingIconClick_ = shouldRemove;
   }
 
-  /** @return {!ClientRect} */
-  getDimensions() {
+  getDimensions(): ClientRect {
+    const rootRect = this.adapter_.getRootBoundingClientRect();
+    const checkmarkRect = this.adapter_.getCheckmarkBoundingClientRect();
+
     // When a chip has a checkmark and not a leading icon, the bounding rect changes in size depending on the current
     // size of the checkmark.
-    if (!this.adapter_.hasLeadingIcon() && this.adapter_.getCheckmarkBoundingClientRect() !== null) {
-      const height = this.adapter_.getRootBoundingClientRect().height;
+    if (!this.adapter_.hasLeadingIcon() && checkmarkRect !== null) {
       // The checkmark's width is initially set to 0, so use the checkmark's height as a proxy since the checkmark
       // should always be square.
-      const width =
-          this.adapter_.getRootBoundingClientRect().width + this.adapter_.getCheckmarkBoundingClientRect()!.height;
-      return /** @type {!ClientRect} */ ({height, width});
+      const width = rootRect.width + checkmarkRect.height;
+      return Object.assign({}, rootRect, {width});
     } else {
-      return this.adapter_.getRootBoundingClientRect();
+      return rootRect;
     }
   }
 
@@ -120,9 +120,8 @@ class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
    * Handles an interaction event on the root element.
    */
   handleInteraction(evt: MouseEvent | KeyboardEvent) {
-    if (evt.type === 'click'
-      || (evt as KeyboardEvent).key === 'Enter'
-      || (evt as KeyboardEvent).keyCode === 13) {
+    const isEnter = (evt as KeyboardEvent).key === 'Enter' || (evt as KeyboardEvent).keyCode === 13;
+    if (evt.type === 'click' || isEnter) {
       this.adapter_.notifyInteraction();
     }
   }
@@ -165,7 +164,7 @@ class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
         this.adapter_.hasClass(cssClasses.SELECTED)) {
       this.adapter_.addClassToLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
     } else if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.CHECKMARK) &&
-               !this.adapter_.hasClass(cssClasses.SELECTED)) {
+        !this.adapter_.hasClass(cssClasses.SELECTED)) {
       this.adapter_.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
     }
   }
@@ -176,10 +175,9 @@ class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
    * @param {!Event} evt
    */
   handleTrailingIconInteraction(evt: MouseEvent | KeyboardEvent) {
+    const isEnter = (evt as KeyboardEvent).key === 'Enter' || (evt as KeyboardEvent).keyCode === 13;
     evt.stopPropagation();
-    if (evt.type === 'click'
-      || (evt as KeyboardEvent).key === 'Enter'
-      || (evt as KeyboardEvent).keyCode === 13) {
+    if (evt.type === 'click' || isEnter) {
       this.adapter_.notifyTrailingIconInteraction();
       if (this.shouldRemoveOnTrailingIconClick_) {
         this.beginExit();
@@ -188,20 +186,4 @@ class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   }
 }
 
-interface MDCChipInteractionEventDetail {
-  chipId: string;
-}
-
-interface MDCChipSelectionEventDetail extends MDCChipInteractionEventDetail {
-  selected: boolean;
-}
-
-interface MDCChipRemovalEventDetail extends MDCChipInteractionEventDetail {
-  root: Element;
-}
-
-interface MDCChipInteractionEvent extends CustomEvent<MDCChipInteractionEventDetail> {}
-interface MDCChipSelectionEvent extends CustomEvent<MDCChipSelectionEventDetail> {}
-interface MDCChipRemovalEvent extends CustomEvent<MDCChipRemovalEventDetail> {}
-
-export {MDCChipFoundation, MDCChipInteractionEvent, MDCChipSelectionEvent, MDCChipRemovalEvent};
+export {MDCChipFoundation as default, MDCChipFoundation};

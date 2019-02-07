@@ -206,4 +206,7 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   }
 }
 
-export {MDCMenuFoundation, MDCMenu, MenuDistance, Corner};
+export {MDCMenu as default, MDCMenu, Corner};
+export * from './adapter';
+export * from './foundation';
+export * from './types';

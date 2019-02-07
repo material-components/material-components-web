@@ -21,17 +21,18 @@
  * THE SOFTWARE.
  */
 
-import MDCComponent from '@material/base/component';
+import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/index';
 import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
-
 import {strings} from './constants';
 import {MDCChipFoundation} from './foundation';
+import {RippleFactory} from './types';
 
-const INTERACTION_EVENTS: Array<'click' | 'keydown'> = ['click', 'keydown'];
+type InteractionType = 'click' | 'keydown';
+
+const INTERACTION_EVENTS: InteractionType[] = ['click', 'keydown'];
 
 class MDCChip extends MDCComponent<MDCChipFoundation> implements RippleCapableSurface {
-
   /**
    * Returns whether the chip is selected.
    */
@@ -69,18 +70,20 @@ class MDCChip extends MDCComponent<MDCChipFoundation> implements RippleCapableSu
   }
 
   id: string | undefined;
-  root_!: HTMLElement;
-  private leadingIcon_!: HTMLElement | null;
-  private trailingIcon_!: HTMLElement | null;
-  private checkmark_!: HTMLElement | null;
-  private ripple_!: MDCRipple;
 
-  private handleInteraction_!: SpecificEventListener<'click'|'keydown'>;
-  private handleTransitionEnd_!: SpecificEventListener<'transitionend'>;
-  private handleTrailingIconInteraction_!: SpecificEventListener<'click'|'keydown'>;
+  // Public visibility for this property is required by RippleCapableSurface.
+  root_!: HTMLElement; // assigned in MDCComponent constructor
 
-  initialize(
-    rippleFactory = (el: Element, foundation: MDCRippleFoundation) => new MDCRipple(el, foundation)) {
+  private leadingIcon_!: Element | null; // assigned in initialize()
+  private trailingIcon_!: Element | null; // assigned in initialize()
+  private checkmark_!: Element | null; // assigned in initialize()
+  private ripple_!: MDCRipple; // assigned in initialize()
+
+  private handleInteraction_!: SpecificEventListener<InteractionType>; // assigned in initialSyncWithDOM()
+  private handleTransitionEnd_!: SpecificEventListener<'transitionend'>; // assigned in initialSyncWithDOM()
+  private handleTrailingIconInteraction_!: SpecificEventListener<InteractionType>; // assigned in initialSyncWithDOM()
+
+  initialize(rippleFactory: RippleFactory = (el, foundation) => new MDCRipple(el, foundation)) {
     this.id = this.root_.id;
     this.leadingIcon_ = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
     this.trailingIcon_ = this.root_.querySelector(strings.TRAILING_ICON_SELECTOR);
@@ -96,16 +99,16 @@ class MDCChip extends MDCComponent<MDCChipFoundation> implements RippleCapableSu
     this.handleInteraction_ = (evt: MouseEvent | KeyboardEvent) => this.foundation_.handleInteraction(evt);
     this.handleTransitionEnd_ = (evt: TransitionEvent) => this.foundation_.handleTransitionEnd(evt);
     this.handleTrailingIconInteraction_ = (evt: MouseEvent | KeyboardEvent) =>
-      this.foundation_.handleTrailingIconInteraction(evt);
+        this.foundation_.handleTrailingIconInteraction(evt);
 
     INTERACTION_EVENTS.forEach((evtType) => {
-      this.root_.addEventListener(evtType, this.handleInteraction_);
+      this.listen(evtType, this.handleInteraction_);
     });
-    this.root_.addEventListener('transitionend', this.handleTransitionEnd_);
+    this.listen('transitionend', this.handleTransitionEnd_);
 
     if (this.trailingIcon_) {
       INTERACTION_EVENTS.forEach((evtType) => {
-        this.trailingIcon_!.addEventListener(evtType, this.handleTrailingIconInteraction_);
+        this.trailingIcon_!.addEventListener(evtType, this.handleTrailingIconInteraction_ as EventListener);
       });
     }
   }
@@ -114,13 +117,13 @@ class MDCChip extends MDCComponent<MDCChipFoundation> implements RippleCapableSu
     this.ripple_.destroy();
 
     INTERACTION_EVENTS.forEach((evtType) => {
-      this.root_.removeEventListener(evtType, this.handleInteraction_);
+      this.unlisten(evtType, this.handleInteraction_);
     });
-    this.root_.removeEventListener('transitionend', this.handleTransitionEnd_);
+    this.unlisten('transitionend', this.handleTransitionEnd_);
 
     if (this.trailingIcon_) {
       INTERACTION_EVENTS.forEach((evtType) => {
-        this.trailingIcon_!.removeEventListener(evtType, this.handleTrailingIconInteraction_);
+        this.trailingIcon_!.removeEventListener(evtType, this.handleTrailingIconInteraction_ as EventListener);
       });
     }
 
@@ -152,13 +155,13 @@ class MDCChip extends MDCComponent<MDCChipFoundation> implements RippleCapableSu
       hasClass: (className) => this.root_.classList.contains(className),
       hasLeadingIcon: () => !!this.leadingIcon_,
       notifyInteraction: () => this.emit(
-        strings.INTERACTION_EVENT, {chipId: this.id}, true /* shouldBubble */),
+          strings.INTERACTION_EVENT, {chipId: this.id}, true /* shouldBubble */),
       notifyRemoval: () => this.emit(
-        strings.REMOVAL_EVENT, {chipId: this.id, root: this.root_}, true /* shouldBubble */),
+          strings.REMOVAL_EVENT, {chipId: this.id, root: this.root_}, true /* shouldBubble */),
       notifySelection: (selected) => this.emit(
-        strings.SELECTION_EVENT, {chipId: this.id, selected}, true /* shouldBubble */),
+          strings.SELECTION_EVENT, {chipId: this.id, selected}, true /* shouldBubble */),
       notifyTrailingIconInteraction: () => this.emit(
-        strings.TRAILING_ICON_INTERACTION_EVENT, {chipId: this.id}, true /* shouldBubble */),
+          strings.TRAILING_ICON_INTERACTION_EVENT, {chipId: this.id}, true /* shouldBubble */),
       removeClass: (className) => this.root_.classList.remove(className),
       removeClassFromLeadingIcon: (className) => {
         if (this.leadingIcon_) {

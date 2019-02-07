@@ -22,12 +22,12 @@
  */
 
 /**
- * Defines the shape of the adapter expected by the foundation. Implement this
- * adapter to integrate the Chip into your framework. See
- * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
- * for more information.
+ * Defines the shape of the adapter expected by the foundation.
+ * Implement this adapter for your framework of choice to delegate updates to
+ * the component in your framework of choice. See architecture documentation
+ * for more details.
+ * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-
 interface MDCChipAdapter {
   /**
    * Adds a class to the root element.
@@ -40,7 +40,7 @@ interface MDCChipAdapter {
   removeClass(className: string): void;
 
   /**
-   * Returns true if the root element contains the given class.
+   * @return true if the root element contains the given class.
    */
   hasClass(className: string): boolean;
 
@@ -55,7 +55,7 @@ interface MDCChipAdapter {
   removeClassFromLeadingIcon(className: string): void;
 
   /**
-   * Returns true if target has className, false otherwise.
+   * @return true if target has className, false otherwise.
    */
   eventTargetHasClass(target: EventTarget | null, className: string): boolean;
 
@@ -82,7 +82,7 @@ interface MDCChipAdapter {
   notifyRemoval(): void;
 
   /**
-   * Returns the computed property value of the given style property on the root element.
+   * @return The computed property value of the given style property on the root element.
    */
   getComputedStyleValue(propertyName: string): string;
 
@@ -92,17 +92,17 @@ interface MDCChipAdapter {
   setStyleProperty(propertyName: string, value: string): void;
 
   /**
-   * Returns whether the chip has a leading icon.
+   * @return Whether the chip has a leading icon.
    */
   hasLeadingIcon(): boolean;
 
   /**
-   * Returns the bounding client rect of the root element.
+   * @return The bounding client rect of the root element.
    */
   getRootBoundingClientRect(): ClientRect;
 
   /**
-   * Returns the bounding client rect of the checkmark element or null if it doesn't exist.
+   * @return The bounding client rect of the checkmark element or null if it doesn't exist.
    */
   getCheckmarkBoundingClientRect(): ClientRect | null;
 }
