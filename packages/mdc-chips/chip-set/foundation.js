@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import MDCFoundation from '@material/base/foundation';
+import {MDCFoundation} from '@material/base/foundation';
 import MDCChipSetAdapter from './adapter';
 // eslint-disable-next-line no-unused-vars
 import {MDCChipInteractionEventType, MDCChipSelectionEventType, MDCChipRemovalEventType} from '../chip/foundation';

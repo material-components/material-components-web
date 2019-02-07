@@ -21,11 +21,10 @@
  * THE SOFTWARE.
  */
 
-import MDCFoundation from './foundation';
+import {MDCFoundation} from './foundation';
 import {CustomEventListener, EventType, SpecificEventListener} from './types';
 
 class MDCComponent<FoundationType extends MDCFoundation> {
-
   static attachTo(root: Element): MDCComponent<MDCFoundation<{}>> {
     // Subclasses which extend MDCBase should provide an attachTo() method that takes a root element and
     // returns an instantiated component with its root set to that element. Also note that in the cases of

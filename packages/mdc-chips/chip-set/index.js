@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import MDCComponent from '@material/base/component';
+import {MDCComponent} from '@material/base/component';
 
 import MDCChipSetAdapter from './adapter';
 import MDCChipSetFoundation from './foundation';
