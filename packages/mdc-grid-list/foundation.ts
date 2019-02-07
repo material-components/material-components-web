@@ -22,35 +22,42 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+import {MDCGridListAdapter} from './adapter';
 import {strings} from './constants';
 
-export default class MDCGridListFoundation extends MDCFoundation {
+class MDCGridListFoundation extends MDCFoundation<MDCGridListAdapter> {
   static get strings() {
     return strings;
   }
 
-  static get defaultAdapter() {
+  static get defaultAdapter(): MDCGridListAdapter {
     return {
-      getOffsetWidth: () => /* number */ 0,
-      getNumberOfTiles: () => /* number */ 0,
-      getOffsetWidthForTileAtIndex: (/* index: number */) => /* number */ 0,
-      setStyleForTilesElement: (/* property: string, value: string */) => {},
-      registerResizeHandler: (/* handler: EventListener */) => {},
-      deregisterResizeHandler: (/* handler: EventListener */) => {},
+      deregisterResizeHandler: () => undefined,
+      getNumberOfTiles: () => 0,
+      getOffsetWidth: () => 0,
+      getOffsetWidthForTileAtIndex: () => 0,
+      registerResizeHandler: () => undefined,
+      setStyleForTilesElement: () => undefined,
     };
   }
-  constructor(adapter) {
+
+  private readonly resizeHandler_: EventListener;
+  private resizeFrame_ = 0;
+
+  constructor(adapter: MDCGridListAdapter) {
     super(Object.assign(MDCGridListFoundation.defaultAdapter, adapter));
-    this.resizeHandler_ = () => this.alignCenter();
-    this.resizeFrame_ = 0;
+    this.resizeHandler_ = this.alignCenter.bind(this);
   }
+
   init() {
     this.alignCenter();
     this.adapter_.registerResizeHandler(this.resizeHandler_);
   }
+
   destroy() {
     this.adapter_.deregisterResizeHandler(this.resizeHandler_);
   }
+
   alignCenter() {
     if (this.resizeFrame_ !== 0) {
       cancelAnimationFrame(this.resizeFrame_);
@@ -60,8 +67,9 @@ export default class MDCGridListFoundation extends MDCFoundation {
       this.resizeFrame_ = 0;
     });
   }
-  alignCenter_() {
-    if (this.adapter_.getNumberOfTiles() == 0) {
+
+  private alignCenter_() {
+    if (this.adapter_.getNumberOfTiles() === 0) {
       return;
     }
     const gridWidth = this.adapter_.getOffsetWidth();
@@ -70,3 +78,5 @@ export default class MDCGridListFoundation extends MDCFoundation {
     this.adapter_.setStyleForTilesElement('width', `${tilesWidth}px`);
   }
 }
+
+export {MDCGridListFoundation as default, MDCGridListFoundation};
