@@ -23,7 +23,7 @@
 
 import {strings, cssClasses, numbers} from './constants';
 import MDCTopAppBarAdapter from './adapter';
-import MDCFoundation from '@material/base/foundation';
+import {MDCFoundation} from '@material/base/foundation';
 
 /**
  * @extends {MDCFoundation<!MDCTopAppBarAdapter>}

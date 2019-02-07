@@ -1,6 +1,6 @@
 {
   "name": "@material/slider",
-  "version": "0.43.0",
+  "version": "0.44.0",
   "description": "The Material Components for the web slider component",
   "main": "dist/mdc.slider.js",
   "license": "MIT",
@@ -21,6 +21,6 @@
     "@material/base": "^0.41.0",
     "@material/rtl": "^0.42.0",
     "@material/theme": "^0.43.0",
-    "@material/typography": "^0.43.0"
+    "@material/typography": "^0.44.0"
   }
 }

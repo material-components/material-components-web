@@ -21,34 +21,14 @@
  * THE SOFTWARE.
  */
 
-import MDCComponent from '@material/base/component';
-import MDCRippleAdapter from './adapter';
-import MDCRippleFoundation from './foundation';
+import {MDCComponent} from '@material/base/component';
+import {MDCRippleAdapter} from './adapter';
+import {MDCRippleFoundation} from './foundation';
+import {RippleAttachOpts, RippleCapableSurface} from './types';
 import * as util from './util';
 
-/** Options passed in when attaching a ripple to an object. */
-interface MDCRippleAttachOpts {
-  isUnbounded?: boolean;
-}
-
-/**
- * See Material Design spec for more details on when to use ripples.
- * https://material.io/guidelines/motion/choreography.html#choreography-creation
- * unbounded Whether or not the ripple bleeds out of the bounds of the element.
- * disabled Whether or not the ripple is attached to a disabled component.
- */
-interface RippleCapableSurface {
-  readonly root_: Element;
-  unbounded?: boolean;
-  disabled?: boolean;
-}
-
-class MDCRipple extends MDCComponent<MDCRippleFoundation> implements
-    RippleCapableSurface {
-
-  static attachTo(root: Element, opts: MDCRippleAttachOpts = {
-    isUnbounded: undefined,
-  }): MDCRipple {
+class MDCRipple extends MDCComponent<MDCRippleFoundation> implements RippleCapableSurface {
+  static attachTo(root: Element, opts: RippleAttachOpts = {isUnbounded: undefined}): MDCRipple {
     const ripple = new MDCRipple(root);
     // Only override unbounded behavior if option is explicitly specified
     if (opts.isUnbounded !== undefined) {
@@ -137,4 +117,7 @@ class MDCRipple extends MDCComponent<MDCRippleFoundation> implements
 
 }
 
-export {MDCRipple, MDCRippleFoundation, RippleCapableSurface, util};
+export {MDCRipple as default, MDCRipple, util};
+export * from './adapter';
+export * from './foundation';
+export * from './types';

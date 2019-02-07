@@ -21,10 +21,10 @@
  * THE SOFTWARE.
  */
 
-import MDCComponent from '@material/base/component';
+import {MDCComponent} from '@material/base/component';
 import {MDCFloatingLabel} from '@material/floating-label/index';
 import {MDCLineRipple} from '@material/line-ripple/index';
-import {MDCMenu} from '@material/menu/index';
+import {MDCMenu} from '@material/menu/index.ts';
 import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
 import {MDCNotchedOutline} from '@material/notched-outline/index';
 import MDCSelectFoundation from './foundation';
@@ -37,8 +37,8 @@ import {MDCSelectHelperText, MDCSelectHelperTextFoundation} from './helper-text/
 /* eslint-enable no-unused-vars */
 
 // Closure has issues with {this as that} syntax.
-import * as menuSurfaceConstants from '@material/menu-surface/constants';
-import * as menuConstants from '@material/menu/constants';
+import * as menuSurfaceConstants from '@material/menu-surface/constants.ts';
+import * as menuConstants from '@material/menu/constants.ts';
 
 const VALIDATION_ATTR_WHITELIST = ['required', 'aria-required'];
 
@@ -302,7 +302,7 @@ class MDCSelect extends MDCComponent {
     this.menuElement_ = /** @type {HTMLElement} */ (this.root_.querySelector(strings.MENU_SELECTOR));
     this.menu_ = menuFactory(this.menuElement_);
     this.menu_.hoistMenuToBody();
-    this.menu_.setAnchorElement(/** @type {!HTMLElement} */ (this.root_));
+    this.menu_.setAnchorElement(this.root_);
     this.menu_.setAnchorCorner(menuSurfaceConstants.Corner.BOTTOM_START);
     this.menu_.wrapFocus = false;
   }

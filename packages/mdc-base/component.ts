@@ -21,10 +21,10 @@
  * THE SOFTWARE.
  */
 
-import MDCFoundation from './foundation';
+import {MDCFoundation} from './foundation';
+import {CustomEventListener, EventType, SpecificEventListener} from './types';
 
 class MDCComponent<FoundationType extends MDCFoundation> {
-
   static attachTo(root: Element): MDCComponent<MDCFoundation<{}>> {
     // Subclasses which extend MDCBase should provide an attachTo() method that takes a root element and
     // returns an instantiated component with its root set to that element. Also note that in the cases of
@@ -82,6 +82,8 @@ class MDCComponent<FoundationType extends MDCFoundation> {
    * Wrapper method to add an event listener to the component's root element. This is most useful when
    * listening for custom events.
    */
+  listen<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
+  listen<E extends Event>(evtType: string, handler: CustomEventListener<E>): void;
   listen(evtType: string, handler: EventListener) {
     this.root_.addEventListener(evtType, handler);
   }
@@ -90,6 +92,8 @@ class MDCComponent<FoundationType extends MDCFoundation> {
    * Wrapper method to remove an event listener to the component's root element. This is most useful when
    * unlistening for custom events.
    */
+  unlisten<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
+  unlisten<E extends Event>(evtType: string, handler: CustomEventListener<E>): void;
   unlisten(evtType: string, handler: EventListener) {
     this.root_.removeEventListener(evtType, handler);
   }
@@ -98,10 +102,10 @@ class MDCComponent<FoundationType extends MDCFoundation> {
    * Fires a cross-browser-compatible custom event from the component root of the given type,
    * with the given data.
    */
-  emit(evtType: string, evtData: object, shouldBubble = false) {
-    let evt;
+  emit<T extends object>(evtType: string, evtData: T, shouldBubble = false) {
+    let evt: CustomEvent<T>;
     if (typeof CustomEvent === 'function') {
-      evt = new CustomEvent(evtType, {
+      evt = new CustomEvent<T>(evtType, {
         bubbles: shouldBubble,
         detail: evtData,
       });
@@ -114,4 +118,4 @@ class MDCComponent<FoundationType extends MDCFoundation> {
   }
 }
 
-export default MDCComponent;
+export {MDCComponent as default, MDCComponent};

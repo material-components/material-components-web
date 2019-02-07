@@ -20,12 +20,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-import MDCComponent from '@material/base/component';
+import {MDCComponent} from '@material/base/component';
 import MDCDismissibleDrawerFoundation from './dismissible/foundation';
 import MDCModalDrawerFoundation from './modal/foundation';
 import MDCDrawerAdapter from './adapter';
 import {MDCList} from '@material/list/index';
-import MDCListFoundation from '@material/list/foundation';
+import {MDCListFoundation} from '@material/list/foundation';
 import {strings} from './constants';
 import * as util from './util';
 import createFocusTrap from 'focus-trap';
@@ -110,7 +110,7 @@ class MDCDrawer extends MDCComponent {
 
     if (this.root_.classList.contains(MODAL)) {
       const {SCRIM_SELECTOR} = MDCDismissibleDrawerFoundation.strings;
-      this.scrim_ = /** @type {!Element} */ (this.root_.parentElement.querySelector(SCRIM_SELECTOR));
+      this.scrim_ = /** @type {!Element} */ (this.root_.parentNode.querySelector(SCRIM_SELECTOR));
       this.handleScrimClick_ = () => /** @type {!MDCModalDrawerFoundation} */ (this.foundation_).handleScrimClick();
       this.scrim_.addEventListener('click', this.handleScrimClick_);
       this.focusTrap_ = util.createFocusTrapInstance(this.root_, this.focusTrapFactory_);

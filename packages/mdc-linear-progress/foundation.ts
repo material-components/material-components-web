@@ -21,14 +21,12 @@
  * THE SOFTWARE.
  */
 
-import {getCorrectPropertyName, StandardCssPropertyName} from '@material/animation/index';
-import MDCFoundation from '@material/base/foundation';
+import {getCorrectPropertyName} from '@material/animation/index';
+import {MDCFoundation} from '@material/base/foundation';
 import {MDCLinearProgressAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-const {TRANSFORM} = StandardCssPropertyName;
-
-export default class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgressAdapter> {
+class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgressAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
@@ -39,12 +37,12 @@ export default class MDCLinearProgressFoundation extends MDCFoundation<MDCLinear
 
   static get defaultAdapter(): MDCLinearProgressAdapter {
     return {
-      addClass: (_className: string) => undefined,
+      addClass: () => undefined,
       getBuffer: () => null,
       getPrimaryBar: () => null,
-      hasClass: (_className: string) => false,
-      removeClass: (_className: string) => undefined,
-      setStyle: (_el: HTMLElement, _styleProperty: string, _value: string) => undefined,
+      hasClass: () => false,
+      removeClass: () => undefined,
+      setStyle: () => undefined,
     };
   }
 
@@ -105,6 +103,8 @@ export default class MDCLinearProgressFoundation extends MDCFoundation<MDCLinear
       return;
     }
     const value = `scaleX(${scaleValue})`;
-    this.adapter_.setStyle(el, getCorrectPropertyName(window, TRANSFORM), value);
+    this.adapter_.setStyle(el, getCorrectPropertyName(window, 'transform'), value);
   }
 }
+
+export {MDCLinearProgressFoundation as default, MDCLinearProgressFoundation};

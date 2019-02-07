@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-import {Point} from './adapter';
+import {Point} from './types';
 
 /**
  * Stores result from supportsCssVariables to avoid redundant processing to

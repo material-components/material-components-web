@@ -30,8 +30,10 @@ import {MDCRipple} from '../../../packages/mdc-ripple/index';
 import {MDCLineRipple} from '../../../packages/mdc-line-ripple/index';
 import {MDCFloatingLabel} from '../../../packages/mdc-floating-label/index';
 import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline/index';
-import {MDCTextField, MDCTextFieldFoundation, MDCTextFieldHelperText,
+import {MDCTextField, MDCTextFieldFoundation, MDCTextFieldHelperText, MDCTextFieldCharacterCounter,
   MDCTextFieldIcon} from '../../../packages/mdc-textfield/index';
+import {cssClasses as helperTextCssClasses} from '../../../packages/mdc-textfield/helper-text/constants';
+import {cssClasses as characterCounterCssClasses} from '../../../packages/mdc-textfield/character-counter/constants';
 
 const {cssClasses} = MDCTextFieldFoundation;
 
@@ -43,6 +45,16 @@ const getFixture = () => bel`
     <div class="mdc-line-ripple"></div>
   </div>
 `;
+
+const getHelperLineWithHelperText = () => bel`
+  <div class="${cssClasses.HELPER_LINE}">
+    <div class="${helperTextCssClasses.ROOT}">helper text</div>
+  </div>`;
+
+const getHelperLineWithCharacterCounter = () => bel`
+  <div class="${cssClasses.HELPER_LINE}">
+    <div class="${characterCounterCssClasses.ROOT}">helper text</div>
+  </div>`;
 
 suite('MDCTextField');
 
@@ -69,6 +81,12 @@ class FakeLineRipple {
 }
 
 class FakeHelperText {
+  constructor() {
+    this.destroy = td.func('.destroy');
+  }
+}
+
+class FakeCharacterCounter {
   constructor() {
     this.destroy = td.func('.destroy');
   }
@@ -127,17 +145,27 @@ test('#constructor instantiates a line ripple on the `.mdc-line-ripple` element 
   assert.instanceOf(component.lineRipple_, MDCLineRipple);
 });
 
-const getHelperTextElement = () => bel`<p id="helper-text">helper text</p>`;
-
-test('#constructor instantiates a helper text on the element with id specified in the input aria-controls' +
-  'if present', () => {
+test('#constructor instantiates a helper text if present', () => {
   const root = getFixture();
-  root.querySelector('.mdc-text-field__input').setAttribute('aria-controls', 'helper-text');
-  const helperText = getHelperTextElement();
+  const helperText = getHelperLineWithHelperText();
+  document.body.appendChild(root);
   document.body.appendChild(helperText);
   const component = new MDCTextField(root);
   assert.instanceOf(component.helperText_, MDCTextFieldHelperText);
+  document.body.removeChild(root);
   document.body.removeChild(helperText);
+});
+
+test('#constructor instantiates a character counter if present', () => {
+  const root = getFixture();
+  const characterCounter = getHelperLineWithCharacterCounter();
+  document.body.appendChild(root);
+  root.querySelector('input').maxLength = 12;
+  document.body.appendChild(characterCounter);
+  const component = new MDCTextField(root);
+  assert.instanceOf(component.characterCounter_, MDCTextFieldCharacterCounter);
+  document.body.removeChild(root);
+  document.body.removeChild(characterCounter);
 });
 
 test('#constructor instantiates a leading icon if an icon element is present', () => {
@@ -193,6 +221,7 @@ test('#constructor handles undefined optional sub-elements gracefully', () => {
 function setupTest(root = getFixture()) {
   const lineRipple = new FakeLineRipple();
   const helperText = new FakeHelperText();
+  const characterCounter = new FakeCharacterCounter();
   const icon = new FakeIcon();
   const label = new FakeLabel();
   const outline = new FakeOutline();
@@ -202,11 +231,12 @@ function setupTest(root = getFixture()) {
     (el) => new FakeRipple(el),
     () => lineRipple,
     () => helperText,
+    () => characterCounter,
     () => icon,
     () => label,
     () => outline
   );
-  return {root, component, lineRipple, helperText, icon, label, outline};
+  return {root, component, lineRipple, helperText, characterCounter, icon, label, outline};
 }
 
 test('#destroy cleans up the ripple if present', () => {
@@ -225,13 +255,26 @@ test('#destroy cleans up the line ripple if present', () => {
 
 test('#destroy cleans up the helper text if present', () => {
   const root = getFixture();
-  root.querySelector('.mdc-text-field__input').setAttribute('aria-controls', 'helper-text');
-  const helperTextElement = getHelperTextElement();
+  const helperTextElement = getHelperLineWithHelperText();
+  document.body.appendChild(root);
   document.body.appendChild(helperTextElement);
   const {component, helperText} = setupTest(root);
   component.destroy();
   td.verify(helperText.destroy());
+  document.body.removeChild(root);
   document.body.removeChild(helperTextElement);
+});
+
+test('#destroy cleans up the character counter if present', () => {
+  const root = getFixture();
+  const characterCounterElement = getHelperLineWithCharacterCounter();
+  document.body.appendChild(root);
+  document.body.appendChild(characterCounterElement);
+  const {component, characterCounter} = setupTest(root);
+  component.destroy();
+  td.verify(characterCounter.destroy());
+  document.body.removeChild(root);
+  document.body.removeChild(characterCounterElement);
 });
 
 test('#destroy cleans up the icon if present', () => {

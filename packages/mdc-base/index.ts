@@ -21,7 +21,6 @@
  * THE SOFTWARE.
  */
 
-import MDCComponent from './component';
-import MDCFoundation from './foundation';
-
-export {MDCFoundation, MDCComponent};
+export * from './component';
+export * from './foundation';
+export * from './types';

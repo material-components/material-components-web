@@ -21,12 +21,10 @@
  * THE SOFTWARE.
  */
 
-import MDCFoundation from '@material/base/foundation';
-import {StandardCssPropertyName, getCorrectPropertyName} from '@material/animation/index.ts';
+import {MDCFoundation} from '@material/base/foundation';
+import {getCorrectPropertyName} from '@material/animation/index.ts';
 
 import {cssClasses, strings} from './constants';
-
-const {TRANSFORM} = StandardCssPropertyName;
 
 export default class MDCTabBarFoundation extends MDCFoundation {
   static get cssClasses() {
@@ -107,7 +105,7 @@ export default class MDCTabBarFoundation extends MDCFoundation {
       this.adapter_.getComputedWidthForTabAtIndex(this.activeTabIndex_) / this.adapter_.getOffsetWidth();
 
     const transformValue = `translateX(${translateAmtForActiveTabLeft}px) scale(${scaleAmtForActiveTabWidth}, 1)`;
-    this.adapter_.setStyleForIndicator(getCorrectPropertyName(window, TRANSFORM), transformValue);
+    this.adapter_.setStyleForIndicator(getCorrectPropertyName(window, 'transform'), transformValue);
 
     if (isIndicatorFirstRender) {
       // Force layout so that transform styles to take effect.

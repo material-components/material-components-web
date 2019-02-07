@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import MDCComponent from '@material/base/component';
+import {MDCComponent} from '@material/base/component';
 import {MDCSelectionControl} from '@material/selection-control/index';
 import {MDCFormFieldFoundation} from './foundation';
 
@@ -63,4 +63,6 @@ class MDCFormField extends MDCComponent<MDCFormFieldFoundation> {
   }
 }
 
-export {MDCFormField, MDCFormFieldFoundation};
+export {MDCFormField as default, MDCFormField};
+export * from './adapter';
+export * from './foundation';

@@ -25,11 +25,7 @@ import {cssClasses, strings, numbers} from './constants';
 import MDCSliderAdapter from './adapter';
 
 import {getCorrectEventName, getCorrectPropertyName} from '@material/animation/index.ts';
-import {StandardCssPropertyName, StandardJsEventType} from '@material/animation/index.ts';
-import MDCFoundation from '@material/base/foundation';
-
-const {TRANSFORM} = StandardCssPropertyName;
-const {TRANSITION_END} = StandardJsEventType;
+import {MDCFoundation} from '@material/base/foundation';
 
 /** @enum {string} */
 const KEY_IDS = {
@@ -151,7 +147,7 @@ class MDCSliderFoundation extends MDCFoundation {
     this.adapter_.registerResizeHandler(this.resizeHandler_);
     this.layout();
     // At last step, provide a reasonable default value to discrete slider
-    if (this.isDiscrete_ && this.getStep() == 0) {
+    if (this.isDiscrete_ && this.getStep() === 0) {
       this.step_ = 1;
     }
   }
@@ -524,8 +520,8 @@ class MDCSliderFoundation extends MDCFoundation {
       translatePx = this.rect_.width - translatePx;
     }
 
-    const transformProp = getCorrectPropertyName(window, TRANSFORM);
-    const transitionendEvtName = getCorrectEventName(window, TRANSITION_END);
+    const transformProp = getCorrectPropertyName(window, 'transform');
+    const transitionendEvtName = getCorrectEventName(window, 'transitionend');
 
     if (this.inTransit_) {
       const onTransitionEnd = () => {

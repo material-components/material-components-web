@@ -1,7 +1,7 @@
 {
   "name": "@material/tab-bar",
   "description": "The Material Components for the web tab bar component",
-  "version": "0.43.1",
+  "version": "0.44.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -16,9 +16,9 @@
   },
   "dependencies": {
     "@material/base": "^0.41.0",
-    "@material/elevation": "^0.43.0",
-    "@material/tab": "^0.43.0",
-    "@material/tab-scroller": "^0.43.1"
+    "@material/elevation": "^0.44.0",
+    "@material/tab": "^0.44.0",
+    "@material/tab-scroller": "^0.44.0"
   },
   "publishConfig": {
     "access": "public"
