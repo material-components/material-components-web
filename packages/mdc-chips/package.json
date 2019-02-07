@@ -20,7 +20,6 @@
     "@material/animation": "^0.41.0",
     "@material/base": "^0.41.0",
     "@material/checkbox": "^0.44.0",
-    "@material/dom": "^0.41.0",
     "@material/elevation": "^0.44.0",
     "@material/ripple": "^0.44.0",
     "@material/shape": "^0.43.0",

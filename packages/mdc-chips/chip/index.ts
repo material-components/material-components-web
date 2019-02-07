@@ -22,7 +22,7 @@
  */
 
 import MDCComponent from '@material/base/component';
-import {SpecificEventListener} from '@material/dom/index';
+import {SpecificEventListener} from '@material/base/index';
 import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
 
 import {strings} from './constants';
