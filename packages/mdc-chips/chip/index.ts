@@ -26,7 +26,12 @@ import {SpecificEventListener} from '@material/base/index';
 import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
 import {strings} from './constants';
 import {MDCChipFoundation} from './foundation';
-import {RippleFactory} from './types';
+import {
+  MDCChipInteractionEventDetail,
+  MDCChipRemovalEventDetail,
+  MDCChipSelectionEventDetail,
+  RippleFactory,
+} from './types';
 
 type InteractionType = 'click' | 'keydown';
 
@@ -152,13 +157,13 @@ class MDCChip extends MDCComponent<MDCChipFoundation> implements RippleCapableSu
       getRootBoundingClientRect: () => this.root_.getBoundingClientRect(),
       hasClass: (className) => this.root_.classList.contains(className),
       hasLeadingIcon: () => !!this.leadingIcon_,
-      notifyInteraction: () => this.emit(
+      notifyInteraction: () => this.emit<MDCChipInteractionEventDetail>(
           strings.INTERACTION_EVENT, {chipId: this.id}, true /* shouldBubble */),
-      notifyRemoval: () => this.emit(
+      notifyRemoval: () => this.emit<MDCChipRemovalEventDetail>(
           strings.REMOVAL_EVENT, {chipId: this.id, root: this.root_}, true /* shouldBubble */),
-      notifySelection: (selected) => this.emit(
+      notifySelection: (selected) => this.emit<MDCChipSelectionEventDetail>(
           strings.SELECTION_EVENT, {chipId: this.id, selected}, true /* shouldBubble */),
-      notifyTrailingIconInteraction: () => this.emit(
+      notifyTrailingIconInteraction: () => this.emit<MDCChipInteractionEventDetail>(
           strings.TRAILING_ICON_INTERACTION_EVENT, {chipId: this.id}, true /* shouldBubble */),
       removeClass: (className) => this.root_.classList.remove(className),
       removeClassFromLeadingIcon: (className) => {
