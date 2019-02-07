@@ -32,10 +32,14 @@ let idCounter = 0;
 
 class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   /**
-   * Returns an array of the IDs of all selected chips.
+   * @return An array of the IDs of all selected chips.
    */
-  get selectedChipIds() {
+  get selectedChipIds(): ReadonlyArray<string> {
     return this.foundation_.getSelectedChipIds();
+  }
+
+  get chips(): ReadonlyArray<MDCChip> {
+    return this.chips_.slice();
   }
 
   static attachTo(root: Element) {
@@ -43,15 +47,10 @@ class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   }
 
   private chips_!: MDCChip[]; // assigned in initialize()
-
-  get chips(): ReadonlyArray<MDCChip> {
-    return this.chips_.slice();
-  }
-
-  private chipFactory_!: (el: Element) => MDCChip;
-  private handleChipInteraction_!: (evt: MDCChipInteractionEvent) => void;
-  private handleChipSelection_!: (evt: MDCChipSelectionEvent) => void;
-  private handleChipRemoval_!: (evt: MDCChipRemovalEvent) => void;
+  private chipFactory_!: (el: Element) => MDCChip; // assigned in initialize()
+  private handleChipInteraction_!: (evt: MDCChipInteractionEvent) => void; // assigned in initialSyncWithDOM()
+  private handleChipSelection_!: (evt: MDCChipSelectionEvent) => void; // assigned in initialSyncWithDOM()
+  private handleChipRemoval_!: (evt: MDCChipRemovalEvent) => void; // assigned in initialSyncWithDOM()
 
   /**
    * @param chipFactory A function which creates a new MDCChip.
@@ -71,12 +70,9 @@ class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
     this.handleChipInteraction_ = (evt) => this.foundation_.handleChipInteraction(evt.detail.chipId);
     this.handleChipSelection_ = (evt) => this.foundation_.handleChipSelection(evt.detail.chipId, evt.detail.selected);
     this.handleChipRemoval_ = (evt) => this.foundation_.handleChipRemoval(evt.detail.chipId);
-    this.root_.addEventListener(
-        MDCChipFoundation.strings.INTERACTION_EVENT, this.handleChipInteraction_ as EventListener);
-    this.root_.addEventListener(
-        MDCChipFoundation.strings.SELECTION_EVENT, this.handleChipSelection_ as EventListener);
-    this.root_.addEventListener(
-        MDCChipFoundation.strings.REMOVAL_EVENT, this.handleChipRemoval_ as EventListener);
+    this.listen(MDCChipFoundation.strings.INTERACTION_EVENT, this.handleChipInteraction_);
+    this.listen(MDCChipFoundation.strings.SELECTION_EVENT, this.handleChipSelection_);
+    this.listen(MDCChipFoundation.strings.REMOVAL_EVENT, this.handleChipRemoval_);
   }
 
   destroy() {
@@ -84,12 +80,9 @@ class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
       chip.destroy();
     });
 
-    this.root_.removeEventListener(
-        MDCChipFoundation.strings.INTERACTION_EVENT, this.handleChipInteraction_ as EventListener);
-    this.root_.removeEventListener(
-        MDCChipFoundation.strings.SELECTION_EVENT, this.handleChipSelection_ as EventListener);
-    this.root_.removeEventListener(
-        MDCChipFoundation.strings.REMOVAL_EVENT, this.handleChipRemoval_ as EventListener);
+    this.unlisten(MDCChipFoundation.strings.INTERACTION_EVENT, this.handleChipInteraction_);
+    this.unlisten(MDCChipFoundation.strings.SELECTION_EVENT, this.handleChipSelection_);
+    this.unlisten(MDCChipFoundation.strings.REMOVAL_EVENT, this.handleChipRemoval_);
 
     super.destroy();
   }
