@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,38 +21,10 @@
  * THE SOFTWARE.
  */
 
-import createFocusTrap from 'focus-trap';
+import * as FocusTrapLib from 'focus-trap';
 
-/**
- * @param {!Element} surfaceEl
- * @param {?Element=} initialFocusEl
- * @param {function(!Element, !FocusTrapCreateOptions): !FocusTrapInstance} focusTrapFactory
- * @return {!FocusTrapInstance}
- */
-function createFocusTrapInstance(surfaceEl, focusTrapFactory = createFocusTrap, initialFocusEl = null) {
-  return focusTrapFactory(surfaceEl, {
-    initialFocus: initialFocusEl,
-    escapeDeactivates: false, // Dialog foundation handles escape key
-    clickOutsideDeactivates: true, // Allow handling of scrim clicks
-  });
-}
-
-/**
- * @param {!Element} el
- * @return {boolean}
- */
-function isScrollable(el) {
-  return el.scrollHeight > el.offsetHeight;
-}
-
-/**
- * @param {!Array<!Element>|!NodeList} els
- * @return {boolean}
- */
-function areTopsMisaligned(els) {
-  const tops = new Set();
-  [].forEach.call(els, (el) => tops.add(el.offsetTop));
-  return tops.size > 1;
-}
-
-export {createFocusTrapInstance, isScrollable, areTopsMisaligned};
+// TODO(acdvorak): Centralize this in mdc-base or mdc-dom?
+export type FocusTrapFactory = (
+    element: HTMLElement | string,
+    userOptions?: FocusTrapLib.Options,
+) => FocusTrapLib.FocusTrap;

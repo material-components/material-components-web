@@ -21,80 +21,34 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
-
 /**
- * Adapter for MDC Dialog. Provides an interface for managing:
- * - CSS classes
- * - DOM
- * - Event handlers
- *
- * Additionally, provides type information for the adapter to the Closure
- * compiler.
- *
+ * Defines the shape of the adapter expected by the foundation.
  * Implement this adapter for your framework of choice to delegate updates to
  * the component in your framework of choice. See architecture documentation
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
- *
- * @record
  */
-class MDCDialogAdapter {
-  /** @param {string} className */
-  addClass(className) {}
+interface MDCDialogAdapter {
+  addClass(className: string): void;
+  removeClass(className: string): void;
+  hasClass(className: string): boolean;
+  addBodyClass(className: string): void;
+  removeBodyClass(className: string): void;
+  eventTargetMatches(target: EventTarget | null, selector: string): boolean;
 
-  /** @param {string} className */
-  removeClass(className) {}
+  isContentScrollable(): boolean;
+  areButtonsStacked(): boolean;
+  getActionFromEvent(event: Event): string | null;
 
-  /**
-   * @param {string} className
-   * @return {boolean}
-   */
-  hasClass(className) {}
+  trapFocus(): void;
+  releaseFocus(): void;
+  clickDefaultButton(): void;
+  reverseButtons(): void;
 
-  /** @param {string} className */
-  addBodyClass(className) {}
-
-  /** @param {string} className */
-  removeBodyClass(className) {}
-
-  /**
-   * @param {!EventTarget} target
-   * @param {string} selector
-   * @return {boolean}
-   */
-  eventTargetMatches(target, selector) {}
-
-  trapFocus() {}
-  releaseFocus() {}
-
-  /** @return {boolean} */
-  isContentScrollable() {}
-
-  /** @return {boolean} */
-  areButtonsStacked() {}
-
-  /**
-   * @param {!Event} event
-   * @return {?string}
-   */
-  getActionFromEvent(event) {}
-
-  clickDefaultButton() {}
-  reverseButtons() {}
-
-  notifyOpening() {}
-  notifyOpened() {}
-
-  /**
-   * @param {string} action
-   */
-  notifyClosing(action) {}
-
-  /**
-   * @param {string} action
-   */
-  notifyClosed(action) {}
+  notifyOpening(): void;
+  notifyOpened(): void;
+  notifyClosing(action: string): void;
+  notifyClosed(action: string): void;
 }
 
-export default MDCDialogAdapter;
+export {MDCDialogAdapter as default, MDCDialogAdapter};

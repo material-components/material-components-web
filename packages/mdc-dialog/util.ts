@@ -21,41 +21,29 @@
  * THE SOFTWARE.
  */
 
-const cssClasses = {
-  OPEN: 'mdc-dialog--open',
-  OPENING: 'mdc-dialog--opening',
-  CLOSING: 'mdc-dialog--closing',
-  SCROLLABLE: 'mdc-dialog--scrollable',
-  STACKED: 'mdc-dialog--stacked',
-  SCROLL_LOCK: 'mdc-dialog-scroll-lock',
-};
+import * as createFocusTrap from 'focus-trap';
+import {FocusTrapFactory} from './types';
 
-const strings = {
-  SCRIM_SELECTOR: '.mdc-dialog__scrim',
-  CONTAINER_SELECTOR: '.mdc-dialog__container',
-  SURFACE_SELECTOR: '.mdc-dialog__surface',
-  CONTENT_SELECTOR: '.mdc-dialog__content',
-  BUTTON_SELECTOR: '.mdc-dialog__button',
-  DEFAULT_BUTTON_SELECTOR: '.mdc-dialog__button--default',
-  SUPPRESS_DEFAULT_PRESS_SELECTOR: [
-    'textarea',
-    '.mdc-menu .mdc-list-item',
-  ].join(', '),
+function createFocusTrapInstance(
+    surfaceEl: HTMLElement,
+    focusTrapFactory: FocusTrapFactory = createFocusTrap as unknown as FocusTrapFactory,
+    initialFocusEl: createFocusTrap.FocusTarget | null,
+): createFocusTrap.FocusTrap {
+  return focusTrapFactory(surfaceEl, ({
+    clickOutsideDeactivates: true, // Allow handling of scrim clicks
+    escapeDeactivates: false, // Dialog foundation handles escape key
+    initialFocus: initialFocusEl,
+  } as createFocusTrap.Options));
+}
 
-  OPENING_EVENT: 'MDCDialog:opening',
-  OPENED_EVENT: 'MDCDialog:opened',
-  CLOSING_EVENT: 'MDCDialog:closing',
-  CLOSED_EVENT: 'MDCDialog:closed',
+function isScrollable(el: HTMLElement | null): boolean {
+  return el ? el.scrollHeight > el.offsetHeight : false;
+}
 
-  ACTION_ATTRIBUTE: 'data-mdc-dialog-action',
+function areTopsMisaligned(els: HTMLElement[]): boolean {
+  const tops = new Set();
+  [].forEach.call(els, (el: HTMLElement) => tops.add(el.offsetTop));
+  return tops.size > 1;
+}
 
-  CLOSE_ACTION: 'close',
-  DESTROY_ACTION: 'destroy',
-};
-
-const numbers = {
-  DIALOG_ANIMATION_OPEN_TIME_MS: 150,
-  DIALOG_ANIMATION_CLOSE_TIME_MS: 75,
-};
-
-export {cssClasses, strings, numbers};
+export {createFocusTrapInstance, isScrollable, areTopsMisaligned};
