@@ -1,5 +1,3 @@
-import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
-
 /**
  * @license
  * Copyright 2016 Google Inc.
@@ -22,6 +20,8 @@ import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
+import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
 
 export interface MDCChipInteractionEventDetail {
   chipId: string;
