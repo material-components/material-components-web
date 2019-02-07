@@ -127,7 +127,7 @@ test('#announce does nothing if textContent is empty', () => {
   assert.equal(ariaEl.getAttribute('aria-live'), 'polite');
 });
 
-test('#announce removes aria-live if it was not present', () => {
+test('#announce does nothing if aria-live was not present', () => {
   const fixture = bel`
 <div>
   <div class="aria label" role="status">Foo</div>
@@ -135,9 +135,13 @@ test('#announce removes aria-live if it was not present', () => {
   const clock = installClock();
   const ariaEl = fixture.querySelector('.aria');
 
-  assert.isNull(ariaEl.getAttribute('aria-live'));
   util.announce(ariaEl);
-  assert.equal(ariaEl.getAttribute('aria-live'), 'off');
-  clock.tick(ARIA_LIVE_DELAY_MS);
+
   assert.isNull(ariaEl.getAttribute('aria-live'));
+  assert.isNull(ariaEl.getAttribute(ARIA_LIVE_LABEL_TEXT_ATTR));
+
+  clock.tick(ARIA_LIVE_DELAY_MS);
+
+  assert.isNull(ariaEl.getAttribute('aria-live'));
+  assert.isNull(ariaEl.getAttribute(ARIA_LIVE_LABEL_TEXT_ATTR));
 });

@@ -32,7 +32,7 @@ function announce(ariaEl: Element, labelEl: Element = ariaEl) {
   // Trim text to ignore `&nbsp;` (see below).
   // textContent is only null if the node is a document, DOCTYPE, or notation.
   const labelText = labelEl.textContent!.trim();
-  if (!labelText) {
+  if (!labelText || !priority) {
     return;
   }
 
@@ -76,12 +76,8 @@ function announce(ariaEl: Element, labelEl: Element = ariaEl) {
   labelEl.setAttribute(ARIA_LIVE_LABEL_TEXT_ATTR, labelText);
 
   setTimeout(() => {
-    if (priority === null) {
-      ariaEl.removeAttribute('aria-live');
-    } else {
-      // Allow screen readers to announce changes to the DOM again.
-      ariaEl.setAttribute('aria-live', priority);
-    }
+    // Allow screen readers to announce changes to the DOM again.
+    ariaEl.setAttribute('aria-live', priority);
 
     // Remove the message from the ::before pseudo-element.
     labelEl.removeAttribute(ARIA_LIVE_LABEL_TEXT_ATTR);
