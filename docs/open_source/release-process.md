@@ -14,11 +14,6 @@ Releases and Branches documentation.
 
 This will log you into NPM.
 
-`gcloud init`
-
-This will log you into Google Cloud account. Choose `material-components-web`
-where necessary.
-
 ## Announce
 
 Ping the Slack announcements channel first! This will let other members of the
@@ -85,24 +80,6 @@ See Lerna issues [#1137](https://github.com/lerna/lerna/issues/1137) and [#1091]
 
 ## Publish to npm
 
-### For Pre-releases
-
-```
-$(npm bin)/lerna publish --skip-git --npm-tag=next --since=<previous-patch-tag>
-```
-
-When lerna prompts for version, choose **Pre-minor** for the first pre-release in a cycle, or **Prerelease** for
-subsequent pre-releases.
-(The resulting version number should always have the same minor version as the next planned release.)
-
-Be sure to include the command-line flags:
-
-* `--skip-git` avoids immediately applying a git tag, which we will do later after updating the changelog
-* `--npm-tag=next` avoids updating the `latest` tag on npm, since pre-releases should not be installed by default
-* `--since=<previous-patch-tag>` (e.g. `--since=v0.36.1`) forces lerna to diff against the latest patch; otherwise,
-  it diffs against the previous minor release which may cause some packages without changes to be published (this
-  happens when bugfix releases aren't tagged from the master branch)
-
 ### For Minor Releases
 
 ```
@@ -161,11 +138,8 @@ git diff # Review the changelog and make sure it looks OK
 
 In certain cases, there are some typical edits to make the changelog easier to read:
 
-* **For a minor release or pre-release after an off-master patch release:**
+* **For a minor release after an off-master patch release:**
   Remove any duplicated items in the new minor release that were already listed under patch releases.
-* **For a minor release after any pre-releases:**
-  Bring any changes from any prior pre-releases under their respective headings for the new final release, then
-  remove the pre-release headings ([example](https://github.com/material-components/material-components-web/commit/13fd6784))
 
 Once you're sure about the changes, run the `post-release` script to commit and create an annotated git tag:
 
@@ -186,7 +160,7 @@ You will need to temporarily alter Github's master branch protection in order to
 1. Perform the process outlined in one of the sections below
 1. Don't forget to re-enable "Include administrators" & click "Save changes" afterwards
 
-### For Pre-releases and Minor Releases
+### For Minor Releases
 
 ```
 git push origin master <tag>
@@ -223,10 +197,10 @@ git push
 
 ### For Minor Releases
 
-We typically maintain a `next` branch on the MDC Web Catalog repository which follows MDC Web pre-releases, to keep
-ahead of breaking changes in new releases.
+We typically maintain a `next` branch on the MDC Web Catalog repository which works ahead of MDC Web releases
+(using [this script](https://gist.github.com/kfranqueiro/d06c7073c5012de3edb6c5875d6a4a50)), to keep ahead of breaking changes.
 
-In the event no pre-releases were tagged, the above process for patch releases would be followed, but would require
+In the event no work was done on the `next` branch, the above process for patch releases would be followed, but would require
 checking for necessary updates to accommodate breaking changes in MDC Web.
 
 Below is the process when a `next` branch is used:
@@ -237,7 +211,7 @@ Below is the process when a `next` branch is used:
 1. Deal with any conflicts if necessary
 1. Update `package.json` to reference the newly-released minor version of `material-components-web`
 1. `rm -rf node_modules && npm i` to cause `package-lock.json` to update
-1. `npm start` and test the catalog, in case any further breaking changes occurred since the last pre-release
+1. `npm start` and test the catalog, in case any further breaking changes occurred since the updates on `next`
 1. `npm run build` to double-check that there are no unforeseen errors when building resources for deployment
 1. If necessary, perform additional changes and commit them to the chore branch
 1. Push the chore branch and send a pull request for one last review
@@ -257,7 +231,7 @@ Below is the process when a `next` branch is used:
 
 ## Log Issues in MDC React Repository
 
-MDC React does not currently maintain a branch that gets updated ahead of release against pre-releases.
+MDC React does not currently maintain a branch that gets updated ahead of release.
 After release, ensure that any breaking changes likely to require MDC React changes have issues logged on the
 MDC React repository, with the "required for sync" label.
 
