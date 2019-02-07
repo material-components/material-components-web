@@ -21,8 +21,8 @@
  * THE SOFTWARE.
  */
 
-import MDCFoundation from '@material/base/foundation';
-import MDCRippleAdapter from './adapter';
+import {MDCFoundation} from '@material/base/foundation';
+import {MDCRippleAdapter} from './adapter';
 import {cssClasses, numbers, strings} from './constants';
 import {Point} from './types';
 import {getNormalizedEventCoords} from './util';

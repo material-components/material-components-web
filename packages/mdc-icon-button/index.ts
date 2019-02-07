@@ -21,10 +21,10 @@
  * THE SOFTWARE.
  */
 
-import MDCComponent from '@material/base/component';
+import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/index';
 import {MDCRipple} from '@material/ripple/index';
-import MDCIconButtonToggleFoundation from './foundation';
+import {MDCIconButtonToggleFoundation} from './foundation';
 
 class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundation> {
   static attachTo(root: HTMLElement) {
@@ -76,4 +76,7 @@ class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundation> {
   }
 }
 
-export {MDCIconButtonToggle, MDCIconButtonToggleFoundation};
+export {MDCIconButtonToggle as default, MDCIconButtonToggle};
+export * from './adapter';
+export * from './foundation';
+export * from './types';

@@ -49,7 +49,7 @@ This section should contain most - if not all - of what you need to get up and r
 // BAD
 import {MDCFoundation} from '@material/base';
 // GOOD
-import MDCFoundation from '@material/base/foundation';
+import {MDCFoundation} from '@material/base/foundation';
 ```
 
 This is an unfortunate side-effect of how [closure's module naming mechanism works](https://github.com/google/closure-compiler/issues/2257).
@@ -109,7 +109,7 @@ Foundations must extend `MDCFoundation` parameterized by their respective adapte
 ```ts
 // foundation.ts
 
-import MDCFoundation from '@material/base/foundation';
+import {MDCFoundation} from '@material/base/foundation';
 import MDCComponentAdapter from './adapter';
 
 class MDCComponentFoundation extends MDCFoundation<MDCComponentAdapter> {
@@ -131,7 +131,7 @@ Components must extend `MDCComponent` parameterized by their respective foundati
 ```ts
 // index.ts
 
-import MDCComponent from '@material/base/component';
+import {MDCComponent} from '@material/base/component';
 import MDCComponentFoundation from './foundation';
 
 class MDCAwesomeComponent extends MDCComponent<MDCComponentFoundation> {

@@ -21,16 +21,15 @@
  * THE SOFTWARE.
  */
 
-import MDCComponent from '@material/base/component';
+import {MDCComponent} from '@material/base/component';
 import {EventType, SpecificEventListener} from '@material/base/index';
 import {RippleCapableSurface} from '@material/ripple/index';
 import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
 import {MDCSelectionControl} from '@material/selection-control/index';
 
-import MDCRadioFoundation from './foundation';
+import {MDCRadioFoundation} from './foundation';
 
 class MDCRadio extends MDCComponent<MDCRadioFoundation> implements RippleCapableSurface, MDCSelectionControl {
-
   static attachTo(root: Element) {
     return new MDCRadio(root);
   }
@@ -110,4 +109,6 @@ class MDCRadio extends MDCComponent<MDCRadioFoundation> implements RippleCapable
   }
 }
 
-export {MDCRadio, MDCRadioFoundation};
+export {MDCRadio as default, MDCRadio};
+export * from './adapter';
+export * from './foundation';

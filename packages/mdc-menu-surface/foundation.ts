@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import MDCFoundation from '@material/base/foundation';
+import {MDCFoundation} from '@material/base/foundation';
 import {MDCMenuSurfaceAdapter} from './adapter';
 import {Corner, CornerBit, cssClasses, numbers, strings} from './constants';
 import {MenuDimensions, MenuDistance, MenuPoint} from './types';

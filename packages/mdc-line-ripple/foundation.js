@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import MDCFoundation from '@material/base/foundation';
+import {MDCFoundation} from '@material/base/foundation';
 import MDCLineRippleAdapter from './adapter';
 import {cssClasses} from './constants';
 
