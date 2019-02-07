@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 export const strings = {
   TILES_SELECTOR: '.mdc-grid-list__tiles',
   TILE_SELECTOR: '.mdc-grid-tile',
