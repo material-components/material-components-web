@@ -32,4 +32,4 @@ interface MDCGridListAdapter {
   ): void;
 }
 
-export {MDCGridListAdapter};
+export {MDCGridListAdapter as default, MDCGridListAdapter};
