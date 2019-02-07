@@ -26,13 +26,12 @@ import {numbers, strings} from './constants';
 const {ARIA_LIVE_DELAY_MS} = numbers;
 const {ARIA_LIVE_LABEL_TEXT_ATTR} = strings;
 
-/**
- * @param {!HTMLElement} ariaEl
- * @param {!HTMLElement=} labelEl
- */
-function announce(ariaEl, labelEl = ariaEl) {
+function announce(ariaEl: Element, labelEl: Element = ariaEl) {
   const priority = ariaEl.getAttribute('aria-live');
-  const labelText = labelEl.textContent.trim(); // Ignore `&nbsp;` (see below)
+
+  // Trim text to ignore `&nbsp;` (see below).
+  // textContent is only null if the node is a document, DOCTYPE, or notation.
+  const labelText = labelEl.textContent!.trim();
   if (!labelText) {
     return;
   }
@@ -77,8 +76,12 @@ function announce(ariaEl, labelEl = ariaEl) {
   labelEl.setAttribute(ARIA_LIVE_LABEL_TEXT_ATTR, labelText);
 
   setTimeout(() => {
-    // Allow screen readers to announce changes to the DOM again.
-    ariaEl.setAttribute('aria-live', priority);
+    if (priority === null) {
+      ariaEl.removeAttribute('aria-live');
+    } else {
+      // Allow screen readers to announce changes to the DOM again.
+      ariaEl.setAttribute('aria-live', priority);
+    }
 
     // Remove the message from the ::before pseudo-element.
     labelEl.removeAttribute(ARIA_LIVE_LABEL_TEXT_ATTR);

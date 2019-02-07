@@ -160,11 +160,11 @@ class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
     }
   }
 
-  handleActionButtonClick() {
+  handleActionButtonClick(_evt: MouseEvent) {
     this.close(REASON_ACTION);
   }
 
-  handleActionIconClick() {
+  handleActionIconClick(_evt: MouseEvent) {
     this.close(REASON_DISMISS);
   }
 

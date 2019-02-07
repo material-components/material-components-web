@@ -26,7 +26,7 @@ import {MDCComponent} from '@material/base/component';
 import * as ponyfill from '@material/dom/ponyfill';
 import {strings} from './constants';
 import {MDCSnackbarFoundation} from './foundation';
-import {Announcer} from './types';
+import {Announcer, AnnouncerFactory} from './types';
 import * as util from './util';
 
 const {
@@ -39,18 +39,17 @@ class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
     return new MDCSnackbar(root);
   }
 
-  private actionEl_!: Element; // assigned in initialSyncWithDOM()
   private announce_!: Announcer; // assigned in initialize()
-  private handleKeyDown_!: SpecificEventListener<'keydown'; // assigned in initialSyncWithDOM()
-  private handleSurfaceClick_!: SpecificEventListener<'click'; // assigned in initialSyncWithDOM()
+
+  private actionEl_!: Element; // assigned in initialSyncWithDOM()
   private labelEl_!: Element; // assigned in initialSyncWithDOM()
   private surfaceEl_!: Element; // assigned in initialSyncWithDOM()
 
-  /**
-   * @param {function(): function(Element, Element=):void} announceFactory
-   */
-  initialize(announceFactory = () => util.announce) {
-    this.announce_ = announceFactory();
+  private handleKeyDown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
+  private handleSurfaceClick_!: SpecificEventListener<'click'>; // assigned in initialSyncWithDOM()
+
+  initialize(announcerFactory: AnnouncerFactory = () => util.announce) {
+    this.announce_ = announcerFactory();
   }
 
   initialSyncWithDOM() {
@@ -62,9 +61,9 @@ class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
     this.handleSurfaceClick_ = (evt) => {
       const target = evt.target as Element;
       if (this.isActionButton_(target)) {
-        this.foundation_.handleActionButtonClick();
+        this.foundation_.handleActionButtonClick(evt);
       } else if (this.isActionIcon_(target)) {
-        this.foundation_.handleActionIconClick();
+        this.foundation_.handleActionIconClick(evt);
       }
     };
 
@@ -141,20 +140,20 @@ class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
     this.actionEl_.textContent = actionButtonText;
   }
 
-  private registerKeyDownHandler_(handler: EventListener) {
+  private registerKeyDownHandler_(handler: SpecificEventListener<'keydown'>) {
     this.listen('keydown', handler);
   }
 
-  private deregisterKeyDownHandler_(handler: EventListener) {
+  private deregisterKeyDownHandler_(handler: SpecificEventListener<'keydown'>) {
     this.unlisten('keydown', handler);
   }
 
-  private registerSurfaceClickHandler_(handler: EventListener) {
-    this.surfaceEl_.addEventListener('click', handler);
+  private registerSurfaceClickHandler_(handler: SpecificEventListener<'click'>) {
+    this.surfaceEl_.addEventListener('click', handler as EventListener);
   }
 
-  private deregisterSurfaceClickHandler_(handler: EventListener) {
-    this.surfaceEl_.removeEventListener('click', handler);
+  private deregisterSurfaceClickHandler_(handler: SpecificEventListener<'click'>) {
+    this.surfaceEl_.removeEventListener('click', handler as EventListener);
   }
 
   private isActionButton_(target: Element): boolean {
