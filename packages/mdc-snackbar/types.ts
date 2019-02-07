@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,44 +21,4 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
-
-/**
- * Adapter for MDC Snackbar. Provides an interface for managing:
- * - CSS classes
- * - Event handlers
- *
- * Additionally, provides type information for the adapter to the Closure
- * compiler.
- *
- * Implement this adapter for your framework of choice to delegate updates to
- * the component in your framework of choice. See architecture documentation
- * for more details.
- * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
- *
- * @record
- */
-class MDCSnackbarAdapter {
-  /** @param {string} className */
-  addClass(className) {}
-
-  /** @param {string} className */
-  removeClass(className) {}
-
-  announce() {}
-
-  notifyOpening() {}
-  notifyOpened() {}
-
-  /**
-   * @param {string} reason
-   */
-  notifyClosing(reason) {}
-
-  /**
-   * @param {string} reason
-   */
-  notifyClosed(reason) {}
-}
-
-export default MDCSnackbarAdapter;
+export type Announcer = (ariaEl: Element, labelEl?: Element) => void;

@@ -21,62 +21,50 @@
  * THE SOFTWARE.
  */
 
+import {SpecificEventListener} from '@material/base';
 import {MDCComponent} from '@material/base/component';
-import MDCSnackbarFoundation from './foundation';
-import {strings} from './constants';
-import * as util from './util';
 import * as ponyfill from '@material/dom/ponyfill';
+import {strings} from './constants';
+import {MDCSnackbarFoundation} from './foundation';
+import {Announcer} from './types';
+import * as util from './util';
 
 const {
   SURFACE_SELECTOR, LABEL_SELECTOR, ACTION_SELECTOR, DISMISS_SELECTOR,
   OPENING_EVENT, OPENED_EVENT, CLOSING_EVENT, CLOSED_EVENT,
 } = strings;
 
-class MDCSnackbar extends MDCComponent {
-  static attachTo(root) {
+class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
+  static attachTo(root: Element) {
     return new MDCSnackbar(root);
   }
 
-  constructor(...args) {
-    super(...args);
-
-    /** @type {!HTMLElement} */
-    this.surfaceEl_;
-
-    /** @type {!HTMLElement} */
-    this.labelEl_;
-
-    /** @type {!HTMLElement} */
-    this.actionEl_;
-
-    /** @type {function(!HTMLElement, !HTMLElement=): void} */
-    this.announce_;
-
-    /** @private {!Function} */
-    this.handleKeyDown_;
-
-    /** @private {!Function} */
-    this.handleSurfaceClick_;
-  }
+  private actionEl_!: Element; // assigned in initialSyncWithDOM()
+  private announce_!: Announcer; // assigned in initialize()
+  private handleKeyDown_!: SpecificEventListener<'keydown'; // assigned in initialSyncWithDOM()
+  private handleSurfaceClick_!: SpecificEventListener<'click'; // assigned in initialSyncWithDOM()
+  private labelEl_!: Element; // assigned in initialSyncWithDOM()
+  private surfaceEl_!: Element; // assigned in initialSyncWithDOM()
 
   /**
-   * @param {function(): function(!HTMLElement, !HTMLElement=):void} announceFactory
+   * @param {function(): function(Element, Element=):void} announceFactory
    */
   initialize(announceFactory = () => util.announce) {
     this.announce_ = announceFactory();
   }
 
   initialSyncWithDOM() {
-    this.surfaceEl_ = /** @type {!HTMLElement} */ (this.root_.querySelector(SURFACE_SELECTOR));
-    this.labelEl_ = /** @type {!HTMLElement} */ (this.root_.querySelector(LABEL_SELECTOR));
-    this.actionEl_ = /** @type {!HTMLElement} */ (this.root_.querySelector(ACTION_SELECTOR));
+    this.surfaceEl_ = this.root_.querySelector<HTMLElement>(SURFACE_SELECTOR)!;
+    this.labelEl_ = this.root_.querySelector<HTMLElement>(LABEL_SELECTOR)!;
+    this.actionEl_ = this.root_.querySelector<HTMLElement>(ACTION_SELECTOR)!;
 
     this.handleKeyDown_ = (evt) => this.foundation_.handleKeyDown(evt);
     this.handleSurfaceClick_ = (evt) => {
-      if (this.isActionButton_(evt.target)) {
-        this.foundation_.handleActionButtonClick(evt);
-      } else if (this.isActionIcon_(evt.target)) {
-        this.foundation_.handleActionIconClick(evt);
+      const target = evt.target as Element;
+      if (this.isActionButton_(target)) {
+        this.foundation_.handleActionButtonClick();
+      } else if (this.isActionIcon_(target)) {
+        this.foundation_.handleActionIconClick();
       }
     };
 
@@ -95,7 +83,7 @@ class MDCSnackbar extends MDCComponent {
   }
 
   /**
-   * @param {string=} reason Why the snackbar was closed. Value will be passed to CLOSING_EVENT and CLOSED_EVENT via the
+   * @param reason Why the snackbar was closed. Value will be passed to CLOSING_EVENT and CLOSED_EVENT via the
    *     `event.detail.reason` property. Standard values are REASON_ACTION and REASON_DISMISS, but custom
    *     client-specific values may also be used if desired.
    */
@@ -103,132 +91,77 @@ class MDCSnackbar extends MDCComponent {
     this.foundation_.close(reason);
   }
 
-  /**
-   * @return {!MDCSnackbarFoundation}
-   */
   getDefaultFoundation() {
-    /* eslint brace-style: "off" */
     return new MDCSnackbarFoundation({
       addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
       announce: () => this.announce_(this.labelEl_),
-      notifyOpening: () => this.emit(OPENING_EVENT, {}),
-      notifyOpened: () => this.emit(OPENED_EVENT, {}),
-      notifyClosing: (reason) => this.emit(CLOSING_EVENT, reason ? {reason} : {}),
       notifyClosed: (reason) => this.emit(CLOSED_EVENT, reason ? {reason} : {}),
+      notifyClosing: (reason) => this.emit(CLOSING_EVENT, reason ? {reason} : {}),
+      notifyOpened: () => this.emit(OPENED_EVENT, {}),
+      notifyOpening: () => this.emit(OPENING_EVENT, {}),
+      removeClass: (className) => this.root_.classList.remove(className),
     });
   }
 
-  /**
-   * @return {number}
-   */
-  get timeoutMs() {
+  get timeoutMs(): number {
     return this.foundation_.getTimeoutMs();
   }
 
-  /**
-   * @param {number} timeoutMs
-   */
-  set timeoutMs(timeoutMs) {
+  set timeoutMs(timeoutMs: number) {
     this.foundation_.setTimeoutMs(timeoutMs);
   }
 
-  /**
-   * @return {boolean}
-   */
-  get closeOnEscape() {
+  get closeOnEscape(): boolean {
     return this.foundation_.getCloseOnEscape();
   }
 
-  /**
-   * @param {boolean} closeOnEscape
-   */
-  set closeOnEscape(closeOnEscape) {
+  set closeOnEscape(closeOnEscape: boolean) {
     this.foundation_.setCloseOnEscape(closeOnEscape);
   }
 
-  /**
-   * @return {boolean}
-   */
-  get isOpen() {
+  get isOpen(): boolean {
     return this.foundation_.isOpen();
   }
 
-  /**
-   * @return {string}
-   */
-  get labelText() {
-    return this.labelEl_.textContent;
+  get labelText(): string {
+    // This property only returns null if the node is a document, DOCTYPE, or notation.
+    // On Element nodes, it always returns a string.
+    return this.labelEl_.textContent!;
   }
 
-  /**
-   * @param {string} labelText
-   */
-  set labelText(labelText) {
+  set labelText(labelText: string) {
     this.labelEl_.textContent = labelText;
   }
 
-  /**
-   * @return {string}
-   */
-  get actionButtonText() {
-    return this.actionEl_.textContent;
+  get actionButtonText(): string {
+    return this.actionEl_.textContent!;
   }
 
-  /**
-   * @param {string} actionButtonText
-   */
-  set actionButtonText(actionButtonText) {
+  set actionButtonText(actionButtonText: string) {
     this.actionEl_.textContent = actionButtonText;
   }
 
-  /**
-   * @param {!Function} handler
-   * @private
-   */
-  registerKeyDownHandler_(handler) {
+  private registerKeyDownHandler_(handler: EventListener) {
     this.listen('keydown', handler);
   }
 
-  /**
-   * @param {!Function} handler
-   * @private
-   */
-  deregisterKeyDownHandler_(handler) {
+  private deregisterKeyDownHandler_(handler: EventListener) {
     this.unlisten('keydown', handler);
   }
 
-  /**
-   * @param {!Function} handler
-   * @private
-   */
-  registerSurfaceClickHandler_(handler) {
+  private registerSurfaceClickHandler_(handler: EventListener) {
     this.surfaceEl_.addEventListener('click', handler);
   }
 
-  /**
-   * @param {!Function} handler
-   * @private
-   */
-  deregisterSurfaceClickHandler_(handler) {
+  private deregisterSurfaceClickHandler_(handler: EventListener) {
     this.surfaceEl_.removeEventListener('click', handler);
   }
 
-  /**
-   * @param {!Element} target
-   * @return {boolean}
-   * @private
-   */
-  isActionButton_(target) {
+  private isActionButton_(target: Element): boolean {
     return Boolean(ponyfill.closest(target, ACTION_SELECTOR));
   }
 
-  /**
-   * @param {!Element} target
-   * @return {boolean}
-   * @private
-   */
-  isActionIcon_(target) {
+  private isActionIcon_(target: Element): boolean {
     return Boolean(ponyfill.closest(target, DISMISS_SELECTOR));
   }
 }
