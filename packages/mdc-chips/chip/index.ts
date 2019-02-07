@@ -34,9 +34,9 @@ const INTERACTION_EVENTS: InteractionType[] = ['click', 'keydown'];
 
 class MDCChip extends MDCComponent<MDCChipFoundation> implements RippleCapableSurface {
   /**
-   * Returns whether the chip is selected.
+   * @return Whether the chip is selected.
    */
-  get selected() {
+  get selected(): boolean {
     return this.foundation_.isSelected();
   }
 
@@ -48,9 +48,9 @@ class MDCChip extends MDCComponent<MDCChipFoundation> implements RippleCapableSu
   }
 
   /**
-   * Returns whether a trailing icon click should trigger exit/removal of the chip.
+   * @return Whether a trailing icon click should trigger exit/removal of the chip.
    */
-  get shouldRemoveOnTrailingIconClick() {
+  get shouldRemoveOnTrailingIconClick(): boolean {
     return this.foundation_.getShouldRemoveOnTrailingIconClick();
   }
 
@@ -61,15 +61,17 @@ class MDCChip extends MDCComponent<MDCChipFoundation> implements RippleCapableSu
     this.foundation_.setShouldRemoveOnTrailingIconClick(shouldRemove);
   }
 
-  get ripple() {
+  get ripple(): MDCRipple {
     return this.ripple_;
+  }
+
+  get id(): string {
+    return this.root_.id;
   }
 
   static attachTo(root: Element) {
     return new MDCChip(root);
   }
-
-  id: string | undefined;
 
   // Public visibility for this property is required by RippleCapableSurface.
   root_!: HTMLElement; // assigned in MDCComponent constructor
@@ -84,7 +86,6 @@ class MDCChip extends MDCComponent<MDCChipFoundation> implements RippleCapableSu
   private handleTrailingIconInteraction_!: SpecificEventListener<InteractionType>; // assigned in initialSyncWithDOM()
 
   initialize(rippleFactory: RippleFactory = (el, foundation) => new MDCRipple(el, foundation)) {
-    this.id = this.root_.id;
     this.leadingIcon_ = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
     this.trailingIcon_ = this.root_.querySelector(strings.TRAILING_ICON_SELECTOR);
     this.checkmark_ = this.root_.querySelector(strings.CHECKMARK_SELECTOR);

@@ -26,11 +26,11 @@ import {MDCChip, MDCChipFoundation} from '../chip/index';
 import {MDCChipInteractionEvent, MDCChipRemovalEvent, MDCChipSelectionEvent} from '../chip/types';
 import {MDCChipSetFoundation} from './foundation';
 
-let idCounter = 0;
 type ChipFactory = (el: Element) => MDCChip;
 
-class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
+let idCounter = 0;
 
+class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   /**
    * Returns an array of the IDs of all selected chips.
    */

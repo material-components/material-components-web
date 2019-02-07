@@ -279,10 +279,10 @@ Method Signature | Description
 
 Property | Value Type | Description
 --- | --- | ---
-`id` | `string` | Unique identifier on the chip\*
+`id` | `string` (read-only) | Unique identifier on the chip\*
 `selected` | `boolean` | Proxies to the foundation's `isSelected`/`setSelected` methods
 `shouldRemoveOnTrailingIconClick` | `boolean` | Proxies to the foundation's `getShouldRemoveOnTrailingIconClick`/`setShouldRemoveOnTrailingIconClick` methods\*\*
-`ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCChip` initializes
+`ripple` | `MDCRipple` (read-only) | The `MDCRipple` instance for the root element that `MDCChip` initializes
 
 > \*_NOTE_: This will be the same as the `id` attribute on the root element. If an `id` is not provided, a unique one will be generated.
 
