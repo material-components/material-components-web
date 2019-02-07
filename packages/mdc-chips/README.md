@@ -279,9 +279,9 @@ Method Signature | Description
 
 Property | Value Type | Description
 --- | --- | ---
-`id` | string | Unique identifier on the chip\*
-`selected` | Boolean | Proxies to the foundation's `isSelected`/`setSelected` methods
-`shouldRemoveOnTrailingIconClick` | Boolean | Proxies to the foundation's `getShouldRemoveOnTrailingIconClick`/`setShouldRemoveOnTrailingIconClick` methods\*\*
+`id` | `string` | Unique identifier on the chip\*
+`selected` | `boolean` | Proxies to the foundation's `isSelected`/`setSelected` methods
+`shouldRemoveOnTrailingIconClick` | `boolean` | Proxies to the foundation's `getShouldRemoveOnTrailingIconClick`/`setShouldRemoveOnTrailingIconClick` methods\*\*
 `ripple` | `MDCRipple` | The `MDCRipple` instance for the root element that `MDCChip` initializes
 
 > \*_NOTE_: This will be the same as the `id` attribute on the root element. If an `id` is not provided, a unique one will be generated.
@@ -307,8 +307,8 @@ Method Signature | Description
 
 Property | Value Type | Description
 --- | --- | ---
-`chips` | Array<`MDCChip`> | An array of the `MDCChip` objects that represent chips in the set
-`selectedChipIds` | `!Array<string>` (read-only) | An array of the IDs of all selected chips
+`chips` | `MDCChip[]` | An array of the `MDCChip` objects that represent chips in the set
+`selectedChipIds` | `string[]` (read-only) | An array of the IDs of all selected chips
 
 ## Usage within Web Frameworks
 
@@ -316,7 +316,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 
 ### Adapters: `MDCChipAdapter` and `MDCChipSetAdapter`
 
-See [`chip/index.js`](chip/index.js) and [`chip-set/index.js`](chip-set/index.js) for vanilla DOM implementations of these adapter APIs for reference.
+See [`chip/index.ts`](chip/index.ts) and [`chip-set/index.ts`](chip-set/index.ts) for vanilla DOM implementations of these adapter APIs for reference.
 
 #### `MDCChipAdapter`
 
@@ -336,7 +336,7 @@ Method Signature | Description
 `setStyleProperty(propertyName: string, value: string) => void` | Sets the property value of the given style property on the root element
 `hasLeadingIcon() => boolean` | Returns whether the chip has a leading icon
 `getRootBoundingClientRect() => ClientRect` | Returns the bounding client rect of the root element
-`getCheckmarkBoundingClientRect() => ?ClientRect` | Returns the bounding client rect of the checkmark element or null if it doesn't exist
+`getCheckmarkBoundingClientRect() => ClientRect \| null` | Returns the bounding client rect of the checkmark element or null if it doesn't exist
 
 > \*_NOTE_: `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target chip's ID, and must be observable by the parent `mdc-chip-set` element (e.g. via DOM event bubbling).
 
@@ -382,7 +382,7 @@ Events | Element Selector | Foundation Handler
 
 Method Signature | Description
 --- | ---
-`getSelectedChipIds() => !Array<string>` | Returns an array of the IDs of all selected chips
+`getSelectedChipIds() => string[]` | Returns an array of the IDs of all selected chips
 `select(chipId: string) => void` | Selects the chip with the given id
 `handleChipInteraction(chipId: string) => void` | Handles a custom `MDCChip:interaction` event on the root element
 `handleChipSelection(chipId: string, selected: boolean) => void` | Handles a custom `MDCChip:selection` event on the root element
