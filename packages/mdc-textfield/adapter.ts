@@ -21,8 +21,8 @@
  * THE SOFTWARE.
  */
 
-import {NativeInputType} from './types';
 import {EventType, SpecificEventListener} from '@material/base/index';
+import {NativeInputType} from './types';
 
 /**
  * Defines the shape of the adapter expected by the foundation.

@@ -22,8 +22,8 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {MDCTextFieldIconFoundation} from './foundation';
 import {EventType, SpecificEventListener} from '@material/base/index';
+import {MDCTextFieldIconFoundation} from './foundation';
 
 class MDCTextFieldIcon extends MDCComponent<MDCTextFieldIconFoundation> {
   static attachTo(root: Element): MDCTextFieldIcon {
