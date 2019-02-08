@@ -64,7 +64,7 @@ interface MDCSliderAdapter {
   /**
    * Returns the bounding client rect for the slider Element
    */
-  computeBoundingRect(): ClientRect | null;
+  computeBoundingRect(): ClientRect;
 
   /**
    * Returns the tab index of the slider Element

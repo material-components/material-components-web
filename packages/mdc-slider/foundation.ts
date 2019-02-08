@@ -102,7 +102,7 @@ class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     // tslint:enable:object-literal-sort-keys
   }
 
-  private rect_: ClientRect | null = null;
+  private rect_!: ClientRect; // assigned in layout() via init()
 
   /**
    * We set this to NaN since we want it to be a number, but we can't use '0' or '-1'
