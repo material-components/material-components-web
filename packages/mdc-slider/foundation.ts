@@ -23,7 +23,7 @@
 
 import {getCorrectEventName, getCorrectPropertyName} from '@material/animation/index';
 import {MDCFoundation} from '@material/base/foundation';
-import {SpecificEventListener} from '@material/base/index';
+import {EventType, SpecificEventListener} from '@material/base/index';
 import {MDCSliderAdapter} from './adapter';
 import {cssClasses, numbers, strings} from './constants';
 
@@ -123,8 +123,7 @@ class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   private preventFocusState_ = false;
 
   private readonly thumbContainerPointerHandler_: EventListener;
-  private readonly interactionStartHandler_:
-      SpecificEventListener<'touchstart'> | SpecificEventListener<'pointerdown'> | SpecificEventListener<'mousedown'>;
+  private readonly interactionStartHandler_: SpecificEventListener<DownEventType>;
   private readonly keydownHandler_: SpecificEventListener<'keydown'>;
   private readonly focusHandler_: SpecificEventListener<'focus'>;
   private readonly blurHandler_: SpecificEventListener<'blur'>;
@@ -149,14 +148,14 @@ class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     this.hasTrackMarker_ = this.adapter_.hasClass(cssClasses.HAS_TRACK_MARKER);
 
     DOWN_EVENTS.forEach((evtName) => {
-      this.adapter_.registerInteractionHandler(evtName, this.interactionStartHandler_ as EventListener);
+      this.adapter_.registerInteractionHandler(evtName, this.interactionStartHandler_);
       this.adapter_.registerThumbContainerInteractionHandler(evtName, this.thumbContainerPointerHandler_);
     });
 
-    this.adapter_.registerInteractionHandler('keydown', this.keydownHandler_ as EventListener);
-    this.adapter_.registerInteractionHandler('focus', this.focusHandler_ as EventListener);
-    this.adapter_.registerInteractionHandler('blur', this.blurHandler_ as EventListener);
-    this.adapter_.registerResizeHandler(this.resizeHandler_ as EventListener);
+    this.adapter_.registerInteractionHandler('keydown', this.keydownHandler_);
+    this.adapter_.registerInteractionHandler('focus', this.focusHandler_);
+    this.adapter_.registerInteractionHandler('blur', this.blurHandler_);
+    this.adapter_.registerResizeHandler(this.resizeHandler_);
 
     this.layout();
 
@@ -168,14 +167,14 @@ class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
 
   destroy() {
     DOWN_EVENTS.forEach((evtName) => {
-      this.adapter_.deregisterInteractionHandler(evtName, this.interactionStartHandler_ as EventListener);
+      this.adapter_.deregisterInteractionHandler(evtName, this.interactionStartHandler_);
       this.adapter_.deregisterThumbContainerInteractionHandler(evtName, this.thumbContainerPointerHandler_);
     });
 
-    this.adapter_.deregisterInteractionHandler('keydown', this.keydownHandler_ as EventListener);
-    this.adapter_.deregisterInteractionHandler('focus', this.focusHandler_ as EventListener);
-    this.adapter_.deregisterInteractionHandler('blur', this.blurHandler_ as EventListener);
-    this.adapter_.deregisterResizeHandler(this.resizeHandler_ as EventListener);
+    this.adapter_.deregisterInteractionHandler('keydown', this.keydownHandler_);
+    this.adapter_.deregisterInteractionHandler('focus', this.focusHandler_);
+    this.adapter_.deregisterInteractionHandler('blur', this.blurHandler_);
+    this.adapter_.deregisterResizeHandler(this.resizeHandler_);
   }
 
   setupTrackMarker() {
@@ -282,7 +281,7 @@ class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   /**
    * Called when the user starts interacting with the slider
    */
-  private handleDown_(downEvent: MouseLikeEvent): void {
+  private handleDown_(downEvent: MouseLikeEvent) {
     if (this.disabled_) {
       return;
     }
@@ -315,7 +314,7 @@ class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   /**
    * Called when the user moves the slider
    */
-  private handleMove_(evt: MouseLikeEvent): void {
+  private handleMove_(evt: MouseLikeEvent) {
     evt.preventDefault();
     this.setValueFromEvt_(evt);
   }
@@ -341,7 +340,7 @@ class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   /**
    * Sets the slider value from an event
    */
-  private setValueFromEvt_(evt: MouseLikeEvent): void {
+  private setValueFromEvt_(evt: MouseLikeEvent) {
     const pageX = this.getPageX_(evt);
     const value = this.computeValueFromPageX_(pageX);
     this.setValue_(value, true);
@@ -365,7 +364,7 @@ class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   /**
    * Handles keydown events
    */
-  private handleKeydown_(evt: KeyboardEvent): void {
+  private handleKeydown_(evt: KeyboardEvent) {
     const keyId = this.getKeyId_(evt);
     const value = this.getValueForKeyId_(keyId);
     if (isNaN(value)) {
@@ -502,7 +501,7 @@ class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     }
 
     const transformProp = getCorrectPropertyName(window, 'transform');
-    const transitionendEvtName = getCorrectEventName(window, 'transitionend');
+    const transitionendEvtName = getCorrectEventName(window, 'transitionend') as EventType;
 
     if (this.inTransit_) {
       const onTransitionEnd = () => {
@@ -525,7 +524,7 @@ class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   /**
    * Toggles the active state of the slider
    */
-  private setActive_(active: boolean): void {
+  private setActive_(active: boolean) {
     this.active_ = active;
     this.toggleClass_(cssClasses.ACTIVE, this.active_);
   }
@@ -533,7 +532,7 @@ class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   /**
    * Toggles the inTransit state of the slider
    */
-  private setInTransit_(inTransit: boolean): void {
+  private setInTransit_(inTransit: boolean) {
     this.inTransit_ = inTransit;
     this.toggleClass_(cssClasses.IN_TRANSIT, this.inTransit_);
   }
@@ -541,7 +540,7 @@ class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   /**
    * Conditionally adds or removes a class based on shouldBePresent
    */
-  private toggleClass_(className: string, shouldBePresent: boolean): void {
+  private toggleClass_(className: string, shouldBePresent: boolean) {
     if (shouldBePresent) {
       this.adapter_.addClass(className);
     } else {

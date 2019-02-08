@@ -21,6 +21,8 @@
  * THE SOFTWARE.
  */
 
+import {EventType, SpecificEventListener} from '@material/base';
+
 /**
  * Defines the shape of the adapter expected by the foundation.
  * Implement this adapter for your framework of choice to delegate updates to
@@ -72,42 +74,42 @@ interface MDCSliderAdapter {
   /**
    * Registers an event handler on the root element for a given event.
    */
-  registerInteractionHandler(type: string, handler: EventListener): void;
+  registerInteractionHandler<E extends EventType>(type: E, handler: SpecificEventListener<E>): void;
 
   /**
    * Deregisters an event handler on the root element for a given event.
    */
-  deregisterInteractionHandler(type: string, handler: EventListener): void;
+  deregisterInteractionHandler<E extends EventType>(type: E, handler: SpecificEventListener<E>): void;
 
   /**
    * Registers an event handler on the thumb container element for a given event.
    */
-  registerThumbContainerInteractionHandler(type: string, handler: EventListener): void;
+  registerThumbContainerInteractionHandler<E extends EventType>(type: E, handler: SpecificEventListener<E>): void;
 
   /**
    * Deregisters an event handler on the thumb container element for a given event.
    */
-  deregisterThumbContainerInteractionHandler(type: string, handler: EventListener): void;
+  deregisterThumbContainerInteractionHandler<E extends EventType>(type: E, handler: SpecificEventListener<E>): void;
 
   /**
    * Registers an event handler on the body for a given event.
    */
-  registerBodyInteractionHandler(type: string, handler: EventListener): void;
+  registerBodyInteractionHandler<E extends EventType>(type: E, handler: SpecificEventListener<E>): void;
 
   /**
    * Deregisters an event handler on the body for a given event.
    */
-  deregisterBodyInteractionHandler(type: string, handler: EventListener): void;
+  deregisterBodyInteractionHandler<E extends EventType>(type: E, handler: SpecificEventListener<E>): void;
 
   /**
    * Registers an event handler for the window resize event
    */
-  registerResizeHandler(handler: EventListener): void;
+  registerResizeHandler(handler: SpecificEventListener<'resize'>): void;
 
   /**
    * Deregisters an event handler for the window resize event
    */
-  deregisterResizeHandler(handler: EventListener): void;
+  deregisterResizeHandler(handler: SpecificEventListener<'resize'>): void;
 
   /**
    * Emits a custom event MDCSlider:input from the root
