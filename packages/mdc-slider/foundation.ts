@@ -122,7 +122,7 @@ class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   private disabled_ = false;
   private preventFocusState_ = false;
 
-  private readonly thumbContainerPointerHandler_: EventListener;
+  private readonly thumbContainerPointerHandler_: SpecificEventListener<DownEventType>;
   private readonly interactionStartHandler_: SpecificEventListener<DownEventType>;
   private readonly keydownHandler_: SpecificEventListener<'keydown'>;
   private readonly focusHandler_: SpecificEventListener<'focus'>;
