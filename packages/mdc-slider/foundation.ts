@@ -347,8 +347,8 @@ class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
    */
   private computeValueFromPageX_(pageX: number): number {
     const {max_: max, min_: min} = this;
-    const xPos = pageX - this.rect_!.left; // rect_ is assigned in layout()
-    let pctComplete = xPos / this.rect_!.width; // rect_ is assigned in layout()
+    const xPos = pageX - this.rect_.left;
+    let pctComplete = xPos / this.rect_.width;
     if (this.adapter_.isRTL()) {
       pctComplete = 1 - pctComplete;
     }
@@ -491,9 +491,9 @@ class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   private updateUIForCurrentValue_() {
     const {max_: max, min_: min, value_: value} = this;
     const pctComplete = (value - min) / (max - min);
-    let translatePx = pctComplete * this.rect_!.width; // rect_ is assigned in layout()
+    let translatePx = pctComplete * this.rect_.width;
     if (this.adapter_.isRTL()) {
-      translatePx = this.rect_!.width - translatePx; // rect_ is assigned in layout()
+      translatePx = this.rect_.width - translatePx;
     }
 
     const transformProp = getCorrectPropertyName(window, 'transform');
