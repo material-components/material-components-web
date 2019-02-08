@@ -302,11 +302,11 @@ class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
     // (See https://github.com/material-components/material-components-web/issues/1192)
     const upHandler = () => {
       this.handleUp_();
-      this.adapter_.deregisterBodyInteractionHandler(moveEventType, moveHandler as EventListener);
+      this.adapter_.deregisterBodyInteractionHandler(moveEventType, moveHandler);
       UP_EVENTS.forEach((evtName) => this.adapter_.deregisterBodyInteractionHandler(evtName, upHandler));
     };
 
-    this.adapter_.registerBodyInteractionHandler(moveEventType, moveHandler as EventListener);
+    this.adapter_.registerBodyInteractionHandler(moveEventType, moveHandler);
     UP_EVENTS.forEach((evtName) => this.adapter_.registerBodyInteractionHandler(evtName, upHandler));
     this.setValueFromEvt_(downEvent);
   }
