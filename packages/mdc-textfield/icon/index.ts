@@ -23,6 +23,7 @@
 
 import {MDCComponent} from '@material/base/component';
 import {MDCTextFieldIconFoundation} from './foundation';
+import {EventType, SpecificEventListener} from '@material/base/index';
 
 class MDCTextFieldIcon extends MDCComponent<MDCTextFieldIconFoundation> {
   static attachTo(root: Element): MDCTextFieldIcon {
@@ -40,8 +41,12 @@ class MDCTextFieldIcon extends MDCComponent<MDCTextFieldIconFoundation> {
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       removeAttr: (attr) => this.root_.removeAttribute(attr),
       setContent: (content) => this.root_.textContent = content,
-      registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
-      deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
+      registerInteractionHandler: <E extends EventType>(evtType: E, handler: SpecificEventListener<E>) => {
+        this.root_.addEventListener(evtType, handler);
+      },
+      deregisterInteractionHandler: <E extends EventType>(evtType: E, handler: SpecificEventListener<E>) => {
+        this.root_.removeEventListener(evtType, handler);
+      },
       notifyIconAction: () => this.emit(
         MDCTextFieldIconFoundation.strings.ICON_EVENT, {} /* evtData */, true /* shouldBubble */),
     });

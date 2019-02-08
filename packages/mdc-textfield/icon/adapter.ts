@@ -54,7 +54,7 @@ interface MDCTextFieldIconAdapter {
   /**
    * Registers an event listener on the icon element for a given event.
    */
-  registerInteractionHandle<E extends EventType>(evtType: E, handler: SpecificEventListener<E>): void;
+  registerInteractionHandler<E extends EventType>(evtType: E, handler: SpecificEventListener<E>): void;
 
   /**
    * Deregisters an event listener on the icon element for a given event.

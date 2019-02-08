@@ -50,8 +50,8 @@ class MDCTextFieldHelperTextFoundation extends MDCFoundation<MDCTextFieldHelperT
     // tslint:enable:object-literal-sort-keys
   }
 
-  constructor(adapter: MDCTextFieldHelperTextAdapter) {
-    super(Object.assign(MDCTextFieldHelperTextFoundation.defaultAdapter, adapter));
+  constructor(adapter: Partial<MDCTextFieldHelperTextAdapter> = {}) {
+    super({...MDCTextFieldHelperTextFoundation.defaultAdapter, ...adapter});
   }
 
   /**
