@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2017 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,11 +21,33 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
-const cssClasses = {
-  LABEL_FLOAT_ABOVE: 'mdc-floating-label--float-above',
-  LABEL_SHAKE: 'mdc-floating-label--shake',
-  ROOT: 'mdc-floating-label',
-};
+/**
+ * Defines the shape of the adapter expected by the foundation.
+ * Implement this adapter for your framework of choice to delegate updates to
+ * the component in your framework of choice. See architecture documentation
+ * for more details.
+ * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
+ */
+interface MDCNotchedOutlineAdapter {
+  /**
+   * Adds a class to the root element.
+   */
+  addClass(className: string): void;
 
-export {cssClasses};
+  /**
+   * Removes a class from the root element.
+   */
+  removeClass(className: string): void;
+
+  /**
+   * Sets the width style property of the notch element.
+   */
+  setNotchWidthProperty(width: number): void;
+
+  /**
+   * Removes the width style property from the notch element.
+   */
+  removeNotchWidthProperty(): void;
+}
+
+export {MDCNotchedOutlineAdapter as default, MDCNotchedOutlineAdapter};
