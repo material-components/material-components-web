@@ -21,57 +21,42 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
+import {EventType, SpecificEventListener} from '@material/base/index';
 
 /**
- * Adapter for MDC TextField Line Ripple.
- *
- * Defines the shape of the adapter expected by the foundation. Implement this
- * adapter to integrate the line ripple into your framework. See
- * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
- * for more information.
- *
- * @record
+ * Defines the shape of the adapter expected by the foundation.
+ * Implement this adapter for your framework of choice to delegate updates to
+ * the component in your framework of choice. See architecture documentation
+ * for more details.
+ * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-class MDCLineRippleAdapter {
+interface MDCLineRippleAdapter {
   /**
    * Adds a class to the line ripple element.
-   * @param {string} className
    */
-  addClass(className) {}
+  addClass(className: string): void;
 
   /**
    * Removes a class from the line ripple element.
-   * @param {string} className
    */
-  removeClass(className) {}
+  removeClass(className: string): void;
 
-  /**
-   * @param {string} className
-   * @return {boolean}
-   */
-  hasClass(className) {}
+  hasClass(className: string): boolean;
 
   /**
    * Sets the style property with propertyName to value on the root element.
-   * @param {string} propertyName
-   * @param {string} value
    */
-  setStyle(propertyName, value) {}
+  setStyle(propertyName: string, value: string): void;
 
   /**
    * Registers an event listener on the line ripple element for a given event.
-   * @param {string} evtType
-   * @param {function(!Event): undefined} handler
    */
-  registerEventHandler(evtType, handler) {}
+  registerEventHandler<E extends EventType>(evtType: E, handler: SpecificEventListener<E>): void;
 
   /**
    * Deregisters an event listener on the line ripple element for a given event.
-   * @param {string} evtType
-   * @param {function(!Event): undefined} handler
    */
-  deregisterEventHandler(evtType, handler) {}
+  deregisterEventHandler<E extends EventType>(evtType: E, handler: SpecificEventListener<E>): void;
 }
 
-export default MDCLineRippleAdapter;
+export {MDCLineRippleAdapter as default, MDCLineRippleAdapter};
