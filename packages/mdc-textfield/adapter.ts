@@ -21,32 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {MDCTextFieldHelperTextFoundation} from './helper-text/foundation';
-import {MDCTextFieldCharacterCounterFoundation} from './character-counter/foundation';
-import {MDCTextFieldIconFoundation} from './icon/foundation';
-
-/**
- * @typedef {{
- *   value: string,
- *   disabled: boolean,
- *   badInput: boolean,
- *   validity: {
- *     badInput: boolean,
- *     valid: boolean,
- *   },
- * }}
- */
-let NativeInputType;
-
-/**
- * @typedef {{
- *   helperText: (!MDCTextFieldHelperTextFoundation|undefined),
- *   characterCounter: (!MDCTextFieldCharacterCounterFoundation|undefined),
- *   leadingIcon: (!MDCTextFieldIconFoundation|undefined),
- *   trailingIcon: (!MDCTextFieldIconFoundation|undefined),
- * }}
- */
-let FoundationMapType;
+import {NativeInputType} from './types';
 
 /**
  * Defines the shape of the adapter expected by the foundation.
@@ -67,7 +42,7 @@ interface MDCTextFieldAdapter {
   removeClass(className: string): void;
 
   /**
-   * Returns true if the root element contains the given class name.
+   * @return true if the root element contains the given class name.
    */
   hasClass(className: string): boolean;
 
@@ -103,31 +78,30 @@ interface MDCTextFieldAdapter {
   deregisterValidationAttributeChangeHandler(observer: MutationObserver): void;
 
   /**
-   * Returns an object representing the native text input element, with a
-   * similar API shape. The object returned should include the value, disabled
-   * and badInput properties, as well as the checkValidity() function. We never
-   * alter the value within our code, however we do update the disabled
-   * property, so if you choose to duck-type the return value for this method
-   * in your implementation it's important to keep this in mind. Also note that
-   * this method can return null, which the foundation will handle gracefully.
+   * @return An object representing the native text input element, with a
+   *     similar API shape. The object returned should include the value, disabled
+   *     and badInput properties, as well as the checkValidity() function. We never
+   *     alter the value within our code, however we do update the disabled
+   *     property, so if you choose to duck-type the return value for this method
+   *     in your implementation it's important to keep this in mind. Also note that
+   *     this method can return null, which the foundation will handle gracefully.
    */
-  getNativeInput(): Element | NativeInputType | null;
+  getNativeInput(): HTMLInputElement | NativeInputType | null;
 
   /**
-   * Returns true if the textfield is focused.
-   * We achieve this via `document.activeElement === this.root_`.
+   * @return true if the textfield is focused. We achieve this via `document.activeElement === this.root_`.
    */
   isFocused(): boolean;
 
   /**
    * Activates the line ripple.
    */
-  activateLineRipple();
+  activateLineRipple(): void;
 
   /**
    * Deactivates the line ripple.
    */
-  deactivateLineRipple();
+  deactivateLineRipple(): void;
 
   /**
    * Sets the transform origin of the line ripple.
@@ -136,29 +110,29 @@ interface MDCTextFieldAdapter {
 
   /**
    * Only implement if label exists.
-Shakes label if shouldShake is true.
+   * Shakes label if shouldShake is true.
    */
   shakeLabel(shouldShake: boolean): void;
 
   /**
    * Only implement if label exists.
-Floats the label above the input element if shouldFloat is true.
+   * Floats the label above the input element if shouldFloat is true.
    */
   floatLabel(shouldFloat: boolean): void;
 
   /**
-   * Returns true if label element exists, false if it doesn't.
+   * @return true if label element exists, false if it doesn't.
    */
   hasLabel(): boolean;
 
   /**
    * Only implement if label exists.
-Returns width of label in pixels.
+   * @return width of label in pixels.
    */
   getLabelWidth(): number;
 
   /**
-   * Returns true if outline element exists, false if it doesn't.
+   * @return true if outline element exists, false if it doesn't.
    */
   hasOutline(): boolean;
 
@@ -171,7 +145,7 @@ Returns width of label in pixels.
    * Only implement if outline element exists.
    * Closes notch in outline element.
    */
-  closeOutline();
+  closeOutline(): void;
 }
 
-export {MDCTextFieldAdapter, NativeInputType, FoundationMapType};
+export {MDCTextFieldAdapter as default, MDCTextFieldAdapter};
