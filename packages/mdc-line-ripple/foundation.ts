@@ -56,11 +56,11 @@ class MDCLineRippleFoundation extends MDCFoundation<MDCLineRippleAdapter> {
   }
 
   init() {
-    this.adapter_.registerEventHandler('transitionend', this.transitionEndHandler_ as EventListener);
+    this.adapter_.registerEventHandler('transitionend', this.transitionEndHandler_);
   }
 
   destroy() {
-    this.adapter_.deregisterEventHandler('transitionend', this.transitionEndHandler_ as EventListener);
+    this.adapter_.deregisterEventHandler('transitionend', this.transitionEndHandler_);
   }
 
   activate() {

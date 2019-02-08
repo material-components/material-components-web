@@ -21,6 +21,8 @@
  * THE SOFTWARE.
  */
 
+import {EventType, SpecificEventListener} from '@material/base/index';
+
 /**
  * Defines the shape of the adapter expected by the foundation.
  * Implement this adapter for your framework of choice to delegate updates to
@@ -49,12 +51,12 @@ interface MDCLineRippleAdapter {
   /**
    * Registers an event listener on the line ripple element for a given event.
    */
-  registerEventHandler(evtType: string, handler: EventListener): void;
+  registerEventHandler<E extends EventType>(evtType: E, handler: SpecificEventListener<E>): void;
 
   /**
    * Deregisters an event listener on the line ripple element for a given event.
    */
-  deregisterEventHandler(evtType: string, handler: EventListener): void;
+  deregisterEventHandler<E extends EventType>(evtType: E, handler: SpecificEventListener<E>): void;
 }
 
 export {MDCLineRippleAdapter as default, MDCLineRippleAdapter};

@@ -47,7 +47,7 @@ class MDCLineRipple extends MDCComponent<MDCLineRippleFoundation> {
    * Sets the transform origin given a user's click location.
    * The `rippleCenter` is the x-coordinate of the middle of the ripple.
    */
-  setRippleCenter(xCoordinate: number): void {
+  setRippleCenter(xCoordinate: number) {
     this.foundation_.setRippleCenter(xCoordinate);
   }
 
