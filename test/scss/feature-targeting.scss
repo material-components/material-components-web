@@ -1,15 +1,16 @@
 @import "@material/button/mixins";
 @import "@material/card/mixins";
-@import "@material/menu-surface/mixins";
 @import "@material/checkbox/mixins";
 @import "@material/elevation/mixins";
 @import "@material/feature-targeting/functions";
+@import "@material/list/mixins";
+@import "@material/menu-surface/mixins";
 @import "@material/menu/mixins";
 @import "@material/radio/mixins";
 @import "@material/ripple/mixins";
-@import "@material/typography/mixins";
+@import "@material/shape/mixins";
 @import "@material/switch/mixins";
-@import "@material/list/mixins";
+@import "@material/typography/mixins";
 
 .mdc-test {
   // Button
@@ -79,6 +80,9 @@
   @include mdc-states-selected(red, $query: mdc-feature-any());
   @include mdc-ripple-radius-bounded($query: mdc-feature-any());
   @include mdc-ripple-radius-unbounded($query: mdc-feature-any());
+
+  // Shape
+  @include mdc-shape-radius(1px 2px, true, $query: mdc-feature-any());
 
   // Switch
   @include mdc-switch($query: mdc-feature-any());
