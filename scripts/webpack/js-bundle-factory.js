@@ -170,7 +170,7 @@ class JsBundleFactory {
         linearProgress: getAbsolutePath('/packages/mdc-linear-progress/index.ts'),
         menu: getAbsolutePath('/packages/mdc-menu/index.ts'),
         menuSurface: getAbsolutePath('/packages/mdc-menu-surface/index.ts'),
-        notchedOutline: getAbsolutePath('/packages/mdc-notched-outline/index.js'),
+        notchedOutline: getAbsolutePath('/packages/mdc-notched-outline/index.ts'),
         radio: getAbsolutePath('/packages/mdc-radio/index.ts'),
         ripple: getAbsolutePath('/packages/mdc-ripple/index.ts'),
         select: getAbsolutePath('/packages/mdc-select/index.js'),
