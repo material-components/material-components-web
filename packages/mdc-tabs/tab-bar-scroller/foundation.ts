@@ -21,12 +21,12 @@
  * THE SOFTWARE.
  */
 
-
 import {MDCFoundation} from '@material/base/foundation';
 
+import MDCTabBarScrollerAdapter from './adapter';
 import {cssClasses, strings} from './constants';
 
-export default class MDCTabBarScrollerFoundation extends MDCFoundation {
+export default class MDCTabBarScrollerFoundation extends MDCFoundation<MDCTabBarScrollerAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
@@ -35,38 +35,48 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     return strings;
   }
 
-  static get defaultAdapter() {
+  static get defaultAdapter(): MDCTabBarScrollerAdapter {
     return {
-      addClass: (/* className: string */) => {},
-      removeClass: (/* className: string */) => {},
-      eventTargetHasClass: (/* target: EventTarget, className: string */) => /* boolean */ false,
-      addClassToForwardIndicator: (/* className: string */) => {},
-      removeClassFromForwardIndicator: (/* className: string */) => {},
-      addClassToBackIndicator: (/* className: string */) => {},
-      removeClassFromBackIndicator: (/* className: string */) => {},
-      isRTL: () => /* boolean */ false,
-      registerBackIndicatorClickHandler: (/* handler: EventListener */) => {},
-      deregisterBackIndicatorClickHandler: (/* handler: EventListener */) => {},
-      registerForwardIndicatorClickHandler: (/* handler: EventListener */) => {},
-      deregisterForwardIndicatorClickHandler: (/* handler: EventListener */) => {},
-      registerCapturedInteractionHandler: (/* evt: string, handler: EventListener */) => {},
-      deregisterCapturedInteractionHandler: (/* evt: string, handler: EventListener */) => {},
-      registerWindowResizeHandler: (/* handler: EventListener */) => {},
-      deregisterWindowResizeHandler: (/* handler: EventListener */) => {},
-      getNumberOfTabs: () => /* number */ 0,
-      getComputedWidthForTabAtIndex: () => /* number */ 0,
-      getComputedLeftForTabAtIndex: () => /* number */ 0,
-      getOffsetWidthForScrollFrame: () => /* number */ 0,
-      getScrollLeftForScrollFrame: () => /* number */ 0,
-      setScrollLeftForScrollFrame: (/* scrollLeftAmount: number */) => {},
-      getOffsetWidthForTabBar: () => /* number */ 0,
-      setTransformStyleForTabBar: (/* value: string */) => {},
-      getOffsetLeftForEventTarget: (/* target: EventTarget */) => /* number */ 0,
-      getOffsetWidthForEventTarget: (/* target: EventTarget */) => /* number */ 0,
+      addClass: () => undefined,
+      addClassToBackIndicator: () => undefined,
+      addClassToForwardIndicator: () => undefined,
+      deregisterBackIndicatorClickHandler: () => undefined,
+      deregisterCapturedInteractionHandler: () => undefined,
+      deregisterForwardIndicatorClickHandler: () => undefined,
+      deregisterWindowResizeHandler: () => undefined,
+      eventTargetHasClass: () => false,
+      getComputedLeftForTabAtIndex: () => 0,
+      getComputedWidthForTabAtIndex: () => 0,
+      getNumberOfTabs: () => 0,
+      getOffsetLeftForEventTarget: () => 0,
+      getOffsetWidthForEventTarget: () => 0,
+      getOffsetWidthForScrollFrame: () => 0,
+      getOffsetWidthForTabBar: () => 0,
+      getScrollLeftForScrollFrame: () => 0,
+      isRTL: () => false,
+      registerBackIndicatorClickHandler: () => undefined,
+      registerCapturedInteractionHandler: () => undefined,
+      registerForwardIndicatorClickHandler: () => undefined,
+      registerWindowResizeHandler: () => undefined,
+      removeClass: () => undefined,
+      removeClassFromBackIndicator: () => undefined,
+      removeClassFromForwardIndicator: () => undefined,
+      setScrollLeftForScrollFrame: () => undefined,
+      setTransformStyleForTabBar: () => undefined,
     };
   }
 
-  constructor(adapter) {
+  pointerDownRecognized_: boolean;
+  backIndicatorClickHandler_: EventListener;
+  currentTranslateOffset_: number;
+  layoutFrame_: number;
+  scrollFrameScrollLeft_: number;
+  resizeHandler_: EventListener;
+  forwardIndicatorClickHandler_: EventListener;
+  interactionHandler_: EventListener;
+  focusedTarget_: EventTarget | null;
+
+  constructor(adapter: MDCTabBarScrollerAdapter) {
     super(Object.assign(MDCTabBarScrollerFoundation.defaultAdapter, adapter));
 
     this.pointerDownRecognized_ = false;
@@ -78,12 +88,12 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     this.backIndicatorClickHandler_ = (evt) => this.scrollBack(evt);
     this.resizeHandler_ = () => this.layout();
     this.interactionHandler_ = (evt) => {
-      if (evt.type == 'touchstart' || evt.type == 'mousedown') {
+      if (evt.type === 'touchstart' || evt.type === 'mousedown') {
         this.pointerDownRecognized_ = true;
       }
       this.handlePossibleTabKeyboardFocus_(evt);
 
-      if (evt.type == 'focus') {
+      if (evt.type === 'focus') {
         this.pointerDownRecognized_ = false;
       }
     };
@@ -108,7 +118,7 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     });
   }
 
-  scrollBack(evt = null) {
+  scrollBack(evt: Event | null = null) {
     if (evt) {
       evt.preventDefault();
     }
@@ -141,7 +151,7 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     this.scrollToTabAtIndex(scrollTargetIndex);
   }
 
-  scrollForward(evt = null) {
+  scrollForward(evt: Event | null = null) {
     if (evt) {
       evt.preventDefault();
     }
@@ -157,10 +167,10 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
       if (this.isRTL_()) {
         const frameOffsetAndTabWidth =
           scrollFrameOffsetWidth - this.adapter_.getComputedWidthForTabAtIndex(i);
-        const tabOffsetLeftAndWidth =
+        const rtlTabOffsetLeftAndWidth =
           this.adapter_.getComputedLeftForTabAtIndex(i) + this.adapter_.getComputedWidthForTabAtIndex(i);
         const tabRightOffset =
-          this.adapter_.getOffsetWidthForTabBar() - tabOffsetLeftAndWidth;
+          this.adapter_.getOffsetWidthForTabBar() - rtlTabOffsetLeftAndWidth;
 
         scrollTargetDetermined = tabRightOffset > frameOffsetAndTabWidth;
       }
@@ -184,8 +194,8 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     return this.adapter_.isRTL();
   }
 
-  handlePossibleTabKeyboardFocus_(evt) {
-    if (!this.adapter_.eventTargetHasClass(evt.target, cssClasses.TAB) || this.pointerDownRecognized_) {
+  handlePossibleTabKeyboardFocus_(evt: Event) {
+    if (!this.adapter_.eventTargetHasClass(evt.target as EventTarget, cssClasses.TAB) || this.pointerDownRecognized_) {
       return;
     }
 
@@ -195,8 +205,8 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     this.focusedTarget_ = evt.target;
     const scrollFrameWidth = this.adapter_.getOffsetWidthForScrollFrame();
     const tabBarWidth = this.adapter_.getOffsetWidthForTabBar();
-    const leftEdge = this.adapter_.getOffsetLeftForEventTarget(this.focusedTarget_);
-    const rightEdge = leftEdge + this.adapter_.getOffsetWidthForEventTarget(this.focusedTarget_);
+    const leftEdge = this.adapter_.getOffsetLeftForEventTarget(this.focusedTarget_ as EventTarget);
+    const rightEdge = leftEdge + this.adapter_.getOffsetWidthForEventTarget(this.focusedTarget_ as EventTarget);
 
     let shouldScrollBack = rightEdge <= this.currentTranslateOffset_;
     let shouldScrollForward = rightEdge > this.currentTranslateOffset_ + scrollFrameWidth;
@@ -228,7 +238,7 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     this.updateIndicatorEnabledStates_();
   }
 
-  scrollToTabAtIndex(index) {
+  scrollToTabAtIndex(index: number) {
     const scrollTargetOffsetLeft = this.adapter_.getComputedLeftForTabAtIndex(index);
     const scrollTargetOffsetWidth = this.adapter_.getComputedWidthForTabAtIndex(index);
 
@@ -238,7 +248,7 @@ export default class MDCTabBarScrollerFoundation extends MDCFoundation {
     requestAnimationFrame(() => this.shiftFrame_());
   }
 
-  normalizeForRTL_(left, width) {
+  normalizeForRTL_(left: number, width: number) {
     return this.isRTL_() ? this.adapter_.getOffsetWidthForTabBar() - (left + width) : left;
   }
 

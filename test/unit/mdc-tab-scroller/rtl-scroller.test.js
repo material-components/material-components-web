@@ -35,22 +35,22 @@ const setup = () => {
   return {scroller};
 };
 
-test('#getScrollPositionRTL() is abstract and does nothing', () => {
+test('#getScrollPositionRTL() is abstract is not compiled', () => {
   const {scroller} = setup();
-  assert.isUndefined(scroller.getScrollPositionRTL());
+  assert.isUndefined(scroller.getScrollPositionRTL);
 });
 
-test('#scrollToRTL() is abstract and does nothing', () => {
+test('#scrollToRTL() is abstract is not compiled', () => {
   const {scroller} = setup();
-  assert.isUndefined(scroller.scrollToRTL());
+  assert.isUndefined(scroller.scrollToRTL);
 });
 
-test('#incrementScrollRTL() is abstract and does nothing', () => {
+test('#incrementScrollRTL() is abstract is not compiled', () => {
   const {scroller} = setup();
-  assert.isUndefined(scroller.incrementScrollRTL());
+  assert.isUndefined(scroller.incrementScrollRTL);
 });
 
-test('#getAnimatingScrollPosition() is abstract and does nothing', () => {
+test('#getAnimatingScrollPosition() is abstract is not compiled', () => {
   const {scroller} = setup();
-  assert.isUndefined(scroller.getAnimatingScrollPosition());
+  assert.isUndefined(scroller.getAnimatingScrollPosition);
 });

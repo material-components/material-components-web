@@ -76,7 +76,7 @@ class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
       getScrollContentWidth: () => 0,
       getScrollPosition: () => 0,
       getTabDimensionsAtIndex: () => (undefined as unknown as MDCTabDimensions),
-      getTabIndicatorClientRectAtIndex: () => new ClientRect(),
+      getTabIndicatorClientRectAtIndex: () => ({} as ClientRect),
       getTabListLength: () => 0,
       incrementScroll: () => undefined,
       isRTL: () => false,

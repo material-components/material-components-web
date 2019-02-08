@@ -43,7 +43,7 @@ abstract class MDCTabIndicatorFoundation extends MDCFoundation<MDCTabIndicatorAd
   static get defaultAdapter(): MDCTabIndicatorAdapter {
     return ({
       addClass: () => undefined,
-      computeContentClientRect: () => new ClientRect(),
+      computeContentClientRect: () => ({} as ClientRect),
       removeClass: () => undefined,
       setContentStyleProperty: () => '',
     });
