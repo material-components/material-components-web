@@ -275,8 +275,7 @@
   .mdc-list-group__subheader {
     $mdc-list-subheader-virtual-height: 3rem;
     $mdc-list-subheader-leading: map-get(map-get($mdc-typography-styles, body1), line-height);
-    $mdc-list-subheader-margin:
-      ($mdc-list-subheader-virtual-height - $mdc-list-subheader-leading) / 2;
+    $mdc-list-subheader-margin: ($mdc-list-subheader-virtual-height - $mdc-list-subheader-leading) / 2;
 
     @include mdc-typography(subtitle1, $query);
 
@@ -335,12 +334,8 @@
 }
 
 @mixin mdc-list-item-shape-radius($radius, $rtl-reflexive: false, $query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
-
   .mdc-list-item {
-    @include mdc-feature-targets($feat-structure) {
-      @include mdc-shape-radius($radius, $rtl-reflexive);
-    }
+    @include mdc-shape-radius($radius, $rtl-reflexive, $query: $query);
   }
 }
 
