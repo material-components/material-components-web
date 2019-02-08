@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc.
+ * Copyright 2018 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,41 +21,19 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
+const strings = {
+  NOTCH_ELEMENT_SELECTOR: '.mdc-notched-outline__notch',
+};
 
-/**
- * Adapter for MDC Notched Outline.
- *
- * Defines the shape of the adapter expected by the foundation. Implement this
- * adapter to integrate the Notched Outline into your framework. See
- * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
- * for more information.
- *
- * @record
- */
-class MDCNotchedOutlineAdapter {
-  /**
-   * Adds a class to the root element.
-   * @param {string} className
-   */
-  addClass(className) {}
+const numbers = {
+  // This should stay in sync with $mdc-notched-outline-padding * 2.
+  NOTCH_ELEMENT_PADDING: 8,
+};
 
-  /**
-   * Removes a class from the root element.
-   * @param {string} className
-   */
-  removeClass(className) {}
+const cssClasses = {
+  NO_LABEL: 'mdc-notched-outline--no-label',
+  OUTLINE_NOTCHED: 'mdc-notched-outline--notched',
+  OUTLINE_UPGRADED: 'mdc-notched-outline--upgraded',
+};
 
-  /**
-   * Sets the width style property of the notch element.
-   * @param {number} width
-   */
-  setNotchWidthProperty(width) {}
-
-  /**
-   * Removes the width style property from the notch element.
-   */
-  removeNotchWidthProperty() {}
-}
-
-export default MDCNotchedOutlineAdapter;
+export {cssClasses, numbers, strings};

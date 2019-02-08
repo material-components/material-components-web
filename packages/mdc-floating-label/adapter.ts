@@ -21,50 +21,40 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
+import {EventType, SpecificEventListener} from '@material/base';
 
 /**
- * Adapter for MDC Floating Label.
- *
- * Defines the shape of the adapter expected by the foundation. Implement this
- * adapter to integrate the floating label into your framework. See
- * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
- * for more information.
- *
- * @record
+ * Defines the shape of the adapter expected by the foundation.
+ * Implement this adapter for your framework of choice to delegate updates to
+ * the component in your framework of choice. See architecture documentation
+ * for more details.
+ * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-class MDCFloatingLabelAdapter {
+interface MDCFloatingLabelAdapter {
   /**
    * Adds a class to the label element.
-   * @param {string} className
    */
-  addClass(className) {}
+  addClass(className: string): void;
 
   /**
    * Removes a class from the label element.
-   * @param {string} className
    */
-  removeClass(className) {}
+  removeClass(className: string): void;
 
   /**
    * Returns the width of the label element.
-   * @return {number}
    */
-  getWidth() {}
+  getWidth(): number;
 
   /**
    * Registers an event listener on the root element for a given event.
-   * @param {string} evtType
-   * @param {function(!Event): undefined} handler
    */
-  registerInteractionHandler(evtType, handler) {}
+  registerInteractionHandler<E extends EventType>(evtType: E, handler: SpecificEventListener<E>): void;
 
   /**
    * Deregisters an event listener on the root element for a given event.
-   * @param {string} evtType
-   * @param {function(!Event): undefined} handler
    */
-  deregisterInteractionHandler(evtType, handler) {}
+  deregisterInteractionHandler<E extends EventType>(evtType: E, handler: SpecificEventListener<E>): void;
 }
 
-export default MDCFloatingLabelAdapter;
+export {MDCFloatingLabelAdapter as default, MDCFloatingLabelAdapter};

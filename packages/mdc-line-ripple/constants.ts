@@ -21,22 +21,9 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
-const strings = {
-  NOTCH_ELEMENT_SELECTOR: '.mdc-notched-outline__notch',
-};
-
-/** @enum {number} */
-const numbers = {
-  // This should stay in sync with $mdc-notched-outline-padding * 2.
-  NOTCH_ELEMENT_PADDING: 8,
-};
-
-/** @enum {string} */
 const cssClasses = {
-  OUTLINE_NOTCHED: 'mdc-notched-outline--notched',
-  OUTLINE_UPGRADED: 'mdc-notched-outline--upgraded',
-  NO_LABEL: 'mdc-notched-outline--no-label',
+  LINE_RIPPLE_ACTIVE: 'mdc-line-ripple--active',
+  LINE_RIPPLE_DEACTIVATING: 'mdc-line-ripple--deactivating',
 };
 
-export {cssClasses, numbers, strings};
+export {cssClasses};
