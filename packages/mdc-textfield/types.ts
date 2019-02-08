@@ -21,13 +21,16 @@
  * THE SOFTWARE.
  */
 
-import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
-import {MDCTextFieldCharacterCounter} from './character-counter';
+import {MDCFloatingLabel} from '@material/floating-label/index';
+import {MDCLineRipple} from '@material/line-ripple/index';
+import {MDCNotchedOutline} from '@material/notched-outline/index';
+import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
 import {MDCTextFieldCharacterCounterFoundation} from './character-counter/foundation';
-import {MDCTextFieldHelperText} from './helper-text';
+import {MDCTextFieldCharacterCounter} from './character-counter/index';
 import {MDCTextFieldHelperTextFoundation} from './helper-text/foundation';
-import {MDCTextFieldIcon} from './icon';
+import {MDCTextFieldHelperText} from './helper-text/index';
 import {MDCTextFieldIconFoundation} from './icon/foundation';
+import {MDCTextFieldIcon} from './icon/index';
 
 export interface NativeInputType {
   disabled: boolean;
