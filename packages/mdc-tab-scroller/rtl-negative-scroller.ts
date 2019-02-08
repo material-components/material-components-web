@@ -72,7 +72,7 @@ class MDCTabScrollerRTLNegative extends MDCTabScrollerRTL {
    * @param {number} translateX
    * @return {number}
    */
-  getAnimatingScrollPosition(scrollX: number, translateX: number) {
+  getAnimatingScrollPosition(scrollX: number, translateX: number): number {
     return scrollX - translateX;
   }
 
@@ -80,7 +80,7 @@ class MDCTabScrollerRTLNegative extends MDCTabScrollerRTL {
    * @return {!MDCTabScrollerHorizontalEdges}
    * @private
    */
-  calculateScrollEdges_() {
+  private calculateScrollEdges_(): MDCTabScrollerHorizontalEdges {
     const contentWidth = this.adapter_.getScrollContentOffsetWidth();
     const rootWidth = this.adapter_.getScrollAreaOffsetWidth();
     return /** @type {!MDCTabScrollerHorizontalEdges} */ ({
@@ -94,7 +94,7 @@ class MDCTabScrollerRTLNegative extends MDCTabScrollerRTL {
    * @return {number}
    * @private
    */
-  clampScrollValue_(scrollX: number) {
+ private clampScrollValue_(scrollX: number): number {
     const edges = this.calculateScrollEdges_();
     return Math.max(Math.min(edges.right, scrollX), edges.left);
   }

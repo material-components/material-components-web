@@ -2,11 +2,20 @@
   "compilerOptions": {
     "lib": ["es5", "es6", "dom"],
     "paths": {
-        "@material/base": "./packages/mdc-base",
-        "@material/ripple": "./packages/mdc-ripple",
-        "@material/tab-indicator": "./packages/mdc-tab-indicator",
-        "@material/tab-scroller": "./packages/mdc-tab-scroller"
+        "@material/base": [
+          "./packages/mdc-base"
+        ],
+        "@material/ripple": [
+          "./packages/mdc-ripple"
+        ],
+        "@material/tab-indicator": [
+          "./packages/mdc-tab-indicator"
+        ],
+        "@material/tab-scroller": [
+          "./packages/mdc-tab-scroller"
+        ]
     },
+    "baseURL": ".",
     "downlevelIteration": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,

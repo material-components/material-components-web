@@ -36,13 +36,13 @@ export default class MDCTabFoundation extends MDCFoundation<MDCTabAdapter> {
 
   static get defaultAdapter(): MDCTabAdapter {
     return {
-      addClass: (className: string) => undefined,
-      deregisterInteractionHandler: (type: string, handler: EventListener) => undefined,
+      addClass: () => undefined,
+      deregisterInteractionHandler: () => undefined,
       getOffsetLeft: () => 0,
       getOffsetWidth: () => 0,
       notifySelected: () => undefined,
-      registerInteractionHandler: (type: string, handler: EventListener) => undefined,
-      removeClass: (className: string) => undefined,
+      registerInteractionHandler: () => undefined,
+      removeClass: () => undefined,
     };
   }
 

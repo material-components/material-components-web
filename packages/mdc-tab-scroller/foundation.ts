@@ -49,8 +49,8 @@ class MDCTabScrollerFoundation extends MDCFoundation<MDCTabScrollerAdapter> {
    * @return {!MDCTabScrollerAdapter}
    */
   static get defaultAdapter(): MDCTabScrollerAdapter {
-    return /** @type {!MDCTabScrollerAdapter} */ ({
-      addClass: (className: string) => undefined,
+    return ({
+      addClass: () => undefined,
       addScrollAreaClass: () => undefined,
       computeHorizontalScrollbarHeight: () => 0,
       computeScrollAreaClientRect: () => new ClientRect(),
