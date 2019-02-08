@@ -22,6 +22,7 @@
  */
 
 import {NativeInputType} from './types';
+import {EventType, SpecificEventListener} from '@material/base/index';
 
 /**
  * Defines the shape of the adapter expected by the foundation.
@@ -49,22 +50,22 @@ interface MDCTextFieldAdapter {
   /**
    * Registers an event handler on the root element for a given event.
    */
-  registerTextFieldInteractionHandler(type: string, handler: EventListener): void;
+  registerTextFieldInteractionHandler<E extends EventType>(evtType: E, handler: SpecificEventListener<E>): void;
 
   /**
    * Deregisters an event handler on the root element for a given event.
    */
-  deregisterTextFieldInteractionHandler(type: string, handler: EventListener): void;
+  deregisterTextFieldInteractionHandler<E extends EventType>(evtType: E, handler: SpecificEventListener<E>): void;
 
   /**
    * Registers an event listener on the native input element for a given event.
    */
-  registerInputInteractionHandler(evtType: string, handler: EventListener): void;
+  registerInputInteractionHandler<E extends EventType>(evtType: E, handler: SpecificEventListener<E>): void;
 
   /**
    * Deregisters an event listener on the native input element for a given event.
    */
-  deregisterInputInteractionHandler(evtType: string, handler: EventListener): void;
+  deregisterInputInteractionHandler<E extends EventType>(evtType: E, handler: SpecificEventListener<E>): void;
 
   /**
    * Registers a validation attribute change listener on the input element.

@@ -22,16 +22,17 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+import {EventType, SpecificEventListener} from '@material/base/index';
 import * as ponyfill from '@material/dom/ponyfill';
 import {MDCFloatingLabel} from '@material/floating-label/index';
 import {MDCLineRipple} from '@material/line-ripple/index';
 import {MDCNotchedOutline} from '@material/notched-outline/index';
 import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
-import {MDCTextFieldCharacterCounter, MDCTextFieldCharacterCounterFoundation} from './character-counter/index';
+import {MDCTextFieldCharacterCounter, MDCTextFieldCharacterCounterFoundation} from './character-counter';
 import {cssClasses, strings} from './constants';
 import {MDCTextFieldFoundation} from './foundation';
-import {MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation} from './helper-text/index';
-import {MDCTextFieldIcon} from './icon/index';
+import {MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation} from './helper-text';
+import {MDCTextFieldIcon} from './icon';
 import {FoundationMapType} from './types';
 import {
   CharacterCounterFactory,
@@ -120,17 +121,20 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
     }
 
     this.ripple = null;
-    if (!this.root_.classList.contains(cssClasses.TEXTAREA) && !this.root_.classList.contains(cssClasses.OUTLINED)) {
+
+    const isTextArea = this.root_.classList.contains(cssClasses.TEXTAREA);
+    const isOutlined = this.root_.classList.contains(cssClasses.OUTLINED);
+    if (!isTextArea && !isOutlined) {
       const adapter = {
         ...MDCRipple.createAdapter(this),
         ...({
           // tslint:disable:object-literal-sort-keys
           isSurfaceActive: () => ponyfill.matches(this.input_, ':active'),
-          registerInteractionHandler: (type: string, handler: EventListener) => {
-            return this.input_.addEventListener(type, handler);
+          registerInteractionHandler: <E extends EventType>(evtType: E, handler: SpecificEventListener<E>) => {
+            return this.input_.addEventListener(evtType, handler);
           },
-          deregisterInteractionHandler: (type: string, handler: EventListener) => {
-            return this.input_.removeEventListener(type, handler);
+          deregisterInteractionHandler: <E extends EventType>(evtType: E, handler: SpecificEventListener<E>) => {
+            return this.input_.removeEventListener(evtType, handler);
           },
           // tslint:enable:object-literal-sort-keys
         }),
@@ -250,7 +254,7 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
    * @param maxLength Sets the input element's maxLength.
    */
   set maxLength(maxLength: number) {
-    // Chrome throws exception if maxLength is se 0
+    // Chrome throws exception if maxLength is set to a value less than zero
     if (maxLength < 0) {
       this.input_.removeAttribute('maxLength');
     } else {
@@ -422,10 +426,10 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
   getInputAdapterMethods_() {
     // tslint:disable:object-literal-sort-keys
     return {
-      registerInputInteractionHandler: (evtType: string, handler: EventListener) => {
+      registerInputInteractionHandler: <E extends EventType>(evtType: E, handler: SpecificEventListener<E>) => {
         return this.input_.addEventListener(evtType, handler);
       },
-      deregisterInputInteractionHandler: (evtType: string, handler: EventListener) => {
+      deregisterInputInteractionHandler: <E extends EventType>(evtType: E, handler: SpecificEventListener<E>) => {
         return this.input_.removeEventListener(evtType, handler);
       },
       getNativeInput: () => this.input_,

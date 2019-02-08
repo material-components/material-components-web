@@ -57,7 +57,7 @@ class MDCTextFieldHelperTextFoundation extends MDCFoundation<MDCTextFieldHelperT
   /**
    * Sets the content of the helper text field.
    */
-  setContent(content: string): void {
+  setContent(content: string) {
     this.adapter_.setContent(content);
   }
 
@@ -75,7 +75,7 @@ class MDCTextFieldHelperTextFoundation extends MDCFoundation<MDCTextFieldHelperT
   /**
    * @param isValidation True to make the helper text act as an error validation message.
    */
-  setValidation(isValidation: boolean): void {
+  setValidation(isValidation: boolean) {
     if (isValidation) {
       this.adapter_.addClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
     } else {
@@ -93,7 +93,7 @@ class MDCTextFieldHelperTextFoundation extends MDCFoundation<MDCTextFieldHelperT
   /**
    * Sets the validity of the helper text based on the input validity.
    */
-  setValidity(inputIsValid: boolean): void {
+  setValidity(inputIsValid: boolean) {
     const helperTextIsPersistent = this.adapter_.hasClass(cssClasses.HELPER_TEXT_PERSISTENT);
     const helperTextIsValidationMsg = this.adapter_.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
     const validationMsgNeedsDisplay = helperTextIsValidationMsg && !inputIsValid;

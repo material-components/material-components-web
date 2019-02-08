@@ -93,7 +93,7 @@ class MDCTextFieldIconFoundation extends MDCFoundation<MDCTextFieldIconAdapter> 
     this.adapter_.setContent(content);
   }
 
-  handleInteraction(evt: Event): void {
+  handleInteraction(evt: Event) {
     const isEnterKey = (evt as KeyboardEvent).key === 'Enter' || (evt as KeyboardEvent).keyCode === 13;
     if (evt.type === 'click' || isEnterKey) {
       this.adapter_.notifyIconAction();

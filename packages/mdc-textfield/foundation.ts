@@ -22,12 +22,16 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+import {EventType} from '@material/base/index';
 import {MDCTextFieldAdapter} from './adapter';
 import {MDCTextFieldCharacterCounterFoundation} from './character-counter';
 import {ALWAYS_FLOAT_TYPES, cssClasses, numbers, strings, VALIDATION_ATTR_WHITELIST} from './constants';
 import {MDCTextFieldHelperTextFoundation} from './helper-text';
 import {MDCTextFieldIconFoundation} from './icon';
 import {FoundationMapType, NativeInputType} from './types';
+
+const MOUSEDOWN_TOUCHSTART_EVENTS: EventType[] = ['mousedown', 'touchstart'];
+const CLICK_KEYDOWN_EVENTS: EventType[] = ['click', 'keydown'];
 
 class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   static get cssClasses() {
@@ -43,7 +47,7 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   }
 
   get shouldShake(): boolean {
-    return !this.isValid() && !this.isFocused_ && !!this.getValue();
+    return !this.isFocused_ && !this.isValid() && Boolean(this.getValue());
   }
 
   private get shouldAlwaysFloat_(): boolean {
@@ -52,7 +56,7 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   }
 
   get shouldFloat(): boolean {
-    return this.shouldAlwaysFloat_ || this.isFocused_ || !!this.getValue() || this.isBadInput_();
+    return this.shouldAlwaysFloat_ || this.isFocused_ || Boolean(this.getValue()) || this.isBadInput_();
   }
 
   /**
@@ -135,10 +139,10 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     this.adapter_.registerInputInteractionHandler('focus', this.inputFocusHandler_);
     this.adapter_.registerInputInteractionHandler('blur', this.inputBlurHandler_);
     this.adapter_.registerInputInteractionHandler('input', this.inputInputHandler_);
-    ['mousedown', 'touchstart'].forEach((evtType) => {
+    MOUSEDOWN_TOUCHSTART_EVENTS.forEach((evtType) => {
       this.adapter_.registerInputInteractionHandler(evtType, this.setPointerXOffset_);
     });
-    ['click', 'keydown'].forEach((evtType) => {
+    CLICK_KEYDOWN_EVENTS.forEach((evtType) => {
       this.adapter_.registerTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
     this.validationObserver_ =
@@ -150,10 +154,10 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     this.adapter_.deregisterInputInteractionHandler('focus', this.inputFocusHandler_);
     this.adapter_.deregisterInputInteractionHandler('blur', this.inputBlurHandler_);
     this.adapter_.deregisterInputInteractionHandler('input', this.inputInputHandler_);
-    ['mousedown', 'touchstart'].forEach((evtType) => {
+    MOUSEDOWN_TOUCHSTART_EVENTS.forEach((evtType) => {
       this.adapter_.deregisterInputInteractionHandler(evtType, this.setPointerXOffset_);
     });
-    ['click', 'keydown'].forEach((evtType) => {
+    CLICK_KEYDOWN_EVENTS.forEach((evtType) => {
       this.adapter_.deregisterTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
     this.adapter_.deregisterValidationAttributeChangeHandler(this.validationObserver_);
@@ -293,7 +297,7 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   }
 
   /**
-   * Otherwise, returns the result of native validity checks.
+   * @return The custom validity state, if set; otherwise, the result of a native validity check.
    */
   isValid(): boolean {
     return this.useNativeValidation_
@@ -301,7 +305,7 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   }
 
   /**
-   * @param isValid Sets the validity state of the Text Field.
+   * @param isValid Sets the custom validity state of the Text Field.
    */
   setValid(isValid: boolean): void {
     this.isValid_ = isValid;
@@ -393,14 +397,14 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   }
 
   /**
-   * user-supplied value
+   * @return True if the Text Field input fails in converting the user-supplied value.
    */
   private isBadInput_(): boolean {
     return this.getNativeInput_().validity.badInput;
   }
 
   /**
-   * (ValidityState.valid).
+   * @return The result of native validity checking (ValidityState.valid).
    */
   private isNativeInputValid_(): boolean {
     return this.getNativeInput_().validity.valid;
@@ -455,7 +459,7 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   }
 
   /**
-   * host environment, or a dummy if none exists
+   * @return The native text input from the host environment, or a dummy if none exists.
    */
   private getNativeInput_(): HTMLInputElement | NativeInputType {
     return this.adapter_.getNativeInput() || {

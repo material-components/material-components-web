@@ -21,6 +21,8 @@
  * THE SOFTWARE.
  */
 
+import {EventType, SpecificEventListener} from '@material/base/index';
+
 /**
  * Defines the shape of the adapter expected by the foundation.
  * Implement this adapter for your framework of choice to delegate updates to
@@ -52,12 +54,12 @@ interface MDCTextFieldIconAdapter {
   /**
    * Registers an event listener on the icon element for a given event.
    */
-  registerInteractionHandler(evtType: string, handler: EventListener): void;
+  registerInteractionHandle<E extends EventType>(evtType: E, handler: SpecificEventListener<E>): void;
 
   /**
    * Deregisters an event listener on the icon element for a given event.
    */
-  deregisterInteractionHandler(evtType: string, handler: EventListener): void;
+  deregisterInteractionHandler<E extends EventType>(evtType: E, handler: SpecificEventListener<E>): void;
 
   /**
    * Emits a custom event "MDCTextField:icon" denoting a user has clicked the icon.
