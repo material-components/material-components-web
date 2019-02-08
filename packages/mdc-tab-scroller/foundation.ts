@@ -22,20 +22,18 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+import {MDCTabScrollerAdapter, MDCTabScrollerAnimation, MDCTabScrollerHorizontalEdges} from './adapter';
 import {cssClasses, strings} from './constants';
-/* eslint-disable no-unused-vars */
-import {MDCTabScrollerAnimation, MDCTabScrollerHorizontalEdges, MDCTabScrollerAdapter} from './adapter';
-import MDCTabScrollerRTL from './rtl-scroller';
-/* eslint-enable no-unused-vars */
 import MDCTabScrollerRTLDefault from './rtl-default-scroller';
 import MDCTabScrollerRTLNegative from './rtl-negative-scroller';
 import MDCTabScrollerRTLReverse from './rtl-reverse-scroller';
+import MDCTabScrollerRTL from './rtl-scroller';
 
 /**
  * @extends {MDCFoundation<!MDCTabScrollerAdapter>}
  * @final
  */
-class MDCTabScrollerFoundation extends MDCFoundation {
+class MDCTabScrollerFoundation extends MDCFoundation<MDCTabScrollerAdapter> {
   /** @return enum {string} */
   static get cssClasses() {
     return cssClasses;
@@ -50,27 +48,29 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @see MDCTabScrollerAdapter for typing information
    * @return {!MDCTabScrollerAdapter}
    */
-  static get defaultAdapter() {
+  static get defaultAdapter(): MDCTabScrollerAdapter {
     return /** @type {!MDCTabScrollerAdapter} */ ({
-      eventTargetMatchesSelector: () => {},
-      addClass: () => {},
-      removeClass: () => {},
-      addScrollAreaClass: () => {},
-      setScrollAreaStyleProperty: () => {},
-      setScrollContentStyleProperty: () => {},
-      getScrollContentStyleValue: () => {},
-      setScrollAreaScrollLeft: () => {},
-      getScrollAreaScrollLeft: () => {},
-      getScrollContentOffsetWidth: () => {},
-      getScrollAreaOffsetWidth: () => {},
-      computeScrollAreaClientRect: () => {},
-      computeScrollContentClientRect: () => {},
-      computeHorizontalScrollbarHeight: () => {},
+      addClass: (className: string) => undefined,
+      addScrollAreaClass: () => undefined,
+      computeHorizontalScrollbarHeight: () => 0,
+      computeScrollAreaClientRect: () => new ClientRect(),
+      computeScrollContentClientRect: () => new ClientRect(),
+      eventTargetMatchesSelector: () => false,
+      getScrollAreaOffsetWidth: () => 0,
+      getScrollAreaScrollLeft: () => 0,
+      getScrollContentOffsetWidth: () => 0,
+      getScrollContentStyleValue: () => '',
+      removeClass: () => undefined,
+      setScrollAreaScrollLeft: () => undefined,
+      setScrollAreaStyleProperty: () => undefined,
+      setScrollContentStyleProperty: () => undefined,
     });
   }
 
-  /** @param {!MDCTabScrollerAdapter} adapter */
-  constructor(adapter) {
+  private isAnimating_: boolean;
+  private rtlScrollerInstance_!: MDCTabScrollerRTL;
+
+  constructor(adapter: MDCTabScrollerAdapter) {
     super(Object.assign(MDCTabScrollerFoundation.defaultAdapter, adapter));
 
     /**
@@ -84,7 +84,6 @@ class MDCTabScrollerFoundation extends MDCFoundation {
      * of RTL scrolling in it's own class.
      * @private {?MDCTabScrollerRTL}
      */
-    this.rtlScrollerInstance_;
   }
 
   init() {
@@ -126,10 +125,11 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * Handles the transitionend event
    * @param {!Event} evt
    */
-  handleTransitionEnd(evt) {
+  handleTransitionEnd(evt: TransitionEvent) {
     // Early exit if we aren't animating or the event was triggered by a different element.
     if (!this.isAnimating_
-      || !this.adapter_.eventTargetMatchesSelector(evt.target, MDCTabScrollerFoundation.strings.CONTENT_SELECTOR)) {
+      || !this.adapter_.eventTargetMatchesSelector(
+        evt.target as EventTarget, MDCTabScrollerFoundation.strings.CONTENT_SELECTOR)) {
       return;
     }
 
@@ -141,7 +141,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * Increment the scroll value by the scrollXIncrement
    * @param {number} scrollXIncrement The value by which to increment the scroll position
    */
-  incrementScroll(scrollXIncrement) {
+  incrementScroll(scrollXIncrement: number) {
     // Early exit for non-operational increment values
     if (scrollXIncrement === 0) {
       return;
@@ -158,7 +158,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * Scrolls to the given scrollX value
    * @param {number} scrollX
    */
-  scrollTo(scrollX) {
+  scrollTo(scrollX: number) {
     if (this.isRTL_()) {
       return this.scrollToRTL_(scrollX);
     }
@@ -170,7 +170,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * Returns the appropriate version of the MDCTabScrollerRTL
    * @return {!MDCTabScrollerRTL}
    */
-  getRTLScroller() {
+  getRTLScroller(): MDCTabScrollerRTL {
     if (!this.rtlScrollerInstance_) {
       this.rtlScrollerInstance_ = this.rtlScrollerFactory_();
     }
@@ -183,7 +183,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @return {number}
    * @private
    */
-  calculateCurrentTranslateX_() {
+  private calculateCurrentTranslateX_(): number {
     const transformValue = this.adapter_.getScrollContentStyleValue('transform');
     // Early exit if no transform is present
     if (transformValue === 'none') {
@@ -194,9 +194,9 @@ class MDCTabScrollerFoundation extends MDCFoundation {
     // of `matrix(a, b, c, d, tx, ty)`. We only care about tx (translateX) so
     // we're going to grab all the parenthesized values, strip out tx, and
     // parse it.
-    const results = /\((.+)\)/.exec(transformValue)[1];
+    const results = (/\((.+)\)/.exec(transformValue) || [])[1];
     const parts = results.split(',');
-    return parseFloat(parts[4]);
+    return Number.parseFloat(parts[4]);
   }
 
   /**
@@ -205,7 +205,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @return {number}
    * @private
    */
-  clampScrollValue_(scrollX) {
+  private clampScrollValue_(scrollX: number): number {
     const edges = this.calculateScrollEdges_();
     return Math.min(Math.max(edges.left, scrollX), edges.right);
   }
@@ -214,7 +214,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @return {number}
    * @private
    */
-  computeCurrentScrollPositionRTL_() {
+  private computeCurrentScrollPositionRTL_(): number {
     const translateX = this.calculateCurrentTranslateX_();
     return this.getRTLScroller().getScrollPositionRTL(translateX);
   }
@@ -223,7 +223,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @return {!MDCTabScrollerHorizontalEdges}
    * @private
    */
-  calculateScrollEdges_() {
+  private calculateScrollEdges_(): MDCTabScrollerHorizontalEdges {
     const contentWidth = this.adapter_.getScrollContentOffsetWidth();
     const rootWidth = this.adapter_.getScrollAreaOffsetWidth();
     return /** @type {!MDCTabScrollerHorizontalEdges} */ ({
@@ -237,13 +237,13 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @param {number} scrollX The new scroll position
    * @private
    */
-  scrollTo_(scrollX) {
+  private scrollTo_(scrollX: number) {
     const currentScrollX = this.getScrollPosition();
     const safeScrollX = this.clampScrollValue_(scrollX);
     const scrollDelta = safeScrollX - currentScrollX;
     this.animate_(/** @type {!MDCTabScrollerAnimation} */ ({
       finalScrollPosition: safeScrollX,
-      scrollDelta: scrollDelta,
+      scrollDelta,
     }));
   }
 
@@ -252,7 +252,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @param {number} scrollX The new scroll position
    * @private
    */
-  scrollToRTL_(scrollX) {
+  private scrollToRTL_(scrollX: number) {
     const animation = this.getRTLScroller().scrollToRTL(scrollX);
     this.animate_(animation);
   }
@@ -262,14 +262,14 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @param {number} scrollX The new scroll position increment
    * @private
    */
-  incrementScroll_(scrollX) {
+  private incrementScroll_(scrollX: number) {
     const currentScrollX = this.getScrollPosition();
     const targetScrollX = scrollX + currentScrollX;
     const safeScrollX = this.clampScrollValue_(targetScrollX);
     const scrollDelta = safeScrollX - currentScrollX;
     this.animate_(/** @type {!MDCTabScrollerAnimation} */ ({
       finalScrollPosition: safeScrollX,
-      scrollDelta: scrollDelta,
+      scrollDelta,
     }));
   }
 
@@ -278,7 +278,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @param {number} scrollX The new scroll position RTL increment
    * @private
    */
-  incrementScrollRTL_(scrollX) {
+  private incrementScrollRTL_(scrollX: number) {
     const animation = this.getRTLScroller().incrementScrollRTL(scrollX);
     this.animate_(animation);
   }
@@ -288,7 +288,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @param {!MDCTabScrollerAnimation} animation The animation to apply
    * @private
    */
-  animate_(animation) {
+  private animate_(animation: MDCTabScrollerAnimation) {
     // Early exit if translateX is 0, which means there's no animation to perform
     if (animation.scrollDelta === 0) {
       return;
@@ -314,7 +314,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * Stops scroll animation
    * @private
    */
-  stopScrollAnimation_() {
+  private stopScrollAnimation_() {
     this.isAnimating_ = false;
     const currentScrollPosition = this.getAnimatingScrollPosition_();
     this.adapter_.removeClass(MDCTabScrollerFoundation.cssClasses.ANIMATING);
@@ -327,7 +327,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @return {number}
    * @private
    */
-  getAnimatingScrollPosition_() {
+  private getAnimatingScrollPosition_() {
     const currentTranslateX = this.calculateCurrentTranslateX_();
     const scrollLeft = this.adapter_.getScrollAreaScrollLeft();
     if (this.isRTL_()) {
@@ -342,7 +342,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @return {!MDCTabScrollerRTL}
    * @private
    */
-  rtlScrollerFactory_() {
+  private rtlScrollerFactory_(): MDCTabScrollerRTL {
     // Browsers have three different implementations of scrollLeft in RTL mode,
     // dependent on the browser. The behavior is based off the max LTR
     // scrollleft value and 0.
@@ -394,7 +394,7 @@ class MDCTabScrollerFoundation extends MDCFoundation {
    * @return {boolean}
    * @private
    */
-  isRTL_() {
+  private isRTL_(): boolean {
     return this.adapter_.getScrollContentStyleValue('direction') === 'rtl';
   }
 }

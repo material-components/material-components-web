@@ -36,7 +36,7 @@ class MDCTabScrollerRTLReverse extends MDCTabScrollerRTL {
    * @param {number} translateX
    * @return {number}
    */
-  getScrollPositionRTL(translateX) {
+  getScrollPositionRTL(translateX: number) {
     const currentScrollLeft = this.adapter_.getScrollAreaScrollLeft();
     // Scroll values on most browsers are ints instead of floats so we round
     return Math.round(currentScrollLeft - translateX);
@@ -46,7 +46,7 @@ class MDCTabScrollerRTLReverse extends MDCTabScrollerRTL {
    * @param {number} scrollX
    * @return {!MDCTabScrollerAnimation}
    */
-  scrollToRTL(scrollX) {
+  scrollToRTL(scrollX: number): MDCTabScrollerAnimation {
     const currentScrollLeft = this.adapter_.getScrollAreaScrollLeft();
     const clampedScrollLeft = this.clampScrollValue_(scrollX);
     return /** @type {!MDCTabScrollerAnimation} */ ({
@@ -59,7 +59,7 @@ class MDCTabScrollerRTLReverse extends MDCTabScrollerRTL {
    * @param {number} scrollX
    * @return {!MDCTabScrollerAnimation}
    */
-  incrementScrollRTL(scrollX) {
+  incrementScrollRTL(scrollX: number): MDCTabScrollerAnimation {
     const currentScrollLeft = this.adapter_.getScrollAreaScrollLeft();
     const clampedScrollLeft = this.clampScrollValue_(currentScrollLeft + scrollX);
     return /** @type {!MDCTabScrollerAnimation} */ ({
@@ -72,7 +72,7 @@ class MDCTabScrollerRTLReverse extends MDCTabScrollerRTL {
    * @param {number} scrollX
    * @return {number}
    */
-  getAnimatingScrollPosition(scrollX, translateX) {
+  getAnimatingScrollPosition(scrollX: number, translateX: number): number {
     return scrollX + translateX;
   }
 
@@ -80,7 +80,7 @@ class MDCTabScrollerRTLReverse extends MDCTabScrollerRTL {
    * @return {!MDCTabScrollerHorizontalEdges}
    * @private
    */
-  calculateScrollEdges_() {
+  private calculateScrollEdges_(): MDCTabScrollerHorizontalEdges {
     const contentWidth = this.adapter_.getScrollContentOffsetWidth();
     const rootWidth = this.adapter_.getScrollAreaOffsetWidth();
     return /** @type {!MDCTabScrollerHorizontalEdges} */ ({
@@ -94,7 +94,7 @@ class MDCTabScrollerRTLReverse extends MDCTabScrollerRTL {
    * @return {number}
    * @private
    */
-  clampScrollValue_(scrollX) {
+  private clampScrollValue_(scrollX: number): number {
     const edges = this.calculateScrollEdges_();
     return Math.min(Math.max(edges.right, scrollX), edges.left);
   }

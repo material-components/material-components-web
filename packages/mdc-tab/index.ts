@@ -42,7 +42,8 @@ class MDCTab extends MDCComponent<MDCTabFoundation> implements RippleCapableSurf
   }
 
   id?: string;
-  private ripple_: MDCRipple;
+  root_!: HTMLElement;
+  private ripple_!: MDCRipple;
   private tabIndicator_!: MDCTabIndicator;
   private content_!: HTMLElement;
   private handleClick_?: EventListener;
@@ -57,7 +58,7 @@ class MDCTab extends MDCComponent<MDCTabFoundation> implements RippleCapableSurf
   }
 
   initialize(
-    rippleFactory = (el: Element, foundation: MDCTabFoundation) => new MDCRipple(el, foundation),
+    rippleFactory = (el: Element, foundation: MDCRippleFoundation) => new MDCRipple(el, foundation),
     tabIndicatorFactory = (el: HTMLElement) => new MDCTabIndicator(el)) {
     this.id = this.root_.id;
     const rippleSurface = this.root_.querySelector(MDCTabFoundation.strings.RIPPLE_SELECTOR) as HTMLElement;

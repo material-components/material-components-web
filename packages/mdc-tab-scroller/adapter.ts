@@ -35,7 +35,10 @@
  * position or transformation is abstracted away from the animation method.
  * @typedef {{finalScrollPosition: number, scrollDelta: number}}
  */
-let MDCTabScrollerAnimation;
+interface MDCTabScrollerAnimation {
+  finalScrollPosition: number;
+  scrollDelta: number;
+}
 
 /**
  * MDCTabScrollerHorizontalEdges represents the left and right edges of the
@@ -44,7 +47,10 @@ let MDCTabScrollerAnimation;
  * the max scrollable value as either a positive or negative integer.
  * @typedef {{left: number, right: number}}
  */
-let MDCTabScrollerHorizontalEdges;
+interface MDCTabScrollerHorizontalEdges {
+  left: number;
+  right: number;
+}
 
 /**
  * Adapter for MDC Tab Scroller.
@@ -56,46 +62,46 @@ let MDCTabScrollerHorizontalEdges;
  *
  * @record
  */
-class MDCTabScrollerAdapter {
+interface MDCTabScrollerAdapter {
   /**
-   * Adds the given className to the root element.
-   * @param {string} className The className to add
+   * Adds the given className: string to the root element.
+   * @param {string} className: string The className: string to add
    */
-  addClass(className) {}
+  addClass(className: string): void;
 
   /**
-   * Removes the given className from the root element.
-   * @param {string} className The className to remove
+   * Removes the given className: string from the root element.
+   * @param {string} className: string The className: string to remove
    */
-  removeClass(className) {}
+  removeClass(className: string): void;
 
   /**
-   * Adds the given className to the scroll area element.
-   * @param {string} className The className to add
+   * Adds the given className: string to the scroll area element.
+   * @param {string} className: string The className: string to add
    */
-  addScrollAreaClass(className) {}
+  addScrollAreaClass(className: string): void;
 
   /**
-   * Returns whether the event target matches given className.
+   * Returns whether the event target matches given className: string.
    * @param {EventTarget} evtTarget The event target
    * @param {string} selector The selector to check
    * @return {boolean}
    */
-  eventTargetMatchesSelector(evtTarget, selector) {}
+  eventTargetMatchesSelector(evtTarget: EventTarget, selector: string): boolean;
 
   /**
    * Sets a style property of the area element to the passed value.
    * @param {string} propName The style property name to set
    * @param {string} value The style property value
    */
-  setScrollAreaStyleProperty(propName, value) {}
+  setScrollAreaStyleProperty(propName: string, value: string): void;
 
   /**
    * Sets a style property of the content element to the passed value.
    * @param {string} propName The style property name to set
    * @param {string} value The style property value
    */
-  setScrollContentStyleProperty(propName, value) {}
+  setScrollContentStyleProperty(propName: string, value: string): void;
 
   /**
    * Returns the scroll content element's computed style value of the given css property `propertyName`.
@@ -103,49 +109,49 @@ class MDCTabScrollerAdapter {
    * @param {string} propertyName
    * @return {string}
    */
-  getScrollContentStyleValue(propertyName) {}
+  getScrollContentStyleValue(propertyName: string): string;
 
   /**
    * Sets the scrollLeft value of the scroll area element to the passed value.
    * @param {number} scrollLeft The new scrollLeft value
    */
-  setScrollAreaScrollLeft(scrollLeft) {}
+  setScrollAreaScrollLeft(scrollLeft: number): void;
 
   /**
    * Returns the scrollLeft value of the scroll area element.
    * @return {number}
    */
-  getScrollAreaScrollLeft() {}
+  getScrollAreaScrollLeft(): number;
 
   /**
    * Returns the offsetWidth of the scroll content element.
    * @return {number}
    */
-  getScrollContentOffsetWidth() {}
+  getScrollContentOffsetWidth(): number;
 
   /**
    * Returns the offsetWitdth of the scroll area element.
    * @return {number}
    */
-  getScrollAreaOffsetWidth() {}
+  getScrollAreaOffsetWidth(): number;
 
   /**
    * Returns the bounding client rect of the scroll area element.
    * @return {!ClientRect}
    */
-  computeScrollAreaClientRect() {}
+  computeScrollAreaClientRect(): ClientRect;
 
   /**
    * Returns the bounding client rect of the scroll content element.
    * @return {!ClientRect}
    */
-  computeScrollContentClientRect() {}
+  computeScrollContentClientRect(): ClientRect;
 
   /**
    * Returns the height of the browser's horizontal scrollbars (in px).
    * @return {number}
    */
-  computeHorizontalScrollbarHeight() {}
+  computeHorizontalScrollbarHeight(): number;
 }
 
 export {MDCTabScrollerAnimation, MDCTabScrollerHorizontalEdges, MDCTabScrollerAdapter};

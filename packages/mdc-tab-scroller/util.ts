@@ -27,7 +27,7 @@ import {cssClasses} from './constants';
  * Stores result from computeHorizontalScrollbarHeight to avoid redundant processing.
  * @private {number|undefined}
  */
-let horizontalScrollbarHeight_;
+let horizontalScrollbarHeight_: number | undefined;
 
 /**
  * Computes the height of browser-rendered horizontal scrollbars using a self-created test element.
@@ -36,7 +36,7 @@ let horizontalScrollbarHeight_;
  * @param {boolean=} shouldCacheResult
  * @return {number}
  */
-function computeHorizontalScrollbarHeight(documentObj, shouldCacheResult = true) {
+function computeHorizontalScrollbarHeight(documentObj: Document, shouldCacheResult = true): number {
   if (shouldCacheResult && typeof horizontalScrollbarHeight_ !== 'undefined') {
     return horizontalScrollbarHeight_;
   }
@@ -58,10 +58,10 @@ function computeHorizontalScrollbarHeight(documentObj, shouldCacheResult = true)
  * @param {!Object} HTMLElementPrototype
  * @return {string}
  */
-function getMatchesProperty(HTMLElementPrototype) {
+function getMatchesProperty(htmlElementPrototype: typeof HTMLElement): string {
   return [
     'msMatchesSelector', 'matches',
-  ].filter((p) => p in HTMLElementPrototype).pop();
+  ].filter((p) => p in htmlElementPrototype).pop() as string;
 }
 
 export {computeHorizontalScrollbarHeight, getMatchesProperty};

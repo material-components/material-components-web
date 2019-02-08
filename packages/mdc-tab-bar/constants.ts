@@ -21,50 +21,31 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
+/** @enum {string} */
+const strings = {
+  ARROW_LEFT_KEY: 'ArrowLeft',
+  ARROW_RIGHT_KEY: 'ArrowRight',
+  END_KEY: 'End',
+  ENTER_KEY: 'Enter',
+  HOME_KEY: 'Home',
+  SPACE_KEY: 'Space',
+  TAB_ACTIVATED_EVENT: 'MDCTabBar:activated',
+  TAB_SCROLLER_SELECTOR: '.mdc-tab-scroller',
+  TAB_SELECTOR: '.mdc-tab',
+};
 
-/* eslint-disable no-unused-vars */
-import {MDCTabScrollerAdapter, MDCTabScrollerAnimation} from './adapter';
-/* eslint-enable no-unused-vars */
+/** @enum {number} */
+const numbers = {
+  ARROW_LEFT_KEYCODE: 37,
+  ARROW_RIGHT_KEYCODE: 39,
+  END_KEYCODE: 35,
+  ENTER_KEYCODE: 13,
+  EXTRA_SCROLL_AMOUNT: 20,
+  HOME_KEYCODE: 36,
+  SPACE_KEYCODE: 32,
+};
 
-/**
- * @abstract
- */
-class MDCTabScrollerRTL {
-  /** @param {!MDCTabScrollerAdapter} adapter */
-  constructor(adapter) {
-    /** @private */
-    this.adapter_ = adapter;
-  }
-
-  /**
-   * @param {number} translateX The current translateX position
-   * @return {number}
-   * @abstract
-   */
-  getScrollPositionRTL(translateX) {}
-
-  /**
-   * @param {number} scrollX
-   * @return {!MDCTabScrollerAnimation}
-   * @abstract
-   */
-  scrollToRTL(scrollX) {}
-
-  /**
-   * @param {number} scrollX
-   * @return {!MDCTabScrollerAnimation}
-   * @abstract
-   */
-  incrementScrollRTL(scrollX) {}
-
-  /**
-   * @param {number} scrollX The current scrollX position
-   * @param {number} translateX The current translateX position
-   * @return {number}
-   * @abstract
-   */
-  getAnimatingScrollPosition(scrollX, translateX) {}
-}
-
-export default MDCTabScrollerRTL;
+export {
+  numbers,
+  strings,
+};

@@ -31,39 +31,28 @@ import * as util from './util';
  * @extends {MDCComponent<!MDCTabScrollerFoundation>}
  * @final
  */
-class MDCTabScroller extends MDCComponent {
+class MDCTabScroller extends MDCComponent<MDCTabScrollerFoundation> {
   /**
    * @param {!Element} root
    * @return {!MDCTabScroller}
    */
-  static attachTo(root) {
+  static attachTo(root: Element): MDCTabScroller {
     return new MDCTabScroller(root);
   }
 
-  constructor(...args) {
-    super(...args);
-
-    /** @private {?Element} */
-    this.content_;
-
-    /** @private {?Element} */
-    this.area_;
-
-    /** @private {?function(?Event): undefined} */
-    this.handleInteraction_;
-
-    /** @private {?function(!Event): undefined} */
-    this.handleTransitionEnd_;
-  }
-
+  area_!: HTMLElement;
+  content_!: HTMLElement;
+  handleInteraction_!: EventListenerOrEventListenerObject;
+  handleTransitionEnd_!: EventListenerOrEventListenerObject;
   initialize() {
-    this.area_ = this.root_.querySelector(MDCTabScrollerFoundation.strings.AREA_SELECTOR);
-    this.content_ = this.root_.querySelector(MDCTabScrollerFoundation.strings.CONTENT_SELECTOR);
+    this.area_ = this.root_.querySelector(MDCTabScrollerFoundation.strings.AREA_SELECTOR) as HTMLElement;
+    this.content_ = this.root_.querySelector(MDCTabScrollerFoundation.strings.CONTENT_SELECTOR) as HTMLElement;
   }
 
   initialSyncWithDOM() {
     this.handleInteraction_ = () => this.foundation_.handleInteraction();
-    this.handleTransitionEnd_ = (evt) => this.foundation_.handleTransitionEnd(evt);
+    this.handleTransitionEnd_ = (
+      (evt: TransitionEvent) => this.foundation_.handleTransitionEnd(evt)) as EventListenerOrEventListenerObject;
 
     this.area_.addEventListener('wheel', this.handleInteraction_);
     this.area_.addEventListener('touchstart', this.handleInteraction_);
@@ -87,25 +76,27 @@ class MDCTabScroller extends MDCComponent {
   /**
    * @return {!MDCTabScrollerFoundation}
    */
-  getDefaultFoundation() {
-    const adapter = /** @type {!MDCTabScrollerAdapter} */ ({
-      eventTargetMatchesSelector: (evtTarget, selector) => {
-        const MATCHES = util.getMatchesProperty(HTMLElement.prototype);
-        return evtTarget[MATCHES](selector);
-      },
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
+  getDefaultFoundation(): MDCTabScrollerFoundation {
+    const adapter: MDCTabScrollerAdapter = ({
+      addClass: (className: string) => this.root_.classList.add(className),
       addScrollAreaClass: (className) => this.area_.classList.add(className),
-      setScrollAreaStyleProperty: (prop, value) => this.area_.style.setProperty(prop, value),
-      setScrollContentStyleProperty: (prop, value) => this.content_.style.setProperty(prop, value),
-      getScrollContentStyleValue: (propName) => window.getComputedStyle(this.content_).getPropertyValue(propName),
-      setScrollAreaScrollLeft: (scrollX) => this.area_.scrollLeft = scrollX,
-      getScrollAreaScrollLeft: () => this.area_.scrollLeft,
-      getScrollContentOffsetWidth: () => this.content_.offsetWidth,
-      getScrollAreaOffsetWidth: () => this.area_.offsetWidth,
+      computeHorizontalScrollbarHeight: () => util.computeHorizontalScrollbarHeight(document),
       computeScrollAreaClientRect: () => this.area_.getBoundingClientRect(),
       computeScrollContentClientRect: () => this.content_.getBoundingClientRect(),
-      computeHorizontalScrollbarHeight: () => util.computeHorizontalScrollbarHeight(document),
+      eventTargetMatchesSelector: (evtTarget, selector): boolean => {
+        // tslint:disable-next-line
+        const MATCHES = util.getMatchesProperty(HTMLElement.prototype as any);
+        // tslint:disable-next-line
+        return (evtTarget as any)[MATCHES](selector);
+      },
+      getScrollAreaOffsetWidth: () => this.area_.offsetWidth,
+      getScrollAreaScrollLeft: () => this.area_.scrollLeft,
+      getScrollContentOffsetWidth: () => this.content_.offsetWidth,
+      getScrollContentStyleValue: (propName) => window.getComputedStyle(this.content_).getPropertyValue(propName),
+      removeClass: (className) => this.root_.classList.remove(className),
+      setScrollAreaScrollLeft: (scrollX) => this.area_.scrollLeft = scrollX,
+      setScrollAreaStyleProperty: (prop, value) => this.area_.style.setProperty(prop, value),
+      setScrollContentStyleProperty: (prop, value) => this.content_.style.setProperty(prop, value),
     });
 
     return new MDCTabScrollerFoundation(adapter);
@@ -115,7 +106,7 @@ class MDCTabScroller extends MDCComponent {
    * Returns the current visual scroll position
    * @return {number}
    */
-  getScrollPosition() {
+  getScrollPosition(): number {
     return this.foundation_.getScrollPosition();
   }
 
@@ -123,7 +114,7 @@ class MDCTabScroller extends MDCComponent {
    * Returns the width of the scroll content
    * @return {number}
    */
-  getScrollContentWidth() {
+  getScrollContentWidth(): number {
     return this.content_.offsetWidth;
   }
 
@@ -131,7 +122,7 @@ class MDCTabScroller extends MDCComponent {
    * Increments the scroll value by the given amount
    * @param {number} scrollXIncrement The pixel value by which to increment the scroll value
    */
-  incrementScroll(scrollXIncrement) {
+  incrementScroll(scrollXIncrement: number) {
     this.foundation_.incrementScroll(scrollXIncrement);
   }
 
@@ -139,7 +130,7 @@ class MDCTabScroller extends MDCComponent {
    * Scrolls to the given pixel position
    * @param {number} scrollX The pixel value to scroll to
    */
-  scrollTo(scrollX) {
+  scrollTo(scrollX: number) {
     this.foundation_.scrollTo(scrollX);
   }
 }

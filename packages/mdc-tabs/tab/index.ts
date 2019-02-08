@@ -35,6 +35,7 @@ export class MDCTab extends MDCComponent<MDCTabFoundation> {
   }
 
   ripple_!: MDCRipple;
+  root_!: HTMLElement;
 
   get computedWidth() {
     return this.foundation_.getComputedWidth();
@@ -60,7 +61,12 @@ export class MDCTab extends MDCComponent<MDCTabFoundation> {
     this.foundation_.setPreventDefaultOnClick(preventDefaultOnClick);
   }
 
-  constructor(root: HTMLElement, foundation?: MDCTabFoundation, ...args) {
+  constructor(
+    root: HTMLElement,
+    foundation?: MDCTabFoundation,
+    // tslint:disable-next-line:no-any a component can pass in anything it needs to the constructor
+    ...args: any[]
+  ) {
     super(root, foundation, ...args);
 
     this.ripple_ = MDCRipple.attachTo(this.root_);

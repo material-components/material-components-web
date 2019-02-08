@@ -4,7 +4,8 @@
     "paths": {
         "@material/base": "./packages/mdc-base",
         "@material/ripple": "./packages/mdc-ripple",
-        "@material/tab-indicator": "./packages/mdc-tab-indicator"
+        "@material/tab-indicator": "./packages/mdc-tab-indicator",
+        "@material/tab-scroller": "./packages/mdc-tab-scroller"
     },
     "downlevelIteration": true,
     "moduleResolution": "node",
