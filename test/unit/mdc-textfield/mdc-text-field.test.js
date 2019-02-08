@@ -30,8 +30,9 @@ import {MDCRipple} from '../../../packages/mdc-ripple/index';
 import {MDCLineRipple} from '../../../packages/mdc-line-ripple/index';
 import {MDCFloatingLabel} from '../../../packages/mdc-floating-label/index';
 import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline/index';
-import {MDCTextField, MDCTextFieldFoundation, MDCTextFieldHelperText, MDCTextFieldCharacterCounter,
-  MDCTextFieldIcon} from '../../../packages/mdc-textfield/index';
+import {
+  MDCTextField, MDCTextFieldFoundation, MDCTextFieldHelperText, MDCTextFieldCharacterCounter, MDCTextFieldIcon,
+} from '../../../packages/mdc-textfield/index';
 import {cssClasses as helperTextCssClasses} from '../../../packages/mdc-textfield/helper-text/constants';
 import {cssClasses as characterCounterCssClasses} from '../../../packages/mdc-textfield/character-counter/constants';
 
@@ -467,9 +468,7 @@ test('#adapter.setLineRippleTransformOrigin calls the setRippleCenter method on 
 function setupMockFoundationTest(root = getFixture()) {
   const MockFoundationConstructor = td.constructor(MDCTextFieldFoundation);
   const mockFoundation = new MockFoundationConstructor();
-  const component = new MDCTextField(
-    root,
-    mockFoundation);
+  const component = new MDCTextField(root, mockFoundation);
   return {root, component, mockFoundation};
 }
 
