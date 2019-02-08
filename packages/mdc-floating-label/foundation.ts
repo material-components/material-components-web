@@ -55,11 +55,11 @@ class MDCFloatingLabelFoundation extends MDCFoundation<MDCFloatingLabelAdapter> 
   }
 
   init() {
-    this.adapter_.registerInteractionHandler('animationend', this.shakeAnimationEndHandler_ as EventListener);
+    this.adapter_.registerInteractionHandler('animationend', this.shakeAnimationEndHandler_);
   }
 
   destroy() {
-    this.adapter_.deregisterInteractionHandler('animationend', this.shakeAnimationEndHandler_ as EventListener);
+    this.adapter_.deregisterInteractionHandler('animationend', this.shakeAnimationEndHandler_);
   }
 
   /**
