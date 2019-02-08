@@ -111,13 +111,12 @@
     will-change: transform, opacity;
     z-index: $mdc-menu-surface-z-index;
   }
-  
+
   @include mdc-feature-targets($feat-animation) {
     transition:
       opacity $mdc-menu-surface-fade-in-duration linear,
       transform $mdc-menu-surface-scale-duration $mdc-animation-deceleration-curve-timing-function;
   }
-
 
   &:focus {
     @include mdc-feature-targets($feat-structure) {
