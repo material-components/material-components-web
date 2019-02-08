@@ -21,7 +21,6 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
 const cssClasses = {
   LABEL_FLOAT_ABOVE: 'mdc-floating-label--float-above',
   LABEL_SHAKE: 'mdc-floating-label--shake',

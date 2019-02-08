@@ -21,42 +21,36 @@
  * THE SOFTWARE.
  */
 
+import {SpecificEventListener} from '@material/base';
 import {MDCFoundation} from '@material/base/foundation';
-import MDCFloatingLabelAdapter from './adapter';
+import {MDCFloatingLabelAdapter} from './adapter';
 import {cssClasses} from './constants';
 
-/**
- * @extends {MDCFoundation<!MDCFloatingLabelAdapter>}
- * @final
- */
-class MDCFloatingLabelFoundation extends MDCFoundation {
-  /** @return enum {string} */
+class MDCFloatingLabelFoundation extends MDCFoundation<MDCFloatingLabelAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
 
   /**
-   * {@see MDCFloatingLabelAdapter} for typing information on parameters and return
-   * types.
-   * @return {!MDCFloatingLabelAdapter}
+   * See {@link MDCFloatingLabelAdapter} for typing information on parameters and return types.
    */
-  static get defaultAdapter() {
-    return /** @type {!MDCFloatingLabelAdapter} */ ({
-      addClass: () => {},
-      removeClass: () => {},
-      getWidth: () => {},
-      registerInteractionHandler: () => {},
-      deregisterInteractionHandler: () => {},
-    });
+  static get defaultAdapter(): MDCFloatingLabelAdapter {
+    // tslint:disable:object-literal-sort-keys
+    return {
+      addClass: () => undefined,
+      removeClass: () => undefined,
+      getWidth: () => 0,
+      registerInteractionHandler: () => undefined,
+      deregisterInteractionHandler: () => undefined,
+    };
+    // tslint:enable:object-literal-sort-keys
   }
 
-  /**
-   * @param {!MDCFloatingLabelAdapter} adapter
-   */
-  constructor(adapter) {
-    super(Object.assign(MDCFloatingLabelFoundation.defaultAdapter, adapter));
+  private readonly shakeAnimationEndHandler_: SpecificEventListener<'animationend'>;
 
-    /** @private {function(!Event): undefined} */
+  constructor(adapter: Partial<MDCFloatingLabelAdapter> = {}) {
+    super({...MDCFloatingLabelFoundation.defaultAdapter, ...adapter});
+
     this.shakeAnimationEndHandler_ = () => this.handleShakeAnimationEnd_();
   }
 
@@ -70,18 +64,16 @@ class MDCFloatingLabelFoundation extends MDCFoundation {
 
   /**
    * Returns the width of the label element.
-   * @return {number}
    */
-  getWidth() {
+  getWidth(): number {
     return this.adapter_.getWidth();
   }
 
   /**
-   * Styles the label to produce the label shake for errors.
-   * @param {boolean} shouldShake adds shake class if true,
-   * otherwise removes shake class.
+   * Styles the label to produce a shake animation to indicate an error.
+   * @param shouldShake If true, adds the shake CSS class; otherwise, removes shake class.
    */
-  shake(shouldShake) {
+  shake(shouldShake: boolean) {
     const {LABEL_SHAKE} = MDCFloatingLabelFoundation.cssClasses;
     if (shouldShake) {
       this.adapter_.addClass(LABEL_SHAKE);
@@ -92,10 +84,9 @@ class MDCFloatingLabelFoundation extends MDCFoundation {
 
   /**
    * Styles the label to float or dock.
-   * @param {boolean} shouldFloat adds float class if true, otherwise remove
-   * float and shake class to dock label.
+   * @param shouldFloat If true, adds the float CSS class; otherwise, removes float and shake classes to dock the label.
    */
-  float(shouldFloat) {
+  float(shouldFloat: boolean) {
     const {LABEL_FLOAT_ABOVE, LABEL_SHAKE} = MDCFloatingLabelFoundation.cssClasses;
     if (shouldFloat) {
       this.adapter_.addClass(LABEL_FLOAT_ABOVE);
@@ -105,13 +96,10 @@ class MDCFloatingLabelFoundation extends MDCFoundation {
     }
   }
 
-  /**
-   * Handles an interaction event on the root element.
-   */
-  handleShakeAnimationEnd_() {
+  private handleShakeAnimationEnd_() {
     const {LABEL_SHAKE} = MDCFloatingLabelFoundation.cssClasses;
     this.adapter_.removeClass(LABEL_SHAKE);
   }
 }
 
-export default MDCFloatingLabelFoundation;
+export {MDCFloatingLabelFoundation as default, MDCFloatingLabelFoundation};
