@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2018 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,11 +21,9 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
 const cssClasses = {
-  LABEL_FLOAT_ABOVE: 'mdc-floating-label--float-above',
-  LABEL_SHAKE: 'mdc-floating-label--shake',
-  ROOT: 'mdc-floating-label',
+  LINE_RIPPLE_ACTIVE: 'mdc-line-ripple--active',
+  LINE_RIPPLE_DEACTIVATING: 'mdc-line-ripple--deactivating',
 };
 
 export {cssClasses};

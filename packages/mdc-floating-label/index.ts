@@ -22,51 +22,35 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import MDCFloatingLabelAdapter from './adapter';
-import MDCFloatingLabelFoundation from './foundation';
+import {MDCFloatingLabelFoundation} from './foundation';
 
-/**
- * @extends {MDCComponent<!MDCFloatingLabelFoundation>}
- * @final
- */
-class MDCFloatingLabel extends MDCComponent {
-  /**
-   * @param {!Element} root
-   * @return {!MDCFloatingLabel}
-   */
-  static attachTo(root) {
+class MDCFloatingLabel extends MDCComponent<MDCFloatingLabelFoundation> {
+  static attachTo(root: Element): MDCFloatingLabel {
     return new MDCFloatingLabel(root);
   }
 
   /**
    * Styles the label to produce the label shake for errors.
-   * @param {boolean} shouldShake styles the label to shake by adding shake class
-   * if true, otherwise will stop shaking by removing shake class.
+   * @param shouldShake If true, shakes the label by adding a CSS class; otherwise, stops shaking by removing the class.
    */
-  shake(shouldShake) {
+  shake(shouldShake: boolean) {
     this.foundation_.shake(shouldShake);
   }
 
   /**
-   * Styles label to float/dock.
-   * @param {boolean} shouldFloat styles the label to float by adding float class
-   * if true, otherwise docks the label by removing the float class.
+   * Styles the label to float/dock.
+   * @param shouldFloat If true, floats the label by adding a CSS class; otherwise, docks it by removing the class.
    */
-  float(shouldFloat) {
+  float(shouldFloat: boolean) {
     this.foundation_.float(shouldFloat);
   }
 
-  /**
-   * @return {number}
-   */
-  getWidth() {
+  getWidth(): number {
     return this.foundation_.getWidth();
   }
 
-  /**
-   * @return {!MDCFloatingLabelFoundation}
-   */
-  getDefaultFoundation() {
+  getDefaultFoundation(): MDCFloatingLabelFoundation {
+    // tslint:disable:object-literal-sort-keys
     return new MDCFloatingLabelFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
@@ -74,7 +58,10 @@ class MDCFloatingLabel extends MDCComponent {
       registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
     });
+    // tslint:enable:object-literal-sort-keys
   }
 }
 
-export {MDCFloatingLabel, MDCFloatingLabelFoundation};
+export {MDCFloatingLabel as default, MDCFloatingLabel};
+export * from './adapter';
+export * from './foundation';
