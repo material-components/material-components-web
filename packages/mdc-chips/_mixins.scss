@@ -174,7 +174,9 @@
   $left: $mdc-chip-leading-icon-margin-left) {
   &.mdc-chip--selected .mdc-chip__checkmark,
   .mdc-chip__icon--leading:not(.mdc-chip__icon--leading-hidden) {
-    margin: $top $right $bottom $left;
+    @include mdc-rtl-reflexive-property(margin, $left, $right);
+    margin-bottom: $bottom;
+    margin-top: $top;
   }
 }
 
