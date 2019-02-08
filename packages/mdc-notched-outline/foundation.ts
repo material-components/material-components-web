@@ -22,56 +22,44 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
-import MDCNotchedOutlineAdapter from './adapter';
-import {cssClasses, strings, numbers} from './constants';
+import {MDCNotchedOutlineAdapter} from './adapter';
+import {cssClasses, numbers, strings} from './constants';
 
-/**
- * @extends {MDCFoundation<!MDCNotchedOutlineAdapter>}
- * @final
- */
-class MDCNotchedOutlineFoundation extends MDCFoundation {
-  /** @return enum {string} */
+class MDCNotchedOutlineFoundation extends MDCFoundation<MDCNotchedOutlineAdapter> {
   static get strings() {
     return strings;
   }
 
-  /** @return enum {string} */
   static get cssClasses() {
     return cssClasses;
   }
 
-  /** @return enum {number} */
   static get numbers() {
     return numbers;
   }
 
   /**
-   * {@see MDCNotchedOutlineAdapter} for typing information on parameters and return
-   * types.
-   * @return {!MDCNotchedOutlineAdapter}
+   * See {@link MDCNotchedOutlineAdapter} for typing information on parameters and return types.
    */
-  static get defaultAdapter() {
-    return /** @type {!MDCNotchedOutlineAdapter} */ ({
-      addClass: () => {},
-      removeClass: () => {},
-      setNotchWidthProperty: () => {},
-      removeNotchWidthProperty: () => {},
-    });
+  static get defaultAdapter(): MDCNotchedOutlineAdapter {
+    // tslint:disable:object-literal-sort-keys
+    return {
+      addClass: () => undefined,
+      removeClass: () => undefined,
+      setNotchWidthProperty: () => undefined,
+      removeNotchWidthProperty: () => undefined,
+    };
+    // tslint:enable:object-literal-sort-keys
+  }
+
+  constructor(adapter: Partial<MDCNotchedOutlineAdapter> = {}) {
+    super({...MDCNotchedOutlineFoundation.defaultAdapter, ...adapter});
   }
 
   /**
-   * @param {!MDCNotchedOutlineAdapter} adapter
+   * Adds the outline notched selector and updates the notch width calculated based off of notchWidth.
    */
-  constructor(adapter) {
-    super(Object.assign(MDCNotchedOutlineFoundation.defaultAdapter, adapter));
-  }
-
-  /**
-   * Adds the outline notched selector and updates the notch width
-   * calculated based off of notchWidth.
-   * @param {number} notchWidth
-   */
-  notch(notchWidth) {
+  notch(notchWidth: number) {
     const {OUTLINE_NOTCHED} = MDCNotchedOutlineFoundation.cssClasses;
 
     if (notchWidth > 0) {
@@ -92,4 +80,4 @@ class MDCNotchedOutlineFoundation extends MDCFoundation {
   }
 }
 
-export default MDCNotchedOutlineFoundation;
+export {MDCNotchedOutlineFoundation as default, MDCNotchedOutlineFoundation};
