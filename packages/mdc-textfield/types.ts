@@ -21,8 +21,12 @@
  * THE SOFTWARE.
  */
 
+import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
+import {MDCTextFieldCharacterCounter} from './character-counter';
 import {MDCTextFieldCharacterCounterFoundation} from './character-counter/foundation';
+import {MDCTextFieldHelperText} from './helper-text';
 import {MDCTextFieldHelperTextFoundation} from './helper-text/foundation';
+import {MDCTextFieldIcon} from './icon';
 import {MDCTextFieldIconFoundation} from './icon/foundation';
 
 export interface NativeInputType {
@@ -42,3 +46,11 @@ export interface FoundationMapType {
   leadingIcon: MDCTextFieldIconFoundation;
   trailingIcon: MDCTextFieldIconFoundation;
 }
+
+export type RippleFactory = (el: Element, foundation: MDCRippleFoundation) => MDCRipple;
+export type LineRippleFactory = (el: Element) => MDCLineRipple;
+export type HelperTextFactory = (el: Element) => MDCTextFieldHelperText;
+export type CharacterCounterFactory = (el: Element) => MDCTextFieldCharacterCounter;
+export type IconFactory = (el: Element) => MDCTextFieldIcon;
+export type LabelFactory = (el: Element) => MDCFloatingLabel;
+export type OutlineFactory = (el: Element) => MDCNotchedOutline;
