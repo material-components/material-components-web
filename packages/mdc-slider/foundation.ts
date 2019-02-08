@@ -30,6 +30,20 @@ import {cssClasses, numbers, strings} from './constants';
 type UpEventType = 'mouseup' | 'pointerup' | 'touchend';
 type DownEventType = 'mousedown' | 'pointerdown' | 'touchstart';
 type MoveEventType = 'mousemove' | 'pointermove' | 'touchmove';
+type MouseLikeEvent = MouseEvent | PointerEvent | TouchEvent;
+
+type MoveEventMap = {
+  readonly [K in DownEventType]: MoveEventType;
+};
+
+const DOWN_EVENTS: DownEventType[] = ['mousedown', 'pointerdown', 'touchstart'];
+const UP_EVENTS: UpEventType[] = ['mouseup', 'pointerup', 'touchend'];
+
+const MOVE_EVENT_MAP: MoveEventMap = {
+  mousedown: 'mousemove',
+  pointerdown: 'pointermove',
+  touchstart: 'touchmove',
+};
 
 const KEY_IDS = {
   ARROW_DOWN: 'ArrowDown',
@@ -41,21 +55,6 @@ const KEY_IDS = {
   PAGE_DOWN: 'PageDown',
   PAGE_UP: 'PageUp',
 };
-
-type MoveEventMap = {
-  readonly [K in DownEventType]: MoveEventType;
-};
-
-const MOVE_EVENT_MAP: MoveEventMap = {
-  mousedown: 'mousemove',
-  pointerdown: 'pointermove',
-  touchstart: 'touchmove',
-};
-
-const DOWN_EVENTS: DownEventType[] = ['mousedown', 'pointerdown', 'touchstart'];
-const UP_EVENTS: UpEventType[] = ['mouseup', 'pointerup', 'touchend'];
-
-type MouseLikeEvent = MouseEvent | PointerEvent | TouchEvent;
 
 class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   static get cssClasses() {
@@ -129,11 +128,8 @@ class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   private readonly blurHandler_: SpecificEventListener<'blur'>;
   private readonly resizeHandler_: SpecificEventListener<'resize'>;
 
-  /**
-   * Creates a new instance of MDCSliderFoundation
-   */
-  constructor(adapter: MDCSliderAdapter | null) {
-    super(Object.assign(MDCSliderFoundation.defaultAdapter, adapter));
+  constructor(adapter: Partial<MDCSliderAdapter> = {}) {
+    super({...MDCSliderFoundation.defaultAdapter, ...adapter});
 
     this.thumbContainerPointerHandler_ = () => this.handlingThumbTargetEvt_ = true;
     this.interactionStartHandler_ = (evt: MouseLikeEvent) => this.handleDown_(evt);
