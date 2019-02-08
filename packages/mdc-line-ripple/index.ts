@@ -22,20 +22,10 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+import {MDCLineRippleFoundation} from './foundation';
 
-import MDCLineRippleAdapter from './adapter';
-import MDCLineRippleFoundation from './foundation';
-
-/**
- * @extends {MDCComponent<!MDCLineRippleFoundation>}
- * @final
- */
-class MDCLineRipple extends MDCComponent {
-  /**
-   * @param {!Element} root
-   * @return {!MDCLineRipple}
-   */
-  static attachTo(root) {
+class MDCLineRipple extends MDCComponent<MDCLineRippleFoundation> {
+  static attachTo(root: Element): MDCLineRipple {
     return new MDCLineRipple(root);
   }
 
@@ -54,27 +44,27 @@ class MDCLineRipple extends MDCComponent {
   }
 
   /**
-   * Sets the transform origin given a user's click location. The `rippleCenter` is the
-   * x-coordinate of the middle of the ripple.
-   * @param {number} xCoordinate
+   * Sets the transform origin given a user's click location.
+   * The `rippleCenter` is the x-coordinate of the middle of the ripple.
    */
-  setRippleCenter(xCoordinate) {
+  setRippleCenter(xCoordinate: number): void {
     this.foundation_.setRippleCenter(xCoordinate);
   }
 
-  /**
-   * @return {!MDCLineRippleFoundation}
-   */
-  getDefaultFoundation() {
-    return new MDCLineRippleFoundation(/** @type {!MDCLineRippleAdapter} */ (Object.assign({
+  getDefaultFoundation(): MDCLineRippleFoundation {
+    // tslint:disable:object-literal-sort-keys
+    return new MDCLineRippleFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
-      setStyle: (propertyName, value) => this.root_.style[propertyName] = value,
+      setStyle: (propertyName, value) => (this.root_ as HTMLElement).style.setProperty(propertyName, value),
       registerEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
-    })));
+    });
+    // tslint:enable:object-literal-sort-keys
   }
 }
 
-export {MDCLineRipple, MDCLineRippleFoundation};
+export {MDCLineRipple as default, MDCLineRipple};
+export * from './adapter';
+export * from './foundation';
