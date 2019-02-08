@@ -26,10 +26,10 @@ import {MDCTextFieldHelperTextFoundation} from './helper-text/foundation';
 import {MDCTextFieldIconFoundation} from './icon/foundation';
 
 export interface NativeInputType {
-  badInput?: boolean;
   disabled: boolean;
-  maxLength?: number;
-  validity: {
+  maxLength: number;
+  type: string;
+  validity: ValidityState | {
     badInput: boolean;
     valid: boolean;
   };

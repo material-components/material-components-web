@@ -23,11 +23,11 @@
 
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCTextFieldAdapter} from './adapter';
-import {ALWAYS_FLOAT_TYPES, cssClasses, numbers, strings, VALIDATION_ATTR_WHITELIST} from './constants';
-import {FoundationMapType, NativeInputType} from './types';
-import {MDCTextFieldHelperTextFoundation} from './helper-text';
 import {MDCTextFieldCharacterCounterFoundation} from './character-counter';
+import {ALWAYS_FLOAT_TYPES, cssClasses, numbers, strings, VALIDATION_ATTR_WHITELIST} from './constants';
+import {MDCTextFieldHelperTextFoundation} from './helper-text';
 import {MDCTextFieldIconFoundation} from './icon';
+import {FoundationMapType, NativeInputType} from './types';
 
 class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   static get cssClasses() {
@@ -244,7 +244,7 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
 
   /**
    * Activates the Text Field's focus state in cases when the input value
-   * changes without user input (e.g. programatically).
+   * changes without user input (e.g. programmatically).
    */
   autoCompleteFocus() {
     if (!this.receivedUserInput_) {
@@ -460,6 +460,8 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   private getNativeInput_(): HTMLInputElement | NativeInputType {
     return this.adapter_.getNativeInput() || {
       disabled: false,
+      maxLength: -1,
+      type: 'input',
       validity: {
         badInput: false,
         valid: true,
