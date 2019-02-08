@@ -54,16 +54,12 @@ test('#computeContentClientRect returns the client rect', () => {
   td.verify(mockAdapter.computeContentClientRect(), {times: 1});
 });
 
-test('#activate is abstract and does nothing', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.activate();
-  td.verify(mockAdapter.addClass(td.matchers.isA(String)), {times: 0});
-  td.verify(mockAdapter.removeClass(td.matchers.isA(String)), {times: 0});
+test('#activate is abstract and does not exist', () => {
+  const {foundation} = setupTest();
+  assert.isUndefined(foundation.active);
 });
 
 test('#deactivate is abstract and does nothing', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.deactivate();
-  td.verify(mockAdapter.addClass(td.matchers.isA(String)), {times: 0});
-  td.verify(mockAdapter.removeClass(td.matchers.isA(String)), {times: 0});
+  const {foundation} = setupTest();
+  assert.isUndefined(foundation.deactive);
 });
