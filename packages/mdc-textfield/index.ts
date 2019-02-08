@@ -352,19 +352,18 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
         registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
         deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
         registerValidationAttributeChangeHandler: (handler) => {
-          const getAttributesList = (mutationsList: MutationRecord[]) => {
-            return mutationsList.map((mutation) => mutation.attributeName!).filter((attributeName) => attributeName);
+          const getAttributesList = (mutationsList: MutationRecord[]): string[] => {
+            return mutationsList
+                .map((mutation) => mutation.attributeName)
+                .filter((attributeName) => attributeName) as string[];
           };
           const observer = new MutationObserver((mutationsList) => handler(getAttributesList(mutationsList)));
-          const targetNode = this.root_.querySelector(strings.INPUT_SELECTOR)!;
           const config = {attributes: true};
-          observer.observe(targetNode, config);
+          observer.observe(this.input_, config);
           return observer;
         },
         deregisterValidationAttributeChangeHandler: (observer) => observer.disconnect(),
-        isFocused: () => {
-          return document.activeElement === this.root_.querySelector(strings.INPUT_SELECTOR);
-        },
+        isFocused: () => document.activeElement === this.input_,
         // tslint:enable:object-literal-sort-keys
       }),
       ...this.getInputAdapterMethods_(),
