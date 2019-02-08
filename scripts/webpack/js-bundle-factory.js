@@ -175,7 +175,7 @@ class JsBundleFactory {
         ripple: getAbsolutePath('/packages/mdc-ripple/index.ts'),
         select: getAbsolutePath('/packages/mdc-select/index.js'),
         selectionControl: getAbsolutePath('/packages/mdc-selection-control/index.ts'),
-        slider: getAbsolutePath('/packages/mdc-slider/index.js'),
+        slider: getAbsolutePath('/packages/mdc-slider/index.ts'),
         snackbar: getAbsolutePath('/packages/mdc-snackbar/index.js'),
         switch: getAbsolutePath('/packages/mdc-switch/index.ts'),
         tab: getAbsolutePath('/packages/mdc-tab/index.js'),
