@@ -15,7 +15,7 @@
           "./packages/mdc-tab-scroller"
         ]
     },
-    "baseURL": ".",
+    "baseUrl": ".",
     "downlevelIteration": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,
