@@ -29,17 +29,19 @@
  * the visual position of the Tab with respect it's parent container.
  * @typedef {{rootLeft: number, rootRight: number, contentLeft: number, contentRight: number}}
  */
-let MDCTabDimensions;
+interface MDCTabDimensions {
+  rootLeft: number;
+  rootRight: number;
+  contentLeft: number;
+  contentRight: number;
+}
 
-/**
- * @typedef {{
- *   detail: {
- *     tabId: string,
- *   },
- *   bubbles: boolean,
- * }}
- */
-let MDCTabInteractionEventType;
+interface MDCTabInteractionEventType {
+  detail: {
+    tabId: string;
+  };
+  bubbles: boolean;
+}
 
 /**
  * Adapter for MDC Tab.
@@ -51,75 +53,75 @@ let MDCTabInteractionEventType;
  *
  * @record
  */
-class MDCTabAdapter {
+interface MDCTabAdapter {
   /**
    * Adds the given className to the root element.
    * @param {string} className The className to add
    */
-  addClass(className) {}
+  addClass(className: string): void;
 
   /**
    * Removes the given className from the root element.
    * @param {string} className The className to remove
    */
-  removeClass(className) {}
+  removeClass(className: string): void;
 
   /**
    * Returns whether the root element has the given className.
    * @param {string} className The className to remove
    * @return {boolean}
    */
-  hasClass(className) {}
+  hasClass(className: string): boolean;
 
   /**
    * Sets the given attrName of the root element to the given value.
    * @param {string} attr The attribute name to set
    * @param {string} value The value so give the attribute
    */
-  setAttr(attr, value) {}
+  setAttr(attr: string, value: string): void;
 
   /**
    * Activates the indicator element.
    * @param {!ClientRect=} previousIndicatorClientRect The client rect of the previously activated indicator
    */
-  activateIndicator(previousIndicatorClientRect) {}
+  activateIndicator(previousIndicatorClientRect: ClientRect): void;
 
   /** Deactivates the indicator. */
-  deactivateIndicator() {}
+  deactivateIndicator(): void;
 
   /**
    * Emits the MDCTab:interacted event for use by parent components
    */
-  notifyInteracted() {}
+  notifyInteracted(): void;
 
   /**
    * Returns the offsetLeft value of the root element.
    * @return {number}
    */
-  getOffsetLeft() {}
+  getOffsetLeft(): number;
 
   /**
    * Returns the offsetWidth value of the root element.
    * @return {number}
    */
-  getOffsetWidth() {}
+  getOffsetWidth(): number;
 
   /**
    * Returns the offsetLeft of the content element.
    * @return {number}
    */
-  getContentOffsetLeft() {}
+  getContentOffsetLeft(): number;
 
   /**
    * Returns the offsetWidth of the content element.
    * @return {number}
    */
-  getContentOffsetWidth() {}
+  getContentOffsetWidth(): number;
 
   /**
    * Applies focus to the root element
    */
-  focus() {}
+  focus(): void;
 }
 
 export {MDCTabDimensions, MDCTabInteractionEventType, MDCTabAdapter};

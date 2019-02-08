@@ -33,31 +33,31 @@
  *
  * @record
  */
-class MDCTabIndicatorAdapter {
+interface MDCTabIndicatorAdapter {
   /**
    * Adds the given className to the root element.
    * @param {string} className The className to add
    */
-  addClass(className) {}
+  addClass(className: string): void;
 
   /**
    * Removes the given className from the root element.
    * @param {string} className The className to remove
    */
-  removeClass(className) {}
+  removeClass(className: string): void;
 
   /**
    * Returns the client rect of the content element.
    * @return {!ClientRect}
    */
-  computeContentClientRect() {}
+  computeContentClientRect(): ClientRect;
 
   /**
    * Sets a style property of the content element to the passed value
    * @param {string} propName The style property name to set
    * @param {string} value The style property value
    */
-  setContentStyleProperty(propName, value) {}
+  setContentStyleProperty(propName: string, value: string): string;
 }
 
 export default MDCTabIndicatorAdapter;

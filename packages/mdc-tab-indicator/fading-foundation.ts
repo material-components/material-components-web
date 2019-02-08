@@ -21,22 +21,16 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
-const cssClasses = {
-  ACTIVE: 'mdc-tab--active',
-};
+import MDCTabIndicatorFoundation from './foundation';
 
-/** @enum {string} */
-const strings = {
-  ARIA_SELECTED: 'aria-selected',
-  RIPPLE_SELECTOR: '.mdc-tab__ripple',
-  CONTENT_SELECTOR: '.mdc-tab__content',
-  TAB_INDICATOR_SELECTOR: '.mdc-tab-indicator',
-  TABINDEX: 'tabIndex',
-  INTERACTED_EVENT: 'MDCTab:interacted',
-};
+class MDCFadingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
+  activate() {
+    this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
+  }
 
-export {
-  cssClasses,
-  strings,
-};
+  deactivate() {
+    this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
+  }
+}
+
+export default MDCFadingTabIndicatorFoundation;

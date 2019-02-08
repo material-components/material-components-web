@@ -24,12 +24,10 @@
 import MDCTabIndicatorFoundation from './foundation';
 
 /**
- * @extends {MDCTabIndicatorFoundation}
  * @final
  */
 class MDCSlidingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
-  /** @param {!ClientRect=} previousIndicatorClientRect */
-  activate(previousIndicatorClientRect) {
+  activate(previousIndicatorClientRect: ClientRect) {
     // Early exit if no indicator is present to handle cases where an indicator
     // may be activated without a prior indicator state
     if (!previousIndicatorClientRect) {

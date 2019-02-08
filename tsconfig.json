@@ -1,6 +1,11 @@
 {
   "compilerOptions": {
     "lib": ["es5", "es6", "dom"],
+    "paths": {
+        "@material/base": "./packages/mdc-base",
+        "@material/ripple": "./packages/mdc-ripple",
+        "@material/tab-indicator": "./packages/mdc-tab-indicator"
+    },
     "downlevelIteration": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,
