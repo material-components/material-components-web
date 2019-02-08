@@ -33,7 +33,7 @@ class MDCFloatingLabel extends MDCComponent<MDCFloatingLabelFoundation> {
    * Styles the label to produce the label shake for errors.
    * @param shouldShake If true, shakes the label by adding a CSS class; otherwise, stops shaking by removing the class.
    */
-  shake(shouldShake: boolean): void {
+  shake(shouldShake: boolean) {
     this.foundation_.shake(shouldShake);
   }
 

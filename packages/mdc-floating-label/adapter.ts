@@ -21,6 +21,8 @@
  * THE SOFTWARE.
  */
 
+import {EventType, SpecificEventListener} from '@material/base';
+
 /**
  * Defines the shape of the adapter expected by the foundation.
  * Implement this adapter for your framework of choice to delegate updates to
@@ -47,12 +49,12 @@ interface MDCFloatingLabelAdapter {
   /**
    * Registers an event listener on the root element for a given event.
    */
-  registerInteractionHandler(evtType: string, handler: EventListener): void;
+  registerInteractionHandler<E extends EventType>(evtType: E, handler: SpecificEventListener<E>): void;
 
   /**
    * Deregisters an event listener on the root element for a given event.
    */
-  deregisterInteractionHandler(evtType: string, handler: EventListener): void;
+  deregisterInteractionHandler<E extends EventType>(evtType: E, handler: SpecificEventListener<E>): void;
 }
 
 export {MDCFloatingLabelAdapter as default, MDCFloatingLabelAdapter};
