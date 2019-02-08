@@ -33,14 +33,15 @@ import {cssClasses, strings} from './constants';
 import {MDCTextFieldFoundation} from './foundation';
 import {MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation} from './helper-text';
 import {MDCTextFieldIcon} from './icon';
-import {FoundationMapType} from './types';
 import {
   CharacterCounterFactory,
+  FoundationMapType,
   HelperTextFactory,
   IconFactory,
   LabelFactory,
   LineRippleFactory,
-  OutlineFactory, RippleFactory,
+  OutlineFactory,
+  RippleFactory,
 } from './types';
 
 class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements RippleCapableSurface {
@@ -52,14 +53,14 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
   root_!: HTMLElement; // assigned in MDCComponent constructor
   ripple!: MDCRipple | null; // assigned in initialize()
 
+  private characterCounter_!: MDCTextFieldCharacterCounter | null; // assigned in initialize()
+  private helperText_!: MDCTextFieldHelperText | null; // assigned in initialize()
   private input_!: HTMLInputElement; // assigned in initialize()
-  private lineRipple_!: MDCLineRipple; // assigned in initialize()
-  private helperText_!: MDCTextFieldHelperText; // assigned in initialize()
-  private characterCounter_!: MDCTextFieldCharacterCounter; // assigned in initialize()
-  private leadingIcon_!: MDCTextFieldIcon; // assigned in initialize()
-  private trailingIcon_!: MDCTextFieldIcon; // assigned in initialize()
-  private label_!: MDCFloatingLabel; // assigned in initialize()
-  private outline_!: MDCNotchedOutline; // assigned in initialize()
+  private label_!: MDCFloatingLabel | null; // assigned in initialize()
+  private leadingIcon_!: MDCTextFieldIcon | null; // assigned in initialize()
+  private lineRipple_!: MDCLineRipple | null; // assigned in initialize()
+  private outline_!: MDCNotchedOutline | null; // assigned in initialize()
+  private trailingIcon_!: MDCTextFieldIcon | null; // assigned in initialize()
 
   initialize(
       rippleFactory: RippleFactory = (el, foundation) => new MDCRipple(el, foundation),
@@ -71,18 +72,15 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
       outlineFactory: OutlineFactory = (el) => new MDCNotchedOutline(el),
   ) {
     this.input_ = this.root_.querySelector<HTMLInputElement>(strings.INPUT_SELECTOR)!;
+
     const labelElement = this.root_.querySelector(strings.LABEL_SELECTOR);
-    if (labelElement) {
-      this.label_ = labelFactory(labelElement);
-    }
+    this.label_ = labelElement ? labelFactory(labelElement) : null;
+
     const lineRippleElement = this.root_.querySelector(strings.LINE_RIPPLE_SELECTOR);
-    if (lineRippleElement) {
-      this.lineRipple_ = lineRippleFactory(lineRippleElement);
-    }
+    this.lineRipple_ = lineRippleElement ? lineRippleFactory(lineRippleElement) : null;
+
     const outlineElement = this.root_.querySelector(strings.OUTLINE_SELECTOR);
-    if (outlineElement) {
-      this.outline_ = outlineFactory(outlineElement);
-    }
+    this.outline_ = outlineElement ? outlineFactory(outlineElement) : null;
 
     // Helper text
     const helperTextStrings = MDCTextFieldHelperTextFoundation.strings;
@@ -90,9 +88,7 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
     const hasHelperLine = (nextElementSibling && nextElementSibling.classList.contains(cssClasses.HELPER_LINE));
     const helperTextEl =
         hasHelperLine && nextElementSibling && nextElementSibling.querySelector(helperTextStrings.ROOT_SELECTOR);
-    if (helperTextEl) {
-      this.helperText_ = helperTextFactory(helperTextEl);
-    }
+    this.helperText_ = helperTextEl ? helperTextFactory(helperTextEl) : null;
 
     // Character counter
     const characterCounterStrings = MDCTextFieldCharacterCounterFoundation.strings;
@@ -101,11 +97,10 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
     if (!characterCounterEl && hasHelperLine && nextElementSibling) {
       characterCounterEl = nextElementSibling.querySelector(characterCounterStrings.ROOT_SELECTOR);
     }
+    this.characterCounter_ = characterCounterEl ? characterCounterFactory(characterCounterEl) : null;
 
-    if (characterCounterEl) {
-      this.characterCounter_ = characterCounterFactory(characterCounterEl);
-    }
-
+    this.leadingIcon_ = null;
+    this.trailingIcon_ = null;
     const iconElements = this.root_.querySelectorAll(strings.ICON_SELECTOR);
     if (iconElements.length > 0) {
       if (iconElements.length > 1) { // Has both icons.
@@ -120,28 +115,22 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
       }
     }
 
-    this.ripple = null;
-
     const isTextArea = this.root_.classList.contains(cssClasses.TEXTAREA);
     const isOutlined = this.root_.classList.contains(cssClasses.OUTLINED);
-    if (!isTextArea && !isOutlined) {
-      const adapter = {
-        ...MDCRipple.createAdapter(this),
-        ...({
-          // tslint:disable:object-literal-sort-keys
-          isSurfaceActive: () => ponyfill.matches(this.input_, ':active'),
-          registerInteractionHandler: <E extends EventType>(evtType: E, handler: SpecificEventListener<E>) => {
-            return this.input_.addEventListener(evtType, handler);
-          },
-          deregisterInteractionHandler: <E extends EventType>(evtType: E, handler: SpecificEventListener<E>) => {
-            return this.input_.removeEventListener(evtType, handler);
-          },
-          // tslint:enable:object-literal-sort-keys
-        }),
-      };
-      const foundation = new MDCRippleFoundation(adapter);
-      this.ripple = rippleFactory(this.root_, foundation);
-    }
+    this.ripple = (isTextArea || isOutlined) ? null : rippleFactory(this.root_, new MDCRippleFoundation({
+      ...MDCRipple.createAdapter(this),
+      ...({
+        // tslint:disable:object-literal-sort-keys
+        isSurfaceActive: () => ponyfill.matches(this.input_, ':active'),
+        registerInteractionHandler: <E extends EventType>(evtType: E, handler: SpecificEventListener<E>) => {
+          return this.input_.addEventListener(evtType, handler);
+        },
+        deregisterInteractionHandler: <E extends EventType>(evtType: E, handler: SpecificEventListener<E>) => {
+          return this.input_.removeEventListener(evtType, handler);
+        },
+        // tslint:enable:object-literal-sort-keys
+      }),
+    }));
   }
 
   destroy() {
@@ -388,10 +377,10 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
 
   getLabelAdapterMethods_() {
     return {
-      floatLabel: (shouldFloat: boolean) => this.label_.float(shouldFloat),
+      floatLabel: (shouldFloat: boolean) => this.label_ && this.label_.float(shouldFloat),
       getLabelWidth: () => this.label_ ? this.label_.getWidth() : 0,
-      hasLabel: () => !!this.label_,
-      shakeLabel: (shouldShake: boolean) => this.label_.shake(shouldShake),
+      hasLabel: () => Boolean(this.label_),
+      shakeLabel: (shouldShake: boolean) => this.label_ && this.label_.shake(shouldShake),
     };
   }
 
@@ -417,9 +406,9 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
 
   getOutlineAdapterMethods_() {
     return {
-      closeOutline: () => this.outline_.closeNotch(),
-      hasOutline: () => !!this.outline_,
-      notchOutline: (labelWidth: number) => this.outline_.notch(labelWidth),
+      closeOutline: () => this.outline_ && this.outline_.closeNotch(),
+      hasOutline: () => Boolean(this.outline_),
+      notchOutline: (labelWidth: number) => this.outline_ && this.outline_.notch(labelWidth),
     };
   }
 
