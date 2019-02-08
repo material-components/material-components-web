@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2017 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,11 +21,38 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
-const cssClasses = {
-  LABEL_FLOAT_ABOVE: 'mdc-floating-label--float-above',
-  LABEL_SHAKE: 'mdc-floating-label--shake',
-  ROOT: 'mdc-floating-label',
-};
+/**
+ * Defines the shape of the adapter expected by the foundation.
+ * Implement this adapter for your framework of choice to delegate updates to
+ * the component in your framework of choice. See architecture documentation
+ * for more details.
+ * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
+ */
+interface MDCFloatingLabelAdapter {
+  /**
+   * Adds a class to the label element.
+   */
+  addClass(className: string): void;
 
-export {cssClasses};
+  /**
+   * Removes a class from the label element.
+   */
+  removeClass(className: string): void;
+
+  /**
+   * Returns the width of the label element.
+   */
+  getWidth(): number;
+
+  /**
+   * Registers an event listener on the root element for a given event.
+   */
+  registerInteractionHandler(evtType: string, handler: EventListener): void;
+
+  /**
+   * Deregisters an event listener on the root element for a given event.
+   */
+  deregisterInteractionHandler(evtType: string, handler: EventListener): void;
+}
+
+export {MDCFloatingLabelAdapter as default, MDCFloatingLabelAdapter};
