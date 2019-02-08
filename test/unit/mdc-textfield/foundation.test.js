@@ -56,16 +56,16 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   ]);
 });
 
-const setupTest = () => {
+const setupTest = ({characterCounter = false} = {}) => {
   const mockAdapter = td.object(MDCTextFieldFoundation.defaultAdapter);
   const helperText = td.object({
     setContent: () => {},
     showToScreenReader: () => {},
     setValidity: () => {},
   });
-  const characterCounter = td.object({
+  characterCounter = characterCounter === true ? td.object({
     setCounterValue: () => {},
-  });
+  }) : undefined;
   const leadingIcon = td.object({
     setDisabled: () => {},
     setAriaLabel: () => {},
@@ -866,7 +866,7 @@ test('#handleInput activates focus state', () => {
 });
 
 test('#handleInput updates character counter on text input', () => {
-  const {foundation, mockAdapter, characterCounter} = setupTest();
+  const {foundation, mockAdapter, characterCounter} = setupTest({characterCounter: true});
 
   const nativeInput = {
     type: 'text',
@@ -884,7 +884,7 @@ test('#handleInput updates character counter on text input', () => {
 
 
 test('#handleInput throws error when maxLength HTML attribute is not found in input element', () => {
-  const {foundation, mockAdapter} = setupTest();
+  const {foundation, mockAdapter} = setupTest({characterCounter: true});
 
   const nativeInput = {
     type: 'text',
@@ -901,7 +901,7 @@ test('#handleInput throws error when maxLength HTML attribute is not found in in
 
 test('#handleValidationAttributeChange sets character counter when maxlength attribute value is changed in input ' +
     'element', () => {
-  const {foundation, mockAdapter, characterCounter} = setupTest();
+  const {foundation, mockAdapter, characterCounter} = setupTest({characterCounter: true});
 
   const nativeInput = {
     type: 'text',

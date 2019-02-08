@@ -462,7 +462,11 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
    * @return The native text input from the host environment, or a dummy if none exists.
    */
   private getNativeInput_(): HTMLInputElement | NativeInputType {
-    return this.adapter_.getNativeInput() || {
+    // adapter_ can be undefined in foundation unit tests. This happens when testdouble is creating a mock object and
+    // invokes the shouldShake/shouldFloat getters (which in turn call getValue(), which calls this method) before
+    // init() has been called in the MDCTextField constructor.
+    const nativeInput = this.adapter_ ? this.adapter_.getNativeInput() : null;
+    return nativeInput || {
       disabled: false,
       maxLength: -1,
       type: 'input',
