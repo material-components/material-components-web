@@ -52,7 +52,7 @@ class MDCNotchedOutline extends MDCComponent<MDCNotchedOutlineFoundation> {
    * Updates classes and styles to open the notch to the specified width.
    * @param notchWidth The notch width in the outline.
    */
-  notch(notchWidth: number): void {
+  notch(notchWidth: number) {
     this.foundation_.notch(notchWidth);
   }
 

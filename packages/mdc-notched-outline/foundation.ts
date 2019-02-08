@@ -34,7 +34,6 @@ class MDCNotchedOutlineFoundation extends MDCFoundation<MDCNotchedOutlineAdapter
     return cssClasses;
   }
 
-  /** @return enum {number} */
   static get numbers() {
     return numbers;
   }
@@ -53,14 +52,14 @@ class MDCNotchedOutlineFoundation extends MDCFoundation<MDCNotchedOutlineAdapter
     // tslint:enable:object-literal-sort-keys
   }
 
-  constructor(adapter: MDCNotchedOutlineAdapter) {
-    super(Object.assign(MDCNotchedOutlineFoundation.defaultAdapter, adapter));
+  constructor(adapter: Partial<MDCNotchedOutlineAdapter> = {}) {
+    super({...MDCNotchedOutlineFoundation.defaultAdapter, ...adapter});
   }
 
   /**
    * Adds the outline notched selector and updates the notch width calculated based off of notchWidth.
    */
-  notch(notchWidth: number): void {
+  notch(notchWidth: number) {
     const {OUTLINE_NOTCHED} = MDCNotchedOutlineFoundation.cssClasses;
 
     if (notchWidth > 0) {
