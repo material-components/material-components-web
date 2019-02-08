@@ -21,14 +21,27 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
-const cssClasses = {
-  ROOT: 'mdc-text-field-character-counter',
-};
+import {MDCComponent} from '@material/base/component';
+import {MDCTextFieldCharacterCounterFoundation} from './foundation';
 
-/** @enum {string} */
-const strings = {
-  ROOT_SELECTOR: `.${cssClasses.ROOT}`,
-};
+class MDCTextFieldCharacterCounter extends MDCComponent<MDCTextFieldCharacterCounterFoundation> {
+  static attachTo(root: Element): MDCTextFieldCharacterCounter {
+    return new MDCTextFieldCharacterCounter(root);
+  }
 
-export {strings, cssClasses};
+  get foundation(): MDCTextFieldCharacterCounterFoundation {
+    return this.foundation_;
+  }
+
+  getDefaultFoundation(): MDCTextFieldCharacterCounterFoundation {
+    return new MDCTextFieldCharacterCounterFoundation({
+      setContent: (content) => {
+        this.root_.textContent = content;
+      },
+    });
+  }
+}
+
+export {MDCTextFieldCharacterCounter as default, MDCTextFieldCharacterCounter};
+export * from './adapter';
+export * from './foundation';

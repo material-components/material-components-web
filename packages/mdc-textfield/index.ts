@@ -30,7 +30,7 @@ import {getMatchesProperty} from '@material/ripple/util';
 
 import {cssClasses, strings} from './constants';
 import {MDCTextFieldAdapter, FoundationMapType} from './adapter';
-import MDCTextFieldFoundation from './foundation';
+import {MDCTextFieldFoundation} from './foundation';
 /* eslint-disable no-unused-vars */
 import {MDCLineRipple, MDCLineRippleFoundation} from '@material/line-ripple/index';
 import {MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation} from './helper-text/index';
@@ -40,11 +40,7 @@ import {MDCFloatingLabel, MDCFloatingLabelFoundation} from '@material/floating-l
 import {MDCNotchedOutline, MDCNotchedOutlineFoundation} from '@material/notched-outline/index';
 /* eslint-enable no-unused-vars */
 
-/**
- * @extends {MDCComponent<!MDCTextFieldFoundation>}
- * @final
- */
-class MDCTextField extends MDCComponent {
+class MDCTextField extends MDCComponent<MDCTextFieldFoundation> {
   /**
    * @param {...?} args
    */
@@ -70,11 +66,7 @@ class MDCTextField extends MDCComponent {
     this.outline_;
   }
 
-  /**
-   * @param {!Element} root
-   * @return {!MDCTextField}
-   */
-  static attachTo(root) {
+  static attachTo(root: Element): MDCTextField {
     return new MDCTextField(root);
   }
 
@@ -155,11 +147,11 @@ class MDCTextField extends MDCComponent {
     if (!this.root_.classList.contains(cssClasses.TEXTAREA) && !this.root_.classList.contains(cssClasses.OUTLINED)) {
       const MATCHES = getMatchesProperty(HTMLElement.prototype);
       const adapter =
-        Object.assign(MDCRipple.createAdapter(/** @type {!RippleCapableSurface} */ (this)), {
+        Object.assign(MDCRipple.createAdapter(this)), {
           isSurfaceActive: () => this.input_[MATCHES](':active'),
           registerInteractionHandler: (type, handler) => this.input_.addEventListener(type, handler),
           deregisterInteractionHandler: (type, handler) => this.input_.removeEventListener(type, handler),
-        });
+        };
       const foundation = new MDCRippleFoundation(adapter);
       this.ripple = rippleFactory(this.root_, foundation);
     }
@@ -201,101 +193,80 @@ class MDCTextField extends MDCComponent {
     this.disabled = this.input_.disabled;
   }
 
-  /**
-   * @return {string} The value of the input.
-   */
-  get value() {
+  get value(): string {
     return this.foundation_.getValue();
   }
 
   /**
-   * @param {string} value The value to set on the input.
+   * @param value The value to set on the input.
    */
-  set value(value) {
+  set value(value: string): void {
     this.foundation_.setValue(value);
   }
 
-  /**
-   * @return {boolean} True if the Text Field is disabled.
-   */
-  get disabled() {
+  get disabled(): boolean {
     return this.foundation_.isDisabled();
   }
 
   /**
-   * @param {boolean} disabled Sets the Text Field disabled or enabled.
+   * @param disabled Sets the Text Field disabled or enabled.
    */
-  set disabled(disabled) {
+  set disabled(disabled: boolean): void {
     this.foundation_.setDisabled(disabled);
   }
 
-  /**
-   * @return {boolean} valid True if the Text Field is valid.
-   */
-  get valid() {
+  get valid(): boolean {
     return this.foundation_.isValid();
   }
 
   /**
-   * @param {boolean} valid Sets the Text Field valid or invalid.
+   * @param valid Sets the Text Field valid or invalid.
    */
-  set valid(valid) {
+  set valid(valid: boolean): void {
     this.foundation_.setValid(valid);
   }
 
-  /**
-   * @return {boolean} True if the Text Field is required.
-   */
-  get required() {
+  get required(): boolean {
     return this.input_.required;
   }
 
   /**
-   * @param {boolean} required Sets the Text Field to required.
+   * @param required Sets the Text Field to required.
    */
-  set required(required) {
+  set required(required: boolean): void {
     this.input_.required = required;
   }
 
-  /**
-   * @return {string} The input element's validation pattern.
-   */
-  get pattern() {
+  get pattern(): string {
     return this.input_.pattern;
   }
 
   /**
-   * @param {string} pattern Sets the input element's validation pattern.
+   * @param pattern Sets the input element's validation pattern.
    */
-  set pattern(pattern) {
+  set pattern(pattern: string): void {
     this.input_.pattern = pattern;
   }
 
-  /**
-   * @return {number} The input element's minLength.
-   */
-  get minLength() {
+  get minLength(): number {
     return this.input_.minLength;
   }
 
   /**
-   * @param {number} minLength Sets the input element's minLength.
+   * @param minLength Sets the input element's minLength.
    */
-  set minLength(minLength) {
+  set minLength(minLength: number): void {
     this.input_.minLength = minLength;
   }
 
-  /**
-   * @return {number} The input element's maxLength.
-   */
-  get maxLength() {
+  get maxLength(): number {
     return this.input_.maxLength;
   }
 
   /**
-   * @param {number} maxLength Sets the input element's maxLength.
+   * @param maxLength Sets the input element's maxLength.
    */
-  set maxLength(maxLength) {
+  set maxLength(maxLength: number): void {
     // Chrome throws exception if maxLength is set < 0
     if (maxLength < 0) {
       this.input_.removeAttribute('maxLength');
@@ -304,93 +275,79 @@ class MDCTextField extends MDCComponent {
     }
   }
 
-  /**
-   * @return {string} The input element's min.
-   */
-  get min() {
+  get min(): string {
     return this.input_.min;
   }
 
   /**
-   * @param {string} min Sets the input element's min.
+   * @param min Sets the input element's min.
    */
-  set min(min) {
+  set min(min: string): void {
     this.input_.min = min;
   }
 
-  /**
-   * @return {string} The input element's max.
-   */
-  get max() {
+  get max(): string {
     return this.input_.max;
   }
 
   /**
-   * @param {string} max Sets the input element's max.
+   * @param max Sets the input element's max.
    */
-  set max(max) {
+  set max(max: string): void {
     this.input_.max = max;
   }
 
-  /**
-   * @return {string} The input element's step.
-   */
-  get step() {
+  get step(): string {
     return this.input_.step;
   }
 
   /**
-   * @param {string} step Sets the input element's step.
+   * @param step Sets the input element's step.
    */
-  set step(step) {
+  set step(step: string): void {
     this.input_.step = step;
   }
 
   /**
    * Sets the helper text element content.
-   * @param {string} content
    */
-  set helperTextContent(content) {
+  set helperTextContent(content: string): void {
     this.foundation_.setHelperTextContent(content);
   }
 
   /**
    * Sets the aria label of the leading icon.
-   * @param {string} label
    */
-  set leadingIconAriaLabel(label) {
+  set leadingIconAriaLabel(label: string): void {
     this.foundation_.setLeadingIconAriaLabel(label);
   }
 
   /**
    * Sets the text content of the leading icon.
-   * @param {string} content
    */
-  set leadingIconContent(content) {
+  set leadingIconContent(content: string): void {
     this.foundation_.setLeadingIconContent(content);
   }
 
   /**
    * Sets the aria label of the trailing icon.
-   * @param {string} label
    */
-  set trailingIconAriaLabel(label) {
+  set trailingIconAriaLabel(label: string): void {
     this.foundation_.setTrailingIconAriaLabel(label);
   }
 
   /**
    * Sets the text content of the trailing icon.
-   * @param {string} content
    */
-  set trailingIconContent(content) {
+  set trailingIconContent(content: string): void {
     this.foundation_.setTrailingIconContent(content);
   }
 
   /**
    * Enables or disables the use of native validation. Use this for custom validation.
-   * @param {boolean} useNativeValidation Set this to false to ignore native input validation.
+   * @param useNativeValidation Set this to false to ignore native input validation.
    */
-  set useNativeValidation(useNativeValidation) {
+  set useNativeValidation(useNativeValidation: boolean): void {
     this.foundation_.setUseNativeValidation(useNativeValidation);
   }
 
@@ -409,19 +366,16 @@ class MDCTextField extends MDCComponent {
     this.foundation_.notchOutline(openNotch);
   }
 
-  /**
-   * @return {!MDCTextFieldFoundation}
-   */
-  getDefaultFoundation() {
+  getDefaultFoundation(): MDCTextFieldFoundation {
     return new MDCTextFieldFoundation(
-      /** @type {!MDCTextFieldAdapter} */ (Object.assign({
+      Object.assign({
         addClass: (className) => this.root_.classList.add(className),
         removeClass: (className) => this.root_.classList.remove(className),
         hasClass: (className) => this.root_.classList.contains(className),
         registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
         deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
         registerValidationAttributeChangeHandler: (handler) => {
-          const getAttributesList = (mutationsList) => mutationsList.map((mutation) => mutation.attributeName);
+          const getAttributesList = (mutationsList) => mutationsList.map((mutation) => mutation.attributeName;
           const observer = new MutationObserver((mutationsList) => handler(getAttributesList(mutationsList)));
           const targetNode = this.root_.querySelector(strings.INPUT_SELECTOR);
           const config = {attributes: true};
@@ -441,14 +395,18 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
-   * @return {!{
+   * shakeLabel: function(boolean): undefined,
+  floatLabel: function(boolean): undefined,
+  hasLabel: function(): boolean,
+  getLabelWidth: function(): number,
+}}
+   */
+  getLabelAdapterMethods_(): {
    *   shakeLabel: function(boolean): undefined,
    *   floatLabel: function(boolean): undefined,
    *   hasLabel: function(): boolean,
    *   getLabelWidth: function(): number,
-   * }}
-   */
-  getLabelAdapterMethods_() {
+   *  {
     return {
       shakeLabel: (shouldShake) => this.label_.shake(shouldShake),
       floatLabel: (shouldFloat) => this.label_.float(shouldFloat),
@@ -458,13 +416,16 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
-   * @return {!{
+   * activateLineRipple: function(): undefined,
+  deactivateLineRipple: function(): undefined,
+  setLineRippleTransformOrigin: function(number): undefined,
+}}
+   */
+  getLineRippleAdapterMethods_(): {
    *   activateLineRipple: function(): undefined,
    *   deactivateLineRipple: function(): undefined,
    *   setLineRippleTransformOrigin: function(number): undefined,
-   * }}
-   */
-  getLineRippleAdapterMethods_() {
+   *  {
     return {
       activateLineRipple: () => {
         if (this.lineRipple_) {
@@ -485,12 +446,14 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
-   * @return {!{
+   * notchOutline: function(number, boolean): undefined,
+  hasOutline: function(): boolean,
+}}
+   */
+  getOutlineAdapterMethods_(): {
    *   notchOutline: function(number, boolean): undefined,
    *   hasOutline: function(): boolean,
-   * }}
-   */
-  getOutlineAdapterMethods_() {
+   *  {
     return {
       notchOutline: (labelWidth) => this.outline_.notch(labelWidth),
       closeOutline: () => this.outline_.closeNotch(),
@@ -499,13 +462,16 @@ class MDCTextField extends MDCComponent {
   }
 
   /**
-   * @return {!{
+   * registerInputInteractionHandler: function(string, function()): undefined,
+  deregisterInputInteractionHandler: function(string, function()): undefined,
+  getNativeInput: function(): ?Element,
+}}
+   */
+  getInputAdapterMethods_(): {
    *   registerInputInteractionHandler: function(string, function()): undefined,
    *   deregisterInputInteractionHandler: function(string, function()): undefined,
    *   getNativeInput: function(): ?Element,
-   * }}
-   */
-  getInputAdapterMethods_() {
+   *  {
     return {
       registerInputInteractionHandler: (evtType, handler) => this.input_.addEventListener(evtType, handler),
       deregisterInputInteractionHandler: (evtType, handler) => this.input_.removeEventListener(evtType, handler),
@@ -515,9 +481,8 @@ class MDCTextField extends MDCComponent {
 
   /**
    * Returns a map of all subcomponents to subfoundations.
-   * @return {!FoundationMapType}
    */
-  getFoundationMap_() {
+  getFoundationMap_(): FoundationMapType {
     return {
       helperText: this.helperText_ ? this.helperText_.foundation : undefined,
       characterCounter: this.characterCounter_ ? this.characterCounter_.foundation : undefined,

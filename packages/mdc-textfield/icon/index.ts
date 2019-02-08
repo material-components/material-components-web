@@ -22,47 +22,33 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+import {MDCTextFieldIconFoundation} from './foundation';
 
-import MDCTextFieldIconAdapter from './adapter';
-import MDCTextFieldIconFoundation from './foundation';
-
-/**
- * @extends {MDCComponent<!MDCTextFieldIconFoundation>}
- * @final
- */
-class MDCTextFieldIcon extends MDCComponent {
-  /**
-   * @param {!Element} root
-   * @return {!MDCTextFieldIcon}
-   */
-  static attachTo(root) {
+class MDCTextFieldIcon extends MDCComponent<MDCTextFieldIconFoundation> {
+  static attachTo(root: Element): MDCTextFieldIcon {
     return new MDCTextFieldIcon(root);
   }
 
-  /**
-   * @return {!MDCTextFieldIconFoundation}
-   */
-  get foundation() {
+  get foundation(): MDCTextFieldIconFoundation {
     return this.foundation_;
   }
 
-  /**
-   * @return {!MDCTextFieldIconFoundation}
-   */
-  getDefaultFoundation() {
-    return new MDCTextFieldIconFoundation(/** @type {!MDCTextFieldIconAdapter} */ (Object.assign({
+  getDefaultFoundation(): MDCTextFieldIconFoundation {
+    // tslint:disable:object-literal-sort-keys
+    return new MDCTextFieldIconFoundation({
       getAttr: (attr) => this.root_.getAttribute(attr),
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       removeAttr: (attr) => this.root_.removeAttribute(attr),
-      setContent: (content) => {
-        this.root_.textContent = content;
-      },
+      setContent: (content) => this.root_.textContent = content,
       registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       notifyIconAction: () => this.emit(
         MDCTextFieldIconFoundation.strings.ICON_EVENT, {} /* evtData */, true /* shouldBubble */),
-    })));
+    });
+    // tslint:enable:object-literal-sort-keys
   }
 }
 
-export {MDCTextFieldIcon, MDCTextFieldIconFoundation};
+export {MDCTextFieldIcon as default, MDCTextFieldIcon};
+export * from './adapter';
+export * from './foundation';

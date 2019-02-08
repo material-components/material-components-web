@@ -21,7 +21,6 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
 const strings = {
   ICON_EVENT: 'MDCTextField:icon',
   ICON_ROLE: 'button',

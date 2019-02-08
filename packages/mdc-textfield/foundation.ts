@@ -23,29 +23,22 @@
 
 import {MDCFoundation} from '@material/base/foundation';
 /* eslint-disable no-unused-vars */
-import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
-import MDCTextFieldCharacterCounterFoundation from './character-counter/foundation';
-import MDCTextFieldIconFoundation from './icon/foundation';
+import {MDCTextFieldHelperTextFoundation} from './helper-text/foundation';
+import {MDCTextFieldCharacterCounterFoundation} from './character-counter/foundation';
+import {MDCTextFieldIconFoundation} from './icon/foundation';
 /* eslint-enable no-unused-vars */
 import {MDCTextFieldAdapter, NativeInputType, FoundationMapType} from './adapter';
 import {cssClasses, strings, numbers, VALIDATION_ATTR_WHITELIST, ALWAYS_FLOAT_TYPES} from './constants';
 
-/**
- * @extends {MDCFoundation<!MDCTextFieldAdapter>}
- * @final
- */
-class MDCTextFieldFoundation extends MDCFoundation {
-  /** @return enum {string} */
+class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
 
-  /** @return enum {string} */
   static get strings() {
     return strings;
   }
 
-  /** @return enum {string} */
   static get numbers() {
     return numbers;
   }
@@ -56,10 +49,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * @return {boolean}
    * @private
    */
-  get shouldAlwaysFloat_() {
+  get shouldAlwaysFloat_(): boolean {
     const type = this.getNativeInput_().type;
     return ALWAYS_FLOAT_TYPES.indexOf(type) >= 0;
   }
@@ -70,42 +62,41 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * {@see MDCTextFieldAdapter} for typing information on parameters and return
-   * types.
-   * @return {!MDCTextFieldAdapter}
+   * See {@link MDCTextFieldAdapter} for typing information on parameters and return
+types.
    */
-  static get defaultAdapter() {
-    return /** @type {!MDCTextFieldAdapter} */ ({
-      addClass: () => {},
-      removeClass: () => {},
-      hasClass: () => {},
-      registerTextFieldInteractionHandler: () => {},
-      deregisterTextFieldInteractionHandler: () => {},
-      registerInputInteractionHandler: () => {},
-      deregisterInputInteractionHandler: () => {},
-      registerValidationAttributeChangeHandler: () => {},
-      deregisterValidationAttributeChangeHandler: () => {},
-      getNativeInput: () => {},
-      isFocused: () => {},
-      activateLineRipple: () => {},
-      deactivateLineRipple: () => {},
-      setLineRippleTransformOrigin: () => {},
-      shakeLabel: () => {},
-      floatLabel: () => {},
-      hasLabel: () => {},
-      getLabelWidth: () => {},
-      hasOutline: () => {},
-      notchOutline: () => {},
-      closeOutline: () => {},
-    });
+  static get defaultAdapter(): MDCTextFieldAdapter {
+    return {
+      addClass: () => undefined,
+      removeClass: () => undefined,
+      hasClass: () => undefined,
+      registerTextFieldInteractionHandler: () => undefined,
+      deregisterTextFieldInteractionHandler: () => undefined,
+      registerInputInteractionHandler: () => undefined,
+      deregisterInputInteractionHandler: () => undefined,
+      registerValidationAttributeChangeHandler: () => undefined,
+      deregisterValidationAttributeChangeHandler: () => undefined,
+      getNativeInput: () => undefined,
+      isFocused: () => undefined,
+      activateLineRipple: () => undefined,
+      deactivateLineRipple: () => undefined,
+      setLineRippleTransformOrigin: () => undefined,
+      shakeLabel: () => undefined,
+      floatLabel: () => undefined,
+      hasLabel: () => undefined,
+      getLabelWidth: () => undefined,
+      hasOutline: () => undefined,
+      notchOutline: () => undefined,
+      closeOutline: () => undefined,
+    };
   }
 
   /**
    * @param {!MDCTextFieldAdapter} adapter
    * @param {!FoundationMapType=} foundationMap Map from subcomponent names to their subfoundations.
    */
-  constructor(adapter, foundationMap = /** @type {!FoundationMapType} */ ({})) {
-    super(Object.assign(MDCTextFieldFoundation.defaultAdapter, adapter));
+  constructor(adapter, foundationMap = {})) {
+    super(Object.assign(MDCTextFieldFoundation.defaultAdapter, adapter);
 
     /** @type {!MDCTextFieldHelperTextFoundation|undefined} */
     this.helperText_ = foundationMap.helperText;
@@ -116,29 +107,29 @@ class MDCTextFieldFoundation extends MDCFoundation {
     /** @type {!MDCTextFieldIconFoundation|undefined} */
     this.trailingIcon_ = foundationMap.trailingIcon;
 
-    /** @private {boolean} */
+    private isFocused_: boolean;
     this.isFocused_ = false;
-    /** @private {boolean} */
+    private receivedUserInput_: boolean;
     this.receivedUserInput_ = false;
-    /** @private {boolean} */
+    private useCustomValidityChecking_: boolean;
     this.useCustomValidityChecking_ = false;
-    /** @private {boolean} */
+    private isValid_: boolean;
     this.isValid_ = true;
 
-    /** @private {boolean} */
+    private useNativeValidation_: boolean;
     this.useNativeValidation_ = true;
 
-    /** @private {function(): undefined} */
+    private inputFocusHandler_: function(): undefined;
     this.inputFocusHandler_ = () => this.activateFocus();
-    /** @private {function(): undefined} */
+    private inputBlurHandler_: function(): undefined;
     this.inputBlurHandler_ = () => this.deactivateFocus();
-    /** @private {function(): undefined} */
+    private inputInputHandler_: function(): undefined;
     this.inputInputHandler_ = () => this.handleInput();
-    /** @private {function(!Event): undefined} */
+    private setPointerXOffset_: EventListener;
     this.setPointerXOffset_ = (evt) => this.setTransformOrigin(evt);
-    /** @private {function(!Event): undefined} */
+    private textFieldInteractionHandler_: EventListener;
     this.textFieldInteractionHandler_ = () => this.handleTextFieldInteraction();
-    /** @private {function(!Array): undefined} */
+    private validationAttributeChangeHandler_: function(!Array): undefined;
     this.validationAttributeChangeHandler_ = (attributesList) => this.handleValidationAttributeChange(attributesList);
 
     /** @private {!MutationObserver} */
@@ -192,9 +183,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
   /**
    * Handles validation attribute changes
-   * @param {!Array<string>} attributesList
    */
-  handleValidationAttributeChange(attributesList) {
+  handleValidationAttributeChange(attributesList: Array<string>): void {
     attributesList.some((attributeName) => {
       if (VALIDATION_ATTR_WHITELIST.indexOf(attributeName) > -1) {
         this.styleValidity_(true);
@@ -245,10 +235,9 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
   /**
    * Sets the line ripple's transform origin, so that the line ripple activate
-   * animation will animate out from the user's click location.
-   * @param {!Event} evt
+animation will animate out from the user's click location.
    */
-  setTransformOrigin(evt) {
+  setTransformOrigin(evt: Event): void {
     let targetEvent;
     if (evt.touches) {
       targetEvent = evt.touches[0];
@@ -297,17 +286,14 @@ class MDCTextFieldFoundation extends MDCFoundation {
     }
   }
 
-  /**
-   * @return {string} The value of the input Element.
-   */
-  getValue() {
+  getValue(): string {
     return this.getNativeInput_().value;
   }
 
   /**
-   * @param {string} value The value to set on the input Element.
+   * @param value The value to set on the input Element.
    */
-  setValue(value) {
+  setValue(value: string): void {
     // Prevent Safari from moving the caret to the end of the input when the value has not changed.
     if (this.getValue() !== value) {
       this.getNativeInput_().value = value;
@@ -322,18 +308,17 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * @return {boolean} If a custom validity is set, returns that value.
-   *     Otherwise, returns the result of native validity checks.
+   * Otherwise, returns the result of native validity checks.
    */
-  isValid() {
+  isValid(): boolean {
     return this.useNativeValidation_
       ? this.isNativeInputValid_() : this.isValid_;
   }
 
   /**
-   * @param {boolean} isValid Sets the validity state of the Text Field.
+   * @param isValid Sets the validity state of the Text Field.
    */
-  setValid(isValid) {
+  setValid(isValid: boolean): void {
     this.isValid_ = isValid;
     this.styleValidity_(isValid);
 
@@ -345,31 +330,28 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
   /**
    * Enables or disables the use of native validation. Use this for custom validation.
-   * @param {boolean} useNativeValidation Set this to false to ignore native input validation.
+   * @param useNativeValidation Set this to false to ignore native input validation.
    */
-  setUseNativeValidation(useNativeValidation) {
+  setUseNativeValidation(useNativeValidation: boolean): void {
     this.useNativeValidation_ = useNativeValidation;
   }
 
-  /**
-   * @return {boolean} True if the Text Field is disabled.
-   */
-  isDisabled() {
+  isDisabled(): boolean {
     return this.getNativeInput_().disabled;
   }
 
   /**
-   * @param {boolean} disabled Sets the text-field disabled or enabled.
+   * @param disabled Sets the text-field disabled or enabled.
    */
-  setDisabled(disabled) {
+  setDisabled(disabled: boolean): void {
     this.getNativeInput_().disabled = disabled;
     this.styleDisabled_(disabled);
   }
 
   /**
-   * @param {string} content Sets the content of the helper text.
+   * @param content Sets the content of the helper text.
    */
-  setHelperTextContent(content) {
+  setHelperTextContent(content: string): void {
     if (this.helperText_) {
       this.helperText_.setContent(content);
     }
@@ -377,10 +359,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
   /**
    * Sets character counter values that shows characters used and the total character limit.
-   * @param {number} currentLength
-   * @private
+
+@private
    */
-  setCharacterCounter_(currentLength) {
+  setCharacterCounter_(currentLength: number): void {
     if (!this.characterCounter_) return;
 
     const maxLength = this.getNativeInput_().maxLength;
@@ -393,9 +375,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
   /**
    * Sets the aria label of the leading icon.
-   * @param {string} label
    */
-  setLeadingIconAriaLabel(label) {
+  setLeadingIconAriaLabel(label: string): void {
     if (this.leadingIcon_) {
       this.leadingIcon_.setAriaLabel(label);
     }
@@ -403,9 +384,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
   /**
    * Sets the text content of the leading icon.
-   * @param {string} content
    */
-  setLeadingIconContent(content) {
+  setLeadingIconContent(content: string): void {
     if (this.leadingIcon_) {
       this.leadingIcon_.setContent(content);
     }
@@ -413,9 +393,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
   /**
    * Sets the aria label of the trailing icon.
-   * @param {string} label
    */
-  setTrailingIconAriaLabel(label) {
+  setTrailingIconAriaLabel(label: string): void {
     if (this.trailingIcon_) {
       this.trailingIcon_.setAriaLabel(label);
     }
@@ -423,37 +402,34 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
   /**
    * Sets the text content of the trailing icon.
-   * @param {string} content
    */
-  setTrailingIconContent(content) {
+  setTrailingIconContent(content: string): void {
     if (this.trailingIcon_) {
       this.trailingIcon_.setContent(content);
     }
   }
 
   /**
-   * @return {boolean} True if the Text Field input fails in converting the
-   *     user-supplied value.
-   * @private
+   * user-supplied value.
+@private
    */
-  isBadInput_() {
+  isBadInput_(): boolean {
     return this.getNativeInput_().validity.badInput;
   }
 
   /**
-   * @return {boolean} The result of native validity checking
-   *     (ValidityState.valid).
+   * (ValidityState.valid).
    */
-  isNativeInputValid_() {
+  isNativeInputValid_(): boolean {
     return this.getNativeInput_().validity.valid;
   }
 
   /**
    * Styles the component based on the validity state.
-   * @param {boolean} isValid
-   * @private
+
+@private
    */
-  styleValidity_(isValid) {
+  styleValidity_(isValid: boolean): void {
     const {INVALID} = MDCTextFieldFoundation.cssClasses;
     if (isValid) {
       this.adapter_.removeClass(INVALID);
@@ -467,10 +443,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
   /**
    * Styles the component based on the focused state.
-   * @param {boolean} isFocused
-   * @private
+
+@private
    */
-  styleFocused_(isFocused) {
+  styleFocused_(isFocused: boolean): void {
     const {FOCUSED} = MDCTextFieldFoundation.cssClasses;
     if (isFocused) {
       this.adapter_.addClass(FOCUSED);
@@ -481,10 +457,10 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
   /**
    * Styles the component based on the disabled state.
-   * @param {boolean} isDisabled
-   * @private
+
+@private
    */
-  styleDisabled_(isDisabled) {
+  styleDisabled_(isDisabled: boolean): void {
     const {DISABLED, INVALID} = MDCTextFieldFoundation.cssClasses;
     if (isDisabled) {
       this.adapter_.addClass(DISABLED);
@@ -503,21 +479,20 @@ class MDCTextFieldFoundation extends MDCFoundation {
   }
 
   /**
-   * @return {!Element|!NativeInputType} The native text input from the
    * host environment, or a dummy if none exists.
-   * @private
+@private
    */
-  getNativeInput_() {
+  getNativeInput_(): Element|!NativeInputType {
     return this.adapter_.getNativeInput() ||
-    /** @type {!NativeInputType} */ ({
+    {
       value: '',
       disabled: false,
       validity: {
         badInput: false,
         valid: true,
       },
-    });
+    };
   }
 }
 
-export default MDCTextFieldFoundation;
+export {MDCTextFieldFoundation as default, MDCTextFieldFoundation};

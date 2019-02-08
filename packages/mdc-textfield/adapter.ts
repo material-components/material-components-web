@@ -21,13 +21,9 @@
  * THE SOFTWARE.
  */
 
-/* eslint-disable no-unused-vars */
-import MDCTextFieldHelperTextFoundation from './helper-text/foundation';
-/* eslint-disable no-unused-vars */
-import MDCTextFieldCharacterCounterFoundation from './character-counter/foundation';
-import MDCTextFieldIconFoundation from './icon/foundation';
-
-/* eslint no-unused-vars: [2, {"args": "none"}] */
+import {MDCTextFieldHelperTextFoundation} from './helper-text/foundation';
+import {MDCTextFieldCharacterCounterFoundation} from './character-counter/foundation';
+import {MDCTextFieldIconFoundation} from './icon/foundation';
 
 /**
  * @typedef {{
@@ -53,76 +49,58 @@ let NativeInputType;
 let FoundationMapType;
 
 /**
- * Adapter for MDC Text Field.
- *
- * Defines the shape of the adapter expected by the foundation. Implement this
- * adapter to integrate the Text Field into your framework. See
- * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
- * for more information.
- *
- * @record
+ * Defines the shape of the adapter expected by the foundation.
+ * Implement this adapter for your framework of choice to delegate updates to
+ * the component in your framework of choice. See architecture documentation
+ * for more details.
+ * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-class MDCTextFieldAdapter {
+interface MDCTextFieldAdapter {
   /**
    * Adds a class to the root Element.
-   * @param {string} className
    */
-  addClass(className) {}
+  addClass(className: string): void;
 
   /**
    * Removes a class from the root Element.
-   * @param {string} className
    */
-  removeClass(className) {}
+  removeClass(className: string): void;
 
   /**
    * Returns true if the root element contains the given class name.
-   * @param {string} className
-   * @return {boolean}
    */
-  hasClass(className) {}
+  hasClass(className: string): boolean;
 
   /**
    * Registers an event handler on the root element for a given event.
-   * @param {string} type
-   * @param {function(!Event): undefined} handler
    */
-  registerTextFieldInteractionHandler(type, handler) {}
+  registerTextFieldInteractionHandler(type: string, handler: EventListener): void;
 
   /**
    * Deregisters an event handler on the root element for a given event.
-   * @param {string} type
-   * @param {function(!Event): undefined} handler
    */
-  deregisterTextFieldInteractionHandler(type, handler) {}
+  deregisterTextFieldInteractionHandler(type: string, handler: EventListener): void;
 
   /**
    * Registers an event listener on the native input element for a given event.
-   * @param {string} evtType
-   * @param {function(!Event): undefined} handler
    */
-  registerInputInteractionHandler(evtType, handler) {}
+  registerInputInteractionHandler(evtType: string, handler: EventListener): void;
 
   /**
    * Deregisters an event listener on the native input element for a given event.
-   * @param {string} evtType
-   * @param {function(!Event): undefined} handler
    */
-  deregisterInputInteractionHandler(evtType, handler) {}
+  deregisterInputInteractionHandler(evtType: string, handler: EventListener): void;
 
   /**
    * Registers a validation attribute change listener on the input element.
    * Handler accepts list of attribute names.
-   * @param {function(!Array<string>): undefined} handler
-   * @return {!MutationObserver}
    */
-  registerValidationAttributeChangeHandler(handler) {}
+  registerValidationAttributeChangeHandler(handler: (attributeNames: string[]) => void): MutationObserver;
 
   /**
    * Disconnects a validation attribute observer on the input element.
-   * @param {!MutationObserver} observer
    */
-  deregisterValidationAttributeChangeHandler(observer) {}
+  deregisterValidationAttributeChangeHandler(observer: MutationObserver): void;
 
   /**
    * Returns an object representing the native text input element, with a
@@ -132,77 +110,68 @@ class MDCTextFieldAdapter {
    * property, so if you choose to duck-type the return value for this method
    * in your implementation it's important to keep this in mind. Also note that
    * this method can return null, which the foundation will handle gracefully.
-   * @return {?Element|?NativeInputType}
    */
-  getNativeInput() {}
+  getNativeInput(): Element | NativeInputType | null;
 
   /**
    * Returns true if the textfield is focused.
    * We achieve this via `document.activeElement === this.root_`.
-   * @return {boolean}
    */
-  isFocused() {}
+  isFocused(): boolean;
 
   /**
    * Activates the line ripple.
    */
-  activateLineRipple() {}
+  activateLineRipple();
 
   /**
    * Deactivates the line ripple.
    */
-  deactivateLineRipple() {}
+  deactivateLineRipple();
 
   /**
    * Sets the transform origin of the line ripple.
-   * @param {number} normalizedX
    */
-  setLineRippleTransformOrigin(normalizedX) {}
+  setLineRippleTransformOrigin(normalizedX: number): void;
 
   /**
    * Only implement if label exists.
-   * Shakes label if shouldShake is true.
-   * @param {boolean} shouldShake
+Shakes label if shouldShake is true.
    */
-  shakeLabel(shouldShake) {}
+  shakeLabel(shouldShake: boolean): void;
 
   /**
    * Only implement if label exists.
-   * Floats the label above the input element if shouldFloat is true.
-   * @param {boolean} shouldFloat
+Floats the label above the input element if shouldFloat is true.
    */
-  floatLabel(shouldFloat) {}
+  floatLabel(shouldFloat: boolean): void;
 
   /**
    * Returns true if label element exists, false if it doesn't.
-   * @return {boolean}
    */
-  hasLabel() {}
+  hasLabel(): boolean;
 
   /**
    * Only implement if label exists.
-   * Returns width of label in pixels.
-   * @return {number}
+Returns width of label in pixels.
    */
-  getLabelWidth() {}
+  getLabelWidth(): number;
 
   /**
    * Returns true if outline element exists, false if it doesn't.
-   * @return {boolean}
    */
-  hasOutline() {}
+  hasOutline(): boolean;
 
   /**
    * Only implement if outline element exists.
-   * @param {number} labelWidth
    */
-  notchOutline(labelWidth) {}
+  notchOutline(labelWidth: number): void;
 
   /**
    * Only implement if outline element exists.
    * Closes notch in outline element.
    */
-  closeOutline() {}
+  closeOutline();
 }
 
 export {MDCTextFieldAdapter, NativeInputType, FoundationMapType};

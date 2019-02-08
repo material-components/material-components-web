@@ -21,24 +21,18 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
-
 /**
- * Adapter for MDC Text Field Character Counter.
- *
- * Defines the shape of the adapter expected by the foundation. Implement this
- * adapter to integrate the TextField character counter into your framework. See
- * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
- * for more information.
- *
- * @record
+ * Defines the shape of the adapter expected by the foundation.
+ * Implement this adapter for your framework of choice to delegate updates to
+ * the component in your framework of choice. See architecture documentation
+ * for more details.
+ * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-class MDCTextFieldCharacterCounterAdapter {
+interface MDCTextFieldCharacterCounterAdapter {
   /**
    * Sets the text content of character counter element.
-   * @param {string} content
    */
-  setContent(content) {}
+  setContent(content: string): void;
 }
 
-export default MDCTextFieldCharacterCounterAdapter;
+export {MDCTextFieldCharacterCounterAdapter as default, MDCTextFieldCharacterCounterAdapter};

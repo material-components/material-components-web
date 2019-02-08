@@ -21,7 +21,6 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
 const strings = {
   ARIA_CONTROLS: 'aria-controls',
   INPUT_SELECTOR: '.mdc-text-field__input',
@@ -31,7 +30,6 @@ const strings = {
   LINE_RIPPLE_SELECTOR: '.mdc-line-ripple',
 };
 
-/** @enum {string} */
 const cssClasses = {
   ROOT: 'mdc-text-field',
   DISABLED: 'mdc-text-field--disabled',

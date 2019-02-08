@@ -22,58 +22,49 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
-import MDCTextFieldHelperTextAdapter from './adapter';
+import {MDCTextFieldHelperTextAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-
-/**
- * @extends {MDCFoundation<!MDCTextFieldHelperTextAdapter>}
- * @final
- */
-class MDCTextFieldHelperTextFoundation extends MDCFoundation {
-  /** @return enum {string} */
+class MDCTextFieldHelperTextFoundation extends MDCFoundation<MDCTextFieldHelperTextAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
 
-  /** @return enum {string} */
   static get strings() {
     return strings;
   }
 
   /**
-   * {@see MDCTextFieldHelperTextAdapter} for typing information on parameters and return
-   * types.
-   * @return {!MDCTextFieldHelperTextAdapter}
+   * See {@link MDCTextFieldHelperTextAdapter} for typing information on parameters and return types.
    */
-  static get defaultAdapter() {
-    return /** @type {!MDCTextFieldHelperTextAdapter} */ ({
-      addClass: () => {},
-      removeClass: () => {},
-      hasClass: () => {},
-      setAttr: () => {},
-      removeAttr: () => {},
-      setContent: () => {},
-    });
+  static get defaultAdapter(): MDCTextFieldHelperTextAdapter {
+    // tslint:disable:object-literal-sort-keys
+    return {
+      addClass: () => undefined,
+      removeClass: () => undefined,
+      hasClass: () => false,
+      setAttr: () => undefined,
+      removeAttr: () => undefined,
+      setContent: () => undefined,
+    };
+    // tslint:enable:object-literal-sort-keys
   }
 
-  /**
-   * @param {!MDCTextFieldHelperTextAdapter} adapter
-   */
-  constructor(adapter) {
+  constructor(adapter: MDCTextFieldHelperTextAdapter) {
     super(Object.assign(MDCTextFieldHelperTextFoundation.defaultAdapter, adapter));
   }
 
   /**
    * Sets the content of the helper text field.
-   * @param {string} content
    */
-  setContent(content) {
+  setContent(content: string): void {
     this.adapter_.setContent(content);
   }
 
-  /** @param {boolean} isPersistent Sets the persistency of the helper text. */
-  setPersistent(isPersistent) {
+  /**
+   * @param isPersistent Sets the persistency of the helper text.
+   */
+  setPersistent(isPersistent: boolean) {
     if (isPersistent) {
       this.adapter_.addClass(cssClasses.HELPER_TEXT_PERSISTENT);
     } else {
@@ -82,10 +73,9 @@ class MDCTextFieldHelperTextFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {boolean} isValidation True to make the helper text act as an
-   *   error validation message.
+   * @param isValidation True to make the helper text act as an error validation message.
    */
-  setValidation(isValidation) {
+  setValidation(isValidation: boolean): void {
     if (isValidation) {
       this.adapter_.addClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
     } else {
@@ -93,16 +83,17 @@ class MDCTextFieldHelperTextFoundation extends MDCFoundation {
     }
   }
 
-  /** Makes the helper text visible to the screen reader. */
+  /**
+   * Makes the helper text visible to the screen reader.
+   */
   showToScreenReader() {
     this.adapter_.removeAttr(strings.ARIA_HIDDEN);
   }
 
   /**
    * Sets the validity of the helper text based on the input validity.
-   * @param {boolean} inputIsValid
    */
-  setValidity(inputIsValid) {
+  setValidity(inputIsValid: boolean): void {
     const helperTextIsPersistent = this.adapter_.hasClass(cssClasses.HELPER_TEXT_PERSISTENT);
     const helperTextIsValidationMsg = this.adapter_.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
     const validationMsgNeedsDisplay = helperTextIsValidationMsg && !inputIsValid;
@@ -120,11 +111,10 @@ class MDCTextFieldHelperTextFoundation extends MDCFoundation {
 
   /**
    * Hides the help text from screen readers.
-   * @private
    */
-  hide_() {
+  private hide_() {
     this.adapter_.setAttr(strings.ARIA_HIDDEN, 'true');
   }
 }
 
-export default MDCTextFieldHelperTextFoundation;
+export {MDCTextFieldHelperTextFoundation as default, MDCTextFieldHelperTextFoundation};

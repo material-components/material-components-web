@@ -22,47 +22,38 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
-import MDCTextFieldIconAdapter from './adapter';
+import {MDCTextFieldIconAdapter} from './adapter';
 import {strings} from './constants';
 
-
-/**
- * @extends {MDCFoundation<!MDCTextFieldIconAdapter>}
- * @final
- */
-class MDCTextFieldIconFoundation extends MDCFoundation {
-  /** @return enum {string} */
+class MDCTextFieldIconFoundation extends MDCFoundation<MDCTextFieldIconAdapter> {
   static get strings() {
     return strings;
   }
 
   /**
-   * {@see MDCTextFieldIconAdapter} for typing information on parameters and return
-   * types.
-   * @return {!MDCTextFieldIconAdapter}
+   * See {@link MDCTextFieldIconAdapter} for typing information on parameters and return types.
    */
-  static get defaultAdapter() {
-    return /** @type {!MDCTextFieldIconAdapter} */ ({
-      getAttr: () => {},
-      setAttr: () => {},
-      removeAttr: () => {},
-      setContent: () => {},
-      registerInteractionHandler: () => {},
-      deregisterInteractionHandler: () => {},
-      notifyIconAction: () => {},
-    });
+  static get defaultAdapter(): MDCTextFieldIconAdapter {
+    // tslint:disable:object-literal-sort-keys
+    return {
+      getAttr: () => null,
+      setAttr: () => undefined,
+      removeAttr: () => undefined,
+      setContent: () => undefined,
+      registerInteractionHandler: () => undefined,
+      deregisterInteractionHandler: () => undefined,
+      notifyIconAction: () => undefined,
+    };
+    // tslint:enable:object-literal-sort-keys
   }
 
-  /**
-   * @param {!MDCTextFieldIconAdapter} adapter
-   */
-  constructor(adapter) {
+  private savedTabIndex_: string | null;
+  private readonly interactionHandler_: EventListener;
+
+  constructor(adapter: MDCTextFieldIconAdapter) {
     super(Object.assign(MDCTextFieldIconFoundation.defaultAdapter, adapter));
 
-    /** @private {string?} */
     this.savedTabIndex_ = null;
-
-    /** @private {function(!Event): undefined} */
     this.interactionHandler_ = (evt) => this.handleInteraction(evt);
   }
 
@@ -80,8 +71,7 @@ class MDCTextFieldIconFoundation extends MDCFoundation {
     });
   }
 
-  /** @param {boolean} disabled */
-  setDisabled(disabled) {
+  setDisabled(disabled: boolean) {
     if (!this.savedTabIndex_) {
       return;
     }
@@ -95,25 +85,20 @@ class MDCTextFieldIconFoundation extends MDCFoundation {
     }
   }
 
-  /** @param {string} label */
-  setAriaLabel(label) {
+  setAriaLabel(label: string) {
     this.adapter_.setAttr('aria-label', label);
   }
 
-  /** @param {string} content */
-  setContent(content) {
+  setContent(content: string) {
     this.adapter_.setContent(content);
   }
 
-  /**
-   * Handles an interaction event
-   * @param {!Event} evt
-   */
-  handleInteraction(evt) {
-    if (evt.type === 'click' || evt.key === 'Enter' || evt.keyCode === 13) {
+  handleInteraction(evt: Event): void {
+    const isEnterKey = (evt as KeyboardEvent).key === 'Enter' || (evt as KeyboardEvent).keyCode === 13;
+    if (evt.type === 'click' || isEnterKey) {
       this.adapter_.notifyIconAction();
     }
   }
 }
 
-export default MDCTextFieldIconFoundation;
+export {MDCTextFieldIconFoundation as default, MDCTextFieldIconFoundation};
