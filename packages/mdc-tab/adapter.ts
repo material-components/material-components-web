@@ -21,105 +21,77 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
-
 /**
- * MDCTabDimensions provides details about the left and right edges of the Tab
- * root element and the Tab content element. These values are used to determine
- * the visual position of the Tab with respect it's parent container.
- * @typedef {{rootLeft: number, rootRight: number, contentLeft: number, contentRight: number}}
+ * Defines the shape of the adapter expected by the foundation.
+ * Implement this adapter for your framework of choice to delegate updates to
+ * the component in your framework of choice. See architecture documentation
+ * for more details.
+ * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-let MDCTabDimensions;
-
-/**
- * @typedef {{
- *   detail: {
- *     tabId: string,
- *   },
- *   bubbles: boolean,
- * }}
- */
-let MDCTabInteractionEventType;
-
-/**
- * Adapter for MDC Tab.
- *
- * Defines the shape of the adapter expected by the foundation. Implement this
- * adapter to integrate the Tab  into your framework. See
- * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
- * for more information.
- *
- * @record
- */
-class MDCTabAdapter {
+interface MDCTabAdapter {
   /**
    * Adds the given className to the root element.
-   * @param {string} className The className to add
+   * @param className The className to add
    */
-  addClass(className) {}
+  addClass(className: string): void;
 
   /**
    * Removes the given className from the root element.
-   * @param {string} className The className to remove
+   * @param className The className to remove
    */
-  removeClass(className) {}
+  removeClass(className: string): void;
 
   /**
    * Returns whether the root element has the given className.
-   * @param {string} className The className to remove
-   * @return {boolean}
+   * @param className The className to remove
    */
-  hasClass(className) {}
+  hasClass(className: string): boolean;
 
   /**
    * Sets the given attrName of the root element to the given value.
-   * @param {string} attr The attribute name to set
-   * @param {string} value The value so give the attribute
+   * @param attr The attribute name to set
+   * @param value The value so give the attribute
    */
-  setAttr(attr, value) {}
+  setAttr(attr: string, value: string): void;
 
   /**
    * Activates the indicator element.
-   * @param {!ClientRect=} previousIndicatorClientRect The client rect of the previously activated indicator
+   * @param previousIndicatorClientRect The client rect of the previously activated indicator
    */
-  activateIndicator(previousIndicatorClientRect) {}
+  activateIndicator(previousIndicatorClientRect?: ClientRect | null): void;
 
   /** Deactivates the indicator. */
-  deactivateIndicator() {}
+  deactivateIndicator(): void;
 
   /**
    * Emits the MDCTab:interacted event for use by parent components
    */
-  notifyInteracted() {}
+  notifyInteracted(): void;
 
   /**
    * Returns the offsetLeft value of the root element.
-   * @return {number}
    */
-  getOffsetLeft() {}
+  getOffsetLeft(): number;
 
   /**
    * Returns the offsetWidth value of the root element.
-   * @return {number}
    */
-  getOffsetWidth() {}
+  getOffsetWidth(): number;
 
   /**
    * Returns the offsetLeft of the content element.
-   * @return {number}
    */
-  getContentOffsetLeft() {}
+  getContentOffsetLeft(): number;
 
   /**
    * Returns the offsetWidth of the content element.
-   * @return {number}
    */
-  getContentOffsetWidth() {}
+  getContentOffsetWidth(): number;
 
   /**
    * Applies focus to the root element
    */
-  focus() {}
+  focus(): void;
 }
 
-export {MDCTabDimensions, MDCTabInteractionEventType, MDCTabAdapter};
+export {MDCTabAdapter as default, MDCTabAdapter};
