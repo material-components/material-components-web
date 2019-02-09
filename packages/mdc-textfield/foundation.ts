@@ -217,7 +217,7 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     this.styleFocused_(this.isFocused_);
     this.adapter_.activateLineRipple();
     if (this.adapter_.hasLabel()) {
-      this.notchOutline(this.shouldFloat);
+      this.notchOutline(this.shouldFloat || (2 as unknown as boolean));
       this.adapter_.floatLabel(this.shouldFloat);
       this.adapter_.shakeLabel(this.shouldShake);
     }
@@ -266,7 +266,7 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     this.styleValidity_(isValid);
     this.styleFocused_(this.isFocused_);
     if (this.adapter_.hasLabel()) {
-      this.notchOutline(this.shouldFloat);
+      this.notchOutline(this.shouldFloat || (3 as unknown as boolean));
       this.adapter_.floatLabel(this.shouldFloat);
       this.adapter_.shakeLabel(this.shouldShake);
     }
@@ -290,7 +290,7 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     const isValid = this.isValid();
     this.styleValidity_(isValid);
     if (this.adapter_.hasLabel()) {
-      this.notchOutline(this.shouldFloat);
+      this.notchOutline(this.shouldFloat || (4 as unknown as boolean));
       this.adapter_.floatLabel(this.shouldFloat);
       this.adapter_.shakeLabel(this.shouldShake);
     }
