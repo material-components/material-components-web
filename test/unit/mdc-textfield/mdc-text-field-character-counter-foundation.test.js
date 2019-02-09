@@ -53,7 +53,9 @@ test('#setContent sets the content of the character counter element', () => {
 });
 
 test('#setContent current length does not exceed character count limit', () => {
-  const {foundation, mockAdapter} = setupTest();
+  const foundation = new MDCTextFieldCharacterCounterFoundation();
+  const adapter = foundation.adapter_;
+  adapter.setContent = td.func('setContent');
   foundation.setCounterValue(24, 20);
-  td.verify(mockAdapter.setContent('20 / 20'));
+  td.verify(adapter.setContent('20 / 20'));
 });

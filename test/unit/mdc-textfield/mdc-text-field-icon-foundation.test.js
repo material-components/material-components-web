@@ -45,11 +45,14 @@ test('defaultAdapter returns a complete adapter implementation', () => {
 const setupTest = () => setupFoundationTest(MDCTextFieldIconFoundation);
 
 test('#init adds event listeners', () => {
-  const {foundation, mockAdapter} = setupTest();
+  const foundation = new MDCTextFieldIconFoundation();
+  const adapter = foundation.adapter_;
+  adapter.registerInteractionHandler = td.func('registerInteractionHandler');
+
   foundation.init();
 
-  td.verify(mockAdapter.registerInteractionHandler('click', td.matchers.isA(Function)));
-  td.verify(mockAdapter.registerInteractionHandler('keydown', td.matchers.isA(Function)));
+  td.verify(adapter.registerInteractionHandler('click', td.matchers.isA(Function)));
+  td.verify(adapter.registerInteractionHandler('keydown', td.matchers.isA(Function)));
 });
 
 test('#destroy removes event listeners', () => {
