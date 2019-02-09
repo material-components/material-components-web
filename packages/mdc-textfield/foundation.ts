@@ -56,7 +56,8 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   }
 
   get shouldFloat(): boolean {
-    return this.shouldAlwaysFloat_ || this.isFocused_ || Boolean(this.getValue()) || this.isBadInput_();
+    // The trailing `|| false` is needed for unit tests to pass in IE 11.
+    return this.shouldAlwaysFloat_ || this.isFocused_ || Boolean(this.getValue()) || this.isBadInput_() || false;
   }
 
   /**
@@ -400,8 +401,7 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
    * @return True if the Text Field input fails in converting the user-supplied value.
    */
   private isBadInput_(): boolean {
-    // The trailing `|| false` is needed for unit tests to pass in IE 11.
-    return this.getNativeInput_().validity.badInput || false;
+    return this.getNativeInput_().validity.badInput;
   }
 
   /**
