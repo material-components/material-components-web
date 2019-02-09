@@ -49,8 +49,7 @@ abstract class MDCTabIndicatorFoundation extends MDCFoundation<MDCTabIndicatorAd
     super({...MDCTabIndicatorFoundation.defaultAdapter, ...adapter});
   }
 
-  /** @return {!ClientRect} */
-  computeContentClientRect() {
+  computeContentClientRect(): ClientRect {
     return this.adapter_.computeContentClientRect();
   }
 
