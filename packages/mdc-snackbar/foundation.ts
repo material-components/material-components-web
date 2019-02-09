@@ -21,16 +21,14 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: ["error", {"argsIgnorePattern": "evt", "varsIgnorePattern": "Adapter$"}] */
-
 import {MDCFoundation} from '@material/base/foundation';
-import MDCSnackbarAdapter from './adapter';
+import {MDCSnackbarAdapter} from './adapter';
 import {cssClasses, numbers, strings} from './constants';
 
 const {OPENING, OPEN, CLOSING} = cssClasses;
 const {REASON_ACTION, REASON_DISMISS} = strings;
 
-class MDCSnackbarFoundation extends MDCFoundation {
+class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
@@ -43,44 +41,27 @@ class MDCSnackbarFoundation extends MDCFoundation {
     return numbers;
   }
 
-  /**
-   * @return {!MDCSnackbarAdapter}
-   */
-  static get defaultAdapter() {
-    return /** @type {!MDCSnackbarAdapter} */ ({
-      addClass: (/* className: string */) => {},
-      removeClass: (/* className: string */) => {},
-      announce: () => {},
-      notifyOpening: () => {},
-      notifyOpened: () => {},
-      notifyClosing: (/* reason: string */) => {},
-      notifyClosed: (/* reason: string */) => {},
-    });
+  static get defaultAdapter(): MDCSnackbarAdapter {
+    return {
+      addClass: () => undefined,
+      announce: () => undefined,
+      notifyClosed: () => undefined,
+      notifyClosing: () => undefined,
+      notifyOpened: () => undefined,
+      notifyOpening: () => undefined,
+      removeClass: () => undefined,
+    };
   }
 
-  /**
-   * @param {!MDCSnackbarAdapter=} adapter
-   */
-  constructor(adapter) {
+  private isOpen_ = false;
+  private animationFrame_ = 0;
+  private animationTimer_ = 0;
+  private autoDismissTimer_ = 0;
+  private autoDismissTimeoutMs_ = numbers.DEFAULT_AUTO_DISMISS_TIMEOUT_MS;
+  private closeOnEscape_ = true;
+
+  constructor(adapter?: MDCSnackbarAdapter) {
     super(Object.assign(MDCSnackbarFoundation.defaultAdapter, adapter));
-
-    /** @private {boolean} */
-    this.isOpen_ = false;
-
-    /** @private {number} */
-    this.animationFrame_ = 0;
-
-    /** @private {number} */
-    this.animationTimer_ = 0;
-
-    /** @private {number} */
-    this.autoDismissTimer_ = 0;
-
-    /** @private {number} */
-    this.autoDismissTimeoutMs_ = numbers.DEFAULT_AUTO_DISMISS_TIMEOUT_MS;
-
-    /** @private {boolean} */
-    this.closeOnEscape_ = true;
   }
 
   destroy() {
@@ -117,7 +98,7 @@ class MDCSnackbarFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {string=} reason Why the snackbar was closed. Value will be passed to CLOSING_EVENT and CLOSED_EVENT via the
+   * @param reason Why the snackbar was closed. Value will be passed to CLOSING_EVENT and CLOSED_EVENT via the
    *     `event.detail.reason` property. Standard values are REASON_ACTION and REASON_DISMISS, but custom
    *     client-specific values may also be used if desired.
    */
@@ -144,24 +125,15 @@ class MDCSnackbarFoundation extends MDCFoundation {
     }, numbers.SNACKBAR_ANIMATION_CLOSE_TIME_MS);
   }
 
-  /**
-   * @return {boolean}
-   */
-  isOpen() {
+  isOpen(): boolean {
     return this.isOpen_;
   }
 
-  /**
-   * @return {number}
-   */
-  getTimeoutMs() {
+  getTimeoutMs(): number {
     return this.autoDismissTimeoutMs_;
   }
 
-  /**
-   * @param {number} timeoutMs
-   */
-  setTimeoutMs(timeoutMs) {
+  setTimeoutMs(timeoutMs: number) {
     // Use shorter variable names to make the code more readable
     const minValue = numbers.MIN_AUTO_DISMISS_TIMEOUT_MS;
     const maxValue = numbers.MAX_AUTO_DISMISS_TIMEOUT_MS;
@@ -173,51 +145,35 @@ class MDCSnackbarFoundation extends MDCFoundation {
     }
   }
 
-  /**
-   * @return {boolean}
-   */
-  getCloseOnEscape() {
+  getCloseOnEscape(): boolean {
     return this.closeOnEscape_;
   }
 
-  /**
-   * @param {boolean} closeOnEscape
-   */
-  setCloseOnEscape(closeOnEscape) {
+  setCloseOnEscape(closeOnEscape: boolean) {
     this.closeOnEscape_ = closeOnEscape;
   }
 
-  /**
-   * @param {!KeyboardEvent} evt
-   */
-  handleKeyDown(evt) {
-    if (this.getCloseOnEscape() && (evt.key === 'Escape' || evt.keyCode === 27)) {
+  handleKeyDown(evt: KeyboardEvent) {
+    const isEscapeKey = evt.key === 'Escape' || evt.keyCode === 27;
+    if (isEscapeKey && this.getCloseOnEscape()) {
       this.close(REASON_DISMISS);
     }
   }
 
-  /**
-   * @param {!MouseEvent} evt
-   */
-  handleActionButtonClick(evt) {
+  handleActionButtonClick(_evt: MouseEvent) {
     this.close(REASON_ACTION);
   }
 
-  /**
-   * @param {!MouseEvent} evt
-   */
-  handleActionIconClick(evt) {
+  handleActionIconClick(_evt: MouseEvent) {
     this.close(REASON_DISMISS);
   }
 
-  /** @private */
-  clearAutoDismissTimer_() {
+  private clearAutoDismissTimer_() {
     clearTimeout(this.autoDismissTimer_);
     this.autoDismissTimer_ = 0;
   }
 
-  /** @private */
-  handleAnimationTimerEnd_() {
+  private handleAnimationTimerEnd_() {
     this.animationTimer_ = 0;
     this.adapter_.removeClass(cssClasses.OPENING);
     this.adapter_.removeClass(cssClasses.CLOSING);
@@ -225,10 +181,8 @@ class MDCSnackbarFoundation extends MDCFoundation {
 
   /**
    * Runs the given logic on the next animation frame, using setTimeout to factor in Firefox reflow behavior.
-   * @param {Function} callback
-   * @private
    */
-  runNextAnimationFrame_(callback) {
+  private runNextAnimationFrame_(callback: () => void) {
     cancelAnimationFrame(this.animationFrame_);
     this.animationFrame_ = requestAnimationFrame(() => {
       this.animationFrame_ = 0;
@@ -238,4 +192,4 @@ class MDCSnackbarFoundation extends MDCFoundation {
   }
 }
 
-export default MDCSnackbarFoundation;
+export {MDCSnackbarFoundation as default, MDCSnackbarFoundation};
