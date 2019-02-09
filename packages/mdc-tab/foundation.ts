@@ -56,8 +56,8 @@ class MDCTabFoundation extends MDCFoundation<MDCTabAdapter> {
 
   private focusOnActivate_ = true;
 
-  constructor(adapter: MDCTabAdapter) {
-    super(Object.assign(MDCTabFoundation.defaultAdapter, adapter));
+  constructor(adapter?: Partial<MDCTabAdapter>) {
+    super({...MDCTabFoundation.defaultAdapter, ...adapter});
   }
 
   handleClick() {
