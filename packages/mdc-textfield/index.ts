@@ -341,8 +341,7 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
    * Recomputes the outline SVG path for the outline element.
    */
   layout() {
-    // The trailing `|| false` is needed for a unit test to pass in IE 11.
-    const openNotch = this.foundation_.shouldFloat || false;
+    const openNotch = this.foundation_.shouldFloat;
     this.foundation_.notchOutline(openNotch);
   }
 

@@ -400,7 +400,8 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
    * @return True if the Text Field input fails in converting the user-supplied value.
    */
   private isBadInput_(): boolean {
-    return this.getNativeInput_().validity.badInput;
+    // The badInput property is not supported in IE 11 💩.
+    return this.getNativeInput_().validity.badInput || false;
   }
 
   /**
