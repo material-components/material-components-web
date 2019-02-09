@@ -21,16 +21,18 @@
  * THE SOFTWARE.
  */
 
+// tslint:disable:only-arrow-functions
+
 const registry = Object.create(null);
 
-const CONSOLE_WARN = console.warn.bind(console);
+const CONSOLE_WARN = console.warn.bind(console); // tslint:disable-line:no-console
 
-function _emit(evtType, evtData, shouldBubble = false) {
+function _emit(evtType: string, evtData: object, shouldBubble = false) {
   let evt;
   if (typeof CustomEvent === 'function') {
     evt = new CustomEvent(evtType, {
-      detail: evtData,
       bubbles: shouldBubble,
+      detail: evtData,
     });
   } else {
     evt = document.createEvent('CustomEvent');
@@ -41,23 +43,25 @@ function _emit(evtType, evtData, shouldBubble = false) {
 }
 
 /**
- * Auto-initializes all mdc components on a page.
+ * Auto-initializes all MDC components on a page.
  */
-export default function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
+function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
   const components = [];
-  const nodes = root.querySelectorAll('[data-mdc-auto-init]');
-  for (let i = 0, node; (node = nodes[i]); i++) {
+  const nodes: HTMLElement[] = [].slice.call(root.querySelectorAll<HTMLElement>('[data-mdc-auto-init]'));
+
+  for (const node of nodes) {
     const ctorName = node.dataset.mdcAutoInit;
     if (!ctorName) {
       throw new Error('(mdc-auto-init) Constructor name must be given.');
     }
 
-    const Ctor = registry[ctorName];
+    const Ctor = registry[ctorName]; // tslint:disable-line:variable-name
     if (typeof Ctor !== 'function') {
       throw new Error(
         `(mdc-auto-init) Could not find constructor in registry for ${ctorName}`);
     }
 
+    // @ts-ignore
     if (node[ctorName]) {
       warn(`(mdc-auto-init) Component already initialized for ${node}. Skipping...`);
       continue;
@@ -66,10 +70,10 @@ export default function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
     // TODO: Should we make an eslint rule for an attachTo() static method?
     const component = Ctor.attachTo(node);
     Object.defineProperty(node, ctorName, {
+      configurable: true,
+      enumerable: false,
       value: component,
       writable: false,
-      enumerable: false,
-      configurable: true,
     });
     components.push(component);
   }
@@ -78,7 +82,8 @@ export default function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
   return components;
 }
 
-mdcAutoInit.register = function(componentName, Ctor, warn = CONSOLE_WARN) {
+// tslint:disable-next-line:variable-name
+mdcAutoInit.register = function(componentName: string, Ctor: Function, warn = CONSOLE_WARN) {
   if (typeof Ctor !== 'function') {
     throw new Error(`(mdc-auto-init) Invalid Ctor value ${Ctor}. Expected function`);
   }
@@ -90,10 +95,12 @@ mdcAutoInit.register = function(componentName, Ctor, warn = CONSOLE_WARN) {
   registry[componentName] = Ctor;
 };
 
-mdcAutoInit.deregister = function(componentName) {
+mdcAutoInit.deregister = function(componentName: string) {
   delete registry[componentName];
 };
 
 mdcAutoInit.deregisterAll = function() {
   Object.keys(registry).forEach(this.deregister, this);
 };
+
+export {mdcAutoInit as default, mdcAutoInit};
