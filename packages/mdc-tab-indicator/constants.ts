@@ -21,20 +21,17 @@
  * THE SOFTWARE.
  */
 
-import MDCTabIndicatorFoundation from './foundation';
+const cssClasses = {
+  ACTIVE: 'mdc-tab-indicator--active',
+  FADE: 'mdc-tab-indicator--fade',
+  NO_TRANSITION: 'mdc-tab-indicator--no-transition',
+};
 
-/**
- * @extends {MDCTabIndicatorFoundation}
- * @final
- */
-class MDCFadingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
-  activate() {
-    this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
-  }
+const strings = {
+  CONTENT_SELECTOR: '.mdc-tab-indicator__content',
+};
 
-  deactivate() {
-    this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
-  }
-}
-
-export default MDCFadingTabIndicatorFoundation;
+export {
+  cssClasses,
+  strings,
+};

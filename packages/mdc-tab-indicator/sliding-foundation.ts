@@ -21,15 +21,10 @@
  * THE SOFTWARE.
  */
 
-import MDCTabIndicatorFoundation from './foundation';
+import {MDCTabIndicatorFoundation} from './foundation';
 
-/**
- * @extends {MDCTabIndicatorFoundation}
- * @final
- */
 class MDCSlidingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
-  /** @param {!ClientRect=} previousIndicatorClientRect */
-  activate(previousIndicatorClientRect) {
+  activate(previousIndicatorClientRect?: ClientRect | null) {
     // Early exit if no indicator is present to handle cases where an indicator
     // may be activated without a prior indicator state
     if (!previousIndicatorClientRect) {
@@ -58,6 +53,6 @@ class MDCSlidingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
   deactivate() {
     this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
   }
-}
+} /* istanbul thinks this is an `if` statement */
 
-export default MDCSlidingTabIndicatorFoundation;
+export {MDCSlidingTabIndicatorFoundation as default, MDCSlidingTabIndicatorFoundation};

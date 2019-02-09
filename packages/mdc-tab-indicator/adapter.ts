@@ -21,19 +21,37 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
-const cssClasses = {
-  ACTIVE: 'mdc-tab-indicator--active',
-  FADE: 'mdc-tab-indicator--fade',
-  NO_TRANSITION: 'mdc-tab-indicator--no-transition',
-};
+/**
+ * Defines the shape of the adapter expected by the foundation.
+ * Implement this adapter for your framework of choice to delegate updates to
+ * the component in your framework of choice. See architecture documentation
+ * for more details.
+ * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
+ */
+interface MDCTabIndicatorAdapter {
+  /**
+   * Adds the given className to the root element.
+   * @param className The className to add
+   */
+  addClass(className: string): void;
 
-/** @enum {string} */
-const strings = {
-  CONTENT_SELECTOR: '.mdc-tab-indicator__content',
-};
+  /**
+   * Removes the given className from the root element.
+   * @param className The className to remove
+   */
+  removeClass(className: string): void;
 
-export {
-  cssClasses,
-  strings,
-};
+  /**
+   * Returns the client rect of the content element.
+   */
+  computeContentClientRect(): ClientRect;
+
+  /**
+   * Sets a style property of the content element to the passed value
+   * @param propName The style property name to set
+   * @param value The style property value
+   */
+  setContentStyleProperty(propName: string, value: string): void;
+}
+
+export {MDCTabIndicatorAdapter as default, MDCTabIndicatorAdapter};
