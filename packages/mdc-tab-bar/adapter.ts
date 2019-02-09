@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {MDCTabDimensions} from '@material/tab/adapter';
+import {MDCTabDimensions} from '@material/tab/index';
 
 /**
  * Defines the shape of the adapter expected by the foundation.
