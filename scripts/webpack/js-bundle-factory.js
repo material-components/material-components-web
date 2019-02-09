@@ -97,10 +97,7 @@ class JsBundleFactory {
             babelLoader,
             {
               loader: 'ts-loader',
-              options: {
-                configFile: tsConfigFilePath,
-                transpileOnly: true
-              },
+              options: {configFile: tsConfigFilePath},
             },
           ],
         }, {

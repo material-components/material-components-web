@@ -77,9 +77,23 @@ function cpAsset(asset) {
   return cpFile(asset, destDir).then(() => console.log(`cp ${asset} -> ${destDir}`));
 }
 
+function cpDeclarationAsset(asset) {
+  const assetPkg = path.parse(asset.split('build/')[1]).dir;
+  if (!fs.existsSync(assetPkg)) {
+    Promise.reject(new Error(`Non-existent asset package path ${assetPkg} for ${asset}`));
+  }
+  const destDir = path.join(assetPkg, 'dist', path.basename(asset));
+  return cpFile(asset, destDir).then(() => console.log(`cp ${asset} -> ${destDir}`));
+}
+
 cleanPkgDistDirs();
 
 Promise.all(globSync('build/*.{css,js,map}').map(cpAsset)).catch((err) => {
+  console.error(`Error encountered copying assets: ${err}`);
+  process.exit(1);
+});
+
+Promise.all(globSync('build/packages/**/*.d.ts').map(cpDeclarationAsset)).catch((err) => {
   console.error(`Error encountered copying assets: ${err}`);
   process.exit(1);
 });
