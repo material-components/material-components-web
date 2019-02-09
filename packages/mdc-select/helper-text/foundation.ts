@@ -50,7 +50,7 @@ class MDCSelectHelperTextFoundation extends MDCFoundation<MDCSelectHelperTextAda
     // tslint:enable:object-literal-sort-keys
   }
 
-  constructor(adapter: Partial<MDCSelectHelperTextAdapter> = {}) {
+  constructor(adapter?: Partial<MDCSelectHelperTextAdapter>) {
     super({...MDCSelectHelperTextFoundation.defaultAdapter, ...adapter});
 }
 

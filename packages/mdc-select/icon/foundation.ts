@@ -53,7 +53,7 @@ class MDCSelectIconFoundation extends MDCFoundation<MDCSelectIconAdapter> {
   private savedTabIndex_!: string | null; // assigned in initialSyncWithDOM()
   private readonly interactionHandler_!: EventListener; // assigned in initialSyncWithDOM()
 
-  constructor(adapter: Partial<MDCSelectIconAdapter> = {}) {
+  constructor(adapter?: Partial<MDCSelectIconAdapter>) {
     super({...MDCSelectIconFoundation.defaultAdapter, ...adapter});
 
     this.savedTabIndex_ = null;
