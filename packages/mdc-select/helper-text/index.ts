@@ -22,45 +22,31 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+import {MDCSelectHelperTextFoundation} from './foundation';
 
-import MDCSelectHelperTextAdapter from './adapter';
-import MDCSelectHelperTextFoundation from './foundation';
-
-/**
- * @extends {MDCComponent<!MDCSelectHelperTextFoundation>}
- * @final
- */
-class MDCSelectHelperText extends MDCComponent {
-  /**
-   * @param {!Element} root
-   * @return {!MDCSelectHelperText}
-   */
-  static attachTo(root) {
+class MDCSelectHelperText extends MDCComponent<MDCSelectHelperTextFoundation> {
+  static attachTo(root: Element): MDCSelectHelperText {
     return new MDCSelectHelperText(root);
   }
 
-  /**
-   * @return {!MDCSelectHelperTextFoundation}
-   */
-  get foundation() {
+  get foundation(): MDCSelectHelperTextFoundation {
     return this.foundation_;
   }
 
-  /**
-   * @return {!MDCSelectHelperTextFoundation}
-   */
-  getDefaultFoundation() {
-    return new MDCSelectHelperTextFoundation(/** @type {!MDCSelectHelperTextAdapter} */ (Object.assign({
+  getDefaultFoundation(): MDCSelectHelperTextFoundation {
+    // tslint:disable:object-literal-sort-keys
+    return new MDCSelectHelperTextFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       removeAttr: (attr) => this.root_.removeAttribute(attr),
-      setContent: (content) => {
-        this.root_.textContent = content;
-      },
-    })));
+      setContent: (content) => this.root_.textContent = content,
+    });
+    // tslint:enable:object-literal-sort-keys
   }
 }
 
-export {MDCSelectHelperText, MDCSelectHelperTextFoundation};
+export {MDCSelectHelperText as default, MDCSelectHelperText};
+export * from './adapter';
+export * from './foundation';

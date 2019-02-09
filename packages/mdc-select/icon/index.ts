@@ -22,47 +22,33 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+import {MDCSelectIconFoundation} from './foundation';
 
-import MDCSelectIconAdapter from './adapter';
-import MDCSelectIconFoundation from './foundation';
-
-/**
- * @extends {MDCComponent<!MDCSelectIconFoundation>}
- * @final
- */
-class MDCSelectIcon extends MDCComponent {
-  /**
-   * @param {!Element} root
-   * @return {!MDCSelectIcon}
-   */
-  static attachTo(root) {
+class MDCSelectIcon extends MDCComponent<MDCSelectIconFoundation> {
+  static attachTo(root: Element): MDCSelectIcon {
     return new MDCSelectIcon(root);
   }
 
-  /**
-   * @return {!MDCSelectIconFoundation}
-   */
-  get foundation() {
+  get foundation(): MDCSelectIconFoundation {
     return this.foundation_;
   }
 
-  /**
-   * @return {!MDCSelectIconFoundation}
-   */
-  getDefaultFoundation() {
-    return new MDCSelectIconFoundation(/** @type {!MDCSelectIconAdapter} */ (Object.assign({
+  getDefaultFoundation(): MDCSelectIconFoundation {
+    // tslint:disable:object-literal-sort-keys
+    return new MDCSelectIconFoundation({
       getAttr: (attr) => this.root_.getAttribute(attr),
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       removeAttr: (attr) => this.root_.removeAttribute(attr),
-      setContent: (content) => {
-        this.root_.textContent = content;
-      },
+      setContent: (content) => this.root_.textContent = content,
       registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       notifyIconAction: () => this.emit(
-        MDCSelectIconFoundation.strings.ICON_EVENT, {} /* evtData */, true /* shouldBubble */),
-    })));
+          MDCSelectIconFoundation.strings.ICON_EVENT, {} /* evtData */, true /* shouldBubble */),
+    });
+    // tslint:enable:object-literal-sort-keys
   }
 }
 
-export {MDCSelectIcon, MDCSelectIconFoundation};
+export {MDCSelectIcon as default, MDCSelectIcon};
+export * from './adapter';
+export * from './foundation';

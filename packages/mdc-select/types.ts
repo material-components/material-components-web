@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,10 +21,30 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
-const strings = {
-  ICON_EVENT: 'MDCSelect:icon',
-  ICON_ROLE: 'button',
-};
+import {MDCFloatingLabel} from '@material/floating-label/index';
+import {MDCLineRipple} from '@material/line-ripple/index';
+import {MDCMenu} from '@material/menu/index';
+import {MDCNotchedOutline} from '@material/notched-outline/index';
+import {MDCSelectHelperTextFoundation} from './helper-text/index';
+import {MDCSelectIconFoundation} from './icon/index';
 
-export {strings};
+export interface FoundationMapType {
+  leadingIcon: MDCSelectIconFoundation;
+  helperText: MDCSelectHelperTextFoundation;
+}
+
+export interface SelectEvent extends Event {
+  detail: SelectEventDetail;
+}
+
+export interface SelectEventDetail {
+  value: string;
+  index: number;
+}
+
+export type LineRippleFactory = (el: Element) => MDCLineRipple;
+export type HelperTextFactory = (el: Element) => MDCTextFieldHelperText;
+export type MenuFactory = (el: Element) => MDCMenu;
+export type IconFactory = (el: Element) => MDCTextFieldIcon;
+export type LabelFactory = (el: Element) => MDCFloatingLabel;
+export type OutlineFactory = (el: Element) => MDCNotchedOutline;

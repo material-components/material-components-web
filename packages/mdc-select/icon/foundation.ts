@@ -22,66 +22,59 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
-import MDCSelectIconAdapter from './adapter';
+import {EventType} from '@material/base/index';
+import {MDCSelectIconAdapter} from './adapter';
 import {strings} from './constants';
 
+const CLICK_KEYDOWN_EVENTS: EventType[] = ['click', 'keydown'];
 
-/**
- * @extends {MDCFoundation<!MDCSelectIconAdapter>}
- * @final
- */
-class MDCSelectIconFoundation extends MDCFoundation {
-  /** @return enum {string} */
+class MDCSelectIconFoundation extends MDCFoundation<MDCSelectIconAdapter> {
   static get strings() {
     return strings;
   }
 
   /**
-   * {@see MDCSelectIconAdapter} for typing information on parameters and return
-   * types.
-   * @return {!MDCSelectIconAdapter}
+   * See {@link MDCSelectIconAdapter} for typing information on parameters and return types.
    */
-  static get defaultAdapter() {
-    return /** @type {!MDCSelectIconAdapter} */ ({
-      getAttr: () => {},
-      setAttr: () => {},
-      removeAttr: () => {},
-      setContent: () => {},
-      registerInteractionHandler: () => {},
-      deregisterInteractionHandler: () => {},
-      notifyIconAction: () => {},
-    });
+  static get defaultAdapter(): MDCSelectIconAdapter {
+    // tslint:disable:object-literal-sort-keys
+    return {
+      getAttr: () => null,
+      setAttr: () => undefined,
+      removeAttr: () => undefined,
+      setContent: () => undefined,
+      registerInteractionHandler: () => undefined,
+      deregisterInteractionHandler: () => undefined,
+      notifyIconAction: () => undefined,
+    };
+    // tslint:enable:object-literal-sort-keys
   }
 
-  /**
-   * @param {!MDCSelectIconAdapter} adapter
-   */
-  constructor(adapter) {
-    super(Object.assign(MDCSelectIconFoundation.defaultAdapter, adapter));
+  private savedTabIndex_!: string | null; // assigned in initialSyncWithDOM()
+  private readonly interactionHandler_!: EventListener; // assigned in initialSyncWithDOM()
 
-    /** @private {string?} */
+  constructor(adapter: Partial<MDCSelectIconAdapter> = {}) {
+    super({...MDCSelectIconFoundation.defaultAdapter, ...adapter});
+
     this.savedTabIndex_ = null;
-
-    /** @private {function(!Event): undefined} */
     this.interactionHandler_ = (evt) => this.handleInteraction(evt);
   }
 
   init() {
     this.savedTabIndex_ = this.adapter_.getAttr('tabindex');
 
-    ['click', 'keydown'].forEach((evtType) => {
+    CLICK_KEYDOWN_EVENTS.forEach((evtType) => {
       this.adapter_.registerInteractionHandler(evtType, this.interactionHandler_);
     });
   }
 
   destroy() {
-    ['click', 'keydown'].forEach((evtType) => {
+    CLICK_KEYDOWN_EVENTS.forEach((evtType) => {
       this.adapter_.deregisterInteractionHandler(evtType, this.interactionHandler_);
     });
   }
 
-  /** @param {boolean} disabled */
-  setDisabled(disabled) {
+  setDisabled(disabled: boolean) {
     if (!this.savedTabIndex_) {
       return;
     }
@@ -95,25 +88,20 @@ class MDCSelectIconFoundation extends MDCFoundation {
     }
   }
 
-  /** @param {string} label */
-  setAriaLabel(label) {
+  setAriaLabel(label: string) {
     this.adapter_.setAttr('aria-label', label);
   }
 
-  /** @param {string} content */
-  setContent(content) {
+  setContent(content: string) {
     this.adapter_.setContent(content);
   }
 
-  /**
-   * Handles an interaction event
-   * @param {!Event} evt
-   */
-  handleInteraction(evt) {
-    if (evt.type === 'click' || evt.key === 'Enter' || evt.keyCode === 13) {
+  handleInteraction(evt: Event) {
+    const isEnterKey = (evt as KeyboardEvent).key === 'Enter' || (evt as KeyboardEvent).keyCode === 13;
+    if (evt.type === 'click' || isEnterKey) {
       this.adapter_.notifyIconAction();
     }
   }
 }
 
-export default MDCSelectIconFoundation;
+export {MDCSelectIconFoundation as default, MDCSelectIconFoundation};

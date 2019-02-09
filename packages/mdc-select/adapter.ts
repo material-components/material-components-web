@@ -21,159 +21,118 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
-/* eslint-disable no-unused-vars */
-import {MDCSelectIconFoundation} from './icon/index';
-import {MDCSelectHelperTextFoundation} from './helper-text/index';
-/* eslint-enable no-unused-vars */
-
 /**
- * @typedef {{
- *   leadingIcon: (!MDCSelectIconFoundation|undefined),
- *   helperText: (!MDCSelectHelperTextFoundation|undefined),
- * }}
- */
-let FoundationMapType;
-
-/**
- * Adapter for MDC Select. Provides an interface for managing
- * - classes
- * - dom
- * - event handlers
- *
- * Additionally, provides type information for the adapter to the Closure
- * compiler.
- *
+ * Defines the shape of the adapter expected by the foundation.
  * Implement this adapter for your framework of choice to delegate updates to
  * the component in your framework of choice. See architecture documentation
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
- *
- * @record
  */
-
-class MDCSelectAdapter {
+interface MDCSelectAdapter {
   /**
    * Adds class to root element.
-   * @param {string} className
    */
-  addClass(className) {}
+  addClass(className: string): void;
 
   /**
    * Removes a class from the root element.
-   * @param {string} className
    */
-  removeClass(className) {}
+  removeClass(className: string): void;
 
   /**
    * Returns true if the root element contains the given class name.
-   * @param {string} className
-   * @return {boolean}
    */
-  hasClass(className) {}
+  hasClass(className: string): boolean;
 
   /**
    * Activates the bottom line, showing a focused state.
    */
-  activateBottomLine() {}
+  activateBottomLine(): void;
 
   /**
    * Deactivates the bottom line.
    */
-  deactivateBottomLine() {}
+  deactivateBottomLine(): void;
 
   /**
    * Sets the value of the select.
-   * @param {string} value
    */
-  setValue(value) {}
+  setValue(value: string): void;
 
   /**
    * Returns the selected value of the select element.
-   * @return {string}
    */
-  getValue() {}
+  getValue(): string;
 
   /**
    * Floats label determined based off of the shouldFloat argument.
-   * @param {boolean} shouldFloat
    */
-  floatLabel(shouldFloat) {}
+  floatLabel(shouldFloat: boolean): void;
 
   /**
    * Returns width of label in pixels, if the label exists.
-   * @return {number}
    */
-  getLabelWidth() {}
+  getLabelWidth(): number;
 
   /**
    * Returns true if outline element exists, false if it doesn't.
-   * @return {boolean}
    */
-  hasOutline() {}
+  hasOutline(): boolean;
 
   /**
    * Only implement if outline element exists.
-   * @param {number} labelWidth
    */
-  notchOutline(labelWidth) {}
+  notchOutline(labelWidth: number): void;
 
   /**
    * Closes notch in outline element, if the outline exists.
    */
-  closeOutline() {}
+  closeOutline(): void;
 
   /**
    * Opens the menu.
    */
-  openMenu() {}
+  openMenu(): void;
 
   /**
    * Closes the menu.
    */
-  closeMenu() {}
+  closeMenu(): void;
 
   /**
    * Returns true if the menu is currently open.
-   * @return {boolean}
    */
-  isMenuOpen() {}
+  isMenuOpen(): boolean;
 
   /**
    * Sets the selected index of the select to the index provided.
-   * @param {number} index
    */
-  setSelectedIndex(index) {}
+  setSelectedIndex(index: number): void;
 
   /**
    * Sets the select to disabled.
-   * @param {boolean} isDisabled
    */
-  setDisabled(isDisabled) {}
+  setDisabled(isDisabled: boolean): void;
 
   /**
    * Sets the line ripple transform origin center.
-   * @param {number} normalizedX
    */
-  setRippleCenter(normalizedX) {}
+  setRippleCenter(normalizedX: number): void;
 
   /**
    * Emits a change event when an element is selected.
-   * @param {string} value
    */
-  notifyChange(value) {}
+  notifyChange(value: string): void;
 
   /**
    * Checks if the select is currently valid.
-   * @return {boolean} isValid
    */
-  checkValidity() {}
+  checkValidity(): boolean;
 
   /**
    * Adds/Removes the invalid class.
-   * @param {boolean} isValid
    */
-  setValid(isValid) {}
+  setValid(isValid: boolean): void;
 }
 
-export {MDCSelectAdapter, FoundationMapType};
+export {MDCSelectAdapter as default, MDCSelectAdapter};

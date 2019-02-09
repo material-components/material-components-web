@@ -22,85 +22,79 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
-/* eslint-disable no-unused-vars */
-import {MDCSelectAdapter, FoundationMapType} from './adapter';
-import {MDCSelectIconFoundation} from './icon/index';
-import {MDCSelectHelperTextFoundation} from './helper-text/index';
-/* eslint-enable no-unused-vars */
-import {cssClasses, strings, numbers} from './constants';
 
-/**
- * @extends {MDCFoundation<!MDCSelectAdapter>}
- * @final
- */
-class MDCSelectFoundation extends MDCFoundation {
-  /** @return enum {string} */
+import {MDCSelectAdapter} from './adapter';
+import {cssClasses, numbers, strings} from './constants';
+import {FoundationMapType} from './types';
+import {MDCSelectHelperTextFoundation} from './helper-text/index';
+import {MDCSelectIconFoundation} from './icon/index';
+
+class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
 
-  /** @return enum {number} */
   static get numbers() {
     return numbers;
   }
 
-  /** @return enum {string} */
   static get strings() {
     return strings;
   }
 
   /**
-   * {@see MDCSelectAdapter} for typing information on parameters and return
-   * types.
-   * @return {!MDCSelectAdapter}
+   * See {@link MDCSelectAdapter} for typing information on parameters and return types.
    */
-  static get defaultAdapter() {
-    return /** @type {!MDCSelectAdapter} */ ({
-      addClass: (/* className: string */) => {},
-      removeClass: (/* className: string */) => {},
+  static get defaultAdapter(): MDCSelectAdapter {
+    // tslint:disable:object-literal-sort-keys
+    return {
+      addClass: (/* className: string */) => undefined,
+      removeClass: (/* className: string */) => undefined,
       hasClass: (/* className: string */) => false,
-      activateBottomLine: () => {},
-      deactivateBottomLine: () => {},
-      setValue: () => {},
-      getValue: () => {},
-      floatLabel: (/* value: boolean */) => {},
-      getLabelWidth: () => {},
+      activateBottomLine: () => undefined,
+      deactivateBottomLine: () => undefined,
+      setValue: () => undefined,
+      getValue: () => '',
+      floatLabel: (/* value: boolean */) => undefined,
+      getLabelWidth: () => 0,
       hasOutline: () => false,
-      notchOutline: (/* labelWidth: number, */) => {},
-      closeOutline: () => {},
-      openMenu: () => {},
-      closeMenu: () => {},
-      isMenuOpen: () => {},
-      setSelectedIndex: () => {},
-      setDisabled: () => {},
-      setRippleCenter: () => {},
-      notifyChange: () => {},
-      checkValidity: () => {},
-      setValid: () => {},
-    });
+      notchOutline: (/* labelWidth: number, */) => undefined,
+      closeOutline: () => undefined,
+      openMenu: () => undefined,
+      closeMenu: () => undefined,
+      isMenuOpen: () => false,
+      setSelectedIndex: () => undefined,
+      setDisabled: () => undefined,
+      setRippleCenter: () => undefined,
+      notifyChange: () => undefined,
+      checkValidity: () => false,
+      setValid: () => undefined,
+    };
+    // tslint:enable:object-literal-sort-keys
   }
+
+  private readonly leadingIcon_: MDCSelectIconFoundation | undefined;
+  private readonly helperText_: MDCSelectHelperTextFoundation | undefined;
 
   /**
    * @param {!MDCSelectAdapter} adapter
    * @param {!FoundationMapType=} foundationMap Map from subcomponent names to their subfoundations.
    */
-  constructor(adapter, foundationMap = /** @type {!FoundationMapType} */ ({})) {
-    super(Object.assign(MDCSelectFoundation.defaultAdapter, adapter));
+  constructor(adapter: Partial<MDCSelectAdapter> = {}, foundationMap: Partial<FoundationMapType> = {}) {
+    super({...MDCSelectFoundation.defaultAdapter, ...adapter});
 
-    /** @type {!MDCSelectIconFoundation|undefined} */
     this.leadingIcon_ = foundationMap.leadingIcon;
-    /** @type {!MDCSelectHelperTextFoundation|undefined} */
     this.helperText_ = foundationMap.helperText;
   }
 
-  setSelectedIndex(index) {
+  setSelectedIndex(index: number) {
     this.adapter_.setSelectedIndex(index);
     this.adapter_.closeMenu();
     const didChange = true;
     this.handleChange(didChange);
   }
 
-  setValue(value) {
+  setValue(value: string) {
     this.adapter_.setValue(value);
     const didChange = true;
     this.handleChange(didChange);
@@ -110,8 +104,12 @@ class MDCSelectFoundation extends MDCFoundation {
     return this.adapter_.getValue();
   }
 
-  setDisabled(isDisabled) {
-    isDisabled ? this.adapter_.addClass(cssClasses.DISABLED) : this.adapter_.removeClass(cssClasses.DISABLED);
+  setDisabled(isDisabled: boolean) {
+    if (isDisabled) {
+      this.adapter_.addClass(cssClasses.DISABLED);
+    } else {
+      this.adapter_.removeClass(cssClasses.DISABLED);
+    }
     this.adapter_.setDisabled(isDisabled);
     this.adapter_.closeMenu();
 
@@ -121,9 +119,9 @@ class MDCSelectFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {string} content Sets the content of the helper text.
+   * @param content Sets the content of the helper text.
    */
-  setHelperTextContent(content) {
+  setHelperTextContent(content: string) {
     if (this.helperText_) {
       this.helperText_.setContent(content);
     }
@@ -177,7 +175,9 @@ class MDCSelectFoundation extends MDCFoundation {
    * Handles blur events from select element.
    */
   handleBlur() {
-    if (this.adapter_.isMenuOpen()) return;
+    if (this.adapter_.isMenuOpen()) {
+      return;
+    }
     this.adapter_.removeClass(cssClasses.FOCUSED);
     this.handleChange(false);
     this.adapter_.deactivateBottomLine();
@@ -192,15 +192,19 @@ class MDCSelectFoundation extends MDCFoundation {
     }
   }
 
-  handleClick(normalizedX) {
-    if (this.adapter_.isMenuOpen()) return;
+  handleClick(normalizedX: number) {
+    if (this.adapter_.isMenuOpen()) {
+      return;
+    }
     this.adapter_.setRippleCenter(normalizedX);
 
     this.adapter_.openMenu();
   }
 
-  handleKeydown(event) {
-    if (this.adapter_.isMenuOpen()) return;
+  handleKeydown(event: KeyboardEvent) {
+    if (this.adapter_.isMenuOpen()) {
+      return;
+    }
 
     const isEnter = event.key === 'Enter' || event.keyCode === 13;
     const isSpace = event.key === 'Space' || event.keyCode === 32;
@@ -215,9 +219,8 @@ class MDCSelectFoundation extends MDCFoundation {
 
   /**
    * Opens/closes the notched outline.
-   * @param {boolean} openNotch
    */
-  notchOutline(openNotch) {
+  notchOutline(openNotch: boolean) {
     if (!this.adapter_.hasOutline()) {
       return;
     }
@@ -234,9 +237,8 @@ class MDCSelectFoundation extends MDCFoundation {
 
   /**
    * Sets the aria label of the leading icon.
-   * @param {string} label
    */
-  setLeadingIconAriaLabel(label) {
+  setLeadingIconAriaLabel(label: string) {
     if (this.leadingIcon_) {
       this.leadingIcon_.setAriaLabel(label);
     }
@@ -244,15 +246,14 @@ class MDCSelectFoundation extends MDCFoundation {
 
   /**
    * Sets the text content of the leading icon.
-   * @param {string} content
    */
-  setLeadingIconContent(content) {
+  setLeadingIconContent(content: string) {
     if (this.leadingIcon_) {
       this.leadingIcon_.setContent(content);
     }
   }
 
-  setValid(isValid) {
+  setValid(isValid: boolean) {
     this.adapter_.setValid(isValid);
   }
 
@@ -261,4 +262,4 @@ class MDCSelectFoundation extends MDCFoundation {
   }
 }
 
-export default MDCSelectFoundation;
+export {MDCSelectFoundation as default, MDCSelectFoundation};

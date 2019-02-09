@@ -108,7 +108,7 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
    * the items container that are proper list items, and not supplemental / presentational DOM
    * elements.
    */
-  get items(): Element[] {
+  get items(): HTMLElement[] {
     return this.list_ ? this.list_.listElements : [];
   }
 
@@ -191,10 +191,10 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
       },
       elementContainsClass: (element, className) => element.classList.contains(className),
       closeSurface: () => this.open = false,
-      getElementIndex: (element) => this.items.indexOf(element),
+      getElementIndex: (element) => this.items.indexOf(element as HTMLElement),
       getParentElement: (element) => element.parentElement,
       getSelectedElementIndex: (selectionGroup) => {
-        const selectedListItem = selectionGroup.querySelector(`.${cssClasses.MENU_SELECTED_LIST_ITEM}`);
+        const selectedListItem = selectionGroup.querySelector<HTMLElement>(`.${cssClasses.MENU_SELECTED_LIST_ITEM}`);
         return selectedListItem ? this.items.indexOf(selectedListItem) : -1;
       },
       notifySelected: (evtData) => this.emit<DefaultMenuItemEventDetail>(strings.SELECTED_EVENT, {
