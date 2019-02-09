@@ -42,6 +42,7 @@ export interface SelectEventDetail {
   index: number;
 }
 
+// TODO(acdvorak): Every component should export its own factory and event types.
 export type LineRippleFactory = (el: Element) => MDCLineRipple;
 export type HelperTextFactory = (el: Element) => MDCTextFieldHelperText;
 export type MenuFactory = (el: Element) => MDCMenu;
