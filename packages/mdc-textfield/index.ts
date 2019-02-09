@@ -342,7 +342,7 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
    */
   layout() {
     const openNotch = this.foundation_.shouldFloat;
-    this.foundation_.notchOutline(openNotch || (1 as unknown as boolean));
+    this.foundation_.notchOutline(openNotch || (99 as unknown as boolean));
   }
 
   getDefaultFoundation(): MDCTextFieldFoundation {
