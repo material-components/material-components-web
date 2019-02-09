@@ -22,7 +22,8 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
-import {MDCTabDimensions} from '@material/tab/adapter';
+import {TabInteractionEventDetail} from '@material/tab/index';
+import {MDCTabDimensions} from '@material/tab/index';
 import {MDCTabBarAdapter} from './adapter';
 import {numbers, strings} from './constants';
 
@@ -141,7 +142,7 @@ class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
   /**
    * Handles the MDCTab:interacted event
    */
-  handleTabInteraction(evt: CustomEvent<TabInteractionEvent>) {
+  handleTabInteraction(evt: CustomEvent<TabInteractionEventDetail>) {
     this.adapter_.setActiveTab(this.adapter_.getIndexOfTabById(evt.detail.tabId));
   }
 
