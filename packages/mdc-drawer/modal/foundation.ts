@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2018 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,27 +21,31 @@
  * THE SOFTWARE.
  */
 
-import * as createFocusTrap from 'focus-trap';
-import {FocusTrapFactory} from './types';
+import {MDCDismissibleDrawerFoundation} from '../dismissible/foundation';
 
-export function createFocusTrapInstance(
-    surfaceEl: HTMLElement,
-    focusTrapFactory: FocusTrapFactory = createFocusTrap as unknown as FocusTrapFactory,
-    initialFocusEl?: createFocusTrap.FocusTarget | null,
-): createFocusTrap.FocusTrap {
-  return focusTrapFactory(surfaceEl, {
-    clickOutsideDeactivates: true, // Allow handling of scrim clicks.
-    escapeDeactivates: false, // Foundation handles ESC key.
-    initialFocus: initialFocusEl || undefined,
-  });
+class MDCModalDrawerFoundation extends MDCDismissibleDrawerFoundation {
+  /**
+   * Called when drawer finishes open animation.
+   * @override
+   */
+  opened() {
+    this.adapter_.trapFocus();
+  }
+
+  /**
+   * Called when drawer finishes close animation.
+   * @override
+   */
+  closed() {
+    this.adapter_.releaseFocus();
+  }
+
+  /**
+   * Handles click event on scrim.
+   */
+  handleScrimClick() {
+    this.close();
+  }
 }
 
-export function isScrollable(el: HTMLElement | null): boolean {
-  return el ? el.scrollHeight > el.offsetHeight : false;
-}
-
-export function areTopsMisaligned(els: HTMLElement[]): boolean {
-  const tops = new Set();
-  [].forEach.call(els, (el: HTMLElement) => tops.add(el.offsetTop));
-  return tops.size > 1;
-}
+export {MDCModalDrawerFoundation as default, MDCModalDrawerFoundation};
