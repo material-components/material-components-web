@@ -26,6 +26,7 @@ import {ponyfill} from '@material/dom/index';
 import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
 import {MDCSelectionControl} from '@material/selection-control/index';
 import {MDCSwitchFoundation} from './foundation';
+import {EventType} from '@material/base/index';
 
 /**
  * An implementation of the switch component defined by the Material Design spec.
@@ -94,21 +95,23 @@ class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCSelectio
     const {RIPPLE_SURFACE_SELECTOR} = MDCSwitchFoundation.strings;
     const rippleSurface = this.root_.querySelector(RIPPLE_SURFACE_SELECTOR) as HTMLElement;
 
-    const adapter = Object.assign(MDCRipple.createAdapter(this), {
+    return new MDCRipple(this.root_, new MDCRippleFoundation({
+      ...MDCRipple.createAdapter(this),
       addClass: (className: string) => rippleSurface.classList.add(className),
       computeBoundingRect: () => rippleSurface.getBoundingClientRect(),
-      deregisterInteractionHandler: (type: string, handler: EventListener) =>
-          this.nativeControl_.removeEventListener(type, handler),
+      deregisterInteractionHandler: (evtType: EventType, handler: EventListener) => {
+        this.nativeControl_.removeEventListener(evtType, handler);
+      },
       isSurfaceActive: () => ponyfill.matches(this.nativeControl_, ':active'),
       isUnbounded: () => true,
-      registerInteractionHandler: (type: string, handler: EventListener) =>
-          this.nativeControl_.addEventListener(type, handler),
+      registerInteractionHandler: (evtType: EventType, handler: EventListener) => {
+        this.nativeControl_.addEventListener(evtType, handler);
+      },
       removeClass: (className: string) => rippleSurface.classList.remove(className),
-      updateCssVariable: (varName: string, value: string) =>
-          rippleSurface.style.setProperty(varName, value),
-    });
-    const foundation = new MDCRippleFoundation(adapter);
-    return new MDCRipple(this.root_, foundation);
+      updateCssVariable: (varName: string, value: string) => {
+        rippleSurface.style.setProperty(varName, value);
+      },
+    }));
   }
 
   private get nativeControl_() {

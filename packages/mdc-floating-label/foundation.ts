@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {SpecificEventListener} from '@material/base';
+import {SpecificEventListener} from '@material/base/index';
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCFloatingLabelAdapter} from './adapter';
 import {cssClasses} from './constants';

@@ -33,8 +33,8 @@ import {EventType, SpecificEventListener} from '@material/base/index';
 interface MDCFormFieldAdapter {
   activateInputRipple(): void;
   deactivateInputRipple(): void;
-  deregisterInteractionHandler<E extends EventType>(type: E, handler: SpecificEventListener<E>): void;
-  registerInteractionHandler<E extends EventType>(type: E, handler: SpecificEventListener<E>): void;
+  deregisterInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
+  registerInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 }
 
 export {MDCFormFieldAdapter as default, MDCFormFieldAdapter};

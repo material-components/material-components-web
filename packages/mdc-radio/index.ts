@@ -82,14 +82,14 @@ class MDCRadio extends MDCComponent<MDCRadioFoundation> implements RippleCapable
   private initRipple_(): MDCRipple {
     const foundation = new MDCRippleFoundation({
       ...MDCRipple.createAdapter(this),
-      deregisterInteractionHandler: <K extends EventType>(type: K, handler: SpecificEventListener<K>) =>
-          this.nativeControl_.removeEventListener(type, handler),
+      deregisterInteractionHandler: <K extends EventType>(evtType: K, handler: SpecificEventListener<K>) =>
+          this.nativeControl_.removeEventListener(evtType, handler),
       // Radio buttons technically go "active" whenever there is *any* keyboard interaction. This is not the
       // UI we desire.
       isSurfaceActive: () => false,
       isUnbounded: () => true,
-      registerInteractionHandler: <K extends EventType>(type: K, handler: SpecificEventListener<K>) =>
-          this.nativeControl_.addEventListener(type, handler),
+      registerInteractionHandler: <K extends EventType>(evtType: K, handler: SpecificEventListener<K>) =>
+          this.nativeControl_.addEventListener(evtType, handler),
     });
     return new MDCRipple(this.root_, foundation);
   }

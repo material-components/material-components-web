@@ -22,7 +22,7 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {ponyfill} from '@material/dom';
+import {ponyfill} from '@material/dom/index';
 import {MDCRippleAdapter} from './adapter';
 import {MDCRippleFoundation} from './foundation';
 import {RippleAttachOpts, RippleCapableSurface} from './types';
@@ -109,7 +109,6 @@ class MDCRipple extends MDCComponent<MDCRippleFoundation> implements RippleCapab
   private setUnbounded_() {
     this.foundation_.setUnbounded(Boolean(this.unbounded_));
   }
-
 }
 
 export {MDCRipple as default, MDCRipple, util};

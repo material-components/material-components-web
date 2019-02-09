@@ -110,11 +110,11 @@ class MDCDialog extends MDCComponent<MDCDialogFoundation> {
 
     const LAYOUT_EVENTS = ['resize', 'orientationchange'];
     this.handleOpening_ = () => {
-      LAYOUT_EVENTS.forEach((type) => window.addEventListener(type, this.handleLayout_));
+      LAYOUT_EVENTS.forEach((evtType) => window.addEventListener(evtType, this.handleLayout_));
       document.addEventListener('keydown', this.handleDocumentKeydown_);
     };
     this.handleClosing_ = () => {
-      LAYOUT_EVENTS.forEach((type) => window.removeEventListener(type, this.handleLayout_));
+      LAYOUT_EVENTS.forEach((evtType) => window.removeEventListener(evtType, this.handleLayout_));
       document.removeEventListener('keydown', this.handleDocumentKeydown_);
     };
 

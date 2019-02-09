@@ -60,7 +60,7 @@ const POINTER_DEACTIVATION_EVENT_TYPES: DeactivationEventType[] = [
 ];
 
 // simultaneous nested activations
-let activatedTargets: Array<EventTarget|null> = [];
+let activatedTargets: Array<EventTarget | null> = [];
 
 class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
   static get cssClasses(): {[key: string]: string} {
@@ -96,53 +96,40 @@ class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
     };
   }
 
-  private layoutFrame_: number;
-  private frame_: {
-    width: number,
-    height: number,
-  };
+  private activationAnimationHasEnded_ = false;
   private activationState_: ActivationStateType;
-  private initialSize_: number;
-  private maxRadius_: number;
-  private activateHandler_: EventHandlerNonNull;
-  private deactivateHandler_: EventHandlerNonNull;
-  private focusHandler_: EventHandlerNonNull;
-  private blurHandler_: EventHandlerNonNull;
-  private resizeHandler_: EventHandlerNonNull;
+  private activationTimer_ = 0;
+  private fgDeactivationRemovalTimer_ = 0;
+  private fgScale_ = '0';
+  private frame_ = {width: 0, height: 0};
+  private initialSize_ = 0;
+  private layoutFrame_ = 0;
+  private maxRadius_ = 0;
+  private unboundedCoords_: Coordinates = {left: 0, top: 0};
 
-  private unboundedCoords_: Coordinates;
-  private fgScale_: string;
-  private activationTimer_: number;
-  private fgDeactivationRemovalTimer_: number;
-  private activationAnimationHasEnded_: boolean;
-  private activationTimerCallback_: () => void;
+  private readonly activationTimerCallback_: () => void;
+  private readonly activateHandler_: EventHandlerNonNull;
+  private readonly deactivateHandler_: EventHandlerNonNull;
+  private readonly focusHandler_: EventHandlerNonNull;
+  private readonly blurHandler_: EventHandlerNonNull;
+  private readonly resizeHandler_: EventHandlerNonNull;
+
   private previousActivationEvent_?: Event;
 
   constructor(adapter: Partial<MDCRippleAdapter> = {}) {
     super({...MDCRippleFoundation.defaultAdapter, ...adapter});
 
-    this.layoutFrame_ = 0;
-    this.frame_ = ({width: 0, height: 0});
     this.activationState_ = this.defaultActivationState_();
-    this.initialSize_ = 0;
-    this.maxRadius_ = 0;
+
+    this.activationTimerCallback_ = () => {
+      this.activationAnimationHasEnded_ = true;
+      this.runDeactivationUXLogicIfReady_();
+    };
     this.activateHandler_ = (e) => this.activate_(e);
     this.deactivateHandler_ = () => this.deactivate_();
     this.focusHandler_ = () => this.handleFocus();
     this.blurHandler_ = () => this.handleBlur();
     this.resizeHandler_ = () => this.layout();
-    this.unboundedCoords_ = {
-      left: 0,
-      top: 0,
-    };
-    this.fgScale_ = '0';
-    this.activationTimer_ = 0;
-    this.fgDeactivationRemovalTimer_ = 0;
-    this.activationAnimationHasEnded_ = false;
-    this.activationTimerCallback_ = () => {
-      this.activationAnimationHasEnded_ = true;
-      this.runDeactivationUXLogicIfReady_();
-    };
   }
 
   init() {
@@ -163,7 +150,6 @@ class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
     }
   }
 
-  /** @override */
   destroy() {
     if (this.supportsPressRipple_()) {
       if (this.activationTimer_) {
@@ -189,11 +175,12 @@ class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
     this.deregisterRootHandlers_();
     this.deregisterDeactivationHandlers_();
   }
+
   /**
-   * event Optional event containing position information.
+   * @param evt Optional event containing position information.
    */
-  activate(event?: Event): void {
-    this.activate_(event);
+  activate(evt?: Event): void {
+    this.activate_(evt);
   }
 
   deactivate(): void {
@@ -255,8 +242,8 @@ class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
    */
   private registerRootHandlers_(supportsPressRipple: boolean) {
     if (supportsPressRipple) {
-      ACTIVATION_EVENT_TYPES.forEach((type) => {
-        this.adapter_.registerInteractionHandler(type, this.activateHandler_);
+      ACTIVATION_EVENT_TYPES.forEach((evtType) => {
+        this.adapter_.registerInteractionHandler(evtType, this.activateHandler_);
       });
       if (this.adapter_.isUnbounded()) {
         this.adapter_.registerResizeHandler(this.resizeHandler_);
@@ -267,19 +254,19 @@ class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
     this.adapter_.registerInteractionHandler('blur', this.blurHandler_);
   }
 
-  private registerDeactivationHandlers_(e: Event) {
-    if (e.type === 'keydown') {
+  private registerDeactivationHandlers_(evt: Event) {
+    if (evt.type === 'keydown') {
       this.adapter_.registerInteractionHandler('keyup', this.deactivateHandler_);
     } else {
-      POINTER_DEACTIVATION_EVENT_TYPES.forEach((type) => {
-        this.adapter_.registerDocumentInteractionHandler(type, this.deactivateHandler_);
+      POINTER_DEACTIVATION_EVENT_TYPES.forEach((evtType) => {
+        this.adapter_.registerDocumentInteractionHandler(evtType, this.deactivateHandler_);
       });
     }
   }
 
   private deregisterRootHandlers_() {
-    ACTIVATION_EVENT_TYPES.forEach((type) => {
-      this.adapter_.deregisterInteractionHandler(type, this.activateHandler_);
+    ACTIVATION_EVENT_TYPES.forEach((evtType) => {
+      this.adapter_.deregisterInteractionHandler(evtType, this.activateHandler_);
     });
     this.adapter_.deregisterInteractionHandler('focus', this.focusHandler_);
     this.adapter_.deregisterInteractionHandler('blur', this.blurHandler_);
@@ -291,21 +278,21 @@ class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
 
   private deregisterDeactivationHandlers_() {
     this.adapter_.deregisterInteractionHandler('keyup', this.deactivateHandler_);
-    POINTER_DEACTIVATION_EVENT_TYPES.forEach((type) => {
-      this.adapter_.deregisterDocumentInteractionHandler(type, this.deactivateHandler_);
+    POINTER_DEACTIVATION_EVENT_TYPES.forEach((evtType) => {
+      this.adapter_.deregisterDocumentInteractionHandler(evtType, this.deactivateHandler_);
     });
   }
 
   private removeCssVars_() {
     const rippleStrings = MDCRippleFoundation.strings;
-    Object.keys(rippleStrings).forEach((k) => {
-      if (k.indexOf('VAR_') === 0) {
-        this.adapter_.updateCssVariable(rippleStrings[k], null);
+    Object.keys(rippleStrings).forEach((key) => {
+      if (key.indexOf('VAR_') === 0) {
+        this.adapter_.updateCssVariable(rippleStrings[key], null);
       }
     });
   }
 
-  private activate_(e?: Event) {
+  private activate_(evt?: Event) {
     if (this.adapter_.isSurfaceDisabled()) {
       return;
     }
@@ -317,19 +304,19 @@ class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
 
     // Avoid reacting to follow-on events fired by touch device after an already-processed user interaction
     const previousActivationEvent = this.previousActivationEvent_;
-    const isSameInteraction = previousActivationEvent && e !== undefined && previousActivationEvent.type !== e.type;
+    const isSameInteraction = previousActivationEvent && evt !== undefined && previousActivationEvent.type !== evt.type;
     if (isSameInteraction) {
       return;
     }
 
     activationState.isActivated = true;
-    activationState.isProgrammatic = e === undefined;
-    activationState.activationEvent = e;
-    activationState.wasActivatedByPointer = activationState.isProgrammatic ? false : e !== undefined && (
-      e.type === 'mousedown' || e.type === 'touchstart' || e.type === 'pointerdown'
+    activationState.isProgrammatic = evt === undefined;
+    activationState.activationEvent = evt;
+    activationState.wasActivatedByPointer = activationState.isProgrammatic ? false : evt !== undefined && (
+      evt.type === 'mousedown' || evt.type === 'touchstart' || evt.type === 'pointerdown'
     );
 
-    const hasActivatedChild = e !== undefined && activatedTargets.length > 0 && activatedTargets.some(
+    const hasActivatedChild = evt !== undefined && activatedTargets.length > 0 && activatedTargets.some(
       (target) => this.adapter_.containsEventTarget(target));
     if (hasActivatedChild) {
       // Immediately reset activation state, while preserving logic that prevents touch follow-on events
@@ -337,12 +324,12 @@ class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
       return;
     }
 
-    if (e !== undefined) {
-      activatedTargets.push(e.target);
-      this.registerDeactivationHandlers_(e);
+    if (evt !== undefined) {
+      activatedTargets.push(evt.target);
+      this.registerDeactivationHandlers_(evt);
     }
 
-    activationState.wasElementMadeActive = this.checkElementMadeActive_(e);
+    activationState.wasElementMadeActive = this.checkElementMadeActive_(evt);
     if (activationState.wasElementMadeActive) {
       this.animateActivation_();
     }
@@ -352,15 +339,15 @@ class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
       activatedTargets = [];
 
       if (!activationState.wasElementMadeActive
-        && e !== undefined
-        && ((e as KeyboardEvent).key === ' ' || (e as KeyboardEvent).keyCode === 32)) {
+        && evt !== undefined
+        && ((evt as KeyboardEvent).key === ' ' || (evt as KeyboardEvent).keyCode === 32)) {
         // If space was pressed, try again within an rAF call to detect :active, because different UAs report
         // active states inconsistently when they're called within event handling code:
         // - https://bugs.chromium.org/p/chromium/issues/detail?id=635971
         // - https://bugzilla.mozilla.org/show_bug.cgi?id=1293741
         // We try first outside rAF to support Edge, which does not exhibit this problem, but will crash if a CSS
         // variable is set within a rAF callback for a submit button interaction (#2241).
-        activationState.wasElementMadeActive = this.checkElementMadeActive_(e);
+        activationState.wasElementMadeActive = this.checkElementMadeActive_(evt);
         if (activationState.wasElementMadeActive) {
           this.animateActivation_();
         }
@@ -373,8 +360,8 @@ class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
     });
   }
 
-  private checkElementMadeActive_(e?: Event) {
-    return (e !== undefined && e.type === 'keydown') ? this.adapter_.isSurfaceActive() : true;
+  private checkElementMadeActive_(evt?: Event) {
+    return (evt !== undefined && evt.type === 'keydown') ? this.adapter_.isSurfaceActive() : true;
   }
 
   private animateActivation_() {
@@ -475,7 +462,7 @@ class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
       return;
     }
 
-    const state = /** @type {!ActivationStateType} */ (Object.assign({}, activationState));
+    const state: ActivationStateType = {...activationState};
 
     if (activationState.isProgrammatic) {
       requestAnimationFrame(() => this.animateDeactivation_(state));

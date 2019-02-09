@@ -89,14 +89,12 @@ class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements MDCSele
   private initRipple_(): MDCRipple {
     const foundation = new MDCRippleFoundation({
       ...MDCRipple.createAdapter(this),
-      deregisterInteractionHandler:
-          <K extends EventType>(type: K, handler: SpecificEventListener<K>) =>
-              this.nativeCb_.removeEventListener(type, handler),
+      deregisterInteractionHandler: <K extends EventType>(evtType: K, handler: SpecificEventListener<K>) =>
+          this.nativeCb_.removeEventListener(evtType, handler),
       isSurfaceActive: () => ponyfill.matches(this.nativeCb_, ':active'),
       isUnbounded: () => true,
-      registerInteractionHandler:
-          <K extends EventType>(type: K, handler: SpecificEventListener<K>) =>
-              this.nativeCb_.addEventListener(type, handler),
+      registerInteractionHandler: <K extends EventType>(evtType: K, handler: SpecificEventListener<K>) =>
+          this.nativeCb_.addEventListener(evtType, handler),
     });
     return new MDCRipple(this.root_, foundation);
   }
