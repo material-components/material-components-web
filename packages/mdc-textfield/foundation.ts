@@ -56,8 +56,7 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   }
 
   get shouldFloat(): boolean {
-    // The trailing `|| false` is needed for unit tests to pass in IE 11.
-    return this.shouldAlwaysFloat_ || this.isFocused_ || Boolean(this.getValue()) || this.isBadInput_() || false;
+    return this.shouldAlwaysFloat_ || this.isFocused_ || Boolean(this.getValue()) || this.isBadInput_();
   }
 
   /**
