@@ -21,11 +21,10 @@
  * THE SOFTWARE.
  */
 
+import {EventType, SpecificEventListener} from '@material/base/index';
+
 /**
- * Adapter for MDC Form Field. Provides an interface for managing
- * - event handlers
- * - ripple activation
- *
+ * Defines the shape of the adapter expected by the foundation.
  * Implement this adapter for your framework of choice to delegate updates to
  * the component in your framework of choice. See architecture documentation
  * for more details.
@@ -34,12 +33,8 @@
 interface MDCFormFieldAdapter {
   activateInputRipple(): void;
   deactivateInputRipple(): void;
-  deregisterInteractionHandler<K extends keyof GlobalEventHandlersEventMap>(
-    type: K, handler: (evt: GlobalEventHandlersEventMap[K],
-  ) => void): void;
-  registerInteractionHandler<K extends keyof GlobalEventHandlersEventMap>(
-    type: K, handler: (evt: GlobalEventHandlersEventMap[K],
-  ) => void): void;
+  deregisterInteractionHandler<E extends EventType>(type: E, handler: SpecificEventListener<E>): void;
+  registerInteractionHandler<E extends EventType>(type: E, handler: SpecificEventListener<E>): void;
 }
 
 export {MDCFormFieldAdapter as default, MDCFormFieldAdapter};

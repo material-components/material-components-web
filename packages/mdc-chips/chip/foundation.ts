@@ -103,7 +103,7 @@ class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       // The checkmark's width is initially set to 0, so use the checkmark's height as a proxy since the checkmark
       // should always be square.
       const width = rootRect.width + checkmarkRect.height;
-      return Object.assign({}, rootRect, {width});
+      return {...rootRect, width};
     } else {
       return rootRect;
     }

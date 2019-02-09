@@ -75,11 +75,11 @@ class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
     return numbers;
   }
 
-  static get defaultAdapter() {
+  static get defaultAdapter(): MDCRippleAdapter {
     return {
       addClass: () => undefined,
       browserSupportsCssVars: () => true,
-      computeBoundingRect: () => undefined,
+      computeBoundingRect: () => ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}),
       containsEventTarget: () => true,
       deregisterDocumentInteractionHandler: () => undefined,
       deregisterInteractionHandler: () => undefined,
@@ -118,8 +118,8 @@ class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
   private activationTimerCallback_: () => void;
   private previousActivationEvent_?: Event;
 
-  constructor(adapter: MDCRippleAdapter) {
-    super(Object.assign(MDCRippleFoundation.defaultAdapter, adapter));
+  constructor(adapter: Partial<MDCRippleAdapter> = {}) {
+    super({...MDCRippleFoundation.defaultAdapter, ...adapter});
 
     this.layoutFrame_ = 0;
     this.frame_ = ({width: 0, height: 0});

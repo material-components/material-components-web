@@ -24,11 +24,11 @@
 import {getCorrectEventName} from '@material/animation/index';
 import {MDCComponent} from '@material/base/component';
 import {EventType, SpecificEventListener} from '@material/base/index';
-import {MDCRipple, MDCRippleFoundation, RippleCapableSurface, util} from '@material/ripple/index';
+import {ponyfill} from '@material/dom/index';
+import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
 import {MDCSelectionControl} from '@material/selection-control/index';
 import {MDCCheckboxFoundation} from './foundation';
 
-const {getMatchesProperty} = util;
 const CB_PROTO_PROPS = ['checked', 'indeterminate'];
 
 class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements MDCSelectionControl, RippleCapableSurface {
@@ -87,18 +87,17 @@ class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements MDCSele
   }
 
   private initRipple_(): MDCRipple {
-    const MATCHES = getMatchesProperty(HTMLElement.prototype);
-    const adapter = Object.assign(MDCRipple.createAdapter(this), {
+    const foundation = new MDCRippleFoundation({
+      ...MDCRipple.createAdapter(this),
       deregisterInteractionHandler:
-        <K extends EventType>(type: K, handler: SpecificEventListener<K>) =>
-          this.nativeCb_.removeEventListener(type, handler),
-      isSurfaceActive: () => this.nativeCb_[MATCHES as 'matches'](':active'),
+          <K extends EventType>(type: K, handler: SpecificEventListener<K>) =>
+              this.nativeCb_.removeEventListener(type, handler),
+      isSurfaceActive: () => ponyfill.matches(this.nativeCb_, ':active'),
       isUnbounded: () => true,
       registerInteractionHandler:
-        <K extends EventType>(type: K, handler: SpecificEventListener<K>) =>
-          this.nativeCb_.addEventListener(type, handler),
+          <K extends EventType>(type: K, handler: SpecificEventListener<K>) =>
+              this.nativeCb_.addEventListener(type, handler),
     });
-    const foundation = new MDCRippleFoundation(adapter);
     return new MDCRipple(this.root_, foundation);
   }
 

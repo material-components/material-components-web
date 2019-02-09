@@ -23,7 +23,7 @@
 
 import {SpecificEventListener} from '@material/base';
 import {MDCComponent} from '@material/base/component';
-import * as ponyfill from '@material/dom/ponyfill';
+import {ponyfill} from '@material/dom/index';
 import {strings} from './constants';
 import {MDCSnackbarFoundation} from './foundation';
 import {Announcer, AnnouncerFactory} from './types';

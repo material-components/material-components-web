@@ -60,8 +60,8 @@ class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
   private autoDismissTimeoutMs_ = numbers.DEFAULT_AUTO_DISMISS_TIMEOUT_MS;
   private closeOnEscape_ = true;
 
-  constructor(adapter?: MDCSnackbarAdapter) {
-    super(Object.assign(MDCSnackbarFoundation.defaultAdapter, adapter));
+  constructor(adapter: Partial<MDCSnackbarAdapter> = {}) {
+    super({...MDCSnackbarFoundation.defaultAdapter, ...adapter});
   }
 
   destroy() {

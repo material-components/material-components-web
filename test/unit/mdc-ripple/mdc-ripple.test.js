@@ -30,6 +30,7 @@ import {MDCRipple} from '../../../packages/mdc-ripple/index';
 import {cssClasses} from '../../../packages/mdc-ripple/constants';
 import * as util from '../../../packages/mdc-ripple/util';
 import {install as installClock} from '../helpers/clock';
+import {ponyfill} from '../../../packages/mdc-dom/index';
 
 suite('MDCRipple');
 
@@ -118,12 +119,17 @@ test('adapter#isUnbounded delegates to unbounded getter', () => {
 });
 
 test('adapter#isSurfaceActive calls the correct :matches API method on the root element', () => {
-  const {root, component} = setupTest();
-  const MATCHES = util.getMatchesProperty(HTMLElement.prototype);
-  const matches = td.func('root.<matches>');
-  td.when(matches(':active')).thenReturn(true);
-  root[MATCHES] = matches;
-  assert.isOk(component.getDefaultFoundation().adapter_.isSurfaceActive());
+  const {component} = setupTest();
+  const realMatches = ponyfill.matches;
+  const fakeMatches = td.func('.matches');
+  td.when(fakeMatches(td.matchers.isA(Element), ':active')).thenReturn(true);
+  ponyfill.matches = fakeMatches;
+
+  try {
+    assert.isOk(component.getDefaultFoundation().adapter_.isSurfaceActive());
+  } finally {
+    ponyfill.matches = realMatches;
+  }
 });
 
 test('adapter#isSurfaceDisabled delegates to component\'s disabled getter', () => {

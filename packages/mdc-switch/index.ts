@@ -22,8 +22,8 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+import {ponyfill} from '@material/dom/index';
 import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
-import {getMatchesProperty} from '@material/ripple/util';
 import {MDCSelectionControl} from '@material/selection-control/index';
 import {MDCSwitchFoundation} from './foundation';
 
@@ -33,7 +33,6 @@ import {MDCSwitchFoundation} from './foundation';
  * https://material.io/design/components/selection-controls.html#switches
  */
 class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCSelectionControl, RippleCapableSurface {
-  /** Creates an instance of MDCSwitch bound to the given root element. */
   static attachTo(root: HTMLElement) {
     return new MDCSwitch(root);
   }
@@ -95,13 +94,12 @@ class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCSelectio
     const {RIPPLE_SURFACE_SELECTOR} = MDCSwitchFoundation.strings;
     const rippleSurface = this.root_.querySelector(RIPPLE_SURFACE_SELECTOR) as HTMLElement;
 
-    const MATCHES = getMatchesProperty(HTMLElement.prototype);
     const adapter = Object.assign(MDCRipple.createAdapter(this), {
       addClass: (className: string) => rippleSurface.classList.add(className),
       computeBoundingRect: () => rippleSurface.getBoundingClientRect(),
       deregisterInteractionHandler: (type: string, handler: EventListener) =>
           this.nativeControl_.removeEventListener(type, handler),
-      isSurfaceActive: () => this.nativeControl_[MATCHES]!(':active'),
+      isSurfaceActive: () => ponyfill.matches(this.nativeControl_, ':active'),
       isUnbounded: () => true,
       registerInteractionHandler: (type: string, handler: EventListener) =>
           this.nativeControl_.addEventListener(type, handler),

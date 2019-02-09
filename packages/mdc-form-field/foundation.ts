@@ -43,12 +43,11 @@ class MDCFormFieldFoundation extends MDCFoundation<MDCFormFieldAdapter> {
     };
   }
 
-  private clickHandler_: () => void;
+  private readonly clickHandler_: () => void;
 
-  constructor(adapter: MDCFormFieldAdapter) {
-    super(Object.assign(MDCFormFieldFoundation.defaultAdapter, adapter));
+  constructor(adapter: Partial<MDCFormFieldAdapter> = {}) {
+    super({...MDCFormFieldFoundation.defaultAdapter, ...adapter});
 
-    /** @private {!EventListener} */
     this.clickHandler_ = () => this.handleClick_();
   }
 
