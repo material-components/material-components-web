@@ -22,8 +22,5 @@
     "newLine": "lf",
     "types": [],
     "declaration": true
-  },
-  "include": [
-    "../../**/*"
-  ]
+  }
 }

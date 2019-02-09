@@ -65,7 +65,7 @@ class JsBundleFactory {
         library,
       },
       plugins = [],
-      tsConfigFilePath = path.resolve(__dirname, '../typescript/tsconfig.umd.json'),
+      tsConfigFilePath = path.resolve(__dirname, '../../tsconfig.json'),
     }) {
     chunks = chunks || this.globber_.getChunks({inputDirectory, filePathPattern});
 
@@ -83,14 +83,13 @@ class JsBundleFactory {
         path: fsDirAbsolutePath,
         publicPath: httpDirAbsolutePath,
         filename: filenamePattern,
-        libraryTarget: 'umd',
-        library,
       },
       resolve: {
         extensions,
       },
       devtool: 'source-map',
       module: {
+        noParse: ['/*.ts/'],
         rules: [{
           test: /\.ts$/,
           exclude: /node_modules/,
@@ -98,7 +97,10 @@ class JsBundleFactory {
             babelLoader,
             {
               loader: 'ts-loader',
-              options: {configFile: tsConfigFilePath},
+              options: {
+                configFile: tsConfigFilePath,
+                transpileOnly: true
+              },
             },
           ],
         }, {
