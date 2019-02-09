@@ -31,7 +31,8 @@ class MDCFixedTopAppBarFoundation extends MDCTopAppBarFoundation {
    */
   private wasScrolled_ = false;
 
-  constructor(adapter: MDCTopAppBarAdapter) {
+  /* istanbul ignore next */
+  constructor(adapter: Partial<MDCTopAppBarAdapter> = {}) {
     super(adapter);
 
     this.scrollHandler_ = () => this.fixedScrollHandler_();

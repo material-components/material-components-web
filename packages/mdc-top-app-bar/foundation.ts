@@ -35,6 +35,7 @@ class MDCTopAppBarBaseFoundation extends MDCFoundation<MDCTopAppBarAdapter> {
   }
 
   static get numbers() {
+    /* istanbul ignore next */
     return numbers;
   }
 
@@ -66,6 +67,7 @@ class MDCTopAppBarBaseFoundation extends MDCFoundation<MDCTopAppBarAdapter> {
   protected resizeHandler_?: EventListener;
   private readonly navClickHandler_: EventListener;
 
+  /* istanbul ignore next */
   constructor(adapter: Partial<MDCTopAppBarAdapter> = {}) {
     super({...MDCTopAppBarBaseFoundation.defaultAdapter, ...adapter});
 

@@ -31,6 +31,7 @@ class MDCShortTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
    */
   isCollapsed = false;
 
+  /* istanbul ignore next */
   constructor(adapter: Partial<MDCTopAppBarAdapter> = {}) {
     super(adapter);
   }
