@@ -21,8 +21,8 @@
  * THE SOFTWARE.
  */
 
-import {SpecificEventListener} from '@material/base/index';
 import {MDCFoundation} from '@material/base/foundation';
+import {SpecificEventListener} from '@material/base/index';
 import {MDCLineRippleAdapter} from './adapter';
 import {cssClasses} from './constants';
 

@@ -22,11 +22,11 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+import {EventType} from '@material/base/index';
 import {ponyfill} from '@material/dom/index';
 import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
 import {MDCSelectionControl} from '@material/selection-control/index';
 import {MDCSwitchFoundation} from './foundation';
-import {EventType} from '@material/base/index';
 
 /**
  * An implementation of the switch component defined by the Material Design spec.

@@ -21,8 +21,8 @@
  * THE SOFTWARE.
  */
 
-import {SpecificEventListener} from '@material/base/index';
 import {MDCComponent} from '@material/base/component';
+import {SpecificEventListener} from '@material/base/index';
 import {ponyfill} from '@material/dom/index';
 import {strings} from './constants';
 import {MDCSnackbarFoundation} from './foundation';
