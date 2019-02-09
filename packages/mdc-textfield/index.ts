@@ -374,7 +374,7 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
     });
   }
 
-  getLabelAdapterMethods_() {
+  private getLabelAdapterMethods_() {
     return {
       floatLabel: (shouldFloat: boolean) => this.label_ && this.label_.float(shouldFloat),
       getLabelWidth: () => this.label_ ? this.label_.getWidth() : 0,
@@ -383,7 +383,7 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
     };
   }
 
-  getLineRippleAdapterMethods_() {
+  private getLineRippleAdapterMethods_() {
     return {
       activateLineRipple: () => {
         if (this.lineRipple_) {
@@ -403,7 +403,7 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
     };
   }
 
-  getOutlineAdapterMethods_() {
+  private getOutlineAdapterMethods_() {
     return {
       closeOutline: () => this.outline_ && this.outline_.closeNotch(),
       hasOutline: () => Boolean(this.outline_),
@@ -411,7 +411,7 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
     };
   }
 
-  getInputAdapterMethods_() {
+  private getInputAdapterMethods_() {
     // tslint:disable:object-literal-sort-keys
     return {
       registerInputInteractionHandler: <E extends EventType>(evtType: E, handler: SpecificEventListener<E>) => {
@@ -428,7 +428,7 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
   /**
    * @return A map of all subcomponents to subfoundations.
    */
-  getFoundationMap_(): Partial<FoundationMapType> {
+  private getFoundationMap_(): Partial<FoundationMapType> {
     return {
       characterCounter: this.characterCounter_ ? this.characterCounter_.foundation : undefined,
       helperText: this.helperText_ ? this.helperText_.foundation : undefined,
