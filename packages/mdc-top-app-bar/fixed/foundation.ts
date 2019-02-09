@@ -39,12 +39,10 @@ class MDCFixedTopAppBarFoundation extends MDCTopAppBarFoundation {
 
   init() {
     super.init();
-    this.adapter_.registerScrollHandler(this.scrollHandler_);
   }
 
   destroy() {
     super.destroy();
-    this.adapter_.deregisterScrollHandler(this.scrollHandler_);
   }
 
   /**

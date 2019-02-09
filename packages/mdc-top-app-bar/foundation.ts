@@ -62,30 +62,34 @@ class MDCTopAppBarBaseFoundation extends MDCFoundation<MDCTopAppBarAdapter> {
     // tslint:enable:object-literal-sort-keys
   }
 
-  protected navClickHandler_: EventListener;
-  protected scrollHandler_: EventListener;
+  protected scrollHandler_?: EventListener;
+  protected resizeHandler_?: EventListener;
+  private readonly navClickHandler_: EventListener;
 
   constructor(adapter: Partial<MDCTopAppBarAdapter> = {}) {
     super({...MDCTopAppBarBaseFoundation.defaultAdapter, ...adapter});
 
     this.navClickHandler_ = () => this.adapter_.notifyNavigationIconClicked();
-    this.scrollHandler_ = () => undefined;
   }
 
   init() {
+    if (this.scrollHandler_) {
+      this.adapter_.registerScrollHandler(this.scrollHandler_);
+    }
+    if (this.resizeHandler_) {
+      this.adapter_.registerResizeHandler(this.resizeHandler_);
+    }
     this.adapter_.registerNavigationIconInteractionHandler('click', this.navClickHandler_);
   }
 
   destroy() {
+    if (this.scrollHandler_) {
+      this.adapter_.deregisterScrollHandler(this.scrollHandler_);
+    }
+    if (this.resizeHandler_) {
+      this.adapter_.deregisterResizeHandler(this.resizeHandler_);
+    }
     this.adapter_.deregisterNavigationIconInteractionHandler('click', this.navClickHandler_);
-  }
-
-  initScrollHandler() {
-    this.adapter_.registerScrollHandler(this.scrollHandler_);
-  }
-
-  destroyScrollHandler() {
-    this.adapter_.deregisterScrollHandler(this.scrollHandler_);
   }
 }
 

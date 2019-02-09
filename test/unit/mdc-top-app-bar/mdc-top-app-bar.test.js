@@ -121,17 +121,6 @@ test('destroy destroys icon ripples', () => {
   });
 });
 
-test('#setScrollTarget deregisters and registers scroll handler on provided target', () => {
-  const {component} = setupTest();
-  const fakeTarget = {};
-  component.foundation_.destroyScrollHandler = td.func();
-  component.foundation_.initScrollHandler = td.func();
-  component.setScrollTarget(fakeTarget);
-  td.verify(component.foundation_.destroyScrollHandler(), {times: 1});
-  td.verify(component.foundation_.initScrollHandler(), {times: 1});
-  assert.equal(component.scrollTarget_, fakeTarget);
-});
-
 test('getDefaultFoundation returns the appropriate foundation for default', () => {
   const fixture = getFixture();
   const root = fixture.querySelector(strings.ROOT_SELECTOR);

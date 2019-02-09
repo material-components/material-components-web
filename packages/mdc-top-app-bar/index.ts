@@ -64,9 +64,7 @@ class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
   }
 
   setScrollTarget(target: EventTarget) {
-    this.foundation_.destroyScrollHandler();
     this.scrollTarget_ = target;
-    this.foundation_.initScrollHandler();
   }
 
   getDefaultFoundation(): MDCTopAppBarBaseFoundation {

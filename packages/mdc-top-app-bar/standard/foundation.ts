@@ -68,8 +68,6 @@ class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
    */
   private resizeDebounceId_ = INITIAL_VALUE;
 
-  private readonly resizeHandler_: EventListener;
-
   constructor(adapter: Partial<MDCTopAppBarAdapter> = {}) {
     super(adapter);
 
@@ -82,14 +80,10 @@ class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
 
   init() {
     super.init();
-    this.adapter_.registerScrollHandler(this.scrollHandler_);
-    this.adapter_.registerResizeHandler(this.resizeHandler_);
   }
 
   destroy() {
     super.destroy();
-    this.adapter_.deregisterScrollHandler(this.scrollHandler_);
-    this.adapter_.deregisterResizeHandler(this.resizeHandler_);
     this.adapter_.setStyle('top', '');
   }
 
