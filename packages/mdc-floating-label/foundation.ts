@@ -48,7 +48,7 @@ class MDCFloatingLabelFoundation extends MDCFoundation<MDCFloatingLabelAdapter> 
 
   private readonly shakeAnimationEndHandler_: SpecificEventListener<'animationend'>;
 
-  constructor(adapter: Partial<MDCFloatingLabelAdapter> = {}) {
+  constructor(adapter?: Partial<MDCFloatingLabelAdapter>) {
     super({...MDCFloatingLabelFoundation.defaultAdapter, ...adapter});
 
     this.shakeAnimationEndHandler_ = () => this.handleShakeAnimationEnd_();

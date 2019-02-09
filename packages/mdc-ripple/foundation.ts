@@ -116,7 +116,7 @@ class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
 
   private previousActivationEvent_?: Event;
 
-  constructor(adapter: Partial<MDCRippleAdapter> = {}) {
+  constructor(adapter?: Partial<MDCRippleAdapter>) {
     super({...MDCRippleFoundation.defaultAdapter, ...adapter});
 
     this.activationState_ = this.defaultActivationState_();

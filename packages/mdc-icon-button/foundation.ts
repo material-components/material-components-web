@@ -44,7 +44,7 @@ class MDCIconButtonToggleFoundation extends MDCFoundation<MDCIconButtonToggleAda
     };
   }
 
-  constructor(adapter: Partial<MDCIconButtonToggleAdapter> = {}) {
+  constructor(adapter?: Partial<MDCIconButtonToggleAdapter>) {
     super({...MDCIconButtonToggleFoundation.defaultAdapter, ...adapter});
   }
 

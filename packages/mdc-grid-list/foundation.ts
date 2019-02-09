@@ -44,7 +44,7 @@ class MDCGridListFoundation extends MDCFoundation<MDCGridListAdapter> {
   private readonly resizeHandler_: EventListener;
   private resizeFrame_ = 0;
 
-  constructor(adapter: Partial<MDCGridListAdapter> = {}) {
+  constructor(adapter?: Partial<MDCGridListAdapter>) {
     super({...MDCGridListFoundation.defaultAdapter, ...adapter});
 
     this.resizeHandler_ = this.alignCenter.bind(this);

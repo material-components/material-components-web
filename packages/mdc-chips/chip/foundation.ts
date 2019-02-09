@@ -68,7 +68,7 @@ class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
    */
   private shouldRemoveOnTrailingIconClick_ = true;
 
-  constructor(adapter: Partial<MDCChipAdapter> = {}) {
+  constructor(adapter?: Partial<MDCChipAdapter>) {
     super({...MDCChipFoundation.defaultAdapter, ...adapter});
   }
 
