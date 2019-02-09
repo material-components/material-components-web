@@ -53,7 +53,7 @@ class MDCTextFieldIconFoundation extends MDCFoundation<MDCTextFieldIconAdapter> 
   private savedTabIndex_: string | null;
   private readonly interactionHandler_: EventListener;
 
-  constructor(adapter: Partial<MDCTextFieldIconAdapter> = {}) {
+  constructor(adapter?: Partial<MDCTextFieldIconAdapter>) {
     super({...MDCTextFieldIconFoundation.defaultAdapter, ...adapter});
 
     this.savedTabIndex_ = null;

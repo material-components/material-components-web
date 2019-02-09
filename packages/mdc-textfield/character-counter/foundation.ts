@@ -43,7 +43,7 @@ class MDCTextFieldCharacterCounterFoundation extends MDCFoundation<MDCTextFieldC
     };
   }
 
-  constructor(adapter: Partial<MDCTextFieldCharacterCounterAdapter> = {}) {
+  constructor(adapter?: Partial<MDCTextFieldCharacterCounterAdapter>) {
     super({...MDCTextFieldCharacterCounterFoundation.defaultAdapter, ...adapter});
   }
 
