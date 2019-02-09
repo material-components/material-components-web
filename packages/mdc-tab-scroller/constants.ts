@@ -21,36 +21,18 @@
  * THE SOFTWARE.
  */
 
-import {assert} from 'chai';
-
-import {setupFoundationTest} from '../helpers/setup';
-import MDCTabScrollerFoundation from '../../../packages/mdc-tab-scroller/foundation';
-import MDCTabScrollerRTL from '../../../packages/mdc-tab-scroller/rtl-scroller';
-
-suite('MDCTabScrollerRTL');
-
-const setup = () => {
-  const {mockAdapter} = setupFoundationTest(MDCTabScrollerFoundation);
-  const scroller = new MDCTabScrollerRTL(mockAdapter);
-  return {scroller};
+const cssClasses = {
+  ANIMATING: 'mdc-tab-scroller--animating',
+  SCROLL_AREA_SCROLL: 'mdc-tab-scroller__scroll-area--scroll',
+  SCROLL_TEST: 'mdc-tab-scroller__test',
 };
 
-test('#getScrollPositionRTL() is abstract and does nothing', () => {
-  const {scroller} = setup();
-  assert.isUndefined(scroller.getScrollPositionRTL());
-});
+const strings = {
+  AREA_SELECTOR: '.mdc-tab-scroller__scroll-area',
+  CONTENT_SELECTOR: '.mdc-tab-scroller__scroll-content',
+};
 
-test('#scrollToRTL() is abstract and does nothing', () => {
-  const {scroller} = setup();
-  assert.isUndefined(scroller.scrollToRTL());
-});
-
-test('#incrementScrollRTL() is abstract and does nothing', () => {
-  const {scroller} = setup();
-  assert.isUndefined(scroller.incrementScrollRTL());
-});
-
-test('#getAnimatingScrollPosition() is abstract and does nothing', () => {
-  const {scroller} = setup();
-  assert.isUndefined(scroller.getAnimatingScrollPosition());
-});
+export {
+  cssClasses,
+  strings,
+};

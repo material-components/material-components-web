@@ -22,43 +22,23 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-
-import {MDCTabScrollerAdapter} from './adapter';
-import MDCTabScrollerFoundation from './foundation';
+import {ponyfill} from '@material/dom/index';
+import {MDCTabScrollerFoundation} from './foundation';
 import * as util from './util';
 
-/**
- * @extends {MDCComponent<!MDCTabScrollerFoundation>}
- * @final
- */
-class MDCTabScroller extends MDCComponent {
-  /**
-   * @param {!Element} root
-   * @return {!MDCTabScroller}
-   */
-  static attachTo(root) {
+class MDCTabScroller extends MDCComponent<MDCTabScrollerFoundation> {
+  static attachTo(root: Element): MDCTabScroller {
     return new MDCTabScroller(root);
   }
 
-  constructor(...args) {
-    super(...args);
-
-    /** @private {?Element} */
-    this.content_;
-
-    /** @private {?Element} */
-    this.area_;
-
-    /** @private {?function(?Event): undefined} */
-    this.handleInteraction_;
-
-    /** @private {?function(!Event): undefined} */
-    this.handleTransitionEnd_;
-  }
+  private content_!: HTMLElement; // assigned in initialize()
+  private area_!: HTMLElement; // assigned in initialize()
+  private handleInteraction_!: EventListener; // assigned in initialSyncWithDOM()
+  private handleTransitionEnd_!: EventListener; // assigned in initialSyncWithDOM()
 
   initialize() {
-    this.area_ = this.root_.querySelector(MDCTabScrollerFoundation.strings.AREA_SELECTOR);
-    this.content_ = this.root_.querySelector(MDCTabScrollerFoundation.strings.CONTENT_SELECTOR);
+    this.area_ = this.root_.querySelector<HTMLElement>(MDCTabScrollerFoundation.strings.AREA_SELECTOR)!;
+    this.content_ = this.root_.querySelector<HTMLElement>(MDCTabScrollerFoundation.strings.CONTENT_SELECTOR)!;
   }
 
   initialSyncWithDOM() {
@@ -84,15 +64,10 @@ class MDCTabScroller extends MDCComponent {
     this.content_.removeEventListener('transitionend', this.handleTransitionEnd_);
   }
 
-  /**
-   * @return {!MDCTabScrollerFoundation}
-   */
-  getDefaultFoundation() {
-    const adapter = /** @type {!MDCTabScrollerAdapter} */ ({
-      eventTargetMatchesSelector: (evtTarget, selector) => {
-        const MATCHES = util.getMatchesProperty(HTMLElement.prototype);
-        return evtTarget[MATCHES](selector);
-      },
+  getDefaultFoundation(): MDCTabScrollerFoundation {
+    // tslint:disable:object-literal-sort-keys
+    return new MDCTabScrollerFoundation({
+      eventTargetMatchesSelector: (evtTarget, selector) => ponyfill.matches(evtTarget as Element, selector),
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       addScrollAreaClass: (className) => this.area_.classList.add(className),
@@ -107,41 +82,41 @@ class MDCTabScroller extends MDCComponent {
       computeScrollContentClientRect: () => this.content_.getBoundingClientRect(),
       computeHorizontalScrollbarHeight: () => util.computeHorizontalScrollbarHeight(document),
     });
-
-    return new MDCTabScrollerFoundation(adapter);
+    // tslint:enable:object-literal-sort-keys
   }
 
   /**
    * Returns the current visual scroll position
-   * @return {number}
    */
-  getScrollPosition() {
+  getScrollPosition(): number {
     return this.foundation_.getScrollPosition();
   }
 
   /**
    * Returns the width of the scroll content
-   * @return {number}
    */
-  getScrollContentWidth() {
+  getScrollContentWidth(): number {
     return this.content_.offsetWidth;
   }
 
   /**
    * Increments the scroll value by the given amount
-   * @param {number} scrollXIncrement The pixel value by which to increment the scroll value
+   * @param scrollXIncrement The pixel value by which to increment the scroll value
    */
-  incrementScroll(scrollXIncrement) {
+  incrementScroll(scrollXIncrement: number) {
     this.foundation_.incrementScroll(scrollXIncrement);
   }
 
   /**
    * Scrolls to the given pixel position
-   * @param {number} scrollX The pixel value to scroll to
+   * @param scrollX The pixel value to scroll to
    */
-  scrollTo(scrollX) {
+  scrollTo(scrollX: number) {
     this.foundation_.scrollTo(scrollX);
   }
 }
 
-export {MDCTabScroller, MDCTabScrollerFoundation, util};
+export {MDCTabScroller as default, MDCTabScroller, util};
+export * from './adapter';
+export * from './foundation';
+export * from './types';
