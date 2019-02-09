@@ -373,8 +373,7 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
       ...this.getLabelAdapterMethods_(),
       ...this.getLineRippleAdapterMethods_(),
       ...this.getOutlineAdapterMethods_(),
-      ...this.getFoundationMap_(),
-    });
+    }, this.getFoundationMap_());
   }
 
   private getLabelAdapterMethods_() {
