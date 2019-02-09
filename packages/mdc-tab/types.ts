@@ -22,6 +22,7 @@
  */
 
 import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
+import {MDCTabIndicator} from '@material/tab-indicator/index';
 
 /**
  * MDCTabDimensions provides details about the left and right edges of the Tab
@@ -35,9 +36,8 @@ export interface MDCTabDimensions {
   contentRight: number;
 }
 
-export interface TabInteractionEvent {
-  detail: TabInteractionEventDetail;
-}
+// TODO(acdvorak): Use this style everywhere
+export type TabInteractionEvent = CustomEvent<TabInteractionEventDetail>;
 
 export interface TabInteractionEventDetail {
   tabId: string;
