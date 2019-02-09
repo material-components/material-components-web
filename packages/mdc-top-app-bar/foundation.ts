@@ -68,7 +68,7 @@ class MDCTopAppBarBaseFoundation extends MDCFoundation<MDCTopAppBarAdapter> {
   private readonly navClickHandler_: EventListener;
 
   /* istanbul ignore next */
-  constructor(adapter: Partial<MDCTopAppBarAdapter> = {}) {
+  constructor(adapter?: Partial<MDCTopAppBarAdapter>) {
     super({...MDCTopAppBarBaseFoundation.defaultAdapter, ...adapter});
 
     this.navClickHandler_ = () => this.adapter_.notifyNavigationIconClicked();
