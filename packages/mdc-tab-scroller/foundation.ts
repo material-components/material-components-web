@@ -71,7 +71,7 @@ class MDCTabScrollerFoundation extends MDCFoundation<MDCTabScrollerAdapter> {
    */
   private rtlScrollerInstance_?: MDCTabScrollerRTL;
 
-  constructor(adapter: Partial<MDCTabScrollerAdapter> = {}) {
+  constructor(adapter?: Partial<MDCTabScrollerAdapter>) {
     super({...MDCTabScrollerFoundation.defaultAdapter, ...adapter});
   }
 
