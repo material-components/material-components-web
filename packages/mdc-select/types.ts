@@ -25,17 +25,15 @@ import {MDCFloatingLabel} from '@material/floating-label/index';
 import {MDCLineRipple} from '@material/line-ripple/index';
 import {MDCMenu} from '@material/menu/index';
 import {MDCNotchedOutline} from '@material/notched-outline/index';
-import {MDCSelectHelperTextFoundation} from './helper-text/index';
-import {MDCSelectIconFoundation} from './icon/index';
+import {MDCSelectHelperText, MDCSelectHelperTextFoundation} from './helper-text/index';
+import {MDCSelectIcon, MDCSelectIconFoundation} from './icon/index';
 
 export interface FoundationMapType {
   leadingIcon: MDCSelectIconFoundation;
   helperText: MDCSelectHelperTextFoundation;
 }
 
-export interface SelectEvent extends Event {
-  detail: SelectEventDetail;
-}
+export type SelectEvent = CustomEvent<SelectEventDetail>;
 
 export interface SelectEventDetail {
   value: string;
@@ -44,8 +42,8 @@ export interface SelectEventDetail {
 
 // TODO(acdvorak): Every component should export its own factory and event types.
 export type LineRippleFactory = (el: Element) => MDCLineRipple;
-export type HelperTextFactory = (el: Element) => MDCTextFieldHelperText;
+export type HelperTextFactory = (el: Element) => MDCSelectHelperText;
 export type MenuFactory = (el: Element) => MDCMenu;
-export type IconFactory = (el: Element) => MDCTextFieldIcon;
+export type IconFactory = (el: Element) => MDCSelectIcon;
 export type LabelFactory = (el: Element) => MDCFloatingLabel;
 export type OutlineFactory = (el: Element) => MDCNotchedOutline;

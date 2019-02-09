@@ -36,8 +36,7 @@ import {MDCSelectHelperText} from './helper-text';
 import {MDCSelectIcon} from './icon';
 import {
   FoundationMapType,
-  HelperTextFactory,
-  IconFactory,
+  HelperTextFactory, IconFactory,
   LabelFactory,
   LineRippleFactory, MenuFactory,
   OutlineFactory, SelectEventDetail,
