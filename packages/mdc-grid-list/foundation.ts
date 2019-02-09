@@ -44,6 +44,7 @@ class MDCGridListFoundation extends MDCFoundation<MDCGridListAdapter> {
   private readonly resizeHandler_: EventListener;
   private resizeFrame_ = 0;
 
+  /* istanbul ignore next: optional argument is not a branch statement */
   constructor(adapter?: Partial<MDCGridListAdapter>) {
     super({...MDCGridListFoundation.defaultAdapter, ...adapter});
 
