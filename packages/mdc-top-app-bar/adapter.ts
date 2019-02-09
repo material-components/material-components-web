@@ -21,87 +21,65 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
-
 /**
- * Adapter for MDC Top App Bar
- *
- * Defines the shape of the adapter expected by the foundation. Implement this
- * adapter to integrate the Top App Bar into your framework. See
- * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
- * for more information.
- *
- * @record
+ * Defines the shape of the adapter expected by the foundation.
+ * Implement this adapter for your framework of choice to delegate updates to
+ * the component in your framework of choice. See architecture documentation
+ * for more details.
+ * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-class MDCTopAppBarAdapter {
+interface MDCTopAppBarAdapter {
   /**
    * Adds a class to the root Element.
-   * @param {string} className
    */
-  addClass(className) {}
+  addClass(className: string): void;
 
   /**
    * Removes a class from the root Element.
-   * @param {string} className
    */
-  removeClass(className) {}
+  removeClass(className: string): void;
 
   /**
    * Returns true if the root Element contains the given class.
-   * @param {string} className
-   * @return {boolean}
    */
-  hasClass(className) {}
+  hasClass(className: string): boolean;
 
   /**
    * Sets the specified inline style property on the root Element to the given value.
-   * @param {string} property
-   * @param {string} value
    */
-  setStyle(property, value) {}
+  setStyle(property: string, value: string): void;
 
   /**
    * Gets the height of the top app bar.
-   * @return {number}
    */
-  getTopAppBarHeight() {}
+  getTopAppBarHeight(): number;
 
   /**
    * Registers an event handler on the navigation icon element for a given event.
-   * @param {string} type
-   * @param {function(!Event): undefined} handler
    */
-  registerNavigationIconInteractionHandler(type, handler) {}
+  registerNavigationIconInteractionHandler(type: string, handler: EventListener): void;
 
   /**
    * Deregisters an event handler on the navigation icon element for a given event.
-   * @param {string} type
-   * @param {function(!Event): undefined} handler
    */
-  deregisterNavigationIconInteractionHandler(type, handler) {}
+  deregisterNavigationIconInteractionHandler(type: string, handler: EventListener): void;
 
   /**
    * Emits an event when the navigation icon is clicked.
    */
-  notifyNavigationIconClicked() {}
+  notifyNavigationIconClicked(): void;
 
-  /** @param {function(!Event)} handler */
-  registerScrollHandler(handler) {}
+  registerScrollHandler(handler: EventListener): void;
 
-  /** @param {function(!Event)} handler */
-  deregisterScrollHandler(handler) {}
+  deregisterScrollHandler(handler: EventListener): void;
 
-  /** @param {function(!Event)} handler */
-  registerResizeHandler(handler) {}
+  registerResizeHandler(handler: EventListener): void;
 
-  /** @param {function(!Event)} handler */
-  deregisterResizeHandler(handler) {}
+  deregisterResizeHandler(handler: EventListener): void;
 
-  /** @return {number} */
-  getViewportScrollY() {}
+  getViewportScrollY(): number;
 
-  /** @return {number} */
-  getTotalActionItems() {}
+  getTotalActionItems(): number;
 }
 
-export default MDCTopAppBarAdapter;
+export {MDCTopAppBarAdapter as default, MDCTopAppBarAdapter};

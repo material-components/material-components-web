@@ -21,29 +21,34 @@
  * THE SOFTWARE.
  */
 
+import {MDCTopAppBarAdapter} from '../adapter';
 import {cssClasses} from '../constants';
-import MDCTopAppBarAdapter from '../adapter';
-import MDCTopAppBarFoundation from '../foundation';
+import {MDCTopAppBarBaseFoundation} from '../foundation';
 
-/**
- * @extends {MDCTopAppBarFoundation<!MDCFixedTopAppBarFoundation>}
- * @final
- */
-class MDCFixedTopAppBarFoundation extends MDCTopAppBarFoundation {
+class MDCShortTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
   /**
-   * @param {!MDCTopAppBarAdapter} adapter
+   * State variable for the current top app bar state
    */
-  constructor(adapter) {
-    super(adapter);
-    /** State variable for the previous scroll iteration top app bar state */
-    this.wasScrolled_ = false;
+  isCollapsed = false;
 
-    this.scrollHandler_ = () => this.fixedScrollHandler_();
+  constructor(adapter: Partial<MDCTopAppBarAdapter> = {}) {
+    super(adapter);
+
+    this.scrollHandler_ = () => this.shortAppBarScrollHandler_();
   }
 
   init() {
     super.init();
-    this.adapter_.registerScrollHandler(this.scrollHandler_);
+    const isAlwaysCollapsed = this.adapter_.hasClass(cssClasses.SHORT_COLLAPSED_CLASS);
+
+    if (this.adapter_.getTotalActionItems() > 0) {
+      this.adapter_.addClass(cssClasses.SHORT_HAS_ACTION_ITEM_CLASS);
+    }
+
+    if (!isAlwaysCollapsed) {
+      this.adapter_.registerScrollHandler(this.scrollHandler_);
+      this.shortAppBarScrollHandler_();
+    }
   }
 
   destroy() {
@@ -52,24 +57,23 @@ class MDCFixedTopAppBarFoundation extends MDCTopAppBarFoundation {
   }
 
   /**
-   * Scroll handler for applying/removing the modifier class
-   * on the fixed top app bar.
+   * Scroll handler for applying/removing the collapsed modifier class on the short top app bar.
    */
-  fixedScrollHandler_() {
+  private shortAppBarScrollHandler_() {
     const currentScroll = this.adapter_.getViewportScrollY();
 
     if (currentScroll <= 0) {
-      if (this.wasScrolled_) {
-        this.adapter_.removeClass(cssClasses.FIXED_SCROLLED_CLASS);
-        this.wasScrolled_ = false;
+      if (this.isCollapsed) {
+        this.adapter_.removeClass(cssClasses.SHORT_COLLAPSED_CLASS);
+        this.isCollapsed = false;
       }
     } else {
-      if (!this.wasScrolled_) {
-        this.adapter_.addClass(cssClasses.FIXED_SCROLLED_CLASS);
-        this.wasScrolled_ = true;
+      if (!this.isCollapsed) {
+        this.adapter_.addClass(cssClasses.SHORT_COLLAPSED_CLASS);
+        this.isCollapsed = true;
       }
     }
   }
 }
 
-export default MDCFixedTopAppBarFoundation;
+export {MDCShortTopAppBarFoundation as default, MDCShortTopAppBarFoundation};

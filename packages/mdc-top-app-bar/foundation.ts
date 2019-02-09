@@ -21,62 +21,55 @@
  * THE SOFTWARE.
  */
 
-import {strings, cssClasses, numbers} from './constants';
-import MDCTopAppBarAdapter from './adapter';
 import {MDCFoundation} from '@material/base/foundation';
+import {MDCTopAppBarAdapter} from './adapter';
+import {cssClasses, numbers, strings} from './constants';
 
-/**
- * @extends {MDCFoundation<!MDCTopAppBarAdapter>}
- */
-class MDCTopAppBarBaseFoundation extends MDCFoundation {
-  /** @return enum {string} */
+class MDCTopAppBarBaseFoundation extends MDCFoundation<MDCTopAppBarAdapter> {
   static get strings() {
     return strings;
   }
 
-  /** @return enum {string} */
   static get cssClasses() {
     return cssClasses;
   }
 
-  /** @return enum {number} */
   static get numbers() {
     return numbers;
   }
 
   /**
-   * {@see MDCTopAppBarAdapter} for typing information on parameters and return
-   * types.
-   * @return {!MDCTopAppBarAdapter}
+   * See {@link MDCTopAppBarAdapter} for typing information on parameters and return types.
    */
-  static get defaultAdapter() {
-    return /** @type {!MDCTopAppBarAdapter} */ ({
-      hasClass: (/* className: string */) => {},
-      addClass: (/* className: string */) => {},
-      removeClass: (/* className: string */) => {},
-      setStyle: (/* property: string, value: string */) => {},
-      getTopAppBarHeight: () => {},
-      registerNavigationIconInteractionHandler: (/* type: string, handler: EventListener */) => {},
-      deregisterNavigationIconInteractionHandler: (/* type: string, handler: EventListener */) => {},
-      notifyNavigationIconClicked: () => {},
-      registerScrollHandler: (/* handler: EventListener */) => {},
-      deregisterScrollHandler: (/* handler: EventListener */) => {},
-      registerResizeHandler: (/* handler: EventListener */) => {},
-      deregisterResizeHandler: (/* handler: EventListener */) => {},
-      getViewportScrollY: () => /* number */ 0,
-      getTotalActionItems: () => /* number */ 0,
-    });
+  static get defaultAdapter(): MDCTopAppBarAdapter {
+    // tslint:disable:object-literal-sort-keys
+    return {
+      addClass: () => undefined,
+      removeClass: () => undefined,
+      hasClass: () => false,
+      setStyle: () => undefined,
+      getTopAppBarHeight: () => 0,
+      registerNavigationIconInteractionHandler: () => undefined,
+      deregisterNavigationIconInteractionHandler: () => undefined,
+      notifyNavigationIconClicked: () => undefined,
+      registerScrollHandler: () => undefined,
+      deregisterScrollHandler: () => undefined,
+      registerResizeHandler: () => undefined,
+      deregisterResizeHandler: () => undefined,
+      getViewportScrollY: () =>  0,
+      getTotalActionItems: () =>  0,
+    };
+    // tslint:enable:object-literal-sort-keys
   }
 
-  /**
-   * @param {!MDCTopAppBarAdapter} adapter
-   */
-  constructor(/** @type {!MDCTopAppBarAdapter} */ adapter) {
-    super(Object.assign(MDCTopAppBarBaseFoundation.defaultAdapter, adapter));
+  protected navClickHandler_: EventListener;
+  protected scrollHandler_: EventListener;
+
+  constructor(adapter: Partial<MDCTopAppBarAdapter> = {}) {
+    super({...MDCTopAppBarBaseFoundation.defaultAdapter, ...adapter});
 
     this.navClickHandler_ = () => this.adapter_.notifyNavigationIconClicked();
-
-    this.scrollHandler_ = () => {};
+    this.scrollHandler_ = () => undefined;
   }
 
   init() {
@@ -96,4 +89,4 @@ class MDCTopAppBarBaseFoundation extends MDCFoundation {
   }
 }
 
-export default MDCTopAppBarBaseFoundation;
+export {MDCTopAppBarBaseFoundation as default, MDCTopAppBarBaseFoundation};
