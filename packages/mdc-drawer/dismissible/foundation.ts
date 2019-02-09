@@ -55,7 +55,7 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapter> {
   private animationFrame_ = 0;
   private animationTimer_ = 0;
 
-  constructor(adapter: Partial<MDCDrawerAdapter> = {}) {
+  constructor(adapter?: Partial<MDCDrawerAdapter>) {
     super({...MDCDismissibleDrawerFoundation.defaultAdapter, ...adapter});
   }
 
@@ -68,9 +68,6 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapter> {
     }
   }
 
-  /**
-   * Function to open the drawer.
-   */
   open() {
     if (this.isOpen() || this.isOpening() || this.isClosing()) {
       return;
@@ -87,9 +84,6 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapter> {
     this.adapter_.saveFocus();
   }
 
-  /**
-   * Function to close the drawer.
-   */
   close() {
     if (!this.isOpen() || this.isOpening() || this.isClosing()) {
       return;
