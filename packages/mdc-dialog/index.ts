@@ -154,11 +154,11 @@ class MDCDialog extends MDCComponent<MDCDialogFoundation> {
       areButtonsStacked: () => util.areTopsMisaligned(this.buttons_),
       clickDefaultButton: () => this.defaultButton_ && this.defaultButton_.click(),
       eventTargetMatches: (target, selector) => target ? matches(target as Element, selector) : false,
-      getActionFromEvent: (event: Event) => {
-        if (!event.target) {
+      getActionFromEvent: (evt: Event) => {
+        if (!evt.target) {
           return '';
         }
-        const element = closest(event.target as Element, `[${strings.ACTION_ATTRIBUTE}]`);
+        const element = closest(evt.target as Element, `[${strings.ACTION_ATTRIBUTE}]`);
         return element && element.getAttribute(strings.ACTION_ATTRIBUTE);
       },
       hasClass: (className) => this.root_.classList.contains(className),
