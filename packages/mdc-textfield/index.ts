@@ -53,9 +53,12 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
   root_!: HTMLElement; // assigned in MDCComponent constructor
   ripple!: MDCRipple | null; // assigned in initialize()
 
+  // The only required sub-element.
+  private input_!: HTMLInputElement; // assigned in initialize()
+
+  // Optional sub-elements.
   private characterCounter_!: MDCTextFieldCharacterCounter | null; // assigned in initialize()
   private helperText_!: MDCTextFieldHelperText | null; // assigned in initialize()
-  private input_!: HTMLInputElement; // assigned in initialize()
   private label_!: MDCFloatingLabel | null; // assigned in initialize()
   private leadingIcon_!: MDCTextFieldIcon | null; // assigned in initialize()
   private lineRipple_!: MDCLineRipple | null; // assigned in initialize()
