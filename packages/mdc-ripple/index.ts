@@ -46,9 +46,9 @@ class MDCRipple extends MDCComponent<MDCRippleFoundation> implements RippleCapab
       computeBoundingRect: () => instance.root_.getBoundingClientRect(),
       containsEventTarget: (target) => instance.root_.contains(target as Node),
       deregisterDocumentInteractionHandler: (evtType, handler) =>
-        document.documentElement.removeEventListener(evtType, handler, util.applyPassive()),
+          document.documentElement.removeEventListener(evtType, handler, util.applyPassive()),
       deregisterInteractionHandler: (evtType, handler) =>
-        instance.root_.removeEventListener(evtType, handler, util.applyPassive()),
+          instance.root_.removeEventListener(evtType, handler, util.applyPassive()),
       deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
       getWindowPageOffset: () => ({x: window.pageXOffset, y: window.pageYOffset}),
       isSurfaceActive: () => {
@@ -58,21 +58,20 @@ class MDCRipple extends MDCComponent<MDCRippleFoundation> implements RippleCapab
       isSurfaceDisabled: () => Boolean(instance.disabled),
       isUnbounded: () => Boolean(instance.unbounded),
       registerDocumentInteractionHandler: (evtType, handler) =>
-        document.documentElement.addEventListener(evtType, handler, util.applyPassive()),
+          document.documentElement.addEventListener(evtType, handler, util.applyPassive()),
       registerInteractionHandler: (evtType, handler) =>
-        instance.root_.addEventListener(evtType, handler, util.applyPassive()),
+          instance.root_.addEventListener(evtType, handler, util.applyPassive()),
       registerResizeHandler: (handler) => window.addEventListener('resize', handler),
       removeClass: (className) => instance.root_.classList.remove(className),
       updateCssVariable: (varName, value) => (instance.root_ as HTMLElement).style.setProperty(varName, value),
     };
   }
 
+  // Public visibility for this property is required by RippleCapableSurface.
+  root_!: Element; // assigned in MDCComponent constructor
+
   disabled = false;
-  /**
-   * this line may seem redundent, but without this the TS compiler does not
-   * think that `this` is of type RippleCapableSurface
-   */
-  root_!: Element;
+
   private unbounded_?: boolean;
 
   get unbounded(): boolean {

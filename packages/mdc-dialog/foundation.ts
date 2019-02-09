@@ -69,8 +69,8 @@ class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
   private autoStackButtons_ = true;
   private areButtonsStacked_ = false;
 
-  constructor(adapter: MDCDialogAdapter) {
-    super(Object.assign(MDCDialogFoundation.defaultAdapter, adapter));
+  constructor(adapter: Partial<MDCDialogAdapter> = {}) {
+    super({...MDCDialogFoundation.defaultAdapter, ...adapter});
   }
 
   init() {

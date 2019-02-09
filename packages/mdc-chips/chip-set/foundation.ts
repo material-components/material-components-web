@@ -47,8 +47,8 @@ class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
    */
   private selectedChipIds_: string[] = [];
 
-  constructor(adapter: MDCChipSetAdapter) {
-    super(Object.assign(MDCChipSetFoundation.defaultAdapter, adapter));
+  constructor(adapter: Partial<MDCChipSetAdapter> = {}) {
+    super({...MDCChipSetFoundation.defaultAdapter, ...adapter});
   }
 
   /**

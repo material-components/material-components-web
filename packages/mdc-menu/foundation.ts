@@ -58,8 +58,8 @@ class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     // tslint:enable:object-literal-sort-keys
   }
 
-  constructor(adapter: MDCMenuAdapter) {
-    super(Object.assign(MDCMenuFoundation.defaultAdapter, adapter));
+  constructor(adapter: Partial<MDCMenuAdapter> = {}) {
+    super({...MDCMenuFoundation.defaultAdapter, ...adapter});
   }
 
   destroy() {

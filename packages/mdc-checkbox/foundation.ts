@@ -58,8 +58,8 @@ class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
   private animEndLatchTimer_ = 0;
   private enableAnimationEndHandler_ = false;
 
-  constructor(adapter: MDCCheckboxAdapter) {
-    super(Object.assign(MDCCheckboxFoundation.defaultAdapter, adapter));
+  constructor(adapter: Partial<MDCCheckboxAdapter> = {}) {
+    super({...MDCCheckboxFoundation.defaultAdapter, ...adapter});
   }
 
   init() {

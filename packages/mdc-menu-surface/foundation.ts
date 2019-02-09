@@ -105,8 +105,8 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
   private dimensions_!: MenuDimensions; // assigned in open()
   private measurements_!: AutoLayoutMeasurements; // assigned in open()
 
-  constructor(adapter: MDCMenuSurfaceAdapter) {
-    super(Object.assign(MDCMenuSurfaceFoundation.defaultAdapter, adapter));
+  constructor(adapter: Partial<MDCMenuSurfaceAdapter> = {}) {
+    super({...MDCMenuSurfaceFoundation.defaultAdapter, ...adapter});
   }
 
   init() {

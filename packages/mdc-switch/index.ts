@@ -38,8 +38,8 @@ class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCSelectio
     return new MDCSwitch(root);
   }
 
-  // Initialized in super class constructor, re-declared as public to fulfill to the `RippleCapableSurface` interface.
-  root_!: Element;
+  // Public visibility for this property is required by RippleCapableSurface.
+  root_!: Element; // assigned in MDCComponent constructor
 
   private ripple_ = this.initRipple_();
 
@@ -62,7 +62,6 @@ class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCSelectio
     this.checked = this.checked;
   }
 
-  /** Gets the default Foundation for this switch. */
   getDefaultFoundation() {
     return new MDCSwitchFoundation({
       addClass: (className: string) => this.root_.classList.add(className),
@@ -72,23 +71,22 @@ class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCSelectio
     });
   }
 
-  /** The MDCRipple associated with this switch. */
   get ripple() {
     return this.ripple_;
   }
 
-  /** The checked state of this switch. */
   get checked() {
     return this.nativeControl_.checked;
   }
+
   set checked(checked) {
     this.foundation_.setChecked(checked);
   }
 
-  /** The disabled state of this switch. */
   get disabled() {
     return this.nativeControl_.disabled;
   }
+
   set disabled(disabled) {
     this.foundation_.setDisabled(disabled);
   }
@@ -115,7 +113,6 @@ class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCSelectio
     return new MDCRipple(this.root_, foundation);
   }
 
-  /** Returns the state of the native control element. */
   private get nativeControl_() {
     const {NATIVE_CONTROL_SELECTOR} = MDCSwitchFoundation.strings;
     return this.root_.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
