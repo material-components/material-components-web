@@ -79,7 +79,7 @@ class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
 
   private useAutomaticActivation_ = false;
 
-  constructor(adapter: Partial<MDCTabBarAdapter> = {}) {
+  constructor(adapter?: Partial<MDCTabBarAdapter>) {
     super({...MDCTabBarFoundation.defaultAdapter, ...adapter});
   }
 
