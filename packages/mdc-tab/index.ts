@@ -107,7 +107,7 @@ class MDCTab extends MDCComponent<MDCTabFoundation> implements RippleCapableSurf
   /**
    * Activates the tab
    */
-  activate(computeIndicatorClientRect?: ClientRect) {
+  activate(computeIndicatorClientRect?: ClientRect | null) {
     this.foundation_.activate(computeIndicatorClientRect);
   }
 
