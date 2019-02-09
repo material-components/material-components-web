@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,31 +21,5 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
-const strings = {
-  TAB_ACTIVATED_EVENT: 'MDCTabBar:activated',
-  TAB_SCROLLER_SELECTOR: '.mdc-tab-scroller',
-  TAB_SELECTOR: '.mdc-tab',
-  ARROW_LEFT_KEY: 'ArrowLeft',
-  ARROW_RIGHT_KEY: 'ArrowRight',
-  END_KEY: 'End',
-  HOME_KEY: 'Home',
-  ENTER_KEY: 'Enter',
-  SPACE_KEY: 'Space',
-};
-
-/** @enum {number} */
-const numbers = {
-  EXTRA_SCROLL_AMOUNT: 20,
-  ARROW_LEFT_KEYCODE: 37,
-  ARROW_RIGHT_KEYCODE: 39,
-  END_KEYCODE: 35,
-  HOME_KEYCODE: 36,
-  ENTER_KEYCODE: 13,
-  SPACE_KEYCODE: 32,
-};
-
-export {
-  numbers,
-  strings,
-};
+export type TabFactory = (el: Element) => MDCTab;
+export type TabScrollerFactory = (el: Element) => MDCTabScroller;
