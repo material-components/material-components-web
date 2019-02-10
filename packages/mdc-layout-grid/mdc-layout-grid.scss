@@ -65,7 +65,7 @@
         // Span classes.
         // stylelint-disable max-nesting-depth
         @at-root .mdc-layout-grid__cell--span-#{$span},
-          .mdc-layout-grid__cell--span-#{$span}-#{$size} {
+        .mdc-layout-grid__cell--span-#{$span}-#{$size} {
           @include mdc-layout-grid-cell-span_($size, $span, $gutter);
         }
         // stylelint-enable max-nesting-depth
