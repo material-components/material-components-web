@@ -23,10 +23,10 @@
 
 import {MDCDismissibleDrawerFoundation} from '../dismissible/foundation';
 
+/* istanbul ignore next: subclass is not a branch statement */
 class MDCModalDrawerFoundation extends MDCDismissibleDrawerFoundation {
   /**
    * Called when drawer finishes open animation.
-   * @override
    */
   opened() {
     this.adapter_.trapFocus();
@@ -34,7 +34,6 @@ class MDCModalDrawerFoundation extends MDCDismissibleDrawerFoundation {
 
   /**
    * Called when drawer finishes close animation.
-   * @override
    */
   closed() {
     this.adapter_.releaseFocus();
