@@ -23,6 +23,7 @@
 
 import {MDCTabIndicatorFoundation} from './foundation';
 
+/* istanbul ignore next: subclass is not a branch statement */
 class MDCSlidingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
   activate(previousIndicatorClientRect?: ClientRect | null) {
     // Early exit if no indicator is present to handle cases where an indicator
@@ -53,6 +54,6 @@ class MDCSlidingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
   deactivate() {
     this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
   }
-} /* istanbul thinks this is an `if` statement */
+}
 
 export {MDCSlidingTabIndicatorFoundation as default, MDCSlidingTabIndicatorFoundation};

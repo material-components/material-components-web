@@ -23,6 +23,7 @@
 
 import {MDCTabIndicatorFoundation} from './foundation';
 
+/* istanbul ignore next: subclass is not a branch statement */
 class MDCFadingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
   activate() {
     this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
@@ -31,6 +32,6 @@ class MDCFadingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
   deactivate() {
     this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
   }
-} /* istanbul thinks this is an `if` statement */
+}
 
 export {MDCFadingTabIndicatorFoundation as default, MDCFadingTabIndicatorFoundation};
