@@ -81,14 +81,14 @@ main(process.argv);
 
 function main(argv) {
   if (argv.length < 3) {
-    console.error('Missing root directory path');
+    console.error(`Usage: node ${path.basename(argv[1])} path/to/mdc-web/packages`);
     process.exit(1);
   }
 
-  const rootDir = path.resolve(process.argv[2]);
-  const srcFiles = glob.sync(`${rootDir}/**/*.{js,ts}`);
+  const packagesDir = path.resolve(process.argv[2]);
+  const srcFiles = glob.sync(`${packagesDir}/**/*.{js,ts}`, {ignore: ['**/node_modules/**']});
 
-  srcFiles.forEach((srcFile) => transform(srcFile, rootDir));
+  srcFiles.forEach((srcFile) => transform(srcFile, packagesDir));
   logProgress('');
   console.log('\rTransform pass completed. ' + srcFiles.length + ' files written.\n');
 }
@@ -98,19 +98,19 @@ function getAstFromCodeString(codeString) {
     parser: {
       parse: (code) => parser.parse(code, {
         sourceType: 'module',
-        plugins: ['typescript'],
+        plugins: ['typescript', 'classProperties'],
       }),
     },
   });
 }
 
-function transform(srcFile, rootDir) {
+function transform(srcFile, packagesDir) {
   const src = fs.readFileSync(srcFile, 'utf8');
   const ast = getAstFromCodeString(src);
 
   traverse(ast, {
     ImportDeclaration(path) {
-      const packageStr = rewriteDeclarationSource(path.node, srcFile, rootDir);
+      const packageStr = rewriteDeclarationSource(path.node, srcFile, packagesDir);
       const {value: sourceValue} = path.node.source;
 
       const hasThirdPartyTransformed = sourceValue.includes(THIRD_PARTY_PATH);
@@ -144,7 +144,7 @@ function transform(srcFile, rootDir) {
   logProgress(`[rewrite] ${srcFile}`);
 }
 
-function rewriteDeclarationSource(node, srcFile, rootDir) {
+function rewriteDeclarationSource(node, srcFile, packagesDir) {
   let source = node.source.value;
   const pathParts = source.split('/');
   const isMDCImport = pathParts[0] === '@material';
@@ -152,12 +152,12 @@ function rewriteDeclarationSource(node, srcFile, rootDir) {
   // format `source` for @material/foo imports
   if (isMDCImport) {
     const modName = pathParts[1]; // @material/<modName>
-    const atMaterialReplacementPath = `${rootDir}/mdc-${modName}`;
+    const atMaterialReplacementPath = `${packagesDir}/mdc-${modName}`;
     const rewrittenSource = [atMaterialReplacementPath].concat(pathParts.slice(2)).join('/');
     source = rewrittenSource;
   }
 
-  return patchNodeForDeclarationSource(source, srcFile, rootDir, node);
+  return patchNodeForDeclarationSource(source, srcFile, packagesDir, node);
 }
 
 function isThirdPartyModule(source) {
@@ -166,7 +166,7 @@ function isThirdPartyModule(source) {
   return !wouldLoadAsFileOrDir;
 }
 
-function patchNodeForDeclarationSource(source, srcFile, rootDir, node) {
+function patchNodeForDeclarationSource(source, srcFile, packagesDir, node) {
   let resolvedSource = source;
   const basedir = path.dirname(srcFile);
   // TODO: This section of code will need to be revisited when a third party module is used internally.
