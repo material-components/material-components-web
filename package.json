@@ -42,8 +42,8 @@
     "test:site": "npm run clean:site && ./scripts/site-generator-test.sh"
   },
   "devDependencies": {
-    "@babel/parser": "^7.2.3",
     "@google-cloud/datastore": "^3.0.1",
+    "@babel/parser": "^7.2.3",
     "@octokit/rest": "^16.1.0",
     "argparse": "^1.0.10",
     "ascii-table": "0.0.9",
