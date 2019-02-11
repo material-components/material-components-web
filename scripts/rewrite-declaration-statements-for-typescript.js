@@ -63,7 +63,6 @@
  * ```
  */
 
-const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
 
@@ -77,6 +76,8 @@ const types = require('babel-types');
 
 const THIRD_PARTY_PATH = 'mdc.thirdparty.';
 
+const alreadyRewrittenImportPaths = new Set();
+
 main(process.argv);
 
 function main(argv) {
@@ -86,11 +87,16 @@ function main(argv) {
   }
 
   const packagesDir = path.resolve(process.argv[2]);
-  const srcFiles = glob.sync(`${packagesDir}/**/*.{js,ts}`, {ignore: ['**/node_modules/**']});
 
-  srcFiles.forEach((srcFile) => transform(srcFile, packagesDir));
+  /** @type {!Array<string>} */
+  const srcFileAbsolutePaths = glob.sync(`${packagesDir}/**/*.{js,ts}`, {ignore: ['**/node_modules/**']});
+
+  srcFileAbsolutePaths.forEach((srcFileAbsolutePath) => {
+    transformSrc(srcFileAbsolutePath);
+  });
+
   logProgress('');
-  console.log('\rTransform pass completed. ' + srcFiles.length + ' files written.\n');
+  console.log('\rTransform pass completed. ' + srcFileAbsolutePaths.length + ' files written.\n');
 }
 
 function getAstFromCodeString(codeString) {
@@ -104,13 +110,16 @@ function getAstFromCodeString(codeString) {
   });
 }
 
-function transform(srcFile, packagesDir) {
-  const src = fs.readFileSync(srcFile, 'utf8');
+/**
+ * @param {string} srcFileAbsolutePath
+ */
+function transformSrc(srcFileAbsolutePath) {
+  const src = fs.readFileSync(srcFileAbsolutePath, 'utf8');
   const ast = getAstFromCodeString(src);
 
   traverse(ast, {
     ImportDeclaration(path) {
-      const packageStr = rewriteDeclarationSource(path.node, srcFile, packagesDir);
+      const packageStr = rewriteDeclarationSource(path.node, srcFileAbsolutePath);
       const {value: sourceValue} = path.node.source;
 
       const hasThirdPartyTransformed = sourceValue.includes(THIRD_PARTY_PATH);
@@ -140,72 +149,76 @@ function transform(srcFile, packagesDir) {
     },
   });
 
-  fs.writeFileSync(srcFile, outputCode, 'utf8');
-  logProgress(`[rewrite] ${srcFile}`);
+  fs.writeFileSync(srcFileAbsolutePath, outputCode, 'utf8');
+  logProgress(`[rewrite] ${srcFileAbsolutePath}`);
 }
 
-function rewriteDeclarationSource(node, srcFile, packagesDir) {
-  let source = node.source.value;
-  const pathParts = source.split('/');
-  const isMDCImport = pathParts[0] === '@material';
+/**
+ * @param {!Object} astNode
+ * @param {string} srcFilePathAbsolute
+ * @return {string} New import path
+ */
+function rewriteDeclarationSource(astNode, srcFilePathAbsolute) {
+  const oldImportPath = astNode.source.value;
+  let newImportPath = oldImportPath;
+  const basedir = path.dirname(srcFilePathAbsolute);
 
-  // format `source` for @material/foo imports
-  if (isMDCImport) {
-    const modName = pathParts[1]; // @material/<modName>
-    const atMaterialReplacementPath = `${packagesDir}/mdc-${modName}`;
-    const rewrittenSource = [atMaterialReplacementPath].concat(pathParts.slice(2)).join('/');
-    source = rewrittenSource;
-  }
-
-  return patchNodeForDeclarationSource(source, srcFile, packagesDir, node);
-}
-
-function isThirdPartyModule(source) {
-  // See: https://nodejs.org/api/modules.html#modules_all_together (step 3)
-  const wouldLoadAsFileOrDir = ['./', '/', '../'].some((s) => source.indexOf(s) === 0);
-  return !wouldLoadAsFileOrDir;
-}
-
-function patchNodeForDeclarationSource(source, srcFile, packagesDir, node) {
-  let resolvedSource = source;
-  const basedir = path.dirname(srcFile);
   // TODO: This section of code will need to be revisited when a third party module is used internally.
-  // currently we haven't built interal dialog or drawer to actually use this rewrite correctly.
-  if (isThirdPartyModule(source)) {
-    // for focus-trap
-    assert(source.indexOf('@material') < 0, '@material/* import sources should have already been rewritten');
-    patchDefaultImportIfNeeded(node);
-    resolvedSource = `${THIRD_PARTY_PATH}${camelCase(source)}`;
-    return resolvedSource;
+  // currently we haven't built internal dialog or drawer to actually use this rewrite correctly.
+  // Needed for focus-trap.
+  if (isThirdPartyModule(oldImportPath)) {
+    if (oldImportPath.indexOf('@material') > -1) {
+      return oldImportPath;
+    }
+    patchDefaultImportIfNeeded(astNode);
+    newImportPath = `${THIRD_PARTY_PATH}${camelCase(oldImportPath)}`;
+    return newImportPath;
   } else {
-    const fileDir = resolve.sync(source, {
+    if (alreadyRewrittenImportPaths.has(oldImportPath)) {
+      return oldImportPath;
+    }
+    const fileDir = resolve.sync(oldImportPath, {
       basedir,
       extensions: ['.ts', '.js'],
     });
-    const srcDirectory = path.dirname(srcFile);
-    resolvedSource = path.relative(srcDirectory, fileDir);
-    const packageStr = resolvedSource
-      .replace('.js', '')
-      .replace('.ts', '');
-    return `./${packageStr}`;
+    const srcDirectory = path.dirname(srcFilePathAbsolute);
+    newImportPath = './' + getBazelFileNameOrPath(
+      path.relative(srcDirectory, fileDir)
+        .replace('.js', '')
+        .replace('.ts', '')
+    );
+    alreadyRewrittenImportPaths.add(newImportPath);
+    return newImportPath;
   }
 }
 
-function patchDefaultImportIfNeeded(node) {
+function patchDefaultImportIfNeeded(astNode) {
   const defaultImportSpecifierIndex =
-      node.specifiers.findIndex(types.isImportDefaultSpecifier);
+      astNode.specifiers.findIndex(types.isImportDefaultSpecifier);
   if (defaultImportSpecifierIndex >= 0) {
-    const defaultImportSpecifier = node.specifiers[defaultImportSpecifierIndex];
+    const defaultImportSpecifier = astNode.specifiers[defaultImportSpecifierIndex];
     const defaultPropImportSpecifier = types.importSpecifier(defaultImportSpecifier.local, types.identifier('default'));
-    node.specifiers[defaultImportSpecifierIndex] = defaultPropImportSpecifier;
+    astNode.specifiers[defaultImportSpecifierIndex] = defaultPropImportSpecifier;
   }
+}
+
+function isThirdPartyModule(importPath) {
+  // See: https://nodejs.org/api/modules.html#modules_all_together (step 3)
+  const wouldLoadAsFileOrDir = ['./', '/', '../'].some((s) => importPath.indexOf(s) === 0);
+  return !wouldLoadAsFileOrDir;
+}
+
+function getBazelFileNameOrPath(ossFileNameOrPath) {
+  return ossFileNameOrPath
+    .replace(/mdc-?/g, '')
+    .replace(/material-components-web/g, 'material_components_web')
+    .replace(/selection-control/g, 'selection_control')
+    .replace(/character-counter/g, 'character_counter')
+    .replace(/helper-text/g, 'helper_text')
+    .replace(/-/g, '')
+  ;
 }
 
 function logProgress(msg) {
-  if (logProgress.__prev_msg_length) {
-    const lineClear = ' '.repeat(logProgress.__prev_msg_length + 10);
-    process.stdout.write('\r' + lineClear);
-  }
-  logProgress.__prev_msg_length = msg.length;
-  process.stdout.write('\r' + msg);
+  console.log(msg);
 }
