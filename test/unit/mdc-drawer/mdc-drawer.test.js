@@ -339,12 +339,13 @@ test('adapter#focusActiveNavigationItem focuses on active navigation item', () =
 
 test('adapter#focusActiveNavigationItem does nothing if no active navigation item exists', () => {
   const {component, root} = setupTest();
+  const prevActiveElement = document.activeElement;
   document.body.appendChild(root);
   const activatedNavigationItemEl = root.querySelector(`.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`);
   activatedNavigationItemEl.classList.remove(MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS);
   component.getDefaultFoundation().adapter_.focusActiveNavigationItem();
 
-  assert.notEqual(document.activeElement, activatedNavigationItemEl);
+  assert.equal(document.activeElement, prevActiveElement);
   document.body.removeChild(root);
 });
 
