@@ -33,7 +33,7 @@
 // Public
 //
 
-@mixin mdc-list($query: mdc-feature-all()) {
+@mixin mdc-list-core-styles($query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
   $feat-typography: mdc-feature-create-target($query, typography);
@@ -277,7 +277,8 @@
   .mdc-list-group__subheader {
     $mdc-list-subheader-virtual-height: 3rem;
     $mdc-list-subheader-leading: map-get(map-get($mdc-typography-styles, body1), line-height);
-    $mdc-list-subheader-margin: ($mdc-list-subheader-virtual-height - $mdc-list-subheader-leading) / 2;
+    $mdc-list-subheader-margin: ($mdc-list-subheader-virtual-height - $mdc-list-subheader-leading) /
+      2;
 
     @include mdc-typography(subtitle1, $query);
 

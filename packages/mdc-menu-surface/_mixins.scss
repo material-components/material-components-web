@@ -33,7 +33,7 @@
 // Public
 //
 
-@mixin mdc-menu-surface($query: mdc-feature-all()) {
+@mixin mdc-menu-surface-core-styles($query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
   // postcss-bem-linter: define menu-surface
@@ -109,8 +109,7 @@
   }
 
   @include mdc-feature-targets($feat-animation) {
-    transition:
-      opacity $mdc-menu-surface-fade-in-duration linear,
+    transition: opacity $mdc-menu-surface-fade-in-duration linear,
       transform $mdc-menu-surface-scale-duration $mdc-animation-deceleration-curve-timing-function;
   }
 

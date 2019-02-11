@@ -33,7 +33,7 @@
 // Public
 //
 
-@mixin mdc-switch($query: mdc-feature-all()) {
+@mixin mdc-switch-core-styles($query: mdc-feature-all()) {
   // postcss-bem-linter: define switch
 
   $feat-animation: mdc-feature-create-target($query, animation);
@@ -198,9 +198,7 @@
   }
 
   @include mdc-feature-targets($feat-animation) {
-    transition:
-      mdc-switch-transition(opacity),
-      mdc-switch-transition(background-color),
+    transition: mdc-switch-transition(opacity), mdc-switch-transition(background-color),
       mdc-switch-transition(border-color);
   }
 }
@@ -229,9 +227,7 @@
   }
 
   @include mdc-feature-targets($feat-animation) {
-    transition:
-      mdc-switch-transition(transform),
-      mdc-switch-transition(background-color),
+    transition: mdc-switch-transition(transform), mdc-switch-transition(background-color),
       mdc-switch-transition(border-color);
   }
 }
@@ -298,7 +294,7 @@
 }
 
 @mixin mdc-switch__thumb-disabled_ {
-  border-width: 1px;  // In high contrast mode, only show outline of knob.
+  border-width: 1px; // In high contrast mode, only show outline of knob.
 }
 
 @mixin mdc-switch__native-control-disabled_ {
