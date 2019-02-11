@@ -47,17 +47,17 @@ class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   static get defaultAdapter(): MDCSelectAdapter {
     // tslint:disable:object-literal-sort-keys
     return {
-      addClass: (/* className: string */) => undefined,
-      removeClass: (/* className: string */) => undefined,
-      hasClass: (/* className: string */) => false,
+      addClass: () => undefined,
+      removeClass: () => undefined,
+      hasClass: () => false,
       activateBottomLine: () => undefined,
       deactivateBottomLine: () => undefined,
       setValue: () => undefined,
       getValue: () => '',
-      floatLabel: (/* value: boolean */) => undefined,
+      floatLabel: () => undefined,
       getLabelWidth: () => 0,
       hasOutline: () => false,
-      notchOutline: (/* labelWidth: number, */) => undefined,
+      notchOutline: () => undefined,
       closeOutline: () => undefined,
       openMenu: () => undefined,
       closeMenu: () => undefined,
