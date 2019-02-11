@@ -68,8 +68,8 @@ class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
    */
   private shouldRemoveOnTrailingIconClick_ = true;
 
-  constructor(adapter: MDCChipAdapter) {
-    super(Object.assign(MDCChipFoundation.defaultAdapter, adapter));
+  constructor(adapter?: Partial<MDCChipAdapter>) {
+    super({...MDCChipFoundation.defaultAdapter, ...adapter});
   }
 
   isSelected() {
@@ -103,7 +103,7 @@ class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       // The checkmark's width is initially set to 0, so use the checkmark's height as a proxy since the checkmark
       // should always be square.
       const width = rootRect.width + checkmarkRect.height;
-      return Object.assign({}, rootRect, {width});
+      return {...rootRect, width};
     } else {
       return rootRect;
     }
@@ -172,7 +172,6 @@ class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   /**
    * Handles an interaction event on the trailing icon element. This is used to
    * prevent the ripple from activating on interaction with the trailing icon.
-   * @param {!Event} evt
    */
   handleTrailingIconInteraction(evt: MouseEvent | KeyboardEvent) {
     const isEnter = (evt as KeyboardEvent).key === 'Enter' || (evt as KeyboardEvent).keyCode === 13;

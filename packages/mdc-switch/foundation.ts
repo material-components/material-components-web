@@ -52,8 +52,8 @@ class MDCSwitchFoundation extends MDCFoundation<MDCSwitchAdapter> {
     };
   }
 
-  constructor(adapter: MDCSwitchAdapter) {
-    super(Object.assign(MDCSwitchFoundation.defaultAdapter, adapter));
+  constructor(adapter?: Partial<MDCSwitchAdapter>) {
+    super({...MDCSwitchFoundation.defaultAdapter, ...adapter});
   }
 
   /** Sets the checked state of the switch. */
