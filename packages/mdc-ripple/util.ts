@@ -111,11 +111,8 @@ export type VendorMatchesFunctionName = 'webkitMatchesSelector' | 'msMatchesSele
 export type MatchesFunctionName = VendorMatchesFunctionName | 'matches';
 
 export function getMatchesProperty(htmlElementPrototype: {}): MatchesFunctionName {
-  /**
-   * Order is important because we return the first existing method we find.
-   * Do not change the order of the items in the below array.
-   */
-
+  // Order is important because we return the first existing method we find.
+  // Do not change the order of the items in the below array.
   const matchesMethods: MatchesFunctionName[] = ['matches', 'webkitMatchesSelector', 'msMatchesSelector'];
   let method: MatchesFunctionName = 'matches';
   for (const matchesMethod of matchesMethods) {
@@ -128,9 +125,8 @@ export function getMatchesProperty(htmlElementPrototype: {}): MatchesFunctionNam
   return method;
 }
 
-export function getNormalizedEventCoords(
-    ev: Event | undefined, pageOffset: Point, clientRect: ClientRect): Point {
-  if (!ev) {
+export function getNormalizedEventCoords(evt: Event | undefined, pageOffset: Point, clientRect: ClientRect): Point {
+  if (!evt) {
     return {x: 0, y: 0};
   }
   const {x, y} = pageOffset;
@@ -140,12 +136,12 @@ export function getNormalizedEventCoords(
   let normalizedX;
   let normalizedY;
   // Determine touch point relative to the ripple container.
-  if (ev.type === 'touchstart') {
-    const touchEvent = ev as TouchEvent;
+  if (evt.type === 'touchstart') {
+    const touchEvent = evt as TouchEvent;
     normalizedX = touchEvent.changedTouches[0].pageX - documentX;
     normalizedY = touchEvent.changedTouches[0].pageY - documentY;
   } else {
-    const mouseEvent = ev as MouseEvent;
+    const mouseEvent = evt as MouseEvent;
     normalizedX = mouseEvent.pageX - documentX;
     normalizedY = mouseEvent.pageY - documentY;
   }

@@ -132,7 +132,9 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
     this.setIsHoisted(true);
   }
 
-  /** @param corner Default anchor corner alignment of top-left surface corner. */
+  /**
+   * @param corner Default anchor corner alignment of top-left surface corner.
+   */
   setAnchorCorner(corner: Corner) {
     this.foundation_.setAnchorCorner(corner);
   }

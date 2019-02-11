@@ -110,11 +110,11 @@ class MDCDialog extends MDCComponent<MDCDialogFoundation> {
 
     const LAYOUT_EVENTS = ['resize', 'orientationchange'];
     this.handleOpening_ = () => {
-      LAYOUT_EVENTS.forEach((type) => window.addEventListener(type, this.handleLayout_));
+      LAYOUT_EVENTS.forEach((evtType) => window.addEventListener(evtType, this.handleLayout_));
       document.addEventListener('keydown', this.handleDocumentKeydown_);
     };
     this.handleClosing_ = () => {
-      LAYOUT_EVENTS.forEach((type) => window.removeEventListener(type, this.handleLayout_));
+      LAYOUT_EVENTS.forEach((evtType) => window.removeEventListener(evtType, this.handleLayout_));
       document.removeEventListener('keydown', this.handleDocumentKeydown_);
     };
 
@@ -154,11 +154,11 @@ class MDCDialog extends MDCComponent<MDCDialogFoundation> {
       areButtonsStacked: () => util.areTopsMisaligned(this.buttons_),
       clickDefaultButton: () => this.defaultButton_ && this.defaultButton_.click(),
       eventTargetMatches: (target, selector) => target ? matches(target as Element, selector) : false,
-      getActionFromEvent: (event: Event) => {
-        if (!event.target) {
+      getActionFromEvent: (evt: Event) => {
+        if (!evt.target) {
           return '';
         }
-        const element = closest(event.target as Element, `[${strings.ACTION_ATTRIBUTE}]`);
+        const element = closest(evt.target as Element, `[${strings.ACTION_ATTRIBUTE}]`);
         return element && element.getAttribute(strings.ACTION_ATTRIBUTE);
       },
       hasClass: (className) => this.root_.classList.contains(className),
