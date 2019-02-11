@@ -38,7 +38,7 @@ interface MDCDialogAdapter {
 
   isContentScrollable(): boolean;
   areButtonsStacked(): boolean;
-  getActionFromEvent(event: Event): string | null;
+  getActionFromEvent(evt: Event): string | null;
 
   trapFocus(): void;
   releaseFocus(): void;

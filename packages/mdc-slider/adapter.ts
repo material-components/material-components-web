@@ -21,178 +21,140 @@
  * THE SOFTWARE.
  */
 
-/* eslint-disable no-unused-vars */
+import {EventType, SpecificEventListener} from '@material/base/index';
 
 /**
- * Adapter for MDC Slider.
- *
- * Defines the shape of the adapter expected by the foundation. Implement this
- * adapter to integrate the Slider into your framework. See
- * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
- * for more information.
- *
- * @record
+ * Defines the shape of the adapter expected by the foundation.
+ * Implement this adapter for your framework of choice to delegate updates to
+ * the component in your framework of choice. See architecture documentation
+ * for more details.
+ * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-class MDCSliderAdapter {
+interface MDCSliderAdapter {
   /**
    * Returns true if className exists for the slider Element
-   * @param {string} className
-   * @return {boolean}
    */
-  hasClass(className) {}
+  hasClass(className: string): boolean;
 
   /**
    * Adds a class to the slider Element
-   * @param {string} className
    */
-  addClass(className) {}
+  addClass(className: string): void;
 
   /**
    * Removes a class from the slider Element
-   * @param {string} className
    */
-  removeClass(className) {}
+  removeClass(className: string): void;
 
   /**
-   * Returns a string if attribute name exists on the slider Element,
-   * otherwise returns null
-   * @param {string} name
-   * @return {?string}
+   * Returns a string if attribute name exists on the slider Element, otherwise returns null
    */
-  getAttribute(name) {}
+  getAttribute(name: string): string | null;
 
   /**
    * Sets attribute name on slider Element to value
-   * @param {string} name
-   * @param {string} value
    */
-  setAttribute(name, value) {}
+  setAttribute(name: string, value: string): void;
 
   /**
    * Removes attribute name from slider Element
-   * @param {string} name
    */
-  removeAttribute(name) {}
+  removeAttribute(name: string): void;
 
   /**
    * Returns the bounding client rect for the slider Element
-   * @return {?ClientRect}
    */
-  computeBoundingRect() {}
+  computeBoundingRect(): ClientRect;
 
   /**
    * Returns the tab index of the slider Element
-   * @return {number}
    */
-  getTabIndex() {}
+  getTabIndex(): number;
 
   /**
    * Registers an event handler on the root element for a given event.
-   * @param {string} type
-   * @param {function(!Event): undefined} handler
    */
-  registerInteractionHandler(type, handler) {}
+  registerInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Deregisters an event handler on the root element for a given event.
-   * @param {string} type
-   * @param {function(!Event): undefined} handler
    */
-  deregisterInteractionHandler(type, handler) {}
+  deregisterInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Registers an event handler on the thumb container element for a given event.
-   * @param {string} type
-   * @param {function(!Event): undefined} handler
    */
-  registerThumbContainerInteractionHandler(type, handler) {}
+  registerThumbContainerInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Deregisters an event handler on the thumb container element for a given event.
-   * @param {string} type
-   * @param {function(!Event): undefined} handler
    */
-  deregisterThumbContainerInteractionHandler(type, handler) {}
+  deregisterThumbContainerInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Registers an event handler on the body for a given event.
-   * @param {string} type
-   * @param {function(!Event): undefined} handler
    */
-  registerBodyInteractionHandler(type, handler) {}
+  registerBodyInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Deregisters an event handler on the body for a given event.
-   * @param {string} type
-   * @param {function(!Event): undefined} handler
    */
-  deregisterBodyInteractionHandler(type, handler) {}
+  deregisterBodyInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Registers an event handler for the window resize event
-   * @param {function(!Event): undefined} handler
    */
-  registerResizeHandler(handler) {}
+  registerResizeHandler(handler: SpecificEventListener<'resize'>): void;
 
   /**
    * Deregisters an event handler for the window resize event
-   * @param {function(!Event): undefined} handler
    */
-  deregisterResizeHandler(handler) {}
+  deregisterResizeHandler(handler: SpecificEventListener<'resize'>): void;
 
   /**
    * Emits a custom event MDCSlider:input from the root
    */
-  notifyInput() {}
+  notifyInput(): void;
 
   /**
    * Emits a custom event MDCSlider:change from the root
    */
-  notifyChange() {}
+  notifyChange(): void;
 
   /**
    * Sets a style property of the thumb container element to the passed value
-   * @param {string} propertyName
-   * @param {string} value
    */
-  setThumbContainerStyleProperty(propertyName, value) {}
+  setThumbContainerStyleProperty(propertyName: string, value: string): void;
 
   /**
    * Sets a style property of the track element to the passed value
-   * @param {string} propertyName
-   * @param {string} value
    */
-  setTrackStyleProperty(propertyName, value) {}
+  setTrackStyleProperty(propertyName: string, value: string): void;
 
   /**
    * Sets the inner text of the pin marker to the passed value
-   * @param {number} value
    */
-  setMarkerValue(value) {}
+  setMarkerValue(value: number): void;
 
   /**
    * Appends the passed number of track markers to the track mark container element
-   * @param {number} numMarkers
    */
-  appendTrackMarkers(numMarkers) {}
+  appendTrackMarkers(numMarkers: number): void;
 
   /**
    * Removes all track markers fromt he track mark container element
    */
-  removeTrackMarkers() {}
+  removeTrackMarkers(): void;
 
   /**
    * Sets a style property of the last track marker to the passed value
-   * @param {string} propertyName
-   * @param {string} value
    */
-  setLastTrackMarkersStyleProperty(propertyName, value) {}
+  setLastTrackMarkersStyleProperty(propertyName: string, value: string): void;
 
   /**
    * Returns true if the root element is RTL, otherwise false
-   * @return {boolean}
    */
-  isRTL() {}
+  isRTL(): boolean;
 }
 
-export default MDCSliderAdapter;
+export {MDCSliderAdapter as default, MDCSliderAdapter};

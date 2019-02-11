@@ -51,12 +51,12 @@ interface MDCLineRippleAdapter {
   /**
    * Registers an event listener on the line ripple element for a given event.
    */
-  registerEventHandler<E extends EventType>(evtType: E, handler: SpecificEventListener<E>): void;
+  registerEventHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Deregisters an event listener on the line ripple element for a given event.
    */
-  deregisterEventHandler<E extends EventType>(evtType: E, handler: SpecificEventListener<E>): void;
+  deregisterEventHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 }
 
 export {MDCLineRippleAdapter as default, MDCLineRippleAdapter};

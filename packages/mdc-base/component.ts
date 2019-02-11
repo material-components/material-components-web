@@ -51,6 +51,7 @@ class MDCComponent<FoundationType extends MDCFoundation> {
     this.initialSyncWithDOM();
   }
 
+  /* istanbul ignore next: method param only exists for typing purposes; it does not need to be unit tested */
   // tslint:disable-next-line:no-any a component can pass in anything it needs to initialize
   initialize(..._args: any[]) {
     // Subclasses can override this to do any additional setup work that would be considered part of a

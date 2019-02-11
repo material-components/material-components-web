@@ -21,6 +21,5 @@
  * THE SOFTWARE.
  */
 
-declare interface Element {
-  msMatchesSelector?: (selector: string) => boolean;
-}
+export type Announcer = (ariaEl: Element, labelEl?: Element) => void;
+export type AnnouncerFactory = () => Announcer;

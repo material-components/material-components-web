@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc.
+ * Copyright 2018 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,36 +21,21 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
-const cssClasses = {
-  ACTIVE: 'mdc-slider--active',
-  DISABLED: 'mdc-slider--disabled',
-  DISCRETE: 'mdc-slider--discrete',
-  FOCUS: 'mdc-slider--focus',
-  IN_TRANSIT: 'mdc-slider--in-transit',
-  IS_DISCRETE: 'mdc-slider--discrete',
-  HAS_TRACK_MARKER: 'mdc-slider--display-markers',
-};
+/**
+ * Defines the shape of the adapter expected by the foundation.
+ * Implement this adapter for your framework of choice to delegate updates to
+ * the component in your framework of choice. See architecture documentation
+ * for more details.
+ * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
+ */
+interface MDCSnackbarAdapter {
+  addClass(className: string): void;
+  announce(): void;
+  notifyClosed(reason: string): void;
+  notifyClosing(reason: string): void;
+  notifyOpened(): void;
+  notifyOpening(): void;
+  removeClass(className: string): void;
+}
 
-/** @enum {string} */
-const strings = {
-  TRACK_SELECTOR: '.mdc-slider__track',
-  TRACK_MARKER_CONTAINER_SELECTOR: '.mdc-slider__track-marker-container',
-  LAST_TRACK_MARKER_SELECTOR: '.mdc-slider__track-marker:last-child',
-  THUMB_CONTAINER_SELECTOR: '.mdc-slider__thumb-container',
-  PIN_VALUE_MARKER_SELECTOR: '.mdc-slider__pin-value-marker',
-  ARIA_VALUEMIN: 'aria-valuemin',
-  ARIA_VALUEMAX: 'aria-valuemax',
-  ARIA_VALUENOW: 'aria-valuenow',
-  ARIA_DISABLED: 'aria-disabled',
-  STEP_DATA_ATTR: 'data-step',
-  CHANGE_EVENT: 'MDCSlider:change',
-  INPUT_EVENT: 'MDCSlider:input',
-};
-
-/** @enum {number} */
-const numbers = {
-  PAGE_FACTOR: 4,
-};
-
-export {cssClasses, strings, numbers};
+export {MDCSnackbarAdapter as default, MDCSnackbarAdapter};

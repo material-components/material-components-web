@@ -26,14 +26,13 @@ import {numbers, strings} from './constants';
 const {ARIA_LIVE_DELAY_MS} = numbers;
 const {ARIA_LIVE_LABEL_TEXT_ATTR} = strings;
 
-/**
- * @param {!HTMLElement} ariaEl
- * @param {!HTMLElement=} labelEl
- */
-function announce(ariaEl, labelEl = ariaEl) {
+function announce(ariaEl: Element, labelEl: Element = ariaEl) {
   const priority = ariaEl.getAttribute('aria-live');
-  const labelText = labelEl.textContent.trim(); // Ignore `&nbsp;` (see below)
-  if (!labelText) {
+
+  // Trim text to ignore `&nbsp;` (see below).
+  // textContent is only null if the node is a document, DOCTYPE, or notation.
+  const labelText = labelEl.textContent!.trim();
+  if (!labelText || !priority) {
     return;
   }
 

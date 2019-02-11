@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2017 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,44 +21,33 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
+const cssClasses = {
+  ACTIVE: 'mdc-slider--active',
+  DISABLED: 'mdc-slider--disabled',
+  DISCRETE: 'mdc-slider--discrete',
+  FOCUS: 'mdc-slider--focus',
+  HAS_TRACK_MARKER: 'mdc-slider--display-markers',
+  IN_TRANSIT: 'mdc-slider--in-transit',
+  IS_DISCRETE: 'mdc-slider--discrete',
+};
 
-/**
- * Adapter for MDC Snackbar. Provides an interface for managing:
- * - CSS classes
- * - Event handlers
- *
- * Additionally, provides type information for the adapter to the Closure
- * compiler.
- *
- * Implement this adapter for your framework of choice to delegate updates to
- * the component in your framework of choice. See architecture documentation
- * for more details.
- * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
- *
- * @record
- */
-class MDCSnackbarAdapter {
-  /** @param {string} className */
-  addClass(className) {}
+const strings = {
+  ARIA_DISABLED: 'aria-disabled',
+  ARIA_VALUEMAX: 'aria-valuemax',
+  ARIA_VALUEMIN: 'aria-valuemin',
+  ARIA_VALUENOW: 'aria-valuenow',
+  CHANGE_EVENT: 'MDCSlider:change',
+  INPUT_EVENT: 'MDCSlider:input',
+  LAST_TRACK_MARKER_SELECTOR: '.mdc-slider__track-marker:last-child',
+  PIN_VALUE_MARKER_SELECTOR: '.mdc-slider__pin-value-marker',
+  STEP_DATA_ATTR: 'data-step',
+  THUMB_CONTAINER_SELECTOR: '.mdc-slider__thumb-container',
+  TRACK_MARKER_CONTAINER_SELECTOR: '.mdc-slider__track-marker-container',
+  TRACK_SELECTOR: '.mdc-slider__track',
+};
 
-  /** @param {string} className */
-  removeClass(className) {}
+const numbers = {
+  PAGE_FACTOR: 4,
+};
 
-  announce() {}
-
-  notifyOpening() {}
-  notifyOpened() {}
-
-  /**
-   * @param {string} reason
-   */
-  notifyClosing(reason) {}
-
-  /**
-   * @param {string} reason
-   */
-  notifyClosed(reason) {}
-}
-
-export default MDCSnackbarAdapter;
+export {cssClasses, strings, numbers};
