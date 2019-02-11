@@ -28,7 +28,7 @@ import * as util from '../../../packages/mdc-drawer/util';
 
 suite('MDCDrawer - util');
 
-test('#createFocusTrapInstance creates a properly configured focus trap instance with all args specified', () => {
+test('createFocusTrapInstance creates a properly configured focus trap instance with all args specified', () => {
   const rootEl = bel`<div></div>`;
   const focusTrapFactory = td.func('focusTrapFactory');
   const properlyConfiguredFocusTrapInstance = {};
@@ -43,7 +43,7 @@ test('#createFocusTrapInstance creates a properly configured focus trap instance
   assert.equal(instance, properlyConfiguredFocusTrapInstance);
 });
 
-test('#createFocusTrapInstance creates a properly configured focus trap instance with optional args omitted', () => {
+test('createFocusTrapInstance creates a properly configured focus trap instance with optional args omitted', () => {
   const surface = bel`<div></div>`;
   const instance = util.createFocusTrapInstance(surface);
   assert.sameMembers(Object.keys(instance), ['activate', 'deactivate', 'pause', 'unpause']);

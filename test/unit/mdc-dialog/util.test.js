@@ -28,7 +28,7 @@ import * as util from '../../../packages/mdc-dialog/util';
 
 suite('MDCDialog - util');
 
-test('#createFocusTrapInstance creates a properly configured focus trap instance with all args specified', () => {
+test('createFocusTrapInstance creates a properly configured focus trap instance with all args specified', () => {
   const surface = bel`<div></div>`;
   const yesBtn = bel`<button></button>`;
   const focusTrapFactory = td.func('focusTrapFactory');
@@ -43,17 +43,17 @@ test('#createFocusTrapInstance creates a properly configured focus trap instance
   assert.equal(instance, properlyConfiguredFocusTrapInstance);
 });
 
-test('#createFocusTrapInstance creates a properly configured focus trap instance with optional args omitted', () => {
+test('createFocusTrapInstance creates a properly configured focus trap instance with optional args omitted', () => {
   const surface = bel`<div></div>`;
   const instance = util.createFocusTrapInstance(surface);
   assert.sameMembers(Object.keys(instance), ['activate', 'deactivate', 'pause', 'unpause']);
 });
 
-test('#isScrollable returns false when element is null', () => {
+test('isScrollable returns false when element is null', () => {
   assert.isFalse(util.isScrollable(null));
 });
 
-test('#isScrollable returns false when element has no content', () => {
+test('isScrollable returns false when element has no content', () => {
   const parent = bel`<div></div>`;
 
   // Element.scrollHeight only returns the correct value when the element is attached to the DOM.
@@ -65,7 +65,7 @@ test('#isScrollable returns false when element has no content', () => {
   }
 });
 
-test('#isScrollable returns false when element content does not overflow its bounding box', () => {
+test('isScrollable returns false when element content does not overflow its bounding box', () => {
   const parent = bel`
 <div style="height: 20px; overflow: auto;">
   <div style="height: 10px;"></div>
@@ -80,7 +80,7 @@ test('#isScrollable returns false when element content does not overflow its bou
   }
 });
 
-test('#isScrollable returns true when element content overflows its bounding box', () => {
+test('isScrollable returns true when element content overflows its bounding box', () => {
   const parent = bel`
 <div style="height: 20px; overflow: auto;">
   <div style="height: 30px;"></div>
@@ -95,11 +95,11 @@ test('#isScrollable returns true when element content overflows its bounding box
   }
 });
 
-test('#areTopsMisaligned returns false when array is empty', () => {
+test('areTopsMisaligned returns false when array is empty', () => {
   assert.isFalse(util.areTopsMisaligned([]));
 });
 
-test('#areTopsMisaligned returns false when array only contains one element', () => {
+test('areTopsMisaligned returns false when array only contains one element', () => {
   const parent = bel`
 <div style="display: flex;
             position: relative;
@@ -120,7 +120,7 @@ test('#areTopsMisaligned returns false when array only contains one element', ()
   }
 });
 
-test('#areTopsMisaligned returns false when elements have same offsetTop', () => {
+test('areTopsMisaligned returns false when elements have same offsetTop', () => {
   const parent = bel`
 <div style="display: flex;
             position: relative;
@@ -142,7 +142,7 @@ test('#areTopsMisaligned returns false when elements have same offsetTop', () =>
   }
 });
 
-test('#areTopsMisaligned returns true when elements have different "top" values', () => {
+test('areTopsMisaligned returns true when elements have different "top" values', () => {
   const parent = bel`
 <div style="display: flex;
             position: relative;
