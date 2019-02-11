@@ -72,7 +72,6 @@ class MDCTabIndicator extends MDCComponent<MDCTabIndicatorFoundation> {
 
 export {MDCTabIndicator as default, MDCTabIndicator};
 export * from './adapter';
-export * from './constants';
 export * from './foundation';
 export * from './fading-foundation';
 export * from './sliding-foundation';
