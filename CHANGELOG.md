@@ -77,7 +77,7 @@
 * **list:** Introduced new adapter `isFocusInsideList` for MDC List for improved accessibility.
 * **snackbar:** Snackbar's DOM and APIs have changed to match the latest design guidelines. See the Snackbar documentation for more information.
 * **button:** We recommend placing each button's text label within a `mdc-button__label` element. This does not immediately break existing MDC Button usage, but updating is recommended to future-proof against potential upcoming changes.
-* **tab:** `MDCTabBar#getIndexOfTab(tab: MDCTab): number` is now `MDCTabBar#getIndexOfTabByID(id: string): number`
+* **tab:** `MDCTabBar#getIndexOfTab(tab: MDCTab): number` is now `MDCTabBar#getIndexOfTabById(id: string): number`
 
 
 
