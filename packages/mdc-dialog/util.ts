@@ -27,12 +27,12 @@ import {FocusTrapFactory} from './types';
 export function createFocusTrapInstance(
     surfaceEl: HTMLElement,
     focusTrapFactory: FocusTrapFactory = createFocusTrap as unknown as FocusTrapFactory,
-    initialFocusEl?: createFocusTrap.FocusTarget | null,
+    initialFocusEl?: createFocusTrap.FocusTarget,
 ): createFocusTrap.FocusTrap {
   return focusTrapFactory(surfaceEl, {
     clickOutsideDeactivates: true, // Allow handling of scrim clicks.
     escapeDeactivates: false, // Foundation handles ESC key.
-    initialFocus: initialFocusEl || undefined,
+    initialFocus: initialFocusEl,
   });
 }
 
