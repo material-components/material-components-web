@@ -33,8 +33,8 @@ class MDCList extends MDCComponent<MDCListFoundation> {
     this.foundation_.setVerticalOrientation(value);
   }
 
-  get listElements(): HTMLElement[] {
-    return [].slice.call(this.root_.querySelectorAll<HTMLElement>(strings.ENABLED_ITEMS_SELECTOR));
+  get listElements(): Element[] {
+    return [].slice.call(this.root_.querySelectorAll(strings.ENABLED_ITEMS_SELECTOR));
   }
 
   set wrapFocus(value: boolean) {
@@ -104,16 +104,16 @@ class MDCList extends MDCComponent<MDCListFoundation> {
    */
   initializeListType() {
     const checkboxListItems = this.root_.querySelectorAll(strings.ARIA_ROLE_CHECKBOX_SELECTOR);
-    const singleSelectedListItem = this.root_.querySelector<HTMLElement>(`
+    const singleSelectedListItem = this.root_.querySelector(`
       .${cssClasses.LIST_ITEM_ACTIVATED_CLASS},
       .${cssClasses.LIST_ITEM_SELECTED_CLASS}
     `);
-    const radioSelectedListItem = this.root_.querySelector<HTMLElement>(strings.ARIA_CHECKED_RADIO_SELECTOR);
+    const radioSelectedListItem = this.root_.querySelector(strings.ARIA_CHECKED_RADIO_SELECTOR);
 
     if (checkboxListItems.length) {
       const preselectedItems = this.root_.querySelectorAll(strings.ARIA_CHECKED_CHECKBOX_SELECTOR);
       this.selectedIndex =
-        [].map.call(preselectedItems, (listItem: HTMLElement) => this.listElements.indexOf(listItem)) as number[];
+        [].map.call(preselectedItems, (listItem: Element) => this.listElements.indexOf(listItem)) as number[];
     } else if (singleSelectedListItem) {
       if (singleSelectedListItem.classList.contains(cssClasses.LIST_ITEM_ACTIVATED_CLASS)) {
         this.foundation_.setUseActivatedClass(true);
@@ -135,12 +135,12 @@ class MDCList extends MDCComponent<MDCListFoundation> {
         }
       },
       focusItemAtIndex: (index) => {
-        const element = this.listElements[index] as HTMLElement;
+        const element = this.listElements[index] as HTMLElement | null;
         if (element) {
           element.focus();
         }
       },
-      getFocusedElementIndex: () => this.listElements.indexOf(document.activeElement as HTMLElement),
+      getFocusedElementIndex: () => this.listElements.indexOf(document.activeElement!),
       getListItemCount: () => this.listElements.length,
       hasCheckboxAtIndex: (index) => {
         const listItem = this.listElements[index];
@@ -203,8 +203,7 @@ class MDCList extends MDCComponent<MDCListFoundation> {
    */
   private getListItemIndex_(evt: Event) {
     const eventTarget = evt.target as Element;
-    const nearestParent =
-        ponyfill.closest<HTMLElement>(eventTarget, `.${cssClasses.LIST_ITEM_CLASS}, .${cssClasses.ROOT}`);
+    const nearestParent = ponyfill.closest(eventTarget, `.${cssClasses.LIST_ITEM_CLASS}, .${cssClasses.ROOT}`);
 
     // Get the index of the element if it is a list item.
     if (nearestParent && ponyfill.matches(nearestParent, `.${cssClasses.LIST_ITEM_CLASS}`)) {

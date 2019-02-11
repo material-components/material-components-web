@@ -89,7 +89,7 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
   get selectedIndex(): number {
     let selectedIndex = -1;
     if (this.menuElement_ && this.menu_) {
-      const selectedEl = this.menuElement_.querySelector<HTMLElement>(strings.SELECTED_ITEM_SELECTOR)!;
+      const selectedEl = this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)!;
       selectedIndex = this.menu_.items.indexOf(selectedEl);
     } else if (this.nativeControl_) {
       selectedIndex = this.nativeControl_.selectedIndex;
@@ -245,7 +245,8 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
     this.handleMenuOpened_ = () => {
       // Menu should open to the last selected element.
       if (this.selectedIndex >= 0) {
-        this.menu_!.items[this.selectedIndex].focus();
+        const selectedItemEl = this.menu_!.items[this.selectedIndex] as HTMLElement;
+        selectedItemEl.focus();
       }
     };
     this.handleMenuClosed_ = () => {
@@ -413,8 +414,7 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
         return '';
       },
       setValue: (value: string) => {
-        const element =
-          this.menuElement_!.querySelector<HTMLElement>(`[${strings.ENHANCED_VALUE_ATTR}="${value}"]`);
+        const element = this.menuElement_!.querySelector(`[${strings.ENHANCED_VALUE_ATTR}="${value}"]`);
         this.setEnhancedSelectedIndex_(element ? this.menu_!.items.indexOf(element) : -1);
       },
       openMenu: () => {
