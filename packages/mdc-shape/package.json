@@ -14,5 +14,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "@material/feature-targeting": "^0.44.0"
   }
 }
