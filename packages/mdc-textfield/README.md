@@ -182,7 +182,7 @@ which is immediate sibling of `.mdc-text-field`. See [here](helper-text/) for mo
 ### Text Field with Character Counter
 
 Character counter is used if there is a character limit. It displays the ratio of characters used and the total character limit.
-Helper text should be rendered inside `.mdc-text-field-helper-line` element which is immediate sibling of `.mdc-text-field`.
+Character counter should be rendered inside `.mdc-text-field-helper-line` element which is immediate sibling of `.mdc-text-field`.
 See [here](character-counter/) for more information on using character counter.
 
 ```html

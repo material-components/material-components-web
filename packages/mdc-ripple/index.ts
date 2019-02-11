@@ -22,6 +22,7 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+import {ponyfill} from '@material/dom/index';
 import {MDCRippleAdapter} from './adapter';
 import {MDCRippleFoundation} from './foundation';
 import {RippleAttachOpts, RippleCapableSurface} from './types';
@@ -38,8 +39,6 @@ class MDCRipple extends MDCComponent<MDCRippleFoundation> implements RippleCapab
   }
 
   static createAdapter(instance: RippleCapableSurface): MDCRippleAdapter {
-    const MATCHES = util.getMatchesProperty(HTMLElement.prototype);
-
     return {
       addClass: (className) => instance.root_.classList.add(className),
       browserSupportsCssVars: () => util.supportsCssVariables(window),
@@ -51,10 +50,7 @@ class MDCRipple extends MDCComponent<MDCRippleFoundation> implements RippleCapab
         instance.root_.removeEventListener(evtType, handler, util.applyPassive()),
       deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
       getWindowPageOffset: () => ({x: window.pageXOffset, y: window.pageYOffset}),
-      isSurfaceActive: () => {
-        const root = instance.root_;
-        return root[MATCHES as 'matches'](':active');
-      },
+      isSurfaceActive: () => ponyfill.matches(instance.root_, ':active'),
       isSurfaceDisabled: () => Boolean(instance.disabled),
       isUnbounded: () => Boolean(instance.unbounded),
       registerDocumentInteractionHandler: (evtType, handler) =>
@@ -67,12 +63,11 @@ class MDCRipple extends MDCComponent<MDCRippleFoundation> implements RippleCapab
     };
   }
 
+  // Public visibility for this property is required by RippleCapableSurface.
+  root_!: Element; // assigned in MDCComponent constructor
+
   disabled = false;
-  /**
-   * this line may seem redundent, but without this the TS compiler does not
-   * think that `this` is of type RippleCapableSurface
-   */
-  root_!: Element;
+
   private unbounded_?: boolean;
 
   get unbounded(): boolean {
@@ -114,7 +109,6 @@ class MDCRipple extends MDCComponent<MDCRippleFoundation> implements RippleCapab
   private setUnbounded_() {
     this.foundation_.setUnbounded(Boolean(this.unbounded_));
   }
-
 }
 
 export {MDCRipple as default, MDCRipple, util};
