@@ -31,7 +31,7 @@ import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 import {MDCCheckbox, MDCCheckboxFoundation} from '../../../packages/mdc-checkbox/index';
 import {MDCRipple} from '../../../packages/mdc-ripple/index';
 import {strings} from '../../../packages/mdc-checkbox/constants';
-import {getMatchesProperty} from '../../../packages/mdc-ripple/util';
+import {ponyfill} from '../../../packages/mdc-dom/index';
 
 function getFixture() {
   return bel`
@@ -95,15 +95,20 @@ if (supportsCssVariables(window)) {
     const input = root.querySelector('input');
     clock.runToFrame();
 
+    const realMatches = ponyfill.matches;
     const fakeMatches = td.func('.matches');
-    td.when(fakeMatches(':active')).thenReturn(true);
-    input[getMatchesProperty(HTMLElement.prototype)] = fakeMatches;
+    td.when(fakeMatches(td.matchers.isA(Element), ':active')).thenReturn(true);
+    ponyfill.matches = fakeMatches;
 
-    assert.isTrue(root.classList.contains('mdc-ripple-upgraded'));
-    domEvents.emit(input, 'keydown');
-    clock.runToFrame();
+    try {
+      assert.isTrue(root.classList.contains('mdc-ripple-upgraded'));
+      domEvents.emit(input, 'keydown');
+      clock.runToFrame();
 
-    assert.isTrue(root.classList.contains('mdc-ripple-upgraded--foreground-activation'));
+      assert.isTrue(root.classList.contains('mdc-ripple-upgraded--foreground-activation'));
+    } finally {
+      ponyfill.matches = realMatches;
+    }
   });
 }
 

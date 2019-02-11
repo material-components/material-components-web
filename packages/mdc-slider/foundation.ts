@@ -128,7 +128,7 @@ class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   private readonly blurHandler_: SpecificEventListener<'blur'>;
   private readonly resizeHandler_: SpecificEventListener<'resize'>;
 
-  constructor(adapter: Partial<MDCSliderAdapter> = {}) {
+  constructor(adapter?: Partial<MDCSliderAdapter>) {
     super({...MDCSliderFoundation.defaultAdapter, ...adapter});
 
     this.thumbContainerPointerHandler_ = () => this.handlingThumbTargetEvt_ = true;
