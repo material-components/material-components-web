@@ -80,7 +80,7 @@ class MDCTabFoundation extends MDCFoundation<MDCTabAdapter> {
   /**
    * Activates the Tab
    */
-  activate(previousIndicatorClientRect?: ClientRect | null) {
+  activate(previousIndicatorClientRect?: ClientRect) {
     this.adapter_.addClass(cssClasses.ACTIVE);
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'true');
     this.adapter_.setAttr(strings.TABINDEX, '0');

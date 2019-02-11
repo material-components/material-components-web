@@ -146,7 +146,7 @@ Property | Value Type | Description
 
 Method Signature | Description
 --- | ---
-`activate(previousIndicatorClientRect: ClientRect=) => void` | Activates the indicator.  `previousIndicatorClientRect` is an optional argument.
+`activate(previousIndicatorClientRect?: ClientRect) => void` | Activates the indicator.  `previousIndicatorClientRect` is an optional argument.
 `deactivate() => void` | Deactivates the indicator.
 `focus() => void` | Focuses the tab.
 `computeIndicatorClientRect() => ClientRect` | Returns the bounding client rect of the indicator.
@@ -168,7 +168,7 @@ Method Signature | Description
 `removeClass(className: string) => void` | Removes a class from the root element.
 `hasClass(className: string) => boolean` | Returns true if the root element contains the given class.
 `setAttr(attr: string, value: string) => void` | Sets the given attribute on the root element to the given value.
-`activateIndicator(previousIndicatorClientRect: ClientRect=) => void` | Activates the tab indicator subcomponent. `previousIndicatorClientRect` is an optional argument.
+`activateIndicator(previousIndicatorClientRect?: ClientRect) => void` | Activates the tab indicator subcomponent. `previousIndicatorClientRect` is an optional argument.
 `deactivateIndicator() => void` | Deactivates the tab indicator subcomponent.
 `getOffsetLeft() => number` | Returns the `offsetLeft` value of the root element.
 `getOffsetWidth() => number` | Returns the `offsetWidth` value of the root element.
@@ -184,7 +184,7 @@ Method Signature | Description
 `handleClick() => void` | Handles the logic for the `"click"` event.
 `isActive() => boolean` | Returns whether the tab is active.
 `setFocusOnActivate(focusOnActivate: boolean) => void` | Sets whether the tab should focus itself when activated.
-`activate(previousIndicatorClientRect: ClientRect=) => void` | Activates the tab. `previousIndicatorClientRect` is an optional argument.
+`activate(previousIndicatorClientRect?: ClientRect) => void` | Activates the tab. `previousIndicatorClientRect` is an optional argument.
 `deactivate() => void` | Deactivates the tab.
 `computeDimensions() => MDCTabDimensions` | Returns the dimensions of the tab.
 

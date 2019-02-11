@@ -58,7 +58,7 @@ interface MDCTabAdapter {
    * Activates the indicator element.
    * @param previousIndicatorClientRect The client rect of the previously activated indicator
    */
-  activateIndicator(previousIndicatorClientRect?: ClientRect | null): void;
+  activateIndicator(previousIndicatorClientRect?: ClientRect): void;
 
   /** Deactivates the indicator. */
   deactivateIndicator(): void;
