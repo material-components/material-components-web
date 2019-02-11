@@ -36,7 +36,6 @@ export interface MDCTabDimensions {
   contentRight: number;
 }
 
-// TODO(acdvorak): Use this style everywhere
 export type TabInteractionEvent = CustomEvent<TabInteractionEventDetail>;
 
 export interface TabInteractionEventDetail {
