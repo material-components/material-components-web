@@ -93,7 +93,7 @@ class MDCDialog extends MDCComponent<MDCDialogFoundation> {
     this.buttons_ = [].slice.call(this.root_.querySelectorAll<HTMLElement>(strings.BUTTON_SELECTOR));
     this.defaultButton_ = this.root_.querySelector<HTMLElement>(strings.DEFAULT_BUTTON_SELECTOR);
     this.focusTrapFactory_ = focusTrapFactory;
-    this.initialFocusEl_ = initialFocusEl as HTMLElement;
+    this.initialFocusEl_ = initialFocusEl as HTMLElement | null;
     this.buttonRipples_ = [];
 
     for (const buttonEl of this.buttons_) {
