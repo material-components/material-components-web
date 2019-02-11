@@ -30,7 +30,7 @@
 @import "./keyframes";
 @import "./variables";
 
-@mixin mdc-ripple($query: mdc-feature-all()) {
+@mixin mdc-ripple-core-styles($query: mdc-feature-all()) {
   // postcss-bem-linter: define ripple-surface
 
   $feat-structure: mdc-feature-create-target($query, structure);

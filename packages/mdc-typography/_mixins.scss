@@ -24,7 +24,7 @@
 @import "@material/feature-targeting/mixins";
 @import "./variables";
 
-@mixin mdc-typography-top-level($query: mdc-feature-all()) {
+@mixin mdc-typography-core-styles($query: mdc-feature-all()) {
   .mdc-typography {
     @include mdc-typography-base($query: $query);
   }

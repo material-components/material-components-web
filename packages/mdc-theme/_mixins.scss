@@ -24,7 +24,7 @@
 @import "@material/feature-targeting/mixins";
 @import "./variables";
 
-@mixin mdc-theme($query: mdc-feature-all()) {
+@mixin mdc-theme-core-styles($query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
 
   :root {

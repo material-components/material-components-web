@@ -25,7 +25,7 @@
 @import "@material/theme/variables";
 @import "./variables";
 
-@mixin mdc-elevation-top-level($query: mdc-feature-all()) {
+@mixin mdc-elevation-core-styles($query: mdc-feature-all()) {
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-structure: mdc-feature-create-target($query, structure);
 
