@@ -52,7 +52,7 @@ class MDCNotchedOutlineFoundation extends MDCFoundation<MDCNotchedOutlineAdapter
     // tslint:enable:object-literal-sort-keys
   }
 
-  constructor(adapter: Partial<MDCNotchedOutlineAdapter> = {}) {
+  constructor(adapter?: Partial<MDCNotchedOutlineAdapter>) {
     super({...MDCNotchedOutlineFoundation.defaultAdapter, ...adapter});
   }
 

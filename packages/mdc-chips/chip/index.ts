@@ -95,10 +95,10 @@ class MDCChip extends MDCComponent<MDCChipFoundation> implements RippleCapableSu
     this.trailingIcon_ = this.root_.querySelector(strings.TRAILING_ICON_SELECTOR);
     this.checkmark_ = this.root_.querySelector(strings.CHECKMARK_SELECTOR);
 
-    const adapter = Object.assign(MDCRipple.createAdapter(this), {
+    this.ripple_ = rippleFactory(this.root_, new MDCRippleFoundation({
+      ...MDCRipple.createAdapter(this),
       computeBoundingRect: () => this.foundation_.getDimensions(),
-    });
-    this.ripple_ = rippleFactory(this.root_, new MDCRippleFoundation(adapter));
+    }));
   }
 
   initialSyncWithDOM() {

@@ -69,8 +69,8 @@ class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   private isCheckboxList_ = false;
   private isRadioList_ = false;
 
-  constructor(adapter: MDCListAdapter) {
-    super(Object.assign(MDCListFoundation.defaultAdapter, adapter));
+  constructor(adapter?: Partial<MDCListAdapter>) {
+    super({...MDCListFoundation.defaultAdapter, ...adapter});
   }
 
   layout() {
