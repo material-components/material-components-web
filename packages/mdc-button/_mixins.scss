@@ -171,16 +171,18 @@
 }
 
 @mixin mdc-button-shape-radius($radius, $rtl-reflexive: false, $query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
-
-  @include mdc-feature-targets($feat-structure) {
-    @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-button-height, $radius), $rtl-reflexive);
-  }
+  @include mdc-shape-radius(
+    mdc-shape-resolve-percentage-radius($mdc-button-height, $radius),
+    $rtl-reflexive,
+    $query: $query
+  );
 
   &.mdc-button--dense {
-    @include mdc-feature-targets($feat-structure) {
-      @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-dense-button-height, $radius), $rtl-reflexive);
-    }
+    @include mdc-shape-radius(
+      mdc-shape-resolve-percentage-radius($mdc-dense-button-height, $radius),
+      $rtl-reflexive,
+      $query: $query
+    );
   }
 }
 
