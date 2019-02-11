@@ -186,7 +186,8 @@ test(`#isClosing returns true when it has ${cssClasses.CLOSING} class`, () => {
 });
 
 test(`#isClosing returns false when it lacks ${cssClasses.CLOSING} class`, () => {
-  const foundation = new MDCModalDrawerFoundation();
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasClass(cssClasses.CLOSING)).thenReturn(false);
   assert.isFalse(foundation.isClosing());
 });
 
