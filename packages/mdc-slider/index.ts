@@ -95,16 +95,16 @@ class MDCSlider extends MDCComponent<MDCSliderFoundation> {
       removeAttribute: (name) => this.root_.removeAttribute(name),
       computeBoundingRect: () => this.root_.getBoundingClientRect(),
       getTabIndex: () => this.root_.tabIndex,
-      registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
-      deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
-      registerThumbContainerInteractionHandler: (type, handler) => {
-        this.thumbContainer_.addEventListener(type, handler);
+      registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
+      deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
+      registerThumbContainerInteractionHandler: (evtType, handler) => {
+        this.thumbContainer_.addEventListener(evtType, handler);
       },
-      deregisterThumbContainerInteractionHandler: (type, handler) => {
-        this.thumbContainer_.removeEventListener(type, handler);
+      deregisterThumbContainerInteractionHandler: (evtType, handler) => {
+        this.thumbContainer_.removeEventListener(evtType, handler);
       },
-      registerBodyInteractionHandler: (type, handler) => document.body.addEventListener(type, handler),
-      deregisterBodyInteractionHandler: (type, handler) => document.body.removeEventListener(type, handler),
+      registerBodyInteractionHandler: (evtType, handler) => document.body.addEventListener(evtType, handler),
+      deregisterBodyInteractionHandler: (evtType, handler) => document.body.removeEventListener(evtType, handler),
       registerResizeHandler: (handler) => window.addEventListener('resize', handler),
       deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
       notifyInput: () => this.emit(strings.INPUT_EVENT, this),

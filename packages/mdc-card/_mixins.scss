@@ -291,11 +291,7 @@
 }
 
 @mixin mdc-card-shape-radius($radius, $rtl-reflexive: false, $query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
-
-  @include mdc-feature-targets($feat-structure) {
-    @include mdc-shape-radius($radius, $rtl-reflexive);
-  }
+  @include mdc-shape-radius($radius, $rtl-reflexive, $query: $query);
 }
 
 @mixin mdc-card-media-aspect-ratio($x, $y, $query: mdc-feature-all()) {
