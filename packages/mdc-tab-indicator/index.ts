@@ -61,7 +61,7 @@ class MDCTabIndicator extends MDCComponent<MDCTabIndicatorFoundation> {
     return new MDCSlidingTabIndicatorFoundation(adapter);
   }
 
-  activate(previousIndicatorClientRect?: ClientRect | null) {
+  activate(previousIndicatorClientRect?: ClientRect) {
     this.foundation_.activate(previousIndicatorClientRect);
   }
 

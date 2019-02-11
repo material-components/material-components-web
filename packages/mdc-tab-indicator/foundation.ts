@@ -53,7 +53,7 @@ abstract class MDCTabIndicatorFoundation extends MDCFoundation<MDCTabIndicatorAd
     return this.adapter_.computeContentClientRect();
   }
 
-  abstract activate(previousIndicatorClientRect?: ClientRect | null): void;
+  abstract activate(previousIndicatorClientRect?: ClientRect): void;
   abstract deactivate(): void;
 }
 
