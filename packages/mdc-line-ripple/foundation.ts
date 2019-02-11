@@ -21,8 +21,8 @@
  * THE SOFTWARE.
  */
 
-import {SpecificEventListener} from '@material/base';
 import {MDCFoundation} from '@material/base/foundation';
+import {SpecificEventListener} from '@material/base/index';
 import {MDCLineRippleAdapter} from './adapter';
 import {cssClasses} from './constants';
 
@@ -49,7 +49,7 @@ class MDCLineRippleFoundation extends MDCFoundation<MDCLineRippleAdapter> {
 
   private readonly transitionEndHandler_: SpecificEventListener<'transitionend'>;
 
-  constructor(adapter: Partial<MDCLineRippleAdapter> = {}) {
+  constructor(adapter?: Partial<MDCLineRippleAdapter>) {
     super({...MDCLineRippleFoundation.defaultAdapter, ...adapter});
 
     this.transitionEndHandler_ = (evt) => this.handleTransitionEnd(evt);

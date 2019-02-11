@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@material/base": "^0.41.0",
+    "@material/feature-targeting": "^0.44.0",
     "@material/list": "^0.44.0",
     "@material/menu-surface": "^0.44.0",
     "@material/ripple": "^0.44.0",
