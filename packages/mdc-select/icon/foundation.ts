@@ -50,13 +50,12 @@ class MDCSelectIconFoundation extends MDCFoundation<MDCSelectIconAdapter> {
     // tslint:enable:object-literal-sort-keys
   }
 
-  private savedTabIndex_!: string | null; // assigned in initialSyncWithDOM()
+  private savedTabIndex_: string | null = null;
   private readonly interactionHandler_!: EventListener; // assigned in initialSyncWithDOM()
 
   constructor(adapter?: Partial<MDCSelectIconAdapter>) {
     super({...MDCSelectIconFoundation.defaultAdapter, ...adapter});
 
-    this.savedTabIndex_ = null;
     this.interactionHandler_ = (evt) => this.handleInteraction(evt);
   }
 
