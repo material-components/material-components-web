@@ -21,6 +21,7 @@
  * THE SOFTWARE.
  */
 
+import {SpecificEventListener} from '@material/base/types';
 import {MDCComponent} from '@material/base/component';
 import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
 import {MDCTabIndicator} from '@material/tab-indicator/index';
@@ -40,7 +41,7 @@ class MDCTab extends MDCComponent<MDCTabFoundation> implements RippleCapableSurf
   private ripple_!: MDCRipple; // assigned in initialize();
   private tabIndicator_!: MDCTabIndicator; // assigned in initialize();
   private content_!: HTMLElement; // assigned in initialize();
-  private handleClick_!: EventListener; // assigned in initialize();
+  private handleClick_!: SpecificEventListener<'click'>; // assigned in initialize();
 
   initialize(
       rippleFactory: RippleFactory = (el, foundation) => new MDCRipple(el, foundation),
@@ -63,7 +64,7 @@ class MDCTab extends MDCComponent<MDCTabFoundation> implements RippleCapableSurf
   }
 
   initialSyncWithDOM() {
-    this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
+    this.handleClick_ = () => this.foundation_.handleClick();
     this.listen('click', this.handleClick_);
   }
 
@@ -107,7 +108,7 @@ class MDCTab extends MDCComponent<MDCTabFoundation> implements RippleCapableSurf
   /**
    * Activates the tab
    */
-  activate(computeIndicatorClientRect?: ClientRect | null) {
+  activate(computeIndicatorClientRect?: ClientRect) {
     this.foundation_.activate(computeIndicatorClientRect);
   }
 
