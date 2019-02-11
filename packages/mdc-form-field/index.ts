@@ -57,8 +57,16 @@ class MDCFormField extends MDCComponent<MDCFormFieldFoundation> {
           this.input_.ripple.deactivate();
         }
       },
-      deregisterInteractionHandler: (type, handler) => this.label_ && this.label_.removeEventListener(type, handler),
-      registerInteractionHandler: (type, handler) => this.label_ && this.label_.addEventListener(type, handler),
+      deregisterInteractionHandler: (evtType, handler) => {
+        if (this.label_) {
+          this.label_.removeEventListener(evtType, handler);
+        }
+      },
+      registerInteractionHandler: (evtType, handler) => {
+        if (this.label_) {
+          this.label_.addEventListener(evtType, handler);
+        }
+      },
     });
   }
 }
