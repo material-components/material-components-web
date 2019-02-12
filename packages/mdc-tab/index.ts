@@ -21,8 +21,8 @@
  * THE SOFTWARE.
  */
 
-import {SpecificEventListener} from '@material/base/types';
 import {MDCComponent} from '@material/base/component';
+import {SpecificEventListener} from '@material/base/types';
 import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
 import {MDCTabIndicator} from '@material/tab-indicator/index';
 import {MDCTabFoundation} from './foundation';

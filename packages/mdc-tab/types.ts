@@ -21,7 +21,8 @@
  * THE SOFTWARE.
  */
 
-import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
+import {MDCRippleFoundation} from '@material/ripple/foundation';
+import {MDCRipple} from '@material/ripple/index';
 import {MDCTabIndicator} from '@material/tab-indicator/index';
 
 /**
