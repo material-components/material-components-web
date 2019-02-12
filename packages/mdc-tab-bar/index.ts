@@ -21,8 +21,8 @@
  * THE SOFTWARE.
  */
 
-import {CustomEventListener, SpecificEventListener} from '@material/base';
 import {MDCComponent} from '@material/base/component';
+import {CustomEventListener, SpecificEventListener} from '@material/base/types';
 import {MDCTabScroller} from '@material/tab-scroller/index';
 import {MDCTab, MDCTabFoundation, TabInteractionEvent} from '@material/tab/index';
 import {MDCTabBarFoundation} from './foundation';

@@ -22,8 +22,7 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
-import {TabInteractionEventDetail} from '@material/tab/index';
-import {MDCTabDimensions} from '@material/tab/index';
+import {MDCTabDimensions, TabInteractionEventDetail} from '@material/tab/types';
 import {MDCTabBarAdapter} from './adapter';
 import {numbers, strings} from './constants';
 
