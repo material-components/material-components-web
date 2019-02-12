@@ -21,84 +21,51 @@
  * THE SOFTWARE.
  */
 
-import MDCTabScrollerRTL from './rtl-scroller';
+import {MDCTabScrollerRTL} from './rtl-scroller';
+import {MDCTabScrollerAnimation, MDCTabScrollerHorizontalEdges} from './types';
 
-/* eslint-disable no-unused-vars */
-import {MDCTabScrollerAnimation, MDCTabScrollerHorizontalEdges} from './adapter';
-/* eslint-enable no-unused-vars */
-
-/**
- * @extends {MDCTabScrollerRTL}
- * @final
- */
-class MDCTabScrollerRTLDefault extends MDCTabScrollerRTL {
-  /**
-   * @return {number}
-   */
-  getScrollPositionRTL() {
+class MDCTabScrollerRTLReverse extends MDCTabScrollerRTL {
+  getScrollPositionRTL(translateX: number): number {
     const currentScrollLeft = this.adapter_.getScrollAreaScrollLeft();
-    const {right} = this.calculateScrollEdges_();
     // Scroll values on most browsers are ints instead of floats so we round
-    return Math.round(right - currentScrollLeft);
+    return Math.round(currentScrollLeft - translateX);
   }
 
-  /**
-   * @param {number} scrollX
-   * @return {!MDCTabScrollerAnimation}
-   */
-  scrollToRTL(scrollX) {
-    const edges = this.calculateScrollEdges_();
+  scrollToRTL(scrollX: number): MDCTabScrollerAnimation {
     const currentScrollLeft = this.adapter_.getScrollAreaScrollLeft();
-    const clampedScrollLeft = this.clampScrollValue_(edges.right - scrollX);
-    return /** @type {!MDCTabScrollerAnimation} */ ({
+    const clampedScrollLeft = this.clampScrollValue_(scrollX);
+    return {
       finalScrollPosition: clampedScrollLeft,
-      scrollDelta: clampedScrollLeft - currentScrollLeft,
-    });
+      scrollDelta: currentScrollLeft - clampedScrollLeft,
+    };
   }
 
-  /**
-   * @param {number} scrollX
-   * @return {!MDCTabScrollerAnimation}
-   */
-  incrementScrollRTL(scrollX) {
+  incrementScrollRTL(scrollX: number): MDCTabScrollerAnimation {
     const currentScrollLeft = this.adapter_.getScrollAreaScrollLeft();
-    const clampedScrollLeft = this.clampScrollValue_(currentScrollLeft - scrollX);
-    return /** @type {!MDCTabScrollerAnimation} */ ({
+    const clampedScrollLeft = this.clampScrollValue_(currentScrollLeft + scrollX);
+    return {
       finalScrollPosition: clampedScrollLeft,
-      scrollDelta: clampedScrollLeft - currentScrollLeft,
-    });
+      scrollDelta: currentScrollLeft - clampedScrollLeft,
+    };
   }
 
-  /**
-   * @param {number} scrollX
-   * @return {number}
-   */
-  getAnimatingScrollPosition(scrollX) {
-    return scrollX;
+  getAnimatingScrollPosition(scrollX: number, translateX: number): number {
+    return scrollX + translateX;
   }
 
-  /**
-   * @return {!MDCTabScrollerHorizontalEdges}
-   * @private
-   */
-  calculateScrollEdges_() {
+  private calculateScrollEdges_(): MDCTabScrollerHorizontalEdges {
     const contentWidth = this.adapter_.getScrollContentOffsetWidth();
     const rootWidth = this.adapter_.getScrollAreaOffsetWidth();
-    return /** @type {!MDCTabScrollerHorizontalEdges} */ ({
-      left: 0,
-      right: contentWidth - rootWidth,
-    });
+    return {
+      left: contentWidth - rootWidth,
+      right: 0,
+    };
   }
 
-  /**
-   * @param {number} scrollX
-   * @return {number}
-   * @private
-   */
-  clampScrollValue_(scrollX) {
+  private clampScrollValue_(scrollX: number): number {
     const edges = this.calculateScrollEdges_();
-    return Math.min(Math.max(edges.left, scrollX), edges.right);
+    return Math.min(Math.max(edges.right, scrollX), edges.left);
   }
 }
 
-export default MDCTabScrollerRTLDefault;
+export {MDCTabScrollerRTLReverse as default, MDCTabScrollerRTLReverse};
