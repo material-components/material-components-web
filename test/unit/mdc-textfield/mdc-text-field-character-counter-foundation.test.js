@@ -46,6 +46,10 @@ test('defaultAdapter returns a complete adapter implementation', () => {
 
 const setupTest = () => setupFoundationTest(MDCTextFieldCharacterCounterFoundation);
 
+test('istanbul code coverage', () => {
+  assert.doesNotThrow(() => new MDCTextFieldCharacterCounterFoundation());
+});
+
 test('#setContent sets the content of the character counter element', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setCounterValue(12, 20);
@@ -53,9 +57,7 @@ test('#setContent sets the content of the character counter element', () => {
 });
 
 test('#setContent current length does not exceed character count limit', () => {
-  const foundation = new MDCTextFieldCharacterCounterFoundation();
-  const adapter = foundation.adapter_;
-  adapter.setContent = td.func('setContent');
+  const {foundation, mockAdapter} = setupTest();
   foundation.setCounterValue(24, 20);
-  td.verify(adapter.setContent('20 / 20'));
+  td.verify(mockAdapter.setContent('20 / 20'));
 });

@@ -48,12 +48,14 @@ test('defaultAdapter returns a complete adapter implementation', () => {
 
 const setupTest = () => setupFoundationTest(MDCTextFieldHelperTextFoundation);
 
+test('istanbul code coverage', () => {
+  assert.doesNotThrow(() => new MDCTextFieldHelperTextFoundation());
+});
+
 test('#setContent sets the content of the helper text element', () => {
-  const foundation = new MDCTextFieldHelperTextFoundation();
-  const adapter = foundation.adapter_;
-  adapter.setContent = td.func('setContent');
+  const {foundation, mockAdapter} = setupTest();
   foundation.setContent('foo');
-  td.verify(adapter.setContent('foo'));
+  td.verify(mockAdapter.setContent('foo'));
 });
 
 test('#setPersistent toggles the persistent class', () => {
