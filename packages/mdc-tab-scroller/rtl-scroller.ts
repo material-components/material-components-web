@@ -21,50 +21,27 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
+import {MDCTabScrollerAdapter} from './adapter';
+import {MDCTabScrollerAnimation} from './types';
 
-/* eslint-disable no-unused-vars */
-import {MDCTabScrollerAdapter, MDCTabScrollerAnimation} from './adapter';
-/* eslint-enable no-unused-vars */
+abstract class MDCTabScrollerRTL {
+  protected readonly adapter_: MDCTabScrollerAdapter;
 
-/**
- * @abstract
- */
-class MDCTabScrollerRTL {
-  /** @param {!MDCTabScrollerAdapter} adapter */
-  constructor(adapter) {
-    /** @private */
+  constructor(adapter: MDCTabScrollerAdapter) {
     this.adapter_ = adapter;
   }
 
-  /**
-   * @param {number} translateX The current translateX position
-   * @return {number}
-   * @abstract
-   */
-  getScrollPositionRTL(translateX) {}
+  abstract getScrollPositionRTL(translateX: number): number;
+
+  abstract scrollToRTL(scrollX: number): MDCTabScrollerAnimation;
+
+  abstract incrementScrollRTL(scrollX: number): MDCTabScrollerAnimation;
 
   /**
-   * @param {number} scrollX
-   * @return {!MDCTabScrollerAnimation}
-   * @abstract
+   * @param scrollX The current scrollX position
+   * @param translateX The current translateX position
    */
-  scrollToRTL(scrollX) {}
-
-  /**
-   * @param {number} scrollX
-   * @return {!MDCTabScrollerAnimation}
-   * @abstract
-   */
-  incrementScrollRTL(scrollX) {}
-
-  /**
-   * @param {number} scrollX The current scrollX position
-   * @param {number} translateX The current translateX position
-   * @return {number}
-   * @abstract
-   */
-  getAnimatingScrollPosition(scrollX, translateX) {}
+  abstract getAnimatingScrollPosition(scrollX: number, translateX: number): number;
 }
 
-export default MDCTabScrollerRTL;
+export {MDCTabScrollerRTL as default, MDCTabScrollerRTL};
