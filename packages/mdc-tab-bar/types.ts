@@ -24,5 +24,5 @@
 import {MDCTabScroller} from '@material/tab-scroller/index';
 import {MDCTab} from '@material/tab/index';
 
-export type TabFactory = (el: Element) => MDCTab;
-export type TabScrollerFactory = (el: Element) => MDCTabScroller;
+export type TabFactory = (root: Element) => MDCTab;
+export type TabScrollerFactory = (root: Element) => MDCTabScroller;

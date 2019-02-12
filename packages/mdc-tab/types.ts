@@ -43,5 +43,5 @@ export interface TabInteractionEventDetail {
   tabId: string;
 }
 
-export type RippleFactory = (el: Element, foundation: MDCRippleFoundation) => MDCRipple;
-export type TabIndicatorFactory = (el: Element) => MDCTabIndicator;
+export type RippleFactory = (root: Element, foundation: MDCRippleFoundation) => MDCRipple;
+export type TabIndicatorFactory = (root: Element) => MDCTabIndicator;

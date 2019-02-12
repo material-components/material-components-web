@@ -32,6 +32,8 @@ import * as util from './util';
 
 const strings = MDCDialogFoundation.strings;
 
+export type MDCDialogFactory = (root: Element, foundation?: MDCDialogFoundation) => MDCDialog;
+
 export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   get isOpen() {
     return this.foundation_.isOpen();

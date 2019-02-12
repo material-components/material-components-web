@@ -38,5 +38,5 @@ export interface DefaultMenuItemEventDetail extends MenuItemEventDetail {
   item: Element;
 }
 
-export type MenuSurfaceFactory = (el: Element) => MDCMenuSurface;
-export type ListFactory = (el: Element) => MDCList;
+export type MenuSurfaceFactory = (root: Element) => MDCMenuSurface;
+export type ListFactory = (root: Element) => MDCList;

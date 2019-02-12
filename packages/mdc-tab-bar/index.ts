@@ -49,8 +49,8 @@ class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
   }
 
   initialize(
-      tabFactory: TabFactory = (el) => new MDCTab(el),
-      tabScrollerFactory: TabScrollerFactory = (el) => new MDCTabScroller(el),
+      tabFactory: TabFactory = (root) => new MDCTab(el),
+      tabScrollerFactory: TabScrollerFactory = (root) => new MDCTabScroller(el),
   ) {
     this.tabList_ = this.instantiateTabs_(tabFactory);
     this.tabScroller_ = this.instantiateTabScroller_(tabScrollerFactory);

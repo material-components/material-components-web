@@ -25,6 +25,8 @@ import {MDCComponent} from '@material/base/component';
 import {MDCSelectionControl} from '@material/selection-control/index';
 import {MDCFormFieldFoundation} from './foundation';
 
+export type MDCFormFieldFactory = (root: Element, foundation?: MDCFormFieldFoundation) => MDCFormField;
+
 export class MDCFormField extends MDCComponent<MDCFormFieldFoundation> {
   static attachTo(root: HTMLElement) {
     return new MDCFormField(root);
