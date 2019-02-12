@@ -21,25 +21,26 @@
  * THE SOFTWARE.
  */
 
-import td from 'testdouble';
+const strings = {
+  ARROW_LEFT_KEY: 'ArrowLeft',
+  ARROW_RIGHT_KEY: 'ArrowRight',
+  END_KEY: 'End',
+  ENTER_KEY: 'Enter',
+  HOME_KEY: 'Home',
+  SPACE_KEY: 'Space',
+  TAB_ACTIVATED_EVENT: 'MDCTabBar:activated',
+  TAB_SCROLLER_SELECTOR: '.mdc-tab-scroller',
+  TAB_SELECTOR: '.mdc-tab',
+};
 
-import {setupFoundationTest} from '../helpers/setup';
-import {MDCFadingTabIndicatorFoundation} from '../../../packages/mdc-tab-indicator/fading-foundation';
+const numbers = {
+  ARROW_LEFT_KEYCODE: 37,
+  ARROW_RIGHT_KEYCODE: 39,
+  END_KEYCODE: 35,
+  ENTER_KEYCODE: 13,
+  EXTRA_SCROLL_AMOUNT: 20,
+  HOME_KEYCODE: 36,
+  SPACE_KEYCODE: 32,
+};
 
-suite('MDCFadingTabIndicatorFoundation');
-
-const setupTest = () => setupFoundationTest(MDCFadingTabIndicatorFoundation);
-
-test(`#activate adds the ${MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE} class`, () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.activate();
-  td.verify(mockAdapter.addClass(MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE));
-});
-
-test(`#deactivate removes the ${MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE} class`, () => {
-  const foundation = new MDCFadingTabIndicatorFoundation();
-  const adapter = foundation.adapter_;
-  adapter.removeClass = td.func('removeClass');
-  foundation.deactivate();
-  td.verify(adapter.removeClass(MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE));
-});
+export {numbers, strings};

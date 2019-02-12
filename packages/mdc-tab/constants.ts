@@ -21,43 +21,20 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
+const cssClasses = {
+  ACTIVE: 'mdc-tab--active',
+};
 
-/**
- * Adapter for MDC Tab Indicator.
- *
- * Defines the shape of the adapter expected by the foundation. Implement this
- * adapter to integrate the Tab Indicator into your framework. See
- * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
- * for more information.
- *
- * @record
- */
-class MDCTabIndicatorAdapter {
-  /**
-   * Adds the given className to the root element.
-   * @param {string} className The className to add
-   */
-  addClass(className) {}
+const strings = {
+  ARIA_SELECTED: 'aria-selected',
+  CONTENT_SELECTOR: '.mdc-tab__content',
+  INTERACTED_EVENT: 'MDCTab:interacted',
+  RIPPLE_SELECTOR: '.mdc-tab__ripple',
+  TABINDEX: 'tabIndex',
+  TAB_INDICATOR_SELECTOR: '.mdc-tab-indicator',
+};
 
-  /**
-   * Removes the given className from the root element.
-   * @param {string} className The className to remove
-   */
-  removeClass(className) {}
-
-  /**
-   * Returns the client rect of the content element.
-   * @return {!ClientRect}
-   */
-  computeContentClientRect() {}
-
-  /**
-   * Sets a style property of the content element to the passed value
-   * @param {string} propName The style property name to set
-   * @param {string} value The style property value
-   */
-  setContentStyleProperty(propName, value) {}
-}
-
-export default MDCTabIndicatorAdapter;
+export {
+  cssClasses,
+  strings,
+};

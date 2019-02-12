@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,25 +21,8 @@
  * THE SOFTWARE.
  */
 
-import td from 'testdouble';
+import {MDCTabScroller} from '@material/tab-scroller/index';
+import {MDCTab} from '@material/tab/index';
 
-import {setupFoundationTest} from '../helpers/setup';
-import {MDCFadingTabIndicatorFoundation} from '../../../packages/mdc-tab-indicator/fading-foundation';
-
-suite('MDCFadingTabIndicatorFoundation');
-
-const setupTest = () => setupFoundationTest(MDCFadingTabIndicatorFoundation);
-
-test(`#activate adds the ${MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE} class`, () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.activate();
-  td.verify(mockAdapter.addClass(MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE));
-});
-
-test(`#deactivate removes the ${MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE} class`, () => {
-  const foundation = new MDCFadingTabIndicatorFoundation();
-  const adapter = foundation.adapter_;
-  adapter.removeClass = td.func('removeClass');
-  foundation.deactivate();
-  td.verify(adapter.removeClass(MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE));
-});
+export type TabFactory = (el: Element) => MDCTab;
+export type TabScrollerFactory = (el: Element) => MDCTabScroller;
