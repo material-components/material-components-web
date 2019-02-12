@@ -21,19 +21,27 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
-const cssClasses = {
-  ACTIVE: 'mdc-tab-indicator--active',
-  FADE: 'mdc-tab-indicator--fade',
-  NO_TRANSITION: 'mdc-tab-indicator--no-transition',
-};
+import {MDCTabScrollerAdapter} from './adapter';
+import {MDCTabScrollerAnimation} from './types';
 
-/** @enum {string} */
-const strings = {
-  CONTENT_SELECTOR: '.mdc-tab-indicator__content',
-};
+abstract class MDCTabScrollerRTL {
+  protected readonly adapter_: MDCTabScrollerAdapter;
 
-export {
-  cssClasses,
-  strings,
-};
+  constructor(adapter: MDCTabScrollerAdapter) {
+    this.adapter_ = adapter;
+  }
+
+  abstract getScrollPositionRTL(translateX: number): number;
+
+  abstract scrollToRTL(scrollX: number): MDCTabScrollerAnimation;
+
+  abstract incrementScrollRTL(scrollX: number): MDCTabScrollerAnimation;
+
+  /**
+   * @param scrollX The current scrollX position
+   * @param translateX The current translateX position
+   */
+  abstract getAnimatingScrollPosition(scrollX: number, translateX: number): number;
+}
+
+export {MDCTabScrollerRTL as default, MDCTabScrollerRTL};

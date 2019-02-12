@@ -25,18 +25,14 @@ import {cssClasses} from './constants';
 
 /**
  * Stores result from computeHorizontalScrollbarHeight to avoid redundant processing.
- * @private {number|undefined}
  */
-let horizontalScrollbarHeight_;
+let horizontalScrollbarHeight_: number | undefined;
 
 /**
  * Computes the height of browser-rendered horizontal scrollbars using a self-created test element.
  * May return 0 (e.g. on OS X browsers under default configuration).
- * @param {!Document} documentObj
- * @param {boolean=} shouldCacheResult
- * @return {number}
  */
-function computeHorizontalScrollbarHeight(documentObj, shouldCacheResult = true) {
+export function computeHorizontalScrollbarHeight(documentObj: Document, shouldCacheResult = true): number {
   if (shouldCacheResult && typeof horizontalScrollbarHeight_ !== 'undefined') {
     return horizontalScrollbarHeight_;
   }
@@ -54,14 +50,20 @@ function computeHorizontalScrollbarHeight(documentObj, shouldCacheResult = true)
   return horizontalScrollbarHeight;
 }
 
-/**
- * @param {!Object} HTMLElementPrototype
- * @return {string}
- */
-function getMatchesProperty(HTMLElementPrototype) {
-  return [
-    'msMatchesSelector', 'matches',
-  ].filter((p) => p in HTMLElementPrototype).pop();
-}
+export type VendorMatchesFunctionName = 'webkitMatchesSelector' | 'msMatchesSelector';
+export type MatchesFunctionName = VendorMatchesFunctionName | 'matches';
 
-export {computeHorizontalScrollbarHeight, getMatchesProperty};
+export function getMatchesProperty(htmlElementPrototype: {}): MatchesFunctionName {
+  // Order is important because we return the first existing method we find.
+  // Do not change the order of the items in the below array.
+  const matchesMethods: MatchesFunctionName[] = ['matches', 'webkitMatchesSelector', 'msMatchesSelector'];
+  let method: MatchesFunctionName = 'matches';
+  for (const matchesMethod of matchesMethods) {
+    if (matchesMethod in htmlElementPrototype) {
+      method = matchesMethod;
+      break;
+    }
+  }
+
+  return method;
+}

@@ -21,25 +21,18 @@
  * THE SOFTWARE.
  */
 
-import td from 'testdouble';
+const cssClasses = {
+  ANIMATING: 'mdc-tab-scroller--animating',
+  SCROLL_AREA_SCROLL: 'mdc-tab-scroller__scroll-area--scroll',
+  SCROLL_TEST: 'mdc-tab-scroller__test',
+};
 
-import {setupFoundationTest} from '../helpers/setup';
-import {MDCFadingTabIndicatorFoundation} from '../../../packages/mdc-tab-indicator/fading-foundation';
+const strings = {
+  AREA_SELECTOR: '.mdc-tab-scroller__scroll-area',
+  CONTENT_SELECTOR: '.mdc-tab-scroller__scroll-content',
+};
 
-suite('MDCFadingTabIndicatorFoundation');
-
-const setupTest = () => setupFoundationTest(MDCFadingTabIndicatorFoundation);
-
-test(`#activate adds the ${MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE} class`, () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.activate();
-  td.verify(mockAdapter.addClass(MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE));
-});
-
-test(`#deactivate removes the ${MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE} class`, () => {
-  const foundation = new MDCFadingTabIndicatorFoundation();
-  const adapter = foundation.adapter_;
-  adapter.removeClass = td.func('removeClass');
-  foundation.deactivate();
-  td.verify(adapter.removeClass(MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE));
-});
+export {
+  cssClasses,
+  strings,
+};

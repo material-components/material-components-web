@@ -21,31 +21,26 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
 const strings = {
-  TAB_ACTIVATED_EVENT: 'MDCTabBar:activated',
-  TAB_SCROLLER_SELECTOR: '.mdc-tab-scroller',
-  TAB_SELECTOR: '.mdc-tab',
   ARROW_LEFT_KEY: 'ArrowLeft',
   ARROW_RIGHT_KEY: 'ArrowRight',
   END_KEY: 'End',
-  HOME_KEY: 'Home',
   ENTER_KEY: 'Enter',
+  HOME_KEY: 'Home',
   SPACE_KEY: 'Space',
+  TAB_ACTIVATED_EVENT: 'MDCTabBar:activated',
+  TAB_SCROLLER_SELECTOR: '.mdc-tab-scroller',
+  TAB_SELECTOR: '.mdc-tab',
 };
 
-/** @enum {number} */
 const numbers = {
-  EXTRA_SCROLL_AMOUNT: 20,
   ARROW_LEFT_KEYCODE: 37,
   ARROW_RIGHT_KEYCODE: 39,
   END_KEYCODE: 35,
-  HOME_KEYCODE: 36,
   ENTER_KEYCODE: 13,
+  EXTRA_SCROLL_AMOUNT: 20,
+  HOME_KEYCODE: 36,
   SPACE_KEYCODE: 32,
 };
 
-export {
-  numbers,
-  strings,
-};
+export {numbers, strings};

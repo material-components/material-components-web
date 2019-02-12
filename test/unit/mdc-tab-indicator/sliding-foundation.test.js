@@ -24,7 +24,7 @@
 import td from 'testdouble';
 
 import {setupFoundationTest} from '../helpers/setup';
-import MDCSlidingTabIndicatorFoundation from '../../../packages/mdc-tab-indicator/sliding-foundation';
+import {MDCSlidingTabIndicatorFoundation} from '../../../packages/mdc-tab-indicator/sliding-foundation';
 
 suite('MDCSlidingTabIndicatorFoundation');
 
@@ -56,7 +56,9 @@ test('#activate does not modify transform and does not transition if no client r
 });
 
 test(`#deactivate removes the ${MDCSlidingTabIndicatorFoundation.cssClasses.ACTIVE} class`, () => {
-  const {foundation, mockAdapter} = setupTest();
+  const foundation = new MDCSlidingTabIndicatorFoundation();
+  const adapter = foundation.adapter_;
+  adapter.removeClass = td.func('removeClass');
   foundation.deactivate();
-  td.verify(mockAdapter.removeClass(MDCSlidingTabIndicatorFoundation.cssClasses.ACTIVE));
+  td.verify(adapter.removeClass(MDCSlidingTabIndicatorFoundation.cssClasses.ACTIVE));
 });
