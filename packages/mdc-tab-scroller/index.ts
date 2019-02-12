@@ -22,9 +22,12 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+import {SpecificEventListener} from '@material/base/types';
 import {ponyfill} from '@material/dom/index';
 import {MDCTabScrollerFoundation} from './foundation';
 import * as util from './util';
+
+type InteractionEventType = 'wheel' | 'touchstart' | 'pointerdown' | 'mousedown' | 'keydown';
 
 class MDCTabScroller extends MDCComponent<MDCTabScrollerFoundation> {
   static attachTo(root: Element): MDCTabScroller {
@@ -33,8 +36,8 @@ class MDCTabScroller extends MDCComponent<MDCTabScrollerFoundation> {
 
   private content_!: HTMLElement; // assigned in initialize()
   private area_!: HTMLElement; // assigned in initialize()
-  private handleInteraction_!: EventListener; // assigned in initialSyncWithDOM()
-  private handleTransitionEnd_!: EventListener; // assigned in initialSyncWithDOM()
+  private handleInteraction_!: SpecificEventListener<InteractionEventType>; // assigned in initialSyncWithDOM()
+  private handleTransitionEnd_!: SpecificEventListener<'transitionend'>; // assigned in initialSyncWithDOM()
 
   initialize() {
     this.area_ = this.root_.querySelector<HTMLElement>(MDCTabScrollerFoundation.strings.AREA_SELECTOR)!;
