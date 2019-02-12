@@ -114,8 +114,8 @@ Method Signature | Description
 `setAttr(attr: string, value: string) => void` | Sets an attribute with a given value on the icon element.
 `removeAttr(attr: string) => void` | Removes an attribute from the icon element.
 `setContent(content: string) => void` | Sets the text content of the icon element.
-`registerInteractionHandler(evtType: EventType, handler: EventListener) => void` | Registers an event listener for a given event.
-`deregisterInteractionHandler(evtType: EventType, handler: EventListener) => void` | Deregisters an event listener for a given event.
+`registerInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener for a given event.
+`deregisterInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener for a given event.
 `notifyIconAction() => void` | Emits a custom event "MDCSelect:icon" denoting a user has clicked the icon, which bubbles to the top-level select element.
 
 ### `MDCSelectIconFoundation`

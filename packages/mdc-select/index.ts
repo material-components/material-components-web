@@ -61,7 +61,7 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
   private selectedText_!: HTMLElement | null;
 
   private hiddenInput_!: HTMLInputElement | null;
-  private leadingIcon_!: MDCSelectIcon | null;
+  private leadingIcon_?: MDCSelectIcon;
   private helperText_!: MDCSelectHelperText | null;
   private menuElement_!: Element | null;
   private ripple!: MDCRipple | null;
@@ -77,103 +77,6 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
   private handleMenuClosed_!: EventListener; // assigned in initialize()
   private handleMenuSelected_!: CustomEventListener<MenuItemEvent>; // assigned in initialize()
   private validationObserver_!: MutationObserver; // assigned in initialize()
-
-  get value(): string {
-    return this.foundation_.getValue();
-  }
-
-  set value(value: string) {
-    this.foundation_.setValue(value);
-  }
-
-  get selectedIndex(): number {
-    let selectedIndex = -1;
-    if (this.menuElement_ && this.menu_) {
-      const selectedEl = this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)!;
-      selectedIndex = this.menu_.items.indexOf(selectedEl);
-    } else if (this.nativeControl_) {
-      selectedIndex = this.nativeControl_.selectedIndex;
-    }
-    return selectedIndex;
-  }
-
-  set selectedIndex(selectedIndex: number) {
-    this.foundation_.setSelectedIndex(selectedIndex);
-  }
-
-  get disabled(): boolean {
-    return this.root_.classList.contains(cssClasses.DISABLED) ||
-        (this.nativeControl_ ? this.nativeControl_.disabled : false);
-  }
-
-  set disabled(disabled: boolean) {
-    this.foundation_.setDisabled(disabled);
-  }
-
-  set leadingIconAriaLabel(label: string) {
-    this.foundation_.setLeadingIconAriaLabel(label);
-  }
-
-  /**
-   * Sets the text content of the leading icon.
-   */
-  set leadingIconContent(content: string) {
-    this.foundation_.setLeadingIconContent(content);
-  }
-
-  /**
-   * Sets the text content of the helper text.
-   */
-  set helperTextContent(content: string) {
-    this.foundation_.setHelperTextContent(content);
-  }
-
-  /**
-   * Sets the current invalid state of the select.
-   */
-  set valid(isValid: boolean) {
-    this.foundation_.setValid(isValid);
-  }
-
-  /**
-   * Checks if the select is in a valid state.
-   */
-  get valid(): boolean {
-    return this.foundation_.isValid();
-  }
-
-  /**
-   * Sets the control to the required state.
-   */
-  set required(isRequired: boolean) {
-    if (this.nativeControl_) {
-      this.nativeControl_.required = isRequired;
-    } else {
-      if (isRequired) {
-        this.selectedText_!.setAttribute('aria-required', isRequired.toString());
-      } else {
-        this.selectedText_!.removeAttribute('aria-required');
-      }
-    }
-  }
-
-  /**
-   * Returns whether the select is required.
-   */
-  get required(): boolean {
-    if (this.nativeControl_) {
-      return this.nativeControl_.required;
-    } else {
-      return this.selectedText_!.getAttribute('aria-required') === 'true';
-    }
-  }
-
-  /**
-   * Recomputes the outline SVG path for the outline element.
-   */
-  layout() {
-    this.foundation_.layout();
-  }
 
   initialize(
       labelFactory: LabelFactory = (el) => new MDCFloatingLabel(el),
@@ -336,14 +239,111 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
     super.destroy();
   }
 
+  get value(): string {
+    return this.foundation_.getValue();
+  }
+
+  set value(value: string) {
+    this.foundation_.setValue(value);
+  }
+
+  get selectedIndex(): number {
+    let selectedIndex = -1;
+    if (this.menuElement_ && this.menu_) {
+      const selectedEl = this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)!;
+      selectedIndex = this.menu_.items.indexOf(selectedEl);
+    } else if (this.nativeControl_) {
+      selectedIndex = this.nativeControl_.selectedIndex;
+    }
+    return selectedIndex;
+  }
+
+  set selectedIndex(selectedIndex: number) {
+    this.foundation_.setSelectedIndex(selectedIndex);
+  }
+
+  get disabled(): boolean {
+    return this.root_.classList.contains(cssClasses.DISABLED) ||
+      (this.nativeControl_ ? this.nativeControl_.disabled : false);
+  }
+
+  set disabled(disabled: boolean) {
+    this.foundation_.setDisabled(disabled);
+  }
+
+  set leadingIconAriaLabel(label: string) {
+    this.foundation_.setLeadingIconAriaLabel(label);
+  }
+
+  /**
+   * Sets the text content of the leading icon.
+   */
+  set leadingIconContent(content: string) {
+    this.foundation_.setLeadingIconContent(content);
+  }
+
+  /**
+   * Sets the text content of the helper text.
+   */
+  set helperTextContent(content: string) {
+    this.foundation_.setHelperTextContent(content);
+  }
+
+  /**
+   * Sets the current invalid state of the select.
+   */
+  set valid(isValid: boolean) {
+    this.foundation_.setValid(isValid);
+  }
+
+  /**
+   * Checks if the select is in a valid state.
+   */
+  get valid(): boolean {
+    return this.foundation_.isValid();
+  }
+
+  /**
+   * Sets the control to the required state.
+   */
+  set required(isRequired: boolean) {
+    if (this.nativeControl_) {
+      this.nativeControl_.required = isRequired;
+    } else {
+      if (isRequired) {
+        this.selectedText_!.setAttribute('aria-required', isRequired.toString());
+      } else {
+        this.selectedText_!.removeAttribute('aria-required');
+      }
+    }
+  }
+
+  /**
+   * Returns whether the select is required.
+   */
+  get required(): boolean {
+    if (this.nativeControl_) {
+      return this.nativeControl_.required;
+    } else {
+      return this.selectedText_!.getAttribute('aria-required') === 'true';
+    }
+  }
+
+  /**
+   * Recomputes the outline SVG path for the outline element.
+   */
+  layout() {
+    this.foundation_.layout();
+  }
+
   getDefaultFoundation(): MDCSelectFoundation {
     return new MDCSelectFoundation({
-          ...(this.nativeControl_ ? this.getNativeSelectAdapterMethods_() : this.getEnhancedSelectAdapterMethods_()),
-          ...this.getCommonAdapterMethods_(),
-          ...this.getOutlineAdapterMethods_(),
-          ...this.getLabelAdapterMethods_(),
-        },
-        this.getFoundationMap_(),
+        ...(this.nativeControl_ ? this.getNativeSelectAdapterMethods_() : this.getEnhancedSelectAdapterMethods_()),
+        ...this.getCommonAdapterMethods_(),
+        ...this.getOutlineAdapterMethods_(),
+        ...this.getLabelAdapterMethods_(),
+      },
+      this.getFoundationMap_(),
     );
   }
 

@@ -24,8 +24,8 @@
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCSelectAdapter} from './adapter';
 import {cssClasses, numbers, strings} from './constants';
-import {MDCSelectHelperTextFoundation} from './helper-text/index';
-import {MDCSelectIconFoundation} from './icon/index';
+import {MDCSelectHelperTextFoundation} from './helper-text/foundation';
+import {MDCSelectIconFoundation} from './icon/foundation';
 import {FoundationMapType} from './types';
 
 class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {

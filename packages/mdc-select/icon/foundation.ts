@@ -22,11 +22,13 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
-import {EventType} from '@material/base/index';
+import {SpecificEventListener} from '@material/base/types';
 import {MDCSelectIconAdapter} from './adapter';
 import {strings} from './constants';
 
-const CLICK_KEYDOWN_EVENTS: EventType[] = ['click', 'keydown'];
+type InteractionEventType = 'click' | 'keydown';
+
+const INTERACTION_EVENTS: InteractionEventType[] = ['click', 'keydown'];
 
 class MDCSelectIconFoundation extends MDCFoundation<MDCSelectIconAdapter> {
   static get strings() {
@@ -51,7 +53,9 @@ class MDCSelectIconFoundation extends MDCFoundation<MDCSelectIconAdapter> {
   }
 
   private savedTabIndex_: string | null = null;
-  private readonly interactionHandler_!: EventListener; // assigned in initialSyncWithDOM()
+
+  // assigned in initialSyncWithDOM()
+  private readonly interactionHandler_!: SpecificEventListener<InteractionEventType>;
 
   constructor(adapter?: Partial<MDCSelectIconAdapter>) {
     super({...MDCSelectIconFoundation.defaultAdapter, ...adapter});
@@ -62,13 +66,13 @@ class MDCSelectIconFoundation extends MDCFoundation<MDCSelectIconAdapter> {
   init() {
     this.savedTabIndex_ = this.adapter_.getAttr('tabindex');
 
-    CLICK_KEYDOWN_EVENTS.forEach((evtType) => {
+    INTERACTION_EVENTS.forEach((evtType) => {
       this.adapter_.registerInteractionHandler(evtType, this.interactionHandler_);
     });
   }
 
   destroy() {
-    CLICK_KEYDOWN_EVENTS.forEach((evtType) => {
+    INTERACTION_EVENTS.forEach((evtType) => {
       this.adapter_.deregisterInteractionHandler(evtType, this.interactionHandler_);
     });
   }
@@ -95,7 +99,7 @@ class MDCSelectIconFoundation extends MDCFoundation<MDCSelectIconAdapter> {
     this.adapter_.setContent(content);
   }
 
-  handleInteraction(evt: Event) {
+  handleInteraction(evt: MouseEvent | KeyboardEvent) {
     const isEnterKey = (evt as KeyboardEvent).key === 'Enter' || (evt as KeyboardEvent).keyCode === 13;
     if (evt.type === 'click' || isEnterKey) {
       this.adapter_.notifyIconAction();

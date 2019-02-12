@@ -39,7 +39,7 @@ class MDCSelectIcon extends MDCComponent<MDCSelectIconFoundation> {
       getAttr: (attr) => this.root_.getAttribute(attr),
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       removeAttr: (attr) => this.root_.removeAttribute(attr),
-      setContent: (content) => this.root_.textContent = content,
+      setContent: (content) => { this.root_.textContent = content; },
       registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       notifyIconAction: () => this.emit(
