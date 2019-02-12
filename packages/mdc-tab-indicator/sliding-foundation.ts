@@ -21,15 +21,11 @@
  * THE SOFTWARE.
  */
 
-import MDCTabIndicatorFoundation from './foundation';
+import {MDCTabIndicatorFoundation} from './foundation';
 
-/**
- * @extends {MDCTabIndicatorFoundation}
- * @final
- */
+/* istanbul ignore next: subclass is not a branch statement */
 class MDCSlidingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
-  /** @param {!ClientRect=} previousIndicatorClientRect */
-  activate(previousIndicatorClientRect) {
+  activate(previousIndicatorClientRect?: ClientRect) {
     // Early exit if no indicator is present to handle cases where an indicator
     // may be activated without a prior indicator state
     if (!previousIndicatorClientRect) {
@@ -60,4 +56,4 @@ class MDCSlidingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
   }
 }
 
-export default MDCSlidingTabIndicatorFoundation;
+export {MDCSlidingTabIndicatorFoundation as default, MDCSlidingTabIndicatorFoundation};
