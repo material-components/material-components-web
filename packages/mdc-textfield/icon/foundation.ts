@@ -22,11 +22,13 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
-import {EventType} from '@material/base/index';
+import {SpecificEventListener} from '@material/base/types';
 import {MDCTextFieldIconAdapter} from './adapter';
 import {strings} from './constants';
 
-const CLICK_KEYDOWN_EVENTS: EventType[] = ['click', 'keydown'];
+type InteractionEventType = 'click' | 'keydown';
+
+const INTERACTION_EVENTS: InteractionEventType[] = ['click', 'keydown'];
 
 class MDCTextFieldIconFoundation extends MDCFoundation<MDCTextFieldIconAdapter> {
   static get strings() {
@@ -51,7 +53,7 @@ class MDCTextFieldIconFoundation extends MDCFoundation<MDCTextFieldIconAdapter> 
   }
 
   private savedTabIndex_: string | null;
-  private readonly interactionHandler_: EventListener;
+  private readonly interactionHandler_: SpecificEventListener<InteractionEventType>;
 
   constructor(adapter?: Partial<MDCTextFieldIconAdapter>) {
     super({...MDCTextFieldIconFoundation.defaultAdapter, ...adapter});
@@ -63,13 +65,13 @@ class MDCTextFieldIconFoundation extends MDCFoundation<MDCTextFieldIconAdapter> 
   init() {
     this.savedTabIndex_ = this.adapter_.getAttr('tabindex');
 
-    CLICK_KEYDOWN_EVENTS.forEach((evtType) => {
+    INTERACTION_EVENTS.forEach((evtType) => {
       this.adapter_.registerInteractionHandler(evtType, this.interactionHandler_);
     });
   }
 
   destroy() {
-    CLICK_KEYDOWN_EVENTS.forEach((evtType) => {
+    INTERACTION_EVENTS.forEach((evtType) => {
       this.adapter_.deregisterInteractionHandler(evtType, this.interactionHandler_);
     });
   }
@@ -96,7 +98,7 @@ class MDCTextFieldIconFoundation extends MDCFoundation<MDCTextFieldIconAdapter> 
     this.adapter_.setContent(content);
   }
 
-  handleInteraction(evt: Event) {
+  handleInteraction(evt: MouseEvent | KeyboardEvent) {
     const isEnterKey = (evt as KeyboardEvent).key === 'Enter' || (evt as KeyboardEvent).keyCode === 13;
     if (evt.type === 'click' || isEnterKey) {
       this.adapter_.notifyIconAction();
