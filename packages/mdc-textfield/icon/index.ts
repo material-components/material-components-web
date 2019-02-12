@@ -22,7 +22,7 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {EventType, SpecificEventListener} from '@material/base/index';
+import {EventType, SpecificEventListener} from '@material/base/types';
 import {MDCTextFieldIconFoundation} from './foundation';
 
 class MDCTextFieldIcon extends MDCComponent<MDCTextFieldIconFoundation> {

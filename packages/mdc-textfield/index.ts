@@ -22,12 +22,14 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {EventType, SpecificEventListener} from '@material/base/index';
+import {EventType, SpecificEventListener} from '@material/base/types';
 import * as ponyfill from '@material/dom/ponyfill';
 import {MDCFloatingLabel} from '@material/floating-label/index';
 import {MDCLineRipple} from '@material/line-ripple/index';
 import {MDCNotchedOutline} from '@material/notched-outline/index';
-import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
+import {MDCRippleFoundation} from '@material/ripple/foundation';
+import {MDCRipple} from '@material/ripple/index';
+import {RippleCapableSurface} from '@material/ripple/types';
 import {MDCTextFieldCharacterCounter, MDCTextFieldCharacterCounterFoundation} from './character-counter';
 import {cssClasses, strings} from './constants';
 import {MDCTextFieldFoundation} from './foundation';
