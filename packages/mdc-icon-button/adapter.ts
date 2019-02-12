@@ -30,7 +30,7 @@ import {IconButtonToggleEvent} from './types';
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCIconButtonToggleAdapter {
+export interface MDCIconButtonToggleAdapter {
   addClass(className: string): void;
 
   removeClass(className: string): void;
@@ -42,4 +42,4 @@ interface MDCIconButtonToggleAdapter {
   notifyChange(evtData: IconButtonToggleEvent): void;
 }
 
-export {MDCIconButtonToggleAdapter as default, MDCIconButtonToggleAdapter};
+export default MDCIconButtonToggleAdapter;
