@@ -35,9 +35,7 @@ class MDCTextFieldCharacterCounter extends MDCComponent<MDCTextFieldCharacterCou
 
   getDefaultFoundation(): MDCTextFieldCharacterCounterFoundation {
     return new MDCTextFieldCharacterCounterFoundation({
-      setContent: (content) => {
-        this.root_.textContent = content;
-      },
+      setContent: (content) => { this.root_.textContent = content; },
     });
   }
 }

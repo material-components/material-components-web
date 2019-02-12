@@ -40,7 +40,7 @@ class MDCTextFieldIcon extends MDCComponent<MDCTextFieldIconFoundation> {
       getAttr: (attr) => this.root_.getAttribute(attr),
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       removeAttr: (attr) => this.root_.removeAttribute(attr),
-      setContent: (content) => this.root_.textContent = content,
+      setContent: (content) => { this.root_.textContent = content; },
       registerInteractionHandler: <E extends EventType>(evtType: E, handler: SpecificEventListener<E>) => {
         this.root_.addEventListener(evtType, handler);
       },
