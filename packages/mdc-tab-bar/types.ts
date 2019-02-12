@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,20 +21,8 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
-const cssClasses = {
-  ANIMATING: 'mdc-tab-scroller--animating',
-  SCROLL_TEST: 'mdc-tab-scroller__test',
-  SCROLL_AREA_SCROLL: 'mdc-tab-scroller__scroll-area--scroll',
-};
+import {MDCTabScroller} from '@material/tab-scroller/index';
+import {MDCTab} from '@material/tab/index';
 
-/** @enum {string} */
-const strings = {
-  AREA_SELECTOR: '.mdc-tab-scroller__scroll-area',
-  CONTENT_SELECTOR: '.mdc-tab-scroller__scroll-content',
-};
-
-export {
-  cssClasses,
-  strings,
-};
+export type TabFactory = (el: Element) => MDCTab;
+export type TabScrollerFactory = (el: Element) => MDCTabScroller;
