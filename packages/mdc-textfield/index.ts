@@ -127,12 +127,8 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
       ...({
         // tslint:disable:object-literal-sort-keys
         isSurfaceActive: () => ponyfill.matches(this.input_, ':active'),
-        registerInteractionHandler: (evtType, handler) => {
-          return this.input_.addEventListener(evtType, handler);
-        },
-        deregisterInteractionHandler: (evtType, handler) => {
-          return this.input_.removeEventListener(evtType, handler);
-        },
+        registerInteractionHandler: (evtType, handler) => this.input_.addEventListener(evtType, handler),
+        deregisterInteractionHandler: (evtType, handler) => this.input_.removeEventListener(evtType, handler),
         // tslint:enable:object-literal-sort-keys
       }),
     }));
@@ -419,10 +415,10 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
     // tslint:disable:object-literal-sort-keys
     return {
       registerInputInteractionHandler: <E extends EventType>(evtType: E, handler: SpecificEventListener<E>) => {
-        return this.input_.addEventListener(evtType, handler);
+        this.input_.addEventListener(evtType, handler);
       },
       deregisterInputInteractionHandler: <E extends EventType>(evtType: E, handler: SpecificEventListener<E>) => {
-        return this.input_.removeEventListener(evtType, handler);
+        this.input_.removeEventListener(evtType, handler);
       },
       getNativeInput: () => this.input_,
     };

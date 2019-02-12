@@ -443,7 +443,7 @@ test('#setLeadingIconContent sets the content of the leading icon element', () =
   td.verify(leadingIcon.setContent('foo'));
 });
 
-test('#setLeadingIconContent sets does nothing if element is not present', () => {
+test('#setLeadingIconContent does nothing if element is not present', () => {
   const {foundation} = setupTest({useLeadingIcon: false});
   assert.doesNotThrow(() => foundation.setLeadingIconContent('foo'));
 });
@@ -465,7 +465,7 @@ test('#setTrailingIconContent sets the content of the trailing icon element', ()
   td.verify(trailingIcon.setContent('foo'));
 });
 
-test('#setTrailingIconContent sets does nothing if element is not present', () => {
+test('#setTrailingIconContent does nothing if element is not present', () => {
   const {foundation} = setupTest({useTrailingIcon: false});
   assert.doesNotThrow(() => foundation.setTrailingIconContent('foo'));
 });

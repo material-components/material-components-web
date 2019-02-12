@@ -52,13 +52,12 @@ class MDCTextFieldIconFoundation extends MDCFoundation<MDCTextFieldIconAdapter> 
     // tslint:enable:object-literal-sort-keys
   }
 
-  private savedTabIndex_: string | null;
+  private savedTabIndex_: string | null = null;
   private readonly interactionHandler_: SpecificEventListener<InteractionEventType>;
 
   constructor(adapter?: Partial<MDCTextFieldIconAdapter>) {
     super({...MDCTextFieldIconFoundation.defaultAdapter, ...adapter});
 
-    this.savedTabIndex_ = null;
     this.interactionHandler_ = (evt) => this.handleInteraction(evt);
   }
 
