@@ -10,6 +10,7 @@
 @import "@material/ripple/mixins";
 @import "@material/shape/mixins";
 @import "@material/switch/mixins";
+@import "@material/theme/mixins";
 @import "@material/typography/mixins";
 
 .mdc-test {
@@ -38,6 +39,7 @@
   @include mdc-checkbox-focus-indicator-color(red, $query: mdc-feature-any());
 
   // Elevation
+  @include mdc-elevation-core-styles($query: mdc-feature-any());
   @include mdc-elevation(0, $query: mdc-feature-any());
 
   // List
@@ -69,6 +71,7 @@
   @include mdc-radio-focus-indicator-color(red, $query: mdc-feature-any());
 
   // Ripple
+  @include mdc-ripple-core-styles($query: mdc-feature-any());
   @include mdc-ripple-common($query: mdc-feature-any());
   @include mdc-ripple-surface($query: mdc-feature-any());
   @include mdc-states-base-color(red, $query: mdc-feature-any());
@@ -95,7 +98,11 @@
   @include mdc-switch-toggled-off-track-color(on-surface, $query: mdc-feature-any());
   @include mdc-switch-toggled-off-thumb-color(on-surface, $query: mdc-feature-any());
 
+  // Theme
+  @include mdc-theme-core-styles($query: mdc-feature-any());
+
   // Typography
+  @include mdc-typography-core-styles($query: mdc-feature-any());
   @include mdc-typography-base($query: mdc-feature-any());
   @include mdc-typography(button, $query: mdc-feature-any());
   @include mdc-typography-overflow-ellipsis($query: mdc-feature-any());
