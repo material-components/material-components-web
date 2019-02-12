@@ -21,12 +21,9 @@
  * THE SOFTWARE.
  */
 
-import MDCTabIndicatorFoundation from './foundation';
+import {MDCTabIndicatorFoundation} from './foundation';
 
-/**
- * @extends {MDCTabIndicatorFoundation}
- * @final
- */
+/* istanbul ignore next: subclass is not a branch statement */
 class MDCFadingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
   activate() {
     this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
@@ -37,4 +34,4 @@ class MDCFadingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
   }
 }
 
-export default MDCFadingTabIndicatorFoundation;
+export {MDCFadingTabIndicatorFoundation as default, MDCFadingTabIndicatorFoundation};

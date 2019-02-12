@@ -22,90 +22,65 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+import {MDCTabAdapter} from './adapter';
+import {cssClasses, strings} from './constants';
+import {MDCTabDimensions} from './types';
 
-/* eslint-disable no-unused-vars */
-import {MDCTabAdapter, MDCTabDimensions} from './adapter';
-/* eslint-enable no-unused-vars */
-
-import {
-  cssClasses,
-  strings,
-} from './constants';
-
-/**
- * @extends {MDCFoundation<!MDCTabAdapter>}
- * @final
- */
-class MDCTabFoundation extends MDCFoundation {
-  /** @return enum {string} */
+class MDCTabFoundation extends MDCFoundation<MDCTabAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
 
-  /** @return enum {string} */
   static get strings() {
     return strings;
   }
 
-  /**
-   * @see MDCTabAdapter for typing information
-   * @return {!MDCTabAdapter}
-   */
-  static get defaultAdapter() {
-    return /** @type {!MDCTabAdapter} */ ({
-      addClass: () => {},
-      removeClass: () => {},
-      hasClass: () => {},
-      setAttr: () => {},
-      activateIndicator: () => {},
-      deactivateIndicator: () => {},
-      notifyInteracted: () => {},
-      getOffsetLeft: () => {},
-      getOffsetWidth: () => {},
-      getContentOffsetLeft: () => {},
-      getContentOffsetWidth: () => {},
-      focus: () => {},
-    });
+  static get defaultAdapter(): MDCTabAdapter {
+    // tslint:disable:object-literal-sort-keys
+    return {
+      addClass: () => undefined,
+      removeClass: () => undefined,
+      hasClass: () => false,
+      setAttr: () => undefined,
+      activateIndicator: () => undefined,
+      deactivateIndicator: () => undefined,
+      notifyInteracted: () => undefined,
+      getOffsetLeft: () => 0,
+      getOffsetWidth: () => 0,
+      getContentOffsetLeft: () => 0,
+      getContentOffsetWidth: () => 0,
+      focus: () => undefined,
+    };
+    // tslint:enable:object-literal-sort-keys
   }
 
-  /** @param {!MDCTabAdapter} adapter */
-  constructor(adapter) {
-    super(Object.assign(MDCTabFoundation.defaultAdapter, adapter));
+  private focusOnActivate_ = true;
 
-    /** @private {boolean} */
-    this.focusOnActivate_ = true;
+  constructor(adapter?: Partial<MDCTabAdapter>) {
+    super({...MDCTabFoundation.defaultAdapter, ...adapter});
   }
 
-  /**
-   * Handles the "click" event
-   */
   handleClick() {
     // It's up to the parent component to keep track of the active Tab and
     // ensure we don't activate a Tab that's already active.
     this.adapter_.notifyInteracted();
   }
 
-  /**
-   * Returns the Tab's active state
-   * @return {boolean}
-   */
-  isActive() {
+  isActive(): boolean {
     return this.adapter_.hasClass(cssClasses.ACTIVE);
   }
 
   /**
    * Sets whether the tab should focus itself when activated
-   * @param {boolean} focusOnActivate
    */
-  setFocusOnActivate(focusOnActivate) {
+  setFocusOnActivate(focusOnActivate: boolean) {
     this.focusOnActivate_ = focusOnActivate;
   }
 
   /**
    * Activates the Tab
-   * @param {!ClientRect=} previousIndicatorClientRect
    */
-  activate(previousIndicatorClientRect) {
+  activate(previousIndicatorClientRect?: ClientRect) {
     this.adapter_.addClass(cssClasses.ACTIVE);
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'true');
     this.adapter_.setAttr(strings.TABINDEX, '0');
@@ -132,21 +107,20 @@ class MDCTabFoundation extends MDCFoundation {
 
   /**
    * Returns the dimensions of the Tab
-   * @return {!MDCTabDimensions}
    */
-  computeDimensions() {
+  computeDimensions(): MDCTabDimensions {
     const rootWidth = this.adapter_.getOffsetWidth();
     const rootLeft = this.adapter_.getOffsetLeft();
     const contentWidth = this.adapter_.getContentOffsetWidth();
     const contentLeft = this.adapter_.getContentOffsetLeft();
 
     return {
-      rootLeft,
-      rootRight: rootLeft + rootWidth,
       contentLeft: rootLeft + contentLeft,
       contentRight: rootLeft + contentLeft + contentWidth,
+      rootLeft,
+      rootRight: rootLeft + rootWidth,
     };
   }
 }
 
-export default MDCTabFoundation;
+export {MDCTabFoundation as default, MDCTabFoundation};

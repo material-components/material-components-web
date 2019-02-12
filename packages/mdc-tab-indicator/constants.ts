@@ -21,25 +21,17 @@
  * THE SOFTWARE.
  */
 
-import td from 'testdouble';
+const cssClasses = {
+  ACTIVE: 'mdc-tab-indicator--active',
+  FADE: 'mdc-tab-indicator--fade',
+  NO_TRANSITION: 'mdc-tab-indicator--no-transition',
+};
 
-import {setupFoundationTest} from '../helpers/setup';
-import {MDCFadingTabIndicatorFoundation} from '../../../packages/mdc-tab-indicator/fading-foundation';
+const strings = {
+  CONTENT_SELECTOR: '.mdc-tab-indicator__content',
+};
 
-suite('MDCFadingTabIndicatorFoundation');
-
-const setupTest = () => setupFoundationTest(MDCFadingTabIndicatorFoundation);
-
-test(`#activate adds the ${MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE} class`, () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.activate();
-  td.verify(mockAdapter.addClass(MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE));
-});
-
-test(`#deactivate removes the ${MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE} class`, () => {
-  const foundation = new MDCFadingTabIndicatorFoundation();
-  const adapter = foundation.adapter_;
-  adapter.removeClass = td.func('removeClass');
-  foundation.deactivate();
-  td.verify(adapter.removeClass(MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE));
-});
+export {
+  cssClasses,
+  strings,
+};
