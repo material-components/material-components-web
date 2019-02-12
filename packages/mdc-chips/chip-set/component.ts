@@ -55,7 +55,7 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   /**
    * @param chipFactory A function which creates a new MDCChip.
    */
-  initialize(chipFactory: MDCChipFactory = (root) => new MDCChip(el)) {
+  initialize(chipFactory: MDCChipFactory = (el) => new MDCChip(el)) {
     this.chipFactory_ = chipFactory;
     this.chips_ = this.instantiateChips_(this.chipFactory_);
   }

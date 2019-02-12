@@ -44,8 +44,8 @@ class MDCTab extends MDCComponent<MDCTabFoundation> implements RippleCapableSurf
   private handleClick_!: SpecificEventListener<'click'>; // assigned in initialize();
 
   initialize(
-    rippleFactory: RippleFactory = (root, foundation) => new MDCRipple(el, foundation),
-    tabIndicatorFactory: TabIndicatorFactory = (root) => new MDCTabIndicator(el),
+    rippleFactory: RippleFactory = (el, foundation) => new MDCRipple(el, foundation),
+    tabIndicatorFactory: TabIndicatorFactory = (el) => new MDCTabIndicator(el),
   ) {
     this.id = this.root_.id;
     const rippleSurface = this.root_.querySelector<HTMLElement>(MDCTabFoundation.strings.RIPPLE_SELECTOR)!;

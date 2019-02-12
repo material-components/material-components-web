@@ -47,8 +47,8 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   private afterOpenedCallback_!: EventListener; // assigned in initialSyncWithDOM()
 
   initialize(
-      menuSurfaceFactory: MenuSurfaceFactory = (root) => new MDCMenuSurface(el),
-      listFactory: ListFactory = (root) => new MDCList(el)) {
+      menuSurfaceFactory: MenuSurfaceFactory = (el) => new MDCMenuSurface(el),
+      listFactory: ListFactory = (el) => new MDCList(el)) {
     this.menuSurfaceFactory_ = menuSurfaceFactory;
     this.listFactory_ = listFactory;
   }
