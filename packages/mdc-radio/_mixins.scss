@@ -125,7 +125,9 @@
       }
 
       @include mdc-feature-targets($feat-animation) {
-        transition: mdc-radio-exit(transform), mdc-radio-exit(border-color);
+        transition:
+          mdc-radio-exit(transform),
+          mdc-radio-exit(border-color);
       }
     }
 
@@ -160,7 +162,9 @@
   .mdc-radio__native-control:disabled {
     + .mdc-radio__background {
       @include mdc-feature-targets($feat-animation) {
-        transition: mdc-radio-enter(opacity), mdc-radio-enter(transform);
+        transition:
+          mdc-radio-enter(opacity),
+          mdc-radio-enter(transform);
       }
 
       .mdc-radio__outer-circle {
@@ -171,7 +175,9 @@
 
       .mdc-radio__inner-circle {
         @include mdc-feature-targets($feat-animation) {
-          transition: mdc-radio-enter(transform), mdc-radio-enter(border-color);
+          transition:
+            mdc-radio-enter(transform),
+            mdc-radio-enter(border-color);
         }
       }
     }
@@ -192,7 +198,9 @@
         }
 
         @include mdc-feature-targets($feat-animation) {
-          transition: mdc-radio-enter(transform), mdc-radio-enter(border-color);
+          transition:
+            mdc-radio-enter(transform),
+            mdc-radio-enter(border-color);
         }
       }
     }
@@ -227,7 +235,9 @@
       }
 
       @include mdc-feature-targets($feat-animation) {
-        transition: mdc-radio-enter(opacity), mdc-radio-enter(transform);
+        transition:
+          mdc-radio-enter(opacity),
+          mdc-radio-enter(transform);
       }
     }
   }
@@ -239,9 +249,7 @@
   $feat-color: mdc-feature-create-target($query, color);
 
   // stylelint-disable-next-line selector-max-specificity
-  .mdc-radio__native-control:enabled:not(:checked)
-  + .mdc-radio__background
-  .mdc-radio__outer-circle {
+  .mdc-radio__native-control:enabled:not(:checked) + .mdc-radio__background .mdc-radio__outer-circle {
     @include mdc-feature-targets($feat-color) {
       @include mdc-theme-prop(border-color, $color);
     }
