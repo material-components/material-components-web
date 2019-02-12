@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,56 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {MDCComponent} from '@material/base/component';
-import {MDCSelectionControl} from '@material/selection-control/index';
-import {MDCFormFieldFoundation} from './foundation';
-
-class MDCFormField extends MDCComponent<MDCFormFieldFoundation> {
-  static attachTo(root: HTMLElement) {
-    return new MDCFormField(root);
-  }
-
-  private input_?: MDCSelectionControl;
-
-  set input(input: MDCSelectionControl | undefined) {
-    this.input_ = input;
-  }
-
-  get input(): MDCSelectionControl | undefined {
-    return this.input_;
-  }
-
-  private get label_(): Element | null {
-    const {LABEL_SELECTOR} = MDCFormFieldFoundation.strings;
-    return this.root_.querySelector(LABEL_SELECTOR);
-  }
-
-  getDefaultFoundation() {
-    return new MDCFormFieldFoundation({
-      activateInputRipple: () => {
-        if (this.input_ && this.input_.ripple) {
-          this.input_.ripple.activate();
-        }
-      },
-      deactivateInputRipple: () => {
-        if (this.input_ && this.input_.ripple) {
-          this.input_.ripple.deactivate();
-        }
-      },
-      deregisterInteractionHandler: (evtType, handler) => {
-        if (this.label_) {
-          this.label_.removeEventListener(evtType, handler);
-        }
-      },
-      registerInteractionHandler: (evtType, handler) => {
-        if (this.label_) {
-          this.label_.addEventListener(evtType, handler);
-        }
-      },
-    });
-  }
-}
-
-export {MDCFormField as default, MDCFormField};
+export {MDCFormField as default} from './component';
 export * from './adapter';
+export * from './component';
 export * from './foundation';
