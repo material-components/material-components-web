@@ -22,59 +22,39 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
-import MDCTabIndicatorAdapter from './adapter';
-import {
-  cssClasses,
-  strings,
-} from './constants';
+import {MDCTabIndicatorAdapter} from './adapter';
+import {cssClasses, strings} from './constants';
 
-/**
- * @extends {MDCFoundation<!MDCTabIndicatorAdapter>}
- * @abstract
- */
-class MDCTabIndicatorFoundation extends MDCFoundation {
-  /** @return enum {string} */
+abstract class MDCTabIndicatorFoundation extends MDCFoundation<MDCTabIndicatorAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
 
-  /** @return enum {string} */
   static get strings() {
     return strings;
   }
 
-  /**
-   * @see MDCTabIndicatorAdapter for typing information
-   * @return {!MDCTabIndicatorAdapter}
-   */
-  static get defaultAdapter() {
-    return /** @type {!MDCTabIndicatorAdapter} */ ({
-      addClass: () => {},
-      removeClass: () => {},
-      computeContentClientRect: () => {},
-      setContentStyleProperty: () => {},
-    });
+  static get defaultAdapter(): MDCTabIndicatorAdapter {
+    // tslint:disable:object-literal-sort-keys
+    return {
+      addClass: () => undefined,
+      removeClass: () => undefined,
+      computeContentClientRect: () => ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}),
+      setContentStyleProperty: () => undefined,
+    };
+    // tslint:enable:object-literal-sort-keys
   }
 
-  /** @param {!MDCTabIndicatorAdapter} adapter */
-  constructor(adapter) {
-    super(Object.assign(MDCTabIndicatorFoundation.defaultAdapter, adapter));
+  constructor(adapter?: Partial<MDCTabIndicatorAdapter>) {
+    super({...MDCTabIndicatorFoundation.defaultAdapter, ...adapter});
   }
 
-  /** @return {!ClientRect} */
-  computeContentClientRect() {
+  computeContentClientRect(): ClientRect {
     return this.adapter_.computeContentClientRect();
   }
 
-  /**
-   * Activates the indicator
-   * @param {!ClientRect=} previousIndicatorClientRect
-   * @abstract
-   */
-  activate(previousIndicatorClientRect) {} // eslint-disable-line no-unused-vars
-
-  /** @abstract */
-  deactivate() {}
+  abstract activate(previousIndicatorClientRect?: ClientRect): void;
+  abstract deactivate(): void;
 }
 
-export default MDCTabIndicatorFoundation;
+export {MDCTabIndicatorFoundation as default, MDCTabIndicatorFoundation};
