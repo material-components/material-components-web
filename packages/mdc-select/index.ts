@@ -79,12 +79,13 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
   private validationObserver_!: MutationObserver; // assigned in initialize()
 
   initialize(
-      labelFactory: LabelFactory = (el) => new MDCFloatingLabel(el),
-      lineRippleFactory: LineRippleFactory = (el) => new MDCLineRipple(el),
-      outlineFactory: OutlineFactory = (el) => new MDCNotchedOutline(el),
-      menuFactory: MenuFactory = (el) => new MDCMenu(el),
-      iconFactory: IconFactory = (el) => new MDCSelectIcon(el),
-      helperTextFactory: HelperTextFactory = (el) => new MDCSelectHelperText(el)) {
+    labelFactory: LabelFactory = (el) => new MDCFloatingLabel(el),
+    lineRippleFactory: LineRippleFactory = (el) => new MDCLineRipple(el),
+    outlineFactory: OutlineFactory = (el) => new MDCNotchedOutline(el),
+    menuFactory: MenuFactory = (el) => new MDCMenu(el),
+    iconFactory: IconFactory = (el) => new MDCSelectIcon(el),
+    helperTextFactory: HelperTextFactory = (el) => new MDCSelectHelperText(el),
+  ) {
     this.nativeControl_ = this.root_.querySelector(strings.NATIVE_CONTROL_SELECTOR);
     this.selectedText_ = this.root_.querySelector(strings.SELECTED_TEXT_SELECTOR);
 
@@ -385,12 +386,12 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
     // tslint:disable:object-literal-sort-keys
     return {
       getValue: () => this.nativeControl_!.value,
-      setValue: (value: string) => this.nativeControl_!.value = value,
+      setValue: (value: string) => { this.nativeControl_!.value = value; },
       openMenu: () => undefined,
       closeMenu: () => undefined,
       isMenuOpen: () => false,
-      setSelectedIndex: (index: number) => this.nativeControl_!.selectedIndex = index,
-      setDisabled: (isDisabled: boolean) => this.nativeControl_!.disabled = isDisabled,
+      setSelectedIndex: (index: number) => { this.nativeControl_!.selectedIndex = index; },
+      setDisabled: (isDisabled: boolean) => { this.nativeControl_!.disabled = isDisabled; },
       setValid: (isValid: boolean) => {
         if (isValid) {
           this.root_.classList.remove(cssClasses.INVALID);
@@ -578,8 +579,8 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
 
     const getAttributesList = (mutationsList: MutationRecord[]): string[] => {
       return mutationsList
-          .map((mutation) => mutation.attributeName)
-          .filter((attributeName) => attributeName) as string[];
+        .map((mutation) => mutation.attributeName)
+        .filter((attributeName) => attributeName) as string[];
     };
     const observer = new MutationObserver((mutationsList) => observerHandler(getAttributesList(mutationsList)));
     const element = this.nativeControl_ || this.selectedText_!;
