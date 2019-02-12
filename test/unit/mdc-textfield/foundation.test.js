@@ -63,15 +63,15 @@ const setupTest = ({
   useTrailingIcon = false,
 } = {}) => {
   const mockAdapter = td.object(MDCTextFieldFoundation.defaultAdapter);
-  const helperText = useHelperText === true ? td.object({
+  const helperText = useHelperText ? td.object({
     setContent: () => {},
     showToScreenReader: () => {},
     setValidity: () => {},
   }) : undefined;
-  const characterCounter = useCharacterCounter === true ? td.object({
+  const characterCounter = useCharacterCounter ? td.object({
     setCounterValue: () => {},
   }) : undefined;
-  const leadingIcon = useLeadingIcon === true ? td.object({
+  const leadingIcon = useLeadingIcon ? td.object({
     setDisabled: () => {},
     setAriaLabel: () => {},
     setContent: () => {},
@@ -79,7 +79,7 @@ const setupTest = ({
     deregisterInteractionHandler: () => {},
     handleInteraction: () => {},
   }) : undefined;
-  const trailingIcon = useTrailingIcon === true ? td.object({
+  const trailingIcon = useTrailingIcon ? td.object({
     setDisabled: () => {},
     setAriaLabel: () => {},
     setContent: () => {},
