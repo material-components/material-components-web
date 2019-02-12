@@ -9,6 +9,8 @@
     "checkbox"
   ],
   "main": "dist/mdc.checkbox.js",
+  "module": "./index.js",
+  "sideEffects": false,
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git"
