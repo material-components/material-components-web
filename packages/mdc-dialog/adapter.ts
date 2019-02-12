@@ -28,7 +28,7 @@
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCDialogAdapter {
+export interface MDCDialogAdapter {
   addClass(className: string): void;
   removeClass(className: string): void;
   hasClass(className: string): boolean;
@@ -51,4 +51,4 @@ interface MDCDialogAdapter {
   notifyClosed(action: string): void;
 }
 
-export {MDCDialogAdapter as default, MDCDialogAdapter};
+export default MDCDialogAdapter;

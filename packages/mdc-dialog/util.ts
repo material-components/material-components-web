@@ -24,7 +24,7 @@
 import * as createFocusTrap from 'focus-trap';
 import {FocusTrapFactory} from './types';
 
-function createFocusTrapInstance(
+export function createFocusTrapInstance(
     surfaceEl: HTMLElement,
     focusTrapFactory: FocusTrapFactory = createFocusTrap as unknown as FocusTrapFactory,
     initialFocusEl: createFocusTrap.FocusTarget | null,
@@ -36,14 +36,12 @@ function createFocusTrapInstance(
   } as createFocusTrap.Options));
 }
 
-function isScrollable(el: HTMLElement | null): boolean {
+export function isScrollable(el: HTMLElement | null): boolean {
   return el ? el.scrollHeight > el.offsetHeight : false;
 }
 
-function areTopsMisaligned(els: HTMLElement[]): boolean {
+export function areTopsMisaligned(els: HTMLElement[]): boolean {
   const tops = new Set();
   [].forEach.call(els, (el: HTMLElement) => tops.add(el.offsetTop));
   return tops.size > 1;
 }
-
-export {createFocusTrapInstance, isScrollable, areTopsMisaligned};

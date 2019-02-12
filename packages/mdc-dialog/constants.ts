@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-const cssClasses = {
+export const cssClasses = {
   CLOSING: 'mdc-dialog--closing',
   OPEN: 'mdc-dialog--open',
   OPENING: 'mdc-dialog--opening',
@@ -30,7 +30,7 @@ const cssClasses = {
   STACKED: 'mdc-dialog--stacked',
 };
 
-const strings = {
+export const strings = {
   ACTION_ATTRIBUTE: 'data-mdc-dialog-action',
   BUTTON_SELECTOR: '.mdc-dialog__button',
   CLOSED_EVENT: 'MDCDialog:closed',
@@ -50,9 +50,7 @@ const strings = {
   SURFACE_SELECTOR: '.mdc-dialog__surface',
 };
 
-const numbers = {
+export const numbers = {
   DIALOG_ANIMATION_CLOSE_TIME_MS: 75,
   DIALOG_ANIMATION_OPEN_TIME_MS: 150,
 };
-
-export {cssClasses, numbers, strings};
