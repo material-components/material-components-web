@@ -21,19 +21,17 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
 const cssClasses = {
   ACTIVE: 'mdc-tab--active',
 };
 
-/** @enum {string} */
 const strings = {
   ARIA_SELECTED: 'aria-selected',
-  RIPPLE_SELECTOR: '.mdc-tab__ripple',
   CONTENT_SELECTOR: '.mdc-tab__content',
-  TAB_INDICATOR_SELECTOR: '.mdc-tab-indicator',
-  TABINDEX: 'tabIndex',
   INTERACTED_EVENT: 'MDCTab:interacted',
+  RIPPLE_SELECTOR: '.mdc-tab__ripple',
+  TABINDEX: 'tabIndex',
+  TAB_INDICATOR_SELECTOR: '.mdc-tab-indicator',
 };
 
 export {

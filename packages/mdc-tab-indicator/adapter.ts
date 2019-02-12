@@ -21,50 +21,37 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
-
-/* eslint-disable no-unused-vars */
-import {MDCTabScrollerAdapter, MDCTabScrollerAnimation} from './adapter';
-/* eslint-enable no-unused-vars */
-
 /**
- * @abstract
+ * Defines the shape of the adapter expected by the foundation.
+ * Implement this adapter for your framework of choice to delegate updates to
+ * the component in your framework of choice. See architecture documentation
+ * for more details.
+ * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-class MDCTabScrollerRTL {
-  /** @param {!MDCTabScrollerAdapter} adapter */
-  constructor(adapter) {
-    /** @private */
-    this.adapter_ = adapter;
-  }
+interface MDCTabIndicatorAdapter {
+  /**
+   * Adds the given className to the root element.
+   * @param className The className to add
+   */
+  addClass(className: string): void;
 
   /**
-   * @param {number} translateX The current translateX position
-   * @return {number}
-   * @abstract
+   * Removes the given className from the root element.
+   * @param className The className to remove
    */
-  getScrollPositionRTL(translateX) {}
+  removeClass(className: string): void;
 
   /**
-   * @param {number} scrollX
-   * @return {!MDCTabScrollerAnimation}
-   * @abstract
+   * Returns the client rect of the content element.
    */
-  scrollToRTL(scrollX) {}
+  computeContentClientRect(): ClientRect;
 
   /**
-   * @param {number} scrollX
-   * @return {!MDCTabScrollerAnimation}
-   * @abstract
+   * Sets a style property of the content element to the passed value
+   * @param propName The style property name to set
+   * @param value The style property value
    */
-  incrementScrollRTL(scrollX) {}
-
-  /**
-   * @param {number} scrollX The current scrollX position
-   * @param {number} translateX The current translateX position
-   * @return {number}
-   * @abstract
-   */
-  getAnimatingScrollPosition(scrollX, translateX) {}
+  setContentStyleProperty(propName: string, value: string): void;
 }
 
-export default MDCTabScrollerRTL;
+export {MDCTabIndicatorAdapter as default, MDCTabIndicatorAdapter};

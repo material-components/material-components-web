@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,20 +21,27 @@
  * THE SOFTWARE.
  */
 
-import MDCTabIndicatorFoundation from './foundation';
+import {MDCRippleFoundation} from '@material/ripple/foundation';
+import {MDCRipple} from '@material/ripple/index';
+import {MDCTabIndicator} from '@material/tab-indicator/index';
 
 /**
- * @extends {MDCTabIndicatorFoundation}
- * @final
+ * MDCTabDimensions provides details about the left and right edges of the Tab
+ * root element and the Tab content element. These values are used to determine
+ * the visual position of the Tab with respect it's parent container.
  */
-class MDCFadingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
-  activate() {
-    this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
-  }
-
-  deactivate() {
-    this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
-  }
+export interface MDCTabDimensions {
+  rootLeft: number;
+  rootRight: number;
+  contentLeft: number;
+  contentRight: number;
 }
 
-export default MDCFadingTabIndicatorFoundation;
+export type TabInteractionEvent = CustomEvent<TabInteractionEventDetail>;
+
+export interface TabInteractionEventDetail {
+  tabId: string;
+}
+
+export type RippleFactory = (el: Element, foundation: MDCRippleFoundation) => MDCRipple;
+export type TabIndicatorFactory = (el: Element) => MDCTabIndicator;
