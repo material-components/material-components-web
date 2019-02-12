@@ -8,8 +8,8 @@
     "material design",
     "checkbox"
   ],
-  "main": "dist/mdc.checkbox.js",
-  "module": "./index.js",
+  "browser": "dist/mdc.checkbox.js",
+  "main": "./index.js",
   "sideEffects": false,
   "repository": {
     "type": "git",
