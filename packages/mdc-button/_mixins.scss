@@ -32,7 +32,7 @@
 @import "@material/shape/functions";
 @import "./variables";
 
-@mixin mdc-button($query: mdc-feature-all()) {
+@mixin mdc-button-core-styles($query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
 

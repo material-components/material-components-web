@@ -33,7 +33,7 @@
 // Public
 //
 
-@mixin mdc-card($query: mdc-feature-all()) {
+@mixin mdc-card-core-styles($query: mdc-feature-all()) {
   // postcss-bem-linter: define card
 
   $feat-color: mdc-feature-create-target($query, color);
