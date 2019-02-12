@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {MDCRipple} from '@material/ripple/index';
+import {MDCRipple} from '@material/ripple/component';
 
 export interface MDCSelectionControlState {
   checked: boolean;

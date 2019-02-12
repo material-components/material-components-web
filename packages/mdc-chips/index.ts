@@ -21,10 +21,5 @@
  * THE SOFTWARE.
  */
 
-export * from './chip/adapter';
-export * from './chip/foundation';
-export * from './chip/index';
-export * from './chip/types';
-export * from './chip-set/adapter';
-export * from './chip-set/foundation';
-export * from './chip-set/index';
+export * from './chip';
+export * from './chip-set';

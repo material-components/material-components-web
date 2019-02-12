@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {EventType, SpecificEventListener} from '@material/base/index';
+import {EventType, SpecificEventListener} from '@material/base/types';
 import {Point} from './types';
 
 /**
@@ -31,7 +31,7 @@ import {Point} from './types';
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCRippleAdapter {
+export interface MDCRippleAdapter {
   browserSupportsCssVars(): boolean;
 
   isUnbounded(): boolean;
@@ -65,4 +65,4 @@ interface MDCRippleAdapter {
   getWindowPageOffset(): Point;
 }
 
-export {MDCRippleAdapter as default, MDCRippleAdapter};
+export default MDCRippleAdapter;

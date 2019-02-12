@@ -21,32 +21,11 @@
  * THE SOFTWARE.
  */
 
-type StandardCssPropertyName = (
-    'animation' | 'transform' | 'transition'
-);
-type PrefixedCssPropertyName = (
-    '-webkit-animation' | '-webkit-transform' | '-webkit-transition'
-);
-type StandardJsEventType = (
-    'animationend' | 'animationiteration' | 'animationstart' | 'transitionend'
-);
-type PrefixedJsEventType = (
-    'webkitAnimationEnd' | 'webkitAnimationIteration' | 'webkitAnimationStart' | 'webkitTransitionEnd'
-);
-
-type CssVendorPropertyMap = { [K in StandardCssPropertyName]: CssVendorProperty };
-type JsVendorPropertyMap = { [K in StandardJsEventType]: JsVendorProperty };
-
-interface CssVendorProperty {
-  prefixed: PrefixedCssPropertyName;
-  standard: StandardCssPropertyName;
-}
-
-interface JsVendorProperty {
-  cssProperty: StandardCssPropertyName;
-  prefixed: PrefixedJsEventType;
-  standard: StandardJsEventType;
-}
+import {
+  CssVendorPropertyMap, JsVendorPropertyMap,
+  PrefixedCssPropertyName, PrefixedJsEventType,
+  StandardCssPropertyName, StandardJsEventType,
+} from './types';
 
 const cssPropertyNameMap: CssVendorPropertyMap = {
   animation: {
@@ -90,7 +69,7 @@ function isWindow(windowObj: Window): boolean {
   return Boolean(windowObj.document) && typeof windowObj.document.createElement === 'function';
 }
 
-function getCorrectPropertyName(windowObj: Window, cssProperty: StandardCssPropertyName):
+export function getCorrectPropertyName(windowObj: Window, cssProperty: StandardCssPropertyName):
     StandardCssPropertyName | PrefixedCssPropertyName {
   if (isWindow(windowObj) && cssProperty in cssPropertyNameMap) {
     const el = windowObj.document.createElement('div');
@@ -101,7 +80,7 @@ function getCorrectPropertyName(windowObj: Window, cssProperty: StandardCssPrope
   return cssProperty;
 }
 
-function getCorrectEventName(windowObj: Window, eventType: StandardJsEventType):
+export function getCorrectEventName(windowObj: Window, eventType: StandardJsEventType):
     StandardJsEventType | PrefixedJsEventType {
   if (isWindow(windowObj) && eventType in jsEventTypeMap) {
     const el = windowObj.document.createElement('div');
@@ -111,12 +90,3 @@ function getCorrectEventName(windowObj: Window, eventType: StandardJsEventType):
   }
   return eventType;
 }
-
-export {
-  PrefixedCssPropertyName,
-  StandardCssPropertyName,
-  PrefixedJsEventType,
-  StandardJsEventType,
-  getCorrectEventName,
-  getCorrectPropertyName,
-};

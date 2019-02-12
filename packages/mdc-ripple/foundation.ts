@@ -62,7 +62,7 @@ const POINTER_DEACTIVATION_EVENT_TYPES: DeactivationEventType[] = [
 // simultaneous nested activations
 let activatedTargets: Array<EventTarget | null> = [];
 
-class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
+export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
   static get cssClasses(): {[key: string]: string} {
     return cssClasses;
   }
@@ -527,4 +527,4 @@ class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
   }
 }
 
-export {MDCRippleFoundation as default, MDCRippleFoundation};
+export default MDCRippleFoundation;

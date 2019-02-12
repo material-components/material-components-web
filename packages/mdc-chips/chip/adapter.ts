@@ -28,7 +28,7 @@
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCChipAdapter {
+export interface MDCChipAdapter {
   /**
    * Adds a class to the root element.
    */
@@ -107,4 +107,4 @@ interface MDCChipAdapter {
   getCheckmarkBoundingClientRect(): ClientRect | null;
 }
 
-export {MDCChipAdapter as default, MDCChipAdapter};
+export default MDCChipAdapter;
