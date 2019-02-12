@@ -32,7 +32,7 @@ import {MDCTextFieldHelperText} from './helper-text/index';
 import {MDCTextFieldIconFoundation} from './icon/foundation';
 import {MDCTextFieldIcon} from './icon/index';
 
-export interface NativeInputType {
+export type NativeInputElement = HTMLInputElement | {
   disabled: boolean;
   maxLength: number;
   type: string;
@@ -41,7 +41,7 @@ export interface NativeInputType {
     valid: boolean;
   };
   value: string;
-}
+};
 
 export interface FoundationMapType {
   helperText: MDCTextFieldHelperTextFoundation;

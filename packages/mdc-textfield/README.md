@@ -376,7 +376,7 @@ Method Signature | Description
 `deregisterInputInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the native input element for a given event.
 `registerValidationAttributeChangeHandler(handler: (attributeNames: string[]) => void) => MutationObserver` | Registers a validation attribute change listener on the input element. Handler accepts list of attribute changes.
 `deregisterValidationAttributeChangeHandler(!MutationObserver) => void` | Disconnects a validation attribute observer on the input element.
-`getNativeInput() => HTMLInputElement \| NativeInputType` | Returns an object representing the native text input element, with a similar API shape.
+`getNativeInput() => NativeInputType \| null` | Returns an object representing the native text input element, with a similar API shape. See [types.ts](types.ts).
 `isFocused() => boolean` | Returns whether the input is focused.
 `hasOutline() => boolean` | Returns whether there is an outline element.
 `notchOutline(labelWidth: number) => void` | Updates the notched outline path to open the notch and update the notch width for the label element.

@@ -22,16 +22,19 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
-import {EventType} from '@material/base/index';
+import {SpecificEventListener} from '@material/base/types';
 import {MDCTextFieldAdapter} from './adapter';
 import {MDCTextFieldCharacterCounterFoundation} from './character-counter';
 import {ALWAYS_FLOAT_TYPES, cssClasses, numbers, strings, VALIDATION_ATTR_WHITELIST} from './constants';
 import {MDCTextFieldHelperTextFoundation} from './helper-text';
 import {MDCTextFieldIconFoundation} from './icon';
-import {FoundationMapType, NativeInputType} from './types';
+import {FoundationMapType, NativeInputElement} from './types';
 
-const MOUSEDOWN_TOUCHSTART_EVENTS: EventType[] = ['mousedown', 'touchstart'];
-const CLICK_KEYDOWN_EVENTS: EventType[] = ['click', 'keydown'];
+type PointerDownEventType = 'mousedown' | 'touchstart';
+type InteractionEventType = 'click' | 'keydown';
+
+const POINTERDOWN_EVENTS: PointerDownEventType[] = ['mousedown', 'touchstart'];
+const INTERACTION_EVENTS: InteractionEventType[] = ['click', 'keydown'];
 
 class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   static get cssClasses() {
@@ -96,17 +99,17 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   private useNativeValidation_ = true;
 
   private readonly inputFocusHandler_: () => void;
-  private readonly inputBlurHandler_: EventListener;
-  private readonly inputInputHandler_: EventListener;
-  private readonly setPointerXOffset_: EventListener;
-  private readonly textFieldInteractionHandler_: EventListener;
+  private readonly inputBlurHandler_: SpecificEventListener<'blur'>;
+  private readonly inputInputHandler_: SpecificEventListener<'input'>;
+  private readonly setPointerXOffset_: SpecificEventListener<PointerDownEventType>;
+  private readonly textFieldInteractionHandler_: SpecificEventListener<InteractionEventType>;
   private readonly validationAttributeChangeHandler_: (attributesList: string[]) => void;
   private validationObserver_!: MutationObserver; // assigned in init()
 
-  private readonly helperText_: MDCTextFieldHelperTextFoundation | undefined;
-  private readonly characterCounter_: MDCTextFieldCharacterCounterFoundation | undefined;
-  private readonly leadingIcon_: MDCTextFieldIconFoundation | undefined;
-  private readonly trailingIcon_: MDCTextFieldIconFoundation | undefined;
+  private readonly helperText_?: MDCTextFieldHelperTextFoundation;
+  private readonly characterCounter_?: MDCTextFieldCharacterCounterFoundation;
+  private readonly leadingIcon_?: MDCTextFieldIconFoundation;
+  private readonly trailingIcon_?: MDCTextFieldIconFoundation;
 
   /**
    * @param adapter
@@ -139,10 +142,10 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     this.adapter_.registerInputInteractionHandler('focus', this.inputFocusHandler_);
     this.adapter_.registerInputInteractionHandler('blur', this.inputBlurHandler_);
     this.adapter_.registerInputInteractionHandler('input', this.inputInputHandler_);
-    MOUSEDOWN_TOUCHSTART_EVENTS.forEach((evtType) => {
+    POINTERDOWN_EVENTS.forEach((evtType) => {
       this.adapter_.registerInputInteractionHandler(evtType, this.setPointerXOffset_);
     });
-    CLICK_KEYDOWN_EVENTS.forEach((evtType) => {
+    INTERACTION_EVENTS.forEach((evtType) => {
       this.adapter_.registerTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
     this.validationObserver_ =
@@ -154,10 +157,10 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     this.adapter_.deregisterInputInteractionHandler('focus', this.inputFocusHandler_);
     this.adapter_.deregisterInputInteractionHandler('blur', this.inputBlurHandler_);
     this.adapter_.deregisterInputInteractionHandler('input', this.inputInputHandler_);
-    MOUSEDOWN_TOUCHSTART_EVENTS.forEach((evtType) => {
+    POINTERDOWN_EVENTS.forEach((evtType) => {
       this.adapter_.deregisterInputInteractionHandler(evtType, this.setPointerXOffset_);
     });
-    CLICK_KEYDOWN_EVENTS.forEach((evtType) => {
+    INTERACTION_EVENTS.forEach((evtType) => {
       this.adapter_.deregisterTextFieldInteractionHandler(evtType, this.textFieldInteractionHandler_);
     });
     this.adapter_.deregisterValidationAttributeChangeHandler(this.validationObserver_);
@@ -230,7 +233,7 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
    * Sets the line ripple's transform origin, so that the line ripple activate
    * animation will animate out from the user's click location.
    */
-  setTransformOrigin(evt: Event): void {
+  setTransformOrigin(evt: TouchEvent | MouseEvent): void {
     const touches = (evt as TouchEvent).touches;
     const targetEvent = touches ? touches[0] : evt;
     const targetClientRect = (targetEvent.target as Element).getBoundingClientRect();
@@ -460,12 +463,12 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   }
 
   /**
-   * @return The native text input from the host environment, or a dummy if none exists.
+   * @return The native text input from the host environment.
    */
-  private getNativeInput_(): HTMLInputElement | NativeInputType {
-    // adapter_ can be undefined in foundation unit tests. This happens when testdouble is creating a mock object and
-    // invokes the shouldShake/shouldFloat getters (which in turn call getValue(), which calls this method) before
-    // init() has been called in the MDCTextField constructor.
+  private getNativeInput_(): NativeInputElement {
+    // this.adapter_ may be undefined in foundation unit tests. This happens when testdouble is creating a mock object
+    // and invokes the shouldShake/shouldFloat getters (which in turn call getValue(), which calls this method) before
+    // init() has been called from the MDCTextField constructor. To work around that issue, we return a dummy input.
     const nativeInput = this.adapter_ ? this.adapter_.getNativeInput() : null;
     return nativeInput || {
       disabled: false,
