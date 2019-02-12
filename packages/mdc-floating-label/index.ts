@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,47 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {MDCComponent} from '@material/base/component';
-import {MDCFloatingLabelFoundation} from './foundation';
-
-class MDCFloatingLabel extends MDCComponent<MDCFloatingLabelFoundation> {
-  static attachTo(root: Element): MDCFloatingLabel {
-    return new MDCFloatingLabel(root);
-  }
-
-  /**
-   * Styles the label to produce the label shake for errors.
-   * @param shouldShake If true, shakes the label by adding a CSS class; otherwise, stops shaking by removing the class.
-   */
-  shake(shouldShake: boolean) {
-    this.foundation_.shake(shouldShake);
-  }
-
-  /**
-   * Styles the label to float/dock.
-   * @param shouldFloat If true, floats the label by adding a CSS class; otherwise, docks it by removing the class.
-   */
-  float(shouldFloat: boolean) {
-    this.foundation_.float(shouldFloat);
-  }
-
-  getWidth(): number {
-    return this.foundation_.getWidth();
-  }
-
-  getDefaultFoundation(): MDCFloatingLabelFoundation {
-    // tslint:disable:object-literal-sort-keys
-    return new MDCFloatingLabelFoundation({
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
-      getWidth: () => this.root_.scrollWidth,
-      registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
-      deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
-    });
-    // tslint:enable:object-literal-sort-keys
-  }
-}
-
-export {MDCFloatingLabel as default, MDCFloatingLabel};
+export {MDCFloatingLabel as default} from './component';
 export * from './adapter';
+export * from './component';
 export * from './foundation';
