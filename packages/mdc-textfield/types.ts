@@ -33,15 +33,8 @@ import {MDCTextFieldHelperText} from './helper-text/index';
 import {MDCTextFieldIconFoundation} from './icon/foundation';
 import {MDCTextFieldIcon} from './icon/index';
 
-export type NativeInputElement = HTMLInputElement | {
-  disabled: boolean;
-  maxLength: number;
-  type: string;
-  validity: ValidityState | {
-    badInput: boolean;
-    valid: boolean;
-  };
-  value: string;
+export type NativeInputElement = Pick<HTMLInputElement, 'disabled' | 'maxLength' | 'type' | 'value'> & {
+  validity: Pick<ValidityState, 'badInput' | 'valid'>;
 };
 
 export interface FoundationMapType {
