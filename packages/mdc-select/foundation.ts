@@ -75,6 +75,7 @@ class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   private readonly leadingIcon_: MDCSelectIconFoundation | undefined;
   private readonly helperText_: MDCSelectHelperTextFoundation | undefined;
 
+  /* istanbul ignore next: optional argument is not a branch statement */
   /**
    * @param adapter
    * @param foundationMap Map from subcomponent names to their subfoundations.

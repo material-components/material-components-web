@@ -59,8 +59,10 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
   private menuOpened_ = false;
 
   // Exactly one of these fields must be non-null.
-  private nativeControl_!: HTMLSelectElement | null;
-  private selectedText_!: HTMLElement | null;
+  private nativeControl_!: HTMLSelectElement | null; // assigned in initialize()
+  private selectedText_!: HTMLElement | null; // assigned in initialize()
+
+  private targetElement_!: HTMLElement; // assigned in initialize()
 
   private hiddenInput_!: HTMLInputElement | null;
   private leadingIcon_?: MDCSelectIcon;
@@ -91,6 +93,22 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
     this.nativeControl_ = this.root_.querySelector(strings.NATIVE_CONTROL_SELECTOR);
     this.selectedText_ = this.root_.querySelector(strings.SELECTED_TEXT_SELECTOR);
 
+    const targetElement = this.nativeControl_ || this.selectedText_;
+    if (!targetElement) {
+      throw new Error(
+        'MDCSelect: Missing required element: Exactly one of the following selectors must be present: ' +
+        `'${strings.NATIVE_CONTROL_SELECTOR}' or '${strings.SELECTED_TEXT_SELECTOR}'`,
+      );
+    }
+
+    this.targetElement_ = targetElement;
+    if (this.targetElement_.hasAttribute(strings.ARIA_CONTROLS)) {
+      const helperTextElement = document.getElementById(this.targetElement_.getAttribute(strings.ARIA_CONTROLS)!);
+      if (helperTextElement) {
+        this.helperText_ = helperTextFactory(helperTextElement);
+      }
+    }
+
     if (this.selectedText_) {
       this.enhancedSelectSetup_(menuFactory);
     }
@@ -111,15 +129,6 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
 
       if (this.menuElement_) {
         this.menuElement_.classList.add(cssClasses.WITH_LEADING_ICON);
-      }
-    }
-
-    // At least one of these elements must be non-null.
-    const element = this.nativeControl_ || this.selectedText_!;
-    if (element.hasAttribute(strings.ARIA_CONTROLS)) {
-      const helperTextElement = document.getElementById(element.getAttribute(strings.ARIA_CONTROLS)!);
-      if (helperTextElement) {
-        this.helperText_ = helperTextFactory(helperTextElement);
       }
     }
 
@@ -166,15 +175,12 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
       }
     };
 
-    // One of these elements must be non-null.
-    const element = this.nativeControl_ || this.selectedText_!;
-
-    element.addEventListener('change', this.handleChange_);
-    element.addEventListener('focus', this.handleFocus_);
-    element.addEventListener('blur', this.handleBlur_);
+    this.targetElement_.addEventListener('change', this.handleChange_);
+    this.targetElement_.addEventListener('focus', this.handleFocus_);
+    this.targetElement_.addEventListener('blur', this.handleBlur_);
 
     POINTER_EVENTS.forEach((evtType) => {
-      element.addEventListener(evtType, this.handleClick_ as EventListener);
+      this.targetElement_.addEventListener(evtType, this.handleClick_ as EventListener);
     });
 
     if (this.menuElement_) {
@@ -205,15 +211,12 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
   }
 
   destroy() {
-    // One of these elements must be non-null.
-    const element = this.nativeControl_ || this.selectedText_!;
-
-    element.removeEventListener('change', this.handleChange_);
-    element.removeEventListener('focus', this.handleFocus_);
-    element.removeEventListener('blur', this.handleBlur_);
-    element.removeEventListener('keydown', this.handleKeydown_);
+    this.targetElement_.removeEventListener('change', this.handleChange_);
+    this.targetElement_.removeEventListener('focus', this.handleFocus_);
+    this.targetElement_.removeEventListener('blur', this.handleBlur_);
+    this.targetElement_.removeEventListener('keydown', this.handleKeydown_);
     POINTER_EVENTS.forEach((evtType) => {
-      element.removeEventListener(evtType, this.handleClick_ as EventListener);
+      this.targetElement_.removeEventListener(evtType, this.handleClick_ as EventListener);
     });
 
     if (this.menu_) {
@@ -366,17 +369,14 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
   }
 
   private initRipple_(): MDCRipple {
-    // At least one of the elements must be non-null.
-    const element = this.nativeControl_ || this.selectedText_!;
-
     // tslint:disable:object-literal-sort-keys
     const foundation = new MDCRippleFoundation({
       ...MDCRipple.createAdapter(this),
       registerInteractionHandler: <E extends EventType>(evtType: E, handler: SpecificEventListener<E>) => {
-        element.addEventListener(evtType, handler);
+        this.targetElement_.addEventListener(evtType, handler);
       },
       deregisterInteractionHandler: <E extends EventType>(evtType: E, handler: SpecificEventListener<E>) => {
-        element.removeEventListener(evtType, handler);
+        this.targetElement_.removeEventListener(evtType, handler);
       },
     });
     // tslint:enable:object-literal-sort-keys
@@ -541,8 +541,9 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
   }
 
   private initialSyncRequiredState_() {
-    const element = this.nativeControl_ || this.selectedText_!;
-    const isRequired = (element as HTMLSelectElement).required || element.getAttribute('aria-required') === 'true'
+    const isRequired =
+      (this.targetElement_ as HTMLSelectElement).required
+      || this.targetElement_.getAttribute('aria-required') === 'true'
       || this.root_.classList.contains(cssClasses.REQUIRED);
     if (isRequired) {
       if (this.nativeControl_) {
@@ -585,8 +586,7 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
         .filter((attributeName) => attributeName) as string[];
     };
     const observer = new MutationObserver((mutationsList) => observerHandler(getAttributesList(mutationsList)));
-    const element = this.nativeControl_ || this.selectedText_!;
-    observer.observe(element, {attributes: true});
+    observer.observe(this.targetElement_, {attributes: true});
     this.validationObserver_ = observer;
   }
 }
