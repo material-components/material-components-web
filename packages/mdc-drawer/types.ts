@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,20 +21,14 @@
  * THE SOFTWARE.
  */
 
-import createFocusTrap from 'focus-trap';
+import {MDCList} from '@material/list/index';
+import * as FocusTrapLib from 'focus-trap';
 
-/**
- * @param {!Element} surfaceEl
- * @param {!Function} focusTrapFactory
- * @return {!FocusTrapInstance}
- */
-function createFocusTrapInstance(surfaceEl, focusTrapFactory = createFocusTrap) {
-  return focusTrapFactory(surfaceEl, {
-    clickOutsideDeactivates: true,
-    initialFocus: false, // Navigation drawer handles focusing on active nav item.
-    escapeDeactivates: false, // Navigation drawer handles ESC.
-    returnFocusOnDeactivate: false, // Navigation drawer handles restore focus.
-  });
-}
+// TODO(acdvorak): Centralize this in mdc-base or mdc-dom?
+export type FocusTrapFactory = (
+    element: HTMLElement | string,
+    userOptions?: FocusTrapLib.Options,
+) => FocusTrapLib.FocusTrap;
 
-export {createFocusTrapInstance};
+// TODO(acdvorak): Centralize this in mdc-list (ditto for other packages)
+export type ListFactory = (el: Element) => MDCList;

@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2016 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,34 +21,17 @@
  * THE SOFTWARE.
  */
 
-import MDCDismissibleDrawerFoundation from '../dismissible/foundation';
+import * as createFocusTrap from 'focus-trap';
+import {FocusTrapFactory} from './types';
 
-/**
- * @extends {MDCDismissibleDrawerFoundation}
- */
-class MDCModalDrawerFoundation extends MDCDismissibleDrawerFoundation {
-  /**
-   * Called when drawer finishes open animation.
-   * @override
-   */
-  opened() {
-    this.adapter_.trapFocus();
-  }
-
-  /**
-   * Called when drawer finishes close animation.
-   * @override
-   */
-  closed() {
-    this.adapter_.releaseFocus();
-  }
-
-  /**
-   * Handles click event on scrim.
-   */
-  handleScrimClick() {
-    this.close();
-  }
+export function createFocusTrapInstance(
+    surfaceEl: HTMLElement,
+    focusTrapFactory: FocusTrapFactory = createFocusTrap as unknown as FocusTrapFactory,
+): createFocusTrap.FocusTrap {
+  return focusTrapFactory(surfaceEl, {
+    clickOutsideDeactivates: true, // Allow handling of scrim clicks.
+    escapeDeactivates: false, // Foundation handles ESC key.
+    initialFocus: undefined, // Component handles focusing on active nav item.
+    returnFocusOnDeactivate: false, // Component handles restoring focus.
+  });
 }
-
-export default MDCModalDrawerFoundation;

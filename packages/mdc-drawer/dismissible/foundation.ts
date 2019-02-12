@@ -21,48 +21,42 @@
  * THE SOFTWARE.
  */
 
-import MDCDrawerAdapter from '../adapter';
 import {MDCFoundation} from '@material/base/foundation';
+import {MDCDrawerAdapter} from '../adapter';
 import {cssClasses, strings} from '../constants';
 
-/**
- * @extends {MDCFoundation<!MDCDrawerAdapter>}
- */
-class MDCDismissibleDrawerFoundation extends MDCFoundation {
-  /** @return enum {string} */
+class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapter> {
   static get strings() {
     return strings;
   }
 
-  /** @return enum {string} */
   static get cssClasses() {
     return cssClasses;
   }
 
-  static get defaultAdapter() {
-    return /** @type {!MDCDrawerAdapter} */ ({
-      addClass: (/* className: string */) => {},
-      removeClass: (/* className: string */) => {},
-      hasClass: (/* className: string */) => {},
-      elementHasClass: (/* element: !Element, className: string */) => {},
-      notifyClose: () => {},
-      notifyOpen: () => {},
-      saveFocus: () => {},
-      restoreFocus: () => {},
-      focusActiveNavigationItem: () => {},
-      trapFocus: () => {},
-      releaseFocus: () => {},
-    });
+  static get defaultAdapter(): MDCDrawerAdapter {
+    // tslint:disable:object-literal-sort-keys
+    return {
+      addClass: () => undefined,
+      removeClass: () => undefined,
+      hasClass: () => false,
+      elementHasClass: () => false,
+      notifyClose: () => undefined,
+      notifyOpen: () => undefined,
+      saveFocus: () => undefined,
+      restoreFocus: () => undefined,
+      focusActiveNavigationItem: () => undefined,
+      trapFocus: () => undefined,
+      releaseFocus: () => undefined,
+    };
+    // tslint:enable:object-literal-sort-keys
   }
 
-  constructor(adapter) {
-    super(Object.assign(MDCDismissibleDrawerFoundation.defaultAdapter, adapter));
+  private animationFrame_ = 0;
+  private animationTimer_ = 0;
 
-    /** @private {number} */
-    this.animationFrame_ = 0;
-
-    /** @private {number} */
-    this.animationTimer_ = 0;
+  constructor(adapter?: Partial<MDCDrawerAdapter>) {
+    super({...MDCDismissibleDrawerFoundation.defaultAdapter, ...adapter});
   }
 
   destroy() {
@@ -74,9 +68,6 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
     }
   }
 
-  /**
-   * Function to open the drawer.
-   */
   open() {
     if (this.isOpen() || this.isOpening() || this.isClosing()) {
       return;
@@ -93,9 +84,6 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
     this.adapter_.saveFocus();
   }
 
-  /**
-   * Function to close the drawer.
-   */
   close() {
     if (!this.isOpen() || this.isOpening() || this.isClosing()) {
       return;
@@ -105,48 +93,31 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
   }
 
   /**
-   * Extension point for when drawer finishes open animation.
-   * @protected
+   * @return true if drawer is in open state.
    */
-  opened() {}
-
-  /**
-   * Extension point for when drawer finishes close animation.
-   * @protected
-   */
-  closed() {}
-
-  /**
-   * Returns true if drawer is in open state.
-   * @return {boolean}
-   */
-  isOpen() {
+  isOpen(): boolean {
     return this.adapter_.hasClass(cssClasses.OPEN);
   }
 
   /**
-   * Returns true if drawer is animating open.
-   * @return {boolean}
+   * @return true if drawer is animating open.
    */
-  isOpening() {
+  isOpening(): boolean {
     return this.adapter_.hasClass(cssClasses.OPENING) || this.adapter_.hasClass(cssClasses.ANIMATE);
   }
 
   /**
-   * Returns true if drawer is animating closed.
-   * @return {boolean}
+   * @return true if drawer is animating closed.
    */
-  isClosing() {
+  isClosing(): boolean {
     return this.adapter_.hasClass(cssClasses.CLOSING);
   }
 
   /**
    * Keydown handler to close drawer when key is escape.
-   * @param evt
    */
-  handleKeydown(evt) {
+  handleKeydown(evt: KeyboardEvent) {
     const {keyCode, key} = evt;
-
     const isEscape = key === 'Escape' || keyCode === 27;
     if (isEscape) {
       this.close();
@@ -155,14 +126,13 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
 
   /**
    * Handles a transition end event on the root element.
-   * @param {!Event} evt
    */
-  handleTransitionEnd(evt) {
+  handleTransitionEnd(evt: Event) {
     const {OPENING, CLOSING, OPEN, ANIMATE, ROOT} = cssClasses;
 
     // In Edge, transitionend on ripple pseudo-elements yields a target without classList, so check for Element first.
     const isElement = evt.target instanceof Element;
-    if (!isElement || !this.adapter_.elementHasClass(/** @type {!Element} */ (evt.target), ROOT)) {
+    if (!isElement || !this.adapter_.elementHasClass(evt.target as Element, ROOT)) {
       return;
     }
 
@@ -183,11 +153,19 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
   }
 
   /**
-   * Runs the given logic on the next animation frame, using setTimeout to factor in Firefox reflow behavior.
-   * @param {Function} callback
-   * @private
+   * Extension point for when drawer finishes open animation.
    */
-  runNextAnimationFrame_(callback) {
+  protected opened() {} // tslint:disable-line:no-empty
+
+  /**
+   * Extension point for when drawer finishes close animation.
+   */
+  protected closed() {} // tslint:disable-line:no-empty
+
+  /**
+   * Runs the given logic on the next animation frame, using setTimeout to factor in Firefox reflow behavior.
+   */
+  private runNextAnimationFrame_(callback: Function) {
     cancelAnimationFrame(this.animationFrame_);
     this.animationFrame_ = requestAnimationFrame(() => {
       this.animationFrame_ = 0;
@@ -197,4 +175,4 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation {
   }
 }
 
-export default MDCDismissibleDrawerFoundation;
+export {MDCDismissibleDrawerFoundation as default, MDCDismissibleDrawerFoundation};
