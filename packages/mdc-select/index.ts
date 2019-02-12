@@ -42,8 +42,10 @@ import {
   OutlineFactory, SelectEventDetail,
 } from './types';
 
+type PointerEventType = 'mousedown' | 'touchstart';
+
+const POINTER_EVENTS: PointerEventType[] = ['mousedown', 'touchstart'];
 const VALIDATION_ATTR_WHITELIST = ['required', 'aria-required'];
-const MOUSEDOWN_TOUCHSTART_EVENTS: EventType[] = ['mousedown', 'touchstart'];
 
 class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapableSurface {
   static attachTo(root: Element): MDCSelect {
@@ -71,7 +73,7 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
   private handleChange_!: SpecificEventListener<'change'>; // assigned in initialize()
   private handleFocus_!: SpecificEventListener<'focus'>; // assigned in initialize()
   private handleBlur_!: SpecificEventListener<'blur'>; // assigned in initialize()
-  private handleClick_!: SpecificEventListener<'click'>; // assigned in initialize()
+  private handleClick_!: SpecificEventListener<PointerEventType>; // assigned in initialize()
   private handleKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialize()
   private handleMenuOpened_!: EventListener; // assigned in initialize()
   private handleMenuClosed_!: EventListener; // assigned in initialize()
@@ -171,7 +173,7 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
     element.addEventListener('focus', this.handleFocus_);
     element.addEventListener('blur', this.handleBlur_);
 
-    MOUSEDOWN_TOUCHSTART_EVENTS.forEach((evtType) => {
+    POINTER_EVENTS.forEach((evtType) => {
       element.addEventListener(evtType, this.handleClick_ as EventListener);
     });
 
@@ -210,7 +212,7 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
     element.removeEventListener('focus', this.handleFocus_);
     element.removeEventListener('blur', this.handleBlur_);
     element.removeEventListener('keydown', this.handleKeydown_);
-    MOUSEDOWN_TOUCHSTART_EVENTS.forEach((evtType) => {
+    POINTER_EVENTS.forEach((evtType) => {
       element.removeEventListener(evtType, this.handleClick_ as EventListener);
     });
 
@@ -498,9 +500,9 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
   /**
    * Calculates where the line ripple should start based on the x coordinate within the component.
    */
-  private getNormalizedXCoordinate_(evt: MouseEvent): number {
+  private getNormalizedXCoordinate_(evt: MouseEvent | TouchEvent): number {
     const targetClientRect = (evt.target as Element).getBoundingClientRect();
-    const xCoordinate = evt.clientX; // TODO(acdvorak): How should this be typed?
+    const xCoordinate = (evt as MouseEvent).clientX; // TODO(acdvorak): How does this work for TouchEvent?
     return xCoordinate - targetClientRect.left;
   }
 
