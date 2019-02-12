@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import MDCFoundation from '@material/base/foundation';
+import {MDCFoundation} from '@material/base/foundation';
 import {MDCIconButtonToggleAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
@@ -44,8 +44,8 @@ class MDCIconButtonToggleFoundation extends MDCFoundation<MDCIconButtonToggleAda
     };
   }
 
-  constructor(adapter: MDCIconButtonToggleAdapter) {
-    super(Object.assign(MDCIconButtonToggleFoundation.defaultAdapter, adapter));
+  constructor(adapter?: Partial<MDCIconButtonToggleAdapter>) {
+    super({...MDCIconButtonToggleFoundation.defaultAdapter, ...adapter});
   }
 
   init() {

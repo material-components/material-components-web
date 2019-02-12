@@ -26,7 +26,7 @@ import td from 'testdouble';
 
 import {setupFoundationTest} from '../helpers/setup';
 import {verifyDefaultAdapter} from '../helpers/foundation';
-import MDCIconButtonToggleFoundation from '../../../packages/mdc-icon-button/foundation';
+import {MDCIconButtonToggleFoundation} from '../../../packages/mdc-icon-button/foundation';
 
 const {strings, cssClasses} = MDCIconButtonToggleFoundation;
 

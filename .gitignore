@@ -8,5 +8,6 @@ out
 .idea
 *.sw*
 .closure-tmp
-.vscode
+.site-generator-tmp
 .typescript-tmp
+.vscode

@@ -22,8 +22,9 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+import {EventType} from '@material/base/index';
+import {ponyfill} from '@material/dom/index';
 import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
-import {getMatchesProperty} from '@material/ripple/util';
 import {MDCSelectionControl} from '@material/selection-control/index';
 import {MDCSwitchFoundation} from './foundation';
 
@@ -33,13 +34,12 @@ import {MDCSwitchFoundation} from './foundation';
  * https://material.io/design/components/selection-controls.html#switches
  */
 class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCSelectionControl, RippleCapableSurface {
-  /** Creates an instance of MDCSwitch bound to the given root element. */
   static attachTo(root: HTMLElement) {
     return new MDCSwitch(root);
   }
 
-  // Initialized in super class constructor, re-declared as public to fulfill to the `RippleCapableSurface` interface.
-  root_!: Element;
+  // Public visibility for this property is required by RippleCapableSurface.
+  root_!: Element; // assigned in MDCComponent constructor
 
   private ripple_ = this.initRipple_();
 
@@ -62,7 +62,6 @@ class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCSelectio
     this.checked = this.checked;
   }
 
-  /** Gets the default Foundation for this switch. */
   getDefaultFoundation() {
     return new MDCSwitchFoundation({
       addClass: (className: string) => this.root_.classList.add(className),
@@ -72,23 +71,22 @@ class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCSelectio
     });
   }
 
-  /** The MDCRipple associated with this switch. */
   get ripple() {
     return this.ripple_;
   }
 
-  /** The checked state of this switch. */
   get checked() {
     return this.nativeControl_.checked;
   }
+
   set checked(checked) {
     this.foundation_.setChecked(checked);
   }
 
-  /** The disabled state of this switch. */
   get disabled() {
     return this.nativeControl_.disabled;
   }
+
   set disabled(disabled) {
     this.foundation_.setDisabled(disabled);
   }
@@ -97,29 +95,31 @@ class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCSelectio
     const {RIPPLE_SURFACE_SELECTOR} = MDCSwitchFoundation.strings;
     const rippleSurface = this.root_.querySelector(RIPPLE_SURFACE_SELECTOR) as HTMLElement;
 
-    const MATCHES = getMatchesProperty(HTMLElement.prototype);
-    const adapter = Object.assign(MDCRipple.createAdapter(this), {
+    return new MDCRipple(this.root_, new MDCRippleFoundation({
+      ...MDCRipple.createAdapter(this),
       addClass: (className: string) => rippleSurface.classList.add(className),
       computeBoundingRect: () => rippleSurface.getBoundingClientRect(),
-      deregisterInteractionHandler: (type: string, handler: EventListener) =>
-          this.nativeControl_.removeEventListener(type, handler),
-      isSurfaceActive: () => this.nativeControl_[MATCHES]!(':active'),
+      deregisterInteractionHandler: (evtType: EventType, handler: EventListener) => {
+        this.nativeControl_.removeEventListener(evtType, handler);
+      },
+      isSurfaceActive: () => ponyfill.matches(this.nativeControl_, ':active'),
       isUnbounded: () => true,
-      registerInteractionHandler: (type: string, handler: EventListener) =>
-          this.nativeControl_.addEventListener(type, handler),
+      registerInteractionHandler: (evtType: EventType, handler: EventListener) => {
+        this.nativeControl_.addEventListener(evtType, handler);
+      },
       removeClass: (className: string) => rippleSurface.classList.remove(className),
-      updateCssVariable: (varName: string, value: string) =>
-          rippleSurface.style.setProperty(varName, value),
-    });
-    const foundation = new MDCRippleFoundation(adapter);
-    return new MDCRipple(this.root_, foundation);
+      updateCssVariable: (varName: string, value: string) => {
+        rippleSurface.style.setProperty(varName, value);
+      },
+    }));
   }
 
-  /** Returns the state of the native control element. */
   private get nativeControl_() {
     const {NATIVE_CONTROL_SELECTOR} = MDCSwitchFoundation.strings;
     return this.root_.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
   }
 }
 
-export {MDCSwitchFoundation, MDCSwitch};
+export {MDCSwitch as default, MDCSwitch};
+export * from './adapter';
+export * from './foundation';

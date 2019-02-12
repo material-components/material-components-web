@@ -22,19 +22,16 @@
  */
 
 import {getCorrectEventName} from '@material/animation/index';
-import MDCComponent from '@material/base/component';
+import {MDCComponent} from '@material/base/component';
 import {EventType, SpecificEventListener} from '@material/base/index';
-import {MDCRipple, MDCRippleFoundation, RippleCapableSurface, util} from '@material/ripple/index';
+import {ponyfill} from '@material/dom/index';
+import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
 import {MDCSelectionControl} from '@material/selection-control/index';
+import {MDCCheckboxFoundation} from './foundation';
 
-import MDCCheckboxFoundation from './foundation';
-import MDCCheckboxAdapter from './adapter';
-
-const {getMatchesProperty} = util;
 const CB_PROTO_PROPS = ['checked', 'indeterminate'];
 
 class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements MDCSelectionControl, RippleCapableSurface {
-
   static attachTo(root: Element) {
     return new MDCCheckbox(root);
   }
@@ -90,18 +87,15 @@ class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements MDCSele
   }
 
   private initRipple_(): MDCRipple {
-    const MATCHES = getMatchesProperty(HTMLElement.prototype);
-    const adapter = Object.assign(MDCRipple.createAdapter(this), {
-      deregisterInteractionHandler:
-        <K extends EventType>(type: K, handler: SpecificEventListener<K>) =>
-          this.nativeCb_.removeEventListener(type, handler),
-      isSurfaceActive: () => this.nativeCb_[MATCHES as 'matches'](':active'),
+    const foundation = new MDCRippleFoundation({
+      ...MDCRipple.createAdapter(this),
+      deregisterInteractionHandler: <K extends EventType>(evtType: K, handler: SpecificEventListener<K>) =>
+          this.nativeCb_.removeEventListener(evtType, handler),
+      isSurfaceActive: () => ponyfill.matches(this.nativeCb_, ':active'),
       isUnbounded: () => true,
-      registerInteractionHandler:
-        <K extends EventType>(type: K, handler: SpecificEventListener<K>) =>
-          this.nativeCb_.addEventListener(type, handler),
+      registerInteractionHandler: <K extends EventType>(evtType: K, handler: SpecificEventListener<K>) =>
+          this.nativeCb_.addEventListener(evtType, handler),
     });
-    const foundation = new MDCRippleFoundation(adapter);
     return new MDCRipple(this.root_, foundation);
   }
 
@@ -184,4 +178,6 @@ function validDescriptor(inputPropDesc: PropertyDescriptor | undefined): inputPr
   return !!inputPropDesc && typeof inputPropDesc.set === 'function';
 }
 
-export {MDCCheckboxFoundation, MDCCheckbox, MDCCheckboxAdapter};
+export {MDCCheckbox as default, MDCCheckbox};
+export * from './adapter';
+export * from './foundation';

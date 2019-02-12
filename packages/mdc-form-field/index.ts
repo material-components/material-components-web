@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import MDCComponent from '@material/base/component';
+import {MDCComponent} from '@material/base/component';
 import {MDCSelectionControl} from '@material/selection-control/index';
 import {MDCFormFieldFoundation} from './foundation';
 
@@ -57,10 +57,20 @@ class MDCFormField extends MDCComponent<MDCFormFieldFoundation> {
           this.input_.ripple.deactivate();
         }
       },
-      deregisterInteractionHandler: (type, handler) => this.label_ && this.label_.removeEventListener(type, handler),
-      registerInteractionHandler: (type, handler) => this.label_ && this.label_.addEventListener(type, handler),
+      deregisterInteractionHandler: (evtType, handler) => {
+        if (this.label_) {
+          this.label_.removeEventListener(evtType, handler);
+        }
+      },
+      registerInteractionHandler: (evtType, handler) => {
+        if (this.label_) {
+          this.label_.addEventListener(evtType, handler);
+        }
+      },
     });
   }
 }
 
-export {MDCFormField, MDCFormFieldFoundation};
+export {MDCFormField as default, MDCFormField};
+export * from './adapter';
+export * from './foundation';

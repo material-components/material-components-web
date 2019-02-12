@@ -21,8 +21,6 @@
  * THE SOFTWARE.
  */
 
-import MDCComponent from './component';
-import MDCFoundation from './foundation';
-import {CustomEventListener, EventType, SpecificEventListener} from './types';
-
-export {MDCFoundation, MDCComponent, CustomEventListener, EventType, SpecificEventListener};
+export * from './component';
+export * from './foundation';
+export * from './types';

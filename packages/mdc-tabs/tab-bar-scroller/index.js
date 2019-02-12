@@ -22,7 +22,7 @@
  */
 
 import {getCorrectPropertyName} from '@material/animation/index.ts';
-import MDCComponent from '@material/base/component';
+import {MDCComponent} from '@material/base/component';
 
 import {MDCTabBar} from '../tab-bar/index';
 import MDCTabBarScrollerFoundation from './foundation';

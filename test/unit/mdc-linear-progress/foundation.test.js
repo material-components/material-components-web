@@ -26,7 +26,7 @@ import td from 'testdouble';
 
 import {setupFoundationTest} from '../helpers/setup';
 import {verifyDefaultAdapter} from '../helpers/foundation';
-import MDCLinearProgressFoundation from '../../../packages/mdc-linear-progress/foundation';
+import {MDCLinearProgressFoundation} from '../../../packages/mdc-linear-progress/foundation';
 
 const {cssClasses} = MDCLinearProgressFoundation;
 

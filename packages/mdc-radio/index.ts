@@ -21,16 +21,14 @@
  * THE SOFTWARE.
  */
 
-import MDCComponent from '@material/base/component';
+import {MDCComponent} from '@material/base/component';
 import {EventType, SpecificEventListener} from '@material/base/index';
-import {RippleCapableSurface} from '@material/ripple/index';
-import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
+import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
 import {MDCSelectionControl} from '@material/selection-control/index';
 
-import MDCRadioFoundation from './foundation';
+import {MDCRadioFoundation} from './foundation';
 
 class MDCRadio extends MDCComponent<MDCRadioFoundation> implements RippleCapableSurface, MDCSelectionControl {
-
   static attachTo(root: Element) {
     return new MDCRadio(root);
   }
@@ -82,18 +80,17 @@ class MDCRadio extends MDCComponent<MDCRadioFoundation> implements RippleCapable
   }
 
   private initRipple_(): MDCRipple {
-    const adapter = Object.assign(MDCRipple.createAdapter(this), {
-      deregisterInteractionHandler:
-        <K extends EventType>(type: K, handler: SpecificEventListener<K>) =>
-          this.nativeControl_.removeEventListener(type, handler),
+    const foundation = new MDCRippleFoundation({
+      ...MDCRipple.createAdapter(this),
+      deregisterInteractionHandler: <K extends EventType>(evtType: K, handler: SpecificEventListener<K>) =>
+        this.nativeControl_.removeEventListener(evtType, handler),
       // Radio buttons technically go "active" whenever there is *any* keyboard interaction. This is not the
       // UI we desire.
       isSurfaceActive: () => false,
       isUnbounded: () => true,
-      registerInteractionHandler: <K extends EventType>(type: K, handler: SpecificEventListener<K>) =>
-        this.nativeControl_.addEventListener(type, handler),
+      registerInteractionHandler: <K extends EventType>(evtType: K, handler: SpecificEventListener<K>) =>
+        this.nativeControl_.addEventListener(evtType, handler),
     });
-    const foundation = new MDCRippleFoundation(adapter);
     return new MDCRipple(this.root_, foundation);
   }
 
@@ -110,4 +107,6 @@ class MDCRadio extends MDCComponent<MDCRadioFoundation> implements RippleCapable
   }
 }
 
-export {MDCRadio, MDCRadioFoundation};
+export {MDCRadio as default, MDCRadio};
+export * from './adapter';
+export * from './foundation';

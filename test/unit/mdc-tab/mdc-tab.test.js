@@ -60,7 +60,7 @@ test('click handler is added during initialSyncWithDOM', () => {
   const {component, root, mockFoundation} = setupTest({createMockFoundation: true});
 
   domEvents.emit(root, 'click');
-  td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 1});
+  td.verify(mockFoundation.handleClick(), {times: 1});
 
   component.destroy();
 });
@@ -70,7 +70,7 @@ test('click handler is removed during destroy', () => {
 
   component.destroy();
   domEvents.emit(root, 'click');
-  td.verify(mockFoundation.handleClick(td.matchers.anything()), {times: 0});
+  td.verify(mockFoundation.handleClick(), {times: 0});
 });
 
 test('#destroy removes the ripple', () => {

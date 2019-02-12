@@ -21,34 +21,15 @@
  * THE SOFTWARE.
  */
 
-import MDCComponent from '@material/base/component';
-import MDCRippleAdapter from './adapter';
-import MDCRippleFoundation from './foundation';
+import {MDCComponent} from '@material/base/component';
+import {ponyfill} from '@material/dom/index';
+import {MDCRippleAdapter} from './adapter';
+import {MDCRippleFoundation} from './foundation';
+import {RippleAttachOpts, RippleCapableSurface} from './types';
 import * as util from './util';
 
-/** Options passed in when attaching a ripple to an object. */
-interface MDCRippleAttachOpts {
-  isUnbounded?: boolean;
-}
-
-/**
- * See Material Design spec for more details on when to use ripples.
- * https://material.io/guidelines/motion/choreography.html#choreography-creation
- * unbounded Whether or not the ripple bleeds out of the bounds of the element.
- * disabled Whether or not the ripple is attached to a disabled component.
- */
-interface RippleCapableSurface {
-  readonly root_: Element;
-  unbounded?: boolean;
-  disabled?: boolean;
-}
-
-class MDCRipple extends MDCComponent<MDCRippleFoundation> implements
-    RippleCapableSurface {
-
-  static attachTo(root: Element, opts: MDCRippleAttachOpts = {
-    isUnbounded: undefined,
-  }): MDCRipple {
+class MDCRipple extends MDCComponent<MDCRippleFoundation> implements RippleCapableSurface {
+  static attachTo(root: Element, opts: RippleAttachOpts = {isUnbounded: undefined}): MDCRipple {
     const ripple = new MDCRipple(root);
     // Only override unbounded behavior if option is explicitly specified
     if (opts.isUnbounded !== undefined) {
@@ -58,8 +39,6 @@ class MDCRipple extends MDCComponent<MDCRippleFoundation> implements
   }
 
   static createAdapter(instance: RippleCapableSurface): MDCRippleAdapter {
-    const MATCHES = util.getMatchesProperty(HTMLElement.prototype);
-
     return {
       addClass: (className) => instance.root_.classList.add(className),
       browserSupportsCssVars: () => util.supportsCssVariables(window),
@@ -71,10 +50,7 @@ class MDCRipple extends MDCComponent<MDCRippleFoundation> implements
         instance.root_.removeEventListener(evtType, handler, util.applyPassive()),
       deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
       getWindowPageOffset: () => ({x: window.pageXOffset, y: window.pageYOffset}),
-      isSurfaceActive: () => {
-        const root = instance.root_;
-        return root[MATCHES as 'matches'](':active');
-      },
+      isSurfaceActive: () => ponyfill.matches(instance.root_, ':active'),
       isSurfaceDisabled: () => Boolean(instance.disabled),
       isUnbounded: () => Boolean(instance.unbounded),
       registerDocumentInteractionHandler: (evtType, handler) =>
@@ -87,8 +63,11 @@ class MDCRipple extends MDCComponent<MDCRippleFoundation> implements
     };
   }
 
+  // Public visibility for this property is required by RippleCapableSurface.
+  root_!: Element; // assigned in MDCComponent constructor
+
   disabled = false;
-  root_: Element = this.root_;
+
   private unbounded_?: boolean;
 
   get unbounded(): boolean {
@@ -130,7 +109,9 @@ class MDCRipple extends MDCComponent<MDCRippleFoundation> implements
   private setUnbounded_() {
     this.foundation_.setUnbounded(Boolean(this.unbounded_));
   }
-
 }
 
-export {MDCRipple, MDCRippleFoundation, RippleCapableSurface, util};
+export {MDCRipple as default, MDCRipple, util};
+export * from './adapter';
+export * from './foundation';
+export * from './types';

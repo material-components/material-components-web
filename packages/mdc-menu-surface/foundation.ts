@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import MDCFoundation from '@material/base/foundation';
+import {MDCFoundation} from '@material/base/foundation';
 import {MDCMenuSurfaceAdapter} from './adapter';
 import {Corner, CornerBit, cssClasses, numbers, strings} from './constants';
 import {MenuDimensions, MenuDistance, MenuPoint} from './types';
@@ -105,8 +105,8 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
   private dimensions_!: MenuDimensions; // assigned in open()
   private measurements_!: AutoLayoutMeasurements; // assigned in open()
 
-  constructor(adapter: MDCMenuSurfaceAdapter) {
-    super(Object.assign(MDCMenuSurfaceFoundation.defaultAdapter, adapter));
+  constructor(adapter?: Partial<MDCMenuSurfaceAdapter>) {
+    super({...MDCMenuSurfaceFoundation.defaultAdapter, ...adapter});
   }
 
   init() {

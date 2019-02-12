@@ -53,6 +53,10 @@ test('createFocusTrapInstance creates a properly configured focus trap instance'
   assert.equal(instance, properlyConfiguredFocusTrapInstance);
 });
 
+test('isScrollable returns false when element is null', () => {
+  assert.isFalse(util.isScrollable(null));
+});
+
 test('isScrollable returns false when element has no content', () => {
   const parent = bel`<div></div>`;
 

@@ -21,8 +21,8 @@
  * THE SOFTWARE.
  */
 
-import MDCFoundation from '@material/base/foundation';
-import MDCCheckboxAdapter from './adapter';
+import {MDCFoundation} from '@material/base/foundation';
+import {MDCCheckboxAdapter} from './adapter';
 import {cssClasses, numbers, strings} from './constants';
 
 class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
@@ -58,8 +58,8 @@ class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
   private animEndLatchTimer_ = 0;
   private enableAnimationEndHandler_ = false;
 
-  constructor(adapter: MDCCheckboxAdapter) {
-    super(Object.assign(MDCCheckboxFoundation.defaultAdapter, adapter));
+  constructor(adapter?: Partial<MDCCheckboxAdapter>) {
+    super({...MDCCheckboxFoundation.defaultAdapter, ...adapter});
   }
 
   init() {

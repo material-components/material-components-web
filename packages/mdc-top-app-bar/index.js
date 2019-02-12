@@ -22,7 +22,7 @@
  */
 
 import MDCTopAppBarAdapter from './adapter';
-import MDCComponent from '@material/base/component';
+import {MDCComponent} from '@material/base/component';
 import {MDCRipple} from '@material/ripple/index';
 import {cssClasses, strings} from './constants';
 import MDCTopAppBarBaseFoundation from './foundation';

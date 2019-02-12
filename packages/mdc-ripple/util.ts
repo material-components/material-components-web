@@ -54,23 +54,21 @@ function detectEdgePseudoVarBug(windowObj: Window): boolean {
 
 /** Checks whether the browser supports Css Variables. */
 export function supportsCssVariables(windowObj: Window, forceRefresh = false): boolean {
+  const {CSS} = windowObj;
   let supportsCssVars = supportsCssVariables_;
   if (typeof supportsCssVariables_ === 'boolean' && !forceRefresh) {
-    return Boolean(supportsCssVariables_);
+    return supportsCssVariables_;
   }
 
-  const supportsFunctionPresent = windowObj.CSS && typeof windowObj.CSS.supports === 'function';
+  const supportsFunctionPresent = CSS && typeof CSS.supports === 'function';
   if (!supportsFunctionPresent) {
     return false;
   }
 
-  const {CSS} = windowObj;
-  const explicitlySupportsCssVars = CSS
-    && CSS.supports('--css-vars', 'yes');
+  const explicitlySupportsCssVars = CSS.supports('--css-vars', 'yes');
   // See: https://bugs.webkit.org/show_bug.cgi?id=154669
   // See: README section on Safari
   const weAreFeatureDetectingSafari10plus = (
-    CSS &&
     CSS.supports('(--css-vars: yes)') &&
     CSS.supports('color', '#00000000')
   );
@@ -109,26 +107,12 @@ export function applyPassive(globalObj: Window = window, forceRefresh = false):
   return supportsPassive_ ? {passive: true} as EventListenerOptions : false;
 }
 
-/** Gets the matches function from an element. */
-export function getMatchesFunction(htmlElementPrototype: HTMLElement): (selector: string) => boolean {
-  if (htmlElementPrototype.webkitMatchesSelector) {
-    return htmlElementPrototype.webkitMatchesSelector;
-  } else if (htmlElementPrototype.msMatchesSelector) {
-    return htmlElementPrototype.webkitMatchesSelector;
-  } else {
-    return htmlElementPrototype.matches;
-  }
-}
-
 export type VendorMatchesFunctionName = 'webkitMatchesSelector' | 'msMatchesSelector';
 export type MatchesFunctionName = VendorMatchesFunctionName | 'matches';
 
 export function getMatchesProperty(htmlElementPrototype: {}): MatchesFunctionName {
-  /**
-   * Order is important because we return the first existing method we find.
-   * Do not change the order of the items in the below array.
-   */
-
+  // Order is important because we return the first existing method we find.
+  // Do not change the order of the items in the below array.
   const matchesMethods: MatchesFunctionName[] = ['matches', 'webkitMatchesSelector', 'msMatchesSelector'];
   let method: MatchesFunctionName = 'matches';
   for (const matchesMethod of matchesMethods) {
@@ -141,9 +125,8 @@ export function getMatchesProperty(htmlElementPrototype: {}): MatchesFunctionNam
   return method;
 }
 
-export function getNormalizedEventCoords(
-    ev: Event | undefined, pageOffset: Point, clientRect: ClientRect): Point {
-  if (!ev) {
+export function getNormalizedEventCoords(evt: Event | undefined, pageOffset: Point, clientRect: ClientRect): Point {
+  if (!evt) {
     return {x: 0, y: 0};
   }
   const {x, y} = pageOffset;
@@ -153,17 +136,14 @@ export function getNormalizedEventCoords(
   let normalizedX;
   let normalizedY;
   // Determine touch point relative to the ripple container.
-  if (ev.type === 'touchstart') {
-    const e = ev as TouchEvent;
-    normalizedX = e.changedTouches[0].pageX - documentX;
-    normalizedY = e.changedTouches[0].pageY - documentY;
+  if (evt.type === 'touchstart') {
+    const touchEvent = evt as TouchEvent;
+    normalizedX = touchEvent.changedTouches[0].pageX - documentX;
+    normalizedY = touchEvent.changedTouches[0].pageY - documentY;
   } else {
-    const e = ev as MouseEvent;
-    normalizedX = e.pageX - documentX;
-    normalizedY = e.pageY - documentY;
-  }
-  if (normalizedX === undefined || normalizedY === undefined) {
-    throw new Error('Event coordinates not defined');
+    const mouseEvent = evt as MouseEvent;
+    normalizedX = mouseEvent.pageX - documentX;
+    normalizedY = mouseEvent.pageY - documentY;
   }
 
   return {x: normalizedX, y: normalizedY};

@@ -23,15 +23,13 @@
 
 import {MDCRipple} from '@material/ripple/index';
 
-interface MDCSelectionControlState {
+export interface MDCSelectionControlState {
   checked: boolean;
   indeterminate: boolean;
   disabled: boolean;
   value?: string;
 }
 
-interface MDCSelectionControl {
+export interface MDCSelectionControl {
   readonly ripple: MDCRipple | undefined;
 }
-
-export {MDCSelectionControlState, MDCSelectionControl};

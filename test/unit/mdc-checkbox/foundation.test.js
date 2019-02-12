@@ -28,7 +28,7 @@ import td from 'testdouble';
 import {install as installClock} from '../helpers/clock';
 import {setupFoundationTest} from '../helpers/setup';
 import {verifyDefaultAdapter} from '../helpers/foundation';
-import MDCCheckboxFoundation from '../../../packages/mdc-checkbox/foundation';
+import {MDCCheckboxFoundation} from '../../../packages/mdc-checkbox/foundation';
 import {cssClasses, strings, numbers} from '../../../packages/mdc-checkbox/constants';
 
 const DESC_UNDEFINED = {

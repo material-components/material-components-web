@@ -20,23 +20,29 @@
 // THE SOFTWARE.
 //
 
+@import "@material/feature-targeting/functions";
+@import "@material/feature-targeting/mixins";
 @import "./variables";
 @import "./functions";
 
-@mixin mdc-shape-radius($radius, $rtl-reflexive: false) {
-  // Even if $rtl-reflexive is true, only emit RTL styles if we can't easily tell that the given radius is symmetrical
-  $needs-flip: $rtl-reflexive and length($radius) > 1;
+@mixin mdc-shape-radius($radius, $rtl-reflexive: false, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
 
-  @if ($needs-flip) {
-    /* @noflip */
-  }
+  @include mdc-feature-targets($feat-structure) {
+    // Even if $rtl-reflexive is true, only emit RTL styles if we can't easily tell that the given radius is symmetrical
+    $needs-flip: $rtl-reflexive and length($radius) > 1;
 
-  border-radius: mdc-shape-prop-value($radius);
-
-  @if ($needs-flip) {
-    @include mdc-rtl {
+    @if ($needs-flip) {
       /* @noflip */
-      border-radius: mdc-shape-flip-radius(mdc-shape-prop-value($radius));
+    }
+
+    border-radius: mdc-shape-prop-value($radius);
+
+    @if ($needs-flip) {
+      @include mdc-rtl {
+        /* @noflip */
+        border-radius: mdc-shape-flip-radius(mdc-shape-prop-value($radius));
+      }
     }
   }
 }
