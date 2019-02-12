@@ -502,8 +502,12 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
    */
   private getNormalizedXCoordinate_(evt: MouseEvent | TouchEvent): number {
     const targetClientRect = (evt.target as Element).getBoundingClientRect();
-    const xCoordinate = (evt as MouseEvent).clientX; // TODO(acdvorak): How does this work for TouchEvent?
+    const xCoordinate = this.isTouchEvent_(evt) ? evt.touches[0].clientX : evt.clientX;
     return xCoordinate - targetClientRect.left;
+  }
+
+  private isTouchEvent_(evt: MouseEvent | TouchEvent): evt is TouchEvent {
+    return Boolean((evt as TouchEvent).touches);
   }
 
   /**
