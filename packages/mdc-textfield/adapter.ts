@@ -79,11 +79,8 @@ interface MDCTextFieldAdapter {
   deregisterValidationAttributeChangeHandler(observer: MutationObserver): void;
 
   /**
-   * @return An object representing the native text input element, with a similar API shape.
-   *     We never alter the value within our code, however we do update the disabled
-   *     property, so if you choose to duck-type the return value for this method
-   *     in your implementation it's important to keep this in mind. Also note that
-   *     this method can return null, which the foundation will handle gracefully.
+   * @return The native `<input>` element, or an object with the same shape.
+   * Note that this method can return null, which the foundation will handle gracefully.
    */
   getNativeInput(): NativeInputElement | null;
 
