@@ -22,18 +22,11 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+import {MDCTabDimensions, TabInteractionEventDetail} from '@material/tab/types';
+import {MDCTabBarAdapter} from './adapter';
+import {numbers, strings} from './constants';
 
-import {strings, numbers} from './constants';
-import MDCTabBarAdapter from './adapter';
-
-/* eslint-disable no-unused-vars */
-import {MDCTabDimensions} from '@material/tab/adapter';
-/* eslint-enable no-unused-vars */
-
-/**
- * @type {Set<string>}
- */
-const ACCEPTABLE_KEYS = new Set();
+const ACCEPTABLE_KEYS: Set<string> = new Set();
 // IE11 has no support for new Set with iterable so we need to initialize this by hand
 ACCEPTABLE_KEYS.add(strings.ARROW_LEFT_KEY);
 ACCEPTABLE_KEYS.add(strings.ARROW_RIGHT_KEY);
@@ -42,10 +35,7 @@ ACCEPTABLE_KEYS.add(strings.HOME_KEY);
 ACCEPTABLE_KEYS.add(strings.ENTER_KEY);
 ACCEPTABLE_KEYS.add(strings.SPACE_KEY);
 
-/**
- * @type {Map<number, string>}
- */
-const KEYCODE_MAP = new Map();
+const KEYCODE_MAP: Map<number, string> = new Map();
 // IE11 has no support for new Map with iterable so we need to initialize this by hand
 KEYCODE_MAP.set(numbers.ARROW_LEFT_KEYCODE, strings.ARROW_LEFT_KEY);
 KEYCODE_MAP.set(numbers.ARROW_RIGHT_KEYCODE, strings.ARROW_RIGHT_KEY);
@@ -54,71 +44,54 @@ KEYCODE_MAP.set(numbers.HOME_KEYCODE, strings.HOME_KEY);
 KEYCODE_MAP.set(numbers.ENTER_KEYCODE, strings.ENTER_KEY);
 KEYCODE_MAP.set(numbers.SPACE_KEYCODE, strings.SPACE_KEY);
 
-/**
- * @extends {MDCFoundation<!MDCTabBarAdapter>}
- * @final
- */
-class MDCTabBarFoundation extends MDCFoundation {
-  /** @return enum {string} */
+class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
   static get strings() {
     return strings;
   }
 
-  /** @return enum {number} */
   static get numbers() {
     return numbers;
   }
 
-  /**
-   * @see MDCTabBarAdapter for typing information
-   * @return {!MDCTabBarAdapter}
-   */
-  static get defaultAdapter() {
-    return /** @type {!MDCTabBarAdapter} */ ({
-      scrollTo: () => {},
-      incrementScroll: () => {},
-      getScrollPosition: () => {},
-      getScrollContentWidth: () => {},
-      getOffsetWidth: () => {},
-      isRTL: () => {},
-      setActiveTab: () => {},
-      activateTabAtIndex: () => {},
-      deactivateTabAtIndex: () => {},
-      focusTabAtIndex: () => {},
-      getTabIndicatorClientRectAtIndex: () => {},
-      getTabDimensionsAtIndex: () => {},
-      getPreviousActiveTabIndex: () => {},
-      getFocusedTabIndex: () => {},
-      getIndexOfTabById: () => {},
-      getTabListLength: () => {},
-      notifyTabActivated: () => {},
-    });
+  static get defaultAdapter(): MDCTabBarAdapter {
+    // tslint:disable:object-literal-sort-keys
+    return {
+      scrollTo: () => undefined,
+      incrementScroll: () => undefined,
+      getScrollPosition: () => 0,
+      getScrollContentWidth: () => 0,
+      getOffsetWidth: () => 0,
+      isRTL: () => false,
+      setActiveTab: () => undefined,
+      activateTabAtIndex: () => undefined,
+      deactivateTabAtIndex: () => undefined,
+      focusTabAtIndex: () => undefined,
+      getTabIndicatorClientRectAtIndex: () => ({top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}),
+      getTabDimensionsAtIndex: () => ({rootLeft: 0, rootRight: 0, contentLeft: 0, contentRight: 0}),
+      getPreviousActiveTabIndex: () => -1,
+      getFocusedTabIndex: () => -1,
+      getIndexOfTabById: () => -1,
+      getTabListLength: () => 0,
+      notifyTabActivated: () => undefined,
+    };
+    // tslint:enable:object-literal-sort-keys
   }
 
-  /**
-   * @param {!MDCTabBarAdapter} adapter
-   * */
-  constructor(adapter) {
-    super(Object.assign(MDCTabBarFoundation.defaultAdapter, adapter));
+  private useAutomaticActivation_ = false;
 
-    /** @private {boolean} */
-    this.useAutomaticActivation_ = false;
+  constructor(adapter?: Partial<MDCTabBarAdapter>) {
+    super({...MDCTabBarFoundation.defaultAdapter, ...adapter});
   }
 
   /**
    * Switches between automatic and manual activation modes.
    * See https://www.w3.org/TR/wai-aria-practices/#tabpanel for examples.
-   * @param {boolean} useAutomaticActivation
    */
-  setUseAutomaticActivation(useAutomaticActivation) {
+  setUseAutomaticActivation(useAutomaticActivation: boolean) {
     this.useAutomaticActivation_ = useAutomaticActivation;
   }
 
-  /**
-   * Activates the tab at the given index
-   * @param {number} index
-   */
-  activateTab(index) {
+  activateTab(index: number) {
     const previousActiveIndex = this.adapter_.getPreviousActiveTabIndex();
     if (!this.indexIsInRange_(index) || index === previousActiveIndex) {
       return;
@@ -131,11 +104,7 @@ class MDCTabBarFoundation extends MDCFoundation {
     this.adapter_.notifyTabActivated(index);
   }
 
-  /**
-   * Handles the keydown event
-   * @param {!Event} evt
-   */
-  handleKeyDown(evt) {
+  handleKeyDown(evt: KeyboardEvent) {
     // Get the key from the event
     const key = this.getKeyFromEvent_(evt);
 
@@ -171,17 +140,16 @@ class MDCTabBarFoundation extends MDCFoundation {
 
   /**
    * Handles the MDCTab:interacted event
-   * @param {!CustomEvent} evt
    */
-  handleTabInteraction(evt) {
+  handleTabInteraction(evt: CustomEvent<TabInteractionEventDetail>) {
     this.adapter_.setActiveTab(this.adapter_.getIndexOfTabById(evt.detail.tabId));
   }
 
   /**
    * Scrolls the tab at the given index into view
-   * @param {number} index The tab index to make visible
+   * @param index The tab index to make visible
    */
-  scrollIntoView(index) {
+  scrollIntoView(index: number) {
     // Early exit if the index is out of range
     if (!this.indexIsInRange_(index)) {
       return;
@@ -207,12 +175,10 @@ class MDCTabBarFoundation extends MDCFoundation {
 
   /**
    * Private method for determining the index of the destination tab based on what key was pressed
-   * @param {number} origin The original index from which to determine the destination
-   * @param {string} key The name of the key
-   * @return {number}
-   * @private
+   * @param origin The original index from which to determine the destination
+   * @param key The name of the key
    */
-  determineTargetFromKey_(origin, key) {
+  private determineTargetFromKey_(origin: number, key: string): number {
     const isRTL = this.isRTL_();
     const maxIndex = this.adapter_.getTabListLength() - 1;
     const shouldGoToEnd = key === strings.END_KEY;
@@ -241,14 +207,17 @@ class MDCTabBarFoundation extends MDCFoundation {
 
   /**
    * Calculates the scroll increment that will make the tab at the given index visible
-   * @param {number} index The index of the tab
-   * @param {number} nextIndex The index of the next tab
-   * @param {number} scrollPosition The current scroll position
-   * @param {number} barWidth The width of the Tab Bar
-   * @return {number}
-   * @private
+   * @param index The index of the tab
+   * @param nextIndex The index of the next tab
+   * @param scrollPosition The current scroll position
+   * @param barWidth The width of the Tab Bar
    */
-  calculateScrollIncrement_(index, nextIndex, scrollPosition, barWidth) {
+  private calculateScrollIncrement_(
+      index: number,
+      nextIndex: number,
+      scrollPosition: number,
+      barWidth: number,
+  ): number {
     const nextTabDimensions = this.adapter_.getTabDimensionsAtIndex(nextIndex);
     const relativeContentLeft = nextTabDimensions.contentLeft - scrollPosition - barWidth;
     const relativeContentRight = nextTabDimensions.contentRight - scrollPosition;
@@ -264,15 +233,19 @@ class MDCTabBarFoundation extends MDCFoundation {
 
   /**
    * Calculates the scroll increment that will make the tab at the given index visible in RTL
-   * @param {number} index The index of the tab
-   * @param {number} nextIndex The index of the next tab
-   * @param {number} scrollPosition The current scroll position
-   * @param {number} barWidth The width of the Tab Bar
-   * @param {number} scrollContentWidth The width of the scroll content
-   * @return {number}
-   * @private
+   * @param index The index of the tab
+   * @param nextIndex The index of the next tab
+   * @param scrollPosition The current scroll position
+   * @param barWidth The width of the Tab Bar
+   * @param scrollContentWidth The width of the scroll content
    */
-  calculateScrollIncrementRTL_(index, nextIndex, scrollPosition, barWidth, scrollContentWidth) {
+  private calculateScrollIncrementRTL_(
+      index: number,
+      nextIndex: number,
+      scrollPosition: number,
+      barWidth: number,
+      scrollContentWidth: number,
+  ): number {
     const nextTabDimensions = this.adapter_.getTabDimensionsAtIndex(nextIndex);
     const relativeContentLeft = scrollContentWidth - nextTabDimensions.contentLeft - scrollPosition;
     const relativeContentRight = scrollContentWidth - nextTabDimensions.contentRight - scrollPosition - barWidth;
@@ -288,14 +261,17 @@ class MDCTabBarFoundation extends MDCFoundation {
 
   /**
    * Determines the index of the adjacent tab closest to either edge of the Tab Bar
-   * @param {number} index The index of the tab
-   * @param {!MDCTabDimensions} tabDimensions The dimensions of the tab
-   * @param {number} scrollPosition The current scroll position
-   * @param {number} barWidth The width of the tab bar
-   * @return {number}
-   * @private
+   * @param index The index of the tab
+   * @param tabDimensions The dimensions of the tab
+   * @param scrollPosition The current scroll position
+   * @param barWidth The width of the tab bar
    */
-  findAdjacentTabIndexClosestToEdge_(index, tabDimensions, scrollPosition, barWidth) {
+  private findAdjacentTabIndexClosestToEdge_(
+      index: number,
+      tabDimensions: MDCTabDimensions,
+      scrollPosition: number,
+      barWidth: number,
+  ): number {
     /**
      * Tabs are laid out in the Tab Scroller like this:
      *
@@ -339,15 +315,19 @@ class MDCTabBarFoundation extends MDCFoundation {
 
   /**
    * Determines the index of the adjacent tab closest to either edge of the Tab Bar in RTL
-   * @param {number} index The index of the tab
-   * @param {!MDCTabDimensions} tabDimensions The dimensions of the tab
-   * @param {number} scrollPosition The current scroll position
-   * @param {number} barWidth The width of the tab bar
-   * @param {number} scrollContentWidth The width of the scroller content
-   * @return {number}
-   * @private
+   * @param index The index of the tab
+   * @param tabDimensions The dimensions of the tab
+   * @param scrollPosition The current scroll position
+   * @param barWidth The width of the tab bar
+   * @param scrollContentWidth The width of the scroller content
    */
-  findAdjacentTabIndexClosestToEdgeRTL_(index, tabDimensions, scrollPosition, barWidth, scrollContentWidth) {
+  private findAdjacentTabIndexClosestToEdgeRTL_(
+      index: number,
+      tabDimensions: MDCTabDimensions,
+      scrollPosition: number,
+      barWidth: number,
+      scrollContentWidth: number,
+  ): number {
     const rootLeft = scrollContentWidth - tabDimensions.rootLeft - barWidth - scrollPosition;
     const rootRight = scrollContentWidth - tabDimensions.rootRight - scrollPosition;
     const rootDelta = rootLeft + rootRight;
@@ -367,46 +347,39 @@ class MDCTabBarFoundation extends MDCFoundation {
 
   /**
    * Returns the key associated with a keydown event
-   * @param {!Event} evt The keydown event
-   * @return {string}
-   * @private
+   * @param evt The keydown event
    */
-  getKeyFromEvent_(evt) {
+  private getKeyFromEvent_(evt: KeyboardEvent): string {
     if (ACCEPTABLE_KEYS.has(evt.key)) {
       return evt.key;
     }
-
-    return KEYCODE_MAP.get(evt.keyCode);
+    return KEYCODE_MAP.get(evt.keyCode)!;
   }
 
-  isActivationKey_(key) {
+  private isActivationKey_(key: string) {
     return key === strings.SPACE_KEY || key === strings.ENTER_KEY;
   }
 
   /**
    * Returns whether a given index is inclusively between the ends
-   * @param {number} index The index to test
-   * @private
+   * @param index The index to test
    */
-  indexIsInRange_(index) {
+  private indexIsInRange_(index: number) {
     return index >= 0 && index < this.adapter_.getTabListLength();
   }
 
   /**
    * Returns the view's RTL property
-   * @return {boolean}
-   * @private
    */
-  isRTL_() {
+  private isRTL_(): boolean {
     return this.adapter_.isRTL();
   }
 
   /**
-   * Scrolls the tab at the given index into view for left-to-right useragents
-   * @param {number} index The index of the tab to scroll into view
-   * @private
+   * Scrolls the tab at the given index into view for left-to-right user agents.
+   * @param index The index of the tab to scroll into view
    */
-  scrollIntoView_(index) {
+  private scrollIntoView_(index: number) {
     const scrollPosition = this.adapter_.getScrollPosition();
     const barWidth = this.adapter_.getOffsetWidth();
     const tabDimensions = this.adapter_.getTabDimensionsAtIndex(index);
@@ -422,10 +395,9 @@ class MDCTabBarFoundation extends MDCFoundation {
 
   /**
    * Scrolls the tab at the given index into view in RTL
-   * @param {number} index The tab index to make visible
-   * @private
+   * @param index The tab index to make visible
    */
-  scrollIntoViewRTL_(index) {
+  private scrollIntoViewRTL_(index: number) {
     const scrollPosition = this.adapter_.getScrollPosition();
     const barWidth = this.adapter_.getOffsetWidth();
     const tabDimensions = this.adapter_.getTabDimensionsAtIndex(index);
@@ -442,4 +414,4 @@ class MDCTabBarFoundation extends MDCFoundation {
   }
 }
 
-export default MDCTabBarFoundation;
+export {MDCTabBarFoundation as default, MDCTabBarFoundation};

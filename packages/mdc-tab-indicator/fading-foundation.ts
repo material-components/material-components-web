@@ -21,36 +21,17 @@
  * THE SOFTWARE.
  */
 
-import {assert} from 'chai';
+import {MDCTabIndicatorFoundation} from './foundation';
 
-import {setupFoundationTest} from '../helpers/setup';
-import MDCTabScrollerFoundation from '../../../packages/mdc-tab-scroller/foundation';
-import MDCTabScrollerRTL from '../../../packages/mdc-tab-scroller/rtl-scroller';
+/* istanbul ignore next: subclass is not a branch statement */
+class MDCFadingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
+  activate() {
+    this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
+  }
 
-suite('MDCTabScrollerRTL');
+  deactivate() {
+    this.adapter_.removeClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
+  }
+}
 
-const setup = () => {
-  const {mockAdapter} = setupFoundationTest(MDCTabScrollerFoundation);
-  const scroller = new MDCTabScrollerRTL(mockAdapter);
-  return {scroller};
-};
-
-test('#getScrollPositionRTL() is abstract and does nothing', () => {
-  const {scroller} = setup();
-  assert.isUndefined(scroller.getScrollPositionRTL());
-});
-
-test('#scrollToRTL() is abstract and does nothing', () => {
-  const {scroller} = setup();
-  assert.isUndefined(scroller.scrollToRTL());
-});
-
-test('#incrementScrollRTL() is abstract and does nothing', () => {
-  const {scroller} = setup();
-  assert.isUndefined(scroller.incrementScrollRTL());
-});
-
-test('#getAnimatingScrollPosition() is abstract and does nothing', () => {
-  const {scroller} = setup();
-  assert.isUndefined(scroller.getAnimatingScrollPosition());
-});
+export {MDCFadingTabIndicatorFoundation as default, MDCFadingTabIndicatorFoundation};

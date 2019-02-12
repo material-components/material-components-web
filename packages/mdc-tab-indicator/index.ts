@@ -23,55 +23,35 @@
 
 import {MDCComponent} from '@material/base/component';
 
-import MDCTabIndicatorAdapter from './adapter';
-import MDCTabIndicatorFoundation from './foundation';
+import {MDCTabIndicatorAdapter} from './adapter';
+import {MDCFadingTabIndicatorFoundation} from './fading-foundation';
+import {MDCTabIndicatorFoundation} from './foundation';
+import {MDCSlidingTabIndicatorFoundation} from './sliding-foundation';
 
-import MDCSlidingTabIndicatorFoundation from './sliding-foundation';
-import MDCFadingTabIndicatorFoundation from './fading-foundation';
-
-/**
- * @extends {MDCComponent<!MDCTabIndicatorFoundation>}
- * @final
- */
-class MDCTabIndicator extends MDCComponent {
-  /**
-   * @param {!Element} root
-   * @return {!MDCTabIndicator}
-   */
-  static attachTo(root) {
+class MDCTabIndicator extends MDCComponent<MDCTabIndicatorFoundation> {
+  static attachTo(root: Element): MDCTabIndicator {
     return new MDCTabIndicator(root);
   }
 
-  /**
-   * @param {...?} args
-   */
-  constructor(...args) {
-    super(...args);
-    /** @type {?Element} */
-    this.content_;
-  }
+  private content_!: HTMLElement; // assigned in initialize()
 
   initialize() {
-    this.content_ = this.root_.querySelector(MDCTabIndicatorFoundation.strings.CONTENT_SELECTOR);
+    this.content_ = this.root_.querySelector<HTMLElement>(MDCTabIndicatorFoundation.strings.CONTENT_SELECTOR)!;
   }
 
-  /**
-   * @return {!ClientRect}
-   */
-  computeContentClientRect() {
+  computeContentClientRect(): ClientRect {
     return this.foundation_.computeContentClientRect();
   }
 
-  /**
-   * @return {!MDCTabIndicatorFoundation}
-   */
-  getDefaultFoundation() {
-    const adapter = /** @type {!MDCTabIndicatorAdapter} */ (Object.assign({
+  getDefaultFoundation(): MDCTabIndicatorFoundation {
+    // tslint:disable:object-literal-sort-keys
+    const adapter: MDCTabIndicatorAdapter = {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       computeContentClientRect: () => this.content_.getBoundingClientRect(),
       setContentStyleProperty: (prop, value) => this.content_.style.setProperty(prop, value),
-    }));
+    };
+    // tslint:enable:object-literal-sort-keys
 
     if (this.root_.classList.contains(MDCTabIndicatorFoundation.cssClasses.FADE)) {
       return new MDCFadingTabIndicatorFoundation(adapter);
@@ -81,10 +61,7 @@ class MDCTabIndicator extends MDCComponent {
     return new MDCSlidingTabIndicatorFoundation(adapter);
   }
 
-  /**
-   * @param {!ClientRect=} previousIndicatorClientRect
-   */
-  activate(previousIndicatorClientRect) {
+  activate(previousIndicatorClientRect?: ClientRect) {
     this.foundation_.activate(previousIndicatorClientRect);
   }
 
@@ -93,4 +70,8 @@ class MDCTabIndicator extends MDCComponent {
   }
 }
 
-export {MDCTabIndicator, MDCTabIndicatorFoundation, MDCSlidingTabIndicatorFoundation, MDCFadingTabIndicatorFoundation};
+export {MDCTabIndicator as default, MDCTabIndicator};
+export * from './adapter';
+export * from './foundation';
+export * from './fading-foundation';
+export * from './sliding-foundation';
