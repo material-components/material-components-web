@@ -127,12 +127,12 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapter> {
   /**
    * Handles a transition end event on the root element.
    */
-  handleTransitionEnd(evt: Event) {
+  handleTransitionEnd(evt: TransitionEvent) {
     const {OPENING, CLOSING, OPEN, ANIMATE, ROOT} = cssClasses;
 
     // In Edge, transitionend on ripple pseudo-elements yields a target without classList, so check for Element first.
-    const isElement = evt.target instanceof Element;
-    if (!isElement || !this.adapter_.elementHasClass(evt.target as Element, ROOT)) {
+    const isRootElement = this.isElement_(evt.target) && this.adapter_.elementHasClass(evt.target, ROOT);
+    if (!isRootElement) {
       return;
     }
 
@@ -165,13 +165,18 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapter> {
   /**
    * Runs the given logic on the next animation frame, using setTimeout to factor in Firefox reflow behavior.
    */
-  private runNextAnimationFrame_(callback: Function) {
+  private runNextAnimationFrame_(callback: () => void) {
     cancelAnimationFrame(this.animationFrame_);
     this.animationFrame_ = requestAnimationFrame(() => {
       this.animationFrame_ = 0;
       clearTimeout(this.animationTimer_);
       this.animationTimer_ = setTimeout(callback, 0);
     });
+  }
+
+  private isElement_(element: unknown): element is Element {
+    // In Edge, transitionend on ripple pseudo-elements yields a target without classList.
+    return Boolean((element as Element).classList);
   }
 }
 

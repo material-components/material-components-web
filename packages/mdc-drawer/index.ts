@@ -57,7 +57,7 @@ class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
   }
 
   private previousFocus_?: Element | null;
-  private scrim_!: Element | null; // assigned in initialSyncWithDOM()
+  private scrim_!: HTMLElement | null; // assigned in initialSyncWithDOM()
   private list_?: MDCList; // assigned in initialize()
 
   private focusTrap_?: createFocusTrap.FocusTrap; // assigned in initialSyncWithDOM()
@@ -82,11 +82,11 @@ class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
     const {MODAL} = MDCDismissibleDrawerFoundation.cssClasses;
     const {SCRIM_SELECTOR} = MDCDismissibleDrawerFoundation.strings;
 
-    this.scrim_ = (this.root_.parentNode as Element).querySelector(SCRIM_SELECTOR);
+    this.scrim_ = (this.root_.parentNode as Element).querySelector<HTMLElement>(SCRIM_SELECTOR);
 
     if (this.scrim_ && this.root_.classList.contains(MODAL)) {
       this.handleScrimClick_ = () => (this.foundation_ as MDCModalDrawerFoundation).handleScrimClick();
-      this.scrim_.addEventListener('click', this.handleScrimClick_ as EventListener);
+      this.scrim_.addEventListener('click', this.handleScrimClick_);
       this.focusTrap_ = util.createFocusTrapInstance(this.root_ as HTMLElement, this.focusTrapFactory_);
     }
 
@@ -106,8 +106,8 @@ class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
     }
 
     const {MODAL} = MDCDismissibleDrawerFoundation.cssClasses;
-    if (this.root_.classList.contains(MODAL)) {
-      this.scrim_!.removeEventListener('click', this.handleScrimClick_ as EventListener);
+    if (this.scrim_ && this.handleScrimClick_ && this.root_.classList.contains(MODAL)) {
+      this.scrim_.removeEventListener('click', this.handleScrimClick_);
       // Ensure drawer is closed to hide scrim and release focus
       this.open = false;
     }
