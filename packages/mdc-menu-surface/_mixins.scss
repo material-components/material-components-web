@@ -109,7 +109,8 @@
   }
 
   @include mdc-feature-targets($feat-animation) {
-    transition: opacity $mdc-menu-surface-fade-in-duration linear,
+    transition:
+      opacity $mdc-menu-surface-fade-in-duration linear,
       transform $mdc-menu-surface-scale-duration $mdc-animation-deceleration-curve-timing-function;
   }
 
