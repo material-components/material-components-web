@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,16 +21,18 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
-const strings = {
-  ARIA_HIDDEN: 'aria-hidden',
-  ROLE: 'role',
-};
+/**
+ * Defines the shape of the adapter expected by the foundation.
+ * Implement this adapter for your framework of choice to delegate updates to
+ * the component in your framework of choice. See architecture documentation
+ * for more details.
+ * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
+ */
+interface MDCTextFieldCharacterCounterAdapter {
+  /**
+   * Sets the text content of character counter element.
+   */
+  setContent(content: string): void;
+}
 
-/** @enum {string} */
-const cssClasses = {
-  HELPER_TEXT_PERSISTENT: 'mdc-select-helper-text--persistent',
-  HELPER_TEXT_VALIDATION_MSG: 'mdc-select-helper-text--validation-msg',
-};
-
-export {strings, cssClasses};
+export {MDCTextFieldCharacterCounterAdapter as default, MDCTextFieldCharacterCounterAdapter};

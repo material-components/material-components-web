@@ -22,50 +22,35 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
-import MDCTextFieldCharacterCounterAdapter from './adapter';
+import {MDCTextFieldCharacterCounterAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-/**
- * @extends {MDCFoundation<!MDCTextFieldCharacterCounterAdapter>}
- * @final
- */
-class MDCTextFieldCharacterCounterFoundation extends MDCFoundation {
-  /** @return enum {string} */
+class MDCTextFieldCharacterCounterFoundation extends MDCFoundation<MDCTextFieldCharacterCounterAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
 
-  /** @return enum {string} */
   static get strings() {
     return strings;
   }
 
   /**
-   * {@see MDCTextFieldCharacterCounterAdapter} for typing information on parameters and return
-   * types.
-   * @return {!MDCTextFieldCharacterCounterAdapter}
+   * See {@link MDCTextFieldCharacterCounterAdapter} for typing information on parameters and return types.
    */
-  static get defaultAdapter() {
-    return /** @type {!MDCTextFieldCharacterCounterAdapter} */ ({
-      setContent: () => {},
-    });
+  static get defaultAdapter(): MDCTextFieldCharacterCounterAdapter {
+    return {
+      setContent: () => undefined,
+    };
   }
 
-  /**
-   * @param {!MDCTextFieldCharacterCounterAdapter} adapter
-   */
-  constructor(adapter) {
-    super(Object.assign(MDCTextFieldCharacterCounterFoundation.defaultAdapter, adapter));
+  constructor(adapter?: Partial<MDCTextFieldCharacterCounterAdapter>) {
+    super({...MDCTextFieldCharacterCounterFoundation.defaultAdapter, ...adapter});
   }
 
-  /**
-   * @param {number} currentLength
-   * @param {number} maxLength
-   */
-  setCounterValue(currentLength, maxLength) {
+  setCounterValue(currentLength: number, maxLength: number) {
     currentLength = Math.min(currentLength, maxLength);
     this.adapter_.setContent(`${currentLength} / ${maxLength}`);
   }
 }
 
-export default MDCTextFieldCharacterCounterFoundation;
+export {MDCTextFieldCharacterCounterFoundation as default, MDCTextFieldCharacterCounterFoundation};

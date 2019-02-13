@@ -21,25 +21,25 @@
  * THE SOFTWARE.
  */
 
-import {MDCList} from '@material/list/index';
-import {MDCMenuSurface} from '@material/menu-surface/index';
+import {MDCComponent} from '@material/base/component';
+import {MDCTextFieldCharacterCounterFoundation} from './foundation';
 
-export type MenuItemEvent = CustomEvent<MenuItemEventDetail>;
-export type DefaultMenuItemEvent = CustomEvent<DefaultMenuItemEventDetail>;
+class MDCTextFieldCharacterCounter extends MDCComponent<MDCTextFieldCharacterCounterFoundation> {
+  static attachTo(root: Element): MDCTextFieldCharacterCounter {
+    return new MDCTextFieldCharacterCounter(root);
+  }
 
-/**
- * Event properties used by the adapter and foundation.
- */
-export interface MenuItemEventDetail {
-  index: number;
+  get foundation(): MDCTextFieldCharacterCounterFoundation {
+    return this.foundation_;
+  }
+
+  getDefaultFoundation(): MDCTextFieldCharacterCounterFoundation {
+    return new MDCTextFieldCharacterCounterFoundation({
+      setContent: (content) => { this.root_.textContent = content; },
+    });
+  }
 }
 
-/**
- * Event properties specific to the default component implementation.
- */
-export interface DefaultMenuItemEventDetail extends MenuItemEventDetail {
-  item: Element;
-}
-
-export type MenuSurfaceFactory = (root: Element) => MDCMenuSurface;
-export type ListFactory = (root: Element) => MDCList;
+export {MDCTextFieldCharacterCounter as default, MDCTextFieldCharacterCounter};
+export * from './adapter';
+export * from './foundation';

@@ -46,6 +46,10 @@ test('defaultAdapter returns a complete adapter implementation', () => {
 
 const setupTest = () => setupFoundationTest(MDCTextFieldCharacterCounterFoundation);
 
+test('istanbul code coverage', () => {
+  assert.doesNotThrow(() => new MDCTextFieldCharacterCounterFoundation());
+});
+
 test('#setContent sets the content of the character counter element', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setCounterValue(12, 20);

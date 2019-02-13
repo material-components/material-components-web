@@ -22,45 +22,31 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+import {MDCTextFieldHelperTextFoundation} from './foundation';
 
-import MDCTextFieldHelperTextAdapter from './adapter';
-import MDCTextFieldHelperTextFoundation from './foundation';
-
-/**
- * @extends {MDCComponent<!MDCTextFieldHelperTextFoundation>}
- * @final
- */
-class MDCTextFieldHelperText extends MDCComponent {
-  /**
-   * @param {!Element} root
-   * @return {!MDCTextFieldHelperText}
-   */
-  static attachTo(root) {
+class MDCTextFieldHelperText extends MDCComponent<MDCTextFieldHelperTextFoundation> {
+  static attachTo(root: Element): MDCTextFieldHelperText {
     return new MDCTextFieldHelperText(root);
   }
 
-  /**
-   * @return {!MDCTextFieldHelperTextFoundation}
-   */
-  get foundation() {
+  get foundation(): MDCTextFieldHelperTextFoundation {
     return this.foundation_;
   }
 
-  /**
-   * @return {!MDCTextFieldHelperTextFoundation}
-   */
-  getDefaultFoundation() {
-    return new MDCTextFieldHelperTextFoundation(/** @type {!MDCTextFieldHelperTextAdapter} */ (Object.assign({
+  getDefaultFoundation(): MDCTextFieldHelperTextFoundation {
+    // tslint:disable:object-literal-sort-keys
+    return new MDCTextFieldHelperTextFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       removeAttr: (attr) => this.root_.removeAttribute(attr),
-      setContent: (content) => {
-        this.root_.textContent = content;
-      },
-    })));
+      setContent: (content) => { this.root_.textContent = content; },
+    });
+    // tslint:enable:object-literal-sort-keys
   }
 }
 
-export {MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation};
+export {MDCTextFieldHelperText as default, MDCTextFieldHelperText};
+export * from './adapter';
+export * from './foundation';
