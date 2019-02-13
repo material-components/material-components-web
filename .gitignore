@@ -3,6 +3,11 @@ node_modules
 /build
 /coverage
 packages/*/dist
+packages/**/*.js
+!packages/**/*.ts
+# must come after !*.ts
+packages/**/*.d.ts
+packages/**/*.js.map
 out
 *.log
 .idea

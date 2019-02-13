@@ -1,5 +1,0 @@
-*.js
-!*.ts
-# must come after !*.ts
-*.d.ts
-*.js.map
