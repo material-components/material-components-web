@@ -25,39 +25,7 @@
 
 import {MDCComponent} from '@material/base/component';
 import {MDCFoundation} from '@material/base/foundation';
-
-export type MDCAutoInitKey = (
-  'MDCCheckbox' |
-  'MDCChip' |
-  'MDCChipSet' |
-  'MDCDialog' |
-  'MDCDrawer' |
-  'MDCFloatingLabel' |
-  'MDCFormField' |
-  'MDCGridList' |
-  'MDCIconButtonToggle' |
-  'MDCIconToggle' |
-  'MDCLineRipple' |
-  'MDCLinearProgress' |
-  'MDCList' |
-  'MDCMenu' |
-  'MDCMenuSurface' |
-  'MDCNotchedOutline' |
-  'MDCRadio' |
-  'MDCRipple' |
-  'MDCSelect' |
-  'MDCSlider' |
-  'MDCSnackbar' |
-  'MDCSwitch' |
-  'MDCTabBar' |
-  'MDCTextField' |
-  'MDCToolbar' |
-  'MDCTopAppBar'
-);
-
-export type MDCAutoInitElement = HTMLElement & {
-  [K in MDCAutoInitKey]?: string;
-};
+import {MDCAutoInitElement, MDCAutoInitKey} from './types';
 
 interface ComponentClass {
   // tslint:disable-next-line:no-any a component can pass in anything it needs to the constructor
@@ -152,3 +120,4 @@ mdcAutoInit.deregisterAll = function() {
 };
 
 export {mdcAutoInit as default, mdcAutoInit};
+export * from './types';
