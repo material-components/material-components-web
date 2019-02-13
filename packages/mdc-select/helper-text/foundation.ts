@@ -22,58 +22,49 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
-import MDCSelectHelperTextAdapter from './adapter';
+import {MDCSelectHelperTextAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-
-/**
- * @extends {MDCFoundation<!MDCSelectHelperTextAdapter>}
- * @final
- */
-class MDCSelectHelperTextFoundation extends MDCFoundation {
-  /** @return enum {string} */
+class MDCSelectHelperTextFoundation extends MDCFoundation<MDCSelectHelperTextAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
 
-  /** @return enum {string} */
   static get strings() {
     return strings;
   }
 
   /**
-   * {@see MDCSelectHelperTextAdapter} for typing information on parameters and return
-   * types.
-   * @return {!MDCSelectHelperTextAdapter}
+   * See {@link MDCSelectHelperTextAdapter} for typing information on parameters and return types.
    */
-  static get defaultAdapter() {
-    return /** @type {!MDCSelectHelperTextAdapter} */ ({
-      addClass: () => {},
-      removeClass: () => {},
-      hasClass: () => {},
-      setAttr: () => {},
-      removeAttr: () => {},
-      setContent: () => {},
-    });
+  static get defaultAdapter(): MDCSelectHelperTextAdapter {
+    // tslint:disable:object-literal-sort-keys
+    return {
+      addClass: () => undefined,
+      removeClass: () => undefined,
+      hasClass: () => false,
+      setAttr: () => undefined,
+      removeAttr: () => undefined,
+      setContent: () => undefined,
+    };
+    // tslint:enable:object-literal-sort-keys
   }
 
-  /**
-   * @param {!MDCSelectHelperTextAdapter} adapter
-   */
-  constructor(adapter) {
-    super(Object.assign(MDCSelectHelperTextFoundation.defaultAdapter, adapter));
-  }
+  constructor(adapter?: Partial<MDCSelectHelperTextAdapter>) {
+    super({...MDCSelectHelperTextFoundation.defaultAdapter, ...adapter});
+}
 
   /**
    * Sets the content of the helper text field.
-   * @param {string} content
    */
-  setContent(content) {
+  setContent(content: string) {
     this.adapter_.setContent(content);
   }
 
-  /** @param {boolean} isPersistent Sets the persistency of the helper text. */
-  setPersistent(isPersistent) {
+  /**
+   *  Sets the persistency of the helper text.
+   */
+  setPersistent(isPersistent: boolean) {
     if (isPersistent) {
       this.adapter_.addClass(cssClasses.HELPER_TEXT_PERSISTENT);
     } else {
@@ -82,10 +73,9 @@ class MDCSelectHelperTextFoundation extends MDCFoundation {
   }
 
   /**
-   * @param {boolean} isValidation True to make the helper text act as an
-   *   error validation message.
+   * @param isValidation True to make the helper text act as an error validation message.
    */
-  setValidation(isValidation) {
+  setValidation(isValidation: boolean) {
     if (isValidation) {
       this.adapter_.addClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
     } else {
@@ -93,16 +83,17 @@ class MDCSelectHelperTextFoundation extends MDCFoundation {
     }
   }
 
-  /** Makes the helper text visible to the screen reader. */
+  /**
+   * Makes the helper text visible to screen readers.
+   */
   showToScreenReader() {
     this.adapter_.removeAttr(strings.ARIA_HIDDEN);
   }
 
   /**
    * Sets the validity of the helper text based on the select validity.
-   * @param {boolean} selectIsValid
    */
-  setValidity(selectIsValid) {
+  setValidity(selectIsValid: boolean) {
     const helperTextIsPersistent = this.adapter_.hasClass(cssClasses.HELPER_TEXT_PERSISTENT);
     const helperTextIsValidationMsg = this.adapter_.hasClass(cssClasses.HELPER_TEXT_VALIDATION_MSG);
     const validationMsgNeedsDisplay = helperTextIsValidationMsg && !selectIsValid;
@@ -120,11 +111,10 @@ class MDCSelectHelperTextFoundation extends MDCFoundation {
 
   /**
    * Hides the help text from screen readers.
-   * @private
    */
-  hide_() {
+  private hide_() {
     this.adapter_.setAttr(strings.ARIA_HIDDEN, 'true');
   }
 }
 
-export default MDCSelectHelperTextFoundation;
+export {MDCSelectHelperTextFoundation as default, MDCSelectHelperTextFoundation};

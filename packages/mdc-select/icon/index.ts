@@ -22,45 +22,33 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+import {MDCSelectIconFoundation} from './foundation';
 
-import MDCSelectHelperTextAdapter from './adapter';
-import MDCSelectHelperTextFoundation from './foundation';
-
-/**
- * @extends {MDCComponent<!MDCSelectHelperTextFoundation>}
- * @final
- */
-class MDCSelectHelperText extends MDCComponent {
-  /**
-   * @param {!Element} root
-   * @return {!MDCSelectHelperText}
-   */
-  static attachTo(root) {
-    return new MDCSelectHelperText(root);
+class MDCSelectIcon extends MDCComponent<MDCSelectIconFoundation> {
+  static attachTo(root: Element): MDCSelectIcon {
+    return new MDCSelectIcon(root);
   }
 
-  /**
-   * @return {!MDCSelectHelperTextFoundation}
-   */
-  get foundation() {
+  get foundation(): MDCSelectIconFoundation {
     return this.foundation_;
   }
 
-  /**
-   * @return {!MDCSelectHelperTextFoundation}
-   */
-  getDefaultFoundation() {
-    return new MDCSelectHelperTextFoundation(/** @type {!MDCSelectHelperTextAdapter} */ (Object.assign({
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
-      hasClass: (className) => this.root_.classList.contains(className),
+  getDefaultFoundation(): MDCSelectIconFoundation {
+    // tslint:disable:object-literal-sort-keys
+    return new MDCSelectIconFoundation({
+      getAttr: (attr) => this.root_.getAttribute(attr),
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       removeAttr: (attr) => this.root_.removeAttribute(attr),
-      setContent: (content) => {
-        this.root_.textContent = content;
-      },
-    })));
+      setContent: (content) => { this.root_.textContent = content; },
+      registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
+      deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
+      notifyIconAction: () => this.emit(
+          MDCSelectIconFoundation.strings.ICON_EVENT, {} /* evtData */, true /* shouldBubble */),
+    });
+    // tslint:enable:object-literal-sort-keys
   }
 }
 
-export {MDCSelectHelperText, MDCSelectHelperTextFoundation};
+export {MDCSelectIcon as default, MDCSelectIcon};
+export * from './adapter';
+export * from './foundation';

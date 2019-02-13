@@ -21,42 +21,28 @@
  * THE SOFTWARE.
  */
 
-import {MDCComponent} from '@material/base/component';
+import {MDCFloatingLabel} from '@material/floating-label/index';
+import {MDCLineRipple} from '@material/line-ripple/index';
+import {MDCMenu} from '@material/menu/index';
+import {MDCNotchedOutline} from '@material/notched-outline/index';
+import {MDCSelectHelperText, MDCSelectHelperTextFoundation} from './helper-text/index';
+import {MDCSelectIcon, MDCSelectIconFoundation} from './icon/index';
 
-import MDCTextFieldCharacterCounterAdapter from './adapter';
-import MDCTextFieldCharacterCounterFoundation from './foundation';
-
-/**
- * @extends {MDCComponent<!MDCTextFieldCharacterCounterFoundation>}
- * @final
- */
-class MDCTextFieldCharacterCounter extends MDCComponent {
-  /**
-   * @param {!Element} root
-   * @return {!MDCTextFieldCharacterCounter}
-   */
-  static attachTo(root) {
-    return new MDCTextFieldCharacterCounter(root);
-  }
-
-  /**
-   * @return {!MDCTextFieldCharacterCounterFoundation}
-   */
-  get foundation() {
-    return this.foundation_;
-  }
-
-  /**
-   * @return {!MDCTextFieldCharacterCounterFoundation}
-   */
-  getDefaultFoundation() {
-    return new MDCTextFieldCharacterCounterFoundation(
-      /** @type {!MDCTextFieldCharacterCounterAdapter} */ (Object.assign({
-        setContent: (content) => {
-          this.root_.textContent = content;
-        },
-      })));
-  }
+export interface FoundationMapType {
+  leadingIcon: MDCSelectIconFoundation;
+  helperText: MDCSelectHelperTextFoundation;
 }
 
-export {MDCTextFieldCharacterCounter, MDCTextFieldCharacterCounterFoundation};
+export type SelectEvent = CustomEvent<SelectEventDetail>;
+
+export interface SelectEventDetail {
+  value: string;
+  index: number;
+}
+
+export type LineRippleFactory = (el: Element) => MDCLineRipple;
+export type HelperTextFactory = (el: Element) => MDCSelectHelperText;
+export type MenuFactory = (el: Element) => MDCMenu;
+export type IconFactory = (el: Element) => MDCSelectIcon;
+export type LabelFactory = (el: Element) => MDCFloatingLabel;
+export type OutlineFactory = (el: Element) => MDCNotchedOutline;

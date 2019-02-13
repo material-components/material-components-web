@@ -130,6 +130,10 @@ test('attachTo returns a component instance', () => {
   assert.isOk(MDCSelect.attachTo(getFixture()) instanceof MDCSelect);
 });
 
+test('constructor throws an error when required elements are missing', () => {
+  assert.throws(() => new MDCSelect(bel`<div class="mdc-select"></div>`), 'Missing required element');
+});
+
 function setupTest(hasOutline = false, hasLabel = true, hasHelperText = false) {
   const bottomLine = new FakeBottomLine();
   const label = new FakeLabel();

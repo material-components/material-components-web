@@ -44,6 +44,10 @@ test('defaultAdapter returns a complete adapter implementation', () => {
 
 const setupTest = () => setupFoundationTest(MDCTextFieldIconFoundation);
 
+test('istanbul code coverage', () => {
+  assert.doesNotThrow(() => new MDCTextFieldIconFoundation());
+});
+
 test('#init adds event listeners', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.init();
