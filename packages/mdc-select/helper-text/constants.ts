@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2019 Google Inc.
+ * Copyright 2018 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,25 +21,14 @@
  * THE SOFTWARE.
  */
 
-import {MDCList} from '@material/list/index';
-import {MDCMenuSurface} from '@material/menu-surface/index';
+const strings = {
+  ARIA_HIDDEN: 'aria-hidden',
+  ROLE: 'role',
+};
 
-export type MenuItemEvent = CustomEvent<MenuItemEventDetail>;
-export type DefaultMenuItemEvent = CustomEvent<DefaultMenuItemEventDetail>;
+const cssClasses = {
+  HELPER_TEXT_PERSISTENT: 'mdc-select-helper-text--persistent',
+  HELPER_TEXT_VALIDATION_MSG: 'mdc-select-helper-text--validation-msg',
+};
 
-/**
- * Event properties used by the adapter and foundation.
- */
-export interface MenuItemEventDetail {
-  index: number;
-}
-
-/**
- * Event properties specific to the default component implementation.
- */
-export interface DefaultMenuItemEventDetail extends MenuItemEventDetail {
-  item: Element;
-}
-
-export type MenuSurfaceFactory = (el: Element) => MDCMenuSurface;
-export type ListFactory = (el: Element) => MDCList;
+export {strings, cssClasses};
