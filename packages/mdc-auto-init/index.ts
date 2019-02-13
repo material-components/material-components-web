@@ -23,14 +23,60 @@
 
 // tslint:disable:only-arrow-functions
 
-const registry = Object.create(null);
+import {MDCComponent} from '@material/base/component';
+import {MDCFoundation} from '@material/base/foundation';
+
+export type MDCAutoInitKey = (
+  'MDCCheckbox' |
+  'MDCChip' |
+  'MDCChipSet' |
+  'MDCDialog' |
+  'MDCDrawer' |
+  'MDCFloatingLabel' |
+  'MDCFormField' |
+  'MDCGridList' |
+  'MDCIconButtonToggle' |
+  'MDCIconToggle' |
+  'MDCLineRipple' |
+  'MDCLinearProgress' |
+  'MDCList' |
+  'MDCMenu' |
+  'MDCMenuSurface' |
+  'MDCNotchedOutline' |
+  'MDCRadio' |
+  'MDCRipple' |
+  'MDCSelect' |
+  'MDCSlider' |
+  'MDCSnackbar' |
+  'MDCSwitch' |
+  'MDCTabBar' |
+  'MDCTextField' |
+  'MDCToolbar' |
+  'MDCTopAppBar'
+);
+
+export type MDCAutoInitElement = HTMLElement & {
+  [K in MDCAutoInitKey]?: string;
+};
+
+interface ComponentClass {
+  // tslint:disable-next-line:no-any a component can pass in anything it needs to the constructor
+  new<F extends MDCFoundation>(root: Element, foundation?: F, ...args: any[]): MDCComponent<F>;
+  attachTo<F extends MDCFoundation>(root: Element): MDCComponent<F>;
+}
+
+type Registry = {
+  [K in MDCAutoInitKey]?: ComponentClass;
+};
+
+const registry: Registry = {};
 
 const CONSOLE_WARN = console.warn.bind(console); // tslint:disable-line:no-console
 
-function _emit(evtType: string, evtData: object, shouldBubble = false) {
+function _emit<T extends object>(evtType: string, evtData: T, shouldBubble = false) {
   let evt;
   if (typeof CustomEvent === 'function') {
-    evt = new CustomEvent(evtType, {
+    evt = new CustomEvent<T>(evtType, {
       bubbles: shouldBubble,
       detail: evtData,
     });
@@ -47,10 +93,10 @@ function _emit(evtType: string, evtData: object, shouldBubble = false) {
  */
 function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
   const components = [];
-  const nodes: HTMLElement[] = [].slice.call(root.querySelectorAll<HTMLElement>('[data-mdc-auto-init]'));
+  const nodes: MDCAutoInitElement[] = [].slice.call(root.querySelectorAll('[data-mdc-auto-init]'));
 
   for (const node of nodes) {
-    const ctorName = node.dataset.mdcAutoInit;
+    const ctorName = node.getAttribute('data-mdc-auto-init') as MDCAutoInitKey | null;
     if (!ctorName) {
       throw new Error('(mdc-auto-init) Constructor name must be given.');
     }
@@ -61,13 +107,13 @@ function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
         `(mdc-auto-init) Could not find constructor in registry for ${ctorName}`);
     }
 
-    // @ts-ignore
     if (node[ctorName]) {
       warn(`(mdc-auto-init) Component already initialized for ${node}. Skipping...`);
       continue;
     }
 
     // TODO: Should we make an eslint rule for an attachTo() static method?
+    // See https://github.com/Microsoft/TypeScript/issues/14600 for discussion of static interface support in TS
     const component = Ctor.attachTo(node);
     Object.defineProperty(node, ctorName, {
       configurable: true,
@@ -83,7 +129,7 @@ function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
 }
 
 // tslint:disable-next-line:variable-name
-mdcAutoInit.register = function(componentName: string, Ctor: Function, warn = CONSOLE_WARN) {
+mdcAutoInit.register = function(componentName: MDCAutoInitKey, Ctor: ComponentClass, warn = CONSOLE_WARN) {
   if (typeof Ctor !== 'function') {
     throw new Error(`(mdc-auto-init) Invalid Ctor value ${Ctor}. Expected function`);
   }
@@ -95,12 +141,13 @@ mdcAutoInit.register = function(componentName: string, Ctor: Function, warn = CO
   registry[componentName] = Ctor;
 };
 
-mdcAutoInit.deregister = function(componentName: string) {
+mdcAutoInit.deregister = function(componentName: MDCAutoInitKey) {
   delete registry[componentName];
 };
 
 mdcAutoInit.deregisterAll = function() {
-  Object.keys(registry).forEach(this.deregister, this);
+  const keys = Object.keys(registry) as MDCAutoInitKey[];
+  keys.forEach(this.deregister, this);
 };
 
 export {mdcAutoInit as default, mdcAutoInit};
