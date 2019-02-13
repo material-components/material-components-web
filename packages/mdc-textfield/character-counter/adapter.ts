@@ -21,42 +21,18 @@
  * THE SOFTWARE.
  */
 
-import {MDCComponent} from '@material/base/component';
-
-import MDCTextFieldCharacterCounterAdapter from './adapter';
-import MDCTextFieldCharacterCounterFoundation from './foundation';
-
 /**
- * @extends {MDCComponent<!MDCTextFieldCharacterCounterFoundation>}
- * @final
+ * Defines the shape of the adapter expected by the foundation.
+ * Implement this adapter for your framework of choice to delegate updates to
+ * the component in your framework of choice. See architecture documentation
+ * for more details.
+ * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-class MDCTextFieldCharacterCounter extends MDCComponent {
+interface MDCTextFieldCharacterCounterAdapter {
   /**
-   * @param {!Element} root
-   * @return {!MDCTextFieldCharacterCounter}
+   * Sets the text content of character counter element.
    */
-  static attachTo(root) {
-    return new MDCTextFieldCharacterCounter(root);
-  }
-
-  /**
-   * @return {!MDCTextFieldCharacterCounterFoundation}
-   */
-  get foundation() {
-    return this.foundation_;
-  }
-
-  /**
-   * @return {!MDCTextFieldCharacterCounterFoundation}
-   */
-  getDefaultFoundation() {
-    return new MDCTextFieldCharacterCounterFoundation(
-      /** @type {!MDCTextFieldCharacterCounterAdapter} */ (Object.assign({
-        setContent: (content) => {
-          this.root_.textContent = content;
-        },
-      })));
-  }
+  setContent(content: string): void;
 }
 
-export {MDCTextFieldCharacterCounter, MDCTextFieldCharacterCounterFoundation};
+export {MDCTextFieldCharacterCounterAdapter as default, MDCTextFieldCharacterCounterAdapter};

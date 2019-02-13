@@ -21,63 +21,50 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
+import {EventType, SpecificEventListener} from '@material/base/types';
 
 /**
- * Adapter for MDC Text Field Icon.
- *
- * Defines the shape of the adapter expected by the foundation. Implement this
- * adapter to integrate the text field icon into your framework. See
- * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
- * for more information.
- *
- * @record
+ * Defines the shape of the adapter expected by the foundation.
+ * Implement this adapter for your framework of choice to delegate updates to
+ * the component in your framework of choice. See architecture documentation
+ * for more details.
+ * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-class MDCTextFieldIconAdapter {
+interface MDCTextFieldIconAdapter {
   /**
    * Gets the value of an attribute on the icon element.
-   * @param {string} attr
-   * @return {string}
    */
-  getAttr(attr) {}
+  getAttr(attr: string): string | null;
 
   /**
    * Sets an attribute on the icon element.
-   * @param {string} attr
-   * @param {string} value
    */
-  setAttr(attr, value) {}
+  setAttr(attr: string, value: string): void;
 
   /**
    * Removes an attribute from the icon element.
-   * @param {string} attr
    */
-  removeAttr(attr) {}
+  removeAttr(attr: string): void;
 
   /**
    * Sets the text content of the icon element.
-   * @param {string} content
    */
-  setContent(content) {}
+  setContent(content: string): void;
 
   /**
    * Registers an event listener on the icon element for a given event.
-   * @param {string} evtType
-   * @param {function(!Event): undefined} handler
    */
-  registerInteractionHandler(evtType, handler) {}
+  registerInteractionHandler<E extends EventType>(evtType: E, handler: SpecificEventListener<E>): void;
 
   /**
    * Deregisters an event listener on the icon element for a given event.
-   * @param {string} evtType
-   * @param {function(!Event): undefined} handler
    */
-  deregisterInteractionHandler(evtType, handler) {}
+  deregisterInteractionHandler<E extends EventType>(evtType: E, handler: SpecificEventListener<E>): void;
 
   /**
    * Emits a custom event "MDCTextField:icon" denoting a user has clicked the icon.
    */
-  notifyIconAction() {}
+  notifyIconAction(): void;
 }
 
-export default MDCTextFieldIconAdapter;
+export {MDCTextFieldIconAdapter as default, MDCTextFieldIconAdapter};

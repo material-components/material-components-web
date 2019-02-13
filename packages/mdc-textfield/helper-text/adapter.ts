@@ -21,56 +21,43 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
-
 /**
- * Adapter for MDC Text Field Helper Text.
- *
- * Defines the shape of the adapter expected by the foundation. Implement this
- * adapter to integrate the TextField helper text into your framework. See
- * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
- * for more information.
- *
- * @record
+ * Defines the shape of the adapter expected by the foundation.
+ * Implement this adapter for your framework of choice to delegate updates to
+ * the component in your framework of choice. See architecture documentation
+ * for more details.
+ * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-class MDCTextFieldHelperTextAdapter {
+interface MDCTextFieldHelperTextAdapter {
   /**
    * Adds a class to the helper text element.
-   * @param {string} className
    */
-  addClass(className) {}
+  addClass(className: string): void;
 
   /**
    * Removes a class from the helper text element.
-   * @param {string} className
    */
-  removeClass(className) {}
+  removeClass(className: string): void;
 
   /**
    * Returns whether or not the helper text element contains the given class.
-   * @param {string} className
-   * @return {boolean}
    */
-  hasClass(className) {}
+  hasClass(className: string): boolean;
 
   /**
    * Sets an attribute with a given value on the helper text element.
-   * @param {string} attr
-   * @param {string} value
    */
-  setAttr(attr, value) {}
+  setAttr(attr: string, value: string): void;
 
   /**
    * Removes an attribute from the helper text element.
-   * @param {string} attr
    */
-  removeAttr(attr) {}
+  removeAttr(attr: string): void;
 
   /**
    * Sets the text content for the helper text element.
-   * @param {string} content
    */
-  setContent(content) {}
+  setContent(content: string): void;
 }
 
-export default MDCTextFieldHelperTextAdapter;
+export {MDCTextFieldHelperTextAdapter as default, MDCTextFieldHelperTextAdapter};

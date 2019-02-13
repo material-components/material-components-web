@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,10 +21,12 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
-const strings = {
-  ICON_EVENT: 'MDCTextField:icon',
-  ICON_ROLE: 'button',
+const cssClasses = {
+  ROOT: 'mdc-text-field-character-counter',
 };
 
-export {strings};
+const strings = {
+  ROOT_SELECTOR: `.${cssClasses.ROOT}`,
+};
+
+export {strings, cssClasses};
