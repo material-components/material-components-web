@@ -374,9 +374,9 @@ Method Signature | Description
 `deregisterTextFieldInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event handler on the root element for a given event.
 `registerInputInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the native input element for a given event.
 `deregisterInputInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the native input element for a given event.
-`registerValidationAttributeChangeHandler(handler: function(!Array<string>) => undefined) => !MutationObserver` | Registers a validation attribute change listener on the input element. Handler accepts list of attribute changes.
+`registerValidationAttributeChangeHandler(handler: (attributeNames: string[]) => void) => MutationObserver` | Registers a validation attribute change listener on the input element. Handler accepts list of attribute changes.
 `deregisterValidationAttributeChangeHandler(!MutationObserver) => void` | Disconnects a validation attribute observer on the input element.
-`getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}?` | Returns an object representing the native text input element, with a similar API shape.
+`getNativeInput() => NativeInputType \| null` | Returns an object representing the native text input element, with a similar API shape. See [types.ts](types.ts).
 `isFocused() => boolean` | Returns whether the input is focused.
 `hasOutline() => boolean` | Returns whether there is an outline element.
 `notchOutline(labelWidth: number) => void` | Updates the notched outline path to open the notch and update the notch width for the label element.
@@ -384,7 +384,7 @@ Method Signature | Description
 
 #### `MDCTextFieldAdapter.getNativeInput()`
 
-Returns an object representing the native text input element, with a similar API shape. The object returned should include the `value`, `disabled` and `badInput` properties, as well as the `checkValidity()` function. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully.
+Returns an object representing the native text input element, with a similar API shape. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully.
 
 #### `MDCTextFieldAdapter.getIdleOutlineStyleValue(propertyName: string)`
 
