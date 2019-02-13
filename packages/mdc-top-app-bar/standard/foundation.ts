@@ -68,7 +68,7 @@ class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
    */
   private resizeDebounceId_ = INITIAL_VALUE;
 
-  /* istanbul ignore next */
+  /* istanbul ignore next: optional argument is not a branch statement */
   constructor(adapter?: Partial<MDCTopAppBarAdapter>) {
     super(adapter);
 

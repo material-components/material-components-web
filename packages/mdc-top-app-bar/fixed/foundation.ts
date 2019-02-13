@@ -31,19 +31,11 @@ class MDCFixedTopAppBarFoundation extends MDCTopAppBarFoundation {
    */
   private wasScrolled_ = false;
 
-  /* istanbul ignore next */
+  /* istanbul ignore next: optional argument is not a branch statement */
   constructor(adapter?: Partial<MDCTopAppBarAdapter>) {
     super(adapter);
 
     this.scrollHandler_ = () => this.fixedScrollHandler_();
-  }
-
-  init() {
-    super.init();
-  }
-
-  destroy() {
-    super.destroy();
   }
 
   /**

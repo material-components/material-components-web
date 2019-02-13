@@ -29,7 +29,8 @@ import {MDCFixedTopAppBarFoundation} from './fixed/foundation';
 import {MDCTopAppBarBaseFoundation} from './foundation';
 import {MDCShortTopAppBarFoundation} from './short/foundation';
 import {MDCTopAppBarFoundation} from './standard/foundation';
-import {RippleFactory} from './types';
+
+export type MDCRippleFactory = (el: Element) => MDCRipple;
 
 class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
   static attachTo(root: Element): MDCTopAppBar {
@@ -40,7 +41,7 @@ class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
   private iconRipples_!: MDCRipple[];
   private scrollTarget_!: EventTarget;
 
-  initialize(rippleFactory: RippleFactory = (el) => MDCRipple.attachTo(el)) {
+  initialize(rippleFactory: MDCRippleFactory = (el) => MDCRipple.attachTo(el)) {
     this.navIcon_ = this.root_.querySelector(strings.NAVIGATION_ICON_SELECTOR);
 
     // Get all icons in the toolbar and instantiate the ripples
@@ -86,8 +87,8 @@ class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
         }
       },
       notifyNavigationIconClicked: () => this.emit(strings.NAVIGATION_EVENT, {}),
-      registerScrollHandler: (handler) => this.scrollTarget_.addEventListener('scroll', handler),
-      deregisterScrollHandler: (handler) => this.scrollTarget_.removeEventListener('scroll', handler),
+      registerScrollHandler: (handler) => this.scrollTarget_.addEventListener('scroll', handler as EventListener),
+      deregisterScrollHandler: (handler) => this.scrollTarget_.removeEventListener('scroll', handler as EventListener),
       registerResizeHandler: (handler) => window.addEventListener('resize', handler),
       deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
       getViewportScrollY: () => {
@@ -118,4 +119,3 @@ export * from './short/foundation';
 export * from './standard/foundation';
 export * from './adapter';
 export * from './foundation';
-export * from './types';

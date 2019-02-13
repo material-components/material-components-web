@@ -22,6 +22,7 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+import {SpecificEventListener} from '@material/base/types';
 import {MDCTopAppBarAdapter} from './adapter';
 import {cssClasses, numbers, strings} from './constants';
 
@@ -35,7 +36,7 @@ class MDCTopAppBarBaseFoundation extends MDCFoundation<MDCTopAppBarAdapter> {
   }
 
   static get numbers() {
-    /* istanbul ignore next */
+    /* istanbul ignore next: we don't access this property in our unit tests, but we still need to expose it publicly */
     return numbers;
   }
 
@@ -63,11 +64,11 @@ class MDCTopAppBarBaseFoundation extends MDCFoundation<MDCTopAppBarAdapter> {
     // tslint:enable:object-literal-sort-keys
   }
 
-  protected scrollHandler_?: EventListener;
-  protected resizeHandler_?: EventListener;
-  private readonly navClickHandler_: EventListener;
+  protected scrollHandler_?: SpecificEventListener<'scroll'>;
+  protected resizeHandler_?: SpecificEventListener<'resize'>;
+  private readonly navClickHandler_: SpecificEventListener<'click'>;
 
-  /* istanbul ignore next */
+  /* istanbul ignore next: optional argument is not a branch statement */
   constructor(adapter?: Partial<MDCTopAppBarAdapter>) {
     super({...MDCTopAppBarBaseFoundation.defaultAdapter, ...adapter});
 
