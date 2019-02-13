@@ -9,3 +9,5 @@ execSync(
   `$(npm bin)/tsc --project ${root}/tsconfig.json --module esnext`,
   {stdio: [0, 1, 2]}
 );
+
+console.log('Completed converting all TS files to ES Modules.');
