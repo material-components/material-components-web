@@ -34,6 +34,7 @@ const {spawnSync} = require('child_process');
 const {sync: globSync} = require('glob');
 
 const PKG_RE = /(?:material\-components\-web)|(?:mdc\.[a-zA-Z\-]+)/;
+const DECLARATION_FILE_PREFIX = 'mdc-';
 
 const isValidCwd = (
   path.basename(process.cwd()) === 'material-components-web' &&
@@ -46,6 +47,18 @@ if (!isValidCwd) {
     'Invalid CWD. Please ensure you are running this from the root of the repo, and that you have run `npm run dist`'
   );
   process.exit(1);
+}
+
+function toCamelCase(name) {
+  const nameParts = name.split('-');
+  if (nameParts.length <= 1) {
+    return name;
+  }
+
+  return nameParts.reduce((finalName, part, index) => {
+    if (index === 0) return part;
+    return finalName + part[0].toUpperCase() + part.slice(1);
+  }, '');
 }
 
 function cleanPkgDistDirs() {
@@ -82,7 +95,8 @@ function cpDeclarationAsset(asset) {
   if (!fs.existsSync(assetPkg)) {
     Promise.reject(new Error(`Non-existent asset package path ${assetPkg} for ${asset}`));
   }
-  const destDir = path.join(assetPkg, 'dist', path.basename(asset));
+  const destFileName = toCamelCase(path.parse(asset).name.replace(/^mdc-|\.d$/gm, ''));
+  const destDir = path.join(assetPkg, 'dist', `mdc.${destFileName}.d.ts`);
   return cpFile(asset, destDir).then(() => console.log(`cp ${asset} -> ${destDir}`));
 }
 
@@ -93,7 +107,7 @@ Promise.all(globSync('build/*.{css,js,map}').map(cpAsset)).catch((err) => {
   process.exit(1);
 });
 
-Promise.all(globSync('build/packages/**/*.d.ts').map(cpDeclarationAsset)).catch((err) => {
+Promise.all(globSync(`build/packages/**/${DECLARATION_FILE_PREFIX}*.d.ts`).map(cpDeclarationAsset)).catch((err) => {
   console.error(`Error encountered copying assets: ${err}`);
   process.exit(1);
 });
