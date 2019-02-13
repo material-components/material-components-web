@@ -358,7 +358,7 @@ class MDCSelect extends MDCComponent {
     element.addEventListener('focus', this.handleFocus_);
     element.addEventListener('blur', this.handleBlur_);
 
-    ['mousedown', 'touchstart'].forEach((evtType) => {
+    ['click'].forEach((evtType) => {
       element.addEventListener(evtType, this.handleClick_);
     });
 
@@ -396,7 +396,7 @@ class MDCSelect extends MDCComponent {
     element.removeEventListener('focus', this.handleFocus_);
     element.removeEventListener('blur', this.handleBlur_);
     element.removeEventListener('keydown', this.handleKeydown_);
-    ['mousedown', 'touchstart'].forEach((evtType) => {
+    ['click'].forEach((evtType) => {
       element.removeEventListener(evtType, this.handleClick_);
     });
 
