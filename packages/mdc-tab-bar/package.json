@@ -12,7 +12,7 @@
   "main": "dist/mdc.tabBar.js",
   "module": "./index.js",
   "sideEffects": false,
-  "types": "dist/index.d.ts",
+  "types": "dist/tabBar.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git"
