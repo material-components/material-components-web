@@ -83,6 +83,8 @@ class JsBundleFactory {
         path: fsDirAbsolutePath,
         publicPath: httpDirAbsolutePath,
         filename: filenamePattern,
+        libraryTarget: 'umd',
+        library,
       },
       resolve: {
         extensions,
