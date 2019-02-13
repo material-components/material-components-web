@@ -48,6 +48,10 @@ test('defaultAdapter returns a complete adapter implementation', () => {
 
 const setupTest = () => setupFoundationTest(MDCTextFieldHelperTextFoundation);
 
+test('istanbul code coverage', () => {
+  assert.doesNotThrow(() => new MDCTextFieldHelperTextFoundation());
+});
+
 test('#setContent sets the content of the helper text element', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setContent('foo');
