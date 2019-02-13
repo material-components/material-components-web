@@ -88,6 +88,7 @@ function _emit<T extends object>(evtType: string, evtData: T, shouldBubble = fal
   document.dispatchEvent(evt);
 }
 
+/* istanbul ignore next: optional argument is not a branch statement */
 /**
  * Auto-initializes all MDC components on a page.
  */
