@@ -23,38 +23,28 @@
 
 import {MDCComponent} from '@material/base/component';
 import {MDCRipple} from '@material/ripple/index';
+import {MDCToolbarFoundation} from './foundation';
+import {ToolbarEventDetail} from './types';
 
-import MDCToolbarFoundation from './foundation';
+const strings = MDCToolbarFoundation.strings;
 
-export {MDCToolbarFoundation};
-
-export class MDCToolbar extends MDCComponent {
-  static attachTo(root) {
+export class MDCToolbar extends MDCComponent<MDCToolbarFoundation> {
+  static attachTo(root: Element) {
     return new MDCToolbar(root);
   }
 
-  get firstRowElement_() {
-    return this.root_.querySelector(MDCToolbarFoundation.strings.FIRST_ROW_SELECTOR);
-  }
+  protected root_!: HTMLElement; // assigned in MDCComponent constructor
 
-  get titleElement_() {
-    return this.root_.querySelector(MDCToolbarFoundation.strings.TITLE_SELECTOR);
-  }
-
-  set fixedAdjustElement(fixedAdjustElement) {
-    this.fixedAdjustElement_ = fixedAdjustElement;
-    this.foundation_.updateAdjustElementStyles();
-  }
-
-  get fixedAdjustElement() {
-    return this.fixedAdjustElement_;
-  }
+  private ripples_!: MDCRipple[]; // assigned in initialize()
+  private fixedAdjustElement_?: HTMLElement;
 
   initialize() {
-    this.ripples_ = [].map.call(this.root_.querySelectorAll(MDCToolbarFoundation.strings.ICON_SELECTOR), (icon) => {
+    this.ripples_ = [];
+
+    [].forEach.call(this.root_.querySelectorAll(strings.ICON_SELECTOR), (icon: HTMLElement) => {
       const ripple = MDCRipple.attachTo(icon);
       ripple.unbounded = true;
-      return ripple;
+      this.ripples_.push(ripple);
     });
   }
 
@@ -65,8 +55,25 @@ export class MDCToolbar extends MDCComponent {
     super.destroy();
   }
 
+  set fixedAdjustElement(element: HTMLElement | undefined) {
+    this.fixedAdjustElement_ = element;
+    this.foundation_.updateAdjustElementStyles();
+  }
+
+  get fixedAdjustElement(): HTMLElement | undefined {
+    return this.fixedAdjustElement_;
+  }
+
+  private get firstRowElement_(): HTMLElement {
+    return this.root_.querySelector<HTMLElement>(strings.FIRST_ROW_SELECTOR)!;
+  }
+
+  private get titleElement_(): HTMLElement {
+    return this.root_.querySelector<HTMLElement>(strings.TITLE_SELECTOR)!;
+  }
 
   getDefaultFoundation() {
+    // tslint:disable:object-literal-sort-keys
     return new MDCToolbarFoundation({
       hasClass: (className) => this.root_.classList.contains(className),
       addClass: (className) => this.root_.classList.add(className),
@@ -79,7 +86,7 @@ export class MDCToolbar extends MDCComponent {
       getViewportScrollY: () => window.pageYOffset,
       getOffsetHeight: () => this.root_.offsetHeight,
       getFirstRowElementOffsetHeight: () => this.firstRowElement_.offsetHeight,
-      notifyChange: (evtData) => this.emit(MDCToolbarFoundation.strings.CHANGE_EVENT, evtData),
+      notifyChange: (evtData) => this.emit<ToolbarEventDetail>(strings.CHANGE_EVENT, evtData),
       setStyle: (property, value) => this.root_.style.setProperty(property, value),
       setStyleForTitleElement: (property, value) => this.titleElement_.style.setProperty(property, value),
       setStyleForFlexibleRowElement: (property, value) => this.firstRowElement_.style.setProperty(property, value),
@@ -89,5 +96,8 @@ export class MDCToolbar extends MDCComponent {
         }
       },
     });
+    // tslint:enable:object-literal-sort-keys
   }
 }
+
+export default MDCToolbar;

@@ -25,23 +25,25 @@ import {assert} from 'chai';
 import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
+import {install as installClock} from '../helpers/clock';
 
 import {strings} from '../../../packages/mdc-toolbar/constants';
-import {MDCToolbar} from '../../../packages/mdc-toolbar/index';
+import {MDCToolbar} from '../../../packages/mdc-toolbar/component';
 
 function getFixture() {
+  /* eslint-disable max-len */
   return bel`
     <div>
       <header class="mdc-toolbar mdc-toolbar--flexible mdc-toolbar--flexible-default-behavior">
         <div class="mdc-toolbar__row">
           <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-            <a class="material-icons">menu</a>
+            <a class="material-icons mdc-toolbar__menu-icon">menu</a>
             <span class="mdc-toolbar__title">Title</span>
           </section>
           <section class="mdc-toolbar__section mdc-toolbar__section--align-end" role="toolbar">
-            <a class="material-icons" aria-label="Download" alt="Download">file_download</a>
-            <a class="material-icons" aria-label="Print this page" alt="Print this page">print</a>
-            <a class="material-icons" aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>
+            <a class="material-icons mdc-toolbar__icon" aria-label="Download" alt="Download">file_download</a>
+            <a class="material-icons mdc-toolbar__icon" aria-label="Print this page" alt="Print this page">print</a>
+            <a class="material-icons mdc-toolbar__icon" aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>
           </section>
         </div>
       </header>
@@ -49,6 +51,7 @@ function getFixture() {
       </main>
     </div>
   `;
+  /* eslint-enable max-len */
 }
 
 function setupTest() {
@@ -63,6 +66,22 @@ suite('MDCToolbar');
 
 test('attachTo initializes and returns an MDCToolbar instance', () => {
   assert.isOk(MDCToolbar.attachTo(getFixture()) instanceof MDCToolbar);
+});
+
+test('#destroy calls destroy on all icon ripples', () => {
+  const toolbar = MDCToolbar.attachTo(getFixture());
+
+  assert.equal(toolbar.ripples_.length, 3);
+
+  toolbar.ripples_[0].destroy = td.func('destroy');
+  toolbar.ripples_[1].destroy = td.func('destroy');
+  toolbar.ripples_[2].destroy = td.func('destroy');
+
+  toolbar.destroy();
+
+  td.verify(toolbar.ripples_[0].destroy(), {times: 1});
+  td.verify(toolbar.ripples_[1].destroy(), {times: 1});
+  td.verify(toolbar.ripples_[2].destroy(), {times: 1});
 });
 
 test('adapter#hasClass returns true if the root element has specified class', () => {
@@ -97,8 +116,7 @@ test('adapter#registerScrollHandler registers the handler for scroll', () => {
   try {
     td.verify(handler(td.matchers.anything()));
   } finally {
-    // Just to be safe
-    window.removeEventListener('resize', handler);
+    window.removeEventListener('resize', handler); // Just to be safe
   }
 });
 
@@ -111,8 +129,7 @@ test('adapter#deregisterScrollHandler unlistens the handler for scroll', () => {
   try {
     td.verify(handler(td.matchers.anything()), {times: 0});
   } finally {
-    // Just to be safe
-    window.removeEventListener('resize', handler);
+    window.removeEventListener('resize', handler); // Just to be safe
   }
 });
 
@@ -124,8 +141,45 @@ test('adapter#registerResizeHandler registers the handler for window resize', ()
   try {
     td.verify(handler(td.matchers.anything()));
   } finally {
-    // Just to be safe
-    window.removeEventListener('resize', handler);
+    window.removeEventListener('resize', handler); // Just to be safe
+  }
+});
+
+test('scroll emits change event with detail object', () => {
+  const clock = installClock();
+  const {component, root} = setupTest();
+  document.body.appendChild(root);
+
+  let detail = null;
+  const handler = (evt) => detail = evt.detail;
+  component.listen(strings.CHANGE_EVENT, handler);
+
+  domEvents.emit(window, 'scroll');
+  clock.runToFrame();
+
+  try {
+    assert.deepEqual(detail, {flexibleExpansionRatio: 1});
+  } finally {
+    document.body.removeChild(root);
+  }
+});
+
+test('resize emits change event with detail object', () => {
+  const clock = installClock();
+  const {component, root} = setupTest();
+  document.body.appendChild(root);
+
+  let detail = null;
+  const handler = (evt) => detail = evt.detail;
+  component.listen(strings.CHANGE_EVENT, handler);
+
+  domEvents.emit(window, 'resize');
+  clock.runToFrame();
+
+  try {
+    assert.deepEqual(detail, {flexibleExpansionRatio: 1});
+  } finally {
+    document.body.removeChild(root);
   }
 });
 
@@ -138,8 +192,7 @@ test('adapter#deregisterResizeHandler unlistens the handler for window resize', 
   try {
     td.verify(handler(td.matchers.anything()), {times: 0});
   } finally {
-    // Just to be safe
-    window.removeEventListener('resize', handler);
+    window.removeEventListener('resize', handler); // Just to be safe
   }
 });
 
