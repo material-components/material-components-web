@@ -29,6 +29,10 @@ Foundation and Adapter. This lets us reuse Foundation code across multiple web
 platforms, e.g. React and Angular, by re-implementing only the Adapter. For now
 we've only implemented a vanilla JavaScript version of the Adapter.
 
+### TypeScript
+
+MDC Web has built our components using TypeScript to increase developer communication and spped. It's proven to catch bugs before releasing new versions of our components, and provides another layer of safety via types. TypeScript helps increase the contributions the Open Source Community adds to our repository and components.
+
 ### Foundation
 
 The Foundation contains the business logic that best represents Material Design,

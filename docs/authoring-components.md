@@ -13,45 +13,46 @@ external components that would like to interface with the MDC Web ecosystem.
 > Please note that since this project is still in its early stages of development, these practices
 may be subject to change. They will stabilize as we near towards a full release.
 
-* [Who this document is for](#who-this-document-is-for)
-* [How to build a component](#how-to-build-a-component)
-  * [Start with a simple component prototype](#start-with-a-simple-component-prototype)
-  * [Identify host environment interactions](#identify-host-environment-interactions)
-  * [Create the adapter interface](#create-the-adapter-interface)
-  * [Refactor your existing code into a foundation](#refactor-your-existing-code-into-a-foundation)
-  * [Build a component on top of that foundation, providing an adapter](#build-a-component-on-top-of-that-foundation-providing-an-adapter)
-* [What makes a good component](#what-makes-a-good-component)
-  * [Fully tested code](#fully-tested-code)
-  * [Thoroughly documented and strictly versioned adapter interface](#thoroughly-documented-and-strictly-versioned-adapter-interface)
-  * [Accessibility](#accessibility)
-  * [RTL Awareness](#rtl-awareness)
-  * [Support for theming](#support-for-theming)
-* [General Best Practices](#general-best-practices)
-  * [Do what the user expects](#do-what-the-user-expects)
-  * [Design adapter interfaces to be simple and intuitive](#design-adapter-interfaces-to-be-simple-and-intuitive)
-  * [Do not reference host objects within foundation code.](#do-not-reference-host-objects-within-foundation-code)
-  * [Clean up all references on destruction](#clean-up-all-references-on-destruction)
-* [Authoring components for MDC Web](#authoring-components-for-mdc-web)
-  * [File Structure](#file-structure)
-  * [License Stanzas](#license-stanzas)
-  * [Scss](#scss)
-     * [Separate reusable variables and mixins from main scss](#separate-reusable-variables-and-mixins-from-main-scss)
-     * [Follow the BEM Pattern](#follow-the-bem-pattern)
-     * [Use mdc-theme for theming](#use-mdc-theme-for-theming)
-     * [Use mdc-rtl for RTL support](#use-mdc-rtl-for-rtl-support)
-  * [Javascript](#javascript)
-     * [Define a static attachTo(root) method for every component](#define-a-static-attachtoroot-method-for-every-component)
-     * [Define a defaultAdapter getter for every foundation](#define-a-defaultadapter-getter-for-every-foundation)
-     * [Define all exported CSS classes, strings, and numbers as foundation constants.](#define-all-exported-css-classes-strings-and-numbers-as-foundation-constants)
-     * [Extend components and foundations from mdc-base classes.](#extend-components-and-foundations-from-mdc-base-classes)
-     * [Packages must be registered with our build infrastructure, and with material-components-web pkg](#packages-must-be-registered-with-our-build-infrastructure-and-with-material-components-web-pkg)
-     * [Closure Compatibility](#closure-compatibility)
-  * [Testing](#testing)
-     * [Verify foundation's adapters](#verify-foundations-adapters)
-     * [Use helper methods](#use-helper-methods)
-     * [Use bel for DOM fixture](#use-bel-for-dom-fixture)
-     * [Always clean up the DOM after every test](#always-clean-up-the-dom-after-every-test)
-     * [Verify adapters via testdouble.](#verify-adapters-via-testdouble)
+- [Authoring Components](#authoring-components)
+  - [Who this document is for](#who-this-document-is-for)
+  - [How to build a component](#how-to-build-a-component)
+    - [Start with a simple component prototype](#start-with-a-simple-component-prototype)
+    - [Identify host environment interactions](#identify-host-environment-interactions)
+    - [Create the adapter interface](#create-the-adapter-interface)
+    - [Refactor your existing code into a foundation](#refactor-your-existing-code-into-a-foundation)
+    - [Build a component on top of that foundation, providing an adapter](#build-a-component-on-top-of-that-foundation-providing-an-adapter)
+  - [What makes a good component](#what-makes-a-good-component)
+    - [Fully tested code](#fully-tested-code)
+    - [Thoroughly documented and strictly versioned adapter interface](#thoroughly-documented-and-strictly-versioned-adapter-interface)
+    - [Accessibility](#accessibility)
+    - [RTL Awareness](#rtl-awareness)
+    - [Support for theming](#support-for-theming)
+  - [General Best Practices](#general-best-practices)
+    - [Do what the user expects](#do-what-the-user-expects)
+    - [Design adapter interfaces to be simple and intuitive](#design-adapter-interfaces-to-be-simple-and-intuitive)
+    - [Do not reference host objects within foundation code](#do-not-reference-host-objects-within-foundation-code)
+    - [Clean up all references on destruction](#clean-up-all-references-on-destruction)
+  - [Authoring components for MDC Web](#authoring-components-for-mdc-web)
+    - [File Structure](#file-structure)
+    - [License Stanzas](#license-stanzas)
+    - [Scss](#scss)
+      - [Separate reusable variables and mixins from main scss](#separate-reusable-variables-and-mixins-from-main-scss)
+      - [Follow the BEM Pattern](#follow-the-bem-pattern)
+      - [Use mdc-theme for theming](#use-mdc-theme-for-theming)
+      - [Use mdc-rtl for RTL support](#use-mdc-rtl-for-rtl-support)
+    - [Javascript](#javascript)
+      - [Define a static attachTo(root) method for every component](#define-a-static-attachtoroot-method-for-every-component)
+      - [Define a defaultAdapter getter for every foundation](#define-a-defaultadapter-getter-for-every-foundation)
+      - [Define all exported CSS classes, strings, and numbers as foundation constants.](#define-all-exported-css-classes-strings-and-numbers-as-foundation-constants)
+      - [Extend components and foundations from mdc-base classes.](#extend-components-and-foundations-from-mdc-base-classes)
+      - [Packages must be registered with our build infrastructure, and with material-components-web pkg](#packages-must-be-registered-with-our-build-infrastructure-and-with-material-components-web-pkg)
+      - [TypeScript Compatibility](#typescript-compatibility)
+    - [Testing](#testing)
+      - [Verify foundation's adapters](#verify-foundations-adapters)
+      - [Use helper methods](#use-helper-methods)
+      - [Use bel for DOM fixture](#use-bel-for-dom-fixture)
+      - [Always clean up the DOM after every test](#always-clean-up-the-dom-after-every-test)
+      - [Verify adapters via testdouble.](#verify-adapters-via-testdouble)
 
 ## Who this document is for
 
@@ -433,7 +434,7 @@ As opposed to a bad adapter interface like the one below
 The above adapter interface is more suited for a foundation method. The adapter's sole
 responsibility should be performing the style updates, not determining what they are.
 
-### Do not reference host objects within foundation code.
+### Do not reference host objects within foundation code
 
 To ensure your foundation is as compatible with as many frameworks as possible, avoid directly
 referencing host objects within them. This includes `window`, `document`, `console`, and others.
@@ -441,11 +442,7 @@ _Only reference global objects defined within the ECMAScript specification withi
 
 We make an exception for this rule for `requestAnimationFrame`, but in the future we may refactor
 that out as well. In addition, a workaround to working with host objects in a foundation is to ask
-for them via the adapter. However, you should design your adapter APIs such that they return a
-[structural type](https://github.com/google/closure-compiler/wiki/Structural-Interfaces-in-Closure-Compiler)
-representing your host object, rather than a nominal type of the host object itself. For example,
-instead of asking for an `HTMLInputElement` of type `"checkbox"`, ask for an
-object that has `checked`, `indeterminate`, and `disabled` boolean properties.
+for them via the adapter.
 
 ### Clean up all references on destruction
 
@@ -738,7 +735,7 @@ class MDCNewComponentFoundation extends MDCFoundation {
 ```
 
 The primary purpose of this is so that our components can interoperate with aspects of Google's
-front-end infrastructure, such as Closure Stylesheets' [CSS Class Renaming](https://github.com/google/closure-stylesheets#renaming) mechanism. In addition, it
+front-end infrastructure. In addition, it
 provides the added benefit of semantic code, and less magic strings/numbers.
 
 #### Extend components and foundations from mdc-base classes.
@@ -760,16 +757,11 @@ Concretely:
   `config.validate-commit-msg.scope.allowed` array within the top-level `package.json` at the root
   of the repo. The commit subject is the _name the component, without the `mdc-`/`@material/`_.
   E.g., for `mdc-icon-button`, the correct subject is `icon-button`.
-- Ensure that the package name is added to the `closureWhitelist` array within the top-level
-  `package.json`.
 
-#### Closure Compatibility
+#### TypeScript Compatibility
 
-> NOTE: Our currently existing components are in the process of being made compatible with closure.
-
-All core MDC Web components must be fully compatible with the Google Closure Compiler using its
-advanced compilation mechanisms. We've provided a thorough explanation of this, as well as
-conventions, examples, and common closure patterns you may not be used to, in our [closure compiler documentation](./closure-compiler.md).
+All core MDC Web components must be fully compatible with the [TypeScript](https://www.typescriptlang.org/index.html). We've provided a list of requirements and further explanation of meeting the TypeScript compatibility, as well as
+conventions, examples, and common TypeScript patterns you may not be used to, in our [Coding Best Practices](./code/best_practices.md).
 
 ### Testing
 

@@ -10,7 +10,7 @@ path: /docs/importing-js/
 
 Most components ship with Component / Foundation classes which are used to provide a full-fidelity Material Design component. Depending on what technology you use in your stack, there are several ways to import the JavaScript.
 
-### ES2015
+### ES2015+
 
 ```js
 import {MDCFoo, MDCFooFoundation} from '@material/foo';
@@ -26,11 +26,17 @@ of your built assets, you will want to explicitly reference the package's `index
 import {MDCFoo, MDCFooFoundation} from '@material/foo/index';
 ```
 
+Certain buildtools will often pick up on the use of `package.json`'s `module` property, which points to the ES2015+ `index.js` source code. If you are using [Webpack](https://webpack.js.org/) or [Rollup](https://rollupjs.org/guide/en), then you will not need to reference the `index.js` file, and can continue to use the `@material/foo` import paths.
+
 Note that in this case, you must ensure your build toolchain is configured to process and transpile MDC Web's modules
 as well as your own. You will also need to include babel's
 [`transform-object-assign`](https://www.npmjs.com/package/babel-plugin-transform-object-assign) plugin for IE 11 support.
 
 See the [Getting Started guide](getting-started.md) for more details on setting up an environment.
+
+#### TypeScript
+
+If you are using TypeScript, MDC Web's packages also include `.d.ts` files for your consumption. Most of the time you shouldn't need to reference these, as the TypeScript compiler should automatically pick them up. MDC Web has also defined the `types` property found in `package.json`, for your convinence. There is a bundled `.d.ts` file found under the `dist` directory that maps to the respective UMD module. There are corresponding `.d.ts` files for each foundation/component/adapter/etc. within the package.
 
 ### CommonJS
 
