@@ -33,8 +33,8 @@ import {MDCTabScrollerAdapter, MDCTabScrollerAnimation} from './adapter';
 class MDCTabScrollerRTL {
   /** @param {!MDCTabScrollerAdapter} adapter */
   constructor(adapter) {
-    /** @private */
-    this.adapter_ = adapter;
+    /** @package */
+    this.adapter = adapter;
   }
 
   /**
