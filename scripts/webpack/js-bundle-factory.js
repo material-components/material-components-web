@@ -159,7 +159,7 @@ class JsBundleFactory {
         chips: getAbsolutePath('/packages/mdc-chips/index.ts'),
         dialog: getAbsolutePath('/packages/mdc-dialog/index.ts'),
         dom: getAbsolutePath('/packages/mdc-dom/index.ts'),
-        drawer: getAbsolutePath('/packages/mdc-drawer/index.js'),
+        drawer: getAbsolutePath('/packages/mdc-drawer/index.ts'),
         floatingLabel: getAbsolutePath('/packages/mdc-floating-label/index.ts'),
         formField: getAbsolutePath('/packages/mdc-form-field/index.ts'),
         gridList: getAbsolutePath('/packages/mdc-grid-list/index.ts'),
