@@ -135,7 +135,7 @@ class MDCList extends MDCComponent<MDCListFoundation> {
         }
       },
       focusItemAtIndex: (index) => {
-        const element = this.listElements[index] as HTMLElement;
+        const element = this.listElements[index] as HTMLElement | undefined;
         if (element) {
           element.focus();
         }

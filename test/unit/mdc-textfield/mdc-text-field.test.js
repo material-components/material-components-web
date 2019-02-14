@@ -30,8 +30,9 @@ import {MDCRipple} from '../../../packages/mdc-ripple/index';
 import {MDCLineRipple} from '../../../packages/mdc-line-ripple/index';
 import {MDCFloatingLabel} from '../../../packages/mdc-floating-label/index';
 import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline/index';
-import {MDCTextField, MDCTextFieldFoundation, MDCTextFieldHelperText, MDCTextFieldCharacterCounter,
-  MDCTextFieldIcon} from '../../../packages/mdc-textfield/index';
+import {
+  MDCTextField, MDCTextFieldFoundation, MDCTextFieldHelperText, MDCTextFieldCharacterCounter, MDCTextFieldIcon,
+} from '../../../packages/mdc-textfield/index';
 import {cssClasses as helperTextCssClasses} from '../../../packages/mdc-textfield/helper-text/constants';
 import {cssClasses as characterCounterCssClasses} from '../../../packages/mdc-textfield/character-counter/constants';
 
@@ -218,6 +219,50 @@ test('#constructor handles undefined optional sub-elements gracefully', () => {
   assert.doesNotThrow(() => new MDCTextField(root));
 });
 
+test('default adapter methods handle sub-elements when present', () => {
+  const root = getFixture();
+  const component = new MDCTextField(root);
+  const adapter = component.getDefaultFoundation().adapter_;
+  assert.isFalse(adapter.hasClass('foo'));
+  assert.equal(adapter.getLabelWidth(), 0);
+  assert.doesNotThrow(() => adapter.floatLabel(true));
+});
+
+test('default adapter methods handle undefined optional sub-elements gracefully', () => {
+  const root = bel`
+    <div class="mdc-text-field">
+      <input type="text" class="mdc-text-field__input" id="my-text-field">
+    </div>
+  `;
+  const component = new MDCTextField(root);
+  const adapter = component.getDefaultFoundation().adapter_;
+  assert.equal(adapter.getLabelWidth(), 0);
+  assert.isFalse(adapter.hasLabel());
+  assert.isFalse(adapter.hasOutline());
+  assert.doesNotThrow(() => adapter.floatLabel(true));
+  assert.doesNotThrow(() => adapter.shakeLabel(true));
+  assert.doesNotThrow(() => adapter.activateLineRipple());
+  assert.doesNotThrow(() => adapter.deactivateLineRipple());
+  assert.doesNotThrow(() => adapter.setLineRippleTransformOrigin(0));
+  assert.doesNotThrow(() => adapter.closeOutline());
+  assert.doesNotThrow(() => adapter.notchOutline(0));
+});
+
+/**
+ * @param {!HTMLElement=} root
+ * @return {{
+ *   root: HTMLElement,
+ *   component: MDCTextField,
+ *   foundation: MDCTextFieldFoundation,
+ *   adapter: MDCTextFieldAdapter,
+ *   outline: MDCNotchedOutline,
+ *   icon: MDCTextFieldIcon,
+ *   lineRipple: MDCLineRipple,
+ *   label: MDCFloatingLabel,
+ *   helperText: MDCTextFieldHelperText,
+ *   characterCounter: MDCTextFieldCharacterCounter,
+ * }}
+ */
 function setupTest(root = getFixture()) {
   const lineRipple = new FakeLineRipple();
   const helperText = new FakeHelperText();
@@ -225,6 +270,7 @@ function setupTest(root = getFixture()) {
   const icon = new FakeIcon();
   const label = new FakeLabel();
   const outline = new FakeOutline();
+
   const component = new MDCTextField(
     root,
     undefined,
@@ -236,7 +282,11 @@ function setupTest(root = getFixture()) {
     () => label,
     () => outline
   );
-  return {root, component, lineRipple, helperText, characterCounter, icon, label, outline};
+
+  const foundation = component.foundation_;
+  const adapter = foundation.adapter_;
+
+  return {root, component, foundation, adapter, lineRipple, helperText, characterCounter, icon, label, outline};
 }
 
 test('#destroy cleans up the ripple if present', () => {
@@ -307,6 +357,25 @@ test('#destroy handles undefined optional sub-elements gracefully', () => {
   assert.doesNotThrow(() => component.destroy());
 });
 
+test('#destroy handles undefined optional ripple gracefully', () => {
+  const root = getFixture();
+  const component = new MDCTextField(root);
+  component.ripple = null;
+  assert.doesNotThrow(() => component.destroy());
+});
+
+test('#destroy calls destroy for both icon elements if present', () => {
+  const root = getFixture(true);
+  root.classList.add('mdc-text-field--with-trailing-icon');
+  root.appendChild(bel`<i class="mdc-text-field__icon material-icons">3d_rotations</i>`);
+  const component = new MDCTextField(root);
+  component.leadingIcon_.destroy = td.func('leadingIcon_.destroy');
+  component.trailingIcon_.destroy = td.func('trailingIcon_.destroy');
+  component.destroy();
+  td.verify(component.leadingIcon_.destroy());
+  td.verify(component.trailingIcon_.destroy());
+});
+
 test('#initialSyncWithDom sets disabled if input element is not disabled', () => {
   const {component} = setupTest();
   component.initialSyncWithDom();
@@ -372,6 +441,13 @@ test('#adapter.addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
   assert.isOk(root.classList.contains('foo'));
+});
+
+test('layout calls foundation notchOutline', () => {
+  const {component, foundation} = setupTest();
+  foundation.notchOutline = td.func('notchOutline');
+  component.layout();
+  td.verify(foundation.notchOutline(false));
 });
 
 test('#adapter.removeClass removes a class from the root element', () => {
@@ -467,9 +543,7 @@ test('#adapter.setLineRippleTransformOrigin calls the setRippleCenter method on 
 function setupMockFoundationTest(root = getFixture()) {
   const MockFoundationConstructor = td.constructor(MDCTextFieldFoundation);
   const mockFoundation = new MockFoundationConstructor();
-  const component = new MDCTextField(
-    root,
-    mockFoundation);
+  const component = new MDCTextField(root, mockFoundation);
   return {root, component, mockFoundation};
 }
 
