@@ -115,27 +115,30 @@ export class MDCToolbarFoundation extends MDCFoundation<MDCToolbarAdapter> {
     toolbarRowHeight: 0,
   };
 
-  private readonly resizeHandler_: SpecificEventListener<'resize'>;
-  private readonly scrollHandler_: SpecificEventListener<'scroll'>;
+  private resizeHandler_!: SpecificEventListener<'resize'>; // assigned in init()
+  private scrollHandler_!: SpecificEventListener<'scroll'>; // assigned in init()
 
   constructor(adapter?: Partial<MDCToolbarAdapter>) {
     super({...MDCToolbarFoundation.defaultAdapter, ...adapter});
-
-    this.resizeHandler_ = () => this.checkRowHeight_();
-    this.scrollHandler_ = () => this.updateToolbarStyles_();
   }
 
   init() {
     this.isFixed_ = this.adapter_.hasClass(cssClasses.FIXED);
     this.isFixedLastRow_ = this.adapter_.hasClass(cssClasses.FIXED_LASTROW) && this.isFixed_;
     this.hasFlexibleFirstRow_ = this.adapter_.hasClass(cssClasses.TOOLBAR_ROW_FLEXIBLE);
+
     if (this.hasFlexibleFirstRow_) {
       this.useFlexDefaultBehavior_ = this.adapter_.hasClass(cssClasses.FLEXIBLE_DEFAULT_BEHAVIOR);
     }
-    this.initKeyRatio_();
-    this.setKeyHeights_();
+
+    this.resizeHandler_ = () => this.checkRowHeight_();
+    this.scrollHandler_ = () => this.updateToolbarStyles_();
+
     this.adapter_.registerResizeHandler(this.resizeHandler_);
     this.adapter_.registerScrollHandler(this.scrollHandler_);
+
+    this.initKeyRatio_();
+    this.setKeyHeights_();
   }
 
   destroy() {
