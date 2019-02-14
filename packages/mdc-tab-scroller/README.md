@@ -108,7 +108,6 @@ MDC Tab Scroller provides a `util` module with functions to help implement adapt
 Function Signature | Description
 --- | ---
 `computeHorizontalScrollbarHeight(document: Document) => number` | Returns the height of the browser's horizontal scrollbars (in px).
-`getMatchesProperty(HTMLElementPrototype: Object) => string` | Returns the appropriate property name for the `matches` API in the current browser environment.
 
 ### `MDCTabScrollerFoundation`
 

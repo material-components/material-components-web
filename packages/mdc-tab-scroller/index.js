@@ -22,6 +22,7 @@
  */
 
 import MDCComponent from '@material/base/component';
+import {matches} from '@material/dom/ponyfill';
 
 import {MDCTabScrollerAdapter} from './adapter';
 import MDCTabScrollerFoundation from './foundation';
@@ -90,8 +91,7 @@ class MDCTabScroller extends MDCComponent {
   getDefaultFoundation() {
     const adapter = /** @type {!MDCTabScrollerAdapter} */ ({
       eventTargetMatchesSelector: (evtTarget, selector) => {
-        const MATCHES = util.getMatchesProperty(HTMLElement.prototype);
-        return evtTarget[MATCHES](selector);
+        return matches(evtTarget, selector);
       },
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),

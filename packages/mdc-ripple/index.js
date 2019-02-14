@@ -22,6 +22,7 @@
  */
 
 import MDCComponent from '@material/base/component';
+import {matches} from '@material/dom/ponyfill';
 import MDCRippleAdapter from './adapter';
 import MDCRippleFoundation from './foundation';
 import * as util from './util';
@@ -60,12 +61,10 @@ class MDCRipple extends MDCComponent {
    * @return {!MDCRippleAdapter}
    */
   static createAdapter(instance) {
-    const MATCHES = util.getMatchesProperty(HTMLElement.prototype);
-
     return {
       browserSupportsCssVars: () => util.supportsCssVariables(window),
       isUnbounded: () => instance.unbounded,
-      isSurfaceActive: () => instance.root_[MATCHES](':active'),
+      isSurfaceActive: () => matches(instance.root_, ':active'),
       isSurfaceDisabled: () => instance.disabled,
       addClass: (className) => instance.root_.classList.add(className),
       removeClass: (className) => instance.root_.classList.remove(className),

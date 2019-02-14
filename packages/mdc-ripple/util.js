@@ -118,28 +118,6 @@ function applyPassive(globalObj = window, forceRefresh = false) {
 }
 
 /**
- * @param {!Object} HTMLElementPrototype
- * @return {string}
- */
-function getMatchesProperty(HTMLElementPrototype) {
-  /**
-   * Order is important because we return the first existing method we find.
-   * Do not change the order of the items in the below array.
-   */
-  const matchesMethods = ['matches', 'webkitMatchesSelector', 'msMatchesSelector'];
-  let method = 'matches';
-  for (let i = 0; i < matchesMethods.length; i++) {
-    const matchesMethod = matchesMethods[i];
-    if (matchesMethod in HTMLElementPrototype) {
-      method = matchesMethod;
-      break;
-    }
-  }
-
-  return method;
-}
-
-/**
  * @param {!Event} ev
  * @param {{x: number, y: number}} pageOffset
  * @param {!ClientRect} clientRect
@@ -166,4 +144,4 @@ function getNormalizedEventCoords(ev, pageOffset, clientRect) {
   return {x: normalizedX, y: normalizedY};
 }
 
-export {supportsCssVariables, applyPassive, getMatchesProperty, getNormalizedEventCoords};
+export {supportsCssVariables, applyPassive, getNormalizedEventCoords};

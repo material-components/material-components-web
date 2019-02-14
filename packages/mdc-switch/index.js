@@ -27,7 +27,7 @@ import {MDCSelectionControlState, MDCSelectionControl} from '@material/selection
 /* eslint-enable no-unused-vars */
 import MDCSwitchFoundation from './foundation';
 import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
-import {getMatchesProperty} from '@material/ripple/util';
+import {matches} from '@material/dom/ponyfill';
 
 /**
  * @extends MDCComponent<!MDCSwitchFoundation>
@@ -84,10 +84,9 @@ class MDCSwitch extends MDCComponent {
     const {RIPPLE_SURFACE_SELECTOR} = MDCSwitchFoundation.strings;
     const rippleSurface = /** @type {!Element} */ (this.root_.querySelector(RIPPLE_SURFACE_SELECTOR));
 
-    const MATCHES = getMatchesProperty(HTMLElement.prototype);
     const adapter = Object.assign(MDCRipple.createAdapter(this), {
       isUnbounded: () => true,
-      isSurfaceActive: () => this.nativeControl_[MATCHES](':active'),
+      isSurfaceActive: () => matches(/** @type {!Element} */ (this.nativeControl_), ':active'),
       addClass: (className) => rippleSurface.classList.add(className),
       removeClass: (className) => rippleSurface.classList.remove(className),
       registerInteractionHandler: (type, handler) => this.nativeControl_.addEventListener(type, handler),
