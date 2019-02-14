@@ -56,7 +56,7 @@ const REPO_PACKAGE_JSON = require(path.resolve('package.json'));
 const WEBPACK_CONFIG_RELATIVE_PATH = 'webpack.config.js';
 const WEBPACK_CONFIG = require(path.resolve(WEBPACK_CONFIG_RELATIVE_PATH));
 
-const MASTER_TS_RELATIVE_PATH = 'packages/material-components-web/index.js';
+const MASTER_TS_RELATIVE_PATH = 'packages/material-components-web/index.ts';
 const MASTER_CSS_RELATIVE_PATH = 'packages/material-components-web/material-components-web.scss';
 const MASTER_PACKAGE_JSON_RELATIVE_PATH = 'packages/material-components-web/package.json';
 const MASTER_PACKAGE_JSON = require(path.resolve(MASTER_PACKAGE_JSON_RELATIVE_PATH));
