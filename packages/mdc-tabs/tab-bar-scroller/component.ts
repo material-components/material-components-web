@@ -99,5 +99,3 @@ export class MDCTabBarScroller extends MDCComponent<MDCTabBarScrollerFoundation>
     this.foundation_.layout();
   }
 }
-
-export default MDCTabBarScroller;
