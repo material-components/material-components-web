@@ -24,6 +24,18 @@
 @import "@material/feature-targeting/mixins";
 @import "./variables";
 
+@mixin mdc-typography-core-styles($query: mdc-feature-all()) {
+  .mdc-typography {
+    @include mdc-typography-base($query: $query);
+  }
+
+  @each $style in map-keys($mdc-typography-styles) {
+    .mdc-typography--#{$style} {
+      @include mdc-typography($style, $query: $query);
+    }
+  }
+}
+
 @mixin mdc-typography-base($query: mdc-feature-all()) {
   $feat-typography: mdc-feature-create-target($query, typography);
 

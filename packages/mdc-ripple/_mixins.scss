@@ -20,6 +20,7 @@
 // THE SOFTWARE.
 //
 
+@import "@material/animation/functions";
 @import "@material/animation/variables";
 @import "@material/base/mixins";
 @import "@material/feature-targeting/functions";
@@ -28,6 +29,42 @@
 @import "./functions";
 @import "./keyframes";
 @import "./variables";
+
+@mixin mdc-ripple-core-styles($query: mdc-feature-all()) {
+  // postcss-bem-linter: define ripple-surface
+
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  .mdc-ripple-surface {
+    @include mdc-ripple-surface($query: $query);
+    @include mdc-states($query: $query);
+    @include mdc-ripple-radius-bounded($query: $query);
+
+    @include mdc-feature-targets($feat-structure) {
+      position: relative;
+      outline: none;
+      overflow: hidden;
+    }
+
+    &[data-mdc-ripple-is-unbounded] {
+      @include mdc-ripple-radius-unbounded($query: $query);
+
+      @include mdc-feature-targets($feat-structure) {
+        overflow: visible;
+      }
+    }
+
+    &--primary {
+      @include mdc-states(primary, $query: $query);
+    }
+
+    &--accent {
+      @include mdc-states(secondary, $query: $query);
+    }
+  }
+
+  // postcss-bem-linter: end
+}
 
 @mixin mdc-ripple-common($query: mdc-feature-all()) {
   $feat-animation: mdc-feature-create-target($query, animation);
