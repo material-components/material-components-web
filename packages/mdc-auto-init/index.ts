@@ -79,6 +79,8 @@ export function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
       continue;
     }
 
+    // TODO: Should we make an eslint rule for an attachTo() static method?
+    // See https://github.com/Microsoft/TypeScript/issues/14600 for discussion of static interface support in TS
     const component = Constructor.attachTo(node);
     Object.defineProperty(node, ctorName, {
       configurable: true,
