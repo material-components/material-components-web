@@ -36,10 +36,11 @@ export class MDCToolbar extends MDCComponent<MDCToolbarFoundation> {
   protected root_!: HTMLElement; // assigned in MDCComponent constructor
 
   private ripples_!: MDCRipple[]; // assigned in initialize()
-  private fixedAdjustElement_?: HTMLElement;
+  private fixedAdjustElement_!: HTMLElement | null; // assigned in initialize()
 
   initialize() {
     this.ripples_ = [];
+    this.fixedAdjustElement_ = null;
 
     [].forEach.call(this.root_.querySelectorAll(strings.ICON_SELECTOR), (icon: HTMLElement) => {
       const ripple = MDCRipple.attachTo(icon);
@@ -55,12 +56,12 @@ export class MDCToolbar extends MDCComponent<MDCToolbarFoundation> {
     super.destroy();
   }
 
-  set fixedAdjustElement(element: HTMLElement | undefined) {
+  set fixedAdjustElement(element: HTMLElement | null) {
     this.fixedAdjustElement_ = element;
     this.foundation_.updateAdjustElementStyles();
   }
 
-  get fixedAdjustElement(): HTMLElement | undefined {
+  get fixedAdjustElement(): HTMLElement | null {
     return this.fixedAdjustElement_;
   }
 
@@ -68,7 +69,7 @@ export class MDCToolbar extends MDCComponent<MDCToolbarFoundation> {
     return this.root_.querySelector<HTMLElement>(strings.FIRST_ROW_SELECTOR)!;
   }
 
-  private get titleElement_(): HTMLElement {
+  private get titleElement_(): HTMLElement | null {
     return this.root_.querySelector<HTMLElement>(strings.TITLE_SELECTOR)!;
   }
 
@@ -88,7 +89,11 @@ export class MDCToolbar extends MDCComponent<MDCToolbarFoundation> {
       getFirstRowElementOffsetHeight: () => this.firstRowElement_.offsetHeight,
       notifyChange: (evtData) => this.emit<ToolbarEventDetail>(strings.CHANGE_EVENT, evtData),
       setStyle: (property, value) => this.root_.style.setProperty(property, value),
-      setStyleForTitleElement: (property, value) => this.titleElement_.style.setProperty(property, value),
+      setStyleForTitleElement: (property, value) => {
+        if (this.titleElement_) {
+          this.titleElement_.style.setProperty(property, value);
+        }
+      },
       setStyleForFlexibleRowElement: (property, value) => this.firstRowElement_.style.setProperty(property, value),
       setStyleForFixedAdjustElement: (property, value) => {
         if (this.fixedAdjustElement) {
