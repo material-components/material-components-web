@@ -23,8 +23,7 @@
 
 // tslint:disable:only-arrow-functions
 
-import {MDCComponent} from '@material/base/component';
-import {MDCFoundation} from '@material/base/foundation';
+import {MDCComponent, MDCFoundation} from '@material/base/index';
 import {MDCAutoInitElement, MDCAutoInitKey} from './types';
 
 interface ComponentClass {
