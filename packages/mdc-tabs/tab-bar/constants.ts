@@ -26,7 +26,7 @@ export const cssClasses = {
 };
 
 export const strings = {
-  TAB_SELECTOR: '.mdc-tab',
-  INDICATOR_SELECTOR: '.mdc-tab-bar__indicator',
   CHANGE_EVENT: 'MDCTabBar:change',
+  INDICATOR_SELECTOR: '.mdc-tab-bar__indicator',
+  TAB_SELECTOR: '.mdc-tab',
 };
