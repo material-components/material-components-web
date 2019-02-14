@@ -22,8 +22,8 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {MDCChip, MDCChipFactory, MDCChipFoundation} from '../chip';
-import {MDCChipInteractionEvent, MDCChipRemovalEvent, MDCChipSelectionEvent} from '../chip';
+import {MDCChip, MDCChipFactory, MDCChipFoundation} from '../chip/index';
+import {MDCChipInteractionEvent, MDCChipRemovalEvent, MDCChipSelectionEvent} from '../chip/index';
 import {MDCChipSetFoundation} from './foundation';
 
 let idCounter = 0;

@@ -21,5 +21,5 @@
  * THE SOFTWARE.
  */
 
-export * from './chip';
-export * from './chip-set';
+export * from './chip/index';
+export * from './chip-set/index';
