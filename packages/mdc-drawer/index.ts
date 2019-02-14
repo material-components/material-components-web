@@ -153,7 +153,7 @@ class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
   }
 }
 
-export {MDCDrawer as default, MDCDrawer, util};
+export {MDCDrawer, util};
 export * from './dismissible/foundation';
 export * from './modal/foundation';
 export * from './adapter';
