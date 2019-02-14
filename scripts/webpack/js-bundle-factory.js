@@ -125,7 +125,7 @@ class JsBundleFactory {
 
     return this.createCustomJs({
       bundleName: 'main-js-combined',
-      chunks: getAbsolutePath('/packages/material-components-web/index.js'),
+      chunks: getAbsolutePath('/packages/material-components-web/index.ts'),
       output: {
         fsDirAbsolutePath,
         httpDirAbsolutePath,
