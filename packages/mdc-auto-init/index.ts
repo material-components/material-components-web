@@ -70,8 +70,8 @@ function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
       throw new Error('(mdc-auto-init) Constructor name must be given.');
     }
 
-    const Ctor = registry[ctorName]; // tslint:disable-line:variable-name
-    if (typeof Ctor !== 'function') {
+    const Constructor = registry[ctorName]; // tslint:disable-line:variable-name
+    if (typeof Constructor !== 'function') {
       throw new Error(
         `(mdc-auto-init) Could not find constructor in registry for ${ctorName}`);
     }
@@ -83,7 +83,7 @@ function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
 
     // TODO: Should we make an eslint rule for an attachTo() static method?
     // See https://github.com/Microsoft/TypeScript/issues/14600 for discussion of static interface support in TS
-    const component = Ctor.attachTo(node);
+    const component = Constructor.attachTo(node);
     Object.defineProperty(node, ctorName, {
       configurable: true,
       enumerable: false,
@@ -97,17 +97,18 @@ function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
   return components;
 }
 
+// Constructor is PascalCased because it is a direct reference to a class, rather than an instance of a class.
 // tslint:disable-next-line:variable-name
-mdcAutoInit.register = function(componentName: MDCAutoInitKey, Ctor: ComponentClass, warn = CONSOLE_WARN) {
-  if (typeof Ctor !== 'function') {
-    throw new Error(`(mdc-auto-init) Invalid Ctor value ${Ctor}. Expected function`);
+mdcAutoInit.register = function(componentName: MDCAutoInitKey, Constructor: ComponentClass, warn = CONSOLE_WARN) {
+  if (typeof Constructor !== 'function') {
+    throw new Error(`(mdc-auto-init) Invalid Ctor value ${Constructor}. Expected function`);
   }
   if (registry[componentName]) {
     warn(
-      `(mdc-auto-init) Overriding registration for ${componentName} with ${Ctor}. ` +
+      `(mdc-auto-init) Overriding registration for ${componentName} with ${Constructor}. ` +
       `Was: ${registry[componentName]}`);
   }
-  registry[componentName] = Ctor;
+  registry[componentName] = Constructor;
 };
 
 mdcAutoInit.deregister = function(componentName: MDCAutoInitKey) {
