@@ -21,7 +21,6 @@
  * THE SOFTWARE.
  */
 
-export {MDCTabBarScroller as default} from './component';
 export * from './adapter';
 export * from './component';
 export * from './foundation';
