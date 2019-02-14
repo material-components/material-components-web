@@ -28,7 +28,7 @@ import {MDCChipSetFoundation} from './foundation';
 
 let idCounter = 0;
 
-export type MDCChipSeFactory = (root: Element, foundation?: MDCChipSetFoundation) => MDCChipSet;
+export type MDCChipSetFactory = (root: Element, foundation?: MDCChipSetFoundation) => MDCChipSet;
 
 export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   /**
