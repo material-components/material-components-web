@@ -79,10 +79,6 @@ class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
     this.resizeHandler_ = () => this.topAppBarResizeHandler_();
   }
 
-  init() {
-    super.init();
-  }
-
   destroy() {
     super.destroy();
     this.adapter_.setStyle('top', '');

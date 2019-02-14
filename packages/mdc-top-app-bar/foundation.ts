@@ -75,23 +75,39 @@ class MDCTopAppBarBaseFoundation extends MDCFoundation<MDCTopAppBarAdapter> {
   }
 
   init() {
-    if (this.scrollHandler_) {
-      this.adapter_.registerScrollHandler(this.scrollHandler_);
-    }
-    if (this.resizeHandler_) {
-      this.adapter_.registerResizeHandler(this.resizeHandler_);
-    }
+    this.initScrollHandler();
+    this.initResizeHandler_();
     this.adapter_.registerNavigationIconInteractionHandler('click', this.navClickHandler_);
   }
 
   destroy() {
+    this.destroyScrollHandler();
+    this.destroyResizeHandler_();
+    this.adapter_.deregisterNavigationIconInteractionHandler('click', this.navClickHandler_);
+  }
+
+  initScrollHandler() {
+    if (this.scrollHandler_) {
+      this.adapter_.registerScrollHandler(this.scrollHandler_);
+    }
+  }
+
+  destroyScrollHandler() {
     if (this.scrollHandler_) {
       this.adapter_.deregisterScrollHandler(this.scrollHandler_);
     }
+  }
+
+  private initResizeHandler_() {
+    if (this.resizeHandler_) {
+      this.adapter_.registerResizeHandler(this.resizeHandler_);
+    }
+  }
+
+  private destroyResizeHandler_() {
     if (this.resizeHandler_) {
       this.adapter_.deregisterResizeHandler(this.resizeHandler_);
     }
-    this.adapter_.deregisterNavigationIconInteractionHandler('click', this.navClickHandler_);
   }
 }
 
