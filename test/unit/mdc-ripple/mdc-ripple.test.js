@@ -30,7 +30,6 @@ import {MDCRipple} from '../../../packages/mdc-ripple/index';
 import {cssClasses} from '../../../packages/mdc-ripple/constants';
 import * as util from '../../../packages/mdc-ripple/util';
 import {install as installClock} from '../helpers/clock';
-import {ponyfill} from '../../../packages/mdc-dom/index';
 
 suite('MDCRipple');
 
