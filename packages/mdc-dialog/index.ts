@@ -70,7 +70,7 @@ class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   private container_!: HTMLElement; // assigned in initialize()
   private content_!: HTMLElement | null; // assigned in initialize()
   private defaultButton_!: HTMLElement | null; // assigned in initialize()
-  private initialFocusEl_!: HTMLElement | undefined; // assigned in initialize()
+  private initialFocusEl_?: HTMLElement; // assigned in initialize()
 
   private focusTrap_!: createFocusTrap.FocusTrap; // assigned in initialSyncWithDOM()
   private focusTrapFactory_!: FocusTrapFactory; // assigned in initialize()
@@ -83,7 +83,7 @@ class MDCDialog extends MDCComponent<MDCDialogFoundation> {
 
   initialize(
       focusTrapFactory: FocusTrapFactory = createFocusTrap as unknown as FocusTrapFactory,
-      initialFocusEl?: Element) {
+      initialFocusEl?: HTMLElement) {
     const container = this.root_.querySelector<HTMLElement>(strings.CONTAINER_SELECTOR);
     if (!container) {
       throw new Error(`Dialog component requires a ${strings.CONTAINER_SELECTOR} container element`);
@@ -93,7 +93,7 @@ class MDCDialog extends MDCComponent<MDCDialogFoundation> {
     this.buttons_ = [].slice.call(this.root_.querySelectorAll<HTMLElement>(strings.BUTTON_SELECTOR));
     this.defaultButton_ = this.root_.querySelector<HTMLElement>(strings.DEFAULT_BUTTON_SELECTOR);
     this.focusTrapFactory_ = focusTrapFactory;
-    this.initialFocusEl_ = initialFocusEl as HTMLElement | undefined;
+    this.initialFocusEl_ = initialFocusEl;
     this.buttonRipples_ = [];
 
     for (const buttonEl of this.buttons_) {

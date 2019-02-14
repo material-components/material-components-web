@@ -24,11 +24,9 @@
 import {MDCList} from '@material/list/index';
 import * as FocusTrapLib from 'focus-trap';
 
-// TODO(acdvorak): Centralize this in mdc-base or mdc-dom?
 export type FocusTrapFactory = (
     element: HTMLElement | string,
     userOptions?: FocusTrapLib.Options,
 ) => FocusTrapLib.FocusTrap;
 
-// TODO(acdvorak): Centralize this in mdc-list (ditto for other packages)
 export type ListFactory = (el: Element) => MDCList;
