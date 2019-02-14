@@ -93,7 +93,6 @@ export {
   formField,
   gridList,
   iconButton,
-  iconToggle,
   lineRipple,
   linearProgress,
   list,
