@@ -20,23 +20,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-/** @enum {string} */
+
 const cssClasses = {
-  ROOT: 'mdc-drawer',
+  ANIMATE: 'mdc-drawer--animate',
+  CLOSING: 'mdc-drawer--closing',
   DISMISSIBLE: 'mdc-drawer--dismissible',
   MODAL: 'mdc-drawer--modal',
   OPEN: 'mdc-drawer--open',
-  ANIMATE: 'mdc-drawer--animate',
   OPENING: 'mdc-drawer--opening',
-  CLOSING: 'mdc-drawer--closing',
+  ROOT: 'mdc-drawer',
 };
 
-/** @enum {string} */
 const strings = {
   APP_CONTENT_SELECTOR: '.mdc-drawer-app-content',
-  SCRIM_SELECTOR: '.mdc-drawer-scrim',
   CLOSE_EVENT: 'MDCDrawer:closed',
   OPEN_EVENT: 'MDCDrawer:opened',
+  SCRIM_SELECTOR: '.mdc-drawer-scrim',
 };
 
 export {cssClasses, strings};
