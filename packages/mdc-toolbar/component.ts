@@ -23,6 +23,7 @@
 
 import {MDCComponent} from '@material/base/component';
 import {MDCRipple} from '@material/ripple/index';
+import {MDCToolbarAdapter} from './adapter';
 import {MDCToolbarFoundation} from './foundation';
 import {ToolbarEventDetail} from './types';
 
@@ -36,11 +37,19 @@ export class MDCToolbar extends MDCComponent<MDCToolbarFoundation> {
   protected root_!: HTMLElement; // assigned in MDCComponent constructor
 
   private ripples_!: MDCRipple[]; // assigned in initialize()
+  private firstRowElement_!: HTMLElement; // assigned in initialize()
   private fixedAdjustElement_!: HTMLElement | null; // assigned in initialize()
+  private titleElement_!: HTMLElement | null; // assigned in initialize()
 
   initialize() {
     this.ripples_ = [];
     this.fixedAdjustElement_ = null;
+    this.titleElement_ = this.root_.querySelector<HTMLElement>(strings.TITLE_SELECTOR);
+    const firstRowElement = this.root_.querySelector<HTMLElement>(strings.FIRST_ROW_SELECTOR);
+    if (!firstRowElement) {
+      throw new Error(`MDCToolbar: Required sub-element '${strings.FIRST_ROW_SELECTOR}' is missing`);
+    }
+    this.firstRowElement_ = firstRowElement;
 
     [].forEach.call(this.root_.querySelectorAll(strings.ICON_SELECTOR), (icon: HTMLElement) => {
       const ripple = MDCRipple.attachTo(icon);
@@ -65,17 +74,9 @@ export class MDCToolbar extends MDCComponent<MDCToolbarFoundation> {
     return this.fixedAdjustElement_;
   }
 
-  private get firstRowElement_(): HTMLElement {
-    return this.root_.querySelector<HTMLElement>(strings.FIRST_ROW_SELECTOR)!;
-  }
-
-  private get titleElement_(): HTMLElement | null {
-    return this.root_.querySelector<HTMLElement>(strings.TITLE_SELECTOR)!;
-  }
-
   getDefaultFoundation() {
     // tslint:disable:object-literal-sort-keys
-    return new MDCToolbarFoundation({
+    const adapter: MDCToolbarAdapter = {
       hasClass: (className) => this.root_.classList.contains(className),
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
@@ -100,7 +101,8 @@ export class MDCToolbar extends MDCComponent<MDCToolbarFoundation> {
           this.fixedAdjustElement.style.setProperty(property, value);
         }
       },
-    });
+    };
     // tslint:enable:object-literal-sort-keys
+    return new MDCToolbarFoundation(adapter);
   }
 }

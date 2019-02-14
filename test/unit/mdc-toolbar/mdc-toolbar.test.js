@@ -30,28 +30,32 @@ import {install as installClock} from '../helpers/clock';
 import {strings} from '../../../packages/mdc-toolbar/constants';
 import {MDCToolbar} from '../../../packages/mdc-toolbar/component';
 
-function getFixture() {
+function getFixture({hasRow = true} = {}) {
   /* eslint-disable max-len */
+  const rowEl = !hasRow ? '' : bel`
+    <div class="mdc-toolbar__row">
+      <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+        <a class="material-icons mdc-toolbar__menu-icon">menu</a>
+        <span class="mdc-toolbar__title">Title</span>
+      </section>
+      <section class="mdc-toolbar__section mdc-toolbar__section--align-end" role="toolbar">
+        <a class="material-icons mdc-toolbar__icon" aria-label="Download" alt="Download">file_download</a>
+        <a class="material-icons mdc-toolbar__icon" aria-label="Print this page" alt="Print this page">print</a>
+        <a class="material-icons mdc-toolbar__icon" aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>
+      </section>
+    </div>
+  `;
+  /* eslint-enable max-len */
+
   return bel`
     <div>
       <header class="mdc-toolbar mdc-toolbar--flexible mdc-toolbar--flexible-default-behavior">
-        <div class="mdc-toolbar__row">
-          <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-            <a class="material-icons mdc-toolbar__menu-icon">menu</a>
-            <span class="mdc-toolbar__title">Title</span>
-          </section>
-          <section class="mdc-toolbar__section mdc-toolbar__section--align-end" role="toolbar">
-            <a class="material-icons mdc-toolbar__icon" aria-label="Download" alt="Download">file_download</a>
-            <a class="material-icons mdc-toolbar__icon" aria-label="Print this page" alt="Print this page">print</a>
-            <a class="material-icons mdc-toolbar__icon" aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>
-          </section>
-        </div>
+        ${rowEl}
       </header>
       <main class="mdc-toolbar-fixed-adjust">
       </main>
     </div>
   `;
-  /* eslint-enable max-len */
 }
 
 function setupTest() {
@@ -66,6 +70,10 @@ suite('MDCToolbar');
 
 test('attachTo initializes and returns an MDCToolbar instance', () => {
   assert.isOk(MDCToolbar.attachTo(getFixture()) instanceof MDCToolbar);
+});
+
+test('attachTo throws an error if required sub-element is not present', () => {
+  assert.throws(() => MDCToolbar.attachTo(getFixture({hasRow: false})));
 });
 
 test('#destroy calls destroy on all icon ripples', () => {
