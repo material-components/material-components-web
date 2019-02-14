@@ -211,7 +211,6 @@ function isThirdPartyModule(importPath) {
 function getBazelFileNameOrPath(ossFileNameOrPath) {
   return ossFileNameOrPath
     .replace(/mdc-?/g, '')
-    .replace(/material-components-web/g, 'material_components_web')
     .replace(/selection-control/g, 'selection_control')
     .replace(/character-counter/g, 'character_counter')
     .replace(/helper-text/g, 'helper_text')
