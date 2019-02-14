@@ -21,28 +21,4 @@
 //
 
 @import "./mixins";
-
-:root {
-  @each $style in map-keys($mdc-theme-property-values) {
-    --mdc-theme-#{$style}: #{map-get($mdc-theme-property-values, $style)};
-  }
-}
-
-@each $style in map-keys($mdc-theme-property-values) {
-  @if $style != "background" and $style != "surface" {
-    .mdc-theme--#{$style} {
-      @include mdc-theme-prop(color, $style, true);
-    }
-  } @else {
-    .mdc-theme--#{$style} {
-      @include mdc-theme-prop(background-color, $style);
-    }
-  }
-}
-
-// CSS rules for using primary and secondary (plus light/dark variants) as background colors.
-@each $style in ("primary", "secondary") {
-  .mdc-theme--#{$style}-bg {
-    @include mdc-theme-prop(background-color, $style, true);
-  }
-}
+@include mdc-theme-core-styles;

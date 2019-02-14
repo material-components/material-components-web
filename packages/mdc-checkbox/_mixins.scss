@@ -33,7 +33,7 @@
 // Public
 //
 
-@mixin mdc-checkbox($query: mdc-feature-all()) {
+@mixin mdc-checkbox-core-styles($query: mdc-feature-all()) {
   // postcss-bem-linter: define checkbox
 
   $feat-animation: mdc-feature-create-target($query, animation);

@@ -33,7 +33,7 @@
 // Public
 //
 
-@mixin mdc-card($query: mdc-feature-all()) {
+@mixin mdc-card-core-styles($query: mdc-feature-all()) {
   // postcss-bem-linter: define card
 
   $feat-color: mdc-feature-create-target($query, color);
@@ -291,11 +291,7 @@
 }
 
 @mixin mdc-card-shape-radius($radius, $rtl-reflexive: false, $query: mdc-feature-all()) {
-  $feat-structure: mdc-feature-create-target($query, structure);
-
-  @include mdc-feature-targets($feat-structure) {
-    @include mdc-shape-radius($radius, $rtl-reflexive);
-  }
+  @include mdc-shape-radius($radius, $rtl-reflexive, $query: $query);
 }
 
 @mixin mdc-card-media-aspect-ratio($x, $y, $query: mdc-feature-all()) {
