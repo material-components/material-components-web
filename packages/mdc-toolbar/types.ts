@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,28 +21,8 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
-const cssClasses = {
-  FIXED_CLASS: 'mdc-top-app-bar--fixed',
-  FIXED_SCROLLED_CLASS: 'mdc-top-app-bar--fixed-scrolled',
-  SHORT_CLASS: 'mdc-top-app-bar--short',
-  SHORT_HAS_ACTION_ITEM_CLASS: 'mdc-top-app-bar--short-has-action-item',
-  SHORT_COLLAPSED_CLASS: 'mdc-top-app-bar--short-collapsed',
-};
+export interface ToolbarEventDetail {
+  flexibleExpansionRatio: number;
+}
 
-/** @enum {number} */
-const numbers = {
-  DEBOUNCE_THROTTLE_RESIZE_TIME_MS: 100,
-  MAX_TOP_APP_BAR_HEIGHT: 128,
-};
-
-/** @enum {string} */
-const strings = {
-  ACTION_ITEM_SELECTOR: '.mdc-top-app-bar__action-item',
-  NAVIGATION_EVENT: 'MDCTopAppBar:nav',
-  NAVIGATION_ICON_SELECTOR: '.mdc-top-app-bar__navigation-icon',
-  ROOT_SELECTOR: '.mdc-top-app-bar',
-  TITLE_SELECTOR: '.mdc-top-app-bar__title',
-};
-
-export {strings, cssClasses, numbers};
+export type ToolbarEvent = CustomEvent<ToolbarEventDetail>;

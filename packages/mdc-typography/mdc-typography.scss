@@ -20,15 +20,5 @@
 // THE SOFTWARE.
 //
 
-@import "./variables";
 @import "./mixins";
-
-.mdc-typography {
-  @include mdc-typography-base;
-}
-
-@each $style in map-keys($mdc-typography-styles) {
-  .mdc-typography--#{$style} {
-    @include mdc-typography($style);
-  }
-}
+@include mdc-typography-core-styles;

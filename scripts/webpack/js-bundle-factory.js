@@ -125,7 +125,7 @@ class JsBundleFactory {
 
     return this.createCustomJs({
       bundleName: 'main-js-combined',
-      chunks: getAbsolutePath('/packages/material-components-web/index.js'),
+      chunks: getAbsolutePath('/packages/material-components-web/index.ts'),
       output: {
         fsDirAbsolutePath,
         httpDirAbsolutePath,
@@ -153,7 +153,7 @@ class JsBundleFactory {
       bundleName: 'main-js-a-la-carte',
       chunks: {
         animation: getAbsolutePath('/packages/mdc-animation/index.ts'),
-        autoInit: getAbsolutePath('/packages/mdc-auto-init/index.js'),
+        autoInit: getAbsolutePath('/packages/mdc-auto-init/index.ts'),
         base: getAbsolutePath('/packages/mdc-base/index.ts'),
         checkbox: getAbsolutePath('/packages/mdc-checkbox/index.ts'),
         chips: getAbsolutePath('/packages/mdc-chips/index.ts'),
@@ -184,8 +184,8 @@ class JsBundleFactory {
         tabScroller: getAbsolutePath('/packages/mdc-tab-scroller/index.ts'),
         tabs: getAbsolutePath('/packages/mdc-tabs/index.js'),
         textfield: getAbsolutePath('/packages/mdc-textfield/index.ts'),
-        toolbar: getAbsolutePath('/packages/mdc-toolbar/index.js'),
-        topAppBar: getAbsolutePath('/packages/mdc-top-app-bar/index.js'),
+        toolbar: getAbsolutePath('/packages/mdc-toolbar/index.ts'),
+        topAppBar: getAbsolutePath('/packages/mdc-top-app-bar/index.ts'),
       },
       output: {
         fsDirAbsolutePath,

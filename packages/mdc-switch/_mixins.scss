@@ -33,7 +33,7 @@
 // Public
 //
 
-@mixin mdc-switch($query: mdc-feature-all()) {
+@mixin mdc-switch-core-styles($query: mdc-feature-all()) {
   // postcss-bem-linter: define switch
 
   $feat-animation: mdc-feature-create-target($query, animation);

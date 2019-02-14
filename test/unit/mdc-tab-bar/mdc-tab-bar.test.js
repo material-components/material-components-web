@@ -227,13 +227,6 @@ test(`#adapter.notifyTabActivated emits the ${MDCTabBarFoundation.strings.TAB_AC
   td.verify(handler(td.matchers.contains({detail: {index: 66}})));
 });
 
-function setupMockFoundationTest(root = getFixture()) {
-  const MockFoundationConstructor = td.constructor(MDCTabBarFoundation);
-  const mockFoundation = new MockFoundationConstructor();
-  const component = new MDCTabBar(root, mockFoundation);
-  return {root, component, mockFoundation};
-}
-
 test('#activateTab calls activateTab', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
   component.activateTab(1);

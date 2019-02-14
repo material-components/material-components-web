@@ -304,7 +304,6 @@ Method Signature | Description
 --- | ---
 `util.supportsCssVariables(windowObj, forceRefresh = false) => Boolean` | Determine whether the current browser supports CSS variables (custom properties)
 `util.applyPassive(globalObj = window, forceRefresh = false) => object` | Determine whether the current browser supports passive event listeners
-`util.getMatchesProperty(HTMLElementPrototype) => Function` | Return the correct "matches" property to use on the current browser
 `util.getNormalizedEventCoords(ev, pageOffset, clientRect) => object` | Determines X/Y coordinates of an event normalized for touch events and ripples
 
 > _NOTE_: The functions `util.supportsCssVariables` and `util.applyPassive` cache their results; `forceRefresh` will force recomputation, but is used mainly for testing and should not be necessary in normal use.
