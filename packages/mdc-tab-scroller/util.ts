@@ -49,21 +49,3 @@ export function computeHorizontalScrollbarHeight(documentObj: Document, shouldCa
   }
   return horizontalScrollbarHeight;
 }
-
-export type VendorMatchesFunctionName = 'webkitMatchesSelector' | 'msMatchesSelector';
-export type MatchesFunctionName = VendorMatchesFunctionName | 'matches';
-
-export function getMatchesProperty(htmlElementPrototype: {}): MatchesFunctionName {
-  // Order is important because we return the first existing method we find.
-  // Do not change the order of the items in the below array.
-  const matchesMethods: MatchesFunctionName[] = ['matches', 'webkitMatchesSelector', 'msMatchesSelector'];
-  let method: MatchesFunctionName = 'matches';
-  for (const matchesMethod of matchesMethods) {
-    if (matchesMethod in htmlElementPrototype) {
-      method = matchesMethod;
-      break;
-    }
-  }
-
-  return method;
-}

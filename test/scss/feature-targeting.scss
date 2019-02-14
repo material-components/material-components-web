@@ -10,11 +10,12 @@
 @import "@material/ripple/mixins";
 @import "@material/shape/mixins";
 @import "@material/switch/mixins";
+@import "@material/theme/mixins";
 @import "@material/typography/mixins";
 
 .mdc-test {
   // Button
-  @include mdc-button($query: mdc-feature-any());
+  @include mdc-button-core-styles($query: mdc-feature-any());
   @include mdc-button-filled-accessible(red, $query: mdc-feature-any());
   @include mdc-button-container-fill-color(red, $query: mdc-feature-any());
   @include mdc-button-outline-color(red, $query: mdc-feature-any());
@@ -25,23 +26,24 @@
   @include mdc-button-outline-width(0, $query: mdc-feature-any());
 
   // Card
-  @include mdc-card($query: mdc-feature-any());
+  @include mdc-card-core-styles($query: mdc-feature-any());
   @include mdc-card-fill-color(red, $query: mdc-feature-any());
   @include mdc-card-outline(red, $query: mdc-feature-any());
   @include mdc-card-shape-radius(0, $query: mdc-feature-any());
   @include mdc-card-media-aspect-ratio(1, 1, $query: mdc-feature-any());
 
   // Checkbox
-  @include mdc-checkbox($query: mdc-feature-any());
+  @include mdc-checkbox-core-styles($query: mdc-feature-any());
   @include mdc-checkbox-container-colors($query: mdc-feature-any());
   @include mdc-checkbox-ink-color(red, $query: mdc-feature-any());
   @include mdc-checkbox-focus-indicator-color(red, $query: mdc-feature-any());
 
   // Elevation
+  @include mdc-elevation-core-styles($query: mdc-feature-any());
   @include mdc-elevation(0, $query: mdc-feature-any());
 
   // List
-  @include mdc-list($query: mdc-feature-any());
+  @include mdc-list-core-styles($query: mdc-feature-any());
   @include mdc-list-item-primary-text-ink-color(red, $query: mdc-feature-any());
   @include mdc-list-item-secondary-text-ink-color(red, $query: mdc-feature-any());
   @include mdc-list-item-graphic-fill-color(red, $query: mdc-feature-any());
@@ -52,23 +54,24 @@
   @include mdc-list-group-subheader-ink-color(red, $query: mdc-feature-any());
 
   // Menu
-  @include mdc-menu($query: mdc-feature-any());
+  @include mdc-menu-core-styles($query: mdc-feature-any());
   @include mdc-menu-width(0, $query: mdc-feature-any());
 
   // Menu Surface
-  @include mdc-menu-surface($query: mdc-feature-any());
+  @include mdc-menu-surface-core-styles($query: mdc-feature-any());
   @include mdc-menu-surface-fill-color(surface, $query: mdc-feature-any());
   @include mdc-menu-surface-ink-color(on-surface, $query: mdc-feature-any());
   @include mdc-menu-surface-shape-radius(medium, $query: mdc-feature-any());
 
   // Radio
-  @include mdc-radio($query: mdc-feature-any());
+  @include mdc-radio-core-styles($query: mdc-feature-any());
   @include mdc-radio-unchecked-stroke-color(red, $query: mdc-feature-any());
   @include mdc-radio-checked-stroke-color(red, $query: mdc-feature-any());
   @include mdc-radio-ink-color(red, $query: mdc-feature-any());
   @include mdc-radio-focus-indicator-color(red, $query: mdc-feature-any());
 
   // Ripple
+  @include mdc-ripple-core-styles($query: mdc-feature-any());
   @include mdc-ripple-common($query: mdc-feature-any());
   @include mdc-ripple-surface($query: mdc-feature-any());
   @include mdc-states-base-color(red, $query: mdc-feature-any());
@@ -85,7 +88,7 @@
   @include mdc-shape-radius(1px 2px, true, $query: mdc-feature-any());
 
   // Switch
-  @include mdc-switch($query: mdc-feature-any());
+  @include mdc-switch-core-styles($query: mdc-feature-any());
   @include mdc-switch-toggled-on-color(on-surface, $query: mdc-feature-any());
   @include mdc-switch-toggled-off-color(on-surface, $query: mdc-feature-any());
   @include mdc-switch-toggled-on-ripple-color(on-surface, $query: mdc-feature-any());
@@ -95,7 +98,11 @@
   @include mdc-switch-toggled-off-track-color(on-surface, $query: mdc-feature-any());
   @include mdc-switch-toggled-off-thumb-color(on-surface, $query: mdc-feature-any());
 
+  // Theme
+  @include mdc-theme-core-styles($query: mdc-feature-any());
+
   // Typography
+  @include mdc-typography-core-styles($query: mdc-feature-any());
   @include mdc-typography-base($query: mdc-feature-any());
   @include mdc-typography(button, $query: mdc-feature-any());
   @include mdc-typography-overflow-ellipsis($query: mdc-feature-any());

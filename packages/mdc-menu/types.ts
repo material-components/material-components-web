@@ -24,6 +24,9 @@
 import {MDCList} from '@material/list/index';
 import {MDCMenuSurface} from '@material/menu-surface/index';
 
+export type MenuItemEvent = CustomEvent<MenuItemEventDetail>;
+export type DefaultMenuItemEvent = CustomEvent<DefaultMenuItemEventDetail>;
+
 /**
  * Event properties used by the adapter and foundation.
  */
