@@ -31,19 +31,19 @@ let idCounter = 0;
 export type MDCChipSetFactory = (root: Element, foundation?: MDCChipSetFoundation) => MDCChipSet;
 
 export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
-  /**
-   * @return An array of the IDs of all selected chips.
-   */
-  get selectedChipIds(): ReadonlyArray<string> {
-    return this.foundation_.getSelectedChipIds();
+  static attachTo(root: Element) {
+    return new MDCChipSet(root);
   }
 
   get chips(): ReadonlyArray<MDCChip> {
     return this.chips_.slice();
   }
 
-  static attachTo(root: Element) {
-    return new MDCChipSet(root);
+  /**
+   * @return An array of the IDs of all selected chips.
+   */
+  get selectedChipIds(): ReadonlyArray<string> {
+    return this.foundation_.getSelectedChipIds();
   }
 
   private chips_!: MDCChip[]; // assigned in initialize()
