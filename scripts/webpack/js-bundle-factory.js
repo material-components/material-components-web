@@ -153,7 +153,7 @@ class JsBundleFactory {
       bundleName: 'main-js-a-la-carte',
       chunks: {
         animation: getAbsolutePath('/packages/mdc-animation/index.ts'),
-        autoInit: getAbsolutePath('/packages/mdc-auto-init/index.js'),
+        autoInit: getAbsolutePath('/packages/mdc-auto-init/index.ts'),
         base: getAbsolutePath('/packages/mdc-base/index.ts'),
         checkbox: getAbsolutePath('/packages/mdc-checkbox/index.ts'),
         chips: getAbsolutePath('/packages/mdc-chips/index.ts'),
@@ -185,7 +185,7 @@ class JsBundleFactory {
         tabs: getAbsolutePath('/packages/mdc-tabs/index.ts'),
         textfield: getAbsolutePath('/packages/mdc-textfield/index.ts'),
         toolbar: getAbsolutePath('/packages/mdc-toolbar/index.js'),
-        topAppBar: getAbsolutePath('/packages/mdc-top-app-bar/index.js'),
+        topAppBar: getAbsolutePath('/packages/mdc-top-app-bar/index.ts'),
       },
       output: {
         fsDirAbsolutePath,
