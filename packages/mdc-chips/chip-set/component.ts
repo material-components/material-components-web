@@ -117,7 +117,7 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   /**
    * Instantiates chip components on all of the chip set's child chip elements.
    */
-  instantiateChips_(chipFactory: MDCChipFactory): MDCChip[] {
+  private instantiateChips_(chipFactory: MDCChipFactory): MDCChip[] {
     const chipElements: Element[] =
         [].slice.call(this.root_.querySelectorAll(MDCChipSetFoundation.strings.CHIP_SELECTOR));
     return chipElements.map((el) => {
@@ -129,7 +129,7 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   /**
    * Returns the index of the chip with the given id, or -1 if the chip does not exist.
    */
-  findChipIndex_(chipId: string): number {
+  private findChipIndex_(chipId: string): number {
     for (let i = 0; i < this.chips_.length; i++) {
       if (this.chips_[i].id === chipId) {
         return i;
