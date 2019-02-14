@@ -36,7 +36,6 @@ class MDCTopAppBarBaseFoundation extends MDCFoundation<MDCTopAppBarAdapter> {
   }
 
   static get numbers() {
-    /* istanbul ignore next: we don't access this property in our unit tests, but we still need to expose it publicly */
     return numbers;
   }
 

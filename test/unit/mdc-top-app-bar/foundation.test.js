@@ -27,7 +27,7 @@ import {captureHandlers} from '../helpers/foundation';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import MDCTopAppBarBaseFoundation from '../../../packages/mdc-top-app-bar/foundation';
-import {strings, cssClasses} from '../../../packages/mdc-top-app-bar/constants';
+import {cssClasses, numbers, strings} from '../../../packages/mdc-top-app-bar/constants';
 
 suite('MDCTopAppBarBaseFoundation');
 
@@ -39,6 +39,11 @@ test('exports strings', () => {
 test('exports cssClasses', () => {
   assert.isTrue('cssClasses' in MDCTopAppBarBaseFoundation);
   assert.deepEqual(MDCTopAppBarBaseFoundation.cssClasses, cssClasses);
+});
+
+test('exports numbers', () => {
+  assert.isTrue('numbers' in MDCTopAppBarBaseFoundation);
+  assert.deepEqual(MDCTopAppBarBaseFoundation.numbers, numbers);
 });
 
 test('defaultAdapter returns a complete adapter implementation', () => {
