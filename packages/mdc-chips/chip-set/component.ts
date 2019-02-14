@@ -138,5 +138,3 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
     return -1;
   }
 }
-
-export default MDCChipSet;

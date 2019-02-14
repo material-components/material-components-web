@@ -78,5 +78,3 @@ export class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundat
     return ripple;
   }
 }
-
-export default MDCIconButtonToggle;

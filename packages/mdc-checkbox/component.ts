@@ -181,5 +181,3 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation>
 function validDescriptor(inputPropDesc: PropertyDescriptor | undefined): inputPropDesc is PropertyDescriptor {
   return !!inputPropDesc && typeof inputPropDesc.set === 'function';
 }
-
-export default MDCCheckbox;

@@ -72,5 +72,3 @@ export class MDCFormField extends MDCComponent<MDCFormFieldFoundation> {
     });
   }
 }
-
-export default MDCFormField;

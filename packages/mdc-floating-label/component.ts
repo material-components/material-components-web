@@ -63,5 +63,3 @@ export class MDCFloatingLabel extends MDCComponent<MDCFloatingLabelFoundation> {
     // tslint:enable:object-literal-sort-keys
   }
 }
-
-export default MDCFloatingLabel;

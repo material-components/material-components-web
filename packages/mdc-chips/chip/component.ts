@@ -187,5 +187,3 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements RippleCa
     });
   }
 }
-
-export default MDCChip;

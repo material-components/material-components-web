@@ -112,5 +112,3 @@ export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements Ripp
     this.foundation_.setUnbounded(Boolean(this.unbounded_));
   }
 }
-
-export default MDCRipple;

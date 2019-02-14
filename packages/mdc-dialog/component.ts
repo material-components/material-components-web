@@ -183,5 +183,3 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
     });
   }
 }
-
-export default MDCDialog;
