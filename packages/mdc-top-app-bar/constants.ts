@@ -21,22 +21,19 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
 const cssClasses = {
   FIXED_CLASS: 'mdc-top-app-bar--fixed',
   FIXED_SCROLLED_CLASS: 'mdc-top-app-bar--fixed-scrolled',
   SHORT_CLASS: 'mdc-top-app-bar--short',
-  SHORT_HAS_ACTION_ITEM_CLASS: 'mdc-top-app-bar--short-has-action-item',
   SHORT_COLLAPSED_CLASS: 'mdc-top-app-bar--short-collapsed',
+  SHORT_HAS_ACTION_ITEM_CLASS: 'mdc-top-app-bar--short-has-action-item',
 };
 
-/** @enum {number} */
 const numbers = {
   DEBOUNCE_THROTTLE_RESIZE_TIME_MS: 100,
   MAX_TOP_APP_BAR_HEIGHT: 128,
 };
 
-/** @enum {string} */
 const strings = {
   ACTION_ITEM_SELECTOR: '.mdc-top-app-bar__action-item',
   NAVIGATION_EVENT: 'MDCTopAppBar:nav',
@@ -45,4 +42,4 @@ const strings = {
   TITLE_SELECTOR: '.mdc-top-app-bar__title',
 };
 
-export {strings, cssClasses, numbers};
+export {cssClasses, numbers, strings};
