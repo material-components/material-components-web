@@ -21,79 +21,70 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
-
 /**
- * Adapter for MDC Drawer
- *
- * Defines the shape of the adapter expected by the foundation. Implement this
- * adapter to integrate the Drawer into your framework. See
- * https://github.com/material-components/material-components-web/blob/master/docs/authoring-components.md
- * for more information.
- *
- * @record
+ * Defines the shape of the adapter expected by the foundation.
+ * Implement this adapter for your framework of choice to delegate updates to
+ * the component in your framework of choice. See architecture documentation
+ * for more details.
+ * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-class MDCDrawerAdapter {
+interface MDCDrawerAdapter {
   /**
    * Adds a class to the root Element.
-   * @param {string} className
    */
-  addClass(className) {}
+  addClass(className: string): void;
 
   /**
    * Removes a class from the root Element.
-   * @param {string} className
    */
-  removeClass(className) {}
+  removeClass(className: string): void;
 
   /**
    * Returns true if the root Element contains the given class.
-   * @param {string} className
-   * @return {boolean}
    */
-  hasClass(className) {}
+  hasClass(className: string): boolean;
 
   /**
-   * @param {!Element} element target element to verify class name
-   * @param {string} className class name
+   * @param element target element to verify class name
+   * @param className class name
    */
-  elementHasClass(element, className) {}
+  elementHasClass(element: Element, className: string): boolean;
 
   /**
    * Saves the focus of currently active element.
    */
-  saveFocus() {}
+  saveFocus(): void;
 
   /**
    * Restores focus to element previously saved with 'saveFocus'.
    */
-  restoreFocus() {}
+  restoreFocus(): void;
 
   /**
    * Focuses the active / selected navigation item.
    */
-  focusActiveNavigationItem() {}
+  focusActiveNavigationItem(): void;
 
   /**
    * Emits a custom event "MDCDrawer:closed" denoting the drawer has closed.
    */
-  notifyClose() {}
+  notifyClose(): void;
 
   /**
    * Emits a custom event "MDCDrawer:opened" denoting the drawer has opened.
    */
-  notifyOpen() {}
+  notifyOpen(): void;
 
   /**
    * Traps focus on root element and focuses the active navigation element.
    */
-  trapFocus() {}
+  trapFocus(): void;
 
   /**
    * Releases focus trap from root element which was set by `trapFocus`
    * and restores focus to where it was prior to calling `trapFocus`.
    */
-  releaseFocus() {}
+  releaseFocus(): void;
 }
 
-export default MDCDrawerAdapter;
+export {MDCDrawerAdapter as default, MDCDrawerAdapter};
