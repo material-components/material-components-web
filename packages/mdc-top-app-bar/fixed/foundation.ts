@@ -21,34 +21,41 @@
  * THE SOFTWARE.
  */
 
-import MDCDismissibleDrawerFoundation from '../dismissible/foundation';
+import {MDCTopAppBarAdapter} from '../adapter';
+import {cssClasses} from '../constants';
+import {MDCTopAppBarFoundation} from '../standard/foundation';
 
-/**
- * @extends {MDCDismissibleDrawerFoundation}
- */
-class MDCModalDrawerFoundation extends MDCDismissibleDrawerFoundation {
+class MDCFixedTopAppBarFoundation extends MDCTopAppBarFoundation {
   /**
-   * Called when drawer finishes open animation.
-   * @override
+   * State variable for the previous scroll iteration top app bar state
    */
-  opened() {
-    this.adapter_.trapFocus();
+  private wasScrolled_ = false;
+
+  /* istanbul ignore next: optional argument is not a branch statement */
+  constructor(adapter?: Partial<MDCTopAppBarAdapter>) {
+    super(adapter);
+
+    this.scrollHandler_ = () => this.fixedScrollHandler_();
   }
 
   /**
-   * Called when drawer finishes close animation.
-   * @override
+   * Scroll handler for applying/removing the modifier class on the fixed top app bar.
    */
-  closed() {
-    this.adapter_.releaseFocus();
-  }
+  fixedScrollHandler_() {
+    const currentScroll = this.adapter_.getViewportScrollY();
 
-  /**
-   * Handles click event on scrim.
-   */
-  handleScrimClick() {
-    this.close();
+    if (currentScroll <= 0) {
+      if (this.wasScrolled_) {
+        this.adapter_.removeClass(cssClasses.FIXED_SCROLLED_CLASS);
+        this.wasScrolled_ = false;
+      }
+    } else {
+      if (!this.wasScrolled_) {
+        this.adapter_.addClass(cssClasses.FIXED_SCROLLED_CLASS);
+        this.wasScrolled_ = true;
+      }
+    }
   }
 }
 
-export default MDCModalDrawerFoundation;
+export {MDCFixedTopAppBarFoundation as default, MDCFixedTopAppBarFoundation};

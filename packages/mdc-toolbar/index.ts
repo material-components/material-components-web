@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,23 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-/** @enum {string} */
-const cssClasses = {
-  ROOT: 'mdc-drawer',
-  DISMISSIBLE: 'mdc-drawer--dismissible',
-  MODAL: 'mdc-drawer--modal',
-  OPEN: 'mdc-drawer--open',
-  ANIMATE: 'mdc-drawer--animate',
-  OPENING: 'mdc-drawer--opening',
-  CLOSING: 'mdc-drawer--closing',
-};
 
-/** @enum {string} */
-const strings = {
-  APP_CONTENT_SELECTOR: '.mdc-drawer-app-content',
-  SCRIM_SELECTOR: '.mdc-drawer-scrim',
-  CLOSE_EVENT: 'MDCDrawer:closed',
-  OPEN_EVENT: 'MDCDrawer:opened',
-};
-
-export {cssClasses, strings};
+export * from './adapter';
+export * from './component';
+export * from './foundation';
+export * from './types';

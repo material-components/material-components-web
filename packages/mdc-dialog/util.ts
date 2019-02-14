@@ -24,26 +24,24 @@
 import * as createFocusTrap from 'focus-trap';
 import {FocusTrapFactory} from './types';
 
-function createFocusTrapInstance(
+export function createFocusTrapInstance(
     surfaceEl: HTMLElement,
     focusTrapFactory: FocusTrapFactory = createFocusTrap as unknown as FocusTrapFactory,
-    initialFocusEl: createFocusTrap.FocusTarget | null,
+    initialFocusEl?: createFocusTrap.FocusTarget,
 ): createFocusTrap.FocusTrap {
-  return focusTrapFactory(surfaceEl, ({
-    clickOutsideDeactivates: true, // Allow handling of scrim clicks
-    escapeDeactivates: false, // Dialog foundation handles escape key
+  return focusTrapFactory(surfaceEl, {
+    clickOutsideDeactivates: true, // Allow handling of scrim clicks.
+    escapeDeactivates: false, // Foundation handles ESC key.
     initialFocus: initialFocusEl,
-  } as createFocusTrap.Options));
+  });
 }
 
-function isScrollable(el: HTMLElement | null): boolean {
+export function isScrollable(el: HTMLElement | null): boolean {
   return el ? el.scrollHeight > el.offsetHeight : false;
 }
 
-function areTopsMisaligned(els: HTMLElement[]): boolean {
+export function areTopsMisaligned(els: HTMLElement[]): boolean {
   const tops = new Set();
   [].forEach.call(els, (el: HTMLElement) => tops.add(el.offsetTop));
   return tops.size > 1;
 }
-
-export {createFocusTrapInstance, isScrollable, areTopsMisaligned};

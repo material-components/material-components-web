@@ -21,31 +21,30 @@
  * THE SOFTWARE.
  */
 
-import {cssClasses} from './constants';
+import {MDCDismissibleDrawerFoundation} from '../dismissible/foundation';
 
-/**
- * Stores result from computeHorizontalScrollbarHeight to avoid redundant processing.
- */
-let horizontalScrollbarHeight_: number | undefined;
-
-/**
- * Computes the height of browser-rendered horizontal scrollbars using a self-created test element.
- * May return 0 (e.g. on OS X browsers under default configuration).
- */
-export function computeHorizontalScrollbarHeight(documentObj: Document, shouldCacheResult = true): number {
-  if (shouldCacheResult && typeof horizontalScrollbarHeight_ !== 'undefined') {
-    return horizontalScrollbarHeight_;
+/* istanbul ignore next: subclass is not a branch statement */
+class MDCModalDrawerFoundation extends MDCDismissibleDrawerFoundation {
+  /**
+   * Called when drawer finishes open animation.
+   */
+  opened() {
+    this.adapter_.trapFocus();
   }
 
-  const el = documentObj.createElement('div');
-  el.classList.add(cssClasses.SCROLL_TEST);
-  documentObj.body.appendChild(el);
-
-  const horizontalScrollbarHeight = el.offsetHeight - el.clientHeight;
-  documentObj.body.removeChild(el);
-
-  if (shouldCacheResult) {
-    horizontalScrollbarHeight_ = horizontalScrollbarHeight;
+  /**
+   * Called when drawer finishes close animation.
+   */
+  closed() {
+    this.adapter_.releaseFocus();
   }
-  return horizontalScrollbarHeight;
+
+  /**
+   * Handles click event on scrim.
+   */
+  handleScrimClick() {
+    this.close();
+  }
 }
+
+export {MDCModalDrawerFoundation as default, MDCModalDrawerFoundation};

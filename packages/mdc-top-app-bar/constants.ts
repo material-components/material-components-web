@@ -21,31 +21,25 @@
  * THE SOFTWARE.
  */
 
-import {cssClasses} from './constants';
+const cssClasses = {
+  FIXED_CLASS: 'mdc-top-app-bar--fixed',
+  FIXED_SCROLLED_CLASS: 'mdc-top-app-bar--fixed-scrolled',
+  SHORT_CLASS: 'mdc-top-app-bar--short',
+  SHORT_COLLAPSED_CLASS: 'mdc-top-app-bar--short-collapsed',
+  SHORT_HAS_ACTION_ITEM_CLASS: 'mdc-top-app-bar--short-has-action-item',
+};
 
-/**
- * Stores result from computeHorizontalScrollbarHeight to avoid redundant processing.
- */
-let horizontalScrollbarHeight_: number | undefined;
+const numbers = {
+  DEBOUNCE_THROTTLE_RESIZE_TIME_MS: 100,
+  MAX_TOP_APP_BAR_HEIGHT: 128,
+};
 
-/**
- * Computes the height of browser-rendered horizontal scrollbars using a self-created test element.
- * May return 0 (e.g. on OS X browsers under default configuration).
- */
-export function computeHorizontalScrollbarHeight(documentObj: Document, shouldCacheResult = true): number {
-  if (shouldCacheResult && typeof horizontalScrollbarHeight_ !== 'undefined') {
-    return horizontalScrollbarHeight_;
-  }
+const strings = {
+  ACTION_ITEM_SELECTOR: '.mdc-top-app-bar__action-item',
+  NAVIGATION_EVENT: 'MDCTopAppBar:nav',
+  NAVIGATION_ICON_SELECTOR: '.mdc-top-app-bar__navigation-icon',
+  ROOT_SELECTOR: '.mdc-top-app-bar',
+  TITLE_SELECTOR: '.mdc-top-app-bar__title',
+};
 
-  const el = documentObj.createElement('div');
-  el.classList.add(cssClasses.SCROLL_TEST);
-  documentObj.body.appendChild(el);
-
-  const horizontalScrollbarHeight = el.offsetHeight - el.clientHeight;
-  documentObj.body.removeChild(el);
-
-  if (shouldCacheResult) {
-    horizontalScrollbarHeight_ = horizontalScrollbarHeight;
-  }
-  return horizontalScrollbarHeight;
-}
+export {cssClasses, numbers, strings};
