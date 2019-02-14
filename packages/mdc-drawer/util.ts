@@ -21,20 +21,17 @@
  * THE SOFTWARE.
  */
 
-import createFocusTrap from 'focus-trap';
+import * as createFocusTrap from 'focus-trap';
+import {FocusTrapFactory} from './types';
 
-/**
- * @param {!Element} surfaceEl
- * @param {!Function} focusTrapFactory
- * @return {!FocusTrapInstance}
- */
-function createFocusTrapInstance(surfaceEl, focusTrapFactory = createFocusTrap) {
+export function createFocusTrapInstance(
+    surfaceEl: HTMLElement,
+    focusTrapFactory: FocusTrapFactory = createFocusTrap as unknown as FocusTrapFactory,
+): createFocusTrap.FocusTrap {
   return focusTrapFactory(surfaceEl, {
-    clickOutsideDeactivates: true,
-    initialFocus: false, // Navigation drawer handles focusing on active nav item.
-    escapeDeactivates: false, // Navigation drawer handles ESC.
-    returnFocusOnDeactivate: false, // Navigation drawer handles restore focus.
+    clickOutsideDeactivates: true, // Allow handling of scrim clicks.
+    escapeDeactivates: false, // Foundation handles ESC key.
+    initialFocus: undefined, // Component handles focusing on active nav item.
+    returnFocusOnDeactivate: false, // Component handles restoring focus.
   });
 }
-
-export {createFocusTrapInstance};

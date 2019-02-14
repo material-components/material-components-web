@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,27 +21,12 @@
  * THE SOFTWARE.
  */
 
-import * as createFocusTrap from 'focus-trap';
-import {FocusTrapFactory} from './types';
+import {MDCList} from '@material/list/index';
+import * as FocusTrapLib from 'focus-trap';
 
-export function createFocusTrapInstance(
-    surfaceEl: HTMLElement,
-    focusTrapFactory: FocusTrapFactory = createFocusTrap as unknown as FocusTrapFactory,
-    initialFocusEl?: createFocusTrap.FocusTarget,
-): createFocusTrap.FocusTrap {
-  return focusTrapFactory(surfaceEl, {
-    clickOutsideDeactivates: true, // Allow handling of scrim clicks.
-    escapeDeactivates: false, // Foundation handles ESC key.
-    initialFocus: initialFocusEl,
-  });
-}
+export type FocusTrapFactory = (
+    element: HTMLElement | string,
+    userOptions?: FocusTrapLib.Options,
+) => FocusTrapLib.FocusTrap;
 
-export function isScrollable(el: HTMLElement | null): boolean {
-  return el ? el.scrollHeight > el.offsetHeight : false;
-}
-
-export function areTopsMisaligned(els: HTMLElement[]): boolean {
-  const tops = new Set();
-  [].forEach.call(els, (el: HTMLElement) => tops.add(el.offsetTop));
-  return tops.size > 1;
-}
+export type ListFactory = (el: Element) => MDCList;
