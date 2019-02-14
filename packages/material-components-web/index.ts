@@ -111,5 +111,6 @@ export {
   tabIndicator,
   tabScroller,
   textField,
+  toolbar,
   topAppBar,
 };
