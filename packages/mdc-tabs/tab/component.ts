@@ -23,14 +23,19 @@
 
 import {MDCComponent} from '@material/base/component';
 import {MDCRipple} from '@material/ripple/index';
-
 import {cssClasses} from './constants';
-import MDCTabFoundation from './foundation';
+import {MDCTabFoundation} from './foundation';
 
-export {MDCTabFoundation};
+export type MDCTabFactory = (el: Element) => MDCTab;
 
-export class MDCTab extends MDCComponent {
-  static attachTo(root) {
+export type MDCTabSelectedEvent = CustomEvent<MDCTabSelectedEventDetail>;
+
+export interface MDCTabSelectedEventDetail {
+  tab: MDCTab;
+}
+
+export class MDCTab extends MDCComponent<MDCTabFoundation> {
+  static attachTo(root: Element) {
     return new MDCTab(root);
   }
 
@@ -58,11 +63,9 @@ export class MDCTab extends MDCComponent {
     this.foundation_.setPreventDefaultOnClick(preventDefaultOnClick);
   }
 
-  constructor(...args) {
-    super(...args);
+  protected root_!: HTMLElement; // assigned in MDCComponent constructor
 
-    this.ripple_ = MDCRipple.attachTo(this.root_);
-  }
+  private ripple_ = MDCRipple.attachTo(this.root_);
 
   destroy() {
     this.ripple_.destroy();
@@ -70,6 +73,7 @@ export class MDCTab extends MDCComponent {
   }
 
   getDefaultFoundation() {
+    // tslint:disable:object-literal-sort-keys
     return new MDCTabFoundation({
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
@@ -77,8 +81,10 @@ export class MDCTab extends MDCComponent {
       deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
       getOffsetWidth: () => this.root_.offsetWidth,
       getOffsetLeft: () => this.root_.offsetLeft,
-      notifySelected: () => this.emit(MDCTabFoundation.strings.SELECTED_EVENT, {tab: this}, true),
+      notifySelected: () =>
+        this.emit<MDCTabSelectedEventDetail>(MDCTabFoundation.strings.SELECTED_EVENT, {tab: this}, true),
     });
+    // tslint:enable:object-literal-sort-keys
   }
 
   initialSyncWithDOM() {
@@ -89,3 +95,5 @@ export class MDCTab extends MDCComponent {
     this.foundation_.measureSelf();
   }
 }
+
+export default MDCTab;

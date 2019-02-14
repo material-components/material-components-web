@@ -677,7 +677,7 @@ class MDCNewComponentFoundation extends MDCFoundation {
   }
 
   constructor(adapter) {
-    super(Object.assign(MDCNewComponentFoundation.defaultAdapter, adapter));
+    super({...MDCNewComponentFoundation.defaultAdapter, ...adapter});
   }
 }
 ```

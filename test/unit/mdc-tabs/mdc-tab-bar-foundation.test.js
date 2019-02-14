@@ -113,6 +113,7 @@ test('#destroy deregisters tab event handlers', () => {
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
 
+  foundation.init();
   foundation.destroy();
   td.verify(mockAdapter.unbindOnMDCTabSelectedEvent());
   td.verify(mockAdapter.deregisterResizeHandler(isA(Function)));

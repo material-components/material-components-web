@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,17 +21,7 @@
  * THE SOFTWARE.
  */
 
-export const cssClasses = {
-  INDICATOR_FORWARD: 'mdc-tab-bar-scroller__indicator--forward',
-  INDICATOR_BACK: 'mdc-tab-bar-scroller__indicator--back',
-  INDICATOR_ENABLED: 'mdc-tab-bar-scroller__indicator--enabled',
-  TAB: 'mdc-tab',
-};
-
-export const strings = {
-  FRAME_SELECTOR: '.mdc-tab-bar-scroller__scroll-frame',
-  TABS_SELECTOR: '.mdc-tab-bar-scroller__scroll-frame__tabs',
-  TAB_SELECTOR: '.mdc-tab',
-  INDICATOR_FORWARD_SELECTOR: '.mdc-tab-bar-scroller__indicator--forward',
-  INDICATOR_BACK_SELECTOR: '.mdc-tab-bar-scroller__indicator--back',
-};
+export {MDCTabBarScroller as default} from './component';
+export * from './adapter';
+export * from './component';
+export * from './foundation';
