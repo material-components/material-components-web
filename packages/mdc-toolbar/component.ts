@@ -26,7 +26,7 @@ import {MDCRipple} from '@material/ripple/index';
 import {MDCToolbarFoundation} from './foundation';
 import {ToolbarEventDetail} from './types';
 
-const strings = MDCToolbarFoundation.strings;
+const {strings} = MDCToolbarFoundation;
 
 export class MDCToolbar extends MDCComponent<MDCToolbarFoundation> {
   static attachTo(root: Element) {
