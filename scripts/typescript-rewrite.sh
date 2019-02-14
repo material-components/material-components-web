@@ -41,6 +41,6 @@ for pkg in $(find ./packages -maxdepth 1 -type d); do
   fi
 done
 rm -fr $TYPESCRIPT_PKGDIR/**/{node_modules,dist}
- 
+
 log "Rewriting all import statements to be internal typescript compatible"
 node scripts/rewrite-declaration-statements-for-typescript.js $TYPESCRIPT_PKGDIR
