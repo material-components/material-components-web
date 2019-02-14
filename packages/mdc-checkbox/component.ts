@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {getCorrectEventName} from '@material/animation/index';
+import {getCorrectEventName} from '@material/animation/util';
 import {MDCComponent} from '@material/base/component';
 import {EventType, SpecificEventListener} from '@material/base/types';
 import {ponyfill} from '@material/dom/index';
