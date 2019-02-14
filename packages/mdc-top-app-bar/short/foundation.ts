@@ -43,7 +43,7 @@ class MDCShortTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
       this.adapter_.addClass(cssClasses.SHORT_HAS_ACTION_ITEM_CLASS);
     }
 
-    if (!this.isAlwaysCollapsed_) {
+    if (!this.adapter_.hasClass(cssClasses.SHORT_COLLAPSED_CLASS)) {
       this.scrollHandler_ = () => this.shortAppBarScrollHandler_();
       this.adapter_.registerScrollHandler(this.scrollHandler_);
       this.shortAppBarScrollHandler_();
@@ -52,10 +52,6 @@ class MDCShortTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
 
   destroy() {
     super.destroy();
-  }
-
-  private get isAlwaysCollapsed_() {
-    return this.adapter_.hasClass(cssClasses.SHORT_COLLAPSED_CLASS);
   }
 
   /**
