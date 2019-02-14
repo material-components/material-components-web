@@ -24,7 +24,6 @@
 // tslint:disable:only-arrow-functions
 
 import {MDCComponent, MDCFoundation} from '@material/base/index';
-import {MDCAutoInitElement, MDCAutoInitKey} from './types';
 
 interface ComponentClass {
   // tslint:disable-next-line:no-any a component can pass in anything it needs to the constructor
@@ -32,9 +31,9 @@ interface ComponentClass {
   attachTo<F extends MDCFoundation>(root: Element): MDCComponent<F>;
 }
 
-type Registry = {
-  [K in MDCAutoInitKey]?: ComponentClass;
-};
+interface Registry {
+  [key: string]: ComponentClass;
+}
 
 const registry: Registry = {};
 
@@ -59,12 +58,12 @@ function _emit<T extends object>(evtType: string, evtData: T, shouldBubble = fal
 /**
  * Auto-initializes all MDC components on a page.
  */
-function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
+export function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
   const components = [];
-  const nodes: MDCAutoInitElement[] = [].slice.call(root.querySelectorAll('[data-mdc-auto-init]'));
+  const nodes: Element[] = [].slice.call(root.querySelectorAll('[data-mdc-auto-init]'));
 
   for (const node of nodes) {
-    const ctorName = node.getAttribute('data-mdc-auto-init') as MDCAutoInitKey | null;
+    const ctorName = node.getAttribute('data-mdc-auto-init');
     if (!ctorName) {
       throw new Error('(mdc-auto-init) Constructor name must be given.');
     }
@@ -75,7 +74,7 @@ function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
         `(mdc-auto-init) Could not find constructor in registry for ${ctorName}`);
     }
 
-    if (node[ctorName]) {
+    if (Object.getOwnPropertyDescriptor(node, ctorName)) {
       warn(`(mdc-auto-init) Component already initialized for ${node}. Skipping...`);
       continue;
     }
@@ -98,7 +97,7 @@ function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
 
 // Constructor is PascalCased because it is a direct reference to a class, rather than an instance of a class.
 // tslint:disable-next-line:variable-name
-mdcAutoInit.register = function(componentName: MDCAutoInitKey, Constructor: ComponentClass, warn = CONSOLE_WARN) {
+mdcAutoInit.register = function(componentName: string, Constructor: ComponentClass, warn = CONSOLE_WARN) {
   if (typeof Constructor !== 'function') {
     throw new Error(`(mdc-auto-init) Invalid Ctor value ${Constructor}. Expected function`);
   }
@@ -110,14 +109,13 @@ mdcAutoInit.register = function(componentName: MDCAutoInitKey, Constructor: Comp
   registry[componentName] = Constructor;
 };
 
-mdcAutoInit.deregister = function(componentName: MDCAutoInitKey) {
+mdcAutoInit.deregister = function(componentName: string) {
   delete registry[componentName];
 };
 
 mdcAutoInit.deregisterAll = function() {
-  const keys = Object.keys(registry) as MDCAutoInitKey[];
+  const keys = Object.keys(registry) as string[];
   keys.forEach(this.deregister, this);
 };
 
-export {mdcAutoInit as default, mdcAutoInit};
-export * from './types';
+export default mdcAutoInit;
