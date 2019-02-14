@@ -90,56 +90,6 @@ export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
     this.adapter_.deregisterResizeHandler(this.resizeHandler_);
   }
 
-  layoutInternal_() {
-    this.forEachTabIndex_((index) => this.adapter_.measureTabAtIndex(index));
-    this.layoutIndicator_();
-  }
-
-  layoutIndicator_() {
-    const isIndicatorFirstRender = !this.isIndicatorShown_;
-
-    // Ensure that indicator appears in the right position immediately for correct first render.
-    if (isIndicatorFirstRender) {
-      this.adapter_.setStyleForIndicator('transition', 'none');
-    }
-
-    const translateAmtForActiveTabLeft = this.adapter_.getComputedLeftForTabAtIndex(this.activeTabIndex_);
-    const scaleAmtForActiveTabWidth =
-      this.adapter_.getComputedWidthForTabAtIndex(this.activeTabIndex_) / this.adapter_.getOffsetWidth();
-
-    const transformValue = `translateX(${translateAmtForActiveTabLeft}px) scale(${scaleAmtForActiveTabWidth}, 1)`;
-    this.adapter_.setStyleForIndicator(getCorrectPropertyName(window, 'transform'), transformValue);
-
-    if (isIndicatorFirstRender) {
-      // Force layout so that transform styles to take effect.
-      this.adapter_.getOffsetWidthForIndicator();
-      this.adapter_.setStyleForIndicator('transition', '');
-      this.adapter_.setStyleForIndicator('visibility', 'visible');
-      this.isIndicatorShown_ = true;
-    }
-  }
-
-  findActiveTabIndex_() {
-    let activeTabIndex = -1;
-    this.forEachTabIndex_((index) => {
-      if (this.adapter_.isTabActiveAtIndex(index)) {
-        activeTabIndex = index;
-        return true;
-      }
-    });
-    return activeTabIndex;
-  }
-
-  forEachTabIndex_(iterator: (index: number) => boolean | void) {
-    const numTabs = this.adapter_.getNumberOfTabs();
-    for (let index = 0; index < numTabs; index++) {
-      const shouldBreak = iterator(index);
-      if (shouldBreak) {
-        break;
-      }
-    }
-  }
-
   layout() {
     if (this.layoutFrame_) {
       cancelAnimationFrame(this.layoutFrame_);
@@ -176,6 +126,56 @@ export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
 
   getActiveTabIndex() {
     return this.findActiveTabIndex_();
+  }
+
+  private layoutInternal_() {
+    this.forEachTabIndex_((index) => this.adapter_.measureTabAtIndex(index));
+    this.layoutIndicator_();
+  }
+
+  private layoutIndicator_() {
+    const isIndicatorFirstRender = !this.isIndicatorShown_;
+
+    // Ensure that indicator appears in the right position immediately for correct first render.
+    if (isIndicatorFirstRender) {
+      this.adapter_.setStyleForIndicator('transition', 'none');
+    }
+
+    const translateAmtForActiveTabLeft = this.adapter_.getComputedLeftForTabAtIndex(this.activeTabIndex_);
+    const scaleAmtForActiveTabWidth =
+      this.adapter_.getComputedWidthForTabAtIndex(this.activeTabIndex_) / this.adapter_.getOffsetWidth();
+
+    const transformValue = `translateX(${translateAmtForActiveTabLeft}px) scale(${scaleAmtForActiveTabWidth}, 1)`;
+    this.adapter_.setStyleForIndicator(getCorrectPropertyName(window, 'transform'), transformValue);
+
+    if (isIndicatorFirstRender) {
+      // Force layout so that transform styles to take effect.
+      this.adapter_.getOffsetWidthForIndicator();
+      this.adapter_.setStyleForIndicator('transition', '');
+      this.adapter_.setStyleForIndicator('visibility', 'visible');
+      this.isIndicatorShown_ = true;
+    }
+  }
+
+  private findActiveTabIndex_() {
+    let activeTabIndex = -1;
+    this.forEachTabIndex_((index) => {
+      if (this.adapter_.isTabActiveAtIndex(index)) {
+        activeTabIndex = index;
+        return true;
+      }
+    });
+    return activeTabIndex;
+  }
+
+  private forEachTabIndex_(iterator: (index: number) => boolean | void) {
+    const numTabs = this.adapter_.getNumberOfTabs();
+    for (let index = 0; index < numTabs; index++) {
+      const shouldBreak = iterator(index);
+      if (shouldBreak) {
+        break;
+      }
+    }
   }
 }
 

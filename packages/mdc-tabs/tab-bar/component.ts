@@ -99,21 +99,21 @@ export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
     return new MDCTabBarFoundation(adapter);
   }
 
-  gatherTabs_(tabFactory: MDCTabFactory): MDCTab[] {
+  layout() {
+    this.foundation_.layout();
+  }
+
+  private gatherTabs_(tabFactory: MDCTabFactory): MDCTab[] {
     const tabElements: HTMLElement[] =
       [].slice.call(this.root_.querySelectorAll(MDCTabBarFoundation.strings.TAB_SELECTOR));
     return tabElements.map((el: Element) => tabFactory(el));
   }
 
-  setActiveTabIndex_(activeTabIndex: number, notifyChange: boolean) {
+  private setActiveTabIndex_(activeTabIndex: number, notifyChange: boolean) {
     this.foundation_.switchToTabAtIndex(activeTabIndex, notifyChange);
   }
 
-  layout() {
-    this.foundation_.layout();
-  }
-
-  setActiveTab_(activeTab: MDCTab, notifyChange: boolean) {
+  private setActiveTab_(activeTab: MDCTab, notifyChange: boolean) {
     const indexOfTab = this.tabs.indexOf(activeTab);
     if (indexOfTab < 0) {
       throw new Error('Invalid tab component given as activeTab: Tab not found within this component\'s tab list');

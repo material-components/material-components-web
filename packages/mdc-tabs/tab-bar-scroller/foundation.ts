@@ -196,8 +196,24 @@ export class MDCTabBarScrollerFoundation extends MDCFoundation<MDCTabBarScroller
     requestAnimationFrame(() => this.shiftFrame_());
   }
 
-  private isRTL_() {
-    return this.adapter_.isRTL();
+  private layout_() {
+    const frameWidth = this.adapter_.getOffsetWidthForScrollFrame();
+    const isOverflowing = this.adapter_.getOffsetWidthForTabBar() > frameWidth;
+
+    if (!isOverflowing) {
+      this.currentTranslateOffset_ = 0;
+    }
+
+    this.shiftFrame_();
+    this.updateIndicatorEnabledStates_();
+  }
+
+  private shiftFrame_() {
+    const shiftAmount = this.isRTL_() ?
+      this.currentTranslateOffset_ : -this.currentTranslateOffset_;
+
+    this.adapter_.setTransformStyleForTabBar(`translateX(${shiftAmount}px)`);
+    this.updateIndicatorEnabledStates_();
   }
 
   private handlePossibleTabKeyboardFocus_(evt: Event) {
@@ -235,30 +251,6 @@ export class MDCTabBarScrollerFoundation extends MDCFoundation<MDCTabBarScroller
     this.pointerDownRecognized_ = false;
   }
 
-  private layout_() {
-    const frameWidth = this.adapter_.getOffsetWidthForScrollFrame();
-    const isOverflowing = this.adapter_.getOffsetWidthForTabBar() > frameWidth;
-
-    if (!isOverflowing) {
-      this.currentTranslateOffset_ = 0;
-    }
-
-    this.shiftFrame_();
-    this.updateIndicatorEnabledStates_();
-  }
-
-  private normalizeForRTL_(left: number, width: number) {
-    return this.isRTL_() ? this.adapter_.getOffsetWidthForTabBar() - (left + width) : left;
-  }
-
-  private shiftFrame_() {
-    const shiftAmount = this.isRTL_() ?
-      this.currentTranslateOffset_ : -this.currentTranslateOffset_;
-
-    this.adapter_.setTransformStyleForTabBar(`translateX(${shiftAmount}px)`);
-    this.updateIndicatorEnabledStates_();
-  }
-
   private updateIndicatorEnabledStates_() {
     const {INDICATOR_ENABLED} = cssClasses;
     if (this.currentTranslateOffset_ === 0) {
@@ -273,6 +265,14 @@ export class MDCTabBarScrollerFoundation extends MDCFoundation<MDCTabBarScroller
     } else {
       this.adapter_.removeClassFromForwardIndicator(INDICATOR_ENABLED);
     }
+  }
+
+  private normalizeForRTL_(left: number, width: number) {
+    return this.isRTL_() ? this.adapter_.getOffsetWidthForTabBar() - (left + width) : left;
+  }
+
+  private isRTL_() {
+    return this.adapter_.isRTL();
   }
 }
 
