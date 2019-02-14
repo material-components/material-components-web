@@ -329,6 +329,7 @@ it, or its ancestors, has a `dir="rtl"` attribute.
 The block class is `mdc-toolbar`. This defines the top-level toolbar element.
 
 ### Element
+
 The component accommodates multiple rows using the wrapper `mdc-toolbar__row`.
 For each row, it has `mdc-toolbar__section` and `mdc-toolbar__title` elements. You
 can add multiple sections to toolbar. Refer to Sections and Toolbar title for
@@ -414,13 +415,13 @@ const toolbar = new MDCToolbar(document.querySelector('.mdc-toolbar'));
 
 Method Signature | Description
 --- | ---
-`updateAdjustElementStyles() => void` | sets `AdjustElement` proper `margin-top`.
+`updateAdjustElementStyles() => void` | Sets `AdjustElement` proper `margin-top`.
 
 #### Event
 
 Event Name | Event Data Structure | Description
 --- | --- | ---
-`change` | `{flexibleExpansionRatio: number}` | Emits the ratio of current flexible space to total flexible space height. So when it is minimized, ratio equals to 0 and when it is maximized, ratio equals to 1.
+`change` | `ToolbarEventDetail` | Emits the ratio of current flexible space to total flexible space height. So when it is minimized, ratio equals to 0 and when it is maximized, ratio equals to 1. See [types.ts](types.ts).
 
 #### Adapter
 
