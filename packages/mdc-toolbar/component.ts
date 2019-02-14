@@ -104,5 +104,3 @@ export class MDCToolbar extends MDCComponent<MDCToolbarFoundation> {
     // tslint:enable:object-literal-sort-keys
   }
 }
-
-export default MDCToolbar;
