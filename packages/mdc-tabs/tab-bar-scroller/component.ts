@@ -45,8 +45,6 @@ export class MDCTabBarScroller extends MDCComponent<MDCTabBarScrollerFoundation>
   private backIndicator_!: HTMLElement; // assigned in initialize()
 
   initialize(tabBarFactory: MDCTabBarFactory = (el) => new MDCTabBar(el)) {
-    this.tabBar_ = tabBarFactory(this.tabBarEl_);
-
     this.scrollFrame_ =
       this.root_.querySelector<HTMLElement>(MDCTabBarScrollerFoundation.strings.FRAME_SELECTOR)!;
     this.tabBarEl_ =
@@ -55,6 +53,8 @@ export class MDCTabBarScroller extends MDCComponent<MDCTabBarScrollerFoundation>
       this.root_.querySelector<HTMLElement>(MDCTabBarScrollerFoundation.strings.INDICATOR_FORWARD_SELECTOR)!;
     this.backIndicator_ =
       this.root_.querySelector<HTMLElement>(MDCTabBarScrollerFoundation.strings.INDICATOR_BACK_SELECTOR)!;
+
+    this.tabBar_ = tabBarFactory(this.tabBarEl_);
   }
 
   getDefaultFoundation() {
