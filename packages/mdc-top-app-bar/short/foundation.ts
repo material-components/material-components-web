@@ -21,35 +21,30 @@
  * THE SOFTWARE.
  */
 
-import MDCTopAppBarAdapter from '../adapter';
-import MDCTopAppBarBaseFoundation from '../foundation';
+import {MDCTopAppBarAdapter} from '../adapter';
 import {cssClasses} from '../constants';
+import {MDCTopAppBarBaseFoundation} from '../foundation';
 
-/**
- * @extends {MDCTopAppBarBaseFoundation<!MDCShortTopAppBarFoundation>}
- * @final
- */
 class MDCShortTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
   /**
-   * @param {!MDCTopAppBarAdapter} adapter
+   * State variable for the current top app bar state
    */
-  constructor(adapter) {
-    super(adapter);
-    // State variable for the current top app bar state
-    this.isCollapsed = false;
+  isCollapsed = false;
 
-    this.scrollHandler_ = () => this.shortAppBarScrollHandler_();
+  /* istanbul ignore next: optional argument is not a branch statement */
+  constructor(adapter?: Partial<MDCTopAppBarAdapter>) {
+    super(adapter);
   }
 
   init() {
     super.init();
-    const isAlwaysCollapsed = this.adapter_.hasClass(cssClasses.SHORT_COLLAPSED_CLASS);
 
     if (this.adapter_.getTotalActionItems() > 0) {
       this.adapter_.addClass(cssClasses.SHORT_HAS_ACTION_ITEM_CLASS);
     }
 
-    if (!isAlwaysCollapsed) {
+    if (!this.adapter_.hasClass(cssClasses.SHORT_COLLAPSED_CLASS)) {
+      this.scrollHandler_ = () => this.shortAppBarScrollHandler_();
       this.adapter_.registerScrollHandler(this.scrollHandler_);
       this.shortAppBarScrollHandler_();
     }
@@ -57,16 +52,12 @@ class MDCShortTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
 
   destroy() {
     super.destroy();
-    this.adapter_.deregisterScrollHandler(this.scrollHandler_);
   }
 
-
   /**
-   * Scroll handler for applying/removing the collapsed modifier class
-   * on the short top app bar.
-   * @private
+   * Scroll handler for applying/removing the collapsed modifier class on the short top app bar.
    */
-  shortAppBarScrollHandler_() {
+  private shortAppBarScrollHandler_() {
     const currentScroll = this.adapter_.getViewportScrollY();
 
     if (currentScroll <= 0) {
@@ -83,4 +74,4 @@ class MDCShortTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
   }
 }
 
-export default MDCShortTopAppBarFoundation;
+export {MDCShortTopAppBarFoundation as default, MDCShortTopAppBarFoundation};
