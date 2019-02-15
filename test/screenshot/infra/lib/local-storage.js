@@ -166,7 +166,7 @@ class LocalStorage {
       cwd,
       nodir: true,
       dot: true,
-      ignore: ['**/node_modules/**'],
+      ignore: ['**/node_modules/**', '**/*.d.ts'],
     });
   }
 
@@ -255,7 +255,7 @@ class LocalStorage {
     this.logger_.debug(`Finding all files in "${cwd}"...`);
 
     /** @type {!Array<string>} */
-    const allFilePaths = glob.sync('**/*', {cwd, nodir: true});
+    const allFilePaths = glob.sync('**/*', {cwd, nodir: true, ignore: ['**/out/**/*.d.ts', '**/*.map']});
 
     this.logger_.debug(`Found ${allFilePaths.length.toLocaleString()} files in "${cwd}"!`);
 
