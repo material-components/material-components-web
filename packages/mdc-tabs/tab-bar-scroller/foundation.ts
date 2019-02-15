@@ -86,8 +86,8 @@ export class MDCTabBarScrollerFoundation extends MDCFoundation<MDCTabBarScroller
   constructor(adapter?: Partial<MDCTabBarScrollerAdapter>) {
     super({...MDCTabBarScrollerFoundation.defaultAdapter, ...adapter});
 
-    this.forwardIndicatorClickHandler_ = (evt: MouseEvent) => this.scrollForward(evt);
-    this.backIndicatorClickHandler_ = (evt: MouseEvent) => this.scrollBack(evt);
+    this.forwardIndicatorClickHandler_ = (evt) => this.scrollForward(evt);
+    this.backIndicatorClickHandler_ = (evt) => this.scrollBack(evt);
     this.resizeHandler_ = () => this.layout();
     this.interactionHandler_ = (evt) => {
       if (evt.type === 'touchstart' || evt.type === 'mousedown') {

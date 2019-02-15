@@ -22,7 +22,7 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {MDCTab, MDCTabFactory, MDCTabFoundation, MDCTabSelectedEvent} from '../tab';
+import {MDCTab, MDCTabFactory, MDCTabFoundation, MDCTabSelectedEvent} from '../tab/index';
 import {MDCTabBarAdapter} from './adapter';
 import {MDCTabBarFoundation} from './foundation';
 

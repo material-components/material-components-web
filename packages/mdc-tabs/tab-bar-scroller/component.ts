@@ -23,7 +23,7 @@
 
 import {getCorrectPropertyName} from '@material/animation/index';
 import {MDCComponent} from '@material/base/component';
-import {MDCTabBar, MDCTabBarFactory} from '../tab-bar';
+import {MDCTabBar, MDCTabBarFactory} from '../tab-bar/index';
 import {MDCTabBarScrollerAdapter} from './adapter';
 import {MDCTabBarScrollerFoundation} from './foundation';
 
@@ -72,10 +72,8 @@ export class MDCTabBarScroller extends MDCComponent<MDCTabBarScrollerFoundation>
       deregisterBackIndicatorClickHandler: (handler) => this.backIndicator_.removeEventListener('click', handler),
       registerForwardIndicatorClickHandler: (handler) => this.forwardIndicator_.addEventListener('click', handler),
       deregisterForwardIndicatorClickHandler: (handler) => this.forwardIndicator_.removeEventListener('click', handler),
-      registerCapturedInteractionHandler: (evt, handler) =>
-        this.root_.addEventListener(evt, handler as EventListener, true),
-      deregisterCapturedInteractionHandler: (evt, handler) =>
-        this.root_.removeEventListener(evt, handler as EventListener, true),
+      registerCapturedInteractionHandler: (evt, handler) => this.root_.addEventListener(evt, handler, true),
+      deregisterCapturedInteractionHandler: (evt, handler) => this.root_.removeEventListener(evt, handler, true),
       registerWindowResizeHandler: (handler) => window.addEventListener('resize', handler),
       deregisterWindowResizeHandler: (handler) => window.removeEventListener('resize', handler),
       getNumberOfTabs: () => this.tabBar.tabs.length,
