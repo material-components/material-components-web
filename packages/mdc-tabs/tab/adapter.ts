@@ -21,17 +21,13 @@
  * THE SOFTWARE.
  */
 
-import {SpecificEventListener} from '@material/base/types';
-
-export type MDCTabInteractionEventType = 'click' | 'keydown';
+import {EventType, SpecificEventListener} from '@material/base/types';
 
 export interface MDCTabAdapter {
   addClass: (className: string) => void;
   removeClass: (className: string) => void;
-  registerInteractionHandler:
-    <K extends MDCTabInteractionEventType>(type: K, handler: SpecificEventListener<K>) => void;
-  deregisterInteractionHandler:
-    <K extends MDCTabInteractionEventType>(type: K, handler: SpecificEventListener<K>) => void;
+  registerInteractionHandler: <K extends EventType>(type: K, handler: SpecificEventListener<K>) => void;
+  deregisterInteractionHandler: <K extends EventType>(type: K, handler: SpecificEventListener<K>) => void;
   getOffsetWidth: () => number;
   getOffsetLeft: () => number;
   notifySelected: () => void;
