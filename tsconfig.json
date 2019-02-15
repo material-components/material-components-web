@@ -21,6 +21,6 @@
     "target": "es5",
     "newLine": "lf",
     "types": [],
-    "declaration": true,
+    "declaration": true
   }
 }

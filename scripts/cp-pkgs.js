@@ -95,7 +95,7 @@ function cpDeclarationAsset(asset) {
   if (!fs.existsSync(assetPkg)) {
     Promise.reject(new Error(`Non-existent asset package path ${assetPkg} for ${asset}`));
   }
-  const destFileName = toCamelCase(path.parse(asset).name.replace(/^mdc-|\.d$/gm, ''));
+  const destFileName = toCamelCase(path.parse(asset).name.replace(/^mdc-|\.d$/g, ''));
   const destDir = path.join(assetPkg, 'dist', `mdc.${destFileName}.d.ts`);
   return cpFile(asset, destDir).then(() => console.log(`cp ${asset} -> ${destDir}`));
 }
