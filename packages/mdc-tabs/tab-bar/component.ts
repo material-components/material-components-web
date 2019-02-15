@@ -86,7 +86,9 @@ export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
       notifyChange: (evtData) => this.emit(MDCTabBarFoundation.strings.CHANGE_EVENT, evtData),
       getNumberOfTabs: () => this.tabs.length,
       isTabActiveAtIndex: (index) => this.tabs[index].isActive,
-      setTabActiveAtIndex: (index, isActive) => { this.tabs[index].isActive = isActive; },
+      setTabActiveAtIndex: (index, isActive) => {
+        this.tabs[index].isActive = isActive;
+      },
       isDefaultPreventedOnClickForTabAtIndex: (index) => this.tabs[index].preventDefaultOnClick,
       setPreventDefaultOnClickForTabAtIndex: (index, preventDefaultOnClick) => {
         this.tabs[index].preventDefaultOnClick = preventDefaultOnClick;
