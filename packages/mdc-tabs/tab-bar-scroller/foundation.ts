@@ -219,7 +219,7 @@ export class MDCTabBarScrollerFoundation extends MDCFoundation<MDCTabBarScroller
     this.updateIndicatorEnabledStates_();
   }
 
-  private handlePossibleTabKeyboardFocus_(evt: Event) {
+  private handlePossibleTabKeyboardFocus_(evt: MouseEvent | TouchEvent | FocusEvent) {
     const target = evt.target as HTMLElement;
 
     if (!this.adapter_.eventTargetHasClass(target, cssClasses.TAB) || this.pointerDownRecognized_) {
