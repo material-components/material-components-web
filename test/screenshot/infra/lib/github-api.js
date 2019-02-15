@@ -42,26 +42,26 @@ class GitHubApi {
 
   constructor() {
     this.gitRepo_ = new GitRepo();
-    this.octokit_ = new Octokit(this.getAuthToken_());
     this.isTravis_ = process.env.TRAVIS === 'true';
+    this.authToken_ = this.getAuth_();
+    this.octokit_ = new Octokit(this.authToken_ ? {auth: this.authToken_} : undefined);
   }
 
   /**
-   * @return {({auth: string}|undefined)}
+   * @return {?string}
    * @private
    */
-  getAuthToken_() {
+  getAuth_() {
     let token;
 
     try {
       token = require('../auth/github.json').api_key.personal_access_token;
-      console.log('GitHubApi.getAuthToken_(): AUTHENTICATED!');
-      this.isAuthenticated_ = true;
-      return {auth: token};
+      console.log('GitHubApi.getAuth_(): AUTHENTICATED!');
+      return `token ${token}`; // https://github.com/octokit/rest.js/issues/1228
     } catch (err) {
       // Not running on Travis
-      console.log('GitHubApi.getAuthToken_(): NOT AUTHENTICATED!');
-      this.isAuthenticated_ = false;
+      console.log('GitHubApi.getAuth_(): NOT AUTHENTICATED!');
+      return null;
     }
   }
 
@@ -72,7 +72,7 @@ class GitHubApi {
    * @return {!Promise<?Github.AnyResponse>}
    */
   async setPullRequestStatus({state, targetUrl, description = undefined}) {
-    if (!this.isTravis_ || !this.isAuthenticated_) {
+    if (!this.isTravis_ || !this.authToken_) {
       console.log(`GitHubApi.setPullRequestStatus(): ${!this.isTravis_ ? 'NOT TRAVIS' : 'NOT AUTHENTICATED'}!`);
       return null;
     }
@@ -106,7 +106,7 @@ class GitHubApi {
    * @return {!Promise<?Github.AnyResponse>}
    */
   async createPullRequestComment({prNumber, comment}) {
-    if (!this.isTravis_ || !this.isAuthenticated_) {
+    if (!this.isTravis_ || !this.authToken_) {
       return null;
     }
 
