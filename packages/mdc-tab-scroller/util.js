@@ -54,14 +54,4 @@ function computeHorizontalScrollbarHeight(documentObj, shouldCacheResult = true)
   return horizontalScrollbarHeight;
 }
 
-/**
- * @param {!Object} HTMLElementPrototype
- * @return {string}
- */
-function getMatchesProperty(HTMLElementPrototype) {
-  return [
-    'msMatchesSelector', 'matches',
-  ].filter((p) => p in HTMLElementPrototype).pop();
-}
-
-export {computeHorizontalScrollbarHeight, getMatchesProperty};
+export {computeHorizontalScrollbarHeight};

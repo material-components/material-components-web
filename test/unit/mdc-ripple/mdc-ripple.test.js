@@ -117,15 +117,6 @@ test('adapter#isUnbounded delegates to unbounded getter', () => {
   assert.isOk(component.getDefaultFoundation().adapter_.isUnbounded());
 });
 
-test('adapter#isSurfaceActive calls the correct :matches API method on the root element', () => {
-  const {root, component} = setupTest();
-  const MATCHES = util.getMatchesProperty(HTMLElement.prototype);
-  const matches = td.func('root.<matches>');
-  td.when(matches(':active')).thenReturn(true);
-  root[MATCHES] = matches;
-  assert.isOk(component.getDefaultFoundation().adapter_.isSurfaceActive());
-});
-
 test('adapter#isSurfaceDisabled delegates to component\'s disabled getter', () => {
   const {component} = setupTest();
   component.disabled = true;

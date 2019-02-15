@@ -28,7 +28,7 @@ import {MDCSelectionControlState, MDCSelectionControl} from '@material/selection
 /* eslint-enable no-unused-vars */
 import MDCCheckboxFoundation from './foundation';
 import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
-import {getMatchesProperty} from '@material/ripple/util';
+import {matches} from '@material/dom/ponyfill';
 
 /** @const {!Array<string>} */
 const CB_PROTO_PROPS = ['checked', 'indeterminate'];
@@ -78,10 +78,9 @@ class MDCCheckbox extends MDCComponent {
    * @private
    */
   initRipple_() {
-    const MATCHES = getMatchesProperty(HTMLElement.prototype);
     const adapter = Object.assign(MDCRipple.createAdapter(this), {
       isUnbounded: () => true,
-      isSurfaceActive: () => this.nativeCb_[MATCHES](':active'),
+      isSurfaceActive: () => matches(/** @type {!Element} */ (this.nativeCb_), ':active'),
       registerInteractionHandler: (type, handler) => this.nativeCb_.addEventListener(type, handler),
       deregisterInteractionHandler: (type, handler) => this.nativeCb_.removeEventListener(type, handler),
     });

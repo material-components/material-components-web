@@ -30,7 +30,7 @@
 @import "./functions";
 @import "./variables";
 
-@mixin mdc-radio($query: mdc-feature-all()) {
+@mixin mdc-radio-core-styles($query: mdc-feature-all()) {
   // postcss-bem-linter: define radio
 
   $feat-animation: mdc-feature-create-target($query, animation);

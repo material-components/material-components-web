@@ -117,16 +117,6 @@ test('applyPassive returns false for browsers that do not support passive event 
   assert.isNotOk(util.applyPassive(mockWindow, true));
 });
 
-test('#getMatchesProperty returns the correct property for selector matching', () => {
-  assert.equal(util.getMatchesProperty({matches: () => {}}), 'matches');
-  assert.equal(util.getMatchesProperty({webkitMatchesSelector: () => {}}), 'webkitMatchesSelector');
-  assert.equal(util.getMatchesProperty({msMatchesSelector: () => {}}), 'msMatchesSelector');
-});
-
-test('#getMatchesProperty returns the standard function if more than one method is present', () => {
-  assert.equal(util.getMatchesProperty({matches: () => {}, webkitMatchesSelector: () => {}}), 'matches');
-});
-
 test('#getNormalizedEventCoords maps event coords into the relative coordinates of the given rect', () => {
   const ev = {type: 'mousedown', pageX: 70, pageY: 70};
   const pageOffset = {x: 10, y: 10};
