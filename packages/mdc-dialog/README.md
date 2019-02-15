@@ -89,8 +89,9 @@ const dialog = new MDCDialog(document.querySelector('.mdc-dialog'));
 > See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
 
 MDC Dialog makes no assumptions about what will be added to the `mdc-dialog__content` element. Any List, Checkboxes,
-etc. must also be instantiated. Additionally, call `layout` on any applicable components within the content when
-`MDCDialog:opened` is emitted.
+etc. must also be instantiated. If your dialog contains any layout-sensitive components, you should wait until
+`MDCDialog:opened` is emitted to instantiate them (or call `layout` on them) so that the dialog's transition finishes
+first.
 
 For example, to instantiate an MDC List inside of a Simple or Confirmation Dialog:
 
@@ -102,6 +103,9 @@ dialog.listen('MDCDialog:opened', () => {
   list.layout();
 });
 ```
+
+> *NOTE*: Mispositioned or incorrectly-sized elements (e.g. ripples, floating labels, notched outlines) are a strong
+> indication that child components are being instantiated before the dialog has finished opening.
 
 ## Variants
 
