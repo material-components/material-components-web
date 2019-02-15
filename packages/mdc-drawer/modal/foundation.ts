@@ -21,28 +21,30 @@
  * THE SOFTWARE.
  */
 
-/** @enum {string} */
-const cssClasses = {
-  FIXED_CLASS: 'mdc-top-app-bar--fixed',
-  FIXED_SCROLLED_CLASS: 'mdc-top-app-bar--fixed-scrolled',
-  SHORT_CLASS: 'mdc-top-app-bar--short',
-  SHORT_HAS_ACTION_ITEM_CLASS: 'mdc-top-app-bar--short-has-action-item',
-  SHORT_COLLAPSED_CLASS: 'mdc-top-app-bar--short-collapsed',
-};
+import {MDCDismissibleDrawerFoundation} from '../dismissible/foundation';
 
-/** @enum {number} */
-const numbers = {
-  DEBOUNCE_THROTTLE_RESIZE_TIME_MS: 100,
-  MAX_TOP_APP_BAR_HEIGHT: 128,
-};
+/* istanbul ignore next: subclass is not a branch statement */
+class MDCModalDrawerFoundation extends MDCDismissibleDrawerFoundation {
+  /**
+   * Called when drawer finishes open animation.
+   */
+  opened() {
+    this.adapter_.trapFocus();
+  }
 
-/** @enum {string} */
-const strings = {
-  ACTION_ITEM_SELECTOR: '.mdc-top-app-bar__action-item',
-  NAVIGATION_EVENT: 'MDCTopAppBar:nav',
-  NAVIGATION_ICON_SELECTOR: '.mdc-top-app-bar__navigation-icon',
-  ROOT_SELECTOR: '.mdc-top-app-bar',
-  TITLE_SELECTOR: '.mdc-top-app-bar__title',
-};
+  /**
+   * Called when drawer finishes close animation.
+   */
+  closed() {
+    this.adapter_.releaseFocus();
+  }
 
-export {strings, cssClasses, numbers};
+  /**
+   * Handles click event on scrim.
+   */
+  handleScrimClick() {
+    this.close();
+  }
+}
+
+export {MDCModalDrawerFoundation as default, MDCModalDrawerFoundation};

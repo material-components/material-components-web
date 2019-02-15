@@ -21,27 +21,21 @@
  * THE SOFTWARE.
  */
 
-import * as createFocusTrap from 'focus-trap';
-import {FocusTrapFactory} from './types';
+const cssClasses = {
+  ANIMATE: 'mdc-drawer--animate',
+  CLOSING: 'mdc-drawer--closing',
+  DISMISSIBLE: 'mdc-drawer--dismissible',
+  MODAL: 'mdc-drawer--modal',
+  OPEN: 'mdc-drawer--open',
+  OPENING: 'mdc-drawer--opening',
+  ROOT: 'mdc-drawer',
+};
 
-export function createFocusTrapInstance(
-    surfaceEl: HTMLElement,
-    focusTrapFactory: FocusTrapFactory = createFocusTrap as unknown as FocusTrapFactory,
-    initialFocusEl?: createFocusTrap.FocusTarget,
-): createFocusTrap.FocusTrap {
-  return focusTrapFactory(surfaceEl, {
-    clickOutsideDeactivates: true, // Allow handling of scrim clicks.
-    escapeDeactivates: false, // Foundation handles ESC key.
-    initialFocus: initialFocusEl,
-  });
-}
+const strings = {
+  APP_CONTENT_SELECTOR: '.mdc-drawer-app-content',
+  CLOSE_EVENT: 'MDCDrawer:closed',
+  OPEN_EVENT: 'MDCDrawer:opened',
+  SCRIM_SELECTOR: '.mdc-drawer-scrim',
+};
 
-export function isScrollable(el: HTMLElement | null): boolean {
-  return el ? el.scrollHeight > el.offsetHeight : false;
-}
-
-export function areTopsMisaligned(els: HTMLElement[]): boolean {
-  const tops = new Set();
-  [].forEach.call(els, (el: HTMLElement) => tops.add(el.offsetTop));
-  return tops.size > 1;
-}
+export {cssClasses, strings};
