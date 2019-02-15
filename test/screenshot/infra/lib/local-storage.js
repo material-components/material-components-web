@@ -166,7 +166,7 @@ class LocalStorage {
       cwd,
       nodir: true,
       dot: true,
-      ignore: ['**/node_modules/**', '**/*.d.ts'],
+      ignore: ['**/node_modules/**'],
     });
   }
 
