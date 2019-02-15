@@ -120,20 +120,20 @@
     }
   }
 
+  &--animating-open {
+    @include mdc-feature-targets($feat-structure) {
+      display: inline-block;
+      transform: scale(.8);
+      opacity: 0;
+    }
+  }
+
   // stylelint-disable-next-line selector-max-type
   &--open {
     @include mdc-feature-targets($feat-structure) {
       display: inline-block;
       transform: scale(1);
       opacity: 1;
-    }
-  }
-
-  &--animating-open {
-    @include mdc-feature-targets($feat-structure) {
-      display: inline-block;
-      transform: scale(.8);
-      opacity: 0;
     }
   }
 
