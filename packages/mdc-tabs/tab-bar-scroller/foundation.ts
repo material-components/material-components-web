@@ -27,6 +27,10 @@ import {MDCTabAdapter} from '../tab';
 import {MDCTabBarScrollerAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
+export type InteractionEventType = 'touchstart' | 'mousedown' | 'focus';
+
+const INTERACTION_EVENTS: InteractionEventType[] = ['touchstart', 'mousedown', 'focus'];
+
 export class MDCTabBarScrollerFoundation extends MDCFoundation<MDCTabBarScrollerAdapter> {
   static get cssClasses() {
     return cssClasses;
@@ -78,7 +82,7 @@ export class MDCTabBarScrollerFoundation extends MDCFoundation<MDCTabBarScroller
   private readonly forwardIndicatorClickHandler_: SpecificEventListener<'click'>;
   private readonly backIndicatorClickHandler_: SpecificEventListener<'click'>;
   private readonly resizeHandler_: SpecificEventListener<'resize'>;
-  private readonly interactionHandler_: SpecificEventListener<'touchstart' | 'mousedown' | 'focus'>;
+  private readonly interactionHandler_: SpecificEventListener<InteractionEventType>;
 
   constructor(adapter?: Partial<MDCTabAdapter>) {
     super({...MDCTabBarScrollerFoundation.defaultAdapter, ...adapter});
@@ -101,7 +105,7 @@ export class MDCTabBarScrollerFoundation extends MDCFoundation<MDCTabBarScroller
     this.adapter_.registerBackIndicatorClickHandler(this.backIndicatorClickHandler_);
     this.adapter_.registerForwardIndicatorClickHandler(this.forwardIndicatorClickHandler_);
     this.adapter_.registerWindowResizeHandler(this.resizeHandler_);
-    ['touchstart', 'mousedown', 'focus'].forEach((evtType) => {
+    INTERACTION_EVENTS.forEach((evtType) => {
       this.adapter_.registerCapturedInteractionHandler(evtType, this.interactionHandler_);
     });
     this.layout();
@@ -111,7 +115,7 @@ export class MDCTabBarScrollerFoundation extends MDCFoundation<MDCTabBarScroller
     this.adapter_.deregisterBackIndicatorClickHandler(this.backIndicatorClickHandler_);
     this.adapter_.deregisterForwardIndicatorClickHandler(this.forwardIndicatorClickHandler_);
     this.adapter_.deregisterWindowResizeHandler(this.resizeHandler_);
-    ['touchstart', 'mousedown', 'focus'].forEach((evtType) => {
+    INTERACTION_EVENTS.forEach((evtType) => {
       this.adapter_.deregisterCapturedInteractionHandler(evtType, this.interactionHandler_);
     });
   }

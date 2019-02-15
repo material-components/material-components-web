@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {SpecificEventListener} from '@material/base/types';
+import {EventType, SpecificEventListener} from '@material/base/types';
 
 export interface MDCTabBarScrollerAdapter {
   addClass: (className: string) => void;
@@ -36,8 +36,8 @@ export interface MDCTabBarScrollerAdapter {
   deregisterBackIndicatorClickHandler: (handler: SpecificEventListener<'click'>) => void;
   registerForwardIndicatorClickHandler: (handler: SpecificEventListener<'click'>) => void;
   deregisterForwardIndicatorClickHandler: (handler: SpecificEventListener<'click'>) => void;
-  registerCapturedInteractionHandler: (evt: string, handler: SpecificEventListener<'click'>) => void;
-  deregisterCapturedInteractionHandler: (evt: string, handler: SpecificEventListener<'click'>) => void;
+  registerCapturedInteractionHandler: <K extends EventType>(evt: K, handler: SpecificEventListener<K>) => void;
+  deregisterCapturedInteractionHandler: <K extends EventType>(evt: K, handler: SpecificEventListener<K>) => void;
   registerWindowResizeHandler: (handler: SpecificEventListener<'resize'>) => void;
   deregisterWindowResizeHandler: (handler: SpecificEventListener<'resize'>) => void;
   getNumberOfTabs: () => number;
