@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {MDCRipple, MDCRippleFoundation} from '@material/ripple';
+import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
 
 export interface MDCChipInteractionEventDetail {
   chipId: string;

@@ -43,14 +43,16 @@ class GitHubApi {
 
   constructor() {
     this.gitRepo_ = new GitRepo();
-    this.octokit_ = octokit();
+    this.octokit_ = octokit(this.getAuthToken_());
     this.isTravis_ = process.env.TRAVIS === 'true';
     this.isAuthenticated_ = false;
-    this.authenticate_();
   }
 
-  /** @private */
-  authenticate_() {
+  /**
+   * @return {({auth: string}|undefined)}
+   * @private
+   */
+  getAuthToken_() {
     let token;
 
     try {
@@ -60,12 +62,8 @@ class GitHubApi {
       return;
     }
 
-    this.octokit_.authenticate({
-      type: 'oauth',
-      token: token,
-    });
-
     this.isAuthenticated_ = true;
+    return {auth: token};
   }
 
   /**

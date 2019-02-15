@@ -36,6 +36,12 @@ class FakeComponent {
   }
 }
 
+class InvalidComponent {
+  constructor(node) {
+    this.node = node;
+  }
+}
+
 const createFixture = () => bel`
   <div id="root">
     <p data-mdc-auto-init="FakeComponent" class="mdc-fake">Fake Element</p>
@@ -48,6 +54,12 @@ const setupTest = () => {
   return createFixture();
 };
 
+const setupInvalidTest = () => {
+  mdcAutoInit.deregisterAll();
+  mdcAutoInit.register('InvalidComponent', InvalidComponent);
+  return createFixture();
+};
+
 suite('MDCAutoInit');
 
 test('calls attachTo() on components registered for identifier on nodes w/ data-mdc-auto-init attr', () => {
@@ -55,6 +67,11 @@ test('calls attachTo() on components registered for identifier on nodes w/ data-
   mdcAutoInit(root);
 
   assert.isOk(root.querySelector('.mdc-fake').FakeComponent instanceof FakeComponent);
+});
+
+test('throws when attachTo() is missing', () => {
+  const root = setupInvalidTest();
+  assert.throws(() => mdcAutoInit(root));
 });
 
 test('passes the node where "data-mdc-auto-init" was found to attachTo()', () => {

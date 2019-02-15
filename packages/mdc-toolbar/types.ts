@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,31 +21,8 @@
  * THE SOFTWARE.
  */
 
-import {cssClasses} from './constants';
-
-/**
- * Stores result from computeHorizontalScrollbarHeight to avoid redundant processing.
- */
-let horizontalScrollbarHeight_: number | undefined;
-
-/**
- * Computes the height of browser-rendered horizontal scrollbars using a self-created test element.
- * May return 0 (e.g. on OS X browsers under default configuration).
- */
-export function computeHorizontalScrollbarHeight(documentObj: Document, shouldCacheResult = true): number {
-  if (shouldCacheResult && typeof horizontalScrollbarHeight_ !== 'undefined') {
-    return horizontalScrollbarHeight_;
-  }
-
-  const el = documentObj.createElement('div');
-  el.classList.add(cssClasses.SCROLL_TEST);
-  documentObj.body.appendChild(el);
-
-  const horizontalScrollbarHeight = el.offsetHeight - el.clientHeight;
-  documentObj.body.removeChild(el);
-
-  if (shouldCacheResult) {
-    horizontalScrollbarHeight_ = horizontalScrollbarHeight;
-  }
-  return horizontalScrollbarHeight;
+export interface ToolbarEventDetail {
+  flexibleExpansionRatio: number;
 }
+
+export type ToolbarEvent = CustomEvent<ToolbarEventDetail>;
