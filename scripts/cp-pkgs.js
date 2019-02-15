@@ -32,6 +32,7 @@ const cpFile = require('cp-file');
 const toSlugCase = require('to-slug-case');
 const {spawnSync} = require('child_process');
 const {sync: globSync} = require('glob');
+const {dtsBundler} = require('./build/dts-bundler.js');
 
 const PKG_RE = /(?:material\-components\-web)|(?:mdc\.[a-zA-Z\-]+)/;
 const DECLARATION_FILE_PREFIX = 'mdc-';
@@ -87,7 +88,12 @@ function cpAsset(asset) {
     Promise.reject(new Error(`Non-existent asset package path ${assetPkg} for ${asset}`));
   }
   const destDir = path.join(assetPkg, 'dist', path.basename(asset));
-  return cpFile(asset, destDir).then(() => console.log(`cp ${asset} -> ${destDir}`));
+  return cpFile(asset, destDir).then(
+    () => console.log(`cp ${asset} -> ${destDir}`),
+    (err) => {
+      throw err;
+    }
+  );
 }
 
 function cpDeclarationAsset(asset) {
@@ -97,7 +103,12 @@ function cpDeclarationAsset(asset) {
   }
   const destFileName = toCamelCase(path.parse(asset).name.replace(/^mdc-|\.d$/g, ''));
   const destDir = path.join(assetPkg, 'dist', `mdc.${destFileName}.d.ts`);
-  return cpFile(asset, destDir).then(() => console.log(`cp ${asset} -> ${destDir}`));
+  return cpFile(asset, destDir).then(
+    () => console.log(`cp ${asset} -> ${destDir}`),
+    (err) => {
+      throw err;
+    }
+  );
 }
 
 cleanPkgDistDirs();
@@ -106,6 +117,11 @@ Promise.all(globSync('build/*.{css,js,map}').map(cpAsset)).catch((err) => {
   console.error(`Error encountered copying assets: ${err}`);
   process.exit(1);
 });
+
+/**
+ * this method builds the files that the next lines copy to each package
+ */
+dtsBundler();
 
 Promise.all(globSync(`build/packages/**/${DECLARATION_FILE_PREFIX}*.d.ts`).map(cpDeclarationAsset)).catch((err) => {
   console.error(`Error encountered copying assets: ${err}`);

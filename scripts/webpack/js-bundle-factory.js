@@ -91,7 +91,6 @@ class JsBundleFactory {
       },
       devtool: 'source-map',
       module: {
-        noParse: ['/*.ts/'],
         rules: [{
           test: /\.ts$/,
           exclude: /node_modules/,
