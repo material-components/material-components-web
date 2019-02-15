@@ -10,7 +10,7 @@
     "scroller"
   ],
   "main": "dist/mdc.tabScroller.js",
-  "module": "./index.js",
+  "module": "index.js",
   "sideEffects": false,
   "types": "dist/tabScroller.d.ts",
   "repository": {

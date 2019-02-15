@@ -3,6 +3,8 @@
   "description": "Declarative, easy-to-use auto-initialization for Material Components for the web",
   "version": "0.41.0",
   "main": "dist/mdc.autoInit.js",
+  "types": "dist/mdc.autoInit.d.ts",
+  "sideEffects": false,
   "module": "index.js",
   "license": "MIT",
   "repository": {

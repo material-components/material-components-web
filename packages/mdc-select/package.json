@@ -10,6 +10,9 @@
     "multi select"
   ],
   "main": "dist/mdc.select.js",
+  "module": "index.js",
+  "types": "dist/mdc.select.d.ts",
+  "sideEffects": false,
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git"

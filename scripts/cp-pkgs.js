@@ -123,7 +123,10 @@ Promise.all(globSync('build/*.{css,js,map}').map(cpAsset)).catch((err) => {
  */
 dtsBundler();
 
-Promise.all(globSync(`build/packages/**/${DECLARATION_FILE_PREFIX}*.d.ts`).map(cpDeclarationAsset)).catch((err) => {
+Promise.all(
+  globSync(`build/packages/**/{${DECLARATION_FILE_PREFIX},material-components-web}*.d.ts`)
+    .map(cpDeclarationAsset)
+).catch((err) => {
   console.error(`Error encountered copying assets: ${err}`);
   process.exit(1);
 });

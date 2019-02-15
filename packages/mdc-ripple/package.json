@@ -9,7 +9,7 @@
     "ripple"
   ],
   "main": "dist/mdc.ripple.js",
-  "module": "./index.js",
+  "module": "index.js",
   "sideEffects": false,
   "types": "dist/ripple.d.ts",
   "repository": {

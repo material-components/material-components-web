@@ -4,6 +4,9 @@
   "description": "The Material Components for the web tabs component",
   "license": "MIT",
   "main": "dist/mdc.tabs.js",
+  "module": "index.js",
+  "types": "dist/mdc.tabs.d.ts",
+  "sideEffects": false,
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git"
