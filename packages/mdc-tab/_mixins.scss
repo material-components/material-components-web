@@ -37,7 +37,7 @@
   }
 }
 
-@mixin mdc-tab-ripple-color($color) {
+@mixin mdc-tab-states-color($color) {
   .mdc-tab__ripple {
     @include mdc-states($color);
   }
@@ -45,7 +45,7 @@
 
 @mixin mdc-tab-ink-color($color) {
   @include mdc-tab-text-label-color($color);
-  @include mdc-tab-ripple-color($color);
+  @include mdc-tab-states-color($color);
 }
 
 @mixin mdc-tab-parent-positioning {
