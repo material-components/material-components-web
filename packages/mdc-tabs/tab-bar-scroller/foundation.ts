@@ -23,7 +23,6 @@
 
 import {SpecificEventListener} from '@material/base';
 import {MDCFoundation} from '@material/base/foundation';
-import {MDCTabAdapter} from '../tab';
 import {MDCTabBarScrollerAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
@@ -84,7 +83,7 @@ export class MDCTabBarScrollerFoundation extends MDCFoundation<MDCTabBarScroller
   private readonly resizeHandler_: SpecificEventListener<'resize'>;
   private readonly interactionHandler_: SpecificEventListener<InteractionEventType>;
 
-  constructor(adapter?: Partial<MDCTabAdapter>) {
+  constructor(adapter?: Partial<MDCTabBarScrollerAdapter>) {
     super({...MDCTabBarScrollerFoundation.defaultAdapter, ...adapter});
 
     this.forwardIndicatorClickHandler_ = (evt: MouseEvent) => this.scrollForward(evt);

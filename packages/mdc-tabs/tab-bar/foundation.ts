@@ -24,7 +24,6 @@
 import {getCorrectPropertyName} from '@material/animation/index';
 import {SpecificEventListener} from '@material/base';
 import {MDCFoundation} from '@material/base/foundation';
-import {MDCTabAdapter} from '../tab';
 import {MDCTabBarAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
@@ -68,7 +67,7 @@ export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
 
   private resizeHandler_!: SpecificEventListener<'resize'>; // assigned in init()
 
-  constructor(adapter?: Partial<MDCTabAdapter>) {
+  constructor(adapter?: Partial<MDCTabBarAdapter>) {
     super({...MDCTabBarFoundation.defaultAdapter, ...adapter});
   }
 
