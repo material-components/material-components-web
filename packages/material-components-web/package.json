@@ -30,7 +30,6 @@
     "@material/form-field": "^0.44.0",
     "@material/grid-list": "^0.44.0",
     "@material/icon-button": "^0.44.0",
-    "@material/icon-toggle": "^0.44.0",
     "@material/image-list": "^0.44.0",
     "@material/layout-grid": "^0.41.0",
     "@material/line-ripple": "^0.43.0",

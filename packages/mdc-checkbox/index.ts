@@ -28,7 +28,6 @@ import {ponyfill} from '@material/dom/index';
 import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
 import {MDCSelectionControl} from '@material/selection-control/index';
 import {MDCCheckboxFoundation} from './foundation';
-
 const CB_PROTO_PROPS = ['checked', 'indeterminate'];
 
 class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements MDCSelectionControl, RippleCapableSurface {
@@ -90,11 +89,11 @@ class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements MDCSele
     const foundation = new MDCRippleFoundation({
       ...MDCRipple.createAdapter(this),
       deregisterInteractionHandler: <K extends EventType>(evtType: K, handler: SpecificEventListener<K>) =>
-          this.nativeCb_.removeEventListener(evtType, handler),
+        this.nativeCb_.removeEventListener(evtType, handler),
       isSurfaceActive: () => ponyfill.matches(this.nativeCb_, ':active'),
       isUnbounded: () => true,
       registerInteractionHandler: <K extends EventType>(evtType: K, handler: SpecificEventListener<K>) =>
-          this.nativeCb_.addEventListener(evtType, handler),
+        this.nativeCb_.addEventListener(evtType, handler),
     });
     return new MDCRipple(this.root_, foundation);
   }

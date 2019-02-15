@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,27 +21,8 @@
  * THE SOFTWARE.
  */
 
-export const cssClasses = {
-  FIXED: 'mdc-toolbar--fixed',
-  FIXED_LASTROW: 'mdc-toolbar--fixed-lastrow-only',
-  FIXED_AT_LAST_ROW: 'mdc-toolbar--fixed-at-last-row',
-  TOOLBAR_ROW_FLEXIBLE: 'mdc-toolbar--flexible',
-  FLEXIBLE_DEFAULT_BEHAVIOR: 'mdc-toolbar--flexible-default-behavior',
-  FLEXIBLE_MAX: 'mdc-toolbar--flexible-space-maximized',
-  FLEXIBLE_MIN: 'mdc-toolbar--flexible-space-minimized',
-};
+export type MDCTabBarEvent = CustomEvent<MDCTabBarEventDetail>;
 
-export const strings = {
-  TITLE_SELECTOR: '.mdc-toolbar__title',
-  ICON_SELECTOR: '.mdc-toolbar__icon',
-  FIRST_ROW_SELECTOR: '.mdc-toolbar__row:first-child',
-  CHANGE_EVENT: 'MDCToolbar:change',
-};
-
-export const numbers = {
-  MAX_TITLE_SIZE: 2.125,
-  MIN_TITLE_SIZE: 1.25,
-  TOOLBAR_ROW_HEIGHT: 64,
-  TOOLBAR_ROW_MOBILE_HEIGHT: 56,
-  TOOLBAR_MOBILE_BREAKPOINT: 600,
-};
+export interface MDCTabBarEventDetail {
+  activeTabIndex: number;
+}

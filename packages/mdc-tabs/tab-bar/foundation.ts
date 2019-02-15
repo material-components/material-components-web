@@ -21,12 +21,13 @@
  * THE SOFTWARE.
  */
 
+import {getCorrectPropertyName} from '@material/animation/index';
+import {SpecificEventListener} from '@material/base';
 import {MDCFoundation} from '@material/base/foundation';
-import {getCorrectPropertyName} from '@material/animation/index.ts';
-
+import {MDCTabBarAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-export default class MDCTabBarFoundation extends MDCFoundation {
+export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
@@ -35,41 +36,43 @@ export default class MDCTabBarFoundation extends MDCFoundation {
     return strings;
   }
 
-  static get defaultAdapter() {
+  static get defaultAdapter(): MDCTabBarAdapter {
+    // tslint:disable:object-literal-sort-keys
     return {
-      addClass: (/* className: string */) => {},
-      removeClass: (/* className: string */) => {},
-      bindOnMDCTabSelectedEvent: () => {},
-      unbindOnMDCTabSelectedEvent: () => {},
-      registerResizeHandler: (/* handler: EventListener */) => {},
-      deregisterResizeHandler: (/* handler: EventListener */) => {},
-      getOffsetWidth: () => /* number */ 0,
-      setStyleForIndicator: (/* propertyName: string, value: string */) => {},
-      getOffsetWidthForIndicator: () => /* number */ 0,
-      notifyChange: (/* evtData: {activeTabIndex: number} */) => {},
-      getNumberOfTabs: () => /* number */ 0,
-      isTabActiveAtIndex: (/* index: number */) => /* boolean */ false,
-      setTabActiveAtIndex: (/* index: number, isActive: true */) => {},
-      isDefaultPreventedOnClickForTabAtIndex: (/* index: number */) => /* boolean */ false,
-      setPreventDefaultOnClickForTabAtIndex: (/* index: number, preventDefaultOnClick: boolean */) => {},
-      measureTabAtIndex: (/* index: number */) => {},
-      getComputedWidthForTabAtIndex: (/* index: number */) => /* number */ 0,
-      getComputedLeftForTabAtIndex: (/* index: number */) => /* number */ 0,
+      addClass: () => undefined,
+      removeClass: () => undefined,
+      bindOnMDCTabSelectedEvent: () => undefined,
+      unbindOnMDCTabSelectedEvent: () => undefined,
+      registerResizeHandler: () => undefined,
+      deregisterResizeHandler: () => undefined,
+      getOffsetWidth: () => 0,
+      setStyleForIndicator: () => undefined,
+      getOffsetWidthForIndicator: () => 0,
+      notifyChange: () => undefined,
+      getNumberOfTabs: () => 0,
+      isTabActiveAtIndex: () => false,
+      setTabActiveAtIndex: () => undefined,
+      isDefaultPreventedOnClickForTabAtIndex: () => false,
+      setPreventDefaultOnClickForTabAtIndex: () => undefined,
+      measureTabAtIndex: () => undefined,
+      getComputedWidthForTabAtIndex: () => 0,
+      getComputedLeftForTabAtIndex: () => 0,
     };
+    // tslint:enable:object-literal-sort-keys
   }
 
-  constructor(adapter) {
-    super(Object.assign(MDCTabBarFoundation.defaultAdapter, adapter));
+  private isIndicatorShown_ = false;
+  private activeTabIndex_ = 0;
+  private layoutFrame_ = 0;
 
-    this.isIndicatorShown_ = false;
-    this.computedWidth_ = 0;
-    this.computedLeft_ = 0;
-    this.activeTabIndex_ = 0;
-    this.layoutFrame_ = 0;
-    this.resizeHandler_ = () => this.layout();
+  private resizeHandler_!: SpecificEventListener<'resize'>; // assigned in init()
+
+  constructor(adapter?: Partial<MDCTabBarAdapter>) {
+    super({...MDCTabBarFoundation.defaultAdapter, ...adapter});
   }
 
   init() {
+    this.resizeHandler_ = () => this.layout();
     this.adapter_.addClass(cssClasses.UPGRADED);
     this.adapter_.bindOnMDCTabSelectedEvent();
     this.adapter_.registerResizeHandler(this.resizeHandler_);
@@ -86,57 +89,6 @@ export default class MDCTabBarFoundation extends MDCFoundation {
     this.adapter_.deregisterResizeHandler(this.resizeHandler_);
   }
 
-  layoutInternal_() {
-    this.forEachTabIndex_((index) => this.adapter_.measureTabAtIndex(index));
-    this.computedWidth_ = this.adapter_.getOffsetWidth();
-    this.layoutIndicator_();
-  }
-
-  layoutIndicator_() {
-    const isIndicatorFirstRender = !this.isIndicatorShown_;
-
-    // Ensure that indicator appears in the right position immediately for correct first render.
-    if (isIndicatorFirstRender) {
-      this.adapter_.setStyleForIndicator('transition', 'none');
-    }
-
-    const translateAmtForActiveTabLeft = this.adapter_.getComputedLeftForTabAtIndex(this.activeTabIndex_);
-    const scaleAmtForActiveTabWidth =
-      this.adapter_.getComputedWidthForTabAtIndex(this.activeTabIndex_) / this.adapter_.getOffsetWidth();
-
-    const transformValue = `translateX(${translateAmtForActiveTabLeft}px) scale(${scaleAmtForActiveTabWidth}, 1)`;
-    this.adapter_.setStyleForIndicator(getCorrectPropertyName(window, 'transform'), transformValue);
-
-    if (isIndicatorFirstRender) {
-      // Force layout so that transform styles to take effect.
-      this.adapter_.getOffsetWidthForIndicator();
-      this.adapter_.setStyleForIndicator('transition', '');
-      this.adapter_.setStyleForIndicator('visibility', 'visible');
-      this.isIndicatorShown_ = true;
-    }
-  }
-
-  findActiveTabIndex_() {
-    let activeTabIndex = -1;
-    this.forEachTabIndex_((index) => {
-      if (this.adapter_.isTabActiveAtIndex(index)) {
-        activeTabIndex = index;
-        return true;
-      }
-    });
-    return activeTabIndex;
-  }
-
-  forEachTabIndex_(iterator) {
-    const numTabs = this.adapter_.getNumberOfTabs();
-    for (let index = 0; index < numTabs; index++) {
-      const shouldBreak = iterator(index);
-      if (shouldBreak) {
-        break;
-      }
-    }
-  }
-
   layout() {
     if (this.layoutFrame_) {
       cancelAnimationFrame(this.layoutFrame_);
@@ -148,7 +100,7 @@ export default class MDCTabBarFoundation extends MDCFoundation {
     });
   }
 
-  switchToTabAtIndex(index, shouldNotify) {
+  switchToTabAtIndex(index: number, shouldNotify: boolean) {
     if (index === this.activeTabIndex_) {
       return;
     }
@@ -174,4 +126,56 @@ export default class MDCTabBarFoundation extends MDCFoundation {
   getActiveTabIndex() {
     return this.findActiveTabIndex_();
   }
+
+  private layoutInternal_() {
+    this.forEachTabIndex_((index) => this.adapter_.measureTabAtIndex(index));
+    this.layoutIndicator_();
+  }
+
+  private layoutIndicator_() {
+    const isIndicatorFirstRender = !this.isIndicatorShown_;
+
+    // Ensure that indicator appears in the right position immediately for correct first render.
+    if (isIndicatorFirstRender) {
+      this.adapter_.setStyleForIndicator('transition', 'none');
+    }
+
+    const translateAmtForActiveTabLeft = this.adapter_.getComputedLeftForTabAtIndex(this.activeTabIndex_);
+    const scaleAmtForActiveTabWidth =
+      this.adapter_.getComputedWidthForTabAtIndex(this.activeTabIndex_) / this.adapter_.getOffsetWidth();
+
+    const transformValue = `translateX(${translateAmtForActiveTabLeft}px) scale(${scaleAmtForActiveTabWidth}, 1)`;
+    this.adapter_.setStyleForIndicator(getCorrectPropertyName(window, 'transform'), transformValue);
+
+    if (isIndicatorFirstRender) {
+      // Force layout so that transform styles to take effect.
+      this.adapter_.getOffsetWidthForIndicator();
+      this.adapter_.setStyleForIndicator('transition', '');
+      this.adapter_.setStyleForIndicator('visibility', 'visible');
+      this.isIndicatorShown_ = true;
+    }
+  }
+
+  private findActiveTabIndex_() {
+    let activeTabIndex = -1;
+    this.forEachTabIndex_((index) => {
+      if (this.adapter_.isTabActiveAtIndex(index)) {
+        activeTabIndex = index;
+        return true;
+      }
+    });
+    return activeTabIndex;
+  }
+
+  private forEachTabIndex_(iterator: (index: number) => boolean | void) {
+    const numTabs = this.adapter_.getNumberOfTabs();
+    for (let index = 0; index < numTabs; index++) {
+      const shouldBreak = iterator(index);
+      if (shouldBreak) {
+        break;
+      }
+    }
+  }
 }
+
+export default MDCTabBarFoundation;

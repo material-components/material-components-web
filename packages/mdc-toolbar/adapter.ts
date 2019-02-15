@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,79 +21,33 @@
  * THE SOFTWARE.
  */
 
-/* eslint no-unused-vars: [2, {"args": "none"}] */
+import {SpecificEventListener} from '@material/base/types';
+import {ToolbarEventDetail} from './types';
 
 /**
- * Adapter for MDC Icon Toggle. Provides an interface for managing
- * - classes
- * - dom
- * - inner text
- * - event handlers
- * - event dispatch
- *
- * Additionally, provides type information for the adapter to the Closure
- * compiler.
- *
+ * Defines the shape of the adapter expected by the foundation.
  * Implement this adapter for your framework of choice to delegate updates to
  * the component in your framework of choice. See architecture documentation
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
- *
- * @record
  */
-
-class MDCIconToggleAdapter {
-  /** @param {string} className */
-  addClass(className) {}
-
-  /** @param {string} className */
-  removeClass(className) {}
-
-  /**
-   * @param {string} type
-   * @param {!EventListener} handler
-   */
-  registerInteractionHandler(type, handler) {}
-
-  /**
-   * @param {string} type
-   * @param {!EventListener} handler
-   */
-  deregisterInteractionHandler(type, handler) {}
-
-  /** @param {string} text */
-  setText(text) {}
-
-  /** @return {number} */
-  getTabIndex() {}
-
-  /** @param {number} tabIndex */
-  setTabIndex(tabIndex) {}
-
-  /**
-   * @param {string} name
-   * @return {string}
-   */
-  getAttr(name) {}
-
-  /**
-   * @param {string} name
-   * @param {string} value
-   */
-  setAttr(name, value) {}
-
-  /** @param {string} name */
-  rmAttr(name) {}
-
-  /** @param {!IconToggleEvent} evtData */
-  notifyChange(evtData) {}
+export interface MDCToolbarAdapter {
+  hasClass: (className: string) => boolean;
+  addClass: (className: string) => void;
+  removeClass: (className: string) => void;
+  registerScrollHandler: (handler: SpecificEventListener<'scroll'>) => void;
+  deregisterScrollHandler: (handler: SpecificEventListener<'scroll'>) => void;
+  registerResizeHandler: (handler: SpecificEventListener<'resize'>) => void;
+  deregisterResizeHandler: (handler: SpecificEventListener<'resize'>) => void;
+  getViewportWidth: () => number;
+  getViewportScrollY: () => number;
+  getOffsetHeight: () => number;
+  getFirstRowElementOffsetHeight: () => number;
+  notifyChange: (evtData: ToolbarEventDetail) => void;
+  setStyle: (property: string, value: string) => void;
+  setStyleForTitleElement: (property: string, value: string) => void;
+  setStyleForFlexibleRowElement: (property: string, value: string) => void;
+  setStyleForFixedAdjustElement: (property: string, value: string) => void;
 }
 
-/**
- * @typedef {{
- *   isOn: boolean,
- * }}
- */
-let IconToggleEvent;
-
-export {MDCIconToggleAdapter, IconToggleEvent};
+export default MDCToolbarAdapter;

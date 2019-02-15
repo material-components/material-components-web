@@ -126,7 +126,7 @@ class JsBundleFactory {
 
     return this.createCustomJs({
       bundleName: 'main-js-combined',
-      chunks: getAbsolutePath('/packages/material-components-web/index.js'),
+      chunks: getAbsolutePath('/packages/material-components-web/index.ts'),
       output: {
         fsDirAbsolutePath,
         httpDirAbsolutePath,
@@ -154,7 +154,7 @@ class JsBundleFactory {
       bundleName: 'main-js-a-la-carte',
       chunks: {
         animation: getAbsolutePath('/packages/mdc-animation/index.ts'),
-        autoInit: getAbsolutePath('/packages/mdc-auto-init/index.js'),
+        autoInit: getAbsolutePath('/packages/mdc-auto-init/index.ts'),
         base: getAbsolutePath('/packages/mdc-base/index.ts'),
         checkbox: getAbsolutePath('/packages/mdc-checkbox/index.ts'),
         chips: getAbsolutePath('/packages/mdc-chips/index.ts'),
@@ -165,7 +165,6 @@ class JsBundleFactory {
         formField: getAbsolutePath('/packages/mdc-form-field/index.ts'),
         gridList: getAbsolutePath('/packages/mdc-grid-list/index.ts'),
         iconButton: getAbsolutePath('/packages/mdc-icon-button/index.ts'),
-        iconToggle: getAbsolutePath('/packages/mdc-icon-toggle/index.js'),
         list: getAbsolutePath('/packages/mdc-list/index.ts'),
         lineRipple: getAbsolutePath('/packages/mdc-line-ripple/index.ts'),
         linearProgress: getAbsolutePath('/packages/mdc-linear-progress/index.ts'),
@@ -183,9 +182,9 @@ class JsBundleFactory {
         tabBar: getAbsolutePath('/packages/mdc-tab-bar/index.ts'),
         tabIndicator: getAbsolutePath('/packages/mdc-tab-indicator/index.ts'),
         tabScroller: getAbsolutePath('/packages/mdc-tab-scroller/index.ts'),
-        tabs: getAbsolutePath('/packages/mdc-tabs/index.js'),
+        tabs: getAbsolutePath('/packages/mdc-tabs/index.ts'),
         textfield: getAbsolutePath('/packages/mdc-textfield/index.ts'),
-        toolbar: getAbsolutePath('/packages/mdc-toolbar/index.js'),
+        toolbar: getAbsolutePath('/packages/mdc-toolbar/index.ts'),
         topAppBar: getAbsolutePath('/packages/mdc-top-app-bar/index.ts'),
       },
       output: {

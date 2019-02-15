@@ -27,7 +27,7 @@
 @import "@material/ripple/mixins";
 @import "./variables";
 
-@mixin mdc-menu($query: mdc-feature-all()) {
+@mixin mdc-menu-core-styles($query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
 

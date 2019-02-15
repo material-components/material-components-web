@@ -336,7 +336,7 @@ figure {
 }
 
 //
-// Icon Toggle demo
+// Icon Button demo
 //
 
 .mdc-icon-button {
@@ -345,12 +345,12 @@ figure {
   display: inline-flex;
 }
 
-.demo-icon-toggle-row {
+.demo-icon-button-row {
   display: flex;
   flex-wrap: wrap;
 }
 
-.demo-icon-toggle-tile {
+.demo-icon-button-tile {
   width: 200px;
   margin: 0 10px 10px 0;
   padding: 20px;
