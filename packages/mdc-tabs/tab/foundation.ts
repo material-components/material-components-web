@@ -22,9 +22,11 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+import {SpecificEventListener} from '@material/base/types';
+import {MDCTabAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-export default class MDCTabFoundation extends MDCFoundation {
+export class MDCTabFoundation extends MDCFoundation<MDCTabAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
@@ -33,25 +35,30 @@ export default class MDCTabFoundation extends MDCFoundation {
     return strings;
   }
 
-  static get defaultAdapter() {
+  static get defaultAdapter(): MDCTabAdapter {
+    // tslint:disable:object-literal-sort-keys
     return {
-      addClass: (/* className: string */) => {},
-      removeClass: (/* className: string */) => {},
-      registerInteractionHandler: (/* type: string, handler: EventListener */) => {},
-      deregisterInteractionHandler: (/* type: string, handler: EventListener */) => {},
-      getOffsetWidth: () => /* number */ 0,
-      getOffsetLeft: () => /* number */ 0,
-      notifySelected: () => {},
+      addClass: () => undefined,
+      removeClass: () => undefined,
+      registerInteractionHandler: () => undefined,
+      deregisterInteractionHandler: () => undefined,
+      getOffsetWidth: () => 0,
+      getOffsetLeft: () => 0,
+      notifySelected: () => undefined,
     };
+    // tslint:enable:object-literal-sort-keys
   }
 
-  constructor(adapter = {}) {
-    super(Object.assign(MDCTabFoundation.defaultAdapter, adapter));
+  private computedWidth_ = 0;
+  private computedLeft_ = 0;
+  private isActive_ = false;
+  private preventDefaultOnClick_ = false;
 
-    this.computedWidth_ = 0;
-    this.computedLeft_ = 0;
-    this.isActive_ = false;
-    this.preventDefaultOnClick_ = false;
+  private readonly clickHandler_: SpecificEventListener<'click'>;
+  private readonly keydownHandler_: SpecificEventListener<'keydown'>;
+
+  constructor(adapter?: Partial<MDCTabAdapter>) {
+    super({...MDCTabFoundation.defaultAdapter, ...adapter});
 
     this.clickHandler_ = (evt) => {
       if (this.preventDefaultOnClick_) {
@@ -61,7 +68,7 @@ export default class MDCTabFoundation extends MDCFoundation {
     };
 
     this.keydownHandler_ = (evt) => {
-      if (evt.key && evt.key === 'Enter' || evt.keyCode === 13) {
+      if (evt.key === 'Enter' || evt.keyCode === 13) {
         this.adapter_.notifySelected();
       }
     };
@@ -89,7 +96,7 @@ export default class MDCTabFoundation extends MDCFoundation {
     return this.isActive_;
   }
 
-  setActive(isActive) {
+  setActive(isActive: boolean) {
     this.isActive_ = isActive;
     if (this.isActive_) {
       this.adapter_.addClass(cssClasses.ACTIVE);
@@ -102,7 +109,7 @@ export default class MDCTabFoundation extends MDCFoundation {
     return this.preventDefaultOnClick_;
   }
 
-  setPreventDefaultOnClick(preventDefaultOnClick) {
+  setPreventDefaultOnClick(preventDefaultOnClick: boolean) {
     this.preventDefaultOnClick_ = preventDefaultOnClick;
   }
 
@@ -111,3 +118,5 @@ export default class MDCTabFoundation extends MDCFoundation {
     this.computedLeft_ = this.adapter_.getOffsetLeft();
   }
 }
+
+export default MDCTabFoundation;

@@ -21,16 +21,14 @@
  * THE SOFTWARE.
  */
 
-import {getCorrectPropertyName} from '@material/animation/index.ts';
+import {getCorrectPropertyName} from '@material/animation/index';
 import {MDCComponent} from '@material/base/component';
+import {MDCTabBar, MDCTabBarFactory} from '../tab-bar/index';
+import {MDCTabBarScrollerAdapter} from './adapter';
+import {MDCTabBarScrollerFoundation} from './foundation';
 
-import {MDCTabBar} from '../tab-bar/index';
-import MDCTabBarScrollerFoundation from './foundation';
-
-export {MDCTabBarScrollerFoundation};
-
-export class MDCTabBarScroller extends MDCComponent {
-  static attachTo(root) {
+export class MDCTabBarScroller extends MDCComponent<MDCTabBarScrollerFoundation> {
+  static attachTo(root: Element) {
     return new MDCTabBarScroller(root);
   }
 
@@ -38,16 +36,30 @@ export class MDCTabBarScroller extends MDCComponent {
     return this.tabBar_;
   }
 
-  initialize(tabBarFactory = (root) => new MDCTabBar(root)) {
-    this.scrollFrame_ = this.root_.querySelector(MDCTabBarScrollerFoundation.strings.FRAME_SELECTOR);
-    this.tabBarEl_ = this.root_.querySelector(MDCTabBarScrollerFoundation.strings.TABS_SELECTOR);
-    this.forwardIndicator_ = this.root_.querySelector(MDCTabBarScrollerFoundation.strings.INDICATOR_FORWARD_SELECTOR);
-    this.backIndicator_ = this.root_.querySelector(MDCTabBarScrollerFoundation.strings.INDICATOR_BACK_SELECTOR);
+  protected root_!: HTMLElement; // assigned in MDCComponent constructor
+
+  private tabBar_!: MDCTabBar; // assigned in initialize()
+  private scrollFrame_!: HTMLElement; // assigned in initialize()
+  private tabBarEl_!: HTMLElement; // assigned in initialize()
+  private forwardIndicator_!: HTMLElement; // assigned in initialize()
+  private backIndicator_!: HTMLElement; // assigned in initialize()
+
+  initialize(tabBarFactory: MDCTabBarFactory = (el) => new MDCTabBar(el)) {
+    this.scrollFrame_ =
+      this.root_.querySelector<HTMLElement>(MDCTabBarScrollerFoundation.strings.FRAME_SELECTOR)!;
+    this.tabBarEl_ =
+      this.root_.querySelector<HTMLElement>(MDCTabBarScrollerFoundation.strings.TABS_SELECTOR)!;
+    this.forwardIndicator_ =
+      this.root_.querySelector<HTMLElement>(MDCTabBarScrollerFoundation.strings.INDICATOR_FORWARD_SELECTOR)!;
+    this.backIndicator_ =
+      this.root_.querySelector<HTMLElement>(MDCTabBarScrollerFoundation.strings.INDICATOR_BACK_SELECTOR)!;
+
     this.tabBar_ = tabBarFactory(this.tabBarEl_);
   }
 
   getDefaultFoundation() {
-    return new MDCTabBarScrollerFoundation({
+    // tslint:disable:object-literal-sort-keys
+    const adapter: MDCTabBarScrollerAdapter = {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       eventTargetHasClass: (target, className) => target.classList.contains(className),
@@ -55,24 +67,15 @@ export class MDCTabBarScroller extends MDCComponent {
       removeClassFromForwardIndicator: (className) => this.forwardIndicator_.classList.remove(className),
       addClassToBackIndicator: (className) => this.backIndicator_.classList.add(className),
       removeClassFromBackIndicator: (className) => this.backIndicator_.classList.remove(className),
-      isRTL: () =>
-        getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
-      registerBackIndicatorClickHandler: (handler) =>
-        this.backIndicator_.addEventListener('click', handler),
-      deregisterBackIndicatorClickHandler: (handler) =>
-        this.backIndicator_.removeEventListener('click', handler),
-      registerForwardIndicatorClickHandler: (handler) =>
-        this.forwardIndicator_.addEventListener('click', handler),
-      deregisterForwardIndicatorClickHandler: (handler) =>
-        this.forwardIndicator_.removeEventListener('click', handler),
-      registerCapturedInteractionHandler: (evt, handler) =>
-        this.root_.addEventListener(evt, handler, true),
-      deregisterCapturedInteractionHandler: (evt, handler) =>
-        this.root_.removeEventListener(evt, handler, true),
-      registerWindowResizeHandler: (handler) =>
-        window.addEventListener('resize', handler),
-      deregisterWindowResizeHandler: (handler) =>
-        window.removeEventListener('resize', handler),
+      isRTL: () => getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
+      registerBackIndicatorClickHandler: (handler) => this.backIndicator_.addEventListener('click', handler),
+      deregisterBackIndicatorClickHandler: (handler) => this.backIndicator_.removeEventListener('click', handler),
+      registerForwardIndicatorClickHandler: (handler) => this.forwardIndicator_.addEventListener('click', handler),
+      deregisterForwardIndicatorClickHandler: (handler) => this.forwardIndicator_.removeEventListener('click', handler),
+      registerCapturedInteractionHandler: (evt, handler) => this.root_.addEventListener(evt, handler, true),
+      deregisterCapturedInteractionHandler: (evt, handler) => this.root_.removeEventListener(evt, handler, true),
+      registerWindowResizeHandler: (handler) => window.addEventListener('resize', handler),
+      deregisterWindowResizeHandler: (handler) => window.removeEventListener('resize', handler),
       getNumberOfTabs: () => this.tabBar.tabs.length,
       getComputedWidthForTabAtIndex: (index) => this.tabBar.tabs[index].computedWidth,
       getComputedLeftForTabAtIndex: (index) => this.tabBar.tabs[index].computedLeft,
@@ -85,7 +88,9 @@ export class MDCTabBarScroller extends MDCComponent {
       },
       getOffsetLeftForEventTarget: (target) => target.offsetLeft,
       getOffsetWidthForEventTarget: (target) => target.offsetWidth,
-    });
+    };
+    // tslint:enable:object-literal-sort-keys
+    return new MDCTabBarScrollerFoundation(adapter);
   }
 
   layout() {

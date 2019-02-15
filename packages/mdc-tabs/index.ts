@@ -21,12 +21,6 @@
  * THE SOFTWARE.
  */
 
-export const cssClasses = {
-  UPGRADED: 'mdc-tab-bar-upgraded',
-};
-
-export const strings = {
-  TAB_SELECTOR: '.mdc-tab',
-  INDICATOR_SELECTOR: '.mdc-tab-bar__indicator',
-  CHANGE_EVENT: 'MDCTabBar:change',
-};
+export * from './tab';
+export * from './tab-bar';
+export * from './tab-bar-scroller';
