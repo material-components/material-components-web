@@ -438,6 +438,7 @@
 // Textarea
 @mixin mdc-text-field-textarea-disabled_ {
   @include mdc-text-field-outlined-disabled_;
+  /* @alternate */
   @include mdc-text-field-textarea-fill-color_($mdc-textarea-disabled-background);
 }
 
