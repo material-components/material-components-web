@@ -16,7 +16,7 @@
     "fix:css": "stylelint --fix \"packages/**/*.scss\"; stylelint --fix --config=test/screenshot/.stylelintrc.yaml \"test/screenshot/**/*.scss\"",
     "fix": "npm-run-all --parallel fix:*",
     "lint:css": "stylelint \"packages/**/*.scss\" && stylelint --config=test/screenshot/.stylelintrc.yaml \"test/screenshot/**/*.scss\"",
-    "lint:js": "eslint packages test scripts webpack.config.js demos/webpack.config.js karma.conf.js",
+    "lint:js": "eslint test scripts webpack.config.js demos/webpack.config.js karma.conf.js",
     "lint:ts": "tslint --exclude \"test/**/*.d.ts\" \"packages/**/*.ts\" \"test/**/*.ts\" \"scripts/**/*.ts\"",
     "lint:html": "find test/screenshot/spec/ -name '*.html' | grep -v 'index.html$' | xargs htmllint",
     "lint:imports": "node scripts/check-imports.js",
