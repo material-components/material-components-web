@@ -104,6 +104,9 @@ dialog.listen('MDCDialog:opened', () => {
 });
 ```
 
+> *NOTE*: Mispositioned or incorrectly-sized elements (e.g. ripples, floating labels, notched outlines) are a strong
+> indication that child components are being instantiated before the dialog has finished opening.
+
 ## Variants
 
 ### Simple Dialog
