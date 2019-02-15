@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,22 +21,6 @@
  * THE SOFTWARE.
  */
 
-import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
-
-export interface MDCChipInteractionEventDetail {
-  chipId: string;
-}
-
-export interface MDCChipSelectionEventDetail extends MDCChipInteractionEventDetail {
-  selected: boolean;
-}
-
-export interface MDCChipRemovalEventDetail extends MDCChipInteractionEventDetail {
-  root: Element;
-}
-
-export interface MDCChipInteractionEvent extends CustomEvent<MDCChipInteractionEventDetail> {}
-export interface MDCChipSelectionEvent extends CustomEvent<MDCChipSelectionEventDetail> {}
-export interface MDCChipRemovalEvent extends CustomEvent<MDCChipRemovalEventDetail> {}
-
-export type RippleFactory = (el: Element, foundation: MDCRippleFoundation) => MDCRipple;
+export * from './adapter';
+export * from './component';
+export * from './foundation';

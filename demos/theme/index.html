@@ -463,14 +463,14 @@
       </section>
 
       <section class="demo-component-section">
-        <i id="icon-toggle" class="demo-anchor-with-toolbar-offset"></i>
+        <i id="icon-button--toggle" class="demo-anchor-with-toolbar-offset"></i>
         <h3 class="mdc-typography--headline5 demo-component-section__heading">
-          Icon Toggle
-          <a href="#icon-toggle" class="demo-component-section__permalink" title="Permalink to the theme demo for the icon toggle component">#</a>
+          Icon Button
+          <a href="#icon-button--toggle" class="demo-component-section__permalink" title="Permalink to the theme demo for the icon button component">#</a>
         </h3>
 
-        <div class="demo-icon-toggle-row">
-          <div class="mdc-elevation--z2 demo-icon-toggle-tile">
+        <div class="demo-icon-button-row">
+          <div class="mdc-elevation--z2 demo-icon-button-tile">
             <h4 class="mdc-typography--subtitle1">Enabled</h4>
 
             <button class="mdc-icon-button"
@@ -480,7 +480,7 @@
               <i class="material-icons mdc-icon-button__icon">favorite_border</i></button>
           </div>
 
-          <div class="mdc-elevation--z2 demo-icon-toggle-tile">
+          <div class="mdc-elevation--z2 demo-icon-button-tile">
             <h4 class="mdc-typography--subtitle1">Disabled</h4>
 
             <button class="mdc-icon-button"
@@ -868,10 +868,6 @@
         [].forEach.call(document.querySelectorAll('[data-mdc-ripple-is-unbounded]'), function(iconButtonEl) {
           mdc.ripple.MDCRipple.attachTo(iconButtonEl);
         });
-
-        /*
-         * Icon Toggle
-         */
 
         [].forEach.call(document.querySelectorAll('.mdc-icon-button[data-demo-toggle]'), function(iconButtonToggleEl) {
           mdc.iconButton.MDCIconButtonToggle.attachTo(iconButtonToggleEl);

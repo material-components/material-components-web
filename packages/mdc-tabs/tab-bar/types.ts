@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,12 +21,8 @@
  * THE SOFTWARE.
  */
 
-export const cssClasses = {
-  UPGRADED: 'mdc-tab-bar-upgraded',
-};
+export type MDCTabBarEvent = CustomEvent<MDCTabBarEventDetail>;
 
-export const strings = {
-  TAB_SELECTOR: '.mdc-tab',
-  INDICATOR_SELECTOR: '.mdc-tab-bar__indicator',
-  CHANGE_EVENT: 'MDCTabBar:change',
-};
+export interface MDCTabBarEventDetail {
+  activeTabIndex: number;
+}

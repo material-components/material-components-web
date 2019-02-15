@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,22 +21,16 @@
  * THE SOFTWARE.
  */
 
-import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
+import {EventType, SpecificEventListener} from '@material/base/types';
 
-export interface MDCChipInteractionEventDetail {
-  chipId: string;
+export interface MDCTabAdapter {
+  addClass: (className: string) => void;
+  removeClass: (className: string) => void;
+  registerInteractionHandler: <K extends EventType>(type: K, handler: SpecificEventListener<K>) => void;
+  deregisterInteractionHandler: <K extends EventType>(type: K, handler: SpecificEventListener<K>) => void;
+  getOffsetWidth: () => number;
+  getOffsetLeft: () => number;
+  notifySelected: () => void;
 }
 
-export interface MDCChipSelectionEventDetail extends MDCChipInteractionEventDetail {
-  selected: boolean;
-}
-
-export interface MDCChipRemovalEventDetail extends MDCChipInteractionEventDetail {
-  root: Element;
-}
-
-export interface MDCChipInteractionEvent extends CustomEvent<MDCChipInteractionEventDetail> {}
-export interface MDCChipSelectionEvent extends CustomEvent<MDCChipSelectionEventDetail> {}
-export interface MDCChipRemovalEvent extends CustomEvent<MDCChipRemovalEventDetail> {}
-
-export type RippleFactory = (el: Element, foundation: MDCRippleFoundation) => MDCRipple;
+export default MDCTabAdapter;
