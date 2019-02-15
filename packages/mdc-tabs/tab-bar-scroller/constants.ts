@@ -21,6 +21,17 @@
  * THE SOFTWARE.
  */
 
-export {MDCTabFoundation, MDCTab} from './tab';
-export {MDCTabBarFoundation, MDCTabBar} from './tab-bar';
-export {MDCTabBarScrollerFoundation, MDCTabBarScroller} from './tab-bar-scroller';
+export const cssClasses = {
+  INDICATOR_BACK: 'mdc-tab-bar-scroller__indicator--back',
+  INDICATOR_ENABLED: 'mdc-tab-bar-scroller__indicator--enabled',
+  INDICATOR_FORWARD: 'mdc-tab-bar-scroller__indicator--forward',
+  TAB: 'mdc-tab',
+};
+
+export const strings = {
+  FRAME_SELECTOR: '.mdc-tab-bar-scroller__scroll-frame',
+  INDICATOR_BACK_SELECTOR: '.mdc-tab-bar-scroller__indicator--back',
+  INDICATOR_FORWARD_SELECTOR: '.mdc-tab-bar-scroller__indicator--forward',
+  TABS_SELECTOR: '.mdc-tab-bar-scroller__scroll-frame__tabs',
+  TAB_SELECTOR: '.mdc-tab',
+};
