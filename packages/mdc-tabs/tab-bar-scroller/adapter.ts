@@ -51,3 +51,5 @@ export interface MDCTabBarScrollerAdapter {
   getOffsetLeftForEventTarget: (target: HTMLElement) => number;
   getOffsetWidthForEventTarget: (target: HTMLElement) => number;
 }
+
+export default MDCTabBarScrollerAdapter;

@@ -44,3 +44,5 @@ export interface MDCTabBarAdapter {
   getComputedWidthForTabAtIndex: (index: number) => number;
   getComputedLeftForTabAtIndex: (index: number) => number;
 }
+
+export default MDCTabBarAdapter;
