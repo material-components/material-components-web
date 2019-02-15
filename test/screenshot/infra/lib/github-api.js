@@ -21,8 +21,7 @@
  * THE SOFTWARE.
  */
 
-const VError = require('verror');
-const octokit = require('@octokit/rest');
+const Octokit = require('@octokit/rest');
 
 const GitRepo = require('./git-repo');
 const getStackTrace = require('./stacktrace')('GitHubApi');
@@ -43,9 +42,8 @@ class GitHubApi {
 
   constructor() {
     this.gitRepo_ = new GitRepo();
-    this.octokit_ = octokit(this.getAuthToken_());
+    this.octokit_ = new Octokit(this.getAuthToken_());
     this.isTravis_ = process.env.TRAVIS === 'true';
-    this.isAuthenticated_ = false;
   }
 
   /**
@@ -57,13 +55,14 @@ class GitHubApi {
 
     try {
       token = require('../auth/github.json').api_key.personal_access_token;
+      console.log('GitHubApi.getAuthToken_(): AUTHENTICATED!');
+      this.isAuthenticated_ = true;
+      return {auth: token};
     } catch (err) {
       // Not running on Travis
-      return;
+      console.log('GitHubApi.getAuthToken_(): NOT AUTHENTICATED!');
+      this.isAuthenticated_ = false;
     }
-
-    this.isAuthenticated_ = true;
-    return {auth: token};
   }
 
   /**
@@ -74,6 +73,7 @@ class GitHubApi {
    */
   async setPullRequestStatus({state, targetUrl, description = undefined}) {
     if (!this.isTravis_ || !this.isAuthenticated_) {
+      console.log(`GitHubApi.setPullRequestStatus(): ${!this.isTravis_ ? 'NOT TRAVIS' : 'NOT AUTHENTICATED'}!`);
       return null;
     }
 
@@ -95,7 +95,8 @@ class GitHubApi {
         context: 'screenshot-test/butter-bot',
       });
     } catch (err) {
-      throw new VError(err, `Failed to set commit status:\n${stackTrace}`);
+      console.warn(`Failed to set commit status:\n${stackTrace}\n\n`, err);
+      return null;
     }
   }
 
@@ -120,7 +121,8 @@ class GitHubApi {
         body: comment,
       });
     } catch (err) {
-      throw new VError(err, `Failed to create comment on PR #${prNumber}:\n${stackTrace}`);
+      console.warn(`Failed to create comment on PR #${prNumber}:\n${stackTrace}\n\n`, err);
+      return null;
     }
   }
 
@@ -142,7 +144,8 @@ class GitHubApi {
         per_page: 100,
       });
     } catch (err) {
-      throw new VError(err, `Failed to get pull request number for branch "${branch}":\n${stackTrace}`);
+      console.warn(`Failed to get pull request number for branch "${branch}":\n${stackTrace}\n\n`, err);
+      return null;
     }
 
     const filteredPRs = allPrsResponse.data.filter((pr) => pr.head.ref === branch);
@@ -153,7 +156,7 @@ class GitHubApi {
 
   /**
    * @param {number} prNumber
-   * @return {!Promise<string>}
+   * @return {!Promise<?string>}
    */
   async getPullRequestBaseBranch(prNumber) {
     let prResponse;
@@ -167,12 +170,14 @@ class GitHubApi {
         number: prNumber,
       });
     } catch (err) {
-      throw new VError(err, `Failed to get the base branch for PR #${prNumber}:\n${stackTrace}`);
+      console.warn(`Failed to get the base branch for PR #${prNumber}:\n${stackTrace}\n\n`, err);
+      return null;
     }
 
     if (!prResponse.data) {
       const serialized = JSON.stringify(prResponse, null, 2);
-      throw new Error(`Unable to fetch data for GitHub PR #${prNumber}:\n${serialized}`);
+      console.warn(`Unable to fetch data for GitHub PR #${prNumber}:\n${serialized}`);
+      return null;
     }
 
     return `origin/${prResponse.data.base.ref}`;
