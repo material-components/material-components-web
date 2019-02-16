@@ -34,7 +34,7 @@ export class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundat
 
   protected root_!: HTMLElement; // assigned in MDCComponent constructor
 
-  private ripple_: MDCRipple = this.initRipple_();
+  private readonly ripple_: MDCRipple = this.createRipple_();
   private handleClick_!: SpecificEventListener<'click'>; // assigned in initialSyncWithDOM()
 
   initialSyncWithDOM() {
@@ -48,7 +48,7 @@ export class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundat
     super.destroy();
   }
 
-  getDefaultFoundation(): MDCIconButtonToggleFoundation {
+  getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCIconButtonToggleAdapter = {
@@ -73,7 +73,7 @@ export class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundat
     this.foundation_.toggle(isOn);
   }
 
-  private initRipple_(): MDCRipple {
+  private createRipple_(): MDCRipple {
     const ripple = new MDCRipple(this.root_);
     ripple.unbounded = true;
     return ripple;

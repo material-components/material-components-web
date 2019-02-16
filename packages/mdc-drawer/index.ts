@@ -114,7 +114,7 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
     }
   }
 
-  getDefaultFoundation(): MDCDismissibleDrawerFoundation {
+  getDefaultFoundation() {
     // tslint:disable:object-literal-sort-keys
     const adapter: MDCDrawerAdapter = {
       addClass: (className) => this.root_.classList.add(className),

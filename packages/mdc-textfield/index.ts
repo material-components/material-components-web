@@ -127,7 +127,7 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
       }
     }
 
-    this.ripple = this.initRipple_(rippleFactory);
+    this.ripple = this.createRipple_(rippleFactory);
   }
 
   destroy() {
@@ -339,7 +339,7 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
     this.foundation_.notchOutline(openNotch);
   }
 
-  getDefaultFoundation(): MDCTextFieldFoundation {
+  getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys
@@ -438,7 +438,7 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
     };
   }
 
-  private initRipple_(rippleFactory: MDCRippleFactory): MDCRipple | null {
+  private createRipple_(rippleFactory: MDCRippleFactory): MDCRipple | null {
     const isTextArea = this.root_.classList.contains(cssClasses.TEXTAREA);
     const isOutlined = this.root_.classList.contains(cssClasses.OUTLINED);
 

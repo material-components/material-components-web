@@ -93,7 +93,7 @@ export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements Ripp
     this.foundation_.layout();
   }
 
-  getDefaultFoundation(): MDCRippleFoundation {
+  getDefaultFoundation() {
     return new MDCRippleFoundation(MDCRipple.createAdapter(this));
   }
 

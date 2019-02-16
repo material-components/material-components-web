@@ -53,7 +53,7 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation>
   // Public visibility for this property is required by RippleCapableSurface.
   root_!: Element; // assigned in MDCComponent constructor
 
-  private ripple_: MDCRipple = this.initRipple_();
+  private readonly ripple_: MDCRipple = this.createRipple_();
   private handleChange_!: EventListener; // assigned in initialSyncWithDOM()
   private handleAnimationEnd_!: EventListener; // assigned in initialSyncWithDOM()
 
@@ -73,7 +73,7 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation>
     super.destroy();
   }
 
-  getDefaultFoundation(): MDCCheckboxFoundation {
+  getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCCheckboxAdapter = {
@@ -91,7 +91,7 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation>
     return new MDCCheckboxFoundation(adapter);
   }
 
-  private initRipple_(): MDCRipple {
+  private createRipple_(): MDCRipple {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCRippleAdapter = {

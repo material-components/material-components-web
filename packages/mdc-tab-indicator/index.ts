@@ -45,7 +45,7 @@ class MDCTabIndicator extends MDCComponent<MDCTabIndicatorFoundation> {
     return this.foundation_.computeContentClientRect();
   }
 
-  getDefaultFoundation(): MDCTabIndicatorFoundation {
+  getDefaultFoundation() {
     // tslint:disable:object-literal-sort-keys
     const adapter: MDCTabIndicatorAdapter = {
       addClass: (className) => this.root_.classList.add(className),

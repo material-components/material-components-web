@@ -85,7 +85,7 @@ class MDCSlider extends MDCComponent<MDCSliderFoundation> {
     this.trackMarkerContainer_ = this.root_.querySelector<HTMLElement>(strings.TRACK_MARKER_CONTAINER_SELECTOR)!;
   }
 
-  getDefaultFoundation(): MDCSliderFoundation {
+  getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys

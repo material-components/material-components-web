@@ -37,7 +37,7 @@ class MDCTextFieldCharacterCounter extends MDCComponent<MDCTextFieldCharacterCou
     return this.foundation_;
   }
 
-  getDefaultFoundation(): MDCTextFieldCharacterCounterFoundation {
+  getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCTextFieldCharacterCounterAdapter = {

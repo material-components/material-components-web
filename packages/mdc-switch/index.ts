@@ -42,7 +42,7 @@ class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCSelectio
   // Public visibility for this property is required by RippleCapableSurface.
   root_!: Element; // assigned in MDCComponent constructor
 
-  private ripple_ = this.initRipple_();
+  private readonly ripple_ = this.createRipple_();
 
   // Initialized in `initialSyncWithDOM`.
   private changeHandler_!: EventListener;
@@ -95,7 +95,7 @@ class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCSelectio
     this.foundation_.setDisabled(disabled);
   }
 
-  private initRipple_(): MDCRipple {
+  private createRipple_(): MDCRipple {
     const {RIPPLE_SURFACE_SELECTOR} = MDCSwitchFoundation.strings;
     const rippleSurface = this.root_.querySelector(RIPPLE_SURFACE_SELECTOR) as HTMLElement;
 

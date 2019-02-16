@@ -70,7 +70,7 @@ class MDCTabScroller extends MDCComponent<MDCTabScrollerFoundation> {
     this.content_.removeEventListener('transitionend', this.handleTransitionEnd_);
   }
 
-  getDefaultFoundation(): MDCTabScrollerFoundation {
+  getDefaultFoundation() {
     // tslint:disable:object-literal-sort-keys
     const adapter: MDCTabScrollerAdapter = {
       eventTargetMatchesSelector: (evtTarget, selector) => ponyfill.matches(evtTarget as Element, selector),

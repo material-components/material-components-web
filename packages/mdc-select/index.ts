@@ -128,7 +128,7 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
     }
 
     if (!this.root_.classList.contains(cssClasses.OUTLINED)) {
-      this.ripple = this.initRipple_();
+      this.ripple = this.createRipple_();
     }
 
     // The required state needs to be sync'd before the mutation observer is added.
@@ -337,7 +337,7 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
     this.foundation_.layout();
   }
 
-  getDefaultFoundation(): MDCSelectFoundation {
+  getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCSelectAdapter = {
@@ -364,7 +364,7 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
     this.menu_.wrapFocus = false;
   }
 
-  private initRipple_(): MDCRipple {
+  private createRipple_(): MDCRipple {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys

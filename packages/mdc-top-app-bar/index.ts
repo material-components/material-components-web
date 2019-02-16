@@ -72,7 +72,7 @@ class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
     this.foundation_.initScrollHandler();
   }
 
-  getDefaultFoundation(): MDCTopAppBarBaseFoundation {
+  getDefaultFoundation() {
     // tslint:disable:object-literal-sort-keys
     const adapter: MDCTopAppBarAdapter = {
       hasClass: (className) => this.root_.classList.contains(className),

@@ -36,7 +36,7 @@ class MDCRadio extends MDCComponent<MDCRadioFoundation> implements RippleCapable
   // Public visibility for this property is required by RippleCapableSurface.
   root_!: Element; // assigned in MDCComponent constructor
 
-  private readonly ripple_: MDCRipple = this.initRipple_();
+  private readonly ripple_: MDCRipple = this.createRipple_();
 
   get checked(): boolean {
     return this.nativeControl_.checked;
@@ -82,7 +82,7 @@ class MDCRadio extends MDCComponent<MDCRadioFoundation> implements RippleCapable
     return new MDCRadioFoundation(adapter);
   }
 
-  private initRipple_(): MDCRipple {
+  private createRipple_(): MDCRipple {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys
