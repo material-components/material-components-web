@@ -28,7 +28,7 @@
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCTabAdapter {
+export interface MDCTabAdapter {
   /**
    * Adds the given className to the root element.
    * @param className The className to add
@@ -93,5 +93,3 @@ interface MDCTabAdapter {
    */
   focus(): void;
 }
-
-export {MDCTabAdapter as default, MDCTabAdapter};

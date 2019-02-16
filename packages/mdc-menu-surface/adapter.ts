@@ -30,7 +30,7 @@ import {MenuDimensions, MenuDistance, MenuPoint} from './types';
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCMenuSurfaceAdapter {
+export interface MDCMenuSurfaceAdapter {
   addClass(className: string): void;
   removeClass(className: string): void;
   hasClass(className: string): boolean;
@@ -69,5 +69,3 @@ interface MDCMenuSurfaceAdapter {
   /** Emits an event when the menu surface is opened. */
   notifyOpen(): void;
 }
-
-export {MDCMenuSurfaceAdapter as default, MDCMenuSurfaceAdapter};

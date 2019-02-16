@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {EventType, SpecificEventListener} from '@material/base/index';
+import {EventType, SpecificEventListener} from '@material/base/types';
 
 /**
  * Defines the shape of the adapter expected by the foundation.
@@ -30,7 +30,7 @@ import {EventType, SpecificEventListener} from '@material/base/index';
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCSliderAdapter {
+export interface MDCSliderAdapter {
   /**
    * Returns true if className exists for the slider Element
    */
@@ -156,5 +156,3 @@ interface MDCSliderAdapter {
    */
   isRTL(): boolean;
 }
-
-export {MDCSliderAdapter as default, MDCSliderAdapter};

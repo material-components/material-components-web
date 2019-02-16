@@ -30,7 +30,7 @@ import {EventType, SpecificEventListener} from '@material/base/types';
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCTextFieldIconAdapter {
+export interface MDCTextFieldIconAdapter {
   /**
    * Gets the value of an attribute on the icon element.
    */
@@ -66,5 +66,3 @@ interface MDCTextFieldIconAdapter {
    */
   notifyIconAction(): void;
 }
-
-export {MDCTextFieldIconAdapter as default, MDCTextFieldIconAdapter};

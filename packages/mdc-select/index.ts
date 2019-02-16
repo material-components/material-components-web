@@ -22,7 +22,7 @@
  */
 
 import {CustomEventListener, MDCComponent} from '@material/base/index';
-import {EventType, SpecificEventListener} from '@material/base/index';
+import {EventType, SpecificEventListener} from '@material/base/types';
 import {MDCFloatingLabel} from '@material/floating-label/index';
 import {MDCLineRipple} from '@material/line-ripple/index';
 import * as menuSurfaceConstants from '@material/menu-surface/constants';

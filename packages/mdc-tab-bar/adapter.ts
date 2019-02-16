@@ -30,7 +30,7 @@ import {MDCTabDimensions} from '@material/tab/types';
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCTabBarAdapter {
+export interface MDCTabBarAdapter {
   /**
    * Scrolls to the given position
    * @param scrollX The position to scroll to
@@ -127,5 +127,3 @@ interface MDCTabBarAdapter {
    */
   notifyTabActivated(index: number): void;
 }
-
-export {MDCTabBarAdapter as default, MDCTabBarAdapter};

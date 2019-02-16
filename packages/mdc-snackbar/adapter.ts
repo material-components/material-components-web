@@ -28,7 +28,7 @@
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCSnackbarAdapter {
+export interface MDCSnackbarAdapter {
   addClass(className: string): void;
   announce(): void;
   notifyClosed(reason: string): void;
@@ -37,5 +37,3 @@ interface MDCSnackbarAdapter {
   notifyOpening(): void;
   removeClass(className: string): void;
 }
-
-export {MDCSnackbarAdapter as default, MDCSnackbarAdapter};

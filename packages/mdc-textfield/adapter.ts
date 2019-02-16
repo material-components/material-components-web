@@ -31,7 +31,7 @@ import {NativeInputElement} from './types';
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCTextFieldAdapter {
+export interface MDCTextFieldAdapter {
   /**
    * Adds a class to the root Element.
    */
@@ -143,5 +143,3 @@ interface MDCTextFieldAdapter {
    */
   closeOutline(): void;
 }
-
-export {MDCTextFieldAdapter as default, MDCTextFieldAdapter};

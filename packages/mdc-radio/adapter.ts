@@ -28,10 +28,8 @@
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCRadioAdapter {
+export interface MDCRadioAdapter {
   addClass(className: string): void;
   removeClass(className: string): void;
   setNativeControlDisabled(disabled: boolean): void;
 }
-
-export {MDCRadioAdapter as default, MDCRadioAdapter};

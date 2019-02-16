@@ -30,7 +30,7 @@ import {EventType, SpecificEventListener} from '@material/base/types';
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCTopAppBarAdapter {
+export interface MDCTopAppBarAdapter {
   /**
    * Adds a class to the root Element.
    */
@@ -83,5 +83,3 @@ interface MDCTopAppBarAdapter {
 
   getTotalActionItems(): number;
 }
-
-export {MDCTopAppBarAdapter as default, MDCTopAppBarAdapter};

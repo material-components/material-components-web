@@ -28,7 +28,7 @@
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCTabScrollerAdapter {
+export interface MDCTabScrollerAdapter {
   /**
    * Adds the given className to the root element.
    * @param className The className to add
@@ -110,5 +110,3 @@ interface MDCTabScrollerAdapter {
    */
   computeHorizontalScrollbarHeight(): number;
 }
-
-export {MDCTabScrollerAdapter as default, MDCTabScrollerAdapter};

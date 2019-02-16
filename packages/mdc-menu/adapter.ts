@@ -29,7 +29,7 @@ import {MenuItemEventDetail} from './types';
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCMenuAdapter {
+export interface MDCMenuAdapter {
   /**
    * Adds a class to the element at the index provided.
    */
@@ -80,5 +80,3 @@ interface MDCMenuAdapter {
    */
   notifySelected(evtData: MenuItemEventDetail): void;
 }
-
-export {MDCMenuAdapter as default, MDCMenuAdapter};
