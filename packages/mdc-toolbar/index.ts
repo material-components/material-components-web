@@ -21,6 +21,7 @@
  * THE SOFTWARE.
  */
 
+export {MDCToolbar as default} from './component';
 export * from './adapter';
 export * from './component';
 export * from './foundation';

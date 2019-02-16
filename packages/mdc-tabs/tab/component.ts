@@ -99,3 +99,5 @@ export class MDCTab extends MDCComponent<MDCTabFoundation> {
     this.foundation_.measureSelf();
   }
 }
+
+export default MDCTab;

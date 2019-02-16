@@ -106,3 +106,5 @@ export class MDCToolbar extends MDCComponent<MDCToolbarFoundation> {
     return new MDCToolbarFoundation(adapter);
   }
 }
+
+export default MDCToolbar;

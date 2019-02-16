@@ -123,3 +123,5 @@ export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
     this.setActiveTabIndex_(indexOfTab, notifyChange);
   }
 }
+
+export default MDCTabBar;

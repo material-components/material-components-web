@@ -21,54 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {MDCComponent} from '@material/base/component';
-import {MDCLinearProgressAdapter} from './adapter';
-import {MDCLinearProgressFoundation} from './foundation';
-
-class MDCLinearProgress extends MDCComponent<MDCLinearProgressFoundation> {
-  static attachTo(root: Element) {
-    return new MDCLinearProgress(root);
-  }
-
-  set determinate(value: boolean) {
-    this.foundation_.setDeterminate(value);
-  }
-
-  set progress(value: number) {
-    this.foundation_.setProgress(value);
-  }
-
-  set buffer(value: number) {
-    this.foundation_.setBuffer(value);
-  }
-
-  set reverse(value: boolean) {
-    this.foundation_.setReverse(value);
-  }
-
-  open() {
-    this.foundation_.open();
-  }
-
-  close() {
-    this.foundation_.close();
-  }
-
-  getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
-    const adapter: MDCLinearProgressAdapter = {
-      addClass: (className: string) => this.root_.classList.add(className),
-      getBuffer: () => this.root_.querySelector(MDCLinearProgressFoundation.strings.BUFFER_SELECTOR),
-      getPrimaryBar: () => this.root_.querySelector(MDCLinearProgressFoundation.strings.PRIMARY_BAR_SELECTOR),
-      hasClass: (className: string) => this.root_.classList.contains(className),
-      removeClass: (className: string) => this.root_.classList.remove(className),
-      setStyle: (el: HTMLElement, styleProperty: string, value: string) => el.style.setProperty(styleProperty, value),
-    };
-    return new MDCLinearProgressFoundation(adapter);
-  }
-}
-
-export {MDCLinearProgress as default, MDCLinearProgress};
+export {MDCLinearProgress as default} from './component';
 export * from './adapter';
+export * from './component';
 export * from './foundation';

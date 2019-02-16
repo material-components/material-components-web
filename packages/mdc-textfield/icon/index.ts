@@ -21,40 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {MDCComponent} from '@material/base/component';
-import {MDCTextFieldIconAdapter} from './adapter';
-import {MDCTextFieldIconFoundation} from './foundation';
-
-export type MDCTextFieldIconFactory = (el: Element, foundation?: MDCTextFieldIconFoundation) => MDCTextFieldIcon;
-
-class MDCTextFieldIcon extends MDCComponent<MDCTextFieldIconFoundation> {
-  static attachTo(root: Element): MDCTextFieldIcon {
-    return new MDCTextFieldIcon(root);
-  }
-
-  get foundation(): MDCTextFieldIconFoundation {
-    return this.foundation_;
-  }
-
-  getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
-    // tslint:disable:object-literal-sort-keys
-    const adapter: MDCTextFieldIconAdapter = {
-      getAttr: (attr) => this.root_.getAttribute(attr),
-      setAttr: (attr, value) => this.root_.setAttribute(attr, value),
-      removeAttr: (attr) => this.root_.removeAttribute(attr),
-      setContent: (content) => { this.root_.textContent = content; },
-      registerInteractionHandler: (evtType, handler) => this.listen(evtType, handler),
-      deregisterInteractionHandler: (evtType, handler) => this.unlisten(evtType, handler),
-      notifyIconAction: () => this.emit(
-        MDCTextFieldIconFoundation.strings.ICON_EVENT, {} /* evtData */, true /* shouldBubble */),
-    };
-    // tslint:enable:object-literal-sort-keys
-    return new MDCTextFieldIconFoundation(adapter);
-  }
-}
-
-export {MDCTextFieldIcon as default, MDCTextFieldIcon};
+export {MDCTextFieldIcon as default} from './component';
 export * from './adapter';
+export * from './component';
 export * from './foundation';

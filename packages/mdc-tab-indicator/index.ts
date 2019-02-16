@@ -21,59 +21,9 @@
  * THE SOFTWARE.
  */
 
-import {MDCComponent} from '@material/base/component';
-
-import {MDCTabIndicatorAdapter} from './adapter';
-import {MDCFadingTabIndicatorFoundation} from './fading-foundation';
-import {MDCTabIndicatorFoundation} from './foundation';
-import {MDCSlidingTabIndicatorFoundation} from './sliding-foundation';
-
-export type MDCTabIndicatorFactory = (el: Element, foundation?: MDCTabIndicatorFoundation) => MDCTabIndicator;
-
-class MDCTabIndicator extends MDCComponent<MDCTabIndicatorFoundation> {
-  static attachTo(root: Element): MDCTabIndicator {
-    return new MDCTabIndicator(root);
-  }
-
-  private content_!: HTMLElement; // assigned in initialize()
-
-  initialize() {
-    this.content_ = this.root_.querySelector<HTMLElement>(MDCTabIndicatorFoundation.strings.CONTENT_SELECTOR)!;
-  }
-
-  computeContentClientRect(): ClientRect {
-    return this.foundation_.computeContentClientRect();
-  }
-
-  getDefaultFoundation() {
-    // tslint:disable:object-literal-sort-keys
-    const adapter: MDCTabIndicatorAdapter = {
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
-      computeContentClientRect: () => this.content_.getBoundingClientRect(),
-      setContentStyleProperty: (prop, value) => this.content_.style.setProperty(prop, value),
-    };
-    // tslint:enable:object-literal-sort-keys
-
-    if (this.root_.classList.contains(MDCTabIndicatorFoundation.cssClasses.FADE)) {
-      return new MDCFadingTabIndicatorFoundation(adapter);
-    }
-
-    // Default to the sliding indicator
-    return new MDCSlidingTabIndicatorFoundation(adapter);
-  }
-
-  activate(previousIndicatorClientRect?: ClientRect) {
-    this.foundation_.activate(previousIndicatorClientRect);
-  }
-
-  deactivate() {
-    this.foundation_.deactivate();
-  }
-}
-
-export {MDCTabIndicator as default, MDCTabIndicator};
+export {MDCTabIndicator as default} from './component';
 export * from './adapter';
+export * from './component';
 export * from './foundation';
 export * from './fading-foundation';
 export * from './sliding-foundation';

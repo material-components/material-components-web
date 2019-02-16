@@ -21,56 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {MDCComponent} from '@material/base/component';
-import {MDCLineRippleAdapter} from './adapter';
-import {MDCLineRippleFoundation} from './foundation';
-
-export type MDCLineRippleFactory = (el: Element, foundation?: MDCLineRippleFoundation) => MDCLineRipple;
-
-class MDCLineRipple extends MDCComponent<MDCLineRippleFoundation> {
-  static attachTo(root: Element): MDCLineRipple {
-    return new MDCLineRipple(root);
-  }
-
-  /**
-   * Activates the line ripple
-   */
-  activate() {
-    this.foundation_.activate();
-  }
-
-  /**
-   * Deactivates the line ripple
-   */
-  deactivate() {
-    this.foundation_.deactivate();
-  }
-
-  /**
-   * Sets the transform origin given a user's click location.
-   * The `rippleCenter` is the x-coordinate of the middle of the ripple.
-   */
-  setRippleCenter(xCoordinate: number) {
-    this.foundation_.setRippleCenter(xCoordinate);
-  }
-
-  getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
-    // tslint:disable:object-literal-sort-keys
-    const adapter: MDCLineRippleAdapter = {
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
-      hasClass: (className) => this.root_.classList.contains(className),
-      setStyle: (propertyName, value) => (this.root_ as HTMLElement).style.setProperty(propertyName, value),
-      registerEventHandler: (evtType, handler) => this.listen(evtType, handler),
-      deregisterEventHandler: (evtType, handler) => this.unlisten(evtType, handler),
-    };
-    // tslint:enable:object-literal-sort-keys
-    return new MDCLineRippleFoundation(adapter);
-  }
-}
-
-export {MDCLineRipple as default, MDCLineRipple};
+export {MDCLineRipple as default} from './component';
 export * from './adapter';
+export * from './component';
 export * from './foundation';

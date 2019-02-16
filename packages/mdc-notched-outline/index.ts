@@ -21,66 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {MDCComponent} from '@material/base/component';
-import {MDCFloatingLabelFoundation} from '@material/floating-label/foundation';
-import {MDCNotchedOutlineAdapter} from './adapter';
-import {cssClasses, strings} from './constants';
-import {MDCNotchedOutlineFoundation} from './foundation';
-
-export type MDCNotchedOutlineFactory = (el: Element, foundation?: MDCNotchedOutlineFoundation) => MDCNotchedOutline;
-
-class MDCNotchedOutline extends MDCComponent<MDCNotchedOutlineFoundation> {
-  static attachTo(root: Element): MDCNotchedOutline {
-    return new MDCNotchedOutline(root);
-  }
-
-  private notchElement_!: HTMLElement; // assigned in initialSyncWithDOM()
-
-  initialSyncWithDOM() {
-    this.notchElement_ = this.root_.querySelector<HTMLElement>(strings.NOTCH_ELEMENT_SELECTOR)!;
-
-    const label = this.root_.querySelector<HTMLElement>('.' + MDCFloatingLabelFoundation.cssClasses.ROOT);
-    if (label) {
-      label.style.transitionDuration = '0s';
-      this.root_.classList.add(cssClasses.OUTLINE_UPGRADED);
-      requestAnimationFrame(() => {
-        label.style.transitionDuration = '';
-      });
-    } else {
-      this.root_.classList.add(cssClasses.NO_LABEL);
-    }
-  }
-
-  /**
-   * Updates classes and styles to open the notch to the specified width.
-   * @param notchWidth The notch width in the outline.
-   */
-  notch(notchWidth: number) {
-    this.foundation_.notch(notchWidth);
-  }
-
-  /**
-   * Updates classes and styles to close the notch.
-   */
-  closeNotch() {
-    this.foundation_.closeNotch();
-  }
-
-  getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
-    // tslint:disable:object-literal-sort-keys
-    const adapter: MDCNotchedOutlineAdapter = {
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
-      setNotchWidthProperty: (width) => this.notchElement_.style.setProperty('width', width + 'px'),
-      removeNotchWidthProperty: () => this.notchElement_.style.removeProperty('width'),
-    };
-    // tslint:enable:object-literal-sort-keys
-    return new MDCNotchedOutlineFoundation(adapter);
-  }
-}
-
-export {MDCNotchedOutline as default, MDCNotchedOutline};
+export {MDCNotchedOutline as default} from './component';
 export * from './adapter';
+export * from './component';
 export * from './foundation';

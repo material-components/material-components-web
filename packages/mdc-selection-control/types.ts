@@ -21,4 +21,15 @@
  * THE SOFTWARE.
  */
 
-export * from './types';
+import {MDCRipple} from '@material/ripple/component';
+
+export interface MDCSelectionControlState {
+  checked: boolean;
+  indeterminate: boolean;
+  disabled: boolean;
+  value?: string;
+}
+
+export interface MDCSelectionControl {
+  readonly ripple: MDCRipple | undefined;
+}

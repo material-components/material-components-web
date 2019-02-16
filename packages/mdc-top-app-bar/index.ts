@@ -21,105 +21,10 @@
  * THE SOFTWARE.
  */
 
-import {MDCComponent} from '@material/base/component';
-import {MDCRipple, MDCRippleFactory} from '@material/ripple/component';
-import {MDCTopAppBarAdapter} from './adapter';
-import {cssClasses, strings} from './constants';
-import {MDCFixedTopAppBarFoundation} from './fixed/foundation';
-import {MDCTopAppBarBaseFoundation} from './foundation';
-import {MDCShortTopAppBarFoundation} from './short/foundation';
-import {MDCTopAppBarFoundation} from './standard/foundation';
-
-class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
-  static attachTo(root: Element): MDCTopAppBar {
-    return new MDCTopAppBar(root);
-  }
-
-  private navIcon_!: Element | null;
-  private iconRipples_!: MDCRipple[];
-  private scrollTarget_!: EventTarget;
-
-  initialize(rippleFactory: MDCRippleFactory = (el) => MDCRipple.attachTo(el)) {
-    this.navIcon_ = this.root_.querySelector(strings.NAVIGATION_ICON_SELECTOR);
-
-    // Get all icons in the toolbar and instantiate the ripples
-    const icons: Element[] = [].slice.call(this.root_.querySelectorAll(strings.ACTION_ITEM_SELECTOR));
-    if (this.navIcon_) {
-      icons.push(this.navIcon_);
-    }
-
-    this.iconRipples_ = icons.map((icon) => {
-      const ripple = rippleFactory(icon);
-      ripple.unbounded = true;
-      return ripple;
-    });
-
-    this.scrollTarget_ = window;
-  }
-
-  destroy() {
-    this.iconRipples_.forEach((iconRipple) => iconRipple.destroy());
-    super.destroy();
-  }
-
-  setScrollTarget(target: EventTarget) {
-    // Remove scroll handler from the previous scroll target
-    this.foundation_.destroyScrollHandler();
-
-    this.scrollTarget_ = target;
-
-    // Initialize scroll handler on the new scroll target
-    this.foundation_.initScrollHandler();
-  }
-
-  getDefaultFoundation() {
-    // tslint:disable:object-literal-sort-keys
-    const adapter: MDCTopAppBarAdapter = {
-      hasClass: (className) => this.root_.classList.contains(className),
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
-      setStyle: (property, value) => (this.root_ as HTMLElement).style.setProperty(property, value),
-      getTopAppBarHeight: () => this.root_.clientHeight,
-      registerNavigationIconInteractionHandler: (evtType, handler) => {
-        if (this.navIcon_) {
-          this.navIcon_.addEventListener(evtType, handler);
-        }
-      },
-      deregisterNavigationIconInteractionHandler: (evtType, handler) => {
-        if (this.navIcon_) {
-          this.navIcon_.removeEventListener(evtType, handler);
-        }
-      },
-      notifyNavigationIconClicked: () => this.emit(strings.NAVIGATION_EVENT, {}),
-      registerScrollHandler: (handler) => this.scrollTarget_.addEventListener('scroll', handler as EventListener),
-      deregisterScrollHandler: (handler) => this.scrollTarget_.removeEventListener('scroll', handler as EventListener),
-      registerResizeHandler: (handler) => window.addEventListener('resize', handler),
-      deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
-      getViewportScrollY: () => {
-        const win = this.scrollTarget_ as Window;
-        const el = this.scrollTarget_ as Element;
-        return win.pageYOffset !== undefined ? win.pageYOffset : el.scrollTop;
-      },
-      getTotalActionItems: () => this.root_.querySelectorAll(strings.ACTION_ITEM_SELECTOR).length,
-    };
-    // tslint:enable:object-literal-sort-keys
-
-    let foundation: MDCTopAppBarBaseFoundation;
-    if (this.root_.classList.contains(cssClasses.SHORT_CLASS)) {
-      foundation = new MDCShortTopAppBarFoundation(adapter);
-    } else if (this.root_.classList.contains(cssClasses.FIXED_CLASS)) {
-      foundation = new MDCFixedTopAppBarFoundation(adapter);
-    } else {
-      foundation = new MDCTopAppBarFoundation(adapter);
-    }
-
-    return foundation;
-  }
-}
-
-export {MDCTopAppBar as default, MDCTopAppBar};
+export {MDCTopAppBar as default} from './component';
+export * from './adapter';
+export * from './component';
+export * from './foundation';
 export * from './fixed/foundation';
 export * from './short/foundation';
 export * from './standard/foundation';
-export * from './adapter';
-export * from './foundation';

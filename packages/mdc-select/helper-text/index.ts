@@ -21,39 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {MDCComponent} from '@material/base/component';
-import {MDCSelectHelperTextAdapter} from './adapter';
-import {MDCSelectHelperTextFoundation} from './foundation';
-
-export type MDCSelectHelperTextFactory =
-  (el: Element, foundation?: MDCSelectHelperTextFoundation) => MDCSelectHelperText;
-
-class MDCSelectHelperText extends MDCComponent<MDCSelectHelperTextFoundation> {
-  static attachTo(root: Element): MDCSelectHelperText {
-    return new MDCSelectHelperText(root);
-  }
-
-  get foundation(): MDCSelectHelperTextFoundation {
-    return this.foundation_;
-  }
-
-  getDefaultFoundation() {
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
-    // tslint:disable:object-literal-sort-keys
-    const adapter: MDCSelectHelperTextAdapter = {
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
-      hasClass: (className) => this.root_.classList.contains(className),
-      setAttr: (attr, value) => this.root_.setAttribute(attr, value),
-      removeAttr: (attr) => this.root_.removeAttribute(attr),
-      setContent: (content) => { this.root_.textContent = content; },
-    };
-    // tslint:enable:object-literal-sort-keys
-    return new MDCSelectHelperTextFoundation(adapter);
-  }
-}
-
-export {MDCSelectHelperText as default, MDCSelectHelperText};
+export {MDCSelectHelperText as default} from './component';
 export * from './adapter';
+export * from './component';
 export * from './foundation';
