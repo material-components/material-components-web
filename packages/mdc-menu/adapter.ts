@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {MenuItemEventDetail} from './types';
+import {MDCMenuItemEventDetail} from './types';
 
 /**
  * Implement this adapter for your framework of choice to delegate updates to
@@ -78,5 +78,5 @@ export interface MDCMenuAdapter {
   /**
    * Emit an event when a menu item is selected.
    */
-  notifySelected(evtData: MenuItemEventDetail): void;
+  notifySelected(evtData: MDCMenuItemEventDetail): void;
 }

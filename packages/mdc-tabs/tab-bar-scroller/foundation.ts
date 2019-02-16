@@ -26,7 +26,7 @@ import {MDCFoundation} from '@material/base/foundation';
 import {MDCTabBarScrollerAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-export type InteractionEventType = 'touchstart' | 'mousedown' | 'focus';
+type InteractionEventType = 'touchstart' | 'mousedown' | 'focus';
 
 const INTERACTION_EVENTS: InteractionEventType[] = ['touchstart', 'mousedown', 'focus'];
 

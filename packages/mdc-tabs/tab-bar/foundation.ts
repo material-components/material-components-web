@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {getCorrectPropertyName} from '@material/animation/index';
+import {getCorrectPropertyName} from '@material/animation/util';
 import {SpecificEventListener} from '@material/base';
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCTabBarAdapter} from './adapter';

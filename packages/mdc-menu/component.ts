@@ -23,14 +23,14 @@
 
 import {MDCComponent} from '@material/base/component';
 import {CustomEventListener, SpecificEventListener} from '@material/base/types';
-import {ListActionEvent, MDCList, MDCListFactory, MDCListFoundation} from '@material/list/index';
+import {MDCList, MDCListActionEvent, MDCListFactory, MDCListFoundation} from '@material/list/index';
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
 import {Corner, MDCMenuSurface, MDCMenuSurfaceFactory} from '@material/menu-surface/index';
 import {MenuDistance} from '@material/menu-surface/types';
 import {MDCMenuAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCMenuFoundation} from './foundation';
-import {DefaultMenuItemEventDetail} from './types';
+import {MDCMenuItemComponentEventDetail} from './types';
 
 export type MDCMenuFactory = (el: Element, foundation?: MDCMenuFoundation) => MDCMenu;
 
@@ -46,7 +46,7 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   private list_!: MDCList | null; // assigned in initialSyncWithDOM()
 
   private handleKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
-  private handleItemAction_!: CustomEventListener<ListActionEvent>; // assigned in initialSyncWithDOM()
+  private handleItemAction_!: CustomEventListener<MDCListActionEvent>; // assigned in initialSyncWithDOM()
   private afterOpenedCallback_!: EventListener; // assigned in initialSyncWithDOM()
 
   initialize(
@@ -202,7 +202,7 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
         const selectedListItem = selectionGroup.querySelector(`.${cssClasses.MENU_SELECTED_LIST_ITEM}`);
         return selectedListItem ? this.items.indexOf(selectedListItem) : -1;
       },
-      notifySelected: (evtData) => this.emit<DefaultMenuItemEventDetail>(strings.SELECTED_EVENT, {
+      notifySelected: (evtData) => this.emit<MDCMenuItemComponentEventDetail>(strings.SELECTED_EVENT, {
         index: evtData.index,
         item: this.items[evtData.index],
       }),

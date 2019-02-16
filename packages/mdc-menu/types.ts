@@ -21,19 +21,19 @@
  * THE SOFTWARE.
  */
 
-export type MenuItemEvent = CustomEvent<MenuItemEventDetail>;
-export type DefaultMenuItemEvent = CustomEvent<DefaultMenuItemEventDetail>;
+export type MDCMenuItemEvent = CustomEvent<MDCMenuItemEventDetail>;
+export type MDCMenuItemComponentEvent = CustomEvent<MDCMenuItemComponentEventDetail>;
 
 /**
  * Event properties used by the adapter and foundation.
  */
-export interface MenuItemEventDetail {
+export interface MDCMenuItemEventDetail {
   index: number;
 }
 
 /**
  * Event properties specific to the default component implementation.
  */
-export interface DefaultMenuItemEventDetail extends MenuItemEventDetail {
+export interface MDCMenuItemComponentEventDetail extends MDCMenuItemEventDetail {
   item: Element;
 }

@@ -21,16 +21,15 @@
  * THE SOFTWARE.
  */
 
-export interface ListActionEventDetail {
+export interface MDCListActionEventDetail {
   /**
    * Index of the list item that was activated.
    */
   index: number;
 }
 
-export interface ListActionEvent extends Event {
-  detail: ListActionEventDetail;
+export interface MDCListActionEvent extends Event {
+  detail: MDCListActionEventDetail;
 }
 
-export type ListActionEventListener = (evt: ListActionEvent) => void;
-export type ListIndex = number | number[];
+export type MDCListIndex = number | number[];

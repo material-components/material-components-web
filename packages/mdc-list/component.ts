@@ -27,7 +27,7 @@ import {ponyfill} from '@material/dom/index';
 import {MDCListAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCListFoundation} from './foundation';
-import {ListActionEventDetail, ListIndex} from './types';
+import {MDCListActionEventDetail, MDCListIndex} from './types';
 
 export type MDCListFactory = (el: Element, foundation?: MDCListFoundation) => MDCList;
 
@@ -48,11 +48,11 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
     this.foundation_.setSingleSelection(isSingleSelectionList);
   }
 
-  get selectedIndex(): ListIndex {
+  get selectedIndex(): MDCListIndex {
     return this.foundation_.getSelectedIndex();
   }
 
-  set selectedIndex(index: ListIndex) {
+  set selectedIndex(index: MDCListIndex) {
     this.foundation_.setSelectedIndex(index);
   }
 
@@ -164,7 +164,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
         return this.root_.contains(document.activeElement);
       },
       notifyAction: (index) => {
-        this.emit<ListActionEventDetail>(strings.ACTION_EVENT, {index}, /** shouldBubble */ true);
+        this.emit<MDCListActionEventDetail>(strings.ACTION_EVENT, {index}, /** shouldBubble */ true);
       },
       removeAttributeForElementIndex: (index, attr) => {
         const element = this.listElements[index];

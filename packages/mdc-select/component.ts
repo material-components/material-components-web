@@ -27,7 +27,7 @@ import {MDCFloatingLabel, MDCFloatingLabelFactory} from '@material/floating-labe
 import {MDCLineRipple, MDCLineRippleFactory} from '@material/line-ripple/index';
 import * as menuSurfaceConstants from '@material/menu-surface/constants';
 import * as menuConstants from '@material/menu/constants';
-import {MDCMenu, MDCMenuFactory, MenuItemEvent} from '@material/menu/index';
+import {MDCMenu, MDCMenuFactory, MDCMenuItemEvent} from '@material/menu/index';
 import {MDCNotchedOutline, MDCNotchedOutlineFactory} from '@material/notched-outline/index';
 import {MDCRipple, MDCRippleAdapter, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
 import {MDCSelectAdapter} from './adapter';
@@ -74,7 +74,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements Ripp
   private handleKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialize()
   private handleMenuOpened_!: EventListener; // assigned in initialize()
   private handleMenuClosed_!: EventListener; // assigned in initialize()
-  private handleMenuSelected_!: CustomEventListener<MenuItemEvent>; // assigned in initialize()
+  private handleMenuSelected_!: CustomEventListener<MDCMenuItemEvent>; // assigned in initialize()
   private validationObserver_!: MutationObserver; // assigned in initialize()
 
   initialize(
