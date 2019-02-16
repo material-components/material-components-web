@@ -50,6 +50,8 @@ export interface MDCChipRemovalEventDetail extends MDCChipInteractionEventDetail
   root: Element;
 }
 
+// TODO(acdvorak): Should we use `interface` or `type`?
+// TODO(acdvorak): Should these go in `types.ts` or `component.ts` if they're not component-specific?
 export interface MDCChipInteractionEvent extends CustomEvent<MDCChipInteractionEventDetail> {}
 export interface MDCChipSelectionEvent extends CustomEvent<MDCChipSelectionEventDetail> {}
 export interface MDCChipRemovalEvent extends CustomEvent<MDCChipRemovalEventDetail> {}
