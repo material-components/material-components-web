@@ -35,6 +35,10 @@ const {
   OPENING_EVENT, OPENED_EVENT, CLOSING_EVENT, CLOSED_EVENT,
 } = strings;
 
+export interface MDCSnackbarCloseEventDetail {
+  reason?: string;
+}
+
 export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
   static attachTo(root: Element) {
     return new MDCSnackbar(root);
@@ -97,8 +101,8 @@ export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
     const adapter: MDCSnackbarAdapter = {
       addClass: (className) => this.root_.classList.add(className),
       announce: () => this.announce_(this.labelEl_),
-      notifyClosed: (reason) => this.emit(CLOSED_EVENT, reason ? {reason} : {}),
-      notifyClosing: (reason) => this.emit(CLOSING_EVENT, reason ? {reason} : {}),
+      notifyClosed: (reason) => this.emit<MDCSnackbarCloseEventDetail>(CLOSED_EVENT, reason ? {reason} : {}),
+      notifyClosing: (reason) => this.emit<MDCSnackbarCloseEventDetail>(CLOSING_EVENT, reason ? {reason} : {}),
       notifyOpened: () => this.emit(OPENED_EVENT, {}),
       notifyOpening: () => this.emit(OPENING_EVENT, {}),
       removeClass: (className) => this.root_.classList.remove(className),

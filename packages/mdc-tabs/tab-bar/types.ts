@@ -21,8 +21,8 @@
  * THE SOFTWARE.
  */
 
-export type MDCTabBarEvent = CustomEvent<MDCTabBarEventDetail>;
+export type MDCTabBarChangeEvent = CustomEvent<MDCTabBarChangeEventDetail>;
 
-export interface MDCTabBarEventDetail {
+export interface MDCTabBarChangeEventDetail {
   activeTabIndex: number;
 }

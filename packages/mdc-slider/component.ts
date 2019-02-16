@@ -110,8 +110,8 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
       deregisterBodyInteractionHandler: (evtType, handler) => document.body.removeEventListener(evtType, handler),
       registerResizeHandler: (handler) => window.addEventListener('resize', handler),
       deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
-      notifyInput: () => this.emit(strings.INPUT_EVENT, this),
-      notifyChange: () => this.emit(strings.CHANGE_EVENT, this),
+      notifyInput: () => this.emit<MDCSlider>(strings.INPUT_EVENT, this), // TODO(acdvorak): Create detail interface
+      notifyChange: () => this.emit<MDCSlider>(strings.CHANGE_EVENT, this), // TODO(acdvorak): Create detail interface
       setThumbContainerStyleProperty: (propertyName, value) => {
         this.thumbContainer_.style.setProperty(propertyName, value);
       },

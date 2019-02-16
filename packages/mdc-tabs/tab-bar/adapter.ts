@@ -22,7 +22,7 @@
  */
 
 import {SpecificEventListener} from '@material/base/types';
-import {MDCTabBarEventDetail} from './types';
+import {MDCTabBarChangeEventDetail} from './types';
 
 export interface MDCTabBarAdapter {
   addClass: (className: string) => void;
@@ -34,7 +34,7 @@ export interface MDCTabBarAdapter {
   getOffsetWidth: () => number;
   setStyleForIndicator: (propertyName: string, value: string) => void;
   getOffsetWidthForIndicator: () => number;
-  notifyChange: (evtData: MDCTabBarEventDetail) => void;
+  notifyChange: (evtData: MDCTabBarChangeEventDetail) => void;
   getNumberOfTabs: () => number;
   isTabActiveAtIndex: (index: number) => boolean;
   setTabActiveAtIndex: (index: number, isActive: boolean) => void;

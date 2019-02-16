@@ -26,6 +26,9 @@ import {SpecificEventListener} from '@material/base/types';
 import {MDCRipple} from '@material/ripple/component';
 import {MDCIconButtonToggleAdapter} from './adapter';
 import {MDCIconButtonToggleFoundation} from './foundation';
+import {MDCIconButtonToggleEventDetail} from './types';
+
+const {strings} = MDCIconButtonToggleFoundation;
 
 export class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundation> {
   static attachTo(root: HTMLElement) {
@@ -54,7 +57,7 @@ export class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundat
     const adapter: MDCIconButtonToggleAdapter = {
       addClass: (className) => this.root_.classList.add(className),
       hasClass: (className) => this.root_.classList.contains(className),
-      notifyChange: (evtData) => this.emit(MDCIconButtonToggleFoundation.strings.CHANGE_EVENT, evtData),
+      notifyChange: (evtData) => this.emit<MDCIconButtonToggleEventDetail>(strings.CHANGE_EVENT, evtData),
       removeClass: (className) => this.root_.classList.remove(className),
       setAttr: (attrName, attrValue) => this.root_.setAttribute(attrName, attrValue),
     };

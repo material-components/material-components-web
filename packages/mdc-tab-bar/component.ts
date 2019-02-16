@@ -29,7 +29,13 @@ import {MDCTabFactory} from '@material/tab/index';
 import {MDCTabBarAdapter} from './adapter';
 import {MDCTabBarFoundation} from './foundation';
 
+const {strings} = MDCTabBarFoundation;
+
 let tabIdCounter = 0;
+
+export interface MDCTabBarActivatedEventDetail {
+  index: number;
+}
 
 export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
   static attachTo(root: Element): MDCTabBar {
@@ -122,7 +128,8 @@ export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
         return -1;
       },
       getTabListLength: () => this.tabList_.length,
-      notifyTabActivated: (index) => this.emit(MDCTabBarFoundation.strings.TAB_ACTIVATED_EVENT, {index}, true),
+      notifyTabActivated: (index) =>
+        this.emit<MDCTabBarActivatedEventDetail>(strings.TAB_ACTIVATED_EVENT, {index}, true),
     };
     // tslint:enable:object-literal-sort-keys
     return new MDCTabBarFoundation(adapter);
@@ -148,7 +155,7 @@ export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
    * Returns all the tab elements in a nice clean array
    */
   private getTabElements_(): Element[] {
-    return [].slice.call(this.root_.querySelectorAll(MDCTabBarFoundation.strings.TAB_SELECTOR));
+    return [].slice.call(this.root_.querySelectorAll(strings.TAB_SELECTOR));
   }
 
   /**
@@ -165,7 +172,7 @@ export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
    * Instantiates tab scroller component on the child tab scroller element
    */
   private instantiateTabScroller_(tabScrollerFactory: MDCTabScrollerFactory): MDCTabScroller | null {
-    const tabScrollerElement = this.root_.querySelector(MDCTabBarFoundation.strings.TAB_SCROLLER_SELECTOR);
+    const tabScrollerElement = this.root_.querySelector(strings.TAB_SCROLLER_SELECTOR);
     if (tabScrollerElement) {
       return tabScrollerFactory(tabScrollerElement);
     }

@@ -33,6 +33,10 @@ import {MDCDialogFocusTrapFactory} from './util';
 
 const strings = MDCDialogFoundation.strings;
 
+export interface MDCDialogCloseEventDetail {
+  action?: string;
+}
+
 export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   get isOpen() {
     return this.foundation_.isOpen();
@@ -167,8 +171,8 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
       },
       hasClass: (className) => this.root_.classList.contains(className),
       isContentScrollable: () => util.isScrollable(this.content_),
-      notifyClosed: (action) => this.emit(strings.CLOSED_EVENT, action ? {action} : {}),
-      notifyClosing: (action) => this.emit(strings.CLOSING_EVENT, action ? {action} : {}),
+      notifyClosed: (action) => this.emit<MDCDialogCloseEventDetail>(strings.CLOSED_EVENT, action ? {action} : {}),
+      notifyClosing: (action) => this.emit<MDCDialogCloseEventDetail>(strings.CLOSING_EVENT, action ? {action} : {}),
       notifyOpened: () => this.emit(strings.OPENED_EVENT, {}),
       notifyOpening: () => this.emit(strings.OPENING_EVENT, {}),
       releaseFocus: () => this.focusTrap_.deactivate(),

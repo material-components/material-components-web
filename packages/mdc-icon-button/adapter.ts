@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {IconButtonToggleEvent} from './types';
+import {MDCIconButtonToggleEventDetail} from './types';
 
 /**
  * Defines the shape of the adapter expected by the foundation.
@@ -39,5 +39,5 @@ export interface MDCIconButtonToggleAdapter {
 
   setAttr(attrName: string, attrValue: string): void;
 
-  notifyChange(evtData: IconButtonToggleEvent): void;
+  notifyChange(evtData: MDCIconButtonToggleEventDetail): void;
 }
