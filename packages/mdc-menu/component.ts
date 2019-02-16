@@ -211,5 +211,3 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
     return new MDCMenuFoundation(adapter);
   }
 }
-
-export default MDCMenu;

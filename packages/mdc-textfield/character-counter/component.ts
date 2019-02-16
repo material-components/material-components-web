@@ -46,5 +46,3 @@ export class MDCTextFieldCharacterCounter extends MDCComponent<MDCTextFieldChara
     return new MDCTextFieldCharacterCounterFoundation(adapter);
   }
 }
-
-export default MDCTextFieldCharacterCounter;

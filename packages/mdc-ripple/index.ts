@@ -22,8 +22,6 @@
  */
 
 import * as util from './util';
-
-export {MDCRipple as default} from './component';
 export * from './adapter';
 export * from './component';
 export * from './foundation';

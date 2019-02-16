@@ -67,5 +67,3 @@ export class MDCFloatingLabel extends MDCComponent<MDCFloatingLabelFoundation> {
     return new MDCFloatingLabelFoundation(adapter);
   }
 }
-
-export default MDCFloatingLabel;

@@ -22,8 +22,6 @@
  */
 
 import * as util from './util';
-
-export {MDCDialog as default} from './component';
 export {util};
 export * from './adapter';
 export * from './component';

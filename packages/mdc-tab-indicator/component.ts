@@ -71,5 +71,3 @@ export class MDCTabIndicator extends MDCComponent<MDCTabIndicatorFoundation> {
     this.foundation_.deactivate();
   }
 }
-
-export default MDCTabIndicator;

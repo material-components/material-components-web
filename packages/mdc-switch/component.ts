@@ -126,5 +126,3 @@ export class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCS
     return this.root_.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
   }
 }
-
-export default MDCSwitch;

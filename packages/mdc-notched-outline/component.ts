@@ -80,5 +80,3 @@ export class MDCNotchedOutline extends MDCComponent<MDCNotchedOutlineFoundation>
     return new MDCNotchedOutlineFoundation(adapter);
   }
 }
-
-export default MDCNotchedOutline;

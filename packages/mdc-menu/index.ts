@@ -20,8 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-export {MDCMenu as default} from './component';
 export {Corner} from '@material/menu-surface/constants'; // for backward compatibility
 export * from './adapter';
 export * from './component';

@@ -459,5 +459,3 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
     return rippleFactory(this.root_, new MDCRippleFoundation(adapter));
   }
 }
-
-export default MDCTextField;

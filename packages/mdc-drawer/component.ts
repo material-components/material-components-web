@@ -153,5 +153,3 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
     }
   }
 }
-
-export default MDCDrawer;

@@ -143,5 +143,3 @@ export class MDCTab extends MDCComponent<MDCTabFoundation> implements RippleCapa
     this.root_.focus();
   }
 }
-
-export default MDCTab;

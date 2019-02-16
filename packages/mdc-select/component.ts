@@ -587,5 +587,3 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements Ripp
     this.validationObserver_ = observer;
   }
 }
-
-export default MDCSelect;

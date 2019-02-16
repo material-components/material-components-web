@@ -53,5 +53,3 @@ export class MDCTextFieldHelperText extends MDCComponent<MDCTextFieldHelperTextF
     return new MDCTextFieldHelperTextFoundation(adapter);
   }
 }
-
-export default MDCTextFieldHelperText;

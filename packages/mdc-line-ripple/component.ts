@@ -70,5 +70,3 @@ export class MDCLineRipple extends MDCComponent<MDCLineRippleFoundation> {
     return new MDCLineRippleFoundation(adapter);
   }
 }
-
-export default MDCLineRipple;

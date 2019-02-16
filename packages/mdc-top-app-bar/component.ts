@@ -116,5 +116,3 @@ export class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
     return foundation;
   }
 }
-
-export default MDCTopAppBar;

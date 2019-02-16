@@ -22,8 +22,6 @@
  */
 
 import * as util from './util';
-
-export {MDCMenuSurface as default} from './component';
 export {Corner, CornerBit} from './constants';
 export {util};
 export * from './adapter';

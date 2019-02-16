@@ -172,5 +172,3 @@ export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
     return null;
   }
 }
-
-export default MDCTabBar;

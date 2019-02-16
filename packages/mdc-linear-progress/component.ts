@@ -68,5 +68,3 @@ export class MDCLinearProgress extends MDCComponent<MDCLinearProgressFoundation>
     return new MDCLinearProgressFoundation(adapter);
   }
 }
-
-export default MDCLinearProgress;

@@ -54,5 +54,3 @@ export class MDCSelectIcon extends MDCComponent<MDCSelectIconFoundation> {
     return new MDCSelectIconFoundation(adapter);
   }
 }
-
-export default MDCSelectIcon;

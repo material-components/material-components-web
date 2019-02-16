@@ -52,5 +52,3 @@ export class MDCGridList extends MDCComponent<MDCGridListFoundation> {
     return new MDCGridListFoundation(adapter);
   }
 }
-
-export default MDCGridList;

@@ -22,8 +22,6 @@
  */
 
 import * as util from './util';
-
-export {MDCSnackbar as default} from './component';
 export {util};
 export * from './adapter';
 export * from './component';

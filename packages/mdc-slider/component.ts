@@ -184,5 +184,3 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
     return isNumeric ? num : defaultValue;
   }
 }
-
-export default MDCSlider;

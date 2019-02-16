@@ -211,5 +211,3 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
     return new MDCMenuSurfaceFoundation(adapter);
   }
 }
-
-export default MDCMenuSurface;

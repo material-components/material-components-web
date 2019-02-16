@@ -53,5 +53,3 @@ export class MDCSelectHelperText extends MDCComponent<MDCSelectHelperTextFoundat
     return new MDCSelectHelperTextFoundation(adapter);
   }
 }
-
-export default MDCSelectHelperText;

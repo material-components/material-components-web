@@ -110,5 +110,3 @@ export class MDCRadio extends MDCComponent<MDCRadioFoundation> implements Ripple
     return el;
   }
 }
-
-export default MDCRadio;

@@ -168,5 +168,3 @@ export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
     return Boolean(ponyfill.closest(target, DISMISS_SELECTOR));
   }
 }
-
-export default MDCSnackbar;

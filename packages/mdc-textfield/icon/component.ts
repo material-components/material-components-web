@@ -54,5 +54,3 @@ export class MDCTextFieldIcon extends MDCComponent<MDCTextFieldIconFoundation> {
     return new MDCTextFieldIconFoundation(adapter);
   }
 }
-
-export default MDCTextFieldIcon;

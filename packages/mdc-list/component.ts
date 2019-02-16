@@ -260,5 +260,3 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
     this.foundation_.handleClick(index, toggleCheckbox);
   }
 }
-
-export default MDCList;
