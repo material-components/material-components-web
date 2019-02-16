@@ -22,25 +22,36 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {EventType, SpecificEventListener} from '@material/base/types';
 import * as ponyfill from '@material/dom/ponyfill';
 import {MDCFloatingLabel, MDCFloatingLabelFactory} from '@material/floating-label/index';
 import {MDCLineRipple, MDCLineRippleFactory} from '@material/line-ripple/index';
 import {MDCNotchedOutline, MDCNotchedOutlineFactory} from '@material/notched-outline/index';
+import {MDCRippleAdapter} from '@material/ripple/adapter';
 import {MDCRipple, MDCRippleFactory} from '@material/ripple/component';
 import {MDCRippleFoundation} from '@material/ripple/foundation';
 import {RippleCapableSurface} from '@material/ripple/types';
 import {
+  MDCTextFieldAdapter,
+  MDCTextFieldInputAdapter,
+  MDCTextFieldLabelAdapter,
+  MDCTextFieldLineRippleAdapter,
+  MDCTextFieldOutlineAdapter,
+  MDCTextFieldRootAdapter,
+} from './adapter';
+import {
   MDCTextFieldCharacterCounter,
   MDCTextFieldCharacterCounterFactory,
   MDCTextFieldCharacterCounterFoundation,
-} from './character-counter';
+} from './character-counter/index';
 import {cssClasses, strings} from './constants';
 import {MDCTextFieldFoundation} from './foundation';
-import {MDCTextFieldHelperText, MDCTextFieldHelperTextFactory, MDCTextFieldHelperTextFoundation} from './helper-text';
-import {MDCTextFieldIcon, MDCTextFieldIconFactory} from './icon';
+import {
+  MDCTextFieldHelperText,
+  MDCTextFieldHelperTextFactory,
+  MDCTextFieldHelperTextFoundation,
+} from './helper-text/index';
+import {MDCTextFieldIcon, MDCTextFieldIconFactory} from './icon/index';
 import {MDCTextFieldFoundationMap} from './types';
-import {MDCRippleAdapter} from '@material/ripple';
 
 class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements RippleCapableSurface {
   static attachTo(root: Element): MDCTextField {
@@ -329,46 +340,65 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
   }
 
   getDefaultFoundation(): MDCTextFieldFoundation {
-    return new MDCTextFieldFoundation({
-      ...({
-        // tslint:disable:object-literal-sort-keys
-        addClass: (className) => this.root_.classList.add(className),
-        removeClass: (className) => this.root_.classList.remove(className),
-        hasClass: (className) => this.root_.classList.contains(className),
-        registerTextFieldInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
-        deregisterTextFieldInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
-        registerValidationAttributeChangeHandler: (handler) => {
-          const getAttributesList = (mutationsList: MutationRecord[]): string[] => {
-            return mutationsList
-              .map((mutation) => mutation.attributeName)
-              .filter((attributeName) => attributeName) as string[];
-          };
-          const observer = new MutationObserver((mutationsList) => handler(getAttributesList(mutationsList)));
-          const config = {attributes: true};
-          observer.observe(this.input_, config);
-          return observer;
-        },
-        deregisterValidationAttributeChangeHandler: (observer) => observer.disconnect(),
-        isFocused: () => document.activeElement === this.input_,
-        // tslint:enable:object-literal-sort-keys
-      }),
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // tslint:disable:object-literal-sort-keys
+    const adapter: MDCTextFieldAdapter = {
+      ...this.getRootAdapterMethods_(),
       ...this.getInputAdapterMethods_(),
       ...this.getLabelAdapterMethods_(),
       ...this.getLineRippleAdapterMethods_(),
       ...this.getOutlineAdapterMethods_(),
-    }, this.getFoundationMap_());
+    };
+    // tslint:enable:object-literal-sort-keys
+    return new MDCTextFieldFoundation(adapter, this.getFoundationMap_());
   }
 
-  private getLabelAdapterMethods_() {
+  private getRootAdapterMethods_(): MDCTextFieldRootAdapter {
+    // tslint:disable:object-literal-sort-keys
     return {
-      floatLabel: (shouldFloat: boolean) => this.label_ && this.label_.float(shouldFloat),
+      addClass: (className) => this.root_.classList.add(className),
+      removeClass: (className) => this.root_.classList.remove(className),
+      hasClass: (className) => this.root_.classList.contains(className),
+      registerTextFieldInteractionHandler: (evtType, handler) => this.listen(evtType, handler),
+      deregisterTextFieldInteractionHandler: (evtType, handler) => this.unlisten(evtType, handler),
+      registerValidationAttributeChangeHandler: (handler) => {
+        const getAttributesList = (mutationsList: MutationRecord[]): string[] => {
+          return mutationsList
+            .map((mutation) => mutation.attributeName)
+            .filter((attributeName) => attributeName) as string[];
+        };
+        const observer = new MutationObserver((mutationsList) => handler(getAttributesList(mutationsList)));
+        const config = {attributes: true};
+        observer.observe(this.input_, config);
+        return observer;
+      },
+      deregisterValidationAttributeChangeHandler: (observer) => observer.disconnect(),
+    };
+    // tslint:enable:object-literal-sort-keys
+  }
+
+  private getInputAdapterMethods_(): MDCTextFieldInputAdapter {
+    // tslint:disable:object-literal-sort-keys
+    return {
+      getNativeInput: () => this.input_,
+      isFocused: () => document.activeElement === this.input_,
+      registerInputInteractionHandler: (evtType, handler) => this.input_.addEventListener(evtType, handler),
+      deregisterInputInteractionHandler: (evtType, handler) => this.input_.removeEventListener(evtType, handler),
+    };
+    // tslint:enable:object-literal-sort-keys
+  }
+
+  private getLabelAdapterMethods_(): MDCTextFieldLabelAdapter {
+    return {
+      floatLabel: (shouldFloat) => this.label_ && this.label_.float(shouldFloat),
       getLabelWidth: () => this.label_ ? this.label_.getWidth() : 0,
       hasLabel: () => Boolean(this.label_),
-      shakeLabel: (shouldShake: boolean) => this.label_ && this.label_.shake(shouldShake),
+      shakeLabel: (shouldShake) => this.label_ && this.label_.shake(shouldShake),
     };
   }
 
-  private getLineRippleAdapterMethods_() {
+  private getLineRippleAdapterMethods_(): MDCTextFieldLineRippleAdapter {
     return {
       activateLineRipple: () => {
         if (this.lineRipple_) {
@@ -380,7 +410,7 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
           this.lineRipple_.deactivate();
         }
       },
-      setLineRippleTransformOrigin: (normalizedX: number) => {
+      setLineRippleTransformOrigin: (normalizedX) => {
         if (this.lineRipple_) {
           this.lineRipple_.setRippleCenter(normalizedX);
         }
@@ -388,26 +418,12 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
     };
   }
 
-  private getOutlineAdapterMethods_() {
+  private getOutlineAdapterMethods_(): MDCTextFieldOutlineAdapter {
     return {
       closeOutline: () => this.outline_ && this.outline_.closeNotch(),
       hasOutline: () => Boolean(this.outline_),
-      notchOutline: (labelWidth: number) => this.outline_ && this.outline_.notch(labelWidth),
+      notchOutline: (labelWidth) => this.outline_ && this.outline_.notch(labelWidth),
     };
-  }
-
-  private getInputAdapterMethods_() {
-    // tslint:disable:object-literal-sort-keys
-    return {
-      registerInputInteractionHandler: <E extends EventType>(evtType: E, handler: SpecificEventListener<E>) => {
-        this.input_.addEventListener(evtType, handler);
-      },
-      deregisterInputInteractionHandler: <E extends EventType>(evtType: E, handler: SpecificEventListener<E>) => {
-        this.input_.removeEventListener(evtType, handler);
-      },
-      getNativeInput: () => this.input_,
-    };
-    // tslint:enable:object-literal-sort-keys
   }
 
   /**
@@ -422,7 +438,7 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
     };
   }
 
-  private initRipple_(rippleFactory: MDCRippleFactory) {
+  private initRipple_(rippleFactory: MDCRippleFactory): MDCRipple | null {
     const isTextArea = this.root_.classList.contains(cssClasses.TEXTAREA);
     const isOutlined = this.root_.classList.contains(cssClasses.OUTLINED);
 

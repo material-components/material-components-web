@@ -95,7 +95,7 @@ class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCSelectio
     this.foundation_.setDisabled(disabled);
   }
 
-  private initRipple_() {
+  private initRipple_(): MDCRipple {
     const {RIPPLE_SURFACE_SELECTOR} = MDCSwitchFoundation.strings;
     const rippleSurface = this.root_.querySelector(RIPPLE_SURFACE_SELECTOR) as HTMLElement;
 

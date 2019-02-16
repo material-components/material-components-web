@@ -31,7 +31,15 @@ import {MDCTextFieldNativeInputElement} from './types';
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-export interface MDCTextFieldAdapter {
+export interface MDCTextFieldAdapter extends
+  MDCTextFieldRootAdapter,
+  MDCTextFieldInputAdapter,
+  MDCTextFieldLabelAdapter,
+  MDCTextFieldLineRippleAdapter,
+  MDCTextFieldOutlineAdapter {
+}
+
+export interface MDCTextFieldRootAdapter {
   /**
    * Adds a class to the root Element.
    */
@@ -58,16 +66,6 @@ export interface MDCTextFieldAdapter {
   deregisterTextFieldInteractionHandler<E extends EventType>(evtType: E, handler: SpecificEventListener<E>): void;
 
   /**
-   * Registers an event listener on the native input element for a given event.
-   */
-  registerInputInteractionHandler<E extends EventType>(evtType: E, handler: SpecificEventListener<E>): void;
-
-  /**
-   * Deregisters an event listener on the native input element for a given event.
-   */
-  deregisterInputInteractionHandler<E extends EventType>(evtType: E, handler: SpecificEventListener<E>): void;
-
-  /**
    * Registers a validation attribute change listener on the input element.
    * Handler accepts list of attribute names.
    */
@@ -77,7 +75,9 @@ export interface MDCTextFieldAdapter {
    * Disconnects a validation attribute observer on the input element.
    */
   deregisterValidationAttributeChangeHandler(observer: MutationObserver): void;
+}
 
+export interface MDCTextFieldInputAdapter {
   /**
    * @return The native `<input>` element, or an object with the same shape.
    * Note that this method can return null, which the foundation will handle gracefully.
@@ -90,20 +90,17 @@ export interface MDCTextFieldAdapter {
   isFocused(): boolean;
 
   /**
-   * Activates the line ripple.
+   * Registers an event listener on the native input element for a given event.
    */
-  activateLineRipple(): void;
+  registerInputInteractionHandler<E extends EventType>(evtType: E, handler: SpecificEventListener<E>): void;
 
   /**
-   * Deactivates the line ripple.
+   * Deregisters an event listener on the native input element for a given event.
    */
-  deactivateLineRipple(): void;
+  deregisterInputInteractionHandler<E extends EventType>(evtType: E, handler: SpecificEventListener<E>): void;
+}
 
-  /**
-   * Sets the transform origin of the line ripple.
-   */
-  setLineRippleTransformOrigin(normalizedX: number): void;
-
+export interface MDCTextFieldLabelAdapter {
   /**
    * Only implement if label exists.
    * Shakes label if shouldShake is true.
@@ -126,7 +123,26 @@ export interface MDCTextFieldAdapter {
    * @return width of label in pixels.
    */
   getLabelWidth(): number;
+}
 
+export interface MDCTextFieldLineRippleAdapter {
+  /**
+   * Activates the line ripple.
+   */
+  activateLineRipple(): void;
+
+  /**
+   * Deactivates the line ripple.
+   */
+  deactivateLineRipple(): void;
+
+  /**
+   * Sets the transform origin of the line ripple.
+   */
+  setLineRippleTransformOrigin(normalizedX: number): void;
+}
+
+export interface MDCTextFieldOutlineAdapter {
   /**
    * @return true if outline element exists, false if it doesn't.
    */
