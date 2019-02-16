@@ -26,7 +26,7 @@ import td from 'testdouble';
 import {captureHandlers} from '../helpers/foundation';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
-import MDCTopAppBarBaseFoundation from '../../../packages/mdc-top-app-bar/foundation';
+import {MDCTopAppBarBaseFoundation} from '../../../packages/mdc-top-app-bar/foundation';
 import {cssClasses, numbers, strings} from '../../../packages/mdc-top-app-bar/constants';
 
 suite('MDCTopAppBarBaseFoundation');

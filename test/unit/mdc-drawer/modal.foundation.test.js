@@ -22,7 +22,7 @@
  */
 
 import td from 'testdouble';
-import MDCModalDrawerFoundation from '../../../packages/mdc-drawer/modal/foundation';
+import {MDCModalDrawerFoundation} from '../../../packages/mdc-drawer/modal/foundation';
 
 suite('MDCModalDrawerFoundation');
 

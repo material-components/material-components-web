@@ -25,8 +25,8 @@ import {assert} from 'chai';
 import td from 'testdouble';
 
 import {setupFoundationTest} from '../helpers/setup';
-import MDCTabScrollerFoundation from '../../../packages/mdc-tab-scroller/foundation';
-import MDCTabScrollerRTLDefault from '../../../packages/mdc-tab-scroller/rtl-default-scroller';
+import {MDCTabScrollerFoundation} from '../../../packages/mdc-tab-scroller/foundation';
+import {MDCTabScrollerRTLDefault} from '../../../packages/mdc-tab-scroller/rtl-default-scroller';
 
 suite('MDCTabScrollerRTLDefault');
 

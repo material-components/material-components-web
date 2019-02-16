@@ -26,7 +26,7 @@ import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
-import MDCTextFieldIconFoundation from '../../../packages/mdc-textfield/icon/foundation';
+import {MDCTextFieldIconFoundation} from '../../../packages/mdc-textfield/icon/foundation';
 import {strings} from '../../../packages/mdc-textfield/icon/constants';
 
 suite('MDCTextFieldIconFoundation');
