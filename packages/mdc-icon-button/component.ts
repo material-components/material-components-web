@@ -39,11 +39,11 @@ export class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundat
 
   initialSyncWithDOM() {
     this.handleClick_ = () => this.foundation_.handleClick();
-    this.root_.addEventListener('click', this.handleClick_);
+    this.listen('click', this.handleClick_);
   }
 
   destroy() {
-    this.root_.removeEventListener('click', this.handleClick_);
+    this.unlisten('click', this.handleClick_);
     this.ripple_.destroy();
     super.destroy();
   }

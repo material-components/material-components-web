@@ -22,7 +22,7 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {CustomEventListener, EventType, SpecificEventListener} from '@material/base/types';
+import {CustomEventListener, SpecificEventListener} from '@material/base/types';
 import {MDCFloatingLabel, MDCFloatingLabelFactory} from '@material/floating-label/index';
 import {MDCLineRipple, MDCLineRippleFactory} from '@material/line-ripple/index';
 import * as menuSurfaceConstants from '@material/menu-surface/constants';
@@ -370,12 +370,8 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
     // tslint:disable:object-literal-sort-keys
     const adapter: MDCRippleAdapter = {
       ...MDCRipple.createAdapter(this),
-      registerInteractionHandler: <E extends EventType>(evtType: E, handler: SpecificEventListener<E>) => {
-        this.targetElement_.addEventListener(evtType, handler);
-      },
-      deregisterInteractionHandler: <E extends EventType>(evtType: E, handler: SpecificEventListener<E>) => {
-        this.targetElement_.removeEventListener(evtType, handler);
-      },
+      registerInteractionHandler: (evtType, handler) => this.targetElement_.addEventListener(evtType, handler),
+      deregisterInteractionHandler: (evtType, handler) => this.targetElement_.removeEventListener(evtType, handler),
     };
     // tslint:enable:object-literal-sort-keys
     return new MDCRipple(this.root_, new MDCRippleFoundation(adapter));

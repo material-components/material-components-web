@@ -68,15 +68,15 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
     this.registerBodyClickListener_ = () => document.body.addEventListener('click', this.handleBodyClick_);
     this.deregisterBodyClickListener_ = () => document.body.removeEventListener('click', this.handleBodyClick_);
 
-    this.root_.addEventListener('keydown', this.handleKeydown_);
-    this.root_.addEventListener(strings.OPENED_EVENT, this.registerBodyClickListener_);
-    this.root_.addEventListener(strings.CLOSED_EVENT, this.deregisterBodyClickListener_);
+    this.listen('keydown', this.handleKeydown_);
+    this.listen(strings.OPENED_EVENT, this.registerBodyClickListener_);
+    this.listen(strings.CLOSED_EVENT, this.deregisterBodyClickListener_);
   }
 
   destroy() {
-    this.root_.removeEventListener('keydown', this.handleKeydown_);
-    this.root_.removeEventListener(strings.OPENED_EVENT, this.registerBodyClickListener_);
-    this.root_.removeEventListener(strings.CLOSED_EVENT, this.deregisterBodyClickListener_);
+    this.unlisten('keydown', this.handleKeydown_);
+    this.unlisten(strings.OPENED_EVENT, this.registerBodyClickListener_);
+    this.unlisten(strings.CLOSED_EVENT, this.deregisterBodyClickListener_);
     super.destroy();
   }
 

@@ -63,8 +63,8 @@ class MDCLineRipple extends MDCComponent<MDCLineRippleFoundation> {
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
       setStyle: (propertyName, value) => (this.root_ as HTMLElement).style.setProperty(propertyName, value),
-      registerEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
-      deregisterEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
+      registerEventHandler: (evtType, handler) => this.listen(evtType, handler),
+      deregisterEventHandler: (evtType, handler) => this.unlisten(evtType, handler),
     };
     // tslint:enable:object-literal-sort-keys
     return new MDCLineRippleFoundation(adapter);

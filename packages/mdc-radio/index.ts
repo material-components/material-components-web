@@ -22,7 +22,6 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {EventType, SpecificEventListener} from '@material/base/types';
 import {MDCRipple, MDCRippleAdapter, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
 import {MDCSelectionControl} from '@material/selection-control/index';
 
@@ -86,17 +85,17 @@ class MDCRadio extends MDCComponent<MDCRadioFoundation> implements RippleCapable
   private initRipple_(): MDCRipple {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // tslint:disable:object-literal-sort-keys
     const adapter: MDCRippleAdapter = {
       ...MDCRipple.createAdapter(this),
-      deregisterInteractionHandler: <K extends EventType>(evtType: K, handler: SpecificEventListener<K>) =>
-        this.nativeControl_.removeEventListener(evtType, handler),
-      // Radio buttons technically go "active" whenever there is *any* keyboard interaction. This is not the
-      // UI we desire.
+      registerInteractionHandler: (evtType, handler) => this.nativeControl_.addEventListener(evtType, handler),
+      deregisterInteractionHandler: (evtType, handler) => this.nativeControl_.removeEventListener(evtType, handler),
+      // Radio buttons technically go "active" whenever there is *any* keyboard interaction.
+      // This is not the UI we desire.
       isSurfaceActive: () => false,
       isUnbounded: () => true,
-      registerInteractionHandler: <K extends EventType>(evtType: K, handler: SpecificEventListener<K>) =>
-        this.nativeControl_.addEventListener(evtType, handler),
     };
+    // tslint:enable:object-literal-sort-keys
     return new MDCRipple(this.root_, new MDCRippleFoundation(adapter));
   }
 

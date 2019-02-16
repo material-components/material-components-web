@@ -98,8 +98,8 @@ class MDCSlider extends MDCComponent<MDCSliderFoundation> {
       removeAttribute: (name) => this.root_.removeAttribute(name),
       computeBoundingRect: () => this.root_.getBoundingClientRect(),
       getTabIndex: () => this.root_.tabIndex,
-      registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
-      deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
+      registerInteractionHandler: (evtType, handler) => this.listen(evtType, handler),
+      deregisterInteractionHandler: (evtType, handler) => this.unlisten(evtType, handler),
       registerThumbContainerInteractionHandler: (evtType, handler) => {
         this.thumbContainer_.addEventListener(evtType, handler);
       },

@@ -80,8 +80,8 @@ export class MDCTab extends MDCComponent<MDCTabFoundation> {
     const adapter: MDCTabAdapter = {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-      registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
-      deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
+      registerInteractionHandler: (type, handler) => this.listen(type, handler),
+      deregisterInteractionHandler: (type, handler) => this.unlisten(type, handler),
       getOffsetWidth: () => this.root_.offsetWidth,
       getOffsetLeft: () => this.root_.offsetLeft,
       notifySelected: () =>
