@@ -59,6 +59,7 @@ function _emit<T extends object>(evtType: string, evtData: T, shouldBubble = fal
 /**
  * Auto-initializes all MDC components on a page.
  */
+
 export function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
   const components = [];
   const nodes: Element[] = [].slice.call(root.querySelectorAll('[data-mdc-auto-init]'));
