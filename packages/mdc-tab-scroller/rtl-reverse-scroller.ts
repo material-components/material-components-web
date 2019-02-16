@@ -68,4 +68,4 @@ export class MDCTabScrollerRTLReverse extends MDCTabScrollerRTL {
   }
 }
 
-export default MDCTabScrollerRTLReverse;
+export default MDCTabScrollerRTLReverse; // For backward compatibility

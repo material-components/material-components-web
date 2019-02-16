@@ -44,4 +44,4 @@ export abstract class MDCTabScrollerRTL {
   abstract getAnimatingScrollPosition(scrollX: number, translateX: number): number;
 }
 
-export default MDCTabScrollerRTL;
+export default MDCTabScrollerRTL; // For backward compatibility

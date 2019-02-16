@@ -70,4 +70,4 @@ export class MDCTabScrollerRTLDefault extends MDCTabScrollerRTL {
   }
 }
 
-export default MDCTabScrollerRTLDefault;
+export default MDCTabScrollerRTLDefault; // For backward compatibility
