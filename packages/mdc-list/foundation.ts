@@ -32,7 +32,7 @@ function isNumberArray(selectedIndex: MDCListIndex): selectedIndex is number[] {
   return selectedIndex instanceof Array;
 }
 
-class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
+export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   static get strings() {
     return strings;
   }
@@ -430,4 +430,4 @@ class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   }
 }
 
-export {MDCListFoundation as default, MDCListFoundation};
+export default MDCListFoundation;

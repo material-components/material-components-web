@@ -25,7 +25,7 @@ import {MDCFoundation} from '@material/base/foundation';
 import {MDCRadioAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-class MDCRadioFoundation extends MDCFoundation<MDCRadioAdapter> {
+export class MDCRadioFoundation extends MDCFoundation<MDCRadioAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
@@ -53,4 +53,4 @@ class MDCRadioFoundation extends MDCFoundation<MDCRadioAdapter> {
   }
 }
 
-export {MDCRadioFoundation as default, MDCRadioFoundation};
+export default MDCRadioFoundation;

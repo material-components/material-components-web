@@ -27,7 +27,7 @@ import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
 import {MDCMenuAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
+export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
@@ -137,4 +137,4 @@ class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
   }
 }
 
-export {MDCMenuFoundation as default, MDCMenuFoundation};
+export default MDCMenuFoundation;

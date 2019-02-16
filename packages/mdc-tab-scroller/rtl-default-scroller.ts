@@ -24,7 +24,7 @@
 import {MDCTabScrollerRTL} from './rtl-scroller';
 import {MDCTabScrollerAnimation, MDCTabScrollerHorizontalEdges} from './types';
 
-class MDCTabScrollerRTLDefault extends MDCTabScrollerRTL {
+export class MDCTabScrollerRTLDefault extends MDCTabScrollerRTL {
   getScrollPositionRTL(): number {
     const currentScrollLeft = this.adapter_.getScrollAreaScrollLeft();
     const {right} = this.calculateScrollEdges_();
@@ -70,4 +70,4 @@ class MDCTabScrollerRTLDefault extends MDCTabScrollerRTL {
   }
 }
 
-export {MDCTabScrollerRTLDefault as default, MDCTabScrollerRTLDefault};
+export default MDCTabScrollerRTLDefault;

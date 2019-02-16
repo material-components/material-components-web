@@ -25,7 +25,7 @@ import {MDCFoundation} from '@material/base/foundation';
 import {MDCTabIndicatorAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-abstract class MDCTabIndicatorFoundation extends MDCFoundation<MDCTabIndicatorAdapter> {
+export abstract class MDCTabIndicatorFoundation extends MDCFoundation<MDCTabIndicatorAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
@@ -57,4 +57,4 @@ abstract class MDCTabIndicatorFoundation extends MDCFoundation<MDCTabIndicatorAd
   abstract deactivate(): void;
 }
 
-export {MDCTabIndicatorFoundation as default, MDCTabIndicatorFoundation};
+export default MDCTabIndicatorFoundation;

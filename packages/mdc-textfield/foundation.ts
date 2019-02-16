@@ -36,7 +36,7 @@ type InteractionEventType = 'click' | 'keydown';
 const POINTERDOWN_EVENTS: PointerDownEventType[] = ['mousedown', 'touchstart'];
 const INTERACTION_EVENTS: InteractionEventType[] = ['click', 'keydown'];
 
-class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
+export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
@@ -483,4 +483,4 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   }
 }
 
-export {MDCTextFieldFoundation as default, MDCTextFieldFoundation};
+export default MDCTextFieldFoundation;

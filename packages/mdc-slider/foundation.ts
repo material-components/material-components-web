@@ -56,7 +56,7 @@ const KEY_IDS = {
   PAGE_UP: 'PageUp',
 };
 
-class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
+export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
@@ -545,4 +545,4 @@ class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   }
 }
 
-export {MDCSliderFoundation as default, MDCSliderFoundation};
+export default MDCSliderFoundation;

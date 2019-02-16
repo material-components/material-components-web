@@ -30,7 +30,7 @@ type InteractionEventType = 'click' | 'keydown';
 
 const INTERACTION_EVENTS: InteractionEventType[] = ['click', 'keydown'];
 
-class MDCSelectIconFoundation extends MDCFoundation<MDCSelectIconAdapter> {
+export class MDCSelectIconFoundation extends MDCFoundation<MDCSelectIconAdapter> {
   static get strings() {
     return strings;
   }
@@ -107,4 +107,4 @@ class MDCSelectIconFoundation extends MDCFoundation<MDCSelectIconAdapter> {
   }
 }
 
-export {MDCSelectIconFoundation as default, MDCSelectIconFoundation};
+export default MDCSelectIconFoundation;

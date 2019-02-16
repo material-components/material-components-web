@@ -30,7 +30,7 @@ import {MDCTabScrollerRTLReverse} from './rtl-reverse-scroller';
 import {MDCTabScrollerRTL} from './rtl-scroller';
 import {MDCTabScrollerAnimation, MDCTabScrollerHorizontalEdges} from './types';
 
-class MDCTabScrollerFoundation extends MDCFoundation<MDCTabScrollerAdapter> {
+export class MDCTabScrollerFoundation extends MDCFoundation<MDCTabScrollerAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
@@ -361,4 +361,4 @@ class MDCTabScrollerFoundation extends MDCFoundation<MDCTabScrollerAdapter> {
   }
 }
 
-export {MDCTabScrollerFoundation as default, MDCTabScrollerFoundation};
+export default MDCTabScrollerFoundation;

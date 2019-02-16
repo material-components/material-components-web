@@ -44,7 +44,7 @@ KEYCODE_MAP.set(numbers.HOME_KEYCODE, strings.HOME_KEY);
 KEYCODE_MAP.set(numbers.ENTER_KEYCODE, strings.ENTER_KEY);
 KEYCODE_MAP.set(numbers.SPACE_KEYCODE, strings.SPACE_KEY);
 
-class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
+export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
   static get strings() {
     return strings;
   }
@@ -414,4 +414,4 @@ class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
   }
 }
 
-export {MDCTabBarFoundation as default, MDCTabBarFoundation};
+export default MDCTabBarFoundation;

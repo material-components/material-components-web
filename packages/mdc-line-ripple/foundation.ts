@@ -26,7 +26,7 @@ import {SpecificEventListener} from '@material/base/types';
 import {MDCLineRippleAdapter} from './adapter';
 import {cssClasses} from './constants';
 
-class MDCLineRippleFoundation extends MDCFoundation<MDCLineRippleAdapter> {
+export class MDCLineRippleFoundation extends MDCFoundation<MDCLineRippleAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
@@ -90,4 +90,4 @@ class MDCLineRippleFoundation extends MDCFoundation<MDCLineRippleAdapter> {
   }
 }
 
-export {MDCLineRippleFoundation as default, MDCLineRippleFoundation};
+export default MDCLineRippleFoundation;

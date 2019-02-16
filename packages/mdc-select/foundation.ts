@@ -28,7 +28,7 @@ import {MDCSelectHelperTextFoundation} from './helper-text/foundation';
 import {MDCSelectIconFoundation} from './icon/foundation';
 import {MDCSelectFoundationMap} from './types';
 
-class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
+export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
@@ -262,4 +262,4 @@ class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   }
 }
 
-export {MDCSelectFoundation as default, MDCSelectFoundation};
+export default MDCSelectFoundation;

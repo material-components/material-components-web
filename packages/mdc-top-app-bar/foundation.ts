@@ -26,7 +26,7 @@ import {SpecificEventListener} from '@material/base/types';
 import {MDCTopAppBarAdapter} from './adapter';
 import {cssClasses, numbers, strings} from './constants';
 
-class MDCTopAppBarBaseFoundation extends MDCFoundation<MDCTopAppBarAdapter> {
+export class MDCTopAppBarBaseFoundation extends MDCFoundation<MDCTopAppBarAdapter> {
   static get strings() {
     return strings;
   }
@@ -111,4 +111,4 @@ class MDCTopAppBarBaseFoundation extends MDCFoundation<MDCTopAppBarAdapter> {
   }
 }
 
-export {MDCTopAppBarBaseFoundation as default, MDCTopAppBarBaseFoundation};
+export default MDCTopAppBarBaseFoundation;

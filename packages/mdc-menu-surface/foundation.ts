@@ -35,7 +35,7 @@ interface AutoLayoutMeasurements {
   windowScroll: MenuPoint;
 }
 
-class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
+export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
@@ -500,4 +500,4 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
   }
 }
 
-export {MDCMenuSurfaceFoundation as default, MDCMenuSurfaceFoundation};
+export default MDCMenuSurfaceFoundation;
