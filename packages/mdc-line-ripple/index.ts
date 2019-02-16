@@ -25,6 +25,8 @@ import {MDCComponent} from '@material/base/component';
 import {MDCLineRippleAdapter} from './adapter';
 import {MDCLineRippleFoundation} from './foundation';
 
+export type MDCLineRippleFactory = (el: Element, foundation?: MDCLineRippleFoundation) => MDCLineRipple;
+
 class MDCLineRipple extends MDCComponent<MDCLineRippleFoundation> {
   static attachTo(root: Element): MDCLineRipple {
     return new MDCLineRipple(root);

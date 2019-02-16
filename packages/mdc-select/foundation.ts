@@ -26,7 +26,7 @@ import {MDCSelectAdapter} from './adapter';
 import {cssClasses, numbers, strings} from './constants';
 import {MDCSelectHelperTextFoundation} from './helper-text/foundation';
 import {MDCSelectIconFoundation} from './icon/foundation';
-import {FoundationMapType} from './types';
+import {MDCSelectFoundationMap} from './types';
 
 class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   static get cssClasses() {
@@ -80,7 +80,7 @@ class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
    * @param adapter
    * @param foundationMap Map from subcomponent names to their subfoundations.
    */
-  constructor(adapter?: Partial<MDCSelectAdapter>, foundationMap: Partial<FoundationMapType> = {}) {
+  constructor(adapter?: Partial<MDCSelectAdapter>, foundationMap: Partial<MDCSelectFoundationMap> = {}) {
     super({...MDCSelectFoundation.defaultAdapter, ...adapter});
 
     this.leadingIcon_ = foundationMap.leadingIcon;

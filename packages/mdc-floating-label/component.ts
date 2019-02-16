@@ -25,7 +25,7 @@ import {MDCComponent} from '@material/base/component';
 import {MDCFloatingLabelAdapter} from './adapter';
 import {MDCFloatingLabelFoundation} from './foundation';
 
-export type MDCFloatingLabelFactory = (root: Element, foundation?: MDCFloatingLabelFoundation) => MDCFloatingLabel;
+export type MDCFloatingLabelFactory = (el: Element, foundation?: MDCFloatingLabelFoundation) => MDCFloatingLabel;
 
 export class MDCFloatingLabel extends MDCComponent<MDCFloatingLabelFoundation> {
   static attachTo(root: Element): MDCFloatingLabel {
@@ -67,3 +67,5 @@ export class MDCFloatingLabel extends MDCComponent<MDCFloatingLabelFoundation> {
     return new MDCFloatingLabelFoundation(adapter);
   }
 }
+
+export default MDCFloatingLabel;

@@ -28,7 +28,7 @@ import {MDCRippleFoundation} from './foundation';
 import {RippleAttachOpts, RippleCapableSurface} from './types';
 import * as util from './util';
 
-export type MDCRippleFactory = (root: Element, foundation?: MDCRippleFoundation) => MDCRipple;
+export type MDCRippleFactory = (el: Element, foundation?: MDCRippleFoundation) => MDCRipple;
 
 export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements RippleCapableSurface {
   static attachTo(root: Element, opts: RippleAttachOpts = {isUnbounded: undefined}): MDCRipple {

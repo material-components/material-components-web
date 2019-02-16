@@ -24,27 +24,22 @@
 import {MDCComponent} from '@material/base/component';
 import {EventType, SpecificEventListener} from '@material/base/types';
 import * as ponyfill from '@material/dom/ponyfill';
-import {MDCFloatingLabel} from '@material/floating-label/index';
-import {MDCLineRipple} from '@material/line-ripple/index';
-import {MDCNotchedOutline} from '@material/notched-outline/index';
+import {MDCFloatingLabel, MDCFloatingLabelFactory} from '@material/floating-label/index';
+import {MDCLineRipple, MDCLineRippleFactory} from '@material/line-ripple/index';
+import {MDCNotchedOutline, MDCNotchedOutlineFactory} from '@material/notched-outline/index';
+import {MDCRipple, MDCRippleFactory} from '@material/ripple/component';
 import {MDCRippleFoundation} from '@material/ripple/foundation';
-import {MDCRipple} from '@material/ripple/index';
 import {RippleCapableSurface} from '@material/ripple/types';
-import {MDCTextFieldCharacterCounter, MDCTextFieldCharacterCounterFoundation} from './character-counter';
+import {
+  MDCTextFieldCharacterCounter,
+  MDCTextFieldCharacterCounterFactory,
+  MDCTextFieldCharacterCounterFoundation,
+} from './character-counter';
 import {cssClasses, strings} from './constants';
 import {MDCTextFieldFoundation} from './foundation';
-import {MDCTextFieldHelperText, MDCTextFieldHelperTextFoundation} from './helper-text';
-import {MDCTextFieldIcon} from './icon';
-import {
-  CharacterCounterFactory,
-  FoundationMapType,
-  HelperTextFactory,
-  IconFactory,
-  LabelFactory,
-  LineRippleFactory,
-  OutlineFactory,
-  RippleFactory,
-} from './types';
+import {MDCTextFieldHelperText, MDCTextFieldHelperTextFactory, MDCTextFieldHelperTextFoundation} from './helper-text';
+import {MDCTextFieldIcon, MDCTextFieldIconFactory} from './icon';
+import {MDCTextFieldFoundationMap} from './types';
 
 class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements RippleCapableSurface {
   static attachTo(root: Element): MDCTextField {
@@ -68,13 +63,13 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
   private trailingIcon_!: MDCTextFieldIcon | null; // assigned in initialize()
 
   initialize(
-      rippleFactory: RippleFactory = (el, foundation) => new MDCRipple(el, foundation),
-      lineRippleFactory: LineRippleFactory = (el) => new MDCLineRipple(el),
-      helperTextFactory: HelperTextFactory = (el) => new MDCTextFieldHelperText(el),
-      characterCounterFactory: CharacterCounterFactory = (el) => new MDCTextFieldCharacterCounter(el),
-      iconFactory: IconFactory = (el) => new MDCTextFieldIcon(el),
-      labelFactory: LabelFactory = (el) => new MDCFloatingLabel(el),
-      outlineFactory: OutlineFactory = (el) => new MDCNotchedOutline(el),
+      rippleFactory: MDCRippleFactory = (el, foundation) => new MDCRipple(el, foundation),
+      lineRippleFactory: MDCLineRippleFactory = (el) => new MDCLineRipple(el),
+      helperTextFactory: MDCTextFieldHelperTextFactory = (el) => new MDCTextFieldHelperText(el),
+      characterCounterFactory: MDCTextFieldCharacterCounterFactory = (el) => new MDCTextFieldCharacterCounter(el),
+      iconFactory: MDCTextFieldIconFactory = (el) => new MDCTextFieldIcon(el),
+      labelFactory: MDCFloatingLabelFactory = (el) => new MDCFloatingLabel(el),
+      outlineFactory: MDCNotchedOutlineFactory = (el) => new MDCNotchedOutline(el),
   ) {
     this.input_ = this.root_.querySelector<HTMLInputElement>(strings.INPUT_SELECTOR)!;
 
@@ -428,7 +423,7 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
   /**
    * @return A map of all subcomponents to subfoundations.
    */
-  private getFoundationMap_(): Partial<FoundationMapType> {
+  private getFoundationMap_(): Partial<MDCTextFieldFoundationMap> {
     return {
       characterCounter: this.characterCounter_ ? this.characterCounter_.foundation : undefined,
       helperText: this.helperText_ ? this.helperText_.foundation : undefined,

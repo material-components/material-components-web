@@ -23,12 +23,9 @@
 
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
-import {MDCRipple} from '@material/ripple/index';
+import {MDCRipple} from '@material/ripple/component';
 import {MDCIconButtonToggleAdapter} from './adapter';
 import {MDCIconButtonToggleFoundation} from './foundation';
-
-export type MDCIconButtonToggleFactory =
-  (root: Element, foundation?: MDCIconButtonToggleFoundation) => MDCIconButtonToggle;
 
 export class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundation> {
   static attachTo(root: HTMLElement) {

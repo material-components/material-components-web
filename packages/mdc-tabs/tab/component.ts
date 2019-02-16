@@ -22,12 +22,12 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {MDCRipple} from '@material/ripple/index';
+import {MDCRipple} from '@material/ripple/component';
 import {MDCTabAdapter} from './adapter';
 import {cssClasses} from './constants';
 import {MDCTabFoundation} from './foundation';
 
-export type MDCTabFactory = (el: Element) => MDCTab;
+export type MDCTabFactory = (el: Element, foundation?: MDCTabFoundation) => MDCTab;
 
 export type MDCTabSelectedEvent = CustomEvent<MDCTabSelectedEventDetail>;
 

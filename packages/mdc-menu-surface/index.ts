@@ -22,7 +22,7 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {SpecificEventListener} from '@material/base/index';
+import {SpecificEventListener} from '@material/base/types';
 import {MDCMenuSurfaceAdapter} from './adapter';
 import {Corner, cssClasses, strings} from './constants';
 import {MDCMenuSurfaceFoundation} from './foundation';
@@ -30,6 +30,8 @@ import {MenuDistance} from './types';
 import * as util from './util';
 
 type RegisterFunction = () => void;
+
+export type MDCMenuSurfaceFactory = (el: Element, foundation?: MDCMenuSurfaceFoundation) => MDCMenuSurface;
 
 class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
   static attachTo(root: Element): MDCMenuSurface {

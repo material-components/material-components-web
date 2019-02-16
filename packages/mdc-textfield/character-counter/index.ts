@@ -25,6 +25,9 @@ import {MDCComponent} from '@material/base/component';
 import {MDCTextFieldCharacterCounterAdapter} from './adapter';
 import {MDCTextFieldCharacterCounterFoundation} from './foundation';
 
+export type MDCTextFieldCharacterCounterFactory =
+  (el: Element, foundation?: MDCTextFieldCharacterCounterFoundation) => MDCTextFieldCharacterCounter;
+
 class MDCTextFieldCharacterCounter extends MDCComponent<MDCTextFieldCharacterCounterFoundation> {
   static attachTo(root: Element): MDCTextFieldCharacterCounter {
     return new MDCTextFieldCharacterCounter(root);

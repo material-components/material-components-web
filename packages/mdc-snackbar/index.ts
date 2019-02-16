@@ -22,12 +22,12 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {SpecificEventListener} from '@material/base/index';
+import {SpecificEventListener} from '@material/base/types';
 import {ponyfill} from '@material/dom/index';
 import {MDCSnackbarAdapter} from './adapter';
 import {strings} from './constants';
 import {MDCSnackbarFoundation} from './foundation';
-import {Announcer, AnnouncerFactory} from './types';
+import {MDCSnackbarAnnouncer, MDCSnackbarAnnouncerFactory} from './types';
 import * as util from './util';
 
 const {
@@ -40,7 +40,7 @@ class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
     return new MDCSnackbar(root);
   }
 
-  private announce_!: Announcer; // assigned in initialize()
+  private announce_!: MDCSnackbarAnnouncer; // assigned in initialize()
 
   private actionEl_!: Element; // assigned in initialSyncWithDOM()
   private labelEl_!: Element; // assigned in initialSyncWithDOM()
@@ -49,7 +49,7 @@ class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
   private handleKeyDown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
   private handleSurfaceClick_!: SpecificEventListener<'click'>; // assigned in initialSyncWithDOM()
 
-  initialize(announcerFactory: AnnouncerFactory = () => util.announce) {
+  initialize(announcerFactory: MDCSnackbarAnnouncerFactory = () => util.announce) {
     this.announce_ = announcerFactory();
   }
 

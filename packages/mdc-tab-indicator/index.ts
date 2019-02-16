@@ -28,6 +28,8 @@ import {MDCFadingTabIndicatorFoundation} from './fading-foundation';
 import {MDCTabIndicatorFoundation} from './foundation';
 import {MDCSlidingTabIndicatorFoundation} from './sliding-foundation';
 
+export type MDCTabIndicatorFactory = (el: Element, foundation?: MDCTabIndicatorFoundation) => MDCTabIndicator;
+
 class MDCTabIndicator extends MDCComponent<MDCTabIndicatorFoundation> {
   static attachTo(root: Element): MDCTabIndicator {
     return new MDCTabIndicator(root);

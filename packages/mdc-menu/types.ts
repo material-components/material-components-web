@@ -21,9 +21,6 @@
  * THE SOFTWARE.
  */
 
-import {MDCList} from '@material/list/index';
-import {MDCMenuSurface} from '@material/menu-surface/index';
-
 export type MenuItemEvent = CustomEvent<MenuItemEventDetail>;
 export type DefaultMenuItemEvent = CustomEvent<DefaultMenuItemEventDetail>;
 
@@ -40,6 +37,3 @@ export interface MenuItemEventDetail {
 export interface DefaultMenuItemEventDetail extends MenuItemEventDetail {
   item: Element;
 }
-
-export type MenuSurfaceFactory = (root: Element) => MDCMenuSurface;
-export type ListFactory = (root: Element) => MDCList;

@@ -24,16 +24,14 @@
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
 import {closest, matches} from '@material/dom/ponyfill';
-import {MDCRipple} from '@material/ripple/index';
+import {MDCRipple} from '@material/ripple/component';
 import * as FocusTrapLib from 'focus-trap';
 import {MDCDialogAdapter} from './adapter';
 import {MDCDialogFoundation} from './foundation';
-import {FocusTrapFactory} from './types';
 import * as util from './util';
+import {MDCDialogFocusTrapFactory} from './util';
 
 const strings = MDCDialogFoundation.strings;
-
-export type MDCDialogFactory = (root: Element, foundation?: MDCDialogFoundation) => MDCDialog;
 
 export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   get isOpen() {
@@ -76,7 +74,7 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   private initialFocusEl_?: HTMLElement; // assigned in initialize()
 
   private focusTrap_!: FocusTrapLib.FocusTrap; // assigned in initialSyncWithDOM()
-  private focusTrapFactory_?: FocusTrapFactory; // assigned in initialize()
+  private focusTrapFactory_?: MDCDialogFocusTrapFactory; // assigned in initialize()
 
   private handleInteraction_!: SpecificEventListener<'click'|'keydown'>; // assigned in initialSyncWithDOM()
   private handleDocumentKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
@@ -85,7 +83,7 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   private handleClosing_!: () => void; // assigned in initialSyncWithDOM()
 
   initialize(
-    focusTrapFactory?: FocusTrapFactory,
+    focusTrapFactory?: MDCDialogFocusTrapFactory,
     initialFocusEl?: HTMLElement,
   ) {
     const container = this.root_.querySelector<HTMLElement>(strings.CONTAINER_SELECTOR);

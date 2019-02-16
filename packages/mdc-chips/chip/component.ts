@@ -48,7 +48,7 @@ export interface MDCChipInteractionEvent extends CustomEvent<MDCChipInteractionE
 export interface MDCChipSelectionEvent extends CustomEvent<MDCChipSelectionEventDetail> {}
 export interface MDCChipRemovalEvent extends CustomEvent<MDCChipRemovalEventDetail> {}
 
-export type MDCChipFactory = (root: Element, foundation?: MDCChipFoundation) => MDCChip;
+export type MDCChipFactory = (el: Element, foundation?: MDCChipFoundation) => MDCChip;
 
 export class MDCChip extends MDCComponent<MDCChipFoundation> implements RippleCapableSurface {
   /**

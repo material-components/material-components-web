@@ -25,6 +25,9 @@ import {MDCComponent} from '@material/base/component';
 import {MDCTextFieldHelperTextAdapter} from './adapter';
 import {MDCTextFieldHelperTextFoundation} from './foundation';
 
+export type MDCTextFieldHelperTextFactory =
+  (el: Element, foundation?: MDCTextFieldHelperTextFoundation) => MDCTextFieldHelperText;
+
 class MDCTextFieldHelperText extends MDCComponent<MDCTextFieldHelperTextFoundation> {
   static attachTo(root: Element): MDCTextFieldHelperText {
     return new MDCTextFieldHelperText(root);

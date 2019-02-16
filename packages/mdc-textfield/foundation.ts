@@ -28,7 +28,7 @@ import {MDCTextFieldCharacterCounterFoundation} from './character-counter';
 import {ALWAYS_FLOAT_TYPES, cssClasses, numbers, strings, VALIDATION_ATTR_WHITELIST} from './constants';
 import {MDCTextFieldHelperTextFoundation} from './helper-text';
 import {MDCTextFieldIconFoundation} from './icon';
-import {FoundationMapType, NativeInputElement} from './types';
+import {MDCTextFieldFoundationMap, MDCTextFieldNativeInputElement} from './types';
 
 type PointerDownEventType = 'mousedown' | 'touchstart';
 type InteractionEventType = 'click' | 'keydown';
@@ -115,7 +115,7 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
    * @param adapter
    * @param foundationMap Map from subcomponent names to their subfoundations.
    */
-  constructor(adapter?: Partial<MDCTextFieldAdapter>, foundationMap: Partial<FoundationMapType> = {}) {
+  constructor(adapter?: Partial<MDCTextFieldAdapter>, foundationMap: Partial<MDCTextFieldFoundationMap> = {}) {
     super({...MDCTextFieldFoundation.defaultAdapter, ...adapter});
 
     this.helperText_ = foundationMap.helperText;
@@ -465,7 +465,7 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   /**
    * @return The native text input element from the host environment, or an object with the same shape for unit tests.
    */
-  private getNativeInput_(): NativeInputElement {
+  private getNativeInput_(): MDCTextFieldNativeInputElement {
     // this.adapter_ may be undefined in foundation unit tests. This happens when testdouble is creating a mock object
     // and invokes the shouldShake/shouldFloat getters (which in turn call getValue(), which calls this method) before
     // init() has been called from the MDCTextField constructor. To work around that issue, we return a dummy object.

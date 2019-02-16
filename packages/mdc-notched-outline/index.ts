@@ -22,10 +22,12 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {MDCFloatingLabelFoundation} from '@material/floating-label/index';
+import {MDCFloatingLabelFoundation} from '@material/floating-label/foundation';
 import {MDCNotchedOutlineAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCNotchedOutlineFoundation} from './foundation';
+
+export type MDCNotchedOutlineFactory = (el: Element, foundation?: MDCNotchedOutlineFoundation) => MDCNotchedOutline;
 
 class MDCNotchedOutline extends MDCComponent<MDCNotchedOutlineFoundation> {
   static attachTo(root: Element): MDCNotchedOutline {

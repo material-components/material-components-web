@@ -30,6 +30,8 @@ import * as util from './util';
 
 type InteractionEventType = 'wheel' | 'touchstart' | 'pointerdown' | 'mousedown' | 'keydown';
 
+export type MDCTabScrollerFactory = (el: Element, foundation?: MDCTabScrollerFoundation) => MDCTabScroller;
+
 class MDCTabScroller extends MDCComponent<MDCTabScrollerFoundation> {
   static attachTo(root: Element): MDCTabScroller {
     return new MDCTabScroller(root);

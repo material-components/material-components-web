@@ -22,11 +22,15 @@
  */
 
 import * as createFocusTrap from 'focus-trap';
-import {FocusTrapFactory} from './types';
+
+export type MDCDrawerFocusTrapFactory = (
+  element: HTMLElement | string,
+  userOptions?: createFocusTrap.Options,
+) => createFocusTrap.FocusTrap;
 
 export function createFocusTrapInstance(
     surfaceEl: HTMLElement,
-    focusTrapFactory: FocusTrapFactory = createFocusTrap as unknown as FocusTrapFactory,
+    focusTrapFactory: MDCDrawerFocusTrapFactory = createFocusTrap as unknown as MDCDrawerFocusTrapFactory,
 ): createFocusTrap.FocusTrap {
   return focusTrapFactory(surfaceEl, {
     clickOutsideDeactivates: true, // Allow handling of scrim clicks.

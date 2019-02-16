@@ -21,27 +21,21 @@
  * THE SOFTWARE.
  */
 
-import {CustomEventListener, MDCComponent} from '@material/base/index';
-import {EventType, SpecificEventListener} from '@material/base/types';
-import {MDCFloatingLabel} from '@material/floating-label/index';
-import {MDCLineRipple} from '@material/line-ripple/index';
+import {MDCComponent} from '@material/base/component';
+import {CustomEventListener, EventType, SpecificEventListener} from '@material/base/types';
+import {MDCFloatingLabel, MDCFloatingLabelFactory} from '@material/floating-label/index';
+import {MDCLineRipple, MDCLineRippleFactory} from '@material/line-ripple/index';
 import * as menuSurfaceConstants from '@material/menu-surface/constants';
 import * as menuConstants from '@material/menu/constants';
-import {MDCMenu, MenuItemEvent} from '@material/menu/index';
-import {MDCNotchedOutline} from '@material/notched-outline/index';
+import {MDCMenu, MDCMenuFactory, MenuItemEvent} from '@material/menu/index';
+import {MDCNotchedOutline, MDCNotchedOutlineFactory} from '@material/notched-outline/index';
 import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
 import {MDCSelectAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCSelectFoundation} from './foundation';
-import {MDCSelectHelperText} from './helper-text';
-import {MDCSelectIcon} from './icon';
-import {
-  FoundationMapType,
-  HelperTextFactory, IconFactory,
-  LabelFactory,
-  LineRippleFactory, MenuFactory,
-  OutlineFactory, SelectEventDetail,
-} from './types';
+import {MDCSelectHelperText, MDCSelectHelperTextFactory} from './helper-text';
+import {MDCSelectIcon, MDCSelectIconFactory} from './icon';
+import {MDCSelectEventDetail, MDCSelectFoundationMap} from './types';
 
 type PointerEventType = 'mousedown' | 'touchstart';
 
@@ -84,12 +78,12 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
   private validationObserver_!: MutationObserver; // assigned in initialize()
 
   initialize(
-    labelFactory: LabelFactory = (el) => new MDCFloatingLabel(el),
-    lineRippleFactory: LineRippleFactory = (el) => new MDCLineRipple(el),
-    outlineFactory: OutlineFactory = (el) => new MDCNotchedOutline(el),
-    menuFactory: MenuFactory = (el) => new MDCMenu(el),
-    iconFactory: IconFactory = (el) => new MDCSelectIcon(el),
-    helperTextFactory: HelperTextFactory = (el) => new MDCSelectHelperText(el),
+    labelFactory: MDCFloatingLabelFactory = (el) => new MDCFloatingLabel(el),
+    lineRippleFactory: MDCLineRippleFactory = (el) => new MDCLineRipple(el),
+    outlineFactory: MDCNotchedOutlineFactory = (el) => new MDCNotchedOutline(el),
+    menuFactory: MDCMenuFactory = (el) => new MDCMenu(el),
+    iconFactory: MDCSelectIconFactory = (el) => new MDCSelectIcon(el),
+    helperTextFactory: MDCSelectHelperTextFactory = (el) => new MDCSelectHelperText(el),
   ) {
     this.nativeControl_ = this.root_.querySelector(strings.NATIVE_CONTROL_SELECTOR);
     this.selectedText_ = this.root_.querySelector(strings.SELECTED_TEXT_SELECTOR);
@@ -358,7 +352,7 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
   /**
    * Handles setup for the enhanced menu.
    */
-  private enhancedSelectSetup_(menuFactory: MenuFactory) {
+  private enhancedSelectSetup_(menuFactory: MDCMenuFactory) {
     const isDisabled = this.root_.classList.contains(cssClasses.DISABLED);
     this.selectedText_!.setAttribute('tabindex', isDisabled ? '-1' : '0');
     this.hiddenInput_ = this.root_.querySelector(strings.HIDDEN_INPUT_SELECTOR);
@@ -476,7 +470,7 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
       deactivateBottomLine: () => this.lineRipple_ && this.lineRipple_.deactivate(),
       notifyChange: (value: string) => {
         const index = this.selectedIndex;
-        this.emit<SelectEventDetail>(strings.CHANGE_EVENT, {value, index}, true /* shouldBubble  */);
+        this.emit<MDCSelectEventDetail>(strings.CHANGE_EVENT, {value, index}, true /* shouldBubble  */);
       },
     };
     // tslint:enable:object-literal-sort-keys
@@ -515,7 +509,7 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
   /**
    * Returns a map of all subcomponents to subfoundations.
    */
-  private getFoundationMap_(): Partial<FoundationMapType> {
+  private getFoundationMap_(): Partial<MDCSelectFoundationMap> {
     return {
       helperText: this.helperText_ ? this.helperText_.foundation : undefined,
       leadingIcon: this.leadingIcon_ ? this.leadingIcon_.foundation : undefined,

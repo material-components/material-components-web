@@ -26,7 +26,7 @@ import {MDCTab, MDCTabFactory, MDCTabFoundation, MDCTabSelectedEvent} from '../t
 import {MDCTabBarAdapter} from './adapter';
 import {MDCTabBarFoundation} from './foundation';
 
-export type MDCTabBarFactory = (el: Element) => MDCTabBar;
+export type MDCTabBarFactory = (el: Element, foundation?: MDCTabBarFoundation) => MDCTabBar;
 
 export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
   static attachTo(root: Element) {

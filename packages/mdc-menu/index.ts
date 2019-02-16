@@ -22,23 +22,25 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {CustomEventListener, SpecificEventListener} from '@material/base/index';
-import {ListActionEvent, MDCList, MDCListFoundation} from '@material/list/index';
+import {CustomEventListener, SpecificEventListener} from '@material/base/types';
+import {ListActionEvent, MDCList, MDCListFactory, MDCListFoundation} from '@material/list/index';
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
-import {Corner, MDCMenuSurface} from '@material/menu-surface/index';
+import {Corner, MDCMenuSurface, MDCMenuSurfaceFactory} from '@material/menu-surface/index';
 import {MenuDistance} from '@material/menu-surface/types';
 import {MDCMenuAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCMenuFoundation} from './foundation';
-import {DefaultMenuItemEventDetail, ListFactory, MenuSurfaceFactory} from './types';
+import {DefaultMenuItemEventDetail} from './types';
+
+export type MDCMenuFactory = (el: Element, foundation?: MDCMenuFoundation) => MDCMenu;
 
 class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   static attachTo(root: Element) {
     return new MDCMenu(root);
   }
 
-  private menuSurfaceFactory_!: MenuSurfaceFactory; // assigned in initialize()
-  private listFactory_!: ListFactory; // assigned in initialize()
+  private menuSurfaceFactory_!: MDCMenuSurfaceFactory; // assigned in initialize()
+  private listFactory_!: MDCListFactory; // assigned in initialize()
 
   private menuSurface_!: MDCMenuSurface; // assigned in initialSyncWithDOM()
   private list_!: MDCList | null; // assigned in initialSyncWithDOM()
@@ -48,8 +50,8 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   private afterOpenedCallback_!: EventListener; // assigned in initialSyncWithDOM()
 
   initialize(
-      menuSurfaceFactory: MenuSurfaceFactory = (el) => new MDCMenuSurface(el),
-      listFactory: ListFactory = (el) => new MDCList(el)) {
+      menuSurfaceFactory: MDCMenuSurfaceFactory = (el) => new MDCMenuSurface(el),
+      listFactory: MDCListFactory = (el) => new MDCList(el)) {
     this.menuSurfaceFactory_ = menuSurfaceFactory;
     this.listFactory_ = listFactory;
   }

@@ -23,11 +23,13 @@
 
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
-import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
-import {MDCTabIndicator} from '@material/tab-indicator/index';
+import {MDCRipple, MDCRippleFactory, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
+import {MDCTabIndicator, MDCTabIndicatorFactory} from '@material/tab-indicator/index';
 import {MDCTabAdapter} from './adapter';
 import {MDCTabFoundation} from './foundation';
-import {MDCTabDimensions, RippleFactory, TabIndicatorFactory, TabInteractionEventDetail} from './types';
+import {MDCTabDimensions, MDCTabInteractionEventDetail} from './types';
+
+export type MDCTabFactory = (el: Element, foundation?: MDCTabFoundation) => MDCTab;
 
 class MDCTab extends MDCComponent<MDCTabFoundation> implements RippleCapableSurface {
   static attachTo(root: Element): MDCTab {
@@ -45,8 +47,8 @@ class MDCTab extends MDCComponent<MDCTabFoundation> implements RippleCapableSurf
   private handleClick_!: SpecificEventListener<'click'>; // assigned in initialize();
 
   initialize(
-    rippleFactory: RippleFactory = (el, foundation) => new MDCRipple(el, foundation),
-    tabIndicatorFactory: TabIndicatorFactory = (el) => new MDCTabIndicator(el),
+    rippleFactory: MDCRippleFactory = (el, foundation) => new MDCRipple(el, foundation),
+    tabIndicatorFactory: MDCTabIndicatorFactory = (el) => new MDCTabIndicator(el),
   ) {
     this.id = this.root_.id;
     const rippleSurface = this.root_.querySelector<HTMLElement>(MDCTabFoundation.strings.RIPPLE_SELECTOR)!;
@@ -86,7 +88,7 @@ class MDCTab extends MDCComponent<MDCTabFoundation> implements RippleCapableSurf
       hasClass: (className) => this.root_.classList.contains(className),
       activateIndicator: (previousIndicatorClientRect) => this.tabIndicator_.activate(previousIndicatorClientRect),
       deactivateIndicator: () => this.tabIndicator_.deactivate(),
-      notifyInteracted: () => this.emit<TabInteractionEventDetail>(
+      notifyInteracted: () => this.emit<MDCTabInteractionEventDetail>(
         MDCTabFoundation.strings.INTERACTED_EVENT, {tabId: this.id}, true /* bubble */),
       getOffsetLeft: () => this.root_.offsetLeft,
       getOffsetWidth: () => this.root_.offsetWidth,

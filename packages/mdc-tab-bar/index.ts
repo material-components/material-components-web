@@ -23,11 +23,11 @@
 
 import {MDCComponent} from '@material/base/component';
 import {CustomEventListener, SpecificEventListener} from '@material/base/types';
-import {MDCTabScroller} from '@material/tab-scroller/index';
-import {MDCTab, MDCTabFoundation, TabInteractionEvent} from '@material/tab/index';
+import {MDCTabScroller, MDCTabScrollerFactory} from '@material/tab-scroller/index';
+import {MDCTab, MDCTabFoundation, MDCTabInteractionEvent} from '@material/tab/index';
+import {MDCTabFactory} from '@material/tab/index';
 import {MDCTabBarAdapter} from './adapter';
 import {MDCTabBarFoundation} from './foundation';
-import {TabFactory, TabScrollerFactory} from './types';
 
 let tabIdCounter = 0;
 
@@ -38,7 +38,7 @@ class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
 
   private tabList_!: MDCTab[]; // assigned in initialize()
   private tabScroller_!: MDCTabScroller | null; // assigned in initialize()
-  private handleTabInteraction_!: CustomEventListener<TabInteractionEvent>; // assigned in initialSyncWithDOM()
+  private handleTabInteraction_!: CustomEventListener<MDCTabInteractionEvent>; // assigned in initialSyncWithDOM()
   private handleKeyDown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
 
   set focusOnActivate(focusOnActivate: boolean) {
@@ -50,8 +50,8 @@ class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
   }
 
   initialize(
-      tabFactory: TabFactory = (el) => new MDCTab(el),
-      tabScrollerFactory: TabScrollerFactory = (el) => new MDCTabScroller(el),
+      tabFactory: MDCTabFactory = (el) => new MDCTab(el),
+      tabScrollerFactory: MDCTabScrollerFactory = (el) => new MDCTabScroller(el),
   ) {
     this.tabList_ = this.instantiateTabs_(tabFactory);
     this.tabScroller_ = this.instantiateTabScroller_(tabScrollerFactory);
@@ -154,7 +154,7 @@ class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
   /**
    * Instantiates tab components on all child tab elements
    */
-  private instantiateTabs_(tabFactory: TabFactory) {
+  private instantiateTabs_(tabFactory: MDCTabFactory) {
     return this.getTabElements_().map((el) => {
       el.id = el.id || `mdc-tab-${++tabIdCounter}`;
       return tabFactory(el);
@@ -164,7 +164,7 @@ class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
   /**
    * Instantiates tab scroller component on the child tab scroller element
    */
-  private instantiateTabScroller_(tabScrollerFactory: TabScrollerFactory): MDCTabScroller | null {
+  private instantiateTabScroller_(tabScrollerFactory: MDCTabScrollerFactory): MDCTabScroller | null {
     const tabScrollerElement = this.root_.querySelector(MDCTabBarFoundation.strings.TAB_SCROLLER_SELECTOR);
     if (tabScrollerElement) {
       return tabScrollerFactory(tabScrollerElement);
@@ -176,4 +176,3 @@ class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
 export {MDCTabBar as default, MDCTabBar};
 export * from './adapter';
 export * from './foundation';
-export * from './types';

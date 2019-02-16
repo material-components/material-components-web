@@ -21,5 +21,5 @@
  * THE SOFTWARE.
  */
 
-export type Announcer = (ariaEl: Element, labelEl?: Element) => void;
-export type AnnouncerFactory = () => Announcer;
+export type MDCSnackbarAnnouncer = (ariaEl: Element, labelEl?: Element) => void;
+export type MDCSnackbarAnnouncerFactory = () => MDCSnackbarAnnouncer;

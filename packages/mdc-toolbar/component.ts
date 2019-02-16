@@ -22,7 +22,7 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {MDCRipple} from '@material/ripple/index';
+import {MDCRipple} from '@material/ripple/component';
 import {MDCToolbarAdapter} from './adapter';
 import {MDCToolbarFoundation} from './foundation';
 import {ToolbarEventDetail} from './types';

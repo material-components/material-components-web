@@ -23,7 +23,8 @@
 
 // tslint:disable:only-arrow-functions
 
-import {MDCComponent, MDCFoundation} from '@material/base/index';
+import {MDCComponent} from '@material/base/component';
+import {MDCFoundation} from '@material/base/foundation';
 
 interface ComponentClass {
   // tslint:disable-next-line:no-any a component can pass in anything it needs to the constructor

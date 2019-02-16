@@ -26,6 +26,8 @@ import {EventType, SpecificEventListener} from '@material/base/types';
 import {MDCTextFieldIconAdapter} from './adapter';
 import {MDCTextFieldIconFoundation} from './foundation';
 
+export type MDCTextFieldIconFactory = (el: Element, foundation?: MDCTextFieldIconFoundation) => MDCTextFieldIcon;
+
 class MDCTextFieldIcon extends MDCComponent<MDCTextFieldIconFoundation> {
   static attachTo(root: Element): MDCTextFieldIcon {
     return new MDCTextFieldIcon(root);

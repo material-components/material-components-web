@@ -21,28 +21,17 @@
  * THE SOFTWARE.
  */
 
-import {MDCFloatingLabel} from '@material/floating-label/index';
-import {MDCLineRipple} from '@material/line-ripple/index';
-import {MDCMenu} from '@material/menu/index';
-import {MDCNotchedOutline} from '@material/notched-outline/index';
-import {MDCSelectHelperText, MDCSelectHelperTextFoundation} from './helper-text/index';
-import {MDCSelectIcon, MDCSelectIconFoundation} from './icon/index';
+import {MDCSelectHelperTextFoundation} from './helper-text/foundation';
+import {MDCSelectIconFoundation} from './icon/foundation';
 
-export interface FoundationMapType {
+export interface MDCSelectFoundationMap {
   leadingIcon: MDCSelectIconFoundation;
   helperText: MDCSelectHelperTextFoundation;
 }
 
-export type SelectEvent = CustomEvent<SelectEventDetail>;
+export type MDCSelectEvent = CustomEvent<MDCSelectEventDetail>;
 
-export interface SelectEventDetail {
+export interface MDCSelectEventDetail {
   value: string;
   index: number;
 }
-
-export type LineRippleFactory = (el: Element) => MDCLineRipple;
-export type HelperTextFactory = (el: Element) => MDCSelectHelperText;
-export type MenuFactory = (el: Element) => MDCMenu;
-export type IconFactory = (el: Element) => MDCSelectIcon;
-export type LabelFactory = (el: Element) => MDCFloatingLabel;
-export type OutlineFactory = (el: Element) => MDCNotchedOutline;

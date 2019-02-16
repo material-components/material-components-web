@@ -32,8 +32,6 @@ import {MDCCheckboxFoundation} from './foundation';
 
 const CB_PROTO_PROPS = ['checked', 'indeterminate'];
 
-export type MDCCheckboxFactory = (root: Element, foundation?: MDCCheckboxFoundation) => MDCCheckbox;
-
 export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation>
   implements MDCSelectionControl, RippleCapableSurface {
 

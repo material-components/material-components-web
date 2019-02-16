@@ -22,7 +22,7 @@
  */
 
 import {EventType, SpecificEventListener} from '@material/base/types';
-import {NativeInputElement} from './types';
+import {MDCTextFieldNativeInputElement} from './types';
 
 /**
  * Defines the shape of the adapter expected by the foundation.
@@ -82,7 +82,7 @@ export interface MDCTextFieldAdapter {
    * @return The native `<input>` element, or an object with the same shape.
    * Note that this method can return null, which the foundation will handle gracefully.
    */
-  getNativeInput(): NativeInputElement | null;
+  getNativeInput(): MDCTextFieldNativeInputElement | null;
 
   /**
    * @return true if the textfield is focused. We achieve this via `document.activeElement === this.root_`.

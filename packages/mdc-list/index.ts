@@ -22,12 +22,14 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {SpecificEventListener} from '@material/base/index';
+import {SpecificEventListener} from '@material/base/types';
 import {ponyfill} from '@material/dom/index';
 import {MDCListAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCListFoundation} from './foundation';
 import {ListActionEventDetail, ListIndex} from './types';
+
+export type MDCListFactory = (el: Element, foundation?: MDCListFoundation) => MDCList;
 
 class MDCList extends MDCComponent<MDCListFoundation> {
   set vertical(value: boolean) {

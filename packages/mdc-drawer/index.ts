@@ -22,18 +22,18 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {SpecificEventListener} from '@material/base/index';
+import {SpecificEventListener} from '@material/base/types';
 import {MDCListFoundation} from '@material/list/foundation';
-import {MDCList} from '@material/list/index';
+import {MDCList, MDCListFactory} from '@material/list/index';
 import * as createFocusTrap from 'focus-trap';
 import {MDCDrawerAdapter} from './adapter';
 import {strings} from './constants';
 import {MDCDismissibleDrawerFoundation} from './dismissible/foundation';
 import {MDCModalDrawerFoundation} from './modal/foundation';
-import {FocusTrapFactory, ListFactory} from './types';
 import * as util from './util';
+import {MDCDrawerFocusTrapFactory} from './util';
 
-class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
+export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
   static attachTo(root: Element): MDCDrawer {
     return new MDCDrawer(root);
   }
@@ -61,15 +61,16 @@ class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
   private list_?: MDCList; // assigned in initialize()
 
   private focusTrap_?: createFocusTrap.FocusTrap; // assigned in initialSyncWithDOM()
-  private focusTrapFactory_!: FocusTrapFactory; // assigned in initialize()
+  private focusTrapFactory_!: MDCDrawerFocusTrapFactory; // assigned in initialize()
 
   private handleScrimClick_?: SpecificEventListener<'click'>; // initialized in initialSyncWithDOM()
   private handleKeydown_!: SpecificEventListener<'keydown'>; // initialized in initialSyncWithDOM()
   private handleTransitionEnd_!: SpecificEventListener<'transitionend'>; // initialized in initialSyncWithDOM()
 
   initialize(
-      focusTrapFactory: FocusTrapFactory = createFocusTrap as unknown as FocusTrapFactory,
-      listFactory: ListFactory = (el) => new MDCList(el)) {
+    focusTrapFactory: MDCDrawerFocusTrapFactory = createFocusTrap as unknown as MDCDrawerFocusTrapFactory,
+    listFactory: MDCListFactory = (el) => new MDCList(el),
+  ) {
     const listEl = this.root_.querySelector(`.${MDCListFoundation.cssClasses.ROOT}`);
     if (listEl) {
       this.list_ = listFactory(listEl);
@@ -129,7 +130,7 @@ class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
       },
       focusActiveNavigationItem: () => {
         const activeNavItemEl =
-            this.root_.querySelector<HTMLElement>(`.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`);
+          this.root_.querySelector<HTMLElement>(`.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`);
         if (activeNavItemEl) {
           activeNavItemEl.focus();
         }
@@ -153,8 +154,8 @@ class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
   }
 }
 
-export {MDCDrawer as default, MDCDrawer, util};
+export default MDCDrawer;
+export {util};
 export * from './dismissible/foundation';
 export * from './modal/foundation';
 export * from './adapter';
-export * from './types';

@@ -25,6 +25,8 @@ import {MDCComponent} from '@material/base/component';
 import {MDCSelectIconAdapter} from './adapter';
 import {MDCSelectIconFoundation} from './foundation';
 
+export type MDCSelectIconFactory = (el: Element, foundation?: MDCSelectIconFoundation) => MDCSelectIcon;
+
 class MDCSelectIcon extends MDCComponent<MDCSelectIconFoundation> {
   static attachTo(root: Element): MDCSelectIcon {
     return new MDCSelectIcon(root);

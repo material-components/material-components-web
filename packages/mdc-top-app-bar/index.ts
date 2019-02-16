@@ -22,15 +22,13 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {MDCRipple} from '@material/ripple/index';
+import {MDCRipple, MDCRippleFactory} from '@material/ripple/component';
 import {MDCTopAppBarAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCFixedTopAppBarFoundation} from './fixed/foundation';
 import {MDCTopAppBarBaseFoundation} from './foundation';
 import {MDCShortTopAppBarFoundation} from './short/foundation';
 import {MDCTopAppBarFoundation} from './standard/foundation';
-
-export type MDCRippleFactory = (el: Element) => MDCRipple;
 
 class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
   static attachTo(root: Element): MDCTopAppBar {
