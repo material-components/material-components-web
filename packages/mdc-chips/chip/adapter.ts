@@ -106,5 +106,3 @@ export interface MDCChipAdapter {
    */
   getCheckmarkBoundingClientRect(): ClientRect | null;
 }
-
-export default MDCChipAdapter;

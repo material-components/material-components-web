@@ -64,5 +64,3 @@ export interface MDCRippleAdapter {
 
   getWindowPageOffset(): Point;
 }
-
-export default MDCRippleAdapter;

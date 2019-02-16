@@ -32,5 +32,3 @@ export interface MDCTabAdapter {
   getOffsetLeft: () => number;
   notifySelected: () => void;
 }
-
-export default MDCTabAdapter;

@@ -44,5 +44,3 @@ export interface MDCChipSetAdapter {
    */
   setSelected(chipId: string, selected: boolean): void;
 }
-
-export default MDCChipSetAdapter;

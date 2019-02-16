@@ -36,5 +36,3 @@ export interface MDCFormFieldAdapter {
   deregisterInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
   registerInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 }
-
-export default MDCFormFieldAdapter;

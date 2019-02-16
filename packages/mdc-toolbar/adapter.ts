@@ -49,5 +49,3 @@ export interface MDCToolbarAdapter {
   setStyleForFlexibleRowElement: (property: string, value: string) => void;
   setStyleForFixedAdjustElement: (property: string, value: string) => void;
 }
-
-export default MDCToolbarAdapter;

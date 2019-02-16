@@ -50,5 +50,3 @@ export interface MDCDialogAdapter {
   notifyClosing(action: string): void;
   notifyClosed(action: string): void;
 }
-
-export default MDCDialogAdapter;

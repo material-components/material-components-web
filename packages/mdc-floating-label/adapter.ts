@@ -56,5 +56,3 @@ export interface MDCFloatingLabelAdapter {
    */
   deregisterInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 }
-
-export default MDCFloatingLabelAdapter;
