@@ -73,7 +73,7 @@ export class MDCToolbarFoundation extends MDCFoundation<MDCToolbarAdapter> {
     return numbers;
   }
 
-  static get defaultAdapter() {
+  static get defaultAdapter(): MDCToolbarAdapter {
     // tslint:disable:object-literal-sort-keys
     return {
       hasClass: () => false,
