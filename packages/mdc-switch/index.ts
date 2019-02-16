@@ -24,7 +24,7 @@
 import {MDCComponent} from '@material/base/component';
 import {EventType} from '@material/base/types';
 import {ponyfill} from '@material/dom/index';
-import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
+import {MDCRipple, MDCRippleAdapter, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
 import {MDCSelectionControl} from '@material/selection-control/index';
 import {MDCSwitchAdapter} from './adapter';
 import {MDCSwitchFoundation} from './foundation';
@@ -99,7 +99,9 @@ class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCSelectio
     const {RIPPLE_SURFACE_SELECTOR} = MDCSwitchFoundation.strings;
     const rippleSurface = this.root_.querySelector(RIPPLE_SURFACE_SELECTOR) as HTMLElement;
 
-    return new MDCRipple(this.root_, new MDCRippleFoundation({
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    const adapter: MDCRippleAdapter = {
       ...MDCRipple.createAdapter(this),
       addClass: (className: string) => rippleSurface.classList.add(className),
       computeBoundingRect: () => rippleSurface.getBoundingClientRect(),
@@ -115,7 +117,8 @@ class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCSelectio
       updateCssVariable: (varName: string, value: string) => {
         rippleSurface.style.setProperty(varName, value);
       },
-    }));
+    };
+    return new MDCRipple(this.root_, new MDCRippleFoundation(adapter));
   }
 
   private get nativeControl_() {

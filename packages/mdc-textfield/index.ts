@@ -40,6 +40,7 @@ import {MDCTextFieldFoundation} from './foundation';
 import {MDCTextFieldHelperText, MDCTextFieldHelperTextFactory, MDCTextFieldHelperTextFoundation} from './helper-text';
 import {MDCTextFieldIcon, MDCTextFieldIconFactory} from './icon';
 import {MDCTextFieldFoundationMap} from './types';
+import {MDCRippleAdapter} from '@material/ripple';
 
 class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements RippleCapableSurface {
   static attachTo(root: Element): MDCTextField {
@@ -63,13 +64,13 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
   private trailingIcon_!: MDCTextFieldIcon | null; // assigned in initialize()
 
   initialize(
-      rippleFactory: MDCRippleFactory = (el, foundation) => new MDCRipple(el, foundation),
-      lineRippleFactory: MDCLineRippleFactory = (el) => new MDCLineRipple(el),
-      helperTextFactory: MDCTextFieldHelperTextFactory = (el) => new MDCTextFieldHelperText(el),
-      characterCounterFactory: MDCTextFieldCharacterCounterFactory = (el) => new MDCTextFieldCharacterCounter(el),
-      iconFactory: MDCTextFieldIconFactory = (el) => new MDCTextFieldIcon(el),
-      labelFactory: MDCFloatingLabelFactory = (el) => new MDCFloatingLabel(el),
-      outlineFactory: MDCNotchedOutlineFactory = (el) => new MDCNotchedOutline(el),
+    rippleFactory: MDCRippleFactory = (el, foundation) => new MDCRipple(el, foundation),
+    lineRippleFactory: MDCLineRippleFactory = (el) => new MDCLineRipple(el),
+    helperTextFactory: MDCTextFieldHelperTextFactory = (el) => new MDCTextFieldHelperText(el),
+    characterCounterFactory: MDCTextFieldCharacterCounterFactory = (el) => new MDCTextFieldCharacterCounter(el),
+    iconFactory: MDCTextFieldIconFactory = (el) => new MDCTextFieldIcon(el),
+    labelFactory: MDCFloatingLabelFactory = (el) => new MDCFloatingLabel(el),
+    outlineFactory: MDCNotchedOutlineFactory = (el) => new MDCNotchedOutline(el),
   ) {
     this.input_ = this.root_.querySelector<HTMLInputElement>(strings.INPUT_SELECTOR)!;
 
@@ -87,7 +88,7 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
     const nextElementSibling = this.root_.nextElementSibling;
     const hasHelperLine = (nextElementSibling && nextElementSibling.classList.contains(cssClasses.HELPER_LINE));
     const helperTextEl =
-        hasHelperLine && nextElementSibling && nextElementSibling.querySelector(helperTextStrings.ROOT_SELECTOR);
+      hasHelperLine && nextElementSibling && nextElementSibling.querySelector(helperTextStrings.ROOT_SELECTOR);
     this.helperText_ = helperTextEl ? helperTextFactory(helperTextEl) : null;
 
     // Character counter
@@ -115,18 +116,7 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
       }
     }
 
-    const isTextArea = this.root_.classList.contains(cssClasses.TEXTAREA);
-    const isOutlined = this.root_.classList.contains(cssClasses.OUTLINED);
-    this.ripple = (isTextArea || isOutlined) ? null : rippleFactory(this.root_, new MDCRippleFoundation({
-      ...MDCRipple.createAdapter(this),
-      ...({
-        // tslint:disable:object-literal-sort-keys
-        isSurfaceActive: () => ponyfill.matches(this.input_, ':active'),
-        registerInteractionHandler: (evtType, handler) => this.input_.addEventListener(evtType, handler),
-        deregisterInteractionHandler: (evtType, handler) => this.input_.removeEventListener(evtType, handler),
-        // tslint:enable:object-literal-sort-keys
-      }),
-    }));
+    this.ripple = this.initRipple_(rippleFactory);
   }
 
   destroy() {
@@ -350,8 +340,8 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
         registerValidationAttributeChangeHandler: (handler) => {
           const getAttributesList = (mutationsList: MutationRecord[]): string[] => {
             return mutationsList
-                .map((mutation) => mutation.attributeName)
-                .filter((attributeName) => attributeName) as string[];
+              .map((mutation) => mutation.attributeName)
+              .filter((attributeName) => attributeName) as string[];
           };
           const observer = new MutationObserver((mutationsList) => handler(getAttributesList(mutationsList)));
           const config = {attributes: true};
@@ -430,6 +420,27 @@ class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements Rippl
       leadingIcon: this.leadingIcon_ ? this.leadingIcon_.foundation : undefined,
       trailingIcon: this.trailingIcon_ ? this.trailingIcon_.foundation : undefined,
     };
+  }
+
+  private initRipple_(rippleFactory: MDCRippleFactory) {
+    const isTextArea = this.root_.classList.contains(cssClasses.TEXTAREA);
+    const isOutlined = this.root_.classList.contains(cssClasses.OUTLINED);
+
+    if (isTextArea || isOutlined) {
+      return null;
+    }
+
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // tslint:disable:object-literal-sort-keys
+    const adapter: MDCRippleAdapter = {
+      ...MDCRipple.createAdapter(this),
+      isSurfaceActive: () => ponyfill.matches(this.input_, ':active'),
+      registerInteractionHandler: (evtType, handler) => this.input_.addEventListener(evtType, handler),
+      deregisterInteractionHandler: (evtType, handler) => this.input_.removeEventListener(evtType, handler),
+    };
+    // tslint:enable:object-literal-sort-keys
+    return rippleFactory(this.root_, new MDCRippleFoundation(adapter));
   }
 }
 

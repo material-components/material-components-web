@@ -23,7 +23,13 @@
 
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
-import {MDCRipple, MDCRippleFactory, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
+import {
+  MDCRipple,
+  MDCRippleAdapter,
+  MDCRippleFactory,
+  MDCRippleFoundation,
+  RippleCapableSurface,
+} from '@material/ripple/index';
 import {MDCChipAdapter} from './adapter';
 import {strings} from './constants';
 import {MDCChipFoundation} from './foundation';
@@ -108,10 +114,13 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements RippleCa
     this.trailingIcon_ = this.root_.querySelector(strings.TRAILING_ICON_SELECTOR);
     this.checkmark_ = this.root_.querySelector(strings.CHECKMARK_SELECTOR);
 
-    this.ripple_ = rippleFactory(this.root_, new MDCRippleFoundation({
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    const rippleAdapter: MDCRippleAdapter = {
       ...MDCRipple.createAdapter(this),
       computeBoundingRect: () => this.foundation_.getDimensions(),
-    }));
+    };
+    this.ripple_ = rippleFactory(this.root_, new MDCRippleFoundation(rippleAdapter));
   }
 
   initialSyncWithDOM() {

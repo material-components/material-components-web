@@ -29,7 +29,7 @@ import * as menuSurfaceConstants from '@material/menu-surface/constants';
 import * as menuConstants from '@material/menu/constants';
 import {MDCMenu, MDCMenuFactory, MenuItemEvent} from '@material/menu/index';
 import {MDCNotchedOutline, MDCNotchedOutlineFactory} from '@material/notched-outline/index';
-import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
+import {MDCRipple, MDCRippleAdapter, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
 import {MDCSelectAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCSelectFoundation} from './foundation';
@@ -365,8 +365,10 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
   }
 
   private initRipple_(): MDCRipple {
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys
-    const foundation = new MDCRippleFoundation({
+    const adapter: MDCRippleAdapter = {
       ...MDCRipple.createAdapter(this),
       registerInteractionHandler: <E extends EventType>(evtType: E, handler: SpecificEventListener<E>) => {
         this.targetElement_.addEventListener(evtType, handler);
@@ -374,10 +376,9 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
       deregisterInteractionHandler: <E extends EventType>(evtType: E, handler: SpecificEventListener<E>) => {
         this.targetElement_.removeEventListener(evtType, handler);
       },
-    });
+    };
     // tslint:enable:object-literal-sort-keys
-
-    return new MDCRipple(this.root_, foundation);
+    return new MDCRipple(this.root_, new MDCRippleFoundation(adapter));
   }
 
   private getNativeSelectAdapterMethods_() {

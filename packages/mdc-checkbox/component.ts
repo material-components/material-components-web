@@ -25,7 +25,7 @@ import {getCorrectEventName} from '@material/animation/util';
 import {MDCComponent} from '@material/base/component';
 import {EventType, SpecificEventListener} from '@material/base/types';
 import {ponyfill} from '@material/dom/index';
-import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
+import {MDCRipple, MDCRippleAdapter, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
 import {MDCSelectionControl} from '@material/selection-control/index';
 import {MDCCheckboxAdapter} from './adapter';
 import {MDCCheckboxFoundation} from './foundation';
@@ -93,7 +93,9 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation>
   }
 
   private initRipple_(): MDCRipple {
-    const foundation = new MDCRippleFoundation({
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    const adapter: MDCRippleAdapter = {
       ...MDCRipple.createAdapter(this),
       deregisterInteractionHandler: <K extends EventType>(evtType: K, handler: SpecificEventListener<K>) =>
         this.nativeCb_.removeEventListener(evtType, handler),
@@ -101,8 +103,8 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation>
       isUnbounded: () => true,
       registerInteractionHandler: <K extends EventType>(evtType: K, handler: SpecificEventListener<K>) =>
         this.nativeCb_.addEventListener(evtType, handler),
-    });
-    return new MDCRipple(this.root_, foundation);
+    };
+    return new MDCRipple(this.root_, new MDCRippleFoundation(adapter));
   }
 
   private installPropertyChangeHooks_() {
