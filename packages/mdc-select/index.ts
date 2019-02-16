@@ -30,6 +30,7 @@ import * as menuConstants from '@material/menu/constants';
 import {MDCMenu, MenuItemEvent} from '@material/menu/index';
 import {MDCNotchedOutline} from '@material/notched-outline/index';
 import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
+import {MDCSelectAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCSelectFoundation} from './foundation';
 import {MDCSelectHelperText} from './helper-text';
@@ -343,14 +344,15 @@ class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapab
   }
 
   getDefaultFoundation(): MDCSelectFoundation {
-    return new MDCSelectFoundation({
-        ...(this.nativeControl_ ? this.getNativeSelectAdapterMethods_() : this.getEnhancedSelectAdapterMethods_()),
-        ...this.getCommonAdapterMethods_(),
-        ...this.getOutlineAdapterMethods_(),
-        ...this.getLabelAdapterMethods_(),
-      },
-      this.getFoundationMap_(),
-    );
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    const adapter: MDCSelectAdapter = {
+      ...(this.nativeControl_ ? this.getNativeSelectAdapterMethods_() : this.getEnhancedSelectAdapterMethods_()),
+      ...this.getCommonAdapterMethods_(),
+      ...this.getOutlineAdapterMethods_(),
+      ...this.getLabelAdapterMethods_(),
+    };
+    return new MDCSelectFoundation(adapter, this.getFoundationMap_());
   }
 
   /**

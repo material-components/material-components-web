@@ -22,6 +22,7 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+import {MDCLineRippleAdapter} from './adapter';
 import {MDCLineRippleFoundation} from './foundation';
 
 class MDCLineRipple extends MDCComponent<MDCLineRippleFoundation> {
@@ -52,16 +53,19 @@ class MDCLineRipple extends MDCComponent<MDCLineRippleFoundation> {
   }
 
   getDefaultFoundation(): MDCLineRippleFoundation {
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys
-    return new MDCLineRippleFoundation({
+    const adapter: MDCLineRippleAdapter = {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
       setStyle: (propertyName, value) => (this.root_ as HTMLElement).style.setProperty(propertyName, value),
       registerEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
-    });
+    };
     // tslint:enable:object-literal-sort-keys
+    return new MDCLineRippleFoundation(adapter);
   }
 }
 

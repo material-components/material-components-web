@@ -22,6 +22,7 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+import {MDCSliderAdapter} from './adapter';
 import {strings} from './constants';
 import {MDCSliderFoundation} from './foundation';
 
@@ -85,8 +86,10 @@ class MDCSlider extends MDCComponent<MDCSliderFoundation> {
   }
 
   getDefaultFoundation(): MDCSliderFoundation {
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys
-    return new MDCSliderFoundation({
+    const adapter: MDCSliderAdapter = {
       hasClass: (className) => this.root_.classList.contains(className),
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
@@ -134,8 +137,9 @@ class MDCSlider extends MDCComponent<MDCSliderFoundation> {
         lastTrackMarker.style.setProperty(propertyName, value);
       },
       isRTL: () => getComputedStyle(this.root_).direction === 'rtl',
-    });
+    };
     // tslint:disable:object-literal-sort-keys
+    return new MDCSliderFoundation(adapter);
   }
 
   initialSyncWithDOM() {

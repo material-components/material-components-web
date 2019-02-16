@@ -22,6 +22,7 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+import {MDCSelectIconAdapter} from './adapter';
 import {MDCSelectIconFoundation} from './foundation';
 
 class MDCSelectIcon extends MDCComponent<MDCSelectIconFoundation> {
@@ -34,8 +35,10 @@ class MDCSelectIcon extends MDCComponent<MDCSelectIconFoundation> {
   }
 
   getDefaultFoundation(): MDCSelectIconFoundation {
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys
-    return new MDCSelectIconFoundation({
+    const adapter: MDCSelectIconAdapter = {
       getAttr: (attr) => this.root_.getAttribute(attr),
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       removeAttr: (attr) => this.root_.removeAttribute(attr),
@@ -43,9 +46,10 @@ class MDCSelectIcon extends MDCComponent<MDCSelectIconFoundation> {
       registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
       notifyIconAction: () => this.emit(
-          MDCSelectIconFoundation.strings.ICON_EVENT, {} /* evtData */, true /* shouldBubble */),
-    });
+        MDCSelectIconFoundation.strings.ICON_EVENT, {} /* evtData */, true /* shouldBubble */),
+    };
     // tslint:enable:object-literal-sort-keys
+    return new MDCSelectIconFoundation(adapter);
   }
 }
 

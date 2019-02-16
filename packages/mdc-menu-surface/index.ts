@@ -23,6 +23,7 @@
 
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/index';
+import {MDCMenuSurfaceAdapter} from './adapter';
 import {Corner, cssClasses, strings} from './constants';
 import {MDCMenuSurfaceFoundation} from './foundation';
 import {MenuDistance} from './types';
@@ -144,8 +145,10 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
   }
 
   getDefaultFoundation(): MDCMenuSurfaceFoundation {
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys
-    return new MDCMenuSurfaceFoundation({
+    const adapter: MDCMenuSurfaceAdapter = {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
@@ -171,13 +174,13 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
         }
       },
       isFirstElementFocused: () =>
-          this.firstFocusableElement_ ? this.firstFocusableElement_ === document.activeElement : false,
+        this.firstFocusableElement_ ? this.firstFocusableElement_ === document.activeElement : false,
       isLastElementFocused: () =>
-          this.lastFocusableElement_ ? this.lastFocusableElement_ === document.activeElement : false,
+        this.lastFocusableElement_ ? this.lastFocusableElement_ === document.activeElement : false,
       focusFirstElement: () =>
-          this.firstFocusableElement_ && this.firstFocusableElement_.focus && this.firstFocusableElement_.focus(),
+        this.firstFocusableElement_ && this.firstFocusableElement_.focus && this.firstFocusableElement_.focus(),
       focusLastElement: () =>
-          this.lastFocusableElement_ && this.lastFocusableElement_.focus && this.lastFocusableElement_.focus(),
+        this.lastFocusableElement_ && this.lastFocusableElement_.focus && this.lastFocusableElement_.focus(),
 
       getInnerDimensions: () => {
         return {width: this.root_.offsetWidth, height: this.root_.offsetHeight};
@@ -201,8 +204,9 @@ class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
       setMaxHeight: (height) => {
         this.root_.style.maxHeight = height;
       },
-    });
+    };
     // tslint:enable:object-literal-sort-keys
+    return new MDCMenuSurfaceFoundation(adapter);
   }
 }
 

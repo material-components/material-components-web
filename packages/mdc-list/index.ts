@@ -24,6 +24,7 @@
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/index';
 import {ponyfill} from '@material/dom/index';
+import {MDCListAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCListFoundation} from './foundation';
 import {ListActionEventDetail, ListIndex} from './types';
@@ -127,7 +128,9 @@ class MDCList extends MDCComponent<MDCListFoundation> {
   }
 
   getDefaultFoundation() {
-    return new MDCListFoundation({
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    const adapter: MDCListAdapter = {
       addClassForElementIndex: (index, className) => {
         const element = this.listElements[index];
         if (element) {
@@ -194,7 +197,8 @@ class MDCList extends MDCComponent<MDCListFoundation> {
           [].slice.call(element.querySelectorAll(strings.CHILD_ELEMENTS_TO_TOGGLE_TABINDEX));
         listItemChildren.forEach((el) => el.setAttribute('tabindex', tabIndexValue));
       },
-    });
+    };
+    return new MDCListFoundation(adapter);
   }
 
   /**

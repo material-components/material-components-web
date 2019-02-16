@@ -27,6 +27,7 @@ import {ListActionEvent, MDCList, MDCListFoundation} from '@material/list/index'
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
 import {Corner, MDCMenuSurface} from '@material/menu-surface/index';
 import {MenuDistance} from '@material/menu-surface/types';
+import {MDCMenuAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCMenuFoundation} from './foundation';
 import {DefaultMenuItemEventDetail, ListFactory, MenuSurfaceFactory} from './types';
@@ -171,8 +172,10 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   }
 
   getDefaultFoundation(): MDCMenuFoundation {
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys
-    return new MDCMenuFoundation({
+    const adapter: MDCMenuAdapter = {
       addClassToElementAtIndex: (index, className) => {
         const list = this.items;
         list[index].classList.add(className);
@@ -201,8 +204,9 @@ class MDCMenu extends MDCComponent<MDCMenuFoundation> {
         index: evtData.index,
         item: this.items[evtData.index],
       }),
-    });
+    };
     // tslint:enable:object-literal-sort-keys
+    return new MDCMenuFoundation(adapter);
   }
 }
 

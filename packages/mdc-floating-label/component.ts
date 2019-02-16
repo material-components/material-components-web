@@ -22,6 +22,7 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+import {MDCFloatingLabelAdapter} from './adapter';
 import {MDCFloatingLabelFoundation} from './foundation';
 
 export type MDCFloatingLabelFactory = (root: Element, foundation?: MDCFloatingLabelFoundation) => MDCFloatingLabel;
@@ -52,14 +53,17 @@ export class MDCFloatingLabel extends MDCComponent<MDCFloatingLabelFoundation> {
   }
 
   getDefaultFoundation(): MDCFloatingLabelFoundation {
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys
-    return new MDCFloatingLabelFoundation({
+    const adapter: MDCFloatingLabelAdapter = {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       getWidth: () => this.root_.scrollWidth,
       registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
       deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
-    });
+    };
     // tslint:enable:object-literal-sort-keys
+    return new MDCFloatingLabelFoundation(adapter);
   }
 }

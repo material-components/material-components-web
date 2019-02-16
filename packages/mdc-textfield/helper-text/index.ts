@@ -22,6 +22,7 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+import {MDCTextFieldHelperTextAdapter} from './adapter';
 import {MDCTextFieldHelperTextFoundation} from './foundation';
 
 class MDCTextFieldHelperText extends MDCComponent<MDCTextFieldHelperTextFoundation> {
@@ -34,16 +35,19 @@ class MDCTextFieldHelperText extends MDCComponent<MDCTextFieldHelperTextFoundati
   }
 
   getDefaultFoundation(): MDCTextFieldHelperTextFoundation {
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys
-    return new MDCTextFieldHelperTextFoundation({
+    const adapter: MDCTextFieldHelperTextAdapter = {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       hasClass: (className) => this.root_.classList.contains(className),
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       removeAttr: (attr) => this.root_.removeAttribute(attr),
       setContent: (content) => { this.root_.textContent = content; },
-    });
+    };
     // tslint:enable:object-literal-sort-keys
+    return new MDCTextFieldHelperTextFoundation(adapter);
   }
 }
 

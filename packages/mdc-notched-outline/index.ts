@@ -23,6 +23,7 @@
 
 import {MDCComponent} from '@material/base/component';
 import {MDCFloatingLabelFoundation} from '@material/floating-label/index';
+import {MDCNotchedOutlineAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCNotchedOutlineFoundation} from './foundation';
 
@@ -64,14 +65,17 @@ class MDCNotchedOutline extends MDCComponent<MDCNotchedOutlineFoundation> {
   }
 
   getDefaultFoundation(): MDCNotchedOutlineFoundation {
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys
-    return new MDCNotchedOutlineFoundation({
+    const adapter: MDCNotchedOutlineAdapter = {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       setNotchWidthProperty: (width) => this.notchElement_.style.setProperty('width', width + 'px'),
       removeNotchWidthProperty: () => this.notchElement_.style.removeProperty('width'),
-    });
+    };
     // tslint:enable:object-literal-sort-keys
+    return new MDCNotchedOutlineFoundation(adapter);
   }
 }
 

@@ -26,6 +26,7 @@ import {EventType, SpecificEventListener} from '@material/base/types';
 import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
 import {MDCSelectionControl} from '@material/selection-control/index';
 
+import {MDCRadioAdapter} from './adapter';
 import {MDCRadioFoundation} from './foundation';
 
 class MDCRadio extends MDCComponent<MDCRadioFoundation> implements RippleCapableSurface, MDCSelectionControl {
@@ -72,11 +73,14 @@ class MDCRadio extends MDCComponent<MDCRadioFoundation> implements RippleCapable
   }
 
   getDefaultFoundation() {
-    return new MDCRadioFoundation({
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    const adapter: MDCRadioAdapter = {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       setNativeControlDisabled: (disabled) => this.nativeControl_.disabled = disabled,
-    });
+    };
+    return new MDCRadioFoundation(adapter);
   }
 
   private initRipple_(): MDCRipple {

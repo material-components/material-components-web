@@ -23,6 +23,7 @@
 
 import {MDCComponent} from '@material/base/component';
 import {EventType, SpecificEventListener} from '@material/base/types';
+import {MDCTextFieldIconAdapter} from './adapter';
 import {MDCTextFieldIconFoundation} from './foundation';
 
 class MDCTextFieldIcon extends MDCComponent<MDCTextFieldIconFoundation> {
@@ -35,8 +36,10 @@ class MDCTextFieldIcon extends MDCComponent<MDCTextFieldIconFoundation> {
   }
 
   getDefaultFoundation(): MDCTextFieldIconFoundation {
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys
-    return new MDCTextFieldIconFoundation({
+    const adapter: MDCTextFieldIconAdapter = {
       getAttr: (attr) => this.root_.getAttribute(attr),
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       removeAttr: (attr) => this.root_.removeAttribute(attr),
@@ -49,8 +52,9 @@ class MDCTextFieldIcon extends MDCComponent<MDCTextFieldIconFoundation> {
       },
       notifyIconAction: () => this.emit(
         MDCTextFieldIconFoundation.strings.ICON_EVENT, {} /* evtData */, true /* shouldBubble */),
-    });
+    };
     // tslint:enable:object-literal-sort-keys
+    return new MDCTextFieldIconFoundation(adapter);
   }
 }
 

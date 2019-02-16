@@ -26,6 +26,7 @@ import {SpecificEventListener} from '@material/base/types';
 import {closest, matches} from '@material/dom/ponyfill';
 import {MDCRipple} from '@material/ripple/index';
 import * as FocusTrapLib from 'focus-trap';
+import {MDCDialogAdapter} from './adapter';
 import {MDCDialogFoundation} from './foundation';
 import {FocusTrapFactory} from './types';
 import * as util from './util';
@@ -151,7 +152,9 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   }
 
   getDefaultFoundation() {
-    return new MDCDialogFoundation({
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    const adapter: MDCDialogAdapter = {
       addBodyClass: (className) => document.body.classList.add(className),
       addClass: (className) => this.root_.classList.add(className),
       areButtonsStacked: () => util.areTopsMisaligned(this.buttons_),
@@ -180,6 +183,7 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
         });
       },
       trapFocus: () => this.focusTrap_.activate(),
-    });
+    };
+    return new MDCDialogFoundation(adapter);
   }
 }

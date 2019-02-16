@@ -26,6 +26,7 @@ import {EventType} from '@material/base/index';
 import {ponyfill} from '@material/dom/index';
 import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
 import {MDCSelectionControl} from '@material/selection-control/index';
+import {MDCSwitchAdapter} from './adapter';
 import {MDCSwitchFoundation} from './foundation';
 
 /**
@@ -63,12 +64,15 @@ class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCSelectio
   }
 
   getDefaultFoundation() {
-    return new MDCSwitchFoundation({
-      addClass: (className: string) => this.root_.classList.add(className),
-      removeClass: (className: string) => this.root_.classList.remove(className),
-      setNativeControlChecked: (checked: boolean) => this.nativeControl_.checked = checked,
-      setNativeControlDisabled: (disabled: boolean) => this.nativeControl_.disabled = disabled,
-    });
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    const adapter: MDCSwitchAdapter = {
+      addClass: (className) => this.root_.classList.add(className),
+      removeClass: (className) => this.root_.classList.remove(className),
+      setNativeControlChecked: (checked) => this.nativeControl_.checked = checked,
+      setNativeControlDisabled: (disabled) => this.nativeControl_.disabled = disabled,
+    };
+    return new MDCSwitchFoundation(adapter);
   }
 
   get ripple() {

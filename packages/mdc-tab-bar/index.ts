@@ -25,6 +25,7 @@ import {MDCComponent} from '@material/base/component';
 import {CustomEventListener, SpecificEventListener} from '@material/base/types';
 import {MDCTabScroller} from '@material/tab-scroller/index';
 import {MDCTab, MDCTabFoundation, TabInteractionEvent} from '@material/tab/index';
+import {MDCTabBarAdapter} from './adapter';
 import {MDCTabBarFoundation} from './foundation';
 import {TabFactory, TabScrollerFactory} from './types';
 
@@ -83,8 +84,10 @@ class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
   }
 
   getDefaultFoundation(): MDCTabBarFoundation {
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys
-    return new MDCTabBarFoundation({
+    const adapter: MDCTabBarAdapter = {
       scrollTo: (scrollX) => this.tabScroller_!.scrollTo(scrollX),
       incrementScroll: (scrollXIncrement) => this.tabScroller_!.incrementScroll(scrollXIncrement),
       getScrollPosition: () => this.tabScroller_!.getScrollPosition(),
@@ -120,8 +123,9 @@ class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
       },
       getTabListLength: () => this.tabList_.length,
       notifyTabActivated: (index) => this.emit(MDCTabBarFoundation.strings.TAB_ACTIVATED_EVENT, {index}, true),
-    });
+    };
     // tslint:enable:object-literal-sort-keys
+    return new MDCTabBarFoundation(adapter);
   }
 
   /**

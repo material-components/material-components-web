@@ -23,6 +23,7 @@
 
 import {MDCComponent} from '@material/base/component';
 import {MDCSelectionControl} from '@material/selection-control/index';
+import {MDCFormFieldAdapter} from './adapter';
 import {MDCFormFieldFoundation} from './foundation';
 
 export type MDCFormFieldFactory = (root: Element, foundation?: MDCFormFieldFoundation) => MDCFormField;
@@ -48,7 +49,9 @@ export class MDCFormField extends MDCComponent<MDCFormFieldFoundation> {
   }
 
   getDefaultFoundation() {
-    return new MDCFormFieldFoundation({
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    const adapter: MDCFormFieldAdapter = {
       activateInputRipple: () => {
         if (this.input_ && this.input_.ripple) {
           this.input_.ripple.activate();
@@ -69,6 +72,7 @@ export class MDCFormField extends MDCComponent<MDCFormFieldFoundation> {
           this.label_.addEventListener(evtType, handler);
         }
       },
-    });
+    };
+    return new MDCFormFieldFoundation(adapter);
   }
 }

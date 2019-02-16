@@ -24,6 +24,7 @@
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/index';
 import {ponyfill} from '@material/dom/index';
+import {MDCSnackbarAdapter} from './adapter';
 import {strings} from './constants';
 import {MDCSnackbarFoundation} from './foundation';
 import {Announcer, AnnouncerFactory} from './types';
@@ -91,7 +92,9 @@ class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
   }
 
   getDefaultFoundation() {
-    return new MDCSnackbarFoundation({
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    const adapter: MDCSnackbarAdapter = {
       addClass: (className) => this.root_.classList.add(className),
       announce: () => this.announce_(this.labelEl_),
       notifyClosed: (reason) => this.emit(CLOSED_EVENT, reason ? {reason} : {}),
@@ -99,7 +102,8 @@ class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
       notifyOpened: () => this.emit(OPENED_EVENT, {}),
       notifyOpening: () => this.emit(OPENING_EVENT, {}),
       removeClass: (className) => this.root_.classList.remove(className),
-    });
+    };
+    return new MDCSnackbarFoundation(adapter);
   }
 
   get timeoutMs(): number {

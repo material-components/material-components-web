@@ -24,6 +24,7 @@
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
 import {MDCRipple, MDCRippleFactory, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
+import {MDCChipAdapter} from './adapter';
 import {strings} from './constants';
 import {MDCChipFoundation} from './foundation';
 
@@ -156,7 +157,9 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements RippleCa
   }
 
   getDefaultFoundation() {
-    return new MDCChipFoundation({
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    const adapter: MDCChipAdapter = {
       addClass: (className) => this.root_.classList.add(className),
       addClassToLeadingIcon: (className) => {
         if (this.leadingIcon_) {
@@ -170,13 +173,13 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements RippleCa
       hasClass: (className) => this.root_.classList.contains(className),
       hasLeadingIcon: () => !!this.leadingIcon_,
       notifyInteraction: () => this.emit<MDCChipInteractionEventDetail>(
-          strings.INTERACTION_EVENT, {chipId: this.id}, true /* shouldBubble */),
+        strings.INTERACTION_EVENT, {chipId: this.id}, true /* shouldBubble */),
       notifyRemoval: () => this.emit<MDCChipRemovalEventDetail>(
-          strings.REMOVAL_EVENT, {chipId: this.id, root: this.root_}, true /* shouldBubble */),
+        strings.REMOVAL_EVENT, {chipId: this.id, root: this.root_}, true /* shouldBubble */),
       notifySelection: (selected) => this.emit<MDCChipSelectionEventDetail>(
-          strings.SELECTION_EVENT, {chipId: this.id, selected}, true /* shouldBubble */),
+        strings.SELECTION_EVENT, {chipId: this.id, selected}, true /* shouldBubble */),
       notifyTrailingIconInteraction: () => this.emit<MDCChipInteractionEventDetail>(
-          strings.TRAILING_ICON_INTERACTION_EVENT, {chipId: this.id}, true /* shouldBubble */),
+        strings.TRAILING_ICON_INTERACTION_EVENT, {chipId: this.id}, true /* shouldBubble */),
       removeClass: (className) => this.root_.classList.remove(className),
       removeClassFromLeadingIcon: (className) => {
         if (this.leadingIcon_) {
@@ -184,6 +187,7 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements RippleCa
         }
       },
       setStyleProperty: (propertyName, value) => this.root_.style.setProperty(propertyName, value),
-    });
+    };
+    return new MDCChipFoundation(adapter);
   }
 }

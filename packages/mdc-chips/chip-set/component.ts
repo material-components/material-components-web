@@ -24,6 +24,7 @@
 import {MDCComponent} from '@material/base/component';
 import {MDCChip, MDCChipFactory, MDCChipFoundation} from '../chip/index';
 import {MDCChipInteractionEvent, MDCChipRemovalEvent, MDCChipSelectionEvent} from '../chip/index';
+import {MDCChipSetAdapter} from './adapter';
 import {MDCChipSetFoundation} from './foundation';
 
 let idCounter = 0;
@@ -96,7 +97,9 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   }
 
   getDefaultFoundation() {
-    return new MDCChipSetFoundation({
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    const adapter: MDCChipSetAdapter = {
       hasClass: (className) => this.root_.classList.contains(className),
       removeChip: (chipId) => {
         const index = this.findChipIndex_(chipId);
@@ -111,7 +114,8 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
           this.chips_[index].selected = selected;
         }
       },
-    });
+    };
+    return new MDCChipSetFoundation(adapter);
   }
 
   /**

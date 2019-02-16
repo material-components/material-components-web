@@ -22,6 +22,7 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+import {MDCGridListAdapter} from './adapter';
 import {MDCGridListFoundation} from './foundation';
 
 class MDCGridList extends MDCComponent<MDCGridListFoundation> {
@@ -30,7 +31,9 @@ class MDCGridList extends MDCComponent<MDCGridListFoundation> {
   }
 
   getDefaultFoundation() {
-    return new MDCGridListFoundation({
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    const adapter: MDCGridListAdapter = {
       deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
       getNumberOfTiles: () => {
         return this.root_.querySelectorAll(MDCGridListFoundation.strings.TILE_SELECTOR).length;
@@ -45,7 +48,8 @@ class MDCGridList extends MDCComponent<MDCGridListFoundation> {
         const tilesEl = this.root_.querySelector<HTMLElement>(MDCGridListFoundation.strings.TILES_SELECTOR);
         tilesEl!.style[property] = value;
       },
-    });
+    };
+    return new MDCGridListFoundation(adapter);
   }
 }
 

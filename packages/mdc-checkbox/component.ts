@@ -27,6 +27,7 @@ import {EventType, SpecificEventListener} from '@material/base/types';
 import {ponyfill} from '@material/dom/index';
 import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
 import {MDCSelectionControl} from '@material/selection-control/index';
+import {MDCCheckboxAdapter} from './adapter';
 import {MDCCheckboxFoundation} from './foundation';
 
 const CB_PROTO_PROPS = ['checked', 'indeterminate'];
@@ -76,7 +77,9 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation>
   }
 
   getDefaultFoundation(): MDCCheckboxFoundation {
-    return new MDCCheckboxFoundation({
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    const adapter: MDCCheckboxAdapter = {
       addClass: (className) => this.root_.classList.add(className),
       forceLayout: () => (this.root_ as HTMLElement).offsetWidth,
       hasNativeControl: () => !!this.nativeCb_,
@@ -87,7 +90,8 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation>
       removeNativeControlAttr: (attr) => this.nativeCb_.removeAttribute(attr),
       setNativeControlAttr: (attr, value) => this.nativeCb_.setAttribute(attr, value),
       setNativeControlDisabled: (disabled) => this.nativeCb_.disabled = disabled,
-    });
+    };
+    return new MDCCheckboxFoundation(adapter);
   }
 
   private initRipple_(): MDCRipple {

@@ -24,6 +24,7 @@
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
 import {MDCRipple} from '@material/ripple/index';
+import {MDCIconButtonToggleAdapter} from './adapter';
 import {MDCIconButtonToggleFoundation} from './foundation';
 
 export type MDCIconButtonToggleFactory =
@@ -51,13 +52,16 @@ export class MDCIconButtonToggle extends MDCComponent<MDCIconButtonToggleFoundat
   }
 
   getDefaultFoundation(): MDCIconButtonToggleFoundation {
-    return new MDCIconButtonToggleFoundation({
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    const adapter: MDCIconButtonToggleAdapter = {
       addClass: (className) => this.root_.classList.add(className),
       hasClass: (className) => this.root_.classList.contains(className),
       notifyChange: (evtData) => this.emit(MDCIconButtonToggleFoundation.strings.CHANGE_EVENT, evtData),
       removeClass: (className) => this.root_.classList.remove(className),
       setAttr: (attrName, attrValue) => this.root_.setAttribute(attrName, attrValue),
-    });
+    };
+    return new MDCIconButtonToggleFoundation(adapter);
   }
 
   get ripple(): MDCRipple {

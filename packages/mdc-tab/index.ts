@@ -25,6 +25,7 @@ import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
 import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
 import {MDCTabIndicator} from '@material/tab-indicator/index';
+import {MDCTabAdapter} from './adapter';
 import {MDCTabFoundation} from './foundation';
 import {MDCTabDimensions, RippleFactory, TabIndicatorFactory, TabInteractionEventDetail} from './types';
 
@@ -75,8 +76,10 @@ class MDCTab extends MDCComponent<MDCTabFoundation> implements RippleCapableSurf
   }
 
   getDefaultFoundation(): MDCTabFoundation {
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys
-    return new MDCTabFoundation({
+    const adapter: MDCTabAdapter = {
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
@@ -90,8 +93,9 @@ class MDCTab extends MDCComponent<MDCTabFoundation> implements RippleCapableSurf
       getContentOffsetLeft: () => this.content_.offsetLeft,
       getContentOffsetWidth: () => this.content_.offsetWidth,
       focus: () => this.root_.focus(),
-    });
+    };
     // tslint:enable:object-literal-sort-keys
+    return new MDCTabFoundation(adapter);
   }
 
   /**
