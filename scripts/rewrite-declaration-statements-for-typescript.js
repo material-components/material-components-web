@@ -21,121 +21,99 @@
  * THE SOFTWARE.
  */
 
-/**
- * @fileoverview Rewrites JS and TS to match relative path format. That means
- *  * Rewrite import FooConstants from '@material/foo/constants' to import FooConstants from './../foo/index'
- *  * Rewrite import {FooFoundation} from '@material/foo' to import {FooFoundation} from './mdc-foo/index'
- *
- *
- * This script rewrites import statements such that:
- *
- * ```js
- * import [<SPECIFIERS> from] '@material/$PKG[/files...]';
- * ```
- * becomes
- * ```js
- * import [<SPECIFIERS> from] '../<RELATIVE_PATH>/$PKG[/files...]';
- * ```
- * The RELATIVE_PATH is the path relative from the current working file.
- *
- * This script also handles third-party dependencies, e.g.
- *
- * ```js
- * import {thing1, thing2} from 'third-party-lib';
- * ```
- *
- * becomes
- *
- * ```js
- * import {thing1, thing2} from 'mdc.thirdparty.thirdPartyLib';
- * ```
- *
- * and
- *
- * ```js
- * import someDefaultExport from 'third-party-lib';
- * ```
- *
- * becomes
- *
- * ```js
- * import {default as someDefaultExport} from 'mdc.thirdparty.thirdPartyLib'
- * ```
- */
-
 const fs = require('fs');
-const path = require('path');
-
-const {default: traverse} = require('babel-traverse');
-const parser = require('@babel/parser');
-const camelCase = require('camel-case');
 const glob = require('glob');
+const parser = require('@babel/parser');
+const path = require('path');
 const recast = require('recast');
-const resolve = require('resolve');
 const types = require('babel-types');
+const {default: traverse} = require('babel-traverse');
 
-const THIRD_PARTY_PATH = 'mdc.thirdparty.';
-
-const alreadyRewrittenImportPaths = new Set();
-
-main(process.argv);
-
-function main(argv) {
-  if (argv.length < 3) {
-    console.error(`Usage: node ${path.basename(argv[1])} path/to/mdc-web/packages`);
-    process.exit(1);
-  }
-
-  const packagesDir = path.resolve(process.argv[2]);
-
-  /** @type {!Array<string>} */
-  const srcFileAbsolutePaths = glob.sync(`${packagesDir}/**/*.{js,ts}`, {ignore: ['**/node_modules/**']});
-
-  srcFileAbsolutePaths.forEach((srcFileAbsolutePath) => {
-    transformSrc(srcFileAbsolutePath);
-  });
-
-  logProgress('');
-  console.log('\rTransform pass completed. ' + srcFileAbsolutePaths.length + ' files written.\n');
+if (process.argv.length < 3) {
+  console.log(`Usage: node ${path.basename(process.argv[1])} path/to/mdc-web/`);
+  process.exit(1);
 }
 
-function getAstFromCodeString(codeString) {
-  return recast.parse(codeString, {
-    parser: {
-      parse: (code) => parser.parse(code, {
-        sourceType: 'module',
-        plugins: ['typescript', 'classProperties'],
-      }),
-    },
-  });
+main(process.argv[2]);
+
+function main(tsTempDir) {
+  const searchPattern = path.join(tsTempDir, '**/*.ts');
+  const tsFilePaths = glob.sync(searchPattern, {nodir: true, ignore: ['**/node_modules/**', '**/dist/**']});
+
+  for (const tsFilePath of tsFilePaths) {
+    const newTsCode = transformTS(tsFilePath, (oldImportPath) => {
+      return rewriteImportPath(oldImportPath);
+    });
+    fs.writeFileSync(tsFilePath, newTsCode, 'utf8');
+  }
+}
+
+function rewriteImportPath(ossImportPath) {
+  // Only rewrite path-relative imports (e.g., './chip-set/index' -> './chipset/index').
+  // Ignore npm module imports (e.g., '@material/base/types' or 'focus-trap').
+  if (!ossImportPath.startsWith('.')) {
+    return ossImportPath;
+  }
+  return ossImportPath
+    .replace(/selection-control/g, 'selection_control')
+    .replace(/character-counter/g, 'character_counter')
+    .replace(/helper-text/g, 'helper_text')
+    .replace(/-/g, '')
+  ;
 }
 
 /**
- * @param {string} srcFileAbsolutePath
+ * @param {string} inputFilePath
+ * @param {function(string): string} importRewriter
+ * @return {string}
  */
-function transformSrc(srcFileAbsolutePath) {
-  const src = fs.readFileSync(srcFileAbsolutePath, 'utf8');
-  const ast = getAstFromCodeString(src);
+function transformTS(inputFilePath, importRewriter) {
+  const inputCode = fs.readFileSync(inputFilePath, 'utf8');
+  const ast = getAstFromCodeString(inputCode);
 
   traverse(ast, {
-    ImportDeclaration(path) {
-      const packageStr = rewriteDeclarationSource(path.node, srcFileAbsolutePath);
-      const {value: sourceValue} = path.node.source;
-
-      const hasThirdPartyTransformed = sourceValue.includes(THIRD_PARTY_PATH);
-      if (sourceValue !== packageStr && !hasThirdPartyTransformed) {
-        const importDeclaration = types.importDeclaration(path.node.specifiers, types.stringLiteral(packageStr));
-        // Preserve comments above import statements, since this is most likely
-        // the license comment.
-        if (path.node.comments && path.node.comments.length > 0) {
-          for (let i = 0; i < path.node.comments.length; i++) {
-            const commentValue = path.node.comments[i].value;
-            importDeclaration.comments = importDeclaration.comments || [];
-            importDeclaration.comments.push({type: 'CommentBlock', value: commentValue});
-          }
-        }
-        path.replaceWith(importDeclaration);
+    ExportDeclaration(oldExportDeclaration) {
+      // Ensure export has a `from '...'` qualifier (i.e., it's directly re-exporting an import).
+      // E.g.: Rewrite `export ... from '...';`, but not `export {util};` or `export default Foo;`.
+      if (!oldExportDeclaration.node.source) {
+        return;
       }
+
+      const oldImportPath = oldExportDeclaration.node.source.value;
+      const newImportPath = importRewriter(oldImportPath);
+      if (oldImportPath === newImportPath) {
+        return;
+      }
+
+      let newExportDeclaration;
+      if (types.isExportAllDeclaration(oldExportDeclaration)) {
+        // E.g.: `export * from '...';`
+        newExportDeclaration = types.exportAllDeclaration(
+          types.stringLiteral(newImportPath));
+      } else if (types.isExportNamedDeclaration(oldExportDeclaration)) {
+        // E.g.: `export {Foo} from '...';`
+        newExportDeclaration = types.exportNamedDeclaration(
+          null,
+          oldExportDeclaration.node.specifiers,
+          types.stringLiteral(newImportPath));
+      } else {
+        throw new Error(`Unsupported export declaration type: ${oldExportDeclaration.type}`);
+      }
+
+      replaceDeclaration(oldExportDeclaration, newExportDeclaration);
+    },
+    ImportDeclaration(oldImportDeclaration) {
+      const oldImportPath = oldImportDeclaration.node.source.value;
+      const newImportPath = importRewriter(oldImportPath);
+      if (oldImportPath === newImportPath) {
+        return;
+      }
+
+      const newImportDeclaration = types.importDeclaration(
+        oldImportDeclaration.node.specifiers,
+        types.stringLiteral(newImportPath));
+
+      replaceDeclaration(oldImportDeclaration, newImportDeclaration);
     },
   });
 
@@ -149,75 +127,33 @@ function transformSrc(srcFileAbsolutePath) {
     },
   });
 
-  fs.writeFileSync(srcFileAbsolutePath, outputCode, 'utf8');
-  logProgress(`[rewrite] ${srcFileAbsolutePath}`);
+  return outputCode;
 }
 
-/**
- * @param {!Object} astNode
- * @param {string} srcFilePathAbsolute
- * @return {string} New import path
- */
-function rewriteDeclarationSource(astNode, srcFilePathAbsolute) {
-  const oldImportPath = astNode.source.value;
-  let newImportPath = oldImportPath;
-  const basedir = path.dirname(srcFilePathAbsolute);
+function replaceDeclaration(oldDeclaration, newDeclaration) {
+  newDeclaration.comments = newDeclaration.comments || [];
 
-  // TODO: This section of code will need to be revisited when a third party module is used internally.
-  // currently we haven't built internal dialog or drawer to actually use this rewrite correctly.
-  // Needed for focus-trap.
-  if (isThirdPartyModule(oldImportPath)) {
-    if (oldImportPath.indexOf('@material') > -1) {
-      return oldImportPath;
+  // Preserve comments above import statements, since this is most likely the license comment.
+  const oldComments = oldDeclaration.node.comments;
+  if (oldComments && oldComments.length > 0) {
+    for (const oldComment of oldComments) {
+      newDeclaration.comments.push({
+        type: oldComment.type,
+        value: oldComment.value,
+      });
     }
-    patchDefaultImportIfNeeded(astNode);
-    newImportPath = `${THIRD_PARTY_PATH}${camelCase(oldImportPath)}`;
-    return newImportPath;
-  } else {
-    if (alreadyRewrittenImportPaths.has(oldImportPath)) {
-      return oldImportPath;
-    }
-    const fileDir = resolve.sync(oldImportPath, {
-      basedir,
-      extensions: ['.ts', '.js'],
-    });
-    const srcDirectory = path.dirname(srcFilePathAbsolute);
-    newImportPath = './' + getBazelFileNameOrPath(
-      path.relative(srcDirectory, fileDir)
-        .replace('.js', '')
-        .replace('.ts', '')
-    );
-    alreadyRewrittenImportPaths.add(newImportPath);
-    return newImportPath;
   }
+
+  oldDeclaration.replaceWith(newDeclaration);
 }
 
-function patchDefaultImportIfNeeded(astNode) {
-  const defaultImportSpecifierIndex =
-      astNode.specifiers.findIndex(types.isImportDefaultSpecifier);
-  if (defaultImportSpecifierIndex >= 0) {
-    const defaultImportSpecifier = astNode.specifiers[defaultImportSpecifierIndex];
-    const defaultPropImportSpecifier = types.importSpecifier(defaultImportSpecifier.local, types.identifier('default'));
-    astNode.specifiers[defaultImportSpecifierIndex] = defaultPropImportSpecifier;
-  }
-}
-
-function isThirdPartyModule(importPath) {
-  // See: https://nodejs.org/api/modules.html#modules_all_together (step 3)
-  const wouldLoadAsFileOrDir = ['./', '/', '../'].some((s) => importPath.indexOf(s) === 0);
-  return !wouldLoadAsFileOrDir;
-}
-
-function getBazelFileNameOrPath(ossFileNameOrPath) {
-  return ossFileNameOrPath
-    .replace(/mdc-?/g, '')
-    .replace(/selection-control/g, 'selection_control')
-    .replace(/character-counter/g, 'character_counter')
-    .replace(/helper-text/g, 'helper_text')
-    .replace(/-/g, '')
-  ;
-}
-
-function logProgress(msg) {
-  console.log(msg);
+function getAstFromCodeString(inputCode) {
+  return recast.parse(inputCode, {
+    parser: {
+      parse: (code) => parser.parse(code, {
+        sourceType: 'module',
+        plugins: ['typescript', 'classProperties'],
+      }),
+    },
+  });
 }
