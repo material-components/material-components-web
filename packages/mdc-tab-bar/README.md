@@ -78,6 +78,18 @@ const tabBar = new MDCTabBar(document.querySelector('.mdc-tab-bar'));
 MDC Tab Bar does not have any variants; however, its subcomponents do. See the [Tab Scroller](../mdc-tab-scroller),
 [Tab](../mdc-tab), and [Tab Indicator](../mdc-tab-indicator) documentation for more information.
 
+### Tab Icons
+
+We recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts:
+
+```html
+<head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+```
+
+However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any other icon library you wish.
+
 ## Style Customization
 
 ### CSS Classes
