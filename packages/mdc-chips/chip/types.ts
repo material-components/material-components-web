@@ -21,7 +21,19 @@
  * THE SOFTWARE.
  */
 
-export * from './adapter';
-export * from './component';
-export * from './foundation';
-export * from './types';
+export interface MDCChipInteractionEventDetail {
+  chipId: string;
+}
+
+export interface MDCChipSelectionEventDetail extends MDCChipInteractionEventDetail {
+  selected: boolean;
+}
+
+export interface MDCChipRemovalEventDetail extends MDCChipInteractionEventDetail {
+  root: Element;
+}
+
+// TODO(acdvorak): Should we use `interface` or `type`?
+export interface MDCChipInteractionEvent extends CustomEvent<MDCChipInteractionEventDetail> {}
+export interface MDCChipSelectionEvent extends CustomEvent<MDCChipSelectionEventDetail> {}
+export interface MDCChipRemovalEvent extends CustomEvent<MDCChipRemovalEventDetail> {}

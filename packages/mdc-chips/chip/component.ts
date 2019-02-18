@@ -33,28 +33,11 @@ import {
 import {MDCChipAdapter} from './adapter';
 import {strings} from './constants';
 import {MDCChipFoundation} from './foundation';
+import {MDCChipInteractionEventDetail, MDCChipRemovalEventDetail, MDCChipSelectionEventDetail} from './types';
 
 type InteractionType = 'click' | 'keydown';
 
 const INTERACTION_EVENTS: InteractionType[] = ['click', 'keydown'];
-
-export interface MDCChipInteractionEventDetail {
-  chipId: string;
-}
-
-export interface MDCChipSelectionEventDetail extends MDCChipInteractionEventDetail {
-  selected: boolean;
-}
-
-export interface MDCChipRemovalEventDetail extends MDCChipInteractionEventDetail {
-  root: Element;
-}
-
-// TODO(acdvorak): Should we use `interface` or `type`?
-// TODO(acdvorak): Should these go in `types.ts` or `component.ts` if they're not component-specific?
-export interface MDCChipInteractionEvent extends CustomEvent<MDCChipInteractionEventDetail> {}
-export interface MDCChipSelectionEvent extends CustomEvent<MDCChipSelectionEventDetail> {}
-export interface MDCChipRemovalEvent extends CustomEvent<MDCChipRemovalEventDetail> {}
 
 export type MDCChipFactory = (el: Element, foundation?: MDCChipFoundation) => MDCChip;
 
