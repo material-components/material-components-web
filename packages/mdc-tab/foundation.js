@@ -108,7 +108,6 @@ class MDCTabFoundation extends MDCFoundation {
   activate(previousIndicatorClientRect) {
     this.adapter_.addClass(cssClasses.ACTIVE);
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'true');
-    this.adapter_.setAttr(strings.TABINDEX, '0');
     this.adapter_.activateIndicator(previousIndicatorClientRect);
     if (this.focusOnActivate_) {
       this.adapter_.focus();
@@ -126,7 +125,6 @@ class MDCTabFoundation extends MDCFoundation {
 
     this.adapter_.removeClass(cssClasses.ACTIVE);
     this.adapter_.setAttr(strings.ARIA_SELECTED, 'false');
-    this.adapter_.setAttr(strings.TABINDEX, '-1');
     this.adapter_.deactivateIndicator();
   }
 

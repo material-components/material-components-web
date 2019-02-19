@@ -32,7 +32,6 @@ const strings = {
   RIPPLE_SELECTOR: '.mdc-tab__ripple',
   CONTENT_SELECTOR: '.mdc-tab__content',
   TAB_INDICATOR_SELECTOR: '.mdc-tab-indicator',
-  TABINDEX: 'tabIndex',
   INTERACTED_EVENT: 'MDCTab:interacted',
 };
 

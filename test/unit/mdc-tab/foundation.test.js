@@ -63,12 +63,6 @@ test('#activate sets the root element aria-selected attribute to true', () => {
   td.verify(mockAdapter.setAttr(MDCTabFoundation.strings.ARIA_SELECTED, 'true'));
 });
 
-test('#activate sets the root element tabindex to 0', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.activate();
-  td.verify(mockAdapter.setAttr(MDCTabFoundation.strings.TABINDEX, '0'));
-});
-
 test('#activate activates the indicator', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.activate({width: 100, left: 200});
@@ -120,13 +114,6 @@ test('#deactivate deactivates the indicator', () => {
   td.when(mockAdapter.hasClass(MDCTabFoundation.cssClasses.ACTIVE)).thenReturn(true);
   foundation.deactivate();
   td.verify(mockAdapter.deactivateIndicator());
-});
-
-test('#deactivate sets the root element tabindex to -1', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(MDCTabFoundation.cssClasses.ACTIVE)).thenReturn(true);
-  foundation.deactivate();
-  td.verify(mockAdapter.setAttr(MDCTabFoundation.strings.TABINDEX, '-1'));
 });
 
 test(`#handleClick emits the ${MDCTabFoundation.strings.INTERACTED_EVENT} event`, () => {
