@@ -91,7 +91,8 @@
 
   @return (
     op: without,
-    queries: ($feature-query)
+    // NOTE: we need to use `append`, just putting parens around a single value doesn't make it a list in Sass.
+    queries: append((), $feature-query)
   );
 }
 
