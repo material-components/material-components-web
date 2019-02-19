@@ -177,7 +177,12 @@ export class MDCTabScrollerFoundation extends MDCFoundation<MDCTabScrollerAdapte
     // of `matrix(a, b, c, d, tx, ty)`. We only care about tx (translateX) so
     // we're going to grab all the parenthesized values, strip out tx, and
     // parse it.
-    const [, matrixParams] = /\((.+?)\)/.exec(transformValue);
+    const match = /\((.+?)\)/.exec(transformValue);
+    if (!match) {
+      return 0;
+    }
+
+    const matrixParams = match[1];
 
     // @ts-ignore
     const [a, b, c, d, tx, ty] = matrixParams.split(',');
