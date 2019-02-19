@@ -33,7 +33,7 @@
 // Public
 //
 
-@mixin mdc-list($query: mdc-feature-all()) {
+@mixin mdc-list-core-styles($query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
   $feat-typography: mdc-feature-create-target($query, typography);

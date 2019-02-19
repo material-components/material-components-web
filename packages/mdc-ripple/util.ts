@@ -52,7 +52,6 @@ function detectEdgePseudoVarBug(windowObj: Window): boolean {
   return hasPseudoVarBug;
 }
 
-/** Checks whether the browser supports Css Variables. */
 export function supportsCssVariables(windowObj: Window, forceRefresh = false): boolean {
   const {CSS} = windowObj;
   let supportsCssVars = supportsCssVariables_;
@@ -98,31 +97,12 @@ export function applyPassive(globalObj: Window = window, forceRefresh = false):
         isSupported = true;
         return isSupported;
       }});
-    // tslint:disable-next-line:no-empty cannot throw error because of tests. tslint also disables console.logs
-    } catch (e) {}
+    } catch (e) {} // tslint:disable-line:no-empty cannot throw error due to tests. tslint also disables console.log.
 
     supportsPassive_ = isSupported;
   }
 
   return supportsPassive_ ? {passive: true} as EventListenerOptions : false;
-}
-
-export type VendorMatchesFunctionName = 'webkitMatchesSelector' | 'msMatchesSelector';
-export type MatchesFunctionName = VendorMatchesFunctionName | 'matches';
-
-export function getMatchesProperty(htmlElementPrototype: {}): MatchesFunctionName {
-  // Order is important because we return the first existing method we find.
-  // Do not change the order of the items in the below array.
-  const matchesMethods: MatchesFunctionName[] = ['matches', 'webkitMatchesSelector', 'msMatchesSelector'];
-  let method: MatchesFunctionName = 'matches';
-  for (const matchesMethod of matchesMethods) {
-    if (matchesMethod in htmlElementPrototype) {
-      method = matchesMethod;
-      break;
-    }
-  }
-
-  return method;
 }
 
 export function getNormalizedEventCoords(evt: Event | undefined, pageOffset: Point, clientRect: ClientRect): Point {

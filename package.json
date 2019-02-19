@@ -44,7 +44,7 @@
   "devDependencies": {
     "@google-cloud/datastore": "^3.0.1",
     "@babel/parser": "^7.2.3",
-    "@octokit/rest": "^16.1.0",
+    "@octokit/rest": "^16.15.0",
     "argparse": "^1.0.10",
     "ascii-table": "0.0.9",
     "autoprefixer": "^9.0.0",
@@ -173,7 +173,6 @@
           "form-field",
           "grid-list",
           "icon-button",
-          "icon-toggle",
           "image-list",
           "layout-grid",
           "line-ripple",

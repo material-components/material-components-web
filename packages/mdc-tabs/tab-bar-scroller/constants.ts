@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2017 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,31 +21,17 @@
  * THE SOFTWARE.
  */
 
-import {cssClasses} from './constants';
+export const cssClasses = {
+  INDICATOR_BACK: 'mdc-tab-bar-scroller__indicator--back',
+  INDICATOR_ENABLED: 'mdc-tab-bar-scroller__indicator--enabled',
+  INDICATOR_FORWARD: 'mdc-tab-bar-scroller__indicator--forward',
+  TAB: 'mdc-tab',
+};
 
-/**
- * Stores result from computeHorizontalScrollbarHeight to avoid redundant processing.
- */
-let horizontalScrollbarHeight_: number | undefined;
-
-/**
- * Computes the height of browser-rendered horizontal scrollbars using a self-created test element.
- * May return 0 (e.g. on OS X browsers under default configuration).
- */
-export function computeHorizontalScrollbarHeight(documentObj: Document, shouldCacheResult = true): number {
-  if (shouldCacheResult && typeof horizontalScrollbarHeight_ !== 'undefined') {
-    return horizontalScrollbarHeight_;
-  }
-
-  const el = documentObj.createElement('div');
-  el.classList.add(cssClasses.SCROLL_TEST);
-  documentObj.body.appendChild(el);
-
-  const horizontalScrollbarHeight = el.offsetHeight - el.clientHeight;
-  documentObj.body.removeChild(el);
-
-  if (shouldCacheResult) {
-    horizontalScrollbarHeight_ = horizontalScrollbarHeight;
-  }
-  return horizontalScrollbarHeight;
-}
+export const strings = {
+  FRAME_SELECTOR: '.mdc-tab-bar-scroller__scroll-frame',
+  INDICATOR_BACK_SELECTOR: '.mdc-tab-bar-scroller__indicator--back',
+  INDICATOR_FORWARD_SELECTOR: '.mdc-tab-bar-scroller__indicator--forward',
+  TABS_SELECTOR: '.mdc-tab-bar-scroller__scroll-frame__tabs',
+  TAB_SELECTOR: '.mdc-tab',
+};

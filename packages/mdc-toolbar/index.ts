@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,6 +21,7 @@
  * THE SOFTWARE.
  */
 
-export {MDCTabFoundation, MDCTab} from './tab';
-export {MDCTabBarFoundation, MDCTabBar} from './tab-bar';
-export {MDCTabBarScrollerFoundation, MDCTabBarScroller} from './tab-bar-scroller';
+export * from './adapter';
+export * from './component';
+export * from './foundation';
+export * from './types';

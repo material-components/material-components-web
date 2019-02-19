@@ -20,7 +20,46 @@
 // THE SOFTWARE.
 //
 
+@import "@material/feature-targeting/functions";
+@import "@material/feature-targeting/mixins";
 @import "./variables";
+
+@mixin mdc-theme-core-styles($query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  :root {
+    @include mdc-feature-targets($feat-color) {
+      @each $style in map-keys($mdc-theme-property-values) {
+        --mdc-theme-#{$style}: #{map-get($mdc-theme-property-values, $style)};
+      }
+    }
+  }
+
+  @each $style in map-keys($mdc-theme-property-values) {
+    @if $style != "background" and $style != "surface" {
+      .mdc-theme--#{$style} {
+        @include mdc-feature-targets($feat-color) {
+          @include mdc-theme-prop(color, $style, true);
+        }
+      }
+    } @else {
+      .mdc-theme--#{$style} {
+        @include mdc-feature-targets($feat-color) {
+          @include mdc-theme-prop(background-color, $style);
+        }
+      }
+    }
+  }
+
+  // CSS rules for using primary and secondary (plus light/dark variants) as background colors.
+  @each $style in ("primary", "secondary") {
+    .mdc-theme--#{$style}-bg {
+      @include mdc-feature-targets($feat-color) {
+        @include mdc-theme-prop(background-color, $style, true);
+      }
+    }
+  }
+}
 
 // Applies the correct theme color style to the specified property.
 // $property is typically color or background-color, but can be any CSS property that accepts color values.
@@ -47,7 +86,7 @@
       @if $edgeOptOut {
         // stylelint-disable max-nesting-depth
         @at-root {
-          @supports not (-ms-ime-align:auto) {
+          @supports not (-ms-ime-align: auto) {
             // stylelint-disable scss/selector-no-redundant-nesting-selector
             & {
               /* @alternate */
@@ -67,7 +106,7 @@
       @if $edgeOptOut {
         // stylelint-disable max-nesting-depth
         @at-root {
-          @supports not (-ms-ime-align:auto) {
+          @supports not (-ms-ime-align: auto) {
             // stylelint-disable scss/selector-no-redundant-nesting-selector
             & {
               /* @alternate */

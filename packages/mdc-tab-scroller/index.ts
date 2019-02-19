@@ -24,6 +24,7 @@
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
 import {ponyfill} from '@material/dom/index';
+import {MDCTabScrollerAdapter} from './adapter';
 import {MDCTabScrollerFoundation} from './foundation';
 import * as util from './util';
 
@@ -69,7 +70,7 @@ class MDCTabScroller extends MDCComponent<MDCTabScrollerFoundation> {
 
   getDefaultFoundation(): MDCTabScrollerFoundation {
     // tslint:disable:object-literal-sort-keys
-    return new MDCTabScrollerFoundation({
+    const adapter: MDCTabScrollerAdapter = {
       eventTargetMatchesSelector: (evtTarget, selector) => ponyfill.matches(evtTarget as Element, selector),
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
@@ -84,8 +85,9 @@ class MDCTabScroller extends MDCComponent<MDCTabScrollerFoundation> {
       computeScrollAreaClientRect: () => this.area_.getBoundingClientRect(),
       computeScrollContentClientRect: () => this.content_.getBoundingClientRect(),
       computeHorizontalScrollbarHeight: () => util.computeHorizontalScrollbarHeight(document),
-    });
+    };
     // tslint:enable:object-literal-sort-keys
+    return new MDCTabScrollerFoundation(adapter);
   }
 
   /**
