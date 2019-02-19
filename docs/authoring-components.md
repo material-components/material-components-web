@@ -100,7 +100,7 @@ out the dynamic functionality.
 </div>
 ```
 
-```js
+```ts
 class RedblueTogglePrototype {
   get toggled() {
     return this.root.getAttribute('aria-pressed') === 'true';
@@ -179,7 +179,7 @@ and must be taken into account.
 Now that the host environment interactions are identified, an adapter interface can be carved out
 within our existing component.
 
-```js
+```ts
 class RedblueTogglePrototype {
   get toggled() {
     return SOMEHOW_GET_ATTRIBUTE('aria-pressed') === 'true';
@@ -196,11 +196,11 @@ class RedblueTogglePrototype {
   }
 
   initialize() {
-    SOMEHOW_REGISTER_INTERACTION_HANDLER('click', this.clickHandler_);
+    this.root.addEventListener('click', this.clickHandler_);
   }
 
   destroy() {
-    SOMEHOW_UNREGISTER_INTERACTION_HANDLER('click', this.clickHandler_);
+    this.root.removeEventListener('click', this.clickHandler_);
   }
 
   toggle(isToggled = undefined) {
@@ -232,14 +232,9 @@ methods. We can now take these fake methods and transform them into an adapter i
 | SOMEHOW_ADD_CLASS(className: string) | addClass(className: string) |
 | SOMEHOW_REMOVE_CLASS(className: string) | removeClass(className: string) |
 | SOMEHOW_UPDATE_TOGGLE_COLOR_TEXT_CONTENT(textContent: string) | setToggleColorTextContent(textContent: string) |
-| SOMEHOW_REGISTER_INTERACTION_HANDLER(type: string, handler: EventListener) | registerInteractionHandler(type: string, handler: EventListener) |
-| SOMEHOW_DEREGISTER_INTERACTION_HANDLER(type: string, handler: EventListener) | deregisterInteractionHandler(type: string, handler: EventListener) |
 
-> Note: It is a convention in our code base to use the terms `registerInteractionHandler` and
-`deregisterInteractionHandler` as adapter methods for adding/removing generic event listeners. We do
-this because we feel it more semantic in that most components are only interested in interactivity.
-However, feel free to call these methods `{add,remove}EventListener` or anything else you would
-like.
+> Note: We have changed our convention of using `registerInteractionHandler` and
+`deregisterInteractionHandler` as adapter methods for adding/removing generic event listeners. Instead please manage events in the component layer. This is because event systems can change from framework/environment (ie. React Synthetic Events).
 
 ### Refactor your existing code into a foundation
 
@@ -251,39 +246,35 @@ be used to build out lint tools to enforce proper adapter shape. This example sh
 as making use of our `MDCFoundation` class, which is the base class which all foundations inherit
 from.
 
-```js
+```ts
 class RedblueToggleFoundation extends MDCFoundation {
   static get defaultAdapter() {
     return {
       getAttr: (/* attr: string */) => /* string */ '',
-      setAttr: (/* attr: string, value: string */) => {},
-      addClass: (/* className: string */) => {},
-      removeClass: (/* className: string */) => {},
-      setToggleColorTextContent: (/* textContent: string */) => {},
-      registerInteractionHandler: (/* type: string, handler: EventListener */) => {},
-      deregisterInteractionHandler: (/* type: string, handler: EventListener */) => {}
+      setAttr: (/* attr: string, value: string */) => undefined,
+      addClass: (/* className: string */) => undefined,
+      removeClass: (/* className: string */) => undefined,
+      setToggleColorTextContent: (/* textContent: string */) => undefined,
+      registerInteractionHandler: (/* type: string, handler: EventListener */) => undefined,
+      deregisterInteractionHandler: (/* type: string, handler: EventListener */) => undefined
     };
   }
+  
+  private toggled_ = false;
 
   constructor(adapter) {
     super(Object.assign(RedblueToggleFoundation.defaultAdapter, adapter));
-    this.toggled_ = false;
-    this.clickHandler_ = () => this.toggle();
   }
 
-  init() {
-    this.adapter_.registerInteractionHandler('click', this.clickHandler_);
-  }
-
-  destroy() {
-    this.adapter_.deregisterInteractionHandler('click', this.clickHandler_);
+  handleClick() {
+    this.toggle_();
   }
 
   isToggled() {
     return this.adapter_.getAttr('aria-pressed') === 'true';
   }
 
-  toggle(isToggled = undefined) {
+  private toggle_(isToggled = undefined) {
     const wasToggledExplicitlySet = isToggled === Boolean(isToggled);
     this.toggled_ = wasToggledExplicitlySet ? isToggled : !this.toggled_;
 
@@ -317,8 +308,16 @@ Since this component is a vanilla component, it should be modeled after the vani
 favors getters and setters to implement its functionality (think `checked`, `disabled`, etc.). Our
 adapter is extremely straightforward as we can simply repurpose the methods we started out with.
 
-```js
+```ts
 class RedblueToggle extends MDCComponent {
+  initialize() {
+    this.root.addEventListener('click', this.foundation_.handleClick);
+  }
+
+  destroy() {
+    this.root.removeEventListener('click', this.foundation_.handleClick);
+  }
+
   get toggled() {
     return this.foundation_.isToggled();
   }
@@ -336,8 +335,6 @@ class RedblueToggle extends MDCComponent {
       setToggleColorTextContent: textContent => {
         this.root_.querySelector('.redblue-toggle__color').textContent = textContent;
       },
-      registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
-      deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler)
     });
   }
 }
@@ -475,9 +472,10 @@ A typical component within our codebase looks like so:
 packages
   ├── mdc-component
       ├── README.md # The component's README
-      ├── constants.js # The component's cssClasses/strings/numbers constants
-      ├── foundation.js # The component's foundation class
-      ├── index.js # The file that contains the vanilla component class, as well as exports the foundation
+      ├── adapter.ts # The adapter interface implemented by the component
+      ├── constants.ts # The component's cssClasses/strings/numbers constants
+      ├── foundation.ts # The component's foundation class
+      ├── index.ts # The file that contains the vanilla component class, as well as exports the foundation
       ├── mdc-component.scss # The main source file for the component's CSS
       └── package.json # The components package file
 test/unit
@@ -690,11 +688,11 @@ the aforementioned rule, we would also like to provide lint rules to enforce the
   text that could potentially be localized, etc.) must be referenced by a `strings` static getter.
 - All semantic numbers leveraged by the foundation (timeout lengths, transition durations, etc.) must
   be referenced by a `numbers` static getter.
-- These constants should be defined within a `constants.js` file, and then proxied through the
+- These constants should be defined within a `constants.ts` file, and then proxied through the
   foundation.
 
-```js
-// constants.js
+```ts
+// constants.ts
 
 export const cssClasses = {
   ROOT: 'mdc-new-component',
@@ -711,7 +709,7 @@ export const numbers = {
   DEFAULT_THROTTLE_DELAY_MS: 300,
 };
 
-// foundation.js
+// foundation.ts
 
 import {cssClasses, strings, numbers} from './constants';
 
