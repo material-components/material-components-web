@@ -7,7 +7,6 @@ out
 *.log
 .idea
 *.sw*
-.closure-tmp
+.rewrite-tmp
 .site-generator-tmp
-.typescript-tmp
 .vscode
