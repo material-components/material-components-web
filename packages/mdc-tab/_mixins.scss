@@ -44,8 +44,9 @@
 }
 
 @mixin mdc-tab-ink-color($color) {
-  @include mdc-tab-text-label-color($color);
+  @include mdc-tab-icon-color($color);
   @include mdc-tab-states-color($color);
+  @include mdc-tab-text-label-color($color);
 }
 
 @mixin mdc-tab-parent-positioning {
