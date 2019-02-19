@@ -89,7 +89,7 @@ function main(argv) {
   const packagesDir = path.resolve(process.argv[2]);
 
   /** @type {!Array<string>} */
-  const srcFileAbsolutePaths = glob.sync(`${packagesDir}/**/*.{js,ts}`, {ignore: ['**/node_modules/**']});
+  const srcFileAbsolutePaths = glob.sync(`${packagesDir}/**/*.ts`, {ignore: ['**/node_modules/**']});
 
   srcFileAbsolutePaths.forEach((srcFileAbsolutePath) => {
     transformSrc(srcFileAbsolutePath);
@@ -179,12 +179,11 @@ function rewriteDeclarationSource(astNode, srcFilePathAbsolute) {
     }
     const fileDir = resolve.sync(oldImportPath, {
       basedir,
-      extensions: ['.ts', '.js'],
+      extensions: ['.ts'],
     });
     const srcDirectory = path.dirname(srcFilePathAbsolute);
     newImportPath = './' + getBazelFileNameOrPath(
       path.relative(srcDirectory, fileDir)
-        .replace('.js', '')
         .replace('.ts', '')
     );
     alreadyRewrittenImportPaths.add(newImportPath);
