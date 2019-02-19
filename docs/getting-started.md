@@ -365,7 +365,65 @@ Now run `npm start` again and open http://localhost:8080. You should see a Mater
 
 <img src="button_with_ripple.png" alt="Button with Ripple" width="90" height="36">
 
-### Step 5: Build Assets for Production
+### Step 5: Add Material Icons
+
+See the [Material Icons Guide](https://google.github.io/material-design-icons/) for detailed instructions on self-hosting Material Icons.
+
+To self-host the icon font, first install the Material Icons as a Node dependency:
+
+```
+npm install --save-dev material-design-icons
+```
+
+Now you can use SASS to `@include` the Material Icon CSS file. In this example, we'll use an [Icon Button](https://material.io/develop/web/components/buttons/icon-buttons/).
+
+```
+npm install --save-dev @material/icon-button
+```
+
+Update your `index.html` to include the MDC Icon Button markup, including the `material-icons` class.
+
+```html
+<body>
+  <button class="mdc-icon-button material-icons">favorite</button>
+  <script src="bundle.js" async></script>
+</body>
+```
+
+We need to tell our `app.scss` to import the Material Icon CSS file, as well as the SASS for `@material/icon-button`. Replace `app.scss` with this code:
+
+```scss
+@import "@material/icon-button/mdc-icon-button";
+@import "~material-icons/iconfont/material-icons.css"
+```
+
+Update `app.js` to ripple the icon button. Replace `app.js` with this code:
+
+```js
+import {MDCRipple} from '@material/ripple';
+
+const iconButtonRipple = new MDCRipple(document.querySelector('.mdc-icon-button'));
+iconButtonRipple.unbounded = true;
+```
+
+Finally, we need to update our webpack configuration to support fonts. Add this `file-loader` object to the rules array after the `babel-loader` object:
+
+```js
+{
+  test: /\.(woff(2)?|ttf|eot|svg)$/,
+  use: [{
+    loader: 'file-loader',
+    options: {
+      name: '[name].[ext]',
+      outputPath: 'fonts/'
+    }
+  }]
+}
+```
+
+Now run `npm start` again and open http://localhost:8080. You should see a heart button with a ripple.
+
+### Step 6: Build Assets for Production
 
 Up to this point, we've used `webpack-dev-server` to preview our work with live updates. However, `webpack-dev-server` is not intended for production use. Instead, we should generate production-ready assets.
 
