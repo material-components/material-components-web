@@ -18,7 +18,6 @@
     "@material/base": "^0.41.0",
     "@material/feature-targeting": "^0.44.1",
     "@material/ripple": "^0.44.1",
-    "@material/selection-control": "^0.44.1",
     "@material/theme": "^0.43.0"
   }
 }
