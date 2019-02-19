@@ -27,6 +27,9 @@ import {MDCChipInteractionEvent, MDCChipRemovalEvent, MDCChipSelectionEvent} fro
 import {MDCChipSetAdapter} from './adapter';
 import {MDCChipSetFoundation} from './foundation';
 
+const {INTERACTION_EVENT, SELECTION_EVENT, REMOVAL_EVENT} = MDCChipFoundation.strings;
+const {CHIP_SELECTOR} = MDCChipSetFoundation.strings;
+
 let idCounter = 0;
 
 export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
@@ -69,9 +72,9 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
     this.handleChipInteraction_ = (evt) => this.foundation_.handleChipInteraction(evt.detail.chipId);
     this.handleChipSelection_ = (evt) => this.foundation_.handleChipSelection(evt.detail.chipId, evt.detail.selected);
     this.handleChipRemoval_ = (evt) => this.foundation_.handleChipRemoval(evt.detail.chipId);
-    this.listen(MDCChipFoundation.strings.INTERACTION_EVENT, this.handleChipInteraction_);
-    this.listen(MDCChipFoundation.strings.SELECTION_EVENT, this.handleChipSelection_);
-    this.listen(MDCChipFoundation.strings.REMOVAL_EVENT, this.handleChipRemoval_);
+    this.listen(INTERACTION_EVENT, this.handleChipInteraction_);
+    this.listen(SELECTION_EVENT, this.handleChipSelection_);
+    this.listen(REMOVAL_EVENT, this.handleChipRemoval_);
   }
 
   destroy() {
@@ -79,9 +82,9 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
       chip.destroy();
     });
 
-    this.unlisten(MDCChipFoundation.strings.INTERACTION_EVENT, this.handleChipInteraction_);
-    this.unlisten(MDCChipFoundation.strings.SELECTION_EVENT, this.handleChipSelection_);
-    this.unlisten(MDCChipFoundation.strings.REMOVAL_EVENT, this.handleChipRemoval_);
+    this.unlisten(INTERACTION_EVENT, this.handleChipInteraction_);
+    this.unlisten(SELECTION_EVENT, this.handleChipSelection_);
+    this.unlisten(REMOVAL_EVENT, this.handleChipRemoval_);
 
     super.destroy();
   }
@@ -121,7 +124,7 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
    */
   private instantiateChips_(chipFactory: MDCChipFactory): MDCChip[] {
     const chipElements: Element[] =
-        [].slice.call(this.root_.querySelectorAll(MDCChipSetFoundation.strings.CHIP_SELECTOR));
+        [].slice.call(this.root_.querySelectorAll(CHIP_SELECTOR));
     return chipElements.map((el) => {
       el.id = el.id || `mdc-chip-${++idCounter}`;
       return chipFactory(el);

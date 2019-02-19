@@ -29,6 +29,8 @@ import {MDCSelectionControl} from '@material/selection-control/index';
 import {MDCCheckboxAdapter} from './adapter';
 import {MDCCheckboxFoundation} from './foundation';
 
+const {NATIVE_CONTROL_SELECTOR} = MDCCheckboxFoundation.strings;
+
 const CB_PROTO_PROPS = ['checked', 'indeterminate'];
 
 export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation>
@@ -42,7 +44,6 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation>
    * Returns the state of the native control element, or null if the native control element is not present.
    */
   get nativeCb_(): HTMLInputElement {
-    const {NATIVE_CONTROL_SELECTOR} = MDCCheckboxFoundation.strings;
     const cbEl = this.root_.querySelector<HTMLInputElement>(NATIVE_CONTROL_SELECTOR);
     if (!cbEl) {
       throw new Error(`Checkbox requires a ${NATIVE_CONTROL_SELECTOR} element`);

@@ -23,15 +23,16 @@
 
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
+import {MDCList, MDCListFactory} from '@material/list/component';
 import {MDCListFoundation} from '@material/list/foundation';
-import {MDCList, MDCListFactory} from '@material/list/index';
 import * as createFocusTrap from 'focus-trap';
 import {MDCDrawerAdapter} from './adapter';
-import {strings} from './constants';
 import {MDCDismissibleDrawerFoundation} from './dismissible/foundation';
 import {MDCModalDrawerFoundation} from './modal/foundation';
 import * as util from './util';
 import {MDCDrawerFocusTrapFactory} from './util';
+
+const {cssClasses, strings} = MDCDismissibleDrawerFoundation;
 
 export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
   static attachTo(root: Element): MDCDrawer {
@@ -80,8 +81,8 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
   }
 
   initialSyncWithDOM() {
-    const {MODAL} = MDCDismissibleDrawerFoundation.cssClasses;
-    const {SCRIM_SELECTOR} = MDCDismissibleDrawerFoundation.strings;
+    const {MODAL} = cssClasses;
+    const {SCRIM_SELECTOR} = strings;
 
     this.scrim_ = (this.root_.parentNode as Element).querySelector<HTMLElement>(SCRIM_SELECTOR);
 
@@ -106,7 +107,7 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
       this.list_.destroy();
     }
 
-    const {MODAL} = MDCDismissibleDrawerFoundation.cssClasses;
+    const {MODAL} = cssClasses;
     if (this.scrim_ && this.handleScrimClick_ && this.root_.classList.contains(MODAL)) {
       this.scrim_.removeEventListener('click', this.handleScrimClick_);
       // Ensure drawer is closed to hide scrim and release focus
@@ -142,7 +143,7 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
     };
     // tslint:enable:object-literal-sort-keys
 
-    const {DISMISSIBLE, MODAL} = MDCDismissibleDrawerFoundation.cssClasses;
+    const {DISMISSIBLE, MODAL} = cssClasses;
     if (this.root_.classList.contains(DISMISSIBLE)) {
       return new MDCDismissibleDrawerFoundation(adapter);
     } else if (this.root_.classList.contains(MODAL)) {

@@ -32,7 +32,7 @@ import {MDCDialogCloseEventDetail} from './types';
 import * as util from './util';
 import {MDCDialogFocusTrapFactory} from './util';
 
-const strings = MDCDialogFoundation.strings;
+const {strings} = MDCDialogFoundation;
 
 export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   get isOpen() {
