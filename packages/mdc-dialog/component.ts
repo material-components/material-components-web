@@ -28,14 +28,11 @@ import {MDCRipple} from '@material/ripple/component';
 import * as FocusTrapLib from 'focus-trap';
 import {MDCDialogAdapter} from './adapter';
 import {MDCDialogFoundation} from './foundation';
+import {MDCDialogCloseEventDetail} from './types';
 import * as util from './util';
 import {MDCDialogFocusTrapFactory} from './util';
 
 const strings = MDCDialogFoundation.strings;
-
-export interface MDCDialogCloseEventDetail {
-  action?: string;
-}
 
 export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   get isOpen() {

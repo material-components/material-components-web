@@ -27,17 +27,13 @@ import {ponyfill} from '@material/dom/index';
 import {MDCSnackbarAdapter} from './adapter';
 import {strings} from './constants';
 import {MDCSnackbarFoundation} from './foundation';
-import {MDCSnackbarAnnouncer, MDCSnackbarAnnouncerFactory} from './types';
+import {MDCSnackbarAnnouncer, MDCSnackbarAnnouncerFactory, MDCSnackbarCloseEventDetail} from './types';
 import * as util from './util';
 
 const {
   SURFACE_SELECTOR, LABEL_SELECTOR, ACTION_SELECTOR, DISMISS_SELECTOR,
   OPENING_EVENT, OPENED_EVENT, CLOSING_EVENT, CLOSED_EVENT,
 } = strings;
-
-export interface MDCSnackbarCloseEventDetail {
-  reason?: string;
-}
 
 export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
   static attachTo(root: Element) {

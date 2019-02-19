@@ -24,18 +24,14 @@
 import {MDCComponent} from '@material/base/component';
 import {CustomEventListener, SpecificEventListener} from '@material/base/types';
 import {MDCTabScroller, MDCTabScrollerFactory} from '@material/tab-scroller/index';
-import {MDCTab, MDCTabFoundation, MDCTabInteractionEvent} from '@material/tab/index';
-import {MDCTabFactory} from '@material/tab/index';
+import {MDCTab, MDCTabFactory, MDCTabFoundation, MDCTabInteractionEvent} from '@material/tab/index';
 import {MDCTabBarAdapter} from './adapter';
 import {MDCTabBarFoundation} from './foundation';
+import {MDCTabBarActivatedEventDetail} from './types';
 
 const {strings} = MDCTabBarFoundation;
 
 let tabIdCounter = 0;
-
-export interface MDCTabBarActivatedEventDetail {
-  index: number;
-}
 
 export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
   static attachTo(root: Element): MDCTabBar {

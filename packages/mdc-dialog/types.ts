@@ -21,15 +21,12 @@
  * THE SOFTWARE.
  */
 
-export type MDCSnackbarAnnouncer = (ariaEl: Element, labelEl?: Element) => void;
-export type MDCSnackbarAnnouncerFactory = () => MDCSnackbarAnnouncer;
-
-export interface MDCSnackbarCloseEventDetail {
-  reason?: string;
+export interface MDCDialogCloseEventDetail {
+  action?: string;
 }
 
 // Note: CustomEvent<T> is not supported by Closure Compiler.
 
-export interface MDCSnackbarCloseEvent extends Event {
-  readonly detail: MDCSnackbarCloseEventDetail;
+export interface MDCDialogCloseEvent extends Event {
+  readonly detail: MDCDialogCloseEventDetail;
 }
