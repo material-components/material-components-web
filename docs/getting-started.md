@@ -246,7 +246,7 @@ Before we configure Webpack you’ll need all of these dependencies:
 You can install all of them by running this command:
 
 ```
-npm install --save-dev babel-core@6 babel-loader@7 babel-preset-es2015 babel-plugin-transform-object-assign ts-loader
+npm install --save-dev babel-core@6 babel-loader@7 babel-preset-es2015 babel-plugin-transform-object-assign ts-loader@3.5.0
 ```
 
 We also recommend installing typescript globally to run `tsc` commands from your CLI:
@@ -257,7 +257,7 @@ npm install -g typescript # this allows you to run `tsc --init` in a subsequent 
 
 ### Step 4: TypeScript setup
 
-Now we need to setup TypeScript through your `tsconfig.json` file. The easiest way is to use the `TypeScript CLI` known as `tsc`. If you install it globally found in the [Step 3](#), you can run the follow:
+Now we need to setup TypeScript through your `tsconfig.json` file. The easiest way is to use the `TypeScript CLI` known as `tsc`. If you install it globally found in the [Step 3](#step-3-installing-javascript-packages), you can run the follow:
 
 
 ```
@@ -393,7 +393,7 @@ const ripple = new MDCRipple(document.querySelector('.foo-button'));
 
 > Note: We explicitly reference `index` within each MDC Web package in order to import the ES2015 source directly.
 > This allows for tree-shaking and avoiding duplicate code for common dependencies (e.g. Ripple).
-> However, it requires transpiling the MDC Web modules using the tools installed in [Step 5]().
+> However, it requires transpiling the MDC Web modules using the tools installed in [Step 5](#step-5-webpack-with-es2015).
 
 Now run `npm start` again and open http://localhost:8080. You should see a Material Design ripple on the button!
 
