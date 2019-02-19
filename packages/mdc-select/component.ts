@@ -33,8 +33,8 @@ import {MDCRipple, MDCRippleAdapter, MDCRippleFoundation, RippleCapableSurface} 
 import {MDCSelectAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCSelectFoundation} from './foundation';
-import {MDCSelectHelperText, MDCSelectHelperTextFactory} from './helper-text';
-import {MDCSelectIcon, MDCSelectIconFactory} from './icon';
+import {MDCSelectHelperText, MDCSelectHelperTextFactory} from './helper-text/index';
+import {MDCSelectIcon, MDCSelectIconFactory} from './icon/index';
 import {MDCSelectEventDetail, MDCSelectFoundationMap} from './types';
 
 type PointerEventType = 'mousedown' | 'touchstart';

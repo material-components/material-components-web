@@ -25,7 +25,7 @@ import {getCorrectEventName} from '@material/animation/util';
 import {MDCComponent} from '@material/base/component';
 import {ponyfill} from '@material/dom/index';
 import {MDCRipple, MDCRippleAdapter, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
-import {MDCSelectionControl} from '@material/selection-control/index';
+import {MDCSelectionControl} from '@material/selection-control/types';
 import {MDCCheckboxAdapter} from './adapter';
 import {MDCCheckboxFoundation} from './foundation';
 

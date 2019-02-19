@@ -22,7 +22,7 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {MDCSelectionControl} from '@material/selection-control/index';
+import {MDCSelectionControl} from '@material/selection-control/types';
 import {MDCFormFieldAdapter} from './adapter';
 import {MDCFormFieldFoundation} from './foundation';
 

@@ -24,10 +24,10 @@
 import {MDCFoundation} from '@material/base/foundation';
 import {SpecificEventListener} from '@material/base/types';
 import {MDCTextFieldAdapter} from './adapter';
-import {MDCTextFieldCharacterCounterFoundation} from './character-counter';
+import {MDCTextFieldCharacterCounterFoundation} from './character-counter/index';
 import {ALWAYS_FLOAT_TYPES, cssClasses, numbers, strings, VALIDATION_ATTR_WHITELIST} from './constants';
-import {MDCTextFieldHelperTextFoundation} from './helper-text';
-import {MDCTextFieldIconFoundation} from './icon';
+import {MDCTextFieldHelperTextFoundation} from './helper-text/index';
+import {MDCTextFieldIconFoundation} from './icon/index';
 import {MDCTextFieldFoundationMap, MDCTextFieldNativeInputElement} from './types';
 
 type PointerDownEventType = 'mousedown' | 'touchstart';
