@@ -38,6 +38,8 @@ See the [Getting Started guide](getting-started.md) for more details on setting 
 
 If you are using TypeScript, MDC Web's packages also include `.d.ts` files for your consumption. Most of the time you shouldn't need to reference these, as the TypeScript compiler should automatically pick them up. MDC Web has also defined the `types` property found in `package.json`, for your convinence. There is a bundled `.d.ts` file found under the `dist` directory that maps to the respective UMD module. There are corresponding `.d.ts` files for each foundation/component/adapter/etc. within the package.
 
+> NOTE: Intentionally we did not include the `.ts` source files in our packages. Everyone can use the `.d.ts` files and transpiled `.js` (in ES5 or ES2015+ format) as `.js` files are universally accepted.
+
 ### CommonJS
 
 ```js
