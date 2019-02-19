@@ -3,7 +3,7 @@
   "description": "Material Components Web",
   "license": "MIT",
   "scripts": {
-    "build": "npm run clean && mkdirp build && webpack --progress --colors --display-error-details",
+    "build": "npm run clean && mkdirp build && webpack --progress --colors",
     "build:esmodules": "node ./scripts/build/esmodule-builder.js",
     "build:demos": "npm run clean && mkdirp build && webpack --config=demos/webpack.config.js --progress --colors",
     "build:min": "mkdirp build && cross-env MDC_ENV=production webpack -p --progress --colors",
