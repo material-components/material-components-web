@@ -18,6 +18,14 @@ To try Material Components for the web with minimal setup, load the precompiled 
 </head>
 ```
 
+We also recommend using [Material Icons](https://material.io/tools/icons/) from Google Fonts. (Some of our examples implicitly use Material Icons.)
+
+```html
+<head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+```
+
 Then include MDC markup...
 
 ```html
