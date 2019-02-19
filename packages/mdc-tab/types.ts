@@ -33,8 +33,12 @@ export interface MDCTabDimensions {
   contentRight: number;
 }
 
-export type MDCTabInteractionEvent = CustomEvent<MDCTabInteractionEventDetail>;
-
 export interface MDCTabInteractionEventDetail {
   tabId: string;
+}
+
+// Note: CustomEvent<T> is not supported by Closure Compiler.
+
+export interface MDCTabInteractionEvent extends Event {
+  readonly detail: MDCTabInteractionEventDetail;
 }

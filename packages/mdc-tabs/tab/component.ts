@@ -29,10 +29,14 @@ import {MDCTabFoundation} from './foundation';
 
 export type MDCTabFactory = (el: Element, foundation?: MDCTabFoundation) => MDCTab;
 
-export type MDCTabSelectedEvent = CustomEvent<MDCTabSelectedEventDetail>;
-
 export interface MDCTabSelectedEventDetail {
   tab: MDCTab;
+}
+
+// Note: CustomEvent<T> is not supported by Closure Compiler.
+
+export interface MDCTabSelectedEvent extends Event {
+  readonly detail: MDCTabSelectedEventDetail;
 }
 
 export class MDCTab extends MDCComponent<MDCTabFoundation> {

@@ -25,7 +25,7 @@ import {MDCComponent} from '@material/base/component';
 import {MDCRipple} from '@material/ripple/component';
 import {MDCToolbarAdapter} from './adapter';
 import {MDCToolbarFoundation} from './foundation';
-import {ToolbarEventDetail} from './types';
+import {MDCToolbarEventDetail} from './types';
 
 const {strings} = MDCToolbarFoundation;
 
@@ -88,7 +88,7 @@ export class MDCToolbar extends MDCComponent<MDCToolbarFoundation> {
       getViewportScrollY: () => window.pageYOffset,
       getOffsetHeight: () => this.root_.offsetHeight,
       getFirstRowElementOffsetHeight: () => this.firstRowElement_.offsetHeight,
-      notifyChange: (evtData) => this.emit<ToolbarEventDetail>(strings.CHANGE_EVENT, evtData),
+      notifyChange: (evtData) => this.emit<MDCToolbarEventDetail>(strings.CHANGE_EVENT, evtData),
       setStyle: (property, value) => this.root_.style.setProperty(property, value),
       setStyleForTitleElement: (property, value) => {
         if (this.titleElement_) {

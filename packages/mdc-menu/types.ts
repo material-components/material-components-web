@@ -21,9 +21,6 @@
  * THE SOFTWARE.
  */
 
-export type MDCMenuItemEvent = CustomEvent<MDCMenuItemEventDetail>;
-export type MDCMenuItemComponentEvent = CustomEvent<MDCMenuItemComponentEventDetail>;
-
 /**
  * Event properties used by the adapter and foundation.
  */
@@ -36,4 +33,14 @@ export interface MDCMenuItemEventDetail {
  */
 export interface MDCMenuItemComponentEventDetail extends MDCMenuItemEventDetail {
   item: Element;
+}
+
+// Note: CustomEvent<T> is not supported by Closure Compiler.
+
+export interface MDCMenuItemEvent extends Event {
+  readonly detail: MDCMenuItemEventDetail;
+}
+
+export interface MDCMenuItemComponentEvent extends Event {
+  readonly detail: MDCMenuItemComponentEventDetail;
 }

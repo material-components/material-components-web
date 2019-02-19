@@ -21,8 +21,12 @@
  * THE SOFTWARE.
  */
 
-export type MDCTabBarChangeEvent = CustomEvent<MDCTabBarChangeEventDetail>;
-
 export interface MDCTabBarChangeEventDetail {
   activeTabIndex: number;
+}
+
+// Note: CustomEvent<T> is not supported by Closure Compiler.
+
+export interface MDCTabBarChangeEvent extends Event {
+  readonly detail: MDCTabBarChangeEventDetail;
 }

@@ -29,9 +29,13 @@ export interface MDCSelectFoundationMap {
   helperText: MDCSelectHelperTextFoundation;
 }
 
-export type MDCSelectEvent = CustomEvent<MDCSelectEventDetail>;
-
 export interface MDCSelectEventDetail {
   value: string;
   index: number;
+}
+
+// Note: CustomEvent<T> is not supported by Closure Compiler.
+
+export interface MDCSelectEvent extends Event {
+  readonly detail: MDCSelectEventDetail;
 }
