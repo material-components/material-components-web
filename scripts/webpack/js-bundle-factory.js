@@ -88,6 +88,10 @@ class JsBundleFactory {
       },
       resolve: {
         extensions,
+        modules: [
+          'node_modules',
+          path.resolve(__dirname, 'node_modules'),
+        ],
       },
       devtool: 'source-map',
       module: {
