@@ -21,19 +21,19 @@
  * THE SOFTWARE.
  */
 
-export interface MenuDimensions {
+export interface MDCMenuDimensions {
   width: number;
   height: number;
 }
 
-export interface MenuDistance {
+export interface MDCMenuDistance {
   top: number;
   right: number;
   bottom: number;
   left: number;
 }
 
-export interface MenuPoint {
+export interface MDCMenuPoint {
   x: number;
   y: number;
 }

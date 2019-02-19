@@ -22,7 +22,7 @@
  */
 
 import {EventType, SpecificEventListener} from '@material/base/types';
-import {Point} from './types';
+import {MDCRipplePoint} from './types';
 
 /**
  * Defines the shape of the adapter expected by the foundation.
@@ -62,5 +62,5 @@ export interface MDCRippleAdapter {
 
   computeBoundingRect(): ClientRect;
 
-  getWindowPageOffset(): Point;
+  getWindowPageOffset(): MDCRipplePoint;
 }

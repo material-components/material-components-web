@@ -24,7 +24,7 @@
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCRippleAdapter} from './adapter';
 import {cssClasses, numbers, strings} from './constants';
-import {Point} from './types';
+import {MDCRipplePoint} from './types';
 import {getNormalizedEventCoords} from './util';
 
 interface ActivationStateType {
@@ -37,8 +37,8 @@ interface ActivationStateType {
 }
 
 interface FgTranslationCoordinates {
-  startPoint: Point;
-  endPoint: Point;
+  startPoint: MDCRipplePoint;
+  endPoint: MDCRipplePoint;
 }
 
 interface Coordinates {

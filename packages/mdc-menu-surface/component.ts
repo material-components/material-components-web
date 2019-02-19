@@ -26,7 +26,7 @@ import {SpecificEventListener} from '@material/base/types';
 import {MDCMenuSurfaceAdapter} from './adapter';
 import {Corner, cssClasses, strings} from './constants';
 import {MDCMenuSurfaceFoundation} from './foundation';
-import {MenuDistance} from './types';
+import {MDCMenuDistance} from './types';
 import * as util from './util';
 
 type RegisterFunction = () => void;
@@ -142,7 +142,7 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
     this.foundation_.setAnchorCorner(corner);
   }
 
-  setAnchorMargin(margin: Partial<MenuDistance>) {
+  setAnchorMargin(margin: Partial<MDCMenuDistance>) {
     this.foundation_.setAnchorMargin(margin);
   }
 

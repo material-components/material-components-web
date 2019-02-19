@@ -25,13 +25,13 @@ import {MDCComponent} from '@material/base/component';
 import {ponyfill} from '@material/dom/index';
 import {MDCRippleAdapter} from './adapter';
 import {MDCRippleFoundation} from './foundation';
-import {RippleAttachOpts, RippleCapableSurface} from './types';
+import {MDCRippleAttachOpts, RippleCapableSurface} from './types';
 import * as util from './util';
 
 export type MDCRippleFactory = (el: Element, foundation?: MDCRippleFoundation) => MDCRipple;
 
 export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements RippleCapableSurface {
-  static attachTo(root: Element, opts: RippleAttachOpts = {isUnbounded: undefined}): MDCRipple {
+  static attachTo(root: Element, opts: MDCRippleAttachOpts = {isUnbounded: undefined}): MDCRipple {
     const ripple = new MDCRipple(root);
     // Only override unbounded behavior if option is explicitly specified
     if (opts.isUnbounded !== undefined) {

@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {MenuDimensions, MenuDistance, MenuPoint} from './types';
+import {MDCMenuDimensions, MDCMenuDistance, MDCMenuPoint} from './types';
 
 /**
  * Defines the shape of the adapter expected by the foundation.
@@ -42,12 +42,12 @@ export interface MDCMenuSurfaceAdapter {
   isLastElementFocused(): boolean;
   isRtl(): boolean;
 
-  getInnerDimensions(): MenuDimensions;
+  getInnerDimensions(): MDCMenuDimensions;
   getAnchorDimensions(): ClientRect | null;
-  getWindowDimensions(): MenuDimensions;
-  getBodyDimensions(): MenuDimensions;
-  getWindowScroll(): MenuPoint;
-  setPosition(position: Partial<MenuDistance>): void;
+  getWindowDimensions(): MDCMenuDimensions;
+  getBodyDimensions(): MDCMenuDimensions;
+  getWindowScroll(): MDCMenuPoint;
+  setPosition(position: Partial<MDCMenuDistance>): void;
   setMaxHeight(height: string): void;
   setTransformOrigin(origin: string): void;
 

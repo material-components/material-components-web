@@ -204,7 +204,7 @@ Property | Value Type | Description
 Method Signature | Description
 --- | ---
 `setAnchorCorner(Corner) => void` | Proxies to the menu surface's `setAnchorCorner(Corner)` method.
-`setAnchorMargin(Partial<MenuDistance>) => void` | Proxies to the menu surface's `setAnchorMargin(Partial<MenuDistance>)` method.
+`setAnchorMargin(Partial<MDCMenuDistance>) => void` | Proxies to the menu surface's `setAnchorMargin(Partial<MDCMenuDistance>)` method.
 `setAbsolutePosition(x: number, y: number) => void` | Proxies to the menu surface's `setAbsolutePosition(x: number, y: number)` method.
 `setFixedPosition(isFixed: boolean) => void` | Proxies to the menu surface's `setFixedPosition(isFixed: boolean)` method.
 `hoistMenuToBody() => void` | Proxies to the menu surface's `hoistMenuToBody()` method.

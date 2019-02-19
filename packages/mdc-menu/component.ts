@@ -26,7 +26,7 @@ import {CustomEventListener, SpecificEventListener} from '@material/base/types';
 import {MDCList, MDCListActionEvent, MDCListFactory, MDCListFoundation} from '@material/list/index';
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
 import {Corner, MDCMenuSurface, MDCMenuSurfaceFactory} from '@material/menu-surface/index';
-import {MenuDistance} from '@material/menu-surface/types';
+import {MDCMenuDistance} from '@material/menu-surface/types';
 import {MDCMenuAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCMenuFoundation} from './foundation';
@@ -126,7 +126,7 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
     this.menuSurface_.setAnchorCorner(corner);
   }
 
-  setAnchorMargin(margin: Partial<MenuDistance>) {
+  setAnchorMargin(margin: Partial<MDCMenuDistance>) {
     this.menuSurface_.setAnchorMargin(margin);
   }
 
