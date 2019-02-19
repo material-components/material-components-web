@@ -134,6 +134,8 @@ Mixin | Description
 --- | ---
 `mdc-tab-text-label-color($color)` | Customizes the color of the tab text label.
 `mdc-tab-icon-color($color)` | Customizes the color of the tab icon.
+`mdc-tab-states-color($color)`| Customizes the base states color, which affects focus and ripple states.
+`mdc-tab-ink-color($color)` | Customizes the states and label text color.
 `mdc-tab-parent-positioning` | Sets the positioning of the MDCTab's parent element so that `MDCTab.computeDimensions()` reports the same values in all browsers.
 `mdc-tab-fixed-width($width)` | Sets the fixed width of the tab. The tab will never be smaller than the given width.
 
