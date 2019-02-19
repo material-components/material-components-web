@@ -22,8 +22,8 @@
  */
 
 import {getCorrectPropertyName} from '@material/animation/index';
-import {SpecificEventListener} from '@material/base';
 import {MDCFoundation} from '@material/base/foundation';
+import {SpecificEventListener} from '@material/base/index';
 import {MDCTabBarAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
