@@ -45,7 +45,7 @@ globSync('packages/*/package.json').forEach((jsonPath) => {
   }
   verifyPath(packageInfo, jsonPath, 'main');
   verifyPath(packageInfo, jsonPath, 'module');
-  verifyPath(packageInfo, jsonPath, 'type');
+  verifyPath(packageInfo, jsonPath, 'types');
 });
 
 if (invalidMains > 0 || invalidModules > 0 || invalidTypes > 0) {
@@ -63,9 +63,13 @@ if (invalidMains > 0 || invalidModules > 0 || invalidTypes > 0) {
 }
 
 function verifyPath(packageInfo, jsonPath, type) {
+  const isAtRoot = type === 'module';
   const packageJsonPropPath = path.join(path.dirname(jsonPath), packageInfo[type]);
   let isInvalid = false;
-  if (packageJsonPropPath.indexOf('dist') < 0) {
+  if (!isAtRoot && packageJsonPropPath.indexOf('dist') < 0) {
+    isInvalid = true;
+    console.error(`${jsonPath} ${type} property does not reference a file under dist`);
+  } else if (isAtRoot && packageJsonPropPath.indexOf('dist') > 0) {
     isInvalid = true;
     console.error(`${jsonPath} ${type} property does not reference a file under dist`);
   }
@@ -77,7 +81,7 @@ function verifyPath(packageInfo, jsonPath, type) {
   if (isInvalid) {
     // Multiple checks could have failed, but only increment the counter once for one package.
 
-    switch (types) {
+    switch (type) {
       case 'main':
         invalidMains++;
         break;
