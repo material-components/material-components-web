@@ -8,7 +8,7 @@
     "build:demos": "npm run clean && mkdirp build && webpack --config=demos/webpack.config.js --progress --colors",
     "build:min": "mkdirp build && cross-env MDC_ENV=production webpack -p --progress --colors",
     "changelog": "standard-changelog -i CHANGELOG.md -k packages/material-components-web/package.json",
-    "clean": "del-cli build/** build packages/**/*.js .typescript-tmp/** .typescript-tmp",
+    "clean": "del-cli build/** build .typescript-tmp/** .typescript-tmp && git clean -fX",
     "clean:site": "del-cli .site-generator-tmp/** .site-generator-tmp",
     "dist": "npm run build && npm run build:min && npm run build:esmodules",
     "dev": "npm run clean && cross-env MDC_ENV=development webpack-dev-server --config=demos/webpack.config.js --progress --inline --hot --host 0.0.0.0",

@@ -39,9 +39,9 @@ matrix:
 
   - node_js: 8
     env:
-      - TEST_SUITE=build
+      - TEST_SUITE=dist
     script:
-      - if has_testable_files; then npm run build; else log_untestable_files; fi
+      - if has_testable_files; then npm run dist; else log_untestable_files; fi
 
   - node_js: 8
     env:
