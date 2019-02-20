@@ -5,7 +5,7 @@ const path = require('path');
 const dTsDirectory = path.resolve(__dirname, '../../build/packages');
 
 function dtsBundler() {
-  const packageDirectories = fs.readdirSync(dTsDirectory)
+  const packageDirectories = fs.readdirSync(dTsDirectory);
   packageDirectories.forEach((packageDirectory) => {
     const main = path.resolve(dTsDirectory, packageDirectory, './index.d.ts');
     dts.bundle({
