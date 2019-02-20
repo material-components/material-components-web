@@ -5,7 +5,7 @@
   "main": "dist/mdc.slider.js",
   "module": "index.js",
   "sideEffects": false,
-  "types": "dist/slider.d.ts",
+  "types": "dist/mdc.slider.d.ts",
   "license": "MIT",
   "repository": {
     "type": "git",

@@ -11,8 +11,8 @@
   ],
   "main": "dist/mdc.textfield.js",
   "module": "index.js",
-  "types": "dist/mdc.textfield.d.ts",
   "sideEffects": false,
+  "types": "dist/mdc.textfield.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git"

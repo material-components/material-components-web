@@ -11,7 +11,7 @@
   "main": "dist/mdc.menu.js",
   "module": "index.js",
   "sideEffects": false,
-  "types": "dist/menu.d.ts",
+  "types": "dist/mdc.menu.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git"

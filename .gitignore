@@ -5,7 +5,7 @@ node_modules
 packages/*/dist
 packages/**/*.js
 packages/**/*.d.ts
-packages/**/*.js.map
+packages/**/*.map
 out
 *.log
 .idea

@@ -6,7 +6,7 @@
   "main": "dist/mdc.selectionControl.js",
   "module": "index.js",
   "sideEffects": false,
-  "types": "dist/selectionControl.d.ts",
+  "types": "dist/mdc.selectionControl.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git"

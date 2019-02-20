@@ -12,7 +12,7 @@
   "main": "dist/mdc.tabScroller.js",
   "module": "index.js",
   "sideEffects": false,
-  "types": "dist/tabScroller.d.ts",
+  "types": "dist/mdc.tabScroller.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git"

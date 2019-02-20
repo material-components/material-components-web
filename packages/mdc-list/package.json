@@ -6,7 +6,7 @@
   "main": "dist/mdc.list.js",
   "module": "index.js",
   "sideEffects": false,
-  "types": "dist/list.d.ts",
+  "types": "dist/mdc.list.d.ts",
   "keywords": [
     "material components",
     "material design",
