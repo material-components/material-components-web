@@ -1,3 +1,18 @@
+<a name="0.44.1"></a>
+## [0.44.1](https://github.com/material-components/material-components-web/compare/v0.44.0...v0.44.1) (2019-02-19)
+
+
+### Bug Fixes
+
+* **chips:** Flip leading icon margin when used in RTL contexts ([#4380](https://github.com/material-components/material-components-web/issues/4380)) ([10a384f](https://github.com/material-components/material-components-web/commit/10a384f))
+* **chips:** Use required pixel value ([#4361](https://github.com/material-components/material-components-web/issues/4361)) ([7dc2125](https://github.com/material-components/material-components-web/commit/7dc2125))
+* **feature-targeting:** fix incorrect list construction ([#4419](https://github.com/material-components/material-components-web/issues/4419)) ([37f2044](https://github.com/material-components/material-components-web/commit/37f2044))
+* **floating-label:** Add missing import to mixins ([#4434](https://github.com/material-components/material-components-web/issues/4434)) ([cd1d9fb](https://github.com/material-components/material-components-web/commit/cd1d9fb))
+* **menu-surface:** Correct open animation issue ([#4371](https://github.com/material-components/material-components-web/issues/4371)) ([189957b](https://github.com/material-components/material-components-web/commit/189957b))
+* **text-field:** Fix placeholder styles for text field fullwidth variant. ([#4385](https://github.com/material-components/material-components-web/issues/4385)) ([1edc29f](https://github.com/material-components/material-components-web/commit/1edc29f))
+
+
+
 <a name="0.44.0"></a>
 # [0.44.0](https://github.com/material-components/material-components-web/compare/v0.43.0...v0.44.0) (2019-02-04)
 

@@ -71,6 +71,7 @@
   box-sizing: border-box;
   height: $mdc-text-field-height;
   overflow: hidden;
+  /* @alternate */
   will-change: opacity, transform, color;
 }
 
