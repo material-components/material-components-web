@@ -44,7 +44,7 @@ npm install @material/line-ripple
 ### JavaScript Instantiation
 
 ```js
-import {MDCLineRipple} from '@material/line-ripple';
+import {MDCLineRipple} from '@material/line-ripple/index';
 
 const lineRipple = new MDCLineRipple(document.querySelector('.mdc-line-ripple'));
 ```

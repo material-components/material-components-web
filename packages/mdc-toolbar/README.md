@@ -364,7 +364,7 @@ Mixin | Description
 #### ES2015
 
 ```javascript
-import {MDCToolbar, MDCToolbarFoundation} from '@material/toolbar';
+import {MDCToolbar, MDCToolbarFoundation} from '@material/toolbar/index';
 ```
 
 #### CommonJS
@@ -403,7 +403,7 @@ mdc.toolbar.MDCToolbar.attachTo(document.querySelector('.mdc-toolbar'));
 ### Manual Instantiation
 
 ```javascript
-import {MDCToolbar} from '@material/toolbar';
+import {MDCToolbar} from '@material/toolbar/index';
 
 const toolbar = new MDCToolbar(document.querySelector('.mdc-toolbar'));
 ```

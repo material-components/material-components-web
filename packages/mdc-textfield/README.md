@@ -51,7 +51,7 @@ npm install @material/textfield
 ### JavaScript Instantiation
 
 ```js
-import {MDCTextField} from '@material/textfield';
+import {MDCTextField} from '@material/textfield/index';
 
 const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
 ```

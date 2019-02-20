@@ -58,7 +58,7 @@ npm install @material/icon-toggle
 Then in JS:
 
 ```js
-import {MDCIconToggle} from '@material/icon-toggle';
+import {MDCIconToggle} from '@material/icon-toggle/index';
 
 MDCIconToggle.attachTo(document.querySelector('.mdc-icon-toggle'));
 ```

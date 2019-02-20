@@ -49,7 +49,7 @@ npm install @material/tab-scroller
 ### JavaScript Instantiation
 
 ```js
-import {MDCTabScroller} from '@material/tab-scroller';
+import {MDCTabScroller} from '@material/tab-scroller/index';
 
 const tabScroller = new MDCTabScroller(document.querySelector('.mdc-tab-scroller'));
 ```

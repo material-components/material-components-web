@@ -58,7 +58,7 @@ npm install @material/button
 The button will work without JavaScript, but you can enhance it to have a ripple effect by instantiating `MDCRipple` on the root element. See [MDC Ripple](../mdc-ripple) for details.
 
 ```js
-import {MDCRipple} from '@material/ripple';
+import {MDCRipple} from '@material/ripple/index';
 
 const buttonRipple = new MDCRipple(document.querySelector('.mdc-button'));
 ```

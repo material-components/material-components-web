@@ -142,7 +142,7 @@ mdc.autoInit();
 If you're using ES2015:
 
 ```js
-import autoInit from '@material/auto-init';
+import autoInit from '@material/auto-init/index';
 
 autoInit();
 ```
@@ -172,7 +172,7 @@ you need to; unlike with auto-initialization, there is no way to retrieve it lat
 Start by importing the component:
 
 ```js
-import {MDCTextField} from '@material/textfield';
+import {MDCTextField} from '@material/textfield/index';
 ```
 
 Then instantiate it by calling the constructor on the root node:

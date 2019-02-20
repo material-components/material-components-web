@@ -47,7 +47,7 @@ npm install @material/tab-indicator
 ### JavaScript Instantiation
 
 ```js
-import {MDCTabIndicator} from '@material/tab-indicator';
+import {MDCTabIndicator} from '@material/tab-indicator/index';
 
 const tabIndicator = new MDCTabIndicator(document.querySelector('.mdc-tab-indicator'));
 ```

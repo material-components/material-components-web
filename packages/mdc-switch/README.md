@@ -61,7 +61,7 @@ npm install @material/switch
 The Switch requires JavaScript to function, so it is necessary to instantiate MDCSwitch with the HTML.
 
 ```js
-import {MDCSwitch} from '@material/switch';
+import {MDCSwitch} from '@material/switch/index';
 
 const switchControl = new MDCSwitch(document.querySelector('.mdc-switch'));
 ```

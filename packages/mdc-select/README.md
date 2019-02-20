@@ -73,7 +73,7 @@ For the native select, you can simply include the `mdc-select` Sass file.
 ### JavaScript Instantiation
 
 ```js
-import {MDCSelect} from '@material/select';
+import {MDCSelect} from '@material/select/index';
 
 const select = new MDCSelect(document.querySelector('.mdc-select'));
 

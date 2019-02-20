@@ -64,7 +64,7 @@ npm install @material/menu
 ### JavaScript Instantiation
 
 ```js
-import {MDCMenu} from '@material/menu';
+import {MDCMenu} from '@material/menu/index';
 
 const menu = new MDCMenu(document.querySelector('.mdc-menu'));
 menu.open = true;

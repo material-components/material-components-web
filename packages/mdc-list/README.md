@@ -57,7 +57,7 @@ npm install @material/list
 MDC List includes an optional JavaScript component which can be used for keyboard interaction and accessibility.
 
 ```js
-import {MDCList} from '@material/list';
+import {MDCList} from '@material/list/index';
 
 const list = new MDCList(document.querySelector('.mdc-list'));
 ```
@@ -68,7 +68,7 @@ Note that the JS component does _not_ automatically instantiate ripples on list 
 fully-upgraded ripple effect on list items, you must instantiate `MDCRipple` on each item:
 
 ```js
-import {MDCRipple} from '@material/ripple';
+import {MDCRipple} from '@material/ripple/index';
 
 const listItemRipples = list.listElements.map((listItemEl) => new MDCRipple(listItemEl));
 ```

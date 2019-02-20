@@ -75,8 +75,8 @@ mapping between `data-mdc-auto-init` attribute values and the components which t
 be achieved via `mdcAutoInit.register`.
 
 ```js
-import mdcAutoInit from '@material/auto-init';
-import {MDCTextField} from '@material/textfield';
+import mdcAutoInit from '@material/auto-init/index';
+import {MDCTextField} from '@material/textfield/index';
 
 mdcAutoInit.register('MDCTextField', MDCTextField);
 ```
@@ -89,8 +89,8 @@ convenience.
 Also note that a component can be mapped to any string, not necessarily the name of its constructor.
 
 ```js
-import mdcAutoInit from '@material/auto-init';
-import {MDCTextField} from '@material/textfield';
+import mdcAutoInit from '@material/auto-init/index';
+import {MDCTextField} from '@material/textfield/index';
 
 mdcAutoInit.register('My amazing text field!!!', MDCTextField);
 ```

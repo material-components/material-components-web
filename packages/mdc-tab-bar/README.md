@@ -66,7 +66,7 @@ npm install @material/tab-bar
 ### JavaScript Instantiation
 
 ```js
-import {MDCTabBar} from '@material/tab-bar';
+import {MDCTabBar} from '@material/tab-bar/index';
 
 const tabBar = new MDCTabBar(document.querySelector('.mdc-tab-bar'));
 ```

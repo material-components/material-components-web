@@ -41,7 +41,7 @@ In the 'JavaScript Instantiation' subsection, include a note about importing a J
 ### JavaScript Instantiation
 
 ```js
-import {MDCButton} from '@material/button';
+import {MDCButton} from '@material/button/index';
 
 const button = new MDCButton(document.querySelector('.mdc-button'));
 ```

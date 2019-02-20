@@ -82,7 +82,7 @@ npm install @material/dialog
 ### JavaScript Instantiation
 
 ```js
-import {MDCDialog} from '@material/dialog';
+import {MDCDialog} from '@material/dialog/index';
 const dialog = new MDCDialog(document.querySelector('.mdc-dialog'));
 ```
 
@@ -96,7 +96,7 @@ first.
 For example, to instantiate an MDC List inside of a Simple or Confirmation Dialog:
 
 ```js
-import {MDCList} from '@material/list';
+import {MDCList} from '@material/list/index';
 const list = new MDCList(document.querySelector('.mdc-dialog .mdc-list'));
 
 dialog.listen('MDCDialog:opened', () => {

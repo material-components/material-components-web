@@ -74,8 +74,8 @@ We recommend using MDC Checkbox with [MDC Form Field](../mdc-form-field) for enh
 The checkbox will work without JavaScript, but you can enhance it with a ripple interaction effect by instantiating `MDCCheckbox` on the `mdc-checkbox` element. To activate the ripple effect upon interacting with the label, you must also instantiate `MDCFormField` on the `mdc-form-field` element and set the `MDCCheckbox` instance as its `input`.
 
 ```js
-import {MDCFormField} from '@material/form-field';
-import {MDCCheckbox} from '@material/checkbox';
+import {MDCFormField} from '@material/form-field/index';
+import {MDCCheckbox} from '@material/checkbox/index';
 
 const checkbox = new MDCCheckbox(document.querySelector('.mdc-checkbox'));
 const formField = new MDCFormField(document.querySelector('.mdc-form-field'));

@@ -284,8 +284,8 @@ any tab elements that are children of the `mdc-tab-bar` root element.
 ##### ES2015
 
 ```javascript
-import {MDCTab, MDCTabFoundation} from '@material/tabs';
-import {MDCTabBar, MDCTabBarFoundation} from '@material/tabs';
+import {MDCTab, MDCTabFoundation} from '@material/tabs/index';
+import {MDCTabBar, MDCTabBarFoundation} from '@material/tabs/index';
 ```
 
 ##### CommonJS
@@ -347,7 +347,7 @@ of `MDCTabBar`, e.g.:
 ```
 
 ```javascript
-import {MDCTabBar, MDCTabBarFoundation} from '@material/tabs';
+import {MDCTabBar, MDCTabBarFoundation} from '@material/tabs/index';
 
 const tabBar = new MDCTabBar(document.querySelector('#my-mdc-tab-bar'));
 ```
@@ -363,9 +363,9 @@ The anatomy of `mdc-tab-bar-scroller` includes an instance of `mdc-tab-bar`, RTL
 ##### ES2015
 
 ```javascript
-import {MDCTab, MDCTabFoundation} from '@material/tabs';
-import {MDCTabBar, MDCTabBarFoundation} from '@material/tabs';
-import {MDCTabBarScroller, MDCTabBarFoundationScroller} from '@material/tabs';
+import {MDCTab, MDCTabFoundation} from '@material/tabs/index';
+import {MDCTabBar, MDCTabBarFoundation} from '@material/tabs/index';
+import {MDCTabBarScroller, MDCTabBarFoundationScroller} from '@material/tabs/index';
 ```
 
 ##### CommonJS
@@ -456,7 +456,7 @@ of `MDCTabBarScroller`, e.g.:
 ```
 
 ```javascript
-import {MDCTabBarScroller, MDCTabBarScrollerFoundation} from '@material/tabs';
+import {MDCTabBarScroller, MDCTabBarScrollerFoundation} from '@material/tabs/index';
 
 const tabBarScroller = new MDCTabBarScroller(document.querySelector('#my-mdc-tab-bar-scroller'));
 ```
@@ -464,7 +464,7 @@ const tabBarScroller = new MDCTabBarScroller(document.querySelector('#my-mdc-tab
 Tab Bar Scrollers can also instantiate any `mdc-tab-bar` from a DOM element on the fly using a built in factory function:
 
 ```js
-import {MDCTabBarScroller, MDCTabBarScrollerFoundation} from '@material/tabs';
+import {MDCTabBarScroller, MDCTabBarScrollerFoundation} from '@material/tabs/index';
 
 const tabBarEl = document.querySelector('#my-mdc-tab-bar');
 const scrollerEl = document.querySelector('#my-mdc-tab-bar-scroller');

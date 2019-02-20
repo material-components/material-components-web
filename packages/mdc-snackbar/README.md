@@ -63,7 +63,7 @@ npm install @material/snackbar
 ### JavaScript Instantiation
 
 ```js
-import {MDCSnackbar} from '@material/snackbar';
+import {MDCSnackbar} from '@material/snackbar/index';
 const snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
 ```
 

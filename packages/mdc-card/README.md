@@ -85,7 +85,7 @@ MDC Card itself does not require JavaScript. However, if you place interactive c
 you may want to instantiate ripples or other components. For example:
 
 ```js
-import {MDCRipple} from '@material/ripple';
+import {MDCRipple} from '@material/ripple/index';
 
 const selector = '.mdc-button, .mdc-icon-button, .mdc-card__primary-action';
 const ripples = [].map.call(document.querySelectorAll(selector), function(el) {

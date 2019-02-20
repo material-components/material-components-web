@@ -108,7 +108,7 @@ tests against that package and its dependencies.
 
 ```js
 // BAD
-import {MDCFoundation} from '@material/base';
+import {MDCFoundation} from '@material/base/index';
 // GOOD
 import MDCFoundation from '@material/base/foundation';
 ```

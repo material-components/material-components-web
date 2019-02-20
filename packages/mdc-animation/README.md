@@ -95,7 +95,7 @@ Function | Description
 These functions handle prefixing across various browsers
 
 ```js
-import {getCorrectEventName} from '@material/animation';
+import {getCorrectEventName} from '@material/animation/index';
 
 const eventToListenFor = getCorrectEventName(window, 'animationstart');
 ```

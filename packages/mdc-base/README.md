@@ -25,7 +25,7 @@ Then include it in your code in one of the following ways:
 #### ES2015+
 
 ```javascript
-import {MDCComponent, MDCFoundation} from '@material/base';
+import {MDCComponent, MDCFoundation} from '@material/base/index';
 ```
 #### CommonJS
 

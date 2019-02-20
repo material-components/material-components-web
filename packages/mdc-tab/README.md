@@ -55,7 +55,7 @@ npm install @material/tab
 ### JavaScript Instantiation
 
 ```js
-import {MDCTab} from '@material/tab';
+import {MDCTab} from '@material/tab/index';
 
 const tab = new MDCTab(document.querySelector('.mdc-tab'));
 ```

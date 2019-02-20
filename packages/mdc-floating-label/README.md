@@ -44,7 +44,7 @@ npm install @material/floating-label
 ### JavaScript Instantiation
 
 ```js
-import {MDCFloatingLabel} from '@material/floating-label';
+import {MDCFloatingLabel} from '@material/floating-label/index';
 
 const floatingLabel = new MDCFloatingLabel(document.querySelector('.mdc-floating-label'));
 ```
