@@ -462,6 +462,8 @@ ${CliColor.bold.red('Skipping screenshot tests.')}
    */
   logComparisonResults_(reportData) {
     this.logger_.foldStart('screenshot.diff_results', 'Diff results');
+    this.logComparisonResultSet_('Skipped', reportData.screenshots.skipped_screenshot_list);
+    this.logComparisonResultSet_('Unchanged', reportData.screenshots.unchanged_screenshot_list);
     this.logComparisonResultSet_('Removed', reportData.screenshots.removed_screenshot_list);
     this.logComparisonResultSet_('Added', reportData.screenshots.added_screenshot_list);
     this.logComparisonResultSet_('Changed', reportData.screenshots.changed_screenshot_list);
