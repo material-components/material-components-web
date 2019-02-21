@@ -23,7 +23,6 @@
 
 import * as util from './util';
 
-export {MDCTabScroller as default} from './component'; // For backward compatibility
 export {util};
 export * from './adapter';
 export * from './component';

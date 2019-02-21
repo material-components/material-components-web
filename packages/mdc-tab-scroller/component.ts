@@ -122,5 +122,3 @@ export class MDCTabScroller extends MDCComponent<MDCTabScrollerFoundation> {
     this.foundation_.scrollTo(scrollX);
   }
 }
-
-export default MDCTabScroller; // For backward compatibility
