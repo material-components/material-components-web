@@ -34,11 +34,12 @@ const {spawnSync} = require('child_process');
 const {sync: globSync} = require('glob');
 const {dtsBundler} = require('./build/dts-bundler.js');
 
+const ALL_IN_ONE_PACKAGE = 'material-components-web';
 const PKG_RE = /(?:material\-components\-web)|(?:mdc\.[a-zA-Z\-]+)/;
 const DECLARATION_FILE_PREFIX = 'mdc-';
 
 const isValidCwd = (
-  path.basename(process.cwd()) === 'material-components-web' &&
+  path.basename(process.cwd()) === ALL_IN_ONE_PACKAGE &&
   fs.existsSync('packages') &&
   fs.existsSync('build')
 );
@@ -101,8 +102,13 @@ function cpDeclarationAsset(asset) {
   if (!fs.existsSync(assetPkg)) {
     Promise.reject(new Error(`Non-existent asset package path ${assetPkg} for ${asset}`));
   }
-  const destFileName = toCamelCase(path.parse(asset).name.replace(/^mdc-|\.d$/g, ''));
-  const destDir = path.join(assetPkg, 'dist', `mdc.${destFileName}.d.ts`);
+
+  const packageName = path.parse(asset).name.replace(/^mdc-|\.d$/g, '');
+  const isAllInOne = packageName === ALL_IN_ONE_PACKAGE;
+  const destFileName = isAllInOne ? packageName : `mdc.${toCamelCase(packageName)}`;
+  const destDir = path.join(assetPkg, 'dist', `${destFileName}.d.ts`);
+  console.log(destDir)
+
   return cpFile(asset, destDir).then(
     () => console.log(`cp ${asset} -> ${destDir}`),
     (err) => {
@@ -124,7 +130,7 @@ Promise.all(globSync('build/*.{css,js,map}').map(cpAsset)).catch((err) => {
 dtsBundler();
 
 Promise.all(
-  globSync(`build/packages/**/{${DECLARATION_FILE_PREFIX},material-components-web}*.d.ts`)
+  globSync(`build/packages/**/{${DECLARATION_FILE_PREFIX},${ALL_IN_ONE_PACKAGE}}*.d.ts`)
     .map(cpDeclarationAsset)
 ).catch((err) => {
   console.error(`Error encountered copying assets: ${err}`);

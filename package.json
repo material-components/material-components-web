@@ -8,8 +8,8 @@
     "build:demos": "npm run clean && mkdirp build && webpack --config=demos/webpack.config.js --progress --colors",
     "build:min": "mkdirp build && cross-env MDC_ENV=production webpack -p --progress --colors",
     "changelog": "standard-changelog -i CHANGELOG.md -k packages/material-components-web/package.json",
-    "clean": "del-cli build/** build .typescript-tmp/** .typescript-tmp && git clean -fX",
-    "clean:site": "del-cli .site-generator-tmp/** .site-generator-tmp",
+    "clean": "node -e \"require('./scripts/build/clean').main()\"",
+    "clean:site": "node -e \"require('./scripts/build/clean').removeDirectory('.site-generator-tmp')\"",
     "dist": "npm run build && npm run build:min && npm run build:esmodules",
     "dev": "npm run clean && cross-env MDC_ENV=development webpack-dev-server --config=demos/webpack.config.js --progress --inline --hot --host 0.0.0.0",
     "fix:js": "eslint --fix packages test webpack.config.js demos/webpack.config.js karma.conf.js",
@@ -43,8 +43,8 @@
     "test:site": "npm run clean:site && ./scripts/site-generator-test.sh"
   },
   "devDependencies": {
-    "@google-cloud/datastore": "^3.0.1",
     "@babel/parser": "^7.2.3",
+    "@google-cloud/datastore": "^3.0.1",
     "@octokit/rest": "^16.15.0",
     "argparse": "^1.0.10",
     "ascii-table": "0.0.9",
@@ -72,7 +72,6 @@
     "dart-sass": "^1.15.2",
     "debounce": "^1.1.0",
     "del": "^3.0.0",
-    "del-cli": "^1.0.0",
     "detect-port": "^1.2.3",
     "dom-events": "^0.1.1",
     "dts-bundle": "^0.7.3",
