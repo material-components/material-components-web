@@ -23,8 +23,8 @@
 
 import td from 'testdouble';
 
-import MDCFixedTopAppBarFoundation from '../../../packages/mdc-top-app-bar/fixed/foundation';
-import MDCTopAppBarFoundation from '../../../packages/mdc-top-app-bar/foundation';
+import {MDCFixedTopAppBarFoundation} from '../../../packages/mdc-top-app-bar/fixed/foundation';
+import {MDCTopAppBarFoundation} from '../../../packages/mdc-top-app-bar/standard/foundation';
 import {install as installClock} from '../helpers/clock';
 
 suite('MDCFixedTopAppBarFoundation');

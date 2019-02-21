@@ -26,8 +26,8 @@
  * This makes ponyfills safer than traditional polyfills, especially for libraries like MDC.
  */
 
-function closest<T extends Element>(element: Element, selector: string): T | null;
-function closest(element: Element, selector: string): Element | null {
+export function closest<T extends Element>(element: Element, selector: string): T | null;
+export function closest(element: Element, selector: string): Element | null {
   if (element.closest) {
     return element.closest(selector);
   }
@@ -42,11 +42,9 @@ function closest(element: Element, selector: string): Element | null {
   return null;
 }
 
-function matches(element: Element, selector: string): boolean {
+export function matches(element: Element, selector: string): boolean {
   const nativeMatches = element.matches
       || element.webkitMatchesSelector
       || element.msMatchesSelector;
   return nativeMatches.call(element, selector);
 }
-
-export {closest, matches};

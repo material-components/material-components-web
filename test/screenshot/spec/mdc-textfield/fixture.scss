@@ -56,7 +56,7 @@
 
 // Work around MS Edge rendering bug.
 // TODO(acdvorak): Create and link to GitHub issue
-@supports (-ms-ime-align:auto) {
+@supports (-ms-ime-align: auto) {
   .test-text-field__input {
     transform: translateX(.1px);
   }

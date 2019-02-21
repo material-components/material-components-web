@@ -20,19 +20,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-import {Point} from './types';
+import {MDCRipplePoint} from './types';
 
 /**
  * Stores result from supportsCssVariables to avoid redundant processing to
  * detect CSS custom variable support.
  */
-let supportsCssVariables_: boolean|undefined;
+let supportsCssVariables_: boolean | undefined;
 
 /**
  * Stores result from applyPassive to avoid redundant processing to detect
  * passive event listener support.
  */
-let supportsPassive_: boolean|undefined;
+let supportsPassive_: boolean | undefined;
 
 function detectEdgePseudoVarBug(windowObj: Window): boolean {
   // Detect versions of Edge with buggy var() support
@@ -68,8 +68,8 @@ export function supportsCssVariables(windowObj: Window, forceRefresh = false): b
   // See: https://bugs.webkit.org/show_bug.cgi?id=154669
   // See: README section on Safari
   const weAreFeatureDetectingSafari10plus = (
-    CSS.supports('(--css-vars: yes)') &&
-    CSS.supports('color', '#00000000')
+      CSS.supports('(--css-vars: yes)') &&
+      CSS.supports('color', '#00000000')
   );
 
   if (explicitlySupportsCssVars || weAreFeatureDetectingSafari10plus) {
@@ -89,15 +89,18 @@ export function supportsCssVariables(windowObj: Window, forceRefresh = false): b
  * if so, use them.
  */
 export function applyPassive(globalObj: Window = window, forceRefresh = false):
-    boolean|EventListenerOptions {
+    boolean | EventListenerOptions {
   if (supportsPassive_ === undefined || forceRefresh) {
     let isSupported = false;
     try {
-      globalObj.document.addEventListener('test', () => undefined, {get passive() {
-        isSupported = true;
-        return isSupported;
-      }});
-    } catch (e) {} // tslint:disable-line:no-empty cannot throw error due to tests. tslint also disables console.log.
+      globalObj.document.addEventListener('test', () => undefined, {
+        get passive() {
+          isSupported = true;
+          return isSupported;
+        },
+      });
+    } catch (e) {
+    } // tslint:disable-line:no-empty cannot throw error due to tests. tslint also disables console.log.
 
     supportsPassive_ = isSupported;
   }
@@ -105,7 +108,8 @@ export function applyPassive(globalObj: Window = window, forceRefresh = false):
   return supportsPassive_ ? {passive: true} as EventListenerOptions : false;
 }
 
-export function getNormalizedEventCoords(evt: Event | undefined, pageOffset: Point, clientRect: ClientRect): Point {
+export function getNormalizedEventCoords(evt: Event | undefined, pageOffset: MDCRipplePoint, clientRect: ClientRect):
+    MDCRipplePoint {
   if (!evt) {
     return {x: 0, y: 0};
   }

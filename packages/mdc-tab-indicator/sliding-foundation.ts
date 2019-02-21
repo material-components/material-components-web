@@ -24,7 +24,7 @@
 import {MDCTabIndicatorFoundation} from './foundation';
 
 /* istanbul ignore next: subclass is not a branch statement */
-class MDCSlidingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
+export class MDCSlidingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
   activate(previousIndicatorClientRect?: ClientRect) {
     // Early exit if no indicator is present to handle cases where an indicator
     // may be activated without a prior indicator state
@@ -56,4 +56,4 @@ class MDCSlidingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
   }
 }
 
-export {MDCSlidingTabIndicatorFoundation as default, MDCSlidingTabIndicatorFoundation};
+export default MDCSlidingTabIndicatorFoundation;

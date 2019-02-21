@@ -25,7 +25,7 @@ import {MDCFoundation} from '@material/base/foundation';
 import {MDCIconButtonToggleAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-class MDCIconButtonToggleFoundation extends MDCFoundation<MDCIconButtonToggleAdapter> {
+export class MDCIconButtonToggleFoundation extends MDCFoundation<MDCIconButtonToggleAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
@@ -72,4 +72,4 @@ class MDCIconButtonToggleFoundation extends MDCFoundation<MDCIconButtonToggleAda
   }
 }
 
-export {MDCIconButtonToggleFoundation as default, MDCIconButtonToggleFoundation};
+export default MDCIconButtonToggleFoundation;

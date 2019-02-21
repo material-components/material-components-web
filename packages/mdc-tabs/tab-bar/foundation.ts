@@ -21,7 +21,8 @@
  * THE SOFTWARE.
  */
 
-import {getCorrectPropertyName} from '@material/animation/index';
+import {getCorrectPropertyName} from '@material/animation/util';
+import {SpecificEventListener} from '@material/base';
 import {MDCFoundation} from '@material/base/foundation';
 import {SpecificEventListener} from '@material/base/index';
 import {MDCTabBarAdapter} from './adapter';
@@ -142,7 +143,7 @@ export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
 
     const translateAmtForActiveTabLeft = this.adapter_.getComputedLeftForTabAtIndex(this.activeTabIndex_);
     const scaleAmtForActiveTabWidth =
-      this.adapter_.getComputedWidthForTabAtIndex(this.activeTabIndex_) / this.adapter_.getOffsetWidth();
+        this.adapter_.getComputedWidthForTabAtIndex(this.activeTabIndex_) / this.adapter_.getOffsetWidth();
 
     const transformValue = `translateX(${translateAmtForActiveTabLeft}px) scale(${scaleAmtForActiveTabWidth}, 1)`;
     this.adapter_.setStyleForIndicator(getCorrectPropertyName(window, 'transform'), transformValue);

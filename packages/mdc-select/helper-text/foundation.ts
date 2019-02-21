@@ -25,7 +25,7 @@ import {MDCFoundation} from '@material/base/foundation';
 import {MDCSelectHelperTextAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-class MDCSelectHelperTextFoundation extends MDCFoundation<MDCSelectHelperTextAdapter> {
+export class MDCSelectHelperTextFoundation extends MDCFoundation<MDCSelectHelperTextAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
@@ -52,7 +52,7 @@ class MDCSelectHelperTextFoundation extends MDCFoundation<MDCSelectHelperTextAda
 
   constructor(adapter?: Partial<MDCSelectHelperTextAdapter>) {
     super({...MDCSelectHelperTextFoundation.defaultAdapter, ...adapter});
-}
+  }
 
   /**
    * Sets the content of the helper text field.
@@ -117,4 +117,4 @@ class MDCSelectHelperTextFoundation extends MDCFoundation<MDCSelectHelperTextAda
   }
 }
 
-export {MDCSelectHelperTextFoundation as default, MDCSelectHelperTextFoundation};
+export default MDCSelectHelperTextFoundation;

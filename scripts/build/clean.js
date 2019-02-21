@@ -7,6 +7,7 @@ const {sync: globSync} = require('glob');
 function main() {
   removeDirectory('build');
   removeDirectory('.typescript-tmp');
+  removeDirectory('.rewrite-tmp');
   removeFilesOfType('js');
   removeFilesOfType('d.ts');
   removeFilesOfType('map');

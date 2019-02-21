@@ -421,7 +421,7 @@ Method Signature | Description
 
 Event Name | Event Data Structure | Description
 --- | --- | ---
-`change` | `ToolbarEventDetail` | Emits the ratio of current flexible space to total flexible space height. So when it is minimized, ratio equals to 0 and when it is maximized, ratio equals to 1. See [types.ts](types.ts).
+`change` | `MDCToolbarEventDetail` | Emits the ratio of current flexible space to total flexible space height. So when it is minimized, ratio equals to 0 and when it is maximized, ratio equals to 1. See [types.ts](types.ts).
 
 #### Adapter
 
@@ -438,7 +438,7 @@ Method Signature | Description
 `getViewportScrollY() => number` | Gets the number of pixels that the content of body is scrolled upward
 `getOffsetHeight() => number` | Gets root element `mdc-toolbar` offsetHeight.
 `getFirstRowElementOffsetHeight() => number` | Gets first row element offsetHeight.
-`notifyChange(evtData: ToolbarEventDetail) => void` | Broadcasts an event with the remaining ratio of flexible space. See [types.ts](types.ts).
+`notifyChange(evtData: MDCToolbarEventDetail) => void` | Broadcasts an event with the remaining ratio of flexible space. See [types.ts](types.ts).
 `setStyle(property: string, value: number) => void` | Sets `mdc-toolbar` style property to provided value.
 `setStyleForTitleElement(property: string, value: number) => void` | Sets `mdc-toolbar__title` style property to provided value.
 `setStyleForFlexibleRowElement(property: string, value: number) => void` | Sets flexible row element style property to provided value.

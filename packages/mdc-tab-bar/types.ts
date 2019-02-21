@@ -21,8 +21,12 @@
  * THE SOFTWARE.
  */
 
-import {MDCTabScroller} from '@material/tab-scroller/index';
-import {MDCTab} from '@material/tab/index';
+export interface MDCTabBarActivatedEventDetail {
+  index: number;
+}
 
-export type TabFactory = (el: Element) => MDCTab;
-export type TabScrollerFactory = (el: Element) => MDCTabScroller;
+// Note: CustomEvent<T> is not supported by Closure Compiler.
+
+export interface MDCTabBarActivatedEvent extends Event {
+  readonly detail: MDCTabBarActivatedEventDetail;
+}

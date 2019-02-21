@@ -22,11 +22,11 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
-import {SpecificEventListener} from '@material/base/index';
+import {SpecificEventListener} from '@material/base/types';
 import {MDCFloatingLabelAdapter} from './adapter';
 import {cssClasses} from './constants';
 
-class MDCFloatingLabelFoundation extends MDCFoundation<MDCFloatingLabelAdapter> {
+export class MDCFloatingLabelFoundation extends MDCFoundation<MDCFloatingLabelAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
@@ -102,4 +102,4 @@ class MDCFloatingLabelFoundation extends MDCFoundation<MDCFloatingLabelAdapter> 
   }
 }
 
-export {MDCFloatingLabelFoundation as default, MDCFloatingLabelFoundation};
+export default MDCFloatingLabelFoundation;

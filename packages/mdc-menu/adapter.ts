@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {MenuItemEventDetail} from './types';
+import {MDCMenuItemEventDetail} from './types';
 
 /**
  * Implement this adapter for your framework of choice to delegate updates to
@@ -29,7 +29,7 @@ import {MenuItemEventDetail} from './types';
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCMenuAdapter {
+export interface MDCMenuAdapter {
   /**
    * Adds a class to the element at the index provided.
    */
@@ -78,7 +78,5 @@ interface MDCMenuAdapter {
   /**
    * Emit an event when a menu item is selected.
    */
-  notifySelected(evtData: MenuItemEventDetail): void;
+  notifySelected(evtData: MDCMenuItemEventDetail): void;
 }
-
-export {MDCMenuAdapter as default, MDCMenuAdapter};

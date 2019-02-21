@@ -28,7 +28,7 @@
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCListAdapter {
+export interface MDCListAdapter {
   getListItemCount(): number;
 
   getFocusedElementIndex(): number;
@@ -82,5 +82,3 @@ interface MDCListAdapter {
    */
   isFocusInsideList(): boolean;
 }
-
-export {MDCListAdapter as default, MDCListAdapter};

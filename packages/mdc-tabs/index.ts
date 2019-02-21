@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,6 +21,6 @@
  * THE SOFTWARE.
  */
 
-export * from './tab';
-export * from './tab-bar';
-export * from './tab-bar-scroller';
+export * from './tab/index';
+export * from './tab-bar/index';
+export * from './tab-bar-scroller/index';

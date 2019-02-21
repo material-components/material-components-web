@@ -21,12 +21,10 @@
  * THE SOFTWARE.
  */
 
-const cssClasses = {
+export const cssClasses = {
   ROOT: 'mdc-form-field',
 };
 
-const strings = {
+export const strings = {
   LABEL_SELECTOR: '.mdc-form-field > label',
 };
-
-export {cssClasses, strings};

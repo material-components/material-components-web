@@ -21,13 +21,11 @@
  * THE SOFTWARE.
  */
 
-const strings = {
+export const strings = {
   CHIP_SELECTOR: '.mdc-chip',
 };
 
-const cssClasses = {
+export const cssClasses = {
   CHOICE: 'mdc-chip-set--choice',
   FILTER: 'mdc-chip-set--filter',
 };
-
-export {strings, cssClasses};

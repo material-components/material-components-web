@@ -21,10 +21,12 @@
  * THE SOFTWARE.
  */
 
-import * as FocusTrapLib from 'focus-trap';
+export interface MDCDialogCloseEventDetail {
+  action?: string;
+}
 
-// TODO(acdvorak): Centralize this in mdc-base or mdc-dom?
-export type FocusTrapFactory = (
-    element: HTMLElement | string,
-    userOptions?: FocusTrapLib.Options,
-) => FocusTrapLib.FocusTrap;
+// Note: CustomEvent<T> is not supported by Closure Compiler.
+
+export interface MDCDialogCloseEvent extends Event {
+  readonly detail: MDCDialogCloseEventDetail;
+}

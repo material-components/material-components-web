@@ -22,7 +22,7 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
-import {MDCTabDimensions, TabInteractionEventDetail} from '@material/tab/types';
+import {MDCTabDimensions, MDCTabInteractionEvent} from '@material/tab/types';
 import {MDCTabBarAdapter} from './adapter';
 import {numbers, strings} from './constants';
 
@@ -44,7 +44,7 @@ KEYCODE_MAP.set(numbers.HOME_KEYCODE, strings.HOME_KEY);
 KEYCODE_MAP.set(numbers.ENTER_KEYCODE, strings.ENTER_KEY);
 KEYCODE_MAP.set(numbers.SPACE_KEYCODE, strings.SPACE_KEY);
 
-class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
+export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
   static get strings() {
     return strings;
   }
@@ -141,7 +141,7 @@ class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
   /**
    * Handles the MDCTab:interacted event
    */
-  handleTabInteraction(evt: CustomEvent<TabInteractionEventDetail>) {
+  handleTabInteraction(evt: MDCTabInteractionEvent) {
     this.adapter_.setActiveTab(this.adapter_.getIndexOfTabById(evt.detail.tabId));
   }
 
@@ -403,7 +403,7 @@ class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
     const tabDimensions = this.adapter_.getTabDimensionsAtIndex(index);
     const scrollWidth = this.adapter_.getScrollContentWidth();
     const nextIndex = this.findAdjacentTabIndexClosestToEdgeRTL_(
-      index, tabDimensions, scrollPosition, barWidth, scrollWidth);
+        index, tabDimensions, scrollPosition, barWidth, scrollWidth);
 
     if (!this.indexIsInRange_(nextIndex)) {
       return;
@@ -414,4 +414,4 @@ class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
   }
 }
 
-export {MDCTabBarFoundation as default, MDCTabBarFoundation};
+export default MDCTabBarFoundation;

@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-export interface Point {
+export interface MDCRipplePoint {
   x: number;
   y: number;
 }
@@ -29,7 +29,7 @@ export interface Point {
 /**
  * Options passed in when attaching a ripple to an object.
  */
-export interface RippleAttachOpts {
+export interface MDCRippleAttachOpts {
   isUnbounded?: boolean;
 }
 
@@ -39,7 +39,7 @@ export interface RippleAttachOpts {
  * unbounded Whether or not the ripple bleeds out of the bounds of the element.
  * disabled Whether or not the ripple is attached to a disabled component.
  */
-export interface RippleCapableSurface {
+export interface MDCRippleCapableSurface {
   readonly root_: Element;
   unbounded?: boolean;
   disabled?: boolean;

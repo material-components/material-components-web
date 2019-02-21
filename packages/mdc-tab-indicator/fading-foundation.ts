@@ -24,7 +24,7 @@
 import {MDCTabIndicatorFoundation} from './foundation';
 
 /* istanbul ignore next: subclass is not a branch statement */
-class MDCFadingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
+export class MDCFadingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
   activate() {
     this.adapter_.addClass(MDCTabIndicatorFoundation.cssClasses.ACTIVE);
   }
@@ -34,4 +34,4 @@ class MDCFadingTabIndicatorFoundation extends MDCTabIndicatorFoundation {
   }
 }
 
-export {MDCFadingTabIndicatorFoundation as default, MDCFadingTabIndicatorFoundation};
+export default MDCFadingTabIndicatorFoundation;

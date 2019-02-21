@@ -27,7 +27,7 @@ import {MDCTopAppBarBaseFoundation} from '../foundation';
 
 const INITIAL_VALUE = 0;
 
-class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
+export class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
   /**
    * Indicates if the top app bar was docked in the previous scroll handler iteration.
    */
@@ -193,4 +193,4 @@ class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
   }
 }
 
-export {MDCTopAppBarFoundation as default, MDCTopAppBarFoundation};
+export default MDCTopAppBarFoundation;

@@ -28,7 +28,7 @@
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCDrawerAdapter {
+export interface MDCDrawerAdapter {
   /**
    * Adds a class to the root Element.
    */
@@ -86,5 +86,3 @@ interface MDCDrawerAdapter {
    */
   releaseFocus(): void;
 }
-
-export {MDCDrawerAdapter as default, MDCDrawerAdapter};

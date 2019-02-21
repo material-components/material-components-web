@@ -30,7 +30,7 @@ import {install as installClock} from '../helpers/clock';
 import {setupFoundationTest} from '../helpers/setup';
 
 import {cssClasses} from '../../../packages/mdc-slider/constants';
-import MDCSliderFoundation from '../../../packages/mdc-slider/foundation';
+import {MDCSliderFoundation} from '../../../packages/mdc-slider/foundation';
 
 suite('MDCSliderFoundation');
 

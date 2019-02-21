@@ -21,12 +21,12 @@
  * THE SOFTWARE.
  */
 
-import {getCorrectPropertyName} from '@material/animation/index';
+import {getCorrectPropertyName} from '@material/animation/util';
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCLinearProgressAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgressAdapter> {
+export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgressAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
@@ -49,6 +49,10 @@ class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgressAdapter
   private isDeterminate_!: boolean;
   private isReversed_!: boolean;
   private progress_!: number;
+
+  constructor(adapter?: Partial<MDCLinearProgressAdapter>) {
+    super({...MDCLinearProgressFoundation.defaultAdapter, ...adapter});
+  }
 
   init() {
     this.isDeterminate_ = !this.adapter_.hasClass(cssClasses.INDETERMINATE_CLASS);
@@ -107,4 +111,4 @@ class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgressAdapter
   }
 }
 
-export {MDCLinearProgressFoundation as default, MDCLinearProgressFoundation};
+export default MDCLinearProgressFoundation;

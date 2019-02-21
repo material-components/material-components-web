@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,8 +21,6 @@
  * THE SOFTWARE.
  */
 
-import {MDCRipple, MDCRippleFoundation} from '@material/ripple/index';
-
 export interface MDCChipInteractionEventDetail {
   chipId: string;
 }
@@ -35,8 +33,16 @@ export interface MDCChipRemovalEventDetail extends MDCChipInteractionEventDetail
   root: Element;
 }
 
-export interface MDCChipInteractionEvent extends CustomEvent<MDCChipInteractionEventDetail> {}
-export interface MDCChipSelectionEvent extends CustomEvent<MDCChipSelectionEventDetail> {}
-export interface MDCChipRemovalEvent extends CustomEvent<MDCChipRemovalEventDetail> {}
+// Note: CustomEvent<T> is not supported by Closure Compiler.
 
-export type RippleFactory = (el: Element, foundation: MDCRippleFoundation) => MDCRipple;
+export interface MDCChipInteractionEvent extends Event {
+  readonly detail: MDCChipInteractionEventDetail;
+}
+
+export interface MDCChipSelectionEvent extends Event {
+  readonly detail: MDCChipSelectionEventDetail;
+}
+
+export interface MDCChipRemovalEvent extends Event {
+  readonly detail: MDCChipRemovalEventDetail;
+}

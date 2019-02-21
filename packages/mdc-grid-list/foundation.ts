@@ -25,7 +25,7 @@ import {MDCFoundation} from '@material/base/foundation';
 import {MDCGridListAdapter} from './adapter';
 import {strings} from './constants';
 
-class MDCGridListFoundation extends MDCFoundation<MDCGridListAdapter> {
+export class MDCGridListFoundation extends MDCFoundation<MDCGridListAdapter> {
   static get strings() {
     return strings;
   }
@@ -81,4 +81,4 @@ class MDCGridListFoundation extends MDCFoundation<MDCGridListAdapter> {
   }
 }
 
-export {MDCGridListFoundation as default, MDCGridListFoundation};
+export default MDCGridListFoundation;

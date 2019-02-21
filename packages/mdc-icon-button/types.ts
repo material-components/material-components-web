@@ -21,6 +21,6 @@
  * THE SOFTWARE.
  */
 
-export interface IconButtonToggleEvent {
+export interface MDCIconButtonToggleEventDetail {
   isOn: boolean;
 }

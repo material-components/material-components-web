@@ -28,7 +28,7 @@
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCTabIndicatorAdapter {
+export interface MDCTabIndicatorAdapter {
   /**
    * Adds the given className to the root element.
    * @param className The className to add
@@ -53,5 +53,3 @@ interface MDCTabIndicatorAdapter {
    */
   setContentStyleProperty(propName: string, value: string): void;
 }
-
-export {MDCTabIndicatorAdapter as default, MDCTabIndicatorAdapter};

@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {MenuDimensions, MenuDistance, MenuPoint} from './types';
+import {MDCMenuDimensions, MDCMenuDistance, MDCMenuPoint} from './types';
 
 /**
  * Defines the shape of the adapter expected by the foundation.
@@ -30,7 +30,7 @@ import {MenuDimensions, MenuDistance, MenuPoint} from './types';
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCMenuSurfaceAdapter {
+export interface MDCMenuSurfaceAdapter {
   addClass(className: string): void;
   removeClass(className: string): void;
   hasClass(className: string): boolean;
@@ -42,12 +42,12 @@ interface MDCMenuSurfaceAdapter {
   isLastElementFocused(): boolean;
   isRtl(): boolean;
 
-  getInnerDimensions(): MenuDimensions;
+  getInnerDimensions(): MDCMenuDimensions;
   getAnchorDimensions(): ClientRect | null;
-  getWindowDimensions(): MenuDimensions;
-  getBodyDimensions(): MenuDimensions;
-  getWindowScroll(): MenuPoint;
-  setPosition(position: Partial<MenuDistance>): void;
+  getWindowDimensions(): MDCMenuDimensions;
+  getBodyDimensions(): MDCMenuDimensions;
+  getWindowScroll(): MDCMenuPoint;
+  setPosition(position: Partial<MDCMenuDistance>): void;
   setMaxHeight(height: string): void;
   setTransformOrigin(origin: string): void;
 
@@ -69,5 +69,3 @@ interface MDCMenuSurfaceAdapter {
   /** Emits an event when the menu surface is opened. */
   notifyOpen(): void;
 }
-
-export {MDCMenuSurfaceAdapter as default, MDCMenuSurfaceAdapter};
