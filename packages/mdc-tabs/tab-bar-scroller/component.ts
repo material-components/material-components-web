@@ -58,6 +58,8 @@ export class MDCTabBarScroller extends MDCComponent<MDCTabBarScrollerFoundation>
   }
 
   getDefaultFoundation() {
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys
     const adapter: MDCTabBarScrollerAdapter = {
       addClass: (className) => this.root_.classList.add(className),
