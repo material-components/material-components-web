@@ -28,7 +28,7 @@
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCTextFieldHelperTextAdapter {
+export interface MDCTextFieldHelperTextAdapter {
   /**
    * Adds a class to the helper text element.
    */
@@ -59,5 +59,3 @@ interface MDCTextFieldHelperTextAdapter {
    */
   setContent(content: string): void;
 }
-
-export {MDCTextFieldHelperTextAdapter as default, MDCTextFieldHelperTextAdapter};

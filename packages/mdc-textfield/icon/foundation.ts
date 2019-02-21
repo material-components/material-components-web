@@ -30,7 +30,7 @@ type InteractionEventType = 'click' | 'keydown';
 
 const INTERACTION_EVENTS: InteractionEventType[] = ['click', 'keydown'];
 
-class MDCTextFieldIconFoundation extends MDCFoundation<MDCTextFieldIconAdapter> {
+export class MDCTextFieldIconFoundation extends MDCFoundation<MDCTextFieldIconAdapter> {
   static get strings() {
     return strings;
   }
@@ -105,4 +105,4 @@ class MDCTextFieldIconFoundation extends MDCFoundation<MDCTextFieldIconAdapter> 
   }
 }
 
-export {MDCTextFieldIconFoundation as default, MDCTextFieldIconFoundation};
+export default MDCTextFieldIconFoundation;

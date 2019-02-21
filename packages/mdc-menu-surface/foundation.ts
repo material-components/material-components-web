@@ -24,18 +24,18 @@
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCMenuSurfaceAdapter} from './adapter';
 import {Corner, CornerBit, cssClasses, numbers, strings} from './constants';
-import {MenuDimensions, MenuDistance, MenuPoint} from './types';
+import {MDCMenuDimensions, MDCMenuDistance, MDCMenuPoint} from './types';
 
 interface AutoLayoutMeasurements {
-  anchorSize: MenuDimensions;
-  bodySize: MenuDimensions;
-  surfaceSize: MenuDimensions;
-  viewportDistance: MenuDistance;
-  viewportSize: MenuDimensions;
-  windowScroll: MenuPoint;
+  anchorSize: MDCMenuDimensions;
+  bodySize: MDCMenuDimensions;
+  surfaceSize: MDCMenuDimensions;
+  viewportDistance: MDCMenuDistance;
+  viewportSize: MDCMenuDimensions;
+  windowScroll: MDCMenuPoint;
 }
 
-class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
+export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
@@ -99,10 +99,10 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
   private animationRequestId_ = 0;
 
   private anchorCorner_: Corner = Corner.TOP_START;
-  private anchorMargin_: MenuDistance = {top: 0, right: 0, bottom: 0, left: 0};
-  private position_: MenuPoint = {x: 0, y: 0};
+  private anchorMargin_: MDCMenuDistance = {top: 0, right: 0, bottom: 0, left: 0};
+  private position_: MDCMenuPoint = {x: 0, y: 0};
 
-  private dimensions_!: MenuDimensions; // assigned in open()
+  private dimensions_!: MDCMenuDimensions; // assigned in open()
   private measurements_!: AutoLayoutMeasurements; // assigned in open()
 
   constructor(adapter?: Partial<MDCMenuSurfaceAdapter>) {
@@ -138,7 +138,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
   /**
    * @param margin Set of margin values from anchor.
    */
-  setAnchorMargin(margin: Partial<MenuDistance>) {
+  setAnchorMargin(margin: Partial<MDCMenuDistance>) {
     this.anchorMargin_.top = margin.top || 0;
     this.anchorMargin_.right = margin.right || 0;
     this.anchorMargin_.bottom = margin.bottom || 0;
@@ -263,7 +263,7 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
     const verticalOffset = this.getVerticalOriginOffset_(corner);
     const {anchorSize, surfaceSize} = this.measurements_;
 
-    const position: Partial<MenuDistance> = {
+    const position: Partial<MDCMenuDistance> = {
       [horizontalAlignment]: horizontalOffset ? horizontalOffset : 0,
       [verticalAlignment]: verticalOffset ? verticalOffset : 0,
     };
@@ -333,9 +333,9 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
 
     const isBottomAligned = this.hasBit_(this.anchorCorner_, CornerBit.BOTTOM);
     const availableTop = isBottomAligned ? viewportDistance.top + anchorSize.height + this.anchorMargin_.bottom
-      : viewportDistance.top + this.anchorMargin_.top;
+        : viewportDistance.top + this.anchorMargin_.top;
     const availableBottom = isBottomAligned ? viewportDistance.bottom - this.anchorMargin_.bottom
-      : viewportDistance.bottom + anchorSize.height - this.anchorMargin_.top;
+        : viewportDistance.bottom + anchorSize.height - this.anchorMargin_.top;
 
     const topOverflow = surfaceSize.height - availableTop;
     const bottomOverflow = surfaceSize.height - availableBottom;
@@ -347,11 +347,11 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
     const isFlipRtl = this.hasBit_(this.anchorCorner_, CornerBit.FLIP_RTL);
     const avoidHorizontalOverlap = this.hasBit_(this.anchorCorner_, CornerBit.RIGHT);
     const isAlignedRight = (avoidHorizontalOverlap && !isRtl) ||
-      (!avoidHorizontalOverlap && isFlipRtl && isRtl);
+        (!avoidHorizontalOverlap && isFlipRtl && isRtl);
     const availableLeft = isAlignedRight ? viewportDistance.left + anchorSize.width + this.anchorMargin_.right :
-      viewportDistance.left + this.anchorMargin_.left;
+        viewportDistance.left + this.anchorMargin_.left;
     const availableRight = isAlignedRight ? viewportDistance.right - this.anchorMargin_.right :
-      viewportDistance.right + anchorSize.width - this.anchorMargin_.left;
+        viewportDistance.right + anchorSize.width - this.anchorMargin_.left;
 
     const leftOverflow = surfaceSize.width - availableLeft;
     const rightOverflow = surfaceSize.width - availableRight;
@@ -441,10 +441,10 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
   }
 
   /** Calculates the offsets for positioning the menu-surface when the menu-surface has been hoisted to the body. */
-  private adjustPositionForHoistedElement_(position: Partial<MenuDistance>) {
+  private adjustPositionForHoistedElement_(position: Partial<MDCMenuDistance>) {
     const {windowScroll, viewportDistance} = this.measurements_;
 
-    const props = Object.keys(position) as Array<keyof Partial<MenuDistance>>;
+    const props = Object.keys(position) as Array<keyof Partial<MDCMenuDistance>>;
 
     for (const prop of props) {
       let value = position[prop] || 0;
@@ -500,4 +500,4 @@ class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapter> {
   }
 }
 
-export {MDCMenuSurfaceFoundation as default, MDCMenuSurfaceFoundation};
+export default MDCMenuSurfaceFoundation;

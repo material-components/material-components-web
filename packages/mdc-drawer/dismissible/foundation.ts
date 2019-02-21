@@ -25,7 +25,7 @@ import {MDCFoundation} from '@material/base/foundation';
 import {MDCDrawerAdapter} from '../adapter';
 import {cssClasses, strings} from '../constants';
 
-class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapter> {
+export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapter> {
   static get strings() {
     return strings;
   }
@@ -180,4 +180,4 @@ class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapter> {
   }
 }
 
-export {MDCDismissibleDrawerFoundation as default, MDCDismissibleDrawerFoundation};
+export default MDCDismissibleDrawerFoundation;

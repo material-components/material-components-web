@@ -24,15 +24,15 @@
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCListAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
-import {ListIndex} from './types';
+import {MDCListIndex} from './types';
 
 const ELEMENTS_KEY_ALLOWED_IN = ['input', 'button', 'textarea', 'select'];
 
-function isNumberArray(selectedIndex: ListIndex): selectedIndex is number[] {
+function isNumberArray(selectedIndex: MDCListIndex): selectedIndex is number[] {
   return selectedIndex instanceof Array;
 }
 
-class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
+export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   static get strings() {
     return strings;
   }
@@ -63,7 +63,7 @@ class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   private wrapFocus_ = false;
   private isVertical_ = true;
   private isSingleSelectionList_ = false;
-  private selectedIndex_: ListIndex = -1;
+  private selectedIndex_: MDCListIndex = -1;
   private focusedItemIndex_ = -1;
   private useActivatedClass_ = false;
   private isCheckboxList_ = false;
@@ -111,11 +111,11 @@ class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     this.useActivatedClass_ = useActivated;
   }
 
-  getSelectedIndex(): ListIndex {
+  getSelectedIndex(): MDCListIndex {
     return this.selectedIndex_;
   }
 
-  setSelectedIndex(index: ListIndex) {
+  setSelectedIndex(index: MDCListIndex) {
     if (!this.isIndexValid_(index)) {
       return;
     }
@@ -373,7 +373,7 @@ class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     this.setTabindexAtIndex_(targetIndex);
   }
 
-  private isIndexValid_(index: ListIndex) {
+  private isIndexValid_(index: MDCListIndex) {
     if (index instanceof Array) {
       if (!this.isCheckboxList_) {
         throw new Error('MDCListFoundation: Array of index is only supported for checkbox based list');
@@ -430,4 +430,4 @@ class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   }
 }
 
-export {MDCListFoundation as default, MDCListFoundation};
+export default MDCListFoundation;

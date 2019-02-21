@@ -25,7 +25,7 @@ import {MDCTopAppBarAdapter} from '../adapter';
 import {cssClasses} from '../constants';
 import {MDCTopAppBarBaseFoundation} from '../foundation';
 
-class MDCShortTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
+export class MDCShortTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
   /**
    * State variable for the current top app bar state
    */
@@ -74,4 +74,4 @@ class MDCShortTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
   }
 }
 
-export {MDCShortTopAppBarFoundation as default, MDCShortTopAppBarFoundation};
+export default MDCShortTopAppBarFoundation;

@@ -26,7 +26,7 @@ import {SpecificEventListener} from '@material/base/types';
 import {MDCTopAppBarAdapter} from './adapter';
 import {cssClasses, numbers, strings} from './constants';
 
-class MDCTopAppBarBaseFoundation extends MDCFoundation<MDCTopAppBarAdapter> {
+export class MDCTopAppBarBaseFoundation extends MDCFoundation<MDCTopAppBarAdapter> {
   static get strings() {
     return strings;
   }
@@ -57,8 +57,8 @@ class MDCTopAppBarBaseFoundation extends MDCFoundation<MDCTopAppBarAdapter> {
       deregisterScrollHandler: () => undefined,
       registerResizeHandler: () => undefined,
       deregisterResizeHandler: () => undefined,
-      getViewportScrollY: () =>  0,
-      getTotalActionItems: () =>  0,
+      getViewportScrollY: () => 0,
+      getTotalActionItems: () => 0,
     };
     // tslint:enable:object-literal-sort-keys
   }
@@ -111,4 +111,4 @@ class MDCTopAppBarBaseFoundation extends MDCFoundation<MDCTopAppBarAdapter> {
   }
 }
 
-export {MDCTopAppBarBaseFoundation as default, MDCTopAppBarBaseFoundation};
+export default MDCTopAppBarBaseFoundation;

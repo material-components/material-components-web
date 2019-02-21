@@ -28,7 +28,7 @@
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCCheckboxAdapter {
+export interface MDCCheckboxAdapter {
   addClass(className: string): void;
   forceLayout(): void;
   hasNativeControl(): boolean;
@@ -40,5 +40,3 @@ interface MDCCheckboxAdapter {
   setNativeControlAttr(attr: string, value: string): void;
   setNativeControlDisabled(disabled: boolean): void;
 }
-
-export {MDCCheckboxAdapter as default, MDCCheckboxAdapter};

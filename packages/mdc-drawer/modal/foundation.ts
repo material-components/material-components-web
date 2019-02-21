@@ -24,7 +24,7 @@
 import {MDCDismissibleDrawerFoundation} from '../dismissible/foundation';
 
 /* istanbul ignore next: subclass is not a branch statement */
-class MDCModalDrawerFoundation extends MDCDismissibleDrawerFoundation {
+export class MDCModalDrawerFoundation extends MDCDismissibleDrawerFoundation {
   /**
    * Called when drawer finishes open animation.
    */
@@ -47,4 +47,4 @@ class MDCModalDrawerFoundation extends MDCDismissibleDrawerFoundation {
   }
 }
 
-export {MDCModalDrawerFoundation as default, MDCModalDrawerFoundation};
+export default MDCModalDrawerFoundation;

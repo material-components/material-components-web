@@ -28,7 +28,7 @@
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCNotchedOutlineAdapter {
+export interface MDCNotchedOutlineAdapter {
   /**
    * Adds a class to the root element.
    */
@@ -49,5 +49,3 @@ interface MDCNotchedOutlineAdapter {
    */
   removeNotchWidthProperty(): void;
 }
-
-export {MDCNotchedOutlineAdapter as default, MDCNotchedOutlineAdapter};

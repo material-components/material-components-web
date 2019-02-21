@@ -22,11 +22,15 @@
  */
 
 import * as createFocusTrap from 'focus-trap';
-import {FocusTrapFactory} from './types';
+
+export type MDCDialogFocusTrapFactory = (
+    element: HTMLElement | string,
+    userOptions?: createFocusTrap.Options,
+) => createFocusTrap.FocusTrap;
 
 export function createFocusTrapInstance(
     surfaceEl: HTMLElement,
-    focusTrapFactory: FocusTrapFactory = createFocusTrap as unknown as FocusTrapFactory,
+    focusTrapFactory: MDCDialogFocusTrapFactory = createFocusTrap as unknown as MDCDialogFocusTrapFactory,
     initialFocusEl?: createFocusTrap.FocusTarget,
 ): createFocusTrap.FocusTrap {
   return focusTrapFactory(surfaceEl, {

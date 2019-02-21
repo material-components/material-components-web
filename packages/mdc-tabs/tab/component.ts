@@ -22,16 +22,21 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {MDCRipple} from '@material/ripple/index';
+import {MDCRipple} from '@material/ripple/component';
+import {MDCTabAdapter} from './adapter';
 import {cssClasses} from './constants';
 import {MDCTabFoundation} from './foundation';
 
-export type MDCTabFactory = (el: Element) => MDCTab;
-
-export type MDCTabSelectedEvent = CustomEvent<MDCTabSelectedEventDetail>;
+export type MDCTabFactory = (el: Element, foundation?: MDCTabFoundation) => MDCTab;
 
 export interface MDCTabSelectedEventDetail {
   tab: MDCTab;
+}
+
+// Note: CustomEvent<T> is not supported by Closure Compiler.
+
+export interface MDCTabSelectedEvent extends Event {
+  readonly detail: MDCTabSelectedEventDetail;
 }
 
 export class MDCTab extends MDCComponent<MDCTabFoundation> {
@@ -73,18 +78,21 @@ export class MDCTab extends MDCComponent<MDCTabFoundation> {
   }
 
   getDefaultFoundation() {
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys
-    return new MDCTabFoundation({
+    const adapter: MDCTabAdapter = {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
-      registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
-      deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler),
+      registerInteractionHandler: (type, handler) => this.listen(type, handler),
+      deregisterInteractionHandler: (type, handler) => this.unlisten(type, handler),
       getOffsetWidth: () => this.root_.offsetWidth,
       getOffsetLeft: () => this.root_.offsetLeft,
       notifySelected: () =>
-        this.emit<MDCTabSelectedEventDetail>(MDCTabFoundation.strings.SELECTED_EVENT, {tab: this}, true),
-    });
+          this.emit<MDCTabSelectedEventDetail>(MDCTabFoundation.strings.SELECTED_EVENT, {tab: this}, true),
+    };
     // tslint:enable:object-literal-sort-keys
+    return new MDCTabFoundation(adapter);
   }
 
   initialSyncWithDOM() {

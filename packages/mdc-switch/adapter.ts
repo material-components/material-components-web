@@ -28,7 +28,7 @@
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCSwitchAdapter {
+export interface MDCSwitchAdapter {
   /**
    * Adds a CSS class to the root element.
    */
@@ -49,5 +49,3 @@ interface MDCSwitchAdapter {
    */
   setNativeControlDisabled(disabled: boolean): void;
 }
-
-export {MDCSwitchAdapter as default, MDCSwitchAdapter};

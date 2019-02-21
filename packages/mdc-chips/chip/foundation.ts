@@ -34,7 +34,7 @@ const emptyClientRect = {
   width: 0,
 };
 
-class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
+export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   static get strings() {
     return strings;
   }
@@ -185,4 +185,4 @@ class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   }
 }
 
-export {MDCChipFoundation as default, MDCChipFoundation};
+export default MDCChipFoundation;

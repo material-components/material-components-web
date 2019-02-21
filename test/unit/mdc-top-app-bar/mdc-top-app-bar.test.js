@@ -28,9 +28,9 @@ import td from 'testdouble';
 
 import {MDCTopAppBar} from '../../../packages/mdc-top-app-bar/index';
 import {strings} from '../../../packages/mdc-top-app-bar/constants';
-import MDCTopAppBarFoundation from '../../../packages/mdc-top-app-bar/foundation';
-import MDCFixedTopAppBarFoundation from '../../../packages/mdc-top-app-bar/fixed/foundation';
-import MDCShortTopAppBarFoundation from '../../../packages/mdc-top-app-bar/short/foundation';
+import {MDCTopAppBarFoundation} from '../../../packages/mdc-top-app-bar/standard/foundation';
+import {MDCFixedTopAppBarFoundation} from '../../../packages/mdc-top-app-bar/fixed/foundation';
+import {MDCShortTopAppBarFoundation} from '../../../packages/mdc-top-app-bar/short/foundation';
 
 const MENU_ICONS_COUNT = 3;
 

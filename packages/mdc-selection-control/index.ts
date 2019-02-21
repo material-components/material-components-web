@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,15 +21,4 @@
  * THE SOFTWARE.
  */
 
-import {MDCRipple} from '@material/ripple/index';
-
-export interface MDCSelectionControlState {
-  checked: boolean;
-  indeterminate: boolean;
-  disabled: boolean;
-  value?: string;
-}
-
-export interface MDCSelectionControl {
-  readonly ripple: MDCRipple | undefined;
-}
+export * from './types';

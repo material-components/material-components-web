@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,39 +21,6 @@
  * THE SOFTWARE.
  */
 
-import {MDCComponent} from '@material/base/component';
-import {EventType, SpecificEventListener} from '@material/base/types';
-import {MDCTextFieldIconFoundation} from './foundation';
-
-class MDCTextFieldIcon extends MDCComponent<MDCTextFieldIconFoundation> {
-  static attachTo(root: Element): MDCTextFieldIcon {
-    return new MDCTextFieldIcon(root);
-  }
-
-  get foundation(): MDCTextFieldIconFoundation {
-    return this.foundation_;
-  }
-
-  getDefaultFoundation(): MDCTextFieldIconFoundation {
-    // tslint:disable:object-literal-sort-keys
-    return new MDCTextFieldIconFoundation({
-      getAttr: (attr) => this.root_.getAttribute(attr),
-      setAttr: (attr, value) => this.root_.setAttribute(attr, value),
-      removeAttr: (attr) => this.root_.removeAttribute(attr),
-      setContent: (content) => { this.root_.textContent = content; },
-      registerInteractionHandler: <E extends EventType>(evtType: E, handler: SpecificEventListener<E>) => {
-        this.root_.addEventListener(evtType, handler);
-      },
-      deregisterInteractionHandler: <E extends EventType>(evtType: E, handler: SpecificEventListener<E>) => {
-        this.root_.removeEventListener(evtType, handler);
-      },
-      notifyIconAction: () => this.emit(
-        MDCTextFieldIconFoundation.strings.ICON_EVENT, {} /* evtData */, true /* shouldBubble */),
-    });
-    // tslint:enable:object-literal-sort-keys
-  }
-}
-
-export {MDCTextFieldIcon as default, MDCTextFieldIcon};
 export * from './adapter';
+export * from './component';
 export * from './foundation';

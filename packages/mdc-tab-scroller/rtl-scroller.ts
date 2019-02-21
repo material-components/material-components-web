@@ -24,7 +24,7 @@
 import {MDCTabScrollerAdapter} from './adapter';
 import {MDCTabScrollerAnimation} from './types';
 
-abstract class MDCTabScrollerRTL {
+export abstract class MDCTabScrollerRTL {
   protected readonly adapter_: MDCTabScrollerAdapter;
 
   constructor(adapter: MDCTabScrollerAdapter) {
@@ -44,4 +44,4 @@ abstract class MDCTabScrollerRTL {
   abstract getAnimatingScrollPosition(scrollX: number, translateX: number): number;
 }
 
-export {MDCTabScrollerRTL as default, MDCTabScrollerRTL};
+export default MDCTabScrollerRTL; // For backward compatibility

@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,102 +21,8 @@
  * THE SOFTWARE.
  */
 
-type StandardCssPropertyName = (
-    'animation' | 'transform' | 'transition'
-);
-type PrefixedCssPropertyName = (
-    '-webkit-animation' | '-webkit-transform' | '-webkit-transition'
-);
-type StandardJsEventType = (
-    'animationend' | 'animationiteration' | 'animationstart' | 'transitionend'
-);
-type PrefixedJsEventType = (
-    'webkitAnimationEnd' | 'webkitAnimationIteration' | 'webkitAnimationStart' | 'webkitTransitionEnd'
-);
+import * as util from './util';
 
-type CssVendorPropertyMap = { [K in StandardCssPropertyName]: CssVendorProperty };
-type JsVendorPropertyMap = { [K in StandardJsEventType]: JsVendorProperty };
-
-interface CssVendorProperty {
-  prefixed: PrefixedCssPropertyName;
-  standard: StandardCssPropertyName;
-}
-
-interface JsVendorProperty {
-  cssProperty: StandardCssPropertyName;
-  prefixed: PrefixedJsEventType;
-  standard: StandardJsEventType;
-}
-
-const cssPropertyNameMap: CssVendorPropertyMap = {
-  animation: {
-    prefixed: '-webkit-animation',
-    standard: 'animation',
-  },
-  transform: {
-    prefixed: '-webkit-transform',
-    standard: 'transform',
-  },
-  transition: {
-    prefixed: '-webkit-transition',
-    standard: 'transition',
-  },
-};
-
-const jsEventTypeMap: JsVendorPropertyMap = {
-  animationend: {
-    cssProperty: 'animation',
-    prefixed: 'webkitAnimationEnd',
-    standard: 'animationend',
-  },
-  animationiteration: {
-    cssProperty: 'animation',
-    prefixed: 'webkitAnimationIteration',
-    standard: 'animationiteration',
-  },
-  animationstart: {
-    cssProperty: 'animation',
-    prefixed: 'webkitAnimationStart',
-    standard: 'animationstart',
-  },
-  transitionend: {
-    cssProperty: 'transition',
-    prefixed: 'webkitTransitionEnd',
-    standard: 'transitionend',
-  },
-};
-
-function isWindow(windowObj: Window): boolean {
-  return Boolean(windowObj.document) && typeof windowObj.document.createElement === 'function';
-}
-
-function getCorrectPropertyName(windowObj: Window, cssProperty: StandardCssPropertyName):
-    StandardCssPropertyName | PrefixedCssPropertyName {
-  if (isWindow(windowObj) && cssProperty in cssPropertyNameMap) {
-    const el = windowObj.document.createElement('div');
-    const {standard, prefixed} = cssPropertyNameMap[cssProperty];
-    const isStandard = standard in el.style;
-    return isStandard ? standard : prefixed;
-  }
-  return cssProperty;
-}
-
-function getCorrectEventName(windowObj: Window, eventType: StandardJsEventType):
-    StandardJsEventType | PrefixedJsEventType {
-  if (isWindow(windowObj) && eventType in jsEventTypeMap) {
-    const el = windowObj.document.createElement('div');
-    const {standard, prefixed, cssProperty} = jsEventTypeMap[eventType];
-    const isStandard = cssProperty in el.style;
-    return isStandard ? standard : prefixed;
-  }
-  return eventType;
-}
-
-export {
-  PrefixedCssPropertyName,
-  StandardCssPropertyName,
-  PrefixedJsEventType,
-  StandardJsEventType,
-  getCorrectEventName,
-  getCorrectPropertyName,
-};
+export {util}; // New namespace
+export * from './types';
+export * from './util'; // Old namespace for backward compatibility

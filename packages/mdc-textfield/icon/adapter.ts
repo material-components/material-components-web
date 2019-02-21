@@ -30,7 +30,7 @@ import {EventType, SpecificEventListener} from '@material/base/types';
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCTextFieldIconAdapter {
+export interface MDCTextFieldIconAdapter {
   /**
    * Gets the value of an attribute on the icon element.
    */
@@ -54,17 +54,15 @@ interface MDCTextFieldIconAdapter {
   /**
    * Registers an event listener on the icon element for a given event.
    */
-  registerInteractionHandler<E extends EventType>(evtType: E, handler: SpecificEventListener<E>): void;
+  registerInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Deregisters an event listener on the icon element for a given event.
    */
-  deregisterInteractionHandler<E extends EventType>(evtType: E, handler: SpecificEventListener<E>): void;
+  deregisterInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 
   /**
    * Emits a custom event "MDCTextField:icon" denoting a user has clicked the icon.
    */
   notifyIconAction(): void;
 }
-
-export {MDCTextFieldIconAdapter as default, MDCTextFieldIconAdapter};

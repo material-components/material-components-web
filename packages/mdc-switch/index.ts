@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,105 +21,6 @@
  * THE SOFTWARE.
  */
 
-import {MDCComponent} from '@material/base/component';
-import {EventType} from '@material/base/index';
-import {ponyfill} from '@material/dom/index';
-import {MDCRipple, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
-import {MDCSelectionControl} from '@material/selection-control/index';
-import {MDCSwitchFoundation} from './foundation';
-
-/**
- * An implementation of the switch component defined by the Material Design spec.
- *
- * https://material.io/design/components/selection-controls.html#switches
- */
-class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCSelectionControl, RippleCapableSurface {
-  static attachTo(root: HTMLElement) {
-    return new MDCSwitch(root);
-  }
-
-  // Public visibility for this property is required by RippleCapableSurface.
-  root_!: Element; // assigned in MDCComponent constructor
-
-  private ripple_ = this.initRipple_();
-
-  // Initialized in `initialSyncWithDOM`.
-  private changeHandler_!: EventListener;
-
-  destroy() {
-    super.destroy();
-    this.ripple_.destroy();
-    this.nativeControl_.removeEventListener('change', this.changeHandler_);
-  }
-
-  initialSyncWithDOM() {
-    this.changeHandler_ = (...args) => this.foundation_.handleChange(...args);
-    this.nativeControl_.addEventListener('change', this.changeHandler_);
-
-    // Sometimes the checked state of the input element is saved in the history.
-    // The switch styling should match the checked state of the input element.
-    // Do an initial sync between the native control and the foundation.
-    this.checked = this.checked;
-  }
-
-  getDefaultFoundation() {
-    return new MDCSwitchFoundation({
-      addClass: (className: string) => this.root_.classList.add(className),
-      removeClass: (className: string) => this.root_.classList.remove(className),
-      setNativeControlChecked: (checked: boolean) => this.nativeControl_.checked = checked,
-      setNativeControlDisabled: (disabled: boolean) => this.nativeControl_.disabled = disabled,
-    });
-  }
-
-  get ripple() {
-    return this.ripple_;
-  }
-
-  get checked() {
-    return this.nativeControl_.checked;
-  }
-
-  set checked(checked) {
-    this.foundation_.setChecked(checked);
-  }
-
-  get disabled() {
-    return this.nativeControl_.disabled;
-  }
-
-  set disabled(disabled) {
-    this.foundation_.setDisabled(disabled);
-  }
-
-  private initRipple_() {
-    const {RIPPLE_SURFACE_SELECTOR} = MDCSwitchFoundation.strings;
-    const rippleSurface = this.root_.querySelector(RIPPLE_SURFACE_SELECTOR) as HTMLElement;
-
-    return new MDCRipple(this.root_, new MDCRippleFoundation({
-      ...MDCRipple.createAdapter(this),
-      addClass: (className: string) => rippleSurface.classList.add(className),
-      computeBoundingRect: () => rippleSurface.getBoundingClientRect(),
-      deregisterInteractionHandler: (evtType: EventType, handler: EventListener) => {
-        this.nativeControl_.removeEventListener(evtType, handler);
-      },
-      isSurfaceActive: () => ponyfill.matches(this.nativeControl_, ':active'),
-      isUnbounded: () => true,
-      registerInteractionHandler: (evtType: EventType, handler: EventListener) => {
-        this.nativeControl_.addEventListener(evtType, handler);
-      },
-      removeClass: (className: string) => rippleSurface.classList.remove(className),
-      updateCssVariable: (varName: string, value: string) => {
-        rippleSurface.style.setProperty(varName, value);
-      },
-    }));
-  }
-
-  private get nativeControl_() {
-    const {NATIVE_CONTROL_SELECTOR} = MDCSwitchFoundation.strings;
-    return this.root_.querySelector(NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
-  }
-}
-
-export {MDCSwitch as default, MDCSwitch};
 export * from './adapter';
+export * from './component';
 export * from './foundation';

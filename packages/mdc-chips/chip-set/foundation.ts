@@ -25,7 +25,7 @@ import {MDCFoundation} from '@material/base/foundation';
 import {MDCChipSetAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
+export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   static get strings() {
     return strings;
   }
@@ -127,4 +127,4 @@ class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   }
 }
 
-export {MDCChipSetFoundation as default, MDCChipSetFoundation};
+export default MDCChipSetFoundation;

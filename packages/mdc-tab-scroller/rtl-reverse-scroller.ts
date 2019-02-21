@@ -24,7 +24,7 @@
 import {MDCTabScrollerRTL} from './rtl-scroller';
 import {MDCTabScrollerAnimation, MDCTabScrollerHorizontalEdges} from './types';
 
-class MDCTabScrollerRTLReverse extends MDCTabScrollerRTL {
+export class MDCTabScrollerRTLReverse extends MDCTabScrollerRTL {
   getScrollPositionRTL(translateX: number): number {
     const currentScrollLeft = this.adapter_.getScrollAreaScrollLeft();
     // Scroll values on most browsers are ints instead of floats so we round
@@ -68,4 +68,4 @@ class MDCTabScrollerRTLReverse extends MDCTabScrollerRTL {
   }
 }
 
-export {MDCTabScrollerRTLReverse as default, MDCTabScrollerRTLReverse};
+export default MDCTabScrollerRTLReverse; // For backward compatibility

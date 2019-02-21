@@ -25,8 +25,11 @@ import {MDCComponent} from '@material/base/component';
 import {MDCTab, MDCTabFactory, MDCTabFoundation, MDCTabSelectedEvent} from '../tab/index';
 import {MDCTabBarAdapter} from './adapter';
 import {MDCTabBarFoundation} from './foundation';
+import {MDCTabBarChangeEventDetail} from './types';
 
-export type MDCTabBarFactory = (el: Element) => MDCTabBar;
+const {strings} = MDCTabBarFoundation;
+
+export type MDCTabBarFactory = (el: Element, foundation?: MDCTabBarFoundation) => MDCTabBar;
 
 export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
   static attachTo(root: Element) {
@@ -61,7 +64,7 @@ export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
   private tabSelectedHandler_!: (evt: MDCTabSelectedEvent) => void; // assigned in initialize()
 
   initialize(tabFactory: MDCTabFactory = (el) => new MDCTab(el)) {
-    this.indicator_ = this.root_.querySelector<HTMLElement>(MDCTabBarFoundation.strings.INDICATOR_SELECTOR)!;
+    this.indicator_ = this.root_.querySelector<HTMLElement>(strings.INDICATOR_SELECTOR)!;
     this.tabs_ = this.gatherTabs_(tabFactory);
     this.tabSelectedHandler_ = ({detail}) => {
       const {tab} = detail;
@@ -70,20 +73,22 @@ export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
   }
 
   getDefaultFoundation() {
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys
     const adapter: MDCTabBarAdapter = {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       bindOnMDCTabSelectedEvent: () =>
-        this.listen(MDCTabFoundation.strings.SELECTED_EVENT, this.tabSelectedHandler_),
+          this.listen(MDCTabFoundation.strings.SELECTED_EVENT, this.tabSelectedHandler_),
       unbindOnMDCTabSelectedEvent: () =>
-        this.unlisten(MDCTabFoundation.strings.SELECTED_EVENT, this.tabSelectedHandler_),
+          this.unlisten(MDCTabFoundation.strings.SELECTED_EVENT, this.tabSelectedHandler_),
       registerResizeHandler: (handler) => window.addEventListener('resize', handler),
       deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
       getOffsetWidth: () => this.root_.offsetWidth,
       setStyleForIndicator: (propertyName, value) => this.indicator_.style.setProperty(propertyName, value),
       getOffsetWidthForIndicator: () => this.indicator_.offsetWidth,
-      notifyChange: (evtData) => this.emit(MDCTabBarFoundation.strings.CHANGE_EVENT, evtData),
+      notifyChange: (evtData) => this.emit<MDCTabBarChangeEventDetail>(strings.CHANGE_EVENT, evtData),
       getNumberOfTabs: () => this.tabs.length,
       isTabActiveAtIndex: (index) => this.tabs[index].isActive,
       setTabActiveAtIndex: (index, isActive) => {
@@ -107,7 +112,7 @@ export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
 
   private gatherTabs_(tabFactory: MDCTabFactory): MDCTab[] {
     const tabElements: HTMLElement[] =
-      [].slice.call(this.root_.querySelectorAll(MDCTabBarFoundation.strings.TAB_SELECTOR));
+        [].slice.call(this.root_.querySelectorAll(strings.TAB_SELECTOR));
     return tabElements.map((el: Element) => tabFactory(el));
   }
 

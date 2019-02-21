@@ -26,7 +26,7 @@ import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
-import MDCTextFieldCharacterCounterFoundation from '../../../packages/mdc-textfield/character-counter/foundation';
+import {MDCTextFieldCharacterCounterFoundation} from '../../../packages/mdc-textfield/character-counter/foundation';
 
 suite('MDCTextFieldCharacterCounterFoundation');
 

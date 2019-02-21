@@ -28,7 +28,7 @@
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCSelectHelperTextAdapter {
+export interface MDCSelectHelperTextAdapter {
   /**
    * Adds a class to the helper text element.
    */
@@ -59,5 +59,3 @@ interface MDCSelectHelperTextAdapter {
    */
   setContent(content: string): void;
 }
-
-export {MDCSelectHelperTextAdapter as default, MDCSelectHelperTextAdapter};

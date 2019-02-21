@@ -28,7 +28,7 @@
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCLinearProgressAdapter {
+export interface MDCLinearProgressAdapter {
   addClass(className: string): void;
   getBuffer(): HTMLElement | null;
   getPrimaryBar(): HTMLElement | null;
@@ -36,5 +36,3 @@ interface MDCLinearProgressAdapter {
   removeClass(className: string): void;
   setStyle(el: HTMLElement, styleProperty: string, value: string): void;
 }
-
-export {MDCLinearProgressAdapter as default, MDCLinearProgressAdapter};
