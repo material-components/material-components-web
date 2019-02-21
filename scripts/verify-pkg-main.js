@@ -82,15 +82,15 @@ function verifyPath(packageInfo, jsonPath, type) {
     // Multiple checks could have failed, but only increment the counter once for one package.
 
     switch (type) {
-      case 'main':
-        invalidMains++;
-        break;
-      case 'module':
-        invalidModules++;
-        break;
-      case 'types':
-        invalidTypes++;
-        break;
+    case 'main':
+      invalidMains++;
+      break;
+    case 'module':
+      invalidModules++;
+      break;
+    case 'types':
+      invalidTypes++;
+      break;
     }
   }
 }
