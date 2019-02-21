@@ -246,7 +246,7 @@ Before we configure Webpack you’ll need all of these dependencies:
 You can install all of them by running this command:
 
 ```
-npm install --save-dev babel-core@6 babel-loader@7 babel-preset-es2015 babel-plugin-transform-object-assign ts-loader@3.5.0
+npm install --save-dev babel-core@6 babel-loader@7 babel-preset-es2015 babel-plugin-transform-object-assign typescript ts-loader@3.5.0
 ```
 
 We also recommend installing typescript globally to run `tsc` commands from your CLI:
