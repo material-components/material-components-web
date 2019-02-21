@@ -44,11 +44,13 @@ export class MDCTextFieldIcon extends MDCComponent<MDCTextFieldIconFoundation> {
       getAttr: (attr) => this.root_.getAttribute(attr),
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       removeAttr: (attr) => this.root_.removeAttribute(attr),
-      setContent: (content) => { this.root_.textContent = content; },
+      setContent: (content) => {
+        this.root_.textContent = content;
+      },
       registerInteractionHandler: (evtType, handler) => this.listen(evtType, handler),
       deregisterInteractionHandler: (evtType, handler) => this.unlisten(evtType, handler),
       notifyIconAction: () => this.emit(
-        MDCTextFieldIconFoundation.strings.ICON_EVENT, {} /* evtData */, true /* shouldBubble */),
+          MDCTextFieldIconFoundation.strings.ICON_EVENT, {} /* evtData */, true /* shouldBubble */),
     };
     // tslint:enable:object-literal-sort-keys
     return new MDCTextFieldIconFoundation(adapter);

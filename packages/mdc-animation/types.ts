@@ -22,16 +22,16 @@
  */
 
 export type StandardCssPropertyName =
-  'animation' | 'transform' | 'transition';
+    'animation' | 'transform' | 'transition';
 
 export type PrefixedCssPropertyName =
-  '-webkit-animation' | '-webkit-transform' | '-webkit-transition';
+    '-webkit-animation' | '-webkit-transform' | '-webkit-transition';
 
 export type StandardJsEventType =
-  'animationend' | 'animationiteration' | 'animationstart' | 'transitionend';
+    'animationend' | 'animationiteration' | 'animationstart' | 'transitionend';
 
 export type PrefixedJsEventType =
-  'webkitAnimationEnd' | 'webkitAnimationIteration' | 'webkitAnimationStart' | 'webkitTransitionEnd';
+    'webkitAnimationEnd' | 'webkitAnimationIteration' | 'webkitAnimationStart' | 'webkitTransitionEnd';
 
 export interface CssVendorProperty {
   prefixed: PrefixedCssPropertyName;

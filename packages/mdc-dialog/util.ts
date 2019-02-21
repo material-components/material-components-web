@@ -24,8 +24,8 @@
 import * as createFocusTrap from 'focus-trap';
 
 export type MDCDialogFocusTrapFactory = (
-  element: HTMLElement | string,
-  userOptions?: createFocusTrap.Options,
+    element: HTMLElement | string,
+    userOptions?: createFocusTrap.Options,
 ) => createFocusTrap.FocusTrap;
 
 export function createFocusTrapInstance(

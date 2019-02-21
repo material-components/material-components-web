@@ -31,12 +31,11 @@ import {MDCTextFieldNativeInputElement} from './types';
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-export interface MDCTextFieldAdapter extends
-  MDCTextFieldRootAdapter,
-  MDCTextFieldInputAdapter,
-  MDCTextFieldLabelAdapter,
-  MDCTextFieldLineRippleAdapter,
-  MDCTextFieldOutlineAdapter {
+export interface MDCTextFieldAdapter extends MDCTextFieldRootAdapter,
+    MDCTextFieldInputAdapter,
+    MDCTextFieldLabelAdapter,
+    MDCTextFieldLineRippleAdapter,
+    MDCTextFieldOutlineAdapter {
 }
 
 export interface MDCTextFieldRootAdapter {

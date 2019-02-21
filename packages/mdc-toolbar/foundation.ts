@@ -169,11 +169,11 @@ export class MDCToolbarFoundation extends MDCFoundation<MDCToolbarAdapter> {
       this.calculations_.toolbarRowHeight = newToolbarRowHeight;
       this.calculations_.toolbarHeight = this.calculations_.toolbarRatio * this.calculations_.toolbarRowHeight;
       this.calculations_.flexibleExpansionHeight =
-        this.calculations_.flexibleExpansionRatio * this.calculations_.toolbarRowHeight;
+          this.calculations_.flexibleExpansionRatio * this.calculations_.toolbarRowHeight;
       this.calculations_.maxTranslateYDistance =
-        this.calculations_.maxTranslateYRatio * this.calculations_.toolbarRowHeight;
+          this.calculations_.maxTranslateYRatio * this.calculations_.toolbarRowHeight;
       this.calculations_.scrollThreshold =
-        this.calculations_.scrollThresholdRatio * this.calculations_.toolbarRowHeight;
+          this.calculations_.scrollThresholdRatio * this.calculations_.toolbarRowHeight;
       this.updateAdjustElementStyles();
       this.updateToolbarStyles_();
     }
@@ -213,15 +213,15 @@ export class MDCToolbarFoundation extends MDCFoundation<MDCToolbarAdapter> {
     this.calculations_.toolbarRatio = this.adapter_.getOffsetHeight() / toolbarRowHeight;
     this.calculations_.flexibleExpansionRatio = firstRowMaxRatio - 1;
     this.calculations_.maxTranslateYRatio =
-      this.isFixedLastRow_ ? this.calculations_.toolbarRatio - firstRowMaxRatio : 0;
+        this.isFixedLastRow_ ? this.calculations_.toolbarRatio - firstRowMaxRatio : 0;
     this.calculations_.scrollThresholdRatio =
-      (this.isFixedLastRow_ ? this.calculations_.toolbarRatio : firstRowMaxRatio) - 1;
+        (this.isFixedLastRow_ ? this.calculations_.toolbarRatio : firstRowMaxRatio) - 1;
   }
 
   private getRowHeight_() {
     const breakpoint = numbers.TOOLBAR_MOBILE_BREAKPOINT;
     return this.adapter_.getViewportWidth() < breakpoint ?
-      numbers.TOOLBAR_ROW_MOBILE_HEIGHT : numbers.TOOLBAR_ROW_HEIGHT;
+        numbers.TOOLBAR_ROW_MOBILE_HEIGHT : numbers.TOOLBAR_ROW_HEIGHT;
   }
 
   private updateToolbarFlexibleState_(flexibleExpansionRatio: number) {
@@ -236,8 +236,8 @@ export class MDCToolbarFoundation extends MDCFoundation<MDCToolbarAdapter> {
 
   private updateToolbarFixedState_(scrollTop: number) {
     const translateDistance = Math.max(0, Math.min(
-      scrollTop - this.calculations_.flexibleExpansionHeight,
-      this.calculations_.maxTranslateYDistance));
+        scrollTop - this.calculations_.flexibleExpansionHeight,
+        this.calculations_.maxTranslateYDistance));
     this.adapter_.setStyle('transform', `translateY(${-translateDistance}px)`);
 
     if (translateDistance === this.calculations_.maxTranslateYDistance) {
@@ -251,7 +251,7 @@ export class MDCToolbarFoundation extends MDCFoundation<MDCToolbarAdapter> {
     if (this.isFixed_) {
       const height = this.calculations_.flexibleExpansionHeight * flexibleExpansionRatio;
       this.adapter_.setStyleForFlexibleRowElement('height',
-        `${height + this.calculations_.toolbarRowHeight}px`);
+          `${height + this.calculations_.toolbarRowHeight}px`);
     }
     if (this.useFlexDefaultBehavior_) {
       this.updateElementStylesDefaultBehavior_(flexibleExpansionRatio);

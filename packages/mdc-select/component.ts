@@ -78,12 +78,12 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
   private validationObserver_!: MutationObserver; // assigned in initialize()
 
   initialize(
-    labelFactory: MDCFloatingLabelFactory = (el) => new MDCFloatingLabel(el),
-    lineRippleFactory: MDCLineRippleFactory = (el) => new MDCLineRipple(el),
-    outlineFactory: MDCNotchedOutlineFactory = (el) => new MDCNotchedOutline(el),
-    menuFactory: MDCMenuFactory = (el) => new MDCMenu(el),
-    iconFactory: MDCSelectIconFactory = (el) => new MDCSelectIcon(el),
-    helperTextFactory: MDCSelectHelperTextFactory = (el) => new MDCSelectHelperText(el),
+      labelFactory: MDCFloatingLabelFactory = (el) => new MDCFloatingLabel(el),
+      lineRippleFactory: MDCLineRippleFactory = (el) => new MDCLineRipple(el),
+      outlineFactory: MDCNotchedOutlineFactory = (el) => new MDCNotchedOutline(el),
+      menuFactory: MDCMenuFactory = (el) => new MDCMenu(el),
+      iconFactory: MDCSelectIconFactory = (el) => new MDCSelectIcon(el),
+      helperTextFactory: MDCSelectHelperTextFactory = (el) => new MDCSelectHelperText(el),
   ) {
     this.nativeControl_ = this.root_.querySelector(strings.NATIVE_CONTROL_SELECTOR);
     this.selectedText_ = this.root_.querySelector(strings.SELECTED_TEXT_SELECTOR);
@@ -91,8 +91,8 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     const targetElement = this.nativeControl_ || this.selectedText_;
     if (!targetElement) {
       throw new Error(
-        'MDCSelect: Missing required element: Exactly one of the following selectors must be present: ' +
-        `'${strings.NATIVE_CONTROL_SELECTOR}' or '${strings.SELECTED_TEXT_SELECTOR}'`,
+          'MDCSelect: Missing required element: Exactly one of the following selectors must be present: ' +
+          `'${strings.NATIVE_CONTROL_SELECTOR}' or '${strings.SELECTED_TEXT_SELECTOR}'`,
       );
     }
 
@@ -200,7 +200,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     this.foundation_.handleChange(/* didChange */ false);
 
     if (this.root_.classList.contains(cssClasses.DISABLED)
-      || (this.nativeControl_ && this.nativeControl_.disabled)) {
+        || (this.nativeControl_ && this.nativeControl_.disabled)) {
       this.disabled = true;
     }
   }
@@ -265,7 +265,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
 
   get disabled(): boolean {
     return this.root_.classList.contains(cssClasses.DISABLED) ||
-      (this.nativeControl_ ? this.nativeControl_.disabled : false);
+        (this.nativeControl_ ? this.nativeControl_.disabled : false);
   }
 
   set disabled(disabled: boolean) {
@@ -381,12 +381,18 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     // tslint:disable:object-literal-sort-keys
     return {
       getValue: () => this.nativeControl_!.value,
-      setValue: (value: string) => { this.nativeControl_!.value = value; },
+      setValue: (value: string) => {
+        this.nativeControl_!.value = value;
+      },
       openMenu: () => undefined,
       closeMenu: () => undefined,
       isMenuOpen: () => false,
-      setSelectedIndex: (index: number) => { this.nativeControl_!.selectedIndex = index; },
-      setDisabled: (isDisabled: boolean) => { this.nativeControl_!.disabled = isDisabled; },
+      setSelectedIndex: (index: number) => {
+        this.nativeControl_!.selectedIndex = index;
+      },
+      setDisabled: (isDisabled: boolean) => {
+        this.nativeControl_!.disabled = isDisabled;
+      },
       setValid: (isValid: boolean) => {
         if (isValid) {
           this.root_.classList.remove(cssClasses.INVALID);
@@ -539,9 +545,9 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
 
   private initialSyncRequiredState_() {
     const isRequired =
-      (this.targetElement_ as HTMLSelectElement).required
-      || this.targetElement_.getAttribute('aria-required') === 'true'
-      || this.root_.classList.contains(cssClasses.REQUIRED);
+        (this.targetElement_ as HTMLSelectElement).required
+        || this.targetElement_.getAttribute('aria-required') === 'true'
+        || this.root_.classList.contains(cssClasses.REQUIRED);
     if (isRequired) {
       if (this.nativeControl_) {
         this.nativeControl_.required = true;
@@ -579,8 +585,8 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
 
     const getAttributesList = (mutationsList: MutationRecord[]): string[] => {
       return mutationsList
-        .map((mutation) => mutation.attributeName)
-        .filter((attributeName) => attributeName) as string[];
+          .map((mutation) => mutation.attributeName)
+          .filter((attributeName) => attributeName) as string[];
     };
     const observer = new MutationObserver((mutationsList) => observerHandler(getAttributesList(mutationsList)));
     observer.observe(this.targetElement_, {attributes: true});

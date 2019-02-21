@@ -29,6 +29,7 @@ import {MDCFoundation} from '@material/base/foundation';
 interface ComponentClass {
   // tslint:disable-next-line:no-any a component can pass in anything it needs to the constructor
   new<F extends MDCFoundation>(root: Element, foundation?: F, ...args: any[]): MDCComponent<F>;
+
   attachTo<F extends MDCFoundation>(root: Element): MDCComponent<F>;
 }
 
@@ -73,7 +74,7 @@ export function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
     const Constructor = registry[ctorName]; // tslint:disable-line:variable-name
     if (typeof Constructor !== 'function') {
       throw new Error(
-        `(mdc-auto-init) Could not find constructor in registry for ${ctorName}`);
+          `(mdc-auto-init) Could not find constructor in registry for ${ctorName}`);
     }
 
     if (Object.getOwnPropertyDescriptor(node, ctorName)) {
@@ -105,8 +106,8 @@ mdcAutoInit.register = function(componentName: string, Constructor: ComponentCla
   }
   if (registry[componentName]) {
     warn(
-      `(mdc-auto-init) Overriding registration for ${componentName} with ${Constructor}. ` +
-      `Was: ${registry[componentName]}`);
+        `(mdc-auto-init) Overriding registration for ${componentName} with ${Constructor}. ` +
+        `Was: ${registry[componentName]}`);
   }
   registry[componentName] = Constructor;
 };

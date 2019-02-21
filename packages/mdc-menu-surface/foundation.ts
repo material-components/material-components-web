@@ -333,9 +333,9 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
 
     const isBottomAligned = this.hasBit_(this.anchorCorner_, CornerBit.BOTTOM);
     const availableTop = isBottomAligned ? viewportDistance.top + anchorSize.height + this.anchorMargin_.bottom
-      : viewportDistance.top + this.anchorMargin_.top;
+        : viewportDistance.top + this.anchorMargin_.top;
     const availableBottom = isBottomAligned ? viewportDistance.bottom - this.anchorMargin_.bottom
-      : viewportDistance.bottom + anchorSize.height - this.anchorMargin_.top;
+        : viewportDistance.bottom + anchorSize.height - this.anchorMargin_.top;
 
     const topOverflow = surfaceSize.height - availableTop;
     const bottomOverflow = surfaceSize.height - availableBottom;
@@ -347,11 +347,11 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
     const isFlipRtl = this.hasBit_(this.anchorCorner_, CornerBit.FLIP_RTL);
     const avoidHorizontalOverlap = this.hasBit_(this.anchorCorner_, CornerBit.RIGHT);
     const isAlignedRight = (avoidHorizontalOverlap && !isRtl) ||
-      (!avoidHorizontalOverlap && isFlipRtl && isRtl);
+        (!avoidHorizontalOverlap && isFlipRtl && isRtl);
     const availableLeft = isAlignedRight ? viewportDistance.left + anchorSize.width + this.anchorMargin_.right :
-      viewportDistance.left + this.anchorMargin_.left;
+        viewportDistance.left + this.anchorMargin_.left;
     const availableRight = isAlignedRight ? viewportDistance.right - this.anchorMargin_.right :
-      viewportDistance.right + anchorSize.width - this.anchorMargin_.left;
+        viewportDistance.right + anchorSize.width - this.anchorMargin_.left;
 
     const leftOverflow = surfaceSize.width - availableLeft;
     const rightOverflow = surfaceSize.width - availableRight;

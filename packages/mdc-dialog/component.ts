@@ -77,15 +77,15 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   private focusTrap_!: FocusTrapLib.FocusTrap; // assigned in initialSyncWithDOM()
   private focusTrapFactory_?: MDCDialogFocusTrapFactory; // assigned in initialize()
 
-  private handleInteraction_!: SpecificEventListener<'click'|'keydown'>; // assigned in initialSyncWithDOM()
+  private handleInteraction_!: SpecificEventListener<'click' | 'keydown'>; // assigned in initialSyncWithDOM()
   private handleDocumentKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
   private handleLayout_!: EventListener; // assigned in initialSyncWithDOM()
   private handleOpening_!: EventListener; // assigned in initialSyncWithDOM()
   private handleClosing_!: () => void; // assigned in initialSyncWithDOM()
 
   initialize(
-    focusTrapFactory?: MDCDialogFocusTrapFactory,
-    initialFocusEl?: HTMLElement,
+      focusTrapFactory?: MDCDialogFocusTrapFactory,
+      initialFocusEl?: HTMLElement,
   ) {
     const container = this.root_.querySelector<HTMLElement>(strings.CONTAINER_SELECTOR);
     if (!container) {

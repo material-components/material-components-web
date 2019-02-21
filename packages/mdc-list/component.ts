@@ -91,13 +91,13 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
 
     // List items need to have at least tabindex=-1 to be focusable.
     [].slice.call(this.root_.querySelectorAll('.mdc-list-item:not([tabindex])'))
-      .forEach((el: Element) => {
-        el.setAttribute('tabindex', '-1');
-      });
+        .forEach((el: Element) => {
+          el.setAttribute('tabindex', '-1');
+        });
 
     // Child button/a elements are not tabbable until the list item is focused.
     [].slice.call(this.root_.querySelectorAll(strings.FOCUSABLE_CHILD_ELEMENTS))
-      .forEach((el: Element) => el.setAttribute('tabindex', '-1'));
+        .forEach((el: Element) => el.setAttribute('tabindex', '-1'));
 
     this.foundation_.layout();
   }
@@ -116,7 +116,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
     if (checkboxListItems.length) {
       const preselectedItems = this.root_.querySelectorAll(strings.ARIA_CHECKED_CHECKBOX_SELECTOR);
       this.selectedIndex =
-        [].map.call(preselectedItems, (listItem: Element) => this.listElements.indexOf(listItem)) as number[];
+          [].map.call(preselectedItems, (listItem: Element) => this.listElements.indexOf(listItem)) as number[];
     } else if (singleSelectedListItem) {
       if (singleSelectedListItem.classList.contains(cssClasses.LIST_ITEM_ACTIVATED_CLASS)) {
         this.foundation_.setUseActivatedClass(true);
@@ -196,7 +196,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
       setTabIndexForListItemChildren: (listItemIndex, tabIndexValue) => {
         const element = this.listElements[listItemIndex];
         const listItemChildren: Element[] =
-          [].slice.call(element.querySelectorAll(strings.CHILD_ELEMENTS_TO_TOGGLE_TABINDEX));
+            [].slice.call(element.querySelectorAll(strings.CHILD_ELEMENTS_TO_TOGGLE_TABINDEX));
         listItemChildren.forEach((el) => el.setAttribute('tabindex', tabIndexValue));
       },
     };

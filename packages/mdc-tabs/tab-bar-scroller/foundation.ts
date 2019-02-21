@@ -162,14 +162,14 @@ export class MDCTabBarScrollerFoundation extends MDCFoundation<MDCTabBarScroller
 
     for (let i = 0; i < this.adapter_.getNumberOfTabs(); i++) {
       const tabOffsetLeftAndWidth =
-        this.adapter_.getComputedLeftForTabAtIndex(i) + this.adapter_.getComputedWidthForTabAtIndex(i);
+          this.adapter_.getComputedLeftForTabAtIndex(i) + this.adapter_.getComputedWidthForTabAtIndex(i);
       let scrollTargetDetermined = tabOffsetLeftAndWidth > scrollFrameOffsetWidth;
 
       if (this.isRTL_()) {
         const frameOffsetAndTabWidth =
-          scrollFrameOffsetWidth - this.adapter_.getComputedWidthForTabAtIndex(i);
+            scrollFrameOffsetWidth - this.adapter_.getComputedWidthForTabAtIndex(i);
         const tabRightOffset =
-          this.adapter_.getOffsetWidthForTabBar() - tabOffsetLeftAndWidth;
+            this.adapter_.getOffsetWidthForTabBar() - tabOffsetLeftAndWidth;
 
         scrollTargetDetermined = tabRightOffset > frameOffsetAndTabWidth;
       }
@@ -194,7 +194,7 @@ export class MDCTabBarScrollerFoundation extends MDCFoundation<MDCTabBarScroller
     const scrollTargetOffsetWidth = this.adapter_.getComputedWidthForTabAtIndex(index);
 
     this.currentTranslateOffset_ =
-      this.normalizeForRTL_(scrollTargetOffsetLeft, scrollTargetOffsetWidth);
+        this.normalizeForRTL_(scrollTargetOffsetLeft, scrollTargetOffsetWidth);
 
     requestAnimationFrame(() => this.shiftFrame_());
   }
@@ -213,7 +213,7 @@ export class MDCTabBarScrollerFoundation extends MDCFoundation<MDCTabBarScroller
 
   private shiftFrame_() {
     const shiftAmount = this.isRTL_() ?
-      this.currentTranslateOffset_ : -this.currentTranslateOffset_;
+        this.currentTranslateOffset_ : -this.currentTranslateOffset_;
 
     this.adapter_.setTransformStyleForTabBar(`translateX(${shiftAmount}px)`);
     this.updateIndicatorEnabledStates_();

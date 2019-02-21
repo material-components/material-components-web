@@ -26,7 +26,7 @@ import {MDCSelectHelperTextAdapter} from './adapter';
 import {MDCSelectHelperTextFoundation} from './foundation';
 
 export type MDCSelectHelperTextFactory =
-  (el: Element, foundation?: MDCSelectHelperTextFoundation) => MDCSelectHelperText;
+    (el: Element, foundation?: MDCSelectHelperTextFoundation) => MDCSelectHelperText;
 
 export class MDCSelectHelperText extends MDCComponent<MDCSelectHelperTextFoundation> {
   static attachTo(root: Element): MDCSelectHelperText {
@@ -47,7 +47,9 @@ export class MDCSelectHelperText extends MDCComponent<MDCSelectHelperTextFoundat
       hasClass: (className) => this.root_.classList.contains(className),
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       removeAttr: (attr) => this.root_.removeAttribute(attr),
-      setContent: (content) => { this.root_.textContent = content; },
+      setContent: (content) => {
+        this.root_.textContent = content;
+      },
     };
     // tslint:enable:object-literal-sort-keys
     return new MDCSelectHelperTextFoundation(adapter);

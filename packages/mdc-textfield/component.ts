@@ -75,13 +75,13 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
   private trailingIcon_!: MDCTextFieldIcon | null; // assigned in initialize()
 
   initialize(
-    rippleFactory: MDCRippleFactory = (el, foundation) => new MDCRipple(el, foundation),
-    lineRippleFactory: MDCLineRippleFactory = (el) => new MDCLineRipple(el),
-    helperTextFactory: MDCTextFieldHelperTextFactory = (el) => new MDCTextFieldHelperText(el),
-    characterCounterFactory: MDCTextFieldCharacterCounterFactory = (el) => new MDCTextFieldCharacterCounter(el),
-    iconFactory: MDCTextFieldIconFactory = (el) => new MDCTextFieldIcon(el),
-    labelFactory: MDCFloatingLabelFactory = (el) => new MDCFloatingLabel(el),
-    outlineFactory: MDCNotchedOutlineFactory = (el) => new MDCNotchedOutline(el),
+      rippleFactory: MDCRippleFactory = (el, foundation) => new MDCRipple(el, foundation),
+      lineRippleFactory: MDCLineRippleFactory = (el) => new MDCLineRipple(el),
+      helperTextFactory: MDCTextFieldHelperTextFactory = (el) => new MDCTextFieldHelperText(el),
+      characterCounterFactory: MDCTextFieldCharacterCounterFactory = (el) => new MDCTextFieldCharacterCounter(el),
+      iconFactory: MDCTextFieldIconFactory = (el) => new MDCTextFieldIcon(el),
+      labelFactory: MDCFloatingLabelFactory = (el) => new MDCFloatingLabel(el),
+      outlineFactory: MDCNotchedOutlineFactory = (el) => new MDCNotchedOutline(el),
   ) {
     this.input_ = this.root_.querySelector<HTMLInputElement>(strings.INPUT_SELECTOR)!;
 
@@ -99,7 +99,7 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
     const nextElementSibling = this.root_.nextElementSibling;
     const hasHelperLine = (nextElementSibling && nextElementSibling.classList.contains(cssClasses.HELPER_LINE));
     const helperTextEl =
-      hasHelperLine && nextElementSibling && nextElementSibling.querySelector(helperTextStrings.ROOT_SELECTOR);
+        hasHelperLine && nextElementSibling && nextElementSibling.querySelector(helperTextStrings.ROOT_SELECTOR);
     this.helperText_ = helperTextEl ? helperTextFactory(helperTextEl) : null;
 
     // Character counter
@@ -365,8 +365,8 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
       registerValidationAttributeChangeHandler: (handler) => {
         const getAttributesList = (mutationsList: MutationRecord[]): string[] => {
           return mutationsList
-            .map((mutation) => mutation.attributeName)
-            .filter((attributeName) => attributeName) as string[];
+              .map((mutation) => mutation.attributeName)
+              .filter((attributeName) => attributeName) as string[];
         };
         const observer = new MutationObserver((mutationsList) => handler(getAttributesList(mutationsList)));
         const config = {attributes: true};

@@ -177,7 +177,7 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
       // TRANSITION_STATE_INDETERMINATE
       default:
         return newState === TRANSITION_STATE_CHECKED ?
-          ANIM_INDETERMINATE_CHECKED : ANIM_INDETERMINATE_UNCHECKED;
+            ANIM_INDETERMINATE_CHECKED : ANIM_INDETERMINATE_UNCHECKED;
     }
   }
 
@@ -185,7 +185,7 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
     // Ensure aria-checked is set to mixed if checkbox is in indeterminate state.
     if (this.adapter_.isIndeterminate()) {
       this.adapter_.setNativeControlAttr(
-        strings.ARIA_CHECKED_ATTR, strings.ARIA_CHECKED_INDETERMINATE_VALUE);
+          strings.ARIA_CHECKED_ATTR, strings.ARIA_CHECKED_INDETERMINATE_VALUE);
     } else {
       // The on/off state does not need to keep track of aria-checked, since
       // the screenreader uses the checked property on the checkbox element.

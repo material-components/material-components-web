@@ -34,7 +34,7 @@ const {NATIVE_CONTROL_SELECTOR} = MDCCheckboxFoundation.strings;
 const CB_PROTO_PROPS = ['checked', 'indeterminate'];
 
 export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation>
-  implements MDCSelectionControl, MDCRippleCapableSurface {
+    implements MDCSelectionControl, MDCRippleCapableSurface {
 
   static attachTo(root: Element) {
     return new MDCCheckbox(root);

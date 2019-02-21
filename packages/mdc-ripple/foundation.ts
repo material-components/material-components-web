@@ -63,15 +63,15 @@ const POINTER_DEACTIVATION_EVENT_TYPES: DeactivationEventType[] = [
 let activatedTargets: Array<EventTarget | null> = [];
 
 export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
-  static get cssClasses(): {[key: string]: string} {
+  static get cssClasses(): { [key: string]: string } {
     return cssClasses;
   }
 
-  static get strings(): {[key: string]: string} {
+  static get strings(): { [key: string]: string } {
     return strings;
   }
 
-  static get numbers(): {[key: string]: number} {
+  static get numbers(): { [key: string]: number } {
     return numbers;
   }
 
@@ -208,12 +208,12 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
 
   handleFocus(): void {
     requestAnimationFrame(() =>
-      this.adapter_.addClass(MDCRippleFoundation.cssClasses.BG_FOCUSED));
+        this.adapter_.addClass(MDCRippleFoundation.cssClasses.BG_FOCUSED));
   }
 
   handleBlur(): void {
     requestAnimationFrame(() =>
-      this.adapter_.removeClass(MDCRippleFoundation.cssClasses.BG_FOCUSED));
+        this.adapter_.removeClass(MDCRippleFoundation.cssClasses.BG_FOCUSED));
   }
 
   /**
@@ -313,11 +313,11 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
     activationState.isProgrammatic = evt === undefined;
     activationState.activationEvent = evt;
     activationState.wasActivatedByPointer = activationState.isProgrammatic ? false : evt !== undefined && (
-      evt.type === 'mousedown' || evt.type === 'touchstart' || evt.type === 'pointerdown'
+        evt.type === 'mousedown' || evt.type === 'touchstart' || evt.type === 'pointerdown'
     );
 
     const hasActivatedChild = evt !== undefined && activatedTargets.length > 0 && activatedTargets.some(
-      (target) => this.adapter_.containsEventTarget(target));
+        (target) => this.adapter_.containsEventTarget(target));
     if (hasActivatedChild) {
       // Immediately reset activation state, while preserving logic that prevents touch follow-on events
       this.resetActivationState_();
@@ -339,8 +339,8 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
       activatedTargets = [];
 
       if (!activationState.wasElementMadeActive
-        && evt !== undefined
-        && ((evt as KeyboardEvent).key === ' ' || (evt as KeyboardEvent).keyCode === 32)) {
+          && evt !== undefined
+          && ((evt as KeyboardEvent).key === ' ' || (evt as KeyboardEvent).keyCode === 32)) {
         // If space was pressed, try again within an rAF call to detect :active, because different UAs report
         // active states inconsistently when they're called within event handling code:
         // - https://bugs.chromium.org/p/chromium/issues/detail?id=635971
@@ -400,9 +400,9 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
     let startPoint;
     if (wasActivatedByPointer) {
       startPoint = getNormalizedEventCoords(
-        activationEvent,
-        this.adapter_.getWindowPageOffset(),
-        this.adapter_.computeBoundingRect(),
+          activationEvent,
+          this.adapter_.getWindowPageOffset(),
+          this.adapter_.computeBoundingRect(),
       );
     } else {
       startPoint = {

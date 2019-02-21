@@ -304,7 +304,7 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
    */
   isValid(): boolean {
     return this.useNativeValidation_
-      ? this.isNativeInputValid_() : this.isValid_;
+        ? this.isNativeInputValid_() : this.isValid_;
   }
 
   /**

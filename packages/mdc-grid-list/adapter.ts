@@ -35,6 +35,6 @@ export interface MDCGridListAdapter {
   getOffsetWidthForTileAtIndex(index: number): number;
   registerResizeHandler(handler: EventListener): void;
   setStyleForTilesElement(
-    property: Exclude<keyof CSSStyleDeclaration, ('length' | 'parentRule')>, value: string | null,
+      property: Exclude<keyof CSSStyleDeclaration, ('length' | 'parentRule')>, value: string | null,
   ): void;
 }

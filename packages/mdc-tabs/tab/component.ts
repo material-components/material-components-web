@@ -89,7 +89,7 @@ export class MDCTab extends MDCComponent<MDCTabFoundation> {
       getOffsetWidth: () => this.root_.offsetWidth,
       getOffsetLeft: () => this.root_.offsetLeft,
       notifySelected: () =>
-        this.emit<MDCTabSelectedEventDetail>(MDCTabFoundation.strings.SELECTED_EVENT, {tab: this}, true),
+          this.emit<MDCTabSelectedEventDetail>(MDCTabFoundation.strings.SELECTED_EVENT, {tab: this}, true),
     };
     // tslint:enable:object-literal-sort-keys
     return new MDCTabFoundation(adapter);

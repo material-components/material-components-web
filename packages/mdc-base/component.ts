@@ -37,10 +37,10 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
   protected foundation_: FoundationType;
 
   constructor(
-    root: Element,
-    foundation?: FoundationType,
-    // tslint:disable-next-line:no-any a component can pass in anything it needs to the constructor
-    ...args: any[]
+      root: Element,
+      foundation?: FoundationType,
+      // tslint:disable-next-line:no-any a component can pass in anything it needs to the constructor
+      ...args: any[]
   ) {
     this.root_ = root;
     this.initialize(...args);
@@ -63,7 +63,7 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
     // Subclasses must override this method to return a properly configured foundation class for the
     // component.
     throw new Error('Subclasses must override getDefaultFoundation to return a properly configured ' +
-      'foundation class');
+        'foundation class');
   }
 
   initialSyncWithDOM() {

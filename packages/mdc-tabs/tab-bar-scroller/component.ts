@@ -46,13 +46,13 @@ export class MDCTabBarScroller extends MDCComponent<MDCTabBarScrollerFoundation>
 
   initialize(tabBarFactory: MDCTabBarFactory = (el) => new MDCTabBar(el)) {
     this.scrollFrame_ =
-      this.root_.querySelector<HTMLElement>(MDCTabBarScrollerFoundation.strings.FRAME_SELECTOR)!;
+        this.root_.querySelector<HTMLElement>(MDCTabBarScrollerFoundation.strings.FRAME_SELECTOR)!;
     this.tabBarEl_ =
-      this.root_.querySelector<HTMLElement>(MDCTabBarScrollerFoundation.strings.TABS_SELECTOR)!;
+        this.root_.querySelector<HTMLElement>(MDCTabBarScrollerFoundation.strings.TABS_SELECTOR)!;
     this.forwardIndicator_ =
-      this.root_.querySelector<HTMLElement>(MDCTabBarScrollerFoundation.strings.INDICATOR_FORWARD_SELECTOR)!;
+        this.root_.querySelector<HTMLElement>(MDCTabBarScrollerFoundation.strings.INDICATOR_FORWARD_SELECTOR)!;
     this.backIndicator_ =
-      this.root_.querySelector<HTMLElement>(MDCTabBarScrollerFoundation.strings.INDICATOR_BACK_SELECTOR)!;
+        this.root_.querySelector<HTMLElement>(MDCTabBarScrollerFoundation.strings.INDICATOR_BACK_SELECTOR)!;
 
     this.tabBar_ = tabBarFactory(this.tabBarEl_);
   }

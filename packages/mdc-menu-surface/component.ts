@@ -176,13 +176,13 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
         }
       },
       isFirstElementFocused: () =>
-        this.firstFocusableElement_ ? this.firstFocusableElement_ === document.activeElement : false,
+          this.firstFocusableElement_ ? this.firstFocusableElement_ === document.activeElement : false,
       isLastElementFocused: () =>
-        this.lastFocusableElement_ ? this.lastFocusableElement_ === document.activeElement : false,
+          this.lastFocusableElement_ ? this.lastFocusableElement_ === document.activeElement : false,
       focusFirstElement: () =>
-        this.firstFocusableElement_ && this.firstFocusableElement_.focus && this.firstFocusableElement_.focus(),
+          this.firstFocusableElement_ && this.firstFocusableElement_.focus && this.firstFocusableElement_.focus(),
       focusLastElement: () =>
-        this.lastFocusableElement_ && this.lastFocusableElement_.focus && this.lastFocusableElement_.focus(),
+          this.lastFocusableElement_ && this.lastFocusableElement_.focus && this.lastFocusableElement_.focus(),
 
       getInnerDimensions: () => {
         return {width: this.root_.offsetWidth, height: this.root_.offsetHeight};

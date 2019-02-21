@@ -80,9 +80,9 @@ export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       bindOnMDCTabSelectedEvent: () =>
-        this.listen(MDCTabFoundation.strings.SELECTED_EVENT, this.tabSelectedHandler_),
+          this.listen(MDCTabFoundation.strings.SELECTED_EVENT, this.tabSelectedHandler_),
       unbindOnMDCTabSelectedEvent: () =>
-        this.unlisten(MDCTabFoundation.strings.SELECTED_EVENT, this.tabSelectedHandler_),
+          this.unlisten(MDCTabFoundation.strings.SELECTED_EVENT, this.tabSelectedHandler_),
       registerResizeHandler: (handler) => window.addEventListener('resize', handler),
       deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
       getOffsetWidth: () => this.root_.offsetWidth,
@@ -112,7 +112,7 @@ export class MDCTabBar extends MDCComponent<MDCTabBarFoundation> {
 
   private gatherTabs_(tabFactory: MDCTabFactory): MDCTab[] {
     const tabElements: HTMLElement[] =
-      [].slice.call(this.root_.querySelectorAll(strings.TAB_SELECTOR));
+        [].slice.call(this.root_.querySelectorAll(strings.TAB_SELECTOR));
     return tabElements.map((el: Element) => tabFactory(el));
   }
 

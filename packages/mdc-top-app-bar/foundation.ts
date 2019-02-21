@@ -57,8 +57,8 @@ export class MDCTopAppBarBaseFoundation extends MDCFoundation<MDCTopAppBarAdapte
       deregisterScrollHandler: () => undefined,
       registerResizeHandler: () => undefined,
       deregisterResizeHandler: () => undefined,
-      getViewportScrollY: () =>  0,
-      getTotalActionItems: () =>  0,
+      getViewportScrollY: () => 0,
+      getTotalActionItems: () => 0,
     };
     // tslint:enable:object-literal-sort-keys
   }

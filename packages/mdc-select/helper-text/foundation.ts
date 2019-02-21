@@ -52,7 +52,7 @@ export class MDCSelectHelperTextFoundation extends MDCFoundation<MDCSelectHelper
 
   constructor(adapter?: Partial<MDCSelectHelperTextAdapter>) {
     super({...MDCSelectHelperTextFoundation.defaultAdapter, ...adapter});
-}
+  }
 
   /**
    * Sets the content of the helper text field.

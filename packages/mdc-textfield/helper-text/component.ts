@@ -26,7 +26,7 @@ import {MDCTextFieldHelperTextAdapter} from './adapter';
 import {MDCTextFieldHelperTextFoundation} from './foundation';
 
 export type MDCTextFieldHelperTextFactory =
-  (el: Element, foundation?: MDCTextFieldHelperTextFoundation) => MDCTextFieldHelperText;
+    (el: Element, foundation?: MDCTextFieldHelperTextFoundation) => MDCTextFieldHelperText;
 
 export class MDCTextFieldHelperText extends MDCComponent<MDCTextFieldHelperTextFoundation> {
   static attachTo(root: Element): MDCTextFieldHelperText {
@@ -47,7 +47,9 @@ export class MDCTextFieldHelperText extends MDCComponent<MDCTextFieldHelperTextF
       hasClass: (className) => this.root_.classList.contains(className),
       setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       removeAttr: (attr) => this.root_.removeAttribute(attr),
-      setContent: (content) => { this.root_.textContent = content; },
+      setContent: (content) => {
+        this.root_.textContent = content;
+      },
     };
     // tslint:enable:object-literal-sort-keys
     return new MDCTextFieldHelperTextFoundation(adapter);

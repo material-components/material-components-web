@@ -69,8 +69,8 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
   private handleTransitionEnd_!: SpecificEventListener<'transitionend'>; // initialized in initialSyncWithDOM()
 
   initialize(
-    focusTrapFactory: MDCDrawerFocusTrapFactory = createFocusTrap as unknown as MDCDrawerFocusTrapFactory,
-    listFactory: MDCListFactory = (el) => new MDCList(el),
+      focusTrapFactory: MDCDrawerFocusTrapFactory = createFocusTrap as unknown as MDCDrawerFocusTrapFactory,
+      listFactory: MDCListFactory = (el) => new MDCList(el),
   ) {
     const listEl = this.root_.querySelector(`.${MDCListFoundation.cssClasses.ROOT}`);
     if (listEl) {
@@ -133,7 +133,7 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
       },
       focusActiveNavigationItem: () => {
         const activeNavItemEl =
-          this.root_.querySelector<HTMLElement>(`.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`);
+            this.root_.querySelector<HTMLElement>(`.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`);
         if (activeNavItemEl) {
           activeNavItemEl.focus();
         }
@@ -152,7 +152,7 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
       return new MDCModalDrawerFoundation(adapter);
     } else {
       throw new Error(
-        `MDCDrawer: Failed to instantiate component. Supported variants are ${DISMISSIBLE} and ${MODAL}.`);
+          `MDCDrawer: Failed to instantiate component. Supported variants are ${DISMISSIBLE} and ${MODAL}.`);
     }
   }
 }
