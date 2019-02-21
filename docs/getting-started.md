@@ -257,8 +257,7 @@ npm install -g typescript # this allows you to run `tsc --init` in a subsequent 
 
 ### Step 4: TypeScript setup
 
-Now we need to setup TypeScript through your `tsconfig.json` file. The easiest way is to use the `TypeScript CLI` known as `tsc`. If you install it globally found in the [Step 3](#step-3-installing-javascript-packages), you can run the follow:
-
+Now we need to setup TypeScript through your `tsconfig.json` file. The easiest way is to use the `TypeScript CLI` known as `tsc`. If you install it globally found in the [Step 3](#step-3-installing-javascript-packages), you can run the following:
 
 ```
 tsc --init
