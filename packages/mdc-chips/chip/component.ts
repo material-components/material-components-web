@@ -26,9 +26,9 @@ import {SpecificEventListener} from '@material/base/types';
 import {
   MDCRipple,
   MDCRippleAdapter,
+  MDCRippleCapableSurface,
   MDCRippleFactory,
   MDCRippleFoundation,
-  RippleCapableSurface,
 } from '@material/ripple/index';
 import {MDCChipAdapter} from './adapter';
 import {strings} from './constants';
@@ -41,7 +41,7 @@ const INTERACTION_EVENTS: InteractionType[] = ['click', 'keydown'];
 
 export type MDCChipFactory = (el: Element, foundation?: MDCChipFoundation) => MDCChip;
 
-export class MDCChip extends MDCComponent<MDCChipFoundation> implements RippleCapableSurface {
+export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippleCapableSurface {
   /**
    * @return Whether the chip is selected.
    */
@@ -82,7 +82,7 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements RippleCa
     return new MDCChip(root);
   }
 
-  // Public visibility for this property is required by RippleCapableSurface.
+  // Public visibility for this property is required by MDCRippleCapableSurface.
   root_!: HTMLElement; // assigned in MDCComponent constructor
 
   private leadingIcon_!: Element | null; // assigned in initialize()

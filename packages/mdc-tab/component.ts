@@ -23,7 +23,7 @@
 
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
-import {MDCRipple, MDCRippleFactory, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
+import {MDCRipple, MDCRippleCapableSurface, MDCRippleFactory, MDCRippleFoundation} from '@material/ripple/index';
 import {MDCTabIndicator, MDCTabIndicatorFactory} from '@material/tab-indicator/index';
 import {MDCTabAdapter} from './adapter';
 import {MDCTabFoundation} from './foundation';
@@ -31,14 +31,14 @@ import {MDCTabDimensions, MDCTabInteractionEventDetail} from './types';
 
 export type MDCTabFactory = (el: Element, foundation?: MDCTabFoundation) => MDCTab;
 
-export class MDCTab extends MDCComponent<MDCTabFoundation> implements RippleCapableSurface {
+export class MDCTab extends MDCComponent<MDCTabFoundation> implements MDCRippleCapableSurface {
   static attachTo(root: Element): MDCTab {
     return new MDCTab(root);
   }
 
   id!: string; // assigned in initialize();
 
-  // Public visibility for this property is required by RippleCapableSurface.
+  // Public visibility for this property is required by MDCRippleCapableSurface.
   root_!: HTMLElement; // assigned in MDCComponent constructor
 
   private ripple_!: MDCRipple; // assigned in initialize();

@@ -22,17 +22,17 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {MDCRipple, MDCRippleAdapter, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
+import {MDCRipple, MDCRippleAdapter, MDCRippleCapableSurface, MDCRippleFoundation} from '@material/ripple/index';
 import {MDCSelectionControl} from '@material/selection-control/index';
 import {MDCRadioAdapter} from './adapter';
 import {MDCRadioFoundation} from './foundation';
 
-export class MDCRadio extends MDCComponent<MDCRadioFoundation> implements RippleCapableSurface, MDCSelectionControl {
+export class MDCRadio extends MDCComponent<MDCRadioFoundation> implements MDCRippleCapableSurface, MDCSelectionControl {
   static attachTo(root: Element) {
     return new MDCRadio(root);
   }
 
-  // Public visibility for this property is required by RippleCapableSurface.
+  // Public visibility for this property is required by MDCRippleCapableSurface.
   root_!: Element; // assigned in MDCComponent constructor
 
   private readonly ripple_: MDCRipple = this.createRipple_();

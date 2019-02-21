@@ -29,7 +29,7 @@ import * as menuSurfaceConstants from '@material/menu-surface/constants';
 import * as menuConstants from '@material/menu/constants';
 import {MDCMenu, MDCMenuFactory, MDCMenuItemEvent} from '@material/menu/index';
 import {MDCNotchedOutline, MDCNotchedOutlineFactory} from '@material/notched-outline/index';
-import {MDCRipple, MDCRippleAdapter, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
+import {MDCRipple, MDCRippleAdapter, MDCRippleCapableSurface, MDCRippleFoundation} from '@material/ripple/index';
 import {MDCSelectAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCSelectFoundation} from './foundation';
@@ -42,12 +42,12 @@ type PointerEventType = 'mousedown' | 'touchstart';
 const POINTER_EVENTS: PointerEventType[] = ['mousedown', 'touchstart'];
 const VALIDATION_ATTR_WHITELIST = ['required', 'aria-required'];
 
-export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements RippleCapableSurface {
+export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCRippleCapableSurface {
   static attachTo(root: Element): MDCSelect {
     return new MDCSelect(root);
   }
 
-  // Public visibility for this property is required by RippleCapableSurface.
+  // Public visibility for this property is required by MDCRippleCapableSurface.
   root_!: HTMLElement; // assigned in MDCComponent constructor
 
   private menu_!: MDCMenu | null; // assigned in enhancedSelectSetup_()

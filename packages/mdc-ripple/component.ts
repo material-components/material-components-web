@@ -25,12 +25,12 @@ import {MDCComponent} from '@material/base/component';
 import {ponyfill} from '@material/dom/index';
 import {MDCRippleAdapter} from './adapter';
 import {MDCRippleFoundation} from './foundation';
-import {MDCRippleAttachOpts, RippleCapableSurface} from './types';
+import {MDCRippleAttachOpts, MDCRippleCapableSurface} from './types';
 import * as util from './util';
 
 export type MDCRippleFactory = (el: Element, foundation?: MDCRippleFoundation) => MDCRipple;
 
-export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements RippleCapableSurface {
+export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements MDCRippleCapableSurface {
   static attachTo(root: Element, opts: MDCRippleAttachOpts = {isUnbounded: undefined}): MDCRipple {
     const ripple = new MDCRipple(root);
     // Only override unbounded behavior if option is explicitly specified
@@ -40,7 +40,7 @@ export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements Ripp
     return ripple;
   }
 
-  static createAdapter(instance: RippleCapableSurface): MDCRippleAdapter {
+  static createAdapter(instance: MDCRippleCapableSurface): MDCRippleAdapter {
     return {
       addClass: (className) => instance.root_.classList.add(className),
       browserSupportsCssVars: () => util.supportsCssVariables(window),
@@ -65,7 +65,7 @@ export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements Ripp
     };
   }
 
-  // Public visibility for this property is required by RippleCapableSurface.
+  // Public visibility for this property is required by MDCRippleCapableSurface.
   root_!: Element; // assigned in MDCComponent constructor
 
   disabled = false;

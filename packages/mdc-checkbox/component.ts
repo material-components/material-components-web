@@ -24,7 +24,7 @@
 import {getCorrectEventName} from '@material/animation/util';
 import {MDCComponent} from '@material/base/component';
 import {ponyfill} from '@material/dom/index';
-import {MDCRipple, MDCRippleAdapter, MDCRippleFoundation, RippleCapableSurface} from '@material/ripple/index';
+import {MDCRipple, MDCRippleAdapter, MDCRippleCapableSurface, MDCRippleFoundation} from '@material/ripple/index';
 import {MDCSelectionControl} from '@material/selection-control/types';
 import {MDCCheckboxAdapter} from './adapter';
 import {MDCCheckboxFoundation} from './foundation';
@@ -34,7 +34,7 @@ const {NATIVE_CONTROL_SELECTOR} = MDCCheckboxFoundation.strings;
 const CB_PROTO_PROPS = ['checked', 'indeterminate'];
 
 export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation>
-  implements MDCSelectionControl, RippleCapableSurface {
+  implements MDCSelectionControl, MDCRippleCapableSurface {
 
   static attachTo(root: Element) {
     return new MDCCheckbox(root);
@@ -51,7 +51,7 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation>
     return cbEl;
   }
 
-  // Public visibility for this property is required by RippleCapableSurface.
+  // Public visibility for this property is required by MDCRippleCapableSurface.
   root_!: Element; // assigned in MDCComponent constructor
 
   private readonly ripple_: MDCRipple = this.createRipple_();

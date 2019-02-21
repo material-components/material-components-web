@@ -29,7 +29,7 @@ import {MDCNotchedOutline, MDCNotchedOutlineFactory} from '@material/notched-out
 import {MDCRippleAdapter} from '@material/ripple/adapter';
 import {MDCRipple, MDCRippleFactory} from '@material/ripple/component';
 import {MDCRippleFoundation} from '@material/ripple/foundation';
-import {RippleCapableSurface} from '@material/ripple/types';
+import {MDCRippleCapableSurface} from '@material/ripple/types';
 import {
   MDCTextFieldAdapter,
   MDCTextFieldInputAdapter,
@@ -53,12 +53,12 @@ import {
 import {MDCTextFieldIcon, MDCTextFieldIconFactory} from './icon/index';
 import {MDCTextFieldFoundationMap} from './types';
 
-export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements RippleCapableSurface {
+export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements MDCRippleCapableSurface {
   static attachTo(root: Element): MDCTextField {
     return new MDCTextField(root);
   }
 
-  // Public visibility for these properties is required by RippleCapableSurface.
+  // Public visibility for these properties is required by MDCRippleCapableSurface.
   root_!: HTMLElement; // assigned in MDCComponent constructor
   ripple!: MDCRipple | null; // assigned in initialize()
 
