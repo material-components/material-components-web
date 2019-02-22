@@ -31,7 +31,7 @@ we've only implemented a vanilla JavaScript version of the Adapter.
 
 ### TypeScript
 
-MDC Web has built our components using TypeScript to increase developer communication and spped. It's proven to catch bugs before releasing new versions of our components, and provides another layer of safety via types. TypeScript helps the Open Source Contributors and maintainers alike with adding features and fixing bugs.
+MDC Web components are built using TypeScript to increase developer communication and spped. It's proven to catch bugs before releasing new versions of our components, and provides another layer of safety via types. TypeScript helps the Open Source Contributors and maintainers alike with adding features and fixing bugs.
 
 ### Foundation
 
