@@ -111,4 +111,5 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
   }
 }
 
+// tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
 export default MDCLinearProgressFoundation;
