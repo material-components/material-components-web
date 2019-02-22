@@ -164,20 +164,17 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
     } = MDCCheckboxFoundation.cssClasses;
 
     switch (oldState) {
-      // tslint:disable-next-line:ban-ts-ignore This method was ported from JS, which already had the fallthrough.
-      // @ts-ignore:no-switch-case-fall-through Intentional fallthrough for backward compatibility.
       case TRANSITION_STATE_INIT:
         if (newState === TRANSITION_STATE_UNCHECKED) {
           return '';
         }
-        // Fallthrough to default
+        return newState === TRANSITION_STATE_CHECKED ? ANIM_INDETERMINATE_CHECKED : ANIM_INDETERMINATE_UNCHECKED;
       case TRANSITION_STATE_UNCHECKED:
         return newState === TRANSITION_STATE_CHECKED ? ANIM_UNCHECKED_CHECKED : ANIM_UNCHECKED_INDETERMINATE;
       case TRANSITION_STATE_CHECKED:
         return newState === TRANSITION_STATE_UNCHECKED ? ANIM_CHECKED_UNCHECKED : ANIM_CHECKED_INDETERMINATE;
       default: // TRANSITION_STATE_INDETERMINATE
-        return newState === TRANSITION_STATE_CHECKED ?
-            ANIM_INDETERMINATE_CHECKED : ANIM_INDETERMINATE_UNCHECKED;
+        return newState === TRANSITION_STATE_CHECKED ? ANIM_INDETERMINATE_CHECKED : ANIM_INDETERMINATE_UNCHECKED;
     }
   }
 

@@ -4,6 +4,7 @@
     "gts/tslint.json"
   ],
   "rules": {
+    "ban-ts-ignore": true,
     "no-default-export": false,
     "quotemark": [true, "single"],
     "eofline": true

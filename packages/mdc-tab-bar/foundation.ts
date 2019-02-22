@@ -26,11 +26,7 @@ import {MDCTabDimensions, MDCTabInteractionEvent} from '@material/tab/types';
 import {MDCTabBarAdapter} from './adapter';
 import {numbers, strings} from './constants';
 
-// tslint:disable:no-inferrable-new-expression Keep explicit generic param for
-// better readability and sanity checking.
-const ACCEPTABLE_KEYS: Set<string> = new Set();
-// tslint:enable:no-inferrable-new-expression
-
+const ACCEPTABLE_KEYS = new Set<string>();
 // IE11 has no support for new Set with iterable so we need to initialize this by hand
 ACCEPTABLE_KEYS.add(strings.ARROW_LEFT_KEY);
 ACCEPTABLE_KEYS.add(strings.ARROW_RIGHT_KEY);
@@ -39,11 +35,7 @@ ACCEPTABLE_KEYS.add(strings.HOME_KEY);
 ACCEPTABLE_KEYS.add(strings.ENTER_KEY);
 ACCEPTABLE_KEYS.add(strings.SPACE_KEY);
 
-// tslint:disable:no-inferrable-new-expression Keep explicit generic param for
-// better readability and sanity checking.
-const KEYCODE_MAP: Map<number, string> = new Map();
-// tslint:enable:no-inferrable-new-expression
-
+const KEYCODE_MAP = new Map<number, string>();
 // IE11 has no support for new Map with iterable so we need to initialize this by hand
 KEYCODE_MAP.set(numbers.ARROW_LEFT_KEYCODE, strings.ARROW_LEFT_KEY);
 KEYCODE_MAP.set(numbers.ARROW_RIGHT_KEYCODE, strings.ARROW_RIGHT_KEY);
