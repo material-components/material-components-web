@@ -135,6 +135,11 @@ async function attemptCherryPicks(tag, list) {
       if (e.message.includes(CONFLICT_MESSAGE)) {
         results.conflicted.push(logLine);
         await simpleGit.raw(['cherry-pick', '--abort']);
+      } else if (e.message.includes('is a merge')) {
+        const logCommand = `\`git log --oneline --graph ${logLine.hash}\``;
+        console.warn(`Merge commit found! Run ${logCommand} and take note of commits on each parent,`);
+        console.warn('then compare to your detached history afterwards to ensure no commits of interest were skipped.');
+        results.skipped.push(logLine);
       } else {
         console.error(`${logLine.hash} unexpected failure!`, e);
       }
