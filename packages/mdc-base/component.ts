@@ -118,6 +118,6 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
   }
 }
 
-// tslint:disable-next-line:no-default-export Needed for backward compatibility
-// with MDC Web v0.44.0 and earlier.
+// tslint:disable:no-default-export Needed for backward compatibility with
+// MDC Web v0.44.0 and earlier.
 export default MDCComponent;
