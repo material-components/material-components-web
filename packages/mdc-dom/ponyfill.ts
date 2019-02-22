@@ -26,7 +26,6 @@
  * This makes ponyfills safer than traditional polyfills, especially for libraries like MDC.
  */
 
-export function closest<T extends Element>(element: Element, selector: string): T | null;
 export function closest(element: Element, selector: string): Element | null {
   if (element.closest) {
     return element.closest(selector);
