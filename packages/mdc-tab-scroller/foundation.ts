@@ -184,7 +184,8 @@ export class MDCTabScrollerFoundation extends MDCFoundation<MDCTabScrollerAdapte
 
     const matrixParams = match[1];
 
-    // @ts-ignore
+    // tslint:disable-next-line:ban-ts-ignore The @ts-ignore comment below disables a compiler warning (not an error).
+    // @ts-ignore These unused variables should retain their semantic names for clarity.
     const [a, b, c, d, tx, ty] = matrixParams.split(',');
 
     return parseFloat(tx); // tslint:disable-line:ban
