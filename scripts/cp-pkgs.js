@@ -109,7 +109,7 @@ function dtsBundler() {
   });
 }
 
-function getDeclarationDirectory(asset, assetPkg) {
+function getDeclarationFileName(asset, assetPkg) {
   const packageName = path.parse(asset).name.replace(/^mdc-|\.d$/g, '');
   const isAllInOne = packageName === ALL_IN_ONE_PACKAGE;
   const destFileName = isAllInOne ? packageName : `mdc.${toCamelCase(packageName)}`;
@@ -122,7 +122,7 @@ function cpDeclarationAsset(asset) {
     Promise.reject(new Error(`Non-existent asset package path ${assetPkg} for ${asset}`));
   }
 
-  const destDir = getDeclarationDirectory(asset, assetPkg);
+  const destDir = getDeclarationFileName(asset, assetPkg);
   return cpFile(asset, destDir).then(
     () => console.log(`cp ${asset} -> ${destDir}`),
     (err) => {throw err;}
