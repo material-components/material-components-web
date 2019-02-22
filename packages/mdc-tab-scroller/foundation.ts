@@ -184,7 +184,8 @@ export class MDCTabScrollerFoundation extends MDCFoundation<MDCTabScrollerAdapte
 
     const matrixParams = match[1];
 
-    // @ts-ignore
+    // tslint:disable-next-line:ban-ts-ignore "Unused vars" should be a linter warning, not a compiler error.
+    // @ts-ignore These unused variables should retain their semantic names for clarity.
     const [a, b, c, d, tx, ty] = matrixParams.split(',');
 
     return parseFloat(tx); // tslint:disable-line:ban
@@ -366,4 +367,5 @@ export class MDCTabScrollerFoundation extends MDCFoundation<MDCTabScrollerAdapte
   }
 }
 
+// tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
 export default MDCTabScrollerFoundation;

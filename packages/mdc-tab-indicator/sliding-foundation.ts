@@ -56,4 +56,5 @@ export class MDCSlidingTabIndicatorFoundation extends MDCTabIndicatorFoundation 
   }
 }
 
+// tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
 export default MDCSlidingTabIndicatorFoundation;

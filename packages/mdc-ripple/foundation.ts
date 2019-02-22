@@ -527,4 +527,5 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
   }
 }
 
+// tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
 export default MDCRippleFoundation;
