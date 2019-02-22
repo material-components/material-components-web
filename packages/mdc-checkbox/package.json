@@ -20,7 +20,6 @@
     "@material/feature-targeting": "^0.44.1",
     "@material/ripple": "^0.44.1",
     "@material/rtl": "^0.42.0",
-    "@material/selection-control": "^0.44.1",
     "@material/theme": "^0.43.0"
   }
 }

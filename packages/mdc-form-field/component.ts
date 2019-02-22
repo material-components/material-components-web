@@ -22,22 +22,26 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {MDCSelectionControl} from '@material/selection-control/types';
+import {MDCRipple} from '@material/ripple/component';
 import {MDCFormFieldAdapter} from './adapter';
 import {MDCFormFieldFoundation} from './foundation';
+
+export interface MDCFormFieldInput {
+  readonly ripple: MDCRipple | undefined;
+}
 
 export class MDCFormField extends MDCComponent<MDCFormFieldFoundation> {
   static attachTo(root: HTMLElement) {
     return new MDCFormField(root);
   }
 
-  private input_?: MDCSelectionControl;
+  private input_?: MDCFormFieldInput;
 
-  set input(input: MDCSelectionControl | undefined) {
+  set input(input: MDCFormFieldInput | undefined) {
     this.input_ = input;
   }
 
-  get input(): MDCSelectionControl | undefined {
+  get input(): MDCFormFieldInput | undefined {
     return this.input_;
   }
 
