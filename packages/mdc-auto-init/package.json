@@ -12,6 +12,7 @@
     "url": "https://github.com/material-components/material-components-web.git"
   },
   "dependencies": {
-    "@material/base": "^0.41.0"
+    "@material/base": "^0.41.0",
+    "tslib": "^1.9.3"
   }
 }

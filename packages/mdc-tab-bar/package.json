@@ -21,7 +21,8 @@
     "@material/base": "^0.41.0",
     "@material/elevation": "^0.44.1",
     "@material/tab": "^0.44.1",
-    "@material/tab-scroller": "^0.44.1"
+    "@material/tab-scroller": "^0.44.1",
+    "tslib": "^1.9.3"
   },
   "publishConfig": {
     "access": "public"

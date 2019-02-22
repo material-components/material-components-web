@@ -125,7 +125,9 @@ function cpDeclarationAsset(asset) {
   const destDir = getDeclarationFileName(asset, assetPkg);
   return cpFile(asset, destDir).then(
     () => console.log(`cp ${asset} -> ${destDir}`),
-    (err) => {throw err;}
+    (err) => {
+      throw err;
+    }
   );
 }
 

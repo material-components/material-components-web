@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "build": "npm run clean && mkdirp build && webpack --progress --colors",
-    "build:esmodules": "node ./scripts/build/esmodule-builder.js",
+    "build:esmodules": "$(npm bin)/tsc --project ./tsconfig.json --module esnext",
     "build:demos": "npm run clean && mkdirp build && webpack --config=demos/webpack.config.js --progress --colors",
     "build:min": "mkdirp build && cross-env MDC_ENV=production webpack -p --progress --colors",
     "changelog": "standard-changelog -i CHANGELOG.md -k packages/material-components-web/package.json",
@@ -21,7 +21,7 @@
     "lint:ts": "tslint --exclude \"**/*.d.ts\" \"packages/**/*.ts\" \"test/**/*.ts\" \"scripts/**/*.ts\"",
     "lint:html": "find test/screenshot/spec/ -name '*.html' | grep -v 'index.html$' | xargs htmllint",
     "lint:imports": "node scripts/check-imports.js",
-    "lint": "npm run clean && npm-run-all --parallel lint:*",
+    "lint": "npm-run-all --parallel lint:*",
     "postinstall": "lerna bootstrap",
     "pretest": "npm run lint",
     "test": "npm run test:unit && npm run test:dependency && npm run build && npm run clean",

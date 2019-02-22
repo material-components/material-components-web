@@ -20,7 +20,8 @@
     "@material/base": "^0.41.0",
     "@material/rtl": "^0.42.0",
     "@material/theme": "^0.43.0",
-    "@material/typography": "^0.44.1"
+    "@material/typography": "^0.44.1",
+    "tslib": "^1.9.3"
   },
   "publishConfig": {
     "access": "public"
