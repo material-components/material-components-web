@@ -31,7 +31,7 @@ import {cssClasses, strings} from './constants';
  * See architecture documentation for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-class MDCSwitchFoundation extends MDCFoundation<MDCSwitchAdapter> {
+export class MDCSwitchFoundation extends MDCFoundation<MDCSwitchAdapter> {
   /** The string constants used by the switch. */
   static get strings() {
     return strings;
@@ -88,4 +88,4 @@ class MDCSwitchFoundation extends MDCFoundation<MDCSwitchAdapter> {
   }
 }
 
-export {MDCSwitchFoundation as default, MDCSwitchFoundation};
+export default MDCSwitchFoundation;

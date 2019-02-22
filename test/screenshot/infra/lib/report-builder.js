@@ -996,20 +996,7 @@ class ReportBuilder {
   logRunParameters_(verb, screenshots) {
     const count = screenshots.length;
     const plural = count === 1 ? '' : 's:';
-
     console.log(`${verb} ${count} screenshot${plural}`);
-    if (count > 0) {
-      for (const screenshot of screenshots) {
-        const htmlFile = screenshot.actual_html_file || screenshot.expected_html_file;
-        const publicUrl = this.analytics_.getUrl({
-          url: htmlFile.public_url,
-          source: 'cli',
-          medium: 'inventory',
-        });
-        console.log(`  - ${this.cli_.colorizeUrl(publicUrl)} > ${screenshot.user_agent.alias}`);
-      }
-    }
-    console.log();
   }
 }
 

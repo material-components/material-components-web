@@ -21,15 +21,20 @@
  * THE SOFTWARE.
  */
 
-interface MDCGridListAdapter {
+/**
+ * Defines the shape of the adapter expected by the foundation.
+ * Implement this adapter for your framework of choice to delegate updates to
+ * the component in your framework of choice. See architecture documentation
+ * for more details.
+ * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
+ */
+export interface MDCGridListAdapter {
   deregisterResizeHandler(handler: EventListener): void;
   getNumberOfTiles(): number;
   getOffsetWidth(): number;
   getOffsetWidthForTileAtIndex(index: number): number;
   registerResizeHandler(handler: EventListener): void;
   setStyleForTilesElement(
-    property: Exclude<keyof CSSStyleDeclaration, ('length' | 'parentRule')>, value: string | null,
+      property: Exclude<keyof CSSStyleDeclaration, ('length' | 'parentRule')>, value: string | null,
   ): void;
 }
-
-export {MDCGridListAdapter as default, MDCGridListAdapter};

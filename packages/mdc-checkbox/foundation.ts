@@ -25,7 +25,7 @@ import {MDCFoundation} from '@material/base/foundation';
 import {MDCCheckboxAdapter} from './adapter';
 import {cssClasses, numbers, strings} from './constants';
 
-class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
+export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
@@ -164,20 +164,20 @@ class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
     } = MDCCheckboxFoundation.cssClasses;
 
     switch (oldState) {
-    // @ts-ignore:no-switch-case-fall-through already existing fallthrough
-    case TRANSITION_STATE_INIT:
-      if (newState === TRANSITION_STATE_UNCHECKED) {
-        return '';
-      }
-    // fallthrough
-    case TRANSITION_STATE_UNCHECKED:
-      return newState === TRANSITION_STATE_CHECKED ? ANIM_UNCHECKED_CHECKED : ANIM_UNCHECKED_INDETERMINATE;
-    case TRANSITION_STATE_CHECKED:
-      return newState === TRANSITION_STATE_UNCHECKED ? ANIM_CHECKED_UNCHECKED : ANIM_CHECKED_INDETERMINATE;
-    // TRANSITION_STATE_INDETERMINATE
-    default:
-      return newState === TRANSITION_STATE_CHECKED ?
-        ANIM_INDETERMINATE_CHECKED : ANIM_INDETERMINATE_UNCHECKED;
+      // @ts-ignore:no-switch-case-fall-through already existing fallthrough
+      case TRANSITION_STATE_INIT:
+        if (newState === TRANSITION_STATE_UNCHECKED) {
+          return '';
+        }
+      // fallthrough
+      case TRANSITION_STATE_UNCHECKED:
+        return newState === TRANSITION_STATE_CHECKED ? ANIM_UNCHECKED_CHECKED : ANIM_UNCHECKED_INDETERMINATE;
+      case TRANSITION_STATE_CHECKED:
+        return newState === TRANSITION_STATE_UNCHECKED ? ANIM_CHECKED_UNCHECKED : ANIM_CHECKED_INDETERMINATE;
+      // TRANSITION_STATE_INDETERMINATE
+      default:
+        return newState === TRANSITION_STATE_CHECKED ?
+            ANIM_INDETERMINATE_CHECKED : ANIM_INDETERMINATE_UNCHECKED;
     }
   }
 
@@ -185,7 +185,7 @@ class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
     // Ensure aria-checked is set to mixed if checkbox is in indeterminate state.
     if (this.adapter_.isIndeterminate()) {
       this.adapter_.setNativeControlAttr(
-        strings.ARIA_CHECKED_ATTR, strings.ARIA_CHECKED_INDETERMINATE_VALUE);
+          strings.ARIA_CHECKED_ATTR, strings.ARIA_CHECKED_INDETERMINATE_VALUE);
     } else {
       // The on/off state does not need to keep track of aria-checked, since
       // the screenreader uses the checked property on the checkbox element.
@@ -194,4 +194,4 @@ class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
   }
 }
 
-export {MDCCheckboxFoundation as default, MDCCheckboxFoundation};
+export default MDCCheckboxFoundation;

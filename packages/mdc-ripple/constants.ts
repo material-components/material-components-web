@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-const cssClasses = {
+export const cssClasses = {
   // Ripple is a special case where the "root" component is really a "mixin" of sorts,
   // given that it's an 'upgrade' to an existing component. That being said it is the root
   // CSS class that all other CSS classes derive from.
@@ -32,7 +32,7 @@ const cssClasses = {
   UNBOUNDED: 'mdc-ripple-upgraded--unbounded',
 };
 
-const strings = {
+export const strings = {
   VAR_FG_SCALE: '--mdc-ripple-fg-scale',
   VAR_FG_SIZE: '--mdc-ripple-fg-size',
   VAR_FG_TRANSLATE_END: '--mdc-ripple-fg-translate-end',
@@ -41,12 +41,10 @@ const strings = {
   VAR_TOP: '--mdc-ripple-top',
 };
 
-const numbers = {
+export const numbers = {
   DEACTIVATION_TIMEOUT_MS: 225, // Corresponds to $mdc-ripple-translate-duration (i.e. activation animation duration)
   FG_DEACTIVATION_MS: 150, // Corresponds to $mdc-ripple-fade-out-duration (i.e. deactivation animation duration)
   INITIAL_ORIGIN_SCALE: 0.6,
   PADDING: 10,
   TAP_DELAY_MS: 300, // Delay between touch and simulated mouse events on touch devices
 };
-
-export {cssClasses, strings, numbers};

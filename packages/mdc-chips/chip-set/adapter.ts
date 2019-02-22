@@ -28,7 +28,7 @@
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCChipSetAdapter {
+export interface MDCChipSetAdapter {
   /**
    * @return true if the root element contains the given class name.
    */
@@ -44,5 +44,3 @@ interface MDCChipSetAdapter {
    */
   setSelected(chipId: string, selected: boolean): void;
 }
-
-export {MDCChipSetAdapter as default, MDCChipSetAdapter};

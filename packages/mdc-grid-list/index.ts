@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2016 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,34 +21,6 @@
  * THE SOFTWARE.
  */
 
-import {MDCComponent} from '@material/base/component';
-import {MDCGridListFoundation} from './foundation';
-
-class MDCGridList extends MDCComponent<MDCGridListFoundation> {
-  static attachTo(root: Element) {
-    return new MDCGridList(root);
-  }
-
-  getDefaultFoundation() {
-    return new MDCGridListFoundation({
-      deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
-      getNumberOfTiles: () => {
-        return this.root_.querySelectorAll(MDCGridListFoundation.strings.TILE_SELECTOR).length;
-      },
-      getOffsetWidth: () => (this.root_ as HTMLElement).offsetWidth,
-      getOffsetWidthForTileAtIndex: (index) => {
-        const tileEl = this.root_.querySelectorAll<HTMLElement>(MDCGridListFoundation.strings.TILE_SELECTOR)[index];
-        return tileEl.offsetWidth;
-      },
-      registerResizeHandler: (handler) => window.addEventListener('resize', handler),
-      setStyleForTilesElement: (property, value) => {
-        const tilesEl = this.root_.querySelector<HTMLElement>(MDCGridListFoundation.strings.TILES_SELECTOR);
-        tilesEl!.style[property] = value;
-      },
-    });
-  }
-}
-
-export {MDCGridList as default, MDCGridList};
 export * from './adapter';
+export * from './component';
 export * from './foundation';

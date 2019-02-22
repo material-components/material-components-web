@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-const strings = {
+export const strings = {
   CHECKMARK_SELECTOR: '.mdc-chip__checkmark',
   ENTRY_ANIMATION_NAME: 'mdc-chip-entry',
   INTERACTION_EVENT: 'MDCChip:interaction',
@@ -32,7 +32,7 @@ const strings = {
   TRAILING_ICON_SELECTOR: '.mdc-chip__icon--trailing',
 };
 
-const cssClasses = {
+export const cssClasses = {
   CHECKMARK: 'mdc-chip__checkmark',
   CHIP_EXIT: 'mdc-chip--exit',
   HIDDEN_LEADING_ICON: 'mdc-chip__icon--leading-hidden',
@@ -40,5 +40,3 @@ const cssClasses = {
   SELECTED: 'mdc-chip--selected',
   TRAILING_ICON: 'mdc-chip__icon--trailing',
 };
-
-export {cssClasses, strings};

@@ -28,7 +28,7 @@ import {cssClasses, numbers, strings} from './constants';
 const {OPENING, OPEN, CLOSING} = cssClasses;
 const {REASON_ACTION, REASON_DISMISS} = strings;
 
-class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
+export class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
@@ -192,4 +192,4 @@ class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
   }
 }
 
-export {MDCSnackbarFoundation as default, MDCSnackbarFoundation};
+export default MDCSnackbarFoundation;

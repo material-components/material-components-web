@@ -26,7 +26,7 @@ import {MDCTabAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCTabDimensions} from './types';
 
-class MDCTabFoundation extends MDCFoundation<MDCTabAdapter> {
+export class MDCTabFoundation extends MDCFoundation<MDCTabAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
@@ -123,4 +123,4 @@ class MDCTabFoundation extends MDCFoundation<MDCTabAdapter> {
   }
 }
 
-export {MDCTabFoundation as default, MDCTabFoundation};
+export default MDCTabFoundation;

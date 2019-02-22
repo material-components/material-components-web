@@ -21,9 +21,7 @@
  * THE SOFTWARE.
  */
 
-const ROOT = 'mdc-checkbox';
-
-const cssClasses = {
+export const cssClasses = {
   ANIM_CHECKED_INDETERMINATE: 'mdc-checkbox--anim-checked-indeterminate',
   ANIM_CHECKED_UNCHECKED: 'mdc-checkbox--anim-checked-unchecked',
   ANIM_INDETERMINATE_CHECKED: 'mdc-checkbox--anim-indeterminate-checked',
@@ -36,18 +34,16 @@ const cssClasses = {
   UPGRADED: 'mdc-checkbox--upgraded',
 };
 
-const strings = {
+export const strings = {
   ARIA_CHECKED_ATTR: 'aria-checked',
   ARIA_CHECKED_INDETERMINATE_VALUE: 'mixed',
-  NATIVE_CONTROL_SELECTOR: `.${ROOT}__native-control`,
+  NATIVE_CONTROL_SELECTOR: '.mdc-checkbox__native-control',
   TRANSITION_STATE_CHECKED: 'checked',
   TRANSITION_STATE_INDETERMINATE: 'indeterminate',
   TRANSITION_STATE_INIT: 'init',
   TRANSITION_STATE_UNCHECKED: 'unchecked',
 };
 
-const numbers = {
+export const numbers = {
   ANIM_END_LATCH_MS: 250,
 };
-
-export {cssClasses, strings, numbers};

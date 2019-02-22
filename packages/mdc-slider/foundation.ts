@@ -21,9 +21,9 @@
  * THE SOFTWARE.
  */
 
-import {getCorrectEventName, getCorrectPropertyName} from '@material/animation/index';
+import {getCorrectEventName, getCorrectPropertyName} from '@material/animation/util';
 import {MDCFoundation} from '@material/base/foundation';
-import {EventType, SpecificEventListener} from '@material/base/index';
+import {EventType, SpecificEventListener} from '@material/base/types';
 import {MDCSliderAdapter} from './adapter';
 import {cssClasses, numbers, strings} from './constants';
 
@@ -56,7 +56,7 @@ const KEY_IDS = {
   PAGE_UP: 'PageUp',
 };
 
-class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
+export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
@@ -545,4 +545,4 @@ class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   }
 }
 
-export {MDCSliderFoundation as default, MDCSliderFoundation};
+export default MDCSliderFoundation;

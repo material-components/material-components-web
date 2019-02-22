@@ -27,7 +27,7 @@ import td from 'testdouble';
 import {install as installClock} from '../helpers/clock';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
-import MDCToolbarFoundation from '../../../packages/mdc-toolbar/foundation';
+import {MDCToolbarFoundation} from '../../../packages/mdc-toolbar/foundation';
 
 const {cssClasses, numbers} = MDCToolbarFoundation;
 

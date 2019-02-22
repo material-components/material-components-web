@@ -21,25 +21,6 @@
  * THE SOFTWARE.
  */
 
-import {MDCComponent} from '@material/base/component';
-import {MDCTextFieldCharacterCounterFoundation} from './foundation';
-
-class MDCTextFieldCharacterCounter extends MDCComponent<MDCTextFieldCharacterCounterFoundation> {
-  static attachTo(root: Element): MDCTextFieldCharacterCounter {
-    return new MDCTextFieldCharacterCounter(root);
-  }
-
-  get foundation(): MDCTextFieldCharacterCounterFoundation {
-    return this.foundation_;
-  }
-
-  getDefaultFoundation(): MDCTextFieldCharacterCounterFoundation {
-    return new MDCTextFieldCharacterCounterFoundation({
-      setContent: (content) => { this.root_.textContent = content; },
-    });
-  }
-}
-
-export {MDCTextFieldCharacterCounter as default, MDCTextFieldCharacterCounter};
 export * from './adapter';
+export * from './component';
 export * from './foundation';

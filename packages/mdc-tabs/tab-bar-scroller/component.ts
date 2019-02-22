@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {getCorrectPropertyName} from '@material/animation/index';
+import {getCorrectPropertyName} from '@material/animation/util';
 import {MDCComponent} from '@material/base/component';
 import {MDCTabBar, MDCTabBarFactory} from '../tab-bar/index';
 import {MDCTabBarScrollerAdapter} from './adapter';
@@ -46,18 +46,20 @@ export class MDCTabBarScroller extends MDCComponent<MDCTabBarScrollerFoundation>
 
   initialize(tabBarFactory: MDCTabBarFactory = (el) => new MDCTabBar(el)) {
     this.scrollFrame_ =
-      this.root_.querySelector<HTMLElement>(MDCTabBarScrollerFoundation.strings.FRAME_SELECTOR)!;
+        this.root_.querySelector<HTMLElement>(MDCTabBarScrollerFoundation.strings.FRAME_SELECTOR)!;
     this.tabBarEl_ =
-      this.root_.querySelector<HTMLElement>(MDCTabBarScrollerFoundation.strings.TABS_SELECTOR)!;
+        this.root_.querySelector<HTMLElement>(MDCTabBarScrollerFoundation.strings.TABS_SELECTOR)!;
     this.forwardIndicator_ =
-      this.root_.querySelector<HTMLElement>(MDCTabBarScrollerFoundation.strings.INDICATOR_FORWARD_SELECTOR)!;
+        this.root_.querySelector<HTMLElement>(MDCTabBarScrollerFoundation.strings.INDICATOR_FORWARD_SELECTOR)!;
     this.backIndicator_ =
-      this.root_.querySelector<HTMLElement>(MDCTabBarScrollerFoundation.strings.INDICATOR_BACK_SELECTOR)!;
+        this.root_.querySelector<HTMLElement>(MDCTabBarScrollerFoundation.strings.INDICATOR_BACK_SELECTOR)!;
 
     this.tabBar_ = tabBarFactory(this.tabBarEl_);
   }
 
   getDefaultFoundation() {
+    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys
     const adapter: MDCTabBarScrollerAdapter = {
       addClass: (className) => this.root_.classList.add(className),

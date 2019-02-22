@@ -22,7 +22,7 @@
  */
 
 import {SpecificEventListener} from '@material/base/types';
-import {ToolbarEventDetail} from './types';
+import {MDCToolbarEventDetail} from './types';
 
 /**
  * Defines the shape of the adapter expected by the foundation.
@@ -43,11 +43,9 @@ export interface MDCToolbarAdapter {
   getViewportScrollY: () => number;
   getOffsetHeight: () => number;
   getFirstRowElementOffsetHeight: () => number;
-  notifyChange: (evtData: ToolbarEventDetail) => void;
+  notifyChange: (evtData: MDCToolbarEventDetail) => void;
   setStyle: (property: string, value: string) => void;
   setStyleForTitleElement: (property: string, value: string) => void;
   setStyleForFlexibleRowElement: (property: string, value: string) => void;
   setStyleForFixedAdjustElement: (property: string, value: string) => void;
 }
-
-export default MDCToolbarAdapter;

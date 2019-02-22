@@ -28,11 +28,9 @@
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCTextFieldCharacterCounterAdapter {
+export interface MDCTextFieldCharacterCounterAdapter {
   /**
    * Sets the text content of character counter element.
    */
   setContent(content: string): void;
 }
-
-export {MDCTextFieldCharacterCounterAdapter as default, MDCTextFieldCharacterCounterAdapter};

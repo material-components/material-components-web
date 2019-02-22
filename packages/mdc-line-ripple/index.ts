@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,50 +21,6 @@
  * THE SOFTWARE.
  */
 
-import {MDCComponent} from '@material/base/component';
-import {MDCLineRippleFoundation} from './foundation';
-
-class MDCLineRipple extends MDCComponent<MDCLineRippleFoundation> {
-  static attachTo(root: Element): MDCLineRipple {
-    return new MDCLineRipple(root);
-  }
-
-  /**
-   * Activates the line ripple
-   */
-  activate() {
-    this.foundation_.activate();
-  }
-
-  /**
-   * Deactivates the line ripple
-   */
-  deactivate() {
-    this.foundation_.deactivate();
-  }
-
-  /**
-   * Sets the transform origin given a user's click location.
-   * The `rippleCenter` is the x-coordinate of the middle of the ripple.
-   */
-  setRippleCenter(xCoordinate: number) {
-    this.foundation_.setRippleCenter(xCoordinate);
-  }
-
-  getDefaultFoundation(): MDCLineRippleFoundation {
-    // tslint:disable:object-literal-sort-keys
-    return new MDCLineRippleFoundation({
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
-      hasClass: (className) => this.root_.classList.contains(className),
-      setStyle: (propertyName, value) => (this.root_ as HTMLElement).style.setProperty(propertyName, value),
-      registerEventHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
-      deregisterEventHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
-    });
-    // tslint:enable:object-literal-sort-keys
-  }
-}
-
-export {MDCLineRipple as default, MDCLineRipple};
 export * from './adapter';
+export * from './component';
 export * from './foundation';

@@ -28,7 +28,7 @@ import {setupFoundationTest} from '../helpers/setup';
 import {verifyDefaultAdapter, captureHandlers} from '../helpers/foundation';
 import {install as installClock} from '../helpers/clock';
 
-import MDCTabBarFoundation from '../../../packages/mdc-tabs/tab-bar/foundation';
+import {MDCTabBarFoundation} from '../../../packages/mdc-tabs/tab-bar/foundation';
 
 suite('MDCTabBarFoundation');
 

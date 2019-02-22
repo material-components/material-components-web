@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {EventType, SpecificEventListener} from '@material/base/index';
+import {EventType, SpecificEventListener} from '@material/base/types';
 
 /**
  * Defines the shape of the adapter expected by the foundation.
@@ -30,7 +30,7 @@ import {EventType, SpecificEventListener} from '@material/base/index';
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCLineRippleAdapter {
+export interface MDCLineRippleAdapter {
   /**
    * Adds a class to the line ripple element.
    */
@@ -58,5 +58,3 @@ interface MDCLineRippleAdapter {
    */
   deregisterEventHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
 }
-
-export {MDCLineRippleAdapter as default, MDCLineRippleAdapter};

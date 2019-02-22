@@ -25,7 +25,7 @@ import {MDCTopAppBarAdapter} from '../adapter';
 import {cssClasses} from '../constants';
 import {MDCTopAppBarFoundation} from '../standard/foundation';
 
-class MDCFixedTopAppBarFoundation extends MDCTopAppBarFoundation {
+export class MDCFixedTopAppBarFoundation extends MDCTopAppBarFoundation {
   /**
    * State variable for the previous scroll iteration top app bar state
    */
@@ -58,4 +58,4 @@ class MDCFixedTopAppBarFoundation extends MDCTopAppBarFoundation {
   }
 }
 
-export {MDCFixedTopAppBarFoundation as default, MDCFixedTopAppBarFoundation};
+export default MDCFixedTopAppBarFoundation;

@@ -32,7 +32,7 @@ import {
   util,
 } from '../../../packages/mdc-tab-scroller/index';
 
-import MDCTabScrollerRTL from '../../../packages/mdc-tab-scroller/rtl-scroller';
+import {MDCTabScrollerRTL} from '../../../packages/mdc-tab-scroller/rtl-scroller';
 
 const getFixture = () => bel`
   <div class="mdc-tab-scroller">

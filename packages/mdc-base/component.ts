@@ -24,7 +24,7 @@
 import {MDCFoundation} from './foundation';
 import {CustomEventListener, EventType, SpecificEventListener} from './types';
 
-class MDCComponent<FoundationType extends MDCFoundation> {
+export class MDCComponent<FoundationType extends MDCFoundation> {
   static attachTo(root: Element): MDCComponent<MDCFoundation<{}>> {
     // Subclasses which extend MDCBase should provide an attachTo() method that takes a root element and
     // returns an instantiated component with its root set to that element. Also note that in the cases of
@@ -37,10 +37,10 @@ class MDCComponent<FoundationType extends MDCFoundation> {
   protected foundation_: FoundationType;
 
   constructor(
-    root: Element,
-    foundation?: FoundationType,
-    // tslint:disable-next-line:no-any a component can pass in anything it needs to the constructor
-    ...args: any[]
+      root: Element,
+      foundation?: FoundationType,
+      // tslint:disable-next-line:no-any a component can pass in anything it needs to the constructor
+      ...args: any[]
   ) {
     this.root_ = root;
     this.initialize(...args);
@@ -63,7 +63,7 @@ class MDCComponent<FoundationType extends MDCFoundation> {
     // Subclasses must override this method to return a properly configured foundation class for the
     // component.
     throw new Error('Subclasses must override getDefaultFoundation to return a properly configured ' +
-      'foundation class');
+        'foundation class');
   }
 
   initialSyncWithDOM() {
@@ -118,4 +118,4 @@ class MDCComponent<FoundationType extends MDCFoundation> {
   }
 }
 
-export {MDCComponent as default, MDCComponent};
+export default MDCComponent;

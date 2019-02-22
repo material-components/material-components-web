@@ -25,7 +25,7 @@ import {assert} from 'chai';
 import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
-import MDCTextFieldFoundation from '../../../packages/mdc-textfield/foundation';
+import {MDCTextFieldFoundation} from '../../../packages/mdc-textfield/foundation';
 
 const LABEL_WIDTH = 100;
 const {cssClasses, numbers} = MDCTextFieldFoundation;

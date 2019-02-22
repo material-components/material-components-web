@@ -21,10 +21,6 @@
  * THE SOFTWARE.
  */
 
-import {MDCRippleFoundation} from '@material/ripple/foundation';
-import {MDCRipple} from '@material/ripple/index';
-import {MDCTabIndicator} from '@material/tab-indicator/index';
-
 /**
  * MDCTabDimensions provides details about the left and right edges of the Tab
  * root element and the Tab content element. These values are used to determine
@@ -37,11 +33,12 @@ export interface MDCTabDimensions {
   contentRight: number;
 }
 
-export type TabInteractionEvent = CustomEvent<TabInteractionEventDetail>;
-
-export interface TabInteractionEventDetail {
+export interface MDCTabInteractionEventDetail {
   tabId: string;
 }
 
-export type RippleFactory = (el: Element, foundation: MDCRippleFoundation) => MDCRipple;
-export type TabIndicatorFactory = (el: Element) => MDCTabIndicator;
+// Note: CustomEvent<T> is not supported by Closure Compiler.
+
+export interface MDCTabInteractionEvent extends Event {
+  readonly detail: MDCTabInteractionEventDetail;
+}

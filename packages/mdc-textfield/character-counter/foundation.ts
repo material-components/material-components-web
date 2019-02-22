@@ -25,7 +25,7 @@ import {MDCFoundation} from '@material/base/foundation';
 import {MDCTextFieldCharacterCounterAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-class MDCTextFieldCharacterCounterFoundation extends MDCFoundation<MDCTextFieldCharacterCounterAdapter> {
+export class MDCTextFieldCharacterCounterFoundation extends MDCFoundation<MDCTextFieldCharacterCounterAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
@@ -53,4 +53,4 @@ class MDCTextFieldCharacterCounterFoundation extends MDCFoundation<MDCTextFieldC
   }
 }
 
-export {MDCTextFieldCharacterCounterFoundation as default, MDCTextFieldCharacterCounterFoundation};
+export default MDCTextFieldCharacterCounterFoundation;

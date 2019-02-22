@@ -21,14 +21,12 @@
  * THE SOFTWARE.
  */
 
-const cssClasses = {
+export const cssClasses = {
   ICON_BUTTON_ON: 'mdc-icon-button--on',
   ROOT: 'mdc-icon-button',
 };
 
-const strings = {
+export const strings = {
   ARIA_PRESSED: 'aria-pressed',
   CHANGE_EVENT: 'MDCIconButtonToggle:change',
 };
-
-export {cssClasses, strings};

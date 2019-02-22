@@ -21,12 +21,10 @@
  * THE SOFTWARE.
  */
 
-import {MDCList} from '@material/list/index';
-import * as FocusTrapLib from 'focus-trap';
+declare interface Element {
+  msMatchesSelector?: (selector: string) => boolean;
+}
 
-export type FocusTrapFactory = (
-    element: HTMLElement | string,
-    userOptions?: FocusTrapLib.Options,
-) => FocusTrapLib.FocusTrap;
-
-export type ListFactory = (el: Element) => MDCList;
+declare interface Window {
+  CSS: CSS;
+}

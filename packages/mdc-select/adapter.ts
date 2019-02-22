@@ -28,7 +28,7 @@
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-interface MDCSelectAdapter {
+export interface MDCSelectAdapter {
   /**
    * Adds class to root element.
    */
@@ -134,5 +134,3 @@ interface MDCSelectAdapter {
    */
   setValid(isValid: boolean): void;
 }
-
-export {MDCSelectAdapter as default, MDCSelectAdapter};

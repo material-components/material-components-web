@@ -21,33 +21,17 @@
  * THE SOFTWARE.
  */
 
-import {MDCFloatingLabel} from '@material/floating-label/index';
-import {MDCLineRipple} from '@material/line-ripple/index';
-import {MDCNotchedOutline} from '@material/notched-outline/index';
-import {MDCRippleFoundation} from '@material/ripple/foundation';
-import {MDCRipple} from '@material/ripple/index';
 import {MDCTextFieldCharacterCounterFoundation} from './character-counter/foundation';
-import {MDCTextFieldCharacterCounter} from './character-counter/index';
 import {MDCTextFieldHelperTextFoundation} from './helper-text/foundation';
-import {MDCTextFieldHelperText} from './helper-text/index';
 import {MDCTextFieldIconFoundation} from './icon/foundation';
-import {MDCTextFieldIcon} from './icon/index';
 
-export type NativeInputElement = Pick<HTMLInputElement, 'disabled' | 'maxLength' | 'type' | 'value'> & {
+export type MDCTextFieldNativeInputElement = Pick<HTMLInputElement, 'disabled' | 'maxLength' | 'type' | 'value'> & {
   validity: Pick<ValidityState, 'badInput' | 'valid'>;
 };
 
-export interface FoundationMapType {
+export interface MDCTextFieldFoundationMap {
   helperText: MDCTextFieldHelperTextFoundation;
   characterCounter: MDCTextFieldCharacterCounterFoundation;
   leadingIcon: MDCTextFieldIconFoundation;
   trailingIcon: MDCTextFieldIconFoundation;
 }
-
-export type RippleFactory = (el: Element, foundation: MDCRippleFoundation) => MDCRipple;
-export type LineRippleFactory = (el: Element) => MDCLineRipple;
-export type HelperTextFactory = (el: Element) => MDCTextFieldHelperText;
-export type CharacterCounterFactory = (el: Element) => MDCTextFieldCharacterCounter;
-export type IconFactory = (el: Element) => MDCTextFieldIcon;
-export type LabelFactory = (el: Element) => MDCFloatingLabel;
-export type OutlineFactory = (el: Element) => MDCNotchedOutline;

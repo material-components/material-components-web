@@ -26,7 +26,7 @@ import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
-import MDCLineRippleFoundation from '../../../packages/mdc-line-ripple/foundation';
+import {MDCLineRippleFoundation} from '../../../packages/mdc-line-ripple/foundation';
 
 const {cssClasses} = MDCLineRippleFoundation;
 

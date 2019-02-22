@@ -28,7 +28,7 @@ import {setupFoundationTest} from '../helpers/setup';
 import {verifyDefaultAdapter, captureHandlers} from '../helpers/foundation';
 
 import {cssClasses} from '../../../packages/mdc-tabs/tab/constants';
-import MDCTabFoundation from '../../../packages/mdc-tabs/tab/foundation';
+import {MDCTabFoundation} from '../../../packages/mdc-tabs/tab/foundation';
 
 suite('MDCTabFoundation');
 

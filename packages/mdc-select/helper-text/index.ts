@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,32 +21,6 @@
  * THE SOFTWARE.
  */
 
-import {MDCComponent} from '@material/base/component';
-import {MDCSelectHelperTextFoundation} from './foundation';
-
-class MDCSelectHelperText extends MDCComponent<MDCSelectHelperTextFoundation> {
-  static attachTo(root: Element): MDCSelectHelperText {
-    return new MDCSelectHelperText(root);
-  }
-
-  get foundation(): MDCSelectHelperTextFoundation {
-    return this.foundation_;
-  }
-
-  getDefaultFoundation(): MDCSelectHelperTextFoundation {
-    // tslint:disable:object-literal-sort-keys
-    return new MDCSelectHelperTextFoundation({
-      addClass: (className) => this.root_.classList.add(className),
-      removeClass: (className) => this.root_.classList.remove(className),
-      hasClass: (className) => this.root_.classList.contains(className),
-      setAttr: (attr, value) => this.root_.setAttribute(attr, value),
-      removeAttr: (attr) => this.root_.removeAttribute(attr),
-      setContent: (content) => { this.root_.textContent = content; },
-    });
-    // tslint:enable:object-literal-sort-keys
-  }
-}
-
-export {MDCSelectHelperText as default, MDCSelectHelperText};
 export * from './adapter';
+export * from './component';
 export * from './foundation';

@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,34 +21,6 @@
  * THE SOFTWARE.
  */
 
-import {MDCComponent} from '@material/base/component';
-import {MDCSelectIconFoundation} from './foundation';
-
-class MDCSelectIcon extends MDCComponent<MDCSelectIconFoundation> {
-  static attachTo(root: Element): MDCSelectIcon {
-    return new MDCSelectIcon(root);
-  }
-
-  get foundation(): MDCSelectIconFoundation {
-    return this.foundation_;
-  }
-
-  getDefaultFoundation(): MDCSelectIconFoundation {
-    // tslint:disable:object-literal-sort-keys
-    return new MDCSelectIconFoundation({
-      getAttr: (attr) => this.root_.getAttribute(attr),
-      setAttr: (attr, value) => this.root_.setAttribute(attr, value),
-      removeAttr: (attr) => this.root_.removeAttribute(attr),
-      setContent: (content) => { this.root_.textContent = content; },
-      registerInteractionHandler: (evtType, handler) => this.root_.addEventListener(evtType, handler),
-      deregisterInteractionHandler: (evtType, handler) => this.root_.removeEventListener(evtType, handler),
-      notifyIconAction: () => this.emit(
-          MDCSelectIconFoundation.strings.ICON_EVENT, {} /* evtData */, true /* shouldBubble */),
-    });
-    // tslint:enable:object-literal-sort-keys
-  }
-}
-
-export {MDCSelectIcon as default, MDCSelectIcon};
 export * from './adapter';
+export * from './component';
 export * from './foundation';

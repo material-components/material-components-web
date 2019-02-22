@@ -21,8 +21,12 @@
  * THE SOFTWARE.
  */
 
-export interface ToolbarEventDetail {
+export interface MDCToolbarEventDetail {
   flexibleExpansionRatio: number;
 }
 
-export type ToolbarEvent = CustomEvent<ToolbarEventDetail>;
+// Note: CustomEvent<T> is not supported by Closure Compiler.
+
+export interface MDCToolbarEvent extends Event {
+  readonly detail: MDCToolbarEventDetail;
+}

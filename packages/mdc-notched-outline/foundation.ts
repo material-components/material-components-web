@@ -25,7 +25,7 @@ import {MDCFoundation} from '@material/base/foundation';
 import {MDCNotchedOutlineAdapter} from './adapter';
 import {cssClasses, numbers, strings} from './constants';
 
-class MDCNotchedOutlineFoundation extends MDCFoundation<MDCNotchedOutlineAdapter> {
+export class MDCNotchedOutlineFoundation extends MDCFoundation<MDCNotchedOutlineAdapter> {
   static get strings() {
     return strings;
   }
@@ -80,4 +80,4 @@ class MDCNotchedOutlineFoundation extends MDCFoundation<MDCNotchedOutlineAdapter
   }
 }
 
-export {MDCNotchedOutlineFoundation as default, MDCNotchedOutlineFoundation};
+export default MDCNotchedOutlineFoundation;

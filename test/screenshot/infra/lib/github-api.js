@@ -21,8 +21,8 @@
  * THE SOFTWARE.
  */
 
-const VError = require('verror');
-const octokit = require('@octokit/rest');
+const nodeUtil = require('util');
+const Octokit = require('@octokit/rest');
 
 const GitRepo = require('./git-repo');
 const getStackTrace = require('./stacktrace')('GitHubApi');
@@ -43,27 +43,24 @@ class GitHubApi {
 
   constructor() {
     this.gitRepo_ = new GitRepo();
-    this.octokit_ = octokit(this.getAuthToken_());
     this.isTravis_ = process.env.TRAVIS === 'true';
-    this.isAuthenticated_ = false;
+    this.authToken_ = this.getAuth_();
+    this.octokit_ = new Octokit(this.authToken_ ? {auth: this.authToken_} : undefined);
   }
 
   /**
-   * @return {({auth: string}|undefined)}
+   * @return {?string}
    * @private
    */
-  getAuthToken_() {
+  getAuth_() {
     let token;
 
     try {
       token = require('../auth/github.json').api_key.personal_access_token;
+      return `token ${token}`; // https://github.com/octokit/rest.js/issues/1228
     } catch (err) {
-      // Not running on Travis
-      return;
+      return null; // Not running on Travis
     }
-
-    this.isAuthenticated_ = true;
-    return {auth: token};
   }
 
   /**
@@ -73,7 +70,7 @@ class GitHubApi {
    * @return {!Promise<?Github.AnyResponse>}
    */
   async setPullRequestStatus({state, targetUrl, description = undefined}) {
-    if (!this.isTravis_ || !this.isAuthenticated_) {
+    if (!this.isTravis_ || !this.authToken_) {
       return null;
     }
 
@@ -95,7 +92,8 @@ class GitHubApi {
         context: 'screenshot-test/butter-bot',
       });
     } catch (err) {
-      throw new VError(err, `Failed to set commit status:\n${stackTrace}`);
+      this.error_('Failed to set commit status:', stackTrace, err);
+      return null;
     }
   }
 
@@ -105,7 +103,7 @@ class GitHubApi {
    * @return {!Promise<?Github.AnyResponse>}
    */
   async createPullRequestComment({prNumber, comment}) {
-    if (!this.isTravis_ || !this.isAuthenticated_) {
+    if (!this.isTravis_ || !this.authToken_) {
       return null;
     }
 
@@ -120,7 +118,8 @@ class GitHubApi {
         body: comment,
       });
     } catch (err) {
-      throw new VError(err, `Failed to create comment on PR #${prNumber}:\n${stackTrace}`);
+      this.error_(`Failed to create comment on PR #${prNumber}:`, stackTrace, err);
+      return null;
     }
   }
 
@@ -142,7 +141,8 @@ class GitHubApi {
         per_page: 100,
       });
     } catch (err) {
-      throw new VError(err, `Failed to get pull request number for branch "${branch}":\n${stackTrace}`);
+      this.error_(`Failed to get pull request number for branch "${branch}":`, stackTrace, err);
+      return null;
     }
 
     const filteredPRs = allPrsResponse.data.filter((pr) => pr.head.ref === branch);
@@ -153,7 +153,7 @@ class GitHubApi {
 
   /**
    * @param {number} prNumber
-   * @return {!Promise<string>}
+   * @return {!Promise<?string>}
    */
   async getPullRequestBaseBranch(prNumber) {
     let prResponse;
@@ -167,15 +167,31 @@ class GitHubApi {
         number: prNumber,
       });
     } catch (err) {
-      throw new VError(err, `Failed to get the base branch for PR #${prNumber}:\n${stackTrace}`);
+      this.error_(`Failed to get the base branch for PR #${prNumber}:`, stackTrace, err);
+      return null;
     }
 
     if (!prResponse.data) {
       const serialized = JSON.stringify(prResponse, null, 2);
-      throw new Error(`Unable to fetch data for GitHub PR #${prNumber}:\n${serialized}`);
+      this.error_(`Unable to fetch data for GitHub PR #${prNumber}:`, serialized);
+      return null;
     }
 
     return `origin/${prResponse.data.base.ref}`;
+  }
+
+  /**
+   * @param {string} message
+   * @param {string} stackTrace
+   * @param {(Error|string)=} unsafeErr
+   * @private
+   */
+  error_(message, stackTrace, unsafeErr = '') {
+    let redactedError = nodeUtil.inspect(unsafeErr, /* showHidden */ false, /* depth */ 5);
+    while (this.authToken_ && redactedError.indexOf(this.authToken_) > -1) {
+      redactedError = redactedError.replace(this.authToken_, '[REDACTED]');
+    }
+    console.warn(`${message}:\n${stackTrace}\n\n`, redactedError);
   }
 }
 

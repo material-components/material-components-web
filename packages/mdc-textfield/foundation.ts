@@ -24,11 +24,11 @@
 import {MDCFoundation} from '@material/base/foundation';
 import {SpecificEventListener} from '@material/base/types';
 import {MDCTextFieldAdapter} from './adapter';
-import {MDCTextFieldCharacterCounterFoundation} from './character-counter';
+import {MDCTextFieldCharacterCounterFoundation} from './character-counter/foundation';
 import {ALWAYS_FLOAT_TYPES, cssClasses, numbers, strings, VALIDATION_ATTR_WHITELIST} from './constants';
-import {MDCTextFieldHelperTextFoundation} from './helper-text';
-import {MDCTextFieldIconFoundation} from './icon';
-import {FoundationMapType, NativeInputElement} from './types';
+import {MDCTextFieldHelperTextFoundation} from './helper-text/foundation';
+import {MDCTextFieldIconFoundation} from './icon/foundation';
+import {MDCTextFieldFoundationMap, MDCTextFieldNativeInputElement} from './types';
 
 type PointerDownEventType = 'mousedown' | 'touchstart';
 type InteractionEventType = 'click' | 'keydown';
@@ -36,7 +36,7 @@ type InteractionEventType = 'click' | 'keydown';
 const POINTERDOWN_EVENTS: PointerDownEventType[] = ['mousedown', 'touchstart'];
 const INTERACTION_EVENTS: InteractionEventType[] = ['click', 'keydown'];
 
-class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
+export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   static get cssClasses() {
     return cssClasses;
   }
@@ -115,7 +115,7 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
    * @param adapter
    * @param foundationMap Map from subcomponent names to their subfoundations.
    */
-  constructor(adapter?: Partial<MDCTextFieldAdapter>, foundationMap: Partial<FoundationMapType> = {}) {
+  constructor(adapter?: Partial<MDCTextFieldAdapter>, foundationMap: Partial<MDCTextFieldFoundationMap> = {}) {
     super({...MDCTextFieldFoundation.defaultAdapter, ...adapter});
 
     this.helperText_ = foundationMap.helperText;
@@ -304,7 +304,7 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
    */
   isValid(): boolean {
     return this.useNativeValidation_
-      ? this.isNativeInputValid_() : this.isValid_;
+        ? this.isNativeInputValid_() : this.isValid_;
   }
 
   /**
@@ -465,7 +465,7 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   /**
    * @return The native text input element from the host environment, or an object with the same shape for unit tests.
    */
-  private getNativeInput_(): NativeInputElement {
+  private getNativeInput_(): MDCTextFieldNativeInputElement {
     // this.adapter_ may be undefined in foundation unit tests. This happens when testdouble is creating a mock object
     // and invokes the shouldShake/shouldFloat getters (which in turn call getValue(), which calls this method) before
     // init() has been called from the MDCTextField constructor. To work around that issue, we return a dummy object.
@@ -483,4 +483,4 @@ class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   }
 }
 
-export {MDCTextFieldFoundation as default, MDCTextFieldFoundation};
+export default MDCTextFieldFoundation;
