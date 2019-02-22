@@ -733,7 +733,7 @@ class MDCNewComponentFoundation extends MDCFoundation {
 ```
 
 The primary purpose of this is so that our components can interoperate with aspects of Google's
-front-end infrastructure. In addition, it
+front-end infrastructure, such as Closure Stylesheets' [CSS Class Renaming](https://github.com/google/closure-stylesheets#renaming) mechanism.. In addition, it
 provides the added benefit of semantic code, and less magic strings/numbers.
 
 #### Extend components and foundations from mdc-base classes.
