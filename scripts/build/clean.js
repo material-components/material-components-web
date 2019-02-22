@@ -35,14 +35,12 @@ function removeFilesOfType(type) {
   filePaths.forEach((filePath) => {
     fs.unlink(filePath, (err) => {
       if (err) throw err;
-      console.log(`${filePath} was deleted`);
     });
   });
 
   nestedFilePaths.forEach((filePath) => {
     fs.unlink(filePath, (err) => {
       if (err) throw err;
-      console.log(`${filePath} was deleted`);
     });
   });
 }
