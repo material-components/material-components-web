@@ -25,7 +25,6 @@ import {getCorrectEventName} from '@material/animation/util';
 import {MDCComponent} from '@material/base/component';
 import {ponyfill} from '@material/dom/index';
 import {MDCRipple, MDCRippleAdapter, MDCRippleCapableSurface, MDCRippleFoundation} from '@material/ripple/index';
-import {MDCSelectionControl} from '@material/selection-control/types';
 import {MDCCheckboxAdapter} from './adapter';
 import {MDCCheckboxFoundation} from './foundation';
 
@@ -33,8 +32,7 @@ const {NATIVE_CONTROL_SELECTOR} = MDCCheckboxFoundation.strings;
 
 const CB_PROTO_PROPS = ['checked', 'indeterminate'];
 
-export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation>
-    implements MDCSelectionControl, MDCRippleCapableSurface {
+export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements MDCRippleCapableSurface {
 
   static attachTo(root: Element) {
     return new MDCCheckbox(root);
