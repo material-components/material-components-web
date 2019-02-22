@@ -22,8 +22,6 @@ function removeDirectory(directory) {
     if (err) {
       throw err;
     }
-
-    console.log(`deleted ${directory} directory`);
   });
 }
 
