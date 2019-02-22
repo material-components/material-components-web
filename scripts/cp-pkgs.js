@@ -26,17 +26,18 @@
  * dist/ folder.
  */
 
-const path = require('path');
-const fs = require('fs');
 const cpFile = require('cp-file');
+const dts = require('dts-bundle');
+const fs = require('fs');
+const path = require('path');
 const toSlugCase = require('to-slug-case');
 const {spawnSync} = require('child_process');
 const {sync: globSync} = require('glob');
-const {dtsBundler} = require('./build/dts-bundler.js');
 
 const ALL_IN_ONE_PACKAGE = 'material-components-web';
-const PKG_RE = /(?:material\-components\-web)|(?:mdc\.[a-zA-Z\-]+)/;
 const DECLARATION_FILE_PREFIX = 'mdc-';
+const D_TS_DIRECTORY = path.resolve(__dirname, '../build/packages');
+const PKG_RE = /(?:material\-components\-web)|(?:mdc\.[a-zA-Z\-]+)/;
 
 const isValidCwd = (
   path.basename(process.cwd()) === ALL_IN_ONE_PACKAGE &&
@@ -97,41 +98,57 @@ function cpAsset(asset) {
   );
 }
 
+function dtsBundler() {
+  const packageDirectories = fs.readdirSync(D_TS_DIRECTORY);
+  packageDirectories.forEach((packageDirectory) => {
+    const main = path.resolve(D_TS_DIRECTORY, packageDirectory, './index.d.ts');
+    dts.bundle({
+      name: packageDirectory,
+      main,
+    });
+  });
+}
+
+function getDeclarationDirectory(asset, assetPkg) {
+  const packageName = path.parse(asset).name.replace(/^mdc-|\.d$/g, '');
+  const isAllInOne = packageName === ALL_IN_ONE_PACKAGE;
+  const destFileName = isAllInOne ? packageName : `mdc.${toCamelCase(packageName)}`;
+  return path.join(assetPkg, 'dist', `${destFileName}.d.ts`);
+}
+
 function cpDeclarationAsset(asset) {
   const assetPkg = path.parse(asset.split('build/')[1]).dir;
   if (!fs.existsSync(assetPkg)) {
     Promise.reject(new Error(`Non-existent asset package path ${assetPkg} for ${asset}`));
   }
 
-  const packageName = path.parse(asset).name.replace(/^mdc-|\.d$/g, '');
-  const isAllInOne = packageName === ALL_IN_ONE_PACKAGE;
-  const destFileName = isAllInOne ? packageName : `mdc.${toCamelCase(packageName)}`;
-  const destDir = path.join(assetPkg, 'dist', `${destFileName}.d.ts`);
-
+  const destDir = getDeclarationDirectory(asset, assetPkg);
   return cpFile(asset, destDir).then(
     () => console.log(`cp ${asset} -> ${destDir}`),
-    (err) => {
-      throw err;
-    }
+    (err) => {throw err;}
   );
 }
 
-cleanPkgDistDirs();
+function main() {
+  cleanPkgDistDirs();
 
-Promise.all(globSync('build/*.{css,js,map}').map(cpAsset)).catch((err) => {
-  console.error(`Error encountered copying assets: ${err}`);
-  process.exit(1);
-});
+  Promise.all(globSync('build/*.{css,js,map}').map(cpAsset)).catch((err) => {
+    console.error(`Error encountered copying assets: ${err}`);
+    process.exit(1);
+  });
 
-/**
- * this method builds the files that the next lines copy to each package
- */
-dtsBundler();
+  /**
+   * this method builds the files that the next lines copy to each package
+   */
+  dtsBundler();
 
-Promise.all(
-  globSync(`build/packages/**/{${DECLARATION_FILE_PREFIX},${ALL_IN_ONE_PACKAGE}}*.d.ts`)
-    .map(cpDeclarationAsset)
-).catch((err) => {
-  console.error(`Error encountered copying assets: ${err}`);
-  process.exit(1);
-});
+  Promise.all(
+    globSync(`build/packages/**/{${DECLARATION_FILE_PREFIX},${ALL_IN_ONE_PACKAGE}}*.d.ts`)
+      .map(cpDeclarationAsset)
+  ).catch((err) => {
+    console.error(`Error encountered copying assets: ${err}`);
+    process.exit(1);
+  });
+}
+
+main();
