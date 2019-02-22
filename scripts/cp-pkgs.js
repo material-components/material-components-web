@@ -107,7 +107,6 @@ function cpDeclarationAsset(asset) {
   const isAllInOne = packageName === ALL_IN_ONE_PACKAGE;
   const destFileName = isAllInOne ? packageName : `mdc.${toCamelCase(packageName)}`;
   const destDir = path.join(assetPkg, 'dist', `${destFileName}.d.ts`);
-  console.log(destDir);
 
   return cpFile(asset, destDir).then(
     () => console.log(`cp ${asset} -> ${destDir}`),
