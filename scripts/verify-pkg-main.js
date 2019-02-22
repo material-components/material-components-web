@@ -56,22 +56,22 @@ if (invalidMains > 0 || invalidModules > 0 || invalidTypes > 0) {
     console.error(`${invalidModules} incorrect module property values found; please fix.`);
   }
   if (invalidTypes > 0) {
-    console.error(`${invalidTypes} incorrect type property values found; please fix.`);
+    console.error(`${invalidTypes} incorrect types property values found; please fix.`);
   }
 } else {
-  console.log('Success: All packages with main, module, type properties reference valid files under dist!');
+  console.log('Success: All packages with main, module, types properties reference appropriate files!');
 }
 
 function verifyPath(packageInfo, jsonPath, type) {
   const isAtRoot = type === 'module';
   const packageJsonPropPath = path.join(path.dirname(jsonPath), packageInfo[type]);
   let isInvalid = false;
-  if (!isAtRoot && packageJsonPropPath.indexOf('dist') < 0) {
+  if (!isAtRoot && packageJsonPropPath.indexOf('dist') === -1) {
     isInvalid = true;
     console.error(`${jsonPath} ${type} property does not reference a file under dist`);
-  } else if (isAtRoot && packageJsonPropPath.indexOf('dist') > 0) {
+  } else if (isAtRoot && packageJsonPropPath.indexOf('dist') !== -1) {
     isInvalid = true;
-    console.error(`${jsonPath} ${type} property does not reference a file under dist`);
+    console.error(`${jsonPath} ${type} property should not reference a file under dist`);
   }
   if (!fs.existsSync(packageJsonPropPath)) {
     isInvalid = true;
