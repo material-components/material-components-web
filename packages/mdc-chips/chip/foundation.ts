@@ -104,9 +104,12 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       if (checkmarkRect) {
         const rootRect = getRootRect();
         const height = rootRect.height;
-        // The checkmark's width is initially set to 0, so use the checkmark's height as a proxy since the checkmark
-        // should always be square.
-        const width = rootRect.width + checkmarkRect.height;
+        // Checkmark is a square, meaning the client rect's width and height are identical once the animation completes.
+        // However, the checkbox is initially hidden by setting the width to 0.
+        // To account for an initial width of 0, we use the checkbox's height instead (which equals the end-state width)
+        // when adding it to the root client rect's width.
+        const checkmarkWidth = checkmarkRect.height;
+        const width = rootRect.width + checkmarkWidth;
         return {...rootRect, width, height};
       }
     }
