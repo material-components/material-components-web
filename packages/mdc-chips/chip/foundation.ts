@@ -94,19 +94,24 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   }
 
   getDimensions(): ClientRect {
-    const rootRect = this.adapter_.getRootBoundingClientRect();
-    const checkmarkRect = this.adapter_.getCheckmarkBoundingClientRect();
+    const getRootRect = () => this.adapter_.getRootBoundingClientRect();
+    const getCheckmarkRect = () => this.adapter_.getCheckmarkBoundingClientRect();
 
     // When a chip has a checkmark and not a leading icon, the bounding rect changes in size depending on the current
     // size of the checkmark.
-    if (!this.adapter_.hasLeadingIcon() && checkmarkRect !== null) {
-      // The checkmark's width is initially set to 0, so use the checkmark's height as a proxy since the checkmark
-      // should always be square.
-      const width = rootRect.width + checkmarkRect.height;
-      return {...rootRect, width};
-    } else {
-      return rootRect;
+    if (!this.adapter_.hasLeadingIcon()) {
+      const checkmarkRect = getCheckmarkRect();
+      if (checkmarkRect) {
+        const rootRect = getRootRect();
+        const height = rootRect.height;
+        // The checkmark's width is initially set to 0, so use the checkmark's height as a proxy since the checkmark
+        // should always be square.
+        const width = rootRect.width + checkmarkRect.height;
+        return {...rootRect, width, height};
+      }
     }
+
+    return getRootRect();
   }
 
   /**
