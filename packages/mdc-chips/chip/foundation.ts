@@ -94,19 +94,27 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   }
 
   getDimensions(): ClientRect {
-    const rootRect = this.adapter_.getRootBoundingClientRect();
-    const checkmarkRect = this.adapter_.getCheckmarkBoundingClientRect();
+    const getRootRect = () => this.adapter_.getRootBoundingClientRect();
+    const getCheckmarkRect = () => this.adapter_.getCheckmarkBoundingClientRect();
 
     // When a chip has a checkmark and not a leading icon, the bounding rect changes in size depending on the current
     // size of the checkmark.
-    if (!this.adapter_.hasLeadingIcon() && checkmarkRect !== null) {
-      // The checkmark's width is initially set to 0, so use the checkmark's height as a proxy since the checkmark
-      // should always be square.
-      const width = rootRect.width + checkmarkRect.height;
-      return {...rootRect, width};
-    } else {
-      return rootRect;
+    if (!this.adapter_.hasLeadingIcon()) {
+      const checkmarkRect = getCheckmarkRect();
+      if (checkmarkRect) {
+        const rootRect = getRootRect();
+        const height = rootRect.height;
+        // Checkmark is a square, meaning the client rect's width and height are identical once the animation completes.
+        // However, the checkbox is initially hidden by setting the width to 0.
+        // To account for an initial width of 0, we use the checkbox's height instead (which equals the end-state width)
+        // when adding it to the root client rect's width.
+        const checkmarkWidth = checkmarkRect.height;
+        const width = rootRect.width + checkmarkWidth;
+        return {...rootRect, width, height};
+      }
     }
+
+    return getRootRect();
   }
 
   /**
