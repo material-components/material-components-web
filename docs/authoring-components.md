@@ -233,8 +233,10 @@ methods. We can now take these fake methods and transform them into an adapter i
 | SOMEHOW_REMOVE_CLASS(className: string) | removeClass(className: string) |
 | SOMEHOW_UPDATE_TOGGLE_COLOR_TEXT_CONTENT(textContent: string) | setToggleColorTextContent(textContent: string) |
 
-> Note: We have changed our convention of using `registerInteractionHandler` and
-`deregisterInteractionHandler` as adapter methods for adding/removing generic event listeners. Instead please manage events in the component layer. This is because event systems can change from framework/environment (ie. React Synthetic Events).
+> Note: We no longer recommend using `registerInteractionHandler` and
+`deregisterInteractionHandler` as adapter methods for adding/removing generic event listeners. Event handling varies significantly across frameworks
+(e.g., [React Synthetic Events](https://reactjs.org/docs/events.html)),
+so we recommend managing events in the component layer.
 
 ### Refactor your existing code into a foundation
 
@@ -250,13 +252,13 @@ from.
 class RedblueToggleFoundation extends MDCFoundation {
   static get defaultAdapter() {
     return {
-      getAttr: (/* attr: string */) => /* string */ '',
-      setAttr: (/* attr: string, value: string */) => undefined,
-      addClass: (/* className: string */) => undefined,
-      removeClass: (/* className: string */) => undefined,
-      setToggleColorTextContent: (/* textContent: string */) => undefined,
-      registerInteractionHandler: (/* type: string, handler: EventListener */) => undefined,
-      deregisterInteractionHandler: (/* type: string, handler: EventListener */) => undefined
+      getAttr: (attr: string) => '',
+      setAttr: (attr: string, value: string) => undefined,
+      addClass: (className: string) => undefined,
+      removeClass: (className: string) => undefined,
+      setToggleColorTextContent: (textContent: string) => undefined,
+      registerInteractionHandler: (type: string, handler: EventListener) => undefined,
+      deregisterInteractionHandler: (type: string, handler: EventListener) => undefined,
     };
   }
   
@@ -473,9 +475,10 @@ packages
   ├── mdc-component
       ├── README.md # The component's README
       ├── adapter.ts # The adapter interface implemented by the component
-      ├── constants.ts # The component's cssClasses/strings/numbers constants
       ├── foundation.ts # The component's foundation class
-      ├── index.ts # The file that contains the vanilla component class, as well as exports the foundation
+      ├── component.ts # The file that contains the vanilla component class
+      ├── constants.ts # The component's cssClasses/strings/numbers constants
+      ├── index.ts # The file that exports the source files of the package (foundation, component, adapter, constants, etc.)
       ├── mdc-component.scss # The main source file for the component's CSS
       └── package.json # The components package file
 test/unit
@@ -733,7 +736,7 @@ class MDCNewComponentFoundation extends MDCFoundation {
 ```
 
 The primary purpose of this is so that our components can interoperate with aspects of Google's
-front-end infrastructure, such as Closure Stylesheets' [CSS Class Renaming](https://github.com/google/closure-stylesheets#renaming) mechanism.. In addition, it
+front-end infrastructure, such as Closure Stylesheets' [CSS Class Renaming](https://github.com/google/closure-stylesheets#renaming) mechanism. In addition, it
 provides the added benefit of semantic code, and less magic strings/numbers.
 
 #### Extend components and foundations from mdc-base classes.
@@ -758,7 +761,7 @@ Concretely:
 
 #### TypeScript Compatibility
 
-All core MDC Web components must be fully compatible with the [TypeScript](https://www.typescriptlang.org/index.html). We've provided a list of requirements and further explanation of meeting the TypeScript compatibility, as well as
+All core MDC Web components must be fully compatible with strict-mode [TypeScript](https://www.typescriptlang.org/). We've provided a list of requirements and further explanation of meeting the TypeScript compatibility, as well as
 conventions, examples, and common TypeScript patterns you may not be used to, in our [Coding Best Practices](./code/best_practices.md).
 
 ### Testing

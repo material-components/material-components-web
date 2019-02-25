@@ -31,7 +31,10 @@ we've only implemented a vanilla JavaScript version of the Adapter.
 
 ### TypeScript
 
-MDC Web components are built using TypeScript to increase developer communication and spped. It's proven to catch bugs before releasing new versions of our components, and provides another layer of safety via types. TypeScript helps the Open Source Contributors and maintainers alike with adding features and fixing bugs.
+MDC Web components are written in [TypeScript](https://www.typescriptlang.org/)
+to increase developer velocity and reduce errors. Our npm releases include
+UMD and ES2015+ JavaScript bundles, as well as `.d.ts` typing declaration files
+for TypeScript users. See [Importing JS](../importing-js.md) for more information.
 
 ### Foundation
 
