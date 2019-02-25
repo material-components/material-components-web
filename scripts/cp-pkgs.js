@@ -90,7 +90,7 @@ function getAssetEntry(asset) {
 
 /**
  * @param {string} asset filepath relative to the root directory
- * @returns {Promise}
+ * @returns {Promise<void>}
  */
 async function cpAsset(asset) {
   const assetPkg = path.join('packages', getAssetEntry(asset));
@@ -137,7 +137,7 @@ function getDeclarationFileName(asset, assetPkg) {
  * Copies the declaration file from the /build directory to its respective
  * destination directory.
  * @param {string} asset filepath relative to the root directory
- * @returns {Promise}
+ * @returns {Promise<void>}
  */
 async function cpDeclarationAsset(asset) {
   const assetPkg = path.parse(asset.split('build/')[1]).dir;
