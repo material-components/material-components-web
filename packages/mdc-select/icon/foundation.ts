@@ -39,7 +39,7 @@ export class MDCSelectIconFoundation extends MDCFoundation<MDCSelectIconAdapter>
    * See {@link MDCSelectIconAdapter} for typing information on parameters and return types.
    */
   static get defaultAdapter(): MDCSelectIconAdapter {
-    // tslint:disable:object-literal-sort-keys
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       getAttr: () => null,
       setAttr: () => undefined,

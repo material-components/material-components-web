@@ -367,7 +367,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
   private createRipple_(): MDCRipple {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
-    // tslint:disable:object-literal-sort-keys
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCRippleAdapter = {
       ...MDCRipple.createAdapter(this),
       registerInteractionHandler: (evtType, handler) => this.targetElement_.addEventListener(evtType, handler),
@@ -378,7 +378,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
   }
 
   private getNativeSelectAdapterMethods_() {
-    // tslint:disable:object-literal-sort-keys
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       getValue: () => this.nativeControl_!.value,
       setValue: (value: string) => {
@@ -406,7 +406,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
   }
 
   private getEnhancedSelectAdapterMethods_() {
-    // tslint:disable:object-literal-sort-keys
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       getValue: () => {
         const listItem = this.menuElement_!.querySelector(strings.SELECTED_ITEM_SELECTOR);
@@ -463,7 +463,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
   }
 
   private getCommonAdapterMethods_() {
-    // tslint:disable:object-literal-sort-keys
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       addClass: (className: string) => this.root_.classList.add(className),
       removeClass: (className: string) => this.root_.classList.remove(className),
@@ -480,7 +480,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
   }
 
   private getOutlineAdapterMethods_() {
-    // tslint:disable:object-literal-sort-keys
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       hasOutline: () => Boolean(this.outline_),
       notchOutline: (labelWidth: number) => this.outline_ && this.outline_.notch(labelWidth),

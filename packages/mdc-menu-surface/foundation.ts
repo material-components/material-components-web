@@ -56,7 +56,7 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
    * @see {@link MDCMenuSurfaceAdapter} for typing information on parameters and return types.
    */
   static get defaultAdapter(): MDCMenuSurfaceAdapter {
-    // tslint:disable:object-literal-sort-keys
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       addClass: () => undefined,
       removeClass: () => undefined,
@@ -292,9 +292,8 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
     const viewportSize = this.adapter_.getWindowDimensions();
     const windowScroll = this.adapter_.getWindowScroll();
 
-    // tslint:disable:object-literal-sort-keys
-
     if (!anchorRect) {
+      // tslint:disable:object-literal-sort-keys Positional properties are more readable when they're grouped together
       anchorRect = {
         top: this.position_.y,
         right: this.position_.x,
@@ -303,6 +302,7 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
         width: 0,
         height: 0,
       };
+      // tslint:enable:object-literal-sort-keys
     }
 
     return {
@@ -310,16 +310,16 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
       bodySize,
       surfaceSize: this.dimensions_,
       viewportDistance: {
+        // tslint:disable:object-literal-sort-keys Positional properties are more readable when they're grouped together
         top: anchorRect.top,
         right: viewportSize.width - anchorRect.right,
         bottom: viewportSize.height - anchorRect.bottom,
         left: anchorRect.left,
+        // tslint:enable:object-literal-sort-keys
       },
       viewportSize,
       windowScroll,
     };
-
-    // tslint:enable:object-literal-sort-keys
   }
 
   /**

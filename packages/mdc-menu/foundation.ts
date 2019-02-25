@@ -42,7 +42,7 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
    * @see {@link MDCMenuAdapter} for typing information on parameters and return types.
    */
   static get defaultAdapter(): MDCMenuAdapter {
-    // tslint:disable:object-literal-sort-keys
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       addClassToElementAtIndex: () => undefined,
       removeClassFromElementAtIndex: () => undefined,

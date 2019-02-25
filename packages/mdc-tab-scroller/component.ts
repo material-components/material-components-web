@@ -73,7 +73,7 @@ export class MDCTabScroller extends MDCComponent<MDCTabScrollerFoundation> {
   getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
-    // tslint:disable:object-literal-sort-keys
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCTabScrollerAdapter = {
       eventTargetMatchesSelector: (evtTarget, selector) => ponyfill.matches(evtTarget as Element, selector),
       addClass: (className) => this.root_.classList.add(className),

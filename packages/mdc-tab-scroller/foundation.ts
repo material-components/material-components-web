@@ -40,7 +40,7 @@ export class MDCTabScrollerFoundation extends MDCFoundation<MDCTabScrollerAdapte
   }
 
   static get defaultAdapter(): MDCTabScrollerAdapter {
-    // tslint:disable:object-literal-sort-keys
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       eventTargetMatchesSelector: () => false,
       addClass: () => undefined,
