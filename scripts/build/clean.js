@@ -1,5 +1,5 @@
 /**
- * Cleans top-level build directories (for OSS and internal processes),
+ * @fileoverview Cleans top-level build directories (for OSS and internal processes),
  * dist subfolders under packages, and .js[.map] files in package directories.
  */
 
@@ -7,6 +7,10 @@ const {exec} = require('child_process');
 const fs = require('fs');
 
 const {sync: globSync} = require('glob');
+
+if (require.main === module) {
+  main();
+}
 
 function main() {
   removeDirectory('build');
@@ -18,7 +22,7 @@ function main() {
 }
 
 function removeDirectory(directory) {
-  exec(`rm -rf ${directory}`, (err) => {
+  exec(`del-cli ${directory}/ ${directory}`, (err) => {
     if (err) {
       throw err;
     }
@@ -27,16 +31,10 @@ function removeDirectory(directory) {
 
 function removeFilesOfType(type) {
   const fileGlob = `packages/*/*.${type}`;
-  const nestedFileGlob = `packages/*/!(node_modules)/**/*.${type}`;
-  const filePaths = globSync(fileGlob);
-  const nestedFilePaths = globSync(nestedFileGlob);
-  filePaths.forEach((filePath) => {
-    fs.unlink(filePath, (err) => {
-      if (err) throw err;
-    });
+  const filePaths = globSync(fileGlob, {
+    ignore: ['**/node_modules/**'],
   });
-
-  nestedFilePaths.forEach((filePath) => {
+  filePaths.forEach((filePath) => {
     fs.unlink(filePath, (err) => {
       if (err) throw err;
     });

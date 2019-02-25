@@ -39,49 +39,56 @@ let invalidMains = 0;
 let invalidModules = 0;
 let invalidTypes = 0;
 globSync('packages/*/package.json').forEach((jsonPath) => {
-  const packageInfo = JSON.parse(fs.readFileSync(jsonPath));
-  if (!packageInfo.main) {
+  const packageJson = JSON.parse(fs.readFileSync(jsonPath));
+  if (!packageJson.main) {
     return;
   }
-  verifyPath(packageInfo, jsonPath, 'main');
-  verifyPath(packageInfo, jsonPath, 'module');
-  verifyPath(packageInfo, jsonPath, 'types');
+  verifyPath(packageJson, jsonPath, 'main');
+  verifyPath(packageJson, jsonPath, 'module');
+  verifyPath(packageJson, jsonPath, 'types');
 });
 
 if (invalidMains > 0 || invalidModules > 0 || invalidTypes > 0) {
   if (invalidMains > 0) {
-    console.error(`${invalidMains} incorrect main property values found; please fix.`);
+    logErrorAndExit(`${invalidMains} incorrect main property values found; please fix.`);
   }
   if (invalidModules > 0) {
-    console.error(`${invalidModules} incorrect module property values found; please fix.`);
+    logErrorAndExit(`${invalidModules} incorrect module property values found; please fix.`);
   }
   if (invalidTypes > 0) {
-    console.error(`${invalidTypes} incorrect types property values found; please fix.`);
+    logErrorAndExit(`${invalidTypes} incorrect types property values found; please fix.`);
   }
 } else {
   console.log('Success: All packages with main, module, types properties reference appropriate files!');
 }
 
-function verifyPath(packageInfo, jsonPath, type) {
-  const isAtRoot = type === 'module';
-  const packageJsonPropPath = path.join(path.dirname(jsonPath), packageInfo[type]);
+/**
+ * Verifies that a file exists at the `packagePropertyKey`. If it doesnot
+ * this function will console an error.
+ * @param {object} packageJson package.json in JSON format
+ * @param {string} jsonPath filepath (relative to the root directory) to a component's package.json
+ * @param {string} packagePropertyKey property key of package.json
+ */
+function verifyPath(packageJson, jsonPath, packagePropertyKey) {
+  const isAtRoot = packagePropertyKey === 'module';
+  const packageJsonPropPath = path.join(path.dirname(jsonPath), packageJson[packagePropertyKey]);
   let isInvalid = false;
   if (!isAtRoot && packageJsonPropPath.indexOf('dist') === -1) {
     isInvalid = true;
-    console.error(`${jsonPath} ${type} property does not reference a file under dist`);
+    console.error(`${jsonPath} ${packagePropertyKey} property does not reference a file under dist`);
   } else if (isAtRoot && packageJsonPropPath.indexOf('dist') !== -1) {
     isInvalid = true;
-    console.error(`${jsonPath} ${type} property should not reference a file under dist`);
+    console.error(`${jsonPath} ${packagePropertyKey} property should not reference a file under dist`);
   }
   if (!fs.existsSync(packageJsonPropPath)) {
     isInvalid = true;
-    console.error(`${jsonPath} ${type} property points to nonexistent ${packageJsonPropPath}`);
+    console.error(`${jsonPath} ${packagePropertyKey} property points to nonexistent ${packageJsonPropPath}`);
   }
 
   if (isInvalid) {
     // Multiple checks could have failed, but only increment the counter once for one package.
 
-    switch (type) {
+    switch (packagePropertyKey) {
     case 'main':
       invalidMains++;
       break;
@@ -93,4 +100,9 @@ function verifyPath(packageInfo, jsonPath, type) {
       break;
     }
   }
+}
+
+function logErrorAndExit(message) {
+  console.error(message);
+  process.exit(1);
 }

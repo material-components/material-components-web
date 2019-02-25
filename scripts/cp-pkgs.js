@@ -52,18 +52,18 @@ if (!isValidCwd) {
   process.exit(1);
 }
 
-function toCamelCase(name) {
-  const nameParts = name.split('-');
-  if (nameParts.length <= 1) {
-    return name;
-  }
 
-  return nameParts.reduce((finalName, part, index) => {
-    if (index === 0) return part;
-    return finalName + part[0].toUpperCase() + part.slice(1);
-  }, '');
+/**
+ * @param {string} dashedName A dash-separated package name. E.g., "mdc-linear-progress".
+ * @return {string} dashedName converted to camelCase. E.g., "mdcLinearProgress".
+ */
+function toCamelCase(dashedName) {
+  return dashedName.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
 }
 
+/**
+ * Cleans the /dist directory of each package.
+ */
 function cleanPkgDistDirs() {
   const statuses = globSync('packages/*/dist').map(
     (distPath) => spawnSync('rm', ['-r', distPath], {stdio: 'inherit'}).status);
@@ -74,6 +74,10 @@ function cleanPkgDistDirs() {
   }
 }
 
+/**
+ * @param {string} asset filepath relative to the root directory
+ * @returns {string} destination package name
+ */
 function getAssetEntry(asset) {
   const [entryName] = path.parse(asset).name.match(PKG_RE);
   const [MDC, componentName] = entryName.split('.');
@@ -84,10 +88,14 @@ function getAssetEntry(asset) {
   return [MDC, toSlugCase(componentName)].join('-');
 }
 
-function cpAsset(asset) {
+/**
+ * @param {string} asset filepath relative to the root directory
+ * @returns {Promise}
+ */
+async function cpAsset(asset) {
   const assetPkg = path.join('packages', getAssetEntry(asset));
   if (!fs.existsSync(assetPkg)) {
-    Promise.reject(new Error(`Non-existent asset package path ${assetPkg} for ${asset}`));
+    return Promise.reject(new Error(`Non-existent asset package path ${assetPkg} for ${asset}`));
   }
   const destDir = path.join(assetPkg, 'dist', path.basename(asset));
   return cpFile(asset, destDir).then(
@@ -98,6 +106,10 @@ function cpAsset(asset) {
   );
 }
 
+/**
+ * Imports all files in index.d.ts and compiles a bundled .d.ts file for
+ * UMD files.
+ */
 function dtsBundler() {
   const packageDirectories = fs.readdirSync(D_TS_DIRECTORY);
   packageDirectories.forEach((packageDirectory) => {
@@ -109,6 +121,11 @@ function dtsBundler() {
   });
 }
 
+/**
+ * @param {string} asset filepath relative to the root directory
+ * @param {string} assetPkg directory path to destination package
+ * @returns {string} destination filepath for UMD declaration file.
+ */
 function getDeclarationFileName(asset, assetPkg) {
   const packageName = path.parse(asset).name.replace(/^mdc-|\.d$/g, '');
   const isAllInOne = packageName === ALL_IN_ONE_PACKAGE;
@@ -116,10 +133,16 @@ function getDeclarationFileName(asset, assetPkg) {
   return path.join(assetPkg, 'dist', `${destFileName}.d.ts`);
 }
 
-function cpDeclarationAsset(asset) {
+/**
+ * Copies the declaration file from the /build directory to its respective
+ * destination directory.
+ * @param {string} asset filepath relative to the root directory
+ * @returns {Promise}
+ */
+async function cpDeclarationAsset(asset) {
   const assetPkg = path.parse(asset.split('build/')[1]).dir;
   if (!fs.existsSync(assetPkg)) {
-    Promise.reject(new Error(`Non-existent asset package path ${assetPkg} for ${asset}`));
+    return Promise.reject(new Error(`Non-existent asset package path ${assetPkg} for ${asset}`));
   }
 
   const destDir = getDeclarationFileName(asset, assetPkg);
@@ -131,24 +154,28 @@ function cpDeclarationAsset(asset) {
   );
 }
 
+/**
+ * 1. Cleans all /dist directories in each package
+ * 2. Copies generated css, js, and map files to the respective packages
+ * 3. Bundles the declaration files into one file for the UMD index.js file
+ * 4. Copies the generated declaration file from step 3, into the respective pacakge
+ */
 function main() {
   cleanPkgDistDirs();
 
   Promise.all(globSync('build/*.{css,js,map}').map(cpAsset)).catch((err) => {
-    console.error(`Error encountered copying assets: ${err}`);
+    console.error('Error encountered copying assets:', err);
     process.exit(1);
   });
 
-  /**
-   * this method builds the files that the next lines copy to each package
-   */
+  // this method builds the files that the next lines copy to each package
   dtsBundler();
 
   Promise.all(
     globSync(`build/packages/**/{${DECLARATION_FILE_PREFIX},${ALL_IN_ONE_PACKAGE}}*.d.ts`)
       .map(cpDeclarationAsset)
   ).catch((err) => {
-    console.error(`Error encountered copying assets: ${err}`);
+    console.error('Error encountered copying assets:', err);
     process.exit(1);
   });
 }
