@@ -28,8 +28,8 @@ const {sync: globSync} = require('glob');
 const isValidCwd = fs.existsSync('packages') && fs.existsSync(path.join('packages', 'material-components-web', 'dist'));
 
 /**
- * Verifies that a file exists at the `packagePropertyKey`. If it doesnot
- * this function will console an error.
+ * Verifies that a file exists at the `packagePropertyKey`. If it does not
+ * this function will log an error to the console.
  * @param {object} packageJson package.json in JSON format
  * @param {string} jsonPath filepath (relative to the root directory) to a component's package.json
  * @param {string} packagePropertyKey property key of package.json
