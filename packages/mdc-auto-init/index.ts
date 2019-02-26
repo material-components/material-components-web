@@ -26,22 +26,23 @@
 import {MDCComponent} from '@material/base/component';
 import {MDCFoundation} from '@material/base/foundation';
 
-interface ComponentClass {
+export interface MDCComponentClass {
   // tslint:disable-next-line:no-any a component can pass in anything it needs to the constructor
   new<F extends MDCFoundation>(root: Element, foundation?: F, ...args: any[]): MDCComponent<F>;
 
+  // Static method.
   attachTo<F extends MDCFoundation>(root: Element): MDCComponent<F>;
 }
 
-interface Registry {
-  [key: string]: ComponentClass;
+interface InternalComponentRegistry {
+  [key: string]: MDCComponentClass;
 }
 
-const registry: Registry = {};
+const registry: InternalComponentRegistry = {};
 
 const CONSOLE_WARN = console.warn.bind(console); // tslint:disable-line:no-console
 
-function _emit<T extends object>(evtType: string, evtData: T, shouldBubble = false) {
+function emit<T extends object>(evtType: string, evtData: T, shouldBubble = false) {
   let evt;
   if (typeof CustomEvent === 'function') {
     evt = new CustomEvent<T>(evtType, {
@@ -60,7 +61,6 @@ function _emit<T extends object>(evtType: string, evtData: T, shouldBubble = fal
 /**
  * Auto-initializes all MDC components on a page.
  */
-
 export function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
   const components = [];
   const nodes: Element[] = [].slice.call(root.querySelectorAll('[data-mdc-auto-init]'));
@@ -94,20 +94,19 @@ export function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
     components.push(component);
   }
 
-  _emit('MDCAutoInit:End', {});
+  emit('MDCAutoInit:End', {});
   return components;
 }
 
 // Constructor is PascalCased because it is a direct reference to a class, rather than an instance of a class.
 // tslint:disable-next-line:variable-name
-mdcAutoInit.register = function(componentName: string, Constructor: ComponentClass, warn = CONSOLE_WARN) {
+mdcAutoInit.register = function(componentName: string, Constructor: MDCComponentClass, warn = CONSOLE_WARN) {
   if (typeof Constructor !== 'function') {
-    throw new Error(`(mdc-auto-init) Invalid Ctor value ${Constructor}. Expected function`);
+    throw new Error(`(mdc-auto-init) Invalid Constructor value: ${Constructor}. Expected function.`);
   }
-  if (registry[componentName]) {
-    warn(
-        `(mdc-auto-init) Overriding registration for ${componentName} with ${Constructor}. ` +
-        `Was: ${registry[componentName]}`);
+  const registryValue = registry[componentName];
+  if (registryValue) {
+    warn(`(mdc-auto-init) Overriding registration for ${componentName} with ${Constructor}. Was: ${registryValue}`);
   }
   registry[componentName] = Constructor;
 };
