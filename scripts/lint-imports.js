@@ -102,20 +102,44 @@ function checkOneImportPath(importOrExportDeclaration, inputFilePath) {
   const resolvedAbsolutePathWithExt = resolve.sync(importPath, {basedir: inputFileDir, extensions: ['.ts', '.js']});
   const resolvedFileNameWithoutExt = path.parse(resolvedAbsolutePathWithExt).name;
 
-  const isRelativePath = resolvedAbsolutePathWithExt.indexOf('node_modules') === -1;
-  const isMaterialNpm = importPath.startsWith('@material/');
-  const isThirdParty = !isMaterialNpm && !isRelativePath;
+  const isLocalFileImport = resolvedAbsolutePathWithExt.indexOf('node_modules') === -1;
+  const isMaterialNpmImport = importPath.startsWith('@material/');
+  const isThirdPartyImport = !isMaterialNpmImport && !isLocalFileImport;
 
-  // Ignore external npm modules like 'focus-trap'.
-  if (isThirdParty) {
-    return;
+  // Make sure npm modules are specified in package.json dependencies
+  if (isMaterialNpmImport || isThirdPartyImport) {
+    const inputFilePackageDir = inputFilePath.replace(new RegExp('(packages/[^/]+)/.+'), '$1');
+    const inputFilePackageJson = require(path.join(inputFilePackageDir, 'package.json'));
+    const expectedNpmDep = importPath
+      // "@material/foo/bar" -> "@material/foo"
+      .replace(new RegExp('^(@[^/]+/[^/]+)/.+'), '$1')
+      // "focus-trap/foo" -> "focus-trap"
+      .replace(new RegExp('^([^@][^/]+)/.+'), '$1')
+    ;
+    /** @type {!Object<string, string>|undefined} */
+    const inputFilePackageJsonDeps = inputFilePackageJson.dependencies;
+    if (!inputFilePackageJsonDeps || !inputFilePackageJsonDeps[expectedNpmDep]) {
+      logLinterViolation(
+        inputFilePath,
+        // eslint-disable-next-line max-len
+        `Import path '${importPathAnsi}' references NPM module '${expectedNpmDep}', but that module is not listed in package.json dependencies.`
+      );
+    }
   }
 
-  if (!importPath.endsWith(`/${resolvedFileNameWithoutExt}`)) {
+  if (!isThirdPartyImport && !importPath.endsWith(`/${resolvedFileNameWithoutExt}`)) {
     logLinterViolation(
       inputFilePath,
       // eslint-disable-next-line max-len
       `Import path '${importPathAnsi}' should point directly to a specific TypeScript file. E.g.: import '${importPath}/index'`
+    );
+  }
+
+  if (path.isAbsolute(importPath)) {
+    logLinterViolation(
+      inputFilePath,
+      // eslint-disable-next-line max-len
+      `Import path '${importPathAnsi}' appears to be an absolute path. Please use a relative path instead.`
     );
   }
 
@@ -142,7 +166,7 @@ function checkOneImportPath(importOrExportDeclaration, inputFilePath) {
 function logLinterViolation(inputFilePath, message) {
   const errorAnsi = colors.red('ERROR');
   const inputFilePathAnsi = colors.bold(path.relative(packagesDir, inputFilePath));
-  console.error(`[${errorAnsi}] ${inputFilePathAnsi}: ${message}`);
+  console.error(`${errorAnsi}: ${inputFilePathAnsi}: ${message}`);
   process.exitCode = 1;
   violationCount++;
 }
