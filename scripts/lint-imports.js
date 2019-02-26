@@ -22,7 +22,7 @@
  */
 
 /**
- * @fileoverview Custom linter script that warns us when we deviate from best practices.
+ * @fileoverview Custom linter for TypeScript imports.
  */
 
 const fs = require('fs');
@@ -44,7 +44,7 @@ function lintAllFiles() {
   const searchPattern = path.join(packagesDir, '**/*.ts');
   const inputFilePaths = glob.sync(searchPattern, {nodir: true, ignore: ['**/node_modules/**']});
 
-  const customLinterAnsi = colors.bold.yellow('Custom Linter');
+  const customLinterAnsi = colors.bold.yellow('Import Linter');
   console.log(`${customLinterAnsi}: Checking ${inputFilePaths.length.toLocaleString()} TypeScript files...\n`);
 
   for (const inputFilePath of inputFilePaths) {
@@ -54,7 +54,7 @@ function lintAllFiles() {
 
   const violationCountAnsi = colors.bold(violationCount);
   const plural = violationCount === 1 ? '' : 's';
-  console.log(`\n${violationCountAnsi} Custom Linter error${plural}\n`);
+  console.log(`\n${violationCountAnsi} Import Linter error${plural}\n`);
 }
 
 /**
@@ -162,7 +162,7 @@ function checkOneImportPath(importOrExportDeclaration, inputFilePath) {
   }
 }
 
-// TODO(acdvorak): Add `fix:custom` support for rewriting the AST?
+// TODO(acdvorak): Add `npm run fix:imports` mode to automatically rewrite the AST when possible?
 function logLinterViolation(inputFilePath, message) {
   const errorAnsi = colors.red('ERROR');
   const inputFilePathAnsi = colors.bold(path.relative(packagesDir, inputFilePath));
