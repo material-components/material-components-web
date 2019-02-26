@@ -86,9 +86,7 @@ class JsBundleFactory {
         libraryTarget: 'umd',
         library,
       },
-      resolve: {
-        extensions,
-      },
+      resolve: {extensions},
       devtool: 'source-map',
       module: {
         rules: [{

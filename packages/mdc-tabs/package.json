@@ -4,6 +4,9 @@
   "description": "The Material Components for the web tabs component",
   "license": "MIT",
   "main": "dist/mdc.tabs.js",
+  "module": "index.js",
+  "sideEffects": false,
+  "types": "dist/mdc.tabs.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git"
@@ -22,6 +25,7 @@
     "@material/ripple": "^0.44.1",
     "@material/rtl": "^0.42.0",
     "@material/theme": "^0.43.0",
-    "@material/typography": "^0.44.1"
+    "@material/typography": "^0.44.1",
+    "tslib": "^1.9.3"
   }
 }
