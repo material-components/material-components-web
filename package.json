@@ -20,6 +20,7 @@
     "lint:ts": "tslint --exclude \"test/**/*.d.ts\" \"packages/**/*.ts\" \"test/**/*.ts\" \"scripts/**/*.ts\"",
     "lint:html": "find test/screenshot/spec/ -name '*.html' | grep -v 'index.html$' | xargs htmllint",
     "lint:imports": "node scripts/check-imports.js",
+    "lint:custom": "node scripts/custom-linter.js",
     "lint": "npm-run-all --parallel lint:*",
     "postinstall": "lerna bootstrap",
     "pretest": "npm run lint",
