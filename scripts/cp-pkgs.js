@@ -160,24 +160,20 @@ async function cpDeclarationAsset(asset) {
  * 3. Bundles the declaration files into one file for the UMD index.js file
  * 4. Copies the generated declaration file from step 3, into the respective pacakge
  */
-function main() {
-  cleanPkgDistDirs();
+cleanPkgDistDirs();
 
-  Promise.all(globSync('build/*.{css,js,map}').map(cpAsset)).catch((err) => {
-    console.error('Error encountered copying assets:', err);
-    process.exit(1);
-  });
+Promise.all(globSync('build/*.{css,js,map}').map(cpAsset)).catch((err) => {
+  console.error('Error encountered copying assets:', err);
+  process.exit(1);
+});
 
-  // this method builds the files that the next lines copy to each package
-  dtsBundler();
+// this method builds the files that the next lines copy to each package
+dtsBundler();
 
-  Promise.all(
-    globSync(`build/packages/**/{${DECLARATION_FILE_PREFIX},${ALL_IN_ONE_PACKAGE}}*.d.ts`)
-      .map(cpDeclarationAsset)
-  ).catch((err) => {
-    console.error('Error encountered copying assets:', err);
-    process.exit(1);
-  });
-}
-
-main();
+Promise.all(
+  globSync(`build/packages/**/{${DECLARATION_FILE_PREFIX},${ALL_IN_ONE_PACKAGE}}*.d.ts`)
+    .map(cpDeclarationAsset)
+).catch((err) => {
+  console.error('Error encountered copying assets:', err);
+  process.exit(1);
+});

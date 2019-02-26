@@ -27,6 +27,51 @@ const {sync: globSync} = require('glob');
 
 const isValidCwd = fs.existsSync('packages') && fs.existsSync(path.join('packages', 'material-components-web', 'dist'));
 
+/**
+ * Verifies that a file exists at the `packagePropertyKey`. If it doesnot
+ * this function will console an error.
+ * @param {object} packageJson package.json in JSON format
+ * @param {string} jsonPath filepath (relative to the root directory) to a component's package.json
+ * @param {string} packagePropertyKey property key of package.json
+ */
+function verifyPath(packageJson, jsonPath, packagePropertyKey) {
+  const isAtRoot = packagePropertyKey === 'module';
+  const packageJsonPropPath = path.join(path.dirname(jsonPath), packageJson[packagePropertyKey]);
+  let isInvalid = false;
+  if (!isAtRoot && packageJsonPropPath.indexOf('dist') === -1) {
+    isInvalid = true;
+    logError(`${jsonPath} ${packagePropertyKey} property does not reference a file under dist`);
+  } else if (isAtRoot && packageJsonPropPath.indexOf('dist') !== -1) {
+    isInvalid = true;
+    logError(`${jsonPath} ${packagePropertyKey} property should not reference a file under dist`);
+  }
+  if (!fs.existsSync(packageJsonPropPath)) {
+    isInvalid = true;
+    logError(`${jsonPath} ${packagePropertyKey} property points to nonexistent ${packageJsonPropPath}`);
+  }
+
+  if (isInvalid) {
+    // Multiple checks could have failed, but only increment the counter once for one package.
+
+    switch (packagePropertyKey) {
+    case 'main':
+      invalidMains++;
+      break;
+    case 'module':
+      invalidModules++;
+      break;
+    case 'types':
+      invalidTypes++;
+      break;
+    }
+  }
+}
+
+function logError(message) {
+  console.error(message);
+  process.exitCode = 1;
+}
+
 if (!isValidCwd) {
   console.error(
     'Invalid CWD. Please ensure you are running this from the root of the repo, and that you have run ' +
@@ -50,59 +95,14 @@ globSync('packages/*/package.json').forEach((jsonPath) => {
 
 if (invalidMains > 0 || invalidModules > 0 || invalidTypes > 0) {
   if (invalidMains > 0) {
-    logErrorAndExit(`${invalidMains} incorrect main property values found; please fix.`);
+    logError(`${invalidMains} incorrect main property values found; please fix.`);
   }
   if (invalidModules > 0) {
-    logErrorAndExit(`${invalidModules} incorrect module property values found; please fix.`);
+    logError(`${invalidModules} incorrect module property values found; please fix.`);
   }
   if (invalidTypes > 0) {
-    logErrorAndExit(`${invalidTypes} incorrect types property values found; please fix.`);
+    logError(`${invalidTypes} incorrect types property values found; please fix.`);
   }
 } else {
   console.log('Success: All packages with main, module, types properties reference appropriate files!');
-}
-
-/**
- * Verifies that a file exists at the `packagePropertyKey`. If it doesnot
- * this function will console an error.
- * @param {object} packageJson package.json in JSON format
- * @param {string} jsonPath filepath (relative to the root directory) to a component's package.json
- * @param {string} packagePropertyKey property key of package.json
- */
-function verifyPath(packageJson, jsonPath, packagePropertyKey) {
-  const isAtRoot = packagePropertyKey === 'module';
-  const packageJsonPropPath = path.join(path.dirname(jsonPath), packageJson[packagePropertyKey]);
-  let isInvalid = false;
-  if (!isAtRoot && packageJsonPropPath.indexOf('dist') === -1) {
-    isInvalid = true;
-    console.error(`${jsonPath} ${packagePropertyKey} property does not reference a file under dist`);
-  } else if (isAtRoot && packageJsonPropPath.indexOf('dist') !== -1) {
-    isInvalid = true;
-    console.error(`${jsonPath} ${packagePropertyKey} property should not reference a file under dist`);
-  }
-  if (!fs.existsSync(packageJsonPropPath)) {
-    isInvalid = true;
-    console.error(`${jsonPath} ${packagePropertyKey} property points to nonexistent ${packageJsonPropPath}`);
-  }
-
-  if (isInvalid) {
-    // Multiple checks could have failed, but only increment the counter once for one package.
-
-    switch (packagePropertyKey) {
-    case 'main':
-      invalidMains++;
-      break;
-    case 'module':
-      invalidModules++;
-      break;
-    case 'types':
-      invalidTypes++;
-      break;
-    }
-  }
-}
-
-function logErrorAndExit(message) {
-  console.error(message);
-  process.exit(1);
 }
