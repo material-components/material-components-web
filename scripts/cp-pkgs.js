@@ -154,7 +154,7 @@ async function cpDeclarationAsset(asset) {
   );
 }
 
-/**
+/*
  * 1. Cleans all /dist directories in each package
  * 2. Copies generated css, js, and map files to the respective packages
  * 3. Bundles the declaration files into one file for the UMD index.js file
