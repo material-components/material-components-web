@@ -37,6 +37,7 @@
   @include mdc-checkbox-container-colors($query: mdc-feature-any());
   @include mdc-checkbox-ink-color(red, $query: mdc-feature-any());
   @include mdc-checkbox-focus-indicator-color(red, $query: mdc-feature-any());
+  @include mdc-checkbox-ripple($query: mdc-feature-any());
 
   // Elevation
   @include mdc-elevation-core-styles($query: mdc-feature-any());
