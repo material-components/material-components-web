@@ -88,7 +88,7 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
   getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
-    // tslint:disable:object-literal-sort-keys
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCSliderAdapter = {
       hasClass: (className) => this.root_.classList.contains(className),
       addClass: (className) => this.root_.classList.add(className),
@@ -138,7 +138,7 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
       },
       isRTL: () => getComputedStyle(this.root_).direction === 'rtl',
     };
-    // tslint:disable:object-literal-sort-keys
+    // tslint:enable:object-literal-sort-keys
     return new MDCSliderFoundation(adapter);
   }
 

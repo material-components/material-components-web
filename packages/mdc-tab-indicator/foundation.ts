@@ -35,7 +35,7 @@ export abstract class MDCTabIndicatorFoundation extends MDCFoundation<MDCTabIndi
   }
 
   static get defaultAdapter(): MDCTabIndicatorAdapter {
-    // tslint:disable:object-literal-sort-keys
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       addClass: () => undefined,
       removeClass: () => undefined,

@@ -31,11 +31,6 @@ export class MDCRadio extends MDCComponent<MDCRadioFoundation> implements MDCRip
     return new MDCRadio(root);
   }
 
-  // Public visibility for this property is required by MDCRippleCapableSurface.
-  root_!: Element; // assigned in MDCComponent constructor
-
-  private readonly ripple_: MDCRipple = this.createRipple_();
-
   get checked(): boolean {
     return this.nativeControl_.checked;
   }
@@ -64,6 +59,11 @@ export class MDCRadio extends MDCComponent<MDCRadioFoundation> implements MDCRip
     return this.ripple_;
   }
 
+  // Public visibility for this property is required by MDCRippleCapableSurface.
+  root_!: Element; // assigned in MDCComponent constructor
+
+  private readonly ripple_: MDCRipple = this.createRipple_();
+
   destroy() {
     this.ripple_.destroy();
     super.destroy();
@@ -83,7 +83,7 @@ export class MDCRadio extends MDCComponent<MDCRadioFoundation> implements MDCRip
   private createRipple_(): MDCRipple {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
-    // tslint:disable:object-literal-sort-keys
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCRippleAdapter = {
       ...MDCRipple.createAdapter(this),
       registerInteractionHandler: (evtType, handler) => this.nativeControl_.addEventListener(evtType, handler),
@@ -97,9 +97,6 @@ export class MDCRadio extends MDCComponent<MDCRadioFoundation> implements MDCRip
     return new MDCRipple(this.root_, new MDCRippleFoundation(adapter));
   }
 
-  /**
-   * Returns the state of the native control element, or null if the native control element is not present.
-   */
   private get nativeControl_(): HTMLInputElement {
     const {NATIVE_CONTROL_SELECTOR} = MDCRadioFoundation.strings;
     const el = this.root_.querySelector<HTMLInputElement>(NATIVE_CONTROL_SELECTOR);

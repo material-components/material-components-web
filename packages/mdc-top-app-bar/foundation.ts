@@ -43,7 +43,7 @@ export class MDCTopAppBarBaseFoundation extends MDCFoundation<MDCTopAppBarAdapte
    * See {@link MDCTopAppBarAdapter} for typing information on parameters and return types.
    */
   static get defaultAdapter(): MDCTopAppBarAdapter {
-    // tslint:disable:object-literal-sort-keys
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       addClass: () => undefined,
       removeClass: () => undefined,

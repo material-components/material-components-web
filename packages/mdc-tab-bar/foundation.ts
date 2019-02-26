@@ -54,7 +54,7 @@ export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
   }
 
   static get defaultAdapter(): MDCTabBarAdapter {
-    // tslint:disable:object-literal-sort-keys
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       scrollTo: () => undefined,
       incrementScroll: () => undefined,

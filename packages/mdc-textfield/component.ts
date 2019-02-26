@@ -342,7 +342,7 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
   getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
-    // tslint:disable:object-literal-sort-keys
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCTextFieldAdapter = {
       ...this.getRootAdapterMethods_(),
       ...this.getInputAdapterMethods_(),
@@ -355,7 +355,7 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
   }
 
   private getRootAdapterMethods_(): MDCTextFieldRootAdapter {
-    // tslint:disable:object-literal-sort-keys
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
@@ -379,7 +379,7 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
   }
 
   private getInputAdapterMethods_(): MDCTextFieldInputAdapter {
-    // tslint:disable:object-literal-sort-keys
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       getNativeInput: () => this.input_,
       isFocused: () => document.activeElement === this.input_,
@@ -448,7 +448,7 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
 
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
-    // tslint:disable:object-literal-sort-keys
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCRippleAdapter = {
       ...MDCRipple.createAdapter(this),
       isSurfaceActive: () => ponyfill.matches(this.input_, ':active'),
