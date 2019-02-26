@@ -21,8 +21,8 @@
  * THE SOFTWARE.
  */
 
-import {SpecificEventListener} from '@material/base/types';
 import {MDCFoundation} from '@material/base/foundation';
+import {SpecificEventListener} from '@material/base/types';
 import {MDCTabBarScrollerAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
