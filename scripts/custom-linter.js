@@ -116,17 +116,17 @@ function checkOneImportPath(importOrExportDeclaration, inputFilePath) {
 
   if (importPath.indexOf('./') > -1) {
     /** @type {string} */
-    const resolvedPath = resolve.sync(importPath, {basedir: inputFileDir, extensions: ['.ts', '.js']});
-    let relativePath = path.relative(inputFileDir, resolvedPath);
-    if (!relativePath.startsWith('./') && !relativePath.startsWith('../')) {
-      relativePath = `./${relativePath}`;
+    const resolvedAbsolutePathWithExt = resolve.sync(importPath, {basedir: inputFileDir, extensions: ['.ts', '.js']});
+    let relativePathWithExt = path.relative(inputFileDir, resolvedAbsolutePathWithExt);
+    if (!relativePathWithExt.startsWith('./') && !relativePathWithExt.startsWith('../')) {
+      relativePathWithExt = `./${relativePathWithExt}`;
     }
-    const pointsToTSFile = relativePath === `${importPath}.ts`;
+    const pointsToTSFile = relativePathWithExt === `${importPath}.ts`;
     if (!pointsToTSFile) {
       logLinterViolation(
         inputFilePath,
         // eslint-disable-next-line max-len
-        `Import path '${importPathAnsi}' should point directly to a specific TypeScript file. E.g.: import '${relativePath.replace('.ts', '')}'`
+        `Import path '${importPathAnsi}' should point directly to a specific TypeScript file. E.g.: import '${relativePathWithExt.replace('.ts', '')}'`
       );
     }
   }
@@ -137,7 +137,7 @@ function checkOneImportPath(importOrExportDeclaration, inputFilePath) {
     logLinterViolation(
       inputFilePath,
       // eslint-disable-next-line max-len
-      `Import path '${importPathAnsi}' is only allowed in component.ts and index.ts files. Please import a more specific file (e.g., adapter.ts, foundation.ts, or types.ts). This keeps bite sizes smaller for wrapper libraries that only use our foundations.`
+      `Import path '${importPathAnsi}' is only allowed in component.ts and index.ts files. Please import a more specific file (e.g., 'adapter', 'foundation', or 'types'). This keeps byte sizes smaller for wrapper libraries that only use our foundations.`
     );
   }
 }
