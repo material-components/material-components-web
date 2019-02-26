@@ -31,7 +31,7 @@ import {MDCCheckboxFoundation} from './foundation';
 /**
  * This type is needed for compatibility with Closure Compiler.
  */
-type PropertyDescriptorGetter = (() => any) | undefined; // tslint:disable-line:no-any
+type PropertyDescriptorGetter = (() => unknown) | undefined;
 
 const CB_PROTO_PROPS = ['checked', 'indeterminate'];
 
