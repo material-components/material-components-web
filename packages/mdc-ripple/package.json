@@ -9,6 +9,9 @@
     "ripple"
   ],
   "main": "dist/mdc.ripple.js",
+  "module": "index.js",
+  "sideEffects": false,
+  "types": "dist/mdc.ripple.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git"
@@ -18,6 +21,7 @@
     "@material/base": "^0.41.0",
     "@material/dom": "^0.41.0",
     "@material/feature-targeting": "^0.44.1",
-    "@material/theme": "^0.43.0"
+    "@material/theme": "^0.43.0",
+    "tslib": "^1.9.3"
   }
 }
