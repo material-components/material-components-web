@@ -59,15 +59,6 @@ export class MDCRadio extends MDCComponent<MDCRadioFoundation> implements MDCRip
     return this.ripple_;
   }
 
-  private get nativeControl_(): HTMLInputElement {
-    const {NATIVE_CONTROL_SELECTOR} = MDCRadioFoundation.strings;
-    const el = this.root_.querySelector<HTMLInputElement>(NATIVE_CONTROL_SELECTOR);
-    if (!el) {
-      throw new Error(`Radio component requires a ${NATIVE_CONTROL_SELECTOR} element`);
-    }
-    return el;
-  }
-
   // Public visibility for this property is required by MDCRippleCapableSurface.
   root_!: Element; // assigned in MDCComponent constructor
 
@@ -104,5 +95,14 @@ export class MDCRadio extends MDCComponent<MDCRadioFoundation> implements MDCRip
     };
     // tslint:enable:object-literal-sort-keys
     return new MDCRipple(this.root_, new MDCRippleFoundation(adapter));
+  }
+
+  private get nativeControl_(): HTMLInputElement {
+    const {NATIVE_CONTROL_SELECTOR} = MDCRadioFoundation.strings;
+    const el = this.root_.querySelector<HTMLInputElement>(NATIVE_CONTROL_SELECTOR);
+    if (!el) {
+      throw new Error(`Radio component requires a ${NATIVE_CONTROL_SELECTOR} element`);
+    }
+    return el;
   }
 }

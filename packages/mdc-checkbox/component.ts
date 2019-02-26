@@ -76,15 +76,6 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements 
     this.nativeControl_.value = value;
   }
 
-  private get nativeControl_(): HTMLInputElement {
-    const {NATIVE_CONTROL_SELECTOR} = MDCCheckboxFoundation.strings;
-    const el = this.root_.querySelector<HTMLInputElement>(NATIVE_CONTROL_SELECTOR);
-    if (!el) {
-      throw new Error(`Checkbox component requires a ${NATIVE_CONTROL_SELECTOR} element`);
-    }
-    return el;
-  }
-
   // Public visibility for this property is required by MDCRippleCapableSurface.
   root_!: Element; // assigned in MDCComponent constructor
 
@@ -178,6 +169,15 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements 
       }
       Object.defineProperty(nativeCb, controlState, desc);
     });
+  }
+
+  private get nativeControl_(): HTMLInputElement {
+    const {NATIVE_CONTROL_SELECTOR} = MDCCheckboxFoundation.strings;
+    const el = this.root_.querySelector<HTMLInputElement>(NATIVE_CONTROL_SELECTOR);
+    if (!el) {
+      throw new Error(`Checkbox component requires a ${NATIVE_CONTROL_SELECTOR} element`);
+    }
+    return el;
   }
 }
 
