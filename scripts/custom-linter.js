@@ -98,11 +98,24 @@ function checkOneImportPath(importOrExportDeclaration, inputFilePath) {
   const importPath = importOrExportDeclaration.node.source.value;
   const importPathAnsi = colors.bold(importPath);
 
-  if (new RegExp('^@material/[^/]+$').test(importPath)) {
+  /** @type {string} */
+  const resolvedAbsolutePathWithExt = resolve.sync(importPath, {basedir: inputFileDir, extensions: ['.ts', '.js']});
+  const resolvedFileNameWithoutExt = path.parse(resolvedAbsolutePathWithExt).name;
+
+  const isRelativePath = resolvedAbsolutePathWithExt.indexOf('node_modules') === -1;
+  const isMaterialNpm = importPath.startsWith('@material/');
+  const isThirdParty = !isMaterialNpm && !isRelativePath;
+
+  // Ignore external npm modules like 'focus-trap'.
+  if (isThirdParty) {
+    return;
+  }
+
+  if (!importPath.endsWith(`/${resolvedFileNameWithoutExt}`)) {
     logLinterViolation(
       inputFilePath,
       // eslint-disable-next-line max-len
-      `Import path '${importPathAnsi}' resolves to a transpiled JS file instead of a TS source file. Please include the extension-less filename of the specific file you wish to import. E.g.: '${importPath}/index'`
+      `Import path '${importPathAnsi}' should point directly to a specific TypeScript file. E.g.: import '${importPath}/index'`
     );
   }
 
@@ -110,25 +123,8 @@ function checkOneImportPath(importOrExportDeclaration, inputFilePath) {
     logLinterViolation(
       inputFilePath,
       // eslint-disable-next-line max-len
-      `Import path '${importPathAnsi}' appears to be a relative path to another package. Please use a @material import instead. E.g.: import '@material/foo/types' instead of import '../mdc-foo/types'.`
+      `Import path '${importPathAnsi}' appears to be a relative path to an MDC package. Please use a @material import instead. E.g.: import '@material/foo/types' instead of import '../mdc-foo/types'.`
     );
-  }
-
-  if (importPath.indexOf('./') > -1) {
-    /** @type {string} */
-    const resolvedAbsolutePathWithExt = resolve.sync(importPath, {basedir: inputFileDir, extensions: ['.ts', '.js']});
-    let relativePathWithExt = path.relative(inputFileDir, resolvedAbsolutePathWithExt);
-    if (!relativePathWithExt.startsWith('./') && !relativePathWithExt.startsWith('../')) {
-      relativePathWithExt = `./${relativePathWithExt}`;
-    }
-    const pointsToTSFile = relativePathWithExt === `${importPath}.ts`;
-    if (!pointsToTSFile) {
-      logLinterViolation(
-        inputFilePath,
-        // eslint-disable-next-line max-len
-        `Import path '${importPathAnsi}' should point directly to a specific TypeScript file. E.g.: import '${relativePathWithExt.replace('.ts', '')}'`
-      );
-    }
   }
 
   const importPathIsComponent = importPath.endsWith('/index') || importPath.endsWith('/component');
@@ -137,7 +133,7 @@ function checkOneImportPath(importOrExportDeclaration, inputFilePath) {
     logLinterViolation(
       inputFilePath,
       // eslint-disable-next-line max-len
-      `Import path '${importPathAnsi}' is only allowed in component.ts and index.ts files. Please import a more specific file (e.g., 'adapter', 'foundation', or 'types'). This keeps byte sizes smaller for wrapper libraries that only use our foundations.`
+      `Import path '${importPathAnsi}' is only allowed in component.ts and index.ts files. Please import a more specific file (e.g., 'adapter', 'foundation', 'types'). This keeps byte sizes smaller for wrapper libraries that only use our foundations.`
     );
   }
 }
