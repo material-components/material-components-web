@@ -509,6 +509,7 @@ class MDCTextField extends MDCComponent {
       registerInputInteractionHandler: (evtType, handler) => this.input_.addEventListener(evtType, handler),
       deregisterInputInteractionHandler: (evtType, handler) => this.input_.removeEventListener(evtType, handler),
       getNativeInput: () => this.input_,
+      hasAutofillValue: () => matches(/** @type {!Element} */ (this.input_), ':-webkit-autofill'),
     };
   }
 

@@ -66,7 +66,8 @@ class MDCTextFieldFoundation extends MDCFoundation {
 
   /** @return {boolean} */
   get shouldFloat() {
-    return this.shouldAlwaysFloat_ || this.isFocused_ || !!this.getValue() || this.isBadInput_();
+    return this.shouldAlwaysFloat_ || this.isFocused_ || !!this.getValue() || this.isBadInput_() ||
+        this.adapter_.hasAutofillValue();
   }
 
   /**

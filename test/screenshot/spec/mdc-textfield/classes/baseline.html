@@ -44,47 +44,41 @@
     <main class="test-viewport test-viewport--mobile">
       <div class="test-layout">
 
-        <div class="test-cell test-cell--textfield">
-          <div class="mdc-text-field">
-            <input type="text" id="filled-text-field" class="mdc-text-field__input test-text-field__input">
-            <label class="mdc-floating-label" for="filled-text-field">Label</label>
-            <div class="mdc-line-ripple"></div>
-          </div>
-        </div>
-
-        <div class="test-cell test-cell--textfield">
-          <div class="mdc-text-field mdc-text-field--outlined">
-            <input type="text" id="outlined-text-field" class="mdc-text-field__input test-text-field__input">
+        <form name="myForm">
+          <div class="row">
+            <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-trailing-icon">
+              <i class="material-icons mdc-text-field__icon">error</i>
+              <input type="text" id="tf-outlined" class="mdc-text-field__input" required minlength="4">
             <div class="mdc-notched-outline">
               <div class="mdc-notched-outline__leading"></div>
               <div class="mdc-notched-outline__notch">
-                <label for="outlined-text-field" class="mdc-floating-label">Label</label>
+                <label for="tf-outlined" class="mdc-floating-label">Username</label>
               </div>
               <div class="mdc-notched-outline__trailing"></div>
             </div>
           </div>
-        </div>
-
-        <div class="test-cell test-cell--textfield">
-          <div class="mdc-text-field">
-            <input type="text" id="filled-text-field-with-value" class="mdc-text-field__input test-text-field__input" value="Filled value">
-            <label for="filled-text-field-with-value" class="mdc-floating-label mdc-floating-label--float-above">Label</label>
-            <div class="mdc-line-ripple"></div>
+                <p id="username-helper-text" class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" aria-hidden="true">
+            Minimum of 4 characters are required.
+          </p>
           </div>
-        </div>
-
-        <div class="test-cell test-cell--textfield">
-          <div class="mdc-text-field mdc-text-field--outlined">
-            <input type="text" id="outlined-text-field-with-value" class="mdc-text-field__input test-text-field__input" value="Filled value">
-            <div class="mdc-notched-outline mdc-notched-outline--notched">
+          <div class="row">
+            <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-trailing-icon">
+              <i class="material-icons mdc-text-field__icon">error</i>
+              <input type="password" id="tf-outlined" class="mdc-text-field__input" required pattern=".{6,}">
+            <div class="mdc-notched-outline">
               <div class="mdc-notched-outline__leading"></div>
               <div class="mdc-notched-outline__notch">
-                <label for="outlined-text-field-with-value" class="mdc-floating-label mdc-floating-label--float-above">Label</label>
+                <label for="tf-outlined" class="mdc-floating-label">Password</label>
               </div>
               <div class="mdc-notched-outline__trailing"></div>
             </div>
           </div>
-        </div>
+                  <p id="username-helper-text" class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg	" aria-hidden="true">
+            Minimum of 6 characters are required.
+          </p>
+          </div>
+          <button class="mdc-button mdc-button--raised" type="submit">Register</button>
+        </form>
 
       </div>
     </main>
