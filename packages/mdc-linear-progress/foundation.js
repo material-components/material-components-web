@@ -22,7 +22,7 @@
  */
 
 import MDCFoundation from '@material/base/foundation';
-import {transformStyleProperties} from '@material/animation/index';
+import {getCorrectPropertyName} from '@material/animation/index';
 
 import {cssClasses, strings} from './constants';
 
@@ -100,8 +100,6 @@ export default class MDCLinearProgressFoundation extends MDCFoundation {
 
   setScale_(el, scaleValue) {
     const value = 'scaleX(' + scaleValue + ')';
-    transformStyleProperties.forEach((transformStyleProperty) => {
-      this.adapter_.setStyle(el, transformStyleProperty, value);
-    });
+    this.adapter_.setStyle(el, getCorrectPropertyName(window, 'transform'), value);
   }
 }
