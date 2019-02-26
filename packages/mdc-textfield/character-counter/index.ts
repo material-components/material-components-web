@@ -23,4 +23,8 @@
 
 export * from './adapter';
 export * from './component';
+export {
+  cssClasses as characterCountCssClasses,
+  strings as characterCountStrings,
+} from './constants';
 export * from './foundation';

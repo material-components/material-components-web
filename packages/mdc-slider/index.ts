@@ -22,5 +22,6 @@
  */
 
 export * from './adapter';
+export * from './constants';
 export * from './component';
 export * from './foundation';

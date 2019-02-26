@@ -23,4 +23,8 @@
 
 export * from './adapter';
 export * from './component';
+export {
+  cssClasses as tabBarScrollerCssClasses,
+  strings as tabBarScrollerStrings,
+} from './constants';
 export * from './foundation';

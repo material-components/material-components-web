@@ -23,4 +23,5 @@
 
 export * from './adapter';
 export * from './component';
+export {cssClasses as helperTextCssClasses, strings as helperTextStrings} from './constants';
 export * from './foundation';

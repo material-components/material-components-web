@@ -23,4 +23,5 @@
 
 export * from './adapter';
 export * from './component';
+export {strings as iconStrings} from './constants';
 export * from './foundation';

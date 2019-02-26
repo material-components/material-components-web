@@ -23,6 +23,11 @@
 
 export * from './adapter';
 export * from './component';
+export {
+  cssClasses as textFieldCssClasses,
+  numbers as textFieldNumbers,
+  strings as textFieldStrings,
+} from './constants';
 export * from './foundation';
 export * from './types';
 export * from './character-counter/index';
