@@ -192,7 +192,7 @@ Method Signature | Description
 
 ### `MDCTabFoundation` Event Handlers
 
-When wrapping the Tab component, it is necessary to register the following event handler. For an example of this, see the [MDCTab](index.ts) component's `initialSyncWithDOM` method.
+When wrapping the Tab component, it is necessary to register the following event handler. For an example of this, see the [`MDCTab`](component.ts) component's `initialSyncWithDOM` method.
 
 Event | Element | Foundation Handler
 --- | --- | ---

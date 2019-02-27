@@ -316,7 +316,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 
 ### Adapters: `MDCChipAdapter` and `MDCChipSetAdapter`
 
-See [`chip/index.ts`](chip/index.ts) and [`chip-set/index.ts`](chip-set/index.ts) for vanilla DOM implementations of these adapter APIs for reference.
+See [`chip/component.ts`](chip/component.ts) and [`chip-set/component.ts`](chip-set/component.ts) for vanilla DOM implementations of these adapter APIs for reference.
 
 #### `MDCChipAdapter`
 

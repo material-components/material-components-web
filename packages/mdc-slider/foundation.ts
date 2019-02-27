@@ -70,7 +70,7 @@ export class MDCSliderFoundation extends MDCFoundation<MDCSliderAdapter> {
   }
 
   static get defaultAdapter(): MDCSliderAdapter {
-    // tslint:disable:object-literal-sort-keys
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       hasClass: () => false,
       addClass: () => undefined,

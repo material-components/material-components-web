@@ -12,7 +12,6 @@ branches:
   # This prevents excessive resource usage and CI slowness.
   only:
     - master
-    - feat/typescript
 
 before_install:
   # Source the scripts to export their env vars. See https://superuser.com/a/176788/62792

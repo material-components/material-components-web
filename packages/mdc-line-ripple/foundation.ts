@@ -35,7 +35,7 @@ export class MDCLineRippleFoundation extends MDCFoundation<MDCLineRippleAdapter>
    * See {@link MDCLineRippleAdapter} for typing information on parameters and return types.
    */
   static get defaultAdapter(): MDCLineRippleAdapter {
-    // tslint:disable:object-literal-sort-keys
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       addClass: () => undefined,
       removeClass: () => undefined,

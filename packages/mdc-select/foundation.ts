@@ -45,7 +45,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
    * See {@link MDCSelectAdapter} for typing information on parameters and return types.
    */
   static get defaultAdapter(): MDCSelectAdapter {
-    // tslint:disable:object-literal-sort-keys
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       addClass: () => undefined,
       removeClass: () => undefined,
