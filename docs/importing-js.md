@@ -26,7 +26,12 @@ of your built assets, you will want to explicitly reference the package's `index
 import {MDCFoo, MDCFooFoundation} from '@material/foo/index';
 ```
 
-Certain build tools will often pick up on the use of `package.json`'s `module` property, which points to the ES2015+ `index.js` source code. If you are using [Webpack](https://webpack.js.org/) or [Rollup](https://rollupjs.org/guide/en), then you will not need to reference the `index.js` file, and can continue to use the `@material/foo` import paths.
+Certain build tools will detect the [`module`](https://github.com/rollup/rollup/wiki/pkg.module) property in `package.json`,
+which points to an ES Module otherwise only containing ES5 syntax.
+If you're using [Webpack](https://webpack.js.org/) or
+[Rollup](https://rollupjs.org/guide/en), you do not need to
+reference `/index` directly, and can continue to use the shorter
+`@material/foo` import path syntax.
 
 Note that in this case, you must ensure your build toolchain is configured to process and transpile MDC Web's modules
 as well as your own. You will also need to include babel's

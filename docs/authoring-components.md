@@ -313,11 +313,11 @@ adapter is extremely straightforward as we can simply repurpose the methods we s
 ```ts
 class RedblueToggle extends MDCComponent {
   initialize() {
-    this.root.addEventListener('click', this.foundation_.handleClick);
+    this.listen('click', this.foundation_.handleClick);
   }
 
   destroy() {
-    this.root.removeEventListener('click', this.foundation_.handleClick);
+    this.unlisten('click', this.foundation_.handleClick);
   }
 
   get toggled() {
@@ -473,12 +473,14 @@ A typical component within our codebase looks like so:
 ```
 packages
   ├── mdc-component
-      ├── README.md # The component's README
-      ├── adapter.ts # The adapter interface implemented by the component
-      ├── foundation.ts # The component's foundation class
-      ├── component.ts # The file that contains the vanilla component class
-      ├── constants.ts # The component's cssClasses/strings/numbers constants
-      ├── index.ts # The file that exports the source files of the package (foundation, component, adapter, constants, etc.)
+      ├── README.md # Usage instructions and API documentation
+      ├── adapter.ts # Adapter interface implemented by framework wrappers and the vanilla component
+      ├── foundation.ts # Framework-agnostic business logic used by wrapper libraries and the vanilla component
+      ├── component.ts # Vanilla adapter implementation for clients who aren't using a wrapper framework like React
+      ├── constants.ts # Constant values used by one or more files in the package (e.g., cssClasses, strings, numbers)
+      ├── index.ts # Re-exports types from other files in the package (adapter, foundation, component, util, etc.)
+      ├── types.ts # (optional) All non-component-related types and interfaces not covered by other files should go in `types.ts`
+      ├── utils.ts # (optional) Framework-agnostic helper functions (e.g., feature detection)
       ├── mdc-component.scss # The main source file for the component's CSS
       └── package.json # The components package file
 test/unit
