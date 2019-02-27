@@ -27,8 +27,7 @@ import {MDCComponent} from '@material/base/component';
 import {MDCFoundation} from '@material/base/foundation';
 
 export interface MDCAttachable {
-  // tslint:disable-next-line:no-any a component can pass in anything it needs to the constructor
-  new<F extends MDCFoundation>(root: Element, foundation?: F, ...args: any[]): MDCComponent<F>;
+  new<F extends MDCFoundation>(root: Element, foundation?: F, ...args: Array<unknown>): MDCComponent<F>;
 
   // Static method.
   attachTo<F extends MDCFoundation>(root: Element): MDCComponent<F>;

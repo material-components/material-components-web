@@ -264,8 +264,8 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
     const {anchorSize, surfaceSize} = this.measurements_;
 
     const position: Partial<MDCMenuDistance> = {
-      [horizontalAlignment]: horizontalOffset ? horizontalOffset : 0,
-      [verticalAlignment]: verticalOffset ? verticalOffset : 0,
+      [horizontalAlignment]: horizontalOffset,
+      [verticalAlignment]: verticalOffset,
     };
 
     // Center align when anchor width is comparable or greater than menu surface, otherwise keep corner.
