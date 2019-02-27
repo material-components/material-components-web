@@ -34,8 +34,7 @@ reference `/index` directly, and can continue to use the shorter
 `@material/foo` import path syntax.
 
 Note that in this case, you must ensure your build toolchain is configured to process and transpile MDC Web's modules
-as well as your own. You will also need to include babel's
-[`transform-object-assign`](https://www.npmjs.com/package/babel-plugin-transform-object-assign) plugin for IE 11 support.
+as well as your own.
 
 See the [Getting Started guide](getting-started.md) for more details on setting up an environment.
 

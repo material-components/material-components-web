@@ -231,9 +231,9 @@ any `MDCComponent` that requires custom adapter functionality.
 class MyMDCComponent extends MDCComponent {
   constructor() {
     super(...arguments);
-    const foundation = new MDCRippleFoundation(Object.assign(MDCRipple.createAdapter(this), {
+    const foundation = new MDCRippleFoundation({...MDCRipple.createAdapter(this), {
       isSurfaceActive: () => this.isActive_, /* Custom functionality */
-    }));
+    }});
     this.ripple = new MDCRipple(this.root, foundation);
   }
 }
@@ -262,11 +262,10 @@ class MyComponent {
         this.active = false;
       }
     });
-
-    const foundation = new MDCRippleFoundation(Object.assign(MDCRipple.createAdapter(this), {
+    const foundation = new MDCRippleFoundation({...MDCRipple.createAdapter(this), {
       // ...
       isSurfaceActive: () => this.active
-    }));
+    }});
     this.ripple = new MDCRipple(this.root, foundation);
   }
 }

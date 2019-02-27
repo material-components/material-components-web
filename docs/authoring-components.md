@@ -265,7 +265,7 @@ class RedblueToggleFoundation extends MDCFoundation {
   private toggled_ = false;
 
   constructor(adapter) {
-    super(Object.assign(RedblueToggleFoundation.defaultAdapter, adapter));
+    super({...RedblueToggleFoundation.defaultAdapter, ...adapter});
   }
 
   handleClick() {
@@ -677,7 +677,7 @@ class MDCNewComponentFoundation extends MDCFoundation {
   }
 
   constructor(adapter) {
-    super(Object.assign(MDCNewComponentFoundation.defaultAdapter, adapter));
+    super(...MDCNewComponentFoundation.defaultAdapter, ...adapter});
   }
 }
 ```
