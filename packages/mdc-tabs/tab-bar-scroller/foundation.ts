@@ -21,8 +21,8 @@
  * THE SOFTWARE.
  */
 
-import {SpecificEventListener} from '@material/base';
 import {MDCFoundation} from '@material/base/foundation';
+import {SpecificEventListener} from '@material/base/types';
 import {MDCTabBarScrollerAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
@@ -279,4 +279,5 @@ export class MDCTabBarScrollerFoundation extends MDCFoundation<MDCTabBarScroller
   }
 }
 
+// tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
 export default MDCTabBarScrollerFoundation;

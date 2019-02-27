@@ -164,20 +164,17 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
     } = MDCCheckboxFoundation.cssClasses;
 
     switch (oldState) {
-      // @ts-ignore:no-switch-case-fall-through already existing fallthrough
       case TRANSITION_STATE_INIT:
         if (newState === TRANSITION_STATE_UNCHECKED) {
           return '';
         }
-      // fallthrough
+        return newState === TRANSITION_STATE_CHECKED ? ANIM_INDETERMINATE_CHECKED : ANIM_INDETERMINATE_UNCHECKED;
       case TRANSITION_STATE_UNCHECKED:
         return newState === TRANSITION_STATE_CHECKED ? ANIM_UNCHECKED_CHECKED : ANIM_UNCHECKED_INDETERMINATE;
       case TRANSITION_STATE_CHECKED:
         return newState === TRANSITION_STATE_UNCHECKED ? ANIM_CHECKED_UNCHECKED : ANIM_CHECKED_INDETERMINATE;
-      // TRANSITION_STATE_INDETERMINATE
-      default:
-        return newState === TRANSITION_STATE_CHECKED ?
-            ANIM_INDETERMINATE_CHECKED : ANIM_INDETERMINATE_UNCHECKED;
+      default: // TRANSITION_STATE_INDETERMINATE
+        return newState === TRANSITION_STATE_CHECKED ? ANIM_INDETERMINATE_CHECKED : ANIM_INDETERMINATE_UNCHECKED;
     }
   }
 
@@ -194,4 +191,5 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
   }
 }
 
+// tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
 export default MDCCheckboxFoundation;

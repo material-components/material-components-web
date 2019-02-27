@@ -25,17 +25,19 @@ import {getCorrectEventName} from '@material/animation/util';
 import {MDCComponent} from '@material/base/component';
 import {ponyfill} from '@material/dom/index';
 import {MDCRipple, MDCRippleAdapter, MDCRippleCapableSurface, MDCRippleFoundation} from '@material/ripple/index';
-import {MDCSelectionControl} from '@material/selection-control/types';
 import {MDCCheckboxAdapter} from './adapter';
 import {MDCCheckboxFoundation} from './foundation';
+
+/**
+ * This type is needed for compatibility with Closure Compiler.
+ */
+type PropertyDescriptorGetter = (() => any) | undefined; // tslint:disable-line:no-any
 
 const {NATIVE_CONTROL_SELECTOR} = MDCCheckboxFoundation.strings;
 
 const CB_PROTO_PROPS = ['checked', 'indeterminate'];
 
-export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation>
-    implements MDCSelectionControl, MDCRippleCapableSurface {
-
+export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements MDCRippleCapableSurface {
   static attachTo(root: Element) {
     return new MDCCheckbox(root);
   }
@@ -117,10 +119,13 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation>
         return;
       }
 
+      // Type cast is needed for compatibility with Closure Compiler.
+      const nativeGetter = (desc as {get: PropertyDescriptorGetter}).get;
+
       const nativeCbDesc = {
         configurable: desc.configurable,
         enumerable: desc.enumerable,
-        get: desc.get,
+        get: nativeGetter,
         set: (state: boolean) => {
           desc.set!.call(nativeCb, state);
           this.foundation_.handleChange();

@@ -86,9 +86,7 @@ class JsBundleFactory {
         libraryTarget: 'umd',
         library,
       },
-      resolve: {
-        extensions,
-      },
+      resolve: {extensions},
       devtool: 'source-map',
       module: {
         rules: [{
@@ -173,7 +171,6 @@ class JsBundleFactory {
         radio: getAbsolutePath('/packages/mdc-radio/index.ts'),
         ripple: getAbsolutePath('/packages/mdc-ripple/index.ts'),
         select: getAbsolutePath('/packages/mdc-select/index.ts'),
-        selectionControl: getAbsolutePath('/packages/mdc-selection-control/index.ts'),
         slider: getAbsolutePath('/packages/mdc-slider/index.ts'),
         snackbar: getAbsolutePath('/packages/mdc-snackbar/index.ts'),
         switch: getAbsolutePath('/packages/mdc-switch/index.ts'),

@@ -71,7 +71,6 @@ const CSS_WHITELIST = [
   'dom',
   'feature-targeting',
   'rtl',
-  'selection-control',
   'shape',
 ];
 
@@ -85,7 +84,6 @@ const NOT_AUTOINIT = [
   'base',
   'dom',
   'icon-toggle',
-  'selection-control',
   'tab', // Only makes sense in context of tab-bar
   'tab-indicator', // Only makes sense in context of tab-bar
   'tab-scroller', // Only makes sense in context of tab-bar

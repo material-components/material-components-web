@@ -57,4 +57,5 @@ export abstract class MDCTabIndicatorFoundation extends MDCFoundation<MDCTabIndi
   abstract deactivate(): void;
 }
 
+// tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
 export default MDCTabIndicatorFoundation;

@@ -63,15 +63,15 @@ const POINTER_DEACTIVATION_EVENT_TYPES: DeactivationEventType[] = [
 let activatedTargets: Array<EventTarget | null> = [];
 
 export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
-  static get cssClasses(): { [key: string]: string } {
+  static get cssClasses() {
     return cssClasses;
   }
 
-  static get strings(): { [key: string]: string } {
+  static get strings() {
     return strings;
   }
 
-  static get numbers(): { [key: string]: number } {
+  static get numbers() {
     return numbers;
   }
 
@@ -285,7 +285,8 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
 
   private removeCssVars_() {
     const rippleStrings = MDCRippleFoundation.strings;
-    Object.keys(rippleStrings).forEach((key) => {
+    const keys = Object.keys(rippleStrings) as Array<keyof typeof rippleStrings>;
+    keys.forEach((key) => {
       if (key.indexOf('VAR_') === 0) {
         this.adapter_.updateCssVariable(rippleStrings[key], null);
       }
@@ -527,4 +528,5 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
   }
 }
 
+// tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
 export default MDCRippleFoundation;
