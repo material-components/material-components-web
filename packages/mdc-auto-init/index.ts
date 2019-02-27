@@ -26,7 +26,7 @@
 import {MDCComponent} from '@material/base/component';
 import {MDCFoundation} from '@material/base/foundation';
 
-export interface MDCComponentClass {
+export interface MDCAttachable {
   // tslint:disable-next-line:no-any a component can pass in anything it needs to the constructor
   new<F extends MDCFoundation>(root: Element, foundation?: F, ...args: any[]): MDCComponent<F>;
 
@@ -35,7 +35,7 @@ export interface MDCComponentClass {
 }
 
 interface InternalComponentRegistry {
-  [key: string]: MDCComponentClass;
+  [key: string]: MDCAttachable;
 }
 
 const registry: InternalComponentRegistry = {};
@@ -100,7 +100,7 @@ export function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
 
 // Constructor is PascalCased because it is a direct reference to a class, rather than an instance of a class.
 // tslint:disable-next-line:variable-name
-mdcAutoInit.register = function(componentName: string, Constructor: MDCComponentClass, warn = CONSOLE_WARN) {
+mdcAutoInit.register = function(componentName: string, Constructor: MDCAttachable, warn = CONSOLE_WARN) {
   if (typeof Constructor !== 'function') {
     throw new Error(`(mdc-auto-init) Invalid Constructor value: ${Constructor}. Expected function.`);
   }
