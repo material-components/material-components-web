@@ -86,6 +86,9 @@
       @if $edgeOptOut {
         // stylelint-disable max-nesting-depth
         @at-root {
+          // IE 11 doesn't understand this syntax and ignores the entire block.
+          // Edge understands this syntax and skips the entire block to avoid a nasty :before/:after pseudo-element bug.
+          // All other browsers apply the styles within the block.
           @supports not (-ms-ime-align: auto) {
             // stylelint-disable scss/selector-no-redundant-nesting-selector
             & {
@@ -106,6 +109,9 @@
       @if $edgeOptOut {
         // stylelint-disable max-nesting-depth
         @at-root {
+          // IE 11 doesn't understand this syntax and ignores the entire block.
+          // Edge understands this syntax and skips the entire block to avoid a nasty :before/:after pseudo-element bug.
+          // All other browsers apply the styles within the block.
           @supports not (-ms-ime-align: auto) {
             // stylelint-disable scss/selector-no-redundant-nesting-selector
             & {

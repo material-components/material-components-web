@@ -162,7 +162,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `handleChange(evt: Event) => void` | Handles a change event from the native control. |
 
 ### `MDCSwitchFoundation` Event Handlers
-If wrapping the switch component it is necessary to add an event handler for native control change events that calls the `handleChange` foundation method. For an example of this, see the [MDCSwitch](index.js) component `initialSyncWithDOM` method.
+If wrapping the switch component it is necessary to add an event handler for native control change events that calls the `handleChange` foundation method. For an example of this, see the [`MDCSwitch`](component.ts) component's `initialSyncWithDOM` method.
 
 | Event | Element Selector | Foundation Handler |
 | --- | --- | --- |

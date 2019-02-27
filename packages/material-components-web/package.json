@@ -8,6 +8,9 @@
     "material design"
   ],
   "main": "dist/material-components-web.js",
+  "module": "index.js",
+  "sideEffects": false,
+  "types": "dist/material-components-web.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web"
@@ -30,7 +33,6 @@
     "@material/form-field": "^0.44.1",
     "@material/grid-list": "^0.44.1",
     "@material/icon-button": "^0.44.1",
-    "@material/icon-toggle": "^0.44.1",
     "@material/image-list": "^0.44.1",
     "@material/layout-grid": "^0.41.0",
     "@material/line-ripple": "^0.43.0",
@@ -43,7 +45,6 @@
     "@material/ripple": "^0.44.1",
     "@material/rtl": "^0.42.0",
     "@material/select": "^0.44.1",
-    "@material/selection-control": "^0.44.1",
     "@material/shape": "^0.44.1",
     "@material/slider": "^0.44.1",
     "@material/snackbar": "^0.44.1",

@@ -29,19 +29,38 @@ import td from 'testdouble';
 import {MDCDrawer} from '../../../packages/mdc-drawer/index';
 import {strings, cssClasses} from '../../../packages/mdc-drawer/constants';
 import {MDCListFoundation} from '../../../packages/mdc-list/index';
-import MDCDismissibleDrawerFoundation from '../../../packages/mdc-drawer/dismissible/foundation';
+import {MDCDismissibleDrawerFoundation} from '../../../packages/mdc-drawer/dismissible/foundation';
+import {MDCModalDrawerFoundation} from '../../../packages/mdc-drawer/modal/foundation';
 
+/**
+ * @typedef {{
+ *   variantClass: (string|undefined),
+ *   shadowRoot: (boolean|undefined),
+ *   hasList: (boolean|undefined),
+ * }}
+ */
+let DrawerSetupOptions; // eslint-disable-line no-unused-vars
+
+const defaultSetupOptions = {variantClass: cssClasses.DISMISSIBLE, shadowRoot: false, hasList: true};
+
+/**
+ * @param {DrawerSetupOptions} options
+ * @return {HTMLElement|DocumentFragment}
+ */
 function getFixture(options) {
+  const listEl = bel`
+    <div class="mdc-list-group">
+      <nav class="mdc-list">
+        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
+        </a>
+      </nav>
+    </div>
+    `;
   const drawerEl = bel`
     <div class="mdc-drawer ${options.variantClass}">
       <div class="mdc-drawer__content">
-        <div class="mdc-list-group">
-          <nav class="mdc-list">
-            <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
-            </a>
-          </nav>
-        </div>
+        ${options.hasList ? listEl : ''}
       </div>
     </div>
     `;
@@ -64,8 +83,10 @@ function getFixture(options) {
   }
 }
 
-const defaultSetupOptions = {variantClass: cssClasses.DISMISSIBLE, shadowRoot: false};
-
+/**
+ * @param {DrawerSetupOptions} options
+ * @return {{component: MDCDrawer, root: (HTMLElement|DocumentFragment), drawer: HTMLElement}}
+ */
 function setupTest(options = defaultSetupOptions) {
   const root = getFixture(options);
   const drawer = root.querySelector('.mdc-drawer');
@@ -73,10 +94,23 @@ function setupTest(options = defaultSetupOptions) {
   return {root, drawer, component};
 }
 
+/**
+ * @param {DrawerSetupOptions} options
+ * @return {{
+ *   component: MDCDrawer,
+ *   mockList: MDCList,
+ *   mockFocusTrapInstance: {activate: function(), deactivate: function(), pause: function(), unpause: function()},
+ *   root: HTMLElement,
+ *   drawer: HTMLElement,
+ *   mockFoundation: (MDCDismissibleDrawerFoundation|MDCModalDrawerFoundation),
+ * }}
+ */
 function setupTestWithMocks(options = defaultSetupOptions) {
   const root = getFixture(options);
   const drawer = root.querySelector('.mdc-drawer');
-  const MockFoundationCtor = td.constructor(MDCDismissibleDrawerFoundation);
+  const isModal = options.variantClass === cssClasses.MODAL;
+  const MockFoundationClass = isModal ? MDCModalDrawerFoundation : MDCDismissibleDrawerFoundation;
+  const MockFoundationCtor = td.constructor(MockFoundationClass);
   const mockFoundation = new MockFoundationCtor();
   const mockFocusTrapInstance = td.object({
     activate: () => {},
@@ -94,8 +128,8 @@ function setupTestWithMocks(options = defaultSetupOptions) {
 suite('MDCDrawer');
 
 test('attachTo initializes and returns a MDCDrawer instance', () => {
-  const drawer = getFixture({variantClass: cssClasses.DISMISSIBLE}).querySelector('.mdc-drawer');
-  assert.isTrue(MDCDrawer.attachTo(drawer) instanceof MDCDrawer);
+  const root = getFixture({variantClass: cssClasses.DISMISSIBLE, hasList: false}).querySelector('.mdc-drawer');
+  assert.instanceOf(MDCDrawer.attachTo(root), MDCDrawer);
 });
 
 test('#get open calls foundation.isOpen', () => {
@@ -114,6 +148,13 @@ test('#set open false calls foundation.close', () => {
   const {component, mockFoundation} = setupTestWithMocks();
   component.open = false;
   td.verify(mockFoundation.close(), {times: 1});
+});
+
+test('click event calls foundation.handleScrimClick method', () => {
+  const {root, mockFoundation} = setupTestWithMocks({variantClass: cssClasses.MODAL});
+  const scrimEl = root.querySelector('.mdc-drawer-scrim');
+  domEvents.emit(scrimEl, 'click');
+  td.verify(mockFoundation.handleScrimClick(), {times: 1});
 });
 
 test('keydown event calls foundation.handleKeydown method', () => {
@@ -155,6 +196,14 @@ test('#destroy calls destroy on list', () => {
   component.destroy();
 
   td.verify(mockList.destroy(), {times: 1});
+});
+
+test('#destroy does not throw an error when list is not present', () => {
+  const {component, mockList} =
+    setupTestWithMocks(Object.assign({}, defaultSetupOptions, {variantClass: cssClasses.MODAL, hasList: false}));
+  component.destroy();
+
+  td.verify(mockList.destroy(), {times: 0});
 });
 
 test('adapter#addClass adds class to drawer', () => {
@@ -283,8 +332,20 @@ test('adapter#focusActiveNavigationItem focuses on active navigation item', () =
   document.body.appendChild(root);
   component.getDefaultFoundation().adapter_.focusActiveNavigationItem();
 
-  const activedNavigationItemEl = root.querySelector(`.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`);
-  assert.equal(activedNavigationItemEl, document.activeElement);
+  const activatedNavigationItemEl = root.querySelector(`.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`);
+  assert.equal(document.activeElement, activatedNavigationItemEl);
+  document.body.removeChild(root);
+});
+
+test('adapter#focusActiveNavigationItem does nothing if no active navigation item exists', () => {
+  const {component, root} = setupTest();
+  const prevActiveElement = document.activeElement;
+  document.body.appendChild(root);
+  const activatedNavigationItemEl = root.querySelector(`.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`);
+  activatedNavigationItemEl.classList.remove(MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS);
+  component.getDefaultFoundation().adapter_.focusActiveNavigationItem();
+
+  assert.equal(document.activeElement, prevActiveElement);
   document.body.removeChild(root);
 });
 

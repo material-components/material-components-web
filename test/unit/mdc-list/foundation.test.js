@@ -27,7 +27,7 @@ import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
-import MDCListFoundation from '../../../packages/mdc-list/foundation';
+import {MDCListFoundation} from '../../../packages/mdc-list/foundation';
 import {strings, cssClasses} from '../../../packages/mdc-list/constants';
 import {install as installClock} from '../helpers/clock';
 
@@ -83,7 +83,7 @@ test('#handleFocusIn switches list item button/a elements to tabindex=0', () => 
 
   foundation.handleFocusIn(event, 1);
 
-  td.verify(mockAdapter.setTabIndexForListItemChildren(1, 0));
+  td.verify(mockAdapter.setTabIndexForListItemChildren(1, '0'));
 });
 
 test('#handleFocusOut switches list item button/a elements to tabindex=-1', () => {
@@ -93,7 +93,7 @@ test('#handleFocusOut switches list item button/a elements to tabindex=-1', () =
 
   foundation.handleFocusOut(event, 1);
 
-  td.verify(mockAdapter.setTabIndexForListItemChildren(1, -1));
+  td.verify(mockAdapter.setTabIndexForListItemChildren(1, '-1'));
 });
 
 test('#handleFocusIn switches list item button/a elements to tabindex=0 when target is child element', () => {
@@ -104,7 +104,7 @@ test('#handleFocusIn switches list item button/a elements to tabindex=0 when tar
 
   foundation.handleFocusIn(event, 1);
 
-  td.verify(mockAdapter.setTabIndexForListItemChildren(1, 0));
+  td.verify(mockAdapter.setTabIndexForListItemChildren(1, '0'));
 });
 
 test('#handleFocusOut switches list item button/a elements to tabindex=-1 when target is child element', () => {
@@ -115,7 +115,7 @@ test('#handleFocusOut switches list item button/a elements to tabindex=-1 when t
 
   foundation.handleFocusOut(event, 1);
 
-  td.verify(mockAdapter.setTabIndexForListItemChildren(1, -1));
+  td.verify(mockAdapter.setTabIndexForListItemChildren(1, '-1'));
 });
 
 test('#handleFocusIn does nothing if mdc-list-item is not on element or ancestor', () => {
@@ -155,7 +155,7 @@ test('#handleFocusOut sets tabindex=0 to selected item when focus leaves single 
   const event = {target};
   foundation.handleFocusOut(event, 3);
   clock.runToFrame();
-  td.verify(mockAdapter.setAttributeForElementIndex(2, 'tabindex', 0), {times: 1});
+  td.verify(mockAdapter.setAttributeForElementIndex(2, 'tabindex', '0'), {times: 1});
 });
 
 test('#handleFocusOut sets tabindex=0 to first item when focus leaves single selection list that has no '
@@ -171,7 +171,7 @@ test('#handleFocusOut sets tabindex=0 to first item when focus leaves single sel
   const event = {target};
   foundation.handleFocusOut(event, 3);
   clock.runToFrame();
-  td.verify(mockAdapter.setAttributeForElementIndex(0, 'tabindex', 0), {times: 1});
+  td.verify(mockAdapter.setAttributeForElementIndex(0, 'tabindex', '0'), {times: 1});
 });
 
 test('#handleFocusOut does not set tabindex=0 to selected list item when focus moves to next list item.', () => {
@@ -208,7 +208,7 @@ test('#handleFocusOut sets tabindex=0 to first selected index when focus leaves 
   const clock = installClock();
   foundation.handleFocusOut(event, 2);
   clock.runToFrame();
-  td.verify(mockAdapter.setAttributeForElementIndex(2, 'tabindex', 0), {times: 1});
+  td.verify(mockAdapter.setAttributeForElementIndex(2, 'tabindex', '0'), {times: 1});
 });
 
 test('#handleKeydown does nothing if the key is not used for navigation', () => {
@@ -695,7 +695,7 @@ test('#handleClick when singleSelection=true on a list item should cause the lis
   td.when(mockAdapter.getListItemCount()).thenReturn(3);
   foundation.handleClick(1, false);
 
-  td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', 0), {times: 1});
+  td.verify(mockAdapter.setAttributeForElementIndex(1, 'tabindex', '0'), {times: 1});
 });
 
 test('#handleClick when singleSelection=true on a button subelement should not cause the list item to be selected',
@@ -727,7 +727,7 @@ test('#handleClick when singleSelection=true on the first element when already s
   foundation.handleClick(0, false);
   foundation.handleClick(0, false);
 
-  td.verify(mockAdapter.setAttributeForElementIndex(0, 'tabindex', 0), {times: 2});
+  td.verify(mockAdapter.setAttributeForElementIndex(0, 'tabindex', '0'), {times: 2});
 });
 
 test('#handleClick when toggleCheckbox=false does not change the checkbox state', () => {

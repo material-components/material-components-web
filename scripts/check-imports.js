@@ -42,7 +42,7 @@ const path = require('path');
 
 const {sync: globSync} = require('glob');
 const {default: traverse} = require('babel-traverse');
-const babylon = require('babylon');
+const parser = require('@babel/parser');
 
 let exitCode = 0;
 main();
@@ -57,7 +57,7 @@ function main() {
 function check(srcFile) {
   const pkgRoot = findPkgRoot(srcFile);
   const src = fs.readFileSync(srcFile, 'utf8');
-  const ast = babylon.parse(src, {sourceType: 'module'});
+  const ast = parser.parse(src, {sourceType: 'module'});
 
   traverse(ast, {
     'ImportDeclaration'({node}) {

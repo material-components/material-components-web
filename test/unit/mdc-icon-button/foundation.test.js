@@ -26,7 +26,7 @@ import td from 'testdouble';
 
 import {setupFoundationTest} from '../helpers/setup';
 import {verifyDefaultAdapter} from '../helpers/foundation';
-import MDCIconButtonToggleFoundation from '../../../packages/mdc-icon-button/foundation';
+import {MDCIconButtonToggleFoundation} from '../../../packages/mdc-icon-button/foundation';
 
 const {strings, cssClasses} = MDCIconButtonToggleFoundation;
 
@@ -48,13 +48,13 @@ test('defaultAdapter returns a complete adapter implementation', () => {
 
 const setupTest = () => setupFoundationTest(MDCIconButtonToggleFoundation);
 
-test(`isOn is false if hasClass{${cssClasses.ICON_BUTTON_ON}) returns false`, () => {
+test(`isOn is false if hasClass(${cssClasses.ICON_BUTTON_ON}) returns false`, () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass(cssClasses.ICON_BUTTON_ON)).thenReturn(false);
   assert.isFalse(foundation.isOn());
 });
 
-test(`isOn is true if hasClass{${cssClasses.ICON_BUTTON_ON}) returns true`, () => {
+test(`isOn is true if hasClass(${cssClasses.ICON_BUTTON_ON}) returns true`, () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass(cssClasses.ICON_BUTTON_ON)).thenReturn(true);
   assert.isTrue(foundation.isOn());

@@ -9,6 +9,9 @@
     "radio"
   ],
   "main": "dist/mdc.radio.js",
+  "module": "index.js",
+  "sideEffects": false,
+  "types": "dist/mdc.radio.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git"
@@ -18,7 +21,7 @@
     "@material/base": "^0.41.0",
     "@material/feature-targeting": "^0.44.1",
     "@material/ripple": "^0.44.1",
-    "@material/selection-control": "^0.44.1",
-    "@material/theme": "^0.43.0"
+    "@material/theme": "^0.43.0",
+    "tslib": "^1.9.3"
   }
 }

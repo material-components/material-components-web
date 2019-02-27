@@ -83,7 +83,7 @@ class DiffBaseParser {
       if (process.env.TRAVIS_BRANCH) {
         baseBranch = `origin/${process.env.TRAVIS_BRANCH}`;
       } else {
-        baseBranch = await this.gitHubApi_.getPullRequestBaseBranch(prNumber);
+        baseBranch = await this.gitHubApi_.getPullRequestBaseBranch(prNumber) || baseBranch;
       }
     }
     return this.parseDiffBase(baseBranch);

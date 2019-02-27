@@ -22,7 +22,7 @@
  */
 
 import td from 'testdouble';
-import MDCModalDrawerFoundation from '../../../packages/mdc-drawer/modal/foundation';
+import {MDCModalDrawerFoundation} from '../../../packages/mdc-drawer/modal/foundation';
 
 suite('MDCModalDrawerFoundation');
 
@@ -48,7 +48,8 @@ test('#closed untraps the focus when drawer finishes animating close', () => {
 });
 
 test('#handleScrimClick closes the drawer', () => {
-  const {foundation} = setupTest();
+  const foundation = new MDCModalDrawerFoundation();
+  foundation.close = td.func('close');
   foundation.handleScrimClick();
   td.verify(foundation.close(), {times: 1});
 });

@@ -26,7 +26,7 @@ import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
-import MDCTabBarFoundation from '../../../packages/mdc-tab-bar/foundation';
+import {MDCTabBarFoundation} from '../../../packages/mdc-tab-bar/foundation';
 
 suite('MDCTabBarFoundation');
 
