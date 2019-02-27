@@ -39,8 +39,7 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
   constructor(
       root: Element,
       foundation?: FoundationType,
-      // tslint:disable-next-line:no-any a component can pass in anything it needs to the constructor
-      ...args: any[]
+      ...args: Array<unknown>
   ) {
     this.root_ = root;
     this.initialize(...args);
@@ -52,8 +51,7 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
   }
 
   /* istanbul ignore next: method param only exists for typing purposes; it does not need to be unit tested */
-  // tslint:disable-next-line:no-any a component can pass in anything it needs to initialize
-  initialize(..._args: any[]) {
+  initialize(..._args: Array<unknown>) {
     // Subclasses can override this to do any additional setup work that would be considered part of a
     // "constructor". Essentially, it is a hook into the parent constructor before the foundation is
     // initialized. Any additional arguments besides root and foundation will be passed in here.
