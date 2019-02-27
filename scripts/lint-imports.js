@@ -42,7 +42,10 @@ lintAllFiles();
 
 function lintAllFiles() {
   const searchPattern = path.join(packagesDir, '**/*.ts');
-  const inputFilePaths = glob.sync(searchPattern, {nodir: true, ignore: ['**/node_modules/**']});
+  const inputFilePaths = glob.sync(searchPattern, {
+    nodir: true,
+    ignore: ['**/node_modules/**', '**/dist/**', '**/*.d.ts'],
+  });
 
   const customLinterAnsi = colors.bold.yellow('Import Linter');
   console.log(`${customLinterAnsi}: Checking ${inputFilePaths.length.toLocaleString()} TypeScript files...\n`);
