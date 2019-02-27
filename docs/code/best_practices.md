@@ -133,13 +133,3 @@ export class MDCAwesomeComponent extends MDCComponent<MDCComponentFoundation> {
 }
 ```
 
-### For key/value maps, use index signatures where possible
-
-Index signatures are useful for homogeneous maps of key/value pairs, while interfaces are useful for specific object signatures.
-Both are more specific than just typing something as `object`, and are thus preferable for their respective use cases.
-
-```ts
-static get strings(): {[key: string]: string} {
-  ...
-}
-```
