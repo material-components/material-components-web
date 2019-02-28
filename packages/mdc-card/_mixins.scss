@@ -34,6 +34,7 @@
 //
 
 @mixin mdc-card-core-styles($query: mdc-feature-all()) {
+  @include mdc-ripple-common($query);
   @include mdc-card-without-ripple($query);
   @include mdc-card-ripple($query);
 }
