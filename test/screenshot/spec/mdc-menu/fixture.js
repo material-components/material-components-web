@@ -26,7 +26,6 @@ window.mdc.testFixture.fontsLoaded.then(() => {
   const menuEl = document.querySelector('.mdc-menu');
   const menu = mdc.menu.MDCMenu.attachTo(menuEl);
   menu.setAnchorCorner(mdc.menu.Corner.BOTTOM_LEFT);
-  menu.setAnchorElement(buttonEl);
   menu.open = true;
 
   buttonEl.addEventListener('click', () => {
