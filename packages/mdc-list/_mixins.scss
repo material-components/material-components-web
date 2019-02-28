@@ -35,6 +35,8 @@
 
 @mixin mdc-list-core-styles($query: mdc-feature-all()) {
   @include mdc-ripple-common($query);
+  @include mdc-list-without-ripple($query);
+  @include mdc-list-ripple($query);
 }
 
 // This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
@@ -286,7 +288,7 @@
 
 // This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
 // list styles. It is recommended that most users use `mdc-list-core-styles` instead.
-@mixin mdc-list-without-ripple($query: mdc-feature-all()) {
+@mixin mdc-list-ripple($query: mdc-feature-all()) {
   // List items should support states by default, but it should be possible to opt out.
   // Direct child combinator is necessary for non-interactive modifier on parent to not
   // match this selector.

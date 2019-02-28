@@ -120,7 +120,7 @@
 
 // This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
 // button styles. It is recommended that most users use `mdc-button-core-styles` instead.
-@include mdc-button-ripple() {
+@mixin mdc-button-ripple($query: mdc-feature-all()) {
   .mdc-button {
     @include mdc-ripple-surface($query);
     @include mdc-ripple-radius-bounded($query: $query);
