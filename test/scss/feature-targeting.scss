@@ -58,6 +58,8 @@
   @include mdc-list-item-shape-radius(42, $rtl-reflexive: false, $query: mdc-feature-any());
   @include mdc-list-divider-color(red, $query: mdc-feature-any());
   @include mdc-list-group-subheader-ink-color(red, $query: mdc-feature-any());
+  @include mdc-list-ripple($query: mdc-feature-any());
+  @include mdc-list-without-ripple($query: mdc-feature-any());
 
   // Menu
   @include mdc-menu-core-styles($query: mdc-feature-any());
@@ -105,6 +107,8 @@
   @include mdc-switch-toggled-on-thumb-color(on-surface, $query: mdc-feature-any());
   @include mdc-switch-toggled-off-track-color(on-surface, $query: mdc-feature-any());
   @include mdc-switch-toggled-off-thumb-color(on-surface, $query: mdc-feature-any());
+  @include mdc-switch-ripple($query: mdc-feature-any());
+  @include mdc-switch-without-ripple($query: mdc-feature-any());
 
   // Theme
   @include mdc-theme-core-styles($query: mdc-feature-any());
