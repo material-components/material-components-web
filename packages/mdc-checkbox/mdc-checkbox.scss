@@ -20,8 +20,5 @@
 // THE SOFTWARE.
 //
 
-@import "@material/ripple/mixins";
 @import "./mixins";
-@include mdc-ripple-common;
 @include mdc-checkbox-core-styles;
-@include mdc-checkbox-ripple;
