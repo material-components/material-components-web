@@ -24,6 +24,8 @@
   @include mdc-button-shape-radius(0, $query: mdc-feature-any());
   @include mdc-button-horizontal-padding(0, $query: mdc-feature-any());
   @include mdc-button-outline-width(0, $query: mdc-feature-any());
+  @include mdc-button-ripple($query: mdc-feature-any());
+  @include mdc-button-without-ripple($query: mdc-feature-any());
 
   // Card
   @include mdc-card-core-styles($query: mdc-feature-any());
