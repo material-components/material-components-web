@@ -20,7 +20,7 @@
     "lint:js": "eslint test scripts webpack.config.js demos/webpack.config.js karma.conf.js",
     "lint:ts": "tslint --exclude \"**/*.d.ts\" \"packages/**/*.ts\" \"test/**/*.ts\" \"scripts/**/*.ts\"",
     "lint:html": "find test/screenshot/spec/ -name '*.html' | grep -v 'index.html$' | xargs htmllint",
-    "lint:imports": "node scripts/check-imports.js",
+    "lint:imports": "node scripts/lint-imports.js",
     "lint": "npm-run-all --parallel lint:*",
     "postinstall": "lerna bootstrap",
     "pretest": "npm run lint",
