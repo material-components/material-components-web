@@ -1,3 +1,42 @@
+<a name="1.0.0-0"></a>
+# [1.0.0-0](https://github.com/material-components/material-components-web/compare/v0.44.0...v1.0.0-0) (2019-02-28)
+
+
+### Bug Fixes
+
+* **list:** Update default notifyAction impl to emit object ([#4356](https://github.com/material-components/material-components-web/issues/4356)) ([ed1aeb2](https://github.com/material-components/material-components-web/commit/ed1aeb2)), closes [#4355](https://github.com/material-components/material-components-web/issues/4355)
+* **menu:** Read index property from list item event detail ([#4368](https://github.com/material-components/material-components-web/issues/4368)) ([5eb5a01](https://github.com/material-components/material-components-web/commit/5eb5a01)), closes [#4356](https://github.com/material-components/material-components-web/issues/4356)
+* **ripple:** Use mdc-dom.matches everywhere ([#4372](https://github.com/material-components/material-components-web/issues/4372)) ([a2aa3c8](https://github.com/material-components/material-components-web/commit/a2aa3c8)), closes [#4340](https://github.com/material-components/material-components-web/issues/4340)
+* **text-field:** Set char counter text not to wrap ([#4423](https://github.com/material-components/material-components-web/issues/4423)) ([9b7dce7](https://github.com/material-components/material-components-web/commit/9b7dce7))
+
+
+### Code Refactoring
+
+* **animation:** Remove `transformStyleProperties` export ([#4453](https://github.com/material-components/material-components-web/issues/4453)) ([aa44991](https://github.com/material-components/material-components-web/commit/aa44991)), closes [/github.com/material-components/material-components-web/pull/4407#discussion_r258668567](https://github.com//github.com/material-components/material-components-web/pull/4407/issues/discussion_r258668567)
+
+
+### Features
+
+* Convert packages to TypeScript ([#4451](https://github.com/material-components/material-components-web/issues/4451)) ([ad5743a](https://github.com/material-components/material-components-web/commit/ad5743a))
+* **feature-targeting:** Elevation, ripple, theme, typography ([#4383](https://github.com/material-components/material-components-web/issues/4383)) ([4c2a63c](https://github.com/material-components/material-components-web/commit/4c2a63c))
+* **feature-targeting:** Rename main mixins to end with `-core-styles` ([#4404](https://github.com/material-components/material-components-web/issues/4404)) ([3102351](https://github.com/material-components/material-components-web/commit/3102351))
+* **menu-surface:** Update setPosition adapter API to use numeric values ([#4351](https://github.com/material-components/material-components-web/issues/4351)) ([701ed5c](https://github.com/material-components/material-components-web/commit/701ed5c)), closes [#4273](https://github.com/material-components/material-components-web/issues/4273)
+* **ripple:** Reduce press opacity by 25% ([#4350](https://github.com/material-components/material-components-web/issues/4350)) ([f5d2170](https://github.com/material-components/material-components-web/commit/f5d2170))
+* **shape:** add feature targeting to public mixins ([#4384](https://github.com/material-components/material-components-web/issues/4384)) ([e0860dd](https://github.com/material-components/material-components-web/commit/e0860dd))
+* **tab:** Implement a base states color mixin for Tab ([#4421](https://github.com/material-components/material-components-web/issues/4421)) ([35c3721](https://github.com/material-components/material-components-web/commit/35c3721))
+
+
+### BREAKING CHANGES
+
+* The previously deprecated mdc-icon-toggle package has been removed; use mdc-icon-button instead.
+* **animation:** The `transformStyleProperties` array export has been removed from `mdc-animation`. Please use `getCorrectPropertyName(window, 'transform')` instead.
+* **ripple:** `getMatchesProperty()` has been removed from `@material/ripple/util` and `@material/tab-scroller/util`. Use `matches()` from `@material/dom/ponyfill` instead.
+* **feature-targeting:** The main mixins recently introduced to some packages in in v0.44.0 have been renamed from `mdc-foo` to `mdc-foo-core-styles`. (Importing baseline styles via `mdc-foo.scss` remains unaffected.)
+* **list:** The default `MDCListAdapter.notifyAction()` implementation now emits an object of type `{index: number}` rather than a primitive `number` directly.
+* **menu-surface:** `MDCMenuSurfaceAdapter.setPosition()` now expects an object with properties of type `number` rather than `string`. E.g., `setPosition({top: '5px', left: '10px'})` is now `setPosition({top: 5, left: 10})`.
+
+
+
 <a name="0.44.1"></a>
 ## [0.44.1](https://github.com/material-components/material-components-web/compare/v0.44.0...v0.44.1) (2019-02-19)
 
