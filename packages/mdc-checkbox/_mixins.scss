@@ -39,7 +39,7 @@
   @include mdc-checkbox-ripple($query);
 }
 
-// This API is intended for use by frameworks that may want to separate the ripple related styles from the other
+// This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
 // checkbox styles. It is recommended that most users use `mdc-checkbox-core-styles` instead.
 @mixin mdc-checkbox-without-ripple($query: mdc-feature-all()) {
   // postcss-bem-linter: define checkbox
@@ -176,6 +176,8 @@
   // postcss-bem-linter: end
 }
 
+// This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
+// checkbox styles. It is recommended that most users use `mdc-checkbox-core-styles` instead.
 @mixin mdc-checkbox-ripple($query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 

@@ -33,6 +33,8 @@
   @include mdc-card-outline(red, $query: mdc-feature-any());
   @include mdc-card-shape-radius(0, $query: mdc-feature-any());
   @include mdc-card-media-aspect-ratio(1, 1, $query: mdc-feature-any());
+  @include mdc-card-ripple($query: mdc-feature-any());
+  @include mdc-card-without-ripple($query: mdc-feature-any());
 
   // Checkbox
   @include mdc-checkbox-core-styles($query: mdc-feature-any());

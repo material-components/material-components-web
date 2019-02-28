@@ -38,6 +38,8 @@
   @include mdc-button-ripple($query);
 }
 
+// This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
+// button styles. It is recommended that most users use `mdc-button-core-styles` instead.
 @mixin mdc-button-without-ripple($query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
@@ -116,6 +118,8 @@
   // postcss-bem-linter: end
 }
 
+// This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
+// button styles. It is recommended that most users use `mdc-button-core-styles` instead.
 @include mdc-button-ripple() {
   .mdc-button {
     @include mdc-ripple-surface($query);
