@@ -38,7 +38,7 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
     return new MDCMenuSurface(root);
   }
 
-  anchorElement: Element | null = null;
+  anchorElement!: Element | null; // assigned in initialSyncWithDOM()
 
   protected root_!: HTMLElement; // assigned in MDCComponent constructor
 
@@ -54,9 +54,7 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
 
   initialSyncWithDOM() {
     const parentEl = this.root_.parentElement;
-    if (parentEl && parentEl.classList.contains(cssClasses.ANCHOR)) {
-      this.anchorElement = parentEl;
-    }
+    this.anchorElement = parentEl && parentEl.classList.contains(cssClasses.ANCHOR) ? parentEl : null;
 
     if (this.root_.classList.contains(cssClasses.FIXED)) {
       this.setFixedPosition(true);

@@ -45,12 +45,28 @@ function getFixture(open, fixedPosition = false) {
   `;
 }
 
-function setupTest(open = false, fixedPosition = false) {
+function getAnchorFixture(menuFixture) {
+  const anchorEl = bel`
+    <div class="mdc-menu-surface--anchor">
+      <button class="mdc-button">Open</button>
+    </div>
+  `;
+  anchorEl.appendChild(menuFixture);
+  return anchorEl;
+}
+
+function setupTest(open = false, fixedPosition = false, withAnchor = false) {
   const root = getFixture(open, fixedPosition);
   const MockFoundationConstructor = td.constructor(MDCMenuSurfaceFoundation);
   const mockFoundation = new MockFoundationConstructor();
-  const component = new MDCMenuSurface(root, mockFoundation);
-  return {root, component, mockFoundation};
+
+  const fixtures = {root, mockFoundation};
+  if (withAnchor) {
+    fixtures.anchor = getAnchorFixture(root);
+  }
+
+  fixtures.component = new MDCMenuSurface(root, mockFoundation);
+  return fixtures;
 }
 
 suite('MDCMenuSurface');
@@ -128,6 +144,11 @@ test('setMenuSurfaceAnchorElement', () => {
   const myElement = {};
   component.setMenuSurfaceAnchorElement(myElement);
   assert.equal(component.anchorElement, myElement);
+});
+
+test('anchorElement is properly initialized when the DOM contains an anchor', () => {
+  const {component, anchor} = setupTest(false, false, true);
+  assert.equal(component.anchorElement, anchor);
 });
 
 test('hoistMenuToBody', () => {
