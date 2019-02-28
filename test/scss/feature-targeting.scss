@@ -75,6 +75,8 @@
   @include mdc-radio-checked-stroke-color(red, $query: mdc-feature-any());
   @include mdc-radio-ink-color(red, $query: mdc-feature-any());
   @include mdc-radio-focus-indicator-color(red, $query: mdc-feature-any());
+  @include mdc-radio-ripple($query: mdc-feature-any());
+  @include mdc-radio-without-ripple($query: mdc-feature-any());
 
   // Ripple
   @include mdc-ripple-core-styles($query: mdc-feature-any());
