@@ -540,6 +540,11 @@ test('#adapter.setLineRippleTransformOrigin calls the setRippleCenter method on 
   td.verify(lineRipple.setRippleCenter(100));
 });
 
+test('#adapter.hasAutofillValue returns false when input has not auto-filled value', () => {
+  const {component} = setupTest();
+  assert.isFalse(component.getDefaultFoundation().adapter_.hasAutofillValue());
+});
+
 function setupMockFoundationTest(root = getFixture()) {
   const MockFoundationConstructor = td.constructor(MDCTextFieldFoundation);
   const mockFoundation = new MockFoundationConstructor();
