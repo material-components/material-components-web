@@ -49,7 +49,7 @@ test('#announce temporarily disables ARIA attributes and then restores them', ()
 
   util.announce(ariaEl, labelEl);
 
-  // Trim to remove `&nbsp;` (see comment in util.js)
+  // Trim to remove `&nbsp;` (see comment in util.ts)
   assert.equal(labelEl.textContent.trim(), '');
   assert.equal(ariaEl.getAttribute('aria-live'), 'off');
 
@@ -97,7 +97,7 @@ test('#announce second argument is optional', () => {
 
   util.announce(ariaEl);
 
-  // Trim to remove `&nbsp;` (see comment in util.js)
+  // Trim to remove `&nbsp;` (see comment in util.ts)
   assert.equal(ariaEl.textContent.trim(), '');
   assert.equal(ariaEl.getAttribute(ARIA_LIVE_LABEL_TEXT_ATTR), labelText);
   assert.equal(ariaEl.getAttribute('aria-live'), 'off');

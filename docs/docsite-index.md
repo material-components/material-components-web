@@ -45,11 +45,11 @@ Then include MDC markup...
 mdc.ripple.MDCRipple.attachTo(document.querySelector('.foo-button'));
 ```
 
-However, it is highly recommended to install Material Components for the web via npm and consume its ES2015 modules and Sass directly. This is outlined in the steps below.
+However, it is highly recommended to install Material Components for the web via npm and consume its ES Modules and Sass directly. This is outlined in the steps below.
 
-## Using MDC Web with ES2015 and Sass
+## Using MDC Web with ES Modules and Sass
 
-> **Note:** This assumes you have Node.js and npm installed locally, and have configured webpack to compile Sass and ES2015. See the [Getting Started Guide](getting-started.md) for pointers on how to configure webpack.
+> **Note:** This assumes you have Node.js and npm installed locally, and have configured webpack to compile Sass and ES Modules. See the [Getting Started Guide](getting-started.md) for pointers on how to configure webpack.
 
 1.  {: .step-list-item } ### Install components
 
@@ -99,7 +99,7 @@ However, it is highly recommended to install Material Components for the web via
 
 4.  {: .step-list-item } ### Add scripts and instantiate components
 
-    Next, import the ES2015 file for `@material/ripple` into your application, and initialize an `MDCRipple` with a DOM element:
+    Next, import the ES Module file for `@material/ripple` into your application, and initialize an `MDCRipple` with a DOM element:
 
     ```js
     import {MDCRipple} from '@material/ripple';
