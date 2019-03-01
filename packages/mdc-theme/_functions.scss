@@ -66,15 +66,16 @@
 }
 
 @function mdc-theme-is-var-with-fallback_($style) {
-  @return type-of($style) == 'map' and map-has-key($style, 'var') and map-has-key($style, 'fallback');
+  @return type-of($style) == "map" and map-has-key($style, "name") and map-has-key($style, "fallback");
 }
 
 @function mdc-theme-var-fallback_($style) {
-  @return map-get($style, 'fallback');
+  @return map-get($style, "fallback");
 }
 
 @function mdc-theme-var_($style) {
-  $var: map-get($style, 'var');
+  $var: map-get($style, "name");
   $fallback: mdc-theme-var-fallback_($style);
+
   @return var(#{$var}, $fallback);
 }
