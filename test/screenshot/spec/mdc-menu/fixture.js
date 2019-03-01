@@ -30,7 +30,26 @@ window.mdc.testFixture.fontsLoaded.then(() => {
   menu.open = true;
 
   buttonEl.addEventListener('click', () => {
+    menu.setFocusItemIndex(-1);
     menu.open = !menu.open;
+  });
+
+  buttonEl.addEventListener('keydown', (evt) => {
+    const arrowUp = evt.key === 'ArrowUp' || evt.keyCode === 38;
+    const arrowDown = evt.key === 'ArrowDown' || evt.keyCode === 40;
+    const isEnter = evt.key === 'Enter' || evt.keyCode === 13;
+
+    if (arrowUp || arrowDown || isEnter) {
+      evt.preventDefault();
+      let focusItemIndex = 0;
+
+      if (arrowUp) {
+        focusItemIndex = menu.items.length - 1;
+      }
+      menu.setFocusItemIndex(focusItemIndex);
+
+      menu.open = true;
+    }
   });
 
   window.mdc.testFixture.notifyDomReady();

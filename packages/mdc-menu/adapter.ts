@@ -79,4 +79,16 @@ export interface MDCMenuAdapter {
    * Emit an event when a menu item is selected.
    */
   notifySelected(evtData: MDCMenuItemEventDetail): void;
+
+  /** Returns the menu item count. */
+  getMenuItemCount(): number;
+
+  /** Focuses the menu item at given index. */
+  focusItemAtIndex(index: number): void;
+
+  /** Returns true if menu root element is on focus. */
+  isFocused(): boolean;
+
+  /** Focuses the menu root element. */
+  focus(): void;
 }
