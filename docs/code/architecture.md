@@ -33,7 +33,7 @@ we've only implemented a vanilla JavaScript version of the Adapter.
 
 MDC Web components are written in [TypeScript](https://www.typescriptlang.org/)
 to increase developer velocity and reduce errors. Our npm releases include
-UMD JavaScript bundles, ES2015 modules containing ES5, and `.d.ts` typing
+UMD JavaScript bundles, ES Modules containing ES5, and `.d.ts` typing
 declaration files for TypeScript users.
 See [Importing JS](../importing-js.md) for more information.
 

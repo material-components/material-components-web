@@ -22,7 +22,7 @@ npm install @material/base
 
 Then include it in your code in one of the following ways:
 
-#### ES2015+
+#### ES Module syntax
 
 ```javascript
 import {MDCComponent, MDCFoundation} from '@material/base';
