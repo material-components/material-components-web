@@ -60,7 +60,7 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
 
   get shouldFloat(): boolean {
     return this.shouldAlwaysFloat_ || this.isFocused_ || Boolean(this.getValue()) || this.isBadInput_() ||
-        this.adapter_.hasAutofillValue();
+        this.hasAutofillValue_();
   }
 
   /**
@@ -482,6 +482,11 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
       },
       value: '',
     };
+  }
+
+  private hasAutofillValue_(): boolean {
+    // For testdouble
+    return this.adapter_ ? this.adapter_.hasAutofillValue() : false;
   }
 }
 

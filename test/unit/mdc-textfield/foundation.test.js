@@ -899,6 +899,22 @@ test('label floats when type is date even if value is empty', () => {
   td.verify(mockAdapter.floatLabel(true));
 });
 
+test('#shouldFloat label should float when input has auto-filled value', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasAutofillValue()).thenReturn(true);
+
+  foundation.init();
+  assert.isTrue(foundation.shouldFloat);
+});
+
+test('#shouldFloat label should not float when input has no auto-filled value', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.hasAutofillValue()).thenReturn(false);
+
+  foundation.init();
+  assert.isFalse(foundation.shouldFloat);
+});
+
 test('#handleInput activates focus state', () => {
   const {foundation, mockAdapter} = setupTest();
 
