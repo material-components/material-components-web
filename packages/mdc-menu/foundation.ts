@@ -37,6 +37,7 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
   }
 
   private closeAnimationEndTimerId_ = 0;
+  private focusItemIndex_ = -1;
 
   /**
    * @see {@link MDCMenuAdapter} for typing information on parameters and return types.
@@ -54,6 +55,10 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
       getParentElement: () => null,
       getSelectedElementIndex: () => -1,
       notifySelected: () => undefined,
+      getMenuItemCount: () => 0,
+      focusItemAtIndex: () => undefined,
+      isFocused: () => false,
+      focus: () => undefined,
     };
     // tslint:enable:object-literal-sort-keys
   }
@@ -77,6 +82,17 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     if (isTab) {
       this.adapter_.closeSurface();
     }
+
+    const arrowUp = evt.key === 'ArrowUp' || evt.keyCode === 38;
+    const arrowDown = evt.key === 'ArrowDown' || evt.keyCode === 40;
+
+    if (!this.adapter_.isFocused()) return;
+
+    if (arrowUp || arrowDown) {
+      evt.preventDefault();
+      const focusItemIndex = arrowUp ? this.adapter_.getMenuItemCount() - 1 : 0;
+      this.focusItemAtIndex_(focusItemIndex);
+    }
   }
 
   handleItemAction(listItem: Element) {
@@ -95,6 +111,27 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
         this.handleSelectionGroup_(selectionGroup, index);
       }
     }, MDCMenuSurfaceFoundation.numbers.TRANSITION_CLOSE_DURATION);
+  }
+
+  handleMenuSurfaceOpened() {
+    this.focusItemAtIndex_(this.focusItemIndex_);
+  }
+
+  /**
+   * Sets the focus item index where the menu should focus on open. Focuses
+   * the menu root element by default.
+   */
+  setFocusItemIndex(index: number) {
+    const lastItemIndex = this.adapter_.getMenuItemCount() - 1;
+    this.focusItemIndex_ = Math.min(lastItemIndex, index);
+  }
+
+  private focusItemAtIndex_(index: number) {
+    if (index < 0) {
+      this.adapter_.focus();
+    } else {
+      this.adapter_.focusItemAtIndex(index);
+    }
   }
 
   /**
