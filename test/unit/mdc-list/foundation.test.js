@@ -44,7 +44,7 @@ test('exports cssClasses', () => {
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCListFoundation, [
     'getListItemCount', 'getFocusedElementIndex', 'setAttributeForElementIndex',
-    'removeAttributeForElementIndex', 'addClassForElementIndex', 'removeClassForElementIndex',
+    'addClassForElementIndex', 'removeClassForElementIndex',
     'focusItemAtIndex', 'setTabIndexForListItemChildren', 'hasRadioAtIndex',
     'hasCheckboxAtIndex', 'isCheckboxCheckedAtIndex', 'setCheckedCheckboxOrRadioAtIndex',
     'notifyAction', 'isFocusInsideList',
@@ -577,7 +577,6 @@ test('#handleKeydown space key is triggered 2x when singleSelection does not un-
 
   td.verify(preventDefault(), {times: 2});
   td.verify(mockAdapter.setAttributeForElementIndex(0, strings.ARIA_SELECTED, 'true'), {times: 2});
-  td.verify(mockAdapter.removeAttributeForElementIndex(0, strings.ARIA_SELECTED), {times: 0});
 });
 
 test('#handleKeydown space key is triggered 2x when singleSelection is true on second ' +
