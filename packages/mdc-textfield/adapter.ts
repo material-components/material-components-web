@@ -97,6 +97,9 @@ export interface MDCTextFieldInputAdapter {
    * Deregisters an event listener on the native input element for a given event.
    */
   deregisterInputInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
+
+  /** Returns true if input element has browser auto-filled value. */
+  hasAutofillValue(): boolean;
 }
 
 export interface MDCTextFieldLabelAdapter {

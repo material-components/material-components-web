@@ -386,6 +386,7 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
       isFocused: () => document.activeElement === this.input_,
       registerInputInteractionHandler: (evtType, handler) => this.input_.addEventListener(evtType, handler),
       deregisterInputInteractionHandler: (evtType, handler) => this.input_.removeEventListener(evtType, handler),
+      hasAutofillValue: () => ponyfill.matches(this.input_, ':-webkit-autofill'),
     };
     // tslint:enable:object-literal-sort-keys
   }

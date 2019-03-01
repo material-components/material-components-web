@@ -55,7 +55,8 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   }
 
   get shouldFloat(): boolean {
-    return this.shouldAlwaysFloat_ || this.isFocused_ || Boolean(this.getValue()) || this.isBadInput_();
+    return this.shouldAlwaysFloat_ || this.isFocused_ || Boolean(this.getValue()) || this.isBadInput_() ||
+        this.adapter_.hasAutofillValue();
   }
 
   get shouldShake(): boolean {
@@ -89,6 +90,7 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
       hasOutline: () => false,
       notchOutline: () => undefined,
       closeOutline: () => undefined,
+      hasAutofillValue: () => false,
     };
     // tslint:enable:object-literal-sort-keys
   }
