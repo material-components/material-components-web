@@ -47,7 +47,7 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
 
   private handleKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
   private handleItemAction_!: CustomEventListener<MDCListActionEvent>; // assigned in initialSyncWithDOM()
-  private afterOpenedCallback_!: EventListener; // assigned in initialSyncWithDOM()
+  private handleMenuSurfaceOpened_!: EventListener; // assigned in initialSyncWithDOM()
 
   initialize(
       menuSurfaceFactory: MDCMenuSurfaceFactory = (el) => new MDCMenuSurface(el),
@@ -69,9 +69,9 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
 
     this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt);
     this.handleItemAction_ = (evt) => this.foundation_.handleItemAction(this.items[evt.detail.index]);
-    this.afterOpenedCallback_ = () => this.handleAfterOpened_();
+    this.handleMenuSurfaceOpened_ = () => this.foundation_.handleMenuSurfaceOpened();
 
-    this.menuSurface_.listen(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, this.afterOpenedCallback_);
+    this.menuSurface_.listen(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, this.handleMenuSurfaceOpened_);
     this.listen('keydown', this.handleKeydown_);
     this.listen(MDCListFoundation.strings.ACTION_EVENT, this.handleItemAction_);
   }
@@ -82,7 +82,7 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
     }
 
     this.menuSurface_.destroy();
-    this.menuSurface_.unlisten(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, this.afterOpenedCallback_);
+    this.menuSurface_.unlisten(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, this.handleMenuSurfaceOpened_);
     this.unlisten('keydown', this.handleKeydown_);
     this.unlisten(MDCListFoundation.strings.ACTION_EVENT, this.handleItemAction_);
     super.destroy();
@@ -117,6 +117,14 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
 
   set quickOpen(quickOpen: boolean) {
     this.menuSurface_.quickOpen = quickOpen;
+  }
+
+  /**
+   * Sets focus item index where the menu should focus on open. Focuses the
+   * menu root element by default.
+   */
+  setFocusItemIndex(index: number) {
+    this.foundation_.setFocusItemIndex(index);
   }
 
   /**
@@ -166,13 +174,6 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
     this.menuSurface_.anchorElement = element;
   }
 
-  handleAfterOpened_() {
-    const list = this.items;
-    if (list.length > 0) {
-      (list[0] as HTMLElement).focus();
-    }
-  }
-
   getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
@@ -206,6 +207,10 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
         index: evtData.index,
         item: this.items[evtData.index],
       }),
+      getMenuItemCount: () => this.items.length,
+      focusItemAtIndex: (index) => (this.items[index] as HTMLElement).focus(),
+      isFocused: () => document.activeElement === this.root_,
+      focus: () => (this.root_ as HTMLElement).focus(),
     };
     // tslint:enable:object-literal-sort-keys
     return new MDCMenuFoundation(adapter);
