@@ -120,11 +120,15 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   }
 
   /**
-   * Sets focus item index where the menu should focus on open. Focuses the
-   * menu root element by default.
+   * Sets the index of the menu item that will be focused every time the menu opens.
+   * Pass {@link numbers.FOCUS_ROOT_INDEX} to indicate that the root menu element,
+   * rather than a specific list item, should receive focus when the menu opens
+   * (this is the default behavior).
+   * @param index Index of the menu item to focus when the menu opens,
+   *     or {@link numbers.FOCUS_ROOT_INDEX} for the root menu element.
    */
-  setFocusItemIndex(index: number) {
-    this.foundation_.setFocusItemIndex(index);
+  setDefaultFocusItemIndex(index: number) {
+    this.foundation_.setDefaultFocusItemIndex(index);
   }
 
   /**
@@ -209,8 +213,8 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
       }),
       getMenuItemCount: () => this.items.length,
       focusItemAtIndex: (index) => (this.items[index] as HTMLElement).focus(),
-      isFocused: () => document.activeElement === this.root_,
-      focus: () => (this.root_ as HTMLElement).focus(),
+      isRootFocused: () => document.activeElement === this.root_,
+      focusRoot: () => (this.root_ as HTMLElement).focus(),
     };
     // tslint:enable:object-literal-sort-keys
     return new MDCMenuFoundation(adapter);

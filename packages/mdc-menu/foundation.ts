@@ -25,7 +25,7 @@ import {MDCFoundation} from '@material/base/foundation';
 import {MDCListFoundation} from '@material/list/foundation';
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
 import {MDCMenuAdapter} from './adapter';
-import {cssClasses, strings} from './constants';
+import {cssClasses, strings, numbers} from './constants';
 
 export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
   static get cssClasses() {
@@ -36,8 +36,12 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     return strings;
   }
 
+  static get numbers() {
+    return numbers;
+  }
+
   private closeAnimationEndTimerId_ = 0;
-  private focusItemIndex_ = -1;
+  private defaultFocusItemIndex_ = numbers.FOCUS_ROOT_INDEX;
 
   /**
    * @see {@link MDCMenuAdapter} for typing information on parameters and return types.
@@ -57,8 +61,8 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
       notifySelected: () => undefined,
       getMenuItemCount: () => 0,
       focusItemAtIndex: () => undefined,
-      isFocused: () => false,
-      focus: () => undefined,
+      isRootFocused: () => false,
+      focusRoot: () => undefined,
     };
     // tslint:enable:object-literal-sort-keys
   }
@@ -86,11 +90,11 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     const arrowUp = evt.key === 'ArrowUp' || evt.keyCode === 38;
     const arrowDown = evt.key === 'ArrowDown' || evt.keyCode === 40;
 
-    if (!this.adapter_.isFocused()) return;
+    if (!this.adapter_.isRootFocused()) return;
 
     if (arrowUp || arrowDown) {
       evt.preventDefault();
-      const focusItemIndex = arrowUp ? this.adapter_.getMenuItemCount() - 1 : 0;
+      const focusItemIndex = arrowDown ? 0 : (this.adapter_.getMenuItemCount() - 1);
       this.focusItemAtIndex_(focusItemIndex);
     }
   }
@@ -114,21 +118,26 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
   }
 
   handleMenuSurfaceOpened() {
-    this.focusItemAtIndex_(this.focusItemIndex_);
+    this.focusItemAtIndex_(this.defaultFocusItemIndex_);
   }
 
   /**
    * Sets the focus item index where the menu should focus on open. Focuses
    * the menu root element by default.
    */
-  setFocusItemIndex(index: number) {
-    const lastItemIndex = this.adapter_.getMenuItemCount() - 1;
-    this.focusItemIndex_ = Math.min(lastItemIndex, index);
+  setDefaultFocusItemIndex(index: number) {
+    const isIndexInRange = index >= 0 && index < this.adapter_.getMenuItemCount();
+
+    if (index === numbers.FOCUS_ROOT_INDEX || isIndexInRange) {
+      this.defaultFocusItemIndex_ = index;
+    } else {
+      throw new Error(`MDCMenuFoundation: Expected index to be in range or ${numbers.FOCUS_ROOT_INDEX} but got: ${index}`);
+    }
   }
 
   private focusItemAtIndex_(index: number) {
-    if (index < 0) {
-      this.adapter_.focus();
+    if (index === numbers.FOCUS_ROOT_INDEX) {
+      this.adapter_.focusRoot();
     } else {
       this.adapter_.focusItemAtIndex(index);
     }

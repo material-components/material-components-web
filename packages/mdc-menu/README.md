@@ -233,6 +233,10 @@ Method Signature | Description
 `getParentElement(element: Element) => Element \| null` | Returns the `.parentElement` element of the `element` provided.
 `getSelectedElementIndex(element: Element) => number` | Returns the `index` value of the element within the selection group provided, `element` that contains the `mdc-menu-item--selected` class.
 `notifySelected(index: number) => void` | Emits a `MDCMenu:selected` event for the element at the `index` specified.
+`getMenuItemCount() => number` | Returns the menu item count.
+`focusItemAtIndex(index: number)` | Focuses the menu item at given index.
+`isRootFocused() => boolean` | Returns true if menu root element is on focus.
+`focusRoot() => void` | Focuses the menu root element.
 
 ### `MDCMenuFoundation`
 
@@ -240,6 +244,8 @@ Method Signature | Description
 --- | ---
 `handleKeydown(evt: Event) => void` | Event handler for the `keydown` events within the menu.
 `handleItemAction(listItem: Element) => void` | Event handler for list's action event.
+`handleMenuSurfaceOpened() => void` | Event handler for menu surface's opened event.
+`setFocusItemIndex(index: number) => void` | Sets the index of the menu item that will be focused every time the menu opens. Pass numbers.FOCUS_ROOT_INDEX to indicate that the root menu element, rather than a specific list item, should receive focus when the menu opens (this is the default behavior).
 
 ### Events
 
