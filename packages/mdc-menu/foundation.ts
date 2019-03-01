@@ -25,7 +25,7 @@ import {MDCFoundation} from '@material/base/foundation';
 import {MDCListFoundation} from '@material/list/foundation';
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
 import {MDCMenuAdapter} from './adapter';
-import {cssClasses, strings, numbers} from './constants';
+import {cssClasses, numbers, strings} from './constants';
 
 export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
   static get cssClasses() {
@@ -131,7 +131,8 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     if (index === numbers.FOCUS_ROOT_INDEX || isIndexInRange) {
       this.defaultFocusItemIndex_ = index;
     } else {
-      throw new Error(`MDCMenuFoundation: Expected index to be in range or ${numbers.FOCUS_ROOT_INDEX} but got: ${index}`);
+      throw new Error(`MDCMenuFoundation: Expected index to be in range or ${numbers.FOCUS_ROOT_INDEX} ` +
+          `but got: ${index}`);
     }
   }
 
