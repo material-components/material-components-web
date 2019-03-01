@@ -230,8 +230,7 @@ function checkComponentImportedAddedInMDCPackage(ast) {
       if (node.source) {
         const source = node.source.value;
         const pkgFile = CLI_PACKAGE_JSON.name + '/index';
-        // TODO: remove `.ts` when typescript rewrite is complete.
-        if (source === pkgFile || source === pkgFile + '.ts') {
+        if (source === pkgFile) {
           isImported = true;
         }
       }

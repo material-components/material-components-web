@@ -281,7 +281,7 @@ any tab elements that are children of the `mdc-tab-bar` root element.
 
 #### Including in code
 
-##### ES2015
+##### ES Modules
 
 ```javascript
 import {MDCTab, MDCTabFoundation} from '@material/tabs';
@@ -360,7 +360,7 @@ The anatomy of `mdc-tab-bar-scroller` includes an instance of `mdc-tab-bar`, RTL
 
 #### Including in code
 
-##### ES2015
+##### ES Module syntax
 
 ```javascript
 import {MDCTab, MDCTabFoundation} from '@material/tabs';
