@@ -10,7 +10,7 @@ path: /docs/importing-js/
 
 Most components ship with Component / Foundation classes which are used to provide a full-fidelity Material Design component. Depending on what technology you use in your stack, there are several ways to import the JavaScript.
 
-### ES2015+
+### ES2015
 
 ```js
 import {MDCFoo, MDCFooFoundation} from '@material/foo';
@@ -20,7 +20,7 @@ Note that MDC Web's packages point `main` to pre-compiled UMD modules under `dis
 Build toolchains often assume that dependencies under `node_modules` are already ES5, and thus skip transpiling them.
 
 However, if you want to take advantage of tree-shaking and dependency sharing within MDC Web's code to reduce the size
-of your built assets, you will want to explicitly reference the package's `index.js`, which contains the ES2015+ source:
+of your built assets, you will want to explicitly reference the package's `index.js`, which contains the ES2015 source:
 
 ```js
 import {MDCFoo, MDCFooFoundation} from '@material/foo/index';
@@ -33,16 +33,20 @@ If you're using [Webpack](https://webpack.js.org/) or
 reference `/index` directly, and can continue to use the shorter
 `@material/foo` import path syntax.
 
-Note that in this case, you must ensure your build toolchain is configured to process and transpile MDC Web's modules
+Note that in this case, you must ensure your build toolchain is configured to process MDC Web's modules
 as well as your own.
 
 See the [Getting Started guide](getting-started.md) for more details on setting up an environment.
 
 #### TypeScript
 
-If you are using TypeScript, MDC Web's packages also include `.d.ts` files for your consumption. Most of the time you shouldn't need to reference these, as the TypeScript compiler should automatically find them via the `types` property found in `package.json`. There is a bundled `.d.ts` file found under the `dist` directory that maps to the respective UMD module. There are corresponding `.d.ts` files for each foundation/component/adapter/etc. within the package.
+If you are using TypeScript, MDC Web's packages also include `.d.ts` files for your consumption.
+Most of the time you shouldn't need to explicitly reference these, as the TypeScript compiler should automatically
+find them via the `types` property found in `package.json`. There is a bundled `.d.ts` file found under the `dist`
+directory that maps to the respective UMD module.
+There are corresponding `.d.ts` files for each foundation/component/adapter/etc. within the package.
 
-> NOTE: We intentionally omit `.ts` source files in our packages because the `.d.ts` files and transpiled `.js` (in UMD or ES2015+ format) are universally accepted.
+> NOTE: We intentionally omit `.ts` source files in our packages because the `.d.ts` files and transpiled `.js` (in UMD or ES2015 format) are universally accepted.
 
 ### CommonJS
 

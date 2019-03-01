@@ -261,7 +261,7 @@ class RedblueToggleFoundation extends MDCFoundation {
       deregisterInteractionHandler: (type: string, handler: EventListener) => undefined,
     };
   }
-  
+
   private toggled_ = false;
 
   constructor(adapter) {
@@ -476,11 +476,11 @@ packages
       ├── README.md # Usage instructions and API documentation
       ├── adapter.ts # Adapter interface implemented by framework wrappers and the vanilla component
       ├── foundation.ts # Framework-agnostic business logic used by wrapper libraries and the vanilla component
-      ├── component.ts # Vanilla adapter implementation for clients who aren't using a wrapper framework like React
+      ├── component.ts # Vanilla component and adapter implementations for clients who aren't using a framework
       ├── constants.ts # Constant values used by one or more files in the package (e.g., cssClasses, strings, numbers)
-      ├── index.ts # Re-exports types from other files in the package (adapter, foundation, component, util, etc.)
-      ├── types.ts # (optional) All non-component-related types and interfaces not covered by other files should go in `types.ts`
-      ├── utils.ts # (optional) Framework-agnostic helper functions (e.g., feature detection)
+      ├── index.ts # Forwards exports from other files in the package (adapter, foundation, component, util, etc.)
+      ├── types.ts # (optional) Contains types and interfaces exposed in public APIs unrelated to the vanilla component
+      ├── util.ts # (optional) Framework-agnostic helper functions (e.g., feature detection)
       ├── mdc-component.scss # The main source file for the component's CSS
       └── package.json # The components package file
 test/unit
@@ -577,9 +577,10 @@ Please put this in a comment at the top of every source file, replacing <YEAR> w
 If variables and mixins are intended to be used outside of a single stylesheet, refactor them out
 into [sass partials](http://sass-lang.com/guide#topic-4). These files can then be included in other
 stylesheets without having extra CSS omitted both times. As a rule of thumb, _never_ `@import` sass
-files which output CSS`, as it will most likely be duplicate output.
+files which output CSS, as it will most likely be duplicate output.
 
 #### Follow the BEM Pattern
+
 We follow a modified version of the [BEM](http://getbem.com/) pattern, which is defined within our
 [stylelint rules](../.stylelintrc.yaml#L252-L255). It's basically:
 
