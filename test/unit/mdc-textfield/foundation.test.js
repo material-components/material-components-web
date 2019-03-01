@@ -52,7 +52,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'getNativeInput', 'isFocused', 'activateLineRipple', 'deactivateLineRipple',
     'setLineRippleTransformOrigin', 'shakeLabel', 'floatLabel', 'hasLabel', 'getLabelWidth',
     'registerValidationAttributeChangeHandler', 'deregisterValidationAttributeChangeHandler',
-    'hasOutline', 'notchOutline', 'closeOutline',
+    'hasOutline', 'notchOutline', 'closeOutline', 'hasAutofillValue',
   ]);
 });
 
@@ -111,6 +111,7 @@ const setupValueTest = ({
   useHelperText = false,
   useLeadingIcon = false,
   useTrailingIcon = false,
+  hasAutofillValue = false,
 } = {}) => {
   const {foundation, mockAdapter, helperText} = setupTest({
     useCharacterCounter, useHelperText, useLeadingIcon, useTrailingIcon,
@@ -125,6 +126,7 @@ const setupValueTest = ({
   if (hasLabel) {
     td.when(mockAdapter.hasLabel()).thenReturn(true);
   }
+  td.when(mockAdapter.hasAutofillValue()).thenReturn(hasAutofillValue);
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
   foundation.init();
 
@@ -656,6 +658,7 @@ const setupBlurTest = () => {
     },
   };
   td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+  td.when(mockAdapter.hasAutofillValue()).thenReturn(false);
   foundation.init();
 
   return {foundation, mockAdapter, blur, nativeInput, helperText};
