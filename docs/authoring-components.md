@@ -13,45 +13,46 @@ external components that would like to interface with the MDC Web ecosystem.
 > Please note that since this project is still in its early stages of development, these practices
 may be subject to change. They will stabilize as we near towards a full release.
 
-* [Who this document is for](#who-this-document-is-for)
-* [How to build a component](#how-to-build-a-component)
-  * [Start with a simple component prototype](#start-with-a-simple-component-prototype)
-  * [Identify host environment interactions](#identify-host-environment-interactions)
-  * [Create the adapter interface](#create-the-adapter-interface)
-  * [Refactor your existing code into a foundation](#refactor-your-existing-code-into-a-foundation)
-  * [Build a component on top of that foundation, providing an adapter](#build-a-component-on-top-of-that-foundation-providing-an-adapter)
-* [What makes a good component](#what-makes-a-good-component)
-  * [Fully tested code](#fully-tested-code)
-  * [Thoroughly documented and strictly versioned adapter interface](#thoroughly-documented-and-strictly-versioned-adapter-interface)
-  * [Accessibility](#accessibility)
-  * [RTL Awareness](#rtl-awareness)
-  * [Support for theming](#support-for-theming)
-* [General Best Practices](#general-best-practices)
-  * [Do what the user expects](#do-what-the-user-expects)
-  * [Design adapter interfaces to be simple and intuitive](#design-adapter-interfaces-to-be-simple-and-intuitive)
-  * [Do not reference host objects within foundation code.](#do-not-reference-host-objects-within-foundation-code)
-  * [Clean up all references on destruction](#clean-up-all-references-on-destruction)
-* [Authoring components for MDC Web](#authoring-components-for-mdc-web)
-  * [File Structure](#file-structure)
-  * [License Stanzas](#license-stanzas)
-  * [Scss](#scss)
-     * [Separate reusable variables and mixins from main scss](#separate-reusable-variables-and-mixins-from-main-scss)
-     * [Follow the BEM Pattern](#follow-the-bem-pattern)
-     * [Use mdc-theme for theming](#use-mdc-theme-for-theming)
-     * [Use mdc-rtl for RTL support](#use-mdc-rtl-for-rtl-support)
-  * [Javascript](#javascript)
-     * [Define a static attachTo(root) method for every component](#define-a-static-attachtoroot-method-for-every-component)
-     * [Define a defaultAdapter getter for every foundation](#define-a-defaultadapter-getter-for-every-foundation)
-     * [Define all exported CSS classes, strings, and numbers as foundation constants.](#define-all-exported-css-classes-strings-and-numbers-as-foundation-constants)
-     * [Extend components and foundations from mdc-base classes.](#extend-components-and-foundations-from-mdc-base-classes)
-     * [Packages must be registered with our build infrastructure, and with material-components-web pkg](#packages-must-be-registered-with-our-build-infrastructure-and-with-material-components-web-pkg)
-     * [Closure Compatibility](#closure-compatibility)
-  * [Testing](#testing)
-     * [Verify foundation's adapters](#verify-foundations-adapters)
-     * [Use helper methods](#use-helper-methods)
-     * [Use bel for DOM fixture](#use-bel-for-dom-fixture)
-     * [Always clean up the DOM after every test](#always-clean-up-the-dom-after-every-test)
-     * [Verify adapters via testdouble.](#verify-adapters-via-testdouble)
+- [Authoring Components](#authoring-components)
+  - [Who this document is for](#who-this-document-is-for)
+  - [How to build a component](#how-to-build-a-component)
+    - [Start with a simple component prototype](#start-with-a-simple-component-prototype)
+    - [Identify host environment interactions](#identify-host-environment-interactions)
+    - [Create the adapter interface](#create-the-adapter-interface)
+    - [Refactor your existing code into a foundation](#refactor-your-existing-code-into-a-foundation)
+    - [Build a component on top of that foundation, providing an adapter](#build-a-component-on-top-of-that-foundation-providing-an-adapter)
+  - [What makes a good component](#what-makes-a-good-component)
+    - [Fully tested code](#fully-tested-code)
+    - [Thoroughly documented and strictly versioned adapter interface](#thoroughly-documented-and-strictly-versioned-adapter-interface)
+    - [Accessibility](#accessibility)
+    - [RTL Awareness](#rtl-awareness)
+    - [Support for theming](#support-for-theming)
+  - [General Best Practices](#general-best-practices)
+    - [Do what the user expects](#do-what-the-user-expects)
+    - [Design adapter interfaces to be simple and intuitive](#design-adapter-interfaces-to-be-simple-and-intuitive)
+    - [Do not reference host objects within foundation code](#do-not-reference-host-objects-within-foundation-code)
+    - [Clean up all references on destruction](#clean-up-all-references-on-destruction)
+  - [Authoring components for MDC Web](#authoring-components-for-mdc-web)
+    - [File Structure](#file-structure)
+    - [License Stanzas](#license-stanzas)
+    - [Scss](#scss)
+      - [Separate reusable variables and mixins from main scss](#separate-reusable-variables-and-mixins-from-main-scss)
+      - [Follow the BEM Pattern](#follow-the-bem-pattern)
+      - [Use mdc-theme for theming](#use-mdc-theme-for-theming)
+      - [Use mdc-rtl for RTL support](#use-mdc-rtl-for-rtl-support)
+    - [Javascript](#javascript)
+      - [Define a static attachTo(root) method for every component](#define-a-static-attachtoroot-method-for-every-component)
+      - [Define a defaultAdapter getter for every foundation](#define-a-defaultadapter-getter-for-every-foundation)
+      - [Define all exported CSS classes, strings, and numbers as foundation constants.](#define-all-exported-css-classes-strings-and-numbers-as-foundation-constants)
+      - [Extend components and foundations from mdc-base classes.](#extend-components-and-foundations-from-mdc-base-classes)
+      - [Packages must be registered with our build infrastructure, and with material-components-web pkg](#packages-must-be-registered-with-our-build-infrastructure-and-with-material-components-web-pkg)
+      - [TypeScript Compatibility](#typescript-compatibility)
+    - [Testing](#testing)
+      - [Verify foundation's adapters](#verify-foundations-adapters)
+      - [Use helper methods](#use-helper-methods)
+      - [Use bel for DOM fixture](#use-bel-for-dom-fixture)
+      - [Always clean up the DOM after every test](#always-clean-up-the-dom-after-every-test)
+      - [Verify adapters via testdouble.](#verify-adapters-via-testdouble)
 
 ## Who this document is for
 
@@ -99,7 +100,7 @@ out the dynamic functionality.
 </div>
 ```
 
-```js
+```ts
 class RedblueTogglePrototype {
   get toggled() {
     return this.root.getAttribute('aria-pressed') === 'true';
@@ -178,7 +179,7 @@ and must be taken into account.
 Now that the host environment interactions are identified, an adapter interface can be carved out
 within our existing component.
 
-```js
+```ts
 class RedblueTogglePrototype {
   get toggled() {
     return SOMEHOW_GET_ATTRIBUTE('aria-pressed') === 'true';
@@ -195,11 +196,11 @@ class RedblueTogglePrototype {
   }
 
   initialize() {
-    SOMEHOW_REGISTER_INTERACTION_HANDLER('click', this.clickHandler_);
+    this.root.addEventListener('click', this.clickHandler_);
   }
 
   destroy() {
-    SOMEHOW_UNREGISTER_INTERACTION_HANDLER('click', this.clickHandler_);
+    this.root.removeEventListener('click', this.clickHandler_);
   }
 
   toggle(isToggled = undefined) {
@@ -231,14 +232,11 @@ methods. We can now take these fake methods and transform them into an adapter i
 | SOMEHOW_ADD_CLASS(className: string) | addClass(className: string) |
 | SOMEHOW_REMOVE_CLASS(className: string) | removeClass(className: string) |
 | SOMEHOW_UPDATE_TOGGLE_COLOR_TEXT_CONTENT(textContent: string) | setToggleColorTextContent(textContent: string) |
-| SOMEHOW_REGISTER_INTERACTION_HANDLER(type: string, handler: EventListener) | registerInteractionHandler(type: string, handler: EventListener) |
-| SOMEHOW_DEREGISTER_INTERACTION_HANDLER(type: string, handler: EventListener) | deregisterInteractionHandler(type: string, handler: EventListener) |
 
-> Note: It is a convention in our code base to use the terms `registerInteractionHandler` and
-`deregisterInteractionHandler` as adapter methods for adding/removing generic event listeners. We do
-this because we feel it more semantic in that most components are only interested in interactivity.
-However, feel free to call these methods `{add,remove}EventListener` or anything else you would
-like.
+> Note: We no longer recommend using `registerInteractionHandler` and
+`deregisterInteractionHandler` as adapter methods for adding/removing generic event listeners. Event handling varies significantly across frameworks
+(e.g., [React Synthetic Events](https://reactjs.org/docs/events.html)),
+so we recommend managing events in the component layer.
 
 ### Refactor your existing code into a foundation
 
@@ -250,39 +248,35 @@ be used to build out lint tools to enforce proper adapter shape. This example sh
 as making use of our `MDCFoundation` class, which is the base class which all foundations inherit
 from.
 
-```js
+```ts
 class RedblueToggleFoundation extends MDCFoundation {
   static get defaultAdapter() {
     return {
-      getAttr: (/* attr: string */) => /* string */ '',
-      setAttr: (/* attr: string, value: string */) => {},
-      addClass: (/* className: string */) => {},
-      removeClass: (/* className: string */) => {},
-      setToggleColorTextContent: (/* textContent: string */) => {},
-      registerInteractionHandler: (/* type: string, handler: EventListener */) => {},
-      deregisterInteractionHandler: (/* type: string, handler: EventListener */) => {}
+      getAttr: (attr: string) => '',
+      setAttr: (attr: string, value: string) => undefined,
+      addClass: (className: string) => undefined,
+      removeClass: (className: string) => undefined,
+      setToggleColorTextContent: (textContent: string) => undefined,
+      registerInteractionHandler: (type: string, handler: EventListener) => undefined,
+      deregisterInteractionHandler: (type: string, handler: EventListener) => undefined,
     };
   }
 
+  private toggled_ = false;
+
   constructor(adapter) {
-    super(Object.assign(RedblueToggleFoundation.defaultAdapter, adapter));
-    this.toggled_ = false;
-    this.clickHandler_ = () => this.toggle();
+    super({...RedblueToggleFoundation.defaultAdapter, ...adapter});
   }
 
-  init() {
-    this.adapter_.registerInteractionHandler('click', this.clickHandler_);
-  }
-
-  destroy() {
-    this.adapter_.deregisterInteractionHandler('click', this.clickHandler_);
+  handleClick() {
+    this.toggle_();
   }
 
   isToggled() {
     return this.adapter_.getAttr('aria-pressed') === 'true';
   }
 
-  toggle(isToggled = undefined) {
+  private toggle_(isToggled = undefined) {
     const wasToggledExplicitlySet = isToggled === Boolean(isToggled);
     this.toggled_ = wasToggledExplicitlySet ? isToggled : !this.toggled_;
 
@@ -316,8 +310,16 @@ Since this component is a vanilla component, it should be modeled after the vani
 favors getters and setters to implement its functionality (think `checked`, `disabled`, etc.). Our
 adapter is extremely straightforward as we can simply repurpose the methods we started out with.
 
-```js
+```ts
 class RedblueToggle extends MDCComponent {
+  initialize() {
+    this.listen('click', this.foundation_.handleClick);
+  }
+
+  destroy() {
+    this.unlisten('click', this.foundation_.handleClick);
+  }
+
   get toggled() {
     return this.foundation_.isToggled();
   }
@@ -335,8 +337,6 @@ class RedblueToggle extends MDCComponent {
       setToggleColorTextContent: textContent => {
         this.root_.querySelector('.redblue-toggle__color').textContent = textContent;
       },
-      registerInteractionHandler: (type, handler) => this.root_.addEventListener(type, handler),
-      deregisterInteractionHandler: (type, handler) => this.root_.removeEventListener(type, handler)
     });
   }
 }
@@ -433,7 +433,7 @@ As opposed to a bad adapter interface like the one below
 The above adapter interface is more suited for a foundation method. The adapter's sole
 responsibility should be performing the style updates, not determining what they are.
 
-### Do not reference host objects within foundation code.
+### Do not reference host objects within foundation code
 
 To ensure your foundation is as compatible with as many frameworks as possible, avoid directly
 referencing host objects within them. This includes `window`, `document`, `console`, and others.
@@ -441,11 +441,7 @@ _Only reference global objects defined within the ECMAScript specification withi
 
 We make an exception for this rule for `requestAnimationFrame`, but in the future we may refactor
 that out as well. In addition, a workaround to working with host objects in a foundation is to ask
-for them via the adapter. However, you should design your adapter APIs such that they return a
-[structural type](https://github.com/google/closure-compiler/wiki/Structural-Interfaces-in-Closure-Compiler)
-representing your host object, rather than a nominal type of the host object itself. For example,
-instead of asking for an `HTMLInputElement` of type `"checkbox"`, ask for an
-object that has `checked`, `indeterminate`, and `disabled` boolean properties.
+for them via the adapter.
 
 ### Clean up all references on destruction
 
@@ -477,10 +473,14 @@ A typical component within our codebase looks like so:
 ```
 packages
   ├── mdc-component
-      ├── README.md # The component's README
-      ├── constants.js # The component's cssClasses/strings/numbers constants
-      ├── foundation.js # The component's foundation class
-      ├── index.js # The file that contains the vanilla component class, as well as exports the foundation
+      ├── README.md # Usage instructions and API documentation
+      ├── adapter.ts # Adapter interface implemented by framework wrappers and the vanilla component
+      ├── foundation.ts # Framework-agnostic business logic used by wrapper libraries and the vanilla component
+      ├── component.ts # Vanilla component and adapter implementations for clients who aren't using a framework
+      ├── constants.ts # Constant values used by one or more files in the package (e.g., cssClasses, strings, numbers)
+      ├── index.ts # Forwards exports from other files in the package (adapter, foundation, component, util, etc.)
+      ├── types.ts # (optional) Contains types and interfaces exposed in public APIs unrelated to the vanilla component
+      ├── util.ts # (optional) Framework-agnostic helper functions (e.g., feature detection)
       ├── mdc-component.scss # The main source file for the component's CSS
       └── package.json # The components package file
 test/unit
@@ -577,9 +577,10 @@ Please put this in a comment at the top of every source file, replacing <YEAR> w
 If variables and mixins are intended to be used outside of a single stylesheet, refactor them out
 into [sass partials](http://sass-lang.com/guide#topic-4). These files can then be included in other
 stylesheets without having extra CSS omitted both times. As a rule of thumb, _never_ `@import` sass
-files which output CSS`, as it will most likely be duplicate output.
+files which output CSS, as it will most likely be duplicate output.
 
 #### Follow the BEM Pattern
+
 We follow a modified version of the [BEM](http://getbem.com/) pattern, which is defined within our
 [stylelint rules](../.stylelintrc.yaml#L252-L255). It's basically:
 
@@ -677,7 +678,7 @@ class MDCNewComponentFoundation extends MDCFoundation {
   }
 
   constructor(adapter) {
-    super(Object.assign(MDCNewComponentFoundation.defaultAdapter, adapter));
+    super(...MDCNewComponentFoundation.defaultAdapter, ...adapter});
   }
 }
 ```
@@ -693,11 +694,11 @@ the aforementioned rule, we would also like to provide lint rules to enforce the
   text that could potentially be localized, etc.) must be referenced by a `strings` static getter.
 - All semantic numbers leveraged by the foundation (timeout lengths, transition durations, etc.) must
   be referenced by a `numbers` static getter.
-- These constants should be defined within a `constants.js` file, and then proxied through the
+- These constants should be defined within a `constants.ts` file, and then proxied through the
   foundation.
 
-```js
-// constants.js
+```ts
+// constants.ts
 
 export const cssClasses = {
   ROOT: 'mdc-new-component',
@@ -714,7 +715,7 @@ export const numbers = {
   DEFAULT_THROTTLE_DELAY_MS: 300,
 };
 
-// foundation.js
+// foundation.ts
 
 import {cssClasses, strings, numbers} from './constants';
 
@@ -760,16 +761,11 @@ Concretely:
   `config.validate-commit-msg.scope.allowed` array within the top-level `package.json` at the root
   of the repo. The commit subject is the _name the component, without the `mdc-`/`@material/`_.
   E.g., for `mdc-icon-button`, the correct subject is `icon-button`.
-- Ensure that the package name is added to the `closureWhitelist` array within the top-level
-  `package.json`.
 
-#### Closure Compatibility
+#### TypeScript Compatibility
 
-> NOTE: Our currently existing components are in the process of being made compatible with closure.
-
-All core MDC Web components must be fully compatible with the Google Closure Compiler using its
-advanced compilation mechanisms. We've provided a thorough explanation of this, as well as
-conventions, examples, and common closure patterns you may not be used to, in our [closure compiler documentation](./closure-compiler.md).
+All core MDC Web components must be fully compatible with strict-mode [TypeScript](https://www.typescriptlang.org/). We've provided a list of requirements and further explanation of meeting the TypeScript compatibility, as well as
+conventions, examples, and common TypeScript patterns you may not be used to, in our [Coding Best Practices](./code/best_practices.md).
 
 ### Testing
 

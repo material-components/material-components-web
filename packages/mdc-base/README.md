@@ -22,7 +22,7 @@ npm install @material/base
 
 Then include it in your code in one of the following ways:
 
-#### ES2015+
+#### ES Module syntax
 
 ```javascript
 import {MDCComponent, MDCFoundation} from '@material/base';
@@ -83,7 +83,7 @@ export default class MyFoundation extends MDCFoundation {
   }
 
   constructor(adapter) {
-    super(Object.assign(MyFoundation.defaultAdapter, adapter));
+    super({...MyFoundation.defaultAdapter, ...adapter});
     const {TOGGLED} = MyFoundation.cssClasses;
     this.clickHandler_ = () => this.adapter_.toggleClass(TOGGLED);
   }
