@@ -362,7 +362,7 @@ Mixin | Description
 
 ### Including in code
 
-#### ES2015
+#### ES Module syntax
 
 ```javascript
 import {MDCToolbar, MDCToolbarFoundation} from '@material/toolbar';
