@@ -35,7 +35,6 @@ const {spawnSync} = require('child_process');
 const {sync: globSync} = require('glob');
 
 const ALL_IN_ONE_PACKAGE = 'material-components-web';
-const DECLARATION_FILE_PREFIX = 'mdc-';
 const D_TS_DIRECTORY = path.resolve(__dirname, '../build/packages');
 const PACKAGES_DIRECTORY = path.resolve(__dirname, '../packages');
 const PKG_RE = /(?:material\-components\-web)|(?:mdc\.[a-zA-Z\-]+)/;
