@@ -30,7 +30,7 @@
 
 // Private mixins
 
-@mixin mdc-text-field-icon-horizontal-position_($position-property, $position, $padding) {
+@mixin mdc-text-field-icon-horizontal-position_($position-property, $position, $padding, $input-padding) {
   .mdc-text-field__icon {
     @include mdc-rtl-reflexive-position($position-property, $position);
   }
@@ -42,7 +42,7 @@
     }
   } @else {
     .mdc-text-field__input {
-      @include mdc-rtl-reflexive-property(padding, $position /* left-value */, $padding  /* right-value */);
+      @include mdc-rtl-reflexive-property(padding, $input-padding /* left-value */, $padding  /* right-value */);
     }
   }
 }
