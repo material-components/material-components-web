@@ -147,6 +147,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
       },
       getFocusedElementIndex: () => this.listElements.indexOf(document.activeElement!),
       getListItemCount: () => this.listElements.length,
+      hasAriaCurrent: () => !!this.root_.querySelector(`.${cssClasses.LIST_ITEM_CLASS}[${strings.ARIA_CURRENT}]`),
       hasCheckboxAtIndex: (index) => {
         const listItem = this.listElements[index];
         return !!listItem.querySelector(strings.CHECKBOX_SELECTOR);

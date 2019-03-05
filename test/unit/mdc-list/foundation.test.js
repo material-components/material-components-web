@@ -47,7 +47,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'removeAttributeForElementIndex', 'addClassForElementIndex', 'removeClassForElementIndex',
     'focusItemAtIndex', 'setTabIndexForListItemChildren', 'hasRadioAtIndex',
     'hasCheckboxAtIndex', 'isCheckboxCheckedAtIndex', 'setCheckedCheckboxOrRadioAtIndex',
-    'notifyAction', 'isFocusInsideList',
+    'notifyAction', 'isFocusInsideList', 'hasAriaCurrent',
   ]);
 });
 
@@ -576,7 +576,7 @@ test('#handleKeydown space key is triggered 2x when singleSelection does not un-
   foundation.handleKeydown(event, true, 0);
 
   td.verify(preventDefault(), {times: 2});
-  td.verify(mockAdapter.setAttributeForElementIndex(0, strings.ARIA_SELECTED, 'true'), {times: 2});
+  td.verify(mockAdapter.setAttributeForElementIndex(0, strings.ARIA_SELECTED, 'true'), {times: 1});
   td.verify(mockAdapter.removeAttributeForElementIndex(0, strings.ARIA_SELECTED), {times: 0});
 });
 
@@ -594,7 +594,7 @@ test('#handleKeydown space key is triggered 2x when singleSelection is true on s
   foundation.handleKeydown(event, true, 1);
 
   td.verify(preventDefault(), {times: 2});
-  td.verify(mockAdapter.setAttributeForElementIndex(1, strings.ARIA_SELECTED, 'true'), {times: 2});
+  td.verify(mockAdapter.setAttributeForElementIndex(1, strings.ARIA_SELECTED, 'true'), {times: 1});
 });
 
 test('#handleKeydown bail out early if event origin doesnt have a mdc-list-item ancestor from the current list', () => {

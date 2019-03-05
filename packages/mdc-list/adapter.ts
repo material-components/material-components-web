@@ -52,6 +52,8 @@ export interface MDCListAdapter {
    */
   setTabIndexForListItemChildren(listItemIndex: number, tabIndexValue: string): void;
 
+  hasAriaCurrent(): boolean;
+
   /**
    * @return true if radio button is present at given list item index.
    */
