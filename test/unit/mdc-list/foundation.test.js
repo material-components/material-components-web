@@ -47,7 +47,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'removeAttributeForElementIndex', 'addClassForElementIndex', 'removeClassForElementIndex',
     'focusItemAtIndex', 'setTabIndexForListItemChildren', 'hasRadioAtIndex',
     'hasCheckboxAtIndex', 'isCheckboxCheckedAtIndex', 'setCheckedCheckboxOrRadioAtIndex',
-    'notifyAction', 'isFocusInsideList', 'hasAriaCurrent',
+    'notifyAction', 'isFocusInsideList', 'getAttributeForElementIndex',
   ]);
 });
 
@@ -541,6 +541,7 @@ test('#handleKeydown space key is triggered when singleSelection is true selects
 
   td.when(mockAdapter.getFocusedElementIndex()).thenReturn(0);
   td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  td.when(mockAdapter.getAttributeForElementIndex(0, strings.ARIA_CURRENT)).thenReturn(null);
   foundation.setSingleSelection(true);
   foundation.handleKeydown(event, true, 0);
 
@@ -556,6 +557,7 @@ test('#handleKeydown space key when singleSelection=true does not select an elem
 
   td.when(mockAdapter.getFocusedElementIndex()).thenReturn(0);
   td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  td.when(mockAdapter.getAttributeForElementIndex(0, strings.ARIA_CURRENT)).thenReturn(null);
   foundation.setSingleSelection(true);
   foundation.handleKeydown(event, false, 0);
 
@@ -571,6 +573,7 @@ test('#handleKeydown space key is triggered 2x when singleSelection does not un-
 
   td.when(mockAdapter.getFocusedElementIndex()).thenReturn(0);
   td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  td.when(mockAdapter.getAttributeForElementIndex(0, strings.ARIA_CURRENT)).thenReturn(null);
   foundation.setSingleSelection(true);
   foundation.handleKeydown(event, true, 0);
   foundation.handleKeydown(event, true, 0);
@@ -589,6 +592,7 @@ test('#handleKeydown space key is triggered 2x when singleSelection is true on s
 
   td.when(mockAdapter.getFocusedElementIndex()).thenReturn(1);
   td.when(mockAdapter.getListItemCount()).thenReturn(3);
+  td.when(mockAdapter.getAttributeForElementIndex(1, strings.ARIA_CURRENT)).thenReturn(null);
   foundation.setSingleSelection(true);
   foundation.handleKeydown(event, true, 1);
   foundation.handleKeydown(event, true, 1);
@@ -844,6 +848,8 @@ test('#setSelectedIndex removes selected/activated class name and sets aria-sele
   const {foundation, mockAdapter} = setupTest();
 
   td.when(mockAdapter.getListItemCount()).thenReturn(4);
+  td.when(mockAdapter.getAttributeForElementIndex(2, strings.ARIA_CURRENT)).thenReturn(null);
+  td.when(mockAdapter.getAttributeForElementIndex(3, strings.ARIA_CURRENT)).thenReturn(null);
   foundation.setSelectedIndex(2);
 
   foundation.setSelectedIndex(3);

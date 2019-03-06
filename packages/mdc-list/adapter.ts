@@ -29,6 +29,11 @@
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
 export interface MDCListAdapter {
+  /**
+   * Returns the attribute value of list item at given `index`.
+   */
+  getAttributeForElementIndex(index: number, attr: string): string | null;
+
   getListItemCount(): number;
 
   getFocusedElementIndex(): number;
@@ -51,8 +56,6 @@ export interface MDCListAdapter {
    * the list item at the index specified.
    */
   setTabIndexForListItemChildren(listItemIndex: number, tabIndexValue: string): void;
-
-  hasAriaCurrent(): boolean;
 
   /**
    * @return true if radio button is present at given list item index.

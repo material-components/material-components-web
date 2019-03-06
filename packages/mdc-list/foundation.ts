@@ -49,9 +49,9 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     return {
       addClassForElementIndex: () => undefined,
       focusItemAtIndex: () => undefined,
+      getAttributeForElementIndex: () => null,
       getFocusedElementIndex: () => 0,
       getListItemCount: () => 0,
-      hasAriaCurrent: () => false,
       hasCheckboxAtIndex: () => false,
       hasRadioAtIndex: () => false,
       isCheckboxCheckedAtIndex: () => false,
@@ -71,7 +71,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   private selectedIndex_: MDCListIndex = numbers.UNSET_INDEX;
   private focusedItemIndex_ = numbers.UNSET_INDEX;
   private useActivatedClass_ = false;
-  private useAriaCurrentAttr_ = false;
+  private ariaCurrentAttrValue_: string | null = null;
   private isCheckboxList_ = false;
   private isRadioList_ = false;
 
@@ -86,10 +86,6 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       this.isCheckboxList_ = true;
     } else if (this.adapter_.hasRadioAtIndex(0)) {
       this.isRadioList_ = true;
-    }
-
-    if (this.adapter_.hasAriaCurrent()) {
-      this.useAriaCurrentAttr_ = true;
     }
   }
 
@@ -325,12 +321,20 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    * Sets aria attribute for single selection at given index.
    */
   private setAriaForSingleSelectionAtIndex_(index: number) {
-    const ariaAttribute = this.useAriaCurrentAttr_ ? strings.ARIA_CURRENT : strings.ARIA_SELECTED;
+    if (this.selectedIndex_ === numbers.UNSET_INDEX) {
+      this.ariaCurrentAttrValue_ =
+            this.adapter_.getAttributeForElementIndex(index as number, strings.ARIA_CURRENT);
+    }
+
+    const isAriaCurrent = this.ariaCurrentAttrValue_ !== null;
+    const ariaAttribute = isAriaCurrent ? strings.ARIA_CURRENT : strings.ARIA_SELECTED;
+    const ariaAttributeValue = isAriaCurrent ? this.ariaCurrentAttrValue_ : 'true';
 
     if (this.selectedIndex_ !== numbers.UNSET_INDEX) {
       this.adapter_.setAttributeForElementIndex(this.selectedIndex_ as number, ariaAttribute, 'false');
     }
-    this.adapter_.setAttributeForElementIndex(index, ariaAttribute, 'true');
+
+    this.adapter_.setAttributeForElementIndex(index, ariaAttribute, ariaAttributeValue as string);
   }
 
   /**
