@@ -29,6 +29,14 @@ Foundation and Adapter. This lets us reuse Foundation code across multiple web
 platforms, e.g. React and Angular, by re-implementing only the Adapter. For now
 we've only implemented a vanilla JavaScript version of the Adapter.
 
+### TypeScript
+
+MDC Web components are written in [TypeScript](https://www.typescriptlang.org/)
+to increase developer velocity and reduce errors. Our npm releases include
+UMD JavaScript bundles, ES Modules containing ES5, and `.d.ts` typing
+declaration files for TypeScript users.
+See [Importing JS](../importing-js.md) for more information.
+
 ### Foundation
 
 The Foundation contains the business logic that best represents Material Design,
