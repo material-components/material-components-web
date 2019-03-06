@@ -34,7 +34,6 @@
 //
 
 @mixin mdc-checkbox-core-styles($query: mdc-feature-all()) {
-  @include mdc-ripple-common($query);
   @include mdc-checkbox-without-ripple($query);
   @include mdc-checkbox-ripple($query);
 }
@@ -180,6 +179,8 @@
 // checkbox styles. It is recommended that most users use `mdc-checkbox-core-styles` instead.
 @mixin mdc-checkbox-ripple($query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-ripple-common($query);
 
   .mdc-checkbox {
     @include mdc-ripple-surface($query);

@@ -31,7 +31,6 @@
 @import "./variables";
 
 @mixin mdc-radio-core-styles($query: mdc-feature-all()) {
-  @include mdc-ripple-common($query);
   @include mdc-radio-without-ripple($query);
   @include mdc-radio-ripple($query);
 }
@@ -241,6 +240,8 @@
 // radio styles. It is recommended that most users use `mdc-radio-core-styles` instead.
 @mixin mdc-radio-ripple($query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-ripple-common($query);
 
   .mdc-radio {
     @include mdc-ripple-surface($query);
