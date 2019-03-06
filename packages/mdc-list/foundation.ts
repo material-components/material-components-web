@@ -328,12 +328,12 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
 
     const isAriaCurrent = this.ariaCurrentAttrValue_ !== null;
     const ariaAttribute = isAriaCurrent ? strings.ARIA_CURRENT : strings.ARIA_SELECTED;
-    const ariaAttributeValue = isAriaCurrent ? this.ariaCurrentAttrValue_ : 'true';
 
     if (this.selectedIndex_ !== numbers.UNSET_INDEX) {
       this.adapter_.setAttributeForElementIndex(this.selectedIndex_ as number, ariaAttribute, 'false');
     }
 
+    const ariaAttributeValue = isAriaCurrent ? this.ariaCurrentAttrValue_ : 'true';
     this.adapter_.setAttributeForElementIndex(index, ariaAttribute, ariaAttributeValue as string);
   }
 
