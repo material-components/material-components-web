@@ -1,6 +1,6 @@
 {
   "name": "@material/grid-list",
-  "version": "1.0.0-0",
+  "version": "1.0.0-1",
   "description": "The Material Components for the web grid list component",
   "license": "MIT",
   "main": "dist/mdc.gridList.js",
@@ -17,10 +17,10 @@
     "grid list"
   ],
   "dependencies": {
-    "@material/base": "^1.0.0-0",
+    "@material/base": "^1.0.0-1",
     "@material/rtl": "^0.42.0",
-    "@material/theme": "^1.0.0-0",
-    "@material/typography": "^1.0.0-0",
+    "@material/theme": "^1.0.0-1",
+    "@material/typography": "^1.0.0-1",
     "tslib": "^1.9.3"
   },
   "publishConfig": {

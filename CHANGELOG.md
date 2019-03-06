@@ -1,3 +1,14 @@
+<a name="1.0.0-1"></a>
+# [1.0.0-1](https://github.com/material-components/material-components-web/compare/v1.0.0-0...v1.0.0-1) (2019-03-04)
+
+
+### Bug Fixes
+
+* **menu-surface:** Fix anchorElement initialization ([#4462](https://github.com/material-components/material-components-web/issues/4462)) ([2025c8b](https://github.com/material-components/material-components-web/commit/2025c8b))
+* **package:** Fix module declaration names in dist d.ts files ([#4476](https://github.com/material-components/material-components-web/issues/4476)) ([872b39f](https://github.com/material-components/material-components-web/commit/872b39f))
+
+
+
 <a name="1.0.0-0"></a>
 # [1.0.0-0](https://github.com/material-components/material-components-web/compare/v0.44.0...v1.0.0-0) (2019-02-28)
 
