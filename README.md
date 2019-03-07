@@ -41,7 +41,7 @@ Material Components for the web is the successor to [Material Design Lite](https
 <!-- Render textfield component -->
 <div class="mdc-text-field">
   <input type="text" id="my-text-field" class="mdc-text-field__input">
-  <label class="mdc-floating-label" for="my-text-field">Hint text</label>
+  <label class="mdc-floating-label" for="my-text-field">Label</label>
   <div class="mdc-line-ripple"></div>
 </div>
 
