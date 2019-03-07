@@ -33,7 +33,8 @@
 // TODO(acdvorak): Require "initialized in" comment on ! properties
 
 import * as babelParser from '@babel/parser';
-import {default as babelTraverse} from '@babel/traverse';
+import babelTraverse from '@babel/traverse';
+import {NodePath} from '@babel/traverse';
 import * as babelTypes from '@babel/types';
 import * as colors from 'colors/safe';
 import * as fs from 'fs';
@@ -41,6 +42,12 @@ import * as glob from 'glob';
 import * as path from 'path';
 import * as recastParser from 'recast/lib/parser';
 import * as resolve from 'resolve';
+
+type ClassMemberNodePath = (
+    NodePath<babelTypes.ClassMethod> |
+    NodePath<babelTypes.ClassProperty> |
+    NodePath<babelTypes.TSMethodSignature>
+);
 
 interface PackageJson {
   private?: boolean;
@@ -70,12 +77,6 @@ interface NamedIdentifier {
   name: string | null;
   loc: babelTypes.SourceLocation | null;
 }
-
-type ClassMemberNodePath = (
-    babelTraverse.ClassMethodNodePath |
-    babelTraverse.ClassPropertyNodePath |
-    babelTraverse.TSMethodSignatureNodePath
-);
 
 const PACKAGES_DIR_ABSOLUTE = path.resolve(__dirname, '../packages');
 
@@ -148,7 +149,7 @@ function checkAllImportPaths(inputFilePath: string, inputCode: string) {
 }
 
 function checkOneImportPath(
-    nodePath: babelTraverse.ImportDeclarationNodePath | babelTraverse.ExportDeclarationNodePath,
+    nodePath: NodePath<babelTypes.ImportDeclaration> | NodePath<babelTypes.ExportDeclaration>,
     inputFilePath: string,
 ) {
   const declarationNode = nodePath.node;
@@ -300,12 +301,12 @@ function checkAllInlineProperties(inputFilePath: string, inputCode: string) {
 }
 
 function visitOneClassProperty(
-    propertyNodePath: babelTraverse.ClassPropertyNodePath,
+    nodePath: NodePath<babelTypes.ClassProperty>,
     propertiesInitializedInline: Map<string, AstLocation>,
 ) {
-  const propertyNode = propertyNodePath.node;
-  const propertyValueNode = propertyNode.value;
-  if (!propertyValueNode) {
+  const propertyNode = nodePath.node;
+  const valueNode = propertyNode.value;
+  if (!valueNode) {
     return;
   }
 
@@ -320,12 +321,12 @@ function visitOneClassProperty(
   propertiesInitializedInline.set(key.name, {
     snippetStartIndex: propertyNode.start,
     snippetEndIndex: propertyNode.end,
-    violationSource: propertyValueNode.loc,
+    violationSource: valueNode.loc,
   });
 }
 
 function visitOneAssignmentExpression(
-    expressionNodePath: babelTraverse.AssignmentExpressionNodePath,
+    expressionNodePath: NodePath<babelTypes.AssignmentExpression>,
     propertiesAssignedInMethods: Map<string, AstLocation[]>,
 ) {
   const expressionNode = expressionNodePath.node;
@@ -357,7 +358,7 @@ function checkAllReturnAnnotations(inputFilePath: string, inputCode: string) {
 }
 
 function checkOneReturnAnnotation(
-    nodePath: babelTraverse.FunctionNodePath,
+    nodePath: NodePath<babelTypes.Function>,
     inputFilePath: string,
 ) {
   const functionLikeNode = nodePath.node;
@@ -382,7 +383,7 @@ function checkAllIdentifierNames(inputFilePath: string, inputCode: string) {
   const ast = getAstFromCodeString(inputCode);
 
   const checkName =
-      (nodePath: babelTraverse.NodePath) => checkOneIdentifierName(nodePath, inputFilePath);
+      (nodePath: NodePath) => checkOneIdentifierName(nodePath, inputFilePath);
   const checkAccessibility =
       (nodePath: ClassMemberNodePath) => checkOneClassMemberAccessibility(nodePath, inputFilePath);
   const checkReadme =
@@ -407,7 +408,7 @@ function checkAllIdentifierNames(inputFilePath: string, inputCode: string) {
 }
 
 function checkOneIdentifierName(
-    nodePath: babelTraverse.NodePath,
+    nodePath: NodePath,
     inputFilePath: string,
 ) {
   const node = nodePath.node;
