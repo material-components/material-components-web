@@ -134,9 +134,9 @@ function lintOneFile(inputFilePath: string, inputCode: string) {
 }
 
 function checkAllImportPaths(inputFilePath: string, inputCode: string) {
-  const astRoot = getAstFromCodeString(inputCode);
+  const ast = getAstFromCodeString(inputCode);
 
-  babelTraverse(astRoot, {
+  babelTraverse(ast, {
     ExportDeclaration(nodePath) {
       checkOneImportPath(nodePath, inputFilePath);
     },
@@ -350,12 +350,12 @@ function checkAllReturnAnnotations(inputFilePath: string, inputCode: string) {
 
   babelTraverse(ast, {
     Function(nodePath) {
-      checkFunctionReturnAnnotation(nodePath, inputFilePath);
+      checkOneReturnAnnotation(nodePath, inputFilePath);
     },
   });
 }
 
-function checkFunctionReturnAnnotation(
+function checkOneReturnAnnotation(
     nodePath: babelTraverse.FunctionNodePath,
     inputFilePath: string,
 ) {
@@ -380,27 +380,32 @@ function checkFunctionReturnAnnotation(
 function checkAllIdentifierNames(inputFilePath: string, inputCode: string) {
   const ast = getAstFromCodeString(inputCode);
 
+  const checkName =
+      (nodePath: babelTraverse.NodePath) => checkOneIdentifierName(nodePath, inputFilePath);
+  const checkAccessibility =
+      (nodePath: ClassMemberNodePath) => checkOneClassMemberAccessibility(nodePath, inputFilePath);
+  const checkReadme =
+      (nodePath: ClassMemberNodePath) => checkOneClassMemberIsInReadme(nodePath, inputFilePath);
+
   babelTraverse(ast, {
-    Function(nodePath) {
-      checkIdentifierName(nodePath, inputFilePath);
-    },
-    ClassMethod(nodePath) {
-      checkClassMemberAccessibility(nodePath, inputFilePath);
-      checkClassMemberIsInReadme(nodePath, inputFilePath);
-    },
-    ClassProperty(nodePath) {
-      checkIdentifierName(nodePath, inputFilePath);
-      checkClassMemberAccessibility(nodePath, inputFilePath);
-      checkClassMemberIsInReadme(nodePath, inputFilePath);
-    },
-    TSMethodSignature(nodePath) {
-      checkIdentifierName(nodePath, inputFilePath);
-      checkClassMemberIsInReadme(nodePath, inputFilePath);
-    },
+    Function: checkName,
+    ClassProperty: checkName,
+    TSMethodSignature: checkName,
+  });
+
+  babelTraverse(ast, {
+    ClassMethod: checkAccessibility,
+    ClassProperty: checkAccessibility,
+  });
+
+  babelTraverse(ast, {
+    ClassMethod: checkReadme,
+    ClassProperty: checkReadme,
+    TSMethodSignature: checkReadme,
   });
 }
 
-function checkIdentifierName(
+function checkOneIdentifierName(
     nodePath: babelTraverse.NodePath,
     inputFilePath: string,
 ) {
@@ -429,8 +434,8 @@ function checkIdentifierName(
   }
 }
 
-function checkClassMemberAccessibility(
-    nodePath: babelTraverse.ClassMethodNodePath | babelTraverse.ClassPropertyNodePath,
+function checkOneClassMemberAccessibility(
+    nodePath: ClassMemberNodePath,
     inputFilePath: string,
 ) {
   const node = nodePath.node;
@@ -439,7 +444,7 @@ function checkClassMemberAccessibility(
     return;
   }
 
-  const accessibility = node.accessibility;
+  const accessibility = babelTypes.isTSMethodSignature(node) ? 'public' : node.accessibility;
   const isPublicAccess = accessibility !== 'private' && accessibility !== 'protected';
   const isPublicName = !name.endsWith('_');
 
@@ -462,7 +467,7 @@ function checkClassMemberAccessibility(
   }
 }
 
-function checkClassMemberIsInReadme(
+function checkOneClassMemberIsInReadme(
     nodePath: ClassMemberNodePath,
     inputFilePath: string,
 ) {
@@ -495,16 +500,16 @@ function checkClassMemberIsInReadme(
   }
 }
 
-function getNameAndLocation(astNode: babelTypes.Node): NamedIdentifier {
-  if (babelTypes.isClassMethod(astNode) || babelTypes.isClassProperty(astNode) ||
-      babelTypes.isObjectMethod(astNode) || babelTypes.isObjectProperty(astNode) ||
-      babelTypes.isTSMethodSignature(astNode)) {
-    const key = astNode.key as unknown as NamedIdentifier;
+function getNameAndLocation(node: babelTypes.Node): NamedIdentifier {
+  if (babelTypes.isClassMethod(node) || babelTypes.isClassProperty(node) ||
+      babelTypes.isObjectMethod(node) || babelTypes.isObjectProperty(node) ||
+      babelTypes.isTSMethodSignature(node)) {
+    const key = node.key as unknown as NamedIdentifier;
     if (key.name) {
       return key;
     }
-  } else if (babelTypes.isFunctionDeclaration(astNode) && astNode.id) {
-    return astNode.id;
+  } else if (babelTypes.isFunctionDeclaration(node) && node.id) {
+    return node.id;
   }
   return {name: null, loc: null};
 }
