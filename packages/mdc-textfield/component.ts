@@ -162,7 +162,7 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
    * Initializes the Text Field's internal state based on the environment's
    * state.
    */
-  initialSyncWithDom() {
+  initialSyncWithDOM() {
     this.disabled = this.input_.disabled;
   }
 

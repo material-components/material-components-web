@@ -166,13 +166,6 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
     this.menuSurface_.anchorElement = element;
   }
 
-  handleAfterOpened_() {
-    const list = this.items;
-    if (list.length > 0) {
-      (list[0] as HTMLElement).focus();
-    }
-  }
-
   getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
@@ -209,5 +202,12 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
     };
     // tslint:enable:object-literal-sort-keys
     return new MDCMenuFoundation(adapter);
+  }
+
+  private handleAfterOpened_() {
+    const list = this.items;
+    if (list.length > 0) {
+      (list[0] as HTMLElement).focus();
+    }
   }
 }

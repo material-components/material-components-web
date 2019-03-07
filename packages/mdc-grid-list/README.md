@@ -227,11 +227,6 @@ can use `div` instead of `img` markup. It will resize the assets to cover the ti
 and crop the assets to display the center part.
 
 ```html
-<style>
-  .my-tile-image {
-    background-image: url(my-image.jpg);
-  }
-</style>
 <div class="mdc-grid-list">
   <ul class="mdc-grid-list__tiles">
     <li class="mdc-grid-tile">
@@ -244,17 +239,21 @@ and crop the assets to display the center part.
     </li>
   </ul>
 </div>
+
+<style>
+.my-tile-image {
+  background-image: url(my-image.jpg);
+}
+</style>
 ```
 
 However, the method results in a less semantic markup, so we don't use this method by
 default.
 
-
 ### RTL Support
 
 `mdc-grid-list` is automatically RTL-aware, and will re-position elements whenever
 it, or its ancestors, have a `dir="rtl"` attribute.
-
 
 ### Theme
 
@@ -262,18 +261,19 @@ it, or its ancestors, have a `dir="rtl"` attribute.
 color for its background color. `mdc-grid-tile__secondary` uses the theme's primary
 color for its background color, and the theme's `on-primary` color for its text color.
 
-### Using the Foundation Class
+### `MDCGridListFoundation`
 
-MDCGridList ships with an `MDCGridListFoundation` class that external frameworks and libraries
-can use to build their own MDCGridList components with minimal effort. As with all foundation
-classes, an adapter object must be provided. The adapter for Grid list must provide the following
-functions, with correct signatures:
+Method Signature | Description
+--- | ---
+`alignCenter() => void` | Centers tiles horizontally within their parent container.
 
-| Method Signature | Description |
-| --- | --- |
-| `getOffsetWidth() => number` | Get root element `mdc-grid-list` offsetWidth. |
-| `getNumberOfTiles() => number` | Get the number of mdc-grid-tile elements contained within the grid list. |
-| `getOffsetWidthForTileAtIndex(index: number) => number` | Get offsetWidth of `mdc-grid-tile` at specified index. |
-| `setStyleForTilesElement(property: string, value: number) => void` | Set `mdc-grid-list__tiles` style property to provided value. |
-| `registerResizeHandler(handler: EventListener) => void` | Registers a handler to be called when the surface (or its viewport) resizes. Our default implementation adds the handler as a listener to the window's `resize()` event. |
-| `deregisterResizeHandler(handler: EventListener) => void` | Unregisters a handler to be called when the surface (or its viewport) resizes. Our default implementation removes the handler as a listener to the window's `resize()` event. |
+### `MDCGridListAdapter`
+
+Method Signature | Description
+--- | ---
+`getOffsetWidth() => number` | Get root element `mdc-grid-list` offsetWidth.
+`getNumberOfTiles() => number` | Get the number of mdc-grid-tile elements contained within the grid list.
+`getOffsetWidthForTileAtIndex(index: number) => number` | Get offsetWidth of `mdc-grid-tile` at specified index.
+`setStyleForTilesElement(property: string, value: number) => void` | Set `mdc-grid-list__tiles` style property to provided value.
+`registerResizeHandler(handler: EventListener) => void` | Registers a handler to be called when the surface (or its viewport) resizes. Our default implementation adds the handler as a listener to the window's `resize()` event.
+`deregisterResizeHandler(handler: EventListener) => void` | Unregisters a handler to be called when the surface (or its viewport) resizes. Our default implementation removes the handler as a listener to the window's `resize()` event.

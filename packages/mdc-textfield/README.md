@@ -333,20 +333,21 @@ Mixin | Description
 
 Property | Value Type | Description
 --- | --- | ---
-`value` | string | Proxies to the foundation's `getValue`/`setValue` methods.
-`disabled` | boolean | Proxies to the foundation's `isDisabled`/`setDisabled` methods.
-`useNativeValidation` | boolean (write-only) | Proxies to the foundation's `setUseNativeValidation` method.
-`valid` | boolean | Proxies to the foundation's `isValid`/`setValid` methods.
-`helperTextContent` | string (write-only)| Proxies to the foundation's `setHelperTextContent` method when set.
+`value` | `string` | Proxies to the foundation's `getValue`/`setValue` methods.
+`disabled` | `boolean` | Proxies to the foundation's `isDisabled`/`setDisabled` methods.
+`useNativeValidation` | `boolean` (write-only) | Proxies to the foundation's `setUseNativeValidation` method.
+`valid` | `boolean` | Proxies to the foundation's `isValid`/`setValid` methods.
+`helperTextContent` | `string` (write-only)| Proxies to the foundation's `setHelperTextContent` method when set.
 `ripple` | `MDCRipple` (write-only) | The `MDCRipple` instance for the root element that `MDCTextField` initializes; this only applies to the default Text Field, and is `null` for other variants.
-`leadingIconAriaLabel` | string (write-only) | Proxies to the foundation's `setLeadingIconAriaLabel` method.
-`trailingIconAriaLabel` | string (write-only) | Proxies to the foundation's `setTrailingIconAriaLabel` method.
-`leadingIconContent` | string (write-only) | Proxies to the foundation's `setLeadingIconContent` method.
-`trailingIconContent` | string (write-only) | Proxies to the foundation's `setTrailingIconContent` method.
+`leadingIconAriaLabel` | `string` (write-only) | Proxies to the foundation's `setLeadingIconAriaLabel` method.
+`trailingIconAriaLabel` | `string` (write-only) | Proxies to the foundation's `setTrailingIconAriaLabel` method.
+`leadingIconContent` | `string` (write-only) | Proxies to the foundation's `setLeadingIconContent` method.
+`trailingIconContent` | `string` (write-only) | Proxies to the foundation's `setTrailingIconContent` method.
 
 In addition to the above, the following properties proxy to the `input` element's properties of the same name:
 
 * `required`
+* `pattern`
 * `minLength`
 * `maxLength`
 * `min`
@@ -392,6 +393,11 @@ Returns the idle outline element's computed style value of the given css propert
 
 ### `MDCTextFieldFoundation`
 
+Property | Value Type | Description
+--- | --- | ---
+`shouldFloat` | `boolean` (read-only) | Determines whether the label should float.
+`shouldShake` | `boolean` (read-only) | Determines whether the label should shake.
+
 Method Signature | Description
 --- | ---
 `getValue() => string` | Returns the input's value.
@@ -412,5 +418,7 @@ Method Signature | Description
 `setTrailingIconAriaLabel(label: string) => void` | Sets the aria label of the trailing icon.
 `setTrailingIconContent(content: string) => void` | Sets the text content of the trailing icon.
 `notchOutline(openNotch: boolean) => void` | Opens/closes the notched outline.
+`setTransformOrigin(evt: TouchEvent \| MouseEvent) => void` | Sets the line ripple's transform origin, so that the line ripple activate animation will animate out from the user's click location.
+`autoCompleteFocus() => void` | Activates the Text Field's focus state in cases when the input value is changed programmatically (i.e., without user action).
 
 `MDCTextFieldFoundation` supports multiple optional sub-elements: helper text and icon. The foundations of these sub-elements must be passed in as constructor arguments to `MDCTextFieldFoundation`.

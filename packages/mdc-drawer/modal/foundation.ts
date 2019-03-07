@@ -26,24 +26,24 @@ import {MDCDismissibleDrawerFoundation} from '../dismissible/foundation';
 /* istanbul ignore next: subclass is not a branch statement */
 export class MDCModalDrawerFoundation extends MDCDismissibleDrawerFoundation {
   /**
+   * Handles click event on scrim.
+   */
+  handleScrimClick() {
+    this.close();
+  }
+
+  /**
    * Called when drawer finishes open animation.
    */
-  opened() {
+  protected opened_() {
     this.adapter_.trapFocus();
   }
 
   /**
    * Called when drawer finishes close animation.
    */
-  closed() {
+  protected closed_() {
     this.adapter_.releaseFocus();
-  }
-
-  /**
-   * Handles click event on scrim.
-   */
-  handleScrimClick() {
-    this.close();
   }
 }
 
