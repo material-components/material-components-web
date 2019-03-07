@@ -1,26 +1,29 @@
 {
   "compilerOptions": {
-    "lib": ["es5", "es6", "dom"],
+    "declaration": true,
     "downlevelIteration": true,
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "lib": ["es5", "es6", "dom"],
+    "moduleResolution": "node",
+    "newLine": "lf",
+    "noEmitOnError": false,
+    "noErrorTruncation": true,
     "noFallthroughCasesInSwitch": true,
+    "noStrictGenericChecks": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noErrorTruncation": true,
-    "noEmitOnError": false,
-    "importHelpers": true,
-    "noStrictGenericChecks": true,
-    "strict": true,
-    "pretty": true,
     "preserveConstEnums": true,
-    "stripInternal": true,
+    "pretty": true,
+    "skipLibCheck": true,
     "sourceMap": true,
+    "strict": true,
+    "stripInternal": true,
     "target": "es5",
-    "newLine": "lf",
-    "types": [],
-    "declaration": true
-  }
+    "types": []
+  },
+  "exclude": [
+    "scripts/**/*.ts"
+  ]
 }

@@ -26,10 +26,12 @@ import {cssClasses} from '../constants';
 import {MDCTopAppBarBaseFoundation} from '../foundation';
 
 export class MDCShortTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
-  /**
-   * State variable for the current top app bar state
-   */
-  isCollapsed = false;
+  // Public visibility for backward compatibility.
+  get isCollapsed(): boolean {
+    return this.isCollapsed_;
+  }
+
+  private isCollapsed_ = false;
 
   /* istanbul ignore next: optional argument is not a branch statement */
   constructor(adapter?: Partial<MDCTopAppBarAdapter>) {
@@ -61,14 +63,14 @@ export class MDCShortTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
     const currentScroll = this.adapter_.getViewportScrollY();
 
     if (currentScroll <= 0) {
-      if (this.isCollapsed) {
+      if (this.isCollapsed_) {
         this.adapter_.removeClass(cssClasses.SHORT_COLLAPSED_CLASS);
-        this.isCollapsed = false;
+        this.isCollapsed_ = false;
       }
     } else {
-      if (!this.isCollapsed) {
+      if (!this.isCollapsed_) {
         this.adapter_.addClass(cssClasses.SHORT_COLLAPSED_CLASS);
-        this.isCollapsed = true;
+        this.isCollapsed_ = true;
       }
     }
   }

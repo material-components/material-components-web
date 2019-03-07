@@ -211,20 +211,36 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 
 Method Signature | Description
 --- | ---
-`hasClass(className: string) => boolean` | Checks if the root element of the component has the given className.
 `addClass(className: string) => void` | Adds a class to the root element of the component.
 `removeClass(className: string) => void` | Removes a class from the root element of the component.
-`registerNavigationIconInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the native navigation icon element for a given event.
-`deregisterNavigationIconInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the native navigation icon element for a given event.
-`notifyNavigationIconClicked() => void` | Emits a custom event `MDCTopAppBar:nav` when the navigation icon is clicked.
-`registerScrollHandler(handler) => void` | Registers a handler to be called when user scrolls. Our default implementation adds the handler as a listener to the window's `scroll` event.
-`deregisterScrollHandler(handler) => void` | Unregisters a handler to be called when user scrolls. Our default implementation removes the handler as a listener to the window's `scroll` event.
+`hasClass(className: string) => boolean` | Checks if the root element of the component has the given className.
+`setStyle(property: string, value: string) => void` | Sets the specified CSS property to the given value on the root element.
+`getTopAppBarHeight() => number` | Gets the height in px of the top app bar.
 `getViewportScrollY() => number` | Gets the number of pixels that the content of body is scrolled from the top of the page.
 `getTotalActionItems() => number` | Gets the number of action items in the top app bar.
+`notifyNavigationIconClicked() => void` | Emits a custom event `MDCTopAppBar:nav` when the navigation icon is clicked.
+`registerNavigationIconInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the native navigation icon element for a given event.
+`deregisterNavigationIconInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the native navigation icon element for a given event.
+`registerScrollHandler(handler: EventListener) => void` | Registers a handler to be called when user scrolls. Our default implementation adds the handler as a listener to the window's `scroll` event.
+`deregisterScrollHandler(handler: EventListener) => void` | Unregisters a handler to be called when user scrolls. Our default implementation removes the handler as a listener to the window's `scroll` event.
+`registerResizeHandler(handler: EventListener) => void` | Registers a handler to be called when the surface (or its viewport) resizes. Our default implementation adds the handler as a listener to the window's `resize` event.
+`deregisterResizeHandler(handler: EventListener) => void` | Unregisters a handler to be called when the surface (or its viewport) resizes. Our default implementation removes the handler as a listener to the window's `resize` event.
 
-### Foundations: `MDCTopAppBarBaseFoundation`, `MDCTopAppBarFoundation`, `MDCFixedTopAppBarFoundation` and `MDCShortTopAppBarFoundation`
+### Foundations
+
+#### `MDCTopAppBarBaseFoundation`, `MDCTopAppBarFoundation`, `MDCFixedTopAppBarFoundation` and `MDCShortTopAppBarFoundation`
+
+All foundations provide the following methods:
 
 Method Signature | Description
 --- | ---
-`initScrollHandler(handler: function) => void` | Registers a scroll handler on a specific target element.
-`destroyScrollHandler(handler: function) => void` | Deregisters the current scroll handler set by the foundation.
+`initScrollHandler(handler: EventListener) => void` | Registers a scroll handler on a specific target element.
+`destroyScrollHandler(handler: EventListener) => void` | Deregisters the current scroll handler set by the foundation.
+
+#### `MDCShortTopAppBarFoundation`
+
+In addition to the methods above, the short variant provides the following public properties:
+
+Property | Value Type | Description
+--- | --- | ---
+`isCollapsed` | `boolean` (read-only) | Indicates whether the short top app bar is in the collapsed state.

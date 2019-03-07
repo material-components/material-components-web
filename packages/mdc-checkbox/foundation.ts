@@ -85,7 +85,9 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
    * Handles the animationend event for the checkbox
    */
   handleAnimationEnd() {
-    if (!this.enableAnimationEndHandler_) return;
+    if (!this.enableAnimationEndHandler_) {
+      return;
+    }
 
     clearTimeout(this.animEndLatchTimer_);
 
