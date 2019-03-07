@@ -245,7 +245,6 @@ and crop the assets to display the center part.
     </li>
   </ul>
 </div>
-
 ```
 
 However, the method results in a less semantic markup, so we don't use this method by
