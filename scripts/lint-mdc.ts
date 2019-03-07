@@ -43,24 +43,15 @@ import * as path from 'path';
 import * as recastParser from 'recast/lib/parser';
 import * as resolve from 'resolve';
 
+interface RecastCustomParser {
+  parse(sourceCode: string): babelTypes.File;
+}
+
 type ClassMemberNodePath = (
     NodePath<babelTypes.ClassMethod> |
     NodePath<babelTypes.ClassProperty> |
     NodePath<babelTypes.TSMethodSignature>
 );
-
-interface PackageJson {
-  private?: boolean;
-  description?: string;
-  license?: string;
-  scripts?: { [key: string]: string; };
-  dependencies?: { [key: string]: string; };
-  devDependencies?: { [key: string]: string; };
-}
-
-interface RecastCustomParser {
-  parse(sourceCode: string): babelTypes.File;
-}
 
 interface AstLocation {
   /** Substring index within the file at which a preview of the offending code starts. */
@@ -76,6 +67,15 @@ interface AstLocation {
 interface NamedIdentifier {
   name: string | null;
   loc: babelTypes.SourceLocation | null;
+}
+
+interface PackageJson {
+  private?: boolean;
+  description?: string;
+  license?: string;
+  scripts?: { [key: string]: string; };
+  dependencies?: { [key: string]: string; };
+  devDependencies?: { [key: string]: string; };
 }
 
 const PACKAGES_DIR_ABSOLUTE = path.resolve(__dirname, '../packages');
@@ -552,6 +552,7 @@ function readmeIsMissingApiName(readmeFilePathAbsolute: string, apiName: string)
 }
 
 function getAstFromCodeString(inputCode: string): babelTypes.Node {
+  // DO NOT INLINE this variable. It provides stronger typing than recast's type declarations..
   const customParser: RecastCustomParser = {
     parse: (code) => babelParser.parse(code, {
       sourceType: 'module',
