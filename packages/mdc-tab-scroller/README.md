@@ -99,6 +99,8 @@ Method Signature | Description
 `getScrollAreaScrollLeft() => number` | Returns the scroll area element's `scrollLeft`.
 `getScrollContentOffsetWidth() => number` | Returns the scroll content element's `offsetWidth`.
 `getScrollAreaOffsetWidth() => number` | Returns the scroll area element's `offsetWidth`.
+`computeScrollAreaClientRect() => ClientRect` | Returns the bounding client rect of the scroll area element.
+`computeScrollContentClientRect() => ClientRect` | Returns the bounding client rect of the scroll content element.
 `computeHorizontalScrollbarHeight() => number` | Returns the height of the browser's horizontal scrollbars (in px).
 
 #### `util` Functions

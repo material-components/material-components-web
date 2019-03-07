@@ -30,11 +30,10 @@
 
 // TODO(acdvorak): Disallow leading/trailing underscores on all publicly-exported identifiers
 // TODO(acdvorak): Require all publicly-exported functions to appear in the README
-// TODO(acdvorak): Require all interface methods to appear in the README
 
 import * as babelParser from '@babel/parser';
+import {default as babelTraverse} from '@babel/traverse';
 import * as babelTypes from '@babel/types';
-import {default as babelTraverse} from 'babel-traverse';
 import * as colors from 'colors/safe';
 import * as fs from 'fs';
 import * as glob from 'glob';
@@ -70,6 +69,12 @@ interface NamedIdentifier {
   name: string | null;
   loc: babelTypes.SourceLocation | null;
 }
+
+type ClassMemberNodePath = (
+    babelTraverse.ClassMethodNodePath |
+    babelTraverse.ClassPropertyNodePath |
+    babelTraverse.TSMethodSignatureNodePath
+);
 
 const PACKAGES_DIR_ABSOLUTE = path.resolve(__dirname, '../packages');
 
@@ -235,8 +240,8 @@ function checkOneImportPath(
     return;
   }
 
-  const importPathIsComponent = importPath.endsWith('/index') || importPath.endsWith('/component');
-  const inputFileIsComponent = inputFilePath.endsWith('/index.ts') || inputFilePath.endsWith('/component.ts');
+  const importPathIsComponent = importPath.endsWith('/index') || importPath.endsWith('component');
+  const inputFileIsComponent = inputFilePath.endsWith('/index.ts') || inputFilePath.endsWith('component.ts');
   if (importPathIsComponent && !inputFileIsComponent) {
     logLinterViolation(
         inputFilePath,
@@ -253,7 +258,7 @@ function checkOneImportPath(
 
 function checkAllInlineProperties(inputFilePath: string, inputCode: string) {
   // Inline property assignment is only an issue in subclasses of MDCComponent.
-  const isComponentFile = inputFilePath.endsWith('/component.ts');
+  const isComponentFile = inputFilePath.endsWith('component.ts');
   if (!isComponentFile) {
     return;
   }
@@ -388,6 +393,10 @@ function checkAllIdentifierNames(inputFilePath: string, inputCode: string) {
       checkClassMemberAccessibility(nodePath, inputFilePath);
       checkClassMemberIsInReadme(nodePath, inputFilePath);
     },
+    TSMethodSignature(nodePath) {
+      checkIdentifierName(nodePath, inputFilePath);
+      checkClassMemberIsInReadme(nodePath, inputFilePath);
+    },
   });
 }
 
@@ -414,7 +423,7 @@ function checkIdentifierName(
     logLinterViolation(
         inputFilePath,
         loc,
-        `Trailing underscores are only allowed on class methods and properties: '${name}' (${node.type}).`,
+        `Trailing underscores are only allowed on class methods and properties: '${name}'.`,
     );
     return;
   }
@@ -454,12 +463,14 @@ function checkClassMemberAccessibility(
 }
 
 function checkClassMemberIsInReadme(
-    nodePath: babelTraverse.ClassMethodNodePath | babelTraverse.ClassPropertyNodePath,
+    nodePath: ClassMemberNodePath,
     inputFilePath: string,
 ) {
   const {node} = nodePath;
   const {name, loc} = getNameAndLocation(node);
-  const kind = babelTypes.isClassMethod(node) ? node.kind : 'property';
+  const kind =
+      babelTypes.isClassMethod(node) ? node.kind :
+      babelTypes.isTSMethodSignature(node) ? 'method' : 'property';
   if (!name || README_METHOD_WHITELIST.includes(name)) {
     return;
   }
@@ -486,7 +497,8 @@ function checkClassMemberIsInReadme(
 
 function getNameAndLocation(astNode: babelTypes.Node): NamedIdentifier {
   if (babelTypes.isClassMethod(astNode) || babelTypes.isClassProperty(astNode) ||
-      babelTypes.isObjectMethod(astNode) || babelTypes.isObjectProperty(astNode)) {
+      babelTypes.isObjectMethod(astNode) || babelTypes.isObjectProperty(astNode) ||
+      babelTypes.isTSMethodSignature(astNode)) {
     const key = astNode.key as unknown as NamedIdentifier;
     if (key.name) {
       return key;

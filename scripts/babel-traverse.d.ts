@@ -22,14 +22,14 @@
  */
 
 /**
- * @fileoverview Typing declarations for the 'babel-traverse' NPM module.
+ * @fileoverview Typing declarations for the '@babel/traverse' NPM module.
  *
  * See https://babeljs.io/docs/en/babel-types for a list of all available AST node types.
  *
  * See https://stackoverflow.com/a/51114250/467582 for TypeScript's `import('...')` syntax.
  */
 
-declare module 'babel-traverse' {
+declare module '@babel/traverse' {
   declare function traverse(ast: babelTypes.Node, options: Partial<traverse.TraversalOptions>): void;
 
   declare namespace traverse {
@@ -48,7 +48,13 @@ declare module 'babel-traverse' {
     export interface IdentifierNodePath extends NodePath<import('@babel/types').Identifier> {}
     export interface ImportDeclarationNodePath extends NodePath<import('@babel/types').ImportDeclaration> {}
     export interface ObjectMethodNodePath extends NodePath<import('@babel/types').ObjectMethod> {}
+    export interface ObjectPropertyNodePath extends NodePath<import('@babel/types').ObjectProperty> {}
     export interface PropertyNodePath extends NodePath<import('@babel/types').Property> {}
+    export interface TSInterfaceBodyNodePath extends NodePath<import('@babel/types').TSInterfaceBody> {}
+    export interface TSInterfaceDeclarationNodePath extends NodePath<import('@babel/types').TSInterfaceDeclaration> {}
+    export interface TSMethodSignatureNodePath extends NodePath<import('@babel/types').TSMethodSignature> {}
+    export interface TSPropertySignatureNodePath extends NodePath<import('@babel/types').TSPropertySignature> {}
+    export interface TSTypeAnnotationNodePath extends NodePath<import('@babel/types').TSTypeAnnotation> {}
 
     export interface TraversalOptions {
       ArrowFunctionExpression: (nodePath: ArrowFunctionExpressionNodePath) => void;
@@ -62,7 +68,13 @@ declare module 'babel-traverse' {
       Identifier: (nodePath: IdentifierNodePath) => void;
       ImportDeclaration: (nodePath: ImportDeclarationNodePath) => void;
       ObjectMethod: (nodePath: ObjectMethodNodePath) => void;
+      ObjectProperty: (nodePath: ObjectPropertyNodePath) => void;
       Property: (nodePath: PropertyNodePath) => void;
+      TSInterfaceBody: (nodePath: TSInterfaceBodyNodePath) => void;
+      TSInterfaceDeclaration: (nodePath: TSInterfaceDeclarationNodePath) => void;
+      TSMethodSignature: (nodePath: TSMethodSignatureNodePath) => void;
+      TSPropertySignature: (nodePath: TSPropertySignatureNodePath) => void;
+      TSTypeAnnotation: (nodePath: TSTypeAnnotationNodePath) => void;
     }
   }
 

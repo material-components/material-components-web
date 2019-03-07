@@ -363,7 +363,6 @@ Method Signature | Description
 
 If you are using a JavaScript framework, such as React or Angular, you can create a Text Field for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-
 ### `MDCTextFieldAdapter`
 
 Method Signature | Description
@@ -390,6 +389,31 @@ Returns an object representing the native text input element, with a similar API
 #### `MDCTextFieldAdapter.getIdleOutlineStyleValue(propertyName: string)`
 
 Returns the idle outline element's computed style value of the given css property `propertyName`. The vanilla implementation achieves this via `getComputedStyle(...).getPropertyValue(propertyName)`.
+
+### `MDCTextFieldLabelAdapter`
+
+Method Signature | Description
+--- | ---
+`shakeLabel(shouldShake: boolean) => void` | Shakes the label to indicate an invalid input value.
+`floatLabel(shouldFloat: boolean) => void` | Floats the label.
+`hasLabel() => boolean` | Determines whether the text field has a label element.
+`getLabelWidth() => number` | Returns the width of the label element in px.
+
+### `MDCTextFieldLineRippleAdapter`
+
+Method Signature | Description
+--- | ---
+`activateLineRipple() => void` | Activates the text field's line ripple sub-element.
+`deactivateLineRipple() => void` | Deactivate the text field's line ripple sub-element.
+`setLineRippleTransformOrigin(normalizedX: number) => void` | Sets the CSS `transform-origin` property to the given value on the text field's line ripple sub-element (if present).
+
+### `MDCTextFieldOutlineAdapter`
+
+Method Signature | Description
+--- | ---
+`hasOutline() => boolean` | Determines whether the text field has an outline sub-element.
+`notchOutline(labelWidth: number) => void` | Sets the width of the text field's notched outline sub-element.
+`closeOutline() => void` | Closes the text field's notched outline sub-element.
 
 ### `MDCTextFieldFoundation`
 
