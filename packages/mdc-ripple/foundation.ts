@@ -392,7 +392,7 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
     // Force layout in order to re-trigger the animation.
     this.adapter_.computeBoundingRect();
     this.adapter_.addClass(FG_ACTIVATION);
-    this.activationTimer_ = setTimeout(() => this.activationTimerCallback_(), DEACTIVATION_TIMEOUT_MS);
+    this.activationTimer_ = window.setTimeout(() => this.activationTimerCallback_(), DEACTIVATION_TIMEOUT_MS);
   }
 
   private getFgTranslationCoordinates_(): FgTranslationCoordinates {
@@ -435,7 +435,7 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
     if (activationHasEnded && this.activationAnimationHasEnded_) {
       this.rmBoundedActivationClasses_();
       this.adapter_.addClass(FG_DEACTIVATION);
-      this.fgDeactivationRemovalTimer_ = setTimeout(() => {
+      this.fgDeactivationRemovalTimer_ = window.setTimeout(() => {
         this.adapter_.removeClass(FG_DEACTIVATION);
       }, numbers.FG_DEACTIVATION_MS);
     }
@@ -453,7 +453,7 @@ export class MDCRippleFoundation extends MDCFoundation<MDCRippleAdapter> {
     this.activationState_ = this.defaultActivationState_();
     // Touch devices may fire additional events for the same interaction within a short time.
     // Store the previous event until it's safe to assume that subsequent events are for new interactions.
-    setTimeout(() => this.previousActivationEvent_ = undefined, MDCRippleFoundation.numbers.TAP_DELAY_MS);
+    window.setTimeout(() => this.previousActivationEvent_ = undefined, MDCRippleFoundation.numbers.TAP_DELAY_MS);
   }
 
   private deactivate_(): void {

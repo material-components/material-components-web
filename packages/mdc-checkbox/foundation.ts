@@ -91,7 +91,7 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
 
     clearTimeout(this.animEndLatchTimer_);
 
-    this.animEndLatchTimer_ = setTimeout(() => {
+    this.animEndLatchTimer_ = window.setTimeout(() => {
       this.adapter_.removeClass(this.currentAnimationClass_);
       this.enableAnimationEndHandler_ = false;
     }, numbers.ANIM_END_LATCH_MS);

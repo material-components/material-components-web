@@ -75,7 +75,7 @@ function announce(ariaEl: Element, labelEl: Element = ariaEl) {
   // however, `aria-live` is turned off, so this DOM update will be ignored by screen readers.
   labelEl.setAttribute(ARIA_LIVE_LABEL_TEXT_ATTR, labelText);
 
-  setTimeout(() => {
+  window.setTimeout(() => {
     // Allow screen readers to announce changes to the DOM again.
     ariaEl.setAttribute('aria-live', priority);
 

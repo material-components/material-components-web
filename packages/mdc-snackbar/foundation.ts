@@ -87,10 +87,10 @@ export class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
     this.runNextAnimationFrame_(() => {
       this.adapter_.addClass(OPEN);
 
-      this.animationTimer_ = setTimeout(() => {
+      this.animationTimer_ = window.setTimeout(() => {
         this.handleAnimationTimerEnd_();
         this.adapter_.notifyOpened();
-        this.autoDismissTimer_ = setTimeout(() => {
+        this.autoDismissTimer_ = window.setTimeout(() => {
           this.close(REASON_DISMISS);
         }, this.getTimeoutMs());
       }, numbers.SNACKBAR_ANIMATION_OPEN_TIME_MS);
@@ -119,7 +119,7 @@ export class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
     this.adapter_.removeClass(cssClasses.OPENING);
 
     clearTimeout(this.animationTimer_);
-    this.animationTimer_ = setTimeout(() => {
+    this.animationTimer_ = window.setTimeout(() => {
       this.handleAnimationTimerEnd_();
       this.adapter_.notifyClosed(reason);
     }, numbers.SNACKBAR_ANIMATION_CLOSE_TIME_MS);
@@ -187,7 +187,7 @@ export class MDCSnackbarFoundation extends MDCFoundation<MDCSnackbarAdapter> {
     this.animationFrame_ = requestAnimationFrame(() => {
       this.animationFrame_ = 0;
       clearTimeout(this.animationTimer_);
-      this.animationTimer_ = setTimeout(callback, 0);
+      this.animationTimer_ = window.setTimeout(callback, 0);
     });
   }
 }

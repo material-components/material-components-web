@@ -151,7 +151,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
      * Between Focusout & Focusin some browsers do not have focus on any element. Setting a delay to wait till the focus
      * is moved to next element.
      */
-    setTimeout(() => {
+    window.setTimeout(() => {
       if (!this.adapter_.isFocusInsideList()) {
         this.setTabindexToFirstSelectedItem_();
       }
