@@ -33,7 +33,7 @@ declare module 'babel-traverse' {
   declare function traverse(ast: babelTypes.Node, options: Partial<traverse.TraversalOptions>): void;
 
   declare namespace traverse {
-    export interface NodePath<NodeType extends import('@babel/types').BaseNode> {
+    export interface NodePath<NodeType extends import('@babel/types').BaseNode = import('@babel/types').Node> {
       node: NodeType;
     }
 
@@ -48,6 +48,7 @@ declare module 'babel-traverse' {
     export interface IdentifierNodePath extends NodePath<import('@babel/types').Identifier> {}
     export interface ImportDeclarationNodePath extends NodePath<import('@babel/types').ImportDeclaration> {}
     export interface ObjectMethodNodePath extends NodePath<import('@babel/types').ObjectMethod> {}
+    export interface PropertyNodePath extends NodePath<import('@babel/types').Property> {}
 
     export interface TraversalOptions {
       ArrowFunctionExpression: (nodePath: ArrowFunctionExpressionNodePath) => void;
@@ -61,6 +62,7 @@ declare module 'babel-traverse' {
       Identifier: (nodePath: IdentifierNodePath) => void;
       ImportDeclaration: (nodePath: ImportDeclarationNodePath) => void;
       ObjectMethod: (nodePath: ObjectMethodNodePath) => void;
+      Property: (nodePath: PropertyNodePath) => void;
     }
   }
 

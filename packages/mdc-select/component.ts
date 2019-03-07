@@ -50,6 +50,9 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
   // Public visibility for this property is required by MDCRippleCapableSurface.
   root_!: HTMLElement; // assigned in MDCComponent constructor
 
+  // Public visibility for backward compatibility.
+  ripple!: MDCRipple | null;
+
   private menu_!: MDCMenu | null; // assigned in enhancedSelectSetup_()
   private isMenuOpen_!: boolean; // assigned in initialize()
 
@@ -59,14 +62,13 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
 
   private targetElement_!: HTMLElement; // assigned in initialize()
 
-  private hiddenInput_!: HTMLInputElement | null;
-  private leadingIcon_?: MDCSelectIcon;
-  private helperText_!: MDCSelectHelperText | null;
-  private menuElement_!: Element | null;
-  private ripple!: MDCRipple | null;
-  private lineRipple_!: MDCLineRipple | null;
-  private label_!: MDCFloatingLabel | null;
-  private outline_!: MDCNotchedOutline | null;
+  private hiddenInput_!: HTMLInputElement | null; // assigned in enhancedSelectSetup_()
+  private menuElement_!: Element | null; // assigned in enhancedSelectSetup_()
+  private leadingIcon_?: MDCSelectIcon; // assigned in initialize()
+  private helperText_!: MDCSelectHelperText | null; // assigned in initialize()
+  private lineRipple_!: MDCLineRipple | null; // assigned in initialize()
+  private label_!: MDCFloatingLabel | null; // assigned in initialize()
+  private outline_!: MDCNotchedOutline | null; // assigned in initialize()
   private handleChange_!: SpecificEventListener<'change'>; // assigned in initialize()
   private handleFocus_!: SpecificEventListener<'focus'>; // assigned in initialize()
   private handleBlur_!: SpecificEventListener<'blur'>; // assigned in initialize()

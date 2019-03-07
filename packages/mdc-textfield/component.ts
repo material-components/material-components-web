@@ -58,8 +58,10 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
     return new MDCTextField(root);
   }
 
-  // Public visibility for these properties is required by MDCRippleCapableSurface.
+  // Public visibility for this property is required by MDCRippleCapableSurface.
   root_!: HTMLElement; // assigned in MDCComponent constructor
+
+  // Public visibility for backward compatibility.
   ripple!: MDCRipple | null; // assigned in initialize()
 
   // The only required sub-element.

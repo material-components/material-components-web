@@ -222,9 +222,21 @@ Method Signature | Description
 `getViewportScrollY() => number` | Gets the number of pixels that the content of body is scrolled from the top of the page.
 `getTotalActionItems() => number` | Gets the number of action items in the top app bar.
 
-### Foundations: `MDCTopAppBarBaseFoundation`, `MDCTopAppBarFoundation`, `MDCFixedTopAppBarFoundation` and `MDCShortTopAppBarFoundation`
+### Foundations
+
+#### `MDCTopAppBarBaseFoundation`, `MDCTopAppBarFoundation`, `MDCFixedTopAppBarFoundation` and `MDCShortTopAppBarFoundation`
+
+All foundations provide the following methods:
 
 Method Signature | Description
 --- | ---
-`initScrollHandler(handler: function) => void` | Registers a scroll handler on a specific target element.
-`destroyScrollHandler(handler: function) => void` | Deregisters the current scroll handler set by the foundation.
+`initScrollHandler(handler: EventListener) => void` | Registers a scroll handler on a specific target element.
+`destroyScrollHandler(handler: EventListener) => void` | Deregisters the current scroll handler set by the foundation.
+
+#### `MDCShortTopAppBarFoundation`
+
+In addition to the methods above, the short variant provides the following public properties:
+
+Property | Value Type | Description
+--- | --- | ---
+`isCollapsed` | `boolean` (read-only) | Indicates whether the short top app bar is in the collapsed state.

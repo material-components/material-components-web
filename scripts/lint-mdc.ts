@@ -29,7 +29,6 @@
 // tslint:disable:object-literal-sort-keys
 
 // TODO(acdvorak): Disallow leading/trailing underscores on all publicly-exported identifiers
-// TODO(acdvorak): Require private class properties to have a trailing underscore
 // TODO(acdvorak): Require all publicly-exported functions to appear in the README
 // TODO(acdvorak): Require all interface methods to appear in the README
 
@@ -67,7 +66,7 @@ interface AstLocation {
   violationSource: babelTypes.SourceLocation | null;
 }
 
-interface FunctionIdentifier {
+interface NamedIdentifier {
   name: string | null;
   loc: babelTypes.SourceLocation | null;
 }
@@ -84,6 +83,14 @@ const README_METHOD_WHITELIST = [
   'init',
   'initialSyncWithDOM',
   'initialize',
+];
+
+/**
+ * List of public properties that are allowed to have a trailing underscore in their name.
+ */
+const PUBLIC_PROPERTY_UNDERSCORE_WHITELIST = [
+  // `MDCComponent` subclasses that implement `MDCRippleCapableSurface` need public visibility on the `root_` property.
+  'root_',
 ];
 
 let violationCount = 0;
@@ -117,18 +124,19 @@ function lintAllFiles(inputFilePaths: string[]) {
 function lintOneFile(inputFilePath: string, inputCode: string) {
   checkAllImportPaths(inputFilePath, inputCode);
   checkAllInlineProperties(inputFilePath, inputCode);
-  checkAllFunctions(inputFilePath, inputCode);
+  checkAllReturnAnnotations(inputFilePath, inputCode);
+  checkAllIdentifierNames(inputFilePath, inputCode);
 }
 
 function checkAllImportPaths(inputFilePath: string, inputCode: string) {
-  const ast = getAstFromCodeString(inputCode);
+  const astRoot = getAstFromCodeString(inputCode);
 
-  babelTraverse(ast, {
-    ExportDeclaration(oldExportDeclaration) {
-      checkOneImportPath(oldExportDeclaration, inputFilePath);
+  babelTraverse(astRoot, {
+    ExportDeclaration(nodePath) {
+      checkOneImportPath(nodePath, inputFilePath);
     },
-    ImportDeclaration(oldImportDeclaration) {
-      checkOneImportPath(oldImportDeclaration, inputFilePath);
+    ImportDeclaration(nodePath) {
+      checkOneImportPath(nodePath, inputFilePath);
     },
   });
 }
@@ -255,11 +263,11 @@ function checkAllInlineProperties(inputFilePath: string, inputCode: string) {
   const propertiesAssignedInMethods = new Map<string, AstLocation[]>();
 
   babelTraverse(ast, {
-    ClassProperty(propertyNodePath) {
-      visitOneClassProperty(propertyNodePath, propertiesInitializedInline);
+    ClassProperty(nodePath) {
+      visitOneClassProperty(nodePath, propertiesInitializedInline);
     },
-    AssignmentExpression(expressionNodePath) {
-      visitOneAssignmentExpression(expressionNodePath, propertiesAssignedInMethods);
+    AssignmentExpression(nodePath) {
+      visitOneAssignmentExpression(nodePath, propertiesAssignedInMethods);
     },
   });
 
@@ -332,118 +340,14 @@ function visitOneAssignmentExpression(
   });
 }
 
-function checkAllFunctions(inputFilePath: string, inputCode: string) {
+function checkAllReturnAnnotations(inputFilePath: string, inputCode: string) {
   const ast = getAstFromCodeString(inputCode);
 
   babelTraverse(ast, {
     Function(nodePath) {
-      checkFunctionName(nodePath, inputFilePath);
       checkFunctionReturnAnnotation(nodePath, inputFilePath);
     },
-    ClassMethod(nodePath) {
-      checkClassMethodAccessibility(nodePath, inputFilePath);
-      checkClassMethodInReadme(nodePath, inputFilePath);
-    },
   });
-}
-
-function checkFunctionName(
-    nodePath: babelTraverse.FunctionNodePath,
-    inputFilePath: string,
-) {
-  const functionNode = nodePath.node;
-  const {name: functionName, loc: functionNameLocation} = getFunctionNameAndLocation(functionNode);
-  if (!functionName) {
-    return;
-  }
-
-  if (functionName.startsWith('_')) {
-    logLinterViolation(
-        inputFilePath,
-        functionNameLocation,
-        [
-          `Leading underscores are not allowed in function names: '${functionName}'.`,
-        ],
-    );
-    return;
-  }
-
-  if (functionName.endsWith('_') && !babelTypes.isClassMethod(functionNode)) {
-    logLinterViolation(
-        inputFilePath,
-        functionNameLocation,
-        [
-          `Trailing underscores are only allowed on class methods and properties: '${functionName}'.`,
-        ],
-    );
-    return;
-  }
-}
-
-function checkClassMethodAccessibility(
-    nodePath: babelTraverse.ClassMethodNodePath,
-    inputFilePath: string,
-) {
-  // `MDCComponent` subclasses that implement `MDCRippleCapableSurface` need public visibility on the `root_` property.
-  const whitelist = ['root_'];
-  const methodNode = nodePath.node;
-  const {name: methodName, loc: methodNameLocation} = getFunctionNameAndLocation(methodNode);
-  if (!methodName || whitelist.includes(methodName)) {
-    return;
-  }
-
-  const accessibility = methodNode.accessibility;
-  const isPublicAccess = accessibility !== 'private' && accessibility !== 'protected';
-  const isPublicName = !methodName.endsWith('_');
-
-  if (!isPublicAccess && isPublicName) {
-    logLinterViolation(
-        inputFilePath,
-        methodNameLocation,
-        `Non-public method '${methodName}' is missing a trailing underscore in its name.`,
-    );
-    return;
-  }
-
-  if (isPublicAccess && !isPublicName) {
-    logLinterViolation(
-        inputFilePath,
-        methodNameLocation,
-        `Non-public method '${methodName}' requires a private/protected accessibility modifier.`,
-    );
-    return;
-  }
-}
-
-function checkClassMethodInReadme(
-    nodePath: babelTraverse.ClassMethodNodePath,
-    inputFilePath: string,
-) {
-  const functionNode = nodePath.node;
-  const {name: functionName, loc: functionNameLocation} = getFunctionNameAndLocation(functionNode);
-  const functionType = functionNode.kind;
-  if (!functionName || README_METHOD_WHITELIST.includes(functionName)) {
-    return;
-  }
-
-  if (isStaticOrNonPublicMethod(functionNode)) {
-    return;
-  }
-
-  const readmeFilePathAbsolute = getReadmeFilePathAbsolute(inputFilePath);
-  if (!readmeFilePathAbsolute) {
-    return;
-  }
-
-  if (readmeIsMissingApiName(readmeFilePathAbsolute, functionName)) {
-    const readmeFilePathRelative = path.relative(PACKAGES_DIR_ABSOLUTE, readmeFilePathAbsolute);
-    logLinterViolation(
-        inputFilePath,
-        functionNameLocation,
-        `Public ${functionType} '${functionName}' is missing from '${readmeFilePathRelative}'.`,
-    );
-    return;
-  }
 }
 
 function checkFunctionReturnAnnotation(
@@ -468,31 +372,144 @@ function checkFunctionReturnAnnotation(
   }
 }
 
-function getFunctionNameAndLocation(functionNode: babelTypes.Node): FunctionIdentifier {
-  if (babelTypes.isClassMethod(functionNode) || babelTypes.isObjectMethod(functionNode)) {
-    const key = functionNode.key as unknown as FunctionIdentifier;
+function checkAllIdentifierNames(inputFilePath: string, inputCode: string) {
+  const ast = getAstFromCodeString(inputCode);
+
+  babelTraverse(ast, {
+    Function(nodePath) {
+      checkIdentifierName(nodePath, inputFilePath);
+    },
+    ClassMethod(nodePath) {
+      checkClassMemberAccessibility(nodePath, inputFilePath);
+      checkClassMemberIsInReadme(nodePath, inputFilePath);
+    },
+    ClassProperty(nodePath) {
+      checkIdentifierName(nodePath, inputFilePath);
+      checkClassMemberAccessibility(nodePath, inputFilePath);
+      checkClassMemberIsInReadme(nodePath, inputFilePath);
+    },
+  });
+}
+
+function checkIdentifierName(
+    nodePath: babelTraverse.NodePath,
+    inputFilePath: string,
+) {
+  const node = nodePath.node;
+  const {name, loc} = getNameAndLocation(node);
+  if (!name) {
+    return;
+  }
+
+  if (name.startsWith('_')) {
+    logLinterViolation(
+        inputFilePath,
+        loc,
+        `Leading underscores are not allowed in function names: '${name}'.`,
+    );
+    return;
+  }
+
+  if (name.endsWith('_') && !babelTypes.isClassMethod(node) && !babelTypes.isClassProperty(node)) {
+    logLinterViolation(
+        inputFilePath,
+        loc,
+        `Trailing underscores are only allowed on class methods and properties: '${name}' (${node.type}).`,
+    );
+    return;
+  }
+}
+
+function checkClassMemberAccessibility(
+    nodePath: babelTraverse.ClassMethodNodePath | babelTraverse.ClassPropertyNodePath,
+    inputFilePath: string,
+) {
+  const node = nodePath.node;
+  const {name, loc} = getNameAndLocation(node);
+  if (!name || PUBLIC_PROPERTY_UNDERSCORE_WHITELIST.includes(name)) {
+    return;
+  }
+
+  const accessibility = node.accessibility;
+  const isPublicAccess = accessibility !== 'private' && accessibility !== 'protected';
+  const isPublicName = !name.endsWith('_');
+
+  if (!isPublicAccess && isPublicName) {
+    logLinterViolation(
+        inputFilePath,
+        loc,
+        `Non-public member '${name}' is missing a trailing underscore in its name.`,
+    );
+    return;
+  }
+
+  if (isPublicAccess && !isPublicName) {
+    logLinterViolation(
+        inputFilePath,
+        loc,
+        `Non-public member '${name}' requires a private/protected accessibility modifier.`,
+    );
+    return;
+  }
+}
+
+function checkClassMemberIsInReadme(
+    nodePath: babelTraverse.ClassMethodNodePath | babelTraverse.ClassPropertyNodePath,
+    inputFilePath: string,
+) {
+  const {node} = nodePath;
+  const {name, loc} = getNameAndLocation(node);
+  const kind = babelTypes.isClassMethod(node) ? node.kind : 'property';
+  if (!name || README_METHOD_WHITELIST.includes(name)) {
+    return;
+  }
+
+  if (isStaticOrNonPublicMember(node)) {
+    return;
+  }
+
+  const readmeFilePathAbsolute = getReadmeFilePathAbsolute(inputFilePath);
+  if (!readmeFilePathAbsolute) {
+    return;
+  }
+
+  if (readmeIsMissingApiName(readmeFilePathAbsolute, name)) {
+    const readmeFilePathRelative = path.relative(PACKAGES_DIR_ABSOLUTE, readmeFilePathAbsolute);
+    logLinterViolation(
+        inputFilePath,
+        loc,
+        `Public ${kind} '${name}' is missing from '${readmeFilePathRelative}'.`,
+    );
+    return;
+  }
+}
+
+function getNameAndLocation(astNode: babelTypes.Node): NamedIdentifier {
+  if (babelTypes.isClassMethod(astNode) || babelTypes.isClassProperty(astNode) ||
+      babelTypes.isObjectMethod(astNode) || babelTypes.isObjectProperty(astNode)) {
+    const key = astNode.key as unknown as NamedIdentifier;
     if (key.name) {
       return key;
     }
-  } else if (babelTypes.isFunctionDeclaration(functionNode) && functionNode.id) {
-    return functionNode.id;
+  } else if (babelTypes.isFunctionDeclaration(astNode) && astNode.id) {
+    return astNode.id;
   }
   return {name: null, loc: null};
 }
 
-function isStaticOrNonPublicMethod(functionNode: babelTypes.Function): boolean {
-  const {name: functionName} = getFunctionNameAndLocation(functionNode);
-  if (!functionName) {
+function isStaticOrNonPublicMember(node: babelTypes.Node): boolean {
+  const {name} = getNameAndLocation(node);
+  if (!name) {
     // Arrow function or unnamed function expression.
     return true;
   }
 
-  if (babelTypes.isClassMethod(functionNode)) {
+  if (babelTypes.isClassMethod(node) || babelTypes.isClassProperty(node)) {
     return (
-        functionNode.accessibility === 'private' ||
-        functionNode.accessibility === 'protected' ||
-        functionNode.static ||
-        functionName.endsWith('_')
+        node.accessibility === 'private' ||
+        node.accessibility === 'protected' ||
+        node.static ||
+        name.endsWith('_')
     );
   }
 
