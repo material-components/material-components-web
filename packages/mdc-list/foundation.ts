@@ -73,7 +73,9 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   }
 
   layout() {
-    if (this.adapter_.getListItemCount() === 0) return;
+    if (this.adapter_.getListItemCount() === 0) {
+      return;
+    }
 
     if (this.adapter_.hasCheckboxAtIndex(0)) {
       this.isCheckboxList_ = true;
@@ -221,7 +223,9 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    * Click handler for the list.
    */
   handleClick(index: number, toggleCheckbox: boolean) {
-    if (index === -1) return;
+    if (index === -1) {
+      return;
+    }
 
     if (this.isSelectableList_()) {
       this.setSelectedIndexOnAction_(index, toggleCheckbox);

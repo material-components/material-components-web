@@ -389,7 +389,9 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
    * Sets character counter values that shows characters used and the total character limit.
    */
   private setCharacterCounter_(currentLength: number): void {
-    if (!this.characterCounter_) return;
+    if (!this.characterCounter_) {
+      return;
+    }
 
     const maxLength = this.getNativeInput_().maxLength;
     if (maxLength === -1) {
