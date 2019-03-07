@@ -41,7 +41,7 @@ Material Components for the web is the successor to [Material Design Lite](https
 <!-- Render textfield component -->
 <div class="mdc-text-field">
   <input type="text" id="my-text-field" class="mdc-text-field__input">
-  <label class="mdc-floating-label" for="my-text-field">Hint text</label>
+  <label class="mdc-floating-label" for="my-text-field">Label</label>
   <div class="mdc-line-ripple"></div>
 </div>
 
@@ -72,7 +72,7 @@ Sample usage of text field component. Please see [MDC Textfield](packages/mdc-te
 ```html
 <div class="mdc-text-field">
   <input type="text" id="my-text-field" class="mdc-text-field__input">
-  <label class="mdc-floating-label" for="my-text-field">Hint text</label>
+  <label class="mdc-floating-label" for="my-text-field">Label</label>
   <div class="mdc-line-ripple"></div>
 </div>
 ```
@@ -96,7 +96,7 @@ const textField = new MDCTextField(document.querySelector('.mdc-text-field'));
 
 This'll initialize text field component on a single `.mdc-text-field` element.
 
-> Please see [quick start demo](https://stackblitz.com/edit/mdc-web-quick-start-demo) on stackblitz for full example.
+> Please see [quick start demo](https://glitch.com/~mdc-web-quick-start) on glitch for full example.
 
 ## Need help?
 
