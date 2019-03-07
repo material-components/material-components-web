@@ -13,9 +13,10 @@ MDC Web strives to seamlessly incorporate into a wider range of usage contexts, 
 
 Material Components for the web is the successor to [Material Design Lite](https://getmdl.io/). In addition to implementing the [Material Design guidelines](https://material.io/design), it provides more flexible theming customization, not only in terms of color, but also typography, shape, states, and more. It is also specifically [architected](docs/code/architecture.md) for adaptability to various [major web frameworks](docs/framework-wrappers.md).
 
-> NOTE: Material Components Web follows semver and is still in version 0.x, which means it is regularly subject to
-> breaking changes. We typically follow a 2-week release schedule which includes one minor release per month with
-> breaking changes, and intermediate patch releases with bug fixes.
+> NOTE: Material Components Web tends to release breaking changes on a monthly basis, but follows
+> [semver](https://semver.org/) so you can control when you incorporate them.
+> We typically follow a 2-week release schedule which includes one major release per month with breaking changes,
+> and intermediate patch releases with bug fixes.
 
 ## Important links
 
