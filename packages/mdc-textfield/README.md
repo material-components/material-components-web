@@ -378,9 +378,6 @@ Method Signature | Description
 `deregisterValidationAttributeChangeHandler(!MutationObserver) => void` | Disconnects a validation attribute observer on the input element.
 `getNativeInput() => NativeInputType \| null` | Returns an object representing the native text input element, with a similar API shape. See [types.ts](types.ts).
 `isFocused() => boolean` | Returns whether the input is focused.
-`hasOutline() => boolean` | Returns whether there is an outline element.
-`notchOutline(labelWidth: number) => void` | Updates the notched outline path to open the notch and update the notch width for the label element.
-`closeOutline() => void` | Closes the notch in the notched outline element.
 
 #### `MDCTextFieldAdapter.getNativeInput()`
 
