@@ -52,7 +52,6 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       isCheckboxCheckedAtIndex: () => false,
       isFocusInsideList: () => false,
       notifyAction: () => undefined,
-      removeAttributeForElementIndex: () => undefined,
       removeClassForElementIndex: () => undefined,
       setAttributeForElementIndex: () => undefined,
       setCheckedCheckboxOrRadioAtIndex: () => undefined,

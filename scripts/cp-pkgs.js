@@ -35,8 +35,8 @@ const {spawnSync} = require('child_process');
 const {sync: globSync} = require('glob');
 
 const ALL_IN_ONE_PACKAGE = 'material-components-web';
-const DECLARATION_FILE_PREFIX = 'mdc-';
 const D_TS_DIRECTORY = path.resolve(__dirname, '../build/packages');
+const PACKAGES_DIRECTORY = path.resolve(__dirname, '../packages');
 const PKG_RE = /(?:material\-components\-web)|(?:mdc\.[a-zA-Z\-]+)/;
 
 const isValidCwd = (
@@ -76,7 +76,7 @@ function cleanPkgDistDirs() {
 
 /**
  * @param {string} asset filepath relative to the root directory
- * @returns {string} destination package name
+ * @return {string} destination package name
  */
 function getAssetEntry(asset) {
   const [entryName] = path.parse(asset).name.match(PKG_RE);
@@ -90,7 +90,7 @@ function getAssetEntry(asset) {
 
 /**
  * @param {string} asset filepath relative to the root directory
- * @returns {Promise<void>}
+ * @return {Promise<void>}
  */
 async function cpAsset(asset) {
   const assetPkg = path.join('packages', getAssetEntry(asset));
@@ -107,51 +107,25 @@ async function cpAsset(asset) {
 }
 
 /**
- * Imports all files in index.d.ts and compiles a bundled .d.ts file for
- * UMD files.
+ * Imports all files in index.d.ts and compiles a bundled .d.ts file for UMD bundles.
  */
 function dtsBundler() {
   const packageDirectories = fs.readdirSync(D_TS_DIRECTORY);
   packageDirectories.forEach((packageDirectory) => {
-    const main = path.resolve(D_TS_DIRECTORY, packageDirectory, './index.d.ts');
+    const packagePath = path.join(PACKAGES_DIRECTORY, packageDirectory);
+    const name = JSON.parse(fs.readFileSync(path.join(packagePath, 'package.json'), 'utf8')).name;
+    const main = path.join(D_TS_DIRECTORY, packageDirectory, './index.d.ts');
+    const isAllInOne = packageDirectory === ALL_IN_ONE_PACKAGE;
+    const destBasename = isAllInOne ? packageDirectory : `mdc.${toCamelCase(packageDirectory.replace(/^mdc-/, ''))}`;
+    const destFilename = path.join(packagePath, 'dist', `${destBasename}.d.ts`);
+
+    console.log(`Writing UMD declarations in ${destFilename.replace(process.cwd() + '/', '')}`);
     dts.bundle({
-      name: packageDirectory,
+      name,
       main,
+      out: destFilename,
     });
   });
-}
-
-/**
- * @param {string} asset filepath relative to the root directory
- * @param {string} assetPkg directory path to destination package
- * @returns {string} destination filepath for UMD declaration file.
- */
-function getDeclarationFileName(asset, assetPkg) {
-  const packageName = path.parse(asset).name.replace(/^mdc-|\.d$/g, '');
-  const isAllInOne = packageName === ALL_IN_ONE_PACKAGE;
-  const destFileName = isAllInOne ? packageName : `mdc.${toCamelCase(packageName)}`;
-  return path.join(assetPkg, 'dist', `${destFileName}.d.ts`);
-}
-
-/**
- * Copies the declaration file from the /build directory to its respective
- * destination directory.
- * @param {string} asset filepath relative to the root directory
- * @returns {Promise<void>}
- */
-async function cpDeclarationAsset(asset) {
-  const assetPkg = path.parse(asset.split('build/')[1]).dir;
-  if (!fs.existsSync(assetPkg)) {
-    return Promise.reject(new Error(`Non-existent asset package path ${assetPkg} for ${asset}`));
-  }
-
-  const destDir = getDeclarationFileName(asset, assetPkg);
-  return cpFile(asset, destDir).then(
-    () => console.log(`cp ${asset} -> ${destDir}`),
-    (err) => {
-      throw err;
-    }
-  );
 }
 
 /*
@@ -167,13 +141,5 @@ Promise.all(globSync('build/*.{css,js,map}').map(cpAsset)).catch((err) => {
   process.exit(1);
 });
 
-// this method builds the files that the next lines copy to each package
+// Build d.ts files for each UMD bundle and copy into each package's dist folder
 dtsBundler();
-
-Promise.all(
-  globSync(`build/packages/**/{${DECLARATION_FILE_PREFIX},${ALL_IN_ONE_PACKAGE}}*.d.ts`)
-    .map(cpDeclarationAsset)
-).catch((err) => {
-  console.error('Error encountered copying assets:', err);
-  process.exit(1);
-});
