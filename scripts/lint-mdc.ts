@@ -338,6 +338,7 @@ function checkAllFunctions(inputFilePath: string, inputCode: string) {
   babelTraverse(ast, {
     Function(nodePath) {
       checkFunctionName(nodePath, inputFilePath);
+      checkFunctionReturnAnnotation(nodePath, inputFilePath);
     },
     ClassMethod(nodePath) {
       checkClassMethodAccessibility(nodePath, inputFilePath);
@@ -442,6 +443,28 @@ function checkClassMethodInReadme(
         `Public ${functionType} '${functionName}' is missing from '${readmeFilePathRelative}'.`,
     );
     return;
+  }
+}
+
+function checkFunctionReturnAnnotation(
+    nodePath: babelTraverse.FunctionNodePath,
+    inputFilePath: string,
+) {
+  const functionLikeNode = nodePath.node;
+  const leadingComments = functionLikeNode.leadingComments || [];
+  for (const leadingComment of leadingComments) {
+    if (leadingComment.type !== 'CommentBlock') {
+      continue;
+    }
+
+    if (leadingComment.value.indexOf(' @returns ') > -1) {
+      logLinterViolation(
+          inputFilePath,
+          leadingComment.loc,
+          `Please use a '@return' annotation (singular) instead of '@returns' (plural) in TSDoc comments.`,
+      );
+      return;
+    }
   }
 }
 
