@@ -166,12 +166,6 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
       notifyAction: (index) => {
         this.emit<MDCListActionEventDetail>(strings.ACTION_EVENT, {index}, /** shouldBubble */ true);
       },
-      removeAttributeForElementIndex: (index, attr) => {
-        const element = this.listElements[index];
-        if (element) {
-          element.removeAttribute(attr);
-        }
-      },
       removeClassForElementIndex: (index, className) => {
         const element = this.listElements[index];
         if (element) {
