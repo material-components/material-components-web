@@ -227,10 +227,10 @@ can use `div` instead of `img` markup. It will resize the assets to cover the ti
 and crop the assets to display the center part.
 
 ```html
-<style>	
-  .my-tile-image {	
-    background-image: url(my-image.jpg);	
-  }	
+<style>
+  .my-tile-image {
+    background-image: url(my-image.jpg);
+  }
 </style>
 
 <div class="mdc-grid-list">
