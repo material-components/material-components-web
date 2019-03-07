@@ -24,6 +24,8 @@
   @include mdc-button-shape-radius(0, $query: mdc-feature-any());
   @include mdc-button-horizontal-padding(0, $query: mdc-feature-any());
   @include mdc-button-outline-width(0, $query: mdc-feature-any());
+  @include mdc-button-ripple($query: mdc-feature-any());
+  @include mdc-button-without-ripple($query: mdc-feature-any());
 
   // Card
   @include mdc-card-core-styles($query: mdc-feature-any());
@@ -31,12 +33,16 @@
   @include mdc-card-outline(red, $query: mdc-feature-any());
   @include mdc-card-shape-radius(0, $query: mdc-feature-any());
   @include mdc-card-media-aspect-ratio(1, 1, $query: mdc-feature-any());
+  @include mdc-card-ripple($query: mdc-feature-any());
+  @include mdc-card-without-ripple($query: mdc-feature-any());
 
   // Checkbox
   @include mdc-checkbox-core-styles($query: mdc-feature-any());
   @include mdc-checkbox-container-colors($query: mdc-feature-any());
   @include mdc-checkbox-ink-color(red, $query: mdc-feature-any());
   @include mdc-checkbox-focus-indicator-color(red, $query: mdc-feature-any());
+  @include mdc-checkbox-ripple($query: mdc-feature-any());
+  @include mdc-checkbox-without-ripple($query: mdc-feature-any());
 
   // Elevation
   @include mdc-elevation-core-styles($query: mdc-feature-any());
@@ -52,6 +58,8 @@
   @include mdc-list-item-shape-radius(42, $rtl-reflexive: false, $query: mdc-feature-any());
   @include mdc-list-divider-color(red, $query: mdc-feature-any());
   @include mdc-list-group-subheader-ink-color(red, $query: mdc-feature-any());
+  @include mdc-list-ripple($query: mdc-feature-any());
+  @include mdc-list-without-ripple($query: mdc-feature-any());
 
   // Menu
   @include mdc-menu-core-styles($query: mdc-feature-any());
@@ -69,6 +77,8 @@
   @include mdc-radio-checked-stroke-color(red, $query: mdc-feature-any());
   @include mdc-radio-ink-color(red, $query: mdc-feature-any());
   @include mdc-radio-focus-indicator-color(red, $query: mdc-feature-any());
+  @include mdc-radio-ripple($query: mdc-feature-any());
+  @include mdc-radio-without-ripple($query: mdc-feature-any());
 
   // Ripple
   @include mdc-ripple-core-styles($query: mdc-feature-any());
@@ -97,6 +107,8 @@
   @include mdc-switch-toggled-on-thumb-color(on-surface, $query: mdc-feature-any());
   @include mdc-switch-toggled-off-track-color(on-surface, $query: mdc-feature-any());
   @include mdc-switch-toggled-off-thumb-color(on-surface, $query: mdc-feature-any());
+  @include mdc-switch-ripple($query: mdc-feature-any());
+  @include mdc-switch-without-ripple($query: mdc-feature-any());
 
   // Theme
   @include mdc-theme-core-styles($query: mdc-feature-any());
