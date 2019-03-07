@@ -30,6 +30,7 @@
 
 // TODO(acdvorak): Disallow leading/trailing underscores on all publicly-exported identifiers
 // TODO(acdvorak): Require all publicly-exported functions to appear in the README
+// TODO(acdvorak): Require "initialized in" comment on ! properties
 
 import * as babelParser from '@babel/parser';
 import {default as babelTraverse} from '@babel/traverse';
