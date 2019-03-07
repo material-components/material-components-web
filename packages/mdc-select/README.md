@@ -405,16 +405,17 @@ Mixin | Description
 
 The `MDCSelect` component API is modeled after a subset of the `HTMLSelectElement` functionality.
 
-| Property | Type | Description |
-| --- | --- | --- |
-| `value` | `string` | The `value`/`data-value` of the currently selected option. |
-| `selectedIndex` | `number` | The index of the currently selected option. Set to -1 if no option is currently selected. Changing this property will update the select element. |
-| `disabled` | `boolean` | Whether or not the component is disabled. Setting this sets the disabled state on the component. |
-| `valid` | `boolean` | Whether or not the component is in a valid state. Setting this updates styles on the component, but does not affect the native validity state. |
-| `required` | `boolean` | Whether or not the component is required. Setting this updates the `required` or `aria-required` attribute on the component and enables validation. |
-| `leadingIconAriaLabel` | `string` (write-only) | Proxies to the foundation's `setLeadingIconAriaLabel` method. |
-| `leadingIconContent` | `string` (write-only) | Proxies to the foundation's `setLeadingIconContent` method. |
-| `helperTextContent` | `string` (write-only)| Proxies to the foundation's `setHelperTextContent` method when set. |
+Property | Type | Description
+--- | --- | ---
+`value` | `string` | The `value`/`data-value` of the currently selected option.
+`selectedIndex` | `number` | The index of the currently selected option. Set to -1 if no option is currently selected. Changing this property will update the select element.
+`disabled` | `boolean` | Whether or not the component is disabled. Setting this sets the disabled state on the component.
+`valid` | `boolean` | Whether or not the component is in a valid state. Setting this updates styles on the component, but does not affect the native validity state.
+`required` | `boolean` | Whether or not the component is required. Setting this updates the `required` or `aria-required` attribute on the component and enables validation.
+`leadingIconAriaLabel` | `string` (write-only) | Proxies to the foundation's `setLeadingIconAriaLabel` method.
+`leadingIconContent` | `string` (write-only) | Proxies to the foundation's `setLeadingIconContent` method.
+`helperTextContent` | `string` (write-only)| Proxies to the foundation's `setHelperTextContent` method when set.
+`ripple` | `MDCRipple` | Ripple instance attached to outlined select variant, or `null` for all other variants.
 
 ### Events
 

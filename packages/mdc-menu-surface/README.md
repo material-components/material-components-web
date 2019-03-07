@@ -164,8 +164,9 @@ Type Name | Description
 
 Property | Value Type | Description
 --- | --- | ---
-`open` | Boolean | Proxies to the foundation's `isOpen`/(`open`, `close`) methods.
-`quickOpen` | Boolean | Proxies to the foundation's `setQuickOpen()` method.
+`open` | `boolean` | Proxies to the foundation's `isOpen`/(`open`, `close`) methods.
+`quickOpen` | `boolean` | Proxies to the foundation's `setQuickOpen()` method.
+`anchorElement` | `Element` | Gets or sets the element that the surface is anchored to, or `null` if the surface is not anchored. Defaults to the root element's parent `mdc-menu-surface--anchor` element if present.
 
 Method Signature | Description
 --- | ---

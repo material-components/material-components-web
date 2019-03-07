@@ -159,7 +159,7 @@ Method Signature | Description
 --- | ---
 `addClass(className: string) => void` | Adds a class to the root element.
 `removeClass(className: string) => void` | Removes a class from the root element.
-`setContentStyleProp(property: string, value: string) => void` | Sets the style property of the content element.
+`setContentStyleProperty(property: string, value: string) => void` | Sets the style property of the content element.
 `computeContentClientRect() => ClientRect` | Returns the content element's bounding client rect.
 
 ### `MDCTabIndicatorFoundation`

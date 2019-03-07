@@ -49,10 +49,6 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     return numbers;
   }
 
-  get shouldShake(): boolean {
-    return !this.isFocused_ && !this.isValid() && Boolean(this.getValue());
-  }
-
   private get shouldAlwaysFloat_(): boolean {
     const type = this.getNativeInput_().type;
     return ALWAYS_FLOAT_TYPES.indexOf(type) >= 0;
@@ -60,6 +56,10 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
 
   get shouldFloat(): boolean {
     return this.shouldAlwaysFloat_ || this.isFocused_ || Boolean(this.getValue()) || this.isBadInput_();
+  }
+
+  get shouldShake(): boolean {
+    return !this.isFocused_ && !this.isValid() && Boolean(this.getValue());
   }
 
   /**
@@ -389,7 +389,9 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
    * Sets character counter values that shows characters used and the total character limit.
    */
   private setCharacterCounter_(currentLength: number): void {
-    if (!this.characterCounter_) return;
+    if (!this.characterCounter_) {
+      return;
+    }
 
     const maxLength = this.getNativeInput_().maxLength;
     if (maxLength === -1) {
