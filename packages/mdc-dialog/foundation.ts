@@ -107,7 +107,7 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
 
       this.layout();
 
-      this.animationTimer_ = window.setTimeout(() => {
+      this.animationTimer_ = setTimeout(() => {
         this.handleAnimationTimerEnd_();
         this.adapter_.trapFocus();
         this.adapter_.notifyOpened();
@@ -131,7 +131,7 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
     this.animationFrame_ = 0;
 
     clearTimeout(this.animationTimer_);
-    this.animationTimer_ = window.setTimeout(() => {
+    this.animationTimer_ = setTimeout(() => {
       this.adapter_.releaseFocus();
       this.handleAnimationTimerEnd_();
       this.adapter_.notifyClosed(action);
@@ -224,7 +224,7 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
     this.animationFrame_ = requestAnimationFrame(() => {
       this.animationFrame_ = 0;
       clearTimeout(this.animationTimer_);
-      this.animationTimer_ = window.setTimeout(callback, 0);
+      this.animationTimer_ = setTimeout(callback, 0);
     });
   }
 

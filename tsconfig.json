@@ -22,5 +22,8 @@
     "stripInternal": true,
     "target": "es5",
     "types": []
-  }
+  },
+  "exclude": [
+    "scripts/**/*.ts"
+  ]
 }

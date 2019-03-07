@@ -186,7 +186,7 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
       if (this.isQuickOpen_) {
         this.adapter_.notifyOpen();
       } else {
-        this.openAnimationEndTimerId_ = window.setTimeout(() => {
+        this.openAnimationEndTimerId_ = setTimeout(() => {
           this.openAnimationEndTimerId_ = 0;
           this.adapter_.removeClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_OPEN);
           this.adapter_.notifyOpen();
@@ -210,7 +210,7 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
       if (this.isQuickOpen_) {
         this.adapter_.notifyClose();
       } else {
-        this.closeAnimationEndTimerId_ = window.setTimeout(() => {
+        this.closeAnimationEndTimerId_ = setTimeout(() => {
           this.closeAnimationEndTimerId_ = 0;
           this.adapter_.removeClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_CLOSED);
           this.adapter_.notifyClose();

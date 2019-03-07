@@ -155,7 +155,7 @@ export class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
   private topAppBarResizeHandler_() {
     // Throttle resize events 10 p/s
     if (!this.resizeThrottleId_) {
-      this.resizeThrottleId_ = window.setTimeout(() => {
+      this.resizeThrottleId_ = setTimeout(() => {
         this.resizeThrottleId_ = INITIAL_VALUE;
         this.throttledResizeHandler_();
       }, numbers.DEBOUNCE_THROTTLE_RESIZE_TIME_MS);
@@ -167,7 +167,7 @@ export class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
       clearTimeout(this.resizeDebounceId_);
     }
 
-    this.resizeDebounceId_ = window.setTimeout(() => {
+    this.resizeDebounceId_ = setTimeout(() => {
       this.topAppBarScrollHandler_();
       this.isCurrentlyBeingResized_ = false;
       this.resizeDebounceId_ = INITIAL_VALUE;

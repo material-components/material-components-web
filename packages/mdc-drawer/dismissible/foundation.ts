@@ -170,7 +170,7 @@ export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapt
     this.animationFrame_ = requestAnimationFrame(() => {
       this.animationFrame_ = 0;
       clearTimeout(this.animationTimer_);
-      this.animationTimer_ = window.setTimeout(callback, 0);
+      this.animationTimer_ = setTimeout(callback, 0);
     });
   }
 
