@@ -5,8 +5,9 @@
   ],
   "rules": {
     "ban-ts-ignore": true,
-    "quotemark": [true, "single"],
-    "eofline": true
+    "curly": true,
+    "eofline": true,
+    "quotemark": [true, "single", "avoid-escape"]
   },
   "linterOptions": {
     "exclude": [

@@ -544,7 +544,7 @@ Method Signature | Description
 `setSingleSelection(value: Boolean) => void` | Sets the list to be a selection list. Enables the `enter` and `space` keys for selecting/deselecting a list item.
 `getSelectedIndex() => MDCListIndex` | Gets the current selection state by returning selected index or list of indexes for checkbox based list. See [types.ts](./types.ts) for `MDCListIndex` type definition.
 `setSelectedIndex(index: MDCListIndex) => void` | Sets the selection state to given index or list of indexes if it is checkbox based list. See [types.ts](./types.ts) for `MDCListIndex` type definition.
-`setUseActivated(useActivated: boolean) => void` | Sets the selection logic to apply/remove the `mdc-list-item--activated` class.
+`setUseActivatedClass(useActivated: boolean) => void` | Sets the selection logic to apply/remove the `mdc-list-item--activated` class.
 `handleFocusIn(evt: Event) => void` | Handles the changing of `tabindex` to `0` for all button and anchor elements when a list item receives focus.
 `handleFocusOut(evt: Event) => void` | Handles the changing of `tabindex` to `-1` for all button and anchor elements when a list item loses focus.
 `handleKeydown(evt: Event) => void` | Handles determining if a focus action should occur when a key event is triggered.
