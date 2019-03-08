@@ -31,7 +31,6 @@
 // TODO(acdvorak): Disallow leading/trailing underscores on all publicly-exported identifiers
 // TODO(acdvorak): Require all publicly-exported functions to appear in the README
 // TODO(acdvorak): Require adapter interfaces to end with Adapter, and foundations to end with Foundation
-// TODO(acdvorak): Prohibit non-imported type definitions in index.ts
 
 import * as babelParser from '@babel/parser';
 import babelTraverse, {NodePath} from '@babel/traverse';
@@ -70,7 +69,8 @@ interface NamedIdentifier {
 }
 
 type NodeKind = (
-    'class' | 'constructor' | 'enum' | 'getter' | 'interface' | 'method' | 'property' | 'setter' | 'type' | 'variable'
+    'class' | 'constructor' | 'enum' | 'getter' | 'interface' | 'method' | 'property' | 'setter' | 'symbol' | 'type' |
+    'variable'
 );
 
 interface PackageJson {
@@ -117,6 +117,11 @@ const EXPORT_MDC_PREFIX_NAME_WHITELIST = [
   'ALWAYS_FLOAT_TYPES', 'VALIDATION_ATTR_WHITELIST',
 ];
 
+const INDEX_FILE_PATH_WHITELIST = [
+  'material-components-web/index.ts',
+  'mdc-auto-init/index.ts',
+];
+
 let violationCount = 0;
 
 run();
@@ -151,6 +156,7 @@ function lintOneFile(inputFilePath: string, inputCode: string) {
   checkAllComments(inputFilePath, inputCode);
   checkAllIdentifierNames(inputFilePath, inputCode);
   checkAllExportNames(inputFilePath, inputCode);
+  checkIndexOnlyReexports(inputFilePath, inputCode);
 }
 
 function checkAllImportPaths(inputFilePath: string, inputCode: string) {
@@ -496,6 +502,43 @@ function checkOneReturnAnnotation(
   }
 }
 
+function checkIndexOnlyReexports(inputFilePath: string, inputCode: string) {
+  if (!inputFilePath.endsWith('/index.ts')) {
+    return;
+  }
+
+  const ast = getAstFromCodeString(inputCode);
+
+  babelTraverse(ast, {
+    enter(nodePath: NodePath) {
+      const isFileLevelNode = nodePath.isFile() || nodePath.isProgram();
+      const belongsToImportOrExport =
+          isImportOrExportNodePath(nodePath) || nodePath.findParent(isImportOrExportNodePath);
+      const isWhitelistedPath = INDEX_FILE_PATH_WHITELIST.some((whitelistedPathPart) => {
+        return inputFilePath.includes(whitelistedPathPart);
+      });
+
+      if (isFileLevelNode || belongsToImportOrExport || isWhitelistedPath) {
+        return;
+      }
+
+      const node = nodePath.node;
+      const {name, loc} = getNameAndLocation(node);
+      const kind = getNodeKind(node);
+
+      logLinterViolation(
+          inputFilePath,
+          loc,
+          [
+            `Invalid top-level ${kind} (${node.type})${name ? `: '${name}'` : ''}.`,
+            'index.ts files may only contain imports and exports.',
+          ],
+      );
+      return;
+    },
+  });
+}
+
 function checkAllExportNames(inputFilePath: string, inputCode: string) {
   const ast = getAstFromCodeString(inputCode);
 
@@ -728,17 +771,26 @@ function getNameAndLocation(node: babelTypes.Node): NamedIdentifier {
     return node;
   } else if (babelTypes.isTSEnumDeclaration(node)) {
     return node.id;
+  } else if (babelTypes.isTSLiteralType(node)) {
+    return {name: String(node.literal.value), loc: node.literal.loc};
+  } else if (babelTypes.isStringLiteral(node)) {
+    return {name: node.value, loc: node.loc};
   } else if (babelTypes.isVariableDeclaration(node)) {
     const firstId = node.declarations[0].id;
     if (babelTypes.isIdentifier(firstId)) {
       return firstId;
     }
   }
-  return {name: null, loc: null};
+  return {name: null, loc: node.loc};
 }
 
 function isMethodLike(node: babelTypes.Node): node is babelTypes.ClassMethod | babelTypes.ObjectMethod {
   return babelTypes.isClassMethod(node) || babelTypes.isObjectMethod(node);
+}
+
+function isImportOrExportNodePath(nodePath: NodePath): nodePath is
+    NodePath<babelTypes.ImportDeclaration> | NodePath<babelTypes.ExportDeclaration> {
+  return nodePath.isImportDeclaration() || nodePath.isExportDeclaration();
 }
 
 // TODO(acdvorak): Merge with getNameAndLocation()
@@ -773,7 +825,11 @@ function getNodeKind(node: babelTypes.Node): NodeKind {
   if (babelTypes.isProperty(node)) {
     return 'property';
   }
-  return 'type';
+  if (babelTypes.isTypeAlias(node) || babelTypes.isTypeAnnotation(node) || babelTypes.isTSType(node) ||
+      babelTypes.isTSTypeAliasDeclaration(node) || babelTypes.isTSTypeLiteral(node)) {
+    return 'type';
+  }
+  return 'symbol';
 }
 
 function isStaticOrNonPublicMember(node: babelTypes.Node): boolean {
