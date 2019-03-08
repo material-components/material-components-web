@@ -32,7 +32,6 @@
 // TODO(acdvorak): Require all publicly-exported functions to appear in the README
 // TODO(acdvorak): Require adapter interfaces to end with Adapter, and foundations to end with Foundation
 // TODO(acdvorak): Prohibit non-imported type definitions in index.ts
-// TODO(acdvorak): Enum names?
 
 import * as babelParser from '@babel/parser';
 import babelTraverse, {NodePath} from '@babel/traverse';
@@ -70,6 +69,10 @@ interface NamedIdentifier {
   loc: babelTypes.SourceLocation | null;
 }
 
+type NodeKind = (
+    'class' | 'constructor' | 'enum' | 'getter' | 'interface' | 'method' | 'property' | 'setter' | 'type' | 'variable'
+);
+
 interface PackageJson {
   private?: boolean;
   description?: string;
@@ -99,6 +102,19 @@ const README_METHOD_WHITELIST = [
 const PUBLIC_PROPERTY_UNDERSCORE_WHITELIST = [
   // `MDCComponent` subclasses that implement `MDCRippleCapableSurface` need public visibility on the `root_` property.
   'root_',
+];
+
+// TODO(acdvorak): Remove these exceptions
+const EXPORT_MDC_PREFIX_PATH_WHITELIST = [
+  'mdc-animation/types.ts',
+  'mdc-base/types.ts',
+];
+
+// TODO(acdvorak): Remove Corner, CornerBit, ALWAYS_FLOAT_TYPES, VALIDATION_ATTR_WHITELIST
+const EXPORT_MDC_PREFIX_NAME_WHITELIST = [
+  'cssClasses', 'numbers', 'strings',
+  'Corner', 'CornerBit',
+  'ALWAYS_FLOAT_TYPES', 'VALIDATION_ATTR_WHITELIST',
 ];
 
 let violationCount = 0;
@@ -491,8 +507,10 @@ function checkAllExportNames(inputFilePath: string, inputCode: string) {
   babelTraverse(ast, {
     Function: checkDeclarationName,
     ClassDeclaration: checkDeclarationName,
+    TSEnumDeclaration: checkDeclarationName,
     TSInterfaceDeclaration: checkDeclarationName,
     TSTypeAliasDeclaration: checkDeclarationName,
+    VariableDeclaration: checkDeclarationName,
   });
 
   babelTraverse(ast, {
@@ -552,6 +570,7 @@ function checkOneIdentifierName(
     inputFilePath: string,
 ) {
   const node = nodePath.node;
+  const kind = getNodeKind(node);
   const {name, loc} = getNameAndLocation(node);
   if (!name) {
     return;
@@ -561,38 +580,58 @@ function checkOneIdentifierName(
     logLinterViolation(
         inputFilePath,
         loc,
-        `Leading underscores are not allowed in function names: '${name}'.`,
+        [
+          `Prohibited ${kind} name: '${name}'.`,
+          `Leading underscores are not allowed.`,
+        ],
     );
     return;
   }
 
-  if (name.endsWith('_') && !babelTypes.isClassMethod(node) && !babelTypes.isClassProperty(node)) {
-    logLinterViolation(
-        inputFilePath,
-        loc,
-        `Trailing underscores are only allowed on class methods and properties: '${name}'.`,
-    );
-    return;
-  }
-
-  const isExportedInline = nodePath.findParent((parentNodePath) => parentNodePath.isExportDeclaration());
+  const isExportedInline = nodePath.parentPath.isExportDeclaration();
   const isInterface = babelTypes.isInterfaceDeclaration(node) || babelTypes.isTSInterfaceDeclaration(node);
   const isClass = babelTypes.isClassDeclaration(node);
   const isType = babelTypes.isTypeAlias(node) || babelTypes.isTSTypeAliasDeclaration(node);
-  const kind = isInterface ? 'interface' : isClass ? 'class' : 'type';
-  if (isExportedInline && (isInterface || isClass || isType)) {
-    // TODO(acdvorak): Remove exception for mdc-animation/types.ts and mdc-base/types.ts
+  const isEnum = babelTypes.isTSEnumDeclaration(node);
+  const isVariable = babelTypes.isVariableDeclaration(node);
+
+  if (isExportedInline && (isInterface || isClass || isType || isEnum || isVariable)) {
     const isWhitelisted =
-        inputFilePath.indexOf('mdc-animation/types.ts') > -1 ||
-        inputFilePath.indexOf('mdc-base/types.ts') > -1;
+        EXPORT_MDC_PREFIX_PATH_WHITELIST.some((whitelistedPathPart) => inputFilePath.includes(whitelistedPathPart)) ||
+        EXPORT_MDC_PREFIX_NAME_WHITELIST.indexOf(name) > -1;
     if (!name.startsWith('MDC') && !isWhitelisted) {
       logLinterViolation(
           inputFilePath,
           loc,
-          `Publicly exported ${kind} '${name}' is missing 'MDC' prefix.`,
+          [
+            `Prohibited ${kind} name: '${name}'.`,
+            `Publicly exported symbols must begin with an 'MDC' prefix.`,
+          ],
       );
       return;
     }
+  }
+
+  const isModuleLevelVariable =
+      babelTypes.isVariableDeclaration(node) &&
+      nodePath.parentPath.isProgram() &&
+      !isExportedInline;
+
+  const isTrailingUnderscoreAllowed =
+      babelTypes.isClassMethod(node) ||
+      babelTypes.isClassProperty(node) ||
+      isModuleLevelVariable;
+
+  if (name.endsWith('_') && !isTrailingUnderscoreAllowed) {
+    logLinterViolation(
+        inputFilePath,
+        loc,
+        [
+          `Prohibited ${kind} name: '${name}'.`,
+          'Trailing underscores are only allowed on class methods/properties and non-exported module-level variables.',
+        ],
+    );
+    return;
   }
 }
 
@@ -601,6 +640,7 @@ function checkOneClassMemberAccessibility(
     inputFilePath: string,
 ) {
   const node = nodePath.node;
+  const kind = getNodeKind(node);
   const {name, loc} = getNameAndLocation(node);
   if (!name || PUBLIC_PROPERTY_UNDERSCORE_WHITELIST.includes(name)) {
     return;
@@ -614,7 +654,10 @@ function checkOneClassMemberAccessibility(
     logLinterViolation(
         inputFilePath,
         loc,
-        `Non-public member '${name}' is missing a trailing underscore in its name.`,
+        [
+          `Prohibited ${kind} name: '${name}'.`,
+          `Non-public members must end with a trailing underscore (e.g., ${name}_).`,
+        ],
     );
     return;
   }
@@ -623,7 +666,10 @@ function checkOneClassMemberAccessibility(
     logLinterViolation(
         inputFilePath,
         loc,
-        `Non-public member '${name}' requires a private/protected accessibility modifier.`,
+        [
+          `Wrong visibility for ${kind} name: '${name}'.`,
+          `Member names that end with a trailing underscore must be marked private or protected.`,
+        ],
     );
     return;
   }
@@ -635,11 +681,7 @@ function checkOneClassMemberIsInReadme(
 ) {
   const {node} = nodePath;
   const {name, loc} = getNameAndLocation(node);
-  const kind =
-      babelTypes.isClassMethod(node) ? node.kind :
-      babelTypes.isClassDeclaration(node) ? 'class' :
-      babelTypes.isTSInterfaceDeclaration(node) ? 'interface' :
-      babelTypes.isTSMethodSignature(node) ? 'method' : 'property';
+  const kind = getNodeKind(node);
   if (!name || README_METHOD_WHITELIST.includes(name)) {
     return;
   }
@@ -658,7 +700,10 @@ function checkOneClassMemberIsInReadme(
     logLinterViolation(
         inputFilePath,
         loc,
-        `Public ${kind} '${name}' is missing from '${readmeFilePathRelative}'.`,
+        [
+          `Missing documentation for ${kind}: '${name}'.`,
+          `Most publicly exported symbols must be documented in '${readmeFilePathRelative}'.`,
+        ],
     );
     return;
   }
@@ -681,8 +726,54 @@ function getNameAndLocation(node: babelTypes.Node): NamedIdentifier {
     return node.id;
   } else if (babelTypes.isIdentifier(node)) {
     return node;
+  } else if (babelTypes.isTSEnumDeclaration(node)) {
+    return node.id;
+  } else if (babelTypes.isVariableDeclaration(node)) {
+    const firstId = node.declarations[0].id;
+    if (babelTypes.isIdentifier(firstId)) {
+      return firstId;
+    }
   }
   return {name: null, loc: null};
+}
+
+function isMethodLike(node: babelTypes.Node): node is babelTypes.ClassMethod | babelTypes.ObjectMethod {
+  return babelTypes.isClassMethod(node) || babelTypes.isObjectMethod(node);
+}
+
+// TODO(acdvorak): Merge with getNameAndLocation()
+function getNodeKind(node: babelTypes.Node): NodeKind {
+  if (babelTypes.isInterfaceDeclaration(node) || babelTypes.isTSInterfaceDeclaration(node)) {
+    return 'interface';
+  }
+  if (babelTypes.isClassDeclaration(node)) {
+    return 'class';
+  }
+  if (babelTypes.isTSEnumDeclaration(node)) {
+    return 'enum';
+  }
+  if (babelTypes.isVariableDeclaration(node)) {
+    return 'variable';
+  }
+  if (babelTypes.isVariableDeclaration(node)) {
+    return 'variable';
+  }
+  if (isMethodLike(node) && node.kind === 'get') {
+    return 'getter';
+  }
+  if (isMethodLike(node) && node.kind === 'set') {
+    return 'setter';
+  }
+  if (isMethodLike(node) && node.kind === 'constructor') {
+    return 'constructor';
+  }
+  if (isMethodLike(node) && node.kind === 'method') {
+    return 'method';
+  }
+  if (babelTypes.isProperty(node)) {
+    return 'property';
+  }
+  return 'type';
 }
 
 function isStaticOrNonPublicMember(node: babelTypes.Node): boolean {
