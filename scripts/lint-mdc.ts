@@ -304,20 +304,13 @@ function visitOneClassProperty(
     propertiesInitializedInline: Map<string, AstLocation>,
 ) {
   const propertyNode = nodePath.node;
+  const keyNode = propertyNode.key;
   const valueNode = propertyNode.value;
-  if (!valueNode) {
+  if (!valueNode || !babelTypes.isIdentifier(keyNode) || !keyNode.name) {
     return;
   }
 
-  // ClassProperty.key is a union type containing to a large number of types,
-  // some of which lack a `name` property. Rather than cast it to a single type,
-  // which may or may not be correct, it's simpler to cast it to an object literal.
-  const key = propertyNode.key as unknown as { name: string | undefined };
-  if (!key.name) {
-    return;
-  }
-
-  propertiesInitializedInline.set(key.name, {
+  propertiesInitializedInline.set(keyNode.name, {
     snippetStartIndex: propertyNode.start,
     snippetEndIndex: propertyNode.end,
     violationSource: valueNode.loc,
@@ -329,9 +322,14 @@ function visitOneAssignmentExpression(
     propertiesAssignedInMethods: Map<string, AstLocation[]>,
 ) {
   const expressionNode = expressionNodePath.node;
-  const leftNode = expressionNode.left as babelTypes.MemberExpression;
+  const leftNode = expressionNode.left;
   const rightNode = expressionNode.right;
-  const propertyNode = leftNode.property as babelTypes.Identifier;
+
+  if (!babelTypes.isMemberExpression(leftNode) || !babelTypes.isIdentifier(leftNode.property)) {
+    return;
+  }
+
+  const propertyNode = leftNode.property;
   if (!propertyNode) {
     return;
   }
@@ -348,20 +346,56 @@ function visitOneAssignmentExpression(
 
 function checkAllComments(inputFilePath: string, inputCode: string) {
   const ast = getAstFromCodeString(inputCode);
+  const propertyAssignmentParentMethodNames = new Map<string, string[]>();
 
   babelTraverse(ast, {
+    AssignmentExpression(nodePath) {
+      collectParentMethodNames(nodePath, propertyAssignmentParentMethodNames);
+    },
+  });
+
+  babelTraverse(ast, {
+    ClassProperty(nodePath) {
+      checkOneDefiniteAssignment(nodePath, inputFilePath, inputCode, propertyAssignmentParentMethodNames);
+    },
     Function(nodePath) {
       checkOneReturnAnnotation(nodePath, inputFilePath);
-    },
-    ClassProperty(nodePath) {
-      checkOneDefiniteAssignmentComment(nodePath, inputFilePath);
     },
   });
 }
 
-function checkOneDefiniteAssignmentComment(
+function collectParentMethodNames(
+    expressionNodePath: NodePath<babelTypes.AssignmentExpression>,
+    propertyAssignmentParentMethodNames: Map<string, string[]>,
+) {
+  const expressionNode = expressionNodePath.node;
+  const leftNode = expressionNode.left;
+
+  if (!babelTypes.isMemberExpression(leftNode) || !babelTypes.isIdentifier(leftNode.property)) {
+    return;
+  }
+
+  const propertyNode = leftNode.property;
+  if (!propertyNode) {
+    return;
+  }
+
+  const methodNames = propertyAssignmentParentMethodNames.get(propertyNode.name) || [];
+  propertyAssignmentParentMethodNames.set(propertyNode.name, methodNames);
+
+  const parentMethodNodePath = expressionNodePath.findParent((parentNodePath) => parentNodePath.isClassMethod());
+  if (parentMethodNodePath &&
+      parentMethodNodePath.isClassMethod() &&
+      babelTypes.isIdentifier(parentMethodNodePath.node.key)) {
+    methodNames.push(parentMethodNodePath.node.key.name);
+  }
+}
+
+function checkOneDefiniteAssignment(
     nodePath: NodePath<babelTypes.ClassProperty>,
     inputFilePath: string,
+    inputCode: string,
+    propertyAssignmentParentMethodNames: Map<string, string[]>,
 ) {
   const propertyNode = nodePath.node;
   const propertyKey = propertyNode.key;
@@ -374,7 +408,7 @@ function checkOneDefiniteAssignmentComment(
     return;
   }
 
-  if (!propertyNode.definite) {
+  if (!propertyNode.definite || !propertyNode.loc) {
     return;
   }
 
@@ -387,19 +421,34 @@ function checkOneDefiniteAssignmentComment(
   let hasMatchingComment = false;
   for (const commentNode of commentNodes) {
     const commentStr = commentNode.value;
-    if (commentStr.startsWith(' assigned in ') && commentStr.endsWith('()')) {
-      hasMatchingComment = true;
+    if (commentStr.startsWith(' assigned in ') && (commentStr.endsWith('()') || commentStr.endsWith(' constructor'))) {
+      const isSameLine = commentNode.loc.start.line === propertyNode.loc.start.line;
+      const isLineBefore = commentNode.loc.start.line === propertyNode.loc.start.line - 1;
+      const isSameColumn = commentNode.loc.start.column === propertyNode.loc.start.column;
+      const isColumnAfter = commentNode.loc.start.column === propertyNode.loc.end.column + 1;
+
+      const isLeadingComment = isLineBefore && isSameColumn;
+      const isTrailingComment = isSameLine && isColumnAfter;
+
+      if (isLeadingComment || isTrailingComment) {
+        hasMatchingComment = true;
+      }
     }
   }
 
   if (!hasMatchingComment) {
+    const methodNames = propertyAssignmentParentMethodNames.get(propertyKey.name) || [];
+    const firstMethodName = methodNames.filter((methodName) => methodName !== 'destroy')[0] || 'NAME_OF_METHOD';
+    const startIndex = propertyNode.start || 0;
+    const endIndex = propertyNode.end || startIndex;
+    const codeSnippet = inputCode.substring(startIndex, endIndex);
     logLinterViolation(
         inputFilePath,
         propertyKey.loc,
         [
           `Properties with a definite assignment assertion (!) require an accompanying comment:`,
           '',
-          `    ${colors.bold(propertyKey.name)}!: ...; // assigned in NAME_OF_METHOD()`,
+          `    ${codeSnippet} // assigned in ${firstMethodName}()`,
         ],
     );
     return;
@@ -555,8 +604,8 @@ function getNameAndLocation(node: babelTypes.Node): NamedIdentifier {
   if (babelTypes.isClassMethod(node) || babelTypes.isClassProperty(node) ||
       babelTypes.isObjectMethod(node) || babelTypes.isObjectProperty(node) ||
       babelTypes.isTSMethodSignature(node)) {
-    const key = node.key as unknown as NamedIdentifier;
-    if (key.name) {
+    const key = node.key;
+    if (babelTypes.isIdentifier(key) && key.name) {
       return key;
     }
   } else if (babelTypes.isFunctionDeclaration(node) && node.id) {
