@@ -30,13 +30,14 @@ TODO: Add more notes about how to isolate subsystems from component specifics
 
 ### Typescript
 
-#### Definite assignment operator
+#### Definite assignment assertion
+
 * MDC Web has other lifecycle methods (`initialize()` and `initSyncWithDom()`) that are not contained within the `constructor`.
 * Typescript compiler cannot infer that the other methods are run in conjunction, and will throw an error on properties not defined.
 * Feel free to use the `!` when you run into the error `<PROPERTY_NAME> has no initializer and is not definitely assigned in the constructor.`. ie.
 
 ```
-private progress_!: number; // Assigned in init
+private progress_!: number; // assigned in init()
 
 init() {
   this.progress_ = 0;
