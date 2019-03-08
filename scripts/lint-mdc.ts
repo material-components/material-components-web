@@ -28,9 +28,6 @@
 // tslint:disable:no-console
 // tslint:disable:object-literal-sort-keys
 
-// TODO(acdvorak): Disallow leading/trailing underscores on all publicly-exported identifiers
-// TODO(acdvorak): Require all publicly-exported functions to appear in the README
-
 import * as babelParser from '@babel/parser';
 import babelTraverse, {NodePath} from '@babel/traverse';
 import * as babelTypes from '@babel/types';
@@ -85,16 +82,24 @@ interface PackageJson {
 
 const PACKAGES_DIR_ABSOLUTE = path.resolve(__dirname, '../packages');
 
+// TODO(acdvorak): Remove Corner, CornerBit, ALWAYS_FLOAT_TYPES, VALIDATION_ATTR_WHITELIST
 /**
  * List of public method names that do not need to be documented in README.md.
  */
-const README_METHOD_WHITELIST = [
+const README_WHITELIST = [
   'constructor',
+  'cssClasses',
   'destroy',
   'getDefaultFoundation',
   'init',
   'initialSyncWithDOM',
   'initialize',
+  'numbers',
+  'strings',
+  'Corner',
+  'CornerBit',
+  'ALWAYS_FLOAT_TYPES',
+  'VALIDATION_ATTR_WHITELIST',
 ];
 
 /**
@@ -518,8 +523,11 @@ function checkIndexOnlyReexports(inputFilePath: string, inputCode: string) {
       const isWhitelistedPath = INDEX_FILE_PATH_WHITELIST.some((whitelistedPathPart) => {
         return inputFilePath.includes(whitelistedPathPart);
       });
+      const isTopLevel = nodePath.parentPath && (
+          nodePath.parentPath.isProgram() || nodePath.parentPath.isExportDeclaration()
+      );
 
-      if (isFileLevelNode || belongsToImportOrExport || isWhitelistedPath) {
+      if (isFileLevelNode || belongsToImportOrExport || isWhitelistedPath || !isTopLevel) {
         return;
       }
 
@@ -584,12 +592,17 @@ function checkAllExportNames(inputFilePath: string, inputCode: string) {
 function checkAllIdentifierNames(inputFilePath: string, inputCode: string) {
   const ast = getAstFromCodeString(inputCode);
 
-  const checkName =
-      (nodePath: NodePath) => checkOneIdentifierName(nodePath, inputFilePath);
-  const checkAccessibility =
-      (nodePath: ClassMemberNodePath) => checkOneClassMemberAccessibility(nodePath, inputFilePath);
-  const checkReadme =
-      (nodePath: ClassMemberNodePath) => checkOneClassMemberIsInReadme(nodePath, inputFilePath);
+  const checkName = (nodePath: NodePath) => {
+    checkOneIdentifierName(nodePath, inputFilePath);
+  };
+  const checkAccessibility = (nodePath: ClassMemberNodePath) => {
+    checkOneClassMemberAccessibility(nodePath, inputFilePath);
+  };
+  const checkExportedSymbolInReadme = (nodePath: NodePath) => {
+    if (isInlineExportedSymbol(nodePath)) {
+      checkOneClassMemberIsInReadme(nodePath, inputFilePath);
+    }
+  };
 
   babelTraverse(ast, {
     Function: checkName,
@@ -603,9 +616,13 @@ function checkAllIdentifierNames(inputFilePath: string, inputCode: string) {
   });
 
   babelTraverse(ast, {
-    ClassMethod: checkReadme,
-    ClassProperty: checkReadme,
-    TSMethodSignature: checkReadme,
+    ClassMethod: checkExportedSymbolInReadme,
+    ClassProperty: checkExportedSymbolInReadme,
+    Function: checkExportedSymbolInReadme,
+    TSEnumDeclaration: checkExportedSymbolInReadme,
+    TSMethodSignature: checkExportedSymbolInReadme,
+    TSType: checkExportedSymbolInReadme,
+    VariableDeclaration: checkExportedSymbolInReadme,
   });
 }
 
@@ -726,7 +743,7 @@ function checkOneClassMemberIsInReadme(
   const {node} = nodePath;
   const {name, loc} = getNameAndLocation(node);
   const kind = getNodeKind(node);
-  if (!name || README_METHOD_WHITELIST.includes(name)) {
+  if (!name || README_WHITELIST.includes(name)) {
     return;
   }
 
@@ -858,7 +875,7 @@ function checkOneAdapterName(nodePath: NodePath<ClassLikeNode>, inputFilePath: s
     return;
   }
 
-  if (!isExportedSymbol(nodePath)) {
+  if (!isInlineExportedSymbol(nodePath)) {
     logLinterViolation(
         inputFilePath,
         loc,
@@ -873,7 +890,7 @@ function checkOneAdapterName(nodePath: NodePath<ClassLikeNode>, inputFilePath: s
 
 function collectPubliclyExportedClassNames(nodePath: NodePath<ClassLikeNode>, classNames: string[]) {
   const id = nodePath.node.id;
-  if (id && isExportedSymbol(nodePath)) {
+  if (id && isInlineExportedSymbol(nodePath)) {
     classNames.push(id.name);
   }
 }
@@ -916,7 +933,7 @@ function isMethodLike(node: babelTypes.Node): node is babelTypes.ClassMethod | b
 
 function isImportOrExport(nodePath: NodePath): nodePath is
     NodePath<babelTypes.ImportDeclaration> | NodePath<babelTypes.ExportDeclaration> {
-  return isImportDeclaration(nodePath) || isExportedSymbol(nodePath);
+  return isImportDeclaration(nodePath) || isInlineExportedSymbol(nodePath);
 }
 
 function isImportDeclaration(nodePath: NodePath) {
@@ -926,10 +943,10 @@ function isImportDeclaration(nodePath: NodePath) {
   );
 }
 
-function isExportedSymbol(nodePath: NodePath) {
+function isInlineExportedSymbol(nodePath: NodePath) {
   return (
       nodePath.isExportDeclaration() ||
-      Boolean(nodePath.findParent((parentPath) => parentPath.isExportDeclaration()))
+      (nodePath.parentPath && nodePath.parentPath.isExportDeclaration())
   );
 }
 

@@ -489,3 +489,14 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `handleScrimClick() => void` | Handles click event on scrim.
+
+### The Util API
+
+External frameworks and libraries can use the following utility methods from the `util` module when implementing their own component.
+
+Function Signature | Description
+--- | ---
+`createFocusTrapInstance(surfaceEl: Element, focusTrapFactory: () => FocusTrap) => FocusTrap` | Creates a properly configured [focus-trap][] instance.
+
+[focus-trap]: https://github.com/davidtheclark/focus-trap
+

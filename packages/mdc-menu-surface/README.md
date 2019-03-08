@@ -233,3 +233,11 @@ Method Signature | Description
 `close() => void` | Closes the menu.
 `isOpen() => boolean` | Returns a boolean indicating whether the menu surface is open.
 `setQuickOpen(quickOpen: boolean) => void` | Sets whether the menu surface should open and close without animation when the `open`/`close` methods are called.
+
+### The Util API
+
+External frameworks and libraries can use the following utility methods from the `util` module when implementing their own component.
+
+Function Signature | Description
+--- | ---
+`getTransformPropertyName(globalObj: Window, forceRefresh?: boolean): CssTransformPropertyName` | Determines the browser-specific vendor name for the CSS `transform` property. See [`util.ts`](./util.ts) for return values.

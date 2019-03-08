@@ -418,9 +418,9 @@ Event | Target | Foundation Handler | Register | Deregister
 
 External frameworks and libraries can use the following utility methods from the `util` module when implementing their own component.
 
-Method Signature | Description
+Function Signature | Description
 --- | ---
-`createFocusTrapInstance(surfaceEl: Element, focusTrapFactory: function(): !FocusTrap, initialFocusEl: ?Element) => !FocusTrap` | Creates a properly configured [focus-trap][] instance.
+`createFocusTrapInstance(surfaceEl: Element, focusTrapFactory?: () => FocusTrap, initialFocusEl?: Element) => FocusTrap` | Creates a properly configured [focus-trap][] instance.
 `isScrollable(el: Element \| null) => boolean` | Determines if the given element is scrollable.
 `areTopsMisaligned(els: Element[]) => boolean` | Determines if two or more of the given elements have different `offsetTop` values.
 
