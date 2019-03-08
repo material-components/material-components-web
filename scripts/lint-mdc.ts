@@ -30,6 +30,9 @@
 
 // TODO(acdvorak): Disallow leading/trailing underscores on all publicly-exported identifiers
 // TODO(acdvorak): Require all publicly-exported functions to appear in the README
+// TODO(acdvorak): Require adapter interfaces to end with Adapter, and foundations to end with Foundation
+// TODO(acdvorak): Prohibit non-imported type definitions in index.ts
+// TODO(acdvorak): Enum names?
 
 import * as babelParser from '@babel/parser';
 import babelTraverse, {NodePath} from '@babel/traverse';
@@ -131,6 +134,7 @@ function lintOneFile(inputFilePath: string, inputCode: string) {
   checkAllInlineProperties(inputFilePath, inputCode);
   checkAllComments(inputFilePath, inputCode);
   checkAllIdentifierNames(inputFilePath, inputCode);
+  checkAllExportNames(inputFilePath, inputCode);
 }
 
 function checkAllImportPaths(inputFilePath: string, inputCode: string) {
@@ -476,6 +480,45 @@ function checkOneReturnAnnotation(
   }
 }
 
+function checkAllExportNames(inputFilePath: string, inputCode: string) {
+  const ast = getAstFromCodeString(inputCode);
+
+  const checkDeclarationName = (nodePath: NodePath) => {
+    checkOneIdentifierName(nodePath, inputFilePath);
+    // checkOneClassMemberIsInReadme(nodePath, inputFilePath); // TODO(acdvorak)
+  };
+
+  babelTraverse(ast, {
+    Function: checkDeclarationName,
+    ClassDeclaration: checkDeclarationName,
+    TSInterfaceDeclaration: checkDeclarationName,
+    TSTypeAliasDeclaration: checkDeclarationName,
+  });
+
+  babelTraverse(ast, {
+    ExportNamedDeclaration(nodePath: NodePath<babelTypes.ExportNamedDeclaration>) {
+      const node = nodePath.node;
+      for (const specifier of node.specifiers) {
+        const loc = specifier.exported.loc;
+        const name = specifier.exported.name;
+        if (!inputFilePath.endsWith('/index.ts')) {
+          logLinterViolation(
+              inputFilePath,
+              loc,
+              [
+                `Named object exports are only allowed in index.ts files: '${name}'.`,
+                'Please use inline export syntax instead. E.g.:',
+                '',
+                `    export [function|class|interface|enum|type] ${name}...`,
+              ],
+          );
+          return;
+        }
+      }
+    },
+  });
+}
+
 function checkAllIdentifierNames(inputFilePath: string, inputCode: string) {
   const ast = getAstFromCodeString(inputCode);
 
@@ -531,6 +574,26 @@ function checkOneIdentifierName(
     );
     return;
   }
+
+  const isExportedInline = nodePath.findParent((parentNodePath) => parentNodePath.isExportDeclaration());
+  const isInterface = babelTypes.isInterfaceDeclaration(node) || babelTypes.isTSInterfaceDeclaration(node);
+  const isClass = babelTypes.isClassDeclaration(node);
+  const isType = babelTypes.isTypeAlias(node) || babelTypes.isTSTypeAliasDeclaration(node);
+  const kind = isInterface ? 'interface' : isClass ? 'class' : 'type';
+  if (isExportedInline && (isInterface || isClass || isType)) {
+    // TODO(acdvorak): Remove exception for mdc-animation/types.ts and mdc-base/types.ts
+    const isWhitelisted =
+        inputFilePath.indexOf('mdc-animation/types.ts') > -1 ||
+        inputFilePath.indexOf('mdc-base/types.ts') > -1;
+    if (!name.startsWith('MDC') && !isWhitelisted) {
+      logLinterViolation(
+          inputFilePath,
+          loc,
+          `Publicly exported ${kind} '${name}' is missing 'MDC' prefix.`,
+      );
+      return;
+    }
+  }
 }
 
 function checkOneClassMemberAccessibility(
@@ -567,13 +630,15 @@ function checkOneClassMemberAccessibility(
 }
 
 function checkOneClassMemberIsInReadme(
-    nodePath: ClassMemberNodePath,
+    nodePath: NodePath,
     inputFilePath: string,
 ) {
   const {node} = nodePath;
   const {name, loc} = getNameAndLocation(node);
   const kind =
       babelTypes.isClassMethod(node) ? node.kind :
+      babelTypes.isClassDeclaration(node) ? 'class' :
+      babelTypes.isTSInterfaceDeclaration(node) ? 'interface' :
       babelTypes.isTSMethodSignature(node) ? 'method' : 'property';
   if (!name || README_METHOD_WHITELIST.includes(name)) {
     return;
@@ -600,15 +665,22 @@ function checkOneClassMemberIsInReadme(
 }
 
 function getNameAndLocation(node: babelTypes.Node): NamedIdentifier {
-  if (babelTypes.isClassMethod(node) || babelTypes.isClassProperty(node) ||
-      babelTypes.isObjectMethod(node) || babelTypes.isObjectProperty(node) ||
+  if (babelTypes.isClassMethod(node) ||
+      babelTypes.isClassProperty(node) ||
+      babelTypes.isObjectMethod(node) ||
+      babelTypes.isObjectProperty(node) ||
       babelTypes.isTSMethodSignature(node)) {
     const key = node.key;
     if (babelTypes.isIdentifier(key) && key.name) {
       return key;
     }
-  } else if (babelTypes.isFunctionDeclaration(node) && node.id) {
+  } else if ((babelTypes.isClassDeclaration(node) ||
+              babelTypes.isFunctionDeclaration(node) ||
+              babelTypes.isTSInterfaceDeclaration(node) ||
+              babelTypes.isTSTypeAliasDeclaration(node)) && node.id) {
     return node.id;
+  } else if (babelTypes.isIdentifier(node)) {
+    return node;
   }
   return {name: null, loc: null};
 }

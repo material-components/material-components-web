@@ -21,14 +21,14 @@
  * THE SOFTWARE.
  */
 
-const cssClasses = {
+export const cssClasses = {
   LIST_ITEM_ACTIVATED_CLASS: 'mdc-list-item--activated',
   LIST_ITEM_CLASS: 'mdc-list-item',
   LIST_ITEM_SELECTED_CLASS: 'mdc-list-item--selected',
   ROOT: 'mdc-list',
 };
 
-const strings = {
+export const strings = {
   ACTION_EVENT: 'MDCList:action',
   ARIA_CHECKED: 'aria-checked',
   ARIA_CHECKED_CHECKBOX_SELECTOR: '[role="checkbox"][aria-checked="true"]',
@@ -52,5 +52,3 @@ const strings = {
   `,
   RADIO_SELECTOR: 'input[type="radio"]:not(:disabled)',
 };
-
-export {strings, cssClasses};

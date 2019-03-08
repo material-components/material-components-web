@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-const cssClasses = {
+export const cssClasses = {
   ANCHOR: 'mdc-menu-surface--anchor',
   ANIMATING_CLOSED: 'mdc-menu-surface--animating-closed',
   ANIMATING_OPEN: 'mdc-menu-surface--animating-open',
@@ -31,7 +31,7 @@ const cssClasses = {
 };
 
 // tslint:disable:object-literal-sort-keys
-const strings = {
+export const strings = {
   CLOSED_EVENT: 'MDCMenuSurface:closed',
   OPENED_EVENT: 'MDCMenuSurface:opened',
   FOCUSABLE_ELEMENTS: [
@@ -41,7 +41,7 @@ const strings = {
 };
 // tslint:enable:object-literal-sort-keys
 
-const numbers = {
+export const numbers = {
   /** Total duration of menu-surface open animation. */
   TRANSITION_OPEN_DURATION: 120,
 
@@ -58,7 +58,7 @@ const numbers = {
 /**
  * Enum for bits in the {@see Corner) bitmap.
  */
-enum CornerBit {
+export enum CornerBit {
   BOTTOM = 1,
   CENTER = 2,
   RIGHT = 4,
@@ -72,7 +72,7 @@ enum CornerBit {
  * to right and RIGHT if the directionality is right to left.
  * Likewise END maps to RIGHT or LEFT depending on the directionality.
  */
-enum Corner {
+export enum Corner {
   TOP_LEFT = 0,
   TOP_RIGHT = CornerBit.RIGHT,
   BOTTOM_LEFT = CornerBit.BOTTOM,
@@ -82,5 +82,3 @@ enum Corner {
   BOTTOM_START = CornerBit.BOTTOM | CornerBit.FLIP_RTL, // tslint:disable-line:no-bitwise
   BOTTOM_END = CornerBit.BOTTOM | CornerBit.RIGHT | CornerBit.FLIP_RTL, // tslint:disable-line:no-bitwise
 }
-
-export {cssClasses, strings, numbers, CornerBit, Corner};

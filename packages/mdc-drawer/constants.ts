@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-const cssClasses = {
+export const cssClasses = {
   ANIMATE: 'mdc-drawer--animate',
   CLOSING: 'mdc-drawer--closing',
   DISMISSIBLE: 'mdc-drawer--dismissible',
@@ -31,11 +31,9 @@ const cssClasses = {
   ROOT: 'mdc-drawer',
 };
 
-const strings = {
+export const strings = {
   APP_CONTENT_SELECTOR: '.mdc-drawer-app-content',
   CLOSE_EVENT: 'MDCDrawer:closed',
   OPEN_EVENT: 'MDCDrawer:opened',
   SCRIM_SELECTOR: '.mdc-drawer-scrim',
 };
-
-export {cssClasses, strings};

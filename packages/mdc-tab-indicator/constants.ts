@@ -21,17 +21,12 @@
  * THE SOFTWARE.
  */
 
-const cssClasses = {
+export const cssClasses = {
   ACTIVE: 'mdc-tab-indicator--active',
   FADE: 'mdc-tab-indicator--fade',
   NO_TRANSITION: 'mdc-tab-indicator--no-transition',
 };
 
-const strings = {
+export const strings = {
   CONTENT_SELECTOR: '.mdc-tab-indicator__content',
-};
-
-export {
-  cssClasses,
-  strings,
 };

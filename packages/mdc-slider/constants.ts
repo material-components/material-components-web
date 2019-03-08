@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-const cssClasses = {
+export const cssClasses = {
   ACTIVE: 'mdc-slider--active',
   DISABLED: 'mdc-slider--disabled',
   DISCRETE: 'mdc-slider--discrete',
@@ -31,7 +31,7 @@ const cssClasses = {
   IS_DISCRETE: 'mdc-slider--discrete',
 };
 
-const strings = {
+export const strings = {
   ARIA_DISABLED: 'aria-disabled',
   ARIA_VALUEMAX: 'aria-valuemax',
   ARIA_VALUEMIN: 'aria-valuemin',
@@ -46,8 +46,6 @@ const strings = {
   TRACK_SELECTOR: '.mdc-slider__track',
 };
 
-const numbers = {
+export const numbers = {
   PAGE_FACTOR: 4,
 };
-
-export {cssClasses, strings, numbers};

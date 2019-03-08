@@ -21,9 +21,7 @@
  * THE SOFTWARE.
  */
 
-const cssClasses = {
+export const cssClasses = {
   LINE_RIPPLE_ACTIVE: 'mdc-line-ripple--active',
   LINE_RIPPLE_DEACTIVATING: 'mdc-line-ripple--deactivating',
 };
-
-export {cssClasses};

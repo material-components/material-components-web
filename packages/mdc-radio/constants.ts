@@ -21,13 +21,11 @@
  * THE SOFTWARE.
  */
 
-const strings = {
+export const strings = {
   NATIVE_CONTROL_SELECTOR: '.mdc-radio__native-control',
 };
 
-const cssClasses = {
+export const cssClasses = {
   DISABLED: 'mdc-radio--disabled',
   ROOT: 'mdc-radio',
 };
-
-export {strings, cssClasses};

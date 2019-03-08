@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-const strings = {
+export const strings = {
   ARIA_CONTROLS: 'aria-controls',
   ICON_SELECTOR: '.mdc-text-field__icon',
   INPUT_SELECTOR: '.mdc-text-field__input',
@@ -30,7 +30,7 @@ const strings = {
   OUTLINE_SELECTOR: '.mdc-notched-outline',
 };
 
-const cssClasses = {
+export const cssClasses = {
   DENSE: 'mdc-text-field--dense',
   DISABLED: 'mdc-text-field--disabled',
   FOCUSED: 'mdc-text-field--focused',
@@ -42,7 +42,7 @@ const cssClasses = {
   WITH_LEADING_ICON: 'mdc-text-field--with-leading-icon',
 };
 
-const numbers = {
+export const numbers = {
   DENSE_LABEL_SCALE: 0.923,
   LABEL_SCALE: 0.75,
 };
@@ -51,15 +51,13 @@ const numbers = {
  * Whitelist based off of https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
  * under the "Validation-related attributes" section.
  */
-const VALIDATION_ATTR_WHITELIST = [
+export const VALIDATION_ATTR_WHITELIST = [
   'pattern', 'min', 'max', 'required', 'step', 'minlength', 'maxlength',
 ];
 
 /**
  * Label should always float for these types as they show some UI even if value is empty.
  */
-const ALWAYS_FLOAT_TYPES = [
+export const ALWAYS_FLOAT_TYPES = [
   'color', 'date', 'datetime-local', 'month', 'range', 'time', 'week',
 ];
-
-export {cssClasses, strings, numbers, VALIDATION_ATTR_WHITELIST, ALWAYS_FLOAT_TYPES};

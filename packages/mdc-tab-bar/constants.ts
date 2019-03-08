@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-const strings = {
+export const strings = {
   ARROW_LEFT_KEY: 'ArrowLeft',
   ARROW_RIGHT_KEY: 'ArrowRight',
   END_KEY: 'End',
@@ -33,7 +33,7 @@ const strings = {
   TAB_SELECTOR: '.mdc-tab',
 };
 
-const numbers = {
+export const numbers = {
   ARROW_LEFT_KEYCODE: 37,
   ARROW_RIGHT_KEYCODE: 39,
   END_KEYCODE: 35,
@@ -42,5 +42,3 @@ const numbers = {
   HOME_KEYCODE: 36,
   SPACE_KEYCODE: 32,
 };
-
-export {numbers, strings};

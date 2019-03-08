@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-const cssClasses = {
+export const cssClasses = {
   DISABLED: 'mdc-select--disabled',
   FOCUSED: 'mdc-select--focused',
   INVALID: 'mdc-select--invalid',
@@ -32,7 +32,7 @@ const cssClasses = {
   WITH_LEADING_ICON: 'mdc-select--with-leading-icon',
 };
 
-const strings = {
+export const strings = {
   ARIA_CONTROLS: 'aria-controls',
   ARIA_SELECTED_ATTR: 'aria-selected',
   CHANGE_EVENT: 'MDCSelect:change',
@@ -48,8 +48,6 @@ const strings = {
   SELECTED_TEXT_SELECTOR: '.mdc-select__selected-text',
 };
 
-const numbers = {
+export const numbers = {
   LABEL_SCALE: 0.75,
 };
-
-export {cssClasses, strings, numbers};

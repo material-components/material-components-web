@@ -22,7 +22,7 @@
  */
 
 /** CSS classes used by the switch. */
-const cssClasses = {
+export const cssClasses = {
   /** Class used for a switch that is in the "checked" (on) position. */
   CHECKED: 'mdc-switch--checked',
   /** Class used for a switch that is disabled. */
@@ -30,11 +30,9 @@ const cssClasses = {
 };
 
 /** String constants used by the switch. */
-const strings = {
+export const strings = {
   /** A CSS selector used to locate the native HTML control for the switch.  */
   NATIVE_CONTROL_SELECTOR: '.mdc-switch__native-control',
   /** A CSS selector used to locate the ripple surface element for the switch. */
   RIPPLE_SURFACE_SELECTOR: '.mdc-switch__thumb-underlay',
 };
-
-export {cssClasses, strings};

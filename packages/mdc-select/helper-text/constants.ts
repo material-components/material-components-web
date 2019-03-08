@@ -21,14 +21,12 @@
  * THE SOFTWARE.
  */
 
-const strings = {
+export const strings = {
   ARIA_HIDDEN: 'aria-hidden',
   ROLE: 'role',
 };
 
-const cssClasses = {
+export const cssClasses = {
   HELPER_TEXT_PERSISTENT: 'mdc-select-helper-text--persistent',
   HELPER_TEXT_VALIDATION_MSG: 'mdc-select-helper-text--validation-msg',
 };
-
-export {strings, cssClasses};

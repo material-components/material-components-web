@@ -21,13 +21,13 @@
  * THE SOFTWARE.
  */
 
-const cssClasses = {
+export const cssClasses = {
   CLOSING: 'mdc-snackbar--closing',
   OPEN: 'mdc-snackbar--open',
   OPENING: 'mdc-snackbar--opening',
 };
 
-const strings = {
+export const strings = {
   ACTION_SELECTOR: '.mdc-snackbar__action',
   ARIA_LIVE_LABEL_TEXT_ATTR: 'data-mdc-snackbar-label-text',
   CLOSED_EVENT: 'MDCSnackbar:closed',
@@ -41,7 +41,7 @@ const strings = {
   SURFACE_SELECTOR: '.mdc-snackbar__surface',
 };
 
-const numbers = {
+export const numbers = {
   DEFAULT_AUTO_DISMISS_TIMEOUT_MS: 5000,
   MAX_AUTO_DISMISS_TIMEOUT_MS: 10000,
   MIN_AUTO_DISMISS_TIMEOUT_MS: 4000,
@@ -57,5 +57,3 @@ const numbers = {
    */
   ARIA_LIVE_DELAY_MS: 1000,
 };
-
-export {cssClasses, strings, numbers};

@@ -21,9 +21,7 @@
  * THE SOFTWARE.
  */
 
-const strings = {
+export const strings = {
   ICON_EVENT: 'MDCTextField:icon',
   ICON_ROLE: 'button',
 };
-
-export {strings};

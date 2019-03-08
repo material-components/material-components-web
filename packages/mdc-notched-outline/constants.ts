@@ -21,19 +21,17 @@
  * THE SOFTWARE.
  */
 
-const strings = {
+export const strings = {
   NOTCH_ELEMENT_SELECTOR: '.mdc-notched-outline__notch',
 };
 
-const numbers = {
+export const numbers = {
   // This should stay in sync with $mdc-notched-outline-padding * 2.
   NOTCH_ELEMENT_PADDING: 8,
 };
 
-const cssClasses = {
+export const cssClasses = {
   NO_LABEL: 'mdc-notched-outline--no-label',
   OUTLINE_NOTCHED: 'mdc-notched-outline--notched',
   OUTLINE_UPGRADED: 'mdc-notched-outline--upgraded',
 };
-
-export {cssClasses, numbers, strings};

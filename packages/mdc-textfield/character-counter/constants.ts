@@ -21,12 +21,10 @@
  * THE SOFTWARE.
  */
 
-const cssClasses = {
+export const cssClasses = {
   ROOT: 'mdc-text-field-character-counter',
 };
 
-const strings = {
+export const strings = {
   ROOT_SELECTOR: `.${cssClasses.ROOT}`,
 };
-
-export {strings, cssClasses};

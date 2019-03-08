@@ -26,7 +26,7 @@ import {numbers, strings} from './constants';
 const {ARIA_LIVE_DELAY_MS} = numbers;
 const {ARIA_LIVE_LABEL_TEXT_ATTR} = strings;
 
-function announce(ariaEl: Element, labelEl: Element = ariaEl) {
+export function announce(ariaEl: Element, labelEl: Element = ariaEl) {
   const priority = ariaEl.getAttribute('aria-live');
 
   // Trim text to ignore `&nbsp;` (see below).
@@ -86,5 +86,3 @@ function announce(ariaEl: Element, labelEl: Element = ariaEl) {
     labelEl.textContent = labelText;
   }, ARIA_LIVE_DELAY_MS);
 }
-
-export {announce};
