@@ -25,7 +25,8 @@ import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
 import {MDCList, MDCListFactory} from '@material/list/component';
 import {MDCListFoundation} from '@material/list/foundation';
-import * as createFocusTrap from 'focus-trap';
+import createFocusTrap from 'focus-trap';
+import {FocusTrap} from 'focus-trap';
 import {MDCDrawerAdapter} from './adapter';
 import {MDCDismissibleDrawerFoundation} from './dismissible/foundation';
 import {MDCModalDrawerFoundation} from './modal/foundation';
@@ -61,7 +62,7 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
   private scrim_!: HTMLElement | null; // assigned in initialSyncWithDOM()
   private list_?: MDCList; // assigned in initialize()
 
-  private focusTrap_?: createFocusTrap.FocusTrap; // assigned in initialSyncWithDOM()
+  private focusTrap_?: FocusTrap; // assigned in initialSyncWithDOM()
   private focusTrapFactory_!: MDCDrawerFocusTrapFactory; // assigned in initialize()
 
   private handleScrimClick_?: SpecificEventListener<'click'>; // initialized in initialSyncWithDOM()

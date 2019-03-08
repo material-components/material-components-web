@@ -21,17 +21,18 @@
  * THE SOFTWARE.
  */
 
-import * as createFocusTrap from 'focus-trap';
+import createFocusTrap from 'focus-trap';
+import {FocusTrap, Options} from 'focus-trap';
 
 export type MDCDrawerFocusTrapFactory = (
     element: HTMLElement | string,
-    userOptions?: createFocusTrap.Options,
-) => createFocusTrap.FocusTrap;
+    userOptions?: Options,
+) => FocusTrap;
 
 export function createFocusTrapInstance(
     surfaceEl: HTMLElement,
     focusTrapFactory: MDCDrawerFocusTrapFactory = createFocusTrap as unknown as MDCDrawerFocusTrapFactory,
-): createFocusTrap.FocusTrap {
+): FocusTrap {
   return focusTrapFactory(surfaceEl, {
     clickOutsideDeactivates: true, // Allow handling of scrim clicks.
     escapeDeactivates: false, // Foundation handles ESC key.
