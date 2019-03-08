@@ -38,7 +38,7 @@ export class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCR
 
   private readonly ripple_ = this.createRipple_();
 
-  // Initialized in `initialSyncWithDOM`.
+  // assigned in `initialSyncWithDOM`.
   private changeHandler_!: EventListener;
 
   destroy() {

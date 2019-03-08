@@ -33,8 +33,7 @@
 // TODO(acdvorak): Require "initialized in" comment on ! properties
 
 import * as babelParser from '@babel/parser';
-import babelTraverse from '@babel/traverse';
-import {NodePath} from '@babel/traverse';
+import babelTraverse, {NodePath} from '@babel/traverse';
 import * as babelTypes from '@babel/types';
 import * as colors from 'colors/safe';
 import * as fs from 'fs';
@@ -131,7 +130,7 @@ function lintAllFiles(inputFilePaths: string[]) {
 function lintOneFile(inputFilePath: string, inputCode: string) {
   checkAllImportPaths(inputFilePath, inputCode);
   checkAllInlineProperties(inputFilePath, inputCode);
-  checkAllReturnAnnotations(inputFilePath, inputCode);
+  checkAllComments(inputFilePath, inputCode);
   checkAllIdentifierNames(inputFilePath, inputCode);
 }
 
@@ -347,14 +346,64 @@ function visitOneAssignmentExpression(
   });
 }
 
-function checkAllReturnAnnotations(inputFilePath: string, inputCode: string) {
+function checkAllComments(inputFilePath: string, inputCode: string) {
   const ast = getAstFromCodeString(inputCode);
 
   babelTraverse(ast, {
     Function(nodePath) {
       checkOneReturnAnnotation(nodePath, inputFilePath);
     },
+    ClassProperty(nodePath) {
+      checkOneDefiniteAssignmentComment(nodePath, inputFilePath);
+    },
   });
+}
+
+function checkOneDefiniteAssignmentComment(
+    nodePath: NodePath<babelTypes.ClassProperty>,
+    inputFilePath: string,
+) {
+  const propertyNode = nodePath.node;
+  const propertyKey = propertyNode.key;
+  const valueNode = propertyNode.value;
+  if (valueNode || !babelTypes.isIdentifier(propertyKey) || !propertyKey.name) {
+    return;
+  }
+
+  if (!propertyNode.typeAnnotation || babelTypes.isNoop(propertyNode.typeAnnotation)) {
+    return;
+  }
+
+  if (!propertyNode.definite) {
+    return;
+  }
+
+  const commentNodes = [
+    ...(propertyNode.leadingComments || []),
+    ...(propertyNode.innerComments || []),
+    ...(propertyNode.trailingComments || []),
+  ];
+
+  let hasMatchingComment = false;
+  for (const commentNode of commentNodes) {
+    const commentStr = commentNode.value;
+    if (commentStr.startsWith(' assigned in ') && commentStr.endsWith('()')) {
+      hasMatchingComment = true;
+    }
+  }
+
+  if (!hasMatchingComment) {
+    logLinterViolation(
+        inputFilePath,
+        propertyKey.loc,
+        [
+          `Properties with a definite assignment assertion (!) require an accompanying comment:`,
+          '',
+          `    ${colors.bold(propertyKey.name)}!: ...; // assigned in NAME_OF_METHOD()`,
+        ],
+    );
+    return;
+  }
 }
 
 function checkOneReturnAnnotation(

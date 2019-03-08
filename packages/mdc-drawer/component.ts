@@ -64,9 +64,9 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
   private focusTrap_?: createFocusTrap.FocusTrap; // assigned in initialSyncWithDOM()
   private focusTrapFactory_!: MDCDrawerFocusTrapFactory; // assigned in initialize()
 
-  private handleScrimClick_?: SpecificEventListener<'click'>; // initialized in initialSyncWithDOM()
-  private handleKeydown_!: SpecificEventListener<'keydown'>; // initialized in initialSyncWithDOM()
-  private handleTransitionEnd_!: SpecificEventListener<'transitionend'>; // initialized in initialSyncWithDOM()
+  private handleScrimClick_?: SpecificEventListener<'click'>; // assigned in initialSyncWithDOM()
+  private handleKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
+  private handleTransitionEnd_!: SpecificEventListener<'transitionend'>; // assigned in initialSyncWithDOM()
 
   initialize(
       focusTrapFactory: MDCDrawerFocusTrapFactory = createFocusTrap as unknown as MDCDrawerFocusTrapFactory,
