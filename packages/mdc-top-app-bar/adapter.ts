@@ -56,6 +56,15 @@ export interface MDCTopAppBarAdapter {
    */
   getTopAppBarHeight(): number;
 
+  getViewportScrollY(): number;
+
+  getTotalActionItems(): number;
+
+  /**
+   * Emits an event when the navigation icon is clicked.
+   */
+  notifyNavigationIconClicked(): void;
+
   /**
    * Registers an event handler on the navigation icon element for a given event.
    */
@@ -66,11 +75,6 @@ export interface MDCTopAppBarAdapter {
    */
   deregisterNavigationIconInteractionHandler<K extends EventType>(type: K, handler: SpecificEventListener<K>): void;
 
-  /**
-   * Emits an event when the navigation icon is clicked.
-   */
-  notifyNavigationIconClicked(): void;
-
   registerScrollHandler(handler: SpecificEventListener<'scroll'>): void;
 
   deregisterScrollHandler(handler: SpecificEventListener<'scroll'>): void;
@@ -78,8 +82,4 @@ export interface MDCTopAppBarAdapter {
   registerResizeHandler(handler: SpecificEventListener<'resize'>): void;
 
   deregisterResizeHandler(handler: SpecificEventListener<'resize'>): void;
-
-  getViewportScrollY(): number;
-
-  getTotalActionItems(): number;
 }

@@ -176,13 +176,6 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
     });
   }
 
-  layoutInternal_() {
-    if (this.autoStackButtons_) {
-      this.detectStackedButtons_();
-    }
-    this.detectScrollableContent_();
-  }
-
   handleInteraction(evt: MouseEvent | KeyboardEvent) {
     const isClick = evt.type === 'click';
     const isEnter = (evt as KeyboardEvent).key === 'Enter' || (evt as KeyboardEvent).keyCode === 13;
@@ -208,6 +201,13 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
     if (isEscape && this.escapeKeyAction_ !== '') {
       this.close(this.escapeKeyAction_);
     }
+  }
+
+  private layoutInternal_() {
+    if (this.autoStackButtons_) {
+      this.detectStackedButtons_();
+    }
+    this.detectScrollableContent_();
   }
 
   private handleAnimationTimerEnd_() {

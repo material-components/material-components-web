@@ -48,7 +48,7 @@ test('exports numbers', () => {
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCListFoundation, [
     'getListItemCount', 'getFocusedElementIndex', 'setAttributeForElementIndex',
-    'removeAttributeForElementIndex', 'addClassForElementIndex', 'removeClassForElementIndex',
+    'addClassForElementIndex', 'removeClassForElementIndex',
     'focusItemAtIndex', 'setTabIndexForListItemChildren', 'hasRadioAtIndex',
     'hasCheckboxAtIndex', 'isCheckboxCheckedAtIndex', 'setCheckedCheckboxOrRadioAtIndex',
     'notifyAction', 'isFocusInsideList', 'getAttributeForElementIndex',

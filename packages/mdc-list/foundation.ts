@@ -57,7 +57,6 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       isCheckboxCheckedAtIndex: () => false,
       isFocusInsideList: () => false,
       notifyAction: () => undefined,
-      removeAttributeForElementIndex: () => undefined,
       removeClassForElementIndex: () => undefined,
       setAttributeForElementIndex: () => undefined,
       setCheckedCheckboxOrRadioAtIndex: () => undefined,
@@ -80,7 +79,9 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   }
 
   layout() {
-    if (this.adapter_.getListItemCount() === 0) return;
+    if (this.adapter_.getListItemCount() === 0) {
+      return;
+    }
 
     if (this.adapter_.hasCheckboxAtIndex(0)) {
       this.isCheckboxList_ = true;
@@ -228,7 +229,9 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    * Click handler for the list.
    */
   handleClick(index: number, toggleCheckbox: boolean) {
-    if (index === numbers.UNSET_INDEX) return;
+    if (index === numbers.UNSET_INDEX) {
+      return;
+    }
 
     if (this.isSelectableList_()) {
       this.setSelectedIndexOnAction_(index, toggleCheckbox);
@@ -301,7 +304,9 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   }
 
   private setSingleSelectionAtIndex_(index: number) {
-    if (this.selectedIndex_ === index) return;
+    if (this.selectedIndex_ === index) {
+      return;
+    }
 
     let selectedClassName = cssClasses.LIST_ITEM_SELECTED_CLASS;
     if (this.useActivatedClass_) {
