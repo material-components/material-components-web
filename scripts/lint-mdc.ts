@@ -30,7 +30,6 @@
 
 // TODO(acdvorak): Disallow leading/trailing underscores on all publicly-exported identifiers
 // TODO(acdvorak): Require all publicly-exported functions to appear in the README
-// TODO(acdvorak): Require adapter interfaces to end with Adapter, and foundations to end with Foundation
 
 import * as babelParser from '@babel/parser';
 import babelTraverse, {NodePath} from '@babel/traverse';
@@ -72,6 +71,8 @@ type NodeKind = (
     'class' | 'constructor' | 'enum' | 'getter' | 'interface' | 'method' | 'property' | 'setter' | 'symbol' | 'type' |
     'variable'
 );
+
+type ClassLikeNode = babelTypes.ClassDeclaration | babelTypes.InterfaceDeclaration | babelTypes.TSInterfaceDeclaration;
 
 interface PackageJson {
   private?: boolean;
@@ -153,10 +154,11 @@ function lintAllFiles(inputFilePaths: string[]) {
 function lintOneFile(inputFilePath: string, inputCode: string) {
   checkAllImportPaths(inputFilePath, inputCode);
   checkAllInlineProperties(inputFilePath, inputCode);
-  checkAllComments(inputFilePath, inputCode);
-  checkAllIdentifierNames(inputFilePath, inputCode);
-  checkAllExportNames(inputFilePath, inputCode);
+  checkAllAnnotations(inputFilePath, inputCode);
   checkIndexOnlyReexports(inputFilePath, inputCode);
+  checkAllExportNames(inputFilePath, inputCode);
+  checkAllIdentifierNames(inputFilePath, inputCode);
+  checkAllAdaptersAndFoundations(inputFilePath, inputCode);
 }
 
 function checkAllImportPaths(inputFilePath: string, inputCode: string) {
@@ -369,7 +371,7 @@ function visitOneAssignmentExpression(
   });
 }
 
-function checkAllComments(inputFilePath: string, inputCode: string) {
+function checkAllAnnotations(inputFilePath: string, inputCode: string) {
   const ast = getAstFromCodeString(inputCode);
   const propertyAssignmentParentMethodNames = new Map<string, string[]>();
 
@@ -512,8 +514,7 @@ function checkIndexOnlyReexports(inputFilePath: string, inputCode: string) {
   babelTraverse(ast, {
     enter(nodePath: NodePath) {
       const isFileLevelNode = nodePath.isFile() || nodePath.isProgram();
-      const belongsToImportOrExport =
-          isImportOrExportNodePath(nodePath) || nodePath.findParent(isImportOrExportNodePath);
+      const belongsToImportOrExport = isImportOrExport(nodePath);
       const isWhitelistedPath = INDEX_FILE_PATH_WHITELIST.some((whitelistedPathPart) => {
         return inputFilePath.includes(whitelistedPathPart);
       });
@@ -752,6 +753,131 @@ function checkOneClassMemberIsInReadme(
   }
 }
 
+function checkAllAdaptersAndFoundations(inputFilePath: string, inputCode: string) {
+  const isAdapterFile = inputFilePath.endsWith('adapter.ts');
+  const isFoundationFile = inputFilePath.endsWith('foundation.ts');
+  const publiclyExportedClassNames: string[] = [];
+  const ast = getAstFromCodeString(inputCode);
+
+  babelTraverse(ast, {
+    ClassDeclaration(nodePath: NodePath<babelTypes.ClassDeclaration>) {
+      collectPubliclyExportedClassNames(nodePath, publiclyExportedClassNames);
+    },
+    InterfaceDeclaration(nodePath: NodePath<babelTypes.InterfaceDeclaration>) {
+      collectPubliclyExportedClassNames(nodePath, publiclyExportedClassNames);
+    },
+    TSInterfaceDeclaration(nodePath: NodePath<babelTypes.TSInterfaceDeclaration>) {
+      collectPubliclyExportedClassNames(nodePath, publiclyExportedClassNames);
+    },
+  });
+
+  if (isAdapterFile) {
+    babelTraverse(ast, {
+      enter(nodePath: NodePath) {
+        const isTopLevelNode =
+            nodePath.parentPath &&
+            (nodePath.parentPath.isProgram() || nodePath.parentPath.isExportDeclaration());
+        if (isTopLevelNode) {
+          checkOneTopLevelAdapterNode(nodePath, inputFilePath);
+        }
+      },
+      ClassDeclaration(nodePath: NodePath<babelTypes.ClassDeclaration>) {
+        collectPubliclyExportedClassNames(nodePath, publiclyExportedClassNames);
+      },
+      InterfaceDeclaration(nodePath: NodePath<babelTypes.InterfaceDeclaration>) {
+        checkOneAdapterName(nodePath, inputFilePath);
+      },
+      TSInterfaceDeclaration(nodePath: NodePath<babelTypes.TSInterfaceDeclaration>) {
+        checkOneAdapterName(nodePath, inputFilePath);
+      },
+    });
+
+    if (!publiclyExportedClassNames.some((className) => className.endsWith('Adapter'))) {
+      logLinterViolation(
+          inputFilePath,
+          ast.loc,
+          `*adapter.ts files must export at least one public interface ending in 'Adapter'.`,
+      );
+      return;
+    }
+  }
+
+  if (isFoundationFile) {
+    if (!publiclyExportedClassNames.some((className) => className.endsWith('Foundation'))) {
+      logLinterViolation(
+          inputFilePath,
+          ast.loc,
+          `All *foundation.ts files must export at least one public class ending in 'Foundation'.`,
+      );
+      return;
+    }
+  }
+}
+
+function checkOneTopLevelAdapterNode(nodePath: NodePath, inputFilePath: string) {
+  const node = nodePath.node;
+  const {name, loc} = getNameAndLocation(node);
+  const kind = getNodeKind(node);
+
+  const isFileLevelNode =
+      nodePath.isFile() ||
+      nodePath.isProgram() ||
+      nodePath.isExportDeclaration() ||
+      isImportDeclaration(nodePath);
+  const isInterface = babelTypes.isInterfaceDeclaration(node) || babelTypes.isTSInterfaceDeclaration(node);
+  if (isFileLevelNode || isInterface) {
+    return;
+  }
+
+  logLinterViolation(
+      inputFilePath,
+      loc,
+      [
+        `Invalid top-level ${kind} (${node.type})${name ? `: '${name}'` : ''}.`,
+        `Only interfaces are allowed in *adapter.ts files.`,
+      ],
+  );
+}
+
+function checkOneAdapterName(nodePath: NodePath<ClassLikeNode>, inputFilePath: string) {
+  const node = nodePath.node;
+  const {name, loc} = getNameAndLocation(node);
+  const kind = getNodeKind(node);
+  const id = nodePath.node.id;
+
+  if (id && !id.name.endsWith('Adapter')) {
+    logLinterViolation(
+        inputFilePath,
+        loc,
+        [
+          `Invalid top-level ${kind} (${node.type})${name ? `: '${name}'` : ''}.`,
+          `All type names in *adapter.ts files must end with 'Adapter'.`,
+          `This keeps the files lean and predictable.`,
+        ],
+    );
+    return;
+  }
+
+  if (!isExportedSymbol(nodePath)) {
+    logLinterViolation(
+        inputFilePath,
+        loc,
+        [
+          `Invalid top-level ${kind} (${node.type})${name ? `: '${name}'` : ''}.`,
+          `All types in *adapter.ts files must be exported.`,
+        ],
+    );
+    return;
+  }
+}
+
+function collectPubliclyExportedClassNames(nodePath: NodePath<ClassLikeNode>, classNames: string[]) {
+  const id = nodePath.node.id;
+  if (id && isExportedSymbol(nodePath)) {
+    classNames.push(id.name);
+  }
+}
+
 function getNameAndLocation(node: babelTypes.Node): NamedIdentifier {
   if (babelTypes.isClassMethod(node) ||
       babelTypes.isClassProperty(node) ||
@@ -788,9 +914,23 @@ function isMethodLike(node: babelTypes.Node): node is babelTypes.ClassMethod | b
   return babelTypes.isClassMethod(node) || babelTypes.isObjectMethod(node);
 }
 
-function isImportOrExportNodePath(nodePath: NodePath): nodePath is
+function isImportOrExport(nodePath: NodePath): nodePath is
     NodePath<babelTypes.ImportDeclaration> | NodePath<babelTypes.ExportDeclaration> {
-  return nodePath.isImportDeclaration() || nodePath.isExportDeclaration();
+  return isImportDeclaration(nodePath) || isExportedSymbol(nodePath);
+}
+
+function isImportDeclaration(nodePath: NodePath) {
+  return (
+      nodePath.isImportDeclaration() ||
+      Boolean(nodePath.findParent((parentPath) => parentPath.isImportDeclaration()))
+  );
+}
+
+function isExportedSymbol(nodePath: NodePath) {
+  return (
+      nodePath.isExportDeclaration() ||
+      Boolean(nodePath.findParent((parentPath) => parentPath.isExportDeclaration()))
+  );
 }
 
 // TODO(acdvorak): Merge with getNameAndLocation()
