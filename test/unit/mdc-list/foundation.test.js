@@ -28,7 +28,7 @@ import td from 'testdouble';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
 import {MDCListFoundation} from '../../../packages/mdc-list/foundation';
-import {strings, cssClasses} from '../../../packages/mdc-list/constants';
+import {strings, cssClasses, numbers} from '../../../packages/mdc-list/constants';
 import {install as installClock} from '../helpers/clock';
 
 suite('MDCListFoundation');
@@ -39,6 +39,10 @@ test('exports strings', () => {
 
 test('exports cssClasses', () => {
   assert.deepEqual(MDCListFoundation.cssClasses, cssClasses);
+});
+
+test('exports numbers', () => {
+  assert.deepEqual(MDCListFoundation.numbers, numbers);
 });
 
 test('defaultAdapter returns a complete adapter implementation', () => {
@@ -855,6 +859,32 @@ test('#setSelectedIndex removes selected/activated class name and sets aria-sele
   foundation.setSelectedIndex(3);
   td.verify(mockAdapter.removeClassForElementIndex(2, cssClasses.LIST_ITEM_SELECTED_CLASS), {times: 1});
   td.verify(mockAdapter.setAttributeForElementIndex(2, strings.ARIA_SELECTED, 'false'), {times: 1});
+});
+
+test('#setSelectedIndex sets aria-current="false" to previously selected index and sets aria-current without any token'
+    + 'to current index', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(5);
+  td.when(mockAdapter.getAttributeForElementIndex(2, strings.ARIA_CURRENT)).thenReturn('');
+  foundation.setSelectedIndex(2);
+
+  foundation.setSelectedIndex(3);
+  td.verify(mockAdapter.setAttributeForElementIndex(2, strings.ARIA_CURRENT, 'false'), {times: 1});
+  td.verify(mockAdapter.setAttributeForElementIndex(3, strings.ARIA_CURRENT, ''), {times: 1});
+});
+
+test('#setSelectedIndex sets aria-current to false to previously selected index and sets aria-current with appropriate '
+    + 'token to current index', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(5);
+  td.when(mockAdapter.getAttributeForElementIndex(2, strings.ARIA_CURRENT)).thenReturn('page');
+  foundation.setSelectedIndex(2);
+
+  foundation.setSelectedIndex(3);
+  td.verify(mockAdapter.setAttributeForElementIndex(2, strings.ARIA_CURRENT, 'false'), {times: 1});
+  td.verify(mockAdapter.setAttributeForElementIndex(3, strings.ARIA_CURRENT, 'page'), {times: 1});
 });
 
 test('#setSelectedIndex throws error when array of index is set on radio based list', () => {

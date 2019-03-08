@@ -321,9 +321,10 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    * Sets aria attribute for single selection at given index.
    */
   private setAriaForSingleSelectionAtIndex_(index: number) {
+    // Detect the presence of aria-current and get the value only during list initialization when it is in unset state.
     if (this.selectedIndex_ === numbers.UNSET_INDEX) {
       this.ariaCurrentAttrValue_ =
-            this.adapter_.getAttributeForElementIndex(index as number, strings.ARIA_CURRENT);
+            this.adapter_.getAttributeForElementIndex(index, strings.ARIA_CURRENT);
     }
 
     const isAriaCurrent = this.ariaCurrentAttrValue_ !== null;
