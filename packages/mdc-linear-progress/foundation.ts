@@ -46,9 +46,9 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
     };
   }
 
-  private isDeterminate_!: boolean;
-  private isReversed_!: boolean;
-  private progress_!: number;
+  private isDeterminate_!: boolean; // assigned in init()
+  private isReversed_!: boolean; // assigned in init()
+  private progress_!: number; // assigned in init()
 
   constructor(adapter?: Partial<MDCLinearProgressAdapter>) {
     super({...MDCLinearProgressFoundation.defaultAdapter, ...adapter});

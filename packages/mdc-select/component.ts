@@ -50,7 +50,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
   // Public visibility for this property is required by MDCRippleCapableSurface.
   root_!: HTMLElement; // assigned in MDCComponent constructor
 
-  ripple!: MDCRipple | null;
+  ripple!: MDCRipple | null; // assigned in initialize()
 
   private menu_!: MDCMenu | null; // assigned in enhancedSelectSetup_()
   private isMenuOpen_!: boolean; // assigned in initialize()

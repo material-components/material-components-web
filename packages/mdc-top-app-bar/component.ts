@@ -35,9 +35,9 @@ export class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
     return new MDCTopAppBar(root);
   }
 
-  private navIcon_!: Element | null;
-  private iconRipples_!: MDCRipple[];
-  private scrollTarget_!: EventTarget;
+  private navIcon_!: Element | null; // assigned in initialize()
+  private iconRipples_!: MDCRipple[]; // assigned in initialize()
+  private scrollTarget_!: EventTarget; // assigned in initialize()
 
   initialize(rippleFactory: MDCRippleFactory = (el) => MDCRipple.attachTo(el)) {
     this.navIcon_ = this.root_.querySelector(strings.NAVIGATION_ICON_SELECTOR);

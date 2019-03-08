@@ -36,15 +36,15 @@ export class MDCTab extends MDCComponent<MDCTabFoundation> implements MDCRippleC
     return new MDCTab(root);
   }
 
-  id!: string; // assigned in initialize();
+  id!: string; // assigned in initialize()
 
   // Public visibility for this property is required by MDCRippleCapableSurface.
   root_!: HTMLElement; // assigned in MDCComponent constructor
 
-  private ripple_!: MDCRipple; // assigned in initialize();
-  private tabIndicator_!: MDCTabIndicator; // assigned in initialize();
-  private content_!: HTMLElement; // assigned in initialize();
-  private handleClick_!: SpecificEventListener<'click'>; // assigned in initialize();
+  private ripple_!: MDCRipple; // assigned in initialize()
+  private tabIndicator_!: MDCTabIndicator; // assigned in initialize()
+  private content_!: HTMLElement; // assigned in initialize()
+  private handleClick_!: SpecificEventListener<'click'>; // assigned in initialize()
 
   initialize(
       rippleFactory: MDCRippleFactory = (el, foundation) => new MDCRipple(el, foundation),
