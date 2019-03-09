@@ -553,7 +553,6 @@ function checkAllExportNames(inputFilePath: string, inputCode: string) {
 
   const checkDeclarationName = (nodePath: NodePath) => {
     checkOneIdentifierName(nodePath, inputFilePath);
-    // checkOneClassMemberIsInReadme(nodePath, inputFilePath); // TODO(acdvorak)
   };
 
   babelTraverse(ast, {
