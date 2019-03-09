@@ -59,15 +59,16 @@ interface AstLocation {
   violationSource: babelTypes.SourceLocation | null;
 }
 
-interface NamedIdentifier {
-  name: string | null;
-  loc: babelTypes.SourceLocation | null;
-}
-
 type NodeKind = (
     'class' | 'constructor' | 'enum' | 'getter' | 'interface' | 'method' | 'property' | 'setter' | 'symbol' | 'type' |
     'variable'
 );
+
+interface NamedIdentifier {
+  name: string | null;
+  loc: babelTypes.SourceLocation | null;
+  kind: NodeKind;
+}
 
 type ClassLikeNode = babelTypes.ClassDeclaration | babelTypes.InterfaceDeclaration | babelTypes.TSInterfaceDeclaration;
 
@@ -532,8 +533,7 @@ function checkIndexOnlyReexports(inputFilePath: string, inputCode: string) {
       }
 
       const node = nodePath.node;
-      const {name, loc} = getNameAndLocation(node);
-      const kind = getNodeKind(node);
+      const {name, loc, kind} = getIdentifierInfo(node);
 
       logLinterViolation(
           inputFilePath,
@@ -630,8 +630,7 @@ function checkOneIdentifierName(
     inputFilePath: string,
 ) {
   const node = nodePath.node;
-  const kind = getNodeKind(node);
-  const {name, loc} = getNameAndLocation(node);
+  const {name, loc, kind} = getIdentifierInfo(node);
   if (!name) {
     return;
   }
@@ -700,8 +699,7 @@ function checkOneClassMemberAccessibility(
     inputFilePath: string,
 ) {
   const node = nodePath.node;
-  const kind = getNodeKind(node);
-  const {name, loc} = getNameAndLocation(node);
+  const {name, loc, kind} = getIdentifierInfo(node);
   if (!name || PUBLIC_PROPERTY_UNDERSCORE_WHITELIST.includes(name)) {
     return;
   }
@@ -740,8 +738,7 @@ function checkOneClassMemberIsInReadme(
     inputFilePath: string,
 ) {
   const {node} = nodePath;
-  const {name, loc} = getNameAndLocation(node);
-  const kind = getNodeKind(node);
+  const {name, loc, kind} = getIdentifierInfo(node);
   if (!name || README_WHITELIST.includes(name)) {
     return;
   }
@@ -832,8 +829,7 @@ function checkAllAdaptersAndFoundations(inputFilePath: string, inputCode: string
 
 function checkOneTopLevelAdapterNode(nodePath: NodePath, inputFilePath: string) {
   const node = nodePath.node;
-  const {name, loc} = getNameAndLocation(node);
-  const kind = getNodeKind(node);
+  const {name, loc, kind} = getIdentifierInfo(node);
 
   const isFileLevelNode =
       nodePath.isFile() ||
@@ -857,8 +853,7 @@ function checkOneTopLevelAdapterNode(nodePath: NodePath, inputFilePath: string) 
 
 function checkOneAdapterName(nodePath: NodePath<ClassLikeNode>, inputFilePath: string) {
   const node = nodePath.node;
-  const {name, loc} = getNameAndLocation(node);
-  const kind = getNodeKind(node);
+  const {name, loc, kind} = getIdentifierInfo(node);
   const id = nodePath.node.id;
 
   if (id && !id.name.endsWith('Adapter')) {
@@ -894,7 +889,8 @@ function collectPubliclyExportedClassNames(nodePath: NodePath<ClassLikeNode>, cl
   }
 }
 
-function getNameAndLocation(node: babelTypes.Node): NamedIdentifier {
+function getIdentifierInfo(node: babelTypes.Node): NamedIdentifier {
+  const kind = getNodeKind(node);
   if (babelTypes.isClassMethod(node) ||
       babelTypes.isClassProperty(node) ||
       babelTypes.isObjectMethod(node) ||
@@ -902,54 +898,30 @@ function getNameAndLocation(node: babelTypes.Node): NamedIdentifier {
       babelTypes.isTSMethodSignature(node)) {
     const key = node.key;
     if (babelTypes.isIdentifier(key) && key.name) {
-      return key;
+      return {...key, kind};
     }
   } else if ((babelTypes.isClassDeclaration(node) ||
               babelTypes.isFunctionDeclaration(node) ||
               babelTypes.isTSInterfaceDeclaration(node) ||
               babelTypes.isTSTypeAliasDeclaration(node)) && node.id) {
-    return node.id;
+    return {...node.id, kind};
   } else if (babelTypes.isIdentifier(node)) {
-    return node;
+    return {...node, kind};
   } else if (babelTypes.isTSEnumDeclaration(node)) {
-    return node.id;
+    return {...node.id, kind};
   } else if (babelTypes.isTSLiteralType(node)) {
-    return {name: String(node.literal.value), loc: node.literal.loc};
+    return {name: String(node.literal.value), loc: node.literal.loc, kind};
   } else if (babelTypes.isStringLiteral(node)) {
-    return {name: node.value, loc: node.loc};
+    return {name: node.value, loc: node.loc, kind};
   } else if (babelTypes.isVariableDeclaration(node)) {
     const firstId = node.declarations[0].id;
     if (babelTypes.isIdentifier(firstId)) {
-      return firstId;
+      return {...firstId, kind};
     }
   }
-  return {name: null, loc: node.loc};
+  return {name: null, loc: node.loc, kind};
 }
 
-function isMethodLike(node: babelTypes.Node): node is babelTypes.ClassMethod | babelTypes.ObjectMethod {
-  return babelTypes.isClassMethod(node) || babelTypes.isObjectMethod(node);
-}
-
-function isImportOrExport(nodePath: NodePath): nodePath is
-    NodePath<babelTypes.ImportDeclaration> | NodePath<babelTypes.ExportDeclaration> {
-  return isImportDeclaration(nodePath) || isInlineExportedSymbol(nodePath);
-}
-
-function isImportDeclaration(nodePath: NodePath) {
-  return (
-      nodePath.isImportDeclaration() ||
-      Boolean(nodePath.findParent((parentPath) => parentPath.isImportDeclaration()))
-  );
-}
-
-function isInlineExportedSymbol(nodePath: NodePath) {
-  return (
-      nodePath.isExportDeclaration() ||
-      (nodePath.parentPath && nodePath.parentPath.isExportDeclaration())
-  );
-}
-
-// TODO(acdvorak): Merge with getNameAndLocation()
 function getNodeKind(node: babelTypes.Node): NodeKind {
   if (babelTypes.isInterfaceDeclaration(node) || babelTypes.isTSInterfaceDeclaration(node)) {
     return 'interface';
@@ -988,8 +960,31 @@ function getNodeKind(node: babelTypes.Node): NodeKind {
   return 'symbol';
 }
 
+function isMethodLike(node: babelTypes.Node): node is babelTypes.ClassMethod | babelTypes.ObjectMethod {
+  return babelTypes.isClassMethod(node) || babelTypes.isObjectMethod(node);
+}
+
+function isImportOrExport(nodePath: NodePath): nodePath is
+    NodePath<babelTypes.ImportDeclaration> | NodePath<babelTypes.ExportDeclaration> {
+  return isImportDeclaration(nodePath) || isInlineExportedSymbol(nodePath);
+}
+
+function isImportDeclaration(nodePath: NodePath) {
+  return (
+      nodePath.isImportDeclaration() ||
+      Boolean(nodePath.findParent((parentPath) => parentPath.isImportDeclaration()))
+  );
+}
+
+function isInlineExportedSymbol(nodePath: NodePath) {
+  return (
+      nodePath.isExportDeclaration() ||
+      (nodePath.parentPath && nodePath.parentPath.isExportDeclaration())
+  );
+}
+
 function isStaticOrNonPublicMember(node: babelTypes.Node): boolean {
-  const {name} = getNameAndLocation(node);
+  const {name} = getIdentifierInfo(node);
   if (!name) {
     // Arrow function or unnamed function expression.
     return true;
