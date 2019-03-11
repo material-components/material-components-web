@@ -21,8 +21,7 @@
  * THE SOFTWARE.
  */
 
-import createFocusTrap from 'focus-trap';
-import {FocusTrap, Options} from 'focus-trap';
+import {default as createFocusTrap, FocusTrap, Options} from 'focus-trap';
 
 export type MDCDrawerFocusTrapFactory = (
     element: HTMLElement | string,
