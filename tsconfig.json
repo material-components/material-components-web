@@ -5,7 +5,6 @@
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
-    "importHelpers": true,
     "lib": ["es5", "es6", "dom"],
     "moduleResolution": "node",
     "newLine": "lf",
