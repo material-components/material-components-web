@@ -143,6 +143,7 @@ Mixin | Description
 
 Property | Value Type | Description
 --- | --- | ---
+`id` | `string` | Value of the root tab element's `id` attribute.
 `active` | `boolean` (read-only) | Allows getting the active state of the tab.
 `focusOnActivate` | `boolean` (write-only) | Sets whether the tab should focus itself when activated. Defaults to `true`.
 

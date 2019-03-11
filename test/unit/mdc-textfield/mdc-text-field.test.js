@@ -376,9 +376,9 @@ test('#destroy calls destroy for both icon elements if present', () => {
   td.verify(component.trailingIcon_.destroy());
 });
 
-test('#initialSyncWithDom sets disabled if input element is not disabled', () => {
+test('#initialSyncWithDOM sets disabled if input element is not disabled', () => {
   const {component} = setupTest();
-  component.initialSyncWithDom();
+  component.initialSyncWithDOM();
   assert.isNotOk(component.disabled);
 });
 

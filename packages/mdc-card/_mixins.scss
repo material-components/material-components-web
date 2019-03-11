@@ -34,6 +34,13 @@
 //
 
 @mixin mdc-card-core-styles($query: mdc-feature-all()) {
+  @include mdc-card-without-ripple($query);
+  @include mdc-card-ripple($query);
+}
+
+// This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
+// card styles. It is recommended that most users use `mdc-card-core-styles` instead.
+@mixin mdc-card-without-ripple($query: mdc-feature-all()) {
   // postcss-bem-linter: define card
 
   $feat-color: mdc-feature-create-target($query, color);
@@ -113,9 +120,6 @@
   //
 
   .mdc-card__primary-action {
-    @include mdc-ripple-surface($query);
-    @include mdc-ripple-radius-bounded($query: $query);
-
     @include mdc-feature-targets($feat-structure) {
       @include mdc-card-container-layout_;
 
@@ -126,8 +130,6 @@
       cursor: pointer;
       overflow: hidden;
     }
-
-    @include mdc-states($query: $query);
   }
 
   .mdc-card__primary-action:first-child {
@@ -266,6 +268,18 @@
   }
 
   // postcss-bem-linter: end
+}
+
+// This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
+// card styles. It is recommended that most users use `mdc-card-core-styles` instead.
+@mixin mdc-card-ripple($query: mdc-feature-all()) {
+  @include mdc-ripple-common($query);
+
+  .mdc-card__primary-action {
+    @include mdc-ripple-surface($query);
+    @include mdc-ripple-radius-bounded($query: $query);
+    @include mdc-states($query: $query);
+  }
 }
 
 @mixin mdc-card-fill-color($color, $query: mdc-feature-all()) {

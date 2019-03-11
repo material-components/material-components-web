@@ -33,10 +33,15 @@
 @import "./variables";
 
 @mixin mdc-button-core-styles($query: mdc-feature-all()) {
+  @include mdc-button-without-ripple($query);
+  @include mdc-button-ripple($query);
+}
+
+// This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
+// button styles. It is recommended that most users use `mdc-button-core-styles` instead.
+@mixin mdc-button-without-ripple($query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
-
-  @include mdc-ripple-common($query);
 
   // postcss-bem-linter: define button
   .mdc-button {
@@ -55,7 +60,6 @@
     }
 
     @include mdc-button-ink-color(primary, $query);
-    @include mdc-states(primary, false, $query);
   }
 
   .mdc-button__label + .mdc-button__icon {
@@ -93,7 +97,6 @@
     @include mdc-button--filled_($query);
     @include mdc-button-container-fill-color(primary, $query);
     @include mdc-button-ink-color(on-primary, $query);
-    @include mdc-states(on-primary, false, $query);
   }
 
   .mdc-button--raised {
@@ -112,6 +115,23 @@
     }
   }
   // postcss-bem-linter: end
+}
+
+// This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
+// button styles. It is recommended that most users use `mdc-button-core-styles` instead.
+@mixin mdc-button-ripple($query: mdc-feature-all()) {
+  @include mdc-ripple-common($query);
+
+  .mdc-button {
+    @include mdc-ripple-surface($query);
+    @include mdc-ripple-radius-bounded($query: $query);
+    @include mdc-states(primary, false, $query);
+  }
+
+  .mdc-button--raised,
+  .mdc-button--unelevated {
+    @include mdc-states(on-primary, false, $query);
+  }
 }
 
 @mixin mdc-button-filled-accessible($container-fill-color, $query: mdc-feature-all()) {
@@ -216,8 +236,6 @@
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-typography(button, $query);
-  @include mdc-ripple-surface($query);
-  @include mdc-ripple-radius-bounded($query: $query);
   @include mdc-button-horizontal-padding($mdc-button-horizontal-padding, $query);
 
   @include mdc-feature-targets($feat-structure) {

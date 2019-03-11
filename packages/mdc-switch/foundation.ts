@@ -25,12 +25,6 @@ import {MDCFoundation} from '@material/base/foundation';
 import {MDCSwitchAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
-/**
- * Foundation for the MDC Switch. Encapsulates business logic for the switch.
- *
- * See architecture documentation for more details.
- * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
- */
 export class MDCSwitchFoundation extends MDCFoundation<MDCSwitchAdapter> {
   /** The string constants used by the switch. */
   static get strings() {

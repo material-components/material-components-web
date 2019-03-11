@@ -28,11 +28,6 @@ import {MDCRipple, MDCRippleAdapter, MDCRippleCapableSurface, MDCRippleFoundatio
 import {MDCSwitchAdapter} from './adapter';
 import {MDCSwitchFoundation} from './foundation';
 
-/**
- * An implementation of the switch component defined by the Material Design spec.
- *
- * https://material.io/design/components/selection-controls.html#switches
- */
 export class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCRippleCapableSurface {
   static attachTo(root: HTMLElement) {
     return new MDCSwitch(root);

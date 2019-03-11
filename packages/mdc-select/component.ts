@@ -50,8 +50,10 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
   // Public visibility for this property is required by MDCRippleCapableSurface.
   root_!: HTMLElement; // assigned in MDCComponent constructor
 
+  ripple!: MDCRipple | null;
+
   private menu_!: MDCMenu | null; // assigned in enhancedSelectSetup_()
-  private menuOpened_ = false;
+  private isMenuOpen_!: boolean; // assigned in initialize()
 
   // Exactly one of these fields must be non-null.
   private nativeControl_!: HTMLSelectElement | null; // assigned in initialize()
@@ -59,14 +61,13 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
 
   private targetElement_!: HTMLElement; // assigned in initialize()
 
-  private hiddenInput_!: HTMLInputElement | null;
-  private leadingIcon_?: MDCSelectIcon;
-  private helperText_!: MDCSelectHelperText | null;
-  private menuElement_!: Element | null;
-  private ripple!: MDCRipple | null;
-  private lineRipple_!: MDCLineRipple | null;
-  private label_!: MDCFloatingLabel | null;
-  private outline_!: MDCNotchedOutline | null;
+  private hiddenInput_!: HTMLInputElement | null; // assigned in enhancedSelectSetup_()
+  private menuElement_!: Element | null; // assigned in enhancedSelectSetup_()
+  private leadingIcon_?: MDCSelectIcon; // assigned in initialize()
+  private helperText_!: MDCSelectHelperText | null; // assigned in initialize()
+  private lineRipple_!: MDCLineRipple | null; // assigned in initialize()
+  private label_!: MDCFloatingLabel | null; // assigned in initialize()
+  private outline_!: MDCNotchedOutline | null; // assigned in initialize()
   private handleChange_!: SpecificEventListener<'change'>; // assigned in initialize()
   private handleFocus_!: SpecificEventListener<'focus'>; // assigned in initialize()
   private handleBlur_!: SpecificEventListener<'blur'>; // assigned in initialize()
@@ -85,6 +86,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
       iconFactory: MDCSelectIconFactory = (el) => new MDCSelectIcon(el),
       helperTextFactory: MDCSelectHelperTextFactory = (el) => new MDCSelectHelperText(el),
   ) {
+    this.isMenuOpen_ = false;
     this.nativeControl_ = this.root_.querySelector(strings.NATIVE_CONTROL_SELECTOR);
     this.selectedText_ = this.root_.querySelector(strings.SELECTED_TEXT_SELECTOR);
 
@@ -160,10 +162,10 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
       }
     };
     this.handleMenuClosed_ = () => {
-      // menuOpened_ is used to track the state of the menu opening or closing since the menu.open function
+      // isMenuOpen_ is used to track the state of the menu opening or closing since the menu.open function
       // will return false if the menu is still closing and this method listens to the closed event which
       // occurs after the menu is already closed.
-      this.menuOpened_ = false;
+      this.isMenuOpen_ = false;
       this.selectedText_!.removeAttribute('aria-expanded');
       if (document.activeElement !== this.selectedText_) {
         this.foundation_.handleBlur();
@@ -422,7 +424,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
       openMenu: () => {
         if (this.menu_ && !this.menu_.open) {
           this.menu_.open = true;
-          this.menuOpened_ = true;
+          this.isMenuOpen_ = true;
           this.selectedText_!.setAttribute('aria-expanded', 'true');
         }
       },
@@ -431,7 +433,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
           this.menu_.open = false;
         }
       },
-      isMenuOpen: () => Boolean(this.menu_) && this.menuOpened_,
+      isMenuOpen: () => Boolean(this.menu_) && this.isMenuOpen_,
       setSelectedIndex: (index: number) => this.setEnhancedSelectedIndex_(index),
       setDisabled: (isDisabled: boolean) => {
         this.selectedText_!.setAttribute('tabindex', isDisabled ? '-1' : '0');
