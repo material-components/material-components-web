@@ -25,7 +25,7 @@ import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
 import {closest, matches} from '@material/dom/ponyfill';
 import {MDCRipple} from '@material/ripple/component';
-import * as FocusTrapLib from 'focus-trap';
+import {FocusTrap} from 'focus-trap';
 import {MDCDialogAdapter} from './adapter';
 import {MDCDialogFoundation} from './foundation';
 import {MDCDialogCloseEventDetail} from './types';
@@ -74,7 +74,7 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   private defaultButton_!: HTMLElement | null; // assigned in initialize()
   private initialFocusEl_?: HTMLElement; // assigned in initialize()
 
-  private focusTrap_!: FocusTrapLib.FocusTrap; // assigned in initialSyncWithDOM()
+  private focusTrap_!: FocusTrap; // assigned in initialSyncWithDOM()
   private focusTrapFactory_?: MDCDialogFocusTrapFactory; // assigned in initialize()
 
   private handleInteraction_!: SpecificEventListener<'click' | 'keydown'>; // assigned in initialSyncWithDOM()
