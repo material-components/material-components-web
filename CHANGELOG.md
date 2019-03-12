@@ -1,16 +1,16 @@
-<a name="1.0.0-1"></a>
-# [1.0.0-1](https://github.com/material-components/material-components-web/compare/v1.0.0-0...v1.0.0-1) (2019-03-04)
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/material-components/material-components-web/compare/v1.0.0...v1.0.1) (2019-03-11)
 
 
 ### Bug Fixes
 
-* **menu-surface:** Fix anchorElement initialization ([#4462](https://github.com/material-components/material-components-web/issues/4462)) ([2025c8b](https://github.com/material-components/material-components-web/commit/2025c8b))
-* **package:** Fix module declaration names in dist d.ts files ([#4476](https://github.com/material-components/material-components-web/issues/4476)) ([872b39f](https://github.com/material-components/material-components-web/commit/872b39f))
+* **feature-targeting:** Move ripple styles into separate mixins ([#4454](https://github.com/material-components/material-components-web/issues/4454)) ([f53aacc](https://github.com/material-components/material-components-web/commit/f53aacc))
+* Don't import * from focus-trap to avoid default export confusion ([#4485](https://github.com/material-components/material-components-web/issues/4485)) ([bd3d946](https://github.com/material-components/material-components-web/commit/bd3d946))
 
 
 
-<a name="1.0.0-0"></a>
-# [1.0.0-0](https://github.com/material-components/material-components-web/compare/v0.44.0...v1.0.0-0) (2019-02-28)
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/material-components/material-components-web/compare/v0.44.1...v1.0.0) (2019-03-06)
 
 
 ### Bug Fixes
@@ -19,6 +19,9 @@
 * **menu:** Read index property from list item event detail ([#4368](https://github.com/material-components/material-components-web/issues/4368)) ([5eb5a01](https://github.com/material-components/material-components-web/commit/5eb5a01)), closes [#4356](https://github.com/material-components/material-components-web/issues/4356)
 * **ripple:** Use mdc-dom.matches everywhere ([#4372](https://github.com/material-components/material-components-web/issues/4372)) ([a2aa3c8](https://github.com/material-components/material-components-web/commit/a2aa3c8)), closes [#4340](https://github.com/material-components/material-components-web/issues/4340)
 * **text-field:** Set char counter text not to wrap ([#4423](https://github.com/material-components/material-components-web/issues/4423)) ([9b7dce7](https://github.com/material-components/material-components-web/commit/9b7dce7))
+* **menu-surface:** Fix anchorElement initialization ([#4462](https://github.com/material-components/material-components-web/issues/4462)) ([2025c8b](https://github.com/material-components/material-components-web/commit/2025c8b))
+* **package:** Fix module declaration names in dist d.ts files ([#4476](https://github.com/material-components/material-components-web/issues/4476)) ([872b39f](https://github.com/material-components/material-components-web/commit/872b39f))
+* **list:** Remove unused adapter.removeAttributeForElementIndex ([#4473](https://github.com/material-components/material-components-web/issues/4473)) ([6b3a419](https://github.com/material-components/material-components-web/commit/6b3a419))
 
 
 ### Code Refactoring
@@ -43,8 +46,9 @@
 * **animation:** The `transformStyleProperties` array export has been removed from `mdc-animation`. Please use `getCorrectPropertyName(window, 'transform')` instead.
 * **ripple:** `getMatchesProperty()` has been removed from `@material/ripple/util` and `@material/tab-scroller/util`. Use `matches()` from `@material/dom/ponyfill` instead.
 * **feature-targeting:** The main mixins recently introduced to some packages in in v0.44.0 have been renamed from `mdc-foo` to `mdc-foo-core-styles`. (Importing baseline styles via `mdc-foo.scss` remains unaffected.)
-* **list:** The default `MDCListAdapter.notifyAction()` implementation now emits an object of type `{index: number}` rather than a primitive `number` directly.
-* **menu-surface:** `MDCMenuSurfaceAdapter.setPosition()` now expects an object with properties of type `number` rather than `string`. E.g., `setPosition({top: '5px', left: '10px'})` is now `setPosition({top: 5, left: 10})`.
+* **list:** The default `MDCListAdapter#notifyAction` implementation now emits an object of type `{index: number}` rather than a primitive `number` directly.
+* **menu-surface:** `MDCMenuSurfaceAdapter#setPosition` now expects an object with properties of type `number` rather than `string`. E.g., `setPosition({top: '5px', left: '10px'})` is now `setPosition({top: 5, left: 10})`.
+* **list:** Removed `MDCListAdapter#removeAttributeForElementIndex`
 
 
 

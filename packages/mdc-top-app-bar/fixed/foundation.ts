@@ -41,7 +41,7 @@ export class MDCFixedTopAppBarFoundation extends MDCTopAppBarFoundation {
   /**
    * Scroll handler for applying/removing the modifier class on the fixed top app bar.
    */
-  fixedScrollHandler_() {
+  private fixedScrollHandler_() {
     const currentScroll = this.adapter_.getViewportScrollY();
 
     if (currentScroll <= 0) {
