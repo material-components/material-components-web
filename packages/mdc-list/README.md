@@ -52,6 +52,12 @@ npm install @material/list
 </ul>
 ```
 
+### Styles
+
+```scss
+@import "@material/list/mdc-list";
+```
+
 ### JavaScript
 
 MDC List includes an optional JavaScript component which can be used for keyboard interaction and accessibility.
