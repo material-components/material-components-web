@@ -29,7 +29,7 @@ import {verifyDefaultAdapter} from '../helpers/foundation';
 
 import {cssClasses, strings, numbers} from '../../../packages/mdc-snackbar/constants';
 import {install as installClock} from '../helpers/clock';
-import MDCSnackbarFoundation from '../../../packages/mdc-snackbar/foundation';
+import {MDCSnackbarFoundation} from '../../../packages/mdc-snackbar/foundation';
 
 suite('MDCSnackbarFoundation');
 

@@ -329,6 +329,7 @@ it, or its ancestors, has a `dir="rtl"` attribute.
 The block class is `mdc-toolbar`. This defines the top-level toolbar element.
 
 ### Element
+
 The component accommodates multiple rows using the wrapper `mdc-toolbar__row`.
 For each row, it has `mdc-toolbar__section` and `mdc-toolbar__title` elements. You
 can add multiple sections to toolbar. Refer to Sections and Toolbar title for
@@ -361,7 +362,7 @@ Mixin | Description
 
 ### Including in code
 
-#### ES2015
+#### ES Module syntax
 
 ```javascript
 import {MDCToolbar, MDCToolbarFoundation} from '@material/toolbar';
@@ -414,13 +415,13 @@ const toolbar = new MDCToolbar(document.querySelector('.mdc-toolbar'));
 
 Method Signature | Description
 --- | ---
-`updateAdjustElementStyles() => void` | sets `AdjustElement` proper `margin-top`.
+`updateAdjustElementStyles() => void` | Sets `AdjustElement` proper `margin-top`.
 
 #### Event
 
 Event Name | Event Data Structure | Description
 --- | --- | ---
-`change` | `{flexibleExpansionRatio: number}` | Emits the ratio of current flexible space to total flexible space height. So when it is minimized, ratio equals to 0 and when it is maximized, ratio equals to 1.
+`change` | `MDCToolbarEventDetail` | Emits the ratio of current flexible space to total flexible space height. So when it is minimized, ratio equals to 0 and when it is maximized, ratio equals to 1. See [types.ts](types.ts).
 
 #### Adapter
 
@@ -429,15 +430,15 @@ Method Signature | Description
 `hasClass(className: string) => boolean` | Checks if the root element of the component has the given className.
 `addClass(className: string) => void` | Adds a class to the root element of the component.
 `removeClass(className: string) => void` | Removes a class from the root element of the component.
-`registerScrollHandler(handler: Function) => void` | Registers a handler to be called when user scrolls. Our default implementation adds the handler as a listener to the window's `scroll` event.
-`deregisterScrollHandler(handler: Function) => void` | Unregisters a handler to be called when user scrolls. Our default implementation removes the handler as a listener to the window's `scroll` event.
-`registerResizeHandler(handler: Function) => void` | Registers a handler to be called when the surface (or its viewport) resizes. Our default implementation adds the handler as a listener to the window's `resize` event.
-`deregisterResizeHandler(handler: Function) => void` | Unregisters a handler to be called when the surface (or its viewport) resizes. Our default implementation removes the handler as a listener to the window's `resize` event.
+`registerScrollHandler(handler: EventListener) => void` | Registers a handler to be called when user scrolls. Our default implementation adds the handler as a listener to the window's `scroll` event.
+`deregisterScrollHandler(handler: EventListener) => void` | Unregisters a handler to be called when user scrolls. Our default implementation removes the handler as a listener to the window's `scroll` event.
+`registerResizeHandler(handler: EventListener) => void` | Registers a handler to be called when the surface (or its viewport) resizes. Our default implementation adds the handler as a listener to the window's `resize` event.
+`deregisterResizeHandler(handler: EventListener) => void` | Unregisters a handler to be called when the surface (or its viewport) resizes. Our default implementation removes the handler as a listener to the window's `resize` event.
 `getViewportWidth() => number` | Gets viewport (window) width.
 `getViewportScrollY() => number` | Gets the number of pixels that the content of body is scrolled upward
 `getOffsetHeight() => number` | Gets root element `mdc-toolbar` offsetHeight.
 `getFirstRowElementOffsetHeight() => number` | Gets first row element offsetHeight.
-`notifyChange(evtData: {flexibleExpansionRatio: number}) => void` | Broadcasts an event with the remaining ratio of flexible space.
+`notifyChange(evtData: MDCToolbarEventDetail) => void` | Broadcasts an event with the remaining ratio of flexible space. See [types.ts](types.ts).
 `setStyle(property: string, value: number) => void` | Sets `mdc-toolbar` style property to provided value.
 `setStyleForTitleElement(property: string, value: number) => void` | Sets `mdc-toolbar__title` style property to provided value.
 `setStyleForFlexibleRowElement(property: string, value: number) => void` | Sets flexible row element style property to provided value.

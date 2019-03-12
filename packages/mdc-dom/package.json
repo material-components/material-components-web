@@ -1,14 +1,20 @@
 {
   "name": "@material/dom",
   "description": "DOM manipulation utilities for Material Components for the web",
-  "version": "0.41.0",
+  "version": "1.0.1",
   "license": "MIT",
   "main": "dist/mdc.dom.js",
+  "module": "index.js",
+  "sideEffects": false,
+  "types": "dist/mdc.dom.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/material-components/material-components-web.git"
   },
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "tslib": "^1.9.3"
   }
 }

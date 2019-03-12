@@ -49,7 +49,7 @@ test('#announce temporarily disables ARIA attributes and then restores them', ()
 
   util.announce(ariaEl, labelEl);
 
-  // Trim to remove `&nbsp;` (see comment in util.js)
+  // Trim to remove `&nbsp;` (see comment in util.ts)
   assert.equal(labelEl.textContent.trim(), '');
   assert.equal(ariaEl.getAttribute('aria-live'), 'off');
 
@@ -97,7 +97,7 @@ test('#announce second argument is optional', () => {
 
   util.announce(ariaEl);
 
-  // Trim to remove `&nbsp;` (see comment in util.js)
+  // Trim to remove `&nbsp;` (see comment in util.ts)
   assert.equal(ariaEl.textContent.trim(), '');
   assert.equal(ariaEl.getAttribute(ARIA_LIVE_LABEL_TEXT_ATTR), labelText);
   assert.equal(ariaEl.getAttribute('aria-live'), 'off');
@@ -105,7 +105,7 @@ test('#announce second argument is optional', () => {
   clock.tick(ARIA_LIVE_DELAY_MS);
 
   assert.equal(ariaEl.textContent, labelText);
-  assert.equal(ariaEl.getAttribute(ARIA_LIVE_LABEL_TEXT_ATTR), null);
+  assert.isNull(ariaEl.getAttribute(ARIA_LIVE_LABEL_TEXT_ATTR));
   assert.equal(ariaEl.getAttribute('aria-live'), 'polite');
 });
 
@@ -123,6 +123,25 @@ test('#announce does nothing if textContent is empty', () => {
   util.announce(ariaEl, labelEl);
 
   assert.equal(labelEl.textContent.trim(), '');
-  assert.equal(labelEl.getAttribute(ARIA_LIVE_LABEL_TEXT_ATTR), null);
+  assert.isNull(labelEl.getAttribute(ARIA_LIVE_LABEL_TEXT_ATTR));
   assert.equal(ariaEl.getAttribute('aria-live'), 'polite');
+});
+
+test('#announce does nothing if aria-live was not present', () => {
+  const fixture = bel`
+<div>
+  <div class="aria label" role="status">Foo</div>
+</div>`;
+  const clock = installClock();
+  const ariaEl = fixture.querySelector('.aria');
+
+  util.announce(ariaEl);
+
+  assert.isNull(ariaEl.getAttribute('aria-live'));
+  assert.isNull(ariaEl.getAttribute(ARIA_LIVE_LABEL_TEXT_ATTR));
+
+  clock.tick(ARIA_LIVE_DELAY_MS);
+
+  assert.isNull(ariaEl.getAttribute('aria-live'));
+  assert.isNull(ariaEl.getAttribute(ARIA_LIVE_LABEL_TEXT_ATTR));
 });

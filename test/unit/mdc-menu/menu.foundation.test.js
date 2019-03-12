@@ -27,7 +27,7 @@ import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
 import {install as installClock} from '../helpers/clock';
 import {MDCMenuFoundation} from '../../../packages/mdc-menu/foundation';
-import MDCListFoundation from '../../../packages/mdc-list/foundation';
+import {MDCListFoundation} from '../../../packages/mdc-list/foundation';
 import {cssClasses, strings} from '../../../packages/mdc-menu/constants';
 import {numbers} from '../../../packages/mdc-menu-surface/constants';
 

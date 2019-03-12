@@ -34,6 +34,13 @@
 //
 
 @mixin mdc-list-core-styles($query: mdc-feature-all()) {
+  @include mdc-list-without-ripple($query);
+  @include mdc-list-ripple($query);
+}
+
+// This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
+// list styles. It is recommended that most users use `mdc-list-core-styles` instead.
+@mixin mdc-list-without-ripple($query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
   $feat-typography: mdc-feature-create-target($query, typography);
@@ -46,8 +53,6 @@
     $mdc-list-divider-color-on-dark-bg,
     $mdc-list-divider-color-on-light-bg
   );
-
-  @include mdc-ripple-common($query);
 
   .mdc-list {
     @include mdc-list-base_($query);
@@ -213,13 +218,6 @@
     }
   }
 
-  // List items should support states by default, but it should be possible to opt out.
-  // Direct child combinator is necessary for non-interactive modifier on parent to not
-  // match this selector.
-  :not(.mdc-list--non-interactive) > :not(.mdc-list-item--disabled).mdc-list-item {
-    @include mdc-list-item-interactive-ripple_($query);
-  }
-
   // Override anchor tag styles for the use-case of a list being used for navigation
   // stylelint-disable selector-max-type,selector-no-qualifying-type
   a.mdc-list-item {
@@ -284,6 +282,19 @@
     @include mdc-feature-targets($feat-structure) {
       margin: $mdc-list-subheader-margin $mdc-list-side-padding;
     }
+  }
+}
+
+// This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
+// list styles. It is recommended that most users use `mdc-list-core-styles` instead.
+@mixin mdc-list-ripple($query: mdc-feature-all()) {
+  @include mdc-ripple-common($query);
+
+  // List items should support states by default, but it should be possible to opt out.
+  // Direct child combinator is necessary for non-interactive modifier on parent to not
+  // match this selector.
+  :not(.mdc-list--non-interactive) > :not(.mdc-list-item--disabled).mdc-list-item {
+    @include mdc-list-item-interactive-ripple_($query);
   }
 }
 

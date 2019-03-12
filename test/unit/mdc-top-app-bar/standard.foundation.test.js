@@ -24,7 +24,7 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
-import MDCTopAppBarFoundation from '../../../packages/mdc-top-app-bar/standard/foundation';
+import {MDCTopAppBarFoundation} from '../../../packages/mdc-top-app-bar/standard/foundation';
 import {numbers} from '../../../packages/mdc-top-app-bar/constants';
 import {install as installClock} from '../helpers/clock';
 

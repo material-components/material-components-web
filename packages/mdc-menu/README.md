@@ -204,13 +204,13 @@ Property | Value Type | Description
 Method Signature | Description
 --- | ---
 `setAnchorCorner(Corner) => void` | Proxies to the menu surface's `setAnchorCorner(Corner)` method.
-`setAnchorMargin(AnchorMargin) => void` | Proxies to the menu surface's `setAnchorMargin(AnchorMargin)` method.
+`setAnchorMargin(Partial<MDCMenuDistance>) => void` | Proxies to the menu surface's `setAnchorMargin(Partial<MDCMenuDistance>)` method.
 `setAbsolutePosition(x: number, y: number) => void` | Proxies to the menu surface's `setAbsolutePosition(x: number, y: number)` method.
 `setFixedPosition(isFixed: boolean) => void` | Proxies to the menu surface's `setFixedPosition(isFixed: boolean)` method.
 `hoistMenuToBody() => void` | Proxies to the menu surface's `hoistMenuToBody()` method.
 `setIsHoisted(isHoisted: boolean) => void` | Proxies to the menu surface's `setIsHoisted(isHoisted: boolean)` method.
-`setAnchorElement(element: HTMLElement) => void` | Proxies to the menu surface's `setAnchorElement(element)` method.
-`getOptionByIndex(index: number) => ?HTMLElement` | Returns the list item at the `index` specified.
+`setAnchorElement(element: Element) => void` | Proxies to the menu surface's `setAnchorElement(element)` method.
+`getOptionByIndex(index: number) => Element \| null` | Returns the list item at the `index` specified.
 `getDefaultFoundation() => MDCMenuFoundation` | Returns the foundation.
 
 > See [Menu Surface](../mdc-menu-surface/README.md) and [List](../mdc-list/README.md) documentation for more information on proxied methods and properties.
@@ -227,11 +227,11 @@ Method Signature | Description
 `removeClassFromElementAtIndex(index: number, className: string) => void` | Removes the `className` class from the element at the `index` specified.
 `addAttributeToElementAtIndex(index: number, attr: string, value: string) => void` | Adds the `attr` attribute with value `value` to the element at the `index` specified.
 `removeAttributeFromElementAtIndex(index: number, attr: string) => void` | Removes the `attr` attribute from the element at the `index` specified.
-`elementContainsClass(element: HTMLElement, className: string) => boolean` | Returns true if the `element` contains the `className` class.
+`elementContainsClass(element: Element, className: string) => boolean` | Returns true if the `element` contains the `className` class.
 `closeSurface() => void` | Closes the menu surface.
-`getElementIndex(element: HTMLElement) => number` | Returns the `index` value of the `element`.
-`getParentElement(element: HTMLElement) => ?HTMLElement` | Returns the `.parentElement` element of the `element` provided.
-`getSelectedElementIndex(element: HTMLElement) => number` | Returns the `index` value of the element within the selection group provided, `element` that contains the `mdc-menu-item--selected` class.
+`getElementIndex(element: Element) => number` | Returns the `index` value of the `element`.
+`getParentElement(element: Element) => Element \| null` | Returns the `.parentElement` element of the `element` provided.
+`getSelectedElementIndex(element: Element) => number` | Returns the `index` value of the element within the selection group provided, `element` that contains the `mdc-menu-item--selected` class.
 `notifySelected(index: number) => void` | Emits a `MDCMenu:selected` event for the element at the `index` specified.
 
 ### `MDCMenuFoundation`
@@ -239,10 +239,10 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `handleKeydown(evt: Event) => void` | Event handler for the `keydown` events within the menu.
-`handleItemAction(listItem: !HTMLElement) => void` | Event handler for list's action event.
+`handleItemAction(listItem: Element) => void` | Event handler for list's action event.
 
 ### Events
 
 Event Name | Data | Description
 --- | --- | ---
-`MDCMenu:selected` | `{detail: {item: HTMLElement, index: number}}` | Used to indicate when an element has been selected. This event also includes the item selected and the list index of that item.
+`MDCMenu:selected` | `{detail: {item: Element, index: number}}` | Used to indicate when an element has been selected. This event also includes the item selected and the list index of that item.

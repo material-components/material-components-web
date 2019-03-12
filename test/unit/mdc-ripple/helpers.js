@@ -25,7 +25,7 @@ import td from 'testdouble';
 
 import {setupFoundationTest} from '../helpers/setup';
 import {install as installClock} from '../helpers/clock';
-import MDCRippleFoundation from '../../../packages/mdc-ripple/foundation';
+import {MDCRippleFoundation} from '../../../packages/mdc-ripple/foundation';
 
 export function setupTest(isCssVarsSupported = true) {
   const {foundation, mockAdapter} = setupFoundationTest(MDCRippleFoundation);

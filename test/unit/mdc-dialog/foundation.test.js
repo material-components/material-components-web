@@ -29,7 +29,7 @@ import {verifyDefaultAdapter} from '../helpers/foundation';
 
 import {cssClasses, strings, numbers} from '../../../packages/mdc-dialog/constants';
 import {install as installClock} from '../helpers/clock';
-import MDCDialogFoundation from '../../../packages/mdc-dialog/foundation';
+import {MDCDialogFoundation} from '../../../packages/mdc-dialog/foundation';
 
 const ENTER_EVENTS = [
   {type: 'keydown', key: 'Enter', target: {}},

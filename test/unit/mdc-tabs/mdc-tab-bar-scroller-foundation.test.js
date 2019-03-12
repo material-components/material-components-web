@@ -28,7 +28,7 @@ import {setupFoundationTest} from '../helpers/setup';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {install as installClock} from '../helpers/clock';
 
-import MDCTabBarScrollerFoundation from '../../../packages/mdc-tabs/tab-bar-scroller/foundation';
+import {MDCTabBarScrollerFoundation} from '../../../packages/mdc-tabs/tab-bar-scroller/foundation';
 
 suite('MDCTabBarScrollerFoundation');
 

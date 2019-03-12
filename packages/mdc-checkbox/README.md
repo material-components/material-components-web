@@ -143,10 +143,10 @@ This means you will need to override this style manually for Edge if you alter t
 
 Property Name | Type | Description
 --- | --- | ---
-`checked` | Boolean | Setter/getter for the checkbox's checked state
-`indeterminate` | Boolean | Setter/getter for the checkbox's indeterminate state
-`disabled` | Boolean | Setter/getter for the checkbox's disabled state
-`value` | String | Setter/getter for the checkbox's
+`checked` | `boolean` | Setter/getter for the checkbox's checked state
+`indeterminate` | `boolean` | Setter/getter for the checkbox's indeterminate state
+`disabled` | `boolean` | Setter/getter for the checkbox's disabled state
+`value` | `string` | Setter/getter for the checkbox's
 
 ## Usage within Web Frameworks
 
@@ -154,17 +154,18 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 
 ### `MDCCheckboxAdapter`
 
-| Method Signature | Description |
-| --- | --- |
-| `addClass(className: string) => void` | Adds a class to the root element. |
-| `removeClass(className: string) => void` | Removes a class from the root element. |
-| `getNativeControl() => HTMLInputElement?` | Returns the native checkbox control, if available. Note that if this control is not available, the methods that rely on it will exit gracefully.|
-| `forceLayout() => void` | Force-trigger a layout on the root element. This is needed to restart animations correctly. If you find that you do not need to do this, you can simply make it a no-op. |
-| `isAttachedToDOM() => boolean` | Returns true if the component is currently attached to the DOM, false otherwise. |
-| `isIndeterminate() => boolean` | Returns true if the component is in the indeterminate state. |
-| `isChecked() => boolean` | Returns true if the component is checked. |
-| `hasNativeControl() => boolean` | Returns true if the input is present in the component. |
-| `setNativeControlDisabled(disabled: boolean) => void` | Sets the input to disabled. |
+Method Signature | Description
+--- | ---
+`addClass(className: string) => void` | Adds a class to the root element.
+`removeClass(className: string) => void` | Removes a class from the root element.
+`forceLayout() => void` | Force-trigger a layout on the root element. This is needed to restart animations correctly. If you find that you do not need to do this, you can simply make it a no-op.
+`isAttachedToDOM() => boolean` | Returns true if the component is currently attached to the DOM, false otherwise.
+`isIndeterminate() => boolean` | Returns true if the component is in the indeterminate state.
+`isChecked() => boolean` | Returns true if the component is checked.
+`hasNativeControl() => boolean` | Returns true if the input is present in the component.
+`setNativeControlDisabled(disabled: boolean) => void` | Sets the input to disabled.
+`setNativeControlAttr(attr: string, value: string) => void` | Sets an HTML attribute to the given value on the native input element.
+`removeNativeControlAttr(attr: string) => void` | Removes an attribute from the native input element.
 
 ### `MDCCheckboxFoundation`
 

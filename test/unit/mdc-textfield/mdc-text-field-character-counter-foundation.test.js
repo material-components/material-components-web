@@ -26,7 +26,7 @@ import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
-import MDCTextFieldCharacterCounterFoundation from '../../../packages/mdc-textfield/character-counter/foundation';
+import {MDCTextFieldCharacterCounterFoundation} from '../../../packages/mdc-textfield/character-counter/foundation';
 
 suite('MDCTextFieldCharacterCounterFoundation');
 
@@ -45,6 +45,10 @@ test('defaultAdapter returns a complete adapter implementation', () => {
 });
 
 const setupTest = () => setupFoundationTest(MDCTextFieldCharacterCounterFoundation);
+
+test('istanbul code coverage', () => {
+  assert.doesNotThrow(() => new MDCTextFieldCharacterCounterFoundation());
+});
 
 test('#setContent sets the content of the character counter element', () => {
   const {foundation, mockAdapter} = setupTest();

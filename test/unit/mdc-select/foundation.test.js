@@ -26,7 +26,7 @@ import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 
-import MDCSelectFoundation from '../../../packages/mdc-select/foundation';
+import {MDCSelectFoundation} from '../../../packages/mdc-select/foundation';
 import {cssClasses, strings, numbers} from '../../../packages/mdc-select/constants';
 
 const LABEL_WIDTH = 100;

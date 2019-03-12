@@ -25,7 +25,7 @@ import {assert} from 'chai';
 import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
-import MDCChipSetFoundation from '../../../packages/mdc-chips/chip-set/foundation';
+import {MDCChipSetFoundation} from '../../../packages/mdc-chips/chip-set/foundation';
 
 const {cssClasses} = MDCChipSetFoundation;
 
