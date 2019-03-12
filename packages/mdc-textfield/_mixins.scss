@@ -330,6 +330,7 @@
 
 @mixin mdc-text-field-hover-outline-color_($color) {
   &:not(.mdc-text-field--focused) {
+    // stylelint-disable-next-line selector-combinator-space-after
     .mdc-text-field__input:hover ~,
     .mdc-text-field__icon:hover ~ {
       .mdc-notched-outline {
@@ -438,6 +439,7 @@
 // Textarea
 @mixin mdc-text-field-textarea-disabled_ {
   @include mdc-text-field-outlined-disabled_;
+  /* @alternate */
   @include mdc-text-field-textarea-fill-color_($mdc-textarea-disabled-background);
 }
 

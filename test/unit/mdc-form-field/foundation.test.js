@@ -24,7 +24,7 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
-import MDCFormFieldFoundation from '../../../packages/mdc-form-field/foundation';
+import {MDCFormFieldFoundation} from '../../../packages/mdc-form-field/foundation';
 import {cssClasses, strings} from '../../../packages/mdc-form-field/constants';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 

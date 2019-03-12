@@ -83,9 +83,10 @@ Method Signature | Description
 --- | ---
 `addClass(className: string) => void` | Adds a class to the root element.
 `removeClass(className: string) => void` | Removes a class from the root element.
+`hasClass(className: string) => boolean` | Determines whether the root element has the given CSS class name.
 `setStyle(propertyName: string, value: string) => void` | Sets the style property with `propertyName` to `value` on the root element.
-`registerEventHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the root element for a given event.
-`deregisterEventHandler(handler: EventListener) => void` | Deregisters an event listener on the root element for a given event.
+`registerEventHandler(evtType: EventType, handler: EventListener) => void` | Registers an event listener on the root element for a given event.
+`deregisterEventHandler(evtType: EventType, handler: EventListener) => void` | Deregisters an event listener on the root element for a given event.
 
 ### `MDCLineRippleFoundation`
 

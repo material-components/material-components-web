@@ -227,13 +227,14 @@ Usually, you'll want to use `MDCRipple` _along_ with the component for the actua
 ripple to. `MDCRipple` has a static `createAdapter(instance)` method that can be used to instantiate a ripple within
 any `MDCComponent` that requires custom adapter functionality.
 
-```js
+```ts
 class MyMDCComponent extends MDCComponent {
   constructor() {
     super(...arguments);
-    const foundation = new MDCRippleFoundation(Object.assign(MDCRipple.createAdapter(this), {
+    const foundation = new MDCRippleFoundation({
+      ...MDCRipple.createAdapter(this),
       isSurfaceActive: () => this.isActive_, /* Custom functionality */
-    }));
+    });
     this.ripple = new MDCRipple(this.root, foundation);
   }
 }
@@ -247,7 +248,7 @@ Different keyboard events activate different elements. For example, the space ke
 
 To make your component work properly with keyboard events, you'll have to listen for both `keydown` and `keyup` events to set some state that determines whether or not the surface is "active".
 
-```js
+```ts
 class MyComponent {
   constructor(element) {
     this.root = element;
@@ -262,11 +263,11 @@ class MyComponent {
         this.active = false;
       }
     });
-
-    const foundation = new MDCRippleFoundation(Object.assign(MDCRipple.createAdapter(this), {
+    const foundation = new MDCRippleFoundation(
+      ...MDCRipple.createAdapter(this),
       // ...
       isSurfaceActive: () => this.active
-    }));
+    });
     this.ripple = new MDCRipple(this.root, foundation);
   }
 }

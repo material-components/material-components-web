@@ -28,7 +28,7 @@ import {setupFoundationTest} from '../helpers/setup';
 import {verifyDefaultAdapter, captureHandlers} from '../helpers/foundation';
 import {install as installClock} from '../helpers/clock';
 
-import MDCTabBarFoundation from '../../../packages/mdc-tabs/tab-bar/foundation';
+import {MDCTabBarFoundation} from '../../../packages/mdc-tabs/tab-bar/foundation';
 
 suite('MDCTabBarFoundation');
 
@@ -113,6 +113,7 @@ test('#destroy deregisters tab event handlers', () => {
   const {foundation, mockAdapter} = setupTest();
   const {isA} = td.matchers;
 
+  foundation.init();
   foundation.destroy();
   td.verify(mockAdapter.unbindOnMDCTabSelectedEvent());
   td.verify(mockAdapter.deregisterResizeHandler(isA(Function)));

@@ -25,7 +25,7 @@ import {assert} from 'chai';
 import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
-import MDCRippleFoundation from '../../../packages/mdc-ripple/foundation';
+import {MDCRippleFoundation} from '../../../packages/mdc-ripple/foundation';
 import {cssClasses, strings, numbers} from '../../../packages/mdc-ripple/constants';
 
 import {testFoundation} from './helpers';
@@ -246,7 +246,7 @@ testFoundation(`#layout sets ${strings.VAR_FG_SCALE} based on the difference bet
   const initialSize = maxSize * numbers.INITIAL_ORIGIN_SCALE;
   const surfaceDiameter = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
   const maxRadius = surfaceDiameter + numbers.PADDING;
-  const fgScale = maxRadius / initialSize;
+  const fgScale = `${maxRadius / initialSize}`;
 
   td.verify(adapter.updateCssVariable(strings.VAR_FG_SCALE, fgScale));
 });

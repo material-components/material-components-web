@@ -24,7 +24,7 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
-import MDCSwitchFoundation from '../../../packages/mdc-switch/foundation';
+import {MDCSwitchFoundation} from '../../../packages/mdc-switch/foundation';
 
 suite('MDCSwitchFoundation');
 

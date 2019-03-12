@@ -27,10 +27,10 @@ import td from 'testdouble';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {install as installClock} from '../helpers/clock';
 import {setupFoundationTest} from '../helpers/setup';
-import MDCTabScrollerFoundation from '../../../packages/mdc-tab-scroller/foundation';
-import MDCTabScrollerRTLDefault from '../../../packages/mdc-tab-scroller/rtl-default-scroller';
-import MDCTabScrollerRTLNegative from '../../../packages/mdc-tab-scroller/rtl-negative-scroller';
-import MDCTabScrollerRTLReverse from '../../../packages/mdc-tab-scroller/rtl-reverse-scroller';
+import {MDCTabScrollerFoundation} from '../../../packages/mdc-tab-scroller/foundation';
+import {MDCTabScrollerRTLDefault} from '../../../packages/mdc-tab-scroller/rtl-default-scroller';
+import {MDCTabScrollerRTLNegative} from '../../../packages/mdc-tab-scroller/rtl-negative-scroller';
+import {MDCTabScrollerRTLReverse} from '../../../packages/mdc-tab-scroller/rtl-reverse-scroller';
 
 suite('MDCTabScrollerFoundation');
 

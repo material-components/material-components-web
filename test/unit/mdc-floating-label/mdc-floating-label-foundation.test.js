@@ -26,7 +26,7 @@ import td from 'testdouble';
 
 import {captureHandlers, verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
-import MDCFloatingLabelFoundation from '../../../packages/mdc-floating-label/foundation';
+import {MDCFloatingLabelFoundation} from '../../../packages/mdc-floating-label/foundation';
 
 const {cssClasses} = MDCFloatingLabelFoundation;
 

@@ -186,8 +186,8 @@ Event Name | `event.detail` | Description
 --- | --- | ---
 `MDCSnackbar:opening` | `{}` | Indicates when the snackbar begins its opening animation.
 `MDCSnackbar:opened` | `{}` | Indicates when the snackbar finishes its opening animation.
-`MDCSnackbar:closing` | `{reason: ?string}` | Indicates when the snackbar begins its closing animation. `reason` contains the reason why the snackbar closed (`dismiss` or `action`).
-`MDCSnackbar:closed` | `{reason: ?string}` | Indicates when the snackbar finishes its closing animation. `reason` contains the reason why the snackbar closed (`dismiss` or `action`).
+`MDCSnackbar:closing` | `{reason?: string}` | Indicates when the snackbar begins its closing animation. `reason` contains the reason why the snackbar closed (`'dismiss'`, `'action'`, or `undefined`).
+`MDCSnackbar:closed` | `{reason?: string}` | Indicates when the snackbar finishes its closing animation. `reason` contains the reason why the snackbar closed (`'dismiss'`, `'action'`, or `undefined`).
 
 ### Usage Within Frameworks
 
@@ -202,8 +202,8 @@ Method Signature | Description
 `announce() => void` | Announces the snackbar's label text to screen reader users.
 `notifyOpening() => void` | Broadcasts an event denoting that the snackbar has just started opening.
 `notifyOpened() => void` | Broadcasts an event denoting that the snackbar has finished opening.
-`notifyClosing(reason: string) {}` | Broadcasts an event denoting that the snackbar has just started closing. If a non-empty `reason` is passed, the event's `detail` object should include its value in the `reason` property.
-`notifyClosed(reason: string) {}` | Broadcasts an event denoting that the snackbar has finished closing. If a non-empty `reason` is passed, the event's `detail` object should include its value in the `reason` property.
+`notifyClosing(reason: string) => void` | Broadcasts an event denoting that the snackbar has just started closing. If a non-empty `reason` is passed, the event's `detail` object should include its value in the `reason` property.
+`notifyClosed(reason: string) => void` | Broadcasts an event denoting that the snackbar has finished closing. If a non-empty `reason` is passed, the event's `detail` object should include its value in the `reason` property.
 
 #### `MDCSnackbarFoundation` Methods
 
@@ -216,9 +216,9 @@ Method Signature | Description
 `setTimeoutMs(timeoutMs: number)` | Sets the automatic dismiss timeout in milliseconds. Value must be between `4000` and `10000` or an error will be thrown.
 `getCloseOnEscape() => boolean` | Returns whether the snackbar closes when it is focused and the user presses the <kbd>ESC</kbd> key.
 `setCloseOnEscape(closeOnEscape: boolean) => void` | Sets whether the snackbar closes when it is focused and the user presses the <kbd>ESC</kbd> key.
-`handleKeyDown(event: !KeyEvent)` | Handles `keydown` events on or within the snackbar's root element.
-`handleActionButtonClick(event: !MouseEvent)` | Handles `click` events on or within the action button.
-`handleActionIconClick(event: !MouseEvent)` | Handles `click` events on or within the dismiss icon.
+`handleKeyDown(event: KeyEvent)` | Handles `keydown` events on or within the snackbar's root element.
+`handleActionButtonClick(event: MouseEvent)` | Handles `click` events on or within the action button.
+`handleActionIconClick(event: MouseEvent)` | Handles `click` events on or within the dismiss icon.
 
 #### Event Handlers
 
@@ -236,7 +236,7 @@ External frameworks and libraries can use the following utility methods from the
 
 Method Signature | Description
 --- | ---
-`announce(ariaEl: !HTMLElement, labelEl: !HTMLElement=) => void` | Announces the label text to screen reader users.
+`announce(ariaEl: Element, labelEl?: Element) => void` | Announces the label text to screen reader users.
 
 > Alternatively, frameworks can use [Closure Library's `goog.a11y.aria.Announcer#say()` method](https://github.com/google/closure-library/blob/bee9ced776b4700e8076a3466bd9d3f9ade2fb54/closure/goog/a11y/aria/announcer.js#L80).
 
