@@ -1,0 +1,18 @@
+{
+  "extends": [
+    "tslint:recommended",
+    "gts/tslint.json"
+  ],
+  "rules": {
+    "ban-ts-ignore": true,
+    "curly": true,
+    "eofline": true,
+    "quotemark": [true, "single", "avoid-escape"]
+  },
+  "linterOptions": {
+    "exclude": [
+      "node_modules/**/*.{j,t}s",
+      "**/node_modules/**/*.{j,t}s"
+    ]
+  }
+}

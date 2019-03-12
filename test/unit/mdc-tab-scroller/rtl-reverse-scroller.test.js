@@ -25,8 +25,8 @@ import {assert} from 'chai';
 import td from 'testdouble';
 
 import {setupFoundationTest} from '../helpers/setup';
-import MDCTabScrollerFoundation from '../../../packages/mdc-tab-scroller/foundation';
-import MDCTabScrollerRTLReverse from '../../../packages/mdc-tab-scroller/rtl-reverse-scroller';
+import {MDCTabScrollerFoundation} from '../../../packages/mdc-tab-scroller/foundation';
+import {MDCTabScrollerRTLReverse} from '../../../packages/mdc-tab-scroller/rtl-reverse-scroller';
 
 suite('MDCTabScrollerRTLReverse');
 

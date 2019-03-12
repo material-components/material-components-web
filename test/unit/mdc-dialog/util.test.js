@@ -24,21 +24,11 @@
 import bel from 'bel';
 import td from 'testdouble';
 import {assert} from 'chai';
-
 import * as util from '../../../packages/mdc-dialog/util';
 
 suite('MDCDialog - util');
 
-// Babel transpiles optional function arguments into `if` statements. Istanbul (our code coverage tool) then reports the
-// transpiled `else` branch as lacking coverage, but the coverage report UI doesn't tell you where the missing branches
-// are. See https://github.com/gotwarlost/istanbul/issues/582#issuecomment-334683612.
-// createFocusTrapInstance() has two optional arguments, so code coverage reports two missed branches.
-test('createFocusTrapInstance covers `if` branches added by Babel transpilation of optional arguments', () => {
-  const surface = bel`<div></div>`;
-  util.createFocusTrapInstance(surface);
-});
-
-test('createFocusTrapInstance creates a properly configured focus trap instance', () => {
+test('createFocusTrapInstance creates a properly configured focus trap instance with all args specified', () => {
   const surface = bel`<div></div>`;
   const yesBtn = bel`<button></button>`;
   const focusTrapFactory = td.func('focusTrapFactory');
@@ -51,6 +41,16 @@ test('createFocusTrapInstance creates a properly configured focus trap instance'
 
   const instance = util.createFocusTrapInstance(surface, focusTrapFactory, yesBtn);
   assert.equal(instance, properlyConfiguredFocusTrapInstance);
+});
+
+test('createFocusTrapInstance creates a properly configured focus trap instance with optional args omitted', () => {
+  const surface = bel`<div></div>`;
+  const instance = util.createFocusTrapInstance(surface);
+  assert.sameMembers(Object.keys(instance), ['activate', 'deactivate', 'pause', 'unpause']);
+});
+
+test('isScrollable returns false when element is null', () => {
+  assert.isFalse(util.isScrollable(null));
 });
 
 test('isScrollable returns false when element has no content', () => {

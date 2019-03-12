@@ -78,22 +78,17 @@ print_all_changed_files
 
 if [[ "$TEST_SUITE" == 'unit' ]]; then
   # Only run unit tests if JS files changed
-  check_for_testable_files '^karma\.conf\.js$' '^packages/.+\.js$' '^test/unit/.+\.js$'
+  check_for_testable_files '^karma\.conf\.js$' '^packages/.+\.(js|ts)$' '^test/unit/.+\.(js|ts)$'
 fi
 
 if [[ "$TEST_SUITE" == 'lint' ]]; then
   # Only run linter if JS/Sass files changed
-  check_for_testable_files '\.(js|css|scss)$'
+  check_for_testable_files '\.(js|ts|css|scss)$'
 fi
 
 if [[ "$TEST_SUITE" == 'build' ]]; then
   # Only run build if package JS/Sass files changed
-  check_for_testable_files '^packages/.+\.(js|css|scss)$'
-fi
-
-if [[ "$TEST_SUITE" == 'closure' ]]; then
-  # Only run closure test if package JS files changed
-  check_for_testable_files '^packages/.+\.js$'
+  check_for_testable_files '^packages/.+\.(js|ts|css|scss)$'
 fi
 
 if [[ "$TEST_SUITE" == 'site-generator' ]]; then
@@ -103,5 +98,5 @@ fi
 
 if [[ "$TEST_SUITE" == 'screenshot' ]]; then
   # Only run screenshot tests if package JS/Sass files, screenshot test files, or image files changed.
-  check_for_testable_files '^packages/.+\.(js|css|scss)$' '^test/screenshot/' '\.(png|jpg|jpeg|gif|svg)$'
+  check_for_testable_files '^packages/.+\.(js|ts|css|scss)$' '^test/screenshot/' '\.(png|jpg|jpeg|gif|svg)$'
 fi

@@ -20,11 +20,12 @@ within the two-week cycle, and would rev the version number accordingly based on
 
 In summary, MDC Web has the following types of releases:
 
-* **Minor release:** A release with new features and/or breaking changes; this revs the minor version number (e.g. 0.36.0)
-* **Patch release:** A release consisting primarily of bugfixes, with no features or breaking changes; this revs the patch version number (e.g. 0.36.1)
-* **Pre-release:** A preview release containing breaking changes, cut before the next scheduled minor release (e.g. 0.37.0-pre.0)
+* **Major release:** A release with new features and breaking changes; this revs the major version number (e.g. 2.0.0)
+* **Minor release:** A release with new features but NO breaking changes; this revs the minor version number (e.g. 1.1.0)
+* **Patch release:** A release consisting primarily of bugfixes, with no features or breaking changes; this revs the patch version number (e.g. 1.0.1)
+* **Pre-release:** A preview release containing breaking changes, cut before the next scheduled major release (e.g. 2.0.0-0)
 
-See [Release Process](./release-process.md) for steps to perform for each type of release.
+See [Release Process](./release-process.md) for steps to perform for different types of releases.
 
 ### About Pre-releases
 
@@ -34,8 +35,9 @@ mind - we will cut pre-releases of MDC Web when breaking changes are merged whic
 repositories. These will be cut on an as-needed basis, with no set schedule.
 
 The Catalog repository (and possibly also MDC React, eventually) will each have a `next` branch, which will be updated
-to point to the pre-release. Pull requests should be filed against this branch for changes needed for the upcoming
-MDC Web release.
+to point to the pre-release (or tested against unreleased code using
+[this script](https://gist.github.com/kfranqueiro/d06c7073c5012de3edb6c5875d6a4a50)).
+Pull requests should be filed against this branch for changes needed for the upcoming MDC Web release.
 
 After the next minor release is cut and the `next` branch is squashed and merged into `master`, we will hard-reset the
 `next` branch against `master` and force-push it to accommodate the subsequent minor release.

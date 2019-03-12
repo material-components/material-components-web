@@ -168,26 +168,6 @@ test('adapter#setAttributeForElementIndex sets the attribute for the list elemen
   document.body.removeChild(root);
 });
 
-test('adapter#removeAttributeForElementIndex does nothing if the element at index does not exist', () => {
-  const {root, component} = setupTest();
-  document.body.appendChild(root);
-  const func = () => {
-    component.getDefaultFoundation().adapter_.removeAttributeForElementIndex(5, 'foo');
-  };
-  assert.doesNotThrow(func);
-  document.body.removeChild(root);
-});
-
-test('adapter#removeAttributeForElementIndex sets the attribute for the list element at index specified', () => {
-  const {root, component} = setupTest();
-  document.body.appendChild(root);
-  const selectedNode = root.querySelectorAll('.mdc-list-item')[1];
-  component.getDefaultFoundation().adapter_.setAttributeForElementIndex(1, 'foo', 'bar');
-  component.getDefaultFoundation().adapter_.removeAttributeForElementIndex(1, 'foo');
-  assert.isFalse(selectedNode.hasAttribute('foo'));
-  document.body.removeChild(root);
-});
-
 test('adapter#addClassForElementIndex does nothing if the element at index does not exist', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);

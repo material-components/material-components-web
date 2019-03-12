@@ -24,7 +24,7 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
-import {getCorrectEventName} from '../../../packages/mdc-animation/index';
+import {getCorrectEventName} from '../../../packages/mdc-animation/index.ts';
 
 import {cssClasses} from '../../../packages/mdc-slider/constants';
 import {TRANSFORM_PROP, setupEventTest as setupTest} from './helpers';

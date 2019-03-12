@@ -31,7 +31,6 @@ import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 import {MDCCheckbox, MDCCheckboxFoundation} from '../../../packages/mdc-checkbox/index';
 import {MDCRipple} from '../../../packages/mdc-ripple/index';
 import {strings} from '../../../packages/mdc-checkbox/constants';
-import {getMatchesProperty} from '../../../packages/mdc-ripple/util';
 
 function getFixture() {
   return bel`
@@ -97,7 +96,7 @@ if (supportsCssVariables(window)) {
 
     const fakeMatches = td.func('.matches');
     td.when(fakeMatches(':active')).thenReturn(true);
-    input[getMatchesProperty(HTMLElement.prototype)] = fakeMatches;
+    input.matches = fakeMatches;
 
     assert.isTrue(root.classList.contains('mdc-ripple-upgraded'));
     domEvents.emit(input, 'keydown');

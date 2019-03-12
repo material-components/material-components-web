@@ -24,7 +24,10 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
-import {getCorrectPropertyName, getCorrectEventName} from '../../../packages/mdc-animation/index';
+import {
+  getCorrectPropertyName,
+  getCorrectEventName,
+} from '../../../packages/mdc-animation/index.ts';
 
 // Has no properties without a prefix
 const legacyWindowObj = td.object({

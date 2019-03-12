@@ -50,6 +50,18 @@ const SAUCE_LAUNCHERS = {
 
 const customLaunchers = Object.assign({}, USING_SL ? SAUCE_LAUNCHERS : {}, HEADLESS_LAUNCHERS);
 const browsers = USING_TRAVISCI ? Object.keys(customLaunchers) : ['Chrome'];
+const istanbulInstrumenterLoader = {
+  use: [{
+    loader: 'istanbul-instrumenter-loader',
+    options: {esModules: true},
+  }],
+  exclude: [
+    /node_modules/,
+    /adapter.[jt]s$/,
+    /constants.[jt]s$/,
+  ],
+  include: path.resolve('./packages'),
+};
 
 module.exports = function(config) {
   config.set({
@@ -61,7 +73,7 @@ module.exports = function(config) {
     preprocessors: {
       'test/unit/index.js': ['webpack', 'sourcemap'],
     },
-    reporters: ['dots', 'coverage'],
+    reporters: ['dots', 'coverage-istanbul'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
@@ -72,13 +84,21 @@ module.exports = function(config) {
     concurrency: USING_SL ? 4 : Infinity,
     customLaunchers: customLaunchers,
 
-    coverageReporter: {
-      dir: 'coverage',
-      reporters: [
-        {type: 'lcovonly', subdir: '.'},
-        {type: 'json', subdir: '.', file: 'coverage.json'},
-        {type: 'html'},
-      ],
+    coverageIstanbulReporter: {
+      'dir': 'coverage',
+      'reports': ['html', 'lcovonly', 'json'],
+      'report-config': {
+        lcovonly: {subdir: '.'},
+        json: {subdir: '.', file: 'coverage.json'},
+      },
+      // 'emitWarning' causes the tests to fail if the thresholds are not met
+      'emitWarning': false,
+      'thresholds': {
+        statements: 95,
+        branches: 95,
+        lines: 95,
+        functions: 95,
+      },
     },
 
     client: {
@@ -93,20 +113,15 @@ module.exports = function(config) {
     },
 
     webpack: Object.assign({}, webpackConfig, {
-      devtool: 'inline-source-map',
       module: Object.assign({}, webpackConfig.module, {
         // Cover source files when not debugging tests. Otherwise, omit coverage instrumenting to get
         // uncluttered source maps.
-        rules: webpackConfig.module.rules.concat([config.singleRun ? {
+        rules: webpackConfig.module.rules.concat(config.singleRun ? [Object.assign({
+          enforce: 'post',
+          test: /\.ts$/,
+        }, istanbulInstrumenterLoader), Object.assign({
           test: /\.js$/,
-          include: path.resolve('./packages'),
-          exclude: [
-            /node_modules/,
-            /adapter.js/,
-          ],
-          loader: 'istanbul-instrumenter-loader',
-          query: {esModules: true},
-        } : undefined]).filter(Boolean),
+        }, istanbulInstrumenterLoader)] : []),
       }),
     }),
 

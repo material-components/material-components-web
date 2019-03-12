@@ -102,5 +102,5 @@ const eventToListenFor = getCorrectEventName(window, 'animationstart');
 
 Method Signature | Description
 --- | ---
-`getCorrectEventName(windowObj, eventType)` | Returns a JavaScript event name, prefixed if necessary
-`getCorrectPropertyName(windowObj, eventType)` | Returns a CSS property name, prefixed if necessary
+`getCorrectEventName(windowObj: Window, eventType: StandardJsEventType) => StandardJsEventType \| PrefixedJsEventType` | Returns a JavaScript event name, prefixed if necessary. See [`types.ts`](types.ts) for supported values.
+`getCorrectPropertyName(windowObj: Window, cssProperty: StandardCssPropertyName) => StandardCssPropertyName \| PrefixedCssPropertyName` | Returns a CSS property name, prefixed if necessary. See [`types.ts`](types.ts) for supported values.

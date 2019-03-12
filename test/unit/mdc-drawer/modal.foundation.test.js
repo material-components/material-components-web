@@ -22,7 +22,7 @@
  */
 
 import td from 'testdouble';
-import MDCModalDrawerFoundation from '../../../packages/mdc-drawer/modal/foundation';
+import {MDCModalDrawerFoundation} from '../../../packages/mdc-drawer/modal/foundation';
 
 suite('MDCModalDrawerFoundation');
 
@@ -35,20 +35,21 @@ const setupTest = () => {
   return {foundation, mockAdapter, mockFoundation};
 };
 
-test('#opened traps the focus when drawer finishes animating open', () => {
+test('#opened_ traps the focus when drawer finishes animating open', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.opened();
+  foundation.opened_();
   td.verify(mockAdapter.trapFocus(), {times: 1});
 });
 
-test('#closed untraps the focus when drawer finishes animating close', () => {
+test('#closed_ untraps the focus when drawer finishes animating close', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.closed();
+  foundation.closed_();
   td.verify(mockAdapter.releaseFocus(), {times: 1});
 });
 
 test('#handleScrimClick closes the drawer', () => {
-  const {foundation} = setupTest();
+  const foundation = new MDCModalDrawerFoundation();
+  foundation.close = td.func('close');
   foundation.handleScrimClick();
   td.verify(foundation.close(), {times: 1});
 });

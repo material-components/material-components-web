@@ -25,7 +25,7 @@ import {assert} from 'chai';
 import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
-import MDCTextFieldFoundation from '../../../packages/mdc-textfield/foundation';
+import {MDCTextFieldFoundation} from '../../../packages/mdc-textfield/foundation';
 
 const LABEL_WIDTH = 100;
 const {cssClasses, numbers} = MDCTextFieldFoundation;
@@ -56,32 +56,37 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   ]);
 });
 
-const setupTest = () => {
+const setupTest = ({
+  useCharacterCounter = false,
+  useHelperText = false,
+  useLeadingIcon = false,
+  useTrailingIcon = false,
+} = {}) => {
   const mockAdapter = td.object(MDCTextFieldFoundation.defaultAdapter);
-  const helperText = td.object({
+  const helperText = useHelperText ? td.object({
     setContent: () => {},
     showToScreenReader: () => {},
     setValidity: () => {},
-  });
-  const characterCounter = td.object({
+  }) : undefined;
+  const characterCounter = useCharacterCounter ? td.object({
     setCounterValue: () => {},
-  });
-  const leadingIcon = td.object({
+  }) : undefined;
+  const leadingIcon = useLeadingIcon ? td.object({
     setDisabled: () => {},
     setAriaLabel: () => {},
     setContent: () => {},
     registerInteractionHandler: () => {},
     deregisterInteractionHandler: () => {},
     handleInteraction: () => {},
-  });
-  const trailingIcon = td.object({
+  }) : undefined;
+  const trailingIcon = useTrailingIcon ? td.object({
     setDisabled: () => {},
     setAriaLabel: () => {},
     setContent: () => {},
     registerInteractionHandler: () => {},
     deregisterInteractionHandler: () => {},
     handleInteraction: () => {},
-  });
+  }) : undefined;
   const foundationMap = {
     helperText,
     characterCounter,
@@ -97,13 +102,24 @@ test('#constructor sets disabled to false', () => {
   assert.isNotOk(foundation.isDisabled());
 });
 
-const setupValueTest = (value, optIsValid, optIsBadInput, hasLabel) => {
-  const {foundation, mockAdapter, helperText} = setupTest();
+const setupValueTest = ({
+  value,
+  optIsValid,
+  optIsBadInput,
+  hasLabel,
+  useCharacterCounter = false,
+  useHelperText = false,
+  useLeadingIcon = false,
+  useTrailingIcon = false,
+} = {}) => {
+  const {foundation, mockAdapter, helperText} = setupTest({
+    useCharacterCounter, useHelperText, useLeadingIcon, useTrailingIcon,
+  });
   const nativeInput = {
     value: value,
     validity: {
-      valid: optIsValid === undefined ? true : !!optIsValid,
-      badInput: optIsBadInput === undefined ? false : !!optIsBadInput,
+      valid: optIsValid === undefined ? true : Boolean(optIsValid),
+      badInput: optIsBadInput === undefined ? false : Boolean(optIsBadInput),
     },
   };
   if (hasLabel) {
@@ -126,7 +142,7 @@ test('#getValue returns the field\'s value', () => {
 
 test('#setValue with non-empty value styles the label', () => {
   const value = 'new value';
-  const {foundation, nativeInput, mockAdapter} = setupValueTest('', undefined, undefined, true);
+  const {foundation, nativeInput, mockAdapter} = setupValueTest({value: '', hasLabel: true});
   // Initial empty value should not float label.
   td.verify(mockAdapter.floatLabel(false), {times: 0});
   nativeInput.value = value;
@@ -136,7 +152,7 @@ test('#setValue with non-empty value styles the label', () => {
 });
 
 test('#setValue with empty value styles the label', () => {
-  const {foundation, nativeInput, mockAdapter} = setupValueTest('old value', undefined, undefined, true);
+  const {foundation, nativeInput, mockAdapter} = setupValueTest({value: 'old value', hasLabel: true});
   // Initial value should float the label.
   td.verify(mockAdapter.floatLabel(true));
   nativeInput.value = '';
@@ -147,7 +163,7 @@ test('#setValue with empty value styles the label', () => {
 
 test('#setValue valid and invalid input', () => {
   const {foundation, mockAdapter, nativeInput, helperText} =
-    setupValueTest('', /* isValid */ false, undefined, true);
+    setupValueTest({value: '', optIsValid: false, hasLabel: true, useHelperText: true});
 
   foundation.setValue('invalid');
   td.verify(mockAdapter.addClass(cssClasses.INVALID));
@@ -165,7 +181,7 @@ test('#setValue valid and invalid input', () => {
 
 test('#setValue with invalid status and empty value does not shake the label', () => {
   const {foundation, mockAdapter, helperText} =
-    setupValueTest('', /* isValid */ false, undefined, true);
+    setupValueTest({value: '', optIsValid: false, hasLabel: true, useHelperText: true});
 
   foundation.setValue('');
   td.verify(mockAdapter.addClass(cssClasses.INVALID));
@@ -175,14 +191,14 @@ test('#setValue with invalid status and empty value does not shake the label', (
 });
 
 test('#setValue does not affect focused state', () => {
-  const {foundation, mockAdapter} = setupValueTest('');
+  const {foundation, mockAdapter} = setupValueTest({value: ''});
   foundation.setValue('');
   td.verify(mockAdapter.addClass(cssClasses.FOCUSED), {times: 0});
   td.verify(mockAdapter.removeClass(cssClasses.FOCUSED), {times: 0});
 });
 
 test('#setValue does not affect disabled state', () => {
-  const {foundation, mockAdapter} = setupValueTest('');
+  const {foundation, mockAdapter} = setupValueTest({value: ''});
   foundation.setValue('');
   td.verify(mockAdapter.addClass(cssClasses.DISABLED), {times: 0});
   td.verify(mockAdapter.removeClass(cssClasses.DISABLED), {times: 0});
@@ -191,7 +207,7 @@ test('#setValue does not affect disabled state', () => {
 });
 
 test('#isValid for native validation', () => {
-  const {foundation, nativeInput} = setupValueTest('', /* isValid */ true);
+  const {foundation, nativeInput} = setupValueTest({value: '', optIsValid: true});
   assert.isOk(foundation.isValid());
 
   nativeInput.validity.valid = false;
@@ -199,7 +215,7 @@ test('#isValid for native validation', () => {
 });
 
 test('#setValid overrides native validation when useNativeValidation set to false', () => {
-  const {foundation, nativeInput} = setupValueTest('', /* isValid */ false);
+  const {foundation, nativeInput} = setupValueTest({value: '', optIsValid: false});
   foundation.setUseNativeValidation(false);
   foundation.setValid(true);
   assert.isOk(foundation.isValid());
@@ -210,7 +226,7 @@ test('#setValid overrides native validation when useNativeValidation set to fals
 });
 
 test('#setValid updates classes', () => {
-  const {foundation, mockAdapter, helperText} = setupTest();
+  const {foundation, mockAdapter, helperText} = setupTest({useHelperText: true});
   td.when(mockAdapter.hasLabel()).thenReturn(true);
 
   foundation.setValid(false);
@@ -231,7 +247,7 @@ test('#setValid updates classes', () => {
 });
 
 test('#setValid updates classes, but not label methods when hasLabel is false', () => {
-  const {foundation, mockAdapter, helperText} = setupTest();
+  const {foundation, mockAdapter, helperText} = setupTest({useHelperText: true});
 
   foundation.setValid(false);
   td.verify(mockAdapter.addClass(cssClasses.INVALID));
@@ -296,13 +312,13 @@ test('#setDisabled removes mdc-text-field--disabled when set to false', () => {
 });
 
 test('#setDisabled sets disabled on leading icon', () => {
-  const {foundation, leadingIcon} = setupTest();
+  const {foundation, leadingIcon} = setupTest({useLeadingIcon: true});
   foundation.setDisabled(true);
   td.verify(leadingIcon.setDisabled(true));
 });
 
 test('#setDisabled sets disabled on trailing icon', () => {
-  const {foundation, trailingIcon} = setupTest();
+  const {foundation, trailingIcon} = setupTest({useTrailingIcon: true});
   foundation.setDisabled(true);
   td.verify(trailingIcon.setDisabled(true));
 });
@@ -322,15 +338,17 @@ test('#setValid removes mdc-textfied--invalid when set to true', () => {
 test('#init focuses on input if adapter.isFocused is true', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.isFocused()).thenReturn(true);
+  foundation.activateFocus = td.func('activateFocus');
   foundation.init();
-  td.verify(foundation.inputFocusHandler_());
+  td.verify(foundation.activateFocus(), {times: 1});
 });
 
 test('#init does not focus if adapter.isFocused is false', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.isFocused()).thenReturn(false);
   foundation.init();
-  td.verify(foundation.inputFocusHandler_(), {times: 0});
+  foundation.activateFocus = td.func('activateFocus');
+  td.verify(foundation.activateFocus(), {times: 0});
 });
 
 test('#init adds event listeners', () => {
@@ -376,7 +394,7 @@ test('#init floats label if the input contains a value', () => {
   td.verify(mockAdapter.floatLabel(true));
 });
 
-test('#init doesnot call floatLabel if there is no label and the input contains a value', () => {
+test('#init does not call floatLabel if there is no label and the input contains a value', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getNativeInput()).thenReturn({
     value: 'Pre-filled value',
@@ -403,33 +421,53 @@ test('#init does not float label if the input does not contain a value', () => {
 });
 
 test('#setHelperTextContent sets the content of the helper text element', () => {
-  const {foundation, helperText} = setupTest();
+  const {foundation, helperText} = setupTest({useHelperText: true});
   foundation.setHelperTextContent('foo');
   td.verify(helperText.setContent('foo'));
 });
 
 test('#setLeadingIconAriaLabel sets the aria-label of the leading icon element', () => {
-  const {foundation, leadingIcon} = setupTest();
+  const {foundation, leadingIcon} = setupTest({useLeadingIcon: true});
   foundation.setLeadingIconAriaLabel('foo');
   td.verify(leadingIcon.setAriaLabel('foo'));
 });
 
+test('#setLeadingIconAriaLabel does nothing if element is not present', () => {
+  const {foundation} = setupTest({useLeadingIcon: false});
+  assert.doesNotThrow(() => foundation.setLeadingIconAriaLabel('foo'));
+});
+
 test('#setLeadingIconContent sets the content of the leading icon element', () => {
-  const {foundation, leadingIcon} = setupTest();
+  const {foundation, leadingIcon} = setupTest({useLeadingIcon: true});
   foundation.setLeadingIconContent('foo');
   td.verify(leadingIcon.setContent('foo'));
 });
 
+test('#setLeadingIconContent does nothing if element is not present', () => {
+  const {foundation} = setupTest({useLeadingIcon: false});
+  assert.doesNotThrow(() => foundation.setLeadingIconContent('foo'));
+});
+
 test('#setTrailingIconAriaLabel sets the aria-label of the trailing icon element', () => {
-  const {foundation, trailingIcon} = setupTest();
+  const {foundation, trailingIcon} = setupTest({useTrailingIcon: true});
   foundation.setTrailingIconAriaLabel('foo');
   td.verify(trailingIcon.setAriaLabel('foo'));
 });
 
+test('#setTrailingIconAriaLabel does nothing if element is not present', () => {
+  const {foundation} = setupTest({useTrailingIcon: false});
+  assert.doesNotThrow(() => foundation.setTrailingIconAriaLabel('foo'));
+});
+
 test('#setTrailingIconContent sets the content of the trailing icon element', () => {
-  const {foundation, trailingIcon} = setupTest();
+  const {foundation, trailingIcon} = setupTest({useTrailingIcon: true});
   foundation.setTrailingIconContent('foo');
   td.verify(trailingIcon.setContent('foo'));
+});
+
+test('#setTrailingIconContent does nothing if element is not present', () => {
+  const {foundation} = setupTest({useTrailingIcon: false});
+  assert.doesNotThrow(() => foundation.setTrailingIconContent('foo'));
 });
 
 test('#notchOutline updates the width of the outline element', () => {
@@ -593,7 +631,7 @@ test('on focus do not styles label if hasLabel is false', () => {
 });
 
 test('on focus makes helper text visible to the screen reader', () => {
-  const {foundation, mockAdapter, helperText} = setupTest();
+  const {foundation, mockAdapter, helperText} = setupTest({useHelperText: true});
   let focus;
   td.when(mockAdapter.registerInputInteractionHandler('focus', td.matchers.isA(Function)))
     .thenDo((evtType, handler) => {
@@ -605,7 +643,7 @@ test('on focus makes helper text visible to the screen reader', () => {
 });
 
 const setupBlurTest = () => {
-  const {foundation, mockAdapter, helperText} = setupTest();
+  const {foundation, mockAdapter, helperText} = setupTest({useHelperText: true});
   let blur;
   td.when(mockAdapter.registerInputInteractionHandler('blur', td.matchers.isA(Function))).thenDo((evtType, handler) => {
     blur = handler;
@@ -804,7 +842,7 @@ test('touchstart on the input sets the line ripple origin', () => {
 });
 
 test('on validation attribute change calls styleValidity_', () => {
-  const {foundation, mockAdapter, helperText} = setupTest();
+  const {foundation, mockAdapter, helperText} = setupTest({useHelperText: true});
   let attributeChange;
   td.when(mockAdapter.registerValidationAttributeChangeHandler(td.matchers.isA(Function)))
     .thenDo((handler) => attributeChange = handler);
@@ -821,7 +859,7 @@ test('on validation attribute change calls styleValidity_', () => {
 });
 
 test('should not call styleValidity_ on non-whitelisted attribute change', () => {
-  const {foundation, mockAdapter, helperText} = setupTest();
+  const {foundation, mockAdapter, helperText} = setupTest({useHelperText: true});
   let attributeChange;
   td.when(mockAdapter.registerValidationAttributeChangeHandler(td.matchers.isA(Function)))
     .thenDo((handler) => attributeChange = handler);
@@ -838,7 +876,7 @@ test('should not call styleValidity_ on non-whitelisted attribute change', () =>
 });
 
 test('label floats on invalid input even if value is empty', () => {
-  const {mockAdapter} = setupValueTest('', false, true, true);
+  const {mockAdapter} = setupValueTest({value: '', optIsValid: false, optIsBadInput: true, hasLabel: true});
   td.verify(mockAdapter.floatLabel(true));
 });
 
@@ -866,7 +904,7 @@ test('#handleInput activates focus state', () => {
 });
 
 test('#handleInput updates character counter on text input', () => {
-  const {foundation, mockAdapter, characterCounter} = setupTest();
+  const {foundation, mockAdapter, characterCounter} = setupTest({useCharacterCounter: true});
 
   const nativeInput = {
     type: 'text',
@@ -884,7 +922,7 @@ test('#handleInput updates character counter on text input', () => {
 
 
 test('#handleInput throws error when maxLength HTML attribute is not found in input element', () => {
-  const {foundation, mockAdapter} = setupTest();
+  const {foundation, mockAdapter} = setupTest({useCharacterCounter: true});
 
   const nativeInput = {
     type: 'text',
@@ -901,7 +939,7 @@ test('#handleInput throws error when maxLength HTML attribute is not found in in
 
 test('#handleValidationAttributeChange sets character counter when maxlength attribute value is changed in input ' +
     'element', () => {
-  const {foundation, mockAdapter, characterCounter} = setupTest();
+  const {foundation, mockAdapter, characterCounter} = setupTest({useCharacterCounter: true});
 
   const nativeInput = {
     type: 'text',
