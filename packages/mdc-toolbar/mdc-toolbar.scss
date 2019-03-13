@@ -49,8 +49,7 @@
     min-height: $mdc-toolbar-row-height;
 
     // TODO: refactor this out when #23 is implemented
-    @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint)
-      and (orientation: landscape) {
+    @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint) and (orientation: landscape) {
       min-height: $mdc-toolbar-mobile-landscape-row-height;
     }
 
@@ -71,8 +70,7 @@
     padding: $mdc-toolbar-element-section-padding;
     z-index: 1;
 
-    @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint)
-      and (orientation: landscape) {
+    @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint) and (orientation: landscape) {
       padding: 0;
     }
 
@@ -86,8 +84,7 @@
       justify-content: flex-start;
       order: -1;
 
-      @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint)
-        and (orientation: landscape) {
+      @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint) and (orientation: landscape) {
         @include mdc-rtl-reflexive-box(padding, "left", $mdc-toolbar-mobile-section-horizontal-padding);
       }
 
@@ -102,8 +99,7 @@
       justify-content: flex-end;
       order: 1;
 
-      @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint)
-        and (orientation: landscape) {
+      @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint) and (orientation: landscape) {
         @include mdc-rtl-reflexive-box(padding, "right", $mdc-toolbar-mobile-section-horizontal-padding);
       }
 
@@ -156,11 +152,19 @@
 
   .mdc-toolbar__row:first-child {
     height: $mdc-toolbar-row-height * $mdc-toolbar-ratio-to-extend-flexible;
-    height: calc(#{$mdc-toolbar-row-height} * var(--mdc-toolbar-ratio-to-extend-flexible, #{$mdc-toolbar-ratio-to-extend-flexible}));
+    height:
+      calc(
+        #{$mdc-toolbar-row-height} *
+        var(--mdc-toolbar-ratio-to-extend-flexible, #{$mdc-toolbar-ratio-to-extend-flexible})
+      );
 
     @media (max-width: $mdc-toolbar-mobile-breakpoint) {
       height: $mdc-toolbar-mobile-row-height * $mdc-toolbar-ratio-to-extend-flexible;
-      height: calc(#{$mdc-toolbar-mobile-row-height} * var(--mdc-toolbar-ratio-to-extend-flexible, #{$mdc-toolbar-ratio-to-extend-flexible}));
+      height:
+        calc(
+          #{$mdc-toolbar-mobile-row-height} *
+          var(--mdc-toolbar-ratio-to-extend-flexible, #{$mdc-toolbar-ratio-to-extend-flexible})
+        );
     }
 
     &::after {
@@ -229,8 +233,7 @@
 .mdc-toolbar-fixed-adjust {
   padding-top: $mdc-toolbar-row-height;
 
-  @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint)
-    and (max-height: $mdc-toolbar-mobile-breakpoint) {
+  @media (max-width: $mdc-toolbar-mobile-landscape-width-breakpoint) and (max-height: $mdc-toolbar-mobile-breakpoint) {
     padding-top: $mdc-toolbar-mobile-landscape-row-height;
   }
 
