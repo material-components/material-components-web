@@ -31,15 +31,18 @@ $mdc-switch-tap-target-size: 48px !default;
 $mdc-switch-thumb-offset: 4px !default;
 
 // Position for the tap target that contains the thumb to align the thumb correctly offset from the track.
-$mdc-switch-tap-target-initial-position: -$mdc-switch-tap-target-size / 2 + $mdc-switch-thumb-diameter / 2 -
+$mdc-switch-tap-target-initial-position:
+  -$mdc-switch-tap-target-size / 2 + $mdc-switch-thumb-diameter / 2 -
   $mdc-switch-thumb-offset !default;
 
 // Value to cover the whole switch area (including the ripple) with the native control.
-$mdc-switch-native-control-width: $mdc-switch-track-width + ($mdc-switch-tap-target-size - $mdc-switch-thumb-diameter) +
+$mdc-switch-native-control-width:
+  $mdc-switch-track-width +
+  ($mdc-switch-tap-target-size - $mdc-switch-thumb-diameter) +
   $mdc-switch-thumb-offset * 2 !default;
 
-$mdc-switch-thumb-active-margin: $mdc-switch-track-width - $mdc-switch-thumb-diameter +
-  $mdc-switch-thumb-offset * 2 !default;
+$mdc-switch-thumb-active-margin:
+  $mdc-switch-track-width - $mdc-switch-thumb-diameter + $mdc-switch-thumb-offset * 2 !default;
 
 $mdc-switch-toggled-off-thumb-color: mdc-theme-prop-value(surface) !default;
 $mdc-switch-toggled-off-track-color: mdc-theme-prop-value(on-surface) !default;
