@@ -36,7 +36,7 @@ import * as babelParser from '@babel/parser';
 import babelTraverse from '@babel/traverse';
 import {NodePath} from '@babel/traverse';
 import * as babelTypes from '@babel/types';
-import * as colors from 'colors/safe';
+import colors from 'colors/safe';
 import * as fs from 'fs';
 import * as glob from 'glob';
 import * as path from 'path';
