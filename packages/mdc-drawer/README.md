@@ -481,10 +481,8 @@ Method Signature | Description
 `isOpen() => boolean` | Returns true if the drawer is in the open position.
 `isOpening() => boolean` | Returns true if the drawer is animating open.
 `isClosing() => boolean` | Returns true if the drawer is animating closed.
-`handleKeyDown(evt: Event) => void` | Handles the keydown event.
-`handleTransitionEnd(evt: Event) => void` | Handles the transitionend event when the drawer finishes opening/closing.
-`opened() => void` | Only called internally. Extension point for when drawer finishes open animation.
-`closed() => void` | Only called internally. Extension point for when drawer finishes close animation.
+`handleKeydown(evt: Event) => void` | Handles the `keydown` event.
+`handleTransitionEnd(evt: Event) => void` | Handles the `transitionend` event when the drawer finishes opening/closing.
 
 #### `MDCModalDrawerFoundation` (extends `MDCDismissibleDrawerFoundation`)
 

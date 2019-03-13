@@ -123,7 +123,7 @@ function setupMockFoundationTest(root = getFixture()) {
   return {root, component, mockFoundation};
 }
 
-test('#initialSyncWithDom calls foundation.setChecked', () => {
+test('#initialSyncWithDOM calls foundation.setChecked', () => {
   const root = getFixture();
   const inputEl = root.querySelector(NATIVE_CONTROL_SELECTOR);
   inputEl.checked = true;

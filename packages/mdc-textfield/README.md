@@ -333,20 +333,21 @@ Mixin | Description
 
 Property | Value Type | Description
 --- | --- | ---
-`value` | string | Proxies to the foundation's `getValue`/`setValue` methods.
-`disabled` | boolean | Proxies to the foundation's `isDisabled`/`setDisabled` methods.
-`useNativeValidation` | boolean (write-only) | Proxies to the foundation's `setUseNativeValidation` method.
-`valid` | boolean | Proxies to the foundation's `isValid`/`setValid` methods.
-`helperTextContent` | string (write-only)| Proxies to the foundation's `setHelperTextContent` method when set.
+`value` | `string` | Proxies to the foundation's `getValue`/`setValue` methods.
+`disabled` | `boolean` | Proxies to the foundation's `isDisabled`/`setDisabled` methods.
+`useNativeValidation` | `boolean` (write-only) | Proxies to the foundation's `setUseNativeValidation` method.
+`valid` | `boolean` | Proxies to the foundation's `isValid`/`setValid` methods.
+`helperTextContent` | `string` (write-only)| Proxies to the foundation's `setHelperTextContent` method when set.
 `ripple` | `MDCRipple` (write-only) | The `MDCRipple` instance for the root element that `MDCTextField` initializes; this only applies to the default Text Field, and is `null` for other variants.
-`leadingIconAriaLabel` | string (write-only) | Proxies to the foundation's `setLeadingIconAriaLabel` method.
-`trailingIconAriaLabel` | string (write-only) | Proxies to the foundation's `setTrailingIconAriaLabel` method.
-`leadingIconContent` | string (write-only) | Proxies to the foundation's `setLeadingIconContent` method.
-`trailingIconContent` | string (write-only) | Proxies to the foundation's `setTrailingIconContent` method.
+`leadingIconAriaLabel` | `string` (write-only) | Proxies to the foundation's `setLeadingIconAriaLabel` method.
+`trailingIconAriaLabel` | `string` (write-only) | Proxies to the foundation's `setTrailingIconAriaLabel` method.
+`leadingIconContent` | `string` (write-only) | Proxies to the foundation's `setLeadingIconContent` method.
+`trailingIconContent` | `string` (write-only) | Proxies to the foundation's `setTrailingIconContent` method.
 
 In addition to the above, the following properties proxy to the `input` element's properties of the same name:
 
 * `required`
+* `pattern`
 * `minLength`
 * `maxLength`
 * `min`
@@ -361,7 +362,6 @@ Method Signature | Description
 ## Usage Within Frameworks
 
 If you are using a JavaScript framework, such as React or Angular, you can create a Text Field for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
-
 
 ### `MDCTextFieldAdapter`
 
@@ -378,9 +378,16 @@ Method Signature | Description
 `deregisterValidationAttributeChangeHandler(!MutationObserver) => void` | Disconnects a validation attribute observer on the input element.
 `getNativeInput() => NativeInputType \| null` | Returns an object representing the native text input element, with a similar API shape. See [types.ts](types.ts).
 `isFocused() => boolean` | Returns whether the input is focused.
-`hasOutline() => boolean` | Returns whether there is an outline element.
-`notchOutline(labelWidth: number) => void` | Updates the notched outline path to open the notch and update the notch width for the label element.
-`closeOutline() => void` | Closes the notch in the notched outline element.
+`shakeLabel(shouldShake: boolean) => void` | Shakes the label to indicate an invalid input value.
+`floatLabel(shouldFloat: boolean) => void` | Floats the label.
+`hasLabel() => boolean` | Determines whether the text field has a label element.
+`getLabelWidth() => number` | Returns the width of the label element in px.
+`activateLineRipple() => void` | Activates the text field's line ripple sub-element.
+`deactivateLineRipple() => void` | Deactivate the text field's line ripple sub-element.
+`setLineRippleTransformOrigin(normalizedX: number) => void` | Sets the CSS `transform-origin` property to the given value on the text field's line ripple sub-element (if present).
+`hasOutline() => boolean` | Determines whether the text field has an outline sub-element.
+`notchOutline(labelWidth: number) => void` | Sets the width of the text field's notched outline sub-element.
+`closeOutline() => void` | Closes the text field's notched outline sub-element.
 
 #### `MDCTextFieldAdapter.getNativeInput()`
 
@@ -391,6 +398,11 @@ Returns an object representing the native text input element, with a similar API
 Returns the idle outline element's computed style value of the given css property `propertyName`. The vanilla implementation achieves this via `getComputedStyle(...).getPropertyValue(propertyName)`.
 
 ### `MDCTextFieldFoundation`
+
+Property | Value Type | Description
+--- | --- | ---
+`shouldFloat` | `boolean` (read-only) | Determines whether the label should float.
+`shouldShake` | `boolean` (read-only) | Determines whether the label should shake.
 
 Method Signature | Description
 --- | ---
@@ -412,5 +424,7 @@ Method Signature | Description
 `setTrailingIconAriaLabel(label: string) => void` | Sets the aria label of the trailing icon.
 `setTrailingIconContent(content: string) => void` | Sets the text content of the trailing icon.
 `notchOutline(openNotch: boolean) => void` | Opens/closes the notched outline.
+`setTransformOrigin(evt: TouchEvent \| MouseEvent) => void` | Sets the line ripple's transform origin, so that the line ripple activate animation will animate out from the user's click location.
+`autoCompleteFocus() => void` | Activates the Text Field's focus state in cases when the input value is changed programmatically (i.e., without user action).
 
 `MDCTextFieldFoundation` supports multiple optional sub-elements: helper text and icon. The foundations of these sub-elements must be passed in as constructor arguments to `MDCTextFieldFoundation`.

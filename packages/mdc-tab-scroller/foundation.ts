@@ -153,7 +153,7 @@ export class MDCTabScrollerFoundation extends MDCFoundation<MDCTabScrollerAdapte
   }
 
   /**
-   * Returns the appropriate version of the MDCTabScrollerRTL
+   * @return Browser-specific {@link MDCTabScrollerRTL} instance.
    */
   getRTLScroller(): MDCTabScrollerRTL {
     if (!this.rtlScrollerInstance_) {
@@ -164,7 +164,7 @@ export class MDCTabScrollerFoundation extends MDCFoundation<MDCTabScrollerAdapte
   }
 
   /**
-   * Returns the translateX value from a CSS matrix transform function string
+   * @return translateX value from a CSS matrix transform function string.
    */
   private calculateCurrentTranslateX_(): number {
     const transformValue = this.adapter_.getScrollContentStyleValue('transform');
@@ -317,7 +317,7 @@ export class MDCTabScrollerFoundation extends MDCFoundation<MDCTabScrollerAdapte
   private rtlScrollerFactory_(): MDCTabScrollerRTL {
     // Browsers have three different implementations of scrollLeft in RTL mode,
     // dependent on the browser. The behavior is based off the max LTR
-    // scrollleft value and 0.
+    // scrollLeft value and 0.
     //
     // * Default scrolling in RTL *
     //    - Left-most value: 0
