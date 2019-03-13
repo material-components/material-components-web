@@ -70,11 +70,11 @@
 @mixin mdc-theme-prop($property, $style, $important: false, $edgeOptOut: false) {
   @if mdc-theme-is-var-with-fallback_($style) {
     @if $important {
-      #{$property}: mdc-theme-var-fallback_($style) !important;
+      #{$property}: mdc-theme-get-var-fallback_($style) !important;
       /* @alternate */
       #{$property}: mdc-theme-var_($style) !important;
     } @else {
-      #{$property}: mdc-theme-var-fallback_($style);
+      #{$property}: mdc-theme-get-var-fallback_($style);
       /* @alternate */
       #{$property}: mdc-theme-var_($style);
     }

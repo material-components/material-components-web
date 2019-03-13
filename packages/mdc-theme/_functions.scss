@@ -69,13 +69,13 @@
   @return type-of($style) == "map" and map-has-key($style, "varname") and map-has-key($style, "fallback");
 }
 
-@function mdc-theme-var-fallback_($style) {
+@function mdc-theme-get-var-fallback_($style) {
   @return map-get($style, "fallback");
 }
 
 @function mdc-theme-var_($style) {
   $var: map-get($style, "varname");
-  $fallback: mdc-theme-var-fallback_($style);
+  $fallback: mdc-theme-get-var-fallback_($style);
 
   @return var(#{$var}, $fallback);
 }
