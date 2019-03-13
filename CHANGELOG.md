@@ -1,3 +1,14 @@
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/material-components/material-components-web/compare/v1.0.0...v1.0.1) (2019-03-11)
+
+
+### Bug Fixes
+
+* **feature-targeting:** Move ripple styles into separate mixins ([#4454](https://github.com/material-components/material-components-web/issues/4454)) ([f53aacc](https://github.com/material-components/material-components-web/commit/f53aacc))
+* Don't import * from focus-trap to avoid default export confusion ([#4485](https://github.com/material-components/material-components-web/issues/4485)) ([bd3d946](https://github.com/material-components/material-components-web/commit/bd3d946))
+
+
+
 <a name="1.0.0"></a>
 # [1.0.0](https://github.com/material-components/material-components-web/compare/v0.44.1...v1.0.0) (2019-03-06)
 
