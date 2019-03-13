@@ -584,7 +584,6 @@ test('#handleKeydown space key is triggered 2x when singleSelection does not un-
 
   td.verify(preventDefault(), {times: 2});
   td.verify(mockAdapter.setAttributeForElementIndex(0, strings.ARIA_SELECTED, 'true'), {times: 1});
-  td.verify(mockAdapter.removeAttributeForElementIndex(0, strings.ARIA_SELECTED), {times: 0});
 });
 
 test('#handleKeydown space key is triggered 2x when singleSelection is true on second ' +
@@ -878,7 +877,7 @@ test('#setSelectedIndex should set aria-selected as default option in the absenc
   const {foundation, mockAdapter} = setupTest();
 
   td.when(mockAdapter.getListItemCount()).thenReturn(5);
-  td.when(mockAdapter.getAttributeForElementIndex(2, strings.ARIA_CURRENT)).thenReturn('page');
+  td.when(mockAdapter.getAttributeForElementIndex(2, strings.ARIA_CURRENT)).thenReturn(null);
   foundation.setSelectedIndex(2);
 
   td.verify(mockAdapter.setAttributeForElementIndex(2, td.matchers.isA(String), 'false'), {times: 0});
