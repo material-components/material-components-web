@@ -71,9 +71,11 @@
   @if mdc-theme-is-var-with-fallback_($style) {
     @if $important {
       #{$property}: mdc-theme-var-fallback_($style) !important;
+      /* @alternate */
       #{$property}: mdc-theme-var_($style) !important;
     } @else {
       #{$property}: mdc-theme-var-fallback_($style);
+      /* @alternate */
       #{$property}: mdc-theme-var_($style);
     }
   } @else if mdc-theme-is-valid-theme-prop-value_($style) {
