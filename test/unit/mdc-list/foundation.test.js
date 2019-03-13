@@ -861,6 +861,30 @@ test('#setSelectedIndex removes selected/activated class name and sets aria-sele
   td.verify(mockAdapter.setAttributeForElementIndex(2, strings.ARIA_SELECTED, 'false'), {times: 1});
 });
 
+test('#setSelectedIndex should detect the presence of aria-current during list initialization '
+    + '(i.e., when it is in unset state) and sets the same attribute on pre-selected index', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(5);
+  td.when(mockAdapter.getAttributeForElementIndex(2, strings.ARIA_CURRENT)).thenReturn('page');
+  foundation.setSelectedIndex(2);
+
+  td.verify(mockAdapter.setAttributeForElementIndex(2, strings.ARIA_CURRENT, 'false'), {times: 0});
+  td.verify(mockAdapter.setAttributeForElementIndex(2, strings.ARIA_CURRENT, 'page'), {times: 1});
+});
+
+test('#setSelectedIndex should set aria-selected as default option in the absence of aria-selected on pre-selected '
+    + 'item index', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getListItemCount()).thenReturn(5);
+  td.when(mockAdapter.getAttributeForElementIndex(2, strings.ARIA_CURRENT)).thenReturn('page');
+  foundation.setSelectedIndex(2);
+
+  td.verify(mockAdapter.setAttributeForElementIndex(2, td.matchers.isA(String), 'false'), {times: 0});
+  td.verify(mockAdapter.setAttributeForElementIndex(2, strings.ARIA_SELECTED, 'true'), {times: 1});
+});
+
 test('#setSelectedIndex sets aria-current="false" to previously selected index and sets aria-current without any token'
     + 'to current index', () => {
   const {foundation, mockAdapter} = setupTest();

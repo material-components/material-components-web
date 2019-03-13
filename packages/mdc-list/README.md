@@ -212,8 +212,8 @@ list.singleSelection = true;
 #### Pre-selected list item
 
 When rendering the list with a pre-selected list item, the list item that needs to be selected should contain
-the `mdc-list-item--selected` or `mdc-list-item--activated` class and `aria-selected="true"` attribute before
-creating the list.
+the `mdc-list-item--selected` or `mdc-list-item--activated` class before creating the list. Please see
+[Accessibility](#Accessibility) section for appropriate aria attributes.
 
 ```html
 <ul id="my-list" class="mdc-list" role="listbox">
@@ -499,10 +499,10 @@ these should also receive `tabIndex="-1"`.
 #### Setup in `singleSelection()`
 
 When implementing a component that will use the single selection variant, the HTML should be modified to include
-the `aria-selected` attribute, the `mdc-list-item--selected` or `mdc-list-item--activated` class should be added,
+the `mdc-list-item--selected` or `mdc-list-item--activated` class name,
 and the `tabindex` of the selected element should be `0`. The first list item should have the `tabindex` updated
 to `-1`. The foundation method `setSelectedIndex()` should be called with the initially selected element immediately
-after the foundation is instantiated.
+after the foundation is instantiated. Please see [Accessibility](#Accessibility) section for appropriate aria attributes.
 
 ```html
 <ul id="my-list" class="mdc-list">

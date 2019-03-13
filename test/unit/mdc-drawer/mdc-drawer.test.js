@@ -51,7 +51,7 @@ function getFixture(options) {
   const listEl = bel`
     <div class="mdc-list-group">
       <nav class="mdc-list">
-        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
+        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
         </a>
       </nav>
