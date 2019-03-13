@@ -35,7 +35,8 @@ $mdc-chip-trailing-icon-hover-opacity: .62 !default;
 $mdc-chip-trailing-icon-focus-opacity: .87 !default;
 $mdc-chip-leading-icon-size: 20px !default;
 $mdc-chip-trailing-icon-size: 18px !default;
-$mdc-chip-leading-icon-delay: -50ms !default; // Speed up delay to bridge gap between leading icon and checkmark transition.
+// Speed up delay to bridge gap between leading icon and checkmark transition.
+$mdc-chip-leading-icon-delay: -50ms !default;
 $mdc-chip-checkmark-with-leading-icon-delay: 80ms !default;
 
 $mdc-chip-checkmark-animation-delay: 50ms !default;
