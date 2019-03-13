@@ -363,7 +363,12 @@
 // Icons
 
 @mixin mdc-text-field-with-leading-icon_ {
-  @include mdc-text-field-icon-horizontal-position_(left, $mdc-text-field-icon-position, $mdc-text-field-icon-padding, $mdc-text-field-input-padding);
+  @include mdc-text-field-icon-horizontal-position_(
+    left,
+    $mdc-text-field-icon-position,
+    $mdc-text-field-icon-padding,
+    $mdc-text-field-input-padding
+  );
 
   .mdc-floating-label {
     @include mdc-rtl-reflexive-position(left, $mdc-text-field-icon-padding);
@@ -384,7 +389,12 @@
 }
 
 @mixin mdc-text-field-outlined-with-leading-icon_ {
-  @include mdc-text-field-icon-horizontal-position_(left, $mdc-text-field-icon-position, $mdc-text-field-icon-padding, $mdc-text-field-input-padding);
+  @include mdc-text-field-icon-horizontal-position_(
+    left,
+    $mdc-text-field-icon-position,
+    $mdc-text-field-icon-padding,
+    $mdc-text-field-input-padding
+  );
   @include mdc-notched-outline-floating-label-float-position($mdc-text-field-outlined-label-position-y, 32px);
   @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon);
 
