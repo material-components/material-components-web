@@ -23,6 +23,7 @@
 @import "@material/feature-targeting/functions";
 @import "@material/feature-targeting/mixins";
 @import "./variables";
+@import "./functions";
 
 @mixin mdc-theme-core-styles($query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
@@ -67,7 +68,17 @@
 // $edgeOptOut controls whether to feature-detect around Edge to avoid emitting CSS variables for it,
 // intended for use in cases where interactions with pseudo-element styles cause problems due to Edge bugs.
 @mixin mdc-theme-prop($property, $style, $important: false, $edgeOptOut: false) {
-  @if mdc-theme-is-valid-theme-prop-value_($style) {
+  @if mdc-theme-is-var-with-fallback_($style) {
+    @if $important {
+      #{$property}: mdc-theme-get-var-fallback_($style) !important;
+      /* @alternate */
+      #{$property}: mdc-theme-var_($style) !important;
+    } @else {
+      #{$property}: mdc-theme-get-var-fallback_($style);
+      /* @alternate */
+      #{$property}: mdc-theme-var_($style);
+    }
+  } @else if mdc-theme-is-valid-theme-prop-value_($style) {
     @if $important {
       #{$property}: $style !important;
     } @else {
