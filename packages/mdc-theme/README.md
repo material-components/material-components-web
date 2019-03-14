@@ -139,9 +139,9 @@ For example, the following Sass...
   color: red;
   color: var(--foo-color, red);
 }
-``
+```
 
-The above output CSS will apply the fallback color for all supported browsers (including IE11) while allowing for CSS custom property use as a progressive enhancement. This argument type is intended for clients who need custom color application outside of the existing theme properties.
+The above output CSS will apply the `fallback` field's value for all supported browsers (including IE11) while allowing for CSS custom property use as a progressive enhancement. Browsers like IE11 that do not support CSS custom properties will apply the `color: red;` and ignore the `color: var(--foo-color, red);`. This argument type is intended for clients who need custom color application outside of the existing theme properties.
 
 #### `mdc-theme-luminance($color)`
 
