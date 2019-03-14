@@ -301,7 +301,7 @@
   }
 
   @include mdc-feature-targets($feat-color) {
-    @include mdc-theme-prop(border-color, $color);
+    border-color: mdc-theme-prop-value($color);
   }
 }
 
