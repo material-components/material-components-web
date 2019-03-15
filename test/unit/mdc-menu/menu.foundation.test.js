@@ -122,13 +122,15 @@ test('handleKeydown arrowUp key focuses last menu item', () => {
   td.verify(mockAdapter.focusItemAtIndex(4));
 });
 
-test('handleKeydown arrowing through the menu when one of the menu item is already on focus does not shift the focus ' +
-  'to first or last menu items.', () => {
+test('handleKeydown arrowing through the menu when one of the list item is already focused menu does not shift the ' +
+  'focus', () => {
   const {foundation, mockAdapter} = setupTest();
 
   td.when(mockAdapter.isRootFocused()).thenReturn(false);
   foundation.handleKeydown({key: 'ArrowUp'});
   foundation.handleKeydown({key: 'ArrowDown'});
+
+  // List component handles navigation through list items.
   td.verify(mockAdapter.focusItemAtIndex(td.matchers.anything()), {times: 0});
 });
 
