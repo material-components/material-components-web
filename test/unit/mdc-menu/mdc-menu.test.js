@@ -443,7 +443,7 @@ test('adapter#notifySelected emits an event for a selected element', () => {
 
 test('adapter#getMenuItemCount returns the menu item count', () => {
   const {component} = setupTest();
-  assert.equal(component.items.length, component.getDefaultFoundation().adapter_.getMenuItemCount());
+  assert.equal(component.getDefaultFoundation().adapter_.getMenuItemCount(), component.items.length);
 });
 
 test('adapter#focusItemAtIndex focuses the menu item at given index', () => {
@@ -451,12 +451,12 @@ test('adapter#focusItemAtIndex focuses the menu item at given index', () => {
   document.body.appendChild(root);
 
   component.getDefaultFoundation().adapter_.focusItemAtIndex(2);
-  assert.equal(component.items[2], document.activeElement);
+  assert.equal(document.activeElement, component.items[2]);
 
   document.body.removeChild(root);
 });
 
-test('adapter#isRootFocused returns true if menu root is on focus', () => {
+test('adapter#isRootFocused returns true if menu root has focus', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
 
@@ -472,7 +472,7 @@ test('adapter#focusRoot focuses the menu root element', () => {
   document.body.appendChild(root);
 
   component.getDefaultFoundation().adapter_.focusRoot();
-  assert.equal(root, document.activeElement);
+  assert.equal(document.activeElement, root);
 
   document.body.removeChild(root);
 });

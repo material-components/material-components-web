@@ -89,7 +89,7 @@ export interface MDCMenuAdapter {
    */
   focusItemAtIndex(index: number): void;
 
-  /** @return Returns true if menu root element is on focus. */
+  /** @return Returns true if menu root element has focus. */
   isRootFocused(): boolean;
 
   /** Focuses the menu root element. */

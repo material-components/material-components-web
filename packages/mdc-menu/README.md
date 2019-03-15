@@ -196,7 +196,7 @@ Please see [Menu Button](https://www.w3.org/TR/wai-aria-practices/#menubutton) W
 
 With focus on the menu button:
 
-  * <kbd>Enter</kbd>, <kbd>Space</kbd>, <kbd>Down Arrow</kbd> & <kbd>Down Arrow</kbd> opens the menu and places focus on the first menu item.
+  * <kbd>Enter</kbd>, <kbd>Space</kbd> & <kbd>Down Arrow</kbd> opens the menu and places focus on the first menu item.
   * <kbd>Up Arrow</kbd> opens the menu and moves focus to the last menu item.
   * The focus is set to menu root element when clicked or touched. Menu handles the keyboard handling once it is opened and focused on root element.
 
@@ -248,7 +248,7 @@ Method Signature | Description
 `notifySelected(index: number) => void` | Emits a `MDCMenu:selected` event for the element at the `index` specified.
 `getMenuItemCount() => number` | Returns the menu item count.
 `focusItemAtIndex(index: number)` | Focuses the menu item at given index.
-`isRootFocused() => boolean` | Returns true if menu root element is on focus.
+`isRootFocused() => boolean` | Returns true if menu root element has focus.
 `focusRoot() => void` | Focuses the menu root element.
 
 ### `MDCMenuFoundation`

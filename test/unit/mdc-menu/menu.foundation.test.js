@@ -102,7 +102,7 @@ test('handleKeydown tab key causes the menu to close', () => {
   td.verify(mockAdapter.elementContainsClass(td.matchers.anything()), {times: 0});
 });
 
-test('handleKeydown arrowDown key causes the first menu item to be on focus', () => {
+test('handleKeydown arrowDown key focuses first menu item', () => {
   const {foundation, mockAdapter} = setupTest();
   const event = {key: 'ArrowDown', preventDefault: () => {}};
 
@@ -111,7 +111,7 @@ test('handleKeydown arrowDown key causes the first menu item to be on focus', ()
   td.verify(mockAdapter.focusItemAtIndex(0));
 });
 
-test('handleKeydown arrowUp key causes the last menu item to be on focus', () => {
+test('handleKeydown arrowUp key focuses last menu item', () => {
   const {foundation, mockAdapter} = setupTest();
   const event = {key: 'ArrowUp', preventDefault: () => {}};
 
@@ -132,7 +132,7 @@ test('handleKeydown arrowing through the menu when one of the menu item is alrea
   td.verify(mockAdapter.focusItemAtIndex(td.matchers.anything()), {times: 0});
 });
 
-test('handleItemAction item action causes the menu to close', () => {
+test('handleItemAction item action closes the menu', () => {
   const {foundation, mockAdapter} = setupTest();
   const itemEl = document.createElement('li');
 
@@ -142,7 +142,7 @@ test('handleItemAction item action causes the menu to close', () => {
   td.verify(mockAdapter.closeSurface(), {times: 1});
 });
 
-test('handleItemAction item action causes the menu to emit the selected event', () => {
+test('handleItemAction item action emits selected event', () => {
   const {foundation, mockAdapter} = setupTest();
   const itemEl = document.createElement('li');
 

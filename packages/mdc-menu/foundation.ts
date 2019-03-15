@@ -90,7 +90,9 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     const arrowUp = evt.key === 'ArrowUp' || evt.keyCode === 38;
     const arrowDown = evt.key === 'ArrowDown' || evt.keyCode === 40;
 
-    if (!this.adapter_.isRootFocused()) return;
+    if (!this.adapter_.isRootFocused()) {
+      return;
+    }
 
     if (arrowUp || arrowDown) {
       evt.preventDefault();
