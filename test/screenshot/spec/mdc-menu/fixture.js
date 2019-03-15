@@ -37,12 +37,21 @@ window.mdc.testFixture.fontsLoaded.then(() => {
     const arrowUp = evt.key === 'ArrowUp' || evt.keyCode === 38;
     const arrowDown = evt.key === 'ArrowDown' || evt.keyCode === 40;
     const isEnter = evt.key === 'Enter' || evt.keyCode === 13;
+    const isSpace = evt.key === 'Space' || evt.keyCode === 32;
 
-    if (arrowDown || isEnter) {
+    if (arrowUp || arrowDown || isEnter || isSpace) {
       evt.preventDefault();
+    } else {
+      return;
+    }
+
+    if (isSpace) {
+      menu.setDefaultFocusItemIndex(0);
+    } else if (isEnter) {
+      menu.setDefaultFocusItemIndex(0);
+    } else if (arrowDown) {
       menu.setDefaultFocusItemIndex(0);
     } else if (arrowUp) {
-      evt.preventDefault();
       menu.setDefaultFocusItemIndex(menu.items.length - 1);
     }
 
