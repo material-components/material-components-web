@@ -18,19 +18,32 @@ npm install material-components-web
 ```
 
 ### Including the Javascript
+ 
+### Import TypeScript Module
+
+```ts
+import * as mdc from 'material-components-web/index';
+const checkbox = new mdc.checkbox.MDCCheckbox(document.querySelector('.mdc-checkbox'));
+// OR
+import { checkbox } from 'material-components-web/index';
+const checkbox = new checkbox.MDCCheckbox(document.querySelector('.mdc-checkbox'));
+```
+
+> UMD JS bundles now available. import statement without index will resolve to UMD bundle.
+
+### Import UMD Module
 
 ```js
 import * as mdc from 'material-components-web';
-const checkbox = new mdc.checkbox.MDCCheckbox(document.querySelector('.mdc-checkbox'));
-// OR
 import { checkbox } from 'material-components-web';
-const checkbox = new checkbox.MDCCheckbox(document.querySelector('.mdc-checkbox'));
 ```
 
 > NOTE: Since switch is a reserved word in JS, switch is instead named `switchControl`. 
 
-> NOTE: Built CSS files as well as UMD JS bundles will be available as part of the package
-> post-alpha.
+> NOTE: Built CSS files will be available as part of the package post-alpha.
+
+
+
 
 ### Auto-initialization of components
 
