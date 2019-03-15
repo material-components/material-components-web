@@ -63,7 +63,10 @@
   $selector: if(&, "&.mdc-top-app-bar--short-collapsed", ".mdc-top-app-bar--short-collapsed");
 
   #{$selector} {
-    @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-top-app-bar-dense-row-height, $radius), $rtl-reflexive);
+    @include mdc-shape-radius(
+      mdc-shape-resolve-percentage-radius($mdc-top-app-bar-dense-row-height, $radius),
+      $rtl-reflexive
+    );
   }
 }
 

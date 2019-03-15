@@ -35,8 +35,6 @@ export interface MDCListAdapter {
 
   setAttributeForElementIndex(index: number, attribute: string, value: string): void;
 
-  removeAttributeForElementIndex(index: number, attribute: string): void;
-
   addClassForElementIndex(index: number, className: string): void;
 
   removeClassForElementIndex(index: number, className: string): void;

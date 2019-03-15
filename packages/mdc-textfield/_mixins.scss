@@ -41,7 +41,10 @@
 
   $masked-radius: mdc-shape-mask-radius($radius, 1 1 0 0);
 
-  @include mdc-shape-radius(mdc-shape-resolve-percentage-radius($mdc-text-field-height, $masked-radius), $rtl-reflexive);
+  @include mdc-shape-radius(
+    mdc-shape-resolve-percentage-radius($mdc-text-field-height, $masked-radius),
+    $rtl-reflexive
+  );
 }
 
 @mixin mdc-text-field-textarea-shape-radius($radius, $rtl-reflexive: false) {
@@ -184,7 +187,11 @@
 }
 
 @mixin mdc-text-field-dense_ {
-  @include mdc-floating-label-float-position($mdc-text-field-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
+  @include mdc-floating-label-float-position(
+    $mdc-text-field-dense-label-position-y,
+    0%,
+    $mdc-text-field-dense-label-scale
+  );
   @include mdc-floating-label-shake-animation(text-field-dense);
 
   .mdc-text-field__input {
@@ -255,7 +262,10 @@
         @include mdc-rtl-reflexive-position(left, ($mdc-text-field-icon-padding - $mdc-notched-outline-leading-width));
 
         &--float-above {
-          @include mdc-rtl-reflexive-position(left, ($mdc-text-field-icon-padding - $mdc-notched-outline-leading-width) + $mdc-notched-outline-padding);
+          @include mdc-rtl-reflexive-position(
+            left,
+            ($mdc-text-field-icon-padding - $mdc-notched-outline-leading-width) + $mdc-notched-outline-padding
+          );
         }
       }
     }
@@ -284,7 +294,11 @@
 }
 
 @mixin mdc-text-field-outlined-dense_ {
-  @include mdc-notched-outline-floating-label-float-position($mdc-text-field-outlined-dense-label-position-y, 0%, $mdc-text-field-dense-label-scale);
+  @include mdc-notched-outline-floating-label-float-position(
+    $mdc-text-field-outlined-dense-label-position-y,
+    0%,
+    $mdc-text-field-dense-label-scale
+  );
   @include mdc-floating-label-shake-animation(text-field-outlined-dense);
 
   height: 48px;
@@ -318,7 +332,7 @@
   .mdc-text-field__input {
     display: flex;
     padding: 12px 16px 14px;
-    border: none !important;  // FF adds unwanted border in HC mode on windows.
+    border: none !important; // FF adds unwanted border in HC mode on windows.
     background-color: transparent;
     z-index: 1;
   }
@@ -349,7 +363,12 @@
 // Icons
 
 @mixin mdc-text-field-with-leading-icon_ {
-  @include mdc-text-field-icon-horizontal-position_(left, $mdc-text-field-icon-position, $mdc-text-field-icon-padding);
+  @include mdc-text-field-icon-horizontal-position_(
+    left,
+    $mdc-text-field-icon-position,
+    $mdc-text-field-icon-padding,
+    $mdc-text-field-input-padding
+  );
 
   .mdc-floating-label {
     @include mdc-rtl-reflexive-position(left, $mdc-text-field-icon-padding);
@@ -357,7 +376,12 @@
 }
 
 @mixin mdc-text-field-dense-with-leading-icon_ {
-  @include mdc-text-field-icon-horizontal-position_(left, $mdc-text-field-dense-icon-position, $mdc-text-field-dense-icon-padding);
+  @include mdc-text-field-icon-horizontal-position_(
+    left,
+    $mdc-text-field-dense-icon-position,
+    $mdc-text-field-dense-icon-padding,
+    $mdc-text-field-input-padding
+  );
 
   .mdc-floating-label {
     @include mdc-rtl-reflexive-position(left, $mdc-text-field-dense-icon-padding);
@@ -365,7 +389,12 @@
 }
 
 @mixin mdc-text-field-outlined-with-leading-icon_ {
-  @include mdc-text-field-icon-horizontal-position_(left, $mdc-text-field-icon-position, $mdc-text-field-icon-padding);
+  @include mdc-text-field-icon-horizontal-position_(
+    left,
+    $mdc-text-field-icon-position,
+    $mdc-text-field-icon-padding,
+    $mdc-text-field-input-padding
+  );
   @include mdc-notched-outline-floating-label-float-position($mdc-text-field-outlined-label-position-y, 32px);
   @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon);
 
@@ -379,7 +408,11 @@
 }
 
 @mixin mdc-text-field-outlined-dense-with-leading-icon_ {
-  @include mdc-notched-outline-floating-label-float-position($mdc-text-field-outlined-dense-label-position-y, $mdc-text-field-outlined-dense-with-leading-icon-label-position-x, $mdc-text-field-dense-label-scale);
+  @include mdc-notched-outline-floating-label-float-position(
+    $mdc-text-field-outlined-dense-label-position-y,
+    $mdc-text-field-outlined-dense-with-leading-icon-label-position-x,
+    $mdc-text-field-dense-label-scale
+  );
   @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon-dense);
 
   @include mdc-rtl {
@@ -392,24 +425,49 @@
 }
 
 @mixin mdc-text-field-with-trailing-icon_ {
-  @include mdc-text-field-icon-horizontal-position_(right, $mdc-text-field-trailing-icon-position, $mdc-text-field-icon-padding);
+  @include mdc-text-field-icon-horizontal-position_(
+    right,
+    $mdc-text-field-trailing-icon-position,
+    $mdc-text-field-icon-padding,
+    $mdc-text-field-input-padding
+  );
 
   // Outlined uses 16px for text alignment when using a trailing icon.
   &.mdc-text-field--outlined {
-    @include mdc-text-field-icon-horizontal-position_(right, $mdc-text-field-icon-position, $mdc-text-field-icon-padding);
+    @include mdc-text-field-icon-horizontal-position_(
+      right,
+      $mdc-text-field-icon-position,
+      $mdc-text-field-icon-padding,
+      $mdc-text-field-input-padding
+    );
   }
 }
 
 @mixin mdc-text-field-dense-with-trailing-icon_ {
-  @include mdc-text-field-icon-horizontal-position_(right, $mdc-text-field-dense-icon-position, $mdc-text-field-dense-icon-padding);
+  @include mdc-text-field-icon-horizontal-position_(
+    right,
+    $mdc-text-field-dense-icon-position,
+    $mdc-text-field-dense-icon-padding,
+    $mdc-text-field-input-padding
+  );
 }
 
 @mixin mdc-text-field-with-both-icons_ {
-  @include mdc-text-field-icon-horizontal-position-two-icons_($mdc-text-field-icon-position, $mdc-text-field-icon-padding, $mdc-text-field-trailing-icon-position, $mdc-text-field-icon-padding);
+  @include mdc-text-field-icon-horizontal-position-two-icons_(
+    $mdc-text-field-icon-position,
+    $mdc-text-field-icon-padding,
+    $mdc-text-field-trailing-icon-position,
+    $mdc-text-field-icon-padding
+  );
 }
 
 @mixin mdc-text-field-dense-with-both-icons_ {
-  @include mdc-text-field-icon-horizontal-position-two-icons_($mdc-text-field-dense-icon-position, $mdc-text-field-dense-icon-padding, $mdc-text-field-dense-icon-position, $mdc-text-field-dense-icon-padding);
+  @include mdc-text-field-icon-horizontal-position-two-icons_(
+    $mdc-text-field-dense-icon-position,
+    $mdc-text-field-dense-icon-padding,
+    $mdc-text-field-dense-icon-position,
+    $mdc-text-field-dense-icon-padding
+  );
 }
 
 // Full Width

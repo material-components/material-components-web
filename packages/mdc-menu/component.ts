@@ -219,4 +219,11 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
     // tslint:enable:object-literal-sort-keys
     return new MDCMenuFoundation(adapter);
   }
+
+  private handleAfterOpened_() {
+    const list = this.items;
+    if (list.length > 0) {
+      (list[0] as HTMLElement).focus();
+    }
+  }
 }

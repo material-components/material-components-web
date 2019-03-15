@@ -138,12 +138,12 @@ export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapt
 
     if (this.isClosing()) {
       this.adapter_.removeClass(OPEN);
-      this.closed();
+      this.closed_();
       this.adapter_.restoreFocus();
       this.adapter_.notifyClose();
     } else {
       this.adapter_.focusActiveNavigationItem();
-      this.opened();
+      this.opened_();
       this.adapter_.notifyOpen();
     }
 
@@ -155,12 +155,12 @@ export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapt
   /**
    * Extension point for when drawer finishes open animation.
    */
-  protected opened() {} // tslint:disable-line:no-empty
+  protected opened_() {} // tslint:disable-line:no-empty
 
   /**
    * Extension point for when drawer finishes close animation.
    */
-  protected closed() {} // tslint:disable-line:no-empty
+  protected closed_() {} // tslint:disable-line:no-empty
 
   /**
    * Runs the given logic on the next animation frame, using setTimeout to factor in Firefox reflow behavior.

@@ -41,7 +41,8 @@ $mdc-switch-native-control-width:
   ($mdc-switch-tap-target-size - $mdc-switch-thumb-diameter) +
   $mdc-switch-thumb-offset * 2 !default;
 
-$mdc-switch-thumb-active-margin: $mdc-switch-track-width - $mdc-switch-thumb-diameter + $mdc-switch-thumb-offset * 2 !default;
+$mdc-switch-thumb-active-margin:
+  $mdc-switch-track-width - $mdc-switch-thumb-diameter + $mdc-switch-thumb-offset * 2 !default;
 
 $mdc-switch-toggled-off-thumb-color: mdc-theme-prop-value(surface) !default;
 $mdc-switch-toggled-off-track-color: mdc-theme-prop-value(on-surface) !default;

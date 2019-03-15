@@ -61,9 +61,7 @@ export class MDCGridListFoundation extends MDCFoundation<MDCGridListAdapter> {
   }
 
   alignCenter() {
-    if (this.resizeFrame_ !== 0) {
-      cancelAnimationFrame(this.resizeFrame_);
-    }
+    cancelAnimationFrame(this.resizeFrame_);
     this.resizeFrame_ = requestAnimationFrame(() => {
       this.alignCenter_();
       this.resizeFrame_ = 0;
