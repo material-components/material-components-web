@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 
+// stylelint-disable-next-line max-line-length
 // stylelint-disable selector-max-type, selector-max-universal, no-descending-specificity, declaration-property-unit-whitelist
 
 /*
@@ -32,7 +33,10 @@ html {
   box-sizing: border-box;
 }
 
-*, *:before, *:after { // stylelint-disable-line
+*,
+*::before,
+*::after {
+  // stylelint-disable-line
   box-sizing: inherit;
 }
 

@@ -30,7 +30,7 @@
 
 // Private mixins
 
-@mixin mdc-text-field-icon-horizontal-position_($position-property, $position, $padding) {
+@mixin mdc-text-field-icon-horizontal-position_($position-property, $position, $padding, $input-padding) {
   .mdc-text-field__icon {
     @include mdc-rtl-reflexive-position($position-property, $position);
   }
@@ -38,16 +38,21 @@
   // Move the input's position, to allow room for the icon
   @if ($position-property == left) {
     .mdc-text-field__input {
-      @include mdc-rtl-reflexive-property(padding, $padding /* left-value */, $position  /* right-value */);
+      @include mdc-rtl-reflexive-property(padding, $padding, $input-padding);
     }
   } @else {
     .mdc-text-field__input {
-      @include mdc-rtl-reflexive-property(padding, $position /* left-value */, $padding  /* right-value */);
+      @include mdc-rtl-reflexive-property(padding, $input-padding, $padding);
     }
   }
 }
 
-@mixin mdc-text-field-icon-horizontal-position-two-icons_($position-left, $padding-left, $position-right, $padding-right) {
+@mixin mdc-text-field-icon-horizontal-position-two-icons_(
+  $position-left,
+  $padding-left,
+  $position-right,
+  $padding-right
+) {
   .mdc-text-field__icon {
     @include mdc-rtl-reflexive(left, $position-left, right, auto);
 
@@ -65,7 +70,8 @@
 @mixin mdc-text-field-icon-color_($color, $styleSecondIcon: false) {
   .mdc-text-field__icon {
     @if ($styleSecondIcon) {
-      ~ .mdc-text-field__icon { // Selects the second instance of this class regardless of element type.
+      // Select the second instance of this class regardless of element type.
+      ~ .mdc-text-field__icon {
         @include mdc-theme-prop(color, $color);
       }
     } @else {
