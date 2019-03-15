@@ -64,3 +64,18 @@
 @function mdc-theme-contrast-tone($color) {
   @return if(mdc-theme-tone($color) == "dark", "light", "dark");
 }
+
+@function mdc-theme-is-var-with-fallback_($style) {
+  @return type-of($style) == "map" and map-has-key($style, "varname") and map-has-key($style, "fallback");
+}
+
+@function mdc-theme-get-var-fallback_($style) {
+  @return map-get($style, "fallback");
+}
+
+@function mdc-theme-var_($style) {
+  $var: map-get($style, "varname");
+  $fallback: mdc-theme-get-var-fallback_($style);
+
+  @return var(#{$var}, $fallback);
+}

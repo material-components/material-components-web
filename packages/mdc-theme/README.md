@@ -110,6 +110,38 @@ Property Name | Description
 `on-secondary` | A text/iconography color that is usable on top of secondary color
 `on-surface` | A text/iconography color that is usable on top of surface color
 
+#### `mdc-theme-prop` with CSS Custom Properties
+
+> **Note** The Sass map `$style` argument is intended *only* for use with color mixins.
+
+The `mdc-theme-prop` mixin also accepts a Sass map for the `$style` argument. The map must contain the following fields:
+
+Fields | Description
+--- | ---
+`varname` | The name of a CSS custom property
+`fallback` | A fallback value for the CSS custom property
+
+For example, the following Sass...
+
+```
+.foo {
+  @include mdc-theme-prop(color, (
+    varname: --foo-color,
+    fallback: red,
+  ));
+}
+```
+
+...will produce the following CSS...
+
+```
+.foo {
+  color: red;
+  color: var(--foo-color, red);
+}
+```
+
+The above output CSS will apply the `fallback` field's value for all supported browsers (including IE11) while allowing for CSS custom property use as a progressive enhancement. Browsers like IE11 that do not support CSS custom properties will apply the `color: red;` and ignore the `color: var(--foo-color, red);`. This argument type is intended for clients who need custom color application outside of the existing theme properties.
 
 #### `mdc-theme-luminance($color)`
 

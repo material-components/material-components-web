@@ -4,6 +4,8 @@ plugins:
   - stylelint-scss
   - stylelint-order
 rules:
+  # Wrap lines greater than 120 characters
+  max-line-length: 120
   # Override stylelint-config-standard - we only use CSS comments for annotations that don't warrant an empty line
   comment-empty-line-before: null
   # Follow best practices
