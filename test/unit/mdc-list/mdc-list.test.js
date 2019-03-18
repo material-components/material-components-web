@@ -438,3 +438,12 @@ test('adapter#notifyAction emits action event', () => {
 
   assert.deepEqual(detail, {index: 3});
 });
+
+test('adapter#isFocusInsideList returns true if focus is inside list root', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+  assert.isFalse(component.getDefaultFoundation().adapter_.isFocusInsideList());
+  root.querySelector('.mdc-list-item').focus();
+  assert.isTrue(component.getDefaultFoundation().adapter_.isFocusInsideList());
+  document.body.removeChild(root);
+});
