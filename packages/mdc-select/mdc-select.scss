@@ -64,6 +64,7 @@
   box-sizing: border-box;
   height: $mdc-select-height;
   overflow: hidden;
+  /* @alternate */
   will-change: opacity, transform, color;
 
   &__dropdown-icon {
