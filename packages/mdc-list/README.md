@@ -218,8 +218,8 @@ list.singleSelection = true;
 #### Pre-selected list item
 
 When rendering the list with a pre-selected list item, the list item that needs to be selected should contain
-the `mdc-list-item--selected` or `mdc-list-item--activated` class and `aria-selected="true"` attribute before
-creating the list.
+the `mdc-list-item--selected` or `mdc-list-item--activated` class before creating the list. Please see
+[Accessibility](#Accessibility) section for appropriate aria attributes.
 
 ```html
 <ul id="my-list" class="mdc-list" role="listbox">
@@ -424,6 +424,9 @@ Use `role="listbox"` only for single selection list, without this role the `ul` 
 Do not use `aria-orientation` attribute for standard list (i.e., `role="list"`), use component's `vertical` property to set the orientation
 to vertical.
 
+Single selection list supports `aria-selected` and `aria-current` attributes. List automatically detects the presence of these attributes
+and sets it to next selected list item based on which ARIA attribute you use (i.e., `aria-selected` or `aria-current`). Please see WAI-ARIA [aria-current](https://www.w3.org/TR/wai-aria-1.1/#aria-current) article for recommended usage and available attribute values.
+
 As the user navigates through the list, any `button` and `a` elements within the list will receive `tabindex="-1"` when
 the list item is not focused. When the list item receives focus, the aforementioned elements will receive
 `tabIndex="0"`. This allows for the user to tab through list item elements and then tab to the first element after the
@@ -502,10 +505,10 @@ these should also receive `tabIndex="-1"`.
 #### Setup in `singleSelection()`
 
 When implementing a component that will use the single selection variant, the HTML should be modified to include
-the `aria-selected` attribute, the `mdc-list-item--selected` or `mdc-list-item--activated` class should be added,
+the `mdc-list-item--selected` or `mdc-list-item--activated` class name,
 and the `tabindex` of the selected element should be `0`. The first list item should have the `tabindex` updated
 to `-1`. The foundation method `setSelectedIndex()` should be called with the initially selected element immediately
-after the foundation is instantiated.
+after the foundation is instantiated. Please see [Accessibility](#Accessibility) section for appropriate aria attributes.
 
 ```html
 <ul id="my-list" class="mdc-list">
@@ -529,6 +532,7 @@ Method Signature | Description
 `getListItemCount() => Number` | Returns the total number of list items (elements with `mdc-list-item` class) that are direct children of the `root_` element.
 `getFocusedElementIndex() => Number` | Returns the `index` value of the currently focused element.
 `getListItemIndex(ele: Element) => Number` | Returns the `index` value of the provided `ele` element.
+`getAttributeForElementIndex(index: number, attribute: string) => string | null` | Returns the attribute value of list item at given `index`.
 `setAttributeForElementIndex(index: Number, attr: String, value: String) => void` | Sets the `attr` attribute to `value` for the list item at `index`.
 `addClassForElementIndex(index: Number, className: String) => void` | Adds the `className` class to the list item at `index`.
 `removeClassForElementIndex(index: Number, className: String) => void` | Removes the `className` class to the list item at `index`.
