@@ -35,8 +35,8 @@
 
   // Customize the menu-surface and contained list to match the mdc-menu styles.
   .mdc-menu {
-    @include mdc-list-item-meta-ink-color(text-primary-on-background, $query);
-    @include mdc-list-item-graphic-ink-color(text-primary-on-background, $query);
+    @include mdc-list-item-meta-ink-color(on-surface, $query);
+    @include mdc-list-item-graphic-ink-color(on-surface, $query);
 
     @include mdc-feature-targets($feat-structure) {
       min-width: $mdc-menu-min-width;
