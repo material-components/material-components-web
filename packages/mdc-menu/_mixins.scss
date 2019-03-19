@@ -80,7 +80,7 @@
 
     .mdc-list-item {
       @include mdc-feature-targets($feat-structure) {
-        @include mdc-rtl-reflexive-box(padding, left, 56px);
+        @include mdc-rtl-reflexive-property(padding, 56px, 16px);
       }
     }
 
