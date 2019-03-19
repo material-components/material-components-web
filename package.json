@@ -40,7 +40,8 @@
     "test:unit": "karma start --single-run",
     "test:dependency": "./scripts/dependency-test.sh",
     "test:feature-targeting": "node test/scss/verify-feature-targeting.js",
-    "test:site": "npm run clean:site && ./scripts/site-generator-test.sh"
+    "test:site": "npm run clean:site && ./scripts/site-generator-test.sh",
+    "test:bundlesize": "bundlesize"
   },
   "devDependencies": {
     "@babel/parser": "^7.2.3",
@@ -62,6 +63,7 @@
     "babel-traverse": "^6.24.1",
     "babel-types": "^6.24.1",
     "bel": "^6.0.0",
+    "bundlesize": "^0.17.1",
     "camel-case": "^3.0.0",
     "chai": "^4.0.2",
     "chokidar": "^2.0.4",
@@ -221,5 +223,13 @@
     "hooks": {
       "commit-msg": "validate-commit-msg"
     }
-  }
+  },
+  "bundlesize": [
+    {
+      "path": "./build/**/*.js"
+    },
+    {
+      "path": "./build/**/*.css"
+    }
+  ]
 }

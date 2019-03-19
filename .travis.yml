@@ -41,6 +41,8 @@ matrix:
       - TEST_SUITE=build
     script:
       - if has_testable_files; then npm run dist; else log_untestable_files; fi
+    after_success:
+      - npm run test:bundlesize
 
   - node_js: 8
     env:
