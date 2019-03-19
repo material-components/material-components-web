@@ -28,7 +28,7 @@ import td from 'testdouble';
 
 import {MDCDrawer} from '../../../packages/mdc-drawer/index';
 import {strings, cssClasses} from '../../../packages/mdc-drawer/constants';
-import {MDCListFoundation} from '../../../packages/mdc-list/index';
+import {MDCList, MDCListFoundation} from '../../../packages/mdc-list/index';
 import {MDCDismissibleDrawerFoundation} from '../../../packages/mdc-drawer/dismissible/foundation';
 import {MDCModalDrawerFoundation} from '../../../packages/mdc-drawer/modal/foundation';
 
@@ -148,6 +148,11 @@ test('#set open false calls foundation.close', () => {
   const {component, mockFoundation} = setupTestWithMocks();
   component.open = false;
   td.verify(mockFoundation.close(), {times: 1});
+});
+
+test('#get list returns MDCList instance when DOM includes list', () => {
+  const {component} = setupTest();
+  assert.instanceOf(component.list, MDCList);
 });
 
 test('click event calls foundation.handleScrimClick method', () => {
