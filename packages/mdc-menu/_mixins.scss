@@ -24,6 +24,7 @@
 @import "@material/feature-targeting/mixins";
 @import "@material/rtl/mixins";
 @import "@material/list/mixins";
+@import "@material/list/variables";
 @import "@material/ripple/mixins";
 @import "./variables";
 
@@ -85,7 +86,7 @@
 
     .mdc-list-item {
       @include mdc-feature-targets($feat-structure) {
-        @include mdc-rtl-reflexive-box(padding, left, 56px);
+        @include mdc-rtl-reflexive-property(padding, 56px, $mdc-list-side-padding);
       }
     }
 
