@@ -140,7 +140,6 @@ Mixin | Description
 `mdc-tab-active-icon-color($color)`  | Customizes the color of the active tab's icon.
 `mdc-tab-parent-positioning` | Sets the positioning of the MDCTab's parent element so that `MDCTab.computeDimensions()` reports the same values in all browsers.
 `mdc-tab-fixed-width($width)` | Sets the fixed width of the tab. The tab will never be smaller than the given width.
-`mdc-tab-text-transform($transform)`  | Sets the `text-transform` CSS property of the tab element.
 
 ## `MDCTab` Properties and Methods
 
