@@ -2,6 +2,7 @@
 @import "@material/card/mixins";
 @import "@material/checkbox/mixins";
 @import "@material/elevation/mixins";
+@import "@material/fab/mixins";
 @import "@material/feature-targeting/functions";
 @import "@material/form-field/mixins";
 @import "@material/list/mixins";
@@ -48,6 +49,20 @@
   // Elevation
   @include mdc-elevation-core-styles($query: mdc-feature-any());
   @include mdc-elevation(0, $query: mdc-feature-any());
+
+  // FAB
+  @include mdc-fab-core-styles($query: mdc-feature-any());
+  @include mdc-fab-without-ripple($query: mdc-feature-any());
+  @include mdc-fab-ripple($query: mdc-feature-any());
+  @include mdc-fab-accessible(red, $query: mdc-feature-any());
+  @include mdc-fab-container-color(red, $query: mdc-feature-any());
+  @include mdc-fab-icon-size(0, $query: mdc-feature-any());
+  @include mdc-fab-ink-color(red, $query: mdc-feature-any());
+  @include mdc-fab-extended-fluid($query: mdc-feature-any());
+  @include mdc-fab-extended-padding(0, 0, $query: mdc-feature-any());
+  @include mdc-fab-extended-label-padding(0, $query: mdc-feature-any());
+  @include mdc-fab-shape-radius(0, $query: mdc-feature-any());
+  @include mdc-fab-extended-shape-radius(0, $rtl-reflexive: false, $query: mdc-feature-any());
 
   // Form Field
   @include mdc-form-field-core-styles($query: mdc-feature-any());
