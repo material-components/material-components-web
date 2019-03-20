@@ -1,5 +1,5 @@
 //
-// Copyright 2018 Google Inc.
+// Copyright 2019 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,51 +20,4 @@
 // THE SOFTWARE.
 //
 
-@import "@material/ripple/mixins";
-@import "@material/theme/mixins";
-
-// Public mixins
-
-@mixin mdc-tab-text-label-color($color) {
-  .mdc-tab__text-label {
-    @include mdc-theme-prop(color, $color);
-  }
-}
-
-@mixin mdc-tab-icon-color($color) {
-  .mdc-tab__icon {
-    @include mdc-theme-prop(color, $color);
-  }
-}
-
-@mixin mdc-tab-states-color($color) {
-  .mdc-tab__ripple {
-    @include mdc-states($color);
-  }
-}
-
-@mixin mdc-tab-ink-color($color) {
-  @include mdc-tab-icon-color($color);
-  @include mdc-tab-states-color($color);
-  @include mdc-tab-text-label-color($color);
-}
-
-@mixin mdc-tab-active-text-label-color($color) {
-  &.mdc-tab--active {
-    @include mdc-tab-text-label-color($color);
-  }
-}
-
-@mixin mdc-tab-active-icon-color($color) {
-  &.mdc-tab--active {
-    @include mdc-tab-icon-color($color);
-  }
-}
-
-@mixin mdc-tab-parent-positioning {
-  position: relative;
-}
-
-@mixin mdc-tab-fixed-width($width) {
-  flex: 0 1 $width;
-}
+$mdc-form-field-item-spacing: 4px !default;
