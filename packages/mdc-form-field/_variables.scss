@@ -1,5 +1,5 @@
 //
-// Copyright 2018 Google Inc.
+// Copyright 2019 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,10 +20,4 @@
 // THE SOFTWARE.
 //
 
-@import "@material/theme/mixins";
-@import "@material/theme/variables";
-
-$mdc-menu-ink-color: rgba(mdc-theme-prop-value(on-surface), mdc-theme-text-emphasis(high)) !default;
-
-$mdc-menu-width-base: 56px !default;
-$mdc-menu-min-width: 2 * $mdc-menu-width-base !default;
+$mdc-form-field-item-spacing: 4px !default;

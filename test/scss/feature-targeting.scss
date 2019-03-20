@@ -4,6 +4,7 @@
 @import "@material/dialog/mixins";
 @import "@material/elevation/mixins";
 @import "@material/feature-targeting/functions";
+@import "@material/form-field/mixins";
 @import "@material/list/mixins";
 @import "@material/menu-surface/mixins";
 @import "@material/menu/mixins";
@@ -60,6 +61,9 @@
   // Elevation
   @include mdc-elevation-core-styles($query: mdc-feature-any());
   @include mdc-elevation(0, $query: mdc-feature-any());
+
+  // Form Field
+  @include mdc-form-field-core-styles($query: mdc-feature-any());
 
   // List
   @include mdc-list-core-styles($query: mdc-feature-any());
