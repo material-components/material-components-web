@@ -1,6 +1,7 @@
 @import "@material/button/mixins";
 @import "@material/card/mixins";
 @import "@material/checkbox/mixins";
+@import "@material/dialog/mixins";
 @import "@material/elevation/mixins";
 @import "@material/feature-targeting/functions";
 @import "@material/list/mixins";
@@ -43,6 +44,18 @@
   @include mdc-checkbox-focus-indicator-color(red, $query: mdc-feature-any());
   @include mdc-checkbox-ripple($query: mdc-feature-any());
   @include mdc-checkbox-without-ripple($query: mdc-feature-any());
+
+  // Dialog
+  @include mdc-dialog-core-styles($query: mdc-feature-any());
+  @include mdc-dialog-container-fill-color(red, $query: mdc-feature-any());
+  @include mdc-dialog-scrim-color(red, $query: mdc-feature-any());
+  @include mdc-dialog-title-ink-color(red, $query: mdc-feature-any());
+  @include mdc-dialog-content-ink-color(red, $query: mdc-feature-any());
+  @include mdc-dialog-scroll-divider-color(red, $query: mdc-feature-any());
+  @include mdc-dialog-shape-radius(0, $query: mdc-feature-any());
+  @include mdc-dialog-min-width(0, $query: mdc-feature-any());
+  @include mdc-dialog-max-width(0, 0, $query: mdc-feature-any());
+  @include mdc-dialog-max-height(0, 0, $query: mdc-feature-any());
 
   // Elevation
   @include mdc-elevation-core-styles($query: mdc-feature-any());
