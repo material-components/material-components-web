@@ -49,6 +49,18 @@
   @include mdc-tab-text-label-color($color);
 }
 
+@mixin mdc-tab-active-text-label-color($color) {
+  &.mdc-tab--active .mdc-tab__text-label {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-tab-active-icon-color($color) {
+  &.mdc-tab--active .mdc-tab__icon {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
 @mixin mdc-tab-parent-positioning {
   position: relative;
 }
@@ -56,3 +68,8 @@
 @mixin mdc-tab-fixed-width($width) {
   flex: 0 1 $width;
 }
+
+@mixin mdc-tab-text-transform($transform) {
+  text-transform: $transform;
+}
+

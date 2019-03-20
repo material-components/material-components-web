@@ -48,11 +48,8 @@
     @include mdc-tab-text-label-color($material-color-blue-600);
     @include mdc-tab-icon-color($material-color-blue-600);
     @include mdc-tab-states-color($material-color-yellow-700);
-  }
-
-  .mdc-tab--active {
-    @include mdc-tab-text-label-color($material-color-blue-900);
-    @include mdc-tab-icon-color($material-color-blue-900);
+    @include mdc-tab-active-text-label-color($material-color-blue-900);
+    @include mdc-tab-active-icon-color($material-color-blue-900);
   }
 
   .mdc-tab-indicator {
