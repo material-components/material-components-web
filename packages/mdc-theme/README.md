@@ -11,6 +11,21 @@ path: /catalog/theme/
 
 The Material Design color system can be used to create a color scheme that reflects your brand or style.
 
+The colors in this module are derived from three theme colors:
+
+* Primary: the primary color used in your application, applies to a number of UI elements.
+* Secondary: the secondary color used in your application, applies to a number of UI elements. (Previously called "accent".)
+* Background: the background color for your application, aka the color on top of which your UI is drawn.
+* 
+and five text styles:
+
+* Primary: used for most text
+* Secondary: used for text which is lower in the visual hierarchy
+* Hint: used for text hints, such as those in text fields and labels
+* Disabled: used for text in disabled components and content
+* Icon: used for icons
+> A note about Primary and Secondary, don't confuse primary/secondary color with primary/secondary text. The former refers to the primary/secondary theme color that is used to establish a visual identity and color many parts of your application. The latter refers to the style of text that is most prominent (low opacity, high contrast), and used to display most content.
+
 ## Design & API Documentation
 
 <ul class="icon-list">
