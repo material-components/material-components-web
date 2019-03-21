@@ -29,8 +29,15 @@ function materialImporter(url) {
   return {file: url};
 }
 
+// Verify that the Sass compiles when we ask for all features.
+sass.renderSync({
+  file: path.join(__dirname, 'feature-targeting-select-all.scss'),
+  importer: materialImporter,
+});
+
+// Verify that the Sass produces no CSS when we ask for no features.
 const result = sass.renderSync({
-  file: path.join(__dirname, 'feature-targeting.scss'),
+  file: path.join(__dirname, 'feature-targeting-select-none.scss'),
   importer: materialImporter,
 });
 const css = result.css.toString('utf8').trim();
