@@ -38,11 +38,11 @@ import * as mdc from 'material-components-web';
 import { checkbox } from 'material-components-web';
 ```
 
+> See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
+
 > NOTE: Since switch is a reserved word in JS, switch is instead named `switchControl`. 
 
 > NOTE: Built CSS files will be available as part of the package post-alpha.
-
-
 
 
 ### Auto-initialization of components
