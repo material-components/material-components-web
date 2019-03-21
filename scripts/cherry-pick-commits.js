@@ -187,13 +187,22 @@ async function run() {
   // non-patch commits from master between the last .0 release and the previous patch release.
   const results = await attemptCherryPicks(tag, list, mode);
 
-  console.log('');
-  console.log('Test-running build...');
-  const buildSucceeded = checkSpawnSuccess('npm run build');
+  let buildSucceeded;
+  let testsSucceeded;
+  const skipTests = args.includes('--skip-tests');
 
-  console.log('');
-  console.log('Running unit tests...');
-  const testsSucceeded = checkSpawnSuccess('npm run test:unit');
+  if (skipTests) {
+    console.log('Skipping npm run build and npm run test:unit.');
+    console.log('You should _really_ run these unless you\'re just testing this script.');
+  } else {
+    console.log('');
+    console.log('Test-running build...');
+    buildSucceeded = checkSpawnSuccess('npm run build');
+
+    console.log('');
+    console.log('Running unit tests...');
+    testsSucceeded = checkSpawnSuccess('npm run test:unit');
+  }
 
   console.log('');
   console.log('Finished!');
@@ -215,9 +224,11 @@ async function run() {
     console.log('(git cherry-pick -x <hash>, then resolve conflicts, then git cherry-pick --continue)');
   }
 
-  console.log('');
-  console.log(`Build status: ${buildSucceeded ? 'Success!' : 'FAIL (see above for errors)'}`);
-  console.log(`Unit tests status: ${testsSucceeded ? 'Success!' : 'FAIL (see above for failures)'}`);
+  if (!skipTests) {
+    console.log('');
+    console.log(`Build status: ${buildSucceeded ? 'Success!' : 'FAIL (see above for errors)'}`);
+    console.log(`Unit tests status: ${testsSucceeded ? 'Success!' : 'FAIL (see above for failures)'}`);
+  }
 
   console.log('');
   console.log('Please review `git log` to make sure there are no commits dependent on omitted feature commits.');
