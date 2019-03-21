@@ -54,8 +54,10 @@ const logFormat = {
 // Use a splitter that is very unlikely to be included in commit descriptions, to be used with the above format
 const logSplitter = ';;;';
 
-// Resolves to the most recent non-pre-release git tag.
-async function getMostRecentTag(mode) {
+// Resolves to the appropriate git tag to serve as the base for a minor or patch release.
+// The base for minor releases is the latest minor release (*.0).
+// The base for patch releases is the latest patch release.
+async function getBaseTag(mode) {
   const tags = await simpleGit.tags();
   // Filter old independent-versioned tags and pre-releases.
   // If cherry-picking for a minor release, ignore patch releases to work from the latest major or minor release.
@@ -176,7 +178,7 @@ async function run() {
   }
   const mode = modeArg.slice(2);
 
-  const tag = args.find((arg) => arg[0] === 'v') || await getMostRecentTag(mode);
+  const tag = args.find((arg) => arg[0] === 'v') || await getBaseTag(mode);
   const isInHistory = await isCommitInHistory(tag);
   const commit = isInHistory ? tag : await resolveCherryPick(tag);
   const list = await getCommitsAfter(commit);
