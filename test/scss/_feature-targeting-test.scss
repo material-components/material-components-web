@@ -1,6 +1,7 @@
 @import "@material/button/mixins";
 @import "@material/card/mixins";
 @import "@material/checkbox/mixins";
+@import "@material/dialog/mixins";
 @import "@material/elevation/mixins";
 @import "@material/form-field/mixins";
 @import "@material/list/mixins";
@@ -44,6 +45,18 @@
     @include mdc-checkbox-focus-indicator-color(red, $query: $query);
     @include mdc-checkbox-ripple($query: $query);
     @include mdc-checkbox-without-ripple($query: $query);
+
+    // Dialog
+    @include mdc-dialog-core-styles($query: $query);
+    @include mdc-dialog-container-fill-color(red, $query: $query);
+    @include mdc-dialog-scrim-color(red, $query: $query);
+    @include mdc-dialog-title-ink-color(red, $query: $query);
+    @include mdc-dialog-content-ink-color(red, $query: $query);
+    @include mdc-dialog-scroll-divider-color(red, $query: $query);
+    @include mdc-dialog-shape-radius(0, $query: $query);
+    @include mdc-dialog-min-width(0, $query: $query);
+    @include mdc-dialog-max-width(0, 0, $query: $query);
+    @include mdc-dialog-max-height(0, 0, $query: $query);
 
     // Elevation
     @include mdc-elevation-core-styles($query: $query);
