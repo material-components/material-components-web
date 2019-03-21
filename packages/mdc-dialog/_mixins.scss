@@ -20,97 +20,415 @@
 // THE SOFTWARE.
 //
 
+@import "@material/animation/functions";
+@import "@material/elevation/mixins";
+@import "@material/feature-targeting/functions";
+@import "@material/feature-targeting/mixins";
+@import "@material/rtl/mixins";
 @import "@material/shape/mixins";
 @import "@material/theme/mixins";
 @import "@material/theme/variables"; // for mdc-theme-prop-value
+@import "@material/typography/mixins";
+@import "./variables";
 
-//
-// Public
-//
+@mixin mdc-dialog-core-styles($query: mdc-feature-all()) {
+  $feat-animation: mdc-feature-create-target($query, animation);
+  $feat-structure: mdc-feature-create-target($query, structure);
 
-@mixin mdc-dialog-container-fill-color($color) {
-  .mdc-dialog__surface {
-    @include mdc-theme-prop(background-color, $color);
-  }
-}
+  // postcss-bem-linter: define dialog
 
-@mixin mdc-dialog-scrim-color($color, $opacity: $mdc-dialog-scrim-opacity) {
+  .mdc-dialog,
   .mdc-dialog__scrim {
-    background-color: rgba(mdc-theme-prop-value($color), $opacity);
+    @include mdc-feature-targets($feat-structure) {
+      position: fixed;
+      top: 0;
+      left: 0;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+    }
   }
-}
 
-@mixin mdc-dialog-title-ink-color($color, $opacity: $mdc-dialog-title-ink-opacity) {
+  .mdc-dialog {
+    @include mdc-dialog-container-fill-color(surface, $query: $query);
+    @include mdc-dialog-scrim-color($mdc-dialog-scrim-color, $query: $query);
+    @include mdc-dialog-title-ink-color($mdc-dialog-title-ink-color, $query: $query);
+    @include mdc-dialog-content-ink-color($mdc-dialog-content-ink-color, $query: $query);
+    @include mdc-dialog-scroll-divider-color($mdc-dialog-scroll-divider-color, $query: $query);
+    @include mdc-dialog-min-width($mdc-dialog-min-width, $query: $query);
+    @include mdc-dialog-max-width($mdc-dialog-max-width, $mdc-dialog-margin, $query: $query);
+    @include mdc-dialog-max-height(null, $mdc-dialog-margin, $query: $query);
+    @include mdc-dialog-shape-radius(medium, $query: $query);
+
+    @include mdc-feature-targets($feat-structure) {
+      // Use `display: none` instead of `visibility: hidden` to avoid recalculating layout when the dialog is closed.
+      display: none;
+      z-index: $mdc-dialog-z-index;
+    }
+  }
+
+  .mdc-dialog__scrim {
+    @include mdc-feature-targets($feat-structure) {
+      opacity: 0;
+      z-index: -1;
+    }
+  }
+
+  // This wrapper element is needed to make max-height work in IE 11.
+  // See https://github.com/philipwalton/flexbugs/issues/216
+  .mdc-dialog__container {
+    @include mdc-feature-targets($feat-structure) {
+      display: flex;
+      flex-direction: row; // IE 11
+      justify-content: space-around; // Ensure Safari centers the dialog (because it treats the container's width oddly)
+      box-sizing: border-box;
+      transform: scale(.8);
+      opacity: 0;
+    }
+  }
+
+  .mdc-dialog__surface {
+    @include mdc-elevation(24, $query: $query);
+
+    @include mdc-feature-targets($feat-structure) {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 0; // IE 11
+      flex-shrink: 0; // IE 11
+      box-sizing: border-box;
+      max-width: 100%; // IE 11
+      max-height: 100%; // IE 11
+
+      @include mdc-rtl(".mdc-dialog") {
+        text-align: right;
+      }
+    }
+  }
+
   .mdc-dialog__title {
-    color: rgba(mdc-theme-prop-value($color), $opacity);
-  }
-}
+    @include mdc-typography-baseline-top(40px, $query: $query);
+    @include mdc-typography(headline6, $query: $query);
 
-@mixin mdc-dialog-content-ink-color($color, $opacity: $mdc-dialog-content-ink-opacity) {
+    @include mdc-feature-targets($feat-structure) {
+      display: block;
+      position: relative;
+      flex-shrink: 0;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0 24px $mdc-dialog-title-bottom-padding;
+      border-bottom: 1px solid transparent;
+
+      @include mdc-rtl(".mdc-dialog") {
+        text-align: right;
+      }
+    }
+  }
+
+  // stylelint-disable-next-line plugin/selector-bem-pattern
+  .mdc-dialog--scrollable .mdc-dialog__title {
+    @include mdc-feature-targets($feat-structure) {
+      // Adjust bottom padding to make title height align to spec when divider is present.
+      // (Titles for alert dialogs w/o dividers align based on text baseline. All spec values are divisible by 4.)
+      padding-bottom: $mdc-dialog-title-bottom-padding + 6px;
+    }
+  }
+
   .mdc-dialog__content {
-    color: rgba(mdc-theme-prop-value($color), $opacity);
-  }
-}
+    @include mdc-typography(body1, $query: $query);
 
-@mixin mdc-dialog-scroll-divider-color($color, $opacity: $mdc-dialog-scroll-divider-opacity) {
-  &.mdc-dialog--scrollable .mdc-dialog__title,
-  &.mdc-dialog--scrollable .mdc-dialog__actions {
-    border-color: rgba(mdc-theme-prop-value($color), $opacity);
-  }
-}
+    @include mdc-feature-targets($feat-structure) {
+      flex-grow: 1;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 20px 24px; // Note: the top padding is only 20px for dialogs without titles; see below for override
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+    }
 
-@mixin mdc-dialog-shape-radius($radius, $rtl-reflexive: false) {
-  .mdc-dialog__surface {
-    @include mdc-shape-radius($radius, $rtl-reflexive);
-  }
-}
-
-@mixin mdc-dialog-min-width($min-width) {
-  .mdc-dialog__surface {
-    min-width: $min-width;
-  }
-}
-
-@mixin mdc-dialog-max-width($max-width, $margin) {
-  $max-size-calc-expr: calc(100vw - #{$margin * 2});
-
-  .mdc-dialog__surface {
-    @if $max-width {
-      $max-width-breakpoint: $max-width + ($margin * 2);
-
-      // Fit snugly within the viewport at smaller screen sizes.
-      @media (max-width: $max-width-breakpoint) {
-        max-width: $max-size-calc-expr;
+    // The content element already has top/bottom padding, so we need to suppress margins on its first/last children.
+    > :first-child {
+      @include mdc-feature-targets($feat-structure) {
+        margin-top: 0;
       }
+    }
 
-      // Once the screen gets big enough, apply a fixed maximum width.
-      @media (min-width: $max-width-breakpoint) {
-        max-width: $max-width;
+    // The content element already has top/bottom padding, so we need to suppress margins on its first/last children.
+    > :last-child {
+      @include mdc-feature-targets($feat-structure) {
+        margin-bottom: 0;
       }
-    } @else {
-      max-width: $max-size-calc-expr;
+    }
+  }
+
+  // stylelint-disable-next-line plugin/selector-bem-pattern
+  .mdc-dialog__title + .mdc-dialog__content {
+    @include mdc-feature-targets($feat-structure) {
+      // Eliminate padding to bring as close to spec as possible, relying on title padding.
+      // (Spec seems inconsistent RE title/body spacing on alert vs. simple variants.)
+      padding-top: 0;
+    }
+  }
+
+  // stylelint-disable-next-line plugin/selector-bem-pattern
+  .mdc-dialog--scrollable .mdc-dialog__content {
+    @include mdc-feature-targets($feat-structure) {
+      // Reduce and equalize vertical paddings when scrollable dividers are present
+      // (Note: this is intentionally after title + content to take precedence)
+      padding-top: 8px;
+      padding-bottom: 8px;
+    }
+  }
+
+  // stylelint-disable-next-line plugin/selector-bem-pattern
+  .mdc-dialog__content .mdc-list:first-child:last-child {
+    @include mdc-feature-targets($feat-structure) {
+      // Override default .mdc-list padding for content consisting exclusively of a MDC List
+      padding: 6px 0 0; // Top padding balances with title height
+    }
+  }
+
+  // stylelint-disable-next-line plugin/selector-bem-pattern, selector-max-specificity
+  .mdc-dialog--scrollable .mdc-dialog__content .mdc-list:first-child:last-child {
+    @include mdc-feature-targets($feat-structure) {
+      // Override default .mdc-list padding for content consisting exclusively of a MDC List
+      padding: 0;
+    }
+  }
+
+  .mdc-dialog__actions {
+    @include mdc-feature-targets($feat-structure) {
+      display: flex;
+      position: relative;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      box-sizing: border-box;
+      min-height: 52px;
+      margin: 0;
+      padding: 8px;
+      border-top: 1px solid transparent;
+    }
+
+    .mdc-dialog--stacked & {
+      @include mdc-feature-targets($feat-structure) {
+        flex-direction: column;
+        align-items: flex-end;
+      }
+    }
+  }
+
+  .mdc-dialog__button {
+    @include mdc-feature-targets($feat-structure) {
+      @include mdc-rtl-reflexive-box(margin, left, 8px);
+    }
+
+    &:first-child {
+      @include mdc-feature-targets($feat-structure) {
+        @include mdc-rtl-reflexive-box(margin, left, 0);
+      }
+    }
+
+    @include mdc-feature-targets($feat-structure) {
+      max-width: 100%; // Prevent long text from overflowing parent element in IE 11
+      text-align: right;
+
+      @include mdc-rtl(".mdc-dialog") {
+        text-align: left;
+      }
+    }
+
+    .mdc-dialog--stacked &:not(:first-child) {
+      @include mdc-feature-targets($feat-structure) {
+        margin-top: 12px;
+      }
+    }
+  }
+
+  .mdc-dialog--open,
+  .mdc-dialog--opening,
+  .mdc-dialog--closing {
+    @include mdc-feature-targets($feat-structure) {
+      display: flex;
+    }
+  }
+
+  .mdc-dialog--opening {
+    .mdc-dialog__scrim {
+      @include mdc-feature-targets($feat-animation) {
+        transition: opacity 150ms linear;
+      }
+    }
+
+    .mdc-dialog__container {
+      @include mdc-feature-targets($feat-animation) {
+        transition: opacity 75ms linear, mdc-animation-enter(transform, 150ms);
+      }
+    }
+  }
+
+  .mdc-dialog--closing {
+    .mdc-dialog__scrim,
+    .mdc-dialog__container {
+      @include mdc-feature-targets($feat-animation) {
+        transition: opacity 75ms linear;
+      }
+    }
+
+    .mdc-dialog__container {
+      @include mdc-feature-targets($feat-structure) {
+        // Dialog container scales up while opening, but should remain scaled up while closing
+        transform: scale(1);
+      }
+    }
+  }
+
+  .mdc-dialog--open {
+    .mdc-dialog__scrim {
+      @include mdc-feature-targets($feat-structure) {
+        opacity: 1;
+      }
+    }
+
+    .mdc-dialog__container {
+      @include mdc-feature-targets($feat-structure) {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+  }
+
+  // postcss-bem-linter: end
+
+  // Class applied to body while dialog is open, to prevent scrolling behind the dialog
+  .mdc-dialog-scroll-lock {
+    @include mdc-feature-targets($feat-structure) {
+      overflow: hidden;
     }
   }
 }
 
-@mixin mdc-dialog-max-height($max-height, $margin) {
+@mixin mdc-dialog-container-fill-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  .mdc-dialog__surface {
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(background-color, $color);
+    }
+  }
+}
+
+@mixin mdc-dialog-scrim-color($color, $opacity: $mdc-dialog-scrim-opacity, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  .mdc-dialog__scrim {
+    @include mdc-feature-targets($feat-color) {
+      background-color: rgba(mdc-theme-prop-value($color), $opacity);
+    }
+  }
+}
+
+@mixin mdc-dialog-title-ink-color($color, $opacity: $mdc-dialog-title-ink-opacity, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  .mdc-dialog__title {
+    @include mdc-feature-targets($feat-color) {
+      color: rgba(mdc-theme-prop-value($color), $opacity);
+    }
+  }
+}
+
+@mixin mdc-dialog-content-ink-color($color, $opacity: $mdc-dialog-content-ink-opacity, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  .mdc-dialog__content {
+    @include mdc-feature-targets($feat-color) {
+      color: rgba(mdc-theme-prop-value($color), $opacity);
+    }
+  }
+}
+
+@mixin mdc-dialog-scroll-divider-color(
+  $color,
+  $opacity: $mdc-dialog-scroll-divider-opacity,
+  $query: mdc-feature-all()
+) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  &.mdc-dialog--scrollable .mdc-dialog__title,
+  &.mdc-dialog--scrollable .mdc-dialog__actions {
+    @include mdc-feature-targets($feat-color) {
+      border-color: rgba(mdc-theme-prop-value($color), $opacity);
+    }
+  }
+}
+
+@mixin mdc-dialog-shape-radius($radius, $rtl-reflexive: false, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  .mdc-dialog__surface {
+    @include mdc-shape-radius($radius, $rtl-reflexive, $query: $query);
+  }
+}
+
+@mixin mdc-dialog-min-width($min-width, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  .mdc-dialog__surface {
+    @include mdc-feature-targets($feat-structure) {
+      min-width: $min-width;
+    }
+  }
+}
+
+@mixin mdc-dialog-max-width($max-width, $margin, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+  $max-size-calc-expr: calc(100vw - #{$margin * 2});
+
+  .mdc-dialog__surface {
+    @include mdc-feature-targets($feat-structure) {
+      @if $max-width {
+        $max-width-breakpoint: $max-width + ($margin * 2);
+
+        // Fit snugly within the viewport at smaller screen sizes.
+        @media (max-width: $max-width-breakpoint) {
+          max-width: $max-size-calc-expr;
+        }
+
+        // Once the screen gets big enough, apply a fixed maximum width.
+        @media (min-width: $max-width-breakpoint) {
+          max-width: $max-width;
+        }
+      } @else {
+        max-width: $max-size-calc-expr;
+      }
+    }
+  }
+}
+
+@mixin mdc-dialog-max-height($max-height, $margin, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
   $max-size-calc-expr: calc(100vh - #{$margin * 2});
 
   .mdc-dialog__surface {
-    @if $max-height {
-      $max-height-breakpoint: $max-height + ($margin * 2);
+    @include mdc-feature-targets($feat-structure) {
+      @if $max-height {
+        $max-height-breakpoint: $max-height + ($margin * 2);
 
-      // Fit snugly within the viewport at smaller screen sizes.
-      @media (max-height: $max-height-breakpoint) {
+        // Fit snugly within the viewport at smaller screen sizes.
+        @media (max-height: $max-height-breakpoint) {
+          max-height: $max-size-calc-expr;
+        }
+
+        // Once the screen gets big enough, apply a fixed maximum height.
+        @media (min-height: $max-height-breakpoint) {
+          max-height: $max-height;
+        }
+      } @else {
         max-height: $max-size-calc-expr;
       }
-
-      // Once the screen gets big enough, apply a fixed maximum height.
-      @media (min-height: $max-height-breakpoint) {
-        max-height: $max-height;
-      }
-    } @else {
-      max-height: $max-size-calc-expr;
     }
   }
 }
