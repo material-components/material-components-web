@@ -34,4 +34,8 @@ const strings = {
   SELECTED_EVENT: 'MDCMenu:selected',
 };
 
-export {cssClasses, strings};
+const numbers = {
+  FOCUS_ROOT_INDEX: -1,
+};
+
+export {cssClasses, strings, numbers};

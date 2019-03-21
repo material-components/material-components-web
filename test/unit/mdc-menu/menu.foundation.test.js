@@ -29,6 +29,7 @@ import {install as installClock} from '../helpers/clock';
 import {MDCMenuFoundation} from '../../../packages/mdc-menu/foundation';
 import {MDCListFoundation} from '../../../packages/mdc-list/foundation';
 import {cssClasses, strings} from '../../../packages/mdc-menu/constants';
+import {numbers as menuNumbers} from '../../../packages/mdc-menu/constants';
 import {numbers} from '../../../packages/mdc-menu-surface/constants';
 
 function setupTest() {
@@ -45,7 +46,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCMenuFoundation, [
     'addClassToElementAtIndex', 'removeClassFromElementAtIndex', 'addAttributeToElementAtIndex',
     'removeAttributeFromElementAtIndex', 'elementContainsClass', 'closeSurface', 'getElementIndex', 'getParentElement',
-    'getSelectedElementIndex', 'notifySelected',
+    'getSelectedElementIndex', 'notifySelected', 'getMenuItemCount', 'focusItemAtIndex', 'isRootFocused', 'focusRoot',
   ]);
 });
 
@@ -55,6 +56,10 @@ test('exports strings', () => {
 
 test('exports cssClasses', () => {
   assert.deepEqual(MDCMenuFoundation.cssClasses, cssClasses);
+});
+
+test('exports numbers', () => {
+  assert.deepEqual(MDCMenuFoundation.numbers, menuNumbers);
 });
 
 test('destroy does not throw error', () => {
@@ -97,7 +102,39 @@ test('handleKeydown tab key causes the menu to close', () => {
   td.verify(mockAdapter.elementContainsClass(td.matchers.anything()), {times: 0});
 });
 
-test('handleItemAction item action causes the menu to close', () => {
+test('handleKeydown arrowDown key focuses first menu item', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const event = {key: 'ArrowDown', preventDefault: () => {}};
+
+  td.when(mockAdapter.isRootFocused()).thenReturn(true);
+  foundation.handleKeydown(event);
+  td.verify(mockAdapter.focusItemAtIndex(0));
+});
+
+test('handleKeydown arrowUp key focuses last menu item', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const event = {key: 'ArrowUp', preventDefault: () => {}};
+
+  td.when(mockAdapter.isRootFocused()).thenReturn(true);
+  td.when(mockAdapter.getMenuItemCount()).thenReturn(5);
+
+  foundation.handleKeydown(event);
+  td.verify(mockAdapter.focusItemAtIndex(4));
+});
+
+test('handleKeydown arrowing through the menu when one of the list item is already focused menu does not shift the ' +
+  'focus', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.isRootFocused()).thenReturn(false);
+  foundation.handleKeydown({key: 'ArrowUp'});
+  foundation.handleKeydown({key: 'ArrowDown'});
+
+  // List component handles navigation through list items.
+  td.verify(mockAdapter.focusItemAtIndex(td.matchers.anything()), {times: 0});
+});
+
+test('handleItemAction item action closes the menu', () => {
   const {foundation, mockAdapter} = setupTest();
   const itemEl = document.createElement('li');
 
@@ -107,7 +144,7 @@ test('handleItemAction item action causes the menu to close', () => {
   td.verify(mockAdapter.closeSurface(), {times: 1});
 });
 
-test('handleItemAction item action causes the menu to emit the selected event', () => {
+test('handleItemAction item action emits selected event', () => {
   const {foundation, mockAdapter} = setupTest();
   const itemEl = document.createElement('li');
 
@@ -217,6 +254,40 @@ test('handleItemAction item action event inside of a child element of a selectio
     {times: 0});
   td.verify(mockAdapter.addClassToElementAtIndex(td.matchers.isA(Number), cssClasses.MENU_SELECTED_LIST_ITEM),
     {times: 0});
+});
+
+test('handleMenuSurfaceOpened menu focuses the root element by default on menu surface opened', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getMenuItemCount()).thenReturn(5);
+  foundation.handleMenuSurfaceOpened();
+  td.verify(mockAdapter.focusRoot());
+});
+
+test('handleMenuSurfaceOpened menu focuses the first menu item when default focus item index is set to 0 on menu ' +
+    'surface opened', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getMenuItemCount()).thenReturn(5);
+  foundation.setDefaultFocusItemIndex(0);
+  foundation.handleMenuSurfaceOpened();
+  td.verify(mockAdapter.focusItemAtIndex(0));
+});
+
+test('setDefaultFocusItemIndex focuses the root element on menu open when set to numbers.FOCUS_ROOT_INDEX', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getMenuItemCount()).thenReturn(5);
+  foundation.setDefaultFocusItemIndex(menuNumbers.FOCUS_ROOT_INDEX);
+  foundation.handleMenuSurfaceOpened();
+  td.verify(mockAdapter.focusRoot());
+});
+
+test('setDefaultFocusItemIndex throws error when focus item index is out of range', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getMenuItemCount()).thenReturn(5);
+  assert.throws(() => foundation.setDefaultFocusItemIndex(99));
 });
 
 // Item Action

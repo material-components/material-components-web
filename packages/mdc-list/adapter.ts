@@ -29,6 +29,11 @@
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
 export interface MDCListAdapter {
+  /**
+   * Returns the attribute value of list item at given `index`.
+   */
+  getAttributeForElementIndex(index: number, attr: string): string | null;
+
   getListItemCount(): number;
 
   getFocusedElementIndex(): number;

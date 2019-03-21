@@ -155,11 +155,14 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt);
     this.handleMenuSelected_ = (evtData) => this.selectedIndex = evtData.detail.index;
     this.handleMenuOpened_ = () => {
-      // Menu should open to the last selected element.
-      if (this.selectedIndex >= 0) {
-        const selectedItemEl = this.menu_!.items[this.selectedIndex] as HTMLElement;
-        selectedItemEl.focus();
+      if (this.menu_!.items.length === 0) {
+        return;
       }
+
+      // Menu should open to the last selected element, should open to first menu item otherwise.
+      const focusItemIndex = this.selectedIndex >= 0 ? this.selectedIndex : 0;
+      const focusItemEl = this.menu_!.items[focusItemIndex] as HTMLElement;
+      focusItemEl.focus();
     };
     this.handleMenuClosed_ = () => {
       // isMenuOpen_ is used to track the state of the menu opening or closing since the menu.open function
