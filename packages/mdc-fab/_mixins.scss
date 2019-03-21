@@ -92,19 +92,16 @@
 }
 
 @mixin mdc-fab-accessible($container-color, $query: mdc-feature-all()) {
-  $feat-color: mdc-feature-create-target($query, color);
-  $fill-tone: mdc-theme-tone($container-color);
-
   @include mdc-fab-container-color($container-color, $query: $query);
 
-  @include mdc-feature-targets($feat-color) {
-    @if ($fill-tone == "dark") {
-      @include mdc-fab-ink-color(text-primary-on-dark, $query: $query);
-      @include mdc-states(text-primary-on-dark, $query: $query);
-    } @else {
-      @include mdc-fab-ink-color(text-primary-on-light, $query: $query);
-      @include mdc-states(text-primary-on-light, $query: $query);
-    }
+  $fill-tone: mdc-theme-tone($container-color);
+
+  @if ($fill-tone == "dark") {
+    @include mdc-fab-ink-color(text-primary-on-dark, $query: $query);
+    @include mdc-states(text-primary-on-dark, $query: $query);
+  } @else {
+    @include mdc-fab-ink-color(text-primary-on-light, $query: $query);
+    @include mdc-states(text-primary-on-light, $query: $query);
   }
 }
 
