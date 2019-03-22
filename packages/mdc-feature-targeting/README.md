@@ -40,13 +40,17 @@ Authoring component styles:
 Consuming component styles:
 
 ```scss
+@import "@material/feature-targeting/functions";
 @import "my-component-mixins";
 
 // To include all styles (using the default of mdc-feature-all() defined above):
 @include my-component-core-styles;
 
 // Or, to include a specific subset of styles:
-@include my-component-core-styles(mdc-feature-any(structure));
+@include my-component-core-styles(structure);
+@include my-component-core-styles(mdc-feature-any(color, typography));
+// The above two @includes and the following @include would produce equivalent results:
+@include my-component-core-styles(mdc-feature-without(animation));
 ```
 
 ## Sass Mixins and Functions
