@@ -78,10 +78,8 @@
     }
   }
 
-  @at-root {
-    @include mdc-image-list-aspect(1, $query: $query);
-    @include mdc-image-list-shape-radius(0, $query: $query);
-  }
+  @include mdc-image-list-aspect(1, $query: $query);
+  @include mdc-image-list-shape-radius(0, $query: $query);
 
   .mdc-image-list__supporting {
     @include mdc-feature-targets($feat-color) {
@@ -169,14 +167,18 @@
 
 // Standard Image List
 
-@mixin mdc-image-list-standard-columns($column-count, $gutter-size: $mdc-image-list-standard-gutter-size, $query: mdc-feature-all()) {
+@mixin mdc-image-list-standard-columns(
+  $column-count,
+  $gutter-size: $mdc-image-list-standard-gutter-size,
+  $query: mdc-feature-all()
+) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
   // This uses margin rather than padding to facilitate properly positioning the supporting content element when
   // --with-text-protection is used.
   .mdc-image-list__item {
     @include mdc-feature-targets($feat-structure) {
-      // Subtract extra fraction from each item's width to ensure correct wrapping in IE and Edge which round differently
+      // Subtract extra fraction from each item's width to ensure correct wrapping in IE/Edge which round differently
       width: calc(100% / #{$column-count} - #{$gutter-size + 1 / $column-count});
       margin: $gutter-size / 2;
     }
@@ -185,7 +187,11 @@
 
 // Masonry Image List
 
-@mixin mdc-image-list-masonry-columns($column-count, $gutter-size: $mdc-image-list-masonry-gutter-size, $query: mdc-feature-all()) {
+@mixin mdc-image-list-masonry-columns(
+  $column-count,
+  $gutter-size: $mdc-image-list-masonry-gutter-size,
+  $query: mdc-feature-all()
+) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-feature-targets($feat-structure) {
