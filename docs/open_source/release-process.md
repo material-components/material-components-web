@@ -34,7 +34,7 @@ This will pull the latest tags and `master` commits into your local repository.
 Run the following script to automatically cherry-pick new bugfixes on top of the last release:
 
 ```
-node scripts/cherry-pick-patch-commits
+node scripts/cherry-pick-commits --patch
 ```
 
 > Note: After running the script, you are in a detached HEAD state. You can create a temporary local branch if desired,

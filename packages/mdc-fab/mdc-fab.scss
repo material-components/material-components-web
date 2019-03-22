@@ -18,46 +18,5 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-@import "@material/ripple/common";
-@import "@material/ripple/mixins";
-@import "@material/ripple/variables";
-@import "@material/typography/mixins";
 @import "./mixins";
-
-// postcss-bem-linter: define fab
-
-.mdc-fab {
-  @include mdc-fab-base_;
-  @include mdc-fab-container-color(secondary);
-  @include mdc-fab-icon-size(24px);
-  @include mdc-fab-ink-color(on-secondary);
-  @include mdc-states(on-secondary);
-}
-
-.mdc-fab--mini {
-  @include mdc-fab--mini_;
-}
-
-.mdc-fab--extended {
-  @include mdc-fab--extended_;
-}
-
-.mdc-fab__label {
-  @include mdc-fab--label_;
-}
-
-.mdc-fab__icon {
-  @include mdc-fab__icon_;
-}
-
-// Increase specificity for FAB icon styles that need to override styles defined for .material-icons
-// (which is loaded separately so the order of CSS definitions is not guaranteed)
-.mdc-fab .mdc-fab__icon {
-  @include mdc-fab__icon-overrides_;
-}
-
-.mdc-fab--exited {
-  @include mdc-fab--exited_;
-}
-
-// postcss-bem-linter: end
+@include mdc-fab-core-styles;
