@@ -19,9 +19,7 @@ npm install material-components-web
 
 ### Including the Javascript
  
-### Import TypeScript Module
-
-```ts
+```js
 import * as mdc from 'material-components-web';
 const checkbox = new mdc.checkbox.MDCCheckbox(document.querySelector('.mdc-checkbox'));
 // OR
