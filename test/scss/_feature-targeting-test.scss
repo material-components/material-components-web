@@ -5,6 +5,7 @@
 @import "@material/elevation/mixins";
 @import "@material/fab/mixins";
 @import "@material/form-field/mixins";
+@import "@material/grid-list/mixins";
 @import "@material/list/mixins";
 @import "@material/menu-surface/mixins";
 @import "@material/menu/mixins";
@@ -79,6 +80,11 @@
 
     // Form Field
     @include mdc-form-field-core-styles($query: $query);
+
+    // Grid List
+    @include mdc-grid-list-core-styles($query: $query);
+    @include mdc-grid-list-tile-aspect(1, $query: $query);
+    @include mdc-grid-list-tile-gutter(0, $query: $query);
 
     // List
     @include mdc-list-core-styles($query: $query);
