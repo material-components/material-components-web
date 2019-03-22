@@ -23,7 +23,7 @@
 
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCListAdapter} from './adapter';
-import {cssClasses, strings} from './constants';
+import {cssClasses, numbers, strings} from './constants';
 import {MDCListIndex} from './types';
 
 const ELEMENTS_KEY_ALLOWED_IN = ['input', 'button', 'textarea', 'select'];
@@ -41,10 +41,15 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     return cssClasses;
   }
 
+  static get numbers() {
+    return numbers;
+  }
+
   static get defaultAdapter(): MDCListAdapter {
     return {
       addClassForElementIndex: () => undefined,
       focusItemAtIndex: () => undefined,
+      getAttributeForElementIndex: () => null,
       getFocusedElementIndex: () => 0,
       getListItemCount: () => 0,
       hasCheckboxAtIndex: () => false,
@@ -62,9 +67,10 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   private wrapFocus_ = false;
   private isVertical_ = true;
   private isSingleSelectionList_ = false;
-  private selectedIndex_: MDCListIndex = -1;
-  private focusedItemIndex_ = -1;
+  private selectedIndex_: MDCListIndex = numbers.UNSET_INDEX;
+  private focusedItemIndex_ = numbers.UNSET_INDEX;
   private useActivatedClass_ = false;
+  private ariaCurrentAttrValue_: string | null = null;
   private isCheckboxList_ = false;
   private isRadioList_ = false;
 
@@ -172,8 +178,8 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     const isSpace = evt.key === 'Space' || evt.keyCode === 32;
 
     let currentIndex = this.adapter_.getFocusedElementIndex();
-    let nextIndex = -1;
-    if (currentIndex === -1) {
+    let nextIndex = numbers.UNSET_INDEX;
+    if (currentIndex === numbers.UNSET_INDEX) {
       currentIndex = listItemIndex;
       if (currentIndex < 0) {
         // If this event doesn't have a mdc-list-item ancestor from the
@@ -223,7 +229,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    * Click handler for the list.
    */
   handleClick(index: number, toggleCheckbox: boolean) {
-    if (index === -1) {
+    if (index === numbers.UNSET_INDEX) {
       return;
     }
 
@@ -298,20 +304,43 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   }
 
   private setSingleSelectionAtIndex_(index: number) {
+    if (this.selectedIndex_ === index) {
+      return;
+    }
+
     let selectedClassName = cssClasses.LIST_ITEM_SELECTED_CLASS;
     if (this.useActivatedClass_) {
       selectedClassName = cssClasses.LIST_ITEM_ACTIVATED_CLASS;
     }
 
-    if (this.selectedIndex_ >= 0 && this.selectedIndex_ !== index) {
+    if (this.selectedIndex_ !== numbers.UNSET_INDEX) {
       this.adapter_.removeClassForElementIndex(this.selectedIndex_ as number, selectedClassName);
-      this.adapter_.setAttributeForElementIndex(this.selectedIndex_ as number, strings.ARIA_SELECTED, 'false');
     }
-
     this.adapter_.addClassForElementIndex(index, selectedClassName);
-    this.adapter_.setAttributeForElementIndex(index, strings.ARIA_SELECTED, 'true');
+    this.setAriaForSingleSelectionAtIndex_(index);
 
     this.selectedIndex_ = index;
+  }
+
+  /**
+   * Sets aria attribute for single selection at given index.
+   */
+  private setAriaForSingleSelectionAtIndex_(index: number) {
+    // Detect the presence of aria-current and get the value only during list initialization when it is in unset state.
+    if (this.selectedIndex_ === numbers.UNSET_INDEX) {
+      this.ariaCurrentAttrValue_ =
+            this.adapter_.getAttributeForElementIndex(index, strings.ARIA_CURRENT);
+    }
+
+    const isAriaCurrent = this.ariaCurrentAttrValue_ !== null;
+    const ariaAttribute = isAriaCurrent ? strings.ARIA_CURRENT : strings.ARIA_SELECTED;
+
+    if (this.selectedIndex_ !== numbers.UNSET_INDEX) {
+      this.adapter_.setAttributeForElementIndex(this.selectedIndex_ as number, ariaAttribute, 'false');
+    }
+
+    const ariaAttributeValue = isAriaCurrent ? this.ariaCurrentAttrValue_ : 'true';
+    this.adapter_.setAttributeForElementIndex(index, ariaAttribute, ariaAttributeValue as string);
   }
 
   /**
@@ -320,7 +349,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   private setRadioAtIndex_(index: number) {
     this.adapter_.setCheckedCheckboxOrRadioAtIndex(index, true);
 
-    if (this.selectedIndex_ >= 0) {
+    if (this.selectedIndex_ !== numbers.UNSET_INDEX) {
       this.adapter_.setAttributeForElementIndex(this.selectedIndex_ as number, strings.ARIA_CHECKED, 'false');
     }
 
@@ -344,7 +373,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
   }
 
   private setTabindexAtIndex_(index: number) {
-    if (this.focusedItemIndex_ === -1 && index !== 0) {
+    if (this.focusedItemIndex_ === numbers.UNSET_INDEX && index !== 0) {
       // If no list item was selected set first list item's tabindex to -1.
       // Generally, tabindex is set to 0 on first list item of list that has no preselected items.
       this.adapter_.setAttributeForElementIndex(0, 'tabindex', '-1');
@@ -366,7 +395,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     let targetIndex = 0;
 
     if (this.isSelectableList_()) {
-      if (typeof this.selectedIndex_ === 'number' && this.selectedIndex_ !== -1) {
+      if (typeof this.selectedIndex_ === 'number' && this.selectedIndex_ !== numbers.UNSET_INDEX) {
         targetIndex = this.selectedIndex_;
       } else if (isNumberArray(this.selectedIndex_) && this.selectedIndex_.length > 0) {
         targetIndex = this.selectedIndex_.reduce((currentIndex, minIndex) => Math.min(currentIndex, minIndex));
@@ -421,7 +450,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     this.adapter_.setAttributeForElementIndex(index, strings.ARIA_CHECKED, isChecked ? 'true' : 'false');
 
     // If none of the checkbox items are selected and selectedIndex is not initialized then provide a default value.
-    let selectedIndexes = this.selectedIndex_ === -1 ? [] : (this.selectedIndex_ as number[]).slice();
+    let selectedIndexes = this.selectedIndex_ === numbers.UNSET_INDEX ? [] : (this.selectedIndex_ as number[]).slice();
 
     if (isChecked) {
       selectedIndexes.push(index);

@@ -49,6 +49,18 @@
   @include mdc-tab-text-label-color($color);
 }
 
+@mixin mdc-tab-active-text-label-color($color) {
+  &.mdc-tab--active {
+    @include mdc-tab-text-label-color($color);
+  }
+}
+
+@mixin mdc-tab-active-icon-color($color) {
+  &.mdc-tab--active {
+    @include mdc-tab-icon-color($color);
+  }
+}
+
 @mixin mdc-tab-parent-positioning {
   position: relative;
 }

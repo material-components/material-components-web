@@ -68,6 +68,10 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
   private handleKeydown_!: SpecificEventListener<'keydown'>; // initialized in initialSyncWithDOM()
   private handleTransitionEnd_!: SpecificEventListener<'transitionend'>; // initialized in initialSyncWithDOM()
 
+  get list(): MDCList | undefined {
+    return this.list_;
+  }
+
   initialize(
       focusTrapFactory: MDCDrawerFocusTrapFactory = createFocusTrap as unknown as MDCDrawerFocusTrapFactory,
       listFactory: MDCListFactory = (el) => new MDCList(el),

@@ -28,6 +28,7 @@ import domEvents from 'dom-events';
 
 import {MDCMenu, MDCMenuFoundation} from '../../../packages/mdc-menu/index';
 import {Corner} from '../../../packages/mdc-menu-surface/constants';
+import {cssClasses} from '../../../packages/mdc-menu/constants';
 import {MDCListFoundation} from '../../../packages/mdc-list/index';
 import {MDCMenuSurfaceFoundation} from '../../../packages/mdc-menu-surface/foundation';
 
@@ -108,6 +109,20 @@ function setupTest(open = false) {
 
   const component = new MDCMenu(root);
   return {root, component};
+}
+
+/**
+ * @param {!Object=} options
+ * @return {{component: !MDCMenu, root: !HTMLElement, mockFoundation: !MDCMenuFoundation}}
+ */
+function setupTestWithMock(options = {open: true}) {
+  const root = getFixture(options.open);
+
+  const MockFoundationCtor = td.constructor(MDCMenuFoundation);
+  const mockFoundation = new MockFoundationCtor();
+
+  const component = new MDCMenu(root, mockFoundation);
+  return {root, component, mockFoundation};
 }
 
 suite('MDCMenu');
@@ -265,20 +280,25 @@ test('setAbsolutePosition', () => {
   td.verify(menuSurface.setAbsolutePosition(100, 120));
 });
 
-test('menu surface opened event causes first element to be focused', () => {
+test('menu surface opened event causes root element to be focused', () => {
   const {root} = setupTest();
   document.body.appendChild(root);
   const event = document.createEvent('Event');
   event.initEvent(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, false, true);
   root.dispatchEvent(event);
 
-  assert.equal(document.activeElement, root.querySelector('.mdc-list-item'));
+  assert.isTrue(document.activeElement.classList.contains(cssClasses.ROOT));
   document.body.removeChild(root);
 });
 
-test('menu surface opened event causes no element to be focused if the list is empty', () => {
+test('handleMenuSurfaceOpened calls foundation\'s handleMenuSurfaceOpened method on menu surface opened event', () => {
+  const {root, mockFoundation} = setupTestWithMock();
+  domEvents.emit(root, MDCMenuSurfaceFoundation.strings.OPENED_EVENT);
+  td.verify(mockFoundation.handleMenuSurfaceOpened());
+});
+
+test('menu surface opened event causes root element to be focused if the list is empty', () => {
   const {root} = setupTest();
-  const lastActiveElement = document.activeElement;
   root.querySelector('.mdc-list').innerHTML = ''; // Quick clear of all list items
   const event = document.createEvent('Event');
   event.initEvent(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, false, true);
@@ -286,7 +306,7 @@ test('menu surface opened event causes no element to be focused if the list is e
 
   root.dispatchEvent(event);
 
-  assert.equal(document.activeElement, lastActiveElement);
+  assert.isTrue(document.activeElement.classList.contains(cssClasses.ROOT));
   document.body.removeChild(root);
 });
 
@@ -313,6 +333,13 @@ test('open=true does not throw an error if there are no items in the list to foc
     component.open = true;
   });
   document.body.removeChild(root);
+});
+
+test('#setDefaultFocusItemIndex Calls foundation\'s setDefaultFocusItemIndex method', () => {
+  const {component, mockFoundation} = setupTestWithFakes();
+
+  component.setDefaultFocusItemIndex(2);
+  td.verify(mockFoundation.setDefaultFocusItemIndex(2));
 });
 
 // Adapter method test
@@ -412,4 +439,40 @@ test('adapter#notifySelected emits an event for a selected element', () => {
   root.addEventListener(MDCMenuFoundation.strings.SELECTED_EVENT, handler);
   component.getDefaultFoundation().adapter_.notifySelected(0);
   td.verify(handler(td.matchers.anything()));
+});
+
+test('adapter#getMenuItemCount returns the menu item count', () => {
+  const {component} = setupTest();
+  assert.equal(component.getDefaultFoundation().adapter_.getMenuItemCount(), component.items.length);
+});
+
+test('adapter#focusItemAtIndex focuses the menu item at given index', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+
+  component.getDefaultFoundation().adapter_.focusItemAtIndex(2);
+  assert.equal(document.activeElement, component.items[2]);
+
+  document.body.removeChild(root);
+});
+
+test('adapter#isRootFocused returns true if menu root has focus', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+
+  assert.isFalse(component.getDefaultFoundation().adapter_.isRootFocused());
+  root.focus();
+  assert.isTrue(component.getDefaultFoundation().adapter_.isRootFocused());
+
+  document.body.removeChild(root);
+});
+
+test('adapter#focusRoot focuses the menu root element', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+
+  component.getDefaultFoundation().adapter_.focusRoot();
+  assert.equal(document.activeElement, root);
+
+  document.body.removeChild(root);
 });
