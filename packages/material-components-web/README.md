@@ -22,20 +22,11 @@ npm install material-components-web
 ### Import TypeScript Module
 
 ```ts
-import * as mdc from 'material-components-web/index';
+import * as mdc from 'material-components-web';
 const checkbox = new mdc.checkbox.MDCCheckbox(document.querySelector('.mdc-checkbox'));
 // OR
-import { checkbox } from 'material-components-web/index';
-const checkbox = new checkbox.MDCCheckbox(document.querySelector('.mdc-checkbox'));
-```
-
-> UMD JS bundles now available. import statement without index will resolve to UMD bundle.
-
-### Import UMD Module
-
-```js
-import * as mdc from 'material-components-web';
 import { checkbox } from 'material-components-web';
+const checkbox = new checkbox.MDCCheckbox(document.querySelector('.mdc-checkbox'));
 ```
 
 > See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
