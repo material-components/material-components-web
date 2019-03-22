@@ -30,12 +30,11 @@
 @mixin mdc-grid-list-core-styles($query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
+  $feat-typography: mdc-feature-create-target($query, typography);
 
   // postcss-bem-linter: define grid-list
-  @at-root {
-    @include mdc-grid-list-tile-aspect(1, $query: $query);
-    @include mdc-grid-list-tile-gutter(4px, $query: $query);
-  }
+  @include mdc-grid-list-tile-aspect(1, $query: $query);
+  @include mdc-grid-list-tile-gutter(4px, $query: $query);
 
   .mdc-grid-list__tiles {
     @include mdc-feature-targets($feat-structure) {
@@ -131,8 +130,11 @@
       margin: 0;
       padding: 0;
       font-size: 1rem;
-      font-weight: #{map-get($mdc-typography-font-weight-values, medium)};
       line-height: 1rem;
+    }
+
+    @include mdc-feature-targets($feat-typography) {
+      font-weight: #{map-get($mdc-typography-font-weight-values, medium)};
     }
   }
 
