@@ -31,7 +31,7 @@ const checkbox = new checkbox.MDCCheckbox(document.querySelector('.mdc-checkbox'
 
 > NOTE: Since switch is a reserved word in JS, switch is instead named `switchControl`. 
 
-> NOTE: Built CSS files will be available as part of the package post-alpha.
+> NOTE: Built CSS files as well as UMD JS bundles will be available as part of the package.
 
 
 ### Auto-initialization of components
