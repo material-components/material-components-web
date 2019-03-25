@@ -11,13 +11,7 @@ path: /catalog/theme/
 
 The Material Design color system can be used to create a color scheme that reflects your brand or style.
 
-The colors in this module are derived from three theme colors:
-
-* Primary: the primary color used in your application, applies to a number of UI elements.
-* Secondary: the secondary color used in your application, applies to a number of UI elements. (Previously called "accent".)
-* Background: the background color for your application, aka the color on top of which your UI is drawn.
-* 
-and five text styles:
+The colors five text styles used in the color system:
 
 * Primary: used for most text
 * Secondary: used for text which is lower in the visual hierarchy
