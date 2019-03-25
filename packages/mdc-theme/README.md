@@ -11,7 +11,7 @@ path: /catalog/theme/
 
 The Material Design color system can be used to create a color scheme that reflects your brand or style.
 
-The colors five text styles used in the color system:
+The colors five text styles (refered to as `<TEXT_STYLE>` below) used in the color system:
 
 * Primary: used for most text
 * Secondary: used for text which is lower in the visual hierarchy
