@@ -13,12 +13,12 @@ the type of release you're interested in performing.
 })('minor');
 ```
 
-## Vocabulary
+### Vocabulary
 
 This document reuses the [terminology for release types](./releases-and-branches.md#release-types) summarized in the
 Releases and Branches documentation.
 
-## First-time Setup
+## 0. First-time Setup
 
 > Employees are supposed to do this as part of onboarding, but we've put it here
 > as a reminder.
@@ -27,12 +27,12 @@ Releases and Branches documentation.
 
 This will log you into NPM.
 
-## Announce
+## 1. Announce
 
-Ping the Slack announcements channel first! This will let other members of the
+Ping the announcements channel first! This will let other members of the
 team know NOT to merge PRs during this release process.
 
-## Check Out Code
+## 2. Check Out Code
 
 Check out the master branch and update:
 
@@ -97,7 +97,7 @@ If you find you need to remove commits that should not have been cherry-picked, 
 
 </details>
 
-## Preparation
+## 3. Preparation
 
 Run the pre-release script:
 
@@ -116,7 +116,7 @@ npm profile disable-2fa
 
 See Lerna issues [#1137](https://github.com/lerna/lerna/issues/1137) and [#1091](https://github.com/lerna/lerna/issues/1091) for more information.
 
-## Publish to npm
+## 4. Publish to npm
 
 > TIP: You can use `npx lerna updated [--since=...]` to preview which packages it would publish before running the
 > commands in this section.
@@ -143,7 +143,7 @@ npm profile enable-2fa auth-and-writes
 
 See Lerna issues [#1137](https://github.com/lerna/lerna/issues/1137) and [#1091](https://github.com/lerna/lerna/issues/1091) for more information.
 
-## Commit Version Bumps
+## 5. Commit Version Bumps
 
 At this point the packages will have been published to npm, but you will have local changes to update the versions of
 each package that was published, which need to be committed:
@@ -152,7 +152,7 @@ each package that was published, which need to be committed:
 git commit -am "chore: Publish"
 ```
 
-## Update Changelog and Create Git Tag
+## 6. Update Changelog and Create Git Tag
 
 It's recommended to generate the changelog prior to running the post-release script so you can double-check the changes
 before it creates a tag:
@@ -177,7 +177,7 @@ Once you're sure about the changes, run the `post-release` script to commit and 
 ./scripts/post-release.sh
 ```
 
-## Push
+## 7. Push
 
 You will need to temporarily alter Github's master branch protection in order to push after the release:
 
@@ -224,7 +224,7 @@ git push
 
 </details>
 
-## Update and Deploy Catalog Repository
+## 8. Update and Deploy Catalog Repository
 
 <details open>
   <summary><strong>For Major Releases or Minor Releases</strong></summary>
@@ -275,13 +275,13 @@ checking for necessary updates to accommodate new features or breaking changes i
 
 </details>
 
-## Log Issues in MDC React Repository
+## 9. Log Issues in MDC React Repository
 
 MDC React does not currently maintain a branch that gets updated ahead of release.
 After release, ensure that any breaking changes likely to require MDC React changes have issues logged on the
 MDC React repository, with the "required for sync" label.
 
-## Notify material.io Team
+## 10. Notify material.io Team
 
 Our markdown documentation is transformed and mirrored to the Develop section of material.io.
 
