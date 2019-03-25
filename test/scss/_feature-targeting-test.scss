@@ -1,0 +1,176 @@
+@import "@material/button/mixins";
+@import "@material/card/mixins";
+@import "@material/checkbox/mixins";
+@import "@material/dialog/mixins";
+@import "@material/elevation/mixins";
+@import "@material/fab/mixins";
+@import "@material/form-field/mixins";
+@import "@material/grid-list/mixins";
+@import "@material/icon-button/mixins";
+@import "@material/image-list/mixins";
+@import "@material/list/mixins";
+@import "@material/menu-surface/mixins";
+@import "@material/menu/mixins";
+@import "@material/radio/mixins";
+@import "@material/ripple/mixins";
+@import "@material/shape/mixins";
+@import "@material/switch/mixins";
+@import "@material/theme/mixins";
+@import "@material/typography/mixins";
+
+@mixin mdc-feature-targeting-test($query) {
+  .mdc-test {
+    // Button
+    @include mdc-button-core-styles($query: $query);
+    @include mdc-button-filled-accessible(red, $query: $query);
+    @include mdc-button-container-fill-color(red, $query: $query);
+    @include mdc-button-outline-color(red, $query: $query);
+    @include mdc-button-icon-color(red, $query: $query);
+    @include mdc-button-ink-color(red, $query: $query);
+    @include mdc-button-shape-radius(0, $query: $query);
+    @include mdc-button-horizontal-padding(0, $query: $query);
+    @include mdc-button-outline-width(0, $query: $query);
+    @include mdc-button-ripple($query: $query);
+    @include mdc-button-without-ripple($query: $query);
+
+    // Card
+    @include mdc-card-core-styles($query: $query);
+    @include mdc-card-fill-color(red, $query: $query);
+    @include mdc-card-outline(red, $query: $query);
+    @include mdc-card-shape-radius(0, $query: $query);
+    @include mdc-card-media-aspect-ratio(1, 1, $query: $query);
+    @include mdc-card-ripple($query: $query);
+    @include mdc-card-without-ripple($query: $query);
+
+    // Checkbox
+    @include mdc-checkbox-core-styles($query: $query);
+    @include mdc-checkbox-container-colors($query: $query);
+    @include mdc-checkbox-ink-color(red, $query: $query);
+    @include mdc-checkbox-focus-indicator-color(red, $query: $query);
+    @include mdc-checkbox-ripple($query: $query);
+    @include mdc-checkbox-without-ripple($query: $query);
+
+    // Dialog
+    @include mdc-dialog-core-styles($query: $query);
+    @include mdc-dialog-container-fill-color(red, $query: $query);
+    @include mdc-dialog-scrim-color(red, $query: $query);
+    @include mdc-dialog-title-ink-color(red, $query: $query);
+    @include mdc-dialog-content-ink-color(red, $query: $query);
+    @include mdc-dialog-scroll-divider-color(red, $query: $query);
+    @include mdc-dialog-shape-radius(0, $query: $query);
+    @include mdc-dialog-min-width(0, $query: $query);
+    @include mdc-dialog-max-width(0, 0, $query: $query);
+    @include mdc-dialog-max-height(0, 0, $query: $query);
+
+    // Elevation
+    @include mdc-elevation-core-styles($query: $query);
+    @include mdc-elevation(0, $query: $query);
+
+    // FAB
+    @include mdc-fab-core-styles($query: $query);
+    @include mdc-fab-without-ripple($query: $query);
+    @include mdc-fab-ripple($query: $query);
+    @include mdc-fab-accessible(red, $query: $query);
+    @include mdc-fab-container-color(red, $query: $query);
+    @include mdc-fab-icon-size(0, $query: $query);
+    @include mdc-fab-ink-color(red, $query: $query);
+    @include mdc-fab-extended-fluid($query: $query);
+    @include mdc-fab-extended-padding(0, 0, $query: $query);
+    @include mdc-fab-extended-label-padding(0, $query: $query);
+    @include mdc-fab-shape-radius(0, $query: $query);
+    @include mdc-fab-extended-shape-radius(0, $rtl-reflexive: false, $query: $query);
+
+    // Form Field
+    @include mdc-form-field-core-styles($query: $query);
+
+    // Grid List
+    @include mdc-grid-list-core-styles($query: $query);
+    @include mdc-grid-list-tile-aspect(1, $query: $query);
+    @include mdc-grid-list-tile-gutter(0, $query: $query);
+
+    // Icon Button
+    @include mdc-icon-button-core-styles($query: $query);
+    @include mdc-icon-button-size(0, $query: $query);
+    @include mdc-icon-button-ink-color(red, $query: $query);
+
+    // Image List
+    @include mdc-image-list-core-styles($query: $query);
+    @include mdc-image-list-aspect(1, $query: $query);
+    @include mdc-image-list-shape-radius(0, $query: $query);
+    @include mdc-image-list-standard-columns(4, 4px, $query: $query);
+    @include mdc-image-list-masonry-columns(4, 4px, $query: $query);
+
+    // List
+    @include mdc-list-core-styles($query: $query);
+    @include mdc-list-item-primary-text-ink-color(red, $query: $query);
+    @include mdc-list-item-secondary-text-ink-color(red, $query: $query);
+    @include mdc-list-item-graphic-fill-color(red, $query: $query);
+    @include mdc-list-item-graphic-ink-color(red, $query: $query);
+    @include mdc-list-item-meta-ink-color(red, $query: $query);
+    @include mdc-list-item-shape-radius(42, $rtl-reflexive: false, $query: $query);
+    @include mdc-list-divider-color(red, $query: $query);
+    @include mdc-list-group-subheader-ink-color(red, $query: $query);
+    @include mdc-list-ripple($query: $query);
+    @include mdc-list-without-ripple($query: $query);
+
+    // Menu
+    @include mdc-menu-core-styles($query: $query);
+    @include mdc-menu-width(0, $query: $query);
+
+    // Menu Surface
+    @include mdc-menu-surface-core-styles($query: $query);
+    @include mdc-menu-surface-fill-color(surface, $query: $query);
+    @include mdc-menu-surface-ink-color(on-surface, $query: $query);
+    @include mdc-menu-surface-shape-radius(medium, $query: $query);
+
+    // Radio
+    @include mdc-radio-core-styles($query: $query);
+    @include mdc-radio-unchecked-stroke-color(red, $query: $query);
+    @include mdc-radio-checked-stroke-color(red, $query: $query);
+    @include mdc-radio-ink-color(red, $query: $query);
+    @include mdc-radio-focus-indicator-color(red, $query: $query);
+    @include mdc-radio-ripple($query: $query);
+    @include mdc-radio-without-ripple($query: $query);
+
+    // Ripple
+    @include mdc-ripple-core-styles($query: $query);
+    @include mdc-ripple-common($query: $query);
+    @include mdc-ripple-surface($query: $query);
+    @include mdc-states-base-color(red, $query: $query);
+    @include mdc-states-hover-opacity(1, $query: $query);
+    @include mdc-states-focus-opacity(1, $query: $query);
+    @include mdc-states-press-opacity(1, $query: $query);
+    @include mdc-states($query: $query);
+    @include mdc-states-activated(red, $query: $query);
+    @include mdc-states-selected(red, $query: $query);
+    @include mdc-ripple-radius-bounded($query: $query);
+    @include mdc-ripple-radius-unbounded($query: $query);
+
+    // Shape
+    @include mdc-shape-radius(1px 2px, true, $query: $query);
+
+    // Switch
+    @include mdc-switch-core-styles($query: $query);
+    @include mdc-switch-toggled-on-color(on-surface, $query: $query);
+    @include mdc-switch-toggled-off-color(on-surface, $query: $query);
+    @include mdc-switch-toggled-on-ripple-color(on-surface, $query: $query);
+    @include mdc-switch-toggled-off-ripple-color(on-surface, $query: $query);
+    @include mdc-switch-toggled-on-track-color(on-surface, $query: $query);
+    @include mdc-switch-toggled-on-thumb-color(on-surface, $query: $query);
+    @include mdc-switch-toggled-off-track-color(on-surface, $query: $query);
+    @include mdc-switch-toggled-off-thumb-color(on-surface, $query: $query);
+    @include mdc-switch-ripple($query: $query);
+    @include mdc-switch-without-ripple($query: $query);
+
+    // Theme
+    @include mdc-theme-core-styles($query: $query);
+
+    // Typography
+    @include mdc-typography-core-styles($query: $query);
+    @include mdc-typography-base($query: $query);
+    @include mdc-typography(button, $query: $query);
+    @include mdc-typography-overflow-ellipsis($query: $query);
+    @include mdc-typography-baseline-top(0, $query: $query);
+    @include mdc-typography-baseline-bottom(0, $query: $query);
+  }
+}
