@@ -45,18 +45,12 @@ This will pull the latest tags and `master` commits into your local repository.
 <details open>
   <summary><strong>Additional Step for Minor Releases and Patch Releases</strong></summary>
 
-First, make sure you checkout the correct branch or tag based on what you're releasing:
-
-* If you're releasing the first non-major version ever after a major version (typically x.0.1), checkout `master`.
-* If you're releasing a minor version (e.g. x.1.0), checkout the latest previous patch version (e.g. `vX.0.1`).
-* If you're releasing the first patch after a minor version (e.g. x.1.1), checkout the minor version (e.g. `vX.1.0`).
-* If you're releasing a subsequent patch (e.g. x.y.2), checkout `vX.Y.1`.
-
-Once you're on the correct base, run the following script to automatically cherry-pick only the appropriate commits on
-top of the last release.
-
 <details open>
   <summary>For Minor Releases</summary>
+
+First, checkout the latest previous patch version (e.g. `vX.0.1`).
+
+Then run the following script to automatically cherry-pick only the appropriate commits on top of the last release.
 
 ```
 node scripts/cherry-pick-commits --minor
@@ -67,13 +61,22 @@ node scripts/cherry-pick-commits --minor
 <details open>
   <summary>For Patch Releases</summary>
 
+First, make sure you checkout the correct branch or tag based on what you're releasing:
+
+* If you're releasing the first non-major version ever after a major version (typically X.0.1), checkout `master`.
+* If you're releasing the first patch after a minor version (e.g. X.1.1), checkout the minor version (e.g. `vX.1.0`).
+* If you're releasing a subsequent patch (e.g. X.Y.2), checkout `vX.Y.1`.
+
+Once you're on the correct base, run the following script to automatically cherry-pick only the appropriate commits on
+top of the last release.
+
 ```
 node scripts/cherry-pick-commits --patch
 ```
 
 </details>
 
-Read the output carefully:
+Read the output of the cherry-pick script carefully:
 
 * You may need to cherry-pick commits that the script could not cherry-pick cleanly without conflict
 * The script may have cherry-picked commits that rely on skipped commits; these need to be removed.
