@@ -84,9 +84,9 @@
     // Image List
     @include mdc-image-list-core-styles($query: $query);
     @include mdc-image-list-aspect(1, $query: $query);
-    @include mdc-image-list-shape-radius(0, $rtl-reflexive: false, $query: $query);
-    @include mdc-image-list-standard-columns(4, $gutter-size: $mdc-image-list-standard-gutter-size, $query: $query);
-    @include mdc-image-list-masonry-columns(4, $gutter-size: $mdc-image-list-masonry-gutter-size, $query: $query);
+    @include mdc-image-list-shape-radius(0, $query: $query);
+    @include mdc-image-list-standard-columns(4, 4px, $query: $query);
+    @include mdc-image-list-masonry-columns(4, 4px, $query: $query);
 
     // List
     @include mdc-list-core-styles($query: $query);
