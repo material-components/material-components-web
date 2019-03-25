@@ -6,6 +6,7 @@
 @import "@material/fab/mixins";
 @import "@material/form-field/mixins";
 @import "@material/icon-button/mixins";
+@import "@material/image-list/mixins";
 @import "@material/list/mixins";
 @import "@material/menu-surface/mixins";
 @import "@material/menu/mixins";
@@ -85,6 +86,13 @@
     @include mdc-icon-button-core-styles($query: $query);
     @include mdc-icon-button-size(0, $query: $query);
     @include mdc-icon-button-ink-color(red, $query: $query);
+
+    // Image List
+    @include mdc-image-list-core-styles($query: $query);
+    @include mdc-image-list-aspect(1, $query: $query);
+    @include mdc-image-list-shape-radius(0, $query: $query);
+    @include mdc-image-list-standard-columns(4, 4px, $query: $query);
+    @include mdc-image-list-masonry-columns(4, 4px, $query: $query);
 
     // List
     @include mdc-list-core-styles($query: $query);
