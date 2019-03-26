@@ -262,7 +262,7 @@ In the event no work was done on the `next` branch, the process below for patch 
 checking for necessary updates to accommodate new features or breaking changes in MDC Web.
 
   <details>
-    <summary>Process for when a `next` branch is used</summary>
+    <summary>Process for when a <code>next</code> branch is used</summary>
 
 1. Ensure you have the latest `master` checked out: `git checkout master && git pull`
 1. Create a new branch, e.g.: `git checkout -b chore/1.0.0`
