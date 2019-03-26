@@ -35,6 +35,9 @@
   .mdc-tab__icon {
     @include mdc-theme-prop(color, $color);
   }
+  svg.mdc-tab__icon {
+    @include mdc-theme-prop(fill, $color);
+  }
 }
 
 @mixin mdc-tab-states-color($color) {
