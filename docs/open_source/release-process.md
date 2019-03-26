@@ -223,7 +223,7 @@ git push
 > This is referenced by the cherry-pick script to tie minor/patch releases to their cherry-picked commits on master.
 
   <details open>
-    <summary>Additional Note for Minor Releases</summary>
+    <summary><strong>Additional Note for Minor Releases</strong></summary>
 
 Minor releases are likely to experience conflicts when cherry-picking the `chore: Publish` commit back into master.
 This is because master already had the patch version bumps cherry-picked in, and then can't resolve the diffs generated
