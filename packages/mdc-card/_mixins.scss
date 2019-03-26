@@ -174,7 +174,7 @@
 
   .mdc-card__action-icons {
     @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(color, text-icon-on-background);
+      @include mdc-theme-prop(color, $mdc-card-action-icon-color);
     }
 
     @include mdc-feature-targets($feat-structure) {
@@ -264,7 +264,7 @@
 
   .mdc-card__action--icon:not(:disabled) {
     @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(color, text-icon-on-background);
+      @include mdc-theme-prop(color, $mdc-card-action-icon-color);
     }
   }
 

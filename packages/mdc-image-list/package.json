@@ -13,6 +13,7 @@
     "image list"
   ],
   "dependencies": {
+    "@material/feature-targeting": "^0.44.1",
     "@material/shape": "^1.0.0",
     "@material/theme": "^1.0.0",
     "@material/typography": "^1.0.0"

@@ -22,7 +22,10 @@
  */
 
 /**
- * @fileoverview Identifies and cherry-picks commits that are not features and do not contain breaking changes.
+ * @fileoverview Identifies and cherry-picks commits for minor or patch releases.
+ *
+ * Minor releases skip commits that do not contain breaking changes.
+ * Patch releases skip commits that are not features and that do not contain breaking changes.
  *
  * Defaults to operating against the latest non-pre-release tag, but a tag can be specified via command-line argument.
  * This will automatically attempt to cherry-pick appropriate commits since the tag, but will abort and skip any
@@ -51,11 +54,16 @@ const logFormat = {
 // Use a splitter that is very unlikely to be included in commit descriptions, to be used with the above format
 const logSplitter = ';;;';
 
-// Resolves to the most recent non-pre-release git tag.
-async function getMostRecentTag() {
+// Resolves to the appropriate git tag to serve as the base for a minor or patch release.
+// The base for minor releases is the latest minor release (*.0).
+// The base for patch releases is the latest patch release.
+async function getBaseTag(mode) {
   const tags = await simpleGit.tags();
-  // Filter old independent-versioned tags and pre-releases
-  const filteredTags = tags.all.filter((tag) => /^v/.test(tag) && !/-/.test(tag));
+  // Filter old independent-versioned tags and pre-releases.
+  // If cherry-picking for a minor release, ignore patch releases to work from the latest major or minor release.
+  const filteredTags = tags.all.filter((tag) => /^v/.test(tag) && !/-/.test(tag) &&
+      (mode !== 'minor' || /\.0$/.test(tag)));
+
   return filteredTags[filteredTags.length - 1];
 }
 
@@ -102,16 +110,16 @@ async function getCommitsAfter(commit) {
 }
 
 // Returns true if commit should NOT be cherry-picked.
-function shouldSkipCommit(logLine) {
+function shouldSkipCommit(logLine, mode) {
   const parsedCommit = parser.sync(logLine.message, parserOpts);
-  return parsedCommit.type === 'feat' || // feature commit
+  return (parsedCommit.type === 'feat' && mode === 'patch') || // feature commit
     parsedCommit.notes.find((note) => note.title === 'BREAKING CHANGE') || // breaking change commit
     (parsedCommit.type === 'chore' && parsedCommit.subject === 'Publish'); // Publish (version-rev) commit
 }
 
 // Checks out the given tag and attempts to cherry-pick each commit in the list against it.
 // If a conflict is encountered, that cherry-pick is aborted and processing moves on to the next commit.
-async function attemptCherryPicks(tag, list) {
+async function attemptCherryPicks(tag, list, mode) {
   const results = {
     successful: [],
     conflicted: [],
@@ -122,7 +130,7 @@ async function attemptCherryPicks(tag, list) {
   await simpleGit.checkout([tag]);
 
   for (const logLine of list) {
-    if (shouldSkipCommit(logLine)) {
+    if (shouldSkipCommit(logLine, mode)) {
       results.skipped.push(logLine);
       continue;
     }
@@ -163,7 +171,14 @@ function logSingleLineCommit(logLine) {
 }
 
 async function run() {
-  const tag = args.find((arg) => arg[0] === 'v') || await getMostRecentTag();
+  const modeArg = args.find((arg) => arg === '--patch' || arg === '--minor');
+  if (!modeArg) {
+    console.error('You must specify --patch or --minor to indicate what to cherry-pick.');
+    process.exit(1);
+  }
+  const mode = modeArg.slice(2);
+
+  const tag = args.find((arg) => arg[0] === 'v') || await getBaseTag(mode);
   const isInHistory = await isCommitInHistory(tag);
   const commit = isInHistory ? tag : await resolveCherryPick(tag);
   const list = await getCommitsAfter(commit);
@@ -172,15 +187,24 @@ async function run() {
   // Always cherry-pick on top of the last tag.
   // If we used the cherry-picked master commit as base in the case of subsequent patches, we'd inherit
   // non-patch commits from master between the last .0 release and the previous patch release.
-  const results = await attemptCherryPicks(tag, list);
+  const results = await attemptCherryPicks(tag, list, mode);
 
-  console.log('');
-  console.log('Test-running build...');
-  const buildSucceeded = checkSpawnSuccess('npm run build');
+  let buildSucceeded;
+  let testsSucceeded;
+  const skipTests = args.includes('--skip-tests');
 
-  console.log('');
-  console.log('Running unit tests...');
-  const testsSucceeded = checkSpawnSuccess('npm run test:unit');
+  if (skipTests) {
+    console.log('Skipping npm run build and npm run test:unit.');
+    console.log('You should _really_ run these unless you\'re just testing this script.');
+  } else {
+    console.log('');
+    console.log('Test-running build...');
+    buildSucceeded = checkSpawnSuccess('npm run build');
+
+    console.log('');
+    console.log('Running unit tests...');
+    testsSucceeded = checkSpawnSuccess('npm run test:unit');
+  }
 
   console.log('');
   console.log('Finished!');
@@ -202,9 +226,11 @@ async function run() {
     console.log('(git cherry-pick -x <hash>, then resolve conflicts, then git cherry-pick --continue)');
   }
 
-  console.log('');
-  console.log(`Build status: ${buildSucceeded ? 'Success!' : 'FAIL (see above for errors)'}`);
-  console.log(`Unit tests status: ${testsSucceeded ? 'Success!' : 'FAIL (see above for failures)'}`);
+  if (!skipTests) {
+    console.log('');
+    console.log(`Build status: ${buildSucceeded ? 'Success!' : 'FAIL (see above for errors)'}`);
+    console.log(`Unit tests status: ${testsSucceeded ? 'Success!' : 'FAIL (see above for failures)'}`);
+  }
 
   console.log('');
   console.log('Please review `git log` to make sure there are no commits dependent on omitted feature commits.');
