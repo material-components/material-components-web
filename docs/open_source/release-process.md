@@ -222,6 +222,32 @@ git push
 > NOTE: The `-x` argument above adds the original cherry-picked commit's hash in the commit description.
 > This is referenced by the cherry-pick script to tie minor/patch releases to their cherry-picked commits on master.
 
+  <details open>
+    <summary>Additional Note for Minor Releases</summary>
+
+Minor releases are likely to experience conflicts when cherry-picking the `chore: Publish` commit back into master.
+This is because master already had the patch version bumps cherry-picked in, and then can't resolve the diffs generated
+by the minor branch which go directly from the previous minor version to the new one.
+
+You may wish to abort the cherry-pick and then retry with the recursive/theirs strategy:
+
+```
+git cherry-pick --abort
+git cherry-pick -x --strategy=recursive -X theirs <publish-hash>
+```
+
+You should examine the generated changeset (with `git show`) to ensure that it didn't unintentionally steamroll any
+newer version numbers (which could happen if a package previously had a patch release but did not receive a minor bump).
+
+Once you're sure it's OK, continue with the changelog commit and push:
+
+```
+git cherry-pick -x <changelog-hash>
+git push
+```
+
+  </details>
+
 </details>
 
 ## 8. Update and Deploy Catalog Repository
