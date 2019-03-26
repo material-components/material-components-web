@@ -28,8 +28,9 @@ window.mdc.testFixture.fontsLoaded.then(() => {
   menu.setAnchorCorner(mdc.menu.Corner.BOTTOM_LEFT);
   menu.open = true;
 
+  const {numbers, strings} = mdc.menu.MDCMenuFoundation;
   buttonEl.addEventListener('click', () => {
-    menu.setDefaultFocusItemIndex(mdc.menu.MDCMenuFoundation.numbers.FOCUS_ROOT_INDEX);
+    menu.setDefaultFocusItemIndex(numbers.FOCUS_ROOT_INDEX);
     menu.open = !menu.open;
   });
 
@@ -56,6 +57,10 @@ window.mdc.testFixture.fontsLoaded.then(() => {
     }
 
     menu.open = !menu.open;
+  });
+
+  menuEl.addEventListener(strings.SELECTED_EVENT, (evt) => {
+    console.log('Selected menu item: ', evt.detail.item);
   });
 
   window.mdc.testFixture.notifyDomReady();
