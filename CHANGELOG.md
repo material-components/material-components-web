@@ -1,3 +1,30 @@
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/material-components/material-components-web/compare/v1.0.0...v1.1.0) (2019-03-26)
+
+
+### Bug Fixes
+
+* **card:** Use on-surface color for action icons ([#4519](https://github.com/material-components/material-components-web/issues/4519)) ([34fb821](https://github.com/material-components/material-components-web/commit/34fb821))
+* **menu:** Fix selection group list item spacing ([#4517](https://github.com/material-components/material-components-web/issues/4517)) ([8a1de5b](https://github.com/material-components/material-components-web/commit/8a1de5b))
+* **menu:** Use on-surface color for graphic/meta content ([#4520](https://github.com/material-components/material-components-web/issues/4520)) ([499d286](https://github.com/material-components/material-components-web/commit/499d286))
+* **text-field:** Fix for input alignment in textfield with trailing icon ([#4478](https://github.com/material-components/material-components-web/issues/4478)) ([7c9793b](https://github.com/material-components/material-components-web/commit/7c9793b))
+
+
+### Features
+
+* **dialog:** Add feature targeting for styles ([#4524](https://github.com/material-components/material-components-web/issues/4524)) ([690036f](https://github.com/material-components/material-components-web/commit/690036f))
+* **drawer:** Make list instance publicly accessible ([#4516](https://github.com/material-components/material-components-web/issues/4516)) ([798108b](https://github.com/material-components/material-components-web/commit/798108b))
+* **fab:** Add feature targeting for styles ([#4526](https://github.com/material-components/material-components-web/issues/4526)) ([5676d70](https://github.com/material-components/material-components-web/commit/5676d70))
+* **form-field:** add feature targeting for styles ([#4521](https://github.com/material-components/material-components-web/issues/4521)) ([11eb357](https://github.com/material-components/material-components-web/commit/11eb357))
+* **grid-list:** Add feature targeting for styles ([#4534](https://github.com/material-components/material-components-web/issues/4534)) ([3a3c74c](https://github.com/material-components/material-components-web/commit/3a3c74c))
+* **icon-button:** Add feature targeting for styles ([#4536](https://github.com/material-components/material-components-web/issues/4536)) ([ab8beeb](https://github.com/material-components/material-components-web/commit/ab8beeb))
+* **image-list:** Add feature targeting for styles ([#4535](https://github.com/material-components/material-components-web/issues/4535)) ([1046258](https://github.com/material-components/material-components-web/commit/1046258))
+* **list:** Automatically use appropriate aria attribute for single selection list. ([#4479](https://github.com/material-components/material-components-web/issues/4479)) ([3804743](https://github.com/material-components/material-components-web/commit/3804743))
+* **tab:** Add Tab Sass mixins targeting active state colors ([#4522](https://github.com/material-components/material-components-web/issues/4522)) ([3666c80](https://github.com/material-components/material-components-web/commit/3666c80))
+* **theme:** Add support for arbitrary CSS vars with fallback ([#4470](https://github.com/material-components/material-components-web/issues/4470)) ([b4b954b](https://github.com/material-components/material-components-web/commit/b4b954b))
+
+
+
 <a name="1.0.1"></a>
 ## [1.0.1](https://github.com/material-components/material-components-web/compare/v1.0.0...v1.0.1) (2019-03-11)
 
