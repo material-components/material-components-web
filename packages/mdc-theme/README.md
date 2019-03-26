@@ -62,7 +62,7 @@ Text style | Description
 
 Here are the example usages of `primary` text style:
 
-  * CSS Custom property: `--mdc-theme-text-text-primary-on-light`
+  * CSS Custom property: `--mdc-theme-text-primary-on-light`
   * Class name: `mdc-theme--text-primary-on-light`
   * Property name used in Sass: `text-primary-on-light`
 
