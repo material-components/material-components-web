@@ -1,5 +1,5 @@
 //
-// Copyright 2018 Google Inc.
+// Copyright 2019 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -30,14 +30,10 @@ $mdc-shape-large-component-radius: 50%;
 @import "../../../../packages/mdc-fab/mdc-fab";
 @import "../../../../packages/mdc-textfield/mdc-text-field";
 @import "../../../../packages/mdc-select/mdc-select";
-@import "../../../../packages/mdc-fab/mixins";
 @import "../mixins";
 
 .test-cell--fab,
-.test-cell--button {
-  @include test-cell-size(301, 81);
-}
-
+.test-cell--button,
 .test-cell--textfield,
 .test-cell--select {
   @include test-cell-size(301, 81);
