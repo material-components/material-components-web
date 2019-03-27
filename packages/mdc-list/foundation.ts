@@ -53,6 +53,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       getFocusedElementIndex: () => 0,
       getListItemCount: () => 0,
       hasCheckboxAtIndex: () => false,
+      hasClassAtIndex: () => false,
       hasRadioAtIndex: () => false,
       isCheckboxCheckedAtIndex: () => false,
       isFocusInsideList: () => false,
@@ -134,6 +135,10 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     } else {
       this.setSingleSelectionAtIndex_(index as number);
     }
+  }
+
+  isItemEnabledAtIndex(index: number): boolean {
+    return !this.adapter_.hasClassAtIndex(index, cssClasses.LIST_ITEM_DISABLED_CLASS);
   }
 
   /**
@@ -247,17 +252,23 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    * Focuses the next element on the list.
    */
   focusNextElement(index: number) {
-    const count = this.adapter_.getListItemCount();
-    let nextIndex = index + 1;
-    if (nextIndex >= count) {
-      if (this.wrapFocus_) {
-        nextIndex = 0;
-      } else {
-        // Return early because last item is already focused.
-        return index;
-      }
+    const lastItemIndex = this.adapter_.getListItemCount() - 1;
+
+    let nextIndex: number;
+    if (index === lastItemIndex && this.wrapFocus_) {
+      nextIndex = 0;
+    } else if (index === lastItemIndex) {
+      // Return early because last item is already focused.
+      return index;
+    } else {
+      nextIndex = index + 1;
     }
-    this.adapter_.focusItemAtIndex(nextIndex);
+
+    if (this.isItemEnabledAtIndex(nextIndex)) {
+      this.adapter_.focusItemAtIndex(nextIndex);
+    } else {
+      this.focusNextElement(nextIndex);
+    }
 
     return nextIndex;
   }
@@ -266,29 +277,56 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    * Focuses the previous element on the list.
    */
   focusPrevElement(index: number) {
-    let prevIndex = index - 1;
-    if (prevIndex < 0) {
-      if (this.wrapFocus_) {
-        prevIndex = this.adapter_.getListItemCount() - 1;
-      } else {
-        // Return early because first item is already focused.
-        return index;
-      }
+    let prevIndex: number;
+
+    if (index === 0 && this.wrapFocus_) {
+      prevIndex = this.adapter_.getListItemCount() - 1;
+    } else if (index === 0) {
+      // Return early because first item is already focused.
+      return index;
+    } else {
+      prevIndex = index - 1;
     }
-    this.adapter_.focusItemAtIndex(prevIndex);
+
+    if (this.isItemEnabledAtIndex(prevIndex)) {
+      this.adapter_.focusItemAtIndex(prevIndex);
+    } else {
+      this.focusPrevElement(prevIndex);
+    }
 
     return prevIndex;
   }
 
-  focusFirstElement() {
-    this.adapter_.focusItemAtIndex(0);
-    return 0;
+  focusFirstElement(firstEnabledItemIndex = 0) {
+    const lastItemIndex = this.adapter_.getListItemCount() - 1;
+
+    if (firstEnabledItemIndex === lastItemIndex) {
+      return firstEnabledItemIndex;
+    }
+
+    if (this.isItemEnabledAtIndex(firstEnabledItemIndex)) {
+      this.adapter_.focusItemAtIndex(firstEnabledItemIndex);
+    } else {
+      this.focusFirstElement(firstEnabledItemIndex + 1);
+    }
+
+    return firstEnabledItemIndex;
   }
 
-  focusLastElement() {
-    const lastIndex = this.adapter_.getListItemCount() - 1;
-    this.adapter_.focusItemAtIndex(lastIndex);
-    return lastIndex;
+  focusLastElement(lastEnabledItemIndex?: number) {
+    if (lastEnabledItemIndex === undefined) {
+      lastEnabledItemIndex = this.adapter_.getListItemCount() - 1;
+    } else if (lastEnabledItemIndex < 0) {
+      return 0;
+    }
+
+    if (this.isItemEnabledAtIndex(lastEnabledItemIndex)) {
+      this.adapter_.focusItemAtIndex(lastEnabledItemIndex);
+    } else {
+      this.focusLastElement(lastEnabledItemIndex - 1);
+    }
+
+    return lastEnabledItemIndex;
   }
 
   /**

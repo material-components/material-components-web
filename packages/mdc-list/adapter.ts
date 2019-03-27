@@ -61,6 +61,13 @@ export interface MDCListAdapter {
   hasRadioAtIndex(index: number): boolean;
 
   /**
+   * @param index Target list item index.
+   * @param className Class name of target list item.
+   * @return Returns true if has class name at given list item index.
+   */
+  hasClassAtIndex(index: number, className: string): boolean;
+
+  /**
    * @return true if checkbox is present at given list item index.
    */
   hasCheckboxAtIndex(index: number): boolean;

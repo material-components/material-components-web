@@ -37,7 +37,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
   }
 
   get listElements(): Element[] {
-    return [].slice.call(this.root_.querySelectorAll(strings.ENABLED_ITEMS_SELECTOR));
+    return [].slice.call(this.root_.querySelectorAll(`.${cssClasses.LIST_ITEM_CLASS}`));
   }
 
   set wrapFocus(value: boolean) {
@@ -152,6 +152,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
         const listItem = this.listElements[index];
         return !!listItem.querySelector(strings.CHECKBOX_SELECTOR);
       },
+      hasClassAtIndex: (index, className) => this.listElements[index].classList.contains(className),
       hasRadioAtIndex: (index) => {
         const listItem = this.listElements[index];
         return !!listItem.querySelector(strings.RADIO_SELECTOR);
