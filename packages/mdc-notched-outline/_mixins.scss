@@ -43,21 +43,28 @@
 }
 
 @mixin mdc-notched-outline-shape-radius($radius, $rtl-reflexive: false) {
+  $masked-leading-radius: mdc-shape-mask-radius($radius, 1 0 0 1);
+  $masked-trailing-radius: mdc-shape-mask-radius($radius, 0 1 1 0);
+  $max-leading-radius: mdc-shape-max-corner-radius($masked-leading-radius);
+  $max-trailing-radius: mdc-shape-max-corner-radius($masked-trailing-radius);
+
+
   .mdc-notched-outline__leading {
-    $masked-radius: mdc-shape-mask-radius($radius, 1 0 0 1);
-
-    @include mdc-shape-radius($masked-radius, $rtl-reflexive: $rtl-reflexive);
-
-    $max-leading-radius: mdc-shape-max-corner-radius($masked-radius);
+    @include mdc-shape-radius($masked-leading-radius, $rtl-reflexive: $rtl-reflexive);
 
     @if ($max-leading-radius > $mdc-notched-outline-leading-width) {
       width: $max-leading-radius;
     }
   }
 
-  @if ($radius > $mdc-notched-outline-leading-width) {
+  @if (max($max-leading-radius, $max-trailing-radius) > $mdc-notched-outline-leading-width) {
     .mdc-notched-outline__notch {
-      max-width: calc(100% - #{$radius} * 2);
+      max-width:
+        calc(
+          100% -
+          #{max($max-leading-radius, $mdc-notched-outline-leading-width)} -
+          #{max($max-trailing-radius, $mdc-notched-outline-leading-width)}
+        );
     }
   }
 
