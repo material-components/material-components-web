@@ -1,7 +1,7 @@
 {
   "name": "@material/radio",
   "description": "The Material Components for the web radio component",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -20,8 +20,8 @@
     "@material/animation": "^1.0.0",
     "@material/base": "^1.0.0",
     "@material/feature-targeting": "^0.44.1",
-    "@material/ripple": "^1.0.1",
-    "@material/theme": "^1.0.0",
+    "@material/ripple": "^1.1.0",
+    "@material/theme": "^1.1.0",
     "tslib": "^1.9.3"
   }
 }
