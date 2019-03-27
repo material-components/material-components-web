@@ -43,11 +43,19 @@
 }
 
 .test-shaped-text-field {
-  @include mdc-text-field-shape-radius(8px 50%);
+  @include mdc-text-field-shape-radius(4px 50%);
+}
+
+.test-shaped-text-field--inverted {
+  @include mdc-text-field-shape-radius(50% 4px);
 }
 
 .test-shaped-text-field--outline {
-  @include mdc-text-field-outline-shape-radius(8px 50%);
+  @include mdc-text-field-outline-shape-radius(4px 50%);
+}
+
+.test-shaped-text-field--outline-inverted {
+  @include mdc-text-field-outline-shape-radius(50% 4px);
 }
 
 .test-text-field-issues-3332 {

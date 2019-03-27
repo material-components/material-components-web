@@ -119,7 +119,6 @@
   }
 
   $max-leading-radius: mdc-shape-max-corner-radius(mdc-shape-mask-radius($resolved-radius, 1 0 0 1));
-  $max-trailing-radius: mdc-shape-max-corner-radius(mdc-shape-mask-radius($resolved-radius, 0 1 1 0));
 
   @if ($max-leading-radius > $mdc-notched-outline-leading-width) {
     .mdc-select__native-control {
@@ -129,12 +128,18 @@
         $mdc-select-arrow-padding
       );
     }
+  }
 
+  $all-radii: mdc-shape-unpack-radius(mdc-shape-prop-value($resolved-radius));
+  $bottom-trailing-radius: nth($all-radii, 3);
+
+  // Look at both leading-side radii for helper line, to align consistently with the label and input text.
+  @if (max($max-leading-radius, $bottom-trailing-radius) > $mdc-notched-outline-leading-width) {
     + .mdc-select-helper-text {
       @include mdc-rtl-reflexive-property(
         margin,
-        $max-leading-radius + $mdc-notched-outline-padding,
-        $max-trailing-radius
+        max($max-leading-radius, $mdc-notched-outline-leading-width) + $mdc-notched-outline-padding,
+        max($bottom-trailing-radius, $mdc-notched-outline-leading-width)
       );
     }
   }

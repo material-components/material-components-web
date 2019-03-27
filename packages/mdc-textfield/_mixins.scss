@@ -34,23 +34,6 @@
 @import "./variables";
 @import "./functions";
 
-@mixin mdc-text-field-shape-radius($radius, $rtl-reflexive: false) {
-  @if length($radius) > 2 {
-    @error "Invalid radius: '#{$radius}' component doesn't allow customizing all corners";
-  }
-
-  $masked-radius: mdc-shape-mask-radius($radius, 1 1 0 0);
-
-  @include mdc-shape-radius(
-    mdc-shape-resolve-percentage-radius($mdc-text-field-height, $masked-radius),
-    $rtl-reflexive
-  );
-}
-
-@mixin mdc-text-field-textarea-shape-radius($radius, $rtl-reflexive: false) {
-  @include mdc-notched-outline-shape-radius($radius, $rtl-reflexive);
-}
-
 @mixin mdc-text-field-ink-color($color) {
   &:not(.mdc-text-field--disabled) {
     @include mdc-text-field-ink-color_($color);
@@ -127,6 +110,59 @@
   .mdc-text-field__input {
     @include mdc-theme-prop(caret-color, $color);
   }
+}
+
+@mixin mdc-text-field-shape-radius($radius, $rtl-reflexive: false) {
+  @if length($radius) > 2 {
+    @error "Invalid radius: '#{$radius}' component doesn't allow customizing all corners";
+  }
+
+  $masked-radius: mdc-shape-mask-radius($radius, 1 1 0 0);
+
+  @include mdc-shape-radius(
+    mdc-shape-resolve-percentage-radius($mdc-text-field-height, $masked-radius),
+    $rtl-reflexive
+  );
+}
+
+@mixin mdc-text-field-outline-shape-radius($radius, $rtl-reflexive: false) {
+  $resolved-radius: mdc-shape-resolve-percentage-radius($mdc-text-field-height, $radius);
+
+  .mdc-notched-outline {
+    @include mdc-notched-outline-shape-radius($resolved-radius, $rtl-reflexive);
+  }
+
+  // Look at both leading-side radii for both input and helper line, to align consistently with the label.
+  $max-leading-radius: mdc-shape-max-corner-radius(mdc-shape-mask-radius($resolved-radius, 1 0 0 1));
+
+  @if ($max-leading-radius > $mdc-notched-outline-leading-width) {
+    .mdc-text-field__input {
+      /* @noflip */
+      padding-left: $max-leading-radius + $mdc-notched-outline-padding;
+
+      @include mdc-rtl {
+        /* noflip */
+        padding-right: $max-leading-radius + $mdc-notched-outline-padding;
+      }
+    }
+  }
+
+  $all-radii: mdc-shape-unpack-radius(mdc-shape-prop-value($resolved-radius));
+  $bottom-trailing-radius: nth($all-radii, 3);
+
+  @if (max($max-leading-radius, $bottom-trailing-radius) > $mdc-notched-outline-leading-width) {
+    + .mdc-text-field-helper-line {
+      @include mdc-rtl-reflexive-property(
+        padding,
+        max($max-leading-radius, $mdc-notched-outline-leading-width) + $mdc-notched-outline-padding,
+        max($bottom-trailing-radius, $mdc-notched-outline-leading-width)
+      );
+    }
+  }
+}
+
+@mixin mdc-text-field-textarea-shape-radius($radius, $rtl-reflexive: false) {
+  @include mdc-notched-outline-shape-radius($radius, $rtl-reflexive);
 }
 
 // Private mixins
@@ -212,31 +248,6 @@
     .mdc-floating-label::after,
     .mdc-notched-outline .mdc-floating-label::after {
       @content;
-    }
-  }
-}
-
-@mixin mdc-text-field-outline-shape-radius($radius, $rtl-reflexive: false) {
-  $resolved-radius: mdc-shape-resolve-percentage-radius($mdc-text-field-height, $radius);
-
-  .mdc-notched-outline {
-    @include mdc-notched-outline-shape-radius($resolved-radius, $rtl-reflexive);
-  }
-
-  $max-leading-radius: mdc-shape-max-corner-radius(mdc-shape-mask-radius($resolved-radius, 1 0 0 1));
-  $max-trailing-radius: mdc-shape-max-corner-radius(mdc-shape-mask-radius($resolved-radius, 0 1 1 0));
-
-  @if ($max-leading-radius > $mdc-notched-outline-leading-width) {
-    .mdc-text-field__input {
-      @include mdc-rtl-reflexive-property(padding, $max-leading-radius + $mdc-notched-outline-padding, 0);
-    }
-
-    + .mdc-text-field-helper-line {
-      @include mdc-rtl-reflexive-property(
-        padding,
-        $max-leading-radius + $mdc-notched-outline-padding,
-        $max-trailing-radius
-      );
     }
   }
 }

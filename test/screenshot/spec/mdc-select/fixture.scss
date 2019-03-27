@@ -45,7 +45,11 @@
 }
 
 .custom-select-shape-radius {
-  @include mdc-select-shape-radius(8px 50%);
+  @include mdc-select-shape-radius(4px 50%);
+}
+
+.custom-select-shape-radius-inverted {
+  @include mdc-select-shape-radius(50% 4px);
 }
 
 .custom-select-outline-color {
@@ -53,7 +57,11 @@
 }
 
 .custom-select-outline-shape-radius {
-  @include mdc-select-outline-shape-radius(8px 50%);
+  @include mdc-select-outline-shape-radius(4px 50%);
+}
+
+.custom-select-outline-shape-radius-inverted {
+  @include mdc-select-outline-shape-radius(50% 4px);
 }
 
 .custom-enhanced-select-width {
