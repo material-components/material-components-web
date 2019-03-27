@@ -1,7 +1,7 @@
 {
   "name": "@material/button",
   "description": "The Material Components for the web button component",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -13,12 +13,12 @@
     "url": "https://github.com/material-components/material-components-web.git"
   },
   "dependencies": {
-    "@material/elevation": "^1.0.0",
+    "@material/elevation": "^1.1.0",
     "@material/feature-targeting": "^0.44.1",
-    "@material/ripple": "^1.0.1",
+    "@material/ripple": "^1.1.0",
     "@material/rtl": "^0.42.0",
     "@material/shape": "^1.0.0",
-    "@material/theme": "^1.0.0",
+    "@material/theme": "^1.1.0",
     "@material/typography": "^1.0.0"
   }
 }

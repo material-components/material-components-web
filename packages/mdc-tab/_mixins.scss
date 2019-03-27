@@ -34,6 +34,8 @@
 @mixin mdc-tab-icon-color($color) {
   .mdc-tab__icon {
     @include mdc-theme-prop(color, $color);
+
+    fill: currentColor;
   }
 }
 
