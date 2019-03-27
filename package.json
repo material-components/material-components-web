@@ -123,7 +123,7 @@
     "resolve": "^1.3.2",
     "sass-loader": "^7.1.0",
     "selenium-webdriver": "^4.0.0-alpha.1",
-    "semver": "^5.3.0",
+    "semver": "^6.0.0",
     "serve-index": "^1.9.1",
     "simple-git": "^1.92.0",
     "standard-changelog": "^2.0.0",
