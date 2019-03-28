@@ -234,7 +234,7 @@
     }
 
     + .mdc-text-field-helper-line {
-      @include mdc-rtl-reflexive-property(padding, $resolved-radius + $mdc-notched-outline-padding, $radius-pixels);
+      @include mdc-rtl-reflexive-property(padding, $resolved-radius + $mdc-notched-outline-padding, $resolved-radius);
     }
   }
 }
