@@ -91,6 +91,7 @@
 
     @for $i from 1 through length($radius) {
       $corner: nth($radius, $i);
+
       @if map-has-key($mdc-shape-category-values, $corner) {
         $radius-values:
           append($radius-values, nth(mdc-shape-unpack-radius_(map-get($mdc-shape-category-values, $corner)), $i));
@@ -153,6 +154,7 @@
   } @else if length($radius) == 1 {
     @return $radius $radius $radius $radius;
   }
+
   @error "Invalid radius: '#{$radius}' is more than 4 values";
 }
 
