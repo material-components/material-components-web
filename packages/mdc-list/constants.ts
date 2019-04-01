@@ -24,6 +24,7 @@
 const cssClasses = {
   LIST_ITEM_ACTIVATED_CLASS: 'mdc-list-item--activated',
   LIST_ITEM_CLASS: 'mdc-list-item',
+  LIST_ITEM_DISABLED_CLASS: 'mdc-list-item--disabled',
   LIST_ITEM_SELECTED_CLASS: 'mdc-list-item--selected',
   ROOT: 'mdc-list',
 };
