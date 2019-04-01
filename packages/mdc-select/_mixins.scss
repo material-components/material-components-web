@@ -363,7 +363,7 @@
   @include mdc-select-hover-outline-color($mdc-select-outlined-hover-border);
   @include mdc-select-focused-outline-color(primary);
   @include mdc-floating-label-shake-animation(text-field-outlined);
-  @include mdc-select-outline-shape-radius(medium);
+  @include mdc-select-outline-shape-radius(small);
   @include mdc-states-base-color(transparent);
   @include mdc-select-container-fill-color(transparent);
   @include mdc-notched-outline-floating-label-float-position($mdc-select-outlined-label-position-y, 0);
