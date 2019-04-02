@@ -1,7 +1,7 @@
 {
   "name": "@material/tab",
   "description": "The Material Components for the web tab component",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -18,10 +18,10 @@
   "types": "dist/mdc.tab.d.ts",
   "dependencies": {
     "@material/base": "^1.0.0",
-    "@material/ripple": "^1.0.1",
+    "@material/ripple": "^1.1.0",
     "@material/rtl": "^0.42.0",
-    "@material/tab-indicator": "^1.0.0",
-    "@material/theme": "^1.0.0",
+    "@material/tab-indicator": "^1.1.0",
+    "@material/theme": "^1.1.0",
     "@material/typography": "^1.0.0",
     "tslib": "^1.9.3"
   },

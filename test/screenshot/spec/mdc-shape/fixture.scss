@@ -1,5 +1,5 @@
 //
-// Copyright 2018 Google Inc.
+// Copyright 2019 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,5 +20,21 @@
 // THE SOFTWARE.
 //
 
-@import "./mixins";
-@include mdc-icon-button-core-styles;
+// stylelint-disable scss/dollar-variable-pattern
+$mdc-shape-small-component-radius: 50%;
+$mdc-shape-medium-component-radius: 50%;
+$mdc-shape-large-component-radius: 50%;
+// stylelint-enable scss/dollar-variable-pattern
+
+@import "../../../../packages/mdc-button/mdc-button";
+@import "../../../../packages/mdc-fab/mdc-fab";
+@import "../../../../packages/mdc-textfield/mdc-text-field";
+@import "../../../../packages/mdc-select/mdc-select";
+@import "../mixins";
+
+.test-cell--fab,
+.test-cell--button,
+.test-cell--textfield,
+.test-cell--select {
+  @include test-cell-size(301, 81);
+}
