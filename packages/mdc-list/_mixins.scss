@@ -78,11 +78,6 @@
     }
   }
 
-  // Only enable mouse hover for interactive list items which are not disabled.
-  :not(.mdc-list--non-interactive) > .mdc-list-item:not(.mdc-list-item--disabled) {
-    cursor: pointer;
-  }
-
   // "Selected" is ephemeral and likely to change soon. E.g., selecting one or more photos to share in Google Photos.
   // "Activated" is more permanent. E.g., the currently highlighted navigation destination in a drawer.
   .mdc-list-item--selected,
@@ -221,6 +216,11 @@
     @include mdc-feature-targets($feat-structure) {
       @include mdc-list-graphic-size_(36px);
     }
+  }
+
+  // Only change mouse cursor for interactive list items which are not disabled.
+  :not(.mdc-list--non-interactive) > :not(.mdc-list-item--disabled).mdc-list-item {
+    cursor: pointer;
   }
 
   // Override anchor tag styles for the use-case of a list being used for navigation
