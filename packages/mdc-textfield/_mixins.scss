@@ -217,21 +217,24 @@
 }
 
 @mixin mdc-text-field-outline-shape-radius($radius, $rtl-reflexive: false) {
-  $resolved-radius: mdc-shape-resolve-percentage-radius($mdc-text-field-height, $radius);
+  $resolved-radius: nth(mdc-shape-resolve-percentage-radius($mdc-text-field-height, mdc-shape-prop-value($radius)), 1);
+
+  @if (length(mdc-shape-prop-value($radius)) > 1) {
+    // stylelint-disable-next-line max-line-length
+    @warn "mdc-text-field-outline-shape-radius only supports a single radius; see https://github.com/material-components/material-components-web/issues/4140";
+  }
 
   .mdc-notched-outline {
     @include mdc-notched-outline-shape-radius($resolved-radius, $rtl-reflexive);
   }
 
-  $radius-pixels: mdc-shape-prop-value($resolved-radius);
-
-  @if ($radius-pixels > $mdc-notched-outline-leading-width) {
+  @if ($resolved-radius > $mdc-notched-outline-leading-width) {
     .mdc-text-field__input {
-      @include mdc-rtl-reflexive-property(padding, $radius-pixels + $mdc-notched-outline-padding, 0);
+      @include mdc-rtl-reflexive-property(padding, $resolved-radius + $mdc-notched-outline-padding, 0);
     }
 
     + .mdc-text-field-helper-line {
-      @include mdc-rtl-reflexive-property(padding, $radius-pixels + $mdc-notched-outline-padding, $radius-pixels);
+      @include mdc-rtl-reflexive-property(padding, $resolved-radius + $mdc-notched-outline-padding, $resolved-radius);
     }
   }
 }
