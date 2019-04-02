@@ -20,6 +20,8 @@
 // THE SOFTWARE.
 //
 
+@import "../mixins";
+
 .test-cell--fab,
 .test-cell--button {
   // stylelint-disable scss/dollar-variable-pattern
@@ -28,8 +30,6 @@
 
   @import "../../../../packages/mdc-button/mdc-button";
   @import "../../../../packages/mdc-fab/mdc-fab";
-  @import "../mixins";
-
   @include test-cell-size(301, 81);
 }
 
@@ -41,7 +41,5 @@
 
   @import "../../../../packages/mdc-textfield/mdc-text-field";
   @import "../../../../packages/mdc-select/mdc-select";
-  @import "../mixins";
-
   @include test-cell-size(301, 81);
 }
