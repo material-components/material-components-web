@@ -32,19 +32,19 @@ function getFixture() {
   return bel`
   <ul class="mdc-list">
     <li class="mdc-list-item" tabindex="0">
-      Fruit
+      <span class="mdc-list-item__text">Fruit</span>
       <button>one</button>
     </li>
     <li class="mdc-list-item">
-      Potato
+      <span class="mdc-list-item__text">Potato</span>
       <a href="http://www.google.com">Link</a>
     </li>
     <li class="mdc-list-item">
-      Pasta
+      <span class="mdc-list-item__text">Pasta</span>
       <input type="checkbox"/>
     </li>
     <li class="mdc-list-item">
-      Pizza
+      <span class="mdc-list-item__text">Pizza</span>
       <input type="radio"/>
     </li>
    </ul>
@@ -55,19 +55,19 @@ function getFixtureWithDisabledItems() {
   return bel`
   <ul class="mdc-list">
     <li class="mdc-list-item" tabindex="0">
-      Fruit
+      <span class="mdc-list-item__text">Fruit</span>
       <button>one</button>
     </li>
     <li class="mdc-list-item mdc-list-item--disabled" aria-disabled="true">
-      Potato
+      <span class="mdc-list-item__text">Potato</span>
       <a href="http://www.google.com">Link</a>
     </li>
     <li class="mdc-list-item mdc-list-item--disabled" aria-disabled="true">
-      Pasta
+      <span class="mdc-list-item__text">Pasta</span>
       <input type="checkbox"/>
     </li>
     <li class="mdc-list-item">
-      Pizza
+      <span class="mdc-list-item__text">Pizza</span>
       <input type="radio"/>
     </li>
    </ul>
