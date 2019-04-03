@@ -110,7 +110,18 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
         // when adding it to the root client rect's width.
         const checkmarkWidth = checkmarkRect.height;
         const width = rootRect.width + checkmarkWidth;
-        return {...rootRect, width, height};
+        // Spread expression translate to Object.assign in Typescript.
+        // Object.assign combine properties of object.
+        // But ClientRect has only getters, so I added code below.
+        const rect = {
+          width: rootRect.width,
+          height: rootRect.height,
+          top: rootRect.top,
+          left: rootRect.left,
+          right: rootRect.right,
+          bottom: rootRect.bottom,
+        };
+        return {...rect, width, height};
       }
     }
 
