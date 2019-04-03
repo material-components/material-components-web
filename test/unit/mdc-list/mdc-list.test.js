@@ -51,6 +51,29 @@ function getFixture() {
   `;
 }
 
+function getFixtureWithDisabledItems() {
+  return bel`
+  <ul class="mdc-list">
+    <li class="mdc-list-item" tabindex="0">
+      Fruit
+      <button>one</button>
+    </li>
+    <li class="mdc-list-item mdc-list-item--disabled" aria-disabled="true">
+      Potato
+      <a href="http://www.google.com">Link</a>
+    </li>
+    <li class="mdc-list-item mdc-list-item--disabled" aria-disabled="true">
+      Pasta
+      <input type="checkbox"/>
+    </li>
+    <li class="mdc-list-item">
+      Pizza
+      <input type="radio"/>
+    </li>
+   </ul>
+  `;
+}
+
 function setupTest(root = getFixture()) {
   const MockFoundationCtor = td.constructor(MDCListFoundation);
   const mockFoundation = new MockFoundationCtor();
@@ -373,6 +396,11 @@ test('keydown handler is removed from the root element on destroy', () => {
   const listElementItem = root.querySelector('.mdc-list-item');
   listElementItem.dispatchEvent(event);
   td.verify(mockFoundation.handleKeydown(event, true, 0), {times: 0});
+});
+
+runTests('#listElements should return all list items including disabled list items', () => {
+  const {component} = setupTest(getFixtureWithDisabledItems());
+  assert.isTrue(component.listElements.querySelectorAll(`.${cssClasses.LIST_ITEM_DISABLED_CLASS}`).length > 0);
 });
 
 test('adapter#hasRadioAtIndex return true or false based on presense of radio button on list item', () => {
