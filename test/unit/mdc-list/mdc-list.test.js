@@ -398,9 +398,9 @@ test('keydown handler is removed from the root element on destroy', () => {
   td.verify(mockFoundation.handleKeydown(event, true, 0), {times: 0});
 });
 
-runTests('#listElements should return all list items including disabled list items', () => {
+test('#listElements should return all list items including disabled list items', () => {
   const {component} = setupTest(getFixtureWithDisabledItems());
-  assert.isTrue(component.listElements.querySelectorAll(`.${cssClasses.LIST_ITEM_DISABLED_CLASS}`).length > 0);
+  assert.equal(4, component.listElements.length);
 });
 
 test('adapter#hasRadioAtIndex return true or false based on presense of radio button on list item', () => {
