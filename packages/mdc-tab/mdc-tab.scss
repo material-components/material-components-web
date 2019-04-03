@@ -52,8 +52,9 @@
   z-index: 1;
 
   // Firefox still draws a dotted border around focused buttons unless specifically overridden.
-  :-moz-focusring {
-    border: none;
+  &::-moz-focus-inner {
+    padding: 0;
+    border: 0;
   }
 }
 
