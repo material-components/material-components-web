@@ -114,12 +114,12 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
         // Object.assign combine properties of object.
         // But ClientRect has only getters, so I added code below.
         const rect = {
-          width: rootRect.width,
+          bottom: rootRect.bottom,
           height: rootRect.height,
-          top: rootRect.top,
           left: rootRect.left,
           right: rootRect.right,
-          bottom: rootRect.bottom,
+          top: rootRect.top,
+          width: rootRect.width,
         };
         return {...rect, width, height};
       }
