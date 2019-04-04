@@ -45,6 +45,13 @@
 @mixin mdc-notched-outline-shape-radius($radius, $rtl-reflexive: false) {
   $radius: mdc-shape-prop-value($radius);
 
+  @if (length($radius) > 1) {
+    // stylelint-disable-next-line max-line-length
+    @warn "mdc-notched-outline-shape-radius only supports a single radius; see https://github.com/material-components/material-components-web/issues/4140";
+  }
+
+  $radius: nth($radius, 1);
+
   .mdc-notched-outline__leading {
     @include mdc-shape-radius(mdc-shape-mask-radius($radius, 1 0 0 1), $rtl-reflexive: true);
 
