@@ -96,7 +96,7 @@
       @if map-has-key($mdc-shape-category-values, $corner) {
         // If a category is encountered within a list of radii, apply the category's value for the corresponding corner
         $radius-values:
-          append($radius-values, nth(mdc-shape-unpack-radius_(map-get($mdc-shape-category-values, $corner)), $i));
+          append($radius-values, nth(mdc-shape-unpack-radius(map-get($mdc-shape-category-values, $corner)), $i));
       } @else {
         $radius-values: append($radius-values, mdc-shape-validate-radius-value_($corner));
       }
@@ -118,10 +118,10 @@
 //
 // Examples:
 //
-// 1. mdc-shape-unpack-radius_(4px) => 4px 4px 4px 4px
-// 2. mdc-shape-unpack-radius_(4px 2px) => 4px 2px 4px 2px
-// 3. mdc-shape-unpack-radius_(4px 2px 2px) => 4px 2px 2px 2px
-// 2. mdc-shape-unpack-radius_(4px 2px 0 2px) => 4px 2px 0 2px
+// 1. mdc-shape-unpack-radius(4px) => 4px 4px 4px 4px
+// 2. mdc-shape-unpack-radius(4px 2px) => 4px 2px 4px 2px
+// 3. mdc-shape-unpack-radius(4px 2px 2px) => 4px 2px 2px 2px
+// 2. mdc-shape-unpack-radius(4px 2px 0 2px) => 4px 2px 0 2px
 //
 @function mdc-shape-unpack-radius($radius) {
   @if length($radius) == 4 {
