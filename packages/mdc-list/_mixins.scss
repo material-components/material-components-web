@@ -218,6 +218,13 @@
     }
   }
 
+  // Only change mouse cursor for interactive list items which are not disabled.
+  :not(.mdc-list--non-interactive) > :not(.mdc-list-item--disabled).mdc-list-item {
+    @include mdc-feature-targets($feat-structure) {
+      cursor: pointer;
+    }
+  }
+
   // Override anchor tag styles for the use-case of a list being used for navigation
   // stylelint-disable selector-max-type,selector-no-qualifying-type
   a.mdc-list-item {

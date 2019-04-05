@@ -48,7 +48,7 @@
   @include mdc-select-label-color($mdc-select-label-color);
   @include mdc-select-bottom-line-color($mdc-select-bottom-line-idle-color);
   @include mdc-select-helper-text-color($mdc-select-helper-text-color);
-  @include mdc-select-shape-radius(medium);
+  @include mdc-select-shape-radius(small);
 
   // Focused state colors
   @include mdc-select-focused-bottom-line-color(primary);

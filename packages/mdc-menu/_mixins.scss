@@ -56,7 +56,6 @@
 
     .mdc-list-item {
       @include mdc-feature-targets($feat-structure) {
-        cursor: pointer;
         user-select: none;
       }
     }

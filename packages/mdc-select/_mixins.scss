@@ -108,7 +108,7 @@
 }
 
 @mixin mdc-select-outline-shape-radius($radius, $rtl-reflexive: false) {
-  $resolved-radius: mdc-shape-resolve-percentage-radius($mdc-select-height, $radius);
+  $resolved-radius: mdc-shape-resolve-percentage-radius($mdc-select-height, mdc-shape-prop-value($radius));
 
   .mdc-notched-outline {
     @include mdc-notched-outline-shape-radius($resolved-radius, $rtl-reflexive);
@@ -369,7 +369,7 @@
   @include mdc-select-hover-outline-color($mdc-select-outlined-hover-border);
   @include mdc-select-focused-outline-color(primary);
   @include mdc-floating-label-shake-animation(text-field-outlined);
-  @include mdc-select-outline-shape-radius(medium);
+  @include mdc-select-outline-shape-radius(small);
   @include mdc-states-base-color(transparent);
   @include mdc-select-container-fill-color(transparent);
   @include mdc-notched-outline-floating-label-float-position($mdc-select-outlined-label-position-y, 0);

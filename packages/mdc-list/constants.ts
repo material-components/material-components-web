@@ -24,6 +24,7 @@
 const cssClasses = {
   LIST_ITEM_ACTIVATED_CLASS: 'mdc-list-item--activated',
   LIST_ITEM_CLASS: 'mdc-list-item',
+  LIST_ITEM_DISABLED_CLASS: 'mdc-list-item--disabled',
   LIST_ITEM_SELECTED_CLASS: 'mdc-list-item--selected',
   ROOT: 'mdc-list',
 };
@@ -44,7 +45,7 @@ const strings = {
     .${cssClasses.LIST_ITEM_CLASS} button:not(:disabled),
     .${cssClasses.LIST_ITEM_CLASS} a
   `,
-  ENABLED_ITEMS_SELECTOR: '.mdc-list-item:not(.mdc-list-item--disabled)',
+  ENABLED_ITEMS_SELECTOR: `.${cssClasses.LIST_ITEM_CLASS}:not(.${cssClasses.LIST_ITEM_DISABLED_CLASS})`,
   FOCUSABLE_CHILD_ELEMENTS: `
     .${cssClasses.LIST_ITEM_CLASS} button:not(:disabled),
     .${cssClasses.LIST_ITEM_CLASS} a,
