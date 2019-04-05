@@ -289,6 +289,7 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     // Prevent Safari from moving the caret to the end of the input when the value has not changed.
     if (this.getValue() !== value) {
       this.getNativeInput_().value = value;
+      this.setCharacterCounter_(value.length);
     }
     const isValid = this.isValid();
     this.styleValidity_(isValid);
