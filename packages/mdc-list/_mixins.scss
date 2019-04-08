@@ -306,10 +306,10 @@
 
   // Set styles only for focus state on disabled list item.
   :not(.mdc-list--non-interactive) > .mdc-list-item--disabled {
-    @include mdc-ripple-surface;
-    @include mdc-ripple-radius-bounded;
-    @include mdc-states-base-color(mdc-theme-prop-value(on-surface));
-    @include mdc-states-focus-opacity(mdc-states-opacity(primary, focus));
+    @include mdc-ripple-surface($query: $query);
+    @include mdc-ripple-radius-bounded($query: $query);
+    @include mdc-states-base-color(mdc-theme-prop-value(on-surface), $query: $query);
+    @include mdc-states-focus-opacity(mdc-states-opacity(primary, focus), $query: $query);
   }
 }
 
