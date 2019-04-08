@@ -159,6 +159,10 @@
   @include mdc-text-field-helper-text-validation-color($mdc-text-field-error);
   @include mdc-text-field-caret-color($mdc-text-field-error);
 
+  @include mdc-required-text-field-label-asterisk_ {
+    @include mdc-theme-prop(color, $mdc-text-field-error);
+  }
+
   &.mdc-text-field--with-trailing-icon {
     &:not(.mdc-text-field--with-leading-icon) {
       @include mdc-text-field-icon-color($mdc-text-field-error);
@@ -178,7 +182,7 @@
   @include mdc-text-field-label-color($mdc-text-field-focused-label-color);
 
   @include mdc-required-text-field-label-asterisk_ {
-    @include mdc-theme-prop(color, $mdc-text-field-error);
+    @include mdc-theme-prop(color, $mdc-text-field-focused-label-color);
   }
 
   + .mdc-text-field-helper-line .mdc-text-field-helper-text:not(.mdc-text-field-helper-text--validation-msg) {
