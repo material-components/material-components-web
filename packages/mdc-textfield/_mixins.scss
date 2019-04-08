@@ -381,7 +381,7 @@
 @mixin mdc-text-field-dense-with-leading-icon_ {
   @include mdc-text-field-icon-horizontal-position_(
     left,
-    $mdc-text-field-dense-icon-position,
+    $mdc-text-field-icon-position,
     $mdc-text-field-dense-icon-padding,
     $mdc-text-field-input-padding
   );
@@ -430,7 +430,7 @@
 @mixin mdc-text-field-with-trailing-icon_ {
   @include mdc-text-field-icon-horizontal-position_(
     right,
-    $mdc-text-field-trailing-icon-position,
+    $mdc-text-field-icon-position,
     $mdc-text-field-icon-padding,
     $mdc-text-field-input-padding
   );
@@ -449,7 +449,7 @@
 @mixin mdc-text-field-dense-with-trailing-icon_ {
   @include mdc-text-field-icon-horizontal-position_(
     right,
-    $mdc-text-field-dense-icon-position,
+    $mdc-text-field-icon-position,
     $mdc-text-field-dense-icon-padding,
     $mdc-text-field-input-padding
   );
@@ -459,16 +459,16 @@
   @include mdc-text-field-icon-horizontal-position-two-icons_(
     $mdc-text-field-icon-position,
     $mdc-text-field-icon-padding,
-    $mdc-text-field-trailing-icon-position,
+    $mdc-text-field-icon-position,
     $mdc-text-field-icon-padding
   );
 }
 
 @mixin mdc-text-field-dense-with-both-icons_ {
   @include mdc-text-field-icon-horizontal-position-two-icons_(
-    $mdc-text-field-dense-icon-position,
+    $mdc-text-field-icon-position,
     $mdc-text-field-dense-icon-padding,
-    $mdc-text-field-dense-icon-position,
+    $mdc-text-field-icon-position,
     $mdc-text-field-dense-icon-padding
   );
 }
