@@ -95,6 +95,8 @@
   @include mdc-feature-targets($feat-structure) {
     display: none;
     position: absolute;
+    top: 0;
+    left: 0;
     box-sizing: border-box;
     max-width: calc(100vw - #{$mdc-menu-surface-min-distance-from-edge});
     max-height: calc(100vh - #{$mdc-menu-surface-min-distance-from-edge});
