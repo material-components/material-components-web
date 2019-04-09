@@ -55,6 +55,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       hasCheckboxAtIndex: () => false,
       hasRadioAtIndex: () => false,
       isCheckboxCheckedAtIndex: () => false,
+      isRootFocused: () => false,
       isFocusInsideList: () => false,
       notifyAction: () => undefined,
       removeClassForElementIndex: () => undefined,
@@ -177,9 +178,20 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
     const isEnter = evt.key === 'Enter' || evt.keyCode === 13;
     const isSpace = evt.key === 'Space' || evt.keyCode === 32;
 
+    if (this.adapter_.isRootFocused()) {
+      if (arrowUp || isEnd) {
+        evt.preventDefault();
+        this.focusLastElement();
+      } else if (arrowDown || isHome) {
+        evt.preventDefault();
+        this.focusFirstElement();
+      }
+
+      return;
+    }
+
     let currentIndex = this.adapter_.getFocusedElementIndex();
-    let nextIndex = numbers.UNSET_INDEX;
-    if (currentIndex === numbers.UNSET_INDEX) {
+    if (currentIndex === -1) {
       currentIndex = listItemIndex;
       if (currentIndex < 0) {
         // If this event doesn't have a mdc-list-item ancestor from the
@@ -188,6 +200,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       }
     }
 
+    let nextIndex;
     if ((this.isVertical_ && arrowDown) || (!this.isVertical_ && arrowRight)) {
       this.preventDefaultEvent_(evt);
       nextIndex = this.focusNextElement(currentIndex);
@@ -219,7 +232,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
 
     this.focusedItemIndex_ = currentIndex;
 
-    if (nextIndex >= 0) {
+    if (nextIndex !== undefined) {
       this.setTabindexAtIndex_(nextIndex);
       this.focusedItemIndex_ = nextIndex;
     }
