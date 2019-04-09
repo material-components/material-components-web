@@ -28,6 +28,7 @@
 'use strict';
 
 const path = require('path');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 class JsBundleFactory {
   constructor({
@@ -76,6 +77,17 @@ class JsBundleFactory {
       },
     };
 
+    const commonPlugins = [];
+
+    if (this.env_.isProd()) {
+      commonPlugins.push(new UglifyJSPlugin({
+        output: {
+          comments: false,
+        },
+        sourceMap: true,
+      }));
+    }
+
     return {
       name: bundleName,
       entry: chunks,
@@ -106,6 +118,7 @@ class JsBundleFactory {
         }],
       },
       plugins: [
+        ...commonPlugins,
         ...plugins,
       ],
     };
