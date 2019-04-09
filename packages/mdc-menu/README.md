@@ -202,11 +202,12 @@ With focus on the menu button:
 
 Use `setDefaultFocusState` method to set default focus state that will be focused every time when menu is opened.
 
-Focus state | Description | User action
---- | --- | ---
-`DefaultFocusState.FIRST_ITEM` | Focuses the first menu item | <kbd>Enter</kbd>, <kbd>Space</kbd>, <kbd>Down Arrow</kbd>
-`DefaultFocusState.LAST_ITEM` | Focuses the last menu item | <kbd>Up arrow</kbd>
-`DefaultFocusState.LIST_ROOT` | Focuses the list root | Click or Touch
+Focus state | Description
+--- | ---
+`DefaultFocusState.FIRST_ITEM` | Focuses the first menu item. Set this when menu button receives <kbd>Enter</kbd>, <kbd>Space</kbd>, <kbd>Down Arrow</kbd>.
+`DefaultFocusState.LAST_ITEM` | Focuses the last menu item. Set this when menu button receives <kbd>Up arrow</kbd>.
+`DefaultFocusState.LIST_ROOT` | Focuses the list root. Set this when menu button Clicked or Touched.
+`DefaultFocusState.NONE` | Does not change the focus. Set this if you do not want the menu to grab focus on open. (Autocomplete dropdown menu, for example).
 
 ## `MDCMenu` Properties and Methods
 
