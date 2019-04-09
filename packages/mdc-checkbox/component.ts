@@ -23,8 +23,8 @@
 
 import {getCorrectEventName} from '@material/animation/util';
 import {MDCComponent} from '@material/base/component';
-import {ponyfill} from '@material/dom/index';
-import {MDCRipple, MDCRippleAdapter, MDCRippleCapableSurface, MDCRippleFoundation} from '@material/ripple/index';
+import {ponyfill} from '@material/dom';
+import {MDCRipple, MDCRippleAdapter, MDCRippleCapableSurface, MDCRippleFoundation} from '@material/ripple';
 import {MDCCheckboxAdapter} from './adapter';
 import {MDCCheckboxFoundation} from './foundation';
 
