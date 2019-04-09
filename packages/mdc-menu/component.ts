@@ -28,7 +28,7 @@ import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
 import {Corner, MDCMenuSurface, MDCMenuSurfaceFactory} from '@material/menu-surface/index';
 import {MDCMenuDistance} from '@material/menu-surface/types';
 import {MDCMenuAdapter} from './adapter';
-import {cssClasses, strings, DefaultFocusState} from './constants';
+import {cssClasses, DefaultFocusState, strings} from './constants';
 import {MDCMenuFoundation} from './foundation';
 import {MDCMenuItemComponentEventDetail} from './types';
 

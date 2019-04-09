@@ -43,6 +43,6 @@ enum DefaultFocusState {
   LIST_ROOT = 1,
   FIRST_ITEM = 2,
   LAST_ITEM = 3,
-};
+}
 
 export {cssClasses, strings, numbers, DefaultFocusState};

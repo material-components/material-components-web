@@ -71,7 +71,7 @@ export interface MDCListAdapter {
   isCheckboxCheckedAtIndex(index: number): boolean;
 
   /**
-   * @return
+   * @return true if root element is focused.
    */
   isRootFocused(): boolean;
 
