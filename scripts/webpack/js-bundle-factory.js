@@ -87,9 +87,9 @@ class JsBundleFactory {
     if (!this.env_.isProd()) {
       // Skip minify if it is not 'production'
       uglifyJSPluginOptions = Object.assign({}, uglifyJSPluginOptions, {
-        compress: true,
-        mangle: true,
-        beautify: false,
+        compress: false,
+        mangle: false,
+        beautify: true,
       });
     }
 
