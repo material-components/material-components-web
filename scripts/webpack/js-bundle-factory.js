@@ -77,16 +77,26 @@ class JsBundleFactory {
       },
     };
 
-    const commonPlugins = [];
+    let uglifyJSPluginOptions = {
+      output: {
+        comments: false, // Removes repeated @license comments and other code comments.
+      },
+      sourceMap: true,
+    };
 
-    if (this.env_.isProd()) {
-      commonPlugins.push(new UglifyJSPlugin({
-        output: {
-          comments: false,
-        },
-        sourceMap: true,
-      }));
+    if (!this.env_.isProd()) {
+      // Skip minify if it is not 'production'
+      uglifyJSPluginOptions = Object.assign({}, uglifyJSPluginOptions, {
+        compress: true,
+        mangle: true,
+        beautify: false,
+      });
     }
+
+    const commonPlugins = [
+      new UglifyJSPlugin(uglifyJSPluginOptions),
+      this.pluginFactory_.createCopyrightBannerPlugin(),
+    ];
 
     return {
       name: bundleName,
@@ -143,10 +153,7 @@ class JsBundleFactory {
         filenamePattern: this.env_.isProd() ? 'material-components-web.min.js' : 'material-components-web.js',
         library: 'mdc',
       },
-      plugins: [
-        this.pluginFactory_.createCopyrightBannerPlugin(),
-        ...plugins,
-      ],
+      plugins,
     });
   }
 
@@ -202,10 +209,7 @@ class JsBundleFactory {
         filenamePattern: this.env_.isProd() ? 'mdc.[name].min.js' : 'mdc.[name].js',
         library: ['mdc', '[name]'],
       },
-      plugins: [
-        this.pluginFactory_.createCopyrightBannerPlugin(),
-        ...plugins,
-      ],
+      plugins,
     });
   }
 }
