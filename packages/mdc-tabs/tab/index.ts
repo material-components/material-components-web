@@ -23,4 +23,8 @@
 
 export * from './adapter';
 export * from './component';
+export {
+  strings as tabStrings,
+  cssClasses as tabCssClasses,
+} from './constants';
 export * from './foundation';

@@ -23,6 +23,11 @@
 
 export * from './adapter';
 export * from './component';
+export {
+  strings as selectStrings,
+  cssClasses as selectCssClasses,
+  numbers as selectNumbers,
+} from './constants';
 export * from './foundation';
 export * from './types';
 export * from './helper-text/index';
