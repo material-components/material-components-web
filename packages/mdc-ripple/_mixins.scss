@@ -184,18 +184,22 @@
   }
 }
 
-@mixin mdc-states-base-color($color, $query: mdc-feature-all()) {
+@mixin mdc-states-base-color($color: null, $query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
 
   &::before,
   &::after {
     @include mdc-feature-targets($feat-color) {
-      @if alpha(mdc-theme-prop-value($color)) > 0 {
-        @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
+      @if($color != null) {
+        @if alpha(mdc-theme-prop-value($color)) > 0 {
+          @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
+        } @else {
+          // If a color with 0 alpha is specified, don't render the ripple pseudo-elements at all.
+          // This avoids unnecessary transitions and overflow.
+          content: none;
+        }
       } @else {
-        // If a color with 0 alpha is specified, don't render the ripple pseudo-elements at all.
-        // This avoids unnecessary transitions and overflow.
-        content: none;
+        background-color: currentColor;
       }
     }
   }
@@ -385,7 +389,7 @@
   $opacity-modifier: 0,
   $query: mdc-feature-all()
 ) {
-  @include mdc-states-base-color($color, $query);
+  @include mdc-states-base-color;
   @include mdc-states-hover-opacity(mdc-states-opacity($color, hover) + $opacity-modifier, $query);
   @include mdc-states-focus-opacity(
     mdc-states-opacity($color, focus) + $opacity-modifier,
