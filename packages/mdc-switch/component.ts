@@ -23,11 +23,8 @@
 
 import {MDCComponent} from '@material/base/component';
 import {EventType} from '@material/base/types';
-import {matches} from '@material/dom/ponyfill';
-import {MDCRipple} from '@material/ripple/component';
-import {MDCRippleAdapter} from '@material/ripple/adapter';
-import {MDCRippleCapableSurface} from '@material/ripple/types';
-import {MDCRippleFoundation} from '@material/ripple/foundation';
+import {ponyfill} from '@material/dom/index';
+import {MDCRipple, MDCRippleAdapter, MDCRippleCapableSurface, MDCRippleFoundation} from '@material/ripple/index';
 import {MDCSwitchAdapter} from './adapter';
 import {MDCSwitchFoundation} from './foundation';
 
@@ -105,7 +102,7 @@ export class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCR
       deregisterInteractionHandler: (evtType: EventType, handler: EventListener) => {
         this.nativeControl_.removeEventListener(evtType, handler);
       },
-      isSurfaceActive: () => matches(this.nativeControl_, ':active'),
+      isSurfaceActive: () => ponyfill.matches(this.nativeControl_, ':active'),
       isUnbounded: () => true,
       registerInteractionHandler: (evtType: EventType, handler: EventListener) => {
         this.nativeControl_.addEventListener(evtType, handler);

@@ -23,10 +23,13 @@
 
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
-import {MDCRipple, MDCRippleFactory} from '@material/ripple/component';
-import {MDCRippleAdapter} from '@material/ripple/adapter';
-import {MDCRippleCapableSurface} from '@material/ripple/types';
-import {MDCRippleFoundation} from '@material/ripple/foundation';
+import {
+  MDCRipple,
+  MDCRippleAdapter,
+  MDCRippleCapableSurface,
+  MDCRippleFactory,
+  MDCRippleFoundation,
+} from '@material/ripple/index';
 import {MDCChipAdapter} from './adapter';
 import {strings} from './constants';
 import {MDCChipFoundation} from './foundation';

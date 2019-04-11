@@ -23,9 +23,9 @@
 
 import {MDCComponent} from '@material/base/component';
 import * as ponyfill from '@material/dom/ponyfill';
-import {MDCFloatingLabel, MDCFloatingLabelFactory} from '@material/floating-label/component';
-import {MDCLineRipple, MDCLineRippleFactory} from '@material/line-ripple/component';
-import {MDCNotchedOutline, MDCNotchedOutlineFactory} from '@material/notched-outline/component';
+import {MDCFloatingLabel, MDCFloatingLabelFactory} from '@material/floating-label/index';
+import {MDCLineRipple, MDCLineRippleFactory} from '@material/line-ripple/index';
+import {MDCNotchedOutline, MDCNotchedOutlineFactory} from '@material/notched-outline/index';
 import {MDCRippleAdapter} from '@material/ripple/adapter';
 import {MDCRipple, MDCRippleFactory} from '@material/ripple/component';
 import {MDCRippleFoundation} from '@material/ripple/foundation';
