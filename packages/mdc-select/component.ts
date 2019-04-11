@@ -37,9 +37,9 @@ import {MDCSelectHelperText, MDCSelectHelperTextFactory} from './helper-text/ind
 import {MDCSelectIcon, MDCSelectIconFactory} from './icon/index';
 import {MDCSelectEventDetail, MDCSelectFoundationMap} from './types';
 
-type PointerEventType = 'mousedown' | 'touchstart';
+type PointerEventType = 'click';
 
-const POINTER_EVENTS: PointerEventType[] = ['mousedown', 'touchstart'];
+const POINTER_EVENTS: PointerEventType[] = ['click'];
 const VALIDATION_ATTR_WHITELIST = ['required', 'aria-required'];
 
 export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCRippleCapableSurface {
