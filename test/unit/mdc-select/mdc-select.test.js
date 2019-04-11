@@ -585,18 +585,14 @@ test('click on the select calls foundation.handleClick()', () => {
   td.verify(component.foundation_.handleClick(200), {times: 1});
 });
 
-test('#destroy removes the mousedown listener', () => {
-  const {bottomLine, component, fixture} = setupTest();
-  const event = document.createEvent('MouseEvent');
+
+test('#destroy removes the click listener', () => {
+  const {component, nativeControl} = setupTest();
   const clientX = 200;
-  const clientY = 200;
-
+  component.foundation_.handleClick = td.func();
   component.destroy();
-  // IE11 mousedown event.
-  event.initMouseEvent('mousedown', true, true, window, 0, 0, 0, clientX, clientY, false, false, false, false, 0, null);
-  fixture.querySelector('select').dispatchEvent(event);
-
-  td.verify(bottomLine.setRippleCenter(200), {times: 0});
+  domEvents.emit(nativeControl, 'click', {clientX});
+  td.verify(component.foundation_.handleClick(200), {times: 0});
 });
 
 test('keydown is not added to the native select when initialized', () => {
