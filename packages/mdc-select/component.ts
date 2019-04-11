@@ -23,13 +23,16 @@
 
 import {MDCComponent} from '@material/base/component';
 import {CustomEventListener, SpecificEventListener} from '@material/base/types';
-import {MDCFloatingLabel, MDCFloatingLabelFactory} from '@material/floating-label/index';
-import {MDCLineRipple, MDCLineRippleFactory} from '@material/line-ripple/index';
+import {MDCFloatingLabel, MDCFloatingLabelFactory} from '@material/floating-label/component';
 import * as menuSurfaceConstants from '@material/menu-surface/constants';
 import * as menuConstants from '@material/menu/constants';
-import {MDCMenu, MDCMenuFactory, MDCMenuItemEvent} from '@material/menu/index';
-import {MDCNotchedOutline, MDCNotchedOutlineFactory} from '@material/notched-outline/index';
-import {MDCRipple, MDCRippleAdapter, MDCRippleCapableSurface, MDCRippleFoundation} from '@material/ripple/index';
+import {MDCMenu, MDCMenuFactory} from '@material/menu/component';
+import {MDCMenuItemEvent} from '@material/menu/types';
+import {MDCNotchedOutline, MDCNotchedOutlineFactory} from '@material/notched-outline/component';
+import {MDCRipple} from '@material/ripple/component';
+import {MDCRippleAdapter} from '@material/ripple/adapter';
+import {MDCRippleCapableSurface} from '@material/ripple/types';
+import {MDCRippleFoundation} from '@material/ripple/foundation';
 import {MDCSelectAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCSelectFoundation} from './foundation';
