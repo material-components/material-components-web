@@ -1,5 +1,5 @@
 //
-// Copyright 2018 Google Inc.
+// Copyright 2019 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,53 +20,32 @@
 // THE SOFTWARE.
 //
 
-@import "@material/ripple/mixins";
-@import "@material/theme/mixins";
+@import "../mixins";
 
-// Public mixins
+.test-cell--fab,
+.test-cell--button {
+  // stylelint-disable scss/dollar-variable-pattern
+  $mdc-shape-small-component-radius: 0 50% 0 50%;
+  // stylelint-enable scss/dollar-variable-pattern
 
-@mixin mdc-tab-text-label-color($color) {
-  .mdc-tab__text-label {
-    @include mdc-theme-prop(color, $color);
+  @at-root {
+    @import "../../../../packages/mdc-button/mdc-button";
+    @import "../../../../packages/mdc-fab/mdc-fab";
   }
+
+  @include test-cell-size(301, 81);
 }
 
-@mixin mdc-tab-icon-color($color) {
-  .mdc-tab__icon {
-    @include mdc-theme-prop(color, $color);
+.test-cell--textfield,
+.test-cell--select {
+  // stylelint-disable scss/dollar-variable-pattern
+  $mdc-shape-small-component-radius: 50%;
+  // stylelint-enable scss/dollar-variable-pattern
 
-    fill: currentColor;
+  @at-root {
+    @import "../../../../packages/mdc-textfield/mdc-text-field";
+    @import "../../../../packages/mdc-select/mdc-select";
   }
-}
 
-@mixin mdc-tab-states-color($color) {
-  .mdc-tab__ripple {
-    @include mdc-states($color);
-  }
-}
-
-@mixin mdc-tab-ink-color($color) {
-  @include mdc-tab-icon-color($color);
-  @include mdc-tab-states-color($color);
-  @include mdc-tab-text-label-color($color);
-}
-
-@mixin mdc-tab-active-text-label-color($color) {
-  &.mdc-tab--active {
-    @include mdc-tab-text-label-color($color);
-  }
-}
-
-@mixin mdc-tab-active-icon-color($color) {
-  &.mdc-tab--active {
-    @include mdc-tab-icon-color($color);
-  }
-}
-
-@mixin mdc-tab-parent-positioning {
-  position: relative;
-}
-
-@mixin mdc-tab-fixed-width($width) {
-  flex: 0 1 $width;
+  @include test-cell-size(301, 81);
 }

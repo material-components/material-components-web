@@ -1,11 +1,24 @@
 # Release Process
 
-## Vocabulary
+**TIP:** Run the following script in the dev console to automatically expand the appropriate sections in this page for
+the type of release you're interested in performing.
+(You can replace `'minor'` on the last line with `'major'` or `'patch'`.)
+
+```js
+(function(type) {
+  document.querySelectorAll('details').forEach((el) => {
+    const summary = el.querySelector('summary');
+    el.open = summary && summary.textContent.toLowerCase().includes(`${type} release`);
+  })
+})('minor');
+```
+
+### Vocabulary
 
 This document reuses the [terminology for release types](./releases-and-branches.md#release-types) summarized in the
 Releases and Branches documentation.
 
-## First-time Setup
+## 0. First-time Setup
 
 > Employees are supposed to do this as part of onboarding, but we've put it here
 > as a reminder.
@@ -14,12 +27,12 @@ Releases and Branches documentation.
 
 This will log you into NPM.
 
-## Announce
+## 1. Announce
 
-Ping the Slack announcements channel first! This will let other members of the
+Ping the announcements channel first! This will let other members of the
 team know NOT to merge PRs during this release process.
 
-## Check Out Code
+## 2. Check Out Code
 
 Check out the master branch and update:
 
@@ -29,24 +42,50 @@ git checkout master && git pull && git fetch --tags
 
 This will pull the latest tags and `master` commits into your local repository.
 
-### Additional Step for Patch Releases
+<details open>
+  <summary><strong>Additional Step for Minor Releases and Patch Releases</strong></summary>
 
-Run the following script to automatically cherry-pick new bugfixes on top of the last release:
+<details open>
+  <summary>For Minor Releases</summary>
+
+First, checkout the latest previous patch version (e.g. `vX.0.1`).
+
+Then run the following script to automatically cherry-pick only the appropriate commits on top of the last release.
+
+```
+node scripts/cherry-pick-commits --minor
+```
+
+</details>
+
+<details open>
+  <summary>For Patch Releases</summary>
+
+First, make sure you checkout the correct branch or tag based on what you're releasing:
+
+* If you're releasing the first non-major version ever after a major version (typically X.0.1), checkout `master`.
+* If you're releasing the first patch after a minor version (e.g. X.1.1), checkout the minor version (e.g. `vX.1.0`).
+* If you're releasing a subsequent patch (e.g. X.Y.2), checkout `vX.Y.1`.
+
+Once you're on the correct base, run the following script to automatically cherry-pick only the appropriate commits on
+top of the last release.
 
 ```
 node scripts/cherry-pick-commits --patch
 ```
 
-> Note: After running the script, you are in a detached HEAD state. You can create a temporary local branch if desired,
-> but all that needs to be pushed is the tag produced at the end of the release process.
+</details>
 
-Read the output carefully:
+Read the output of the cherry-pick script carefully:
 
 * You may need to cherry-pick commits that the script could not cherry-pick cleanly without conflict
-* The script may have cherry-picked fixes that rely on breaking changes or new features; these need to be removed.
+* The script may have cherry-picked commits that rely on skipped commits; these need to be removed.
   This is especially likely if the script reports that either the build or the unit tests failed.
 * Examine `git log` to ensure there are no unexpected commits beyond the previous tag (in case any breaking changes
   weren't flagged properly, or features were mislabeled as fixes, etc.)
+
+> NOTE: After running the script, you are in a detached HEAD state. You can create a temporary local branch if desired,
+> but all that needs to be pushed is the tag produced at the end of the release process.
 
 If you find you need to remove commits that should not have been cherry-picked, perform the following steps:
 
@@ -56,10 +95,9 @@ If you find you need to remove commits that should not have been cherry-picked, 
 1. Save and exit (`:x` in vim)
 1. Re-check `git log` to confirm that the commits are no longer present
 
-> Note: In the rare event that zero commits were skipped, you can simply checkout master and cut the release as you
-> would normally do for a minor release, and skip all of the cherry-picking back and forth.
+</details>
 
-## Preparation
+## 3. Preparation
 
 Run the pre-release script:
 
@@ -68,7 +106,7 @@ Run the pre-release script:
 This will ensure you can publish/tag, build all release files, and ensure all tests
 pass prior to releasing (lerna will update versions for us in the next step).
 
-## Disable 2FA
+### Disable 2FA
 
 If you have two-factor authentication enabled on your NPM account (you should), you'll need to temporarily disable it:
 
@@ -78,35 +116,24 @@ npm profile disable-2fa
 
 See Lerna issues [#1137](https://github.com/lerna/lerna/issues/1137) and [#1091](https://github.com/lerna/lerna/issues/1091) for more information.
 
-## Publish to npm
+## 4. Publish to npm
 
-### For Minor Releases
+> TIP: You can use `npx lerna updated [--since=...]` to preview which packages it would publish before running the
+> commands in this section.
 
 ```
-$(npm bin)/lerna publish --skip-git --since=<previous-patch-tag>
+npx lerna publish --skip-git --since=<previous-tag>
 ```
 
-When lerna prompts for version, choose Minor.
+When lerna prompts for version, choose Major, Minor, or Patch as appropriate.
 
 Be sure to include the command-line flags:
 
 * `--skip-git` avoids immediately applying a git tag, which we will do later after updating the changelog
-* `--since=<previous-patch-tag>` (e.g. `--since=v0.36.1`) forces lerna to diff against the latest patch; otherwise,
-  it diffs against the previous minor release which may cause some packages without changes to be published (this
-  happens when bugfix releases aren't tagged from the master branch)
+* `--since=<previous-tag>` (e.g. `--since=v1.0.1`) forces lerna to diff against the latest tag; otherwise,
+  it may cause some packages without changes to be published if it diffs against the wrong release based on git history
 
-### For Patch Releases
-
-```
-$(npm bin)/lerna publish --skip-git
-```
-
-When lerna prompts for version, choose Patch.
-
-Be sure to include the command-line flag; `--skip-git` avoids immediately applying a git tag, which we will do later
-after updating the changelog.
-
-## Enable 2FA
+### Enable 2FA
 
 If you temporarily disabled two-factor authentication on your NPM account, you'll need to re-enable it:
 
@@ -116,17 +143,16 @@ npm profile enable-2fa auth-and-writes
 
 See Lerna issues [#1137](https://github.com/lerna/lerna/issues/1137) and [#1091](https://github.com/lerna/lerna/issues/1091) for more information.
 
-## Commit Version Bumps
+## 5. Commit Version Bumps
 
-Regardless of which arguments were passed to `lerna publish` above, at this point the packages will have been
-published to npm, but you will have local changes to update the versions of each package that was published,
-which need to be committed:
+At this point the packages will have been published to npm, but you will have local changes to update the versions of
+each package that was published, which need to be committed:
 
 ```
 git commit -am "chore: Publish"
 ```
 
-## Update Changelog and Create Git Tag
+## 6. Update Changelog and Create Git Tag
 
 It's recommended to generate the changelog prior to running the post-release script so you can double-check the changes
 before it creates a tag:
@@ -138,8 +164,12 @@ git diff # Review the changelog and make sure it looks OK
 
 In certain cases, there are some typical edits to make the changelog easier to read:
 
-* **For a minor release after an off-master patch release:**
-  Remove any duplicated items in the new minor release that were already listed under patch releases.
+<details open>
+  <summary><strong>For a major release after a minor/patch, or a minor release after a patch</strong></summary>
+
+* Remove any duplicated items in the new release that were already listed under previous releases
+
+</details>
 
 Once you're sure about the changes, run the `post-release` script to commit and create an annotated git tag:
 
@@ -147,9 +177,7 @@ Once you're sure about the changes, run the `post-release` script to commit and 
 ./scripts/post-release.sh
 ```
 
-## Push
-
-### Common First Step for All Releases
+## 7. Push
 
 You will need to temporarily alter Github's master branch protection in order to push after the release:
 
@@ -160,7 +188,8 @@ You will need to temporarily alter Github's master branch protection in order to
 1. Perform the process outlined in one of the sections below
 1. Don't forget to re-enable "Include administrators" & click "Save changes" afterwards
 
-### For Minor Releases
+<details open>
+  <summary><strong>For Major Releases</strong></summary>
 
 ```
 git push origin master <tag>
@@ -169,14 +198,17 @@ git push origin master <tag>
 This will ensure the new commits *and* tag are pushed to the remote git repository.
 (e.g. `git push origin master v0.39.0`)
 
-### For Patch Releases
+</details>
+
+<details open>
+  <summary><strong>For Minor Releases or Patch Releases</strong></summary>
 
 ```
 git push origin <tag>
 ```
 
-We don't need to push a branch for bugfix releases since we only cherry-pick commits for them at release time and they
-are not tagged from master (which contains all commits, not just bugfixes).
+We don't need to push a branch for these releases since we only cherry-pick commits for them at release time and they
+are not tagged from master (which contains all commits, including breaking changes).
 
 However, we *do* need to sync the new release versions and changelog with master. Run `git log` and take note of the
 publish and changelog commit hashes. Then switch to master and cherry-pick them:
@@ -187,26 +219,53 @@ git cherry-pick -x <publish-hash> <changelog-hash>
 git push
 ```
 
-## Update and Deploy Catalog Repository
+> NOTE: The `-x` argument above adds the original cherry-picked commit's hash in the commit description.
+> This is referenced by the cherry-pick script to tie minor/patch releases to their cherry-picked commits on master.
 
-### For Patch Releases
+  <details open>
+    <summary><strong>Additional Note for Minor Releases</strong></summary>
 
-1. Update the `material-components-web` dependency in the catalog's `package.json` to the new patch version
-1. Run `npm start` and glance through the catalog pages to make sure everything looks normal
-1. Send a PR for the dependency update, then run `npm run deploy` once it's merged to master
+Minor releases are likely to experience conflicts when cherry-picking the `chore: Publish` commit back into master.
+This is because master already had the patch version bumps cherry-picked in, and then can't resolve the diffs generated
+by the minor branch which go directly from the previous minor version to the new one.
 
-### For Minor Releases
+You may wish to abort the cherry-pick and then retry with the recursive/theirs strategy:
+
+```
+git cherry-pick --abort
+git cherry-pick -x --strategy=recursive -X theirs <publish-hash>
+```
+
+You should examine the generated changeset (with `git show`) to ensure that it didn't unintentionally steamroll any
+newer version numbers (which could happen if a package previously had a patch release but did not receive a minor bump).
+
+Once you're sure it's OK, continue with the changelog commit and push:
+
+```
+git cherry-pick -x <changelog-hash>
+git push
+```
+
+  </details>
+
+</details>
+
+## 8. Update and Deploy Catalog Repository
+
+<details open>
+  <summary><strong>For Major Releases or Minor Releases</strong></summary>
 
 We typically maintain a `next` branch on the MDC Web Catalog repository which works ahead of MDC Web releases
 (using [this script](https://gist.github.com/kfranqueiro/d06c7073c5012de3edb6c5875d6a4a50)), to keep ahead of breaking changes.
 
-In the event no work was done on the `next` branch, the above process for patch releases would be followed, but would require
-checking for necessary updates to accommodate breaking changes in MDC Web.
+In the event no work was done on the `next` branch, the process below for patch releases would be followed, but would require
+checking for necessary updates to accommodate new features or breaking changes in MDC Web.
 
-Below is the process when a `next` branch is used:
+  <details>
+    <summary>Process for when a <code>next</code> branch is used</summary>
 
 1. Ensure you have the latest `master` checked out: `git checkout master && git pull`
-1. Create a new branch, e.g.: `git checkout -b chore/0.36.0`
+1. Create a new branch, e.g.: `git checkout -b chore/1.0.0`
 1. Merge `next` into the branch: `git merge next`
 1. Deal with any conflicts if necessary
 1. Update `package.json` to reference the newly-released minor version of `material-components-web`
@@ -229,13 +288,26 @@ Below is the process when a `next` branch is used:
    1. `git push -f origin next`
    1. Re-protect the `next` branch by changing the `master` rule match back to `[mn][ae][sx]t*`
 
-## Log Issues in MDC React Repository
+  </details>
+
+</details>
+
+<details open>
+  <summary><strong>For Patch Releases</strong></summary>
+
+1. Update the `material-components-web` dependency in the catalog's `package.json` to the new patch version
+1. Run `npm start` and glance through the catalog pages to make sure everything looks normal
+1. Send a PR for the dependency update, then run `npm run deploy` once it's merged to master
+
+</details>
+
+## 9. Log Issues in MDC React Repository
 
 MDC React does not currently maintain a branch that gets updated ahead of release.
 After release, ensure that any breaking changes likely to require MDC React changes have issues logged on the
 MDC React repository, with the "required for sync" label.
 
-## Notify material.io Team
+## 10. Notify material.io Team
 
 Our markdown documentation is transformed and mirrored to the Develop section of material.io.
 

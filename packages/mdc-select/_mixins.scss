@@ -108,7 +108,12 @@
 }
 
 @mixin mdc-select-outline-shape-radius($radius, $rtl-reflexive: false) {
-  $resolved-radius: mdc-shape-resolve-percentage-radius($mdc-select-height, $radius);
+  $resolved-radius: nth(mdc-shape-resolve-percentage-radius($mdc-select-height, mdc-shape-prop-value($radius)), 1);
+
+  @if (length(mdc-shape-prop-value($radius)) > 1) {
+    // stylelint-disable-next-line max-line-length
+    @warn "mdc-select-outline-shape-radius only supports a single radius; see https://github.com/material-components/material-components-web/issues/4140";
+  }
 
   .mdc-notched-outline {
     @include mdc-notched-outline-shape-radius($resolved-radius, $rtl-reflexive);
@@ -118,13 +123,11 @@
     @include mdc-shape-radius($resolved-radius, $rtl-reflexive);
   }
 
-  $radius-pixels: mdc-shape-prop-value($resolved-radius);
-
-  @if ($radius-pixels > $mdc-notched-outline-leading-width) {
+  @if ($resolved-radius > $mdc-notched-outline-leading-width) {
     .mdc-select__native-control {
       @include mdc-rtl-reflexive-property(
         padding,
-        $radius-pixels + $mdc-notched-outline-padding,
+        $resolved-radius + $mdc-notched-outline-padding,
         $mdc-select-arrow-padding
       );
     }
@@ -132,7 +135,7 @@
     + .mdc-select-helper-text {
       @include mdc-rtl-reflexive-property(
         margin,
-        $radius-pixels + $mdc-notched-outline-padding,
+        $resolved-radius + $mdc-notched-outline-padding,
         $mdc-select-outline-label-offset
       );
     }
@@ -363,7 +366,7 @@
   @include mdc-select-hover-outline-color($mdc-select-outlined-hover-border);
   @include mdc-select-focused-outline-color(primary);
   @include mdc-floating-label-shake-animation(text-field-outlined);
-  @include mdc-select-outline-shape-radius(medium);
+  @include mdc-select-outline-shape-radius(small);
   @include mdc-states-base-color(transparent);
   @include mdc-select-container-fill-color(transparent);
   @include mdc-notched-outline-floating-label-float-position($mdc-select-outlined-label-position-y, 0);
