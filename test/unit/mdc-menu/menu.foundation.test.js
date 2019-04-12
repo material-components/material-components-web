@@ -228,7 +228,7 @@ test('handleMenuSurfaceOpened menu focuses the list root element by default on m
   const {foundation, mockAdapter} = setupTest();
 
   foundation.handleMenuSurfaceOpened();
-  td.verify(mockAdapter.focusListRoot());
+  td.verify(mockAdapter.focusListRoot(), {times: 1});
 });
 
 test('handleMenuSurfaceOpened menu focuses the first menu item when DefaultFocusState is set to FIRST_ITEM on menu ' +
@@ -237,7 +237,7 @@ test('handleMenuSurfaceOpened menu focuses the first menu item when DefaultFocus
 
   foundation.setDefaultFocusState(DefaultFocusState.FIRST_ITEM);
   foundation.handleMenuSurfaceOpened();
-  td.verify(mockAdapter.focusItemAtIndex(0));
+  td.verify(mockAdapter.focusItemAtIndex(0), {times: 1});
 });
 
 test('handleMenuSurfaceOpened focuses the list root element when DefaultFocusState is set to LIST_ROOT', () => {
@@ -245,7 +245,7 @@ test('handleMenuSurfaceOpened focuses the list root element when DefaultFocusSta
 
   foundation.setDefaultFocusState(DefaultFocusState.LIST_ROOT);
   foundation.handleMenuSurfaceOpened();
-  td.verify(mockAdapter.focusListRoot());
+  td.verify(mockAdapter.focusListRoot(), {times: 1});
 });
 
 test('handleMenuSurfaceOpened focuses the last item when DefaultFocusState is set to LAST_ITEM', () => {
@@ -254,7 +254,7 @@ test('handleMenuSurfaceOpened focuses the last item when DefaultFocusState is se
   td.when(mockAdapter.getMenuItemCount()).thenReturn(5);
   foundation.setDefaultFocusState(DefaultFocusState.LAST_ITEM);
   foundation.handleMenuSurfaceOpened();
-  td.verify(mockAdapter.focusItemAtIndex(4));
+  td.verify(mockAdapter.focusItemAtIndex(4), {times: 1});
 });
 
 test('handleMenuSurfaceOpened does not focus anything when DefaultFocusState is set to NONE', () => {

@@ -107,9 +107,6 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
 
   handleMenuSurfaceOpened() {
     switch (this.defaultFocusState_) {
-      case DefaultFocusState.LIST_ROOT:
-        this.adapter_.focusListRoot();
-        break;
       case DefaultFocusState.FIRST_ITEM:
         this.adapter_.focusItemAtIndex(0);
         break;
@@ -117,8 +114,10 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
         this.adapter_.focusItemAtIndex(this.adapter_.getMenuItemCount() - 1);
         break;
       case DefaultFocusState.NONE:
-      default:
         // Do nothing.
+        break;
+      default:
+        this.adapter_.focusListRoot();
         break;
     }
   }
