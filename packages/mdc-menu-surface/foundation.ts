@@ -174,14 +174,14 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
    */
   open() {
     this.adapter_.saveFocus();
-
+    this.autoPosition_();
+    
     if (!this.isQuickOpen_) {
       this.adapter_.addClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_OPEN);
     }
 
     this.animationRequestId_ = requestAnimationFrame(() => {
       this.adapter_.addClass(MDCMenuSurfaceFoundation.cssClasses.OPEN);
-      this.dimensions_ = this.adapter_.getInnerDimensions();
       this.autoPosition_();
       if (this.isQuickOpen_) {
         this.adapter_.notifyOpen();
@@ -252,6 +252,7 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
   }
 
   private autoPosition_() {
+    this.dimensions_ = this.adapter_.getInnerDimensions();
     // Compute measurements for autoposition methods reuse.
     this.measurements_ = this.getAutoLayoutMeasurements_();
 
