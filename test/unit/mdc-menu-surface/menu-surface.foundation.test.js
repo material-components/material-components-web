@@ -825,6 +825,6 @@ testFoundation('should cancel animation after destroy', ({foundation, mockAdapte
 
   td.verify(
     mockAdapter.setPosition(td.matchers.anything()),
-    {times: 0}
+    {times: 1}
   );
 });

@@ -175,7 +175,7 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
   open() {
     this.adapter_.saveFocus();
     this.autoPosition_();
-    
+
     if (!this.isQuickOpen_) {
       this.adapter_.addClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_OPEN);
     }
