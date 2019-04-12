@@ -435,7 +435,7 @@ list. The `Arrow`, `Home`, and `End` keys should be used for navigating internal
 item. The MDCList will perform the following actions for each key press. Since list interaction will toggle a radio
 button or checkbox within the list item, the list will not toggle `tabindex` for those elements.
 
-Any disabled list items (with the `mdc-list-item--disabled` class applied) will be excluded from keyboard navigation.
+Disabled list item will be included in the keyboard navigation. Please see [Focusability of disabled controls](https://www.w3.org/TR/wai-aria-practices-1.1/#kbd_disabled_controls) section in ARIA practices article.
 
 Key | Action
 --- | ---
@@ -454,7 +454,7 @@ Key | Action
 Property | Value Type | Description
 --- | --- | ---
 `vertical` | `boolean` (write-only) | Proxies to the foundation's `setVerticalOrientation()` method.
-`listElements` | `Array<Element>` (read-only) | Returns all enabled list item elements.
+`listElements` | `Array<Element>` (read-only) | Returns all list item elements including disabled list items.
 `wrapFocus` | `boolean` (write-only) | Proxies to the foundation's `setWrapFocus()` method.
 `singleSelection` | `boolean` (write-only) | Proxies to the foundation's `setSingleSelection()` method.
 `selectedIndex` | `boolean` | Proxies to the foundation's `getSelectedIndex()` and `setSelectedIndex()` methods.

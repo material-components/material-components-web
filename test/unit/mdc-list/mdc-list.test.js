@@ -32,19 +32,42 @@ function getFixture() {
   return bel`
   <ul class="mdc-list">
     <li class="mdc-list-item" tabindex="0">
-      Fruit
+      <span class="mdc-list-item__text">Fruit</span>
       <button>one</button>
     </li>
     <li class="mdc-list-item">
-      Potato
+      <span class="mdc-list-item__text">Potato</span>
       <a href="http://www.google.com">Link</a>
     </li>
     <li class="mdc-list-item">
-      Pasta
+      <span class="mdc-list-item__text">Pasta</span>
       <input type="checkbox"/>
     </li>
     <li class="mdc-list-item">
-      Pizza
+      <span class="mdc-list-item__text">Pizza</span>
+      <input type="radio"/>
+    </li>
+   </ul>
+  `;
+}
+
+function getFixtureWithDisabledItems() {
+  return bel`
+  <ul class="mdc-list">
+    <li class="mdc-list-item" tabindex="0">
+      <span class="mdc-list-item__text">Fruit</span>
+      <button>one</button>
+    </li>
+    <li class="mdc-list-item mdc-list-item--disabled" aria-disabled="true">
+      <span class="mdc-list-item__text">Potato</span>
+      <a href="http://www.google.com">Link</a>
+    </li>
+    <li class="mdc-list-item mdc-list-item--disabled" aria-disabled="true">
+      <span class="mdc-list-item__text">Pasta</span>
+      <input type="checkbox"/>
+    </li>
+    <li class="mdc-list-item">
+      <span class="mdc-list-item__text">Pizza</span>
       <input type="radio"/>
     </li>
    </ul>
@@ -373,6 +396,11 @@ test('keydown handler is removed from the root element on destroy', () => {
   const listElementItem = root.querySelector('.mdc-list-item');
   listElementItem.dispatchEvent(event);
   td.verify(mockFoundation.handleKeydown(event, true, 0), {times: 0});
+});
+
+test('#listElements should return all list items including disabled list items', () => {
+  const {component} = setupTest(getFixtureWithDisabledItems());
+  assert.equal(4, component.listElements.length);
 });
 
 test('adapter#hasRadioAtIndex return true or false based on presense of radio button on list item', () => {
