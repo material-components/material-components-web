@@ -32,6 +32,7 @@ export const cssClasses = {
   DISABLED: 'mdc-checkbox--disabled',
   INDETERMINATE: 'mdc-checkbox--indeterminate',
   UPGRADED: 'mdc-checkbox--upgraded',
+  SELECTED: 'mdc-checkbox--selected',
 };
 
 export const strings = {
