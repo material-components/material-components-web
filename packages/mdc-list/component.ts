@@ -37,7 +37,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
   }
 
   get listElements(): Element[] {
-    return [].slice.call(this.root_.querySelectorAll(strings.ENABLED_ITEMS_SELECTOR));
+    return [].slice.call(this.root_.querySelectorAll(`.${cssClasses.LIST_ITEM_CLASS}`));
   }
 
   set wrapFocus(value: boolean) {

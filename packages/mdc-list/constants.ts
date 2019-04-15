@@ -45,7 +45,6 @@ const strings = {
     .${cssClasses.LIST_ITEM_CLASS} button:not(:disabled),
     .${cssClasses.LIST_ITEM_CLASS} a
   `,
-  ENABLED_ITEMS_SELECTOR: `.${cssClasses.LIST_ITEM_CLASS}:not(.${cssClasses.LIST_ITEM_DISABLED_CLASS})`,
   FOCUSABLE_CHILD_ELEMENTS: `
     .${cssClasses.LIST_ITEM_CLASS} button:not(:disabled),
     .${cssClasses.LIST_ITEM_CLASS} a,
