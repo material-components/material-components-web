@@ -28,7 +28,7 @@
 @import "@material/rtl/mixins";
 @import "@material/shape/mixins";
 @import "@material/theme/mixins";
-@import "@material/theme/variables"; // for mdc-theme-prop-value
+@import "@material/theme/variables"; // for mdc-theme-prop-value.
 @import "@material/typography/mixins";
 @import "./variables";
 
@@ -50,8 +50,8 @@
     @include mdc-datatable-checked-icon-color($mdc-datatable-checked-icon-color, $query: $query);
     @include mdc-datatable-divider-color($mdc-datatable-divider-color, $query: $query);
     @include mdc-datatable-divider-size($mdc-datatable-divider-size, $query: $query);
-    @include mdc-datatable-row-hover-color($mdc-datatable-row-hover-color, $query: $query);
-    @include mdc-datatable-header-text-color($mdc-datatable-header-text-color, $query: $query);
+    @include mdc-datatable-row-hover-fill-color($mdc-datatable-row-hover-fill-color, $query: $query);
+    @include mdc-datatable-header-row-text-color($mdc-datatable-header-row-text-color, $query: $query);
     @include mdc-datatable-row-text-color($mdc-datatable-row-text-color, $query: $query);
     @include mdc-datatable-shape-radius($mdc-datatable-shape-radius, $query: $query);
     @include mdc-datatable-stroke-size($mdc-datatable-stroke-size, $query: $query);
@@ -73,7 +73,13 @@
   }
 
   .mdc-datatable__cell {
-    @include mdc-typography(body2, $query: $query);
+    @include mdc-datatable-cell-base-styles_($query: $query);
+  }
+
+  .mdc-datatable__cell-numeric {
+    @include mdc-datatable-cell-base-styles_($query: $query);
+
+    text-align: right;
   }
 
   .mdc-datatable__header-cell {
@@ -143,20 +149,21 @@
   }
 }
 
-@mixin mdc-datatable-row-hover-color($color, $query: mdc-feature-all()) {
+@mixin mdc-datatable-row-hover-fill-color($color, $query: mdc-feature-all()) {
   .mdc-datatable__row:not(.mdc-datatable__row--selected):hover {
     @include mdc-theme-prop("background-color", $color);
   }
 }
 
-@mixin mdc-datatable-header-text-color($color, $query: mdc-feature-all()) {
+@mixin mdc-datatable-header-row-text-color($color, $query: mdc-feature-all()) {
   .mdc-datatable__header-cell {
     @include mdc-theme-prop("color", $color);
   }
 }
 
 @mixin mdc-datatable-row-text-color($color, $query: mdc-feature-all()) {
-  .mdc-datatable__row-cell {
+  .mdc-datatable__cell-numeric,
+  .mdc-datatable__cell {
     @include mdc-theme-prop("color", $color);
   }
 }
@@ -199,6 +206,7 @@
   $trailing-padding: $mdc-datatable-cell-trailing-padding,
   $query: mdc-feature-all()) {
   .mdc-datatable__cell,
+  .mdc-datatable__cell-numeric,
   .mdc-datatable__header-cell {
     padding-right: $trailing-padding;
     padding-left: $leading-padding;
@@ -211,4 +219,8 @@
       width: nth($width-list, $i);
     }
   }
+}
+
+@mixin mdc-datatable-cell-base-styles_($query: mdc-feature-all()) {
+  @include mdc-typography(body2, $query: $query);
 }

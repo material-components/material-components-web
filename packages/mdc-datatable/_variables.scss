@@ -23,17 +23,17 @@
 @import "@material/theme/functions";
 
 $mdc-datatable-fill-color: surface !default;
-$mdc-datatable-header-row-fill-color: surface !default;
-$mdc-datatable-row-fill-color: surface !default;
+$mdc-datatable-header-row-fill-color: inherit !default;
+$mdc-datatable-row-fill-color: inherit !default;
 $mdc-datatable-selected-row-fill-color: rgba(mdc-theme-prop-value(primary), .04) !default;
 
 $mdc-datatable-checked-icon-color: primary !default;
 $mdc-datatable-divider-color: rgba(mdc-theme-prop-value(on-surface), .12) !default;
 $mdc-datatable-divider-size: 1px !default;
-$mdc-datatable-row-hover-color: rgba(mdc-theme-prop-value(on-surface), .04) !default;
+$mdc-datatable-row-hover-fill-color: rgba(mdc-theme-prop-value(on-surface), .04) !default;
 
-$mdc-datatable-header-text-color: on-surface !default;
-$mdc-datatable-row-text-color: on-surface !default;
+$mdc-datatable-header-row-text-color: rgba(mdc-theme-prop-value(on-surface), .87) !default;
+$mdc-datatable-row-text-color: rgba(mdc-theme-prop-value(on-surface), .87) !default;
 
 $mdc-datatable-shape-radius: medium !default;
 $mdc-datatable-stroke-size: 1px !default;

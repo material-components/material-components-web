@@ -23,3 +23,12 @@
 @import "../../../../packages/mdc-datatable/mixins";
 @import "../../../../packages/mdc-theme/color-palette";
 @import "../mixins";
+
+.test-datatable-fill-color {
+  @include mdc-datatable-fill-color(#3C3C46);
+  @include mdc-datatable-row-fill-color(#474752);
+  @include mdc-datatable-header-row-text-color(rgba(white, .6));
+  @include mdc-datatable-row-text-color(white);
+  @include mdc-datatable-divider-color(rgba(white, .12));
+  @include mdc-datatable-stroke-size(0);
+}
