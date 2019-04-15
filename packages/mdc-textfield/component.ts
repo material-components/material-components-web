@@ -41,16 +41,16 @@ import {
 import {
   MDCTextFieldCharacterCounter,
   MDCTextFieldCharacterCounterFactory,
-  MDCTextFieldCharacterCounterFoundation,
-} from './character-counter/index';
+} from './character-counter/component';
+import {MDCTextFieldCharacterCounterFoundation} from './character-counter/foundation';
 import {cssClasses, strings} from './constants';
 import {MDCTextFieldFoundation} from './foundation';
 import {
   MDCTextFieldHelperText,
   MDCTextFieldHelperTextFactory,
-  MDCTextFieldHelperTextFoundation,
-} from './helper-text/index';
-import {MDCTextFieldIcon, MDCTextFieldIconFactory} from './icon/index';
+} from './helper-text/component';
+import {MDCTextFieldHelperTextFoundation} from './helper-text/foundation';
+import {MDCTextFieldIcon, MDCTextFieldIconFactory} from './icon/component';
 import {MDCTextFieldFoundationMap} from './types';
 
 export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements MDCRippleCapableSurface {
