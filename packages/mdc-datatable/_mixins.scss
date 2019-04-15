@@ -1,0 +1,214 @@
+//
+// Copyright 2019 Google Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+
+@import "@material/animation/functions";
+@import "@material/elevation/mixins";
+@import "@material/feature-targeting/functions";
+@import "@material/feature-targeting/mixins";
+@import "@material/checkbox/mixins";
+@import "@material/rtl/mixins";
+@import "@material/shape/mixins";
+@import "@material/theme/mixins";
+@import "@material/theme/variables"; // for mdc-theme-prop-value
+@import "@material/typography/mixins";
+@import "./variables";
+
+@mixin mdc-datatable-core-styles($query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+  $feat-typography: mdc-feature-create-target($query, typography);
+
+  // postcss-bem-linter: define datatable
+
+  .mdc-datatable__content {
+    @include mdc-typography(body2, $query: $query);
+  }
+
+  .mdc-datatable {
+    @include mdc-datatable-fill-color($mdc-datatable-fill-color, $query: $query);
+    @include mdc-datatable-row-fill-color($mdc-datatable-row-fill-color, $query: $query);
+    @include mdc-datatable-header-row-fill-color($mdc-datatable-header-row-fill-color, $query: $query);
+    @include mdc-datatable-selected-row-fill-color($mdc-datatable-selected-row-fill-color, $query: $query);
+    @include mdc-datatable-checked-icon-color($mdc-datatable-checked-icon-color, $query: $query);
+    @include mdc-datatable-divider-color($mdc-datatable-divider-color, $query: $query);
+    @include mdc-datatable-divider-size($mdc-datatable-divider-size, $query: $query);
+    @include mdc-datatable-row-hover-color($mdc-datatable-row-hover-color, $query: $query);
+    @include mdc-datatable-header-text-color($mdc-datatable-header-text-color, $query: $query);
+    @include mdc-datatable-row-text-color($mdc-datatable-row-text-color, $query: $query);
+    @include mdc-datatable-shape-radius($mdc-datatable-shape-radius, $query: $query);
+    @include mdc-datatable-stroke-size($mdc-datatable-stroke-size, $query: $query);
+    @include mdc-datatable-stroke-color($mdc-datatable-stroke-color, $query: $query);
+    @include mdc-datatable-header-row-height($mdc-datatable-header-row-height, $query: $query);
+    @include mdc-datatable-row-height($mdc-datatable-row-height, $query: $query);
+    @include mdc-datatable-cell-padding(
+      $leading-padding: $mdc-datatable-cell-leading-padding,
+      $trailing-padding: $mdc-datatable-cell-trailing-padding,
+      $query: $query
+    );
+
+    overflow: hidden; // For border-radius to work
+  }
+
+  .mdc-datatable__table {
+    border: 0;
+    border-collapse: collapse;
+  }
+
+  .mdc-datatable__cell {
+    @include mdc-typography(body2, $query: $query);
+  }
+
+  .mdc-datatable__header-cell {
+    @include mdc-typography(subtitle2, $query: $query);
+
+    @include mdc-feature-targets($feat-structure) {
+      text-align: left;
+    }
+  }
+}
+
+@mixin mdc-datatable-fill-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  @include mdc-feature-targets($feat-color) {
+    @include mdc-theme-prop("background-color", $color);
+  }
+}
+
+@mixin mdc-datatable-header-row-fill-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  .mdc-datatable__header-row {
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop("background-color", $color);
+    }
+  }
+}
+
+@mixin mdc-datatable-row-fill-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  .mdc-datatable__row {
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop("background-color", $color);
+    }
+  }
+}
+
+@mixin mdc-datatable-selected-row-fill-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  .mdc-datatable__row--selected {
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop("background-color", $color);
+    }
+  }
+}
+
+@mixin mdc-datatable-checked-icon-color($color, $query: mdc-feature-all()) {
+  .mdc-datatable__checkbox {
+    @include mdc-checkbox-container-colors($marked-stroke-color: $color, $marked-fill-color: $color, $query: $query);
+    @include mdc-checkbox-focus-indicator-color($color, $query: $query);
+  }
+}
+
+@mixin mdc-datatable-divider-color($color, $query: mdc-feature-all()) {
+  .mdc-datatable__row {
+    border-top-color: $color;
+  }
+}
+
+@mixin mdc-datatable-divider-size($size, $query: mdc-feature-all()) {
+  .mdc-datatable__row {
+    border-top-width: $size;
+    border-top-style: solid;
+  }
+}
+
+@mixin mdc-datatable-row-hover-color($color, $query: mdc-feature-all()) {
+  .mdc-datatable__row:not(.mdc-datatable__row--selected):hover {
+    @include mdc-theme-prop("background-color", $color);
+  }
+}
+
+@mixin mdc-datatable-header-text-color($color, $query: mdc-feature-all()) {
+  .mdc-datatable__header-cell {
+    @include mdc-theme-prop("color", $color);
+  }
+}
+
+@mixin mdc-datatable-row-text-color($color, $query: mdc-feature-all()) {
+  .mdc-datatable__row-cell {
+    @include mdc-theme-prop("color", $color);
+  }
+}
+
+@mixin mdc-datatable-shape-radius($radius, $rtl-reflexive: false, $query: mdc-feature-all()) {
+  @include mdc-shape-radius($radius, $rtl-reflexive, $query: $query);
+}
+
+@mixin mdc-datatable-stroke-size($size, $query: mdc-feature-all()) {
+  border-width: $size;
+  border-style: solid;
+}
+
+@mixin mdc-datatable-stroke-color($color, $query: mdc-feature-all()) {
+  border-color: $color;
+}
+
+@mixin mdc-datatable-header-row-height($height, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  .mdc-datatable__header-row {
+    @include mdc-feature-targets($feat-structure) {
+      height: $height;
+    }
+  }
+}
+
+@mixin mdc-datatable-row-height($height, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  .mdc-datatable__row {
+    @include mdc-feature-targets($feat-structure) {
+      height: $height;
+    }
+  }
+}
+
+@mixin mdc-datatable-cell-padding(
+  $leading-padding: $mdc-datatable-cell-leading-padding,
+  $trailing-padding: $mdc-datatable-cell-trailing-padding,
+  $query: mdc-feature-all()) {
+  .mdc-datatable__cell,
+  .mdc-datatable__header-cell {
+    padding-right: $trailing-padding;
+    padding-left: $leading-padding;
+  }
+}
+
+@mixin mdc-datatable-column-widths($width-list, $query: mdc-feature-all()) {
+  @for $i from 1 through length($width-list) {
+    .mdc-datatable__row > :nth-child(#{$i}) {
+      width: nth($width-list, $i);
+    }
+  }
+}

@@ -24,6 +24,7 @@
     "@material/checkbox": "^1.1.0",
     "@material/chips": "^1.1.0",
     "@material/dialog": "^1.1.0",
+    "@material/datatable": "^0.0.0",
     "@material/dom": "^1.1.0",
     "@material/drawer": "^1.1.0",
     "@material/elevation": "^1.1.0",
