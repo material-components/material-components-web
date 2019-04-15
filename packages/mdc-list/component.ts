@@ -23,7 +23,7 @@
 
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
-import {matches, closest} from '@material/dom/ponyfill';
+import {closest, matches} from '@material/dom/ponyfill';
 import {MDCListAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCListFoundation} from './foundation';

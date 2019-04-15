@@ -24,10 +24,10 @@
 import {MDCComponent} from '@material/base/component';
 import {EventType} from '@material/base/types';
 import {matches} from '@material/dom/ponyfill';
-import {MDCRipple} from '@material/ripple/component';
 import {MDCRippleAdapter} from '@material/ripple/adapter';
-import {MDCRippleCapableSurface} from '@material/ripple/types';
+import {MDCRipple} from '@material/ripple/component';
 import {MDCRippleFoundation} from '@material/ripple/foundation';
+import {MDCRippleCapableSurface} from '@material/ripple/types';
 import {MDCSwitchAdapter} from './adapter';
 import {MDCSwitchFoundation} from './foundation';
 

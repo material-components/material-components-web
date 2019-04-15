@@ -24,11 +24,11 @@
 import {MDCComponent} from '@material/base/component';
 import {CustomEventListener, SpecificEventListener} from '@material/base/types';
 import {MDCList, MDCListFactory} from '@material/list/component';
-import {MDCListActionEvent} from '@material/list/types';
 import {MDCListFoundation} from '@material/list/foundation';
-import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
-import {Corner} from '@material/menu-surface/constants';
+import {MDCListActionEvent} from '@material/list/types';
 import {MDCMenuSurface, MDCMenuSurfaceFactory} from '@material/menu-surface/component';
+import {Corner} from '@material/menu-surface/constants';
+import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
 import {MDCMenuDistance} from '@material/menu-surface/types';
 import {MDCMenuAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
