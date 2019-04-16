@@ -51,7 +51,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'addClassForElementIndex', 'removeClassForElementIndex',
     'focusItemAtIndex', 'setTabIndexForListItemChildren', 'hasRadioAtIndex',
     'hasCheckboxAtIndex', 'isCheckboxCheckedAtIndex', 'setCheckedCheckboxOrRadioAtIndex',
-    'notifyAction', 'isFocusInsideList', 'getAttributeForElementIndex',
+    'notifyAction', 'isFocusInsideList', 'getAttributeForElementIndex', 'isRootFocused',
   ]);
 });
 
@@ -213,6 +213,43 @@ test('#handleFocusOut sets tabindex=0 to first selected index when focus leaves 
   foundation.handleFocusOut(event, 2);
   clock.runToFrame();
   td.verify(mockAdapter.setAttributeForElementIndex(2, 'tabindex', '0'), {times: 1});
+});
+
+test('#handleKeydown does nothing if key received on root element and not used for navigation', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const event = {key: 'A'};
+
+  td.when(mockAdapter.isRootFocused()).thenReturn(true);
+  foundation.handleKeydown(event, false, -1);
+
+  td.verify(mockAdapter.getFocusedElementIndex(), {times: 0});
+});
+
+test('#handleKeydown should focus on last item when UP arrow key received on list root', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const preventDefault = td.func('preventDefault');
+  const event = {key: 'ArrowUp', preventDefault};
+
+  td.when(mockAdapter.isRootFocused()).thenReturn(true);
+  td.when(mockAdapter.getListItemCount()).thenReturn(5);
+  foundation.handleKeydown(event, false, -1);
+
+  td.verify(preventDefault(), {times: 1});
+  td.verify(mockAdapter.focusItemAtIndex(4), {times: 1});
+  td.verify(mockAdapter.getFocusedElementIndex(), {times: 0});
+});
+
+test('#handleKeydown should focus on first item when DOWN arrow key received on list root', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const preventDefault = td.func('preventDefault');
+  const event = {key: 'ArrowDown', preventDefault};
+
+  td.when(mockAdapter.isRootFocused()).thenReturn(true);
+  foundation.handleKeydown(event, false, -1);
+
+  td.verify(preventDefault(), {times: 1});
+  td.verify(mockAdapter.focusItemAtIndex(0), {times: 1});
+  td.verify(mockAdapter.getFocusedElementIndex(), {times: 0});
 });
 
 test('#handleKeydown does nothing if the key is not used for navigation', () => {
