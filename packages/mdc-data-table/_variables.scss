@@ -22,24 +22,24 @@
 
 @import "@material/theme/functions";
 
-$mdc-datatable-fill-color: surface !default;
-$mdc-datatable-header-row-fill-color: inherit !default;
-$mdc-datatable-row-fill-color: inherit !default;
-$mdc-datatable-selected-row-fill-color: rgba(mdc-theme-prop-value(primary), .04) !default;
+$mdc-data-table-fill-color: surface !default;
+$mdc-data-table-header-row-fill-color: inherit !default;
+$mdc-data-table-row-fill-color: inherit !default;
+$mdc-data-table-selected-row-fill-color: rgba(mdc-theme-prop-value(primary), .04) !default;
 
-$mdc-datatable-checked-icon-color: primary !default;
-$mdc-datatable-divider-color: rgba(mdc-theme-prop-value(on-surface), .12) !default;
-$mdc-datatable-divider-size: 1px !default;
-$mdc-datatable-row-hover-fill-color: rgba(mdc-theme-prop-value(on-surface), .04) !default;
+$mdc-data-table-checked-icon-color: primary !default;
+$mdc-data-table-divider-color: rgba(mdc-theme-prop-value(on-surface), .12) !default;
+$mdc-data-table-divider-size: 1px !default;
+$mdc-data-table-row-hover-fill-color: rgba(mdc-theme-prop-value(on-surface), .04) !default;
 
-$mdc-datatable-header-row-text-color: rgba(mdc-theme-prop-value(on-surface), .87) !default;
-$mdc-datatable-row-text-color: rgba(mdc-theme-prop-value(on-surface), .87) !default;
+$mdc-data-table-header-row-text-color: rgba(mdc-theme-prop-value(on-surface), .87) !default;
+$mdc-data-table-row-text-color: rgba(mdc-theme-prop-value(on-surface), .87) !default;
 
-$mdc-datatable-shape-radius: medium !default;
-$mdc-datatable-stroke-size: 1px !default;
-$mdc-datatable-stroke-color: rgba(mdc-theme-prop-value(on-surface), .12) !default;
+$mdc-data-table-shape-radius: medium !default;
+$mdc-data-table-stroke-size: 1px !default;
+$mdc-data-table-stroke-color: rgba(mdc-theme-prop-value(on-surface), .12) !default;
 
-$mdc-datatable-header-row-height: 48px !default;
-$mdc-datatable-row-height: 48px !default;
-$mdc-datatable-cell-leading-padding: 16px !default;
-$mdc-datatable-cell-trailing-padding: 16px !default;
+$mdc-data-table-header-row-height: 48px !default;
+$mdc-data-table-row-height: 44px !default;
+$mdc-data-table-cell-leading-padding: 16px !default;
+$mdc-data-table-cell-trailing-padding: 16px !default;
