@@ -24,6 +24,7 @@
 import {MDCComponent} from '@material/base/component';
 import {CustomEventListener, SpecificEventListener} from '@material/base/types';
 import {MDCFloatingLabel, MDCFloatingLabelFactory} from '@material/floating-label/component';
+import {MDCLineRipple, MDCLineRippleFactory} from '@material/line-ripple/component';
 import * as menuSurfaceConstants from '@material/menu-surface/constants';
 import {MDCMenu, MDCMenuFactory} from '@material/menu/component';
 import * as menuConstants from '@material/menu/constants';
