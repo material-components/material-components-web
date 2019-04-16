@@ -63,6 +63,12 @@
   }
 }
 
+@mixin mdc-tab-active-states-color($color) {
+  &.mdc-tab--active {
+    @include mdc-tab-states-color($color);
+  }
+}
+
 @mixin mdc-tab-parent-positioning {
   position: relative;
 }
