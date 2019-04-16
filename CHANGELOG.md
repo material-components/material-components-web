@@ -1,3 +1,22 @@
+<a name="1.1.1"></a>
+## [1.1.1](https://github.com/material-components/material-components-web/compare/v1.1.0...v1.1.1) (2019-04-08)
+
+
+### Bug Fixes
+
+* **chips:** Fix incorrect ripple effect on filter chip ([#4565](https://github.com/material-components/material-components-web/issues/4565)) ([60a268f](https://github.com/material-components/material-components-web/commit/60a268f))
+* **list:** Add cursor: pointer for interactive list items ([#4563](https://github.com/material-components/material-components-web/issues/4563)) ([0bba1fa](https://github.com/material-components/material-components-web/commit/0bba1fa)), closes [#4557](https://github.com/material-components/material-components-web/issues/4557)
+* **menu:** Fix selection group list item spacing ([#4517](https://github.com/material-components/material-components-web/issues/4517)) ([e9b7cca](https://github.com/material-components/material-components-web/commit/e9b7cca))
+* **select:** Use correct shape category consistently with text-field ([#4553](https://github.com/material-components/material-components-web/issues/4553)) ([5d3e22f](https://github.com/material-components/material-components-web/commit/5d3e22f))
+* **shape:** Allow percentage based global overrides ([#4548](https://github.com/material-components/material-components-web/issues/4548)) ([f648b2d](https://github.com/material-components/material-components-web/commit/f648b2d))
+* **shape:** Fix errors related to multi-value shape categories ([#4547](https://github.com/material-components/material-components-web/issues/4547)) ([39214e4](https://github.com/material-components/material-components-web/commit/39214e4))
+* **tab:** Fix tab icon color mixin to support SVG icons. ([#4540](https://github.com/material-components/material-components-web/issues/4540)) ([13326b6](https://github.com/material-components/material-components-web/commit/13326b6))
+* **tab:** Update moz-focusring to moz-focus-inner to match button ([#4567](https://github.com/material-components/material-components-web/issues/4567)) ([b99d2c5](https://github.com/material-components/material-components-web/commit/b99d2c5))
+* **tabs:** Disable firefox focus ring ([#4560](https://github.com/material-components/material-components-web/issues/4560)) ([1a7ddb1](https://github.com/material-components/material-components-web/commit/1a7ddb1))
+* **text-field:** Set character counter in setValue ([#4572](https://github.com/material-components/material-components-web/issues/4572)) ([7261fd0](https://github.com/material-components/material-components-web/commit/7261fd0))
+
+
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/material-components/material-components-web/compare/v1.0.0...v1.1.0) (2019-03-26)
 

@@ -2,12 +2,12 @@
 
 MDC Web is split into packages. Each package is either a Subsystem or a
 Component. Subsystems apply to many components. They generally describe style
-(e.g. color) or motion (e.g. animation). Component packages tend to rely on
-many subsystem packages. But component packages rarely depend on other
-component packages. Components require an HTML structure. Some components are
-static, but most are dynamic and include some JavaScript.
+(e.g.: color) or motion (e.g.: animation). Component packages tend to rely on
+many subsystem packages. On the other hand, component packages rarely depend on
+other component packages. Components require an HTML structure. Some components
+are static, but most are dynamic and include some JavaScript.
 
-> Each component is usable separately from any other component.
+> Each component is usable separate from any other component.
 
 ## Sass
 

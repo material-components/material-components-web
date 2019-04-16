@@ -36,12 +36,8 @@ class PluginFactory {
     this.globber_ = globber;
   }
 
-  createCopyrightBannerPlugin({
-    projectName = 'Material Components for the Web',
-    authorName = 'Google Inc.',
-    licenseName = 'MIT',
-  } = {}) {
-    return new CopyrightBannerPlugin({projectName, authorName, licenseName});
+  createCopyrightBannerPlugin() {
+    return new CopyrightBannerPlugin();
   }
 
   createCssCleanupPlugin({cleanupDirRelativePath} = {}) {
