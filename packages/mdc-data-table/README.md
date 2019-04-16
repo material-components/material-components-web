@@ -7,12 +7,12 @@ iconId: data_table
 path: /catalog/data-tables/
 -->
 
-# Datatable
+# Data Table
 
 <!--<div class="article__asset">
   <a class="article__asset-link"
      href="https://material-components.github.io/material-components-web-catalog/#/component/data-table">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/data-tables.png" width="714" alt="Datatable screenshot">
+    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/data-tables.png" width="714" alt="Data table screenshot">
   </a>
 </div>-->
 
@@ -22,7 +22,7 @@ Data tables display sets of data.
 
 <ul class="icon-list">
   <li class="icon-list-item icon-list-item--spec">
-    <a href="https://material.io/go/design-data-tables">Material Design guidelines: Datatables</a>
+    <a href="https://material.io/go/design-data-tables">Material Design guidelines: Data tables</a>
   </li>
   <li class="icon-list-item icon-list-item--link">
     <a href="https://material-components.github.io/material-components-web-catalog/#/component/data-table">Demo</a>
@@ -80,7 +80,7 @@ npm install @material/data-table
 ```
 ## Variants
 
-### Datatable with row selection
+### Data table with row selection
 
 ```html
 <div class="mdc-data-table">
