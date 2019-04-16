@@ -984,43 +984,29 @@ test(`#destroy removes the listener for the ${MDCMenuFoundation.strings.SELECTED
   document.body.removeChild(fixture);
 });
 
-test('#destroy removes the mousedown listener', () => {
-  const {bottomLine, component, fixture} = setupTest();
-  const event = document.createEvent('MouseEvent');
+test('#destroy removes the click listener', () => {
+  const {component, selectedText} = setupTest();
   const clientX = 200;
-  const clientY = 200;
-
+  component.foundation_.handleClick = td.func();
   component.destroy();
-  // IE11 mousedown event.
-  event.initMouseEvent('mousedown', true, true, window, 0, 0, 0, clientX, clientY, false, false, false, false, 0, null);
-  fixture.querySelector('.mdc-select__selected-text').dispatchEvent(event);
-
-  td.verify(bottomLine.setRippleCenter(200), {times: 0});
+  domEvents.emit(selectedText, 'click', {clientX});
+  td.verify(component.foundation_.handleClick(200), {times: 0});
 });
 
-test('mousedown on the select sets the line ripple origin', () => {
-  const {bottomLine, fixture} = setupTest();
-  const event = document.createEvent('MouseEvent');
+test('click on the selectedText calls foundation.handleClick()', () => {
+  const {component, selectedText} = setupTest();
   const clientX = 200;
-  const clientY = 200;
-  // IE11 mousedown event.
-  event.initMouseEvent('mousedown', true, true, window, 0, 0, 0, clientX, clientY, false, false, false, false, 0, null);
-  fixture.querySelector('.mdc-select__selected-text').dispatchEvent(event);
-
-  td.verify(bottomLine.setRippleCenter(200), {times: 1});
+  component.foundation_.handleClick = td.func();
+  domEvents.emit(selectedText, 'click', {clientX});
+  td.verify(component.foundation_.handleClick(200), {times: 1});
 });
 
-test('mousedown on the select does nothing if the it does not have a lineRipple', () => {
-  const hasOutline = true;
-  const {bottomLine, fixture} = setupTest(hasOutline);
-  const event = document.createEvent('MouseEvent');
+test('click on the selectedText focuses on the selectedText element', () => {
+  const {selectedText} = setupTest();
   const clientX = 200;
-  const clientY = 200;
-  // IE11 mousedown event.
-  event.initMouseEvent('mousedown', true, true, window, 0, 0, 0, clientX, clientY, false, false, false, false, 0, null);
-  fixture.querySelector('.mdc-select__selected-text').dispatchEvent(event);
-
-  td.verify(bottomLine.setRippleCenter(200), {times: 0});
+  selectedText.focus = td.func();
+  domEvents.emit(selectedText, 'click', {clientX});
+  td.verify(selectedText.focus(), {times: 1});
 });
 
 test('menu surface opened event causes the first element (if not element is selected) to be focused', () => {
