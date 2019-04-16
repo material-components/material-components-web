@@ -164,6 +164,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
       isFocusInsideList: () => {
         return this.root_.contains(document.activeElement);
       },
+      isRootFocused: () => document.activeElement === this.root_,
       notifyAction: (index) => {
         this.emit<MDCListActionEventDetail>(strings.ACTION_EVENT, {index}, /** shouldBubble */ true);
       },
@@ -237,10 +238,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
   private handleKeydownEvent_(evt: KeyboardEvent) {
     const index = this.getListItemIndex_(evt);
     const target = evt.target as Element;
-
-    if (index >= 0) {
-      this.foundation_.handleKeydown(evt, target.classList.contains(cssClasses.LIST_ITEM_CLASS), index);
-    }
+    this.foundation_.handleKeydown(evt, target.classList.contains(cssClasses.LIST_ITEM_CLASS), index);
   }
 
   /**
