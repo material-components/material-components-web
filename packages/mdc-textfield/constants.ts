@@ -31,15 +31,18 @@ const strings = {
 };
 
 const cssClasses = {
-  DENSE: 'mdc-text-field--dense',
+  ROOT: 'mdc-text-field',
+  OUTLINED: 'mdc-text-field--outlined',
+  FULL_WIDTH: 'mdc-text-field--fullwidth',
+  TEXTAREA: 'mdc-text-field--textarea',
   DISABLED: 'mdc-text-field--disabled',
+  DENSE: 'mdc-text-field--dense',
+  WITH_LEADING_ICON: 'mdc-text-field--with-leading-icon',
+  WITH_TRAILING_ICON: 'mdc-text-field--with-leading-icon',
   FOCUSED: 'mdc-text-field--focused',
+  NO_LABLE: 'mdc-text-field--no-label',
   HELPER_LINE: 'mdc-text-field-helper-line',
   INVALID: 'mdc-text-field--invalid',
-  OUTLINED: 'mdc-text-field--outlined',
-  ROOT: 'mdc-text-field',
-  TEXTAREA: 'mdc-text-field--textarea',
-  WITH_LEADING_ICON: 'mdc-text-field--with-leading-icon',
 };
 
 const numbers = {
