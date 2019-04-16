@@ -201,7 +201,7 @@
   }
 }
 
-@mixin mdc-states-hover-opacity($opacity, $query: mdc-feature-all()) {
+@mixin mdc-states-hover-opacity($opacity, $query: mdc-feature-all(), $varname: null) {
   $feat-color: mdc-feature-create-target($query, color);
 
   // Background wash styles, for both CSS-only and upgraded stateful surfaces
@@ -209,11 +209,15 @@
     // Opacity falls under color because the chosen opacity is color-dependent in typical usage
     @include mdc-feature-targets($feat-color) {
       opacity: $opacity;
+      @if $varname {
+        /* @alternate */
+        opacity: var(#{$varname}, $opacity);
+      }
     }
   }
 }
 
-@mixin mdc-states-focus-opacity($opacity, $has-nested-focusable-element: false, $query: mdc-feature-all()) {
+@mixin mdc-states-focus-opacity($opacity, $has-nested-focusable-element: false, $query: mdc-feature-all(), $varname: null) {
   $feat-animation: mdc-feature-create-target($query, animation);
   // Opacity falls under color because the chosen opacity is color-dependent in typical usage
   $feat-color: mdc-feature-create-target($query, color);
@@ -238,11 +242,15 @@
 
     @include mdc-feature-targets($feat-color) {
       opacity: $opacity;
+      @if $varname {
+        /* @alternate */
+        opacity: var(#{$varname}, $opacity);
+      }
     }
   }
 }
 
-@mixin mdc-states-press-opacity($opacity, $query: mdc-feature-all()) {
+@mixin mdc-states-press-opacity($opacity, $query: mdc-feature-all(), $varname: null) {
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-color: mdc-feature-create-target($query, color);
 
@@ -264,6 +272,10 @@
       // Opacity falls under color because the chosen opacity is color-dependent in typical usage
       @include mdc-feature-targets($feat-color) {
         opacity: $opacity;
+        @if $varname {
+          /* @alternate */
+          opacity: var(#{$varname}, $opacity);
+        }
       }
     }
   }
@@ -383,7 +395,8 @@
   $color,
   $has-nested-focusable-element,
   $opacity-modifier: 0,
-  $query: mdc-feature-all()
+  $query: mdc-feature-all(),
+  $varnames: ()
 ) {
   @include mdc-states-base-color($color, $query);
   @include mdc-states-hover-opacity(mdc-states-opacity($color, hover) + $opacity-modifier, $query);

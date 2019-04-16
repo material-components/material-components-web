@@ -52,3 +52,7 @@
 
   @return $opacity-map;
 }
+
+@function mdc-states-has-opacity-vars_($vars) {
+  @if map-has-key($vars, $key: )
+}
