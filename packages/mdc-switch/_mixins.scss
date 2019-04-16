@@ -121,6 +121,7 @@
     @include mdc-ripple-surface($query);
     @include mdc-ripple-radius-unbounded(100%, $query);
     @include mdc-states($mdc-switch-baseline-theme-color, false, $query);
+    @include mdc-states-base-color($mdc-switch-baseline-theme-color);
   }
 }
 

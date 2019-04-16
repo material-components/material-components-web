@@ -247,6 +247,7 @@
     @include mdc-ripple-surface($query);
     @include mdc-ripple-radius-unbounded($query: $query);
     @include mdc-states($mdc-radio-baseline-theme-color, $query: $query);
+    @include mdc-states-base-color($mdc-radio-baseline-theme-color);
 
     &.mdc-ripple-upgraded--background-focused {
       .mdc-radio__background::before {

@@ -185,6 +185,7 @@
   .mdc-checkbox {
     @include mdc-ripple-surface($query);
     @include mdc-states($mdc-checkbox-baseline-theme-color, $query: $query);
+    @include mdc-states-base-color($mdc-checkbox-baseline-theme-color);
     @include mdc-ripple-radius-unbounded($query: $query);
   }
 
