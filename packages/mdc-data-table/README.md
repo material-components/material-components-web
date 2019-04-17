@@ -24,9 +24,6 @@ Data tables display sets of data.
   <li class="icon-list-item icon-list-item--spec">
     <a href="https://material.io/go/design-data-tables">Material Design guidelines: Data tables</a>
   </li>
-  <li class="icon-list-item icon-list-item--link">
-    <a href="https://material-components.github.io/material-components-web-catalog/#/component/data-table">Demo</a>
-  </li>
 </ul>
 
 ## Installation
@@ -60,18 +57,18 @@ npm install @material/data-table
     </thead>
     <tbody class="mdc-data-table__content">
       <tr class="mdc-data-table__row">
-        <td class="mdc-data-table__cell-numeric">24</td>
-        <td class="mdc-data-table__cell-numeric">4.0</td>
+        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">24</td>
+        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">4.0</td>
         <td class="mdc-data-table__cell">Super tasty</td>
       </tr>
       <tr class="mdc-data-table__row">
-        <td class="mdc-data-table__cell-numeric">37</td>
-        <td class="mdc-data-table__cell-numeric">4.3</td>
+        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">37</td>
+        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">4.3</td>
         <td class="mdc-data-table__cell">I like ice cream more</td>
       </tr>
       <tr class="mdc-data-table__row">
-        <td class="mdc-data-table__cell-numeric">24</td>
-        <td class="mdc-data-table__cell-numeric">6.0</td>
+        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">24</td>
+        <td class="mdc-data-table__cell mdc-data-table__cell--numeric">6.0</td>
         <td class="mdc-data-table__cell">New filing flavor</td>
       </tr>
     </tbody>
@@ -154,7 +151,7 @@ CSS Class | Description
 `mdc-data-table__content` | Mandatory. Table body element. Added to `tbody` HTML tag.
 `mdc-data-table__row` | Mandatory. Table row element. Added to `tbody > tr` HTML tag.
 `mdc-data-table__cell` | Mandatory. Table cell element. Added to `tbody > tr > td` HTML tag.
-`mdc-data-table__cell-numeric` | Optional. Table cell element that contains numeric data. Added to `tbody > tr > td` HTML tag.
+`mdc-data-table__cell--numeric` | Optional. Table cell element that contains numeric data. Added to `tbody > tr > td` HTML tag.
 `mdc-data-table__row-checkbox` | Optional. Checkbox element rendered inside table row element. Add this class name to `mdc-checkbox` element to override styles required for data-table.
 `mdc-data-table__row--selected` | Optional. Modifier class added to `mdc-data-table__row` when table row is selected.
 
