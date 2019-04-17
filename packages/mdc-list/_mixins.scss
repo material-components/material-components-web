@@ -409,6 +409,10 @@
     margin: 0;
     padding: 8px 0;
     list-style-type: none;
+
+    &:focus {
+      outline: none;
+    }
   }
 
   @include mdc-list-item-primary-text-ink-color(text-primary-on-background, $query);
