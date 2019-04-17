@@ -37,7 +37,7 @@ const cssClasses = {
   FULL_WIDTH: 'mdc-text-field--fullwidth',
   HELPER_LINE: 'mdc-text-field-helper-line',
   INVALID: 'mdc-text-field--invalid',
-  NO_LABLE: 'mdc-text-field--no-label',
+  NO_LABEL: 'mdc-text-field--no-label',
   OUTLINED: 'mdc-text-field--outlined',
   ROOT: 'mdc-text-field',
   TEXTAREA: 'mdc-text-field--textarea',
