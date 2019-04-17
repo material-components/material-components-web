@@ -158,7 +158,11 @@ $mdc-theme-property-values: (
 
 // NOTE: This function is depended upon by mdc-theme-prop-value (above) and thus must be defined in this file.
 @function mdc-theme-is-valid-theme-prop-value_($style) {
-  @return type-of($style) == "color" or $style == "currentColor" or str_slice($style, 1, 4) == "var(";
+  @return type-of($style) == "color" or
+    $style == "currentColor" or
+    str_slice($style, 1, 4) == "var(" or
+    $style == "inherit" or
+    $style == "transparent";
 }
 
 @function mdc-theme-text-emphasis($emphasis) {
