@@ -23,7 +23,7 @@
 
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
-import {ponyfill} from '@material/dom/index';
+import {closest} from '@material/dom/ponyfill';
 import {MDCSnackbarAdapter} from './adapter';
 import {strings} from './constants';
 import {MDCSnackbarFoundation} from './foundation';
@@ -161,10 +161,10 @@ export class MDCSnackbar extends MDCComponent<MDCSnackbarFoundation> {
   }
 
   private isActionButton_(target: Element): boolean {
-    return Boolean(ponyfill.closest(target, ACTION_SELECTOR));
+    return Boolean(closest(target, ACTION_SELECTOR));
   }
 
   private isActionIcon_(target: Element): boolean {
-    return Boolean(ponyfill.closest(target, DISMISS_SELECTOR));
+    return Boolean(closest(target, DISMISS_SELECTOR));
   }
 }
