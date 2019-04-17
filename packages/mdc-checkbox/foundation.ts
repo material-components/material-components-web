@@ -119,12 +119,10 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
 
     const {TRANSITION_STATE_UNCHECKED} = strings;
     const {SELECTED} = cssClasses;
-    if (oldState === TRANSITION_STATE_UNCHECKED) {
-      this.adapter_.addClass(SELECTED);
-    }
-
     if (newState === TRANSITION_STATE_UNCHECKED) {
       this.adapter_.removeClass(SELECTED);
+    } else {
+      this.adapter_.addClass(SELECTED);
     }
 
     // Check to ensure that there isn't a previously existing animation class, in case for example
