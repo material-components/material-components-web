@@ -23,6 +23,7 @@
     "@material/card": "^3.0.0",
     "@material/checkbox": "^3.0.0",
     "@material/chips": "^3.0.0",
+    "@material/data-table": "0.0.0",
     "@material/dialog": "^3.0.0",
     "@material/dom": "^3.0.0",
     "@material/drawer": "^3.0.0",
