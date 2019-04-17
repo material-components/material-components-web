@@ -47,6 +47,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'addClassToElementAtIndex', 'removeClassFromElementAtIndex', 'addAttributeToElementAtIndex',
     'removeAttributeFromElementAtIndex', 'elementContainsClass', 'closeSurface', 'getElementIndex', 'getParentElement',
     'getSelectedElementIndex', 'notifySelected', 'getMenuItemCount', 'focusItemAtIndex', 'focusListRoot',
+    'getMenuSelectionGroups', 'getListItemIndexOfSelectionGroup',
   ]);
 });
 
@@ -161,6 +162,7 @@ test('handleItemAction item action event inside of a selection group with anothe
   td.when(mockAdapter.getParentElement(itemEl)).thenReturn(itemEl);
   td.when(mockAdapter.elementContainsClass(itemEl, cssClasses.MENU_SELECTION_GROUP)).thenReturn(true);
   td.when(mockAdapter.getSelectedElementIndex(itemEl)).thenReturn(0);
+  td.when(mockAdapter.getListItemIndexOfSelectionGroup(0, itemEl)).thenReturn(0);
 
   foundation.handleItemAction(itemEl);
   clock.tick(numbers.TRANSITION_CLOSE_DURATION);
@@ -177,6 +179,7 @@ test('handleItemAction item action event inside of a selection group with no ele
   td.when(mockAdapter.getParentElement(itemEl)).thenReturn(itemEl);
   td.when(mockAdapter.elementContainsClass(itemEl, cssClasses.MENU_SELECTION_GROUP)).thenReturn(true);
   td.when(mockAdapter.getSelectedElementIndex(itemEl)).thenReturn(-1);
+  td.when(mockAdapter.getListItemIndexOfSelectionGroup(0, itemEl)).thenReturn(0);
 
   foundation.handleItemAction(itemEl);
   clock.tick(numbers.TRANSITION_CLOSE_DURATION);
@@ -195,6 +198,7 @@ test('handleItemAction item action event inside of a child element of a list ite
   td.when(mockAdapter.getParentElement(itemEl)).thenReturn(itemEl);
   td.when(mockAdapter.elementContainsClass(itemEl, cssClasses.MENU_SELECTION_GROUP)).thenReturn(false, true);
   td.when(mockAdapter.getSelectedElementIndex(itemEl)).thenReturn(-1);
+  td.when(mockAdapter.getListItemIndexOfSelectionGroup(0, itemEl)).thenReturn(0);
 
   foundation.handleItemAction(itemEl);
   clock.tick(numbers.TRANSITION_CLOSE_DURATION);
@@ -266,6 +270,45 @@ test('handleMenuSurfaceOpened does not focus anything when DefaultFocusState is 
   td.verify(mockAdapter.focusListRoot(), {times: 0});
 });
 
+test('setSelectedIndex gets the menu selection groups of the menu', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const selectionGroupEl = document.createElement('div');
+  td.when(mockAdapter.getMenuSelectionGroups()).thenReturn([selectionGroupEl]);
+  foundation.setSelectedIndex(0, 0);
+  td.verify(mockAdapter.getMenuSelectionGroups(), {times: 1});
+});
+
+test('setSelectedIndex calls addClass and addAttribute', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const selectionGroupEl = document.createElement('div');
+  td.when(mockAdapter.getMenuSelectionGroups()).thenReturn([selectionGroupEl]);
+  td.when(mockAdapter.getSelectedElementIndex(selectionGroupEl)).thenReturn(-1);
+  td.when(mockAdapter.getListItemIndexOfSelectionGroup(0, selectionGroupEl)).thenReturn(2);
+
+  foundation.setSelectedIndex(0, 0);
+  td.verify(mockAdapter.removeClassFromElementAtIndex(
+    td.matchers.isA(Number), cssClasses.MENU_SELECTED_LIST_ITEM), {times: 0});
+  td.verify(mockAdapter.removeAttributeFromElementAtIndex(td.matchers.isA(Number),
+    strings.ARIA_SELECTED_ATTR), {times: 0});
+  td.verify(mockAdapter.addClassToElementAtIndex(2, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 1});
+  td.verify(mockAdapter.addAttributeToElementAtIndex(2, strings.ARIA_SELECTED_ATTR, 'true'), {times: 1});
+});
+
+test('setSelectedIndex remove class and attribute, and adds class and attribute to newly selected item', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const selectionGroupEl = document.createElement('div');
+  td.when(mockAdapter.getMenuSelectionGroups()).thenReturn([selectionGroupEl]);
+  td.when(mockAdapter.getSelectedElementIndex(selectionGroupEl)).thenReturn(1);
+  td.when(mockAdapter.getListItemIndexOfSelectionGroup(0, selectionGroupEl)).thenReturn(2);
+
+  foundation.setSelectedIndex(0, 0);
+  td.verify(mockAdapter.removeClassFromElementAtIndex(1, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 1});
+  td.verify(
+    mockAdapter.removeAttributeFromElementAtIndex(1, strings.ARIA_SELECTED_ATTR), {times: 1});
+  td.verify(mockAdapter.addClassToElementAtIndex(2, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 1});
+  td.verify(mockAdapter.addAttributeToElementAtIndex(2, strings.ARIA_SELECTED_ATTR, 'true'), {times: 1});
+});
+
 // Item Action
 
 test('Item action event causes the menu to close', () => {
@@ -298,6 +341,7 @@ test('item action event inside of a selection group with another element selecte
   td.when(mockAdapter.getParentElement(itemEl)).thenReturn(itemEl);
   td.when(mockAdapter.elementContainsClass(itemEl, cssClasses.MENU_SELECTION_GROUP)).thenReturn(true);
   td.when(mockAdapter.getSelectedElementIndex(itemEl)).thenReturn(0);
+  td.when(mockAdapter.getListItemIndexOfSelectionGroup(0, itemEl)).thenReturn(0);
 
   foundation.handleItemAction(itemEl);
   clock.tick(numbers.TRANSITION_CLOSE_DURATION);
@@ -314,6 +358,7 @@ test('item action event inside of a selection group with no element selected', (
   td.when(mockAdapter.getParentElement(itemEl)).thenReturn(itemEl);
   td.when(mockAdapter.elementContainsClass(itemEl, cssClasses.MENU_SELECTION_GROUP)).thenReturn(true);
   td.when(mockAdapter.getSelectedElementIndex(itemEl)).thenReturn(-1);
+  td.when(mockAdapter.getListItemIndexOfSelectionGroup(0, itemEl)).thenReturn(0);
 
   foundation.handleItemAction(itemEl);
   clock.tick(numbers.TRANSITION_CLOSE_DURATION);
@@ -331,6 +376,7 @@ test('item action event inside of a child element of a list item in a selection 
   td.when(mockAdapter.getParentElement(itemEl)).thenReturn(itemEl);
   td.when(mockAdapter.elementContainsClass(itemEl, cssClasses.MENU_SELECTION_GROUP)).thenReturn(false, true);
   td.when(mockAdapter.getSelectedElementIndex(itemEl)).thenReturn(-1);
+  td.when(mockAdapter.getListItemIndexOfSelectionGroup(0, itemEl)).thenReturn(0);
 
   foundation.handleItemAction(itemEl);
   clock.tick(numbers.TRANSITION_CLOSE_DURATION);

@@ -66,6 +66,18 @@ export interface MDCMenuAdapter {
   getElementIndex(element: Element): number;
 
   /**
+   * @return menu selection groups elements.
+   */
+  getMenuSelectionGroups(): Element[];
+
+  /**
+   * @return Index of list item within menu selection group, relative to the entire .mdc-list element.
+   * @param index Index of of list item within the selection group.
+   * @param selectionGroup .mdc-menu__selection-group Element.
+   */
+  getListItemIndexOfSelectionGroup(index: number, selectionGroup: Element): number;
+
+  /**
    * @return The parentElement of the provided element.
    */
   getParentElement(element: Element): Element | null;

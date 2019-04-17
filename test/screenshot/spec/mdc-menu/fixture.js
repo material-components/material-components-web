@@ -26,6 +26,7 @@ import {DefaultFocusState} from '../../../../packages/mdc-menu/constants';
 window.mdc.testFixture.fontsLoaded.then(() => {
   const buttonEl = document.querySelector('.test-menu-button');
   const menuEl = document.querySelector('.mdc-menu');
+  const multipleSelectionGroupMenuEl = document.getElementById('multiple-selection-group-menu');
   const menu = mdc.menu.MDCMenu.attachTo(menuEl);
   menu.setAnchorCorner(mdc.menu.Corner.BOTTOM_LEFT);
   menu.open = true;
@@ -51,6 +52,10 @@ window.mdc.testFixture.fontsLoaded.then(() => {
       menu.open = !menu.open;
     }
   });
+  if (multipleSelectionGroupMenuEl) {
+    menu.setSelectedIndex(2, 0);
+    menu.setSelectedIndex(1, 1);
+  }
 
   window.mdc.testFixture.notifyDomReady();
 });

@@ -58,6 +58,8 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
       getElementIndex: () => -1,
       getParentElement: () => null,
       getSelectedElementIndex: () => -1,
+      getMenuSelectionGroups: () => [],
+      getListItemIndexOfSelectionGroup: () => -1,
       notifySelected: () => undefined,
       getMenuItemCount: () => 0,
       focusItemAtIndex: () => undefined,
@@ -99,9 +101,7 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     // Wait for the menu to close before adding/removing classes that affect styles.
     this.closeAnimationEndTimerId_ = setTimeout(() => {
       const selectionGroup = this.getSelectionGroup_(listItem);
-      if (selectionGroup) {
-        this.handleSelectionGroup_(selectionGroup, index);
-      }
+      this.handleSelectionGroup_(selectionGroup, index);
     }, MDCMenuSurfaceFoundation.numbers.TRANSITION_CLOSE_DURATION);
   }
 
@@ -131,10 +131,18 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     this.defaultFocusState_ = focusState;
   }
 
+  setSelectedIndex(index: number, selectionGroupIndex: number) {
+    const selectionGroups = this.adapter_.getMenuSelectionGroups();
+    this.handleSelectionGroup_(selectionGroups[selectionGroupIndex], index);
+  }
+
   /**
    * Handles toggling the selected classes in a selection group when a selection is made.
    */
-  private handleSelectionGroup_(selectionGroup: Element, index: number) {
+  private handleSelectionGroup_(selectionGroup: Element | null, index: number) {
+    if (!selectionGroup) {
+      return;
+    }
     // De-select the previous selection in this group.
     const selectedIndex = this.adapter_.getSelectedElementIndex(selectionGroup);
     if (selectedIndex >= 0) {
@@ -142,8 +150,9 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
       this.adapter_.removeClassFromElementAtIndex(selectedIndex, cssClasses.MENU_SELECTED_LIST_ITEM);
     }
     // Select the new list item in this group.
-    this.adapter_.addClassToElementAtIndex(index, cssClasses.MENU_SELECTED_LIST_ITEM);
-    this.adapter_.addAttributeToElementAtIndex(index, strings.ARIA_SELECTED_ATTR, 'true');
+    const normalizedIndex = this.adapter_.getListItemIndexOfSelectionGroup(index, selectionGroup);
+    this.adapter_.addClassToElementAtIndex(normalizedIndex, cssClasses.MENU_SELECTED_LIST_ITEM);
+    this.adapter_.addAttributeToElementAtIndex(normalizedIndex, strings.ARIA_SELECTED_ATTR, 'true');
   }
 
   /**

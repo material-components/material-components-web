@@ -32,6 +32,8 @@ import {DefaultFocusState} from '../../../packages/mdc-menu/constants';
 import {MDCListFoundation} from '../../../packages/mdc-list/index';
 import {MDCMenuSurfaceFoundation} from '../../../packages/mdc-menu-surface/foundation';
 
+const {cssClasses} = MDCMenuFoundation;
+
 function getFixture(open) {
   return bel`
     <div class="mdc-menu mdc-menu-surface ${open ? 'mdc-menu-surface--open' : ''}">
@@ -39,10 +41,37 @@ function getFixture(open) {
         <li tabIndex="-1" class="mdc-list-item" role="menuitem">Item</a>
         <li role="separator"></li>
         <li tabIndex="-1" class="mdc-list-item" role="menuitem">Another Item</a>
-        <ul class="mdc-menu__selection-group mdc-list" role="menu">
-          <li tabIndex="-1" class="mdc-list-item" role="menuitem">Item</a>
-          <li tabIndex="-1" class="mdc-list-item mdc-menu-item--selected" role="menuitem">Another Item</a>
-        </ul>
+        <li>
+          <ul class="mdc-menu__selection-group" role="menu">
+            <li tabIndex="-1" class="mdc-list-item" role="menuitem">Item</a>
+            <li tabIndex="-1" class="mdc-list-item mdc-menu-item--selected" role="menuitem">Another Item</a>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  `;
+}
+
+function getFixtureWithMultipleSelectionGroups(open) {
+  return bel`
+    <div class="mdc-menu mdc-menu-surface ${open ? 'mdc-menu-surface--open' : ''}">
+      <ul class="mdc-list" role="menu" tabIndex="-1">
+        <li tabIndex="-1" class="mdc-list-item" role="menuitem">Item</a>
+        <li class="mdc-list-divider" role="separator"></li>
+        <li tabIndex="-1" class="mdc-list-item" role="menuitem">Another Item</a>
+        <li>
+          <ul class="mdc-menu__selection-group" role="menu">
+            <li tabIndex="-1" class="mdc-list-item" role="menuitem">Item</a>
+            <li tabIndex="-1" class="mdc-list-item mdc-menu-item--selected" role="menuitem">Another Item</a>
+          </ul>
+        </li>                
+        <li class="mdc-list-divider" role="separator"></li>
+        <li>
+          <ul class="mdc-menu__selection-group" role="menu">
+            <li tabIndex="-1" class="mdc-list-item mdc-menu-item--selected" role="menuitem">Item2</a>
+            <li tabIndex="-1" class="mdc-list-item" role="menuitem">Another Item2</a>
+          </ul>
+        </li>
       </ul>
     </div>
   `;
@@ -104,8 +133,8 @@ function setupTestWithFakes(open = false) {
  * @param {boolean=} open
  * @return {{component: !MDCMenu, root: !HTMLElement}}
  */
-function setupTest(open = false) {
-  const root = getFixture(open);
+function setupTest(open = false, fixture = getFixture) {
+  const root = fixture(open);
 
   const component = new MDCMenu(root);
   return {root, component};
@@ -115,8 +144,8 @@ function setupTest(open = false) {
  * @param {!Object=} options
  * @return {{component: !MDCMenu, root: !HTMLElement, mockFoundation: !MDCMenuFoundation}}
  */
-function setupTestWithMock(options = {open: true}) {
-  const root = getFixture(options.open);
+function setupTestWithMock(options = {open: true, fixture: getFixture}) {
+  const root = options.fixture(options.open);
 
   const MockFoundationCtor = td.constructor(MDCMenuFoundation);
   const mockFoundation = new MockFoundationCtor();
@@ -207,6 +236,12 @@ test('setAnchorMargin', () => {
   const {component, menuSurface} = setupTestWithFakes();
   component.setAnchorMargin({top: 0, right: 0, bottom: 0, left: 0});
   td.verify(menuSurface.setAnchorMargin({top: 0, right: 0, bottom: 0, left: 0}));
+});
+
+test('setSelectedIndex', () => {
+  const {component, mockFoundation} = setupTestWithMock({fixture: getFixtureWithMultipleSelectionGroups});
+  component.setSelectedIndex(1, 1);
+  td.verify(mockFoundation.setSelectedIndex(1, 1));
 });
 
 test('setQuickOpen', () => {
@@ -431,6 +466,23 @@ test('adapter#notifySelected emits an event for a selected element', () => {
 test('adapter#getMenuItemCount returns the menu item count', () => {
   const {component} = setupTest();
   assert.equal(component.getDefaultFoundation().adapter_.getMenuItemCount(), component.items.length);
+});
+
+test('adapter#getMenuSelectionGroups returns all selection groups', () => {
+  const {component} = setupTest(false, getFixtureWithMultipleSelectionGroups);
+  assert.equal(component.getDefaultFoundation().adapter_.getMenuSelectionGroups().length, 2);
+});
+
+test('adapter#getListItemIndexOfSelectionGroup returns list item index relative to the first selection group', () => {
+  const {root, component} = setupTest(false, getFixtureWithMultipleSelectionGroups);
+  const selectionGroup = root.querySelectorAll(`.${cssClasses.MENU_SELECTION_GROUP}`)[0];
+  assert.equal(component.getDefaultFoundation().adapter_.getListItemIndexOfSelectionGroup(0, selectionGroup), 2);
+});
+
+test('adapter#getListItemIndexOfSelectionGroup returns list item index relative to the 2nd selection group', () => {
+  const {root, component} = setupTest(false, getFixtureWithMultipleSelectionGroups);
+  const selectionGroup = root.querySelectorAll(`.${cssClasses.MENU_SELECTION_GROUP}`)[1];
+  assert.equal(component.getDefaultFoundation().adapter_.getListItemIndexOfSelectionGroup(1, selectionGroup), 5);
 });
 
 test('adapter#focusItemAtIndex focuses the menu item at given index', () => {
