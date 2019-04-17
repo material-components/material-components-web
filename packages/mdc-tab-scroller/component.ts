@@ -23,7 +23,7 @@
 
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
-import {ponyfill} from '@material/dom/index';
+import {matches} from '@material/dom/ponyfill';
 import {MDCTabScrollerAdapter} from './adapter';
 import {MDCTabScrollerFoundation} from './foundation';
 import * as util from './util';
@@ -75,7 +75,7 @@ export class MDCTabScroller extends MDCComponent<MDCTabScrollerFoundation> {
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCTabScrollerAdapter = {
-      eventTargetMatchesSelector: (evtTarget, selector) => ponyfill.matches(evtTarget as Element, selector),
+      eventTargetMatchesSelector: (evtTarget, selector) => matches(evtTarget as Element, selector),
       addClass: (className) => this.root_.classList.add(className),
       removeClass: (className) => this.root_.classList.remove(className),
       addScrollAreaClass: (className) => this.area_.classList.add(className),
