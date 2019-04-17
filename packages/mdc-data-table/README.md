@@ -9,13 +9,6 @@ path: /catalog/data-tables/
 
 # Data Table
 
-<!--<div class="article__asset">
-  <a class="article__asset-link"
-     href="https://material-components.github.io/material-components-web-catalog/#/component/data-table">
-    <img src="{{ site.rootpath }}/images/mdc_web_screenshots/data-tables.png" width="714" alt="Data table screenshot">
-  </a>
-</div>-->
-
 Data tables display sets of data.
 
 ## Design & API Documentation
