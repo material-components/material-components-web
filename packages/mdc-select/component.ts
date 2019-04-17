@@ -41,9 +41,6 @@ import {MDCSelectHelperText, MDCSelectHelperTextFactory} from './helper-text/com
 import {MDCSelectIcon, MDCSelectIconFactory} from './icon/component';
 import {MDCSelectEventDetail, MDCSelectFoundationMap} from './types';
 
-type PointerEventType = 'mousedown' | 'touchstart';
-
-const POINTER_EVENTS: PointerEventType[] = ['mousedown', 'touchstart'];
 const VALIDATION_ATTR_WHITELIST = ['required', 'aria-required'];
 
 export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCRippleCapableSurface {
@@ -75,7 +72,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
   private handleChange_!: SpecificEventListener<'change'>; // assigned in initialize()
   private handleFocus_!: SpecificEventListener<'focus'>; // assigned in initialize()
   private handleBlur_!: SpecificEventListener<'blur'>; // assigned in initialize()
-  private handleClick_!: SpecificEventListener<PointerEventType>; // assigned in initialize()
+  private handleClick_!: SpecificEventListener<'click'>; // assigned in initialize()
   private handleKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialize()
   private handleMenuOpened_!: EventListener; // assigned in initialize()
   private handleMenuClosed_!: EventListener; // assigned in initialize()
@@ -183,9 +180,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     this.targetElement_.addEventListener('focus', this.handleFocus_);
     this.targetElement_.addEventListener('blur', this.handleBlur_);
 
-    POINTER_EVENTS.forEach((evtType) => {
-      this.targetElement_.addEventListener(evtType, this.handleClick_ as EventListener);
-    });
+    this.targetElement_.addEventListener('click', this.handleClick_ as EventListener);
 
     if (this.menuElement_) {
       this.selectedText_!.addEventListener('keydown', this.handleKeydown_);
@@ -219,9 +214,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     this.targetElement_.removeEventListener('focus', this.handleFocus_);
     this.targetElement_.removeEventListener('blur', this.handleBlur_);
     this.targetElement_.removeEventListener('keydown', this.handleKeydown_);
-    POINTER_EVENTS.forEach((evtType) => {
-      this.targetElement_.removeEventListener(evtType, this.handleClick_ as EventListener);
-    });
+    this.targetElement_.removeEventListener('click', this.handleClick_ as EventListener);
 
     if (this.menu_) {
       this.menu_.unlisten(menuSurfaceConstants.strings.CLOSED_EVENT, this.handleMenuClosed_);

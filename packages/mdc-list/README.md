@@ -544,6 +544,7 @@ Method Signature | Description
 `setCheckedCheckboxOrRadioAtIndex(index: number, isChecked: boolean) => void` | Sets the checked status of checkbox or radio at given list item index.
 `notifyAction(index: number) => void` | Notifies user action on list item including keyboard and mouse actions.
 `isFocusInsideList() => boolean` | Returns true if the current focused element is inside list root.
+`isRootFocused() => boolean` | Returns true if root element is focused.
 
 ### `MDCListFoundation`
 
