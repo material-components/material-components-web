@@ -131,6 +131,11 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     this.defaultFocusState_ = focusState;
   }
 
+  /**
+   * Selects the list item at `index` witnin the specified selection group.
+   * @param index Index of list item within the selection group.
+   * @param selectionGroupIndex Index of selection group within the menu.
+   */
   setSelectedIndex(index: number, selectionGroupIndex: number) {
     const selectionGroups = this.adapter_.getMenuSelectionGroups();
     this.handleSelectionGroup_(selectionGroups[selectionGroupIndex], index);
