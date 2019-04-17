@@ -34,7 +34,7 @@ const cssClasses = {
   DENSE: 'mdc-text-field--dense',
   DISABLED: 'mdc-text-field--disabled',
   FOCUSED: 'mdc-text-field--focused',
-  FULL_WIDTH: 'mdc-text-field--fullwidth',
+  FULLWIDTH: 'mdc-text-field--fullwidth',
   HELPER_LINE: 'mdc-text-field-helper-line',
   INVALID: 'mdc-text-field--invalid',
   NO_LABEL: 'mdc-text-field--no-label',
@@ -42,7 +42,7 @@ const cssClasses = {
   ROOT: 'mdc-text-field',
   TEXTAREA: 'mdc-text-field--textarea',
   WITH_LEADING_ICON: 'mdc-text-field--with-leading-icon',
-  WITH_TRAILING_ICON: 'mdc-text-field--with-leading-icon',
+  WITH_TRAILING_ICON: 'mdc-text-field--with-trailing-icon',
 };
 
 const numbers = {
