@@ -210,8 +210,8 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
         const selectedListItem = selectionGroup.querySelector(`.${cssClasses.MENU_SELECTED_LIST_ITEM}`);
         return selectedListItem ? this.items.indexOf(selectedListItem) : -1;
       },
-      getMenuSelectionGroups: () => {
-        return [].slice.call(this.root_.querySelectorAll(`.${cssClasses.MENU_SELECTION_GROUP}`));
+      getSelectionGroupAtIndex: (selectionGroupIndex) => {
+        return [].slice.call(this.root_.querySelectorAll(`.${cssClasses.MENU_SELECTION_GROUP}`))[selectionGroupIndex];
       },
       getListItemIndexOfSelectionGroup: (index, selectionGroup) => {
         const listItemsInSelectionGroup

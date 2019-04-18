@@ -468,9 +468,16 @@ test('adapter#getMenuItemCount returns the menu item count', () => {
   assert.equal(component.getDefaultFoundation().adapter_.getMenuItemCount(), component.items.length);
 });
 
-test('adapter#getMenuSelectionGroups returns all selection groups', () => {
-  const {component} = setupTest(false, getFixtureWithMultipleSelectionGroups);
-  assert.equal(component.getDefaultFoundation().adapter_.getMenuSelectionGroups().length, 2);
+test('adapter#getSelectionGroupAtIndex return first selection group', () => {
+  const {root, component} = setupTest(false, getFixtureWithMultipleSelectionGroups);
+  const firstSelectionGroup = root.querySelectorAll('.mdc-menu__selection-group')[0];
+  assert.equal(component.getDefaultFoundation().adapter_.getSelectionGroupAtIndex(0), firstSelectionGroup);
+});
+
+test('adapter#getSelectionGroupAtIndex return last selection group', () => {
+  const {root, component} = setupTest(false, getFixtureWithMultipleSelectionGroups);
+  const lastSelectionGroup = root.querySelectorAll('.mdc-menu__selection-group')[1];
+  assert.equal(component.getDefaultFoundation().adapter_.getSelectionGroupAtIndex(1), lastSelectionGroup);
 });
 
 test('adapter#getListItemIndexOfSelectionGroup returns list item index relative to the first selection group', () => {

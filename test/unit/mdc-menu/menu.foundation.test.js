@@ -47,7 +47,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'addClassToElementAtIndex', 'removeClassFromElementAtIndex', 'addAttributeToElementAtIndex',
     'removeAttributeFromElementAtIndex', 'elementContainsClass', 'closeSurface', 'getElementIndex', 'getParentElement',
     'getSelectedElementIndex', 'notifySelected', 'getMenuItemCount', 'focusItemAtIndex', 'focusListRoot',
-    'getMenuSelectionGroups', 'getListItemIndexOfSelectionGroup',
+    'getSelectionGroupAtIndex', 'getListItemIndexOfSelectionGroup',
   ]);
 });
 
@@ -273,15 +273,15 @@ test('handleMenuSurfaceOpened does not focus anything when DefaultFocusState is 
 test('setSelectedIndex gets the menu selection groups of the menu', () => {
   const {foundation, mockAdapter} = setupTest();
   const selectionGroupEl = document.createElement('div');
-  td.when(mockAdapter.getMenuSelectionGroups()).thenReturn([selectionGroupEl]);
+  td.when(mockAdapter.getSelectionGroupAtIndex(0)).thenReturn(selectionGroupEl);
   foundation.setSelectedIndex(0, 0);
-  td.verify(mockAdapter.getMenuSelectionGroups(), {times: 1});
+  td.verify(mockAdapter.getSelectionGroupAtIndex(0), {times: 1});
 });
 
 test('setSelectedIndex calls addClass and addAttribute', () => {
   const {foundation, mockAdapter} = setupTest();
   const selectionGroupEl = document.createElement('div');
-  td.when(mockAdapter.getMenuSelectionGroups()).thenReturn([selectionGroupEl]);
+  td.when(mockAdapter.getSelectionGroupAtIndex(0)).thenReturn(selectionGroupEl);
   td.when(mockAdapter.getSelectedElementIndex(selectionGroupEl)).thenReturn(-1);
   td.when(mockAdapter.getListItemIndexOfSelectionGroup(0, selectionGroupEl)).thenReturn(2);
 
@@ -297,7 +297,7 @@ test('setSelectedIndex calls addClass and addAttribute', () => {
 test('setSelectedIndex remove class and attribute, and adds class and attribute to newly selected item', () => {
   const {foundation, mockAdapter} = setupTest();
   const selectionGroupEl = document.createElement('div');
-  td.when(mockAdapter.getMenuSelectionGroups()).thenReturn([selectionGroupEl]);
+  td.when(mockAdapter.getSelectionGroupAtIndex(0)).thenReturn(selectionGroupEl);
   td.when(mockAdapter.getSelectedElementIndex(selectionGroupEl)).thenReturn(1);
   td.when(mockAdapter.getListItemIndexOfSelectionGroup(0, selectionGroupEl)).thenReturn(2);
 
