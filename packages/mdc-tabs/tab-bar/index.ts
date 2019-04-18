@@ -24,7 +24,7 @@
 export * from './adapter';
 export * from './component';
 export {
-  strings as tabBartrings,
+  strings as tabBarStrings,
   cssClasses as tabBarCssClasses,
 } from './constants';
 export * from './foundation';
