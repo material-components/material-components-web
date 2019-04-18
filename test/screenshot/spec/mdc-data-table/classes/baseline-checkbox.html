@@ -36,7 +36,7 @@
       <div class="mdc-data-table test-data-table">
         <table class="mdc-data-table__table">
           <thead>
-            <tr class="mdc-data-table__header-row">
+            <tr data-row-id="header" class="mdc-data-table__header-row">
               <th class="mdc-data-table__header-cell" scope="col">
                 <div class="mdc-checkbox mdc-data-table__row-checkbox">
                   <input type="checkbox" class="mdc-checkbox__native-control" />
@@ -57,7 +57,7 @@
             </tr>
           </thead>
           <tbody class="mdc-data-table__content">
-            <tr class="mdc-data-table__row">
+            <tr data-row-id="0" class="mdc-data-table__row">
               <td class="mdc-data-table__cell">
                 <div class="mdc-checkbox mdc-data-table__row-checkbox">
                   <input type="checkbox" class="mdc-checkbox__native-control" />
@@ -76,7 +76,7 @@
               <td class="mdc-data-table__cell mdc-data-table__cell--numeric">0:33</td>
               <td class="mdc-data-table__cell">Allison Brie</td>
             </tr>
-            <tr class="mdc-data-table__row mdc-data-table__row--selected" aria-selected="true">
+            <tr data-row-id="1" class="mdc-data-table__row mdc-data-table__row--selected" aria-selected="true">
               <td class="mdc-data-table__cell">
                 <div class="mdc-checkbox mdc-data-table__row-checkbox">
                   <input type="checkbox" class="mdc-checkbox__native-control" checked />
@@ -95,7 +95,7 @@
               <td class="mdc-data-table__cell mdc-data-table__cell--numeric">0:33</td>
               <td class="mdc-data-table__cell">Brie Larson</td>
             </tr>
-            <tr class="mdc-data-table__row mdc-data-table__row--selected" aria-selected="true">
+            <tr data-row-id="2" class="mdc-data-table__row mdc-data-table__row--selected" aria-selected="true">
               <td class="mdc-data-table__cell">
                 <div class="mdc-checkbox mdc-data-table__row-checkbox">
                   <input type="checkbox" class="mdc-checkbox__native-control" checked />
@@ -114,7 +114,7 @@
               <td class="mdc-data-table__cell mdc-data-table__cell--numeric">0:33</td>
               <td class="mdc-data-table__cell">Jeremy Lake</td>
             </tr>
-            <tr class="mdc-data-table__row">
+            <tr data-row-id="3" class="mdc-data-table__row">
               <td class="mdc-data-table__cell">
                 <div class="mdc-checkbox mdc-data-table__row-checkbox">
                   <input type="checkbox" class="mdc-checkbox__native-control" />
@@ -145,5 +145,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fontfaceobserver/2.0.13/fontfaceobserver.standalone.js"></script>
     <script src="../../../out/material-components-web.js"></script>
     <script src="../../../out/spec/fixture.js"></script>
+    <script src="../../../out/spec/mdc-data-table/fixture.js"></script>
   </body>
 </html>

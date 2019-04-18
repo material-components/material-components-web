@@ -21,14 +21,12 @@
  * THE SOFTWARE.
  */
 
-export const cssClasses = {
-  ROOT: 'mdc-data-table',
-  ROW: 'mdc-data-table__row',
-  HEADER_ROW: 'mdc-data-table__header-row',
-  ROW_SELECTED: 'mdc-data-table__row--selected',
-  ROW_CHECKBOX: 'mdc-data-table__row-checkbox',
-};
+window.mdc.testFixture.fontsLoaded.then(() => {
+  window.mdc.testFixture.notifyDomReady();
 
-export const strings = {
-  HEADER_ROW_CHECKBOX_SELECTOR: '.mdc-data-table__header-row .mdc-data-table__row-checkbox',
-};
+  mdc.dataTable.MDCDataTable.attachTo(document.querySelector('.mdc-data-table'));
+
+  document.body.addEventListener('MDCDataTable:changed', (event) => {
+    console.log('changed: ', event.detail);
+  });
+});
