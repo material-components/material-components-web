@@ -53,8 +53,8 @@ window.mdc.testFixture.fontsLoaded.then(() => {
     }
   });
   if (multipleSelectionGroupMenuEl) {
-    menu.setSelectedIndex(2, 0);
-    menu.setSelectedIndex(1, 1);
+    menu.setSelectedIndex(3);
+    menu.setSelectedIndex(5);
   }
 
   window.mdc.testFixture.notifyDomReady();

@@ -226,7 +226,7 @@ Method Signature | Description
 `setAnchorMargin(Partial<MDCMenuDistance>) => void` | Proxies to the menu surface's `setAnchorMargin(Partial<MDCMenuDistance>)` method.
 `setAbsolutePosition(x: number, y: number) => void` | Proxies to the menu surface's `setAbsolutePosition(x: number, y: number)` method.
 `setFixedPosition(isFixed: boolean) => void` | Proxies to the menu surface's `setFixedPosition(isFixed: boolean)` method.
-`setSelectedIndex(index: number, selectionGroup: number) => void | Sets the selected index of the specified selection group. Defaults to the first selection group.
+`setSelectedIndex(index: number) => void | Sets the list item to the selected state at the specified index.
 `hoistMenuToBody() => void` | Proxies to the menu surface's `hoistMenuToBody()` method.
 `setIsHoisted(isHoisted: boolean) => void` | Proxies to the menu surface's `setIsHoisted(isHoisted: boolean)` method.
 `setAnchorElement(element: Element) => void` | Proxies to the menu surface's `setAnchorElement(element)` method.
@@ -252,8 +252,7 @@ Method Signature | Description
 `closeSurface() => void` | Closes the menu surface.
 `getElementIndex(element: Element) => number` | Returns the `index` value of the `element`.
 `getParentElement(element: Element) => Element \| null` | Returns the `.parentElement` element of the `element` provided.
-`getSelectionGroupAtIndex() => Element[]` | Returns the selection group at specified index.
-`getListItemIndexOfSelectionGroup(index: number, selectionGroup: Element) => number` | Returns the index of list item within menu selection group, relative to the entire .mdc-list element.
+`getListItemByIndex() => Element` | Returns the list item at the specified index.
 `getSelectedElementIndex(element: Element) => number` | Returns the `index` value of the element within the selection group provided, `element` that contains the `mdc-menu-item--selected` class.
 `notifySelected(index: number) => void` | Emits a `MDCMenu:selected` event for the element at the `index` specified.
 `getMenuItemCount() => number` | Returns the menu item count.
@@ -268,7 +267,7 @@ Method Signature | Description
 `handleItemAction(listItem: Element) => void` | Event handler for list's action event.
 `handleMenuSurfaceOpened() => void` | Event handler for menu surface's opened event.
 `setDefaultFocusState(focusState: DefaultFocusState) => void` | Sets default focus state where the menu should focus every time when menu is opened. Focuses the list root (`DefaultFocusState.LIST_ROOT`) element by default.
-`setSelectedIndex(index: number, selectionGroupIndex: number) => void` | Selects the list item at `index` witnin the specified selection group.
+`setSelectedIndex(index: number) => void` | Selects the list item at `index` witnin the menu.
 
 ### Events
 

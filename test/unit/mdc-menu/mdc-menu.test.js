@@ -32,8 +32,6 @@ import {DefaultFocusState} from '../../../packages/mdc-menu/constants';
 import {MDCListFoundation} from '../../../packages/mdc-list/index';
 import {MDCMenuSurfaceFoundation} from '../../../packages/mdc-menu-surface/foundation';
 
-const {cssClasses} = MDCMenuFoundation;
-
 function getFixture(open) {
   return bel`
     <div class="mdc-menu mdc-menu-surface ${open ? 'mdc-menu-surface--open' : ''}">
@@ -240,8 +238,8 @@ test('setAnchorMargin', () => {
 
 test('setSelectedIndex', () => {
   const {component, mockFoundation} = setupTestWithMock({fixture: getFixtureWithMultipleSelectionGroups});
-  component.setSelectedIndex(1, 1);
-  td.verify(mockFoundation.setSelectedIndex(1, 1));
+  component.setSelectedIndex(1);
+  td.verify(mockFoundation.setSelectedIndex(1));
 });
 
 test('setQuickOpen', () => {
@@ -468,28 +466,10 @@ test('adapter#getMenuItemCount returns the menu item count', () => {
   assert.equal(component.getDefaultFoundation().adapter_.getMenuItemCount(), component.items.length);
 });
 
-test('adapter#getSelectionGroupAtIndex return first selection group', () => {
-  const {root, component} = setupTest(false, getFixtureWithMultipleSelectionGroups);
-  const firstSelectionGroup = root.querySelectorAll('.mdc-menu__selection-group')[0];
-  assert.equal(component.getDefaultFoundation().adapter_.getSelectionGroupAtIndex(0), firstSelectionGroup);
-});
-
-test('adapter#getSelectionGroupAtIndex return last selection group', () => {
-  const {root, component} = setupTest(false, getFixtureWithMultipleSelectionGroups);
-  const lastSelectionGroup = root.querySelectorAll('.mdc-menu__selection-group')[1];
-  assert.equal(component.getDefaultFoundation().adapter_.getSelectionGroupAtIndex(1), lastSelectionGroup);
-});
-
-test('adapter#getListItemIndexOfSelectionGroup returns list item index relative to the first selection group', () => {
-  const {root, component} = setupTest(false, getFixtureWithMultipleSelectionGroups);
-  const selectionGroup = root.querySelectorAll(`.${cssClasses.MENU_SELECTION_GROUP}`)[0];
-  assert.equal(component.getDefaultFoundation().adapter_.getListItemIndexOfSelectionGroup(0, selectionGroup), 2);
-});
-
-test('adapter#getListItemIndexOfSelectionGroup returns list item index relative to the 2nd selection group', () => {
-  const {root, component} = setupTest(false, getFixtureWithMultipleSelectionGroups);
-  const selectionGroup = root.querySelectorAll(`.${cssClasses.MENU_SELECTION_GROUP}`)[1];
-  assert.equal(component.getDefaultFoundation().adapter_.getListItemIndexOfSelectionGroup(1, selectionGroup), 5);
+test('adapter#getListItemByIndex returns the list item by the index', () => {
+  const {component, root} = setupTest();
+  const listItem = root.querySelectorAll(`.${MDCListFoundation.cssClasses.LIST_ITEM_CLASS}`)[1];
+  assert.equal(component.getDefaultFoundation().adapter_.getListItemByIndex(1), listItem);
 });
 
 test('adapter#focusItemAtIndex focuses the menu item at given index', () => {

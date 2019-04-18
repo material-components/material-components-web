@@ -57,9 +57,8 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
       closeSurface: () => undefined,
       getElementIndex: () => -1,
       getParentElement: () => null,
+      getListItemByIndex: () => null,
       getSelectedElementIndex: () => -1,
-      getSelectionGroupAtIndex: () => null,
-      getListItemIndexOfSelectionGroup: () => -1,
       notifySelected: () => undefined,
       getMenuItemCount: () => 0,
       focusItemAtIndex: () => undefined,
@@ -134,12 +133,15 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
   /**
    * Selects the list item at `index` witnin the specified selection group.
    * @param index Index of list item within the selection group.
-   * @param selectionGroupIndex Index of selection group within the menu.
    */
-  setSelectedIndex(index: number, selectionGroupIndex = 0) {
-    const selectionGroup = this.adapter_.getSelectionGroupAtIndex(selectionGroupIndex);
+  setSelectedIndex(index: number) {
+    const listItem = this.adapter_.getListItemByIndex(index);
+    if (!listItem) {
+      throw new Error('No list item at specified index.');
+    }
+    const selectionGroup = this.getSelectionGroup_(listItem);
     if (!selectionGroup) {
-      throw new Error('No selection group at specified index');
+      throw new Error('No selection group at specified index.');
     }
     this.handleSelectionGroup_(selectionGroup, index);
   }
@@ -158,9 +160,8 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
       this.adapter_.removeClassFromElementAtIndex(selectedIndex, cssClasses.MENU_SELECTED_LIST_ITEM);
     }
     // Select the new list item in this group.
-    const normalizedIndex = this.adapter_.getListItemIndexOfSelectionGroup(index, selectionGroup);
-    this.adapter_.addClassToElementAtIndex(normalizedIndex, cssClasses.MENU_SELECTED_LIST_ITEM);
-    this.adapter_.addAttributeToElementAtIndex(normalizedIndex, strings.ARIA_SELECTED_ATTR, 'true');
+    this.adapter_.addClassToElementAtIndex(index, cssClasses.MENU_SELECTED_LIST_ITEM);
+    this.adapter_.addAttributeToElementAtIndex(index, strings.ARIA_SELECTED_ATTR, 'true');
   }
 
   /**

@@ -23,7 +23,6 @@
 
 import {MDCComponent} from '@material/base/component';
 import {CustomEventListener, SpecificEventListener} from '@material/base/types';
-import {cssClasses as listCssClasses} from '@material/list/constants';
 import {MDCList, MDCListActionEvent, MDCListFactory, MDCListFoundation} from '@material/list/index';
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
 import {Corner, MDCMenuSurface, MDCMenuSurfaceFactory} from '@material/menu-surface/index';
@@ -141,8 +140,8 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
     this.menuSurface_.setAnchorMargin(margin);
   }
 
-  setSelectedIndex(index: number, selectionGroup = 0) {
-    this.foundation_.setSelectedIndex(index, selectionGroup);
+  setSelectedIndex(index: number) {
+    this.foundation_.setSelectedIndex(index);
   }
 
   /**
@@ -210,17 +209,8 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
         const selectedListItem = selectionGroup.querySelector(`.${cssClasses.MENU_SELECTED_LIST_ITEM}`);
         return selectedListItem ? this.items.indexOf(selectedListItem) : -1;
       },
-      getSelectionGroupAtIndex: (selectionGroupIndex) => {
-        return [].slice.call(this.root_.querySelectorAll(`.${cssClasses.MENU_SELECTION_GROUP}`))[selectionGroupIndex];
-      },
-      getListItemIndexOfSelectionGroup: (index, selectionGroup) => {
-        const listItemsInSelectionGroup
-          = [].slice.call(selectionGroup.querySelectorAll(`.${listCssClasses.LIST_ITEM_CLASS}`));
-        if (listItemsInSelectionGroup.length === 0) {
-          return -1;
-        }
-        const listItem = listItemsInSelectionGroup[index];
-        return this.items.indexOf(listItem);
+      getListItemByIndex: (index: number) => {
+        return this.items[index];
       },
       notifySelected: (evtData) => this.emit<MDCMenuItemComponentEventDetail>(strings.SELECTED_EVENT, {
         index: evtData.index,
