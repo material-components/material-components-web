@@ -23,9 +23,9 @@
 
 import {MDCComponent} from '@material/base/component';
 import * as ponyfill from '@material/dom/ponyfill';
-import {MDCFloatingLabel, MDCFloatingLabelFactory} from '@material/floating-label/index';
-import {MDCLineRipple, MDCLineRippleFactory} from '@material/line-ripple/index';
-import {MDCNotchedOutline, MDCNotchedOutlineFactory} from '@material/notched-outline/index';
+import {MDCFloatingLabel, MDCFloatingLabelFactory} from '@material/floating-label/component';
+import {MDCLineRipple, MDCLineRippleFactory} from '@material/line-ripple/component';
+import {MDCNotchedOutline, MDCNotchedOutlineFactory} from '@material/notched-outline/component';
 import {MDCRippleAdapter} from '@material/ripple/adapter';
 import {MDCRipple, MDCRippleFactory} from '@material/ripple/component';
 import {MDCRippleFoundation} from '@material/ripple/foundation';
@@ -41,16 +41,16 @@ import {
 import {
   MDCTextFieldCharacterCounter,
   MDCTextFieldCharacterCounterFactory,
-  MDCTextFieldCharacterCounterFoundation,
-} from './character-counter/index';
+} from './character-counter/component';
+import {MDCTextFieldCharacterCounterFoundation} from './character-counter/foundation';
 import {cssClasses, strings} from './constants';
 import {MDCTextFieldFoundation} from './foundation';
 import {
   MDCTextFieldHelperText,
   MDCTextFieldHelperTextFactory,
-  MDCTextFieldHelperTextFoundation,
-} from './helper-text/index';
-import {MDCTextFieldIcon, MDCTextFieldIconFactory} from './icon/index';
+} from './helper-text/component';
+import {MDCTextFieldHelperTextFoundation} from './helper-text/foundation';
+import {MDCTextFieldIcon, MDCTextFieldIconFactory} from './icon/component';
 import {MDCTextFieldFoundationMap} from './types';
 
 export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implements MDCRippleCapableSurface {
