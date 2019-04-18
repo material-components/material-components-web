@@ -23,7 +23,7 @@
 
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
-import {ponyfill} from '@material/dom/index';
+import {closest, matches} from '@material/dom/ponyfill';
 import {MDCListAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCListFoundation} from './foundation';
@@ -205,10 +205,10 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
    */
   private getListItemIndex_(evt: Event) {
     const eventTarget = evt.target as Element;
-    const nearestParent = ponyfill.closest(eventTarget, `.${cssClasses.LIST_ITEM_CLASS}, .${cssClasses.ROOT}`);
+    const nearestParent = closest(eventTarget, `.${cssClasses.LIST_ITEM_CLASS}, .${cssClasses.ROOT}`);
 
     // Get the index of the element if it is a list item.
-    if (nearestParent && ponyfill.matches(nearestParent, `.${cssClasses.LIST_ITEM_CLASS}`)) {
+    if (nearestParent && matches(nearestParent, `.${cssClasses.LIST_ITEM_CLASS}`)) {
       return this.listElements.indexOf(nearestParent);
     }
 
@@ -249,7 +249,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
     const target = evt.target as Element;
 
     // Toggle the checkbox only if it's not the target of the event, or the checkbox will have 2 change events.
-    const toggleCheckbox = !ponyfill.matches(target, strings.CHECKBOX_RADIO_SELECTOR);
+    const toggleCheckbox = !matches(target, strings.CHECKBOX_RADIO_SELECTOR);
     this.foundation_.handleClick(index, toggleCheckbox);
   }
 }

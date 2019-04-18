@@ -22,7 +22,7 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {ponyfill} from '@material/dom/index';
+import {matches} from '@material/dom/ponyfill';
 import {MDCRippleAdapter} from './adapter';
 import {MDCRippleFoundation} from './foundation';
 import {MDCRippleAttachOpts, MDCRippleCapableSurface} from './types';
@@ -52,7 +52,7 @@ export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements MDCR
           instance.root_.removeEventListener(evtType, handler, util.applyPassive()),
       deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
       getWindowPageOffset: () => ({x: window.pageXOffset, y: window.pageYOffset}),
-      isSurfaceActive: () => ponyfill.matches(instance.root_, ':active'),
+      isSurfaceActive: () => matches(instance.root_, ':active'),
       isSurfaceDisabled: () => Boolean(instance.disabled),
       isUnbounded: () => Boolean(instance.unbounded),
       registerDocumentInteractionHandler: (evtType, handler) =>
