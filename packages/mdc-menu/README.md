@@ -252,7 +252,7 @@ Method Signature | Description
 `closeSurface() => void` | Closes the menu surface.
 `getElementIndex(element: Element) => number` | Returns the `index` value of the `element`.
 `getParentElement(element: Element) => Element \| null` | Returns the `.parentElement` element of the `element` provided.
-`getMenuSelectionGroups() => Element[]` | Returns all menu selection groups within the menu elements.
+`getSelectionGroupAtIndex() => Element[]` | Returns the selection group at specified index.
 `getListItemIndexOfSelectionGroup(index: number, selectionGroup: Element) => number` | Returns the index of list item within menu selection group, relative to the entire .mdc-list element.
 `getSelectedElementIndex(element: Element) => number` | Returns the `index` value of the element within the selection group provided, `element` that contains the `mdc-menu-item--selected` class.
 `notifySelected(index: number) => void` | Emits a `MDCMenu:selected` event for the element at the `index` specified.
