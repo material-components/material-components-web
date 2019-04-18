@@ -21,10 +21,9 @@
  * THE SOFTWARE.
  */
 
+import * as helperTextConstants from './constants';
+
 export * from './adapter';
 export * from './component';
-export {
-  strings as helperTextStrings,
-  cssClasses as helperTextCssClasses,
-} from './constants';
 export * from './foundation';
+export {helperTextConstants};

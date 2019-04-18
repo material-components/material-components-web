@@ -21,10 +21,9 @@
  * THE SOFTWARE.
  */
 
+import * as chipSetConstants from './constants';
+
 export * from './adapter';
 export * from './component';
-export {
-  strings as chipSetStrings,
-  cssClasses as chipSetCssClasses,
-} from './constants';
 export * from './foundation';
+export {chipSetConstants};

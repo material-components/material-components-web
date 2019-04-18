@@ -21,11 +21,10 @@
  * THE SOFTWARE.
  */
 
+import * as tabBarConstants from './constants';
+
 export * from './adapter';
 export * from './component';
-export {
-  strings as tabBarStrings,
-  cssClasses as tabBarCssClasses,
-} from './constants';
 export * from './foundation';
 export * from './types';
+export {tabBarConstants};

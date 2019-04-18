@@ -21,10 +21,9 @@
  * THE SOFTWARE.
  */
 
+import * as characterCountConstants from './constants';
+
 export * from './adapter';
 export * from './component';
-export {
-  strings as characterCountStrings,
-  cssClasses as characterCountCssClasses,
-} from './constants';
 export * from './foundation';
+export {characterCountConstants};

@@ -21,14 +21,12 @@
  * THE SOFTWARE.
  */
 
+import * as selectConstants from './constants';
+
 export * from './adapter';
 export * from './component';
-export {
-  strings as selectStrings,
-  cssClasses as selectCssClasses,
-  numbers as selectNumbers,
-} from './constants';
 export * from './foundation';
 export * from './types';
 export * from './helper-text/index';
 export * from './icon/index';
+export {selectConstants};
