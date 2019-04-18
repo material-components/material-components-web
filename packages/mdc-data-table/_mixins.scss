@@ -84,7 +84,7 @@
     @include mdc-typography(subtitle2, $query: $query);
 
     @include mdc-feature-targets($feat-structure) {
-      text-align: left;
+      text-align: start;
     }
   }
 }
