@@ -44,7 +44,8 @@
   position: relative;
   align-items: center;
   box-sizing: border-box;
-  padding: $mdc-chip-vertical-padding $mdc-chip-horizontal-padding;
+  padding-left: $mdc-chip-horizontal-padding;
+  padding-right: $mdc-chip-horizontal-padding;
   outline: none;
   cursor: pointer;
   overflow: hidden;

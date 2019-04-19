@@ -82,11 +82,11 @@ $custom-chip-ink-color: $material-color-blue-500;
 }
 
 .custom-chip--leading-icon-margin {
-  @include mdc-chip-leading-icon-margin(5px, 5px, 5px, 5px);
+  @include mdc-chip-leading-icon-margin(5px, 5px);
 }
 
 .custom-chip--trailing-icon-margin {
-  @include mdc-chip-trailing-icon-margin(5px, 5px, 5px, 5px);
+  @include mdc-chip-trailing-icon-margin(5px, 5px);
 }
 
 .custom-chip--horizontal-padding {
