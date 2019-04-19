@@ -21,12 +21,12 @@
  * THE SOFTWARE.
  */
 
-import * as selectConstants from './constants';
+import * as MDCSelectConstants from './constants';
 
+export {MDCSelectConstants};
 export * from './adapter';
 export * from './component';
 export * from './foundation';
 export * from './types';
 export * from './helper-text/index';
 export * from './icon/index';
-export {selectConstants};

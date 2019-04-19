@@ -21,7 +21,9 @@
  * THE SOFTWARE.
  */
 
+import * as MDCFormFieldConstants from './constants';
+
+export {MDCFormFieldConstants};
 export * from './adapter';
 export * from './component';
-export * from './constants';
 export * from './foundation';

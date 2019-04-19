@@ -21,7 +21,9 @@
  * THE SOFTWARE.
  */
 
+import * as MDCNotchedOutlineConstants from './constants';
+
+export {MDCNotchedOutlineConstants};
 export * from './adapter';
 export * from './component';
-export * from './constants';
 export * from './foundation';

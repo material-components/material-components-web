@@ -21,7 +21,9 @@
  * THE SOFTWARE.
  */
 
+import * as MDCRadioConstants from './constants';
+
+export {MDCRadioConstants};
 export * from './adapter';
 export * from './component';
-export * from './constants';
 export * from './foundation';

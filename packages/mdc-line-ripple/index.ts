@@ -21,7 +21,9 @@
  * THE SOFTWARE.
  */
 
+import * as MDCLineRippleConstants from './constants';
+
+export {MDCLineRippleConstants};
 export * from './adapter';
 export * from './component';
-export * from './constants';
 export * from './foundation';

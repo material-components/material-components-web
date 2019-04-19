@@ -21,9 +21,11 @@
  * THE SOFTWARE.
  */
 
+import * as MDCTopAppBarConstants from './constants';
+
+export {MDCTopAppBarConstants};
 export * from './adapter';
 export * from './component';
-export * from './constants';
 export * from './foundation';
 export * from './fixed/foundation';
 export * from './short/foundation';

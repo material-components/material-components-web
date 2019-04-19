@@ -21,11 +21,11 @@
  * THE SOFTWARE.
  */
 
+import * as MDCDrawerConstants from './constants';
 import * as util from './util';
 
-export {util};
+export {MDCDrawerConstants, util};
 export * from './adapter';
 export * from './component';
-export * from './constants';
 export * from './dismissible/foundation';
 export * from './modal/foundation';

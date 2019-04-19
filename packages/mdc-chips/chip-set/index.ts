@@ -21,9 +21,9 @@
  * THE SOFTWARE.
  */
 
-import * as chipSetConstants from './constants';
+import * as MDCChipSetConstants from './constants';
 
+export {MDCChipSetConstants};
 export * from './adapter';
 export * from './component';
 export * from './foundation';
-export {chipSetConstants};

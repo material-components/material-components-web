@@ -21,9 +21,9 @@
  * THE SOFTWARE.
  */
 
-import * as helperTextConstants from './constants';
+import * as MDCTextFieldHelperTextConstants from './constants';
 
+export {MDCTextFieldHelperTextConstants};
 export * from './adapter';
 export * from './component';
 export * from './foundation';
-export {helperTextConstants};

@@ -21,10 +21,10 @@
  * THE SOFTWARE.
  */
 
-import * as chipConstants from './constants';
+import * as MDCChipConstants from './constants';
 
+export {MDCChipConstants};
 export * from './adapter';
 export * from './component';
 export * from './foundation';
 export * from './types';
-export {chipConstants};

@@ -20,9 +20,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+import * as MDCTabConstants from './constants';
 
+export {MDCTabConstants};
 export * from './adapter';
 export * from './component';
-export * from './constants';
 export * from './foundation';
 export * from './types';

@@ -21,7 +21,9 @@
  * THE SOFTWARE.
  */
 
+import * as MDCGridListConstants from './constants';
+
+export {MDCGridListConstants};
 export * from './adapter';
 export * from './component';
-export * from './constants';
 export * from './foundation';

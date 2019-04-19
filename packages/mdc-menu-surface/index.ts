@@ -21,12 +21,13 @@
  * THE SOFTWARE.
  */
 
+import * as MDCMenuSurfaceConstants from './constants';
 import * as util from './util';
 
+// TODO: Keeping for backwards compat. Remove in future release
 export {Corner, CornerBit} from './constants';
-export {util};
+export {MDCMenuSurfaceConstants, util};
 export * from './adapter';
 export * from './component';
-export * from './constants';
 export * from './foundation';
 export * from './types';

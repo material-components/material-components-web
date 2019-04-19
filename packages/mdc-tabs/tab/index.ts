@@ -21,9 +21,9 @@
  * THE SOFTWARE.
  */
 
-import * as tabConstants from './constants';
+import * as MDCTabsTabConstants from './constants';
 
+export {MDCTabsTabConstants};
 export * from './adapter';
 export * from './component';
 export * from './foundation';
-export {tabConstants};

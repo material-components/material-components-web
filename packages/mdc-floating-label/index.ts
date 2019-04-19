@@ -21,7 +21,9 @@
  * THE SOFTWARE.
  */
 
+import * as MDCFloatingLabelConstants from './constants';
+
+export {MDCFloatingLabelConstants};
 export * from './adapter';
 export * from './component';
-export * from './constants';
 export * from './foundation';

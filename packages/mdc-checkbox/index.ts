@@ -21,7 +21,9 @@
  * THE SOFTWARE.
  */
 
+import * as MDCDialogConstants from './constants';
+
+export {MDCDialogConstants};
 export * from './adapter';
 export * from './component';
-export * from './constants';
 export * from './foundation';

@@ -21,7 +21,9 @@
  * THE SOFTWARE.
  */
 
+import * as MDCSliderConstants from './constants';
+
+export {MDCSliderConstants};
 export * from './adapter';
 export * from './component';
-export * from './constants';
 export * from './foundation';
