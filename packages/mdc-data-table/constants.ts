@@ -27,8 +27,11 @@ export const cssClasses = {
   HEADER_ROW: 'mdc-data-table__header-row',
   ROW_SELECTED: 'mdc-data-table__row--selected',
   ROW_CHECKBOX: 'mdc-data-table__row-checkbox',
+  CONTENT: 'mdc-data-table__content',
 };
 
 export const strings = {
   HEADER_ROW_CHECKBOX_SELECTOR: '.mdc-data-table__header-row .mdc-data-table__row-checkbox',
+  DATA_ROW_ID_ATTR: 'data-row-id',
+  ARIA_SELECTED: 'aria-selected',
 };

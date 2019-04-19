@@ -23,7 +23,7 @@
 
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCDataTableAdapter} from './adapter';
-import {cssClasses} from './constants';
+import {cssClasses, strings} from './constants';
 
 export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
   static get cssClasses() {
@@ -41,6 +41,41 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
   constructor(adapter?: Partial<MDCDataTableAdapter>) {
     super({...MDCDataTableFoundation.defaultAdapter, ...adapter});
   }
+
+  handleHeaderRowCheckboxChange(event: Event) {
+    const isHeaderChecked = this.adapter_.isHeaderRowCheckboxChecked();
+
+    for (const rowId of this.adapter_.getRowIds()) {
+      this.adapter_.setCheckboxCheckedAtRowId(rowId, isHeaderChecked);
+      if (isHeaderChecked) {
+        this.adapter_.addClassAtRowId(rowId, cssClasses.ROW_SELECTED);
+        this.adapter_.setAttributeAtRowId(rowId, strings.ARIA_SELECTED, 'true');
+      } else {
+        this.adapter_.removeClassAtRowId(rowId, cssClasses.ROW_SELECTED);
+        this.adapter_.setAttributeAtRowId(rowId, strings.ARIA_SELECTED, 'false');
+      }
+    }
+  }
+
+  handleRowCheckboxChange(event: Event) {
+    const checkboxEl = event.target as HTMLInputElement;
+    const row = closest(checkboxEl, `.${cssClasses.ROW}, .${cssClasses.HEADER_ROW}`) as HTMLElement;
+    const rowEl = this.adapter_.isRowCheckboxElement(event.target);
+
+
+    const rowId = this.getRowId(row);
+    const checked = checkboxEl.checked;
+
+    if (checked) {
+      row.classList.add(cssClasses.ROW_SELECTED);
+      row.setAttribute('aria-selected', 'true');
+    } else {
+      row.classList.remove(cssClasses.ROW_SELECTED);
+      row.setAttribute('aria-selected', 'false');
+    }
+
+    this.setHeaderRowCheckState_(this.getSelectedRowIds().length);
+    this.emit('MDCDataTable:changed', {row, rowId, checked}, /** shouldBubble */ true);
 }
 
 // tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.
