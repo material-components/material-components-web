@@ -28,14 +28,14 @@ import domEvents from 'dom-events';
 
 import {MDCMenu, MDCMenuFoundation} from '../../../packages/mdc-menu/index';
 import {Corner} from '../../../packages/mdc-menu-surface/constants';
-import {cssClasses} from '../../../packages/mdc-menu/constants';
+import {DefaultFocusState} from '../../../packages/mdc-menu/constants';
 import {MDCListFoundation} from '../../../packages/mdc-list/index';
 import {MDCMenuSurfaceFoundation} from '../../../packages/mdc-menu-surface/foundation';
 
 function getFixture(open) {
   return bel`
-    <div class="mdc-menu mdc-menu-surface ${open ? 'mdc-menu-surface--open' : ''}" tabindex="-1">
-      <ul class="mdc-list" role="menu">
+    <div class="mdc-menu mdc-menu-surface ${open ? 'mdc-menu-surface--open' : ''}">
+      <ul class="mdc-list" role="menu" tabIndex="-1">
         <li tabIndex="-1" class="mdc-list-item" role="menuitem">Item</a>
         <li role="separator"></li>
         <li tabIndex="-1" class="mdc-list-item" role="menuitem">Another Item</a>
@@ -280,14 +280,14 @@ test('setAbsolutePosition', () => {
   td.verify(menuSurface.setAbsolutePosition(100, 120));
 });
 
-test('menu surface opened event causes root element to be focused', () => {
+test('menu surface opened event causes list root element to be focused', () => {
   const {root} = setupTest();
   document.body.appendChild(root);
   const event = document.createEvent('Event');
   event.initEvent(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, false, true);
   root.dispatchEvent(event);
 
-  assert.isTrue(document.activeElement.classList.contains(cssClasses.ROOT));
+  assert.isTrue(document.activeElement.classList.contains(MDCListFoundation.cssClasses.ROOT));
   document.body.removeChild(root);
 });
 
@@ -295,19 +295,6 @@ test('handleMenuSurfaceOpened calls foundation\'s handleMenuSurfaceOpened method
   const {root, mockFoundation} = setupTestWithMock();
   domEvents.emit(root, MDCMenuSurfaceFoundation.strings.OPENED_EVENT);
   td.verify(mockFoundation.handleMenuSurfaceOpened());
-});
-
-test('menu surface opened event causes root element to be focused if the list is empty', () => {
-  const {root} = setupTest();
-  root.querySelector('.mdc-list').innerHTML = ''; // Quick clear of all list items
-  const event = document.createEvent('Event');
-  event.initEvent(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, false, true);
-  document.body.appendChild(root);
-
-  root.dispatchEvent(event);
-
-  assert.isTrue(document.activeElement.classList.contains(cssClasses.ROOT));
-  document.body.removeChild(root);
 });
 
 test('list item enter keydown emits a menu action event', () => {
@@ -335,11 +322,11 @@ test('open=true does not throw an error if there are no items in the list to foc
   document.body.removeChild(root);
 });
 
-test('#setDefaultFocusItemIndex Calls foundation\'s setDefaultFocusItemIndex method', () => {
+test('#setDefaultFocusState Calls foundation\'s setDefaultFocusState method', () => {
   const {component, mockFoundation} = setupTestWithFakes();
 
-  component.setDefaultFocusItemIndex(2);
-  td.verify(mockFoundation.setDefaultFocusItemIndex(2));
+  component.setDefaultFocusState(DefaultFocusState.FIRST_ITEM);
+  td.verify(mockFoundation.setDefaultFocusState(DefaultFocusState.FIRST_ITEM));
 });
 
 // Adapter method test
@@ -456,23 +443,12 @@ test('adapter#focusItemAtIndex focuses the menu item at given index', () => {
   document.body.removeChild(root);
 });
 
-test('adapter#isRootFocused returns true if menu root has focus', () => {
+test('adapter#focusListRoot focuses the list root element', () => {
   const {root, component} = setupTest();
   document.body.appendChild(root);
 
-  assert.isFalse(component.getDefaultFoundation().adapter_.isRootFocused());
-  root.focus();
-  assert.isTrue(component.getDefaultFoundation().adapter_.isRootFocused());
-
-  document.body.removeChild(root);
-});
-
-test('adapter#focusRoot focuses the menu root element', () => {
-  const {root, component} = setupTest();
-  document.body.appendChild(root);
-
-  component.getDefaultFoundation().adapter_.focusRoot();
-  assert.equal(document.activeElement, root);
+  component.getDefaultFoundation().adapter_.focusListRoot();
+  assert.equal(document.activeElement, root.querySelector(`.${MDCListFoundation.cssClasses.ROOT}`));
 
   document.body.removeChild(root);
 });
