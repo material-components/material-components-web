@@ -57,7 +57,7 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
       closeSurface: () => undefined,
       getElementIndex: () => -1,
       getParentElement: () => null,
-      getListItemByIndex: () => null,
+      getListItemAtIndex: () => null,
       getSelectedElementIndex: () => -1,
       notifySelected: () => undefined,
       getMenuItemCount: () => 0,
@@ -100,7 +100,9 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     // Wait for the menu to close before adding/removing classes that affect styles.
     this.closeAnimationEndTimerId_ = setTimeout(() => {
       const selectionGroup = this.getSelectionGroup_(listItem);
-      this.handleSelectionGroup_(selectionGroup, index);
+      if (!selectionGroup) {
+        this.handleSelectionGroup_(selectionGroup!, index);
+      }
     }, MDCMenuSurfaceFoundation.numbers.TRANSITION_CLOSE_DURATION);
   }
 
@@ -135,13 +137,13 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
    * @param index Index of list item within the selection group.
    */
   setSelectedIndex(index: number) {
-    const listItem = this.adapter_.getListItemByIndex(index);
+    const listItem = this.adapter_.getListItemAtIndex(index);
     if (!listItem) {
-      throw new Error('No list item at specified index.');
+      throw new Error('MDCMenuFoundation:No list item at specified index.');
     }
     const selectionGroup = this.getSelectionGroup_(listItem);
     if (!selectionGroup) {
-      throw new Error('No selection group at specified index.');
+      throw new Error('MDCMenuFoundation:No selection group at specified index.');
     }
     this.handleSelectionGroup_(selectionGroup, index);
   }
@@ -149,10 +151,7 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
   /**
    * Handles toggling the selected classes in a selection group when a selection is made.
    */
-  private handleSelectionGroup_(selectionGroup: Element | null, index: number) {
-    if (!selectionGroup) {
-      return;
-    }
+  private handleSelectionGroup_(selectionGroup: Element, index: number) {
     // De-select the previous selection in this group.
     const selectedIndex = this.adapter_.getSelectedElementIndex(selectionGroup);
     if (selectedIndex >= 0) {

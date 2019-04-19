@@ -40,7 +40,7 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   }
 
   private menuSurfaceFactory_!: MDCMenuSurfaceFactory; // assigned in initialize()
-  private listFactory_!: MDCListFactory; // ` assigned in initialize()
+  private listFactory_!: MDCListFactory; // assigned in initialize()
 
   private menuSurface_!: MDCMenuSurface; // assigned in initialSyncWithDOM()
   private list_!: MDCList | null; // assigned in initialSyncWithDOM()
@@ -140,6 +140,10 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
     this.menuSurface_.setAnchorMargin(margin);
   }
 
+  /**
+   * Sets the list item as the selected row at the specified index.
+   * @param index Index of list item within menu.
+   */
   setSelectedIndex(index: number) {
     this.foundation_.setSelectedIndex(index);
   }
@@ -209,9 +213,7 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
         const selectedListItem = selectionGroup.querySelector(`.${cssClasses.MENU_SELECTED_LIST_ITEM}`);
         return selectedListItem ? this.items.indexOf(selectedListItem) : -1;
       },
-      getListItemByIndex: (index: number) => {
-        return this.items[index];
-      },
+      getListItemAtIndex: (index: number) => this.items[index],
       notifySelected: (evtData) => this.emit<MDCMenuItemComponentEventDetail>(strings.SELECTED_EVENT, {
         index: evtData.index,
         item: this.items[evtData.index],

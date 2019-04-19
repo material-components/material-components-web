@@ -47,7 +47,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'addClassToElementAtIndex', 'removeClassFromElementAtIndex', 'addAttributeToElementAtIndex',
     'removeAttributeFromElementAtIndex', 'elementContainsClass', 'closeSurface', 'getElementIndex', 'getParentElement',
     'getSelectedElementIndex', 'notifySelected', 'getMenuItemCount', 'focusItemAtIndex', 'focusListRoot',
-    'getListItemByIndex',
+    'getListItemAtIndex',
   ]);
 });
 
@@ -270,18 +270,18 @@ test('handleMenuSurfaceOpened does not focus anything when DefaultFocusState is 
 test('setSelectedIndex gets the list item at the specified index', () => {
   const {foundation, mockAdapter} = setupTest();
   const listItemEl = document.createElement('div');
-  td.when(mockAdapter.getListItemByIndex(0)).thenReturn(listItemEl);
+  td.when(mockAdapter.getListItemAtIndex(0)).thenReturn(listItemEl);
   td.when(mockAdapter.getParentElement(listItemEl)).thenReturn(listItemEl);
   td.when(mockAdapter.elementContainsClass(listItemEl, cssClasses.MENU_SELECTION_GROUP)).thenReturn(true);
 
   foundation.setSelectedIndex(0);
-  td.verify(mockAdapter.getListItemByIndex(0), {times: 1});
+  td.verify(mockAdapter.getListItemAtIndex(0), {times: 1});
 });
 
 test('setSelectedIndex calls addClass and addAttribute', () => {
   const {foundation, mockAdapter} = setupTest();
   const listItemEl = document.createElement('div');
-  td.when(mockAdapter.getListItemByIndex(0)).thenReturn(listItemEl);
+  td.when(mockAdapter.getListItemAtIndex(0)).thenReturn(listItemEl);
   td.when(mockAdapter.getParentElement(listItemEl)).thenReturn(listItemEl);
   td.when(mockAdapter.elementContainsClass(listItemEl, cssClasses.MENU_SELECTION_GROUP)).thenReturn(true);
   td.when(mockAdapter.getSelectedElementIndex(listItemEl)).thenReturn(-1);
@@ -298,7 +298,7 @@ test('setSelectedIndex calls addClass and addAttribute', () => {
 test('setSelectedIndex remove class and attribute, and adds class and attribute to newly selected item', () => {
   const {foundation, mockAdapter} = setupTest();
   const listItemEl = document.createElement('div');
-  td.when(mockAdapter.getListItemByIndex(0)).thenReturn(listItemEl);
+  td.when(mockAdapter.getListItemAtIndex(0)).thenReturn(listItemEl);
   td.when(mockAdapter.getParentElement(listItemEl)).thenReturn(listItemEl);
   td.when(mockAdapter.elementContainsClass(listItemEl, cssClasses.MENU_SELECTION_GROUP)).thenReturn(true);
   td.when(mockAdapter.getSelectedElementIndex(listItemEl)).thenReturn(1);

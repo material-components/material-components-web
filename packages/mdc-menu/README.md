@@ -252,7 +252,7 @@ Method Signature | Description
 `closeSurface() => void` | Closes the menu surface.
 `getElementIndex(element: Element) => number` | Returns the `index` value of the `element`.
 `getParentElement(element: Element) => Element \| null` | Returns the `.parentElement` element of the `element` provided.
-`getListItemByIndex() => Element` | Returns the list item at the specified index.
+`getListItemAtIndex() => Element` | Returns the list item at the specified index.
 `getSelectedElementIndex(element: Element) => number` | Returns the `index` value of the element within the selection group provided, `element` that contains the `mdc-menu-item--selected` class.
 `notifySelected(index: number) => void` | Emits a `MDCMenu:selected` event for the element at the `index` specified.
 `getMenuItemCount() => number` | Returns the menu item count.
@@ -267,7 +267,7 @@ Method Signature | Description
 `handleItemAction(listItem: Element) => void` | Event handler for list's action event.
 `handleMenuSurfaceOpened() => void` | Event handler for menu surface's opened event.
 `setDefaultFocusState(focusState: DefaultFocusState) => void` | Sets default focus state where the menu should focus every time when menu is opened. Focuses the list root (`DefaultFocusState.LIST_ROOT`) element by default.
-`setSelectedIndex(index: number) => void` | Selects the list item at `index` witnin the menu.
+`setSelectedIndex(index: number) => void` | Selects the list item at given `index`.
 
 ### Events
 

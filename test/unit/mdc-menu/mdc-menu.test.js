@@ -466,10 +466,10 @@ test('adapter#getMenuItemCount returns the menu item count', () => {
   assert.equal(component.getDefaultFoundation().adapter_.getMenuItemCount(), component.items.length);
 });
 
-test('adapter#getListItemByIndex returns the list item by the index', () => {
+test('adapter#getListItemAtIndex returns the list item by the index', () => {
   const {component, root} = setupTest();
   const listItem = root.querySelectorAll(`.${MDCListFoundation.cssClasses.LIST_ITEM_CLASS}`)[1];
-  assert.equal(component.getDefaultFoundation().adapter_.getListItemByIndex(1), listItem);
+  assert.equal(component.getDefaultFoundation().adapter_.getListItemAtIndex(1), listItem);
 });
 
 test('adapter#focusItemAtIndex focuses the menu item at given index', () => {
