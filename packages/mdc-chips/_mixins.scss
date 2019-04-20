@@ -101,14 +101,14 @@
   // Note: Adjust padding to maintain consistent width with non-outlined chips
   $horizontal-padding-value: max($horizontal-padding - $width, 0);
 
-  padding-left: $horizontal-padding-value;
   padding-right: $horizontal-padding-value;
+  padding-left: $horizontal-padding-value;
   border-width: $width;
 }
 
 @mixin mdc-chip-horizontal-padding($padding) {
-  padding-left: $padding;
   padding-right: $padding;
+  padding-left: $padding;
 }
 
 @mixin mdc-chip-height($height) {
