@@ -279,7 +279,7 @@
   &:disabled {
     @include mdc-feature-targets($feat-color) {
       @include mdc-theme-prop(background-color, transparent);
-
+      fill: $mdc-button-disabled-ink-color;
       color: $mdc-button-disabled-ink-color;
     }
 
@@ -327,6 +327,7 @@
   &:disabled {
     @include mdc-feature-targets($feat-color) {
       border-color: $mdc-button-disabled-ink-color;
+      fill: $mdc-button-disabled-ink-color;
     }
   }
 }
@@ -341,6 +342,7 @@
     @include mdc-feature-targets($feat-color) {
       background-color: rgba(mdc-theme-prop-value(on-surface), .12);
       color: $mdc-button-disabled-ink-color;
+      fill: $mdc-button-disabled-ink-color;
     }
   }
 }
