@@ -97,8 +97,13 @@ export class MDCTabBarFoundation extends MDCFoundation<MDCTabBarAdapter> {
       return;
     }
 
-    this.adapter_.deactivateTabAtIndex(previousActiveIndex);
-    this.adapter_.activateTabAtIndex(index, this.adapter_.getTabIndicatorClientRectAtIndex(previousActiveIndex));
+    let previousClientRect;
+    if (previousActiveIndex !== -1) {
+      this.adapter_.deactivateTabAtIndex(previousActiveIndex);
+      previousClientRect = this.adapter_.getTabIndicatorClientRectAtIndex(previousActiveIndex);
+    }
+
+    this.adapter_.activateTabAtIndex(index, previousClientRect);
     this.scrollIntoView(index);
 
     this.adapter_.notifyTabActivated(index);
