@@ -100,7 +100,7 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     // Wait for the menu to close before adding/removing classes that affect styles.
     this.closeAnimationEndTimerId_ = setTimeout(() => {
       const selectionGroup = this.getSelectionGroup_(listItem);
-      if (!selectionGroup) {
+      if (selectionGroup) {
         this.handleSelectionGroup_(selectionGroup!, index);
       }
     }, MDCMenuSurfaceFoundation.numbers.TRANSITION_CLOSE_DURATION);
@@ -133,17 +133,17 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
   }
 
   /**
-   * Selects the list item at `index` witnin the specified selection group.
-   * @param index Index of list item within the selection group.
+   * Selects the list item at `index` within the menu.
+   * @param index Index of list item within the menu.
    */
   setSelectedIndex(index: number) {
     const listItem = this.adapter_.getListItemAtIndex(index);
     if (!listItem) {
-      throw new Error('MDCMenuFoundation:No list item at specified index.');
+      throw new Error('MDCMenuFoundation: No list item at specified index.');
     }
     const selectionGroup = this.getSelectionGroup_(listItem);
     if (!selectionGroup) {
-      throw new Error('MDCMenuFoundation:No selection group at specified index.');
+      throw new Error('MDCMenuFoundation: No selection group at specified index.');
     }
     this.handleSelectionGroup_(selectionGroup, index);
   }
