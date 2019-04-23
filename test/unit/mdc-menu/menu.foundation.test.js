@@ -267,17 +267,6 @@ test('handleMenuSurfaceOpened does not focus anything when DefaultFocusState is 
   td.verify(mockAdapter.focusListRoot(), {times: 0});
 });
 
-test('setSelectedIndex gets the list item at the specified index', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const listItemEl = document.createElement('div');
-  td.when(mockAdapter.getListItemAtIndex(0)).thenReturn(listItemEl);
-  td.when(mockAdapter.getParentElement(listItemEl)).thenReturn(listItemEl);
-  td.when(mockAdapter.elementContainsClass(listItemEl, cssClasses.MENU_SELECTION_GROUP)).thenReturn(true);
-
-  foundation.setSelectedIndex(0);
-  td.verify(mockAdapter.getListItemAtIndex(0), {times: 1});
-});
-
 test('setSelectedIndex calls addClass and addAttribute', () => {
   const {foundation, mockAdapter} = setupTest();
   const listItemEl = document.createElement('div');
@@ -285,6 +274,7 @@ test('setSelectedIndex calls addClass and addAttribute', () => {
   td.when(mockAdapter.getParentElement(listItemEl)).thenReturn(listItemEl);
   td.when(mockAdapter.elementContainsClass(listItemEl, cssClasses.MENU_SELECTION_GROUP)).thenReturn(true);
   td.when(mockAdapter.getSelectedElementIndex(listItemEl)).thenReturn(-1);
+  td.when(mockAdapter.getMenuItemCount()).thenReturn(2);
 
   foundation.setSelectedIndex(0);
   td.verify(mockAdapter.removeClassFromElementAtIndex(
@@ -302,6 +292,7 @@ test('setSelectedIndex remove class and attribute, and adds class and attribute 
   td.when(mockAdapter.getParentElement(listItemEl)).thenReturn(listItemEl);
   td.when(mockAdapter.elementContainsClass(listItemEl, cssClasses.MENU_SELECTION_GROUP)).thenReturn(true);
   td.when(mockAdapter.getSelectedElementIndex(listItemEl)).thenReturn(1);
+  td.when(mockAdapter.getMenuItemCount()).thenReturn(2);
 
   foundation.setSelectedIndex(0);
   td.verify(mockAdapter.removeClassFromElementAtIndex(1, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 1});
@@ -309,6 +300,16 @@ test('setSelectedIndex remove class and attribute, and adds class and attribute 
     mockAdapter.removeAttributeFromElementAtIndex(1, strings.ARIA_SELECTED_ATTR), {times: 1});
   td.verify(mockAdapter.addClassToElementAtIndex(0, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 1});
   td.verify(mockAdapter.addAttributeToElementAtIndex(0, strings.ARIA_SELECTED_ATTR, 'true'), {times: 1});
+});
+
+test('setSelectedIndex throws error if index is not in range', () => {
+  const {foundation} = setupTest();
+
+  try {
+    foundation.setSelectedIndex(5);
+  } catch (e) {
+    assert.equal(e.message, 'MDCMenuFoundation: No list item at specified index.');
+  }
 });
 
 // Item Action

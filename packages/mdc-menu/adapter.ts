@@ -69,7 +69,7 @@ export interface MDCMenuAdapter {
    * @return List item element.
    * @param index Index of list item within menu.
    */
-  getListItemAtIndex(index: number): Element;
+  getListItemAtIndex(index: number): Element | undefined;
   /**
    * @return The parentElement of the provided element.
    */

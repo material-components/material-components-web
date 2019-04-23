@@ -57,7 +57,7 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
       closeSurface: () => undefined,
       getElementIndex: () => -1,
       getParentElement: () => null,
-      getListItemAtIndex: () => null,
+      getListItemAtIndex: () => undefined,
       getSelectedElementIndex: () => -1,
       notifySelected: () => undefined,
       getMenuItemCount: () => 0,
@@ -137,15 +137,20 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
    * @param index Index of list item within the menu.
    */
   setSelectedIndex(index: number) {
-    const listItem = this.adapter_.getListItemAtIndex(index);
-    if (!listItem) {
+    if (!this.isIndexInRange_(index)) {
       throw new Error('MDCMenuFoundation: No list item at specified index.');
     }
-    const selectionGroup = this.getSelectionGroup_(listItem);
+    const listItem = this.adapter_.getListItemAtIndex(index);
+    const selectionGroup = this.getSelectionGroup_(listItem!);
     if (!selectionGroup) {
       throw new Error('MDCMenuFoundation: No selection group at specified index.');
     }
     this.handleSelectionGroup_(selectionGroup, index);
+  }
+
+  private isIndexInRange_(index: number) {
+    const menuSize = this.adapter_.getMenuItemCount();
+    return index >= 0 && index < menuSize;
   }
 
   /**
