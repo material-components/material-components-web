@@ -23,8 +23,10 @@
 
 import {MDCComponent} from '@material/base/component';
 import {CustomEventListener, SpecificEventListener} from '@material/base/types';
-import {MDCTabScroller, MDCTabScrollerFactory} from '@material/tab-scroller/index';
-import {MDCTab, MDCTabFactory, MDCTabFoundation, MDCTabInteractionEvent} from '@material/tab/index';
+import {MDCTabScroller, MDCTabScrollerFactory} from '@material/tab-scroller/component';
+import {MDCTab, MDCTabFactory} from '@material/tab/component';
+import {MDCTabFoundation} from '@material/tab/foundation';
+import {MDCTabInteractionEvent} from '@material/tab/types';
 import {MDCTabBarAdapter} from './adapter';
 import {MDCTabBarFoundation} from './foundation';
 import {MDCTabBarActivatedEventDetail} from './types';

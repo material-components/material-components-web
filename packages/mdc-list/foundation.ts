@@ -56,6 +56,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       hasRadioAtIndex: () => false,
       isCheckboxCheckedAtIndex: () => false,
       isFocusInsideList: () => false,
+      isRootFocused: () => false,
       notifyAction: () => undefined,
       removeClassForElementIndex: () => undefined,
       setAttributeForElementIndex: () => undefined,
@@ -168,18 +169,29 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
    * Key handler for the list.
    */
   handleKeydown(evt: KeyboardEvent, isRootListItem: boolean, listItemIndex: number) {
-    const arrowLeft = evt.key === 'ArrowLeft' || evt.keyCode === 37;
-    const arrowUp = evt.key === 'ArrowUp' || evt.keyCode === 38;
-    const arrowRight = evt.key === 'ArrowRight' || evt.keyCode === 39;
-    const arrowDown = evt.key === 'ArrowDown' || evt.keyCode === 40;
+    const isArrowLeft = evt.key === 'ArrowLeft' || evt.keyCode === 37;
+    const isArrowUp = evt.key === 'ArrowUp' || evt.keyCode === 38;
+    const isArrowRight = evt.key === 'ArrowRight' || evt.keyCode === 39;
+    const isArrowDown = evt.key === 'ArrowDown' || evt.keyCode === 40;
     const isHome = evt.key === 'Home' || evt.keyCode === 36;
     const isEnd = evt.key === 'End' || evt.keyCode === 35;
     const isEnter = evt.key === 'Enter' || evt.keyCode === 13;
     const isSpace = evt.key === 'Space' || evt.keyCode === 32;
 
+    if (this.adapter_.isRootFocused()) {
+      if (isArrowUp || isEnd) {
+        evt.preventDefault();
+        this.focusLastElement();
+      } else if (isArrowDown || isHome) {
+        evt.preventDefault();
+        this.focusFirstElement();
+      }
+
+      return;
+    }
+
     let currentIndex = this.adapter_.getFocusedElementIndex();
-    let nextIndex = numbers.UNSET_INDEX;
-    if (currentIndex === numbers.UNSET_INDEX) {
+    if (currentIndex === -1) {
       currentIndex = listItemIndex;
       if (currentIndex < 0) {
         // If this event doesn't have a mdc-list-item ancestor from the
@@ -188,10 +200,11 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       }
     }
 
-    if ((this.isVertical_ && arrowDown) || (!this.isVertical_ && arrowRight)) {
+    let nextIndex;
+    if ((this.isVertical_ && isArrowDown) || (!this.isVertical_ && isArrowRight)) {
       this.preventDefaultEvent_(evt);
       nextIndex = this.focusNextElement(currentIndex);
-    } else if ((this.isVertical_ && arrowUp) || (!this.isVertical_ && arrowLeft)) {
+    } else if ((this.isVertical_ && isArrowUp) || (!this.isVertical_ && isArrowLeft)) {
       this.preventDefaultEvent_(evt);
       nextIndex = this.focusPrevElement(currentIndex);
     } else if (isHome) {
@@ -219,7 +232,7 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
 
     this.focusedItemIndex_ = currentIndex;
 
-    if (nextIndex >= 0) {
+    if (nextIndex !== undefined) {
       this.setTabindexAtIndex_(nextIndex);
       this.focusedItemIndex_ = nextIndex;
     }

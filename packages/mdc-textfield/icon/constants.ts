@@ -26,4 +26,8 @@ const strings = {
   ICON_ROLE: 'button',
 };
 
-export {strings};
+const cssClasses = {
+  ROOT: 'mdc-text-field__icon',
+};
+
+export {strings, cssClasses};
