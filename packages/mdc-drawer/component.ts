@@ -146,6 +146,8 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
       notifyOpen: () => this.emit(strings.OPEN_EVENT, {}, true /* shouldBubble */),
       trapFocus: () => this.focusTrap_!.activate(),
       releaseFocus: () => this.focusTrap_!.deactivate(),
+      addBodyClass: (className) => document.body.classList.add(className),
+      removeBodyClass: (className) => document.body.classList.remove(className),
     };
     // tslint:enable:object-literal-sort-keys
 

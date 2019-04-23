@@ -145,6 +145,7 @@
       padding: 20px 24px; // Note: the top padding is only 20px for dialogs without titles; see below for override
       overflow: auto;
       -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
     }
 
     // The content element already has top/bottom padding, so we need to suppress margins on its first/last children.

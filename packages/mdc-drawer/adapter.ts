@@ -85,4 +85,14 @@ export interface MDCDrawerAdapter {
    * and restores focus to where it was prior to calling `trapFocus`.
    */
   releaseFocus(): void;
+
+  /**
+   * Adds a class to the body element
+   */
+  addBodyClass(className: string): void;
+
+  /**
+   * Removes a class from the body element
+   */
+  removeBodyClass(className: string): void;
 }

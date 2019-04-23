@@ -48,6 +48,8 @@ export class MDCDismissibleDrawerFoundation extends MDCFoundation<MDCDrawerAdapt
       focusActiveNavigationItem: () => undefined,
       trapFocus: () => undefined,
       releaseFocus: () => undefined,
+      addBodyClass: () => undefined,
+      removeBodyClass: () => undefined,
     };
     // tslint:enable:object-literal-sort-keys
   }

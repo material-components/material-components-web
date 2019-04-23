@@ -163,6 +163,7 @@
   height: 100%;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 
 // postcss-bem-linter: end

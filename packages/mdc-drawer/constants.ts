@@ -29,6 +29,7 @@ const cssClasses = {
   OPEN: 'mdc-drawer--open',
   OPENING: 'mdc-drawer--opening',
   ROOT: 'mdc-drawer',
+  SCROLL_LOCK: 'mdc-drawer-scroll-lock',
 };
 
 const strings = {

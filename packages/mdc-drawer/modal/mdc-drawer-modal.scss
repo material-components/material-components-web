@@ -48,6 +48,8 @@
   height: 100%;
   transition-property: opacity;
   transition-timing-function: $mdc-animation-standard-curve-timing-function;
+  overflow: hidden;
+  overscroll-behavior: contain;
   z-index: $mdc-drawer-z-index - 1;
 
   .mdc-drawer--open + & {
@@ -67,4 +69,9 @@
     transition-duration: $mdc-drawer-animation-exit;
     opacity: 0;
   }
+}
+
+// Class applied to body while modal drawer is open, to prevent scrolling behind the modal drawer
+.mdc-drawer-scroll-lock {
+  overflow: hidden;
 }
