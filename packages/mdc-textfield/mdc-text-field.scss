@@ -127,7 +127,8 @@
 
   // Vertically center aligns the text input placeholder and value for only filled variant.
   .mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) & {
-    padding: 16px;
+    padding-top: 16px;
+    padding-bottom: 16px;
   }
 }
 // stylelint-disable-next-line plugin/selector-bem-pattern
