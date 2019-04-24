@@ -31,51 +31,85 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
   }
 
   static get defaultAdapter(): MDCDataTableAdapter {
-    return {
-      addClass: () => undefined,
-      hasClass: () => false,
-      removeClass: () => undefined,
-    };
+    return {} as MDCDataTableAdapter;
   }
 
   constructor(adapter?: Partial<MDCDataTableAdapter>) {
     super({...MDCDataTableFoundation.defaultAdapter, ...adapter});
   }
 
-  handleHeaderRowCheckboxChange(event: Event) {
+  layout() {
+    if (this.adapter_.isRowsSelectable()) {
+      this.adapter_.registerHeaderRowCheckbox();
+      this.adapter_.registerRowCheckboxes();
+    }
+
+    this.setHeaderRowCheckboxState_();
+  }
+
+  getRows(): HTMLElement[] {
+    return this.adapter_.getRowElements();
+  }
+
+
+  handleHeaderRowCheckboxChange() {
     const isHeaderChecked = this.adapter_.isHeaderRowCheckboxChecked();
 
-    for (const rowId of this.adapter_.getRowIds()) {
-      this.adapter_.setCheckboxCheckedAtRowId(rowId, isHeaderChecked);
+    if (isHeaderChecked) {
+      this.adapter_.selectAllRowCheckboxes();
+    } else {
+      this.adapter_.unselectAllRowCheckboxes();
+    }
+
+    for (let rowIndex = 0; rowIndex < this.adapter_.getRowCount(); rowIndex++) {
       if (isHeaderChecked) {
-        this.adapter_.addClassAtRowId(rowId, cssClasses.ROW_SELECTED);
-        this.adapter_.setAttributeAtRowId(rowId, strings.ARIA_SELECTED, 'true');
+        this.adapter_.addClassAtRowIndex(rowIndex, cssClasses.ROW_SELECTED);
+        this.adapter_.setAttributeAtRowIndex(rowIndex, strings.ARIA_SELECTED, 'true');
       } else {
-        this.adapter_.removeClassAtRowId(rowId, cssClasses.ROW_SELECTED);
-        this.adapter_.setAttributeAtRowId(rowId, strings.ARIA_SELECTED, 'false');
+        this.adapter_.removeClassAtRowIndex(rowIndex, cssClasses.ROW_SELECTED);
+        this.adapter_.setAttributeAtRowIndex(rowIndex, strings.ARIA_SELECTED, 'false');
       }
     }
   }
 
   handleRowCheckboxChange(event: Event) {
-    const checkboxEl = event.target as HTMLInputElement;
-    const row = closest(checkboxEl, `.${cssClasses.ROW}, .${cssClasses.HEADER_ROW}`) as HTMLElement;
-    const rowEl = this.adapter_.isRowCheckboxElement(event.target);
+    const rowIndex = this.adapter_.getRowIndexByChildElement(event.target as HTMLInputElement);
 
-
-    const rowId = this.getRowId(row);
-    const checked = checkboxEl.checked;
-
-    if (checked) {
-      row.classList.add(cssClasses.ROW_SELECTED);
-      row.setAttribute('aria-selected', 'true');
-    } else {
-      row.classList.remove(cssClasses.ROW_SELECTED);
-      row.setAttribute('aria-selected', 'false');
+    if (rowIndex === -1) {
+      return;
     }
 
-    this.setHeaderRowCheckState_(this.getSelectedRowIds().length);
-    this.emit('MDCDataTable:changed', {row, rowId, checked}, /** shouldBubble */ true);
+    const checkboxNativeEl = event.target as HTMLInputElement;
+    if (!checkboxNativeEl) {
+      return;
+    }
+
+    const selected = checkboxNativeEl.checked;
+
+    if (selected) {
+      this.adapter_.addClassAtRowIndex(rowIndex, cssClasses.ROW_SELECTED);
+      this.adapter_.setAttributeAtRowIndex(rowIndex, strings.ARIA_SELECTED, 'true');
+    } else {
+      this.adapter_.removeClassAtRowIndex(rowIndex, cssClasses.ROW_SELECTED);
+      this.adapter_.setAttributeAtRowIndex(rowIndex, strings.ARIA_SELECTED, 'false');
+    }
+
+    this.setHeaderRowCheckboxState_();
+    const rowId = this.adapter_.getRowIdAtIndex(rowIndex);
+    this.adapter_.notifyRowSelectionChanged({rowId, rowIndex, selected});
+  }
+
+  private setHeaderRowCheckboxState_() {
+    if (this.adapter_.getSelectedRowCount() === this.adapter_.getRowCount()) {
+      this.adapter_.setHeaderRowCheckboxIndeterminate(false);
+      this.adapter_.setHeaderRowCheckboxChecked(true);
+    } else if (this.adapter_.getSelectedRowCount() === 0) {
+      this.adapter_.setHeaderRowCheckboxIndeterminate(false);
+      this.adapter_.setHeaderRowCheckboxChecked(false);
+    } else {
+      this.adapter_.setHeaderRowCheckboxIndeterminate(true);
+    }
+  }
 }
 
 // tslint:disable-next-line:no-default-export Needed for backward compatibility with MDC Web v0.44.0 and earlier.

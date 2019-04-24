@@ -28,8 +28,26 @@
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
+
+import {MDCDataTableRowSelectionChangedEventDetail} from './types';
+
 export interface MDCDataTableAdapter {
-  addClass(className: string): void;
-  removeClass(className: string): void;
-  hasClass(className: string): boolean;
+  isRowsSelectable(): boolean;
+  registerHeaderRowCheckbox(): void;
+  registerRowCheckboxes(): void;
+  getRowElements(): HTMLElement[];
+  isHeaderRowCheckboxChecked(): boolean;
+  selectAllRowCheckboxes(): void;
+  unselectAllRowCheckboxes(): void;
+  getRowCount(): number;
+  getSelectedRowCount(): number;
+  addClassAtRowIndex(rowIndex: number, cssClasses: string): void;
+  removeClassAtRowIndex(rowIndex: number, cssClasses: string): void;
+  setAttributeAtRowIndex(rowIndex: number, attr: string, value: string): void;
+  getAttributeAtRowIndex(rowIndex: number, attr: string): void;
+  getRowIndexByChildElement(el: Element): number;
+  setHeaderRowCheckboxIndeterminate(indeterminate: boolean): void;
+  setHeaderRowCheckboxChecked(checked: boolean): void;
+  getRowIdAtIndex(rowIndex: number): string | null;
+  notifyRowSelectionChanged(data: MDCDataTableRowSelectionChangedEventDetail): void;
 }

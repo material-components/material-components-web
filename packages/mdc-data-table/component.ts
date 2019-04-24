@@ -26,54 +26,29 @@ import {closest} from '@material/dom/ponyfill';
 import {MDCCheckbox, MDCCheckboxFactory} from '@material/checkbox/component';
 import {MDCDataTableAdapter} from './adapter';
 import {MDCDataTableFoundation} from './foundation';
-import {cssClasses, strings} from './constants';
-
-interface RowCheckboxMap {
-  [rowId: string]: MDCCheckbox;
-}
+import {cssClasses, events, strings} from './constants';
+import {MDCDataTableRowSelectionChangedEventDetail} from './types';
 
 export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
   static attachTo(root: Element): MDCDataTable {
     return new MDCDataTable(root);
   }
 
-  private rowCheckboxMap_!: RowCheckboxMap; // assigned in initialize()
+  private rowCheckboxList_!: MDCCheckbox[];
   private headerRowCheckbox_!: MDCCheckbox; // assigned in initialize()
+  private checkboxFactory_!: MDCCheckboxFactory;
 
   initialize(checkboxFactory: MDCCheckboxFactory = (el: Element) => new MDCCheckbox(el)) {
-    const headerRowCheckboxEl = this.root_.querySelector(strings.HEADER_ROW_CHECKBOX_SELECTOR);
-
-    if (headerRowCheckboxEl) {
-      this.headerRowCheckbox_ = checkboxFactory(headerRowCheckboxEl);
-      this.rowCheckboxMap_ = {};
-
-      for (const [index, rowEl] of this.getRows().entries()) {
-        let rowId = rowEl.getAttribute(strings.DATA_ROW_ID_ATTR);
-        if (!rowId) {
-          rowId = index.toString();
-          rowEl.setAttribute(strings.DATA_ROW_ID_ATTR, rowId);
-        }
-        const checkbox = checkboxFactory(rowEl.querySelector(`.${cssClasses.ROW_CHECKBOX}`) as HTMLInputElement);
-        this.rowCheckboxMap_[rowId] = checkbox;
-      }
-    }
+    this.checkboxFactory_ = checkboxFactory;
   }
 
   initialSyncWithDOM() {
-    this.root_.querySelector<HTMLElement>(`.${cssClasses.HEADER_ROW}`)
-        .addEventListener('change', (event) => this.foundation_.handleHeaderRowCheckboxChange(event));
-    this.root_.querySelector<HTMLElement>(`.${cssClasses.CONTENT}`)
+    (this.root_.querySelector(`.${cssClasses.HEADER_ROW}`) as HTMLElement)
+        .addEventListener('change', () => this.foundation_.handleHeaderRowCheckboxChange());
+    (this.root_.querySelector(`.${cssClasses.CONTENT}`) as HTMLElement)
         .addEventListener('change', (event) => this.foundation_.handleRowCheckboxChange(event));
-    this.setHeaderRowCheckState_(this.getSelectedRowIds().length);
-  }
 
-  setHeaderRowCheckState_(selectedRowsCount: number) {
-    this.headerRowCheckbox_.indeterminate = selectedRowsCount > 0 && selectedRowsCount < this.getRowIds().length;
-    this.headerRowCheckbox_.checked = selectedRowsCount !== 0;
-  }
-
-  getRowCheckboxById(rowId: string): MDCCheckbox {
-    return this.rowCheckboxMap_[rowId];
+    this.foundation_.layout();
   }
 
   getRowAtId(rowId: string): HTMLElement {
@@ -90,39 +65,88 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
   }
 
   getRows(): HTMLElement[] {
-    return [].slice.call(this.root_.querySelectorAll(`.${cssClasses.ROW}`));
+    return this.foundation_.getRows();
   }
 
-  getRowIds(): string[] {
-    return this.getRows().map((rowEl: HTMLElement) => rowEl.getAttribute(strings.DATA_ROW_ID_ATTR) as string);
-  }
-
-  getSelectedRowIds(): Array<string|null> {
-    const selectedRows = [].slice.call(this.root_.querySelectorAll(`.${cssClasses.ROW_SELECTED}`));
-    return selectedRows.map((rowEl: HTMLElement) => rowEl.getAttribute(strings.DATA_ROW_ID_ATTR));
-  }
-
-  destroy() {
-    super.destroy();
+  getRowCount(): number {
+    return this.getRows().length;
   }
 
   getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCDataTableAdapter = {
-      addClass: (className) => this.root_.classList.add(className),
-      hasClass: (className) => this.root_.classList.contains(className),
-      removeClass: (className) => this.root_.classList.remove(className),
       isHeaderRowCheckboxChecked: () => this.headerRowCheckbox_.checked,
-      getRowsIds: () => this.getRowIds(),
-      isRowCheckboxAtIdChecked: (rowId: string) => this.getRowCheckboxById(rowId).checked,
-      setCheckboxCheckedAtRowId: (rowId: string, checked: boolean) => {
-        this.getRowCheckboxById(rowId).checked = checked;
+      addClassAtRowIndex: (rowIndex: number, className: string) => {
+        return this.getRows()[rowIndex].classList.add(className);
       },
-      addClassAtRowId: (rowId: string, className: string) => this.getRowAtId(rowId).classList.add(className),
-      removeClassAtRowId: (rowId: string, className: string) => this.getRowAtId(rowId).classList.remove(className),
-      setAttributeAtRowId: (rowId: string, attr: string, value: string) => this.getRowAtId(rowId).setAttribute(attr, value),
+      removeClassAtRowIndex: (rowIndex: number, className: string) => {
+        return this.getRows()[rowIndex].classList.remove(className);
+      },
+      getAttributeAtRowIndex: (index: number, attr: string) => this.getRows()[index].getAttribute(attr),
+      setAttributeAtRowIndex: (rowIndex: number, attr: string, value: string) => {
+        this.getRows()[rowIndex].setAttribute(attr, value);
+      },
+      registerRowCheckboxes: () => {
+        if (this.rowCheckboxList_) {
+          this.rowCheckboxList_.forEach((checkbox) => checkbox.destroy());
+        }
+
+        this.rowCheckboxList_ = [];
+        this.getRows().forEach((rowEl) => {
+          const checkbox = this.checkboxFactory_(rowEl.querySelector(strings.ROW_CHECKBOX_SELECTOR) as HTMLElement);
+          this.rowCheckboxList_.push(checkbox);
+        });
+      },
+      getRowElements: () => [].slice.call(this.root_.querySelectorAll(`.${cssClasses.ROW}`)),
+      registerHeaderRowCheckbox: () => {
+        if (this.headerRowCheckbox_) {
+          this.headerRowCheckbox_.destroy();
+        }
+
+        this.headerRowCheckbox_ =
+            this.checkboxFactory_(this.root_.querySelector(strings.HEADER_ROW_CHECKBOX_SELECTOR) as HTMLElement);
+      },
+      selectAllRowCheckboxes: () => {
+        this.rowCheckboxList_.forEach((checkbox) => {
+          checkbox.checked = true;
+        });
+      },
+      unselectAllRowCheckboxes: () => {
+        this.rowCheckboxList_.forEach((checkbox) => {
+          checkbox.checked = false;
+        });
+      },
+      isRowsSelectable: () => !!this.root_.querySelector(strings.ROW_CHECKBOX_SELECTOR),
+      getRowIndexByChildElement: (el: Element) => {
+        return this.getRows().indexOf(closest(el, strings.ROW_SELECTOR) as HTMLElement);
+      },
+      getRowCount: () => this.getRows().length,
+      getSelectedRowCount: () => this.root_.querySelectorAll(strings.ROW_SELECTED_SELECTOR).length,
+      notifyRowSelectionChanged: (data: MDCDataTableRowSelectionChangedEventDetail) => {
+        this.emit(events.ROW_SELECTION_CHANGED, {
+          row: this.getRowByIndex_(data.rowIndex),
+          rowId: this.getRowIdByIndex_(data.rowIndex),
+          rowIndex: data.rowIndex,
+          selected: data.selected,
+        }, /** shouldBubble */ true);
+      },
+      setHeaderRowCheckboxIndeterminate: (indeterminate: boolean) => {
+        this.headerRowCheckbox_.indeterminate = indeterminate;
+      },
+      setHeaderRowCheckboxChecked: (checked: boolean) => {
+        this.headerRowCheckbox_.checked = checked;
+      },
+      getRowIdAtIndex: (rowIndex: number) => this.getRows()[rowIndex].getAttribute(strings.DATA_ROW_ID_ATTR),
     };
     return new MDCDataTableFoundation(adapter);
+  }
+
+  private getRowByIndex_(index: number): HTMLElement {
+    return this.getRows()[index] as HTMLElement;
+  }
+
+  private getRowIdByIndex_(index: number): string | null {
+    return this.getRowByIndex_(index).getAttribute(strings.DATA_ROW_ID_ATTR);
   }
 }

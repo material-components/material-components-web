@@ -21,25 +21,8 @@
  * THE SOFTWARE.
  */
 
-export const cssClasses = {
-  ROOT: 'mdc-data-table',
-  ROW: 'mdc-data-table__row',
-  HEADER_ROW: 'mdc-data-table__header-row',
-  ROW_SELECTED: 'mdc-data-table__row--selected',
-  HEADER_ROW_CHECKBOX: 'mdc-data-table__header-row-checkbox',
-  ROW_CHECKBOX: 'mdc-data-table__row-checkbox',
-  CONTENT: 'mdc-data-table__content',
-};
-
-export const strings = {
-  DATA_ROW_ID_ATTR: 'data-row-id',
-  ARIA_SELECTED: 'aria-selected',
-  ROW_SELECTOR: `.${cssClasses.ROW}`,
-  ROW_CHECKBOX_SELECTOR: `.${cssClasses.ROW_CHECKBOX}`,
-  HEADER_ROW_CHECKBOX_SELECTOR: `.${cssClasses.HEADER_ROW_CHECKBOX}`,
-  ROW_SELECTED_SELECTOR: `.${cssClasses.ROW_SELECTED}`,
-};
-
-export const events = {
-  ROW_SELECTION_CHANGED: 'MDCDataTable:changed',
-};
+export interface MDCDataTableRowSelectionChangedEventDetail {
+  rowIndex: number;
+  rowId: string | null;
+  selected: boolean;
+}
