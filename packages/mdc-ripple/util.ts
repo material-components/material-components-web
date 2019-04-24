@@ -48,9 +48,8 @@ function detectEdgePseudoVarBug(windowObj: Window): boolean {
   // See: https://bugzilla.mozilla.org/show_bug.cgi?id=548397
   const computedStyle = windowObj.getComputedStyle(node);
   const hasPseudoVarBug = computedStyle !== null && computedStyle.borderTopStyle === 'solid';
-  const el = document.documentElement.querySelector('.mdc-ripple-surface--test-edge-var-bug');
-  if (el) {
-    document.documentElement.removeChild(el);
+  if (node.parentNode) {
+    node.parentNode.removeChild(node);
   }
   return hasPseudoVarBug;
 }
