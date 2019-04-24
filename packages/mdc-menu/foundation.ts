@@ -22,7 +22,6 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
-import {MDCListFoundation} from '@material/list/foundation';
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
 import {MDCMenuAdapter} from './adapter';
 import {cssClasses, DefaultFocusState, numbers, strings} from './constants';
@@ -57,12 +56,12 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
       closeSurface: () => undefined,
       getElementIndex: () => -1,
       getParentElement: () => null,
-      getListItemAtIndex: () => undefined,
-      getSelectedElementIndex: () => -1,
       notifySelected: () => undefined,
       getMenuItemCount: () => 0,
       focusItemAtIndex: () => undefined,
       focusListRoot: () => undefined,
+      getSelectedSiblingOfItemAtIndex: () => -1,
+      isSelectableItemAtIndex: () => false,
     };
     // tslint:enable:object-literal-sort-keys
   }
@@ -99,9 +98,8 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
 
     // Wait for the menu to close before adding/removing classes that affect styles.
     this.closeAnimationEndTimerId_ = setTimeout(() => {
-      const selectionGroup = this.getSelectionGroup_(listItem);
-      if (selectionGroup) {
-        this.handleSelectionGroup_(selectionGroup!, index);
+      if (this.adapter_.isSelectableItemAtIndex(index)) {
+        this.setSelectedIndex(index);
       }
     }, MDCMenuSurfaceFoundation.numbers.TRANSITION_CLOSE_DURATION);
   }
@@ -138,57 +136,31 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
    */
   setSelectedIndex(index: number) {
     if (!this.isIndexInRange_(index)) {
-      throw new Error('MDCMenuFoundation: No list item at specified index.');
+      return;
     }
-    const listItem = this.adapter_.getListItemAtIndex(index);
-    const selectionGroup = this.getSelectionGroup_(listItem!);
-    if (!selectionGroup) {
-      throw new Error('MDCMenuFoundation: No selection group at specified index.');
-    }
-    this.handleSelectionGroup_(selectionGroup, index);
-  }
 
-  private isIndexInRange_(index: number) {
-    const menuSize = this.adapter_.getMenuItemCount();
-    return index >= 0 && index < menuSize;
-  }
-
-  /**
-   * Handles toggling the selected classes in a selection group when a selection is made.
-   */
-  private handleSelectionGroup_(selectionGroup: Element, index: number) {
-    // De-select the previous selection in this group.
-    const selectedIndex = this.adapter_.getSelectedElementIndex(selectionGroup);
-    if (selectedIndex >= 0) {
-      this.adapter_.removeAttributeFromElementAtIndex(selectedIndex, strings.ARIA_SELECTED_ATTR);
-      this.adapter_.removeClassFromElementAtIndex(selectedIndex, cssClasses.MENU_SELECTED_LIST_ITEM);
+    if (!this.adapter_.isSelectableItemAtIndex(index)) {
+      throw new Error('No selection group at specified index.');
     }
-    // Select the new list item in this group.
+
+    const prevSelectedIndex = this.adapter_.getSelectedSiblingOfItemAtIndex(index);
+    if (prevSelectedIndex >= 0) {
+      this.adapter_.removeAttributeFromElementAtIndex(prevSelectedIndex, strings.ARIA_SELECTED_ATTR);
+      this.adapter_.removeClassFromElementAtIndex(prevSelectedIndex, cssClasses.MENU_SELECTED_LIST_ITEM);
+    }
+
     this.adapter_.addClassToElementAtIndex(index, cssClasses.MENU_SELECTED_LIST_ITEM);
     this.adapter_.addAttributeToElementAtIndex(index, strings.ARIA_SELECTED_ATTR, 'true');
   }
 
-  /**
-   * Returns the parent selection group of an element if one exists.
-   */
-  private getSelectionGroup_(listItem: Element): Element | null {
-    let parent = this.adapter_.getParentElement(listItem);
-    if (!parent) {
-      return null;
-    }
+  private isIndexInRange_(index: number): boolean {
+    const menuSize = this.adapter_.getMenuItemCount();
+    const isIndexInRange = index >= 0 && index < menuSize;
 
-    let isGroup = this.adapter_.elementContainsClass(parent, cssClasses.MENU_SELECTION_GROUP);
-
-    // Iterate through ancestors until we find the group or get to the list.
-    while (!isGroup && parent && !this.adapter_.elementContainsClass(parent, MDCListFoundation.cssClasses.ROOT)) {
-      parent = this.adapter_.getParentElement(parent);
-      isGroup = parent ? this.adapter_.elementContainsClass(parent, cssClasses.MENU_SELECTION_GROUP) : false;
-    }
-
-    if (isGroup) {
-      return parent;
+    if (isIndexInRange) {
+      return true;
     } else {
-      return null;
+      throw new Error('MDCMenuFoundation: No list item at specified index.');
     }
   }
 }

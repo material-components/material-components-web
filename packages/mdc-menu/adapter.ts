@@ -66,19 +66,9 @@ export interface MDCMenuAdapter {
   getElementIndex(element: Element): number;
 
   /**
-   * @return List item element.
-   * @param index Index of list item within menu.
-   */
-  getListItemAtIndex(index: number): Element | undefined;
-  /**
    * @return The parentElement of the provided element.
    */
   getParentElement(element: Element): Element | null;
-
-  /**
-   * @return The element within the selectionGroup containing the selected element class.
-   */
-  getSelectedElementIndex(selectionGroup: Element): number;
 
   /**
    * Emit an event when a menu item is selected.
@@ -96,4 +86,8 @@ export interface MDCMenuAdapter {
 
   /** Focuses the list root element. */
   focusListRoot(): void;
+
+  getSelectedSiblingOfItemAtIndex(index: number): number;
+
+  isSelectableItemAtIndex(index: number): boolean;
 }
