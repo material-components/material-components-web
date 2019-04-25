@@ -170,8 +170,8 @@
 }
 
 @mixin mdc-chip-leading-icon-margin(
-  $right: $mdc-chip-leading-icon-margin-right,
-  $left: $mdc-chip-leading-icon-margin-left) {
+  $left: $mdc-chip-leading-icon-margin-left,
+  $right: $mdc-chip-leading-icon-margin-right) {
   &.mdc-chip--selected .mdc-chip__checkmark,
   .mdc-chip__icon--leading:not(.mdc-chip__icon--leading-hidden) {
     @include mdc-rtl-reflexive-property(margin, $left, $right);
@@ -179,8 +179,8 @@
 }
 
 @mixin mdc-chip-trailing-icon-margin(
-  $right: $mdc-chip-trailing-icon-margin-right,
-  $left: $mdc-chip-trailing-icon-margin-left) {
+  $left: $mdc-chip-trailing-icon-margin-left,
+  $right: $mdc-chip-trailing-icon-margin-right) {
   .mdc-chip__icon--trailing {
     margin-right: $right;
     margin-left: $left;
