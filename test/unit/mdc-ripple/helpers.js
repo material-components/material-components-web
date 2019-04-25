@@ -66,6 +66,9 @@ export function createMockWindowForCssVariables() {
 
   td.when(mockDoc.createElement('div')).thenReturn({
     remove: remove,
+    parentNode: {
+      removeChild: () => mockWindow.appendedNodes--,
+    },
   });
 
   const mockWindow = {
