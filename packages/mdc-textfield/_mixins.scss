@@ -487,8 +487,10 @@
 
     display: block;
 
-    .mdc-text-field__input {
-      padding: 0;
+    &.mdc-text-field--no-label {
+      .mdc-text-field__input {
+        padding: 0;
+      }
     }
   }
 
