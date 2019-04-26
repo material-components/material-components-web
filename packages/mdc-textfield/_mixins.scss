@@ -486,16 +486,14 @@
     @include mdc-text-field-fill-color(transparent);
 
     display: block;
-
-    &.mdc-text-field--no-label {
-      .mdc-text-field__input {
-        padding: 0;
-      }
-    }
   }
 
   &.mdc-text-field--textarea .mdc-text-field__input {
     resize: vertical;
+  }
+
+  &.mdc-text-field--no-label:not(.mdc-text-field--textarea) .mdc-text-field__input {
+    padding: 0;
   }
 }
 
