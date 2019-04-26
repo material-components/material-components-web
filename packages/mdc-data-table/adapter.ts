@@ -49,5 +49,6 @@ export interface MDCDataTableAdapter {
   setHeaderRowCheckboxIndeterminate(indeterminate: boolean): void;
   setHeaderRowCheckboxChecked(checked: boolean): void;
   getRowIdAtIndex(rowIndex: number): string | null;
+  setRowCheckboxCheckedAtIndex(rowIndex: number, checked: boolean): void;
   notifyRowSelectionChanged(data: MDCDataTableRowSelectionChangedEventDetail): void;
 }

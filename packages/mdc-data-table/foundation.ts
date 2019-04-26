@@ -51,6 +51,21 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
     return this.adapter_.getRowElements();
   }
 
+  setSelectedRowIds(rowIds: string[]) {
+    for (let rowIndex = 0; rowIndex < this.adapter_.getRowCount(); rowIndex++) {
+      const rowId = this.adapter_.getRowIdAtIndex(rowIndex);
+
+      if (!rowId) {
+        continue;
+      }
+
+      const isSelected = rowIds.indexOf(rowId) >= 0;
+      this.adapter_.setRowCheckboxCheckedAtIndex(rowIndex, isSelected);
+      this.selectRowAtIndex_(rowIndex, isSelected);
+    }
+
+    this.setHeaderRowCheckboxState_();
+  }
 
   handleHeaderRowCheckboxChange() {
     const isHeaderChecked = this.adapter_.isHeaderRowCheckboxChecked();
@@ -86,13 +101,7 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
 
     const selected = checkboxNativeEl.checked;
 
-    if (selected) {
-      this.adapter_.addClassAtRowIndex(rowIndex, cssClasses.ROW_SELECTED);
-      this.adapter_.setAttributeAtRowIndex(rowIndex, strings.ARIA_SELECTED, 'true');
-    } else {
-      this.adapter_.removeClassAtRowIndex(rowIndex, cssClasses.ROW_SELECTED);
-      this.adapter_.setAttributeAtRowIndex(rowIndex, strings.ARIA_SELECTED, 'false');
-    }
+    this.selectRowAtIndex_(rowIndex, selected);
 
     this.setHeaderRowCheckboxState_();
     const rowId = this.adapter_.getRowIdAtIndex(rowIndex);
@@ -108,6 +117,16 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
       this.adapter_.setHeaderRowCheckboxChecked(false);
     } else {
       this.adapter_.setHeaderRowCheckboxIndeterminate(true);
+    }
+  }
+
+  private selectRowAtIndex_(rowIndex: number, selected: boolean) {
+    if (selected) {
+      this.adapter_.addClassAtRowIndex(rowIndex, cssClasses.ROW_SELECTED);
+      this.adapter_.setAttributeAtRowIndex(rowIndex, strings.ARIA_SELECTED, 'true');
+    } else {
+      this.adapter_.removeClassAtRowIndex(rowIndex, cssClasses.ROW_SELECTED);
+      this.adapter_.setAttributeAtRowIndex(rowIndex, strings.ARIA_SELECTED, 'false');
     }
   }
 }

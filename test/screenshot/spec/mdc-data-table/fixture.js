@@ -22,11 +22,9 @@
  */
 
 window.mdc.testFixture.fontsLoaded.then(() => {
+  const dataTable = mdc.dataTable.MDCDataTable.attachTo(document.querySelector('.mdc-data-table'));
+
+  const rowIds = ['u0', 'u1', 'u2', 'u3'];
+  dataTable.setSelectedRowIds(rowIds);
   window.mdc.testFixture.notifyDomReady();
-
-  mdc.dataTable.MDCDataTable.attachTo(document.querySelector('.mdc-data-table'));
-
-  document.body.addEventListener('MDCDataTable:changed', (event) => {
-    console.log('changed: ', event.detail);
-  });
 });

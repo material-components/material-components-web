@@ -51,25 +51,12 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
     this.foundation_.layout();
   }
 
-  getRowAtId(rowId: string): HTMLElement {
-    return this.root_.querySelector(`[${strings.DATA_ROW_ID_ATTR}="${rowId}]`) as HTMLElement;
-  }
-
-  getRowId(row: Element): string {
-    const rowId = row.getAttribute(strings.DATA_ROW_ID_ATTR) as string;
-    if (!rowId) {
-      throw new Error('Expected table row to have unique id via data-row-id attribute.');
-    }
-
-    return rowId;
-  }
-
   getRows(): HTMLElement[] {
     return this.foundation_.getRows();
   }
 
-  getRowCount(): number {
-    return this.getRows().length;
+  setSelectedRowIds(rowIds: string[]) {
+    this.foundation_.setSelectedRowIds(rowIds);
   }
 
   getDefaultFoundation() {
@@ -138,6 +125,9 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
         this.headerRowCheckbox_.checked = checked;
       },
       getRowIdAtIndex: (rowIndex: number) => this.getRows()[rowIndex].getAttribute(strings.DATA_ROW_ID_ATTR),
+      setRowCheckboxCheckedAtIndex: (rowIndex: number, checked: boolean) => {
+        this.rowCheckboxList_[rowIndex].checked = checked;
+      },
     };
     return new MDCDataTableFoundation(adapter);
   }
