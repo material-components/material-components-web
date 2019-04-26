@@ -23,6 +23,7 @@
 
 import {MDCComponent} from '@material/base/component';
 import {CustomEventListener, SpecificEventListener} from '@material/base/types';
+import {closest} from '@material/dom/ponyfill';
 import {MDCList, MDCListFactory} from '@material/list/component';
 import {MDCListFoundation} from '@material/list/foundation';
 import {MDCListActionEvent} from '@material/list/types';
@@ -31,7 +32,6 @@ import {Corner} from '@material/menu-surface/constants';
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
 import {MDCMenuDistance} from '@material/menu-surface/types';
 import {MDCMenuAdapter} from './adapter';
-import {closest} from '@material/dom/ponyfill';
 import {cssClasses, DefaultFocusState, strings} from './constants';
 import {MDCMenuFoundation} from './foundation';
 import {MDCMenuItemComponentEventDetail} from './types';
@@ -212,7 +212,6 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
       elementContainsClass: (element, className) => element.classList.contains(className),
       closeSurface: () => this.open = false,
       getElementIndex: (element) => this.items.indexOf(element),
-      getParentElement: (element) => element.parentElement,
       notifySelected: (evtData) => this.emit<MDCMenuItemComponentEventDetail>(strings.SELECTED_EVENT, {
         index: evtData.index,
         item: this.items[evtData.index],

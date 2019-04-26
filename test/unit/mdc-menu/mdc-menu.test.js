@@ -430,29 +430,6 @@ test('adapter#getElementIndex returns -1 if the element does not exist in the li
   assert.equal(indexValue, -1);
 });
 
-test('adapter#getParentElement returns the parent element of an element', () => {
-  const {root, component} = setupTest();
-  const firstItem = root.querySelector('.mdc-list-item');
-  const parentElement = component.getDefaultFoundation().adapter_.getParentElement(firstItem);
-  assert.equal(firstItem.parentElement, parentElement);
-});
-
-test('adapter#getSelectedElementIndex returns the index of the "selected" element in a group', () => {
-  const {root, component} = setupTest();
-  const selectionGroup = root.querySelector('.mdc-menu__selection-group');
-  const index = component.getDefaultFoundation().adapter_.getSelectedElementIndex(selectionGroup);
-  assert.equal(root.querySelector('.mdc-menu-item--selected'), component.items[index]);
-});
-
-test('adapter#getSelectedElementIndex returns -1 if the "selected" element is not in a group', () => {
-  const {root, component} = setupTest();
-  const selectionGroup = root.querySelector('.mdc-menu__selection-group');
-  const element = root.querySelector('.mdc-menu-item--selected');
-  element.classList.remove('mdc-menu-item--selected');
-  const index = component.getDefaultFoundation().adapter_.getSelectedElementIndex(selectionGroup);
-  assert.equal(index, -1);
-});
-
 test('adapter#notifySelected emits an event for a selected element', () => {
   const {root, component} = setupTest();
   const handler = td.func('eventHandler');
@@ -464,12 +441,6 @@ test('adapter#notifySelected emits an event for a selected element', () => {
 test('adapter#getMenuItemCount returns the menu item count', () => {
   const {component} = setupTest();
   assert.equal(component.getDefaultFoundation().adapter_.getMenuItemCount(), component.items.length);
-});
-
-test('adapter#getListItemAtIndex returns the list item by the index', () => {
-  const {component, root} = setupTest();
-  const listItem = root.querySelectorAll(`.${MDCListFoundation.cssClasses.LIST_ITEM_CLASS}`)[1];
-  assert.equal(component.getDefaultFoundation().adapter_.getListItemAtIndex(1), listItem);
 });
 
 test('adapter#focusItemAtIndex focuses the menu item at given index', () => {
@@ -490,4 +461,28 @@ test('adapter#focusListRoot focuses the list root element', () => {
   assert.equal(document.activeElement, root.querySelector(`.${MDCListFoundation.cssClasses.ROOT}`));
 
   document.body.removeChild(root);
+});
+
+test('adapter#isSelectableItemAtIndex returns true if the menu item is within the' +
+'.mdc-menu__selection-group element', () => {
+  const {component} = setupTest();
+
+  const isSelectableItemAtIndex = component.getDefaultFoundation().adapter_.isSelectableItemAtIndex(3);
+  assert.isTrue(isSelectableItemAtIndex);
+});
+
+test('adapter#isSelectableItemAtIndex returns false if the menu item is not within the' +
+'.mdc-menu__selection-group element', () => {
+  const {component} = setupTest();
+
+  const isSelectableItemAtIndex = component.getDefaultFoundation().adapter_.isSelectableItemAtIndex(1);
+  assert.isFalse(isSelectableItemAtIndex);
+});
+
+test('adapter#getSelectedSiblingOfItemAtIndex returns the index of the selected item within the same' +
+'selection group', () => {
+  const {component} = setupTest();
+
+  const siblingIndex = component.getDefaultFoundation().adapter_.getSelectedSiblingOfItemAtIndex(2);
+  assert.equal(siblingIndex, 3);
 });

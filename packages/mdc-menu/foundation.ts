@@ -55,7 +55,6 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
       elementContainsClass: () => false,
       closeSurface: () => undefined,
       getElementIndex: () => -1,
-      getParentElement: () => null,
       notifySelected: () => undefined,
       getMenuItemCount: () => 0,
       focusItemAtIndex: () => undefined,
@@ -140,7 +139,7 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     }
 
     if (!this.adapter_.isSelectableItemAtIndex(index)) {
-      throw new Error('No selection group at specified index.');
+      throw new Error('MDCMenuFoundation: No selection group at specified index.');
     }
 
     const prevSelectedIndex = this.adapter_.getSelectedSiblingOfItemAtIndex(index);

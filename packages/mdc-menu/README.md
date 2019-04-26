@@ -251,13 +251,12 @@ Method Signature | Description
 `elementContainsClass(element: Element, className: string) => boolean` | Returns true if the `element` contains the `className` class.
 `closeSurface() => void` | Closes the menu surface.
 `getElementIndex(element: Element) => number` | Returns the `index` value of the `element`.
-`getParentElement(element: Element) => Element \| null` | Returns the `.parentElement` element of the `element` provided.
-`getListItemAtIndex() => Element` | Returns the list item at the specified index.
-`getSelectedElementIndex(element: Element) => number` | Returns the `index` value of the element within the selection group provided, `element` that contains the `mdc-menu-item--selected` class.
 `notifySelected(index: number) => void` | Emits a `MDCMenu:selected` event for the element at the `index` specified.
 `getMenuItemCount() => number` | Returns the menu item count.
 `focusItemAtIndex(index: number)` | Focuses the menu item at given index.
 `focusListRoot() => void` | Focuses the list root element.
+`getSelectedSiblingOfItemAtIndex(index: number) => number` | Returns the closest selected sibling of item specified at `index`.
+`isSelectedableItemAtIndex(index: number) => boolean` | Returns true if menu item at specified index is contained within an `.mdc-menu__selection-group` element.
 
 ### `MDCMenuFoundation`
 
