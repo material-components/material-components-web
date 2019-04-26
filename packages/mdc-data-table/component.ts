@@ -94,16 +94,6 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
         this.headerRowCheckbox_ =
             this.checkboxFactory_(this.root_.querySelector(strings.HEADER_ROW_CHECKBOX_SELECTOR) as HTMLElement);
       },
-      selectAllRowCheckboxes: () => {
-        this.rowCheckboxList_.forEach((checkbox) => {
-          checkbox.checked = true;
-        });
-      },
-      unselectAllRowCheckboxes: () => {
-        this.rowCheckboxList_.forEach((checkbox) => {
-          checkbox.checked = false;
-        });
-      },
       isRowsSelectable: () => !!this.root_.querySelector(strings.ROW_CHECKBOX_SELECTOR),
       getRowIndexByChildElement: (el: Element) => {
         return this.getRows().indexOf(closest(el, strings.ROW_SELECTOR) as HTMLElement);
@@ -128,6 +118,8 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
       setRowCheckboxCheckedAtIndex: (rowIndex: number, checked: boolean) => {
         this.rowCheckboxList_[rowIndex].checked = checked;
       },
+      notifySelectedAll: () => this.emit(events.SELECTED_ALL, {}, /** shouldBubble */ true),
+      notifyUnselectedAll: () => this.emit(events.UNSELECTED_ALL, {}, /** shouldBubble */ true),
     };
     return new MDCDataTableFoundation(adapter);
   }

@@ -37,8 +37,6 @@ export interface MDCDataTableAdapter {
   registerRowCheckboxes(): void;
   getRowElements(): HTMLElement[];
   isHeaderRowCheckboxChecked(): boolean;
-  selectAllRowCheckboxes(): void;
-  unselectAllRowCheckboxes(): void;
   getRowCount(): number;
   getSelectedRowCount(): number;
   addClassAtRowIndex(rowIndex: number, cssClasses: string): void;
@@ -51,4 +49,6 @@ export interface MDCDataTableAdapter {
   getRowIdAtIndex(rowIndex: number): string | null;
   setRowCheckboxCheckedAtIndex(rowIndex: number, checked: boolean): void;
   notifyRowSelectionChanged(data: MDCDataTableRowSelectionChangedEventDetail): void;
+  notifySelectedAll(): void;
+  notifyUnselectedAll(): void;
 }

@@ -31,7 +31,27 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
   }
 
   static get defaultAdapter(): MDCDataTableAdapter {
-    return {} as MDCDataTableAdapter;
+    return {
+      isRowsSelectable: () => false,
+      registerHeaderRowCheckbox: () => undefined,
+      registerRowCheckboxes: () => undefined,
+      getRowElements: () => [],
+      isHeaderRowCheckboxChecked: () => false,
+      getRowCount: () => 0,
+      getSelectedRowCount: () => 0,
+      addClassAtRowIndex: () => undefined,
+      removeClassAtRowIndex: () => undefined,
+      setAttributeAtRowIndex: () => undefined,
+      getAttributeAtRowIndex: () => '',
+      getRowIndexByChildElement: () => 0,
+      setHeaderRowCheckboxIndeterminate: () => undefined,
+      setHeaderRowCheckboxChecked: () => undefined,
+      getRowIdAtIndex: () => '',
+      setRowCheckboxCheckedAtIndex: () => undefined,
+      notifyRowSelectionChanged: () => undefined,
+      notifySelectedAll: () => undefined,
+      notifyUnselectedAll: () => undefined,
+    } as MDCDataTableAdapter;
   }
 
   constructor(adapter?: Partial<MDCDataTableAdapter>) {
@@ -55,11 +75,11 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
     for (let rowIndex = 0; rowIndex < this.adapter_.getRowCount(); rowIndex++) {
       const rowId = this.adapter_.getRowIdAtIndex(rowIndex);
 
-      if (!rowId) {
-        continue;
+      let isSelected = false;
+      if (rowId && rowIds.indexOf(rowId) >= 0) {
+        isSelected = true;
       }
 
-      const isSelected = rowIds.indexOf(rowId) >= 0;
       this.adapter_.setRowCheckboxCheckedAtIndex(rowIndex, isSelected);
       this.selectRowAtIndex_(rowIndex, isSelected);
     }
@@ -70,20 +90,15 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
   handleHeaderRowCheckboxChange() {
     const isHeaderChecked = this.adapter_.isHeaderRowCheckboxChecked();
 
-    if (isHeaderChecked) {
-      this.adapter_.selectAllRowCheckboxes();
-    } else {
-      this.adapter_.unselectAllRowCheckboxes();
+    for (let rowIndex = 0; rowIndex < this.adapter_.getRowCount(); rowIndex++) {
+      this.adapter_.setRowCheckboxCheckedAtIndex(rowIndex, isHeaderChecked);
+      this.selectRowAtIndex_(rowIndex, isHeaderChecked);
     }
 
-    for (let rowIndex = 0; rowIndex < this.adapter_.getRowCount(); rowIndex++) {
-      if (isHeaderChecked) {
-        this.adapter_.addClassAtRowIndex(rowIndex, cssClasses.ROW_SELECTED);
-        this.adapter_.setAttributeAtRowIndex(rowIndex, strings.ARIA_SELECTED, 'true');
-      } else {
-        this.adapter_.removeClassAtRowIndex(rowIndex, cssClasses.ROW_SELECTED);
-        this.adapter_.setAttributeAtRowIndex(rowIndex, strings.ARIA_SELECTED, 'false');
-      }
+    if (isHeaderChecked) {
+      this.adapter_.notifySelectedAll();
+    } else {
+      this.adapter_.notifyUnselectedAll();
     }
   }
 
