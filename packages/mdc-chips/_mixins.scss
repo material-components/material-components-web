@@ -170,20 +170,20 @@
 }
 
 @mixin mdc-chip-leading-icon-margin(
-  $left: $mdc-chip-leading-icon-margin-left,
-  $right: $mdc-chip-leading-icon-margin-right) {
+  $left-margin: $mdc-chip-leading-icon-margin-left,
+  $right-margin: $mdc-chip-leading-icon-margin-right) {
   &.mdc-chip--selected .mdc-chip__checkmark,
   .mdc-chip__icon--leading:not(.mdc-chip__icon--leading-hidden) {
-    @include mdc-rtl-reflexive-property(margin, $left, $right);
+    @include mdc-rtl-reflexive-property(margin, $left-margin, $right-margin);
   }
 }
 
 @mixin mdc-chip-trailing-icon-margin(
-  $left: $mdc-chip-trailing-icon-margin-left,
-  $right: $mdc-chip-trailing-icon-margin-right) {
+  $left-margin: $mdc-chip-trailing-icon-margin-left,
+  $right-margin: $mdc-chip-trailing-icon-margin-right) {
   .mdc-chip__icon--trailing {
-    margin-right: $right;
-    margin-left: $left;
+    margin-right: $right-margin;
+    margin-left: $left-margin;
   }
 }
 

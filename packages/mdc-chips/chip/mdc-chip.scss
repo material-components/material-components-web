@@ -43,13 +43,21 @@
   display: inline-flex;
   position: relative;
   align-items: center;
-  box-sizing: border-box;
-  padding-right: $mdc-chip-horizontal-padding;
-  padding-left: $mdc-chip-horizontal-padding;
-  border: 0;
+  padding: 0 $mdc-chip-horizontal-padding;
   outline: none;
+  -webkit-appearance: none;
   cursor: pointer;
   overflow: hidden;
+  border-width: 0;
+
+  &:active {
+    outline: none;
+  }
+
+  &::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+  }
 
   &:hover {
     @include mdc-theme-prop(color, on-surface);
