@@ -159,7 +159,7 @@ test('handleItemAction item action event inside of a selection group with anothe
   td.when(mockAdapter.getElementIndex(itemEl)).thenReturn(0);
   td.when(mockAdapter.elementContainsClass(itemEl, cssClasses.MENU_SELECTION_GROUP)).thenReturn(true);
   td.when(mockAdapter.isSelectableItemAtIndex(0)).thenReturn(true);
-  td.when(mockAdapter.getSelectedSiblingOfItemAtIndex(0)).thenReturn(0);
+  td.when(mockAdapter.getSelectedSiblingOfItemAtIndex(0)).thenReturn(1);
   td.when(mockAdapter.getMenuItemCount()).thenReturn(5);
 
   foundation.handleItemAction(itemEl);
@@ -272,7 +272,7 @@ test('setSelectedIndex calls addClass and addAttribute', () => {
   const listItemEl = document.createElement('div');
   td.when(mockAdapter.isSelectableItemAtIndex(0)).thenReturn(true);
   td.when(mockAdapter.elementContainsClass(listItemEl, cssClasses.MENU_SELECTION_GROUP)).thenReturn(true);
-  td.when(mockAdapter.getSelectedSiblingOfItemAtIndex(0)).thenReturn(false);
+  td.when(mockAdapter.getSelectedSiblingOfItemAtIndex(0)).thenReturn(1);
   td.when(mockAdapter.getMenuItemCount()).thenReturn(2);
 
   foundation.setSelectedIndex(0);
@@ -303,11 +303,7 @@ test('setSelectedIndex remove class and attribute, and adds class and attribute 
 test('setSelectedIndex throws error if index is not in range', () => {
   const {foundation} = setupTest();
 
-  try {
-    foundation.setSelectedIndex(5);
-  } catch (e) {
-    assert.equal(e.message, 'MDCMenuFoundation: No list item at specified index.');
-  }
+  assert.throw(foundation.setSelectedIndex(5), 'MDCMenuFoundation: No list item at specified index.');
 });
 
 // Item Action

@@ -255,7 +255,7 @@ Method Signature | Description
 `getMenuItemCount() => number` | Returns the menu item count.
 `focusItemAtIndex(index: number)` | Focuses the menu item at given index.
 `focusListRoot() => void` | Focuses the list root element.
-`getSelectedSiblingOfItemAtIndex(index: number) => number` | Returns the closest selected sibling of item specified at `index`.
+`getSelectedSiblingOfItemAtIndex(index: number) => number` | Returns selected list item index within the same selection group which is a sibling of item at given `index`.
 `isSelectedableItemAtIndex(index: number) => boolean` | Returns true if menu item at specified index is contained within an `.mdc-menu__selection-group` element.
 
 ### `MDCMenuFoundation`

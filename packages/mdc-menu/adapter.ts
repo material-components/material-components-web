@@ -83,7 +83,8 @@ export interface MDCMenuAdapter {
   focusListRoot(): void;
 
   /**
-   * @return Returns the closest selected sibling of item specified at `index`.
+   * @return Returns selected list item index within the same selection group which is
+   * a sibling of item at given `index`.
    * @param index Index of the menu item with possible selected sibling.
    */
   getSelectedSiblingOfItemAtIndex(index: number): number;

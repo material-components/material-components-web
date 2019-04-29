@@ -134,7 +134,7 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
    * @param index Index of list item within the menu.
    */
   setSelectedIndex(index: number) {
-    if (!this.isIndexInRange_(index)) {
+    if (!this.isIndexValid_(index)) {
       return;
     }
 
@@ -152,7 +152,7 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     this.adapter_.addAttributeToElementAtIndex(index, strings.ARIA_SELECTED_ATTR, 'true');
   }
 
-  private isIndexInRange_(index: number): boolean {
+  private isIndexValid_(index: number): boolean {
     const menuSize = this.adapter_.getMenuItemCount();
     const isIndexInRange = index >= 0 && index < menuSize;
 

@@ -236,7 +236,7 @@ test('setAnchorMargin', () => {
   td.verify(menuSurface.setAnchorMargin({top: 0, right: 0, bottom: 0, left: 0}));
 });
 
-test('setSelectedIndex', () => {
+test('setSelectedIndex calls foundation method setSelectedIndex with given index.', () => {
   const {component, mockFoundation} = setupTestWithMock({fixture: getFixtureWithMultipleSelectionGroups});
   component.setSelectedIndex(1);
   td.verify(mockFoundation.setSelectedIndex(1));
