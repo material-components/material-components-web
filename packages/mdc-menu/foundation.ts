@@ -134,9 +134,7 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
    * @param index Index of list item within the menu.
    */
   setSelectedIndex(index: number) {
-    if (!this.isIndexValid_(index)) {
-      return;
-    }
+    this.validatedIndex_(index);
 
     if (!this.adapter_.isSelectableItemAtIndex(index)) {
       throw new Error('MDCMenuFoundation: No selection group at specified index.');
@@ -152,13 +150,11 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     this.adapter_.addAttributeToElementAtIndex(index, strings.ARIA_SELECTED_ATTR, 'true');
   }
 
-  private isIndexValid_(index: number): boolean {
+  private validatedIndex_(index: number): void {
     const menuSize = this.adapter_.getMenuItemCount();
     const isIndexInRange = index >= 0 && index < menuSize;
 
-    if (isIndexInRange) {
-      return true;
-    } else {
+    if (!isIndexInRange) {
       throw new Error('MDCMenuFoundation: No list item at specified index.');
     }
   }
