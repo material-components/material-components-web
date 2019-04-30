@@ -170,6 +170,7 @@
           "card",
           "checkbox",
           "chips",
+          "data-table",
           "dialog",
           "dom",
           "drawer",
