@@ -359,19 +359,18 @@ test('#layout removes scrollable class when content is not scrollable', () => {
   td.verify(mockAdapter.removeClass(cssClasses.SCROLLABLE));
 });
 
-test(`interaction closes dialog when ${strings.ACTION_ATTRIBUTE} attribute is present`, () => {
+test(`click closes dialog when ${strings.ACTION_ATTRIBUTE} attribute is present`, () => {
   const {foundation, mockAdapter} = setupTest();
   const action = 'action';
   foundation.close = td.func('close');
 
-  INTERACTION_EVENTS.forEach((event) => {
-    td.when(mockAdapter.getActionFromEvent(event)).thenReturn(action);
-    foundation.open();
-    foundation.handleInteraction(event);
+  const event = {type: 'click', target: {}};
+  td.when(mockAdapter.getActionFromEvent(event)).thenReturn(action);
+  foundation.open();
+  foundation.handleClick(event);
 
-    td.verify(foundation.close(action));
-    td.reset();
-  });
+  td.verify(foundation.close(action));
+  td.reset();
 });
 
 test('interaction does not close dialog with action for non-activation keys', () => {
@@ -382,7 +381,7 @@ test('interaction does not close dialog with action for non-activation keys', ()
   td.when(mockAdapter.getActionFromEvent(event)).thenReturn(action);
 
   foundation.open();
-  foundation.handleInteraction(event);
+  foundation.handleKeydown(event);
 
   td.verify(foundation.close(action), {times: 0});
 });
@@ -394,7 +393,11 @@ test(`interaction does nothing when ${strings.ACTION_ATTRIBUTE} attribute is not
   INTERACTION_EVENTS.forEach((event) => {
     td.when(mockAdapter.getActionFromEvent(event)).thenReturn('');
     foundation.open();
-    foundation.handleInteraction(event);
+    if (event.type == 'click') {
+      foundation.handleClick(event);
+    } else if (event.type == 'keydown') {
+      foundation.handleKeydown(event);
+    }
 
     td.verify(foundation.close(td.matchers.isA(String)), {times: 0});
     td.reset();
@@ -405,7 +408,7 @@ test('enter keydown calls adapter.clickDefaultButton', () => {
   const {foundation, mockAdapter} = setupTest();
 
   ENTER_EVENTS.forEach((event) => {
-    foundation.handleInteraction(event);
+    foundation.handleKeydown(event);
     td.verify(mockAdapter.clickDefaultButton());
     td.reset();
   });
@@ -416,7 +419,7 @@ test('enter keydown does not call adapter.clickDefaultButton when it should be s
 
   ENTER_EVENTS.forEach((event) => {
     td.when(mockAdapter.eventTargetMatches(event.target, strings.SUPPRESS_DEFAULT_PRESS_SELECTOR)).thenReturn(true);
-    foundation.handleInteraction(event);
+    foundation.handleKeydown(event);
     td.verify(mockAdapter.clickDefaultButton(), {times: 0});
     td.reset();
   });
@@ -429,7 +432,7 @@ test(`click closes dialog when ${strings.SCRIM_SELECTOR} selector matches`, () =
   td.when(mockAdapter.eventTargetMatches(evt.target, strings.SCRIM_SELECTOR)).thenReturn(true);
 
   foundation.open();
-  foundation.handleInteraction(evt);
+  foundation.handleClick(evt);
 
   td.verify(foundation.close(foundation.getScrimClickAction()));
 });
@@ -442,7 +445,7 @@ test(`click does nothing when ${strings.SCRIM_SELECTOR} class is present but scr
 
   foundation.setScrimClickAction('');
   foundation.open();
-  foundation.handleInteraction(evt);
+  foundation.handleClick(evt);
 
   td.verify(foundation.close(td.matchers.isA(String)), {times: 0});
 });

@@ -192,16 +192,14 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
   handleKeydown(evt: KeyboardEvent) {
     const isEnter = evt.key === 'Enter' || evt.keyCode === 13;
     const isSpace = evt.key === 'Space' || evt.keyCode === 32;
-    if (!isSpace || !isEnter) {
+    if (!isSpace && !isEnter) {
       return;
     }
 
     const isDefault = !this.adapter_.eventTargetMatches(
         evt.target, strings.SUPPRESS_DEFAULT_PRESS_SELECTOR);
     const action = this.adapter_.getActionFromEvent(evt);
-    if (action) {
-      this.close(action);
-    } else if (isEnter && isDefault) {
+    if (!action && isEnter && isDefault) {
       this.adapter_.clickDefaultButton();
     }
   }
