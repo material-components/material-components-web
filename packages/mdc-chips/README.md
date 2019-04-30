@@ -41,9 +41,9 @@ npm install @material/chips
 
 ```html
 <div class="mdc-chip-set">
-  <div class="mdc-chip" tabindex="0">
-    <div class="mdc-chip__text">Chip content</div>
-  </div>
+  <button class="mdc-chip">
+    <span class="mdc-chip__text">Chip content</span>
+  </button>
   ...
 </div>
 ```
@@ -83,10 +83,10 @@ However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any 
 #### Leading icon
 
 ```html
-<div class="mdc-chip">
+<button class="mdc-chip">
   <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">event</i>
-  <div class="mdc-chip__text">Add to calendar</div>
-</div>
+  <span class="mdc-chip__text">Add to calendar</span>
+</button>
 ```
 
 #### Trailing icon
@@ -94,10 +94,10 @@ However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any 
 A trailing icon comes with the functionality to remove the chip from the set. If you're adding a trailing icon, also set `tabindex="0"` and `role="button"` to make it accessible by keyboard and screenreader. Trailing icons should only be added to [input chips](#input-chips).
 
 ```html
-<div class="mdc-chip">
-  <div class="mdc-chip__text">Jane Smith</div>
+<button class="mdc-chip">
+  <span class="mdc-chip__text">Jane Smith</span>
   <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0" role="button">cancel</i>
-</div>
+</button>
 ```
 
 ### Choice Chips
@@ -116,15 +116,15 @@ Filter chips are a variant of chips which allow multiple selection from a set of
 
 ```html
 <div class="mdc-chip-set mdc-chip-set--filter">
-  <div class="mdc-chip">
-    <div class="mdc-chip__checkmark" >
+  <button class="mdc-chip">
+    <span class="mdc-chip__checkmark" >
       <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
         <path class="mdc-chip__checkmark-path" fill="none" stroke="black"
               d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
       </svg>
-    </div>
-    <div class="mdc-chip__text">Filterable content</div>
-  </div>
+    </span>
+    <span class="mdc-chip__text">Filterable content</span>
+  </button>
   ...
 </div>
 ```
@@ -133,16 +133,16 @@ To use a leading icon in a filter chip, put the `mdc-chip__icon--leading` elemen
 
 ```html
 <div class="mdc-chip-set mdc-chip-set--filter">
-  <div class="mdc-chip">
+  <button class="mdc-chip">
     <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">face</i>
-    <div class="mdc-chip__checkmark" >
+    <span class="mdc-chip__checkmark" >
       <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
         <path class="mdc-chip__checkmark-path" fill="none" stroke="black"
               d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
       </svg>
-    </div>
-    <div class="mdc-chip__text">Filterable content</div>
-  </div>
+    </span>
+    <span class="mdc-chip__text">Filterable content</span>
+  </button>
   ...
 </div>
 ```
@@ -194,24 +194,24 @@ chipSet.listen('MDCChip:removal', function(event) {
 To display a pre-selected filter or choice chip, add the class `mdc-chip--selected` to the root chip element.
 
 ```html
-<div class="mdc-chip mdc-chip--selected">
-  <div class="mdc-chip__text">Add to calendar</div>
-</div>
+<button class="mdc-chip mdc-chip--selected">
+  <span class="mdc-chip__text">Add to calendar</span>
+</button>
 ```
 
 To pre-select filter chips that have a leading icon, also add the class `mdc-chip__icon--leading-hidden` to the `mdc-chip__icon--leading` element. This will ensure that the checkmark displaces the leading icon.
 
 ```html
-<div class="mdc-chip mdc-chip--selected">
+<button class="mdc-chip mdc-chip--selected">
   <i class="material-icons mdc-chip__icon mdc-chip__icon--leading mdc-chip__icon--leading-hidden">face</i>
-  <div class="mdc-chip__checkmark">
+  <span class="mdc-chip__checkmark">
     <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
       <path class="mdc-chip__checkmark-path" fill="none" stroke="black"
             d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
     </svg>
-  </div>
-  <div class="mdc-chip__text">Filterable content</div>
-</div>
+  </span>
+  <span class="mdc-chip__text">Filterable content</span>
+</button>
 ```
 
 ## Style Customization
@@ -257,8 +257,8 @@ Mixin | Description
 `mdc-chip-trailing-icon-color($color, $opacity, $hover-opacity, $focus-opacity)` | Customizes the color of a trailing icon in a chip, optionally customizes regular/hover/focus opacities
 `mdc-chip-leading-icon-size($size)` | Customizes the size of a leading icon in a chip
 `mdc-chip-trailing-icon-size($size)` | Customizes the size of a trailing icon in a chip
-`mdc-chip-leading-icon-margin($top, $right, $bottom, $left)` | Customizes the margin of a leading icon in a chip
-`mdc-chip-trailing-icon-margin($top, $right, $bottom, $left)` | Customizes the margin of a trailing icon in a chip
+`mdc-chip-leading-icon-margin($left-margin, $right-margin)` | Customizes the margin of a leading icon in a chip
+`mdc-chip-trailing-icon-margin($left-margin, $right-margin)` | Customizes the margin of a trailing icon in a chip
 `mdc-chip-elevation-transition()` | Adds a MDC elevation transition to the chip. This should be used instead of setting transition with `mdc-elevation-transition-value()` directly when a box shadow transition is desired for a chip
 
 > _NOTE_: `mdc-chip-set-spacing` also sets the amount of space between a chip and the edge of the set it's contained in.
