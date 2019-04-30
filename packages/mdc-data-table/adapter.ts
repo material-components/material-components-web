@@ -44,8 +44,18 @@ export interface MDCDataTableAdapter {
   notifyRowSelectionChanged(data: MDCDataTableRowSelectionChangedEventDetail): void;
   notifySelectedAll(): void;
   notifyUnselectedAll(): void;
+
+  /**
+   * Initializes header row checkbox. Destroys previous checkbox instance if any.
+   */
   registerHeaderRowCheckbox(): void;
+
+  /**
+   * Initializes all row checkboxes. Destroys previous row checkbox instances if any. This is usually called when row
+   * checkboxes are added or removed from table.
+   */
   registerRowCheckboxes(): void;
+
   removeClassAtRowIndex(rowIndex: number, cssClasses: string): void;
   setAttributeAtRowIndex(rowIndex: number, attr: string, value: string): void;
   setHeaderRowCheckboxChecked(checked: boolean): void;
