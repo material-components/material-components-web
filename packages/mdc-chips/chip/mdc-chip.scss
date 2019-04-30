@@ -44,11 +44,11 @@
   position: relative;
   align-items: center;
   padding: 0 $mdc-chip-horizontal-padding;
-  outline: none;
-  -webkit-appearance: none;
-  cursor: pointer;
-  overflow: hidden;
   border-width: 0;
+  outline: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  overflow: hidden;
 
   &::-moz-focus-inner {
     padding: 0;
