@@ -24,7 +24,7 @@
 import {MDCDataTable} from '../../../../packages/mdc-data-table';
 
 window.mdc.testFixture.fontsLoaded.then(() => {
-  const dataTable = MDCDataTable.attachTo(document.querySelector('.mdc-data-table'));
+  const dataTable = MDCDataTable.attachTo(document.querySelector('.test-data-table-baseline-checkbox'));
   const rowIds = ['u1', 'u2'];
 
   dataTable.setSelectedRowIds(rowIds);

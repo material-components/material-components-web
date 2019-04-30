@@ -32,6 +32,7 @@ export const cssClasses = {
   DISABLED: 'mdc-checkbox--disabled',
   INDETERMINATE: 'mdc-checkbox--indeterminate',
   ROOT: 'mdc-checkbox',
+  SELECTED: 'mdc-checkbox--selected',
   UPGRADED: 'mdc-checkbox--upgraded',
 };
 

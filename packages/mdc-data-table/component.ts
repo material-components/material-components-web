@@ -34,8 +34,8 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
     return new MDCDataTable(root);
   }
 
+  private headerRowCheckbox_!: MDCCheckbox;
   private rowCheckboxList_!: MDCCheckbox[];
-  private headerRowCheckbox_!: MDCCheckbox; // assigned in initialize()
   private checkboxFactory_!: MDCCheckboxFactory;
 
   initialize(checkboxFactory: MDCCheckboxFactory = (el: Element) => new MDCCheckbox(el)) {
@@ -48,13 +48,34 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
     (this.root_.querySelector(`.${cssClasses.CONTENT}`) as HTMLElement)
         .addEventListener('change', (event) => this.foundation_.handleRowCheckboxChange(event));
 
-    this.foundation_.layout();
+    this.layout();
   }
 
+  /**
+   * Re-initializes header row checkbox and row checkboxes when selectable rows are added or removed from table.
+   */
+  layout() {
+    return this.foundation_.layout();
+  }
+
+  /**
+   * @return Returns array of row elements.
+   */
   getRows(): HTMLElement[] {
     return this.foundation_.getRows();
   }
 
+  /**
+   * @return Returns array of selected row ids.
+   */
+  getSelectedRowIds(): Array<string|null> {
+    return this.foundation_.getSelectedRowIds();
+  }
+
+  /**
+   * Sets selected row ids. Overwrites previously selected rows.
+   * @param rowIds Array of row ids that needs to be selected.
+   */
   setSelectedRowIds(rowIds: string[]) {
     this.foundation_.setSelectedRowIds(rowIds);
   }
