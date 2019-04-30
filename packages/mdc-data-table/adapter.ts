@@ -32,23 +32,23 @@
 import {MDCDataTableRowSelectionChangedEventDetail} from './types';
 
 export interface MDCDataTableAdapter {
-  isRowsSelectable(): boolean;
-  registerHeaderRowCheckbox(): void;
-  registerRowCheckboxes(): void;
-  getRowElements(): HTMLElement[];
-  isHeaderRowCheckboxChecked(): boolean;
-  getRowCount(): number;
-  getSelectedRowCount(): number;
   addClassAtRowIndex(rowIndex: number, cssClasses: string): void;
-  removeClassAtRowIndex(rowIndex: number, cssClasses: string): void;
-  setAttributeAtRowIndex(rowIndex: number, attr: string, value: string): void;
   getAttributeAtRowIndex(rowIndex: number, attr: string): void;
-  getRowIndexByChildElement(el: Element): number;
-  setHeaderRowCheckboxIndeterminate(indeterminate: boolean): void;
-  setHeaderRowCheckboxChecked(checked: boolean): void;
+  getRowCount(): number;
+  getRowElements(): HTMLElement[];
   getRowIdAtIndex(rowIndex: number): string | null;
-  setRowCheckboxCheckedAtIndex(rowIndex: number, checked: boolean): void;
+  getRowIndexByChildElement(el: Element): number;
+  getSelectedRowCount(): number;
+  isHeaderRowCheckboxChecked(): boolean;
+  isRowsSelectable(): boolean;
   notifyRowSelectionChanged(data: MDCDataTableRowSelectionChangedEventDetail): void;
   notifySelectedAll(): void;
   notifyUnselectedAll(): void;
+  registerHeaderRowCheckbox(): void;
+  registerRowCheckboxes(): void;
+  removeClassAtRowIndex(rowIndex: number, cssClasses: string): void;
+  setAttributeAtRowIndex(rowIndex: number, attr: string, value: string): void;
+  setHeaderRowCheckboxChecked(checked: boolean): void;
+  setHeaderRowCheckboxIndeterminate(indeterminate: boolean): void;
+  setRowCheckboxCheckedAtIndex(rowIndex: number, checked: boolean): void;
 }

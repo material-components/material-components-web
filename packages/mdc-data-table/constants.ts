@@ -22,24 +22,24 @@
  */
 
 export const cssClasses = {
-  ROOT: 'mdc-data-table',
   CELL: 'mdc-data-table__cell',
   CELL_NUMERIC: 'mdc-data-table__cell--numeric',
-  ROW: 'mdc-data-table__row',
-  HEADER_ROW: 'mdc-data-table__header-row',
-  ROW_SELECTED: 'mdc-data-table__row--selected',
-  HEADER_ROW_CHECKBOX: 'mdc-data-table__header-row-checkbox',
-  ROW_CHECKBOX: 'mdc-data-table__row-checkbox',
   CONTENT: 'mdc-data-table__content',
+  HEADER_ROW: 'mdc-data-table__header-row',
+  HEADER_ROW_CHECKBOX: 'mdc-data-table__header-row-checkbox',
+  ROOT: 'mdc-data-table',
+  ROW: 'mdc-data-table__row',
+  ROW_CHECKBOX: 'mdc-data-table__row-checkbox',
+  ROW_SELECTED: 'mdc-data-table__row--selected',
 };
 
 export const strings = {
-  DATA_ROW_ID_ATTR: 'data-row-id',
   ARIA_SELECTED: 'aria-selected',
-  ROW_SELECTOR: `.${cssClasses.ROW}`,
-  ROW_CHECKBOX_SELECTOR: `.${cssClasses.ROW_CHECKBOX}`,
+  DATA_ROW_ID_ATTR: 'data-row-id',
   HEADER_ROW_CHECKBOX_SELECTOR: `.${cssClasses.HEADER_ROW_CHECKBOX}`,
+  ROW_CHECKBOX_SELECTOR: `.${cssClasses.ROW_CHECKBOX}`,
   ROW_SELECTED_SELECTOR: `.${cssClasses.ROW_SELECTED}`,
+  ROW_SELECTOR: `.${cssClasses.ROW}`,
 };
 
 export const events = {

@@ -21,7 +21,6 @@
  * THE SOFTWARE.
  */
 
-import {assert} from 'chai';
 import td from 'testdouble';
 
 import {setupFoundationTest} from '../helpers/setup';
@@ -60,9 +59,8 @@ test('default adapter returns a complete adapter implementation', () => {
  * @return {{mockAdapter: !MDCDataTableAdapter, foundation: !MDCDataTableFoundation}}
  */
 function setupTest() {
-  const adapterFoundationPair = /** @type {{mockAdapter: !MDCDataTableAdapter, foundation: !MDCDataTableFoundation}} */ (
-    setupFoundationTest(MDCDataTableFoundation)
-  );
+  const adapterFoundationPair = /** @type {{mockAdapter: !MDCDataTableAdapter, foundation: !MDCDataTableFoundation}} */
+    (setupFoundationTest(MDCDataTableFoundation));
   adapterFoundationPair.foundation.init();
   return adapterFoundationPair;
 }

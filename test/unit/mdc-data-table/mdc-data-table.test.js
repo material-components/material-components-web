@@ -100,6 +100,7 @@ const mdcDataTableData = {
 
 /** @return {!HTMLElement} */
 function renderComponent(props) {
+  /* eslint-disable indent */
   const templateResult = html`
     <div class="${cssClasses.ROOT}">
       <table class="mdc-data-table__table">

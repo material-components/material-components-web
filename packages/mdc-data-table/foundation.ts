@@ -32,25 +32,25 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
 
   static get defaultAdapter(): MDCDataTableAdapter {
     return {
-      isRowsSelectable: () => false,
-      registerHeaderRowCheckbox: () => undefined,
-      registerRowCheckboxes: () => undefined,
-      getRowElements: () => [],
-      isHeaderRowCheckboxChecked: () => false,
-      getRowCount: () => 0,
-      getSelectedRowCount: () => 0,
       addClassAtRowIndex: () => undefined,
-      removeClassAtRowIndex: () => undefined,
-      setAttributeAtRowIndex: () => undefined,
       getAttributeAtRowIndex: () => '',
-      getRowIndexByChildElement: () => 0,
-      setHeaderRowCheckboxIndeterminate: () => undefined,
-      setHeaderRowCheckboxChecked: () => undefined,
+      getRowCount: () => 0,
+      getRowElements: () => [],
       getRowIdAtIndex: () => '',
-      setRowCheckboxCheckedAtIndex: () => undefined,
+      getRowIndexByChildElement: () => 0,
+      getSelectedRowCount: () => 0,
+      isHeaderRowCheckboxChecked: () => false,
+      isRowsSelectable: () => false,
       notifyRowSelectionChanged: () => undefined,
       notifySelectedAll: () => undefined,
       notifyUnselectedAll: () => undefined,
+      registerHeaderRowCheckbox: () => undefined,
+      registerRowCheckboxes: () => undefined,
+      removeClassAtRowIndex: () => undefined,
+      setAttributeAtRowIndex: () => undefined,
+      setHeaderRowCheckboxChecked: () => undefined,
+      setHeaderRowCheckboxIndeterminate: () => undefined,
+      setRowCheckboxCheckedAtIndex: () => undefined,
     } as MDCDataTableAdapter;
   }
 

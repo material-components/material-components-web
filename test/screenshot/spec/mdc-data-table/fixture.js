@@ -25,8 +25,8 @@ import {MDCDataTable} from '../../../../packages/mdc-data-table';
 
 window.mdc.testFixture.fontsLoaded.then(() => {
   const dataTable = MDCDataTable.attachTo(document.querySelector('.mdc-data-table'));
+  const rowIds = ['u1', 'u2'];
 
-  // const rowIds = ['u0', 'u1', 'u2', 'u3'];
-  // dataTable.setSelectedRowIds(rowIds);
+  dataTable.setSelectedRowIds(rowIds);
   window.mdc.testFixture.notifyDomReady();
 });

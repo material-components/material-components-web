@@ -22,11 +22,11 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {closest} from '@material/dom/ponyfill';
 import {MDCCheckbox, MDCCheckboxFactory} from '@material/checkbox/component';
+import {closest} from '@material/dom/ponyfill';
 import {MDCDataTableAdapter} from './adapter';
-import {MDCDataTableFoundation} from './foundation';
 import {cssClasses, events, strings} from './constants';
+import {MDCDataTableFoundation} from './foundation';
 import {MDCDataTableRowSelectionChangedEventDetail} from './types';
 
 export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
@@ -62,17 +62,37 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
   getDefaultFoundation() {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCDataTableAdapter = {
-      isHeaderRowCheckboxChecked: () => this.headerRowCheckbox_.checked,
-      addClassAtRowIndex: (rowIndex: number, className: string) => {
-        this.getRows()[rowIndex].classList.add(className);
-      },
-      removeClassAtRowIndex: (rowIndex: number, className: string) => {
-        this.getRows()[rowIndex].classList.remove(className);
-      },
+      addClassAtRowIndex: (rowIndex: number, className: string) => this.getRows()[rowIndex].classList.add(className),
       getAttributeAtRowIndex: (index: number, attr: string) => this.getRows()[index].getAttribute(attr),
-      setAttributeAtRowIndex: (rowIndex: number, attr: string, value: string) => {
-        this.getRows()[rowIndex].setAttribute(attr, value);
+      getRowCount: () => this.getRows().length,
+      getRowElements: () => [].slice.call(this.root_.querySelectorAll(strings.ROW_SELECTOR)),
+      getRowIdAtIndex: (rowIndex: number) => this.getRows()[rowIndex].getAttribute(strings.DATA_ROW_ID_ATTR),
+      getRowIndexByChildElement: (el: Element) => {
+        return this.getRows().indexOf((closest(el, strings.ROW_SELECTOR) as HTMLElement));
+      },
+      getSelectedRowCount: () => this.root_.querySelectorAll(strings.ROW_SELECTED_SELECTOR).length,
+      isHeaderRowCheckboxChecked: () => this.headerRowCheckbox_.checked,
+      isRowsSelectable: () => !!this.root_.querySelector(strings.ROW_CHECKBOX_SELECTOR),
+      notifyRowSelectionChanged: (data: MDCDataTableRowSelectionChangedEventDetail) => {
+        this.emit(events.ROW_SELECTION_CHANGED, {
+          row: this.getRowByIndex_(data.rowIndex),
+          rowId: this.getRowIdByIndex_(data.rowIndex),
+          rowIndex: data.rowIndex,
+          selected: data.selected,
+        },
+        /** shouldBubble */ true);
+      },
+      notifySelectedAll: () => this.emit(events.SELECTED_ALL, {}, /** shouldBubble */ true),
+      notifyUnselectedAll: () => this.emit(events.UNSELECTED_ALL, {}, /** shouldBubble */ true),
+      registerHeaderRowCheckbox: () => {
+        if (this.headerRowCheckbox_) {
+          this.headerRowCheckbox_.destroy();
+        }
+
+        const checkboxEl = (this.root_.querySelector(strings.HEADER_ROW_CHECKBOX_SELECTOR) as HTMLElement);
+        this.headerRowCheckbox_ = this.checkboxFactory_(checkboxEl);
       },
       registerRowCheckboxes: () => {
         if (this.rowCheckboxList_) {
@@ -81,45 +101,25 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
 
         this.rowCheckboxList_ = [];
         this.getRows().forEach((rowEl) => {
-          const checkbox = this.checkboxFactory_(rowEl.querySelector(strings.ROW_CHECKBOX_SELECTOR) as HTMLElement);
+          const checkbox = this.checkboxFactory_((rowEl.querySelector(strings.ROW_CHECKBOX_SELECTOR) as HTMLElement));
           this.rowCheckboxList_.push(checkbox);
         });
       },
-      getRowElements: () => [].slice.call(this.root_.querySelectorAll(strings.ROW_SELECTOR)),
-      registerHeaderRowCheckbox: () => {
-        if (this.headerRowCheckbox_) {
-          this.headerRowCheckbox_.destroy();
-        }
-
-        this.headerRowCheckbox_ =
-            this.checkboxFactory_(this.root_.querySelector(strings.HEADER_ROW_CHECKBOX_SELECTOR) as HTMLElement);
+      removeClassAtRowIndex: (rowIndex: number, className: string) => {
+        this.getRows()[rowIndex].classList.remove(className);
       },
-      isRowsSelectable: () => !!this.root_.querySelector(strings.ROW_CHECKBOX_SELECTOR),
-      getRowIndexByChildElement: (el: Element) => {
-        return this.getRows().indexOf(closest(el, strings.ROW_SELECTOR) as HTMLElement);
-      },
-      getRowCount: () => this.getRows().length,
-      getSelectedRowCount: () => this.root_.querySelectorAll(strings.ROW_SELECTED_SELECTOR).length,
-      notifyRowSelectionChanged: (data: MDCDataTableRowSelectionChangedEventDetail) => {
-        this.emit(events.ROW_SELECTION_CHANGED, {
-          row: this.getRowByIndex_(data.rowIndex),
-          rowId: this.getRowIdByIndex_(data.rowIndex),
-          rowIndex: data.rowIndex,
-          selected: data.selected,
-        }, /** shouldBubble */ true);
-      },
-      setHeaderRowCheckboxIndeterminate: (indeterminate: boolean) => {
-        this.headerRowCheckbox_.indeterminate = indeterminate;
+      setAttributeAtRowIndex: (rowIndex: number, attr: string, value: string) => {
+        this.getRows()[rowIndex].setAttribute(attr, value);
       },
       setHeaderRowCheckboxChecked: (checked: boolean) => {
         this.headerRowCheckbox_.checked = checked;
       },
-      getRowIdAtIndex: (rowIndex: number) => this.getRows()[rowIndex].getAttribute(strings.DATA_ROW_ID_ATTR),
+      setHeaderRowCheckboxIndeterminate: (indeterminate: boolean) => {
+        this.headerRowCheckbox_.indeterminate = indeterminate;
+      },
       setRowCheckboxCheckedAtIndex: (rowIndex: number, checked: boolean) => {
         this.rowCheckboxList_[rowIndex].checked = checked;
       },
-      notifySelectedAll: () => this.emit(events.SELECTED_ALL, {}, /** shouldBubble */ true),
-      notifyUnselectedAll: () => this.emit(events.UNSELECTED_ALL, {}, /** shouldBubble */ true),
     };
     return new MDCDataTableFoundation(adapter);
   }
