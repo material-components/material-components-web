@@ -64,11 +64,17 @@
       display: inline-flex;
       position: relative;
       align-items: center;
-      box-sizing: border-box;
-      padding: $mdc-chip-vertical-padding $mdc-chip-horizontal-padding;
+      padding: 0 $mdc-chip-horizontal-padding;
+      border-width: 0;
       outline: none;
       cursor: pointer;
+      -webkit-appearance: none;
       overflow: hidden;
+
+      &::-moz-focus-inner {
+        padding: 0;
+        border: 0;
+      }
     }
 
     &:hover {
@@ -407,10 +413,10 @@
 
   // Note: Adjust padding to maintain consistent width with non-outlined chips
   $horizontal-padding-value: max($horizontal-padding - $width, 0);
-  $vertical-padding-value: max($mdc-chip-vertical-padding - $width, 0);
 
   @include mdc-feature-targets($feat-structure) {
-    padding: $vertical-padding-value $horizontal-padding-value;
+    padding-right: $horizontal-padding-value;
+    padding-left: $horizontal-padding-value;
     border-width: $width;
   }
 }
@@ -419,7 +425,8 @@
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-feature-targets($feat-structure) {
-    padding: $mdc-chip-vertical-padding $padding;
+    padding-right: $padding;
+    padding-left: $padding;
   }
 }
 
@@ -509,35 +516,29 @@
 }
 
 @mixin mdc-chip-leading-icon-margin(
-  $top: $mdc-chip-leading-icon-margin-top,
-  $right: $mdc-chip-leading-icon-margin-right,
-  $bottom: $mdc-chip-leading-icon-margin-bottom,
-  $left: $mdc-chip-leading-icon-margin-left,
+  $left-margin: $mdc-chip-leading-icon-margin-left,
+  $right-margin: $mdc-chip-leading-icon-margin-right,
   $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
   &.mdc-chip--selected .mdc-chip__checkmark,
   .mdc-chip__icon--leading:not(.mdc-chip__icon--leading-hidden) {
     @include mdc-feature-targets($feat-structure) {
-      @include mdc-rtl-reflexive-property(margin, $left, $right);
-
-      margin-top: $top;
-      margin-bottom: $bottom;
+      @include mdc-rtl-reflexive-property(margin, $left-margin, $right-margin);
     }
   }
 }
 
 @mixin mdc-chip-trailing-icon-margin(
-  $top: $mdc-chip-trailing-icon-margin-top,
-  $right: $mdc-chip-trailing-icon-margin-right,
-  $bottom: $mdc-chip-trailing-icon-margin-bottom,
-  $left: $mdc-chip-trailing-icon-margin-left,
+  $left-margin: $mdc-chip-leading-icon-margin-left,
+  $right-margin: $mdc-chip-leading-icon-margin-right,
   $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
   .mdc-chip__icon--trailing {
     @include mdc-feature-targets($feat-structure) {
-      margin: $top $right $bottom $left;
+      margin-right: $right-margin;
+      margin-left: $left-margin;
     }
   }
 }
