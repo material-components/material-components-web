@@ -65,10 +65,10 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
     const adapter: MDCDataTableAdapter = {
       isHeaderRowCheckboxChecked: () => this.headerRowCheckbox_.checked,
       addClassAtRowIndex: (rowIndex: number, className: string) => {
-        return this.getRows()[rowIndex].classList.add(className);
+        this.getRows()[rowIndex].classList.add(className);
       },
       removeClassAtRowIndex: (rowIndex: number, className: string) => {
-        return this.getRows()[rowIndex].classList.remove(className);
+        this.getRows()[rowIndex].classList.remove(className);
       },
       getAttributeAtRowIndex: (index: number, attr: string) => this.getRows()[index].getAttribute(attr),
       setAttributeAtRowIndex: (rowIndex: number, attr: string, value: string) => {
