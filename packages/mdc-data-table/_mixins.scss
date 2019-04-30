@@ -130,6 +130,7 @@
 @mixin mdc-data-table-checked-icon-color($color, $query: mdc-feature-all()) {
   .mdc-data-table__header-row-checkbox,
   .mdc-data-table__row-checkbox {
+    @include mdc-states($color, $query: $query);
     @include mdc-checkbox-container-colors($marked-stroke-color: $color, $marked-fill-color: $color, $query: $query);
     @include mdc-checkbox-focus-indicator-color($color, $query: $query);
   }

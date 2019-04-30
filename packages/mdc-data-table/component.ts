@@ -85,7 +85,7 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
           this.rowCheckboxList_.push(checkbox);
         });
       },
-      getRowElements: () => [].slice.call(this.root_.querySelectorAll(`.${cssClasses.ROW}`)),
+      getRowElements: () => [].slice.call(this.root_.querySelectorAll(strings.ROW_SELECTOR)),
       registerHeaderRowCheckbox: () => {
         if (this.headerRowCheckbox_) {
           this.headerRowCheckbox_.destroy();

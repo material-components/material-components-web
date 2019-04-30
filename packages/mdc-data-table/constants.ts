@@ -23,6 +23,8 @@
 
 export const cssClasses = {
   ROOT: 'mdc-data-table',
+  CELL: 'mdc-data-table__cell',
+  CELL_NUMERIC: 'mdc-data-table__cell--numeric',
   ROW: 'mdc-data-table__row',
   HEADER_ROW: 'mdc-data-table__header-row',
   ROW_SELECTED: 'mdc-data-table__row--selected',
