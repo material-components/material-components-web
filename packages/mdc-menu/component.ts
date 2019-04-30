@@ -23,12 +23,15 @@
 
 import {MDCComponent} from '@material/base/component';
 import {CustomEventListener, SpecificEventListener} from '@material/base/types';
-import {MDCList, MDCListActionEvent, MDCListFactory, MDCListFoundation} from '@material/list/index';
+import {MDCList, MDCListFactory} from '@material/list/component';
+import {MDCListFoundation} from '@material/list/foundation';
+import {MDCListActionEvent} from '@material/list/types';
+import {MDCMenuSurface, MDCMenuSurfaceFactory} from '@material/menu-surface/component';
+import {Corner} from '@material/menu-surface/constants';
 import {MDCMenuSurfaceFoundation} from '@material/menu-surface/foundation';
-import {Corner, MDCMenuSurface, MDCMenuSurfaceFactory} from '@material/menu-surface/index';
 import {MDCMenuDistance} from '@material/menu-surface/types';
 import {MDCMenuAdapter} from './adapter';
-import {cssClasses, strings} from './constants';
+import {cssClasses, DefaultFocusState, strings} from './constants';
 import {MDCMenuFoundation} from './foundation';
 import {MDCMenuItemComponentEventDetail} from './types';
 
@@ -120,15 +123,13 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   }
 
   /**
-   * Sets the index of the menu item that will be focused every time the menu opens.
-   * Pass {@link numbers.FOCUS_ROOT_INDEX} to indicate that the root menu element,
-   * rather than a specific list item, should receive focus when the menu opens
-   * (this is the default behavior).
-   * @param index Index of the menu item to focus when the menu opens,
-   *     or {@link numbers.FOCUS_ROOT_INDEX} for the root menu element.
+   * Sets default focus state where the menu should focus every time when menu
+   * is opened. Focuses the list root (`DefaultFocusState.LIST_ROOT`) element by
+   * default.
+   * @param focusState Default focus state.
    */
-  setDefaultFocusItemIndex(index: number) {
-    this.foundation_.setDefaultFocusItemIndex(index);
+  setDefaultFocusState(focusState: DefaultFocusState) {
+    this.foundation_.setDefaultFocusState(focusState);
   }
 
   /**
@@ -213,8 +214,7 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
       }),
       getMenuItemCount: () => this.items.length,
       focusItemAtIndex: (index) => (this.items[index] as HTMLElement).focus(),
-      isRootFocused: () => document.activeElement === this.root_,
-      focusRoot: () => (this.root_ as HTMLElement).focus(),
+      focusListRoot: () => (this.root_.querySelector(strings.LIST_SELECTOR) as HTMLElement).focus(),
     };
     // tslint:enable:object-literal-sort-keys
     return new MDCMenuFoundation(adapter);
