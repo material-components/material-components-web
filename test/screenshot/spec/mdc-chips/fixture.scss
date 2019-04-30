@@ -35,6 +35,12 @@ $custom-chip-ink-color: $material-color-blue-500;
 
 .custom-chip--chip-set-spacing {
   @include mdc-chip-set-spacing(20px);
+  @at-root {
+    .custom-chip-test-cell {
+      @include test-cell-size(321, 124);
+      padding: 0;
+    }
+  }
 }
 
 .custom-chip--shape-radius {
