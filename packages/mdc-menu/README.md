@@ -41,8 +41,8 @@ npm install @material/menu
 ### HTML Structure
 
 ```html
-<div class="mdc-menu mdc-menu-surface" tabindex="-1">
-  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
+<div class="mdc-menu mdc-menu-surface">
+  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
     <li class="mdc-list-item" role="menuitem">
       <span class="mdc-list-item__text">A Menu Item</span>
     </li>
@@ -79,8 +79,8 @@ menu.open = true;
 Menus can contain a group of list items that can represent the selection state of elements within the group.
 
 ```html
-<div class="mdc-menu mdc-menu-surface" tabindex="-1" id="demo-menu">
-  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
+<div class="mdc-menu mdc-menu-surface" id="demo-menu">
+  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
     <li>
       <ul class="mdc-menu__selection-group">
         <li class="mdc-list-item" role="menuitem">
@@ -198,9 +198,16 @@ With focus on the menu button:
 
   * <kbd>Enter</kbd>, <kbd>Space</kbd> & <kbd>Down Arrow</kbd> opens the menu and places focus on the first menu item.
   * <kbd>Up Arrow</kbd> opens the menu and moves focus to the last menu item.
-  * The focus is set to menu root element when clicked or touched. Menu handles the keyboard handling once it is opened and focused on root element.
+  * The focus is set to list root element (where `role="menu"` is set) when clicked or touched. MDC List handles the keyboard navigation once it receives the focus.
 
-Use `setDefaultFocusItemIndex` method to set the index of the menu item that will be focused every time the menu opens. Set it to `numbers.FOCUS_ROOT_INDEX` to focus on menu root element.
+Use `setDefaultFocusState` method to set default focus state that will be focused every time when menu is opened.
+
+Focus state | Description
+--- | ---
+`DefaultFocusState.FIRST_ITEM` | Focuses the first menu item. Set this when menu button receives <kbd>Enter</kbd>, <kbd>Space</kbd>, <kbd>Down Arrow</kbd>.
+`DefaultFocusState.LAST_ITEM` | Focuses the last menu item. Set this when menu button receives <kbd>Up arrow</kbd>.
+`DefaultFocusState.LIST_ROOT` | Focuses the list root. Set this when menu button Clicked or Touched.
+`DefaultFocusState.NONE` | Does not change the focus. Set this if you do not want the menu to grab focus on open. (Autocomplete dropdown menu, for example).
 
 ## `MDCMenu` Properties and Methods
 
@@ -224,7 +231,7 @@ Method Signature | Description
 `setAnchorElement(element: Element) => void` | Proxies to the menu surface's `setAnchorElement(element)` method.
 `getOptionByIndex(index: number) => Element \| null` | Returns the list item at the `index` specified.
 `getDefaultFoundation() => MDCMenuFoundation` | Returns the foundation.
-`setDefaultFocusItemIndex(index: number) => void` | Sets the index of the menu item that will be focused every time the menu opens. Pass `numbers.FOCUS_ROOT_INDEX` to indicate that the root menu element, rather than a specific list item, should receive focus when the menu opens (this is the default behavior).
+`setDefaultFocusState(focusState: DefaultFocusState) => void` | Sets default focus state where the menu should focus every time when menu is opened. Focuses the list root (`DefaultFocusState.LIST_ROOT`) element by default.
 
 > See [Menu Surface](../mdc-menu-surface/README.md) and [List](../mdc-list/README.md) documentation for more information on proxied methods and properties.
 
@@ -248,8 +255,7 @@ Method Signature | Description
 `notifySelected(index: number) => void` | Emits a `MDCMenu:selected` event for the element at the `index` specified.
 `getMenuItemCount() => number` | Returns the menu item count.
 `focusItemAtIndex(index: number)` | Focuses the menu item at given index.
-`isRootFocused() => boolean` | Returns true if menu root element has focus.
-`focusRoot() => void` | Focuses the menu root element.
+`focusListRoot() => void` | Focuses the list root element.
 
 ### `MDCMenuFoundation`
 
@@ -258,7 +264,7 @@ Method Signature | Description
 `handleKeydown(evt: Event) => void` | Event handler for the `keydown` events within the menu.
 `handleItemAction(listItem: Element) => void` | Event handler for list's action event.
 `handleMenuSurfaceOpened() => void` | Event handler for menu surface's opened event.
-`setDefaultFocusItemIndex(index: number) => void` | Sets the index of the menu item that will be focused every time the menu opens. Pass `numbers.FOCUS_ROOT_INDEX` to indicate that the root menu element, rather than a specific list item, should receive focus when the menu opens (this is the default behavior).
+`setDefaultFocusState(focusState: DefaultFocusState) => void` | Sets default focus state where the menu should focus every time when menu is opened. Focuses the list root (`DefaultFocusState.LIST_ROOT`) element by default.
 
 ### Events
 
