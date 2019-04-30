@@ -46,7 +46,7 @@ export interface MDCDataTableAdapter {
   notifyUnselectedAll(): void;
 
   /**
-   * Initializes header row checkbox. Destroys previous checkbox instance if any.
+   * Initializes header row checkbox. Destroys previous header row checkbox instance if any.
    */
   registerHeaderRowCheckbox(): void;
 
