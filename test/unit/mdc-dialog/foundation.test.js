@@ -36,12 +36,6 @@ const ENTER_EVENTS = [
   {type: 'keydown', keyCode: 13, target: {}},
 ];
 
-const INTERACTION_EVENTS = [
-  {type: 'click', target: {}},
-  {type: 'keydown', key: 'Space', target: {}},
-  {type: 'keydown', keyCode: 32, target: {}},
-].concat(ENTER_EVENTS);
-
 suite('MDCDialogFoundation');
 
 test('exports cssClasses', () => {
@@ -359,24 +353,23 @@ test('#layout removes scrollable class when content is not scrollable', () => {
   td.verify(mockAdapter.removeClass(cssClasses.SCROLLABLE));
 });
 
-test(`click closes dialog when ${strings.ACTION_ATTRIBUTE} attribute is present`, () => {
+test(`#handleClick: Click closes dialog when ${strings.ACTION_ATTRIBUTE} attribute is present`, () => {
   const {foundation, mockAdapter} = setupTest();
   const action = 'action';
   foundation.close = td.func('close');
 
-  const event = {type: 'click', target: {}};
+  const event = {target: {}};
   td.when(mockAdapter.getActionFromEvent(event)).thenReturn(action);
   foundation.open();
   foundation.handleClick(event);
 
   td.verify(foundation.close(action));
-  td.reset();
 });
 
-test('interaction does not close dialog with action for non-activation keys', () => {
+test('#handleKeydown: Keydown does not close dialog with action for non-activation keys', () => {
   const {foundation, mockAdapter} = setupTest();
   const action = 'action';
-  const event = {type: 'keydown', key: 'Escape', target: {}};
+  const event = {type: 'keydown', key: 'Shift', target: {}};
   foundation.close = td.func('close');
   td.when(mockAdapter.getActionFromEvent(event)).thenReturn(action);
 
@@ -386,25 +379,32 @@ test('interaction does not close dialog with action for non-activation keys', ()
   td.verify(foundation.close(action), {times: 0});
 });
 
-test(`interaction does nothing when ${strings.ACTION_ATTRIBUTE} attribute is not present`, () => {
+test(`#handleClick: Click does nothing when ${strings.ACTION_ATTRIBUTE} attribute is not present`, () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.close = td.func('close');
 
-  INTERACTION_EVENTS.forEach((event) => {
+  td.when(mockAdapter.getActionFromEvent(event)).thenReturn('');
+  foundation.open();
+  foundation.handleClick({target: {}});
+
+  td.verify(foundation.close(td.matchers.isA(String)), {times: 0});
+});
+
+test(`#handleKeydown: Keydown does nothing when ${strings.ACTION_ATTRIBUTE} attribute is not present`, () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.close = td.func('close');
+
+  ENTER_EVENTS.forEach((event) => {
     td.when(mockAdapter.getActionFromEvent(event)).thenReturn('');
     foundation.open();
-    if (event.type == 'click') {
-      foundation.handleClick(event);
-    } else if (event.type == 'keydown') {
-      foundation.handleKeydown(event);
-    }
+    foundation.handleKeydown(event);
 
     td.verify(foundation.close(td.matchers.isA(String)), {times: 0});
     td.reset();
   });
 });
 
-test('enter keydown calls adapter.clickDefaultButton', () => {
+test('#handleKeydown: Enter keydown calls adapter.clickDefaultButton', () => {
   const {foundation, mockAdapter} = setupTest();
 
   ENTER_EVENTS.forEach((event) => {
@@ -414,7 +414,7 @@ test('enter keydown calls adapter.clickDefaultButton', () => {
   });
 });
 
-test('enter keydown does not call adapter.clickDefaultButton when it should be suppressed', () => {
+test('#handleKeydown: Enter keydown does not call adapter.clickDefaultButton when it should be suppressed', () => {
   const {foundation, mockAdapter} = setupTest();
 
   ENTER_EVENTS.forEach((event) => {
@@ -425,7 +425,7 @@ test('enter keydown does not call adapter.clickDefaultButton when it should be s
   });
 });
 
-test(`click closes dialog when ${strings.SCRIM_SELECTOR} selector matches`, () => {
+test(`#handleClick: Click closes dialog when ${strings.SCRIM_SELECTOR} selector matches`, () => {
   const {foundation, mockAdapter} = setupTest();
   const evt = {type: 'click', target: {}};
   foundation.close = td.func('close');
@@ -437,7 +437,8 @@ test(`click closes dialog when ${strings.SCRIM_SELECTOR} selector matches`, () =
   td.verify(foundation.close(foundation.getScrimClickAction()));
 });
 
-test(`click does nothing when ${strings.SCRIM_SELECTOR} class is present but scrimClickAction is empty string`, () => {
+test(`#handleClick: Click does nothing when ${strings.SCRIM_SELECTOR} class is present but scrimClickAction is 
+    empty string`, () => {
   const {foundation, mockAdapter} = setupTest();
   const evt = {type: 'click', target: {}};
   foundation.close = td.func('close');
