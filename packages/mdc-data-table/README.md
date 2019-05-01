@@ -43,9 +43,9 @@ npm install @material/data-table
   <table class="mdc-data-table__table">
     <thead>
       <tr class="mdc-data-table__header-row">
-        <th class="mdc-data-table__header-cell" scope="col">Carbs (g)</th>
-        <th class="mdc-data-table__header-cell" scope="col">Protein (g)</th>
-        <th class="mdc-data-table__header-cell" scope="col">Comments</th>
+        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Carbs (g)</th>
+        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Protein (g)</th>
+        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Comments</th>
       </tr>
     </thead>
     <tbody class="mdc-data-table__content">
@@ -77,7 +77,7 @@ npm install @material/data-table
   <table class="mdc-data-table__table">
     <thead>
       <tr class="mdc-data-table__header-row">
-        <th class="mdc-data-table__header-cell" scope="col">
+        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">
           <div class="mdc-checkbox">
             <input type="checkbox" class="mdc-checkbox__native-control" />
             <div class="mdc-checkbox__background">
@@ -88,9 +88,9 @@ npm install @material/data-table
             </div>
           </div>
         </th>
-        <th class="mdc-data-table__header-cell" scope="col">Status</th>
-        <th class="mdc-data-table__header-cell" scope="col">Signal name</th>
-        <th class="mdc-data-table__header-cell" scope="col">Severity</th>
+        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Status</th>
+        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Signal name</th>
+        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Severity</th>
       </tr>
     </thead>
     <tbody class="mdc-data-table__content">
