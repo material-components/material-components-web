@@ -200,6 +200,13 @@ test('#getRows calls foundation.getRows() method', () => {
   component.destroy();
 });
 
+test('#getSelectedRowIds calls foundation.getSelectedRowIds() method', () => {
+  const {component, mockFoundation} = setupTestWithMocks();
+  component.getSelectedRowIds();
+  td.verify(mockFoundation.getSelectedRowIds(), {times: 1});
+  component.destroy();
+});
+
 test('#setSelectedRowIds calls foundation.setSelectedRowIds() method', () => {
   const {component, mockFoundation} = setupTestWithMocks();
   component.setSelectedRowIds(['u1', 'u2']);

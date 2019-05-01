@@ -21,6 +21,7 @@
  * THE SOFTWARE.
  */
 
+import {assert} from 'chai';
 import td from 'testdouble';
 
 import {setupFoundationTest} from '../helpers/setup';
@@ -84,6 +85,7 @@ test('#layout should register header row checkbox only if table is selectable', 
 test('#layout should set header row checkbox checked when all row checkboxes are checked', () => {
   const {foundation, mockAdapter} = setupTest();
 
+  td.when(mockAdapter.isRowsSelectable()).thenReturn(true);
   td.when(mockAdapter.getSelectedRowCount()).thenReturn(5);
   td.when(mockAdapter.getRowCount()).thenReturn(5);
 
@@ -95,11 +97,24 @@ test('#layout should set header row checkbox checked when all row checkboxes are
 test('#layout should set header row checkbox unchecked when all row checkboxes are unchecked', () => {
   const {foundation, mockAdapter} = setupTest();
 
+  td.when(mockAdapter.isRowsSelectable()).thenReturn(true);
   td.when(mockAdapter.getSelectedRowCount()).thenReturn(0);
   td.when(mockAdapter.getRowCount()).thenReturn(5);
 
   foundation.layout();
   td.verify(mockAdapter.setHeaderRowCheckboxIndeterminate(false), {times: 1});
+  td.verify(mockAdapter.setHeaderRowCheckboxChecked(false), {times: 1});
+});
+
+test('#layout should set header row checkbox indeterminate when some of the checkboxes are checked', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.isRowsSelectable()).thenReturn(true);
+  td.when(mockAdapter.getSelectedRowCount()).thenReturn(2);
+  td.when(mockAdapter.getRowCount()).thenReturn(5);
+
+  foundation.layout();
+  td.verify(mockAdapter.setHeaderRowCheckboxIndeterminate(true), {times: 1});
   td.verify(mockAdapter.setHeaderRowCheckboxChecked(false), {times: 1});
 });
 
@@ -145,6 +160,17 @@ test('#setSelectedRowIds when empty unchecks all row checkboxes and unchecks hea
   td.verify(mockAdapter.setHeaderRowCheckboxChecked(false), {times: 1});
 });
 
+test('#getSelectedRowIds Returns selected row ids', () => {
+  const {foundation, mockAdapter} = setupTest();
+
+  td.when(mockAdapter.getSelectedRowCount()).thenReturn(3);
+  td.when(mockAdapter.getRowIdAtIndex(0)).thenReturn('testRowId0');
+  td.when(mockAdapter.getRowIdAtIndex(1)).thenReturn('testRowId1');
+  td.when(mockAdapter.getRowIdAtIndex(2)).thenReturn('testRowId2');
+
+  assert.deepEqual(foundation.getSelectedRowIds(), ['testRowId0', 'testRowId1', 'testRowId2']);
+});
+
 test('#handleHeaderRowCheckboxChange checks all row checkboxes when it is checked and notifies', () => {
   const {foundation, mockAdapter} = setupTest();
 
@@ -172,7 +198,7 @@ test('#handleHeaderRowCheckboxChange unchecks all row checkboxes when it is unch
 test('#handleRowCheckboxChange does not do anything when target row is not found', () => {
   const {foundation, mockAdapter} = setupTest();
 
-  td.when(mockAdapter.getRowIndexByChildElement(td.matchers.isA(HTMLInputElement))).thenReturn(-1);
+  td.when(mockAdapter.getRowIndexByChildElement(td.matchers.anything())).thenReturn(-1);
 
   foundation.handleRowCheckboxChange({});
 

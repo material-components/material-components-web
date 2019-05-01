@@ -158,6 +158,7 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
       this.adapter_.setHeaderRowCheckboxIndeterminate(false);
       this.adapter_.setHeaderRowCheckboxChecked(false);
     } else {
+      this.adapter_.setHeaderRowCheckboxChecked(false);
       this.adapter_.setHeaderRowCheckboxIndeterminate(true);
     }
   }
