@@ -914,45 +914,89 @@ img { max-width: 100%; }
 <div class="container container-main">
 	<div class="content-wrap">
 		<div class="tsd-panel tsd-typography">
-			<h1 id="material-components-web-mdc-web-">Material Components Web (MDC Web)</h1>
-			<p>This package contains the master library for Material Components Web. It simply wraps all of its
-			sibling packages up into one comprehensive library for convenience.</p>
-			<h2 id="installation">Installation</h2>
-			<pre><code>npm <span class="hljs-keyword">install</span> material-components-web</code></pre><h2 id="usage">Usage</h2>
-			<h3 id="including-the-sass">Including the Sass</h3>
-			<pre><code class="language-scss">@<span class="hljs-keyword">import</span> <span class="hljs-string">"material-components-web/material-components-web"</span>;</code></pre>
-			<h3 id="including-the-javascript">Including the Javascript</h3>
-			<pre><code class="language-js"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> mdc <span class="hljs-keyword">from</span> <span class="hljs-string">'material-components-web'</span>;
-<span class="hljs-keyword">const</span> checkbox = <span class="hljs-keyword">new</span> mdc.checkbox.MDCCheckbox(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'.mdc-checkbox'</span>));
-<span class="hljs-comment">// OR</span>
-<span class="hljs-keyword">import</span> {checkbox} <span class="hljs-keyword">from</span> <span class="hljs-string">'material-components-web'</span>;
-<span class="hljs-keyword">const</span> checkbox = <span class="hljs-keyword">new</span> checkbox.MDCCheckbox(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'.mdc-checkbox'</span>));</code></pre>
+			<p><a href="https://www.npmjs.com/package/material-components-web"><img src="https://img.shields.io/npm/v/material-components-web.svg" alt="Version"></a>
+				<a href="https://travis-ci.com/material-components/material-components-web/"><img src="https://travis-ci.com/material-components/material-components-web.svg?branch=master" alt="Build Status"></a>
+				<a href="https://codecov.io/gh/material-components/material-components-web"><img src="https://codecov.io/gh/material-components/material-components-web/branch/master/graph/badge.svg" alt="codecov"></a>
+				<a href="https://discord.gg/material-components"><img src="https://img.shields.io/discord/259087343246508035.svg" alt="Chat"></a>
+			<a href="https://us-central1-material-components-web.cloudfunctions.net/screenshot-shield-url"><img src="https://us-central1-material-components-web.cloudfunctions.net/screenshot-shield-svg" alt="Screenshots"></a></p>
+			<h1 id="material-components-for-the-web">Material Components for the web</h1>
+			<p>Material Components for the web (MDC Web) helps developers execute <a href="https://www.material.io">Material Design</a>.
+			Developed by a core team of engineers and UX designers at Google, these components enable a reliable development workflow to build beautiful and functional web projects.</p>
+			<p>MDC Web strives to seamlessly incorporate into a wider range of usage contexts, from simple static websites to complex, JavaScript-heavy applications to hybrid client/server rendering systems. In short, whether you&#39;re already heavily invested in another framework or not, it should be easy to incorporate Material Components into your site in a lightweight, idiomatic fashion.</p>
+			<p>Material Components for the web is the successor to <a href="https://getmdl.io/">Material Design Lite</a>. In addition to implementing the <a href="https://material.io/design">Material Design guidelines</a>, it provides more flexible theming customization, not only in terms of color, but also typography, shape, states, and more. It is also specifically <a href="docs/code/architecture.md">architected</a> for adaptability to various <a href="docs/framework-wrappers.md">major web frameworks</a>.</p>
 			<blockquote>
-				<p>See <a href="../../docs/importing-js.md">Importing the JS component</a> for more information on how to import JavaScript.</p>
+				<p>NOTE: Material Components Web tends to release breaking changes on a monthly basis, but follows
+					<a href="https://semver.org/">semver</a> so you can control when you incorporate them.
+					We typically follow a 2-week release schedule which includes one major release per month with breaking changes,
+				and intermediate patch releases with bug fixes.</p>
 			</blockquote>
+			<h2 id="important-links">Important links</h2>
+			<ul>
+				<li><a href="docs/getting-started.md">Getting Started Guide</a></li>
+				<li><a href="https://material-components.github.io/material-components-web-catalog">Demos</a></li>
+				<li><a href="docs/framework-wrappers.md">MDC Web on other frameworks</a></li>
+				<li><a href="docs/examples.md">Examples using MDC Web</a></li>
+				<li><a href="CONTRIBUTING.md">Contributing</a></li>
+				<li><a href="https://material.io/design">Material Design Guidelines</a> (external site)</li>
+				<li><a href="docs/supported-browsers.md">Supported browsers</a></li>
+				<li><a href="packages/">All Components</a></li>
+				<li><a href="./CHANGELOG.md">Changelog</a></li>
+				<li><a href="./ROADMAP.md">Roadmap</a></li>
+			</ul>
+			<h2 id="quick-start">Quick start</h2>
+			<h3 id="using-via-cdn">Using via CDN</h3>
+			<pre><code class="language-html"><span class="hljs-comment">&lt;!-- Required styles for MDC Web --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">"stylesheet"</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css"</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- Render textfield component --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"mdc-text-field"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"my-text-field"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"mdc-text-field__input"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"mdc-floating-label"</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"my-text-field"</span>&gt;</span>Label<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"mdc-line-ripple"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- Required MDC Web JavaScript library --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-comment">&lt;!-- Instantiate single textfield component rendered in the document --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+  mdc.textField.MDCTextField.attachTo(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'.mdc-text-field'</span>));
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
 			<blockquote>
-				<p>NOTE: Since switch is a reserved word in JS, switch is instead named <code>switchControl</code>. </p>
+				<p>Please see <a href="https://codepen.io/abhiomkar/pen/gQWarJ">quick start demo</a> on codepen for full example.</p>
 			</blockquote>
+			<h3 id="using-npm">Using NPM</h3>
 			<blockquote>
-				<p>NOTE: Built CSS files as well as UMD JS bundles will be available as part of the package.</p>
+				<p>This guide assumes you have webpack configured to compile Sass into CSS. To configure webpack, please see the full <a href="docs/getting-started.md">getting started guide</a>. You can also see the final code and result in the <a href="https://glitch.com/~material-starter-kit">Material Starter Kit</a>.</p>
 			</blockquote>
-			<h3 id="auto-initialization-of-components">Auto-initialization of components</h3>
-			<p>The <code>material-components-web</code> package automatically registers all MDC Web components with
-				<a href="../mdc-auto-init">mdc-auto-init</a>, making it dead simple to create and initialize components
-			with zero configuration or manual work.</p>
-			<p>For example, say you want to use an <a href="../mdc-icon-button">icon button toogle</a>. Simply render the necessary
-			DOM, and attach the <code>data-mdc-auto-init=&quot;MDCIconButtonToggle&quot;</code> attribute.</p>
-			<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"mdc-icon-button"</span>
-   <span class="hljs-attr">aria-label</span>=<span class="hljs-string">"Add to favorites"</span>
-   <span class="hljs-attr">aria-pressed</span>=<span class="hljs-string">"false"</span>
-   <span class="hljs-attr">data-mdc-auto-init</span>=<span class="hljs-string">"MDCIconButtonToggle"</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">i</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"material-icons mdc-icon-button__icon mdc-icon-button__icon--on"</span>&gt;</span>favorite<span class="hljs-tag">&lt;/<span class="hljs-name">i</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">i</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"material-icons mdc-icon-button__icon"</span>&gt;</span>favorite_border<span class="hljs-tag">&lt;/<span class="hljs-name">i</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></code></pre>
-			<p>Then at the bottom of your html, insert this one-line script tag:</p>
-			<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="undefined">mdc.autoInit()</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
-			<p>This will automatically initialize the icon button toggle, as well as any other components marked with the
-			auto init data attribute. See <a href="../mdc-auto-init">mdc-auto-init</a> for more info.</p>
+			<p>Install textfield node module to your project.</p>
+			<pre><code><span class="hljs-built_in">npm</span> install @material/textfield</code></pre><h4 id="html">HTML</h4>
+			<p>Sample usage of text field component. Please see <a href="packages/mdc-textfield">MDC Textfield</a> component page for more options.</p>
+			<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"mdc-text-field"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"my-text-field"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"mdc-text-field__input"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"mdc-floating-label"</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"my-text-field"</span>&gt;</span>Label<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"mdc-line-ripple"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+			<h4 id="css">CSS</h4>
+			<p>Load styles required for text field component.</p>
+			<pre><code class="language-scss">@<span class="hljs-keyword">import</span> <span class="hljs-string">"@material/textfield/mdc-text-field"</span>;</code></pre>
+			<h4 id="javascript">JavaScript</h4>
+			<p>Import <code>MDCTextField</code> module to instantiate text field component.</p>
+			<pre><code class="language-js"><span class="hljs-keyword">import</span> {MDCTextField} <span class="hljs-keyword">from</span> <span class="hljs-string">'@material/textfield/index'</span>;
+<span class="hljs-keyword">const</span> textField = <span class="hljs-keyword">new</span> MDCTextField(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'.mdc-text-field'</span>));</code></pre>
+			<p>This&#39;ll initialize text field component on a single <code>.mdc-text-field</code> element.</p>
+			<blockquote>
+				<p>Please see <a href="https://glitch.com/~mdc-web-quick-start">quick start demo</a> on glitch for full example.</p>
+			</blockquote>
+			<h2 id="need-help-">Need help?</h2>
+			<p>We&#39;re constantly trying to improve our components. If Github Issues don&#39;t fit your needs, then please visit us on our <a href="https://discord.gg/material-components">Discord Channel</a>.</p>
+			<h2 id="thank-you">Thank you</h2>
+			<p>Third-party services that we use and are thankful to:</p>
+			<ul>
+				<li><a href="https://travis-ci.com/">Travis CI</a> for CI.</li>
+				<li><a href="https://saucelabs.com/">Sauce Labs</a> for unit testing.</li>
+				<li><a href="https://crossbrowsertesting.com/">CrossBrowserTesting</a> for <a href="test/screenshot/">screenshot testing</a>.</li>
+			</ul>
+			<p><a href="https://crossbrowsertesting.com/"><img src="test/screenshot/static/images/cbt-logo.png" alt="CrossBrowserTesting logo" width="180" /></a></p>
 		</div>
 		<section class="tsd-panel-group tsd-index-group">
 			<h2>Index</h2>
