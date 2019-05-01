@@ -7,7 +7,7 @@
     "build:esmodules": "tsc --project ./tsconfig.json --module esnext --importHelpers",
     "build:demos": "npm run clean && mkdirp build && webpack --config=demos/webpack.config.js --progress --colors",
     "build:min": "mkdirp build && cross-env MDC_ENV=production webpack -p --progress --colors",
-    "build:docs": "mkdirp docs/api && typedoc --theme minimal --out docs/api --mode file --target ES6 packages/material-components-web/index.ts  --ignoreCompilerErrors",
+    "build:docs": "mkdirp docs/api && typedoc --readme docs/api/README.md --tsconfig tsconfig.json --mode modules --theme minimal --excludeNotExported --excludePrivate --ignoreCompilerErrors --exclude '{**/*test*,**/node_modules/**,**/test/**}' --out ./docs/api packages/**/*.ts",
     "publish:docs": "gh-pages -d docs/api",
     "changelog": "standard-changelog -i CHANGELOG.md -k packages/material-components-web/package.json",
     "clean": "node ./scripts/build/clean",

@@ -9,6 +9,7 @@
 *.log
 *.sw*
 node_modules/
+docs/api
 
 # Build output
 /build/
