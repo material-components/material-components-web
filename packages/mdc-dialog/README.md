@@ -411,6 +411,7 @@ When wrapping the Dialog foundation, the following events must be bound to the i
 Event | Target | Foundation Handler | Register | Deregister
 --- | --- | --- | --- | ---
 `click` | `.mdc-dialog` (root) | `handleClick` | During initialization | During destruction
+`keydown` | `.mdc-dialog` (root) | `handleKeydown` | During initialization | During destruction
 `keydown` | `document` | `handleDocumentKeydown` | On `MDCDialog:opening` | On `MDCDialog:closing`
 `resize` | `window` | `layout` | On `MDCDialog:opening` | On `MDCDialog:closing`
 `orientationchange` | `window` | `layout` | On `MDCDialog:opening` | On `MDCDialog:closing`
