@@ -30,6 +30,7 @@
 @mixin mdc-tab-indicator-underline-color($color) {
   > .mdc-tab-indicator__content--underline {
     @include mdc-theme-prop(background-color, $color);
+    @include mdc-theme-prop(border-color, $color);
   }
 }
 

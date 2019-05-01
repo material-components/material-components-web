@@ -49,7 +49,10 @@
 
 .mdc-tab-indicator__content--underline {
   align-self: flex-end;
+  box-sizing: border-box;
   width: 100%;
+  border-width: 1px;
+  border-style: solid;
 }
 
 .mdc-tab-indicator__content--icon {
