@@ -383,9 +383,10 @@ test(`#handleClick: Click does nothing when ${strings.ACTION_ATTRIBUTE} attribut
   const {foundation, mockAdapter} = setupTest();
   foundation.close = td.func('close');
 
+  const event = {target: {}};
   td.when(mockAdapter.getActionFromEvent(event)).thenReturn('');
   foundation.open();
-  foundation.handleClick({target: {}});
+  foundation.handleClick(event);
 
   td.verify(foundation.close(td.matchers.isA(String)), {times: 0});
 });
