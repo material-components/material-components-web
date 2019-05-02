@@ -45,12 +45,23 @@ function getFixture(open, fixedPosition = false) {
   `;
 }
 
-function setupTest(open = false, fixedPosition = false) {
+function getAnchorFixture(menuFixture) {
+  const anchorEl = bel`
+    <div class="mdc-menu-surface--anchor">
+      <button class="mdc-button">Open</button>
+    </div>
+  `;
+  anchorEl.appendChild(menuFixture);
+  return anchorEl;
+}
+
+function setupTest({open = false, fixedPosition = false, withAnchor = false} = {}) {
   const root = getFixture(open, fixedPosition);
   const MockFoundationConstructor = td.constructor(MDCMenuSurfaceFoundation);
   const mockFoundation = new MockFoundationConstructor();
+  const anchor = withAnchor ? getAnchorFixture(root) : undefined;
   const component = new MDCMenuSurface(root, mockFoundation);
-  return {root, component, mockFoundation};
+  return {root, mockFoundation, anchor, component};
 }
 
 suite('MDCMenuSurface');
@@ -130,6 +141,11 @@ test('setMenuSurfaceAnchorElement', () => {
   assert.equal(component.anchorElement, myElement);
 });
 
+test('anchorElement is properly initialized when the DOM contains an anchor', () => {
+  const {component, anchor} = setupTest({withAnchor: true});
+  assert.equal(component.anchorElement, anchor);
+});
+
 test('hoistMenuToBody', () => {
   const {root, component, mockFoundation} = setupTest();
   const div = document.createElement('div');
@@ -151,7 +167,7 @@ test('setIsHoisted', () => {
 });
 
 test('setFixedPosition is called when CSS class is present', () => {
-  const {mockFoundation} = setupTest(false, true);
+  const {mockFoundation} = setupTest({fixedPosition: true});
   td.verify(mockFoundation.setFixedPosition(true));
 });
 
@@ -247,7 +263,7 @@ test(`adapter#notifyOpen fires an ${strings.OPENED_EVENT} custom event`, () => {
 });
 
 test('adapter#restoreFocus restores focus saved by adapter#saveFocus', () => {
-  const {root, component} = setupTest(true);
+  const {root, component} = setupTest({open: true});
   const button = bel`<button>Foo</button>`;
   document.body.appendChild(button);
   document.body.appendChild(root);
@@ -261,7 +277,7 @@ test('adapter#restoreFocus restores focus saved by adapter#saveFocus', () => {
 });
 
 test('adapter#restoreFocus does not restore focus if never called adapter#saveFocus', () => {
-  const {root, component} = setupTest(true);
+  const {root, component} = setupTest({open: true});
   const button = bel`<button>Foo</button>`;
   document.body.appendChild(button);
   document.body.appendChild(root);
@@ -274,7 +290,7 @@ test('adapter#restoreFocus does not restore focus if never called adapter#saveFo
 });
 
 test('adapter#restoreFocus does nothing if the active focused element is not in the menu-surface', () => {
-  const {root, component} = setupTest(true);
+  const {root, component} = setupTest({open: true});
   const button = bel`<button>Foo</button>`;
   document.body.appendChild(button);
   document.body.appendChild(root);
@@ -286,7 +302,7 @@ test('adapter#restoreFocus does nothing if the active focused element is not in 
 });
 
 test('adapter#isFocused returns whether the menu surface is focused', () => {
-  const {root, component} = setupTest(true);
+  const {root, component} = setupTest({open: true});
   document.body.appendChild(root);
   root.focus();
   assert.isTrue(component.getDefaultFoundation().adapter_.isFocused());
@@ -294,7 +310,7 @@ test('adapter#isFocused returns whether the menu surface is focused', () => {
 });
 
 test('adapter#isFirstElementFocused returns true if the first element is focused', () => {
-  const {root, component} = setupTest(true);
+  const {root, component} = setupTest({open: true});
   const item = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[0];
   document.body.appendChild(root);
   component.open = true;
@@ -308,7 +324,7 @@ test('adapter#isFirstElementFocused returns true if the first element is focused
 });
 
 test('adapter#isLastElementFocused returns true if the last element is focused', () => {
-  const {root, component} = setupTest(true);
+  const {root, component} = setupTest({open: true});
   const item = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[1];
   document.body.appendChild(root);
   component.open = true;
@@ -322,7 +338,7 @@ test('adapter#isLastElementFocused returns true if the last element is focused',
 });
 
 test('adapter#focusFirstElement focuses the first menu surface element', () => {
-  const {root, component} = setupTest(true);
+  const {root, component} = setupTest({open: true});
   const item = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[0];
   document.body.appendChild(root);
   component.open = true;
@@ -334,7 +350,7 @@ test('adapter#focusFirstElement focuses the first menu surface element', () => {
 });
 
 test('adapter#focusLastElement focuses the last menu surface element', () => {
-  const {root, component} = setupTest(true);
+  const {root, component} = setupTest({open: true});
   const item = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[1];
   document.body.appendChild(root);
   component.open = true;
@@ -347,7 +363,7 @@ test('adapter#focusLastElement focuses the last menu surface element', () => {
 
 test('adapter#hasAnchor returns true if the menu surface has an anchor', () => {
   const anchor = bel`<div class="mdc-menu-surface--anchor"></div>`;
-  const {root, component} = setupTest(true);
+  const {root, component} = setupTest({open: true});
   anchor.appendChild(root);
   component.initialSyncWithDOM();
   assert.isTrue(component.getDefaultFoundation().adapter_.hasAnchor());
@@ -355,7 +371,7 @@ test('adapter#hasAnchor returns true if the menu surface has an anchor', () => {
 
 test('adapter#hasAnchor returns false if it does not have an anchor', () => {
   const notAnAnchor = bel`<div></div>`;
-  const {root, component} = setupTest(true);
+  const {root, component} = setupTest({open: true});
   notAnAnchor.appendChild(root);
   component.initialSyncWithDOM();
   assert.isFalse(component.getDefaultFoundation().adapter_.hasAnchor());
@@ -363,7 +379,7 @@ test('adapter#hasAnchor returns false if it does not have an anchor', () => {
 
 test('adapter#getAnchorDimensions returns the dimensions of the anchor element', () => {
   const anchor = bel`<div class="mdc-menu-surface--anchor" style="height: 21px; width: 42px;"></div>`;
-  const {root, component} = setupTest(true);
+  const {root, component} = setupTest({open: true});
   anchor.appendChild(root);
   document.body.appendChild(anchor);
   component.initialSyncWithDOM();
@@ -373,7 +389,7 @@ test('adapter#getAnchorDimensions returns the dimensions of the anchor element',
 });
 
 test('adapter#getAnchorDimensions returns undefined if there is no anchor element', () => {
-  const {root, component} = setupTest(true);
+  const {root, component} = setupTest({open: true});
   document.body.appendChild(root);
   component.initialSyncWithDOM();
   assert.isNull(component.getDefaultFoundation().adapter_.getAnchorDimensions());
@@ -381,7 +397,7 @@ test('adapter#getAnchorDimensions returns undefined if there is no anchor elemen
 });
 
 test('adapter#getWindowDimensions returns the dimensions of the window', () => {
-  const {root, component} = setupTest(true);
+  const {root, component} = setupTest({open: true});
   document.body.appendChild(root);
   assert.equal(component.getDefaultFoundation().adapter_.getWindowDimensions().height, window.innerHeight);
   assert.equal(component.getDefaultFoundation().adapter_.getWindowDimensions().width, window.innerWidth);
@@ -389,7 +405,7 @@ test('adapter#getWindowDimensions returns the dimensions of the window', () => {
 });
 
 test('adapter#getBodyDimensions returns the body dimensions', () => {
-  const {root, component} = setupTest(true);
+  const {root, component} = setupTest({open: true});
   document.body.appendChild(root);
   assert.equal(component.getDefaultFoundation().adapter_.getBodyDimensions().height, document.body.clientHeight);
   assert.equal(component.getDefaultFoundation().adapter_.getBodyDimensions().width, document.body.clientWidth);
@@ -397,7 +413,7 @@ test('adapter#getBodyDimensions returns the body dimensions', () => {
 });
 
 test('adapter#getWindowScroll returns the scroll position of the window when not scrolled', () => {
-  const {root, component} = setupTest(true);
+  const {root, component} = setupTest({open: true});
   document.body.appendChild(root);
   assert.equal(component.getDefaultFoundation().adapter_.getWindowScroll().x, window.pageXOffset);
   assert.equal(component.getDefaultFoundation().adapter_.getWindowScroll().y, window.pageYOffset);
@@ -406,7 +422,7 @@ test('adapter#getWindowScroll returns the scroll position of the window when not
 
 test('adapter#isRtl returns true for RTL documents', () => {
   const anchor = bel`<div dir="rtl" class="mdc-menu-surface--anchor"></div>`;
-  const {root, component} = setupTest(true);
+  const {root, component} = setupTest({open: true});
   anchor.appendChild(root);
   document.body.appendChild(anchor);
   assert.isTrue(component.getDefaultFoundation().adapter_.isRtl());
@@ -415,7 +431,7 @@ test('adapter#isRtl returns true for RTL documents', () => {
 
 test('adapter#isRtl returns false for explicit LTR documents', () => {
   const anchor = bel`<div dir="ltr" class="mdc-menu-surface--anchor"></div>`;
-  const {root, component} = setupTest(true);
+  const {root, component} = setupTest({open: true});
   anchor.appendChild(root);
   document.body.appendChild(anchor);
   assert.isFalse(component.getDefaultFoundation().adapter_.isRtl());
@@ -424,7 +440,7 @@ test('adapter#isRtl returns false for explicit LTR documents', () => {
 
 test('adapter#isRtl returns false for implicit LTR documents', () => {
   const anchor = bel`<div class="mdc-menu-surface--anchor"></div>`;
-  const {root, component} = setupTest(true);
+  const {root, component} = setupTest({open: true});
   anchor.appendChild(root);
   document.body.appendChild(anchor);
   assert.isFalse(component.getDefaultFoundation().adapter_.isRtl());
@@ -433,7 +449,7 @@ test('adapter#isRtl returns false for implicit LTR documents', () => {
 
 test('adapter#isElementInContainer returns true if element is in the menu surface', () => {
   const anchor = bel`<div class="mdc-menu-surface--anchor"></div>`;
-  const {root, component} = setupTest(true);
+  const {root, component} = setupTest({open: true});
   const button = document.createElement('button');
   root.appendChild(button);
   anchor.appendChild(root);
@@ -445,7 +461,7 @@ test('adapter#isElementInContainer returns true if element is in the menu surfac
 
 test('adapter#isElementInContainer returns true if element is the menu surface', () => {
   const anchor = bel`<div class="mdc-menu-surface--anchor"></div>`;
-  const {root, component} = setupTest(true);
+  const {root, component} = setupTest({open: true});
   anchor.appendChild(root);
   document.body.appendChild(anchor);
 
@@ -455,7 +471,7 @@ test('adapter#isElementInContainer returns true if element is the menu surface',
 
 test('adapter#isElementInContainer returns false if element is not in the menu surface', () => {
   const anchor = bel`<div class="mdc-menu-surface--anchor"></div>`;
-  const {root, component} = setupTest(true);
+  const {root, component} = setupTest({open: true});
   const button = document.createElement('button');
   anchor.appendChild(root);
   document.body.appendChild(anchor);

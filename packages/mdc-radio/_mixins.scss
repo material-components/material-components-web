@@ -30,23 +30,25 @@
 @import "./functions";
 @import "./variables";
 
-@mixin mdc-radio($query: mdc-feature-all()) {
+@mixin mdc-radio-core-styles($query: mdc-feature-all()) {
+  @include mdc-radio-without-ripple($query);
+  @include mdc-radio-ripple($query);
+}
+
+// This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
+// radio styles. It is recommended that most users use `mdc-radio-core-styles` instead.
+@mixin mdc-radio-without-ripple($query: mdc-feature-all()) {
   // postcss-bem-linter: define radio
 
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
 
-  @include mdc-ripple-common($query);
-
   .mdc-radio {
     @include mdc-radio-unchecked-stroke-color($mdc-radio-unchecked-color, $query);
     @include mdc-radio-checked-stroke-color($mdc-radio-baseline-theme-color, $query);
     @include mdc-radio-ink-color($mdc-radio-baseline-theme-color, $query);
     @include mdc-radio-focus-indicator-color($mdc-radio-baseline-theme-color, $query);
-    @include mdc-ripple-surface($query);
-    @include mdc-ripple-radius-unbounded($query: $query);
-    @include mdc-states($mdc-radio-baseline-theme-color, $query: $query);
 
     @include mdc-feature-targets($feat-structure) {
       display: inline-block;
@@ -145,17 +147,6 @@
         z-index: 1;
       }
     }
-
-    // stylelint-disable plugin/selector-bem-pattern
-
-    &.mdc-ripple-upgraded--background-focused {
-      .mdc-radio__background::before {
-        @include mdc-feature-targets($feat-structure) {
-          content: none;
-        }
-      }
-    }
-    // stylelint-enable plugin/selector-bem-pattern
   }
 
   .mdc-radio__native-control:checked,
@@ -243,6 +234,28 @@
   }
 
   // postcss-bem-linter: end
+}
+
+// This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
+// radio styles. It is recommended that most users use `mdc-radio-core-styles` instead.
+@mixin mdc-radio-ripple($query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-ripple-common($query);
+
+  .mdc-radio {
+    @include mdc-ripple-surface($query);
+    @include mdc-ripple-radius-unbounded($query: $query);
+    @include mdc-states($mdc-radio-baseline-theme-color, $query: $query);
+
+    &.mdc-ripple-upgraded--background-focused {
+      .mdc-radio__background::before {
+        @include mdc-feature-targets($feat-structure) {
+          content: none;
+        }
+      }
+    }
+  }
 }
 
 @mixin mdc-radio-unchecked-stroke-color($color, $query: mdc-feature-all()) {

@@ -28,9 +28,9 @@ import td from 'testdouble';
 
 import {MDCTopAppBar} from '../../../packages/mdc-top-app-bar/index';
 import {strings} from '../../../packages/mdc-top-app-bar/constants';
-import MDCTopAppBarFoundation from '../../../packages/mdc-top-app-bar/foundation';
-import MDCFixedTopAppBarFoundation from '../../../packages/mdc-top-app-bar/fixed/foundation';
-import MDCShortTopAppBarFoundation from '../../../packages/mdc-top-app-bar/short/foundation';
+import {MDCTopAppBarFoundation} from '../../../packages/mdc-top-app-bar/standard/foundation';
+import {MDCFixedTopAppBarFoundation} from '../../../packages/mdc-top-app-bar/fixed/foundation';
+import {MDCShortTopAppBarFoundation} from '../../../packages/mdc-top-app-bar/short/foundation';
 
 const MENU_ICONS_COUNT = 3;
 
@@ -123,13 +123,21 @@ test('destroy destroys icon ripples', () => {
 
 test('#setScrollTarget deregisters and registers scroll handler on provided target', () => {
   const {component} = setupTest();
-  const fakeTarget = {};
+  const fakeTarget1 = document.createElement('div');
+  const fakeTarget2 = document.createElement('div');
+
+  component.setScrollTarget(fakeTarget1);
+  assert.equal(component.scrollTarget_, fakeTarget1);
+
   component.foundation_.destroyScrollHandler = td.func();
   component.foundation_.initScrollHandler = td.func();
-  component.setScrollTarget(fakeTarget);
+
+  component.setScrollTarget(fakeTarget2);
+
   td.verify(component.foundation_.destroyScrollHandler(), {times: 1});
   td.verify(component.foundation_.initScrollHandler(), {times: 1});
-  assert.equal(component.scrollTarget_, fakeTarget);
+
+  assert.equal(component.scrollTarget_, fakeTarget2);
 });
 
 test('getDefaultFoundation returns the appropriate foundation for default', () => {

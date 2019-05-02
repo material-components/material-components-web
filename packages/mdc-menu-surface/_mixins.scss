@@ -33,7 +33,7 @@
 // Public
 //
 
-@mixin mdc-menu-surface($query: mdc-feature-all()) {
+@mixin mdc-menu-surface-core-styles($query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
   // postcss-bem-linter: define menu-surface

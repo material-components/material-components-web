@@ -26,7 +26,7 @@ import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
-import MDCTextFieldHelperTextFoundation from '../../../packages/mdc-textfield/helper-text/foundation';
+import {MDCTextFieldHelperTextFoundation} from '../../../packages/mdc-textfield/helper-text/foundation';
 
 const {cssClasses} = MDCTextFieldHelperTextFoundation;
 
@@ -47,6 +47,10 @@ test('defaultAdapter returns a complete adapter implementation', () => {
 });
 
 const setupTest = () => setupFoundationTest(MDCTextFieldHelperTextFoundation);
+
+test('istanbul code coverage', () => {
+  assert.doesNotThrow(() => new MDCTextFieldHelperTextFoundation());
+});
 
 test('#setContent sets the content of the helper text element', () => {
   const {foundation, mockAdapter} = setupTest();

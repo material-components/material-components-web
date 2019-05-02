@@ -25,6 +25,27 @@
 @import "@material/theme/variables";
 @import "./variables";
 
+@mixin mdc-elevation-core-styles($query: mdc-feature-all()) {
+  $feat-animation: mdc-feature-create-target($query, animation);
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @for $z-value from 0 through 24 {
+    .mdc-elevation--z#{$z-value} {
+      @include mdc-elevation($z-value, $query: $query);
+    }
+  }
+
+  .mdc-elevation-transition {
+    @include mdc-feature-targets($feat-animation) {
+      transition: mdc-elevation-transition-value();
+    }
+
+    @include mdc-feature-targets($feat-structure) {
+      will-change: $mdc-elevation-property;
+    }
+  }
+}
+
 // Applies the correct CSS rules to an element to give it the elevation specified by $z-value.
 // The $z-value must be between 0 and 24.
 // If $color has an alpha channel, it will be ignored and overridden. To increase the opacity of the shadow, use

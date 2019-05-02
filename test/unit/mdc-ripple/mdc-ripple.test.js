@@ -114,16 +114,7 @@ test('adapter#browserSupportsCssVars delegates to util', () => {
 test('adapter#isUnbounded delegates to unbounded getter', () => {
   const {component} = setupTest();
   component.unbounded = true;
-  assert.isOk(component.getDefaultFoundation().adapter_.isUnbounded());
-});
-
-test('adapter#isSurfaceActive calls the correct :matches API method on the root element', () => {
-  const {root, component} = setupTest();
-  const MATCHES = util.getMatchesProperty(HTMLElement.prototype);
-  const matches = td.func('root.<matches>');
-  td.when(matches(':active')).thenReturn(true);
-  root[MATCHES] = matches;
-  assert.isOk(component.getDefaultFoundation().adapter_.isSurfaceActive());
+  assert.isTrue(component.getDefaultFoundation().adapter_.isUnbounded());
 });
 
 test('adapter#isSurfaceDisabled delegates to component\'s disabled getter', () => {
@@ -135,14 +126,14 @@ test('adapter#isSurfaceDisabled delegates to component\'s disabled getter', () =
 test('adapter#addClass adds a class to the root', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
-  assert.isOk(root.classList.contains('foo'));
+  assert.isTrue(root.classList.contains('foo'));
 });
 
 test('adapter#removeClass removes a class from the root', () => {
   const {root, component} = setupTest();
   root.classList.add('foo');
   component.getDefaultFoundation().adapter_.removeClass('foo');
-  assert.isNotOk(root.classList.contains('foo'));
+  assert.isFalse(root.classList.contains('foo'));
 });
 
 test('adapter#containsEventTarget returns true if the passed element is a descendant of the root element', () => {

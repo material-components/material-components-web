@@ -33,13 +33,18 @@
 // Public
 //
 
-@mixin mdc-switch($query: mdc-feature-all()) {
+@mixin mdc-switch-core-styles($query: mdc-feature-all()) {
+  @include mdc-switch-without-ripple($query);
+  @include mdc-switch-ripple($query);
+}
+
+// This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
+// switch styles. It is recommended that most users use `mdc-switch-core-styles` instead.
+@mixin mdc-switch-without-ripple($query: mdc-feature-all()) {
   // postcss-bem-linter: define switch
 
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-structure: mdc-feature-create-target($query, structure);
-
-  @include mdc-ripple-common($query);
 
   .mdc-switch {
     @include mdc-feature-targets($feat-structure) {
@@ -50,7 +55,6 @@
     @include mdc-switch-toggled-on-thumb-color($mdc-switch-baseline-theme-color, $query);
     @include mdc-switch-toggled-off-track-color($mdc-switch-toggled-off-track-color, $query);
     @include mdc-switch-toggled-off-thumb-color($mdc-switch-toggled-off-thumb-color, $query);
-    @include mdc-switch-toggled-off-ripple-color($mdc-switch-toggled-off-ripple-color, $query);
   }
 
   .mdc-switch__native-control {
@@ -102,6 +106,22 @@
   }
 
   // postcss-bem-linter: end
+}
+
+// This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
+// switch styles. It is recommended that most users use `mdc-switch-core-styles` instead.
+@mixin mdc-switch-ripple($query: mdc-feature-all()) {
+  @include mdc-ripple-common($query);
+
+  .mdc-switch {
+    @include mdc-switch-toggled-off-ripple-color($mdc-switch-toggled-off-ripple-color, $query);
+  }
+
+  .mdc-switch__thumb-underlay {
+    @include mdc-ripple-surface($query);
+    @include mdc-ripple-radius-unbounded(100%, $query);
+    @include mdc-states($mdc-switch-baseline-theme-color, false, $query);
+  }
 }
 
 @mixin mdc-switch-toggled-on-color($color, $query: mdc-feature-all()) {
@@ -209,10 +229,6 @@
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
-
-  @include mdc-ripple-surface($query);
-  @include mdc-ripple-radius-unbounded(100%, $query);
-  @include mdc-states($mdc-switch-baseline-theme-color, false, $query);
 
   @include mdc-feature-targets($feat-structure) {
     @include mdc-rtl-reflexive-position(left, $mdc-switch-tap-target-initial-position);

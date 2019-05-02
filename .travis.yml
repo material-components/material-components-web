@@ -40,7 +40,7 @@ matrix:
     env:
       - TEST_SUITE=build
     script:
-      - if has_testable_files; then npm run build; else log_untestable_files; fi
+      - if has_testable_files; then npm run dist; else log_untestable_files; fi
 
   - node_js: 8
     env:
@@ -48,16 +48,9 @@ matrix:
     addons:
       sauce_connect: true
     script:
-      - if has_testable_files; then npm run test:unit && npm run posttest; else log_untestable_files; fi
+      - if has_testable_files; then npm run test:unit; else log_untestable_files; fi
     after_success:
       - codecov
-
-  - node_js: 8
-    env:
-      - TEST_SUITE=closure
-      - CLOSURE=1
-    script:
-      - if has_testable_files; then npm run test:closure; else log_untestable_files; fi
 
   - node_js: 8
     env:

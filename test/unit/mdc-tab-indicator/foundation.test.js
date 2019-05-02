@@ -26,7 +26,7 @@ import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
-import MDCTabIndicatorFoundation from '../../../packages/mdc-tab-indicator/foundation';
+import {MDCTabIndicatorFoundation} from '../../../packages/mdc-tab-indicator/foundation';
 
 suite('MDCTabIndicatorFoundation');
 
@@ -48,22 +48,16 @@ test('defaultAdapter returns a complete adapter implementation', () => {
 
 const setupTest = () => setupFoundationTest(MDCTabIndicatorFoundation);
 
-test('#computeContentClientRect returns the client rect', () => {
+test('#computeContentClientRect returns adapter value', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.computeContentClientRect();
   td.verify(mockAdapter.computeContentClientRect(), {times: 1});
 });
 
-test('#activate is abstract and does nothing', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.activate();
-  td.verify(mockAdapter.addClass(td.matchers.isA(String)), {times: 0});
-  td.verify(mockAdapter.removeClass(td.matchers.isA(String)), {times: 0});
-});
-
-test('#deactivate is abstract and does nothing', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.deactivate();
-  td.verify(mockAdapter.addClass(td.matchers.isA(String)), {times: 0});
-  td.verify(mockAdapter.removeClass(td.matchers.isA(String)), {times: 0});
+test('#computeContentClientRect returns default client rect', () => {
+  const foundation = new MDCTabIndicatorFoundation();
+  assert.deepEqual(
+    foundation.computeContentClientRect(),
+    {top: 0, right: 0, bottom: 0, left: 0, width: 0, height: 0}
+  );
 });

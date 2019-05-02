@@ -30,6 +30,7 @@ import {strings} from '../../../packages/mdc-dialog/constants';
 import {MDCDialog, MDCDialogFoundation, util} from '../../../packages/mdc-dialog/index';
 import {supportsCssVariables} from '../../../packages/mdc-ripple/util';
 
+/** @return {!HTMLElement} */
 function getFixture() {
   return bel`
     <div>
@@ -95,6 +96,13 @@ suite('MDCDialog');
 
 test('attachTo returns a component instance', () => {
   assert.instanceOf(MDCDialog.attachTo(getFixture().querySelector('.mdc-dialog')), MDCDialog);
+});
+
+test('attachTo throws an error when container element is missing', () => {
+  const fixture = getFixture();
+  const container = fixture.querySelector('.mdc-dialog__container');
+  container.parentElement.removeChild(container);
+  assert.throws(() => MDCDialog.attachTo(fixture.querySelector('.mdc-dialog')));
 });
 
 test('#initialSyncWithDOM registers click handler on the root element', () => {
@@ -259,6 +267,32 @@ test('set autoStackButtons forwards to MDCDialogFoundation#setAutoStackButtons',
   td.verify(mockFoundation.setAutoStackButtons(false));
 });
 
+test('autoStackButtons adds scrollable class', () => {
+  const clock = installClock();
+  const fixture = getFixture();
+  const root = fixture.querySelector('.mdc-dialog');
+  const content = root.querySelector('.mdc-dialog__content');
+
+  // Simulate a scrollable content area
+  content.innerHTML = new Array(100).join(`<p>${content.textContent}</p>`);
+  content.style.height = '50px';
+  content.style.overflow = 'auto';
+
+  document.body.appendChild(fixture);
+
+  try {
+    const component = new MDCDialog(root);
+    component.autoStackButtons = false;
+    component.open();
+    clock.runToFrame();
+    clock.runToFrame();
+
+    assert.isTrue(root.classList.contains('mdc-dialog--scrollable'));
+  } finally {
+    document.body.removeChild(fixture);
+  }
+});
+
 test('adapter#addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
@@ -301,6 +335,7 @@ test('adapter#eventTargetMatches returns whether or not the target matches the s
 
   assert.isTrue(adapter.eventTargetMatches(target, '.existent-class'));
   assert.isFalse(adapter.eventTargetMatches(target, '.non-existent-class'));
+  assert.isFalse(adapter.eventTargetMatches(null, '.existent-class'));
 });
 
 test(`adapter#notifyOpening emits ${strings.OPENING_EVENT}`, () => {
@@ -410,6 +445,12 @@ test('adapter#areButtonsStacked returns result of util.areTopsMisaligned', () =>
   assert.strictEqual(
     component.getDefaultFoundation().adapter_.areButtonsStacked(),
     util.areTopsMisaligned([yesButton, noButton, cancelButton]));
+});
+
+test('adapter#getActionFromEvent returns an empty string when no event target is present', () => {
+  const {component} = setupTest();
+  const action = component.getDefaultFoundation().adapter_.getActionFromEvent({});
+  assert.equal(action, '');
 });
 
 test('adapter#getActionFromEvent returns attribute value on event target', () => {
