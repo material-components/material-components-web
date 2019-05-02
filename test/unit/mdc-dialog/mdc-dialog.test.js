@@ -108,14 +108,14 @@ test('attachTo throws an error when container element is missing', () => {
 test('#initialSyncWithDOM registers click handler on the root element', () => {
   const {root, component, mockFoundation} = setupTestWithMocks();
   domEvents.emit(root, 'click');
-  td.verify(mockFoundation.handleInteraction(td.matchers.isA(Event)), {times: 1});
+  td.verify(mockFoundation.handleClick(td.matchers.isA(Event)), {times: 1});
   component.destroy();
 });
 
 test('#initialSyncWithDOM registers keydown handler on the root element', () => {
   const {root, component, mockFoundation} = setupTestWithMocks();
   domEvents.emit(root, 'keydown');
-  td.verify(mockFoundation.handleInteraction(td.matchers.isA(Event)), {times: 1});
+  td.verify(mockFoundation.handleKeydown(td.matchers.isA(Event)), {times: 1});
   component.destroy();
 });
 
@@ -123,14 +123,14 @@ test('#destroy deregisters click handler on the root element', () => {
   const {root, component, mockFoundation} = setupTestWithMocks();
   component.destroy();
   domEvents.emit(root, 'click');
-  td.verify(mockFoundation.handleInteraction(td.matchers.isA(Event)), {times: 0});
+  td.verify(mockFoundation.handleClick(td.matchers.isA(Event)), {times: 0});
 });
 
 test('#destroy deregisters keydown handler on the root element', () => {
   const {root, component, mockFoundation} = setupTestWithMocks();
   component.destroy();
   domEvents.emit(root, 'keydown');
-  td.verify(mockFoundation.handleInteraction(td.matchers.isA(Event)), {times: 0});
+  td.verify(mockFoundation.handleKeydown(td.matchers.isA(Event)), {times: 0});
 });
 
 test(`${strings.OPENING_EVENT} registers document keydown handler and ${strings.CLOSING_EVENT} deregisters it`, () => {
