@@ -23,16 +23,13 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Bottom-Anchored Menu - MDC Web Screenshot Test</title>
+    <title>Baseline List - MDC Web Screenshot Test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../../../out/mdc.menu.css">
-    <link rel="stylesheet" href="../../../out/mdc.menu-surface.css">
     <link rel="stylesheet" href="../../../out/mdc.list.css">
-    <link rel="stylesheet" href="../../../out/mdc.button.css">
     <link rel="stylesheet" href="../../../out/spec/fixture.css">
-    <link rel="stylesheet" href="../../../out/spec/mdc-menu/fixture.css">
+    <link rel="stylesheet" href="../../../out/spec/mdc-list/fixture.css">
 
-    <!-- Global site tag (gtag.js) - Google Analytics. -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118996389-2"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -43,33 +40,31 @@
   </head>
 
   <body class="test-container">
-    <div class="mdc-menu-surface--anchor test-menu-button-container test-menu-button-container--bottom-right">
-      <button class="mdc-button test-menu-button">Open menu</button>
-      <div class="mdc-menu mdc-menu-surface mdc-menu-surface--open test-menu--bottom-right" id="demo-menu">
-        <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
-          <li>
-            <ul class="mdc-menu__selection-group">
-              <li class="mdc-list-item" role="menuitem">
-                <span class="mdc-menu__selection-group-icon">
-                  <i class="material-icons">check</i>
-                </span>
-                <span class="mdc-list-item__text">Single</span>
-              </li>
-              <li class="mdc-list-item" role="menuitem">
-                <span class="mdc-menu__selection-group-icon">
-                  <i class="material-icons">check</i>
-                </span>
-                <span class="mdc-list-item__text">1.15</span>
-              </li>
-            </ul>
-          </li>
-          <li class="mdc-list-divider" role="separator"></li>
-          <li class="mdc-list-item" role="menuitem">
-            <span class="mdc-list-item__text">Add space before paragraph</span>
-          </li>
-        </ul>
+    <main class="test-viewport test-viewport--mobile">
+      <div class="test-layout">
+        <div class="test-cell test-cell--list">
+          <ul class="mdc-list test-list-baseline">
+            <li class="mdc-list-item" tabindex="0">
+              <span class="mdc-list-item__text">Single-line item</span>
+            </li>
+            <li class="mdc-list-item mdc-list-item--disabled" aria-disabled="true">
+              <span class="mdc-list-item__text">Single-line item</span>
+            </li>
+            <li class="mdc-list-item mdc-list-item--disabled" aria-disabled="true">
+              <span class="mdc-list-item__text">Single-line item</span>
+            </li>
+            <li class="mdc-list-item">
+              <span class="mdc-list-item__text">Single-line item</span>
+            </li>
+            <li class="mdc-list-item">
+              <span class="mdc-list-item__text">Single-line item</span>
+            </li>
+            <li class="mdc-list-item mdc-list-item--disabled" aria-disabled="true">
+              <span class="mdc-list-item__text">Single-line item</span>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
     </main>
 
     <!-- Automatically provides/replaces `Promise` if missing or broken. -->
@@ -78,6 +73,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fontfaceobserver/2.0.13/fontfaceobserver.standalone.js"></script>
     <script src="../../../out/material-components-web.js"></script>
     <script src="../../../out/spec/fixture.js"></script>
-    <script src="../../../out/spec/mdc-menu/fixture.js"></script>
+    <script src="../../../out/spec/mdc-list/fixture.js"></script>
   </body>
 </html>

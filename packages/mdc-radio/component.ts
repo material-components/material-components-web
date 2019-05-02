@@ -22,7 +22,10 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {MDCRipple, MDCRippleAdapter, MDCRippleCapableSurface, MDCRippleFoundation} from '@material/ripple/index';
+import {MDCRippleAdapter} from '@material/ripple/adapter';
+import {MDCRipple} from '@material/ripple/component';
+import {MDCRippleFoundation} from '@material/ripple/foundation';
+import {MDCRippleCapableSurface} from '@material/ripple/types';
 import {MDCRadioAdapter} from './adapter';
 import {MDCRadioFoundation} from './foundation';
 

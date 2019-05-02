@@ -112,6 +112,12 @@
   // stylelint-enable plugin/selector-bem-pattern
 
   .mdc-list-item__meta {
+    // stylelint-disable selector-class-pattern
+    &:not(.material-icons) {
+      @include mdc-typography(caption, $query);
+    }
+    // stylelint-enable selector-class-pattern
+
     @include mdc-feature-targets($feat-structure) {
       @include mdc-rtl-reflexive-property(margin, auto, 0, ".mdc-list-item");
     }
@@ -218,6 +224,13 @@
     }
   }
 
+  // Only change mouse cursor for interactive list items which are not disabled.
+  :not(.mdc-list--non-interactive) > :not(.mdc-list-item--disabled).mdc-list-item {
+    @include mdc-feature-targets($feat-structure) {
+      cursor: pointer;
+    }
+  }
+
   // Override anchor tag styles for the use-case of a list being used for navigation
   // stylelint-disable selector-max-type,selector-no-qualifying-type
   a.mdc-list-item {
@@ -295,6 +308,14 @@
   // match this selector.
   :not(.mdc-list--non-interactive) > :not(.mdc-list-item--disabled).mdc-list-item {
     @include mdc-list-item-interactive-ripple_($query);
+  }
+
+  // Set styles only for focus state on disabled list item.
+  :not(.mdc-list--non-interactive) > .mdc-list-item--disabled {
+    @include mdc-ripple-surface($query: $query);
+    @include mdc-ripple-radius-bounded($query: $query);
+    @include mdc-states-base-color(mdc-theme-prop-value(on-surface), $query: $query);
+    @include mdc-states-focus-opacity(mdc-states-opacity(primary, focus), $query: $query);
   }
 }
 
@@ -394,6 +415,10 @@
     margin: 0;
     padding: 8px 0;
     list-style-type: none;
+
+    &:focus {
+      outline: none;
+    }
   }
 
   @include mdc-list-item-primary-text-ink-color(text-primary-on-background, $query);

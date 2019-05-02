@@ -20,21 +20,32 @@
 // THE SOFTWARE.
 //
 
-// stylelint-disable scss/dollar-variable-pattern
-$mdc-shape-small-component-radius: 50%;
-$mdc-shape-medium-component-radius: 50%;
-$mdc-shape-large-component-radius: 50%;
-// stylelint-enable scss/dollar-variable-pattern
-
-@import "../../../../packages/mdc-button/mdc-button";
-@import "../../../../packages/mdc-fab/mdc-fab";
-@import "../../../../packages/mdc-textfield/mdc-text-field";
-@import "../../../../packages/mdc-select/mdc-select";
 @import "../mixins";
 
 .test-cell--fab,
-.test-cell--button,
+.test-cell--button {
+  // stylelint-disable scss/dollar-variable-pattern
+  $mdc-shape-small-component-radius: 0 50% 0 50%;
+  // stylelint-enable scss/dollar-variable-pattern
+
+  @at-root {
+    @import "../../../../packages/mdc-button/mdc-button";
+    @import "../../../../packages/mdc-fab/mdc-fab";
+  }
+
+  @include test-cell-size(301, 81);
+}
+
 .test-cell--textfield,
 .test-cell--select {
+  // stylelint-disable scss/dollar-variable-pattern
+  $mdc-shape-small-component-radius: 50%;
+  // stylelint-enable scss/dollar-variable-pattern
+
+  @at-root {
+    @import "../../../../packages/mdc-textfield/mdc-text-field";
+    @import "../../../../packages/mdc-select/mdc-select";
+  }
+
   @include test-cell-size(301, 81);
 }

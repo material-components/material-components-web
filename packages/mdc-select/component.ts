@@ -23,23 +23,24 @@
 
 import {MDCComponent} from '@material/base/component';
 import {CustomEventListener, SpecificEventListener} from '@material/base/types';
-import {MDCFloatingLabel, MDCFloatingLabelFactory} from '@material/floating-label/index';
-import {MDCLineRipple, MDCLineRippleFactory} from '@material/line-ripple/index';
+import {MDCFloatingLabel, MDCFloatingLabelFactory} from '@material/floating-label/component';
+import {MDCLineRipple, MDCLineRippleFactory} from '@material/line-ripple/component';
 import * as menuSurfaceConstants from '@material/menu-surface/constants';
+import {MDCMenu, MDCMenuFactory} from '@material/menu/component';
 import * as menuConstants from '@material/menu/constants';
-import {MDCMenu, MDCMenuFactory, MDCMenuItemEvent} from '@material/menu/index';
-import {MDCNotchedOutline, MDCNotchedOutlineFactory} from '@material/notched-outline/index';
-import {MDCRipple, MDCRippleAdapter, MDCRippleCapableSurface, MDCRippleFoundation} from '@material/ripple/index';
+import {MDCMenuItemEvent} from '@material/menu/types';
+import {MDCNotchedOutline, MDCNotchedOutlineFactory} from '@material/notched-outline/component';
+import {MDCRippleAdapter} from '@material/ripple/adapter';
+import {MDCRipple} from '@material/ripple/component';
+import {MDCRippleFoundation} from '@material/ripple/foundation';
+import {MDCRippleCapableSurface} from '@material/ripple/types';
 import {MDCSelectAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCSelectFoundation} from './foundation';
-import {MDCSelectHelperText, MDCSelectHelperTextFactory} from './helper-text/index';
-import {MDCSelectIcon, MDCSelectIconFactory} from './icon/index';
+import {MDCSelectHelperText, MDCSelectHelperTextFactory} from './helper-text/component';
+import {MDCSelectIcon, MDCSelectIconFactory} from './icon/component';
 import {MDCSelectEventDetail, MDCSelectFoundationMap} from './types';
 
-type PointerEventType = 'mousedown' | 'touchstart';
-
-const POINTER_EVENTS: PointerEventType[] = ['mousedown', 'touchstart'];
 const VALIDATION_ATTR_WHITELIST = ['required', 'aria-required'];
 
 export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCRippleCapableSurface {
@@ -71,7 +72,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
   private handleChange_!: SpecificEventListener<'change'>; // assigned in initialize()
   private handleFocus_!: SpecificEventListener<'focus'>; // assigned in initialize()
   private handleBlur_!: SpecificEventListener<'blur'>; // assigned in initialize()
-  private handleClick_!: SpecificEventListener<PointerEventType>; // assigned in initialize()
+  private handleClick_!: SpecificEventListener<'click'>; // assigned in initialize()
   private handleKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialize()
   private handleMenuOpened_!: EventListener; // assigned in initialize()
   private handleMenuClosed_!: EventListener; // assigned in initialize()
@@ -179,9 +180,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     this.targetElement_.addEventListener('focus', this.handleFocus_);
     this.targetElement_.addEventListener('blur', this.handleBlur_);
 
-    POINTER_EVENTS.forEach((evtType) => {
-      this.targetElement_.addEventListener(evtType, this.handleClick_ as EventListener);
-    });
+    this.targetElement_.addEventListener('click', this.handleClick_ as EventListener);
 
     if (this.menuElement_) {
       this.selectedText_!.addEventListener('keydown', this.handleKeydown_);
@@ -215,9 +214,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     this.targetElement_.removeEventListener('focus', this.handleFocus_);
     this.targetElement_.removeEventListener('blur', this.handleBlur_);
     this.targetElement_.removeEventListener('keydown', this.handleKeydown_);
-    POINTER_EVENTS.forEach((evtType) => {
-      this.targetElement_.removeEventListener(evtType, this.handleClick_ as EventListener);
-    });
+    this.targetElement_.removeEventListener('click', this.handleClick_ as EventListener);
 
     if (this.menu_) {
       this.menu_.unlisten(menuSurfaceConstants.strings.CLOSED_EVENT, this.handleMenuClosed_);

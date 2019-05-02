@@ -206,6 +206,22 @@ test('#setValue does not affect disabled state', () => {
   td.verify(mockAdapter.removeClass(cssClasses.INVALID), {times: 1});
 });
 
+test('#setValue updates character counter when present', () => {
+  const {foundation, mockAdapter, characterCounter} = setupTest({useCharacterCounter: true});
+  const nativeInput = {
+    type: 'text',
+    value: '',
+    maxLength: 4,
+    validity: {
+      valid: true,
+    },
+  };
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+
+  foundation.setValue('ok');
+  td.verify(characterCounter.setCounterValue(2, 4), {times: 1});
+});
+
 test('#isValid for native validation', () => {
   const {foundation, nativeInput} = setupValueTest({value: '', optIsValid: true});
   assert.isOk(foundation.isValid());

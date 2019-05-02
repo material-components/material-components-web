@@ -105,7 +105,7 @@
 
   .mdc-button--outlined {
     @include mdc-button--outlined_($query);
-    @include mdc-button-outline-width(2px, $query: $query);
+    @include mdc-button-outline-width($mdc-button-outlined-border-width, $query: $query);
     @include mdc-button-outline-color(primary, $query);
   }
 
