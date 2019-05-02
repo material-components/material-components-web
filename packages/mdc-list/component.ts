@@ -23,7 +23,7 @@
 
 import {MDCComponent} from '@material/base/component';
 import {SpecificEventListener} from '@material/base/types';
-import {ponyfill} from '@material/dom/index';
+import {closest, matches} from '@material/dom/ponyfill';
 import {MDCListAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCListFoundation} from './foundation';
@@ -37,7 +37,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
   }
 
   get listElements(): Element[] {
-    return [].slice.call(this.root_.querySelectorAll(strings.ENABLED_ITEMS_SELECTOR));
+    return [].slice.call(this.root_.querySelectorAll(`.${cssClasses.LIST_ITEM_CLASS}`));
   }
 
   set wrapFocus(value: boolean) {
@@ -164,6 +164,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
       isFocusInsideList: () => {
         return this.root_.contains(document.activeElement);
       },
+      isRootFocused: () => document.activeElement === this.root_,
       notifyAction: (index) => {
         this.emit<MDCListActionEventDetail>(strings.ACTION_EVENT, {index}, /** shouldBubble */ true);
       },
@@ -204,10 +205,10 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
    */
   private getListItemIndex_(evt: Event) {
     const eventTarget = evt.target as Element;
-    const nearestParent = ponyfill.closest(eventTarget, `.${cssClasses.LIST_ITEM_CLASS}, .${cssClasses.ROOT}`);
+    const nearestParent = closest(eventTarget, `.${cssClasses.LIST_ITEM_CLASS}, .${cssClasses.ROOT}`);
 
     // Get the index of the element if it is a list item.
-    if (nearestParent && ponyfill.matches(nearestParent, `.${cssClasses.LIST_ITEM_CLASS}`)) {
+    if (nearestParent && matches(nearestParent, `.${cssClasses.LIST_ITEM_CLASS}`)) {
       return this.listElements.indexOf(nearestParent);
     }
 
@@ -237,10 +238,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
   private handleKeydownEvent_(evt: KeyboardEvent) {
     const index = this.getListItemIndex_(evt);
     const target = evt.target as Element;
-
-    if (index >= 0) {
-      this.foundation_.handleKeydown(evt, target.classList.contains(cssClasses.LIST_ITEM_CLASS), index);
-    }
+    this.foundation_.handleKeydown(evt, target.classList.contains(cssClasses.LIST_ITEM_CLASS), index);
   }
 
   /**
@@ -251,7 +249,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
     const target = evt.target as Element;
 
     // Toggle the checkbox only if it's not the target of the event, or the checkbox will have 2 change events.
-    const toggleCheckbox = !ponyfill.matches(target, strings.CHECKBOX_RADIO_SELECTOR);
+    const toggleCheckbox = !matches(target, strings.CHECKBOX_RADIO_SELECTOR);
     this.foundation_.handleClick(index, toggleCheckbox);
   }
 }

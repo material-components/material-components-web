@@ -22,8 +22,9 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {MDCChip, MDCChipFactory, MDCChipFoundation} from '../chip/index';
-import {MDCChipInteractionEvent, MDCChipRemovalEvent, MDCChipSelectionEvent} from '../chip/index';
+import {MDCChip, MDCChipFactory} from '../chip/component';
+import {MDCChipFoundation} from '../chip/foundation';
+import {MDCChipInteractionEvent, MDCChipRemovalEvent, MDCChipSelectionEvent} from '../chip/types';
 import {MDCChipSetAdapter} from './adapter';
 import {MDCChipSetFoundation} from './foundation';
 

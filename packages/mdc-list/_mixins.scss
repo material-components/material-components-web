@@ -112,6 +112,12 @@
   // stylelint-enable plugin/selector-bem-pattern
 
   .mdc-list-item__meta {
+    // stylelint-disable selector-class-pattern
+    &:not(.material-icons) {
+      @include mdc-typography(caption, $query);
+    }
+    // stylelint-enable selector-class-pattern
+
     @include mdc-feature-targets($feat-structure) {
       @include mdc-rtl-reflexive-property(margin, auto, 0, ".mdc-list-item");
     }
@@ -303,6 +309,14 @@
   :not(.mdc-list--non-interactive) > :not(.mdc-list-item--disabled).mdc-list-item {
     @include mdc-list-item-interactive-ripple_($query);
   }
+
+  // Set styles only for focus state on disabled list item.
+  :not(.mdc-list--non-interactive) > .mdc-list-item--disabled {
+    @include mdc-ripple-surface($query: $query);
+    @include mdc-ripple-radius-bounded($query: $query);
+    @include mdc-states-base-color(mdc-theme-prop-value(on-surface), $query: $query);
+    @include mdc-states-focus-opacity(mdc-states-opacity(primary, focus), $query: $query);
+  }
 }
 
 @mixin mdc-list-item-primary-text-ink-color($color, $query: mdc-feature-all()) {
@@ -401,6 +415,10 @@
     margin: 0;
     padding: 8px 0;
     list-style-type: none;
+
+    &:focus {
+      outline: none;
+    }
   }
 
   @include mdc-list-item-primary-text-ink-color(text-primary-on-background, $query);
