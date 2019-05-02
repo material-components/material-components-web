@@ -77,7 +77,8 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   private focusTrap_!: FocusTrap; // assigned in initialSyncWithDOM()
   private focusTrapFactory_?: MDCDialogFocusTrapFactory; // assigned in initialize()
 
-  private handleInteraction_!: SpecificEventListener<'click' | 'keydown'>; // assigned in initialSyncWithDOM()
+  private handleClick_!: SpecificEventListener<'click'>; // assigned in initialSyncWithDOM()
+  private handleKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
   private handleDocumentKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
   private handleLayout_!: EventListener; // assigned in initialSyncWithDOM()
   private handleOpening_!: EventListener; // assigned in initialSyncWithDOM()
@@ -107,7 +108,8 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   initialSyncWithDOM() {
     this.focusTrap_ = util.createFocusTrapInstance(this.container_, this.focusTrapFactory_, this.initialFocusEl_);
 
-    this.handleInteraction_ = this.foundation_.handleInteraction.bind(this.foundation_);
+    this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
+    this.handleKeydown_ = this.foundation_.handleKeydown.bind(this.foundation_);
     this.handleDocumentKeydown_ = this.foundation_.handleDocumentKeydown.bind(this.foundation_);
     this.handleLayout_ = this.layout.bind(this);
 
@@ -121,15 +123,15 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
       document.removeEventListener('keydown', this.handleDocumentKeydown_);
     };
 
-    this.listen('click', this.handleInteraction_);
-    this.listen('keydown', this.handleInteraction_);
+    this.listen('click', this.handleClick_);
+    this.listen('keydown', this.handleKeydown_);
     this.listen(strings.OPENING_EVENT, this.handleOpening_);
     this.listen(strings.CLOSING_EVENT, this.handleClosing_);
   }
 
   destroy() {
-    this.unlisten('click', this.handleInteraction_);
-    this.unlisten('keydown', this.handleInteraction_);
+    this.unlisten('click', this.handleClick_);
+    this.unlisten('keydown', this.handleKeydown_);
     this.unlisten(strings.OPENING_EVENT, this.handleOpening_);
     this.unlisten(strings.CLOSING_EVENT, this.handleClosing_);
     this.handleClosing_();
