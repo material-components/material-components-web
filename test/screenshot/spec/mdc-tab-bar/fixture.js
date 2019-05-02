@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
 
 window.mdc.testFixture.fontsLoaded.then(() => {
   [].forEach.call(document.querySelectorAll('.mdc-tab-bar'), (el) => {
-    mdc.tabbar.MDCTabBar.attachTo(el);
+    mdc.tabBar.MDCTabBar.attachTo(el);
   });
 
   window.mdc.testFixture.notifyDomReady();
