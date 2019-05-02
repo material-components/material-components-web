@@ -304,7 +304,7 @@ test('setSelectedIndex throws error if index is not in range', () => {
   const {foundation} = setupTest();
   try {
     foundation.setSelectedIndex(5);
-  } catch(e) {
+  } catch (e) {
     assert.equal(e.message, 'MDCMenuFoundation: No list item at specified index.');
   }
 });
