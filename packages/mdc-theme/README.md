@@ -48,13 +48,29 @@ https://www.w3.org/TR/WCAG20
 
 Color scheme will only get you 80% of the way to a well-designed app. Inevitably there will be some components that do not work "out of the box". To fix problems with accessibility and design, we suggest you use our Sass mixins, such as `mdc-button-filled-accessible`. For more information, consult the documentation for each component.
 
+### Text styles
+
+The text styles (referred to as `<TEXT_STYLE>` below) used in the color system:
+
+Text style | Description
+--- | ---
+`primary` | Used for most text (e.g., `text-primary-on-light`)
+`secondary` | Used for text which is lower in the visual hierarchy (e.g., `text-secondary-on-light`)
+`hint` | Used for text hints, such as those in text fields and labels (e.g., `text-hint-on-light`)
+`disabled` | Used for text in disabled components and content (e.g., `text-disabled-on-light`)
+`icon` | Used for icons (e.g., `text-icon-on-light`)
+
+Here are the example usages of `primary` text style:
+
+  * CSS Custom property: `--mdc-theme-text-primary-on-light`
+  * Class name: `mdc-theme--text-primary-on-light`
+  * Property name used in Sass: `text-primary-on-light`
+
 ### Non-Sass customization
 
 Only a very limited number of Material Design color customization features are supported for non-Sass clients. They are a set of CSS custom properties, and a set of CSS classes.
 
 #### CSS Custom Properties
-
-**A note about `<TEXT_STYLE>`**, `<TEXT_STYLE>` represents the lowercase name of the text styles listed above, e.g. `hint`.
 
 CSS Custom property | Description
 --- | ---
@@ -65,12 +81,10 @@ CSS Custom property | Description
 `--mdc-theme-on-primary` | Text color on top of a primary background
 `--mdc-theme-on-secondary` | Text color on top of a secondary background
 `--mdc-theme-on-surface` | Text color on top of a surface background
-`--mdc-theme-text-<TEXT_STYLE>-on-light` | Text color for TEXT_STYLE on top of light background
-`--mdc-theme-text-<TEXT_STYLE>-on-dark` | Text color for TEXT_STYLE on top of dark background
+`--mdc-theme-text-<TEXT_STYLE>-on-light` | Text color for TEXT_STYLE on top of light background. Please see [Text styles section](#text-styles).
+`--mdc-theme-text-<TEXT_STYLE>-on-dark` | Text color for TEXT_STYLE on top of dark background. Please see [Text styles section](#text-styles).
 
 #### CSS Classes
-
-> **A note about `<TEXT_STYLE>`**, `<TEXT_STYLE>` represents the lowercase name of the text styles listed above, e.g. `hint`.
 
 CSS Class | Description
 --- | ---
@@ -83,8 +97,8 @@ CSS Class | Description
 `mdc-theme--on-surface` | Sets the text color to the theme on-surface color
 `mdc-theme--primary-bg` | Sets the background color to the theme primary color
 `mdc-theme--secondary-bg` | Sets the background color to the theme secondary color
-`mdc-theme--text-<TEXT_STYLE>-on-light` | Sets text to a suitable color for TEXT_STYLE on top of light background
-`mdc-theme--text-<TEXT_STYLE>-on-dark` | Sets text to a suitable color for TEXT_STYLE on top of dark background
+`mdc-theme--text-<TEXT_STYLE>-on-light` | Sets text to a suitable color for TEXT_STYLE on top of light background. Please see [Text styles section](#text-styles).
+`mdc-theme--text-<TEXT_STYLE>-on-dark` | Sets text to a suitable color for TEXT_STYLE on top of dark background. Please see [Text styles section](#text-styles).
 
 ### Sass Mixins, Variables, and Functions
 
@@ -96,20 +110,50 @@ Mixin | Description
 
 The properties below can be used as the `$style` argument for the `mdc-theme-prop` mixin. Literal color values (e.g., `rgba(0, 0, 0, .75)`) may also be used instead.
 
-**A note about `<TEXT_STYLE>`**, `<TEXT_STYLE>` represents the lowercase name of the text styles listed above, e.g. `hint`.
-
 Property Name | Description
 --- | ---
 `primary` | The theme primary color
 `secondary` | The theme secondary color
 `background` | The theme background color
 `surface` | The theme surface color
-`text-<TEXT_STYLE>-on-light` | TEXT_STYLE on top of a light background
-`text-<TEXT_STYLE>-on-dark` | TEXT_STYLE on top of a dark background
+`text-<TEXT_STYLE>-on-light` | TEXT_STYLE on top of a light background. Please see [Text styles section](#text-styles).
+`text-<TEXT_STYLE>-on-dark` | TEXT_STYLE on top of a dark background. Please see [Text styles section](#text-styles).
 `on-primary` | A text/iconography color that is usable on top of primary color
 `on-secondary` | A text/iconography color that is usable on top of secondary color
 `on-surface` | A text/iconography color that is usable on top of surface color
 
+#### `mdc-theme-prop` with CSS Custom Properties
+
+> **Note** The Sass map `$style` argument is intended *only* for use with color mixins.
+
+The `mdc-theme-prop` mixin also accepts a Sass map for the `$style` argument. The map must contain the following fields:
+
+Fields | Description
+--- | ---
+`varname` | The name of a CSS custom property
+`fallback` | A fallback value for the CSS custom property
+
+For example, the following Sass...
+
+```
+.foo {
+  @include mdc-theme-prop(color, (
+    varname: --foo-color,
+    fallback: red,
+  ));
+}
+```
+
+...will produce the following CSS...
+
+```
+.foo {
+  color: red;
+  color: var(--foo-color, red);
+}
+```
+
+The above output CSS will apply the `fallback` field's value for all supported browsers (including IE11) while allowing for CSS custom property use as a progressive enhancement. Browsers like IE11 that do not support CSS custom properties will apply the `color: red;` and ignore the `color: var(--foo-color, red);`. This argument type is intended for clients who need custom color application outside of the existing theme properties.
 
 #### `mdc-theme-luminance($color)`
 

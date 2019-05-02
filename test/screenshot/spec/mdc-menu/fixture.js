@@ -21,16 +21,35 @@
  * THE SOFTWARE.
  */
 
+import {DefaultFocusState} from '../../../../packages/mdc-menu/constants';
+
 window.mdc.testFixture.fontsLoaded.then(() => {
   const buttonEl = document.querySelector('.test-menu-button');
   const menuEl = document.querySelector('.mdc-menu');
   const menu = mdc.menu.MDCMenu.attachTo(menuEl);
   menu.setAnchorCorner(mdc.menu.Corner.BOTTOM_LEFT);
-  menu.setAnchorElement(buttonEl);
   menu.open = true;
 
   buttonEl.addEventListener('click', () => {
+    menu.setDefaultFocusState(DefaultFocusState.LIST_ROOT);
     menu.open = !menu.open;
+  });
+
+  buttonEl.addEventListener('keydown', (evt) => {
+    const arrowUp = evt.key === 'ArrowUp' || evt.keyCode === 38;
+    const arrowDown = evt.key === 'ArrowDown' || evt.keyCode === 40;
+    const isEnter = evt.key === 'Enter' || evt.keyCode === 13;
+    const isSpace = evt.key === 'Space' || evt.keyCode === 32;
+
+    if (isSpace || isEnter || arrowDown) {
+      evt.preventDefault();
+      menu.setDefaultFocusState(DefaultFocusState.FIRST_ITEM);
+      menu.open = !menu.open;
+    } else if (arrowUp) {
+      evt.preventDefault();
+      menu.setDefaultFocusState(DefaultFocusState.LAST_ITEM);
+      menu.open = !menu.open;
+    }
   });
 
   window.mdc.testFixture.notifyDomReady();

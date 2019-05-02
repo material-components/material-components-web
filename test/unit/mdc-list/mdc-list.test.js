@@ -30,21 +30,44 @@ import {cssClasses, strings} from '../../../packages/mdc-list/constants';
 
 function getFixture() {
   return bel`
-  <ul class="mdc-list">
+  <ul class="mdc-list" tabindex="-1">
     <li class="mdc-list-item" tabindex="0">
-      Fruit
+      <span class="mdc-list-item__text">Fruit</span>
       <button>one</button>
     </li>
     <li class="mdc-list-item">
-      Potato
+      <span class="mdc-list-item__text">Potato</span>
       <a href="http://www.google.com">Link</a>
     </li>
     <li class="mdc-list-item">
-      Pasta
+      <span class="mdc-list-item__text">Pasta</span>
       <input type="checkbox"/>
     </li>
     <li class="mdc-list-item">
-      Pizza
+      <span class="mdc-list-item__text">Pizza</span>
+      <input type="radio"/>
+    </li>
+   </ul>
+  `;
+}
+
+function getFixtureWithDisabledItems() {
+  return bel`
+  <ul class="mdc-list" tabindex="-1">
+    <li class="mdc-list-item" tabindex="0">
+      <span class="mdc-list-item__text">Fruit</span>
+      <button>one</button>
+    </li>
+    <li class="mdc-list-item mdc-list-item--disabled" aria-disabled="true">
+      <span class="mdc-list-item__text">Potato</span>
+      <a href="http://www.google.com">Link</a>
+    </li>
+    <li class="mdc-list-item mdc-list-item--disabled" aria-disabled="true">
+      <span class="mdc-list-item__text">Pasta</span>
+      <input type="checkbox"/>
+    </li>
+    <li class="mdc-list-item">
+      <span class="mdc-list-item__text">Pizza</span>
       <input type="radio"/>
     </li>
    </ul>
@@ -165,26 +188,6 @@ test('adapter#setAttributeForElementIndex sets the attribute for the list elemen
   const selectedNode = root.querySelectorAll('.mdc-list-item')[1];
   component.getDefaultFoundation().adapter_.setAttributeForElementIndex(1, 'foo', 'bar');
   assert.equal('bar', selectedNode.getAttribute('foo'));
-  document.body.removeChild(root);
-});
-
-test('adapter#removeAttributeForElementIndex does nothing if the element at index does not exist', () => {
-  const {root, component} = setupTest();
-  document.body.appendChild(root);
-  const func = () => {
-    component.getDefaultFoundation().adapter_.removeAttributeForElementIndex(5, 'foo');
-  };
-  assert.doesNotThrow(func);
-  document.body.removeChild(root);
-});
-
-test('adapter#removeAttributeForElementIndex sets the attribute for the list element at index specified', () => {
-  const {root, component} = setupTest();
-  document.body.appendChild(root);
-  const selectedNode = root.querySelectorAll('.mdc-list-item')[1];
-  component.getDefaultFoundation().adapter_.setAttributeForElementIndex(1, 'foo', 'bar');
-  component.getDefaultFoundation().adapter_.removeAttributeForElementIndex(1, 'foo');
-  assert.isFalse(selectedNode.hasAttribute('foo'));
   document.body.removeChild(root);
 });
 
@@ -377,12 +380,12 @@ test('keydown handler is triggered when a sub-element of a list is triggered', (
   td.verify(mockFoundation.handleKeydown(event, false, 0), {times: 1});
 });
 
-test('keydown handler does not call foundation when event target is not a list item or child of list item', () => {
+test('keydown calls foundation.handleKeydown method with negative index when event triggered on list root ', () => {
   const {root, mockFoundation} = setupTest();
   const event = document.createEvent('KeyboardEvent');
   event.initEvent('keydown', true, true);
   root.dispatchEvent(event);
-  td.verify(mockFoundation.handleKeydown(event, false, 0), {times: 0});
+  td.verify(mockFoundation.handleKeydown(event, false, -1), {times: 1});
 });
 
 test('keydown handler is removed from the root element on destroy', () => {
@@ -393,6 +396,11 @@ test('keydown handler is removed from the root element on destroy', () => {
   const listElementItem = root.querySelector('.mdc-list-item');
   listElementItem.dispatchEvent(event);
   td.verify(mockFoundation.handleKeydown(event, true, 0), {times: 0});
+});
+
+test('#listElements should return all list items including disabled list items', () => {
+  const {component} = setupTest(getFixtureWithDisabledItems());
+  assert.equal(4, component.listElements.length);
 });
 
 test('adapter#hasRadioAtIndex return true or false based on presense of radio button on list item', () => {
@@ -457,4 +465,22 @@ test('adapter#notifyAction emits action event', () => {
   component.unlisten(strings.ACTION_EVENT, handler);
 
   assert.deepEqual(detail, {index: 3});
+});
+
+test('adapter#isFocusInsideList returns true if focus is inside list root', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+  assert.isFalse(component.getDefaultFoundation().adapter_.isFocusInsideList());
+  root.querySelector('.mdc-list-item').focus();
+  assert.isTrue(component.getDefaultFoundation().adapter_.isFocusInsideList());
+  document.body.removeChild(root);
+});
+
+test('adapter#isRootFocused returns true if list root is on focus', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+  assert.isFalse(component.getDefaultFoundation().adapter_.isRootFocused());
+  root.focus();
+  assert.isTrue(component.getDefaultFoundation().adapter_.isRootFocused());
+  document.body.removeChild(root);
 });

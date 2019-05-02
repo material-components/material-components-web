@@ -34,6 +34,13 @@
 //
 
 @mixin mdc-card-core-styles($query: mdc-feature-all()) {
+  @include mdc-card-without-ripple($query);
+  @include mdc-card-ripple($query);
+}
+
+// This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
+// card styles. It is recommended that most users use `mdc-card-core-styles` instead.
+@mixin mdc-card-without-ripple($query: mdc-feature-all()) {
   // postcss-bem-linter: define card
 
   $feat-color: mdc-feature-create-target($query, color);
@@ -113,9 +120,6 @@
   //
 
   .mdc-card__primary-action {
-    @include mdc-ripple-surface($query);
-    @include mdc-ripple-radius-bounded($query: $query);
-
     @include mdc-feature-targets($feat-structure) {
       @include mdc-card-container-layout_;
 
@@ -126,8 +130,6 @@
       cursor: pointer;
       overflow: hidden;
     }
-
-    @include mdc-states($query: $query);
   }
 
   .mdc-card__primary-action:first-child {
@@ -172,7 +174,7 @@
 
   .mdc-card__action-icons {
     @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(color, text-icon-on-background);
+      @include mdc-theme-prop(color, $mdc-card-action-icon-color);
     }
 
     @include mdc-feature-targets($feat-structure) {
@@ -251,7 +253,8 @@
 
   .mdc-card__action--icon {
     @include mdc-feature-targets($feat-structure) {
-      // Icon toggles are taller than buttons, so we need to adjust their margins to prevent the action row from expanding.
+      // Icon buttons are taller than buttons, so we need to adjust their margins to prevent the action row from
+      // expanding.
       margin: -6px 0;
 
       // Same padding as mdc-icon-button.
@@ -261,11 +264,23 @@
 
   .mdc-card__action--icon:not(:disabled) {
     @include mdc-feature-targets($feat-color) {
-      @include mdc-theme-prop(color, text-icon-on-background);
+      @include mdc-theme-prop(color, $mdc-card-action-icon-color);
     }
   }
 
   // postcss-bem-linter: end
+}
+
+// This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
+// card styles. It is recommended that most users use `mdc-card-core-styles` instead.
+@mixin mdc-card-ripple($query: mdc-feature-all()) {
+  @include mdc-ripple-common($query);
+
+  .mdc-card__primary-action {
+    @include mdc-ripple-surface($query);
+    @include mdc-ripple-radius-bounded($query: $query);
+    @include mdc-states($query: $query);
+  }
 }
 
 @mixin mdc-card-fill-color($color, $query: mdc-feature-all()) {

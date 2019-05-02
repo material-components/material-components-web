@@ -97,8 +97,6 @@ if (supportsCssVariables(window)) {
     const fakeMatches = td.func('.matches');
     td.when(fakeMatches(':active')).thenReturn(true);
     input.matches = fakeMatches;
-    input.webkitMatchesSelector = fakeMatches;
-    input.msMatchesSelector = fakeMatches;
 
     assert.isTrue(root.classList.contains('mdc-ripple-upgraded'));
     domEvents.emit(input, 'keydown');

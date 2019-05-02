@@ -34,13 +34,18 @@
 //
 
 @mixin mdc-checkbox-core-styles($query: mdc-feature-all()) {
+  @include mdc-checkbox-without-ripple($query);
+  @include mdc-checkbox-ripple($query);
+}
+
+// This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
+// checkbox styles. It is recommended that most users use `mdc-checkbox-core-styles` instead.
+@mixin mdc-checkbox-without-ripple($query: mdc-feature-all()) {
   // postcss-bem-linter: define checkbox
 
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
-
-  @include mdc-ripple-common($query);
 
   @include mdc-feature-targets($feat-animation) {
     @include mdc-checkbox-mark-keyframes_;
@@ -50,10 +55,6 @@
     @include mdc-feature-targets($feat-structure) {
       @include mdc-checkbox-base_;
     }
-
-    @include mdc-ripple-surface($query);
-    @include mdc-states($mdc-checkbox-baseline-theme-color, $query: $query);
-    @include mdc-ripple-radius-unbounded($query: $query);
   }
 
   @include mdc-checkbox-container-colors($query: $query);
@@ -131,12 +132,6 @@
     @include mdc-checkbox__focus-indicator_($query);
   }
 
-  .mdc-ripple-upgraded--background-focused .mdc-checkbox__background::before {
-    @include mdc-feature-targets($feat-structure) {
-      @include mdc-checkbox__focus-indicator--ripple-upgraded-unbounded_;
-    }
-  }
-
   .mdc-checkbox__native-control:focus ~ .mdc-checkbox__background::before {
     @include mdc-checkbox__focus-indicator--focused_($query);
   }
@@ -178,6 +173,26 @@
   }
 
   // postcss-bem-linter: end
+}
+
+// This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
+// checkbox styles. It is recommended that most users use `mdc-checkbox-core-styles` instead.
+@mixin mdc-checkbox-ripple($query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-ripple-common($query);
+
+  .mdc-checkbox {
+    @include mdc-ripple-surface($query);
+    @include mdc-states($mdc-checkbox-baseline-theme-color, $query: $query);
+    @include mdc-ripple-radius-unbounded($query: $query);
+  }
+
+  .mdc-ripple-upgraded--background-focused .mdc-checkbox__background::before {
+    @include mdc-feature-targets($feat-structure) {
+      content: none;
+    }
+  }
 }
 
 @mixin mdc-checkbox-container-colors(
@@ -409,8 +424,11 @@
 }
 
 @mixin mdc-checkbox-unmarked-background-selector-disabled_ {
+  // Note: we must use `[disabled]` instead of `:disabled` below because Edge does not always recalculate the style
+  // property when the `:disabled` pseudo-class is followed by a sibling combinator. See:
+  // https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11295231/
   // stylelint-disable-next-line selector-max-specificity
-  .mdc-checkbox__native-control:disabled:not(:checked):not(:indeterminate) ~ .mdc-checkbox__background {
+  .mdc-checkbox__native-control[disabled]:not(:checked):not(:indeterminate) ~ .mdc-checkbox__background {
     @content;
   }
 }
@@ -423,8 +441,11 @@
 }
 
 @mixin mdc-checkbox-marked-background-selector-disabled_ {
-  .mdc-checkbox__native-control:disabled:checked ~ .mdc-checkbox__background,
-  .mdc-checkbox__native-control:disabled:indeterminate ~ .mdc-checkbox__background {
+  // Note: we must use `[disabled]` instead of `:disabled` below because Edge does not always recalculate the style
+  // property when the `:disabled` pseudo-class is followed by a sibling combinator. See:
+  // https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11295231/
+  .mdc-checkbox__native-control[disabled]:checked ~ .mdc-checkbox__background,
+  .mdc-checkbox__native-control[disabled]:indeterminate ~ .mdc-checkbox__background {
     @content;
   }
 }
@@ -506,10 +527,6 @@
       mdc-checkbox-transition-enter(opacity, 0ms, 80ms),
       mdc-checkbox-transition-enter(transform, 0ms, 80ms);
   }
-}
-
-@mixin mdc-checkbox__focus-indicator--ripple-upgraded-unbounded_ {
-  content: none;
 }
 
 // Native input

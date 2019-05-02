@@ -26,7 +26,7 @@ import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
-import MDCNotchedOutlineFoundation from '../../../packages/mdc-notched-outline/foundation';
+import {MDCNotchedOutlineFoundation} from '../../../packages/mdc-notched-outline/foundation';
 
 const {cssClasses, numbers, strings} = MDCNotchedOutlineFoundation;
 

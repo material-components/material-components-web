@@ -43,7 +43,7 @@ The simple approach can be outlined as follows:
    `mdcComponent.destroy()` to clean up the MDC Web component.
 
 This general approach will work for almost all basic use-cases. For an example of this approach,
-check out [this plunk](https://plnkr.co/edit/b4v160c186ErrPG5vNza?p=preview) which
+check out [this plunk](https://plnkr.co/edit/qZl2frDGBT6Ro7jEMbjP?p=preview) which
 shows how to wrap our text field within an angular v1 component, as well as our button (with a
 ripple) within an attribute directive.
 
@@ -63,8 +63,8 @@ case.
 
 Every component comes with a complementary foundation class, which is usually called
 `MDCComponentFoundation`, where `MDCComponent` is the name of a component. For example, we have an
-[MDCMenuFoundation](../packages/mdc-menu/foundation.js) that is used by our
-[MDCMenu](../packages/mdc-menu/index.js) component, and which are both exported
+[MDCMenuFoundation](../packages/mdc-menu/foundation.ts) that is used by our
+[MDCMenu](../packages/mdc-menu/index.ts) component, and which are both exported
 publicly.
 
 In order to implement a component via a foundation, take the following steps:

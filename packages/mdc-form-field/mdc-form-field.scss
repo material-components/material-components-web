@@ -20,55 +20,5 @@
 // THE SOFTWARE.
 //
 
-@import "@material/rtl/mixins";
-@import "@material/theme/mixins";
-@import "@material/typography/mixins";
-
-$mdc-form-field-item-spacing: 4px;
-
-// stylelint-disable selector-max-type
-.mdc-form-field {
-  @include mdc-typography(body2);
-  @include mdc-theme-prop(color, text-primary-on-background);
-
-  display: inline-flex;
-  align-items: center;
-  vertical-align: middle;
-
-  > label {
-    order: 0;
-    /* @noflip */
-    margin-right: auto;
-    /* @noflip */
-    padding-left: $mdc-form-field-item-spacing;
-  }
-
-  @include mdc-rtl {
-    > label {
-      /* @noflip */
-      margin-left: auto;
-      /* @noflip */
-      padding-right: $mdc-form-field-item-spacing;
-    }
-  }
-}
-
-.mdc-form-field--align-end {
-  > label {
-    order: -1;
-    /* @noflip */
-    margin-left: auto;
-    /* @noflip */
-    padding-right: $mdc-form-field-item-spacing;
-  }
-
-  @include mdc-rtl {
-    > label {
-      /* @noflip */
-      margin-right: auto;
-      /* @noflip */
-      padding-left: $mdc-form-field-item-spacing;
-    }
-  }
-}
-// stylelint-enable selector-max-type
+@import "./mixins";
+@include mdc-form-field-core-styles;

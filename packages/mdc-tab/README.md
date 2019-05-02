@@ -134,6 +134,11 @@ Mixin | Description
 --- | ---
 `mdc-tab-text-label-color($color)` | Customizes the color of the tab text label.
 `mdc-tab-icon-color($color)` | Customizes the color of the tab icon.
+`mdc-tab-states-color($color)`| Customizes the base states color, which affects hover/focus states and the press ripple.
+`mdc-tab-ink-color($color)` | Customizes the text label, icon, and base states color.
+`mdc-tab-active-text-label-color($color)`  | Customizes the color of the active tab's text label.
+`mdc-tab-active-icon-color($color)`  | Customizes the color of the active tab's icon.
+`mdc-tab-active-states-color($color)`  | Customizes the color of the active tab's states.
 `mdc-tab-parent-positioning` | Sets the positioning of the MDCTab's parent element so that `MDCTab.computeDimensions()` reports the same values in all browsers.
 `mdc-tab-fixed-width($width)` | Sets the fixed width of the tab. The tab will never be smaller than the given width.
 
@@ -141,12 +146,13 @@ Mixin | Description
 
 Property | Value Type | Description
 --- | --- | ---
+`id` | `string` | Value of the root tab element's `id` attribute.
 `active` | `boolean` (read-only) | Allows getting the active state of the tab.
 `focusOnActivate` | `boolean` (write-only) | Sets whether the tab should focus itself when activated. Defaults to `true`.
 
 Method Signature | Description
 --- | ---
-`activate(previousIndicatorClientRect: ClientRect=) => void` | Activates the indicator.  `previousIndicatorClientRect` is an optional argument.
+`activate(previousIndicatorClientRect?: ClientRect) => void` | Activates the indicator.  `previousIndicatorClientRect` is an optional argument.
 `deactivate() => void` | Deactivates the indicator.
 `focus() => void` | Focuses the tab.
 `computeIndicatorClientRect() => ClientRect` | Returns the bounding client rect of the indicator.
@@ -168,7 +174,7 @@ Method Signature | Description
 `removeClass(className: string) => void` | Removes a class from the root element.
 `hasClass(className: string) => boolean` | Returns true if the root element contains the given class.
 `setAttr(attr: string, value: string) => void` | Sets the given attribute on the root element to the given value.
-`activateIndicator(previousIndicatorClientRect: ClientRect=) => void` | Activates the tab indicator subcomponent. `previousIndicatorClientRect` is an optional argument.
+`activateIndicator(previousIndicatorClientRect?: ClientRect) => void` | Activates the tab indicator subcomponent. `previousIndicatorClientRect` is an optional argument.
 `deactivateIndicator() => void` | Deactivates the tab indicator subcomponent.
 `getOffsetLeft() => number` | Returns the `offsetLeft` value of the root element.
 `getOffsetWidth() => number` | Returns the `offsetWidth` value of the root element.
@@ -184,13 +190,13 @@ Method Signature | Description
 `handleClick() => void` | Handles the logic for the `"click"` event.
 `isActive() => boolean` | Returns whether the tab is active.
 `setFocusOnActivate(focusOnActivate: boolean) => void` | Sets whether the tab should focus itself when activated.
-`activate(previousIndicatorClientRect: ClientRect=) => void` | Activates the tab. `previousIndicatorClientRect` is an optional argument.
+`activate(previousIndicatorClientRect?: ClientRect) => void` | Activates the tab. `previousIndicatorClientRect` is an optional argument.
 `deactivate() => void` | Deactivates the tab.
 `computeDimensions() => MDCTabDimensions` | Returns the dimensions of the tab.
 
 ### `MDCTabFoundation` Event Handlers
 
-When wrapping the Tab component, it is necessary to register the following event handler. For an example of this, see the [MDCTab](index.js) component's `initialSyncWithDOM` method.
+When wrapping the Tab component, it is necessary to register the following event handler. For an example of this, see the [`MDCTab`](component.ts) component's `initialSyncWithDOM` method.
 
 Event | Element | Foundation Handler
 --- | --- | ---

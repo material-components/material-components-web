@@ -24,7 +24,7 @@
 import {assert} from 'chai';
 import td from 'testdouble';
 
-import MDCRadioFoundation from '../../../packages/mdc-radio/foundation';
+import {MDCRadioFoundation} from '../../../packages/mdc-radio/foundation';
 
 suite('MDCRadioFoundation');
 

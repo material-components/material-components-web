@@ -31,7 +31,18 @@
   position: relative;
 }
 
-.test-menu-baseline {
+.test-menu-button-container--bottom-right {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+}
+
+.test-menu--baseline {
   top: 36px;
   left: 0;
+}
+
+.test-menu--bottom-right {
+  right: 0;
+  bottom: 36px;
 }

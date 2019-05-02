@@ -24,7 +24,7 @@
 import td from 'testdouble';
 
 import {setupFoundationTest} from '../helpers/setup';
-import MDCFadingTabIndicatorFoundation from '../../../packages/mdc-tab-indicator/fading-foundation';
+import {MDCFadingTabIndicatorFoundation} from '../../../packages/mdc-tab-indicator/fading-foundation';
 
 suite('MDCFadingTabIndicatorFoundation');
 
@@ -37,7 +37,9 @@ test(`#activate adds the ${MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE} cl
 });
 
 test(`#deactivate removes the ${MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE} class`, () => {
-  const {foundation, mockAdapter} = setupTest();
+  const foundation = new MDCFadingTabIndicatorFoundation();
+  const adapter = foundation.adapter_;
+  adapter.removeClass = td.func('removeClass');
   foundation.deactivate();
-  td.verify(mockAdapter.removeClass(MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE));
+  td.verify(adapter.removeClass(MDCFadingTabIndicatorFoundation.cssClasses.ACTIVE));
 });

@@ -41,17 +41,23 @@
   justify-content: center;
   box-sizing: border-box;
   height: $mdc-tab-height;
+  // Explicitly setting margin to 0 is to override safari default margin for button elements.
+  margin: 0;
   padding: 0 24px;
   border: none;
   outline: none;
   background: none;
   text-align: center;
-  text-decoration: none;
-  text-transform: uppercase;
   white-space: nowrap;
   cursor: pointer;
   -webkit-appearance: none;
   z-index: 1;
+
+  // Firefox still draws a dotted border around focused buttons unless specifically overridden.
+  &::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+  }
 }
 
 .mdc-tab--min-width {

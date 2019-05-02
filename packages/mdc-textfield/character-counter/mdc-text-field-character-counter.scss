@@ -29,8 +29,11 @@
 .mdc-text-field-character-counter {
   @include mdc-typography(caption);
   @include mdc-typography-baseline-top(16px);
-  @include mdc-rtl-reflexive-box(margin, left, auto); // Keep flex item align to trailing side on absence of helper text.
+  // Keep flex item align to trailing side on absence of helper text.
+  @include mdc-rtl-reflexive-box(margin, left, auto);
   @include mdc-rtl-reflexive-box(padding, left, 16px);
+
+  white-space: nowrap;
 }
 
 // postcss-bem-linter: end
