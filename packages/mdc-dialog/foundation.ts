@@ -176,7 +176,7 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
     });
   }
 
-  /** Closes the dialog if scrim or action button click. */
+  /** Handles click on the dialog root element. */
   handleClick(evt: MouseEvent) {
     const isScrim = this.adapter_.eventTargetMatches(evt.target, strings.SCRIM_SELECTOR);
     // Check for scrim click first since it doesn't require querying ancestors.
