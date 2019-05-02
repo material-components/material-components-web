@@ -424,8 +424,11 @@
 }
 
 @mixin mdc-checkbox-unmarked-background-selector-disabled_ {
+  // Note: we must use `[disabled]` instead of `:disabled` below because Edge does not always recalculate the style
+  // property when the `:disabled` pseudo-class is followed by a sibling combinator. See:
+  // https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11295231/
   // stylelint-disable-next-line selector-max-specificity
-  .mdc-checkbox__native-control:disabled:not(:checked):not(:indeterminate) ~ .mdc-checkbox__background {
+  .mdc-checkbox__native-control[disabled]:not(:checked):not(:indeterminate) ~ .mdc-checkbox__background {
     @content;
   }
 }
@@ -438,8 +441,11 @@
 }
 
 @mixin mdc-checkbox-marked-background-selector-disabled_ {
-  .mdc-checkbox__native-control:disabled:checked ~ .mdc-checkbox__background,
-  .mdc-checkbox__native-control:disabled:indeterminate ~ .mdc-checkbox__background {
+  // Note: we must use `[disabled]` instead of `:disabled` below because Edge does not always recalculate the style
+  // property when the `:disabled` pseudo-class is followed by a sibling combinator. See:
+  // https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11295231/
+  .mdc-checkbox__native-control[disabled]:checked ~ .mdc-checkbox__background,
+  .mdc-checkbox__native-control[disabled]:indeterminate ~ .mdc-checkbox__background {
     @content;
   }
 }
