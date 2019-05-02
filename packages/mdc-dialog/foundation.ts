@@ -190,6 +190,7 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
     }
   }
 
+  /** Handles keydown on the dialog root element. */
   handleKeydown(evt: KeyboardEvent) {
     const isEnter = evt.key === 'Enter' || evt.keyCode === 13;
     if (!isEnter) {
@@ -209,6 +210,7 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
     }
   }
 
+  /** Handles keydown on the document. */
   handleDocumentKeydown(evt: KeyboardEvent) {
     const isEscape = evt.key === 'Escape' || evt.keyCode === 27;
     if (isEscape && this.escapeKeyAction_ !== '') {
