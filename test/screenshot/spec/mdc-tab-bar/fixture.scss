@@ -25,5 +25,5 @@
 @import "../mixins";
 
 .test-cell--tab-bar {
-  @include test-cell-size(321, 121);
+  @include test-cell-size(400, 100);
 }
