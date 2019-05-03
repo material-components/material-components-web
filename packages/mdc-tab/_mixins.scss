@@ -26,7 +26,8 @@
 // Public mixins
 
 @mixin mdc-tab-horizontal-padding($padding) {
-  padding: 0 $padding;
+  padding-right: $padding;
+  padding-left: $padding;
 }
 
 @mixin mdc-tab-text-label-color($color) {
