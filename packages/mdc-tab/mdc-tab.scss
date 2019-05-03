@@ -44,6 +44,8 @@
   height: $mdc-tab-height;
   // Explicitly setting margin to 0 is to override safari default margin for button elements.
   margin: 0;
+  padding-top: 0;
+  padding-bottom: 0;
   border: none;
   outline: none;
   background: none;
