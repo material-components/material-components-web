@@ -21,8 +21,10 @@
 
 @import "./mixins";
 
-.mdc-select--with-leading-icon {
-  @include mdc-select-icon_;
+.mdc-select--with-leading-icon .mdc-select__icon {
+  position: absolute;
+  bottom: 16px;
+  cursor: pointer;
 }
 
 .mdc-select__icon:not([tabindex]),
