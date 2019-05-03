@@ -28,44 +28,89 @@ import td from 'testdouble';
 
 import {MDCDrawer} from '../../../packages/mdc-drawer/index';
 import {strings, cssClasses} from '../../../packages/mdc-drawer/constants';
-import {MDCListFoundation} from '../../../packages/mdc-list/index';
-import MDCDismissibleDrawerFoundation from '../../../packages/mdc-drawer/dismissible/foundation';
+import {MDCList, MDCListFoundation} from '../../../packages/mdc-list/index';
+import {MDCDismissibleDrawerFoundation} from '../../../packages/mdc-drawer/dismissible/foundation';
+import {MDCModalDrawerFoundation} from '../../../packages/mdc-drawer/modal/foundation';
 
-function getFixture(variantClass) {
-  let scrimEl;
-  if (variantClass === cssClasses.MODAL) {
-    scrimEl = bel`<div class="mdc-drawer-scrim"></div>`;
-  }
+/**
+ * @typedef {{
+ *   variantClass: (string|undefined),
+ *   shadowRoot: (boolean|undefined),
+ *   hasList: (boolean|undefined),
+ * }}
+ */
+let DrawerSetupOptions; // eslint-disable-line no-unused-vars
 
-  return bel`
-  <div class="body-content">
-    <div class="mdc-drawer ${variantClass}">
+const defaultSetupOptions = {variantClass: cssClasses.DISMISSIBLE, shadowRoot: false, hasList: true};
+
+/**
+ * @param {DrawerSetupOptions} options
+ * @return {HTMLElement|DocumentFragment}
+ */
+function getFixture(options) {
+  const listEl = bel`
+    <div class="mdc-list-group">
+      <nav class="mdc-list">
+        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
+          <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
+        </a>
+      </nav>
+    </div>
+    `;
+  const drawerEl = bel`
+    <div class="mdc-drawer ${options.variantClass}">
       <div class="mdc-drawer__content">
-      <div class="mdc-list-group">
-        <nav class="mdc-list">
-          <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
-            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>Inbox
-          </a>
-        </nav>
+        ${options.hasList ? listEl : ''}
       </div>
     </div>
-    ${scrimEl}
-  </div>
-  `;
+    `;
+  const scrimEl = bel`<div class="mdc-drawer-scrim"></div>`;
+  const isModal = options.variantClass === cssClasses.MODAL;
+
+  if (options.shadowRoot) {
+    const fragment = document.createDocumentFragment();
+    fragment.appendChild(drawerEl);
+    if (isModal) {
+      fragment.appendChild(scrimEl);
+    }
+    return fragment;
+  } else {
+    return bel`
+      <div class="body-content">
+        ${drawerEl}
+        ${isModal ? scrimEl : ''}
+      </div>`;
+  }
 }
 
-function setupTest(variantClass = cssClasses.DISMISSIBLE) {
-  const root = getFixture(variantClass);
+/**
+ * @param {DrawerSetupOptions} options
+ * @return {{component: MDCDrawer, root: (HTMLElement|DocumentFragment), drawer: HTMLElement}}
+ */
+function setupTest(options = defaultSetupOptions) {
+  const root = getFixture(options);
   const drawer = root.querySelector('.mdc-drawer');
   const component = new MDCDrawer(drawer);
   return {root, drawer, component};
 }
 
-
-function setupTestWithMocks(variantClass = cssClasses.DISMISSIBLE) {
-  const root = getFixture(variantClass);
+/**
+ * @param {DrawerSetupOptions} options
+ * @return {{
+ *   component: MDCDrawer,
+ *   mockList: MDCList,
+ *   mockFocusTrapInstance: {activate: function(), deactivate: function(), pause: function(), unpause: function()},
+ *   root: HTMLElement,
+ *   drawer: HTMLElement,
+ *   mockFoundation: (MDCDismissibleDrawerFoundation|MDCModalDrawerFoundation),
+ * }}
+ */
+function setupTestWithMocks(options = defaultSetupOptions) {
+  const root = getFixture(options);
   const drawer = root.querySelector('.mdc-drawer');
-  const MockFoundationCtor = td.constructor(MDCDismissibleDrawerFoundation);
+  const isModal = options.variantClass === cssClasses.MODAL;
+  const MockFoundationClass = isModal ? MDCModalDrawerFoundation : MDCDismissibleDrawerFoundation;
+  const MockFoundationCtor = td.constructor(MockFoundationClass);
   const mockFoundation = new MockFoundationCtor();
   const mockFocusTrapInstance = td.object({
     activate: () => {},
@@ -83,8 +128,8 @@ function setupTestWithMocks(variantClass = cssClasses.DISMISSIBLE) {
 suite('MDCDrawer');
 
 test('attachTo initializes and returns a MDCDrawer instance', () => {
-  const drawer = getFixture(cssClasses.DISMISSIBLE).querySelector('.mdc-drawer');
-  assert.isTrue(MDCDrawer.attachTo(drawer) instanceof MDCDrawer);
+  const root = getFixture({variantClass: cssClasses.DISMISSIBLE, hasList: false}).querySelector('.mdc-drawer');
+  assert.instanceOf(MDCDrawer.attachTo(root), MDCDrawer);
 });
 
 test('#get open calls foundation.isOpen', () => {
@@ -105,6 +150,18 @@ test('#set open false calls foundation.close', () => {
   td.verify(mockFoundation.close(), {times: 1});
 });
 
+test('#get list returns MDCList instance when DOM includes list', () => {
+  const {component} = setupTest();
+  assert.instanceOf(component.list, MDCList);
+});
+
+test('click event calls foundation.handleScrimClick method', () => {
+  const {root, mockFoundation} = setupTestWithMocks({variantClass: cssClasses.MODAL});
+  const scrimEl = root.querySelector('.mdc-drawer-scrim');
+  domEvents.emit(scrimEl, 'click');
+  td.verify(mockFoundation.handleScrimClick(), {times: 1});
+});
+
 test('keydown event calls foundation.handleKeydown method', () => {
   const {drawer, mockFoundation} = setupTestWithMocks();
   drawer.querySelector('.mdc-list-item').focus();
@@ -119,8 +176,8 @@ test('transitionend event calls foundation.handleTransitionEnd method', () => {
 });
 
 test('component should throw error when invalid variant class name is used or no variant specified', () => {
-  assert.throws(() => setupTest('mdc-drawer--test-invalid-variant'), Error);
-  assert.throws(() => setupTest(' '), Error);
+  assert.throws(() => setupTest({variantClass: 'mdc-drawer--test-invalid-variant'}), Error);
+  assert.throws(() => setupTest({variantClass: ' '}), Error);
 });
 
 test('#destroy removes keydown event listener', () => {
@@ -144,6 +201,14 @@ test('#destroy calls destroy on list', () => {
   component.destroy();
 
   td.verify(mockList.destroy(), {times: 1});
+});
+
+test('#destroy does not throw an error when list is not present', () => {
+  const {component, mockList} =
+    setupTestWithMocks(Object.assign({}, defaultSetupOptions, {variantClass: cssClasses.MODAL, hasList: false}));
+  component.destroy();
+
+  td.verify(mockList.destroy(), {times: 0});
 });
 
 test('adapter#addClass adds class to drawer', () => {
@@ -232,14 +297,14 @@ test('adapter#restoreFocus focus is not restored if saveFocus never called', () 
 });
 
 test('adapter#trapFocus traps focus on root element', () => {
-  const {component, mockFocusTrapInstance} = setupTestWithMocks(cssClasses.MODAL);
+  const {component, mockFocusTrapInstance} = setupTestWithMocks({variantClass: cssClasses.MODAL});
   component.getDefaultFoundation().adapter_.trapFocus();
 
   td.verify(mockFocusTrapInstance.activate());
 });
 
 test('adapter#releaseFocus releases focus on root element after trap focus', () => {
-  const {component, mockFocusTrapInstance} = setupTestWithMocks(cssClasses.MODAL);
+  const {component, mockFocusTrapInstance} = setupTestWithMocks({variantClass: cssClasses.MODAL});
   component.getDefaultFoundation().adapter_.releaseFocus();
 
   td.verify(mockFocusTrapInstance.deactivate());
@@ -272,7 +337,24 @@ test('adapter#focusActiveNavigationItem focuses on active navigation item', () =
   document.body.appendChild(root);
   component.getDefaultFoundation().adapter_.focusActiveNavigationItem();
 
-  const activedNavigationItemEl = root.querySelector(`.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`);
-  assert.equal(activedNavigationItemEl, document.activeElement);
+  const activatedNavigationItemEl = root.querySelector(`.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`);
+  assert.equal(document.activeElement, activatedNavigationItemEl);
   document.body.removeChild(root);
+});
+
+test('adapter#focusActiveNavigationItem does nothing if no active navigation item exists', () => {
+  const {component, root} = setupTest();
+  const prevActiveElement = document.activeElement;
+  document.body.appendChild(root);
+  const activatedNavigationItemEl = root.querySelector(`.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`);
+  activatedNavigationItemEl.classList.remove(MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS);
+  component.getDefaultFoundation().adapter_.focusActiveNavigationItem();
+
+  assert.equal(document.activeElement, prevActiveElement);
+  document.body.removeChild(root);
+});
+
+test('#initialSyncWithDOM should not throw any errors when DOM rendered in DocumentFragment i.e., Shadow DOM', () => {
+  const {component} = setupTest({variantClass: cssClasses.MODAL, shadowRoot: true});
+  assert.doesNotThrow(() => component.initialSyncWithDOM());
 });

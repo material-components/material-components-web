@@ -182,7 +182,7 @@
   transition: box-shadow 200ms linear;
 }
 
-// Specific styles for prominent and dense styled top app bar
+// Specific styles for dense and prominent styled top app bar
 // stylelint-disable plugin/selector-bem-pattern
 .mdc-top-app-bar--dense.mdc-top-app-bar--prominent {
   .mdc-top-app-bar__row {
@@ -196,7 +196,7 @@
   .mdc-top-app-bar__title {
     @include mdc-rtl-reflexive-box(padding, left, $mdc-top-app-bar-title-left-padding);
 
-    padding-bottom: $mdc-top-app-bar-prominent-dense-title-bottom-padding;
+    padding-bottom: $mdc-top-app-bar-dense-prominent-title-bottom-padding;
   }
 }
 // stylelint-enable plugin/selector-bem-pattern

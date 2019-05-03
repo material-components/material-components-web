@@ -26,7 +26,7 @@ import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
-import MDCTabBarFoundation from '../../../packages/mdc-tab-bar/foundation';
+import {MDCTabBarFoundation} from '../../../packages/mdc-tab-bar/foundation';
 
 suite('MDCTabBarFoundation');
 
@@ -374,6 +374,14 @@ test('#activateTab() deactivates the previously active tab', () => {
   td.when(mockAdapter.getPreviousActiveTabIndex()).thenReturn(6);
   foundation.activateTab(1);
   td.verify(mockAdapter.deactivateTabAtIndex(6), {times: 1});
+});
+
+test('#activateTab() does not deactivate the previously active tab if there is none', () => {
+  const {foundation, mockAdapter} = setupActivateTabTest();
+  td.when(mockAdapter.getTabListLength()).thenReturn(13);
+  td.when(mockAdapter.getPreviousActiveTabIndex()).thenReturn(-1);
+  foundation.activateTab(1);
+  td.verify(mockAdapter.deactivateTabAtIndex(td.matchers.anything()), {times: 0});
 });
 
 test('#activateTab() activates the newly active tab with the previously active tab\'s indicatorClientRect', () => {

@@ -99,6 +99,8 @@ Method Signature | Description
 `getScrollAreaScrollLeft() => number` | Returns the scroll area element's `scrollLeft`.
 `getScrollContentOffsetWidth() => number` | Returns the scroll content element's `offsetWidth`.
 `getScrollAreaOffsetWidth() => number` | Returns the scroll area element's `offsetWidth`.
+`computeScrollAreaClientRect() => ClientRect` | Returns the bounding client rect of the scroll area element.
+`computeScrollContentClientRect() => ClientRect` | Returns the bounding client rect of the scroll content element.
 `computeHorizontalScrollbarHeight() => number` | Returns the height of the browser's horizontal scrollbars (in px).
 
 #### `util` Functions
@@ -108,12 +110,29 @@ MDC Tab Scroller provides a `util` module with functions to help implement adapt
 Function Signature | Description
 --- | ---
 `computeHorizontalScrollbarHeight(document: Document) => number` | Returns the height of the browser's horizontal scrollbars (in px).
-`getMatchesProperty(HTMLElementPrototype: Object) => string` | Returns the appropriate property name for the `matches` API in the current browser environment.
 
 ### `MDCTabScrollerFoundation`
 
 Method Signature | Description
 --- | ---
-`scrollTo(scrollX: number) => void` | Scrolls to the `scrollX` value.
-`incrementScroll(scrollX: number) => void` | Increments the current scroll value by the `scrollX` value.
+`getRTLScroller() => MDCTabScrollerRTL` | Creates an RTL Scroller instance for the current browser.
 `getScrollPosition() => number` | Returns the current visual scroll position.
+`handleInteraction() => void` | Responds to mouse, pointer, touch, and keyboard events.
+`handleTransitionEnd(evt: Event) => void` | Responds to a `transitionend` event on the `mdc-tab-scroller__scroll-content` element.
+`incrementScroll(scrollX: number) => void` | Increments the current scroll value by the `scrollX` value.
+`scrollTo(scrollX: number) => void` | Scrolls to the `scrollX` value.
+
+### `MDCTabScrollerRTL`
+
+Abstract class with three concrete implementations depending on the browser:
+
+* `MDCTabScrollerRTLDefault`
+* `MDCTabScrollerRTLNegative`
+* `MDCTabScrollerRTLReverse`
+
+Method Signature | Description
+--- | ---
+`getAnimatingScrollPosition(scrollX: number, translateX: number) => number` | Returns the current scroll position during animation.
+`getScrollPositionRTL(translateX: number) => number` | Returns the number of px the user has scrolled horizontally, relative to the leading edge.
+`incrementScrollRTL(scrollX: number) => MDCTabScrollerAnimation` | Returns an object containing the values required to animate from the current scroll position to a new scroll position.
+`scrollToRTL(scrollX: number) => MDCTabScrollerAnimation` | Scrolls content horizontally to the given position in an RTL-friendly way.

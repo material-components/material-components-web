@@ -73,6 +73,7 @@ CSS Class | Description
 --- | ---
 `mdc-notched-outline` | Mandatory. Container for the outline's sides and notch.
 `mdc-notched-outline--notched` | Modifier class to open the notched outline.
+`mdc-notched-outline--no-label` | Modifier class to use when the floating label is empty or not used.
 `mdc-notched-outline__leading` | Mandatory. Element representing the leading side of the notched outline (before the notch).
 `mdc-notched-outline__notch` | Mandatory. Element representing the notch.
 `mdc-notched-outline__trailing` | Mandatory. Element representing the trailing side of the notched outline (after the notch).

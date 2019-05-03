@@ -6,11 +6,6 @@ iconId: text_field
 path: /catalog/input-controls/text-field/
 -->
 
-## Important - Deprecation Notice
-
-The dense variant of the text field will be removed in an upcoming release. 
-See [github issue](https://github.com/material-components/material-components-web/issues/4142) for details.
-
 # Text Field
 
 Text fields allow users to input, edit, and select text.
@@ -129,11 +124,99 @@ To disable the text field, add the `disabled` attribute to the `<input>` element
 </div>
 ```
 
+### Text Field without label
+
+A text field doesn’t require a label if a separate but clear label indicator is already displayed adjacent to the text field.
+Add class name `mdc-text-field--no-label` and remove the label element from the structure.
+
+#### Filled
+
+```html
+<div class="mdc-text-field mdc-text-field--no-label">
+  <input type="text" class="mdc-text-field__input" placeholder="Placeholder text" aria-label="Label">
+  <div class="mdc-line-ripple"></div>
+</div>
+```
+
+#### Outlined
+
+```html
+<div class="mdc-text-field mdc-text-field--outlined mdc-text-field--no-label">
+  <input type="text" class="mdc-text-field__input" aria-label="Label">
+  <div class="mdc-notched-outline">
+    <div class="mdc-notched-outline__leading"></div>
+    <div class="mdc-notched-outline__trailing"></div>
+  </div>
+</div>
+```
+
+#### Textarea
+
+```html
+<div class="mdc-text-field mdc-text-field--textarea mdc-text-field--no-label">
+  <textarea class="mdc-text-field__input" rows="8" cols="40" aria-label="Label"></textarea>
+  <div class="mdc-notched-outline">
+    <div class="mdc-notched-outline__leading"></div>
+    <div class="mdc-notched-outline__trailing"></div>
+  </div>
+</div>
+```
+
 ### Text Field with Helper Text
 
 The helper text provides supplemental information and/or validation messages to users. It appears on input field focus
-and disappears on input field blur by default, or it can be persistent.
-See [here](helper-text/) for more information on using helper text.
+and disappears on input field blur by default, or it can be persistent. Helper text should be rendered inside `.mdc-text-field-helper-line` element
+which is immediate sibling of `.mdc-text-field`. See [here](helper-text/) for more information on using helper text.
+
+```html
+<div class="mdc-text-field">
+  <input type="text" id="my-text-field" class="mdc-text-field__input">
+  <label class="mdc-floating-label" for="my-text-field">My Label</label>
+  <div class="mdc-line-ripple"></div>
+</div>
+<div class="mdc-text-field-helper-line">
+  <div class="mdc-text-field-helper-text">helper text</div>
+</div>
+```
+
+### Text Field with Character Counter
+
+Character counter is used if there is a character limit. It displays the ratio of characters used and the total character limit.
+Character counter should be rendered inside `.mdc-text-field-helper-line` element which is immediate sibling of `.mdc-text-field`.
+See [here](character-counter/) for more information on using character counter.
+
+```html
+<div class="mdc-text-field">
+  <input type="text" id="my-text-field" class="mdc-text-field__input" maxlength="10">
+  <label class="mdc-floating-label" for="my-text-field">My Label</label>
+  <div class="mdc-line-ripple"></div>
+</div>
+<div class="mdc-text-field-helper-line">
+  <div class="mdc-text-field-character-counter">0 / 10</div>
+</div>
+```
+
+### Multi-line Text Field (Textarea) with Character Counter
+
+The layout structure of character counter for multi-line text field (textarea) is slightly different since it is rendered
+inside of text field component.
+
+```html
+<div class="mdc-text-field mdc-text-field--textarea">
+  <div class="mdc-text-field-character-counter">0 / 140</div>
+  <textarea id="textarea" class="mdc-text-field__input" rows="8" cols="40" maxlength="140"></textarea>
+  <div class="mdc-notched-outline">
+    <div class="mdc-notched-outline__leading"></div>
+    <div class="mdc-notched-outline__notch">
+      <label for="textarea" class="mdc-floating-label">Textarea Label</label>
+    </div>
+    <div class="mdc-notched-outline__trailing"></div>
+  </div>
+</div>
+```
+
+Helper text and Character counter are optional subcomponents of text field that can co-exist independently.
+It is recommended that `.mdc-text-field` and `.mdc-text-field-helper-line` elements have same width for correct layout.
 
 ### Text Field with Leading and Trailing Icons
 
@@ -183,10 +266,17 @@ CSS Class | Description
 `mdc-text-field--fullwidth` | Styles the text field as a full width text field.
 `mdc-text-field--textarea` | Indicates the text field is a `<textarea>`.
 `mdc-text-field--disabled` | Styles the text field as a disabled text field.
-`mdc-text-field--dense` | Styles the text field as a dense text field.
+`mdc-text-field--dense` | Styles the text field as a dense text field.\*
 `mdc-text-field--with-leading-icon` | Styles the text field as a text field with a leading icon.
 `mdc-text-field--with-trailing-icon` | Styles the text field as a text field with a trailing icon.
 `mdc-text-field--focused` | Styles the text field as a text field in focus.
+`mdc-text-field--no-label` | Styles the text field that has no label.
+`mdc-text-field-helper-line` | Styles the container of helper text and character counter elements.
+
+#### Deprecation Notice
+
+\*The `--dense` variant of the text field will be removed in an upcoming release.
+See [github issue](https://github.com/material-components/material-components-web/issues/4142) for details.
 
 ### Sass Mixins
 
@@ -243,20 +333,21 @@ Mixin | Description
 
 Property | Value Type | Description
 --- | --- | ---
-`value` | string | Proxies to the foundation's `getValue`/`setValue` methods.
-`disabled` | boolean | Proxies to the foundation's `isDisabled`/`setDisabled` methods.
-`useNativeValidation` | boolean (write-only) | Proxies to the foundation's `setUseNativeValidation` method.
-`valid` | boolean | Proxies to the foundation's `isValid`/`setValid` methods.
-`helperTextContent` | string (write-only)| Proxies to the foundation's `setHelperTextContent` method when set.
+`value` | `string` | Proxies to the foundation's `getValue`/`setValue` methods.
+`disabled` | `boolean` | Proxies to the foundation's `isDisabled`/`setDisabled` methods.
+`useNativeValidation` | `boolean` (write-only) | Proxies to the foundation's `setUseNativeValidation` method.
+`valid` | `boolean` | Proxies to the foundation's `isValid`/`setValid` methods.
+`helperTextContent` | `string` (write-only)| Proxies to the foundation's `setHelperTextContent` method when set.
 `ripple` | `MDCRipple` (write-only) | The `MDCRipple` instance for the root element that `MDCTextField` initializes; this only applies to the default Text Field, and is `null` for other variants.
-`leadingIconAriaLabel` | string (write-only) | Proxies to the foundation's `setLeadingIconAriaLabel` method.
-`trailingIconAriaLabel` | string (write-only) | Proxies to the foundation's `setTrailingIconAriaLabel` method.
-`leadingIconContent` | string (write-only) | Proxies to the foundation's `setLeadingIconContent` method.
-`trailingIconContent` | string (write-only) | Proxies to the foundation's `setTrailingIconContent` method.
+`leadingIconAriaLabel` | `string` (write-only) | Proxies to the foundation's `setLeadingIconAriaLabel` method.
+`trailingIconAriaLabel` | `string` (write-only) | Proxies to the foundation's `setTrailingIconAriaLabel` method.
+`leadingIconContent` | `string` (write-only) | Proxies to the foundation's `setLeadingIconContent` method.
+`trailingIconContent` | `string` (write-only) | Proxies to the foundation's `setTrailingIconContent` method.
 
 In addition to the above, the following properties proxy to the `input` element's properties of the same name:
 
 * `required`
+* `pattern`
 * `minLength`
 * `maxLength`
 * `min`
@@ -272,7 +363,6 @@ Method Signature | Description
 
 If you are using a JavaScript framework, such as React or Angular, you can create a Text Field for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-
 ### `MDCTextFieldAdapter`
 
 Method Signature | Description
@@ -284,23 +374,35 @@ Method Signature | Description
 `deregisterTextFieldInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event handler on the root element for a given event.
 `registerInputInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the native input element for a given event.
 `deregisterInputInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the native input element for a given event.
-`registerValidationAttributeChangeHandler(handler: function(!Array<string>) => undefined) => !MutationObserver` | Registers a validation attribute change listener on the input element. Handler accepts list of attribute changes.
+`registerValidationAttributeChangeHandler(handler: (attributeNames: string[]) => void) => MutationObserver` | Registers a validation attribute change listener on the input element. Handler accepts list of attribute changes.
 `deregisterValidationAttributeChangeHandler(!MutationObserver) => void` | Disconnects a validation attribute observer on the input element.
-`getNativeInput() => {value: string, disabled: boolean, badInput: boolean, checkValidity: () => boolean}?` | Returns an object representing the native text input element, with a similar API shape.
+`getNativeInput() => NativeInputType \| null` | Returns an object representing the native text input element, with a similar API shape. See [types.ts](types.ts).
 `isFocused() => boolean` | Returns whether the input is focused.
-`hasOutline() => boolean` | Returns whether there is an outline element.
-`notchOutline(labelWidth: number) => void` | Updates the notched outline path to open the notch and update the notch width for the label element.
-`closeOutline() => void` | Closes the notch in the notched outline element.
+`shakeLabel(shouldShake: boolean) => void` | Shakes the label to indicate an invalid input value.
+`floatLabel(shouldFloat: boolean) => void` | Floats the label.
+`hasLabel() => boolean` | Determines whether the text field has a label element.
+`getLabelWidth() => number` | Returns the width of the label element in px.
+`activateLineRipple() => void` | Activates the text field's line ripple sub-element.
+`deactivateLineRipple() => void` | Deactivate the text field's line ripple sub-element.
+`setLineRippleTransformOrigin(normalizedX: number) => void` | Sets the CSS `transform-origin` property to the given value on the text field's line ripple sub-element (if present).
+`hasOutline() => boolean` | Determines whether the text field has an outline sub-element.
+`notchOutline(labelWidth: number) => void` | Sets the width of the text field's notched outline sub-element.
+`closeOutline() => void` | Closes the text field's notched outline sub-element.
 
 #### `MDCTextFieldAdapter.getNativeInput()`
 
-Returns an object representing the native text input element, with a similar API shape. The object returned should include the `value`, `disabled` and `badInput` properties, as well as the `checkValidity()` function. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully.
+Returns an object representing the native text input element, with a similar API shape. We _never_ alter the value within our code, however we _do_ update the disabled property, so if you choose to duck-type the return value for this method in your implementation it's important to keep this in mind. Also note that this method can return null, which the foundation will handle gracefully.
 
 #### `MDCTextFieldAdapter.getIdleOutlineStyleValue(propertyName: string)`
 
 Returns the idle outline element's computed style value of the given css property `propertyName`. The vanilla implementation achieves this via `getComputedStyle(...).getPropertyValue(propertyName)`.
 
 ### `MDCTextFieldFoundation`
+
+Property | Value Type | Description
+--- | --- | ---
+`shouldFloat` | `boolean` (read-only) | Determines whether the label should float.
+`shouldShake` | `boolean` (read-only) | Determines whether the label should shake.
 
 Method Signature | Description
 --- | ---
@@ -312,6 +414,7 @@ Method Signature | Description
 `isDisabled() => boolean` | Returns whether or not the input is disabled.
 `setDisabled(disabled: boolean) => void` | Updates the input's disabled state.
 `handleTextFieldInteraction(evt: Event) => void` | Handles click and keydown events originating from inside the Text Field component.
+`handleInput() => void` | Handles text input and textarea input event.
 `handleValidationAttributeChange(attributesList: !Array<string>) => void` | Handles validation attribute changes.
 `activateFocus() => void` | Activates the focus state of the Text Field. Normally called in response to the input focus event.
 `deactivateFocus() => void` | Deactivates the focus state of the Text Field. Normally called in response to the input blur event.
@@ -321,5 +424,7 @@ Method Signature | Description
 `setTrailingIconAriaLabel(label: string) => void` | Sets the aria label of the trailing icon.
 `setTrailingIconContent(content: string) => void` | Sets the text content of the trailing icon.
 `notchOutline(openNotch: boolean) => void` | Opens/closes the notched outline.
+`setTransformOrigin(evt: TouchEvent \| MouseEvent) => void` | Sets the line ripple's transform origin, so that the line ripple activate animation will animate out from the user's click location.
+`autoCompleteFocus() => void` | Activates the Text Field's focus state in cases when the input value is changed programmatically (i.e., without user action).
 
 `MDCTextFieldFoundation` supports multiple optional sub-elements: helper text and icon. The foundations of these sub-elements must be passed in as constructor arguments to `MDCTextFieldFoundation`.

@@ -24,6 +24,16 @@
 @import "../../../../packages/mdc-theme/color-palette";
 @import "../mixins";
 
+// stylelint-disable selector-class-pattern
+.mdc-text-field {
+  width: 100%;
+}
+
+.mdc-text-field-helper-line {
+  width: 100%;
+}
+// stylelint-enable selector-class-pattern
+
 .test-cell--textfield {
   @include test-cell-size(301, 121);
 }
@@ -40,9 +50,13 @@
   @include mdc-text-field-outline-shape-radius(50%);
 }
 
+.test-text-field-issues-3332 {
+  width: 201px;
+}
+
 // Work around MS Edge rendering bug.
 // TODO(acdvorak): Create and link to GitHub issue
-@supports (-ms-ime-align:auto) {
+@supports (-ms-ime-align: auto) {
   .test-text-field__input {
     transform: translateX(.1px);
   }

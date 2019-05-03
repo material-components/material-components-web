@@ -25,13 +25,19 @@ import {assert} from 'chai';
 import bel from 'bel';
 import td from 'testdouble';
 
-import MDCDismissibleDrawerFoundation from '../../../packages/mdc-drawer/dismissible/foundation';
+import {MDCDismissibleDrawerFoundation} from '../../../packages/mdc-drawer/dismissible/foundation';
 import {strings, cssClasses} from '../../../packages/mdc-drawer/constants';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {install as installClock} from '../helpers/clock';
 
 suite('MDCDismissibleDrawerFoundation');
 
+/**
+ * @return {{
+ *   mockAdapter: MDCDrawerAdapter,
+ *   foundation: MDCDismissibleDrawerFoundation,
+ * }}
+ */
 const setupTest = () => {
   const mockAdapter = td.object(MDCDismissibleDrawerFoundation.defaultAdapter);
   const foundation = new MDCDismissibleDrawerFoundation(mockAdapter);
@@ -272,4 +278,19 @@ test('#handleTransitionEnd doesn\'t do anything if event is emitted with a non-e
   td.verify(mockAdapter.removeClass(cssClasses.ANIMATE), {times: 0});
   td.verify(mockAdapter.notifyOpen(), {times: 0});
   td.verify(mockAdapter.notifyClose(), {times: 0});
+});
+
+test('#handleTransitionEnd calls .closed_() before restoring the focus.', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.closed_ = td.function();
+
+  const mockEventTarget = bel`<div class="foo">bar</div>`;
+  td.when(mockAdapter.elementHasClass(mockEventTarget, cssClasses.ROOT)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.CLOSING)).thenReturn(true);
+  const executionOrder = [];
+  td.when(foundation.closed_()).thenDo(() => executionOrder.push('closed_'));
+  td.when(mockAdapter.restoreFocus()).thenDo(() => executionOrder.push('restoreFocus'));
+  foundation.handleTransitionEnd({target: mockEventTarget});
+
+  assert.deepEqual(executionOrder, ['closed_', 'restoreFocus']);
 });

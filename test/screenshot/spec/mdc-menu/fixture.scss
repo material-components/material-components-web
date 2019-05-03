@@ -22,7 +22,27 @@
 @import "../mixins";
 
 .test-cell--menu {
-  @include test-cell-size(260, 410);
+  @include test-cell-size(260, 510);
 
   position: relative;
+}
+
+.test-menu-button-container {
+  position: relative;
+}
+
+.test-menu-button-container--bottom-right {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+}
+
+.test-menu--baseline {
+  top: 36px;
+  left: 0;
+}
+
+.test-menu--bottom-right {
+  right: 0;
+  bottom: 36px;
 }

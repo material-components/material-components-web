@@ -30,8 +30,11 @@ import {MDCRipple} from '../../../packages/mdc-ripple/index';
 import {MDCLineRipple} from '../../../packages/mdc-line-ripple/index';
 import {MDCFloatingLabel} from '../../../packages/mdc-floating-label/index';
 import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline/index';
-import {MDCTextField, MDCTextFieldFoundation, MDCTextFieldHelperText,
-  MDCTextFieldIcon} from '../../../packages/mdc-textfield/index';
+import {
+  MDCTextField, MDCTextFieldFoundation, MDCTextFieldHelperText, MDCTextFieldCharacterCounter, MDCTextFieldIcon,
+} from '../../../packages/mdc-textfield/index';
+import {cssClasses as helperTextCssClasses} from '../../../packages/mdc-textfield/helper-text/constants';
+import {cssClasses as characterCounterCssClasses} from '../../../packages/mdc-textfield/character-counter/constants';
 
 const {cssClasses} = MDCTextFieldFoundation;
 
@@ -43,6 +46,16 @@ const getFixture = () => bel`
     <div class="mdc-line-ripple"></div>
   </div>
 `;
+
+const getHelperLineWithHelperText = () => bel`
+  <div class="${cssClasses.HELPER_LINE}">
+    <div class="${helperTextCssClasses.ROOT}">helper text</div>
+  </div>`;
+
+const getHelperLineWithCharacterCounter = () => bel`
+  <div class="${cssClasses.HELPER_LINE}">
+    <div class="${characterCounterCssClasses.ROOT}">helper text</div>
+  </div>`;
 
 suite('MDCTextField');
 
@@ -69,6 +82,12 @@ class FakeLineRipple {
 }
 
 class FakeHelperText {
+  constructor() {
+    this.destroy = td.func('.destroy');
+  }
+}
+
+class FakeCharacterCounter {
   constructor() {
     this.destroy = td.func('.destroy');
   }
@@ -127,17 +146,27 @@ test('#constructor instantiates a line ripple on the `.mdc-line-ripple` element 
   assert.instanceOf(component.lineRipple_, MDCLineRipple);
 });
 
-const getHelperTextElement = () => bel`<p id="helper-text">helper text</p>`;
-
-test('#constructor instantiates a helper text on the element with id specified in the input aria-controls' +
-  'if present', () => {
+test('#constructor instantiates a helper text if present', () => {
   const root = getFixture();
-  root.querySelector('.mdc-text-field__input').setAttribute('aria-controls', 'helper-text');
-  const helperText = getHelperTextElement();
+  const helperText = getHelperLineWithHelperText();
+  document.body.appendChild(root);
   document.body.appendChild(helperText);
   const component = new MDCTextField(root);
   assert.instanceOf(component.helperText_, MDCTextFieldHelperText);
+  document.body.removeChild(root);
   document.body.removeChild(helperText);
+});
+
+test('#constructor instantiates a character counter if present', () => {
+  const root = getFixture();
+  const characterCounter = getHelperLineWithCharacterCounter();
+  document.body.appendChild(root);
+  root.querySelector('input').maxLength = 12;
+  document.body.appendChild(characterCounter);
+  const component = new MDCTextField(root);
+  assert.instanceOf(component.characterCounter_, MDCTextFieldCharacterCounter);
+  document.body.removeChild(root);
+  document.body.removeChild(characterCounter);
 });
 
 test('#constructor instantiates a leading icon if an icon element is present', () => {
@@ -190,23 +219,74 @@ test('#constructor handles undefined optional sub-elements gracefully', () => {
   assert.doesNotThrow(() => new MDCTextField(root));
 });
 
+test('default adapter methods handle sub-elements when present', () => {
+  const root = getFixture();
+  const component = new MDCTextField(root);
+  const adapter = component.getDefaultFoundation().adapter_;
+  assert.isFalse(adapter.hasClass('foo'));
+  assert.equal(adapter.getLabelWidth(), 0);
+  assert.doesNotThrow(() => adapter.floatLabel(true));
+});
+
+test('default adapter methods handle undefined optional sub-elements gracefully', () => {
+  const root = bel`
+    <div class="mdc-text-field">
+      <input type="text" class="mdc-text-field__input" id="my-text-field">
+    </div>
+  `;
+  const component = new MDCTextField(root);
+  const adapter = component.getDefaultFoundation().adapter_;
+  assert.equal(adapter.getLabelWidth(), 0);
+  assert.isFalse(adapter.hasLabel());
+  assert.isFalse(adapter.hasOutline());
+  assert.doesNotThrow(() => adapter.floatLabel(true));
+  assert.doesNotThrow(() => adapter.shakeLabel(true));
+  assert.doesNotThrow(() => adapter.activateLineRipple());
+  assert.doesNotThrow(() => adapter.deactivateLineRipple());
+  assert.doesNotThrow(() => adapter.setLineRippleTransformOrigin(0));
+  assert.doesNotThrow(() => adapter.closeOutline());
+  assert.doesNotThrow(() => adapter.notchOutline(0));
+});
+
+/**
+ * @param {!HTMLElement=} root
+ * @return {{
+ *   root: HTMLElement,
+ *   component: MDCTextField,
+ *   foundation: MDCTextFieldFoundation,
+ *   adapter: MDCTextFieldAdapter,
+ *   outline: MDCNotchedOutline,
+ *   icon: MDCTextFieldIcon,
+ *   lineRipple: MDCLineRipple,
+ *   label: MDCFloatingLabel,
+ *   helperText: MDCTextFieldHelperText,
+ *   characterCounter: MDCTextFieldCharacterCounter,
+ * }}
+ */
 function setupTest(root = getFixture()) {
   const lineRipple = new FakeLineRipple();
   const helperText = new FakeHelperText();
+  const characterCounter = new FakeCharacterCounter();
   const icon = new FakeIcon();
   const label = new FakeLabel();
   const outline = new FakeOutline();
+
   const component = new MDCTextField(
     root,
     undefined,
     (el) => new FakeRipple(el),
     () => lineRipple,
     () => helperText,
+    () => characterCounter,
     () => icon,
     () => label,
     () => outline
   );
-  return {root, component, lineRipple, helperText, icon, label, outline};
+
+  const foundation = component.foundation_;
+  const adapter = foundation.adapter_;
+
+  return {root, component, foundation, adapter, lineRipple, helperText, characterCounter, icon, label, outline};
 }
 
 test('#destroy cleans up the ripple if present', () => {
@@ -225,13 +305,26 @@ test('#destroy cleans up the line ripple if present', () => {
 
 test('#destroy cleans up the helper text if present', () => {
   const root = getFixture();
-  root.querySelector('.mdc-text-field__input').setAttribute('aria-controls', 'helper-text');
-  const helperTextElement = getHelperTextElement();
+  const helperTextElement = getHelperLineWithHelperText();
+  document.body.appendChild(root);
   document.body.appendChild(helperTextElement);
   const {component, helperText} = setupTest(root);
   component.destroy();
   td.verify(helperText.destroy());
+  document.body.removeChild(root);
   document.body.removeChild(helperTextElement);
+});
+
+test('#destroy cleans up the character counter if present', () => {
+  const root = getFixture();
+  const characterCounterElement = getHelperLineWithCharacterCounter();
+  document.body.appendChild(root);
+  document.body.appendChild(characterCounterElement);
+  const {component, characterCounter} = setupTest(root);
+  component.destroy();
+  td.verify(characterCounter.destroy());
+  document.body.removeChild(root);
+  document.body.removeChild(characterCounterElement);
 });
 
 test('#destroy cleans up the icon if present', () => {
@@ -264,9 +357,28 @@ test('#destroy handles undefined optional sub-elements gracefully', () => {
   assert.doesNotThrow(() => component.destroy());
 });
 
-test('#initialSyncWithDom sets disabled if input element is not disabled', () => {
+test('#destroy handles undefined optional ripple gracefully', () => {
+  const root = getFixture();
+  const component = new MDCTextField(root);
+  component.ripple = null;
+  assert.doesNotThrow(() => component.destroy());
+});
+
+test('#destroy calls destroy for both icon elements if present', () => {
+  const root = getFixture(true);
+  root.classList.add('mdc-text-field--with-trailing-icon');
+  root.appendChild(bel`<i class="mdc-text-field__icon material-icons">3d_rotations</i>`);
+  const component = new MDCTextField(root);
+  component.leadingIcon_.destroy = td.func('leadingIcon_.destroy');
+  component.trailingIcon_.destroy = td.func('trailingIcon_.destroy');
+  component.destroy();
+  td.verify(component.leadingIcon_.destroy());
+  td.verify(component.trailingIcon_.destroy());
+});
+
+test('#initialSyncWithDOM sets disabled if input element is not disabled', () => {
   const {component} = setupTest();
-  component.initialSyncWithDom();
+  component.initialSyncWithDOM();
   assert.isNotOk(component.disabled);
 });
 
@@ -329,6 +441,13 @@ test('#adapter.addClass adds a class to the root element', () => {
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.addClass('foo');
   assert.isOk(root.classList.contains('foo'));
+});
+
+test('layout calls foundation notchOutline', () => {
+  const {component, foundation} = setupTest();
+  foundation.notchOutline = td.func('notchOutline');
+  component.layout();
+  td.verify(foundation.notchOutline(false));
 });
 
 test('#adapter.removeClass removes a class from the root element', () => {
@@ -424,9 +543,7 @@ test('#adapter.setLineRippleTransformOrigin calls the setRippleCenter method on 
 function setupMockFoundationTest(root = getFixture()) {
   const MockFoundationConstructor = td.constructor(MDCTextFieldFoundation);
   const mockFoundation = new MockFoundationConstructor();
-  const component = new MDCTextField(
-    root,
-    mockFoundation);
+  const component = new MDCTextField(root, mockFoundation);
   return {root, component, mockFoundation};
 }
 

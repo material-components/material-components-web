@@ -108,7 +108,12 @@
 }
 
 @mixin mdc-select-outline-shape-radius($radius, $rtl-reflexive: false) {
-  $resolved-radius: mdc-shape-resolve-percentage-radius($mdc-select-height, $radius);
+  $resolved-radius: nth(mdc-shape-resolve-percentage-radius($mdc-select-height, mdc-shape-prop-value($radius)), 1);
+
+  @if (length(mdc-shape-prop-value($radius)) > 1) {
+    // stylelint-disable-next-line max-line-length
+    @warn "mdc-select-outline-shape-radius only supports a single radius; see https://github.com/material-components/material-components-web/issues/4140";
+  }
 
   .mdc-notched-outline {
     @include mdc-notched-outline-shape-radius($resolved-radius, $rtl-reflexive);
@@ -118,15 +123,21 @@
     @include mdc-shape-radius($resolved-radius, $rtl-reflexive);
   }
 
-  $radius-pixels: mdc-shape-prop-value($resolved-radius);
-
-  @if ($radius-pixels > $mdc-notched-outline-leading-width) {
+  @if ($resolved-radius > $mdc-notched-outline-leading-width) {
     .mdc-select__native-control {
-      @include mdc-rtl-reflexive-property(padding, $radius-pixels + $mdc-notched-outline-padding, $mdc-select-arrow-padding);
+      @include mdc-rtl-reflexive-property(
+        padding,
+        $resolved-radius + $mdc-notched-outline-padding,
+        $mdc-select-arrow-padding
+      );
     }
 
     + .mdc-select-helper-text {
-      @include mdc-rtl-reflexive-property(margin, $radius-pixels + $mdc-notched-outline-padding, $mdc-select-outline-label-offset);
+      @include mdc-rtl-reflexive-property(
+        margin,
+        $resolved-radius + $mdc-notched-outline-padding,
+        $mdc-select-outline-label-offset
+      );
     }
   }
 }
@@ -184,7 +195,10 @@
   $fill-hex-number: mdc-theme-prop-value($fill-hex-number);
   $fill-hex-number: str-slice(unquote("#{$fill-hex-number}"), 2);
 
-  background: url("data:image/svg+xml,%3Csvg%20width%3D%2210px%22%20height%3D%225px%22%20viewBox%3D%227%2010%2010%205%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%20%20%3Cpolygon%20id%3D%22Shape%22%20stroke%3D%22none%22%20fill%3D%22%23#{$fill-hex-number}%22%20fill-rule%3D%22evenodd%22%20opacity%3D%22#{$opacity}%22%20points%3D%227%2010%2012%2015%2017%2010%22%3E%3C%2Fpolygon%3E%0A%3C%2Fsvg%3E") no-repeat center;
+  background:
+    url("data:image/svg+xml,%3Csvg%20width%3D%2210px%22%20height%3D%225px%22%20viewBox%3D%227%2010%2010%205%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%20%20%3Cpolygon%20id%3D%22Shape%22%20stroke%3D%22none%22%20fill%3D%22%23#{$fill-hex-number}%22%20fill-rule%3D%22evenodd%22%20opacity%3D%22#{$opacity}%22%20points%3D%227%2010%2012%2015%2017%2010%22%3E%3C%2Fpolygon%3E%0A%3C%2Fsvg%3E")
+    no-repeat
+    center;
 }
 
 @mixin mdc-select-outline-color_($color) {
@@ -192,6 +206,7 @@
 }
 
 @mixin mdc-select-hover-outline-color_($color) {
+  // stylelint-disable-next-line selector-combinator-space-after
   &:not(.mdc-select--focused) .mdc-select__native-control:hover ~,
   &:not(.mdc-select--focused) .mdc-select__selected-text:hover ~ {
     .mdc-notched-outline {
@@ -243,7 +258,10 @@
   @include mdc-select-icon-horizontal-position_(16px, $mdc-select-icon-padding);
 
   &.mdc-select--outlined {
-    @include mdc-notched-outline-floating-label-float-position($mdc-select-outlined-label-position-y, $mdc-select-outlined-with-leading-icon-label-position-x);
+    @include mdc-notched-outline-floating-label-float-position(
+      $mdc-select-outlined-label-position-y,
+      $mdc-select-outlined-with-leading-icon-label-position-x
+    );
     @include mdc-floating-label-shake-animation(select-outlined-leading-icon);
 
     @include mdc-rtl {
@@ -348,7 +366,7 @@
   @include mdc-select-hover-outline-color($mdc-select-outlined-hover-border);
   @include mdc-select-focused-outline-color(primary);
   @include mdc-floating-label-shake-animation(text-field-outlined);
-  @include mdc-select-outline-shape-radius(medium);
+  @include mdc-select-outline-shape-radius(small);
   @include mdc-states-base-color(transparent);
   @include mdc-select-container-fill-color(transparent);
   @include mdc-notched-outline-floating-label-float-position($mdc-select-outlined-label-position-y, 0);

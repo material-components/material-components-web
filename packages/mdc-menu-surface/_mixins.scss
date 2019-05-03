@@ -20,17 +20,131 @@
 // THE SOFTWARE.
 //
 
+@import "@material/feature-targeting/functions";
+@import "@material/feature-targeting/mixins";
 @import "@material/theme/mixins";
 @import "@material/shape/mixins";
+@import "@material/animation/variables";
+@import "@material/elevation/mixins";
+@import "@material/rtl/mixins";
+@import "./variables";
 
-@mixin mdc-menu-surface-ink-color($color) {
-  @include mdc-theme-prop(color, $color);
+//
+// Public
+//
+
+@mixin mdc-menu-surface-core-styles($query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  // postcss-bem-linter: define menu-surface
+  .mdc-menu-surface {
+    @include mdc-menu-surface-base_($query);
+    @include mdc-elevation($z-value: 8, $query: $query);
+    @include mdc-menu-surface-fill-color(surface, $query);
+    @include mdc-menu-surface-ink-color(on-surface, $query);
+    @include mdc-menu-surface-shape-radius(medium, false, $query);
+
+    @include mdc-feature-targets($feat-structure) {
+      @include mdc-rtl-reflexive-property(transform-origin, top left, top right);
+    }
+  }
+
+  .mdc-menu-surface--anchor {
+    @include mdc-feature-targets($feat-structure) {
+      position: relative;
+      overflow: visible;
+    }
+  }
+
+  .mdc-menu-surface--fixed {
+    @include mdc-feature-targets($feat-structure) {
+      position: fixed;
+    }
+  }
+  // postcss-bem-linter: end
 }
 
-@mixin mdc-menu-surface-fill-color($color) {
-  @include mdc-theme-prop(background-color, $color);
+@mixin mdc-menu-surface-ink-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  @include mdc-feature-targets($feat-color) {
+    @include mdc-theme-prop(color, $color);
+  }
 }
 
-@mixin mdc-menu-surface-shape-radius($radius, $rtl-reflexive: false) {
-  @include mdc-shape-radius($radius, $rtl-reflexive);
+@mixin mdc-menu-surface-fill-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  @include mdc-feature-targets($feat-color) {
+    @include mdc-theme-prop(background-color, $color);
+  }
+}
+
+@mixin mdc-menu-surface-shape-radius($radius, $rtl-reflexive: false, $query: mdc-feature-all()) {
+  @include mdc-shape-radius($radius, $rtl-reflexive, $query: $query);
+}
+
+//
+// Private
+//
+
+@mixin mdc-menu-surface-base_($query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+  $feat-animation: mdc-feature-create-target($query, animation);
+
+  @include mdc-feature-targets($feat-structure) {
+    display: none;
+    position: absolute;
+    box-sizing: border-box;
+    max-width: calc(100vw - #{$mdc-menu-surface-min-distance-from-edge});
+    max-height: calc(100vh - #{$mdc-menu-surface-min-distance-from-edge});
+    margin: 0;
+    padding: 0;
+    transform: scale(1);
+    transform-origin: top left;
+    opacity: 0;
+    overflow: auto;
+    will-change: transform, opacity;
+    z-index: $mdc-menu-surface-z-index;
+  }
+
+  @include mdc-feature-targets($feat-animation) {
+    transition:
+      opacity $mdc-menu-surface-fade-in-duration linear,
+      transform $mdc-menu-surface-scale-duration $mdc-animation-deceleration-curve-timing-function;
+  }
+
+  &:focus {
+    @include mdc-feature-targets($feat-structure) {
+      outline: none;
+    }
+  }
+
+  // stylelint-disable-next-line selector-max-type
+  &--open {
+    @include mdc-feature-targets($feat-structure) {
+      display: inline-block;
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  &--animating-open {
+    @include mdc-feature-targets($feat-structure) {
+      display: inline-block;
+      transform: scale(.8);
+      opacity: 0;
+    }
+  }
+
+  &--animating-closed {
+    @include mdc-feature-targets($feat-structure) {
+      display: inline-block;
+      opacity: 0;
+    }
+
+    @include mdc-feature-targets($feat-animation) {
+      transition: opacity $mdc-menu-surface-fade-out-duration linear;
+    }
+  }
 }

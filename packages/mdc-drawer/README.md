@@ -34,7 +34,7 @@ npm install @material/drawer
 <aside class="mdc-drawer">
   <div class="mdc-drawer__content">
     <nav class="mdc-list">
-      <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
+      <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
         <span class="mdc-list-item__text">Inbox</span>
       </a>
@@ -95,7 +95,7 @@ const drawer = MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
 <aside class="mdc-drawer">
   <div class="mdc-drawer__content">
     <nav class="mdc-list">
-      <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
+      <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
         <span class="mdc-list-item__text">Inbox</span>
       </a>
@@ -143,7 +143,7 @@ Drawers can contain a header element which will not scroll with the rest of the 
   </div>
   <div class="mdc-drawer__content">
     <nav class="mdc-list">
-      <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
+      <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
         <span class="mdc-list-item__text">Inbox</span>
       </a>
@@ -169,7 +169,7 @@ Dismissible drawers are by default hidden off screen, and can slide into view. D
   <aside class="mdc-drawer mdc-drawer--dismissible">
     <div class="mdc-drawer__content">
       <nav class="mdc-list">
-        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
+        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
           <span class="mdc-list-item__text">Inbox</span>
         </a>
@@ -206,7 +206,7 @@ In the following example, the `mdc-drawer__content` and `main-content` elements 
   <aside class="mdc-drawer mdc-drawer--dismissible">
     <div class="mdc-drawer__content">
       <div class="mdc-list">
-        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
+        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
           <span class="mdc-list-item__text">Inbox</span>
         </a>
@@ -258,7 +258,7 @@ In cases where the drawer appears below the top app bar you will want to follow 
   <aside class="mdc-drawer mdc-drawer--dismissible mdc-top-app-bar--fixed-adjust">
     <div class="mdc-drawer__content">
       <div class="mdc-list">
-        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
+        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
           <span class="mdc-list-item__text">Inbox</span>
         </a>
@@ -333,7 +333,7 @@ Modal drawers are elevated above most of the app's UI and don't affect the scree
   <aside class="mdc-drawer mdc-drawer--modal">
     <div class="mdc-drawer__content">
       <nav class="mdc-list">
-        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-selected="true">
+        <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
           <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
           <span class="mdc-list-item__text">Inbox</span>
         </a>
@@ -481,10 +481,8 @@ Method Signature | Description
 `isOpen() => boolean` | Returns true if the drawer is in the open position.
 `isOpening() => boolean` | Returns true if the drawer is animating open.
 `isClosing() => boolean` | Returns true if the drawer is animating closed.
-`handleKeyDown(evt: Event) => void` | Handles the keydown event.
-`handleTransitionEnd(evt: Event) => void` | Handles the transitionend event when the drawer finishes opening/closing.
-`opened() => void` | Only called internally. Extension point for when drawer finishes open animation.
-`closed() => void` | Only called internally. Extension point for when drawer finishes close animation.
+`handleKeydown(evt: Event) => void` | Handles the `keydown` event.
+`handleTransitionEnd(evt: Event) => void` | Handles the `transitionend` event when the drawer finishes opening/closing.
 
 #### `MDCModalDrawerFoundation` (extends `MDCDismissibleDrawerFoundation`)
 

@@ -129,6 +129,10 @@ $mdc-theme-property-values: (
 //
 // NOTE: This function must be defined in _variables.scss instead of _functions.scss to avoid circular imports.
 @function mdc-theme-prop-value($style) {
+  @if mdc-theme-is-var-with-fallback_($style) {
+    @return mdc-theme-get-var-fallback_($style);
+  }
+
   @if mdc-theme-is-valid-theme-prop-value_($style) {
     @return $style;
   }

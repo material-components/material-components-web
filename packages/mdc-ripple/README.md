@@ -227,13 +227,14 @@ Usually, you'll want to use `MDCRipple` _along_ with the component for the actua
 ripple to. `MDCRipple` has a static `createAdapter(instance)` method that can be used to instantiate a ripple within
 any `MDCComponent` that requires custom adapter functionality.
 
-```js
+```ts
 class MyMDCComponent extends MDCComponent {
   constructor() {
     super(...arguments);
-    const foundation = new MDCRippleFoundation(Object.assign(MDCRipple.createAdapter(this), {
+    const foundation = new MDCRippleFoundation({
+      ...MDCRipple.createAdapter(this),
       isSurfaceActive: () => this.isActive_, /* Custom functionality */
-    }));
+    });
     this.ripple = new MDCRipple(this.root, foundation);
   }
 }
@@ -247,7 +248,7 @@ Different keyboard events activate different elements. For example, the space ke
 
 To make your component work properly with keyboard events, you'll have to listen for both `keydown` and `keyup` events to set some state that determines whether or not the surface is "active".
 
-```js
+```ts
 class MyComponent {
   constructor(element) {
     this.root = element;
@@ -262,11 +263,11 @@ class MyComponent {
         this.active = false;
       }
     });
-
-    const foundation = new MDCRippleFoundation(Object.assign(MDCRipple.createAdapter(this), {
+    const foundation = new MDCRippleFoundation(
+      ...MDCRipple.createAdapter(this),
       // ...
       isSurfaceActive: () => this.active
-    }));
+    });
     this.ripple = new MDCRipple(this.root, foundation);
   }
 }
@@ -304,7 +305,6 @@ Method Signature | Description
 --- | ---
 `util.supportsCssVariables(windowObj, forceRefresh = false) => Boolean` | Determine whether the current browser supports CSS variables (custom properties)
 `util.applyPassive(globalObj = window, forceRefresh = false) => object` | Determine whether the current browser supports passive event listeners
-`util.getMatchesProperty(HTMLElementPrototype) => Function` | Return the correct "matches" property to use on the current browser
 `util.getNormalizedEventCoords(ev, pageOffset, clientRect) => object` | Determines X/Y coordinates of an event normalized for touch events and ripples
 
 > _NOTE_: The functions `util.supportsCssVariables` and `util.applyPassive` cache their results; `forceRefresh` will force recomputation, but is used mainly for testing and should not be necessary in normal use.

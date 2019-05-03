@@ -22,6 +22,7 @@
 
 @import "@material/elevation/mixins";
 @import "@material/ripple/mixins";
+@import "@material/rtl/mixins";
 @import "@material/theme/functions";
 @import "@material/theme/mixins";
 @import "@material/shape/mixins";
@@ -82,7 +83,7 @@
   }
 }
 
-@mixin mdc-chip-outline($width: 1, $style: solid, $color: mdc-theme-prop-value(on-surface)) {
+@mixin mdc-chip-outline($width: 1px, $style: solid, $color: mdc-theme-prop-value(on-surface)) {
   @include mdc-chip-outline-width($width);
   @include mdc-chip-outline-style($style);
   @include mdc-chip-outline-color($color);
@@ -174,7 +175,10 @@
   $left: $mdc-chip-leading-icon-margin-left) {
   &.mdc-chip--selected .mdc-chip__checkmark,
   .mdc-chip__icon--leading:not(.mdc-chip__icon--leading-hidden) {
-    margin: $top $right $bottom $left;
+    @include mdc-rtl-reflexive-property(margin, $left, $right);
+
+    margin-top: $top;
+    margin-bottom: $bottom;
   }
 }
 

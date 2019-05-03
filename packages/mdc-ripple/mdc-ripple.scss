@@ -20,36 +20,6 @@
 // THE SOFTWARE.
 //
 
-@import "@material/animation/functions";
-@import "@material/theme/mixins";
-@import "./common";
 @import "./mixins";
-@import "./variables";
-
-// postcss-bem-linter: define ripple-surface
-
-.mdc-ripple-surface {
-  @include mdc-ripple-surface;
-  @include mdc-states;
-  @include mdc-ripple-radius-bounded;
-
-  position: relative;
-  outline: none;
-  overflow: hidden;
-
-  &[data-mdc-ripple-is-unbounded] {
-    @include mdc-ripple-radius-unbounded;
-
-    overflow: visible;
-  }
-
-  &--primary {
-    @include mdc-states(primary);
-  }
-
-  &--accent {
-    @include mdc-states(secondary);
-  }
-}
-
-// postcss-bem-linter: end
+@include mdc-ripple-common;
+@include mdc-ripple-core-styles;

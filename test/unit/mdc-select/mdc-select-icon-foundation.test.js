@@ -49,7 +49,7 @@ import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
-import MDCSelectIconFoundation from '../../../packages/mdc-select/icon/foundation';
+import {MDCSelectIconFoundation} from '../../../packages/mdc-select/icon/foundation';
 import {strings} from '../../../packages/mdc-select/icon/constants';
 
 suite('MDCSelectIconFoundation');

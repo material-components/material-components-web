@@ -41,8 +41,8 @@ npm install @material/menu
 ### HTML Structure
 
 ```html
-<div class="mdc-menu mdc-menu-surface" tabindex="-1">
-  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
+<div class="mdc-menu mdc-menu-surface">
+  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
     <li class="mdc-list-item" role="menuitem">
       <span class="mdc-list-item__text">A Menu Item</span>
     </li>
@@ -79,8 +79,8 @@ menu.open = true;
 Menus can contain a group of list items that can represent the selection state of elements within the group.
 
 ```html
-<div class="mdc-menu mdc-menu-surface" tabindex="-1" id="demo-menu">
-  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
+<div class="mdc-menu mdc-menu-surface" id="demo-menu">
+  <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
     <li>
       <ul class="mdc-menu__selection-group">
         <li class="mdc-list-item" role="menuitem">
@@ -190,6 +190,25 @@ Mixin | Description
 
 > See [Menu Surface](../mdc-menu-surface/README.md#sass-mixins) and [List](../mdc-list/README.md#sass-mixins) documentation for additional style customization options.
 
+### Accessibility
+
+Please see [Menu Button](https://www.w3.org/TR/wai-aria-practices/#menubutton) WAI-ARIA practices article for details on recommended Roles, States, and Properties for menu button (button that opens a menu).
+
+With focus on the menu button:
+
+  * <kbd>Enter</kbd>, <kbd>Space</kbd> & <kbd>Down Arrow</kbd> opens the menu and places focus on the first menu item.
+  * <kbd>Up Arrow</kbd> opens the menu and moves focus to the last menu item.
+  * The focus is set to list root element (where `role="menu"` is set) when clicked or touched. MDC List handles the keyboard navigation once it receives the focus.
+
+Use `setDefaultFocusState` method to set default focus state that will be focused every time when menu is opened.
+
+Focus state | Description
+--- | ---
+`DefaultFocusState.FIRST_ITEM` | Focuses the first menu item. Set this when menu button receives <kbd>Enter</kbd>, <kbd>Space</kbd>, <kbd>Down Arrow</kbd>.
+`DefaultFocusState.LAST_ITEM` | Focuses the last menu item. Set this when menu button receives <kbd>Up arrow</kbd>.
+`DefaultFocusState.LIST_ROOT` | Focuses the list root. Set this when menu button Clicked or Touched.
+`DefaultFocusState.NONE` | Does not change the focus. Set this if you do not want the menu to grab focus on open. (Autocomplete dropdown menu, for example).
+
 ## `MDCMenu` Properties and Methods
 
 See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
@@ -204,14 +223,15 @@ Property | Value Type | Description
 Method Signature | Description
 --- | ---
 `setAnchorCorner(Corner) => void` | Proxies to the menu surface's `setAnchorCorner(Corner)` method.
-`setAnchorMargin(AnchorMargin) => void` | Proxies to the menu surface's `setAnchorMargin(AnchorMargin)` method.
+`setAnchorMargin(Partial<MDCMenuDistance>) => void` | Proxies to the menu surface's `setAnchorMargin(Partial<MDCMenuDistance>)` method.
 `setAbsolutePosition(x: number, y: number) => void` | Proxies to the menu surface's `setAbsolutePosition(x: number, y: number)` method.
 `setFixedPosition(isFixed: boolean) => void` | Proxies to the menu surface's `setFixedPosition(isFixed: boolean)` method.
 `hoistMenuToBody() => void` | Proxies to the menu surface's `hoistMenuToBody()` method.
 `setIsHoisted(isHoisted: boolean) => void` | Proxies to the menu surface's `setIsHoisted(isHoisted: boolean)` method.
-`setAnchorElement(element: HTMLElement) => void` | Proxies to the menu surface's `setAnchorElement(element)` method.
-`getOptionByIndex(index: number) => ?HTMLElement` | Returns the list item at the `index` specified.
+`setAnchorElement(element: Element) => void` | Proxies to the menu surface's `setAnchorElement(element)` method.
+`getOptionByIndex(index: number) => Element \| null` | Returns the list item at the `index` specified.
 `getDefaultFoundation() => MDCMenuFoundation` | Returns the foundation.
+`setDefaultFocusState(focusState: DefaultFocusState) => void` | Sets default focus state where the menu should focus every time when menu is opened. Focuses the list root (`DefaultFocusState.LIST_ROOT`) element by default.
 
 > See [Menu Surface](../mdc-menu-surface/README.md) and [List](../mdc-list/README.md) documentation for more information on proxied methods and properties.
 
@@ -227,23 +247,27 @@ Method Signature | Description
 `removeClassFromElementAtIndex(index: number, className: string) => void` | Removes the `className` class from the element at the `index` specified.
 `addAttributeToElementAtIndex(index: number, attr: string, value: string) => void` | Adds the `attr` attribute with value `value` to the element at the `index` specified.
 `removeAttributeFromElementAtIndex(index: number, attr: string) => void` | Removes the `attr` attribute from the element at the `index` specified.
-`elementContainsClass(element: HTMLElement, className: string) => boolean` | Returns true if the `element` contains the `className` class.
+`elementContainsClass(element: Element, className: string) => boolean` | Returns true if the `element` contains the `className` class.
 `closeSurface() => void` | Closes the menu surface.
-`getElementIndex(element: HTMLElement) => number` | Returns the `index` value of the `element`.
-`getParentElement(element: HTMLElement) => ?HTMLElement` | Returns the `.parentElement` element of the `element` provided.
-`getSelectedElementIndex(element: HTMLElement) => number` | Returns the `index` value of the element within the selection group provided, `element` that contains the `mdc-menu-item--selected` class.
+`getElementIndex(element: Element) => number` | Returns the `index` value of the `element`.
+`getParentElement(element: Element) => Element \| null` | Returns the `.parentElement` element of the `element` provided.
+`getSelectedElementIndex(element: Element) => number` | Returns the `index` value of the element within the selection group provided, `element` that contains the `mdc-menu-item--selected` class.
 `notifySelected(index: number) => void` | Emits a `MDCMenu:selected` event for the element at the `index` specified.
+`getMenuItemCount() => number` | Returns the menu item count.
+`focusItemAtIndex(index: number)` | Focuses the menu item at given index.
+`focusListRoot() => void` | Focuses the list root element.
 
 ### `MDCMenuFoundation`
 
 Method Signature | Description
 --- | ---
 `handleKeydown(evt: Event) => void` | Event handler for the `keydown` events within the menu.
-`handleClick(evt: Event) => void` | Event handler for the `click` events within the menu.
-`handleSelection(listItem: Element) => void` | Handler for a selected list item. Use this instead of `handleClick` when you don't have access to list item click event.
+`handleItemAction(listItem: Element) => void` | Event handler for list's action event.
+`handleMenuSurfaceOpened() => void` | Event handler for menu surface's opened event.
+`setDefaultFocusState(focusState: DefaultFocusState) => void` | Sets default focus state where the menu should focus every time when menu is opened. Focuses the list root (`DefaultFocusState.LIST_ROOT`) element by default.
 
 ### Events
 
 Event Name | Data | Description
 --- | --- | ---
-`MDCMenu:selected` | `{detail: {item: HTMLElement, index: number}}` | Used to indicate when an element has been selected. This event also includes the item selected and the list index of that item.
+`MDCMenu:selected` | `{detail: {item: Element, index: number}}` | Used to indicate when an element has been selected. This event also includes the item selected and the list index of that item.

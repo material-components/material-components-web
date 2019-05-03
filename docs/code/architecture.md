@@ -2,12 +2,12 @@
 
 MDC Web is split into packages. Each package is either a Subsystem or a
 Component. Subsystems apply to many components. They generally describe style
-(e.g. color) or motion (e.g. animation). Component packages tend to rely on
-many subsystem packages. But component packages rarely depend on other
-component packages. Components require an HTML structure. Some components are
-static, but most are dynamic and include some JavaScript.
+(e.g.: color) or motion (e.g.: animation). Component packages tend to rely on
+many subsystem packages. On the other hand, component packages rarely depend on
+other component packages. Components require an HTML structure. Some components
+are static, but most are dynamic and include some JavaScript.
 
-> Each component is usable separately from any other component.
+> Each component is usable separate from any other component.
 
 ## Sass
 
@@ -28,6 +28,14 @@ MDC Web has split each dynamic component's JavaScript into two pieces:
 Foundation and Adapter. This lets us reuse Foundation code across multiple web
 platforms, e.g. React and Angular, by re-implementing only the Adapter. For now
 we've only implemented a vanilla JavaScript version of the Adapter.
+
+### TypeScript
+
+MDC Web components are written in [TypeScript](https://www.typescriptlang.org/)
+to increase developer velocity and reduce errors. Our npm releases include
+UMD JavaScript bundles, ES Modules containing ES5, and `.d.ts` typing
+declaration files for TypeScript users.
+See [Importing JS](../importing-js.md) for more information.
 
 ### Foundation
 

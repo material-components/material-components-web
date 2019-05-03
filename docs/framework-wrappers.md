@@ -1,3 +1,11 @@
+<!--docs:
+title: "MDC Web on other frameworks"
+navTitle: "Framework Wrappers"
+layout: landing
+section: docs
+path: /docs/framework-wrappers/
+-->
+
 ## MDC Web on other frameworks
 
 Material Components for the web are architected to be adaptable to various major web frameworks. The following wrapper libraries are available:
@@ -6,7 +14,7 @@ Material Components for the web are architected to be adaptable to various major
   - [Material Web Components](https://github.com/material-components/material-components-web-components): MDC Web integration for Web Components (using [vanilla components](./integrating-into-frameworks.md#the-simple-approach-wrapping-mdc-web-vanilla-components))
   - Additional third-party integrations
     - [Preact Material Components](https://github.com/prateekbh/preact-material-components)
-    - [RMWC: React Material Web Components](https://github.com/jamesmfriedman/rmwc)
+    - [RMWC: React Material Web Components](https://github.com/jamesmfriedman/rmwc) (using [foundations/adapters](./integrating-into-frameworks.md#the-advanced-approach-using-foundations-and-adapters).)
     - [Angular MDC](https://github.com/trimox/angular-mdc-web)
     - [Blox Material](https://blox.src.zone/material): Angular Integration Library.
     - [Vue MDC Adapter](https://github.com/stasson/vue-mdc-adapter): MDC Web Integration for Vue.js (using [foundations/adapters](./integrating-into-frameworks.md#the-advanced-approach-using-foundations-and-adapters).)

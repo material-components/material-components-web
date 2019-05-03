@@ -20,12 +20,103 @@
 // THE SOFTWARE.
 //
 
+@import "@material/feature-targeting/functions";
+@import "@material/feature-targeting/mixins";
+@import "@material/rtl/mixins";
+@import "@material/list/mixins";
+@import "@material/list/variables";
+@import "@material/ripple/mixins";
 @import "./variables";
 
-@mixin mdc-menu-width($width) {
-  @if unitless($width) {
-    width: $width * $mdc-menu-width-base;
-  } @else {
-    width: $width;
+@mixin mdc-menu-core-styles($query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-ripple-common($query);
+
+  // Customize the menu-surface and contained list to match the mdc-menu styles.
+  .mdc-menu {
+    @include mdc-list-item-meta-ink-color($mdc-menu-ink-color, $query);
+    @include mdc-list-item-graphic-ink-color($mdc-menu-ink-color, $query);
+
+    @include mdc-feature-targets($feat-structure) {
+      min-width: $mdc-menu-min-width;
+    }
+
+    // Include mdc-list selector to ensure list-inside-menu overrides default list styles
+    .mdc-list {
+      @include mdc-list-item-primary-text-ink-color($mdc-menu-ink-color, $query);
+    }
+
+    .mdc-list-divider {
+      @include mdc-feature-targets($feat-structure) {
+        margin: 8px 0;
+      }
+    }
+
+    .mdc-list-item {
+      @include mdc-feature-targets($feat-structure) {
+        user-select: none;
+      }
+    }
+
+    .mdc-list-item--disabled {
+      @include mdc-feature-targets($feat-structure) {
+        cursor: auto;
+      }
+    }
+
+    //stylelint-disable selector-no-qualifying-type
+    a.mdc-list-item .mdc-list-item__text,
+    a.mdc-list-item .mdc-list-item__graphic {
+      @include mdc-feature-targets($feat-structure) {
+        pointer-events: none;
+      }
+    }
+    // stylelint-enable selector-no-qualifying-type
+  }
+
+  // postcss-bem-linter: define menu
+  .mdc-menu__selection-group {
+    @include mdc-feature-targets($feat-structure) {
+      padding: 0;
+      fill: currentColor;
+    }
+
+    .mdc-list-item {
+      @include mdc-feature-targets($feat-structure) {
+        @include mdc-rtl-reflexive-property(padding, 56px, $mdc-list-side-padding);
+      }
+    }
+
+    // Extra specificity required to override `display` property on `mdc-list-item__graphic`.
+    .mdc-menu__selection-group-icon {
+      @include mdc-feature-targets($feat-structure) {
+        @include mdc-rtl-reflexive-position(left, 16px);
+
+        display: none;
+        position: absolute;
+      }
+    }
+  }
+  // postcss-bem-linter: end
+
+  // stylelint-disable-next-line plugin/selector-bem-pattern
+  .mdc-menu-item--selected .mdc-menu__selection-group-icon {
+    @include mdc-feature-targets($feat-structure) {
+      display: inline;
+    }
+  }
+}
+
+@mixin mdc-menu-width($width, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, color);
+
+  @include mdc-feature-targets($feat-structure) {
+    @if unitless($width) {
+      width: $width * $mdc-menu-width-base;
+    } @else {
+      width: $width;
+    }
   }
 }

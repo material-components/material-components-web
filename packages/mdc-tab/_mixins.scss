@@ -20,6 +20,7 @@
 // THE SOFTWARE.
 //
 
+@import "@material/ripple/mixins";
 @import "@material/theme/mixins";
 
 // Public mixins
@@ -33,6 +34,38 @@
 @mixin mdc-tab-icon-color($color) {
   .mdc-tab__icon {
     @include mdc-theme-prop(color, $color);
+
+    fill: currentColor;
+  }
+}
+
+@mixin mdc-tab-states-color($color) {
+  .mdc-tab__ripple {
+    @include mdc-states($color);
+  }
+}
+
+@mixin mdc-tab-ink-color($color) {
+  @include mdc-tab-icon-color($color);
+  @include mdc-tab-states-color($color);
+  @include mdc-tab-text-label-color($color);
+}
+
+@mixin mdc-tab-active-text-label-color($color) {
+  &.mdc-tab--active {
+    @include mdc-tab-text-label-color($color);
+  }
+}
+
+@mixin mdc-tab-active-icon-color($color) {
+  &.mdc-tab--active {
+    @include mdc-tab-icon-color($color);
+  }
+}
+
+@mixin mdc-tab-active-states-color($color) {
+  &.mdc-tab--active {
+    @include mdc-tab-states-color($color);
   }
 }
 
