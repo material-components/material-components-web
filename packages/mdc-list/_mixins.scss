@@ -112,6 +112,12 @@
   // stylelint-enable plugin/selector-bem-pattern
 
   .mdc-list-item__meta {
+    // stylelint-disable selector-class-pattern
+    &:not(.material-icons) {
+      @include mdc-typography(caption, $query);
+    }
+    // stylelint-enable selector-class-pattern
+
     @include mdc-feature-targets($feat-structure) {
       @include mdc-rtl-reflexive-property(margin, auto, 0, ".mdc-list-item");
     }
