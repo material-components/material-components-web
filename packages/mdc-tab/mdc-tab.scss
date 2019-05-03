@@ -127,7 +127,7 @@
 }
 
 .mdc-tab--active {
-  @include mdc-tab-text-label-color($mdc-tab-text-label-color-active:);
+  @include mdc-tab-text-label-color($mdc-tab-text-label-color-active);
   @include mdc-tab-icon-color($mdc-tab-icon-color-active);
 
   .mdc-tab__text-label,
