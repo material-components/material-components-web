@@ -131,7 +131,7 @@
     "stylelint-config-standard": "^18.0.0",
     "stylelint-order": "^2.0.0",
     "stylelint-scss": "^3.0.0",
-    "stylelint-selector-bem-pattern": "^1.0.0",
+    "stylelint-selector-bem-pattern": "^2.1.0",
     "testdouble": "^3.2.4",
     "to-slug-case": "^1.0.0",
     "ts-loader": "^3.5.0",
