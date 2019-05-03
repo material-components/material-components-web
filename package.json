@@ -98,7 +98,7 @@
     "jimp": "^0.6.1",
     "jsdom": "^13.1.0",
     "json-stable-stringify": "^1.0.1",
-    "karma": "^3.0.0",
+    "karma": "^4.0.0",
     "karma-chrome-launcher": "^2.0.0",
     "karma-coverage-istanbul-reporter": "^2.0.4",
     "karma-firefox-launcher": "^1.0.0",
