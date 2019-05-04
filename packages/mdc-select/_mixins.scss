@@ -28,6 +28,7 @@
 @import "@material/notched-outline/mixins";
 @import "@material/notched-outline/variables";
 @import "./icon/mixins";
+@import "/icon/variables";
 @import "./variables";
 
 // Public
@@ -255,7 +256,7 @@
 }
 
 @mixin mdc-select-with-leading-icon_ {
-  @include mdc-select-icon-horizontal-position_(16px, $mdc-select-icon-padding);
+  @include mdc-select-icon-horizontal-position_($mdc-select-icon-position, $mdc-select-icon-padding);
 
   &.mdc-select--outlined {
     @include mdc-notched-outline-floating-label-float-position(
