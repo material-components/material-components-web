@@ -60,7 +60,7 @@
 
 * **menu:** New adapter methods to MDC List: `isRootFocused`. MDC Menu: Replaced adapter methods `isRootFocused`, `focusRoot` with `focusListRoot`. When using MDC List inside MDC Menu `tabindex` should be set on list root element where `role="menu"` is assigned.
 * **list:** MDCList's `listElements` component API now includes disabled list items which previously returned only enabled list items.
-* **menu:** Focus is no more set to first menu item when menu is opened. Introduced new API (`setDefaultFocusItemIndex()`) to set focus on specific menu item every time the menu is opened. Also introduced new foundation & adapter methods to incorporate this change. Please use `setDefaultFocusItemIndex(0)` method before menu open to retain previous behaviour.
+* **menu:** Focus is no more set to first menu item when menu is opened. Introduced new API (`setDefaultFocusState()`) to set default focus state (`DefaultFocusState`) that will be used to focus every time when menu is opened. Also introduced new foundation & adapter methods to incorporate this change. Please use `setDefaultFocusItemIndex(DefaultFocusState.FIRST_ITEM)` method before menu open to retain previous behaviour.
 * `$mdc-top-app-bar-prominent-dense-title-bottom-padding` is renamed to `$mdc-top-app-bar-dense-prominent-title-bottom-padding`
 
 

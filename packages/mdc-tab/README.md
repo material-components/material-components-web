@@ -141,6 +141,7 @@ Mixin | Description
 `mdc-tab-active-states-color($color)`  | Customizes the color of the active tab's states.
 `mdc-tab-parent-positioning` | Sets the positioning of the MDCTab's parent element so that `MDCTab.computeDimensions()` reports the same values in all browsers.
 `mdc-tab-fixed-width($width)` | Sets the fixed width of the tab. The tab will never be smaller than the given width.
+`mdc-tab-horizontal-padding($padding)` | Sets the horizontal padding of the tab.
 
 ## `MDCTab` Properties and Methods
 

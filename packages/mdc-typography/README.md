@@ -139,7 +139,7 @@ $mdc-typography-styles-button: (
 
 Example: Overriding the global `font-family` property. 
 ```scss
-$mdc-typography-font-family: "Arial, Helvetica, sans-serif";
+$mdc-typography-font-family: unquote("Arial, Helvetica, sans-serif");
 
 ...
 @import ...
