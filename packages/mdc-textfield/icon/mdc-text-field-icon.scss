@@ -28,6 +28,10 @@
   position: absolute;
   bottom: 16px;
   cursor: pointer;
+
+  &.mdc-icon-button {
+    bottom: 4px;
+  }
 }
 
 .mdc-text-field__icon:not([tabindex]),
