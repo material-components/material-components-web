@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@material/base": "^1.0.0",
+    "@material/dom": "^1.1.0",
     "@material/feature-targeting": "^0.44.1",
     "@material/list": "^2.3.0",
     "@material/menu-surface": "^2.3.0",
