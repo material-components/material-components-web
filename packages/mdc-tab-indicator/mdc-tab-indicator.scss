@@ -49,7 +49,9 @@
 
 .mdc-tab-indicator__content--underline {
   align-self: flex-end;
+  box-sizing: border-box;
   width: 100%;
+  border-top-style: solid;
 }
 
 .mdc-tab-indicator__content--icon {
@@ -57,26 +59,26 @@
   margin: 0 auto;
 }
 
-.mdc-tab-indicator--active > .mdc-tab-indicator__content {
+.mdc-tab-indicator--active .mdc-tab-indicator__content {
   opacity: 1;
 }
 
 // Slide by default
-.mdc-tab-indicator > .mdc-tab-indicator__content {
+.mdc-tab-indicator .mdc-tab-indicator__content {
   transition: 250ms transform $mdc-animation-standard-curve-timing-function;
 }
 
 // --no-transition is applied in cases where styles need to be applied immediately to set up a transition
-.mdc-tab-indicator--no-transition > .mdc-tab-indicator__content {
+.mdc-tab-indicator--no-transition .mdc-tab-indicator__content {
   transition: none;
 }
 
-.mdc-tab-indicator--fade > .mdc-tab-indicator__content {
+.mdc-tab-indicator--fade .mdc-tab-indicator__content {
   transition: 150ms opacity linear;
 }
 
 // postcss-bem-linter: ignore
-.mdc-tab-indicator--active.mdc-tab-indicator--fade > .mdc-tab-indicator__content {
+.mdc-tab-indicator--active.mdc-tab-indicator--fade .mdc-tab-indicator__content {
   transition-delay: 100ms;
 }
 

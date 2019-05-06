@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,40 +21,10 @@
  * THE SOFTWARE.
  */
 
-@import "@material/theme/mixins";
+window.mdc.testFixture.fontsLoaded.then(() => {
+  [].forEach.call(document.querySelectorAll('.mdc-tab-bar'), (el) => {
+    mdc.tabBar.MDCTabBar.attachTo(el);
+  });
 
-@mixin mdc-tab-indicator-surface {
-  position: relative;
-}
-
-@mixin mdc-tab-indicator-underline-color($color) {
-  .mdc-tab-indicator__content--underline {
-    @include mdc-theme-prop(border-color, $color);
-  }
-}
-
-@mixin mdc-tab-indicator-underline-height($height) {
-  .mdc-tab-indicator__content--underline {
-    border-top-width: $height;
-  }
-}
-
-@mixin mdc-tab-indicator-underline-top-corner-radius($radius) {
-  .mdc-tab-indicator__content--underline {
-    border-top-left-radius: $radius;
-    border-top-right-radius: $radius;
-  }
-}
-
-@mixin mdc-tab-indicator-icon-color($color) {
-  .mdc-tab-indicator__content--icon {
-    @include mdc-theme-prop(color, $color);
-  }
-}
-
-@mixin mdc-tab-indicator-icon-height($height) {
-  .mdc-tab-indicator__content--icon {
-    height: $height;
-    font-size: $height;
-  }
-}
+  window.mdc.testFixture.notifyDomReady();
+});

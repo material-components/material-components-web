@@ -222,6 +222,22 @@ test('#setValue updates character counter when present', () => {
   td.verify(characterCounter.setCounterValue(2, 4), {times: 1});
 });
 
+test('#setValue forces the character counter to update if value was updated independently', () => {
+  const {foundation, mockAdapter, characterCounter} = setupTest({useCharacterCounter: true});
+  const nativeInput = {
+    type: 'text',
+    value: '',
+    maxLength: 4,
+    validity: {
+      valid: true,
+    },
+  };
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+  nativeInput.value = 'ok';
+  foundation.setValue('ok');
+  td.verify(characterCounter.setCounterValue(2, 4), {times: 1});
+});
+
 test('#isValid for native validation', () => {
   const {foundation, nativeInput} = setupValueTest({value: '', optIsValid: true});
   assert.isOk(foundation.isValid());
