@@ -34,6 +34,19 @@ npm install @material/data-table
 > *NOTE*: Styles for any components you intend to include within data-table (e.g. Checkboxes, etc.) must also be
 > imported.
 
+### JavaScript Instantiation
+
+```js
+import {MDCDataTable} from '@material/data-table';
+const dataTable = new MDCDataTable(document.querySelector('.mdc-data-table'));
+```
+
+> See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
+
+> Instantiating `MDCDataTable` component is only required to add interactions for example, row selection.
+
+MDC Data Table component auto instantiates `MDCCheckbox` for header row checkbox and all row checkbox. Make sure to set required class names to instantiate checkbox component. We suggest to use `layout` API when rows are added or removed from data table to register new checkbox components.
+
 ## Basic Usage
 
 ### HTML Structure
@@ -145,6 +158,7 @@ CSS Class | Description
 `mdc-data-table__row` | Mandatory. Table row element. Added to `tbody > tr` HTML tag.
 `mdc-data-table__cell` | Mandatory. Table cell element. Added to `tbody > tr > td` HTML tag.
 `mdc-data-table__cell--numeric` | Optional. Table cell element that contains numeric data. Added to `tbody > tr > td` HTML tag.
+`mdc-data-table__header-row-checkbox` | Optional. Checkbox element rendered inside table header row element. Add this class name to `mdc-checkbox` element to override styles required for data-table.
 `mdc-data-table__row-checkbox` | Optional. Checkbox element rendered inside table row element. Add this class name to `mdc-checkbox` element to override styles required for data-table.
 `mdc-data-table__row--selected` | Optional. Modifier class added to `mdc-data-table__row` when table row is selected.
 
@@ -173,3 +187,32 @@ Mixin | Description
 ## Accessibility
 
 Please refer [WAI-ARIA Authoring Practices for table](https://www.w3.org/TR/wai-aria-practices-1.1/#table) for ARIA recommended role, states & properties required for table element.
+
+## Events
+
+Please refer MDCDataTable's constant file to access these event constants.
+
+```ts
+const {events} from '@material/data-table/constants';
+// `events.ROW_SELECTION_CHANGED` to access event constant.
+```
+
+Event constant | Event name | Description
+-- | -- | --
+`ROW_SELECTION_CHANGED` | `MDCDataTable:changed` | Event emitted when row checkbox is checked or unchecked.
+`SELECTED_ALL` | `MDCDataTable:selectedAll` | Event emitted when header row checkbox is checked.
+`UNSELECTED_ALL` | `MDCDataTable:unselectedAll` | Event emitted when header row checkbox is unchecked.
+
+## `MDCDialog` Properties and Methods
+
+Property | Value Type | Description
+--- | --- | ---
+
+## Usage within Web Frameworks
+
+If you are using a JavaScript framework, such as React or Angular, you can create a Dialog for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+
+### `MDCDialogAdapter`
+
+Method Signature | Description
+--- | ---
