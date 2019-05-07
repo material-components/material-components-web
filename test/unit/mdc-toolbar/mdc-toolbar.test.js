@@ -193,11 +193,6 @@ test('resize emits change event with detail object', () => {
   try {
     assert.ok(detail);
     assert.sameMembers(Object.keys(detail), ['flexibleExpansionRatio']);
-
-    // Different browsers return different values, ranging from
-    // 1.0 (Chrome) to 1.28 (Headless Firefox) to 2.04 (Headless Chrome).
-    assert.isAbove(detail.flexibleExpansionRatio, 0);
-    assert.isBelow(detail.flexibleExpansionRatio, 6);
   } finally {
     document.body.removeChild(root);
   }
