@@ -28,20 +28,6 @@ function log() {
   echo '\033[36m[post-release]\033[0m' "$@"
 }
 
-if [[ $(git diff --cached CHANGELOG.md) ]]; then
-  log "Found modified CHANGELOG; committing as-is"
-else
-  if [[ $(git diff CHANGELOG.md) ]]; then
-    log "Found modified CHANGELOG; committing as-is"
-  else
-    log "Generating changelog"
-    npm run changelog
-  fi
-  git add CHANGELOG.md
-fi
-git commit -m "docs: Update CHANGELOG.md"
-echo ""
-
 # Extract repo version from updated lerna.json
 REPO_VERSION=$(grep 'version' lerna.json | sed 's/ *"version": "//' | sed 's/",//')
 SEMVER_TAG="v$REPO_VERSION"
@@ -49,6 +35,5 @@ log "Tagging repo using semver tag $SEMVER_TAG"
 git tag $SEMVER_TAG -m "Material Components for the web release $SEMVER_TAG"
 echo ""
 
-log "Post-release steps done! Next, continue with the Push step in the Release Process documentation:"
-echo "https://github.com/material-components/material-components-web/blob/master/docs/open_source/release-process.md#push"
+log "Post-release steps done!"
 echo ""
