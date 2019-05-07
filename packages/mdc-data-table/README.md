@@ -205,8 +205,12 @@ Event constant | Event name | Description
 
 ## `MDCDialog` Properties and Methods
 
-Property | Value Type | Description
---- | --- | ---
+Method Signature | Description
+--- | ---
+`layout() => void` | Registers new row checkbox, header row checkbox and updates the state of header row checkbox. Use this when rows are added / removed from data table.
+`getRows() => HTMLElement[]` | Returns array of row elements.
+`getSelectedRowIds() => Array<string|nul>` | Returns array of selected row ids.
+`setSelectedRowIds(rowIds: string[])` |
 
 ## Usage within Web Frameworks
 
