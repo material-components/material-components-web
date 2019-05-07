@@ -210,7 +210,7 @@ Method Signature | Description
 `layout() => void` | Registers new row checkbox, header row checkbox and updates the state of header row checkbox. Use this when rows are added / removed from data table.
 `getRows() => HTMLElement[]` | Returns array of row elements.
 `getSelectedRowIds() => Array<string|nul>` | Returns array of selected row ids.
-`setSelectedRowIds(rowIds: string[])` |
+`setSelectedRowIds(rowIds: string[])` | Sets selected row ids. Overwrites previously selected rows.
 
 ## Usage within Web Frameworks
 
@@ -220,3 +220,22 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 
 Method Signature | Description
 --- | ---
+`addClassAtRowIndex(rowIndex: number, cssClasses: string) => void` |
+`getAttributeAtRowIndex(rowIndex: number, attr: string) => void` |
+`getRowCount() => number` |
+`getRowElements() => HTMLElement[]` |
+`getRowIdAtIndex(rowIndex: number) => string | null` |
+`getRowIndexByChildElement(el: Element) => number` |
+`getSelectedRowCount() => number` |
+`isHeaderRowCheckboxChecked() => boolean` |
+`isRowsSelectable() => boolean` |
+`notifyRowSelectionChanged(data: MDCDataTableRowSelectionChangedEventDetail) => void` |
+`notifySelectedAll() => void` |
+`notifyUnselectedAll() => void` |
+`registerHeaderRowCheckbox() => void` |
+`registerRowCheckboxes() => void` |
+`removeClassAtRowIndex(rowIndex: number, cssClasses: string) => void` |
+`setAttributeAtRowIndex(rowIndex: number, attr: string, value: string) => void` |
+`setHeaderRowCheckboxChecked(checked: boolean) => void` |
+`setHeaderRowCheckboxIndeterminate(indeterminate: boolean) => void` |
+`setRowCheckboxCheckedAtIndex(rowIndex: number, checked: boolean) => void` |
