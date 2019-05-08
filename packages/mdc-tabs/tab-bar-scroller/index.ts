@@ -21,9 +21,9 @@
  * THE SOFTWARE.
  */
 
-import * as tabBarScroller from './constants';
+import * as tabBarScrollerConstants from './constants';
 
 export * from './adapter';
 export * from './component';
 export * from './foundation';
-export {tabBarScroller};
+export {tabBarScrollerConstants};
