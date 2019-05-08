@@ -33,22 +33,75 @@ import {MDCDataTableRowSelectionChangedEventDetail} from './types';
 
 export interface MDCDataTableAdapter {
   /**
-   * Adds a class to row element at given row index (Excluding header row).
+   * Adds a class name to row element at given row index excluding header row.
    *
    * @param rowIndex Index of row element excluding header row.
    * @param cssClasses CSS Class string to add.
    */
   addClassAtRowIndex(rowIndex: number, cssClasses: string): void;
+
+  /**
+   * Returns attribute value of row element at given row index excluding header row.
+   *
+   * @param rowIndex Index of row element excluding header row.
+   * @param attr Attribute string of row element.
+   */
   getAttributeAtRowIndex(rowIndex: number, attr: string): void;
+
+  /**
+   * Returns row count excluding header row.
+   */
   getRowCount(): number;
+
+  /**
+   * Returns array of row elements excluding header row.
+   */
   getRowElements(): HTMLElement[];
+
+  /**
+   * Returns row id of row element at given row index based on `data-row-id` attribute on row element `tr`
+   *
+   * @param rowIndex Index of row element.
+   * @return Row id of row element, returns `null` in absence of `data-row-id` attribute on row element.
+   */
   getRowIdAtIndex(rowIndex: number): string | null;
+
+  /**
+   * Returns index of row element that contains give child element.
+   *
+   * @param el Child element of row element.
+   * @return Index of row element.
+   */
   getRowIndexByChildElement(el: Element): number;
+
+  /**
+   * @return Selected row count.
+   */
   getSelectedRowCount(): number;
+
+  /**
+   * @return True if header row checkbox is checked.
+   */
   isHeaderRowCheckboxChecked(): boolean;
+
+  /**
+   * @return True if table rows are selectable.
+   */
   isRowsSelectable(): boolean;
+
+  /**
+   * @param data Event detail data for row selection changed event.
+   */
   notifyRowSelectionChanged(data: MDCDataTableRowSelectionChangedEventDetail): void;
+
+  /**
+   * Notifies when header row is checked.
+   */
   notifySelectedAll(): void;
+
+  /**
+   * Notifies when header row is unchecked.
+   */
   notifyUnselectedAll(): void;
 
   /**
