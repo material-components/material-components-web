@@ -32,6 +32,12 @@
 import {MDCDataTableRowSelectionChangedEventDetail} from './types';
 
 export interface MDCDataTableAdapter {
+  /**
+   * Adds a class to row element at given row index (Excluding header row).
+   *
+   * @param rowIndex Index of row element excluding header row.
+   * @param cssClasses CSS Class string to add.
+   */
   addClassAtRowIndex(rowIndex: number, cssClasses: string): void;
   getAttributeAtRowIndex(rowIndex: number, attr: string): void;
   getRowCount(): number;

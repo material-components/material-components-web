@@ -220,7 +220,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 
 Method Signature | Description
 --- | ---
-`addClassAtRowIndex(rowIndex: number, cssClasses: string) => void` |
+`addClassAtRowIndex(rowIndex: number, cssClasses: string) => void` | Adds a class to row element at given row index (Excluding header row).
 `getAttributeAtRowIndex(rowIndex: number, attr: string) => void` |
 `getRowCount() => number` |
 `getRowElements() => HTMLElement[]` |
