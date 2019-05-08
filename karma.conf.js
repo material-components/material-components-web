@@ -68,6 +68,7 @@ module.exports = function(config) {
     basePath: '',
     frameworks: ['mocha'],
     files: [
+      'node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js',
       'test/unit/index.js',
     ],
     preprocessors: {

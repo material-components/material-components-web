@@ -223,5 +223,8 @@
     "hooks": {
       "commit-msg": "validate-commit-msg"
     }
+  },
+  "dependencies": {
+    "@webcomponents/webcomponentsjs": "^2.2.10"
   }
 }
