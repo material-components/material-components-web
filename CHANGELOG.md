@@ -1,3 +1,24 @@
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/material-components/material-components-web/compare/v2.0.0...v2.1.0) (2019-05-06)
+
+
+### Bug Fixes
+
+* **tab:** Update horizontal padding mixin ([#4678](https://github.com/material-components/material-components-web/issues/4678)) ([d3ce9c9](https://github.com/material-components/material-components-web/commit/d3ce9c9))
+* **tab-indicator:** Remove child selector ([#4676](https://github.com/material-components/material-components-web/issues/4676)) ([edbe0ba](https://github.com/material-components/material-components-web/commit/edbe0ba))
+* **tab-indicator:** Show border for high contrast ([#4666](https://github.com/material-components/material-components-web/issues/4666)) ([5a52847](https://github.com/material-components/material-components-web/commit/5a52847))
+* **text-field:** Fixes overlapping input with leading icon in absence of label ([#4637](https://github.com/material-components/material-components-web/issues/4637)) ([64e459e](https://github.com/material-components/material-components-web/commit/64e459e))
+* **text-field:** Update character counter to update when value is set. ([#4663](https://github.com/material-components/material-components-web/issues/4663)) ([acfbe2d](https://github.com/material-components/material-components-web/commit/acfbe2d))
+* **top-app-bar:** Move comment line to appropriate section ([#4610](https://github.com/material-components/material-components-web/issues/4610)) ([3e36555](https://github.com/material-components/material-components-web/commit/3e36555))
+
+
+### Features
+
+* **checkbox:** Updated cssClasses constant of checkbox ([#4674](https://github.com/material-components/material-components-web/issues/4674)) ([bb25680](https://github.com/material-components/material-components-web/commit/bb25680))
+* **tab:** Improved mixins ([#4675](https://github.com/material-components/material-components-web/issues/4675)) ([252009f](https://github.com/material-components/material-components-web/commit/252009f))
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/material-components/material-components-web/compare/v1.0.0...v2.0.0) (2019-04-29)
 
