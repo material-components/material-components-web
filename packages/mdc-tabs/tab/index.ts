@@ -21,9 +21,9 @@
  * THE SOFTWARE.
  */
 
-import * as tabConstants from './constants';
+import {cssClasses as tabCssClasses, strings as tabStrings} from './constants';
 
 export * from './adapter';
 export * from './component';
 export * from './foundation';
-export {tabConstants};
+export {tabCssClasses, tabStrings};

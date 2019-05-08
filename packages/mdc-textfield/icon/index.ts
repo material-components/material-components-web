@@ -21,9 +21,9 @@
  * THE SOFTWARE.
  */
 
-import * as iconConstants from './constants';
+import {cssClasses as iconCssClasses, strings as iconStrings} from './constants';
 
 export * from './adapter';
 export * from './component';
 export * from './foundation';
-export {iconConstants};
+export {iconCssClasses, iconStrings};
