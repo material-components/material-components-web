@@ -21,9 +21,9 @@
  * THE SOFTWARE.
  */
 
-import * as MDCSelectIconConstants from './constants';
+import * as iconConstants from './constants';
 
-export {MDCSelectIconConstants};
 export * from './adapter';
 export * from './component';
 export * from './foundation';
+export {iconConstants};

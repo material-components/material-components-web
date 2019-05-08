@@ -21,10 +21,8 @@
  * THE SOFTWARE.
  */
 
-import * as MDCListConstants from './constants';
-
-export {MDCListConstants};
 export * from './adapter';
 export * from './component';
+export * from './constants';
 export * from './foundation';
 export * from './types';

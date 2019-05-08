@@ -21,9 +21,7 @@
  * THE SOFTWARE.
  */
 
-import * as MDCLinearProgressConstants from './constants';
-
-export {MDCLinearProgressConstants};
 export * from './adapter';
 export * from './component';
+export * from './constants';
 export * from './foundation';

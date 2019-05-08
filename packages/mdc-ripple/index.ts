@@ -21,11 +21,11 @@
  * THE SOFTWARE.
  */
 
-import * as MDCRippleConstants from './constants';
 import * as util from './util';
 
-export {MDCRippleConstants, util};
+export {util};
 export * from './adapter';
 export * from './component';
+export * from './constants';
 export * from './foundation';
 export * from './types';

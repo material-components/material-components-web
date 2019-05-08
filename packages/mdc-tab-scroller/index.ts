@@ -21,11 +21,11 @@
  * THE SOFTWARE.
  */
 
-import * as MDCTabScrollerConstants from './constants';
 import * as util from './util';
 
-export {MDCTabScrollerConstants, util};
+export {util};
 export * from './adapter';
 export * from './component';
+export * from './constants';
 export * from './foundation';
 export * from './types';

@@ -21,9 +21,9 @@
  * THE SOFTWARE.
  */
 
-import * as MDCTextFieldCharacterCountConstants from './constants';
+import * as characterCountConstants from './constants';
 
-export {MDCTextFieldCharacterCountConstants};
 export * from './adapter';
 export * from './component';
 export * from './foundation';
+export {characterCountConstants};

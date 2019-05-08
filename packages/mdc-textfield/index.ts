@@ -21,9 +21,8 @@
  * THE SOFTWARE.
  */
 
-import * as MDCTextFieldConstants from './constants';
+import * as textFieldConstants from './constants';
 
-export {MDCTextFieldConstants};
 export * from './adapter';
 export * from './component';
 export * from './foundation';
@@ -31,3 +30,4 @@ export * from './types';
 export * from './character-counter/index';
 export * from './helper-text/index';
 export * from './icon/index';
+export {textFieldConstants};

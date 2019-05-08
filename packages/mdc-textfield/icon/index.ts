@@ -21,9 +21,9 @@
  * THE SOFTWARE.
  */
 
-import * as MDCTextFieldIconConstants from './constants';
+import * as iconConstants from './constants';
 
-export {MDCTextFieldIconConstants};
 export * from './adapter';
 export * from './component';
 export * from './foundation';
+export {iconConstants};
