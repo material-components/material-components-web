@@ -203,7 +203,7 @@ Event constant | Event name | Description
 `SELECTED_ALL` | `MDCDataTable:selectedAll` | Event emitted when header row checkbox is checked.
 `UNSELECTED_ALL` | `MDCDataTable:unselectedAll` | Event emitted when header row checkbox is unchecked.
 
-## `MDCDialog` Properties and Methods
+## `MDCDataTable` Properties and Methods
 
 Method Signature | Description
 --- | ---
@@ -216,26 +216,37 @@ Method Signature | Description
 
 If you are using a JavaScript framework, such as React or Angular, you can create a Dialog for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
-### `MDCDialogAdapter`
+### `MDCDataTableAdapter`
 
 Method Signature | Description
 --- | ---
-`addClassAtRowIndex(rowIndex: number, cssClasses: string) => void` | Adds a class to row element at given row index (Excluding header row).
-`getAttributeAtRowIndex(rowIndex: number, attr: string) => void` |
-`getRowCount() => number` |
-`getRowElements() => HTMLElement[]` |
-`getRowIdAtIndex(rowIndex: number) => string | null` |
-`getRowIndexByChildElement(el: Element) => number` |
-`getSelectedRowCount() => number` |
-`isHeaderRowCheckboxChecked() => boolean` |
-`isRowsSelectable() => boolean` |
-`notifyRowSelectionChanged(data: MDCDataTableRowSelectionChangedEventDetail) => void` |
-`notifySelectedAll() => void` |
-`notifyUnselectedAll() => void` |
-`registerHeaderRowCheckbox() => void` |
-`registerRowCheckboxes() => void` |
-`removeClassAtRowIndex(rowIndex: number, cssClasses: string) => void` |
-`setAttributeAtRowIndex(rowIndex: number, attr: string, value: string) => void` |
-`setHeaderRowCheckboxChecked(checked: boolean) => void` |
-`setHeaderRowCheckboxIndeterminate(indeterminate: boolean) => void` |
-`setRowCheckboxCheckedAtIndex(rowIndex: number, checked: boolean) => void` |
+`addClassAtRowIndex(rowIndex: number, cssClasses: string) => void` | Adds a class name to row element at given row index excluding header row.
+`getAttributeAtRowIndex(rowIndex: number, attr: string) => void` | Returns attribute value of row element at given row index excluding header row.
+`getRowCount() => number` | Returns row count excluding header row.
+`getRowElements() => HTMLElement[]` | Returns array of row elements excluding header row.
+`getRowIdAtIndex(rowIndex: number) => string | null` | Returns row id of row element at given row index based on `data-row-id` attribute on row element `tr`.
+`getRowIndexByChildElement(el: Element) => number` | Returns index of row element that contains give child element.
+`getSelectedRowCount() => number` | Returns selected row count.
+`isHeaderRowCheckboxChecked() => boolean` | Returns true if header row checkbox is checked.
+`isRowsSelectable() => boolean` | Returns true if table rows are selectable.
+`notifyRowSelectionChanged(data: MDCDataTableRowSelectionChangedEventDetail) => void` | Notifies when row selection is changed.
+`notifySelectedAll() => void` | Notifies when header row is checked.
+`notifyUnselectedAll() => void` | Notifies when header row is unchecked.
+`registerHeaderRowCheckbox() => void` | Initializes header row checkbox. Destroys previous header row checkbox instance if any.
+`registerRowCheckboxes() => void` | Initializes all row checkboxes. Destroys previous row checkbox instances if any. This is usually called when row checkboxes are added or removed from table.
+`removeClassAtRowIndex(rowIndex: number, cssClasses: string) => void` | Removes class name from row element at give row index.
+`setAttributeAtRowIndex(rowIndex: number, attr: string, value: string) => void` | Sets attribute to row element at given row index.
+`setHeaderRowCheckboxChecked(checked: boolean) => void` | Sets header row checkbox checked or unchecked.
+`setHeaderRowCheckboxIndeterminate(indeterminate: boolean) => void` | Sets header row checkbox to indeterminate.
+`setRowCheckboxCheckedAtIndex(rowIndex: number, checked: boolean) => void` | Sets row checkbox to checked or unchecked at given row index.
+
+### `MDCDataTableFoundation`
+
+Method Signature | Description
+--- | ---
+`layout() => void` | Re-initializes header row checkbox and row checkboxes when selectable rows are added or removed from table.
+`getRows() => HTMLElement[]` | Returns array of row elements.
+`setSelectedRowIds(rowIds: string[]) => void` | Sets selected row ids. Overwrites previously selected rows.
+`getSelectedRowIds() => Array<string|null>` | Returns array of selected row ids.
+`handleHeaderRowCheckboxChange() => void` | Handles header row checkbox change event.
+`handleRowCheckboxChange(event: Event) => void` | Handles change event originated from row checkboxes.
