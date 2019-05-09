@@ -68,6 +68,7 @@ module.exports = function(config) {
     basePath: '',
     frameworks: ['mocha'],
     files: [
+      'https://unpkg.com/@webcomponents/template@1.4.0/template.js',
       'test/unit/index.js',
     ],
     preprocessors: {

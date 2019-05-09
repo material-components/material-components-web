@@ -24,7 +24,6 @@
 import {assert} from 'chai';
 import {html, render} from 'lit-html';
 import {classMap} from 'lit-html/directives/class-map.js';
-import '@webcomponents/template';
 import td from 'testdouble';
 import {
   strings,
