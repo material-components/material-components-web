@@ -221,7 +221,6 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 Method Signature | Description
 --- | ---
 `addClassAtRowIndex(rowIndex: number, cssClasses: string) => void` | Adds a class name to row element at given row index excluding header row.
-`getAttributeAtRowIndex(rowIndex: number, attr: string) => void` | Returns attribute value of row element at given row index excluding header row.
 `getRowCount() => number` | Returns row count excluding header row.
 `getRowElements() => HTMLElement[]` | Returns array of row elements excluding header row.
 `getRowIdAtIndex(rowIndex: number) => string | null` | Returns row id of row element at given row index based on `data-row-id` attribute on row element `tr`.

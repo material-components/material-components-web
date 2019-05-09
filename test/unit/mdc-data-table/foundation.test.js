@@ -44,7 +44,6 @@ test('default adapter returns a complete adapter implementation', () => {
     'addClassAtRowIndex',
     'removeClassAtRowIndex',
     'setAttributeAtRowIndex',
-    'getAttributeAtRowIndex',
     'getRowIndexByChildElement',
     'setHeaderRowCheckboxIndeterminate',
     'setHeaderRowCheckboxChecked',

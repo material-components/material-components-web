@@ -41,14 +41,6 @@ export interface MDCDataTableAdapter {
   addClassAtRowIndex(rowIndex: number, cssClasses: string): void;
 
   /**
-   * Returns attribute value of row element at given row index excluding header row.
-   *
-   * @param rowIndex Index of row element excluding header row.
-   * @param attr Attribute string of row element.
-   */
-  getAttributeAtRowIndex(rowIndex: number, attr: string): void;
-
-  /**
    * @return Row count excluding header row.
    */
   getRowCount(): number;
