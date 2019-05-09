@@ -38,14 +38,9 @@ import {
 const html = htm.bind(vhtml);
 
 const classMap = (classesMap) => {
-  const classNames = [];
-  for (const className of Object.keys(classesMap)) {
-    if (classesMap[className]) {
-      classNames.push(className);
-    }
-  }
-
-  return classNames.join(' ');
+  return Object.keys(classesMap).filter((className) => {
+    return classesMap[className];
+  }).join(' ');
 };
 
 const mdcCheckboxTemplate = (props) => {
