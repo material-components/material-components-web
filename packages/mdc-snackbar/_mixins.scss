@@ -43,10 +43,9 @@ $mdc-density-range: 4px;
     @include mdc-snackbar-shape-radius(
       $shape-radius,
       $mdc-snackbar-height: $height,
-      $rtl-reflexive: $rtl-reflexive);
+      $rtl-reflexive: $shape-rtl-reflexive);
   }
 }
-
 
 @mixin mdc-snackbar-fill-color($color) {
   .mdc-snackbar__surface {

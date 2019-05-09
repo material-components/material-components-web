@@ -64,6 +64,7 @@
   @include mdc-snackbar-max-width($mdc-snackbar-max-width);
   @include mdc-snackbar-elevation($mdc-snackbar-elevation);
   @include mdc-snackbar-shape-radius($mdc-snackbar-shape-radius);
+  @include mdc-snackbar-density(0);
 }
 
 .mdc-snackbar--opening,
