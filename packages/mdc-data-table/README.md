@@ -45,7 +45,7 @@ const dataTable = new MDCDataTable(document.querySelector('.mdc-data-table'));
 
 > Instantiating `MDCDataTable` component is only required to add interactions for example, row selection.
 
-MDC Data Table component auto instantiates `MDCCheckbox` for header row checkbox and all row checkbox. Make sure to set required class names to instantiate checkbox component. We suggest to use `layout` API when rows are added or removed from data table to register new checkbox components.
+MDC Data Table component auto instantiates `MDCCheckbox` for header row checkbox and all row checkboxes. Make sure to set required class names to instantiate checkbox component. We suggest to use `layout` API when rows are added or removed from data table to register new checkbox components.
 
 ## Basic Usage
 
@@ -190,7 +190,7 @@ Please refer [WAI-ARIA Authoring Practices for table](https://www.w3.org/TR/wai-
 
 ## Events
 
-Please refer MDCDataTable's constant file to access these event constants.
+Please use MDCDataTable's constant file to access these event constants.
 
 ```ts
 const {events} from '@material/data-table/constants';
