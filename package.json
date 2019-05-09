@@ -225,6 +225,7 @@
     }
   },
   "dependencies": {
+    "@webcomponents/template": "^1.4.0",
     "@webcomponents/webcomponentsjs": "^2.2.10"
   }
 }

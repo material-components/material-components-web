@@ -24,7 +24,7 @@
 import {assert} from 'chai';
 import {html, render} from 'lit-html';
 import {classMap} from 'lit-html/directives/class-map.js';
-import {initTemplatePolyfill} from 'lit-html/polyfills/template_polyfill';
+import '@webcomponents/template';
 import td from 'testdouble';
 import {
   strings,
@@ -35,8 +35,6 @@ import {
   MDCDataTable,
   MDCDataTableFoundation,
 } from '../../../packages/mdc-data-table/index';
-
-initTemplatePolyfill();
 
 const mdcCheckboxTemplate = (props) => {
   return html`<div class="mdc-checkbox ${props.classNames}">
