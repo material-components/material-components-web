@@ -98,6 +98,11 @@ const mdcDataTableData = {
   selectedRowIndexes: [1],
 };
 
+const WEBCOMPONENTS_POLYFILL_URL = "https://unpkg.com/@webcomponents/webcomponentsjs@2.2.10/webcomponents-loader.js";
+const scriptEl = document.createElement('script');
+scriptEl.src = WEBCOMPONENTS_POLYFILL_URL;
+document.head.appendChild(scriptEl);
+
 /** @return {!HTMLElement} */
 function renderComponent(props) {
   /* eslint-disable indent */
