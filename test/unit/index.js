@@ -31,6 +31,11 @@ afterEach(() => {
   uninstallClock();
 });
 
+const WEBCOMPONENTS_POLYFILL_URL = "https://unpkg.com/@webcomponents/webcomponentsjs@2.2.10/webcomponents-loader.js";
+const scriptEl = document.createElement('script');
+scriptEl.src = WEBCOMPONENTS_POLYFILL_URL;
+document.head.appendChild(scriptEl);
+
 // https://github.com/webpack/docs/wiki/context#requirecontext
 const testsContext = require.context(/* directory */ '.', /* useSubdirectories */ true, /\.test\.js$/);
 testsContext.keys().forEach(testsContext);
