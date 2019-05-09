@@ -25,6 +25,11 @@
 
 // Public mixins
 
+@mixin mdc-tab-horizontal-padding($padding) {
+  padding-right: $padding;
+  padding-left: $padding;
+}
+
 @mixin mdc-tab-text-label-color($color) {
   .mdc-tab__text-label {
     @include mdc-theme-prop(color, $color);
@@ -60,6 +65,12 @@
 @mixin mdc-tab-active-icon-color($color) {
   &.mdc-tab--active {
     @include mdc-tab-icon-color($color);
+  }
+}
+
+@mixin mdc-tab-active-states-color($color) {
+  &.mdc-tab--active {
+    @include mdc-tab-states-color($color);
   }
 }
 

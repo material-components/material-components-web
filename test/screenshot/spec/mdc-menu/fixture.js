@@ -21,6 +21,8 @@
  * THE SOFTWARE.
  */
 
+import {DefaultFocusState} from '../../../../packages/mdc-menu/constants';
+
 window.mdc.testFixture.fontsLoaded.then(() => {
   const buttonEl = document.querySelector('.test-menu-button');
   const menuEl = document.querySelector('.mdc-menu');
@@ -29,7 +31,7 @@ window.mdc.testFixture.fontsLoaded.then(() => {
   menu.open = true;
 
   buttonEl.addEventListener('click', () => {
-    menu.setDefaultFocusItemIndex(mdc.menu.MDCMenuFoundation.numbers.FOCUS_ROOT_INDEX);
+    menu.setDefaultFocusState(DefaultFocusState.LIST_ROOT);
     menu.open = !menu.open;
   });
 
@@ -39,23 +41,15 @@ window.mdc.testFixture.fontsLoaded.then(() => {
     const isEnter = evt.key === 'Enter' || evt.keyCode === 13;
     const isSpace = evt.key === 'Space' || evt.keyCode === 32;
 
-    if (arrowUp || arrowDown || isEnter || isSpace) {
+    if (isSpace || isEnter || arrowDown) {
       evt.preventDefault();
-    } else {
-      return;
-    }
-
-    if (isSpace) {
-      menu.setDefaultFocusItemIndex(0);
-    } else if (isEnter) {
-      menu.setDefaultFocusItemIndex(0);
-    } else if (arrowDown) {
-      menu.setDefaultFocusItemIndex(0);
+      menu.setDefaultFocusState(DefaultFocusState.FIRST_ITEM);
+      menu.open = !menu.open;
     } else if (arrowUp) {
-      menu.setDefaultFocusItemIndex(menu.items.length - 1);
+      evt.preventDefault();
+      menu.setDefaultFocusState(DefaultFocusState.LAST_ITEM);
+      menu.open = !menu.open;
     }
-
-    menu.open = !menu.open;
   });
 
   window.mdc.testFixture.notifyDomReady();

@@ -23,7 +23,7 @@
 
 import {getCorrectPropertyName} from '@material/animation/util';
 import {MDCComponent} from '@material/base/component';
-import {MDCTabBar, MDCTabBarFactory} from '../tab-bar/index';
+import {MDCTabBar, MDCTabBarFactory} from '../tab-bar/component';
 import {MDCTabBarScrollerAdapter} from './adapter';
 import {MDCTabBarScrollerFoundation} from './foundation';
 

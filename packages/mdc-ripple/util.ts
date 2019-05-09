@@ -48,7 +48,9 @@ function detectEdgePseudoVarBug(windowObj: Window): boolean {
   // See: https://bugzilla.mozilla.org/show_bug.cgi?id=548397
   const computedStyle = windowObj.getComputedStyle(node);
   const hasPseudoVarBug = computedStyle !== null && computedStyle.borderTopStyle === 'solid';
-  node.remove();
+  if (node.parentNode) {
+    node.parentNode.removeChild(node);
+  }
   return hasPseudoVarBug;
 }
 

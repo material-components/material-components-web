@@ -28,6 +28,7 @@
 'use strict';
 
 const path = require('path');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 class JsBundleFactory {
   constructor({
@@ -76,6 +77,27 @@ class JsBundleFactory {
       },
     };
 
+    let uglifyJSPluginOptions = {
+      output: {
+        comments: false, // Removes repeated @license comments and other code comments.
+      },
+      sourceMap: true,
+    };
+
+    if (!this.env_.isProd()) {
+      // Skip minify if it is not 'production'
+      uglifyJSPluginOptions = Object.assign({}, uglifyJSPluginOptions, {
+        compress: false,
+        mangle: false,
+        beautify: true,
+      });
+    }
+
+    const commonPlugins = [
+      new UglifyJSPlugin(uglifyJSPluginOptions),
+      this.pluginFactory_.createCopyrightBannerPlugin(),
+    ];
+
     return {
       name: bundleName,
       entry: chunks,
@@ -106,6 +128,7 @@ class JsBundleFactory {
         }],
       },
       plugins: [
+        ...commonPlugins,
         ...plugins,
       ],
     };
@@ -130,10 +153,7 @@ class JsBundleFactory {
         filenamePattern: this.env_.isProd() ? 'material-components-web.min.js' : 'material-components-web.js',
         library: 'mdc',
       },
-      plugins: [
-        this.pluginFactory_.createCopyrightBannerPlugin(),
-        ...plugins,
-      ],
+      plugins,
     });
   }
 
@@ -189,10 +209,7 @@ class JsBundleFactory {
         filenamePattern: this.env_.isProd() ? 'mdc.[name].min.js' : 'mdc.[name].js',
         library: ['mdc', '[name]'],
       },
-      plugins: [
-        this.pluginFactory_.createCopyrightBannerPlugin(),
-        ...plugins,
-      ],
+      plugins,
     });
   }
 }

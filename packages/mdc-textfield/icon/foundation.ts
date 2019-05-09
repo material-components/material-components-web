@@ -24,7 +24,7 @@
 import {MDCFoundation} from '@material/base/foundation';
 import {SpecificEventListener} from '@material/base/types';
 import {MDCTextFieldIconAdapter} from './adapter';
-import {strings} from './constants';
+import {cssClasses, strings} from './constants';
 
 type InteractionEventType = 'click' | 'keydown';
 
@@ -33,6 +33,10 @@ const INTERACTION_EVENTS: InteractionEventType[] = ['click', 'keydown'];
 export class MDCTextFieldIconFoundation extends MDCFoundation<MDCTextFieldIconAdapter> {
   static get strings() {
     return strings;
+  }
+
+  static get cssClasses() {
+    return cssClasses;
   }
 
   /**

@@ -241,6 +241,58 @@ testChangeHandler('no transition classes applied when no state change', [
   },
 ], cssClasses.ANIM_UNCHECKED_CHECKED, {times: 1});
 
+test('changing from unchecked to checked adds selected class', () => {
+  const {mockAdapter, change} = setupChangeHandlerTest();
+  change({
+    checked: false,
+    indeterminate: false,
+  });
+  change({
+    checked: true,
+    indeterminate: false,
+  });
+  td.verify(mockAdapter.addClass(cssClasses.SELECTED), {times: 1});
+});
+
+test('changing from unchecked to indeterminate adds selected class', () => {
+  const {mockAdapter, change} = setupChangeHandlerTest();
+  change({
+    checked: false,
+    indeterminate: false,
+  });
+  change({
+    checked: false,
+    indeterminate: true,
+  });
+  td.verify(mockAdapter.addClass(cssClasses.SELECTED), {times: 1});
+});
+
+test('changing from checked to unchecked removes selected class', () => {
+  const {mockAdapter, change} = setupChangeHandlerTest();
+  change({
+    checked: true,
+    indeterminate: false,
+  });
+  change({
+    checked: false,
+    indeterminate: false,
+  });
+  td.verify(mockAdapter.removeClass(cssClasses.SELECTED), {times: 1});
+});
+
+test('changing from indeterminate to unchecked removes selected class', () => {
+  const {mockAdapter, change} = setupChangeHandlerTest();
+  change({
+    checked: false,
+    indeterminate: true,
+  });
+  change({
+    checked: false,
+    indeterminate: false,
+  });
+  td.verify(mockAdapter.removeClass(cssClasses.SELECTED), {times: 1});
+});
+
 test('animation end handler removes animation class after short delay', () => {
   const clock = installClock();
   const {ANIM_UNCHECKED_CHECKED} = cssClasses;

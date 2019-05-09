@@ -31,17 +31,21 @@
 // postcss-bem-linter: define tab
 
 .mdc-tab {
-  @include mdc-tab-text-label-color(on-surface);
-  @include mdc-tab-icon-color(on-surface);
+  @include mdc-tab-text-label-color($mdc-tab-text-label-color-default);
+  @include mdc-tab-icon-color($mdc-tab-icon-color-default);
   @include mdc-tab-indicator-surface;
   @include mdc-typography(button);
+  @include mdc-tab-horizontal-padding($mdc-tab-horizontal-padding);
 
   display: flex;
   flex: 1 0 auto;
   justify-content: center;
   box-sizing: border-box;
   height: $mdc-tab-height;
-  padding: 0 24px;
+  // Explicitly setting margin to 0 is to override safari default margin for button elements.
+  margin: 0;
+  padding-top: 0;
+  padding-bottom: 0;
   border: none;
   outline: none;
   background: none;
@@ -87,13 +91,12 @@
 
 .mdc-tab__text-label,
 .mdc-tab__icon {
-  transition: 150ms color linear, 150ms opacity linear;
+  transition: 150ms color linear;
   z-index: 2;
 }
 
 .mdc-tab__text-label {
   display: inline-block;
-  opacity: $mdc-tab-text-label-opacity;
   // Setting line-height here overrides the line-height from the typography
   // mixin above. The line-height needs to be overridden so that the spacing
   // between the text label and the icon as well as the text label and the
@@ -104,7 +107,6 @@
 .mdc-tab__icon {
   width: $mdc-tab-icon-size;
   height: $mdc-tab-icon-size;
-  opacity: $mdc-tab-icon-opacity;
   font-size: $mdc-tab-icon-size;
 }
 
@@ -127,13 +129,12 @@
 }
 
 .mdc-tab--active {
-  @include mdc-tab-text-label-color(primary);
-  @include mdc-tab-icon-color(primary);
+  @include mdc-tab-text-label-color($mdc-tab-text-label-color-active);
+  @include mdc-tab-icon-color($mdc-tab-icon-color-active);
 
   .mdc-tab__text-label,
   .mdc-tab__icon {
     transition-delay: 100ms;
-    opacity: 1;
   }
 }
 

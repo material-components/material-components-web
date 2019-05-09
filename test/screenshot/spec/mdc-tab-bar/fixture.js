@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,28 +21,10 @@
  * THE SOFTWARE.
  */
 
-const cssClasses = {
-  MENU_SELECTED_LIST_ITEM: 'mdc-menu-item--selected',
-  MENU_SELECTION_GROUP: 'mdc-menu__selection-group',
-  ROOT: 'mdc-menu',
-};
+window.mdc.testFixture.fontsLoaded.then(() => {
+  [].forEach.call(document.querySelectorAll('.mdc-tab-bar'), (el) => {
+    mdc.tabBar.MDCTabBar.attachTo(el);
+  });
 
-const strings = {
-  ARIA_SELECTED_ATTR: 'aria-selected',
-  CHECKBOX_SELECTOR: 'input[type="checkbox"]',
-  LIST_SELECTOR: '.mdc-list',
-  SELECTED_EVENT: 'MDCMenu:selected',
-};
-
-const numbers = {
-  FOCUS_ROOT_INDEX: -1,
-};
-
-enum DefaultFocusState {
-  NONE = 0,
-  LIST_ROOT = 1,
-  FIRST_ITEM = 2,
-  LAST_ITEM = 3,
-}
-
-export {cssClasses, strings, numbers, DefaultFocusState};
+  window.mdc.testFixture.notifyDomReady();
+});
