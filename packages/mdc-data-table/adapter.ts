@@ -49,12 +49,12 @@ export interface MDCDataTableAdapter {
   getAttributeAtRowIndex(rowIndex: number, attr: string): void;
 
   /**
-   * Returns row count excluding header row.
+   * @return Row count excluding header row.
    */
   getRowCount(): number;
 
   /**
-   * Returns array of row elements excluding header row.
+   * @return Array of row elements excluding header row.
    */
   getRowElements(): HTMLElement[];
 
@@ -75,7 +75,6 @@ export interface MDCDataTableAdapter {
   getRowIndexByChildElement(el: Element): number;
 
   /**
-   *
    * @return Selected row count.
    */
   getSelectedRowCount(): number;

@@ -207,14 +207,14 @@ Event constant | Event name | Description
 
 Method Signature | Description
 --- | ---
-`layout() => void` | Registers new row checkbox, header row checkbox and updates the state of header row checkbox. Use this when rows are added / removed from data table.
+`layout() => void` | Registers new row checkboxes, header row checkbox and updates the state of header row checkbox. Use this when rows are added / removed from data table.
 `getRows() => HTMLElement[]` | Returns array of row elements.
 `getSelectedRowIds() => Array<string|nul>` | Returns array of selected row ids.
 `setSelectedRowIds(rowIds: string[])` | Sets selected row ids. Overwrites previously selected rows.
 
 ## Usage within Web Frameworks
 
-If you are using a JavaScript framework, such as React or Angular, you can create a Dialog for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+If you are using a JavaScript framework, such as React or Angular, you can create a Data Table for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
 
 ### `MDCDataTableAdapter`
 
@@ -233,7 +233,7 @@ Method Signature | Description
 `notifySelectedAll() => void` | Notifies when header row is checked.
 `notifyUnselectedAll() => void` | Notifies when header row is unchecked.
 `registerHeaderRowCheckbox() => void` | Initializes header row checkbox. Destroys previous header row checkbox instance if any.
-`registerRowCheckboxes() => void` | Initializes all row checkboxes. Destroys previous row checkbox instances if any. This is usually called when row checkboxes are added or removed from table.
+`registerRowCheckboxes() => void` | Initializes all row checkboxes. Destroys all previous row checkbox instances if any. This is usually called when row checkboxes are added or removed from table.
 `removeClassAtRowIndex(rowIndex: number, cssClasses: string) => void` | Removes class name from row element at give row index.
 `setAttributeAtRowIndex(rowIndex: number, attr: string, value: string) => void` | Sets attribute to row element at given row index.
 `setHeaderRowCheckboxChecked(checked: boolean) => void` | Sets header row checkbox checked or unchecked.
