@@ -205,8 +205,6 @@
     @include mdc-rtl-reflexive-position(left, $checkbox-padding, ".mdc-checkbox");
 
     top: $checkbox-padding;
-    width: $mdc-checkbox-size;
-    height: $mdc-checkbox-size;
   }
 
   .mdc-checkbox__background::before {
@@ -472,6 +470,8 @@
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
+    width: $mdc-checkbox-size;
+    height: $mdc-checkbox-size;
     // border-color is overridden by the mdc-checkbox-unmarked-stroke-color() mixin
     border: $mdc-checkbox-border-width solid currentColor;
     border-radius: 2px;
