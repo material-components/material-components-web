@@ -117,7 +117,7 @@ module.exports = function(config) {
 
     // Refer https://github.com/webpack-contrib/karma-webpack
     webpack: Object.assign({}, webpackConfig, {
-      plugins: [], // Excludes uglify plugin
+      plugins: [], // Exclude UglifyJs plugin from test build.
       module: Object.assign({}, webpackConfig.module, {
         // Cover source files when not debugging tests. Otherwise, omit coverage instrumenting to get
         // uncluttered source maps.

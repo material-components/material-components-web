@@ -86,7 +86,6 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCDataTableAdapter = {
       addClassAtRowIndex: (rowIndex: number, className: string) => this.getRows()[rowIndex].classList.add(className),
-      getAttributeAtRowIndex: (index: number, attr: string) => this.getRows()[index].getAttribute(attr),
       getRowCount: () => this.getRows().length,
       getRowElements: () => [].slice.call(this.root_.querySelectorAll(strings.ROW_SELECTOR)),
       getRowIdAtIndex: (rowIndex: number) => this.getRows()[rowIndex].getAttribute(strings.DATA_ROW_ID_ATTR),
