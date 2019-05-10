@@ -109,7 +109,6 @@
     "karma-tap": "^4.0.0",
     "karma-webpack": "^3.0.0",
     "lerna": "^2.11.0",
-    "lit-html": "^1.0.0",
     "lolex": "3.1.0",
     "mkdirp": "^0.5.1",
     "mocha": "^6.0.0",
