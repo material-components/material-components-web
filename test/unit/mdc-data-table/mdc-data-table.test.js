@@ -22,8 +22,8 @@
  */
 
 import {assert} from 'chai';
-import {html, render} from 'lit-html';
-import {classMap} from 'lit-html/directives/class-map.js';
+import htm from 'htm';
+import vhtml from 'vhtml';
 import td from 'testdouble';
 import {
   strings,
@@ -34,6 +34,14 @@ import {
   MDCDataTable,
   MDCDataTableFoundation,
 } from '../../../packages/mdc-data-table/index';
+
+const html = htm.bind(vhtml);
+
+const classMap = (classesMap) => {
+  return Object.keys(classesMap).filter((className) => {
+    return classesMap[className];
+  }).join(' ');
+};
 
 const mdcCheckboxTemplate = (props) => {
   return html`<div class="mdc-checkbox ${props.classNames}">
@@ -101,7 +109,7 @@ const mdcDataTableData = {
 /** @return {!HTMLElement} */
 function renderComponent(props) {
   /* eslint-disable indent */
-  const templateResult = html`
+  const blobHtml = html`
     <div class="${cssClasses.ROOT}">
       <table class="mdc-data-table__table">
         <thead>
@@ -136,8 +144,8 @@ function renderComponent(props) {
 
   document.body.innerHTML = '';
   const container = document.createElement('div');
+  container.innerHTML = blobHtml;
   document.body.appendChild(container);
-  render(templateResult, container);
   return document.querySelector(`.${cssClasses.ROOT}`);
 }
 
