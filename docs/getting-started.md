@@ -190,14 +190,13 @@ We also need to configure sass-loader to understand the `@material` imports used
 In order to add vendor-specific styles to the Sass files, we need to configure `postcss-preset-env` through PostCSS.
 
 You'll need all of these Node dependencies:
-- [postcss](https://www.npmjs.com/package/postcss): Core package that processes css files
 - [postcss-loader](https://www.npmjs.com/package/postcss-loader): Loader for Webpack used in conjunction with `postcss-preset-env`
 - [postcss-preset-env](https://www.npmjs.com/package/postcss-preset-env): Parses CSS and adds vendor prefixes to CSS rules
 
 You can install all of them by running this command:
 
 ```
-npm install --save-dev postcss postcss-loader postcss-preset-env
+npm install --save-dev postcss-loader postcss-preset-env
 ```
 
 Now create a new `postcss.config.js` file with the following contents:
@@ -209,6 +208,19 @@ module.exports = {
             stage: 0,
         }
     }
+}
+```
+
+Then add the browser targets to your `package.json`:
+
+```json
+{
+    "browserslist": [
+        "last 2 versions",
+        "not IE 10",
+        "not IE_Mob 10",
+        "not dead"
+    ]
 }
 ```
 
