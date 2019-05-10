@@ -23,7 +23,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Baseline data-table - MDC Web Screenshot Test</title>
+    <title>Baseline data table with selectable rows - MDC Web Screenshot Test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../../../out/mdc.checkbox.css">
     <link rel="stylesheet" href="../../../out/mdc.data-table.css">
@@ -33,13 +33,13 @@
 
   <body class="test-container">
     <main class="test-viewport test-viewport--center">
-      <div class="mdc-data-table test-data-table">
+      <div class="mdc-data-table test-data-table-baseline-checkbox">
         <table class="mdc-data-table__table">
           <thead>
             <tr class="mdc-data-table__header-row">
-              <th class="mdc-data-table__header-cell" scope="col">
-                <div class="mdc-checkbox mdc-data-table__row-checkbox">
-                  <input type="checkbox" class="mdc-checkbox__native-control" />
+              <th class="mdc-data-table__header-cell" role="columnheader" scope="col">
+                <div class="mdc-checkbox mdc-data-table__header-row-checkbox">
+                  <input type="checkbox" class="mdc-checkbox__native-control" aria-label="Checkbox for header row selection"/>
                   <div class="mdc-checkbox__background">
                     <svg class="mdc-checkbox__checkmark" viewbox="0 0 24 24">
                       <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
@@ -48,19 +48,19 @@
                   </div>
                 </div>
               </th>
-              <th class="mdc-data-table__header-cell" scope="col">Status</th>
-              <th class="mdc-data-table__header-cell" scope="col">Signal name</th>
-              <th class="mdc-data-table__header-cell" scope="col">Severity</th>
-              <th class="mdc-data-table__header-cell" scope="col">Stage</th>
-              <th class="mdc-data-table__header-cell" scope="col">Time</th>
-              <th class="mdc-data-table__header-cell" scope="col">Roles</th>
+              <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Status</th>
+              <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Signal name</th>
+              <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Severity</th>
+              <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Stage</th>
+              <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Time</th>
+              <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Roles</th>
             </tr>
           </thead>
           <tbody class="mdc-data-table__content">
-            <tr class="mdc-data-table__row">
+            <tr data-row-id="u0" class="mdc-data-table__row">
               <td class="mdc-data-table__cell">
                 <div class="mdc-checkbox mdc-data-table__row-checkbox">
-                  <input type="checkbox" class="mdc-checkbox__native-control" />
+                  <input type="checkbox" class="mdc-checkbox__native-control" aria-label="Checkbox for row with row id 'u0'"/>
                   <div class="mdc-checkbox__background">
                     <svg class="mdc-checkbox__checkmark" viewbox="0 0 24 24">
                       <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
@@ -76,10 +76,10 @@
               <td class="mdc-data-table__cell mdc-data-table__cell--numeric">0:33</td>
               <td class="mdc-data-table__cell">Allison Brie</td>
             </tr>
-            <tr class="mdc-data-table__row mdc-data-table__row--selected" aria-selected="true">
+            <tr data-row-id="u1" class="mdc-data-table__row mdc-data-table__row--selected" aria-selected="true">
               <td class="mdc-data-table__cell">
                 <div class="mdc-checkbox mdc-data-table__row-checkbox">
-                  <input type="checkbox" class="mdc-checkbox__native-control" checked />
+                  <input type="checkbox" class="mdc-checkbox__native-control" checked aria-label="Checkbox for row with row id 'u1'"/>
                   <div class="mdc-checkbox__background">
                     <svg class="mdc-checkbox__checkmark" viewbox="0 0 24 24">
                       <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
@@ -95,10 +95,10 @@
               <td class="mdc-data-table__cell mdc-data-table__cell--numeric">0:33</td>
               <td class="mdc-data-table__cell">Brie Larson</td>
             </tr>
-            <tr class="mdc-data-table__row mdc-data-table__row--selected" aria-selected="true">
+            <tr data-row-id="u2" class="mdc-data-table__row mdc-data-table__row--selected" aria-selected="true">
               <td class="mdc-data-table__cell">
                 <div class="mdc-checkbox mdc-data-table__row-checkbox">
-                  <input type="checkbox" class="mdc-checkbox__native-control" checked />
+                  <input type="checkbox" class="mdc-checkbox__native-control" checked aria-label="Checkbox for row with row id 'u2'"/>
                   <div class="mdc-checkbox__background">
                     <svg class="mdc-checkbox__checkmark" viewbox="0 0 24 24">
                       <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
@@ -114,10 +114,10 @@
               <td class="mdc-data-table__cell mdc-data-table__cell--numeric">0:33</td>
               <td class="mdc-data-table__cell">Jeremy Lake</td>
             </tr>
-            <tr class="mdc-data-table__row">
+            <tr data-row-id="u3" class="mdc-data-table__row">
               <td class="mdc-data-table__cell">
                 <div class="mdc-checkbox mdc-data-table__row-checkbox">
-                  <input type="checkbox" class="mdc-checkbox__native-control" />
+                  <input type="checkbox" class="mdc-checkbox__native-control" aria-label="Checkbox for row with row id 'u3'"/>
                   <div class="mdc-checkbox__background">
                     <svg class="mdc-checkbox__checkmark" viewbox="0 0 24 24">
                       <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
@@ -137,7 +137,6 @@
         </table>
       </div>
     </main>
-  </body>
 
     <!-- Automatically provides/replaces `Promise` if missing or broken. -->
     <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.js"></script>
@@ -145,5 +144,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fontfaceobserver/2.0.13/fontfaceobserver.standalone.js"></script>
     <script src="../../../out/material-components-web.js"></script>
     <script src="../../../out/spec/fixture.js"></script>
+    <script src="../../../out/spec/mdc-data-table/fixture.js"></script>
   </body>
 </html>

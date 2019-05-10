@@ -113,6 +113,7 @@ module.exports = function(config) {
     },
 
     webpack: Object.assign({}, webpackConfig, {
+      plugins: [], // Excludes uglify plugin
       module: Object.assign({}, webpackConfig.module, {
         // Cover source files when not debugging tests. Otherwise, omit coverage instrumenting to get
         // uncluttered source maps.

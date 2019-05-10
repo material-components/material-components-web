@@ -40,12 +40,12 @@ npm install @material/data-table
 
 ```html
 <div class="mdc-data-table">
-  <table class="mdc-data-table__table">
+  <table class="mdc-data-table__table" aria-label="Carbs & proteins">
     <thead>
       <tr class="mdc-data-table__header-row">
-        <th class="mdc-data-table__header-cell" scope="col">Carbs (g)</th>
-        <th class="mdc-data-table__header-cell" scope="col">Protein (g)</th>
-        <th class="mdc-data-table__header-cell" scope="col">Comments</th>
+        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Carbs (g)</th>
+        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Protein (g)</th>
+        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Comments</th>
       </tr>
     </thead>
     <tbody class="mdc-data-table__content">
@@ -74,11 +74,11 @@ npm install @material/data-table
 
 ```html
 <div class="mdc-data-table">
-  <table class="mdc-data-table__table">
+  <table class="mdc-data-table__table" aria-label="Signal statuses">
     <thead>
       <tr class="mdc-data-table__header-row">
-        <th class="mdc-data-table__header-cell" scope="col">
-          <div class="mdc-checkbox">
+        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">
+          <div class="mdc-checkbox mdc-data-table__header-row-checkbox">
             <input type="checkbox" class="mdc-checkbox__native-control" />
             <div class="mdc-checkbox__background">
               <svg class="mdc-checkbox__checkmark" viewbox="0 0 24 24">
@@ -88,15 +88,15 @@ npm install @material/data-table
             </div>
           </div>
         </th>
-        <th class="mdc-data-table__header-cell" scope="col">Status</th>
-        <th class="mdc-data-table__header-cell" scope="col">Signal name</th>
-        <th class="mdc-data-table__header-cell" scope="col">Severity</th>
+        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Status</th>
+        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Signal name</th>
+        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Severity</th>
       </tr>
     </thead>
     <tbody class="mdc-data-table__content">
       <tr class="mdc-data-table__row">
         <td class="mdc-data-table__cell">
-          <div class="mdc-checkbox">
+          <div class="mdc-checkbox mdc-data-table__row-checkbox">
             <input type="checkbox" class="mdc-checkbox__native-control" />
             <div class="mdc-checkbox__background">
               <svg class="mdc-checkbox__checkmark" viewbox="0 0 24 24">
@@ -112,7 +112,7 @@ npm install @material/data-table
       </tr>
       <tr class="mdc-data-table__row mdc-data-table__row--selected" aria-selected="true">
         <td class="mdc-data-table__cell">
-          <div class="mdc-checkbox">
+          <div class="mdc-checkbox mdc-data-table__row-checkbox">
             <input type="checkbox" class="mdc-checkbox__native-control" checked />
             <div class="mdc-checkbox__background">
               <svg class="mdc-checkbox__checkmark" viewbox="0 0 24 24">
