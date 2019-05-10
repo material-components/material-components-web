@@ -1,3 +1,23 @@
+<a name="2.1.1"></a>
+## [2.1.1](https://github.com/material-components/material-components-web/compare/v2.1.0...v2.1.1) (2019-05-10)
+
+
+### Bug Fixes
+
+* **ripple:** Removed will-change CSS property ([a0c7b81](https://github.com/material-components/material-components-web/commit/a0c7b81))
+
+
+
+<a name="2.1.1"></a>
+## [2.1.1](https://github.com/material-components/material-components-web/compare/v2.1.0...v2.1.1) (2019-05-10)
+
+
+### Bug Fixes
+
+* **ripple:** Fixes issue where Chrome v74 shows black artifact on ripple surface on hover ([a0c7b81](https://github.com/material-components/material-components-web/commit/a0c7b81))
+
+
+
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/material-components/material-components-web/compare/v2.0.0...v2.1.0) (2019-05-06)
 
