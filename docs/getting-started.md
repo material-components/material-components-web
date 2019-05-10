@@ -154,7 +154,7 @@ And open http://localhost:8080 in a browser. You should see a blue “Hello Worl
 
 ### Step 2: Include CSS for a component
 
-Now that you have webpack configured to compile Sass into CSS, let's include the Sass files for the Material Design button. First install the Node dependency:
+Now that you have webpack configured to compile Sass into CSS, let's include the Sass files for the Material Design button. First, install the Node dependency:
 
 ```
 npm install --save-dev @material/button
@@ -224,7 +224,7 @@ Then add the browser targets to your `package.json`:
 }
 ```
 
-Then add `postcss-loader` as a loader:
+Now add `postcss-loader` as a loader:
 
 ```js
 { loader: 'extract-loader' },
@@ -353,7 +353,7 @@ Now run `npm start` again and open http://localhost:8080. You should see a “he
 
 ### Step 4: Include JavaScript for a component
 
-Now that you have webpack configured to compile ES2015 into JavaScript, let's include the ES2015 files from the Material Design ripple. First install the Node dependency:
+Now that you have webpack configured to compile ES2015 into JavaScript, let's include the ES2015 files from the Material Design ripple. First, install the Node dependency:
 
 ```
 npm install --save-dev @material/ripple
