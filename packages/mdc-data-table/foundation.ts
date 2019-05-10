@@ -29,7 +29,6 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
   static get defaultAdapter(): MDCDataTableAdapter {
     return {
       addClassAtRowIndex: () => undefined,
-      getAttributeAtRowIndex: () => '',
       getRowCount: () => 0,
       getRowElements: () => [],
       getRowIdAtIndex: () => '',
