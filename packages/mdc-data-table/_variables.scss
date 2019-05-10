@@ -39,7 +39,7 @@ $mdc-data-table-shape-radius: medium !default;
 $mdc-data-table-stroke-size: 1px !default;
 $mdc-data-table-stroke-color: rgba(mdc-theme-prop-value(on-surface), .12) !default;
 
-$mdc-data-table-header-row-height: 48px !default;
-$mdc-data-table-row-height: 44px !default;
+$mdc-data-table-row-height: 52px !default;
+$mdc-data-table-header-row-height: $mdc-data-table-row-height + 4px !default;
 $mdc-data-table-cell-leading-padding: 16px !default;
 $mdc-data-table-cell-trailing-padding: 16px !default;
