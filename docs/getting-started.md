@@ -187,35 +187,37 @@ We also need to configure sass-loader to understand the `@material` imports used
 > [Appendix](#appendix-configuring-a-sass-importer-for-nested-node_modules) below on how to configure a custom importer
 > instead.
 
-In order to add vendor-specific styles to the Sass files, we need to configure `autoprefixer` through PostCSS.
+In order to add vendor-specific styles to the Sass files, we need to configure `postcss-preset-env` through PostCSS.
 
 You'll need all of these Node dependencies:
-- [autoprefixer](https://www.npmjs.com/package/autoprefixer): Parses CSS and adds vendor prefixes to CSS rules
-- [postcss-loader](https://github.com/postcss/postcss-loader): Loader for Webpack used in conjunction with autoprefixer
+- [postcss](https://www.npmjs.com/package/postcss): Core package that processes css files
+- [postcss-loader](https://www.npmjs.com/package/postcss-loader): Loader for Webpack used in conjunction with `postcss-preset-env`
+- [postcss-preset-env](https://www.npmjs.com/package/postcss-preset-env): Parses CSS and adds vendor prefixes to CSS rules
 
 You can install all of them by running this command:
 
 ```
-npm install --save-dev autoprefixer postcss-loader
+npm install --save-dev postcss postcss-loader postcss-preset-env
 ```
 
-Add `autoprefixer` at the top of your `webpack.config.js`:
+Now create a new `postcss.config.js` file with the following contents:
 
 ```js
-const autoprefixer = require('autoprefixer');
+module.exports = {
+    plugins: {
+        "postcss-preset-env": {
+            stage: 0,
+        }
+    }
+}
 ```
 
-Then add `postcss-loader`, using `autoprefixer` as a plugin:
+Then add `postcss-loader` as a loader:
 
 ```js
 { loader: 'extract-loader' },
 { loader: 'css-loader' },
-{
-  loader: 'postcss-loader',
-  options: {
-     plugins: () => [autoprefixer()]
-  }
-},
+{ loader: 'postcss-loader' },
 {
   loader: 'sass-loader',
   options: {
