@@ -34,6 +34,19 @@ npm install @material/data-table
 > *NOTE*: Styles for any components you intend to include within data-table (e.g. Checkboxes, etc.) must also be
 > imported.
 
+### JavaScript Instantiation
+
+```js
+import {MDCDataTable} from '@material/data-table';
+const dataTable = new MDCDataTable(document.querySelector('.mdc-data-table'));
+```
+
+> See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
+
+> Instantiating `MDCDataTable` component is only required to add interactions for example, row selection.
+
+MDC Data Table component auto instantiates `MDCCheckbox` for header row checkbox and all row checkboxes. Make sure to set required class names to instantiate checkbox component. We suggest to use `layout` API when rows are added or removed from data table to register new checkbox components.
+
 ## Basic Usage
 
 ### HTML Structure
@@ -145,6 +158,7 @@ CSS Class | Description
 `mdc-data-table__row` | Mandatory. Table row element. Added to `tbody > tr` HTML tag.
 `mdc-data-table__cell` | Mandatory. Table cell element. Added to `tbody > tr > td` HTML tag.
 `mdc-data-table__cell--numeric` | Optional. Table cell element that contains numeric data. Added to `tbody > tr > td` HTML tag.
+`mdc-data-table__header-row-checkbox` | Optional. Checkbox element rendered inside table header row element. Add this class name to `mdc-checkbox` element to override styles required for data-table.
 `mdc-data-table__row-checkbox` | Optional. Checkbox element rendered inside table row element. Add this class name to `mdc-checkbox` element to override styles required for data-table.
 `mdc-data-table__row--selected` | Optional. Modifier class added to `mdc-data-table__row` when table row is selected.
 
@@ -173,3 +187,65 @@ Mixin | Description
 ## Accessibility
 
 Please refer [WAI-ARIA Authoring Practices for table](https://www.w3.org/TR/wai-aria-practices-1.1/#table) for ARIA recommended role, states & properties required for table element.
+
+## Events
+
+Please use MDCDataTable's constants file to access these event constants.
+
+```ts
+const {events} from '@material/data-table/constants';
+// `events.ROW_SELECTION_CHANGED` to access event constant.
+```
+
+Event constant | Event name | Description
+-- | -- | --
+`ROW_SELECTION_CHANGED` | `MDCDataTable:changed` | Event emitted when row checkbox is checked or unchecked.
+`SELECTED_ALL` | `MDCDataTable:selectedAll` | Event emitted when header row checkbox is checked.
+`UNSELECTED_ALL` | `MDCDataTable:unselectedAll` | Event emitted when header row checkbox is unchecked.
+
+## `MDCDataTable` Properties and Methods
+
+Method Signature | Description
+--- | ---
+`layout() => void` | Registers new row checkboxes, header row checkbox and updates the state of header row checkbox. Use this when rows are added / removed from data table.
+`getRows() => HTMLElement[]` | Returns array of row elements.
+`getSelectedRowIds() => Array<string|nul>` | Returns array of selected row ids.
+`setSelectedRowIds(rowIds: string[])` | Sets selected row ids. Overwrites previously selected rows.
+
+## Usage within Web Frameworks
+
+If you are using a JavaScript framework, such as React or Angular, you can create a Data Table for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
+
+### `MDCDataTableAdapter`
+
+Method Signature | Description
+--- | ---
+`addClassAtRowIndex(rowIndex: number, cssClasses: string) => void` | Adds a class name to row element at given row index excluding header row.
+`getRowCount() => number` | Returns row count excluding header row.
+`getRowElements() => HTMLElement[]` | Returns array of row elements excluding header row.
+`getRowIdAtIndex(rowIndex: number) => string | null` | Returns row id of row element at given row index based on `data-row-id` attribute on row element `tr`.
+`getRowIndexByChildElement(el: Element) => number` | Returns index of row element that contains give child element.
+`getSelectedRowCount() => number` | Returns selected row count.
+`isHeaderRowCheckboxChecked() => boolean` | Returns true if header row checkbox is checked.
+`isRowsSelectable() => boolean` | Returns true if table rows are selectable.
+`notifyRowSelectionChanged(data: MDCDataTableRowSelectionChangedEventDetail) => void` | Notifies when row selection is changed.
+`notifySelectedAll() => void` | Notifies when header row is checked.
+`notifyUnselectedAll() => void` | Notifies when header row is unchecked.
+`registerHeaderRowCheckbox() => void` | Initializes header row checkbox. Destroys previous header row checkbox instance if any.
+`registerRowCheckboxes() => void` | Initializes all row checkboxes. Destroys all previous row checkbox instances if any. This is usually called when row checkboxes are added or removed from table.
+`removeClassAtRowIndex(rowIndex: number, cssClasses: string) => void` | Removes class name from row element at give row index.
+`setAttributeAtRowIndex(rowIndex: number, attr: string, value: string) => void` | Sets attribute to row element at given row index.
+`setHeaderRowCheckboxChecked(checked: boolean) => void` | Sets header row checkbox checked or unchecked.
+`setHeaderRowCheckboxIndeterminate(indeterminate: boolean) => void` | Sets header row checkbox to indeterminate.
+`setRowCheckboxCheckedAtIndex(rowIndex: number, checked: boolean) => void` | Sets row checkbox to checked or unchecked at given row index.
+
+### `MDCDataTableFoundation`
+
+Method Signature | Description
+--- | ---
+`layout() => void` | Re-initializes header row checkbox and row checkboxes when selectable rows are added or removed from table.
+`getRows() => HTMLElement[]` | Returns array of row elements.
+`setSelectedRowIds(rowIds: string[]) => void` | Sets selected row ids. Overwrites previously selected rows.
+`getSelectedRowIds() => Array<string|null>` | Returns array of selected row ids.
+`handleHeaderRowCheckboxChange() => void` | Handles header row checkbox change event.
+`handleRowCheckboxChange(event: Event) => void` | Handles change event originated from row checkboxes.

@@ -259,23 +259,12 @@ test('adapter#removeClassAtRowIndex removes class name from given row index ', (
   component.destroy();
 });
 
-test('adapter#getAttributeAtRowIndex', () => {
-  const {component, adapter} = setupTest();
-
-  assert.equal(
-    adapter.getAttributeAtRowIndex(1, strings.DATA_ROW_ID_ATTR),
-    'u1',
-  );
-
-  component.destroy();
-});
-
 test('adapter#setAttributeAtRowIndex', () => {
   const {component, adapter} = setupTest();
 
   adapter.setAttributeAtRowIndex(1, 'data-test-set-attr', 'test-val-1');
   assert.equal(
-    adapter.getAttributeAtRowIndex(1, 'data-test-set-attr'),
+    adapter.getRowElements()[1].getAttribute('data-test-set-attr'),
     'test-val-1',
   );
 
