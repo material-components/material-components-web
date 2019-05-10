@@ -37,7 +37,7 @@ const MENU_ICONS_COUNT = 3;
 function getFixture(removeIcon) {
   const html = bel`
     <div>
-        <header class="mdc-top-app-bar">
+      <header class="mdc-top-app-bar">
       <div class="mdc-top-app-bar__row">
         <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
           <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
@@ -84,10 +84,15 @@ class FakeRipple {
 function setupTest(removeIcon = false, rippleFactory = (el) => new FakeRipple(el)) {
   const fixture = getFixture(removeIcon);
   const root = fixture.querySelector(strings.ROOT_SELECTOR);
-  const icon = root.querySelector(strings.NAVIGATION_ICON_SELECTOR);
-  const component = new MDCTopAppBar(root, undefined, rippleFactory);
+  const MockFoundationConstructor = td.constructor(MDCTopAppBarFoundation);
+  const mockFoundation = new MockFoundationConstructor();
+  mockFoundation.handleScroll = td.func();
+  mockFoundation.handleResize = td.func();
 
-  return {root, component, icon, fixture};
+  const icon = root.querySelector(strings.NAVIGATION_ICON_SELECTOR);
+  const component = new MDCTopAppBar(root, mockFoundation, rippleFactory);
+
+  return {root, component, icon, mockFoundation, fixture};
 }
 
 suite('MDCTopAppBar');
@@ -113,12 +118,53 @@ test('constructor does not instantiate ripple for nav icon when not present', ()
   setupTest(/** removeIcon */ true, rippleFactory);
 });
 
+test('navIcon click event calls #foundation.handleNavigationClick', () => {
+  const {root, mockFoundation} = setupTest();
+  const navIcon = root.querySelector('.mdc-top-app-bar__navigation-icon');
+  domEvents.emit(navIcon, 'click');
+  td.verify(mockFoundation.handleNavigationClick(td.matchers.isA(Object)), {times: 1});
+});
+
+test('scroll event triggers #foundation.handleScroll', () => {
+  const {mockFoundation} = setupTest();
+  domEvents.emit(window, 'scroll');
+  td.verify(mockFoundation.handleScroll(td.matchers.isA(Object)), {times: 1});
+});
+
+test('resize event triggers #foundation.handleResize', () => {
+  const {mockFoundation} = setupTest();
+  domEvents.emit(window, 'resize');
+  td.verify(mockFoundation.handleResize(td.matchers.isA(Object)), {times: 1});
+});
+
 test('destroy destroys icon ripples', () => {
   const {component} = setupTest();
   component.destroy();
   component.iconRipples_.forEach((icon) => {
     td.verify(icon.destroy());
   });
+});
+
+test('destroy destroys scroll event handler', () => {
+  const {mockFoundation, component} = setupTest();
+  component.destroy();
+  domEvents.emit(window, 'scroll');
+  td.verify(mockFoundation.handleScroll(td.matchers.isA(Object)), {times: 0});
+});
+
+test('destroy destroys resize event handler', () => {
+  const {mockFoundation, component} = setupTest();
+  component.destroy();
+  domEvents.emit(window, 'resize');
+  td.verify(mockFoundation.handleResize(td.matchers.isA(Object)), {times: 0});
+});
+
+test('destroy destroys handleNavigationClick handler', () => {
+  const {mockFoundation, component, root} = setupTest();
+  const navIcon = root.querySelector('.mdc-top-app-bar__navigation-icon');
+  component.destroy();
+  domEvents.emit(navIcon, 'resize');
+  td.verify(mockFoundation.handleNavigationClick(td.matchers.isA(Object)), {times: 0});
 });
 
 test('#setScrollTarget deregisters and registers scroll handler on provided target', () => {
@@ -129,13 +175,7 @@ test('#setScrollTarget deregisters and registers scroll handler on provided targ
   component.setScrollTarget(fakeTarget1);
   assert.equal(component.scrollTarget_, fakeTarget1);
 
-  component.foundation_.destroyScrollHandler = td.func();
-  component.foundation_.initScrollHandler = td.func();
-
   component.setScrollTarget(fakeTarget2);
-
-  td.verify(component.foundation_.destroyScrollHandler(), {times: 1});
-  td.verify(component.foundation_.initScrollHandler(), {times: 1});
 
   assert.equal(component.scrollTarget_, fakeTarget2);
 });
@@ -196,100 +236,6 @@ test('adapter#setStyle sets a style attribute on the root element', () => {
   assert.isFalse(root.style.getPropertyValue('top') === '1px');
   component.getDefaultFoundation().adapter_.setStyle('top', '1px');
   assert.isTrue(root.style.getPropertyValue('top') === '1px');
-});
-
-test('registerNavigationIconInteractionHandler does not add a handler to the nav icon if the nav icon is null', () => {
-  const {component} = setupTest(true);
-  const handler = td.func('eventHandler');
-
-  assert.doesNotThrow(
-    () => component.getDefaultFoundation().adapter_.registerNavigationIconInteractionHandler('click', handler));
-});
-
-test('#adapter.registerNavigationIconInteractionHandler adds a handler to the nav icon ' +
-  'element for a given event', () => {
-  const {component, icon} = setupTest();
-  const handler = td.func('eventHandler');
-  component.getDefaultFoundation().adapter_.registerNavigationIconInteractionHandler('click', handler);
-  domEvents.emit(icon, 'click');
-  td.verify(handler(td.matchers.anything()));
-});
-
-test('#adapter.deregisterScrollHandler does not remove a handler from the nav icon if the nav icon is null ', () => {
-  const {component} = setupTest(true);
-  const handler = td.func('eventHandler');
-
-  assert.doesNotThrow(
-    () => component.getDefaultFoundation().adapter_.deregisterNavigationIconInteractionHandler('click', handler));
-});
-
-test('#adapter.deregisterNavigationIconInteractionHandler removes a handler from the nav icon ' +
-  'element for a given event', () => {
-  const {component, icon} = setupTest();
-  const handler = td.func('eventHandler');
-
-  icon.addEventListener('click', handler);
-  component.getDefaultFoundation().adapter_.deregisterNavigationIconInteractionHandler('click', handler);
-  domEvents.emit(icon, 'click');
-  td.verify(handler(td.matchers.anything()), {times: 0});
-});
-
-test('#adapter.registerScrollHandler adds a scroll handler to the window ' +
-  'element for a given event', () => {
-  const {component} = setupTest();
-  const handler = td.func('scrollHandler');
-  component.getDefaultFoundation().adapter_.registerScrollHandler(handler);
-
-  domEvents.emit(window, 'scroll');
-  try {
-    td.verify(handler(td.matchers.anything()));
-  } finally {
-    // Just to be safe
-    window.removeEventListener('scroll', handler);
-  }
-});
-
-test('#adapter.deregisterScrollHandler removes a scroll handler from the window ' +
-  'element for a given event', () => {
-  const {component} = setupTest();
-  const handler = td.func('scrollHandler');
-  window.addEventListener('scroll', handler);
-  component.getDefaultFoundation().adapter_.deregisterScrollHandler(handler);
-  domEvents.emit(window, 'scroll');
-  try {
-    td.verify(handler(td.matchers.anything()), {times: 0});
-  } finally {
-    // Just to be safe
-    window.removeEventListener('scroll', handler);
-  }
-});
-
-test('#adapter.registerResizeHandler adds a resize handler to the window', () => {
-  const {component} = setupTest();
-  const handler = td.func('resizeHandler');
-  component.getDefaultFoundation().adapter_.registerResizeHandler(handler);
-
-  domEvents.emit(window, 'resize');
-  try {
-    td.verify(handler(td.matchers.anything()));
-  } finally {
-    // Just to be safe
-    window.removeEventListener('resize', handler);
-  }
-});
-
-test('#adapter.deregisterResizeHandler removes a resize handler from the window', () => {
-  const {component} = setupTest();
-  const handler = td.func('resizeHandler');
-  window.addEventListener('resize', handler);
-  component.getDefaultFoundation().adapter_.deregisterResizeHandler(handler);
-  domEvents.emit(window, 'resize');
-  try {
-    td.verify(handler(td.matchers.anything()), {times: 0});
-  } finally {
-    // Just to be safe
-    window.removeEventListener('resize', handler);
-  }
 });
 
 test('adapter#getViewportScrollY returns scroll distance', () => {

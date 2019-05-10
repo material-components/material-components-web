@@ -75,8 +75,8 @@ export class MDCTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
     this.lastScrollPosition_ = this.adapter_.getViewportScrollY();
     this.topAppBarHeight_ = this.adapter_.getTopAppBarHeight();
 
-    this.scrollHandler_ = () => this.topAppBarScrollHandler_();
-    this.resizeHandler_ = () => this.topAppBarResizeHandler_();
+    this.handleScroll = () => this.topAppBarScrollHandler_();
+    this.handleResize = () => this.topAppBarResizeHandler_();
   }
 
   destroy() {
