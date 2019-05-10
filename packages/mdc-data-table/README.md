@@ -190,7 +190,7 @@ Please refer [WAI-ARIA Authoring Practices for table](https://www.w3.org/TR/wai-
 
 ## Events
 
-Please use MDCDataTable's constant file to access these event constants.
+Please use MDCDataTable's constants file to access these event constants.
 
 ```ts
 const {events} from '@material/data-table/constants';
