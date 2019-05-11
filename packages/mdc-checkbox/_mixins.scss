@@ -208,8 +208,8 @@
   }
 
   .mdc-checkbox__background::before {
-    top: -2px - $checkbox-padding;
-    left: -2px - $checkbox-padding;
+    top: -$mdc-checkbox-border-width - $checkbox-padding;
+    left: -$mdc-checkbox-border-width - $checkbox-padding;
     width: $touch-dimension;
     height: $touch-dimension;
   }
