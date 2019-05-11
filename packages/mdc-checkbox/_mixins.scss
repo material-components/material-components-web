@@ -208,6 +208,8 @@
   }
 
   .mdc-checkbox__background::before {
+    top: -2px - $checkbox-padding;
+    left: -2px - $checkbox-padding;
     width: $touch-dimension;
     height: $touch-dimension;
   }
@@ -466,7 +468,6 @@
   @include mdc-feature-targets($feat-structure) {
     display: inline-flex;
     position: absolute;
-    bottom: 0;
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
