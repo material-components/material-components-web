@@ -39,18 +39,7 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
   }
 
   static get defaultAdapter(): MDCCheckboxAdapter {
-    return {
-      addClass: () => undefined,
-      forceLayout: () => undefined,
-      hasNativeControl: () => false,
-      isAttachedToDOM: () => false,
-      isChecked: () => false,
-      isIndeterminate: () => false,
-      removeClass: () => undefined,
-      removeNativeControlAttr: () => undefined,
-      setNativeControlAttr: () => undefined,
-      setNativeControlDisabled: () => undefined,
-    };
+    return {} as MDCCheckboxAdapter;
   }
 
   private currentCheckState_ = strings.TRANSITION_STATE_INIT;
@@ -72,13 +61,42 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
     clearTimeout(this.animEndLatchTimer_);
   }
 
+  isChecked(): boolean {
+    return this.adapter_.isInputChecked();
+  }
+
+  setChecked(checked: boolean) {
+    this.adapter_.setInputChecked(checked);
+    this.transitionCheckState_();
+  }
+
+  isIndeterminate(): boolean {
+    return this.adapter_.isInputIndeterminate();
+  }
+
+  setIndeterminate(indeterminate: boolean) {
+    this.adapter_.setInputIndeterminate(indeterminate);
+  }
+
+  isDisabled(): boolean {
+    return this.adapter_.isInputDisabled();
+  }
+
   setDisabled(disabled: boolean) {
-    this.adapter_.setNativeControlDisabled(disabled);
+    this.adapter_.setInputDisabled(disabled);
     if (disabled) {
       this.adapter_.addClass(cssClasses.DISABLED);
     } else {
       this.adapter_.removeClass(cssClasses.DISABLED);
     }
+  }
+
+  getValue(): string {
+    return this.adapter_.getInputValue();
+  }
+
+  setValue(value: string) {
+    this.adapter_.setInputValue(value);
   }
 
   /**
@@ -105,9 +123,6 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
   }
 
   private transitionCheckState_() {
-    if (!this.adapter_.hasNativeControl()) {
-      return;
-    }
     const oldState = this.currentCheckState_;
     const newState = this.determineCheckState_();
 
@@ -151,10 +166,10 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
       TRANSITION_STATE_UNCHECKED,
     } = strings;
 
-    if (this.adapter_.isIndeterminate()) {
+    if (this.adapter_.isInputIndeterminate()) {
       return TRANSITION_STATE_INDETERMINATE;
     }
-    return this.adapter_.isChecked() ? TRANSITION_STATE_CHECKED : TRANSITION_STATE_UNCHECKED;
+    return this.adapter_.isInputChecked() ? TRANSITION_STATE_CHECKED : TRANSITION_STATE_UNCHECKED;
   }
 
   private getTransitionAnimationClass_(oldState: string, newState: string): string {
@@ -190,13 +205,13 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
 
   private updateAriaChecked_() {
     // Ensure aria-checked is set to mixed if checkbox is in indeterminate state.
-    if (this.adapter_.isIndeterminate()) {
-      this.adapter_.setNativeControlAttr(
+    if (this.adapter_.isInputIndeterminate()) {
+      this.adapter_.setAttributeToInput(
           strings.ARIA_CHECKED_ATTR, strings.ARIA_CHECKED_INDETERMINATE_VALUE);
     } else {
       // The on/off state does not need to keep track of aria-checked, since
       // the screenreader uses the checked property on the checkbox element.
-      this.adapter_.removeNativeControlAttr(strings.ARIA_CHECKED_ATTR);
+      this.adapter_.removeAttributeFromInput(strings.ARIA_CHECKED_ATTR);
     }
   }
 }

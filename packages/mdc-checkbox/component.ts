@@ -30,41 +30,31 @@ import {MDCRippleFoundation} from '@material/ripple/foundation';
 import {MDCRippleCapableSurface} from '@material/ripple/types';
 import {MDCCheckboxAdapter} from './adapter';
 import {MDCCheckboxFoundation} from './foundation';
-
-/**
- * This type is needed for compatibility with Closure Compiler.
- */
-type PropertyDescriptorGetter = (() => unknown) | undefined;
-
-const CB_PROTO_PROPS = ['checked', 'indeterminate'];
+import {strings} from './constants';
 
 export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements MDCRippleCapableSurface {
   static attachTo(root: Element) {
     return new MDCCheckbox(root);
   }
 
-  get ripple(): MDCRipple {
-    return this.ripple_;
-  }
-
   get checked(): boolean {
-    return this.nativeControl_.checked;
+    return this.foundation_.isChecked();
   }
 
   set checked(checked: boolean) {
-    this.nativeControl_.checked = checked;
+    this.foundation_.setChecked(checked);
   }
 
   get indeterminate(): boolean {
-    return this.nativeControl_.indeterminate;
+    return this.foundation_.isIndeterminate();
   }
 
   set indeterminate(indeterminate: boolean) {
-    this.nativeControl_.indeterminate = indeterminate;
+    this.foundation_.setIndeterminate(indeterminate);
   }
 
   get disabled(): boolean {
-    return this.nativeControl_.disabled;
+    return this.foundation_.isDisabled();
   }
 
   set disabled(disabled: boolean) {
@@ -72,11 +62,11 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements 
   }
 
   get value(): string {
-    return this.nativeControl_.value;
+    return this.foundation_.getValue();
   }
 
   set value(value: string) {
-    this.nativeControl_.value = value;
+    this.foundation_.setValue(value);
   }
 
   // Public visibility for this property is required by MDCRippleCapableSurface.
@@ -89,101 +79,52 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements 
   initialSyncWithDOM() {
     this.handleChange_ = () => this.foundation_.handleChange();
     this.handleAnimationEnd_ = () => this.foundation_.handleAnimationEnd();
-    this.nativeControl_.addEventListener('change', this.handleChange_);
+    this.listen('change', () => this.foundation_.handleChange());
     this.listen(getCorrectEventName(window, 'animationend'), this.handleAnimationEnd_);
-    this.installPropertyChangeHooks_();
   }
 
   destroy() {
     this.ripple_.destroy();
-    this.nativeControl_.removeEventListener('change', this.handleChange_);
+    this.unlisten('change', this.handleChange_);
     this.unlisten(getCorrectEventName(window, 'animationend'), this.handleAnimationEnd_);
-    this.uninstallPropertyChangeHooks_();
     super.destroy();
   }
 
   getDefaultFoundation() {
+    const nativeInput = this.root_.querySelector(strings.NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
+
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCCheckboxAdapter = {
+      setInputChecked: (checked) => nativeInput.checked = checked,
+      isInputChecked: () => nativeInput.checked,
+      isInputIndeterminate: () => nativeInput.indeterminate,
+      setInputIndeterminate: (indeterminate) => nativeInput.indeterminate = indeterminate,
+      isInputDisabled: () => nativeInput.disabled,
+      setInputDisabled: (disabled) => nativeInput.disabled = disabled,
+      getInputValue: () => nativeInput.value,
+      setInputValue: (value) => nativeInput.value = value,
       addClass: (className) => this.root_.classList.add(className),
       forceLayout: () => (this.root_ as HTMLElement).offsetWidth,
-      hasNativeControl: () => !!this.nativeControl_,
       isAttachedToDOM: () => Boolean(this.root_.parentNode),
-      isChecked: () => this.checked,
-      isIndeterminate: () => this.indeterminate,
       removeClass: (className) => this.root_.classList.remove(className),
-      removeNativeControlAttr: (attr) => this.nativeControl_.removeAttribute(attr),
-      setNativeControlAttr: (attr, value) => this.nativeControl_.setAttribute(attr, value),
-      setNativeControlDisabled: (disabled) => this.nativeControl_.disabled = disabled,
+      removeAttributeFromInput: (attr) => nativeInput.removeAttribute(attr),
+      setAttributeToInput: (attr, value) => nativeInput.setAttribute(attr, value),
     };
     return new MDCCheckboxFoundation(adapter);
   }
 
   private createRipple_(): MDCRipple {
+    const nativeInput = this.root_.querySelector(strings.NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCRippleAdapter = {
       ...MDCRipple.createAdapter(this),
-      deregisterInteractionHandler: (evtType, handler) => this.nativeControl_.removeEventListener(evtType, handler),
-      isSurfaceActive: () => matches(this.nativeControl_, ':active'),
+      deregisterInteractionHandler: (evtType, handler) => nativeInput.removeEventListener(evtType, handler),
+      isSurfaceActive: () => matches(nativeInput, ':active'),
       isUnbounded: () => true,
-      registerInteractionHandler: (evtType, handler) => this.nativeControl_.addEventListener(evtType, handler),
+      registerInteractionHandler: (evtType, handler) => nativeInput.addEventListener(evtType, handler),
     };
     return new MDCRipple(this.root_, new MDCRippleFoundation(adapter));
   }
-
-  private installPropertyChangeHooks_() {
-    const nativeCb = this.nativeControl_;
-    const cbProto = Object.getPrototypeOf(nativeCb);
-
-    CB_PROTO_PROPS.forEach((controlState) => {
-      const desc = Object.getOwnPropertyDescriptor(cbProto, controlState);
-      // We have to check for this descriptor, since some browsers (Safari) don't support its return.
-      // See: https://bugs.webkit.org/show_bug.cgi?id=49739
-      if (!validDescriptor(desc)) {
-        return;
-      }
-
-      // Type cast is needed for compatibility with Closure Compiler.
-      const nativeGetter = (desc as {get: PropertyDescriptorGetter}).get;
-
-      const nativeCbDesc = {
-        configurable: desc.configurable,
-        enumerable: desc.enumerable,
-        get: nativeGetter,
-        set: (state: boolean) => {
-          desc.set!.call(nativeCb, state);
-          this.foundation_.handleChange();
-        },
-      };
-      Object.defineProperty(nativeCb, controlState, nativeCbDesc);
-    });
-  }
-
-  private uninstallPropertyChangeHooks_() {
-    const nativeCb = this.nativeControl_;
-    const cbProto = Object.getPrototypeOf(nativeCb);
-
-    CB_PROTO_PROPS.forEach((controlState) => {
-      const desc = Object.getOwnPropertyDescriptor(cbProto, controlState);
-      if (!validDescriptor(desc)) {
-        return;
-      }
-      Object.defineProperty(nativeCb, controlState, desc);
-    });
-  }
-
-  private get nativeControl_(): HTMLInputElement {
-    const {NATIVE_CONTROL_SELECTOR} = MDCCheckboxFoundation.strings;
-    const el = this.root_.querySelector<HTMLInputElement>(NATIVE_CONTROL_SELECTOR);
-    if (!el) {
-      throw new Error(`Checkbox component requires a ${NATIVE_CONTROL_SELECTOR} element`);
-    }
-    return el;
-  }
-}
-
-function validDescriptor(inputPropDesc: PropertyDescriptor | undefined): inputPropDesc is PropertyDescriptor {
-  return !!inputPropDesc && typeof inputPropDesc.set === 'function';
 }

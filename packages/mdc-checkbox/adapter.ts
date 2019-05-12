@@ -29,14 +29,18 @@
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
 export interface MDCCheckboxAdapter {
+  setInputChecked(checked: boolean): void;
+  isInputChecked(): boolean;
+  isInputIndeterminate(): boolean;
+  setInputIndeterminate(indeterminate: boolean): void;
+  isInputDisabled(): boolean;
+  setInputDisabled(disabled: boolean): void;
+  getInputValue(): string;
+  setInputValue(value: string): void;
   addClass(className: string): void;
   forceLayout(): void;
-  hasNativeControl(): boolean;
   isAttachedToDOM(): boolean;
-  isChecked(): boolean;
-  isIndeterminate(): boolean;
   removeClass(className: string): void;
-  removeNativeControlAttr(attr: string): void;
-  setNativeControlAttr(attr: string, value: string): void;
-  setNativeControlDisabled(disabled: boolean): void;
+  removeAttributeFromInput(attr: string): void;
+  setAttributeToInput(attr: string, value: string): void;
 }
