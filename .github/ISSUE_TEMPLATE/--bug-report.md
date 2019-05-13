@@ -22,7 +22,7 @@ Thanks for reporting the issue!
 -->
 
 ## Bug report
-A clear and concise description of what the bug is.
+<!-- A clear and concise description of what the bug is. -->
 
 ### Steps to reproduce
 1. Go to '...'
@@ -33,13 +33,16 @@ A clear and concise description of what the bug is.
 ### Actual behavior
 <!-- Please describe actual behaviour of the issue that you're observing. -->
 
-## Expected behavior
-A clear and concise description of what you expected to happen.
+### Expected behavior
+<!-- A clear and concise description of what you expected to happen. -->
 
 ### Screenshots
-If applicable, add screenshots to help explain your issue.
+<!-- If applicable, add screenshots to help explain your issue. -->
 
-**Your Environment (please complete the following information):**
+### Your Environment:
+
+<!-- please complete the following information -->
+
 | Software         | Version(s) |
 | ---------------- | ---------- |
 | MDC Web          |
