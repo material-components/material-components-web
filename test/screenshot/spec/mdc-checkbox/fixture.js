@@ -24,8 +24,6 @@
 document.getElementById('checkbox-indeterminate').indeterminate = true;
 document.getElementById('checkbox-indeterminate-disabled').indeterminate = true;
 
-// import {MDCCheckbox} from '../../../../packages/mdc-checkbox';
-
 for (const el of document.querySelectorAll('.mdc-checkbox')) {
   mdc.checkbox.MDCCheckbox.attachTo(el);
 }
