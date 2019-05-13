@@ -402,7 +402,10 @@
     $mdc-text-field-icon-padding,
     $mdc-text-field-input-padding
   );
-  @include mdc-notched-outline-floating-label-float-position($mdc-text-field-outlined-label-position-y, 32px);
+  @include mdc-notched-outline-floating-label-float-position(
+    $mdc-text-field-outlined-label-position-y,
+    $mdc-text-field-outlined-with-leading-icon-label-position-x
+  );
   @include mdc-floating-label-shake-animation(text-field-outlined-leading-icon);
 
   @include mdc-rtl {
