@@ -23,12 +23,18 @@
 
 const cssClasses = {
   ANIMATE: 'mdc-drawer--animate',
+  APP_CONTENT: 'mdc-drawer-app-content',
   CLOSING: 'mdc-drawer--closing',
+  CONTENT: 'mdc-drawer__content',
   DISMISSIBLE: 'mdc-drawer--dismissible',
+  HEADER: 'mdc-drawer__header',
   MODAL: 'mdc-drawer--modal',
   OPEN: 'mdc-drawer--open',
   OPENING: 'mdc-drawer--opening',
   ROOT: 'mdc-drawer',
+  SCRIM: 'mdc-drawer-scrim',
+  SUBTITLE: 'mdc-drawer__subtitle',
+  TITLE: 'mdc-drawer__title',
 };
 
 const strings = {
