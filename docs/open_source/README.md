@@ -35,7 +35,7 @@ NPM. Triage and release are only performed when the team member is
 release cop for two weeks.
 
 * [Triage Process](triage.md)
-* [Release Process](release-process.md)
+* Release Process
 * Idle in Discord
 
 ## External Contributors

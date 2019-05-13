@@ -4,8 +4,6 @@ This document describes the branching and release strategy we use for MDC Web, a
 we maintain, namely the [MDC Web Catalog](https://github.com/material-components/material-components-web-catalog) and
 [MDC React](https://github.com/material-components/material-components-web-react).
 
-For an explanation of the steps needed to cut a release of MDC Web, see [Release Process](./release-process.md).
-
 ## MDC Web Release Schedule and Versioning
 
 MDC Web follows a 2-week release cycle. We expect to have one release per month containing breaking changes, to coincide
@@ -24,8 +22,6 @@ In summary, MDC Web has the following types of releases:
 * **Minor release:** A release with new features but NO breaking changes; this revs the minor version number (e.g. 1.1.0)
 * **Patch release:** A release consisting primarily of bugfixes, with no features or breaking changes; this revs the patch version number (e.g. 1.0.1)
 * **Pre-release:** A preview release containing breaking changes, cut before the next scheduled major release (e.g. 2.0.0-0)
-
-See [Release Process](./release-process.md) for steps to perform for different types of releases.
 
 ### About Pre-releases
 
