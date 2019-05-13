@@ -28,4 +28,6 @@ export const strings = {
 export const cssClasses = {
   CHOICE: 'mdc-chip-set--choice',
   FILTER: 'mdc-chip-set--filter',
+  INPUT: 'mdc-chip-set--input',
+  ROOT: 'mdc-chip-set',
 };
