@@ -20,29 +20,5 @@
 // THE SOFTWARE.
 //
 
-@import "@material/animation/variables";
 @import "../mixins";
-
-@keyframes mdc-chip-entry {
-  from {
-    transform: scale(.8);
-    opacity: .4;
-  }
-
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-.mdc-chip-set {
-  @include mdc-chip-set-spacing(8px);
-
-  display: flex;
-  flex-wrap: wrap;
-  box-sizing: border-box;
-}
-
-.mdc-chip-set--input .mdc-chip {
-  animation: mdc-chip-entry 100ms $mdc-animation-deceleration-curve-timing-function;
-}
+@include mdc-chip-set-core-styles;
