@@ -36,32 +36,33 @@ const setupTest = () => {
   return {foundation, mockAdapter};
 };
 
-test('#handleScroll calls #adapter.getViewportScrollY', () => {
+test('#handleTargetScroll calls #adapter.getViewportScrollY', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.handleScroll();
+  foundation.handleTargetScroll();
   // twice because it is called once in the standard foundation
   td.verify(mockAdapter.getViewportScrollY(), {times: 2});
 });
 
-test('#handleScroll calls #adapter.addClass if adapter.getViewportScrollY > 0', () => {
+test('#handleTargetScroll calls #adapter.addClass if adapter.getViewportScrollY > 0', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getViewportScrollY()).thenReturn(1);
-  foundation.handleScroll();
+  foundation.handleTargetScroll();
   td.verify(mockAdapter.addClass(MDCTopAppBarFoundation.cssClasses.FIXED_SCROLLED_CLASS), {times: 1});
 });
 
-test('#handleScroll calls #adapter.removeClass if adapter.getViewportScrollY < 0 but had just scrolled down', () => {
+test('#handleTargetScroll calls #adapter.removeClass if ' +
+'adapter.getViewportScrollY < 0 but had just scrolled down', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getViewportScrollY()).thenReturn(1);
-  foundation.handleScroll();
+  foundation.handleTargetScroll();
   td.when(mockAdapter.getViewportScrollY()).thenReturn(-1);
-  foundation.handleScroll();
+  foundation.handleTargetScroll();
   td.verify(mockAdapter.removeClass(MDCTopAppBarFoundation.cssClasses.FIXED_SCROLLED_CLASS), {times: 1});
 });
 
-test('#handleScroll does not call #adapter.removeClass if was not scrolled yet', () => {
+test('#handleTargetScroll does not call #adapter.removeClass if was not scrolled yet', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getViewportScrollY()).thenReturn(-1);
-  foundation.handleScroll();
+  foundation.handleTargetScroll();
   td.verify(mockAdapter.removeClass(td.matchers.isA(String)), {times: 0});
 });

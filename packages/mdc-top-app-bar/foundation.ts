@@ -57,8 +57,8 @@ export class MDCTopAppBarBaseFoundation extends MDCFoundation<MDCTopAppBarAdapte
     // tslint:enable:object-literal-sort-keys
   }
 
-  handleScroll?: SpecificEventListener<'scroll'>;
-  handleResize?: SpecificEventListener<'resize'>;
+  handleTargetScroll?: SpecificEventListener<'scroll'>;
+  handleWindowResize?: SpecificEventListener<'resize'>;
 
   /* istanbul ignore next: optional argument is not a branch statement */
   constructor(adapter?: Partial<MDCTopAppBarAdapter>) {

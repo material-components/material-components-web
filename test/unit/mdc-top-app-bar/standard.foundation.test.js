@@ -120,50 +120,50 @@ test('top app bar : checkForUpdate_ returns true if top app bar is docked but no
   assert.isFalse(foundation.wasDocked_);
 });
 
-test('top app bar : handleScroll does not update currentAppBarOffsetTop_ if ' +
+test('top app bar : handleTargetScroll does not update currentAppBarOffsetTop_ if ' +
   'isCurrentlyBeingResized_ is true', () => {
   const {foundation} = setupTest();
   foundation.isCurrentlyBeingResized_ = true;
-  foundation.handleScroll();
+  foundation.handleTargetScroll();
   assert.isTrue(foundation.currentAppBarOffsetTop_ === 0);
 });
 
-test('top app bar : handleScroll subtracts the currentAppBarOffsetTop_ amount scrolled', () => {
+test('top app bar : handleTargetScroll subtracts the currentAppBarOffsetTop_ amount scrolled', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getViewportScrollY()).thenReturn(1);
-  foundation.handleScroll();
+  foundation.handleTargetScroll();
   assert.isTrue(foundation.currentAppBarOffsetTop_ === -1);
 });
 
-test('top app bar : handleScroll negative scroll results in currentAppBarOffsetTop_ being 0', () => {
+test('top app bar : handleTargetScroll negative scroll results in currentAppBarOffsetTop_ being 0', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getViewportScrollY()).thenReturn(-1);
-  foundation.handleScroll();
+  foundation.handleTargetScroll();
   assert.isTrue(foundation.currentAppBarOffsetTop_ === 0);
 });
 
-test('top app bar : handleScroll scroll greater than top app bar height results in ' +
+test('top app bar : handleTargetScroll scroll greater than top app bar height results in ' +
   'currentAppBarOffsetTop_ being negative topAppBarHeight_', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getViewportScrollY()).thenReturn(100);
-  foundation.handleScroll();
+  foundation.handleTargetScroll();
   assert.isTrue(foundation.currentAppBarOffsetTop_ === -64);
 });
 
-test('top app bar : handleScroll scrolling does not generate a ' +
+test('top app bar : handleTargetScroll scrolling does not generate a ' +
   'positive currentAppBarOffsetTop_', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getViewportScrollY()).thenReturn(100);
-  foundation.handleScroll();
+  foundation.handleTargetScroll();
   td.when(mockAdapter.getViewportScrollY()).thenReturn(-100);
-  foundation.handleScroll();
+  foundation.handleTargetScroll();
   assert.isTrue(foundation.currentAppBarOffsetTop_ === 0);
 });
 
 test('top app bar : resize events should set isCurrentlyBeingResized_ to true', () => {
   const {foundation} = setupTest();
 
-  foundation.handleResize();
+  foundation.handleWindowResize();
 
   assert.isTrue(foundation.isCurrentlyBeingResized_);
 });
@@ -172,9 +172,9 @@ test('top app bar : resize events throttle multiple calls of throttledResizeHand
   const clock = installClock();
   const {foundation} = setupTest();
 
-  foundation.handleResize();
+  foundation.handleWindowResize();
   assert.isFalse(!foundation.resizeThrottleId_);
-  foundation.handleResize();
+  foundation.handleWindowResize();
   clock.tick(numbers.DEBOUNCE_THROTTLE_RESIZE_TIME_MS);
   assert.isTrue(!foundation.resizeThrottleId_);
 });
@@ -183,10 +183,10 @@ test('top app bar : resize events debounce changing isCurrentlyBeingResized_ to 
   const clock = installClock();
   const {foundation} = setupTest();
 
-  foundation.handleResize();
+  foundation.handleWindowResize();
   const debounceId = foundation.resizeDebounceId_;
   clock.tick(50);
-  foundation.handleResize();
+  foundation.handleWindowResize();
   assert.isFalse(debounceId === foundation.resizeDebounceId_);
   assert.isTrue(foundation.isCurrentlyBeingResized_);
   clock.tick(150);

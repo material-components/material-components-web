@@ -36,9 +36,9 @@ export class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
     return new MDCTopAppBar(root);
   }
 
-  private handleNavigationIconClick_!: SpecificEventListener<'click'>; // assigned in initialSyncWithDOM()
-  private handleResize_?: SpecificEventListener<'resize'>; // assigned in initialSyncWithDOM()
-  private handleScroll_?: SpecificEventListener<'scroll'>; // assigned in initialSyncWithDOM()
+  private handleNavigationClick_!: SpecificEventListener<'click'>; // assigned in initialSyncWithDOM()
+  private handleWindowResize_?: SpecificEventListener<'resize'>; // assigned in initialSyncWithDOM()
+  private handleTargetScroll_?: SpecificEventListener<'scroll'>; // assigned in initialSyncWithDOM()
   private navIcon_!: Element | null;
   private iconRipples_!: MDCRipple[];
   private scrollTarget_!: EventTarget;
@@ -62,47 +62,50 @@ export class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
   }
 
   initialSyncWithDOM() {
-    this.handleNavigationIconClick_ = this.foundation_.handleNavigationClick.bind(this.foundation_);
-    this.handleResize_ = this.foundation_.handleResize && this.foundation_.handleResize.bind(this.foundation_);
-    this.handleScroll_ = this.foundation_.handleScroll && this.foundation_.handleScroll.bind(this.foundation_);
+    this.handleNavigationClick_ = this.foundation_.handleNavigationClick.bind(this.foundation_);
+    this.handleWindowResize_
+      = this.foundation_.handleWindowResize && this.foundation_.handleWindowResize.bind(this.foundation_);
+    this.handleTargetScroll_
+      = this.foundation_.handleTargetScroll && this.foundation_.handleTargetScroll.bind(this.foundation_);
 
     if (this.navIcon_) {
-      this.navIcon_.addEventListener('click', this.handleNavigationIconClick_ as EventListener);
+      this.navIcon_.addEventListener('click', this.handleNavigationClick_ as EventListener);
     }
-    if (this.handleScroll_) {
-      this.scrollTarget_.addEventListener('scroll', this.handleScroll_ as EventListener);
+    if (this.handleTargetScroll_) {
+      this.scrollTarget_.addEventListener('scroll', this.handleTargetScroll_ as EventListener);
     }
-    if (this.handleResize_) {
-      window.addEventListener('resize', this.handleResize_ as EventListener);
+    if (this.handleWindowResize_) {
+      window.addEventListener('resize', this.handleWindowResize_ as EventListener);
     }
   }
 
   destroy() {
     this.iconRipples_.forEach((iconRipple) => iconRipple.destroy());
     if (this.navIcon_) {
-      this.navIcon_.removeEventListener('click', this.handleNavigationIconClick_ as EventListener);
+      this.navIcon_.removeEventListener('click', this.handleNavigationClick_ as EventListener);
     }
-    if (this.handleScroll_) {
-      this.scrollTarget_.removeEventListener('scroll', this.handleScroll_ as EventListener);
+    if (this.handleTargetScroll_) {
+      this.scrollTarget_.removeEventListener('scroll', this.handleTargetScroll_ as EventListener);
     }
-    if (this.handleResize_) {
-      window.removeEventListener('resize', this.handleResize_ as EventListener);
+    if (this.handleWindowResize_) {
+      window.removeEventListener('resize', this.handleWindowResize_ as EventListener);
     }
     super.destroy();
   }
 
   setScrollTarget(target: EventTarget) {
     // Remove scroll handler from the previous scroll target
-    if (this.handleScroll_) {
-      this.scrollTarget_.removeEventListener('scroll', this.handleScroll_ as EventListener);
+    if (this.handleTargetScroll_) {
+      this.scrollTarget_.removeEventListener('scroll', this.handleTargetScroll_ as EventListener);
     }
 
     this.scrollTarget_ = target;
 
     // Initialize scroll handler on the new scroll target
-    if (this.handleScroll_) {
-      this.handleScroll_ = this.foundation_.handleScroll && this.foundation_.handleScroll.bind(this.foundation_);
-      this.scrollTarget_.addEventListener('scroll', this.handleScroll_ as EventListener);
+    if (this.handleTargetScroll_) {
+      this.handleTargetScroll_
+        = this.foundation_.handleTargetScroll && this.foundation_.handleTargetScroll.bind(this.foundation_);
+      this.scrollTarget_.addEventListener('scroll', this.handleTargetScroll_ as EventListener);
     }
   }
 

@@ -86,8 +86,8 @@ function setupTest(removeIcon = false, rippleFactory = (el) => new FakeRipple(el
   const root = fixture.querySelector(strings.ROOT_SELECTOR);
   const MockFoundationConstructor = td.constructor(MDCTopAppBarFoundation);
   const mockFoundation = new MockFoundationConstructor();
-  mockFoundation.handleScroll = td.func();
-  mockFoundation.handleResize = td.func();
+  mockFoundation.handleTargetScroll = td.func();
+  mockFoundation.handleWindowResize = td.func();
 
   const icon = root.querySelector(strings.NAVIGATION_ICON_SELECTOR);
   const component = new MDCTopAppBar(root, mockFoundation, rippleFactory);
@@ -125,16 +125,16 @@ test('navIcon click event calls #foundation.handleNavigationClick', () => {
   td.verify(mockFoundation.handleNavigationClick(td.matchers.isA(Object)), {times: 1});
 });
 
-test('scroll event triggers #foundation.handleScroll', () => {
+test('scroll event triggers #foundation.handleTargetScroll', () => {
   const {mockFoundation} = setupTest();
   domEvents.emit(window, 'scroll');
-  td.verify(mockFoundation.handleScroll(td.matchers.isA(Object)), {times: 1});
+  td.verify(mockFoundation.handleTargetScroll(td.matchers.isA(Object)), {times: 1});
 });
 
-test('resize event triggers #foundation.handleResize', () => {
+test('resize event triggers #foundation.handleWindowResize', () => {
   const {mockFoundation} = setupTest();
   domEvents.emit(window, 'resize');
-  td.verify(mockFoundation.handleResize(td.matchers.isA(Object)), {times: 1});
+  td.verify(mockFoundation.handleWindowResize(td.matchers.isA(Object)), {times: 1});
 });
 
 test('destroy destroys icon ripples', () => {
@@ -149,14 +149,14 @@ test('destroy destroys scroll event handler', () => {
   const {mockFoundation, component} = setupTest();
   component.destroy();
   domEvents.emit(window, 'scroll');
-  td.verify(mockFoundation.handleScroll(td.matchers.isA(Object)), {times: 0});
+  td.verify(mockFoundation.handleTargetScroll(td.matchers.isA(Object)), {times: 0});
 });
 
 test('destroy destroys resize event handler', () => {
   const {mockFoundation, component} = setupTest();
   component.destroy();
   domEvents.emit(window, 'resize');
-  td.verify(mockFoundation.handleResize(td.matchers.isA(Object)), {times: 0});
+  td.verify(mockFoundation.handleWindowResize(td.matchers.isA(Object)), {times: 0});
 });
 
 test('destroy destroys handleNavigationClick handler', () => {

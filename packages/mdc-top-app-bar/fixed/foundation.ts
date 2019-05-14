@@ -21,7 +21,6 @@
  * THE SOFTWARE.
  */
 
-import {MDCTopAppBarAdapter} from '../adapter';
 import {cssClasses} from '../constants';
 import {MDCTopAppBarFoundation} from '../standard/foundation';
 
@@ -31,17 +30,10 @@ export class MDCFixedTopAppBarFoundation extends MDCTopAppBarFoundation {
    */
   private wasScrolled_ = false;
 
-  /* istanbul ignore next: optional argument is not a branch statement */
-  constructor(adapter?: Partial<MDCTopAppBarAdapter>) {
-    super(adapter);
-
-    this.handleScroll = () => this.fixedScrollHandler_();
-  }
-
   /**
    * Scroll handler for applying/removing the modifier class on the fixed top app bar.
    */
-  private fixedScrollHandler_() {
+  handleTargetScroll = () => {
     const currentScroll = this.adapter_.getViewportScrollY();
 
     if (currentScroll <= 0) {
