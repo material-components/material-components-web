@@ -1,5 +1,5 @@
 //
-// Copyright 2017 Google Inc.
+// Copyright 2019 Google Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,5 +20,12 @@
 // THE SOFTWARE.
 //
 
-@import "../mixins";
-@include mdc-chip-set-core-styles;
+@import "./../fixture.scss";
+
+.test-top-app-bar-viewport {
+  height: 200vh;
+}
+
+.test-viewport--mobile .test-top-app-bar {
+  width: $test-viewport-mobile-width;
+}
