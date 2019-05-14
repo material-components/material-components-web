@@ -62,19 +62,22 @@ export class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
   }
 
   initialSyncWithDOM() {
+    const isFixed = this.root_.classList.contains(cssClasses.FIXED_CLASS);
+    const isShort = this.root_.classList.contains(cssClasses.SHORT_CLASS);
+
     this.handleNavigationClick_ = this.foundation_.handleNavigationClick.bind(this.foundation_);
     this.handleWindowResize_
       = this.foundation_.handleWindowResize && this.foundation_.handleWindowResize.bind(this.foundation_);
     this.handleTargetScroll_
       = this.foundation_.handleTargetScroll && this.foundation_.handleTargetScroll.bind(this.foundation_);
 
+    this.scrollTarget_.addEventListener('scroll', this.handleTargetScroll_ as EventListener);
+
     if (this.navIcon_) {
       this.navIcon_.addEventListener('click', this.handleNavigationClick_ as EventListener);
     }
-    if (this.handleTargetScroll_) {
-      this.scrollTarget_.addEventListener('scroll', this.handleTargetScroll_ as EventListener);
-    }
-    if (this.handleWindowResize_) {
+
+    if (!isShort && !isFixed) {
       window.addEventListener('resize', this.handleWindowResize_ as EventListener);
     }
   }
