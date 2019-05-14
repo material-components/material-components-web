@@ -87,10 +87,6 @@
     height: $height + $padding * 2;
     padding: $padding;
     font-size: max($width, $height);
-
-    &.mdc-text-field__icon {
-      margin: -$padding;
-    }
   }
 
   // stylelint-disable-next-line selector-max-type
