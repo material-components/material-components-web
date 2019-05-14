@@ -1,3 +1,18 @@
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/material-components/material-components-web/compare/v2.1.1...v2.2.0) (2019-05-13)
+
+
+### Bug Fixes
+
+* **tab:** Fix tab color variables to use color literals ([#4688](https://github.com/material-components/material-components-web/issues/4688)) ([88734fe](https://github.com/material-components/material-components-web/commit/88734fe))
+
+
+### Features
+
+* **chips:** Add feature targeting for styles ([#4693](https://github.com/material-components/material-components-web/issues/4693)) ([0fdb889](https://github.com/material-components/material-components-web/commit/0fdb889))
+
+
+
 <a name="2.1.1"></a>
 ## [2.1.1](https://github.com/material-components/material-components-web/compare/v2.1.0...v2.1.1) (2019-05-10)
 
