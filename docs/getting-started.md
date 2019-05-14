@@ -115,6 +115,7 @@ Then configure webpack to convert `app.scss` into `bundle.css`. For that you nee
 
 ```js
 module.exports = [{
+  mode: "production",
   entry: './app.scss',
   output: {
     // This is necessary for webpack to compile
