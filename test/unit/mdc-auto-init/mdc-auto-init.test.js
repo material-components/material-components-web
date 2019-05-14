@@ -160,9 +160,9 @@ test('#returns the initialized components', () => {
   assert.isOk(components[0] instanceof FakeComponent);
 });
 
-test('does not register any components if element has data-mdc-auto-init-state="registered"', () => {
+test('does not register any components if element has data-mdc-auto-init-state="initialized"', () => {
   const root = setupTest();
-  root.querySelector('[data-mdc-auto-init]').setAttribute('data-mdc-auto-init-state', 'registered');
+  root.querySelector('[data-mdc-auto-init]').setAttribute('data-mdc-auto-init-state', 'initialized');
   mdcAutoInit(root);
 
   assert.isFalse(root.querySelector('.mdc-fake').FakeComponent instanceof FakeComponent);
