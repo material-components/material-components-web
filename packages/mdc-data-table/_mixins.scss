@@ -63,12 +63,12 @@
       $trailing-padding: $mdc-data-table-cell-trailing-padding,
       $query: $query
     );
-
-    overflow: hidden; // For border-radius to work
   }
 
   .mdc-data-table__table {
+    width: 100%;
     border: 0;
+    white-space: nowrap;
     border-collapse: collapse;
   }
 
@@ -84,7 +84,12 @@
     @include mdc-typography(subtitle2, $query: $query);
 
     @include mdc-feature-targets($feat-structure) {
-      text-align: start;
+      text-align: left;
+
+      @include mdc-rtl {
+        /* @noflip */
+        text-align: right;
+      }
     }
   }
 }
