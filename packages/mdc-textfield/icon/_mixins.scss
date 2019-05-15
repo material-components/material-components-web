@@ -68,7 +68,7 @@
       @include mdc-rtl-reflexive(right, $position-right, left, auto);
 
       &.mdc-icon-button {
-        @include mdc-rtl-reflexive-position(right, 0, left, auto);
+        @include mdc-rtl-reflexive(right, 0, left, auto);
       }
     }
   }
