@@ -39,6 +39,11 @@ import {
   MDCTextFieldRootAdapter,
 } from './adapter';
 import {
+  MDCTextFieldAffix,
+  MDCTextFieldAffixFactory,
+} from './affix/component';
+import {MDCTextFieldAffixFoundation} from './affix/foundation';
+import {
   MDCTextFieldCharacterCounter,
   MDCTextFieldCharacterCounterFactory,
 } from './character-counter/component';
@@ -74,6 +79,8 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
   private lineRipple_!: MDCLineRipple | null; // assigned in initialize()
   private outline_!: MDCNotchedOutline | null; // assigned in initialize()
   private trailingIcon_!: MDCTextFieldIcon | null; // assigned in initialize()
+  private prefix_!: MDCTextFieldAffix | null;
+  private suffix_!: MDCTextFieldAffix | null;
 
   initialize(
       rippleFactory: MDCRippleFactory = (el, foundation) => new MDCRipple(el, foundation),
@@ -83,6 +90,7 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
       iconFactory: MDCTextFieldIconFactory = (el) => new MDCTextFieldIcon(el),
       labelFactory: MDCFloatingLabelFactory = (el) => new MDCFloatingLabel(el),
       outlineFactory: MDCNotchedOutlineFactory = (el) => new MDCNotchedOutline(el),
+      affixFactory: MDCTextFieldAffixFactory = (el) => new MDCTextFieldAffix(el),
   ) {
     this.input_ = this.root_.querySelector<HTMLInputElement>(strings.INPUT_SELECTOR)!;
 
@@ -128,6 +136,13 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
       }
     }
 
+    const affixStrings = MDCTextFieldAffixFoundation.strings;
+    const prefixElement = this.root_.querySelector(affixStrings.PREFIX_SELECTOR);
+    this.prefix_ = prefixElement ? affixFactory(prefixElement) : null;
+
+    const suffixElement = this.root_.querySelector(affixStrings.SUFFIX_SELECTOR);
+    this.suffix_ = suffixElement ? affixFactory(suffixElement) : null;
+
     this.ripple = this.createRipple_(rippleFactory);
   }
 
@@ -155,6 +170,12 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
     }
     if (this.outline_) {
       this.outline_.destroy();
+    }
+    if (this.prefix_) {
+      this.prefix_.destroy();
+    }
+    if (this.suffix_) {
+      this.suffix_.destroy();
     }
     super.destroy();
   }
@@ -386,6 +407,7 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
       isFocused: () => document.activeElement === this.input_,
       registerInputInteractionHandler: (evtType, handler) => this.input_.addEventListener(evtType, handler),
       deregisterInputInteractionHandler: (evtType, handler) => this.input_.removeEventListener(evtType, handler),
+      setInputStyle: ({property, value}) => this.input_.style.setProperty(property, value),
     };
     // tslint:enable:object-literal-sort-keys
   }
@@ -431,11 +453,14 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
    * @return A map of all subcomponents to subfoundations.
    */
   private getFoundationMap_(): Partial<MDCTextFieldFoundationMap> {
+    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface
     return {
       characterCounter: this.characterCounter_ ? this.characterCounter_.foundation : undefined,
       helperText: this.helperText_ ? this.helperText_.foundation : undefined,
       leadingIcon: this.leadingIcon_ ? this.leadingIcon_.foundation : undefined,
       trailingIcon: this.trailingIcon_ ? this.trailingIcon_.foundation : undefined,
+      prefix: this.prefix_ ? this.prefix_.foundation : undefined,
+      suffix: this.suffix_ ? this.suffix_.foundation : undefined,
     };
   }
 

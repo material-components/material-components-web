@@ -97,6 +97,11 @@ export interface MDCTextFieldInputAdapter {
    * Deregisters an event listener on the native input element for a given event.
    */
   deregisterInputInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
+
+  /**
+   * Sets the property value of the given style property on the input element.
+   */
+  setInputStyle(styleObject: {property: string, value: string}): void;
 }
 
 export interface MDCTextFieldLabelAdapter {

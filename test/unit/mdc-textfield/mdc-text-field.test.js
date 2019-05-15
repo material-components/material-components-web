@@ -35,6 +35,7 @@ import {
 } from '../../../packages/mdc-textfield/index';
 import {cssClasses as helperTextCssClasses} from '../../../packages/mdc-textfield/helper-text/constants';
 import {cssClasses as characterCounterCssClasses} from '../../../packages/mdc-textfield/character-counter/constants';
+import {MDCTextFieldAffix} from '../../../packages/mdc-textfield/affix/component';
 
 const {cssClasses} = MDCTextFieldFoundation;
 
@@ -107,6 +108,12 @@ class FakeLabel {
 }
 
 class FakeOutline {
+  constructor() {
+    this.destroy = td.func('.destroy');
+  }
+}
+
+class FakeAffix {
   constructor() {
     this.destroy = td.func('.destroy');
   }
@@ -197,6 +204,20 @@ test('#constructor instantiates a trailing icon if the icon is present', () => {
   assert.instanceOf(component.trailingIcon_, MDCTextFieldIcon);
 });
 
+test('#constructor instantiates a prefix if present', () => {
+  const root = getFixture();
+  root.appendChild(bel`<div class="mdc-text-field__prefix"></div>`);
+  const component = new MDCTextField(root);
+  assert.instanceOf(component.prefix_, MDCTextFieldAffix);
+});
+
+test('#constructor instantiates a suffix if present', () => {
+  const root = getFixture();
+  root.appendChild(bel`<div class="mdc-text-field__suffix"></div>`);
+  const component = new MDCTextField(root);
+  assert.instanceOf(component.suffix_, MDCTextFieldAffix);
+});
+
 test('#constructor instantiates a label on the `.mdc-floating-label` element if present', () => {
   const root = getFixture();
   const component = new MDCTextField(root);
@@ -270,6 +291,7 @@ function setupTest(root = getFixture()) {
   const icon = new FakeIcon();
   const label = new FakeLabel();
   const outline = new FakeOutline();
+  const affix = new FakeAffix();
 
   const component = new MDCTextField(
     root,
@@ -280,13 +302,14 @@ function setupTest(root = getFixture()) {
     () => characterCounter,
     () => icon,
     () => label,
-    () => outline
+    () => outline,
+    () => affix
   );
 
   const foundation = component.foundation_;
   const adapter = foundation.adapter_;
 
-  return {root, component, foundation, adapter, lineRipple, helperText, characterCounter, icon, label, outline};
+  return {root, component, foundation, adapter, lineRipple, helperText, characterCounter, icon, label, outline, affix};
 }
 
 test('#destroy cleans up the ripple if present', () => {
@@ -331,6 +354,22 @@ test('#destroy cleans up the icon if present', () => {
   const {component, icon} = setupTest();
   component.destroy();
   td.verify(icon.destroy());
+});
+
+test('#destroy cleans up the prefix if present', () => {
+  const root = getFixture();
+  root.appendChild(bel`<div class="mdc-text-field__prefix"></div>`);
+  const {component, affix} = setupTest(root);
+  component.destroy();
+  td.verify(affix.destroy());
+});
+
+test('#destroy cleans up the suffix if present', () => {
+  const root = getFixture();
+  root.appendChild(bel`<div class="mdc-text-field__suffix"></div>`);
+  const {component, affix} = setupTest(root);
+  component.destroy();
+  td.verify(affix.destroy());
 });
 
 test('#destroy cleans up the label if present', () => {
@@ -520,6 +559,12 @@ test('#adapter.getNativeInput returns the component input element', () => {
     component.getDefaultFoundation().adapter_.getNativeInput(),
     root.querySelector('.mdc-text-field__input')
   );
+});
+
+test('#adapter.setInputStyle sets a style on the input element', () => {
+  const {root, component} = setupTest();
+  component.getDefaultFoundation().adapter_.setInputStyle({property: 'padding-left', value: '0px'});
+  assert.equal(root.querySelector('.mdc-text-field__input').style.getPropertyValue('padding-left'), '0px');
 });
 
 test('#adapter.activateLineRipple calls the activate method on the line ripple', () => {

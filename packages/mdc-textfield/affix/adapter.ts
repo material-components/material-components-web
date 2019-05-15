@@ -21,20 +21,33 @@
  * THE SOFTWARE.
  */
 
-import {MDCTextFieldAffixFoundation} from './affix/foundation';
-import {MDCTextFieldCharacterCounterFoundation} from './character-counter/foundation';
-import {MDCTextFieldHelperTextFoundation} from './helper-text/foundation';
-import {MDCTextFieldIconFoundation} from './icon/foundation';
+/**
+ * Defines the shape of the adapter expected by the foundation.
+ * Implement this adapter for your framework of choice to delegate updates to
+ * the component in your framework of choice. See architecture documentation
+ * for more details.
+ * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
+ */
 
-export type MDCTextFieldNativeInputElement = Pick<HTMLInputElement, 'disabled' | 'maxLength' | 'type' | 'value'> & {
-  validity: Pick<ValidityState, 'badInput' | 'valid'>;
-};
-
-export interface MDCTextFieldFoundationMap {
-  helperText: MDCTextFieldHelperTextFoundation;
-  characterCounter: MDCTextFieldCharacterCounterFoundation;
-  leadingIcon: MDCTextFieldIconFoundation;
-  trailingIcon: MDCTextFieldIconFoundation;
-  prefix: MDCTextFieldAffixFoundation;
-  suffix: MDCTextFieldAffixFoundation;
+export interface MDCTextFieldAffixAdapter {
+  /**
+   * Returns the rendered width of the affix
+   */
+  getWidth(): number;
+  /**
+   * Adds a class to the affix element.
+   */
+  addClass(className: string): void;
+  /**
+   * Removes a class from the affix element.
+   */
+  removeClass(className: string): void;
+  /**
+   * Returns wehther or not the affix element contains the given class
+   */
+  hasClass(className: string): boolean;
+  /**
+   * Returns whether or not the document is RTL
+   */
+  isRtl(): boolean;
 }

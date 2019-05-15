@@ -21,20 +21,16 @@
  * THE SOFTWARE.
  */
 
-import {MDCTextFieldAffixFoundation} from './affix/foundation';
-import {MDCTextFieldCharacterCounterFoundation} from './character-counter/foundation';
-import {MDCTextFieldHelperTextFoundation} from './helper-text/foundation';
-import {MDCTextFieldIconFoundation} from './icon/foundation';
-
-export type MDCTextFieldNativeInputElement = Pick<HTMLInputElement, 'disabled' | 'maxLength' | 'type' | 'value'> & {
-  validity: Pick<ValidityState, 'badInput' | 'valid'>;
+const cssClasses = {
+  AFFIX_VISIBLE: 'mdc-text-field__affix--visible',
+  PREFIX: 'mdc-text-field__prefix',
+  SUFFIX: 'mdc-text-field__suffix',
 };
 
-export interface MDCTextFieldFoundationMap {
-  helperText: MDCTextFieldHelperTextFoundation;
-  characterCounter: MDCTextFieldCharacterCounterFoundation;
-  leadingIcon: MDCTextFieldIconFoundation;
-  trailingIcon: MDCTextFieldIconFoundation;
-  prefix: MDCTextFieldAffixFoundation;
-  suffix: MDCTextFieldAffixFoundation;
-}
+const strings = {
+  AFFIX_SELECTOR: `.${cssClasses.PREFIX},${cssClasses.SUFFIX}`,
+  PREFIX_SELECTOR: `.${cssClasses.PREFIX}`,
+  SUFFIX_SELECTOR: `.${cssClasses.SUFFIX}`,
+};
+
+export {strings, cssClasses};

@@ -374,6 +374,7 @@ Method Signature | Description
 `deregisterTextFieldInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event handler on the root element for a given event.
 `registerInputInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the native input element for a given event.
 `deregisterInputInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the native input element for a given event.
+`setInputStyle({property: string, value: string}) => void` | Sets the property value of the given style property on the native input element.
 `registerValidationAttributeChangeHandler(handler: (attributeNames: string[]) => void) => MutationObserver` | Registers a validation attribute change listener on the input element. Handler accepts list of attribute changes.
 `deregisterValidationAttributeChangeHandler(!MutationObserver) => void` | Disconnects a validation attribute observer on the input element.
 `getNativeInput() => NativeInputType \| null` | Returns an object representing the native text input element, with a similar API shape. See [types.ts](types.ts).
@@ -403,6 +404,7 @@ Property | Value Type | Description
 --- | --- | ---
 `shouldFloat` | `boolean` (read-only) | Determines whether the label should float.
 `shouldShake` | `boolean` (read-only) | Determines whether the label should shake.
+`shouldShowAffix` | `boolean` (read-only) | Determines whether affixes should be visible.
 
 Method Signature | Description
 --- | ---

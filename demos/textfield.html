@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2016 Google Inc.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  THE SOFTWARE.
+-->
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Text Field - Material Components Catalog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="/images/logo_components_color_2x_web_48dp.png">
+  <link rel="stylesheet" href="/assets/textfield.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <script src="/ready.js"></script>
+  <style>
+    .demo-wrapper {
+      padding: 24px;
+    }
+
+    .hero .mdc-text-field {
+      margin-left: 32px;
+      margin-right: 32px;
+    }
+
+    .text-field-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .text-field-row-fullwidth {
+      display: block;
+    }
+
+    .text-field-container {
+      width: 260px;
+    }
+
+    .text-field-container-fullwidth {
+      width: unset;
+    }
+
+    .text-field-row .mdc-text-field {
+      width: 100%;
+    }
+
+    .hero {
+      position: relative;
+    }
+    .hero .note {
+      position: absolute;
+      bottom: 10px;
+      left: 36px;
+      color: rgba(33, 33, 33, .38);
+    }
+  </style>
+</head>
+<body class="mdc-typography">
+  <header class="mdc-toolbar mdc-toolbar--fixed">
+    <div class="mdc-toolbar__row">
+      <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+        <a href="/" class="catalog-back mdc-toolbar__menu-icon"><i class="material-icons">&#xE5C4;</i></a>
+        <span class="mdc-toolbar__title catalog-title">Text Fields</span>
+      </section>
+    </div>
+  </header>
+
+  <main class="mdc-toolbar-fixed-adjust">
+    <section class="hero">
+      <div class="mdc-text-field">
+        <input class="mdc-text-field__input">
+        <div class="mdc-line-ripple"></div>
+        <label class="mdc-floating-label">Filled</label>
+      </div>
+      <div class="mdc-text-field mdc-text-field--outlined">
+        <input class="mdc-text-field__input">
+        <div class="mdc-notched-outline">
+          <div class="mdc-notched-outline__leading"></div>
+          <div class="mdc-notched-outline__notch">
+            <label class="mdc-floating-label">Outlined</label>
+          </div>
+          <div class="mdc-notched-outline__trailing"></div>
+        </div>
+      </div>
+    </section>
+    <section class="demo-wrapper">
+      <div>
+        <h1 class=mdc-typography--subtitle1>Filled</h1>
+        <div class="text-field-row">
+          <div class="text-field-container">
+            <div class="mdc-text-field">
+              <input class="mdc-text-field__input">
+              <div class="mdc-line-ripple"></div>
+              <label class="mdc-floating-label">Filled</label>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+            </div>
+          </div>
+          <div class="text-field-container">
+            <div class="mdc-text-field mdc-text-field--with-leading-icon">
+              <i class="material-icons mdc-text-field__icon">event</i>
+              <input class="mdc-text-field__input">
+              <div class="mdc-line-ripple"></div>
+              <label class="mdc-floating-label">Filled</label>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+            </div>
+          </div>
+          <div class="text-field-container">
+            <div class="mdc-text-field mdc-text-field--with-trailing-icon">
+              <input class="mdc-text-field__input">
+              <div class="mdc-line-ripple"></div>
+              <label class="mdc-floating-label">Filled</label>
+              <i class="material-icons mdc-text-field__icon">delete</i>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h1 class=mdc-typography--subtitle1>Shaped Filled</h1>
+        <div class="text-field-row">
+          <div class="text-field-container">
+            <div class="mdc-text-field demo-text-field-shaped">
+              <input class="mdc-text-field__input">
+              <div class="mdc-line-ripple"></div>
+              <label class="mdc-floating-label">Filled</label>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+            </div>
+          </div>
+          <div class="text-field-container">
+            <div class="mdc-text-field demo-text-field-shaped mdc-text-field--with-leading-icon">
+              <i class="material-icons mdc-text-field__icon">event</i>
+              <input class="mdc-text-field__input">
+              <div class="mdc-line-ripple"></div>
+              <label class="mdc-floating-label">Filled</label>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+            </div>
+          </div>
+          <div class="text-field-container">
+            <div class="mdc-text-field demo-text-field-shaped mdc-text-field--with-trailing-icon">
+              <input class="mdc-text-field__input">
+              <div class="mdc-line-ripple"></div>
+              <label class="mdc-floating-label">Filled</label>
+              <i class="material-icons mdc-text-field__icon">delete</i>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h1 class=mdc-typography--subtitle1>Outlined</h1>
+        <div class="text-field-row">
+          <div class="text-field-container">
+            <div class="mdc-text-field mdc-text-field--outlined">
+              <input class="mdc-text-field__input">
+              <div class="mdc-notched-outline">
+                <div class="mdc-notched-outline__leading"></div>
+                <div class="mdc-notched-outline__notch">
+                  <label class="mdc-floating-label">Outlined</label>
+                </div>
+                <div class="mdc-notched-outline__trailing"></div>
+              </div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+            </div>
+          </div>
+          <div class="text-field-container">
+            <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon">
+              <i class="material-icons mdc-text-field__icon">event</i>
+              <input class="mdc-text-field__input">
+              <div class="mdc-notched-outline">
+                <div class="mdc-notched-outline__leading"></div>
+                <div class="mdc-notched-outline__notch">
+                  <label class="mdc-floating-label">Outlined</label>
+                </div>
+                <div class="mdc-notched-outline__trailing"></div>
+              </div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+            </div>
+          </div>
+          <div class="text-field-container">
+            <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-trailing-icon">
+              <input class="mdc-text-field__input">
+              <i class="material-icons mdc-text-field__icon">delete</i>
+              <div class="mdc-notched-outline">
+                <div class="mdc-notched-outline__leading"></div>
+                <div class="mdc-notched-outline__notch">
+                  <label class="mdc-floating-label">Outlined</label>
+                </div>
+                <div class="mdc-notched-outline__trailing"></div>
+              </div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h1 class=mdc-typography--subtitle1>Shaped Outlined</h1>
+        <div class="text-field-row">
+          <div class="text-field-container">
+            <div class="mdc-text-field mdc-text-field--outlined demo-text-field-outlined-shaped">
+              <input class="mdc-text-field__input">
+              <div class="mdc-notched-outline">
+                <div class="mdc-notched-outline__leading"></div>
+                <div class="mdc-notched-outline__notch">
+                  <label class="mdc-floating-label">Outlined</label>
+                </div>
+                <div class="mdc-notched-outline__trailing"></div>
+              </div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+            </div>
+          </div>
+          <div class="text-field-container">
+            <div class="mdc-text-field mdc-text-field--outlined demo-text-field-outlined-shaped mdc-text-field--with-leading-icon">
+              <i class="material-icons mdc-text-field__icon">event</i>
+              <input class="mdc-text-field__input">
+              <div class="mdc-notched-outline">
+                <div class="mdc-notched-outline__leading"></div>
+                <div class="mdc-notched-outline__notch">
+                  <label class="mdc-floating-label">Outlined</label>
+                </div>
+                <div class="mdc-notched-outline__trailing"></div>
+              </div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+            </div>
+          </div>
+          <div class="text-field-container">
+            <div class="mdc-text-field mdc-text-field--outlined demo-text-field-outlined-shaped mdc-text-field--with-trailing-icon">
+              <input class="mdc-text-field__input">
+              <i class="material-icons mdc-text-field__icon">delete</i>
+              <div class="mdc-notched-outline">
+                <div class="mdc-notched-outline__leading"></div>
+                <div class="mdc-notched-outline__notch">
+                  <label class="mdc-floating-label">Outlined</label>
+                </div>
+                <div class="mdc-notched-outline__trailing"></div>
+              </div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h1 class=mdc-typography--subtitle1>Without label</h1>
+        <div class="text-field-row">
+          <div class="text-field-container">
+            <div class="mdc-text-field mdc-text-field--no-label">
+              <input class="mdc-text-field__input">
+              <div class="mdc-line-ripple"></div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+            </div>
+          </div>
+          <div class="text-field-container">
+            <div class="mdc-text-field mdc-text-field--no-label mdc-text-field--with-leading-icon mdc-text-field--outlined">
+              <i class="material-icons mdc-text-field__icon">event</i>
+              <input class="mdc-text-field__input">
+              <div class="mdc-notched-outline">
+                <div class="mdc-notched-outline__leading"></div>
+                <div class="mdc-notched-outline__trailing"></div>
+              </div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+            </div>
+          </div>
+          <div class="text-field-container">
+            <div class="mdc-text-field mdc-text-field--no-label mdc-text-field--with-trailing-icon mdc-text-field--outlined demo-text-field-outlined-shaped">
+              <input class="mdc-text-field__input">
+              <i class="material-icons mdc-text-field__icon">delete</i>
+              <div class="mdc-notched-outline">
+                <div class="mdc-notched-outline__leading"></div>
+                <div class="mdc-notched-outline__trailing"></div>
+              </div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h1 class=mdc-typography--subtitle1>With prefix</h1>
+        <div class="text-field-row">
+          <div class="text-field-container">
+            <div class="mdc-text-field">
+              <span class="mdc-text-field__prefix">$&nbsp;</span>
+              <input class="mdc-text-field__input">
+              <div class="mdc-line-ripple"></div>
+              <label class="mdc-floating-label">Filled</label>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+            </div>
+          </div>
+          <div class="text-field-container">
+            <div class="mdc-text-field mdc-text-field--with-leading-icon mdc-text-field--outlined">
+              <i class="material-icons mdc-text-field__icon">event</i>
+              <span class="mdc-text-field__prefix">$&nbsp;</span>
+              <input class="mdc-text-field__input">
+              <div class="mdc-notched-outline">
+                <div class="mdc-notched-outline__leading"></div>
+                <div class="mdc-notched-outline__notch">
+                  <label class="mdc-floating-label">Outlined</label>
+                </div>
+                <div class="mdc-notched-outline__trailing"></div>
+              </div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+            </div>
+          </div>
+          <div class="text-field-container">
+            <div class="mdc-text-field mdc-text-field--with-trailing-icon mdc-text-field--outlined demo-text-field-outlined-shaped">
+              <input class="mdc-text-field__input">
+              <span class="mdc-text-field__prefix">$&nbsp;</span>
+              <i class="material-icons mdc-text-field__icon">delete</i>
+              <div class="mdc-notched-outline">
+                <div class="mdc-notched-outline__leading"></div>
+                <div class="mdc-notched-outline__notch">
+                  <label class="mdc-floating-label">Outlined</label>
+                </div>
+                <div class="mdc-notched-outline__trailing"></div>
+              </div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="text-field-row">
+          <div class="text-field-container">
+            <div class="mdc-text-field mdc-text-field--no-label">
+              <span class="mdc-text-field__prefix">$&nbsp;</span>
+              <input class="mdc-text-field__input">
+              <div class="mdc-line-ripple"></div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+            </div>
+          </div>
+          <div class="text-field-container">
+            <div class="mdc-text-field mdc-text-field--no-label mdc-text-field--with-leading-icon mdc-text-field--outlined">
+              <i class="material-icons mdc-text-field__icon">event</i>
+              <span class="mdc-text-field__prefix">$&nbsp;</span>
+              <input class="mdc-text-field__input">
+              <div class="mdc-notched-outline">
+                <div class="mdc-notched-outline__leading"></div>
+                <div class="mdc-notched-outline__trailing"></div>
+              </div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+            </div>
+          </div>
+          <div class="text-field-container">
+            <div class="mdc-text-field mdc-text-field--no-label mdc-text-field--with-trailing-icon mdc-text-field--outlined demo-text-field-outlined-shaped">
+              <input class="mdc-text-field__input">
+              <span class="mdc-text-field__prefix">$&nbsp;</span>
+              <i class="material-icons mdc-text-field__icon">delete</i>
+              <div class="mdc-notched-outline">
+                <div class="mdc-notched-outline__leading"></div>
+                <div class="mdc-notched-outline__trailing"></div>
+              </div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h1 class=mdc-typography--subtitle1>With suffix</h1>
+        <div class="text-field-row">
+          <div class="text-field-container">
+            <div class="mdc-text-field">
+              <input class="mdc-text-field__input">
+              <span class="mdc-text-field__suffix">lbs</span>
+              <div class="mdc-line-ripple"></div>
+              <label class="mdc-floating-label">Filled</label>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+            </div>
+          </div>
+          <div class="text-field-container">
+            <div class="mdc-text-field mdc-text-field--with-leading-icon mdc-text-field--outlined">
+              <i class="material-icons mdc-text-field__icon">event</i>
+              <input class="mdc-text-field__input">
+              <span class="mdc-text-field__suffix">lbs</span>
+              <div class="mdc-notched-outline">
+                <div class="mdc-notched-outline__leading"></div>
+                <div class="mdc-notched-outline__notch">
+                  <label class="mdc-floating-label">Outlined</label>
+                </div>
+                <div class="mdc-notched-outline__trailing"></div>
+              </div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+            </div>
+          </div>
+          <div class="text-field-container">
+            <div class="mdc-text-field mdc-text-field--with-trailing-icon mdc-text-field--outlined demo-text-field-outlined-shaped">
+              <input class="mdc-text-field__input">
+              <span class="mdc-text-field__suffix">lbs</span>
+              <i class="material-icons mdc-text-field__icon">delete</i>
+              <div class="mdc-notched-outline">
+                <div class="mdc-notched-outline__leading"></div>
+                <div class="mdc-notched-outline__notch">
+                  <label class="mdc-floating-label">Outlined</label>
+                </div>
+                <div class="mdc-notched-outline__trailing"></div>
+              </div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="text-field-row">
+          <div class="text-field-container">
+            <div class="mdc-text-field mdc-text-field--no-label">
+              <input class="mdc-text-field__input">
+              <div class="mdc-line-ripple"></div>
+              <span class="mdc-text-field__suffix">lbs</span>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+            </div>
+          </div>
+          <div class="text-field-container">
+            <div class="mdc-text-field mdc-text-field--no-label mdc-text-field--with-leading-icon mdc-text-field--outlined">
+              <i class="material-icons mdc-text-field__icon">event</i>
+              <input class="mdc-text-field__input">
+              <span class="mdc-text-field__suffix">lbs</span>
+              <div class="mdc-notched-outline">
+                <div class="mdc-notched-outline__leading"></div>
+                <div class="mdc-notched-outline__trailing"></div>
+              </div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+            </div>
+          </div>
+          <div class="text-field-container">
+            <div class="mdc-text-field mdc-text-field--no-label mdc-text-field--with-trailing-icon mdc-text-field--outlined demo-text-field-outlined-shaped">
+              <input class="mdc-text-field__input">
+              <span class="mdc-text-field__suffix">lbs</span>
+              <i class="material-icons mdc-text-field__icon">delete</i>
+              <div class="mdc-notched-outline">
+                <div class="mdc-notched-outline__leading"></div>
+                <div class="mdc-notched-outline__trailing"></div>
+              </div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h1 class="mdc-typography--subtitle1">With character counter</h1>
+        <div class="text-field-row">
+          <div class="text-field-container">
+            <div class="mdc-text-field">
+              <input class="mdc-text-field__input" maxlength="18">
+              <div class="mdc-line-ripple"></div>
+              <label class="mdc-floating-label">Filled</label>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+              <div class="mdc-text-field-character-counter">0 / 18</div>
+            </div>
+          </div>
+          <div class="text-field-container">
+            <div class="mdc-text-field mdc-text-field--with-leading-icon mdc-text-field--outlined">
+              <i class="material-icons mdc-text-field__icon">event</i>
+              <input class="mdc-text-field__input" maxlength="18">
+              <div class="mdc-notched-outline">
+                <div class="mdc-notched-outline__leading"></div>
+                <div class="mdc-notched-outline__notch">
+                  <label class="mdc-floating-label">Outlined</label>
+                </div>
+                <div class="mdc-notched-outline__trailing"></div>
+              </div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+              <div class="mdc-text-field-character-counter">0 / 18</div>
+            </div>
+          </div>
+          <div class="text-field-container">
+            <div class="mdc-text-field mdc-text-field--with-trailing-icon mdc-text-field--outlined demo-text-field-outlined-shaped">
+              <input class="mdc-text-field__input" maxlength="18">
+              <i class="material-icons mdc-text-field__icon">delete</i>
+              <div class="mdc-notched-outline">
+                <div class="mdc-notched-outline__leading"></div>
+                <div class="mdc-notched-outline__notch">
+                  <label class="mdc-floating-label">Outlined</label>
+                </div>
+                <div class="mdc-notched-outline__trailing"></div>
+              </div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+              <div class="mdc-text-field-character-counter">0 / 18</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h1 class="mdc-typography--subtitle1">Textarea</h1>
+        <div class="text-field-container">
+          <div class="mdc-text-field mdc-text-field--textarea">
+            <textarea id="textarea" class="mdc-text-field__input"></textarea>
+            <div class="mdc-notched-outline">
+              <div class="mdc-notched-outline__leading"></div>
+              <div class="mdc-notched-outline__notch">
+                <div class="mdc-floating-label">Outlined</div>
+              </div>
+              <div class="mdc-notched-outline__trailing"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h1 class="mdc-typography--subtitle1">Textarea with character counter</h1>
+        <div class="text-field-container">
+          <div class="mdc-text-field mdc-text-field--textarea">
+            <div class="mdc-text-field-character-counter">0 / 255</div>
+            <textarea id="textarea" class="mdc-text-field__input" maxlength="255"></textarea>
+            <div class="mdc-notched-outline">
+              <div class="mdc-notched-outline__leading"></div>
+              <div class="mdc-notched-outline__notch">
+                <div class="mdc-floating-label">Outlined</div>
+              </div>
+              <div class="mdc-notched-outline__trailing"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h1 class="mdc-typography--subtitle1">Full Width</h1>
+        <div class="text-field-row text-field-row-fullwidth">
+          <div class="text-field-container-fullwidth">
+            <div class="mdc-text-field mdc-text-field--fullwidth">
+              <input type="text" id="fullwidth" class="mdc-text-field__input" placeholder="Standard">
+              <div class="mdc-line-ripple"></div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h1 class="mdc-typography--subtitle1">Full Width textarea</h1>
+        <div class="text-field-row text-field-row-fullwidth">
+          <div class="text-field-container-fullwidth">
+            <div class="mdc-text-field mdc-text-field--fullwidth mdc-text-field--no-label mdc-text-field--textarea">
+              <textarea id="fullwidth-textarea" class="mdc-text-field__input"></textarea>
+              <div class="mdc-notched-outline">
+                <div class="mdc-notched-outline__leading"></div>
+                <div class="mdc-notched-outline__notch">
+                  <div class="mdc-floating-label">Outlined</div>
+                </div>
+                <div class="mdc-notched-outline__trailing"></div>
+              </div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+              <div class="mdc-text-field-helper-text" aria-hidden="true">
+                Helper text
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/assets/material-components-web.js" async></script>
+  <script>
+    demoReady(function() {
+      [].forEach.call(document.querySelectorAll('.mdc-text-field'), function(textField) {
+        new mdc.textField.MDCTextField.attachTo(textField);
+      });
+      [].forEach.call(document.querySelectorAll('.mdc-text-field-character-counter'), function(characterCounter) {
+        new mdc.textField.MDCTextFieldCharacterCounter(characterCounter);
+      });
+    });
+  </script>
+</body>
+</html>

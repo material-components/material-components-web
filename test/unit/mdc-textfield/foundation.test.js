@@ -52,7 +52,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'getNativeInput', 'isFocused', 'activateLineRipple', 'deactivateLineRipple',
     'setLineRippleTransformOrigin', 'shakeLabel', 'floatLabel', 'hasLabel', 'getLabelWidth',
     'registerValidationAttributeChangeHandler', 'deregisterValidationAttributeChangeHandler',
-    'hasOutline', 'notchOutline', 'closeOutline',
+    'hasOutline', 'notchOutline', 'closeOutline', 'setInputStyle',
   ]);
 });
 
@@ -61,6 +61,8 @@ const setupTest = ({
   useHelperText = false,
   useLeadingIcon = false,
   useTrailingIcon = false,
+  usePrefix = false,
+  useSuffix = false,
 } = {}) => {
   const mockAdapter = td.object(MDCTextFieldFoundation.defaultAdapter);
   const helperText = useHelperText ? td.object({
@@ -87,14 +89,24 @@ const setupTest = ({
     deregisterInteractionHandler: () => {},
     handleInteraction: () => {},
   }) : undefined;
+  const prefix = usePrefix ? td.object({
+    setVisible: () => {},
+    getInputPadding: () => {},
+  }) : undefined;
+  const suffix = useSuffix ? td.object({
+    setVisible: () => {},
+    getInputPadding: () => {},
+  }) : undefined;
   const foundationMap = {
     helperText,
     characterCounter,
     leadingIcon,
     trailingIcon,
+    prefix,
+    suffix,
   };
   const foundation = new MDCTextFieldFoundation(mockAdapter, foundationMap);
-  return {foundation, mockAdapter, helperText, characterCounter, leadingIcon, trailingIcon};
+  return {foundation, mockAdapter, helperText, characterCounter, leadingIcon, trailingIcon, prefix, suffix};
 };
 
 test('#constructor sets disabled to false', () => {
@@ -367,6 +379,26 @@ test('#setValid removes mdc-textfied--invalid when set to true', () => {
   td.verify(mockAdapter.removeClass(cssClasses.INVALID));
 });
 
+test('#init does not add padding to the input if there is no prefix or suffix', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.init();
+  td.verify(mockAdapter.setInputStyle(), {times: 0});
+});
+
+test('#init adds padding to the input if a prefix is present', () => {
+  const {foundation, mockAdapter, prefix} = setupTest({usePrefix: true});
+  td.when(prefix.getInputPadding()).thenReturn({property: 'padding-left', value: '0px'});
+  foundation.init();
+  td.verify(mockAdapter.setInputStyle({property: 'padding-left', value: '0px'}));
+});
+
+test('#init adds padding to the input if a suffix is present', () => {
+  const {foundation, mockAdapter, suffix} = setupTest({useSuffix: true});
+  td.when(suffix.getInputPadding()).thenReturn({property: 'padding-right', value: '0px'});
+  foundation.init();
+  td.verify(mockAdapter.setInputStyle({property: 'padding-right', value: '0px'}));
+});
+
 test('#init focuses on input if adapter.isFocused is true', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.isFocused()).thenReturn(true);
@@ -410,6 +442,38 @@ test('#destroy removes event listeners', () => {
   td.verify(mockAdapter.deregisterTextFieldInteractionHandler('click', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterTextFieldInteractionHandler('keydown', td.matchers.isA(Function)));
   td.verify(mockAdapter.deregisterValidationAttributeChangeHandler(foundation.validationObserver_));
+});
+
+const executeAffixInitTest = ({hasLabel, hasValue, expected}) => {
+  const {foundation, mockAdapter, prefix, suffix} = setupTest({usePrefix: true, useSuffix: true});
+  td.when(mockAdapter.hasLabel()).thenReturn(hasLabel);
+  const input = {
+    value: hasValue ? 'Value' : '',
+    validity: {
+      valid: true,
+      badInput: false,
+    },
+  };
+  td.when(mockAdapter.getNativeInput()).thenReturn(input);
+  foundation.init();
+  td.verify(prefix.setVisible(expected));
+  td.verify(suffix.setVisible(expected));
+};
+
+test('#init shows affixes if the input has a label and has a value', () => {
+  executeAffixInitTest({hasLabel: true, hasValue: true, expected: true});
+});
+
+test('#init does not show affixes if the input has a label and does not have a value', () => {
+  executeAffixInitTest({hasLabel: true, hasValue: false, expected: false});
+});
+
+test('#init shows affixes if the input does not have a label', () => {
+  executeAffixInitTest({hasLabel: false, hasValue: false, expected: true});
+});
+
+test('#init shows affixes if the input does not have a label and does have a value', () => {
+  executeAffixInitTest({hasLabel: false, hasValue: true, expected: true});
 });
 
 test('#init floats label if the input contains a value', () => {
@@ -674,6 +738,24 @@ test('on focus makes helper text visible to the screen reader', () => {
   td.verify(helperText.showToScreenReader());
 });
 
+test('on focus shows affixes', () => {
+  const {foundation, mockAdapter, prefix, suffix} = setupTest({usePrefix: true, useSuffix: true});
+  let focus;
+  td.when(mockAdapter.registerInputInteractionHandler('focus', td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+      focus = handler;
+    });
+  td.when(mockAdapter.hasLabel()).thenReturn(true);
+
+  foundation.init();
+  td.verify(prefix.setVisible(false));
+  td.verify(suffix.setVisible(false));
+
+  focus();
+  td.verify(prefix.setVisible(true));
+  td.verify(suffix.setVisible(true));
+});
+
 const setupBlurTest = () => {
   const {foundation, mockAdapter, helperText} = setupTest({useHelperText: true});
   let blur;
@@ -779,6 +861,49 @@ test('on blur handles getNativeInput() not returning anything gracefully', () =>
   const {mockAdapter, blur} = setupBlurTest();
   td.when(mockAdapter.getNativeInput()).thenReturn(null);
   assert.doesNotThrow(blur);
+});
+
+const executeAffixBlurTest = ({hasLabel, hasValue, expected}) => {
+  const {foundation, mockAdapter, prefix, suffix} = setupTest({usePrefix: true, useSuffix: true});
+  let blur;
+  td.when(mockAdapter.registerInputInteractionHandler('blur', td.matchers.isA(Function)))
+    .thenDo((evtType, handler) => {
+      blur = handler;
+    });
+  const nativeInput = {
+    value: '',
+    validity: {
+      valid: true,
+      badInput: false,
+    },
+  };
+  td.when(mockAdapter.hasLabel()).thenReturn(hasLabel);
+  td.when(mockAdapter.getNativeInput()).thenReturn(nativeInput);
+
+  foundation.init();
+  td.verify(prefix.setVisible(!hasLabel));
+  td.verify(suffix.setVisible(!hasLabel));
+
+  nativeInput.value = hasValue ? 'Value' : '';
+  blur();
+  td.verify(prefix.setVisible(expected));
+  td.verify(suffix.setVisible(expected));
+};
+
+test('on blur does not hide affixes if input has a label and a value', () => {
+  executeAffixBlurTest({hasLabel: true, hasValue: true, expected: true});
+});
+
+test('on blur hides affixes if input has a label and no value', () => {
+  executeAffixBlurTest({hasLabel: true, hasValue: false, expected: false});
+});
+
+test('on blur does not hide affixes if input has no label and a value', () => {
+  executeAffixBlurTest({hasLabel: false, hasValue: true, expected: true});
+});
+
+test('on blur does not hide affixes if input has no label and no value', () => {
+  executeAffixBlurTest({hasLabel: false, hasValue: false, expected: true});
 });
 
 test('on keydown sets receivedUserInput to true when input is enabled', () => {

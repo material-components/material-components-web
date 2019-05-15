@@ -21,20 +21,6 @@
  * THE SOFTWARE.
  */
 
-import {MDCTextFieldAffixFoundation} from './affix/foundation';
-import {MDCTextFieldCharacterCounterFoundation} from './character-counter/foundation';
-import {MDCTextFieldHelperTextFoundation} from './helper-text/foundation';
-import {MDCTextFieldIconFoundation} from './icon/foundation';
-
-export type MDCTextFieldNativeInputElement = Pick<HTMLInputElement, 'disabled' | 'maxLength' | 'type' | 'value'> & {
-  validity: Pick<ValidityState, 'badInput' | 'valid'>;
-};
-
-export interface MDCTextFieldFoundationMap {
-  helperText: MDCTextFieldHelperTextFoundation;
-  characterCounter: MDCTextFieldCharacterCounterFoundation;
-  leadingIcon: MDCTextFieldIconFoundation;
-  trailingIcon: MDCTextFieldIconFoundation;
-  prefix: MDCTextFieldAffixFoundation;
-  suffix: MDCTextFieldAffixFoundation;
-}
+export * from './adapter';
+export * from './component';
+export * from './foundation';

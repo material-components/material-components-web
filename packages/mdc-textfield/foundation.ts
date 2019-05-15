@@ -24,6 +24,7 @@
 import {MDCFoundation} from '@material/base/foundation';
 import {SpecificEventListener} from '@material/base/types';
 import {MDCTextFieldAdapter} from './adapter';
+import { MDCTextFieldAffixFoundation } from './affix/foundation';
 import {MDCTextFieldCharacterCounterFoundation} from './character-counter/foundation';
 import {ALWAYS_FLOAT_TYPES, cssClasses, numbers, strings, VALIDATION_ATTR_WHITELIST} from './constants';
 import {MDCTextFieldHelperTextFoundation} from './helper-text/foundation';
@@ -62,6 +63,14 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     return !this.isFocused_ && !this.isValid() && Boolean(this.getValue());
   }
 
+  private get shouldAlwaysShowAffix_(): boolean {
+    return this.adapter_ ? !this.adapter_.hasLabel() : false;
+  }
+
+  get shouldShowAffix(): boolean {
+    return this.shouldAlwaysShowAffix_ || this.isFocused_ || Boolean(this.getValue());
+  }
+
   /**
    * See {@link MDCTextFieldAdapter} for typing information on parameters and return types.
    */
@@ -89,6 +98,7 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
       hasOutline: () => false,
       notchOutline: () => undefined,
       closeOutline: () => undefined,
+      setInputStyle: () => undefined,
     };
     // tslint:enable:object-literal-sort-keys
   }
@@ -110,6 +120,8 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   private readonly characterCounter_?: MDCTextFieldCharacterCounterFoundation;
   private readonly leadingIcon_?: MDCTextFieldIconFoundation;
   private readonly trailingIcon_?: MDCTextFieldIconFoundation;
+  private readonly prefix_?: MDCTextFieldAffixFoundation;
+  private readonly suffix_?: MDCTextFieldAffixFoundation;
 
   /**
    * @param adapter
@@ -122,6 +134,8 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     this.characterCounter_ = foundationMap.characterCounter;
     this.leadingIcon_ = foundationMap.leadingIcon;
     this.trailingIcon_ = foundationMap.trailingIcon;
+    this.prefix_ = foundationMap.prefix;
+    this.suffix_ = foundationMap.suffix;
 
     this.inputFocusHandler_ = () => this.activateFocus();
     this.inputBlurHandler_ = () => this.deactivateFocus();
@@ -132,6 +146,15 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
   }
 
   init() {
+    if (this.prefix_) {
+      this.adapter_.setInputStyle(this.prefix_.getInputPadding());
+    }
+    if (this.suffix_) {
+      this.adapter_.setInputStyle(this.suffix_.getInputPadding());
+    }
+
+    this.setAffixVisibility_(this.shouldShowAffix);
+
     if (this.adapter_.isFocused()) {
       this.inputFocusHandler_();
     } else if (this.adapter_.hasLabel() && this.shouldFloat) {
@@ -227,6 +250,7 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     if (this.helperText_) {
       this.helperText_.showToScreenReader();
     }
+    this.setAffixVisibility_(this.shouldShowAffix);
   }
 
   /**
@@ -276,6 +300,7 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
     if (!this.shouldFloat) {
       this.receivedUserInput_ = false;
     }
+    this.setAffixVisibility_(this.shouldShowAffix);
   }
 
   getValue(): string {
@@ -462,6 +487,15 @@ export class MDCTextFieldFoundation extends MDCFoundation<MDCTextFieldAdapter> {
 
     if (this.trailingIcon_) {
       this.trailingIcon_.setDisabled(isDisabled);
+    }
+  }
+
+  private setAffixVisibility_(isVisible: boolean) {
+    if (this.prefix_) {
+      this.prefix_.setVisible(isVisible);
+    }
+    if (this.suffix_) {
+      this.suffix_.setVisible(isVisible);
     }
   }
 
