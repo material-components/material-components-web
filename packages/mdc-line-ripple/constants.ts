@@ -24,6 +24,7 @@
 const cssClasses = {
   LINE_RIPPLE_ACTIVE: 'mdc-line-ripple--active',
   LINE_RIPPLE_DEACTIVATING: 'mdc-line-ripple--deactivating',
+  ROOT: 'mdc-line-ripple',
 };
 
 export {cssClasses};
