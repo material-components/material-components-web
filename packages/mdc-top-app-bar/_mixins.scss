@@ -70,6 +70,10 @@
   }
 }
 
+//
+// Private
+//
+
 @mixin mdc-top-app-bar-mobile-breakpoint_($mobile-breakpoint: $mdc-top-app-bar-mobile-breakpoint) {
   @media (max-width: $mobile-breakpoint) {
     .mdc-top-app-bar__row {
@@ -103,10 +107,6 @@
     }
   }
 }
-
-//
-// Private
-//
 
 // Applies styles to the different types of icons that can exist in top-app-bars.
 // Both .mdc-top-app-bar__icon and .mdc-top-app-bar__navigation-icon share all styles except for
