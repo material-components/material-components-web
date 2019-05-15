@@ -27,6 +27,7 @@
 @import "./mixins";
 
 $test-viewport-trim-color: #abc123; // Value must match `TRIM_COLOR_CSS_VALUE` in `image-cropper.js`
+$test-viewport-mobile-width: 350px;
 $test-layout-cell-grid-color: #ddd;
 
 @mixin test-fixture-grid-bg {
@@ -102,7 +103,7 @@ $test-layout-cell-grid-color: #ddd;
 .test-viewport--mobile {
   @include test-fixture-no-bg;
 
-  width: 350px; // fits 2 columns of buttons within a Galaxy S7 viewport
+  width: $test-viewport-mobile-width; // fits 2 columns of buttons within a Galaxy S7 viewport
   min-width: auto;
   height: 590px; // fits 8 rows of buttons within a Galaxy S7 viewport
   min-height: auto;
