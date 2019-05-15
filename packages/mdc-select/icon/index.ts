@@ -21,9 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {strings as iconStrings} from './constants';
-
 export * from './adapter';
 export * from './component';
 export * from './foundation';
-export {iconStrings};
+export {strings as iconStrings} from './constants';

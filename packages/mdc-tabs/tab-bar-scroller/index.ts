@@ -21,9 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {cssClasses as tabBarScrollerCssClasses, strings as tabBarScrollerStrings} from './constants';
-
 export * from './adapter';
 export * from './component';
 export * from './foundation';
-export {tabBarScrollerCssClasses, tabBarScrollerStrings};
+export {cssClasses as tabBarScrollerCssClasses, strings as tabBarScrollerStrings} from './constants';

@@ -21,9 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {cssClasses as helperTextCssClasses, strings as helperTextStrings} from './constants';
-
 export * from './adapter';
 export * from './component';
 export * from './foundation';
-export {helperTextCssClasses, helperTextStrings};
+export {cssClasses as helperTextCssClasses, strings as helperTextStrings} from './constants';

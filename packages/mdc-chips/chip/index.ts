@@ -21,10 +21,8 @@
  * THE SOFTWARE.
  */
 
-import {cssClasses as chipCssClasses, strings as chipStrings} from './constants';
-
 export * from './adapter';
 export * from './component';
 export * from './foundation';
 export * from './types';
-export {chipCssClasses, chipStrings};
+export {cssClasses as chipCssClasses, strings as chipStrings} from './constants';
