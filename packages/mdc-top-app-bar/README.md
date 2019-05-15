@@ -228,7 +228,7 @@ All foundations provide the following methods:
 
 Method Signature | Description
 --- | ---
-`handleTargetScroll() => void` | Handles `scroll` event on specified scrollTarget (default to `window`).
+`handleTargetScroll() => void` | Handles `scroll` event on specified scrollTarget (defaults to `window`).
 `handleWindowResize() => void` | Handles `resize` event on window.
 `handleNavigationClick() => void` | Handles `click` event on navigation icon.
 

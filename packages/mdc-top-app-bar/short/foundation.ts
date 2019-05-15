@@ -45,9 +45,7 @@ export class MDCShortTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
       this.adapter_.addClass(cssClasses.SHORT_HAS_ACTION_ITEM_CLASS);
     }
 
-    if (!this.adapter_.hasClass(cssClasses.SHORT_COLLAPSED_CLASS)) {
-      this.handleTargetScroll();
-    }
+    this.handleTargetScroll();
   }
 
   /**
