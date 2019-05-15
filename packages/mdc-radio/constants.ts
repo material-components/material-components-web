@@ -26,7 +26,11 @@ const strings = {
 };
 
 const cssClasses = {
+  BACKGROUND: 'mdc-radio__background',
   DISABLED: 'mdc-radio--disabled',
+  INNER_CIRCLE: 'mdc-radio__inner-circle',
+  NATIVE_CONTROL: 'mdc-radio__native-control',
+  OUTER_CIRCLE: 'mdc-radio__outer-circle',
   ROOT: 'mdc-radio',
 };
 
