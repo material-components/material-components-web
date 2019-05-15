@@ -46,6 +46,7 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
       clickDefaultButton: () => undefined,
       eventTargetMatches: () => false,
       getActionFromEvent: () => '',
+      getInitialFocusEl: () => null,
       hasClass: () => false,
       isContentScrollable: () => false,
       notifyClosed: () => undefined,
@@ -68,8 +69,6 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
   private scrimClickAction_ = strings.CLOSE_ACTION;
   private autoStackButtons_ = true;
   private areButtonsStacked_ = false;
-  // Element to focus on after dialog has finished opening.
-  private initialFocusEl_: HTMLElement|null = null;
 
   constructor(adapter?: Partial<MDCDialogAdapter>) {
     super({...MDCDialogFoundation.defaultAdapter, ...adapter});
@@ -111,7 +110,7 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
 
       this.animationTimer_ = setTimeout(() => {
         this.handleAnimationTimerEnd_();
-        this.adapter_.trapFocus(this.initialFocusEl_ || undefined);
+        this.adapter_.trapFocus(this.adapter_.getInitialFocusEl());
         this.adapter_.notifyOpened();
       }, numbers.DIALOG_ANIMATION_OPEN_TIME_MS);
     });
@@ -166,14 +165,6 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
 
   setAutoStackButtons(autoStack: boolean) {
     this.autoStackButtons_ = autoStack;
-  }
-
-  getInitialFocusEl(): HTMLElement|null {
-    return this.initialFocusEl_;
-  }
-
-  setInitialFocusEl(el: HTMLElement|null) {
-    this.initialFocusEl_ = el;
   }
 
   layout() {

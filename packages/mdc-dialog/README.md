@@ -251,7 +251,7 @@ MDC Dialog supports indicating that one of its action buttons represents the def
 Enter key. This can be used e.g. for single-choice Confirmation Dialogs to accelerate the process of making a selection,
 avoiding the need to tab through to the appropriate button to confirm the choice.
 
-To indicate that a button represents the default action, add the `mdc-dialog__button--default` modifier class.
+To indicate that a button represents the default action, add the `data-mdc-dialog-button-default` data attribute.
 For example:
 ```html
 ...
@@ -259,7 +259,7 @@ For example:
   <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
     <span class="mdc-button__label">Cancel</span>
   </button>
-  <button type="button" class="mdc-button mdc-dialog__button mdc-dialog__button--default" data-mdc-dialog-action="accept">
+  <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept" data-mdc-dialog-button-default>
     <span class="mdc-button__label">OK</span>
   </button>
 </footer>
@@ -336,10 +336,10 @@ Mixin | Description
 > *NOTE*: The `max-width` and `max-height` mixins only apply their maximum when the viewport is large enough to accommodate the specified value when accounting for the specified margin on either side. When the viewport is smaller, the dialog is sized such that the given margin is retained around the edges.
 
 ## Other Customizations
-CSS Class | Description
+Data Attributes | Description
 --- | ---
-`mdc-dialog__button--default` | Optional. Add to a button to indicate that it is the default action button (see Default Action Button section above).
-`mdc-dialog__element--focus` | Optional. Add to an element to indicate that it is the element to initially focus on after the dialog has opened. This is the element that should be passed in to `Adapter#setInitialFocusEl`.
+`data-mdc-dialog-button-default` | Optional. Add to a button to indicate that it is the default action button (see Default Action Button section above).
+`data-mdc-dialog-element-focus` | Optional. Add to an element to indicate that it is the element to initially focus on after the dialog has opened. This is the element that should be passed in to `Adapter#getInitialFocusEl`.
 
 ## `MDCDialog` Properties and Methods
 
@@ -379,12 +379,13 @@ Method Signature | Description
 `addBodyClass(className: string) => void` | Adds a class to the `<body>`.
 `removeBodyClass(className: string) => void` | Removes a class from the `<body>`.
 `eventTargetMatches(target: EventTarget | null, selector: string) => void` | Returns `true` if the target element matches the given CSS selector, otherwise `false`.
-`trapFocus(initialFocusEl?: HTMLElement) => void` | Sets up the DOM such that keyboard navigation is restricted to focusable elements within the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details). If `initialFocusEl` is set, also moves focus to that element.
+`trapFocus(initialFocusEl: HTMLElement|null) => void` | Sets up the DOM such that keyboard navigation is restricted to focusable elements within the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details). Moves focus to `initialFocusEl`, if set.
 `releaseFocus() => void` | Removes any effects of focus trapping on the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details).
+`getInitialFocusEl() => HTMLElement|null` | Returns the `data-mdc-dialog-element-focus` element to add focus to after the dialog has opened.
 `isContentScrollable() => boolean` | Returns `true` if `mdc-dialog__content` can be scrolled by the user, otherwise `false`.
 `areButtonsStacked() => boolean` | Returns `true` if `mdc-dialog__action` buttons (`mdc-dialog__button`) are stacked vertically, otherwise `false` if they are side-by-side.
 `getActionFromEvent(event: Event) => string \| null` | Retrieves the value of the `data-mdc-dialog-action` attribute from the given event's target, or an ancestor of the target.
-`clickDefaultButton() => void` | Invokes `click()` on the `mdc-dialog__button--default` element, if one exists in the dialog.
+`clickDefaultButton() => void` | Invokes `click()` on the `data-mdc-dialog-button-default` element, if one exists in the dialog.
 `reverseButtons() => void` | Reverses the order of action buttons in the `mdc-dialog__actions` element. Used when switching between stacked and unstacked button layouts.
 `notifyOpening() => void` | Broadcasts an event denoting that the dialog has just started to open.
 `notifyOpened() => void` | Broadcasts an event denoting that the dialog has finished opening.
@@ -405,8 +406,6 @@ Method Signature | Description
 `setScrimClickAction(action: string)` | Sets the action reflected when the scrim is clicked. Setting to `''` disables closing the dialog via scrim click.
 `getAutoStackButtons() => boolean` | Returns whether stacked/unstacked action button layout is automatically handled during layout logic.
 `setAutoStackButtons(autoStack: boolean) => void` | Sets whether stacked/unstacked action button layout is automatically handled during layout logic.
-`getInitialFocusEl() => HTMLElement|null` | Gets the element to focus on after dialog has finished opening.
-`setInitialFocusEl(el: HTMLElement|null)` | Sets the element to focus on after dialog has finished opening. Passed as an argument to `Adapter#trapFocus`.
 `handleClick(event: MouseEvent)` | Handles `click` events on or within the dialog's root element.
 `handleKeydown(event: KeyboardEvent)` | Handles `keydown` events on or within the dialog's root element.
 `handleDocumentKeydown(event: Event)` | Handles `keydown` events on or within the document while the dialog is open.
