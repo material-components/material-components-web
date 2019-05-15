@@ -115,7 +115,6 @@ Then configure webpack to convert `app.scss` into `bundle.css`. For that you nee
 
 ```js
 module.exports = [{
-  mode: "production",
   entry: './app.scss',
   output: {
     // This is necessary for webpack to compile
@@ -305,8 +304,6 @@ Then configure webpack to convert `app.js` into `bundle.js` by modifying the fol
 The final `webpack.config.js` file should look like this:
 
 ```js
-const autoprefixer = require('autoprefixer');
-
 module.exports = {
   entry: ['./app.scss', './app.js'],
   output: {
@@ -325,11 +322,7 @@ module.exports = {
           },
           {loader: 'extract-loader'},
           {loader: 'css-loader'},
-          {loader: 'postcss-loader',
-            options: {
-              plugins: () => [autoprefixer()],
-            },
-          },
+          {loader: 'postcss-loader'},
           {
             loader: 'sass-loader',
             options: {
