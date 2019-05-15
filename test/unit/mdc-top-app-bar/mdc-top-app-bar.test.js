@@ -256,3 +256,11 @@ test('adapter#getTotalActionItems returns the number of action items on the oppo
   const actual = root.querySelectorAll(strings.ACTION_ITEM_SELECTOR).length;
   assert.isTrue(adapterReturn === actual);
 });
+
+test('adapter#notifyNavigationIconClicked emits the NAVIGATION_EVENT', () => {
+  const {component} = setupTest();
+  const callback = td.func();
+  component.listen(strings.NAVIGATION_EVENT, callback);
+  component.getDefaultFoundation().adapter_.notifyNavigationIconClicked();
+  td.verify(callback(td.matchers.isA(Object)), {times: 1});
+});

@@ -45,6 +45,9 @@ export class MDCShortTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
       this.adapter_.addClass(cssClasses.SHORT_HAS_ACTION_ITEM_CLASS);
     }
 
+    // this was a private method call before, but we decided to override the base class method instead.
+    // this is intended as the short variant must calculate if the
+    // page starts off from the top of the page.
     this.handleTargetScroll();
   }
 
