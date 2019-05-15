@@ -530,8 +530,8 @@
 }
 
 @mixin mdc-chip-trailing-icon-margin(
-  $left-margin: $mdc-chip-leading-icon-margin-left,
-  $right-margin: $mdc-chip-leading-icon-margin-right,
+  $left-margin: $mdc-chip-trailing-icon-margin-left,
+  $right-margin: $mdc-chip-trailing-icon-margin-right,
   $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
