@@ -26,6 +26,6 @@ document.getElementById('checkbox-indeterminate-disabled').indeterminate = true;
 
 [].slice.call(document.querySelectorAll('.mdc-checkbox')).forEach((el) => {
   mdc.checkbox.MDCCheckbox.attachTo(el);
-})
+});
 
 window.mdc.testFixture.notifyDomReady();
