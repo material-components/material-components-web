@@ -51,7 +51,7 @@ export class MDCShortTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
   /**
    * Scroll handler for applying/removing the collapsed modifier class on the short top app bar.
    */
-  handleTargetScroll = () => {
+  handleTargetScroll() {
     if (this.adapter_.hasClass(cssClasses.SHORT_COLLAPSED_CLASS)) {
       return;
     }

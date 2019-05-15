@@ -22,7 +22,6 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
-import {SpecificEventListener} from '@material/base/types';
 import {MDCTopAppBarAdapter} from './adapter';
 import {cssClasses, numbers, strings} from './constants';
 
@@ -62,8 +61,8 @@ export class MDCTopAppBarBaseFoundation extends MDCFoundation<MDCTopAppBarAdapte
     super({...MDCTopAppBarBaseFoundation.defaultAdapter, ...adapter});
   }
 
-  handleTargetScroll: SpecificEventListener<'scroll'> = () => undefined;
-  handleWindowResize: SpecificEventListener<'resize'> = () => undefined;
+  handleTargetScroll() {} // tslint:disable-line:no-empty
+  handleWindowResize() {} // tslint:disable-line:no-empty
 
   handleNavigationClick() {
     this.adapter_.notifyNavigationIconClicked();
