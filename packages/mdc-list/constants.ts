@@ -22,11 +22,29 @@
  */
 
 const cssClasses = {
-  LIST_ITEM_ACTIVATED_CLASS: 'mdc-list-item--activated',
-  LIST_ITEM_CLASS: 'mdc-list-item',
-  LIST_ITEM_DISABLED_CLASS: 'mdc-list-item--disabled',
-  LIST_ITEM_SELECTED_CLASS: 'mdc-list-item--selected',
+  AVATAR_LIST: 'mdc-list--avatar-list',
+  DENSE: 'mdc-list--dense',
+  DIVIDER: 'mdc-list-divider',
+  DIVIDER_PADDED: 'mdc-list-divider--padded',
+  DIVIDER__INSET: 'mdc-list-divider--inset',
+  GROUP: 'mdc-list-group',
+  GROUP_SUBHEADER: 'mdc-list-group__subheader',
+  ITEM: 'mdc-list-item',
+  ITEM_ACTIVATED: 'mdc-list-item--activated',
+  ITEM_DISABLED: 'mdc-list-item--disabled',
+  ITEM_GRAPHIC: 'mdc-list-item__graphic',
+  ITEM_META: 'mdc-list-item__meta',
+  ITEM_PRIMARY_TEXT: 'mdc-list-item__primary-text',
+  ITEM_SECONDARY_TEXT: 'mdc-list-item__secondary-text',
+  ITEM_SELECTED: 'mdc-list-item--selected',
+  ITEM_TEXT: 'mdc-list-item__text',
+  LIST_ITEM_ACTIVATED_CLASS: 'mdc-list-item--activated', // deprecated
+  LIST_ITEM_CLASS: 'mdc-list-item', // deprecated
+  LIST_ITEM_DISABLED_CLASS: 'mdc-list-item--disabled', // deprecated
+  LIST_ITEM_SELECTED_CLASS: 'mdc-list-item--selected', // deprecated
+  NON_INTERACTIVE: 'mdc-list--non-interactive',
   ROOT: 'mdc-list',
+  TWO_LINE: 'mdc-list--two-line',
 };
 
 const strings = {
