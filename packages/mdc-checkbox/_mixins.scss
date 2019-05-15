@@ -186,7 +186,7 @@
     @include mdc-ripple-surface($query);
     @include mdc-states($mdc-checkbox-baseline-theme-color, $query: $query);
     @include mdc-ripple-radius-unbounded($query: $query);
-    @include mdc-checkbox-touch-dimension($mdc-checkbox-touch-area);
+    @include mdc-checkbox-touch-dimension($mdc-checkbox-touch-area, $query: $query);
   }
 
   .mdc-ripple-upgraded--background-focused .mdc-checkbox__background::before {
@@ -196,22 +196,29 @@
   }
 }
 
-@mixin mdc-checkbox-touch-dimension($touch-dimension) {
+@mixin mdc-checkbox-touch-dimension($touch-dimension, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
   $checkbox-padding: ($touch-dimension - $mdc-checkbox-size) / 2;
 
-  padding: $checkbox-padding;
+  @include mdc-feature-targets($feat-structure) {
+    padding: $checkbox-padding;
+  }
 
   .mdc-checkbox__background {
-    @include mdc-rtl-reflexive-position(left, $checkbox-padding, ".mdc-checkbox");
+    @include mdc-feature-targets($feat-structure) {
+      @include mdc-rtl-reflexive-position(left, $checkbox-padding, ".mdc-checkbox");
 
-    top: $checkbox-padding;
+      top: $checkbox-padding;
+    }
   }
 
   .mdc-checkbox__background::before {
-    top: -$mdc-checkbox-border-width - $checkbox-padding;
-    left: -$mdc-checkbox-border-width - $checkbox-padding;
-    width: $touch-dimension;
-    height: $touch-dimension;
+    @include mdc-feature-targets($feat-structure) {
+      top: -$mdc-checkbox-border-width - $checkbox-padding;
+      left: -$mdc-checkbox-border-width - $checkbox-padding;
+      width: $touch-dimension;
+      height: $touch-dimension;
+    }
   }
 }
 
