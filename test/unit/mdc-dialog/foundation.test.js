@@ -191,7 +191,7 @@ test('#open activates focus trapping on the dialog surface', () => {
   clock.tick(100);
   clock.tick(numbers.DIALOG_ANIMATION_OPEN_TIME_MS);
 
-  td.verify(mockAdapter.trapFocus());
+  td.verify(mockAdapter.trapFocus(undefined));
 });
 
 test('#close deactivates focus trapping on the dialog surface', () => {
@@ -513,4 +513,27 @@ test('#getScrimClickAction reflects setting of #setScrimClickAction', () => {
   const action = 'foo';
   foundation.setScrimClickAction(action);
   assert.strictEqual(foundation.getScrimClickAction(), action);
+});
+
+test('#getInitialFocusEl reflects setting of #setInitialFocusEl', () => {
+  const {foundation} = setupTest();
+  const el = document.createElement('button');
+  foundation.setInitialFocusEl(el);
+  assert.strictEqual(foundation.getInitialFocusEl(), el);
+});
+
+test('#setInitialFocusEl element is passed in as an arg to Adapter#trapFocus', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const clock = installClock();
+
+  const button = document.createElement('button');
+  foundation.setInitialFocusEl(button);
+  foundation.open();
+
+  // Wait for application of opening class and setting of additional timeout prior to full open animation timeout
+  clock.runToFrame();
+  clock.tick(100);
+  clock.tick(numbers.DIALOG_ANIMATION_OPEN_TIME_MS);
+
+  td.verify(mockAdapter.trapFocus(button));
 });

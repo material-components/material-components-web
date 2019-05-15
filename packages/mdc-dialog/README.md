@@ -253,7 +253,6 @@ avoiding the need to tab through to the appropriate button to confirm the choice
 
 To indicate that a button represents the default action, add the `mdc-dialog__button--default` modifier class.
 For example:
-
 ```html
 ...
 <footer class="mdc-dialog__actions">
@@ -336,6 +335,12 @@ Mixin | Description
 
 > *NOTE*: The `max-width` and `max-height` mixins only apply their maximum when the viewport is large enough to accommodate the specified value when accounting for the specified margin on either side. When the viewport is smaller, the dialog is sized such that the given margin is retained around the edges.
 
+## Other Customizations
+CSS Class | Description
+--- | ---
+`mdc-dialog__button--default` | Optional. Add to a button to indicate that it is the default action button (see Default Action Button section above).
+`mdc-dialog__element--focus` | Optional. Add to an element to indicate that it is the element to initially focus on after the dialog has opened. This is the element that should be passed in to `Adapter#setInitialFocusEl`.
+
 ## `MDCDialog` Properties and Methods
 
 Property | Value Type | Description
@@ -373,8 +378,8 @@ Method Signature | Description
 `hasClass(className: string) => boolean` | Returns whether the given class exists on the root element.
 `addBodyClass(className: string) => void` | Adds a class to the `<body>`.
 `removeBodyClass(className: string) => void` | Removes a class from the `<body>`.
-`eventTargetMatches(target: EventTarget \| null, selector: string) => void` | Returns `true` if the target element matches the given CSS selector, otherwise `false`.
-`trapFocus() => void` | Sets up the DOM such that keyboard navigation is restricted to focusable elements within the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details).
+`eventTargetMatches(target: EventTarget | null, selector: string) => void` | Returns `true` if the target element matches the given CSS selector, otherwise `false`.
+`trapFocus(initialFocusEl?: HTMLElement) => void` | Sets up the DOM such that keyboard navigation is restricted to focusable elements within the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details). If `initialFocusEl` is set, also moves focus to that element.
 `releaseFocus() => void` | Removes any effects of focus trapping on the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details).
 `isContentScrollable() => boolean` | Returns `true` if `mdc-dialog__content` can be scrolled by the user, otherwise `false`.
 `areButtonsStacked() => boolean` | Returns `true` if `mdc-dialog__action` buttons (`mdc-dialog__button`) are stacked vertically, otherwise `false` if they are side-by-side.
@@ -400,6 +405,8 @@ Method Signature | Description
 `setScrimClickAction(action: string)` | Sets the action reflected when the scrim is clicked. Setting to `''` disables closing the dialog via scrim click.
 `getAutoStackButtons() => boolean` | Returns whether stacked/unstacked action button layout is automatically handled during layout logic.
 `setAutoStackButtons(autoStack: boolean) => void` | Sets whether stacked/unstacked action button layout is automatically handled during layout logic.
+`getInitialFocusEl() => HTMLElement|null` | Gets the element to focus on after dialog has finished opening.
+`setInitialFocusEl(el: HTMLElement|null)` | Sets the element to focus on after dialog has finished opening. Passed as an argument to `Adapter#trapFocus`.
 `handleClick(event: MouseEvent)` | Handles `click` events on or within the dialog's root element.
 `handleKeydown(event: KeyboardEvent)` | Handles `keydown` events on or within the dialog's root element.
 `handleDocumentKeydown(event: Event)` | Handles `keydown` events on or within the document while the dialog is open.

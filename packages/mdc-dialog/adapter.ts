@@ -40,7 +40,7 @@ export interface MDCDialogAdapter {
   areButtonsStacked(): boolean;
   getActionFromEvent(evt: Event): string | null;
 
-  trapFocus(): void;
+  trapFocus(focusElement?: HTMLElement): void;
   releaseFocus(): void;
   clickDefaultButton(): void;
   reverseButtons(): void;

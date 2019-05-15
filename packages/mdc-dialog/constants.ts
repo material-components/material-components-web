@@ -40,6 +40,7 @@ export const strings = {
   CONTENT_SELECTOR: '.mdc-dialog__content',
   DEFAULT_BUTTON_SELECTOR: '.mdc-dialog__button--default',
   DESTROY_ACTION: 'destroy',
+  INITIAL_FOCUS_EL_SELECTOR: '.mdc-dialog__element--focus',
   OPENED_EVENT: 'MDCDialog:opened',
   OPENING_EVENT: 'MDCDialog:opening',
   SCRIM_SELECTOR: '.mdc-dialog__scrim',
