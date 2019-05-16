@@ -28,7 +28,7 @@ import {MDCFoundation} from '@material/base/foundation';
 
 import {strings} from './constants';
 
-const {AUTO_INIT_ATTR, AUTO_INIT_STATE_ATTR, INTIALIZED_STATE} = strings;
+const {AUTO_INIT_ATTR, AUTO_INIT_STATE_ATTR, INITIALIZED_STATE} = strings;
 
 export interface MDCAttachable {
   new<F extends MDCFoundation>(root: Element, foundation?: F, ...args: Array<unknown>): MDCComponent<F>;
@@ -67,7 +67,7 @@ function emit<T extends object>(evtType: string, evtData: T, shouldBubble = fals
 export function mdcAutoInit(root = document) {
   const components = [];
   const nodes: Element[] = [].slice.call(root.querySelectorAll(
-    `[${AUTO_INIT_ATTR}]:not([${AUTO_INIT_STATE_ATTR}="${INTIALIZED_STATE}"])`));
+    `[${AUTO_INIT_ATTR}]:not([${AUTO_INIT_STATE_ATTR}="${INITIALIZED_STATE}"])`));
 
   for (const node of nodes) {
     const ctorName = node.getAttribute(AUTO_INIT_ATTR);
@@ -91,7 +91,7 @@ export function mdcAutoInit(root = document) {
       writable: false,
     });
     components.push(component);
-    node.setAttribute(AUTO_INIT_STATE_ATTR, INTIALIZED_STATE);
+    node.setAttribute(AUTO_INIT_STATE_ATTR, INITIALIZED_STATE);
   }
 
   emit('MDCAutoInit:End', {});

@@ -24,5 +24,5 @@
 export const strings = {
   AUTO_INIT_ATTR: 'data-mdc-auto-init',
   AUTO_INIT_STATE_ATTR: 'data-mdc-auto-init-state',
-  INTIALIZED_STATE: 'initialized',
+  INITIALIZED_STATE: 'initialized',
 };
