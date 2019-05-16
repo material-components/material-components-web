@@ -46,6 +46,7 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
       clickDefaultButton: () => undefined,
       eventTargetMatches: () => false,
       getActionFromEvent: () => '',
+      getInitialFocusEl: () => null,
       hasClass: () => false,
       isContentScrollable: () => false,
       notifyClosed: () => undefined,
@@ -109,7 +110,7 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
 
       this.animationTimer_ = setTimeout(() => {
         this.handleAnimationTimerEnd_();
-        this.adapter_.trapFocus();
+        this.adapter_.trapFocus(this.adapter_.getInitialFocusEl());
         this.adapter_.notifyOpened();
       }, numbers.DIALOG_ANIMATION_OPEN_TIME_MS);
     });
