@@ -339,7 +339,7 @@ Mixin | Description
 Data Attributes | Description
 --- | ---
 `data-mdc-dialog-button-default` | Optional. Add to a button to indicate that it is the default action button (see Default Action Button section above).
-`data-mdc-dialog-element-focus` | Optional. Add to an element to indicate that it is the element to initially focus on after the dialog has opened. This is the element that should be passed in to `Adapter#getInitialFocusEl`.
+`data-mdc-dialog-initial-focus` | Optional. Add to an element to indicate that it is the element to initially focus on after the dialog has opened.
 
 ## `MDCDialog` Properties and Methods
 
@@ -381,7 +381,7 @@ Method Signature | Description
 `eventTargetMatches(target: EventTarget | null, selector: string) => void` | Returns `true` if the target element matches the given CSS selector, otherwise `false`.
 `trapFocus(initialFocusEl: HTMLElement|null) => void` | Sets up the DOM such that keyboard navigation is restricted to focusable elements within the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details). Moves focus to `initialFocusEl`, if set.
 `releaseFocus() => void` | Removes any effects of focus trapping on the dialog surface (see [Handling Focus Trapping](#handling-focus-trapping) below for more details).
-`getInitialFocusEl() => HTMLElement|null` | Returns the `data-mdc-dialog-element-focus` element to add focus to after the dialog has opened.
+`getInitialFocusEl() => HTMLElement|null` | Returns the `data-mdc-dialog-initial-focus` element to add focus to after the dialog has opened.
 `isContentScrollable() => boolean` | Returns `true` if `mdc-dialog__content` can be scrolled by the user, otherwise `false`.
 `areButtonsStacked() => boolean` | Returns `true` if `mdc-dialog__action` buttons (`mdc-dialog__button`) are stacked vertically, otherwise `false` if they are side-by-side.
 `getActionFromEvent(event: Event) => string \| null` | Retrieves the value of the `data-mdc-dialog-action` attribute from the given event's target, or an ancestor of the target.
