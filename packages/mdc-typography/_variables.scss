@@ -22,7 +22,7 @@
 
 @import "./functions";
 
-$mdc-typography-font-family: Roboto, sans-serif !default;
+$mdc-typography-font-family: unquote("Roboto, sans-serif") !default;
 
 $mdc-typography-base: (
   font-family: $mdc-typography-font-family,
