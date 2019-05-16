@@ -473,10 +473,10 @@ test('adapter#getActionFromEvent returns null when attribute is not present', ()
   assert.isNull(action);
 });
 
-test(`adapter#clickDefaultButton invokes click() on button matching ${strings.DEFAULT_BUTTON_SELECTOR}`, () => {
+test(`adapter#clickDefaultButton invokes click() on button matching ${strings.BUTTON_DEFAULT_ATTRIBUTE}`, () => {
   const fixture = getFixture();
   const yesButton = fixture.querySelector('[data-mdc-dialog-action="yes"]');
-  yesButton.classList.add(strings.DEFAULT_BUTTON_SELECTOR.slice(1));
+  yesButton.setAttribute(strings.BUTTON_DEFAULT_ATTRIBUTE, 'true');
 
   const {component} = setupTest(fixture);
   yesButton.click = td.func('click');
@@ -485,7 +485,7 @@ test(`adapter#clickDefaultButton invokes click() on button matching ${strings.DE
   td.verify(yesButton.click());
 });
 
-test(`adapter#clickDefaultButton does nothing if nothing matches ${strings.DEFAULT_BUTTON_SELECTOR}`, () => {
+test(`adapter#clickDefaultButton does nothing if nothing matches ${strings.BUTTON_DEFAULT_ATTRIBUTE}`, () => {
   const {component, yesButton, noButton} = setupTest();
   yesButton.click = td.func('click');
   noButton.click = td.func('click');
