@@ -186,11 +186,38 @@
     @include mdc-ripple-surface($query);
     @include mdc-states($mdc-checkbox-baseline-theme-color, $query: $query);
     @include mdc-ripple-radius-unbounded($query: $query);
+    @include mdc-checkbox-touch-dimension($mdc-checkbox-touch-area, $query: $query);
   }
 
   .mdc-ripple-upgraded--background-focused .mdc-checkbox__background::before {
     @include mdc-feature-targets($feat-structure) {
       content: none;
+    }
+  }
+}
+
+@mixin mdc-checkbox-touch-dimension($touch-dimension, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+  $checkbox-padding: ($touch-dimension - $mdc-checkbox-size) / 2;
+
+  @include mdc-feature-targets($feat-structure) {
+    padding: $checkbox-padding;
+  }
+
+  .mdc-checkbox__background {
+    @include mdc-feature-targets($feat-structure) {
+      @include mdc-rtl-reflexive-position(left, $checkbox-padding, ".mdc-checkbox");
+
+      top: $checkbox-padding;
+    }
+  }
+
+  .mdc-checkbox__background::before {
+    @include mdc-feature-targets($feat-structure) {
+      top: -$mdc-checkbox-border-width - $checkbox-padding;
+      left: -$mdc-checkbox-border-width - $checkbox-padding;
+      width: $touch-dimension;
+      height: $touch-dimension;
     }
   }
 }
@@ -298,7 +325,6 @@
   box-sizing: content-box;
   width: $mdc-checkbox-size;
   height: $mdc-checkbox-size;
-  padding: ($mdc-checkbox-touch-area - $mdc-checkbox-size) / 2;
   line-height: 0;
   white-space: nowrap;
   cursor: pointer;
@@ -319,14 +345,6 @@
 @mixin mdc-checkbox--disabled_ {
   cursor: default;
   pointer-events: none;
-}
-
-@mixin mdc-checkbox__child--cover-parent_ {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
 }
 
 @mixin mdc-checkbox__child--upgraded_ {
@@ -455,17 +473,13 @@
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-feature-targets($feat-structure) {
-    @include mdc-rtl-reflexive-position(left, ($mdc-checkbox-touch-area - $mdc-checkbox-size) / 2, ".mdc-checkbox");
-
     display: inline-flex;
     position: absolute;
-    top: ($mdc-checkbox-touch-area - $mdc-checkbox-size) / 2;
-    bottom: 0;
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    width: $mdc-checkbox-ui-pct;
-    height: $mdc-checkbox-ui-pct;
+    width: $mdc-checkbox-size;
+    height: $mdc-checkbox-size;
     // border-color is overridden by the mdc-checkbox-unmarked-stroke-color() mixin
     border: $mdc-checkbox-border-width solid currentColor;
     border-radius: 2px;
@@ -494,10 +508,7 @@
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-feature-targets($feat-structure) {
-    @include mdc-checkbox__child--cover-parent_;
-
-    width: 100%;
-    height: 100%;
+    position: absolute;
     transform: scale(0, 0);
     border-radius: 50%;
     opacity: 0;
@@ -518,7 +529,7 @@
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-feature-targets($feat-structure) {
-    transform: scale(2.75, 2.75);
+    transform: scale(1);
     opacity: $mdc-checkbox-focus-indicator-opacity;
   }
 
@@ -550,8 +561,11 @@
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-feature-targets($feat-structure) {
-    @include mdc-checkbox__child--cover-parent_;
-
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     width: 100%;
     opacity: 0;
   }
