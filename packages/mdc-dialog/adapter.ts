@@ -40,8 +40,10 @@ export interface MDCDialogAdapter {
   areButtonsStacked(): boolean;
   getActionFromEvent(evt: Event): string | null;
 
-  trapFocus(): void;
+  trapFocus(focusElement: HTMLElement|null): void;
   releaseFocus(): void;
+  // Element to focus on after dialog has opened.
+  getInitialFocusEl(): HTMLElement|null;
   clickDefaultButton(): void;
   reverseButtons(): void;
 

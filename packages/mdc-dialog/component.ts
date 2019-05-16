@@ -72,7 +72,6 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   private container_!: HTMLElement; // assigned in initialize()
   private content_!: HTMLElement | null; // assigned in initialize()
   private defaultButton_!: HTMLElement | null; // assigned in initialize()
-  private initialFocusEl_?: HTMLElement; // assigned in initialize()
 
   private focusTrap_!: FocusTrap; // assigned in initialSyncWithDOM()
   private focusTrapFactory_?: MDCDialogFocusTrapFactory; // assigned in initialize()
@@ -86,7 +85,6 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
 
   initialize(
       focusTrapFactory?: MDCDialogFocusTrapFactory,
-      initialFocusEl?: HTMLElement,
   ) {
     const container = this.root_.querySelector<HTMLElement>(strings.CONTAINER_SELECTOR);
     if (!container) {
@@ -95,9 +93,8 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
     this.container_ = container;
     this.content_ = this.root_.querySelector<HTMLElement>(strings.CONTENT_SELECTOR);
     this.buttons_ = [].slice.call(this.root_.querySelectorAll<HTMLElement>(strings.BUTTON_SELECTOR));
-    this.defaultButton_ = this.root_.querySelector<HTMLElement>(strings.DEFAULT_BUTTON_SELECTOR);
+    this.defaultButton_ = this.root_.querySelector<HTMLElement>(`[${strings.BUTTON_DEFAULT_ATTRIBUTE}]`);
     this.focusTrapFactory_ = focusTrapFactory;
-    this.initialFocusEl_ = initialFocusEl;
     this.buttonRipples_ = [];
 
     for (const buttonEl of this.buttons_) {
@@ -106,7 +103,8 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   }
 
   initialSyncWithDOM() {
-    this.focusTrap_ = util.createFocusTrapInstance(this.container_, this.focusTrapFactory_, this.initialFocusEl_);
+    this.focusTrap_ = util.createFocusTrapInstance(
+        this.container_, this.focusTrapFactory_, this.getInitialFocusEl_() || undefined);
 
     this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
     this.handleKeydown_ = this.foundation_.handleKeydown.bind(this.foundation_);
@@ -168,6 +166,7 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
         const element = closest(evt.target as Element, `[${strings.ACTION_ATTRIBUTE}]`);
         return element && element.getAttribute(strings.ACTION_ATTRIBUTE);
       },
+      getInitialFocusEl: () => this.getInitialFocusEl_(),
       hasClass: (className) => this.root_.classList.contains(className),
       isContentScrollable: () => util.isScrollable(this.content_),
       notifyClosed: (action) => this.emit<MDCDialogCloseEventDetail>(strings.CLOSED_EVENT, action ? {action} : {}),
@@ -186,5 +185,9 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
       trapFocus: () => this.focusTrap_.activate(),
     };
     return new MDCDialogFoundation(adapter);
+  }
+
+  private getInitialFocusEl_(): HTMLElement|null {
+    return document.querySelector(`[${strings.INITIAL_FOCUS_ATTRIBUTE}]`);
   }
 }
