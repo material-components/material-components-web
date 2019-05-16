@@ -66,3 +66,11 @@ test('#handleTargetScroll does not call #adapter.removeClass if was not scrolled
   foundation.handleTargetScroll();
   td.verify(mockAdapter.removeClass(td.matchers.isA(String)), {times: 0});
 });
+
+test('#handleTargetScroll calls #adapter.addClass only once if it already scrolled', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getViewportScrollY()).thenReturn(1);
+  foundation.handleTargetScroll();
+  foundation.handleTargetScroll();
+  td.verify(mockAdapter.addClass(MDCTopAppBarFoundation.cssClasses.FIXED_SCROLLED_CLASS), {times: 1});
+});

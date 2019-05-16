@@ -192,3 +192,9 @@ test('top app bar : resize events debounce changing isCurrentlyBeingResized_ to 
   clock.tick(150);
   assert.isFalse(foundation.isCurrentlyBeingResized_);
 });
+
+test('#destroy calls #adapter.setStyle(top, "")', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.destroy();
+  td.verify(mockAdapter.setStyle('top', ''), {times: 1});
+});

@@ -21,6 +21,7 @@
  * THE SOFTWARE.
  */
 
+import {assert} from 'chai';
 import td from 'testdouble';
 
 import {MDCShortTopAppBarFoundation} from '../../../packages/mdc-top-app-bar/short/foundation';
@@ -95,4 +96,17 @@ test('short top app bar: #adapter.addClass is not called if it does not have an 
   td.when(mockAdapter.getTotalActionItems()).thenReturn(0);
   foundation.init();
   td.verify(mockAdapter.addClass(MDCTopAppBarFoundation.cssClasses.SHORT_HAS_ACTION_ITEM_CLASS), {times: 0});
+});
+
+test('isCollapsed returns false initially if top-app-bar has not scrolled', () => {
+  const {foundation} = setupTest();
+  assert.isFalse(foundation.isCollapsed);
+});
+
+test('isCollapsed returns true if top-app-bar is collapsed', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getViewportScrollY()).thenReturn(1);
+
+  foundation.handleTargetScroll();
+  assert.isTrue(foundation.isCollapsed);
 });
