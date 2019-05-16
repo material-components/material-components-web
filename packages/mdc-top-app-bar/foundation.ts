@@ -61,7 +61,9 @@ export class MDCTopAppBarBaseFoundation extends MDCFoundation<MDCTopAppBarAdapte
     super({...MDCTopAppBarBaseFoundation.defaultAdapter, ...adapter});
   }
 
+  /** Other variants of TopAppBar foundation overrides this method */
   handleTargetScroll() {} // tslint:disable-line:no-empty
+  /** Other variants of TopAppBar foundation overrides this method */
   handleWindowResize() {} // tslint:disable-line:no-empty
 
   handleNavigationClick() {

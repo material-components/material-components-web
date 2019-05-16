@@ -95,18 +95,14 @@ export class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
 
   setScrollTarget(target: EventTarget) {
     // Remove scroll handler from the previous scroll target
-    if (this.handleTargetScroll_) {
-      this.scrollTarget_.removeEventListener('scroll', this.handleTargetScroll_ as EventListener);
-    }
+    this.scrollTarget_.removeEventListener('scroll', this.handleTargetScroll_ as EventListener);
 
     this.scrollTarget_ = target;
 
     // Initialize scroll handler on the new scroll target
-    if (this.handleTargetScroll_) {
-      this.handleTargetScroll_
-        = this.foundation_.handleTargetScroll && this.foundation_.handleTargetScroll.bind(this.foundation_);
-      this.scrollTarget_.addEventListener('scroll', this.handleTargetScroll_ as EventListener);
-    }
+    this.handleTargetScroll_ =
+      this.foundation_.handleTargetScroll.bind(this.foundation_);
+    this.scrollTarget_.addEventListener('scroll', this.handleTargetScroll_ as EventListener);
   }
 
   getDefaultFoundation() {
