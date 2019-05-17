@@ -30,6 +30,7 @@ export const strings = {
   SELECTION_EVENT: 'MDCChip:selection',
   TRAILING_ICON_INTERACTION_EVENT: 'MDCChip:trailingIconInteraction',
   TRAILING_ICON_SELECTOR: '.mdc-chip__icon--trailing',
+  ARIA_CHECKED: 'aria-checked',
 };
 
 export const cssClasses = {
