@@ -25,7 +25,6 @@ import td from 'testdouble';
 
 import {MDCFixedTopAppBarFoundation} from '../../../packages/mdc-top-app-bar/fixed/foundation';
 import {MDCTopAppBarFoundation} from '../../../packages/mdc-top-app-bar/standard/foundation';
-import {install as installClock} from '../helpers/clock';
 
 suite('MDCFixedTopAppBarFoundation');
 
@@ -37,68 +36,41 @@ const setupTest = () => {
   return {foundation, mockAdapter};
 };
 
-const createMockHandlers = (foundation, mockAdapter, clock) => {
-  let scrollHandler;
-  td.when(mockAdapter.registerScrollHandler(td.matchers.isA(Function))).thenDo((fn) => {
-    scrollHandler = fn;
-  });
-
-  foundation.init();
-  clock.runToFrame();
-  td.reset();
-  return {scrollHandler};
-};
-
-test('fixed top app bar: scroll listener is registered on init', () => {
+test('#handleTargetScroll calls #adapter.getViewportScrollY', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.FIXED_CLASS)).thenReturn(true);
-  foundation.init();
-  td.verify(mockAdapter.registerScrollHandler(td.matchers.isA(Function)), {times: 1});
+  foundation.handleTargetScroll();
+  // twice because it is called once in the standard foundation
+  td.verify(mockAdapter.getViewportScrollY(), {times: 2});
 });
 
-test('fixed top app bar: scroll listener is removed on destroy', () => {
+test('#handleTargetScroll calls #adapter.addClass if adapter.getViewportScrollY > 0', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.FIXED_CLASS)).thenReturn(true);
-  foundation.init();
-  foundation.destroy();
-  td.verify(mockAdapter.deregisterScrollHandler(td.matchers.isA(Function)), {times: 1});
-});
-
-test('fixed top app bar: class is added once when page is scrolled from the top', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const clock = installClock();
-
-  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.FIXED_CLASS)).thenReturn(true);
-  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.FIXED_SCROLLED_CLASS)).thenReturn(false);
-  td.when(mockAdapter.getTotalActionItems()).thenReturn(0);
-  td.when(mockAdapter.getViewportScrollY()).thenReturn(0);
-
-  const {scrollHandler} = createMockHandlers(foundation, mockAdapter, clock);
   td.when(mockAdapter.getViewportScrollY()).thenReturn(1);
-
-  scrollHandler();
-  scrollHandler();
-
+  foundation.handleTargetScroll();
   td.verify(mockAdapter.addClass(MDCTopAppBarFoundation.cssClasses.FIXED_SCROLLED_CLASS), {times: 1});
 });
 
-test('fixed top app bar: class is removed once when page is scrolled to the top', () => {
+test('#handleTargetScroll calls #adapter.removeClass if ' +
+'adapter.getViewportScrollY < 0 but had just scrolled down', () => {
   const {foundation, mockAdapter} = setupTest();
-  const clock = installClock();
-
-  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.FIXED_CLASS)).thenReturn(true);
-  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.FIXED_SCROLLED_CLASS)).thenReturn(false);
-  td.when(mockAdapter.getTotalActionItems()).thenReturn(0);
-
-  const {scrollHandler} = createMockHandlers(foundation, mockAdapter, clock);
-  // Apply the scrolled class
   td.when(mockAdapter.getViewportScrollY()).thenReturn(1);
-  scrollHandler();
-
-  // Test removing it
-  td.when(mockAdapter.getViewportScrollY()).thenReturn(0);
-  scrollHandler();
-  scrollHandler();
-
+  foundation.handleTargetScroll();
+  td.when(mockAdapter.getViewportScrollY()).thenReturn(-1);
+  foundation.handleTargetScroll();
   td.verify(mockAdapter.removeClass(MDCTopAppBarFoundation.cssClasses.FIXED_SCROLLED_CLASS), {times: 1});
+});
+
+test('#handleTargetScroll does not call #adapter.removeClass if was not scrolled yet', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getViewportScrollY()).thenReturn(-1);
+  foundation.handleTargetScroll();
+  td.verify(mockAdapter.removeClass(td.matchers.isA(String)), {times: 0});
+});
+
+test('#handleTargetScroll calls #adapter.addClass only once if it already scrolled', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getViewportScrollY()).thenReturn(1);
+  foundation.handleTargetScroll();
+  foundation.handleTargetScroll();
+  td.verify(mockAdapter.addClass(MDCTopAppBarFoundation.cssClasses.FIXED_SCROLLED_CLASS), {times: 1});
 });

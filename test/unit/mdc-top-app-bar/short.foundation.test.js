@@ -21,109 +21,92 @@
  * THE SOFTWARE.
  */
 
+import {assert} from 'chai';
 import td from 'testdouble';
 
 import {MDCShortTopAppBarFoundation} from '../../../packages/mdc-top-app-bar/short/foundation';
 import {MDCTopAppBarFoundation} from '../../../packages/mdc-top-app-bar/standard/foundation';
-import {install as installClock} from '../helpers/clock';
 
 suite('MDCShortTopAppBarFoundation');
 
 const setupTest = () => {
   const mockAdapter = td.object(MDCTopAppBarFoundation.defaultAdapter);
 
+  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS)).thenReturn(true);
+
   const foundation = new MDCShortTopAppBarFoundation(mockAdapter);
 
   return {foundation, mockAdapter};
 };
 
-const createMockHandlers = (foundation, mockAdapter, clock) => {
-  let scrollHandler;
-  td.when(mockAdapter.registerScrollHandler(td.matchers.isA(Function))).thenDo((fn) => {
-    scrollHandler = fn;
-  });
-
-  foundation.init();
-  clock.runToFrame();
-  td.reset();
-  return {scrollHandler};
-};
-
-test('short top app bar: scroll listener is registered on init', () => {
+test('short top app bar: scrollHandler calls #adapter.getViewportScrollY', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS)).thenReturn(true);
   foundation.init();
-  td.verify(mockAdapter.registerScrollHandler(td.matchers.isA(Function)), {times: 1});
+  foundation.handleTargetScroll();
+  // called twice because its called once in the standard foundation
+  td.verify(mockAdapter.getViewportScrollY(), {times: 2});
 });
 
-test('short top app bar: scroll listener is removed on destroy', () => {
+test('short top app bar: scrollHandler does not call getViewportScrollY method ' +
+'if short collapsed class is on the component', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS)).thenReturn(true);
-  foundation.init();
-  foundation.destroy();
-  td.verify(mockAdapter.deregisterScrollHandler(td.matchers.isA(Function)), {times: 1});
-});
-
-test('short top app bar: scroll listener is not registered if collapsed class exists before init', () => {
-  const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS)).thenReturn(true);
   td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_COLLAPSED_CLASS)).thenReturn(true);
-  td.when(mockAdapter.getTotalActionItems()).thenReturn(0);
   foundation.init();
-  td.verify(mockAdapter.registerScrollHandler(td.matchers.anything()), {times: 0});
+  td.verify(mockAdapter.getViewportScrollY(), {times: 0});
 });
 
-test('short top app bar: class is added once when page is scrolled from the top', () => {
+test('short top app bar: #adapter.addClass called when page is scrolled from the top', () => {
   const {foundation, mockAdapter} = setupTest();
-  const clock = installClock();
 
-  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS)).thenReturn(true);
   td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_COLLAPSED_CLASS)).thenReturn(false);
-  td.when(mockAdapter.getTotalActionItems()).thenReturn(0);
-  td.when(mockAdapter.getViewportScrollY()).thenReturn(0);
-
-  const {scrollHandler} = createMockHandlers(foundation, mockAdapter, clock);
   td.when(mockAdapter.getViewportScrollY()).thenReturn(1);
-
-  scrollHandler();
-  scrollHandler();
+  foundation.init();
+  foundation.handleTargetScroll();
 
   td.verify(mockAdapter.addClass(MDCTopAppBarFoundation.cssClasses.SHORT_COLLAPSED_CLASS), {times: 1});
 });
 
-test('short top app bar: class is removed once when page is scrolled to the top', () => {
+test('short top app bar: #adapter.removeClass called when page is scrolled to the top', () => {
   const {foundation, mockAdapter} = setupTest();
-  const clock = installClock();
 
-  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS)).thenReturn(true);
   td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_COLLAPSED_CLASS)).thenReturn(false);
   td.when(mockAdapter.getTotalActionItems()).thenReturn(0);
+  foundation.init();
 
-  const {scrollHandler} = createMockHandlers(foundation, mockAdapter, clock);
   // Apply the collapsed class
   td.when(mockAdapter.getViewportScrollY()).thenReturn(1);
-  scrollHandler();
+  foundation.handleTargetScroll();
 
   // Test removing it
   td.when(mockAdapter.getViewportScrollY()).thenReturn(0);
-  scrollHandler();
-  scrollHandler();
+  foundation.handleTargetScroll();
 
   td.verify(mockAdapter.removeClass(MDCTopAppBarFoundation.cssClasses.SHORT_COLLAPSED_CLASS), {times: 1});
 });
 
-test('short top app bar: class is added if it has an action item', () => {
+test('short top app bar: #adapter.addClass is called if it has an action item', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS)).thenReturn(true);
   td.when(mockAdapter.getTotalActionItems()).thenReturn(1);
   foundation.init();
   td.verify(mockAdapter.addClass(MDCTopAppBarFoundation.cssClasses.SHORT_HAS_ACTION_ITEM_CLASS), {times: 1});
 });
 
-test('short top app bar: class is not added if it does not have an action item', () => {
+test('short top app bar: #adapter.addClass is not called if it does not have an action item', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS)).thenReturn(true);
   td.when(mockAdapter.getTotalActionItems()).thenReturn(0);
   foundation.init();
   td.verify(mockAdapter.addClass(MDCTopAppBarFoundation.cssClasses.SHORT_HAS_ACTION_ITEM_CLASS), {times: 0});
+});
+
+test('isCollapsed returns false initially if top-app-bar has not scrolled', () => {
+  const {foundation} = setupTest();
+  assert.isFalse(foundation.isCollapsed);
+});
+
+test('isCollapsed returns true if top-app-bar is collapsed', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getViewportScrollY()).thenReturn(1);
+
+  foundation.handleTargetScroll();
+  assert.isTrue(foundation.isCollapsed);
 });
