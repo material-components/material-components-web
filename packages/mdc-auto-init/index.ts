@@ -66,8 +66,8 @@ function emit<T extends object>(evtType: string, evtData: T, shouldBubble = fals
  */
 export function mdcAutoInit(root = document) {
   const components = [];
-  const nodes: Element[] = [].slice.call(root.querySelectorAll(
-    `[${AUTO_INIT_ATTR}]:not([${AUTO_INIT_STATE_ATTR}="${INITIALIZED_STATE}"])`));
+  let nodes: Element[] = [].slice.call(root.querySelectorAll(`[${AUTO_INIT_ATTR}]`));
+  nodes = nodes.filter((node) => node.getAttribute(AUTO_INIT_STATE_ATTR) !== INITIALIZED_STATE);
 
   for (const node of nodes) {
     const ctorName = node.getAttribute(AUTO_INIT_ATTR);
