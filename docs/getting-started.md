@@ -157,7 +157,7 @@ And open http://localhost:8080 in a browser. You should see a blue “Hello Worl
 Now that you have webpack configured to compile Sass into CSS, let's include the Sass files for the Material Design button. First, install the Node dependency:
 
 ```
-npm install --save-dev @material/button
+npm install @material/button
 ```
 
 We need to tell our `app.scss` to import the Sass files for `@material/button`. We can also use Sass mixins to customize the button. Replace your “hello world” version of `app.scss` with this code:
@@ -290,6 +290,8 @@ Then configure webpack to convert `app.js` into `bundle.js` by modifying the fol
 The final `webpack.config.js` file should look like this:
 
 ```js
+const autoprefixer = require('autoprefixer');
+
 module.exports = {
   entry: ['./app.scss', './app.js'],
   output: {
@@ -309,11 +311,11 @@ module.exports = {
           {loader: 'extract-loader'},
           {loader: 'css-loader'},
           {
-  loader: 'postcss-loader',
-  options: {
-     plugins: () => [autoprefixer()]
-  }
-},
+            loader: 'postcss-loader',
+            options: {
+              plugins: () => [autoprefixer()]
+            }
+          },
           {
             loader: 'sass-loader',
             options: {
@@ -341,7 +343,7 @@ Now run `npm start` again and open http://localhost:8080. You should see a “he
 Now that you have webpack configured to compile ES2015 into JavaScript, let's include the ES2015 files from the Material Design ripple. First, install the Node dependency:
 
 ```
-npm install --save-dev @material/ripple
+npm install @material/ripple
 ```
 
 We need to tell our `app.js` to import the ES2015 file for `@material/ripple`. We also need to initialize an `MDCRipple` with a DOM element. Replace your “hello world” version of `app.js` with this code:
