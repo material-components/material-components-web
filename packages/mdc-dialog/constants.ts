@@ -32,14 +32,15 @@ export const cssClasses = {
 
 export const strings = {
   ACTION_ATTRIBUTE: 'data-mdc-dialog-action',
+  BUTTON_DEFAULT_ATTRIBUTE: 'data-mdc-dialog-button-default',
   BUTTON_SELECTOR: '.mdc-dialog__button',
   CLOSED_EVENT: 'MDCDialog:closed',
   CLOSE_ACTION: 'close',
   CLOSING_EVENT: 'MDCDialog:closing',
   CONTAINER_SELECTOR: '.mdc-dialog__container',
   CONTENT_SELECTOR: '.mdc-dialog__content',
-  DEFAULT_BUTTON_SELECTOR: '.mdc-dialog__button--default',
   DESTROY_ACTION: 'destroy',
+  INITIAL_FOCUS_ATTRIBUTE: 'data-mdc-dialog-initial-focus',
   OPENED_EVENT: 'MDCDialog:opened',
   OPENING_EVENT: 'MDCDialog:opening',
   SCRIM_SELECTOR: '.mdc-dialog__scrim',

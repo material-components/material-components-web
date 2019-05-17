@@ -54,7 +54,7 @@ test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCDialogFoundation, [
     'addClass', 'removeClass', 'hasClass',
     'addBodyClass', 'removeBodyClass', 'eventTargetMatches',
-    'trapFocus', 'releaseFocus',
+    'trapFocus', 'releaseFocus', 'getInitialFocusEl',
     'isContentScrollable', 'areButtonsStacked', 'getActionFromEvent', 'clickDefaultButton', 'reverseButtons',
     'notifyOpening', 'notifyOpened', 'notifyClosing', 'notifyClosed',
   ]);
@@ -184,6 +184,8 @@ test('#open activates focus trapping on the dialog surface', () => {
   const {foundation, mockAdapter} = setupTest();
   const clock = installClock();
 
+  const button = document.createElement('button');
+  td.when(mockAdapter.getInitialFocusEl()).thenReturn(button);
   foundation.open();
 
   // Wait for application of opening class and setting of additional timeout prior to full open animation timeout
@@ -191,7 +193,7 @@ test('#open activates focus trapping on the dialog surface', () => {
   clock.tick(100);
   clock.tick(numbers.DIALOG_ANIMATION_OPEN_TIME_MS);
 
-  td.verify(mockAdapter.trapFocus());
+  td.verify(mockAdapter.trapFocus(button));
 });
 
 test('#close deactivates focus trapping on the dialog surface', () => {
