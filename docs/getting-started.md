@@ -187,49 +187,35 @@ We also need to configure sass-loader to understand the `@material` imports used
 > [Appendix](#appendix-configuring-a-sass-importer-for-nested-node_modules) below on how to configure a custom importer
 > instead.
 
-In order to add vendor-specific styles to the Sass files, we need to configure `postcss-preset-env` through PostCSS.
+In order to add vendor-specific styles to the Sass files, we need to configure `autoprefixer` through PostCSS.
 
 You'll need all of these Node dependencies:
-- [postcss-loader](https://www.npmjs.com/package/postcss-loader): Loader for Webpack used in conjunction with `postcss-preset-env`
-- [postcss-preset-env](https://www.npmjs.com/package/postcss-preset-env): Parses CSS and adds vendor prefixes to CSS rules
+- [autoprefixer](https://www.npmjs.com/package/autoprefixer): Parses CSS and adds vendor prefixes to CSS rules
+- [postcss-loader](https://github.com/postcss/postcss-loader): Loader for Webpack used in conjunction with autoprefixer
 
 You can install all of them by running this command:
 
 ```
-npm install --save-dev postcss-loader postcss-preset-env
+npm install --save-dev autoprefixer postcss-loader
 ```
 
-Now create a new `postcss.config.js` file with the following contents:
+Add `autoprefixer` at the top of your `webpack.config.js`:
 
 ```js
-module.exports = {
-    plugins: {
-        "postcss-preset-env": {
-            stage: 0,
-        }
-    }
-}
+const autoprefixer = require('autoprefixer');
 ```
 
-Then add the browser targets to your `package.json`:
-
-```json
-{
-    "browserslist": [
-        "last 2 versions",
-        "not IE 10",
-        "not IE_Mob 10",
-        "not dead"
-    ]
-}
-```
-
-Now add `postcss-loader` as a loader:
+Then add `postcss-loader`, using `autoprefixer` as a plugin:
 
 ```js
 { loader: 'extract-loader' },
 { loader: 'css-loader' },
-{ loader: 'postcss-loader' },
+{
+  loader: 'postcss-loader',
+  options: {
+     plugins: () => [autoprefixer()]
+  }
+},
 {
   loader: 'sass-loader',
   options: {
@@ -322,7 +308,12 @@ module.exports = {
           },
           {loader: 'extract-loader'},
           {loader: 'css-loader'},
-          {loader: 'postcss-loader'},
+          {
+  loader: 'postcss-loader',
+  options: {
+     plugins: () => [autoprefixer()]
+  }
+},
           {
             loader: 'sass-loader',
             options: {
