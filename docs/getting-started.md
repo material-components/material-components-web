@@ -369,7 +369,7 @@ Add another script to `package.json`:
 
 ```json
   "scripts": {
-    "build": "webpack -p",
+    "build": "webpack --mode production",
     "start": "webpack-dev-server"
   }
 ```
