@@ -29,7 +29,7 @@ import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
 import {MDCChipFoundation} from '../../../packages/mdc-chips/chip/foundation';
 
-const {cssClasses} = MDCChipFoundation;
+const {cssClasses, strings} = MDCChipFoundation;
 
 suite('MDCChipFoundation');
 
