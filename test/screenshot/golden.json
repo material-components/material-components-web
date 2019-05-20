@@ -200,10 +200,10 @@
     }
   },
   "spec/mdc-checkbox/mixins/touch-dimension.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/15/16_09_10_398/spec/mdc-checkbox/mixins/touch-dimension.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/20/17_56_10_840/spec/mdc-checkbox/mixins/touch-dimension.html?utm_source=golden_json",
     "screenshots": {
       "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/13/19_16_33_458/spec/mdc-checkbox/mixins/touch-dimension.html.windows_chrome_74.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/13/19_16_33_458/spec/mdc-checkbox/mixins/touch-dimension.html.windows_firefox_65.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/20/17_56_10_840/spec/mdc-checkbox/mixins/touch-dimension.html.windows_firefox_65.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/15/16_09_10_398/spec/mdc-checkbox/mixins/touch-dimension.html.windows_ie_11.png"
     }
   },
