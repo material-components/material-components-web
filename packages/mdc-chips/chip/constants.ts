@@ -22,6 +22,7 @@
  */
 
 export const strings = {
+  ARIA_CHECKED: 'aria-checked',
   CHECKMARK_SELECTOR: '.mdc-chip__checkmark',
   ENTRY_ANIMATION_NAME: 'mdc-chip-entry',
   INTERACTION_EVENT: 'MDCChip:interaction',
@@ -30,7 +31,6 @@ export const strings = {
   SELECTION_EVENT: 'MDCChip:selection',
   TRAILING_ICON_INTERACTION_EVENT: 'MDCChip:trailingIconInteraction',
   TRAILING_ICON_SELECTOR: '.mdc-chip__icon--trailing',
-  ARIA_CHECKED: 'aria-checked',
 };
 
 export const cssClasses = {

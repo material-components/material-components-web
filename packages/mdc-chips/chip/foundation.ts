@@ -59,8 +59,8 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       notifyTrailingIconInteraction: () => undefined,
       removeClass: () => undefined,
       removeClassFromLeadingIcon: () => undefined,
-      setStyleProperty: () => undefined,
       setAttr: () => undefined,
+      setStyleProperty: () => undefined,
     };
   }
 
