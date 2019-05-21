@@ -107,28 +107,3 @@
     }
   }
 }
-
-// Applies styles to the different types of icons that can exist in top-app-bars.
-// Both .mdc-top-app-bar__icon and .mdc-top-app-bar__navigation-icon share all styles except for
-// horizontal padding.
-@mixin mdc-top-app-bar-icon_() {
-  @include mdc-ripple-surface;
-  @include mdc-ripple-radius-unbounded;
-
-  display: flex;
-  position: relative;
-  flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  width: $mdc-top-app-bar-icon-size + $mdc-top-app-bar-icon-padding * 2;
-  height: $mdc-top-app-bar-icon-size + $mdc-top-app-bar-icon-padding * 2;
-  padding: $mdc-top-app-bar-icon-padding;
-  border: none;
-  outline: none;
-  background-color: transparent;
-  fill: currentColor;
-  color: inherit;
-  text-decoration: none;
-  cursor: pointer;
-}
