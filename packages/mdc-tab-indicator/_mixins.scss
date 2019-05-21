@@ -28,32 +28,32 @@
 }
 
 @mixin mdc-tab-indicator-underline-color($color) {
-  > .mdc-tab-indicator__content--underline {
-    @include mdc-theme-prop(background-color, $color);
+  .mdc-tab-indicator__content--underline {
+    @include mdc-theme-prop(border-color, $color);
   }
 }
 
 @mixin mdc-tab-indicator-underline-height($height) {
-  > .mdc-tab-indicator__content--underline {
-    height: $height;
+  .mdc-tab-indicator__content--underline {
+    border-top-width: $height;
   }
 }
 
 @mixin mdc-tab-indicator-underline-top-corner-radius($radius) {
-  > .mdc-tab-indicator__content--underline {
+  .mdc-tab-indicator__content--underline {
     border-top-left-radius: $radius;
     border-top-right-radius: $radius;
   }
 }
 
 @mixin mdc-tab-indicator-icon-color($color) {
-  > .mdc-tab-indicator__content--icon {
+  .mdc-tab-indicator__content--icon {
     @include mdc-theme-prop(color, $color);
   }
 }
 
 @mixin mdc-tab-indicator-icon-height($height) {
-  > .mdc-tab-indicator__content--icon {
+  .mdc-tab-indicator__content--icon {
     height: $height;
     font-size: $height;
   }
