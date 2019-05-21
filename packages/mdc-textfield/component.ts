@@ -22,6 +22,7 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+import {applyPassive} from '@material/dom/events';
 import * as ponyfill from '@material/dom/ponyfill';
 import {MDCFloatingLabel, MDCFloatingLabelFactory} from '@material/floating-label/component';
 import {MDCLineRipple, MDCLineRippleFactory} from '@material/line-ripple/component';
@@ -384,8 +385,10 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
     return {
       getNativeInput: () => this.input_,
       isFocused: () => document.activeElement === this.input_,
-      registerInputInteractionHandler: (evtType, handler) => this.input_.addEventListener(evtType, handler),
-      deregisterInputInteractionHandler: (evtType, handler) => this.input_.removeEventListener(evtType, handler),
+      registerInputInteractionHandler: (evtType, handler) =>
+        this.input_.addEventListener(evtType, handler, applyPassive()),
+      deregisterInputInteractionHandler: (evtType, handler) =>
+        this.input_.removeEventListener(evtType, handler, applyPassive()),
     };
     // tslint:enable:object-literal-sort-keys
   }
@@ -453,8 +456,9 @@ export class MDCTextField extends MDCComponent<MDCTextFieldFoundation> implement
     const adapter: MDCRippleAdapter = {
       ...MDCRipple.createAdapter(this),
       isSurfaceActive: () => ponyfill.matches(this.input_, ':active'),
-      registerInteractionHandler: (evtType, handler) => this.input_.addEventListener(evtType, handler),
-      deregisterInteractionHandler: (evtType, handler) => this.input_.removeEventListener(evtType, handler),
+      registerInteractionHandler: (evtType, handler) => this.input_.addEventListener(evtType, handler, applyPassive()),
+      deregisterInteractionHandler: (evtType, handler) =>
+        this.input_.removeEventListener(evtType, handler, applyPassive()),
     };
     // tslint:enable:object-literal-sort-keys
     return rippleFactory(this.root_, new MDCRippleFoundation(adapter));

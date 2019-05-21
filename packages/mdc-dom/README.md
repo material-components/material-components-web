@@ -34,3 +34,13 @@ Function Signature | Description
 --- | ---
 `closest(element: Element, selector: string) => ?Element` | Returns the ancestor of the given element matching the given selector (which may be the element itself if it matches), or `null` if no matching ancestor is found.
 `matches(element: Element, selector: string) => boolean` | Returns true if the given element matches the given CSS selector.
+
+### Event Functions
+
+External frameworks and libraries can use the following event utility methods.
+
+Method Signature | Description
+--- | ---
+`util.applyPassive(globalObj = window, forceRefresh = false) => object` | Determine whether the current browser supports passive event listeners
+
+> _NOTE_: The function `util.applyPassive` cache its results; `forceRefresh` will force recomputation, but is used mainly for testing and should not be necessary in normal use.
