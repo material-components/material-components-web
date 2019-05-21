@@ -159,6 +159,11 @@
     align-self: flex-end;
     padding-bottom: $mdc-top-app-bar-prominent-title-bottom-padding;
   }
+
+  .mdc-top-app-bar__action-item,	
+  .mdc-top-app-bar__navigation-icon {	
+    align-self: flex-start;	
+  }
 }
 
 // stylelint-disable-next-line plugin/selector-bem-pattern
