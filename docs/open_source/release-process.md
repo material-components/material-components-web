@@ -63,20 +63,14 @@ See Lerna issues [#1137](https://github.com/lerna/lerna/issues/1137) and [#1091]
 
 ## 4. Publish to npm
 
-> TIP: You can use `npx lerna updated [--since=...]` to preview which packages it would publish before running the
+> TIP: You can use `$(npm bin)/lerna version` to preview which packages it would publish before running the
 > commands in this section.
 
 ```
 $(npm bin)/lerna publish
 ```
 
-When lerna prompts for version, choose Major, Minor, or Patch as appropriate.
-
-Be sure to include the command-line flags:
-
-* `--skip-git` avoids immediately applying a git tag, which we will do later after updating the changelog
-* `--since=<previous-tag>` (e.g. `--since=v1.0.1`) forces lerna to diff against the latest tag; otherwise,
-  it may cause some packages without changes to be published if it diffs against the wrong release based on git history
+This will change all packages regardless if they've had an update. This will enable all packages to be on the same version.
 
 ### Enable 2FA
 
@@ -107,15 +101,6 @@ npm run changelog
 git diff # Review the changelog and make sure it looks OK
 ```
 
-In certain cases, there are some typical edits to make the changelog easier to read:
-
-<details open>
-  <summary><strong>For a major release after a minor/patch, or a minor release after a patch</strong></summary>
-
-* Remove any duplicated items in the new release that were already listed under previous releases
-
-</details>
-
 Once you're sure about the changes, run the `post-release` script to commit and create an annotated git tag:
 
 ```
@@ -127,11 +112,11 @@ Once you're sure about the changes, run the `post-release` script to commit and 
 You will need to temporarily alter Github's master branch protection in order to push after the release:
 
 1. Go to the [Branches settings page](https://github.com/material-components/material-components-web/settings/branches)
-1. Under Branch Protection Rules, click Edit next to `master`
-1. Uncheck "Include administrators"
-1. Click "Save changes"
-1. Perform the process outlined in one of the sections below
-1. Don't forget to re-enable "Include administrators" & click "Save changes" afterwards
+2. Under Branch Protection Rules, click Edit next to `master`
+3. Uncheck "Include administrators"
+4. Click "Save changes"
+5. Perform the process outlined in one of the sections below
+6. Don't forget to re-enable "Include administrators" & click "Save changes" afterwards
 
 <details open>
   <summary><strong>For Major Releases</strong></summary>
