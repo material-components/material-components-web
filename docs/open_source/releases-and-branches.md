@@ -23,7 +23,7 @@ By having a lower rate of releases with breaking changes, we will decrease the a
 In summary, MDC Web has the following types of releases:
 
 * **Major release:** A release with new features and breaking changes; this revs the major version number (e.g. 2.0.0)
-* **Minor release:** A release with new features but NO breaking changes; this revs the minor version number (e.g. 1.1.0)
+* **Minor release:** A release with non breaking changes including new features and/or bugfixes; this revs the minor version number (e.g. 1.1.0)
 * **Patch release:** A release consisting primarily of bugfixes, with no features or breaking changes; this revs the patch version number (e.g. 1.0.1)
 * **Pre-release:** A preview release containing breaking changes, cut before the next scheduled major release (e.g. 2.0.0-0)
 
@@ -36,7 +36,7 @@ breaking changes for the upcoming release ahead of time - preferably while the n
 mind - we will cut pre-releases of MDC Web when breaking changes are merged which warrant updates in the other
 repositories. These will be cut on an as-needed basis, with no set schedule.
 
-The Catalog repository (and possibly also MDC React, eventually) will each have a `next` branch, which will be updated
+The Catalog repository will each have a `next` branch, which will be updated
 to point to the pre-release (or tested against unreleased code using
 [this script](https://gist.github.com/kfranqueiro/d06c7073c5012de3edb6c5875d6a4a50)).
 Pull requests should be filed against this branch for changes needed for the upcoming MDC Web release.
