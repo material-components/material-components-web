@@ -100,6 +100,7 @@
       box-sizing: border-box;
       max-width: 100%; // IE 11
       max-height: 100%; // IE 11
+      width: 100%;
 
       @include mdc-rtl(".mdc-dialog") {
         text-align: right;
