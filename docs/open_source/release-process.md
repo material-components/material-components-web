@@ -118,9 +118,6 @@ You will need to temporarily alter Github's master branch protection in order to
 5. Perform the process outlined in one of the sections below
 6. Don't forget to re-enable "Include administrators" & click "Save changes" afterwards
 
-<details open>
-  <summary><strong>For Major Releases</strong></summary>
-
 ```
 git push origin master <tag>
 ```
@@ -128,62 +125,7 @@ git push origin master <tag>
 This will ensure the new commits *and* tag are pushed to the remote git repository.
 (e.g. `git push origin master v0.39.0`)
 
-</details>
-
-<details open>
-  <summary><strong>For Minor Releases or Patch Releases</strong></summary>
-
-```
-git push origin <tag>
-```
-
-We don't need to push a branch for these releases since we only cherry-pick commits for them at release time and they
-are not tagged from master (which contains all commits, including breaking changes).
-
-However, we *do* need to sync the new release versions and changelog with master. Run `git log` and take note of the
-publish and changelog commit hashes. Then switch to master and cherry-pick them:
-
-```
-git checkout master
-git cherry-pick -x <publish-hash> <changelog-hash>
-git push
-```
-
-> NOTE: The `-x` argument above adds the original cherry-picked commit's hash in the commit description.
-> This is referenced by the cherry-pick script to tie minor/patch releases to their cherry-picked commits on master.
-
-  <details open>
-    <summary><strong>Additional Note for Minor Releases</strong></summary>
-
-Minor releases are likely to experience conflicts when cherry-picking the `chore: Publish` commit back into master.
-This is because master already had the patch version bumps cherry-picked in, and then can't resolve the diffs generated
-by the minor branch which go directly from the previous minor version to the new one.
-
-You may wish to abort the cherry-pick and then retry with the recursive/theirs strategy:
-
-```
-git cherry-pick --abort
-git cherry-pick -x --strategy=recursive -X theirs <publish-hash>
-```
-
-You should examine the generated changeset (with `git show`) to ensure that it didn't unintentionally steamroll any
-newer version numbers (which could happen if a package previously had a patch release but did not receive a minor bump).
-
-Once you're sure it's OK, continue with the changelog commit and push:
-
-```
-git cherry-pick -x <changelog-hash>
-git push
-```
-
-  </details>
-
-</details>
-
 ## 8. Update and Deploy Catalog Repository
-
-<details open>
-  <summary><strong>For Major Releases or Minor Releases</strong></summary>
 
 We typically maintain a `next` branch on the MDC Web Catalog repository which works ahead of MDC Web releases
 (using [this script](https://gist.github.com/kfranqueiro/d06c7073c5012de3edb6c5875d6a4a50)), to keep ahead of breaking changes.
@@ -191,8 +133,8 @@ We typically maintain a `next` branch on the MDC Web Catalog repository which wo
 In the event no work was done on the `next` branch, the process below for patch releases would be followed, but would require
 checking for necessary updates to accommodate new features or breaking changes in MDC Web.
 
-  <details>
-    <summary>Process for when a <code>next</code> branch is used</summary>
+<details>
+  <summary>Process for when a <code>next</code> branch is used</summary>
 
 1. Ensure you have the latest `master` checked out: `git checkout master && git pull`
 1. Create a new branch, e.g.: `git checkout -b chore/1.0.0`
@@ -218,9 +160,8 @@ checking for necessary updates to accommodate new features or breaking changes i
    1. `git push -f origin next`
    1. Re-protect the `next` branch by changing the `master` rule match back to `[mn][ae][sx]t*`
 
-  </details>
-
 </details>
+
 
 <details open>
   <summary><strong>For Patch Releases</strong></summary>
