@@ -84,8 +84,10 @@
       flex-direction: row; // IE 11
       justify-content: space-around; // Ensure Safari centers the dialog (because it treats the container's width oddly)
       box-sizing: border-box;
+      height: 100%;
       transform: scale(.8);
       opacity: 0;
+      pointer-events: none;
     }
   }
 
@@ -101,6 +103,7 @@
       width: 100%;
       max-width: 100%; // IE 11
       max-height: 100%; // IE 11
+      pointer-events: auto;
       overflow-y: auto; // IE 11
 
       @include mdc-rtl(".mdc-dialog") {
@@ -378,7 +381,7 @@
 @mixin mdc-dialog-min-width($min-width, $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
-  .mdc-dialog__container {
+  .mdc-dialog__surface {
     @include mdc-feature-targets($feat-structure) {
       min-width: $min-width;
     }
@@ -389,7 +392,7 @@
   $feat-structure: mdc-feature-create-target($query, structure);
   $max-size-calc-expr: calc(100% - #{$margin * 2});
 
-  .mdc-dialog__container {
+  .mdc-dialog__surface {
     @include mdc-feature-targets($feat-structure) {
       @if $max-width {
         $max-width-breakpoint: $max-width + ($margin * 2);
@@ -414,7 +417,7 @@
   $feat-structure: mdc-feature-create-target($query, structure);
   $max-size-calc-expr: calc(100% - #{$margin * 2});
 
-  .mdc-dialog__container {
+  .mdc-dialog__surface {
     @include mdc-feature-targets($feat-structure) {
       @if $max-height {
         $max-height-breakpoint: $max-height + ($margin * 2);
