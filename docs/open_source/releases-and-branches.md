@@ -6,15 +6,17 @@ we maintain, namely the [MDC Web Catalog](https://github.com/material-components
 
 For an explanation of the steps needed to cut a release of MDC Web, see [Release Process](./release-process.md).
 
+## Branches
+
+- The `master` branch is the default branch for any non-breaking changes.
+- The `develop` branch is the target branch for breaking changes.
+
 ## MDC Web Release Schedule and Versioning
 
-MDC Web follows a 2-week release cycle. We expect to have one release per month containing breaking changes, to coincide
-with the [Material Design Roadmap](https://github.com/material-components/material-components/blob/develop/ROADMAP.md).
-Any other interim releases will be patch releases including any non-breaking / non-feature changes that can be
-cherry-picked from master in a straightforward manner.
+MDC Web follows a 2-week release cycle. We expect to have 2 - 4 releases per year containing breaking changes.
+Any other interim releases will be patch or minor releases including any non-breaking changes.
 
-This is a change from our earlier process, where we simply tagged a release with whatever has been merged to master
-within the two-week cycle, and would rev the version number accordingly based on whether there were breaking changes.
+By having a lower rate of releases with breaking changes, we will decrease the amount of headache that users experience trying to upgrade.
 
 ## Release Types
 
@@ -39,16 +41,14 @@ to point to the pre-release (or tested against unreleased code using
 [this script](https://gist.github.com/kfranqueiro/d06c7073c5012de3edb6c5875d6a4a50)).
 Pull requests should be filed against this branch for changes needed for the upcoming MDC Web release.
 
-After the next minor release is cut and the `next` branch is squashed and merged into `master`, we will hard-reset the
+After the next major release is cut and the `next` branch is squashed and merged into `master`, we will hard-reset the
 `next` branch against `master` and force-push it to accommodate the subsequent minor release.
 
 ## Feature Branches
 
-The `master` branch remains the default target of development, for both bug fixes and breaking changes.
-
 If we foresee a new component requiring a large amount of work across multiple PRs and release cycles, we
 should keep the work in a collective feature branch first, in an attempt to avoid API churn across releases.
-(The new work on MDC Tab and associated packages is one example.)
+(The TypeScript rewrite is one example, which occured in v1.0.0.)
 
 This allows work on the feature to be performed across multiple separate PRs, which will each be merged into the feature
 branch, before finally merging the feature branch into `master` after all aspects of the feature are complete.

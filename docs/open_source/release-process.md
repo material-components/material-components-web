@@ -42,62 +42,7 @@ git checkout master && git pull && git fetch --tags
 
 This will pull the latest tags and `master` commits into your local repository.
 
-<details open>
-  <summary><strong>Additional Step for Minor Releases and Patch Releases</strong></summary>
-
-<details open>
-  <summary>For Minor Releases</summary>
-
-First, checkout the latest previous patch version (e.g. `vX.0.1`).
-
-Then run the following script to automatically cherry-pick only the appropriate commits on top of the last release.
-
-```
-node scripts/cherry-pick-commits --minor
-```
-
-</details>
-
-<details open>
-  <summary>For Patch Releases</summary>
-
-First, make sure you checkout the correct branch or tag based on what you're releasing:
-
-* If you're releasing the first non-major version ever after a major version (typically X.0.1), checkout `master`.
-* If you're releasing the first patch after a minor version (e.g. X.1.1), checkout the minor version (e.g. `vX.1.0`).
-* If you're releasing a subsequent patch (e.g. X.Y.2), checkout `vX.Y.1`.
-
-Once you're on the correct base, run the following script to automatically cherry-pick only the appropriate commits on
-top of the last release.
-
-```
-node scripts/cherry-pick-commits --patch
-```
-
-</details>
-
-Read the output of the cherry-pick script carefully:
-
-* You may need to cherry-pick commits that the script could not cherry-pick cleanly without conflict
-* The script may have cherry-picked commits that rely on skipped commits; these need to be removed.
-  This is especially likely if the script reports that either the build or the unit tests failed.
-* Examine `git log` to ensure there are no unexpected commits beyond the previous tag (in case any breaking changes
-  weren't flagged properly, or features were mislabeled as fixes, etc.)
-
-> NOTE: After running the script, you are in a detached HEAD state. You can create a temporary local branch if desired,
-> but all that needs to be pushed is the tag produced at the end of the release process.
-
-If you find you need to remove commits that should not have been cherry-picked, perform the following steps:
-
-1. Find the base tag that the cherry-pick script identified and used (find the "Checking out vX.Y.Z" line in the output)
-1. Run `git rebase -i <base tag>` - this will open the sequence of cherry-picked commits in an editor (probably vim)
-1. Find and delete lines for commits that should not have been included (in vim, type `dd` on the line in question)
-1. Save and exit (`:x` in vim)
-1. Re-check `git log` to confirm that the commits are no longer present
-
-</details>
-
-## 3. Preparation
+## Preparation
 
 Run the pre-release script:
 
@@ -122,7 +67,7 @@ See Lerna issues [#1137](https://github.com/lerna/lerna/issues/1137) and [#1091]
 > commands in this section.
 
 ```
-npx lerna publish --skip-git --since=<previous-tag>
+$(npm bin)/lerna publish
 ```
 
 When lerna prompts for version, choose Major, Minor, or Patch as appropriate.
