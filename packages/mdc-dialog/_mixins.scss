@@ -98,10 +98,10 @@
       flex-grow: 0; // IE 11
       flex-shrink: 0; // IE 11
       box-sizing: border-box;
+      width: 100%;
       max-width: 100%; // IE 11
       max-height: 100%; // IE 11
       overflow-y: auto; // IE 11
-      width: 100%;
 
       @include mdc-rtl(".mdc-dialog") {
         text-align: right;
