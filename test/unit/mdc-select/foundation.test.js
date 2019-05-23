@@ -147,16 +147,16 @@ test('#notchOutline does not close the notch if the select is still focused', ()
   td.verify(mockAdapter.closeOutline(), {times: 0});
 });
 
-test(`#handleMenuOpened adds ${cssClasses.OPENED} class name`, () => {
+test(`#handleMenuOpened adds ${cssClasses.ACTIVATED} class name`, () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.handleMenuOpened();
-  td.verify(mockAdapter.addClass(cssClasses.OPENED), {times: 1});
+  td.verify(mockAdapter.addClass(cssClasses.ACTIVATED), {times: 1});
 });
 
-test(`#handleMenuClosed removes ${cssClasses.CLOSED} class name`, () => {
+test(`#handleMenuClosed removes ${cssClasses.ACTIVATED} class name`, () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.handleMenuClosed();
-  td.verify(mockAdapter.removeClass(cssClasses.CLOSED), {times: 1});
+  td.verify(mockAdapter.removeClass(cssClasses.ACTIVATED), {times: 1});
 });
 
 test('#handleChange calls adapter.floatLabel(true) when there is a value', () => {
