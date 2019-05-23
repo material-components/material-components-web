@@ -146,7 +146,7 @@
     @include mdc-typography(body1, $query: $query);
 
     @include mdc-feature-targets($feat-structure) {
-      flex: 0 1 auto;
+      flex: 1 1 auto;
       box-sizing: border-box;
       margin: 0;
       padding: 20px 24px; // Note: the top padding is only 20px for dialogs without titles; see below for override
@@ -207,7 +207,7 @@
   .mdc-dialog__actions {
     @include mdc-feature-targets($feat-structure) {
       display: flex;
-      flex: 1 0 auto; // IE 11
+      flex: 0 0 auto;
       flex-wrap: wrap;
       align-items: center;
       justify-content: flex-end;
