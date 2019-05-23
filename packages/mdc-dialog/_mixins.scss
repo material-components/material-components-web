@@ -80,14 +80,16 @@
   // See https://github.com/philipwalton/flexbugs/issues/216
   .mdc-dialog__container {
     @include mdc-feature-targets($feat-structure) {
-      align-items: center;
       display: flex;
       flex-direction: row; // IE 11
+      align-items: center;
       justify-content: space-around; // Ensure Safari centers the dialog (because it treats the container's width oddly)
       box-sizing: border-box;
       height: 100%;
       transform: scale(.8);
       opacity: 0;
+      // This element is necessary for IE 11 and needs to have `height: 100%`.
+      // Let clicks on element fall through to scrim element underneath.
       pointer-events: none;
     }
   }
@@ -101,11 +103,9 @@
       flex-grow: 0; // IE 11
       flex-shrink: 0; // IE 11
       box-sizing: border-box;
-      width: 100%;
       max-width: 100%; // IE 11
       max-height: 100%; // IE 11
-      pointer-events: auto;
-      overflow-y: auto; // IE 11
+      pointer-events: auto; // Override from `.mdc-dialog__container`.
 
       @include mdc-rtl(".mdc-dialog") {
         text-align: right;
