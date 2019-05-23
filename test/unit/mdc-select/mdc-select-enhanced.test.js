@@ -1027,6 +1027,23 @@ test('menu surface opened event causes the first element (if not element is sele
   document.body.removeChild(menuSurface);
 });
 
+test('menu surface opened event handler calls Foundation#handleMenuOpened', () => {
+  const hasMockFoundation = true;
+  const hasMockMenu = false;
+  const hasOutline = false;
+  const hasLabel = true;
+  const {fixture, mockFoundation, menuSurface} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  document.body.appendChild(fixture);
+
+  const event = document.createEvent('Event');
+  event.initEvent(MDCMenuSurfaceFoundation.strings.OPENED_EVENT, false, true);
+  menuSurface.dispatchEvent(event);
+  td.verify(mockFoundation.handleMenuOpened(), {times: 1});
+
+  document.body.removeChild(fixture);
+  document.body.removeChild(menuSurface);
+});
+
 test('menu surface opened event causes selected element to be focused', () => {
   const hasMockFoundation = false;
   const hasMockMenu = false;
@@ -1057,6 +1074,7 @@ test('menu surface closed event does not call foundation.handleBlur if selected-
   const event = document.createEvent('Event');
   event.initEvent(MDCMenuSurfaceFoundation.strings.CLOSED_EVENT, false, true);
   menuSurface.dispatchEvent(event);
+  td.verify(mockFoundation.handleMenuClosed(), {times: 1});
 
   td.verify(mockFoundation.handleBlur(), {times: 0});
   assert.isFalse(selectedText.hasAttribute('aria-expanded'));
