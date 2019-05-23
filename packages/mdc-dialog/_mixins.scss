@@ -207,7 +207,7 @@
   .mdc-dialog__actions {
     @include mdc-feature-targets($feat-structure) {
       display: flex;
-      flex: 0 0 auto;
+      flex: 1 0 auto; // IE 11
       flex-wrap: wrap;
       align-items: center;
       justify-content: flex-end;
