@@ -48,7 +48,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'notifyTrailingIconInteraction', 'notifyRemoval', 'notifySelection',
     'getComputedStyleValue', 'setStyleProperty', 'hasLeadingIcon',
     'getRootBoundingClientRect', 'getCheckmarkBoundingClientRect',
-    'setAttr',
+    'setAttr', 'notifyKeyDown',
   ]);
 });
 
@@ -315,4 +315,16 @@ test(`#handleTrailingIconInteraction does not add ${cssClasses.CHIP_EXIT} class 
   assert.isFalse(foundation.getShouldRemoveOnTrailingIconClick());
   td.verify(mockAdapter.addClass(cssClasses.CHIP_EXIT), {times: 0});
   td.verify(mockEvt.stopPropagation());
+});
+
+test('#handleKeyDown emits custom event on appropriate key', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const mockEvt = {
+    type: 'keydown',
+    key: 'ArrowLeft',
+  };
+
+  foundation.handleKeyDown(mockEvt);
+
+  td.verify(mockAdapter.notifyKeyDown('ArrowLeft'));
 });
