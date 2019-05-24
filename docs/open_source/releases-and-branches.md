@@ -16,7 +16,7 @@ For an explanation of the steps needed to cut a release of MDC Web, see [Release
 MDC Web follows a 2-week release cycle. We expect to have 2 - 4 releases per year containing breaking changes.
 Any other interim releases will be patch or minor releases including any non-breaking changes.
 
-By having a lower rate of releases with breaking changes, we will decrease the amount of headache that users experience trying to upgrade.
+By having a lower rate of releases with breaking changes, we will decrease the amount of overhead that users experience trying to upgrade.
 
 ## Release Types
 
