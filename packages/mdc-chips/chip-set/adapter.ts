@@ -43,4 +43,29 @@ export interface MDCChipSetAdapter {
    * Sets the selected state of the chip with the given id.
    */
   setSelected(chipId: string, selected: boolean): void;
+
+  /**
+   * Returns the ClientRect of the chip at the given index if exists.
+   */
+  getChipClientRectByIndex(index: number): ClientRect|void;
+
+  /**
+   * Focuses the chip at the given index.
+   */
+  focusChipAtIndex(index: number): void;
+
+  /**
+   * Returns the index of the chip with the given ID.
+   */
+  getIndexOfChipById(chipId: string): number;
+
+  /**
+   * Returns the length of the chip list.
+   */
+  getChipListLength(): number;
+
+  /**
+   * Returns the text direction.
+   */
+  isRTL(): boolean;
 }

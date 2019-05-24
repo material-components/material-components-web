@@ -23,7 +23,38 @@
 
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCChipAdapter} from './adapter';
-import {cssClasses, strings} from './constants';
+import {cssClasses, strings, numbers} from './constants';
+
+export const ACCEPTABLE_KEYS = new Set<string>();
+// IE11 has no support for new Set with iterable so we need to initialize this by hand
+ACCEPTABLE_KEYS.add(strings.ARROW_UP_KEY);
+ACCEPTABLE_KEYS.add(strings.ARROW_RIGHT_KEY);
+ACCEPTABLE_KEYS.add(strings.ARROW_DOWN_KEY);
+ACCEPTABLE_KEYS.add(strings.ARROW_LEFT_KEY);
+ACCEPTABLE_KEYS.add(strings.END_KEY);
+ACCEPTABLE_KEYS.add(strings.HOME_KEY);
+
+export const KEYCODE_MAP = new Map<number, string>();
+// IE11 has no support for new Map with iterable so we need to initialize this by hand
+KEYCODE_MAP.set(numbers.ARROW_UP_KEYCODE, strings.ARROW_UP_KEY);
+KEYCODE_MAP.set(numbers.ARROW_RIGHT_KEYCODE, strings.ARROW_RIGHT_KEY);
+KEYCODE_MAP.set(numbers.ARROW_DOWN_KEYCODE, strings.ARROW_DOWN_KEY);
+KEYCODE_MAP.set(numbers.ARROW_LEFT_KEYCODE, strings.ARROW_LEFT_KEY);
+KEYCODE_MAP.set(numbers.END_KEYCODE, strings.END_KEY);
+KEYCODE_MAP.set(numbers.HOME_KEYCODE, strings.HOME_KEY);
+
+export const HORIZONTAL_KEYS = new Set<string>();
+// IE11 has no support for new Map with iterable so we need to initialize this by hand
+HORIZONTAL_KEYS.add(strings.ARROW_RIGHT_KEY);
+HORIZONTAL_KEYS.add(strings.ARROW_LEFT_KEY);
+HORIZONTAL_KEYS.add(strings.HOME_KEY);
+HORIZONTAL_KEYS.add(strings.END_KEY);
+
+export const VERTICAL_KEYS = new Set<string>();
+// IE11 has no support for new Map with iterable so we need to initialize this by hand
+VERTICAL_KEYS.add(strings.ARROW_UP_KEY);
+VERTICAL_KEYS.add(strings.ARROW_DOWN_KEY);
+
 
 const emptyClientRect = {
   bottom: 0,
@@ -61,6 +92,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       removeClassFromLeadingIcon: () => undefined,
       setAttr: () => undefined,
       setStyleProperty: () => undefined,
+      notifyKeyDown: () => undefined,
     };
   }
 
@@ -197,6 +229,23 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
         this.beginExit();
       }
     }
+  }
+
+  handleKeyDown(evt: KeyboardEvent) {
+    const key = this.getKeyFromEvent_(evt);
+    // Early exit if key isn't useful
+    if (key === undefined) {
+      return;
+    }
+
+    this.adapter_.notifyKeyDown(key);
+  }
+
+  private getKeyFromEvent_(evt: KeyboardEvent): string|void {
+    if (ACCEPTABLE_KEYS.has(evt.key)) {
+      return evt.key;
+    }
+    return KEYCODE_MAP.get(evt.keyCode);
   }
 }
 

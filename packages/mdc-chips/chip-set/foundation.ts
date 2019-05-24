@@ -24,6 +24,8 @@
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCChipSetAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
+import {HORIZONTAL_KEYS, VERTICAL_KEYS} from '../chip/foundation';
+import {strings as chipStrings} from '../chip/constants';
 
 export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   static get strings() {
@@ -39,6 +41,11 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
       hasClass: () => false,
       removeChip: () => undefined,
       setSelected: () => undefined,
+      getChipClientRectByIndex: () => undefined,
+      getIndexOfChipById: () => -1,
+      getChipListLength: () => -1,
+      focusChipAtIndex: () => undefined,
+      isRTL: () => false,
     };
   }
 
@@ -102,6 +109,183 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   handleChipRemoval(chipId: string) {
     this.deselect_(chipId);
     this.adapter_.removeChip(chipId);
+  }
+
+  handleChipKeyDown(chipId: string, key: string) {
+    let index = -1;
+    if (HORIZONTAL_KEYS.has(key)) {
+      index = this.determineNextHorizontalChip_(chipId, key);
+    } else if (VERTICAL_KEYS.has(key)) {
+      index = this.determineNextVerticalChip_(chipId, key);
+    }
+    this.adapter_.focusChipAtIndex(index);
+  }
+
+  private determineNextVerticalChip_(chipId: string, key: string): number {
+    const isRTL = this.adapter_.isRTL();
+    const maxIndex = this.adapter_.getChipListLength() - 1;
+    const shouldGoUp = key === chipStrings.ARROW_UP_KEY;
+    const shouldGoDown = key === chipStrings.ARROW_DOWN_KEY;
+    const index = this.adapter_.getIndexOfChipById(chipId);
+
+    if (shouldGoUp) {
+      return this.determineAboveRowIndex_(index, isRTL);
+    }
+
+    if (shouldGoDown) {
+      return this.determineBelowRowIndex_(index, maxIndex, isRTL);
+    }
+
+    return -1;
+  }
+
+  private determineAboveRowIndex_(index: number, isRTL: boolean): number {
+    let aboveIndex = this.determineRowStartIndex_(index, isRTL) - 1;
+    if (aboveIndex < 0) {
+      return -1;
+    }
+
+    let smallestDistance = Number.MAX_VALUE;
+    let closestIndex = -1;
+    while (aboveIndex >= 0) {
+      const nextDistance = this.chipHorizontalDistance_(index, aboveIndex);
+      if (nextDistance < smallestDistance) {
+        smallestDistance = nextDistance;
+        closestIndex = aboveIndex;
+        aboveIndex -= 1;
+      } else {
+        break;
+      }
+    }
+    
+    return closestIndex;
+  }
+
+  private determineBelowRowIndex_(index: number, maxIndex: number, isRTL: boolean): number {
+    let belowIndex = this.determineRowEndIndex_(index, maxIndex, isRTL) + 1;
+    if (belowIndex > maxIndex) {
+      return -1;
+    }
+
+    let smallestDistance = Number.MAX_VALUE;
+    let closestIndex = -1;
+    while (belowIndex <= maxIndex) {
+      const nextDistance = this.chipHorizontalDistance_(index, belowIndex);
+      if (nextDistance < smallestDistance) {
+        smallestDistance = nextDistance;
+        closestIndex = belowIndex;
+        belowIndex += 1;
+      } else {
+        break;
+      }
+    }
+    
+    return closestIndex;
+  }
+
+  private determineNextHorizontalChip_(chipId: string, key: string): number {
+    const isRTL = this.adapter_.isRTL();
+    const maxIndex = this.adapter_.getChipListLength() - 1;
+    const shouldGoToEndOfRow = key === chipStrings.END_KEY;
+    const shouldGoToStartOfRow = key === chipStrings.HOME_KEY;
+    const shouldDecrement = key === chipStrings.ARROW_LEFT_KEY && !isRTL || key === chipStrings.ARROW_RIGHT_KEY && isRTL;
+    const shouldIncrement = key === chipStrings.ARROW_RIGHT_KEY && !isRTL || key === chipStrings.ARROW_LEFT_KEY && isRTL;
+    const index = this.adapter_.getIndexOfChipById(chipId);
+
+    if (shouldGoToEndOfRow) {
+      return this.determineRowEndIndex_(index, maxIndex, isRTL);
+    }
+
+    if (shouldGoToStartOfRow) {
+      return this.determineRowStartIndex_(index, isRTL);
+    }
+
+    if (shouldDecrement) {
+      return index - 1;
+    }
+    
+    if (shouldIncrement) {
+      return index + 1;
+    }
+
+    return -1;
+  }
+
+  private determineRowEndIndex_(index: number, maxIndex: number, isRTL: boolean): number {
+    while (index <= maxIndex) {
+      let nextIndex = index + 1;
+      if (this.nextChipIsInNewRow_(index, nextIndex, isRTL)) {
+        break;
+      }
+      index = nextIndex;
+    }
+
+    return index;
+  }
+
+  private determineRowStartIndex_(index: number, isRTL: boolean): number {
+    while (index >= 0) {
+      let nextIndex = index - 1;
+      if (this.nextChipIsInNewRow_(index, nextIndex, isRTL)) {
+        break;
+      }
+      index = nextIndex;
+    }
+
+    return index;
+  }
+
+  private nextChipIsInNewRow_(index: number, nextIndex: number, isRTL: boolean): boolean {
+    // Proceed directly to the RTL implementation
+    if (isRTL) {
+      return this.nextChipIsInNewRowRTL_(index, nextIndex);
+    }
+
+    const chipClientRect = this.adapter_.getChipClientRectByIndex(index);
+    const nextChipClientRect = this.adapter_.getChipClientRectByIndex(nextIndex);
+    if (chipClientRect === undefined || nextChipClientRect === undefined) {
+      return true;
+    }
+
+    if (index < nextIndex && chipClientRect.left > nextChipClientRect.left) {
+      return true;
+    }
+
+    if (index > nextIndex && chipClientRect.left < nextChipClientRect.left) {
+      return true;
+    }
+
+    return false;
+  }
+
+  private nextChipIsInNewRowRTL_(index: number, nextIndex: number): boolean {
+    const chipClientRect = this.adapter_.getChipClientRectByIndex(index);
+    const nextChipClientRect = this.adapter_.getChipClientRectByIndex(nextIndex);
+    if (chipClientRect === undefined || nextChipClientRect === undefined) {
+      return true;
+    }
+
+    if (index < nextIndex && chipClientRect.right < nextChipClientRect.right) {
+      return true;
+    }
+
+    if (index > nextIndex && chipClientRect.right > nextChipClientRect.right) {
+      return true;
+    }
+
+    return false;
+  }
+
+  private chipHorizontalDistance_(index: number, aboveIndex: number): number {
+    const chipClientRect = this.adapter_.getChipClientRectByIndex(index);
+    const aboveChipClientRect = this.adapter_.getChipClientRectByIndex(aboveIndex);
+    if (chipClientRect === undefined || aboveChipClientRect === undefined) {
+      return Number.MAX_VALUE;
+    }
+
+    const chipHorizontalCenter = chipClientRect.left + chipClientRect.width / 2;
+    const aboveChipHorizontalCenter = aboveChipClientRect.left + aboveChipClientRect.width / 2;
+    return Math.abs(chipHorizontalCenter - aboveChipHorizontalCenter);
   }
 
   /**

@@ -23,9 +23,16 @@
 
 export const strings = {
   ARIA_CHECKED: 'aria-checked',
+  ARROW_DOWN_KEY: 'ArrowDown',
+  ARROW_LEFT_KEY: 'ArrowLeft',
+  ARROW_RIGHT_KEY: 'ArrowRight',
+  ARROW_UP_KEY: 'ArrowUp',
   CHECKMARK_SELECTOR: '.mdc-chip__checkmark',
+  END_KEY: 'End',
   ENTRY_ANIMATION_NAME: 'mdc-chip-entry',
+  HOME_KEY: 'Home',
   INTERACTION_EVENT: 'MDCChip:interaction',
+  KEYDOWN_EVENT: 'MDCChip:keydown',
   LEADING_ICON_SELECTOR: '.mdc-chip__icon--leading',
   REMOVAL_EVENT: 'MDCChip:removal',
   SELECTION_EVENT: 'MDCChip:selection',
@@ -40,4 +47,13 @@ export const cssClasses = {
   LEADING_ICON: 'mdc-chip__icon--leading',
   SELECTED: 'mdc-chip--selected',
   TRAILING_ICON: 'mdc-chip__icon--trailing',
+};
+
+export const numbers = {
+  ARROW_DOWN_KEYCODE: 40,
+  ARROW_LEFT_KEYCODE: 37,
+  ARROW_RIGHT_KEYCODE: 39,
+  ARROW_UP_KEYCODE: 38,
+  END_KEYCODE: 35,
+  HOME_KEYCODE: 36,
 };
