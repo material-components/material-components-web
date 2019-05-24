@@ -61,6 +61,15 @@ You can find much more information with respect to building components within ou
 
 ### Running development server
 
+#### Local development server
+
+```	
+npm start
+# open http://localhost:8080	
+```
+
+`npm start` runs a [webpack-dev-server](https://webpack.github.io/docs/webpack-dev-server.html) instance that starts our screenshot test server. To read more about our screenshot testing framework please see [screenshot testing documentation](./test/screenshot/README.md).
+
 #### App Engine development server
 
 ```

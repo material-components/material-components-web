@@ -491,7 +491,7 @@ test/screenshot
   ├── spec
       ├── mdc-component
           ├── classes
-              ├── baseline.html # component usage in the happy path case. OTher variants would go under ./classes.
+              ├── baseline.html # component usage in the happy path case. Other variants would go under ./classes.
           ├── mixins
               ├── ink-color.html # component using a sass mixin for customization.
 ```
