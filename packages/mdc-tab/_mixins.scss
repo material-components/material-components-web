@@ -25,6 +25,11 @@
 
 // Public mixins
 
+@mixin mdc-tab-horizontal-padding($padding) {
+  padding-right: $padding;
+  padding-left: $padding;
+}
+
 @mixin mdc-tab-text-label-color($color) {
   .mdc-tab__text-label {
     @include mdc-theme-prop(color, $color);

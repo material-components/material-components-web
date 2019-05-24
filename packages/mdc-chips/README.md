@@ -337,6 +337,7 @@ Method Signature | Description
 `hasLeadingIcon() => boolean` | Returns whether the chip has a leading icon
 `getRootBoundingClientRect() => ClientRect` | Returns the bounding client rect of the root element
 `getCheckmarkBoundingClientRect() => ClientRect \| null` | Returns the bounding client rect of the checkmark element or null if it doesn't exist
+`setAttr(attr: string, value: string) => void` | Sets the value of the attribute on the root element.
 
 > \*_NOTE_: `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target chip's ID, and must be observable by the parent `mdc-chip-set` element (e.g. via DOM event bubbling).
 
