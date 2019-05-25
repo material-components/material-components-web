@@ -61,7 +61,7 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
   /**
    * @return Returns array of row elements.
    */
-  getRows(): HTMLElement[] {
+  getRows(): Element[] {
     return this.foundation_.getRows();
   }
 
@@ -93,6 +93,7 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
         return this.getRows().indexOf((closest(el, strings.ROW_SELECTOR) as HTMLElement));
       },
       getSelectedRowCount: () => this.root_.querySelectorAll(strings.ROW_SELECTED_SELECTOR).length,
+      isCheckboxAtRowIndexChecked: (rowIndex: number) => this.rowCheckboxList_[rowIndex].checked,
       isHeaderRowCheckboxChecked: () => this.headerRowCheckbox_.checked,
       isRowsSelectable: () => !!this.root_.querySelector(strings.ROW_CHECKBOX_SELECTOR),
       notifyRowSelectionChanged: (data: MDCDataTableRowSelectionChangedEventDetail) => {
