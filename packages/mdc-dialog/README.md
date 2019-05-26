@@ -402,6 +402,7 @@ Method Signature | Description
 `setAutoStackButtons(autoStack: boolean) => void` | Sets whether stacked/unstacked action button layout is automatically handled during layout logic.
 `handleInteraction(event: Event)` | Handles `click` and `keydown` events on or within the dialog's root element
 `handleDocumentKeydown(event: Event)` | Handles `keydown` events on or within the document while the dialog is open
+`handleOverScroll(event: Event)` | Handles `touchmove` event on or within the dialog's root element to prevent overscrolling on touch devices
 
 #### Event Handlers
 
@@ -411,6 +412,7 @@ Event | Target | Foundation Handler | Register | Deregister
 --- | --- | --- | --- | ---
 `click` | `.mdc-dialog` (root) | `handleInteraction` | During initialization | During destruction
 `keydown` | `document` | `handleDocumentKeydown` | On `MDCDialog:opening` | On `MDCDialog:closing`
+`touchmove` | `.mdc-dialog` (root) | `handleOverScroll` | During initialization | during destruction
 `resize` | `window` | `layout` | On `MDCDialog:opening` | On `MDCDialog:closing`
 `orientationchange` | `window` | `layout` | On `MDCDialog:opening` | On `MDCDialog:closing`
 

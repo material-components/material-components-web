@@ -469,8 +469,6 @@ Method Signature | Description
 `notifyOpen() => void` | Emits the `MDCDrawer:opened` event.
 `trapFocus() => void` | Traps focus on root element and focuses the active navigation element.
 `releaseFocus() => void` | Releases focus trap from root element which was set by `trapFocus` and restores focus to where it was prior to calling `trapFocus`.
-`addBodyClass(className: string) => void` | Adds a class to the `<body>`.
-`removeBodyClass(className: string) => void` | Removes a class from the `<body>`.
 
 ### Foundations
 
@@ -491,3 +489,4 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `handleScrimClick() => void` | Handles click event on scrim.
+`handleOverScroll() => void` | Handles touchmove event on modal drawer to prevent overscrolling behind.

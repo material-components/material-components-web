@@ -33,10 +33,16 @@ export class MDCModalDrawerFoundation extends MDCDismissibleDrawerFoundation {
   }
 
   /**
+   * Handles touchmove event to prevent overscrolling on modal drawer
+   */
+  handleOverScroll(evt: TouchEvent) {
+    evt.preventDefault();
+  }
+
+  /**
    * Called when drawer finishes open animation.
    */
   protected opened_() {
-    this.adapter_.addBodyClass(MDCDismissibleDrawerFoundation.cssClasses.SCROLL_LOCK);
     this.adapter_.trapFocus();
   }
 
@@ -44,7 +50,6 @@ export class MDCModalDrawerFoundation extends MDCDismissibleDrawerFoundation {
    * Called when drawer finishes close animation.
    */
   protected closed_() {
-    this.adapter_.removeBodyClass(MDCDismissibleDrawerFoundation.cssClasses.SCROLL_LOCK);
     this.adapter_.releaseFocus();
   }
 }

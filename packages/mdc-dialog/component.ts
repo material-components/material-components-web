@@ -79,6 +79,7 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
 
   private handleInteraction_!: SpecificEventListener<'click' | 'keydown'>; // assigned in initialSyncWithDOM()
   private handleDocumentKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
+  private handleOverScroll_!: SpecificEventListener<'touchmove'>;
   private handleLayout_!: EventListener; // assigned in initialSyncWithDOM()
   private handleOpening_!: EventListener; // assigned in initialSyncWithDOM()
   private handleClosing_!: () => void; // assigned in initialSyncWithDOM()
@@ -109,6 +110,7 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
 
     this.handleInteraction_ = this.foundation_.handleInteraction.bind(this.foundation_);
     this.handleDocumentKeydown_ = this.foundation_.handleDocumentKeydown.bind(this.foundation_);
+    this.handleOverScroll_ = this.foundation_.handleOverScroll.bind(this.foundation_);
     this.handleLayout_ = this.layout.bind(this);
 
     const LAYOUT_EVENTS = ['resize', 'orientationchange'];
@@ -123,6 +125,7 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
 
     this.listen('click', this.handleInteraction_);
     this.listen('keydown', this.handleInteraction_);
+    this.listen('touchmove', this.handleOverScroll_);
     this.listen(strings.OPENING_EVENT, this.handleOpening_);
     this.listen(strings.CLOSING_EVENT, this.handleClosing_);
   }
@@ -130,6 +133,7 @@ export class MDCDialog extends MDCComponent<MDCDialogFoundation> {
   destroy() {
     this.unlisten('click', this.handleInteraction_);
     this.unlisten('keydown', this.handleInteraction_);
+    this.unlisten('touchmove', this.handleOverScroll_);
     this.unlisten(strings.OPENING_EVENT, this.handleOpening_);
     this.unlisten(strings.CLOSING_EVENT, this.handleClosing_);
     this.handleClosing_();

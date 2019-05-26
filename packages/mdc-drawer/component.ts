@@ -65,6 +65,7 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
   private focusTrapFactory_!: MDCDrawerFocusTrapFactory; // assigned in initialize()
 
   private handleScrimClick_?: SpecificEventListener<'click'>; // initialized in initialSyncWithDOM()
+  private handleOverScroll_?: SpecificEventListener<'touchmove'>; // initialized in initialSyncWithDOM()
   private handleKeydown_!: SpecificEventListener<'keydown'>; // initialized in initialSyncWithDOM()
   private handleTransitionEnd_!: SpecificEventListener<'transitionend'>; // initialized in initialSyncWithDOM()
 
@@ -93,6 +94,8 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
     if (this.scrim_ && this.root_.classList.contains(MODAL)) {
       this.handleScrimClick_ = () => (this.foundation_ as MDCModalDrawerFoundation).handleScrimClick();
       this.scrim_.addEventListener('click', this.handleScrimClick_);
+      this.handleOverScroll_ = (this.foundation_ as MDCModalDrawerFoundation).handleOverScroll.bind(this.foundation_);
+      this.listen('touchmove', this.handleOverScroll_);
       this.focusTrap_ = util.createFocusTrapInstance(this.root_ as HTMLElement, this.focusTrapFactory_);
     }
 
@@ -114,6 +117,7 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
     const {MODAL} = cssClasses;
     if (this.scrim_ && this.handleScrimClick_ && this.root_.classList.contains(MODAL)) {
       this.scrim_.removeEventListener('click', this.handleScrimClick_);
+      this.unlisten('touchmove', this.handleOverScroll_ as SpecificEventListener<'touchmove'>);
       // Ensure drawer is closed to hide scrim and release focus
       this.open = false;
     }
@@ -146,8 +150,6 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
       notifyOpen: () => this.emit(strings.OPEN_EVENT, {}, true /* shouldBubble */),
       trapFocus: () => this.focusTrap_!.activate(),
       releaseFocus: () => this.focusTrap_!.deactivate(),
-      addBodyClass: (className) => document.body.classList.add(className),
-      removeBodyClass: (className) => document.body.classList.remove(className),
     };
     // tslint:enable:object-literal-sort-keys
 

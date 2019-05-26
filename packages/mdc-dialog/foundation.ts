@@ -203,6 +203,11 @@ export class MDCDialogFoundation extends MDCFoundation<MDCDialogAdapter> {
     }
   }
 
+  handleOverScroll(evt: TouchEvent) {
+    // Prevent scrolling the components behind on touch devices
+    evt.preventDefault();
+  }
+
   private layoutInternal_() {
     if (this.autoStackButtons_) {
       this.detectStackedButtons_();
