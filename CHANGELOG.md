@@ -1,3 +1,116 @@
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/material-components/material-components-web/compare/v2.1.1...v2.2.0) (2019-05-13)
+
+
+### Bug Fixes
+
+* **tab:** Fix tab color variables to use color literals ([#4688](https://github.com/material-components/material-components-web/issues/4688)) ([88734fe](https://github.com/material-components/material-components-web/commit/88734fe))
+
+
+### Features
+
+* **chips:** Add feature targeting for styles ([#4693](https://github.com/material-components/material-components-web/issues/4693)) ([0fdb889](https://github.com/material-components/material-components-web/commit/0fdb889))
+
+
+
+<a name="2.1.1"></a>
+## [2.1.1](https://github.com/material-components/material-components-web/compare/v2.1.0...v2.1.1) (2019-05-10)
+
+
+### Bug Fixes
+
+* **ripple:** Fixes issue where Chrome v74 shows black artifact on ripple surface on hover ([a0c7b81](https://github.com/material-components/material-components-web/commit/a0c7b81))
+
+
+
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/material-components/material-components-web/compare/v2.0.0...v2.1.0) (2019-05-06)
+
+
+### Bug Fixes
+
+* **tab:** Update horizontal padding mixin ([#4678](https://github.com/material-components/material-components-web/issues/4678)) ([d3ce9c9](https://github.com/material-components/material-components-web/commit/d3ce9c9))
+* **tab-indicator:** Remove child selector ([#4676](https://github.com/material-components/material-components-web/issues/4676)) ([edbe0ba](https://github.com/material-components/material-components-web/commit/edbe0ba))
+* **tab-indicator:** Show border for high contrast ([#4666](https://github.com/material-components/material-components-web/issues/4666)) ([5a52847](https://github.com/material-components/material-components-web/commit/5a52847))
+* **text-field:** Fixes overlapping input with leading icon in absence of label ([#4637](https://github.com/material-components/material-components-web/issues/4637)) ([64e459e](https://github.com/material-components/material-components-web/commit/64e459e))
+* **text-field:** Update character counter to update when value is set. ([#4663](https://github.com/material-components/material-components-web/issues/4663)) ([acfbe2d](https://github.com/material-components/material-components-web/commit/acfbe2d))
+* **top-app-bar:** Move comment line to appropriate section ([#4610](https://github.com/material-components/material-components-web/issues/4610)) ([3e36555](https://github.com/material-components/material-components-web/commit/3e36555))
+
+
+### Features
+
+* **checkbox:** Updated cssClasses constant of checkbox ([#4674](https://github.com/material-components/material-components-web/issues/4674)) ([bb25680](https://github.com/material-components/material-components-web/commit/bb25680))
+* **tab:** Improved mixins ([#4675](https://github.com/material-components/material-components-web/issues/4675)) ([252009f](https://github.com/material-components/material-components-web/commit/252009f))
+
+
+
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/material-components/material-components-web/compare/v1.0.0...v2.0.0) (2019-04-29)
+
+
+### Bug Fixes
+
+* **button:** Update border-width to 1px ([#4606](https://github.com/material-components/material-components-web/issues/4606)) ([be8747f](https://github.com/material-components/material-components-web/commit/be8747f))
+* **card:** Use on-surface color for action icons ([#4519](https://github.com/material-components/material-components-web/issues/4519)) ([9f37016](https://github.com/material-components/material-components-web/commit/9f37016))
+* **checkbox:** Fixed disabled checkbox styles for Edge browser ([#4602](https://github.com/material-components/material-components-web/issues/4602)) ([7855a6b](https://github.com/material-components/material-components-web/commit/7855a6b))
+* **chips:** Fix incorrect ripple effect on filter chip ([#4565](https://github.com/material-components/material-components-web/issues/4565)) ([975bae2](https://github.com/material-components/material-components-web/commit/975bae2))
+* **feature-targeting:** Move ripple styles into separate mixins ([#4454](https://github.com/material-components/material-components-web/issues/4454)) ([720bef0](https://github.com/material-components/material-components-web/commit/720bef0))
+* **list:** Add cursor: pointer for interactive list items ([#4563](https://github.com/material-components/material-components-web/issues/4563)) ([d2f0ccb](https://github.com/material-components/material-components-web/commit/d2f0ccb)), closes [#4557](https://github.com/material-components/material-components-web/issues/4557)
+* **list:** Include disabled list items in keyboard navigation and allow focus ([#4568](https://github.com/material-components/material-components-web/issues/4568)) ([6e24280](https://github.com/material-components/material-components-web/commit/6e24280))
+* **list:** Update meta class to use caption typogrpahy style ([#4623](https://github.com/material-components/material-components-web/issues/4623)) ([0826a78](https://github.com/material-components/material-components-web/commit/0826a78))
+* **menu:** Fix selection group list item spacing ([#4517](https://github.com/material-components/material-components-web/issues/4517)) ([5183e01](https://github.com/material-components/material-components-web/commit/5183e01))
+* **menu:** Use on-surface color for graphic/meta content ([#4520](https://github.com/material-components/material-components-web/issues/4520)) ([74b8d67](https://github.com/material-components/material-components-web/commit/74b8d67))
+* **ripple:** Use standard element removal method ([#4638](https://github.com/material-components/material-components-web/issues/4638)) ([ef07477](https://github.com/material-components/material-components-web/commit/ef07477))
+* **select:** Fix enhanced select issue where it does not stay open on long press [#4173](https://github.com/material-components/material-components-web/issues/4173) ([#4590](https://github.com/material-components/material-components-web/issues/4590)) ([8286aa7](https://github.com/material-components/material-components-web/commit/8286aa7))
+* **select:** Use correct shape category consistently with text-field ([#4553](https://github.com/material-components/material-components-web/issues/4553)) ([bec2ef2](https://github.com/material-components/material-components-web/commit/bec2ef2))
+* **shape:** Allow percentage based global overrides ([#4548](https://github.com/material-components/material-components-web/issues/4548)) ([4bf7a86](https://github.com/material-components/material-components-web/commit/4bf7a86))
+* **shape:** Fix errors related to multi-value shape categories ([#4547](https://github.com/material-components/material-components-web/issues/4547)) ([9f79d17](https://github.com/material-components/material-components-web/commit/9f79d17))
+* **tab:** Explicitly set margin to 0 on tabs for Safari ([#4654](https://github.com/material-components/material-components-web/issues/4654)) ([28aa623](https://github.com/material-components/material-components-web/commit/28aa623))
+* Don't import * from focus-trap to avoid default export confusion ([#4485](https://github.com/material-components/material-components-web/issues/4485)) ([6082dc3](https://github.com/material-components/material-components-web/commit/6082dc3))
+* **tab:** Fix tab icon color mixin to support SVG icons. ([#4540](https://github.com/material-components/material-components-web/issues/4540)) ([5ad6570](https://github.com/material-components/material-components-web/commit/5ad6570))
+* **tab:** Update moz-focusring to moz-focus-inner to match button ([#4567](https://github.com/material-components/material-components-web/issues/4567)) ([968a054](https://github.com/material-components/material-components-web/commit/968a054))
+* **tabs:** Disable firefox focus ring ([#4560](https://github.com/material-components/material-components-web/issues/4560)) ([a99b7d4](https://github.com/material-components/material-components-web/commit/a99b7d4))
+* **text-field:** add classes constant ([#4608](https://github.com/material-components/material-components-web/issues/4608)) ([22fa259](https://github.com/material-components/material-components-web/commit/22fa259))
+* **text-field:** Fix for input alignment in textfield with trailing icon ([#4478](https://github.com/material-components/material-components-web/issues/4478)) ([b9c5fc6](https://github.com/material-components/material-components-web/commit/b9c5fc6))
+* **text-field:** Fixed asterisk color where it stays in error color even after input is resolved ([#4576](https://github.com/material-components/material-components-web/issues/4576)) ([ca502d4](https://github.com/material-components/material-components-web/commit/ca502d4))
+* **text-field:** Set character counter in setValue ([#4572](https://github.com/material-components/material-components-web/issues/4572)) ([bce2e63](https://github.com/material-components/material-components-web/commit/bce2e63))
+
+
+### Code Refactoring
+
+* Swap MDCTopAppBar Sass Variable Word Order ([#4498](https://github.com/material-components/material-components-web/issues/4498)) ([e851bae](https://github.com/material-components/material-components-web/commit/e851bae))
+
+
+### Features
+
+* **checkbox:** Toggle selected class with state ([#4612](https://github.com/material-components/material-components-web/issues/4612)) ([5f06dce](https://github.com/material-components/material-components-web/commit/5f06dce))
+* **dialog:** Add feature targeting for styles ([#4524](https://github.com/material-components/material-components-web/issues/4524)) ([3556a93](https://github.com/material-components/material-components-web/commit/3556a93))
+* **drawer:** Make list instance publicly accessible ([#4516](https://github.com/material-components/material-components-web/issues/4516)) ([f46941c](https://github.com/material-components/material-components-web/commit/f46941c))
+* **fab:** Add feature targeting for styles ([#4526](https://github.com/material-components/material-components-web/issues/4526)) ([1ba7bdd](https://github.com/material-components/material-components-web/commit/1ba7bdd))
+* **form-field:** add feature targeting for styles ([#4521](https://github.com/material-components/material-components-web/issues/4521)) ([cd04f82](https://github.com/material-components/material-components-web/commit/cd04f82))
+* **grid-list:** Add feature targeting for styles ([#4534](https://github.com/material-components/material-components-web/issues/4534)) ([a8a6660](https://github.com/material-components/material-components-web/commit/a8a6660))
+* **icon-button:** Add feature targeting for styles ([#4536](https://github.com/material-components/material-components-web/issues/4536)) ([a58f2d2](https://github.com/material-components/material-components-web/commit/a58f2d2))
+* **image-list:** Add feature targeting for styles ([#4535](https://github.com/material-components/material-components-web/issues/4535)) ([0bfeabb](https://github.com/material-components/material-components-web/commit/0bfeabb))
+* **list:** Add disabled class name to constants ([#4558](https://github.com/material-components/material-components-web/issues/4558)) ([f2db177](https://github.com/material-components/material-components-web/commit/f2db177))
+* **list:** Automatically use appropriate aria attribute for single selection list. ([#4479](https://github.com/material-components/material-components-web/issues/4479)) ([077c809](https://github.com/material-components/material-components-web/commit/077c809))
+* **menu:** Added new API to manually set focus when menu is opened ([#4468](https://github.com/material-components/material-components-web/issues/4468)) ([42ae5c3](https://github.com/material-components/material-components-web/commit/42ae5c3))
+* **menu:** Focus management features & accessibility improvements ([#4587](https://github.com/material-components/material-components-web/issues/4587)) ([8d91b93](https://github.com/material-components/material-components-web/commit/8d91b93))
+* **tab:** Add Tab Sass mixins targeting active state colors ([#4522](https://github.com/material-components/material-components-web/issues/4522)) ([31376f7](https://github.com/material-components/material-components-web/commit/31376f7))
+* **tab-bar:** Allow activation of tab without previous active tab ([#4615](https://github.com/material-components/material-components-web/issues/4615)) ([7d4124d](https://github.com/material-components/material-components-web/commit/7d4124d))
+* **tabs:** Add active tab states mixin ([#4603](https://github.com/material-components/material-components-web/issues/4603)) ([0e9f3f5](https://github.com/material-components/material-components-web/commit/0e9f3f5))
+* **text-field:** define icon's cssClasses ([#4614](https://github.com/material-components/material-components-web/issues/4614)) ([816139c](https://github.com/material-components/material-components-web/commit/816139c))
+* **theme:** Add support for arbitrary CSS vars with fallback ([#4470](https://github.com/material-components/material-components-web/issues/4470)) ([0bfb393](https://github.com/material-components/material-components-web/commit/0bfb393))
+
+
+### BREAKING CHANGES
+
+* **menu:** New adapter methods to MDC List: `isRootFocused`. MDC Menu: Replaced adapter methods `isRootFocused`, `focusRoot` with `focusListRoot`. When using MDC List inside MDC Menu `tabindex` should be set on list root element where `role="menu"` is assigned.
+* **list:** MDCList's `listElements` component API now includes disabled list items which previously returned only enabled list items.
+* **menu:** Focus is no more set to first menu item when menu is opened. Introduced new API (`setDefaultFocusState()`) to set default focus state (`DefaultFocusState`) that will be used to focus every time when menu is opened. Also introduced new foundation & adapter methods to incorporate this change. Please use `setDefaultFocusItemIndex(DefaultFocusState.FIRST_ITEM)` method before menu open to retain previous behaviour.
+* `$mdc-top-app-bar-prominent-dense-title-bottom-padding` is renamed to `$mdc-top-app-bar-dense-prominent-title-bottom-padding`
+
+
+
 <a name="1.1.1"></a>
 ## [1.1.1](https://github.com/material-components/material-components-web/compare/v1.1.0...v1.1.1) (2019-04-08)
 

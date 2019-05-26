@@ -1,7 +1,7 @@
 {
   "name": "@material/select",
   "description": "The Material Components web select (text field drop-down) component",
-  "version": "1.1.1",
+  "version": "2.2.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -22,10 +22,10 @@
     "@material/base": "^1.0.0",
     "@material/floating-label": "^1.1.0",
     "@material/line-ripple": "^1.1.0",
-    "@material/menu": "^1.1.1",
+    "@material/menu": "^2.2.0",
     "@material/menu-surface": "^1.1.1",
     "@material/notched-outline": "^1.1.1",
-    "@material/ripple": "^1.1.0",
+    "@material/ripple": "^2.1.1",
     "@material/rtl": "^0.42.0",
     "@material/shape": "^1.1.1",
     "@material/theme": "^1.1.0",
