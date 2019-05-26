@@ -60,8 +60,22 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
 
   /**
    * Re-initializes header row checkbox and row checkboxes when selectable rows are added or removed from table.
+   * Use this if registering checkbox is synchronous.
    */
-  async layout() {
+  layout() {
+    if (this.adapter_.isRowsSelectable()) {
+      this.adapter_.registerHeaderRowCheckbox();
+      this.adapter_.registerRowCheckboxes();
+
+      this.setHeaderRowCheckboxState_();
+    }
+  }
+
+  /**
+   * Re-initializes header row checkbox and row checkboxes when selectable rows are added or removed from table.
+   * Use this if registering checkbox is asynchronous.
+   */
+  async layoutAsync() {
     if (this.adapter_.isRowsSelectable()) {
       await this.adapter_.registerHeaderRowCheckbox();
       await this.adapter_.registerRowCheckboxes();
