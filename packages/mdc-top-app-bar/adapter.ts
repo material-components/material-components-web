@@ -21,8 +21,6 @@
  * THE SOFTWARE.
  */
 
-import {EventType, SpecificEventListener} from '@material/base/types';
-
 /**
  * Defines the shape of the adapter expected by the foundation.
  * Implement this adapter for your framework of choice to delegate updates to
@@ -64,22 +62,4 @@ export interface MDCTopAppBarAdapter {
    * Emits an event when the navigation icon is clicked.
    */
   notifyNavigationIconClicked(): void;
-
-  /**
-   * Registers an event handler on the navigation icon element for a given event.
-   */
-  registerNavigationIconInteractionHandler<K extends EventType>(type: K, handler: SpecificEventListener<K>): void;
-
-  /**
-   * Deregisters an event handler on the navigation icon element for a given event.
-   */
-  deregisterNavigationIconInteractionHandler<K extends EventType>(type: K, handler: SpecificEventListener<K>): void;
-
-  registerScrollHandler(handler: SpecificEventListener<'scroll'>): void;
-
-  deregisterScrollHandler(handler: SpecificEventListener<'scroll'>): void;
-
-  registerResizeHandler(handler: SpecificEventListener<'resize'>): void;
-
-  deregisterResizeHandler(handler: SpecificEventListener<'resize'>): void;
 }

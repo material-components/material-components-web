@@ -29,7 +29,7 @@ import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
 import {MDCChipFoundation} from '../../../packages/mdc-chips/chip/foundation';
 
-const {cssClasses} = MDCChipFoundation;
+const {cssClasses, strings} = MDCChipFoundation;
 
 suite('MDCChipFoundation');
 
@@ -48,6 +48,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'notifyTrailingIconInteraction', 'notifyRemoval', 'notifySelection',
     'getComputedStyleValue', 'setStyleProperty', 'hasLeadingIcon',
     'getRootBoundingClientRect', 'getCheckmarkBoundingClientRect',
+    'setAttr',
   ]);
 });
 
@@ -75,6 +76,18 @@ test('#setSelected removes mdc-chip--selected class if false', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setSelected(false);
   td.verify(mockAdapter.removeClass(cssClasses.SELECTED));
+});
+
+test('#setSelected sets aria-checked="true" if true', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setSelected(true);
+  td.verify(mockAdapter.setAttr(strings.ARIA_CHECKED, 'true'));
+});
+
+test('#setSelected sets aria-checked="false" if false', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setSelected(false);
+  td.verify(mockAdapter.setAttr(strings.ARIA_CHECKED, 'false'));
 });
 
 test('#setSelected removes calls adapter.notifySelection when selected is true', () => {
