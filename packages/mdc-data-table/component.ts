@@ -55,7 +55,7 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
    * Re-initializes header row checkbox and row checkboxes when selectable rows are added or removed from table.
    */
   layout() {
-    return this.foundation_.layout();
+    this.foundation_.layout();
   }
 
   /**
