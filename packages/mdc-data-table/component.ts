@@ -145,8 +145,8 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
     return new MDCDataTableFoundation(adapter);
   }
 
-  private getRowByIndex_(index: number): HTMLElement {
-    return this.getRows()[index] as HTMLElement;
+  private getRowByIndex_(index: number): Element {
+    return this.getRows()[index];
   }
 
   private getRowIdByIndex_(index: number): string | null {
