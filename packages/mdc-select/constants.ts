@@ -22,6 +22,7 @@
  */
 
 const cssClasses = {
+  ACTIVATED: 'mdc-select--activated',
   DISABLED: 'mdc-select--disabled',
   DROPDOWN_ICON: 'mdc-select__dropdown-icon',
   FOCUSED: 'mdc-select--focused',

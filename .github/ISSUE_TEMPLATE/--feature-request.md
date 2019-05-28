@@ -15,14 +15,14 @@ If you have an idea for a new feature, we'd love to hear about it! Please provid
 If you'd like to work on a component, please ensure that you submit an Engineering Outline before submitting a pull request. You can read more about this in our contributing docs: https://github.com/material-components/material-components-web/blob/master/CONTRIBUTING.md#building-components.
 -->
 
-## Is your feature request related to a problem? Please describe.
-<!-- A clear and concise description of what the problem is. -->
+## Feature Request
+<!-- Is your feature request related to a problem? Please describe. -->
 
-## Describe the solution you'd like
+### Proposed solution
 <!-- A clear and concise description of what you want to happen. -->
 
-## Describe alternatives you've considered
+### Alternatives considered
 <!-- A clear and concise description of any alternative solutions or features you've considered. -->
 
-## Additional context
+### Additional context
 <!-- Add any other context or screenshots about the feature request here. -->

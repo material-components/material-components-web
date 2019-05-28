@@ -96,17 +96,6 @@ test('throws when constructor is not registered', () => {
   assert.throws(() => mdcAutoInit(root));
 });
 
-test('warns when autoInit called multiple times on a node', () => {
-  const root = setupTest();
-  const warn = td.func('warn');
-  const {contains} = td.matchers;
-
-  mdcAutoInit(root, warn);
-  mdcAutoInit(root, warn);
-
-  td.verify(warn(contains('(mdc-auto-init) Component already initialized')));
-});
-
 test('#register throws when Ctor is not a function', () => {
   assert.throws(() => mdcAutoInit.register('not-a-function', 'Not a function'));
 });
@@ -169,4 +158,21 @@ test('#returns the initialized components', () => {
 
   assert.equal(components.length, 1);
   assert.isOk(components[0] instanceof FakeComponent);
+});
+
+test('does not register any components if element has data-mdc-auto-init-state="initialized"', () => {
+  const root = setupTest();
+  root.querySelector('[data-mdc-auto-init]').setAttribute('data-mdc-auto-init-state', 'initialized');
+  mdcAutoInit(root);
+
+  assert.isFalse(root.querySelector('.mdc-fake').FakeComponent instanceof FakeComponent);
+});
+
+test('does not return any new components after calling autoInit a second time', () => {
+  const root = setupTest();
+
+  let components = mdcAutoInit(root);
+  assert.equal(components.length, 1);
+  components = mdcAutoInit(root);
+  assert.equal(components.length, 0);
 });
