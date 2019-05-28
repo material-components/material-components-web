@@ -24,12 +24,17 @@
 const cssClasses = {
   ACTIVATED: 'mdc-select--activated',
   DISABLED: 'mdc-select--disabled',
+  DROPDOWN_ICON: 'mdc-select__dropdown-icon',
   FOCUSED: 'mdc-select--focused',
+  ICON: 'mdc-select__icon',
   INVALID: 'mdc-select--invalid',
+  MENU: 'mdc-select__menu',
+  NATIVE_CONTROL: 'mdc-select__native-control',
   OUTLINED: 'mdc-select--outlined',
   REQUIRED: 'mdc-select--required',
   ROOT: 'mdc-select',
   SELECTED_ITEM_CLASS: 'mdc-list-item--selected',
+  SELECTED_TEXT: 'mdc-select__selected-text',
   WITH_LEADING_ICON: 'mdc-select--with-leading-icon',
 };
 
