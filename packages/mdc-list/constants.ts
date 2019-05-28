@@ -26,7 +26,7 @@ const cssClasses = {
   DENSE: 'mdc-list--dense',
   DIVIDER: 'mdc-list-divider',
   DIVIDER_PADDED: 'mdc-list-divider--padded',
-  DIVIDER__INSET: 'mdc-list-divider--inset',
+  DIVIDER_INSET: 'mdc-list-divider--inset',
   GROUP: 'mdc-list-group',
   GROUP_SUBHEADER: 'mdc-list-group__subheader',
   ITEM: 'mdc-list-item',
