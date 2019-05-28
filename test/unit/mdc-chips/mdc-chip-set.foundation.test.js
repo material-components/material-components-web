@@ -41,7 +41,9 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCChipSetFoundation, [
-    'hasClass', 'removeChip', 'setSelected',
+    'hasClass', 'removeChip', 'setSelected', 'focusChipAtIndex',
+    'getChipClientRectByIndex', 'getChipListLength', 'getIndexOfChipById',
+    'isRTL',
   ]);
 });
 
@@ -188,4 +190,198 @@ test('#handleChipRemoval removes chip', () => {
 
   foundation.handleChipRemoval('chipA');
   td.verify(mockAdapter.removeChip('chipA'));
+});
+
+test('#handleKeyDown is good', () => {
+
+});
+
+function setupHandleKeyDownTest(chips=[], isRTL=false) {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getChipClientRectByIndex(td.matchers.isA(Number))).thenDo((index) => {
+    if (index < 0 || index >= chips.length) {
+      return undefined;
+    }
+    return chips[index].clientRect;
+  });
+  td.when(mockAdapter.getIndexOfChipById(td.matchers.isA(String))).thenDo((id) => {
+    return chips.findIndex((chip) => chip.id === id);
+  });
+  td.when(mockAdapter.getChipListLength()).thenReturn(chips.length);
+  td.when(mockAdapter.isRTL()).thenReturn(isRTL);
+  return {foundation, mockAdapter};
+}
+
+function setupFakeChip(left, top, width, height, id) {
+  return {
+    clientRect: {
+      right: left + width,
+      bottom: top + height,
+      left,
+      width,
+      height,
+      top,
+    },
+    id,
+  };
+}
+
+const chipGrid3x3 = [
+  setupFakeChip(0, 0, 60, 30, 'chip0'),
+  setupFakeChip(70, 0, 60, 30, 'chip1'),
+  setupFakeChip(140, 0, 60, 30, 'chip2'),
+  // New row
+  setupFakeChip(0, 40, 60, 30, 'chip3'),
+  setupFakeChip(70, 40, 60, 30, 'chip4'),
+  setupFakeChip(140, 40, 60, 30, 'chip5'),
+  // New row
+  setupFakeChip(0, 80, 60, 30, 'chip6'),
+  setupFakeChip(70, 80, 60, 30, 'chip7'),
+  setupFakeChip(140, 80, 60, 30, 'chip8'),
+];
+
+test('#handleKeyDown ArrowLeft from the first chip does nothing', () => {
+  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3);
+  foundation.handleChipKeyDown('chip0', 'ArrowLeft');
+  td.verify(mockAdapter.focusChipAtIndex(td.matchers.isA(Number)), {times: 0});
+});
+
+test('#handleKeyDown Home from the first chip in a row does nothing', () => {
+  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3);
+  foundation.handleChipKeyDown('chip0', 'Home');
+  td.verify(mockAdapter.focusChipAtIndex(td.matchers.isA(Number)), {times: 0});
+});
+
+test('#handleKeyDown ArrowRight from the last chip does nothing', () => {
+  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3);
+  foundation.handleChipKeyDown('chip8', 'ArrowRight');
+  td.verify(mockAdapter.focusChipAtIndex(td.matchers.isA(Number)), {times: 0});
+});
+
+test('#handleKeyDown End from the last chip in a row does nothing', () => {
+  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3);
+  foundation.handleChipKeyDown('chip5', 'End');
+  td.verify(mockAdapter.focusChipAtIndex(td.matchers.isA(Number)), {times: 0});
+});
+
+test('#handleKeyDown ArrowRight goes to the next logical chip', () => {
+  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3);
+  foundation.handleChipKeyDown('chip4', 'ArrowRight');
+  td.verify(mockAdapter.focusChipAtIndex(5));
+});
+
+test('#handleKeyDown ArrowRight wraps around to the next row', () => {
+  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3);
+  foundation.handleChipKeyDown('chip2', 'ArrowRight');
+  td.verify(mockAdapter.focusChipAtIndex(3));
+});
+
+test('#handleKeyDown ArrowLeft goes to the next logical chip', () => {
+  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3);
+  foundation.handleChipKeyDown('chip4', 'ArrowLeft');
+  td.verify(mockAdapter.focusChipAtIndex(3));
+});
+
+test('#handleKeyDown ArrowLeft wraps around to the previous row', () => {
+  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3);
+  foundation.handleChipKeyDown('chip3', 'ArrowLeft');
+  td.verify(mockAdapter.focusChipAtIndex(2));
+});
+
+test('#handleKeyDown Home goes to the row start chip', () => {
+  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3);
+  foundation.handleChipKeyDown('chip5', 'Home');
+  td.verify(mockAdapter.focusChipAtIndex(3));
+});
+
+test('#handleKeyDown End goes to the row end chip', () => {
+  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3);
+  foundation.handleChipKeyDown('chip3', 'End');
+  td.verify(mockAdapter.focusChipAtIndex(5));
+});
+
+test('#handleKeyDown ArrowUp goes to the next logical chip', () => {
+  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3);
+  foundation.handleChipKeyDown('chip4', 'ArrowUp');
+  td.verify(mockAdapter.focusChipAtIndex(1));
+});
+
+test('#handleKeyDown ArrowUp from the top row does nothing', () => {
+  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3);
+  foundation.handleChipKeyDown('chip0', 'ArrowUp');
+  td.verify(mockAdapter.focusChipAtIndex(td.matchers.isA(Number)), {times: 0});
+});
+
+test('#handleKeyDown ArrowDown goes to the next logical chip', () => {
+  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3);
+  foundation.handleChipKeyDown('chip4', 'ArrowDown');
+  td.verify(mockAdapter.focusChipAtIndex(7));
+});
+
+test('#handleKeyDown ArrowDown from the bottom row does nothing', () => {
+  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3);
+  foundation.handleChipKeyDown('chip7', 'ArrowDown');
+  td.verify(mockAdapter.focusChipAtIndex(td.matchers.isA(Number)), {times: 0});
+});
+
+const chipGrid3x3RTL = [
+  setupFakeChip(140, 0, 60, 30, 'chip0'),
+  setupFakeChip(70, 0, 60, 30, 'chip1'),
+  setupFakeChip(0, 0, 60, 30, 'chip2'),
+  // New row
+  setupFakeChip(140, 40, 60, 30, 'chip3'),
+  setupFakeChip(70, 40, 60, 30, 'chip4'),
+  setupFakeChip(0, 40, 60, 30, 'chip5'),
+  // New row
+  setupFakeChip(140, 80, 60, 30, 'chip6'),
+  setupFakeChip(70, 80, 60, 30, 'chip7'),
+  setupFakeChip(0, 80, 60, 30, 'chip8'),
+];
+
+test('#handleKeyDown ArrowRight goes to the next logical chip in RTL', () => {
+  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3RTL, true);
+  foundation.handleChipKeyDown('chip4', 'ArrowRight');
+  td.verify(mockAdapter.focusChipAtIndex(3));
+});
+
+test('#handleKeyDown ArrowLeft goes to the next logical chip in RTL', () => {
+  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3RTL, true);
+  foundation.handleChipKeyDown('chip4', 'ArrowLeft');
+  td.verify(mockAdapter.focusChipAtIndex(5));
+});
+
+test('#handleKeyDown Home goes to the row start chip in RTL', () => {
+  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3RTL, true);
+  foundation.handleChipKeyDown('chip5', 'Home');
+  td.verify(mockAdapter.focusChipAtIndex(3));
+});
+
+test('#handleKeyDown End goes to the row end chip in RTL', () => {
+  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3RTL, true);
+  foundation.handleChipKeyDown('chip3', 'End');
+  td.verify(mockAdapter.focusChipAtIndex(5));
+});
+
+test('#handleKeyDown Home from the last chip in a row does nothing in RTL', () => {
+  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3RTL, true);
+  foundation.handleChipKeyDown('chip3', 'Home');
+  td.verify(mockAdapter.focusChipAtIndex(td.matchers.isA(Number)), {times: 0});
+});
+
+test('#handleKeyDown End from the first chip in a row does nothing in RTL', () => {
+  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3RTL, true);
+  foundation.handleChipKeyDown('chip5', 'End');
+  td.verify(mockAdapter.focusChipAtIndex(td.matchers.isA(Number)), {times: 0});
+});
+
+test('#handleKeyDown ArrowLeft wraps around to the previous row in RTL', () => {
+  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3RTL, true);
+  foundation.handleChipKeyDown('chip5', 'ArrowLeft');
+  td.verify(mockAdapter.focusChipAtIndex(6));
+});
+
+test('#handleKeyDown ArrowRight wraps around to the previous row in RTL', () => {
+  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3RTL, true);
+  foundation.handleChipKeyDown('chip3', 'ArrowRight');
+  td.verify(mockAdapter.focusChipAtIndex(2));
 });

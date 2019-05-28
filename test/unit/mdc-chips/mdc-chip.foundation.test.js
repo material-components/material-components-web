@@ -27,9 +27,9 @@ import td from 'testdouble';
 import {install as installClock} from '../helpers/clock';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {setupFoundationTest} from '../helpers/setup';
-import {MDCChipFoundation} from '../../../packages/mdc-chips/chip/foundation';
+import {MDCChipFoundation, ACCEPTABLE_KEYS, KEYCODE_MAP} from '../../../packages/mdc-chips/chip/foundation';
 
-const {cssClasses, strings} = MDCChipFoundation;
+const {cssClasses, strings, numbers} = MDCChipFoundation;
 
 suite('MDCChipFoundation');
 
@@ -317,14 +317,46 @@ test(`#handleTrailingIconInteraction does not add ${cssClasses.CHIP_EXIT} class 
   td.verify(mockEvt.stopPropagation());
 });
 
-test('#handleKeyDown emits custom event on appropriate key', () => {
+test('#handleKeyDown emits custom event on all keys', () => {
+  const {foundation, mockAdapter} = setupTest();
+  ACCEPTABLE_KEYS.forEach((key) => {
+    const mockEvt = {
+      type: 'keydown',
+      key,
+    };
+
+    foundation.handleKeyDown(mockEvt);
+    td.verify(mockAdapter.notifyKeyDown(key));
+  });
+});
+
+test('#handleKeyDown emits custom event on all key codes', () => {
+  const {foundation, mockAdapter} = setupTest();
+  [
+    numbers.ARROW_DOWN_KEYCODE,
+    numbers.ARROW_LEFT_KEYCODE,
+    numbers.ARROW_RIGHT_KEYCODE,
+    numbers.ARROW_UP_KEYCODE,
+    numbers.END_KEYCODE,
+    numbers.HOME_KEYCODE,
+  ].forEach((keyCode) => {
+    const mockEvt = {
+      type: 'keydown',
+      keyCode,
+    };
+
+    foundation.handleKeyDown(mockEvt);
+    td.verify(mockAdapter.notifyKeyDown(KEYCODE_MAP.get(keyCode)));
+  });
+});
+
+test('#handleKeyDown ignores unsupported keys', () => {
   const {foundation, mockAdapter} = setupTest();
   const mockEvt = {
     type: 'keydown',
-    key: 'ArrowLeft',
+    key: 'Space',
   };
 
   foundation.handleKeyDown(mockEvt);
-
-  td.verify(mockAdapter.notifyKeyDown('ArrowLeft'));
+  td.verify(mockAdapter.notifyKeyDown('Space'), {times: 0});
 });

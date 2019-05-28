@@ -32,21 +32,21 @@ import {MDCChip, MDCChipFoundation} from '../../../packages/mdc-chips/chip/index
 const {CHECKMARK_SELECTOR} = MDCChipFoundation.strings;
 
 const getFixture = () => bel`
-  <div class="mdc-chip">
-    <div class="mdc-chip__text">Chip content</div>
-  </div>
+  <button class="mdc-chip">
+    <span class="mdc-chip__text">Chip content</span>
+  </button>
 `;
 
 const getFixtureWithCheckmark = () => bel`
-  <div class="mdc-chip">
-    <div class="mdc-chip__checkmark" >
+  <button class="mdc-chip">
+    <span class="mdc-chip__checkmark" >
       <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
         <path class="mdc-chip__checkmark-path" fill="none" stroke="black"
               d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
       </svg>
-    </div>
-    <div class="mdc-chip__text">Chip content</div>
-  </div>
+    </span>
+    <span class="mdc-chip__text">Chip content</span>
+  </button>
 `;
 
 const addLeadingIcon = (root) => {
@@ -254,6 +254,17 @@ test('adapter#notifyRemoval emits ' + MDCChipFoundation.strings.REMOVAL_EVENT, (
   td.verify(handler(td.matchers.anything()));
 });
 
+test('adapter#notifyKeyDown emits ' + MDCChipFoundation.strings.KEYDOWN_EVENT, () => {
+  const {component} = setupTest();
+  const handler = td.func('interaction handler');
+
+  component.listen(
+    MDCChipFoundation.strings.KEYDOWN_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyKeyDown();
+
+  td.verify(handler(td.matchers.anything()));
+});
+
 test('adapter#getComputedStyleValue returns property value from root element styles', () => {
   const {root, component} = setupTest();
   assert.equal(
@@ -329,4 +340,24 @@ test('#beginExit proxies to foundation', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
   component.beginExit();
   td.verify(mockFoundation.beginExit());
+});
+
+test('#focus makes the root the document.activeElement', () => {
+  const {component, root} = setupTest();
+  document.body.appendChild(root);
+  component.focus();
+  assert.equal(root, document.activeElement);
+  document.body.removeChild(root);
+});
+
+test('#getClientRect returns the root ClientRect', () => {
+  const {component, root} = setupTest();
+  document.body.appendChild(root);
+  component.getClientRect();
+  const actual = component.getClientRect();
+  const expected = root.getBoundingClientRect();
+  ['x', 'width'].forEach((prop) => {
+    assert.equal(actual[prop], expected[prop]);
+  });
+  document.body.removeChild(root);
 });

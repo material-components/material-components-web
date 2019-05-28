@@ -112,13 +112,21 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   }
 
   handleChipKeyDown(chipId: string, key: string) {
-    let index = -1;
+    const maxIndex = this.adapter_.getChipListLength() - 1;
+    const index = this.adapter_.getIndexOfChipById(chipId);
+    let idx = -1;
     if (HORIZONTAL_KEYS.has(key)) {
-      index = this.determineNextHorizontalChip_(chipId, key);
+      idx = this.determineNextHorizontalChip_(chipId, key);
     } else if (VERTICAL_KEYS.has(key)) {
-      index = this.determineNextVerticalChip_(chipId, key);
+      idx = this.determineNextVerticalChip_(chipId, key);
     }
-    this.adapter_.focusChipAtIndex(index);
+
+    // Early exit if the index is invalid or the source of the event
+    if (idx < 0 || idx > maxIndex || idx === index) {
+      return;
+    }
+
+    this.adapter_.focusChipAtIndex(idx);
   }
 
   private determineNextVerticalChip_(chipId: string, key: string): number {
@@ -141,10 +149,6 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
 
   private determineAboveRowIndex_(index: number, isRTL: boolean): number {
     let aboveIndex = this.determineRowStartIndex_(index, isRTL) - 1;
-    if (aboveIndex < 0) {
-      return -1;
-    }
-
     let smallestDistance = Number.MAX_VALUE;
     let closestIndex = -1;
     while (aboveIndex >= 0) {
@@ -157,16 +161,11 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
         break;
       }
     }
-    
     return closestIndex;
   }
 
   private determineBelowRowIndex_(index: number, maxIndex: number, isRTL: boolean): number {
     let belowIndex = this.determineRowEndIndex_(index, maxIndex, isRTL) + 1;
-    if (belowIndex > maxIndex) {
-      return -1;
-    }
-
     let smallestDistance = Number.MAX_VALUE;
     let closestIndex = -1;
     while (belowIndex <= maxIndex) {
@@ -179,7 +178,6 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
         break;
       }
     }
-    
     return closestIndex;
   }
 
@@ -203,7 +201,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     if (shouldDecrement) {
       return index - 1;
     }
-    
+
     if (shouldIncrement) {
       return index + 1;
     }

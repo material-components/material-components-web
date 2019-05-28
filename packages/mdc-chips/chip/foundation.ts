@@ -74,6 +74,10 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     return cssClasses;
   }
 
+  static get numbers() {
+    return numbers;
+  }
+
   static get defaultAdapter(): MDCChipAdapter {
     return {
       addClass: () => undefined,
