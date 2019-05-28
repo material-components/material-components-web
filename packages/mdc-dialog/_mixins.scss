@@ -449,7 +449,8 @@
         @if $max-height {
           $max-height-breakpoint: $max-height + ($margin * 2);
           @media (min-height: $max-height-breakpoint) {
-            height: unset;
+            align-items: stretch;
+            height: auto;
           }
         }
       }
