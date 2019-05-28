@@ -27,6 +27,11 @@ const cssClasses = {
   CHECKED: 'mdc-switch--checked',
   /** Class used for a switch that is disabled. */
   DISABLED: 'mdc-switch--disabled',
+  NATIVE_CONTROL: 'mdc-switch__native-control',
+  ROOT: 'mdc-switch',
+  THUMB: 'mdc-switch__thumb',
+  THUMB_UNDERLAY: 'mdc-switch__thumb-underlay',
+  TRACK: 'mdc-switch__track',
 };
 
 /** String constants used by the switch. */

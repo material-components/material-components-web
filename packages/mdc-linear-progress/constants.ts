@@ -22,9 +22,19 @@
  */
 
 export const cssClasses = {
-  CLOSED_CLASS: 'mdc-linear-progress--closed',
-  INDETERMINATE_CLASS: 'mdc-linear-progress--indeterminate',
-  REVERSED_CLASS: 'mdc-linear-progress--reversed',
+  BAR: 'mdc-linear-progress__bar',
+  BAR_INNER: 'mdc-linear-progress__bar-inner',
+  BUFFER: 'mdc-linear-progress__buffer',
+  BUFFERING_DOTS: 'mdc-linear-progress__buffering-dots',
+  CLOSED: 'mdc-linear-progress--closed',
+  CLOSED_CLASS: 'mdc-linear-progress--closed', // deprecated
+  INDETERMINATE: 'mdc-linear-progress--indeterminate',
+  INDETERMINATE_CLASS: 'mdc-linear-progress--indeterminate', // deprecated
+  PRIMARY_BAR: 'mdc-linear-progress__primary-bar',
+  REVERSED: 'mdc-linear-progress--reversed',
+  REVERSED_CLASS: 'mdc-linear-progress--reversed', // deprecated
+  ROOT: 'mdc-linear-progress',
+  SECONDARY_BAR: 'mdc-linear-progress__secondary-bar',
 };
 
 export const strings = {

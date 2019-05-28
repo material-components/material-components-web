@@ -22,9 +22,16 @@
  */
 
 const cssClasses = {
+  ACTION: 'mdc-snackbar__action',
+  ACTIONS: 'mdc-snackbar__actions',
   CLOSING: 'mdc-snackbar--closing',
+  DISMISS: 'mdc-snackbar__dismiss',
+  LABEL: 'mdc-snackbar__label',
+  LEADING: 'mdc-snackbar--leading',
   OPEN: 'mdc-snackbar--open',
   OPENING: 'mdc-snackbar--opening',
+  ROOT: 'mdc-snackbar',
+  STACKED: 'mdc-snackbar--stacked',
 };
 
 const strings = {

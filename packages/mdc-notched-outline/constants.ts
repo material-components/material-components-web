@@ -31,9 +31,13 @@ const numbers = {
 };
 
 const cssClasses = {
+  LEADING: 'mdc-notched-outline__leading',
+  NOTCH: 'mdc-notched-outline__notch',
   NO_LABEL: 'mdc-notched-outline--no-label',
   OUTLINE_NOTCHED: 'mdc-notched-outline--notched',
   OUTLINE_UPGRADED: 'mdc-notched-outline--upgraded',
+  ROOT: 'mdc-notched-outline',
+  TRAILING: 'mdc-notched-outline__trailing',
 };
 
 export {cssClasses, numbers, strings};
