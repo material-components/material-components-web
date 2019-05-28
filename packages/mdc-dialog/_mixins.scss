@@ -446,13 +446,18 @@
     // is fixed.
     .mdc-dialog__container {
       @include mdc-feature-targets($feat-structure) {
+        /* stylelint-disable */
+        // Disable stylelint here, as nesting depth > 3 is required to
+        // work around IE 11.
         @if $max-height {
           $max-height-breakpoint: $max-height + ($margin * 2);
+
           @media (min-height: $max-height-breakpoint) {
             align-items: stretch;
             height: auto;
           }
         }
+        /* stylelint-enable*/
       }
     }
   }
