@@ -64,6 +64,9 @@
       $trailing-padding: $mdc-data-table-cell-trailing-padding,
       $query: $query
     );
+
+    display: inline-flex;
+    flex-direction: column;
   }
 
   .mdc-data-table__table {
