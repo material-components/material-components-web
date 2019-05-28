@@ -392,7 +392,7 @@
 
 @mixin mdc-dialog-max-width($max-width, $margin, $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
-  $max-size-calc-expr: calc(100% - #{$margin * 2});
+  $max-size-calc-expr: calc(100vw - #{$margin * 2});
 
   .mdc-dialog__surface {
     @include mdc-feature-targets($feat-structure) {
