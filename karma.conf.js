@@ -69,6 +69,7 @@ module.exports = function(config) {
     // Refer https://github.com/karma-runner/karma-mocha
     frameworks: ['mocha'],
     files: [
+      // Refer https://github.com/babel/karma-babel-preprocessor
       'node_modules/@babel/polyfill/dist/polyfill.js',
       'test/unit/index.js',
     ],
