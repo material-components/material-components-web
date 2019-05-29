@@ -44,7 +44,7 @@ npm install @material/top-app-bar
 <header class="mdc-top-app-bar">
   <div class="mdc-top-app-bar__row">
     <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-      <a href="#" class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button">menu</a>
+      <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button">menu</button>
       <span class="mdc-top-app-bar__title">Title</span>
     </section>
   </div>
@@ -94,13 +94,13 @@ Top app bars can contain action items which are placed on the side opposite the 
 <header class="mdc-top-app-bar">
   <div class="mdc-top-app-bar__row">
     <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-      <a href="#" class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button">menu</a>
+      <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button">menu</button>
       <span class="mdc-top-app-bar__title">Title</span>
     </section>
     <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
-      <a href="#" class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Download">file_download</a>
-      <a href="#" class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Print this page">print</a>
-      <a href="#" class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Bookmark this page">bookmark</a>
+      <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Download">file_download</button>
+      <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Print this page">print</button>
+      <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Bookmark this page">bookmark</button>
     </section>
   </div>
 </header>
@@ -114,11 +114,11 @@ Short top app bars are top app bars that can collapse to the navigation icon sid
 <header class="mdc-top-app-bar mdc-top-app-bar--short">
   <div class="mdc-top-app-bar__row">
     <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-      <a href="#" class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button">menu</a>
+      <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button">menu</button>
       <span class="mdc-top-app-bar__title">Title</span>
     </section>
     <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
-      <a href="#" class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Bookmark this page">bookmark</a>
+      <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Bookmark this page">bookmark</button>
     </section>
   </div>
 </header>
