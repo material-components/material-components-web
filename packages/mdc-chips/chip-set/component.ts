@@ -24,7 +24,8 @@
 import {MDCComponent} from '@material/base/component';
 import {MDCChip, MDCChipFactory} from '../chip/component';
 import {MDCChipFoundation} from '../chip/foundation';
-import {MDCChipInteractionEvent, MDCChipKeyboardNavigationEvent, MDCChipRemovalEvent, MDCChipSelectionEvent} from '../chip/types';
+import {MDCChipInteractionEvent, MDCChipKeyboardNavigationEvent, MDCChipRemovalEvent,
+    MDCChipSelectionEvent} from '../chip/types';
 import {MDCChipSetAdapter} from './adapter';
 import {MDCChipSetFoundation} from './foundation';
 
@@ -54,7 +55,8 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   private handleChipInteraction_!: (evt: MDCChipInteractionEvent) => void; // assigned in initialSyncWithDOM()
   private handleChipSelection_!: (evt: MDCChipSelectionEvent) => void; // assigned in initialSyncWithDOM()
   private handleChipRemoval_!: (evt: MDCChipRemovalEvent) => void; // assigned in initialSyncWithDOM()
-  private handleChipKeyboardNavigation_!: (evt: MDCChipKeyboardNavigationEvent) => void; // assigned in initialSyncWithDOM()
+  private handleChipKeyboardNavigation_!: (evt: MDCChipKeyboardNavigationEvent)
+    => void; // assigned in initialSyncWithDOM()
 
   /**
    * @param chipFactory A function which creates a new MDCChip.
@@ -74,7 +76,9 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
     this.handleChipInteraction_ = (evt) => this.foundation_.handleChipInteraction(evt.detail.chipId);
     this.handleChipSelection_ = (evt) => this.foundation_.handleChipSelection(evt.detail.chipId, evt.detail.selected);
     this.handleChipRemoval_ = (evt) => this.foundation_.handleChipRemoval(evt.detail.chipId);
-    this.handleChipKeyboardNavigation_ = (evt) => this.foundation_.handleChipKeyboardNavigation(evt.detail.chipId, evt.detail.key);
+    this.handleChipKeyboardNavigation_ = (evt) => {
+      this.foundation_.handleChipKeyboardNavigation(evt.detail.chipId, evt.detail.key);
+    };
     this.listen(INTERACTION_EVENT, this.handleChipInteraction_);
     this.listen(SELECTION_EVENT, this.handleChipSelection_);
     this.listen(REMOVAL_EVENT, this.handleChipRemoval_);

@@ -329,7 +329,7 @@ Method Signature | Description
 `addClassToLeadingIcon(className: string) => void` | Adds a class to the leading icon element
 `removeClassFromLeadingIcon(className: string) => void` | Removes a class from the leading icon element
 `eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise
-`notifyKeyboard(key: string) => void` | Notifies the Chip Set of a keyboard event
+`notifyKeyboardNavigation(key: string) => void` | Notifies the Chip Set of a keyboard navigation event
 `notifyInteraction() => void` | Notifies the Chip Set that the chip has been interacted with\*
 `notifySelection(selected) => void` | Notifies the Chip Set that the chip has been selected or deselected\*\*
 `notifyTrailingIconInteraction() => void` | Notifies the Chip Set that the chip's trailing icon has been interacted with\*
@@ -357,7 +357,7 @@ Method Signature | Description
 `getChipClientRectByIndex(index: number) => ClientRect|void` | Returns the ClientRect of the chip at the given index if it exists
 `focusChipAtIndex() => void` | Gives focus to the chip at the given index if it exists
 `getIndexOfChipById(chipId: string) => number` | Returns the index of the chip with the given ID if it exists or -1
-`getChipListLength() => number` | Returns the number of chips
+`getChipListCount() => number` | Returns the number of chips
 `isRTL() => boolean` | Returns if the text direction is RTL.
 
 ### Foundations: `MDCChipFoundation` and `MDCChipSetFoundation`
@@ -394,7 +394,7 @@ Method Signature | Description
 `getSelectedChipIds() => ReadonlyArray<string>` | Returns an array of the IDs of all selected chips
 `select(chipId: string) => void` | Selects the chip with the given id
 `handleChipInteraction(chipId: string) => void` | Handles a custom `MDCChip:interaction` event on the root element
-`handleChipKeyboard(chipId: string, key: string) => void` | Handles a custom `MDCChip:keyboard` event on the root element
+`handleChipKeyboardNavigation(chipId: string, key: string) => void` | Handles a custom `MDCChip:keyboardnavigation` event on the root element
 `handleChipSelection(chipId: string, selected: boolean) => void` | Handles a custom `MDCChip:selection` event on the root element
 `handleChipRemoval(chipId: string) => void` | Handles a custom `MDCChip:removal` event on the root element
 
