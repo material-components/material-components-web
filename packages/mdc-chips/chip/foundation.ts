@@ -23,7 +23,7 @@
 
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCChipAdapter} from './adapter';
-import {cssClasses, strings, numbers} from './constants';
+import {cssClasses, numbers, strings} from './constants';
 
 export const ACCEPTABLE_KEYS = new Set<string>();
 // IE11 has no support for new Set with iterable so we need to initialize this by hand
@@ -54,7 +54,6 @@ export const VERTICAL_KEYS = new Set<string>();
 // IE11 has no support for new Map with iterable so we need to initialize this by hand
 VERTICAL_KEYS.add(strings.ARROW_UP_KEY);
 VERTICAL_KEYS.add(strings.ARROW_DOWN_KEY);
-
 
 const emptyClientRect = {
   bottom: 0,
@@ -89,6 +88,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       hasClass: () => false,
       hasLeadingIcon: () => false,
       notifyInteraction: () => undefined,
+      notifyKeyboard: () => undefined,
       notifyRemoval: () => undefined,
       notifySelection: () => undefined,
       notifyTrailingIconInteraction: () => undefined,
@@ -96,7 +96,6 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       removeClassFromLeadingIcon: () => undefined,
       setAttr: () => undefined,
       setStyleProperty: () => undefined,
-      notifyKeyDown: () => undefined,
     };
   }
 
@@ -242,7 +241,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       return;
     }
 
-    this.adapter_.notifyKeyDown(key);
+    this.adapter_.notifyKeyboard(key);
   }
 
   private getKeyFromEvent_(evt: KeyboardEvent): string|void {

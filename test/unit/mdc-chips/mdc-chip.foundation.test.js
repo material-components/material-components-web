@@ -326,7 +326,7 @@ test('#handleKeyDown emits custom event on all keys', () => {
     };
 
     foundation.handleKeyDown(mockEvt);
-    td.verify(mockAdapter.notifyKeyDown(key));
+    td.verify(mockAdapter.notifyKeyboard(key));
   });
 });
 

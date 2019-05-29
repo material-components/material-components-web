@@ -82,9 +82,9 @@ export interface MDCChipAdapter {
   notifyRemoval(): void;
 
   /**
-   * Emits a custom "MDCChip:keydown" event signaling a keyboard navigation event.
+   * Emits a custom "MDCChip:keyboard" event signaling a keyboard navigation event.
    */
-  notifyKeyDown(key: string): void;
+  notifyKeyboard(key: string): void;
 
   /**
    * @return The computed property value of the given style property on the root element.

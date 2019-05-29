@@ -32,7 +32,7 @@ export const strings = {
   ENTRY_ANIMATION_NAME: 'mdc-chip-entry',
   HOME_KEY: 'Home',
   INTERACTION_EVENT: 'MDCChip:interaction',
-  KEYDOWN_EVENT: 'MDCChip:keydown',
+  KEYBOARD_EVENT: 'MDCChip:keyboard',
   LEADING_ICON_SELECTOR: '.mdc-chip__icon--leading',
   REMOVAL_EVENT: 'MDCChip:removal',
   SELECTION_EVENT: 'MDCChip:selection',

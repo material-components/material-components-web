@@ -22,10 +22,10 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+import {strings as chipStrings} from '../chip/constants';
+import {HORIZONTAL_KEYS, VERTICAL_KEYS} from '../chip/foundation';
 import {MDCChipSetAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
-import {HORIZONTAL_KEYS, VERTICAL_KEYS} from '../chip/foundation';
-import {strings as chipStrings} from '../chip/constants';
 
 export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   static get strings() {
@@ -38,14 +38,14 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
 
   static get defaultAdapter(): MDCChipSetAdapter {
     return {
+      focusChipAtIndex: () => undefined,
+      getChipClientRectByIndex: () => undefined,
+      getChipListLength: () => -1,
+      getIndexOfChipById: () => -1,
       hasClass: () => false,
+      isRTL: () => false,
       removeChip: () => undefined,
       setSelected: () => undefined,
-      getChipClientRectByIndex: () => undefined,
-      getIndexOfChipById: () => -1,
-      getChipListLength: () => -1,
-      focusChipAtIndex: () => undefined,
-      isRTL: () => false,
     };
   }
 
@@ -111,7 +111,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     this.adapter_.removeChip(chipId);
   }
 
-  handleChipKeyDown(chipId: string, key: string) {
+  handleChipKeyboard(chipId: string, key: string) {
     const maxIndex = this.adapter_.getChipListLength() - 1;
     const index = this.adapter_.getIndexOfChipById(chipId);
     let idx = -1;
@@ -186,8 +186,10 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     const maxIndex = this.adapter_.getChipListLength() - 1;
     const shouldGoToEndOfRow = key === chipStrings.END_KEY;
     const shouldGoToStartOfRow = key === chipStrings.HOME_KEY;
-    const shouldDecrement = key === chipStrings.ARROW_LEFT_KEY && !isRTL || key === chipStrings.ARROW_RIGHT_KEY && isRTL;
-    const shouldIncrement = key === chipStrings.ARROW_RIGHT_KEY && !isRTL || key === chipStrings.ARROW_LEFT_KEY && isRTL;
+    const shouldDecrement = key === chipStrings.ARROW_LEFT_KEY && !isRTL
+        || key === chipStrings.ARROW_RIGHT_KEY && isRTL;
+    const shouldIncrement = key === chipStrings.ARROW_RIGHT_KEY && !isRTL
+        || key === chipStrings.ARROW_LEFT_KEY && isRTL;
     const index = this.adapter_.getIndexOfChipById(chipId);
 
     if (shouldGoToEndOfRow) {
@@ -211,7 +213,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
 
   private determineRowEndIndex_(index: number, maxIndex: number, isRTL: boolean): number {
     while (index <= maxIndex) {
-      let nextIndex = index + 1;
+      const nextIndex = index + 1;
       if (this.nextChipIsInNewRow_(index, nextIndex, isRTL)) {
         break;
       }
@@ -223,7 +225,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
 
   private determineRowStartIndex_(index: number, isRTL: boolean): number {
     while (index >= 0) {
-      let nextIndex = index - 1;
+      const nextIndex = index - 1;
       if (this.nextChipIsInNewRow_(index, nextIndex, isRTL)) {
         break;
       }

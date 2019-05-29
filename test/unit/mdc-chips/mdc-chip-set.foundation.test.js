@@ -192,11 +192,7 @@ test('#handleChipRemoval removes chip', () => {
   td.verify(mockAdapter.removeChip('chipA'));
 });
 
-test('#handleKeyDown is good', () => {
-
-});
-
-function setupHandleKeyDownTest(chips=[], isRTL=false) {
+function setupHandleKeyboardTest(chips=[], isRTL=false) {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.getChipClientRectByIndex(td.matchers.isA(Number))).thenDo((index) => {
     if (index < 0 || index >= chips.length) {
@@ -240,87 +236,87 @@ const chipGrid3x3 = [
   setupFakeChip(140, 80, 60, 30, 'chip8'),
 ];
 
-test('#handleKeyDown ArrowLeft from the first chip does nothing', () => {
-  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3);
-  foundation.handleChipKeyDown('chip0', 'ArrowLeft');
+test('#handleKeyboard ArrowLeft from the first chip does nothing', () => {
+  const {foundation, mockAdapter} = setupHandleKeyboardTest(chipGrid3x3);
+  foundation.handleChipKeyboard('chip0', 'ArrowLeft');
   td.verify(mockAdapter.focusChipAtIndex(td.matchers.isA(Number)), {times: 0});
 });
 
-test('#handleKeyDown Home from the first chip in a row does nothing', () => {
-  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3);
-  foundation.handleChipKeyDown('chip0', 'Home');
+test('#handleKeyboard Home from the first chip in a row does nothing', () => {
+  const {foundation, mockAdapter} = setupHandleKeyboardTest(chipGrid3x3);
+  foundation.handleChipKeyboard('chip0', 'Home');
   td.verify(mockAdapter.focusChipAtIndex(td.matchers.isA(Number)), {times: 0});
 });
 
-test('#handleKeyDown ArrowRight from the last chip does nothing', () => {
-  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3);
-  foundation.handleChipKeyDown('chip8', 'ArrowRight');
+test('#handleKeyboard ArrowRight from the last chip does nothing', () => {
+  const {foundation, mockAdapter} = setupHandleKeyboardTest(chipGrid3x3);
+  foundation.handleChipKeyboard('chip8', 'ArrowRight');
   td.verify(mockAdapter.focusChipAtIndex(td.matchers.isA(Number)), {times: 0});
 });
 
-test('#handleKeyDown End from the last chip in a row does nothing', () => {
-  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3);
-  foundation.handleChipKeyDown('chip5', 'End');
+test('#handleKeyboard End from the last chip in a row does nothing', () => {
+  const {foundation, mockAdapter} = setupHandleKeyboardTest(chipGrid3x3);
+  foundation.handleChipKeyboard('chip5', 'End');
   td.verify(mockAdapter.focusChipAtIndex(td.matchers.isA(Number)), {times: 0});
 });
 
-test('#handleKeyDown ArrowRight goes to the next logical chip', () => {
-  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3);
-  foundation.handleChipKeyDown('chip4', 'ArrowRight');
+test('#handleKeyboard ArrowRight goes to the next logical chip', () => {
+  const {foundation, mockAdapter} = setupHandleKeyboardTest(chipGrid3x3);
+  foundation.handleChipKeyboard('chip4', 'ArrowRight');
   td.verify(mockAdapter.focusChipAtIndex(5));
 });
 
-test('#handleKeyDown ArrowRight wraps around to the next row', () => {
-  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3);
-  foundation.handleChipKeyDown('chip2', 'ArrowRight');
+test('#handleKeyboard ArrowRight wraps around to the next row', () => {
+  const {foundation, mockAdapter} = setupHandleKeyboardTest(chipGrid3x3);
+  foundation.handleChipKeyboard('chip2', 'ArrowRight');
   td.verify(mockAdapter.focusChipAtIndex(3));
 });
 
-test('#handleKeyDown ArrowLeft goes to the next logical chip', () => {
-  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3);
-  foundation.handleChipKeyDown('chip4', 'ArrowLeft');
+test('#handleKeyboard ArrowLeft goes to the next logical chip', () => {
+  const {foundation, mockAdapter} = setupHandleKeyboardTest(chipGrid3x3);
+  foundation.handleChipKeyboard('chip4', 'ArrowLeft');
   td.verify(mockAdapter.focusChipAtIndex(3));
 });
 
-test('#handleKeyDown ArrowLeft wraps around to the previous row', () => {
-  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3);
-  foundation.handleChipKeyDown('chip3', 'ArrowLeft');
+test('#handleKeyboard ArrowLeft wraps around to the previous row', () => {
+  const {foundation, mockAdapter} = setupHandleKeyboardTest(chipGrid3x3);
+  foundation.handleChipKeyboard('chip3', 'ArrowLeft');
   td.verify(mockAdapter.focusChipAtIndex(2));
 });
 
-test('#handleKeyDown Home goes to the row start chip', () => {
-  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3);
-  foundation.handleChipKeyDown('chip5', 'Home');
+test('#handleKeyboard Home goes to the row start chip', () => {
+  const {foundation, mockAdapter} = setupHandleKeyboardTest(chipGrid3x3);
+  foundation.handleChipKeyboard('chip5', 'Home');
   td.verify(mockAdapter.focusChipAtIndex(3));
 });
 
-test('#handleKeyDown End goes to the row end chip', () => {
-  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3);
-  foundation.handleChipKeyDown('chip3', 'End');
+test('#handleKeyboard End goes to the row end chip', () => {
+  const {foundation, mockAdapter} = setupHandleKeyboardTest(chipGrid3x3);
+  foundation.handleChipKeyboard('chip3', 'End');
   td.verify(mockAdapter.focusChipAtIndex(5));
 });
 
-test('#handleKeyDown ArrowUp goes to the next logical chip', () => {
-  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3);
-  foundation.handleChipKeyDown('chip4', 'ArrowUp');
+test('#handleKeyboard ArrowUp goes to the next logical chip', () => {
+  const {foundation, mockAdapter} = setupHandleKeyboardTest(chipGrid3x3);
+  foundation.handleChipKeyboard('chip4', 'ArrowUp');
   td.verify(mockAdapter.focusChipAtIndex(1));
 });
 
-test('#handleKeyDown ArrowUp from the top row does nothing', () => {
-  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3);
-  foundation.handleChipKeyDown('chip0', 'ArrowUp');
+test('#handleKeyboard ArrowUp from the top row does nothing', () => {
+  const {foundation, mockAdapter} = setupHandleKeyboardTest(chipGrid3x3);
+  foundation.handleChipKeyboard('chip0', 'ArrowUp');
   td.verify(mockAdapter.focusChipAtIndex(td.matchers.isA(Number)), {times: 0});
 });
 
-test('#handleKeyDown ArrowDown goes to the next logical chip', () => {
-  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3);
-  foundation.handleChipKeyDown('chip4', 'ArrowDown');
+test('#handleKeyboard ArrowDown goes to the next logical chip', () => {
+  const {foundation, mockAdapter} = setupHandleKeyboardTest(chipGrid3x3);
+  foundation.handleChipKeyboard('chip4', 'ArrowDown');
   td.verify(mockAdapter.focusChipAtIndex(7));
 });
 
-test('#handleKeyDown ArrowDown from the bottom row does nothing', () => {
-  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3);
-  foundation.handleChipKeyDown('chip7', 'ArrowDown');
+test('#handleKeyboard ArrowDown from the bottom row does nothing', () => {
+  const {foundation, mockAdapter} = setupHandleKeyboardTest(chipGrid3x3);
+  foundation.handleChipKeyboard('chip7', 'ArrowDown');
   td.verify(mockAdapter.focusChipAtIndex(td.matchers.isA(Number)), {times: 0});
 });
 
@@ -338,50 +334,50 @@ const chipGrid3x3RTL = [
   setupFakeChip(0, 80, 60, 30, 'chip8'),
 ];
 
-test('#handleKeyDown ArrowRight goes to the next logical chip in RTL', () => {
-  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3RTL, true);
-  foundation.handleChipKeyDown('chip4', 'ArrowRight');
+test('#handleKeyboard ArrowRight goes to the next logical chip in RTL', () => {
+  const {foundation, mockAdapter} = setupHandleKeyboardTest(chipGrid3x3RTL, true);
+  foundation.handleChipKeyboard('chip4', 'ArrowRight');
   td.verify(mockAdapter.focusChipAtIndex(3));
 });
 
-test('#handleKeyDown ArrowLeft goes to the next logical chip in RTL', () => {
-  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3RTL, true);
-  foundation.handleChipKeyDown('chip4', 'ArrowLeft');
+test('#handleKeyboard ArrowLeft goes to the next logical chip in RTL', () => {
+  const {foundation, mockAdapter} = setupHandleKeyboardTest(chipGrid3x3RTL, true);
+  foundation.handleChipKeyboard('chip4', 'ArrowLeft');
   td.verify(mockAdapter.focusChipAtIndex(5));
 });
 
-test('#handleKeyDown Home goes to the row start chip in RTL', () => {
-  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3RTL, true);
-  foundation.handleChipKeyDown('chip5', 'Home');
+test('#handleKeyboard Home goes to the row start chip in RTL', () => {
+  const {foundation, mockAdapter} = setupHandleKeyboardTest(chipGrid3x3RTL, true);
+  foundation.handleChipKeyboard('chip5', 'Home');
   td.verify(mockAdapter.focusChipAtIndex(3));
 });
 
-test('#handleKeyDown End goes to the row end chip in RTL', () => {
-  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3RTL, true);
-  foundation.handleChipKeyDown('chip3', 'End');
+test('#handleKeyboard End goes to the row end chip in RTL', () => {
+  const {foundation, mockAdapter} = setupHandleKeyboardTest(chipGrid3x3RTL, true);
+  foundation.handleChipKeyboard('chip3', 'End');
   td.verify(mockAdapter.focusChipAtIndex(5));
 });
 
-test('#handleKeyDown Home from the last chip in a row does nothing in RTL', () => {
-  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3RTL, true);
-  foundation.handleChipKeyDown('chip3', 'Home');
+test('#handleKeyboard Home from the last chip in a row does nothing in RTL', () => {
+  const {foundation, mockAdapter} = setupHandleKeyboardTest(chipGrid3x3RTL, true);
+  foundation.handleChipKeyboard('chip3', 'Home');
   td.verify(mockAdapter.focusChipAtIndex(td.matchers.isA(Number)), {times: 0});
 });
 
-test('#handleKeyDown End from the first chip in a row does nothing in RTL', () => {
-  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3RTL, true);
-  foundation.handleChipKeyDown('chip5', 'End');
+test('#handleKeyboard End from the first chip in a row does nothing in RTL', () => {
+  const {foundation, mockAdapter} = setupHandleKeyboardTest(chipGrid3x3RTL, true);
+  foundation.handleChipKeyboard('chip5', 'End');
   td.verify(mockAdapter.focusChipAtIndex(td.matchers.isA(Number)), {times: 0});
 });
 
-test('#handleKeyDown ArrowLeft wraps around to the previous row in RTL', () => {
-  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3RTL, true);
-  foundation.handleChipKeyDown('chip5', 'ArrowLeft');
+test('#handleKeyboard ArrowLeft wraps around to the previous row in RTL', () => {
+  const {foundation, mockAdapter} = setupHandleKeyboardTest(chipGrid3x3RTL, true);
+  foundation.handleChipKeyboard('chip5', 'ArrowLeft');
   td.verify(mockAdapter.focusChipAtIndex(6));
 });
 
-test('#handleKeyDown ArrowRight wraps around to the previous row in RTL', () => {
-  const {foundation, mockAdapter} = setupHandleKeyDownTest(chipGrid3x3RTL, true);
-  foundation.handleChipKeyDown('chip3', 'ArrowRight');
+test('#handleKeyboard ArrowRight wraps around to the previous row in RTL', () => {
+  const {foundation, mockAdapter} = setupHandleKeyboardTest(chipGrid3x3RTL, true);
+  foundation.handleChipKeyboard('chip3', 'ArrowRight');
   td.verify(mockAdapter.focusChipAtIndex(2));
 });

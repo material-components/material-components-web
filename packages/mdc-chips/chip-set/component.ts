@@ -24,11 +24,11 @@
 import {MDCComponent} from '@material/base/component';
 import {MDCChip, MDCChipFactory} from '../chip/component';
 import {MDCChipFoundation} from '../chip/foundation';
-import {MDCChipInteractionEvent, MDCChipRemovalEvent, MDCChipSelectionEvent, MDCChipKeyDownEvent} from '../chip/types';
+import {MDCChipInteractionEvent, MDCChipKeyboardEvent, MDCChipRemovalEvent, MDCChipSelectionEvent} from '../chip/types';
 import {MDCChipSetAdapter} from './adapter';
 import {MDCChipSetFoundation} from './foundation';
 
-const {INTERACTION_EVENT, SELECTION_EVENT, REMOVAL_EVENT, KEYDOWN_EVENT} = MDCChipFoundation.strings;
+const {INTERACTION_EVENT, SELECTION_EVENT, REMOVAL_EVENT, KEYBOARD_EVENT: KEYDOWN_EVENT} = MDCChipFoundation.strings;
 const {CHIP_SELECTOR} = MDCChipSetFoundation.strings;
 
 let idCounter = 0;
@@ -54,7 +54,7 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   private handleChipInteraction_!: (evt: MDCChipInteractionEvent) => void; // assigned in initialSyncWithDOM()
   private handleChipSelection_!: (evt: MDCChipSelectionEvent) => void; // assigned in initialSyncWithDOM()
   private handleChipRemoval_!: (evt: MDCChipRemovalEvent) => void; // assigned in initialSyncWithDOM()
-  private handleChipKeyDown_!: (evt: MDCChipKeyDownEvent) => void; // assigned in initialSyncWithDOM()
+  private handleChipKeyboard_!: (evt: MDCChipKeyboardEvent) => void; // assigned in initialSyncWithDOM()
 
   /**
    * @param chipFactory A function which creates a new MDCChip.
@@ -74,11 +74,11 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
     this.handleChipInteraction_ = (evt) => this.foundation_.handleChipInteraction(evt.detail.chipId);
     this.handleChipSelection_ = (evt) => this.foundation_.handleChipSelection(evt.detail.chipId, evt.detail.selected);
     this.handleChipRemoval_ = (evt) => this.foundation_.handleChipRemoval(evt.detail.chipId);
-    this.handleChipKeyDown_ = (evt) => this.foundation_.handleChipKeyDown(evt.detail.chipId, evt.detail.key);
+    this.handleChipKeyboard_ = (evt) => this.foundation_.handleChipKeyboard(evt.detail.chipId, evt.detail.key);
     this.listen(INTERACTION_EVENT, this.handleChipInteraction_);
     this.listen(SELECTION_EVENT, this.handleChipSelection_);
     this.listen(REMOVAL_EVENT, this.handleChipRemoval_);
-    this.listen(KEYDOWN_EVENT, this.handleChipKeyDown_);
+    this.listen(KEYDOWN_EVENT, this.handleChipKeyboard_);
   }
 
   destroy() {
@@ -89,7 +89,7 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
     this.unlisten(INTERACTION_EVENT, this.handleChipInteraction_);
     this.unlisten(SELECTION_EVENT, this.handleChipSelection_);
     this.unlisten(REMOVAL_EVENT, this.handleChipRemoval_);
-    this.unlisten(KEYDOWN_EVENT, this.handleChipKeyDown_);
+    this.unlisten(KEYDOWN_EVENT, this.handleChipKeyboard_);
 
     super.destroy();
   }
@@ -106,7 +106,31 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCChipSetAdapter = {
+      focusChipAtIndex: (index) => {
+        if (index < 0 || index >= this.chips_.length) {
+          return;
+        }
+        this.chips_[index].focus();
+      },
+      getChipClientRectByIndex: (index) => {
+        if (index < 0 || index >= this.chips_.length) {
+          return undefined;
+        }
+        return this.chips_[index].getClientRect();
+      },
+      getChipListLength: () => {
+        return this.chips_.length;
+      },
+      getIndexOfChipById: (chipId) => {
+        for (let i = 0; i < this.chips_.length; i++) {
+          if (this.chips_[i].id === chipId) {
+            return i;
+          }
+        }
+        return -1;
+      },
       hasClass: (className) => this.root_.classList.contains(className),
+      isRTL: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
       removeChip: (chipId) => {
         const index = this.findChipIndex_(chipId);
         if (index >= 0) {
@@ -120,25 +144,6 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
           this.chips_[index].selected = selected;
         }
       },
-      getChipClientRectByIndex: (index) => {
-        if (index < 0 || index >= this.chips_.length) {
-          return undefined;
-        }
-        return this.chips_[index].getClientRect();
-      },
-      getIndexOfChipById: (chipId) => {
-        return this.findChipIndex_(chipId);
-      },
-      getChipListLength: () => {
-        return this.chips_.length;
-      },
-      focusChipAtIndex: (index) => {
-        if (index < 0 || index >= this.chips_.length) {
-          return;
-        }
-        this.chips_[index].focus();
-      },
-      isRTL: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
     };
     return new MDCChipSetFoundation(adapter);
   }
