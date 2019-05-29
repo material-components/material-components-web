@@ -43,7 +43,7 @@ export const strings = {
 };
 
 export const events = {
-  ROW_SELECTION_CHANGED: 'MDCDataTable:changed',
+  ROW_SELECTION_CHANGED: 'MDCDataTable:rowSelectionChanged',
   SELECTED_ALL: 'MDCDataTable:selectedAll',
   UNSELECTED_ALL: 'MDCDataTable:unselectedAll',
 };

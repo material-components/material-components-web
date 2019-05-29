@@ -34,6 +34,7 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
       getRowIdAtIndex: () => '',
       getRowIndexByChildElement: () => 0,
       getSelectedRowCount: () => 0,
+      isCheckboxAtRowIndexChecked: () => false,
       isHeaderRowCheckboxChecked: () => false,
       isRowsSelectable: () => false,
       notifyRowSelectionChanged: () => undefined,
@@ -53,8 +54,13 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
     super({...MDCDataTableFoundation.defaultAdapter, ...adapter});
   }
 
+  init() {
+    this.layout();
+  }
+
   /**
    * Re-initializes header row checkbox and row checkboxes when selectable rows are added or removed from table.
+   * Use this if registering checkbox is synchronous.
    */
   layout() {
     if (this.adapter_.isRowsSelectable()) {
@@ -66,9 +72,22 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
   }
 
   /**
+   * Re-initializes header row checkbox and row checkboxes when selectable rows are added or removed from table.
+   * Use this if registering checkbox is asynchronous.
+   */
+  async layoutAsync(): Promise<void> {
+    if (this.adapter_.isRowsSelectable()) {
+      await this.adapter_.registerHeaderRowCheckbox();
+      await this.adapter_.registerRowCheckboxes();
+
+      this.setHeaderRowCheckboxState_();
+    }
+  }
+
+  /**
    * @return Returns array of row elements.
    */
-  getRows(): HTMLElement[] {
+  getRows(): Element[] {
     return this.adapter_.getRowElements();
   }
 
@@ -97,8 +116,10 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
    */
   getSelectedRowIds(): Array<string|null> {
     const selectedRowIds: Array<string|null> = [];
-    for (let rowIndex = 0; rowIndex < this.adapter_.getSelectedRowCount(); rowIndex++) {
-      selectedRowIds.push(this.adapter_.getRowIdAtIndex(rowIndex));
+    for (let rowIndex = 0; rowIndex < this.adapter_.getRowCount(); rowIndex++) {
+      if (this.adapter_.isCheckboxAtRowIndexChecked(rowIndex)) {
+        selectedRowIds.push(this.adapter_.getRowIdAtIndex(rowIndex));
+      }
     }
 
     return selectedRowIds;
@@ -132,12 +153,7 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
       return;
     }
 
-    const checkboxNativeEl = event.target as HTMLInputElement;
-    if (!checkboxNativeEl) {
-      return;
-    }
-
-    const selected = checkboxNativeEl.checked;
+    const selected = this.adapter_.isCheckboxAtRowIndexChecked(rowIndex);
 
     this.selectRowAtIndex_(rowIndex, selected);
     this.setHeaderRowCheckboxState_();
