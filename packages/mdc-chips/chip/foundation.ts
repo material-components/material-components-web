@@ -55,6 +55,11 @@ export const VERTICAL_KEYS = new Set<string>();
 VERTICAL_KEYS.add(strings.ARROW_UP_KEY);
 VERTICAL_KEYS.add(strings.ARROW_DOWN_KEY);
 
+export const END_KEYS = new Set<string>();
+// IE11 has no support for new Map with iterable so we need to initialize this by hand
+END_KEYS.add(strings.FIRST_KEY);
+END_KEYS.add(strings.LAST_KEY);
+
 const emptyClientRect = {
   bottom: 0,
   height: 0,
@@ -245,10 +250,23 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   }
 
   private getKeyFromEvent_(evt: KeyboardEvent): string|void {
+    let key;
     if (ACCEPTABLE_KEYS.has(evt.key)) {
-      return evt.key;
+      key = evt.key;
+    } else {
+      key = KEYCODE_MAP.get(evt.keyCode);
     }
-    return KEYCODE_MAP.get(evt.keyCode);
+
+    const hasModifier = evt.metaKey || evt.ctrlKey;
+    if (hasModifier && key === strings.HOME_KEY) {
+      return strings.FIRST_KEY;
+    }
+
+    if (hasModifier && key === strings.END_KEY) {
+      return strings.LAST_KEY;
+    }
+
+    return key;
   }
 }
 

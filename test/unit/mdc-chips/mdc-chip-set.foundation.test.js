@@ -201,7 +201,12 @@ function setupHandleKeyboardTest(chips=[], isRTL=false) {
     return chips[index].clientRect;
   });
   td.when(mockAdapter.getIndexOfChipById(td.matchers.isA(String))).thenDo((id) => {
-    return chips.findIndex((chip) => chip.id === id);
+    for (let i = 0; i < chips.length; i++) {
+      if (chip.id === id) {
+        return i;
+      }
+    }
+    return -1;
   });
   td.when(mockAdapter.getChipListCount()).thenReturn(chips.length);
   td.when(mockAdapter.isRTL()).thenReturn(isRTL);

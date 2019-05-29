@@ -23,7 +23,7 @@
 
 import {MDCFoundation} from '@material/base/foundation';
 import {strings as chipStrings} from '../chip/constants';
-import {HORIZONTAL_KEYS, VERTICAL_KEYS} from '../chip/foundation';
+import {HORIZONTAL_KEYS, VERTICAL_KEYS, END_KEYS} from '../chip/foundation';
 import {MDCChipSetAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
@@ -119,6 +119,8 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
       idx = this.determineNextHorizontalChip_(chipId, key);
     } else if (VERTICAL_KEYS.has(key)) {
       idx = this.determineNextVerticalChip_(chipId, key);
+    } else if (END_KEYS.has(key)) {
+      idx = this.determineEndChip_(key, maxIndex);
     }
 
     // Early exit if the index is invalid or the source of the event
@@ -286,6 +288,18 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     const chipHorizontalCenter = chipClientRect.left + chipClientRect.width / 2;
     const aboveChipHorizontalCenter = aboveChipClientRect.left + aboveChipClientRect.width / 2;
     return Math.abs(chipHorizontalCenter - aboveChipHorizontalCenter);
+  }
+
+  private determineEndChip_(key: string, maxIndex: number): number {
+    if (key === chipStrings.FIRST_KEY) {
+      return 0;
+    }
+
+    if (key === chipStrings.LAST_KEY) {
+      return maxIndex;
+    }
+
+    return -1;
   }
 
   /**
