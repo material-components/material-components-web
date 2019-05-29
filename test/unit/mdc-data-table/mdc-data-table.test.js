@@ -222,6 +222,14 @@ test('#setSelectedRowIds calls foundation.setSelectedRowIds() method', () => {
   component.destroy();
 });
 
+test('#setSelectedRowIds sets selected row ids', () => {
+  const {component} = setupTest();
+
+  component.setSelectedRowIds(['u1', 'u2']);
+  assert.deepEqual(component.getSelectedRowIds(), ['u1', 'u2']);
+  component.destroy();
+});
+
 test('adapter#isHeaderRowCheckboxChecked returns true if header row checkbox is checked', () => {
   const {component, root, adapter} = setupTest();
 

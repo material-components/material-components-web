@@ -48,7 +48,7 @@ export interface MDCDataTableAdapter {
   /**
    * @return Array of row elements excluding header row.
    */
-  getRowElements(): HTMLElement[];
+  getRowElements(): Element[];
 
   /**
    * Returns row id of row element at given row index based on `data-row-id` attribute on row element `tr`.
@@ -70,6 +70,12 @@ export interface MDCDataTableAdapter {
    * @return Selected row count.
    */
   getSelectedRowCount(): number;
+
+  /**
+   * @param rowIndex Index of row element.
+   * @return True if row checkbox at given row index is checked.
+   */
+  isCheckboxAtRowIndexChecked(rowIndex: number): boolean;
 
   /**
    * @return True if header row checkbox is checked.
@@ -100,14 +106,16 @@ export interface MDCDataTableAdapter {
 
   /**
    * Initializes header row checkbox. Destroys previous header row checkbox instance if any.
+   * @return Can return Promise only if registering checkbox is asynchronous.
    */
-  registerHeaderRowCheckbox(): void;
+  registerHeaderRowCheckbox(): Promise<void> | void;
 
   /**
    * Initializes all row checkboxes. Destroys previous row checkbox instances if any. This is usually called when row
    * checkboxes are added or removed from table.
+   * @return Can return Promise only if registering checkbox is asynchronous.
    */
-  registerRowCheckboxes(): void;
+  registerRowCheckboxes(): Promise<void> | void;
 
   /**
    * Removes class name from row element at give row index.
