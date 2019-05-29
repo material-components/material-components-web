@@ -24,11 +24,11 @@
 import {MDCComponent} from '@material/base/component';
 import {MDCChip, MDCChipFactory} from '../chip/component';
 import {MDCChipFoundation} from '../chip/foundation';
-import {MDCChipInteractionEvent, MDCChipKeyboardEvent, MDCChipRemovalEvent, MDCChipSelectionEvent} from '../chip/types';
+import {MDCChipInteractionEvent, MDCChipKeyboardNavigationEvent, MDCChipRemovalEvent, MDCChipSelectionEvent} from '../chip/types';
 import {MDCChipSetAdapter} from './adapter';
 import {MDCChipSetFoundation} from './foundation';
 
-const {INTERACTION_EVENT, SELECTION_EVENT, REMOVAL_EVENT, KEYBOARD_EVENT: KEYDOWN_EVENT} = MDCChipFoundation.strings;
+const {INTERACTION_EVENT, SELECTION_EVENT, REMOVAL_EVENT, KEYBOARD_NAVIGATION_EVENT} = MDCChipFoundation.strings;
 const {CHIP_SELECTOR} = MDCChipSetFoundation.strings;
 
 let idCounter = 0;
@@ -54,7 +54,7 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   private handleChipInteraction_!: (evt: MDCChipInteractionEvent) => void; // assigned in initialSyncWithDOM()
   private handleChipSelection_!: (evt: MDCChipSelectionEvent) => void; // assigned in initialSyncWithDOM()
   private handleChipRemoval_!: (evt: MDCChipRemovalEvent) => void; // assigned in initialSyncWithDOM()
-  private handleChipKeyboard_!: (evt: MDCChipKeyboardEvent) => void; // assigned in initialSyncWithDOM()
+  private handleChipKeyboardNavigation_!: (evt: MDCChipKeyboardNavigationEvent) => void; // assigned in initialSyncWithDOM()
 
   /**
    * @param chipFactory A function which creates a new MDCChip.
@@ -74,11 +74,11 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
     this.handleChipInteraction_ = (evt) => this.foundation_.handleChipInteraction(evt.detail.chipId);
     this.handleChipSelection_ = (evt) => this.foundation_.handleChipSelection(evt.detail.chipId, evt.detail.selected);
     this.handleChipRemoval_ = (evt) => this.foundation_.handleChipRemoval(evt.detail.chipId);
-    this.handleChipKeyboard_ = (evt) => this.foundation_.handleChipKeyboard(evt.detail.chipId, evt.detail.key);
+    this.handleChipKeyboardNavigation_ = (evt) => this.foundation_.handleChipKeyboardNavigation(evt.detail.chipId, evt.detail.key);
     this.listen(INTERACTION_EVENT, this.handleChipInteraction_);
     this.listen(SELECTION_EVENT, this.handleChipSelection_);
     this.listen(REMOVAL_EVENT, this.handleChipRemoval_);
-    this.listen(KEYDOWN_EVENT, this.handleChipKeyboard_);
+    this.listen(KEYBOARD_NAVIGATION_EVENT, this.handleChipKeyboardNavigation_);
   }
 
   destroy() {
@@ -89,7 +89,7 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
     this.unlisten(INTERACTION_EVENT, this.handleChipInteraction_);
     this.unlisten(SELECTION_EVENT, this.handleChipSelection_);
     this.unlisten(REMOVAL_EVENT, this.handleChipRemoval_);
-    this.unlisten(KEYDOWN_EVENT, this.handleChipKeyboard_);
+    this.unlisten(KEYBOARD_NAVIGATION_EVENT, this.handleChipKeyboardNavigation_);
 
     super.destroy();
   }
@@ -118,7 +118,7 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
         }
         return this.chips_[index].getClientRect();
       },
-      getChipListLength: () => {
+      getChipListCount: () => {
         return this.chips_.length;
       },
       getIndexOfChipById: (chipId) => {

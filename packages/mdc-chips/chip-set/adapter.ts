@@ -62,7 +62,7 @@ export interface MDCChipSetAdapter {
   /**
    * Returns the length of the chip list.
    */
-  getChipListLength(): number;
+  getChipListCount(): number;
 
   /**
    * Returns the text direction.

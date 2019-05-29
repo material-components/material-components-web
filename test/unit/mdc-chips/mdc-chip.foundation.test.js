@@ -48,7 +48,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'notifyTrailingIconInteraction', 'notifyRemoval', 'notifySelection',
     'getComputedStyleValue', 'setStyleProperty', 'hasLeadingIcon',
     'getRootBoundingClientRect', 'getCheckmarkBoundingClientRect',
-    'setAttr', 'notifyKeyDown',
+    'setAttr', 'notifyKeyboardNavigation',
   ]);
 });
 
@@ -326,7 +326,7 @@ test('#handleKeyDown emits custom event on all keys', () => {
     };
 
     foundation.handleKeyDown(mockEvt);
-    td.verify(mockAdapter.notifyKeyboard(key));
+    td.verify(mockAdapter.notifyKeyboardNavigation(key));
   });
 });
 
@@ -346,7 +346,7 @@ test('#handleKeyDown emits custom event on all key codes', () => {
     };
 
     foundation.handleKeyDown(mockEvt);
-    td.verify(mockAdapter.notifyKeyDown(KEYCODE_MAP.get(keyCode)));
+    td.verify(mockAdapter.notifyKeyboardNavigation(KEYCODE_MAP.get(keyCode)));
   });
 });
 
@@ -358,5 +358,5 @@ test('#handleKeyDown ignores unsupported keys', () => {
   };
 
   foundation.handleKeyDown(mockEvt);
-  td.verify(mockAdapter.notifyKeyDown('Space'), {times: 0});
+  td.verify(mockAdapter.notifyKeyboardNavigation('Space'), {times: 0});
 });

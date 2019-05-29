@@ -254,13 +254,13 @@ test('adapter#notifyRemoval emits ' + MDCChipFoundation.strings.REMOVAL_EVENT, (
   td.verify(handler(td.matchers.anything()));
 });
 
-test('adapter#notifyKeyDown emits ' + MDCChipFoundation.strings.KEYBOARD_EVENT, () => {
+test('adapter#notifyKeyDown emits ' + MDCChipFoundation.strings.KEYBOARD_NAVIGATION_EVENT, () => {
   const {component} = setupTest();
   const handler = td.func('interaction handler');
 
   component.listen(
-    MDCChipFoundation.strings.KEYBOARD_EVENT, handler);
-  component.getDefaultFoundation().adapter_.notifyKeyboard();
+    MDCChipFoundation.strings.KEYBOARD_NAVIGATION_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyKeyboardNavigation();
 
   td.verify(handler(td.matchers.anything()));
 });

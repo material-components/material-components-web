@@ -84,7 +84,7 @@ export interface MDCChipAdapter {
   /**
    * Emits a custom "MDCChip:keyboard" event signaling a keyboard navigation event.
    */
-  notifyKeyboard(key: string): void;
+  notifyKeyboardNavigation(key: string): void;
 
   /**
    * @return The computed property value of the given style property on the root element.

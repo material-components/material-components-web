@@ -91,7 +91,7 @@ test('#destroy cleans up child chip components', () => {
 
 test('#initialSyncWithDOM sets up event handlers', () => {
   const {root, mockFoundation} = setupMockFoundationTest();
-  const {INTERACTION_EVENT, REMOVAL_EVENT, SELECTION_EVENT, KEYBOARD_EVENT} = MDCChipFoundation.strings;
+  const {INTERACTION_EVENT, REMOVAL_EVENT, SELECTION_EVENT, KEYBOARD_NAVIGATION_EVENT} = MDCChipFoundation.strings;
   const evtData = {
     chipId: 'chipA', selected: true, key: 'ArrowRight',
   };
@@ -102,7 +102,7 @@ test('#initialSyncWithDOM sets up event handlers', () => {
   evt1.initCustomEvent(INTERACTION_EVENT, true, true, evtData);
   evt2.initCustomEvent(REMOVAL_EVENT, true, true, evtData);
   evt3.initCustomEvent(SELECTION_EVENT, true, true, evtData);
-  evt4.initCustomEvent(KEYBOARD_EVENT, true, true, evtData);
+  evt4.initCustomEvent(KEYBOARD_NAVIGATION_EVENT, true, true, evtData);
 
   root.dispatchEvent(evt1);
   root.dispatchEvent(evt2);
@@ -112,7 +112,7 @@ test('#initialSyncWithDOM sets up event handlers', () => {
   td.verify(mockFoundation.handleChipInteraction('chipA'), {times: 1});
   td.verify(mockFoundation.handleChipSelection('chipA', true), {times: 1});
   td.verify(mockFoundation.handleChipRemoval('chipA'), {times: 1});
-  td.verify(mockFoundation.handleChipKeyboard('chipA', 'ArrowRight'), {times: 1});
+  td.verify(mockFoundation.handleChipKeyboardNavigation('chipA', 'ArrowRight'), {times: 1});
 });
 
 test('#destroy removes event handlers', () => {
@@ -128,8 +128,8 @@ test('#destroy removes event handlers', () => {
   domEvents.emit(root, MDCChipFoundation.strings.REMOVAL_EVENT);
   td.verify(mockFoundation.handleChipRemoval(td.matchers.anything()), {times: 0});
 
-  domEvents.emit(root, MDCChipFoundation.strings.KEYBOARD_EVENT);
-  td.verify(mockFoundation.handleChipKeyboard(td.matchers.anything()), {times: 0});
+  domEvents.emit(root, MDCChipFoundation.strings.KEYBOARD_NAVIGATION_EVENT);
+  td.verify(mockFoundation.handleChipKeyboardNavigation(td.matchers.anything()), {times: 0});
 });
 
 test('get selectedChipIds proxies to foundation', () => {
@@ -192,9 +192,9 @@ test('#adapter.getIndexOfChipById returns the index of the chip', () => {
   assert.equal(0, component.getDefaultFoundation().adapter_.getIndexOfChipById('chip1'));
 });
 
-test('#adapter.getChipListLength returns the length of the chip list', () => {
+test('#adapter.getChipListCount returns the length of the chip list', () => {
   const {component} = setupTest();
-  assert.equal(component.chips.length, component.getDefaultFoundation().adapter_.getChipListLength());
+  assert.equal(component.chips.length, component.getDefaultFoundation().adapter_.getChipListCount());
 });
 
 test('#adapter.focusChipAtIndex focuses the given chip', () => {

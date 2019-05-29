@@ -30,7 +30,7 @@ import {MDCRippleCapableSurface} from '@material/ripple/types';
 import {MDCChipAdapter} from './adapter';
 import {strings} from './constants';
 import {MDCChipFoundation} from './foundation';
-import {MDCChipInteractionEventDetail, MDCChipKeyboardEventDetail, MDCChipRemovalEventDetail,
+import {MDCChipInteractionEventDetail, MDCChipKeyboardNavigationEventDetail, MDCChipRemovalEventDetail,
     MDCChipSelectionEventDetail} from './types';
 
 type InteractionType = 'click' | 'keydown';
@@ -170,8 +170,8 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
       hasLeadingIcon: () => !!this.leadingIcon_,
       notifyInteraction: () => this.emit<MDCChipInteractionEventDetail>(
           strings.INTERACTION_EVENT, {chipId: this.id}, true /* shouldBubble */),
-      notifyKeyboard: (key) => this.emit<MDCChipKeyboardEventDetail>(
-          strings.KEYBOARD_EVENT, {chipId: this.id, key}, true),
+      notifyKeyboardNavigation: (key) => this.emit<MDCChipKeyboardNavigationEventDetail>(
+          strings.KEYBOARD_NAVIGATION_EVENT, {chipId: this.id, key}, true),
       notifyRemoval: () => this.emit<MDCChipRemovalEventDetail>(
           strings.REMOVAL_EVENT, {chipId: this.id, root: this.root_}, true /* shouldBubble */),
       notifySelection: (selected) => this.emit<MDCChipSelectionEventDetail>(

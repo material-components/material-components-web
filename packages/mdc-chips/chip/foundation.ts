@@ -88,7 +88,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       hasClass: () => false,
       hasLeadingIcon: () => false,
       notifyInteraction: () => undefined,
-      notifyKeyboard: () => undefined,
+      notifyKeyboardNavigation: () => undefined,
       notifyRemoval: () => undefined,
       notifySelection: () => undefined,
       notifyTrailingIconInteraction: () => undefined,
@@ -241,7 +241,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       return;
     }
 
-    this.adapter_.notifyKeyboard(key);
+    this.adapter_.notifyKeyboardNavigation(key);
   }
 
   private getKeyFromEvent_(evt: KeyboardEvent): string|void {

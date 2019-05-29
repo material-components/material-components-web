@@ -33,7 +33,7 @@ export interface MDCChipRemovalEventDetail extends MDCChipInteractionEventDetail
   root: Element;
 }
 
-export interface MDCChipKeyboardEventDetail extends MDCChipInteractionEventDetail {
+export interface MDCChipKeyboardNavigationEventDetail extends MDCChipInteractionEventDetail {
   key: string;
 }
 
@@ -51,6 +51,6 @@ export interface MDCChipRemovalEvent extends Event {
   readonly detail: MDCChipRemovalEventDetail;
 }
 
-export interface MDCChipKeyboardEvent extends Event {
-  readonly detail: MDCChipKeyboardEventDetail;
+export interface MDCChipKeyboardNavigationEvent extends Event {
+  readonly detail: MDCChipKeyboardNavigationEventDetail;
 }
