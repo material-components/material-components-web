@@ -22,7 +22,6 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
-import {SpecificEventListener} from '@material/base/types';
 import {MDCTopAppBarAdapter} from './adapter';
 import {cssClasses, numbers, strings} from './constants';
 
@@ -50,64 +49,25 @@ export class MDCTopAppBarBaseFoundation extends MDCFoundation<MDCTopAppBarAdapte
       hasClass: () => false,
       setStyle: () => undefined,
       getTopAppBarHeight: () => 0,
-      registerNavigationIconInteractionHandler: () => undefined,
-      deregisterNavigationIconInteractionHandler: () => undefined,
       notifyNavigationIconClicked: () => undefined,
-      registerScrollHandler: () => undefined,
-      deregisterScrollHandler: () => undefined,
-      registerResizeHandler: () => undefined,
-      deregisterResizeHandler: () => undefined,
       getViewportScrollY: () => 0,
       getTotalActionItems: () => 0,
     };
     // tslint:enable:object-literal-sort-keys
   }
 
-  protected scrollHandler_?: SpecificEventListener<'scroll'>;
-  protected resizeHandler_?: SpecificEventListener<'resize'>;
-  private readonly navClickHandler_: SpecificEventListener<'click'>;
-
   /* istanbul ignore next: optional argument is not a branch statement */
   constructor(adapter?: Partial<MDCTopAppBarAdapter>) {
     super({...MDCTopAppBarBaseFoundation.defaultAdapter, ...adapter});
-
-    this.navClickHandler_ = () => this.adapter_.notifyNavigationIconClicked();
   }
 
-  init() {
-    this.initScrollHandler();
-    this.initResizeHandler_();
-    this.adapter_.registerNavigationIconInteractionHandler('click', this.navClickHandler_);
-  }
+  /** Other variants of TopAppBar foundation overrides this method */
+  handleTargetScroll() {} // tslint:disable-line:no-empty
+  /** Other variants of TopAppBar foundation overrides this method */
+  handleWindowResize() {} // tslint:disable-line:no-empty
 
-  destroy() {
-    this.destroyScrollHandler();
-    this.destroyResizeHandler_();
-    this.adapter_.deregisterNavigationIconInteractionHandler('click', this.navClickHandler_);
-  }
-
-  initScrollHandler() {
-    if (this.scrollHandler_) {
-      this.adapter_.registerScrollHandler(this.scrollHandler_);
-    }
-  }
-
-  destroyScrollHandler() {
-    if (this.scrollHandler_) {
-      this.adapter_.deregisterScrollHandler(this.scrollHandler_);
-    }
-  }
-
-  private initResizeHandler_() {
-    if (this.resizeHandler_) {
-      this.adapter_.registerResizeHandler(this.resizeHandler_);
-    }
-  }
-
-  private destroyResizeHandler_() {
-    if (this.resizeHandler_) {
-      this.adapter_.deregisterResizeHandler(this.resizeHandler_);
-    }
+  handleNavigationClick() {
+    this.adapter_.notifyNavigationIconClicked();
   }
 }
 

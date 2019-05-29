@@ -132,6 +132,14 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     this.notchOutline(openNotch);
   }
 
+  handleMenuOpened() {
+    this.adapter_.addClass(cssClasses.ACTIVATED);
+  }
+
+  handleMenuClosed() {
+    this.adapter_.removeClass(cssClasses.ACTIVATED);
+  }
+
   /**
    * Handles value changes, via change event or programmatic updates.
    */
