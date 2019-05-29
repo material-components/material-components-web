@@ -109,6 +109,7 @@
       overflow-y: auto;
 
       @include mdc-rtl(".mdc-dialog") {
+        /* @noflip */
         text-align: right;
       }
     }
@@ -128,6 +129,7 @@
       border-bottom: 1px solid transparent;
 
       @include mdc-rtl(".mdc-dialog") {
+        /* @noflip */
         text-align: right;
       }
     }
@@ -240,9 +242,11 @@
 
     @include mdc-feature-targets($feat-structure) {
       max-width: 100%; // Prevent long text from overflowing parent element in IE 11
+      /* @noflip */
       text-align: right;
 
       @include mdc-rtl(".mdc-dialog") {
+        /* @noflip */
         text-align: left;
       }
     }
