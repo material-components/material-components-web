@@ -24,3 +24,4 @@
 export * from './adapter';
 export * from './component';
 export * from './foundation';
+export {cssClasses as tabCssClasses, strings as tabStrings} from './constants';

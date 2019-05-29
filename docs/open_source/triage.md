@@ -1,9 +1,9 @@
 # Triage Process
 
-* [MDC Web Untriaged Issues](https://github.com/material-components/material-components-web/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+-label%3Aicebox+-label%3A%22help+wanted%22+no%3Aassignee+no%3Amilestone+sort%3Acreated-asc)
-* [MDC Catalog Untriaged Issues](https://github.com/material-components/material-components-web-catalog/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+-label%3Aicebox+-label%3A%22help+wanted%22+no%3Aassignee+no%3Amilestone+sort%3Acreated-asc)
-* [MDC Web Codelabs Untriaged Issues](https://github.com/material-components/material-components-web-codelabs/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+-label%3Aicebox+-label%3A%22help+wanted%22+no%3Aassignee+no%3Amilestone+sort%3Acreated-asc+)
-* [MDC React Untriaged Issues](https://github.com/material-components/material-components-web-react/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aopen%20-label%3Ain-tracker%20-label%3A%22help%20wanted%22%20no%3Aassignee%20sort%3Acreated-asc%20)
+* [MDC Web Untriaged Issues](https://github.com/material-components/material-components-web/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+-label%3Aicebox+-label%3Abacklog+-label%3Athis-Q+-label%3Anext-Q+-label%3A%22help+wanted%22+no%3Aassignee+no%3Amilestone+sort%3Acreated-asc+)
+* [MDC Catalog Untriaged Issues]([catalog](https://github.com/material-components/material-components-web-catalog/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+-label%3Aicebox+-label%3Abacklog+-label%3Athis-Q+-label%3Anext-Q+-label%3A%22help+wanted%22+no%3Aassignee+no%3Amilestone+sort%3Acreated-asc+))
+* [MDC Web Codelabs Untriaged Issues](https://github.com/material-components/material-components-web-codelabs/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+-label%3Aicebox+-label%3Abacklog+-label%3Athis-Q+-label%3Anext-Q+-label%3A%22help+wanted%22+no%3Aassignee+no%3Amilestone+sort%3Acreated-asc+)
+* [MDC React Untriaged Issues](https://github.com/material-components/material-components-web-react/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+comments%3A0+-author%3Amoog16+)
 
 ### Installation Problems
 
