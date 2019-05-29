@@ -21,11 +21,8 @@
  * THE SOFTWARE.
  */
 
-import * as util from './util';
-
-export {util};
-export * from './adapter';
-export * from './component';
-export * from './constants';
-export * from './dismissible/foundation';
-export * from './modal/foundation';
+export const strings = {
+  AUTO_INIT_ATTR: 'data-mdc-auto-init',
+  AUTO_INIT_STATE_ATTR: 'data-mdc-auto-init-state',
+  INITIALIZED_STATE: 'initialized',
+};

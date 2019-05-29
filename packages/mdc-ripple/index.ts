@@ -26,5 +26,6 @@ import * as util from './util';
 export {util};
 export * from './adapter';
 export * from './component';
+export * from './constants';
 export * from './foundation';
 export * from './types';
