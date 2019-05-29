@@ -106,14 +106,16 @@ export interface MDCDataTableAdapter {
 
   /**
    * Initializes header row checkbox. Destroys previous header row checkbox instance if any.
+   * @return Can return Promise only if registering checkbox is asynchronous.
    */
-  registerHeaderRowCheckbox(): void;
+  registerHeaderRowCheckbox(): Promise<void> | void;
 
   /**
    * Initializes all row checkboxes. Destroys previous row checkbox instances if any. This is usually called when row
    * checkboxes are added or removed from table.
+   * @return Can return Promise only if registering checkbox is asynchronous.
    */
-  registerRowCheckboxes(): void;
+  registerRowCheckboxes(): Promise<void> | void;
 
   /**
    * Removes class name from row element at give row index.

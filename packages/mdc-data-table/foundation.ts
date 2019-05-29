@@ -75,7 +75,7 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
    * Re-initializes header row checkbox and row checkboxes when selectable rows are added or removed from table.
    * Use this if registering checkbox is asynchronous.
    */
-  async layoutAsync() {
+  async layoutAsync(): Promise<void> {
     if (this.adapter_.isRowsSelectable()) {
       await this.adapter_.registerHeaderRowCheckbox();
       await this.adapter_.registerRowCheckboxes();
