@@ -244,7 +244,7 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `layout() => void` | Re-initializes header row checkbox and row checkboxes when selectable rows are added or removed from table. Use this if registering checkbox is synchronous.
-`layoutAsync() => void` | Re-initializes header row checkbox and row checkboxes when selectable rows are added or removed from table. Use this if registering checkbox is asynchronous.
+`layoutAsync() => Promise<void> | void` | Re-initializes header row checkbox and row checkboxes when selectable rows are added or removed from table. Use this only if `registerRowCheckboxes` and `registerHeaderRowCheckboxe` are asynchronous.
 `getRows() => HTMLElement[]` | Returns array of row elements.
 `setSelectedRowIds(rowIds: string[]) => void` | Sets selected row ids. Overwrites previously selected rows.
 `getSelectedRowIds() => Array<string|null>` | Returns array of selected row ids.
