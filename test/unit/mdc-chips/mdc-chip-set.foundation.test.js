@@ -202,7 +202,7 @@ function setupHandleKeyboardTest(chips=[], isRTL=false) {
   });
   td.when(mockAdapter.getIndexOfChipById(td.matchers.isA(String))).thenDo((id) => {
     for (let i = 0; i < chips.length; i++) {
-      if (chip.id === id) {
+      if (chips[i].id === id) {
         return i;
       }
     }
