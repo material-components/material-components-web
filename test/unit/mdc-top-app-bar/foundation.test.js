@@ -23,7 +23,6 @@
 
 import {assert} from 'chai';
 import td from 'testdouble';
-import {captureHandlers} from '../helpers/foundation';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {MDCTopAppBarBaseFoundation} from '../../../packages/mdc-top-app-bar/foundation';
@@ -48,10 +47,8 @@ test('exports numbers', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCTopAppBarBaseFoundation, [
-    'hasClass', 'addClass', 'removeClass', 'setStyle', 'getTopAppBarHeight', 'registerNavigationIconInteractionHandler',
-    'deregisterNavigationIconInteractionHandler', 'notifyNavigationIconClicked', 'registerScrollHandler',
-    'deregisterScrollHandler', 'registerResizeHandler', 'deregisterResizeHandler', 'getViewportScrollY',
-    'getTotalActionItems',
+    'hasClass', 'addClass', 'removeClass', 'setStyle', 'getTopAppBarHeight', 'notifyNavigationIconClicked',
+    'getViewportScrollY', 'getTotalActionItems',
   ]);
 });
 
@@ -63,31 +60,8 @@ const setupTest = () => {
   return {foundation, mockAdapter};
 };
 
-test('click on navigation icon emits a navigation event', () => {
+test('#handleNavigationClick emits a navigation event', () => {
   const {foundation, mockAdapter} = setupTest();
-  const handlers = captureHandlers(mockAdapter, 'registerNavigationIconInteractionHandler');
-  foundation.init();
-  handlers.click();
+  foundation.handleNavigationClick();
   td.verify(mockAdapter.notifyNavigationIconClicked(), {times: 1});
-});
-
-test('click handler removed from navigation icon during destroy', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.init();
-  foundation.destroy();
-  td.verify(mockAdapter.deregisterNavigationIconInteractionHandler('click', td.matchers.isA(Function)));
-});
-
-test('#initScrollHandler calls registerScrollHandler', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.scrollHandler_ = td.func();
-  foundation.initScrollHandler();
-  td.verify(mockAdapter.registerScrollHandler(foundation.scrollHandler_), {times: 1});
-});
-
-test('#destroyScrollHandler calls deregisterScrollHandler', () => {
-  const {foundation, mockAdapter} = setupTest();
-  foundation.scrollHandler_ = td.func();
-  foundation.destroyScrollHandler();
-  td.verify(mockAdapter.deregisterScrollHandler(foundation.scrollHandler_), {times: 1});
 });
