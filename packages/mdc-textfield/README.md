@@ -388,6 +388,7 @@ Method Signature | Description
 `hasOutline() => boolean` | Determines whether the text field has an outline sub-element.
 `notchOutline(labelWidth: number) => void` | Sets the width of the text field's notched outline sub-element.
 `closeOutline() => void` | Closes the text field's notched outline sub-element.
+`hasAutofillValue() => boolean` | Returns true if input element has browser auto-filled value.
 
 #### `MDCTextFieldAdapter.getNativeInput()`
 
