@@ -69,6 +69,8 @@
     @media screen and (-ms-high-contrast: active) {
       .mdc-list-item--disabled {
         @include mdc-feature-targets($feat-structure) {
+          // Decrease opacity of the list item, not just the text color,
+          // or disabled items won't be differentiated in high contrast mode.
           opacity: mdc-theme-text-emphasis(disabled);
         }
       }
