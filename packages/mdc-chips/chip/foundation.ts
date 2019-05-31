@@ -48,17 +48,25 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       addClass: () => undefined,
       addClassToLeadingIcon: () => undefined,
       eventTargetHasClass: () => false,
+      focusPrimaryAction: () => undefined,
+      focusRemoveAction: () => undefined,
+      focusRoot: () => undefined,
       getCheckmarkBoundingClientRect: () => emptyClientRect,
       getComputedStyleValue: () => '',
       getRootBoundingClientRect: () => emptyClientRect,
       hasClass: () => false,
       hasLeadingIcon: () => false,
+      isRTL: () => false,
+      hasMultipleActions: () => false,
       notifyInteraction: () => undefined,
+      notifyNavigation: () => undefined,
       notifyRemoval: () => undefined,
       notifySelection: () => undefined,
       notifyTrailingIconInteraction: () => undefined,
       removeClass: () => undefined,
       removeClassFromLeadingIcon: () => undefined,
+      setPrimaryActionAttr: () => undefined,
+      setRemoveActionAttr: () => undefined,
       setStyleProperty: () => undefined,
     };
   }
@@ -194,6 +202,27 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
         this.beginExit();
       }
     }
+  }
+
+  focus(dir: string) {
+    if (!this.adapter_.hasMultipleActions()) {
+      this.adapter_.focusRoot();
+      return;
+    }
+
+    const isRTL = this.adapter_.isRTL();
+    const shouldFocusPrimaryAction = dir === strings.DIR_LEFT && !isRTL || dir === strings.DIR_RIGHT && isRTL;
+
+    if (shouldFocusPrimaryAction) {
+      this.adapter_.setPrimaryActionAttr(strings.TAB_INDEX, '0');
+      this.adapter_.setRemoveActionAttr(strings.TAB_INDEX, '-1');
+      this.adapter_.focusPrimaryAction();
+      return;
+    }
+
+    this.adapter_.setRemoveActionAttr(strings.TAB_INDEX, '0');
+    this.adapter_.setPrimaryActionAttr(strings.TAB_INDEX, '-1');
+    this.adapter_.focusRemoveAction();
   }
 }
 

@@ -23,11 +23,16 @@
 
 export const strings = {
   CHECKMARK_SELECTOR: '.mdc-chip__checkmark',
+  DIR_LEFT: 'LEFT',
+  DIR_RIGHT: 'RIGHT',
   ENTRY_ANIMATION_NAME: 'mdc-chip-entry',
   INTERACTION_EVENT: 'MDCChip:interaction',
   LEADING_ICON_SELECTOR: '.mdc-chip__icon--leading',
+  NAVIGATION_EVENT: 'MDCChip:navigation',
+  PRIMARY_ACTION_SELECTOR: '.mdc-chip__primary-action',
   REMOVAL_EVENT: 'MDCChip:removal',
   SELECTION_EVENT: 'MDCChip:selection',
+  TAB_INDEX: 'tabindex',
   TRAILING_ICON_INTERACTION_EVENT: 'MDCChip:trailingIconInteraction',
   TRAILING_ICON_SELECTOR: '.mdc-chip__icon--trailing',
 };

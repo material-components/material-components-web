@@ -105,4 +105,20 @@ export interface MDCChipAdapter {
    * @return The bounding client rect of the checkmark element or null if it doesn't exist.
    */
   getCheckmarkBoundingClientRect(): ClientRect | null;
+
+  notifyNavigation(key: string): void;
+
+  focusRoot(): void;
+
+  focusPrimaryAction(): void;
+
+  focusRemoveAction(): void;
+
+  hasMultipleActions(): boolean;
+
+  setPrimaryActionAttr(attr: string, value: string): void;
+
+  setRemoveActionAttr(attr: string, value: string): void;
+
+  isRTL(): boolean;
 }

@@ -33,6 +33,10 @@ export interface MDCChipRemovalEventDetail extends MDCChipInteractionEventDetail
   root: Element;
 }
 
+export interface MDCChipNavigationEventDetail extends MDCChipInteractionEventDetail {
+  key: string;
+}
+
 // Note: CustomEvent<T> is not supported by Closure Compiler.
 
 export interface MDCChipInteractionEvent extends Event {
@@ -45,4 +49,8 @@ export interface MDCChipSelectionEvent extends Event {
 
 export interface MDCChipRemovalEvent extends Event {
   readonly detail: MDCChipRemovalEventDetail;
+}
+
+export interface MDCChipNavigationEvent extends Event {
+  readonly detail: MDCChipNavigationEventDetail;
 }
