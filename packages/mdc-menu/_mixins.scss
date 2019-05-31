@@ -66,6 +66,14 @@
       }
     }
 
+    @media screen and (-ms-high-contrast: active) {
+      .mdc-list-item--disabled {
+        @include mdc-feature-targets($feat-structure) {
+          opacity: mdc-theme-text-emphasis(disabled);
+        }
+      }
+    }
+
     //stylelint-disable selector-no-qualifying-type
     a.mdc-list-item .mdc-list-item__text,
     a.mdc-list-item .mdc-list-item__graphic {
