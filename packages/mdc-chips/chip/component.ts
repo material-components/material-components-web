@@ -206,6 +206,7 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
           this.trailingIcon_.setAttribute(attr, value);
         }
       },
+      setAttr: (attr, value) => this.root_.setAttribute(attr, value),
       setStyleProperty: (propertyName, value) => this.root_.style.setProperty(propertyName, value),
     };
     return new MDCChipFoundation(adapter);

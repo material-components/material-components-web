@@ -22,6 +22,7 @@
  */
 
 export const strings = {
+  ARIA_CHECKED: 'aria-checked',
   CHECKMARK_SELECTOR: '.mdc-chip__checkmark',
   DIR_LEFT: 'LEFT',
   DIR_RIGHT: 'RIGHT',

@@ -121,4 +121,9 @@ export interface MDCChipAdapter {
   setRemoveActionAttr(attr: string, value: string): void;
 
   isRTL(): boolean;
+
+  /**
+   * Sets the value of the attribute on the root element.
+   */
+  setAttr(attr: string, value: string): void;
 }
