@@ -3,16 +3,18 @@
 We'd love for you to contribute and make Material Components for the web even better than it is today!
 Here are the guidelines we'd like you to follow:
 
-- [General Contributing Guidelines](#general-contributing-guidelines)
-- [Development Process](#development-process)
-  - [Setting up your development environment](#setting-up-your-development-environment)
-  - [Building Components](#building-components)
-  - [Running the development server](#running-the-development-server)
-  - [Building MDC Web](#building-mdc-web)
-  - [Linting / Testing / Coverage Enforcement](#linting--testing--coverage-enforcement)
-    - [Running Tests across browsers](#running-tests-across-browsers)
-  - [Coding Style](#coding-style)
-  - [Submitting Pull Requests](#submitting-pull-requests)
+- [Contributing to Material Components Web (MDC Web)](#contributing-to-material-components-web-mdc-web)
+  - [General Contributing Guidelines](#general-contributing-guidelines)
+  - [Development Process](#development-process)
+    - [Setting up your development environment](#setting-up-your-development-environment)
+    - [Building Components](#building-components)
+    - [Running development server](#running-development-server)
+      - [App Engine development server](#app-engine-development-server)
+    - [Building MDC Web](#building-mdc-web)
+    - [Linting / Testing / Coverage Enforcement](#linting--testing--coverage-enforcement)
+      - [Running Tests across browsers](#running-tests-across-browsers)
+    - [Coding Style](#coding-style)
+    - [Submitting Pull Requests](#submitting-pull-requests)
 
 ## General Contributing Guidelines
 
@@ -53,7 +55,7 @@ Each component requires the following items in order to be complete:
 - A **component class** using vanilla JS + SCSS
 - A **README.md** in its subdir which contains developer documentation on the component, including usage.
 - A **set of unit tests** within `test/unit/` with adequate coverage (which we enforce automatically).
-- A **demo page** within `demos/` that shows example usage of the component.
+- A **screenshot test** within `test/screenshot/spec/` that shows example usage of the component. For more on screenshot tests, please refer to the [screenshot testing documentation](./test/screenshot/README.md).
 
 You can find much more information with respect to building components within our [authoring components guide](./docs/authoring-components.md)
 
@@ -61,12 +63,12 @@ You can find much more information with respect to building components within ou
 
 #### Local development server
 
-```
-npm run dev
-open http://localhost:8080
+```	
+npm start
+# open http://localhost:8080	
 ```
 
-`npm run dev` runs a [webpack-dev-server](https://webpack.github.io/docs/webpack-dev-server.html) instance that uses `demos/` as its content base. This should aid you in initial development of a component. It's served on port 8080.
+`npm start` runs a [webpack-dev-server](https://webpack.github.io/docs/webpack-dev-server.html) instance that starts our screenshot test server. To read more about our screenshot testing framework please see [screenshot testing documentation](./test/screenshot/README.md).
 
 #### App Engine development server
 
