@@ -23,6 +23,7 @@
     "@material/base": "^1.0.0",
     "@material/elevation": "^1.1.0",
     "@material/ripple": "^2.3.0",
+    "@material/icon-button": "^2.1.1",
     "@material/rtl": "^0.42.0",
     "@material/shape": "^1.1.1",
     "@material/theme": "^1.1.0",
