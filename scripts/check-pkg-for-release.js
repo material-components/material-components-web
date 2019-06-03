@@ -83,7 +83,6 @@ const NOT_AUTOINIT = [
   'auto-init',
   'base',
   'dom',
-  'icon-toggle',
   'tab', // Only makes sense in context of tab-bar
   'tab-indicator', // Only makes sense in context of tab-bar
   'tab-scroller', // Only makes sense in context of tab-bar
@@ -197,7 +196,7 @@ function checkCSSDependencyAddedInMDCPackage() {
 }
 
 function checkJSDependencyAddedInMDCPackage() {
-  const NOT_IMPORTED = ['animation', 'icon-toggle'];
+  const NOT_IMPORTED = ['animation'];
   const name = getPkgName();
   if (typeof (CLI_PACKAGE_JSON.main) !== 'undefined' &&
       NOT_IMPORTED.indexOf(name) === -1 &&
