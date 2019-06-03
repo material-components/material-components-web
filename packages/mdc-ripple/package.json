@@ -1,7 +1,7 @@
 {
   "name": "@material/ripple",
   "description": "The Material Components for the web Ink Ripple effect for web element interactions",
-  "version": "2.1.1",
+  "version": "2.3.0",
   "license": "MIT",
   "keywords": [
     "material components",
