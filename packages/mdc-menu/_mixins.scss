@@ -66,6 +66,7 @@
       }
     }
 
+    // Target Windows high-contrast mode.
     @media screen and (-ms-high-contrast: active) {
       .mdc-list-item--disabled {
         @include mdc-feature-targets($feat-structure) {
