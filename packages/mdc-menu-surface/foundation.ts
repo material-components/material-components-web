@@ -196,7 +196,7 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
   /**
    * Closes the menu surface.
    */
-  close() {
+  close(skipRestoreFocus = false) {
     if (!this.isQuickOpen_) {
       this.adapter_.addClass(MDCMenuSurfaceFoundation.cssClasses.ANIMATING_CLOSED);
     }
@@ -215,7 +215,9 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
     });
 
     this.isOpen_ = false;
-    this.maybeRestoreFocus_();
+    if (!skipRestoreFocus) {
+      this.maybeRestoreFocus_();
+    }
   }
 
   /** Handle clicks and close if not within menu-surface element. */

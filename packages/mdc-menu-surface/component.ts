@@ -76,16 +76,23 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
     super.destroy();
   }
 
-  get open(): boolean {
+  isOpen(): boolean {
     return this.foundation_.isOpen();
   }
 
-  set open(value: boolean) {
-    if (value) {
-      this.foundation_.open();
-    } else {
-      this.foundation_.close();
-    }
+  // set open(value: boolean) {
+  //   if (value) {
+  //     this.foundation_.open();
+  //   } else {
+  //     this.foundation_.close();
+  //   }
+  // }
+  open() {
+    this.foundation_.open();
+  }
+
+  close(skipRestoreFocus: boolean) {
+    this.foundation_.close(skipRestoreFocus);
   }
 
   set quickOpen(quickOpen: boolean) {

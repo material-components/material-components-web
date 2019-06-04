@@ -93,11 +93,7 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   }
 
   get open(): boolean {
-    return this.menuSurface_.open;
-  }
-
-  set open(value: boolean) {
-    this.menuSurface_.open = value;
+    return this.menuSurface_.isOpen();
   }
 
   get wrapFocus(): boolean {
@@ -210,7 +206,7 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
         list[index].removeAttribute(attr);
       },
       elementContainsClass: (element, className) => element.classList.contains(className),
-      closeSurface: () => this.open = false,
+      closeSurface: (skipRestoreFocus: boolean) => this.menuSurface_.close(skipRestoreFocus),
       getElementIndex: (element) => this.items.indexOf(element),
       notifySelected: (evtData) => this.emit<MDCMenuItemComponentEventDetail>(strings.SELECTED_EVENT, {
         index: evtData.index,

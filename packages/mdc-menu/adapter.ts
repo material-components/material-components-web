@@ -57,8 +57,10 @@ export interface MDCMenuAdapter {
 
   /**
    * Closes the menu-surface.
+   * @param skipRestoreFocus Whether to skip restoring focus to the previously
+   *    focused element after the surface has been closed.
    */
-  closeSurface(): void;
+  closeSurface(skipRestoreFocus?: boolean): void;
 
   /**
    * @return Index of the element in the list or -1 if it is not in the list.
