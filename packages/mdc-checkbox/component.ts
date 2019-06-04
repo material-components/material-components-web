@@ -24,15 +24,15 @@
 import {getCorrectEventName} from '@material/animation/util';
 import {MDCComponent} from '@material/base/component';
 import {matches} from '@material/dom/ponyfill';
+import {MDCCheckboxAdapterImpl} from './adapter.impl';
 import {MDCRippleAdapter} from '@material/ripple/adapter';
 import {MDCRipple} from '@material/ripple/component';
 import {MDCRippleFoundation} from '@material/ripple/foundation';
 import {MDCRippleCapableSurface} from '@material/ripple/types';
-import {MDCCheckboxAdapter} from './adapter';
 import {MDCCheckboxFoundation} from './foundation';
 import {strings} from './constants';
 
-export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements MDCRippleCapableSurface {
+export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation<MDCCheckbox>> implements MDCRippleCapableSurface {
   static attachTo(root: Element) {
     return new MDCCheckbox(root);
   }
@@ -91,27 +91,7 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements 
   }
 
   getDefaultFoundation() {
-    const nativeInput = this.root_.querySelector(strings.NATIVE_CONTROL_SELECTOR) as HTMLInputElement;
-
-    // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
-    // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
-    const adapter: MDCCheckboxAdapter = {
-      setInputChecked: (checked) => nativeInput.checked = checked,
-      isInputChecked: () => nativeInput.checked,
-      isInputIndeterminate: () => nativeInput.indeterminate,
-      setInputIndeterminate: (indeterminate) => nativeInput.indeterminate = indeterminate,
-      isInputDisabled: () => nativeInput.disabled,
-      setInputDisabled: (disabled) => nativeInput.disabled = disabled,
-      getInputValue: () => nativeInput.value,
-      setInputValue: (value) => nativeInput.value = value,
-      addClass: (className) => this.root_.classList.add(className),
-      forceLayout: () => (this.root_ as HTMLElement).offsetWidth,
-      isAttachedToDOM: () => Boolean(this.root_.parentNode),
-      removeClass: (className) => this.root_.classList.remove(className),
-      removeAttributeFromInput: (attr) => nativeInput.removeAttribute(attr),
-      setAttributeToInput: (attr, value) => nativeInput.setAttribute(attr, value),
-    };
-    return new MDCCheckboxFoundation(adapter);
+    return new MDCCheckboxFoundation(this, MDCCheckboxAdapterImpl.getAdapter());
   }
 
   private createRipple_(): MDCRipple {

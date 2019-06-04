@@ -77,6 +77,10 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
     this.foundation_.destroy();
   }
 
+  getRoot(): Element {
+    return this.root_;
+  }
+
   /**
    * Wrapper method to add an event listener to the component's root element. This is most useful when
    * listening for custom events.

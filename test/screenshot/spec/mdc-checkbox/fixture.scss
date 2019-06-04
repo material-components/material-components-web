@@ -24,20 +24,20 @@
 @import "../../../../packages/mdc-theme/color-palette";
 @import "../mixins";
 
-$custom-checkbox-color: $material-color-red-300;
+// $custom-checkbox-color: $material-color-red-300;
 
 .test-cell--checkbox {
   @include test-cell-size(91);
 }
 
-.custom-checkbox--container-colors {
-  @include mdc-checkbox-container-colors(
-    $unmarked-stroke-color: $custom-checkbox-color,
-    $marked-stroke-color: $custom-checkbox-color,
-    $marked-fill-color: $custom-checkbox-color
-  );
-}
+// .custom-checkbox--container-colors {
+//   @include mdc-checkbox-container-colors(
+//     $unmarked-stroke-color: $custom-checkbox-color,
+//     $marked-stroke-color: $custom-checkbox-color,
+//     $marked-fill-color: $custom-checkbox-color
+//   );
+// }
 
-.custom-checkbox--ink-color {
-  @include mdc-checkbox-ink-color($custom-checkbox-color);
-}
+// .custom-checkbox--ink-color {
+//   @include mdc-checkbox-ink-color($custom-checkbox-color);
+// }

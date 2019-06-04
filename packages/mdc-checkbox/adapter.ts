@@ -28,19 +28,20 @@
  * for more details.
  * https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
  */
-export interface MDCCheckboxAdapter {
-  setInputChecked(checked: boolean): void;
-  isInputChecked(): boolean;
-  isInputIndeterminate(): boolean;
-  setInputIndeterminate(indeterminate: boolean): void;
-  isInputDisabled(): boolean;
-  setInputDisabled(disabled: boolean): void;
-  getInputValue(): string;
-  setInputValue(value: string): void;
-  addClass(className: string): void;
-  forceLayout(): void;
-  isAttachedToDOM(): boolean;
-  removeClass(className: string): void;
-  removeAttributeFromInput(attr: string): void;
-  setAttributeToInput(attr: string, value: string): void;
+
+export interface MDCCheckboxAdapter<T> {
+  setInputChecked(checked: boolean, component: T): void;
+  isInputChecked(component: T): boolean;
+  isInputIndeterminate(component: T): boolean;
+  setInputIndeterminate(indeterminate: boolean, component: T): void;
+  isInputDisabled(component: T): boolean;
+  setInputDisabled(disabled: boolean, component: T): void;
+  getInputValue(component: T): string;
+  setInputValue(value: string, component: T): void;
+  addClass(className: string, component: T): void;
+  forceLayout(component: T): void;
+  isAttachedToDOM(component: T): boolean;
+  removeClass(className: string, component: T): void;
+  removeAttributeFromInput(attr: string, component: T): void;
+  setAttributeToInput(attr: string, value: string, component: T): void;
 }
