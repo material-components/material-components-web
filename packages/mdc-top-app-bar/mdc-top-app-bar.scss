@@ -76,11 +76,6 @@
     overflow: hidden;
     z-index: 1;
   }
-
-  &__action-item,
-  &__navigation-icon {
-    @include mdc-top-app-bar-icon_;
-  }
 }
 
 @at-root {
