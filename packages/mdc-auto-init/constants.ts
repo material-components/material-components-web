@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2017 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,14 +21,8 @@
  * THE SOFTWARE.
  */
 
-import * as interactivity from './interactivity.js';
-
-demoReady((root) => {
-  interactivity.init(root);
-});
-
-// Export useful libs to aid debugging/experimentation in the browser's dev tools console.
-import * as dom from './dom.js';
-import * as pony from './ponyfill.js';
-import * as util from './util.js';
-export {dom, pony, util};
+export const strings = {
+  AUTO_INIT_ATTR: 'data-mdc-auto-init',
+  AUTO_INIT_STATE_ATTR: 'data-mdc-auto-init-state',
+  INITIALIZED_STATE: 'initialized',
+};
