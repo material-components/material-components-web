@@ -249,7 +249,7 @@ Method Signature | Description
 `addAttributeToElementAtIndex(index: number, attr: string, value: string) => void` | Adds the `attr` attribute with value `value` to the element at the `index` specified.
 `removeAttributeFromElementAtIndex(index: number, attr: string) => void` | Removes the `attr` attribute from the element at the `index` specified.
 `elementContainsClass(element: Element, className: string) => boolean` | Returns true if the `element` contains the `className` class.
-`closeSurface() => void` | Closes the menu surface.
+`closeSurface(skipRestoreFocus?: boolean) => void` | Closes the menu surface, skipping restoring focus to the previously focused element if `skipRestoreFocus` is true.
 `getElementIndex(element: Element) => number` | Returns the `index` value of the `element`.
 `notifySelected(index: number) => void` | Emits a `MDCMenu:selected` event for the element at the `index` specified.
 `getMenuItemCount() => number` | Returns the menu item count.

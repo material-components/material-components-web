@@ -99,7 +99,7 @@ test('handleKeydown tab key causes the menu to close', () => {
   const event = {key: 'Tab'};
 
   foundation.handleKeydown(event);
-  td.verify(mockAdapter.closeSurface(), {times: 1});
+  td.verify(mockAdapter.closeSurface(/** skipRestoreFocus */ true), {times: 1});
   td.verify(mockAdapter.elementContainsClass(td.matchers.anything()), {times: 0});
 });
 

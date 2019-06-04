@@ -84,20 +84,18 @@ test('destroy deregisters key handler on the menu surface', () => {
   td.verify(mockFoundation.handleKeydown(td.matchers.isA(Event)), {times: 0});
 });
 
-test('get/set open', () => {
+test('#isOpen', () => {
   const {component, mockFoundation} = setupTest();
   td.when(mockFoundation.isOpen()).thenReturn(true);
-  component.open = true;
-  assert.isTrue(component.open);
+  assert.isTrue(component.isOpen());
 
   td.when(mockFoundation.isOpen()).thenReturn(false);
-  component.open = false;
-  assert.isFalse(component.open);
+  assert.isFalse(component.isOpen());
 });
 
-test('open=true opens the menu surface', () => {
+test('#open opens the menu surface', () => {
   const {component, mockFoundation} = setupTest();
-  component.open = true;
+  component.open();
   td.verify(mockFoundation.open());
 });
 
@@ -108,7 +106,7 @@ test(`${strings.OPENED_EVENT} causes the body click handler to be registered`, (
   td.verify(mockFoundation.handleBodyClick(td.matchers.isA(Event)), {times: 1});
 });
 
-test('open=true does not throw error if no focusable elements', () => {
+test('#open does not throw error if no focusable elements', () => {
   const {root, component, mockFoundation} = setupTest();
 
   while (root.firstChild) {
@@ -116,15 +114,15 @@ test('open=true does not throw error if no focusable elements', () => {
   }
 
   assert.doesNotThrow(() => {
-    component.open = true;
+    component.open();
   });
   td.verify(mockFoundation.open());
 });
 
-test('open=false closes the menu surface', () => {
+test('#close closes the menu surface', () => {
   const {component, mockFoundation} = setupTest();
-  component.open = false;
-  td.verify(mockFoundation.close());
+  component.close();
+  td.verify(mockFoundation.close(/* skipRestoreFocus */ false));
 });
 
 test(`${strings.CLOSED_EVENT} causes the body click handler to be deregistered`, () => {
