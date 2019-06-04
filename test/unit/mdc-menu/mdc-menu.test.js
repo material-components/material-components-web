@@ -89,7 +89,9 @@ class FakeMenuSurface {
   constructor(root) {
     this.root = root;
     this.destroy = td.func('.destroy');
-    this.open = false;
+    this.isOpen = td.func('.isOpen');
+    this.open = td.func('.open');
+    this.close = td.func('.close');
     this.listen = td.function();
     this.unlisten = td.function();
     this.setAnchorCorner = td.func('.setAnchorCorner');
