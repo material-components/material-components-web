@@ -90,7 +90,7 @@ MDC Data Table component auto instantiates `MDCCheckbox` for header row checkbox
   <table class="mdc-data-table__table" aria-label="Signal statuses">
     <thead>
       <tr class="mdc-data-table__header-row">
-        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">
+        <th class="mdc-data-table__header-cell mdc-data-table__header-cell--checkbox" role="columnheader" scope="col">
           <div class="mdc-checkbox mdc-data-table__header-row-checkbox">
             <input type="checkbox" class="mdc-checkbox__native-control" />
             <div class="mdc-checkbox__background">
@@ -108,7 +108,7 @@ MDC Data Table component auto instantiates `MDCCheckbox` for header row checkbox
     </thead>
     <tbody class="mdc-data-table__content">
       <tr class="mdc-data-table__row">
-        <td class="mdc-data-table__cell">
+        <td class="mdc-data-table__cell mdc-data-table__cell--checkbox">
           <div class="mdc-checkbox mdc-data-table__row-checkbox">
             <input type="checkbox" class="mdc-checkbox__native-control" />
             <div class="mdc-checkbox__background">
@@ -124,7 +124,7 @@ MDC Data Table component auto instantiates `MDCCheckbox` for header row checkbox
         <td class="mdc-data-table__cell">Medium</td>
       </tr>
       <tr class="mdc-data-table__row mdc-data-table__row--selected" aria-selected="true">
-        <td class="mdc-data-table__cell">
+        <td class="mdc-data-table__cell mdc-data-table__cell--checkbox">
           <div class="mdc-checkbox mdc-data-table__row-checkbox">
             <input type="checkbox" class="mdc-checkbox__native-control" checked />
             <div class="mdc-checkbox__background">
@@ -154,10 +154,12 @@ CSS Class | Description
 `mdc-data-table__table` | Mandatory. Table element. Added to `table` HTML tag.
 `mdc-data-table__header-row` | Mandatory. Table header row element. Added to `thead > tr` HTML tag.
 `mdc-data-table__header-cell` | Mandatory. Table header cell element. Added to `thead > th > td` HTML tag.
+`mdc-data-table__header-cell--checkbox` | Optional. Table header cell element that contains `mdc-checkbox`. Added to `thead> th > td:first-child` HTML tag.
 `mdc-data-table__content` | Mandatory. Table body element. Added to `tbody` HTML tag.
 `mdc-data-table__row` | Mandatory. Table row element. Added to `tbody > tr` HTML tag.
 `mdc-data-table__cell` | Mandatory. Table cell element. Added to `tbody > tr > td` HTML tag.
 `mdc-data-table__cell--numeric` | Optional. Table cell element that contains numeric data. Added to `tbody > tr > td` HTML tag.
+`mdc-data-table__cell--checkbox` | Optional. Table cell element that contains `mdc-checkbox`. Added to `thead> th > td:first-child` HTML tag.
 `mdc-data-table__header-row-checkbox` | Optional. Checkbox element rendered inside table header row element. Add this class name to `mdc-checkbox` element to override styles required for data-table.
 `mdc-data-table__row-checkbox` | Optional. Checkbox element rendered inside table row element. Add this class name to `mdc-checkbox` element to override styles required for data-table.
 `mdc-data-table__row--selected` | Optional. Modifier class added to `mdc-data-table__row` when table row is selected.

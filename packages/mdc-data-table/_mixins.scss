@@ -44,26 +44,29 @@
 
   .mdc-data-table {
     @include mdc-data-table-fill-color($mdc-data-table-fill-color, $query: $query);
-    @include mdc-data-table-row-fill-color($mdc-data-table-row-fill-color, $query: $query);
-    @include mdc-data-table-header-row-fill-color($mdc-data-table-header-row-fill-color, $query: $query);
-    @include mdc-data-table-selected-row-fill-color($mdc-data-table-selected-row-fill-color, $query: $query);
-    @include mdc-data-table-checkbox-touch-dimension($mdc-data-table-checkbox-touch-dimension, $query: $query);
-    @include mdc-data-table-checked-icon-color($mdc-data-table-checked-icon-color, $query: $query);
-    @include mdc-data-table-divider-color($mdc-data-table-divider-color, $query: $query);
-    @include mdc-data-table-divider-size($mdc-data-table-divider-size, $query: $query);
-    @include mdc-data-table-row-hover-fill-color($mdc-data-table-row-hover-fill-color, $query: $query);
-    @include mdc-data-table-header-row-text-color($mdc-data-table-header-row-text-color, $query: $query);
-    @include mdc-data-table-row-text-color($mdc-data-table-row-text-color, $query: $query);
     @include mdc-data-table-shape-radius($mdc-data-table-shape-radius, $query: $query);
     @include mdc-data-table-stroke-size($mdc-data-table-stroke-size, $query: $query);
     @include mdc-data-table-stroke-color($mdc-data-table-stroke-color, $query: $query);
-    @include mdc-data-table-header-row-height($mdc-data-table-header-row-height, $query: $query);
-    @include mdc-data-table-row-height($mdc-data-table-row-height, $query: $query);
-    @include mdc-data-table-cell-padding(
-      $leading-padding: $mdc-data-table-cell-leading-padding,
-      $trailing-padding: $mdc-data-table-cell-trailing-padding,
-      $query: $query
-    );
+
+    @at-root {
+      @include mdc-data-table-row-fill-color($mdc-data-table-row-fill-color, $query: $query);
+      @include mdc-data-table-header-row-fill-color($mdc-data-table-header-row-fill-color, $query: $query);
+      @include mdc-data-table-selected-row-fill-color($mdc-data-table-selected-row-fill-color, $query: $query);
+      @include mdc-data-table-checkbox-touch-dimension($mdc-data-table-checkbox-touch-dimension, $query: $query);
+      @include mdc-data-table-checked-icon-color($mdc-data-table-checked-icon-color, $query: $query);
+      @include mdc-data-table-divider-color($mdc-data-table-divider-color, $query: $query);
+      @include mdc-data-table-divider-size($mdc-data-table-divider-size, $query: $query);
+      @include mdc-data-table-row-hover-fill-color($mdc-data-table-row-hover-fill-color, $query: $query);
+      @include mdc-data-table-header-row-text-color($mdc-data-table-header-row-text-color, $query: $query);
+      @include mdc-data-table-row-text-color($mdc-data-table-row-text-color, $query: $query);
+      @include mdc-data-table-header-row-height($mdc-data-table-header-row-height, $query: $query);
+      @include mdc-data-table-row-height($mdc-data-table-row-height, $query: $query);
+      @include mdc-data-table-cell-padding(
+        $leading-padding: $mdc-data-table-cell-leading-padding,
+        $trailing-padding: $mdc-data-table-cell-trailing-padding,
+        $query: $query
+      );
+    }
 
     display: inline-flex;
     flex-direction: column;
@@ -82,6 +85,11 @@
 
   .mdc-data-table__cell--numeric {
     text-align: right;
+  }
+
+  .mdc-data-table__header-cell--checkbox,
+  .mdc-data-table__cell--checkbox {
+    padding-right: 0;
   }
 
   .mdc-data-table__header-cell {
