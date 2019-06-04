@@ -30,7 +30,8 @@ import {MDCRippleCapableSurface} from '@material/ripple/types';
 import {MDCChipAdapter} from './adapter';
 import {strings} from './constants';
 import {MDCChipFoundation} from './foundation';
-import {MDCChipInteractionEventDetail, MDCChipRemovalEventDetail, MDCChipSelectionEventDetail, MDCChipNavigationEventDetail} from './types';
+import {MDCChipInteractionEventDetail, MDCChipNavigationEventDetail, MDCChipRemovalEventDetail,
+    MDCChipSelectionEventDetail} from './types';
 
 type InteractionType = 'click' | 'keydown';
 

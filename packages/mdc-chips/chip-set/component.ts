@@ -24,7 +24,8 @@
 import {MDCComponent} from '@material/base/component';
 import {MDCChip, MDCChipFactory} from '../chip/component';
 import {MDCChipFoundation} from '../chip/foundation';
-import {MDCChipInteractionEvent, MDCChipRemovalEvent, MDCChipSelectionEvent, MDCChipNavigationEvent} from '../chip/types';
+import {MDCChipInteractionEvent, MDCChipNavigationEvent, MDCChipRemovalEvent,
+    MDCChipSelectionEvent} from '../chip/types';
 import {MDCChipSetAdapter} from './adapter';
 import {MDCChipSetFoundation} from './foundation';
 
@@ -54,7 +55,7 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   private handleChipInteraction_!: (evt: MDCChipInteractionEvent) => void; // assigned in initialSyncWithDOM()
   private handleChipSelection_!: (evt: MDCChipSelectionEvent) => void; // assigned in initialSyncWithDOM()
   private handleChipRemoval_!: (evt: MDCChipRemovalEvent) => void; // assigned in initialSyncWithDOM()
-  private handleChipNavigation_!: (evt: MDCChipNavigationEvent) => void // assigned in initialSyncWithDOM()
+  private handleChipNavigation_!: (evt: MDCChipNavigationEvent) => void; // assigned in initialSyncWithDOM()
 
   /**
    * @param chipFactory A function which creates a new MDCChip.
@@ -106,7 +107,17 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCChipSetAdapter = {
+      focusChipAtIndex: (index) => {
+        if (index < 0 || index > this.chips_.length - 1) {
+          return;
+        }
+        this.chips_[index].focus();
+      },
+      getIndexOfChipById: (chipId) => {
+        return this.findChipIndex_(chipId);
+      },
       hasClass: (className) => this.root_.classList.contains(className),
+      isRTL: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
       removeChip: (chipId) => {
         const index = this.findChipIndex_(chipId);
         if (index >= 0) {
@@ -120,16 +131,6 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
           this.chips_[index].selected = selected;
         }
       },
-      getIndexOfChipById: (chipId) => {
-        return this.findChipIndex_(chipId);
-      },
-      focusChipAtIndex: (index) => {
-        if (index < 0 || index > this.chips_.length - 1) {
-          return;
-        }
-        this.chips_[index].focus();
-      },
-      isRTL: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
     };
     return new MDCChipSetFoundation(adapter);
   }

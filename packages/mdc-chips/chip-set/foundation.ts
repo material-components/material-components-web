@@ -37,12 +37,12 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
 
   static get defaultAdapter(): MDCChipSetAdapter {
     return {
+      focusChipAtIndex: () => undefined,
+      getIndexOfChipById: () => -1,
       hasClass: () => false,
+      isRTL: () => false,
       removeChip: () => undefined,
       setSelected: () => undefined,
-      getIndexOfChipById: () => -1,
-      focusChipAtIndex: () => undefined,
-      isRTL: () => false,
     };
   }
 
@@ -108,6 +108,24 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     this.adapter_.removeChip(chipId);
   }
 
+  handleChipNavigation(chipId: string, dir: string) {
+    let index = this.adapter_.getIndexOfChipById(chipId);
+    if (index === -1) {
+      return;
+    }
+
+    const isRTL = this.adapter_.isRTL();
+    const shouldIncrement = dir === chipStrings.RIGHT && !isRTL || dir === chipStrings.LEFT && isRTL;
+
+    if (shouldIncrement) {
+      index++;
+    } else {
+      index--;
+    }
+
+    this.adapter_.focusChipAtIndex(index);
+  }
+
   /**
    * Deselects the chip with the given id.
    */
@@ -128,24 +146,6 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     } else {
       this.select(chipId);
     }
-  }
-
-  handleChipNavigation(chipId: string, dir: string) {
-    let index = this.adapter_.getIndexOfChipById(chipId);
-    if (index === -1) {
-      return;
-    }
-
-    const isRTL = this.adapter_.isRTL();
-    const shouldIncrement = dir === chipStrings.RIGHT && !isRTL || dir === chipStrings.LEFT && isRTL;
-
-    if (shouldIncrement) {
-      index++;
-    } else {
-      index--;
-    }
-
-    this.adapter_.focusChipAtIndex(index);
   }
 }
 
