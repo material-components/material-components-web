@@ -38,8 +38,6 @@ export interface MDCMenuSurfaceAdapter {
 
   isElementInContainer(el: Element): boolean;
   isFocused(): boolean;
-  isFirstElementFocused(): boolean;
-  isLastElementFocused(): boolean;
   isRtl(): boolean;
 
   getInnerDimensions(): MDCMenuDimensions;
@@ -56,12 +54,6 @@ export interface MDCMenuSurfaceAdapter {
 
   /** Restores focus to the element that was focused before the menu surface was opened. */
   restoreFocus(): void;
-
-  /** Focuses the first focusable element in the menu-surface. */
-  focusFirstElement(): void;
-
-  /** Focuses the first focusable element in the menu-surface. */
-  focusLastElement(): void;
 
   /** Emits an event when the menu surface is closed. */
   notifyClose(): void;

@@ -206,10 +206,6 @@ Method Signature | Description
 `isFocused() => boolean` | Returns a boolean value indicating whether the root element of the menu surface is focused.
 `saveFocus() => void` | Stores the currently focused element on the document, for restoring with `restoreFocus`.
 `restoreFocus() => void` | Restores the previously saved focus state, by making the previously focused element the active focus again.
-`isFirstElementFocused() => boolean` | Returns a boolean value indicating if the first focusable element of the menu-surface is focused.
-`isLastElementFocused() => boolean` | Returns a boolean value indicating if the last focusable element of the menu-surface is focused.
-`focusFirstElement() => void` | Focuses the first focusable element of the menu-surface.
-`focusLastElement() => void` | Focuses the last focusable element of the menu-surface.
 `getInnerDimensions() => MDCMenuDimensions` | Returns an object with the items container width and height.
 `getAnchorDimensions() => ClientRect \| null` | Returns an object with the dimensions and position of the anchor.
 `getBodyDimensions() => MDCMenuDimensions` | Returns an object with width and height of the body, in pixels.
