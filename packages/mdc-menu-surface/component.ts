@@ -43,8 +43,6 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
   protected root_!: HTMLElement; // assigned in MDCComponent constructor
 
   private previousFocus_?: HTMLElement | SVGElement | null;
-  private firstFocusableElement_?: HTMLElement | SVGElement;
-  private lastFocusableElement_?: HTMLElement | SVGElement;
 
   private handleKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
   private handleBodyClick_!: SpecificEventListener<'click'>; // assigned in initialSyncWithDOM()
@@ -84,9 +82,6 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
 
   set open(value: boolean) {
     if (value) {
-      const focusableElements = this.root_.querySelectorAll<HTMLElement | SVGElement>(strings.FOCUSABLE_ELEMENTS);
-      this.firstFocusableElement_ = focusableElements[0];
-      this.lastFocusableElement_ = focusableElements[focusableElements.length - 1];
       this.foundation_.open();
     } else {
       this.foundation_.close();
@@ -173,14 +168,6 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
           }
         }
       },
-      isFirstElementFocused: () =>
-          this.firstFocusableElement_ ? this.firstFocusableElement_ === document.activeElement : false,
-      isLastElementFocused: () =>
-          this.lastFocusableElement_ ? this.lastFocusableElement_ === document.activeElement : false,
-      focusFirstElement: () =>
-          this.firstFocusableElement_ && this.firstFocusableElement_.focus && this.firstFocusableElement_.focus(),
-      focusLastElement: () =>
-          this.lastFocusableElement_ && this.lastFocusableElement_.focus && this.lastFocusableElement_.focus(),
 
       getInnerDimensions: () => {
         return {width: this.root_.offsetWidth, height: this.root_.offsetHeight};
