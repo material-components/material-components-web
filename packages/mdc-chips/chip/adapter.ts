@@ -82,6 +82,11 @@ export interface MDCChipAdapter {
   notifyRemoval(): void;
 
   /**
+   * Emits a custom event "MDCChip:navigation" denoting a focus navigation event.
+   */
+  notifyNavigation(dir: string): void;
+
+  /**
    * @return The computed property value of the given style property on the root element.
    */
   getComputedStyleValue(propertyName: string): string;

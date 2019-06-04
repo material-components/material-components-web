@@ -43,4 +43,10 @@ export interface MDCChipSetAdapter {
    * Sets the selected state of the chip with the given id.
    */
   setSelected(chipId: string, selected: boolean): void;
+
+  getIndexOfChipById(chipId: string): number;
+
+  focusChipAtIndex(index: number): void;
+
+  isRTL(): boolean;
 }

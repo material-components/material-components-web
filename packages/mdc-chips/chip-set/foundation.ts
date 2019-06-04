@@ -22,6 +22,7 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
+import {strings as chipStrings} from '../chip/constants';
 import {MDCChipSetAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
@@ -39,6 +40,9 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
       hasClass: () => false,
       removeChip: () => undefined,
       setSelected: () => undefined,
+      getIndexOfChipById: () => -1,
+      focusChipAtIndex: () => undefined,
+      isRTL: () => false,
     };
   }
 
@@ -124,6 +128,24 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     } else {
       this.select(chipId);
     }
+  }
+
+  handleChipNavigation(chipId: string, dir: string) {
+    let index = this.adapter_.getIndexOfChipById(chipId);
+    if (index === -1) {
+      return;
+    }
+
+    const isRTL = this.adapter_.isRTL();
+    const shouldIncrement = dir === chipStrings.RIGHT && !isRTL || dir === chipStrings.LEFT && isRTL;
+
+    if (shouldIncrement) {
+      index++;
+    } else {
+      index--;
+    }
+
+    this.adapter_.focusChipAtIndex(index);
   }
 }
 

@@ -23,11 +23,18 @@
 
 export const strings = {
   ARIA_CHECKED: 'aria-checked',
+  ARROW_DOWN_KEY: 'ArrowDown',
+  ARROW_LEFT_KEY: 'ArrowLeft',
+  ARROW_RIGHT_KEY: 'ArrowRight',
+  ARROW_UP_KEY: 'ArrowUp',
   CHECKMARK_SELECTOR: '.mdc-chip__checkmark',
   ENTRY_ANIMATION_NAME: 'mdc-chip-entry',
   INTERACTION_EVENT: 'MDCChip:interaction',
   LEADING_ICON_SELECTOR: '.mdc-chip__icon--leading',
+  LEFT: 'LEFT',
+  NAVIGATION_EVENT: 'MDCChip:navigation',
   REMOVAL_EVENT: 'MDCChip:removal',
+  RIGHT: 'RIGHT',
   SELECTION_EVENT: 'MDCChip:selection',
   TRAILING_ICON_INTERACTION_EVENT: 'MDCChip:trailingIconInteraction',
   TRAILING_ICON_SELECTOR: '.mdc-chip__icon--trailing',

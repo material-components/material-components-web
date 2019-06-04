@@ -34,6 +34,13 @@ const emptyClientRect = {
   width: 0,
 };
 
+export const ACCEPTABLE_KEYS = new Set<string>();
+// IE11 has no support for new Set with iterable so we need to initialize this by hand
+ACCEPTABLE_KEYS.add(strings.ARROW_LEFT_KEY);
+ACCEPTABLE_KEYS.add(strings.ARROW_RIGHT_KEY);
+ACCEPTABLE_KEYS.add(strings.ARROW_DOWN_KEY);
+ACCEPTABLE_KEYS.add(strings.ARROW_UP_KEY);
+
 export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   static get strings() {
     return strings;
@@ -54,6 +61,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       hasClass: () => false,
       hasLeadingIcon: () => false,
       notifyInteraction: () => undefined,
+      notifyNavigation: () => undefined,
       notifyRemoval: () => undefined,
       notifySelection: () => undefined,
       notifyTrailingIconInteraction: () => undefined,
@@ -196,6 +204,23 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       if (this.shouldRemoveOnTrailingIconClick_) {
         this.beginExit();
       }
+    }
+  }
+
+  handleKeydown(evt: KeyboardEvent) {
+    const key = evt.key;
+    // Early exit if the key is not usable
+    if (!ACCEPTABLE_KEYS.has(key)) {
+      return;
+    }
+
+    if (key === strings.ARROW_UP_KEY || key === strings.ARROW_LEFT_KEY) {
+      this.adapter_.notifyNavigation(strings.LEFT);
+      return;
+    }
+
+    if (key === strings.ARROW_DOWN_KEY || key === strings.ARROW_RIGHT_KEY) {
+      this.adapter_.notifyNavigation(strings.RIGHT);
     }
   }
 }

@@ -30,7 +30,7 @@ import {MDCRippleCapableSurface} from '@material/ripple/types';
 import {MDCChipAdapter} from './adapter';
 import {strings} from './constants';
 import {MDCChipFoundation} from './foundation';
-import {MDCChipInteractionEventDetail, MDCChipRemovalEventDetail, MDCChipSelectionEventDetail} from './types';
+import {MDCChipInteractionEventDetail, MDCChipRemovalEventDetail, MDCChipSelectionEventDetail, MDCChipNavigationEventDetail} from './types';
 
 type InteractionType = 'click' | 'keydown';
 
@@ -90,6 +90,7 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
   private handleInteraction_!: SpecificEventListener<InteractionType>; // assigned in initialSyncWithDOM()
   private handleTransitionEnd_!: SpecificEventListener<'transitionend'>; // assigned in initialSyncWithDOM()
   private handleTrailingIconInteraction_!: SpecificEventListener<InteractionType>; // assigned in initialSyncWithDOM()
+  private handleKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
 
   initialize(rippleFactory: MDCRippleFactory = (el, foundation) => new MDCRipple(el, foundation)) {
     this.leadingIcon_ = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
@@ -110,11 +111,13 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
     this.handleTransitionEnd_ = (evt: TransitionEvent) => this.foundation_.handleTransitionEnd(evt);
     this.handleTrailingIconInteraction_ = (evt: MouseEvent | KeyboardEvent) =>
         this.foundation_.handleTrailingIconInteraction(evt);
+    this.handleKeydown_ = (evt: KeyboardEvent) => this.foundation_.handleKeydown(evt);
 
     INTERACTION_EVENTS.forEach((evtType) => {
       this.listen(evtType, this.handleInteraction_);
     });
     this.listen('transitionend', this.handleTransitionEnd_);
+    this.listen('keydown', this.handleKeydown_);
 
     if (this.trailingIcon_) {
       INTERACTION_EVENTS.forEach((evtType) => {
@@ -130,6 +133,7 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
       this.unlisten(evtType, this.handleInteraction_);
     });
     this.unlisten('transitionend', this.handleTransitionEnd_);
+    this.unlisten('keydown', this.handleKeydown_);
 
     if (this.trailingIcon_) {
       INTERACTION_EVENTS.forEach((evtType) => {
@@ -165,6 +169,8 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
       hasLeadingIcon: () => !!this.leadingIcon_,
       notifyInteraction: () => this.emit<MDCChipInteractionEventDetail>(
           strings.INTERACTION_EVENT, {chipId: this.id}, true /* shouldBubble */),
+      notifyNavigation: (key) => this.emit<MDCChipNavigationEventDetail>(
+          strings.NAVIGATION_EVENT,  {chipId: this.id, key}, true /* shouldBubble */),
       notifyRemoval: () => this.emit<MDCChipRemovalEventDetail>(
           strings.REMOVAL_EVENT, {chipId: this.id, root: this.root_}, true /* shouldBubble */),
       notifySelection: (selected) => this.emit<MDCChipSelectionEventDetail>(
@@ -181,5 +187,9 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
       setStyleProperty: (propertyName, value) => this.root_.style.setProperty(propertyName, value),
     };
     return new MDCChipFoundation(adapter);
+  }
+
+  focus() {
+    this.root_.focus();
   }
 }
