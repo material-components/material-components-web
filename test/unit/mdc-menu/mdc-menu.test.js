@@ -209,10 +209,10 @@ test('get/set open', () => {
   assert.isFalse(component.open);
 
   component.open = true;
-  assert.isTrue(menuSurface.open);
+  assert.isTrue(menuSurface.isOpen());
 
   component.open = false;
-  assert.isFalse(menuSurface.open);
+  assert.isFalse(menuSurface.isOpen());
 });
 
 test('wrapFocus proxies to MDCList#wrapFocus property', () => {
@@ -411,9 +411,9 @@ test('adapter#elementContainsClass returns false if the class does not exist on 
 
 test('adapter#closeSurface proxies to menuSurface#open', () => {
   const {component, menuSurface} = setupTestWithFakes();
-  menuSurface.open = true;
+  menuSurface.open();
   component.getDefaultFoundation().adapter_.closeSurface();
-  assert.isFalse(menuSurface.open);
+  assert.isFalse(menuSurface.isOpen());
 });
 
 test('adapter#getElementIndex returns the index value of an element in the list', () => {

@@ -122,7 +122,7 @@ test('#open does not throw error if no focusable elements', () => {
 test('#close closes the menu surface', () => {
   const {component, mockFoundation} = setupTest();
   component.close();
-  td.verify(mockFoundation.close());
+  td.verify(mockFoundation.close(/* skipRestoreFocus */ false));
 });
 
 test(`${strings.CLOSED_EVENT} causes the body click handler to be deregistered`, () => {
