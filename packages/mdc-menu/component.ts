@@ -96,6 +96,14 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
     return this.menuSurface_.isOpen();
   }
 
+  set open(value: boolean) {
+    if (value) {
+      this.menuSurface_.open();
+    } else {
+      this.menuSurface_.close();
+    }
+  }
+
   get wrapFocus(): boolean {
     return this.list_ ? this.list_.wrapFocus : false;
   }
