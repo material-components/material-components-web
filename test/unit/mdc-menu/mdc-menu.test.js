@@ -119,7 +119,6 @@ function setupTestWithFakes(open = false) {
   const root = getFixture(open);
 
   const menuSurface = new FakeMenuSurface(root);
-  menuSurface.open = open;
 
   const MockFoundationCtor = td.constructor(MDCMenuFoundation);
   const mockFoundation = new MockFoundationCtor();
@@ -208,13 +207,14 @@ test('destroy deregisters event listener for keydown', () => {
 test('get/set open', () => {
   const {component, menuSurface} = setupTestWithFakes();
 
+  td.when(menuSurface.isOpen()).thenReturn(false);
   assert.isFalse(component.open);
 
   component.open = true;
-  assert.isTrue(menuSurface.isOpen());
+  td.verify(menuSurface.open(), {times: 1});
 
   component.open = false;
-  assert.isFalse(menuSurface.isOpen());
+  td.verify(menuSurface.close(), {times: 1});
 });
 
 test('wrapFocus proxies to MDCList#wrapFocus property', () => {
@@ -411,11 +411,10 @@ test('adapter#elementContainsClass returns false if the class does not exist on 
   assert.isFalse(containsFoo);
 });
 
-test('adapter#closeSurface proxies to menuSurface#open', () => {
+test('adapter#closeSurface proxies to menuSurface#close', () => {
   const {component, menuSurface} = setupTestWithFakes();
-  menuSurface.open();
-  component.getDefaultFoundation().adapter_.closeSurface();
-  assert.isFalse(menuSurface.isOpen());
+  component.getDefaultFoundation().adapter_.closeSurface(/** skipRestoreFocus */ false);
+  td.verify(menuSurface.close(/** skipRestoreFocus */ false));
 });
 
 test('adapter#getElementIndex returns the index value of an element in the list', () => {
