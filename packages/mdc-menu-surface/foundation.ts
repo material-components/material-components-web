@@ -65,8 +65,6 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
 
       isElementInContainer: () => false,
       isFocused: () => false,
-      isFirstElementFocused: () => false,
-      isLastElementFocused: () => false,
       isRtl: () => false,
 
       getInnerDimensions: () => ({height: 0, width: 0}),
@@ -80,8 +78,6 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
 
       saveFocus: () => undefined,
       restoreFocus: () => undefined,
-      focusFirstElement: () => undefined,
-      focusLastElement: () => undefined,
 
       notifyClose: () => undefined,
       notifyOpen: () => undefined,
@@ -233,21 +229,11 @@ export class MDCMenuSurfaceFoundation extends MDCFoundation<MDCMenuSurfaceAdapte
 
   /** Handle keys that close the surface. */
   handleKeydown(evt: KeyboardEvent) {
-    const {keyCode, key, shiftKey} = evt;
+    const {keyCode, key} = evt;
 
     const isEscape = key === 'Escape' || keyCode === 27;
-    const isTab = key === 'Tab' || keyCode === 9;
-
     if (isEscape) {
       this.close();
-    } else if (isTab) {
-      if (this.adapter_.isLastElementFocused() && !shiftKey) {
-        this.adapter_.focusFirstElement();
-        evt.preventDefault();
-      } else if (this.adapter_.isFirstElementFocused() && shiftKey) {
-        this.adapter_.focusLastElement();
-        evt.preventDefault();
-      }
     }
   }
 
