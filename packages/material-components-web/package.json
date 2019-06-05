@@ -19,20 +19,12 @@
     "@material/animation": "^1.0.0",
     "@material/auto-init": "^2.3.0",
     "@material/base": "^1.0.0",
-<<<<<<< HEAD
-    "@material/button": "^2.1.1",
-    "@material/card": "^2.1.1",
-    "@material/data-table": "0.0.0",
-    "@material/checkbox": "^2.1.1",
-    "@material/chips": "^2.2.0",
-    "@material/dialog": "^2.2.0",
-=======
     "@material/button": "^2.3.0",
     "@material/card": "^2.3.0",
+    "@material/data-table": "0.0.0",
     "@material/checkbox": "^2.3.0",
     "@material/chips": "^2.3.0",
     "@material/dialog": "^2.3.0",
->>>>>>> origin/develop
     "@material/dom": "^1.1.0",
     "@material/drawer": "^2.3.0",
     "@material/elevation": "^1.1.0",

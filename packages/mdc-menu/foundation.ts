@@ -142,20 +142,12 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
 
     const prevSelectedIndex = this.adapter_.getSelectedSiblingOfItemAtIndex(index);
     if (prevSelectedIndex >= 0) {
-<<<<<<< HEAD
-      this.adapter_.removeAttributeFromElementAtIndex(prevSelectedIndex, strings.ARIA_SELECTED_ATTR);
-=======
       this.adapter_.removeAttributeFromElementAtIndex(prevSelectedIndex, strings.ARIA_CHECKED_ATTR);
->>>>>>> origin/develop
       this.adapter_.removeClassFromElementAtIndex(prevSelectedIndex, cssClasses.MENU_SELECTED_LIST_ITEM);
     }
 
     this.adapter_.addClassToElementAtIndex(index, cssClasses.MENU_SELECTED_LIST_ITEM);
-<<<<<<< HEAD
-    this.adapter_.addAttributeToElementAtIndex(index, strings.ARIA_SELECTED_ATTR, 'true');
-=======
     this.adapter_.addAttributeToElementAtIndex(index, strings.ARIA_CHECKED_ATTR, 'true');
->>>>>>> origin/develop
   }
 
   private validatedIndex_(index: number): void {

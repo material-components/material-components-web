@@ -279,15 +279,9 @@ test('setSelectedIndex calls addClass and addAttribute only', () => {
   td.verify(mockAdapter.removeClassFromElementAtIndex(
     td.matchers.isA(Number), cssClasses.MENU_SELECTED_LIST_ITEM), {times: 0});
   td.verify(mockAdapter.removeAttributeFromElementAtIndex(td.matchers.isA(Number),
-<<<<<<< HEAD
-    strings.ARIA_SELECTED_ATTR), {times: 0});
-  td.verify(mockAdapter.addClassToElementAtIndex(0, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 1});
-  td.verify(mockAdapter.addAttributeToElementAtIndex(0, strings.ARIA_SELECTED_ATTR, 'true'), {times: 1});
-=======
     strings.ARIA_CHECKED_ATTR), {times: 0});
   td.verify(mockAdapter.addClassToElementAtIndex(0, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 1});
   td.verify(mockAdapter.addAttributeToElementAtIndex(0, strings.ARIA_CHECKED_ATTR, 'true'), {times: 1});
->>>>>>> origin/develop
 });
 
 test('setSelectedIndex remove class and attribute, and adds class and attribute to newly selected item', () => {
@@ -301,15 +295,9 @@ test('setSelectedIndex remove class and attribute, and adds class and attribute 
   foundation.setSelectedIndex(0);
   td.verify(mockAdapter.removeClassFromElementAtIndex(1, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 1});
   td.verify(
-<<<<<<< HEAD
-    mockAdapter.removeAttributeFromElementAtIndex(1, strings.ARIA_SELECTED_ATTR), {times: 1});
-  td.verify(mockAdapter.addClassToElementAtIndex(0, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 1});
-  td.verify(mockAdapter.addAttributeToElementAtIndex(0, strings.ARIA_SELECTED_ATTR, 'true'), {times: 1});
-=======
     mockAdapter.removeAttributeFromElementAtIndex(1, strings.ARIA_CHECKED_ATTR), {times: 1});
   td.verify(mockAdapter.addClassToElementAtIndex(0, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 1});
   td.verify(mockAdapter.addAttributeToElementAtIndex(0, strings.ARIA_CHECKED_ATTR, 'true'), {times: 1});
->>>>>>> origin/develop
 });
 
 test('setSelectedIndex throws error if index is not in range', () => {
