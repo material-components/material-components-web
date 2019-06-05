@@ -87,12 +87,12 @@ MDC Data Table component auto instantiates `MDCCheckbox` for header row checkbox
 
 ```html
 <div class="mdc-data-table">
-  <table class="mdc-data-table__table" aria-label="Signal statuses">
+  <table class="mdc-data-table__table" aria-label="Dessert calories">
     <thead>
       <tr class="mdc-data-table__header-row">
-        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">
+        <th class="mdc-data-table__header-cell mdc-data-table__header-cell--checkbox" role="columnheader" scope="col">
           <div class="mdc-checkbox mdc-data-table__header-row-checkbox">
-            <input type="checkbox" class="mdc-checkbox__native-control" />
+            <input type="checkbox" class="mdc-checkbox__native-control" aria-label="Toggle all rows" />
             <div class="mdc-checkbox__background">
               <svg class="mdc-checkbox__checkmark" viewbox="0 0 24 24">
                 <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
@@ -101,16 +101,16 @@ MDC Data Table component auto instantiates `MDCCheckbox` for header row checkbox
             </div>
           </div>
         </th>
-        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Status</th>
-        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Signal name</th>
-        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Severity</th>
+        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Desserts</th>
+        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Carbs (g)</th>
+        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Protein (g)</th>
       </tr>
     </thead>
     <tbody class="mdc-data-table__content">
       <tr class="mdc-data-table__row">
-        <td class="mdc-data-table__cell">
+        <td class="mdc-data-table__cell mdc-data-table__cell--checkbox">
           <div class="mdc-checkbox mdc-data-table__row-checkbox">
-            <input type="checkbox" class="mdc-checkbox__native-control" />
+            <input type="checkbox" class="mdc-checkbox__native-control" aria-labelledby="r0" />
             <div class="mdc-checkbox__background">
               <svg class="mdc-checkbox__checkmark" viewbox="0 0 24 24">
                 <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
@@ -119,14 +119,14 @@ MDC Data Table component auto instantiates `MDCCheckbox` for header row checkbox
             </div>
           </div>
         </td>
-        <td class="mdc-data-table__cell">Online</td>
-        <td class="mdc-data-table__cell">Arcus watch slowdown</td>
-        <td class="mdc-data-table__cell">Medium</td>
+        <td class="mdc-data-table__cell" id="r0">Frozen yogurt</td>
+        <td class="mdc-data-table__cell">24</td>
+        <td class="mdc-data-table__cell">4.0</td>
       </tr>
       <tr class="mdc-data-table__row mdc-data-table__row--selected" aria-selected="true">
-        <td class="mdc-data-table__cell">
+        <td class="mdc-data-table__cell mdc-data-table__cell--checkbox">
           <div class="mdc-checkbox mdc-data-table__row-checkbox">
-            <input type="checkbox" class="mdc-checkbox__native-control" checked />
+            <input type="checkbox" class="mdc-checkbox__native-control" checked aria-labelledby="r1" />
             <div class="mdc-checkbox__background">
               <svg class="mdc-checkbox__checkmark" viewbox="0 0 24 24">
                 <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
@@ -135,9 +135,9 @@ MDC Data Table component auto instantiates `MDCCheckbox` for header row checkbox
             </div>
           </div>
         </td>
-        <td class="mdc-data-table__cell">Offline</td>
-        <td class="mdc-data-table__cell">monarch: prod shared ares-managed-features-provider-heavy</td>
-        <td class="mdc-data-table__cell">Huge</td>
+        <td class="mdc-data-table__cell" id="r1">Ice cream sandwich</td>
+        <td class="mdc-data-table__cell">37</td>
+        <td class="mdc-data-table__cell">4.3</td>
       </tr>
     </tbody>
   </table>
@@ -154,10 +154,12 @@ CSS Class | Description
 `mdc-data-table__table` | Mandatory. Table element. Added to `table` HTML tag.
 `mdc-data-table__header-row` | Mandatory. Table header row element. Added to `thead > tr` HTML tag.
 `mdc-data-table__header-cell` | Mandatory. Table header cell element. Added to `thead > th > td` HTML tag.
+`mdc-data-table__header-cell--checkbox` | Optional. Table header cell element that contains `mdc-checkbox`. Added to `thead> th > td:first-child` HTML tag.
 `mdc-data-table__content` | Mandatory. Table body element. Added to `tbody` HTML tag.
 `mdc-data-table__row` | Mandatory. Table row element. Added to `tbody > tr` HTML tag.
 `mdc-data-table__cell` | Mandatory. Table cell element. Added to `tbody > tr > td` HTML tag.
 `mdc-data-table__cell--numeric` | Optional. Table cell element that contains numeric data. Added to `tbody > tr > td` HTML tag.
+`mdc-data-table__cell--checkbox` | Optional. Table cell element that contains `mdc-checkbox`. Added to `thead> th > td:first-child` HTML tag.
 `mdc-data-table__header-row-checkbox` | Optional. Checkbox element rendered inside table header row element. Add this class name to `mdc-checkbox` element to override styles required for data-table.
 `mdc-data-table__row-checkbox` | Optional. Checkbox element rendered inside table row element. Add this class name to `mdc-checkbox` element to override styles required for data-table.
 `mdc-data-table__row--selected` | Optional. Modifier class added to `mdc-data-table__row` when table row is selected.
