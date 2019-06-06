@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "module": "ES2017",
+    "moduleResolution": "node",
+    "lib": ["ES2017", "DOM"],
+    "experimentalDecorators": true
+  }
+}

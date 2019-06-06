@@ -1,0 +1,4 @@
+*.style.ts
+public/*.js
+public/*.map
+!public/index.html
