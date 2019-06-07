@@ -82,7 +82,7 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
     const isTab = key === 'Tab' || keyCode === 9;
 
     if (isTab) {
-      this.adapter_.closeSurface();
+      this.adapter_.closeSurface(/** skipRestoreFocus */ true);
     }
   }
 
@@ -142,12 +142,12 @@ export class MDCMenuFoundation extends MDCFoundation<MDCMenuAdapter> {
 
     const prevSelectedIndex = this.adapter_.getSelectedSiblingOfItemAtIndex(index);
     if (prevSelectedIndex >= 0) {
-      this.adapter_.removeAttributeFromElementAtIndex(prevSelectedIndex, strings.ARIA_SELECTED_ATTR);
+      this.adapter_.removeAttributeFromElementAtIndex(prevSelectedIndex, strings.ARIA_CHECKED_ATTR);
       this.adapter_.removeClassFromElementAtIndex(prevSelectedIndex, cssClasses.MENU_SELECTED_LIST_ITEM);
     }
 
     this.adapter_.addClassToElementAtIndex(index, cssClasses.MENU_SELECTED_LIST_ITEM);
-    this.adapter_.addAttributeToElementAtIndex(index, strings.ARIA_SELECTED_ATTR, 'true');
+    this.adapter_.addAttributeToElementAtIndex(index, strings.ARIA_CHECKED_ATTR, 'true');
   }
 
   private validatedIndex_(index: number): void {
