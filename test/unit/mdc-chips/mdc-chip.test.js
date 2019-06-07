@@ -32,9 +32,9 @@ import {MDCChip, MDCChipFoundation} from '../../../packages/mdc-chips/chip/index
 const {CHECKMARK_SELECTOR} = MDCChipFoundation.strings;
 
 const getFixture = () => bel`
-  <div class="mdc-chip">
+  <button class="mdc-chip">
     <div class="mdc-chip__text">Chip content</div>
-  </div>
+  </button>
 `;
 
 const getFixtureWithCheckmark = () => bel`
@@ -101,6 +101,9 @@ test('#initialSyncWithDOM sets up event handlers', () => {
 
   domEvents.emit(root, 'transitionend');
   td.verify(mockFoundation.handleTransitionEnd(td.matchers.anything()), {times: 1});
+
+  domEvents.emit(root, 'keydown');
+  td.verify(mockFoundation.handleKeydown(td.matchers.anything()), {times: 1});
 });
 
 test('#initialSyncWithDOM sets up interaction event handler on trailing icon if present', () => {
@@ -121,6 +124,9 @@ test('#destroy removes event handlers', () => {
 
   domEvents.emit(root, 'transitionend');
   td.verify(mockFoundation.handleTransitionEnd(td.matchers.anything()), {times: 0});
+
+  domEvents.emit(root, 'keydown');
+  td.verify(mockFoundation.handleKeydown(td.matchers.anything()), {times: 0});
 });
 
 test('#destroy removes interaction event handler on trailing icon if present', () => {
@@ -254,6 +260,16 @@ test('adapter#notifyRemoval emits ' + MDCChipFoundation.strings.REMOVAL_EVENT, (
   td.verify(handler(td.matchers.anything()));
 });
 
+test('adapter#notifyNavigation emits ' + MDCChipFoundation.strings.NAVIGATION_EVENT, () => {
+  const {component} = setupTest();
+  const handler = td.func('interaction handler');
+
+  component.listen(MDCChipFoundation.strings.NAVIGATION_EVENT, handler);
+  component.getDefaultFoundation().adapter_.notifyNavigation(MDCChipFoundation.strings.LEFT);
+
+  td.verify(handler(td.matchers.anything()));
+});
+
 test('adapter#getComputedStyleValue returns property value from root element styles', () => {
   const {root, component} = setupTest();
   assert.equal(
@@ -329,4 +345,12 @@ test('#beginExit proxies to foundation', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
   component.beginExit();
   td.verify(mockFoundation.beginExit());
+});
+
+test('#focus gives focus to the root element', () => {
+  const {root, component} = setupTest();
+  document.body.appendChild(root);
+  component.focus();
+  assert.equal(root, document.activeElement);
+  document.body.removeChild(root);
 });

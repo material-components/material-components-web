@@ -276,6 +276,7 @@ To use the `MDCChip` and `MDCChipSet` classes, [import](../../docs/importing-js.
 Method Signature | Description
 --- | ---
 `beginExit() => void` | Proxies to the foundation's `beginExit` method
+`focus() => void` | Gives focus to the root element
 
 Property | Value Type | Description
 --- | --- | ---
@@ -296,6 +297,7 @@ Event Name | `event.detail` | Description
 `MDCChip:selection` | `{chipId: string, selected: boolean}` | Indicates the chip's selection state has changed (for choice/filter chips)
 `MDCChip:removal` | `{chipId: string, root: Element}` | Indicates the chip is ready to be removed from the DOM
 `MDCChip:trailingIconInteraction` | `{chipId: string}` | Indicates the chip's trailing icon was interacted with (via click/tap or Enter key)
+`MDCChip:navigation` | `{chipId: string, dir: string}` | Indicates a navigation event has occurred on a chip
 
 > _NOTE_: All of `MDCChip`'s emitted events bubble up through the DOM.
 
@@ -338,6 +340,7 @@ Method Signature | Description
 `getRootBoundingClientRect() => ClientRect` | Returns the bounding client rect of the root element
 `getCheckmarkBoundingClientRect() => ClientRect \| null` | Returns the bounding client rect of the checkmark element or null if it doesn't exist
 `setAttr(attr: string, value: string) => void` | Sets the value of the attribute on the root element.
+`notifyNavigation(dir: string) => void` | Notifies the Chip Set that a navigation event has occurred
 
 > \*_NOTE_: `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target chip's ID, and must be observable by the parent `mdc-chip-set` element (e.g. via DOM event bubbling).
 
@@ -352,6 +355,10 @@ Method Signature | Description
 `hasClass(className: string) => boolean` | Returns whether the chip set element has the given class
 `removeChip(chipId: string) => void` | Removes the chip with the given id from the chip set
 `setSelected(chipId: string, selected: boolean) => void` | Sets the selected state of the chip with the given id
+`getIndexOfChipById(id: string) => number` | Returns the index of the chip with the matching `id` or -1
+`focusChipAtIndex(index: number) => void` | Calls `MDCChip#focus()` on the chip at the given `index`
+`isRTL() => boolean` | Returns `true` if the text direction is RTL
+`getChipListCount() => number` | Returns the number of chips inside the chip set
 
 ### Foundations: `MDCChipFoundation` and `MDCChipSetFoundation`
 
@@ -368,6 +375,7 @@ Method Signature | Description
 `handleInteraction(evt: Event) => void` | Handles an interaction event on the root element
 `handleTransitionEnd(evt: Event) => void` | Handles a transition end event on the root element
 `handleTrailingIconInteraction(evt: Event) => void` | Handles an interaction event on the trailing icon element
+`handleKeydown(evt: Event) => void` | Handles a keydown event on the root element
 
 #### `MDCChipFoundation` Event Handlers
 
@@ -378,6 +386,7 @@ Events | Element Selector | Foundation Handler
 `click`, `keydown` | `.mdc-chip` (root) | `handleInteraction()`
 `click`, `keydown` | `.mdc-chip__icon--trailing` (if present) | `handleTrailingIconInteraction()`
 `transitionend` | `.mdc-chip` (root) | `handleTransitionEnd()`
+`keydown` | `.mdc-chip` (root) | `handleKeydown()`
 
 #### `MDCChipSetFoundation`
 
@@ -388,6 +397,7 @@ Method Signature | Description
 `handleChipInteraction(chipId: string) => void` | Handles a custom `MDCChip:interaction` event on the root element
 `handleChipSelection(chipId: string, selected: boolean) => void` | Handles a custom `MDCChip:selection` event on the root element
 `handleChipRemoval(chipId: string) => void` | Handles a custom `MDCChip:removal` event on the root element
+`handleChipNavigation(chipId: string, dir: string) => void` | Handles a custom `MDCChip:navigation` event on the root element
 
 #### `MDCChipSetFoundation` Event Handlers
 
@@ -398,3 +408,4 @@ Events | Element Selector | Foundation Handler
 `MDCChip:interaction` | `.mdc-chip-set` (root) | `handleChipInteraction`
 `MDCChip:selection` | `.mdc-chip-set` (root) | `handleChipSelection`
 `MDCChip:removal` | `.mdc-chip-set` (root) | `handleChipRemoval`
+`MDCChip:navigation` | `.mdc-chip-set` (root) | `handleChipNavigation`
