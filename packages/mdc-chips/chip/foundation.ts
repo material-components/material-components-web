@@ -207,6 +207,9 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     }
   }
 
+  /**
+   * Handles a keydown event from the root element.
+   */
   handleKeydown(evt: KeyboardEvent) {
     const key = evt.key;
     // Early exit if the key is not usable

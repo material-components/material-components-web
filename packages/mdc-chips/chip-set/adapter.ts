@@ -44,11 +44,23 @@ export interface MDCChipSetAdapter {
    */
   setSelected(chipId: string, selected: boolean): void;
 
+  /**
+   * @return the numerical index of the chip with the matching id or -1.
+   */
   getIndexOfChipById(chipId: string): number;
 
+  /**
+   * Gives focus to the chip at the given index.
+   */
   focusChipAtIndex(index: number): void;
 
+  /**
+   * @return true if the text direction is RTL.
+   */
   isRTL(): boolean;
 
+  /**
+   * @return the number of chips in the chip set.
+   */
   getChipListCount(): number;
 }

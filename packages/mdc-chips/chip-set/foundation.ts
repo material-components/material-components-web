@@ -109,6 +109,9 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     this.adapter_.removeChip(chipId);
   }
 
+  /**
+   * Handles a chip navigation event.
+   */
   handleChipNavigation(chipId: string, dir: string) {
     const maxIndex = this.adapter_.getChipListCount() - 1;
     let index = this.adapter_.getIndexOfChipById(chipId);
