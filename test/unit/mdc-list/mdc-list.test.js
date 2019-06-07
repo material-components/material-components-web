@@ -108,7 +108,7 @@ test('component calls setVerticalOrientation(true) on the foundation if aria-ori
 
 test('#initializeListType sets the selectedIndex if a list item has the --selected class', () => {
   const {root, component, mockFoundation} = setupTest();
-  root.querySelector('.mdc-list-item').classList.add(MDCListFoundation.cssClasses.LIST_ITEM_SELECTED_CLASS);
+  root.querySelector('.mdc-list-item').classList.add(MDCListFoundation.cssClasses.ITEM_SELECTED);
   component.initializeListType();
   td.verify(mockFoundation.setSelectedIndex(0), {times: 1});
   td.verify(mockFoundation.setSingleSelection(true), {times: 1});
@@ -116,7 +116,7 @@ test('#initializeListType sets the selectedIndex if a list item has the --select
 
 test('#initializeListType sets the selectedIndex if a list item has the --activated class', () => {
   const {root, component, mockFoundation} = setupTest();
-  root.querySelector('.mdc-list-item').classList.add(MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS);
+  root.querySelector('.mdc-list-item').classList.add(MDCListFoundation.cssClasses.ITEM_ACTIVATED);
   component.initializeListType();
   td.verify(mockFoundation.setSelectedIndex(0), {times: 1});
   td.verify(mockFoundation.setSingleSelection(true), {times: 1});
@@ -124,7 +124,7 @@ test('#initializeListType sets the selectedIndex if a list item has the --activa
 
 test('#initializeListType calls the foundation if the --activated class is present', () => {
   const {root, component, mockFoundation} = setupTest();
-  root.querySelector('.mdc-list-item').classList.add(MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS);
+  root.querySelector('.mdc-list-item').classList.add(MDCListFoundation.cssClasses.ITEM_ACTIVATED);
   component.initializeListType();
   td.verify(mockFoundation.setUseActivatedClass(true), {times: 1});
   td.verify(mockFoundation.setSingleSelection(true), {times: 1});
@@ -132,7 +132,7 @@ test('#initializeListType calls the foundation if the --activated class is prese
 
 test('#initializeListType populates selectedIndex based on preselected checkbox items', () => {
   const {root, component, mockFoundation} = setupTest();
-  const listElements = root.querySelectorAll(`.${cssClasses.LIST_ITEM_CLASS}`);
+  const listElements = root.querySelectorAll(`.${cssClasses.ITEM}`);
   [].map.call(listElements, (itemEl) => itemEl.setAttribute('role', 'checkbox'));
 
   listElements[2].setAttribute('aria-checked', 'true');
@@ -142,7 +142,7 @@ test('#initializeListType populates selectedIndex based on preselected checkbox 
 
 test('#initializeListType populates selectedIndex based on preselected radio item', () => {
   const {root, component, mockFoundation} = setupTest();
-  const listElements = root.querySelectorAll(`.${cssClasses.LIST_ITEM_CLASS}`);
+  const listElements = root.querySelectorAll(`.${cssClasses.ITEM}`);
   listElements[3].setAttribute('role', 'radio');
   listElements[3].setAttribute('aria-checked', 'true');
 

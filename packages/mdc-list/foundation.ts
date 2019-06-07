@@ -321,9 +321,9 @@ export class MDCListFoundation extends MDCFoundation<MDCListAdapter> {
       return;
     }
 
-    let selectedClassName = cssClasses.LIST_ITEM_SELECTED_CLASS;
+    let selectedClassName = cssClasses.ITEM_SELECTED;
     if (this.useActivatedClass_) {
-      selectedClassName = cssClasses.LIST_ITEM_ACTIVATED_CLASS;
+      selectedClassName = cssClasses.ITEM_ACTIVATED;
     }
 
     if (this.selectedIndex_ !== numbers.UNSET_INDEX) {

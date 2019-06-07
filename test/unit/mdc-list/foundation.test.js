@@ -719,8 +719,8 @@ test('#handleClick when singleSelection=false on a list item should not cause th
   td.when(mockAdapter.getListItemCount()).thenReturn(3);
   foundation.handleClick(1, false);
 
-  td.verify(mockAdapter.addClassForElementIndex(1, cssClasses.LIST_ITEM_SELECTED_CLASS), {times: 0});
-  td.verify(mockAdapter.addClassForElementIndex(1, cssClasses.LIST_ITEM_ACTIVATED_CLASS), {times: 0});
+  td.verify(mockAdapter.addClassForElementIndex(1, cssClasses.ITEM_SELECTED), {times: 0});
+  td.verify(mockAdapter.addClassForElementIndex(1, cssClasses.ITEM_ACTIVATED), {times: 0});
 });
 
 test('#handleClick notifies of action when clicked on list item.', () => {
@@ -831,7 +831,7 @@ test('#setUseActivatedClass causes setSelectedIndex to use the --activated class
   foundation.setUseActivatedClass(true);
   foundation.setSelectedIndex(1);
 
-  td.verify(mockAdapter.addClassForElementIndex(1, cssClasses.LIST_ITEM_ACTIVATED_CLASS), {times: 1});
+  td.verify(mockAdapter.addClassForElementIndex(1, cssClasses.ITEM_ACTIVATED), {times: 1});
 });
 
 test('#setSelectedIndex should bail out early if not in the range', () => {
@@ -893,7 +893,7 @@ test('#setSelectedIndex removes selected/activated class name and sets aria-sele
   foundation.setSelectedIndex(2);
 
   foundation.setSelectedIndex(3);
-  td.verify(mockAdapter.removeClassForElementIndex(2, cssClasses.LIST_ITEM_SELECTED_CLASS), {times: 1});
+  td.verify(mockAdapter.removeClassForElementIndex(2, cssClasses.ITEM_SELECTED), {times: 1});
   td.verify(mockAdapter.setAttributeForElementIndex(2, strings.ARIA_SELECTED, 'false'), {times: 1});
 });
 

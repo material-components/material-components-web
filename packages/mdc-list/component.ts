@@ -37,7 +37,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
   }
 
   get listElements(): Element[] {
-    return [].slice.call(this.root_.querySelectorAll(`.${cssClasses.LIST_ITEM_CLASS}`));
+    return [].slice.call(this.root_.querySelectorAll(`.${cssClasses.ITEM}`));
   }
 
   set wrapFocus(value: boolean) {
@@ -108,8 +108,8 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
   initializeListType() {
     const checkboxListItems = this.root_.querySelectorAll(strings.ARIA_ROLE_CHECKBOX_SELECTOR);
     const singleSelectedListItem = this.root_.querySelector(`
-      .${cssClasses.LIST_ITEM_ACTIVATED_CLASS},
-      .${cssClasses.LIST_ITEM_SELECTED_CLASS}
+      .${cssClasses.ITEM_ACTIVATED},
+      .${cssClasses.ITEM_SELECTED}
     `);
     const radioSelectedListItem = this.root_.querySelector(strings.ARIA_CHECKED_RADIO_SELECTOR);
 
@@ -118,7 +118,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
       this.selectedIndex =
           [].map.call(preselectedItems, (listItem: Element) => this.listElements.indexOf(listItem)) as number[];
     } else if (singleSelectedListItem) {
-      if (singleSelectedListItem.classList.contains(cssClasses.LIST_ITEM_ACTIVATED_CLASS)) {
+      if (singleSelectedListItem.classList.contains(cssClasses.ITEM_ACTIVATED)) {
         this.foundation_.setUseActivatedClass(true);
       }
 
@@ -205,10 +205,10 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
    */
   private getListItemIndex_(evt: Event) {
     const eventTarget = evt.target as Element;
-    const nearestParent = closest(eventTarget, `.${cssClasses.LIST_ITEM_CLASS}, .${cssClasses.ROOT}`);
+    const nearestParent = closest(eventTarget, `.${cssClasses.ITEM}, .${cssClasses.ROOT}`);
 
     // Get the index of the element if it is a list item.
-    if (nearestParent && matches(nearestParent, `.${cssClasses.LIST_ITEM_CLASS}`)) {
+    if (nearestParent && matches(nearestParent, `.${cssClasses.ITEM}`)) {
       return this.listElements.indexOf(nearestParent);
     }
 
@@ -238,7 +238,7 @@ export class MDCList extends MDCComponent<MDCListFoundation> {
   private handleKeydownEvent_(evt: KeyboardEvent) {
     const index = this.getListItemIndex_(evt);
     const target = evt.target as Element;
-    this.foundation_.handleKeydown(evt, target.classList.contains(cssClasses.LIST_ITEM_CLASS), index);
+    this.foundation_.handleKeydown(evt, target.classList.contains(cssClasses.ITEM), index);
   }
 
   /**

@@ -26,7 +26,6 @@ const cssClasses = {
   DENSE: 'mdc-list--dense',
   DIVIDER: 'mdc-list-divider',
   DIVIDER_PADDED: 'mdc-list-divider--padded',
-  DIVIDER_INSET: 'mdc-list-divider--inset',
   GROUP: 'mdc-list-group',
   GROUP_SUBHEADER: 'mdc-list-group__subheader',
   ITEM: 'mdc-list-item',
@@ -38,10 +37,6 @@ const cssClasses = {
   ITEM_SECONDARY_TEXT: 'mdc-list-item__secondary-text',
   ITEM_SELECTED: 'mdc-list-item--selected',
   ITEM_TEXT: 'mdc-list-item__text',
-  LIST_ITEM_ACTIVATED_CLASS: 'mdc-list-item--activated', // deprecated
-  LIST_ITEM_CLASS: 'mdc-list-item', // deprecated
-  LIST_ITEM_DISABLED_CLASS: 'mdc-list-item--disabled', // deprecated
-  LIST_ITEM_SELECTED_CLASS: 'mdc-list-item--selected', // deprecated
   NON_INTERACTIVE: 'mdc-list--non-interactive',
   ROOT: 'mdc-list',
   TWO_LINE: 'mdc-list--two-line',
@@ -60,14 +55,14 @@ const strings = {
   CHECKBOX_RADIO_SELECTOR: 'input[type="checkbox"]:not(:disabled), input[type="radio"]:not(:disabled)',
   CHECKBOX_SELECTOR: 'input[type="checkbox"]:not(:disabled)',
   CHILD_ELEMENTS_TO_TOGGLE_TABINDEX: `
-    .${cssClasses.LIST_ITEM_CLASS} button:not(:disabled),
-    .${cssClasses.LIST_ITEM_CLASS} a
+    .${cssClasses.ITEM} button:not(:disabled),
+    .${cssClasses.ITEM} a
   `,
   FOCUSABLE_CHILD_ELEMENTS: `
-    .${cssClasses.LIST_ITEM_CLASS} button:not(:disabled),
-    .${cssClasses.LIST_ITEM_CLASS} a,
-    .${cssClasses.LIST_ITEM_CLASS} input[type="radio"]:not(:disabled),
-    .${cssClasses.LIST_ITEM_CLASS} input[type="checkbox"]:not(:disabled)
+    .${cssClasses.ITEM} button:not(:disabled),
+    .${cssClasses.ITEM} a,
+    .${cssClasses.ITEM} input[type="radio"]:not(:disabled),
+    .${cssClasses.ITEM} input[type="checkbox"]:not(:disabled)
   `,
   RADIO_SELECTOR: 'input[type="radio"]:not(:disabled)',
 };
