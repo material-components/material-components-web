@@ -450,7 +450,7 @@ test('instantiates ripple', function() {
   document.body.removeChild(document.querySelector('.mdc-select__menu'));
 });
 
-test(`#constructor instantiates an outline on the ${cssClasses.OUTLINE_SELECTOR} element if present`, () => {
+test(`#constructor instantiates an outline on the ${strings.OUTLINE_SELECTOR} element if present`, () => {
   const root = getOutlineFixture();
   const component = new MDCSelect(root);
   assert.instanceOf(component.outline_, MDCNotchedOutline);
@@ -763,9 +763,9 @@ test('adapter#setSelectedIndex adds the --selected class to the list item at the
   const {fixture, component, menuSurface} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   document.body.appendChild(fixture);
   const adapter = component.getDefaultFoundation().adapter_;
-  assert.isNull(menuSurface.querySelector(`.${MDCListFoundation.cssClasses.LIST_ITEM_SELECTED_CLASS}`));
+  assert.isNull(menuSurface.querySelector(`.${MDCListFoundation.cssClasses.ITEM_SELECTED}`));
   adapter.setSelectedIndex(1);
-  assert.isNotNull(menuSurface.querySelector(`.${MDCListFoundation.cssClasses.LIST_ITEM_SELECTED_CLASS}`));
+  assert.isNotNull(menuSurface.querySelector(`.${MDCListFoundation.cssClasses.ITEM_SELECTED}`));
   document.body.removeChild(fixture);
   document.body.removeChild(menuSurface);
 });
