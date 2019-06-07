@@ -104,7 +104,7 @@
     "karma-sauce-launcher": "^1.0.0",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-tap": "^4.0.0",
-    "karma-webpack": "^3.0.0",
+    "karma-webpack": "^4.0.0",
     "lerna": "^3.6.0",
     "lolex": "3.1.0",
     "mkdirp": "^0.5.1",
