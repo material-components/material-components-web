@@ -55,18 +55,18 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
   }
 
   init() {
-    this.isDeterminate_ = !this.adapter_.hasClass(cssClasses.INDETERMINATE_CLASS);
-    this.isReversed_ = this.adapter_.hasClass(cssClasses.REVERSED_CLASS);
+    this.isDeterminate_ = !this.adapter_.hasClass(cssClasses.INDETERMINATE);
+    this.isReversed_ = this.adapter_.hasClass(cssClasses.REVERSED);
     this.progress_ = 0;
   }
 
   setDeterminate(isDeterminate: boolean) {
     this.isDeterminate_ = isDeterminate;
     if (this.isDeterminate_) {
-      this.adapter_.removeClass(cssClasses.INDETERMINATE_CLASS);
+      this.adapter_.removeClass(cssClasses.INDETERMINATE);
       this.setScale_(this.adapter_.getPrimaryBar(), this.progress_);
     } else {
-      this.adapter_.addClass(cssClasses.INDETERMINATE_CLASS);
+      this.adapter_.addClass(cssClasses.INDETERMINATE);
       this.setScale_(this.adapter_.getPrimaryBar(), 1);
       this.setScale_(this.adapter_.getBuffer(), 1);
     }
@@ -88,18 +88,18 @@ export class MDCLinearProgressFoundation extends MDCFoundation<MDCLinearProgress
   setReverse(isReversed: boolean) {
     this.isReversed_ = isReversed;
     if (this.isReversed_) {
-      this.adapter_.addClass(cssClasses.REVERSED_CLASS);
+      this.adapter_.addClass(cssClasses.REVERSED);
     } else {
-      this.adapter_.removeClass(cssClasses.REVERSED_CLASS);
+      this.adapter_.removeClass(cssClasses.REVERSED);
     }
   }
 
   open() {
-    this.adapter_.removeClass(cssClasses.CLOSED_CLASS);
+    this.adapter_.removeClass(cssClasses.CLOSED);
   }
 
   close() {
-    this.adapter_.addClass(cssClasses.CLOSED_CLASS);
+    this.adapter_.addClass(cssClasses.CLOSED);
   }
 
   private setScale_(el: HTMLElement | null, scaleValue: number) {

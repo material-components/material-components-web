@@ -50,24 +50,24 @@ const setupTest = () => setupFoundationTest(MDCLinearProgressFoundation);
 
 test('#setDeterminate adds class and resets transforms', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.INDETERMINATE_CLASS)).thenReturn(false);
+  td.when(mockAdapter.hasClass(cssClasses.INDETERMINATE)).thenReturn(false);
   const primaryBar = {};
   td.when(mockAdapter.getPrimaryBar()).thenReturn(primaryBar);
   const buffer = {};
   td.when(mockAdapter.getBuffer()).thenReturn(buffer);
   foundation.init();
   foundation.setDeterminate(false);
-  td.verify(mockAdapter.addClass(cssClasses.INDETERMINATE_CLASS));
+  td.verify(mockAdapter.addClass(cssClasses.INDETERMINATE));
   td.verify(mockAdapter.setStyle(primaryBar, 'transform', 'scaleX(1)'));
   td.verify(mockAdapter.setStyle(buffer, 'transform', 'scaleX(1)'));
 });
 
 test('#setDeterminate removes class', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.INDETERMINATE_CLASS)).thenReturn(false);
+  td.when(mockAdapter.hasClass(cssClasses.INDETERMINATE)).thenReturn(false);
   foundation.init();
   foundation.setDeterminate(true);
-  td.verify(mockAdapter.removeClass(cssClasses.INDETERMINATE_CLASS));
+  td.verify(mockAdapter.removeClass(cssClasses.INDETERMINATE));
 });
 
 test('#setDeterminate restores previous progress value after toggled from false to true', () => {
@@ -94,7 +94,7 @@ test('#setDeterminate updates progress value set while determinate is false afte
 
 test('#setProgress sets transform', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.INDETERMINATE_CLASS)).thenReturn(false);
+  td.when(mockAdapter.hasClass(cssClasses.INDETERMINATE)).thenReturn(false);
   const primaryBar = {};
   td.when(mockAdapter.getPrimaryBar()).thenReturn(primaryBar);
   foundation.init();
@@ -104,7 +104,7 @@ test('#setProgress sets transform', () => {
 
 test('#setProgress on indeterminate does nothing', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.INDETERMINATE_CLASS)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.INDETERMINATE)).thenReturn(true);
   const primaryBar = {};
   td.when(mockAdapter.getPrimaryBar()).thenReturn(primaryBar);
   foundation.init();
@@ -114,7 +114,7 @@ test('#setProgress on indeterminate does nothing', () => {
 
 test('#setBuffer sets transform', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.INDETERMINATE_CLASS)).thenReturn(false);
+  td.when(mockAdapter.hasClass(cssClasses.INDETERMINATE)).thenReturn(false);
   const buffer = {};
   td.when(mockAdapter.getBuffer()).thenReturn(buffer);
   foundation.init();
@@ -124,7 +124,7 @@ test('#setBuffer sets transform', () => {
 
 test('#setBuffer on indeterminate does nothing', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.INDETERMINATE_CLASS)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.INDETERMINATE)).thenReturn(true);
   const buffer = {};
   td.when(mockAdapter.getBuffer()).thenReturn(buffer);
   foundation.init();
@@ -134,32 +134,32 @@ test('#setBuffer on indeterminate does nothing', () => {
 
 test('#setReverse adds class', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.REVERSED_CLASS)).thenReturn(false);
+  td.when(mockAdapter.hasClass(cssClasses.REVERSED)).thenReturn(false);
   foundation.init();
   foundation.setReverse(true);
-  td.verify(mockAdapter.addClass(cssClasses.REVERSED_CLASS));
+  td.verify(mockAdapter.addClass(cssClasses.REVERSED));
 });
 
 test('#setReverse removes class', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.REVERSED_CLASS)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.REVERSED)).thenReturn(true);
   foundation.init();
   foundation.setReverse(false);
-  td.verify(mockAdapter.removeClass(cssClasses.REVERSED_CLASS));
+  td.verify(mockAdapter.removeClass(cssClasses.REVERSED));
 });
 
 test('#open removes class', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.REVERSED_CLASS)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.REVERSED)).thenReturn(true);
   foundation.init();
   foundation.open();
-  td.verify(mockAdapter.removeClass(cssClasses.CLOSED_CLASS));
+  td.verify(mockAdapter.removeClass(cssClasses.CLOSED));
 });
 
 test('#close adds class', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(cssClasses.REVERSED_CLASS)).thenReturn(true);
+  td.when(mockAdapter.hasClass(cssClasses.REVERSED)).thenReturn(true);
   foundation.init();
   foundation.close();
-  td.verify(mockAdapter.addClass(cssClasses.CLOSED_CLASS));
+  td.verify(mockAdapter.addClass(cssClasses.CLOSED));
 });
