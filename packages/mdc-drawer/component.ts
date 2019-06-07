@@ -137,7 +137,7 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
       },
       focusActiveNavigationItem: () => {
         const activeNavItemEl =
-            this.root_.querySelector<HTMLElement>(`.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`);
+            this.root_.querySelector<HTMLElement>(`.${MDCListFoundation.cssClasses.ITEM_ACTIVATED}`);
         if (activeNavItemEl) {
           activeNavItemEl.focus();
         }

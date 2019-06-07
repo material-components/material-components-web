@@ -253,7 +253,7 @@ test('adapter#restoreFocus restores focus to previously saved focus', () => {
   button.focus();
 
   component.getDefaultFoundation().adapter_.saveFocus();
-  root.querySelector(`.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`).focus();
+  root.querySelector(`.${MDCListFoundation.cssClasses.ITEM_ACTIVATED}`).focus();
   component.getDefaultFoundation().adapter_.restoreFocus();
 
   assert.equal(button, document.activeElement);
@@ -287,7 +287,7 @@ test('adapter#restoreFocus focus is not restored if saveFocus never called', () 
   document.body.appendChild(root);
   button.focus();
 
-  const navItem = root.querySelector(`.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`);
+  const navItem = root.querySelector(`.${MDCListFoundation.cssClasses.ITEM_ACTIVATED}`);
   navItem.focus();
   component.getDefaultFoundation().adapter_.restoreFocus();
 
@@ -337,7 +337,7 @@ test('adapter#focusActiveNavigationItem focuses on active navigation item', () =
   document.body.appendChild(root);
   component.getDefaultFoundation().adapter_.focusActiveNavigationItem();
 
-  const activatedNavigationItemEl = root.querySelector(`.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`);
+  const activatedNavigationItemEl = root.querySelector(`.${MDCListFoundation.cssClasses.ITEM_ACTIVATED}`);
   assert.equal(document.activeElement, activatedNavigationItemEl);
   document.body.removeChild(root);
 });
@@ -346,8 +346,8 @@ test('adapter#focusActiveNavigationItem does nothing if no active navigation ite
   const {component, root} = setupTest();
   const prevActiveElement = document.activeElement;
   document.body.appendChild(root);
-  const activatedNavigationItemEl = root.querySelector(`.${MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS}`);
-  activatedNavigationItemEl.classList.remove(MDCListFoundation.cssClasses.LIST_ITEM_ACTIVATED_CLASS);
+  const activatedNavigationItemEl = root.querySelector(`.${MDCListFoundation.cssClasses.ITEM_ACTIVATED}`);
+  activatedNavigationItemEl.classList.remove(MDCListFoundation.cssClasses.ITEM_ACTIVATED);
   component.getDefaultFoundation().adapter_.focusActiveNavigationItem();
 
   assert.equal(document.activeElement, prevActiveElement);
