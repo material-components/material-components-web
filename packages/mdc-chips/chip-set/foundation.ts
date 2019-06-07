@@ -38,6 +38,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   static get defaultAdapter(): MDCChipSetAdapter {
     return {
       focusChipAtIndex: () => undefined,
+      getChipListCount: () => -1,
       getIndexOfChipById: () => -1,
       hasClass: () => false,
       isRTL: () => false,
@@ -109,6 +110,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   }
 
   handleChipNavigation(chipId: string, dir: string) {
+    const maxIndex = this.adapter_.getChipListCount() - 1;
     let index = this.adapter_.getIndexOfChipById(chipId);
     if (index === -1) {
       return;
@@ -116,11 +118,15 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
 
     const isRTL = this.adapter_.isRTL();
     const shouldIncrement = dir === chipStrings.RIGHT && !isRTL || dir === chipStrings.LEFT && isRTL;
-
     if (shouldIncrement) {
       index++;
     } else {
       index--;
+    }
+
+    // Early exit if the index is out of bounds
+    if (index < 0 || index > maxIndex) {
+      return;
     }
 
     this.adapter_.focusChipAtIndex(index);

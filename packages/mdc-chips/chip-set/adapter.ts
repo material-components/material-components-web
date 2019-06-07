@@ -49,4 +49,6 @@ export interface MDCChipSetAdapter {
   focusChipAtIndex(index: number): void;
 
   isRTL(): boolean;
+
+  getChipListCount(): number;
 }

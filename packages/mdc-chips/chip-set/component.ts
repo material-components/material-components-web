@@ -113,6 +113,7 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
         }
         this.chips_[index].focus();
       },
+      getChipListCount: () => this.chips_.length,
       getIndexOfChipById: (chipId) => {
         return this.findChipIndex_(chipId);
       },

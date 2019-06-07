@@ -216,10 +216,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
 
     if (key === strings.ARROW_UP_KEY || key === strings.ARROW_LEFT_KEY) {
       this.adapter_.notifyNavigation(strings.LEFT);
-      return;
-    }
-
-    if (key === strings.ARROW_DOWN_KEY || key === strings.ARROW_RIGHT_KEY) {
+    } else if (key === strings.ARROW_DOWN_KEY || key === strings.ARROW_RIGHT_KEY) {
       this.adapter_.notifyNavigation(strings.RIGHT);
     }
   }
