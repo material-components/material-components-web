@@ -56,11 +56,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
   private menu_!: MDCMenu | null; // assigned in enhancedSelectSetup_()
   private isMenuOpen_!: boolean; // assigned in initialize()
 
-  // Exactly one of these fields must be non-null.
-  private nativeControl_!: HTMLSelectElement | null; // assigned in initialize()
-  private selectedText_!: HTMLElement | null; // assigned in initialize()
-
-  private targetElement_!: HTMLElement; // assigned in initialize()
+  private selectedText_!: HTMLElement; // assigned in initialize()
 
   private hiddenInput_!: HTMLInputElement | null; // assigned in enhancedSelectSetup_()
   private menuElement_!: Element | null; // assigned in enhancedSelectSetup_()
@@ -88,20 +84,17 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
       helperTextFactory: MDCSelectHelperTextFactory = (el) => new MDCSelectHelperText(el),
   ) {
     this.isMenuOpen_ = false;
-    this.nativeControl_ = this.root_.querySelector(strings.NATIVE_CONTROL_SELECTOR);
-    this.selectedText_ = this.root_.querySelector(strings.SELECTED_TEXT_SELECTOR);
+    this.selectedText_ = this.root_.querySelector(strings.SELECTED_TEXT_SELECTOR) as HTMLElement;
 
-    const targetElement = this.nativeControl_ || this.selectedText_;
-    if (!targetElement) {
+    if (!this.selectedText_) {
       throw new Error(
-          'MDCSelect: Missing required element: Exactly one of the following selectors must be present: ' +
-          `'${strings.NATIVE_CONTROL_SELECTOR}' or '${strings.SELECTED_TEXT_SELECTOR}'`,
+          'MDCSelect: Missing required element: The following selector must be present: ' +
+          `'${strings.SELECTED_TEXT_SELECTOR}'`,
       );
     }
 
-    this.targetElement_ = targetElement;
-    if (this.targetElement_.hasAttribute(strings.ARIA_CONTROLS)) {
-      const helperTextElement = document.getElementById(this.targetElement_.getAttribute(strings.ARIA_CONTROLS)!);
+    if (this.selectedText_.hasAttribute(strings.ARIA_CONTROLS)) {
+      const helperTextElement = document.getElementById(this.selectedText_.getAttribute(strings.ARIA_CONTROLS)!);
       if (helperTextElement) {
         this.helperText_ = helperTextFactory(helperTextElement);
       }
@@ -180,11 +173,11 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
       }
     };
 
-    this.targetElement_.addEventListener('change', this.handleChange_);
-    this.targetElement_.addEventListener('focus', this.handleFocus_);
-    this.targetElement_.addEventListener('blur', this.handleBlur_);
+    this.selectedText_.addEventListener('change', this.handleChange_);
+    this.selectedText_.addEventListener('focus', this.handleFocus_);
+    this.selectedText_.addEventListener('blur', this.handleBlur_);
 
-    this.targetElement_.addEventListener('click', this.handleClick_ as EventListener);
+    this.selectedText_.addEventListener('click', this.handleClick_ as EventListener);
 
     if (this.menuElement_) {
       this.selectedText_!.addEventListener('keydown', this.handleKeydown_);
@@ -207,18 +200,17 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     // Initially sync floating label
     this.foundation_.handleChange(/* didChange */ false);
 
-    if (this.root_.classList.contains(cssClasses.DISABLED)
-        || (this.nativeControl_ && this.nativeControl_.disabled)) {
+    if (this.root_.classList.contains(cssClasses.DISABLED)) {
       this.disabled = true;
     }
   }
 
   destroy() {
-    this.targetElement_.removeEventListener('change', this.handleChange_);
-    this.targetElement_.removeEventListener('focus', this.handleFocus_);
-    this.targetElement_.removeEventListener('blur', this.handleBlur_);
-    this.targetElement_.removeEventListener('keydown', this.handleKeydown_);
-    this.targetElement_.removeEventListener('click', this.handleClick_ as EventListener);
+    this.selectedText_.removeEventListener('change', this.handleChange_);
+    this.selectedText_.removeEventListener('focus', this.handleFocus_);
+    this.selectedText_.removeEventListener('blur', this.handleBlur_);
+    this.selectedText_.removeEventListener('keydown', this.handleKeydown_);
+    this.selectedText_.removeEventListener('click', this.handleClick_ as EventListener);
 
     if (this.menu_) {
       this.menu_.unlisten(menuSurfaceConstants.strings.CLOSED_EVENT, this.handleMenuClosed_);
@@ -259,8 +251,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     if (this.menuElement_ && this.menu_) {
       const selectedEl = this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)!;
       selectedIndex = this.menu_.items.indexOf(selectedEl);
-    } else if (this.nativeControl_) {
-      selectedIndex = this.nativeControl_.selectedIndex;
     }
     return selectedIndex;
   }
@@ -270,8 +260,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
   }
 
   get disabled(): boolean {
-    return this.root_.classList.contains(cssClasses.DISABLED) ||
-        (this.nativeControl_ ? this.nativeControl_.disabled : false);
+    return this.root_.classList.contains(cssClasses.DISABLED);
   }
 
   set disabled(disabled: boolean) {
@@ -314,14 +303,10 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
    * Sets the control to the required state.
    */
   set required(isRequired: boolean) {
-    if (this.nativeControl_) {
-      this.nativeControl_.required = isRequired;
+    if (isRequired) {
+      this.selectedText_!.setAttribute('aria-required', isRequired.toString());
     } else {
-      if (isRequired) {
-        this.selectedText_!.setAttribute('aria-required', isRequired.toString());
-      } else {
-        this.selectedText_!.removeAttribute('aria-required');
-      }
+      this.selectedText_!.removeAttribute('aria-required');
     }
   }
 
@@ -329,11 +314,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
    * Returns whether the select is required.
    */
   get required(): boolean {
-    if (this.nativeControl_) {
-      return this.nativeControl_.required;
-    } else {
-      return this.selectedText_!.getAttribute('aria-required') === 'true';
-    }
+    return this.selectedText_!.getAttribute('aria-required') === 'true';
   }
 
   /**
@@ -347,7 +328,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCSelectAdapter = {
-      ...(this.nativeControl_ ? this.getNativeSelectAdapterMethods_() : this.getEnhancedSelectAdapterMethods_()),
+      ...this.getEnhancedSelectAdapterMethods_(),
       ...this.getCommonAdapterMethods_(),
       ...this.getOutlineAdapterMethods_(),
       ...this.getLabelAdapterMethods_(),
@@ -376,39 +357,11 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCRippleAdapter = {
       ...MDCRipple.createAdapter(this),
-      registerInteractionHandler: (evtType, handler) => this.targetElement_.addEventListener(evtType, handler),
-      deregisterInteractionHandler: (evtType, handler) => this.targetElement_.removeEventListener(evtType, handler),
+      registerInteractionHandler: (evtType, handler) => this.selectedText_.addEventListener(evtType, handler),
+      deregisterInteractionHandler: (evtType, handler) => this.selectedText_.removeEventListener(evtType, handler),
     };
     // tslint:enable:object-literal-sort-keys
     return new MDCRipple(this.root_, new MDCRippleFoundation(adapter));
-  }
-
-  private getNativeSelectAdapterMethods_() {
-    // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
-    return {
-      getValue: () => this.nativeControl_!.value,
-      setValue: (value: string) => {
-        this.nativeControl_!.value = value;
-      },
-      openMenu: () => undefined,
-      closeMenu: () => undefined,
-      isMenuOpen: () => false,
-      setSelectedIndex: (index: number) => {
-        this.nativeControl_!.selectedIndex = index;
-      },
-      setDisabled: (isDisabled: boolean) => {
-        this.nativeControl_!.disabled = isDisabled;
-      },
-      setValid: (isValid: boolean) => {
-        if (isValid) {
-          this.root_.classList.remove(cssClasses.INVALID);
-        } else {
-          this.root_.classList.add(cssClasses.INVALID);
-        }
-      },
-      checkValidity: () => this.nativeControl_!.checkValidity(),
-    };
-    // tslint:enable:object-literal-sort-keys
   }
 
   private getEnhancedSelectAdapterMethods_() {
@@ -551,15 +504,11 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
 
   private initialSyncRequiredState_() {
     const isRequired =
-        (this.targetElement_ as HTMLSelectElement).required
-        || this.targetElement_.getAttribute('aria-required') === 'true'
+        (this.selectedText_ as HTMLSelectElement).required
+        || this.selectedText_.getAttribute('aria-required') === 'true'
         || this.root_.classList.contains(cssClasses.REQUIRED);
     if (isRequired) {
-      if (this.nativeControl_) {
-        this.nativeControl_.required = true;
-      } else {
-        this.selectedText_!.setAttribute('aria-required', 'true');
-      }
+      this.selectedText_!.setAttribute('aria-required', 'true');
       this.root_.classList.add(cssClasses.REQUIRED);
     }
   }
@@ -571,18 +520,10 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
           return false;
         }
 
-        if (this.selectedText_) {
-          if (this.selectedText_.getAttribute('aria-required') === 'true') {
-            this.root_.classList.add(cssClasses.REQUIRED);
-          } else {
-            this.root_.classList.remove(cssClasses.REQUIRED);
-          }
+        if (this.selectedText_.getAttribute('aria-required') === 'true') {
+          this.root_.classList.add(cssClasses.REQUIRED);
         } else {
-          if (this.nativeControl_!.required) {
-            this.root_.classList.add(cssClasses.REQUIRED);
-          } else {
-            this.root_.classList.remove(cssClasses.REQUIRED);
-          }
+          this.root_.classList.remove(cssClasses.REQUIRED);
         }
 
         return true;
@@ -595,7 +536,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
           .filter((attributeName) => attributeName) as string[];
     };
     const observer = new MutationObserver((mutationsList) => observerHandler(getAttributesList(mutationsList)));
-    observer.observe(this.targetElement_, {attributes: true});
+    observer.observe(this.selectedText_, {attributes: true});
     this.validationObserver_ = observer;
   }
 }
