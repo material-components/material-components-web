@@ -194,3 +194,9 @@ test('#adapter.focusChipAtIndex focuses the chip at the given index', () => {
   component.getDefaultFoundation().adapter_.focusChipAtIndex(0);
   td.verify(component.chips[0].focus(), {times: 1});
 });
+
+test('#adapter.isRTL returns true if the text direction is RTL', () => {
+  const {component} = setupTest();
+  component.getDefaultFoundation().adapter_.isRTL();
+  assert.isFalse(component.getDefaultFoundation().adapter_.isRTL());
+});

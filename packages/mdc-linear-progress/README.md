@@ -36,9 +36,8 @@ The MDC Linear Progress component is a spec-aligned linear progress indicator co
 npm install @material/linear-progress
 ```
 
-## Basic Usage
+## Usage
 
-### HTML Structure
 ```html
 <div role="progressbar" class="mdc-linear-progress">
   <div class="mdc-linear-progress__buffering-dots"></div>
@@ -51,21 +50,6 @@ npm install @material/linear-progress
   </div>
 </div>
 ```
-
-### Styles
-```scss
-@import "@material/linear-progress/mdc-linear-progress";
-```
-
-### JavaScript Instantiation
-
-```js
-import { MDCLinearProgress } from '@material/linear-progress';
-
-const linearProgress = new MDCLinearProgress(document.querySelector('.mdc-linear-progress'));
-```
-
-> See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.
 
 ### CSS Modifiers
 
