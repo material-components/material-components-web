@@ -46,12 +46,12 @@ export class MDCFixedTopAppBarFoundation extends MDCTopAppBarFoundation {
 
     if (currentScroll <= 0) {
       if (this.wasScrolled_) {
-        this.adapter_.removeClass(cssClasses.FIXED_SCROLLED_CLASS);
+        this.adapter_.removeClass(cssClasses.FIXED_SCROLLED);
         this.wasScrolled_ = false;
       }
     } else {
       if (!this.wasScrolled_) {
-        this.adapter_.addClass(cssClasses.FIXED_SCROLLED_CLASS);
+        this.adapter_.addClass(cssClasses.FIXED_SCROLLED);
         this.wasScrolled_ = true;
       }
     }

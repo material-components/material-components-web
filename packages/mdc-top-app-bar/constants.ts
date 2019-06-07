@@ -27,17 +27,14 @@ const cssClasses = {
   DENSE_PROMINENT_FIXED_ADJUST: 'mdc-top-app-bar--dense-prominent-fixed-adjust',
   FIXED: 'mdc-top-app-bar--fixed',
   FIXED_ADJUST: 'mdc-top-app-bar--fixed-adjust',
-  FIXED_CLASS: 'mdc-top-app-bar--fixed', // deprecated
-  FIXED_SCROLLED_CLASS: 'mdc-top-app-bar--fixed-scrolled', // deprecated
+  FIXED_SCROLLED: 'mdc-top-app-bar--fixed-scrolled',
   PROMINENT: 'mdc-top-app-bar--prominent',
   PROMINENT_FIXED_ADJUST: 'mdc-top-app-bar--prominent-fixed-adjust',
   ROOT: 'mdc-top-app-bar',
   SHORT: 'mdc-top-app-bar--short',
-  SHORT_CLASS: 'mdc-top-app-bar--short', // deprecated
   SHORT_COLLAPSED: 'mdc-top-app-bar--short-collapsed',
-  SHORT_COLLAPSED_CLASS: 'mdc-top-app-bar--short-collapsed', // deprecated
   SHORT_FIXED_ADJUST: 'mdc-top-app-bar--short-fixed-adjust',
-  SHORT_HAS_ACTION_ITEM_CLASS: 'mdc-top-app-bar--short-has-action-item', // deprecated
+  SHORT_HAS_ACTION_ITEM: 'mdc-top-app-bar--short-has-action-item',
 };
 
 const numbers = {

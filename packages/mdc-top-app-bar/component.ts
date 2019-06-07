@@ -107,9 +107,9 @@ export class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
     // tslint:enable:object-literal-sort-keys
 
     let foundation: MDCTopAppBarBaseFoundation;
-    if (this.root_.classList.contains(cssClasses.SHORT_CLASS)) {
+    if (this.root_.classList.contains(cssClasses.SHORT)) {
       foundation = new MDCShortTopAppBarFoundation(adapter);
-    } else if (this.root_.classList.contains(cssClasses.FIXED_CLASS)) {
+    } else if (this.root_.classList.contains(cssClasses.FIXED)) {
       foundation = new MDCFixedTopAppBarFoundation(adapter);
     } else {
       foundation = new MDCTopAppBarFoundation(adapter);

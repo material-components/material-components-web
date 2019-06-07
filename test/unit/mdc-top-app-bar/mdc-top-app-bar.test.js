@@ -152,7 +152,7 @@ test('getDefaultFoundation returns the appropriate foundation for default', () =
 test('getDefaultFoundation returns the appropriate foundation for fixed', () => {
   const fixture = getFixture();
   const root = fixture.querySelector(strings.ROOT_SELECTOR);
-  root.classList.add(MDCTopAppBarFoundation.cssClasses.FIXED_CLASS);
+  root.classList.add(MDCTopAppBarFoundation.cssClasses.FIXED);
   const component = new MDCTopAppBar(root, undefined, (el) => new FakeRipple(el));
   assert.isFalse(component.foundation_ instanceof MDCShortTopAppBarFoundation);
   assert.isTrue(component.foundation_ instanceof MDCFixedTopAppBarFoundation);
@@ -161,7 +161,7 @@ test('getDefaultFoundation returns the appropriate foundation for fixed', () => 
 test('getDefaultFoundation returns the appropriate foundation for short', () => {
   const fixture = getFixture();
   const root = fixture.querySelector(strings.ROOT_SELECTOR);
-  root.classList.add(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS);
+  root.classList.add(MDCTopAppBarFoundation.cssClasses.SHORT);
   const component = new MDCTopAppBar(root, undefined, (el) => new FakeRipple(el));
   assert.isTrue(component.foundation_ instanceof MDCShortTopAppBarFoundation);
   assert.isFalse(component.foundation_ instanceof MDCFixedTopAppBarFoundation);

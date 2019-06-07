@@ -42,10 +42,10 @@ export class MDCShortTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
     super.init();
 
     if (this.adapter_.getTotalActionItems() > 0) {
-      this.adapter_.addClass(cssClasses.SHORT_HAS_ACTION_ITEM_CLASS);
+      this.adapter_.addClass(cssClasses.SHORT_HAS_ACTION_ITEM);
     }
 
-    if (!this.adapter_.hasClass(cssClasses.SHORT_COLLAPSED_CLASS)) {
+    if (!this.adapter_.hasClass(cssClasses.SHORT_COLLAPSED)) {
       this.scrollHandler_ = () => this.shortAppBarScrollHandler_();
       this.adapter_.registerScrollHandler(this.scrollHandler_);
       this.shortAppBarScrollHandler_();
@@ -64,12 +64,12 @@ export class MDCShortTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
 
     if (currentScroll <= 0) {
       if (this.isCollapsed_) {
-        this.adapter_.removeClass(cssClasses.SHORT_COLLAPSED_CLASS);
+        this.adapter_.removeClass(cssClasses.SHORT_COLLAPSED);
         this.isCollapsed_ = false;
       }
     } else {
       if (!this.isCollapsed_) {
-        this.adapter_.addClass(cssClasses.SHORT_COLLAPSED_CLASS);
+        this.adapter_.addClass(cssClasses.SHORT_COLLAPSED);
         this.isCollapsed_ = true;
       }
     }

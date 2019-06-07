@@ -51,14 +51,14 @@ const createMockHandlers = (foundation, mockAdapter, clock) => {
 
 test('short top app bar: scroll listener is registered on init', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS)).thenReturn(true);
+  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT)).thenReturn(true);
   foundation.init();
   td.verify(mockAdapter.registerScrollHandler(td.matchers.isA(Function)), {times: 1});
 });
 
 test('short top app bar: scroll listener is removed on destroy', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS)).thenReturn(true);
+  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT)).thenReturn(true);
   foundation.init();
   foundation.destroy();
   td.verify(mockAdapter.deregisterScrollHandler(td.matchers.isA(Function)), {times: 1});
@@ -66,8 +66,8 @@ test('short top app bar: scroll listener is removed on destroy', () => {
 
 test('short top app bar: scroll listener is not registered if collapsed class exists before init', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS)).thenReturn(true);
-  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_COLLAPSED_CLASS)).thenReturn(true);
+  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT)).thenReturn(true);
+  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_COLLAPSED)).thenReturn(true);
   td.when(mockAdapter.getTotalActionItems()).thenReturn(0);
   foundation.init();
   td.verify(mockAdapter.registerScrollHandler(td.matchers.anything()), {times: 0});
@@ -77,8 +77,8 @@ test('short top app bar: class is added once when page is scrolled from the top'
   const {foundation, mockAdapter} = setupTest();
   const clock = installClock();
 
-  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS)).thenReturn(true);
-  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_COLLAPSED_CLASS)).thenReturn(false);
+  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT)).thenReturn(true);
+  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_COLLAPSED)).thenReturn(false);
   td.when(mockAdapter.getTotalActionItems()).thenReturn(0);
   td.when(mockAdapter.getViewportScrollY()).thenReturn(0);
 
@@ -88,15 +88,15 @@ test('short top app bar: class is added once when page is scrolled from the top'
   scrollHandler();
   scrollHandler();
 
-  td.verify(mockAdapter.addClass(MDCTopAppBarFoundation.cssClasses.SHORT_COLLAPSED_CLASS), {times: 1});
+  td.verify(mockAdapter.addClass(MDCTopAppBarFoundation.cssClasses.SHORT_COLLAPSED), {times: 1});
 });
 
 test('short top app bar: class is removed once when page is scrolled to the top', () => {
   const {foundation, mockAdapter} = setupTest();
   const clock = installClock();
 
-  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS)).thenReturn(true);
-  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_COLLAPSED_CLASS)).thenReturn(false);
+  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT)).thenReturn(true);
+  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_COLLAPSED)).thenReturn(false);
   td.when(mockAdapter.getTotalActionItems()).thenReturn(0);
 
   const {scrollHandler} = createMockHandlers(foundation, mockAdapter, clock);
@@ -109,21 +109,21 @@ test('short top app bar: class is removed once when page is scrolled to the top'
   scrollHandler();
   scrollHandler();
 
-  td.verify(mockAdapter.removeClass(MDCTopAppBarFoundation.cssClasses.SHORT_COLLAPSED_CLASS), {times: 1});
+  td.verify(mockAdapter.removeClass(MDCTopAppBarFoundation.cssClasses.SHORT_COLLAPSED), {times: 1});
 });
 
 test('short top app bar: class is added if it has an action item', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS)).thenReturn(true);
+  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT)).thenReturn(true);
   td.when(mockAdapter.getTotalActionItems()).thenReturn(1);
   foundation.init();
-  td.verify(mockAdapter.addClass(MDCTopAppBarFoundation.cssClasses.SHORT_HAS_ACTION_ITEM_CLASS), {times: 1});
+  td.verify(mockAdapter.addClass(MDCTopAppBarFoundation.cssClasses.SHORT_HAS_ACTION_ITEM), {times: 1});
 });
 
 test('short top app bar: class is not added if it does not have an action item', () => {
   const {foundation, mockAdapter} = setupTest();
-  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT_CLASS)).thenReturn(true);
+  td.when(mockAdapter.hasClass(MDCTopAppBarFoundation.cssClasses.SHORT)).thenReturn(true);
   td.when(mockAdapter.getTotalActionItems()).thenReturn(0);
   foundation.init();
-  td.verify(mockAdapter.addClass(MDCTopAppBarFoundation.cssClasses.SHORT_HAS_ACTION_ITEM_CLASS), {times: 0});
+  td.verify(mockAdapter.addClass(MDCTopAppBarFoundation.cssClasses.SHORT_HAS_ACTION_ITEM), {times: 0});
 });
