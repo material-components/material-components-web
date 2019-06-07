@@ -58,14 +58,14 @@ export class MDCIconButtonToggleFoundation extends MDCFoundation<MDCIconButtonTo
   }
 
   isOn(): boolean {
-    return this.adapter_.hasClass(cssClasses.ICON_BUTTON_ON);
+    return this.adapter_.hasClass(cssClasses.ICON_ON);
   }
 
   toggle(isOn: boolean = !this.isOn()) {
     if (isOn) {
-      this.adapter_.addClass(cssClasses.ICON_BUTTON_ON);
+      this.adapter_.addClass(cssClasses.ICON_ON);
     } else {
-      this.adapter_.removeClass(cssClasses.ICON_BUTTON_ON);
+      this.adapter_.removeClass(cssClasses.ICON_ON);
     }
 
     this.adapter_.setAttr(strings.ARIA_PRESSED, `${isOn}`);

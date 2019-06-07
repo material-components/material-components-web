@@ -23,7 +23,6 @@
 
 export const cssClasses = {
   ICON: 'mdc-icon-button__icon',
-  ICON_BUTTON_ON: 'mdc-icon-button--on', // deprecated
   ICON_ON: 'mdc-icon-button__icon--on',
   ON: 'mdc-icon-button--on',
   ROOT: 'mdc-icon-button',
