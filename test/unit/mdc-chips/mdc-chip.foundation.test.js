@@ -48,7 +48,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
     'notifyTrailingIconInteraction', 'notifyRemoval', 'notifySelection',
     'getComputedStyleValue', 'setStyleProperty', 'hasLeadingIcon',
     'getRootBoundingClientRect', 'getCheckmarkBoundingClientRect',
-    'setAttr',
+    'setAttr', 'notifyNavigation',
   ]);
 });
 
@@ -315,4 +315,36 @@ test(`#handleTrailingIconInteraction does not add ${cssClasses.CHIP_EXIT} class 
   assert.isFalse(foundation.getShouldRemoveOnTrailingIconClick());
   td.verify(mockAdapter.addClass(cssClasses.CHIP_EXIT), {times: 0});
   td.verify(mockEvt.stopPropagation());
+});
+
+test('#handleKeydown emits custom event with "LEFT" on appropriate keys', () => {
+  const {foundation, mockAdapter} = setupTest();
+  [
+    strings.ARROW_UP_KEY,
+    strings.ARROW_LEFT_KEY,
+  ].forEach((key) => {
+    const mockEvt = {
+      type: 'keydown',
+      key,
+    };
+
+    foundation.handleKeydown(mockEvt);
+    td.verify(mockAdapter.notifyNavigation(strings.LEFT));
+  });
+});
+
+test('#handleKeydown emits custom event with "RIGHT" on appropriate keys', () => {
+  const {foundation, mockAdapter} = setupTest();
+  [
+    strings.ARROW_RIGHT_KEY,
+    strings.ARROW_DOWN_KEY,
+  ].forEach((key) => {
+    const mockEvt = {
+      type: 'keydown',
+      key,
+    };
+
+    foundation.handleKeydown(mockEvt);
+    td.verify(mockAdapter.notifyNavigation(strings.RIGHT));
+  });
 });

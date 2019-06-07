@@ -53,6 +53,7 @@ class FakeChip {
   constructor(el) {
     this.id = el.id;
     this.destroy = td.func('.destroy');
+    this.focus = td.func('.focus');
     this.selected = false;
   }
 }
@@ -89,24 +90,28 @@ test('#destroy cleans up child chip components', () => {
 
 test('#initialSyncWithDOM sets up event handlers', () => {
   const {root, mockFoundation} = setupMockFoundationTest();
-  const {INTERACTION_EVENT, REMOVAL_EVENT, SELECTION_EVENT} = MDCChipFoundation.strings;
+  const {INTERACTION_EVENT, LEFT, NAVIGATION_EVENT, REMOVAL_EVENT, SELECTION_EVENT} = MDCChipFoundation.strings;
   const evtData = {
-    chipId: 'chipA', selected: true,
+    chipId: 'chipA', selected: true, key: LEFT,
   };
   const evt1 = document.createEvent('CustomEvent');
   const evt2 = document.createEvent('CustomEvent');
   const evt3 = document.createEvent('CustomEvent');
+  const evt4 = document.createEvent('CustomEvent');
   evt1.initCustomEvent(INTERACTION_EVENT, true, true, evtData);
   evt2.initCustomEvent(REMOVAL_EVENT, true, true, evtData);
   evt3.initCustomEvent(SELECTION_EVENT, true, true, evtData);
+  evt4.initCustomEvent(NAVIGATION_EVENT, true, true, evtData);
 
   root.dispatchEvent(evt1);
   root.dispatchEvent(evt2);
   root.dispatchEvent(evt3);
+  root.dispatchEvent(evt4);
 
   td.verify(mockFoundation.handleChipInteraction('chipA'), {times: 1});
   td.verify(mockFoundation.handleChipSelection('chipA', true), {times: 1});
   td.verify(mockFoundation.handleChipRemoval('chipA'), {times: 1});
+  td.verify(mockFoundation.handleChipNavigation('chipA', 'LEFT'), {times: 1});
 });
 
 test('#destroy removes event handlers', () => {
@@ -121,6 +126,9 @@ test('#destroy removes event handlers', () => {
 
   domEvents.emit(root, MDCChipFoundation.strings.REMOVAL_EVENT);
   td.verify(mockFoundation.handleChipRemoval(td.matchers.anything()), {times: 0});
+
+  domEvents.emit(root, MDCChipFoundation.strings.NAVIGATION_EVENT);
+  td.verify(mockFoundation.handleChipNavigation(td.matchers.anything()), {times: 0});
 });
 
 test('get selectedChipIds proxies to foundation', () => {
@@ -169,4 +177,20 @@ test('#adapter.setSelected sets selected on chip object', () => {
   const chip = component.chips[0];
   component.getDefaultFoundation().adapter_.setSelected(chip.id, true);
   assert.equal(chip.selected, true);
+});
+
+test('#adapter.getChipListCount returns the number of chips', () => {
+  const {component} = setupTest();
+  assert.equal(component.getDefaultFoundation().adapter_.getChipListCount(), 3);
+});
+
+test('#adapter.getIndexOfChipById returns the index of the chip', () => {
+  const {component} = setupTest();
+  assert.equal(component.getDefaultFoundation().adapter_.getIndexOfChipById('chip1'), 0);
+});
+
+test('#adapter.focusChipAtIndex focuses the chip at the given index', () => {
+  const {component} = setupTest();
+  component.getDefaultFoundation().adapter_.focusChipAtIndex(0);
+  td.verify(component.chips[0].focus(), {times: 1});
 });

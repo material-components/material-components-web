@@ -42,6 +42,7 @@ test('exports cssClasses', () => {
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCChipSetFoundation, [
     'hasClass', 'removeChip', 'setSelected',
+    'focusChipAtIndex', 'getIndexOfChipById', 'isRTL', 'getChipListCount',
   ]);
 });
 
@@ -188,4 +189,47 @@ test('#handleChipRemoval removes chip', () => {
 
   foundation.handleChipRemoval('chipA');
   td.verify(mockAdapter.removeChip('chipA'));
+});
+
+function setupChipNavigationTest(chipIds, isRTL=false) {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getIndexOfChipById(td.matchers.isA(String))).thenDo((id) => {
+    for (let i = 0; i < chipIds.length; i++) {
+      if (chipIds[i] === id) {
+        return i;
+      }
+    }
+    return -1;
+  });
+  td.when(mockAdapter.getChipListCount()).thenReturn(chipIds.length);
+  td.when(mockAdapter.isRTL()).thenReturn(isRTL);
+  return {foundation, mockAdapter};
+}
+
+test('#handleChipNavigation "RIGHT" focuses the next chip', () => {
+  const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+
+  foundation.handleChipNavigation('chip1', 'RIGHT');
+  td.verify(mockAdapter.focusChipAtIndex(2));
+});
+
+test('#handleChipNavigation "RIGHT" from the last chip does not focus any chip', () => {
+  const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+
+  foundation.handleChipNavigation('chip2', 'RIGHT');
+  td.verify(mockAdapter.focusChipAtIndex(td.matchers.isA(Number)), {times: 0});
+});
+
+test('#handleChipNavigation "LEFT" focuses the previous chip', () => {
+  const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+
+  foundation.handleChipNavigation('chip1', 'LEFT');
+  td.verify(mockAdapter.focusChipAtIndex(0));
+});
+
+test('#handleChipNavigation "LEFT" from the first chip does not focus any chip', () => {
+  const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+
+  foundation.handleChipNavigation('chip0', 'LEFT');
+  td.verify(mockAdapter.focusChipAtIndex(td.matchers.isA(Number)), {times: 0});
 });
