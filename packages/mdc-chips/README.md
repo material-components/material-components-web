@@ -297,7 +297,7 @@ Event Name | `event.detail` | Description
 `MDCChip:selection` | `{chipId: string, selected: boolean}` | Indicates the chip's selection state has changed (for choice/filter chips)
 `MDCChip:removal` | `{chipId: string, root: Element}` | Indicates the chip is ready to be removed from the DOM
 `MDCChip:trailingIconInteraction` | `{chipId: string}` | Indicates the chip's trailing icon was interacted with (via click/tap or Enter key)
-`MDCChip:navigation` | `{chipId: string, dir: string}` | Indicates a navigation event has occurred on a chip
+`MDCChip:navigation` | `{chipId: string, key: string}` | Indicates a navigation event has occurred on a chip
 
 > _NOTE_: All of `MDCChip`'s emitted events bubble up through the DOM.
 
@@ -340,7 +340,7 @@ Method Signature | Description
 `getRootBoundingClientRect() => ClientRect` | Returns the bounding client rect of the root element
 `getCheckmarkBoundingClientRect() => ClientRect \| null` | Returns the bounding client rect of the checkmark element or null if it doesn't exist
 `setAttr(attr: string, value: string) => void` | Sets the value of the attribute on the root element.
-`notifyNavigation(dir: string) => void` | Notifies the Chip Set that a navigation event has occurred
+`notifyNavigation(key: string) => void` | Notifies the Chip Set that a navigation event has occurred
 
 > \*_NOTE_: `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target chip's ID, and must be observable by the parent `mdc-chip-set` element (e.g. via DOM event bubbling).
 
@@ -397,7 +397,7 @@ Method Signature | Description
 `handleChipInteraction(chipId: string) => void` | Handles a custom `MDCChip:interaction` event on the root element
 `handleChipSelection(chipId: string, selected: boolean) => void` | Handles a custom `MDCChip:selection` event on the root element
 `handleChipRemoval(chipId: string) => void` | Handles a custom `MDCChip:removal` event on the root element
-`handleChipNavigation(chipId: string, dir: string) => void` | Handles a custom `MDCChip:navigation` event on the root element
+`handleChipNavigation(chipId: string, key: string) => void` | Handles a custom `MDCChip:navigation` event on the root element
 
 #### `MDCChipSetFoundation` Event Handlers
 

@@ -317,34 +317,44 @@ test(`#handleTrailingIconInteraction does not add ${cssClasses.CHIP_EXIT} class 
   td.verify(mockEvt.stopPropagation());
 });
 
-test('#handleKeydown emits custom event with "LEFT" on appropriate keys', () => {
+test('#handleKeydown emits custom event with appropriate keys', () => {
   const {foundation, mockAdapter} = setupTest();
   [
     strings.ARROW_UP_KEY,
+    strings.ARROW_RIGHT_KEY,
+    strings.ARROW_DOWN_KEY,
     strings.ARROW_LEFT_KEY,
   ].forEach((key) => {
     const mockEvt = {
       type: 'keydown',
       key,
+      preventDefault: td.func('.preventDefault'),
     };
 
     foundation.handleKeydown(mockEvt);
-    td.verify(mockAdapter.notifyNavigation(strings.LEFT));
+    td.verify(mockAdapter.notifyNavigation(key));
   });
 });
 
-test('#handleKeydown emits custom event with "RIGHT" on appropriate keys', () => {
-  const {foundation, mockAdapter} = setupTest();
-  [
-    strings.ARROW_RIGHT_KEY,
-    strings.ARROW_DOWN_KEY,
-  ].forEach((key) => {
-    const mockEvt = {
-      type: 'keydown',
-      key,
-    };
+test('#handleKeydown calls preventDefault on navigation events', () => {
+  const {foundation} = setupTest();
+  const mockEvt = {
+    type: 'keydown',
+    key: 'ArrowLeft',
+    preventDefault: td.func('.preventDefault'),
+  };
 
-    foundation.handleKeydown(mockEvt);
-    td.verify(mockAdapter.notifyNavigation(strings.RIGHT));
-  });
+  foundation.handleKeydown(mockEvt);
+  td.verify(mockEvt.preventDefault(), {times: 1});
+});
+
+test('#handleKeydown does not emit a custom event for inappropriate keys', () => {
+  const {foundation, mockAdapter} = setupTest();
+  const mockEvt = {
+    type: 'keydown',
+    key: 'Space',
+  };
+
+  foundation.handleKeydown(mockEvt);
+  td.verify(mockAdapter.notifyNavigation(td.matchers.isA(String)), {times: 0});
 });

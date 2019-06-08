@@ -90,9 +90,10 @@ test('#destroy cleans up child chip components', () => {
 
 test('#initialSyncWithDOM sets up event handlers', () => {
   const {root, mockFoundation} = setupMockFoundationTest();
-  const {INTERACTION_EVENT, LEFT, NAVIGATION_EVENT, REMOVAL_EVENT, SELECTION_EVENT} = MDCChipFoundation.strings;
+  const {
+    INTERACTION_EVENT, ARROW_LEFT_KEY, NAVIGATION_EVENT, REMOVAL_EVENT, SELECTION_EVENT} = MDCChipFoundation.strings;
   const evtData = {
-    chipId: 'chipA', selected: true, key: LEFT,
+    chipId: 'chipA', selected: true, key: ARROW_LEFT_KEY,
   };
   const evt1 = document.createEvent('CustomEvent');
   const evt2 = document.createEvent('CustomEvent');
@@ -111,7 +112,7 @@ test('#initialSyncWithDOM sets up event handlers', () => {
   td.verify(mockFoundation.handleChipInteraction('chipA'), {times: 1});
   td.verify(mockFoundation.handleChipSelection('chipA', true), {times: 1});
   td.verify(mockFoundation.handleChipRemoval('chipA'), {times: 1});
-  td.verify(mockFoundation.handleChipNavigation('chipA', 'LEFT'), {times: 1});
+  td.verify(mockFoundation.handleChipNavigation('chipA', ARROW_LEFT_KEY), {times: 1});
 });
 
 test('#destroy removes event handlers', () => {

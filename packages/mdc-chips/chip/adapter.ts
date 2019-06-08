@@ -84,7 +84,7 @@ export interface MDCChipAdapter {
   /**
    * Emits a custom event "MDCChip:navigation" denoting a focus navigation event.
    */
-  notifyNavigation(dir: string): void;
+  notifyNavigation(key: string): void;
 
   /**
    * @return The computed property value of the given style property on the root element.

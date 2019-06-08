@@ -206,30 +206,79 @@ function setupChipNavigationTest(chipIds, isRTL=false) {
   return {foundation, mockAdapter};
 }
 
-test('#handleChipNavigation "RIGHT" focuses the next chip', () => {
+test('#handleChipNavigation "Space" does nothing', () => {
   const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
-  foundation.handleChipNavigation('chip1', 'RIGHT');
-  td.verify(mockAdapter.focusChipAtIndex(2));
-});
-
-test('#handleChipNavigation "RIGHT" from the last chip does not focus any chip', () => {
-  const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
-
-  foundation.handleChipNavigation('chip2', 'RIGHT');
+  foundation.handleChipNavigation('chip1', 'Space');
   td.verify(mockAdapter.focusChipAtIndex(td.matchers.isA(Number)), {times: 0});
 });
 
-test('#handleChipNavigation "LEFT" focuses the previous chip', () => {
+test('#handleChipNavigation "ArrowRight" focuses the next chip', () => {
   const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
-  foundation.handleChipNavigation('chip1', 'LEFT');
+  foundation.handleChipNavigation('chip1', 'ArrowRight');
+  td.verify(mockAdapter.focusChipAtIndex(2));
+});
+
+test('#handleChipNavigation "ArrowRight" focuses the previous chip in RTL', () => {
+  const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2'], true);
+
+  foundation.handleChipNavigation('chip1', 'ArrowRight');
   td.verify(mockAdapter.focusChipAtIndex(0));
 });
 
-test('#handleChipNavigation "LEFT" from the first chip does not focus any chip', () => {
+test('#handleChipNavigation "ArrowDown" focuses the next chip', () => {
   const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
-  foundation.handleChipNavigation('chip0', 'LEFT');
+  foundation.handleChipNavigation('chip1', 'ArrowDown');
+  td.verify(mockAdapter.focusChipAtIndex(2));
+});
+
+test('#handleChipNavigation "ArrowRight" from the last chip does not focus any chip', () => {
+  const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+
+  foundation.handleChipNavigation('chip2', 'ArrowRight');
+  td.verify(mockAdapter.focusChipAtIndex(td.matchers.isA(Number)), {times: 0});
+});
+
+test('#handleChipNavigation "ArrowDown" from the last chip does not focus any chip', () => {
+  const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+
+  foundation.handleChipNavigation('chip2', 'ArrowDown');
+  td.verify(mockAdapter.focusChipAtIndex(td.matchers.isA(Number)), {times: 0});
+});
+
+test('#handleChipNavigation "ArrowLeft" focuses the previous chip', () => {
+  const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+
+  foundation.handleChipNavigation('chip1', 'ArrowLeft');
+  td.verify(mockAdapter.focusChipAtIndex(0));
+});
+
+test('#handleChipNavigation "ArrowLeft" focuses the next chip in RTL', () => {
+  const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2'], true);
+
+  foundation.handleChipNavigation('chip1', 'ArrowLeft');
+  td.verify(mockAdapter.focusChipAtIndex(2));
+});
+
+test('#handleChipNavigation "ArrowUp" focuses the previous chip', () => {
+  const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+
+  foundation.handleChipNavigation('chip1', 'ArrowLeft');
+  td.verify(mockAdapter.focusChipAtIndex(0));
+});
+
+test('#handleChipNavigation "ArrowLeft" from the first chip does not focus any chip', () => {
+  const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+
+  foundation.handleChipNavigation('chip0', 'ArrowLeft');
+  td.verify(mockAdapter.focusChipAtIndex(td.matchers.isA(Number)), {times: 0});
+});
+
+test('#handleChipNavigation "ArrowUp" from the first chip does not focus any chip', () => {
+  const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+
+  foundation.handleChipNavigation('chip0', 'ArrowUp');
   td.verify(mockAdapter.focusChipAtIndex(td.matchers.isA(Number)), {times: 0});
 });

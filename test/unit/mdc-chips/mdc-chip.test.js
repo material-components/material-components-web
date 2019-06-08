@@ -265,7 +265,7 @@ test('adapter#notifyNavigation emits ' + MDCChipFoundation.strings.NAVIGATION_EV
   const handler = td.func('interaction handler');
 
   component.listen(MDCChipFoundation.strings.NAVIGATION_EVENT, handler);
-  component.getDefaultFoundation().adapter_.notifyNavigation(MDCChipFoundation.strings.LEFT);
+  component.getDefaultFoundation().adapter_.notifyNavigation(MDCChipFoundation.strings.ARROW_LEFT_KEY);
 
   td.verify(handler(td.matchers.anything()));
 });

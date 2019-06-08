@@ -34,12 +34,12 @@ const emptyClientRect = {
   width: 0,
 };
 
-export const ACCEPTABLE_KEYS = new Set<string>();
+export const NAVIGATION_KEYS = new Set<string>();
 // IE11 has no support for new Set with iterable so we need to initialize this by hand
-ACCEPTABLE_KEYS.add(strings.ARROW_LEFT_KEY);
-ACCEPTABLE_KEYS.add(strings.ARROW_RIGHT_KEY);
-ACCEPTABLE_KEYS.add(strings.ARROW_DOWN_KEY);
-ACCEPTABLE_KEYS.add(strings.ARROW_UP_KEY);
+NAVIGATION_KEYS.add(strings.ARROW_LEFT_KEY);
+NAVIGATION_KEYS.add(strings.ARROW_RIGHT_KEY);
+NAVIGATION_KEYS.add(strings.ARROW_DOWN_KEY);
+NAVIGATION_KEYS.add(strings.ARROW_UP_KEY);
 
 export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   static get strings() {
@@ -213,15 +213,13 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   handleKeydown(evt: KeyboardEvent) {
     const key = evt.key;
     // Early exit if the key is not usable
-    if (!ACCEPTABLE_KEYS.has(key)) {
+    if (!NAVIGATION_KEYS.has(key)) {
       return;
     }
 
-    if (key === strings.ARROW_UP_KEY || key === strings.ARROW_LEFT_KEY) {
-      this.adapter_.notifyNavigation(strings.LEFT);
-    } else if (key === strings.ARROW_DOWN_KEY || key === strings.ARROW_RIGHT_KEY) {
-      this.adapter_.notifyNavigation(strings.RIGHT);
-    }
+    // Prevent default behavior for movement keys which could include scrolling
+    evt.preventDefault();
+    this.adapter_.notifyNavigation(key);
   }
 }
 

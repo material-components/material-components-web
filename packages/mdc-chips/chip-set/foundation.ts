@@ -23,6 +23,7 @@
 
 import {MDCFoundation} from '@material/base/foundation';
 import {strings as chipStrings} from '../chip/constants';
+import {NAVIGATION_KEYS} from '../chip/foundation';
 import {MDCChipSetAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
@@ -112,15 +113,18 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   /**
    * Handles a chip navigation event.
    */
-  handleChipNavigation(chipId: string, dir: string) {
+  handleChipNavigation(chipId: string, key: string) {
     const maxIndex = this.adapter_.getChipListCount() - 1;
     let index = this.adapter_.getIndexOfChipById(chipId);
-    if (index === -1) {
+    // Early exit if the index if out of range or the key is unusable
+    if (index === -1 || !NAVIGATION_KEYS.has(key)) {
       return;
     }
 
     const isRTL = this.adapter_.isRTL();
-    const shouldIncrement = dir === chipStrings.RIGHT && !isRTL || dir === chipStrings.LEFT && isRTL;
+    const shouldIncrement = key === chipStrings.ARROW_RIGHT_KEY && !isRTL
+        || key === chipStrings.ARROW_LEFT_KEY && isRTL
+        || key === chipStrings.ARROW_DOWN_KEY;
     if (shouldIncrement) {
       index++;
     } else {
