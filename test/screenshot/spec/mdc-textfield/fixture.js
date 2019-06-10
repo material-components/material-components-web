@@ -23,7 +23,6 @@
 
 window.mdc.testFixture.fontsLoaded.then(() => {
   [].forEach.call(document.querySelectorAll('.mdc-text-field:not([data-no-init="true"])'), (el) => {
-    console.log('init');
     mdc.textField.MDCTextField.attachTo(el);
   });
 
