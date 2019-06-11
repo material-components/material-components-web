@@ -53,13 +53,13 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
 
   ripple!: MDCRipple | null;
 
-  private menu_!: MDCMenu | null; // assigned in enhancedSelectSetup_()
+  private menu_!: MDCMenu; // assigned in enhancedSelectSetup_()
   private isMenuOpen_!: boolean; // assigned in initialize()
 
   private selectedText_!: HTMLElement; // assigned in initialize()
 
   private hiddenInput_!: HTMLInputElement | null; // assigned in enhancedSelectSetup_()
-  private menuElement_!: Element | null; // assigned in enhancedSelectSetup_()
+  private menuElement_!: Element; // assigned in enhancedSelectSetup_()
   private leadingIcon_?: MDCSelectIcon; // assigned in initialize()
   private helperText_!: MDCSelectHelperText | null; // assigned in initialize()
   private lineRipple_!: MDCLineRipple | null; // assigned in initialize()
@@ -118,9 +118,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
       this.root_.classList.add(cssClasses.WITH_LEADING_ICON);
       this.leadingIcon_ = iconFactory(leadingIcon);
 
-      if (this.menuElement_) {
-        this.menuElement_.classList.add(cssClasses.WITH_LEADING_ICON);
-      }
+      this.menuElement_.classList.add(cssClasses.WITH_LEADING_ICON);
     }
 
     if (!this.root_.classList.contains(cssClasses.OUTLINED)) {
@@ -151,13 +149,13 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     this.handleMenuOpened_ = () => {
       this.foundation_.handleMenuOpened();
 
-      if (this.menu_!.items.length === 0) {
+      if (this.menu_.items.length === 0) {
         return;
       }
 
       // Menu should open to the last selected element, should open to first menu item otherwise.
       const focusItemIndex = this.selectedIndex >= 0 ? this.selectedIndex : 0;
-      const focusItemEl = this.menu_!.items[focusItemIndex] as HTMLElement;
+      const focusItemEl = this.menu_.items[focusItemIndex] as HTMLElement;
       focusItemEl.focus();
     };
     this.handleMenuClosed_ = () => {
@@ -173,28 +171,25 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
       }
     };
 
-    this.selectedText_.addEventListener('change', this.handleChange_);
     this.selectedText_.addEventListener('focus', this.handleFocus_);
     this.selectedText_.addEventListener('blur', this.handleBlur_);
 
     this.selectedText_.addEventListener('click', this.handleClick_ as EventListener);
 
-    if (this.menuElement_) {
-      this.selectedText_!.addEventListener('keydown', this.handleKeydown_);
-      this.menu_!.listen(menuSurfaceConstants.strings.CLOSED_EVENT, this.handleMenuClosed_);
-      this.menu_!.listen(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
-      this.menu_!.listen(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
+    this.selectedText_!.addEventListener('keydown', this.handleKeydown_);
+    this.menu_.listen(menuSurfaceConstants.strings.CLOSED_EVENT, this.handleMenuClosed_);
+    this.menu_.listen(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
+    this.menu_.listen(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
 
-      if (this.hiddenInput_ && this.hiddenInput_.value) {
-        // If the hidden input already has a value, use it to restore the select's value.
-        // This can happen e.g. if the user goes back or (in some browsers) refreshes the page.
-        const enhancedAdapterMethods = this.getEnhancedSelectAdapterMethods_();
-        enhancedAdapterMethods.setValue(this.hiddenInput_.value);
-      } else if (this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)) {
-        // If an element is selected, the select should set the initial selected text.
-        const enhancedAdapterMethods = this.getEnhancedSelectAdapterMethods_();
-        enhancedAdapterMethods.setValue(enhancedAdapterMethods.getValue());
-      }
+    if (this.hiddenInput_ && this.hiddenInput_.value) {
+      // If the hidden input already has a value, use it to restore the select's value.
+      // This can happen e.g. if the user goes back or (in some browsers) refreshes the page.
+      const enhancedAdapterMethods = this.getEnhancedSelectAdapterMethods_();
+      enhancedAdapterMethods.setValue(this.hiddenInput_.value);
+    } else if (this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)) {
+      // If an element is selected, the select should set the initial selected text.
+      const enhancedAdapterMethods = this.getEnhancedSelectAdapterMethods_();
+      enhancedAdapterMethods.setValue(enhancedAdapterMethods.getValue());
     }
 
     // Initially sync floating label
@@ -212,12 +207,10 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     this.selectedText_.removeEventListener('keydown', this.handleKeydown_);
     this.selectedText_.removeEventListener('click', this.handleClick_ as EventListener);
 
-    if (this.menu_) {
-      this.menu_.unlisten(menuSurfaceConstants.strings.CLOSED_EVENT, this.handleMenuClosed_);
-      this.menu_.unlisten(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
-      this.menu_.unlisten(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
-      this.menu_.destroy();
-    }
+    this.menu_.unlisten(menuSurfaceConstants.strings.CLOSED_EVENT, this.handleMenuClosed_);
+    this.menu_.unlisten(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
+    this.menu_.unlisten(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
+    this.menu_.destroy();
 
     if (this.ripple) {
       this.ripple.destroy();
@@ -248,10 +241,8 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
 
   get selectedIndex(): number {
     let selectedIndex = -1;
-    if (this.menuElement_ && this.menu_) {
-      const selectedEl = this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)!;
-      selectedIndex = this.menu_.items.indexOf(selectedEl);
-    }
+    const selectedEl = this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)!;
+    selectedIndex = this.menu_.items.indexOf(selectedEl);
     return selectedIndex;
   }
 
@@ -368,29 +359,29 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       getValue: () => {
-        const listItem = this.menuElement_!.querySelector(strings.SELECTED_ITEM_SELECTOR);
+        const listItem = this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR);
         if (listItem && listItem.hasAttribute(strings.ENHANCED_VALUE_ATTR)) {
           return listItem.getAttribute(strings.ENHANCED_VALUE_ATTR) || '';
         }
         return '';
       },
       setValue: (value: string) => {
-        const element = this.menuElement_!.querySelector(`[${strings.ENHANCED_VALUE_ATTR}="${value}"]`);
-        this.setEnhancedSelectedIndex_(element ? this.menu_!.items.indexOf(element) : -1);
+        const element = this.menuElement_.querySelector(`[${strings.ENHANCED_VALUE_ATTR}="${value}"]`);
+        this.setEnhancedSelectedIndex_(element ? this.menu_.items.indexOf(element) : -1);
       },
       openMenu: () => {
-        if (this.menu_ && !this.menu_.open) {
+        if (!this.menu_.open) {
           this.menu_.open = true;
           this.isMenuOpen_ = true;
           this.selectedText_!.setAttribute('aria-expanded', 'true');
         }
       },
       closeMenu: () => {
-        if (this.menu_ && this.menu_.open) {
+        if (this.menu_.open) {
           this.menu_.open = false;
         }
       },
-      isMenuOpen: () => Boolean(this.menu_) && this.isMenuOpen_,
+      isMenuOpen: () => this.isMenuOpen_,
       setSelectedIndex: (index: number) => this.setEnhancedSelectedIndex_(index),
       setDisabled: (isDisabled: boolean) => {
         this.selectedText_!.setAttribute('tabindex', isDisabled ? '-1' : '0');
@@ -479,9 +470,9 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
   }
 
   private setEnhancedSelectedIndex_(index: number) {
-    const selectedItem = this.menu_!.items[index];
+    const selectedItem = this.menu_.items[index];
     this.selectedText_!.textContent = selectedItem ? selectedItem.textContent!.trim() : '';
-    const previouslySelected = this.menuElement_!.querySelector(strings.SELECTED_ITEM_SELECTOR);
+    const previouslySelected = this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR);
 
     if (previouslySelected) {
       previouslySelected.classList.remove(cssClasses.SELECTED_ITEM_CLASS);

@@ -903,12 +903,6 @@ test(`adapter#setValid applies ${cssClasses.INVALID} properly`, () => {
   assert.isFalse(fixture.classList.contains(cssClasses.INVALID));
 });
 
-test('change event triggers foundation.handleChange()', () => {
-  const {selectedText, mockFoundation} = setupWithMockFoundation();
-  domEvents.emit(selectedText, 'change');
-  td.verify(mockFoundation.handleChange(true), {times: 1});
-});
-
 test('focus event triggers foundation.handleFocus()', () => {
   const {selectedText, mockFoundation} = setupWithMockFoundation();
   domEvents.emit(selectedText, 'focus');
