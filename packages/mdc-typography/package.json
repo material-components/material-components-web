@@ -1,7 +1,7 @@
 {
   "name": "@material/typography",
   "description": "Typography classes, mixins, and variables for Material Components for the web",
-  "version": "1.0.0",
+  "version": "2.3.0",
   "license": "MIT",
   "keywords": [
     "material components",

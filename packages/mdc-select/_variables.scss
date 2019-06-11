@@ -39,7 +39,6 @@ $mdc-select-helper-text-color: rgba(mdc-theme-prop-value(on-surface), .6) !defau
 
 $mdc-select-fill-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 4%) !default;
 
-$mdc-select-outlined-idle-border: rgba(mdc-theme-prop-value(on-surface), .24) !default;
 $mdc-select-dropdown-opacity: .54 !default;
 
 // Disabled Styles
@@ -49,9 +48,11 @@ $mdc-select-disabled-ink-color: rgba(mdc-theme-prop-value(on-surface), .37) !def
 $mdc-select-disabled-fill-color: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 2%) !default;
 $mdc-select-disabled-dropdown-opacity: .37 !default;
 
+$mdc-select-outlined-idle-border: rgba(mdc-theme-prop-value(on-surface), .38) !default;
+$mdc-select-outlined-hover-border: rgba(mdc-theme-prop-value(on-surface), .87) !default;
+
 // should be .06 after mdc-select opacity is applied
 $mdc-select-outlined-disabled-border: rgba(mdc-theme-prop-value(on-surface), .16) !default;
-$mdc-select-outlined-hover-border: rgba(mdc-theme-prop-value(on-surface), .87) !default;
 
 $mdc-select-label-position-y: 70% !default;
 $mdc-select-outline-label-offset: 16px !default;
