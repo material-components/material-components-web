@@ -43,7 +43,6 @@ const strings = {
   LEADING_ICON_SELECTOR: '.mdc-select__icon',
   LINE_RIPPLE_SELECTOR: '.mdc-line-ripple',
   MENU_SELECTOR: '.mdc-select__menu',
-  NATIVE_CONTROL_SELECTOR: '.mdc-select__native-control',
   OUTLINE_SELECTOR: '.mdc-notched-outline',
   SELECTED_ITEM_SELECTOR: `.${cssClasses.SELECTED_ITEM_CLASS}`,
   SELECTED_TEXT_SELECTOR: '.mdc-select__selected-text',
