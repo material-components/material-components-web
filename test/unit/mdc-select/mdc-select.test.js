@@ -823,11 +823,12 @@ test('adapter#checkValidity returns false when required class is present and sel
   const hasMockMenu = false;
   const hasOutline = false;
   const hasLabel = true;
-  const {component, fixture} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  const {component, fixture, mockFoundation} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   const adapter = component.getDefaultFoundation().adapter_;
 
   fixture.classList.add(cssClasses.REQUIRED);
   component.selectedIndex = -1;
+  td.when(mockFoundation.getSelectedIndex()).thenReturn(-1);
   assert.equal(adapter.checkValidity(), false);
 });
 
@@ -836,11 +837,12 @@ test('adapter#checkValidity returns false when required class is present and pla
   const hasMockMenu = false;
   const hasOutline = false;
   const hasLabel = true;
-  const {component, fixture} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  const {component, fixture, mockFoundation} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   const adapter = component.getDefaultFoundation().adapter_;
 
   fixture.classList.add(cssClasses.REQUIRED);
   component.selectedIndex = 0;
+  td.when(mockFoundation.getSelectedIndex()).thenReturn(0);
   assert.equal(adapter.checkValidity(), false);
 });
 

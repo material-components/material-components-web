@@ -341,6 +341,8 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `setValue(value: string) => void` | Sets the value of the select or text content of the selected-text element. |
 | `isMenuOpen() => boolean` | Returns true if the menu is currently opened in the enhanced select. |
 | `setSelectedIndex(index: number) => void` | Selects the option or list item at the specified index. |
+| `getSelectedMenuItem() => Element|null` | Returns the currently selected menu element, if it exists. |
+| `getMenuItems() => Element[]` | Returns the menu item elements. |
 | `setDisabled(isDisabled: boolean) => void` | Enables or disables the select. |
 | `setRippleCenter(normalizedX: number) => void` | Sets the line ripple center to the provided normalizedX value. |
 | `notifyChange(value: string) => void` | Emits the `MDCSelect:change` event when an element is selected. |
@@ -360,6 +362,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `handleMenuClosed() => void` | Handles menu or menu surface closed event.
 | `handleChange() => void` | Handles a change to the `select` element's value. This must be called both for `change` events and programmatic changes requested via the component API. |
 | `handleKeydown(event: KeyboardEvent) => void` | Handles opening the menu (enhanced select) when the `mdc-select__selected-text` element is focused and the user presses the `Enter` or `Space` key. |
+| `getSelectedIndex() => number` | Returns the index of the currently selected menu item. |
 | `setSelectedIndex(index: number) => void` | Handles setting the `mdc-select__selected-text` element and closing the menu (enhanced select only). Also causes the label to float and outline to notch if needed. |
 | `setValue(value: string) => void` | Handles setting the value through the adapter and causes the label to float and outline to notch if needed. |
 | `getValue() => string` | Handles getting the value through the adapter. |
