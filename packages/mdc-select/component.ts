@@ -53,13 +53,13 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
 
   ripple!: MDCRipple | null;
 
-  private menu_!: MDCMenu | null; // assigned in selectSetup_()
+  private menu_!: MDCMenu; // assigned in selectSetup_()
   private isMenuOpen_!: boolean; // assigned in initialize()
 
   private selectedText_!: HTMLElement; // assigned in initialize()
 
   private hiddenInput_!: HTMLInputElement | null; // assigned in selectSetup_()
-  private menuElement_!: Element | null; // assigned in selectSetup_()
+  private menuElement_!: Element; // assigned in selectSetup_()
   private leadingIcon_?: MDCSelectIcon; // assigned in initialize()
   private helperText_!: MDCSelectHelperText | null; // assigned in initialize()
   private lineRipple_!: MDCLineRipple | null; // assigned in initialize()
@@ -100,9 +100,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
       }
     }
 
-    if (this.selectedText_) {
-      this.selectSetup_(menuFactory);
-    }
+    this.selectSetup_(menuFactory);
 
     const labelElement = this.root_.querySelector(strings.LABEL_SELECTOR);
     this.label_ = labelElement ? labelFactory(labelElement) : null;
@@ -118,9 +116,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
       this.root_.classList.add(cssClasses.WITH_LEADING_ICON);
       this.leadingIcon_ = iconFactory(leadingIcon);
 
-      if (this.menuElement_) {
-        this.menuElement_.classList.add(cssClasses.WITH_LEADING_ICON);
-      }
+      this.menuElement_.classList.add(cssClasses.WITH_LEADING_ICON);
     }
 
     if (!this.root_.classList.contains(cssClasses.OUTLINED)) {
@@ -141,9 +137,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     this.handleFocus_ = () => this.foundation_.handleFocus();
     this.handleBlur_ = () => this.foundation_.handleBlur();
     this.handleClick_ = (evt) => {
-      if (this.selectedText_) {
-        this.selectedText_.focus();
-      }
+      this.selectedText_.focus();
       this.foundation_.handleClick(this.getNormalizedXCoordinate_(evt));
     };
     this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt);
@@ -151,13 +145,13 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     this.handleMenuOpened_ = () => {
       this.foundation_.handleMenuOpened();
 
-      if (this.menu_!.items.length === 0) {
+      if (this.menu_.items.length === 0) {
         return;
       }
 
       // Menu should open to the last selected element, should open to first menu item otherwise.
       const focusItemIndex = this.selectedIndex >= 0 ? this.selectedIndex : 0;
-      const focusItemEl = this.menu_!.items[focusItemIndex] as HTMLElement;
+      const focusItemEl = this.menu_.items[focusItemIndex] as HTMLElement;
       focusItemEl.focus();
     };
     this.handleMenuClosed_ = () => {
@@ -173,27 +167,24 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
       }
     };
 
-    this.selectedText_.addEventListener('change', this.handleChange_);
     this.selectedText_.addEventListener('focus', this.handleFocus_);
     this.selectedText_.addEventListener('blur', this.handleBlur_);
 
     this.selectedText_.addEventListener('click', this.handleClick_ as EventListener);
 
-    if (this.menuElement_) {
-      this.selectedText_!.addEventListener('keydown', this.handleKeydown_);
-      this.menu_!.listen(menuSurfaceConstants.strings.CLOSED_EVENT, this.handleMenuClosed_);
-      this.menu_!.listen(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
-      this.menu_!.listen(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
+    this.selectedText_.addEventListener('keydown', this.handleKeydown_);
+    this.menu_.listen(menuSurfaceConstants.strings.CLOSED_EVENT, this.handleMenuClosed_);
+    this.menu_.listen(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
+    this.menu_.listen(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
 
-      if (this.hiddenInput_ && this.hiddenInput_.value) {
-        // If the hidden input already has a value, use it to restore the select's value.
-        // This can happen e.g. if the user goes back or (in some browsers) refreshes the page.
-        this.getSelectAdapterMethods_().setValue(this.hiddenInput_.value);
-      } else if (this.getSelectedMenuItem_()) {
-        // If an element is selected, the select should set the initial selected text.
-        const adapterMethods = this.getSelectAdapterMethods_();
-        adapterMethods.setValue(adapterMethods.getValue());
-      }
+    if (this.hiddenInput_ && this.hiddenInput_.value) {
+      // If the hidden input already has a value, use it to restore the select's value.
+      // This can happen e.g. if the user goes back or (in some browsers) refreshes the page.
+      this.getSelectAdapterMethods_().setValue(this.hiddenInput_.value);
+    } else if (this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)) {
+      // If an element is selected, the select should set the initial selected text.
+      const adapterMethods = this.getSelectAdapterMethods_();
+      adapterMethods.setValue(adapterMethods.getValue());
     }
 
     // Initially sync floating label
@@ -211,12 +202,10 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     this.selectedText_.removeEventListener('keydown', this.handleKeydown_);
     this.selectedText_.removeEventListener('click', this.handleClick_ as EventListener);
 
-    if (this.menu_) {
-      this.menu_.unlisten(menuSurfaceConstants.strings.CLOSED_EVENT, this.handleMenuClosed_);
-      this.menu_.unlisten(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
-      this.menu_.unlisten(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
-      this.menu_.destroy();
-    }
+    this.menu_.unlisten(menuSurfaceConstants.strings.CLOSED_EVENT, this.handleMenuClosed_);
+    this.menu_.unlisten(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
+    this.menu_.unlisten(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
+    this.menu_.destroy();
 
     if (this.ripple) {
       this.ripple.destroy();
@@ -298,9 +287,9 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
    */
   set required(isRequired: boolean) {
     if (isRequired) {
-      this.selectedText_!.setAttribute('aria-required', isRequired.toString());
+      this.selectedText_.setAttribute('aria-required', isRequired.toString());
     } else {
-      this.selectedText_!.removeAttribute('aria-required');
+      this.selectedText_.removeAttribute('aria-required');
     }
   }
 
@@ -308,7 +297,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
    * Returns whether the select is required.
    */
   get required(): boolean {
-    return this.selectedText_!.getAttribute('aria-required') === 'true';
+    return this.selectedText_.getAttribute('aria-required') === 'true';
   }
 
   /**
@@ -335,7 +324,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
    */
   private selectSetup_(menuFactory: MDCMenuFactory) {
     const isDisabled = this.root_.classList.contains(cssClasses.DISABLED);
-    this.selectedText_!.setAttribute('tabindex', isDisabled ? '-1' : '0');
+    this.selectedText_.setAttribute('tabindex', isDisabled ? '-1' : '0');
     this.hiddenInput_ = this.root_.querySelector(strings.HIDDEN_INPUT_SELECTOR);
     this.menuElement_ = this.root_.querySelector(strings.MENU_SELECTOR)!;
     this.menu_ = menuFactory(this.menuElement_);
@@ -370,27 +359,27 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
       },
       setValue: (value: string) => {
         const element = this.menuElement_!.querySelector(`[${strings.VALUE_ATTR}="${value}"]`);
-        this.setSelectedIndex_(element ? this.menu_!.items.indexOf(element) : -1);
+        this.setSelectedIndex_(element ? this.menu_.items.indexOf(element) : -1);
       },
       openMenu: () => {
-        if (this.menu_ && !this.menu_.open) {
+        if (!this.menu_.open) {
           this.menu_.open = true;
           this.isMenuOpen_ = true;
-          this.selectedText_!.setAttribute('aria-expanded', 'true');
+          this.selectedText_.setAttribute('aria-expanded', 'true');
         }
       },
       closeMenu: () => {
-        if (this.menu_ && this.menu_.open) {
+        if (this.menu_.open) {
           this.menu_.open = false;
         }
       },
-      isMenuOpen: () => Boolean(this.menu_) && this.isMenuOpen_,
+      isMenuOpen: () => this.isMenuOpen_,
       setSelectedIndex: (index: number) => this.setSelectedIndex_(index),
       getSelectedMenuItem: () => this.getSelectedMenuItem_(),
       getMenuItems: () => this.menu_!.items,
       setDisabled: (isDisabled: boolean) => {
-        this.selectedText_!.setAttribute('tabindex', isDisabled ? '-1' : '0');
-        this.selectedText_!.setAttribute('aria-disabled', isDisabled.toString());
+        this.selectedText_.setAttribute('tabindex', isDisabled ? '-1' : '0');
+        this.selectedText_.setAttribute('aria-disabled', isDisabled.toString());
         if (this.hiddenInput_) {
           this.hiddenInput_.disabled = isDisabled;
         }
@@ -406,7 +395,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
         }
       },
       setValid: (isValid: boolean) => {
-        this.selectedText_!.setAttribute('aria-invalid', (!isValid).toString());
+        this.selectedText_.setAttribute('aria-invalid', (!isValid).toString());
         if (isValid) {
           this.root_.classList.remove(cssClasses.INVALID);
         } else {
@@ -479,8 +468,8 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
   }
 
   private setSelectedIndex_(index: number) {
-    const selectedItem = this.menu_!.items[index];
-    this.selectedText_!.textContent = selectedItem ? selectedItem.textContent!.trim() : '';
+    const selectedItem = this.menu_.items[index];
+    this.selectedText_.textContent = selectedItem ? selectedItem.textContent!.trim() : '';
     const previouslySelected = this.getSelectedMenuItem_();
 
     if (previouslySelected) {
@@ -508,7 +497,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
         || this.selectedText_.getAttribute('aria-required') === 'true'
         || this.root_.classList.contains(cssClasses.REQUIRED);
     if (isRequired) {
-      this.selectedText_!.setAttribute('aria-required', 'true');
+      this.selectedText_.setAttribute('aria-required', 'true');
       this.root_.classList.add(cssClasses.REQUIRED);
     }
   }
