@@ -70,7 +70,7 @@
     "conventional-commits-parser": "^3.0.0",
     "cp-file": "^7.0.0",
     "cross-env": "^5.0.0",
-    "css-loader": "^2.0.0",
+    "css-loader": "^3.0.0",
     "cssom": "^0.3.2",
     "cz-conventional-changelog": "^2.0.0",
     "dart-sass": "^1.15.2",
