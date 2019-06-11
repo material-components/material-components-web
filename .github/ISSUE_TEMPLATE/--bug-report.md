@@ -1,7 +1,7 @@
 ---
 name: "\U0001F41BBug report"
 about: Create a bug report to help us improve
-title: "[ComponetName] "
+title: "[ComponentName] title"
 labels: bug
 assignees: ''
 

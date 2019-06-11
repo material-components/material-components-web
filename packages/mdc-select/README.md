@@ -372,6 +372,7 @@ well as interaction targets. See [here](icon/) for more information on using ico
 | `mdc-select__menu` | Mandatory when using the enhanced select. This class should be placed on the `mdc-menu` element within the `mdc-select` element. |
 | `mdc-select__dropdown-icon` | Mandatory. Should be placed on an `i` element within the `mdc-select` element. Used for the dropdown arrow svg and animation.
 | `mdc-select__icon` | Optional. Should be placed on an `i` or `svg` element within the `mdc-select` element. Used for the leading icon.
+| `mdc-select--activated` | Optional. Styles the activated state of select. This class will be added automatically when menu is opened.
 | `mdc-select--disabled` | Optional. Styles the select as disabled. This class should be applied to the root element when the `disabled` attribute is applied to the `<select>` element. |
 | `mdc-select--outlined` | Optional. Styles the select as outlined select. |
 | `mdc-select__native-control` | Mandatory for the native select. The native `<select>` element. |
@@ -462,6 +463,8 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `handleFocus() => void` | Handles a focus event on the `select` element. |
 | `handleBlur() => void` | Handles a blur event on the `select` element. |
 | `handleClick(normalizedX: number) => void` | Sets the line ripple center to the normalizedX for the line ripple. |
+| `handleMenuOpened() => void` | Handles menu or menu surface opened event.
+| `handleMenuClosed() => void` | Handles menu or menu surface closed event.
 | `handleChange() => void` | Handles a change to the `select` element's value. This must be called both for `change` events and programmatic changes requested via the component API. |
 | `handleKeydown(event: KeyboardEvent) => void` | Handles opening the menu (enhanced select) when the `mdc-select__selected-text` element is focused and the user presses the `Enter` or `Space` key. |
 | `setSelectedIndex(index: number) => void` | Handles setting the `mdc-select__selected-text` element and closing the menu (enhanced select only). Also causes the label to float and outline to notch if needed. |
