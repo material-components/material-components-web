@@ -63,6 +63,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       closeMenu: () => undefined,
       isMenuOpen: () => false,
       setSelectedIndex: () => undefined,
+      getSelectedMenuItem: () => null,
+      getMenuItems: () => [],
       setDisabled: () => undefined,
       setRippleCenter: () => undefined,
       notifyChange: () => undefined,
@@ -88,8 +90,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   }
 
   getSelectedIndex(): number {
-    let selectedIndex = -1;
-    return selectedIndex;
+    const selectedMenuItem = this.adapter_.getSelectedMenuItem();
+    return selectedMenuItem ? this.adapter_.getMenuItems().indexOf(selectedMenuItem) : -1;
   }
 
   setSelectedIndex(index: number) {

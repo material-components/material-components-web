@@ -105,9 +105,19 @@ export interface MDCSelectAdapter {
   isMenuOpen(): boolean;
 
   /**
-   * Sets the selected index of the select to the index provided.
+   * Sets the selected index of the menu to the given index.
    */
   setSelectedIndex(index: number): void;
+
+  /**
+   * Returns the currently selected menu element, if it exists.
+   */
+  getSelectedMenuItem(): Element|null;
+
+  /**
+   * Returns the menu item elements.
+   */
+  getMenuItems(): Element[];
 
   /**
    * Sets the select to disabled.

@@ -189,7 +189,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
         // If the hidden input already has a value, use it to restore the select's value.
         // This can happen e.g. if the user goes back or (in some browsers) refreshes the page.
         this.getSelectAdapterMethods_().setValue(this.hiddenInput_.value);
-      } else if (this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)) {
+      } else if (this.getSelectedMenuItem_()) {
         // If an element is selected, the select should set the initial selected text.
         const adapterMethods = this.getSelectAdapterMethods_();
         adapterMethods.setValue(adapterMethods.getValue());
@@ -246,12 +246,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
   }
 
   get selectedIndex(): number {
-    let selectedIndex = -1;
-    if (this.menuElement_ && this.menu_) {
-      const selectedEl = this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)!;
-      selectedIndex = this.menu_.items.indexOf(selectedEl);
-    }
-    return selectedIndex;
+    return this.foundation_.getSelectedIndex();
   }
 
   set selectedIndex(selectedIndex: number) {
@@ -367,7 +362,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       getValue: () => {
-        const listItem = this.menuElement_!.querySelector(strings.SELECTED_ITEM_SELECTOR);
+        const listItem = this.getSelectedMenuItem_();
         if (listItem && listItem.hasAttribute(strings.VALUE_ATTR)) {
           return listItem.getAttribute(strings.VALUE_ATTR) || '';
         }
@@ -391,6 +386,8 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
       },
       isMenuOpen: () => Boolean(this.menu_) && this.isMenuOpen_,
       setSelectedIndex: (index: number) => this.setSelectedIndex_(index),
+      getSelectedMenuItem: () => this.getSelectedMenuItem_(),
+      getMenuItems: () => this.menu_!.items,
       setDisabled: (isDisabled: boolean) => {
         this.selectedText_!.setAttribute('tabindex', isDisabled ? '-1' : '0');
         this.selectedText_!.setAttribute('aria-disabled', isDisabled.toString());
@@ -454,6 +451,10 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     };
   }
 
+  private getSelectedMenuItem_(): Element|null {
+    return this.menuElement_!.querySelector(strings.SELECTED_ITEM_SELECTOR);
+  }
+
   /**
    * Calculates where the line ripple should start based on the x coordinate within the component.
    */
@@ -480,7 +481,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
   private setSelectedIndex_(index: number) {
     const selectedItem = this.menu_!.items[index];
     this.selectedText_!.textContent = selectedItem ? selectedItem.textContent!.trim() : '';
-    const previouslySelected = this.menuElement_!.querySelector(strings.SELECTED_ITEM_SELECTOR);
+    const previouslySelected = this.getSelectedMenuItem_();
 
     if (previouslySelected) {
       previouslySelected.classList.remove(cssClasses.SELECTED_ITEM_CLASS);
