@@ -33,6 +33,8 @@
 @import "@material/typography/mixins";
 @import "./variables";
 
+$mdc-dense-range: 4px;
+
 @mixin mdc-fab-core-styles($query: mdc-feature-all()) {
   @include mdc-fab-without-ripple($query);
   @include mdc-fab-ripple($query);
@@ -45,6 +47,7 @@
     @include mdc-fab-base_($query: $query);
     @include mdc-fab-container-color(secondary, $query: $query);
     @include mdc-fab-icon-size(24px, $query: $query);
+    @include mdc-fab-density(0);
     @include mdc-fab-ink-color(on-secondary, $query: $query);
   }
 
@@ -89,6 +92,23 @@
   }
 
   // postcss-bem-linter: end
+}
+
+@mixin mdc-fab-density($density-scale) {
+  $height: $mdc-fab-height + $density-scale * $mdc-density-range;
+
+  &:not(.mdc-fab--extended) {
+    width: $height;
+    height: $height;
+  }
+}
+
+@mixin mdc-fab-extended-density($density-scale) {
+  $height: $mdc-fab-extended-height + $density-scale * $mdc-density-range;
+
+  @include mdc-fab-extended-shape-radius(50%, $mdc-fab-extended-height: $height);
+
+  height: $height;
 }
 
 @mixin mdc-fab-accessible($container-color, $query: mdc-feature-all()) {
@@ -175,7 +195,7 @@
   }
 }
 
-@mixin mdc-fab-extended-shape-radius($radius, $rtl-reflexive: false, $query: mdc-feature-all()) {
+@mixin mdc-fab-extended-shape-radius($radius, $mdc-fab-extended-height: $mdc-fab-extended-height, $rtl-reflexive: false, $query: mdc-feature-all()) {
   @include mdc-shape-radius(
     mdc-shape-resolve-percentage-radius($mdc-fab-extended-height, $radius),
     $rtl-reflexive,

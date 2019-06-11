@@ -32,6 +32,8 @@
 @import "@material/shape/functions";
 @import "./variables";
 
+$mdc-density-range: 4px;
+
 @mixin mdc-button-core-styles($query: mdc-feature-all()) {
   @include mdc-button-without-ripple($query);
   @include mdc-button-ripple($query);
@@ -48,6 +50,7 @@
     @include mdc-button-base_($query);
     @include mdc-button-shape-radius(small, $query: $query);
     @include mdc-button-container-fill-color(transparent, $query);
+    @include mdc-button-density(0);
 
     // The icon CSS class overrides styles defined in the .material-icons CSS
     // class, which is loaded separately so the order of CSS definitions is not
@@ -132,6 +135,10 @@
   .mdc-button--unelevated {
     @include mdc-states(on-primary, false, $query);
   }
+}
+
+@mixin mdc-button-density($density-scale) {
+  height: $mdc-button-height + $density-scale * $mdc-density-range;
 }
 
 @mixin mdc-button-filled-accessible($container-fill-color, $query: mdc-feature-all()) {
