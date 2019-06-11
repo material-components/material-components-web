@@ -53,13 +53,13 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
 
   ripple!: MDCRipple | null;
 
-  private menu_!: MDCMenu | null; // assigned in enhancedSelectSetup_()
+  private menu_!: MDCMenu | null; // assigned in selectSetup_()
   private isMenuOpen_!: boolean; // assigned in initialize()
 
   private selectedText_!: HTMLElement; // assigned in initialize()
 
-  private hiddenInput_!: HTMLInputElement | null; // assigned in enhancedSelectSetup_()
-  private menuElement_!: Element | null; // assigned in enhancedSelectSetup_()
+  private hiddenInput_!: HTMLInputElement | null; // assigned in selectSetup_()
+  private menuElement_!: Element | null; // assigned in selectSetup_()
   private leadingIcon_?: MDCSelectIcon; // assigned in initialize()
   private helperText_!: MDCSelectHelperText | null; // assigned in initialize()
   private lineRipple_!: MDCLineRipple | null; // assigned in initialize()
@@ -101,7 +101,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     }
 
     if (this.selectedText_) {
-      this.enhancedSelectSetup_(menuFactory);
+      this.selectSetup_(menuFactory);
     }
 
     const labelElement = this.root_.querySelector(strings.LABEL_SELECTOR);
@@ -188,12 +188,11 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
       if (this.hiddenInput_ && this.hiddenInput_.value) {
         // If the hidden input already has a value, use it to restore the select's value.
         // This can happen e.g. if the user goes back or (in some browsers) refreshes the page.
-        const enhancedAdapterMethods = this.getEnhancedSelectAdapterMethods_();
-        enhancedAdapterMethods.setValue(this.hiddenInput_.value);
+        this.getSelectAdapterMethods_().setValue(this.hiddenInput_.value);
       } else if (this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)) {
         // If an element is selected, the select should set the initial selected text.
-        const enhancedAdapterMethods = this.getEnhancedSelectAdapterMethods_();
-        enhancedAdapterMethods.setValue(enhancedAdapterMethods.getValue());
+        const adapterMethods = this.getSelectAdapterMethods_();
+        adapterMethods.setValue(adapterMethods.getValue());
       }
     }
 
@@ -328,7 +327,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCSelectAdapter = {
-      ...this.getEnhancedSelectAdapterMethods_(),
+      ...this.getSelectAdapterMethods_(),
       ...this.getCommonAdapterMethods_(),
       ...this.getOutlineAdapterMethods_(),
       ...this.getLabelAdapterMethods_(),
@@ -337,9 +336,9 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
   }
 
   /**
-   * Handles setup for the enhanced menu.
+   * Handles setup for the menu.
    */
-  private enhancedSelectSetup_(menuFactory: MDCMenuFactory) {
+  private selectSetup_(menuFactory: MDCMenuFactory) {
     const isDisabled = this.root_.classList.contains(cssClasses.DISABLED);
     this.selectedText_!.setAttribute('tabindex', isDisabled ? '-1' : '0');
     this.hiddenInput_ = this.root_.querySelector(strings.HIDDEN_INPUT_SELECTOR);
@@ -364,19 +363,19 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     return new MDCRipple(this.root_, new MDCRippleFoundation(adapter));
   }
 
-  private getEnhancedSelectAdapterMethods_() {
+  private getSelectAdapterMethods_() {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       getValue: () => {
         const listItem = this.menuElement_!.querySelector(strings.SELECTED_ITEM_SELECTOR);
-        if (listItem && listItem.hasAttribute(strings.ENHANCED_VALUE_ATTR)) {
-          return listItem.getAttribute(strings.ENHANCED_VALUE_ATTR) || '';
+        if (listItem && listItem.hasAttribute(strings.VALUE_ATTR)) {
+          return listItem.getAttribute(strings.VALUE_ATTR) || '';
         }
         return '';
       },
       setValue: (value: string) => {
-        const element = this.menuElement_!.querySelector(`[${strings.ENHANCED_VALUE_ATTR}="${value}"]`);
-        this.setEnhancedSelectedIndex_(element ? this.menu_!.items.indexOf(element) : -1);
+        const element = this.menuElement_!.querySelector(`[${strings.VALUE_ATTR}="${value}"]`);
+        this.setSelectedIndex_(element ? this.menu_!.items.indexOf(element) : -1);
       },
       openMenu: () => {
         if (this.menu_ && !this.menu_.open) {
@@ -391,7 +390,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
         }
       },
       isMenuOpen: () => Boolean(this.menu_) && this.isMenuOpen_,
-      setSelectedIndex: (index: number) => this.setEnhancedSelectedIndex_(index),
+      setSelectedIndex: (index: number) => this.setSelectedIndex_(index),
       setDisabled: (isDisabled: boolean) => {
         this.selectedText_!.setAttribute('tabindex', isDisabled ? '-1' : '0');
         this.selectedText_!.setAttribute('aria-disabled', isDisabled.toString());
@@ -478,7 +477,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     };
   }
 
-  private setEnhancedSelectedIndex_(index: number) {
+  private setSelectedIndex_(index: number) {
     const selectedItem = this.menu_!.items[index];
     this.selectedText_!.textContent = selectedItem ? selectedItem.textContent!.trim() : '';
     const previouslySelected = this.menuElement_!.querySelector(strings.SELECTED_ITEM_SELECTOR);
@@ -496,7 +495,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     // Synchronize hidden input's value with data-value attribute of selected item.
     // This code path is also followed when setting value directly, so this covers all cases.
     if (this.hiddenInput_) {
-      this.hiddenInput_.value = selectedItem ? selectedItem.getAttribute(strings.ENHANCED_VALUE_ATTR) || '' : '';
+      this.hiddenInput_.value = selectedItem ? selectedItem.getAttribute(strings.VALUE_ATTR) || '' : '';
     }
 
     this.layout();
