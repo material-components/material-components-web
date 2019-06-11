@@ -1,7 +1,7 @@
 {
   "name": "@material/textfield",
   "description": "The Material Components for the web text field component",
-  "version": "2.1.1",
+  "version": "2.3.1",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -21,14 +21,14 @@
     "@material/animation": "^1.0.0",
     "@material/base": "^1.0.0",
     "@material/dom": "^1.1.0",
-    "@material/floating-label": "^1.1.0",
-    "@material/line-ripple": "^1.1.0",
-    "@material/notched-outline": "^1.1.1",
-    "@material/ripple": "^2.1.1",
+    "@material/floating-label": "^2.3.0",
+    "@material/line-ripple": "^2.3.0",
+    "@material/notched-outline": "^2.3.0",
+    "@material/ripple": "^2.3.0",
     "@material/rtl": "^0.42.0",
     "@material/shape": "^1.1.1",
     "@material/theme": "^1.1.0",
-    "@material/typography": "^1.0.0",
+    "@material/typography": "^2.3.0",
     "tslib": "^1.9.3"
   }
 }
