@@ -23,6 +23,7 @@
 
 import {MDCComponent} from '@material/base/component';
 import {CustomEventListener, SpecificEventListener} from '@material/base/types';
+import {closest} from '@material/dom/ponyfill';
 import {MDCList, MDCListFactory} from '@material/list/component';
 import {MDCListFoundation} from '@material/list/foundation';
 import {MDCListActionEvent} from '@material/list/types';
@@ -92,11 +93,15 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
   }
 
   get open(): boolean {
-    return this.menuSurface_.open;
+    return this.menuSurface_.isOpen();
   }
 
   set open(value: boolean) {
-    this.menuSurface_.open = value;
+    if (value) {
+      this.menuSurface_.open();
+    } else {
+      this.menuSurface_.close();
+    }
   }
 
   get wrapFocus(): boolean {
@@ -141,6 +146,14 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
 
   setAnchorMargin(margin: Partial<MDCMenuDistance>) {
     this.menuSurface_.setAnchorMargin(margin);
+  }
+
+  /**
+   * Sets the list item as the selected row at the specified index.
+   * @param index Index of list item within menu.
+   */
+  setSelectedIndex(index: number) {
+    this.foundation_.setSelectedIndex(index);
   }
 
   /**
@@ -201,13 +214,8 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
         list[index].removeAttribute(attr);
       },
       elementContainsClass: (element, className) => element.classList.contains(className),
-      closeSurface: () => this.open = false,
+      closeSurface: (skipRestoreFocus: boolean) => this.menuSurface_.close(skipRestoreFocus),
       getElementIndex: (element) => this.items.indexOf(element),
-      getParentElement: (element) => element.parentElement,
-      getSelectedElementIndex: (selectionGroup) => {
-        const selectedListItem = selectionGroup.querySelector(`.${cssClasses.MENU_SELECTED_LIST_ITEM}`);
-        return selectedListItem ? this.items.indexOf(selectedListItem) : -1;
-      },
       notifySelected: (evtData) => this.emit<MDCMenuItemComponentEventDetail>(strings.SELECTED_EVENT, {
         index: evtData.index,
         item: this.items[evtData.index],
@@ -215,6 +223,12 @@ export class MDCMenu extends MDCComponent<MDCMenuFoundation> {
       getMenuItemCount: () => this.items.length,
       focusItemAtIndex: (index) => (this.items[index] as HTMLElement).focus(),
       focusListRoot: () => (this.root_.querySelector(strings.LIST_SELECTOR) as HTMLElement).focus(),
+      isSelectableItemAtIndex: (index) => !!closest(this.items[index], `.${cssClasses.MENU_SELECTION_GROUP}`),
+      getSelectedSiblingOfItemAtIndex: (index) => {
+        const selectionGroupEl = closest(this.items[index], `.${cssClasses.MENU_SELECTION_GROUP}`) as HTMLElement;
+        const selectedItemEl = selectionGroupEl.querySelector(`.${cssClasses.MENU_SELECTED_LIST_ITEM}`);
+        return selectedItemEl ? this.items.indexOf(selectedItemEl) : -1;
+      },
     };
     // tslint:enable:object-literal-sort-keys
     return new MDCMenuFoundation(adapter);

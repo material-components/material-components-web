@@ -23,6 +23,7 @@
 
 export * from './adapter';
 export * from './component';
+export * from './constants';
 export * from './foundation';
 export * from './types';
 export * from './character-counter/index';

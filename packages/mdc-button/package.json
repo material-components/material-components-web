@@ -1,7 +1,7 @@
 {
   "name": "@material/button",
   "description": "The Material Components for the web button component",
-  "version": "2.0.0",
+  "version": "2.3.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -15,10 +15,10 @@
   "dependencies": {
     "@material/elevation": "^1.1.0",
     "@material/feature-targeting": "^0.44.1",
-    "@material/ripple": "^2.0.0",
+    "@material/ripple": "^2.3.0",
     "@material/rtl": "^0.42.0",
     "@material/shape": "^1.1.1",
     "@material/theme": "^1.1.0",
-    "@material/typography": "^1.0.0"
+    "@material/typography": "^2.3.0"
   }
 }

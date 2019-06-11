@@ -1,7 +1,7 @@
 {
   "name": "@material/checkbox",
   "description": "The Material Components for the web checkbox component",
-  "version": "2.1.0",
+  "version": "2.3.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -21,7 +21,7 @@
     "@material/base": "^1.0.0",
     "@material/dom": "^1.1.0",
     "@material/feature-targeting": "^0.44.1",
-    "@material/ripple": "^2.0.0",
+    "@material/ripple": "^2.3.0",
     "@material/rtl": "^0.42.0",
     "@material/theme": "^1.1.0",
     "tslib": "^1.9.3"

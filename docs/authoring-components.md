@@ -466,7 +466,7 @@ energy nitpicking on pull requests.
 ### File Structure
 
 All source files for a component reside under `packages/`. All test files reside under `test/unit`,
-which mirrors the `packages/` directory. Demos for each component are located under `demos/`.
+which mirrors the `packages/` directory. Screenshot tests for packages reside under `test/screenshot/spec`.
 
 A typical component within our codebase looks like so:
 
@@ -487,8 +487,13 @@ test/unit
   ├── mdc-component
       ├── foundation.test.js # Unit tests for the component's foundation
       ├── mdc-component.test.js # Unit tests for the component's
-demos
-  ├── component.html
+test/screenshot
+  ├── spec
+      ├── mdc-component
+          ├── classes
+              ├── baseline.html # component usage in the happy path case. Other variants would go under ./classes.
+          ├── mixins
+              ├── ink-color.html # component using a sass mixin for customization.
 ```
 
 **Every component _must_ have these files before we will accept a PR for them.**

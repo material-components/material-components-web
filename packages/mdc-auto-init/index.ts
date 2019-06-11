@@ -26,6 +26,10 @@
 import {MDCComponent} from '@material/base/component';
 import {MDCFoundation} from '@material/base/foundation';
 
+import {strings} from './constants';
+
+const {AUTO_INIT_ATTR, AUTO_INIT_STATE_ATTR, INITIALIZED_STATE} = strings;
+
 export interface MDCAttachable {
   new<F extends MDCFoundation>(root: Element, foundation?: F, ...args: Array<unknown>): MDCComponent<F>;
 
@@ -60,12 +64,13 @@ function emit<T extends object>(evtType: string, evtData: T, shouldBubble = fals
 /**
  * Auto-initializes all MDC components on a page.
  */
-export function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
+export function mdcAutoInit(root = document) {
   const components = [];
-  const nodes: Element[] = [].slice.call(root.querySelectorAll('[data-mdc-auto-init]'));
+  let nodes: Element[] = [].slice.call(root.querySelectorAll(`[${AUTO_INIT_ATTR}]`));
+  nodes = nodes.filter((node) => node.getAttribute(AUTO_INIT_STATE_ATTR) !== INITIALIZED_STATE);
 
   for (const node of nodes) {
-    const ctorName = node.getAttribute('data-mdc-auto-init');
+    const ctorName = node.getAttribute(AUTO_INIT_ATTR);
     if (!ctorName) {
       throw new Error('(mdc-auto-init) Constructor name must be given.');
     }
@@ -74,11 +79,6 @@ export function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
     if (typeof Constructor !== 'function') {
       throw new Error(
           `(mdc-auto-init) Could not find constructor in registry for ${ctorName}`);
-    }
-
-    if (Object.getOwnPropertyDescriptor(node, ctorName)) {
-      warn(`(mdc-auto-init) Component already initialized for ${node}. Skipping...`);
-      continue;
     }
 
     // TODO: Should we make an eslint rule for an attachTo() static method?
@@ -91,6 +91,7 @@ export function mdcAutoInit(root = document, warn = CONSOLE_WARN) {
       writable: false,
     });
     components.push(component);
+    node.setAttribute(AUTO_INIT_STATE_ATTR, INITIALIZED_STATE);
   }
 
   emit('MDCAutoInit:End', {});
