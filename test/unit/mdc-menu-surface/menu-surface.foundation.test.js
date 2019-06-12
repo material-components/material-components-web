@@ -111,9 +111,9 @@ test('exports Corner', () => {
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCMenuSurfaceFoundation, [
     'addClass', 'removeClass', 'hasClass', 'hasAnchor', 'notifyClose', 'notifyOpen', 'isElementInContainer',
-    'isRtl', 'setTransformOrigin', 'isFocused', 'saveFocus', 'restoreFocus', 'isFirstElementFocused',
-    'isLastElementFocused', 'focusFirstElement', 'focusLastElement', 'getInnerDimensions', 'getAnchorDimensions',
-    'getWindowDimensions', 'getBodyDimensions', 'getWindowScroll', 'setPosition', 'setMaxHeight',
+    'isRtl', 'setTransformOrigin', 'isFocused', 'saveFocus', 'restoreFocus', 'getInnerDimensions',
+    'getAnchorDimensions', 'getWindowDimensions', 'getBodyDimensions', 'getWindowScroll', 'setPosition',
+    'setMaxHeight',
   ]);
 });
 
@@ -715,53 +715,6 @@ test('#handleKeydown with Escape key closes the menu surface and sends close eve
   clock.tick(numbers.TRANSITION_CLOSE_DURATION);
   td.verify(mockAdapter.removeClass(cssClasses.OPEN));
   td.verify(mockAdapter.notifyClose());
-});
-
-test('#handleKeydown with Tab key on the last element, it moves to the first', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const clock = installClock();
-  const target = {};
-  const event = {target, key: 'Tab', preventDefault: () => {}};
-
-  td.when(mockAdapter.isLastElementFocused()).thenReturn(true);
-
-  foundation.init();
-  foundation.handleKeydown(event);
-  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
-  clock.runToFrame();
-  td.verify(mockAdapter.focusFirstElement());
-});
-
-test('#handleKeydown with Shift+Tab keys on the first element, it moves to the last', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const clock = installClock();
-  const target = {};
-  const event = {target, key: 'Tab', shiftKey: true, preventDefault: () => {}};
-
-  td.when(mockAdapter.isFirstElementFocused()).thenReturn(true);
-
-  foundation.init();
-  foundation.handleKeydown(event);
-  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
-  clock.runToFrame();
-  td.verify(mockAdapter.focusLastElement(), {times: 1});
-});
-
-test('#handleKeydown with Shift+Tab on middle element does not cause focus to wrap around to first/last', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const clock = installClock();
-  const target = {};
-  const event = {target, key: 'Tab', shiftKey: true, preventDefault: () => {}};
-
-  td.when(mockAdapter.isFirstElementFocused()).thenReturn(false);
-  td.when(mockAdapter.isLastElementFocused()).thenReturn(false);
-
-  foundation.init();
-  foundation.handleKeydown(event);
-  clock.tick(numbers.SELECTED_TRIGGER_DELAY);
-  clock.runToFrame();
-  td.verify(mockAdapter.focusFirstElement(), {times: 0});
-  td.verify(mockAdapter.focusLastElement(), {times: 0});
 });
 
 test('#handleKeydown on any other key, do not prevent default on the event', () => {
