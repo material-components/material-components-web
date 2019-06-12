@@ -37,6 +37,10 @@
 
 // postcss-bem-linter: define select
 .mdc-select {
+  position: relative; // Menu is absolutely positioned relative to this.
+}
+
+.mdc-select__anchor {
   @include mdc-select-container-fill-color($mdc-select-fill-color);
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;

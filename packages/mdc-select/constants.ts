@@ -45,6 +45,7 @@ const strings = {
   OUTLINE_SELECTOR: '.mdc-notched-outline',
   SELECTED_ITEM_SELECTOR: `.${cssClasses.SELECTED_ITEM_CLASS}`,
   SELECTED_TEXT_SELECTOR: '.mdc-select__selected-text',
+  SELECT_ANCHOR_SELECTOR: '.mdc-select__anchor',
   VALUE_ATTR: 'data-value',
 };
 

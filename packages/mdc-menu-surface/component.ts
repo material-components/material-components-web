@@ -93,7 +93,7 @@ export class MDCMenuSurface extends MDCComponent<MDCMenuSurfaceFoundation> {
   }
 
   /**
-   * Removes the menu-surface from it's current location and appends it to the
+   * Removes the menu-surface from its current location and appends it to the
    * body to overcome any overflow:hidden issues.
    */
   hoistMenuToBody() {
