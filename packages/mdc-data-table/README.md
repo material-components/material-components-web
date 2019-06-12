@@ -56,7 +56,7 @@ MDC Data Table component auto instantiates `MDCCheckbox` for header row checkbox
   <table class="mdc-data-table__table" aria-label="Dessert calories">
     <thead>
       <tr class="mdc-data-table__header-row">
-        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Desserts</th>
+        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Dessert</th>
         <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Carbs (g)</th>
         <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Protein (g)</th>
         <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Comments</th>
@@ -105,7 +105,7 @@ MDC Data Table component auto instantiates `MDCCheckbox` for header row checkbox
             </div>
           </div>
         </th>
-        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Desserts</th>
+        <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Dessert</th>
         <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Carbs (g)</th>
         <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Protein (g)</th>
       </tr>
