@@ -1,6 +1,6 @@
 {
   "name": "@material/menu",
-  "version": "2.3.0",
+  "version": "3.0.0-alpha.1",
   "description": "The Material Components for the web menu component",
   "license": "MIT",
   "keywords": [
@@ -18,11 +18,11 @@
   },
   "dependencies": {
     "@material/base": "^1.0.0",
-    "@material/dom": "^1.1.0",
+    "@material/dom": "^3.0.0-alpha.1",
     "@material/feature-targeting": "^0.44.1",
-    "@material/list": "^2.3.0",
-    "@material/menu-surface": "^2.3.0",
-    "@material/ripple": "^2.3.0",
+    "@material/list": "^3.0.0-alpha.1",
+    "@material/menu-surface": "^3.0.0-alpha.1",
+    "@material/ripple": "^3.0.0-alpha.1",
     "@material/rtl": "^0.42.0",
     "tslib": "^1.9.3"
   }

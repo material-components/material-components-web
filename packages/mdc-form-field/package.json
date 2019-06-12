@@ -1,7 +1,7 @@
 {
   "name": "@material/form-field",
   "description": "Material Components for the web wrapper for laying out form fields and labels next to one another",
-  "version": "2.3.0",
+  "version": "3.0.0-alpha.1",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -19,10 +19,10 @@
   "dependencies": {
     "@material/base": "^1.0.0",
     "@material/feature-targeting": "^0.44.1",
-    "@material/ripple": "^2.3.0",
+    "@material/ripple": "^3.0.0-alpha.1",
     "@material/rtl": "^0.42.0",
-    "@material/theme": "^1.1.0",
-    "@material/typography": "^2.3.0",
+    "@material/theme": "^3.0.0-alpha.1",
+    "@material/typography": "^3.0.0-alpha.1",
     "tslib": "^1.9.3"
   }
 }
