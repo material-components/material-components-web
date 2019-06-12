@@ -1,6 +1,6 @@
 {
   "name": "@material/toolbar",
-  "version": "2.3.0",
+  "version": "3.0.0-alpha.0",
   "description": "The Material Components for the web toolbar component",
   "license": "MIT",
   "main": "dist/mdc.toolbar.js",
@@ -18,11 +18,11 @@
   ],
   "dependencies": {
     "@material/base": "^1.0.0",
-    "@material/elevation": "^1.1.0",
-    "@material/ripple": "^2.3.0",
+    "@material/elevation": "^3.0.0-alpha.0",
+    "@material/ripple": "^3.0.0-alpha.0",
     "@material/rtl": "^0.42.0",
-    "@material/theme": "^1.1.0",
-    "@material/typography": "^2.3.0",
+    "@material/theme": "^3.0.0-alpha.0",
+    "@material/typography": "^3.0.0-alpha.0",
     "tslib": "^1.9.3"
   },
   "publishConfig": {

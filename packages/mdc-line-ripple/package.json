@@ -1,7 +1,7 @@
 {
   "name": "@material/line-ripple",
   "description": "The Material Components for the web line-ripple component",
-  "version": "2.3.0",
+  "version": "3.0.0-alpha.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -23,7 +23,7 @@
   "dependencies": {
     "@material/animation": "^1.0.0",
     "@material/base": "^1.0.0",
-    "@material/theme": "^1.1.0",
+    "@material/theme": "^3.0.0-alpha.0",
     "tslib": "^1.9.3"
   }
 }

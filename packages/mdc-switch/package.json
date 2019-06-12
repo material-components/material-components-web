@@ -1,7 +1,7 @@
 {
   "name": "@material/switch",
   "description": "The Material Components for the web switch component",
-  "version": "2.3.0",
+  "version": "3.0.0-alpha.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -19,12 +19,12 @@
   "dependencies": {
     "@material/animation": "^1.0.0",
     "@material/base": "^1.0.0",
-    "@material/dom": "^1.1.0",
-    "@material/elevation": "^1.1.0",
+    "@material/dom": "^3.0.0-alpha.0",
+    "@material/elevation": "^3.0.0-alpha.0",
     "@material/feature-targeting": "^0.44.1",
-    "@material/ripple": "^2.3.0",
+    "@material/ripple": "^3.0.0-alpha.0",
     "@material/rtl": "^0.42.0",
-    "@material/theme": "^1.1.0",
+    "@material/theme": "^3.0.0-alpha.0",
     "tslib": "^1.9.3"
   },
   "publishConfig": {
