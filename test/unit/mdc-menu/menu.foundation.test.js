@@ -99,7 +99,7 @@ test('handleKeydown tab key causes the menu to close', () => {
   const event = {key: 'Tab'};
 
   foundation.handleKeydown(event);
-  td.verify(mockAdapter.closeSurface(), {times: 1});
+  td.verify(mockAdapter.closeSurface(/** skipRestoreFocus */ true), {times: 1});
   td.verify(mockAdapter.elementContainsClass(td.matchers.anything()), {times: 0});
 });
 
@@ -279,9 +279,9 @@ test('setSelectedIndex calls addClass and addAttribute only', () => {
   td.verify(mockAdapter.removeClassFromElementAtIndex(
     td.matchers.isA(Number), cssClasses.MENU_SELECTED_LIST_ITEM), {times: 0});
   td.verify(mockAdapter.removeAttributeFromElementAtIndex(td.matchers.isA(Number),
-    strings.ARIA_SELECTED_ATTR), {times: 0});
+    strings.ARIA_CHECKED_ATTR), {times: 0});
   td.verify(mockAdapter.addClassToElementAtIndex(0, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 1});
-  td.verify(mockAdapter.addAttributeToElementAtIndex(0, strings.ARIA_SELECTED_ATTR, 'true'), {times: 1});
+  td.verify(mockAdapter.addAttributeToElementAtIndex(0, strings.ARIA_CHECKED_ATTR, 'true'), {times: 1});
 });
 
 test('setSelectedIndex remove class and attribute, and adds class and attribute to newly selected item', () => {
@@ -295,9 +295,9 @@ test('setSelectedIndex remove class and attribute, and adds class and attribute 
   foundation.setSelectedIndex(0);
   td.verify(mockAdapter.removeClassFromElementAtIndex(1, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 1});
   td.verify(
-    mockAdapter.removeAttributeFromElementAtIndex(1, strings.ARIA_SELECTED_ATTR), {times: 1});
+    mockAdapter.removeAttributeFromElementAtIndex(1, strings.ARIA_CHECKED_ATTR), {times: 1});
   td.verify(mockAdapter.addClassToElementAtIndex(0, cssClasses.MENU_SELECTED_LIST_ITEM), {times: 1});
-  td.verify(mockAdapter.addAttributeToElementAtIndex(0, strings.ARIA_SELECTED_ATTR, 'true'), {times: 1});
+  td.verify(mockAdapter.addAttributeToElementAtIndex(0, strings.ARIA_CHECKED_ATTR, 'true'), {times: 1});
 });
 
 test('setSelectedIndex throws error if index is not in range', () => {

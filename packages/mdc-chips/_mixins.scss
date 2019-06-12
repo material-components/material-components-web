@@ -64,6 +64,7 @@
       display: inline-flex;
       position: relative;
       align-items: center;
+      box-sizing: border-box;
       padding: 0 $mdc-chip-horizontal-padding;
       border-width: 0;
       outline: none;
