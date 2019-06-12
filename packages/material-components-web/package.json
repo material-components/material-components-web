@@ -1,7 +1,7 @@
 {
   "name": "material-components-web",
   "description": "Modular and customizable Material Design UI components for the web",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -44,7 +44,7 @@
     "@material/radio": "^2.3.0",
     "@material/ripple": "^2.3.0",
     "@material/rtl": "^0.42.0",
-    "@material/select": "^2.3.0",
+    "@material/select": "^2.3.1",
     "@material/shape": "^1.1.1",
     "@material/slider": "^2.3.0",
     "@material/snackbar": "^2.3.0",
@@ -53,7 +53,7 @@
     "@material/tab-bar": "^2.3.0",
     "@material/tab-indicator": "^2.3.0",
     "@material/tab-scroller": "^2.3.0",
-    "@material/textfield": "^2.3.0",
+    "@material/textfield": "^2.3.1",
     "@material/theme": "^1.1.0",
     "@material/toolbar": "^2.3.0",
     "@material/top-app-bar": "^2.3.0",
