@@ -21,6 +21,8 @@
  * THE SOFTWARE.
  */
 
+import { MDCChipNavigationSource } from "../chip/types";
+
 /**
  * Defines the shape of the adapter expected by the foundation.
  * Implement this adapter for your framework of choice to delegate updates to
@@ -50,9 +52,9 @@ export interface MDCChipSetAdapter {
   getIndexOfChipById(chipId: string): number;
 
   /**
-   * Gives focus to the chip at the given index.
+   * Gives focus to the chip at the given index with the given key.
    */
-  focusChipAtIndex(index: number): void;
+  focusChipAtIndex(index: number, key: string, source: MDCChipNavigationSource): void;
 
   /**
    * @return true if the text direction is RTL.

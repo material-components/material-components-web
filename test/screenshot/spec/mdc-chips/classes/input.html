@@ -43,66 +43,126 @@
     <main class="test-viewport test-viewport--mobile">
       <div class="test-layout">
         <div class="test-cell test-cell--chip">
-          <div class="mdc-chip-set mdc-chip-set--input">
-            <button class="mdc-chip">
-              <span class="mdc-chip__text">Chip One</span>
-            </button>
-            <button class="mdc-chip">
-              <span class="mdc-chip__text">Chip Two</span>
-            </button>
-            <button class="mdc-chip">
-              <span class="mdc-chip__text">Chip Three</span>
-            </button>
-            <button class="mdc-chip">
-              <span class="mdc-chip__text">Chip Four</span>
-            </button>
-          </div>
-        </div>
-
-        <div class="test-cell test-cell--chip">
-          <div class="mdc-chip-set mdc-chip-set--input">
-              <button class="mdc-chip">
-                <span class="mdc-chip__text">Chip One</span>
-                <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0" role="button">cancel</i>
-              </button>
-              <button class="mdc-chip">
-                <span class="mdc-chip__text">Chip Two</span>
-                <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0" role="button">cancel</i>
-              </button>
-              <button class="mdc-chip">
-                <span class="mdc-chip__text">Chip Three</span>
-                <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0" role="button">cancel</i>
-              </button>
-              <button class="mdc-chip">
-                <span class="mdc-chip__text">Chip Four</span>
-                <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0" role="button">cancel</i>
-              </button>
+          <div class="mdc-chip-set mdc-chip-set--input" role="grid">
+            <div class="mdc-chip" role="row">
+              <span class="mdc-chip__action--primary" role="gridcell">
+                <span class="mdc-chip__text mdc-chip__action--content" role="button" tabindex="0">Chip One</span>
+              </span>
+            </div>
+            <div class="mdc-chip">
+              <span class="mdc-chip__action--primary" role="gridcell">
+                <span class="mdc-chip__text mdc-chip__action--content" role="button" tabindex="-1">Chip Two</span>
+              </span>
+            </div>
+            <div class="mdc-chip">
+              <span class="mdc-chip__action--primary" role="gridcell">
+                <span class="mdc-chip__text mdc-chip__action--content" role="button" tabindex="-1">Chip Three</span>
+              </span>
+            </div>
+            <div class="mdc-chip">
+              <span class="mdc-chip__action--primary" role="gridcell">
+                <span class="mdc-chip__text mdc-chip__action--content" role="button" tabindex="-1">Chip Four</span>
+              </span>
             </div>
           </div>
         </div>
 
         <div class="test-cell test-cell--chip">
-          <div class="mdc-chip-set mdc-chip-set--input">
-            <button class="mdc-chip">
-              <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">event</i>
-              <span class="mdc-chip__text">Chip One</span>
-              <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0" role="button">cancel</i>
-            </button>
-            <button class="mdc-chip">
-              <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">bookmark</i>
-              <span class="mdc-chip__text">Chip Two</span>
-              <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0" role="button">cancel</i>
-            </button>
-            <button class="mdc-chip">
-              <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">alarm</i>
-              <span class="mdc-chip__text">Chip Three</span>
-              <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0" role="button">cancel</i>
-            </button>
-            <button class="mdc-chip">
-              <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">directions</i>
-              <span class="mdc-chip__text">Chip Four</span>
-              <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0" role="button">cancel</i>
-            </button>
+          <div class="mdc-chip-set mdc-chip-set--input" role="grid">
+              <div class="mdc-chip" role="row">
+                <span class="mdc-chip__action--primary" role="gridcell">
+                  <span class="mdc-chip__text mdc-chip__action--content" role="button" tabindex="0">One</span>
+                </span>
+                <!-- <span class="mdc-chip__action--trailing" role="gridcell">
+                  <i
+                      class="material-icons mdc-chip__icon mdc-chip__icon--trailing mdc-chip__action--content"
+                      tabindex="-1"
+                      role="button"
+                      aria-label="Remove Chip One">cancel</i>
+                </span> -->
+              </div>
+              <div class="mdc-chip" role="row">
+                  <span class="mdc-chip__action--primary" role="gridcell">
+                    <span class="mdc-chip__text mdc-chip__action--content" role="button" tabindex="-1">Two</span>
+                  </span>
+                  <span class="mdc-chip__action--trailing" role="gridcell">
+                    <i
+                        class="material-icons mdc-chip__icon mdc-chip__icon--trailing mdc-chip__action--content"
+                        tabindex="-1"
+                        role="button"
+                        aria-label="Remove Chip Two">cancel</i>
+                  </span>
+              </div>
+              <div class="mdc-chip" role="row">
+                <span class="mdc-chip__action--primary" role="gridcell">
+                  <span class="mdc-chip__text mdc-chip__action--content" role="button" tabindex="-1">Three</span>
+                </span>
+                <span class="mdc-chip__action--trailing" role="gridcell">
+                  <i
+                      class="material-icons mdc-chip__icon mdc-chip__icon--trailing mdc-chip__action--content"
+                      tabindex="-1"
+                      role="button"
+                      aria-label="Remove Chip Three">cancel</i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="test-cell test-cell--chip">
+          <div class="mdc-chip-set mdc-chip-set--input" role="grid">
+            <div class="mdc-chip" role="row">
+              <i class="material-icons mdc-chip__icon mdc-chip__icon--leading" aria-hidden="true">event</i>
+              <span class="mdc-chip__action--primary" role="gridcell">
+                <span class="mdc-chip__text mdc-chip__action--content" role="button" tabindex="0">Chip One</span>
+              </span>
+              <span class="mdc-chip__action--trailing" role="gridcell">
+                <i
+                    class="material-icons mdc-chip__icon mdc-chip__icon--trailing mdc-chip__action--content"
+                    tabindex="-1"
+                    role="button"
+                    aria-label="Remove Chip One">cancel</i>
+              </span>
+            </div>
+            <div class="mdc-chip" role="row">
+              <i class="material-icons mdc-chip__icon mdc-chip__icon--leading" aria-hidden="true">bookmark</i>
+              <span class="mdc-chip__action--primary" role="gridcell">
+                <span class="mdc-chip__text mdc-chip__action--content" role="button" tabindex="-1">Chip Two</span>
+              </span>
+              <span class="mdc-chip__action--trailing" role="gridcell">
+                <i
+                    class="material-icons mdc-chip__icon mdc-chip__icon--trailing mdc-chip__action--content"
+                    tabindex="-1"
+                    role="button"
+                    aria-label="Remove Chip Two">cancel</i>
+              </span>
+            </div>
+            <div class="mdc-chip" role="row">
+              <i class="material-icons mdc-chip__icon mdc-chip__icon--leading" aria-hidden="true">alarm</i>
+              <span class="mdc-chip__action--primary" role="gridcell">
+                <span class="mdc-chip__text mdc-chip__action--content" role="button" tabindex="-1">Chip Three</span>
+              </span>
+              <span class="mdc-chip__action--trailing" role="gridcell">
+                <i
+                    class="material-icons mdc-chip__icon mdc-chip__icon--trailing mdc-chip__action--content"
+                    tabindex="-1"
+                    role="button"
+                    aria-label="Remove Chip Three">cancel</i>
+              </span>
+            </div>
+            <div class="mdc-chip" role="row">
+              <i class="material-icons mdc-chip__icon mdc-chip__icon--leading" aria-hidden="true">directions</i>
+              <span class="mdc-chip__action--primary" role="gridcell">
+                <span class="mdc-chip__text mdc-chip__action--content" role="button" tabindex="-1">Chip Four</span>
+              </span>
+              <span class="mdc-chip__action--trailing" role="gridcell">
+                <i
+                    class="material-icons mdc-chip__icon mdc-chip__icon--trailing mdc-chip__action--content"
+                    tabindex="-1"
+                    role="button"
+                    aria-label="Remove Chip Four">cancel</i>
+              </span>
+            </div>
           </div>
         </div>
       </div>

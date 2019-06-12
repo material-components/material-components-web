@@ -22,18 +22,25 @@
  */
 
 export const strings = {
+  ACTION_CONTENT_SELECTOR: '.mdc-chip__action--content',
   ARIA_CHECKED: 'aria-checked',
   ARROW_DOWN_KEY: 'ArrowDown',
   ARROW_LEFT_KEY: 'ArrowLeft',
   ARROW_RIGHT_KEY: 'ArrowRight',
   ARROW_UP_KEY: 'ArrowUp',
+  END_KEY: 'End',
+  HOME_KEY: 'Home',
+  PRIMARY_ACTION_SELECTOR: '.mdc-chip__action--primary',
   CHECKMARK_SELECTOR: '.mdc-chip__checkmark',
   ENTRY_ANIMATION_NAME: 'mdc-chip-entry',
   INTERACTION_EVENT: 'MDCChip:interaction',
+  LEADING_ACTION_SELECTOR: '.mdc-chip__action--leading',
   LEADING_ICON_SELECTOR: '.mdc-chip__icon--leading',
   NAVIGATION_EVENT: 'MDCChip:navigation',
   REMOVAL_EVENT: 'MDCChip:removal',
   SELECTION_EVENT: 'MDCChip:selection',
+  TAB_INDEX: 'tabindex',
+  TRAILING_ACTION_SELECTOR: '.mdc-chip__action--trailing',
   TRAILING_ICON_INTERACTION_EVENT: 'MDCChip:trailingIconInteraction',
   TRAILING_ICON_SELECTOR: '.mdc-chip__icon--trailing',
 };

@@ -44,39 +44,55 @@
       <div class="test-layout">
         <div class="test-cell test-cell--chip">
           <div class="mdc-chip-set">
-            <button class="mdc-chip">
-              <span class="mdc-chip__text">Chip One</span>
-            </button>
-            <button class="mdc-chip">
-              <span class="mdc-chip__text">Chip Two</span>
-            </button>
-            <button class="mdc-chip">
-              <span class="mdc-chip__text">Chip Three</span>
-            </button>
-            <button class="mdc-chip">
-              <span class="mdc-chip__text">Chip Four</span>
-            </button>
+            <div class="mdc-chip" role="row">
+              <span class="mdc-chip__action--primary" role="gridcell">
+                <span class="mdc-chip__text mdc-chip__action--content" role="button" tabindex="0">Chip One</span>
+              </span>
+            </div>
+            <div class="mdc-chip" role="row">
+              <span class="mdc-chip__action--primary" role="gridcell">
+                <span class="mdc-chip__text mdc-chip__action--content" role="button" tabindex="-1">Chip Two</span>
+              </span>
+            </div>
+            <div class="mdc-chip" role="row">
+              <span class="mdc-chip__action--primary" role="gridcell">
+                <span class="mdc-chip__text mdc-chip__action--content" role="button" tabindex="-1">Chip Three</span>
+              </span>
+            </div>
+            <div class="mdc-chip" role="row">
+              <span class="mdc-chip__action--primary" role="gridcell">
+                <span class="mdc-chip__text mdc-chip__action--content" role="button" tabindex="-1">Chip Four</span>
+              </span>
+            </div>
           </div>
         </div>
 
         <div class="test-cell test-cell--chip">
-          <div class="mdc-chip-set">
-            <button class="mdc-chip">
-              <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">event</i>
-              <span class="mdc-chip__text">Chip One</span>
-            </button>
-            <button class="mdc-chip">
-              <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">bookmark</i>
-              <span class="mdc-chip__text">Chip Two</span>
-            </button>
-            <button class="mdc-chip">
-              <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">alarm</i>
-              <span class="mdc-chip__text">Chip Three</span>
-            </button>
-            <button class="mdc-chip">
-              <i class="material-icons mdc-chip__icon mdc-chip__icon--leading">directions</i>
-              <span class="mdc-chip__text">Chip Four</span>
-            </button>
+          <div class="mdc-chip-set" role="grid">
+            <div class="mdc-chip" role="row">
+              <i aria-hidden="true" class="material-icons mdc-chip__icon mdc-chip__icon--leading">event</i>
+              <span class="mdc-chip__action--primary" role="gridcell">
+                <span class="mdc-chip__text mdc-chip__action--content" role="button" tabindex="0">Chip One</span>
+              </span>
+            </div>
+            <div class="mdc-chip" role="row">
+              <i aria-hidden="true" class="material-icons mdc-chip__icon mdc-chip__icon--leading">bookmark</i>
+              <span class="mdc-chip__action--primary" role="gridcell">
+                <span class="mdc-chip__text mdc-chip__action--content" role="button" tabindex="-1">Chip True</span>
+              </span>
+            </div>
+            <div class="mdc-chip" role="row">
+              <i aria-hidden="true" class="material-icons mdc-chip__icon mdc-chip__icon--leading">alarm</i>
+              <span class="mdc-chip__action--primary" role="gridcell">
+                <span class="mdc-chip__text mdc-chip__action--content" role="button" tabindex="-1">Chip Three</span>
+              </span>
+            </div>
+            <div class="mdc-chip" role="row">
+              <i aria-hidden="true" class="material-icons mdc-chip__icon mdc-chip__icon--leading">directions</i>
+              <span class="mdc-chip__action--primary" role="gridcell">
+                <span class="mdc-chip__text mdc-chip__action--content" role="button" tabindex="-1">Chip Four</span>
+              </span>
+            </div>
           </div>
         </div>
       </div>

@@ -26,6 +26,7 @@ import {strings as chipStrings} from '../chip/constants';
 import {NAVIGATION_KEYS} from '../chip/foundation';
 import {MDCChipSetAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
+import { MDCChipNavigationSource } from '../chip/types';
 
 export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   static get strings() {
@@ -113,7 +114,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   /**
    * Handles a chip navigation event.
    */
-  handleChipNavigation(chipId: string, key: string) {
+  handleChipNavigation(chipId: string, key: string, source: MDCChipNavigationSource) {
     const maxIndex = this.adapter_.getChipListCount() - 1;
     let index = this.adapter_.getIndexOfChipById(chipId);
     // Early exit if the index if out of range or the key is unusable
@@ -131,12 +132,18 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
       index--;
     }
 
+    if (key === chipStrings.END_KEY) {
+      index = maxIndex;
+    } else if (key === chipStrings.HOME_KEY) {
+      index = 0;
+    }
+
     // Early exit if the index is out of bounds
     if (index < 0 || index > maxIndex) {
       return;
     }
 
-    this.adapter_.focusChipAtIndex(index);
+    this.adapter_.focusChipAtIndex(index, key, source);
   }
 
   /**

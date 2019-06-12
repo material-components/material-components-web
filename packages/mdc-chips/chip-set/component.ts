@@ -75,7 +75,7 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
     this.handleChipInteraction_ = (evt) => this.foundation_.handleChipInteraction(evt.detail.chipId);
     this.handleChipSelection_ = (evt) => this.foundation_.handleChipSelection(evt.detail.chipId, evt.detail.selected);
     this.handleChipRemoval_ = (evt) => this.foundation_.handleChipRemoval(evt.detail.chipId);
-    this.handleChipNavigation_ = (evt) => this.foundation_.handleChipNavigation(evt.detail.chipId, evt.detail.key);
+    this.handleChipNavigation_ = (evt) => this.foundation_.handleChipNavigation(evt.detail.chipId, evt.detail.key, evt.detail.source);
     this.listen(INTERACTION_EVENT, this.handleChipInteraction_);
     this.listen(SELECTION_EVENT, this.handleChipSelection_);
     this.listen(REMOVAL_EVENT, this.handleChipRemoval_);
@@ -107,11 +107,11 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCChipSetAdapter = {
-      focusChipAtIndex: (index) => {
+      focusChipAtIndex: (index, key, source) => {
         if (index < 0 || index > this.chips_.length - 1) {
           return;
         }
-        this.chips_[index].focus();
+        this.chips_[index].focusAction(key, source);
       },
       getChipListCount: () => this.chips_.length,
       getIndexOfChipById: (chipId) => {

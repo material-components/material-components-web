@@ -131,6 +131,10 @@
     }
   }
 
+  .mdc-chip__action--primary:focus {
+    outline: none;
+  }
+
   .mdc-chip--selected .mdc-chip__checkmark-path {
     @include mdc-feature-targets($feat-structure) {
       stroke-dashoffset: 0;

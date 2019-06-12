@@ -24,6 +24,7 @@
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCChipAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
+import { MDCChipNavigationSource } from './types';
 
 const emptyClientRect = {
   bottom: 0,
@@ -40,6 +41,8 @@ NAVIGATION_KEYS.add(strings.ARROW_LEFT_KEY);
 NAVIGATION_KEYS.add(strings.ARROW_RIGHT_KEY);
 NAVIGATION_KEYS.add(strings.ARROW_DOWN_KEY);
 NAVIGATION_KEYS.add(strings.ARROW_UP_KEY);
+NAVIGATION_KEYS.add(strings.END_KEY);
+NAVIGATION_KEYS.add(strings.HOME_KEY);
 
 export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   static get strings() {
@@ -54,12 +57,17 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     return {
       addClass: () => undefined,
       addClassToLeadingIcon: () => undefined,
+      primaryActionContentHasFocus: () => false,
       eventTargetHasClass: () => false,
+      focusPrimaryActionContent: () => undefined,
+      focusTrailingActionContent: () => undefined,
       getCheckmarkBoundingClientRect: () => emptyClientRect,
       getComputedStyleValue: () => '',
       getRootBoundingClientRect: () => emptyClientRect,
       hasClass: () => false,
       hasLeadingIcon: () => false,
+      hasTrailingAction: () => false,
+      isRTL: () => false,
       notifyInteraction: () => undefined,
       notifyNavigation: () => undefined,
       notifyRemoval: () => undefined,
@@ -67,8 +75,10 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       notifyTrailingIconInteraction: () => undefined,
       removeClass: () => undefined,
       removeClassFromLeadingIcon: () => undefined,
-      setAttr: () => undefined,
+      setPrimaryActionContentAttr: () => undefined,
+      setTrailingActionContentAttr: () => undefined,
       setStyleProperty: () => undefined,
+      trailingActionContentHasFocus: () => false,
     };
   }
 
@@ -88,10 +98,10 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   setSelected(selected: boolean) {
     if (selected) {
       this.adapter_.addClass(cssClasses.SELECTED);
-      this.adapter_.setAttr(strings.ARIA_CHECKED, 'true');
+      this.adapter_.setPrimaryActionContentAttr(strings.ARIA_CHECKED, 'true');
     } else {
       this.adapter_.removeClass(cssClasses.SELECTED);
-      this.adapter_.setAttr(strings.ARIA_CHECKED, 'false');
+      this.adapter_.setPrimaryActionContentAttr(strings.ARIA_CHECKED, 'false');
     }
     this.adapter_.notifySelection(selected);
   }
@@ -198,8 +208,8 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
    */
   handleTrailingIconInteraction(evt: MouseEvent | KeyboardEvent) {
     const isEnter = (evt as KeyboardEvent).key === 'Enter' || (evt as KeyboardEvent).keyCode === 13;
-    evt.stopPropagation();
     if (evt.type === 'click' || isEnter) {
+      evt.stopPropagation();
       this.adapter_.notifyTrailingIconInteraction();
       if (this.shouldRemoveOnTrailingIconClick_) {
         this.beginExit();
@@ -219,7 +229,77 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
 
     // Prevent default behavior for movement keys which could include scrolling
     evt.preventDefault();
-    this.adapter_.notifyNavigation(key);
+    this.focusNextAction_(key);
+  }
+
+  focusAction(key: string, source: MDCChipNavigationSource) {
+    // Early exit if the key is not usable
+    if (!NAVIGATION_KEYS.has(key)) {
+      return;
+    }
+
+    const keyShouldJumpCells = key === strings.ARROW_UP_KEY || key === strings.ARROW_DOWN_KEY || key === strings.HOME_KEY || key === strings.END_KEY;
+    const chipHasTrailingAction = this.adapter_.hasTrailingAction();
+    if (keyShouldJumpCells && source === MDCChipNavigationSource.Primary || !chipHasTrailingAction) {
+      return this.focusPrimaryAction_();
+    }
+
+    if (keyShouldJumpCells && source === MDCChipNavigationSource.Trailing && chipHasTrailingAction) {
+      return this.focusTrailingAction_();
+    }
+
+    this.focusNextAction_(key);
+  }
+
+  private focusNextAction_(key: string) {
+    const chipIsRTL = this.adapter_.isRTL();
+    const chipHasTrailingAction = this.adapter_.hasTrailingAction();
+    const source = this.getEventSource_();
+    const keyIsLeft = key === strings.ARROW_LEFT_KEY && !chipIsRTL || key === strings.ARROW_RIGHT_KEY && chipIsRTL;
+    const keyIsRight = key === strings.ARROW_RIGHT_KEY && !chipIsRTL || key === strings.ARROW_LEFT_KEY && chipIsRTL;
+    const shouldFocusPrimaryAction = keyIsLeft && source === MDCChipNavigationSource.Trailing
+      || keyIsRight && source === MDCChipNavigationSource.None;
+    const shouldFocusTrailingAction = keyIsRight && source === MDCChipNavigationSource.Primary
+      || keyIsLeft && source === MDCChipNavigationSource.None;
+    if (shouldFocusPrimaryAction) {
+      return this.focusPrimaryAction_();
+    }
+
+    if (chipHasTrailingAction && shouldFocusTrailingAction) {
+      return this.focusTrailingAction_();
+    }
+
+    this.removeFocus_();
+    this.adapter_.notifyNavigation(key, source);
+  }
+
+  private getEventSource_(): MDCChipNavigationSource {
+    if (this.adapter_.primaryActionContentHasFocus()) {
+      return MDCChipNavigationSource.Primary;
+    }
+
+    if (this.adapter_.trailingActionContentHasFocus()) {
+      return MDCChipNavigationSource.Trailing;
+    }
+
+    return MDCChipNavigationSource.None;
+  }
+
+  private focusPrimaryAction_() {
+    this.adapter_.setPrimaryActionContentAttr(strings.TAB_INDEX, '0');
+    this.adapter_.focusPrimaryActionContent();
+    this.adapter_.setTrailingActionContentAttr(strings.TAB_INDEX, '-1');
+  }
+
+  private focusTrailingAction_() {
+    this.adapter_.setTrailingActionContentAttr(strings.TAB_INDEX, '0');
+    this.adapter_.focusTrailingActionContent();
+    this.adapter_.setPrimaryActionContentAttr(strings.TAB_INDEX, '-1');
+  }
+
+  private removeFocus_() {
+    this.adapter_.setTrailingActionContentAttr(strings.TAB_INDEX, '-1');
+    this.adapter_.setPrimaryActionContentAttr(strings.TAB_INDEX, '-1');
   }
 }
 

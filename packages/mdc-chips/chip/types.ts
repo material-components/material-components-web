@@ -21,6 +21,12 @@
  * THE SOFTWARE.
  */
 
+export enum MDCChipNavigationSource {
+  Primary,
+  Trailing,
+  None,
+}
+
 export interface MDCChipInteractionEventDetail {
   chipId: string;
 }
@@ -35,6 +41,7 @@ export interface MDCChipRemovalEventDetail extends MDCChipInteractionEventDetail
 
 export interface MDCChipNavigationEventDetail extends MDCChipInteractionEventDetail {
   key: string;
+  source: MDCChipNavigationSource;
 }
 
 // Note: CustomEvent<T> is not supported by Closure Compiler.

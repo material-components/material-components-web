@@ -21,6 +21,8 @@
  * THE SOFTWARE.
  */
 
+import { MDCChipNavigationSource } from "./types";
+
 /**
  * Defines the shape of the adapter expected by the foundation.
  * Implement this adapter for your framework of choice to delegate updates to
@@ -84,7 +86,7 @@ export interface MDCChipAdapter {
   /**
    * Emits a custom event "MDCChip:navigation" denoting a focus navigation event.
    */
-  notifyNavigation(key: string): void;
+  notifyNavigation(key: string, source: MDCChipNavigationSource): void;
 
   /**
    * @return The computed property value of the given style property on the root element.
@@ -112,7 +114,42 @@ export interface MDCChipAdapter {
   getCheckmarkBoundingClientRect(): ClientRect | null;
 
   /**
-   * Sets the value of the attribute on the root element.
+   * Sets the value of the attribute on the primary action content.
    */
-  setAttr(attr: string, value: string): void;
+  setPrimaryActionContentAttr(attr: string, value: string): void;
+
+  /**
+   * @return true if the primary action content has focus.
+   */
+  primaryActionContentHasFocus(): boolean;
+
+  /**
+   * Gives focus to the primary action content.
+   */
+  focusPrimaryActionContent(): void;
+
+  /**
+   * @return true if the chip has a trailing action.
+   */
+  hasTrailingAction(): boolean;
+
+  /**
+   * Returns true if the primary action content has focus.
+   */
+  setTrailingActionContentAttr(attr: string, value: string): void;
+
+  /**
+   * @return true if the trailing action content has focus.
+   */
+  trailingActionContentHasFocus(): boolean;
+
+  /**
+   * Gives focus to the trailing action content.
+   */
+  focusTrailingActionContent(): void;
+
+  /**
+   * @return true if the text direction is right-to-left.
+   */
+  isRTL(): boolean;
 }
