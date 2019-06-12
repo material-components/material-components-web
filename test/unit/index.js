@@ -32,5 +32,5 @@ afterEach(() => {
 });
 
 // https://github.com/webpack/docs/wiki/context#requirecontext
-const testsContext = require.context(/* directory */ '.', /* useSubdirectories */ true, /\.test\.js$/);
+const testsContext = require.context(/* directory */ '.', /* useSubdirectories */ true, /select.*\.test\.js$/);
 testsContext.keys().forEach(testsContext);

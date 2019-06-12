@@ -45,6 +45,12 @@ export interface MDCSelectAdapter {
   hasClass(className: string): boolean;
 
   /**
+   * Sets the attribute on the given element. If `attributeValue` is undefined,
+   * removes the attribute.
+   */
+  setAttributeForElement(el: Element, attributeName: string, attributeValue?: string): void;
+  
+  /**
    * Activates the bottom line, showing a focused state.
    */
   activateBottomLine(): void;
@@ -53,11 +59,6 @@ export interface MDCSelectAdapter {
    * Deactivates the bottom line.
    */
   deactivateBottomLine(): void;
-
-  /**
-   * Sets the value of the select.
-   */
-  setValue(value: string): void;
 
   /**
    * Returns the selected value of the select element.
@@ -90,36 +91,6 @@ export interface MDCSelectAdapter {
   closeOutline(): void;
 
   /**
-   * Opens the menu.
-   */
-  openMenu(): void;
-
-  /**
-   * Closes the menu.
-   */
-  closeMenu(): void;
-
-  /**
-   * Returns true if the menu is currently open.
-   */
-  isMenuOpen(): boolean;
-
-  /**
-   * Sets the selected index of the menu to the given index.
-   */
-  setSelectedIndex(index: number): void;
-
-  /**
-   * Returns the currently selected menu element, if it exists.
-   */
-  getSelectedMenuItem(): Element|null;
-
-  /**
-   * Returns the menu item elements.
-   */
-  getMenuItems(): Element[];
-
-  /**
    * Sets the select to disabled.
    */
   setDisabled(isDisabled: boolean): void;
@@ -143,4 +114,51 @@ export interface MDCSelectAdapter {
    * Adds/Removes the invalid class.
    */
   setValid(isValid: boolean): void;
+
+  /**
+   * Sets the text content of the selectedText element to the given string.
+   */
+  setSelectedText(text: string): void;
+
+  // Menu-related methods ======================================================
+  /**
+   * Opens the menu.
+   */
+  openMenu(): void;
+
+  /**
+   * Closes the menu.
+   */
+  closeMenu(): void;
+
+  /**
+   * Returns true if the menu is currently open.
+   */
+  isMenuOpen(): boolean;
+
+  /**
+   * Returns the currently selected menu element, if it exists.
+   */
+  getSelectedMenuItem(): Element|null;
+
+  /**
+   * Returns the menu item elements.
+   */
+  getMenuItems(): Element[];
+
+  /**
+   * Gets the menu item with the given VALUE_ATTR attribute name and value, or
+   * null if none exists.
+   */
+  getMenuItemWithValueAttribute(value: string): Element|null;
+
+  /**
+   * Gets the text content of the given menu item element.
+   */
+  getMenuItemText(menuItem: Element): string;
+
+  /**
+   * Toggles the SELEDTED_ITEM_CLASS on the given menu item.
+   */
+  toggleMenuItemSelectedClass(menuItem: Element, toggle: boolean): void;
 }

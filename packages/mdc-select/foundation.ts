@@ -27,6 +27,7 @@ import {cssClasses, numbers, strings} from './constants';
 import {MDCSelectHelperTextFoundation} from './helper-text/foundation';
 import {MDCSelectIconFoundation} from './icon/foundation';
 import {MDCSelectFoundationMap} from './types';
+import { menu } from '../../test/screenshot/out/packages/material-components-web';
 
 export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   static get cssClasses() {
@@ -62,9 +63,10 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       openMenu: () => undefined,
       closeMenu: () => undefined,
       isMenuOpen: () => false,
-      setSelectedIndex: () => undefined,
       getSelectedMenuItem: () => null,
       getMenuItems: () => [],
+      getMenuItemText: () => '',
+      setSelectedText: () => undefined,
       setDisabled: () => undefined,
       setRippleCenter: () => undefined,
       notifyChange: () => undefined,
@@ -95,15 +97,36 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     return selectedMenuItem ? this.adapter_.getMenuItems().indexOf(selectedMenuItem) : -1;
   }
 
-  setSelectedIndex(index: number) {
-    this.adapter_.setSelectedIndex(index);
-    this.adapter_.closeMenu();
+  setSelectedIndex(index: number, closeMenu = false) {
+    const menuItemToSelect = this.adapter_.getMenuItems()[index];
+    this.adapter_.setSelectedText(
+        menuItemToSelect ? this.adapter_.getMenuItemText(menuItemToSelect).trim() : '');
+
+    const previouslySelectedItem = this.adapter_.getSelectedMenuItem();
+    if (previouslySelectedItem) {
+      this.adapter_.toggleMenuItemSelectedClass(previouslySelectedItem, false);
+      // Remove the ARIA_SELECTED attribute.
+      this.adapter_.setAttributeForElement(previouslySelectedItem, strings.ARIA_SELECTED_ATTR);
+    }
+    if (menuItemToSelect) {
+      this.adapter_.toggleMenuItemSelectedClass(menuItemToSelect, true);
+      this.adapter_.setAttributeForElement(menuItemToSelect, strings.ARIA_SELECTED_ATTR, 'true');
+    }
+    this.layout();
+
+    if (closeMenu) {
+      this.adapter_.closeMenu();
+    }
+
     const didChange = true;
     this.handleChange(didChange);
   }
 
   setValue(value: string) {
-    this.adapter_.setValue(value);
+    // this.adapter_.setValue(value);
+    const itemWithValue = this.adapter_.getMenuItemWithValueAttribute(value);
+    this.setSelectedIndex(
+        itemWithValue ? this.adapter_.getMenuItems().indexOf(itemWithValue) : -1);
     const didChange = true;
     this.handleChange(didChange);
   }

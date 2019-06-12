@@ -58,7 +58,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
 
   private selectedText_!: HTMLElement; // assigned in initialize()
 
-  private hiddenInput_!: HTMLInputElement | null; // assigned in selectSetup_()
   private menuElement_!: Element; // assigned in selectSetup_()
   private leadingIcon_?: MDCSelectIcon; // assigned in initialize()
   private helperText_!: MDCSelectHelperText | null; // assigned in initialize()
@@ -177,14 +176,10 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     this.menu_.listen(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
     this.menu_.listen(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
 
-    if (this.hiddenInput_ && this.hiddenInput_.value) {
-      // If the hidden input already has a value, use it to restore the select's value.
-      // This can happen e.g. if the user goes back or (in some browsers) refreshes the page.
-      this.getSelectAdapterMethods_().setValue(this.hiddenInput_.value);
-    } else if (this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)) {
+    if (this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)) {
       // If an element is selected, the select should set the initial selected text.
       const adapterMethods = this.getSelectAdapterMethods_();
-      adapterMethods.setValue(adapterMethods.getValue());
+      this.foundation_.setValue(adapterMethods.getValue());
     }
 
     // Initially sync floating label
@@ -239,7 +234,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
   }
 
   set selectedIndex(selectedIndex: number) {
-    this.foundation_.setSelectedIndex(selectedIndex);
+    this.foundation_.setSelectedIndex(selectedIndex, /** closeMenu */ true);
   }
 
   get disabled(): boolean {
@@ -325,7 +320,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
   private selectSetup_(menuFactory: MDCMenuFactory) {
     const isDisabled = this.root_.classList.contains(cssClasses.DISABLED);
     this.selectedText_.setAttribute('tabindex', isDisabled ? '-1' : '0');
-    this.hiddenInput_ = this.root_.querySelector(strings.HIDDEN_INPUT_SELECTOR);
     this.menuElement_ = this.root_.querySelector(strings.MENU_SELECTOR)!;
     this.menu_ = menuFactory(this.menuElement_);
     this.menu_.hoistMenuToBody();
@@ -357,32 +351,9 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
         }
         return '';
       },
-      setValue: (value: string) => {
-        const element = this.menuElement_!.querySelector(`[${strings.VALUE_ATTR}="${value}"]`);
-        this.setSelectedIndex_(element ? this.menu_.items.indexOf(element) : -1);
-      },
-      openMenu: () => {
-        if (!this.menu_.open) {
-          this.menu_.open = true;
-          this.isMenuOpen_ = true;
-          this.selectedText_.setAttribute('aria-expanded', 'true');
-        }
-      },
-      closeMenu: () => {
-        if (this.menu_.open) {
-          this.menu_.open = false;
-        }
-      },
-      isMenuOpen: () => this.isMenuOpen_,
-      setSelectedIndex: (index: number) => this.setSelectedIndex_(index),
-      getSelectedMenuItem: () => this.getSelectedMenuItem_(),
-      getMenuItems: () => this.menu_!.items,
       setDisabled: (isDisabled: boolean) => {
         this.selectedText_.setAttribute('tabindex', isDisabled ? '-1' : '0');
         this.selectedText_.setAttribute('aria-disabled', isDisabled.toString());
-        if (this.hiddenInput_) {
-          this.hiddenInput_.disabled = isDisabled;
-        }
       },
       checkValidity: () => {
         const classList = this.root_.classList;
@@ -402,6 +373,33 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
           this.root_.classList.add(cssClasses.INVALID);
         }
       },
+      setSelectedText: (text: string) => this.selectedText_.textContent = text,
+      openMenu: () => {
+        if (!this.menu_.open) {
+          this.menu_.open = true;
+          this.isMenuOpen_ = true;
+          this.selectedText_.setAttribute('aria-expanded', 'true');
+        }
+      },
+      closeMenu: () => {
+        if (this.menu_.open) {
+          this.menu_.open = false;
+        }
+      },
+      isMenuOpen: () => this.isMenuOpen_,
+      getSelectedMenuItem: () => this.getSelectedMenuItem_(),
+      getMenuItems: () => this.menu_!.items,
+      getMenuItemWithValueAttribute: (value: string) => {
+        return this.menu_.items.find((item) => item.getAttribute(strings.VALUE_ATTR) === value);
+      },
+      getMenuItemText: (menuItem: Element) => menuItem.textContent,
+      toggleMenuItemSelectedClass: (menuItem: Element, toggle: boolean) => {
+        if (toggle) {
+          menuItem.classList.add(cssClasses.SELECTED_ITEM_CLASS);
+        } else {
+          menuItem.classList.remove(cssClasses.SELECTED_ITEM_CLASS);
+        }
+      }
     };
     // tslint:enable:object-literal-sort-keys
   }
@@ -412,6 +410,13 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
       addClass: (className: string) => this.root_.classList.add(className),
       removeClass: (className: string) => this.root_.classList.remove(className),
       hasClass: (className: string) => this.root_.classList.contains(className),
+      setAttributeForElement: (el: Element, attributeName: string, attributeValue?: string) => {
+        if (attributeValue) {
+          el.setAttribute(attributeName, attributeValue);
+        } else {
+          el.removeAttribute(attributeName);
+        }
+      },
       setRippleCenter: (normalizedX: number) => this.lineRipple_ && this.lineRipple_.setRippleCenter(normalizedX),
       activateBottomLine: () => this.lineRipple_ && this.lineRipple_.activate(),
       deactivateBottomLine: () => this.lineRipple_ && this.lineRipple_.deactivate(),
@@ -465,30 +470,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
       helperText: this.helperText_ ? this.helperText_.foundation : undefined,
       leadingIcon: this.leadingIcon_ ? this.leadingIcon_.foundation : undefined,
     };
-  }
-
-  private setSelectedIndex_(index: number) {
-    const selectedItem = this.menu_.items[index];
-    this.selectedText_.textContent = selectedItem ? selectedItem.textContent!.trim() : '';
-    const previouslySelected = this.getSelectedMenuItem_();
-
-    if (previouslySelected) {
-      previouslySelected.classList.remove(cssClasses.SELECTED_ITEM_CLASS);
-      previouslySelected.removeAttribute(strings.ARIA_SELECTED_ATTR);
-    }
-
-    if (selectedItem) {
-      selectedItem.classList.add(cssClasses.SELECTED_ITEM_CLASS);
-      selectedItem.setAttribute(strings.ARIA_SELECTED_ATTR, 'true');
-    }
-
-    // Synchronize hidden input's value with data-value attribute of selected item.
-    // This code path is also followed when setting value directly, so this covers all cases.
-    if (this.hiddenInput_) {
-      this.hiddenInput_.value = selectedItem ? selectedItem.getAttribute(strings.VALUE_ATTR) || '' : '';
-    }
-
-    this.layout();
   }
 
   private initialSyncRequiredState_() {
