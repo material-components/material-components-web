@@ -1,3 +1,13 @@
+<a name="2.3.1"></a>
+## [2.3.1](https://github.com/material-components/material-components-web/compare/v2.3.0...v2.3.1) (2019-06-11)
+
+
+### Bug Fixes
+
+* **text-field:** Update outline idle border color to match design guidance ([#4768](https://github.com/material-components/material-components-web/issues/4768)) ([7fedeaf](https://github.com/material-components/material-components-web/commit/7fedeaf))
+
+
+
 <a name="2.3.0"></a>
 # [2.3.0](https://github.com/material-components/material-components-web/compare/v2.1.1...v2.3.0) (2019-05-28)
 
