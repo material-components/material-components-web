@@ -46,14 +46,10 @@ The enhanced select requires that you set the `width` of the root element (conta
 `mdc-select` class) as well as setting the width of the `mdc-select__menu` element to match. This is best done
 through the use of another class (e.g. `demo-width-class` in the example HTML and CSS below).
 
-If you are using the enhanced select within an HTML form, you can include a hidden `<input>` element under the root
-`mdc-select` element, and it will be synchronized when the value is updated via user interaction or programmatically.
-
 ### HTML
 
 ```html
 <div class="mdc-select demo-width-class">
-  <input type="hidden" name="enhanced-select">
   <i class="mdc-select__dropdown-icon"></i>
   <div class="mdc-select__selected-text"></div>
   <div class="mdc-select__menu mdc-menu mdc-menu-surface demo-width-class">
@@ -112,7 +108,6 @@ The following is an example of the enhanced select component with all of the nec
 
 ```html
 <div class="mdc-select">
-  <input type="hidden" name="enhanced-select">
   <i class="mdc-select__dropdown-icon"></i>
   <div id="demo-selected-text" class="mdc-select__selected-text" role="button" aria-haspopup="listbox" aria-labelledby="demo-label demo-selected-text">Vegetables</div>
   <div class="mdc-select__menu mdc-menu mdc-menu-surface" role="listbox">
@@ -165,7 +160,6 @@ to set the selected item. The select also needs the text from the selected eleme
 
 ```html
 <div class="mdc-select demo-width-class">
-  <input type="hidden" name="enhanced-select">
   <i class="mdc-select__dropdown-icon"></i>
   <div class="mdc-select__selected-text">Vegetables</div>
   <div class="mdc-select__menu demo-width-class mdc-menu mdc-menu-surface">
@@ -199,12 +193,10 @@ the list with an empty `data-value` attribute.
 
 #### Disabled select
 
-Add the `mdc-select--disabled` class to the `mdc-select` element, and add the `disabled`
-attribute to the hidden `<input>` element if present.
+Add the `mdc-select--disabled` class to the `mdc-select` element.
 
 ```html
 <div class="mdc-select mdc-select--disabled">
-  <input type="hidden" name="enhanced-select" disabled>
   <i class="mdc-select__dropdown-icon"></i>
   <div class="mdc-select__selected-text"></div>
   <div class="mdc-select__menu mdc-menu mdc-menu-surface">
@@ -223,7 +215,6 @@ programmatically select a disabled list item.
 
 ```html
 <div class="mdc-select">
-  <input type="hidden" name="enhanced-select">
   <i class="mdc-select__dropdown-icon"></i>
   <div class="mdc-select__selected-text">Vegetables</div>
   <div class="mdc-select__menu mdc-menu mdc-menu-surface">

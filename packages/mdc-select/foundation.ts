@@ -124,7 +124,6 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   }
 
   setValue(value: string) {
-    // this.adapter_.setValue(value);
     const itemWithValue = this.adapter_.getMenuItemWithValueAttribute(value);
     this.setSelectedIndex(
         itemWithValue ? this.adapter_.getMenuItems().indexOf(itemWithValue) : -1);
