@@ -26,9 +26,9 @@ window.mdc.testFixture.fontsLoaded.then(() => {
     mdc.select.MDCSelect.attachTo(el);
   });
 
-  // Wait 50ms before snapshot, since in IE 11, the screenshot is taken before
+  // Wait 20ms before snapshot, since in IE 11, the screenshot is taken before
   // the browser repaints (and reflects the newly added CSS classes).
   setTimeout(() => {
     window.mdc.testFixture.notifyDomReady();
-  }, 50);
+  }, 20);
 });
