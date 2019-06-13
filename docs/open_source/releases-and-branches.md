@@ -27,6 +27,8 @@ In summary, MDC Web has the following types of releases:
 * **Patch release:** A release consisting primarily of bugfixes, with no features or breaking changes; this revs the patch version number (e.g. 1.0.1)
 * **Pre-release:** A preview release containing breaking changes, cut before the next scheduled major release (e.g. 2.0.0-0)
 
+See [Release Process](./release-process.md) for steps to perform for different types of releases.
+
 ### About Pre-releases
 
 MDC Web Catalog and MDC React both depend on MDC Web via npm dependencies. In order to be able to integrate
