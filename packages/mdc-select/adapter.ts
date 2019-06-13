@@ -49,7 +49,7 @@ export interface MDCSelectAdapter {
    * removes the attribute.
    */
   setAttributeForElement(el: Element, attributeName: string, attributeValue?: string): void;
-  
+
   /**
    * Activates the bottom line, showing a focused state.
    */

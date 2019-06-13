@@ -27,7 +27,6 @@ import {cssClasses, numbers, strings} from './constants';
 import {MDCSelectHelperTextFoundation} from './helper-text/foundation';
 import {MDCSelectIconFoundation} from './icon/foundation';
 import {MDCSelectFoundationMap} from './types';
-import { menu } from '../../test/screenshot/out/packages/material-components-web';
 
 export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   static get cssClasses() {
@@ -51,27 +50,29 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       addClass: () => undefined,
       removeClass: () => undefined,
       hasClass: () => false,
+      setAttributeForElement: () => undefined,
       activateBottomLine: () => undefined,
       deactivateBottomLine: () => undefined,
-      setValue: () => undefined,
       getValue: () => '',
       floatLabel: () => undefined,
       getLabelWidth: () => 0,
       hasOutline: () => false,
       notchOutline: () => undefined,
       closeOutline: () => undefined,
-      openMenu: () => undefined,
-      closeMenu: () => undefined,
-      isMenuOpen: () => false,
-      getSelectedMenuItem: () => null,
-      getMenuItems: () => [],
-      getMenuItemText: () => '',
-      setSelectedText: () => undefined,
       setDisabled: () => undefined,
       setRippleCenter: () => undefined,
       notifyChange: () => undefined,
       checkValidity: () => false,
       setValid: () => undefined,
+      setSelectedText: () => undefined,
+      openMenu: () => undefined,
+      closeMenu: () => undefined,
+      isMenuOpen: () => false,
+      getSelectedMenuItem: () => null,
+      getMenuItems: () => [],
+      getMenuItemWithValueAttribute: () => null,
+      getMenuItemText: () => '',
+      toggleMenuItemSelectedClass: () => undefined,
     };
     // tslint:enable:object-literal-sort-keys
   }

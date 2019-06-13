@@ -390,9 +390,9 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
       getSelectedMenuItem: () => this.getSelectedMenuItem_(),
       getMenuItems: () => this.menu_!.items,
       getMenuItemWithValueAttribute: (value: string) => {
-        return this.menu_.items.find((item) => item.getAttribute(strings.VALUE_ATTR) === value);
+        return this.menu_.items.find((item) => item.getAttribute(strings.VALUE_ATTR) === value) || null;
       },
-      getMenuItemText: (menuItem: Element) => menuItem.textContent,
+      getMenuItemText: (menuItem: Element) => menuItem.textContent || '',
       toggleMenuItemSelectedClass: (menuItem: Element, toggle: boolean) => {
         if (toggle) {
           menuItem.classList.add(cssClasses.SELECTED_ITEM_CLASS);
