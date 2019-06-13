@@ -329,7 +329,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     this.hiddenInput_ = this.root_.querySelector(strings.HIDDEN_INPUT_SELECTOR);
     this.menuElement_ = this.root_.parentElement!.querySelector(strings.MENU_SELECTOR)!;
     this.menu_ = menuFactory(this.menuElement_);
-    // this.menu_.hoistMenuToBody();
     this.menu_.setAnchorElement(this.root_.querySelector(strings.SELECT_ANCHOR_SELECTOR)!);
     this.menu_.setAnchorCorner(menuSurfaceConstants.Corner.BOTTOM_START);
     this.menu_.wrapFocus = false;
