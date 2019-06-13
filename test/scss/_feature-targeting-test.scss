@@ -1,6 +1,7 @@
 @import "@material/button/mixins";
 @import "@material/card/mixins";
 @import "@material/checkbox/mixins";
+@import "@material/chips/mixins";
 @import "@material/dialog/mixins";
 @import "@material/elevation/mixins";
 @import "@material/fab/mixins";
@@ -49,6 +50,31 @@
     @include mdc-checkbox-focus-indicator-color(red, $query: $query);
     @include mdc-checkbox-ripple($query: $query);
     @include mdc-checkbox-without-ripple($query: $query);
+
+    // Chips
+    @include mdc-chip-core-styles($query: $query);
+    @include mdc-chip-elevation-transition($query: $query);
+    @include mdc-chip-fill-color(red, $query: $query);
+    @include mdc-chip-fill-color-accessible(red, $query: $query);
+    @include mdc-chip-height(0, $query: $query);
+    @include mdc-chip-horizontal-padding(0, $query: $query);
+    @include mdc-chip-ink-color(red, $query: $query);
+    @include mdc-chip-leading-icon-color(red, $query: $query);
+    @include mdc-chip-leading-icon-margin($query: $query);
+    @include mdc-chip-leading-icon-size(0, $query: $query);
+    @include mdc-chip-outline($query: $query);
+    @include mdc-chip-outline-color(red, $query: $query);
+    @include mdc-chip-outline-style(soild, $query: $query);
+    @include mdc-chip-outline-width(0, $query: $query);
+    @include mdc-chip-ripple($query: $query);
+    @include mdc-chip-selected-ink-color(red, $query: $query);
+    @include mdc-chip-set-core-styles($query: $query);
+    @include mdc-chip-set-spacing(0, $query: $query);
+    @include mdc-chip-shape-radius(0, $query: $query);
+    @include mdc-chip-trailing-icon-color(red, $query: $query);
+    @include mdc-chip-trailing-icon-margin($query: $query);
+    @include mdc-chip-trailing-icon-size(0, $query: $query);
+    @include mdc-chip-without-ripple($query: $query);
 
     // Dialog
     @include mdc-dialog-core-styles($query: $query);

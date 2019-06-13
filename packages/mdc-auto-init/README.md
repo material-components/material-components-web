@@ -66,6 +66,16 @@ property on that element.
 document.querySelector('.mdc-text-field').MDCTextField.disabled = true;
 ```
 
+#### Calling subsequent `mdc.autoInit()`
+
+If you decide to add new components into the DOM after the initial `mdc.autoInit()`, you can make subsequent calls to `mdc.autoInit()`. This will not reinitialize existing components. This works since mdc-auto-init will add the `data-mdc-auto-init-state="initialized"` attribute, which tracks if the component has already been initialized. After calling `mdc.autoInit()` your component will then look like:
+
+```html
+<div class="mdc-text-field" data-mdc-auto-init="MDCTextField" data-mdc-auto-init-state="initialized">
+  ...
+</div>
+```
+
 ### Using as a standalone module
 
 #### Registering Components

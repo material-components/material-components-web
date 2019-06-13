@@ -156,6 +156,8 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     this.handleKeydown_ = (evt) => this.foundation_.handleKeydown(evt);
     this.handleMenuSelected_ = (evtData) => this.selectedIndex = evtData.detail.index;
     this.handleMenuOpened_ = () => {
+      this.foundation_.handleMenuOpened();
+
       if (this.menu_!.items.length === 0) {
         return;
       }
@@ -166,6 +168,8 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
       focusItemEl.focus();
     };
     this.handleMenuClosed_ = () => {
+      this.foundation_.handleMenuClosed();
+
       // isMenuOpen_ is used to track the state of the menu opening or closing since the menu.open function
       // will return false if the menu is still closing and this method listens to the closed event which
       // occurs after the menu is already closed.

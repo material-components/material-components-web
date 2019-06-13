@@ -1,3 +1,57 @@
+<a name="2.3.1"></a>
+## [2.3.1](https://github.com/material-components/material-components-web/compare/v2.3.0...v2.3.1) (2019-06-11)
+
+
+### Bug Fixes
+
+* **text-field:** Update outline idle border color to match design guidance ([#4768](https://github.com/material-components/material-components-web/issues/4768)) ([7fedeaf](https://github.com/material-components/material-components-web/commit/7fedeaf))
+
+
+
+<a name="2.3.0"></a>
+# [2.3.0](https://github.com/material-components/material-components-web/compare/v2.1.1...v2.3.0) (2019-05-28)
+
+
+### Bug Fixes
+
+* **ripple:** Fixes issue where Chrome v74 shows black artifact on ripple surface on hover ([#4695](https://github.com/material-components/material-components-web/issues/4695)) ([7a5e7ed](https://github.com/material-components/material-components-web/commit/7a5e7ed))
+* **select:** Fixes arrow direction on select focused state ([#4726](https://github.com/material-components/material-components-web/issues/4726)) ([358546a](https://github.com/material-components/material-components-web/commit/358546a))
+* **tab:** Fix tab color variables to use color literals ([#4688](https://github.com/material-components/material-components-web/issues/4688)) ([88734fe](https://github.com/material-components/material-components-web/commit/88734fe))
+* **typography:** Use unquote for setting font-family. ([#4665](https://github.com/material-components/material-components-web/issues/4665)) ([8d8f3fc](https://github.com/material-components/material-components-web/commit/8d8f3fc))
+
+
+### Features
+
+* **auto-init:** initialize components once with multiple mdc.autoInit() calls ([#4691](https://github.com/material-components/material-components-web/issues/4691)) ([218d2e5](https://github.com/material-components/material-components-web/commit/218d2e5))
+* **chips:** Add feature targeting for styles ([#4693](https://github.com/material-components/material-components-web/issues/4693)) ([0fdb889](https://github.com/material-components/material-components-web/commit/0fdb889))
+
+
+
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/material-components/material-components-web/compare/v2.1.1...v2.2.0) (2019-05-13)
+
+
+### Bug Fixes
+
+* **tab:** Fix tab color variables to use color literals ([#4688](https://github.com/material-components/material-components-web/issues/4688)) ([88734fe](https://github.com/material-components/material-components-web/commit/88734fe))
+
+
+### Features
+
+* **chips:** Add feature targeting for styles ([#4693](https://github.com/material-components/material-components-web/issues/4693)) ([0fdb889](https://github.com/material-components/material-components-web/commit/0fdb889))
+
+
+
+<a name="2.1.1"></a>
+## [2.1.1](https://github.com/material-components/material-components-web/compare/v2.1.0...v2.1.1) (2019-05-10)
+
+
+### Bug Fixes
+
+* **ripple:** Fixes issue where Chrome v74 shows black artifact on ripple surface on hover ([a0c7b81](https://github.com/material-components/material-components-web/commit/a0c7b81))
+
+
+
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/material-components/material-components-web/compare/v2.0.0...v2.1.0) (2019-05-06)
 

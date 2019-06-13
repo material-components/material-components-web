@@ -80,7 +80,9 @@
 
     .mdc-select--focused & {
       @include mdc-select-dd-arrow-svg-bg_(mdc-theme-prop-value(primary), 1);
+    }
 
+    .mdc-select--activated & {
       transform: rotate(180deg) translateY(-5px);
       transition: transform $mdc-select-dropdown-transition-duration $mdc-animation-standard-curve-timing-function;
     }
