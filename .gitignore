@@ -25,4 +25,4 @@ packages/**/*.map
 .rewrite-tmp/
 
 # Individual CHANGELOG files
-package/**/CHANGELOG.md
+packages/**/CHANGELOG.md
