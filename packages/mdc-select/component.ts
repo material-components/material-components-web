@@ -48,9 +48,9 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   }
 
   // Root container for select (anchor) element and menu.
-  private root_!: HTMLElement; // assigned in MDCComponent constructor
+  protected root_!: HTMLElement; // assigned in MDCComponent constructor
 
-  ripple!: MDCRipple | null;
+  private ripple_!: MDCRipple | null;
 
   private menu_!: MDCMenu; // assigned in selectSetup_()
   private isMenuOpen_!: boolean; // assigned in initialize()
@@ -121,7 +121,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     }
 
     if (!this.selectAnchor_.classList.contains(cssClasses.OUTLINED)) {
-      this.ripple = this.createRipple_();
+      this.ripple_ = this.createRipple_();
     }
 
     // The required state needs to be sync'd before the mutation observer is added.
@@ -208,8 +208,8 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     this.menu_.unlisten(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
     this.menu_.destroy();
 
-    if (this.ripple) {
-      this.ripple.destroy();
+    if (this.ripple_) {
+      this.ripple_.destroy();
     }
     if (this.outline_) {
       this.outline_.destroy();
