@@ -158,7 +158,7 @@ export interface MDCSelectAdapter {
   getMenuItemText(menuItem: Element): string;
 
   /**
-   * Toggles the SELEDTED_ITEM_CLASS on the given menu item.
+   * Toggles the SELECTED_ITEM_CLASS on the given menu item.
    */
   toggleMenuItemSelectedClass(menuItem: Element, toggle: boolean): void;
 }

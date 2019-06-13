@@ -399,7 +399,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
         } else {
           menuItem.classList.remove(cssClasses.SELECTED_ITEM_CLASS);
         }
-      }
+      },
     };
     // tslint:enable:object-literal-sort-keys
   }

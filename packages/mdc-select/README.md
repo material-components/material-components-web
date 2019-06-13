@@ -319,6 +319,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `addClass(className: string) => void` | Adds a class to the root element. |
 | `removeClass(className: string) => void` | Removes a class from the root element. |
 | `hasClass(className: string) => boolean` | Returns true if the root element has the className in its classList. |
+| `setAttributeForElement(el: Element, attributeName: string, attributeValue?: string) => void;` | Sets the attribute on the given element. If `attributeValue` is undefined, removes the attribute. |
 | `activateBottomLine() => void` | Activates the bottom line component. |
 | `deactivateBottomLine() => void` | Deactivates the bottom line component. |
 | `getValue() => string` | Returns the value selected `option` on the `select` element and the `data-value` of the selected list item on the enhanced select. |
@@ -327,18 +328,20 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `hasOutline() => boolean` | Returns true if the `select` has the notched outline element. |
 | `notchOutline(labelWidth: number) => void` | Switches the notched outline element to its "notched state." |
 | `closeOutline() => void` | Switches the notched outline element to its closed state. |
-| `openMenu() => void` | Causes the menu element in the enhanced select to open. |
-| `closeMenu() => void` | Causes the menu element in the enhanced select to close. |
-| `setValue(value: string) => void` | Sets the value of the select or text content of the selected-text element. |
-| `isMenuOpen() => boolean` | Returns true if the menu is currently opened in the enhanced select. |
-| `setSelectedIndex(index: number) => void` | Selects the option or list item at the specified index. |
-| `getSelectedMenuItem() => Element|null` | Returns the currently selected menu element, if it exists. |
-| `getMenuItems() => Element[]` | Returns the menu item elements. |
 | `setDisabled(isDisabled: boolean) => void` | Enables or disables the select. |
 | `setRippleCenter(normalizedX: number) => void` | Sets the line ripple center to the provided normalizedX value. |
 | `notifyChange(value: string) => void` | Emits the `MDCSelect:change` event when an element is selected. |
 | `checkValidity() => boolean` | Returns whether the component is currently valid, using the select's `checkValidity`. |
 | `setValid(isValid: boolean) => void` | Adds or removes invalid styles. |
+| `setSelectedText(text: string): void` | Sets the text content of the selectedText element to the given string. |
+| `openMenu() => void` | Causes the menu element in the enhanced select to open. |
+| `closeMenu() => void` | Causes the menu element in the enhanced select to close. |
+| `isMenuOpen() => boolean` | Returns true if the menu is currently opened in the enhanced select. |
+| `getSelectedMenuItem() => Element|null` | Returns the currently selected menu element, if it exists. |
+| `getMenuItems() => Element[]` | Returns the menu item elements. |
+| `getMenuItemWithValueAttribute(value: string) => Element|null` | Gets the menu item with the given VALUE_ATTR attribute name and value, or null if none exists. |
+| `getMenuItemText(menuItem: Element) => string` | Gets the text content of the given menu item element. |
+| `toggleMenuItemSelectedClass(menuItem: Element, toggle: boolean) => void` | Toggles the SELECTED_ITEM_CLASS on the given menu item. |
 
 ### `MDCSelectFoundation`
 
