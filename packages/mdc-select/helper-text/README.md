@@ -51,30 +51,32 @@ const helperText = new MDCSelectHelperText(document.querySelector('.mdc-select-h
 
 Note that in every example where the helper text is dependent on the state of the `select` element, we
 assign an id to the `mdc-select-helper-text` element and set that id to the value of the
-`aria-controls` and `aria-describedby` attributes on the element with either the `mdc-select__native-control` or
-`mdc-select__selected-text` class. We recommend doing this as well as it will help indicate to assistive devices that
+`aria-controls` and `aria-describedby` attributes on the element with the `mdc-select__selected-text` class.
+We recommend doing this as well as it will help indicate to assistive devices that
 the display of the helper text is dependent on the interaction with the MDCSelect component.
 
 ```html
-<div class="mdc-select">
-  <i class="mdc-select__dropdown-icon"></i>
-  <select id="native-select-control" class="mdc-select__native-control" aria-controls="username-helper-text" aria-describedby="username-helper-text">
-    <option value="" disabled selected></option>
-    <option value="grains">
-      Bread, Cereal, Rice, and Pasta
-    </option>
-    <option value="vegetables">
-      Vegetables
-    </option>
-    <option value="fruit">
-      Fruit
-    </option>
-  </select>
-  <label class="mdc-floating-label">Pick a Food Group</label>
+<div class="mdc-select custom-enhanced-select-width">
+  <div id="selected-text" class="mdc-select__selected-text"
+      aria-controls="my-helper-text" aria-describedby="my-helper-text"></div>
+  <div class="mdc-select__menu mdc-menu mdc-menu-surface custom-enhanced-select-width" role="listbox">
+    <ul class="mdc-list">
+      <li class="mdc-list-item" data-value="grains" aria-selected="true">
+        Bread, Cereal, Rice, and Pasta
+      </li>
+      <li class="mdc-list-item" data-value="vegetables">
+        Vegetables
+      </li>
+      <li class="mdc-list-item" data-value="fruit">
+        Fruit
+      </li>
+    </ul>
+  </div>
+  <span id="select-label" class="mdc-floating-label">Pick a Food Group</span>
   <div class="mdc-line-ripple"></div>
 </div>
-<p id="username-helper-text" class="mdc-select-helper-text" aria-hidden="true">
-  This will be displayed on your public profile
+<p id="my-helper-text" class="mdc-select-helper-text">
+  Helper text
 </p>
 ```
 
