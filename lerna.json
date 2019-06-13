@@ -7,7 +7,6 @@
         "release/*"
       ],
       "conventionalCommits": true,
-      "noPush": true,
       "message": "chore: Publish %s"
     },
     "publish": {
