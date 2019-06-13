@@ -6,8 +6,7 @@
         "master",
         "release/*"
       ],
-      "conventionalCommits": true,
-      "message": "chore: Publish %s"
+      "conventionalCommits": true
     },
     "publish": {
       "ignoreChanges": [
