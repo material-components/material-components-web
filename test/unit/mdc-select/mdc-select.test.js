@@ -149,6 +149,10 @@ function getHelperTextFixture(root = getFixture()) {
 
 function setupTest(hasOutline = false, hasLabel = true, hasMockFoundation = false,
   hasMockMenu = true, hasHelperText = false) {
+  // Clean up: Remove all menu elements from DOM first.
+  const menuEls = document.querySelectorAll(strings.MENU_SELECTOR);
+  [].forEach.call(menuEls, (el) => el.parentElement.removeChild(el));
+
   const bottomLine = new FakeBottomLine();
   const label = new FakeLabel();
   const fixture = hasOutline ? getOutlineFixture() : getFixture();
@@ -651,27 +655,31 @@ test('adapter#getValue returns the selected element value', () => {
   const hasOutline = false;
   const hasLabel = true;
   const {component, menuSurface} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-  const menuItem = menuSurface.querySelectorAll('.mdc-list-item')[1];
+
+  const index = 1;
+  const menuItem = menuSurface.querySelectorAll('.mdc-list-item')[index];
   const textValue = menuItem.getAttribute('data-value');
   const adapter = component.getDefaultFoundation().adapter_;
-  adapter.toggleMenuItemSelectedClass(menuItem, true);
+  adapter.toggleClassAtIndex(index, cssClasses.SELECTED_ITEM_CLASS, true);
 
   assert.equal(adapter.getValue(), textValue);
   document.body.removeChild(menuSurface);
 });
 
-test('adapter#setAttributeForElement sets attribute value correctly', () => {
+test('adapter#setAttributeAtIndex sets attribute value correctly', () => {
   const hasMockFoundation = true;
   const hasMockMenu = false;
   const hasOutline = false;
   const hasLabel = true;
   const {component, menuSurface} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-  const menuItem = menuSurface.querySelectorAll('.mdc-list-item')[1];
 
+  const index = 1;
+  const menuItem = menuSurface.querySelectorAll('.mdc-list-item')[index];
   const valueToSet = 'foo';
+
   assert.notEqual(valueToSet, menuItem.getAttribute(strings.VALUE_ATTR));
   const adapter = component.getDefaultFoundation().adapter_;
-  adapter.setAttributeForElement(menuItem, strings.VALUE_ATTR, valueToSet);
+  adapter.setAttributeAtIndex(index, strings.VALUE_ATTR, valueToSet);
 
   const listItemValue = menuItem.getAttribute(strings.VALUE_ATTR);
   assert.equal(valueToSet, listItemValue);
@@ -691,6 +699,7 @@ test('adapter#setSelectedText sets the select text content correctly', () => {
   assert.notEqual(textToSet, selectedText.textContent);
   adapter.setSelectedText(textToSet);
   assert.equal(textToSet, selectedText.textContent);
+  document.body.removeChild(fixture);
 });
 
 test('adapter#openMenu causes the menu to open', () => {
@@ -737,7 +746,7 @@ test('adapter#isMenuOpen returns true if the menu is opened, and false if not', 
   document.body.removeChild(fixture);
 });
 
-test('adapter#getSelectedMenuItem gets the selected menu item', () => {
+test('adapter#getIndexOfMenuItemWithAttribute returns the correct index', () => {
   const hasMockFoundation = true;
   const hasMockMenu = false;
   const hasOutline = false;
@@ -746,13 +755,16 @@ test('adapter#getSelectedMenuItem gets the selected menu item', () => {
     setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   document.body.appendChild(fixture);
 
+  const index = 1;
   const adapter = component.getDefaultFoundation().adapter_;
-  const menuItem = adapter.getMenuItems()[1];
-  menuItem.classList.add(cssClasses.SELECTED_ITEM_CLASS);
-  assert.equal(adapter.getSelectedMenuItem(), menuItem);
+  const menuItem = document.querySelectorAll('.mdc-list-item')[index];
+  const value = menuItem.getAttribute(strings.VALUE_ATTR);
+  assert.equal(adapter.getIndexOfMenuItemWithAttribute(strings.VALUE_ATTR, value), index);
+
+  document.body.removeChild(fixture);
 });
 
-test('adapter#getMenuItemWithValueAttribute returns the correct menu item', () => {
+test('adapter#toggleClassAtIndex toggles class correctly', () => {
   const hasMockFoundation = true;
   const hasMockMenu = false;
   const hasOutline = false;
@@ -762,27 +774,15 @@ test('adapter#getMenuItemWithValueAttribute returns the correct menu item', () =
   document.body.appendChild(fixture);
 
   const adapter = component.getDefaultFoundation().adapter_;
-  const menuItem = adapter.getMenuItems()[1];
-  menuItem.setAttribute(strings.VALUE_ATTR, 'foo');
-  assert.equal(adapter.getMenuItemWithValueAttribute('foo'), menuItem);
-});
+  const index = 1;
+  const menuItem = document.querySelectorAll('.mdc-list-item')[index];
 
-test('adapter#toggleMenuItemSelectedClass toggles class correctly', () => {
-  const hasMockFoundation = true;
-  const hasMockMenu = false;
-  const hasOutline = false;
-  const hasLabel = true;
-  const {fixture, component} =
-    setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-  document.body.appendChild(fixture);
-
-  const adapter = component.getDefaultFoundation().adapter_;
-  const menuItem = adapter.getMenuItems()[1];
-
-  adapter.toggleMenuItemSelectedClass(menuItem, true);
+  adapter.toggleClassAtIndex(index, cssClasses.SELECTED_ITEM_CLASS, true);
   assert.isTrue(menuItem.classList.contains(cssClasses.SELECTED_ITEM_CLASS));
-  adapter.toggleMenuItemSelectedClass(menuItem, false);
+  adapter.toggleClassAtIndex(index, cssClasses.SELECTED_ITEM_CLASS, false);
   assert.isFalse(menuItem.classList.contains(cssClasses.SELECTED_ITEM_CLASS));
+
+  document.body.removeChild(fixture);
 });
 
 test('adapter#setDisabled adds the --disabled class to the root element', () => {

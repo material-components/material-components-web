@@ -50,7 +50,6 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       addClass: () => undefined,
       removeClass: () => undefined,
       hasClass: () => false,
-      setAttributeForElement: () => undefined,
       activateBottomLine: () => undefined,
       deactivateBottomLine: () => undefined,
       getValue: () => '',
@@ -68,17 +67,19 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       openMenu: () => undefined,
       closeMenu: () => undefined,
       isMenuOpen: () => false,
-      getSelectedMenuItem: () => null,
-      getMenuItems: () => [],
-      getMenuItemWithValueAttribute: () => null,
-      getMenuItemText: () => '',
-      toggleMenuItemSelectedClass: () => undefined,
+      setAttributeAtIndex: () => undefined,
+      getIndexOfMenuItemWithAttribute: () => numbers.UNSET_INDEX,
+      getMenuItemTextAtIndex: () => '',
+      toggleClassAtIndex: () => undefined,
     };
     // tslint:enable:object-literal-sort-keys
   }
 
   private readonly leadingIcon_: MDCSelectIconFoundation | undefined;
   private readonly helperText_: MDCSelectHelperTextFoundation | undefined;
+
+  // Index of the currently selected menu item.
+  private selectedIndex_: number = numbers.UNSET_INDEX;
 
   /* istanbul ignore next: optional argument is not a branch statement */
   /**
@@ -94,24 +95,25 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
 
   /** Returns the index of the currently selected menu item, or -1 if none. */
   getSelectedIndex(): number {
-    const selectedMenuItem = this.adapter_.getSelectedMenuItem();
-    return selectedMenuItem ? this.adapter_.getMenuItems().indexOf(selectedMenuItem) : -1;
+    return this.selectedIndex_;
   }
 
   setSelectedIndex(index: number, closeMenu = false) {
-    const menuItemToSelect = this.adapter_.getMenuItems()[index];
-    this.adapter_.setSelectedText(
-        menuItemToSelect ? this.adapter_.getMenuItemText(menuItemToSelect).trim() : '');
+    const previouslySelectedIndex = this.selectedIndex_;
+    this.selectedIndex_ = index;
 
-    const previouslySelectedItem = this.adapter_.getSelectedMenuItem();
-    if (previouslySelectedItem) {
-      this.adapter_.toggleMenuItemSelectedClass(previouslySelectedItem, false);
+    this.adapter_.setSelectedText(
+        this.selectedIndex_ === numbers.UNSET_INDEX ?
+            '' : this.adapter_.getMenuItemTextAtIndex(this.selectedIndex_).trim());
+
+    if (previouslySelectedIndex !== numbers.UNSET_INDEX) {
+      this.adapter_.toggleClassAtIndex(previouslySelectedIndex, cssClasses.SELECTED_ITEM_CLASS, false);
       // Remove the ARIA_SELECTED attribute.
-      this.adapter_.setAttributeForElement(previouslySelectedItem, strings.ARIA_SELECTED_ATTR);
+      this.adapter_.setAttributeAtIndex(previouslySelectedIndex, strings.ARIA_SELECTED_ATTR);
     }
-    if (menuItemToSelect) {
-      this.adapter_.toggleMenuItemSelectedClass(menuItemToSelect, true);
-      this.adapter_.setAttributeForElement(menuItemToSelect, strings.ARIA_SELECTED_ATTR, 'true');
+    if (this.selectedIndex_ !== numbers.UNSET_INDEX) {
+      this.adapter_.toggleClassAtIndex(this.selectedIndex_, cssClasses.SELECTED_ITEM_CLASS, true);
+      this.adapter_.setAttributeAtIndex(this.selectedIndex_, strings.ARIA_SELECTED_ATTR);
     }
     this.layout();
 
@@ -124,9 +126,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   }
 
   setValue(value: string) {
-    const itemWithValue = this.adapter_.getMenuItemWithValueAttribute(value);
-    this.setSelectedIndex(
-        itemWithValue ? this.adapter_.getMenuItems().indexOf(itemWithValue) : -1);
+    const index = this.adapter_.getIndexOfMenuItemWithAttribute(strings.VALUE_ATTR, value);
+    this.setSelectedIndex(index);
     const didChange = true;
     this.handleChange(didChange);
   }

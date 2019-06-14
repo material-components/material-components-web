@@ -319,7 +319,6 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `addClass(className: string) => void` | Adds a class to the root element. |
 | `removeClass(className: string) => void` | Removes a class from the root element. |
 | `hasClass(className: string) => boolean` | Returns true if the root element has the className in its classList. |
-| `setAttributeForElement(el: Element, attributeName: string, attributeValue?: string) => void;` | Sets the attribute on the given element. If `attributeValue` is undefined, removes the attribute. |
 | `activateBottomLine() => void` | Activates the bottom line component. |
 | `deactivateBottomLine() => void` | Deactivates the bottom line component. |
 | `getValue() => string` | Returns the value selected `option` on the `select` element and the `data-value` of the selected list item on the enhanced select. |
@@ -339,9 +338,10 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `isMenuOpen() => boolean` | Returns true if the menu is currently opened in the enhanced select. |
 | `getSelectedMenuItem() => Element|null` | Returns the currently selected menu element, if it exists. |
 | `getMenuItems() => Element[]` | Returns the menu item elements. |
-| `getMenuItemWithValueAttribute(value: string) => Element|null` | Gets the menu item with the given VALUE_ATTR attribute name and value, or null if none exists. |
-| `getMenuItemText(menuItem: Element) => string` | Gets the text content of the given menu item element. |
-| `toggleMenuItemSelectedClass(menuItem: Element, toggle: boolean) => void` | Toggles the SELECTED_ITEM_CLASS on the given menu item. |
+| `setAttributeAtIndex(index: number, attributeName: string, attributeValue?: string) => void;` | Sets the attribute on the menu item at the given index. If `attributeValue` is undefined, removes the attribute. |
+| `getIndexOfMenuItemWithAttribute(attributeName: string, attributeValue: string) => number` | Gets the index of the menu item with the given attribute name and value, or null if none exists. |
+| `getMenuItemTextAtIndex(index: number) => string` | Gets the text content of the menu item element at the given index. |
+| `toggleClassAtIndex(menuItem: Element, className: string, toggle: boolean) => void` | Toggles the class name on the menu item at the given index. |
 
 ### `MDCSelectFoundation`
 

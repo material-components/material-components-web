@@ -35,7 +35,7 @@ import {MDCRipple} from '@material/ripple/component';
 import {MDCRippleFoundation} from '@material/ripple/foundation';
 import {MDCRippleCapableSurface} from '@material/ripple/types';
 import {MDCSelectAdapter} from './adapter';
-import {cssClasses, strings} from './constants';
+import {cssClasses, numbers, strings} from './constants';
 import {MDCSelectFoundation} from './foundation';
 import {MDCSelectHelperText, MDCSelectHelperTextFactory} from './helper-text/component';
 import {MDCSelectIcon, MDCSelectIconFactory} from './icon/component';
@@ -388,16 +388,37 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
       },
       isMenuOpen: () => this.isMenuOpen_,
       getSelectedMenuItem: () => this.getSelectedMenuItem_(),
-      getMenuItems: () => this.menu_!.items,
-      getMenuItemWithValueAttribute: (value: string) => {
-        return this.menu_.items.filter((item) => item.getAttribute(strings.VALUE_ATTR) === value)[0] || null;
-      },
-      getMenuItemText: (menuItem: Element) => menuItem.textContent || '',
-      toggleMenuItemSelectedClass: (menuItem: Element, toggle: boolean) => {
-        if (toggle) {
-          menuItem.classList.add(cssClasses.SELECTED_ITEM_CLASS);
+      setAttributeAtIndex: (index: number, attributeName: string, attributeValue?: string) => {
+        const menuItem = this.menu_.items[index];
+        if (!menuItem) {
+          return;
+        }
+
+        if (attributeValue) {
+          menuItem.setAttribute(attributeName, attributeValue);
         } else {
-          menuItem.classList.remove(cssClasses.SELECTED_ITEM_CLASS);
+          menuItem.removeAttribute(attributeName);
+        }
+      },
+      getIndexOfMenuItemWithAttribute: (attributeName: string, attributeValue: string) => {
+        const item = this.menu_.items.filter(
+            (el) => el.getAttribute(attributeName) === attributeValue)[0] || null;
+        return item ? this.menu_.items.indexOf(item) : numbers.UNSET_INDEX;
+      },
+      getMenuItemTextAtIndex: (index: number) => {
+        const menuItem = this.menu_.items[index];
+        return menuItem && menuItem.textContent ? menuItem.textContent : '';
+      },
+      toggleClassAtIndex: (index: number, className: string, toggle: boolean) => {
+        const menuItem = this.menu_.items[index];
+        if (!menuItem) {
+          return;
+        }
+
+        if (toggle) {
+          menuItem.classList.add(className);
+        } else {
+          menuItem.classList.remove(className);
         }
       },
     };
@@ -410,13 +431,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
       addClass: (className: string) => this.root_.classList.add(className),
       removeClass: (className: string) => this.root_.classList.remove(className),
       hasClass: (className: string) => this.root_.classList.contains(className),
-      setAttributeForElement: (el: Element, attributeName: string, attributeValue?: string) => {
-        if (attributeValue) {
-          el.setAttribute(attributeName, attributeValue);
-        } else {
-          el.removeAttribute(attributeName);
-        }
-      },
       setRippleCenter: (normalizedX: number) => this.lineRipple_ && this.lineRipple_.setRippleCenter(normalizedX),
       activateBottomLine: () => this.lineRipple_ && this.lineRipple_.activate(),
       deactivateBottomLine: () => this.lineRipple_ && this.lineRipple_.deactivate(),

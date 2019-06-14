@@ -45,12 +45,6 @@ export interface MDCSelectAdapter {
   hasClass(className: string): boolean;
 
   /**
-   * Sets the attribute on the given element. If `attributeValue` is undefined,
-   * removes the attribute.
-   */
-  setAttributeForElement(el: Element, attributeName: string, attributeValue?: string): void;
-
-  /**
    * Activates the bottom line, showing a focused state.
    */
   activateBottomLine(): void;
@@ -137,28 +131,24 @@ export interface MDCSelectAdapter {
   isMenuOpen(): boolean;
 
   /**
-   * Returns the currently selected menu element, if it exists.
+   * Sets the attribute on the menu item at the given index. If `attributeValue`
+   * is undefined, removes the attribute.
    */
-  getSelectedMenuItem(): Element|null;
+  setAttributeAtIndex(index: number, attributeName: string, attributeValue?: string): void;
 
   /**
-   * Returns the menu item elements.
+   * Gets the index of the menu item with the given attribute name and value, or
+   * numbers.UNSET_INDEX if none exists.
    */
-  getMenuItems(): Element[];
+  getIndexOfMenuItemWithAttribute(attributeName: string, attributeValue: string): number;
 
   /**
-   * Gets the menu item with the given VALUE_ATTR attribute name and value, or
-   * null if none exists.
+   * Gets the text content of the menu item element at the given index.
    */
-  getMenuItemWithValueAttribute(value: string): Element|null;
+  getMenuItemTextAtIndex(index: number): string;
 
   /**
-   * Gets the text content of the given menu item element.
+   * Toggles the class name on the menu item at the given index.
    */
-  getMenuItemText(menuItem: Element): string;
-
-  /**
-   * Toggles the SELECTED_ITEM_CLASS on the given menu item.
-   */
-  toggleMenuItemSelectedClass(menuItem: Element, toggle: boolean): void;
+  toggleClassAtIndex(index: number, className: string, toggle: boolean): void;
 }
