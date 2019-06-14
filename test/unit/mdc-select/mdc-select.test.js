@@ -303,7 +303,7 @@ test('#set valid forwards to foundation', () => {
   td.verify(mockFoundation.setValid(true));
 });
 
-test('#set selectedIndex calls foundation.setSelectedIndex', () => {
+test('#set selectedIndex calls foundation.selectedIndex', () => {
   const hasMockFoundation = true;
   const hasMockMenu = true;
   const hasOutline = false;
