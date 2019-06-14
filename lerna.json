@@ -3,8 +3,7 @@
   "command": {
     "version": {
       "allowBranch": [
-        "master",
-        "release/*"
+        "master"
       ],
       "conventionalCommits": true
     },
