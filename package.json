@@ -41,7 +41,9 @@
     "test:site": "npm run clean:site && ./scripts/site-generator-test.sh"
   },
   "devDependencies": {
+    "@babel/core": "^7.4.5",
     "@babel/parser": "^7.2.3",
+    "@babel/polyfill": "^7.4.4",
     "@babel/traverse": "^7.3.4",
     "@babel/types": "^7.3.4",
     "@google-cloud/datastore": "^3.0.1",
@@ -97,6 +99,7 @@
     "jsdom": "^13.1.0",
     "json-stable-stringify": "^1.0.1",
     "karma": "^4.0.0",
+    "karma-babel-preprocessor": "^8.0.0",
     "karma-chrome-launcher": "^2.0.0",
     "karma-coverage-istanbul-reporter": "^2.0.4",
     "karma-firefox-launcher": "^1.0.0",
