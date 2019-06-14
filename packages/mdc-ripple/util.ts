@@ -28,12 +28,6 @@ import {MDCRipplePoint} from './types';
  */
 let supportsCssVariables_: boolean | undefined;
 
-/**
- * Stores result from applyPassive to avoid redundant processing to detect
- * passive event listener support.
- */
-let supportsPassive_: boolean | undefined;
-
 function detectEdgePseudoVarBug(windowObj: Window): boolean {
   // Detect versions of Edge with buggy var() support
   // See: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/11495448/
@@ -84,30 +78,6 @@ export function supportsCssVariables(windowObj: Window, forceRefresh = false): b
     supportsCssVariables_ = supportsCssVars;
   }
   return supportsCssVars;
-}
-
-/**
- * Determine whether the current browser supports passive event listeners, and
- * if so, use them.
- */
-export function applyPassive(globalObj: Window = window, forceRefresh = false):
-    boolean | EventListenerOptions {
-  if (supportsPassive_ === undefined || forceRefresh) {
-    let isSupported = false;
-    try {
-      globalObj.document.addEventListener('test', () => undefined, {
-        get passive() {
-          isSupported = true;
-          return isSupported;
-        },
-      });
-    } catch (e) {
-    } // tslint:disable-line:no-empty cannot throw error due to tests. tslint also disables console.log.
-
-    supportsPassive_ = isSupported;
-  }
-
-  return supportsPassive_ ? {passive: true} as EventListenerOptions : false;
 }
 
 export function getNormalizedEventCoords(evt: Event | undefined, pageOffset: MDCRipplePoint, clientRect: ClientRect):

@@ -95,28 +95,6 @@ test('#supportsCssVariables returns false when CSS is not an object', () => {
   assert.isNotOk(util.supportsCssVariables(windowObj, true));
 });
 
-test('applyPassive returns an options object for browsers that support passive event listeners', () => {
-  const mockWindow = {
-    document: {
-      addEventListener: function(name, method, options) {
-        return options.passive;
-      },
-    },
-  };
-  assert.deepEqual(util.applyPassive(mockWindow, true), {passive: true});
-});
-
-test('applyPassive returns false for browsers that do not support passive event listeners', () => {
-  const mockWindow = {
-    document: {
-      addEventListener: function() {
-        throw new Error();
-      },
-    },
-  };
-  assert.isNotOk(util.applyPassive(mockWindow, true));
-});
-
 test('#getNormalizedEventCoords maps event coords into the relative coordinates of the given rect', () => {
   const ev = {type: 'mousedown', pageX: 70, pageY: 70};
   const pageOffset = {x: 10, y: 10};

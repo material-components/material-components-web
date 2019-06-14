@@ -22,6 +22,7 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+import {applyPassive} from '@material/dom/events';
 import {matches} from '@material/dom/ponyfill';
 import {MDCRippleAdapter} from './adapter';
 import {MDCRippleFoundation} from './foundation';
@@ -47,18 +48,18 @@ export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements MDCR
       computeBoundingRect: () => instance.root_.getBoundingClientRect(),
       containsEventTarget: (target) => instance.root_.contains(target as Node),
       deregisterDocumentInteractionHandler: (evtType, handler) =>
-          document.documentElement.removeEventListener(evtType, handler, util.applyPassive()),
+          document.documentElement.removeEventListener(evtType, handler, applyPassive()),
       deregisterInteractionHandler: (evtType, handler) =>
-          instance.root_.removeEventListener(evtType, handler, util.applyPassive()),
+          instance.root_.removeEventListener(evtType, handler, applyPassive()),
       deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
       getWindowPageOffset: () => ({x: window.pageXOffset, y: window.pageYOffset}),
       isSurfaceActive: () => matches(instance.root_, ':active'),
       isSurfaceDisabled: () => Boolean(instance.disabled),
       isUnbounded: () => Boolean(instance.unbounded),
       registerDocumentInteractionHandler: (evtType, handler) =>
-          document.documentElement.addEventListener(evtType, handler, util.applyPassive()),
+          document.documentElement.addEventListener(evtType, handler, applyPassive()),
       registerInteractionHandler: (evtType, handler) =>
-          instance.root_.addEventListener(evtType, handler, util.applyPassive()),
+          instance.root_.addEventListener(evtType, handler, applyPassive()),
       registerResizeHandler: (handler) => window.addEventListener('resize', handler),
       removeClass: (className) => instance.root_.classList.remove(className),
       updateCssVariable: (varName, value) => (instance.root_ as HTMLElement).style.setProperty(varName, value),
