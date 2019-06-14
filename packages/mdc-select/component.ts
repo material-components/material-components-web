@@ -237,10 +237,8 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
 
   get selectedIndex(): number {
     let selectedIndex = -1;
-    if (this.menuElement_ && this.menu_) {
-      const selectedEl = this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)!;
-      selectedIndex = this.menu_.items.indexOf(selectedEl);
-    }
+    const selectedEl = this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)!;
+    selectedIndex = this.menu_.items.indexOf(selectedEl);
     return selectedIndex;
   }
 
@@ -332,7 +330,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     const isDisabled = this.selectAnchor_.classList.contains(cssClasses.DISABLED);
     this.selectedText_.setAttribute('tabindex', isDisabled ? '-1' : '0');
     this.hiddenInput_ = this.root_.querySelector(strings.HIDDEN_INPUT_SELECTOR);
-    this.menuElement_ = this.root_.parentElement!.querySelector(strings.MENU_SELECTOR)!;
+    this.menuElement_ = this.root_.querySelector(strings.MENU_SELECTOR)!;
     this.menu_ = menuFactory(this.menuElement_);
     this.menu_.setAnchorElement(this.root_.querySelector(strings.SELECT_ANCHOR_SELECTOR)!);
     this.menu_.setAnchorCorner(menuSurfaceConstants.Corner.BOTTOM_START);
