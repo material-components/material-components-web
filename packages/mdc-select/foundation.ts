@@ -87,12 +87,6 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
     this.helperText_ = foundationMap.helperText;
   }
 
-  /** Returns the index of the currently selected menu item, or -1 if none. */
-  getSelectedIndex(): number {
-    let selectedIndex = -1;
-    return selectedIndex;
-  }
-
   setSelectedIndex(index: number) {
     this.adapter_.setSelectedIndex(index);
     this.adapter_.closeMenu();
