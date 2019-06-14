@@ -131,7 +131,7 @@
     }
   }
 
-  .mdc-chip__action--primary:focus {
+  .mdc-chip__text:focus {
     outline: none;
   }
 
@@ -348,7 +348,7 @@
 }
 
 @mixin mdc-chip-ink-color-ripple_($color, $query) {
-  @include mdc-states($color, $query: $query);
+  @include mdc-states($color, true, $query: $query);
 }
 
 @mixin mdc-chip-selected-ink-color($color, $query: mdc-feature-all()) {
@@ -382,7 +382,7 @@
 
 @mixin mdc-chip-selected-ink-color-ripple_($color, $query) {
   &.mdc-chip {
-    @include mdc-states-selected($color, $query: $query);
+    @include mdc-states-selected($color, true, $query: $query);
   }
 }
 

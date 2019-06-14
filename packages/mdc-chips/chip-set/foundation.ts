@@ -26,7 +26,7 @@ import {strings as chipStrings} from '../chip/constants';
 import {NAVIGATION_KEYS} from '../chip/foundation';
 import {MDCChipSetAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
-import { MDCChipNavigationSource } from '../chip/types';
+import { MDCChipNavigationFocus } from '../chip/types';
 
 export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   static get strings() {
@@ -107,14 +107,20 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
    * Handles the event when a chip is removed.
    */
   handleChipRemoval(chipId: string) {
+    const index = this.adapter_.getIndexOfChipById(chipId);
+    const nextIndex = Math.max(index - 1, 0);
     this.deselect_(chipId);
     this.adapter_.removeChip(chipId);
+    // After removing a chip, we should focus the next removal action for the next chip.
+    // This is essentially the same functionality as if the user hit the "up" arrow key from the removal action.
+    // So, we simulate that by focusing the next index with the up arrow key from the trailing action.
+    this.adapter_.focusChipAtIndex(nextIndex, chipStrings.ARROW_UP_KEY, MDCChipNavigationFocus.TrailingIcon);
   }
 
   /**
    * Handles a chip navigation event.
    */
-  handleChipNavigation(chipId: string, key: string, source: MDCChipNavigationSource) {
+  handleChipNavigation(chipId: string, key: string, source: MDCChipNavigationFocus) {
     const maxIndex = this.adapter_.getChipListCount() - 1;
     let index = this.adapter_.getIndexOfChipById(chipId);
     // Early exit if the index if out of range or the key is unusable

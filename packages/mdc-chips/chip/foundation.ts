@@ -24,7 +24,7 @@
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCChipAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
-import { MDCChipNavigationSource } from './types';
+import { MDCChipNavigationFocus } from './types';
 
 const emptyClientRect = {
   bottom: 0,
@@ -57,16 +57,16 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     return {
       addClass: () => undefined,
       addClassToLeadingIcon: () => undefined,
-      primaryActionContentHasFocus: () => false,
+      textHasFocus: () => false,
       eventTargetHasClass: () => false,
-      focusPrimaryActionContent: () => undefined,
-      focusTrailingActionContent: () => undefined,
+      focusText: () => undefined,
+      focusTrailingIcon: () => undefined,
       getCheckmarkBoundingClientRect: () => emptyClientRect,
       getComputedStyleValue: () => '',
       getRootBoundingClientRect: () => emptyClientRect,
       hasClass: () => false,
       hasLeadingIcon: () => false,
-      hasTrailingAction: () => false,
+      hasTrailingIcon: () => false,
       isRTL: () => false,
       notifyInteraction: () => undefined,
       notifyNavigation: () => undefined,
@@ -75,10 +75,10 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       notifyTrailingIconInteraction: () => undefined,
       removeClass: () => undefined,
       removeClassFromLeadingIcon: () => undefined,
-      setPrimaryActionContentAttr: () => undefined,
-      setTrailingActionContentAttr: () => undefined,
+      setTextAttr: () => undefined,
+      setTrailingIconAttr: () => undefined,
       setStyleProperty: () => undefined,
-      trailingActionContentHasFocus: () => false,
+      trailingIconHasFocus: () => false,
     };
   }
 
@@ -98,10 +98,10 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   setSelected(selected: boolean) {
     if (selected) {
       this.adapter_.addClass(cssClasses.SELECTED);
-      this.adapter_.setPrimaryActionContentAttr(strings.ARIA_CHECKED, 'true');
+      this.adapter_.setTextAttr(strings.ARIA_CHECKED, 'true');
     } else {
       this.adapter_.removeClass(cssClasses.SELECTED);
-      this.adapter_.setPrimaryActionContentAttr(strings.ARIA_CHECKED, 'false');
+      this.adapter_.setTextAttr(strings.ARIA_CHECKED, 'false');
     }
     this.adapter_.notifySelection(selected);
   }
@@ -232,20 +232,23 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     this.focusNextAction_(key);
   }
 
-  focusAction(key: string, source: MDCChipNavigationSource) {
+  focusAction(key: string, source: MDCChipNavigationFocus) {
     // Early exit if the key is not usable
     if (!NAVIGATION_KEYS.has(key)) {
       return;
     }
 
-    const keyShouldJumpCells = key === strings.ARROW_UP_KEY || key === strings.ARROW_DOWN_KEY || key === strings.HOME_KEY || key === strings.END_KEY;
-    const chipHasTrailingAction = this.adapter_.hasTrailingAction();
-    if (keyShouldJumpCells && source === MDCChipNavigationSource.Primary || !chipHasTrailingAction) {
-      return this.focusPrimaryAction_();
+    const keyShouldJumpCells = key === strings.ARROW_UP_KEY
+      || key === strings.ARROW_DOWN_KEY
+      || key === strings.HOME_KEY
+      || key === strings.END_KEY;
+    const chipHasTrailingIcon = this.adapter_.hasTrailingIcon();
+    if (keyShouldJumpCells && source === MDCChipNavigationFocus.Text || !chipHasTrailingIcon) {
+      return this.focusChipText_();
     }
 
-    if (keyShouldJumpCells && source === MDCChipNavigationSource.Trailing && chipHasTrailingAction) {
-      return this.focusTrailingAction_();
+    if (keyShouldJumpCells && source === MDCChipNavigationFocus.TrailingIcon && chipHasTrailingIcon) {
+      return this.focusTrailingIcon_();
     }
 
     this.focusNextAction_(key);
@@ -253,53 +256,53 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
 
   private focusNextAction_(key: string) {
     const chipIsRTL = this.adapter_.isRTL();
-    const chipHasTrailingAction = this.adapter_.hasTrailingAction();
-    const source = this.getEventSource_();
+    const chipHasTrailingIcon = this.adapter_.hasTrailingIcon();
+    const focusSource = this.getFocusSource_();
     const keyIsLeft = key === strings.ARROW_LEFT_KEY && !chipIsRTL || key === strings.ARROW_RIGHT_KEY && chipIsRTL;
     const keyIsRight = key === strings.ARROW_RIGHT_KEY && !chipIsRTL || key === strings.ARROW_LEFT_KEY && chipIsRTL;
-    const shouldFocusPrimaryAction = keyIsLeft && source === MDCChipNavigationSource.Trailing
-      || keyIsRight && source === MDCChipNavigationSource.None;
-    const shouldFocusTrailingAction = keyIsRight && source === MDCChipNavigationSource.Primary
-      || keyIsLeft && source === MDCChipNavigationSource.None;
+    const shouldFocusPrimaryAction = keyIsLeft && focusSource === MDCChipNavigationFocus.TrailingIcon
+      || keyIsRight && focusSource === MDCChipNavigationFocus.None;
+    const shouldFocusTrailingIcon = keyIsRight && focusSource === MDCChipNavigationFocus.Text
+      || keyIsLeft && focusSource === MDCChipNavigationFocus.None;
     if (shouldFocusPrimaryAction) {
-      return this.focusPrimaryAction_();
+      return this.focusChipText_();
     }
 
-    if (chipHasTrailingAction && shouldFocusTrailingAction) {
-      return this.focusTrailingAction_();
+    if (chipHasTrailingIcon && shouldFocusTrailingIcon) {
+      return this.focusTrailingIcon_();
     }
 
     this.removeFocus_();
-    this.adapter_.notifyNavigation(key, source);
+    this.adapter_.notifyNavigation(key, focusSource);
   }
 
-  private getEventSource_(): MDCChipNavigationSource {
-    if (this.adapter_.primaryActionContentHasFocus()) {
-      return MDCChipNavigationSource.Primary;
+  private getFocusSource_(): MDCChipNavigationFocus {
+    if (this.adapter_.textHasFocus()) {
+      return MDCChipNavigationFocus.Text;
     }
 
-    if (this.adapter_.trailingActionContentHasFocus()) {
-      return MDCChipNavigationSource.Trailing;
+    if (this.adapter_.trailingIconHasFocus()) {
+      return MDCChipNavigationFocus.TrailingIcon;
     }
 
-    return MDCChipNavigationSource.None;
+    return MDCChipNavigationFocus.None;
   }
 
-  private focusPrimaryAction_() {
-    this.adapter_.setPrimaryActionContentAttr(strings.TAB_INDEX, '0');
-    this.adapter_.focusPrimaryActionContent();
-    this.adapter_.setTrailingActionContentAttr(strings.TAB_INDEX, '-1');
+  private focusChipText_() {
+    this.adapter_.setTextAttr(strings.TAB_INDEX, '0');
+    this.adapter_.focusText();
+    this.adapter_.setTrailingIconAttr(strings.TAB_INDEX, '-1');
   }
 
-  private focusTrailingAction_() {
-    this.adapter_.setTrailingActionContentAttr(strings.TAB_INDEX, '0');
-    this.adapter_.focusTrailingActionContent();
-    this.adapter_.setPrimaryActionContentAttr(strings.TAB_INDEX, '-1');
+  private focusTrailingIcon_() {
+    this.adapter_.setTrailingIconAttr(strings.TAB_INDEX, '0');
+    this.adapter_.focusTrailingIcon();
+    this.adapter_.setTextAttr(strings.TAB_INDEX, '-1');
   }
 
   private removeFocus_() {
-    this.adapter_.setTrailingActionContentAttr(strings.TAB_INDEX, '-1');
-    this.adapter_.setPrimaryActionContentAttr(strings.TAB_INDEX, '-1');
+    this.adapter_.setTrailingIconAttr(strings.TAB_INDEX, '-1');
+    this.adapter_.setTextAttr(strings.TAB_INDEX, '-1');
   }
 }
 
