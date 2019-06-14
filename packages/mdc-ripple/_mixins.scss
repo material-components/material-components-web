@@ -228,8 +228,14 @@
     "&:not(.mdc-ripple-upgraded):focus::before"
   );
 
+  $jsOnlyFocusSelector: if(
+    $has-nested-focusable-element,
+    "&.mdc-ripple-upgraded--background-focused::before, &.mdc-ripple-upgraded:focus-within::before,",
+    "&.mdc-ripple-upgraded--background-focused::before"
+  );
+
   #{$cssOnlyFocusSelector},
-  &.mdc-ripple-upgraded--background-focused::before {
+  #{$jsOnlyFocusSelector} {
     // Note that this duration is only effective on focus, not blur
     @include mdc-feature-targets($feat-animation) {
       transition-duration: 75ms;

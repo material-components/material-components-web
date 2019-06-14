@@ -50,8 +50,8 @@
                   <path class="mdc-chip__checkmark-path" fill="none" stroke="black" d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
                 </svg>
               </span>
-              <span class="mdc-chip__action--primary" role="gridcell">
-                <span class="mdc-chip__text mdc-chip__action--content" role="checkbox" tabindex="0" aria-checked="false">Chip One</span>
+              <span role="gridcell">
+                <span class="mdc-chip__text" role="checkbox" tabindex="0" aria-checked="false">Chip One</span>
               </span>
             </div>
             <div class="mdc-chip" role="row">
@@ -60,8 +60,8 @@
                   <path class="mdc-chip__checkmark-path" fill="none" stroke="black" d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
                 </svg>
               </span>
-              <span class="mdc-chip__action--primary" role="gridcell">
-                <span class="mdc-chip__text mdc-chip__action--content" role="checkbox" tabindex="-1" aria-checked="false">Chip Two</span>
+              <span role="gridcell">
+                <span class="mdc-chip__text" role="checkbox" tabindex="-1" aria-checked="false">Chip Two</span>
               </span>
             </div>
             <div class="mdc-chip" role="row">
@@ -70,8 +70,8 @@
                   <path class="mdc-chip__checkmark-path" fill="none" stroke="black" d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
                 </svg>
               </span>
-              <span class="mdc-chip__action--primary" role="gridcell">
-                <span class="mdc-chip__text mdc-chip__action--content" role="checkbox" tabindex="-1" aria-checked="false">Chip Three</span>
+              <span role="gridcell">
+                <span class="mdc-chip__text" role="checkbox" tabindex="-1" aria-checked="false">Chip Three</span>
               </span>
             </div>
             <div class="mdc-chip" role="row">
@@ -80,8 +80,8 @@
                   <path class="mdc-chip__checkmark-path" fill="none" stroke="black" d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
                 </svg>
               </span>
-              <span class="mdc-chip__action--primary" role="gridcell">
-                <span class="mdc-chip__text mdc-chip__action--content" role="checkbox" tabindex="-1" aria-checked="false">Chip Four</span>
+              <span role="gridcell">
+                <span class="mdc-chip__text" role="checkbox" tabindex="-1" aria-checked="false">Chip Four</span>
               </span>
             </div>
           </div>
@@ -95,8 +95,8 @@
                   <path class="mdc-chip__checkmark-path" fill="none" stroke="black" d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
                 </svg>
               </span>
-              <span class="mdc-chip__action--primary" role="gridcell">
-                <span class="mdc-chip__text mdc-chip__action--content" role="checkbox" tabindex="0" aria-checked="true">Chip One</span>
+              <span role="gridcell">
+                <span class="mdc-chip__text" role="checkbox" tabindex="0" aria-checked="true">Chip One</span>
               </span>
             </div>
             <div class="mdc-chip mdc-chip--selected" role="row">
@@ -105,8 +105,8 @@
                   <path class="mdc-chip__checkmark-path" fill="none" stroke="black" d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
                 </svg>
               </span>
-              <span class="mdc-chip__action--primary" role="gridcell">
-                <span class="mdc-chip__text mdc-chip__action--content" role="checkbox" tabindex="-1" aria-checked="true">Chip Two</span>
+              <span role="gridcell">
+                <span class="mdc-chip__text" role="checkbox" tabindex="-1" aria-checked="true">Chip Two</span>
               </span>
             </div>
             <div class="mdc-chip mdc-chip--selected" role="row">
@@ -115,8 +115,8 @@
                   <path class="mdc-chip__checkmark-path" fill="none" stroke="black" d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
                 </svg>
               </span>
-              <span class="mdc-chip__action--primary" role="gridcell">
-                <span class="mdc-chip__text mdc-chip__action--content" role="checkbox" tabindex="-1" aria-checked="true">Chip Three</span>
+              <span role="gridcell">
+                <span class="mdc-chip__text" role="checkbox" tabindex="-1" aria-checked="true">Chip Three</span>
               </span>
             </div>
             <div class="mdc-chip mdc-chip--selected" role="row">
@@ -125,51 +125,59 @@
                   <path class="mdc-chip__checkmark-path" fill="none" stroke="black" d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
                 </svg>
               </span>
-              <span class="mdc-chip__action--primary" role="gridcell">
-                <span class="mdc-chip__text mdc-chip__action--content" role="checkbox" tabindex="-1" aria-checked="true">Chip Four</span>
+              <span role="gridcell">
+                <span class="mdc-chip__text" role="checkbox" tabindex="-1" aria-checked="true">Chip Four</span>
               </span>
             </div>
           </div>
         </div>
 
         <div class="test-cell test-cell--chip">
-          <div class="mdc-chip-set mdc-chip-set--filter">
-            <button class="mdc-chip mdc-chip--selected" role="checkbox" aria-checked="true">
+          <div class="mdc-chip-set mdc-chip-set--filter" role="grid">
+            <div class="mdc-chip mdc-chip--selected" role="row">
               <i class="material-icons mdc-chip__icon mdc-chip__icon--leading mdc-chip__icon--leading-hidden">face</i>
               <span class="mdc-chip__checkmark" >
                 <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
                   <path class="mdc-chip__checkmark-path" fill="none" stroke="black" d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
                 </svg>
               </span>
-              <span class="mdc-chip__text">Chip One</span>
-            </button>
-            <button class="mdc-chip mdc-chip--selected" role="checkbox" aria-checked="true">
+              <span role="gridcell">
+                <span class="mdc-chip__text" role="checkbox" tabindex="0" aria-checked="true">Chip One</span>
+              </span>
+            </div>
+            <div class="mdc-chip mdc-chip--selected" role="row">
               <i class="material-icons mdc-chip__icon mdc-chip__icon--leading mdc-chip__icon--leading-hidden">face</i>
               <span class="mdc-chip__checkmark" >
                 <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
                   <path class="mdc-chip__checkmark-path" fill="none" stroke="black" d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
                 </svg>
               </span>
-              <span class="mdc-chip__text">Chip Two</span>
-            </button>
-            <button class="mdc-chip mdc-chip--selected" role="checkbox" aria-checked="true">
+              <span role="gridcell">
+                <span class="mdc-chip__text" role="checkbox" tabindex="-1" aria-checked="true">Chip Two</span>
+              </span>
+            </div>
+            <div class="mdc-chip mdc-chip--selected" role="row">
               <i class="material-icons mdc-chip__icon mdc-chip__icon--leading mdc-chip__icon--leading-hidden">face</i>
               <span class="mdc-chip__checkmark" >
                 <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
                   <path class="mdc-chip__checkmark-path" fill="none" stroke="black" d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
                 </svg>
               </span>
-              <span class="mdc-chip__text">Chip Three</span>
-            </button>
-            <button class="mdc-chip mdc-chip--selected" role="checkbox" aria-checked="true">
+              <span role="gridcell">
+                <span class="mdc-chip__text" role="checkbox" tabindex="-1" aria-checked="true">Chip Three</span>
+              </span>
+            </div>
+            <div class="mdc-chip mdc-chip--selected" role="row">
               <i class="material-icons mdc-chip__icon mdc-chip__icon--leading mdc-chip__icon--leading-hidden">face</i>
               <span class="mdc-chip__checkmark" >
                 <svg class="mdc-chip__checkmark-svg" viewBox="-2 -3 30 30">
                   <path class="mdc-chip__checkmark-path" fill="none" stroke="black" d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
                 </svg>
               </span>
-              <span class="mdc-chip__text">Chip Four</span>
-            </button>
+              <span role="gridcell">
+                <span class="mdc-chip__text" role="checkbox" tabindex="-1" aria-checked="true">Chip Four</span>
+              </span>
+            </div>
           </div>
         </div>
 
