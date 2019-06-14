@@ -94,6 +94,8 @@ $mdc-dense-range: 4px;
   // postcss-bem-linter: end
 }
 
+$mdc-density-range: 4px;
+
 @mixin mdc-fab-density($density-scale) {
   $height: $mdc-fab-height + $density-scale * $mdc-density-range;
 

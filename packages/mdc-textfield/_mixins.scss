@@ -34,12 +34,30 @@
 @import "./variables";
 @import "./functions";
 
-@mixin mdc-text-field-density($density-scale) {
-  $height: $mdc-text-field-height + $density-scale * $mdc-density-range;
+$mdc-text-field-shape-radius: small;
+$mdc-text-field-outline-shape-radius: small;
+$mdc-text-field-density-scale: 0;
 
-  // @include mdc-text-field-shape-radius(small, $mdc-text-field-height: $height);
+@mixin mdc-text-field-theme-override(
+  $density-scale: null,
+  $shape-radius: null,
+  $shape-radius-outline: null) {
 
-  height: $height;
+  $height: $mdc-text-field-height;
+
+  @if $density-scale {
+    $height: $mdc-text-field-height + $density-scale * $mdc-density-range;
+
+    height: $height;
+  }
+
+  @if $shape-radius {
+    @include mdc-text-field-shape-radius($shape-radius, $mdc-text-field-height: $height);
+  }
+
+  @if $shape-radius-outline {
+    @include mdc-text-field-outline-shape-radius($shape-radius-outline, $mdc-text-field-height: $height);
+  }
 }
 
 @mixin mdc-text-field-shape-radius($radius, $mdc-text-field-height: $mdc-text-field-height, $rtl-reflexive: false) {
@@ -228,7 +246,7 @@
   }
 }
 
-@mixin mdc-text-field-outline-shape-radius($radius, $rtl-reflexive: false) {
+@mixin mdc-text-field-outline-shape-radius($radius, $mdc-text-field-height: $mdc-text-field-height, $rtl-reflexive: false) {
   $resolved-radius: nth(mdc-shape-resolve-percentage-radius($mdc-text-field-height, mdc-shape-prop-value($radius)), 1);
 
   @if (length(mdc-shape-prop-value($radius)) > 1) {
@@ -332,11 +350,11 @@
 }
 
 @mixin mdc-text-field-outlined_ {
+  @include mdc-text-field-theme-override($shape-radius-outline: small);
   @include mdc-text-field-outline-color($mdc-text-field-outlined-idle-border);
   @include mdc-text-field-hover-outline-color($mdc-text-field-outlined-hover-border);
   @include mdc-text-field-focused-outline-color(primary);
   @include mdc-floating-label-shake-animation(text-field-outlined);
-  @include mdc-text-field-outline-shape-radius(small);
   @include mdc-notched-outline-floating-label-float-position($mdc-text-field-outlined-label-position-y);
   @include mdc-states-base-color(transparent);
   @include mdc-text-field-fill-color(transparent);

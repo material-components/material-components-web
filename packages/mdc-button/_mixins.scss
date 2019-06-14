@@ -48,9 +48,8 @@ $mdc-density-range: 4px;
   // postcss-bem-linter: define button
   .mdc-button {
     @include mdc-button-base_($query);
-    @include mdc-button-shape-radius(small, $query: $query);
+    @include mdc-button-theme-override;
     @include mdc-button-container-fill-color(transparent, $query);
-    @include mdc-button-density(0);
 
     // The icon CSS class overrides styles defined in the .material-icons CSS
     // class, which is loaded separately so the order of CSS definitions is not
@@ -137,8 +136,18 @@ $mdc-density-range: 4px;
   }
 }
 
-@mixin mdc-button-density($density-scale) {
-  height: $mdc-button-height + $density-scale * $mdc-density-range;
+$mdc-button-density-scale: 0;
+$mdc-button-shape-radius: small;
+
+@mixin mdc-button-theme-override(
+  $density-scale: $mdc-button-density-scale,
+  $shape-radius: $mdc-button-shape-radius) {
+
+  $height: $mdc-button-height + $density-scale * $mdc-density-range;
+
+  @include mdc-button-shape-radius($shape-radius, $mdc-button-height: $height);
+
+  height: $height;
 }
 
 @mixin mdc-button-filled-accessible($container-fill-color, $query: mdc-feature-all()) {
@@ -197,7 +206,7 @@ $mdc-density-range: 4px;
   }
 }
 
-@mixin mdc-button-shape-radius($radius, $rtl-reflexive: false, $query: mdc-feature-all()) {
+@mixin mdc-button-shape-radius($radius, $mdc-button-height: $mdc-button-height, $rtl-reflexive: false, $query: mdc-feature-all()) {
   @include mdc-shape-radius(
     mdc-shape-resolve-percentage-radius($mdc-button-height, $radius),
     $rtl-reflexive,

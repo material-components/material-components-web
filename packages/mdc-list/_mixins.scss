@@ -367,9 +367,35 @@
   }
 }
 
-@mixin mdc-list-item-shape-radius($radius, $rtl-reflexive: false, $query: mdc-feature-all()) {
+$mdc-density-range: 4px;
+
+@mixin mdc-list-theme-override(
+  $density-scale: null,
+  $shape-radius: null) {
+  $height: $mdc-list-item-height;
+
+  @if $density-scale {
+    $height: $mdc-list-item-height + $mdc-density-range * $density-scale;
+
+    .mdc-list-item {
+      height: $height;
+    }
+  }
+
+  @if $shape-radius {
+    @include mdc-list-item-shape-radius($shape-radius, $item-height: $height);
+  }
+}
+
+@mixin mdc-list-item-shape-radius(
+  $radius,
+  $item-height: $mdc-list-item-height,
+  $rtl-reflexive: false,
+  $query: mdc-feature-all()) {
+  $resolved-radius: mdc-shape-resolve-percentage-radius($item-height, $radius);
+
   .mdc-list-item {
-    @include mdc-shape-radius($radius, $rtl-reflexive, $query: $query);
+    @include mdc-shape-radius($resolved-radius, $rtl-reflexive);
   }
 }
 
@@ -429,7 +455,7 @@
   position: relative;
   align-items: center;
   justify-content: flex-start;
-  height: 48px;
+  height: $mdc-list-item-height;
   padding: 0 $mdc-list-side-padding;
   overflow: hidden;
 
