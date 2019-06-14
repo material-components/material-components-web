@@ -880,35 +880,35 @@
     }
   },
   "spec/mdc-select/classes/invalid-helper-text-persistent-validation-msg.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/11/19_44_35_944/spec/mdc-select/classes/invalid-helper-text-persistent-validation-msg.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/14/16_37_22_080/spec/mdc-select/classes/invalid-helper-text-persistent-validation-msg.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/11/19_44_35_944/spec/mdc-select/classes/invalid-helper-text-persistent-validation-msg.html.windows_chrome_75.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/14_12_06_985/spec/mdc-select/classes/invalid-helper-text-persistent-validation-msg.html.windows_firefox_67.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/14_12_06_985/spec/mdc-select/classes/invalid-helper-text-persistent-validation-msg.html.windows_ie_11.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/14/16_37_22_080/spec/mdc-select/classes/invalid-helper-text-persistent-validation-msg.html.windows_chrome_75.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/14/16_37_22_080/spec/mdc-select/classes/invalid-helper-text-persistent-validation-msg.html.windows_firefox_67.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/14/16_37_22_080/spec/mdc-select/classes/invalid-helper-text-persistent-validation-msg.html.windows_ie_11.png"
     }
   },
   "spec/mdc-select/classes/invalid-helper-text-persistent.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/11/19_44_35_944/spec/mdc-select/classes/invalid-helper-text-persistent.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/14/16_37_22_080/spec/mdc-select/classes/invalid-helper-text-persistent.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/11/19_44_35_944/spec/mdc-select/classes/invalid-helper-text-persistent.html.windows_chrome_75.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/14_12_06_985/spec/mdc-select/classes/invalid-helper-text-persistent.html.windows_firefox_67.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/14_12_06_985/spec/mdc-select/classes/invalid-helper-text-persistent.html.windows_ie_11.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/14/16_37_22_080/spec/mdc-select/classes/invalid-helper-text-persistent.html.windows_chrome_75.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/14/16_37_22_080/spec/mdc-select/classes/invalid-helper-text-persistent.html.windows_firefox_67.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/14/16_37_22_080/spec/mdc-select/classes/invalid-helper-text-persistent.html.windows_ie_11.png"
     }
   },
   "spec/mdc-select/classes/invalid-helper-text.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/14_12_06_985/spec/mdc-select/classes/invalid-helper-text.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/14/16_37_22_080/spec/mdc-select/classes/invalid-helper-text.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/14_12_06_985/spec/mdc-select/classes/invalid-helper-text.html.windows_chrome_74.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/14_12_06_985/spec/mdc-select/classes/invalid-helper-text.html.windows_firefox_67.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/14_12_06_985/spec/mdc-select/classes/invalid-helper-text.html.windows_ie_11.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/14/16_37_22_080/spec/mdc-select/classes/invalid-helper-text.html.windows_chrome_75.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/14/16_37_22_080/spec/mdc-select/classes/invalid-helper-text.html.windows_firefox_67.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/14/16_37_22_080/spec/mdc-select/classes/invalid-helper-text.html.windows_ie_11.png"
     }
   },
   "spec/mdc-select/classes/invalid.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/14_12_06_985/spec/mdc-select/classes/invalid.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/14/16_37_22_080/spec/mdc-select/classes/invalid.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/14_12_06_985/spec/mdc-select/classes/invalid.html.windows_chrome_74.png",
-      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/14_12_06_985/spec/mdc-select/classes/invalid.html.windows_firefox_67.png",
-      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/14_12_06_985/spec/mdc-select/classes/invalid.html.windows_ie_11.png"
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/14/16_37_22_080/spec/mdc-select/classes/invalid.html.windows_chrome_75.png",
+      "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/14/16_37_22_080/spec/mdc-select/classes/invalid.html.windows_firefox_67.png",
+      "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/14/16_37_22_080/spec/mdc-select/classes/invalid.html.windows_ie_11.png"
     }
   },
   "spec/mdc-select/classes/leading-icon-svg.html": {
