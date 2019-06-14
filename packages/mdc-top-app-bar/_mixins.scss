@@ -32,6 +32,14 @@
 // Public
 //
 
+$mdc-density-range: 4px;
+
+@mixin mdc-top-app-bar-density($density-scale) {
+  $height: $mdc-top-app-bar-row-height + $density-scale * $mdc-density-range;
+
+  height: $height;
+}
+
 @mixin mdc-top-app-bar-ink-color($color) {
   @include mdc-theme-prop(color, $color);
 }

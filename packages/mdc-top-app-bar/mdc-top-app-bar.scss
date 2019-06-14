@@ -31,6 +31,7 @@
 .mdc-top-app-bar {
   @include mdc-top-app-bar-fill-color-accessible(primary);
   @include mdc-top-app-bar-icon-ink-color(on-primary);
+  @include mdc-top-app-bar-density(0);
 
   display: flex;
   position: fixed;

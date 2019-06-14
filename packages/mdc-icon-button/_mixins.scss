@@ -76,17 +76,28 @@
     @include mdc-ripple-surface($query: $query);
     @include mdc-ripple-radius-unbounded($query: $query);
     @include mdc-states($query: $query);
+    @include mdc-icon-button-density(0);
   }
 }
 
-@mixin mdc-icon-button-size($width, $height: $width, $padding: max($width, $height)/2, $query: mdc-feature-all()) {
+$mdc-density-range: 4px;
+
+@mixin mdc-icon-button-density($density-scale) {
+  $height: $mdc-icon-button-height + $density-scale * $mdc-density-range;
+
+  &:not(.mdc-fab--extended) {
+    width: $height;
+    height: $height;
+  }
+}
+
+@mixin mdc-icon-button-size($width, $height: $width, $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
   @include mdc-feature-targets($feat-structure) {
-    width: $width + $padding * 2;
-    height: $height + $padding * 2;
-    padding: $padding;
-    font-size: max($width, $height);
+    width: $width;
+    height: $height;
+    font-size: $height / 2;
   }
 
   // stylelint-disable-next-line selector-max-type
@@ -113,7 +124,7 @@
   $feat-color: mdc-feature-create-target($query, color);
   $feat-structure: mdc-feature-create-target($query, structure);
 
-  @include mdc-icon-button-size($mdc-icon-button-size, $query: $query);
+  @include mdc-icon-button-size($mdc-icon-button-height, $query: $query);
 
   @include mdc-feature-targets($feat-structure) {
     display: inline-block;

@@ -34,7 +34,15 @@
 @import "./variables";
 @import "./functions";
 
-@mixin mdc-text-field-shape-radius($radius, $rtl-reflexive: false) {
+@mixin mdc-text-field-density($density-scale) {
+  $height: $mdc-text-field-height + $density-scale * $mdc-density-range;
+
+  // @include mdc-text-field-shape-radius(small, $mdc-text-field-height: $height);
+
+  height: $height;
+}
+
+@mixin mdc-text-field-shape-radius($radius, $mdc-text-field-height: $mdc-text-field-height, $rtl-reflexive: false) {
   @if length($radius) > 2 {
     @error "Invalid radius: '#{$radius}' component doesn't allow customizing all corners";
   }
