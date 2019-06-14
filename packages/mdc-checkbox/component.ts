@@ -23,6 +23,7 @@
 
 import {getCorrectEventName} from '@material/animation/util';
 import {MDCComponent} from '@material/base/component';
+import {applyPassive} from '@material/dom/events';
 import {matches} from '@material/dom/ponyfill';
 import {MDCRippleAdapter} from '@material/ripple/adapter';
 import {MDCRipple} from '@material/ripple/component';
@@ -125,10 +126,12 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements 
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCRippleAdapter = {
       ...MDCRipple.createAdapter(this),
-      deregisterInteractionHandler: (evtType, handler) => this.nativeControl_.removeEventListener(evtType, handler),
+      deregisterInteractionHandler: (evtType, handler) => this.nativeControl_.removeEventListener(
+        evtType, handler, applyPassive()),
       isSurfaceActive: () => matches(this.nativeControl_, ':active'),
       isUnbounded: () => true,
-      registerInteractionHandler: (evtType, handler) => this.nativeControl_.addEventListener(evtType, handler),
+      registerInteractionHandler: (evtType, handler) => this.nativeControl_.addEventListener(
+        evtType, handler, applyPassive()),
     };
     return new MDCRipple(this.root_, new MDCRippleFoundation(adapter));
   }
