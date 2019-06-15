@@ -86,6 +86,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
    * Whether a trailing icon click should immediately trigger exit/removal of the chip.
    */
   private shouldRemoveOnTrailingIconClick_ = true;
+  private isRemovalEventFromClick_ = false;
 
   constructor(adapter?: Partial<MDCChipAdapter>) {
     super({...MDCChipFoundation.defaultAdapter, ...adapter});
@@ -154,8 +155,14 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
    */
   handleInteraction(evt: MouseEvent | KeyboardEvent) {
     const isEnter = (evt as KeyboardEvent).key === 'Enter' || (evt as KeyboardEvent).keyCode === 13;
-    if (evt.type === 'click' || isEnter) {
-      this.adapter_.notifyInteraction();
+    const shouldTriggerEvt = evt.type === 'click' || isEnter;
+    const shouldRemoveChip = this.adapter_.hasClass(cssClasses.REMOVE_ON_ACTION);
+    if (shouldTriggerEvt && shouldRemoveChip) {
+      return this.removeChip_(evt);
+    }
+
+    if (shouldTriggerEvt) {
+      return this.adapter_.notifyInteraction();
     }
   }
 
@@ -166,7 +173,8 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     // Handle transition end event on the chip when it is about to be removed.
     if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.CHIP_EXIT)) {
       if (evt.propertyName === 'width') {
-        this.adapter_.notifyRemoval();
+        this.removeFocus_();
+        this.adapter_.notifyRemoval(this.isRemovalEventFromClick_);
       } else if (evt.propertyName === 'opacity') {
         // See: https://css-tricks.com/using-css-transitions-auto-dimensions/#article-header-id-5
         const chipWidth = this.adapter_.getComputedStyleValue('width');
@@ -209,11 +217,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   handleTrailingIconInteraction(evt: MouseEvent | KeyboardEvent) {
     const isEnter = (evt as KeyboardEvent).key === 'Enter' || (evt as KeyboardEvent).keyCode === 13;
     if (evt.type === 'click' || isEnter) {
-      evt.stopPropagation();
-      this.adapter_.notifyTrailingIconInteraction();
-      if (this.shouldRemoveOnTrailingIconClick_) {
-        this.beginExit();
-      }
+      this.removeChip_(evt);
     }
   }
 
@@ -303,6 +307,15 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   private removeFocus_() {
     this.adapter_.setTrailingIconAttr(strings.TAB_INDEX, '-1');
     this.adapter_.setTextAttr(strings.TAB_INDEX, '-1');
+  }
+
+  private removeChip_(evt: MouseEvent|KeyboardEvent) {
+    evt.stopPropagation();
+    this.adapter_.notifyTrailingIconInteraction();
+    if (this.shouldRemoveOnTrailingIconClick_) {
+      this.isRemovalEventFromClick_ = evt.type === 'click';
+      this.beginExit();
+    }
   }
 }
 

@@ -49,5 +49,6 @@ export const cssClasses = {
   LEADING_ICON: 'mdc-chip__icon--leading',
   SELECTED: 'mdc-chip--selected',
   TEXT: 'mdc-chip__text',
+  REMOVE_ON_ACTION: 'mdc-chip--remove-on-action',
   TRAILING_ICON: 'mdc-chip__icon--trailing',
 };

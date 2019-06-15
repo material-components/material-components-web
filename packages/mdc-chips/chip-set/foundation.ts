@@ -106,14 +106,18 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   /**
    * Handles the event when a chip is removed.
    */
-  handleChipRemoval(chipId: string) {
+  handleChipRemoval(chipId: string, fromClick: boolean) {
     const index = this.adapter_.getIndexOfChipById(chipId);
-    const nextIndex = Math.max(index - 1, 0);
     this.deselect_(chipId);
     this.adapter_.removeChip(chipId);
+    if (fromClick) {
+      return;
+    }
     // After removing a chip, we should focus the next removal action for the next chip.
     // This is essentially the same functionality as if the user hit the "up" arrow key from the removal action.
     // So, we simulate that by focusing the next index with the up arrow key from the trailing action.
+    const maxIndex = this.adapter_.getChipListCount() - 1;
+    const nextIndex = Math.min(index, maxIndex);
     this.adapter_.focusChipAtIndex(nextIndex, chipStrings.ARROW_UP_KEY, MDCChipNavigationFocus.TrailingIcon);
   }
 
@@ -132,16 +136,16 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     const shouldIncrement = key === chipStrings.ARROW_RIGHT_KEY && !isRTL
         || key === chipStrings.ARROW_LEFT_KEY && isRTL
         || key === chipStrings.ARROW_DOWN_KEY;
+    const isHome = key === chipStrings.HOME_KEY;
+    const isEnd = key === chipStrings.END_KEY;
     if (shouldIncrement) {
       index++;
+    } else if (isHome) {
+      index = 0;
+    } else if (isEnd) {
+      index = maxIndex;
     } else {
       index--;
-    }
-
-    if (key === chipStrings.END_KEY) {
-      index = maxIndex;
-    } else if (key === chipStrings.HOME_KEY) {
-      index = 0;
     }
 
     // Early exit if the index is out of bounds
