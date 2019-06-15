@@ -1,0 +1,19 @@
+{
+  "name": "@material/banner",
+  "description": "Material Components for the web mixins + CSS Classes for Material Design banner",
+  "version": "0.0.0",
+  "license": "MIT",
+  "keywords": [
+    "material components",
+    "material design",
+    "banner"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/material-components/material-components-web.git"
+  },
+  "dependencies": {
+    "@material/elevation": "^0.43.0",
+    "@material/theme": "^0.43.0"
+  }
+}
