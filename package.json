@@ -6,7 +6,6 @@
     "build": "npm run clean && mkdirp build && webpack --progress --colors",
     "build:esmodules": "tsc --project ./tsconfig.json --module esnext --importHelpers",
     "build:min": "mkdirp build && cross-env MDC_ENV=production webpack -p --progress --colors",
-    "changelog": "standard-changelog -i CHANGELOG.md -k packages/material-components-web/package.json",
     "clean": "node ./scripts/build/clean",
     "clean:site": "node ./scripts/build/clean --site-generator-tmp",
     "dist": "npm run build && npm run build:min && npm run build:esmodules",
@@ -68,13 +67,10 @@
     "cli-table": "^0.3.1",
     "codecov": "^3.0.0",
     "colors": "^1.3.0",
-    "conventional-changelog-angular": "^5.0.2",
-    "conventional-commits-parser": "^3.0.0",
     "cp-file": "^7.0.0",
     "cross-env": "^5.0.0",
     "css-loader": "^2.0.0",
     "cssom": "^0.3.2",
-    "cz-conventional-changelog": "^2.0.0",
     "dart-sass": "^1.15.2",
     "debounce": "^1.1.0",
     "del": "^4.0.0",
@@ -92,7 +88,6 @@
     "gts": "^0.9.0",
     "handlebars": "^4.0.11",
     "htmllint-cli": "0.0.7",
-    "husky": "^1.1.1",
     "is-online": "^8.0.0",
     "istanbul-instrumenter-loader": "^3.0.0",
     "jimp": "^0.6.1",
@@ -127,7 +122,6 @@
     "semver": "^5.3.0",
     "serve-index": "^1.9.1",
     "simple-git": "^1.92.0",
-    "standard-changelog": "^2.0.0",
     "stylelint": "^9.0.0",
     "stylelint-config-standard": "^18.0.0",
     "stylelint-order": "^2.0.0",
@@ -141,7 +135,6 @@
     "typescript": "^3.1.6",
     "url-search-params-polyfill": "^6.0.0",
     "useragent": "^2.3.0",
-    "validate-commit-msg": "^2.6.1",
     "verror": "^1.10.0",
     "webpack": "^3.0.0",
     "webpack-dev-server": "^2.4.3"
@@ -158,68 +151,5 @@
     "plugins": [
       "transform-object-assign"
     ]
-  },
-  "config": {
-    "validate-commit-msg": {
-      "helpMessage": "%s\nNOTE: Please see angular's commit message guidelines (https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#commits) for information on how to format commit messages.\n\nAs an example, here is a valid commit message: 'docs(slider): Document slider public api'\n\nIf this commit is on a development / WIP branch, you can disable this by running `git commit --no-verify`.",
-      "scope": {
-        "allowed": [
-          "animation",
-          "auto-init",
-          "base",
-          "button",
-          "card",
-          "checkbox",
-          "chips",
-          "dialog",
-          "dom",
-          "drawer",
-          "elevation",
-          "fab",
-          "feature-targeting",
-          "floating-label",
-          "form-field",
-          "grid-list",
-          "icon-button",
-          "image-list",
-          "layout-grid",
-          "line-ripple",
-          "linear-progress",
-          "list",
-          "menu",
-          "menu-surface",
-          "notched-outline",
-          "radio",
-          "ripple",
-          "rtl",
-          "select",
-          "shape",
-          "slider",
-          "snackbar",
-          "switch",
-          "tabs",
-          "tab",
-          "tab-bar",
-          "tab-indicator",
-          "tab-scroller",
-          "text-field",
-          "theme",
-          "toolbar",
-          "top-app-bar",
-          "typography",
-          "infrastructure",
-          "package"
-        ],
-        "validate": true
-      }
-    },
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "validate-commit-msg"
-    }
   }
 }
