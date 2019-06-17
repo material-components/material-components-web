@@ -46,7 +46,8 @@
   @include mdc-states-hover-opacity(mdc-states-opacity($mdc-text-field-ink-color, hover));
   @include mdc-states-focus-opacity(mdc-states-opacity($mdc-text-field-ink-color, focus));
   @include mdc-ripple-radius-bounded;
-  @include mdc-text-field-theme-override($density-scale: 0, $shape-radius: small);
+  @include mdc-text-field-density(0);
+  @include mdc-text-field-shape-radius(small);
 
   // Colors
   @include mdc-text-field-label-color($mdc-text-field-label);

@@ -38,6 +38,40 @@ $mdc-text-field-shape-radius: small;
 $mdc-text-field-outline-shape-radius: small;
 $mdc-text-field-density-scale: 0;
 
+@mixin mdc-text-field-density(
+  $density-scale,
+  $shape-radius: null,
+  $shape-rtl-reflexive: false) {
+
+  $height: $mdc-text-field-height + $density-scale * $mdc-density-range;
+
+  height: $height;
+
+  @if $shape-radius {
+    @include mdc-text-field-shape-radius(
+      $shape-radius,
+      $mdc-text-field-height: $height,
+      $rtl-reflexive: $shape-rtl-reflexive);
+  }
+}
+
+@mixin mdc-text-field-outlined-density(
+  $density-scale,
+  $shape-radius: null,
+  $shape-rtl-reflexive: false) {
+
+  $height: $mdc-text-field-height + $density-scale * $mdc-density-range;
+
+  height: $height;
+
+  @if $shape-radius {
+    @include mdc-text-field-outline-shape-radius(
+      $shape-radius,
+      $mdc-text-field-height: $height,
+      $rtl-reflexive: $shape-rtl-reflexive);
+  }
+}
+
 @mixin mdc-text-field-theme-override(
   $density-scale: null,
   $shape-radius: null,
@@ -350,7 +384,7 @@ $mdc-text-field-density-scale: 0;
 }
 
 @mixin mdc-text-field-outlined_ {
-  @include mdc-text-field-theme-override($shape-radius-outline: small);
+  @include mdc-text-field-outline-shape-radius(small);
   @include mdc-text-field-outline-color($mdc-text-field-outlined-idle-border);
   @include mdc-text-field-hover-outline-color($mdc-text-field-outlined-hover-border);
   @include mdc-text-field-focused-outline-color(primary);
