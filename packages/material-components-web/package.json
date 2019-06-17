@@ -55,7 +55,6 @@
     "@material/tab-scroller": "^2.3.0",
     "@material/textfield": "^2.3.1",
     "@material/theme": "^1.1.0",
-    "@material/toolbar": "^2.3.0",
     "@material/top-app-bar": "^2.3.0",
     "@material/typography": "^2.3.0"
   }
