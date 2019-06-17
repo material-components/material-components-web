@@ -78,12 +78,12 @@
     .mdc-floating-label {
       display: inline-block;
       position: relative;
-      top: 17px;
       bottom: auto;
       max-width: 100%;
     }
 
     .mdc-floating-label--float-above {
+      top: 17px;
       text-overflow: clip;
     }
 

@@ -316,8 +316,6 @@ $mdc-text-field-density-scale: 0;
     @include mdc-rtl-reflexive-position(left, $mdc-text-field-label-offset);
 
     // top: 18px;
-    top: 50%;
-    transform: translateY(-50%);
     pointer-events: none;
   }
 
@@ -332,8 +330,6 @@ $mdc-text-field-density-scale: 0;
       @include mdc-rtl-reflexive-position(left, $mdc-notched-outline-padding);
 
       // top: 17px;
-      top: 50%;
-      transform: translateY(-50%);
     }
 
     &--with-leading-icon {
