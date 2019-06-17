@@ -47,6 +47,10 @@ $mdc-text-field-density-scale: 0;
 
   height: $height;
 
+  .mdc-floating-label {
+    // top: (18px / 56px) * $height;
+  }
+
   @if $shape-radius {
     @include mdc-text-field-shape-radius(
       $shape-radius,
@@ -63,6 +67,10 @@ $mdc-text-field-density-scale: 0;
   $height: $mdc-text-field-height + $density-scale * $mdc-density-range;
 
   height: $height;
+
+  .mdc-floating-label {
+    // top: (17px / 56px) * $height;
+  }
 
   @if $shape-radius {
     @include mdc-text-field-outline-shape-radius(
@@ -307,7 +315,9 @@ $mdc-text-field-density-scale: 0;
   .mdc-floating-label {
     @include mdc-rtl-reflexive-position(left, $mdc-text-field-label-offset);
 
-    top: 18px;
+    // top: 18px;
+    top: 50%;
+    transform: translateY(-50%);
     pointer-events: none;
   }
 
@@ -321,7 +331,9 @@ $mdc-text-field-density-scale: 0;
     .mdc-floating-label {
       @include mdc-rtl-reflexive-position(left, $mdc-notched-outline-padding);
 
-      top: 17px;
+      // top: 17px;
+      top: 50%;
+      transform: translateY(-50%);
     }
 
     &--with-leading-icon {
