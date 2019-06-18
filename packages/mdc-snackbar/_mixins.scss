@@ -22,8 +22,31 @@
 
 @import "@material/elevation/mixins";
 @import "@material/shape/mixins";
+@import "@material/shape/functions";
 @import "@material/theme/mixins";
 @import "./variables";
+
+$mdc-density-range: 4px;
+
+@mixin mdc-snackbar-density(
+  $density-scale,
+  $shape-radius: null,
+  $shape-rtl-reflexive: false) {
+
+  $height: $mdc-snackbar-height + $density-scale * $mdc-density-range;
+
+  .mdc-snackbar__surface {
+    height: $height;
+  }
+
+  @if $shape-radius {
+    @include mdc-snackbar-shape-radius(
+      $shape-radius,
+      $mdc-snackbar-height: $height,
+      $rtl-reflexive: $rtl-reflexive);
+  }
+}
+
 
 @mixin mdc-snackbar-fill-color($color) {
   .mdc-snackbar__surface {
@@ -37,9 +60,11 @@
   }
 }
 
-@mixin mdc-snackbar-shape-radius($radius, $rtl-reflexive: false) {
+@mixin mdc-snackbar-shape-radius($radius, $mdc-snackbar-height: $mdc-snackbar-height, $rtl-reflexive: false) {
   .mdc-snackbar__surface {
-    @include mdc-shape-radius($radius, $rtl-reflexive);
+    $resolved-radius: mdc-shape-resolve-percentage-radius($mdc-snackbar-height, $radius);
+
+    @include mdc-shape-radius($resolved-radius, $rtl-reflexive);
   }
 }
 

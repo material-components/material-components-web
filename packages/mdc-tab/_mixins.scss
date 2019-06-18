@@ -22,8 +22,17 @@
 
 @import "@material/ripple/mixins";
 @import "@material/theme/mixins";
+@import "./variables";
 
 // Public mixins
+
+$mdc-density-range: 4px;
+
+@mixin mdc-tab-density($density-scale) {
+  $height: $mdc-tab-height + $density-scale * $mdc-density-range;
+
+  height: $height;
+}
 
 @mixin mdc-tab-horizontal-padding($padding) {
   padding-right: $padding;

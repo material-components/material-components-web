@@ -137,8 +137,6 @@
 
   .mdc-list-item__primary-text {
     @include mdc-typography-overflow-ellipsis($query);
-    @include mdc-typography-baseline-top($item-primary-text-baseline-height, $query);
-    @include mdc-typography-baseline-bottom($item-secondary-text-baseline-height, $query);
 
     @include mdc-feature-targets($feat-structure) {
       display: block;
@@ -155,7 +153,6 @@
   .mdc-list-item__secondary-text {
     @include mdc-typography(body2, $query);
     @include mdc-typography-overflow-ellipsis($query);
-    @include mdc-typography-baseline-top($item-secondary-text-baseline-height, $query);
 
     @include mdc-feature-targets($feat-structure) {
       display: block;
@@ -187,7 +184,7 @@
 
   .mdc-list--avatar-list .mdc-list-item {
     @include mdc-feature-targets($feat-structure) {
-      height: 56px;
+      height: $mdc-list-item-with-avatar-height;
     }
   }
 
@@ -199,15 +196,9 @@
     }
   }
 
-  .mdc-list--two-line .mdc-list-item__text {
-    @include mdc-feature-targets($feat-structure) {
-      align-self: flex-start;
-    }
-  }
-
   .mdc-list--two-line .mdc-list-item {
     @include mdc-feature-targets($feat-structure) {
-      height: 72px;
+      height: $mdc-list-item-with-two-line-height;
     }
   }
 
@@ -368,22 +359,32 @@
 }
 
 $mdc-density-range: 4px;
+$mdc-list-item-shape-radius: small;
 
-@mixin mdc-list-theme-override(
-  $density-scale: null,
-  $shape-radius: null) {
-  $height: $mdc-list-item-height;
+@mixin mdc-list-density(
+  $density-scale,
+  $shape-radius: null,
+  $rtl-reflexive: false) {
 
-  @if $density-scale {
-    $height: $mdc-list-item-height + $mdc-density-range * $density-scale;
+  $height: $mdc-list-item-height + $mdc-density-range * $density-scale;
 
-    .mdc-list-item {
-      height: $height;
-    }
+  .mdc-list-item {
+    height: $height;
   }
 
   @if $shape-radius {
-    @include mdc-list-item-shape-radius($shape-radius, $item-height: $height);
+    @include mdc-list-item-shape-radius(
+      $shape-radius,
+      $item-height: $height,
+      $rtl-reflexive: $rtl-reflexive);
+  }
+}
+
+@mixin mdc-list-two-line-density($density-scale) {
+  $height: $mdc-list-item-with-two-line-height + $mdc-density-range * $density-scale;
+
+  &.mdc-list--two-line .mdc-list-item {
+    height: $height;
   }
 }
 

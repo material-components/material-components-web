@@ -36,12 +36,12 @@
   @include mdc-tab-indicator-surface;
   @include mdc-typography(button);
   @include mdc-tab-horizontal-padding($mdc-tab-horizontal-padding);
+  @include mdc-tab-density(0);
 
   display: flex;
   flex: 1 0 auto;
   justify-content: center;
   box-sizing: border-box;
-  height: $mdc-tab-height;
   // Explicitly setting margin to 0 is to override safari default margin for button elements.
   margin: 0;
   padding-top: 0;

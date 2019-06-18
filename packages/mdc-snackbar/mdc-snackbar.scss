@@ -111,7 +111,9 @@
   margin: 0;
 
   // 14px top/bottom padding needed to make the height 48px.
-  padding: 14px 16px;
+  // padding: 14px 16px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 // Used to prevent visual jank when announcing label text to screen readers.

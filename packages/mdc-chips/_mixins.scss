@@ -36,6 +36,21 @@
 @import "@material/shape/functions";
 @import "./variables";
 
+$mdc-density-range: 4px;
+
+@mixin mdc-chip-density(
+  $density-scale,
+  $shape-radius: null,
+  $rtl-reflexive: false) {
+  $height: $mdc-chip-height-default + $density-scale * $mdc-density-range;
+
+  height: $height;
+
+  @if $shape-radius {
+    @include mdc-chip-shape-radius($shape-radius, $mdc-chip-height: $height, $rtl-reflexive: $rtl-reflexive);
+  }
+}
+
 @mixin mdc-chip-core-styles($query: mdc-feature-all()) {
   @include mdc-chip-without-ripple($query: $query);
   @include mdc-chip-ripple($query: $query);
@@ -291,9 +306,9 @@
   }
 }
 
-@mixin mdc-chip-shape-radius($radius, $rtl-reflexive: false, $query: mdc-feature-all()) {
+@mixin mdc-chip-shape-radius($radius, $mdc-chip-height: $mdc-chip-height-default, $rtl-reflexive: false, $query: mdc-feature-all()) {
   @include mdc-shape-radius(
-    mdc-shape-resolve-percentage-radius($mdc-chip-height-default, $radius),
+    mdc-shape-resolve-percentage-radius($mdc-chip-height, $radius),
     $rtl-reflexive,
     $query: $query);
 }
