@@ -340,9 +340,9 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 
 | Method Signature | Description |
 | --- | --- |
-| `addClass(className: string) => void` | Adds a class to the root element. |
-| `removeClass(className: string) => void` | Removes a class from the root element. |
-| `hasClass(className: string) => boolean` | Returns true if the root element has the className in its classList. |
+| `addClass(className: string) => void` | Adds a class to the select anchor element. |
+| `removeClass(className: string) => void` | Removes a class from the select anchor element. |
+| `hasClass(className: string) => boolean` | Returns true if the select anchor element has the className in its classList. |
 | `activateBottomLine() => void` | Activates the bottom line component. |
 | `deactivateBottomLine() => void` | Deactivates the bottom line component. |
 | `getValue() => string` | Returns the value selected `option` on the `select` element and the `data-value` of the selected list item on the enhanced select. |
