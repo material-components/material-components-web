@@ -67,12 +67,11 @@ const jsPackagesOnly = allPackages.filter(pkg =>
 const stylePackagesOnly = allPackages.filter((pkg) => !noStylePackages.includes(pkg));
 
 const inputFileName = (pkg, isSass) => {
+  let fileName = 'index.ts';
   if (isSass) {
-    const name = pkg === 'mdc-textfield' ? 'mdc-text-field.scss' : `${pkg}.scss`;
-    console.log(name)
-    return name
+    fileName = pkg === 'mdc-textfield' ? 'mdc-text-field.scss' : `${pkg}.scss`;
   }
-  return `packages/${pkg}/index.ts`;
+  return `packages/${pkg}/${fileName}`;
 }
 
 const buildConfigurations = ({pkg, isSass = false, shouldBuildUMD = false}) => {
@@ -84,6 +83,7 @@ const buildConfigurations = ({pkg, isSass = false, shouldBuildUMD = false}) => {
     input: inputFileName(pkg, isSass),
     external: (id) =>  deps && deps.some(dep => id.includes(dep)),
     output: [{
+      // TODO - format to current filename style, so to not introduce a breaking change
       entryFileNames: `${pkg}.esm.js`,
       dir: outputPath,
       format: 'esm',
@@ -135,47 +135,5 @@ const sassConfigurations = stylePackagesOnly.map(pkg => buildConfigurations({
   pkg,
   isSass: true,
 }));
-
-// const sassConfigurations = stylePackagesOnly.map(pkg => {
-//   const pkgJson = require(`./packages/${pkg}/package.json`);
-//   const deps = pkgJson.dependencies ? Object.keys(pkgJson.dependencies) : null;
-//   const outputPath = `./packages/${pkg}/dist`;
-//   const sassFileName = pkg === 'mdc-textfield' ? 'mdc-text-field.scss' : `${pkg}.scss`;
-
-//   return {
-//     input: `packages/${pkg}/${sassFileName}`,
-//     external: (id) =>  deps && deps.some(dep => id.includes(dep)),
-//     output: {
-//       entryFileNames: `${pkg}.esm.js`,
-//       dir: outputPath,
-//       format: 'esm',
-//       banner,
-//     },
-//     plugins: [
-//       typescript(),
-// 			resolve(),
-//       commonjs(), // so Rollup can convert externals to an ES module
-//       terser({
-//         output: {
-//           comments: function(node, comment) {
-//             var text = comment.value;
-//             var type = comment.type;
-//             if (type == "comment2") {
-//               // multiline comment
-//               return /@preserve/i.test(text);
-//             }
-//           }
-//         }
-//       }),
-//       sass({
-//         output: `${outputPath}/${pkg}.css`,
-//         options: {
-//           includePaths: [`./packages/material-components-web/node_modules`]
-//         }
-//       }),
-//     ],
-//   }
-// });
-
 
 export default [].concat(sassConfigurations, jsConfigurations);
