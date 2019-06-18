@@ -686,6 +686,25 @@ test('adapter#setAttributeAtIndex sets attribute value correctly', () => {
   document.body.removeChild(menuSurface);
 });
 
+test('adapter#removeAttributeAtIndex removes attribute value correctly', () => {
+  const hasMockFoundation = true;
+  const hasMockMenu = false;
+  const hasOutline = false;
+  const hasLabel = true;
+  const {component, menuSurface} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+
+  const index = 1;
+  const menuItem = menuSurface.querySelectorAll('.mdc-list-item')[index];
+  const attrToRemove = 'foo';
+  menuItem.setAttribute(attrToRemove, '0');
+
+  const adapter = component.getDefaultFoundation().adapter_;
+  adapter.removeAttributeAtIndex(index, attrToRemove);
+
+  expect(menuItem.hasAttribute(attrToRemove)).to.be.false;
+  document.body.removeChild(menuSurface);
+});
+
 test('adapter#setSelectedText sets the select text content correctly', () => {
   const hasMockFoundation = true;
   const hasMockMenu = true;

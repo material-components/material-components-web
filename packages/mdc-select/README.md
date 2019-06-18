@@ -336,7 +336,8 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `openMenu() => void` | Causes the menu element in the enhanced select to open. |
 | `closeMenu() => void` | Causes the menu element in the enhanced select to close. |
 | `isMenuOpen() => boolean` | Returns true if the menu is currently opened in the enhanced select. |
-| `setAttributeAtIndex(index: number, attributeName: string, attributeValue?: string) => void;` | Sets the attribute on the menu item at the given index. If `attributeValue` is undefined, removes the attribute. |
+| `setAttributeAtIndex(index: number, attributeName: string, attributeValue: string) => void;` | Sets the attribute on the menu item at the given index. |
+| `removeAttributeAtIndex(index: number, attributeName: string) => void;` | Removes the attribute on the menu item at the given index. |
 | `getMenuItemValues() => string[]` | Returns an array representing the VALUE_ATTR attributes of each menu item. |
 | `getMenuItemTextAtIndex(index: number) => string` | Gets the text content of the menu item element at the given index. |
 | `toggleClassAtIndex(menuItem: Element, className: string, toggle: boolean) => void` | Toggles the class name on the menu item at the given index. |

@@ -68,6 +68,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       closeMenu: () => undefined,
       isMenuOpen: () => false,
       setAttributeAtIndex: () => undefined,
+      removeAttributeAtIndex: () => undefined,
       getMenuItemValues: () => [],
       getMenuItemTextAtIndex: () => '',
       toggleClassAtIndex: () => undefined,
@@ -112,12 +113,11 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
 
     if (previouslySelectedIndex !== numbers.UNSET_INDEX) {
       this.adapter_.toggleClassAtIndex(previouslySelectedIndex, cssClasses.SELECTED_ITEM_CLASS, false);
-      // Remove the ARIA_SELECTED attribute.
-      this.adapter_.setAttributeAtIndex(previouslySelectedIndex, strings.ARIA_SELECTED_ATTR);
+      this.adapter_.removeAttributeAtIndex(previouslySelectedIndex, strings.ARIA_SELECTED_ATTR);
     }
     if (this.selectedIndex_ !== numbers.UNSET_INDEX) {
       this.adapter_.toggleClassAtIndex(this.selectedIndex_, cssClasses.SELECTED_ITEM_CLASS, true);
-      this.adapter_.setAttributeAtIndex(this.selectedIndex_, strings.ARIA_SELECTED_ATTR);
+      this.adapter_.setAttributeAtIndex(this.selectedIndex_, strings.ARIA_SELECTED_ATTR, 'true');
     }
     this.layout();
 

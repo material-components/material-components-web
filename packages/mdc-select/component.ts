@@ -35,7 +35,7 @@ import {MDCRipple} from '@material/ripple/component';
 import {MDCRippleFoundation} from '@material/ripple/foundation';
 import {MDCRippleCapableSurface} from '@material/ripple/types';
 import {MDCSelectAdapter} from './adapter';
-import {cssClasses, numbers, strings} from './constants';
+import {cssClasses, strings} from './constants';
 import {MDCSelectFoundation} from './foundation';
 import {MDCSelectHelperText, MDCSelectHelperTextFactory} from './helper-text/component';
 import {MDCSelectIcon, MDCSelectIconFactory} from './icon/component';
@@ -388,15 +388,15 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
       },
       isMenuOpen: () => this.isMenuOpen_,
       getSelectedMenuItem: () => this.getSelectedMenuItem_(),
-      setAttributeAtIndex: (index: number, attributeName: string, attributeValue?: string) => {
+      setAttributeAtIndex: (index: number, attributeName: string, attributeValue: string) => {
         const menuItem = this.menu_.items[index];
-        if (!menuItem) {
-          return;
-        }
-
-        if (attributeValue) {
+        if (menuItem) {
           menuItem.setAttribute(attributeName, attributeValue);
-        } else {
+        }
+      },
+      removeAttributeAtIndex: (index: number, attributeName: string) => {
+        const menuItem = this.menu_.items[index];
+        if (menuItem) {
           menuItem.removeAttribute(attributeName);
         }
       },

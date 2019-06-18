@@ -131,10 +131,14 @@ export interface MDCSelectAdapter {
   isMenuOpen(): boolean;
 
   /**
-   * Sets the attribute on the menu item at the given index. If `attributeValue`
-   * is undefined, removes the attribute.
+   * Sets the attribute on the menu item at the given index.
    */
-  setAttributeAtIndex(index: number, attributeName: string, attributeValue?: string): void;
+  setAttributeAtIndex(index: number, attributeName: string, attributeValue: string): void;
+
+  /**
+   * Removes the attribute on the menu item at the given index.
+   */
+  removeAttributeAtIndex(index: number, attributeName: string): void;
 
   /**
    * Returns an array representing the VALUE_ATTR attributes of each menu item.
