@@ -2,6 +2,7 @@ import typescript from 'rollup-plugin-typescript';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import {terser} from "rollup-plugin-terser";
+import sass from 'rollup-plugin-sass';
 
 const {lstatSync, readdirSync} = require('fs');
 const {join} = require('path');
@@ -11,13 +12,6 @@ const getDirectories = source =>
 	readdirSync(source).map(name => join(source, name)).filter(isDirectory);
 const getPackages = directories =>
 	directories.map(directory => directory.split('packages/')[1]);
-const getFormattedRollupInput = packages => {
-	const input = {};
-	packages.forEach(pkg => {
-		input[pkg] = `packages/${pkg}/index.ts`;
-	});
-	return input;
-}
 
 const noJsPackages = [
   'mdc-button',
@@ -25,7 +19,6 @@ const noJsPackages = [
   'mdc-data-table',
   'mdc-elevation',
   'mdc-fab',
-  'mdc-feature-targeting',
   'mdc-image-list',
   'mdc-layout-grid',
   'mdc-rtl',
@@ -42,49 +35,58 @@ const denyList = [
   'mdc-bottom-app-bar',
   'mdc-bottom-navigation',
   'mdc-bottom-sheet',
+  'mdc-data-table',
   'mdc-divider',
+  'mdc-feature-targeting',
   'mdc-side-sheet',
+  'mdc-tooltip',
 ];
 
-const packages = getPackages(getDirectories('./packages')).filter(pkg =>
-  !denyList.includes(pkg) && !noJsPackages.includes(pkg));
+const noStylePackages = [
+  'mdc-animation',
+  'mdc-auto-init',
+  'mdc-base',
+  'mdc-dom',
+  'mdc-rtl',
+  'mdc-shape',
+];
 
-export default packages.filter(pkg => pkg === 'mdc-textfield').map(pkg => {
+const banner = `/**
+* @preserve
+* @license
+* Copyright Google LLC All Rights Reserved.
+*
+* Use of this source code is governed by an MIT-style license that can be
+* found in the LICENSE file at https://github.com/material-components/material-components-web/blob/master/LICENSE
+*/`;
+
+const allPackages = getPackages(getDirectories('./packages')).filter(pkg =>
+  !denyList.includes(pkg));
+const jsPackagesOnly = allPackages.filter(pkg =>
+  !noJsPackages.includes(pkg));
+const stylePackagesOnly = allPackages.filter((pkg) => !noStylePackages.includes(pkg));
+
+const inputFileName = (pkg, isSass) => {
+  if (isSass) {
+    const name = pkg === 'mdc-textfield' ? 'mdc-text-field.scss' : `${pkg}.scss`;
+    console.log(name)
+    return name
+  }
+  return `packages/${pkg}/index.ts`;
+}
+
+const buildConfigurations = ({pkg, isSass = false, shouldBuildUMD = false}) => {
   const pkgJson = require(`./packages/${pkg}/package.json`);
-  const deps = Object.keys(pkgJson.dependencies);
+  const deps = pkgJson.dependencies ? Object.keys(pkgJson.dependencies) : null;
   const outputPath = `./packages/${pkg}/dist`;
-  const banner = `/**
-  * @preserve
-  * @license
-  * Copyright Google LLC All Rights Reserved.
-  *
-  * Use of this source code is governed by an MIT-style license that can be
-  * found in the LICENSE file at https://github.com/material-components/material-components-web/blob/master/LICENSE
-  */`;
 
-  return {
-    input: `packages/${pkg}/index.ts`,
-    external: (id) => deps.some(dep => id.includes(dep)),
+  const configuration = {
+    input: inputFileName(pkg, isSass),
+    external: (id) =>  deps && deps.some(dep => id.includes(dep)),
     output: [{
       entryFileNames: `${pkg}.esm.js`,
       dir: outputPath,
       format: 'esm',
-      banner,
-    }, {
-      entryFileNames: `${pkg}.umd.js`,
-      dir: outputPath,
-      name: `${pkg}.umd.js`,
-      format: 'umd',
-      banner,
-    }, {
-      entryFileNames: `${pkg}.cjs.js`,
-      dir: outputPath,
-      format: 'cjs',
-      banner,
-    }, {
-      entryFileNames: `${pkg}.amd.js`,
-      dir: outputPath,
-      format: 'amd',
       banner,
     }],
     plugins: [
@@ -103,6 +105,77 @@ export default packages.filter(pkg => pkg === 'mdc-textfield').map(pkg => {
           }
         }
       }),
+      sass({
+        output: `${outputPath}/${pkg}.css`,
+        options: {
+          includePaths: [`./packages/material-components-web/node_modules`]
+        }
+      }),
     ],
   }
-});
+
+  if (shouldBuildUMD) {
+    configuration.output.push({
+      entryFileNames: `${pkg}.umd.js`,
+      dir: outputPath,
+      name: `${pkg}.umd.js`,
+      format: 'umd',
+      banner,
+    });
+  }
+  return configuration;
+}
+
+const jsConfigurations = jsPackagesOnly.map(pkg => buildConfigurations({
+  pkg,
+  shouldBuildUMD: true,
+}));
+
+const sassConfigurations = stylePackagesOnly.map(pkg => buildConfigurations({
+  pkg,
+  isSass: true,
+}));
+
+// const sassConfigurations = stylePackagesOnly.map(pkg => {
+//   const pkgJson = require(`./packages/${pkg}/package.json`);
+//   const deps = pkgJson.dependencies ? Object.keys(pkgJson.dependencies) : null;
+//   const outputPath = `./packages/${pkg}/dist`;
+//   const sassFileName = pkg === 'mdc-textfield' ? 'mdc-text-field.scss' : `${pkg}.scss`;
+
+//   return {
+//     input: `packages/${pkg}/${sassFileName}`,
+//     external: (id) =>  deps && deps.some(dep => id.includes(dep)),
+//     output: {
+//       entryFileNames: `${pkg}.esm.js`,
+//       dir: outputPath,
+//       format: 'esm',
+//       banner,
+//     },
+//     plugins: [
+//       typescript(),
+// 			resolve(),
+//       commonjs(), // so Rollup can convert externals to an ES module
+//       terser({
+//         output: {
+//           comments: function(node, comment) {
+//             var text = comment.value;
+//             var type = comment.type;
+//             if (type == "comment2") {
+//               // multiline comment
+//               return /@preserve/i.test(text);
+//             }
+//           }
+//         }
+//       }),
+//       sass({
+//         output: `${outputPath}/${pkg}.css`,
+//         options: {
+//           includePaths: [`./packages/material-components-web/node_modules`]
+//         }
+//       }),
+//     ],
+//   }
+// });
+
+
+export default [].concat(sassConfigurations, jsConfigurations);
