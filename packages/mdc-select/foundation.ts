@@ -68,7 +68,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       closeMenu: () => undefined,
       isMenuOpen: () => false,
       setAttributeAtIndex: () => undefined,
-      getIndexOfMenuItemWithAttribute: () => numbers.UNSET_INDEX,
+      getMenuItemValues: () => [],
       getMenuItemTextAtIndex: () => '',
       toggleClassAtIndex: () => undefined,
     };
@@ -80,6 +80,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
 
   // Index of the currently selected menu item.
   private selectedIndex_: number = numbers.UNSET_INDEX;
+  // VALUE_ATTR values of the menu items.
+  private readonly menuItemValues_: string[];
 
   /* istanbul ignore next: optional argument is not a branch statement */
   /**
@@ -91,6 +93,8 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
 
     this.leadingIcon_ = foundationMap.leadingIcon;
     this.helperText_ = foundationMap.helperText;
+
+    this.menuItemValues_ = this.adapter_.getMenuItemValues();
   }
 
   /** Returns the index of the currently selected menu item, or -1 if none. */
@@ -126,7 +130,7 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
   }
 
   setValue(value: string) {
-    const index = this.adapter_.getIndexOfMenuItemWithAttribute(strings.VALUE_ATTR, value);
+    const index = this.menuItemValues_.indexOf(value);
     this.setSelectedIndex(index);
     const didChange = true;
     this.handleChange(didChange);

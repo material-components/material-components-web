@@ -337,7 +337,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `closeMenu() => void` | Causes the menu element in the enhanced select to close. |
 | `isMenuOpen() => boolean` | Returns true if the menu is currently opened in the enhanced select. |
 | `setAttributeAtIndex(index: number, attributeName: string, attributeValue?: string) => void;` | Sets the attribute on the menu item at the given index. If `attributeValue` is undefined, removes the attribute. |
-| `getIndexOfMenuItemWithAttribute(attributeName: string, attributeValue: string) => number` | Gets the index of the menu item with the given attribute name and value, or null if none exists. |
+| `getMenuItemValues() => string[]` | Returns an array representing the VALUE_ATTR attributes of each menu item. |
 | `getMenuItemTextAtIndex(index: number) => string` | Gets the text content of the menu item element at the given index. |
 | `toggleClassAtIndex(menuItem: Element, className: string, toggle: boolean) => void` | Toggles the class name on the menu item at the given index. |
 
@@ -356,8 +356,8 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `handleKeydown(event: KeyboardEvent) => void` | Handles opening the menu (enhanced select) when the `mdc-select__selected-text` element is focused and the user presses the `Enter` or `Space` key. |
 | `getSelectedIndex() => number` | Returns the index of the currently selected menu item. |
 | `setSelectedIndex(index: number) => void` | Handles setting the `mdc-select__selected-text` element and closing the menu (enhanced select only). Also causes the label to float and outline to notch if needed. |
-| `setValue(value: string) => void` | Handles setting the value through the adapter and causes the label to float and outline to notch if needed. |
 | `getValue() => string` | Handles getting the value through the adapter. |
+| `setValue() => string` | Sets the selected index to the index of the menu item with the given value. |
 | `setValid(isValid: boolean) => void` | Sets the valid state through the adapter. |
 | `isValid() => boolean` | Gets the valid state through the adapter's `checkValidity` API. |
 | `layout() => void` | Handles determining if the notched outline should be notched. |

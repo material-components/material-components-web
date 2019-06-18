@@ -137,10 +137,9 @@ export interface MDCSelectAdapter {
   setAttributeAtIndex(index: number, attributeName: string, attributeValue?: string): void;
 
   /**
-   * Gets the index of the menu item with the given attribute name and value, or
-   * numbers.UNSET_INDEX if none exists.
+   * Returns an array representing the VALUE_ATTR attributes of each menu item.
    */
-  getIndexOfMenuItemWithAttribute(attributeName: string, attributeValue: string): number;
+  getMenuItemValues(): string[];
 
   /**
    * Gets the text content of the menu item element at the given index.

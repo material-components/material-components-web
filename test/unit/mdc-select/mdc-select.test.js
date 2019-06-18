@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {assert} from 'chai';
+import {assert, expect} from 'chai';
 import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
@@ -746,20 +746,16 @@ test('adapter#isMenuOpen returns true if the menu is opened, and false if not', 
   document.body.removeChild(fixture);
 });
 
-test('adapter#getIndexOfMenuItemWithAttribute returns the correct index', () => {
+test('adapter#getMenuItemValues returns the correct menu item values', () => {
   const hasMockFoundation = true;
   const hasMockMenu = false;
   const hasOutline = false;
   const hasLabel = true;
-  const {fixture, component} =
-    setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  const {fixture, component} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   document.body.appendChild(fixture);
 
-  const index = 1;
   const adapter = component.getDefaultFoundation().adapter_;
-  const menuItem = document.querySelectorAll('.mdc-list-item')[index];
-  const value = menuItem.getAttribute(strings.VALUE_ATTR);
-  assert.equal(adapter.getIndexOfMenuItemWithAttribute(strings.VALUE_ATTR, value), index);
+  expect(adapter.getMenuItemValues()).to.eql(['', 'orange', 'apple']);
 
   document.body.removeChild(fixture);
 });
@@ -802,8 +798,8 @@ test('adapter#setDisabled adds the --disabled class to the root element', () => 
   assert.equal(selectedText.tabIndex, -1);
 
   adapter.setDisabled(false);
-  assert.equal(selectedText.getAttribute('aria-disabled'), 'false');
-  assert.equal(selectedText.tabIndex, 0);
+  expect(selectedText.getAttribute('aria-disabled')).to.equal('false');
+  expect(selectedText.tabIndex).to.equal(0);
 
   document.body.removeChild(fixture);
 });

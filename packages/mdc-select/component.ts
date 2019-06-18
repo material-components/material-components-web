@@ -400,10 +400,8 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
           menuItem.removeAttribute(attributeName);
         }
       },
-      getIndexOfMenuItemWithAttribute: (attributeName: string, attributeValue: string) => {
-        const item = this.menu_.items.filter(
-            (el) => el.getAttribute(attributeName) === attributeValue)[0] || null;
-        return item ? this.menu_.items.indexOf(item) : numbers.UNSET_INDEX;
+      getMenuItemValues: () => {
+        return this.menu_.items.map((el) => el.getAttribute(strings.VALUE_ATTR) || '');
       },
       getMenuItemTextAtIndex: (index: number) => {
         const menuItem = this.menu_.items[index];
