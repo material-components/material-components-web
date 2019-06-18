@@ -91,11 +91,6 @@ class FakeHelperText {
 function getFixture() {
   return bel`
     <div class="mdc-select">
-<<<<<<< HEAD
-      <i class="mdc-select__icon material-icons">code</i>
-      <div class="mdc-select__selected-text"></div>
-      <i class="mdc-select__dropdown-icon"></i>
-=======
       <div class="mdc-select__anchor">
         <input type="hidden" name="enhanced-select">
         <i class="mdc-select__icon material-icons">code</i>
@@ -105,7 +100,6 @@ function getFixture() {
         <div class="mdc-line-ripple"></div>
       </div>
 
->>>>>>> feat/select
       <div class="mdc-select__menu mdc-menu mdc-menu-surface">
         <ul class="mdc-list">
           <li class="mdc-list-item" data-value=""></li>
@@ -123,27 +117,6 @@ function getFixture() {
 
 function getOutlineFixture() {
   return bel`
-<<<<<<< HEAD
-    <div class="mdc-select mdc-select--outlined">
-      <i class="mdc-select__icon material-icons">code</i>
-      <div class="mdc-select__selected-text"></div>
-      <i class="mdc-select__dropdown-icon"></i>
-      <div class="mdc-select__menu mdc-menu mdc-menu-surface">
-      <ul class="mdc-list">
-        <li class="mdc-list-item" data-value=""></li>
-        <li class="mdc-list-item" data-value="orange">
-          Orange
-        </li>
-        <li class="mdc-list-item" data-value="apple">
-          Apple
-        </li>
-      </ul>
-      </div>
-      <div class="mdc-notched-outline">
-        <div class="mdc-notched-outline__leading"></div>
-        <div class="mdc-notched-outline__notch">
-          <span class="mdc-floating-label">Pick a Food Group</span>
-=======
     <div class="mdc-select">
       <div class="mdc-select__anchor mdc-select--outlined">
         <input type="hidden" name="enhanced-select">
@@ -156,7 +129,6 @@ function getOutlineFixture() {
             <span class="mdc-floating-label">Pick a Food Group</span>
           </div>
           <div class="mdc-notched-outline__trailing"></div>
->>>>>>> feat/select
         </div>
       </div>
 
@@ -223,13 +195,8 @@ function setupTest(hasOutline = false, hasLabel = true, hasMockFoundation = fals
     () => icon,
     () => helperText);
 
-<<<<<<< HEAD
-  return {fixture, selectedText, label, labelEl, bottomLine, bottomLineEl, component, outline, menuSurface,
-    mockFoundation, mockMenu, icon, helperText, container};
-=======
   return {fixture, anchor, selectedText, hiddenInput, label, labelEl, bottomLine, bottomLineEl,
     component, outline, menuSurface, mockFoundation, mockMenu, icon, helperText, container};
->>>>>>> feat/select
 }
 
 function setupWithMockFoundation() {
@@ -452,16 +419,6 @@ test('#initialSyncWithDOM sets the selected index if an option has the selected 
   assert.equal(component.selectedIndex, 1);
 });
 
-<<<<<<< HEAD
-=======
-test('#initialSyncWithDOM sets the selected index if the hidden input has a value', () => {
-  const fixture = getFixture();
-  fixture.querySelector(strings.HIDDEN_INPUT_SELECTOR).value = 'orange';
-  const component = new MDCSelect(fixture, /* foundation */ undefined);
-  assert.equal(component.selectedIndex, 1);
-});
-
->>>>>>> feat/select
 test('#initialSyncWithDOM disables the select if the disabled class is found', () => {
   const fixture = bel`
     <div class="mdc-select">
@@ -722,12 +679,7 @@ test('adapter#getValue returns the selected element value', () => {
   const adapter = component.getDefaultFoundation().adapter_;
   adapter.toggleClassAtIndex(index, cssClasses.SELECTED_ITEM_CLASS, true);
 
-<<<<<<< HEAD
-  assert.equal(adapter.getValue(), textValue);
-  document.body.removeChild(menuSurface);
-=======
   assert.equal(value, textValue);
->>>>>>> feat/select
 });
 
 test('adapter#setAttributeAtIndex sets attribute value correctly', () => {
@@ -745,14 +697,8 @@ test('adapter#setAttributeAtIndex sets attribute value correctly', () => {
   const adapter = component.getDefaultFoundation().adapter_;
   adapter.setAttributeAtIndex(index, strings.VALUE_ATTR, valueToSet);
 
-<<<<<<< HEAD
-  const listItemValue = menuItem.getAttribute(strings.VALUE_ATTR);
-  assert.equal(valueToSet, listItemValue);
-  document.body.removeChild(menuSurface);
-=======
   assert.equal(adapter.getValue(), listItemValue);
   assert.equal(hiddenInput.value, listItemValue);
->>>>>>> feat/select
 });
 
 test('adapter#removeAttributeAtIndex removes attribute value correctly', () => {
@@ -770,13 +716,7 @@ test('adapter#removeAttributeAtIndex removes attribute value correctly', () => {
   const adapter = component.getDefaultFoundation().adapter_;
   adapter.removeAttributeAtIndex(index, attrToRemove);
 
-<<<<<<< HEAD
   expect(menuItem.hasAttribute(attrToRemove)).to.be.false;
-  document.body.removeChild(menuSurface);
-=======
-  assert.doesNotThrow(() => adapter.setValue(listItemValue));
-  assert.equal(adapter.getValue(), listItemValue);
->>>>>>> feat/select
 });
 
 test('adapter#setSelectedText sets the select text content correctly', () => {
@@ -788,16 +728,11 @@ test('adapter#setSelectedText sets the select text content correctly', () => {
   document.body.appendChild(fixture);
   const adapter = component.getDefaultFoundation().adapter_;
 
-<<<<<<< HEAD
   const textToSet = 'foo';
   assert.notEqual(textToSet, selectedText.textContent);
   adapter.setSelectedText(textToSet);
   assert.equal(textToSet, selectedText.textContent);
   document.body.removeChild(fixture);
-=======
-  assert.equal(adapter.getValue(), '');
-  assert.equal(hiddenInput.value, '');
->>>>>>> feat/select
 });
 
 test('adapter#openMenu causes the menu to open', () => {
@@ -907,11 +842,7 @@ test('adapter#checkValidity returns false when required class is present and sel
   const hasMockMenu = false;
   const hasOutline = false;
   const hasLabel = true;
-<<<<<<< HEAD
-  const {component, fixture, mockFoundation} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-=======
   const {component, anchor} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
->>>>>>> feat/select
   const adapter = component.getDefaultFoundation().adapter_;
 
   anchor.classList.add(cssClasses.REQUIRED);
@@ -925,11 +856,7 @@ test('adapter#checkValidity returns false when required class is present and pla
   const hasMockMenu = false;
   const hasOutline = false;
   const hasLabel = true;
-<<<<<<< HEAD
-  const {component, fixture, mockFoundation} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-=======
   const {component, anchor} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
->>>>>>> feat/select
   const adapter = component.getDefaultFoundation().adapter_;
 
   anchor.classList.add(cssClasses.REQUIRED);
