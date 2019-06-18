@@ -32,7 +32,7 @@ import {strings} from './constants';
 import {MDCChipFoundation} from './foundation';
 import {MDCChipInteractionEventDetail, MDCChipNavigationEventDetail, MDCChipRemovalEventDetail,
     MDCChipSelectionEventDetail,
-    MDCChipNavigationFocus} from './types';
+    MDCChipNavigationFocusSource} from './types';
 
 type InteractionType = 'click' | 'keydown';
 
@@ -228,7 +228,7 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
     return new MDCChipFoundation(adapter);
   }
 
-  focusAction(key: string, source: MDCChipNavigationFocus) {
+  focusAction(key: string, source: MDCChipNavigationFocusSource) {
     this.foundation_.focusAction(key, source);
   }
 

@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-export enum MDCChipNavigationFocus {
+export enum MDCChipNavigationFocusSource {
   Text,
   TrailingIcon,
   None,
@@ -41,7 +41,7 @@ export interface MDCChipRemovalEventDetail extends MDCChipInteractionEventDetail
 
 export interface MDCChipNavigationEventDetail extends MDCChipInteractionEventDetail {
   key: string;
-  source: MDCChipNavigationFocus;
+  source: MDCChipNavigationFocusSource;
 }
 
 // Note: CustomEvent<T> is not supported by Closure Compiler.

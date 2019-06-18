@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import { MDCChipNavigationFocus } from "./types";
+import { MDCChipNavigationFocusSource } from "./types";
 
 /**
  * Defines the shape of the adapter expected by the foundation.
@@ -86,7 +86,7 @@ export interface MDCChipAdapter {
   /**
    * Emits a custom event "MDCChip:navigation" denoting a focus navigation event.
    */
-  notifyNavigation(key: string, source: MDCChipNavigationFocus): void;
+  notifyNavigation(key: string, source: MDCChipNavigationFocusSource): void;
 
   /**
    * @return The computed property value of the given style property on the root element.

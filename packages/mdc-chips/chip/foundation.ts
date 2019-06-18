@@ -24,7 +24,7 @@
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCChipAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
-import { MDCChipNavigationFocus } from './types';
+import { MDCChipNavigationFocusSource } from './types';
 
 const emptyClientRect = {
   bottom: 0,
@@ -246,7 +246,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     this.focusNextAction_(key);
   }
 
-  focusAction(key: string, source: MDCChipNavigationFocus) {
+  focusAction(key: string, source: MDCChipNavigationFocusSource) {
     // Early exit if the key is not usable
     if (!NAVIGATION_KEYS.has(key)) {
       return;
@@ -258,11 +258,11 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       || key === strings.HOME_KEY
       || key === strings.END_KEY;
     const chipHasTrailingIcon = this.adapter_.hasTrailingIcon();
-    if (keyShouldJumpChips && source === MDCChipNavigationFocus.Text || !chipHasTrailingIcon) {
+    if (keyShouldJumpChips && source === MDCChipNavigationFocusSource.Text || !chipHasTrailingIcon) {
       return this.focusChipText_();
     }
 
-    if (keyShouldJumpChips && source === MDCChipNavigationFocus.TrailingIcon && chipHasTrailingIcon) {
+    if (keyShouldJumpChips && source === MDCChipNavigationFocusSource.TrailingIcon && chipHasTrailingIcon) {
       return this.focusTrailingIcon_();
     }
 
@@ -275,10 +275,10 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     const focusSource = this.getFocusSource_();
     const keyIsLeft = key === strings.ARROW_LEFT_KEY && !chipIsRTL || key === strings.ARROW_RIGHT_KEY && chipIsRTL;
     const keyIsRight = key === strings.ARROW_RIGHT_KEY && !chipIsRTL || key === strings.ARROW_LEFT_KEY && chipIsRTL;
-    const shouldFocusPrimaryAction = keyIsLeft && focusSource === MDCChipNavigationFocus.TrailingIcon
-      || keyIsRight && focusSource === MDCChipNavigationFocus.None;
-    const shouldFocusTrailingIcon = keyIsRight && focusSource === MDCChipNavigationFocus.Text
-      || keyIsLeft && focusSource === MDCChipNavigationFocus.None;
+    const shouldFocusPrimaryAction = keyIsLeft && focusSource === MDCChipNavigationFocusSource.TrailingIcon
+      || keyIsRight && focusSource === MDCChipNavigationFocusSource.None;
+    const shouldFocusTrailingIcon = keyIsRight && focusSource === MDCChipNavigationFocusSource.Text
+      || keyIsLeft && focusSource === MDCChipNavigationFocusSource.None;
     if (shouldFocusPrimaryAction) {
       return this.focusChipText_();
     }
@@ -294,16 +294,16 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   /**
    * @returns the currently focused element of the chip
    */
-  private getFocusSource_(): MDCChipNavigationFocus {
+  private getFocusSource_(): MDCChipNavigationFocusSource {
     if (this.adapter_.textHasFocus()) {
-      return MDCChipNavigationFocus.Text;
+      return MDCChipNavigationFocusSource.Text;
     }
 
     if (this.adapter_.trailingIconHasFocus()) {
-      return MDCChipNavigationFocus.TrailingIcon;
+      return MDCChipNavigationFocusSource.TrailingIcon;
     }
 
-    return MDCChipNavigationFocus.None;
+    return MDCChipNavigationFocusSource.None;
   }
 
   private focusChipText_() {
