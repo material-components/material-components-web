@@ -86,7 +86,6 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
    * Whether a trailing icon click should immediately trigger exit/removal of the chip.
    */
   private shouldRemoveOnTrailingIconClick_ = true;
-  private isRemovalEventFromClick_ = false;
 
   constructor(adapter?: Partial<MDCChipAdapter>) {
     super({...MDCChipFoundation.defaultAdapter, ...adapter});
@@ -154,14 +153,15 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
    * Handles an interaction event on the root element.
    */
   handleInteraction(evt: MouseEvent | KeyboardEvent) {
-    const isEnter = (evt as KeyboardEvent).key === 'Enter' || (evt as KeyboardEvent).keyCode === 13;
-    const shouldTriggerEvt = evt.type === 'click' || isEnter;
-    const shouldRemoveChip = this.adapter_.hasClass(cssClasses.REMOVE_ON_ACTION);
-    if (shouldTriggerEvt && shouldRemoveChip) {
+    const shouldNotify = evt.type === 'click'
+      || evt instanceof KeyboardEvent && (evt.key === strings.ENTER_KEY || evt.key === strings.SPACEBAR_KEY);
+    const shouldRemove = this.adapter_.hasClass(cssClasses.DELETABLE)
+      &&  evt instanceof KeyboardEvent && (evt.key === strings.BACKSPACE_KEY || evt.key === strings.DELETE_KEY);
+    if (shouldRemove) {
       return this.removeChip_(evt);
     }
 
-    if (shouldTriggerEvt) {
+    if (shouldNotify) {
       return this.adapter_.notifyInteraction();
     }
   }
@@ -171,42 +171,52 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
    */
   handleTransitionEnd(evt: TransitionEvent) {
     // Handle transition end event on the chip when it is about to be removed.
-    if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.CHIP_EXIT)) {
-      if (evt.propertyName === 'width') {
-        this.removeFocus_();
-        this.adapter_.notifyRemoval(this.isRemovalEventFromClick_);
-      } else if (evt.propertyName === 'opacity') {
-        // See: https://css-tricks.com/using-css-transitions-auto-dimensions/#article-header-id-5
-        const chipWidth = this.adapter_.getComputedStyleValue('width');
+    const shouldHandle = this.adapter_.eventTargetHasClass(evt.target, cssClasses.CHIP_EXIT);
+    const widthIsAnimating = evt.propertyName === 'width';
+    const opacityIsAnimating = evt.propertyName === 'opacity';
 
-        // On the next frame (once we get the computed width), explicitly set the chip's width
-        // to its current pixel width, so we aren't transitioning out of 'auto'.
+    if (shouldHandle && opacityIsAnimating) {
+      // See: https://css-tricks.com/using-css-transitions-auto-dimensions/#article-header-id-5
+      const chipWidth = this.adapter_.getComputedStyleValue('width');
+
+      // On the next frame (once we get the computed width), explicitly set the chip's width
+      // to its current pixel width, so we aren't transitioning out of 'auto'.
+      requestAnimationFrame(() => {
+        this.adapter_.setStyleProperty('width', chipWidth);
+
+        // To mitigate jitter, start transitioning padding and margin before width.
+        this.adapter_.setStyleProperty('padding', '0');
+        this.adapter_.setStyleProperty('margin', '0');
+
+        // On the next frame (once width is explicitly set), transition width to 0.
         requestAnimationFrame(() => {
-          this.adapter_.setStyleProperty('width', chipWidth);
-
-          // To mitigate jitter, start transitioning padding and margin before width.
-          this.adapter_.setStyleProperty('padding', '0');
-          this.adapter_.setStyleProperty('margin', '0');
-
-          // On the next frame (once width is explicitly set), transition width to 0.
-          requestAnimationFrame(() => {
-            this.adapter_.setStyleProperty('width', '0');
-          });
+          this.adapter_.setStyleProperty('width', '0');
         });
-      }
-      return;
+      });
+      return
+    }
+
+    if (shouldHandle && widthIsAnimating) {
+      this.removeFocus_();
+      this.adapter_.notifyRemoval();
     }
 
     // Handle a transition end event on the leading icon or checkmark, since the transition end event bubbles.
-    if (evt.propertyName !== 'opacity') {
+    if (!opacityIsAnimating) {
       return;
     }
-    if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.LEADING_ICON) &&
-        this.adapter_.hasClass(cssClasses.SELECTED)) {
-      this.adapter_.addClassToLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
-    } else if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.CHECKMARK) &&
-        !this.adapter_.hasClass(cssClasses.SELECTED)) {
-      this.adapter_.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
+
+    const shouldHideLeadingIcon = this.adapter_.eventTargetHasClass(evt.target, cssClasses.LEADING_ICON)
+      && this.adapter_.hasClass(cssClasses.SELECTED);
+    const shouldShowLeadingIcon = this.adapter_.eventTargetHasClass(evt.target, cssClasses.CHECKMARK)
+      && !this.adapter_.hasClass(cssClasses.SELECTED);
+
+    if (shouldHideLeadingIcon) {
+      return this.adapter_.addClassToLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
+    }
+    
+    if (shouldShowLeadingIcon) {
+      return this.adapter_.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
     }
   }
 
@@ -242,16 +252,17 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       return;
     }
 
-    const keyShouldJumpCells = key === strings.ARROW_UP_KEY
+    // Up, Down, Home, and End keys should jump to the same action (if present) on the next chip.
+    const keyShouldJumpChips = key === strings.ARROW_UP_KEY
       || key === strings.ARROW_DOWN_KEY
       || key === strings.HOME_KEY
       || key === strings.END_KEY;
     const chipHasTrailingIcon = this.adapter_.hasTrailingIcon();
-    if (keyShouldJumpCells && source === MDCChipNavigationFocus.Text || !chipHasTrailingIcon) {
+    if (keyShouldJumpChips && source === MDCChipNavigationFocus.Text || !chipHasTrailingIcon) {
       return this.focusChipText_();
     }
 
-    if (keyShouldJumpCells && source === MDCChipNavigationFocus.TrailingIcon && chipHasTrailingIcon) {
+    if (keyShouldJumpChips && source === MDCChipNavigationFocus.TrailingIcon && chipHasTrailingIcon) {
       return this.focusTrailingIcon_();
     }
 
@@ -280,6 +291,9 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     this.adapter_.notifyNavigation(key, focusSource);
   }
 
+  /**
+   * @returns the currently focused element of the chip
+   */
   private getFocusSource_(): MDCChipNavigationFocus {
     if (this.adapter_.textHasFocus()) {
       return MDCChipNavigationFocus.Text;
@@ -313,7 +327,6 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     evt.stopPropagation();
     this.adapter_.notifyTrailingIconInteraction();
     if (this.shouldRemoveOnTrailingIconClick_) {
-      this.isRemovalEventFromClick_ = evt.type === 'click';
       this.beginExit();
     }
   }

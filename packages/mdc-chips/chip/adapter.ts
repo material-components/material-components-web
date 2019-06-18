@@ -81,7 +81,7 @@ export interface MDCChipAdapter {
   /**
    * Emits a custom event "MDCChip:removal" denoting the chip will be removed.
    */
-  notifyRemoval(fromClick: boolean): void;
+  notifyRemoval(): void;
 
   /**
    * Emits a custom event "MDCChip:navigation" denoting a focus navigation event.

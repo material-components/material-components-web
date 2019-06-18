@@ -37,7 +37,6 @@ export interface MDCChipSelectionEventDetail extends MDCChipInteractionEventDeta
 
 export interface MDCChipRemovalEventDetail extends MDCChipInteractionEventDetail {
   root: Element;
-  fromClick: boolean;
 }
 
 export interface MDCChipNavigationEventDetail extends MDCChipInteractionEventDetail {

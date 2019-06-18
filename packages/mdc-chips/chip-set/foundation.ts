@@ -106,13 +106,10 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   /**
    * Handles the event when a chip is removed.
    */
-  handleChipRemoval(chipId: string, fromClick: boolean) {
+  handleChipRemoval(chipId: string) {
     const index = this.adapter_.getIndexOfChipById(chipId);
     this.deselect_(chipId);
     this.adapter_.removeChip(chipId);
-    if (fromClick) {
-      return;
-    }
     // After removing a chip, we should focus the next removal action for the next chip.
     // This is essentially the same functionality as if the user hit the "up" arrow key from the removal action.
     // So, we simulate that by focusing the next index with the up arrow key from the trailing action.
