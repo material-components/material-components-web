@@ -49,9 +49,14 @@ through the use of another class (e.g. `demo-width-class` in the example HTML an
 ### HTML
 
 ```html
-<div class="mdc-select demo-width-class">
-  <i class="mdc-select__dropdown-icon"></i>
-  <div class="mdc-select__selected-text"></div>
+<div class="mdc-select">
+  <div class="mdc-select__anchor demo-width-class">
+    <i class="mdc-select__dropdown-icon"></i>
+    <div class="mdc-select__selected-text"></div>
+    <span class="mdc-floating-label">Pick a Food Group</span>
+    <div class="mdc-line-ripple"></div>
+  </div>
+
   <div class="mdc-select__menu mdc-menu mdc-menu-surface demo-width-class">
     <ul class="mdc-list">
       <li class="mdc-list-item mdc-list-item--selected" data-value="" aria-selected="true"></li>
@@ -66,8 +71,6 @@ through the use of another class (e.g. `demo-width-class` in the example HTML an
       </li>
     </ul>
   </div>
-  <span class="mdc-floating-label">Pick a Food Group</span>
-  <div class="mdc-line-ripple"></div>
 </div>
 ```
 
@@ -108,8 +111,13 @@ The following is an example of the enhanced select component with all of the nec
 
 ```html
 <div class="mdc-select">
-  <i class="mdc-select__dropdown-icon"></i>
-  <div id="demo-selected-text" class="mdc-select__selected-text" role="button" aria-haspopup="listbox" aria-labelledby="demo-label demo-selected-text">Vegetables</div>
+  <div class="mdc-select__anchor">
+    <i class="mdc-select__dropdown-icon"></i>
+    <div id="demo-selected-text" class="mdc-select__selected-text" role="button" aria-haspopup="listbox" aria-labelledby="demo-label demo-selected-text">Vegetables</div>
+    <span id="demo-label" class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
+    <div class="mdc-line-ripple"></div>
+  </div>
+
   <div class="mdc-select__menu mdc-menu mdc-menu-surface" role="listbox">
     <ul class="mdc-list">
       <li class="mdc-list-item mdc-list-item--selected" data-value="" role="option"></li>
@@ -124,8 +132,6 @@ The following is an example of the enhanced select component with all of the nec
       </li>
     </ul>
   </div>
-  <span id="demo-label" class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
-  <div class="mdc-line-ripple"></div>
 </div>
 ```
 
@@ -138,15 +144,17 @@ The Select Outlined variant uses the `mdc-notched-outline` in place of the `mdc-
 same.
 
 ```html
-<div class="mdc-select mdc-select--outlined">
-  <!-- Other elements from the select remain. -->
-   <div class="mdc-notched-outline">
-     <div class="mdc-notched-outline__leading"></div>
-     <div class="mdc-notched-outline__notch">
-       <label class="mdc-floating-label">Pick a Food Group</label>
-     </div>
-     <div class="mdc-notched-outline__trailing"></div>
-   </div>
+<div class="mdc-select">
+  <div class="mdc-select mdc-select--outlined">
+    <div class="mdc-notched-outline">
+      <div class="mdc-notched-outline__leading"></div>
+      <div class="mdc-notched-outline__notch">
+        <label class="mdc-floating-label">Pick a Food Group</label>
+      </div>
+      <div class="mdc-notched-outline__trailing"></div>
+    </div>
+    <!-- Other elements from the select remain. -->
+  </div>
 </div>
 ```
 
@@ -159,9 +167,15 @@ to set the selected item. The select also needs the text from the selected eleme
 `mdc-select__selected-text` element.
 
 ```html
-<div class="mdc-select demo-width-class">
-  <i class="mdc-select__dropdown-icon"></i>
-  <div class="mdc-select__selected-text">Vegetables</div>
+<div class="mdc-select">
+  <div class="mdc-select__anchor demo-width-class">
+    <input type="hidden" name="enhanced-select">
+    <i class="mdc-select__dropdown-icon"></i>
+    <div class="mdc-select__selected-text">Vegetables</div>
+    <span class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
+    <div class="mdc-line-ripple"></div>
+  </div>
+
   <div class="mdc-select__menu demo-width-class mdc-menu mdc-menu-surface">
     <ul class="mdc-list">
       <li class="mdc-list-item" data-value=""></li>
@@ -176,8 +190,6 @@ to set the selected item. The select also needs the text from the selected eleme
       </li>
     </ul>
   </div>
-  <span class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
-  <div class="mdc-line-ripple"></div>
 </div>
 ```
 
@@ -196,14 +208,18 @@ the list with an empty `data-value` attribute.
 Add the `mdc-select--disabled` class to the `mdc-select` element.
 
 ```html
-<div class="mdc-select mdc-select--disabled">
-  <i class="mdc-select__dropdown-icon"></i>
-  <div class="mdc-select__selected-text"></div>
+<div class="mdc-select">
+  <div class="mdc-select__anchor mdc-select--disabled">
+    <input type="hidden" name="enhanced-select" disabled>
+    <i class="mdc-select__dropdown-icon"></i>
+    <div class="mdc-select__selected-text"></div>
+    <span class="mdc-floating-label">Pick a Food Group</span>
+    <div class="mdc-line-ripple"></div>
+  </div>
+
   <div class="mdc-select__menu mdc-menu mdc-menu-surface">
     ...
   </div>
-  <span class="mdc-floating-label">Pick a Food Group</span>
-  <div class="mdc-line-ripple"></div>
 </div>
 ```
 
@@ -215,8 +231,14 @@ programmatically select a disabled list item.
 
 ```html
 <div class="mdc-select">
-  <i class="mdc-select__dropdown-icon"></i>
-  <div class="mdc-select__selected-text">Vegetables</div>
+  <div class="mdc-select__anchor">
+    <input type="hidden" name="enhanced-select">
+    <i class="mdc-select__dropdown-icon"></i>
+    <div class="mdc-select__selected-text">Vegetables</div>
+    <span class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
+    <div class="mdc-line-ripple"></div>
+  </div>
+
   <div class="mdc-select__menu mdc-menu mdc-menu-surface">
     <ul class="mdc-list">
       <li class="mdc-list-item" data-value=""></li>
@@ -231,8 +253,6 @@ programmatically select a disabled list item.
       </li>
     </ul>
   </div>
-  <span class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
-  <div class="mdc-line-ripple"></div>
 </div>
 ```
 
@@ -316,9 +336,9 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 
 | Method Signature | Description |
 | --- | --- |
-| `addClass(className: string) => void` | Adds a class to the root element. |
-| `removeClass(className: string) => void` | Removes a class from the root element. |
-| `hasClass(className: string) => boolean` | Returns true if the root element has the className in its classList. |
+| `addClass(className: string) => void` | Adds a class to the select anchor element. |
+| `removeClass(className: string) => void` | Removes a class from the select anchor element. |
+| `hasClass(className: string) => boolean` | Returns true if the select anchor element has the className in its classList. |
 | `activateBottomLine() => void` | Activates the bottom line component. |
 | `deactivateBottomLine() => void` | Deactivates the bottom line component. |
 | `getValue() => string` | Returns the value selected `option` on the `select` element and the `data-value` of the selected list item on the enhanced select. |

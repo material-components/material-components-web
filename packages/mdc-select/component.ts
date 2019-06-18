@@ -33,7 +33,6 @@ import {MDCNotchedOutline, MDCNotchedOutlineFactory} from '@material/notched-out
 import {MDCRippleAdapter} from '@material/ripple/adapter';
 import {MDCRipple} from '@material/ripple/component';
 import {MDCRippleFoundation} from '@material/ripple/foundation';
-import {MDCRippleCapableSurface} from '@material/ripple/types';
 import {MDCSelectAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 import {MDCSelectFoundation} from './foundation';
@@ -43,19 +42,20 @@ import {MDCSelectEventDetail, MDCSelectFoundationMap} from './types';
 
 const VALIDATION_ATTR_WHITELIST = ['required', 'aria-required'];
 
-export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCRippleCapableSurface {
+export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   static attachTo(root: Element): MDCSelect {
     return new MDCSelect(root);
   }
 
-  // Public visibility for this property is required by MDCRippleCapableSurface.
-  root_!: HTMLElement; // assigned in MDCComponent constructor
+  // Root container for select (anchor) element and menu.
+  protected root_!: HTMLElement; // assigned in MDCComponent constructor
 
-  ripple!: MDCRipple | null;
+  private ripple_!: MDCRipple | null;
 
   private menu_!: MDCMenu; // assigned in selectSetup_()
   private isMenuOpen_!: boolean; // assigned in initialize()
 
+  private selectAnchor_!: HTMLElement; // assigned in initialize()
   private selectedText_!: HTMLElement; // assigned in initialize()
 
   private menuElement_!: Element; // assigned in selectSetup_()
@@ -83,6 +83,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
       helperTextFactory: MDCSelectHelperTextFactory = (el) => new MDCSelectHelperText(el),
   ) {
     this.isMenuOpen_ = false;
+    this.selectAnchor_ = this.root_.querySelector(strings.SELECT_ANCHOR_SELECTOR) as HTMLElement;
     this.selectedText_ = this.root_.querySelector(strings.SELECTED_TEXT_SELECTOR) as HTMLElement;
 
     if (!this.selectedText_) {
@@ -112,14 +113,14 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
 
     const leadingIcon = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
     if (leadingIcon) {
-      this.root_.classList.add(cssClasses.WITH_LEADING_ICON);
+      this.selectAnchor_.classList.add(cssClasses.WITH_LEADING_ICON);
       this.leadingIcon_ = iconFactory(leadingIcon);
 
       this.menuElement_.classList.add(cssClasses.WITH_LEADING_ICON);
     }
 
-    if (!this.root_.classList.contains(cssClasses.OUTLINED)) {
-      this.ripple = this.createRipple_();
+    if (!this.selectAnchor_.classList.contains(cssClasses.OUTLINED)) {
+      this.ripple_ = this.createRipple_();
     }
 
     // The required state needs to be sync'd before the mutation observer is added.
@@ -171,10 +172,10 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
 
     this.selectedText_.addEventListener('click', this.handleClick_ as EventListener);
 
-    this.selectedText_.addEventListener('keydown', this.handleKeydown_);
-    this.menu_.listen(menuSurfaceConstants.strings.CLOSED_EVENT, this.handleMenuClosed_);
-    this.menu_.listen(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
-    this.menu_.listen(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
+    this.selectedText_!.addEventListener('keydown', this.handleKeydown_);
+    this.menu_!.listen(menuSurfaceConstants.strings.CLOSED_EVENT, this.handleMenuClosed_);
+    this.menu_!.listen(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
+    this.menu_!.listen(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
 
     if (this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)) {
       // If an element is selected, the select should set the initial selected text.
@@ -185,7 +186,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     // Initially sync floating label
     this.foundation_.handleChange(/* didChange */ false);
 
-    if (this.root_.classList.contains(cssClasses.DISABLED)) {
+    if (this.selectAnchor_.classList.contains(cssClasses.DISABLED)) {
       this.disabled = true;
     }
   }
@@ -202,8 +203,8 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     this.menu_.unlisten(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
     this.menu_.destroy();
 
-    if (this.ripple) {
-      this.ripple.destroy();
+    if (this.ripple_) {
+      this.ripple_.destroy();
     }
     if (this.outline_) {
       this.outline_.destroy();
@@ -238,7 +239,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
   }
 
   get disabled(): boolean {
-    return this.root_.classList.contains(cssClasses.DISABLED);
+    return this.selectAnchor_.classList.contains(cssClasses.DISABLED);
   }
 
   set disabled(disabled: boolean) {
@@ -318,12 +319,11 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
    * Handles setup for the menu.
    */
   private selectSetup_(menuFactory: MDCMenuFactory) {
-    const isDisabled = this.root_.classList.contains(cssClasses.DISABLED);
+    const isDisabled = this.selectAnchor_.classList.contains(cssClasses.DISABLED);
     this.selectedText_.setAttribute('tabindex', isDisabled ? '-1' : '0');
     this.menuElement_ = this.root_.querySelector(strings.MENU_SELECTOR)!;
     this.menu_ = menuFactory(this.menuElement_);
-    this.menu_.hoistMenuToBody();
-    this.menu_.setAnchorElement(this.root_);
+    this.menu_.setAnchorElement(this.root_.querySelector(strings.SELECT_ANCHOR_SELECTOR)!);
     this.menu_.setAnchorCorner(menuSurfaceConstants.Corner.BOTTOM_START);
     this.menu_.wrapFocus = false;
   }
@@ -333,12 +333,12 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     const adapter: MDCRippleAdapter = {
-      ...MDCRipple.createAdapter(this),
+      ...MDCRipple.createAdapter({root_: this.selectAnchor_}),
       registerInteractionHandler: (evtType, handler) => this.selectedText_.addEventListener(evtType, handler),
       deregisterInteractionHandler: (evtType, handler) => this.selectedText_.removeEventListener(evtType, handler),
     };
     // tslint:enable:object-literal-sort-keys
-    return new MDCRipple(this.root_, new MDCRippleFoundation(adapter));
+    return new MDCRipple(this.selectAnchor_, new MDCRippleFoundation(adapter));
   }
 
   private getSelectAdapterMethods_() {
@@ -356,7 +356,7 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
         this.selectedText_.setAttribute('aria-disabled', isDisabled.toString());
       },
       checkValidity: () => {
-        const classList = this.root_.classList;
+        const classList = this.selectAnchor_.classList;
         if (classList.contains(cssClasses.REQUIRED) && !classList.contains(cssClasses.DISABLED)) {
           // See notes for required attribute under https://www.w3.org/TR/html52/sec-forms.html#the-select-element
           // TL;DR: Invalid if no index is selected, or if the first index is selected and has an empty value.
@@ -368,9 +368,9 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
       setValid: (isValid: boolean) => {
         this.selectedText_.setAttribute('aria-invalid', (!isValid).toString());
         if (isValid) {
-          this.root_.classList.remove(cssClasses.INVALID);
+          this.selectAnchor_.classList.remove(cssClasses.INVALID);
         } else {
-          this.root_.classList.add(cssClasses.INVALID);
+          this.selectAnchor_.classList.add(cssClasses.INVALID);
         }
       },
       setSelectedText: (text: string) => this.selectedText_.textContent = text,
@@ -426,9 +426,9 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
   private getCommonAdapterMethods_() {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
-      addClass: (className: string) => this.root_.classList.add(className),
-      removeClass: (className: string) => this.root_.classList.remove(className),
-      hasClass: (className: string) => this.root_.classList.contains(className),
+      addClass: (className: string) => this.selectAnchor_.classList.add(className),
+      removeClass: (className: string) => this.selectAnchor_.classList.remove(className),
+      hasClass: (className: string) => this.selectAnchor_.classList.contains(className),
       setRippleCenter: (normalizedX: number) => this.lineRipple_ && this.lineRipple_.setRippleCenter(normalizedX),
       activateBottomLine: () => this.lineRipple_ && this.lineRipple_.activate(),
       deactivateBottomLine: () => this.lineRipple_ && this.lineRipple_.deactivate(),
@@ -488,10 +488,10 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
     const isRequired =
         (this.selectedText_ as HTMLSelectElement).required
         || this.selectedText_.getAttribute('aria-required') === 'true'
-        || this.root_.classList.contains(cssClasses.REQUIRED);
+        || this.selectAnchor_.classList.contains(cssClasses.REQUIRED);
     if (isRequired) {
       this.selectedText_.setAttribute('aria-required', 'true');
-      this.root_.classList.add(cssClasses.REQUIRED);
+      this.selectAnchor_.classList.add(cssClasses.REQUIRED);
     }
   }
 
@@ -503,9 +503,9 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> implements MDCR
         }
 
         if (this.selectedText_.getAttribute('aria-required') === 'true') {
-          this.root_.classList.add(cssClasses.REQUIRED);
+          this.selectAnchor_.classList.add(cssClasses.REQUIRED);
         } else {
-          this.root_.classList.remove(cssClasses.REQUIRED);
+          this.selectAnchor_.classList.remove(cssClasses.REQUIRED);
         }
 
         return true;

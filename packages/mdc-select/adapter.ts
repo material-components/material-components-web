@@ -30,17 +30,17 @@
  */
 export interface MDCSelectAdapter {
   /**
-   * Adds class to root element.
+   * Adds class to select anchor element.
    */
   addClass(className: string): void;
 
   /**
-   * Removes a class from the root element.
+   * Removes a class from the select anchor element.
    */
   removeClass(className: string): void;
 
   /**
-   * Returns true if the root element contains the given class name.
+   * Returns true if the select anchor element contains the given class name.
    */
   hasClass(className: string): boolean;
 

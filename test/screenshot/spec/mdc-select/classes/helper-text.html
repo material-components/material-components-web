@@ -47,11 +47,19 @@
       <div class="test-layout">
 
         <div class="test-cell test-cell--select">
-          <div class="mdc-select custom-enhanced-select-width">
-            <i class="mdc-select__dropdown-icon"></i>
-            <div id="screenshot-selected-text" class="mdc-select__selected-text" role="button" aria-haspopup="listbox"
-                 aria-labelledby="screenshot-select-label screenshot-selected-text" aria-controls="my-helper-text">
+          <div class="mdc-select">
+            <div class="mdc-select__anchor custom-enhanced-select-width">
+              <i class="mdc-select__dropdown-icon"></i>
+              <div id="screenshot-selected-text" class="mdc-select__selected-text" role="button" aria-haspopup="listbox"
+                  aria-labelledby="screenshot-select-label screenshot-selected-text" aria-controls="my-helper-text">
+              </div>
+              <span id="screenshot-select-label" class="mdc-floating-label">Pick a Food Group</span>
+              <div class="mdc-line-ripple"></div>
             </div>
+            <p id="my-helper-text" class="mdc-select-helper-text">
+              Helper text
+            </p>
+
             <div class="mdc-select__menu mdc-menu mdc-menu-surface custom-enhanced-select-width" role="listbox">
               <ul class="mdc-list">
                 <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" data-value=""></li>
@@ -66,20 +74,28 @@
                 </li>
               </ul>
             </div>
-            <span id="screenshot-select-label" class="mdc-floating-label">Pick a Food Group</span>
-            <div class="mdc-line-ripple"></div>
           </div>
-          <p id="my-helper-text" class="mdc-select-helper-text">
-            Helper text
-          </p>
         </div>
 
         <div class="test-cell test-cell--select">
-          <div class="mdc-select mdc-select--outlined custom-enhanced-select-width">
-            <i class="mdc-select__dropdown-icon"></i>
-            <div id="screenshot-selected-text2" class="mdc-select__selected-text" role="button" aria-haspopup="listbox"
-                 aria-labelledby="screenshot-select-label2 screenshot-selected-text2" aria-controls="my-helper-text2">
+          <div class="mdc-select">
+            <div class="mdc-select__anchor mdc-select--outlined custom-enhanced-select-width">
+              <i class="mdc-select__dropdown-icon"></i>
+              <div id="screenshot-selected-text2" class="mdc-select__selected-text" role="button" aria-haspopup="listbox"
+                  aria-labelledby="screenshot-select-label2 screenshot-selected-text2" aria-controls="my-helper-text2">
+              </div>
+              <div class="mdc-notched-outline">
+                <div class="mdc-notched-outline__leading"></div>
+                <div class="mdc-notched-outline__notch">
+                  <span id="screenshot-select-label2" class="mdc-floating-label">Pick a Food Group</span>
+                </div>
+                <div class="mdc-notched-outline__trailing"></div>
+              </div>
             </div>
+            <p id="my-helper-text2" class="mdc-select-helper-text">
+              Helper text
+            </p>
+
             <div class="mdc-select__menu mdc-menu mdc-menu-surface custom-enhanced-select-width" role="listbox">
               <ul class="mdc-list">
                 <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" data-value=""></li>
@@ -94,26 +110,24 @@
                 </li>
               </ul>
             </div>
-            <div class="mdc-notched-outline">
-              <div class="mdc-notched-outline__leading"></div>
-              <div class="mdc-notched-outline__notch">
-                <span id="screenshot-select-label2" class="mdc-floating-label">Pick a Food Group</span>
-              </div>
-              <div class="mdc-notched-outline__trailing"></div>
-            </div>
           </div>
-          <p id="my-helper-text2" class="mdc-select-helper-text">
-            Helper text
-          </p>
         </div>
 
         <div class="test-cell test-cell--select">
-          <div class="mdc-select custom-enhanced-select-width">
-            <i class="mdc-select__dropdown-icon"></i>
-            <div id="screenshot-selected-text3" class="mdc-select__selected-text" role="button" aria-haspopup="listbox"
-                 aria-labelledby="screenshot-select-label3 screenshot-selected-text3" aria-controls="my-helper-text3">
-              Bread, Cereal, Rice, and Pasta
+          <div class="mdc-select">
+            <div class="mdc-select__anchor custom-enhanced-select-width">
+              <i class="mdc-select__dropdown-icon"></i>
+              <div id="screenshot-selected-text3" class="mdc-select__selected-text" role="button" aria-haspopup="listbox"
+                  aria-labelledby="screenshot-select-label3 screenshot-selected-text3" aria-controls="my-helper-text3">
+                Bread, Cereal, Rice, and Pasta
+              </div>
+              <span id="screenshot-select-label3" class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
+              <div class="mdc-line-ripple"></div>
             </div>
+            <p id="my-helper-text3" class="mdc-select-helper-text">
+              Helper text
+            </p>
+
             <div class="mdc-select__menu mdc-menu mdc-menu-surface custom-enhanced-select-width" role="listbox">
               <ul class="mdc-list">
                 <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" data-value="grains">
@@ -127,21 +141,29 @@
                 </li>
               </ul>
             </div>
-            <span id="screenshot-select-label3" class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
-            <div class="mdc-line-ripple"></div>
           </div>
-          <p id="my-helper-text3" class="mdc-select-helper-text">
-            Helper text
-          </p>
         </div>
 
         <div class="test-cell test-cell--select">
-          <div class="mdc-select mdc-select--outlined custom-enhanced-select-width">
-            <i class="mdc-select__dropdown-icon"></i>
-            <div id="screenshot-selected-text4" class="mdc-select__selected-text" role="button" aria-haspopup="listbox"
-                 aria-labelledby="screenshot-select-label4 screenshot-selected-text4" aria-controls="my-helper-text4">
-              Bread, Cereal, Rice, and Pasta
+          <div class="mdc-select">
+            <div class="mdc-select__anchor mdc-select--outlined custom-enhanced-select-width">
+              <i class="mdc-select__dropdown-icon"></i>
+              <div id="screenshot-selected-text4" class="mdc-select__selected-text" role="button" aria-haspopup="listbox"
+                  aria-labelledby="screenshot-select-label4 screenshot-selected-text4" aria-controls="my-helper-text4">
+                Bread, Cereal, Rice, and Pasta
+              </div>
+              <div class="mdc-notched-outline mdc-notched-outline--notched">
+                <div class="mdc-notched-outline__leading"></div>
+                <div class="mdc-notched-outline__notch">
+                  <span id="screenshot-select-label4" class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
+                </div>
+                <div class="mdc-notched-outline__trailing"></div>
+              </div>
             </div>
+            <p id="my-helper-text4" class="mdc-select-helper-text">
+              Helper text
+            </p>
+
             <div class="mdc-select__menu mdc-menu mdc-menu-surface custom-enhanced-select-width" role="listbox">
               <ul class="mdc-list">
                 <li class="mdc-list-item mdc-list-item--selected" aria-selected="true" data-value="grains">
@@ -155,17 +177,7 @@
                 </li>
               </ul>
             </div>
-            <div class="mdc-notched-outline mdc-notched-outline--notched">
-              <div class="mdc-notched-outline__leading"></div>
-              <div class="mdc-notched-outline__notch">
-                <span id="screenshot-select-label4" class="mdc-floating-label mdc-floating-label--float-above">Pick a Food Group</span>
-              </div>
-              <div class="mdc-notched-outline__trailing"></div>
-            </div>
           </div>
-          <p id="my-helper-text4" class="mdc-select-helper-text">
-            Helper text
-          </p>
         </div>
 
       </div>

@@ -37,6 +37,35 @@
 
 // postcss-bem-linter: define select
 .mdc-select {
+  position: relative; // Menu is absolutely positioned relative to this.
+
+  &__dropdown-icon {
+    @include mdc-select-dd-arrow-svg-bg_($mdc-select-dropdown-color, $mdc-select-dropdown-opacity);
+    @include mdc-rtl-reflexive(left, auto, right, 8px);
+
+    position: absolute;
+    bottom: 16px;
+    width: 24px;
+    height: 24px;
+    transition: transform $mdc-select-dropdown-transition-duration $mdc-animation-standard-curve-timing-function;
+    pointer-events: none;
+
+    .mdc-select--focused & {
+      @include mdc-select-dd-arrow-svg-bg_(mdc-theme-prop-value(primary), 1);
+    }
+
+    .mdc-select--activated & {
+      transform: rotate(180deg) translateY(-5px);
+      transition: transform $mdc-select-dropdown-transition-duration $mdc-animation-standard-curve-timing-function;
+    }
+  }
+
+  &__native-control {
+    padding-top: 20px;
+  }
+}
+
+.mdc-select__anchor {
   @include mdc-select-container-fill-color($mdc-select-fill-color);
   @include mdc-ripple-surface;
   @include mdc-ripple-radius-bounded;
@@ -66,31 +95,6 @@
   overflow: hidden;
   /* @alternate */
   will-change: opacity, transform, color;
-
-  &__dropdown-icon {
-    @include mdc-select-dd-arrow-svg-bg_($mdc-select-dropdown-color, $mdc-select-dropdown-opacity);
-    @include mdc-rtl-reflexive(left, auto, right, 8px);
-
-    position: absolute;
-    bottom: 16px;
-    width: 24px;
-    height: 24px;
-    transition: transform $mdc-select-dropdown-transition-duration $mdc-animation-standard-curve-timing-function;
-    pointer-events: none;
-
-    .mdc-select--focused & {
-      @include mdc-select-dd-arrow-svg-bg_(mdc-theme-prop-value(primary), 1);
-    }
-
-    .mdc-select--activated & {
-      transform: rotate(180deg) translateY(-5px);
-      transition: transform $mdc-select-dropdown-transition-duration $mdc-animation-standard-curve-timing-function;
-    }
-  }
-
-  &__native-control {
-    padding-top: 20px;
-  }
 
   @include mdc-select-focused-line-ripple_ {
     &::after {
