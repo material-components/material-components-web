@@ -195,7 +195,7 @@ function setupTest(hasOutline = false, hasLabel = true, hasMockFoundation = fals
     () => icon,
     () => helperText);
 
-  return {fixture, anchor, selectedText, hiddenInput, label, labelEl, bottomLine, bottomLineEl,
+  return {fixture, anchor, selectedText, label, labelEl, bottomLine, bottomLineEl,
     component, outline, menuSurface, mockFoundation, mockMenu, icon, helperText, container};
 }
 
@@ -679,7 +679,7 @@ test('adapter#getValue returns the selected element value', () => {
   const adapter = component.getDefaultFoundation().adapter_;
   adapter.toggleClassAtIndex(index, cssClasses.SELECTED_ITEM_CLASS, true);
 
-  assert.equal(value, textValue);
+  expect(adapter.getValue()).to.equal(textValue);
 });
 
 test('adapter#setAttributeAtIndex sets attribute value correctly', () => {
@@ -694,11 +694,11 @@ test('adapter#setAttributeAtIndex sets attribute value correctly', () => {
   const valueToSet = 'foo';
 
   assert.notEqual(valueToSet, menuItem.getAttribute(strings.VALUE_ATTR));
+  expect(menuItem.getAttribute(strings.VALUE_ATTR)).not.to.equal(valueToSet);
   const adapter = component.getDefaultFoundation().adapter_;
   adapter.setAttributeAtIndex(index, strings.VALUE_ATTR, valueToSet);
 
-  assert.equal(adapter.getValue(), listItemValue);
-  assert.equal(hiddenInput.value, listItemValue);
+  expect(menuItem.getAttribute(strings.VALUE_ATTR)).to.equal(valueToSet);
 });
 
 test('adapter#removeAttributeAtIndex removes attribute value correctly', () => {
@@ -842,13 +842,14 @@ test('adapter#checkValidity returns false when required class is present and sel
   const hasMockMenu = false;
   const hasOutline = false;
   const hasLabel = true;
-  const {component, anchor} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  const {component, anchor, mockFoundation} =
+    setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   const adapter = component.getDefaultFoundation().adapter_;
 
   anchor.classList.add(cssClasses.REQUIRED);
   component.selectedIndex = -1;
   td.when(mockFoundation.getSelectedIndex()).thenReturn(-1);
-  assert.equal(adapter.checkValidity(), false);
+  expect(adapter.checkValidity()).to.be.false;
 });
 
 test('adapter#checkValidity returns false when required class is present and placeholder option is selected', () => {
@@ -856,13 +857,14 @@ test('adapter#checkValidity returns false when required class is present and pla
   const hasMockMenu = false;
   const hasOutline = false;
   const hasLabel = true;
-  const {component, anchor} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  const {component, anchor, mockFoundation} =
+    setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   const adapter = component.getDefaultFoundation().adapter_;
 
   anchor.classList.add(cssClasses.REQUIRED);
   component.selectedIndex = 0;
   td.when(mockFoundation.getSelectedIndex()).thenReturn(0);
-  assert.equal(adapter.checkValidity(), false);
+  expect(adapter.checkValidity()).to.be.false;
 });
 
 test('adapter#checkValidity returns true regardless if required class is not present', () => {
