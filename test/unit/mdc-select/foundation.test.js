@@ -46,9 +46,12 @@ test('exports strings', () => {
 
 test('default adapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCSelectFoundation, [
-    'addClass', 'removeClass', 'hasClass', 'floatLabel', 'activateBottomLine', 'deactivateBottomLine', 'getValue',
+    'addClass', 'removeClass', 'hasClass',
+    'floatLabel', 'activateBottomLine', 'deactivateBottomLine', 'getValue',
     'getLabelWidth', 'hasOutline', 'notchOutline', 'closeOutline', 'isMenuOpen', 'openMenu',
-    'closeMenu', 'setDisabled', 'setSelectedIndex', 'setValue', 'setRippleCenter', 'notifyChange',
+    'closeMenu', 'setDisabled', 'setSelectedText',
+    'setAttributeAtIndex', 'removeAttributeAtIndex', 'getMenuItemValues', 'getMenuItemTextAtIndex',
+    'toggleClassAtIndex', 'setRippleCenter', 'notifyChange',
     'checkValidity', 'setValid',
   ]);
 });

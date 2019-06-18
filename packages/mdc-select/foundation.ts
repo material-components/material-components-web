@@ -52,28 +52,37 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
       hasClass: () => false,
       activateBottomLine: () => undefined,
       deactivateBottomLine: () => undefined,
-      setValue: () => undefined,
       getValue: () => '',
       floatLabel: () => undefined,
       getLabelWidth: () => 0,
       hasOutline: () => false,
       notchOutline: () => undefined,
       closeOutline: () => undefined,
-      openMenu: () => undefined,
-      closeMenu: () => undefined,
-      isMenuOpen: () => false,
-      setSelectedIndex: () => undefined,
       setDisabled: () => undefined,
       setRippleCenter: () => undefined,
       notifyChange: () => undefined,
       checkValidity: () => false,
       setValid: () => undefined,
+      setSelectedText: () => undefined,
+      openMenu: () => undefined,
+      closeMenu: () => undefined,
+      isMenuOpen: () => false,
+      setAttributeAtIndex: () => undefined,
+      removeAttributeAtIndex: () => undefined,
+      getMenuItemValues: () => [],
+      getMenuItemTextAtIndex: () => '',
+      toggleClassAtIndex: () => undefined,
     };
     // tslint:enable:object-literal-sort-keys
   }
 
   private readonly leadingIcon_: MDCSelectIconFoundation | undefined;
   private readonly helperText_: MDCSelectHelperTextFoundation | undefined;
+
+  // Index of the currently selected menu item.
+  private selectedIndex_: number = numbers.UNSET_INDEX;
+  // VALUE_ATTR values of the menu items.
+  private readonly menuItemValues_: string[];
 
   /* istanbul ignore next: optional argument is not a branch statement */
   /**
@@ -85,17 +94,44 @@ export class MDCSelectFoundation extends MDCFoundation<MDCSelectAdapter> {
 
     this.leadingIcon_ = foundationMap.leadingIcon;
     this.helperText_ = foundationMap.helperText;
+
+    this.menuItemValues_ = this.adapter_.getMenuItemValues();
   }
 
-  setSelectedIndex(index: number) {
-    this.adapter_.setSelectedIndex(index);
-    this.adapter_.closeMenu();
+  /** Returns the index of the currently selected menu item, or -1 if none. */
+  getSelectedIndex(): number {
+    return this.selectedIndex_;
+  }
+
+  setSelectedIndex(index: number, closeMenu = false) {
+    const previouslySelectedIndex = this.selectedIndex_;
+    this.selectedIndex_ = index;
+
+    this.adapter_.setSelectedText(
+        this.selectedIndex_ === numbers.UNSET_INDEX ?
+            '' : this.adapter_.getMenuItemTextAtIndex(this.selectedIndex_).trim());
+
+    if (previouslySelectedIndex !== numbers.UNSET_INDEX) {
+      this.adapter_.toggleClassAtIndex(previouslySelectedIndex, cssClasses.SELECTED_ITEM_CLASS, false);
+      this.adapter_.removeAttributeAtIndex(previouslySelectedIndex, strings.ARIA_SELECTED_ATTR);
+    }
+    if (this.selectedIndex_ !== numbers.UNSET_INDEX) {
+      this.adapter_.toggleClassAtIndex(this.selectedIndex_, cssClasses.SELECTED_ITEM_CLASS, true);
+      this.adapter_.setAttributeAtIndex(this.selectedIndex_, strings.ARIA_SELECTED_ATTR, 'true');
+    }
+    this.layout();
+
+    if (closeMenu) {
+      this.adapter_.closeMenu();
+    }
+
     const didChange = true;
     this.handleChange(didChange);
   }
 
   setValue(value: string) {
-    this.adapter_.setValue(value);
+    const index = this.menuItemValues_.indexOf(value);
+    this.setSelectedIndex(index);
     const didChange = true;
     this.handleChange(didChange);
   }

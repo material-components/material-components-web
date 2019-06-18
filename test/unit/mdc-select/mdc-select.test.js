@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {assert} from 'chai';
+import {assert, expect} from 'chai';
 import bel from 'bel';
 import domEvents from 'dom-events';
 import td from 'testdouble';
@@ -35,7 +35,6 @@ import {MDCNotchedOutline} from '../../../packages/mdc-notched-outline/index';
 import {MDCMenu, MDCMenuFoundation} from '../../../packages/mdc-menu/index';
 import {MDCMenuSurfaceFoundation} from '../../../packages/mdc-menu-surface/index';
 import {MDCSelectFoundation} from '../../../packages/mdc-select/foundation';
-import {MDCListFoundation} from '../../../packages/mdc-list/foundation';
 import {MDCSelectIcon} from '../../../packages/mdc-select/icon';
 
 const LABEL_WIDTH = 100;
@@ -157,13 +156,16 @@ function getHelperTextFixture(root = getFixture()) {
 }
 
 function setupTest(hasOutline = false, hasLabel = true, hasMockFoundation = false,
-  hasMockMenu = true, hasHelperText = false, hasHiddenInput = true) {
+  hasMockMenu = true, hasHelperText = false) {
+  // Clean up: Remove all menu elements from DOM first.
+  const menuEls = document.querySelectorAll(strings.MENU_SELECTOR);
+  [].forEach.call(menuEls, (el) => el.parentElement.removeChild(el));
+
   const bottomLine = new FakeBottomLine();
   const label = new FakeLabel();
   const fixture = hasOutline ? getOutlineFixture() : getFixture();
   const anchor = fixture.querySelector(strings.SELECT_ANCHOR_SELECTOR);
   const container = hasHelperText ? getHelperTextFixture(fixture) : null;
-  const hiddenInput = fixture.querySelector(strings.HIDDEN_INPUT_SELECTOR);
   const selectedText = fixture.querySelector(strings.SELECTED_TEXT_SELECTOR);
   const labelEl = fixture.querySelector(strings.LABEL_SELECTOR);
   const bottomLineEl = fixture.querySelector(strings.LINE_RIPPLE_SELECTOR);
@@ -180,10 +182,6 @@ function setupTest(hasOutline = false, hasLabel = true, hasMockFoundation = fals
     labelEl.parentElement.removeChild(labelEl);
   }
 
-  if (!hasHiddenInput) {
-    fixture.removeChild(hiddenInput);
-  }
-
   if (container) {
     document.body.appendChild(container);
   }
@@ -197,7 +195,7 @@ function setupTest(hasOutline = false, hasLabel = true, hasMockFoundation = fals
     () => icon,
     () => helperText);
 
-  return {fixture, anchor, selectedText, hiddenInput, label, labelEl, bottomLine, bottomLineEl,
+  return {fixture, anchor, selectedText, label, labelEl, bottomLine, bottomLineEl,
     component, outline, menuSurface, mockFoundation, mockMenu, icon, helperText, container};
 }
 
@@ -309,14 +307,24 @@ test('#set valid forwards to foundation', () => {
   td.verify(mockFoundation.setValid(true));
 });
 
-test('#set selectedIndex calls foundation.selectedIndex', () => {
+test('#get selectedIndex calls foundation.getSelectedIndex', () => {
+  const hasMockFoundation = true;
+  const hasMockMenu = true;
+  const hasOutline = false;
+  const hasLabel = true;
+  const {component, mockFoundation} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  component.selectedIndex;
+  td.verify(mockFoundation.getSelectedIndex(), {times: 1});
+});
+
+test('#set selectedIndex calls foundation.setSelectedIndex', () => {
   const hasMockFoundation = true;
   const hasMockMenu = true;
   const hasOutline = false;
   const hasLabel = true;
   const {component, mockFoundation} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   component.selectedIndex = 1;
-  td.verify(mockFoundation.setSelectedIndex(1), {times: 1});
+  td.verify(mockFoundation.setSelectedIndex(1, /** closeMenu */ true), {times: 1});
 });
 
 test('#set disabled calls foundation.setDisabled', () => {
@@ -407,13 +415,6 @@ test('#initialSyncWithDOM sets the selected index if an option has the selected 
       </div>
     </div>
   `;
-  const component = new MDCSelect(fixture, /* foundation */ undefined);
-  assert.equal(component.selectedIndex, 1);
-});
-
-test('#initialSyncWithDOM sets the selected index if the hidden input has a value', () => {
-  const fixture = getFixture();
-  fixture.querySelector(strings.HIDDEN_INPUT_SELECTOR).value = 'orange';
   const component = new MDCSelect(fixture, /* foundation */ undefined);
   assert.equal(component.selectedIndex, 1);
 });
@@ -671,54 +672,67 @@ test('adapter#getValue returns the selected element value', () => {
   const hasOutline = false;
   const hasLabel = true;
   const {component, menuSurface} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-  const textValue = menuSurface.querySelectorAll('.mdc-list-item')[1].getAttribute('data-value');
-  const adapter = component.getDefaultFoundation().adapter_;
-  adapter.setSelectedIndex(1);
-  const value = adapter.getValue();
 
-  assert.equal(value, textValue);
+  const index = 1;
+  const menuItem = menuSurface.querySelectorAll('.mdc-list-item')[index];
+  const textValue = menuItem.getAttribute('data-value');
+  const adapter = component.getDefaultFoundation().adapter_;
+  adapter.toggleClassAtIndex(index, cssClasses.SELECTED_ITEM_CLASS, true);
+
+  expect(adapter.getValue()).to.equal(textValue);
 });
 
-test('adapter#setValue sets the list item to selected when the data-value is found in the list', () => {
-  const hasMockFoundation = true;
-  const hasMockMenu = false;
-  const hasOutline = false;
-  const hasLabel = true;
-  const {component, hiddenInput, menuSurface} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-  const listItemValue = menuSurface.querySelectorAll('.mdc-list-item')[1].getAttribute('data-value');
-  const adapter = component.getDefaultFoundation().adapter_;
-  adapter.setValue(listItemValue);
-
-  assert.equal(adapter.getValue(), listItemValue);
-  assert.equal(hiddenInput.value, listItemValue);
-});
-
-test('adapter#setValue does not throw if hidden input is absent', () => {
+test('adapter#setAttributeAtIndex sets attribute value correctly', () => {
   const hasMockFoundation = true;
   const hasMockMenu = false;
   const hasOutline = false;
   const hasLabel = true;
   const {component, menuSurface} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-  const listItemValue = menuSurface.querySelectorAll('.mdc-list-item')[1].getAttribute('data-value');
-  const adapter = component.getDefaultFoundation().adapter_;
 
-  assert.doesNotThrow(() => adapter.setValue(listItemValue));
-  assert.equal(adapter.getValue(), listItemValue);
+  const index = 1;
+  const menuItem = menuSurface.querySelectorAll('.mdc-list-item')[index];
+  const valueToSet = 'foo';
+
+  assert.notEqual(valueToSet, menuItem.getAttribute(strings.VALUE_ATTR));
+  expect(menuItem.getAttribute(strings.VALUE_ATTR)).not.to.equal(valueToSet);
+  const adapter = component.getDefaultFoundation().adapter_;
+  adapter.setAttributeAtIndex(index, strings.VALUE_ATTR, valueToSet);
+
+  expect(menuItem.getAttribute(strings.VALUE_ATTR)).to.equal(valueToSet);
 });
 
-test('adapter#setValue clears the selected item if the element is not found', () => {
+test('adapter#removeAttributeAtIndex removes attribute value correctly', () => {
   const hasMockFoundation = true;
   const hasMockMenu = false;
   const hasOutline = false;
   const hasLabel = true;
-  const {component, hiddenInput, menuSurface} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-  const listItemValue = menuSurface.querySelectorAll('.mdc-list-item')[1].getAttribute('data-value');
-  const adapter = component.getDefaultFoundation().adapter_;
-  adapter.setValue(listItemValue);
-  adapter.setValue(listItemValue + '1');
+  const {component, menuSurface} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
 
-  assert.equal(adapter.getValue(), '');
-  assert.equal(hiddenInput.value, '');
+  const index = 1;
+  const menuItem = menuSurface.querySelectorAll('.mdc-list-item')[index];
+  const attrToRemove = 'foo';
+  menuItem.setAttribute(attrToRemove, '0');
+
+  const adapter = component.getDefaultFoundation().adapter_;
+  adapter.removeAttributeAtIndex(index, attrToRemove);
+
+  expect(menuItem.hasAttribute(attrToRemove)).to.be.false;
+});
+
+test('adapter#setSelectedText sets the select text content correctly', () => {
+  const hasMockFoundation = true;
+  const hasMockMenu = true;
+  const hasOutline = false;
+  const hasLabel = true;
+  const {fixture, component, selectedText} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  document.body.appendChild(fixture);
+  const adapter = component.getDefaultFoundation().adapter_;
+
+  const textToSet = 'foo';
+  assert.notEqual(textToSet, selectedText.textContent);
+  adapter.setSelectedText(textToSet);
+  assert.equal(textToSet, selectedText.textContent);
+  document.body.removeChild(fixture);
 });
 
 test('adapter#openMenu causes the menu to open', () => {
@@ -765,64 +779,60 @@ test('adapter#isMenuOpen returns true if the menu is opened, and false if not', 
   document.body.removeChild(fixture);
 });
 
-test('adapter#setSelectedIndex adds the --selected class to the list item at the index specified', () => {
+test('adapter#getMenuItemValues returns the correct menu item values', () => {
   const hasMockFoundation = true;
   const hasMockMenu = false;
   const hasOutline = false;
   const hasLabel = true;
-  const {fixture, component, menuSurface} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  const {fixture, component} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   document.body.appendChild(fixture);
+
   const adapter = component.getDefaultFoundation().adapter_;
-  assert.isNull(menuSurface.querySelector(`.${MDCListFoundation.cssClasses.LIST_ITEM_SELECTED_CLASS}`));
-  adapter.setSelectedIndex(1);
-  assert.isNotNull(menuSurface.querySelector(`.${MDCListFoundation.cssClasses.LIST_ITEM_SELECTED_CLASS}`));
+  expect(adapter.getMenuItemValues()).to.eql(['', 'orange', 'apple']);
+
   document.body.removeChild(fixture);
 });
 
-test('adapter#setDisabled adds the --disabled class to the root element and syncs hidden input', () => {
+test('adapter#toggleClassAtIndex toggles class correctly', () => {
   const hasMockFoundation = true;
-  const hasMockMenu = true;
+  const hasMockMenu = false;
   const hasOutline = false;
   const hasLabel = true;
-  const {fixture, component, selectedText, hiddenInput} =
+  const {fixture, component} =
     setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   document.body.appendChild(fixture);
+
   const adapter = component.getDefaultFoundation().adapter_;
+  const index = 1;
+  const menuItem = document.querySelectorAll('.mdc-list-item')[index];
 
-  assert.equal(selectedText.tabIndex, 0);
-  assert.isFalse(hiddenInput.disabled);
-
-  adapter.setDisabled(true);
-  assert.equal(selectedText.getAttribute('aria-disabled'), 'true');
-  assert.equal(selectedText.tabIndex, -1);
-  assert.isTrue(hiddenInput.disabled);
-
-  adapter.setDisabled(false);
-  assert.equal(selectedText.getAttribute('aria-disabled'), 'false');
-  assert.equal(selectedText.tabIndex, 0);
-  assert.isFalse(hiddenInput.disabled);
+  adapter.toggleClassAtIndex(index, cssClasses.SELECTED_ITEM_CLASS, true);
+  assert.isTrue(menuItem.classList.contains(cssClasses.SELECTED_ITEM_CLASS));
+  adapter.toggleClassAtIndex(index, cssClasses.SELECTED_ITEM_CLASS, false);
+  assert.isFalse(menuItem.classList.contains(cssClasses.SELECTED_ITEM_CLASS));
 
   document.body.removeChild(fixture);
 });
 
-test('adapter#setDisabled does not throw when hidden input is absent', () => {
+test('adapter#setDisabled adds the --disabled class to the root element', () => {
   const hasMockFoundation = true;
   const hasMockMenu = true;
   const hasOutline = false;
   const hasLabel = true;
   const {fixture, component, selectedText} =
-    setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
-
+      setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   document.body.appendChild(fixture);
   const adapter = component.getDefaultFoundation().adapter_;
 
-  assert.doesNotThrow(() => adapter.setDisabled(true));
+  assert.equal(selectedText.tabIndex, 0);
+
+  adapter.setDisabled(true);
   assert.equal(selectedText.getAttribute('aria-disabled'), 'true');
   assert.equal(selectedText.tabIndex, -1);
 
-  assert.doesNotThrow(() => adapter.setDisabled(false));
-  assert.equal(selectedText.getAttribute('aria-disabled'), 'false');
-  assert.equal(selectedText.tabIndex, 0);
+  adapter.setDisabled(false);
+  expect(selectedText.getAttribute('aria-disabled')).to.equal('false');
+  expect(selectedText.tabIndex).to.equal(0);
 
   document.body.removeChild(fixture);
 });
@@ -832,12 +842,14 @@ test('adapter#checkValidity returns false when required class is present and sel
   const hasMockMenu = false;
   const hasOutline = false;
   const hasLabel = true;
-  const {component, anchor} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  const {component, anchor, mockFoundation} =
+    setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   const adapter = component.getDefaultFoundation().adapter_;
 
   anchor.classList.add(cssClasses.REQUIRED);
   component.selectedIndex = -1;
-  assert.equal(adapter.checkValidity(), false);
+  td.when(mockFoundation.getSelectedIndex()).thenReturn(-1);
+  expect(adapter.checkValidity()).to.be.false;
 });
 
 test('adapter#checkValidity returns false when required class is present and placeholder option is selected', () => {
@@ -845,12 +857,14 @@ test('adapter#checkValidity returns false when required class is present and pla
   const hasMockMenu = false;
   const hasOutline = false;
   const hasLabel = true;
-  const {component, anchor} = setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
+  const {component, anchor, mockFoundation} =
+    setupTest(hasOutline, hasLabel, hasMockFoundation, hasMockMenu);
   const adapter = component.getDefaultFoundation().adapter_;
 
   anchor.classList.add(cssClasses.REQUIRED);
   component.selectedIndex = 0;
-  assert.equal(adapter.checkValidity(), false);
+  td.when(mockFoundation.getSelectedIndex()).thenReturn(0);
+  expect(adapter.checkValidity()).to.be.false;
 });
 
 test('adapter#checkValidity returns true regardless if required class is not present', () => {
@@ -1148,7 +1162,7 @@ test('menu surface selected event causes the select to update', () => {
     evt.initCustomEvent(evtType, false, false, detail);
   }
   menuSurface.dispatchEvent(evt);
-  td.verify(mockFoundation.setSelectedIndex(1), {times: 1});
+  td.verify(mockFoundation.setSelectedIndex(1, /** closeMenu */ true), {times: 1});
 
   document.body.removeChild(fixture);
 });

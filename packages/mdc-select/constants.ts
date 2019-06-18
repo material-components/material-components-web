@@ -37,7 +37,6 @@ const strings = {
   ARIA_CONTROLS: 'aria-controls',
   ARIA_SELECTED_ATTR: 'aria-selected',
   CHANGE_EVENT: 'MDCSelect:change',
-  HIDDEN_INPUT_SELECTOR: 'input[type="hidden"]',
   LABEL_SELECTOR: '.mdc-floating-label',
   LEADING_ICON_SELECTOR: '.mdc-select__icon',
   LINE_RIPPLE_SELECTOR: '.mdc-line-ripple',
@@ -51,6 +50,7 @@ const strings = {
 
 const numbers = {
   LABEL_SCALE: 0.75,
+  UNSET_INDEX: -1,
 };
 
 export {cssClasses, strings, numbers};

@@ -46,9 +46,6 @@ The enhanced select requires that you set the `width` of the root element (conta
 `mdc-select` class) as well as setting the width of the `mdc-select__menu` element to match. This is best done
 through the use of another class (e.g. `demo-width-class` in the example HTML and CSS below).
 
-If you are using the enhanced select within an HTML form, you can include a hidden `<input>` element under the root
-`mdc-select` element, and it will be synchronized when the value is updated via user interaction or programmatically.
-
 ### HTML
 
 ```html
@@ -208,8 +205,7 @@ the list with an empty `data-value` attribute.
 
 #### Disabled select
 
-Add the `mdc-select--disabled` class to the `mdc-select` element, and add the `disabled`
-attribute to the hidden `<input>` element if present.
+Add the `mdc-select--disabled` class to the `mdc-select` element.
 
 ```html
 <div class="mdc-select">
@@ -351,18 +347,20 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `hasOutline() => boolean` | Returns true if the `select` has the notched outline element. |
 | `notchOutline(labelWidth: number) => void` | Switches the notched outline element to its "notched state." |
 | `closeOutline() => void` | Switches the notched outline element to its closed state. |
-| `openMenu() => void` | Causes the menu element in the enhanced select to open. |
-| `closeMenu() => void` | Causes the menu element in the enhanced select to close. |
-| `setValue(value: string) => void` | Sets the value of the select or text content of the selected-text element. |
-| `isMenuOpen() => boolean` | Returns true if the menu is currently opened in the enhanced select. |
-| `setSelectedIndex(index: number) => void` | Selects the option or list item at the specified index. |
-| `getSelectedMenuItem() => Element|null` | Returns the currently selected menu element, if it exists. |
-| `getMenuItems() => Element[]` | Returns the menu item elements. |
 | `setDisabled(isDisabled: boolean) => void` | Enables or disables the select. |
 | `setRippleCenter(normalizedX: number) => void` | Sets the line ripple center to the provided normalizedX value. |
 | `notifyChange(value: string) => void` | Emits the `MDCSelect:change` event when an element is selected. |
 | `checkValidity() => boolean` | Returns whether the component is currently valid, using the select's `checkValidity`. |
 | `setValid(isValid: boolean) => void` | Adds or removes invalid styles. |
+| `setSelectedText(text: string): void` | Sets the text content of the selectedText element to the given string. |
+| `openMenu() => void` | Causes the menu element in the enhanced select to open. |
+| `closeMenu() => void` | Causes the menu element in the enhanced select to close. |
+| `isMenuOpen() => boolean` | Returns true if the menu is currently opened in the enhanced select. |
+| `setAttributeAtIndex(index: number, attributeName: string, attributeValue: string) => void;` | Sets the attribute on the menu item at the given index. |
+| `removeAttributeAtIndex(index: number, attributeName: string) => void;` | Removes the attribute on the menu item at the given index. |
+| `getMenuItemValues() => string[]` | Returns an array representing the VALUE_ATTR attributes of each menu item. |
+| `getMenuItemTextAtIndex(index: number) => string` | Gets the text content of the menu item element at the given index. |
+| `toggleClassAtIndex(menuItem: Element, className: string, toggle: boolean) => void` | Toggles the class name on the menu item at the given index. |
 
 ### `MDCSelectFoundation`
 
@@ -379,8 +377,8 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 | `handleKeydown(event: KeyboardEvent) => void` | Handles opening the menu (enhanced select) when the `mdc-select__selected-text` element is focused and the user presses the `Enter` or `Space` key. |
 | `getSelectedIndex() => number` | Returns the index of the currently selected menu item. |
 | `setSelectedIndex(index: number) => void` | Handles setting the `mdc-select__selected-text` element and closing the menu (enhanced select only). Also causes the label to float and outline to notch if needed. |
-| `setValue(value: string) => void` | Handles setting the value through the adapter and causes the label to float and outline to notch if needed. |
 | `getValue() => string` | Handles getting the value through the adapter. |
+| `setValue() => string` | Sets the selected index to the index of the menu item with the given value. |
 | `setValid(isValid: boolean) => void` | Sets the valid state through the adapter. |
 | `isValid() => boolean` | Gets the valid state through the adapter's `checkValidity` API. |
 | `layout() => void` | Handles determining if the notched outline should be notched. |

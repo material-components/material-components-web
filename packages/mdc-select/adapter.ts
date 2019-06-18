@@ -55,11 +55,6 @@ export interface MDCSelectAdapter {
   deactivateBottomLine(): void;
 
   /**
-   * Sets the value of the select.
-   */
-  setValue(value: string): void;
-
-  /**
    * Returns the selected value of the select element.
    */
   getValue(): string;
@@ -90,26 +85,6 @@ export interface MDCSelectAdapter {
   closeOutline(): void;
 
   /**
-   * Opens the menu.
-   */
-  openMenu(): void;
-
-  /**
-   * Closes the menu.
-   */
-  closeMenu(): void;
-
-  /**
-   * Returns true if the menu is currently open.
-   */
-  isMenuOpen(): boolean;
-
-  /**
-   * Sets the selected index of the select to the index provided.
-   */
-  setSelectedIndex(index: number): void;
-
-  /**
    * Sets the select to disabled.
    */
   setDisabled(isDisabled: boolean): void;
@@ -133,4 +108,50 @@ export interface MDCSelectAdapter {
    * Adds/Removes the invalid class.
    */
   setValid(isValid: boolean): void;
+
+  /**
+   * Sets the text content of the selectedText element to the given string.
+   */
+  setSelectedText(text: string): void;
+
+  // Menu-related methods ======================================================
+  /**
+   * Opens the menu.
+   */
+  openMenu(): void;
+
+  /**
+   * Closes the menu.
+   */
+  closeMenu(): void;
+
+  /**
+   * Returns true if the menu is currently open.
+   */
+  isMenuOpen(): boolean;
+
+  /**
+   * Sets the attribute on the menu item at the given index.
+   */
+  setAttributeAtIndex(index: number, attributeName: string, attributeValue: string): void;
+
+  /**
+   * Removes the attribute on the menu item at the given index.
+   */
+  removeAttributeAtIndex(index: number, attributeName: string): void;
+
+  /**
+   * Returns an array representing the VALUE_ATTR attributes of each menu item.
+   */
+  getMenuItemValues(): string[];
+
+  /**
+   * Gets the text content of the menu item element at the given index.
+   */
+  getMenuItemTextAtIndex(index: number): string;
+
+  /**
+   * Toggles the class name on the menu item at the given index.
+   */
+  toggleClassAtIndex(index: number, className: string, toggle: boolean): void;
 }

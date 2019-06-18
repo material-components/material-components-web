@@ -58,7 +58,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   private selectAnchor_!: HTMLElement; // assigned in initialize()
   private selectedText_!: HTMLElement; // assigned in initialize()
 
-  private hiddenInput_!: HTMLInputElement | null; // assigned in selectSetup_()
   private menuElement_!: Element; // assigned in selectSetup_()
   private leadingIcon_?: MDCSelectIcon; // assigned in initialize()
   private helperText_!: MDCSelectHelperText | null; // assigned in initialize()
@@ -178,14 +177,10 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     this.menu_!.listen(menuSurfaceConstants.strings.OPENED_EVENT, this.handleMenuOpened_);
     this.menu_!.listen(menuConstants.strings.SELECTED_EVENT, this.handleMenuSelected_);
 
-    if (this.hiddenInput_ && this.hiddenInput_.value) {
-      // If the hidden input already has a value, use it to restore the select's value.
-      // This can happen e.g. if the user goes back or (in some browsers) refreshes the page.
-      this.getSelectAdapterMethods_().setValue(this.hiddenInput_.value);
-    } else if (this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)) {
+    if (this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)) {
       // If an element is selected, the select should set the initial selected text.
       const adapterMethods = this.getSelectAdapterMethods_();
-      adapterMethods.setValue(adapterMethods.getValue());
+      this.foundation_.setValue(adapterMethods.getValue());
     }
 
     // Initially sync floating label
@@ -236,14 +231,11 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   }
 
   get selectedIndex(): number {
-    let selectedIndex = -1;
-    const selectedEl = this.menuElement_.querySelector(strings.SELECTED_ITEM_SELECTOR)!;
-    selectedIndex = this.menu_.items.indexOf(selectedEl);
-    return selectedIndex;
+    return this.foundation_.getSelectedIndex();
   }
 
   set selectedIndex(selectedIndex: number) {
-    this.foundation_.setSelectedIndex(selectedIndex);
+    this.foundation_.setSelectedIndex(selectedIndex, /** closeMenu */ true);
   }
 
   get disabled(): boolean {
@@ -329,7 +321,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
   private selectSetup_(menuFactory: MDCMenuFactory) {
     const isDisabled = this.selectAnchor_.classList.contains(cssClasses.DISABLED);
     this.selectedText_.setAttribute('tabindex', isDisabled ? '-1' : '0');
-    this.hiddenInput_ = this.root_.querySelector(strings.HIDDEN_INPUT_SELECTOR);
     this.menuElement_ = this.root_.querySelector(strings.MENU_SELECTOR)!;
     this.menu_ = menuFactory(this.menuElement_);
     this.menu_.setAnchorElement(this.root_.querySelector(strings.SELECT_ANCHOR_SELECTOR)!);
@@ -354,16 +345,34 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     // tslint:disable:object-literal-sort-keys Methods should be in the same order as the adapter interface.
     return {
       getValue: () => {
-        const listItem = this.menuElement_!.querySelector(strings.SELECTED_ITEM_SELECTOR);
+        const listItem = this.getSelectedMenuItem_();
         if (listItem && listItem.hasAttribute(strings.VALUE_ATTR)) {
           return listItem.getAttribute(strings.VALUE_ATTR) || '';
         }
         return '';
       },
-      setValue: (value: string) => {
-        const element = this.menuElement_!.querySelector(`[${strings.VALUE_ATTR}="${value}"]`);
-        this.setSelectedIndex_(element ? this.menu_.items.indexOf(element) : -1);
+      setDisabled: (isDisabled: boolean) => {
+        this.selectedText_.setAttribute('tabindex', isDisabled ? '-1' : '0');
+        this.selectedText_.setAttribute('aria-disabled', isDisabled.toString());
       },
+      checkValidity: () => {
+        const classList = this.selectAnchor_.classList;
+        if (classList.contains(cssClasses.REQUIRED) && !classList.contains(cssClasses.DISABLED)) {
+          // See notes for required attribute under https://www.w3.org/TR/html52/sec-forms.html#the-select-element
+          // TL;DR: Invalid if no index is selected, or if the first index is selected and has an empty value.
+          return this.selectedIndex !== -1 && (this.selectedIndex !== 0 || Boolean(this.value));
+        }
+        return true;
+      },
+      setValid: (isValid: boolean) => {
+        this.selectedText_.setAttribute('aria-invalid', (!isValid).toString());
+        if (isValid) {
+          this.selectAnchor_.classList.remove(cssClasses.INVALID);
+        } else {
+          this.selectAnchor_.classList.add(cssClasses.INVALID);
+        }
+      },
+      setSelectedText: (text: string) => this.selectedText_.textContent = text,
       openMenu: () => {
         if (!this.menu_.open) {
           this.menu_.open = true;
@@ -377,30 +386,36 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
         }
       },
       isMenuOpen: () => this.isMenuOpen_,
-      setSelectedIndex: (index: number) => this.setSelectedIndex_(index),
-      setDisabled: (isDisabled: boolean) => {
-        this.selectedText_.setAttribute('tabindex', isDisabled ? '-1' : '0');
-        this.selectedText_.setAttribute('aria-disabled', isDisabled.toString());
-        if (this.hiddenInput_) {
-          this.hiddenInput_.disabled = isDisabled;
+      getSelectedMenuItem: () => this.getSelectedMenuItem_(),
+      setAttributeAtIndex: (index: number, attributeName: string, attributeValue: string) => {
+        const menuItem = this.menu_.items[index];
+        if (menuItem) {
+          menuItem.setAttribute(attributeName, attributeValue);
         }
       },
-      checkValidity: () => {
-        const classList = this.selectAnchor_.classList;
-        if (classList.contains(cssClasses.REQUIRED) && !classList.contains(cssClasses.DISABLED)) {
-          // See notes for required attribute under https://www.w3.org/TR/html52/sec-forms.html#the-select-element
-          // TL;DR: Invalid if no index is selected, or if the first index is selected and has an empty value.
-          return this.selectedIndex !== -1 && (this.selectedIndex !== 0 || Boolean(this.value));
-        } else {
-          return true;
+      removeAttributeAtIndex: (index: number, attributeName: string) => {
+        const menuItem = this.menu_.items[index];
+        if (menuItem) {
+          menuItem.removeAttribute(attributeName);
         }
       },
-      setValid: (isValid: boolean) => {
-        this.selectedText_.setAttribute('aria-invalid', (!isValid).toString());
-        if (isValid) {
-          this.selectAnchor_.classList.remove(cssClasses.INVALID);
+      getMenuItemValues: () => {
+        return this.menu_.items.map((el) => el.getAttribute(strings.VALUE_ATTR) || '');
+      },
+      getMenuItemTextAtIndex: (index: number) => {
+        const menuItem = this.menu_.items[index];
+        return menuItem && menuItem.textContent ? menuItem.textContent : '';
+      },
+      toggleClassAtIndex: (index: number, className: string, toggle: boolean) => {
+        const menuItem = this.menu_.items[index];
+        if (!menuItem) {
+          return;
+        }
+
+        if (toggle) {
+          menuItem.classList.add(className);
         } else {
-          this.selectAnchor_.classList.add(cssClasses.INVALID);
+          menuItem.classList.remove(className);
         }
       },
     };
@@ -441,6 +456,10 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
     };
   }
 
+  private getSelectedMenuItem_(): Element|null {
+    return this.menuElement_!.querySelector(strings.SELECTED_ITEM_SELECTOR);
+  }
+
   /**
    * Calculates where the line ripple should start based on the x coordinate within the component.
    */
@@ -462,30 +481,6 @@ export class MDCSelect extends MDCComponent<MDCSelectFoundation> {
       helperText: this.helperText_ ? this.helperText_.foundation : undefined,
       leadingIcon: this.leadingIcon_ ? this.leadingIcon_.foundation : undefined,
     };
-  }
-
-  private setSelectedIndex_(index: number) {
-    const selectedItem = this.menu_!.items[index];
-    this.selectedText_!.textContent = selectedItem ? selectedItem.textContent!.trim() : '';
-    const previouslySelected = this.menuElement_!.querySelector(strings.SELECTED_ITEM_SELECTOR);
-
-    if (previouslySelected) {
-      previouslySelected.classList.remove(cssClasses.SELECTED_ITEM_CLASS);
-      previouslySelected.removeAttribute(strings.ARIA_SELECTED_ATTR);
-    }
-
-    if (selectedItem) {
-      selectedItem.classList.add(cssClasses.SELECTED_ITEM_CLASS);
-      selectedItem.setAttribute(strings.ARIA_SELECTED_ATTR, 'true');
-    }
-
-    // Synchronize hidden input's value with data-value attribute of selected item.
-    // This code path is also followed when setting value directly, so this covers all cases.
-    if (this.hiddenInput_) {
-      this.hiddenInput_.value = selectedItem ? selectedItem.getAttribute(strings.VALUE_ATTR) || '' : '';
-    }
-
-    this.layout();
   }
 
   private initialSyncRequiredState_() {
