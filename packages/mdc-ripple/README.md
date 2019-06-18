@@ -304,10 +304,9 @@ External frameworks and libraries can use the following utility methods when int
 Method Signature | Description
 --- | ---
 `util.supportsCssVariables(windowObj, forceRefresh = false) => Boolean` | Determine whether the current browser supports CSS variables (custom properties)
-`util.applyPassive(globalObj = window, forceRefresh = false) => object` | Determine whether the current browser supports passive event listeners
 `util.getNormalizedEventCoords(ev, pageOffset, clientRect) => object` | Determines X/Y coordinates of an event normalized for touch events and ripples
 
-> _NOTE_: The functions `util.supportsCssVariables` and `util.applyPassive` cache their results; `forceRefresh` will force recomputation, but is used mainly for testing and should not be necessary in normal use.
+> _NOTE_: The function `util.supportsCssVariables` cache its results; `forceRefresh` will force recomputation, but is used mainly for testing and should not be necessary in normal use.
 
 ## Caveats
 

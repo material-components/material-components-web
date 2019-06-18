@@ -81,20 +81,24 @@ export class MDCComponent<FoundationType extends MDCFoundation> {
    * Wrapper method to add an event listener to the component's root element. This is most useful when
    * listening for custom events.
    */
-  listen<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
-  listen<E extends Event>(evtType: string, handler: CustomEventListener<E>): void;
-  listen(evtType: string, handler: EventListener) {
-    this.root_.addEventListener(evtType, handler);
+  listen<K extends EventType>(
+    evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean): void;
+  listen<E extends Event>(
+    evtType: string, handler: CustomEventListener<E>, options?: AddEventListenerOptions | boolean): void;
+  listen(evtType: string, handler: EventListener, options?: AddEventListenerOptions | boolean) {
+    this.root_.addEventListener(evtType, handler, options);
   }
 
   /**
    * Wrapper method to remove an event listener to the component's root element. This is most useful when
    * unlistening for custom events.
    */
-  unlisten<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
-  unlisten<E extends Event>(evtType: string, handler: CustomEventListener<E>): void;
-  unlisten(evtType: string, handler: EventListener) {
-    this.root_.removeEventListener(evtType, handler);
+  unlisten<K extends EventType>(
+    evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean): void;
+  unlisten<E extends Event>(
+    evtType: string, handler: CustomEventListener<E>, options?: AddEventListenerOptions | boolean): void;
+  unlisten(evtType: string, handler: EventListener, options?: AddEventListenerOptions | boolean) {
+    this.root_.removeEventListener(evtType, handler, options);
   }
 
   /**
