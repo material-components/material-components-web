@@ -136,8 +136,7 @@
     "url-search-params-polyfill": "^6.0.0",
     "useragent": "^2.3.0",
     "verror": "^1.10.0",
-    "webpack": "^3.0.0",
-    "webpack-dev-server": "^2.4.3"
+    "webpack": "^3.0.0"
   },
   "babel": {
     "presets": [
