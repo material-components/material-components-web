@@ -403,7 +403,7 @@
 @mixin mdc-select-helper-text_ {
   .mdc-select-helper-text {
     // stylelint-disable plugin/selector-bem-pattern
-    .mdc-select + & {
+    .mdc-select__anchor + & {
       margin-right: 12px;
       margin-left: 12px;
     }
