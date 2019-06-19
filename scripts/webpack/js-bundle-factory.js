@@ -77,7 +77,7 @@ class JsBundleFactory {
       },
     };
 
-    let uglifyJSPluginOptions = {
+    let uglifyOptions = {
       output: {
         comments: false, // Removes repeated @license comments and other code comments.
       },
@@ -86,15 +86,13 @@ class JsBundleFactory {
 
     if (!this.env_.isProd()) {
       // Skip minify if it is not 'production'
-      uglifyJSPluginOptions = Object.assign({}, uglifyJSPluginOptions, {
+      uglifyOptions = Object.assign({}, uglifyOptions, {
         compress: false,
-        mangle: false,
-        beautify: true,
       });
     }
 
     const commonPlugins = [
-      new UglifyJSPlugin(uglifyJSPluginOptions),
+      new UglifyJSPlugin({uglifyOptions}),
       this.pluginFactory_.createCopyrightBannerPlugin(),
     ];
 

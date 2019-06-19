@@ -29,7 +29,7 @@
 
 const CopyrightBannerPlugin = require('./copyright-banner-plugin');
 const CssCleanupPlugin = require('./css-cleanup-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 class PluginFactory {
   constructor({globber} = {}) {
@@ -48,7 +48,7 @@ class PluginFactory {
   }
 
   createCssExtractorPlugin(outputFilenamePattern) {
-    return new ExtractTextPlugin(outputFilenamePattern);
+    return new MiniCssExtractPlugin(outputFilenamePattern);
   }
 }
 
