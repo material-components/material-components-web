@@ -22,7 +22,6 @@
  */
 
 import {MDCComponent} from '@material/base/component';
-import {applyPassive} from '@material/dom/events';
 import {MDCSliderAdapter} from './adapter';
 import {strings} from './constants';
 import {MDCSliderFoundation} from './foundation';
@@ -99,13 +98,13 @@ export class MDCSlider extends MDCComponent<MDCSliderFoundation> {
       removeAttribute: (name) => this.root_.removeAttribute(name),
       computeBoundingRect: () => this.root_.getBoundingClientRect(),
       getTabIndex: () => this.root_.tabIndex,
-      registerInteractionHandler: (evtType, handler) => this.listen(evtType, handler, applyPassive()),
-      deregisterInteractionHandler: (evtType, handler) => this.unlisten(evtType, handler, applyPassive()),
+      registerInteractionHandler: (evtType, handler) => this.listen(evtType, handler),
+      deregisterInteractionHandler: (evtType, handler) => this.unlisten(evtType, handler),
       registerThumbContainerInteractionHandler: (evtType, handler) => {
-        this.thumbContainer_.addEventListener(evtType, handler, applyPassive());
+        this.thumbContainer_.addEventListener(evtType, handler);
       },
       deregisterThumbContainerInteractionHandler: (evtType, handler) => {
-        this.thumbContainer_.removeEventListener(evtType, handler, applyPassive());
+        this.thumbContainer_.removeEventListener(evtType, handler);
       },
       registerBodyInteractionHandler: (evtType, handler) => document.body.addEventListener(evtType, handler),
       deregisterBodyInteractionHandler: (evtType, handler) => document.body.removeEventListener(evtType, handler),
