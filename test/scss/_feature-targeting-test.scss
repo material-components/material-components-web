@@ -16,6 +16,10 @@
 @import "@material/ripple/mixins";
 @import "@material/shape/mixins";
 @import "@material/switch/mixins";
+@import "@material/tab-bar/mixins";
+@import "@material/tab-scroller/mixins";
+@import "@material/tab-indicator/mixins";
+@import "@material/tab/mixins";
 @import "@material/theme/mixins";
 @import "@material/typography/mixins";
 
@@ -187,6 +191,14 @@
     @include mdc-switch-toggled-off-thumb-color(on-surface, $query: $query);
     @include mdc-switch-ripple($query: $query);
     @include mdc-switch-without-ripple($query: $query);
+
+    // Tabs
+    @include mdc-tab-bar-core-styles($query: $query);
+    @include mdc-tab-scroller-core-styles($query: $query);
+    @include mdc-tab-indicator-core-styles($query: $query);
+    @include mdc-tab-core-styles($query: $query);
+    @include mdc-tab-without-ripple($query: $query);
+    @include mdc-tab-ripple($query: $query);
 
     // Theme
     @include mdc-theme-core-styles($query: $query);
