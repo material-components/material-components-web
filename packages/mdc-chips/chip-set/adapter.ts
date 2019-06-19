@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import { MDCChipNavigationFocusSource } from "../chip/types";
+import {FocusSource} from '../chip/constants';
 
 /**
  * Defines the shape of the adapter expected by the foundation.
@@ -54,7 +54,7 @@ export interface MDCChipSetAdapter {
   /**
    * Gives focus to the chip at the given index with the given key.
    */
-  focusChipAtIndex(index: number, key: string, source: MDCChipNavigationFocusSource): void;
+  focusChipAtIndex(index: number, key: string, source: FocusSource): void;
 
   /**
    * @return true if the text direction is RTL.

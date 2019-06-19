@@ -21,19 +21,23 @@
  * THE SOFTWARE.
  */
 
+export enum FocusSource {
+  Text,
+  TrailingIcon,
+  None,
+}
+
 export const strings = {
   ARIA_CHECKED: 'aria-checked',
   ARROW_DOWN_KEY: 'ArrowDown',
   ARROW_LEFT_KEY: 'ArrowLeft',
   ARROW_RIGHT_KEY: 'ArrowRight',
   ARROW_UP_KEY: 'ArrowUp',
-  BACKSPACE_KEY: 'Backspace',
-  DELETE_KEY: 'Delete',
+  CHECKMARK_SELECTOR: '.mdc-chip__checkmark',
   END_KEY: 'End',
   ENTER_KEY: 'Enter',
-  HOME_KEY: 'Home',
-  CHECKMARK_SELECTOR: '.mdc-chip__checkmark',
   ENTRY_ANIMATION_NAME: 'mdc-chip-entry',
+  HOME_KEY: 'Home',
   INTERACTION_EVENT: 'MDCChip:interaction',
   LEADING_ICON_SELECTOR: '.mdc-chip__icon--leading',
   NAVIGATION_EVENT: 'MDCChip:navigation',
@@ -53,6 +57,5 @@ export const cssClasses = {
   LEADING_ICON: 'mdc-chip__icon--leading',
   SELECTED: 'mdc-chip--selected',
   TEXT: 'mdc-chip__text',
-  DELETABLE: 'mdc-chip--deletable',
   TRAILING_ICON: 'mdc-chip__icon--trailing',
 };

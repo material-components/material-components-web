@@ -21,11 +21,7 @@
  * THE SOFTWARE.
  */
 
-export enum MDCChipNavigationFocusSource {
-  Text,
-  TrailingIcon,
-  None,
-}
+import {FocusSource} from './constants';
 
 export interface MDCChipInteractionEventDetail {
   chipId: string;
@@ -41,7 +37,7 @@ export interface MDCChipRemovalEventDetail extends MDCChipInteractionEventDetail
 
 export interface MDCChipNavigationEventDetail extends MDCChipInteractionEventDetail {
   key: string;
-  source: MDCChipNavigationFocusSource;
+  source: FocusSource;
 }
 
 // Note: CustomEvent<T> is not supported by Closure Compiler.

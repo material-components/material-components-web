@@ -541,8 +541,7 @@
 
   .mdc-chip__icon--trailing {
     @include mdc-feature-targets($feat-structure) {
-      margin-right: $right-margin;
-      margin-left: $left-margin;
+      @include mdc-rtl-reflexive-property(margin, $left-margin, $right-margin);
     }
   }
 }

@@ -28,11 +28,10 @@ import {MDCRipple, MDCRippleFactory} from '@material/ripple/component';
 import {MDCRippleFoundation} from '@material/ripple/foundation';
 import {MDCRippleCapableSurface} from '@material/ripple/types';
 import {MDCChipAdapter} from './adapter';
-import {strings} from './constants';
+import {FocusSource, strings} from './constants';
 import {MDCChipFoundation} from './foundation';
 import {MDCChipInteractionEventDetail, MDCChipNavigationEventDetail, MDCChipRemovalEventDetail,
-    MDCChipSelectionEventDetail,
-    MDCChipNavigationFocusSource} from './types';
+    MDCChipSelectionEventDetail} from './types';
 
 type InteractionType = 'click' | 'keydown';
 
@@ -201,6 +200,7 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
           this.leadingIcon_.classList.remove(className);
         }
       },
+      setStyleProperty: (propertyName, value) => this.root_.style.setProperty(propertyName, value),
       setTextAttr: (attr, value) => {
         if (this.text_) {
           this.text_.setAttribute(attr, value);
@@ -211,7 +211,6 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
           this.trailingIcon_.setAttribute(attr, value);
         }
       },
-      setStyleProperty: (propertyName, value) => this.root_.style.setProperty(propertyName, value),
       textHasFocus: () => {
         if (this.text_) {
           return document.activeElement === this.text_;
@@ -228,7 +227,7 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
     return new MDCChipFoundation(adapter);
   }
 
-  focusAction(key: string, source: MDCChipNavigationFocusSource) {
+  focusAction(key: string, source: FocusSource) {
     this.foundation_.focusAction(key, source);
   }
 

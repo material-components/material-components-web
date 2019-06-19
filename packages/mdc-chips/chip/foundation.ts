@@ -23,8 +23,7 @@
 
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCChipAdapter} from './adapter';
-import {cssClasses, strings} from './constants';
-import { MDCChipNavigationFocusSource } from './types';
+import {cssClasses, FocusSource, strings} from './constants';
 
 const emptyClientRect = {
   bottom: 0,
@@ -44,6 +43,13 @@ NAVIGATION_KEYS.add(strings.ARROW_UP_KEY);
 NAVIGATION_KEYS.add(strings.END_KEY);
 NAVIGATION_KEYS.add(strings.HOME_KEY);
 
+export const JUMP_CHIP_KEYS = new Set<string>();
+// IE11 has no support for new Set with iterable so we need to initialize this by hand
+JUMP_CHIP_KEYS.add(strings.ARROW_UP_KEY);
+JUMP_CHIP_KEYS.add(strings.ARROW_DOWN_KEY);
+JUMP_CHIP_KEYS.add(strings.HOME_KEY);
+JUMP_CHIP_KEYS.add(strings.END_KEY);
+
 export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   static get strings() {
     return strings;
@@ -57,7 +63,6 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     return {
       addClass: () => undefined,
       addClassToLeadingIcon: () => undefined,
-      textHasFocus: () => false,
       eventTargetHasClass: () => false,
       focusText: () => undefined,
       focusTrailingIcon: () => undefined,
@@ -75,9 +80,10 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       notifyTrailingIconInteraction: () => undefined,
       removeClass: () => undefined,
       removeClassFromLeadingIcon: () => undefined,
+      setStyleProperty: () => undefined,
       setTextAttr: () => undefined,
       setTrailingIconAttr: () => undefined,
-      setStyleProperty: () => undefined,
+      textHasFocus: () => false,
       trailingIconHasFocus: () => false,
     };
   }
@@ -154,12 +160,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
    */
   handleInteraction(evt: MouseEvent | KeyboardEvent) {
     const shouldNotify = evt.type === 'click'
-      || evt instanceof KeyboardEvent && (evt.key === strings.ENTER_KEY || evt.key === strings.SPACEBAR_KEY);
-    const shouldRemove = this.adapter_.hasClass(cssClasses.DELETABLE)
-      &&  evt instanceof KeyboardEvent && (evt.key === strings.BACKSPACE_KEY || evt.key === strings.DELETE_KEY);
-    if (shouldRemove) {
-      return this.removeChip_(evt);
-    }
+      || ((evt as KeyboardEvent).key === strings.ENTER_KEY || (evt as KeyboardEvent).key === strings.SPACEBAR_KEY);
 
     if (shouldNotify) {
       return this.adapter_.notifyInteraction();
@@ -193,7 +194,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
           this.adapter_.setStyleProperty('width', '0');
         });
       });
-      return
+      return;
     }
 
     if (shouldHandle && widthIsAnimating) {
@@ -214,7 +215,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     if (shouldHideLeadingIcon) {
       return this.adapter_.addClassToLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
     }
-    
+
     if (shouldShowLeadingIcon) {
       return this.adapter_.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
     }
@@ -246,23 +247,19 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     this.focusNextAction_(key);
   }
 
-  focusAction(key: string, source: MDCChipNavigationFocusSource) {
+  focusAction(key: string, source: FocusSource) {
     // Early exit if the key is not usable
     if (!NAVIGATION_KEYS.has(key)) {
       return;
     }
 
-    // Up, Down, Home, and End keys should jump to the same action (if present) on the next chip.
-    const keyShouldJumpChips = key === strings.ARROW_UP_KEY
-      || key === strings.ARROW_DOWN_KEY
-      || key === strings.HOME_KEY
-      || key === strings.END_KEY;
+    const shouldJumpChips = JUMP_CHIP_KEYS.has(key);
     const chipHasTrailingIcon = this.adapter_.hasTrailingIcon();
-    if (keyShouldJumpChips && source === MDCChipNavigationFocusSource.Text || !chipHasTrailingIcon) {
+    if (shouldJumpChips && (source === FocusSource.Text || !chipHasTrailingIcon)) {
       return this.focusChipText_();
     }
 
-    if (keyShouldJumpChips && source === MDCChipNavigationFocusSource.TrailingIcon && chipHasTrailingIcon) {
+    if (shouldJumpChips && source === FocusSource.TrailingIcon && chipHasTrailingIcon) {
       return this.focusTrailingIcon_();
     }
 
@@ -275,10 +272,10 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     const focusSource = this.getFocusSource_();
     const keyIsLeft = key === strings.ARROW_LEFT_KEY && !chipIsRTL || key === strings.ARROW_RIGHT_KEY && chipIsRTL;
     const keyIsRight = key === strings.ARROW_RIGHT_KEY && !chipIsRTL || key === strings.ARROW_LEFT_KEY && chipIsRTL;
-    const shouldFocusPrimaryAction = keyIsLeft && focusSource === MDCChipNavigationFocusSource.TrailingIcon
-      || keyIsRight && focusSource === MDCChipNavigationFocusSource.None;
-    const shouldFocusTrailingIcon = keyIsRight && focusSource === MDCChipNavigationFocusSource.Text
-      || keyIsLeft && focusSource === MDCChipNavigationFocusSource.None;
+    const shouldFocusPrimaryAction = keyIsLeft && focusSource === FocusSource.TrailingIcon
+      || keyIsRight && focusSource === FocusSource.None;
+    const shouldFocusTrailingIcon = keyIsRight && focusSource === FocusSource.Text
+      || keyIsLeft && focusSource === FocusSource.None;
     if (shouldFocusPrimaryAction) {
       return this.focusChipText_();
     }
@@ -292,18 +289,18 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   }
 
   /**
-   * @returns the currently focused element of the chip
+   * @return the currently focused element of the chip
    */
-  private getFocusSource_(): MDCChipNavigationFocusSource {
+  private getFocusSource_(): FocusSource {
     if (this.adapter_.textHasFocus()) {
-      return MDCChipNavigationFocusSource.Text;
+      return FocusSource.Text;
     }
 
     if (this.adapter_.trailingIconHasFocus()) {
-      return MDCChipNavigationFocusSource.TrailingIcon;
+      return FocusSource.TrailingIcon;
     }
 
-    return MDCChipNavigationFocusSource.None;
+    return FocusSource.None;
   }
 
   private focusChipText_() {
