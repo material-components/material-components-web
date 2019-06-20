@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {FocusSource} from './constants';
+import {EventSource} from './constants';
 
 /**
  * Defines the shape of the adapter expected by the foundation.
@@ -86,7 +86,7 @@ export interface MDCChipAdapter {
   /**
    * Emits a custom event "MDCChip:navigation" denoting a focus navigation event.
    */
-  notifyNavigation(key: string, source: FocusSource): void;
+  notifyNavigation(key: string, source: EventSource): void;
 
   /**
    * @return The computed property value of the given style property on the root element.
@@ -116,37 +116,27 @@ export interface MDCChipAdapter {
   /**
    * Sets the value of the attribute on the primary action content.
    */
-  setTextAttr(attr: string, value: string): void;
+  setPrimaryActionAttr(attr: string, value: string): void;
 
   /**
-   * @return true if the primary action content has focus.
+   * Gives focus to the primary action.
    */
-  textHasFocus(): boolean;
-
-  /**
-   * Gives focus to the primary action content.
-   */
-  focusText(): void;
+  focusPrimaryAction(): void;
 
   /**
    * @return true if the chip has a trailing action.
    */
-  hasTrailingIcon(): boolean;
+  hasTrailingAction(): boolean;
 
   /**
-   * Returns true if the primary action content has focus.
+   * Sets the the attribute on the trailing action if it exists.
    */
-  setTrailingIconAttr(attr: string, value: string): void;
+  setTrailingActionAttr(attr: string, value: string): void;
 
   /**
-   * @return true if the trailing action content has focus.
+   * Gives focus to the trailing action.
    */
-  trailingIconHasFocus(): boolean;
-
-  /**
-   * Gives focus to the trailing action content.
-   */
-  focusTrailingIcon(): void;
+  focusTrailingAction(): void;
 
   /**
    * @return true if the text direction is right-to-left.

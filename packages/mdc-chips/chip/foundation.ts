@@ -23,7 +23,7 @@
 
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCChipAdapter} from './adapter';
-import {cssClasses, FocusSource, strings} from './constants';
+import {cssClasses, Direction, EventSource, strings} from './constants';
 
 const emptyClientRect = {
   bottom: 0,
@@ -64,14 +64,14 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       addClass: () => undefined,
       addClassToLeadingIcon: () => undefined,
       eventTargetHasClass: () => false,
-      focusText: () => undefined,
-      focusTrailingIcon: () => undefined,
+      focusPrimaryAction: () => undefined,
+      focusTrailingAction: () => undefined,
       getCheckmarkBoundingClientRect: () => emptyClientRect,
       getComputedStyleValue: () => '',
       getRootBoundingClientRect: () => emptyClientRect,
       hasClass: () => false,
       hasLeadingIcon: () => false,
-      hasTrailingIcon: () => false,
+      hasTrailingAction: () => false,
       isRTL: () => false,
       notifyInteraction: () => undefined,
       notifyNavigation: () => undefined,
@@ -81,10 +81,8 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       removeClass: () => undefined,
       removeClassFromLeadingIcon: () => undefined,
       setStyleProperty: () => undefined,
-      setTextAttr: () => undefined,
-      setTrailingIconAttr: () => undefined,
-      textHasFocus: () => false,
-      trailingIconHasFocus: () => false,
+      setPrimaryActionAttr: () => undefined,
+      setTrailingActionAttr: () => undefined,
     };
   }
 
@@ -104,10 +102,10 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   setSelected(selected: boolean) {
     if (selected) {
       this.adapter_.addClass(cssClasses.SELECTED);
-      this.adapter_.setTextAttr(strings.ARIA_CHECKED, 'true');
+      this.adapter_.setPrimaryActionAttr(strings.ARIA_CHECKED, 'true');
     } else {
       this.adapter_.removeClass(cssClasses.SELECTED);
-      this.adapter_.setTextAttr(strings.ARIA_CHECKED, 'false');
+      this.adapter_.setPrimaryActionAttr(strings.ARIA_CHECKED, 'false');
     }
     this.adapter_.notifySelection(selected);
   }
@@ -159,11 +157,8 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
    * Handles an interaction event on the root element.
    */
   handleInteraction(evt: MouseEvent | KeyboardEvent) {
-    const shouldNotify = evt.type === 'click'
-      || ((evt as KeyboardEvent).key === strings.ENTER_KEY || (evt as KeyboardEvent).key === strings.SPACEBAR_KEY);
-
-    if (shouldNotify) {
-      return this.adapter_.notifyInteraction();
+    if (this.shouldHandleInteraction_(evt)) {
+      this.adapter_.notifyInteraction();
     }
   }
 
@@ -226,8 +221,8 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
    * prevent the ripple from activating on interaction with the trailing icon.
    */
   handleTrailingIconInteraction(evt: MouseEvent | KeyboardEvent) {
-    const isEnter = (evt as KeyboardEvent).key === 'Enter' || (evt as KeyboardEvent).keyCode === 13;
-    if (evt.type === 'click' || isEnter) {
+    if (this.shouldHandleInteraction_(evt)) {
+      this.adapter_.notifyTrailingIconInteraction();
       this.removeChip_(evt);
     }
   }
@@ -236,6 +231,10 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
    * Handles a keydown event from the root element.
    */
   handleKeydown(evt: KeyboardEvent) {
+    if (this.shouldRemoveChip_(evt)) {
+      return this.removeChip_(evt);
+    }
+
     const key = evt.key;
     // Early exit if the key is not usable
     if (!NAVIGATION_KEYS.has(key)) {
@@ -244,88 +243,116 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
 
     // Prevent default behavior for movement keys which could include scrolling
     evt.preventDefault();
-    this.focusNextAction_(key);
+    this.focusNextAction_(evt);
   }
 
-  focusAction(key: string, source: FocusSource) {
+  focusAction(key: string, source: EventSource) {
     // Early exit if the key is not usable
     if (!NAVIGATION_KEYS.has(key)) {
       return;
     }
 
     const shouldJumpChips = JUMP_CHIP_KEYS.has(key);
-    const chipHasTrailingIcon = this.adapter_.hasTrailingIcon();
-    if (shouldJumpChips && (source === FocusSource.Text || !chipHasTrailingIcon)) {
-      return this.focusChipText_();
+    const hasTrailingAction = this.adapter_.hasTrailingAction();
+    if (shouldJumpChips && (source === EventSource.Primary || !hasTrailingAction)) {
+      return this.focusPrimaryAction_();
     }
 
-    if (shouldJumpChips && source === FocusSource.TrailingIcon && chipHasTrailingIcon) {
-      return this.focusTrailingIcon_();
+    if (shouldJumpChips && source === EventSource.Trailing && hasTrailingAction) {
+      return this.focusTrailingAction_();
     }
 
-    this.focusNextAction_(key);
+    const dir = this.getDirection_(key);
+    if (dir === Direction.Left && hasTrailingAction) {
+      return this.focusTrailingAction_();
+    }
+
+    if (dir === Direction.Right || (dir === Direction.Left && !hasTrailingAction)) {
+      return this.focusPrimaryAction_();
+    }
   }
 
-  private focusNextAction_(key: string) {
-    const chipIsRTL = this.adapter_.isRTL();
-    const chipHasTrailingIcon = this.adapter_.hasTrailingIcon();
-    const focusSource = this.getFocusSource_();
-    const keyIsLeft = key === strings.ARROW_LEFT_KEY && !chipIsRTL || key === strings.ARROW_RIGHT_KEY && chipIsRTL;
-    const keyIsRight = key === strings.ARROW_RIGHT_KEY && !chipIsRTL || key === strings.ARROW_LEFT_KEY && chipIsRTL;
-    const shouldFocusPrimaryAction = keyIsLeft && focusSource === FocusSource.TrailingIcon
-      || keyIsRight && focusSource === FocusSource.None;
-    const shouldFocusTrailingIcon = keyIsRight && focusSource === FocusSource.Text
-      || keyIsLeft && focusSource === FocusSource.None;
-    if (shouldFocusPrimaryAction) {
-      return this.focusChipText_();
+  private focusNextAction_(evt: KeyboardEvent) {
+    const key = evt.key;
+    const hasTrailingAction = this.adapter_.hasTrailingAction();
+    const dir = this.getDirection_(key);
+    const source = this.getEvtSource_(evt);
+    // Early exit if the key should jump keys or the chip only has one action (i.e. no trailing action)
+    if (JUMP_CHIP_KEYS.has(key) || !hasTrailingAction) {
+      this.removeFocus_();
+      this.adapter_.notifyNavigation(key, source);
+      return;
     }
 
-    if (chipHasTrailingIcon && shouldFocusTrailingIcon) {
-      return this.focusTrailingIcon_();
+    if (source === EventSource.Primary && dir === Direction.Right) {
+      return this.focusTrailingAction_();
+    }
+
+    if (source === EventSource.Trailing && dir === Direction.Left) {
+      return this.focusPrimaryAction_();
     }
 
     this.removeFocus_();
-    this.adapter_.notifyNavigation(key, focusSource);
+    this.adapter_.notifyNavigation(key, EventSource.None);
   }
 
-  /**
-   * @return the currently focused element of the chip
-   */
-  private getFocusSource_(): FocusSource {
-    if (this.adapter_.textHasFocus()) {
-      return FocusSource.Text;
+  private getEvtSource_(evt: KeyboardEvent): EventSource {
+    if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.PRIMARY_ACTION)) {
+      return EventSource.Primary;
     }
 
-    if (this.adapter_.trailingIconHasFocus()) {
-      return FocusSource.TrailingIcon;
+    if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.TRAILING_ACTION)) {
+      return EventSource.Trailing;
     }
 
-    return FocusSource.None;
+    return EventSource.None;
   }
 
-  private focusChipText_() {
-    this.adapter_.setTextAttr(strings.TAB_INDEX, '0');
-    this.adapter_.focusText();
-    this.adapter_.setTrailingIconAttr(strings.TAB_INDEX, '-1');
+  private getDirection_(key: string): Direction {
+    const isRTL = this.adapter_.isRTL();
+    if (key === strings.ARROW_LEFT_KEY && !isRTL || key === strings.ARROW_RIGHT_KEY && isRTL) {
+      return Direction.Left;
+    }
+
+    return Direction.Right;
   }
 
-  private focusTrailingIcon_() {
-    this.adapter_.setTrailingIconAttr(strings.TAB_INDEX, '0');
-    this.adapter_.focusTrailingIcon();
-    this.adapter_.setTextAttr(strings.TAB_INDEX, '-1');
+  private focusPrimaryAction_() {
+    this.adapter_.setPrimaryActionAttr(strings.TAB_INDEX, '0');
+    this.adapter_.focusPrimaryAction();
+    this.adapter_.setTrailingActionAttr(strings.TAB_INDEX, '-1');
+  }
+
+  private focusTrailingAction_() {
+    this.adapter_.setTrailingActionAttr(strings.TAB_INDEX, '0');
+    this.adapter_.focusTrailingAction();
+    this.adapter_.setPrimaryActionAttr(strings.TAB_INDEX, '-1');
   }
 
   private removeFocus_() {
-    this.adapter_.setTrailingIconAttr(strings.TAB_INDEX, '-1');
-    this.adapter_.setTextAttr(strings.TAB_INDEX, '-1');
+    this.adapter_.setTrailingActionAttr(strings.TAB_INDEX, '-1');
+    this.adapter_.setPrimaryActionAttr(strings.TAB_INDEX, '-1');
   }
 
   private removeChip_(evt: MouseEvent|KeyboardEvent) {
     evt.stopPropagation();
-    this.adapter_.notifyTrailingIconInteraction();
     if (this.shouldRemoveOnTrailingIconClick_) {
       this.beginExit();
     }
+  }
+
+  private shouldHandleInteraction_(evt: MouseEvent|KeyboardEvent): boolean {
+    if (evt.type === 'click') {
+      return true;
+    }
+
+    const keyEvt = evt as KeyboardEvent;
+    return keyEvt.keyCode === 13 || keyEvt.key === strings.ENTER_KEY ||keyEvt.key === strings.SPACEBAR_KEY;
+  }
+
+  private shouldRemoveChip_(evt: KeyboardEvent): boolean {
+    const isDeletable = this.adapter_.hasClass(cssClasses.DELETABLE);
+    return isDeletable && (evt.key === strings.BACKSPACE_KEY || evt.key === strings.DELETE_KEY);
   }
 }
 

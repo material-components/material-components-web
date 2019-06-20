@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {FocusSource} from './constants';
+import {EventSource} from './constants';
 
 export interface MDCChipInteractionEventDetail {
   chipId: string;
@@ -37,7 +37,7 @@ export interface MDCChipRemovalEventDetail extends MDCChipInteractionEventDetail
 
 export interface MDCChipNavigationEventDetail extends MDCChipInteractionEventDetail {
   key: string;
-  source: FocusSource;
+  source: EventSource;
 }
 
 // Note: CustomEvent<T> is not supported by Closure Compiler.

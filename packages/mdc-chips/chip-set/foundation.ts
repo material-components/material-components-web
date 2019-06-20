@@ -22,7 +22,7 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
-import {FocusSource, strings as chipStrings} from '../chip/constants';
+import {EventSource, strings as chipStrings} from '../chip/constants';
 import {NAVIGATION_KEYS} from '../chip/foundation';
 import {MDCChipSetAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
@@ -114,13 +114,13 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     // So, we simulate that by focusing the next index with the up arrow key from the trailing action.
     const maxIndex = this.adapter_.getChipListCount() - 1;
     const nextIndex = Math.min(index, maxIndex);
-    this.adapter_.focusChipAtIndex(nextIndex, chipStrings.ARROW_UP_KEY, FocusSource.TrailingIcon);
+    this.adapter_.focusChipAtIndex(nextIndex, chipStrings.ARROW_UP_KEY, EventSource.Trailing);
   }
 
   /**
    * Handles a chip navigation event.
    */
-  handleChipNavigation(chipId: string, key: string, source: FocusSource) {
+  handleChipNavigation(chipId: string, key: string, source: EventSource) {
     const maxIndex = this.adapter_.getChipListCount() - 1;
     let index = this.adapter_.getIndexOfChipById(chipId);
     // Early exit if the index if out of range or the key is unusable

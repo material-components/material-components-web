@@ -21,10 +21,15 @@
  * THE SOFTWARE.
  */
 
-export enum FocusSource {
-  Text,
-  TrailingIcon,
+export enum EventSource {
+  Primary,
+  Trailing,
   None,
+}
+
+export enum Direction {
+  Right,
+  Left,
 }
 
 export const strings = {
@@ -33,7 +38,9 @@ export const strings = {
   ARROW_LEFT_KEY: 'ArrowLeft',
   ARROW_RIGHT_KEY: 'ArrowRight',
   ARROW_UP_KEY: 'ArrowUp',
+  BACKSPACE_KEY: 'Backspace',
   CHECKMARK_SELECTOR: '.mdc-chip__checkmark',
+  DELETE_KEY: 'Delete',
   END_KEY: 'End',
   ENTER_KEY: 'Enter',
   ENTRY_ANIMATION_NAME: 'mdc-chip-entry',
@@ -41,11 +48,12 @@ export const strings = {
   INTERACTION_EVENT: 'MDCChip:interaction',
   LEADING_ICON_SELECTOR: '.mdc-chip__icon--leading',
   NAVIGATION_EVENT: 'MDCChip:navigation',
+  PRIMARY_ACTION_SELECTOR: '.mdc-chip__primary-action',
   REMOVAL_EVENT: 'MDCChip:removal',
   SELECTION_EVENT: 'MDCChip:selection',
   SPACEBAR_KEY: ' ',
   TAB_INDEX: 'tabindex',
-  TEXT_SELECTOR: '.mdc-chip__text',
+  TRAILING_ACTION_SELECTOR: '.mdc-chip__trailing-action',
   TRAILING_ICON_INTERACTION_EVENT: 'MDCChip:trailingIconInteraction',
   TRAILING_ICON_SELECTOR: '.mdc-chip__icon--trailing',
 };
@@ -53,9 +61,12 @@ export const strings = {
 export const cssClasses = {
   CHECKMARK: 'mdc-chip__checkmark',
   CHIP_EXIT: 'mdc-chip--exit',
+  DELETABLE: 'mdc-chip--deletable',
   HIDDEN_LEADING_ICON: 'mdc-chip__icon--leading-hidden',
   LEADING_ICON: 'mdc-chip__icon--leading',
+  PRIMARY_ACTION: 'mdc-chip__primary-action',
   SELECTED: 'mdc-chip--selected',
   TEXT: 'mdc-chip__text',
+  TRAILING_ACTION: 'mdc-chip__trailing-action',
   TRAILING_ICON: 'mdc-chip__icon--trailing',
 };

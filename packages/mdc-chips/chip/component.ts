@@ -28,7 +28,7 @@ import {MDCRipple, MDCRippleFactory} from '@material/ripple/component';
 import {MDCRippleFoundation} from '@material/ripple/foundation';
 import {MDCRippleCapableSurface} from '@material/ripple/types';
 import {MDCChipAdapter} from './adapter';
-import {FocusSource, strings} from './constants';
+import {EventSource, strings} from './constants';
 import {MDCChipFoundation} from './foundation';
 import {MDCChipInteractionEventDetail, MDCChipNavigationEventDetail, MDCChipRemovalEventDetail,
     MDCChipSelectionEventDetail} from './types';
@@ -87,7 +87,8 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
   private trailingIcon_!: Element | null; // assigned in initialize()
   private checkmark_!: Element | null; // assigned in initialize()
   private ripple_!: MDCRipple; // assigned in initialize()
-  private text_!: Element | null; // assigned in initialize()
+  private primaryAction_!: Element | null; // assigned in initialize()
+  private trailingAction_!: Element | null; // assigned in initialize()
 
   private handleInteraction_!: SpecificEventListener<InteractionType>; // assigned in initialSyncWithDOM()
   private handleTransitionEnd_!: SpecificEventListener<'transitionend'>; // assigned in initialSyncWithDOM()
@@ -98,7 +99,8 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
     this.leadingIcon_ = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
     this.trailingIcon_ = this.root_.querySelector(strings.TRAILING_ICON_SELECTOR);
     this.checkmark_ = this.root_.querySelector(strings.CHECKMARK_SELECTOR);
-    this.text_ = this.root_.querySelector(strings.TEXT_SELECTOR);
+    this.primaryAction_ = this.root_.querySelector(strings.PRIMARY_ACTION_SELECTOR);
+    this.trailingAction_ = this.root_.querySelector(strings.TRAILING_ACTION_SELECTOR);
 
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
@@ -165,14 +167,14 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
         }
       },
       eventTargetHasClass: (target, className) => target ? (target as Element).classList.contains(className) : false,
-      focusText: () => {
-        if (this.text_) {
-          (this.text_ as HTMLElement).focus();
+      focusPrimaryAction: () => {
+        if (this.primaryAction_) {
+          (this.primaryAction_ as HTMLElement).focus();
         }
       },
-      focusTrailingIcon: () => {
-        if (this.trailingIcon_) {
-          (this.trailingIcon_ as HTMLElement).focus();
+      focusTrailingAction: () => {
+        if (this.trailingAction_) {
+          (this.trailingAction_ as HTMLElement).focus();
         }
       },
       getCheckmarkBoundingClientRect: () => this.checkmark_ ? this.checkmark_.getBoundingClientRect() : null,
@@ -180,7 +182,7 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
       getRootBoundingClientRect: () => this.root_.getBoundingClientRect(),
       hasClass: (className) => this.root_.classList.contains(className),
       hasLeadingIcon: () => !!this.leadingIcon_,
-      hasTrailingIcon: () => !!this.trailingIcon_,
+      hasTrailingAction: () => !!this.trailingAction_,
       isRTL: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
       notifyInteraction: () => this.emit<MDCChipInteractionEventDetail>(
           strings.INTERACTION_EVENT, {chipId: this.id}, true /* shouldBubble */),
@@ -201,33 +203,21 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
         }
       },
       setStyleProperty: (propertyName, value) => this.root_.style.setProperty(propertyName, value),
-      setTextAttr: (attr, value) => {
-        if (this.text_) {
-          this.text_.setAttribute(attr, value);
+      setPrimaryActionAttr: (attr, value) => {
+        if (this.primaryAction_) {
+          this.primaryAction_.setAttribute(attr, value);
         }
       },
-      setTrailingIconAttr: (attr, value) => {
-        if (this.trailingIcon_) {
-          this.trailingIcon_.setAttribute(attr, value);
+      setTrailingActionAttr: (attr, value) => {
+        if (this.trailingAction_) {
+          this.trailingAction_.setAttribute(attr, value);
         }
-      },
-      textHasFocus: () => {
-        if (this.text_) {
-          return document.activeElement === this.text_;
-        }
-        return false;
-      },
-      trailingIconHasFocus: () => {
-        if (this.trailingIcon_) {
-          return document.activeElement === this.trailingIcon_;
-        }
-        return false;
       },
     };
     return new MDCChipFoundation(adapter);
   }
 
-  focusAction(key: string, source: FocusSource) {
+  focusAction(key: string, source: EventSource) {
     this.foundation_.focusAction(key, source);
   }
 
