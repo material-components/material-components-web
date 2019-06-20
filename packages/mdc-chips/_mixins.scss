@@ -132,7 +132,9 @@
   }
 
   .mdc-chip__text:focus {
-    outline: none;
+    @include mdc-feature-targets($feat-structure) {
+      outline: none;
+    }
   }
 
   .mdc-chip--selected .mdc-chip__checkmark-path {
