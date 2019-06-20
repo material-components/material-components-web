@@ -32,9 +32,11 @@ import {MDCChip, MDCChipFoundation} from '../../../packages/mdc-chips/chip/index
 const {CHECKMARK_SELECTOR} = MDCChipFoundation.strings;
 
 const getFixture = () => bel`
-  <button class="mdc-chip">
-    <div class="mdc-chip__text">Chip content</div>
-  </button>
+  <div class="mdc-chip" role="row">
+    <span role="gridcell">
+      <span role="button" tabindex="0" class="mdc-chip__text">Chip content</span>
+    </span>
+  </div>
 `;
 
 const getFixtureWithCheckmark = () => bel`
@@ -56,8 +58,12 @@ const addLeadingIcon = (root) => {
 };
 
 const addTrailingIcon = (root) => {
-  const icon = bel`<i class="material-icons mdc-chip__icon mdc-chip__icon--trailing">cancel</i>`;
-  root.appendChild(icon);
+  const parent = bel`<span role="gridcell"></span>`;
+  const icon = bel`
+    <i tabindex="0" role="button" class="material-icons mdc-chip__icon mdc-chip__icon--trailing">cancel</i>
+  `;
+  parent.appendChild(icon);
+  root.appendChild(parent);
   return icon;
 };
 
@@ -319,6 +325,94 @@ test('adapter#getCheckmarkBoundingClientRect returns null when there is no check
   assert.isNull(component.getDefaultFoundation().adapter_.getCheckmarkBoundingClientRect());
 });
 
+test('adapter#hasTrailingIcon returns false when no trailing icon is present', () => {
+  const root = getFixture();
+  const component = new MDCChip(root);
+  assert.isFalse(component.getDefaultFoundation().adapter_.hasTrailingIcon());
+});
+
+test('adapter#hasTrailingIcon returns true when trailing icon is present', () => {
+  const root = getFixture();
+  addTrailingIcon(root);
+  const component = new MDCChip(root);
+  assert.isTrue(component.getDefaultFoundation().adapter_.hasTrailingIcon());
+});
+
+test('adapter#isRTL returns false if the text direction is not RTL', () => {
+  const {component, root} = setupTest();
+  document.documentElement.appendChild(root);
+  assert.isFalse(component.getDefaultFoundation().adapter_.isRTL());
+  document.documentElement.removeChild(root);
+});
+
+test('adapter#isRTL returns true if the text direction is RTL', () => {
+  const {component, root} = setupTest();
+  document.documentElement.appendChild(root);
+  document.documentElement.setAttribute('dir', 'rtl');
+  assert.isTrue(component.getDefaultFoundation().adapter_.isRTL());
+  document.documentElement.removeAttribute('dir');
+  document.documentElement.removeChild(root);
+});
+
+test('adapter#focusText gives focus to the root element', () => {
+  const {component, root} = setupTest();
+  document.documentElement.appendChild(root);
+  component.getDefaultFoundation().adapter_.focusText();
+  assert.equal(document.activeElement, root.querySelector('.mdc-chip__text'));
+  document.documentElement.removeChild(root);
+});
+
+test('adapter#focusTrailingIcon gives focus to the trailing icon element', () => {
+  const root = getFixture();
+  const icon = addTrailingIcon(root);
+  document.documentElement.appendChild(root);
+  const component = new MDCChip(root);
+  component.getDefaultFoundation().adapter_.focusTrailingIcon();
+  assert.equal(document.activeElement, icon);
+  document.documentElement.removeChild(root);
+});
+
+test('adapter#textHasFocus returns true if the text element has focus', () => {
+  const {component, root} = setupTest();
+  document.documentElement.appendChild(root);
+  component.getDefaultFoundation().adapter_.focusText();
+  assert.isTrue(component.getDefaultFoundation().adapter_.textHasFocus());
+  document.documentElement.removeChild(root);
+});
+
+test('adapter#trailingIconHasFocus returns true if the trailing icon element has focus', () => {
+  const root = getFixture();
+  addTrailingIcon(root);
+  document.documentElement.appendChild(root);
+  const component = new MDCChip(root);
+  component.getDefaultFoundation().adapter_.focusTrailingIcon();
+  assert.isTrue(component.getDefaultFoundation().adapter_.trailingIconHasFocus());
+  document.documentElement.removeChild(root);
+});
+
+test('adapter#trailingIconHasFocus returns false if no trailing icon element is present', () => {
+  const {component, root} = setupTest();
+  document.documentElement.appendChild(root);
+  component.getDefaultFoundation().adapter_.focusText();
+  assert.isFalse(component.getDefaultFoundation().adapter_.trailingIconHasFocus());
+  document.documentElement.removeChild(root);
+});
+
+test('adapter#setTextAttr sets the attribute on the text element', () => {
+  const {root, component} = setupTest();
+  const text = root.querySelector('.mdc-chip__text');
+  component.getDefaultFoundation().adapter_.setTextAttr('tabindex', '-1');
+  assert.equal(text.getAttribute('tabindex'), '-1');
+});
+
+test('adapter#setTrailingIconAttr sets the attribute on the trailing icon element', () => {
+  const root = getFixture();
+  const icon = addTrailingIcon(root);
+  const component = new MDCChip(root);
+  component.getDefaultFoundation().adapter_.setTrailingIconAttr('tabindex', '-1');
+  assert.equal(icon.getAttribute('tabindex'), '-1');
+});
+
 test('#get selected proxies to foundation', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
   assert.equal(component.selected, mockFoundation.isSelected());
@@ -347,10 +441,15 @@ test('#beginExit proxies to foundation', () => {
   td.verify(mockFoundation.beginExit());
 });
 
-test('#focus gives focus to the root element', () => {
-  const {root, component} = setupTest();
-  document.body.appendChild(root);
-  component.focus();
-  assert.equal(root, document.activeElement);
-  document.body.removeChild(root);
+test('#focusAction proxies to the foundation#focusAction', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.focusAction('ArrowLeft', 0);
+  td.verify(mockFoundation.focusAction('ArrowLeft', 0));
+});
+
+test('#remove removes the root from the DOM', () => {
+  const {component, root} = setupTest();
+  document.documentElement.appendChild(root);
+  component.remove();
+  assert.isNull(document.querySelector('.mdc-chip'));
 });

@@ -26,6 +26,7 @@ import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {MDCChipSetFoundation} from '../../../packages/mdc-chips/chip-set/foundation';
+import {FocusSource} from '../../../packages/mdc-chips/chip/constants';
 
 const {cssClasses} = MDCChipSetFoundation;
 
@@ -209,76 +210,94 @@ function setupChipNavigationTest(chipIds, isRTL=false) {
 test('#handleChipNavigation "Space" does nothing', () => {
   const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
-  foundation.handleChipNavigation('chip1', 'Space');
+  foundation.handleChipNavigation('chip1', 'Space', FocusSource.None);
   td.verify(mockAdapter.focusChipAtIndex(td.matchers.isA(Number)), {times: 0});
 });
 
-test('#handleChipNavigation "ArrowRight" focuses the next chip', () => {
+test('#handleChipNavigation "ArrowRight" focuses the next chip text', () => {
   const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
-  foundation.handleChipNavigation('chip1', 'ArrowRight');
-  td.verify(mockAdapter.focusChipAtIndex(2));
+  foundation.handleChipNavigation('chip1', 'ArrowRight', FocusSource.Text);
+  td.verify(mockAdapter.focusChipAtIndex(2, 'ArrowRight', FocusSource.Text));
 });
 
 test('#handleChipNavigation "ArrowRight" focuses the previous chip in RTL', () => {
   const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2'], true);
 
-  foundation.handleChipNavigation('chip1', 'ArrowRight');
-  td.verify(mockAdapter.focusChipAtIndex(0));
+  foundation.handleChipNavigation('chip1', 'ArrowRight', FocusSource.Text);
+  td.verify(mockAdapter.focusChipAtIndex(0, 'ArrowRight', FocusSource.Text));
 });
 
 test('#handleChipNavigation "ArrowDown" focuses the next chip', () => {
   const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
-  foundation.handleChipNavigation('chip1', 'ArrowDown');
-  td.verify(mockAdapter.focusChipAtIndex(2));
+  foundation.handleChipNavigation('chip1', 'ArrowDown', FocusSource.Text);
+  td.verify(mockAdapter.focusChipAtIndex(2, 'ArrowDown', FocusSource.Text));
+});
+
+test('#handleChipNavigation "Home" focuses the first chip', () => {
+  const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+
+  foundation.handleChipNavigation('chip1', 'Home', FocusSource.Text);
+  td.verify(mockAdapter.focusChipAtIndex(0, 'Home', FocusSource.Text));
+});
+
+test('#handleChipNavigation "End" focuses the last chip', () => {
+  const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+
+  foundation.handleChipNavigation('chip1', 'End', FocusSource.Text);
+  td.verify(mockAdapter.focusChipAtIndex(2, 'End', FocusSource.Text));
 });
 
 test('#handleChipNavigation "ArrowRight" from the last chip does not focus any chip', () => {
   const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
-  foundation.handleChipNavigation('chip2', 'ArrowRight');
-  td.verify(mockAdapter.focusChipAtIndex(td.matchers.isA(Number)), {times: 0});
+  foundation.handleChipNavigation('chip2', 'ArrowRight', FocusSource.Text);
+  td.verify(mockAdapter.focusChipAtIndex(
+    td.matchers.isA(Number), td.matchers.isA(String), td.matchers.isA(Number)), {times: 0});
 });
 
 test('#handleChipNavigation "ArrowDown" from the last chip does not focus any chip', () => {
   const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
-  foundation.handleChipNavigation('chip2', 'ArrowDown');
-  td.verify(mockAdapter.focusChipAtIndex(td.matchers.isA(Number)), {times: 0});
+  foundation.handleChipNavigation('chip2', 'ArrowDown', FocusSource.Text);
+  td.verify(mockAdapter.focusChipAtIndex(
+    td.matchers.isA(Number), td.matchers.isA(String), td.matchers.isA(Number)), {times: 0});
 });
 
 test('#handleChipNavigation "ArrowLeft" focuses the previous chip', () => {
   const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
-  foundation.handleChipNavigation('chip1', 'ArrowLeft');
-  td.verify(mockAdapter.focusChipAtIndex(0));
+  foundation.handleChipNavigation('chip1', 'ArrowLeft', FocusSource.TrailingIcon);
+  td.verify(mockAdapter.focusChipAtIndex(0, 'ArrowLeft', FocusSource.TrailingIcon));
 });
 
 test('#handleChipNavigation "ArrowLeft" focuses the next chip in RTL', () => {
   const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2'], true);
 
-  foundation.handleChipNavigation('chip1', 'ArrowLeft');
-  td.verify(mockAdapter.focusChipAtIndex(2));
+  foundation.handleChipNavigation('chip1', 'ArrowLeft', FocusSource.TrailingIcon);
+  td.verify(mockAdapter.focusChipAtIndex(2, 'ArrowLeft', FocusSource.TrailingIcon));
 });
 
 test('#handleChipNavigation "ArrowUp" focuses the previous chip', () => {
   const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
-  foundation.handleChipNavigation('chip1', 'ArrowLeft');
-  td.verify(mockAdapter.focusChipAtIndex(0));
+  foundation.handleChipNavigation('chip1', 'ArrowLeft', FocusSource.Text);
+  td.verify(mockAdapter.focusChipAtIndex(0, 'ArrowLeft', FocusSource.Text));
 });
 
 test('#handleChipNavigation "ArrowLeft" from the first chip does not focus any chip', () => {
   const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
   foundation.handleChipNavigation('chip0', 'ArrowLeft');
-  td.verify(mockAdapter.focusChipAtIndex(td.matchers.isA(Number)), {times: 0});
+  td.verify(mockAdapter.focusChipAtIndex(
+    td.matchers.isA(Number), td.matchers.isA(String), td.matchers.isA(Number)), {times: 0});
 });
 
 test('#handleChipNavigation "ArrowUp" from the first chip does not focus any chip', () => {
   const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
 
   foundation.handleChipNavigation('chip0', 'ArrowUp');
-  td.verify(mockAdapter.focusChipAtIndex(td.matchers.isA(Number)), {times: 0});
+  td.verify(mockAdapter.focusChipAtIndex(
+    td.matchers.isA(Number), td.matchers.isA(String), td.matchers.isA(Number)), {times: 0});
 });

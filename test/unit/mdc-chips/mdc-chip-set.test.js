@@ -53,7 +53,8 @@ class FakeChip {
   constructor(el) {
     this.id = el.id;
     this.destroy = td.func('.destroy');
-    this.focus = td.func('.focus');
+    this.focusAction = td.func('.focus');
+    this.remove = td.func('.remove');
     this.selected = false;
   }
 }
@@ -93,7 +94,7 @@ test('#initialSyncWithDOM sets up event handlers', () => {
   const {
     INTERACTION_EVENT, ARROW_LEFT_KEY, NAVIGATION_EVENT, REMOVAL_EVENT, SELECTION_EVENT} = MDCChipFoundation.strings;
   const evtData = {
-    chipId: 'chipA', selected: true, key: ARROW_LEFT_KEY,
+    chipId: 'chipA', selected: true, key: ARROW_LEFT_KEY, source: 1,
   };
   const evt1 = document.createEvent('CustomEvent');
   const evt2 = document.createEvent('CustomEvent');
@@ -112,7 +113,7 @@ test('#initialSyncWithDOM sets up event handlers', () => {
   td.verify(mockFoundation.handleChipInteraction('chipA'), {times: 1});
   td.verify(mockFoundation.handleChipSelection('chipA', true), {times: 1});
   td.verify(mockFoundation.handleChipRemoval('chipA'), {times: 1});
-  td.verify(mockFoundation.handleChipNavigation('chipA', ARROW_LEFT_KEY), {times: 1});
+  td.verify(mockFoundation.handleChipNavigation('chipA', ARROW_LEFT_KEY, 1), {times: 1});
 });
 
 test('#destroy removes event handlers', () => {
@@ -165,6 +166,7 @@ test('#adapter.removeChip removes the chip object from the chip set', () => {
   component.getDefaultFoundation().adapter_.removeChip(chip.id);
   assert.equal(component.chips.length, 2);
   td.verify(chip.destroy());
+  td.verify(chip.remove());
 });
 
 test('#adapter.removeChip does nothing if the given object is not in the chip set', () => {
@@ -192,12 +194,22 @@ test('#adapter.getIndexOfChipById returns the index of the chip', () => {
 
 test('#adapter.focusChipAtIndex focuses the chip at the given index', () => {
   const {component} = setupTest();
-  component.getDefaultFoundation().adapter_.focusChipAtIndex(0);
-  td.verify(component.chips[0].focus(), {times: 1});
+  component.getDefaultFoundation().adapter_.focusChipAtIndex(0, 'ArrowLeft', 1);
+  td.verify(component.chips[0].focusAction('ArrowLeft', 1), {times: 1});
 });
 
 test('#adapter.isRTL returns true if the text direction is RTL', () => {
-  const {component} = setupTest();
-  component.getDefaultFoundation().adapter_.isRTL();
+  const {component, root} = setupTest();
+  document.documentElement.appendChild(root);
+  document.documentElement.setAttribute('dir', 'rtl');
+  assert.isTrue(component.getDefaultFoundation().adapter_.isRTL());
+  document.documentElement.removeAttribute('dir');
+  document.documentElement.removeChild(root);
+});
+
+test('#adapter.isRTL returns false if the text direction is not RTL', () => {
+  const {component, root} = setupTest();
+  document.documentElement.appendChild(root);
   assert.isFalse(component.getDefaultFoundation().adapter_.isRTL());
+  document.documentElement.removeChild(root);
 });
