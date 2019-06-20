@@ -47,6 +47,7 @@ export interface MDCChipSetAdapter {
   setSelected(chipId: string, selected: boolean): void;
 
   /**
+   * @param chipId the unique ID of the chip
    * @return the numerical index of the chip with the matching id or -1.
    */
   getIndexOfChipById(chipId: string): number;
