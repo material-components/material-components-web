@@ -71,6 +71,8 @@
 
     &__notch {
       flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
       width: auto;
       max-width: calc(100% - #{$mdc-notched-outline-leading-width} * 2);
     }
@@ -78,12 +80,12 @@
     .mdc-floating-label {
       display: inline-block;
       position: relative;
-      bottom: auto;
+      // bottom: auto;
       max-width: 100%;
     }
 
     .mdc-floating-label--float-above {
-      top: 17px;
+      // top: 17px;
       text-overflow: clip;
     }
 
@@ -92,12 +94,10 @@
     }
   }
 
-  .mdc-notched-outline--notched {
-    .mdc-notched-outline__notch {
-      @include mdc-rtl-reflexive-box(padding, right, 8px);
+  .mdc-notched-outline--notched .mdc-notched-outline__notch {
+    // @include mdc-rtl-reflexive-box(padding, right, 8px);
 
-      border-top: none;
-    }
+    border-top: 1px solid transparent !important; // TODO: fix this
   }
 
   .mdc-notched-outline--no-label {

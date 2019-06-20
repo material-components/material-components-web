@@ -53,8 +53,8 @@
     // Force the label into its own layer to prevent visible layer promotion adjustments
     // when the ripple is activated behind it.
     will-change: transform;
-    top: 50%;
-    transform: translateY(-50%);
+    // top: 50%;
+    // transform: translateY(-50%);
 
     @include mdc-rtl {
       /* @noflip */

@@ -48,7 +48,12 @@ $mdc-text-field-density-scale: 0;
   height: $height;
 
   .mdc-floating-label {
+    // line-height: $height;
     // top: (18px / 56px) * $height;
+  }
+
+  .mdc-text-field__input {
+    line-height: $height;
   }
 
   @if $shape-radius {
@@ -65,6 +70,9 @@ $mdc-text-field-density-scale: 0;
   $shape-rtl-reflexive: false) {
 
   $height: $mdc-text-field-height + $density-scale * $mdc-density-range;
+  $position-y: $height / 2;
+
+  @include mdc-notched-outline-floating-label-float-position($position-y);
 
   height: $height;
 
@@ -406,7 +414,8 @@ $mdc-text-field-density-scale: 0;
 
   .mdc-text-field__input {
     display: flex;
-    padding: 12px 16px 14px;
+    // padding: 12px 16px 14px;
+    padding: 0 16px;
     border: none !important; // FF adds unwanted border in HC mode on windows.
     background-color: transparent;
     z-index: 1;

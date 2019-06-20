@@ -66,6 +66,7 @@
   @include mdc-text-field-floating-label_;
 
   display: inline-flex;
+  align-items: center;
   position: relative;
   box-sizing: border-box;
   height: $mdc-text-field-height;
