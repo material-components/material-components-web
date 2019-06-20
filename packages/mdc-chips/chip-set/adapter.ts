@@ -53,6 +53,9 @@ export interface MDCChipSetAdapter {
 
   /**
    * Gives focus to the chip at the given index with the given key.
+   * @param index the index of the chip
+   * @param key the key from the navigation event
+   * @param source the event source from the navigation event
    */
   focusChipAtIndex(index: number, key: string, source: EventSource): void;
 
