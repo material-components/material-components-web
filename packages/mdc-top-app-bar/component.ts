@@ -84,12 +84,12 @@ export class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
       getTopAppBarHeight: () => this.root_.clientHeight,
       registerNavigationIconInteractionHandler: (evtType, handler) => {
         if (this.navIcon_) {
-          this.navIcon_.addEventListener(evtType, handler);
+          (this.navIcon_ as HTMLElement).addEventListener(evtType, handler);
         }
       },
       deregisterNavigationIconInteractionHandler: (evtType, handler) => {
         if (this.navIcon_) {
-          this.navIcon_.removeEventListener(evtType, handler);
+          (this.navIcon_ as HTMLElement).removeEventListener(evtType, handler);
         }
       },
       notifyNavigationIconClicked: () => this.emit(strings.NAVIGATION_EVENT, {}),
