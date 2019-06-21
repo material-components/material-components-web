@@ -39,7 +39,6 @@ npm install @material/linear-progress
 ## Basic Usage
 
 ### HTML Structure
-
 ```html
 <div role="progressbar" class="mdc-linear-progress">
   <div class="mdc-linear-progress__buffering-dots"></div>
