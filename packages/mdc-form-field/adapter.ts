@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-import {EventType, SpecificEventListener} from '@material/base/types';
+import {SpecificEventListener} from '@material/base/types';
 
 /**
  * Defines the shape of the adapter expected by the foundation.
@@ -33,6 +33,6 @@ import {EventType, SpecificEventListener} from '@material/base/types';
 export interface MDCFormFieldAdapter {
   activateInputRipple(): void;
   deactivateInputRipple(): void;
-  deregisterInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
-  registerInteractionHandler<K extends EventType>(evtType: K, handler: SpecificEventListener<K>): void;
+  deregisterInteractionHandler(evtType: 'click', handler: SpecificEventListener<'click'>): void;
+  registerInteractionHandler(evtType: 'click', handler: SpecificEventListener<'click'>): void;
 }

@@ -81,7 +81,7 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements 
   }
 
   // Public visibility for this property is required by MDCRippleCapableSurface.
-  root_!: Element; // assigned in MDCComponent constructor
+  root_!: HTMLElement; // assigned in MDCComponent constructor
 
   private readonly ripple_: MDCRipple = this.createRipple_();
   private handleChange_!: EventListener; // assigned in initialSyncWithDOM()

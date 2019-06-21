@@ -45,7 +45,7 @@ export class MDCFormField extends MDCComponent<MDCFormFieldFoundation> {
     return this.input_;
   }
 
-  private get label_(): Element | null {
+  private get label_(): HTMLElement | null {
     const {LABEL_SELECTOR} = MDCFormFieldFoundation.strings;
     return this.root_.querySelector(LABEL_SELECTOR);
   }

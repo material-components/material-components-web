@@ -38,7 +38,7 @@ export class MDCSwitch extends MDCComponent<MDCSwitchFoundation> implements MDCR
   }
 
   // Public visibility for this property is required by MDCRippleCapableSurface.
-  root_!: Element; // assigned in MDCComponent constructor
+  root_!: HTMLElement; // assigned in MDCComponent constructor
 
   private readonly ripple_ = this.createRipple_();
 

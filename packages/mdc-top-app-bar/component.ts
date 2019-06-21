@@ -35,7 +35,7 @@ export class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
     return new MDCTopAppBar(root);
   }
 
-  private navIcon_!: Element | null;
+  private navIcon_!: HTMLElement | null;
   private iconRipples_!: MDCRipple[];
   private scrollTarget_!: EventTarget;
 
