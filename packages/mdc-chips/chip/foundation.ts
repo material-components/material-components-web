@@ -159,6 +159,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   handleInteraction(evt: MouseEvent | KeyboardEvent) {
     if (this.shouldHandleInteraction_(evt)) {
       this.adapter_.notifyInteraction();
+      this.focusPrimaryAction_();
     }
   }
 

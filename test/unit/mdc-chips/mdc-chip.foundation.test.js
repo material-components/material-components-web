@@ -154,30 +154,33 @@ test('#handleInteraction does not emit event on invalid key', () => {
   td.verify(mockAdapter.notifyInteraction(), {times: 0});
 });
 
-test('#handleInteraction emits custom event on click', () => {
-  const {foundation, mockAdapter} = setupTest();
-  const mockEvt = {
+const validEvents = [
+  {
     type: 'click',
-  };
+  }, {
+    type: 'keydown',
+    key: 'Enter',
+  }, {
+    type: 'keydown',
+    key: ' ', // Space bar
+  },
+];
 
-  foundation.handleInteraction(mockEvt);
-
-  td.verify(mockAdapter.notifyInteraction());
-});
-
-[
-  'Enter',
-  ' ', // Spacebar
-].forEach((key) => {
-  test(`#handleInteraction({key: ${key}}) notifies interaction`, () => {
+validEvents.forEach((evt) => {
+  test(`#handleInteraction(${evt}) notifies interaction`, () => {
     const {foundation, mockAdapter} = setupTest();
-    const mockEvt = {
-      type: 'keydown',
-      key,
-    };
 
-    foundation.handleInteraction(mockEvt);
+    foundation.handleInteraction(evt);
     td.verify(mockAdapter.notifyInteraction());
+  });
+
+  test(`#handleInteraction(${evt}) focuses the primary action`, () => {
+    const {foundation, mockAdapter} = setupTest();
+
+    foundation.handleInteraction(evt);
+    td.verify(mockAdapter.setPrimaryActionAttr(strings.TAB_INDEX, '0'));
+    td.verify(mockAdapter.setTrailingActionAttr(strings.TAB_INDEX, '-1'));
+    td.verify(mockAdapter.focusPrimaryAction());
   });
 });
 

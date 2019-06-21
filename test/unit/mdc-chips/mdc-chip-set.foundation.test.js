@@ -144,6 +144,17 @@ test('#handleChipInteraction selects chip if the chip set is a choice chip set',
   td.verify(mockAdapter.setSelected('chipA', true));
 });
 
+test('#handleChipInteraction removes focus from all chips except the selected one', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getChipListCount()).thenReturn(4);
+  td.when(mockAdapter.getIndexOfChipById('chipA')).thenReturn(1);
+
+  foundation.handleChipInteraction('chipA');
+  td.verify(mockAdapter.removeFocusFromChipAtIndex(0));
+  td.verify(mockAdapter.removeFocusFromChipAtIndex(2));
+  td.verify(mockAdapter.removeFocusFromChipAtIndex(3));
+});
+
 test('#handleChipInteraction does nothing if the chip set is neither choice nor filter', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass(cssClasses.CHOICE)).thenReturn(false);

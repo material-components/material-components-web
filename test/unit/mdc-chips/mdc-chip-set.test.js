@@ -202,7 +202,7 @@ test('#adapter.focusChipAtIndex focuses the chip at the given index', () => {
 test('#adapter.removeFocusFromChipAtIndex removes focus from the chip at the given index', () => {
   const {component} = setupTest();
   component.getDefaultFoundation().adapter_.removeFocusFromChipAtIndex(0);
-  td.verify(component.chips[0].removeFocus(0), {times: 1});
+  td.verify(component.chips[0].removeFocus(), {times: 1});
 });
 
 test('#adapter.isRTL returns true if the text direction is RTL', () => {

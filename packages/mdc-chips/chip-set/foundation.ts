@@ -86,6 +86,8 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
    * Handles a chip interaction event
    */
   handleChipInteraction(chipId: string) {
+    const index = this.adapter_.getIndexOfChipById(chipId);
+    this.removeFocusFromChipsExcept(index);
     if (this.adapter_.hasClass(cssClasses.CHOICE) || this.adapter_.hasClass(cssClasses.FILTER)) {
       this.toggleSelect_(chipId);
     }
@@ -115,12 +117,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     // So, we simulate that by focusing the next index with the up arrow key from the trailing action.
     const maxIndex = this.adapter_.getChipListCount() - 1;
     const nextIndex = Math.min(index, maxIndex);
-    // Remove focus from all chips except the "next" chip
-    for (let i = 0; i <= maxIndex; i++) {
-      if (i !== nextIndex) {
-        this.adapter_.removeFocusFromChipAtIndex(i);
-      }
-    }
+    this.removeFocusFromChipsExcept(nextIndex);
     this.adapter_.focusChipAtIndex(nextIndex, chipStrings.ARROW_UP_KEY, EventSource.Trailing);
   }
 
@@ -178,6 +175,15 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
       this.deselect_(chipId);
     } else {
       this.select(chipId);
+    }
+  }
+
+  private removeFocusFromChipsExcept(index: number) {
+    const chipCount = this.adapter_.getChipListCount();
+    for (let i = 0; i < chipCount; i++) {
+      if (i !== index) {
+        this.adapter_.removeFocusFromChipAtIndex(i);
+      }
     }
   }
 }
