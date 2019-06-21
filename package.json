@@ -132,7 +132,7 @@
     "ts-loader": "^3.5.0",
     "ts-node": "^8.0.3",
     "tslint": "^5.12.0",
-    "typescript": "^3.5.0",
+    "typescript": "^3.1.6",
     "url-search-params-polyfill": "^6.0.0",
     "useragent": "^2.3.0",
     "verror": "^1.10.0",

@@ -67,7 +67,7 @@ export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements MDCR
   }
 
   // Public visibility for this property is required by MDCRippleCapableSurface.
-  root_!: HTMLElement; // assigned in MDCComponent constructor
+  root_!: Element; // assigned in MDCComponent constructor
 
   disabled = false;
 
