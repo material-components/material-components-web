@@ -111,6 +111,7 @@
     --mdc-ripple-fg-translate-start: 0;
 
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    // !!DO NOT REMOVE!! mdc-ripple-will-change-replacer
   }
 
   &::before,
