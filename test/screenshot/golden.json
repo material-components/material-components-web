@@ -384,9 +384,9 @@
     }
   },
   "spec/mdc-dialog/classes/baseline-confirmation.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/12/17_35_21_026/spec/mdc-dialog/classes/baseline-confirmation.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/20/17_09_47_780/spec/mdc-dialog/classes/baseline-confirmation.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/23_35_52_292/spec/mdc-dialog/classes/baseline-confirmation.html.windows_chrome_75.png",
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/20/17_09_47_780/spec/mdc-dialog/classes/baseline-confirmation.html.windows_chrome_75.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/12/17_35_21_026/spec/mdc-dialog/classes/baseline-confirmation.html.windows_firefox_67.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/advorak/2018/09/21/16_50_45_748/spec/mdc-dialog/classes/baseline-confirmation.html.windows_ie_11.png"
     }
@@ -888,9 +888,9 @@
     }
   },
   "spec/mdc-select/classes/enhanced-helper-text-persistent.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/23_35_52_292/spec/mdc-select/classes/enhanced-helper-text-persistent.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/20/17_09_47_780/spec/mdc-select/classes/enhanced-helper-text-persistent.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/23_35_52_292/spec/mdc-select/classes/enhanced-helper-text-persistent.html.windows_chrome_75.png",
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/20/17_09_47_780/spec/mdc-select/classes/enhanced-helper-text-persistent.html.windows_chrome_75.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/23_35_52_292/spec/mdc-select/classes/enhanced-helper-text-persistent.html.windows_firefox_67.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/29/17_07_39_476/spec/mdc-select/classes/enhanced-helper-text-persistent.html.windows_ie_11.png"
     }
@@ -904,17 +904,17 @@
     }
   },
   "spec/mdc-select/classes/enhanced-invalid-helper-text-persistent-validation-msg.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/23_35_52_292/spec/mdc-select/classes/enhanced-invalid-helper-text-persistent-validation-msg.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/20/17_09_47_780/spec/mdc-select/classes/enhanced-invalid-helper-text-persistent-validation-msg.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/23_35_52_292/spec/mdc-select/classes/enhanced-invalid-helper-text-persistent-validation-msg.html.windows_chrome_75.png",
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/20/17_09_47_780/spec/mdc-select/classes/enhanced-invalid-helper-text-persistent-validation-msg.html.windows_chrome_75.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/23_35_52_292/spec/mdc-select/classes/enhanced-invalid-helper-text-persistent-validation-msg.html.windows_firefox_67.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/21/19_18_38_795/spec/mdc-select/classes/enhanced-invalid-helper-text-persistent-validation-msg.html.windows_ie_11.png"
     }
   },
   "spec/mdc-select/classes/enhanced-invalid-helper-text-persistent.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/23_35_52_292/spec/mdc-select/classes/enhanced-invalid-helper-text-persistent.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/20/17_09_47_780/spec/mdc-select/classes/enhanced-invalid-helper-text-persistent.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/23_35_52_292/spec/mdc-select/classes/enhanced-invalid-helper-text-persistent.html.windows_chrome_75.png",
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/20/17_09_47_780/spec/mdc-select/classes/enhanced-invalid-helper-text-persistent.html.windows_chrome_75.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/23_35_52_292/spec/mdc-select/classes/enhanced-invalid-helper-text-persistent.html.windows_firefox_67.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2018/11/21/19_18_38_795/spec/mdc-select/classes/enhanced-invalid-helper-text-persistent.html.windows_ie_11.png"
     }
@@ -952,9 +952,9 @@
     }
   },
   "spec/mdc-select/classes/helper-text-persistent.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/23_35_52_292/spec/mdc-select/classes/helper-text-persistent.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/20/17_09_47_780/spec/mdc-select/classes/helper-text-persistent.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/23_35_52_292/spec/mdc-select/classes/helper-text-persistent.html.windows_chrome_75.png",
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/20/17_09_47_780/spec/mdc-select/classes/helper-text-persistent.html.windows_chrome_75.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/23_35_52_292/spec/mdc-select/classes/helper-text-persistent.html.windows_firefox_67.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/29/17_07_39_476/spec/mdc-select/classes/helper-text-persistent.html.windows_ie_11.png"
     }
@@ -1040,17 +1040,17 @@
     }
   },
   "spec/mdc-select/mixins/enhanced-ink-color.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/23_35_52_292/spec/mdc-select/mixins/enhanced-ink-color.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/20/17_09_47_780/spec/mdc-select/mixins/enhanced-ink-color.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/23_35_52_292/spec/mdc-select/mixins/enhanced-ink-color.html.windows_chrome_75.png",
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/20/17_09_47_780/spec/mdc-select/mixins/enhanced-ink-color.html.windows_chrome_75.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/29/17_07_39_476/spec/mdc-select/mixins/enhanced-ink-color.html.windows_firefox_66.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/29/17_07_39_476/spec/mdc-select/mixins/enhanced-ink-color.html.windows_ie_11.png"
     }
   },
   "spec/mdc-select/mixins/enhanced-label-color.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/23_35_52_292/spec/mdc-select/mixins/enhanced-label-color.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/20/17_09_47_780/spec/mdc-select/mixins/enhanced-label-color.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/23_35_52_292/spec/mdc-select/mixins/enhanced-label-color.html.windows_chrome_75.png",
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/20/17_09_47_780/spec/mdc-select/mixins/enhanced-label-color.html.windows_chrome_75.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/29/17_07_39_476/spec/mdc-select/mixins/enhanced-label-color.html.windows_firefox_66.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/29/17_07_39_476/spec/mdc-select/mixins/enhanced-label-color.html.windows_ie_11.png"
     }
@@ -1072,17 +1072,17 @@
     }
   },
   "spec/mdc-select/mixins/ink-color.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/23_35_52_292/spec/mdc-select/mixins/ink-color.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/20/17_09_47_780/spec/mdc-select/mixins/ink-color.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/23_35_52_292/spec/mdc-select/mixins/ink-color.html.windows_chrome_75.png",
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/20/17_09_47_780/spec/mdc-select/mixins/ink-color.html.windows_chrome_75.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/29/17_07_39_476/spec/mdc-select/mixins/ink-color.html.windows_firefox_66.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/29/17_07_39_476/spec/mdc-select/mixins/ink-color.html.windows_ie_11.png"
     }
   },
   "spec/mdc-select/mixins/label-color.html": {
-    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/23_35_52_292/spec/mdc-select/mixins/label-color.html?utm_source=golden_json",
+    "public_url": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/20/17_09_47_780/spec/mdc-select/mixins/label-color.html?utm_source=golden_json",
     "screenshots": {
-      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/10/23_35_52_292/spec/mdc-select/mixins/label-color.html.windows_chrome_75.png",
+      "desktop_windows_chrome@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/06/20/17_09_47_780/spec/mdc-select/mixins/label-color.html.windows_chrome_75.png",
       "desktop_windows_firefox@latest": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/29/17_07_39_476/spec/mdc-select/mixins/label-color.html.windows_firefox_66.png",
       "desktop_windows_ie@11": "https://storage.googleapis.com/mdc-web-screenshot-tests/travis/2019/05/29/17_07_39_476/spec/mdc-select/mixins/label-color.html.windows_ie_11.png"
     }
