@@ -52,19 +52,20 @@ npm install @material/linear-progress
 </div>
 ```
 
-### Styles	
-```scss	
-@import "@material/linear-progress/mdc-linear-progress";	
-```	
+### Styles
+```scss
+@import "@material/linear-progress/mdc-linear-progress";
+```
 
- ### JavaScript Instantiation	
+ ### JavaScript Instantiation
 
- ```js	
-import { MDCLinearProgress } from '@material/linear-progress';	
- const linearProgress = new MDCLinearProgress(document.querySelector('.mdc-linear-progress'));	
-```	
+ ```js
+import { MDCLinearProgress } from '@material/linear-progress';
 
- > See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.	
+const linearProgress = new MDCLinearProgress(document.querySelector('.mdc-linear-progress'));
+``
+
+> See [Importing the JS component](../../docs/importing-js.md) for more information on how to import JavaScript.	
 
 ### CSS Modifiers
 
