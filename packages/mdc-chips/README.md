@@ -39,6 +39,8 @@ npm install @material/chips
 
 ### HTML Structure
 
+>**Note**: Due to IE11 and Edge's lack of support for the `:focus-within` selector, keyboard navigation of the chip set will not be visually obvious.
+
 ```html
 <div class="mdc-chip-set" role="grid">
   <div class="mdc-chip" role="row">
