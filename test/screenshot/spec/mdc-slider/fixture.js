@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2018 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,11 @@
  * THE SOFTWARE.
  */
 
-import * as events from './events';
-import * as ponyfill from './ponyfill';
+window.mdc.testFixture.fontsLoaded.then(() => {
+  [].forEach.call(document.querySelectorAll('.mdc-slider'), (el) => {
+    const slider = mdc.slider.MDCSlider.attachTo(el);
+    slider.listen('MDCSlider:change', () => console.log(`Value changed to ${slider.value}`));
+  });
 
-export {events, ponyfill};
+  window.mdc.testFixture.notifyDomReady();
+});

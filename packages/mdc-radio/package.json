@@ -19,6 +19,7 @@
   "dependencies": {
     "@material/animation": "^1.0.0",
     "@material/base": "^1.0.0",
+    "@material/dom": "^1.1.0",
     "@material/feature-targeting": "^0.44.1",
     "@material/ripple": "^2.3.0",
     "@material/theme": "^1.1.0",

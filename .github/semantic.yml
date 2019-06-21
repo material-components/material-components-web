@@ -1,0 +1,5 @@
+# Config file for Semantic Pull Requests Probot
+# See https://github.com/probot/semantic-pull-requests
+
+# Always validate the PR title, and ignore the commits
+titleOnly: true
