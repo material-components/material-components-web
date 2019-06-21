@@ -64,7 +64,7 @@ export class MDCRadio extends MDCComponent<MDCRadioFoundation> implements MDCRip
   }
 
   // Public visibility for this property is required by MDCRippleCapableSurface.
-  root_!: Element; // assigned in MDCComponent constructor
+  root_!: HTMLElement; // assigned in MDCComponent constructor
 
   private readonly ripple_: MDCRipple = this.createRipple_();
 
