@@ -27,6 +27,7 @@ import td from 'testdouble';
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {MDCChipSetFoundation} from '../../../packages/mdc-chips/chip-set/foundation';
 import {EventSource} from '../../../packages/mdc-chips/chip/constants';
+import {chipStrings} from '../../../packages/mdc-chips/chip';
 
 const {cssClasses} = MDCChipSetFoundation;
 
@@ -44,6 +45,7 @@ test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCChipSetFoundation, [
     'hasClass', 'removeChip', 'setSelected',
     'focusChipAtIndex', 'getIndexOfChipById', 'isRTL', 'getChipListCount',
+    'removeFocusFromChipAtIndex',
   ]);
 });
 
@@ -190,6 +192,25 @@ test('#handleChipRemoval removes chip', () => {
 
   foundation.handleChipRemoval('chipA');
   td.verify(mockAdapter.removeChip('chipA'));
+});
+
+test('#handleChipRemoval removes focus from all chips except the next one', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getChipListCount()).thenReturn(4);
+  td.when(mockAdapter.getIndexOfChipById('chipA')).thenReturn(1);
+
+  foundation.handleChipRemoval('chipA');
+  td.verify(mockAdapter.removeFocusFromChipAtIndex(0));
+  td.verify(mockAdapter.removeFocusFromChipAtIndex(2));
+});
+
+test('#handleChipRemoval gives focus to the next chip', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getChipListCount()).thenReturn(4);
+  td.when(mockAdapter.getIndexOfChipById('chipA')).thenReturn(1);
+
+  foundation.handleChipRemoval('chipA');
+  td.verify(mockAdapter.focusChipAtIndex(1, chipStrings.ARROW_UP_KEY, EventSource.Trailing));
 });
 
 function setupChipNavigationTest(chipIds, isRTL=false) {

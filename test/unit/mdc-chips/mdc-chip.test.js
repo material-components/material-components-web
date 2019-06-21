@@ -432,6 +432,12 @@ test('#focusAction proxies to the foundation#focusAction', () => {
   td.verify(mockFoundation.focusAction('ArrowLeft', 0));
 });
 
+test('#removeFocus proxies to the foundation#removeFocus', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.removeFocus();
+  td.verify(mockFoundation.removeFocus());
+});
+
 test('#remove removes the root from the DOM', () => {
   const {component, root} = setupTest();
   document.documentElement.appendChild(root);

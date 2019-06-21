@@ -541,17 +541,6 @@ test('#handleKeydown ArrowRight from focused trailing icon focuses text in RTL',
   });
 });
 
-test('#focusAction(ArrowLeft, None) with trailing action does nothing', () => {
-  const {foundation, mockAdapter} = setupNavigationTest({
-    hasTrailingAction: true,
-  });
-  foundation.focusAction('ArrowLeft', EventSource.None);
-  td.verify(mockAdapter.setTrailingActionAttr(td.matchers.isA(String)), {times: 0});
-  td.verify(mockAdapter.setPrimaryActionAttr(td.matchers.isA(String)), {times: 0});
-  td.verify(mockAdapter.focusPrimaryAction(), {times: 0});
-  td.verify(mockAdapter.focusTrailingAction(), {times: 0});
-});
-
 test('#focusAction(ArrowRight, None) gives focus to the text', () => {
   const {foundation, mockAdapter} = setupNavigationTest();
   foundation.focusAction('ArrowRight', EventSource.None);
@@ -617,4 +606,11 @@ test('#focusAction(Invalid, None) makes no focus or tabindex changes', () => {
     td.verify(mockAdapter.setPrimaryActionAttr('tabindex', '0'));
     td.verify(mockAdapter.focusPrimaryAction());
   });
+});
+
+test('#removeFocus() sets tabindex -1 on the primary and trailing action', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.removeFocus();
+  td.verify(mockAdapter.setPrimaryActionAttr(strings.TAB_INDEX, '-1'));
+  td.verify(mockAdapter.setTrailingActionAttr(strings.TAB_INDEX, '-1'));
 });

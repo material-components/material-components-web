@@ -61,6 +61,12 @@ export interface MDCChipSetAdapter {
   focusChipAtIndex(index: number, key: string, source: EventSource): void;
 
   /**
+   * Removes focus from the chip at the given index.
+   * @param index the index of the chip
+   */
+  removeFocusFromChipAtIndex(index: number): void;
+
+  /**
    * @return true if the text direction is RTL.
    */
   isRTL(): boolean;

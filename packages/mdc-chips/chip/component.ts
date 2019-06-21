@@ -221,6 +221,10 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
     this.foundation_.focusAction(key, source);
   }
 
+  removeFocus() {
+    this.foundation_.removeFocus();
+  }
+
   remove() {
     const parent = this.root_.parentNode;
     if (parent !== null) {

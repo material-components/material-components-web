@@ -246,6 +246,11 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     this.focusNextAction_(evt);
   }
 
+  removeFocus() {
+    this.adapter_.setPrimaryActionAttr(strings.TAB_INDEX, '-1');
+    this.adapter_.setTrailingActionAttr(strings.TAB_INDEX, '-1');
+  }
+
   focusAction(key: string, source: EventSource) {
     // Early exit if the key is not usable
     if (!NAVIGATION_KEYS.has(key)) {

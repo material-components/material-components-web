@@ -44,6 +44,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
       hasClass: () => false,
       isRTL: () => false,
       removeChip: () => undefined,
+      removeFocusFromChipAtIndex: () => undefined,
       setSelected: () => undefined,
     };
   }
@@ -114,6 +115,12 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     // So, we simulate that by focusing the next index with the up arrow key from the trailing action.
     const maxIndex = this.adapter_.getChipListCount() - 1;
     const nextIndex = Math.min(index, maxIndex);
+    // Remove focus from all chips except the "next" chip
+    for (let i = 0; i <= maxIndex; i++) {
+      if (i !== nextIndex) {
+        this.adapter_.removeFocusFromChipAtIndex(i);
+      }
+    }
     this.adapter_.focusChipAtIndex(nextIndex, chipStrings.ARROW_UP_KEY, EventSource.Trailing);
   }
 

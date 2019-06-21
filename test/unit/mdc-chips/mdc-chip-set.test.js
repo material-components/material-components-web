@@ -55,6 +55,7 @@ class FakeChip {
     this.destroy = td.func('.destroy');
     this.focusAction = td.func('.focus');
     this.remove = td.func('.remove');
+    this.removeFocus = td.func('.removeFocus');
     this.selected = false;
   }
 }
@@ -196,6 +197,12 @@ test('#adapter.focusChipAtIndex focuses the chip at the given index', () => {
   const {component} = setupTest();
   component.getDefaultFoundation().adapter_.focusChipAtIndex(0, 'ArrowLeft', 1);
   td.verify(component.chips[0].focusAction('ArrowLeft', 1), {times: 1});
+});
+
+test('#adapter.removeFocusFromChipAtIndex removes focus from the chip at the given index', () => {
+  const {component} = setupTest();
+  component.getDefaultFoundation().adapter_.removeFocusFromChipAtIndex(0);
+  td.verify(component.chips[0].removeFocus(0), {times: 1});
 });
 
 test('#adapter.isRTL returns true if the text direction is RTL', () => {
