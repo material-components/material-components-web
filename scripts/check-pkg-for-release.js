@@ -74,20 +74,13 @@ const CSS_WHITELIST = [
   'shape',
 ];
 
-// List of packages that are intentionally not included in the MCW package's dependencies
-const NOT_MCW_DEP = [
-  'tabs', // Deprecated; CSS classes conflict with tab and tab-bar
-];
-
 const NOT_AUTOINIT = [
   'auto-init',
   'base',
   'dom',
-  'icon-toggle',
   'tab', // Only makes sense in context of tab-bar
   'tab-indicator', // Only makes sense in context of tab-bar
   'tab-scroller', // Only makes sense in context of tab-bar
-  'tabs', // Deprecated
 ];
 
 main();
@@ -172,18 +165,16 @@ function checkDependencyAddedInMDCPackage() {
 }
 
 function checkPkgDependencyAddedInMDCPackage() {
-  if (NOT_MCW_DEP.indexOf(getPkgName()) === -1) {
-    assert.notEqual(typeof MASTER_PACKAGE_JSON.dependencies[CLI_PACKAGE_JSON.name], 'undefined',
-      'FAILURE: Component ' + CLI_PACKAGE_JSON.name + ' is not a denpendency for MDC Web. ' +
-      'Please add ' + CLI_PACKAGE_JSON.name +' to ' + MASTER_PACKAGE_JSON_RELATIVE_PATH +
-      '\' dependencies before commit.');
-  }
+  assert.notEqual(typeof MASTER_PACKAGE_JSON.dependencies[CLI_PACKAGE_JSON.name], 'undefined',
+    'FAILURE: Component ' + CLI_PACKAGE_JSON.name + ' is not a denpendency for MDC Web. ' +
+    'Please add ' + CLI_PACKAGE_JSON.name +' to ' + MASTER_PACKAGE_JSON_RELATIVE_PATH +
+    '\' dependencies before commit.');
 }
 
 function checkCSSDependencyAddedInMDCPackage() {
   const name = getPkgName();
   const nameMDC = `mdc-${name}`;
-  if (CSS_WHITELIST.indexOf(name) === -1 && NOT_MCW_DEP.indexOf(name) === -1) {
+  if (CSS_WHITELIST.indexOf(name) === -1) {
     const src = fs.readFileSync(path.join(process.env.PWD, MASTER_CSS_RELATIVE_PATH), 'utf8');
     const cssRules = cssom.parse(src).cssRules;
     const cssRule = path.join(CLI_PACKAGE_JSON.name, nameMDC);
@@ -197,11 +188,10 @@ function checkCSSDependencyAddedInMDCPackage() {
 }
 
 function checkJSDependencyAddedInMDCPackage() {
-  const NOT_IMPORTED = ['animation', 'icon-toggle'];
+  const NOT_IMPORTED = ['animation'];
   const name = getPkgName();
   if (typeof (CLI_PACKAGE_JSON.main) !== 'undefined' &&
-      NOT_IMPORTED.indexOf(name) === -1 &&
-      NOT_MCW_DEP.indexOf(name) === -1) {
+      NOT_IMPORTED.indexOf(name) === -1) {
     const nameCamel = camelCase(CLI_PACKAGE_JSON.name.replace('@material/', ''));
     const src = fs.readFileSync(path.join(process.env.PWD, MASTER_TS_RELATIVE_PATH), 'utf8');
     const ast = recast.parse(src, {
