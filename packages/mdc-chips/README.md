@@ -302,7 +302,7 @@ Method Signature | Description
 --- | ---
 `beginExit() => void` | Proxies to the foundation's `beginExit` method
 `focusAction(key: string, source: FocusSource) => void` | Proxies to the foundation's `focusAction` method
-`
+`removeFocus() => void` | Proxies to the foundation's `removeFocus` method
 
 Property | Value Type | Description
 --- | --- | ---
@@ -365,15 +365,12 @@ Method Signature | Description
 `hasLeadingIcon() => boolean` | Returns whether the chip has a leading icon
 `getRootBoundingClientRect() => ClientRect` | Returns the bounding client rect of the root element
 `getCheckmarkBoundingClientRect() => ClientRect \| null` | Returns the bounding client rect of the checkmark element or null if it doesn't exist
-`setAttr(attr: string, value: string) => void` | Sets the value of the attribute on the root element
-`notifyNavigation(key: string, source: FocusSource) => void` | Notifies the Chip Set that a navigation event has occurred
-`setTextAttr(attr: string, value: string) => void` | Sets an attribute on the text element to the given value
-`textHasFocus() => boolean` | Returns `true` if the text element has focus
-`focusText() => void` | Gives focus to the text element
-`hasTrailingIcon() => boolean` | Returns `true` if the chip has a trailing icon
-`setTrailingIconAttr(attr: string, value: string) => void` | Sets an attribute on the trailing icon to the given value, if the trailing icon exists
-`trailingIconHasFocus() => boolean` | Returns true if the trailing icon is present and has focus
-`focusTrailingIcon() => void` | Gives focus to the trailing icon if present
+`notifyNavigation(key: string, source: EventSource) => void` | Notifies the Chip Set that a navigation event has occurred
+`setPrimaryActionAttr(attr: string, value: string) => void` | Sets an attribute on the primary action element to the given value
+`focusPrimaryAction() => void` | Gives focus to the primary action element
+`hasTrailingAction() => boolean` | Returns `true` if the chip has a trailing action element
+`setTrailingActionAttr(attr: string, value: string) => void` | Sets an attribute on the trailing action element to the given value, if the element exists
+`focusTrailingAction() => void` | Gives focus to the trailing action element if present
 
 
 > \*_NOTE_: `notifyInteraction` and `notifyTrailingIconInteraction` must pass along the target chip's ID, and must be observable by the parent `mdc-chip-set` element (e.g. via DOM event bubbling).
@@ -393,6 +390,7 @@ Method Signature | Description
 `focusChipAtIndex(index: number, key: string, source: FocusSource) => void` | Calls `MDCChip#focus()` on the chip at the given `index`
 `isRTL() => boolean` | Returns `true` if the text direction is RTL
 `getChipListCount() => number` | Returns the number of chips inside the chip set
+`removeFocusFromChipAtIndex(index: number) => void` | Calls `MDCChip#removeFocus()` on the chip at the given `index`
 
 ### Foundations: `MDCChipFoundation` and `MDCChipSetFoundation`
 
@@ -410,6 +408,7 @@ Method Signature | Description
 `handleTransitionEnd(evt: Event) => void` | Handles a transition end event on the root element
 `handleTrailingIconInteraction(evt: Event) => void` | Handles an interaction event on the trailing icon element
 `handleKeydown(evt: Event) => void` | Handles a keydown event on the root element
+`removeFocus() => void` | Removes focusability from the chip
 
 #### `MDCChipFoundation` Event Handlers
 

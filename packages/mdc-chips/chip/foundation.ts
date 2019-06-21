@@ -80,8 +80,8 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       notifyTrailingIconInteraction: () => undefined,
       removeClass: () => undefined,
       removeClassFromLeadingIcon: () => undefined,
-      setStyleProperty: () => undefined,
       setPrimaryActionAttr: () => undefined,
+      setStyleProperty: () => undefined,
       setTrailingActionAttr: () => undefined,
     };
   }
@@ -352,7 +352,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     }
 
     const keyEvt = evt as KeyboardEvent;
-    return keyEvt.keyCode === 13 || keyEvt.key === strings.ENTER_KEY ||keyEvt.key === strings.SPACEBAR_KEY;
+    return keyEvt.keyCode === 13 || keyEvt.key === strings.ENTER_KEY || keyEvt.key === strings.SPACEBAR_KEY;
   }
 
   private shouldRemoveChip_(evt: KeyboardEvent): boolean {

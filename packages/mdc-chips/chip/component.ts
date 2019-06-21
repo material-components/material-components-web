@@ -202,12 +202,12 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
           this.leadingIcon_.classList.remove(className);
         }
       },
-      setStyleProperty: (propertyName, value) => this.root_.style.setProperty(propertyName, value),
       setPrimaryActionAttr: (attr, value) => {
         if (this.primaryAction_) {
           this.primaryAction_.setAttribute(attr, value);
         }
       },
+      setStyleProperty: (propertyName, value) => this.root_.style.setProperty(propertyName, value),
       setTrailingActionAttr: (attr, value) => {
         if (this.trailingAction_) {
           this.trailingAction_.setAttribute(attr, value);
