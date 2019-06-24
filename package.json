@@ -3,7 +3,7 @@
   "description": "Material Components Web",
   "license": "MIT",
   "scripts": {
-    "build": "npm run clean && mkdirp build && webpack --mode=production --progress --colors",
+    "build": "npm run clean && mkdirp build && webpack --mode=development --progress --colors",
     "build:esmodules": "tsc --project ./tsconfig.json --module esnext --outDir build/packages --importHelpers",
     "build:min": "mkdirp build && cross-env MDC_ENV=production webpack -p --mode=production --progress --colors",
     "clean": "node ./scripts/build/clean",
