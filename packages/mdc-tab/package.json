@@ -18,6 +18,7 @@
   "types": "dist/mdc.tab.d.ts",
   "dependencies": {
     "@material/base": "^1.0.0",
+    "@material/feature-targeting": "^0.44.1",
     "@material/ripple": "^2.3.0",
     "@material/rtl": "^0.42.0",
     "@material/tab-indicator": "^2.3.0",
