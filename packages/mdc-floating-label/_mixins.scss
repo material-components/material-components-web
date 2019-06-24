@@ -28,9 +28,21 @@
   @include mdc-theme-prop(color, $color);
 }
 
+@mixin mdc-floating-label-floated-ink-color($color) {
+  @include mdc-floating-label-float-above_ {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
 // Used for textarea in case of scrolling
 @mixin mdc-floating-label-fill-color($color) {
   @include mdc-theme-prop(background-color, $color);
+}
+
+@mixin mdc-floating-label-floated-fill-color($color) {
+  @include mdc-floating-label-float-above_ {
+    @include mdc-theme-prop(background-color, $color);
+  }
 }
 
 @mixin mdc-floating-label-shake-keyframes($modifier, $positionY, $positionX: 0%, $scale: .75) {
@@ -77,4 +89,11 @@
 
 @mixin mdc-floating-label-max-width($max-width) {
   max-width: $max-width;
+}
+
+// Private mixins
+@mixin mdc-floating-label-float-above_ {
+  .mdc-floating-label--float-above {
+    @content;
+  }
 }
