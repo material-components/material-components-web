@@ -47,8 +47,8 @@ class PluginFactory {
     });
   }
 
-  createCssExtractorPlugin(outputFilenamePattern) {
-    return new MiniCssExtractPlugin(outputFilenamePattern);
+  createCssExtractorPlugin(filename) {
+    return new MiniCssExtractPlugin({filename});
   }
 }
 

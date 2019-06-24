@@ -96,6 +96,9 @@ class CssBundleFactory {
           use: this.createCssLoader_(cssExtractorPlugin),
         }],
       },
+      optimization: {
+        minimize: this.env_.isProd(),
+      },
       plugins: [
         cssExtractorPlugin,
         ...fsCleanupPlugins,
