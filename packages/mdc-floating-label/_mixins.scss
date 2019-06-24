@@ -30,7 +30,7 @@
 
 @mixin mdc-floating-label-floated-ink-color($color) {
   @include mdc-floating-label-float-above_ {
-    @include mdc-theme-prop(color, $color);
+    @include mdc-floating-label-ink-color($color);
   }
 }
 
@@ -41,7 +41,7 @@
 
 @mixin mdc-floating-label-floated-fill-color($color) {
   @include mdc-floating-label-float-above_ {
-    @include mdc-theme-prop(background-color, $color);
+    @include mdc-floating-label-fill-color($color);
   }
 }
 

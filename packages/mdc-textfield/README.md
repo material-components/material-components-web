@@ -292,8 +292,13 @@ apply these mixins with CSS selectors such as `.foo-text-field.mdc-text-field--i
 Mixin | Description
 --- | ---
 `mdc-text-field-ink-color($color)` | Customizes the color of the text entered into the text field.
+`mdc-text-field-invalid-ink-color($color)` | Customizes the color of the text entered into the text field when invalid.
 `mdc-text-field-label-color($color)` | Customizes the text color of the label.
+`mdc-text-field-invalid-label-color($color)` | Customizes the text color of the label when invalid.
+`mdc-text-field-floated-label-color($color)` | Customizes the text color of the label when floated.
+`mdc-text-field-invalid-floated-label-color($color)` | Customizes the text color of the label when floated and the text field is invalid.
 `mdc-text-field-caret-color($color)` | Customizes the color of the cursor caret of the text field.
+`mdc-text-field-invalid-caret-color($color)` | Customizes the color of the cursor caret of the text field when invalid.
 
 #### Mixins for Filled Text Field
 
@@ -301,17 +306,24 @@ Mixin | Description
 --- | ---
 `mdc-text-field-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to boxed text field variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `mdc-text-field-fill-color($color)` | Customizes the background color of the text field.
+`mdc-text-field-invalid-fill-color($color)` | Customizes the background color of the text field when invalid.
 `mdc-text-field-bottom-line-color($color)` | Customizes the text field bottom line color except the outlined and textarea variants.
+`mdc-text-field-invalid-bottom-line-color($color)` | Customizes the text field bottom line color when invalid except the outlined and textarea variants.
 `mdc-text-field-hover-bottom-line-color($color)` | Customizes the hover text field bottom line color except the outlined and textarea variants.
+`mdc-text-field-invalid-hover-bottom-line-color($color)` | Customizes the hover text field bottom line color when invalid except the outlined and textarea variants.
 `mdc-text-field-line-ripple-color($color)` | Customizes the color of the default line ripple of the text field.
+`mdc-text-field-invalid-line-ripple-color($color)` | Customizes the color of the default line ripple of the text field when invalid.
 
 #### Mixins for Outlined Text Field
 
 Mixin | Description
 --- | ---
 `mdc-text-field-focused-outline-color($color)` | Customizes the outline border color when the text field is focused.
+`mdc-text-field-invalid-focused-outline-color($color)` | Customizes the outline border color when the text field is focused and invalid.
 `mdc-text-field-hover-outline-color($color)` | Customizes the outline border color when the text field is hovered.
+`mdc-text-field-invalid-hover-outline-color($color)` | Customizes the outline border color when the text field is hovered and invalid.
 `mdc-text-field-outline-color($color)` | Customizes the border color of the outlined text field.
+`mdc-text-field-invalid-outline-color($color)` | Customizes the border color of the outlined text field when invalid.
 `mdc-text-field-outline-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to outlined text field variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 
 #### Mixins for Textarea
