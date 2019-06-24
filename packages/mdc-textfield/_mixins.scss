@@ -105,6 +105,12 @@
   }
 }
 
+@mixin mdc-text-field-focused-label-color($color) {
+  @include mdc-text-field-focused-content_ {
+    @include mdc-text-field-label-color($color);
+  }
+}
+
 @mixin mdc-text-field-floated-label-color($color) {
   &:not(.mdc-text-field--disabled) {
     @include mdc-floating-label-floated-ink-color($color);
@@ -188,6 +194,12 @@
 @mixin mdc-text-field-invalid-label-color($color) {
   @include mdc-text-field-invalid-content_ {
     @include mdc-text-field-label-color($color);
+  }
+}
+
+@mixin mdc-text-field-invalid-focused-label-color($color) {
+  @include mdc-text-field-invalid-content_ {
+    @include mdc-text-field-focused-label-color($color);
   }
 }
 
@@ -456,7 +468,7 @@
 }
 
 @mixin mdc-text-field-focused-outline-color_($color) {
-  &.mdc-text-field--focused {
+  @include mdc-text-field-focused-content_ {
     @include mdc-notched-outline-color($color);
   }
 }
@@ -650,7 +662,7 @@
     pointer-events: none;
   }
 
-  &.mdc-text-field--focused {
+  @include mdc-text-field-focused-content_ {
     @include mdc-text-field-outlined-focused_;
   }
 }
@@ -706,7 +718,13 @@
 }
 
 @mixin mdc-text-field-invalid-content_ {
-  .mdc-text-field--invalid {
+  &.mdc-text-field--invalid {
+    @content;
+  }
+}
+
+@mixin mdc-text-field-focused-content_ {
+  &.mdc-text-field--focused {
     @content;
   }
 }

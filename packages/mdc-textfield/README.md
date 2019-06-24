@@ -294,7 +294,9 @@ Mixin | Description
 `mdc-text-field-ink-color($color)` | Customizes the color of the text entered into the text field.
 `mdc-text-field-invalid-ink-color($color)` | Customizes the color of the text entered into the text field when invalid.
 `mdc-text-field-label-color($color)` | Customizes the text color of the label.
+`mdc-text-field-focused-label-color($color)` | Customizes the text color of the label when focused.
 `mdc-text-field-invalid-label-color($color)` | Customizes the text color of the label when invalid.
+`mdc-text-field-invalid-focused-label-color($color)` | Customizes the text color of the label when invalid and focused.
 `mdc-text-field-floated-label-color($color)` | Customizes the text color of the label when floated.
 `mdc-text-field-invalid-floated-label-color($color)` | Customizes the text color of the label when floated and the text field is invalid.
 `mdc-text-field-caret-color($color)` | Customizes the color of the cursor caret of the text field.
@@ -332,7 +334,9 @@ Mixin | Description
 --- | ---
 `mdc-text-field-textarea-shape-radius($radius, $rtl-reflexive)` | Sets rounded shape to text area variant with given radius size. Set `$rtl-reflexive` to true to flip radius values in RTL context, defaults to false.
 `mdc-text-field-textarea-fill-color($color)` | Customizes the color of the background of the textarea.
+`mdc-text-field-invalid-textarea-fill-color($color)` | Customizes the color of the background of the textarea when invalid.
 `mdc-text-field-textarea-stroke-color($color)` | Customizes the color of the border of the textarea.
+`mdc-text-field-invalid-textarea-stroke-color($color)` | Customizes the color of the border of the textarea when invalid.
 
 
 #### Mixins for Text Field Fullwidth
@@ -340,6 +344,7 @@ Mixin | Description
 Mixin | Description
 --- | ---
 `mdc-text-field-fullwidth-bottom-line-color($color)` | Customizes the fullwidth text field variant bottom line color.
+`mdc-text-field-fullwidth-invalid-bottom-line-color($color)` | Customizes the fullwidth text field variant bottom line color when invalid.
 
 ## `MDCTextField` Properties and Methods
 
