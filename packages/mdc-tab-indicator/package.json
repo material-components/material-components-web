@@ -20,6 +20,7 @@
   "dependencies": {
     "@material/animation": "^1.0.0",
     "@material/base": "^1.0.0",
+    "@material/feature-targeting": "^0.44.1",
     "@material/theme": "^1.1.0",
     "tslib": "^1.9.3"
   },
