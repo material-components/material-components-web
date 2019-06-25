@@ -1,7 +1,7 @@
 {
   "name": "@material/shape",
   "description": "Shape utilities for Material Components for the web",
-  "version": "1.1.1",
+  "version": "3.0.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -16,6 +16,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@material/feature-targeting": "^0.44.1"
+    "@material/feature-targeting": "^3.0.0"
   }
 }
