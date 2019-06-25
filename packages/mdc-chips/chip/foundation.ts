@@ -23,7 +23,7 @@
 
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCChipAdapter} from './adapter';
-import {cssClasses, Direction, EventSource, strings} from './constants';
+import {cssClasses, Direction, EventSource, jumpChipKeys, navigationKeys, strings} from './constants';
 
 const emptyClientRect = {
   bottom: 0,
@@ -33,22 +33,6 @@ const emptyClientRect = {
   top: 0,
   width: 0,
 };
-
-export const NAVIGATION_KEYS = new Set<string>();
-// IE11 has no support for new Set with iterable so we need to initialize this by hand
-NAVIGATION_KEYS.add(strings.ARROW_LEFT_KEY);
-NAVIGATION_KEYS.add(strings.ARROW_RIGHT_KEY);
-NAVIGATION_KEYS.add(strings.ARROW_DOWN_KEY);
-NAVIGATION_KEYS.add(strings.ARROW_UP_KEY);
-NAVIGATION_KEYS.add(strings.END_KEY);
-NAVIGATION_KEYS.add(strings.HOME_KEY);
-
-export const JUMP_CHIP_KEYS = new Set<string>();
-// IE11 has no support for new Set with iterable so we need to initialize this by hand
-JUMP_CHIP_KEYS.add(strings.ARROW_UP_KEY);
-JUMP_CHIP_KEYS.add(strings.ARROW_DOWN_KEY);
-JUMP_CHIP_KEYS.add(strings.HOME_KEY);
-JUMP_CHIP_KEYS.add(strings.END_KEY);
 
 export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   static get strings() {
@@ -238,7 +222,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
 
     const key = evt.key;
     // Early exit if the key is not usable
-    if (!NAVIGATION_KEYS.has(key)) {
+    if (!navigationKeys.has(key)) {
       return;
     }
 
@@ -254,26 +238,26 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
 
   focusAction(key: string, source: EventSource) {
     // Early exit if the key is not usable
-    if (!NAVIGATION_KEYS.has(key)) {
+    if (!navigationKeys.has(key)) {
       return;
     }
 
-    const shouldJumpChips = JUMP_CHIP_KEYS.has(key);
+    const shouldJumpChips = jumpChipKeys.has(key);
     const hasTrailingAction = this.adapter_.hasTrailingAction();
-    if (shouldJumpChips && (source === EventSource.Primary || !hasTrailingAction)) {
+    if (shouldJumpChips && (source === EventSource.PRIMARY || !hasTrailingAction)) {
       return this.focusPrimaryAction_();
     }
 
-    if (shouldJumpChips && source === EventSource.Trailing && hasTrailingAction) {
+    if (shouldJumpChips && source === EventSource.TRAILING && hasTrailingAction) {
       return this.focusTrailingAction_();
     }
 
     const dir = this.getDirection_(key);
-    if (dir === Direction.Left && hasTrailingAction) {
+    if (dir === Direction.LEFT && hasTrailingAction) {
       return this.focusTrailingAction_();
     }
 
-    if (dir === Direction.Right || (dir === Direction.Left && !hasTrailingAction)) {
+    if (dir === Direction.RIGHT || (dir === Direction.LEFT && !hasTrailingAction)) {
       return this.focusPrimaryAction_();
     }
   }
@@ -284,43 +268,41 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     const dir = this.getDirection_(key);
     const source = this.getEvtSource_(evt);
     // Early exit if the key should jump keys or the chip only has one action (i.e. no trailing action)
-    if (JUMP_CHIP_KEYS.has(key) || !hasTrailingAction) {
-      this.removeFocus_();
+    if (jumpChipKeys.has(key) || !hasTrailingAction) {
       this.adapter_.notifyNavigation(key, source);
       return;
     }
 
-    if (source === EventSource.Primary && dir === Direction.Right) {
+    if (source === EventSource.PRIMARY && dir === Direction.RIGHT) {
       return this.focusTrailingAction_();
     }
 
-    if (source === EventSource.Trailing && dir === Direction.Left) {
+    if (source === EventSource.TRAILING && dir === Direction.LEFT) {
       return this.focusPrimaryAction_();
     }
 
-    this.removeFocus_();
-    this.adapter_.notifyNavigation(key, EventSource.None);
+    this.adapter_.notifyNavigation(key, EventSource.NONE);
   }
 
   private getEvtSource_(evt: KeyboardEvent): EventSource {
     if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.PRIMARY_ACTION)) {
-      return EventSource.Primary;
+      return EventSource.PRIMARY;
     }
 
     if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.TRAILING_ACTION)) {
-      return EventSource.Trailing;
+      return EventSource.TRAILING;
     }
 
-    return EventSource.None;
+    return EventSource.NONE;
   }
 
   private getDirection_(key: string): Direction {
     const isRTL = this.adapter_.isRTL();
     if (key === strings.ARROW_LEFT_KEY && !isRTL || key === strings.ARROW_RIGHT_KEY && isRTL) {
-      return Direction.Left;
+      return Direction.LEFT;
     }
 
-    return Direction.Right;
+    return Direction.RIGHT;
   }
 
   private focusPrimaryAction_() {

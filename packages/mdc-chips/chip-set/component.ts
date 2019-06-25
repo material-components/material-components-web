@@ -109,9 +109,6 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCChipSetAdapter = {
       focusChipAtIndex: (index, key, source) => {
-        if (index < 0 || index > this.chips_.length - 1) {
-          return;
-        }
         this.chips_[index].focusAction(key, source);
       },
       getChipListCount: () => this.chips_.length,
@@ -129,9 +126,6 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
         }
       },
       removeFocusFromChipAtIndex: (index) => {
-        if (index < 0 || index > this.chips_.length - 1) {
-          return;
-        }
         this.chips_[index].removeFocus();
       },
       setSelected: (chipId, selected) => {

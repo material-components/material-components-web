@@ -22,14 +22,14 @@
  */
 
 export enum EventSource {
-  Primary,
-  Trailing,
-  None,
+  PRIMARY,
+  TRAILING,
+  NONE,
 }
 
 export enum Direction {
-  Right,
-  Left,
+  RIGHT,
+  LEFT,
 }
 
 export const strings = {
@@ -70,3 +70,19 @@ export const cssClasses = {
   TRAILING_ACTION: 'mdc-chip__trailing-action',
   TRAILING_ICON: 'mdc-chip__icon--trailing',
 };
+
+export const navigationKeys = new Set<string>();
+// IE11 has no support for new Set with iterable so we need to initialize this by hand
+navigationKeys.add(strings.ARROW_LEFT_KEY);
+navigationKeys.add(strings.ARROW_RIGHT_KEY);
+navigationKeys.add(strings.ARROW_DOWN_KEY);
+navigationKeys.add(strings.ARROW_UP_KEY);
+navigationKeys.add(strings.END_KEY);
+navigationKeys.add(strings.HOME_KEY);
+
+export const jumpChipKeys = new Set<string>();
+// IE11 has no support for new Set with iterable so we need to initialize this by hand
+jumpChipKeys.add(strings.ARROW_UP_KEY);
+jumpChipKeys.add(strings.ARROW_DOWN_KEY);
+jumpChipKeys.add(strings.HOME_KEY);
+jumpChipKeys.add(strings.END_KEY);

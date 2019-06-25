@@ -431,7 +431,7 @@ test('#handleKeydown ArrowLeft from focused text emits appropriate event', () =>
     fromPrimaryAction: true,
   });
   foundation.handleKeydown(mockKeyboardEvent('ArrowLeft'));
-  td.verify(mockAdapter.notifyNavigation('ArrowLeft', EventSource.Primary));
+  td.verify(mockAdapter.notifyNavigation('ArrowLeft', EventSource.PRIMARY));
 });
 
 test('#handleKeydown ArrowRight from focused text emits appropriate event', () => {
@@ -439,7 +439,7 @@ test('#handleKeydown ArrowRight from focused text emits appropriate event', () =
     fromPrimaryAction: true,
   });
   foundation.handleKeydown(mockKeyboardEvent('ArrowRight'));
-  td.verify(mockAdapter.notifyNavigation('ArrowRight', EventSource.Primary));
+  td.verify(mockAdapter.notifyNavigation('ArrowRight', EventSource.PRIMARY));
 });
 
 test('#handleKeydown ArrowLeft from focused text emits appropriate event in RTL', () => {
@@ -448,7 +448,7 @@ test('#handleKeydown ArrowLeft from focused text emits appropriate event in RTL'
     isRTL: true,
   });
   foundation.handleKeydown(mockKeyboardEvent('ArrowLeft'));
-  td.verify(mockAdapter.notifyNavigation('ArrowLeft', EventSource.Primary));
+  td.verify(mockAdapter.notifyNavigation('ArrowLeft', EventSource.PRIMARY));
 });
 
 test('#handleKeydown ArrowRight from focused text emits appropriate event in RTL', () => {
@@ -457,7 +457,7 @@ test('#handleKeydown ArrowRight from focused text emits appropriate event in RTL
     isRTL: true,
   });
   foundation.handleKeydown(mockKeyboardEvent('ArrowRight'));
-  td.verify(mockAdapter.notifyNavigation('ArrowRight', EventSource.Primary));
+  td.verify(mockAdapter.notifyNavigation('ArrowRight', EventSource.PRIMARY));
 });
 
 test('#handleKeydown ArrowRight from focused trailing action emits appropriate event', () => {
@@ -465,7 +465,7 @@ test('#handleKeydown ArrowRight from focused trailing action emits appropriate e
     fromTrailingAction: true,
   });
   foundation.handleKeydown(mockKeyboardEvent('ArrowRight'));
-  td.verify(mockAdapter.notifyNavigation('ArrowRight', EventSource.None));
+  td.verify(mockAdapter.notifyNavigation('ArrowRight', EventSource.NONE));
 });
 
 test('#handleKeydown ArrowLeft from focused trailing action emits appropriate event in RTL', () => {
@@ -474,7 +474,7 @@ test('#handleKeydown ArrowLeft from focused trailing action emits appropriate ev
     isRTL: true,
   });
   foundation.handleKeydown(mockKeyboardEvent('ArrowLeft'));
-  td.verify(mockAdapter.notifyNavigation('ArrowLeft', EventSource.None));
+  td.verify(mockAdapter.notifyNavigation('ArrowLeft', EventSource.NONE));
 });
 
 test('#handleKeydown ArrowRight from focused text with trailing icon focuses trailing icon', () => {
@@ -546,7 +546,7 @@ test('#handleKeydown ArrowRight from focused trailing icon focuses text in RTL',
 
 test('#focusAction(ArrowRight, None) gives focus to the text', () => {
   const {foundation, mockAdapter} = setupNavigationTest();
-  foundation.focusAction('ArrowRight', EventSource.None);
+  foundation.focusAction('ArrowRight', EventSource.NONE);
   td.verify(mockAdapter.setTrailingActionAttr('tabindex', '-1'));
   td.verify(mockAdapter.setPrimaryActionAttr('tabindex', '0'));
   td.verify(mockAdapter.focusPrimaryAction());
@@ -554,7 +554,7 @@ test('#focusAction(ArrowRight, None) gives focus to the text', () => {
 
 test('#focusAction(ArrowLeft, None) gives focus to the text in RTL', () => {
   const {foundation, mockAdapter} = setupNavigationTest({isRTL: true});
-  foundation.focusAction('ArrowLeft', EventSource.None);
+  foundation.focusAction('ArrowLeft', EventSource.NONE);
   td.verify(mockAdapter.setTrailingActionAttr('tabindex', '-1'));
   td.verify(mockAdapter.setPrimaryActionAttr('tabindex', '0'));
   td.verify(mockAdapter.focusPrimaryAction());
@@ -562,7 +562,7 @@ test('#focusAction(ArrowLeft, None) gives focus to the text in RTL', () => {
 
 test('#focusAction(ArrowRight, None) gives focus to the trailing icon if present in RTL', () => {
   const {foundation, mockAdapter} = setupNavigationTest({hasTrailingAction: true, isRTL: true});
-  foundation.focusAction('ArrowRight', EventSource.None);
+  foundation.focusAction('ArrowRight', EventSource.NONE);
   td.verify(mockAdapter.setPrimaryActionAttr('tabindex', '-1'));
   td.verify(mockAdapter.setTrailingActionAttr('tabindex', '0'));
   td.verify(mockAdapter.focusTrailingAction());
@@ -570,7 +570,7 @@ test('#focusAction(ArrowRight, None) gives focus to the trailing icon if present
 
 test('#focusAction(Invalid, None) makes no focus or tabindex changes', () => {
   const {foundation, mockAdapter} = setupNavigationTest();
-  foundation.focusAction('Shift', EventSource.None);
+  foundation.focusAction('Shift', EventSource.NONE);
   td.verify(mockAdapter.setTrailingActionAttr(td.matchers.isA(String)), {times: 0});
   td.verify(mockAdapter.setPrimaryActionAttr(td.matchers.isA(String)), {times: 0});
   td.verify(mockAdapter.focusPrimaryAction(), {times: 0});
@@ -588,7 +588,7 @@ test('#focusAction(Invalid, None) makes no focus or tabindex changes', () => {
 ].forEach((key) => {
   test(`#focusAction(${key}, Text) gives focus to the text`, () => {
     const {foundation, mockAdapter} = setupNavigationTest();
-    foundation.focusAction(key, EventSource.Primary);
+    foundation.focusAction(key, EventSource.PRIMARY);
     td.verify(mockAdapter.setTrailingActionAttr('tabindex', '-1'));
     td.verify(mockAdapter.setPrimaryActionAttr('tabindex', '0'));
     td.verify(mockAdapter.focusPrimaryAction());
@@ -596,7 +596,7 @@ test('#focusAction(Invalid, None) makes no focus or tabindex changes', () => {
 
   test(`#focusAction(${key}, TrailingIcon) gives focus to the trailing icon if present`, () => {
     const {foundation, mockAdapter} = setupNavigationTest({hasTrailingAction: true});
-    foundation.focusAction(key, EventSource.Trailing);
+    foundation.focusAction(key, EventSource.TRAILING);
     td.verify(mockAdapter.setPrimaryActionAttr('tabindex', '-1'));
     td.verify(mockAdapter.setTrailingActionAttr('tabindex', '0'));
     td.verify(mockAdapter.focusTrailingAction());
@@ -604,7 +604,7 @@ test('#focusAction(Invalid, None) makes no focus or tabindex changes', () => {
 
   test(`#focusAction(${key}, TrailingIcon) gives focus to the text if trailing icon is not present`, () => {
     const {foundation, mockAdapter} = setupNavigationTest({hasTrailingAction: false});
-    foundation.focusAction(key, EventSource.Trailing);
+    foundation.focusAction(key, EventSource.TRAILING);
     td.verify(mockAdapter.setTrailingActionAttr('tabindex', '-1'));
     td.verify(mockAdapter.setPrimaryActionAttr('tabindex', '0'));
     td.verify(mockAdapter.focusPrimaryAction());

@@ -22,8 +22,7 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
-import {EventSource, strings as chipStrings} from '../chip/constants';
-import {NAVIGATION_KEYS} from '../chip/foundation';
+import {EventSource, navigationKeys, strings as chipStrings} from '../chip/constants';
 import {MDCChipSetAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
@@ -118,7 +117,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     const maxIndex = this.adapter_.getChipListCount() - 1;
     const nextIndex = Math.min(index, maxIndex);
     this.removeFocusFromChipsExcept_(nextIndex);
-    this.adapter_.focusChipAtIndex(nextIndex, chipStrings.ARROW_UP_KEY, EventSource.Trailing);
+    this.adapter_.focusChipAtIndex(nextIndex, chipStrings.ARROW_UP_KEY, EventSource.TRAILING);
   }
 
   /**
@@ -128,7 +127,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     const maxIndex = this.adapter_.getChipListCount() - 1;
     let index = this.adapter_.getIndexOfChipById(chipId);
     // Early exit if the index if out of range or the key is unusable
-    if (index === -1 || !NAVIGATION_KEYS.has(key)) {
+    if (index === -1 || !navigationKeys.has(key)) {
       return;
     }
 
@@ -153,6 +152,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
       return;
     }
 
+    this.removeFocusFromChipsExcept_(index);
     this.adapter_.focusChipAtIndex(index, key, source);
   }
 
