@@ -64,6 +64,7 @@
   @include mdc-list-item-meta-ink-color(text-hint-on-background, $query);
   @include mdc-list-group-subheader-ink-color(text-primary-on-background, $query);
   @include mdc-list-item-disabled-text-opacity($mdc-list-text-disabled-opacity);
+  @include mdc-list-item-disabled-text-color($mdc-list-text-disabled-color, $query);
 
   .mdc-list--dense {
     @include mdc-feature-targets($feat-structure) {
@@ -396,6 +397,14 @@
     .mdc-list-item__primary-text,
     .mdc-list-item__secondary-text {
       opacity: $opacity;
+    }
+  }
+}
+
+@mixin mdc-list-item-disabled-text-color($color, $query: mdc-feature-all()) {
+  .mdc-list-item--disabled {
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(color, $color);
     }
   }
 }
