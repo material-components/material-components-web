@@ -105,7 +105,7 @@ However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any 
 A trailing icon comes with the functionality to remove the chip from the set. If you're adding a trailing icon, also set `tabindex="0"` and `role="button"` to make it accessible by keyboard and screenreader. Trailing icons should only be added to [input chips](#input-chips).
 
 ```html
-<div class="mdc-chip">
+<div class="mdc-chip" role="row">
   <span role="gridcell">
     <span role="button" tabindex="0" class="mdc-chip__text">Jane Smith</span>
   </span>
@@ -213,7 +213,7 @@ chipSet.listen('MDCChip:removal', function(event) {
 To display a pre-selected filter or choice chip, add the class `mdc-chip--selected` to the root chip element.
 
 ```html
-<div class="mdc-chip-set mdc-chip-set--choice">
+<div class="mdc-chip-set mdc-chip-set--choice" role="grid">
   <div class="mdc-chip mdc-chip--selected" role="row">
     <span role="gridcell">
       <span role="radio" tabindex="0" aria-checked="true" class="mdc-chip__text">Add to calendar</span>
@@ -225,7 +225,7 @@ To display a pre-selected filter or choice chip, add the class `mdc-chip--select
 To pre-select filter chips that have a leading icon, also add the class `mdc-chip__icon--leading-hidden` to the `mdc-chip__icon--leading` element. This will ensure that the checkmark displaces the leading icon.
 
 ```html
-<div class="mdc-chip-set mdc-chip-set--filter">
+<div class="mdc-chip-set mdc-chip-set--filter" role="grid">
   <div class="mdc-chip mdc-chip--selected" role="row">
     <i class="material-icons mdc-chip__icon mdc-chip__icon--leading mdc-chip__icon--leading-hidden">face</i>
     <span class="mdc-chip__checkmark">
