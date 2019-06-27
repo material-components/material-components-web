@@ -26,7 +26,6 @@
 $mdc-chip-fill-color-default: mix(mdc-theme-prop-value(on-surface), mdc-theme-prop-value(surface), 12%) !default;
 $mdc-chip-ink-color-default: rgba(mdc-theme-prop-value(on-surface), .87) !default;
 $mdc-chip-horizontal-padding: 12px !default;
-$mdc-chip-vertical-padding: 7px !default;
 $mdc-chip-height-default: 32px !default;
 
 $mdc-chip-icon-color: mdc-theme-prop-value(on-surface) !default;
@@ -44,14 +43,10 @@ $mdc-chip-checkmark-animation-duration: 150ms !default;
 $mdc-chip-width-animation-duration: 150ms !default;
 $mdc-chip-opacity-animation-duration: 75ms !default;
 
-$mdc-chip-leading-icon-margin-top: -4px !default;
 $mdc-chip-leading-icon-margin-right: 4px !default;
-$mdc-chip-leading-icon-margin-bottom: -4px !default;
 $mdc-chip-leading-icon-margin-left: -4px !default;
 
-$mdc-chip-trailing-icon-margin-top: 0 !default;
 $mdc-chip-trailing-icon-margin-right: -4px !default;
-$mdc-chip-trailing-icon-margin-bottom: 0 !default;
 $mdc-chip-trailing-icon-margin-left: 4px !default;
 
 $mdc-chip-exit-transition:

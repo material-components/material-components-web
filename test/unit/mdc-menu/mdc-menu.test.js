@@ -39,10 +39,37 @@ function getFixture(open) {
         <li tabIndex="-1" class="mdc-list-item" role="menuitem">Item</a>
         <li role="separator"></li>
         <li tabIndex="-1" class="mdc-list-item" role="menuitem">Another Item</a>
-        <ul class="mdc-menu__selection-group mdc-list" role="menu">
-          <li tabIndex="-1" class="mdc-list-item" role="menuitem">Item</a>
-          <li tabIndex="-1" class="mdc-list-item mdc-menu-item--selected" role="menuitem">Another Item</a>
-        </ul>
+        <li>
+          <ul class="mdc-menu__selection-group" role="menu">
+            <li tabIndex="-1" class="mdc-list-item" role="menuitem">Item</a>
+            <li tabIndex="-1" class="mdc-list-item mdc-menu-item--selected" role="menuitem">Another Item</a>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  `;
+}
+
+function getFixtureWithMultipleSelectionGroups(open) {
+  return bel`
+    <div class="mdc-menu mdc-menu-surface ${open ? 'mdc-menu-surface--open' : ''}">
+      <ul class="mdc-list" role="menu" tabIndex="-1">
+        <li tabIndex="-1" class="mdc-list-item" role="menuitem">Item</a>
+        <li class="mdc-list-divider" role="separator"></li>
+        <li tabIndex="-1" class="mdc-list-item" role="menuitem">Another Item</a>
+        <li>
+          <ul class="mdc-menu__selection-group" role="menu">
+            <li tabIndex="-1" class="mdc-list-item" role="menuitem">Item</a>
+            <li tabIndex="-1" class="mdc-list-item mdc-menu-item--selected" role="menuitem">Another Item</a>
+          </ul>
+        </li>                
+        <li class="mdc-list-divider" role="separator"></li>
+        <li>
+          <ul class="mdc-menu__selection-group" role="menu">
+            <li tabIndex="-1" class="mdc-list-item mdc-menu-item--selected" role="menuitem">Item2</a>
+            <li tabIndex="-1" class="mdc-list-item" role="menuitem">Another Item2</a>
+          </ul>
+        </li>
       </ul>
     </div>
   `;
@@ -62,7 +89,9 @@ class FakeMenuSurface {
   constructor(root) {
     this.root = root;
     this.destroy = td.func('.destroy');
-    this.open = false;
+    this.isOpen = td.func('.isOpen');
+    this.open = td.func('.open');
+    this.close = td.func('.close');
     this.listen = td.function();
     this.unlisten = td.function();
     this.setAnchorCorner = td.func('.setAnchorCorner');
@@ -90,7 +119,6 @@ function setupTestWithFakes(open = false) {
   const root = getFixture(open);
 
   const menuSurface = new FakeMenuSurface(root);
-  menuSurface.open = open;
 
   const MockFoundationCtor = td.constructor(MDCMenuFoundation);
   const mockFoundation = new MockFoundationCtor();
@@ -104,8 +132,8 @@ function setupTestWithFakes(open = false) {
  * @param {boolean=} open
  * @return {{component: !MDCMenu, root: !HTMLElement}}
  */
-function setupTest(open = false) {
-  const root = getFixture(open);
+function setupTest(open = false, fixture = getFixture) {
+  const root = fixture(open);
 
   const component = new MDCMenu(root);
   return {root, component};
@@ -115,8 +143,8 @@ function setupTest(open = false) {
  * @param {!Object=} options
  * @return {{component: !MDCMenu, root: !HTMLElement, mockFoundation: !MDCMenuFoundation}}
  */
-function setupTestWithMock(options = {open: true}) {
-  const root = getFixture(options.open);
+function setupTestWithMock(options = {open: true, fixture: getFixture}) {
+  const root = options.fixture(options.open);
 
   const MockFoundationCtor = td.constructor(MDCMenuFoundation);
   const mockFoundation = new MockFoundationCtor();
@@ -179,13 +207,14 @@ test('destroy deregisters event listener for keydown', () => {
 test('get/set open', () => {
   const {component, menuSurface} = setupTestWithFakes();
 
+  td.when(menuSurface.isOpen()).thenReturn(false);
   assert.isFalse(component.open);
 
   component.open = true;
-  assert.isTrue(menuSurface.open);
+  td.verify(menuSurface.open(), {times: 1});
 
   component.open = false;
-  assert.isFalse(menuSurface.open);
+  td.verify(menuSurface.close(), {times: 1});
 });
 
 test('wrapFocus proxies to MDCList#wrapFocus property', () => {
@@ -207,6 +236,12 @@ test('setAnchorMargin', () => {
   const {component, menuSurface} = setupTestWithFakes();
   component.setAnchorMargin({top: 0, right: 0, bottom: 0, left: 0});
   td.verify(menuSurface.setAnchorMargin({top: 0, right: 0, bottom: 0, left: 0}));
+});
+
+test('setSelectedIndex calls foundation method setSelectedIndex with given index.', () => {
+  const {component, mockFoundation} = setupTestWithMock({fixture: getFixtureWithMultipleSelectionGroups});
+  component.setSelectedIndex(1);
+  td.verify(mockFoundation.setSelectedIndex(1));
 });
 
 test('setQuickOpen', () => {
@@ -376,11 +411,10 @@ test('adapter#elementContainsClass returns false if the class does not exist on 
   assert.isFalse(containsFoo);
 });
 
-test('adapter#closeSurface proxies to menuSurface#open', () => {
+test('adapter#closeSurface proxies to menuSurface#close', () => {
   const {component, menuSurface} = setupTestWithFakes();
-  menuSurface.open = true;
-  component.getDefaultFoundation().adapter_.closeSurface();
-  assert.isFalse(menuSurface.open);
+  component.getDefaultFoundation().adapter_.closeSurface(/** skipRestoreFocus */ false);
+  td.verify(menuSurface.close(/** skipRestoreFocus */ false));
 });
 
 test('adapter#getElementIndex returns the index value of an element in the list', () => {
@@ -395,29 +429,6 @@ test('adapter#getElementIndex returns -1 if the element does not exist in the li
   const firstItem = document.createElement('li');
   const indexValue = component.getDefaultFoundation().adapter_.getElementIndex(firstItem);
   assert.equal(indexValue, -1);
-});
-
-test('adapter#getParentElement returns the parent element of an element', () => {
-  const {root, component} = setupTest();
-  const firstItem = root.querySelector('.mdc-list-item');
-  const parentElement = component.getDefaultFoundation().adapter_.getParentElement(firstItem);
-  assert.equal(firstItem.parentElement, parentElement);
-});
-
-test('adapter#getSelectedElementIndex returns the index of the "selected" element in a group', () => {
-  const {root, component} = setupTest();
-  const selectionGroup = root.querySelector('.mdc-menu__selection-group');
-  const index = component.getDefaultFoundation().adapter_.getSelectedElementIndex(selectionGroup);
-  assert.equal(root.querySelector('.mdc-menu-item--selected'), component.items[index]);
-});
-
-test('adapter#getSelectedElementIndex returns -1 if the "selected" element is not in a group', () => {
-  const {root, component} = setupTest();
-  const selectionGroup = root.querySelector('.mdc-menu__selection-group');
-  const element = root.querySelector('.mdc-menu-item--selected');
-  element.classList.remove('mdc-menu-item--selected');
-  const index = component.getDefaultFoundation().adapter_.getSelectedElementIndex(selectionGroup);
-  assert.equal(index, -1);
 });
 
 test('adapter#notifySelected emits an event for a selected element', () => {
@@ -451,4 +462,28 @@ test('adapter#focusListRoot focuses the list root element', () => {
   assert.equal(document.activeElement, root.querySelector(`.${MDCListFoundation.cssClasses.ROOT}`));
 
   document.body.removeChild(root);
+});
+
+test('adapter#isSelectableItemAtIndex returns true if the menu item is within the' +
+'.mdc-menu__selection-group element', () => {
+  const {component} = setupTest();
+
+  const isSelectableItemAtIndex = component.getDefaultFoundation().adapter_.isSelectableItemAtIndex(3);
+  assert.isTrue(isSelectableItemAtIndex);
+});
+
+test('adapter#isSelectableItemAtIndex returns false if the menu item is not within the' +
+'.mdc-menu__selection-group element', () => {
+  const {component} = setupTest();
+
+  const isSelectableItemAtIndex = component.getDefaultFoundation().adapter_.isSelectableItemAtIndex(1);
+  assert.isFalse(isSelectableItemAtIndex);
+});
+
+test('adapter#getSelectedSiblingOfItemAtIndex returns the index of the selected item within the same' +
+'selection group', () => {
+  const {component} = setupTest();
+
+  const siblingIndex = component.getDefaultFoundation().adapter_.getSelectedSiblingOfItemAtIndex(2);
+  assert.equal(siblingIndex, 3);
 });

@@ -57,23 +57,15 @@ export interface MDCMenuAdapter {
 
   /**
    * Closes the menu-surface.
+   * @param skipRestoreFocus Whether to skip restoring focus to the previously
+   *    focused element after the surface has been closed.
    */
-  closeSurface(): void;
+  closeSurface(skipRestoreFocus?: boolean): void;
 
   /**
    * @return Index of the element in the list or -1 if it is not in the list.
    */
   getElementIndex(element: Element): number;
-
-  /**
-   * @return The parentElement of the provided element.
-   */
-  getParentElement(element: Element): Element | null;
-
-  /**
-   * @return The element within the selectionGroup containing the selected element class.
-   */
-  getSelectedElementIndex(selectionGroup: Element): number;
 
   /**
    * Emit an event when a menu item is selected.
@@ -91,4 +83,17 @@ export interface MDCMenuAdapter {
 
   /** Focuses the list root element. */
   focusListRoot(): void;
+
+  /**
+   * @return Returns selected list item index within the same selection group which is
+   * a sibling of item at given `index`.
+   * @param index Index of the menu item with possible selected sibling.
+   */
+  getSelectedSiblingOfItemAtIndex(index: number): number;
+
+  /**
+   * @return Returns true if item at specified index is contained within an `.mdc-menu__selection-group` element.
+   * @param index Index of the selectable menu item.
+   */
+  isSelectableItemAtIndex(index: number): boolean;
 }

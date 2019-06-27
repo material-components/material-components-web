@@ -45,21 +45,19 @@ export class MDCShortTopAppBarFoundation extends MDCTopAppBarBaseFoundation {
       this.adapter_.addClass(cssClasses.SHORT_HAS_ACTION_ITEM_CLASS);
     }
 
-    if (!this.adapter_.hasClass(cssClasses.SHORT_COLLAPSED_CLASS)) {
-      this.scrollHandler_ = () => this.shortAppBarScrollHandler_();
-      this.adapter_.registerScrollHandler(this.scrollHandler_);
-      this.shortAppBarScrollHandler_();
-    }
-  }
-
-  destroy() {
-    super.destroy();
+    // this is intended as the short variant must calculate if the
+    // page starts off from the top of the page.
+    this.handleTargetScroll();
   }
 
   /**
    * Scroll handler for applying/removing the collapsed modifier class on the short top app bar.
+   * @override
    */
-  private shortAppBarScrollHandler_() {
+  handleTargetScroll() {
+    if (this.adapter_.hasClass(cssClasses.SHORT_COLLAPSED_CLASS)) {
+      return;
+    }
     const currentScroll = this.adapter_.getViewportScrollY();
 
     if (currentScroll <= 0) {

@@ -1,8 +1,0 @@
-@import "@material/theme/mixins";
-
-@mixin mdc-tab-bar-indicator-ink-color($color) {
-  .mdc-tab-bar__indicator,
-  .mdc-tab__indicator {
-    @include mdc-theme-prop(background-color, $color);
-  }
-}

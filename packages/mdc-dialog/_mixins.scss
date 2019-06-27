@@ -82,10 +82,15 @@
     @include mdc-feature-targets($feat-structure) {
       display: flex;
       flex-direction: row; // IE 11
+      align-items: center;
       justify-content: space-around; // Ensure Safari centers the dialog (because it treats the container's width oddly)
       box-sizing: border-box;
+      height: 100%;
       transform: scale(.8);
       opacity: 0;
+      // This element is necessary for IE 11 and needs to have `height: 100%`.
+      // Let clicks on element fall through to scrim element underneath.
+      pointer-events: none;
     }
   }
 
@@ -100,8 +105,11 @@
       box-sizing: border-box;
       max-width: 100%; // IE 11
       max-height: 100%; // IE 11
+      pointer-events: auto; // Override from `.mdc-dialog__container`.
+      overflow-y: auto;
 
       @include mdc-rtl(".mdc-dialog") {
+        /* @noflip */
         text-align: right;
       }
     }
@@ -121,6 +129,7 @@
       border-bottom: 1px solid transparent;
 
       @include mdc-rtl(".mdc-dialog") {
+        /* @noflip */
         text-align: right;
       }
     }
@@ -233,9 +242,11 @@
 
     @include mdc-feature-targets($feat-structure) {
       max-width: 100%; // Prevent long text from overflowing parent element in IE 11
+      /* @noflip */
       text-align: right;
 
       @include mdc-rtl(".mdc-dialog") {
+        /* @noflip */
         text-align: left;
       }
     }
@@ -410,7 +421,7 @@
 
 @mixin mdc-dialog-max-height($max-height, $margin, $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
-  $max-size-calc-expr: calc(100vh - #{$margin * 2});
+  $max-size-calc-expr: calc(100% - #{$margin * 2});
 
   .mdc-dialog__surface {
     @include mdc-feature-targets($feat-structure) {
@@ -428,6 +439,29 @@
         }
       } @else {
         max-height: $max-size-calc-expr;
+      }
+    }
+  }
+
+  // Target IE 11.
+  @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    // On IE 11, if surface height is fixed and container height is 100%,
+    // scrolling content overflows. So, reset height if surface height
+    // is fixed.
+    .mdc-dialog__container {
+      @include mdc-feature-targets($feat-structure) {
+        /* stylelint-disable */
+        // Disable stylelint here, as nesting depth > 3 is required to
+        // work around IE 11.
+        @if $max-height {
+          $max-height-breakpoint: $max-height + ($margin * 2);
+
+          @media (min-height: $max-height-breakpoint) {
+            align-items: stretch;
+            height: auto;
+          }
+        }
+        /* stylelint-enable*/
       }
     }
   }
