@@ -28,7 +28,7 @@ import {MDCRipple, MDCRippleFactory} from '@material/ripple/component';
 import {MDCRippleFoundation} from '@material/ripple/foundation';
 import {MDCRippleCapableSurface} from '@material/ripple/types';
 import {MDCChipAdapter} from './adapter';
-import {EventSource, strings} from './constants';
+import {strings} from './constants';
 import {MDCChipFoundation} from './foundation';
 import {MDCChipInteractionEventDetail, MDCChipNavigationEventDetail, MDCChipRemovalEventDetail,
     MDCChipSelectionEventDetail} from './types';
@@ -217,8 +217,12 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
     return new MDCChipFoundation(adapter);
   }
 
-  focusAction(key: string, source: EventSource) {
-    this.foundation_.focusAction(key, source);
+  focusPrimaryAction() {
+    this.foundation_.focusPrimaryAction();
+  }
+
+  focusTrailingAction() {
+    this.foundation_.focusTrailingAction();
   }
 
   removeFocus() {

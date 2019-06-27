@@ -108,8 +108,11 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
     const adapter: MDCChipSetAdapter = {
-      focusChipAtIndex: (index, key, source) => {
-        this.chips_[index].focusAction(key, source);
+      focusChipPrimaryActionAtIndex: (index) => {
+        this.chips_[index].focusPrimaryAction();
+      },
+      focusChipTrailingActionAtIndex: (index) => {
+        this.chips_[index].focusTrailingAction();
       },
       getChipListCount: () => this.chips_.length,
       getIndexOfChipById: (chipId) => {

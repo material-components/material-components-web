@@ -21,15 +21,15 @@
  * THE SOFTWARE.
  */
 
+export enum Direction {
+  RIGHT,
+  LEFT,
+}
+
 export enum EventSource {
   PRIMARY,
   TRAILING,
   NONE,
-}
-
-export enum Direction {
-  RIGHT,
-  LEFT,
 }
 
 export const strings = {

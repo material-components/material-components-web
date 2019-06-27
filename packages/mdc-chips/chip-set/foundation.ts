@@ -22,7 +22,7 @@
  */
 
 import {MDCFoundation} from '@material/base/foundation';
-import {EventSource, navigationKeys, strings as chipStrings} from '../chip/constants';
+import {Direction, EventSource, jumpChipKeys, navigationKeys, strings as chipStrings} from '../chip/constants';
 import {MDCChipSetAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
 
@@ -37,7 +37,8 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
 
   static get defaultAdapter(): MDCChipSetAdapter {
     return {
-      focusChipAtIndex: () => undefined,
+      focusChipPrimaryActionAtIndex: () => undefined,
+      focusChipTrailingActionAtIndex: () => undefined,
       getChipListCount: () => -1,
       getIndexOfChipById: () => -1,
       hasClass: () => false,
@@ -111,13 +112,11 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     const index = this.adapter_.getIndexOfChipById(chipId);
     this.deselect_(chipId);
     this.adapter_.removeChip(chipId);
-    // After removing a chip, we should focus the next removal action for the next chip.
-    // This is essentially the same functionality as if the user hit the "up" arrow key from the removal action.
-    // So, we simulate that by focusing the next index with the up arrow key from the trailing action.
     const maxIndex = this.adapter_.getChipListCount() - 1;
     const nextIndex = Math.min(index, maxIndex);
     this.removeFocusFromChipsExcept_(nextIndex);
-    this.adapter_.focusChipAtIndex(nextIndex, chipStrings.ARROW_UP_KEY, EventSource.TRAILING);
+    // After removing a chip, we should focus the trailing action for the next chip.
+    this.adapter_.focusChipTrailingActionAtIndex(nextIndex);
   }
 
   /**
@@ -153,7 +152,36 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     }
 
     this.removeFocusFromChipsExcept_(index);
-    this.adapter_.focusChipAtIndex(index, key, source);
+    this.focusChipAction_(index, key, source);
+  }
+
+  private focusChipAction_(index:number, key: string, source: EventSource) {
+    const shouldJumpChips = jumpChipKeys.has(key);
+    if (shouldJumpChips && source === EventSource.PRIMARY) {
+      return this.adapter_.focusChipPrimaryActionAtIndex(index);
+    }
+
+    if (shouldJumpChips && source === EventSource.TRAILING) {
+      return this.adapter_.focusChipTrailingActionAtIndex(index);
+    }
+
+    const dir = this.getDirection_(key);
+    if (dir === Direction.LEFT) {
+      return this.adapter_.focusChipTrailingActionAtIndex(index);
+    }
+
+    if (dir === Direction.RIGHT) {
+      return this.adapter_.focusChipPrimaryActionAtIndex(index);
+    }
+  }
+
+  private getDirection_(key: string): Direction {
+    const isRTL = this.adapter_.isRTL();
+    if (key === chipStrings.ARROW_LEFT_KEY && !isRTL || key === chipStrings.ARROW_RIGHT_KEY && isRTL) {
+      return Direction.LEFT;
+    }
+
+    return Direction.RIGHT;
   }
 
   /**

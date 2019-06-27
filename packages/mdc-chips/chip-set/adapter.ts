@@ -21,8 +21,6 @@
  * THE SOFTWARE.
  */
 
-import {EventSource} from '../chip/constants';
-
 /**
  * Defines the shape of the adapter expected by the foundation.
  * Implement this adapter for your framework of choice to delegate updates to
@@ -52,13 +50,9 @@ export interface MDCChipSetAdapter {
    */
   getIndexOfChipById(chipId: string): number;
 
-  /**
-   * Gives focus to the chip at the given index with the given key.
-   * @param index the index of the chip
-   * @param key the key from the navigation event
-   * @param source the event source from the navigation event
-   */
-  focusChipAtIndex(index: number, key: string, source: EventSource): void;
+  focusChipPrimaryActionAtIndex(index: number): void;
+
+  focusChipTrailingActionAtIndex(index: number): void;
 
   /**
    * Removes focus from the chip at the given index.

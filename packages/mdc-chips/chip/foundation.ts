@@ -236,30 +236,15 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     this.adapter_.setTrailingActionAttr(strings.TAB_INDEX, '-1');
   }
 
-  focusAction(key: string, source: EventSource) {
-    // Early exit if the key is not usable
-    if (!navigationKeys.has(key)) {
-      return;
-    }
+  focusPrimaryAction() {
+    this.focusPrimaryAction_();
+  }
 
-    const shouldJumpChips = jumpChipKeys.has(key);
-    const hasTrailingAction = this.adapter_.hasTrailingAction();
-    if (shouldJumpChips && (source === EventSource.PRIMARY || !hasTrailingAction)) {
+  focusTrailingAction() {
+    if (!this.adapter_.hasTrailingAction()) {
       return this.focusPrimaryAction_();
     }
-
-    if (shouldJumpChips && source === EventSource.TRAILING && hasTrailingAction) {
-      return this.focusTrailingAction_();
-    }
-
-    const dir = this.getDirection_(key);
-    if (dir === Direction.LEFT && hasTrailingAction) {
-      return this.focusTrailingAction_();
-    }
-
-    if (dir === Direction.RIGHT || (dir === Direction.LEFT && !hasTrailingAction)) {
-      return this.focusPrimaryAction_();
-    }
+    this.focusTrailingAction_();
   }
 
   private focusNextAction_(evt: KeyboardEvent) {
