@@ -59,6 +59,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       notifyTrailingIconInteraction: () => undefined,
       removeClass: () => undefined,
       removeClassFromLeadingIcon: () => undefined,
+      setAttr: () => undefined,
       setStyleProperty: () => undefined,
     };
   }
@@ -79,8 +80,10 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   setSelected(selected: boolean) {
     if (selected) {
       this.adapter_.addClass(cssClasses.SELECTED);
+      this.adapter_.setAttr(strings.ARIA_CHECKED, 'true');
     } else {
       this.adapter_.removeClass(cssClasses.SELECTED);
+      this.adapter_.setAttr(strings.ARIA_CHECKED, 'false');
     }
     this.adapter_.notifySelection(selected);
   }

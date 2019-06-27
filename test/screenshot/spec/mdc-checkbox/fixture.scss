@@ -41,3 +41,7 @@ $custom-checkbox-color: $material-color-red-300;
 .custom-checkbox--ink-color {
   @include mdc-checkbox-ink-color($custom-checkbox-color);
 }
+
+.test-checkbox-touch-dimension {
+  @include mdc-checkbox-touch-dimension(48px);
+}
