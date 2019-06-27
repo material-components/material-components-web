@@ -53,7 +53,8 @@ class FakeChip {
   constructor(el) {
     this.id = el.id;
     this.destroy = td.func('.destroy');
-    this.focusAction = td.func('.focus');
+    this.focusPrimaryAction = td.func('.focusPrimaryAction');
+    this.focusTrailingAction = td.func('.focusTrailingAction');
     this.remove = td.func('.remove');
     this.removeFocus = td.func('.removeFocus');
     this.selected = false;
@@ -193,10 +194,16 @@ test('#adapter.getIndexOfChipById returns the index of the chip', () => {
   assert.equal(component.getDefaultFoundation().adapter_.getIndexOfChipById('chip1'), 0);
 });
 
-test('#adapter.focusChipAtIndex focuses the chip at the given index', () => {
+test('#adapter.focusChipPrimaryActionAtIndex focuses the primary action of the chip at the given index', () => {
   const {component} = setupTest();
-  component.getDefaultFoundation().adapter_.focusChipAtIndex(0, 'ArrowLeft', 1);
-  td.verify(component.chips[0].focusAction('ArrowLeft', 1), {times: 1});
+  component.getDefaultFoundation().adapter_.focusChipPrimaryActionAtIndex(0);
+  td.verify(component.chips[0].focusPrimaryAction(), {times: 1});
+});
+
+test('#adapter.focusChipTrailingActionAtIndex focuses the trailing action of the chip at the given index', () => {
+  const {component} = setupTest();
+  component.getDefaultFoundation().adapter_.focusChipTrailingActionAtIndex(0);
+  td.verify(component.chips[0].focusTrailingAction(), {times: 1});
 });
 
 test('#adapter.removeFocusFromChipAtIndex removes focus from the chip at the given index', () => {

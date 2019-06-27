@@ -426,10 +426,16 @@ test('#beginExit proxies to foundation', () => {
   td.verify(mockFoundation.beginExit());
 });
 
-test('#focusAction proxies to the foundation#focusAction', () => {
+test('#focusPrimaryAction proxies to the foundation#focusPrimaryAction', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
-  component.focusAction('ArrowLeft', 0);
-  td.verify(mockFoundation.focusAction('ArrowLeft', 0));
+  component.focusPrimaryAction();
+  td.verify(mockFoundation.focusPrimaryAction());
+});
+
+test('#focusTrailingAction proxies to the foundation#focusTrailingAction', () => {
+  const {component, mockFoundation} = setupMockFoundationTest();
+  component.focusTrailingAction();
+  td.verify(mockFoundation.focusTrailingAction());
 });
 
 test('#removeFocus proxies to the foundation#removeFocus', () => {
