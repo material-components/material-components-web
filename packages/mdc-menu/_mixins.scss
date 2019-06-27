@@ -96,6 +96,9 @@
 
         display: none;
         position: absolute;
+        // IE11 requires the icon to be vertically centered due to its absolute positioning
+        top: 50%;
+        transform: translateY(-50%);
       }
     }
   }
