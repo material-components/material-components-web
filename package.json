@@ -48,7 +48,6 @@
     "@babel/traverse": "^7.3.4",
     "@babel/types": "^7.3.4",
     "@google-cloud/datastore": "^3.0.1",
-    "@microsoft/tsdoc": "^0.12.9",
     "@octokit/rest": "^16.15.0",
     "@types/babel__traverse": "^7.0.6",
     "@types/glob": "^7.1.1",

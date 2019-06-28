@@ -1,4 +1,3 @@
-// import {ParserContext, TSDocParser} from '@microsoft/tsdoc';
 import * as fs from 'fs';
 
 // // import {sync as glob} from 'glob';
