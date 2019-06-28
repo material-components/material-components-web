@@ -69,9 +69,11 @@ class BuildCommand {
     await this.buildHtmlFiles_(shouldWatch);
 
     if (shouldWatch) {
-      this.processManager_.spawnChildProcess('npm', ['run', 'screenshot:webpack', '--', '--watch', '--mode=development']);
+      this.processManager_.spawnChildProcess('npm', [
+        'run', 'screenshot:webpack', '--', '--watch', '--mode=development']);
     } else {
-      this.processManager_.spawnChildProcessSync('npm', ['run', 'screenshot:webpack', '--', '--mode=development']);
+      this.processManager_.spawnChildProcessSync('npm', [
+        'run', 'screenshot:webpack', '--', '--mode=development']);
     }
 
     this.logger_.foldEnd('screenshot.build');
