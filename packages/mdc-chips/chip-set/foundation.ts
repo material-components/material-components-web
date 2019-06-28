@@ -125,7 +125,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   handleChipNavigation(chipId: string, key: string, source: EventSource) {
     const maxIndex = this.adapter_.getChipListCount() - 1;
     let index = this.adapter_.getIndexOfChipById(chipId);
-    // Early exit if the index if out of range or the key is unusable
+    // Early exit if the index is out of range or the key is unusable
     if (index === -1 || !navigationKeys.has(key)) {
       return;
     }
@@ -155,7 +155,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     this.focusChipAction_(index, key, source);
   }
 
-  private focusChipAction_(index:number, key: string, source: EventSource) {
+  private focusChipAction_(index: number, key: string, source: EventSource) {
     const shouldJumpChips = jumpChipKeys.has(key);
     if (shouldJumpChips && source === EventSource.PRIMARY) {
       return this.adapter_.focusChipPrimaryActionAtIndex(index);

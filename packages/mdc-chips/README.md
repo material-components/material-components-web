@@ -138,7 +138,7 @@ Filter chips are a variant of chips which allow multiple selection from a set of
               d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
       </svg>
     </span>
-    <span> role="gridcell">
+    <span role="gridcell">
       <span role="checkbox" tabindex="0" aria-checked="false" class="mdc-chip__text">Filterable content</span>
     </span>
   </button>
@@ -264,6 +264,10 @@ CSS Class | Description
 
 > _NOTE_: Every element that has an `mdc-chip__icon` class must also have either the `mdc-chip__icon--leading` or `mdc-chip__icon--trailing` class.
 
+`mdc-chip__action--primary` | Mandatory. Placed on the `mdc-chip__text` element.
+`mdc-chip__action--trailing` | Optinoal. Placed on the `mdc-chip__icon--trailing` when it should be accessible via keyboard navigation.
+`mdc-chip--deletable` | Optional. Indicates that the chip should be removable by the delete or backspace key.
+
 ### Sass Mixins
 
 Mixin | Description
@@ -303,7 +307,8 @@ To use the `MDCChip` and `MDCChipSet` classes, [import](../../docs/importing-js.
 Method Signature | Description
 --- | ---
 `beginExit() => void` | Proxies to the foundation's `beginExit` method
-`focusAction(key: string, source: FocusSource) => void` | Proxies to the foundation's `focusAction` method
+`focusPrimaryAction() => void` | Proxies to the foundation's `focusPrimaryAction` method
+`focusTrailingAction() => void` | Proxies to the foundation's `focusTrailingAction` method
 `removeFocus() => void` | Proxies to the foundation's `removeFocus` method
 
 Property | Value Type | Description
@@ -389,7 +394,8 @@ Method Signature | Description
 `removeChip(chipId: string) => void` | Removes the chip with the given id from the chip set
 `setSelected(chipId: string, selected: boolean) => void` | Sets the selected state of the chip with the given id
 `getIndexOfChipById(id: string) => number` | Returns the index of the chip with the matching `id` or -1
-`focusChipAtIndex(index: number, key: string, source: FocusSource) => void` | Calls `MDCChip#focus()` on the chip at the given `index`
+`focusChipPrimaryActionAtIndex(index: number) => void` | Calls `MDCChip#focusPrimaryAction()` on the chip at the given `index`
+`focusChipTrailingActionAtIndex(index: number) => void` | Calls `MDCChip#focusTrailingAction()` on the chip at the given `index`
 `isRTL() => boolean` | Returns `true` if the text direction is RTL
 `getChipListCount() => number` | Returns the number of chips inside the chip set
 `removeFocusFromChipAtIndex(index: number) => void` | Calls `MDCChip#removeFocus()` on the chip at the given `index`

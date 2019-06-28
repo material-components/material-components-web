@@ -385,7 +385,7 @@
 
 @mixin mdc-chip-selected-ink-color-ripple_($color, $query) {
   &.mdc-chip {
-    @include mdc-states-selected($color, true, $query: $query);
+    @include mdc-states-selected($color, $has-nested-focusable-element: true, $query: $query);
   }
 }
 
