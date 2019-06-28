@@ -77,24 +77,14 @@ class JsBundleFactory {
       },
     };
 
-    let uglifyJSPluginOptions = {
+    const uglifyOptions = {
       output: {
         comments: false, // Removes repeated @license comments and other code comments.
       },
       sourceMap: true,
     };
 
-    if (!this.env_.isProd()) {
-      // Skip minify if it is not 'production'
-      uglifyJSPluginOptions = Object.assign({}, uglifyJSPluginOptions, {
-        compress: false,
-        mangle: false,
-        beautify: true,
-      });
-    }
-
     const commonPlugins = [
-      new UglifyJSPlugin(uglifyJSPluginOptions),
       this.pluginFactory_.createCopyrightBannerPlugin(),
     ];
 
@@ -126,6 +116,10 @@ class JsBundleFactory {
           exclude: /node_modules/,
           use: [babelLoader],
         }],
+      },
+      optimization: {
+        minimize: this.env_.isProd(),
+        minimizer: [new UglifyJSPlugin({uglifyOptions})],
       },
       plugins: [
         ...commonPlugins,

@@ -35,7 +35,6 @@ const {spawnSync} = require('child_process');
 const {sync: globSync} = require('glob');
 
 const ALL_IN_ONE_PACKAGE = 'material-components-web';
-const D_TS_DIRECTORY = path.resolve(__dirname, '../build/packages');
 const PACKAGES_DIRECTORY = path.resolve(__dirname, '../packages');
 const PKG_RE = /(?:material\-components\-web)|(?:mdc\.[a-zA-Z\-]+)/;
 
@@ -110,20 +109,26 @@ async function cpAsset(asset) {
  * Imports all files in index.d.ts and compiles a bundled .d.ts file for UMD bundles.
  */
 function dtsBundler() {
-  const packageDirectories = fs.readdirSync(D_TS_DIRECTORY);
+  const packageDirectories = fs.readdirSync(PACKAGES_DIRECTORY);
   packageDirectories.forEach((packageDirectory) => {
-    const packagePath = path.join(PACKAGES_DIRECTORY, packageDirectory);
-    const name = JSON.parse(fs.readFileSync(path.join(packagePath, 'package.json'), 'utf8')).name;
-    const main = path.join(D_TS_DIRECTORY, packageDirectory, './index.d.ts');
-    const isAllInOne = packageDirectory === ALL_IN_ONE_PACKAGE;
-    const destBasename = isAllInOne ? packageDirectory : `mdc.${toCamelCase(packageDirectory.replace(/^mdc-/, ''))}`;
-    const destFilename = path.join(packagePath, 'dist', `${destBasename}.d.ts`);
-
-    console.log(`Writing UMD declarations in ${destFilename.replace(process.cwd() + '/', '')}`);
-    dts.bundle({
-      name,
-      main,
-      out: destFilename,
+    const main = path.join(PACKAGES_DIRECTORY, packageDirectory, './index.d.ts');
+    fs.access(main, fs.constants.F_OK, (error) => {
+      if (error) {
+        return;
+      }
+      // d.ts file exists
+      const packagePath = path.join(PACKAGES_DIRECTORY, packageDirectory);
+      const name = JSON.parse(fs.readFileSync(path.join(packagePath, 'package.json'), 'utf8')).name;
+      const isAllInOne = packageDirectory === ALL_IN_ONE_PACKAGE;
+      const destBasename
+        = isAllInOne ? packageDirectory : `mdc.${toCamelCase(packageDirectory.replace(/^mdc-/, ''))}`;
+      const destFilename = path.join(packagePath, 'dist', `${destBasename}.d.ts`);
+      console.log(`Writing UMD declarations in ${destFilename.replace(process.cwd() + '/', '')}`);
+      dts.bundle({
+        name,
+        main,
+        out: destFilename,
+      });
     });
   });
 }
