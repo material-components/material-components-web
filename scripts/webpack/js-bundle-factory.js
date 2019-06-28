@@ -64,6 +64,7 @@ class JsBundleFactory {
         httpDirAbsolutePath = undefined, // Required for running the demo server
         filenamePattern = this.env_.isProd() ? '[name].min.js' : '[name].js',
         library,
+        globalObject = 'this',
       },
       plugins = [],
       tsConfigFilePath = path.resolve(__dirname, '../../tsconfig.json'),
@@ -97,6 +98,7 @@ class JsBundleFactory {
         filename: filenamePattern,
         libraryTarget: 'umd',
         library,
+        globalObject,
       },
       resolve: {extensions},
       devtool: 'source-map',
