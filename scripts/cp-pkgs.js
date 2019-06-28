@@ -112,22 +112,23 @@ function dtsBundler() {
   const packageDirectories = fs.readdirSync(PACKAGES_DIRECTORY);
   packageDirectories.forEach((packageDirectory) => {
     const main = path.join(PACKAGES_DIRECTORY, packageDirectory, './index.d.ts');
-    fs.access(main, fs.constants.F_OK, (err) => {
-      if (!err) {
-        // d.ts file exists
-        const packagePath = path.join(PACKAGES_DIRECTORY, packageDirectory);
-        const name = JSON.parse(fs.readFileSync(path.join(packagePath, 'package.json'), 'utf8')).name;
-        const isAllInOne = packageDirectory === ALL_IN_ONE_PACKAGE;
-        const destBasename
-          = isAllInOne ? packageDirectory : `mdc.${toCamelCase(packageDirectory.replace(/^mdc-/, ''))}`;
-        const destFilename = path.join(packagePath, 'dist', `${destBasename}.d.ts`);
-        console.log(`Writing UMD declarations in ${destFilename.replace(process.cwd() + '/', '')}`);
-        dts.bundle({
-          name,
-          main,
-          out: destFilename,
-        });
+    fs.access(main, fs.constants.F_OK, (error) => {
+      if (error) {
+        return;
       }
+      // d.ts file exists
+      const packagePath = path.join(PACKAGES_DIRECTORY, packageDirectory);
+      const name = JSON.parse(fs.readFileSync(path.join(packagePath, 'package.json'), 'utf8')).name;
+      const isAllInOne = packageDirectory === ALL_IN_ONE_PACKAGE;
+      const destBasename
+        = isAllInOne ? packageDirectory : `mdc.${toCamelCase(packageDirectory.replace(/^mdc-/, ''))}`;
+      const destFilename = path.join(packagePath, 'dist', `${destBasename}.d.ts`);
+      console.log(`Writing UMD declarations in ${destFilename.replace(process.cwd() + '/', '')}`);
+      dts.bundle({
+        name,
+        main,
+        out: destFilename,
+      });
     });
   });
 }
