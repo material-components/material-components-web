@@ -44,12 +44,14 @@ npm install @material/top-app-bar
 <header class="mdc-top-app-bar">
   <div class="mdc-top-app-bar__row">
     <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-      <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
+      <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button">menu</button>
       <span class="mdc-top-app-bar__title">Title</span>
     </section>
   </div>
 </header>
 ```
+
+> NOTE: Please see note below about `mdc-icon-button` in the [Top App Bar With Action Items](#top-app-bar-with-action-items) section.
 
 #### Menu Icons
 
@@ -67,6 +69,7 @@ However, you can also use SVG, [Font Awesome](https://fontawesome.com/), or any 
 
 ```scss
 @import "@material/top-app-bar/mdc-top-app-bar";
+@import "@material/icon-button/mdc-icon-button";
 ```
 
 ### JavaScript Instantiation
@@ -85,19 +88,19 @@ const topAppBar = new MDCTopAppBar(topAppBarElement);
 
 ### Top App Bar With Action Items
 
-Top app bars can contain action items which are placed on the side opposite the navigation icon.
+Top app bars can contain action items which are placed on the side opposite the navigation icon. You must also attach the `mdc-icon-button` class to both the `mdc-top-app-bar__navigation-icon` and the `mdc-top-app-bar__action-item` elements in order to get the correct styles applied. For further documentation on icons, please see the [mdc-icon-button docs](../mdc-icon-button/README.md).
 
 ```html
 <header class="mdc-top-app-bar">
   <div class="mdc-top-app-bar__row">
     <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-      <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
+      <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button">menu</button>
       <span class="mdc-top-app-bar__title">Title</span>
     </section>
     <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
-      <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Download">file_download</a>
-      <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Print this page">print</a>
-      <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Bookmark this page">bookmark</a>
+      <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Download">file_download</button>
+      <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Print this page">print</button>
+      <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Bookmark this page">bookmark</button>
     </section>
   </div>
 </header>
@@ -111,11 +114,11 @@ Short top app bars are top app bars that can collapse to the navigation icon sid
 <header class="mdc-top-app-bar mdc-top-app-bar--short">
   <div class="mdc-top-app-bar__row">
     <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-      <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
+      <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button">menu</button>
       <span class="mdc-top-app-bar__title">Title</span>
     </section>
     <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
-      <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Bookmark this page">bookmark</a>
+      <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Bookmark this page">bookmark</button>
     </section>
   </div>
 </header>
@@ -219,12 +222,6 @@ Method Signature | Description
 `getViewportScrollY() => number` | Gets the number of pixels that the content of body is scrolled from the top of the page.
 `getTotalActionItems() => number` | Gets the number of action items in the top app bar.
 `notifyNavigationIconClicked() => void` | Emits a custom event `MDCTopAppBar:nav` when the navigation icon is clicked.
-`registerNavigationIconInteractionHandler(evtType: string, handler: EventListener) => void` | Registers an event listener on the native navigation icon element for a given event.
-`deregisterNavigationIconInteractionHandler(evtType: string, handler: EventListener) => void` | Deregisters an event listener on the native navigation icon element for a given event.
-`registerScrollHandler(handler: EventListener) => void` | Registers a handler to be called when user scrolls. Our default implementation adds the handler as a listener to the window's `scroll` event.
-`deregisterScrollHandler(handler: EventListener) => void` | Unregisters a handler to be called when user scrolls. Our default implementation removes the handler as a listener to the window's `scroll` event.
-`registerResizeHandler(handler: EventListener) => void` | Registers a handler to be called when the surface (or its viewport) resizes. Our default implementation adds the handler as a listener to the window's `resize` event.
-`deregisterResizeHandler(handler: EventListener) => void` | Unregisters a handler to be called when the surface (or its viewport) resizes. Our default implementation removes the handler as a listener to the window's `resize` event.
 
 ### Foundations
 
@@ -234,8 +231,9 @@ All foundations provide the following methods:
 
 Method Signature | Description
 --- | ---
-`initScrollHandler(handler: EventListener) => void` | Registers a scroll handler on a specific target element.
-`destroyScrollHandler(handler: EventListener) => void` | Deregisters the current scroll handler set by the foundation.
+`handleTargetScroll() => void` | Handles `scroll` event on specified scrollTarget (defaults to `window`).
+`handleWindowResize() => void` | Handles `resize` event on window.
+`handleNavigationClick() => void` | Handles `click` event on navigation icon.
 
 #### `MDCShortTopAppBarFoundation`
 

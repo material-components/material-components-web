@@ -12,6 +12,7 @@ branches:
   # This prevents excessive resource usage and CI slowness.
   only:
     - master
+    - develop
 
 before_install:
   # Source the scripts to export their env vars. See https://superuser.com/a/176788/62792

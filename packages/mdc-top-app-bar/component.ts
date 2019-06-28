@@ -22,6 +22,7 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+import {SpecificEventListener} from '@material/base/types';
 import {MDCRipple, MDCRippleFactory} from '@material/ripple/component';
 import {MDCTopAppBarAdapter} from './adapter';
 import {cssClasses, strings} from './constants';
@@ -35,6 +36,9 @@ export class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
     return new MDCTopAppBar(root);
   }
 
+  private handleNavigationClick_!: SpecificEventListener<'click'>; // assigned in initialSyncWithDOM()
+  private handleWindowResize_!: SpecificEventListener<'resize'>; // assigned in initialSyncWithDOM()
+  private handleTargetScroll_!: SpecificEventListener<'scroll'>; // assigned in initialSyncWithDOM()
   private navIcon_!: Element | null;
   private iconRipples_!: MDCRipple[];
   private scrollTarget_!: EventTarget;
@@ -57,19 +61,48 @@ export class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
     this.scrollTarget_ = window;
   }
 
+  initialSyncWithDOM() {
+    this.handleNavigationClick_ = this.foundation_.handleNavigationClick.bind(this.foundation_);
+    this.handleWindowResize_ = this.foundation_.handleWindowResize.bind(this.foundation_);
+    this.handleTargetScroll_ = this.foundation_.handleTargetScroll.bind(this.foundation_);
+
+    this.scrollTarget_.addEventListener('scroll', this.handleTargetScroll_ as EventListener);
+
+    if (this.navIcon_) {
+      this.navIcon_.addEventListener('click', this.handleNavigationClick_ as EventListener);
+    }
+
+    const isFixed = this.root_.classList.contains(cssClasses.FIXED_CLASS);
+    const isShort = this.root_.classList.contains(cssClasses.SHORT_CLASS);
+    if (!isShort && !isFixed) {
+      window.addEventListener('resize', this.handleWindowResize_ as EventListener);
+    }
+  }
+
   destroy() {
     this.iconRipples_.forEach((iconRipple) => iconRipple.destroy());
+    this.scrollTarget_.removeEventListener('scroll', this.handleTargetScroll_ as EventListener);
+    if (this.navIcon_) {
+      this.navIcon_.removeEventListener('click', this.handleNavigationClick_ as EventListener);
+    }
+    const isFixed = this.root_.classList.contains(cssClasses.FIXED_CLASS);
+    const isShort = this.root_.classList.contains(cssClasses.SHORT_CLASS);
+    if (!isShort && !isFixed) {
+      window.removeEventListener('resize', this.handleWindowResize_ as EventListener);
+    }
     super.destroy();
   }
 
   setScrollTarget(target: EventTarget) {
     // Remove scroll handler from the previous scroll target
-    this.foundation_.destroyScrollHandler();
+    this.scrollTarget_.removeEventListener('scroll', this.handleTargetScroll_ as EventListener);
 
     this.scrollTarget_ = target;
 
     // Initialize scroll handler on the new scroll target
-    this.foundation_.initScrollHandler();
+    this.handleTargetScroll_ =
+      this.foundation_.handleTargetScroll.bind(this.foundation_);
+    this.scrollTarget_.addEventListener('scroll', this.handleTargetScroll_ as EventListener);
   }
 
   getDefaultFoundation() {
@@ -82,21 +115,7 @@ export class MDCTopAppBar extends MDCComponent<MDCTopAppBarBaseFoundation> {
       removeClass: (className) => this.root_.classList.remove(className),
       setStyle: (property, value) => (this.root_ as HTMLElement).style.setProperty(property, value),
       getTopAppBarHeight: () => this.root_.clientHeight,
-      registerNavigationIconInteractionHandler: (evtType, handler) => {
-        if (this.navIcon_) {
-          (this.navIcon_ as HTMLElement).addEventListener(evtType, handler);
-        }
-      },
-      deregisterNavigationIconInteractionHandler: (evtType, handler) => {
-        if (this.navIcon_) {
-          (this.navIcon_ as HTMLElement).removeEventListener(evtType, handler);
-        }
-      },
       notifyNavigationIconClicked: () => this.emit(strings.NAVIGATION_EVENT, {}),
-      registerScrollHandler: (handler) => this.scrollTarget_.addEventListener('scroll', handler as EventListener),
-      deregisterScrollHandler: (handler) => this.scrollTarget_.removeEventListener('scroll', handler as EventListener),
-      registerResizeHandler: (handler) => window.addEventListener('resize', handler),
-      deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
       getViewportScrollY: () => {
         const win = this.scrollTarget_ as Window;
         const el = this.scrollTarget_ as Element;

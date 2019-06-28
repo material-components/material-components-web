@@ -84,20 +84,18 @@ test('destroy deregisters key handler on the menu surface', () => {
   td.verify(mockFoundation.handleKeydown(td.matchers.isA(Event)), {times: 0});
 });
 
-test('get/set open', () => {
+test('#isOpen', () => {
   const {component, mockFoundation} = setupTest();
   td.when(mockFoundation.isOpen()).thenReturn(true);
-  component.open = true;
-  assert.isTrue(component.open);
+  assert.isTrue(component.isOpen());
 
   td.when(mockFoundation.isOpen()).thenReturn(false);
-  component.open = false;
-  assert.isFalse(component.open);
+  assert.isFalse(component.isOpen());
 });
 
-test('open=true opens the menu surface', () => {
+test('#open opens the menu surface', () => {
   const {component, mockFoundation} = setupTest();
-  component.open = true;
+  component.open();
   td.verify(mockFoundation.open());
 });
 
@@ -108,7 +106,7 @@ test(`${strings.OPENED_EVENT} causes the body click handler to be registered`, (
   td.verify(mockFoundation.handleBodyClick(td.matchers.isA(Event)), {times: 1});
 });
 
-test('open=true does not throw error if no focusable elements', () => {
+test('#open does not throw error if no focusable elements', () => {
   const {root, component, mockFoundation} = setupTest();
 
   while (root.firstChild) {
@@ -116,15 +114,15 @@ test('open=true does not throw error if no focusable elements', () => {
   }
 
   assert.doesNotThrow(() => {
-    component.open = true;
+    component.open();
   });
   td.verify(mockFoundation.open());
 });
 
-test('open=false closes the menu surface', () => {
+test('#close closes the menu surface', () => {
   const {component, mockFoundation} = setupTest();
-  component.open = false;
-  td.verify(mockFoundation.close());
+  component.close();
+  td.verify(mockFoundation.close(/* skipRestoreFocus */ false));
 });
 
 test(`${strings.CLOSED_EVENT} causes the body click handler to be deregistered`, () => {
@@ -309,58 +307,6 @@ test('adapter#isFocused returns whether the menu surface is focused', () => {
   document.body.removeChild(root);
 });
 
-test('adapter#isFirstElementFocused returns true if the first element is focused', () => {
-  const {root, component} = setupTest({open: true});
-  const item = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[0];
-  document.body.appendChild(root);
-  component.open = true;
-
-  assert.isFalse(component.getDefaultFoundation().adapter_.isFirstElementFocused());
-  item.focus();
-  assert.isTrue(component.getDefaultFoundation().adapter_.isFirstElementFocused());
-  component.open = false;
-
-  document.body.removeChild(root);
-});
-
-test('adapter#isLastElementFocused returns true if the last element is focused', () => {
-  const {root, component} = setupTest({open: true});
-  const item = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[1];
-  document.body.appendChild(root);
-  component.open = true;
-
-  assert.isFalse(component.getDefaultFoundation().adapter_.isLastElementFocused());
-  item.focus();
-  assert.isTrue(component.getDefaultFoundation().adapter_.isLastElementFocused());
-
-  component.open = false;
-  document.body.removeChild(root);
-});
-
-test('adapter#focusFirstElement focuses the first menu surface element', () => {
-  const {root, component} = setupTest({open: true});
-  const item = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[0];
-  document.body.appendChild(root);
-  component.open = true;
-
-  component.getDefaultFoundation().adapter_.focusFirstElement();
-  assert.equal(document.activeElement, item);
-  component.open = false;
-  document.body.removeChild(root);
-});
-
-test('adapter#focusLastElement focuses the last menu surface element', () => {
-  const {root, component} = setupTest({open: true});
-  const item = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[1];
-  document.body.appendChild(root);
-  component.open = true;
-
-  component.getDefaultFoundation().adapter_.focusLastElement();
-  assert.equal(document.activeElement, item);
-  component.open = false;
-  document.body.removeChild(root);
-});
-
 test('adapter#hasAnchor returns true if the menu surface has an anchor', () => {
   const anchor = bel`<div class="mdc-menu-surface--anchor"></div>`;
   const {root, component} = setupTest({open: true});
@@ -508,36 +454,4 @@ test('adapter#setMaxHeight sets the maxHeight style on the menu surface element'
   const {root, component} = setupTest();
   component.getDefaultFoundation().adapter_.setMaxHeight('100px');
   assert.equal(root.style.maxHeight, '100px');
-});
-
-test('Pressing Shift+Tab on first element focuses the last menu surface element', () => {
-  const root = getFixture(true);
-  document.body.appendChild(root);
-  const firstItem = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[0];
-  const lastItem = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[1];
-  const component = new MDCMenuSurface(root);
-  component.open = true;
-
-  firstItem.focus();
-  component.getDefaultFoundation().handleKeydown({key: 'Tab', shiftKey: true, preventDefault: () => {}});
-  assert.equal(document.activeElement, lastItem);
-
-  component.open = false;
-  document.body.removeChild(root);
-});
-
-test('Pressing Tab on last element focuses the first menu surface element', () => {
-  const root = getFixture(true);
-  document.body.appendChild(root);
-  const firstItem = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[0];
-  const lastItem = root.querySelectorAll(strings.FOCUSABLE_ELEMENTS)[1];
-  const component = new MDCMenuSurface(root);
-  component.open = true;
-
-  lastItem.focus();
-  component.getDefaultFoundation().handleKeydown({key: 'Tab', shiftKey: false, preventDefault: () => {}});
-  assert.equal(document.activeElement, firstItem);
-
-  component.open = false;
-  document.body.removeChild(root);
 });
