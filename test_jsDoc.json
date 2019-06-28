@@ -1,0 +1,5230 @@
+{
+	"id": 0,
+	"name": "material-components-web",
+	"kind": 0,
+	"flags": {},
+	"children": [
+		{
+			"id": 1262,
+			"name": "\"mdc-drawer/adapter\"",
+			"kind": 1,
+			"kindString": "External module",
+			"flags": {
+				"isExported": true
+			},
+			"originalName": "/Users/mattgoo/Documents/material-components-web/packages/mdc-drawer/adapter.ts",
+			"comment": {
+				"tags": [
+					{
+						"tag": "license",
+						"text": "\nCopyright 2018 Google Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.\n"
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 1263,
+					"name": "MDCDrawerAdapter",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {
+						"isExported": true
+					},
+					"comment": {
+						"shortText": "Defines the shape of the adapter expected by the foundation.\nImplement this adapter for your framework of choice to delegate updates to\nthe component in your framework of choice. See architecture documentation\nfor more details.\nhttps://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md"
+					},
+					"children": [
+						{
+							"id": 1264,
+							"name": "addClass",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1265,
+									"name": "addClass",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"shortText": "Adds a class to the root Element."
+									},
+									"parameters": [
+										{
+											"id": 1266,
+											"name": "className",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/adapter.ts",
+									"line": 35,
+									"character": 10
+								}
+							]
+						},
+						{
+							"id": 1273,
+							"name": "elementHasClass",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1274,
+									"name": "elementHasClass",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"shortText": "Returns true if the an element contains the given class."
+									},
+									"parameters": [
+										{
+											"id": 1275,
+											"name": "element",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"comment": {
+												"text": "target element to verify class name"
+											},
+											"type": {
+												"type": "reference",
+												"name": "Element"
+											}
+										},
+										{
+											"id": 1276,
+											"name": "className",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"comment": {
+												"text": "class name\n"
+											},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/adapter.ts",
+									"line": 52,
+									"character": 17
+								}
+							]
+						},
+						{
+							"id": 1281,
+							"name": "focusActiveNavigationItem",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1282,
+									"name": "focusActiveNavigationItem",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"shortText": "Focuses the active / selected navigation item."
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/adapter.ts",
+									"line": 67,
+									"character": 27
+								}
+							]
+						},
+						{
+							"id": 1270,
+							"name": "hasClass",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1271,
+									"name": "hasClass",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"shortText": "Returns true if the root Element contains the given class."
+									},
+									"parameters": [
+										{
+											"id": 1272,
+											"name": "className",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/adapter.ts",
+									"line": 45,
+									"character": 10
+								}
+							]
+						},
+						{
+							"id": 1283,
+							"name": "notifyClose",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1284,
+									"name": "notifyClose",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"shortText": "Emits a custom event \"MDCDrawer:closed\" denoting the drawer has closed."
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/adapter.ts",
+									"line": 72,
+									"character": 13
+								}
+							]
+						},
+						{
+							"id": 1285,
+							"name": "notifyOpen",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1286,
+									"name": "notifyOpen",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"shortText": "Emits a custom event \"MDCDrawer:opened\" denoting the drawer has opened."
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/adapter.ts",
+									"line": 77,
+									"character": 12
+								}
+							]
+						},
+						{
+							"id": 1289,
+							"name": "releaseFocus",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1290,
+									"name": "releaseFocus",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"shortText": "Releases focus trap from root element which was set by `trapFocus`\nand restores focus to where it was prior to calling `trapFocus`."
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/adapter.ts",
+									"line": 88,
+									"character": 14
+								}
+							]
+						},
+						{
+							"id": 1267,
+							"name": "removeClass",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1268,
+									"name": "removeClass",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"shortText": "Removes a class from the root Element."
+									},
+									"parameters": [
+										{
+											"id": 1269,
+											"name": "className",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/adapter.ts",
+									"line": 40,
+									"character": 13
+								}
+							]
+						},
+						{
+							"id": 1279,
+							"name": "restoreFocus",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1280,
+									"name": "restoreFocus",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"shortText": "Restores focus to element previously saved with 'saveFocus'."
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/adapter.ts",
+									"line": 62,
+									"character": 14
+								}
+							]
+						},
+						{
+							"id": 1277,
+							"name": "saveFocus",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1278,
+									"name": "saveFocus",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"shortText": "Saves the focus of currently active element."
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/adapter.ts",
+									"line": 57,
+									"character": 11
+								}
+							]
+						},
+						{
+							"id": 1287,
+							"name": "trapFocus",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1288,
+									"name": "trapFocus",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"shortText": "Traps focus on root element and focuses the active navigation element."
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/adapter.ts",
+									"line": 82,
+									"character": 11
+								}
+							]
+						}
+					],
+					"groups": [
+						{
+							"title": "Methods",
+							"kind": 2048,
+							"children": [
+								1264,
+								1273,
+								1281,
+								1270,
+								1283,
+								1285,
+								1289,
+								1267,
+								1279,
+								1277,
+								1287
+							]
+						}
+					],
+					"sources": [
+						{
+							"fileName": "mdc-drawer/adapter.ts",
+							"line": 31,
+							"character": 33
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Interfaces",
+					"kind": 256,
+					"children": [
+						1263
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "mdc-drawer/adapter.ts",
+					"line": 1,
+					"character": 0
+				}
+			]
+		},
+		{
+			"id": 1433,
+			"name": "\"mdc-drawer/component\"",
+			"kind": 1,
+			"kindString": "External module",
+			"flags": {
+				"isExported": true
+			},
+			"originalName": "/Users/mattgoo/Documents/material-components-web/packages/mdc-drawer/component.ts",
+			"children": [
+				{
+					"id": 1434,
+					"name": "MDCDrawer",
+					"kind": 128,
+					"kindString": "Class",
+					"flags": {
+						"isExported": true
+					},
+					"children": [
+						{
+							"id": 1464,
+							"name": "constructor",
+							"kind": 512,
+							"kindString": "Constructor",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1465,
+									"name": "new MDCDrawer",
+									"kind": 16384,
+									"kindString": "Constructor signature",
+									"flags": {},
+									"parameters": [
+										{
+											"id": 1466,
+											"name": "root",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"name": "Element"
+											}
+										},
+										{
+											"id": 1467,
+											"name": "foundation",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {
+												"isOptional": true
+											},
+											"type": {
+												"type": "reference",
+												"name": "FoundationType",
+												"id": 137
+											}
+										},
+										{
+											"id": 1468,
+											"name": "args",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {
+												"isRest": true
+											},
+											"type": {
+												"type": "reference",
+												"name": "Array",
+												"typeArguments": [
+													{
+														"type": "intrinsic",
+														"name": "unknown"
+													}
+												]
+											}
+										}
+									],
+									"type": {
+										"type": "reference",
+										"name": "MDCDrawer",
+										"id": 1434
+									},
+									"inheritedFrom": {
+										"type": "reference",
+										"name": "MDCComponent.__constructor"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-base/dist/mdc.base.d.ts",
+									"line": 59,
+									"character": 50
+								}
+							],
+							"inheritedFrom": {
+								"type": "reference",
+								"name": "MDCComponent.__constructor"
+							}
+						},
+						{
+							"id": 1446,
+							"name": "focusTrapFactory_",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isPrivate": true,
+								"isExported": true
+							},
+							"sources": [
+								{
+									"fileName": "mdc-drawer/component.ts",
+									"line": 65,
+									"character": 27
+								}
+							],
+							"type": {
+								"type": "reference",
+								"name": "MDCDrawerFocusTrapFactory",
+								"id": 1369
+							}
+						},
+						{
+							"id": 1445,
+							"name": "focusTrap_",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isPrivate": true,
+								"isExported": true,
+								"isOptional": true
+							},
+							"sources": [
+								{
+									"fileName": "mdc-drawer/component.ts",
+									"line": 64,
+									"character": 20
+								}
+							],
+							"type": {
+								"type": "reference",
+								"name": "FocusTrap"
+							}
+						},
+						{
+							"id": 1463,
+							"name": "foundation_",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isProtected": true,
+								"isExported": true
+							},
+							"sources": [
+								{
+									"fileName": "mdc-base/dist/mdc.base.d.ts",
+									"line": 59,
+									"character": 33
+								}
+							],
+							"type": {
+								"type": "reference",
+								"name": "MDCDismissibleDrawerFoundation",
+								"id": 1306
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"name": "MDCComponent.foundation_"
+							}
+						},
+						{
+							"id": 1448,
+							"name": "handleKeydown_",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isPrivate": true,
+								"isExported": true
+							},
+							"sources": [
+								{
+									"fileName": "mdc-drawer/component.ts",
+									"line": 68,
+									"character": 24
+								}
+							],
+							"type": {
+								"type": "reference",
+								"name": "SpecificEventListener",
+								"id": 125,
+								"typeArguments": [
+									{
+										"type": "stringLiteral",
+										"value": "keydown"
+									}
+								]
+							}
+						},
+						{
+							"id": 1447,
+							"name": "handleScrimClick_",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isPrivate": true,
+								"isExported": true,
+								"isOptional": true
+							},
+							"sources": [
+								{
+									"fileName": "mdc-drawer/component.ts",
+									"line": 67,
+									"character": 27
+								}
+							],
+							"type": {
+								"type": "reference",
+								"name": "SpecificEventListener",
+								"id": 125,
+								"typeArguments": [
+									{
+										"type": "stringLiteral",
+										"value": "click"
+									}
+								]
+							}
+						},
+						{
+							"id": 1449,
+							"name": "handleTransitionEnd_",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isPrivate": true,
+								"isExported": true
+							},
+							"sources": [
+								{
+									"fileName": "mdc-drawer/component.ts",
+									"line": 69,
+									"character": 30
+								}
+							],
+							"type": {
+								"type": "reference",
+								"name": "SpecificEventListener",
+								"id": 125,
+								"typeArguments": [
+									{
+										"type": "stringLiteral",
+										"value": "transitionend"
+									}
+								]
+							}
+						},
+						{
+							"id": 1444,
+							"name": "list_",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isPrivate": true,
+								"isExported": true,
+								"isOptional": true
+							},
+							"sources": [
+								{
+									"fileName": "mdc-drawer/component.ts",
+									"line": 62,
+									"character": 15
+								}
+							],
+							"type": {
+								"type": "reference",
+								"name": "MDCList",
+								"id": 2505
+							}
+						},
+						{
+							"id": 1442,
+							"name": "previousFocus_",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isPrivate": true,
+								"isExported": true,
+								"isOptional": true
+							},
+							"sources": [
+								{
+									"fileName": "mdc-drawer/component.ts",
+									"line": 60,
+									"character": 24
+								}
+							],
+							"type": {
+								"type": "union",
+								"types": [
+									{
+										"type": "reference",
+										"name": "Element"
+									},
+									{
+										"type": "intrinsic",
+										"name": "null"
+									}
+								]
+							}
+						},
+						{
+							"id": 1462,
+							"name": "root_",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isProtected": true,
+								"isExported": true
+							},
+							"sources": [
+								{
+									"fileName": "mdc-base/dist/mdc.base.d.ts",
+									"line": 58,
+									"character": 27
+								}
+							],
+							"type": {
+								"type": "reference",
+								"name": "Element"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"name": "MDCComponent.root_"
+							}
+						},
+						{
+							"id": 1443,
+							"name": "scrim_",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isPrivate": true,
+								"isExported": true
+							},
+							"sources": [
+								{
+									"fileName": "mdc-drawer/component.ts",
+									"line": 61,
+									"character": 16
+								}
+							],
+							"type": {
+								"type": "union",
+								"types": [
+									{
+										"type": "reference",
+										"name": "HTMLElement"
+									},
+									{
+										"type": "intrinsic",
+										"name": "null"
+									}
+								]
+							}
+						},
+						{
+							"id": 1450,
+							"name": "list",
+							"kind": 262144,
+							"kindString": "Accessor",
+							"flags": {
+								"isExported": true
+							},
+							"getSignature": [
+								{
+									"id": 1451,
+									"name": "__get",
+									"kind": 524288,
+									"kindString": "Get signature",
+									"flags": {},
+									"type": {
+										"type": "union",
+										"types": [
+											{
+												"type": "reference",
+												"name": "MDCList"
+											},
+											{
+												"type": "intrinsic",
+												"name": "undefined"
+											}
+										]
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/component.ts",
+									"line": 71,
+									"character": 10
+								}
+							]
+						},
+						{
+							"id": 1438,
+							"name": "open",
+							"kind": 262144,
+							"kindString": "Accessor",
+							"flags": {
+								"isExported": true
+							},
+							"comment": {
+								"shortText": "Returns true if drawer is in the open position.\nToggles the drawer open and closed."
+							},
+							"getSignature": [
+								{
+									"id": 1439,
+									"name": "__get",
+									"kind": 524288,
+									"kindString": "Get signature",
+									"flags": {},
+									"comment": {
+										"shortText": "Returns true if drawer is in the open position."
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								}
+							],
+							"setSignature": [
+								{
+									"id": 1440,
+									"name": "__set",
+									"kind": 1048576,
+									"kindString": "Set signature",
+									"flags": {},
+									"comment": {
+										"shortText": "Toggles the drawer open and closed."
+									},
+									"parameters": [
+										{
+											"id": 1441,
+											"name": "isOpen",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "boolean"
+											}
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/component.ts",
+									"line": 45,
+									"character": 10
+								},
+								{
+									"fileName": "mdc-drawer/component.ts",
+									"line": 52,
+									"character": 10
+								}
+							]
+						},
+						{
+							"id": 1458,
+							"name": "destroy",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1459,
+									"name": "destroy",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									},
+									"overwrites": {
+										"type": "reference",
+										"name": "MDCComponent.destroy"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/component.ts",
+									"line": 106,
+									"character": 9
+								}
+							],
+							"overwrites": {
+								"type": "reference",
+								"name": "MDCComponent.destroy"
+							}
+						},
+						{
+							"id": 1491,
+							"name": "emit",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1492,
+									"name": "emit",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"shortText": "Fires a cross-browser-compatible custom event from the component root of the given type, with the given data."
+									},
+									"typeParameter": [
+										{
+											"id": 1493,
+											"name": "T",
+											"kind": 131072,
+											"kindString": "Type parameter",
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "object"
+											}
+										}
+									],
+									"parameters": [
+										{
+											"id": 1494,
+											"name": "evtType",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										},
+										{
+											"id": 1495,
+											"name": "evtData",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"type": {
+												"type": "typeParameter",
+												"name": "T",
+												"constraint": {
+													"type": "intrinsic",
+													"name": "object"
+												}
+											}
+										},
+										{
+											"id": 1496,
+											"name": "shouldBubble",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {
+												"isOptional": true
+											},
+											"type": {
+												"type": "union",
+												"types": [
+													{
+														"type": "intrinsic",
+														"name": "undefined"
+													},
+													{
+														"type": "intrinsic",
+														"name": "false"
+													},
+													{
+														"type": "intrinsic",
+														"name": "true"
+													}
+												]
+											}
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									},
+									"inheritedFrom": {
+										"type": "reference",
+										"name": "MDCComponent.emit"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-base/dist/mdc.base.d.ts",
+									"line": 80,
+									"character": 16
+								}
+							],
+							"inheritedFrom": {
+								"type": "reference",
+								"name": "MDCComponent.emit"
+							}
+						},
+						{
+							"id": 1460,
+							"name": "getDefaultFoundation",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1461,
+									"name": "getDefaultFoundation",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"name": "MDCDismissibleDrawerFoundation",
+										"id": 1306
+									},
+									"overwrites": {
+										"type": "reference",
+										"name": "MDCComponent.getDefaultFoundation"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/component.ts",
+									"line": 122,
+									"character": 22
+								}
+							],
+							"overwrites": {
+								"type": "reference",
+								"name": "MDCComponent.getDefaultFoundation"
+							}
+						},
+						{
+							"id": 1456,
+							"name": "initialSyncWithDOM",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1457,
+									"name": "initialSyncWithDOM",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									},
+									"overwrites": {
+										"type": "reference",
+										"name": "MDCComponent.initialSyncWithDOM"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/component.ts",
+									"line": 87,
+									"character": 20
+								}
+							],
+							"overwrites": {
+								"type": "reference",
+								"name": "MDCComponent.initialSyncWithDOM"
+							}
+						},
+						{
+							"id": 1452,
+							"name": "initialize",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1453,
+									"name": "initialize",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"parameters": [
+										{
+											"id": 1454,
+											"name": "focusTrapFactory",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"name": "MDCDrawerFocusTrapFactory",
+												"id": 1369
+											},
+											"defaultValue": " createFocusTrap as unknown as MDCDrawerFocusTrapFactory"
+										},
+										{
+											"id": 1455,
+											"name": "listFactory",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"name": "MDCListFactory",
+												"id": 2591
+											},
+											"defaultValue": " (el) => new MDCList(el)"
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									},
+									"overwrites": {
+										"type": "reference",
+										"name": "MDCComponent.initialize"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/component.ts",
+									"line": 75,
+									"character": 12
+								}
+							],
+							"overwrites": {
+								"type": "reference",
+								"name": "MDCComponent.initialize"
+							}
+						},
+						{
+							"id": 1469,
+							"name": "listen",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1470,
+									"name": "listen",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"shortText": "Wrapper method to add an event listener to the component's root element. This is most useful when\nlistening for custom events."
+									},
+									"typeParameter": [
+										{
+											"id": 1471,
+											"name": "K",
+											"kind": 131072,
+											"kindString": "Type parameter",
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"name": "EventType",
+												"id": 124
+											}
+										}
+									],
+									"parameters": [
+										{
+											"id": 1472,
+											"name": "evtType",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"type": {
+												"type": "typeParameter",
+												"name": "K",
+												"constraint": {
+													"type": "reference",
+													"name": "EventType",
+													"id": 124
+												}
+											}
+										},
+										{
+											"id": 1473,
+											"name": "handler",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"name": "SpecificEventListener",
+												"id": 125,
+												"typeArguments": [
+													{
+														"type": "typeParameter",
+														"name": "K",
+														"constraint": {
+															"type": "reference",
+															"name": "EventType",
+															"id": 124
+														}
+													}
+												]
+											}
+										},
+										{
+											"id": 1474,
+											"name": "options",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {
+												"isOptional": true
+											},
+											"type": {
+												"type": "union",
+												"types": [
+													{
+														"type": "reference",
+														"name": "AddEventListenerOptions"
+													},
+													{
+														"type": "intrinsic",
+														"name": "boolean"
+													}
+												]
+											}
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									},
+									"inheritedFrom": {
+										"type": "reference",
+										"name": "MDCComponent.listen"
+									}
+								},
+								{
+									"id": 1475,
+									"name": "listen",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"typeParameter": [
+										{
+											"id": 1476,
+											"name": "E",
+											"kind": 131072,
+											"kindString": "Type parameter",
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"name": "Event"
+											}
+										}
+									],
+									"parameters": [
+										{
+											"id": 1477,
+											"name": "evtType",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										},
+										{
+											"id": 1478,
+											"name": "handler",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"name": "CustomEventListener",
+												"id": 130,
+												"typeArguments": [
+													{
+														"type": "typeParameter",
+														"name": "E",
+														"constraint": {
+															"type": "reference",
+															"name": "Event"
+														}
+													}
+												]
+											}
+										},
+										{
+											"id": 1479,
+											"name": "options",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {
+												"isOptional": true
+											},
+											"type": {
+												"type": "union",
+												"types": [
+													{
+														"type": "reference",
+														"name": "AddEventListenerOptions"
+													},
+													{
+														"type": "intrinsic",
+														"name": "boolean"
+													}
+												]
+											}
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									},
+									"inheritedFrom": {
+										"type": "reference",
+										"name": "MDCComponent.listen"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-base/dist/mdc.base.d.ts",
+									"line": 69,
+									"character": 18
+								},
+								{
+									"fileName": "mdc-base/dist/mdc.base.d.ts",
+									"line": 70,
+									"character": 18
+								}
+							],
+							"inheritedFrom": {
+								"type": "reference",
+								"name": "MDCComponent.listen"
+							}
+						},
+						{
+							"id": 1480,
+							"name": "unlisten",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1481,
+									"name": "unlisten",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"shortText": "Wrapper method to remove an event listener to the component's root element. This is most useful when\nunlistening for custom events."
+									},
+									"typeParameter": [
+										{
+											"id": 1482,
+											"name": "K",
+											"kind": 131072,
+											"kindString": "Type parameter",
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"name": "EventType",
+												"id": 124
+											}
+										}
+									],
+									"parameters": [
+										{
+											"id": 1483,
+											"name": "evtType",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"type": {
+												"type": "typeParameter",
+												"name": "K",
+												"constraint": {
+													"type": "reference",
+													"name": "EventType",
+													"id": 124
+												}
+											}
+										},
+										{
+											"id": 1484,
+											"name": "handler",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"name": "SpecificEventListener",
+												"id": 125,
+												"typeArguments": [
+													{
+														"type": "typeParameter",
+														"name": "K",
+														"constraint": {
+															"type": "reference",
+															"name": "EventType",
+															"id": 124
+														}
+													}
+												]
+											}
+										},
+										{
+											"id": 1485,
+											"name": "options",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {
+												"isOptional": true
+											},
+											"type": {
+												"type": "union",
+												"types": [
+													{
+														"type": "reference",
+														"name": "AddEventListenerOptions"
+													},
+													{
+														"type": "intrinsic",
+														"name": "boolean"
+													}
+												]
+											}
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									},
+									"inheritedFrom": {
+										"type": "reference",
+										"name": "MDCComponent.unlisten"
+									}
+								},
+								{
+									"id": 1486,
+									"name": "unlisten",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"typeParameter": [
+										{
+											"id": 1487,
+											"name": "E",
+											"kind": 131072,
+											"kindString": "Type parameter",
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"name": "Event"
+											}
+										}
+									],
+									"parameters": [
+										{
+											"id": 1488,
+											"name": "evtType",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										},
+										{
+											"id": 1489,
+											"name": "handler",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"name": "CustomEventListener",
+												"id": 130,
+												"typeArguments": [
+													{
+														"type": "typeParameter",
+														"name": "E",
+														"constraint": {
+															"type": "reference",
+															"name": "Event"
+														}
+													}
+												]
+											}
+										},
+										{
+											"id": 1490,
+											"name": "options",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {
+												"isOptional": true
+											},
+											"type": {
+												"type": "union",
+												"types": [
+													{
+														"type": "reference",
+														"name": "AddEventListenerOptions"
+													},
+													{
+														"type": "intrinsic",
+														"name": "boolean"
+													}
+												]
+											}
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									},
+									"inheritedFrom": {
+										"type": "reference",
+										"name": "MDCComponent.unlisten"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-base/dist/mdc.base.d.ts",
+									"line": 75,
+									"character": 20
+								},
+								{
+									"fileName": "mdc-base/dist/mdc.base.d.ts",
+									"line": 76,
+									"character": 20
+								}
+							],
+							"inheritedFrom": {
+								"type": "reference",
+								"name": "MDCComponent.unlisten"
+							}
+						},
+						{
+							"id": 1435,
+							"name": "attachTo",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isStatic": true,
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1436,
+									"name": "attachTo",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"parameters": [
+										{
+											"id": 1437,
+											"name": "root",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"name": "Element"
+											}
+										}
+									],
+									"type": {
+										"type": "reference",
+										"name": "MDCDrawer",
+										"id": 1434
+									},
+									"overwrites": {
+										"type": "reference",
+										"name": "MDCComponent.attachTo"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/component.ts",
+									"line": 38,
+									"character": 17
+								}
+							],
+							"overwrites": {
+								"type": "reference",
+								"name": "MDCComponent.attachTo"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Constructors",
+							"kind": 512,
+							"children": [
+								1464
+							]
+						},
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								1446,
+								1445,
+								1463,
+								1448,
+								1447,
+								1449,
+								1444,
+								1442,
+								1462,
+								1443
+							]
+						},
+						{
+							"title": "Accessors",
+							"kind": 262144,
+							"children": [
+								1450,
+								1438
+							]
+						},
+						{
+							"title": "Methods",
+							"kind": 2048,
+							"children": [
+								1458,
+								1491,
+								1460,
+								1456,
+								1452,
+								1469,
+								1480,
+								1435
+							]
+						}
+					],
+					"sources": [
+						{
+							"fileName": "mdc-drawer/component.ts",
+							"line": 37,
+							"character": 22
+						}
+					],
+					"extendedTypes": [
+						{
+							"type": "reference",
+							"name": "MDCComponent",
+							"typeArguments": [
+								{
+									"type": "reference",
+									"name": "MDCDismissibleDrawerFoundation",
+									"id": 1306
+								}
+							]
+						}
+					]
+				},
+				{
+					"id": 1497,
+					"name": "cssClasses",
+					"kind": 32,
+					"kindString": "Variable",
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "mdc-drawer/component.ts",
+							"line": 35,
+							"character": 17
+						}
+					],
+					"type": {
+						"type": "reflection",
+						"declaration": {
+							"id": 1498,
+							"name": "__type",
+							"kind": 65536,
+							"kindString": "Type literal",
+							"flags": {},
+							"children": [
+								{
+									"id": 1499,
+									"name": "ANIMATE",
+									"kind": 32,
+									"kindString": "Variable",
+									"flags": {},
+									"sources": [
+										{
+											"fileName": "mdc-drawer/constants.ts",
+											"line": 25,
+											"character": 9
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "\"mdc-drawer--animate\""
+								},
+								{
+									"id": 1500,
+									"name": "CLOSING",
+									"kind": 32,
+									"kindString": "Variable",
+									"flags": {},
+									"sources": [
+										{
+											"fileName": "mdc-drawer/constants.ts",
+											"line": 26,
+											"character": 9
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "\"mdc-drawer--closing\""
+								},
+								{
+									"id": 1501,
+									"name": "DISMISSIBLE",
+									"kind": 32,
+									"kindString": "Variable",
+									"flags": {},
+									"sources": [
+										{
+											"fileName": "mdc-drawer/constants.ts",
+											"line": 27,
+											"character": 13
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "\"mdc-drawer--dismissible\""
+								},
+								{
+									"id": 1502,
+									"name": "MODAL",
+									"kind": 32,
+									"kindString": "Variable",
+									"flags": {},
+									"sources": [
+										{
+											"fileName": "mdc-drawer/constants.ts",
+											"line": 28,
+											"character": 7
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "\"mdc-drawer--modal\""
+								},
+								{
+									"id": 1503,
+									"name": "OPEN",
+									"kind": 32,
+									"kindString": "Variable",
+									"flags": {},
+									"sources": [
+										{
+											"fileName": "mdc-drawer/constants.ts",
+											"line": 29,
+											"character": 6
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "\"mdc-drawer--open\""
+								},
+								{
+									"id": 1504,
+									"name": "OPENING",
+									"kind": 32,
+									"kindString": "Variable",
+									"flags": {},
+									"sources": [
+										{
+											"fileName": "mdc-drawer/constants.ts",
+											"line": 30,
+											"character": 9
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "\"mdc-drawer--opening\""
+								},
+								{
+									"id": 1505,
+									"name": "ROOT",
+									"kind": 32,
+									"kindString": "Variable",
+									"flags": {},
+									"sources": [
+										{
+											"fileName": "mdc-drawer/constants.ts",
+											"line": 31,
+											"character": 6
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "\"mdc-drawer\""
+								}
+							],
+							"groups": [
+								{
+									"title": "Variables",
+									"kind": 32,
+									"children": [
+										1499,
+										1500,
+										1501,
+										1502,
+										1503,
+										1504,
+										1505
+									]
+								}
+							]
+						}
+					}
+				},
+				{
+					"id": 1506,
+					"name": "strings",
+					"kind": 32,
+					"kindString": "Variable",
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "mdc-drawer/component.ts",
+							"line": 35,
+							"character": 26
+						}
+					],
+					"type": {
+						"type": "reflection",
+						"declaration": {
+							"id": 1507,
+							"name": "__type",
+							"kind": 65536,
+							"kindString": "Type literal",
+							"flags": {},
+							"children": [
+								{
+									"id": 1508,
+									"name": "APP_CONTENT_SELECTOR",
+									"kind": 32,
+									"kindString": "Variable",
+									"flags": {},
+									"sources": [
+										{
+											"fileName": "mdc-drawer/constants.ts",
+											"line": 35,
+											"character": 22
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "\".mdc-drawer-app-content\""
+								},
+								{
+									"id": 1509,
+									"name": "CLOSE_EVENT",
+									"kind": 32,
+									"kindString": "Variable",
+									"flags": {},
+									"sources": [
+										{
+											"fileName": "mdc-drawer/constants.ts",
+											"line": 36,
+											"character": 13
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "\"MDCDrawer:closed\""
+								},
+								{
+									"id": 1510,
+									"name": "OPEN_EVENT",
+									"kind": 32,
+									"kindString": "Variable",
+									"flags": {},
+									"sources": [
+										{
+											"fileName": "mdc-drawer/constants.ts",
+											"line": 37,
+											"character": 12
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "\"MDCDrawer:opened\""
+								},
+								{
+									"id": 1511,
+									"name": "SCRIM_SELECTOR",
+									"kind": 32,
+									"kindString": "Variable",
+									"flags": {},
+									"sources": [
+										{
+											"fileName": "mdc-drawer/constants.ts",
+											"line": 38,
+											"character": 16
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "\".mdc-drawer-scrim\""
+								}
+							],
+							"groups": [
+								{
+									"title": "Variables",
+									"kind": 32,
+									"children": [
+										1508,
+										1509,
+										1510,
+										1511
+									]
+								}
+							]
+						}
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Classes",
+					"kind": 128,
+					"children": [
+						1434
+					]
+				},
+				{
+					"title": "Variables",
+					"kind": 32,
+					"children": [
+						1497,
+						1506
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "mdc-drawer/component.ts",
+					"line": 1,
+					"character": 0
+				}
+			]
+		},
+		{
+			"id": 1291,
+			"name": "\"mdc-drawer/constants\"",
+			"kind": 1,
+			"kindString": "External module",
+			"flags": {
+				"isExported": true
+			},
+			"originalName": "/Users/mattgoo/Documents/material-components-web/packages/mdc-drawer/constants.ts",
+			"children": [
+				{
+					"id": 1292,
+					"name": "cssClasses",
+					"kind": 2097152,
+					"kindString": "Object literal",
+					"flags": {
+						"isConst": true
+					},
+					"comment": {
+						"tags": [
+							{
+								"tag": "license",
+								"text": "\nCopyright 2016 Google Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.\n"
+							}
+						]
+					},
+					"children": [
+						{
+							"id": 1293,
+							"name": "ANIMATE",
+							"kind": 32,
+							"kindString": "Variable",
+							"flags": {},
+							"sources": [
+								{
+									"fileName": "mdc-drawer/constants.ts",
+									"line": 25,
+									"character": 9
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"defaultValue": "\"mdc-drawer--animate\""
+						},
+						{
+							"id": 1294,
+							"name": "CLOSING",
+							"kind": 32,
+							"kindString": "Variable",
+							"flags": {},
+							"sources": [
+								{
+									"fileName": "mdc-drawer/constants.ts",
+									"line": 26,
+									"character": 9
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"defaultValue": "\"mdc-drawer--closing\""
+						},
+						{
+							"id": 1295,
+							"name": "DISMISSIBLE",
+							"kind": 32,
+							"kindString": "Variable",
+							"flags": {},
+							"sources": [
+								{
+									"fileName": "mdc-drawer/constants.ts",
+									"line": 27,
+									"character": 13
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"defaultValue": "\"mdc-drawer--dismissible\""
+						},
+						{
+							"id": 1296,
+							"name": "MODAL",
+							"kind": 32,
+							"kindString": "Variable",
+							"flags": {},
+							"sources": [
+								{
+									"fileName": "mdc-drawer/constants.ts",
+									"line": 28,
+									"character": 7
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"defaultValue": "\"mdc-drawer--modal\""
+						},
+						{
+							"id": 1297,
+							"name": "OPEN",
+							"kind": 32,
+							"kindString": "Variable",
+							"flags": {},
+							"sources": [
+								{
+									"fileName": "mdc-drawer/constants.ts",
+									"line": 29,
+									"character": 6
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"defaultValue": "\"mdc-drawer--open\""
+						},
+						{
+							"id": 1298,
+							"name": "OPENING",
+							"kind": 32,
+							"kindString": "Variable",
+							"flags": {},
+							"sources": [
+								{
+									"fileName": "mdc-drawer/constants.ts",
+									"line": 30,
+									"character": 9
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"defaultValue": "\"mdc-drawer--opening\""
+						},
+						{
+							"id": 1299,
+							"name": "ROOT",
+							"kind": 32,
+							"kindString": "Variable",
+							"flags": {},
+							"sources": [
+								{
+									"fileName": "mdc-drawer/constants.ts",
+									"line": 31,
+									"character": 6
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"defaultValue": "\"mdc-drawer\""
+						}
+					],
+					"groups": [
+						{
+							"title": "Variables",
+							"kind": 32,
+							"children": [
+								1293,
+								1294,
+								1295,
+								1296,
+								1297,
+								1298,
+								1299
+							]
+						}
+					],
+					"sources": [
+						{
+							"fileName": "mdc-drawer/constants.ts",
+							"line": 24,
+							"character": 16
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "object"
+					}
+				},
+				{
+					"id": 1300,
+					"name": "strings",
+					"kind": 2097152,
+					"kindString": "Object literal",
+					"flags": {
+						"isConst": true
+					},
+					"children": [
+						{
+							"id": 1301,
+							"name": "APP_CONTENT_SELECTOR",
+							"kind": 32,
+							"kindString": "Variable",
+							"flags": {},
+							"sources": [
+								{
+									"fileName": "mdc-drawer/constants.ts",
+									"line": 35,
+									"character": 22
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"defaultValue": "\".mdc-drawer-app-content\""
+						},
+						{
+							"id": 1302,
+							"name": "CLOSE_EVENT",
+							"kind": 32,
+							"kindString": "Variable",
+							"flags": {},
+							"sources": [
+								{
+									"fileName": "mdc-drawer/constants.ts",
+									"line": 36,
+									"character": 13
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"defaultValue": "\"MDCDrawer:closed\""
+						},
+						{
+							"id": 1303,
+							"name": "OPEN_EVENT",
+							"kind": 32,
+							"kindString": "Variable",
+							"flags": {},
+							"sources": [
+								{
+									"fileName": "mdc-drawer/constants.ts",
+									"line": 37,
+									"character": 12
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"defaultValue": "\"MDCDrawer:opened\""
+						},
+						{
+							"id": 1304,
+							"name": "SCRIM_SELECTOR",
+							"kind": 32,
+							"kindString": "Variable",
+							"flags": {},
+							"sources": [
+								{
+									"fileName": "mdc-drawer/constants.ts",
+									"line": 38,
+									"character": 16
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"defaultValue": "\".mdc-drawer-scrim\""
+						}
+					],
+					"groups": [
+						{
+							"title": "Variables",
+							"kind": 32,
+							"children": [
+								1301,
+								1302,
+								1303,
+								1304
+							]
+						}
+					],
+					"sources": [
+						{
+							"fileName": "mdc-drawer/constants.ts",
+							"line": 34,
+							"character": 13
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "object"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Object literals",
+					"kind": 2097152,
+					"children": [
+						1292,
+						1300
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "mdc-drawer/constants.ts",
+					"line": 1,
+					"character": 0
+				}
+			]
+		},
+		{
+			"id": 1305,
+			"name": "\"mdc-drawer/dismissible/foundation\"",
+			"kind": 1,
+			"kindString": "External module",
+			"flags": {
+				"isExported": true
+			},
+			"originalName": "/Users/mattgoo/Documents/material-components-web/packages/mdc-drawer/dismissible/foundation.ts",
+			"children": [
+				{
+					"id": 1306,
+					"name": "MDCDismissibleDrawerFoundation",
+					"kind": 128,
+					"kindString": "Class",
+					"flags": {
+						"isExported": true
+					},
+					"children": [
+						{
+							"id": 1328,
+							"name": "constructor",
+							"kind": 512,
+							"kindString": "Constructor",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1329,
+									"name": "new MDCDismissibleDrawerFoundation",
+									"kind": 16384,
+									"kindString": "Constructor signature",
+									"flags": {},
+									"parameters": [
+										{
+											"id": 1330,
+											"name": "adapter",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {
+												"isOptional": true
+											},
+											"type": {
+												"type": "reference",
+												"name": "Partial",
+												"typeArguments": [
+													{
+														"type": "reference",
+														"name": "MDCDrawerAdapter",
+														"id": 1263
+													}
+												]
+											}
+										}
+									],
+									"type": {
+										"type": "reference",
+										"name": "MDCDismissibleDrawerFoundation",
+										"id": 1306
+									},
+									"overwrites": {
+										"type": "reference",
+										"name": "MDCFoundation.__constructor"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 56,
+									"character": 30
+								}
+							],
+							"overwrites": {
+								"type": "reference",
+								"name": "MDCFoundation.__constructor"
+							}
+						},
+						{
+							"id": 1365,
+							"name": "adapter_",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isProtected": true,
+								"isExported": true
+							},
+							"sources": [
+								{
+									"fileName": "mdc-base/dist/mdc.base.d.ts",
+									"line": 119,
+									"character": 26
+								}
+							],
+							"type": {
+								"type": "reference",
+								"name": "MDCDrawerAdapter",
+								"id": 1263
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"name": "MDCFoundation.adapter_"
+							}
+						},
+						{
+							"id": 1326,
+							"name": "animationFrame_",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isPrivate": true,
+								"isExported": true
+							},
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 55,
+									"character": 25
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "number"
+							},
+							"defaultValue": "0"
+						},
+						{
+							"id": 1327,
+							"name": "animationTimer_",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isPrivate": true,
+								"isExported": true
+							},
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 56,
+									"character": 25
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "number"
+							},
+							"defaultValue": "0"
+						},
+						{
+							"id": 1361,
+							"name": "numbers",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isStatic": true,
+								"isExported": true
+							},
+							"sources": [
+								{
+									"fileName": "mdc-base/dist/mdc.base.d.ts",
+									"line": 115,
+									"character": 31
+								}
+							],
+							"type": {
+								"type": "reflection",
+								"declaration": {
+									"id": 1362,
+									"name": "__type",
+									"kind": 65536,
+									"kindString": "Type literal",
+									"flags": {
+										"isExported": true
+									},
+									"indexSignature": [
+										{
+											"id": 1363,
+											"name": "__index",
+											"kind": 8192,
+											"kindString": "Index signature",
+											"flags": {},
+											"parameters": [
+												{
+													"id": 1364,
+													"name": "key",
+													"kind": 32768,
+													"kindString": "Parameter",
+													"flags": {},
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											}
+										}
+									],
+									"sources": [
+										{
+											"fileName": "mdc-base/dist/mdc.base.d.ts",
+											"line": 115,
+											"character": 32
+										}
+									]
+								}
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"name": "MDCFoundation.numbers"
+							}
+						},
+						{
+							"id": 1314,
+							"name": "cssClasses",
+							"kind": 262144,
+							"kindString": "Accessor",
+							"flags": {
+								"isStatic": true,
+								"isExported": true
+							},
+							"getSignature": [
+								{
+									"id": 1315,
+									"name": "__get",
+									"kind": 524288,
+									"kindString": "Get signature",
+									"flags": {},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 1316,
+											"name": "__type",
+											"kind": 65536,
+											"kindString": "Type literal",
+											"flags": {
+												"isExported": true
+											},
+											"children": [
+												{
+													"id": 1317,
+													"name": "ANIMATE",
+													"kind": 32,
+													"kindString": "Variable",
+													"flags": {
+														"isExported": true
+													},
+													"sources": [
+														{
+															"fileName": "mdc-drawer/constants.ts",
+															"line": 25,
+															"character": 9
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													},
+													"defaultValue": "\"mdc-drawer--animate\""
+												},
+												{
+													"id": 1318,
+													"name": "CLOSING",
+													"kind": 32,
+													"kindString": "Variable",
+													"flags": {
+														"isExported": true
+													},
+													"sources": [
+														{
+															"fileName": "mdc-drawer/constants.ts",
+															"line": 26,
+															"character": 9
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													},
+													"defaultValue": "\"mdc-drawer--closing\""
+												},
+												{
+													"id": 1319,
+													"name": "DISMISSIBLE",
+													"kind": 32,
+													"kindString": "Variable",
+													"flags": {
+														"isExported": true
+													},
+													"sources": [
+														{
+															"fileName": "mdc-drawer/constants.ts",
+															"line": 27,
+															"character": 13
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													},
+													"defaultValue": "\"mdc-drawer--dismissible\""
+												},
+												{
+													"id": 1320,
+													"name": "MODAL",
+													"kind": 32,
+													"kindString": "Variable",
+													"flags": {
+														"isExported": true
+													},
+													"sources": [
+														{
+															"fileName": "mdc-drawer/constants.ts",
+															"line": 28,
+															"character": 7
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													},
+													"defaultValue": "\"mdc-drawer--modal\""
+												},
+												{
+													"id": 1321,
+													"name": "OPEN",
+													"kind": 32,
+													"kindString": "Variable",
+													"flags": {
+														"isExported": true
+													},
+													"sources": [
+														{
+															"fileName": "mdc-drawer/constants.ts",
+															"line": 29,
+															"character": 6
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													},
+													"defaultValue": "\"mdc-drawer--open\""
+												},
+												{
+													"id": 1322,
+													"name": "OPENING",
+													"kind": 32,
+													"kindString": "Variable",
+													"flags": {
+														"isExported": true
+													},
+													"sources": [
+														{
+															"fileName": "mdc-drawer/constants.ts",
+															"line": 30,
+															"character": 9
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													},
+													"defaultValue": "\"mdc-drawer--opening\""
+												},
+												{
+													"id": 1323,
+													"name": "ROOT",
+													"kind": 32,
+													"kindString": "Variable",
+													"flags": {
+														"isExported": true
+													},
+													"sources": [
+														{
+															"fileName": "mdc-drawer/constants.ts",
+															"line": 31,
+															"character": 6
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													},
+													"defaultValue": "\"mdc-drawer\""
+												}
+											],
+											"groups": [
+												{
+													"title": "Variables",
+													"kind": 32,
+													"children": [
+														1317,
+														1318,
+														1319,
+														1320,
+														1321,
+														1322,
+														1323
+													]
+												}
+											]
+										}
+									},
+									"overwrites": {
+										"type": "reference",
+										"name": "MDCFoundation.cssClasses"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 33,
+									"character": 23
+								}
+							],
+							"overwrites": {
+								"type": "reference",
+								"name": "MDCFoundation.cssClasses"
+							}
+						},
+						{
+							"id": 1324,
+							"name": "defaultAdapter",
+							"kind": 262144,
+							"kindString": "Accessor",
+							"flags": {
+								"isStatic": true,
+								"isExported": true
+							},
+							"getSignature": [
+								{
+									"id": 1325,
+									"name": "__get",
+									"kind": 524288,
+									"kindString": "Get signature",
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"name": "MDCDrawerAdapter",
+										"id": 1263
+									},
+									"overwrites": {
+										"type": "reference",
+										"name": "MDCFoundation.defaultAdapter"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 37,
+									"character": 27
+								}
+							],
+							"overwrites": {
+								"type": "reference",
+								"name": "MDCFoundation.defaultAdapter"
+							}
+						},
+						{
+							"id": 1307,
+							"name": "strings",
+							"kind": 262144,
+							"kindString": "Accessor",
+							"flags": {
+								"isStatic": true,
+								"isExported": true
+							},
+							"getSignature": [
+								{
+									"id": 1308,
+									"name": "__get",
+									"kind": 524288,
+									"kindString": "Get signature",
+									"flags": {},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 1309,
+											"name": "__type",
+											"kind": 65536,
+											"kindString": "Type literal",
+											"flags": {
+												"isExported": true
+											},
+											"children": [
+												{
+													"id": 1310,
+													"name": "APP_CONTENT_SELECTOR",
+													"kind": 32,
+													"kindString": "Variable",
+													"flags": {
+														"isExported": true
+													},
+													"sources": [
+														{
+															"fileName": "mdc-drawer/constants.ts",
+															"line": 35,
+															"character": 22
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													},
+													"defaultValue": "\".mdc-drawer-app-content\""
+												},
+												{
+													"id": 1311,
+													"name": "CLOSE_EVENT",
+													"kind": 32,
+													"kindString": "Variable",
+													"flags": {
+														"isExported": true
+													},
+													"sources": [
+														{
+															"fileName": "mdc-drawer/constants.ts",
+															"line": 36,
+															"character": 13
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													},
+													"defaultValue": "\"MDCDrawer:closed\""
+												},
+												{
+													"id": 1312,
+													"name": "OPEN_EVENT",
+													"kind": 32,
+													"kindString": "Variable",
+													"flags": {
+														"isExported": true
+													},
+													"sources": [
+														{
+															"fileName": "mdc-drawer/constants.ts",
+															"line": 37,
+															"character": 12
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													},
+													"defaultValue": "\"MDCDrawer:opened\""
+												},
+												{
+													"id": 1313,
+													"name": "SCRIM_SELECTOR",
+													"kind": 32,
+													"kindString": "Variable",
+													"flags": {
+														"isExported": true
+													},
+													"sources": [
+														{
+															"fileName": "mdc-drawer/constants.ts",
+															"line": 38,
+															"character": 16
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													},
+													"defaultValue": "\".mdc-drawer-scrim\""
+												}
+											],
+											"groups": [
+												{
+													"title": "Variables",
+													"kind": 32,
+													"children": [
+														1310,
+														1311,
+														1312,
+														1313
+													]
+												}
+											]
+										}
+									},
+									"overwrites": {
+										"type": "reference",
+										"name": "MDCFoundation.strings"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 29,
+									"character": 20
+								}
+							],
+							"overwrites": {
+								"type": "reference",
+								"name": "MDCFoundation.strings"
+							}
+						},
+						{
+							"id": 1335,
+							"name": "close",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1336,
+									"name": "close",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 87,
+									"character": 7
+								}
+							]
+						},
+						{
+							"id": 1351,
+							"name": "closed_",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isProtected": true,
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1352,
+									"name": "closed_",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"shortText": "Extension point for when drawer finishes close animation."
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 163,
+									"character": 19
+								}
+							]
+						},
+						{
+							"id": 1331,
+							"name": "destroy",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1332,
+									"name": "destroy",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									},
+									"overwrites": {
+										"type": "reference",
+										"name": "MDCFoundation.destroy"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 62,
+									"character": 9
+								}
+							],
+							"overwrites": {
+								"type": "reference",
+								"name": "MDCFoundation.destroy"
+							}
+						},
+						{
+							"id": 1343,
+							"name": "handleKeydown",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1344,
+									"name": "handleKeydown",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"shortText": "Keydown handler to close drawer when key is escape."
+									},
+									"parameters": [
+										{
+											"id": 1345,
+											"name": "evt",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"name": "KeyboardEvent"
+											}
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 119,
+									"character": 15
+								}
+							]
+						},
+						{
+							"id": 1346,
+							"name": "handleTransitionEnd",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1347,
+									"name": "handleTransitionEnd",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"shortText": "Handles a transition end event on the root element."
+									},
+									"parameters": [
+										{
+											"id": 1348,
+											"name": "evt",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"name": "TransitionEvent"
+											}
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 130,
+									"character": 21
+								}
+							]
+						},
+						{
+							"id": 1366,
+							"name": "init",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1367,
+									"name": "init",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									},
+									"inheritedFrom": {
+										"type": "reference",
+										"name": "MDCFoundation.init"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-base/dist/mdc.base.d.ts",
+									"line": 121,
+									"character": 12
+								}
+							],
+							"inheritedFrom": {
+								"type": "reference",
+								"name": "MDCFoundation.init"
+							}
+						},
+						{
+							"id": 1341,
+							"name": "isClosing",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1342,
+									"name": "isClosing",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"returns": "true if drawer is animating closed.\n"
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 112,
+									"character": 11
+								}
+							]
+						},
+						{
+							"id": 1358,
+							"name": "isElement_",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isPrivate": true,
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1359,
+									"name": "isElement_",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"parameters": [
+										{
+											"id": 1360,
+											"name": "element",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 177,
+									"character": 20
+								}
+							]
+						},
+						{
+							"id": 1337,
+							"name": "isOpen",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1338,
+									"name": "isOpen",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"returns": "true if drawer is in open state.\n"
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 98,
+									"character": 8
+								}
+							]
+						},
+						{
+							"id": 1339,
+							"name": "isOpening",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1340,
+									"name": "isOpening",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"returns": "true if drawer is animating open.\n"
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 105,
+									"character": 11
+								}
+							]
+						},
+						{
+							"id": 1333,
+							"name": "open",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1334,
+									"name": "open",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 71,
+									"character": 6
+								}
+							]
+						},
+						{
+							"id": 1349,
+							"name": "opened_",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isProtected": true,
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1350,
+									"name": "opened_",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"shortText": "Extension point for when drawer finishes open animation."
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 158,
+									"character": 19
+								}
+							]
+						},
+						{
+							"id": 1353,
+							"name": "runNextAnimationFrame_",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isPrivate": true,
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1354,
+									"name": "runNextAnimationFrame_",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"shortText": "Runs the given logic on the next animation frame, using setTimeout to factor in Firefox reflow behavior."
+									},
+									"parameters": [
+										{
+											"id": 1355,
+											"name": "callback",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"type": {
+												"type": "reflection",
+												"declaration": {
+													"id": 1356,
+													"name": "__type",
+													"kind": 65536,
+													"kindString": "Type literal",
+													"flags": {
+														"isExported": true
+													},
+													"signatures": [
+														{
+															"id": 1357,
+															"name": "__call",
+															"kind": 4096,
+															"kindString": "Call signature",
+															"flags": {},
+															"type": {
+																"type": "intrinsic",
+																"name": "void"
+															}
+														}
+													],
+													"sources": [
+														{
+															"fileName": "mdc-drawer/dismissible/foundation.ts",
+															"line": 168,
+															"character": 42
+														}
+													]
+												}
+											}
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 168,
+									"character": 32
+								}
+							]
+						}
+					],
+					"groups": [
+						{
+							"title": "Constructors",
+							"kind": 512,
+							"children": [
+								1328
+							]
+						},
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								1365,
+								1326,
+								1327,
+								1361
+							]
+						},
+						{
+							"title": "Accessors",
+							"kind": 262144,
+							"children": [
+								1314,
+								1324,
+								1307
+							]
+						},
+						{
+							"title": "Methods",
+							"kind": 2048,
+							"children": [
+								1335,
+								1351,
+								1331,
+								1343,
+								1346,
+								1366,
+								1341,
+								1358,
+								1337,
+								1339,
+								1333,
+								1349,
+								1353
+							]
+						}
+					],
+					"sources": [
+						{
+							"fileName": "mdc-drawer/dismissible/foundation.ts",
+							"line": 28,
+							"character": 43
+						}
+					],
+					"extendedTypes": [
+						{
+							"type": "reference",
+							"name": "MDCFoundation",
+							"typeArguments": [
+								{
+									"type": "reference",
+									"name": "MDCDrawerAdapter",
+									"id": 1263
+								}
+							]
+						}
+					],
+					"extendedBy": [
+						{
+							"type": "reference",
+							"name": "MDCModalDrawerFoundation",
+							"id": 1379
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Classes",
+					"kind": 128,
+					"children": [
+						1306
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "mdc-drawer/dismissible/foundation.ts",
+					"line": 1,
+					"character": 0
+				}
+			]
+		},
+		{
+			"id": 1512,
+			"name": "\"mdc-drawer/index\"",
+			"kind": 1,
+			"kindString": "External module",
+			"flags": {
+				"isExported": true
+			},
+			"originalName": "/Users/mattgoo/Documents/material-components-web/packages/mdc-drawer/index.ts",
+			"sources": [
+				{
+					"fileName": "mdc-drawer/index.ts",
+					"line": 1,
+					"character": 0
+				}
+			]
+		},
+		{
+			"id": 1378,
+			"name": "\"mdc-drawer/modal/foundation\"",
+			"kind": 1,
+			"kindString": "External module",
+			"flags": {
+				"isExported": true
+			},
+			"originalName": "/Users/mattgoo/Documents/material-components-web/packages/mdc-drawer/modal/foundation.ts",
+			"children": [
+				{
+					"id": 1379,
+					"name": "MDCModalDrawerFoundation",
+					"kind": 128,
+					"kindString": "Class",
+					"flags": {
+						"isExported": true
+					},
+					"children": [
+						{
+							"id": 1405,
+							"name": "constructor",
+							"kind": 512,
+							"kindString": "Constructor",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1406,
+									"name": "new MDCModalDrawerFoundation",
+									"kind": 16384,
+									"kindString": "Constructor signature",
+									"flags": {},
+									"parameters": [
+										{
+											"id": 1407,
+											"name": "adapter",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {
+												"isOptional": true
+											},
+											"type": {
+												"type": "reference",
+												"name": "Partial",
+												"typeArguments": [
+													{
+														"type": "reference",
+														"name": "MDCDrawerAdapter",
+														"id": 1263
+													}
+												]
+											}
+										}
+									],
+									"type": {
+										"type": "reference",
+										"name": "MDCModalDrawerFoundation",
+										"id": 1379
+									},
+									"overwrites": {
+										"type": "reference",
+										"name": "MDCFoundation.__constructor"
+									},
+									"inheritedFrom": {
+										"type": "reference",
+										"name": "MDCDismissibleDrawerFoundation.__constructor",
+										"id": 1328
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 56,
+									"character": 30
+								}
+							],
+							"overwrites": {
+								"type": "reference",
+								"name": "MDCFoundation.__constructor"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"name": "MDCDismissibleDrawerFoundation.__constructor",
+								"id": 1328
+							}
+						},
+						{
+							"id": 1430,
+							"name": "adapter_",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isProtected": true,
+								"isExported": true
+							},
+							"sources": [
+								{
+									"fileName": "mdc-base/dist/mdc.base.d.ts",
+									"line": 119,
+									"character": 26
+								}
+							],
+							"type": {
+								"type": "reference",
+								"name": "MDCDrawerAdapter",
+								"id": 1263
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"name": "MDCFoundation.adapter_"
+							}
+						},
+						{
+							"id": 1426,
+							"name": "numbers",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isStatic": true,
+								"isExported": true
+							},
+							"sources": [
+								{
+									"fileName": "mdc-base/dist/mdc.base.d.ts",
+									"line": 115,
+									"character": 31
+								}
+							],
+							"type": {
+								"type": "reflection",
+								"declaration": {
+									"id": 1427,
+									"name": "__type",
+									"kind": 65536,
+									"kindString": "Type literal",
+									"flags": {
+										"isExported": true
+									},
+									"indexSignature": [
+										{
+											"id": 1428,
+											"name": "__index",
+											"kind": 8192,
+											"kindString": "Index signature",
+											"flags": {},
+											"parameters": [
+												{
+													"id": 1429,
+													"name": "key",
+													"kind": 32768,
+													"kindString": "Parameter",
+													"flags": {},
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												}
+											],
+											"type": {
+												"type": "intrinsic",
+												"name": "number"
+											}
+										}
+									],
+									"sources": [
+										{
+											"fileName": "mdc-base/dist/mdc.base.d.ts",
+											"line": 115,
+											"character": 32
+										}
+									]
+								}
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"name": "MDCFoundation.numbers"
+							}
+						},
+						{
+							"id": 1393,
+							"name": "cssClasses",
+							"kind": 262144,
+							"kindString": "Accessor",
+							"flags": {
+								"isStatic": true,
+								"isExported": true
+							},
+							"getSignature": [
+								{
+									"id": 1394,
+									"name": "__get",
+									"kind": 524288,
+									"kindString": "Get signature",
+									"flags": {},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 1395,
+											"name": "__type",
+											"kind": 65536,
+											"kindString": "Type literal",
+											"flags": {
+												"isExported": true
+											},
+											"children": [
+												{
+													"id": 1396,
+													"name": "ANIMATE",
+													"kind": 32,
+													"kindString": "Variable",
+													"flags": {
+														"isExported": true
+													},
+													"sources": [
+														{
+															"fileName": "mdc-drawer/constants.ts",
+															"line": 25,
+															"character": 9
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													},
+													"defaultValue": "\"mdc-drawer--animate\""
+												},
+												{
+													"id": 1397,
+													"name": "CLOSING",
+													"kind": 32,
+													"kindString": "Variable",
+													"flags": {
+														"isExported": true
+													},
+													"sources": [
+														{
+															"fileName": "mdc-drawer/constants.ts",
+															"line": 26,
+															"character": 9
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													},
+													"defaultValue": "\"mdc-drawer--closing\""
+												},
+												{
+													"id": 1398,
+													"name": "DISMISSIBLE",
+													"kind": 32,
+													"kindString": "Variable",
+													"flags": {
+														"isExported": true
+													},
+													"sources": [
+														{
+															"fileName": "mdc-drawer/constants.ts",
+															"line": 27,
+															"character": 13
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													},
+													"defaultValue": "\"mdc-drawer--dismissible\""
+												},
+												{
+													"id": 1399,
+													"name": "MODAL",
+													"kind": 32,
+													"kindString": "Variable",
+													"flags": {
+														"isExported": true
+													},
+													"sources": [
+														{
+															"fileName": "mdc-drawer/constants.ts",
+															"line": 28,
+															"character": 7
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													},
+													"defaultValue": "\"mdc-drawer--modal\""
+												},
+												{
+													"id": 1400,
+													"name": "OPEN",
+													"kind": 32,
+													"kindString": "Variable",
+													"flags": {
+														"isExported": true
+													},
+													"sources": [
+														{
+															"fileName": "mdc-drawer/constants.ts",
+															"line": 29,
+															"character": 6
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													},
+													"defaultValue": "\"mdc-drawer--open\""
+												},
+												{
+													"id": 1401,
+													"name": "OPENING",
+													"kind": 32,
+													"kindString": "Variable",
+													"flags": {
+														"isExported": true
+													},
+													"sources": [
+														{
+															"fileName": "mdc-drawer/constants.ts",
+															"line": 30,
+															"character": 9
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													},
+													"defaultValue": "\"mdc-drawer--opening\""
+												},
+												{
+													"id": 1402,
+													"name": "ROOT",
+													"kind": 32,
+													"kindString": "Variable",
+													"flags": {
+														"isExported": true
+													},
+													"sources": [
+														{
+															"fileName": "mdc-drawer/constants.ts",
+															"line": 31,
+															"character": 6
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													},
+													"defaultValue": "\"mdc-drawer\""
+												}
+											],
+											"groups": [
+												{
+													"title": "Variables",
+													"kind": 32,
+													"children": [
+														1396,
+														1397,
+														1398,
+														1399,
+														1400,
+														1401,
+														1402
+													]
+												}
+											]
+										}
+									},
+									"overwrites": {
+										"type": "reference",
+										"name": "MDCFoundation.cssClasses"
+									},
+									"inheritedFrom": {
+										"type": "reference",
+										"name": "MDCDismissibleDrawerFoundation.cssClasses",
+										"id": 1314
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 33,
+									"character": 23
+								}
+							],
+							"overwrites": {
+								"type": "reference",
+								"name": "MDCFoundation.cssClasses"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"name": "MDCDismissibleDrawerFoundation.cssClasses",
+								"id": 1314
+							}
+						},
+						{
+							"id": 1403,
+							"name": "defaultAdapter",
+							"kind": 262144,
+							"kindString": "Accessor",
+							"flags": {
+								"isStatic": true,
+								"isExported": true
+							},
+							"getSignature": [
+								{
+									"id": 1404,
+									"name": "__get",
+									"kind": 524288,
+									"kindString": "Get signature",
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"name": "MDCDrawerAdapter",
+										"id": 1263
+									},
+									"overwrites": {
+										"type": "reference",
+										"name": "MDCFoundation.defaultAdapter"
+									},
+									"inheritedFrom": {
+										"type": "reference",
+										"name": "MDCDismissibleDrawerFoundation.defaultAdapter",
+										"id": 1324
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 37,
+									"character": 27
+								}
+							],
+							"overwrites": {
+								"type": "reference",
+								"name": "MDCFoundation.defaultAdapter"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"name": "MDCDismissibleDrawerFoundation.defaultAdapter",
+								"id": 1324
+							}
+						},
+						{
+							"id": 1386,
+							"name": "strings",
+							"kind": 262144,
+							"kindString": "Accessor",
+							"flags": {
+								"isStatic": true,
+								"isExported": true
+							},
+							"getSignature": [
+								{
+									"id": 1387,
+									"name": "__get",
+									"kind": 524288,
+									"kindString": "Get signature",
+									"flags": {},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 1388,
+											"name": "__type",
+											"kind": 65536,
+											"kindString": "Type literal",
+											"flags": {
+												"isExported": true
+											},
+											"children": [
+												{
+													"id": 1389,
+													"name": "APP_CONTENT_SELECTOR",
+													"kind": 32,
+													"kindString": "Variable",
+													"flags": {
+														"isExported": true
+													},
+													"sources": [
+														{
+															"fileName": "mdc-drawer/constants.ts",
+															"line": 35,
+															"character": 22
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													},
+													"defaultValue": "\".mdc-drawer-app-content\""
+												},
+												{
+													"id": 1390,
+													"name": "CLOSE_EVENT",
+													"kind": 32,
+													"kindString": "Variable",
+													"flags": {
+														"isExported": true
+													},
+													"sources": [
+														{
+															"fileName": "mdc-drawer/constants.ts",
+															"line": 36,
+															"character": 13
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													},
+													"defaultValue": "\"MDCDrawer:closed\""
+												},
+												{
+													"id": 1391,
+													"name": "OPEN_EVENT",
+													"kind": 32,
+													"kindString": "Variable",
+													"flags": {
+														"isExported": true
+													},
+													"sources": [
+														{
+															"fileName": "mdc-drawer/constants.ts",
+															"line": 37,
+															"character": 12
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													},
+													"defaultValue": "\"MDCDrawer:opened\""
+												},
+												{
+													"id": 1392,
+													"name": "SCRIM_SELECTOR",
+													"kind": 32,
+													"kindString": "Variable",
+													"flags": {
+														"isExported": true
+													},
+													"sources": [
+														{
+															"fileName": "mdc-drawer/constants.ts",
+															"line": 38,
+															"character": 16
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													},
+													"defaultValue": "\".mdc-drawer-scrim\""
+												}
+											],
+											"groups": [
+												{
+													"title": "Variables",
+													"kind": 32,
+													"children": [
+														1389,
+														1390,
+														1391,
+														1392
+													]
+												}
+											]
+										}
+									},
+									"overwrites": {
+										"type": "reference",
+										"name": "MDCFoundation.strings"
+									},
+									"inheritedFrom": {
+										"type": "reference",
+										"name": "MDCDismissibleDrawerFoundation.strings",
+										"id": 1307
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 29,
+									"character": 20
+								}
+							],
+							"overwrites": {
+								"type": "reference",
+								"name": "MDCFoundation.strings"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"name": "MDCDismissibleDrawerFoundation.strings",
+								"id": 1307
+							}
+						},
+						{
+							"id": 1412,
+							"name": "close",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1413,
+									"name": "close",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									},
+									"inheritedFrom": {
+										"type": "reference",
+										"name": "MDCDismissibleDrawerFoundation.close",
+										"id": 1335
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 87,
+									"character": 7
+								}
+							],
+							"inheritedFrom": {
+								"type": "reference",
+								"name": "MDCDismissibleDrawerFoundation.close",
+								"id": 1335
+							}
+						},
+						{
+							"id": 1384,
+							"name": "closed_",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isProtected": true,
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1385,
+									"name": "closed_",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"shortText": "Called when drawer finishes close animation."
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									},
+									"overwrites": {
+										"type": "reference",
+										"name": "MDCDismissibleDrawerFoundation.closed_",
+										"id": 1351
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/modal/foundation.ts",
+									"line": 45,
+									"character": 19
+								}
+							],
+							"overwrites": {
+								"type": "reference",
+								"name": "MDCDismissibleDrawerFoundation.closed_",
+								"id": 1351
+							}
+						},
+						{
+							"id": 1408,
+							"name": "destroy",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1409,
+									"name": "destroy",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									},
+									"overwrites": {
+										"type": "reference",
+										"name": "MDCFoundation.destroy"
+									},
+									"inheritedFrom": {
+										"type": "reference",
+										"name": "MDCDismissibleDrawerFoundation.destroy",
+										"id": 1331
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 62,
+									"character": 9
+								}
+							],
+							"overwrites": {
+								"type": "reference",
+								"name": "MDCFoundation.destroy"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"name": "MDCDismissibleDrawerFoundation.destroy",
+								"id": 1331
+							}
+						},
+						{
+							"id": 1420,
+							"name": "handleKeydown",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1421,
+									"name": "handleKeydown",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"shortText": "Keydown handler to close drawer when key is escape."
+									},
+									"parameters": [
+										{
+											"id": 1422,
+											"name": "evt",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"name": "KeyboardEvent"
+											}
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									},
+									"inheritedFrom": {
+										"type": "reference",
+										"name": "MDCDismissibleDrawerFoundation.handleKeydown",
+										"id": 1343
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 119,
+									"character": 15
+								}
+							],
+							"inheritedFrom": {
+								"type": "reference",
+								"name": "MDCDismissibleDrawerFoundation.handleKeydown",
+								"id": 1343
+							}
+						},
+						{
+							"id": 1380,
+							"name": "handleScrimClick",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1381,
+									"name": "handleScrimClick",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"shortText": "Handles click event on scrim."
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/modal/foundation.ts",
+									"line": 31,
+									"character": 18
+								}
+							]
+						},
+						{
+							"id": 1423,
+							"name": "handleTransitionEnd",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1424,
+									"name": "handleTransitionEnd",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"shortText": "Handles a transition end event on the root element."
+									},
+									"parameters": [
+										{
+											"id": 1425,
+											"name": "evt",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"name": "TransitionEvent"
+											}
+										}
+									],
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									},
+									"inheritedFrom": {
+										"type": "reference",
+										"name": "MDCDismissibleDrawerFoundation.handleTransitionEnd",
+										"id": 1346
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 130,
+									"character": 21
+								}
+							],
+							"inheritedFrom": {
+								"type": "reference",
+								"name": "MDCDismissibleDrawerFoundation.handleTransitionEnd",
+								"id": 1346
+							}
+						},
+						{
+							"id": 1431,
+							"name": "init",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1432,
+									"name": "init",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									},
+									"inheritedFrom": {
+										"type": "reference",
+										"name": "MDCFoundation.init"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-base/dist/mdc.base.d.ts",
+									"line": 121,
+									"character": 12
+								}
+							],
+							"inheritedFrom": {
+								"type": "reference",
+								"name": "MDCFoundation.init"
+							}
+						},
+						{
+							"id": 1418,
+							"name": "isClosing",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1419,
+									"name": "isClosing",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"returns": "true if drawer is animating closed.\n"
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "boolean"
+									},
+									"inheritedFrom": {
+										"type": "reference",
+										"name": "MDCDismissibleDrawerFoundation.isClosing",
+										"id": 1341
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 112,
+									"character": 11
+								}
+							],
+							"inheritedFrom": {
+								"type": "reference",
+								"name": "MDCDismissibleDrawerFoundation.isClosing",
+								"id": 1341
+							}
+						},
+						{
+							"id": 1414,
+							"name": "isOpen",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1415,
+									"name": "isOpen",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"returns": "true if drawer is in open state.\n"
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "boolean"
+									},
+									"inheritedFrom": {
+										"type": "reference",
+										"name": "MDCDismissibleDrawerFoundation.isOpen",
+										"id": 1337
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 98,
+									"character": 8
+								}
+							],
+							"inheritedFrom": {
+								"type": "reference",
+								"name": "MDCDismissibleDrawerFoundation.isOpen",
+								"id": 1337
+							}
+						},
+						{
+							"id": 1416,
+							"name": "isOpening",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1417,
+									"name": "isOpening",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"returns": "true if drawer is animating open.\n"
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "boolean"
+									},
+									"inheritedFrom": {
+										"type": "reference",
+										"name": "MDCDismissibleDrawerFoundation.isOpening",
+										"id": 1339
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 105,
+									"character": 11
+								}
+							],
+							"inheritedFrom": {
+								"type": "reference",
+								"name": "MDCDismissibleDrawerFoundation.isOpening",
+								"id": 1339
+							}
+						},
+						{
+							"id": 1410,
+							"name": "open",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1411,
+									"name": "open",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									},
+									"inheritedFrom": {
+										"type": "reference",
+										"name": "MDCDismissibleDrawerFoundation.open",
+										"id": 1333
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/dismissible/foundation.ts",
+									"line": 71,
+									"character": 6
+								}
+							],
+							"inheritedFrom": {
+								"type": "reference",
+								"name": "MDCDismissibleDrawerFoundation.open",
+								"id": 1333
+							}
+						},
+						{
+							"id": 1382,
+							"name": "opened_",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {
+								"isProtected": true,
+								"isExported": true
+							},
+							"signatures": [
+								{
+									"id": 1383,
+									"name": "opened_",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"comment": {
+										"shortText": "Called when drawer finishes open animation."
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "void"
+									},
+									"overwrites": {
+										"type": "reference",
+										"name": "MDCDismissibleDrawerFoundation.opened_",
+										"id": 1349
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/modal/foundation.ts",
+									"line": 38,
+									"character": 19
+								}
+							],
+							"overwrites": {
+								"type": "reference",
+								"name": "MDCDismissibleDrawerFoundation.opened_",
+								"id": 1349
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Constructors",
+							"kind": 512,
+							"children": [
+								1405
+							]
+						},
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								1430,
+								1426
+							]
+						},
+						{
+							"title": "Accessors",
+							"kind": 262144,
+							"children": [
+								1393,
+								1403,
+								1386
+							]
+						},
+						{
+							"title": "Methods",
+							"kind": 2048,
+							"children": [
+								1412,
+								1384,
+								1408,
+								1420,
+								1380,
+								1423,
+								1431,
+								1418,
+								1414,
+								1416,
+								1410,
+								1382
+							]
+						}
+					],
+					"sources": [
+						{
+							"fileName": "mdc-drawer/modal/foundation.ts",
+							"line": 27,
+							"character": 37
+						}
+					],
+					"extendedTypes": [
+						{
+							"type": "reference",
+							"name": "MDCDismissibleDrawerFoundation",
+							"id": 1306
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Classes",
+					"kind": 128,
+					"children": [
+						1379
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "mdc-drawer/modal/foundation.ts",
+					"line": 1,
+					"character": 0
+				}
+			]
+		},
+		{
+			"id": 1368,
+			"name": "\"mdc-drawer/util\"",
+			"kind": 1,
+			"kindString": "External module",
+			"flags": {
+				"isExported": true
+			},
+			"originalName": "/Users/mattgoo/Documents/material-components-web/packages/mdc-drawer/util.ts",
+			"children": [
+				{
+					"id": 1369,
+					"name": "MDCDrawerFocusTrapFactory",
+					"kind": 4194304,
+					"kindString": "Type alias",
+					"flags": {
+						"isExported": true
+					},
+					"sources": [
+						{
+							"fileName": "mdc-drawer/util.ts",
+							"line": 26,
+							"character": 37
+						}
+					],
+					"type": {
+						"type": "reflection",
+						"declaration": {
+							"id": 1370,
+							"name": "__type",
+							"kind": 65536,
+							"kindString": "Type literal",
+							"flags": {},
+							"signatures": [
+								{
+									"id": 1371,
+									"name": "__call",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"parameters": [
+										{
+											"id": 1372,
+											"name": "element",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"type": {
+												"type": "union",
+												"types": [
+													{
+														"type": "reference",
+														"name": "HTMLElement"
+													},
+													{
+														"type": "intrinsic",
+														"name": "string"
+													}
+												]
+											}
+										},
+										{
+											"id": 1373,
+											"name": "userOptions",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {
+												"isOptional": true
+											},
+											"type": {
+												"type": "reference",
+												"name": "Options"
+											}
+										}
+									],
+									"type": {
+										"type": "reference",
+										"name": "FocusTrap"
+									}
+								}
+							],
+							"sources": [
+								{
+									"fileName": "mdc-drawer/util.ts",
+									"line": 26,
+									"character": 39
+								}
+							]
+						}
+					}
+				},
+				{
+					"id": 1374,
+					"name": "createFocusTrapInstance",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isExported": true
+					},
+					"signatures": [
+						{
+							"id": 1375,
+							"name": "createFocusTrapInstance",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"parameters": [
+								{
+									"id": 1376,
+									"name": "surfaceEl",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"name": "HTMLElement"
+									}
+								},
+								{
+									"id": 1377,
+									"name": "focusTrapFactory",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"name": "MDCDrawerFocusTrapFactory",
+										"id": 1369
+									},
+									"defaultValue": " createFocusTrap as unknown as MDCDrawerFocusTrapFactory"
+								}
+							],
+							"type": {
+								"type": "reference",
+								"name": "FocusTrap"
+							}
+						}
+					],
+					"sources": [
+						{
+							"fileName": "mdc-drawer/util.ts",
+							"line": 31,
+							"character": 39
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Type aliases",
+					"kind": 4194304,
+					"children": [
+						1369
+					]
+				},
+				{
+					"title": "Functions",
+					"kind": 64,
+					"children": [
+						1374
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "mdc-drawer/util.ts",
+					"line": 1,
+					"character": 0
+				}
+			]
+		}
+	],
+	"groups": [
+		{
+			"title": "External modules",
+			"kind": 1,
+			"children": [
+				1,
+				57,
+				2,
+				18,
+				58,
+				63,
+				135,
+				185,
+				95,
+				193,
+				123,
+				194,
+				318,
+				222,
+				251,
+				403,
+				753,
+				818,
+				765,
+				771,
+				902,
+				404,
+				675,
+				451,
+				469,
+				752,
+				537,
+				903,
+				904,
+				1141,
+				953,
+				980,
+				1245,
+				1095,
+				1078,
+				1246,
+				1261,
+				1252,
+				1262,
+				1433,
+				1291,
+				1305,
+				1512,
+				1378,
+				1368,
+				1513,
+				1575,
+				1533,
+				1538,
+				1637,
+				1638,
+				1688,
+				1654,
+				1659,
+				1746,
+				1747,
+				1801,
+				1766,
+				1770,
+				1850,
+				1854,
+				1912,
+				1872,
+				1879,
+				1975,
+				1851,
+				1976,
+				2041,
+				2001,
+				2005,
+				2102,
+				2103,
+				2181,
+				2123,
+				2131,
+				2246,
+				2247,
+				2504,
+				2297,
+				2368,
+				2596,
+				2321,
+				2917,
+				3126,
+				2964,
+				2995,
+				3220,
+				2905,
+				3119,
+				2689,
+				2799,
+				2734,
+				2751,
+				2904,
+				2597,
+				3221,
+				3274,
+				3234,
+				3243,
+				3334,
+				3335,
+				3380,
+				3346,
+				3352,
+				3448,
+				3459,
+				3682,
+				3512,
+				3546,
+				3754,
+				3449,
+				3532,
+				3755,
+				4235,
+				3810,
+				4029,
+				3837,
+				4123,
+				3858,
+				3865,
+				4453,
+				3907,
+				4179,
+				3934,
+				3938,
+				4454,
+				4455,
+				3979,
+				4456,
+				4727,
+				4543,
+				4567,
+				4811,
+				4812,
+				5004,
+				4832,
+				4856,
+				5108,
+				4943,
+				4997,
+				5109,
+				5168,
+				5123,
+				5130,
+				5233,
+				5448,
+				5663,
+				5495,
+				5514,
+				5749,
+				5617,
+				5750,
+				5869,
+				5764,
+				5804,
+				5771,
+				5930,
+				5836,
+				5931,
+				6158,
+				5972,
+				6076,
+				6226,
+				6006,
+				6028,
+				6052,
+				5987,
+				5980,
+				6152,
+				5234,
+				5371,
+				5266,
+				5327,
+				5447,
+				5276,
+				6422,
+				6227,
+				6561,
+				6232,
+				6237,
+				6617,
+				6898,
+				6618,
+				6644,
+				6265,
+				6786,
+				6286,
+				6295,
+				7039,
+				6339,
+				6842,
+				6366,
+				6372,
+				7040,
+				7041,
+				6413,
+				7042,
+				7256,
+				7065,
+				7174,
+				7081,
+				7314,
+				7214,
+				7120
+			]
+		}
+	]
+}

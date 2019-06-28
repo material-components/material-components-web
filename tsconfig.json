@@ -21,7 +21,8 @@
     "strict": true,
     "stripInternal": true,
     "target": "es5",
-    "types": []
+    "types": [],
+    "resolveJsonModule": true
   },
   "exclude": [
     "scripts/**/*.ts"

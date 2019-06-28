@@ -28,4 +28,4 @@ packages/**/*.map
 packages/**/CHANGELOG.md
 
 #documentation
-scripts/documentation/*.js
+jsDoc.json

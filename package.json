@@ -6,7 +6,7 @@
     "build": "npm run clean && mkdirp build && webpack --progress --colors",
     "build:esmodules": "tsc --project ./tsconfig.json --module esnext --importHelpers",
     "build:min": "mkdirp build && cross-env MDC_ENV=production webpack -p --progress --colors",
-    "build:docs": "tsc ./scripts/documentation/tsdoc.ts && node ./scripts/documentation/tsdoc.js",
+    "build:docs": "tsc ./scripts/documentation/tsdoc.ts --resolveJsonModule && node ./scripts/documentation/tsdoc.js",
     "build:docs:typescript": "typedoc ./packages",
     "clean": "node ./scripts/build/clean",
     "clean:site": "node ./scripts/build/clean --site-generator-tmp",

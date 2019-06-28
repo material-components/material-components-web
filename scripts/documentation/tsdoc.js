@@ -1,6 +1,5 @@
 "use strict";
 exports.__esModule = true;
-// import {ParserContext, TSDocParser} from '@microsoft/tsdoc';
 var fs = require("fs");
 // // import {sync as glob} from 'glob';
 // function buildTsDocs() {
@@ -20,31 +19,88 @@ var fs = require("fs");
 // }
 // buildTsDocs();
 var jsDocJson = require("../../jsDoc.json");
-jsDocJson.children.forEach(function (file) {
-    var filepath = file.name.replace(/\"/g, '');
-    var componentPath = filepath.split('/')[0];
-    var layers = file.children;
-    var markdownString = '';
-    layers.forEach(function (layer) {
-        // only do foundation, adapter, component methods
-        if (!filepath.endsWith('/adapter')) {
+var TypeScriptDocumentationGenerator = /** @class */ (function () {
+    function TypeScriptDocumentationGenerator() {
+        this.markdownBuffer = {};
+    }
+    /**
+     * Sets Markdown Documentation into markdownBuffer under the `component` name.
+     * @param component string Component that the `markdownString` describes
+     * @param markdownString string Markdown documentation source to be placed into README.md file
+     */
+    TypeScriptDocumentationGenerator.prototype.setMarkdownBuffer = function (component, markdownString) {
+        var markdownComponentBuffer = this.markdownBuffer[component];
+        if (markdownComponentBuffer) {
+            markdownComponentBuffer.push(markdownString);
+        }
+        else {
+            this.markdownBuffer[component] = [markdownString];
+        }
+    };
+    TypeScriptDocumentationGenerator.prototype.generateDocs = function () {
+        var _this = this;
+        jsDocJson.children.forEach(function (jsDocSection) {
+            var filepath = jsDocSection.name.replace(/\"/g, '');
+            var componentPath = filepath.split('/')[0];
+            var esmodules = jsDocSection.children;
+            if (!esmodules) {
+                return;
+            }
+            console.log("-- generating docs for " + filepath);
+            esmodules.forEach(function (esmodule) { return _this.generateDocsForModule(esmodule, componentPath); });
+        });
+        this.generateMarkdownFiles();
+    };
+    TypeScriptDocumentationGenerator.prototype.generateDocsForModule = function (esmodule, componentPath) {
+        if (!esmodule.name.startsWith('MDC')) {
+            // ignore util modules
             return;
         }
-        // create title
-        var title = "### " + layer.name;
-        markdownString += title;
-        // add table layout header
+        if (esmodule.kindString === 'Variable' || esmodule.kindString === 'Type alias') {
+            // 'Variable' === ignore cssClasses and Strings & util functions
+            // 'Type alias' === TS Type declarations
+            return;
+        }
+        var title = "### " + esmodule.name + "\n";
+        var markdownString = title + "\n";
         markdownString += 'Method Signature | Description \n --- | --- \n';
         // create function table
-        var functions = layer.children;
-        functions.forEach(function (func) {
-            markdownString += func.name + " | " + func.signatures[0].comment.shortText + " \n";
+        var functionAndProperties = esmodule.children;
+        functionAndProperties.forEach(function (func) {
+            var _a = func.flags, isPrivate = _a.isPrivate, isProtected = _a.isProtected, isExported = _a.isExported;
+            if (isPrivate
+                || isProtected
+                || !isExported
+                || !func.signatures
+                || !func.signatures[0]
+                || !func.signatures[0].comment
+                || !func.signatures[0].comment.shortText) {
+                // Ignore private/protected/non-exported methods and properties.
+                // If no comment provided, do not record.
+                return;
+            }
+            var comment = func.signatures[0].comment.shortText.replace('\n', '');
+            markdownString += func.name + " | " + comment + " \n";
         });
-        console.log(componentPath, '\n'); //tslint:disable-line
-        fs.writeFile("./packages/" + componentPath + "/markdown.md", markdownString, function (err) {
-            console.log('error ', err); //tslint:disable-line
-        });
-    });
-    // console.log(filepath, '\n'); //tslint:disable-line
-    // console.log(file.children); //tslint:disable-line
-});
+        this.setMarkdownBuffer(componentPath, markdownString);
+    };
+    TypeScriptDocumentationGenerator.prototype.generateMarkdownFiles = function () {
+        var _loop_1 = function (componentName) {
+            var markdown = this_1.markdownBuffer[componentName].join('\n');
+            var markdownFilePath = "./packages/" + componentName + "/markdown.md";
+            fs.writeFile(markdownFilePath, markdown, function (error) {
+                console.log("~~ generated " + markdownFilePath);
+                if (error) {
+                    console.error('error ', error); //tslint:disable-line
+                }
+            });
+        };
+        var this_1 = this;
+        for (var componentName in this.markdownBuffer) {
+            _loop_1(componentName);
+        }
+    };
+    return TypeScriptDocumentationGenerator;
+}());
+var docGenerator = new TypeScriptDocumentationGenerator();
+docGenerator.generateDocs();
