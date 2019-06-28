@@ -1,0 +1,5 @@
+{
+  "json": "jsDoc.json",
+  "ignoreCompilerErrors": true,
+  "excludeExternals": true
+}
