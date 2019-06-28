@@ -1,7 +1,7 @@
 {
   "name": "@material/typography",
   "description": "Typography classes, mixins, and variables for Material Components for the web",
-  "version": "2.3.0",
+  "version": "3.0.0",
   "license": "MIT",
   "keywords": [
     "material components",
@@ -14,6 +14,6 @@
     "url": "https://github.com/material-components/material-components-web.git"
   },
   "dependencies": {
-    "@material/feature-targeting": "^0.44.1"
+    "@material/feature-targeting": "^3.0.0"
   }
 }

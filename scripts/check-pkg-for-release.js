@@ -51,7 +51,6 @@ if (!new RegExp('packages/[^/]+/package.json$').test(CLI_PACKAGE_JSON_RELATIVE_P
 }
 
 const CLI_PACKAGE_JSON = require(path.resolve(CLI_PACKAGE_JSON_RELATIVE_PATH));
-const REPO_PACKAGE_JSON = require(path.resolve('package.json'));
 
 const WEBPACK_CONFIG_RELATIVE_PATH = 'webpack.config.js';
 const WEBPACK_CONFIG = require(path.resolve(WEBPACK_CONFIG_RELATIVE_PATH));
@@ -88,7 +87,6 @@ main();
 function main() {
   checkPublicConfigForNewComponent();
   if (CLI_PACKAGE_JSON.name !== MASTER_PACKAGE_JSON.name) {
-    checkNameIsPresentInAllowedScope();
     if (CLI_PACKAGE_JSON.private) {
       console.log('Skipping private component', CLI_PACKAGE_JSON.name);
     } else {
@@ -109,13 +107,6 @@ function checkPublicConfigForNewComponent() {
       'Consult our docs/authoring-components.md to ensure your component\'s package.json ' +
       'is well-formed.');
   }
-}
-
-function checkNameIsPresentInAllowedScope() {
-  const name = getPkgName();
-  assert.notEqual(REPO_PACKAGE_JSON.config['validate-commit-msg']['scope']['allowed'].indexOf(name), -1,
-    'FAILURE: Component ' + CLI_PACKAGE_JSON.name + ' is not added to allowed scope. Please check package.json ' +
-    'and add ' + name + ' to config["validate-commit-msg"]["scope"]["allowed"] before commit.');
 }
 
 function checkDependencyAddedInWebpackConfig() {

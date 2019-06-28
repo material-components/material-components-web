@@ -1,7 +1,7 @@
 {
   "name": "@material/auto-init",
   "description": "Declarative, easy-to-use auto-initialization for Material Components for the web",
-  "version": "2.3.0",
+  "version": "3.0.0",
   "main": "dist/mdc.autoInit.js",
   "module": "index.js",
   "sideEffects": false,
@@ -12,7 +12,7 @@
     "url": "https://github.com/material-components/material-components-web.git"
   },
   "dependencies": {
-    "@material/base": "^1.0.0",
+    "@material/base": "^3.0.0",
     "tslib": "^1.9.3"
   }
 }
