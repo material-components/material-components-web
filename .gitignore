@@ -26,3 +26,6 @@ packages/**/*.map
 
 # Individual CHANGELOG files
 packages/**/CHANGELOG.md
+
+#documentation
+scripts/documentation/*.js
