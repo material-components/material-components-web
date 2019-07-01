@@ -14,7 +14,7 @@ class TypeScriptDocumentationGenerator {
    * @param markdownString Markdown documentation source to be placed into README.md file
    */
   setMarkdownBuffer(component: string, markdownString: string) {
-    let markdownComponentBuffer = this.markdownBuffer[component];
+    const markdownComponentBuffer = this.markdownBuffer[component];
     if (markdownComponentBuffer) {
       markdownComponentBuffer.push(markdownString);
     } else {
@@ -32,21 +32,21 @@ class TypeScriptDocumentationGenerator {
     jsDocJson.children.forEach((jsDocSection) => {
       const filepath = jsDocSection.name.replace(/\"/g, '');
       const componentPath = filepath.split('/')[0];
-      const esmodules = jsDocSection.children as any[];
+      const esmodules = jsDocSection.children as any[]; // tslint:disable-line
       if (!esmodules) {
         return;
       }
-
-      console.log(`-- generating docs for ${filepath}`);
-      
+      if (filepath !== 'mdc-drawer/component') {return; }
+      console.log(`-- generating docs for ${filepath}`); // tslint:disable-line
       esmodules.forEach((esmodule) => this.generateDocsForModule(esmodule, componentPath));
     });
 
-    this.generateMethodDescriptionTableMarkdown();
+    this.generateMarkdownFile();
   }
 
   /**
-   * 
+   * Creates a documentation for a specified `esmodule`, and creates a markdown string
+   * to be inserted into the main README.md.
    * @param esmodule Generated Typedoc object
    * @param componentPath string FilePath to the component esmodule (eg. mdc-drawer/adapter)
    */
@@ -61,41 +61,85 @@ class TypeScriptDocumentationGenerator {
       return;
     }
 
-    const title = `### ${esmodule.name}\n`;
-    let markdownString = `${title}\n`;
+    const markdownString = this.getClassDocumentationFromModule(esmodule)
+      + this.getFunctionAndPropertiesFromModule(esmodule);
+
+    this.setMarkdownBuffer(componentPath, markdownString);
+  }
+
+  /**
+   * Generates higher level documentation markdown for specified `esmodule`
+   * @param esmodule Generate Typedoc object
+   * @returns generated markdown string containing higher level documentation of the `esmodule`
+   */
+  getClassDocumentationFromModule(esmodule): string {
+    const commentsByType: {fires?: {}} = {};
+    if (!esmodule.comment || !esmodule.comment.tags || esmodule.comment.tags.length <= 0) {
+      return '';
+    }
+    esmodule.comment.tags.forEach((tag) => {
+      const commentType = tag.tag;
+      if (commentsByType[commentType]) {
+        commentsByType[commentType].push(tag);
+      } else {
+        commentsByType[commentType] = [tag];
+      }
+    });
+    let markdownString = '';
+    if (commentsByType.fires) {
+      // @fires describes events that are emitted
+      // https://jsdoc.app/tags-fires.html
+      markdownString = this.generateEventComments(commentsByType.fires);
+    }
+    return markdownString;
+  }
+
+  /**
+   * Generates method description table markdown for specified `esmodule
+   * @param esmodule Generate Typedoc object
+   * @returns generated markdown string containing documentation of the `esmodule`
+   */
+  getFunctionAndPropertiesFromModule(esmodule): string {
+    let markdownString = `### ${esmodule.name}\n\n`;
     markdownString += 'Method Signature | Description \n --- | --- \n';
-    // create function table
     const functionAndProperties = esmodule.children;
     functionAndProperties.forEach((func) => {
-      const {isPrivate, isProtected, isExported} = func.flags;
-      if (isPrivate
-        || isProtected
-        || !isExported
-        || !func.signatures
+      if (!func.signatures
         || !func.signatures[0]
         || !func.signatures[0].comment
         || !func.signatures[0].comment.shortText) {
-        // Ignore private/protected/non-exported methods and properties.
         // If no comment provided, do not record.
         return;
       }
       const comment = func.signatures[0].comment.shortText.replace('\n', ' ');
       markdownString += `${func.name} | ${comment} \n`;
     });
+    return markdownString;
+  }
 
-    this.setMarkdownBuffer(componentPath, markdownString);
+  /**
+   * Generates markdown of events emited by esmodule
+   * @param eventCommentTags {tag: 'fires', text: string} text is description of event emitted.
+   */
+  generateEventComments(eventCommentTags) {
+    let markdownString = '### Events\n\n';
+    // @todo convert to reduce method
+    eventCommentTags.forEach((eventComment) => {
+      markdownString += `- ${eventComment.text.replace('\n', ' ')}\n`;
+    });
+    return `${markdownString}\n`;
   }
 
   /**
    * Generates Markdown file for each entry in `this.markdownBuffer`,
    * which is populated from `this.generateDocsForModule()`.
    */
-  generateMethodDescriptionTableMarkdown() {
-    for (let componentName in this.markdownBuffer) {
+  generateMarkdownFile(): void {
+    for (const componentName in this.markdownBuffer) {
       const markdown = this.markdownBuffer[componentName].join('\n');
       const markdownFilePath = `./packages/${componentName}/methodDescriptionTable.md`;
       fs.writeFile(markdownFilePath, markdown, (error) => {
-        console.log(`~~ generated ${markdownFilePath}`);
+        console.log(`~~ generated ${markdownFilePath}`); // tslint:disable-line
         if (error) {
           console.error('error ', error); //tslint:disable-line
         }
