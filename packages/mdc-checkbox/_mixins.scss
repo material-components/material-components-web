@@ -55,9 +55,10 @@
     @include mdc-feature-targets($feat-structure) {
       @include mdc-checkbox-base_;
     }
+
+    @include mdc-checkbox-container-colors($query: $query);
   }
 
-  @include mdc-checkbox-container-colors($query: $query);
   @include mdc-checkbox-ink-color($mdc-checkbox-mark-color, $query);
   @include mdc-checkbox-focus-indicator-color($mdc-checkbox-baseline-theme-color, $query);
 
@@ -184,7 +185,7 @@
 
   .mdc-checkbox {
     @include mdc-ripple-surface($query);
-    @include mdc-states($mdc-checkbox-baseline-theme-color, $query: $query);
+    @include mdc-states(on-surface, $query: $query);
     @include mdc-ripple-radius-unbounded($query: $query);
     @include mdc-checkbox-touch-dimension($mdc-checkbox-touch-area, $query: $query);
   }
@@ -232,6 +233,15 @@
 ) {
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-color: mdc-feature-create-target($query, color);
+
+  &.mdc-checkbox--selected {
+    @include mdc-states($marked-fill-color, $query: $query);
+  }
+
+  &.mdc-ripple-upgraded--background-focused .mdc-checkbox__background {
+    @include mdc-states-base-color($marked-fill-color, $query: $query);
+    @include mdc-states-focus-opacity($mdc-checkbox-focus-indicator-opacity, $query: $query);
+  }
 
   @include mdc-checkbox-unmarked-background-selector-enabled_ {
     @include mdc-feature-targets($feat-color) {
