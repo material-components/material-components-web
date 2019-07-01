@@ -38,7 +38,7 @@ var TypeScriptDocumentationGenerator = /** @class */ (function () {
             console.log("-- generating docs for " + filepath);
             esmodules.forEach(function (esmodule) { return _this.generateDocsForModule(esmodule, componentPath); });
         });
-        this.generateMarkdownFiles();
+        this.generateMethodDescriptionTableMarkdown();
     };
     /**
      *
@@ -82,10 +82,10 @@ var TypeScriptDocumentationGenerator = /** @class */ (function () {
      * Generates Markdown file for each entry in `this.markdownBuffer`,
      * which is populated from `this.generateDocsForModule()`.
      */
-    TypeScriptDocumentationGenerator.prototype.generateMarkdownFiles = function () {
+    TypeScriptDocumentationGenerator.prototype.generateMethodDescriptionTableMarkdown = function () {
         var _loop_1 = function (componentName) {
             var markdown = this_1.markdownBuffer[componentName].join('\n');
-            var markdownFilePath = "./packages/" + componentName + "/markdown.md";
+            var markdownFilePath = "./packages/" + componentName + "/methodDescriptionTable.md";
             fs.writeFile(markdownFilePath, markdown, function (error) {
                 console.log("~~ generated " + markdownFilePath);
                 if (error) {
