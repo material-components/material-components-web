@@ -132,6 +132,12 @@
     }
   }
 
+  .mdc-chip__text:focus {
+    @include mdc-feature-targets($feat-structure) {
+      outline: none;
+    }
+  }
+
   .mdc-chip--selected .mdc-chip__checkmark-path {
     @include mdc-feature-targets($feat-structure) {
       stroke-dashoffset: 0;
@@ -345,7 +351,7 @@
 }
 
 @mixin mdc-chip-ink-color-ripple_($color, $query) {
-  @include mdc-states($color, $query: $query);
+  @include mdc-states($color, true, $query: $query);
 }
 
 @mixin mdc-chip-selected-ink-color($color, $query: mdc-feature-all()) {
@@ -379,7 +385,7 @@
 
 @mixin mdc-chip-selected-ink-color-ripple_($color, $query) {
   &.mdc-chip {
-    @include mdc-states-selected($color, $query: $query);
+    @include mdc-states-selected($color, $has-nested-focusable-element: true, $query: $query);
   }
 }
 
@@ -538,8 +544,7 @@
 
   .mdc-chip__icon--trailing {
     @include mdc-feature-targets($feat-structure) {
-      margin-right: $right-margin;
-      margin-left: $left-margin;
+      @include mdc-rtl-reflexive-property(margin, $left-margin, $right-margin);
     }
   }
 }

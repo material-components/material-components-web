@@ -26,6 +26,7 @@ import td from 'testdouble';
 
 import {verifyDefaultAdapter} from '../helpers/foundation';
 import {MDCChipSetFoundation} from '../../../packages/mdc-chips/chip-set/foundation';
+import {EventSource} from '../../../packages/mdc-chips/chip/constants';
 
 const {cssClasses} = MDCChipSetFoundation;
 
@@ -42,6 +43,9 @@ test('exports cssClasses', () => {
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCChipSetFoundation, [
     'hasClass', 'removeChip', 'setSelected',
+    'focusChipPrimaryActionAtIndex', 'focusChipTrailingActionAtIndex',
+    'getIndexOfChipById', 'isRTL', 'getChipListCount',
+    'removeFocusFromChipAtIndex',
   ]);
 });
 
@@ -140,6 +144,17 @@ test('#handleChipInteraction selects chip if the chip set is a choice chip set',
   td.verify(mockAdapter.setSelected('chipA', true));
 });
 
+test('#handleChipInteraction removes focus from all chips except the selected one', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getChipListCount()).thenReturn(4);
+  td.when(mockAdapter.getIndexOfChipById('chipA')).thenReturn(1);
+
+  foundation.handleChipInteraction('chipA');
+  td.verify(mockAdapter.removeFocusFromChipAtIndex(0));
+  td.verify(mockAdapter.removeFocusFromChipAtIndex(2));
+  td.verify(mockAdapter.removeFocusFromChipAtIndex(3));
+});
+
 test('#handleChipInteraction does nothing if the chip set is neither choice nor filter', () => {
   const {foundation, mockAdapter} = setupTest();
   td.when(mockAdapter.hasClass(cssClasses.CHOICE)).thenReturn(false);
@@ -188,4 +203,159 @@ test('#handleChipRemoval removes chip', () => {
 
   foundation.handleChipRemoval('chipA');
   td.verify(mockAdapter.removeChip('chipA'));
+});
+
+test('#handleChipRemoval removes focus from all chips except the next one', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getChipListCount()).thenReturn(4);
+  td.when(mockAdapter.getIndexOfChipById('chipA')).thenReturn(1);
+
+  foundation.handleChipRemoval('chipA');
+  td.verify(mockAdapter.removeFocusFromChipAtIndex(0));
+  td.verify(mockAdapter.removeFocusFromChipAtIndex(2));
+});
+
+test('#handleChipRemoval gives focus to the next chip', () => {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getChipListCount()).thenReturn(4);
+  td.when(mockAdapter.getIndexOfChipById('chipA')).thenReturn(1);
+
+  foundation.handleChipRemoval('chipA');
+  td.verify(mockAdapter.focusChipTrailingActionAtIndex(1));
+});
+
+function setupChipNavigationTest(chipIds, isRTL=false) {
+  const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getIndexOfChipById(td.matchers.isA(String))).thenDo((id) => {
+    for (let i = 0; i < chipIds.length; i++) {
+      if (chipIds[i] === id) {
+        return i;
+      }
+    }
+    return -1;
+  });
+  td.when(mockAdapter.getChipListCount()).thenReturn(chipIds.length);
+  td.when(mockAdapter.isRTL()).thenReturn(isRTL);
+  return {foundation, mockAdapter};
+}
+
+test('#handleChipNavigation "Space" does nothing', () => {
+  const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+
+  foundation.handleChipNavigation('chip1', 'Space', EventSource.NONE);
+  td.verify(mockAdapter.focusChipPrimaryActionAtIndex(td.matchers.isA(Number)), {times: 0});
+  td.verify(mockAdapter.focusChipTrailingActionAtIndex(td.matchers.isA(Number)), {times: 0});
+});
+
+test('#handleChipNavigation "ArrowRight" focuses the next chip primary action', () => {
+  const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+
+  foundation.handleChipNavigation('chip1', 'ArrowRight', EventSource.PRIMARY);
+  td.verify(mockAdapter.focusChipPrimaryActionAtIndex(2));
+});
+
+test('#handleChipNavigation "ArrowRight" removes focus from all chips except the next one', () => {
+  const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2', 'chip3']);
+
+  foundation.handleChipNavigation('chip1', 'ArrowRight', EventSource.PRIMARY);
+  td.verify(mockAdapter.removeFocusFromChipAtIndex(0));
+  td.verify(mockAdapter.removeFocusFromChipAtIndex(1));
+  td.verify(mockAdapter.removeFocusFromChipAtIndex(3));
+});
+
+[
+  'ArrowLeft',
+  'ArrowRight',
+  'ArrowUp',
+  'ArrowDown',
+  'Home',
+  'End',
+].forEach((key) => {
+  test(`#handleChipNavigation "${key}" removes focus from N-1 chips (all except the next)`, () => {
+    const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2', 'chip3']);
+
+    foundation.handleChipNavigation('chip1', key, EventSource.PRIMARY);
+    td.verify(mockAdapter.removeFocusFromChipAtIndex(td.matchers.isA(Number)), {times: 3});
+  });
+});
+
+test('#handleChipNavigation "ArrowRight" focuses the previous chip trailing action in RTL', () => {
+  const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2'], true);
+
+  foundation.handleChipNavigation('chip1', 'ArrowRight', EventSource.PRIMARY);
+  td.verify(mockAdapter.focusChipTrailingActionAtIndex(0));
+});
+
+test('#handleChipNavigation "ArrowDown" focuses the next chip primary action', () => {
+  const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+
+  foundation.handleChipNavigation('chip1', 'ArrowDown', EventSource.PRIMARY);
+  td.verify(mockAdapter.focusChipPrimaryActionAtIndex(2));
+});
+
+test('#handleChipNavigation "ArrowDown" from the trailing action focuses the next chip trailing action', () => {
+  const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+
+  foundation.handleChipNavigation('chip1', 'ArrowDown', EventSource.TRAILING);
+  td.verify(mockAdapter.focusChipTrailingActionAtIndex(2));
+});
+
+test('#handleChipNavigation "Home" focuses the first chip primary action', () => {
+  const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+
+  foundation.handleChipNavigation('chip1', 'Home', EventSource.PRIMARY);
+  td.verify(mockAdapter.focusChipPrimaryActionAtIndex(0));
+});
+
+test('#handleChipNavigation "End" focuses the last chip primary action', () => {
+  const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+
+  foundation.handleChipNavigation('chip1', 'End', EventSource.PRIMARY);
+  td.verify(mockAdapter.focusChipPrimaryActionAtIndex(2));
+});
+
+test('#handleChipNavigation "ArrowRight" from the last chip does not focus any chip action', () => {
+  const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+
+  foundation.handleChipNavigation('chip2', 'ArrowRight', EventSource.PRIMARY);
+  td.verify(mockAdapter.focusChipPrimaryActionAtIndex(td.matchers.isA(Number)), {times: 0});
+  td.verify(mockAdapter.focusChipTrailingActionAtIndex(td.matchers.isA(Number)), {times: 0});
+});
+
+test('#handleChipNavigation "ArrowDown" from the last chip does not focus any chip action', () => {
+  const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+
+  foundation.handleChipNavigation('chip2', 'ArrowDown', EventSource.PRIMARY);
+  td.verify(mockAdapter.focusChipPrimaryActionAtIndex(td.matchers.isA(Number)), {times: 0});
+  td.verify(mockAdapter.focusChipTrailingActionAtIndex(td.matchers.isA(Number)), {times: 0});
+});
+
+test('#handleChipNavigation "ArrowLeft" focuses the previous chip trailing action', () => {
+  const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+
+  foundation.handleChipNavigation('chip1', 'ArrowLeft', EventSource.TRAILING);
+  td.verify(mockAdapter.focusChipTrailingActionAtIndex(0));
+});
+
+test('#handleChipNavigation "ArrowLeft" focuses the next chip primary action in RTL', () => {
+  const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2'], true);
+
+  foundation.handleChipNavigation('chip1', 'ArrowLeft', EventSource.TRAILING);
+  td.verify(mockAdapter.focusChipPrimaryActionAtIndex(2));
+});
+
+test('#handleChipNavigation "ArrowLeft" from the first chip does not focus any chip action', () => {
+  const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+
+  foundation.handleChipNavigation('chip0', 'ArrowLeft', EventSource.PRIMARY);
+  td.verify(mockAdapter.focusChipPrimaryActionAtIndex(td.matchers.isA(Number)), {times: 0});
+  td.verify(mockAdapter.focusChipTrailingActionAtIndex(td.matchers.isA(Number)), {times: 0});
+});
+
+test('#handleChipNavigation "ArrowUp" from the first chip does not focus any chip', () => {
+  const {foundation, mockAdapter} = setupChipNavigationTest(['chip0', 'chip1', 'chip2']);
+
+  foundation.handleChipNavigation('chip0', 'ArrowUp', EventSource.PRIMARY);
+  td.verify(mockAdapter.focusChipPrimaryActionAtIndex(td.matchers.isA(Number)), {times: 0});
+  td.verify(mockAdapter.focusChipTrailingActionAtIndex(td.matchers.isA(Number)), {times: 0});
 });

@@ -43,36 +43,52 @@
     <main class="test-viewport test-viewport--mobile">
       <div class="test-layout">
         <div class="test-cell test-cell--chip">
-          <div class="mdc-chip-set mdc-chip-set--choice">
-            <button class="mdc-chip" role="radio" aria-checked="false">
-              <span class="mdc-chip__text">Chip One</span>
-            </button>
-            <button class="mdc-chip" role="radio" aria-checked="false">
-              <span class="mdc-chip__text">Chip Two</span>
-            </button>
-            <button class="mdc-chip" role="radio" aria-checked="false">
-              <span class="mdc-chip__text">Chip Three</span>
-            </button>
-            <button class="mdc-chip" role="radio" aria-checked="false">
-              <span class="mdc-chip__text">Chip Four</span>
-            </button>
+          <div class="mdc-chip-set mdc-chip-set--choice" role="grid">
+            <div class="mdc-chip" role="row">
+              <span role="gridcell">
+                <span class="mdc-chip__text mdc-chip__primary-action" role="radio" tabindex="0" aria-checked="false">Chip One</span>
+              </span>
+            </div>
+            <div class="mdc-chip" role="row">
+              <span role="gridcell">
+                <span class="mdc-chip__text mdc-chip__primary-action" role="radio" tabindex="-1" aria-checked="false">Chip Two</span>
+              </span>
+            </div>
+            <div class="mdc-chip" role="row">
+              <span role="gridcell">
+                <span class="mdc-chip__text mdc-chip__primary-action" role="radio" tabindex="-1" aria-checked="false">Chip Three</span>
+              </span>
+            </div>
+            <div class="mdc-chip" role="row">
+              <span role="gridcell">
+                <span class="mdc-chip__text mdc-chip__primary-action" role="radio" tabindex="-1" aria-checked="false">Chip Four</span>
+              </span>
+            </div>
           </div>
         </div>
 
         <div class="test-cell test-cell--chip">
-          <div class="mdc-chip-set mdc-chip-set--choice">
-            <button class="mdc-chip mdc-chip--selected" role="radio" aria-checked="true">
-              <span class="mdc-chip__text">Chip One</span>
-            </button>
-            <button class="mdc-chip" role="radio" aria-checked="false">
-              <span class="mdc-chip__text">Chip Two</span>
-            </button>
-            <button class="mdc-chip" role="radio" aria-checked="false">
-              <span class="mdc-chip__text">Chip Three</span>
-            </button>
-            <button class="mdc-chip" role="radio" aria-checked="false">
-              <span class="mdc-chip__text">Chip Four</span>
-            </button>
+          <div class="mdc-chip-set mdc-chip-set--choice" role="grid">
+            <div class="mdc-chip mdc-chip--selected" role="row">
+              <span role="gridcell">
+                <span class="mdc-chip__text mdc-chip__primary-action" role="radio" tabindex="0" aria-checked="true">Chip One</span>
+              </span>
+            </div>
+            <div class="mdc-chip" role="row">
+              <span role="gridcell">
+                <span class="mdc-chip__text mdc-chip__primary-action" role="radio" tabindex="-1" aria-checked="false">Chip Two</span>
+              </span>
+            </div>
+            <div class="mdc-chip" role="row">
+              <span role="gridcell">
+                <span class="mdc-chip__text mdc-chip__primary-action" role="radio" tabindex="-1" aria-checked="false">Chip Three</span>
+              </span>
+            </div>
+            <div class="mdc-chip" role="row">
+              <span role="gridcell">
+                <span class="mdc-chip__text mdc-chip__primary-action" role="radio" tabindex="-1" aria-checked="false">Chip Four</span>
+              </span>
+            </div>
           </div>
         </div>
       </div>

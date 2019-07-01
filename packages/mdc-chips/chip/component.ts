@@ -30,7 +30,8 @@ import {MDCRippleCapableSurface} from '@material/ripple/types';
 import {MDCChipAdapter} from './adapter';
 import {strings} from './constants';
 import {MDCChipFoundation} from './foundation';
-import {MDCChipInteractionEventDetail, MDCChipRemovalEventDetail, MDCChipSelectionEventDetail} from './types';
+import {MDCChipInteractionEventDetail, MDCChipNavigationEventDetail, MDCChipRemovalEventDetail,
+    MDCChipSelectionEventDetail} from './types';
 
 type InteractionType = 'click' | 'keydown';
 
@@ -86,15 +87,20 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
   private trailingIcon_!: Element | null; // assigned in initialize()
   private checkmark_!: Element | null; // assigned in initialize()
   private ripple_!: MDCRipple; // assigned in initialize()
+  private primaryAction_!: Element | null; // assigned in initialize()
+  private trailingAction_!: Element | null; // assigned in initialize()
 
   private handleInteraction_!: SpecificEventListener<InteractionType>; // assigned in initialSyncWithDOM()
   private handleTransitionEnd_!: SpecificEventListener<'transitionend'>; // assigned in initialSyncWithDOM()
   private handleTrailingIconInteraction_!: SpecificEventListener<InteractionType>; // assigned in initialSyncWithDOM()
+  private handleKeydown_!: SpecificEventListener<'keydown'>; // assigned in initialSyncWithDOM()
 
   initialize(rippleFactory: MDCRippleFactory = (el, foundation) => new MDCRipple(el, foundation)) {
     this.leadingIcon_ = this.root_.querySelector(strings.LEADING_ICON_SELECTOR);
     this.trailingIcon_ = this.root_.querySelector(strings.TRAILING_ICON_SELECTOR);
     this.checkmark_ = this.root_.querySelector(strings.CHECKMARK_SELECTOR);
+    this.primaryAction_ = this.root_.querySelector(strings.PRIMARY_ACTION_SELECTOR);
+    this.trailingAction_ = this.root_.querySelector(strings.TRAILING_ACTION_SELECTOR);
 
     // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
     // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
@@ -110,11 +116,13 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
     this.handleTransitionEnd_ = (evt: TransitionEvent) => this.foundation_.handleTransitionEnd(evt);
     this.handleTrailingIconInteraction_ = (evt: MouseEvent | KeyboardEvent) =>
         this.foundation_.handleTrailingIconInteraction(evt);
+    this.handleKeydown_ = (evt: KeyboardEvent) => this.foundation_.handleKeydown(evt);
 
     INTERACTION_EVENTS.forEach((evtType) => {
       this.listen(evtType, this.handleInteraction_);
     });
     this.listen('transitionend', this.handleTransitionEnd_);
+    this.listen('keydown', this.handleKeydown_);
 
     if (this.trailingIcon_) {
       INTERACTION_EVENTS.forEach((evtType) => {
@@ -130,6 +138,7 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
       this.unlisten(evtType, this.handleInteraction_);
     });
     this.unlisten('transitionend', this.handleTransitionEnd_);
+    this.unlisten('keydown', this.handleKeydown_);
 
     if (this.trailingIcon_) {
       INTERACTION_EVENTS.forEach((evtType) => {
@@ -158,15 +167,31 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
         }
       },
       eventTargetHasClass: (target, className) => target ? (target as Element).classList.contains(className) : false,
+      focusPrimaryAction: () => {
+        if (this.primaryAction_) {
+          (this.primaryAction_ as HTMLElement).focus();
+        }
+      },
+      focusTrailingAction: () => {
+        if (this.trailingAction_) {
+          (this.trailingAction_ as HTMLElement).focus();
+        }
+      },
       getCheckmarkBoundingClientRect: () => this.checkmark_ ? this.checkmark_.getBoundingClientRect() : null,
       getComputedStyleValue: (propertyName) => window.getComputedStyle(this.root_).getPropertyValue(propertyName),
       getRootBoundingClientRect: () => this.root_.getBoundingClientRect(),
       hasClass: (className) => this.root_.classList.contains(className),
       hasLeadingIcon: () => !!this.leadingIcon_,
+      hasTrailingAction: () => !!this.trailingAction_,
+      isRTL: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
       notifyInteraction: () => this.emit<MDCChipInteractionEventDetail>(
           strings.INTERACTION_EVENT, {chipId: this.id}, true /* shouldBubble */),
-      notifyRemoval: () => this.emit<MDCChipRemovalEventDetail>(
-          strings.REMOVAL_EVENT, {chipId: this.id, root: this.root_}, true /* shouldBubble */),
+      notifyNavigation: (key, source) => this.emit<MDCChipNavigationEventDetail>(
+          strings.NAVIGATION_EVENT,  {chipId: this.id, key, source}, true /* shouldBubble */),
+      notifyRemoval: () => {
+        this.emit<MDCChipRemovalEventDetail>(
+          strings.REMOVAL_EVENT, {chipId: this.id, root: this.root_}, true /* shouldBubble */);
+      },
       notifySelection: (selected) => this.emit<MDCChipSelectionEventDetail>(
           strings.SELECTION_EVENT, {chipId: this.id, selected}, true /* shouldBubble */),
       notifyTrailingIconInteraction: () => this.emit<MDCChipInteractionEventDetail>(
@@ -177,9 +202,37 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
           this.leadingIcon_.classList.remove(className);
         }
       },
-      setAttr: (attr, value) => this.root_.setAttribute(attr, value),
+      setPrimaryActionAttr: (attr, value) => {
+        if (this.primaryAction_) {
+          this.primaryAction_.setAttribute(attr, value);
+        }
+      },
       setStyleProperty: (propertyName, value) => this.root_.style.setProperty(propertyName, value),
+      setTrailingActionAttr: (attr, value) => {
+        if (this.trailingAction_) {
+          this.trailingAction_.setAttribute(attr, value);
+        }
+      },
     };
     return new MDCChipFoundation(adapter);
+  }
+
+  focusPrimaryAction() {
+    this.foundation_.focusPrimaryAction();
+  }
+
+  focusTrailingAction() {
+    this.foundation_.focusTrailingAction();
+  }
+
+  removeFocus() {
+    this.foundation_.removeFocus();
+  }
+
+  remove() {
+    const parent = this.root_.parentNode;
+    if (parent !== null) {
+      parent.removeChild(this.root_);
+    }
   }
 }

@@ -23,7 +23,7 @@
 
 import {MDCFoundation} from '@material/base/foundation';
 import {MDCChipAdapter} from './adapter';
-import {cssClasses, strings} from './constants';
+import {cssClasses, Direction, EventSource, jumpChipKeys, navigationKeys, strings} from './constants';
 
 const emptyClientRect = {
   bottom: 0,
@@ -48,19 +48,25 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       addClass: () => undefined,
       addClassToLeadingIcon: () => undefined,
       eventTargetHasClass: () => false,
+      focusPrimaryAction: () => undefined,
+      focusTrailingAction: () => undefined,
       getCheckmarkBoundingClientRect: () => emptyClientRect,
       getComputedStyleValue: () => '',
       getRootBoundingClientRect: () => emptyClientRect,
       hasClass: () => false,
       hasLeadingIcon: () => false,
+      hasTrailingAction: () => false,
+      isRTL: () => false,
       notifyInteraction: () => undefined,
+      notifyNavigation: () => undefined,
       notifyRemoval: () => undefined,
       notifySelection: () => undefined,
       notifyTrailingIconInteraction: () => undefined,
       removeClass: () => undefined,
       removeClassFromLeadingIcon: () => undefined,
-      setAttr: () => undefined,
+      setPrimaryActionAttr: () => undefined,
       setStyleProperty: () => undefined,
+      setTrailingActionAttr: () => undefined,
     };
   }
 
@@ -80,10 +86,10 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   setSelected(selected: boolean) {
     if (selected) {
       this.adapter_.addClass(cssClasses.SELECTED);
-      this.adapter_.setAttr(strings.ARIA_CHECKED, 'true');
+      this.adapter_.setPrimaryActionAttr(strings.ARIA_CHECKED, 'true');
     } else {
       this.adapter_.removeClass(cssClasses.SELECTED);
-      this.adapter_.setAttr(strings.ARIA_CHECKED, 'false');
+      this.adapter_.setPrimaryActionAttr(strings.ARIA_CHECKED, 'false');
     }
     this.adapter_.notifySelection(selected);
   }
@@ -135,9 +141,9 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
    * Handles an interaction event on the root element.
    */
   handleInteraction(evt: MouseEvent | KeyboardEvent) {
-    const isEnter = (evt as KeyboardEvent).key === 'Enter' || (evt as KeyboardEvent).keyCode === 13;
-    if (evt.type === 'click' || isEnter) {
+    if (this.shouldHandleInteraction_(evt)) {
       this.adapter_.notifyInteraction();
+      this.focusPrimaryAction_();
     }
   }
 
@@ -146,41 +152,52 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
    */
   handleTransitionEnd(evt: TransitionEvent) {
     // Handle transition end event on the chip when it is about to be removed.
-    if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.CHIP_EXIT)) {
-      if (evt.propertyName === 'width') {
-        this.adapter_.notifyRemoval();
-      } else if (evt.propertyName === 'opacity') {
-        // See: https://css-tricks.com/using-css-transitions-auto-dimensions/#article-header-id-5
-        const chipWidth = this.adapter_.getComputedStyleValue('width');
+    const shouldHandle = this.adapter_.eventTargetHasClass(evt.target, cssClasses.CHIP_EXIT);
+    const widthIsAnimating = evt.propertyName === 'width';
+    const opacityIsAnimating = evt.propertyName === 'opacity';
 
-        // On the next frame (once we get the computed width), explicitly set the chip's width
-        // to its current pixel width, so we aren't transitioning out of 'auto'.
+    if (shouldHandle && opacityIsAnimating) {
+      // See: https://css-tricks.com/using-css-transitions-auto-dimensions/#article-header-id-5
+      const chipWidth = this.adapter_.getComputedStyleValue('width');
+
+      // On the next frame (once we get the computed width), explicitly set the chip's width
+      // to its current pixel width, so we aren't transitioning out of 'auto'.
+      requestAnimationFrame(() => {
+        this.adapter_.setStyleProperty('width', chipWidth);
+
+        // To mitigate jitter, start transitioning padding and margin before width.
+        this.adapter_.setStyleProperty('padding', '0');
+        this.adapter_.setStyleProperty('margin', '0');
+
+        // On the next frame (once width is explicitly set), transition width to 0.
         requestAnimationFrame(() => {
-          this.adapter_.setStyleProperty('width', chipWidth);
-
-          // To mitigate jitter, start transitioning padding and margin before width.
-          this.adapter_.setStyleProperty('padding', '0');
-          this.adapter_.setStyleProperty('margin', '0');
-
-          // On the next frame (once width is explicitly set), transition width to 0.
-          requestAnimationFrame(() => {
-            this.adapter_.setStyleProperty('width', '0');
-          });
+          this.adapter_.setStyleProperty('width', '0');
         });
-      }
+      });
       return;
+    }
+
+    if (shouldHandle && widthIsAnimating) {
+      this.removeFocus_();
+      this.adapter_.notifyRemoval();
     }
 
     // Handle a transition end event on the leading icon or checkmark, since the transition end event bubbles.
-    if (evt.propertyName !== 'opacity') {
+    if (!opacityIsAnimating) {
       return;
     }
-    if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.LEADING_ICON) &&
-        this.adapter_.hasClass(cssClasses.SELECTED)) {
-      this.adapter_.addClassToLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
-    } else if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.CHECKMARK) &&
-        !this.adapter_.hasClass(cssClasses.SELECTED)) {
-      this.adapter_.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
+
+    const shouldHideLeadingIcon = this.adapter_.eventTargetHasClass(evt.target, cssClasses.LEADING_ICON)
+      && this.adapter_.hasClass(cssClasses.SELECTED);
+    const shouldShowLeadingIcon = this.adapter_.eventTargetHasClass(evt.target, cssClasses.CHECKMARK)
+      && !this.adapter_.hasClass(cssClasses.SELECTED);
+
+    if (shouldHideLeadingIcon) {
+      return this.adapter_.addClassToLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
+    }
+
+    if (shouldShowLeadingIcon) {
+      return this.adapter_.removeClassFromLeadingIcon(cssClasses.HIDDEN_LEADING_ICON);
     }
   }
 
@@ -189,14 +206,126 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
    * prevent the ripple from activating on interaction with the trailing icon.
    */
   handleTrailingIconInteraction(evt: MouseEvent | KeyboardEvent) {
-    const isEnter = (evt as KeyboardEvent).key === 'Enter' || (evt as KeyboardEvent).keyCode === 13;
-    evt.stopPropagation();
-    if (evt.type === 'click' || isEnter) {
+    if (this.shouldHandleInteraction_(evt)) {
       this.adapter_.notifyTrailingIconInteraction();
-      if (this.shouldRemoveOnTrailingIconClick_) {
-        this.beginExit();
-      }
+      this.removeChip_(evt);
     }
+  }
+
+  /**
+   * Handles a keydown event from the root element.
+   */
+  handleKeydown(evt: KeyboardEvent) {
+    if (this.shouldRemoveChip_(evt)) {
+      return this.removeChip_(evt);
+    }
+
+    const key = evt.key;
+    // Early exit if the key is not usable
+    if (!navigationKeys.has(key)) {
+      return;
+    }
+
+    // Prevent default behavior for movement keys which could include scrolling
+    evt.preventDefault();
+    this.focusNextAction_(evt);
+  }
+
+  removeFocus() {
+    this.adapter_.setPrimaryActionAttr(strings.TAB_INDEX, '-1');
+    this.adapter_.setTrailingActionAttr(strings.TAB_INDEX, '-1');
+  }
+
+  focusPrimaryAction() {
+    this.focusPrimaryAction_();
+  }
+
+  focusTrailingAction() {
+    if (!this.adapter_.hasTrailingAction()) {
+      return this.focusPrimaryAction_();
+    }
+    this.focusTrailingAction_();
+  }
+
+  private focusNextAction_(evt: KeyboardEvent) {
+    const key = evt.key;
+    const hasTrailingAction = this.adapter_.hasTrailingAction();
+    const dir = this.getDirection_(key);
+    const source = this.getEvtSource_(evt);
+    // Early exit if the key should jump keys or the chip only has one action (i.e. no trailing action)
+    if (jumpChipKeys.has(key) || !hasTrailingAction) {
+      this.adapter_.notifyNavigation(key, source);
+      return;
+    }
+
+    if (source === EventSource.PRIMARY && dir === Direction.RIGHT) {
+      return this.focusTrailingAction_();
+    }
+
+    if (source === EventSource.TRAILING && dir === Direction.LEFT) {
+      return this.focusPrimaryAction_();
+    }
+
+    this.adapter_.notifyNavigation(key, EventSource.NONE);
+  }
+
+  private getEvtSource_(evt: KeyboardEvent): EventSource {
+    if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.PRIMARY_ACTION)) {
+      return EventSource.PRIMARY;
+    }
+
+    if (this.adapter_.eventTargetHasClass(evt.target, cssClasses.TRAILING_ACTION)) {
+      return EventSource.TRAILING;
+    }
+
+    return EventSource.NONE;
+  }
+
+  private getDirection_(key: string): Direction {
+    const isRTL = this.adapter_.isRTL();
+    if (key === strings.ARROW_LEFT_KEY && !isRTL || key === strings.ARROW_RIGHT_KEY && isRTL) {
+      return Direction.LEFT;
+    }
+
+    return Direction.RIGHT;
+  }
+
+  private focusPrimaryAction_() {
+    this.adapter_.setPrimaryActionAttr(strings.TAB_INDEX, '0');
+    this.adapter_.focusPrimaryAction();
+    this.adapter_.setTrailingActionAttr(strings.TAB_INDEX, '-1');
+  }
+
+  private focusTrailingAction_() {
+    this.adapter_.setTrailingActionAttr(strings.TAB_INDEX, '0');
+    this.adapter_.focusTrailingAction();
+    this.adapter_.setPrimaryActionAttr(strings.TAB_INDEX, '-1');
+  }
+
+  private removeFocus_() {
+    this.adapter_.setTrailingActionAttr(strings.TAB_INDEX, '-1');
+    this.adapter_.setPrimaryActionAttr(strings.TAB_INDEX, '-1');
+  }
+
+  private removeChip_(evt: MouseEvent|KeyboardEvent) {
+    evt.stopPropagation();
+    if (this.shouldRemoveOnTrailingIconClick_) {
+      this.beginExit();
+    }
+  }
+
+  private shouldHandleInteraction_(evt: MouseEvent|KeyboardEvent): boolean {
+    if (evt.type === 'click') {
+      return true;
+    }
+
+    const keyEvt = evt as KeyboardEvent;
+    return keyEvt.keyCode === 13 || keyEvt.key === strings.ENTER_KEY || keyEvt.key === strings.SPACEBAR_KEY;
+  }
+
+  private shouldRemoveChip_(evt: KeyboardEvent): boolean {
+    const isDeletable = this.adapter_.hasClass(cssClasses.DELETABLE);
+    return isDeletable && (evt.key === strings.BACKSPACE_KEY || evt.key === strings.DELETE_KEY);
   }
 }
 

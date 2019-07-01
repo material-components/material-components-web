@@ -43,4 +43,30 @@ export interface MDCChipSetAdapter {
    * Sets the selected state of the chip with the given id.
    */
   setSelected(chipId: string, selected: boolean): void;
+
+  /**
+   * @param chipId the unique ID of the chip
+   * @return the numerical index of the chip with the matching id or -1.
+   */
+  getIndexOfChipById(chipId: string): number;
+
+  focusChipPrimaryActionAtIndex(index: number): void;
+
+  focusChipTrailingActionAtIndex(index: number): void;
+
+  /**
+   * Removes focus from the chip at the given index.
+   * @param index the index of the chip
+   */
+  removeFocusFromChipAtIndex(index: number): void;
+
+  /**
+   * @return true if the text direction is RTL.
+   */
+  isRTL(): boolean;
+
+  /**
+   * @return the number of chips in the chip set.
+   */
+  getChipListCount(): number;
 }
