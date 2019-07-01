@@ -41,24 +41,25 @@ export interface MDCChipSetAdapter {
   removeChipAtIndex(index: number): void;
 
   /**
-   * Sets the selected state of the chip with the given id.
+   * Sets the selected state of the chip at the given index.
    */
-  setSelected(chipId: string, selected: boolean): void;
+  selectChipAtIndex(index: number, selected: boolean): void;
 
   /**
+   * Returns the index of the chip at the given ID.
    * @param chipId the unique ID of the chip
    * @return the numerical index of the chip with the matching id or -1.
    */
   getIndexOfChipById(chipId: string): number;
 
   /**
-   * Calls Chip#focusPrimaryAction() on the chip at the given index
+   * Calls Chip#focusPrimaryAction() on the chip at the given index.
    * @param index the index of the chip
    */
   focusChipPrimaryActionAtIndex(index: number): void;
 
   /**
-   * Calls Chip#focusTrailingAction() on the chip at the given index
+   * Calls Chip#focusTrailingAction() on the chip at the given index.
    * @param index the index of the chip
    */
   focusChipTrailingActionAtIndex(index: number): void;

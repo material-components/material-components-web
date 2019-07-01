@@ -392,7 +392,7 @@ Method Signature | Description
 --- | ---
 `hasClass(className: string) => boolean` | Returns whether the chip set element has the given class
 `removeChipAtIndex(index: number) => void` | Removes the chip with the given `index` from the chip set
-`setSelected(chipId: string, selected: boolean) => void` | Sets the selected state of the chip with the given id
+`selectChipAtIndex(index: string, selected: boolean) => void` | Sets the selected state of the chip at the given `index`
 `getIndexOfChipById(id: string) => number` | Returns the index of the chip with the matching `id` or -1
 `focusChipPrimaryActionAtIndex(index: number) => void` | Calls `MDCChip#focusPrimaryAction()` on the chip at the given `index`
 `focusChipTrailingActionAtIndex(index: number) => void` | Calls `MDCChip#focusTrailingAction()` on the chip at the given `index`

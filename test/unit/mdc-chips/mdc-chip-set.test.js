@@ -177,10 +177,10 @@ test('#adapter.removeChipAtIndex does nothing if the given object is not in the 
   assert.equal(component.chips.length, 3);
 });
 
-test('#adapter.setSelected sets selected on chip object', () => {
+test('#adapter.selectChipAtIndex sets selected on chip object', () => {
   const {component} = setupTest();
   const chip = component.chips[0];
-  component.getDefaultFoundation().adapter_.setSelected(chip.id, true);
+  component.getDefaultFoundation().adapter_.selectChipAtIndex(0, true);
   assert.equal(chip.selected, true);
 });
 
