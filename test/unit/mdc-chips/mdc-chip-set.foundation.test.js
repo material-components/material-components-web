@@ -42,7 +42,7 @@ test('exports cssClasses', () => {
 
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCChipSetFoundation, [
-    'hasClass', 'removeChip', 'setSelected',
+    'hasClass', 'removeChipAtIndex', 'setSelected',
     'focusChipPrimaryActionAtIndex', 'focusChipTrailingActionAtIndex',
     'getIndexOfChipById', 'isRTL', 'getChipListCount',
     'removeFocusFromChipAtIndex',
@@ -200,9 +200,10 @@ test('#handleChipSelection does nothing if selected is false and the chip is not
 
 test('#handleChipRemoval removes chip', () => {
   const {foundation, mockAdapter} = setupTest();
+  td.when(mockAdapter.getIndexOfChipById('chipA')).thenReturn(1);
 
   foundation.handleChipRemoval('chipA');
-  td.verify(mockAdapter.removeChip('chipA'));
+  td.verify(mockAdapter.removeChipAtIndex(1));
 });
 
 test('#handleChipRemoval removes focus from all chips except the next one', () => {

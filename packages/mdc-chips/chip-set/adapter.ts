@@ -35,9 +35,10 @@ export interface MDCChipSetAdapter {
   hasClass(className: string): boolean;
 
   /**
-   * Removes the chip with the given id from the chip set.
+   * Removes the chip with the given index from the chip set.
+   * Make sure to remove it from the chip list, too.
    */
-  removeChip(chipId: string): void;
+  removeChipAtIndex(index: number): void;
 
   /**
    * Sets the selected state of the chip with the given id.
@@ -50,8 +51,16 @@ export interface MDCChipSetAdapter {
    */
   getIndexOfChipById(chipId: string): number;
 
+  /**
+   * Calls Chip#focusPrimaryAction() on the chip at the given index
+   * @param index the index of the chip
+   */
   focusChipPrimaryActionAtIndex(index: number): void;
 
+  /**
+   * Calls Chip#focusTrailingAction() on the chip at the given index
+   * @param index the index of the chip
+   */
   focusChipTrailingActionAtIndex(index: number): void;
 
   /**

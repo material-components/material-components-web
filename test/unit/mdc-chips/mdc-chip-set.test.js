@@ -162,18 +162,18 @@ test('#adapter.hasClass returns true if class is set on chip set element', () =>
   assert.isTrue(component.getDefaultFoundation().adapter_.hasClass('foo'));
 });
 
-test('#adapter.removeChip removes the chip object from the chip set', () => {
+test('#adapter.removeChipAtIndex removes the chip object from the chip set', () => {
   const {component} = setupTest();
   const chip = component.chips[0];
-  component.getDefaultFoundation().adapter_.removeChip(chip.id);
+  component.getDefaultFoundation().adapter_.removeChipAtIndex(0);
   assert.equal(component.chips.length, 2);
   td.verify(chip.destroy());
   td.verify(chip.remove());
 });
 
-test('#adapter.removeChip does nothing if the given object is not in the chip set', () => {
+test('#adapter.removeChipAtIndex does nothing if the given object is not in the chip set', () => {
   const {component} = setupTest();
-  component.getDefaultFoundation().adapter_.removeChip('chip0');
+  component.getDefaultFoundation().adapter_.removeChipAtIndex(-1);
   assert.equal(component.chips.length, 3);
 });
 

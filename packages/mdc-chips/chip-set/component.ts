@@ -120,9 +120,8 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
       },
       hasClass: (className) => this.root_.classList.contains(className),
       isRTL: () => window.getComputedStyle(this.root_).getPropertyValue('direction') === 'rtl',
-      removeChip: (chipId) => {
-        const index = this.findChipIndex_(chipId);
-        if (index >= 0) {
+      removeChipAtIndex: (index) => {
+        if (index >= 0 && index < this.chips_.length) {
           this.chips_[index].destroy();
           this.chips_[index].remove();
           this.chips_.splice(index, 1);

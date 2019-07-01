@@ -43,7 +43,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
       getIndexOfChipById: () => -1,
       hasClass: () => false,
       isRTL: () => false,
-      removeChip: () => undefined,
+      removeChipAtIndex: () => undefined,
       removeFocusFromChipAtIndex: () => undefined,
       setSelected: () => undefined,
     };
@@ -111,7 +111,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   handleChipRemoval(chipId: string) {
     const index = this.adapter_.getIndexOfChipById(chipId);
     this.deselect_(chipId);
-    this.adapter_.removeChip(chipId);
+    this.adapter_.removeChipAtIndex(index);
     const maxIndex = this.adapter_.getChipListCount() - 1;
     const nextIndex = Math.min(index, maxIndex);
     this.removeFocusFromChipsExcept_(nextIndex);
