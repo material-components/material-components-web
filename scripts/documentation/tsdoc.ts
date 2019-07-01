@@ -10,10 +10,10 @@ class TypeScriptDocumentationGenerator {
 
   /**
    * Sets Markdown Documentation into markdownBuffer under the `component` name.
-   * @param component string Component that the `markdownString` describes
-   * @param markdownString string Markdown documentation source to be placed into README.md file
+   * @param component Component that the `markdownString` describes
+   * @param markdownString Markdown documentation source to be placed into README.md file
    */
-  setMarkdownBuffer(component, markdownString) {
+  setMarkdownBuffer(component: string, markdownString: string) {
     let markdownComponentBuffer = this.markdownBuffer[component];
     if (markdownComponentBuffer) {
       markdownComponentBuffer.push(markdownString);
@@ -42,7 +42,7 @@ class TypeScriptDocumentationGenerator {
       esmodules.forEach((esmodule) => this.generateDocsForModule(esmodule, componentPath));
     });
 
-    this.generateMarkdownFiles();
+    this.generateMethodDescriptionTableMarkdown();
   }
 
   /**
@@ -79,7 +79,7 @@ class TypeScriptDocumentationGenerator {
         // If no comment provided, do not record.
         return;
       }
-      const comment = func.signatures[0].comment.shortText.replace('\n', '');
+      const comment = func.signatures[0].comment.shortText.replace('\n', ' ');
       markdownString += `${func.name} | ${comment} \n`;
     });
 
@@ -90,10 +90,10 @@ class TypeScriptDocumentationGenerator {
    * Generates Markdown file for each entry in `this.markdownBuffer`,
    * which is populated from `this.generateDocsForModule()`.
    */
-  generateMarkdownFiles() {
+  generateMethodDescriptionTableMarkdown() {
     for (let componentName in this.markdownBuffer) {
       const markdown = this.markdownBuffer[componentName].join('\n');
-      const markdownFilePath = `./packages/${componentName}/markdown.md`;
+      const markdownFilePath = `./packages/${componentName}/methodDescriptionTable.md`;
       fs.writeFile(markdownFilePath, markdown, (error) => {
         console.log(`~~ generated ${markdownFilePath}`);
         if (error) {

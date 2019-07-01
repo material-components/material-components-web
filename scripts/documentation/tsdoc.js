@@ -1,23 +1,6 @@
 "use strict";
 exports.__esModule = true;
 var fs = require("fs");
-// // import {sync as glob} from 'glob';
-// function buildTsDocs() {
-//   console.log('Building JS Docs'); //tslint:disable-line
-//   // const tsFiles = glob('packages/**/*.ts', {
-//   //   ignore: ['**/node_modules/**'],
-//   // });
-//   const tsFile = 'packages/mdc-textfield/adapter.ts';
-//   // tsFiles.forEach((tsFile) => {
-//   console.log(`\n parsing ${tsFile}`); //tslint:disable-line
-//   const inputBuffer: string = readFileSync(tsFile).toString();
-//   const tsdocParser: TSDocParser = new TSDocParser();
-//   const parserContext: ParserContext = tsdocParser.parseString(inputBuffer);
-//   const t = parserContext.docComment.params;
-//   console.log(t); //tslint:disable-line
-//   // });
-// }
-// buildTsDocs();
 var jsDocJson = require("../../jsDoc.json");
 var TypeScriptDocumentationGenerator = /** @class */ (function () {
     function TypeScriptDocumentationGenerator() {
@@ -25,8 +8,8 @@ var TypeScriptDocumentationGenerator = /** @class */ (function () {
     }
     /**
      * Sets Markdown Documentation into markdownBuffer under the `component` name.
-     * @param component string Component that the `markdownString` describes
-     * @param markdownString string Markdown documentation source to be placed into README.md file
+     * @param component Component that the `markdownString` describes
+     * @param markdownString Markdown documentation source to be placed into README.md file
      */
     TypeScriptDocumentationGenerator.prototype.setMarkdownBuffer = function (component, markdownString) {
         var markdownComponentBuffer = this.markdownBuffer[component];
@@ -37,6 +20,12 @@ var TypeScriptDocumentationGenerator = /** @class */ (function () {
             this.markdownBuffer[component] = [markdownString];
         }
     };
+    /**
+     * The main function of this class. Iterates through all classes/files
+     * of the packages directory (already precompiled from `npm run build:docs:typescript`).
+     * This then steps through all the esmodule classes (ie. foundations, adapters, components),
+     * and iterates through all methods/properties.
+     */
     TypeScriptDocumentationGenerator.prototype.generateDocs = function () {
         var _this = this;
         jsDocJson.children.forEach(function (jsDocSection) {
@@ -51,6 +40,11 @@ var TypeScriptDocumentationGenerator = /** @class */ (function () {
         });
         this.generateMarkdownFiles();
     };
+    /**
+     *
+     * @param esmodule Generated Typedoc object
+     * @param componentPath string FilePath to the component esmodule (eg. mdc-drawer/adapter)
+     */
     TypeScriptDocumentationGenerator.prototype.generateDocsForModule = function (esmodule, componentPath) {
         if (!esmodule.name.startsWith('MDC')) {
             // ignore util modules
@@ -79,11 +73,15 @@ var TypeScriptDocumentationGenerator = /** @class */ (function () {
                 // If no comment provided, do not record.
                 return;
             }
-            var comment = func.signatures[0].comment.shortText.replace('\n', '');
+            var comment = func.signatures[0].comment.shortText.replace('\n', ' ');
             markdownString += func.name + " | " + comment + " \n";
         });
         this.setMarkdownBuffer(componentPath, markdownString);
     };
+    /**
+     * Generates Markdown file for each entry in `this.markdownBuffer`,
+     * which is populated from `this.generateDocsForModule()`.
+     */
     TypeScriptDocumentationGenerator.prototype.generateMarkdownFiles = function () {
         var _loop_1 = function (componentName) {
             var markdown = this_1.markdownBuffer[componentName].join('\n');
@@ -102,5 +100,8 @@ var TypeScriptDocumentationGenerator = /** @class */ (function () {
     };
     return TypeScriptDocumentationGenerator;
 }());
+/**
+ * This currently only has been tested on mdc-drawer
+ */
 var docGenerator = new TypeScriptDocumentationGenerator();
 docGenerator.generateDocs();
