@@ -228,6 +228,7 @@
   $unmarked-fill-color: transparent,
   $marked-stroke-color: $mdc-checkbox-baseline-theme-color,
   $marked-fill-color: $mdc-checkbox-baseline-theme-color,
+  $selected-ripple-color: $mdc-checkbox-baseline-theme-color,
   $generate-keyframes: true,
   $query: mdc-feature-all()
 ) {
@@ -235,7 +236,7 @@
   $feat-color: mdc-feature-create-target($query, color);
 
   &.mdc-checkbox--selected {
-    @include mdc-states($marked-fill-color, $query: $query);
+    @include mdc-states($selected-ripple-color, $query: $query);
   }
 
   &.mdc-ripple-upgraded--background-focused .mdc-checkbox__background {

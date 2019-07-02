@@ -32,7 +32,6 @@ $custom-checkbox-color: $material-color-red-300;
 
 .custom-checkbox--container-colors {
   @include mdc-checkbox-container-colors(
-    // $unmarked-stroke-color: $custom-checkbox-color,
     $marked-stroke-color: $custom-checkbox-color,
     $marked-fill-color: $custom-checkbox-color
   );
