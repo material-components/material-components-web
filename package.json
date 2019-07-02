@@ -73,7 +73,7 @@
     "cssom": "^0.3.2",
     "dart-sass": "^1.15.2",
     "debounce": "^1.1.0",
-    "del": "^4.0.0",
+    "del": "^5.0.0",
     "detect-port": "^1.2.3",
     "dom-events": "^0.1.1",
     "dts-bundle": "^0.7.3",
