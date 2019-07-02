@@ -456,7 +456,7 @@ If you are using a JavaScript framework, such as React or Angular, you can creat
 
 ### `MDCDrawerAdapter`
 
- Method Signature | Description
+Method Signature | Description
 --- | ---
 `addClass(className: string) => void` | Adds a class to the root element.
 `hasClass(className: string) => boolean` | Returns true if the root element contains the given `className`.
