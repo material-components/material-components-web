@@ -30,3 +30,4 @@ packages/**/CHANGELOG.md
 #documentation
 jsDoc.json
 methodDescriptionTable.md
+scripts/documentation/tsdoc.js

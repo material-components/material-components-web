@@ -36,7 +36,6 @@ class TypeScriptDocumentationGenerator {
       if (!esmodules) {
         return;
       }
-      if (filepath !== 'mdc-drawer/component') {return; }
       console.log(`-- generating docs for ${filepath}`); // tslint:disable-line
       esmodules.forEach((esmodule) => this.generateDocsForModule(esmodule, componentPath));
     });
