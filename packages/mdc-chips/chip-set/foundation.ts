@@ -43,9 +43,9 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
       getIndexOfChipById: () => -1,
       hasClass: () => false,
       isRTL: () => false,
-      removeChip: () => undefined,
+      removeChipAtIndex: () => undefined,
       removeFocusFromChipAtIndex: () => undefined,
-      setSelected: () => undefined,
+      selectChipAtIndex: () => undefined,
     };
   }
 
@@ -75,11 +75,13 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
 
     if (this.adapter_.hasClass(cssClasses.CHOICE) && this.selectedChipIds_.length > 0) {
       const previouslySelectedChip = this.selectedChipIds_[0];
+      const previouslySelectedIndex = this.adapter_.getIndexOfChipById(previouslySelectedChip);
       this.selectedChipIds_.length = 0;
-      this.adapter_.setSelected(previouslySelectedChip, false);
+      this.adapter_.selectChipAtIndex(previouslySelectedIndex, false);
     }
     this.selectedChipIds_.push(chipId);
-    this.adapter_.setSelected(chipId, true);
+    const index = this.adapter_.getIndexOfChipById(chipId);
+    this.adapter_.selectChipAtIndex(index, true);
   }
 
   /**
@@ -111,7 +113,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   handleChipRemoval(chipId: string) {
     const index = this.adapter_.getIndexOfChipById(chipId);
     this.deselect_(chipId);
-    this.adapter_.removeChip(chipId);
+    this.adapter_.removeChipAtIndex(index);
     const maxIndex = this.adapter_.getChipListCount() - 1;
     const nextIndex = Math.min(index, maxIndex);
     this.removeFocusFromChipsExcept_(nextIndex);
@@ -191,7 +193,8 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     const index = this.selectedChipIds_.indexOf(chipId);
     if (index >= 0) {
       this.selectedChipIds_.splice(index, 1);
-      this.adapter_.setSelected(chipId, false);
+      const chipIndex = this.adapter_.getIndexOfChipById(chipId);
+      this.adapter_.selectChipAtIndex(chipIndex, false);
     }
   }
 
