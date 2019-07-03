@@ -310,6 +310,7 @@ Method Signature | Description
 `focusPrimaryAction() => void` | Proxies to the foundation's `focusPrimaryAction` method
 `focusTrailingAction() => void` | Proxies to the foundation's `focusTrailingAction` method
 `removeFocus() => void` | Proxies to the foundation's `removeFocus` method
+`setSelectedFromChipSet(selected: boolean) => void` | Proxies to the foundation's `setSelectedFromChipset` method (only called from the chip set)
 
 Property | Value Type | Description
 --- | --- | ---
@@ -392,7 +393,7 @@ Method Signature | Description
 --- | ---
 `hasClass(className: string) => boolean` | Returns whether the chip set element has the given class
 `removeChipAtIndex(index: number) => void` | Removes the chip with the given `index` from the chip set
-`selectChipAtIndex(index: string, selected: boolean) => void` | Sets the selected state of the chip at the given `index`
+`selectChipAtIndex(index: string, selected: boolean) => void` | Calls `MDCChip#setSelectedFromChipSet(selected)` on the chip at the given `index`
 `getIndexOfChipById(id: string) => number` | Returns the index of the chip with the matching `id` or -1
 `focusChipPrimaryActionAtIndex(index: number) => void` | Calls `MDCChip#focusPrimaryAction()` on the chip at the given `index`
 `focusChipTrailingActionAtIndex(index: number) => void` | Calls `MDCChip#focusTrailingAction()` on the chip at the given `index`
@@ -408,6 +409,7 @@ Method Signature | Description
 --- | ---
 `isSelected() => boolean` | Returns true if the chip is selected
 `setSelected(selected: boolean) => void` | Sets the chip's selected state
+`setSelectedFromChipSet(selected: boolean) => void` | Sets the chip's selected state (called from the chip set)
 `getShouldRemoveOnTrailingIconClick() => boolean` | Returns whether a trailing icon click should trigger exit/removal of the chip
 `setShouldRemoveOnTrailingIconClick(shouldRemove: boolean) => void` | Sets whether a trailing icon click should trigger exit/removal of the chip
 `getDimensions() => ClientRect` | Returns the dimensions of the chip. This is used for applying ripple to the chip.

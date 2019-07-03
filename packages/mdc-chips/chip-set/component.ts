@@ -132,7 +132,7 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
       },
       selectChipAtIndex: (index, selected) => {
         if (index >= 0 && index < this.chips_.length) {
-          this.chips_[index].selected = selected;
+          this.chips_[index].setSelectedFromChipSet(selected);
         }
       },
     };

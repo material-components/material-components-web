@@ -92,16 +92,23 @@ test('#setSelected sets aria-checked="false" if false', () => {
   td.verify(mockAdapter.setPrimaryActionAttr(strings.ARIA_CHECKED, 'false'));
 });
 
-test('#setSelected removes calls adapter.notifySelection when selected is true', () => {
+test('#setSelected notifies of selection when selected is true', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setSelected(true);
   td.verify(mockAdapter.notifySelection(true));
 });
 
-test('#setSelected removes calls adapter.notifySelection when selected is false', () => {
+test('#setSelected notifies of unselection when selected is false', () => {
   const {foundation, mockAdapter} = setupTest();
   foundation.setSelected(false);
   td.verify(mockAdapter.notifySelection(false));
+});
+
+test('#setSelectedFromChipSet does not notify', () => {
+  const {foundation, mockAdapter} = setupTest();
+  foundation.setSelectedFromChipSet(false);
+  foundation.setSelectedFromChipSet(true);
+  td.verify(mockAdapter.notifySelection(td.matchers.isA(Boolean)), {times: 0});
 });
 
 test('#getDimensions returns adapter.getRootBoundingClientRect when there is no checkmark bounding rect', () => {
