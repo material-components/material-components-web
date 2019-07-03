@@ -27,6 +27,8 @@
 
 'use strict';
 
+// TODO: remove this class. this is only used for webpack.
+// We should just use the built in Webpack production/development arguments.
 class Environment {
   setBabelEnv() {
     const event = this.getNpmLifecycleEvent_();
