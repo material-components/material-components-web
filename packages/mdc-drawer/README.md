@@ -440,39 +440,3 @@ document.body.addEventListener('MDCDrawer:closed', () => {
 ## Usage within Web Frameworks
 
 If you are using a JavaScript framework, such as React or Angular, you can create a Navigation Drawer for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).
-
-### `MDCDrawerAdapter`
-
-Method Signature | Description
---- | ---
-`addClass(className: string) => void` | Adds a class to the root element.
-`hasClass(className: string) => boolean` | Returns true if the root element contains the given `className`.
-`removeClass(className: string) => void` | Removes a class from the root element.
-`elementHasClass(element: !Element, className: string) => boolean` | Returns true if the an element contains the given class.
-`saveFocus() => void` | Saves the focus of currently active element.
-`restoreFocus() => void` | Restores focus to element previously saved with 'saveFocus'.
-`focusActiveNavigationItem() => void` | Focuses the active / selected navigation item.
-`notifyClose() => void` | Emits the `MDCDrawer:closed` event.
-`notifyOpen() => void` | Emits the `MDCDrawer:opened` event.
-`trapFocus() => void` | Traps focus on root element and focuses the active navigation element.
-`releaseFocus() => void` | Releases focus trap from root element which was set by `trapFocus` and restores focus to where it was prior to calling `trapFocus`.
-
-### Foundations
-
-#### `MDCDismissibleDrawerFoundation`
-
-Method Signature | Description
---- | ---
-`open() => void` | Opens the drawer from the closed state.
-`close() => void` | Closes the drawer from the open state.
-`isOpen() => boolean` | Returns true if the drawer is in the open position.
-`isOpening() => boolean` | Returns true if the drawer is animating open.
-`isClosing() => boolean` | Returns true if the drawer is animating closed.
-`handleKeydown(evt: Event) => void` | Handles the `keydown` event.
-`handleTransitionEnd(evt: Event) => void` | Handles the `transitionend` event when the drawer finishes opening/closing.
-
-#### `MDCModalDrawerFoundation` (extends `MDCDismissibleDrawerFoundation`)
-
-Method Signature | Description
---- | ---
-`handleScrimClick() => void` | Handles click event on scrim.
