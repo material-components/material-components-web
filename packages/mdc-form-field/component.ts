@@ -66,12 +66,12 @@ export class MDCFormField extends MDCComponent<MDCFormFieldFoundation> {
       },
       deregisterInteractionHandler: (evtType, handler) => {
         if (this.label_) {
-          this.label_.removeEventListener(evtType, handler);
+          (this.label_ as HTMLElement).removeEventListener(evtType, handler);
         }
       },
       registerInteractionHandler: (evtType, handler) => {
         if (this.label_) {
-          this.label_.addEventListener(evtType, handler);
+          (this.label_ as HTMLElement).addEventListener(evtType, handler);
         }
       },
     };
