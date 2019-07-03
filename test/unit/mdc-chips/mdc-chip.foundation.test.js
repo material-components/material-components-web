@@ -104,10 +104,10 @@ test('#setSelected notifies of unselection when selected is false', () => {
   td.verify(mockAdapter.notifySelection(false));
 });
 
-test('#setSelectedFromChipset does not notify', () => {
+test('#setSelectedFromChipSet does not notify', () => {
   const {foundation, mockAdapter} = setupTest();
-  foundation.setSelectedFromChipset(false);
-  foundation.setSelectedFromChipset(true);
+  foundation.setSelectedFromChipSet(false);
+  foundation.setSelectedFromChipSet(true);
   td.verify(mockAdapter.notifySelection(td.matchers.isA(Boolean)), {times: 0});
 });
 
