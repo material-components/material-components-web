@@ -437,19 +437,6 @@ document.body.addEventListener('MDCDrawer:closed', () => {
 });
 ```
 
-## `MDCDrawer` Properties and Methods
-
-Property | Value Type | Description
---- | --- | ---
-`open` | Boolean | Proxies to the foundation's `open`/`close` methods. Also returns true if drawer is in the open position.
-
-### Events
-
-Event Name | Event Data Structure | Description
---- | --- | ---
-`MDCDrawer:opened` | None | Emits when the navigation drawer has opened.
-`MDCDrawer:closed` | None | Emits when the navigation drawer has closed.
-
 ## Usage within Web Frameworks
 
 If you are using a JavaScript framework, such as React or Angular, you can create a Navigation Drawer for your framework. Depending on your needs, you can use the _Simple Approach: Wrapping MDC Web Vanilla Components_, or the _Advanced Approach: Using Foundations and Adapters_. Please follow the instructions [here](../../docs/integrating-into-frameworks.md).

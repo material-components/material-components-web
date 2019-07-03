@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import {ReflectionKind} from 'typedoc/dist/lib/models';
 import * as jsDocJson from '../../jsDoc.json';
 
 class TypeScriptDocumentationGenerator {
@@ -103,17 +104,41 @@ class TypeScriptDocumentationGenerator {
     markdownString += 'Method Signature | Description \n --- | --- \n';
     const functionAndProperties = esmodule.children;
     functionAndProperties.forEach((func) => {
-      if (!func.signatures
-        || !func.signatures[0]
-        || !func.signatures[0].comment
-        || !func.signatures[0].comment.shortText) {
-        // If no comment provided, do not record.
-        return;
+      switch (func.kind) {
+        case ReflectionKind.Function: {
+          markdownString += this.getComment(func);
+          break;
+        }
+        case ReflectionKind.Method: {
+          markdownString += this.getComment(func);
+          break;
+        }
+        case ReflectionKind.Accessor: {
+          if (!func.comment) {
+            return;
+          }
+          const comment = this.cleanComment(`${func.name} | ${func.comment.shortText} ${func.comment.shortText}`);
+          markdownString += `\n`;
+          break;
+        }
+        default: {
+          // do nothing
+        }
       }
-      const comment = func.signatures[0].comment.shortText.replace('\n', ' ');
-      markdownString += `${func.name} | ${comment} \n`;
     });
     return markdownString;
+  }
+
+  getComment(property) {
+    if (!property.signatures
+      || !property.signatures[0]
+      || !property.signatures[0].comment
+      || !property.signatures[0].comment.shortText) {
+      // If no comment provided, do not record.
+      return '';
+    }
+    const comment = this.cleanComment(property.signatures[0].comment.shortText);
+    return `${property.name} | ${comment} \n`;
   }
 
   /**
@@ -124,7 +149,7 @@ class TypeScriptDocumentationGenerator {
     let markdownString = '### Events\n\n';
     // @todo convert to reduce method
     eventCommentTags.forEach((eventComment) => {
-      markdownString += `- ${eventComment.text.replace('\n', ' ')}\n`;
+      markdownString += `- ${this.cleanComment(eventComment.text)}\n`;
     });
     return `${markdownString}\n`;
   }
@@ -144,6 +169,10 @@ class TypeScriptDocumentationGenerator {
         }
       });
     }
+  }
+
+  cleanComment(comment) {
+    return comment.replace('\n', ' ');
   }
 }
 
