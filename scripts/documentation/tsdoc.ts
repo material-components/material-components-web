@@ -158,17 +158,40 @@ class TypeScriptDocumentationGenerator {
    * Generates Markdown file for each entry in `this.markdownBuffer`,
    * which is populated from `this.generateDocsForModule()`.
    */
-  generateMarkdownFile(): void {
+  async generateMarkdownFile() {
     for (const componentName in this.markdownBuffer) {
-      const markdown = this.markdownBuffer[componentName].join('\n');
-      const markdownFilePath = `./packages/${componentName}/methodDescriptionTable.md`;
-      fs.writeFile(markdownFilePath, markdown, (error) => {
-        console.log(`~~ generated ${markdownFilePath}`); // tslint:disable-line
-        if (error) {
-          console.error('error ', error); //tslint:disable-line
-        }
-      });
+      /**
+       * This currently only has been tested on mdc-drawer.
+       * TODO: remove this if condition once all READMEs are generated
+       */
+      if (componentName.includes('mdc-drawer')) {
+        const readmeDestinationPath = `./packages/${componentName}/README.md`;
+        const finalReadmeMarkdown = await this.insertMethodDescriptionTable(componentName);
+        fs.writeFile(readmeDestinationPath, finalReadmeMarkdown, (error) => {
+          console.log(`~~ generated ${readmeDestinationPath}`); // tslint:disable-line
+          if (error) {
+            console.error('error ', error); //tslint:disable-line
+          }
+        });
+      }
     }
+  }
+
+  insertMethodDescriptionTable(componentName: string) {
+    const methodDescriptionTableMarkdown = this.markdownBuffer[componentName].join('\n');
+    const baseReadmeMarkdownPath = `./packages/${componentName}/README_BASE.md`;
+    return new Promise((resolve, reject) => {
+      fs.readFile(baseReadmeMarkdownPath, 'utf8', (error, data) => {
+        if (error) {
+          return reject(error);
+        }
+        const insertedData = data.replace(
+          '<!-- %component-foundation-adapter-spacer% -->',
+          methodDescriptionTableMarkdown,
+        );
+        resolve(insertedData);
+      });
+    });
   }
 
   cleanComment(comment) {
@@ -176,8 +199,5 @@ class TypeScriptDocumentationGenerator {
   }
 }
 
-/**
- * This currently only has been tested on mdc-drawer
- */
 const docGenerator = new TypeScriptDocumentationGenerator();
 docGenerator.generateDocs();
