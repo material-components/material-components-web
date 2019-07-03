@@ -57,6 +57,7 @@ class FakeChip {
     this.focusTrailingAction = td.func('.focusTrailingAction');
     this.remove = td.func('.remove');
     this.removeFocus = td.func('.removeFocus');
+    this.setSelectedFromChipset = td.func('.setSelectedFromChipset');
     this.selected = false;
   }
 }
@@ -177,11 +178,11 @@ test('#adapter.removeChipAtIndex does nothing if the given object is not in the 
   assert.equal(component.chips.length, 3);
 });
 
-test('#adapter.selectChipAtIndex sets selected on chip object', () => {
+test('#adapter.selectChipAtIndex calls setSelectedFromChipset on chip object', () => {
   const {component} = setupTest();
   const chip = component.chips[0];
   component.getDefaultFoundation().adapter_.selectChipAtIndex(0, true);
-  assert.equal(chip.selected, true);
+  td.verify(chip.setSelectedFromChipset(true));
 });
 
 test('#adapter.getChipListCount returns the number of chips', () => {
