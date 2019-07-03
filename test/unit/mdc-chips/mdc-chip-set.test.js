@@ -182,7 +182,7 @@ test('#adapter.selectChipAtIndex calls setSelectedFromChipset on chip object', (
   const {component} = setupTest();
   const chip = component.chips[0];
   component.getDefaultFoundation().adapter_.selectChipAtIndex(0, true);
-  td.verify(chip.setSelectedFromChipset(true));
+  td.verify(chip.setSelectedFromChipSet(true));
 });
 
 test('#adapter.getChipListCount returns the number of chips', () => {

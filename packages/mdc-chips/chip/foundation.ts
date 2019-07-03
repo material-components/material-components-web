@@ -87,7 +87,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     this.setSelected_(selected, true);
   }
 
-  setSelectedFromChipset(selected: boolean) {
+  setSelectedFromChipSet(selected: boolean) {
     this.setSelected_(selected, false);
   }
 

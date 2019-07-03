@@ -217,8 +217,8 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
     return new MDCChipFoundation(adapter);
   }
 
-  setSelectedFromChipset(selected: boolean) {
-    this.foundation_.setSelectedFromChipset(selected);
+  setSelectedFromChipSet(selected: boolean) {
+    this.foundation_.setSelectedFromChipSet(selected);
   }
 
   focusPrimaryAction() {

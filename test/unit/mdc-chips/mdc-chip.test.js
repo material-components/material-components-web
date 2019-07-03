@@ -422,7 +422,7 @@ test('#set shouldRemoveOnTrailingIconClick proxies to foundation', () => {
 
 test('#setSelectedFromChipset proxies to the same foundation method', () => {
   const {component, mockFoundation} = setupMockFoundationTest();
-  component.setSelectedFromChipset(true);
+  component.setSelectedFromChipSet(true);
   td.verify(mockFoundation.setSelectedFromChipset(true));
 });
 
