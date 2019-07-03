@@ -310,7 +310,7 @@ Method Signature | Description
 `focusPrimaryAction() => void` | Proxies to the foundation's `focusPrimaryAction` method
 `focusTrailingAction() => void` | Proxies to the foundation's `focusTrailingAction` method
 `removeFocus() => void` | Proxies to the foundation's `removeFocus` method
-`setSelectedFromChipset(selected: boolean) => void` | Proxies to the foudnation's `setSelectedFromChipset` method (only called from the chip set)
+`setSelectedFromChipset(selected: boolean) => void` | Proxies to the foundation's `setSelectedFromChipset` method (only called from the chip set)
 
 Property | Value Type | Description
 --- | --- | ---
