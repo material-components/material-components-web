@@ -119,7 +119,7 @@ The following mixins apply only to _enabled_ checkboxes. It is not currently pos
 
 Mixin | Description
 --- | ---
-`mdc-checkbox-container-colors($unmarked-stroke-color, $unmarked-fill-color, $marked-stroke-color, $marked-fill-color, $generate-keyframes)` | Generates CSS classes to set and animate the stroke color and/or container fill color of a checkbox
+`mdc-checkbox-container-colors($unmarked-stroke-color, $unmarked-fill-color, $marked-stroke-color, $marked-fill-color, $selected-ripple-color, $generate-keyframes)` | Generates CSS classes to set and animate the stroke color and/or container fill color of a checkbox
 `mdc-checkbox-ink-color($color)` | Sets the ink color of the checked and indeterminate icons
 `mdc-checkbox-focus-indicator-color($color)` | Sets the color of the focus indicator
 `mdc-checkbox-touch-dimension($touch-dimension)` | Sets the touch dimension of the checkbox.
