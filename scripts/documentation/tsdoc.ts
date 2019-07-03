@@ -55,7 +55,7 @@ class TypeScriptDocumentationGenerator {
       // ignore util modules
       return;
     }
-    if (esmodule.kindString === 'Variable' || esmodule.kindString === 'Type alias') {
+    if (esmodule.kind === ReflectionKind.Variable || esmodule.kind === ReflectionKind.TypeAlias) {
       // 'Variable' === ignore cssClasses and Strings & util functions
       // 'Type alias' === TS Type declarations
       return;
@@ -68,7 +68,7 @@ class TypeScriptDocumentationGenerator {
   }
 
   /**
-   * Generates higher level documentation markdown for specified `esmodule`
+   * Collects documentation for file or class, and returns markdown
    * @param esmodule Generate Typedoc object
    * @returns generated markdown string containing higher level documentation of the `esmodule`
    */
@@ -101,24 +101,20 @@ class TypeScriptDocumentationGenerator {
    */
   getFunctionAndPropertiesFromModule(esmodule): string {
     let markdownString = `### ${esmodule.name}\n\n`;
-    markdownString += 'Method Signature | Description \n --- | --- \n';
+    markdownString += 'Method Signature | Description \n--- | --- \n';
     const functionAndProperties = esmodule.children;
     functionAndProperties.forEach((func) => {
       switch (func.kind) {
         case ReflectionKind.Function: {
-          markdownString += this.getComment(func);
+          markdownString += this.getFunctionComment(func);
           break;
         }
         case ReflectionKind.Method: {
-          markdownString += this.getComment(func);
+          markdownString += this.getFunctionComment(func);
           break;
         }
         case ReflectionKind.Accessor: {
-          if (!func.comment) {
-            return;
-          }
-          const comment = this.cleanComment(`${func.name} | ${func.comment.shortText} ${func.comment.shortText}`);
-          markdownString += `\n`;
+          markdownString += this.getAccessorComment(func);
           break;
         }
         default: {
@@ -129,7 +125,7 @@ class TypeScriptDocumentationGenerator {
     return markdownString;
   }
 
-  getComment(property) {
+  getFunctionComment(property) {
     if (!property.signatures
       || !property.signatures[0]
       || !property.signatures[0].comment
@@ -139,6 +135,14 @@ class TypeScriptDocumentationGenerator {
     }
     const comment = this.cleanComment(property.signatures[0].comment.shortText);
     return `${property.name} | ${comment} \n`;
+  }
+
+  getAccessorComment(property) {
+    if (!property.comment) {
+      return '';
+    }
+    const comment = this.cleanComment(`${property.name} | ${property.comment.shortText}`);
+    return `${comment}\n`;
   }
 
   /**
@@ -179,15 +183,19 @@ class TypeScriptDocumentationGenerator {
 
   insertMethodDescriptionTable(componentName: string) {
     const methodDescriptionTableMarkdown = this.markdownBuffer[componentName].join('\n');
-    const baseReadmeMarkdownPath = `./packages/${componentName}/README_BASE.md`;
+    const readmeMarkdownPath = `./packages/${componentName}/README.md`;
     return new Promise((resolve, reject) => {
-      fs.readFile(baseReadmeMarkdownPath, 'utf8', (error, data) => {
+      fs.readFile(readmeMarkdownPath, 'utf8', (error, data) => {
         if (error) {
           return reject(error);
         }
+        const startReplacerToken = '<!-- docgen-tsdoc-replacer:start -->';
+        const endReplacerToken = '<!-- docgen-tsdoc-replacer:end -->';
+        const regexString = `^${startReplacerToken}\\n(.|\n)*${endReplacerToken}$`;
+        const regex = new RegExp(regexString, 'gm');
         const insertedData = data.replace(
-          '<!-- %component-foundation-adapter-spacer% -->',
-          methodDescriptionTableMarkdown,
+          regex,
+          `${startReplacerToken}\n${methodDescriptionTableMarkdown}\n${endReplacerToken}`,
         );
         resolve(insertedData);
       });

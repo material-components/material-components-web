@@ -437,10 +437,11 @@ document.body.addEventListener('MDCDrawer:closed', () => {
 });
 ```
 
+<!-- docgen-tsdoc-replacer:start -->
 ### MDCDrawerAdapter
 
 Method Signature | Description 
- --- | --- 
+--- | --- 
 addClass | Adds a class to the root Element. 
 elementHasClass | Returns true if the an element contains the given class. 
 focusActiveNavigationItem | Focuses the active / selected navigation item. 
@@ -461,8 +462,8 @@ trapFocus | Traps focus on root element and focuses the active navigation elemen
 ### MDCDrawer
 
 Method Signature | Description 
- --- | --- 
-
+--- | --- 
+open | Returns true if drawer is in the open position. Toggles the drawer open and closed.
 emit | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data. 
 listen | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events. 
 unlisten | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events. 
@@ -470,7 +471,7 @@ unlisten | Wrapper method to remove an event listener to the component's root el
 ### MDCDismissibleDrawerFoundation
 
 Method Signature | Description 
- --- | --- 
+--- | --- 
 close | Closes the drawer from the open state. 
 handleKeydown | Keydown handler to close drawer when key is escape. 
 handleTransitionEnd | Handles the `transitionend` event when the drawer finishes opening/closing. 
@@ -482,7 +483,7 @@ open | Opens the drawer from the closed state.
 ### MDCModalDrawerFoundation
 
 Method Signature | Description 
- --- | --- 
+--- | --- 
 close | Closes the drawer from the open state. 
 handleKeydown | Keydown handler to close drawer when key is escape. 
 handleScrimClick | Handles click event on scrim. 
@@ -492,6 +493,7 @@ isOpen | Returns true if the drawer is in the open position.
 isOpening | Returns true if the drawer is animating open. 
 open | Opens the drawer from the closed state. 
 
+<!-- docgen-tsdoc-replacer:end -->
 
 ## Usage within Web Frameworks
 
