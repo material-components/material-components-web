@@ -51,13 +51,10 @@ class TypeScriptDocumentationGenerator {
    * @param componentPath string FilePath to the component esmodule (eg. mdc-drawer/adapter)
    */
   generateDocsForModule(esmodule, componentPath: string) {
-    if (!esmodule.name.startsWith('MDC')) {
-      // ignore util modules
-      return;
-    }
-    if (esmodule.kind === ReflectionKind.Variable || esmodule.kind === ReflectionKind.TypeAlias) {
-      // 'Variable' === ignore cssClasses and Strings & util functions
-      // 'Type alias' === TS Type declarations
+    const isUtilModule = !esmodule.name.startsWith('MDC');
+    const isCssClassesOrString = esmodule.kind === ReflectionKind.Variable;
+    const isType = esmodule.kind === ReflectionKind.TypeAlias;
+    if (isUtilModule || isCssClassesOrString || isType) {
       return;
     }
 
@@ -100,29 +97,25 @@ class TypeScriptDocumentationGenerator {
    * @returns generated markdown string containing documentation of the `esmodule`
    */
   getFunctionAndPropertiesFromModule(esmodule): string {
-    let markdownString = `### ${esmodule.name}\n\n`;
-    markdownString += 'Method Signature | Description \n--- | --- \n';
+    const title = `### ${esmodule.name}\n\n`;
+    const tableHeader = 'Method Signature | Description \n--- | --- \n';
     const functionAndProperties = esmodule.children;
-    functionAndProperties.forEach((func) => {
+    return functionAndProperties.reduce((markdownString, func) => {
       switch (func.kind) {
         case ReflectionKind.Function: {
-          markdownString += this.getFunctionComment(func);
-          break;
+          return markdownString += this.getFunctionComment(func);
         }
         case ReflectionKind.Method: {
-          markdownString += this.getFunctionComment(func);
-          break;
+          return markdownString += this.getFunctionComment(func);
         }
         case ReflectionKind.Accessor: {
-          markdownString += this.getAccessorComment(func);
-          break;
+          return markdownString += this.getAccessorComment(func);
         }
         default: {
-          // do nothing
+          return markdownString;
         }
       }
-    });
-    return markdownString;
+    }, `${title}${tableHeader}`);
   }
 
   getFunctionComment(property) {
@@ -150,12 +143,10 @@ class TypeScriptDocumentationGenerator {
    * @param eventCommentTags {tag: 'fires', text: string} text is description of event emitted.
    */
   generateEventComments(eventCommentTags) {
-    let markdownString = '### Events\n\n';
-    // @todo convert to reduce method
-    eventCommentTags.forEach((eventComment) => {
-      markdownString += `- ${this.cleanComment(eventComment.text)}\n`;
-    });
-    return `${markdownString}\n`;
+    const title = '### Events\n\n';
+    return eventCommentTags.reduce((markdownString, eventComment) => {
+      return markdownString += `- ${this.cleanComment(eventComment.text)}\n`;
+    }, title);
   }
 
   /**

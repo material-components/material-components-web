@@ -458,7 +458,6 @@ trapFocus | Traps focus on root element and focuses the active navigation elemen
 
 - `MDCDrawer:closed` Emits when the navigation drawer has closed.
 - `MDCDrawer:opened` Emits when the navigation drawer has opened. 
-
 ### MDCDrawer
 
 Method Signature | Description 
