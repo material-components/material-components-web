@@ -365,7 +365,7 @@ Method Signature | Description
 `removeClassFromLeadingIcon(className: string) => void` | Removes a class from the leading icon element
 `eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise
 `notifyInteraction() => void` | Notifies the Chip Set that the chip has been interacted with\*
-`notifySelection(selected) => void` | Notifies the Chip Set that the chip has been selected or deselected\*\*
+`notifySelection(selected: boolean, shouldIgnore: boolean) => void` | Notifies the Chip Set that the chip has been selected or deselected\*\*
 `notifyTrailingIconInteraction() => void` | Notifies the Chip Set that the chip's trailing icon has been interacted with\*
 `notifyRemoval() => void` | Notifies the Chip Set that the chip will be removed\*\*\*
 `getComputedStyleValue(propertyName: string) => string` | Returns the computed property value of the given style property on the root element
@@ -438,7 +438,7 @@ Method Signature | Description
 `getSelectedChipIds() => ReadonlyArray<string>` | Returns an array of the IDs of all selected chips
 `select(chipId: string) => void` | Selects the chip with the given id
 `handleChipInteraction(chipId: string) => void` | Handles a custom `MDCChip:interaction` event on the root element
-`handleChipSelection(chipId: string, selected: boolean) => void` | Handles a custom `MDCChip:selection` event on the root element
+`handleChipSelection(chipId: string, selected: boolean, shouldIgnore: boolean) => void` | Handles a custom `MDCChip:selection` event on the root element
 `handleChipRemoval(chipId: string) => void` | Handles a custom `MDCChip:removal` event on the root element
 `handleChipNavigation(chipId: string, key: string) => void` | Handles a custom `MDCChip:navigation` event on the root element
 

@@ -192,8 +192,8 @@ export class MDCChip extends MDCComponent<MDCChipFoundation> implements MDCRippl
         this.emit<MDCChipRemovalEventDetail>(
           strings.REMOVAL_EVENT, {chipId: this.id, root: this.root_}, true /* shouldBubble */);
       },
-      notifySelection: (selected, shouldHandle) => this.emit<MDCChipSelectionEventDetail>(
-          strings.SELECTION_EVENT, {chipId: this.id, selected, shouldIgnore: shouldHandle}, true /* shouldBubble */),
+      notifySelection: (selected, shouldIgnore) => this.emit<MDCChipSelectionEventDetail>(
+          strings.SELECTION_EVENT, {chipId: this.id, selected, shouldIgnore}, true /* shouldBubble */),
       notifyTrailingIconInteraction: () => this.emit<MDCChipInteractionEventDetail>(
           strings.TRAILING_ICON_INTERACTION_EVENT, {chipId: this.id}, true /* shouldBubble */),
       removeClass: (className) => this.root_.classList.remove(className),
