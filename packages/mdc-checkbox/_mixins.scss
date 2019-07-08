@@ -480,6 +480,7 @@
 @mixin mdc-checkbox__background_($query: mdc-feature-all()) {
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-structure: mdc-feature-create-target($query, structure);
+  $feat-color: mdc-feature-create-target($query, color);
 
   @include mdc-feature-targets($feat-structure) {
     display: inline-flex;
@@ -498,7 +499,9 @@
   }
 
   .mdc-checkbox__background::before {
-    @include mdc-theme-prop(background-color, on-surface, $edgeOptOut: true);
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(background-color, on-surface, $edgeOptOut: true);
+    }
   }
 
   @include mdc-feature-targets($feat-animation) {
