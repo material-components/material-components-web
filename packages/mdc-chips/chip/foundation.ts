@@ -84,7 +84,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   }
 
   setSelected(selected: boolean) {
-    this.setSelected_(selected);
+    this.setSelected_(selected, false);
   }
 
   setSelectedFromChipSet(selected: boolean) {
@@ -325,7 +325,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     return isDeletable && (evt.key === strings.BACKSPACE_KEY || evt.key === strings.DELETE_KEY);
   }
 
-  private setSelected_(selected: boolean, shouldIgnore=false) {
+  private setSelected_(selected: boolean, shouldIgnore: boolean) {
     if (selected) {
       this.adapter_.addClass(cssClasses.SELECTED);
       this.adapter_.setPrimaryActionAttr(strings.ARIA_CHECKED, 'true');
