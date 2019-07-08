@@ -1,6 +1,6 @@
+import {Documentalist, MarkdownPlugin, TypescriptPlugin} from '@documentalist/compiler';
 import * as fs from 'fs';
 import {ReflectionKind} from 'typedoc/dist/lib/models';
-import * as jsDocJson from '../../jsDoc.json';
 
 class TypeScriptDocumentationGenerator {
   markdownBuffer: {};
@@ -10,17 +10,24 @@ class TypeScriptDocumentationGenerator {
   }
 
   /**
-   * Sets Markdown Documentation into markdownBuffer under the `component` name.
-   * @param component Component that the `markdownString` describes
-   * @param markdownString Markdown documentation source to be placed into README.md file
+   * Generates JSON from source files TypeScript documentation.
+   * @returns Promise(json)
    */
-  setMarkdownBuffer(component: string, markdownString: string) {
-    const markdownComponentBuffer = this.markdownBuffer[component];
-    if (markdownComponentBuffer) {
-      markdownComponentBuffer.push(markdownString);
-    } else {
-      this.markdownBuffer[component] = [markdownString];
-    }
+  generateJSONFromFiles() {
+    return new Promise((resolve, reject) => {
+      new Documentalist()
+        .use(/\.ts$/, new TypescriptPlugin({
+          excludePaths: ['node_modules'],
+        }))
+        .documentGlobs('packages/**/*') // ← async operation, returns a Promise
+        .then((docs) => JSON.stringify(docs, null, 2))
+        .then((json) => {
+          // TODO: comment out - just for debugging purposes.
+          fs.writeFileSync('docs.json', json);
+          resolve(json);
+        })
+        .catch((error) => console.error(error)); // tslint:disable-line
+    });
   }
 
   /**
@@ -41,7 +48,7 @@ class TypeScriptDocumentationGenerator {
       esmodules.forEach((esmodule) => this.generateDocsForModule(esmodule, componentPath));
     });
 
-    this.generateMarkdownFile();
+    this.generateMarkdownFileFromBuffer();
   }
 
   /**
@@ -150,16 +157,35 @@ class TypeScriptDocumentationGenerator {
   }
 
   /**
+   * Sets Markdown Documentation into markdownBuffer under the `component` name.
+   * @param component Component that the `markdownString` describes
+   * @param markdownString Markdown documentation source to be placed into README.md file
+   */
+  private setMarkdownBuffer(component: string, markdownString: string) {
+    const markdownComponentBuffer = this.markdownBuffer[component];
+    if (markdownComponentBuffer) {
+      markdownComponentBuffer.push(markdownString);
+    } else {
+      this.markdownBuffer[component] = [markdownString];
+    }
+  }
+
+
+  /**
    * Generates Markdown file for each entry in `this.markdownBuffer`,
    * which is populated from `this.generateDocsForModule()`.
    */
-  async generateMarkdownFile() {
+  async generateMarkdownFileFromBuffer() {
     for (const componentName in this.markdownBuffer) {
       /**
        * This currently only has been tested on mdc-drawer.
        * TODO: remove this if condition once all READMEs are generated
        */
-      if (componentName.includes('mdc-drawer')) {
+      const allowList = [
+        // 'mdc-drawer',
+        'mdc-textfield',
+      ];
+      if (allowList.includes(componentName)) {
         const readmeDestinationPath = `./packages/${componentName}/README.md`;
         const finalReadmeMarkdown = await this.insertMethodDescriptionTable(componentName);
         fs.writeFile(readmeDestinationPath, finalReadmeMarkdown, (error) => {
@@ -199,4 +225,5 @@ class TypeScriptDocumentationGenerator {
 }
 
 const docGenerator = new TypeScriptDocumentationGenerator();
-docGenerator.generateDocs();
+docGenerator.generateJSONFromFiles()
+  .then(() => docGenerator.generateDocs());

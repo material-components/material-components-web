@@ -28,6 +28,6 @@ packages/**/*.map
 packages/**/CHANGELOG.md
 
 #documentation
-jsDoc.json
+docs.json
 methodDescriptionTable.md
 scripts/documentation/tsdoc.js
