@@ -56,11 +56,11 @@
       @include mdc-checkbox-base_;
     }
 
-    @include mdc-checkbox-container-colors($query: $query);
+    @include mdc-checkbox-focus-indicator-color($mdc-checkbox-baseline-theme-color, $query: $query);
   }
 
+  @include mdc-checkbox-container-colors($query: $query);
   @include mdc-checkbox-ink-color($mdc-checkbox-mark-color, $query);
-  @include mdc-checkbox-focus-indicator-color($mdc-checkbox-baseline-theme-color, $query);
 
   @include mdc-feature-targets($feat-color) {
     @include mdc-checkbox-disabled-container-color_;
@@ -228,21 +228,11 @@
   $unmarked-fill-color: transparent,
   $marked-stroke-color: $mdc-checkbox-baseline-theme-color,
   $marked-fill-color: $mdc-checkbox-baseline-theme-color,
-  $selected-ripple-color: $mdc-checkbox-baseline-theme-color,
   $generate-keyframes: true,
   $query: mdc-feature-all()
 ) {
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-color: mdc-feature-create-target($query, color);
-
-  &.mdc-checkbox--selected {
-    @include mdc-states($selected-ripple-color, $query: $query);
-  }
-
-  &.mdc-ripple-upgraded--background-focused .mdc-checkbox__background {
-    @include mdc-states-base-color($marked-fill-color, $query: $query);
-    @include mdc-states-focus-opacity($mdc-checkbox-focus-indicator-opacity, $query: $query);
-  }
 
   @include mdc-checkbox-unmarked-background-selector-enabled_ {
     @include mdc-feature-targets($feat-color) {
@@ -317,11 +307,19 @@
 @mixin mdc-checkbox-focus-indicator-color($color, $query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
 
-  // The ::before element is used as a focus indicator for the checkbox
-  .mdc-checkbox__background::before {
+  .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background::before,
+  .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background::before {
     @include mdc-feature-targets($feat-color) {
       @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
     }
+  }
+
+  &.mdc-checkbox--selected {
+    @include mdc-states($color, $query: $query);
+  }
+
+  &.mdc-ripple-upgraded--background-focused.mdc-checkbox--selected {
+    @include mdc-states-base-color($color, $query: $query);
   }
 }
 
@@ -497,6 +495,10 @@
     background-color: transparent;
     pointer-events: none;
     will-change: background-color, border-color;
+  }
+
+  .mdc-checkbox__background::before {
+    @include mdc-theme-prop(background-color, on-surface, $edgeOptOut: true);
   }
 
   @include mdc-feature-targets($feat-animation) {
