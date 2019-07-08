@@ -249,7 +249,7 @@
   }
 
   @if $generate-keyframes {
-    $uid: mdc-checkbox-container-keyframes-uid_();
+    $uid: unique-id();
     $anim-selector: if(&, "&.mdc-checkbox--anim", ".mdc-checkbox--anim");
 
     @include mdc-feature-targets($feat-animation, $feat-color) {
