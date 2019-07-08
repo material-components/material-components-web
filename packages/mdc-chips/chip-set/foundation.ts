@@ -98,7 +98,12 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   /**
    * Handles a chip selection event, used to handle discrepancy when selection state is set directly on the Chip.
    */
-  handleChipSelection(chipId: string, selected: boolean) {
+  handleChipSelection(chipId: string, selected: boolean, shouldIgnore: boolean) {
+    // Early exit if we should ignore the event
+    if (shouldIgnore) {
+      return;
+    }
+
     const chipIsSelected = this.selectedChipIds_.indexOf(chipId) >= 0;
     if (selected && !chipIsSelected) {
       this.select(chipId);

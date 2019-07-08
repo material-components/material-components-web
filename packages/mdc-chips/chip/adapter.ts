@@ -70,7 +70,7 @@ export interface MDCChipAdapter {
   /**
    * Emits a custom "MDCChip:selection" event denoting the chip has been selected or deselected.
    */
-  notifySelection(selected: boolean): void;
+  notifySelection(selected: boolean, shouldIgnore: boolean): void;
 
   /**
    * Emits a custom "MDCChip:trailingIconInteraction" event denoting the trailing icon has been

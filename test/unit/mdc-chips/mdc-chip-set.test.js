@@ -97,7 +97,7 @@ test('#initialSyncWithDOM sets up event handlers', () => {
   const {
     INTERACTION_EVENT, ARROW_LEFT_KEY, NAVIGATION_EVENT, REMOVAL_EVENT, SELECTION_EVENT} = MDCChipFoundation.strings;
   const evtData = {
-    chipId: 'chipA', selected: true, key: ARROW_LEFT_KEY, source: 1,
+    chipId: 'chipA', selected: true, key: ARROW_LEFT_KEY, source: 1, shouldIgnore: false,
   };
   const evt1 = document.createEvent('CustomEvent');
   const evt2 = document.createEvent('CustomEvent');
@@ -114,7 +114,7 @@ test('#initialSyncWithDOM sets up event handlers', () => {
   root.dispatchEvent(evt4);
 
   td.verify(mockFoundation.handleChipInteraction('chipA'), {times: 1});
-  td.verify(mockFoundation.handleChipSelection('chipA', true), {times: 1});
+  td.verify(mockFoundation.handleChipSelection('chipA', true, false), {times: 1});
   td.verify(mockFoundation.handleChipRemoval('chipA'), {times: 1});
   td.verify(mockFoundation.handleChipNavigation('chipA', ARROW_LEFT_KEY, 1), {times: 1});
 });

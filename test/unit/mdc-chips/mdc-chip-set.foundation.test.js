@@ -169,7 +169,7 @@ test('#handleChipSelection selects an unselected chip if selected is true', () =
 
   foundation.selectedChipIds_ = [];
   foundation.select = td.func();
-  foundation.handleChipSelection('chipA', true);
+  foundation.handleChipSelection('chipA', true, false);
   td.verify(foundation.select('chipA'));
 });
 
@@ -178,7 +178,7 @@ test('#handleChipSelection does nothing if selected is true and the chip is alre
 
   foundation.selectedChipIds_ = ['chipA'];
   foundation.select = td.func();
-  foundation.handleChipSelection('chipA', true);
+  foundation.handleChipSelection('chipA', true, false);
   td.verify(foundation.select('chipA'), {times: 0});
 });
 
@@ -186,7 +186,7 @@ test('#handleChipSelection deselects a selected chip if selected is false', () =
   const {foundation} = setupTest();
 
   foundation.selectedChipIds_ = ['chipA'];
-  foundation.handleChipSelection('chipA', false);
+  foundation.handleChipSelection('chipA', false, false);
   assert.equal(foundation.selectedChipIds_.length, 0);
 });
 
@@ -194,8 +194,16 @@ test('#handleChipSelection does nothing if selected is false and the chip is not
   const {foundation} = setupTest();
 
   foundation.selectedChipIds_ = ['chipB'];
-  foundation.handleChipSelection('chipA', false);
+  foundation.handleChipSelection('chipA', false, false);
   assert.equal(foundation.selectedChipIds_.length, 1);
+});
+
+test('#handleChipSelection does nothing if shouldIgnore is true', () => {
+  const {foundation} = setupTest();
+
+  foundation.selectedChipIds_ = ['chipB'];
+  foundation.handleChipSelection('chipA', true, true);
+  td.verify(foundation.select('chipA'), {times: 0});
 });
 
 test('#handleChipRemoval removes chip', () => {
