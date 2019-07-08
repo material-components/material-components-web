@@ -50,7 +50,7 @@ test('attachTo returns an MDCChipSet instance', () => {
 });
 
 class FakeChip {
-  constructor(el) {
+  constructor(el, isSelected=false) {
     this.id = el.id;
     this.destroy = td.func('.destroy');
     this.focusPrimaryAction = td.func('.focusPrimaryAction');
@@ -58,7 +58,7 @@ class FakeChip {
     this.remove = td.func('.remove');
     this.removeFocus = td.func('.removeFocus');
     this.setSelectedFromChipSet = td.func('.setSelectedFromChipSet');
-    this.selected = false;
+    this.selected = isSelected;
   }
 }
 
@@ -73,6 +73,14 @@ function setupMockFoundationTest() {
   const MockFoundationConstructor = td.constructor(MDCChipSetFoundation);
   const mockFoundation = new MockFoundationConstructor();
   const component = new MDCChipSet(root, mockFoundation);
+  return {root, component, mockFoundation};
+}
+
+function setupMockFoundationWithSelection() {
+  const root = getFixture();
+  const MockFoundationConstructor = td.constructor(MDCChipSetFoundation);
+  const mockFoundation = new MockFoundationConstructor();
+  const component = new MDCChipSet(root, mockFoundation, (el) => new FakeChip(el, true));
   return {root, component, mockFoundation};
 }
 
@@ -117,6 +125,13 @@ test('#initialSyncWithDOM sets up event handlers', () => {
   td.verify(mockFoundation.handleChipSelection('chipA', true, false), {times: 1});
   td.verify(mockFoundation.handleChipRemoval('chipA'), {times: 1});
   td.verify(mockFoundation.handleChipNavigation('chipA', ARROW_LEFT_KEY, 1), {times: 1});
+});
+
+test('#initialSyncWithDOM calls MDCChipSetFoundation#selectOnInit on the selected chips', () => {
+  const {mockFoundation} = setupMockFoundationWithSelection();
+  td.verify(mockFoundation.selectOnInit('chip1'));
+  td.verify(mockFoundation.selectOnInit('chip2'));
+  td.verify(mockFoundation.selectOnInit('chip3'));
 });
 
 test('#destroy removes event handlers', () => {
@@ -181,8 +196,8 @@ test('#adapter.removeChipAtIndex does nothing if the given object is not in the 
 test('#adapter.selectChipAtIndex calls setSelectedFromChipSet on chip object', () => {
   const {component} = setupTest();
   const chip = component.chips[0];
-  component.getDefaultFoundation().adapter_.selectChipAtIndex(0, true);
-  td.verify(chip.setSelectedFromChipSet(true));
+  component.getDefaultFoundation().adapter_.selectChipAtIndex(0, true, true);
+  td.verify(chip.setSelectedFromChipSet(true, true));
 });
 
 test('#adapter.getChipListCount returns the number of chips', () => {

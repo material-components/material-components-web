@@ -68,7 +68,7 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   initialSyncWithDOM() {
     this.chips_.forEach((chip) => {
       if (chip.id && chip.selected) {
-        this.foundation_.select(chip.id);
+        this.foundation_.selectOnInit(chip.id);
       }
     });
 
@@ -130,9 +130,9 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
       removeFocusFromChipAtIndex: (index) => {
         this.chips_[index].removeFocus();
       },
-      selectChipAtIndex: (index, selected) => {
+      selectChipAtIndex: (index, selected, shouldNotify) => {
         if (index >= 0 && index < this.chips_.length) {
-          this.chips_[index].setSelectedFromChipSet(selected);
+          this.chips_[index].setSelectedFromChipSet(selected, shouldNotify);
         }
       },
     };

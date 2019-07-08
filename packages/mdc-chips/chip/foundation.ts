@@ -84,11 +84,11 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
   }
 
   setSelected(selected: boolean) {
-    this.setSelected_(selected, false);
+    this.setSelected_(selected, true, false);
   }
 
-  setSelectedFromChipSet(selected: boolean) {
-    this.setSelected_(selected, true);
+  setSelectedFromChipSet(selected: boolean, shouldNotify: boolean) {
+    this.setSelected_(selected, shouldNotify, true);
   }
 
   getShouldRemoveOnTrailingIconClick() {
@@ -325,7 +325,7 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     return isDeletable && (evt.key === strings.BACKSPACE_KEY || evt.key === strings.DELETE_KEY);
   }
 
-  private setSelected_(selected: boolean, shouldIgnore: boolean) {
+  private setSelected_(selected: boolean, shouldNotify: boolean, chipSetShouldIgnore: boolean, ) {
     if (selected) {
       this.adapter_.addClass(cssClasses.SELECTED);
       this.adapter_.setPrimaryActionAttr(strings.ARIA_CHECKED, 'true');
@@ -334,7 +334,9 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
       this.adapter_.setPrimaryActionAttr(strings.ARIA_CHECKED, 'false');
     }
 
-    this.adapter_.notifySelection(selected, shouldIgnore);
+    if (shouldNotify) {
+      this.adapter_.notifySelection(selected, chipSetShouldIgnore);
+    }
   }
 }
 
