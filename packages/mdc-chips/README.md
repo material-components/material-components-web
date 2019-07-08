@@ -365,7 +365,7 @@ Method Signature | Description
 `removeClassFromLeadingIcon(className: string) => void` | Removes a class from the leading icon element
 `eventTargetHasClass(target: EventTarget, className: string) => boolean` | Returns true if target has className, false otherwise
 `notifyInteraction() => void` | Notifies the Chip Set that the chip has been interacted with\*
-`notifySelection(selected: boolean, shouldIgnore: boolean) => void` | Notifies the Chip Set that the chip has been selected or deselected\*\*
+`notifySelection(selected: boolean, chipSetShouldIgnore: boolean) => void` | Notifies the Chip Set that the chip has been selected or deselected\*\*. When `chipSetShouldIgnore` is `true`, the chip set does not process the event.
 `notifyTrailingIconInteraction() => void` | Notifies the Chip Set that the chip's trailing icon has been interacted with\*
 `notifyRemoval() => void` | Notifies the Chip Set that the chip will be removed\*\*\*
 `getComputedStyleValue(propertyName: string) => string` | Returns the computed property value of the given style property on the root element
@@ -409,7 +409,7 @@ Method Signature | Description
 --- | ---
 `isSelected() => boolean` | Returns true if the chip is selected
 `setSelected(selected: boolean) => void` | Sets the chip's selected state
-`setSelectedFromChipSet(selected: boolean) => void` | Sets the chip's selected state (called from the chip set)
+`setSelectedFromChipSet(selected: boolean, shouldNotify: boolean) => void` | Sets the chip's selected state (called from the chip set) to the `selected` param. Will emit a selection event if called with `shouldNotify` set to `true`
 `getShouldRemoveOnTrailingIconClick() => boolean` | Returns whether a trailing icon click should trigger exit/removal of the chip
 `setShouldRemoveOnTrailingIconClick(shouldRemove: boolean) => void` | Sets whether a trailing icon click should trigger exit/removal of the chip
 `getDimensions() => ClientRect` | Returns the dimensions of the chip. This is used for applying ripple to the chip.
@@ -438,9 +438,10 @@ Method Signature | Description
 `getSelectedChipIds() => ReadonlyArray<string>` | Returns an array of the IDs of all selected chips
 `select(chipId: string) => void` | Selects the chip with the given id
 `handleChipInteraction(chipId: string) => void` | Handles a custom `MDCChip:interaction` event on the root element
-`handleChipSelection(chipId: string, selected: boolean, shouldIgnore: boolean) => void` | Handles a custom `MDCChip:selection` event on the root element
+`handleChipSelection(chipId: string, selected: boolean, chipSetShouldIgnore: boolean) => void` | Handles a custom `MDCChip:selection` event on the root element. When `chipSetShouldIgnore` is true, the chip set does not process the event.
 `handleChipRemoval(chipId: string) => void` | Handles a custom `MDCChip:removal` event on the root element
 `handleChipNavigation(chipId: string, key: string) => void` | Handles a custom `MDCChip:navigation` event on the root element
+`selectOnInit(chipId: string) => void` | Selects the chip during initialization. Should *only* be called during the component initialization
 
 #### `MDCChipSetFoundation` Event Handlers
 
