@@ -146,7 +146,7 @@ class TypeScriptDocumentationGenerator {
       documentation = item.documentation.contentsRaw;
     }
     documentation = documentation && documentation.length ? this.cleanComment(documentation) : 'n/a';
-    return `${markdownString}${itemName} | ${this.cleanType(itemSignature)} | ${documentation}\n`;
+    return `${markdownString}${itemName} | \`${itemSignature}\` | ${documentation}\n`;
   }
 
   /**
@@ -215,11 +215,6 @@ class TypeScriptDocumentationGenerator {
 
   private cleanComment(comment) {
     return comment.replace('\n', ' ');
-  }
-
-  private cleanType(typing) {
-    // do not break markdown table format
-    return typing.replace(' | ', ' \\| ');
   }
 }
 
