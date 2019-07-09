@@ -388,8 +388,8 @@
 
   $ripple-target: if($ripple-target != null, " #{$ripple-target}", "");
 
-  &#{$rippleTarget}::before,
-  &#{$rippleTarget}::after {
+  &#{$ripple-target}::before,
+  &#{$ripple-target}::after {
     @include mdc-feature-targets($feat-struture) {
       top: calc(50% - #{$radius / 2});
       /* @noflip */
