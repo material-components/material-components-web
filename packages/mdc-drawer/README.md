@@ -445,14 +445,14 @@ document.body.addEventListener('MDCDrawer:closed', () => {
 Name | Signature | Description
 --- | --- | --- 
 init | `() => void` | n/a
-close | `() => void` | n/a
+close | `() => void` | Closes the drawer from the open state.
 destroy | `() => void` | n/a
 handleKeydown | `(evt: KeyboardEvent) => void` | Keydown handler to close drawer when key is escape.
-handleTransitionEnd | `(evt: TransitionEvent) => void` | Handles a transition end event on the root element.
-isClosing | `() => boolean` | n/a
-isOpen | `() => boolean` | n/a
-isOpening | `() => boolean` | n/a
-open | `() => void` | n/a
+handleTransitionEnd | `(evt: TransitionEvent) => void` | Handles the `transitionend` event when the drawer finishes opening/closing.
+isClosing | `() => boolean` | Returns true if the drawer is animating closed.
+isOpen | `() => boolean` | Returns true if the drawer is in the open position.
+isOpening | `() => boolean` | Returns true if the drawer is animating open.
+open | `() => void` | Opens the drawer from the closed state.
 
 
 ### MDCModalDrawerFoundation
@@ -474,6 +474,8 @@ open | `() => void` | Opens the drawer from the closed state.
 
 
 ### MDCDrawer
+
+@fires `MDCDrawer:closed` Emits when the navigation drawer has closed. @fires `MDCDrawer:opened` Emits when the navigation drawer has opened.
 
 #### Methods
 
@@ -511,7 +513,7 @@ addClass | `(className: string) => void` | Adds a class to the root Element.
 focusActiveNavigationItem | `() => void` | Focuses the active / selected navigation item.
 hasClass | `(className: string) => boolean` | Returns true if the root Element contains the given class.
 notifyClose | `() => void` | Emits a custom event "MDCDrawer:closed" denoting the drawer has closed.
-elementHasClass | `(element: Element, className: string) => boolean` | n/a
+elementHasClass | `(element: Element, className: string) => boolean` | Returns true if the an element contains the given class.
 releaseFocus | `() => void` | Releases focus trap from root element which was set by `trapFocus` and restores focus to where it was prior to calling `trapFocus`.
 removeClass | `(className: string) => void` | Removes a class from the root Element.
 restoreFocus | `() => void` | Restores focus to element previously saved with 'saveFocus'.

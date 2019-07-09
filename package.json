@@ -9,7 +9,7 @@
     "clean": "node ./scripts/build/clean",
     "clean:site": "node ./scripts/build/clean --site-generator-tmp",
     "dist": "npm run build && npm run build:min && npm run build:esmodules",
-    "docgen": "tsc ./scripts/documentation/tsdoc.ts --resolveJsonModule && node ./scripts/documentation/tsdoc.js",
+    "docgen": "npm run clean && npm run build:esmodules && tsc ./scripts/documentation/tsdoc.ts --resolveJsonModule && node ./scripts/documentation/tsdoc.js",
     "fix:js": "eslint --fix test scripts webpack.config.js karma.conf.js",
     "fix:ts": "tslint --exclude \"**/*.d.ts\" --fix \"packages/**/*.ts\" \"test/**/*.ts\" \"scripts/**/*.ts\"",
     "fix:css": "stylelint --fix \"packages/**/*.scss\"; stylelint --fix --config=test/screenshot/.stylelintrc.yaml \"test/screenshot/**/*.scss\"",

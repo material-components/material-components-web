@@ -176,7 +176,7 @@ class TypeScriptDocumentationGenerator {
        */
       const allowList = [
         'mdc-drawer',
-        // 'mdc-textfield',
+        'mdc-textfield',
       ];
 
       if (allowList.includes(componentName)) {
