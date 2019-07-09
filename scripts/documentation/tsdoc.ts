@@ -122,9 +122,26 @@ class TypeScriptDocumentationGenerator {
       return '';
     }
     const title = `${markdownSubHeaderLevel} Methods\n\n`;
-    const tableHeader = 'Name | Signature | Description\n--- | --- | --- \n';
-    const methodDocs = methods.reduce((markdownString, method) =>
-      this.getDocumentationFromItem(markdownString, method, {isMethod: true}), '');
+    const tableHeader = 'Signature | Description\n--- | --- \n';
+    const methodDocs = methods.reduce((markdownString, method) => {
+      // isState ignores cssClasses, defaultAdapter, strings
+      const {isProtected, isStatic} = method.flags;
+      if (isProtected || isStatic) {
+        return markdownString;
+      }
+
+      const methodName = method.name;
+      const methodSignature = method.signatures[0].type;
+      let documentation;
+      if (method.signatures[0].documentation) {
+        documentation = method.signatures[0].documentation.contentsRaw;
+      }
+      if (!documentation) {
+        // ignore methods without any documentation
+        return markdownString;
+      }
+      return `${markdownString}\`${methodName}${methodSignature}\` | ${this.cleanComment(documentation)}\n`;
+    }, '');
     if (!methodDocs.length) {
       return '';
     }
@@ -147,31 +164,29 @@ class TypeScriptDocumentationGenerator {
 
     const title = `${markdownSubHeaderLevel} Properties\n\n`;
     const tableHeader = 'Name | Type | Description\n--- | --- | --- \n';
-    const propertyDocs = properties.reduce((markdownString, property) =>
-      this.getDocumentationFromItem(markdownString, property), '');
+    const propertyDocs = properties.reduce((markdownString, property) => {
+      // isState ignores cssClasses, defaultAdapter, strings
+      const {isProtected, isStatic} = property.flags;
+      if (isProtected || isStatic) {
+        return markdownString;
+      }
+
+      const propertyName = property.name;
+      const propertySignature = property.type;
+      let documentation;
+      if (property.documentation) {
+        documentation = property.documentation.contentsRaw;
+      }
+      if (!documentation) {
+        // ignore methods without any documentation
+        return markdownString;
+      }
+      return `${markdownString}${propertyName} | \`${propertySignature}\` | ${this.cleanComment(documentation)}\n`;
+    }, '');
     if (!propertyDocs.length) {
       return '';
     }
     return `${title}${tableHeader}${propertyDocs}\n`;
-  }
-
-  getDocumentationFromItem(markdownString, item, opts = {isMethod: false}) {
-    // isState ignores cssClasses, defaultAdapter, strings
-    const {isProtected, isStatic} = item.flags;
-    if (isProtected || isStatic) {
-      return markdownString;
-    }
-
-    const itemName = item.name;
-    const itemSignature = opts.isMethod ? item.signatures[0].type : item.type;
-    let documentation;
-    if (opts.isMethod && item.signatures[0].documentation) {
-      documentation = item.signatures[0].documentation.contentsRaw;
-    } else if (item.documentation) {
-      documentation = item.documentation.contentsRaw;
-    }
-    documentation = documentation && documentation.length ? this.cleanComment(documentation) : 'n/a';
-    return `${markdownString}${itemName} | \`${itemSignature}\` | ${documentation}\n`;
   }
 
   /**
