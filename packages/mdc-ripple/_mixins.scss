@@ -331,7 +331,7 @@
     }
 
     @include mdc-states-interactions_(
-      $color, $has-nested-focusable-element, $activated-opacity, $query, $ripple-target);
+      $color, $has-nested-focusable-element, $activated-opacity, $query, $ripple-target-opt);
   }
 }
 
