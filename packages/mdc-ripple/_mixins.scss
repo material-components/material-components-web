@@ -446,7 +446,7 @@
     $ripple-target-opt);
 }
 
-/** Wraps content in the `ripple-target` selector if it exists. */
+// Wraps content in the `ripple-target` selector if it exists.
 @mixin mdc-ripple-target-selector($ripple-target: null) {
   @if $ripple-target != null {
     #{$ripple-target} {
