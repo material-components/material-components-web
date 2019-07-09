@@ -129,7 +129,7 @@ export interface MDCChipAdapter {
   hasTrailingAction(): boolean;
 
   /**
-   * Sets the the attribute on the trailing action if it exists.
+   * Sets the attribute on the trailing action if it exists.
    */
   setTrailingActionAttr(attr: string, value: string): void;
 
