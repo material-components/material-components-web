@@ -1,6 +1,9 @@
 import {Documentalist, TypescriptPlugin} from '@documentalist/compiler';
 import * as fs from 'fs';
 
+const markdownHeaderLevel = '###';
+const markdownSubHeaderLevel = '####';
+
 class TypeScriptDocumentationGenerator {
   markdownBuffer: {};
   docData?: {};
@@ -26,14 +29,12 @@ class TypeScriptDocumentationGenerator {
         .then((docs) => {
           resolve(docs);
           // TODO - remove when all docs are complete
-          // return JSON.stringify(docs, null, 2);
+          return JSON.stringify(docs, null, 2);
         })
-        /*
         .then((json) => {
           // TODO: comment out - just for debugging purposes.
           fs.writeFileSync('docs.json', json);
         })
-        */
         .catch((error) => console.error(error)); // tslint:disable-line
     });
   }
@@ -58,10 +59,12 @@ class TypeScriptDocumentationGenerator {
    * @param esmodule module name (ie. MDCSelectIconFoundation)
    */
   generateDocsForModule(esmodule: string) {
+    const moduleName = `${markdownHeaderLevel} ${esmodule}\n\n`;
     const markdownString =
-      this.getDocumentationForModule(esmodule)
+      moduleName
       + this.getDocumentationForMethods(esmodule)
-      + this.getDocumentationProperties(esmodule);
+      + this.getDocumentationProperties(esmodule)
+      + this.getDocumentationForModule(esmodule);
     if (this.docData[esmodule].kind === 'type alias') {
       return;
     }
@@ -71,16 +74,38 @@ class TypeScriptDocumentationGenerator {
 
   /**
    * This is higher level documentation from the class.
+   * Currently this should only include events documentation.
    * @returns documentation markdown table in string format.
    * @param esmodule module name (ie. MDCSelectIconFoundation)
    */
   getDocumentationForModule(esmodule: string): string {
-    const title = `### ${esmodule}\n\n`;
+    const title = `${markdownSubHeaderLevel} Events\n`;
+    const tableHeader = 'Name | Detail | Description\n--- | --- | --- \n';
     if (!this.docData || !this.docData[esmodule].documentation) {
-      return title;
+      return '';
     }
-    const documentation = this.cleanComment(this.docData[esmodule].documentation.contentsRaw);
-    return `${title}${documentation}\n\n`;
+    const {contents} = this.docData[esmodule].documentation;
+    if (!contents || !contents.length) {
+      return '';
+    }
+    const eventsTable = contents.reduce((markdownString: string, content: {tag?: string, value?: string}) => {
+      if (!content.tag || content.tag !== 'events') {
+        return markdownString;
+      }
+      const {value} = content;
+      const separatedValue = value.split('%-%'); // created this separator
+      const eventName = separatedValue[0];
+      const eventDescription = separatedValue[1];
+      const eventDetail = separatedValue[2];
+      const eventRow = `${eventName} | \`${eventDetail}\`  | ${eventDescription}\n`;
+      return `${markdownString}${eventRow}`;
+    }, '');
+
+    if (!eventsTable.length) {
+      return '';
+    }
+
+    return `${title}${tableHeader}${eventsTable}\n\n`;
   }
 
   /**
@@ -96,7 +121,7 @@ class TypeScriptDocumentationGenerator {
     if (!methods || !methods.length) {
       return '';
     }
-    const title = `#### Methods\n\n`;
+    const title = `${markdownSubHeaderLevel} Methods\n\n`;
     const tableHeader = 'Name | Signature | Description\n--- | --- | --- \n';
     const methodDocs = methods.reduce((markdownString, method) =>
       this.getDocumentationFromItem(markdownString, method, {isMethod: true}), '');
@@ -120,7 +145,7 @@ class TypeScriptDocumentationGenerator {
       return '';
     }
 
-    const title = `#### Properties\n\n`;
+    const title = `${markdownSubHeaderLevel} Properties\n\n`;
     const tableHeader = 'Name | Type | Description\n--- | --- | --- \n';
     const propertyDocs = properties.reduce((markdownString, property) =>
       this.getDocumentationFromItem(markdownString, property), '');
@@ -176,7 +201,7 @@ class TypeScriptDocumentationGenerator {
        */
       const allowList = [
         'mdc-drawer',
-        'mdc-textfield',
+        // 'mdc-textfield',
       ];
 
       if (allowList.includes(componentName)) {
@@ -193,7 +218,9 @@ class TypeScriptDocumentationGenerator {
   }
 
   private insertMethodDescriptionTable(componentName: string) {
-    const methodDescriptionTableMarkdown = this.markdownBuffer[componentName].join('\n');
+    const methodDescriptionTableMarkdown = this.markdownBuffer[componentName]
+      .sort(this.sortByModuleType)
+      .join('\n');
     const readmeMarkdownPath = `./packages/${componentName}/README.md`;
     return new Promise((resolve, reject) => {
       fs.readFile(readmeMarkdownPath, 'utf8', (error, data) => {
@@ -211,6 +238,20 @@ class TypeScriptDocumentationGenerator {
         resolve(insertedData);
       });
     });
+  }
+
+  private sortByModuleType(a: string, b: string) {
+    const FOUNDATION = 'foundation';
+    const ADAPTER = 'adapter';
+    const moduleNameRegex = new RegExp(/^### (MDC[a-zA-Z]*)/g);
+    const moduleA = a.match(moduleNameRegex)[0].toLowerCase();
+    const moduleB = b.match(moduleNameRegex)[0].toLowerCase();
+    if (!moduleA.includes(FOUNDATION) && !moduleA.includes(ADAPTER)) {
+      return -1;
+    } else if (moduleA.includes(FOUNDATION)) {
+      return 1;
+    }
+    return 0;
   }
 
   private cleanComment(comment) {

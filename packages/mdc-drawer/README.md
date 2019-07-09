@@ -438,44 +438,7 @@ document.body.addEventListener('MDCDrawer:closed', () => {
 ```
 
 <!-- docgen-tsdoc-replacer:start -->
-### MDCDismissibleDrawerFoundation
-
-#### Methods
-
-Name | Signature | Description
---- | --- | --- 
-init | `() => void` | n/a
-close | `() => void` | Closes the drawer from the open state.
-destroy | `() => void` | n/a
-handleKeydown | `(evt: KeyboardEvent) => void` | Keydown handler to close drawer when key is escape.
-handleTransitionEnd | `(evt: TransitionEvent) => void` | Handles the `transitionend` event when the drawer finishes opening/closing.
-isClosing | `() => boolean` | Returns true if the drawer is animating closed.
-isOpen | `() => boolean` | Returns true if the drawer is in the open position.
-isOpening | `() => boolean` | Returns true if the drawer is animating open.
-open | `() => void` | Opens the drawer from the closed state.
-
-
-### MDCModalDrawerFoundation
-
-#### Methods
-
-Name | Signature | Description
---- | --- | --- 
-init | `() => void` | n/a
-close | `() => void` | Closes the drawer from the open state.
-destroy | `() => void` | n/a
-handleKeydown | `(evt: KeyboardEvent) => void` | Keydown handler to close drawer when key is escape.
-handleScrimClick | `() => void` | Handles click event on scrim.
-handleTransitionEnd | `(evt: TransitionEvent) => void` | Handles the `transitionend` event when the drawer finishes opening/closing.
-isClosing | `() => boolean` | Returns true if the drawer is animating closed.
-isOpen | `() => boolean` | Returns true if the drawer is in the open position.
-isOpening | `() => boolean` | Returns true if the drawer is animating open.
-open | `() => void` | Opens the drawer from the closed state.
-
-
 ### MDCDrawer
-
-@fires `MDCDrawer:closed` Emits when the navigation drawer has closed. @fires `MDCDrawer:opened` Emits when the navigation drawer has opened.
 
 #### Methods
 
@@ -496,13 +459,15 @@ Name | Type | Description
 list | `MDCList | undefined` | n/a
 open | `boolean` | Toggles the drawer open and closed.
 
+#### Events
+Name | Detail | Description
+--- | --- | --- 
+MDCDrawer:event  | ` {}`  |  Emits when the navigation drawer has closed. 
+MDCDrawer:opened  | ` {}`  |  Emits when the navigation drawer has opened. 
+
+
 
 ### MDCDrawerAdapter
-
-Defines the shape of the adapter expected by the foundation. Implement this adapter for your framework of choice to delegate updates to
-the component in your framework of choice. See architecture documentation
-for more details.
-https://github.com/material-components/material-components-web/blob/master/docs/code/architecture.md
 
 #### Methods
 
@@ -519,6 +484,41 @@ removeClass | `(className: string) => void` | Removes a class from the root Elem
 restoreFocus | `() => void` | Restores focus to element previously saved with 'saveFocus'.
 saveFocus | `() => void` | Saves the focus of currently active element.
 trapFocus | `() => void` | Traps focus on root element and focuses the active navigation element.
+
+
+### MDCModalDrawerFoundation
+
+#### Methods
+
+Name | Signature | Description
+--- | --- | --- 
+init | `() => void` | n/a
+close | `() => void` | Closes the drawer from the open state.
+destroy | `() => void` | n/a
+handleKeydown | `(evt: KeyboardEvent) => void` | Keydown handler to close drawer when key is escape.
+handleScrimClick | `() => void` | Handles click event on scrim.
+handleTransitionEnd | `(evt: TransitionEvent) => void` | Handles the `transitionend` event when the drawer finishes opening/closing.
+isClosing | `() => boolean` | Returns true if the drawer is animating closed.
+isOpen | `() => boolean` | Returns true if the drawer is in the open position.
+isOpening | `() => boolean` | Returns true if the drawer is animating open.
+open | `() => void` | Opens the drawer from the closed state.
+
+
+### MDCDismissibleDrawerFoundation
+
+#### Methods
+
+Name | Signature | Description
+--- | --- | --- 
+init | `() => void` | n/a
+close | `() => void` | Closes the drawer from the open state.
+destroy | `() => void` | n/a
+handleKeydown | `(evt: KeyboardEvent) => void` | Keydown handler to close drawer when key is escape.
+handleTransitionEnd | `(evt: TransitionEvent) => void` | Handles the `transitionend` event when the drawer finishes opening/closing.
+isClosing | `() => boolean` | Returns true if the drawer is animating closed.
+isOpen | `() => boolean` | Returns true if the drawer is in the open position.
+isOpening | `() => boolean` | Returns true if the drawer is animating open.
+open | `() => void` | Opens the drawer from the closed state.
 
 
 <!-- docgen-tsdoc-replacer:end -->
