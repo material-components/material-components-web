@@ -248,14 +248,19 @@ class TypeScriptDocumentationGenerator {
     const moduleB = b.match(moduleNameRegex)[0].toLowerCase();
     if (!moduleA.includes(FOUNDATION) && !moduleA.includes(ADAPTER)) {
       return -1;
-    } else if (moduleA.includes(FOUNDATION)) {
+    } else if (moduleA.includes(FOUNDATION) && !moduleB.includes(FOUNDATION)) {
       return 1;
+    } else if (moduleA.includes(FOUNDATION) && moduleB.includes(FOUNDATION)
+      || moduleA.includes(ADAPTER) && moduleB.includes(ADAPTER)) {
+      // alphabetize
+      return moduleA > moduleB;
     }
     return 0;
   }
 
   private cleanComment(comment) {
-    return comment.replace('\n', ' ');
+    const r = new RegExp(/\n/gm);
+    return comment.replace(r, ' ');
   }
 }
 
