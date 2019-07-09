@@ -1,16 +1,18 @@
-import {Documentalist, MarkdownPlugin, TypescriptPlugin} from '@documentalist/compiler';
+import {Documentalist, TypescriptPlugin} from '@documentalist/compiler';
 import * as fs from 'fs';
-import {ReflectionKind} from 'typedoc/dist/lib/models';
 
 class TypeScriptDocumentationGenerator {
   markdownBuffer: {};
+  docData?: {};
 
   constructor() {
+    this.docData = {};
     this.markdownBuffer = {};
   }
 
   /**
    * Generates JSON from source files TypeScript documentation.
+   * This contains all the esmodule classes (ie. foundations, adapters, components) in JSON format.
    * @returns Promise(json)
    */
   generateJSONFromFiles() {
@@ -18,142 +20,133 @@ class TypeScriptDocumentationGenerator {
       new Documentalist()
         .use(/\.ts$/, new TypescriptPlugin({
           excludePaths: ['node_modules'],
+          includeDeclarations: true,
         }))
         .documentGlobs('packages/**/*') // ← async operation, returns a Promise
-        .then((docs) => JSON.stringify(docs, null, 2))
+        .then((docs) => {
+          resolve(docs);
+          // TODO - remove when all docs are complete
+          // return JSON.stringify(docs, null, 2);
+        })
+        /*
         .then((json) => {
           // TODO: comment out - just for debugging purposes.
           fs.writeFileSync('docs.json', json);
-          resolve(json);
         })
+        */
         .catch((error) => console.error(error)); // tslint:disable-line
     });
   }
 
   /**
-   * The main function of this class. Iterates through all classes/files
-   * of the packages directory (already precompiled from `npm run build:docs:typescript`).
-   * This then steps through all the esmodule classes (ie. foundations, adapters, components),
-   * and iterates through all methods/properties.
+   * The main function of this class. Iterates through all modules found in docData (json).
+   * This should already be generated from this.generateJSONFromFiles().
+   * @param docData json containing documentation from documentalist
    */
-  generateDocs() {
-    jsDocJson.children.forEach((jsDocSection) => {
-      const filepath = jsDocSection.name.replace(/\"/g, '');
-      const componentPath = filepath.split('/')[0];
-      const esmodules = jsDocSection.children as any[]; // tslint:disable-line
-      if (!esmodules) {
-        return;
-      }
-      console.log(`-- generating docs for ${filepath}`); // tslint:disable-line
-      esmodules.forEach((esmodule) => this.generateDocsForModule(esmodule, componentPath));
+  generateDocs(docData) {
+    this.docData = docData.typescript;
+    Object.keys(this.docData).forEach((module) => {
+      console.log(`-- generating docs for ${module}`); // tslint:disable-line
+      this.generateDocsForModule(module);
     });
 
     this.generateMarkdownFileFromBuffer();
   }
 
   /**
-   * Creates a documentation for a specified `esmodule`, and creates a markdown string
-   * to be inserted into the main README.md.
-   * @param esmodule Generated Typedoc object
-   * @param componentPath string FilePath to the component esmodule (eg. mdc-drawer/adapter)
+   * Creates documentation for a specified `esmodule`.
+   * @param esmodule module name (ie. MDCSelectIconFoundation)
    */
-  generateDocsForModule(esmodule, componentPath: string) {
-    const isUtilModule = !esmodule.name.startsWith('MDC');
-    const isCssClassesOrString = esmodule.kind === ReflectionKind.Variable;
-    const isType = esmodule.kind === ReflectionKind.TypeAlias;
-    if (isUtilModule || isCssClassesOrString || isType) {
+  generateDocsForModule(esmodule: string) {
+    const markdownString =
+      this.getDocumentationForModule(esmodule)
+      + this.getDocumentationForMethods(esmodule)
+      + this.getDocumentationProperties(esmodule);
+    if (this.docData[esmodule].kind === 'type alias') {
       return;
     }
 
-    const markdownString = this.getClassDocumentationFromModule(esmodule)
-      + this.getFunctionAndPropertiesFromModule(esmodule);
-
-    this.setMarkdownBuffer(componentPath, markdownString);
+    this.setMarkdownBuffer(this.docData[esmodule].fileName, markdownString);
   }
 
   /**
-   * Collects documentation for file or class, and returns markdown
-   * @param esmodule Generate Typedoc object
-   * @returns generated markdown string containing higher level documentation of the `esmodule`
+   * This is higher level documentation from the class.
+   * @returns documentation markdown table in string format.
+   * @param esmodule module name (ie. MDCSelectIconFoundation)
    */
-  getClassDocumentationFromModule(esmodule): string {
-    const commentsByType: {fires?: {}} = {};
-    if (!esmodule.comment || !esmodule.comment.tags || esmodule.comment.tags.length <= 0) {
-      return '';
+  getDocumentationForModule(esmodule: string): string {
+    const title = `### ${esmodule}\n\n`;
+    if (!this.docData || !this.docData[esmodule].documentation) {
+      return title;
     }
-    esmodule.comment.tags.forEach((tag) => {
-      const commentType = tag.tag;
-      if (commentsByType[commentType]) {
-        commentsByType[commentType].push(tag);
-      } else {
-        commentsByType[commentType] = [tag];
-      }
-    });
-    let markdownString = '';
-    if (commentsByType.fires) {
-      // @fires describes events that are emitted
-      // https://jsdoc.app/tags-fires.html
-      markdownString = this.generateEventComments(commentsByType.fires);
-    }
-    return markdownString;
+    const documentation = this.cleanComment(this.docData[esmodule].documentation.contentsRaw);
+    return `${title}${documentation}\n\n`;
   }
 
   /**
-   * Generates method description table markdown for specified `esmodule
-   * @param esmodule Generate Typedoc object
-   * @returns generated markdown string containing documentation of the `esmodule`
+   * Iterates through all methods of a specified `esmodule`.
+   * @returns documentation markdown table in string format.
+   * @param esmodule module name (ie. MDCSelectIconFoundation)
    */
-  getFunctionAndPropertiesFromModule(esmodule): string {
-    const title = `### ${esmodule.name}\n\n`;
-    const tableHeader = 'Method Signature | Description \n--- | --- \n';
-    const functionAndProperties = esmodule.children;
-    return functionAndProperties.reduce((markdownString, func) => {
-      switch (func.kind) {
-        case ReflectionKind.Function: {
-          return markdownString += this.getFunctionComment(func);
-        }
-        case ReflectionKind.Method: {
-          return markdownString += this.getFunctionComment(func);
-        }
-        case ReflectionKind.Accessor: {
-          return markdownString += this.getAccessorComment(func);
-        }
-        default: {
-          return markdownString;
-        }
-      }
-    }, `${title}${tableHeader}`);
-  }
-
-  getFunctionComment(property) {
-    if (!property.signatures
-      || !property.signatures[0]
-      || !property.signatures[0].comment
-      || !property.signatures[0].comment.shortText) {
-      // If no comment provided, do not record.
+  getDocumentationForMethods(esmodule: string): string {
+    if (!this.docData) {
       return '';
     }
-    const comment = this.cleanComment(property.signatures[0].comment.shortText);
-    return `${property.name} | ${comment} \n`;
-  }
-
-  getAccessorComment(property) {
-    if (!property.comment) {
+    const {methods} = this.docData[esmodule];
+    if (!methods || !methods.length) {
       return '';
     }
-    const comment = this.cleanComment(`${property.name} | ${property.comment.shortText}`);
-    return `${comment}\n`;
+    const title = `#### Methods\n\n`;
+    const tableHeader = 'Name | Signature | Description\n--- | --- | --- \n';
+    const methodDocs = methods.reduce((markdownString, method) =>
+      this.getDocumentationFromItem(markdownString, method, {isMethod: true}), '');
+    if (!methodDocs.length) {
+      return '';
+    }
+    return `${title}${tableHeader}${methodDocs}\n`;
   }
 
   /**
-   * Generates markdown of events emited by esmodule
-   * @param eventCommentTags {tag: 'fires', text: string} text is description of event emitted.
+   * Iterates through all properties of a specified `esmodule`.
+   * @returns documentation markdown table in string format.
+   * @param esmodule module name (ie. MDCSelectIconFoundation)
    */
-  generateEventComments(eventCommentTags) {
-    const title = '### Events\n\n';
-    return eventCommentTags.reduce((markdownString, eventComment) => {
-      return markdownString += `- ${this.cleanComment(eventComment.text)}\n`;
-    }, title);
+  getDocumentationProperties(esmodule: string): string {
+    if (!this.docData) {
+      return '';
+    }
+    const {properties} = this.docData[esmodule];
+    if (!properties || !properties.length) {
+      return '';
+    }
+
+    const title = `#### Properties\n\n`;
+    const tableHeader = 'Name | Type | Description\n--- | --- | --- \n';
+    const propertyDocs = properties.reduce((markdownString, property) =>
+      this.getDocumentationFromItem(markdownString, property), '');
+    if (!propertyDocs.length) {
+      return '';
+    }
+    return `${title}${tableHeader}${propertyDocs}\n`;
+  }
+
+  getDocumentationFromItem(markdownString, item, opts = {isMethod: false}) {
+    // isState ignores cssClasses, defaultAdapter, strings
+    const {isProtected, isStatic} = item.flags;
+    if (isProtected || isStatic) {
+      return markdownString;
+    }
+
+    const itemName = item.name;
+    const itemSignature = opts.isMethod ? item.signatures[0].type : item.type;
+    let documentation;
+    if (opts.isMethod && item.signatures[0].documentation) {
+      documentation = item.signatures[0].documentation.contentsRaw;
+    } else if (item.documentation) {
+      documentation = item.documentation.contentsRaw;
+    }
+    documentation = documentation && documentation.length ? this.cleanComment(documentation) : 'n/a';
+    return `${markdownString}${itemName} | ${this.cleanType(itemSignature)} | ${documentation}\n`;
   }
 
   /**
@@ -161,7 +154,8 @@ class TypeScriptDocumentationGenerator {
    * @param component Component that the `markdownString` describes
    * @param markdownString Markdown documentation source to be placed into README.md file
    */
-  private setMarkdownBuffer(component: string, markdownString: string) {
+  private setMarkdownBuffer(filePath: string, markdownString: string) {
+    const component = filePath.split('/')[1]; // ie. mdc-ripple, mdc-textfield
     const markdownComponentBuffer = this.markdownBuffer[component];
     if (markdownComponentBuffer) {
       markdownComponentBuffer.push(markdownString);
@@ -169,7 +163,6 @@ class TypeScriptDocumentationGenerator {
       this.markdownBuffer[component] = [markdownString];
     }
   }
-
 
   /**
    * Generates Markdown file for each entry in `this.markdownBuffer`,
@@ -182,9 +175,10 @@ class TypeScriptDocumentationGenerator {
        * TODO: remove this if condition once all READMEs are generated
        */
       const allowList = [
-        // 'mdc-drawer',
-        'mdc-textfield',
+        'mdc-drawer',
+        // 'mdc-textfield',
       ];
+
       if (allowList.includes(componentName)) {
         const readmeDestinationPath = `./packages/${componentName}/README.md`;
         const finalReadmeMarkdown = await this.insertMethodDescriptionTable(componentName);
@@ -198,7 +192,7 @@ class TypeScriptDocumentationGenerator {
     }
   }
 
-  insertMethodDescriptionTable(componentName: string) {
+  private insertMethodDescriptionTable(componentName: string) {
     const methodDescriptionTableMarkdown = this.markdownBuffer[componentName].join('\n');
     const readmeMarkdownPath = `./packages/${componentName}/README.md`;
     return new Promise((resolve, reject) => {
@@ -219,11 +213,16 @@ class TypeScriptDocumentationGenerator {
     });
   }
 
-  cleanComment(comment) {
+  private cleanComment(comment) {
     return comment.replace('\n', ' ');
+  }
+
+  private cleanType(typing) {
+    // do not break markdown table format
+    return typing.replace(' | ', ' \\| ');
   }
 }
 
 const docGenerator = new TypeScriptDocumentationGenerator();
 docGenerator.generateJSONFromFiles()
-  .then(() => docGenerator.generateDocs());
+  .then((json) => docGenerator.generateDocs(json));
