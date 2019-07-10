@@ -244,8 +244,7 @@
     &:not(.mdc-ripple-upgraded):focus,
     &:not(.mdc-ripple-upgraded):focus-within {
       #{$ripple-target}::before {
-        @include mdc-states-focus-opacity-properties_(
-          $opacity: $opacity, $query: $query);
+        @include mdc-states-focus-opacity-properties_($query: $query);
       }
     }
   } @else {
@@ -254,14 +253,13 @@
     // CSS-only selectors.
     &:not(.mdc-ripple-upgraded):focus {
       #{$ripple-target}::before {
-        @include mdc-states-focus-opacity-properties_(
-          $opacity: $opacity, $query: $query);
+        @include mdc-states-focus-opacity-properties_($query: $query);
       }
     }
   }
 }
 
-@mixin mdc-states-focus-opacity-properties_($opacity, $query) {
+@mixin mdc-states-focus-opacity-properties_($query) {
   $feat-animation: mdc-feature-create-target($query, animation);
   // Opacity falls under color because the chosen opacity is color-dependent in typical usage
   $feat-color: mdc-feature-create-target($query, color);
