@@ -98,11 +98,9 @@
   }
 }
 
-@mixin mdc-ripple-surface($query: mdc-feature-all(), $ripple-target: null) {
+@mixin mdc-ripple-surface($query: mdc-feature-all(), $ripple-target: "&") {
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-structure: mdc-feature-create-target($query, structure);
-
-  $ripple-target-selector: if($ripple-target == null, "&", " #{$ripple-target}");
 
   @include mdc-feature-targets($feat-structure) {
     --mdc-ripple-fg-size: 0;
@@ -116,8 +114,8 @@
     // !!DO NOT REMOVE!! mdc-ripple-will-change-replacer
   }
 
-  #{$ripple-target-selector}::before,
-  #{$ripple-target-selector}::after {
+  #{$ripple-target}::before,
+  #{$ripple-target}::after {
     @include mdc-feature-targets($feat-structure) {
       position: absolute;
       border-radius: 50%;
@@ -127,7 +125,7 @@
     }
   }
 
-  #{$ripple-target-selector}::before {
+  #{$ripple-target}::before {
     @include mdc-feature-targets($feat-animation) {
       // Also transition background-color to avoid unnatural color flashes when toggling activated/selected state
       transition:
@@ -143,13 +141,13 @@
   // Common styles for upgraded surfaces (some of these depend on custom properties set via JS or other mixins)
 
   &.mdc-ripple-upgraded {
-    #{$ripple-target-selector}::before {
+    #{$ripple-target}::before {
       @include mdc-feature-targets($feat-structure) {
         transform: scale(var(--mdc-ripple-fg-scale, 1));
       }
     }
 
-    #{$ripple-target-selector}::after {
+    #{$ripple-target}::after {
       @include mdc-feature-targets($feat-structure) {
         top: 0;
         /* @noflip */
@@ -161,7 +159,7 @@
   }
 
   &.mdc-ripple-upgraded--unbounded {
-    #{$ripple-target-selector}::after {
+    #{$ripple-target}::after {
       @include mdc-feature-targets($feat-structure) {
         top: var(--mdc-ripple-top, 0);
         /* @noflip */
@@ -171,7 +169,7 @@
   }
 
   &.mdc-ripple-upgraded--foreground-activation {
-    #{$ripple-target-selector}::after {
+    #{$ripple-target}::after {
       @include mdc-feature-targets($feat-animation) {
         animation:
           mdc-ripple-fg-radius-in $mdc-ripple-translate-duration forwards,
@@ -181,7 +179,7 @@
   }
 
   &.mdc-ripple-upgraded--foreground-deactivation {
-    #{$ripple-target-selector}::after {
+    #{$ripple-target}::after {
       @include mdc-feature-targets($feat-animation) {
         animation: mdc-ripple-fg-opacity-out $mdc-ripple-fade-out-duration;
       }
@@ -195,13 +193,11 @@
 }
 
 @mixin mdc-states-base-color(
-  $color, $query: mdc-feature-all(), $ripple-target: null) {
+  $color, $query: mdc-feature-all(), $ripple-target: "&") {
   $feat-color: mdc-feature-create-target($query, color);
 
-  $ripple-target-selector: if($ripple-target == null, "&", " #{$ripple-target}");
-
-  #{$ripple-target-selector}::before,
-  #{$ripple-target-selector}::after {
+  #{$ripple-target}::before,
+  #{$ripple-target}::after {
     @include mdc-feature-targets($feat-color) {
       @if alpha(mdc-theme-prop-value($color)) > 0 {
         @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
@@ -215,14 +211,12 @@
 }
 
 @mixin mdc-states-hover-opacity(
-  $opacity, $query: mdc-feature-all(), $ripple-target: null) {
+  $opacity, $query: mdc-feature-all(), $ripple-target: "&") {
   $feat-color: mdc-feature-create-target($query, color);
-
-  $ripple-target-selector: if($ripple-target == null, "&", " #{$ripple-target}");
 
   // Background wash styles, for both CSS-only and upgraded stateful surfaces
   &:hover {
-    #{$ripple-target-selector}::before {
+    #{$ripple-target}::before {
       // Opacity falls under color because the chosen opacity is color-dependent in typical usage
       @include mdc-feature-targets($feat-color) {
         opacity: $opacity;
@@ -235,12 +229,10 @@
   $opacity,
   $has-nested-focusable-element: false,
   $query: mdc-feature-all(),
-  $ripple-target: null) {
+  $ripple-target: "&") {
   $feat-animation: mdc-feature-create-target($query, animation);
   // Opacity falls under color because the chosen opacity is color-dependent in typical usage
   $feat-color: mdc-feature-create-target($query, color);
-
-  $ripple-target-selector: if($ripple-target == null, "", " #{$ripple-target}");
 
   // Focus overrides hover by reusing the ::before pseudo-element.
   // :focus-within generally works on non-MS browsers and matches when a *child* of the element has focus.
@@ -249,49 +241,47 @@
   // We use a modifier class for JS-enabled surfaces to support all use cases in all browsers.
   $cssOnlyFocusSelector: if(
     $has-nested-focusable-element,
-    "&:not(.mdc-ripple-upgraded):focus#{$ripple-target-selector}::before," +
-    "&:not(.mdc-ripple-upgraded):focus-within#{$ripple-target-selector}::before",
-    "&:not(.mdc-ripple-upgraded):focus#{$ripple-target-selector}::before"
+    "&:not(.mdc-ripple-upgraded):focus, &:not(.mdc-ripple-upgraded):focus-within",
+    "&:not(.mdc-ripple-upgraded):focus"
   );
 
   $jsOnlyFocusSelector: if(
     $has-nested-focusable-element,
-    "&.mdc-ripple-upgraded--background-focused#{$ripple-target-selector}::before," +
-    "&.mdc-ripple-upgraded:focus-within#{$ripple-target-selector}::before,",
-    "&.mdc-ripple-upgraded--background-focused#{$ripple-target-selector}::before"
+    "&.mdc-ripple-upgraded--background-focused, &.mdc-ripple-upgraded:focus-within",
+    "&.mdc-ripple-upgraded--background-focused"
   );
 
   #{$cssOnlyFocusSelector},
   #{$jsOnlyFocusSelector} {
-    // Note that this duration is only effective on focus, not blur
-    @include mdc-feature-targets($feat-animation) {
-      transition-duration: 75ms;
-    }
+    #{$ripple-target}::before {
+      // Note that this duration is only effective on focus, not blur
+      @include mdc-feature-targets($feat-animation) {
+        transition-duration: 75ms;
+      }
 
-    @include mdc-feature-targets($feat-color) {
-      opacity: $opacity;
+      @include mdc-feature-targets($feat-color) {
+        opacity: $opacity;
+      }
     }
   }
 }
 
-@mixin mdc-states-press-opacity($opacity, $query: mdc-feature-all(), $ripple-target: null) {
+@mixin mdc-states-press-opacity($opacity, $query: mdc-feature-all(), $ripple-target: "&") {
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-color: mdc-feature-create-target($query, color);
-
-  $ripple-target-selector: if($ripple-target == null, "&", " #{$ripple-target}");
 
   // Styles for non-upgraded (CSS-only) stateful surfaces
 
   &:not(.mdc-ripple-upgraded) {
     // Apply press additively by using the ::after pseudo-element
-    #{$ripple-target-selector}::after {
+    #{$ripple-target}::after {
       @include mdc-feature-targets($feat-animation) {
         transition: opacity $mdc-ripple-fade-out-duration linear;
       }
     }
 
     &:active {
-      #{$ripple-target-selector}::after {
+      #{$ripple-target}::after {
         @include mdc-feature-targets($feat-animation) {
           transition-duration: $mdc-ripple-fade-in-duration;
         }
@@ -329,16 +319,14 @@
 // Simple mixin for activated states which automatically selects opacity values based on whether the ink color is
 // light or dark.
 @mixin mdc-states-activated(
-  $color, $has-nested-focusable-element: false, $query: mdc-feature-all(), $ripple-target: null) {
+  $color, $has-nested-focusable-element: false, $query: mdc-feature-all(), $ripple-target: "&") {
   $feat-color: mdc-feature-create-target($query, color);
   $activated-opacity: mdc-states-opacity($color, activated);
-
-  $ripple-target-selector: if($ripple-target == null, "&", " #{$ripple-target}");
 
   &--activated {
     // Stylelint seems to think that '&' qualifies as a type selector here?
     // stylelint-disable-next-line selector-max-type
-    #{$ripple-target-selector}::before {
+    #{$ripple-target}::before {
       // Opacity falls under color because the chosen opacity is color-dependent.
       @include mdc-feature-targets($feat-color) {
         opacity: $activated-opacity;
@@ -357,15 +345,13 @@
 // Simple mixin for selected states which automatically selects opacity values based on whether the ink color is
 // light or dark.
 @mixin mdc-states-selected(
-  $color, $has-nested-focusable-element: false, $query: mdc-feature-all(), $ripple-target: null) {
+  $color, $has-nested-focusable-element: false, $query: mdc-feature-all(), $ripple-target: "&") {
   $feat-color: mdc-feature-create-target($query, color);
   $selected-opacity: mdc-states-opacity($color, selected);
 
-  $ripple-target-selector: if($ripple-target == null, "&", " #{$ripple-target}");
-
   &--selected {
     // stylelint-disable-next-line selector-max-type
-    #{$ripple-target-selector}::before {
+    #{$ripple-target}::before {
       // Opacity falls under color because the chosen opacity is color-dependent.
       @include mdc-feature-targets($feat-color) {
         opacity: $selected-opacity;
@@ -382,13 +368,11 @@
 }
 
 @mixin mdc-ripple-radius-bounded(
-  $radius: 100%, $query: mdc-feature-all(), $ripple-target: null) {
+  $radius: 100%, $query: mdc-feature-all(), $ripple-target: "&") {
   $feat-struture: mdc-feature-create-target($query, structure);
 
-  $ripple-target-selector: if($ripple-target == null, "&", " #{$ripple-target}");
-
-  #{$ripple-target-selector}::before,
-  #{$ripple-target-selector}::after {
+  #{$ripple-target}::before,
+  #{$ripple-target}::after {
     @include mdc-feature-targets($feat-struture) {
       top: calc(50% - #{$radius});
       /* @noflip */
@@ -399,7 +383,7 @@
   }
 
   &.mdc-ripple-upgraded {
-    #{$ripple-target-selector}::after {
+    #{$ripple-target}::after {
       @include mdc-feature-targets($feat-struture) {
         width: var(--mdc-ripple-fg-size, $radius);
         height: var(--mdc-ripple-fg-size, $radius);
@@ -409,13 +393,11 @@
 }
 
 @mixin mdc-ripple-radius-unbounded(
-  $radius: 100%, $query: mdc-feature-all(), $ripple-target: null) {
+  $radius: 100%, $query: mdc-feature-all(), $ripple-target: "&") {
   $feat-struture: mdc-feature-create-target($query, structure);
 
-  $ripple-target-selector: if($ripple-target == null, "&", " #{$ripple-target}");
-
-  #{$ripple-target-selector}::before,
-  #{$ripple-target-selector}::after {
+  #{$ripple-target}::before,
+  #{$ripple-target}::after {
     @include mdc-feature-targets($feat-struture) {
       top: calc(50% - #{$radius / 2});
       /* @noflip */
@@ -426,8 +408,8 @@
   }
 
   &.mdc-ripple-upgraded {
-    #{$ripple-target-selector}::before,
-    #{$ripple-target-selector}::after {
+    #{$ripple-target}::before,
+    #{$ripple-target}::after {
       @include mdc-feature-targets($feat-struture) {
         top: var(--mdc-ripple-top, calc(50% - #{$radius / 2}));
         /* @noflip */
@@ -437,7 +419,7 @@
       }
     }
 
-    #{$ripple-target-selector}::after {
+    #{$ripple-target}::after {
       @include mdc-feature-targets($feat-struture) {
         width: var(--mdc-ripple-fg-size, $radius);
         height: var(--mdc-ripple-fg-size, $radius);
@@ -453,7 +435,7 @@
   $query: mdc-feature-all(),
   $ripple-target: null,
 ) {
-  @include mdc-ripple-target($ripple-target) {
+  @include mdc-ripple-target-selector($ripple-target) {
     @include mdc-states-base-color($color, $query);
   }
 
@@ -474,12 +456,12 @@
 }
 
 // Wraps content in the `ripple-target` selector if it exists.
-@mixin mdc-ripple-target($ripple-target: null) {
-  @if $ripple-target != null {
+@mixin mdc-ripple-target-selector($ripple-target: null) {
+  @if $ripple-target == "&" or $ripple-target == null {
+    @content;
+  } @else {
     #{$ripple-target} {
       @content;
     }
-  } @else {
-    @content;
   }
 }
