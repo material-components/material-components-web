@@ -465,7 +465,7 @@
     $opacity: mdc-states-opacity($color, focus) + $opacity-modifier,
     $has-nested-focusable-element: $has-nested-focusable-element,
     $query: $query,
-    $ripple-target-selector, $ripple-target-selector,
+    $ripple-target-selector: $ripple-target-selector,
   );
   @include mdc-states-press-opacity(
     $opacity: mdc-states-opacity($color, press) + $opacity-modifier,
