@@ -1,8 +1,19 @@
 import {Documentalist, TypescriptPlugin} from '@documentalist/compiler';
 import * as fs from 'fs';
+import * as path from 'path';
 
 const markdownHeaderLevel = '###';
 const markdownSubHeaderLevel = '####';
+
+interface ModuleMarkdown {
+  methods?: ModuleMethods[];
+  moduleName: string;
+  readmeDirectoryPath: string;
+}
+interface ModuleMethods {
+  methodSignature: string;
+  documentation: string;
+}
 
 class TypeScriptDocumentationGenerator {
   markdownBuffer: {};
@@ -16,7 +27,7 @@ class TypeScriptDocumentationGenerator {
   /**
    * Generates JSON from source files TypeScript documentation.
    * This contains all the esmodule classes (ie. foundations, adapters, components) in JSON format.
-   * @returns Promise(json)
+   * @returns Promise<{}>
    */
   generateJSONFromFiles() {
     return new Promise((resolve, reject) => {
@@ -59,17 +70,22 @@ class TypeScriptDocumentationGenerator {
    * @param esmodule module name (ie. MDCSelectIconFoundation)
    */
   generateDocsForModule(esmodule: string) {
-    const moduleName = `${markdownHeaderLevel} ${esmodule}\n\n`;
-    const markdownString =
-      moduleName
-      + this.getDocumentationForMethods(esmodule)
-      + this.getDocumentationProperties(esmodule)
-      + this.getDocumentationForModule(esmodule);
-    if (this.docData[esmodule].kind === 'type alias') {
+    const {kind, fileName} = this.docData[esmodule];
+    const readmeDirectoryPath = this.getFilePathName(fileName);
+
+    if (kind === 'type alias') {
+      // ignore types and interfaces
       return;
     }
+    const markdownObject: ModuleMarkdown = {
+      methods: this.getDocumentationForMethods(esmodule),
+      moduleName: esmodule,
+      readmeDirectoryPath,
+    };
+      // + this.getDocumentationProperties(esmodule)
+      // + this.getDocumentationForModule(esmodule);
 
-    this.setMarkdownBuffer(this.docData[esmodule].fileName, markdownString);
+    this.setMarkdownBuffer(readmeDirectoryPath, markdownObject);
   }
 
   /**
@@ -110,42 +126,32 @@ class TypeScriptDocumentationGenerator {
 
   /**
    * Iterates through all methods of a specified `esmodule`.
-   * @returns documentation markdown table in string format.
+   * @returns listof documentation for methods of the esmodule.
    * @param esmodule module name (ie. MDCSelectIconFoundation)
    */
-  getDocumentationForMethods(esmodule: string): string {
-    if (!this.docData) {
-      return '';
+  getDocumentationForMethods(esmodule: string): ModuleMethods[] {
+    if (!this.docData || !this.docData[esmodule].methods) {
+      return [];
     }
-    const {methods} = this.docData[esmodule];
-    if (!methods || !methods.length) {
-      return '';
-    }
-    const title = `${markdownSubHeaderLevel} Methods\n\n`;
-    const tableHeader = 'Signature | Description\n--- | --- \n';
-    const methodDocs = methods.reduce((markdownString, method) => {
-      // isState ignores cssClasses, defaultAdapter, strings
-      const {isProtected, isStatic} = method.flags;
-      if (isProtected || isStatic) {
-        return markdownString;
-      }
-
-      const methodName = method.name;
-      const methodSignature = method.signatures[0].type;
-      let documentation;
-      if (method.signatures[0].documentation) {
-        documentation = method.signatures[0].documentation.contentsRaw;
-      }
-      if (!documentation) {
-        // ignore methods without any documentation
-        return markdownString;
-      }
-      return `${markdownString}\`${methodName}${methodSignature}\` | ${this.cleanComment(documentation)}\n`;
-    }, '');
-    if (!methodDocs.length) {
-      return '';
-    }
-    return `${title}${tableHeader}${methodDocs}\n`;
+    return this.docData[esmodule].methods
+      .filter((method) => {
+        // isState ignores cssClasses, defaultAdapter, strings
+        const {isProtected, isStatic} = method.flags;
+        const hasDocumentation = method.signatures[0].documentation;
+        return !isProtected && !isStatic && hasDocumentation;
+      })
+      .map((method) => {
+        const methodName = method.name;
+        const methodSignature = method.signatures[0].type;
+        const documentation = method.signatures[0].documentation.contentsRaw;
+        return {
+          documentation: this.cleanComment(documentation),
+          methodSignature: `${methodName}${methodSignature}`,
+        };
+      });
+    // const title = `${markdownSubHeaderLevel} Methods\n\n`;
+    // const tableHeader = 'Signature | Description\n--- | --- \n';
+    // return `${title}${tableHeader}${methodDocs}\n`;
   }
 
   /**
@@ -190,17 +196,38 @@ class TypeScriptDocumentationGenerator {
   }
 
   /**
-   * Sets Markdown Documentation into markdownBuffer under the `component` name.
-   * @param component Component that the `markdownString` describes
-   * @param markdownString Markdown documentation source to be placed into README.md file
+   * Returns relative file path to ./packages, and closest directory
+   * with a README.md file (ie. mdc-textfield/helper-text, mdc-drawer).
+   * @param filePath original file path
    */
-  private setMarkdownBuffer(filePath: string, markdownString: string) {
-    const component = filePath.split('/')[1]; // ie. mdc-ripple, mdc-textfield
-    const markdownComponentBuffer = this.markdownBuffer[component];
+  private getFilePathName(filePath: string): string {
+    const startingIndex = filePath.indexOf('/mdc-') + 1; // +1 is to ignore leading '/'
+    const endIndex = filePath.lastIndexOf('/');
+    const directoryPath = filePath.substring(startingIndex, endIndex);
+    try {
+      const relativePathToReadme = path.resolve('packages', directoryPath, 'README.md');
+      if (fs.existsSync(relativePathToReadme)) {
+        return directoryPath;
+      }
+      // look one directory level up
+      return this.getFilePathName(directoryPath);
+    } catch (err) {
+      console.error(err); //tslint:disable-line
+    }
+    return '';
+  }
+
+  /**
+   * Sets Markdown Documentation into markdownBuffer under the `component` name.
+   * @param component Component that the `markdownString` describes.
+   * @param moduleMarkdown List of methods and properties with documentation from esmodule source.
+   */
+  private setMarkdownBuffer(readmeDirectoryPath: string, moduleMarkdown: ModuleMarkdown) {
+    const markdownComponentBuffer = this.markdownBuffer[readmeDirectoryPath];
     if (markdownComponentBuffer) {
-      markdownComponentBuffer.push(markdownString);
+      markdownComponentBuffer.push(moduleMarkdown);
     } else {
-      this.markdownBuffer[component] = [markdownString];
+      this.markdownBuffer[readmeDirectoryPath] = [moduleMarkdown];
     }
   }
 
@@ -209,19 +236,19 @@ class TypeScriptDocumentationGenerator {
    * which is populated from `this.generateDocsForModule()`.
    */
   async generateMarkdownFileFromBuffer() {
-    for (const componentName in this.markdownBuffer) {
+    for (const readmeDirectoryPath in this.markdownBuffer) {
       /**
        * This currently only has been tested on mdc-drawer.
        * TODO: remove this if condition once all READMEs are generated
        */
       const allowList = [
         'mdc-drawer',
-        // 'mdc-textfield',
+        'mdc-textfield',
       ];
 
-      if (allowList.includes(componentName)) {
-        const readmeDestinationPath = `./packages/${componentName}/README.md`;
-        const finalReadmeMarkdown = await this.insertMethodDescriptionTable(componentName);
+      if (allowList.some((allowed) => readmeDirectoryPath.includes(allowed))) {
+        const readmeDestinationPath = `./packages/${readmeDirectoryPath}/test_README.md`;
+        const finalReadmeMarkdown = await this.insertMethodDescriptionTable(readmeDirectoryPath);
         fs.writeFile(readmeDestinationPath, finalReadmeMarkdown, (error) => {
           console.log(`~~ generated ${readmeDestinationPath}`); // tslint:disable-line
           if (error) {
@@ -232,11 +259,11 @@ class TypeScriptDocumentationGenerator {
     }
   }
 
-  private insertMethodDescriptionTable(componentName: string) {
-    const methodDescriptionTableMarkdown = this.markdownBuffer[componentName]
-      .sort(this.sortByModuleType)
-      .join('\n');
-    const readmeMarkdownPath = `./packages/${componentName}/README.md`;
+  private insertMethodDescriptionTable(readmeDirectoryPath: string) {
+    const methodDescriptionTableMarkdown = this.markdownBuffer[readmeDirectoryPath];
+      // .sort(this.sortByModuleType)
+      // .join('\n');
+    const readmeMarkdownPath = `./packages/${readmeDirectoryPath}/test_README.md`;
     return new Promise((resolve, reject) => {
       fs.readFile(readmeMarkdownPath, 'utf8', (error, data) => {
         if (error) {
@@ -255,23 +282,23 @@ class TypeScriptDocumentationGenerator {
     });
   }
 
-  private sortByModuleType(a: string, b: string) {
-    const FOUNDATION = 'foundation';
-    const ADAPTER = 'adapter';
-    const moduleNameRegex = new RegExp(/^### (MDC[a-zA-Z]*)/g);
-    const moduleA = a.match(moduleNameRegex)[0].toLowerCase();
-    const moduleB = b.match(moduleNameRegex)[0].toLowerCase();
-    if (!moduleA.includes(FOUNDATION) && !moduleA.includes(ADAPTER)) {
-      return -1;
-    } else if (moduleA.includes(FOUNDATION) && !moduleB.includes(FOUNDATION)) {
-      return 1;
-    } else if (moduleA.includes(FOUNDATION) && moduleB.includes(FOUNDATION)
-      || moduleA.includes(ADAPTER) && moduleB.includes(ADAPTER)) {
-      // alphabetize
-      return moduleA > moduleB;
-    }
-    return 0;
-  }
+  // private sortByModuleType(a: string, b: string) {
+  //   const FOUNDATION = 'foundation';
+  //   const ADAPTER = 'adapter';
+  //   const moduleNameRegex = new RegExp(/^### (MDC[a-zA-Z]*)/g);
+  //   const moduleA = a.match(moduleNameRegex)[0].toLowerCase();
+  //   const moduleB = b.match(moduleNameRegex)[0].toLowerCase();
+  //   if (!moduleA.includes(FOUNDATION) && !moduleA.includes(ADAPTER)) {
+  //     return -1;
+  //   } else if (moduleA.includes(FOUNDATION) && !moduleB.includes(FOUNDATION)) {
+  //     return 1;
+  //   } else if (moduleA.includes(FOUNDATION) && moduleB.includes(FOUNDATION)
+  //     || moduleA.includes(ADAPTER) && moduleB.includes(ADAPTER)) {
+  //     // alphabetize
+  //     return moduleA > moduleB;
+  //   }
+  //   return 0;
+  // }
 
   private cleanComment(comment) {
     const r = new RegExp(/\n/gm);

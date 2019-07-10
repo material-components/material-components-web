@@ -437,7 +437,7 @@ document.body.addEventListener('MDCDrawer:closed', () => {
 });
 ```
 
-<!-- docgen-tsdoc-replacer:start -->
+<!-- docgen-tsdoc-replacer:start **DO NOT EDIT, This section is automatically generated** -->
 ### MDCDrawer
 
 #### Methods
