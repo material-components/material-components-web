@@ -127,11 +127,11 @@ test('#initialSyncWithDOM sets up event handlers', () => {
   td.verify(mockFoundation.handleChipNavigation('chipA', ARROW_LEFT_KEY, 1), {times: 1});
 });
 
-test('#initialSyncWithDOM calls MDCChipSetFoundation#selectOnInit on the selected chips', () => {
+test('#initialSyncWithDOM calls MDCChipSetFoundation#select on the selected chips', () => {
   const {mockFoundation} = setupMockFoundationWithSelection();
-  td.verify(mockFoundation.selectOnInit('chip1'));
-  td.verify(mockFoundation.selectOnInit('chip2'));
-  td.verify(mockFoundation.selectOnInit('chip3'));
+  td.verify(mockFoundation.select('chip1'));
+  td.verify(mockFoundation.select('chip2'));
+  td.verify(mockFoundation.select('chip3'));
 });
 
 test('#destroy removes event handlers', () => {

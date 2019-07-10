@@ -68,7 +68,7 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
   initialSyncWithDOM() {
     this.chips_.forEach((chip) => {
       if (chip.id && chip.selected) {
-        this.foundation_.selectOnInit(chip.id);
+        this.foundation_.select(chip.id);
       }
     });
 

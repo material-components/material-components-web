@@ -409,7 +409,7 @@ Method Signature | Description
 --- | ---
 `isSelected() => boolean` | Returns true if the chip is selected
 `setSelected(selected: boolean) => void` | Sets the chip's selected state
-`setSelectedFromChipSet(selected: boolean, shouldNotify: boolean) => void` | Sets the chip's selected state (called from the chip set) to the `selected` param. Will emit a selection event if called with `shouldNotify` set to `true`
+`setSelectedFromChipSet(selected: boolean, shouldNotifyClients: boolean) => void` | Sets the chip's selected state (called from the chip set) to the `selected` param. Will emit a selection event if called with `shouldNotifyClients` set to `true`. The emitted selection event will be ignored by the `MDCChipSetFoundation`.
 `getShouldRemoveOnTrailingIconClick() => boolean` | Returns whether a trailing icon click should trigger exit/removal of the chip
 `setShouldRemoveOnTrailingIconClick(shouldRemove: boolean) => void` | Sets whether a trailing icon click should trigger exit/removal of the chip
 `getDimensions() => ClientRect` | Returns the dimensions of the chip. This is used for applying ripple to the chip.
@@ -441,7 +441,6 @@ Method Signature | Description
 `handleChipSelection(chipId: string, selected: boolean, chipSetShouldIgnore: boolean) => void` | Handles a custom `MDCChip:selection` event on the root element. When `chipSetShouldIgnore` is true, the chip set does not process the event.
 `handleChipRemoval(chipId: string) => void` | Handles a custom `MDCChip:removal` event on the root element
 `handleChipNavigation(chipId: string, key: string) => void` | Handles a custom `MDCChip:navigation` event on the root element
-`selectOnInit(chipId: string) => void` | Selects the chip during initialization. Should *only* be called during the component initialization
 
 #### `MDCChipSetFoundation` Event Handlers
 
