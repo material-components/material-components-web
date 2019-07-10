@@ -21,6 +21,7 @@
     "@material/base": "^3.0.0",
     "@material/button": "^3.0.0",
     "@material/dom": "^3.0.0",
+    "@material/feature-targeting": "^3.0.0",
     "@material/icon-button": "^3.0.0",
     "@material/ripple": "^3.0.0",
     "@material/rtl": "^3.0.0",

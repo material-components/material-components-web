@@ -55,11 +55,12 @@
     @include mdc-feature-targets($feat-structure) {
       @include mdc-checkbox-base_;
     }
+
+    @include mdc-checkbox-focus-indicator-color($mdc-checkbox-baseline-theme-color, $query: $query);
   }
 
   @include mdc-checkbox-container-colors($query: $query);
   @include mdc-checkbox-ink-color($mdc-checkbox-mark-color, $query);
-  @include mdc-checkbox-focus-indicator-color($mdc-checkbox-baseline-theme-color, $query);
 
   @include mdc-feature-targets($feat-color) {
     @include mdc-checkbox-disabled-container-color_;
@@ -184,7 +185,7 @@
 
   .mdc-checkbox {
     @include mdc-ripple-surface($query);
-    @include mdc-states($mdc-checkbox-baseline-theme-color, $query: $query);
+    @include mdc-states(on-surface, $query: $query);
     @include mdc-ripple-radius-unbounded($query: $query);
     @include mdc-checkbox-touch-dimension($mdc-checkbox-touch-area, $query: $query);
   }
@@ -306,11 +307,19 @@
 @mixin mdc-checkbox-focus-indicator-color($color, $query: mdc-feature-all()) {
   $feat-color: mdc-feature-create-target($query, color);
 
-  // The ::before element is used as a focus indicator for the checkbox
-  .mdc-checkbox__background::before {
+  .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background::before,
+  .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background::before {
     @include mdc-feature-targets($feat-color) {
       @include mdc-theme-prop(background-color, $color, $edgeOptOut: true);
     }
+  }
+
+  &.mdc-checkbox--selected {
+    @include mdc-states($color, $query: $query);
+  }
+
+  &.mdc-ripple-upgraded--background-focused.mdc-checkbox--selected {
+    @include mdc-states-base-color($color, $query: $query);
   }
 }
 
@@ -471,6 +480,7 @@
 @mixin mdc-checkbox__background_($query: mdc-feature-all()) {
   $feat-animation: mdc-feature-create-target($query, animation);
   $feat-structure: mdc-feature-create-target($query, structure);
+  $feat-color: mdc-feature-create-target($query, color);
 
   @include mdc-feature-targets($feat-structure) {
     display: inline-flex;
@@ -486,6 +496,12 @@
     background-color: transparent;
     pointer-events: none;
     will-change: background-color, border-color;
+  }
+
+  .mdc-checkbox__background::before {
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(background-color, on-surface, $edgeOptOut: true);
+    }
   }
 
   @include mdc-feature-targets($feat-animation) {
