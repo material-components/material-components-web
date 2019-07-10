@@ -21,6 +21,7 @@
     "@material/animation": "^3.0.0",
     "@material/base": "^3.0.0",
     "@material/elevation": "^3.0.0",
+    "@material/feature-targeting": "^3.0.0",
     "@material/list": "^3.0.0",
     "@material/ripple": "^3.0.0",
     "@material/rtl": "^3.0.0",

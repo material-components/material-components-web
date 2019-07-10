@@ -3,6 +3,7 @@
 @import "@material/checkbox/mixins";
 @import "@material/chips/mixins";
 @import "@material/dialog/mixins";
+@import "@material/drawer/mixins";
 @import "@material/elevation/mixins";
 @import "@material/fab/mixins";
 @import "@material/form-field/mixins";
@@ -92,6 +93,27 @@
     @include mdc-dialog-min-width(0, $query: $query);
     @include mdc-dialog-max-width(0, 0, $query: $query);
     @include mdc-dialog-max-height(0, 0, $query: $query);
+
+    // Drawer
+    @include mdc-drawer-core-styles($query: $query);
+    @include mdc-drawer-dismissible-core-styles($query: $query);
+    @include mdc-drawer-modal-core-styles($query: $query);
+    @include mdc-drawer-activated-overlay-color(red, $query: $query);
+    @include mdc-drawer-border-color(red, $query: $query);
+    @include mdc-drawer-item-shape-radius(42, $query: $query);
+    @include mdc-drawer-shape-radius(42, $query: $query);
+    @include mdc-drawer-divider-color(red, $query: $query);
+    @include mdc-drawer-title-ink-color(red, $query: $query);
+    @include mdc-drawer-subtitle-ink-color(red, $query: $query);
+    @include mdc-drawer-fill-color-accessible(red, $query: $query);
+    @include mdc-drawer-item-icon-ink-color(red, $query: $query);
+    @include mdc-drawer-item-activated-icon-ink-color(red, $query: $query);
+    @include mdc-drawer-item-activated-text-ink-color(red, $query: $query);
+    @include mdc-drawer-item-text-ink-color(red, $query: $query);
+    @include mdc-drawer-surface-fill-color(red, $query: $query);
+    @include mdc-drawer-scrim-fill-color(red, $query: $query);
+    @include mdc-drawer-z-index(1337, $query: $query);
+    @include mdc-drawer-width(1337px, $query: $query);
 
     // Elevation
     @include mdc-elevation-core-styles($query: $query);
