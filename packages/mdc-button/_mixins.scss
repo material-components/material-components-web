@@ -32,6 +32,8 @@
 @import "@material/shape/functions";
 @import "./variables";
 
+$mdc-button-ripple-target: ".mdc-button__ripple";
+
 @mixin mdc-button-core-styles($query: mdc-feature-all()) {
   @include mdc-button-without-ripple($query);
   @include mdc-button-ripple($query);
@@ -123,14 +125,24 @@
   @include mdc-ripple-common($query);
 
   .mdc-button {
-    @include mdc-ripple-surface($query);
-    @include mdc-ripple-radius-bounded($query: $query);
-    @include mdc-states(primary, false, $query);
+    @include mdc-ripple-surface($query: $query, $ripple-target: $mdc-button-ripple-target);
+    @include mdc-ripple-radius-bounded(
+      $query: $query, $ripple-target: $mdc-button-ripple-target);
+    @include mdc-states(
+      $color: primary, $query: $query, $ripple-target: $mdc-button-ripple-target);
+
+    #{$mdc-button-ripple-target} {
+      height: 100%;
+      position: absolute;
+      overflow: hidden;
+      width: 100%;
+    }
   }
 
   .mdc-button--raised,
   .mdc-button--unelevated {
-    @include mdc-states(on-primary, false, $query);
+    @include mdc-states(
+      $color: on-primary, $query: $query, $ripple-target: $mdc-button-ripple-target);
   }
 }
 
@@ -141,10 +153,12 @@
 
   @if ($fill-tone == "dark") {
     @include mdc-button-ink-color(text-primary-on-dark, $query);
-    @include mdc-states(text-primary-on-dark, $query: $query);
+    @include mdc-states(
+      $color: text-primary-on-dark, $query: $query, $ripple-target: $mdc-button-ripple-target);
   } @else {
     @include mdc-button-ink-color(text-primary-on-light, $query);
-    @include mdc-states(text-primary-on-light, $query: $query);
+    @include mdc-states(
+      $color: text-primary-on-light, $query: $query, $ripple-target: $mdc-button-ripple-target);
   }
 }
 
@@ -196,6 +210,14 @@
     $rtl-reflexive,
     $query: $query
   );
+
+  #{$mdc-button-ripple-target} {
+    @include mdc-shape-radius(
+      mdc-shape-resolve-percentage-radius($mdc-button-height, $radius),
+      $rtl-reflexive,
+      $query: $query
+    );
+  }
 
   &.mdc-button--dense {
     @include mdc-shape-radius(
@@ -252,7 +274,6 @@
     line-height: inherit;
     user-select: none;
     -webkit-appearance: none;
-    overflow: hidden;
     vertical-align: middle;
   }
 
@@ -288,12 +309,17 @@
       pointer-events: none;
     }
   }
+
+  .mdc-button__label {
+    position: relative;
+  }
 }
 
 @mixin mdc-button__icon_ {
   @include mdc-rtl-reflexive-box(margin, right, 8px);
 
   display: inline-block;
+  position: relative;
   width: 18px;
   height: 18px;
   font-size: 18px;
