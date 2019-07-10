@@ -44,8 +44,7 @@ export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
   }
 
   /**
-   * Returns true if drawer is in the open position.
-   * @returns boolean Proxies to the foundation's `open`/`close` methods.
+   * @return boolean Proxies to the foundation's `open`/`close` methods.
    * Also returns true if drawer is in the open position.
    */
   get open(): boolean {
