@@ -317,7 +317,7 @@
   $color: mdc-theme-prop-value(on-surface),
   $has-nested-focusable-element: false,
   $query: mdc-feature-all(),
-  $ripple-target: null,
+  $ripple-target: "&",
 ) {
   @include mdc-states-interactions_(
     $color: $color,
@@ -443,7 +443,7 @@
   $has-nested-focusable-element,
   $opacity-modifier: 0,
   $query: mdc-feature-all(),
-  $ripple-target: null,
+  $ripple-target: "&",
 ) {
   @include mdc-ripple-target-selector($ripple-target) {
     @include mdc-states-base-color($color, $query);
@@ -466,8 +466,8 @@
 }
 
 // Wraps content in the `ripple-target` selector if it exists.
-@mixin mdc-ripple-target-selector($ripple-target: null) {
-  @if $ripple-target == "&" or $ripple-target == null {
+@mixin mdc-ripple-target-selector($ripple-target: "&") {
+  @if $ripple-target == "&" {
     @content;
   } @else {
     #{$ripple-target} {
