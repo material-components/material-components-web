@@ -230,39 +230,47 @@
   $has-nested-focusable-element: false,
   $query: mdc-feature-all(),
   $ripple-target: "&") {
-  $feat-animation: mdc-feature-create-target($query, animation);
-  // Opacity falls under color because the chosen opacity is color-dependent in typical usage
-  $feat-color: mdc-feature-create-target($query, color);
 
   // Focus overrides hover by reusing the ::before pseudo-element.
   // :focus-within generally works on non-MS browsers and matches when a *child* of the element has focus.
   // It is useful for cases where a component has a focusable element within the root node, e.g. text field,
   // but undesirable in general in case of nested stateful components.
   // We use a modifier class for JS-enabled surfaces to support all use cases in all browsers.
-  $cssOnlyFocusSelector: if(
-    $has-nested-focusable-element,
-    "&:not(.mdc-ripple-upgraded):focus, &:not(.mdc-ripple-upgraded):focus-within",
-    "&:not(.mdc-ripple-upgraded):focus"
-  );
-
-  $jsOnlyFocusSelector: if(
-    $has-nested-focusable-element,
-    "&.mdc-ripple-upgraded--background-focused, &.mdc-ripple-upgraded:focus-within",
-    "&.mdc-ripple-upgraded--background-focused"
-  );
-
-  #{$cssOnlyFocusSelector},
-  #{$jsOnlyFocusSelector} {
-    #{$ripple-target}::before {
-      // Note that this duration is only effective on focus, not blur
-      @include mdc-feature-targets($feat-animation) {
-        transition-duration: 75ms;
-      }
-
-      @include mdc-feature-targets($feat-color) {
-        opacity: $opacity;
+  @if $has-nested-focusable-element {
+    // JS-enabled selectors.
+    &.mdc-ripple-upgraded--background-focused,
+    &.mdc-ripple-upgraded:focus-within,
+    // CSS-only selectors.
+    &:not(.mdc-ripple-upgraded):focus,
+    &:not(.mdc-ripple-upgraded):focus-within {
+      #{$ripple-target}::before {
+        @include mdc-states-focus-opacity-properties_($query: $query);
       }
     }
+  } @else {
+    // JS-enabled selectors.
+    &.mdc-ripple-upgraded--background-focused,
+    // CSS-only selectors.
+    &:not(.mdc-ripple-upgraded):focus {
+      #{$ripple-target}::before {
+        @include mdc-states-focus-opacity-properties_($query: $query);
+      }
+    }
+  }
+}
+
+@mixin mdc-states-focus-opacity-properties_($query) {
+  $feat-animation: mdc-feature-create-target($query, animation);
+  // Opacity falls under color because the chosen opacity is color-dependent in typical usage
+  $feat-color: mdc-feature-create-target($query, color);
+
+  // Note that this duration is only effective on focus, not blur
+  @include mdc-feature-targets($feat-animation) {
+    transition-duration: 75ms;
+  }
+
+  @include mdc-feature-targets($feat-color) {
+    opacity: $opacity;
   }
 }
 
