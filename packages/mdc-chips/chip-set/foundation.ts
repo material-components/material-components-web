@@ -187,7 +187,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     if (index >= 0) {
       this.selectedChipIds_.splice(index, 1);
       const chipIndex = this.adapter_.getIndexOfChipById(chipId);
-      this.adapter_.selectChipAtIndex(chipIndex, /** isSelected */ false, /** shouldNotify */ true);
+      this.adapter_.selectChipAtIndex(chipIndex, /** isSelected */ false, /** shouldNotifyClients */ true);
     }
   }
 

@@ -132,9 +132,9 @@ export class MDCChipSet extends MDCComponent<MDCChipSetFoundation> {
       removeFocusFromChipAtIndex: (index) => {
         this.chips_[index].removeFocus();
       },
-      selectChipAtIndex: (index, selected, shouldNotify) => {
+      selectChipAtIndex: (index, selected, shouldNotifyClients) => {
         if (index >= 0 && index < this.chips_.length) {
-          this.chips_[index].setSelectedFromChipSet(selected, shouldNotify);
+          this.chips_[index].setSelectedFromChipSet(selected, shouldNotifyClients);
         }
       },
     };
