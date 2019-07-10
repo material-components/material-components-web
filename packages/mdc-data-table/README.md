@@ -215,7 +215,7 @@ Method Signature | Description
 --- | ---
 `layout() => void` | Registers new row checkboxes, header row checkbox and updates the state of header row checkbox. Use this when rows are added / removed from data table.
 `getRows() => HTMLElement[]` | Returns array of row elements.
-`getSelectedRowIds() => Array<string|nul>` | Returns array of selected row ids.
+`getSelectedRowIds() => Array<string \| null>` | Returns array of selected row ids.
 `setSelectedRowIds(rowIds: string[])` | Sets selected row ids. Overwrites previously selected rows.
 
 ## Usage within Web Frameworks
@@ -229,7 +229,7 @@ Method Signature | Description
 `addClassAtRowIndex(rowIndex: number, cssClasses: string) => void` | Adds a class name to row element at given row index excluding header row.
 `getRowCount() => number` | Returns row count excluding header row.
 `getRowElements() => HTMLElement[]` | Returns array of row elements excluding header row.
-`getRowIdAtIndex(rowIndex: number) => string | null` | Returns row id of row element at given row index based on `data-row-id` attribute on row element `tr`.
+`getRowIdAtIndex(rowIndex: number) => string \| null` | Returns row id of row element at given row index based on `data-row-id` attribute on row element `tr`.
 `getRowIndexByChildElement(el: Element) => number` | Returns index of row element that contains give child element.
 `getSelectedRowCount() => number` | Returns selected row count.
 `isHeaderRowCheckboxChecked() => boolean` | Returns true if header row checkbox is checked.
@@ -237,8 +237,8 @@ Method Signature | Description
 `notifyRowSelectionChanged(data: MDCDataTableRowSelectionChangedEventDetail) => void` | Notifies when row selection is changed.
 `notifySelectedAll() => void` | Notifies when header row is checked.
 `notifyUnselectedAll() => void` | Notifies when header row is unchecked.
-`registerHeaderRowCheckbox() => Promise<void> | void` | Initializes header row checkbox. Destroys previous header row checkbox instance if any. Can return Promise only if registering checkbox is asynchronous.
-`registerRowCheckboxes() => Promise<void> | void` | Initializes all row checkboxes. Destroys all previous row checkbox instances if any. This is usually called when row checkboxes are added or removed from table. Can return Promise only if registering checkbox is asynchronous.
+`registerHeaderRowCheckbox() => Promise<void> \| void` | Initializes header row checkbox. Destroys previous header row checkbox instance if any. Can return Promise only if registering checkbox is asynchronous.
+`registerRowCheckboxes() => Promise<void> \| void` | Initializes all row checkboxes. Destroys all previous row checkbox instances if any. This is usually called when row checkboxes are added or removed from table. Can return Promise only if registering checkbox is asynchronous.
 `removeClassAtRowIndex(rowIndex: number, cssClasses: string) => void` | Removes class name from row element at give row index.
 `setAttributeAtRowIndex(rowIndex: number, attr: string, value: string) => void` | Sets attribute to row element at given row index.
 `setHeaderRowCheckboxChecked(checked: boolean) => void` | Sets header row checkbox checked or unchecked.
@@ -250,9 +250,9 @@ Method Signature | Description
 Method Signature | Description
 --- | ---
 `layout() => void` | Re-initializes header row checkbox and row checkboxes when selectable rows are added or removed from table. Use this if registering checkbox is synchronous.
-`layoutAsync() => Promise<void> | void` | Re-initializes header row checkbox and row checkboxes when selectable rows are added or removed from table. Use this only if `registerRowCheckboxes` and `registerHeaderRowCheckboxe` are asynchronous.
+`layoutAsync() => Promise<void> \| void` | Re-initializes header row checkbox and row checkboxes when selectable rows are added or removed from table. Use this only if `registerRowCheckboxes` and `registerHeaderRowCheckboxe` are asynchronous.
 `getRows() => HTMLElement[]` | Returns array of row elements.
 `setSelectedRowIds(rowIds: string[]) => void` | Sets selected row ids. Overwrites previously selected rows.
-`getSelectedRowIds() => Array<string|null>` | Returns array of selected row ids.
+`getSelectedRowIds() => Array<string \| null>` | Returns array of selected row ids.
 `handleHeaderRowCheckboxChange() => void` | Handles header row checkbox change event.
 `handleRowCheckboxChange(event: Event) => void` | Handles change event originated from row checkboxes.

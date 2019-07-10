@@ -67,15 +67,19 @@
       );
     }
 
-    display: inline-flex;
-    flex-direction: column;
+    @include mdc-feature-targets($feat-structure) {
+      display: inline-flex;
+      flex-direction: column;
+    }
   }
 
   .mdc-data-table__table {
-    width: 100%;
-    border: 0;
-    white-space: nowrap;
-    border-collapse: collapse;
+    @include mdc-feature-targets($feat-structure) {
+      width: 100%;
+      border: 0;
+      white-space: nowrap;
+      border-collapse: collapse;
+    }
   }
 
   .mdc-data-table__cell {
@@ -83,12 +87,16 @@
   }
 
   .mdc-data-table__cell--numeric {
-    text-align: right;
+    @include mdc-feature-targets($feat-structure) {
+      text-align: right;
+    }
   }
 
   .mdc-data-table__header-cell--checkbox,
   .mdc-data-table__cell--checkbox {
-    padding-right: 0;
+    @include mdc-feature-targets($feat-structure) {
+      padding-right: 0;
+    }
   }
 
   .mdc-data-table__header-cell {
@@ -152,33 +160,53 @@
 }
 
 @mixin mdc-data-table-divider-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
   .mdc-data-table__row {
-    border-top-color: $color;
+    @include mdc-feature-targets($feat-color) {
+      border-top-color: $color;
+    }
   }
 }
 
 @mixin mdc-data-table-divider-size($size, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
   .mdc-data-table__row {
-    border-top-width: $size;
-    border-top-style: solid;
+    @include mdc-feature-targets($feat-structure) {
+      border-top-width: $size;
+      border-top-style: solid;
+    }
   }
 }
 
 @mixin mdc-data-table-row-hover-fill-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
   .mdc-data-table__row:not(.mdc-data-table__row--selected):hover {
-    @include mdc-theme-prop("background-color", $color);
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop("background-color", $color);
+    }
   }
 }
 
 @mixin mdc-data-table-header-row-text-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
   .mdc-data-table__header-cell {
-    @include mdc-theme-prop("color", $color);
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop("color", $color);
+    }
   }
 }
 
 @mixin mdc-data-table-row-text-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
   .mdc-data-table__cell {
-    @include mdc-theme-prop("color", $color);
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop("color", $color);
+    }
   }
 }
 
@@ -187,12 +215,20 @@
 }
 
 @mixin mdc-data-table-stroke-size($size, $query: mdc-feature-all()) {
-  border-width: $size;
-  border-style: solid;
+  $feat-structure: mdc-feature-create-target($query, structure);
+
+  @include mdc-feature-targets($feat-structure) {
+    border-width: $size;
+    border-style: solid;
+  }
 }
 
 @mixin mdc-data-table-stroke-color($color, $query: mdc-feature-all()) {
-  border-color: $color;
+  $feat-color: mdc-feature-create-target($query, color);
+
+  @include mdc-feature-targets($feat-color) {
+    border-color: $color;
+  }
 }
 
 @mixin mdc-data-table-header-row-height($height, $query: mdc-feature-all()) {
@@ -219,17 +255,25 @@
   $leading-padding: $mdc-data-table-cell-leading-padding,
   $trailing-padding: $mdc-data-table-cell-trailing-padding,
   $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
   .mdc-data-table__cell,
   .mdc-data-table__header-cell {
-    padding-right: $trailing-padding;
-    padding-left: $leading-padding;
+    @include mdc-feature-targets($feat-structure) {
+      padding-right: $trailing-padding;
+      padding-left: $leading-padding;
+    }
   }
 }
 
 @mixin mdc-data-table-column-widths($width-list, $query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
   @for $i from 1 through length($width-list) {
     .mdc-data-table__row > :nth-child(#{$i}) {
-      width: nth($width-list, $i);
+      @include mdc-feature-targets($feat-structure) {
+        width: nth($width-list, $i);
+      }
     }
   }
 }
