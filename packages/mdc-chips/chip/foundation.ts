@@ -88,9 +88,9 @@ export class MDCChipFoundation extends MDCFoundation<MDCChipAdapter> {
     this.notifySelection_(selected);
   }
 
-  setSelectedFromChipSet(selected: boolean, shouldNotify: boolean) {
+  setSelectedFromChipSet(selected: boolean, shouldNotifyClients: boolean) {
     this.setSelected_(selected);
-    if (shouldNotify) {
+    if (shouldNotifyClients) {
       this.notifyIgnoredSelection_(selected);
     }
   }
