@@ -26,6 +26,7 @@ document.getElementById('checkbox-indeterminate-disabled').indeterminate = true;
 
 [].slice.call(document.querySelectorAll('.mdc-checkbox')).forEach((el) => {
   mdc.checkbox.MDCCheckbox.attachTo(el);
+  el.querySelector('input[data-autofocus]').focus();
 });
 
 window.mdc.testFixture.notifyDomReady();
