@@ -16,6 +16,7 @@
 @import "@material/radio/mixins";
 @import "@material/ripple/mixins";
 @import "@material/shape/mixins";
+@import "@material/snackbar/mixins";
 @import "@material/switch/mixins";
 @import "@material/tab-bar/mixins";
 @import "@material/tab-scroller/mixins";
@@ -201,6 +202,20 @@
 
     // Shape
     @include mdc-shape-radius(1px 2px, true, $query: $query);
+
+
+    // Snackbar
+    @include mdc-snackbar-core-styles($query: $query);
+    @include mdc-snackbar-fill-color(red, $query: $query);
+    @include mdc-snackbar-label-ink-color(red, $query: $query);
+    @include mdc-snackbar-shape-radius(1337, $query: $query);
+    @include mdc-snackbar-min-width(1337, $query: $query);
+    @include mdc-snackbar-max-width(1337, $query: $query);
+    @include mdc-snackbar-elevation(13, $query: $query);
+    @include mdc-snackbar-viewport-margin(1337, $query: $query);
+    @include mdc-snackbar-z-index(1337, $query: $query);
+    @include mdc-snackbar-position-leading($query: $query);
+    @include mdc-snackbar-layout-stacked($query: $query);
 
     // Switch
     @include mdc-switch-core-styles($query: $query);
