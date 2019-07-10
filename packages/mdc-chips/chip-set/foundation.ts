@@ -211,7 +211,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     }
   }
 
-  private select_(chipId: string, shouldNotify: boolean) {
+  private select_(chipId: string, shouldNotifyClients: boolean) {
     if (this.selectedChipIds_.indexOf(chipId) >= 0) {
       return;
     }
@@ -220,11 +220,11 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
       const previouslySelectedChip = this.selectedChipIds_[0];
       const previouslySelectedIndex = this.adapter_.getIndexOfChipById(previouslySelectedChip);
       this.selectedChipIds_ = [];
-      this.adapter_.selectChipAtIndex(previouslySelectedIndex, /** isSelected */ false, shouldNotify);
+      this.adapter_.selectChipAtIndex(previouslySelectedIndex, /** isSelected */ false, shouldNotifyClients);
     }
     this.selectedChipIds_.push(chipId);
     const index = this.adapter_.getIndexOfChipById(chipId);
-    this.adapter_.selectChipAtIndex(index, /** isSelected */ true, shouldNotify);
+    this.adapter_.selectChipAtIndex(index, /** isSelected */ true, shouldNotifyClients);
   }
 }
 
