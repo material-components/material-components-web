@@ -22,6 +22,7 @@
  */
 
 import {MDCComponent} from '@material/base/component';
+import {SpecificEventListener} from '@material/base/types';
 import {MDCCheckbox, MDCCheckboxFactory} from '@material/checkbox/component';
 import {closest} from '@material/dom/ponyfill';
 import {MDCDataTableAdapter} from './adapter';
@@ -37,16 +38,23 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
   private headerRowCheckbox_!: MDCCheckbox;
   private rowCheckboxList_!: MDCCheckbox[];
   private checkboxFactory_!: MDCCheckboxFactory;
+  private headerRow_!: HTMLElement;
+  private content_!: HTMLElement;
+  private handleHeaderRowCheckboxChange_!: SpecificEventListener<'change'>;
+  private handleRowCheckboxChange_!: SpecificEventListener<'change'>;
 
   initialize(checkboxFactory: MDCCheckboxFactory = (el: Element) => new MDCCheckbox(el)) {
     this.checkboxFactory_ = checkboxFactory;
   }
 
   initialSyncWithDOM() {
-    (this.root_.querySelector(`.${cssClasses.HEADER_ROW}`) as HTMLElement)
-        .addEventListener('change', () => this.foundation_.handleHeaderRowCheckboxChange());
-    (this.root_.querySelector(`.${cssClasses.CONTENT}`) as HTMLElement)
-        .addEventListener('change', (event) => this.foundation_.handleRowCheckboxChange(event));
+    this.headerRow_ = this.root_.querySelector(`.${cssClasses.HEADER_ROW}`) as HTMLElement;
+    this.handleHeaderRowCheckboxChange_ = () => this.foundation_.handleHeaderRowCheckboxChange();
+    this.headerRow_.addEventListener('change', this.handleHeaderRowCheckboxChange_);
+
+    this.content_ = this.root_.querySelector(`.${cssClasses.CONTENT}`) as HTMLElement;
+    this.handleRowCheckboxChange_ = (event) => this.foundation_.handleRowCheckboxChange(event);
+    this.content_.addEventListener('change', this.handleRowCheckboxChange_);
 
     this.layout();
   }
@@ -78,6 +86,14 @@ export class MDCDataTable extends MDCComponent<MDCDataTableFoundation> {
    */
   setSelectedRowIds(rowIds: string[]) {
     this.foundation_.setSelectedRowIds(rowIds);
+  }
+
+  destroy() {
+    this.headerRow_.removeEventListener('change', this.handleHeaderRowCheckboxChange_);
+    this.content_.removeEventListener('change', this.handleRowCheckboxChange_);
+
+    this.headerRowCheckbox_.destroy();
+    this.rowCheckboxList_.forEach((checkbox) => checkbox.destroy());
   }
 
   getDefaultFoundation() {
