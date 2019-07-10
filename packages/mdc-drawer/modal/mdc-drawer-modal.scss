@@ -20,51 +20,5 @@
 // THE SOFTWARE.
 //
 
-@import "@material/animation/functions";
-@import "@material/elevation/mixins";
-@import "@material/rtl/mixins";
 @import "../mixins";
-@import "../variables";
-
-.mdc-drawer--modal {
-  @include mdc-drawer-scrim-fill-color($mdc-drawer-modal-scrim-color);
-  @include mdc-elevation($mdc-drawer-modal-elevation);
-  @include mdc-rtl-reflexive-position(left, 0);
-
-  display: none;
-  position: fixed;
-
-  &.mdc-drawer--open {
-    display: flex;
-  }
-}
-
-.mdc-drawer-scrim {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  transition-property: opacity;
-  transition-timing-function: $mdc-animation-standard-curve-timing-function;
-  z-index: $mdc-drawer-z-index - 1;
-
-  .mdc-drawer--open + & {
-    display: block;
-  }
-
-  .mdc-drawer--animate + & {
-    opacity: 0;
-  }
-
-  .mdc-drawer--opening + & {
-    transition-duration: $mdc-drawer-animation-enter;
-    opacity: 1;
-  }
-
-  .mdc-drawer--closing + & {
-    transition-duration: $mdc-drawer-animation-exit;
-    opacity: 0;
-  }
-}
+@include mdc-drawer-modal-core-styles;
