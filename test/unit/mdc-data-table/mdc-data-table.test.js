@@ -30,10 +30,7 @@ import {
   cssClasses,
   events,
 } from '../../../packages/mdc-data-table/constants';
-import {
-  MDCDataTable,
-  MDCDataTableFoundation,
-} from '../../../packages/mdc-data-table/index';
+import {MDCDataTable} from '../../../packages/mdc-data-table/index';
 
 const html = htm.bind(vhtml);
 
@@ -45,7 +42,7 @@ const classMap = (classesMap) => {
 
 const mdcCheckboxTemplate = (props) => {
   return html`<div class="mdc-checkbox ${props.classNames}">
-  <input type="checkbox" class="mdc-checkbox__native-control" ?checked="${props.isChecked}"></input>
+  <input type="checkbox" class="mdc-checkbox__native-control" checked="${props.isChecked}"></input>
   <div class="mdc-checkbox__background">
     <svg class="mdc-checkbox__checkmark" viewbox="0 0 24 24">
       <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
@@ -156,16 +153,6 @@ function setupTest() {
   return {root, component, adapter};
 }
 
-function setupTestWithMocks() {
-  const root = renderComponent({data: mdcDataTableData});
-  const MockFoundationCtor = td.constructor(MDCDataTableFoundation);
-  const mockFoundation = new MockFoundationCtor();
-  const mockCheckboxFactory = td.function('checkboxFactory');
-  const component = new MDCDataTable(root, mockFoundation, mockCheckboxFactory);
-  const adapter = component.getDefaultFoundation().adapter_;
-  return {root, component, mockFoundation, mockCheckboxFactory, adapter};
-}
-
 suite('MDCDataTable');
 
 test('#attachTo returns a component instance', () => {
@@ -175,51 +162,18 @@ test('#attachTo returns a component instance', () => {
   component.destroy();
 });
 
-test('#initialSyncWithDOM registers change events on header row & row checkboxes', () => {
-  const {root, component, mockFoundation} = setupTestWithMocks();
+test('Checking at least 1 row checkbox sets header row checkbox to indeterminate', () => {
+  const {root} = setupTest();
 
-  root
-    .querySelector(strings.HEADER_ROW_CHECKBOX_SELECTOR)
-    .querySelector('input')
-    .click();
-  td.verify(mockFoundation.handleHeaderRowCheckboxChange(), {times: 1});
-
-  root
+  const rowCheckbox = root
     .querySelector(strings.ROW_CHECKBOX_SELECTOR)
-    .querySelector('input')
-    .click();
-  td.verify(mockFoundation.handleRowCheckboxChange(td.matchers.isA(Event)), {
-    times: 1,
-  });
+    .querySelector('input');
+  rowCheckbox.click();
 
-  component.destroy();
-});
-
-test('#initialSyncWithDOM calls foundation.layout() method', () => {
-  const {component, mockFoundation} = setupTestWithMocks();
-  td.verify(mockFoundation.layout(), {times: 1});
-  component.destroy();
-});
-
-test('#getRows calls foundation.getRows() method', () => {
-  const {component, mockFoundation} = setupTestWithMocks();
-  component.getRows();
-  td.verify(mockFoundation.getRows(), {times: 1});
-  component.destroy();
-});
-
-test('#getSelectedRowIds calls foundation.getSelectedRowIds() method', () => {
-  const {component, mockFoundation} = setupTestWithMocks();
-  component.getSelectedRowIds();
-  td.verify(mockFoundation.getSelectedRowIds(), {times: 1});
-  component.destroy();
-});
-
-test('#setSelectedRowIds calls foundation.setSelectedRowIds() method', () => {
-  const {component, mockFoundation} = setupTestWithMocks();
-  component.setSelectedRowIds(['u1', 'u2']);
-  td.verify(mockFoundation.setSelectedRowIds(['u1', 'u2']), {times: 1});
-  component.destroy();
+  const headerRowCheckbox = root
+    .querySelector(strings.HEADER_ROW_CHECKBOX_SELECTOR)
+    .querySelector('input');
+  assert.isTrue(headerRowCheckbox.indeterminate);
 });
 
 test('#setSelectedRowIds sets selected row ids', () => {
@@ -227,6 +181,14 @@ test('#setSelectedRowIds sets selected row ids', () => {
 
   component.setSelectedRowIds(['u1', 'u2']);
   assert.deepEqual(component.getSelectedRowIds(), ['u1', 'u2']);
+  component.destroy();
+});
+
+test('#getSelectedRowIds returns empty array when no rows selected', () => {
+  const {component} = setupTest();
+
+  component.setSelectedRowIds([]);
+  assert.deepEqual(component.getSelectedRowIds(), []);
   component.destroy();
 });
 
@@ -279,73 +241,10 @@ test('adapter#setAttributeAtRowIndex', () => {
   component.destroy();
 });
 
-test('adapter#registerRowCheckboxes Initiates all row checkboxes', () => {
-  const {
-    mockCheckboxFactory,
-    mockFoundation,
-    root,
-    component,
-    adapter,
-  } = setupTestWithMocks();
-
-  const rows = [].slice.call(root.querySelectorAll(strings.ROW_SELECTOR));
-  td.when(mockFoundation.getRows()).thenReturn(rows);
-
-  adapter.registerRowCheckboxes();
-
-  td.verify(mockCheckboxFactory(td.matchers.isA(Element)), {times: 3});
-  component.destroy();
-});
-
-test('adapter#registerRowCheckboxes subsequent call destroys previous checkbox instances of all row checkboxes', () => {
-  const {
-    mockFoundation,
-    mockCheckboxFactory,
-    component,
-    root,
-    adapter,
-  } = setupTestWithMocks();
-
-  const mockDestroy = td.function('checkbox.destroy');
-  const rows = [].slice.call(root.querySelectorAll(strings.ROW_SELECTOR));
-  td.when(mockFoundation.getRows()).thenReturn(rows);
-  td.when(mockCheckboxFactory(td.matchers.isA(Element))).thenReturn({
-    destroy: mockDestroy,
-  });
-  adapter.registerRowCheckboxes();
-  adapter.registerRowCheckboxes();
-
-  td.verify(mockDestroy(), {times: 3});
-  component.destroy();
-});
-
 test('adapter#getRowElements', () => {
   const {component, adapter} = setupTest();
 
   assert.equal(adapter.getRowElements().length, 3);
-  component.destroy();
-});
-
-test('adapter#registerHeaderRowCheckbox Initializes header row checkbox', () => {
-  const {component, mockCheckboxFactory, adapter} = setupTestWithMocks();
-
-  adapter.registerHeaderRowCheckbox();
-  td.verify(mockCheckboxFactory(td.matchers.isA(Element)), {times: 1});
-
-  component.destroy();
-});
-
-test('adapter#registerHeaderRowCheckbox re-initializing header row checkbox destroys previous checkbox', () => {
-  const {component, mockCheckboxFactory, adapter} = setupTestWithMocks();
-
-  const mockDestroy = td.function('checkbox.destroy');
-  td.when(mockCheckboxFactory(td.matchers.isA(Element))).thenReturn({
-    destroy: mockDestroy,
-  });
-  adapter.registerHeaderRowCheckbox();
-  adapter.registerHeaderRowCheckbox();
-  td.verify(mockDestroy(), {times: 1});
-
   component.destroy();
 });
 

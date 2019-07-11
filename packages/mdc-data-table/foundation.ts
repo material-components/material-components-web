@@ -47,7 +47,7 @@ export class MDCDataTableFoundation extends MDCFoundation<MDCDataTableAdapter> {
       setHeaderRowCheckboxChecked: () => undefined,
       setHeaderRowCheckboxIndeterminate: () => undefined,
       setRowCheckboxCheckedAtIndex: () => undefined,
-    } as MDCDataTableAdapter;
+    };
   }
 
   constructor(adapter?: Partial<MDCDataTableAdapter>) {
