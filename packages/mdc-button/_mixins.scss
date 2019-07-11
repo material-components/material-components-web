@@ -309,17 +309,12 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
       pointer-events: none;
     }
   }
-
-  .mdc-button__label {
-    position: relative;
-  }
 }
 
 @mixin mdc-button__icon_ {
   @include mdc-rtl-reflexive-box(margin, right, 8px);
 
   display: inline-block;
-  position: relative;
   width: 18px;
   height: 18px;
   font-size: 18px;
