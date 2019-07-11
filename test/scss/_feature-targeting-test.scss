@@ -16,6 +16,7 @@
 @import "@material/radio/mixins";
 @import "@material/ripple/mixins";
 @import "@material/shape/mixins";
+@import "@material/slider/mixins";
 @import "@material/snackbar/mixins";
 @import "@material/switch/mixins";
 @import "@material/tab-bar/mixins";
@@ -203,6 +204,17 @@
     // Shape
     @include mdc-shape-radius(1px 2px, true, $query: $query);
 
+    // Slider
+    @include mdc-slider-core-styles($query: $query);
+    @include mdc-slider-highlight-color(red, $query: $query);
+    @include mdc-slider-rail-color(red, $query: $query);
+    @include mdc-slider-rail-tick-mark-color(red, $query: $query);
+    @include mdc-slider-thumb-color(red, $query: $query);
+    @include mdc-slider-focus-halo-color(red, $query: $query);
+    @include mdc-slider-value-pin-ink-color(red, $query: $query);
+    @include mdc-slider-value-pin-fill-color(red, $query: $query);
+    @include mdc-slider-value-pin-fill-color-accessible(red, $query: $query);
+    @include mdc-slider-color-accessible(red, $query: $query);
 
     // Snackbar
     @include mdc-snackbar-core-styles($query: $query);
