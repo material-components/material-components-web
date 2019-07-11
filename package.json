@@ -5,6 +5,7 @@
   "scripts": {
     "build": "npm run clean && mkdirp build && webpack --mode=development --progress --colors",
     "build:esmodules": "tsc --project ./tsconfig.json --module esnext --outDir ./packages --importHelpers",
+    "build:es6": "tsc --project ./tsconfig.json --target es6 --module esnext --outDir ./build/es6 --importHelpers",
     "build:min": "mkdirp build && cross-env MDC_ENV=production webpack -p --mode=production --progress --colors",
     "clean": "node ./scripts/build/clean",
     "clean:site": "node ./scripts/build/clean --site-generator-tmp",

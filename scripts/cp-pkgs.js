@@ -133,6 +133,15 @@ function dtsBundler() {
   });
 }
 
+function copyEs6Modules() {
+  const ES6_DIRECTORY = path.resolve(__dirname, '../build/es6');
+  const distEs6Directories = fs.readdirSync(ES6_DIRECTORY);
+  distEs6Directories.forEach((packageDirectory) => {
+    globSync(`build/es6/${packageDirectory}/*.{css,js,map}`).forEach((asset) => );
+  });
+
+}
+
 /*
  * 1. Cleans all /dist directories in each package
  * 2. Copies generated css, js, and map files to the respective packages
@@ -145,6 +154,8 @@ Promise.all(globSync('build/*.{css,js,map}').map(cpAsset)).catch((err) => {
   console.error('Error encountered copying assets:', err);
   process.exit(1);
 });
+
+copyEs6Modules();
 
 // Build d.ts files for each UMD bundle and copy into each package's dist folder
 dtsBundler();
