@@ -50,7 +50,7 @@ export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements MDCR
       deregisterDocumentInteractionHandler: (evtType, handler) =>
           document.documentElement.removeEventListener(evtType, handler, applyPassive()),
       deregisterInteractionHandler: (evtType, handler) =>
-          instance.root_.removeEventListener(evtType, handler, applyPassive()),
+          (instance.root_ as HTMLElement).removeEventListener(evtType, handler, applyPassive()),
       deregisterResizeHandler: (handler) => window.removeEventListener('resize', handler),
       getWindowPageOffset: () => ({x: window.pageXOffset, y: window.pageYOffset}),
       isSurfaceActive: () => matches(instance.root_, ':active'),
@@ -59,7 +59,7 @@ export class MDCRipple extends MDCComponent<MDCRippleFoundation> implements MDCR
       registerDocumentInteractionHandler: (evtType, handler) =>
           document.documentElement.addEventListener(evtType, handler, applyPassive()),
       registerInteractionHandler: (evtType, handler) =>
-          instance.root_.addEventListener(evtType, handler, applyPassive()),
+        (instance.root_ as HTMLElement).addEventListener(evtType, handler, applyPassive()),
       registerResizeHandler: (handler) => window.addEventListener('resize', handler),
       removeClass: (className) => instance.root_.classList.remove(className),
       updateCssVariable: (varName, value) => (instance.root_ as HTMLElement).style.setProperty(varName, value),

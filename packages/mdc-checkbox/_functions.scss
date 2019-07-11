@@ -22,18 +22,10 @@
 
 @import "@material/theme/functions";
 
-$mdc-checkbox-container-keyframes-uid_: -1;
-
 @function mdc-checkbox-transition-enter($property, $delay: 0ms, $duration: $mdc-checkbox-transition-duration) {
   @return mdc-animation-enter($property, $duration, $delay);
 }
 
 @function mdc-checkbox-transition-exit($property, $delay: 0ms, $duration: $mdc-checkbox-transition-duration) {
   @return mdc-animation-exit-temporary($property, $duration, $delay);
-}
-
-@function mdc-checkbox-container-keyframes-uid_() {
-  $mdc-checkbox-container-keyframes-uid_: $mdc-checkbox-container-keyframes-uid_ + 1 !global;
-
-  @return $mdc-checkbox-container-keyframes-uid_;
 }
