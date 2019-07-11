@@ -23,6 +23,7 @@
     "@material/animation": "^3.0.0",
     "@material/base": "^3.0.0",
     "@material/dom": "^3.0.0",
+    "@material/feature-targeting": "^3.0.0",
     "@material/rtl": "^3.0.0",
     "@material/theme": "^3.0.0",
     "@material/typography": "^3.0.0",

@@ -39,10 +39,11 @@ interface DocumentationContent {
 
 const FOUNDATION = 'foundation';
 const ADAPTER = 'adapter';
+const README_FILE = 'README.md';
 
 class TypeScriptDocumentationGenerator {
   markdownBuffer: {[s: string]: ModuleMarkdown[]};
-  docData?: {};
+  docData?: {}; // Documentalist representation of methods/properties/events
   templateFunction: Handlebars.TemplateDelegate<{}>;
 
   constructor() {
@@ -69,15 +70,7 @@ class TypeScriptDocumentationGenerator {
           includeDeclarations: true,
         }))
         .documentGlobs('packages/**/*') // ← async operation, returns a Promise
-        .then((docs) => {
-          resolve(docs);
-          // TODO - remove when all docs are complete
-          return JSON.stringify(docs, null, 2);
-        })
-        .then((json) => {
-          // TODO: comment out - just for debugging purposes.
-          fs.writeFileSync('docs.json', json);
-        })
+        .then((docs) => resolve(docs))
         .catch((error) => console.error(error)); // tslint:disable-line
     });
   }
@@ -206,7 +199,7 @@ class TypeScriptDocumentationGenerator {
     const endIndex = filePath.lastIndexOf('/');
     const directoryPath = filePath.substring(startingIndex, endIndex);
     try {
-      const relativePathToReadme = path.resolve('packages', directoryPath, 'README.md');
+      const relativePathToReadme = path.resolve('packages', directoryPath, README_FILE);
       if (fs.existsSync(relativePathToReadme)) {
         return directoryPath;
       }
@@ -248,7 +241,7 @@ class TypeScriptDocumentationGenerator {
       ];
 
       if (allowList.some((allowed) => readmeDirectoryPath.includes(allowed))) {
-        const readmeDestinationPath = `./packages/${readmeDirectoryPath}/README.md`;
+        const readmeDestinationPath = `./packages/${readmeDirectoryPath}/${README_FILE}`;
         const finalReadmeMarkdown = await this.insertMethodDescriptionTable(readmeDirectoryPath);
         fs.writeFile(readmeDestinationPath, finalReadmeMarkdown, (error) => {
           console.log(`~~ generated ${readmeDestinationPath}`); // tslint:disable-line
@@ -260,8 +253,15 @@ class TypeScriptDocumentationGenerator {
     }
   }
 
+  /**
+   * Returns a promise, that resolves with the finalized markdown with
+   * inserted documentation in markdown table format.
+   * @param readmeDirectoryPath directory path to readme file
+   * (ie. mdc-textfield/character-counter or mdc-drawer)
+   * @return Promise<{string}>
+   */
   private insertMethodDescriptionTable(readmeDirectoryPath: string) {
-    const readmeMarkdownPath = `./packages/${readmeDirectoryPath}/README.md`;
+    const readmeMarkdownPath = `./packages/${readmeDirectoryPath}/${README_FILE}`;
     return new Promise(async (resolve) => {
       const readmeMd = await readFile(readmeMarkdownPath, 'utf8');
       const modules = this.markdownBuffer[readmeDirectoryPath]
@@ -283,6 +283,14 @@ class TypeScriptDocumentationGenerator {
     });
   }
 
+  /** Sorts modules by the following rules:
+   * 1. Components
+   * 2. Adapters
+   * 3. Foundations
+   * 4. Alphabetized
+   * @param a 1st module of comparison
+   * @param b 2nd module of comparison
+   */
   private sortByModuleType(a: ModuleMarkdown, b: ModuleMarkdown): number {
     const moduleA = a.moduleName.toLowerCase();
     const moduleB = b.moduleName.toLowerCase();
@@ -298,12 +306,21 @@ class TypeScriptDocumentationGenerator {
     return 0;
   }
 
+  /**
+   * 
+   * @param item Documentalist object representation of a method/event/property
+   * @param opts object of different booleans - currently only has `hasDocumentation`
+   */
   private shouldIgnoreDocumentationItem(item, opts = {hasDocumentation: true}) {
     // isState ignores cssClasses, defaultAdapter, strings
     const {isProtected, isStatic} = item.flags;
     return !isProtected && !isStatic && opts.hasDocumentation;
   }
 
+  /**
+   * Removes new lines from raw comment string
+   * @param comment raw comment string
+   */
   private cleanComment(comment) {
     const r = new RegExp(/\n/gm);
     return comment.replace(r, ' ');
