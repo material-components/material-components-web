@@ -152,7 +152,6 @@ CSS Class | Description
 > However, the `mdc-button__label` class may become mandatory for all cases in the future, so it is recommended to
 > always include it to be future-proof.
 
-
 ### Sass Mixins
 
 To customize a button's color and properties, you can use the following mixins.
