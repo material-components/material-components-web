@@ -2,6 +2,8 @@ import {Documentalist, TypescriptPlugin} from '@documentalist/compiler';
 import * as fs from 'fs';
 import * as Handlebars from 'handlebars';
 import * as path from 'path';
+import * as util from 'util';
+const readFile = util.promisify(fs.readFile);
 
 interface ModuleMarkdown {
   methods?: ModuleMethods[];
@@ -35,13 +37,23 @@ interface DocumentationContent {
   value?: string;
 }
 
+const FOUNDATION = 'foundation';
+const ADAPTER = 'adapter';
+
 class TypeScriptDocumentationGenerator {
   markdownBuffer: {[s: string]: ModuleMarkdown[]};
   docData?: {};
+  templateFunction: Handlebars.TemplateDelegate<{}>;
 
   constructor() {
     this.docData = {};
     this.markdownBuffer = {};
+    fs.readFile('./scripts/documentation/apiMarkdownTableTemplate.hbs', 'utf8', (error, template) => {
+      if (error) {
+        console.error(error); // tslint:disable-line
+      }
+      this.templateFunction = Handlebars.compile(template, {noEscape: true});
+    });
   }
 
   /**
@@ -232,11 +244,11 @@ class TypeScriptDocumentationGenerator {
        */
       const allowList = [
         'mdc-drawer',
-        'mdc-textfield',
+        // 'mdc-textfield',
       ];
 
       if (allowList.some((allowed) => readmeDirectoryPath.includes(allowed))) {
-        const readmeDestinationPath = `./packages/${readmeDirectoryPath}/test_README.md`;
+        const readmeDestinationPath = `./packages/${readmeDirectoryPath}/README.md`;
         const finalReadmeMarkdown = await this.insertMethodDescriptionTable(readmeDirectoryPath);
         fs.writeFile(readmeDestinationPath, finalReadmeMarkdown, (error) => {
           console.log(`~~ generated ${readmeDestinationPath}`); // tslint:disable-line
@@ -249,51 +261,42 @@ class TypeScriptDocumentationGenerator {
   }
 
   private insertMethodDescriptionTable(readmeDirectoryPath: string) {
-    const readmeMarkdownPath = `./packages/${readmeDirectoryPath}/test_README.md`;
-    return new Promise((resolve, reject) => {
-      fs.readFile('./scripts/documentation/apiMarkdownTableTemplate.hbs', 'utf8', (error, data) => {
-        const templateFunction = Handlebars.compile(data);
-        resolve(templateFunction(this.markdownBuffer[readmeDirectoryPath]));
-      });
-      // fs.readFile(readmeMarkdownPath, 'utf8', (error, data) => {
-      //   if (error) {
-      //     return reject(error);
-      //   }
-      //   const startReplacerToken = '<!-- docgen-tsdoc-replacer:start -->';
-      //   const endReplacerToken = '<!-- docgen-tsdoc-replacer:end -->';
-      //   const regexString = `^${startReplacerToken}\\n(.|\n)*${endReplacerToken}$`;
-      //   const regex = new RegExp(regexString, 'gm');
-      //   const insertedData = data.replace(
-      //     regex,
-      //     `${startReplacerToken}\n${this.convertModuleMarkdownToString(readmeDirectoryPath)}\n${endReplacerToken}`,
-      //   );
-      //   resolve(insertedData);
-      // });
+    const readmeMarkdownPath = `./packages/${readmeDirectoryPath}/README.md`;
+    return new Promise(async (resolve) => {
+      const readmeMd = await readFile(readmeMarkdownPath, 'utf8');
+      const modules = this.markdownBuffer[readmeDirectoryPath]
+        .filter((module) => module.methods.length || module.properties.length || module.events.length)
+        .sort(this.sortByModuleType);
+      const apiMarkdownTable = this.templateFunction({modules});
+
+      const startReplacerToken
+        = '<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->';
+      const endReplacerToken = '<!-- docgen-tsdoc-replacer:end -->';
+      const regexString = `^${startReplacerToken}\\n(.|\\n)*${endReplacerToken}$`;
+      const regex = new RegExp(regexString, 'gm');
+      const insertedData = readmeMd.replace(
+        regex,
+        `${startReplacerToken}\n${apiMarkdownTable}\n${endReplacerToken}`,
+      );
+
+      resolve(insertedData);
     });
   }
 
-  private convertModuleMarkdownToString(readmeDirectoryPath) {
-    const documentationData = this.markdownBuffer[readmeDirectoryPath];
-      // .sort(this.sortByModuleType)
+  private sortByModuleType(a: ModuleMarkdown, b: ModuleMarkdown): number {
+    const moduleA = a.moduleName.toLowerCase();
+    const moduleB = b.moduleName.toLowerCase();
+    if (!moduleA.includes(FOUNDATION) && !moduleA.includes(ADAPTER)) {
+      return -1;
+    } else if (moduleA.includes(FOUNDATION) && !moduleB.includes(FOUNDATION)) {
+      return 1;
+    } else if (moduleA.includes(FOUNDATION) && moduleB.includes(FOUNDATION)
+      || moduleA.includes(ADAPTER) && moduleB.includes(ADAPTER)) {
+      // alphabetize
+      return moduleA > moduleB ? 1 : -1;
+    }
+    return 0;
   }
-
-  // private sortByModuleType(a: string, b: string) {
-  //   const FOUNDATION = 'foundation';
-  //   const ADAPTER = 'adapter';
-  //   const moduleNameRegex = new RegExp(/^### (MDC[a-zA-Z]*)/g);
-  //   const moduleA = a.match(moduleNameRegex)[0].toLowerCase();
-  //   const moduleB = b.match(moduleNameRegex)[0].toLowerCase();
-  //   if (!moduleA.includes(FOUNDATION) && !moduleA.includes(ADAPTER)) {
-  //     return -1;
-  //   } else if (moduleA.includes(FOUNDATION) && !moduleB.includes(FOUNDATION)) {
-  //     return 1;
-  //   } else if (moduleA.includes(FOUNDATION) && moduleB.includes(FOUNDATION)
-  //     || moduleA.includes(ADAPTER) && moduleB.includes(ADAPTER)) {
-  //     // alphabetize
-  //     return moduleA > moduleB;
-  //   }
-  //   return 0;
-  // }
 
   private shouldIgnoreDocumentationItem(item, opts = {hasDocumentation: true}) {
     // isState ignores cssClasses, defaultAdapter, strings

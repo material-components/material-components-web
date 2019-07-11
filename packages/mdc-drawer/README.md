@@ -437,13 +437,13 @@ document.body.addEventListener('MDCDrawer:closed', () => {
 });
 ```
 
-<!-- docgen-tsdoc-replacer:start **DO NOT EDIT, This section is automatically generated** -->
+<!-- docgen-tsdoc-replacer:start __DO NOT EDIT, This section is automatically generated__ -->
 ### MDCDrawer
 
 #### Methods
 
 Signature | Description
---- | --- 
+--- | ---
 `emit(evtType: string, evtData: T, shouldBubble?: boolean) => void` | Fires a cross-browser-compatible custom event from the component root of the given type, with the given data.
 `listen(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to add an event listener to the component's root element. This is most useful when listening for custom events.
 `unlisten(evtType: K, handler: SpecificEventListener<K>, options?: AddEventListenerOptions | boolean) => void` | Wrapper method to remove an event listener to the component's root element. This is most useful when unlistening for custom events.
@@ -451,29 +451,25 @@ Signature | Description
 #### Properties
 
 Name | Type | Description
---- | --- | --- 
-open | `boolean` | Toggles the drawer open and closed.
+--- | --- | ---
+open | boolean | Toggles the drawer open and closed.
 
 #### Events
-Name | Detail | Description
---- | --- | --- 
-MDCDrawer:closed  | ` {}`  |  Emits when the navigation drawer has closed. 
-MDCDrawer:opened  | ` {}`  |  Emits when the navigation drawer has opened. 
-
-
+- `MDCDrawer:closed {}` Emits when the navigation drawer has closed.
+- `MDCDrawer:opened {}` Emits when the navigation drawer has opened.
 
 ### MDCDrawerAdapter
 
 #### Methods
 
 Signature | Description
---- | --- 
+--- | ---
 `notifyOpen() => void` | Emits a custom event "MDCDrawer:opened" denoting the drawer has opened.
 `addClass(className: string) => void` | Adds a class to the root Element.
 `focusActiveNavigationItem() => void` | Focuses the active / selected navigation item.
 `hasClass(className: string) => boolean` | Returns true if the root Element contains the given class.
 `notifyClose() => void` | Emits a custom event "MDCDrawer:closed" denoting the drawer has closed.
-`elementHasClass(element: Element, className: string) => boolean` | Returns true if the an element contains the given class.
+`elementHasClass(element: Element, className: string) => boolean` | Returns true if the element contains the given class.
 `releaseFocus() => void` | Releases focus trap from root element which was set by `trapFocus` and restores focus to where it was prior to calling `trapFocus`.
 `removeClass(className: string) => void` | Removes a class from the root Element.
 `restoreFocus() => void` | Restores focus to element previously saved with 'saveFocus'.
@@ -486,7 +482,7 @@ Signature | Description
 #### Methods
 
 Signature | Description
---- | --- 
+--- | ---
 `close() => void` | Closes the drawer from the open state.
 `handleKeydown(evt: KeyboardEvent) => void` | Keydown handler to close drawer when key is escape.
 `handleTransitionEnd(evt: TransitionEvent) => void` | Handles the `transitionend` event when the drawer finishes opening/closing.
@@ -501,7 +497,7 @@ Signature | Description
 #### Methods
 
 Signature | Description
---- | --- 
+--- | ---
 `close() => void` | Closes the drawer from the open state.
 `handleKeydown(evt: KeyboardEvent) => void` | Keydown handler to close drawer when key is escape.
 `handleScrimClick() => void` | Handles click event on scrim.
@@ -510,6 +506,7 @@ Signature | Description
 `isOpen() => boolean` | Returns true if the drawer is in the open position.
 `isOpening() => boolean` | Returns true if the drawer is animating open.
 `open() => void` | Opens the drawer from the closed state.
+
 
 
 <!-- docgen-tsdoc-replacer:end -->

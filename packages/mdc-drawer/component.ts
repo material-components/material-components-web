@@ -35,8 +35,8 @@ import {MDCDrawerFocusTrapFactory} from './util';
 const {cssClasses, strings} = MDCDismissibleDrawerFoundation;
 
 /**
- * @events `MDCDrawer:closed` Emits when the navigation drawer has closed. {}
- * @events `MDCDrawer:opened` Emits when the navigation drawer has opened. {}
+ * @events `MDCDrawer:closed {}` Emits when the navigation drawer has closed.
+ * @events `MDCDrawer:opened {}` Emits when the navigation drawer has opened.
  */
 export class MDCDrawer extends MDCComponent<MDCDismissibleDrawerFoundation> {
   static attachTo(root: Element): MDCDrawer {
