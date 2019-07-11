@@ -52,7 +52,6 @@
       @include mdc-data-table-row-fill-color($mdc-data-table-row-fill-color, $query: $query);
       @include mdc-data-table-header-row-fill-color($mdc-data-table-header-row-fill-color, $query: $query);
       @include mdc-data-table-selected-row-fill-color($mdc-data-table-selected-row-fill-color, $query: $query);
-      @include mdc-data-table-checkbox-touch-dimension($mdc-data-table-checkbox-touch-dimension, $query: $query);
       @include mdc-data-table-checked-icon-color($mdc-data-table-checked-icon-color, $query: $query);
       @include mdc-data-table-divider-color($mdc-data-table-divider-color, $query: $query);
       @include mdc-data-table-divider-size($mdc-data-table-divider-size, $query: $query);
@@ -147,16 +146,8 @@
 @mixin mdc-data-table-checked-icon-color($color, $query: mdc-feature-all()) {
   .mdc-data-table__header-row-checkbox,
   .mdc-data-table__row-checkbox {
-    @include mdc-states($color, $query: $query);
-    @include mdc-checkbox-container-colors($marked-stroke-color: $color, $marked-fill-color: $color, $query: $query);
     @include mdc-checkbox-focus-indicator-color($color, $query: $query);
-  }
-}
-
-@mixin mdc-data-table-checkbox-touch-dimension($dimension, $query: mdc-feature-all()) {
-  .mdc-data-table__header-row-checkbox,
-  .mdc-data-table__row-checkbox {
-    @include mdc-checkbox-touch-dimension($dimension, $query: $query);
+    @include mdc-checkbox-container-colors($marked-stroke-color: $color, $marked-fill-color: $color, $query: $query);
   }
 }
 
