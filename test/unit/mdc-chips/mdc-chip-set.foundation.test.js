@@ -126,22 +126,22 @@ test('in filter chips, #handleChipInteraction deselects chip if in selectedChipI
   assert.equal(foundation.getSelectedChipIds().length, 0);
 });
 
-test('#handleChipInteraction selects chip if the chip set is a filter chip set', () => {
+test('#handleChipInteraction selects chip if the chip set is a filter chip set and notifies clients', () => {
   const {foundation, mockAdapter} = setupChipNavigationTest(['chipA', 'chipB']);
   td.when(mockAdapter.hasClass(cssClasses.CHOICE)).thenReturn(false);
   td.when(mockAdapter.hasClass(cssClasses.FILTER)).thenReturn(true);
 
   foundation.handleChipInteraction('chipA');
-  td.verify(mockAdapter.selectChipAtIndex(0, true, false));
+  td.verify(mockAdapter.selectChipAtIndex(0, true, /** notifies clients */ true));
 });
 
-test('#handleChipInteraction selects chip if the chip set is a choice chip set', () => {
+test('#handleChipInteraction selects chip if the chip set is a choice chip set and notifies clients', () => {
   const {foundation, mockAdapter} = setupChipNavigationTest(['chipA', 'chipB']);
   td.when(mockAdapter.hasClass(cssClasses.CHOICE)).thenReturn(true);
   td.when(mockAdapter.hasClass(cssClasses.FILTER)).thenReturn(false);
 
   foundation.handleChipInteraction('chipA');
-  td.verify(mockAdapter.selectChipAtIndex(0, true, false));
+  td.verify(mockAdapter.selectChipAtIndex(0, true, /** notifies clients */ true));
 });
 
 test('#handleChipInteraction removes focus from all chips except the selected one', () => {

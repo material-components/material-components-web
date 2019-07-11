@@ -67,6 +67,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
 
   /**
    * Selects the chip with the given id. Deselects all other chips if the chip set is of the choice variant.
+   * Does not notify clients of the updated selection state.
    */
   select(chipId: string) {
     this.select_(chipId, false);
@@ -96,7 +97,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
     if (selected && !chipIsSelected) {
       this.select(chipId);
     } else if (!selected && chipIsSelected) {
-      this.deselect_(chipId);
+      this.deselectAndNotifyClients_(chipId);
     }
   }
 
@@ -105,7 +106,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
    */
   handleChipRemoval(chipId: string) {
     const index = this.adapter_.getIndexOfChipById(chipId);
-    this.deselect_(chipId);
+    this.deselectAndNotifyClients_(chipId);
     this.adapter_.removeChipAtIndex(index);
     const maxIndex = this.adapter_.getChipListCount() - 1;
     const nextIndex = Math.min(index, maxIndex);
@@ -182,7 +183,7 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
   /**
    * Deselects the chip with the given id.
    */
-  private deselect_(chipId: string) {
+  private deselectAndNotifyClients_(chipId: string) {
     const index = this.selectedChipIds_.indexOf(chipId);
     if (index >= 0) {
       this.selectedChipIds_.splice(index, 1);
@@ -196,9 +197,9 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
    */
   private toggleSelect_(chipId: string) {
     if (this.selectedChipIds_.indexOf(chipId) >= 0) {
-      this.deselect_(chipId);
+      this.deselectAndNotifyClients_(chipId);
     } else {
-      this.select(chipId);
+      this.selectAndNotifyClients_(chipId);
     }
   }
 
@@ -209,6 +210,10 @@ export class MDCChipSetFoundation extends MDCFoundation<MDCChipSetAdapter> {
         this.adapter_.removeFocusFromChipAtIndex(i);
       }
     }
+  }
+
+  private selectAndNotifyClients_(chipId: string) {
+    this.select_(chipId, true);
   }
 
   private select_(chipId: string, shouldNotifyClients: boolean) {
