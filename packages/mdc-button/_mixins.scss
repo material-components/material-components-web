@@ -122,6 +122,8 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
 // This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
 // button styles. It is recommended that most users use `mdc-button-core-styles` instead.
 @mixin mdc-button-ripple($query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+
   @include mdc-ripple-common($query);
 
   .mdc-button {
@@ -132,12 +134,14 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
       $color: primary, $query: $query, $ripple-target: $mdc-button-ripple-target);
 
     #{$mdc-button-ripple-target} {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
+      @include mdc-feature-targets($feat-structure) {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
     }
   }
 
