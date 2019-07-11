@@ -32,11 +32,12 @@
 @import "@material/shape/functions";
 @import "./variables";
 
-$mdc-density-range: 4px;
+$mdc-density-interval: 4px;
 
 @mixin mdc-button-core-styles($query: mdc-feature-all()) {
   @include mdc-button-without-ripple($query);
   @include mdc-button-ripple($query);
+  @include mdc-button-theme-baseline($query);
 }
 
 // This API is intended for use by frameworks that may want to separate the ripple-related styles from the other
@@ -48,7 +49,6 @@ $mdc-density-range: 4px;
   // postcss-bem-linter: define button
   .mdc-button {
     @include mdc-button-base_($query);
-    @include mdc-button-theme-override;
     @include mdc-button-container-fill-color(transparent, $query);
 
     // The icon CSS class overrides styles defined in the .material-icons CSS
@@ -136,20 +136,6 @@ $mdc-density-range: 4px;
   }
 }
 
-$mdc-button-density-scale: 0;
-$mdc-button-shape-radius: small;
-
-@mixin mdc-button-theme-override(
-  $density-scale: $mdc-button-density-scale,
-  $shape-radius: $mdc-button-shape-radius) {
-
-  $height: $mdc-button-height + $density-scale * $mdc-density-range;
-
-  @include mdc-button-shape-radius($shape-radius, $mdc-button-height: $height);
-
-  height: $height;
-}
-
 @mixin mdc-button-filled-accessible($container-fill-color, $query: mdc-feature-all()) {
   $fill-tone: mdc-theme-tone($container-fill-color);
 
@@ -204,6 +190,22 @@ $mdc-button-shape-radius: small;
       @include mdc-theme-prop(color, $color);
     }
   }
+}
+
+@mixin mdc-button-density($density-scale,
+$shape-radius: null,
+$shape-rtl-reflexive: false,
+$query: mdc-feature-all()) {
+  $height: $mdc-button-height + $density-scale * $mdc-density-interval;
+
+  @if $shape-radius {
+    @include mdc-button-shape-radius($shape-radius,
+    $mdc-button-height: $height,
+    $rtl-reflexive: $shape-rtl-reflexive,
+    $query: $query);
+  }
+
+  height: $height;
 }
 
 @mixin mdc-button-shape-radius($radius, $mdc-button-height: $mdc-button-height, $rtl-reflexive: false, $query: mdc-feature-all()) {
@@ -261,7 +263,6 @@ $mdc-button-shape-radius: small;
     justify-content: center;
     box-sizing: border-box;
     min-width: 64px;
-    height: $mdc-button-height;
     border: none;
     outline: none;
     /* @alternate */
@@ -388,4 +389,13 @@ $mdc-button-shape-radius: small;
 @mixin mdc-button--dense_() {
   height: $mdc-dense-button-height;
   font-size: .8125rem; // 13sp
+}
+
+@mixin mdc-button-theme-baseline($query: mdc-feature-all()) {
+  .mdc-button {
+    @include mdc-button-density(
+      $density-scale: $mdc-button-density-scale,
+      $shape-radius: $mdc-button-shape-radius,
+      $query: $query);
+  }
 }
