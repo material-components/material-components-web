@@ -355,7 +355,10 @@
 // Simple mixin for selected states which automatically selects opacity values based on whether the ink color is
 // light or dark.
 @mixin mdc-states-selected(
-  $color, $has-nested-focusable-element: false, $query: mdc-feature-all(), $ripple-target: "&") {
+  $color,
+  $has-nested-focusable-element: false,
+  $query: mdc-feature-all(),
+  $ripple-target: "&") {
   $feat-color: mdc-feature-create-target($query, color);
   $selected-opacity: mdc-states-opacity($color, selected);
 
