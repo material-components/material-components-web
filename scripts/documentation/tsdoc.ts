@@ -6,27 +6,27 @@ import * as util from 'util';
 const readFile = util.promisify(fs.readFile);
 
 interface ModuleMarkdown {
-  methods?: ModuleMethods[];
-  events?: ModuleEvents[];
-  properties?: ModuleProperties[];
+  methods?: ModuleMethod[];
+  events?: ModuleEvent[];
+  properties?: ModuleProperty[];
   moduleName: string;
   readmeDirectoryPath: string;
 }
 
 interface ModuleDocumentation {
-  events: ModuleEvents[];
+  events: ModuleEvent[];
 }
 
-interface ModuleEvents {
+interface ModuleEvent {
   documentation: string;
 }
 
-interface ModuleMethods {
+interface ModuleMethod {
   methodSignature: string;
   documentation: string;
 }
 
-interface ModuleProperties {
+interface ModuleProperty {
   name: string;
   type: string;
   documentation: string;
@@ -135,7 +135,7 @@ class TypeScriptDocumentationGenerator {
    * @returns list of events in the esmodule.
    * @param esmodule module name (ie. MDCSelectIconFoundation)
    */
-  getDocumentationForEvents(esmodule: string): ModuleEvents[] {
+  getDocumentationForEvents(esmodule: string): ModuleEvent[] {
     return (this.docData[esmodule].documentation.contents as DocumentationContent[])
       .filter((content) => content.tag && content.tag === 'events')
       .map((content) => ({documentation: content.value}));
@@ -146,7 +146,7 @@ class TypeScriptDocumentationGenerator {
    * @returns list of method documentation of the esmodule.
    * @param esmodule module name (ie. MDCSelectIconFoundation)
    */
-  getDocumentationForMethods(esmodule: string): ModuleMethods[] {
+  getDocumentationForMethods(esmodule: string): ModuleMethod[] {
     if (!this.docData || !this.docData[esmodule].methods) {
       return [];
     }
@@ -170,7 +170,7 @@ class TypeScriptDocumentationGenerator {
    * @returns list of property documentation of the esmodule.
    * @param esmodule module name (ie. MDCSelectIconFoundation)
    */
-  getDocumentationProperties(esmodule: string): ModuleProperties[] {
+  getDocumentationProperties(esmodule: string): ModuleProperty[] {
     if (!this.docData || !this.docData[esmodule].properties) {
       return [];
     }
@@ -307,7 +307,8 @@ class TypeScriptDocumentationGenerator {
   }
 
   /**
-   * 
+   * A filter function to strip out methods and properties that should not
+   * appear in the Readme tables.
    * @param item Documentalist object representation of a method/event/property
    * @param opts object of different booleans - currently only has `hasDocumentation`
    */
