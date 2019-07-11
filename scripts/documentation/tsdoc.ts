@@ -1,22 +1,42 @@
 import {Documentalist, TypescriptPlugin} from '@documentalist/compiler';
 import * as fs from 'fs';
+import * as Handlebars from 'handlebars';
 import * as path from 'path';
-
-const markdownHeaderLevel = '###';
-const markdownSubHeaderLevel = '####';
 
 interface ModuleMarkdown {
   methods?: ModuleMethods[];
+  events?: ModuleEvents[];
+  properties?: ModuleProperties[];
   moduleName: string;
   readmeDirectoryPath: string;
 }
+
+interface ModuleDocumentation {
+  events: ModuleEvents[];
+}
+
+interface ModuleEvents {
+  documentation: string;
+}
+
 interface ModuleMethods {
   methodSignature: string;
   documentation: string;
 }
 
+interface ModuleProperties {
+  name: string;
+  type: string;
+  documentation: string;
+}
+
+interface DocumentationContent {
+  tag?: string;
+  value?: string;
+}
+
 class TypeScriptDocumentationGenerator {
-  markdownBuffer: {};
+  markdownBuffer: {[s: string]: ModuleMarkdown[]};
   docData?: {};
 
   constructor() {
@@ -30,7 +50,7 @@ class TypeScriptDocumentationGenerator {
    * @returns Promise<{}>
    */
   generateJSONFromFiles() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       new Documentalist()
         .use(/\.ts$/, new TypescriptPlugin({
           excludePaths: ['node_modules'],
@@ -78,55 +98,47 @@ class TypeScriptDocumentationGenerator {
       return;
     }
     const markdownObject: ModuleMarkdown = {
+      events: this.getDocumentationForModule(esmodule).events,
       methods: this.getDocumentationForMethods(esmodule),
       moduleName: esmodule,
+      properties: this.getDocumentationProperties(esmodule),
       readmeDirectoryPath,
     };
-      // + this.getDocumentationProperties(esmodule)
-      // + this.getDocumentationForModule(esmodule);
-
-    this.setMarkdownBuffer(readmeDirectoryPath, markdownObject);
+    this.addToMarkdownBuffer(readmeDirectoryPath, markdownObject);
   }
 
   /**
    * This is higher level documentation from the class.
    * Currently this should only include events documentation.
-   * @returns documentation markdown table in string format.
+   * @returns documentation of the esmodule.
    * @param esmodule module name (ie. MDCSelectIconFoundation)
    */
-  getDocumentationForModule(esmodule: string): string {
-    const title = `${markdownSubHeaderLevel} Events\n`;
-    const tableHeader = 'Name | Detail | Description\n--- | --- | --- \n';
-    if (!this.docData || !this.docData[esmodule].documentation) {
-      return '';
+  getDocumentationForModule(esmodule: string): ModuleDocumentation {
+    if (!this.docData
+      || !this.docData[esmodule].documentation
+      || !this.docData[esmodule].documentation.contents) {
+      return {events: []};
     }
-    const {contents} = this.docData[esmodule].documentation;
-    if (!contents || !contents.length) {
-      return '';
-    }
-    const eventsTable = contents.reduce((markdownString: string, content: {tag?: string, value?: string}) => {
-      if (!content.tag || content.tag !== 'events') {
-        return markdownString;
-      }
-      const {value} = content;
-      const separatedValue = value.split('%-%'); // created this separator
-      const eventName = separatedValue[0];
-      const eventDescription = separatedValue[1];
-      const eventDetail = separatedValue[2];
-      const eventRow = `${eventName} | \`${eventDetail}\`  | ${eventDescription}\n`;
-      return `${markdownString}${eventRow}`;
-    }, '');
+    // this only returns event data
+    return {
+      events: this.getDocumentationForEvents(esmodule),
+    };
+  }
 
-    if (!eventsTable.length) {
-      return '';
-    }
-
-    return `${title}${tableHeader}${eventsTable}\n\n`;
+  /**
+   * Iterates through all events documented in the specified `esmodule`.
+   * @returns list of events in the esmodule.
+   * @param esmodule module name (ie. MDCSelectIconFoundation)
+   */
+  getDocumentationForEvents(esmodule: string): ModuleEvents[] {
+    return (this.docData[esmodule].documentation.contents as DocumentationContent[])
+      .filter((content) => content.tag && content.tag === 'events')
+      .map((content) => ({documentation: content.value}));
   }
 
   /**
    * Iterates through all methods of a specified `esmodule`.
-   * @returns listof documentation for methods of the esmodule.
+   * @returns list of method documentation of the esmodule.
    * @param esmodule module name (ie. MDCSelectIconFoundation)
    */
   getDocumentationForMethods(esmodule: string): ModuleMethods[] {
@@ -134,65 +146,42 @@ class TypeScriptDocumentationGenerator {
       return [];
     }
     return this.docData[esmodule].methods
-      .filter((method) => {
-        // isState ignores cssClasses, defaultAdapter, strings
-        const {isProtected, isStatic} = method.flags;
-        const hasDocumentation = method.signatures[0].documentation;
-        return !isProtected && !isStatic && hasDocumentation;
-      })
+      .filter((method) => this.shouldIgnoreDocumentationItem(method, {
+        hasDocumentation: method.signatures[0].documentation,
+      }))
       .map((method) => {
-        const methodName = method.name;
-        const methodSignature = method.signatures[0].type;
-        const documentation = method.signatures[0].documentation.contentsRaw;
+        const {name, signatures} = method;
+        const methodSignature = signatures[0].type;
+        const documentation = signatures[0].documentation.contentsRaw;
         return {
           documentation: this.cleanComment(documentation),
-          methodSignature: `${methodName}${methodSignature}`,
+          methodSignature: `${name}${methodSignature}`,
         };
       });
-    // const title = `${markdownSubHeaderLevel} Methods\n\n`;
-    // const tableHeader = 'Signature | Description\n--- | --- \n';
-    // return `${title}${tableHeader}${methodDocs}\n`;
   }
 
   /**
    * Iterates through all properties of a specified `esmodule`.
-   * @returns documentation markdown table in string format.
+   * @returns list of property documentation of the esmodule.
    * @param esmodule module name (ie. MDCSelectIconFoundation)
    */
-  getDocumentationProperties(esmodule: string): string {
-    if (!this.docData) {
-      return '';
+  getDocumentationProperties(esmodule: string): ModuleProperties[] {
+    if (!this.docData || !this.docData[esmodule].properties) {
+      return [];
     }
-    const {properties} = this.docData[esmodule];
-    if (!properties || !properties.length) {
-      return '';
-    }
-
-    const title = `${markdownSubHeaderLevel} Properties\n\n`;
-    const tableHeader = 'Name | Type | Description\n--- | --- | --- \n';
-    const propertyDocs = properties.reduce((markdownString, property) => {
-      // isState ignores cssClasses, defaultAdapter, strings
-      const {isProtected, isStatic} = property.flags;
-      if (isProtected || isStatic) {
-        return markdownString;
-      }
-
-      const propertyName = property.name;
-      const propertySignature = property.type;
-      let documentation;
-      if (property.documentation) {
-        documentation = property.documentation.contentsRaw;
-      }
-      if (!documentation) {
-        // ignore methods without any documentation
-        return markdownString;
-      }
-      return `${markdownString}${propertyName} | \`${propertySignature}\` | ${this.cleanComment(documentation)}\n`;
-    }, '');
-    if (!propertyDocs.length) {
-      return '';
-    }
-    return `${title}${tableHeader}${propertyDocs}\n`;
+    return this.docData[esmodule].properties
+      .filter((property) => this.shouldIgnoreDocumentationItem(property, {
+        hasDocumentation: property.documentation,
+      }))
+      .map((property) => {
+        const {name, type} = property;
+        const documentation = this.cleanComment(property.documentation.contentsRaw);
+        return {
+          documentation,
+          name,
+          type,
+        };
+      });
   }
 
   /**
@@ -222,7 +211,7 @@ class TypeScriptDocumentationGenerator {
    * @param component Component that the `markdownString` describes.
    * @param moduleMarkdown List of methods and properties with documentation from esmodule source.
    */
-  private setMarkdownBuffer(readmeDirectoryPath: string, moduleMarkdown: ModuleMarkdown) {
+  private addToMarkdownBuffer(readmeDirectoryPath: string, moduleMarkdown: ModuleMarkdown) {
     const markdownComponentBuffer = this.markdownBuffer[readmeDirectoryPath];
     if (markdownComponentBuffer) {
       markdownComponentBuffer.push(moduleMarkdown);
@@ -260,26 +249,32 @@ class TypeScriptDocumentationGenerator {
   }
 
   private insertMethodDescriptionTable(readmeDirectoryPath: string) {
-    const methodDescriptionTableMarkdown = this.markdownBuffer[readmeDirectoryPath];
-      // .sort(this.sortByModuleType)
-      // .join('\n');
     const readmeMarkdownPath = `./packages/${readmeDirectoryPath}/test_README.md`;
     return new Promise((resolve, reject) => {
-      fs.readFile(readmeMarkdownPath, 'utf8', (error, data) => {
-        if (error) {
-          return reject(error);
-        }
-        const startReplacerToken = '<!-- docgen-tsdoc-replacer:start -->';
-        const endReplacerToken = '<!-- docgen-tsdoc-replacer:end -->';
-        const regexString = `^${startReplacerToken}\\n(.|\n)*${endReplacerToken}$`;
-        const regex = new RegExp(regexString, 'gm');
-        const insertedData = data.replace(
-          regex,
-          `${startReplacerToken}\n${methodDescriptionTableMarkdown}\n${endReplacerToken}`,
-        );
-        resolve(insertedData);
+      fs.readFile('./scripts/documentation/apiMarkdownTableTemplate.hbs', 'utf8', (error, data) => {
+        const templateFunction = Handlebars.compile(data);
+        resolve(templateFunction(this.markdownBuffer[readmeDirectoryPath]));
       });
+      // fs.readFile(readmeMarkdownPath, 'utf8', (error, data) => {
+      //   if (error) {
+      //     return reject(error);
+      //   }
+      //   const startReplacerToken = '<!-- docgen-tsdoc-replacer:start -->';
+      //   const endReplacerToken = '<!-- docgen-tsdoc-replacer:end -->';
+      //   const regexString = `^${startReplacerToken}\\n(.|\n)*${endReplacerToken}$`;
+      //   const regex = new RegExp(regexString, 'gm');
+      //   const insertedData = data.replace(
+      //     regex,
+      //     `${startReplacerToken}\n${this.convertModuleMarkdownToString(readmeDirectoryPath)}\n${endReplacerToken}`,
+      //   );
+      //   resolve(insertedData);
+      // });
     });
+  }
+
+  private convertModuleMarkdownToString(readmeDirectoryPath) {
+    const documentationData = this.markdownBuffer[readmeDirectoryPath];
+      // .sort(this.sortByModuleType)
   }
 
   // private sortByModuleType(a: string, b: string) {
@@ -299,6 +294,12 @@ class TypeScriptDocumentationGenerator {
   //   }
   //   return 0;
   // }
+
+  private shouldIgnoreDocumentationItem(item, opts = {hasDocumentation: true}) {
+    // isState ignores cssClasses, defaultAdapter, strings
+    const {isProtected, isStatic} = item.flags;
+    return !isProtected && !isStatic && opts.hasDocumentation;
+  }
 
   private cleanComment(comment) {
     const r = new RegExp(/\n/gm);

@@ -1,0 +1,30 @@
+{{#each module}}
+  ### {{module.moduleName}}
+
+  {{#if module.moduleName.length}}
+    #### Methods
+
+    Signature | Description
+    --- | ---
+    {{#each module.methods}}
+      {{methodSignature}} | {{documentation}}
+    {{/each}}
+  {{/if}}
+
+  {{#if module.properties.length}}
+    #### Properties
+
+    Name | Type | Description
+    --- | --- | ---
+    {{#each module.properties}}
+      {{name}} | {{type}} | {{documentation}}
+    {{/each}}
+  {{/if}}
+
+  {{#if module.events.length}}
+    #### Events
+    {{#each module.events}}
+      - {{documentation}}
+    {{/each}}
+  {{/if}}
+{{/each}}
