@@ -244,6 +244,11 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
 @mixin mdc-button-horizontal-padding($padding, $query: mdc-feature-all()) {
   $feat-structure: mdc-feature-create-target($query, structure);
 
+  // Note: Adjust padding to maintain consistent width with non-outlined buttons
+  $padding-value: max($padding - $outline-width, 0);
+
+  @include mdc-button-horizontal-padding($padding-value, $query);
+
   @include mdc-feature-targets($feat-structure) {
     // $padding should be a single value; enforce it by specifying all 4 sides in the output
     padding: 0 $padding 0 $padding;
