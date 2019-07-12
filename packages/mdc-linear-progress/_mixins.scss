@@ -18,28 +18,256 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+@import "@material/animation/functions";
+@import "@material/feature-targeting/functions";
+@import "@material/feature-targeting/mixins";
 @import "@material/theme/mixins";
 @import "@material/theme/variables"; // for mdc-theme-prop-value
+@import "./variables";
+@import "./keyframes";
 
-@mixin mdc-linear-progress-bar-color($color) {
-  .mdc-linear-progress__bar-inner {
-    @include mdc-theme-prop(background-color, $color);
+//
+// Public
+//
+
+@mixin mdc-linear-progress-core-styles($query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+  $feat-animation: mdc-feature-create-target($query, animation);
+
+  @include mdc-feature-targets($feat-animation) {
+    @include mdc-linear-progress-primary-indeterminate-translate-keyframes_;
+    @include mdc-linear-progress-primary-indeterminate-scale-keyframes_;
+    @include mdc-linear-progress-secondary-indeterminate-translate-keyframes_;
+    @include mdc-linear-progress-secondary-indeterminate-scale-keyframes_;
+    @include mdc-linear-progress-buffering-keyframes_;
+    @include mdc-linear-progress-primary-indeterminate-translate-reverse-keyframes_;
+    @include mdc-linear-progress-secondary-indeterminate-translate-reverse-keyframes_;
+    @include mdc-linear-progress-buffering-reverse-keyframes_;
+  }
+
+  .mdc-linear-progress {
+    @include mdc-feature-targets($feat-structure) {
+      position: relative;
+      width: 100%;
+      height: 4px;
+      transform: translateZ(0);
+      overflow: hidden;
+    }
+
+    @include mdc-feature-targets($feat-animation) {
+      transition: mdc-animation-exit-temporary(opacity, 250ms);
+    }
+
+    &__bar {
+      @include mdc-feature-targets($feat-structure) {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        animation: none;
+        transform-origin: top left;
+      }
+
+      @include mdc-feature-targets($feat-animation) {
+        transition: mdc-animation-exit-temporary(transform, 250ms);
+      }
+    }
+
+    &__bar-inner {
+      @include mdc-feature-targets($feat-structure) {
+        display: inline-block;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        animation: none;
+      }
+    }
+
+    &__buffering-dots {
+      @include mdc-feature-targets($feat-structure) {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-repeat: repeat-x;
+        background-size: 10px 4px;
+      }
+
+      @include mdc-feature-targets($feat-animation) {
+        animation: buffering 250ms infinite linear;
+      }
+    }
+
+    &__buffer {
+      @include mdc-feature-targets($feat-structure) {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transform-origin: top left;
+      }
+
+      @include mdc-feature-targets($feat-animation) {
+        transition: mdc-animation-exit-temporary(transform, 250ms);
+      }
+    }
+
+    &__primary-bar {
+      @include mdc-feature-targets($feat-structure) {
+        transform: scaleX(0);
+      }
+    }
+
+    &__secondary-bar {
+      @include mdc-feature-targets($feat-structure) {
+        visibility: hidden;
+      }
+    }
+
+    @include mdc-linear-progress-indeterminate_($query: $query);
+    @include mdc-linear-progress-reversed_($query: $query);
+
+    &--closed {
+      @include mdc-feature-targets($feat-structure) {
+        opacity: 0;
+      }
+
+      @include mdc-feature-targets($feat-animation) {
+        animation: none;
+      }
+    }
+  }
+
+  @at-root {
+    @include mdc-linear-progress-bar-color(primary, $query: $query);
+    @include mdc-linear-progress-buffer-color($mdc-linear-progress-baseline-buffer-color, $query: $query);
+  }
+
+  .mdc-linear-progress--indeterminate.mdc-linear-progress--reversed {
+    .mdc-linear-progress__primary-bar {
+      @include mdc-feature-targets($feat-structure) {
+        right: -145.166611%;
+        left: auto;
+      }
+    }
+
+    .mdc-linear-progress__secondary-bar {
+      @include mdc-feature-targets($feat-structure) {
+        right: -54.888891%;
+        left: auto;
+      }
+    }
   }
 }
 
-@mixin mdc-linear-progress-buffer-color($color) {
+@mixin mdc-linear-progress-bar-color($color, $query: mdc-feature-all()) {
+  $feat-color: mdc-feature-create-target($query, color);
+
+  .mdc-linear-progress__bar-inner {
+    @include mdc-feature-targets($feat-color) {
+      @include mdc-theme-prop(background-color, $color);
+    }
+  }
+}
+
+@mixin mdc-linear-progress-buffer-color($color, $query: mdc-feature-all()) {
   // We need to escape the '#' character as "%23" for SVG because '#' is a reserved character in URIs.
   $color-value-for-css: mdc-theme-prop-value($color);
   $color-value-for-svg: mdc-linear-progress-str-replace_(unquote("#{$color-value-for-css}"), "#", "%23");
+  $feat-color: mdc-feature-create-target($query, color);
 
   .mdc-linear-progress__buffering-dots {
-    // SVG is optimized for data URI (https://codepen.io/tigt/post/optimizing-svgs-in-data-uris)
-    // stylelint-disable-next-line function-url-quotes
-    background-image: url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' enable-background='new 0 0 5 2' xml:space='preserve' viewBox='0 0 5 2' preserveAspectRatio='none slice'%3E%3Ccircle cx='1' cy='1' r='1' fill='#{$color-value-for-svg}'/%3E%3C/svg%3E");
+    @include mdc-feature-targets($feat-color) {
+      // SVG is optimized for data URI (https://codepen.io/tigt/post/optimizing-svgs-in-data-uris)
+      // stylelint-disable-next-line function-url-quotes
+      background-image: url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' enable-background='new 0 0 5 2' xml:space='preserve' viewBox='0 0 5 2' preserveAspectRatio='none slice'%3E%3Ccircle cx='1' cy='1' r='1' fill='#{$color-value-for-svg}'/%3E%3C/svg%3E");
+    }
   }
 
   .mdc-linear-progress__buffer {
-    background-color: $color-value-for-css;
+    @include mdc-feature-targets($feat-color) {
+      background-color: $color-value-for-css;
+    }
+  }
+}
+
+//
+// Private
+//
+
+@mixin mdc-linear-progress-indeterminate_($query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+  $feat-animation: mdc-feature-create-target($query, animation);
+
+  &--indeterminate {
+    .mdc-linear-progress__bar {
+      @include mdc-feature-targets($feat-structure) {
+        transition: none;
+      }
+    }
+
+    .mdc-linear-progress__primary-bar {
+      @include mdc-feature-targets($feat-structure) {
+        left: -145.166611%;
+      }
+
+      @include mdc-feature-targets($feat-animation) {
+        animation: primary-indeterminate-translate 2s infinite linear;
+      }
+
+      > .mdc-linear-progress__bar-inner {
+        @include mdc-feature-targets($feat-animation) {
+          animation: primary-indeterminate-scale 2s infinite linear;
+        }
+      }
+    }
+
+    .mdc-linear-progress__secondary-bar {
+      @include mdc-feature-targets($feat-structure) {
+        left: -54.888891%;
+        visibility: visible;
+      }
+
+      @include mdc-feature-targets($feat-animation) {
+        animation: secondary-indeterminate-translate 2s infinite linear;
+      }
+
+      > .mdc-linear-progress__bar-inner {
+        @include mdc-feature-targets($feat-animation) {
+          animation: secondary-indeterminate-scale 2s infinite linear;
+        }
+      }
+    }
+  }
+}
+
+@mixin mdc-linear-progress-reversed_($query: mdc-feature-all()) {
+  $feat-structure: mdc-feature-create-target($query, structure);
+  $feat-animation: mdc-feature-create-target($query, animation);
+
+  &--reversed {
+    .mdc-linear-progress__bar,
+    .mdc-linear-progress__buffer {
+      @include mdc-feature-targets($feat-structure) {
+        right: 0;
+        transform-origin: center right;
+      }
+    }
+
+    .mdc-linear-progress__primary-bar {
+      @include mdc-feature-targets($feat-animation) {
+        animation-name: primary-indeterminate-translate-reverse;
+      }
+    }
+
+    .mdc-linear-progress__secondary-bar {
+      @include mdc-feature-targets($feat-animation) {
+        animation-name: secondary-indeterminate-translate-reverse;
+      }
+    }
+
+    .mdc-linear-progress__buffering-dots {
+      @include mdc-feature-targets($feat-animation) {
+        animation: buffering-reverse 250ms infinite linear;
+      }
+    }
   }
 }
 
