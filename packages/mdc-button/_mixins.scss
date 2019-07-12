@@ -256,11 +256,10 @@ $mdc-button-ripple-target: ".mdc-button__ripple";
   $query: mdc-feature-all()
 ) {
   $feat-structure: mdc-feature-create-target($query, structure);
-
   // Note: Adjust padding to maintain consistent width with non-outlined buttons
   $padding-value: max($padding - $outline-width, 0);
 
-  @include mdc-button-horizontal-padding($padding, $query);
+  @include mdc-button-horizontal-padding($padding-value, $query);
 
   @include mdc-feature-targets($feat-structure) {
     border-width: $outline-width;
