@@ -49,7 +49,7 @@ class TypeScriptDocumentationGenerator {
   constructor() {
     this.docData = {};
     this.markdownBuffer = {};
-    fs.readFile('./scripts/documentation/apiMarkdownTableTemplate.hbs', 'utf8', (error, template) => {
+    fs.readFile('./scripts/documentation/api-markdown-table-template.hbs', 'utf8', (error, template) => {
       if (error) {
         console.error(error); // tslint:disable-line
       }
@@ -62,17 +62,17 @@ class TypeScriptDocumentationGenerator {
    * This contains all the esmodule classes (ie. foundations, adapters, components) in JSON format.
    * @returns Promise<{}>
    */
-  generateJSONFromFiles() {
-    return new Promise((resolve) => {
-      new Documentalist()
-        .use(/\.ts$/, new TypescriptPlugin({
-          excludePaths: ['node_modules'],
-          includeDeclarations: true,
-        }))
-        .documentGlobs('packages/**/*') // ← async operation, returns a Promise
-        .then((docs) => resolve(docs))
-        .catch((error) => console.error(error)); // tslint:disable-line
-    });
+  async generateJSONFromFiles() {
+    let _docs;
+    await new Documentalist()
+      .use(/\.ts$/, new TypescriptPlugin({
+        excludePaths: ['node_modules'],
+        includeDeclarations: true,
+      }))
+      .documentGlobs('packages/**/*')
+      .then((docs) => _docs = docs)
+      .catch((error) => console.error(error)); // tslint:disable-line
+    return _docs;
   }
 
   /**
@@ -81,6 +81,9 @@ class TypeScriptDocumentationGenerator {
    * @param docData json containing documentation from documentalist
    */
   generateDocs(docData) {
+    if (!docData) {
+      console.error('FAILURE: Documentation generation did not compile correctly.');
+    }
     this.docData = docData.typescript;
     Object.keys(this.docData).forEach((module) => {
       console.log(`-- generating docs for ${module}`); // tslint:disable-line
